@@ -1,0 +1,52 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { Assert } from '../assert'
+import { And } from '../boolean/And'
+import { Or } from '../boolean/Or'
+import { IsFalsy } from '../boolean/truthy-falsy'
+import { Xor } from '../boolean/Xor'
+
+declare const _def: unique symbol
+type def = typeof _def
+type Def<x, d> = x extends def ? d : x
+Assert<Def<def, 123>, 123>()
+Assert<Def<1, 2>, 1>()
+
+export interface Op<A = def, B = def, C = def, D = def, _E = def, _F = def, _G = def, _H = def, _I = def> {
+	'!': IsFalsy<A, Def<B, true>, Def<C, false>>
+	'&': And<A, B, Def<C, true>, Def<D, false>>
+	'|': Or<A, B, Def<C, true>, Def<D, false>>
+	'^': Xor<A, B, Def<C, true>, Def<D, false>>
+	'isSubtype': IsSubtype<A, B, Def<C, true>, Def<D, false>>
+	'isSupertype': IsSupertype<A, B, Def<C, true>, Def<D, false>>
+	'isString': IsString<A, Def<B, true>, Def<C, false>>
+	'isSuperString': IsSuperString<A, Def<B, true>, Def<C, false>>
+	'isNumber': IsNumber<A, Def<B, true>, Def<C, false>>
+	'isSuperNumber': IsSuperNumber<A, Def<B, true>, Def<C, false>>
+}
+
+export type IsSubtype<A, B, T = true, F = false> = A extends B ? T : F
+export type IsSupertype<A, B, T = true, F = false> = B extends A ? T : F
+
+export type IsString<A, T = true, F = false> = A extends string ? T : F
+export type IsSuperString<A, T = true, F = false> = string extends A ? T : F
+
+export type IsNumber<A, T = true, F = false> = A extends number ? T : F
+export type IsSuperNumber<A, T = true, F = false> = number extends A ? T : F
+
+export type OpPacked<args extends unknown[]> = [...args, def, def, def, def, def, def, def, def, def, def] extends [
+	infer A,
+	infer B,
+	infer C,
+	infer D,
+	infer E,
+	infer F,
+	infer G,
+	infer H,
+	infer I,
+	...unknown[]
+]
+	? Op<A, B, C, D, E, F, G, H, I>
+	: never

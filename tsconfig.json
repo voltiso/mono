@@ -1,0 +1,46 @@
+{
+	"compilerOptions": {
+		// Node 16 recommended: https://github.com/tsconfig/bases/blob/main/bases/node16.json
+		"lib": ["ES2021"],
+		"module": "CommonJS",
+		"target": "ES2021",
+
+		"strict": true,
+		// "esModuleInterop": true,
+		// "skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		// end of Node 16 recommended
+
+		"rootDir": "src",
+		"outDir": "lib",
+
+		// STRICT options
+		"alwaysStrict": true,
+		"strictNullChecks": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"useUnknownInCatchVariables": true,
+
+		"exactOptionalPropertyTypes": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		// "allowUnusedLabels": false, // undefined = warning
+		// "allowUnreachableCode": false, // undefined = warning
+
+		"sourceMap": true,
+		"declaration": true
+		// "allowJs": true,
+		// "checkJs": true
+	},
+
+	"include": ["src"],
+	"exclude": ["node_modules", "lib"]
+}
