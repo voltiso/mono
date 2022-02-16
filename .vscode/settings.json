@@ -1,5 +1,6 @@
 {
 	"files.eol": "\n",
+	"files.autoSave": "onFocusChange",
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": true,
 	"editor.formatOnType": true
