@@ -2,7 +2,7 @@
 
 import { Assert } from '../../assert'
 import { CanBeUndefined } from '../CanBeUndefined'
-import { IsSame } from '../../IsEqual'
+import { IsIdentical } from '../../IsEqual'
 import { IsOptional } from '../IsOptional'
 import { Callable, Newable } from '../../types'
 
@@ -18,9 +18,9 @@ export type Flatten<T> = T extends Callable<any[]>
 	? T
 	: [{ [k in keyof T]: FlattenValue<T, k> }][0]
 
-Assert<IsSame<Flatten<{ a: 1 } & { b: 2 }>, { a: 1; b: 2 }>>()
-Assert<IsSame<Flatten<{ a?: 1 }>, { a?: 1 }>>()
-Assert<IsSame<Flatten<{ a?: 1 | undefined }>, { a?: 1 }>, false>()
+Assert<IsIdentical<Flatten<{ a: 1 } & { b: 2 }>, { a: 1; b: 2 }>>()
+Assert<IsIdentical<Flatten<{ a?: 1 }>, { a?: 1 }>>()
+Assert<IsIdentical<Flatten<{ a?: 1 | undefined }>, { a?: 1 }>, false>()
 
 Assert<Flatten<number>, number>()
 Assert<number, Flatten<number>>()
