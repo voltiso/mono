@@ -31,14 +31,14 @@ export type MergeDeep<
 	E extends [A] extends [readonly object[]] ? void : object | void = void
 > = [A] extends [readonly object[]] ? MergeDeepI<{}, A> : MergeDeepI<{}, readonly [A, B, C, D, E]>
 
-type RSU = Record<string, unknown>
+type RSU = Record<string, Object>
 
 function mergeDeepI(a: RSU, b: RSU) {
 	const r = { ...a }
 	for (const k in b) {
-		if (r[k] && b[k] && typeof r[k] === 'object' && typeof b[k] === 'object')
-			r[k] = mergeDeepI(r[k] as RSU, b[k] as RSU)
-		else r[k] = b[k]
+		if (r[k]?.constructor === Object && b[k]?.constructor === Object) r[k] = mergeDeepI(r[k] as RSU, b[k] as RSU)
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		else (r[k] as any) = b[k]
 	}
 	return r
 }
