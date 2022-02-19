@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import type { ConditionalKeys } from 'type-fest'
 
 // const asd: X = [['b', 123]]
@@ -23,30 +24,31 @@ export type Interface<
 	(PM | void extends void ? unknown : Inst[PM])
 
 export const createClassInterface = <
-	Args extends unknown[],
-	Inst extends object,
-	Field extends keyof Inst & string,
-	CM extends CMType<Inst> = '_CALL' & CMType<Inst>,
-	PM extends PMType<Inst> = '_PROXY_OBJECT' & PMType<Inst>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	Cls extends Constructor<any>,
+	Field extends keyof InstanceType<Cls> & string,
+	CM extends CMType<InstanceType<Cls>> = '_CALL' & CMType<InstanceType<Cls>>,
+	PM extends PMType<InstanceType<Cls>> = '_PROXY_OBJECT' & PMType<InstanceType<Cls>>
 >(
-	cls: Constructor<Args, Inst>,
+	cls: Cls,
 	fields: readonly Field[] | Field,
 	options: {
 		callMethodName: CM | '_CALL'
 		proxyObjectMethodName: PM | '_PROXY_OBJECT'
 	} = { callMethodName: '_CALL', proxyObjectMethodName: '_PROXY_OBJECT' }
 ) => {
-	type R = Constructor<Args, Interface<Inst, Field, CM, PM>>
+	type R = Constructor<ConstructorParameters<Cls>, Interface<InstanceType<Cls>, Field, CM, PM>>
 
 	const newClass = class {
-		_: Inst
-		constructor(...args: Args) {
-			this._ = new cls(...args)
+		_: InstanceType<Cls>
+		constructor(...args: unknown[]) {
+			this._ = new cls(...args) as InstanceType<Cls>
 
-			const isCallable = (m: CM | '_CALL'): m is CM => (m !== '_CALL' && m in this._) || '_CALL' in this._ // hack to avoid TS error...
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const isCallable = (m: CM | '_CALL'): m is CM => !!(this._ as Record<any, unknown>)[m]
 
 			// eslint-disable-next-line @typescript-eslint/no-this-alias
-			let result: { _: Inst } = this
+			let result: { _: InstanceType<Cls> } = this
 
 			if (isCallable(options.callMethodName)) {
 				const m = options.callMethodName
@@ -63,16 +65,16 @@ export const createClassInterface = <
 				result = f
 			}
 
-			const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM =>
-				(m !== '_PROXY_OBJECT' && m in this._) || '_PROXY_OBJECT' in this._
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM => !!(this._ as Record<any, unknown>)[m]
 
 			if (hasProxyObject(options.proxyObjectMethodName)) {
 				const m = options.proxyObjectMethodName
 				const newResult = new Proxy(result, {
 					get(result, p) {
 						const proxyObject = result._[m] as unknown as object
-						if (p in proxyObject) return Reflect.get(proxyObject, p) as unknown
-						else return Reflect.get(result, p) as unknown
+						if (p in result) return Reflect.get(result, p) as unknown
+						else return Reflect.get(proxyObject, p) as unknown
 					},
 					set(result, p, value, receiver) {
 						// call with null receiver to bypass proxy object (e.g. calls from derived class constructor)
@@ -89,10 +91,10 @@ export const createClassInterface = <
 		}
 	}
 
-	const prototype = <Inst>cls.prototype
+	const prototype = cls.prototype as InstanceType<Cls> & {}
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	type NewInst = Pick<Inst, Field> & { _: Inst }
-	const newPrototype = <NewInst>newClass.prototype
+	type NewInst = Pick<InstanceType<Cls> & {}, Field> & { _: InstanceType<Cls> }
+	const newPrototype = newClass.prototype as NewInst
 
 	appendInterface(newPrototype, prototype, fields, (x: { _: unknown }) => x._)
 

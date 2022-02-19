@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { expect } from 'chai'
-import { createClassInterface } from './Interface'
+import { createClassInterface, Interface } from './Interface'
+import { Unpack } from './Unpack'
 
 describe('Interface', function () {
 	it('works', function () {
-		class ClassImpl {
+		class ClassImpl<A = unknown> {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			constructor(_a: A & string) {}
 			aaa = 2
 			baa = 'bbb'
 			caa() {
@@ -42,9 +45,10 @@ describe('Interface', function () {
 
 		expect(() => createClassInterface(ClassImpl, 'fff')).to.throw('fff')
 
-		const Class = createClassInterface(ClassImpl, ['caa', 'test', 'setterx', 'gx'])
-		type Class = InstanceType<typeof Class>
-		const c = new Class()
+		const publicFields = ['caa', 'test', 'setterx', 'gx'] as const
+		const Class = createClassInterface(ClassImpl, publicFields)
+		type Class = Interface<ClassImpl, Unpack<typeof publicFields>>
+		const c = new Class('')
 
 		expect(c.gx).to.equal(1)
 		c.setterx = 1239
