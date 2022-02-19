@@ -10,8 +10,7 @@
 	"scripts": {
 		"lint": "eslint src",
 		"build": "yarn lint && tsc",
-		"only-build": "tsc",
-		"prepack": "yarn build",
+		"prepare": "yarn build",
 		"test": "cd src && mocha **/*.test.ts"
 	},
 	"devDependencies": {
