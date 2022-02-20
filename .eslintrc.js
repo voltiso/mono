@@ -11,6 +11,7 @@ module.exports = {
 		'plugin:import/typescript',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:@typescript-eslint/recommended-requiring-type-checking',
+		'plugin:jest/all',
 		'plugin:prettier/recommended',
 	],
 	parser: '@typescript-eslint/parser',
@@ -21,6 +22,7 @@ module.exports = {
 	},
 	ignorePatterns: [
 		'.eslintrc.js',
+		'jest.config.js',
 		'lib/**/*', // ignore built files
 	],
 	plugins: ['@typescript-eslint', 'import'],

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { expect } from 'chai'
+// import { expect } from 'chai'
 import { createClassInterface, Interface } from './Interface'
 import { Unpack } from './Unpack'
 
-describe('Interface', function () {
+describe('interface', function () {
 	it('works', function () {
+		expect.hasAssertions()
 		class ClassImpl<A = unknown> {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			constructor(_a: A & string) {}
@@ -41,33 +42,33 @@ describe('Interface', function () {
 			}
 		}
 
-		expect(() => createClassInterface(ClassImpl, ['aaa', 'caa'])).to.throw('aaa')
+		expect(() => createClassInterface(ClassImpl, ['aaa', 'caa'])).toThrow('aaa')
 
-		expect(() => createClassInterface(ClassImpl, 'fff')).to.throw('fff')
+		expect(() => createClassInterface(ClassImpl, 'fff')).toThrow('fff')
 
 		const publicFields = ['caa', 'test', 'setterx', 'gx'] as const
 		const Class = createClassInterface(ClassImpl, publicFields)
 		type Class = Interface<ClassImpl, Unpack<typeof publicFields>>
 		const c = new Class('')
 
-		expect(c.gx).to.equal(1)
+		expect(c.gx).toBe(1)
 		c.setterx = 1239
-		expect(c.gx).to.equal(1239)
+		expect(c.gx).toBe(1239)
 
-		expect(c(12)).to.equal(23)
-		expect(c.caa()).to.equal(11)
-		expect(c.test).to.equal(5)
+		expect(c(12)).toBe(23)
+		expect(c.caa()).toBe(11)
+		expect(c.test).toBe(5)
 
-		expect(c.testproxy).to.equal(123)
+		expect(c.testproxy).toBe(123)
 		c.otherProxyVal = 'asd'
-		expect(c.otherProxyVal).to.equal('asd')
-		expect(c._._PROXY_OBJECT.otherProxyVal).to.equal('asd')
+		expect(c.otherProxyVal).toBe('asd')
+		expect(c._._PROXY_OBJECT.otherProxyVal).toBe('asd')
 
-		expect((c as unknown as ClassImpl).aaa).to.be.undefined
-		expect(c.caa()).to.equal(11)
+		expect((c as unknown as ClassImpl).aaa).toBeUndefined()
+		expect(c.caa()).toBe(11)
 		// eslint-disable-next-line @typescript-eslint/unbound-method
-		expect((c as unknown as ClassImpl).daa).to.be.undefined
+		expect((c as unknown as ClassImpl).daa).toBeUndefined()
 		// eslint-disable-next-line @typescript-eslint/unbound-method
-		expect((c as unknown as ClassImpl).fff).to.be.undefined
+		expect((c as unknown as ClassImpl).fff).toBeUndefined()
 	})
 })
