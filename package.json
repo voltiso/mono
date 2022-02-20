@@ -10,7 +10,7 @@
 	"scripts": {
 		"lint": "eslint src",
 		"build": "tsc",
-		"prepare": "yarn build",
+		"prepack": "yarn build",
 		"test": "jest"
 	},
 	"devDependencies": {
