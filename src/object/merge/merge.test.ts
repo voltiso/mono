@@ -5,18 +5,22 @@ import { Assert } from '../../assert'
 import { IsIdentical } from '../../IsEqual'
 import { Merge } from './merge'
 
-// @ts-expect-error
-type _X = Merge<[{ a: 1 }], { b: 2 }>
+describe('merge', function () {
+	it('works', function () {
+		// @ts-expect-error
+		type _X = Merge<[{ a: 1 }], { b: 2 }>
 
-Assert<IsIdentical<Merge<[]>, {}>>()
-Assert<IsIdentical<Merge<[{ a: 1 }]>, { a: 1 }>>()
-Assert<IsIdentical<Merge<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>>()
-Assert<IsIdentical<Merge<[{ a: 1 }, { a: 2 }]>, { a: 2 }>>()
-Assert<IsIdentical<Merge<[{ a: { a: 1 } }, { a: { b: 2 } }]>, { a: { b: 2 } }>>()
-Assert<IsIdentical<Merge<[{ a: 1 }, { b: 2 }, { c: 3 }]>, { a: 1; b: 2; c: 3 }>>()
+		Assert<IsIdentical<Merge<[]>, {}>>()
+		Assert<IsIdentical<Merge<[{ a: 1 }]>, { a: 1 }>>()
+		Assert<IsIdentical<Merge<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>>()
+		Assert<IsIdentical<Merge<[{ a: 1 }, { a: 2 }]>, { a: 2 }>>()
+		Assert<IsIdentical<Merge<[{ a: { a: 1 } }, { a: { b: 2 } }]>, { a: { b: 2 } }>>()
+		Assert<IsIdentical<Merge<[{ a: 1 }, { b: 2 }, { c: 3 }]>, { a: 1; b: 2; c: 3 }>>()
 
-Assert<IsIdentical<Merge<{ a: 1 }>, { a: 1 }>>()
-Assert<IsIdentical<Merge<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>>()
-Assert<IsIdentical<Merge<{ a: 1 }, { a: 2 }>, { a: 2 }>>()
-Assert<IsIdentical<Merge<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { b: 2 } }>>()
-Assert<IsIdentical<Merge<{ a: 1 }, { b: 2 }, { c: 3 }>, { a: 1; b: 2; c: 3 }>>()
+		Assert<IsIdentical<Merge<{ a: 1 }>, { a: 1 }>>()
+		Assert<IsIdentical<Merge<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>>()
+		Assert<IsIdentical<Merge<{ a: 1 }, { a: 2 }>, { a: 2 }>>()
+		Assert<IsIdentical<Merge<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { b: 2 } }>>()
+		Assert<IsIdentical<Merge<{ a: 1 }, { b: 2 }, { c: 3 }>, { a: 1; b: 2; c: 3 }>>()
+	})
+})

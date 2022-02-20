@@ -3,4 +3,4 @@ export function Assert<_Cond extends Expected, Expected = true>() {
 	//
 }
 
-export { strict as assert } from 'assert'
+export { strict as assert } from 'assert/strict'

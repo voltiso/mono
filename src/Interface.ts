@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import type { ConditionalKeys } from 'type-fest'
-
-// const asd: X = [['b', 123]]
 
 type Constructor<Args extends unknown[] = unknown[], Inst = unknown> = new (...args: Args) => Inst
-// type Class<Args extends unknown[] = unknown[], Inst = unknown> = Constructor<Args, Inst> & Inst
 
-// export type ClassFromConstructor<Ctor> = Ctor extends Constructor<infer Args, infer Inst>
-// 	? Constructor<Args, Inst> & Inst
-// 	: never
+type Condition<X, C, T, F> = X extends C ? T : F
 
-type CMType<Inst> = ConditionalKeys<Inst, CallableFunction>
-type PMType<Inst> = ConditionalKeys<Inst, object>
+type CMType<Inst> = Condition<Inst[keyof Inst], CallableFunction, keyof Inst, never>
+type PMType<Inst> = Condition<Inst[keyof Inst], object, keyof Inst, never>
 
 export type Interface<
 	Inst,
