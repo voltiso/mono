@@ -2,7 +2,7 @@
 	"files.eol": "\n",
 	"editor.formatOnSave": true,
 	"jest.jestCommandLine": "node_modules/.bin/jest",
-	"jest.autoRun": { "watch": false, "onSave": "test-src-all", "onStartup": ["all-tests"] },
+	"jest.autoRun": { "watch": false, "onSave": "test-src-file", "onStartup": ["all-tests"] },
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true
 }
