@@ -1,4 +1,3 @@
-import { Assert } from '../assert'
 import { Ast, AstFromString } from './ast'
 import { Op, OpPacked } from './op'
 
@@ -61,11 +60,3 @@ export type Eval<expr extends Expr = never, args extends unknown[] = []> = expr 
 	: expr extends string
 	? EvalAst<AstFromString<expr>, args>
 	: never
-
-Assert<Eval<'2', ['123', 22]>, 22>()
-Assert<Eval<'1', ['123', 22]>, '123'>()
-Assert<Eval<'!1', ['123', 22]>, false>()
-Assert<Eval<'!1 | 2', ['123', 0]>, false>()
-Assert<Eval<'!1 | 2', ['123', 1]>, true>()
-Assert<Eval<'isNumber', ['123']>, false>()
-Assert<Eval<'isNumber', [123]>, true>()

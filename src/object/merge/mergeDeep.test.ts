@@ -8,6 +8,7 @@ import { mergeDeep, MergeDeep } from './mergeDeep'
 describe('mergeDeep', function () {
 	it('works - static', function () {
 		expect.assertions(0)
+
 		// @ts-expect-error
 		type _X = MergeDeep<[{ a: 1 }], { b: 2 }>
 

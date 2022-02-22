@@ -7,6 +7,8 @@ import { Merge } from './merge'
 
 describe('merge', function () {
 	it('works', function () {
+		expect.assertions(0)
+
 		// @ts-expect-error
 		type _X = Merge<[{ a: 1 }], { b: 2 }>
 

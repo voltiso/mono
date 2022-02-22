@@ -11,9 +11,6 @@
 		"forceConsistentCasingInFileNames": true,
 		// end of Node 16 recommended
 
-		"rootDir": "src",
-		"outDir": "lib",
-
 		// STRICT options
 		"alwaysStrict": true,
 		"strictNullChecks": true,
@@ -31,16 +28,13 @@
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
+		"noUncheckedIndexedAccess": true
 		// "allowUnusedLabels": false, // undefined = warning
 		// "allowUnreachableCode": false, // undefined = warning
 
-		"sourceMap": true,
-		"declaration": true
 		// "allowJs": true,
 		// "checkJs": true
 	},
 
-	"include": ["src"],
-	"exclude": ["node_modules", "lib"]
+	"include": ["src"]
 }

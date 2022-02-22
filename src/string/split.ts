@@ -1,6 +1,3 @@
-import { Assert } from '../assert'
-import { IsEqual } from '../IsEqual'
-
 export type Split<T, Separator extends string = ''> = string extends T
 	? string[]
 	: string extends Separator
@@ -10,6 +7,3 @@ export type Split<T, Separator extends string = ''> = string extends T
 	: T extends ''
 	? []
 	: [T]
-
-Assert<IsEqual<Split<'asd/sdf/dfg', '/'>, ['asd', 'sdf', 'dfg']>>()
-Assert<IsEqual<Split<string, '/'>, string[]>>()

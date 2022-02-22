@@ -1,18 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { Assert } from '../assert'
 import { And } from '../boolean/And'
 import { Or } from '../boolean/Or'
 import { IsFalsy } from '../boolean/truthy-falsy'
 import { Xor } from '../boolean/Xor'
 
 declare const _def: unique symbol
-type def = typeof _def
-type Def<x, d> = x extends def ? d : x
-Assert<Def<def, 123>, 123>()
-Assert<Def<1, 2>, 1>()
+export type def = typeof _def
+export type Def<x, d> = x extends def ? d : x
 
 export interface Op<A = def, B = def, C = def, D = def, _E = def, _F = def, _G = def, _H = def, _I = def> {
 	'!': IsFalsy<A, Def<B, true>, Def<C, false>>

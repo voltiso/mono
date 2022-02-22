@@ -1,7 +1,6 @@
 module.exports = {
 	root: true,
 	env: {
-		// node: true,
 		es6: true,
 	},
 	extends: [
@@ -16,34 +15,15 @@ module.exports = {
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		project: ['tsconfig.json', 'tsconfig.dev.json'],
+		project: 'tsconfig.json',
 		tsconfigRootDir: __dirname,
 		sourceType: 'module',
 	},
-	ignorePatterns: [
-		'.eslintrc.js',
-		'jest.config.js',
-		'lib/**/*', // ignore built files
-	],
+	ignorePatterns: ['.eslintrc.js', 'jest.config.js', 'lib/**/*'],
 	plugins: ['@typescript-eslint', 'import'],
 	rules: {
-		'import/no-unresolved': 0,
+		// 'import/no-unresolved': 0,
 		'@typescript-eslint/no-unnecessary-condition': 'error',
 		'@typescript-eslint/no-floating-promises': 'error',
-		//
-		// '@typescript-eslint/no-unsafe-call': 1,
-		// '@typescript-eslint/no-unsafe-argument': 1,
-		// '@typescript-eslint/no-unsafe-member-access': 1,
-		// '@typescript-eslint/no-unsafe-assignment': 1,
-	},
-	settings: {
-		'import/parsers': {
-			[require.resolve('@typescript-eslint/parser')]: ['.ts', '.tsx', '.d.ts'],
-		},
-		'import/resolver': {
-			[require.resolve('eslint-import-resolver-node')]: {
-				extensions: [],
-			},
-		},
 	},
 }

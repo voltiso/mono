@@ -1,5 +1,3 @@
-import { Assert } from '../assert'
-import { IsEqual } from '../IsEqual'
 import { Print, Printable } from '../Printable'
 
 type JoinImpl<Array, Separator extends Printable = ''> = Array extends [infer H, infer HH, ...infer T]
@@ -14,5 +12,3 @@ export type Join<T extends Printable[] | Printable, Separator extends Printable 
 
 export const join = <Strs extends string[], Separator extends string>(strs: Strs, separator: Separator) =>
 	strs.join(separator) as Join<Strs, Separator>
-
-Assert<IsEqual<Join<['asd', 'sdf'], '/'>, 'asd/sdf'>>()

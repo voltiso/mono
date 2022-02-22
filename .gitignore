@@ -1,20 +1,2 @@
-# yarn2...
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
-# ...with zero-installs
-# !.yarn/cache
-
-# ...or without zero-installs
-.pnp.*
-
-# built files
 lib
-
-# just in case
-# *.log
-# node_modules
+node_modules

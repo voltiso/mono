@@ -1,4 +1,3 @@
-import { Assert } from '../assert'
 import { Op } from './op'
 import { Tokenize } from './tokenize'
 
@@ -72,7 +71,3 @@ type Rec<nodes extends unknown[], tokens> = tokens extends [infer t, ...infer ts
 export type AstFromTokens<tokens extends string[]> = Rec<[['', []]], [...tokens, '!!']>
 
 export type AstFromString<S> = AstFromTokens<Tokenize<S>>
-
-Assert<AstFromString<'asd 1 2 3 & !4'>, ['&', [['asd', ['1', '2', '3']], ['!', ['4']]]]>()
-Assert<AstFromString<'1 | !2 & !3'>, ['|', ['1', ['&', [['!', ['2']], ['!', ['3']]]]]]>()
-Assert<AstFromString<'(1 | 2) & 3'>, ['&', [['|', ['1', '2']], '3']]>()
