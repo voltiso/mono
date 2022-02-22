@@ -1,8 +1,13 @@
 {
+	"files.encoding": "utf8",
 	"files.eol": "\n",
+
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": true,
+
 	"jest.jestCommandLine": "node_modules/.bin/jest",
 	"jest.autoRun": { "watch": false, "onSave": "test-src-file", "onStartup": ["all-tests"] },
+
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true
 }
