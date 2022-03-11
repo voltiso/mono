@@ -77,6 +77,11 @@ export const createClassInterface = <
 						else if (receiver === null) return Reflect.set(result, p, value)
 						else return Reflect.set(proxyObject, p, value)
 					},
+					deleteProperty(result, p) {
+						const proxyObject = result._[m] as unknown as object
+						if (p in result) return Reflect.deleteProperty(result, p)
+						else return Reflect.deleteProperty(proxyObject, p)
+					},
 				})
 				result = newResult
 			}

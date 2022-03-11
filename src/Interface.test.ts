@@ -25,7 +25,10 @@ describe('interface', function () {
 				return x + this.caa() // x + 11
 			}
 
-			_PROXY_OBJECT: { testproxy: number; otherProxyVal?: string } = { testproxy: 123 }
+			_PROXY_OBJECT: { testproxy: number; otherProxyVal?: string; toDelete?: number } = {
+				testproxy: 123,
+				toDelete: 666,
+			}
 
 			ftest() {
 				return 444
@@ -63,6 +66,10 @@ describe('interface', function () {
 		c.otherProxyVal = 'asd'
 		expect(c.otherProxyVal).toBe('asd')
 		expect(c._._PROXY_OBJECT.otherProxyVal).toBe('asd')
+
+		delete c.toDelete
+		expect(c.toDelete).toBeUndefined()
+		expect(c._._PROXY_OBJECT.toDelete).toBeUndefined()
 
 		expect((c as unknown as ClassImpl).aaa).toBeUndefined()
 		expect(c.caa()).toBe(11)
