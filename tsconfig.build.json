@@ -3,7 +3,6 @@
 	"exclude": ["**/*.test.*"],
 
 	"compilerOptions": {
-		"outDir": "lib",
 		"sourceMap": true,
 		"declaration": true
 	}
