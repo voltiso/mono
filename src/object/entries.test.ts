@@ -6,8 +6,8 @@ import { Entry } from './entries'
 describe('object/entries', () => {
 	it('works', () => {
 		expect.assertions(0)
-		Assert<IsEqual<Entry<{}>, never>>()
+		Assert<IsEqual<Entry<{}>, [string | number | symbol, unknown]>>()
 		Assert<IsEqual<Entry<{ a: 1; b: 2 }>, ['a', 1] | ['b', 2]>>()
-		Assert<IsEqual<Entry<object>, never>>()
+		Assert<IsEqual<Entry<object>, [string | number | symbol, unknown]>>()
 	})
 })
