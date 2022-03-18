@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { And } from '../BooleanUtil/And'
-import { Or } from '../BooleanUtil/Or'
-import { IsFalsy } from '../BooleanUtil/truthy-falsy'
-import { Xor } from '../BooleanUtil/Xor'
+import { And } from '../boolean/And'
+import { Or } from '../boolean/Or'
+import { IsFalsy } from '../boolean/truthy-falsy'
+import { Xor } from '../boolean/Xor'
 
 declare const _def: unique symbol
 export type def = typeof _def

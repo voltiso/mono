@@ -1,5 +1,5 @@
 import { Assert } from '.'
-import { SmartFlatten } from './ObjectUtil/flatten/SmartFlatten'
+import { SmartFlatten } from './object/flatten/SmartFlatten'
 
 /**
  * extends 2-way
