@@ -1,6 +1,6 @@
 export * from './flatten'
 export * from './CanBeUndefined'
 export * from './IsOptional'
-export * from './ObjectEntries'
+export * from './entries'
 export * from './PartialFromUndefined'
 export * from './merge'
