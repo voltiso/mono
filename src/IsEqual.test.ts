@@ -39,5 +39,7 @@ describe('isEqual', () => {
 		Assert<IsCompatible<Rec, Rec[] | string>>()
 		Assert<IsIdentical<Rec, Rec[] | string>>()
 		Assert<IsEqual<Rec, Rec[] | string>>()
+
+		Assert<IsCompatible<{ a: 1 }, { a: 1 | undefined }>, false>()
 	})
 })

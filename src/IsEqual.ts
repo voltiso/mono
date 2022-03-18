@@ -1,4 +1,3 @@
-import { Assert } from '.'
 import { SmartFlatten } from './object/flatten/SmartFlatten'
 
 /**
@@ -14,7 +13,7 @@ type IsAlmostSame<A, B, T = true, F = false> = (<X>() => X extends B ? 1 : 0) ex
 	: F
 
 /**
- * Extends 2-way, and is (very) strictly equal https://stackoverflow.com/a/52473108/3570903
+ * Extends 2-way, and is (very) strictly equal
  */
 export type IsIdentical<A, B, T = true, F = false> = [IsCompatible<A, B>] extends [true]
 	? [IsAlmostSame<A, B>] extends [true]
@@ -23,11 +22,8 @@ export type IsIdentical<A, B, T = true, F = false> = [IsCompatible<A, B>] extend
 	: F
 
 /**
- * Same as IsSame, but less strict for intersections: {a:1} & {b:1} === {a:1; b:1}
+ * Same as IsIdentical, but less strict for intersections: {a:1} & {b:1} === {a:1; b:1}
  *
  * Recommended!
  */
 export type IsEqual<A, B, T = true, F = false> = IsIdentical<SmartFlatten<A>, SmartFlatten<B>, T, F>
-
-// eslint-disable-next-line jest/require-hook
-Assert<IsCompatible<{ a: 1 }, { a: 1 | undefined }>, false>()
