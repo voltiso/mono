@@ -25,5 +25,7 @@ module.exports = {
 		// 'import/no-unresolved': 0,
 		'@typescript-eslint/no-unnecessary-condition': 'error',
 		'@typescript-eslint/no-floating-promises': 'error',
+
+		'jest/prefer-lowercase-title': 0,
 	},
 }

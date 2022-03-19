@@ -9,7 +9,7 @@ type MergeI<acc, objs> = objs extends readonly []
 		: [h] extends [never]
 		? MergeI<acc, t>
 		: acc
-	: acc
+	: never
 
 export type Merge<
 	A extends readonly object[] | object,
