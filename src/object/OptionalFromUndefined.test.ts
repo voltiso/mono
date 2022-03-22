@@ -1,14 +1,14 @@
 import { Assert } from '../assert'
 import { IsIdentical } from '../IsEqual'
-import { PartialFromUndefined } from './PartialFromUndefined'
+import { OptionalFromUndefined } from './OptionalFromUndefined'
 
-describe('partialFromUndefined', () => {
+describe('OptionalFromUndefined', () => {
 	it('works', () => {
 		expect.assertions(0)
 
 		Assert<
 			IsIdentical<
-				PartialFromUndefined<{
+				OptionalFromUndefined<{
 					a: number
 					b: string | undefined
 					c?: string
@@ -20,7 +20,7 @@ describe('partialFromUndefined', () => {
 
 		Assert<
 			IsIdentical<
-				PartialFromUndefined<{
+				OptionalFromUndefined<{
 					a: undefined
 				}>,
 				{ a?: never }
