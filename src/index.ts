@@ -12,5 +12,6 @@ export * from './bindCallApply'
 export * from './Unpack'
 export * from './Opaque'
 export * from './RemoveIndex'
+export * from './IsAny'
 
 export { Flatten as _ } from './object'
