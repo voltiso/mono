@@ -1,13 +1,27 @@
 {
 	"files.encoding": "utf8",
 	"files.eol": "\n",
+	"files.exclude": {
+		"**/node_modules": true
+		// "./lib": true
+		// "./dist": true
+	},
 
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 
 	"jest.jestCommandLine": "node_modules/.bin/jest",
+	// "jest.autoRun": "off",
+	// "jest.autoRun": { "watch": true },
 	"jest.autoRun": { "watch": false, "onSave": "test-src-file", "onStartup": ["all-tests"] },
+	"jest.enableCodeLens": false, // code lines jump because of this
 
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"typescript.enablePromptUseWorkspaceTsdk": true
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+
+	"debug.javascript.terminalOptions": {
+		"skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+	},
+
+	"cSpell.words": ["esbuild", "iife", "prebuild", "tsup", "voltiso"]
 }

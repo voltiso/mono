@@ -1,6 +1,8 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-	preset: 'ts-jest',
-	testEnvironment: 'node',
-	modulePathIgnorePatterns: ['lib'],
+	transform: {
+		'\\.ts$': 'esbuild-runner/jest',
+	},
+	moduleNameMapper: {
+		'firebase-admin/(.*)': ['firebase-admin/lib/$1'],
+	},
 }

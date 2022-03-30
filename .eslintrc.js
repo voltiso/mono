@@ -2,6 +2,7 @@ module.exports = {
 	root: true,
 	env: {
 		es6: true,
+		node: true,
 	},
 	extends: [
 		'eslint:recommended',
@@ -15,11 +16,11 @@ module.exports = {
 	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		project: 'tsconfig.json',
+		project: 'tsconfig.lint.json',
 		tsconfigRootDir: __dirname,
 		sourceType: 'module',
 	},
-	ignorePatterns: ['.eslintrc.js', 'jest.config.js', 'lib/**/*'],
+	ignorePatterns: ['dist/**/*', 'node_modules'],
 	plugins: ['@typescript-eslint', 'import'],
 	rules: {
 		// 'import/no-unresolved': 0,

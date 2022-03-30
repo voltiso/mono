@@ -17,4 +17,4 @@ export * from './implementsClass'
 export * from './MaybePromise'
 export * from './isConstructorOrProto'
 
-export { Flatten as _ } from './object'
+export type { Flatten as _ } from './object'

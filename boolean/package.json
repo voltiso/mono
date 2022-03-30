@@ -1,4 +1,0 @@
-{
-	"main": "../lib/boolean/index.js",
-	"types": "../lib/boolean/index.d.ts"
-}

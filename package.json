@@ -1,29 +1,77 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "6.3.0",
+	"version": "6.3.2",
+	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
-	"main": "lib/index.js",
-	"types": "lib/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		},
+		"./array": {
+			"types": "./dist/array/index.d.ts",
+			"import": "./dist/array/index.mjs",
+			"require": "./dist/array/index.js"
+		},
+		"./boolean": {
+			"types": "./dist/boolean/index.d.ts",
+			"import": "./dist/boolean/index.mjs",
+			"require": "./dist/boolean/index.js"
+		},
+		"./object": {
+			"types": "./dist/object/index.d.ts",
+			"import": "./dist/object/index.mjs",
+			"require": "./dist/object/index.js"
+		},
+		"./string": {
+			"types": "./dist/string/index.d.ts",
+			"import": "./dist/string/index.mjs",
+			"require": "./dist/string/index.js"
+		}
+	},
+	"types": "dist/index.d.ts",
+	"typesVersions": {
+		"*": {
+			"array": [
+				"dist/array"
+			],
+			"boolean": [
+				"dist/boolean"
+			],
+			"object": [
+				"dist/object"
+			],
+			"string": [
+				"dist/string"
+			]
+		}
+	},
+	"module": "dist/index.mjs",
+	"main": "dist/index.js",
 	"files": [
-		"lib",
-		"array",
-		"boolean",
-		"object",
-		"string"
+		"dist/"
 	],
 	"scripts": {
-		"lint": "eslint src",
-		"prebuild": "rimraf lib",
-		"build": "tsc --project tsconfig.build.json",
+		"__________TEST": "__________",
 		"test": "jest",
-		"prepare": "npm run build",
-		"prepublishOnly": "run-s lint test"
+		"__________LINT": "__________",
+		"lint": "run-s lint:eslint lint:tsc",
+		"lint:eslint": "eslint . --max-warnings=0",
+		"lint:tsc": "tsc --project tsconfig.lint.json",
+		"__________BUILD": "__________",
+		"prebuild": "rimraf dist",
+		"build": "tsup",
+		"__________PREPARE": "__________",
+		"prepare": "run-s build",
+		"prepublishOnly": "run-s test lint"
 	},
 	"devDependencies": {
 		"@types/jest": "^27.4.1",
 		"@types/node": "^17.0.23",
 		"@typescript-eslint/eslint-plugin": "^5.17.0",
 		"@typescript-eslint/parser": "^5.17.0",
+		"esbuild-runner": "^2.2.1",
 		"eslint": "^8.12.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-import": "^2.25.4",
@@ -33,7 +81,7 @@
 		"npm-run-all": "^4.1.5",
 		"prettier": "^2.6.1",
 		"rimraf": "^3.0.2",
-		"ts-jest": "^27.1.4",
+		"tsup": "^5.12.1",
 		"typescript": "^4.6.3",
 		"zod": "^3.14.3"
 	}
