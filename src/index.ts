@@ -14,5 +14,6 @@ export * from './Opaque'
 export * from './Omit'
 export * from './IsAny'
 export * from './implementsClass'
+export * from './MaybePromise'
 
 export { Flatten as _ } from './object'
