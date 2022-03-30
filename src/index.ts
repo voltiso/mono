@@ -13,5 +13,6 @@ export * from './Unpack'
 export * from './Opaque'
 export * from './Omit'
 export * from './IsAny'
+export * from './implementsClass'
 
 export { Flatten as _ } from './object'

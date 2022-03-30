@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "6.0.1",
+	"version": "6.1.0",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
