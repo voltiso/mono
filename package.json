@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "6.3.2",
+	"version": "6.3.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
@@ -30,7 +30,6 @@
 			"require": "./dist/string/index.js"
 		}
 	},
-	"types": "dist/index.d.ts",
 	"typesVersions": {
 		"*": {
 			"array": [
@@ -47,10 +46,15 @@
 			]
 		}
 	},
+	"types": "dist/index.d.ts",
 	"module": "dist/index.mjs",
 	"main": "dist/index.js",
 	"files": [
-		"dist/"
+		"dist/",
+		"array/",
+		"boolean/",
+		"object/",
+		"string/"
 	],
 	"scripts": {
 		"__________TEST": "__________",
@@ -60,11 +64,15 @@
 		"lint:eslint": "eslint . --max-warnings=0",
 		"lint:tsc": "tsc --project tsconfig.lint.json",
 		"__________BUILD": "__________",
-		"prebuild": "rimraf dist",
-		"build": "tsup",
+		"prebuild": "run-s clean",
+		"build": "run-s build:tsup build:gen-compat-dirs",
+		"build:tsup": "tsup",
+		"build:gen-compat-dirs": "esr script/gen-compat-dirs.ts",
 		"__________PREPARE": "__________",
 		"prepare": "run-s build",
-		"prepublishOnly": "run-s test lint"
+		"prepublishOnly": "run-s test lint",
+		"__________MISC": "__________",
+		"clean": "rimraf dist database"
 	},
 	"devDependencies": {
 		"@types/jest": "^27.4.1",

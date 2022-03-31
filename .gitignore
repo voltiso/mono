@@ -1,2 +1,7 @@
 /dist/
 /node_modules/
+
+/array/
+/boolean/
+/object/
+/string/

@@ -8,13 +8,14 @@
 		"target": "ES2021",
 
 		"strict": true,
-		// "esModuleInterop": true,
+		"esModuleInterop": true,
 		// "skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		// ____________________ Node 16 recommended ____________________
 		//
 
 		"isolatedModules": true,
+		"resolveJsonModule": true,
 
 		//
 		// ______________________ STRICT options _______________________
