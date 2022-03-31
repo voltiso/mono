@@ -17,6 +17,9 @@ export type Interface<
 } & (CM | void extends void ? unknown : Inst[CM]) &
 	(PM | void extends void ? unknown : Inst[PM])
 
+/**
+ * Does not work with constructor overloads
+ */
 export const createClassInterface = <
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	Cls extends Constructor<any>,
