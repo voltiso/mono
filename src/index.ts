@@ -16,5 +16,7 @@ export * from './IsAny'
 export * from './implementsClass'
 export * from './MaybePromise'
 export * from './isConstructorOrProto'
+export * from './PickCall'
+export * from './PickConstruct'
 
 export type { Flatten as _ } from './object'
