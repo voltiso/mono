@@ -2,7 +2,7 @@
 	"files.encoding": "utf8",
 	"files.eol": "\n",
 	"files.exclude": {
-		"**/node_modules": true
+		"**/node_modules/": true
 		// "./lib": true
 		// "./dist": true
 	},

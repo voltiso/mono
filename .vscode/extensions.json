@@ -3,6 +3,7 @@
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
 		"Orta.vscode-jest",
+		"chrmarti.regex",
 		"streetsidesoftware.code-spell-checker"
 		//
 	]
