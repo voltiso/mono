@@ -21,5 +21,6 @@ export * from './assumeType'
 export * from './widenType'
 export * from './narrowType'
 export * from './checkCompilerOptions'
+export * from './Error'
 
 export type { Flatten as _ } from './object'
