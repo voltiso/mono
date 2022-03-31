@@ -2,10 +2,15 @@
 	"files.encoding": "utf8",
 	"files.eol": "\n",
 	"files.exclude": {
-		"**/node_modules/": true
-		// "./lib": true
+		"**/node_modules/": true,
+		"array/": true,
+		"boolean/": true,
+		"object/": true
 		// "./dist": true
 	},
+
+	// "explorer.experimental.fileNesting.enabled": true,
+	// "explorer.experimental.fileNesting.expand": false,
 
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",

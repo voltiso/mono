@@ -1,5 +1,5 @@
-import { Assert } from '../assert'
-import { IsIdentical } from '../IsEqual'
+import { Assert } from '../../assert'
+import { IsIdentical } from '../../IsEqual'
 import { OmitValues } from './OmitValues'
 
 describe('OmitValues', () => {

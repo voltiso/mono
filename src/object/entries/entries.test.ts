@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { IsEqual } from '../IsEqual'
-import { Assert } from '../assert'
+import { IsEqual } from '../../IsEqual'
+import { Assert } from '../../assert'
 import { Entry } from './entries'
 
 describe('object/entries', () => {
