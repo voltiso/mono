@@ -20,5 +20,6 @@ export * from './PickConstruct'
 export * from './assumeType'
 export * from './widenType'
 export * from './narrowType'
+export * from './checkCompilerOptions'
 
 export type { Flatten as _ } from './object'

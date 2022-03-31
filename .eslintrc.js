@@ -20,7 +20,7 @@ module.exports = {
 		tsconfigRootDir: __dirname,
 		sourceType: 'module',
 	},
-	ignorePatterns: ['dist/**/*', 'node_modules'],
+	ignorePatterns: ['dist/**/*', 'node_modules', '**/checkCompilerOptions/**/*'],
 	plugins: ['@typescript-eslint', 'import'],
 	rules: {
 		// 'import/no-unresolved': 0,
