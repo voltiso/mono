@@ -6,7 +6,7 @@
 		"array/": true,
 		"boolean/": true,
 		"object/": true
-		// "./dist": true
+		// "dist/": true
 	},
 
 	// "explorer.experimental.fileNesting.enabled": true,
@@ -28,5 +28,5 @@
 		"skipFiles": ["<node_internals>/**", "**/node_modules/**"]
 	},
 
-	"cSpell.words": ["compat", "esbuild", "iife", "prebuild", "tsup", "voltiso"]
+	"cSpell.words": ["compat", "esbuild", "iife", "Parens", "prebuild", "tsup", "voltiso"]
 }
