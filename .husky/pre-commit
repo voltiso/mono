@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-run-s test build lint
+# require pnpm for development!
+pnpm run-s test build lint
