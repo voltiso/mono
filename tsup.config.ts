@@ -5,6 +5,7 @@ export default defineConfig({
 		'src/index.ts',
 		'src/array/index.ts',
 		'src/boolean/index.ts',
+		'src/number/index.ts',
 		'src/object/index.ts',
 		'src/string/index.ts',
 		//

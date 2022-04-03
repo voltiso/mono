@@ -1,6 +1,6 @@
 import { Assert } from '../assert'
 import { IsCompatible } from '../IsEqual'
-import { Parity } from './parity'
+import { Parity } from './Parity'
 
 describe('list', () => {
 	it('works', () => {
