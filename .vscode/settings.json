@@ -28,5 +28,5 @@
 		"skipFiles": ["<node_internals>/**", "**/node_modules/**"]
 	},
 
-	"cSpell.words": ["compat", "esbuild", "iife", "Parens", "prebuild", "tsup", "voltiso"]
+	"cSpell.words": ["Cloneable", "compat", "esbuild", "iife", "Parens", "prebuild", "tsup", "voltiso"]
 }

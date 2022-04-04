@@ -23,5 +23,6 @@ export * from './narrowType'
 export * from './checkCompilerOptions'
 export * from './Error'
 export * from './Json'
+export * from './clone'
 
 export type { Flatten as _ } from './object'
