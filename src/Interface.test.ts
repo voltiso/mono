@@ -7,8 +7,11 @@ describe('interface', function () {
 	it('works', function () {
 		expect.hasAssertions()
 		class ClassImpl<A = unknown> {
+			_a: A & string
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			constructor(_a: A & string) {}
+			constructor(_a: A & string) {
+				this._a = _a
+			}
 			aaa = 2
 			baa = 'bbb'
 			caa() {
@@ -43,13 +46,17 @@ describe('interface', function () {
 			get gx() {
 				return this.x
 			}
+
+			clone() {
+				return new ClassImpl<A>(this._a)
+			}
 		}
 
 		expect(() => createClassInterface(ClassImpl, ['aaa', 'caa'])).toThrow('aaa')
 
 		expect(() => createClassInterface(ClassImpl, 'fff')).toThrow('fff')
 
-		const publicFields = ['caa', 'test', 'setterx', 'gx'] as const
+		const publicFields = ['caa', 'test', 'setterx', 'gx', 'clone'] as const
 		const Class = createClassInterface(ClassImpl, publicFields)
 		type Class = Interface<ClassImpl, Unpack<typeof publicFields>>
 		const c = new Class('')
@@ -77,5 +84,7 @@ describe('interface', function () {
 		expect((c as unknown as ClassImpl).daa).toBeUndefined()
 		// eslint-disable-next-line @typescript-eslint/unbound-method
 		expect((c as unknown as ClassImpl).fff).toBeUndefined()
+
+		// expect(c.clone()).toBeInstanceOf(Class)
 	})
 })

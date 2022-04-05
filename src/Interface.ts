@@ -36,71 +36,80 @@ export const createClassInterface = <
 ) => {
 	type R = Constructor<ConstructorParameters<Cls>, Interface<InstanceType<Cls>, Field, CM, PM>>
 
-	const newClass = class {
+	function construct(this: NewClass) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const isCallable = (m: CM | '_CALL'): m is CM => !!(this._ as Record<any, unknown>)[m]
+
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		let result: { _: InstanceType<Cls> } = this
+
+		if (isCallable(options.callMethodName)) {
+			const m = options.callMethodName
+			const self = this._ as Record<CM, CallableFunction>
+			// eslint-disable-next-line no-inner-declarations
+			function f(...args: unknown[]) {
+				const r = self[m](...args) as unknown
+				if (r === self) return f
+				else return r
+			}
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			f._ = this._
+			Object.setPrototypeOf(f, <object>Object.getPrototypeOf(this))
+			result = f
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM => !!(this._ as Record<any, unknown>)[m]
+
+		if (hasProxyObject(options.proxyObjectMethodName)) {
+			const m = options.proxyObjectMethodName
+			const newResult = new Proxy(result, {
+				get(result, p) {
+					const proxyObject = result._[m] as unknown as object
+					if (p in result) return Reflect.get(result, p) as unknown
+					else return Reflect.get(proxyObject, p) as unknown
+				},
+				set(result, p, value, receiver) {
+					// call with null receiver to bypass proxy object (e.g. calls from derived class constructor)
+					const proxyObject = result._[m] as unknown as object
+					if (p in result) return Reflect.set(result, p, value)
+					else if (receiver === null) return Reflect.set(result, p, value)
+					else return Reflect.set(proxyObject, p, value)
+				},
+				deleteProperty(result, p) {
+					const proxyObject = result._[m] as unknown as object
+					if (p in result) return Reflect.deleteProperty(result, p)
+					else return Reflect.deleteProperty(proxyObject, p)
+				},
+			})
+			result = newResult
+		}
+
+		// if (fields.includes('clone' as Field)) {
+		// 	result.clone = function () {
+		// 		return new newClass()
+		// 	}
+		// }
+
+		return result
+	}
+
+	class NewClass {
 		_: InstanceType<Cls>
 		constructor(...args: unknown[]) {
 			this._ = new cls(...args) as InstanceType<Cls>
-
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const isCallable = (m: CM | '_CALL'): m is CM => !!(this._ as Record<any, unknown>)[m]
-
-			// eslint-disable-next-line @typescript-eslint/no-this-alias
-			let result: { _: InstanceType<Cls> } = this
-
-			if (isCallable(options.callMethodName)) {
-				const m = options.callMethodName
-				const self = this._ as Record<CM, CallableFunction>
-				// eslint-disable-next-line no-inner-declarations
-				function f(...args: unknown[]) {
-					const r = self[m](...args) as unknown
-					if (r === self) return f
-					else return r
-				}
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-				f._ = this._
-				Object.setPrototypeOf(f, <object>Object.getPrototypeOf(this))
-				result = f
-			}
-
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM => !!(this._ as Record<any, unknown>)[m]
-
-			if (hasProxyObject(options.proxyObjectMethodName)) {
-				const m = options.proxyObjectMethodName
-				const newResult = new Proxy(result, {
-					get(result, p) {
-						const proxyObject = result._[m] as unknown as object
-						if (p in result) return Reflect.get(result, p) as unknown
-						else return Reflect.get(proxyObject, p) as unknown
-					},
-					set(result, p, value, receiver) {
-						// call with null receiver to bypass proxy object (e.g. calls from derived class constructor)
-						const proxyObject = result._[m] as unknown as object
-						if (p in result) return Reflect.set(result, p, value)
-						else if (receiver === null) return Reflect.set(result, p, value)
-						else return Reflect.set(proxyObject, p, value)
-					},
-					deleteProperty(result, p) {
-						const proxyObject = result._[m] as unknown as object
-						if (p in result) return Reflect.deleteProperty(result, p)
-						else return Reflect.deleteProperty(proxyObject, p)
-					},
-				})
-				result = newResult
-			}
-
-			return result
+			return construct.call(this)
 		}
 	}
 
 	const prototype = cls.prototype as InstanceType<Cls> & {}
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	type NewInst = Pick<InstanceType<Cls> & {}, Field> & { _: InstanceType<Cls> }
-	const newPrototype = newClass.prototype as NewInst
+	const newPrototype = NewClass.prototype as NewInst
 
 	appendInterface(newPrototype, prototype, fields, (x: { _: unknown }) => x._)
 
-	return newClass as unknown as R
+	return NewClass as unknown as R
 }
 
 export const createInterface = <
