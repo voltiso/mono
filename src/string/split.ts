@@ -1,9 +1,9 @@
 export type Split<T, Separator extends string = ''> = string extends T
-	? string[]
+	? readonly string[]
 	: string extends Separator
-	? string[]
+	? readonly string[]
 	: T extends `${infer A}${Separator}${infer B}`
-	? [A, ...Split<B, Separator>]
+	? readonly [A, ...Split<B, Separator>]
 	: T extends ''
-	? []
-	: [T]
+	? readonly []
+	: readonly [T]

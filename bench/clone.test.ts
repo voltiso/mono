@@ -37,6 +37,6 @@ describe('bench/clone', () => {
 
 		console.log('q ==', q)
 
-		expect(q).toBeLessThan(0.8)
+		expect(q).toBeLessThan(0.9)
 	})
 })
