@@ -9,3 +9,6 @@ export * from './DeepPartial'
 export * from './isPlain'
 export * from './omit'
 export * from './pick'
+
+export type { Flatten as _ } from './flatten'
+export type { Flatten2 as __ } from './flatten'

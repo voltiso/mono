@@ -1,8 +1,8 @@
 import { Assert } from '../../assert'
 import { IsIdentical } from '../../IsEqual'
-import { Flatten } from './Flatten'
+import { Flatten, Flatten2 } from './Flatten'
 
-describe('flatten', () => {
+describe('Flatten', () => {
 	it('works', () => {
 		expect.assertions(0)
 
@@ -25,5 +25,42 @@ describe('flatten', () => {
 		type Rec = Rec[] | string
 		Assert<Rec, Flatten<Rec>>()
 		Assert<Flatten<Rec>, Rec>()
+
+		Assert<
+			IsIdentical<
+				Flatten<
+					{
+						a: { a: 1 }
+					} & {
+						a: { b: 2 }
+					}
+				>,
+				{
+					a: {
+						a: 1
+					} & {
+						b: 2
+					}
+				}
+			>
+		>()
+
+		Assert<
+			IsIdentical<
+				Flatten2<
+					{
+						a: { a: 1 }
+					} & {
+						a: { b: 2 }
+					}
+				>,
+				{
+					a: {
+						a: 1
+						b: 2
+					}
+				}
+			>
+		>()
 	})
 })

@@ -7,3 +7,9 @@ export type Flatten<T> = T extends Callable<any[]>
 	: T extends Newable<any[]>
 	? T
 	: [{ [k in keyof T]: Field<T, k> }][0]
+
+export type Flatten2<T> = T extends Callable<any[]>
+	? T
+	: T extends Newable<any[]>
+	? T
+	: [{ [k in keyof T]: Flatten<Field<T, k>> }][0]

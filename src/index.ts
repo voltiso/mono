@@ -25,4 +25,4 @@ export * from './Error'
 export * from './Json'
 export * from './clone'
 
-export type { Flatten as _ } from './object'
+// export type { _, __ } from './object'
