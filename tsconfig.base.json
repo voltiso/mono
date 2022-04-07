@@ -1,11 +1,15 @@
 {
 	"compilerOptions": {
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"target": "ESNext",
+		"moduleResolution": "node",
+
 		//
 		// ____________________ Node 16 recommended ____________________
 		// https://github.com/tsconfig/bases/blob/main/bases/node16.json
-		"lib": ["ES2021"],
-		"module": "CommonJS",
-		"target": "ES2021",
+		// "lib": ["ES2021"],
+		// "module": "CommonJS",
+		// "target": "ES2021",
 
 		"strict": true,
 		"esModuleInterop": true,
@@ -37,7 +41,7 @@
 		"noPropertyAccessFromIndexSignature": true,
 		"noUncheckedIndexedAccess": true,
 		"allowUnusedLabels": false, // undefined = warning
-		"allowUnreachableCode": false, // undefined = warning
+		"allowUnreachableCode": false // undefined = warning
 		// ______________________ STRICT options _______________________
 		//
 	}
