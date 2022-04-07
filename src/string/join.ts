@@ -1,7 +1,7 @@
 import { Print, Printable } from '../Printable'
 
-type JoinImpl<Array, Separator extends Printable = ''> = Array extends readonly [infer H, infer HH, ...infer T]
-	? `${Print<H>}${Separator}${JoinImpl<readonly [HH, ...T]>}`
+type JoinImpl<Array, Separator extends Printable> = Array extends readonly [infer H, infer HH, ...infer T]
+	? `${Print<H>}${Separator}${JoinImpl<readonly [HH, ...T], Separator>}`
 	: Array extends readonly [infer H]
 	? Print<H>
 	: ''
