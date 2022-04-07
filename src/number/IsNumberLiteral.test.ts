@@ -15,5 +15,8 @@ describe('number/IsNumberLiteral', () => {
 		Assert<IsIdentical<IsNumberLiteral<123 | string>, boolean>>()
 		Assert<IsIdentical<IsNumberLiteral<never>, false>>()
 		Assert<IsIdentical<IsNumberLiteral<any>, false>>()
+		Assert<IsIdentical<IsNumberLiteral<number & { secretField: 123 }>, false>>()
+		Assert<IsIdentical<IsNumberLiteral<(number & { secretField: 123 }) | 123>, boolean>>()
+		Assert<IsIdentical<IsNumberLiteral<(number & { secretField: 123 }) | object>, false>>()
 	})
 })
