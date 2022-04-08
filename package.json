@@ -69,7 +69,7 @@
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
-		"lint": "run-s lint:eslint lint:tsc",
+		"lint": "run-s lint:tsc lint:eslint",
 		"lint:eslint": "eslint . --max-warnings=0",
 		"lint:tsc": "tsc --project tsconfig.lint.json",
 		"__________BUILD": "__________",
