@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Assert } from './assert'
+import { Assert } from './bdd'
 import { IsIdentical } from './IsEqual'
 import { narrow } from './narrowType'
 

@@ -25,5 +25,6 @@ export * from './Error'
 export * from './Json'
 export * from './clone'
 export * from './Type'
+export * from './IsSubtype'
 
 // export type { _, __ } from './object'

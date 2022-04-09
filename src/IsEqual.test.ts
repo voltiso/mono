@@ -1,45 +1,62 @@
 /* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Assert } from './assert'
-import { IsCompatible, IsEqual, IsIdentical } from './IsEqual'
+import { Assert, Is } from './bdd'
 
 describe('isEqual', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert<IsCompatible<{}, Record<string, any>>, true>() // hmm...
-		Assert<IsIdentical<{}, Record<string, any>>, false>()
-		Assert<IsEqual<{}, Record<string, any>>, false>()
+		Assert(
+			Is<{}>().compatibleWith<Record<string, any>>(), // hmm...
+			Is<{}>().not.identicalTo<Record<string, any>>(),
+			Is<{}>().not.equalTo<Record<string, any>>()
+		)
 
-		Assert<IsCompatible<{ a: 1; b: 1 }, { a: 1 } & { b: 1 }>, true>()
-		Assert<IsIdentical<{ a: 1; b: 1 }, { a: 1 } & { b: 1 }>, false>() // oops...
-		Assert<IsEqual<{ a: 1; b: 1 }, { a: 1 } & { b: 1 }>, true>()
+		Assert(
+			Is<{ a: 1; b: 1 }>().compatibleWith<{ a: 1 } & { b: 1 }>(),
+			Is<{ a: 1; b: 1 }>().not.identicalTo<{ a: 1 } & { b: 1 }>(), // oops...
+			Is<{ a: 1; b: 1 }>().equalTo<{ a: 1 } & { b: 1 }>()
+		)
 
-		Assert<IsCompatible<{ a: { a: 1; b: 1 } }, { a: { a: 1 } & { b: 1 } }>, true>()
-		Assert<IsIdentical<{ x: { a: 1; b: 1 } }, { x: { a: 1 } & { b: 1 } }>, false>() // oops...
-		Assert<IsEqual<{ a: { a: 1; b: 1 } }, { a: { a: 1 } & { b: 1 } }>, true>()
+		Assert(
+			Is<{ a: { a: 1; b: 1 } }>().compatibleWith<{ a: { a: 1 } & { b: 1 } }>(),
+			Is<{ x: { a: 1; b: 1 } }>().not.identicalTo<{ x: { a: 1 } & { b: 1 } }>(), // oops...
+			Is<{ a: { a: 1; b: 1 } }>().equalTo<{ a: { a: 1 } & { b: 1 } }>()
+		)
 
-		Assert<IsCompatible<{ a: 1 }, { a: 1 | undefined }>, false>()
-		Assert<IsIdentical<{ a: 1 }, { a: 1 | undefined }>, false>()
-		Assert<IsEqual<{ a: 1 }, { a: 1 | undefined }>, false>()
+		Assert(
+			Is<{ a: 1 }>().not.compatibleWith<{ a: 1 | undefined }>(),
+			Is<{ a: 1 }>().not.identicalTo<{ a: 1 | undefined }>(),
+			Is<{ a: 1 }>().not.equalTo<{ a: 1 | undefined }>()
+		)
 
-		Assert<IsCompatible<{ a?: 1 }, { a: 1 | undefined }>, false>()
-		Assert<IsIdentical<{ a?: 1 }, { a: 1 | undefined }>, false>()
-		Assert<IsEqual<{ a?: 1 }, { a: 1 | undefined }>, false>()
+		Assert(
+			Is<{ a?: 1 }>().not.compatibleWith<{ a: 1 | undefined }>(),
+			Is<{ a?: 1 }>().not.identicalTo<{ a: 1 | undefined }>(),
+			Is<{ a?: 1 }>().not.equalTo<{ a: 1 | undefined }>()
+		)
 
-		Assert<IsCompatible<{ a?: 1 }, { a?: 1 | undefined }>, false>()
-		Assert<IsIdentical<{ a?: 1 }, { a?: 1 | undefined }>, false>()
-		Assert<IsEqual<{ a?: 1 }, { a?: 1 | undefined }>, false>()
+		Assert(
+			Is<{ a?: 1 }>().not.compatibleWith<{ a?: 1 | undefined }>(),
+			Is<{ a?: 1 }>().not.identicalTo<{ a?: 1 | undefined }>(),
+			Is<{ a?: 1 }>().not.equalTo<{ a?: 1 | undefined }>()
+		)
 
-		Assert<IsCompatible<any, unknown>, true>() // hmm...
-		Assert<IsIdentical<any, unknown>, false>()
-		Assert<IsEqual<any, unknown>, false>()
+		Assert(
+			Is<any>().compatibleWith<unknown>(), // hmm...
+			Is<any>().not.identicalTo<unknown>(),
+			Is<any>().not.equalTo<unknown>()
+		)
 
 		type Rec = Rec[] | string
-		Assert<IsCompatible<Rec, Rec[] | string>>()
-		Assert<IsIdentical<Rec, Rec[] | string>>()
-		Assert<IsEqual<Rec, Rec[] | string>>()
+		Assert(
+			Is<Rec>().compatibleWith<Rec[] | string>(),
+			Is<Rec>().identicalTo<Rec[] | string>(),
+			Is<Rec>().equalTo<Rec[] | string>()
+		)
 
-		Assert<IsCompatible<{ a: 1 }, { a: 1 | undefined }>, false>()
+		Assert(
+			Is<{ a: 1 }>().not.compatibleWith<{ a: 1 | undefined }>()
+			//
+		)
 	})
 })

@@ -1,29 +1,22 @@
-import { Assert } from '../../assert'
-import { IsEqual } from '../../IsEqual'
+import { Assert, Is } from '../../bdd'
 import { SmartFlatten } from './SmartFlatten'
 
 describe('smartFlatten', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert<IsEqual<SmartFlatten<{ a: 1 } & { b: 2 }>, { a: 1; b: 2 }>>()
-		Assert<IsEqual<SmartFlatten<{ a?: 1 }>, { a?: 1 }>>()
-		Assert<IsEqual<SmartFlatten<{ a?: 1 | undefined }>, { a?: 1 }>, false>()
-
-		Assert<SmartFlatten<number>, number>()
-		Assert<number, SmartFlatten<number>>()
-
-		Assert<SmartFlatten<string>, string>()
-		Assert<string, SmartFlatten<string>>()
-
-		Assert<Date, SmartFlatten<Date>>()
-		Assert<SmartFlatten<Date>, Date>()
-
-		Assert<typeof Date, SmartFlatten<typeof Date>>()
-		Assert<SmartFlatten<typeof Date>, typeof Date>()
+		Assert(
+			Is<SmartFlatten<{ a: 1 } & { b: 2 }>>().identicalTo<{ a: 1; b: 2 }>(),
+			Is<SmartFlatten<{ a?: 1 }>>().equalTo<{ a?: 1 }>(),
+			Is<SmartFlatten<{ a?: 1 | undefined }>>().not.equalTo<{ a?: 1 }>(),
+			Is<SmartFlatten<number>>()<number>(),
+			Is<SmartFlatten<string>>()<string>(),
+			Is<SmartFlatten<Date>>()<Date>(),
+			Is<SmartFlatten<typeof Date>>()<typeof Date>()
+			//
+		)
 
 		type Rec = Rec[] | string
-		Assert<Rec, SmartFlatten<Rec>>()
-		Assert<SmartFlatten<Rec>, Rec>()
+		Assert(Is<SmartFlatten<Rec>>().identicalTo<Rec>())
 	})
 })

@@ -1,4 +1,4 @@
-import { Assert } from '../assert'
+import { Assert } from '../bdd'
 import { IsIdentical } from '../IsEqual'
 import { OptionalFromUndefined } from './OptionalFromUndefined'
 

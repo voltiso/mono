@@ -1,5 +1,5 @@
+import { Assert } from '../../../bdd'
 import { Have_exactOptionalPropertyTypes } from '../..'
-import { Assert } from '../../../assert'
 
 describe('Have_exactOptionalPropertyTypes', () => {
 	it('works', () => {

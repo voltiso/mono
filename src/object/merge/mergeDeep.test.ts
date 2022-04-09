@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Assert } from '../../assert'
+import { Assert } from '../../bdd'
 import { IsIdentical } from '../../IsEqual'
 import { mergeDeep, MergeDeep } from './mergeDeep'
 
@@ -9,7 +7,7 @@ describe('mergeDeep', function () {
 	it('works - static', function () {
 		expect.assertions(0)
 
-		// @ts-expect-error
+		// @ts-expect-error either array or individual args
 		type _X = MergeDeep<[{ a: 1 }], { b: 2 }>
 
 		Assert<IsIdentical<MergeDeep<[]>, {}>>()

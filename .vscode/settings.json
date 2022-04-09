@@ -3,10 +3,15 @@
 	"files.eol": "\n",
 	"files.exclude": {
 		"**/node_modules/": true,
+
 		"array/": true,
 		"boolean/": true,
-		"object/": true
-		// "dist/": true
+		"object/": true,
+		"string/": true,
+		"number/": true,
+		"bdd/": true,
+
+		"dist/": true
 	},
 
 	// "explorer.experimental.fileNesting.enabled": true,

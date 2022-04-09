@@ -30,5 +30,6 @@ module.exports = {
 		'jest/prefer-lowercase-title': 0,
 
 		'@typescript-eslint/no-explicit-any': 0,
+		'@typescript-eslint/no-unused-vars': 0, // already checked by TSC, can ignore with `_name` underscored variable name
 	},
 }

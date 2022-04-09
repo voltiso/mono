@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Assert } from '../../assert'
+import { Assert, Is } from '../../bdd'
 import { IsCompatible, IsIdentical } from '../../IsEqual'
 import { Flatten, Flatten2 } from './Flatten'
 
@@ -8,85 +8,87 @@ describe('Flatten', () => {
 		expect.assertions(0)
 
 		type A = Flatten<{ a: 1 } & { b?: 2 }>
-		Assert<IsIdentical<A, { a: 1; b?: 2 }>>()
-		Assert<IsIdentical<Flatten<{ a?: 1 }>, { a?: 1 }>>()
-		Assert<IsIdentical<Flatten<{ a?: 1 | undefined }>, { a?: 1 }>, false>()
-		Assert<IsIdentical<Flatten<{ a: 1 | undefined }>, { a?: 1 }>, false>()
-		Assert<IsIdentical<Flatten<{ a: 1 | undefined }>, { a?: 1 | undefined }>, false>()
-		Assert<IsIdentical<Flatten<{ a: 1 | undefined }>, { a: 1 | undefined }>>()
+		Assert(
+			Is<A>()<{ a: 1; b?: 2 }>(),
 
-		Assert<Flatten<number>, number>()
-		Assert<number, Flatten<number>>()
+			Is<Flatten<{ a?: 1 }>>().identicalTo<{ a?: 1 }>(),
 
-		Assert<Flatten<string>, string>()
-		Assert<string, Flatten<string>>()
+			Is<Flatten<{ a?: 1 | undefined }>>() //
+				.not.identicalTo({ a: 1 }),
 
-		Assert<Date, Flatten<Date>>()
-		Assert<Flatten<Date>, Date>()
+			Is<Flatten<{ a: 1 | undefined }>>() //
+				.not.identicalTo<{ a?: 1 }>(),
 
-		type TypeofDate = typeof Date
-		type FTypeofDate = Flatten<TypeofDate>
-		Assert<IsCompatible<FTypeofDate, TypeofDate>>()
+			Is<Flatten<{ a: 1 | undefined }>>() //
+				.not.identicalTo<{ a?: 1 | undefined }>(),
+
+			Is<Flatten<{ a: 1 | undefined }>>() //
+				.identicalTo<{ a: 1 | undefined }>(),
+
+			Is<Flatten<number>>()<number>(),
+
+			Is<Flatten<string>>()<string>(),
+
+			Is<Flatten<Date>>()<Date>(),
+
+			Is<Flatten<typeof Date>>() //
+				.identicalTo<typeof Date>()
+		)
 
 		type Rec = Rec[] | string
-		type FRec = Flatten<Rec>
-		Assert<IsIdentical<Rec, FRec>>()
+		Assert(Is<Flatten<Rec>>()<Rec>())
 
-		Assert<
-			IsIdentical<
+		Assert(
+			Is<
 				Flatten<
 					{
 						a: { a: 1 }
 					} & {
 						a: { b: 2 }
 					}
-				>,
-				{
-					a: {
-						a: 1
-					} & {
-						b: 2
-					}
+				>
+			>().identicalTo<{
+				a: {
+					a: 1
+				} & {
+					b: 2
 				}
-			>
-		>()
+			}>()
+		)
 
-		Assert<
-			IsIdentical<
+		Assert(
+			Is<
 				Flatten2<
 					{
 						a: { a?: 1 }
 					} & {
 						a?: { b: 2 }
 					}
-				>,
-				{
-					a: {
-						a?: 1
-						b: 2
-					}
+				>
+			>().identicalTo<{
+				a: {
+					a?: 1
+					b: 2
 				}
-			>
-		>()
+			}>()
+		)
 
-		Assert<
-			IsIdentical<
+		Assert(
+			Is<
 				Flatten<
 					{
 						a: { a: 1 }
 					} & {
 						a: { b: 2 }
 					}
-				>,
-				{
-					a: {
-						a: 1
-						b: 2
-					}
+				>
+			>().not.identicalTo<{
+				a: {
+					a: 1
+					b: 2
 				}
-			>,
-			false
-		>()
+			}>()
+		)
 	})
 
 	it('primitives', () => {
@@ -153,15 +155,15 @@ describe('Flatten', () => {
 
 	it('works with generics (unknown)', <X>() => {
 		expect.assertions(0)
-		type Y = Flatten<X>
-		Assert<Y, X>()
-		// Assert<X, Y>()
+		// type Y = Flatten<X>
+		Assert.isSubtype<Flatten<X>, X>()
+		// Assert.isSupertype<Flatten<X>, X>()
 	})
 
 	it('works with generics (string)', <X extends string>() => {
 		expect.assertions(0)
 		type Y = Flatten<X>
-		Assert<Y, X>()
+		Assert.isSubtype<Y, X>()
 		// Assert<X, Y>()
 	})
 

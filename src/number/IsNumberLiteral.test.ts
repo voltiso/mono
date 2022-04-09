@@ -1,22 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Assert } from '../assert'
-import { IsIdentical } from '../IsEqual'
+import { Assert, Is } from '../bdd'
 import { IsNumberLiteral } from './IsNumberLiteral'
 
 describe('number/IsNumberLiteral', () => {
 	it('works', () => {
 		expect.assertions(0)
-		Assert<IsIdentical<IsNumberLiteral<123 | 444>, true>>()
-		Assert<IsIdentical<IsNumberLiteral<123 | 'asd'>, boolean>>()
-		Assert<IsIdentical<IsNumberLiteral<'asd'>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<number>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<number | string>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<number | 'sdf'>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<123 | string>, boolean>>()
-		Assert<IsIdentical<IsNumberLiteral<never>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<any>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<number & { secretField: 123 }>, false>>()
-		Assert<IsIdentical<IsNumberLiteral<(number & { secretField: 123 }) | 123>, boolean>>()
-		Assert<IsIdentical<IsNumberLiteral<(number & { secretField: 123 }) | object>, false>>()
+		Assert(
+			Is<IsNumberLiteral<123 | 444>>().true,
+			Is<IsNumberLiteral<123 | 'asd'>>().boolean,
+			Is<IsNumberLiteral<'asd'>>().false,
+			Is<IsNumberLiteral<number>>().false,
+			Is<IsNumberLiteral<number | string>>().false,
+			Is<IsNumberLiteral<number | 'sdf'>>().false,
+			Is<IsNumberLiteral<123 | string>>().boolean,
+			Is<IsNumberLiteral<never>>().false,
+			Is<IsNumberLiteral<any>>().false,
+			Is<IsNumberLiteral<number & { secretField: 123 }>>().false,
+			Is<IsNumberLiteral<(number & { secretField: 123 }) | 123>>().boolean,
+			Is<IsNumberLiteral<(number & { secretField: 123 }) | object>>().false
+			//
+		)
 	})
 })

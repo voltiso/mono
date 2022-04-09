@@ -1,6 +1,6 @@
 import { UndefinedFromOptional } from './UndefinedFromOptional'
 import { IsIdentical } from '../IsEqual'
-import { Assert } from '../assert'
+import { Assert } from '../bdd'
 
 describe('UndefinedFromOptional', () => {
 	it('works', () => {

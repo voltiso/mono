@@ -1,11 +1,15 @@
-import { Assert } from '../assert'
-import { IsIdentical } from '../IsEqual'
+import { Assert, Is } from '../bdd/Assert'
 import { Tail } from './Tail'
 
 describe('array/Tail', () => {
 	it('works', () => {
 		expect.assertions(0)
-		Assert<IsIdentical<Tail<[1, 2, 3]>, [2, 3]>>()
-		Assert<IsIdentical<Tail<readonly [1, 2, 3]>, readonly [2, 3]>>()
+		Assert(
+			Is<Tail<[1, 2, 3]>>() //
+				.identicalTo<[2, 3]>(),
+
+			Is<Tail<readonly [1, 2, 3]>>() //
+				.identicalTo<readonly [2, 3]>()
+		)
 	})
 })

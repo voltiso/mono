@@ -1,4 +1,4 @@
-import { Assert } from '../assert'
+import { Assert } from '../bdd'
 import { IsEqual } from '../IsEqual'
 import { Split } from './split'
 

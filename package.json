@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "10.0.0",
+	"version": "11.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
@@ -33,6 +33,11 @@
 			"types": "./dist/string/index.d.ts",
 			"import": "./dist/string/index.mjs",
 			"require": "./dist/string/index.js"
+		},
+		"./bdd": {
+			"types": "./dist/bdd/index.d.ts",
+			"import": "./dist/bdd/index.mjs",
+			"require": "./dist/bdd/index.js"
 		}
 	},
 	"typesVersions": {
@@ -51,6 +56,9 @@
 			],
 			"string": [
 				"dist/string"
+			],
+			"bdd": [
+				"dist/bdd"
 			]
 		}
 	},
@@ -63,7 +71,8 @@
 		"boolean/",
 		"number/",
 		"object/",
-		"string/"
+		"string/",
+		"bdd/"
 	],
 	"scripts": {
 		"__________TEST": "__________",

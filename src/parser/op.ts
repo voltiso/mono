@@ -3,6 +3,8 @@ import { And } from '../boolean/And'
 import { Or } from '../boolean/Or'
 import { IsFalsy } from '../boolean/truthy-falsy'
 import { Xor } from '../boolean/Xor'
+import { IsSubtype, IsSupertype } from '../IsSubtype'
+import { IsNumber, IsSuperNumber } from '../number'
 
 declare const _def: unique symbol
 export type def = typeof _def
@@ -21,14 +23,8 @@ export interface Op<A = def, B = def, C = def, D = def, _E = def, _F = def, _G =
 	'isSuperNumber': IsSuperNumber<A, Def<B, true>, Def<C, false>>
 }
 
-export type IsSubtype<A, B, T = true, F = false> = A extends B ? T : F
-export type IsSupertype<A, B, T = true, F = false> = B extends A ? T : F
-
 export type IsString<A, T = true, F = false> = A extends string ? T : F
 export type IsSuperString<A, T = true, F = false> = string extends A ? T : F
-
-export type IsNumber<A, T = true, F = false> = A extends number ? T : F
-export type IsSuperNumber<A, T = true, F = false> = number extends A ? T : F
 
 export type OpPacked<args extends unknown[]> = [...args, def, def, def, def, def, def, def, def, def, def] extends [
 	infer A,

@@ -1,4 +1,4 @@
-import { Assert } from '../assert'
+import { Assert } from '../bdd'
 import { IsEqual } from '../IsEqual'
 import { Includes } from './includes'
 
@@ -7,7 +7,7 @@ describe('includes', () => {
 		expect.assertions(0)
 
 		Assert<Includes<'qwerty', 'wer'>>()
-		Assert<Includes<'qwerty', 'werx'>, false>()
+		Assert.isSubtype<Includes<'banana', 'nano'>, false>()
 		Assert<IsEqual<Includes<string, 'asd'>, boolean>>()
 		Assert<IsEqual<Includes<'asd', string>, boolean>>()
 	})

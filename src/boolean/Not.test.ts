@@ -1,12 +1,18 @@
-import { Assert } from '../assert'
-import { IsCompatible } from '../IsEqual'
+import { Assert, Is } from '../bdd/Assert'
 import { Not } from './Not'
 
 describe('not', () => {
 	it('works', () => {
 		expect.assertions(0)
-		Assert<IsCompatible<Not<true>, false>>()
-		Assert<IsCompatible<Not<false>, true>>()
-		Assert<IsCompatible<Not<boolean>, boolean>>()
+		Assert(
+			Is<Not<true>>() //
+				.identicalTo<false>(),
+
+			Is<Not<false>>() //
+				.identicalTo<true>(),
+
+			Is<Not<boolean>>() //
+				.identicalTo<boolean>()
+		)
 	})
 })

@@ -1,17 +1,28 @@
-import { Assert } from '../assert'
-import { IsCompatible } from '../IsEqual'
+import { Assert, Is } from '../bdd/Assert'
 import { Xor } from './Xor'
 
 describe('xor', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert<IsCompatible<Xor<false, true>, true>>()
-		Assert<IsCompatible<Xor<true, false>, true>>()
-		Assert<IsCompatible<Xor<true, true>, false>>()
-		Assert<IsCompatible<Xor<false, false>, false>>()
+		Assert(
+			Is<Xor<false, true>>() //
+				.identicalTo<true>(),
 
-		Assert<IsCompatible<Xor<false, boolean>, boolean>>()
-		Assert<IsCompatible<Xor<true, boolean>, boolean>>()
+			Is<Xor<true, false>>() //
+				.identicalTo<true>(),
+
+			Is<Xor<true, true>>() //
+				.identicalTo<false>(),
+
+			Is<Xor<false, false>>() //
+				.identicalTo<false>(),
+
+			Is<Xor<false, boolean>>() //
+				.identicalTo<boolean>(),
+
+			Is<Xor<true, boolean>>() //
+				.identicalTo<boolean>()
+		)
 	})
 })
