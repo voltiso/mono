@@ -29,8 +29,8 @@ describe('Flatten', () => {
 		Assert<IsCompatible<FTypeofDate, TypeofDate>>()
 
 		type Rec = Rec[] | string
-		Assert<Rec, Flatten<Rec>>()
-		Assert<Flatten<Rec>, Rec>()
+		type FRec = Flatten<Rec>
+		Assert<IsIdentical<Rec, FRec>>()
 
 		Assert<
 			IsIdentical<
@@ -164,4 +164,39 @@ describe('Flatten', () => {
 		Assert<Y, X>()
 		// Assert<X, Y>()
 	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('fancy', () => {
+	// 	expect.assertions(0)
+
+	// 	interface UnknownDTI {
+	// 		tag: string
+
+	// 		const: { id?: never }
+	// 		public: { id?: never }
+	// 		private: { id?: never }
+	// 		protected: { id?: never }
+
+	// 		methods: object
+
+	// 		doc?: number | undefined
+	// 		docInside?: number | undefined
+	// 	}
+
+	// 	type ___<X extends UnknownDTI> = Flatten<{
+	// 		tag: X['tag']
+
+	// 		public: Flatten<X['public']>
+	// 		const: Flatten<X['const']>
+	// 		private: Flatten<X['private']>
+	// 		protected: Flatten<X['protected']>
+
+	// 		methods: X['methods']
+
+	// 		doc: X['doc']
+	// 		docInside: X['docInside']
+	// 	}>
+
+	// 	type X = ___<Omit<UnknownDTI, 'tag'> & { tag: 'doctorD' } & { public: { asd: 123 } }>
+	// })
 })

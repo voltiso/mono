@@ -28,5 +28,7 @@ module.exports = {
 		'@typescript-eslint/no-floating-promises': 'error',
 
 		'jest/prefer-lowercase-title': 0,
+
+		'@typescript-eslint/no-explicit-any': 0,
 	},
 }
