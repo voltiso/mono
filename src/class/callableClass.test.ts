@@ -67,7 +67,16 @@ describe('callableClass', () => {
 		const Cls3 = Cls2(333n)
 
 		const cls3 = new Cls3('3')
+
+		const cls2 = new Cls2('2')
+
+		expect(cls2._val).toBe('2')
+		expect(cls2._staticRef).toStrictEqual([999])
+
 		expect(cls3._val).toBe('3')
 		expect(cls3._staticRef).toStrictEqual([999, 333n])
+
+		expect(cls3 instanceof _Cls).toBeTruthy()
+		expect(cls3 instanceof Cls).toBeTruthy()
 	})
 })
