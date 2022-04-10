@@ -6,6 +6,14 @@ describe('isEqual', () => {
 		expect.assertions(0)
 
 		Assert(
+			Is<123>().relatedTo<number>(),
+			Is<number>().relatedTo<123>(),
+			Is<number>().relatedTo<number>(),
+			Is<123>().not.relatedTo<444>(),
+			Is<number>().not.relatedTo<string>()
+		)
+
+		Assert(
 			Is<{}>().compatibleWith<Record<string, any>>(), // hmm...
 			Is<{}>().not.identicalTo<Record<string, any>>(),
 			Is<{}>().not.equalTo<Record<string, any>>()

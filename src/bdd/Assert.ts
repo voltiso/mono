@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { IsCompatible, IsEqual, IsIdentical } from '../IsEqual'
+import { IsCompatible, IsEqual, IsIdentical, IsRelated } from '../IsEqual'
 import { protoLink } from '../protoLink'
 
 interface Is<A, T = true, F = false> {
@@ -10,6 +10,8 @@ interface Is<A, T = true, F = false> {
 
 	compatibleWith<B>(_?: B): IsCompatible<A, B, T, F>
 	equalTo<B>(_?: B): IsEqual<A, B, T, F>
+
+	relatedTo<B>(_?: B): IsRelated<A, B, T, F>
 
 	subtypeOf<B>(_?: B): A extends B ? T : F
 	strictSubtypeOf<B>(_?: B): A extends B ? (B extends A ? F : T) : F

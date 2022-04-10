@@ -1,6 +1,11 @@
 import { SmartFlatten } from './object/flatten/SmartFlatten'
 
 /**
+ * Is either a subtype of another one?
+ */
+export type IsRelated<A, B, T = true, F = false> = A extends B ? T : B extends A ? T : F
+
+/**
  * extends 2-way
  */
 export type IsCompatible<A, B, T = true, F = false> = [A, B] extends [B, A] ? T : F
