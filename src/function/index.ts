@@ -12,3 +12,4 @@ export * from './apply'
 export * from './lazy'
 
 export * from './Return'
+export * from './MaybePromise'
