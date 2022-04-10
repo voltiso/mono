@@ -17,12 +17,22 @@ type IsAlmostSame<A, B, T = true, F = false> = (<X>() => X extends B ? 1 : 0) ex
 	? T
 	: F
 
+type IsIdenticalIfFunction<A, B> = [A] extends [(this: infer ThisA, ...args: any[]) => any]
+	? [B] extends [(this: infer ThisB, ...args: any[]) => any]
+		? IsIdentical<ThisA, ThisB>
+		: true
+	: true
+
+// type IsIdenticalIfFunction<A, B> = IsIdentical<ThisParameterType<A>, ThisParameterType<B>>
+
 /**
  * Extends 2-way, and is (very) strictly equal
  */
 export type IsIdentical<A, B, T = true, F = false> = [IsCompatible<A, B>] extends [true]
 	? [IsAlmostSame<A, B>] extends [true]
-		? T
+		? [IsIdenticalIfFunction<A, B>] extends [true]
+			? T
+			: F
 		: F
 	: F
 

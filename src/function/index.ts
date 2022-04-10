@@ -1,5 +1,4 @@
 export * from './Callable'
-export * from './Newable'
 
 export * from './PickCall'
 export * from './PickConstruct'

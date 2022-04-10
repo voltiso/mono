@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert, Is } from './bdd'
+import { Callable } from './function'
+import { IsIdentical } from './IsEqual'
 
 describe('isEqual', () => {
+	it('simple', () => {
+		expect.assertions(0)
+		Assert<IsIdentical<unknown, unknown>>()
+	})
+
 	it('works', () => {
 		expect.assertions(0)
 
@@ -65,6 +72,17 @@ describe('isEqual', () => {
 		Assert(
 			Is<{ a: 1 }>().not.compatibleWith<{ a: 1 | undefined }>()
 			//
+		)
+
+		Assert(
+			Is<(a: string) => number>().compatibleWith<(this: bigint, a: string) => number>(), // hmm
+			Is<(a: string) => number>().not.identicalTo<(this: bigint, a: string) => number>(),
+			Is<(a: string) => number>().not.equalTo<(this: bigint, a: string) => number>()
+		)
+
+		Assert(
+			Is<Callable>() //
+				.identicalTo<(...args: never[]) => unknown>()
 		)
 	})
 })
