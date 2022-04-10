@@ -1,6 +1,5 @@
 import { CallableWithThis, Newable, Return } from '../function'
 import { Instance } from './Instance'
-import { protoLink } from './protoLink'
 
 export function callableClass<Class extends Newable, Fun extends CallableWithThis<never[], unknown, Class>>(
 	Cls: Class,
@@ -17,5 +16,6 @@ export function callableClass<Class extends Newable, Fun extends CallableWithThi
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	Ctor.prototype = Cls.prototype
 
-	return protoLink(Ctor, Cls) as unknown as Class & Fun
+	return Object.setPrototypeOf(Ctor, Cls) as Class & Fun
+	// return protoLink(Ctor, Cls) as unknown as Class & Fun
 }
