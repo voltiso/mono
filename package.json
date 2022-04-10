@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "12.2.0",
+	"version": "12.2.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
@@ -49,6 +49,11 @@
 			"import": "./dist/symbol/index.mjs",
 			"require": "./dist/symbol/index.js"
 		},
+		"./parser": {
+			"types": "./dist/parser/index.d.ts",
+			"import": "./dist/parser/index.mjs",
+			"require": "./dist/parser/index.js"
+		},
 		"./bdd": {
 			"types": "./dist/bdd/index.d.ts",
 			"import": "./dist/bdd/index.mjs",
@@ -86,6 +91,9 @@
 			"symbol": [
 				"dist/symbol"
 			],
+			"parser": [
+				"dist/parser"
+			],
 			"bdd": [
 				"dist/bdd"
 			],
@@ -107,6 +115,7 @@
 		"function/",
 		"class/",
 		"symbol/",
+		"parser/",
 		"bdd/",
 		"compiler-options/"
 	],

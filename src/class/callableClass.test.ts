@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable max-statements */
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-magic-numbers */
@@ -27,12 +29,16 @@ class _Cls {
 	static addStaticData(this: typeof _Cls, arg: symbol): Cls
 	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol): Cls
 
-	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol): Cls {
+	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol) {
 		class Cls extends this {
 			static override readonly _staticData: (number | bigint | symbol)[] = [...super._staticData, arg]
 		}
 		return callableClass(Cls, Fun)
 	}
+}
+
+class _Derived extends _Cls {
+	declare _additionalField: string
 }
 
 function Fun(s: symbol): typeof _Cls
@@ -44,7 +50,7 @@ function Fun(this: typeof _Cls, arg: bigint | symbol | string): typeof _Cls | st
 	else return this.addStaticData(arg)
 }
 
-const Cls = callableClass(_Cls, Fun)
+const Cls = callableClass(_Derived, Fun)
 type Cls = typeof Cls
 
 describe('callableClass', () => {

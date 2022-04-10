@@ -11,6 +11,7 @@ export default defineConfig({
 		'src/function/index.ts',
 		'src/class/index.ts',
 		'src/symbol/index.ts',
+		'src/parser/index.ts',
 		'src/bdd/index.ts',
 		'src/compiler-options/index.ts',
 		//
