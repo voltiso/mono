@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 // import { expect } from 'chai'
 import { createClassInterface, Interface } from './Interface'
-import { Unpack } from './Unpack'
+import { Unpack } from './array/Unpack'
 
 describe('interface', function () {
 	it('works', function () {

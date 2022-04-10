@@ -1,6 +1,6 @@
 import { CanBeUndefined } from '../CanBeUndefined'
 import { IsOptional } from '../IsOptional'
-import { Callable, Newable } from '../../types'
+import { Callable, Newable } from '../../function'
 
 type SmartFlattenValue<T, k extends keyof T, e> = IsOptional<
 	T,

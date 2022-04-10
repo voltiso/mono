@@ -1,3 +1,4 @@
-export * from './includes'
-export * from './join'
-export * from './split'
+export * from './Includes'
+export * from './Join'
+export * from './Split'
+export * from './Printable'

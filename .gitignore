@@ -6,6 +6,10 @@
 /number/
 /object/
 /string/
+/function/
+/class/
+/symbol/
 /bdd/
+/compiler-options/
 
 *.tgz

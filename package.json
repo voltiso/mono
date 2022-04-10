@@ -34,10 +34,30 @@
 			"import": "./dist/string/index.mjs",
 			"require": "./dist/string/index.js"
 		},
+		"./function": {
+			"types": "./dist/function/index.d.ts",
+			"import": "./dist/function/index.mjs",
+			"require": "./dist/function/index.js"
+		},
+		"./class": {
+			"types": "./dist/class/index.d.ts",
+			"import": "./dist/class/index.mjs",
+			"require": "./dist/class/index.js"
+		},
+		"./symbol": {
+			"types": "./dist/symbol/index.d.ts",
+			"import": "./dist/symbol/index.mjs",
+			"require": "./dist/symbol/index.js"
+		},
 		"./bdd": {
 			"types": "./dist/bdd/index.d.ts",
 			"import": "./dist/bdd/index.mjs",
 			"require": "./dist/bdd/index.js"
+		},
+		"./compiler-options": {
+			"types": "./dist/compiler-options/index.d.ts",
+			"import": "./dist/compiler-options/index.mjs",
+			"require": "./dist/compiler-options/index.js"
 		}
 	},
 	"typesVersions": {
@@ -57,8 +77,20 @@
 			"string": [
 				"dist/string"
 			],
+			"function": [
+				"dist/function"
+			],
+			"class": [
+				"dist/class"
+			],
+			"symbol": [
+				"dist/symbol"
+			],
 			"bdd": [
 				"dist/bdd"
+			],
+			"compiler-options": [
+				"dist/compiler-options"
 			]
 		}
 	},
@@ -72,7 +104,11 @@
 		"number/",
 		"object/",
 		"string/",
-		"bdd/"
+		"function/",
+		"class/",
+		"symbol/",
+		"bdd/",
+		"compiler-options/"
 	],
 	"scripts": {
 		"__________TEST": "__________",

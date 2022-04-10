@@ -1,8 +1,8 @@
-import { Type } from './Type'
+import { type } from './symbol/type'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type StaticError = {
-	[Type]: 'StaticError'
+	[type]: 'StaticError'
 }
 
 export type Throw<message> = StaticError & message

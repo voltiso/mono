@@ -15,10 +15,13 @@ export interface Op<A = def, B = def, C = def, D = def, _E = def, _F = def, _G =
 	'&': And<A, B, Def<C, true>, Def<D, false>>
 	'|': Or<A, B, Def<C, true>, Def<D, false>>
 	'^': Xor<A, B, Def<C, true>, Def<D, false>>
+
 	'isSubtype': IsSubtype<A, B, Def<C, true>, Def<D, false>>
 	'isSupertype': IsSupertype<A, B, Def<C, true>, Def<D, false>>
+
 	'isString': IsString<A, Def<B, true>, Def<C, false>>
 	'isSuperString': IsSuperString<A, Def<B, true>, Def<C, false>>
+
 	'isNumber': IsNumber<A, Def<B, true>, Def<C, false>>
 	'isSuperNumber': IsSuperNumber<A, Def<B, true>, Def<C, false>>
 }

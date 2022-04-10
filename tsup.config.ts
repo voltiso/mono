@@ -8,7 +8,11 @@ export default defineConfig({
 		'src/number/index.ts',
 		'src/object/index.ts',
 		'src/string/index.ts',
+		'src/function/index.ts',
+		'src/class/index.ts',
+		'src/symbol/index.ts',
 		'src/bdd/index.ts',
+		'src/compiler-options/index.ts',
 		//
 	],
 	format: ['esm', 'cjs'], // , 'iife'],

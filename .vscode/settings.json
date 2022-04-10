@@ -9,7 +9,11 @@
 		"object/": true,
 		"string/": true,
 		"number/": true,
+		"function/": true,
+		"class/": true,
+		"symbol/": true,
 		"bdd/": true,
+		"compiler-options/": true,
 
 		"dist/": true
 	},

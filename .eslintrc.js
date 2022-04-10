@@ -20,7 +20,7 @@ module.exports = {
 		tsconfigRootDir: __dirname,
 		sourceType: 'module',
 	},
-	ignorePatterns: ['dist/**/*', 'node_modules', '**/checkCompilerOptions/**/*'],
+	ignorePatterns: ['dist/**/*', 'node_modules/**/*', 'src/compiler-options/**/*'],
 	plugins: ['@typescript-eslint', 'import'],
 	rules: {
 		// 'import/no-unresolved': 0,
@@ -31,5 +31,6 @@ module.exports = {
 
 		'@typescript-eslint/no-explicit-any': 0,
 		'@typescript-eslint/no-unused-vars': 0, // already checked by TSC, can ignore with `_name` underscored variable name
+		'@typescript-eslint/no-empty-function': 0,
 	},
 }
