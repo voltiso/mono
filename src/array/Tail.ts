@@ -5,5 +5,6 @@ export type Tail<L extends readonly unknown[]> = L extends [unknown, ...infer T]
 	: never
 
 export function tail<Arr extends readonly unknown[]>(arr: Arr): Tail<Arr> {
+	// eslint-disable-next-line no-magic-numbers
 	return arr.slice(1) as Tail<Arr>
 }

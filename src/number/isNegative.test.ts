@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Assert, Is } from '../bdd'
 import { IsNegative } from './IsNegative'

@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert, Is } from '../../bdd'
 import { Entry } from './entries'

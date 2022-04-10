@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { isPrimitive } from './Primitive'
 

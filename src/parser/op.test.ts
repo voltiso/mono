@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { Assert } from '../bdd'
 import { def, Def } from './op'
 

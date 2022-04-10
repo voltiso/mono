@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { assert } from '../assert'
 
 type _At<Arr> = Arr extends (infer T)[] ? T | undefined : Arr extends RelativeIndexable<infer T> ? T | undefined : never
@@ -40,6 +41,6 @@ export function isRelativeIndexable(arr: unknown): arr is RelativeIndexable<unkn
 
 export function at<Arr, Idx extends number & keyof Arr>(arr: Arr, idx: Idx): Exclude<At<Arr, Idx>, undefined> {
 	const r = isRelativeIndexable(arr) ? arr.at(idx) : arr[idx]
-	assert(r !== undefined)
+	assert(typeof r !== 'undefined')
 	return r as Exclude<At<Arr, Idx>, undefined>
 }

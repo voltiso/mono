@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert, Is } from '../../bdd'
 import { IsCompatible, IsIdentical } from '../../IsEqual'
@@ -93,11 +95,45 @@ describe('Flatten', () => {
 
 	it('primitives', () => {
 		expect.assertions(0)
+
 		type N = Flatten<number>
 		Assert<IsIdentical<N, number>>()
 
 		type S = Flatten<string>
 		Assert<IsIdentical<S, string>>()
+
+		type B = Flatten<boolean>
+		Assert<IsIdentical<B, boolean>>()
+	})
+
+	it('nullish', () => {
+		expect.assertions(0)
+
+		type Null = Flatten<null>
+		Assert<IsIdentical<Null, null>>()
+
+		type Undef = Flatten<undefined>
+		Assert<IsIdentical<Undef, undefined>>()
+	})
+
+	it('TS types - unknown, ...', () => {
+		expect.assertions(0)
+
+		type U = Flatten<unknown>
+		Assert<IsIdentical<U, unknown>>()
+
+		type A = Flatten<any>
+		Assert<IsIdentical<A, any>>()
+
+		type N = Flatten<never>
+		Assert<IsIdentical<N, never>>()
+
+		type V = Flatten<void>
+		Assert<IsIdentical<V, void>>()
+	})
+
+	it('object', () => {
+		expect.assertions(0)
 
 		type O = Flatten<object>
 		Assert<IsIdentical<O, object>>()
@@ -110,18 +146,6 @@ describe('Flatten', () => {
 
 		type OOOO = Flatten<Record<string, unknown>>
 		Assert<IsIdentical<OOOO, Record<string, unknown>>>()
-
-		type B = Flatten<boolean>
-		Assert<IsIdentical<B, boolean>>()
-
-		type U = Flatten<unknown>
-		Assert<IsIdentical<U, unknown>>()
-
-		type Null = Flatten<null>
-		Assert<IsIdentical<Null, null>>()
-
-		type Undef = Flatten<undefined>
-		Assert<IsIdentical<Undef, undefined>>()
 	})
 
 	it('works with index signatures', () => {

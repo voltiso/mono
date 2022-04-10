@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { Assert, Is } from '../bdd/Assert'
 import { Tail } from './Tail'
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -35,6 +36,7 @@ describe('bench/clone', () => {
 
 		const q = myTime / otherTime
 
+		// eslint-disable-next-line no-console
 		console.log('q ==', q)
 
 		expect(q).toBeLessThan(0.9)

@@ -1,21 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-/**
- * Omit call and construct signatures
- * Does not work with overloads!
- */
-export type PickCallNoUnknown<T extends (...args: any) => any> =
-	| _PickCall0<T>
-	| _PickCall1<T>
-	| _PickCall2<T>
-	| _PickCall3<T>
-	| _PickCall4<T>
-
-//
-
-//
-// implementation
-//
 type _PickCall0<T> = T extends () => infer R ? () => R : never
 
 type _PickCall1<T> = T extends (a: infer A) => infer R ? (unknown extends A ? never : (a: A) => R) : never
@@ -37,3 +19,14 @@ type _PickCall4<T> = T extends (a: infer A, b: infer B, c: infer C, d: infer D) 
 		? never
 		: (...args: [A, B, C, D]) => R
 	: never
+
+/**
+ * Omit call and construct signatures
+ * Does not work with overloads!
+ */
+export type PickCallNoUnknown<T extends (...args: never) => unknown> =
+	| _PickCall0<T>
+	| _PickCall1<T>
+	| _PickCall2<T>
+	| _PickCall3<T>
+	| _PickCall4<T>

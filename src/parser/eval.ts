@@ -9,7 +9,9 @@ type EvalAstArray_Acc<r extends unknown[], arr, args extends unknown[]> = arr ex
 
 type EvalAstArray<arr extends unknown[], args extends unknown[]> = EvalAstArray_Acc<[], arr, args>
 
-// TODO: tail recursion
+/**
+ * - TODO: tail recursion
+ */
 export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [infer op, infer asts]
 	? op extends keyof Op
 		? asts extends unknown[]
@@ -49,7 +51,10 @@ export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [inf
 		: never
 	: never
 
-type ExprString = string // TODO
+/**
+ * - TODO: constrain it better, not just `string`
+ */
+type ExprString = string
 
 export type Expr = Ast | keyof Op | ExprString
 

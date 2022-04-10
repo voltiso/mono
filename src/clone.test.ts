@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { clone } from './clone'
 
 class MyCloneable {
@@ -18,8 +19,10 @@ class MyCloneable {
 }
 
 describe('clone', () => {
+	// eslint-disable-next-line max-statements
 	it('works', () => {
 		expect.hasAssertions()
+
 		const x = {
 			d: new Date('2022-02-20'),
 			arr: [1, 2, 3],

@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
@@ -33,6 +35,7 @@ interface Is<A, T = true, F = false> {
 
 export type { Is as Predicates }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const proxy: any = new Proxy(() => proxy, {
 	get() {
 		return proxy

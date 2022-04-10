@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { Assert } from '../bdd'
 import { IsIdentical } from '../IsEqual'
 import { DeepPartial } from './DeepPartial'

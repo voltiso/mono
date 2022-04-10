@@ -1,3 +1,10 @@
+/* eslint-disable no-inner-declarations */
+/* eslint-disable no-constructor-return */
+/* eslint-disable no-param-reassign */
+/* eslint-disable consistent-this */
+/* eslint-disable @typescript-eslint/no-this-alias */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/ban-types */
 
 type Constructor<Args extends unknown[] = unknown[], Inst = unknown> = new (...args: Args) => Inst
@@ -20,46 +27,41 @@ export type Interface<
 /**
  * Does not work with constructor overloads
  */
-export const createClassInterface = <
+export function createClassInterface<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	Cls extends Constructor<any>,
-	Field extends keyof InstanceType<Cls> & string,
-	CM extends CMType<InstanceType<Cls>> = '_CALL' & CMType<InstanceType<Cls>>,
-	PM extends PMType<InstanceType<Cls>> = '_PROXY_OBJECT' & PMType<InstanceType<Cls>>
+	Class extends Constructor<any>,
+	Field extends keyof InstanceType<Class> & string,
+	CM extends CMType<InstanceType<Class>> = '_CALL' & CMType<InstanceType<Class>>,
+	PM extends PMType<InstanceType<Class>> = '_PROXY_OBJECT' & PMType<InstanceType<Class>>
 >(
-	cls: Cls,
+	Cls: Class,
 	fields: readonly Field[] | Field,
 	options: {
 		callMethodName: CM | '_CALL'
 		proxyObjectMethodName: PM | '_PROXY_OBJECT'
 	} = { callMethodName: '_CALL', proxyObjectMethodName: '_PROXY_OBJECT' }
-) => {
-	type R = Constructor<ConstructorParameters<Cls>, Interface<InstanceType<Cls>, Field, CM, PM>>
+) {
+	type R = Constructor<ConstructorParameters<Class>, Interface<InstanceType<Class>, Field, CM, PM>>
 
-	function construct(this: NewClass) {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const isCallable = (m: CM | '_CALL'): m is CM => !!(this._ as Record<any, unknown>)[m]
+	function Construct(this: NewClass) {
+		const isCallable = (m: CM | '_CALL'): m is CM => Boolean((this._ as Record<any, unknown>)[m])
 
-		// eslint-disable-next-line @typescript-eslint/no-this-alias
-		let result: { _: InstanceType<Cls> } = this
+		let result: { _: InstanceType<Class> } = this
 
 		if (isCallable(options.callMethodName)) {
 			const m = options.callMethodName
 			const self = this._ as Record<CM, CallableFunction>
-			// eslint-disable-next-line no-inner-declarations
 			function f(...args: unknown[]) {
 				const r = self[m](...args) as unknown
 				if (r === self) return f
 				else return r
 			}
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			f._ = this._
 			Object.setPrototypeOf(f, <object>Object.getPrototypeOf(this))
 			result = f
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM => !!(this._ as Record<any, unknown>)[m]
+		const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM => Boolean((this._ as Record<any, unknown>)[m])
 
 		if (hasProxyObject(options.proxyObjectMethodName)) {
 			const m = options.proxyObjectMethodName
@@ -69,6 +71,7 @@ export const createClassInterface = <
 					if (p in result) return Reflect.get(result, p) as unknown
 					else return Reflect.get(proxyObject, p) as unknown
 				},
+				// eslint-disable-next-line max-params
 				set(result, p, value, receiver) {
 					// call with null receiver to bypass proxy object (e.g. calls from derived class constructor)
 					const proxyObject = result._[m] as unknown as object
@@ -95,16 +98,15 @@ export const createClassInterface = <
 	}
 
 	class NewClass {
-		_: InstanceType<Cls>
+		_: InstanceType<Class>
 		constructor(...args: unknown[]) {
-			this._ = new cls(...args) as InstanceType<Cls>
-			return construct.call(this)
+			this._ = new Cls(...args) as InstanceType<Class>
+			return Construct.call(this)
 		}
 	}
 
-	const prototype = cls.prototype as InstanceType<Cls> & {}
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	type NewInst = Pick<InstanceType<Cls> & {}, Field> & { _: InstanceType<Cls> }
+	const prototype = Cls.prototype as InstanceType<Class> & {}
+	type NewInst = Pick<InstanceType<Class> & {}, Field> & { _: InstanceType<Class> }
 	const newPrototype = NewClass.prototype as NewInst
 
 	appendInterface(newPrototype, prototype, fields, (x: { _: unknown }) => x._)
@@ -112,23 +114,21 @@ export const createClassInterface = <
 	return NewClass as unknown as R
 }
 
-export const createInterface = <
+export function createInterface<
 	Inst extends object,
 	Field extends keyof Inst & string,
 	CM extends CMType<Inst> = '_CALL' & CMType<Inst>,
 	PM extends PMType<Inst> = '_PROXY_OBJECT' & PMType<Inst>
->(
-	srcObj: Inst,
-	fields: Field | readonly Field[],
-	callMethodName: CM | '_CALL' = '_CALL'
-) => {
+>(srcObj: Inst, fields: Field | readonly Field[], callMethodName: CM | '_CALL' = '_CALL') {
 	type R = Interface<Inst, Field, CM, PM>
 
-	const isCallable = (m: CM | '_CALL'): m is CM => (m !== '_CALL' && m in srcObj) || '_CALL' in srcObj // hack to avoid TS error...
+	function isCallable(m: CM | '_CALL'): m is CM {
+		return (m !== '_CALL' && m in srcObj) || '_CALL' in srcObj // hack to avoid TS error...
+	}
 
 	const dstObj = (
 		isCallable(callMethodName)
-			? function (...args: unknown[]) {
+			? (...args: unknown[]) => {
 					const r = (srcObj as unknown as Record<CM, CallableFunction>)[callMethodName](...args) as unknown
 					if (r === srcObj) return dstObj
 					else return r
@@ -141,17 +141,18 @@ export const createInterface = <
 	return dstObj
 }
 
-const isArray = (arr: unknown): arr is unknown[] | readonly unknown[] => Array.isArray(arr)
+function isArray(arr: unknown): arr is unknown[] | readonly unknown[] {
+	return Array.isArray(arr)
+}
 
-export const appendInterface = <R extends object, Field extends keyof R & string>(
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line max-params
+export function appendInterface<R extends object, Field extends keyof R & string>(
 	dstObj: Pick<R, Field>,
 	srcObj: R,
 	fields?: readonly Field[] | Field,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	thisTransform?: (t: any) => unknown
-) => {
-	if (fields === undefined) {
+) {
+	if (typeof fields === 'undefined') {
 		fields = Object.getOwnPropertyNames(srcObj) as Field[]
 	} else if (!isArray(fields)) fields = [fields]
 
@@ -159,7 +160,6 @@ export const appendInterface = <R extends object, Field extends keyof R & string
 		if (!(field in srcObj)) throw new Error(`createInterface: ${field} not part of the source object`)
 		// const source = srcObj[field]
 		Object.defineProperty(dstObj, field, {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			get(this: any) {
 				const self = (thisTransform ? thisTransform(this) : this) as unknown
 				const r = Reflect.get(srcObj, field, self) as unknown

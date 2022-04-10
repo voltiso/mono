@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-magic-numbers */
 import { Assert, Is } from '../bdd'
 import { IsNumberLiteral } from './IsNumberLiteral'
 

@@ -1,7 +1,7 @@
-export const lazy = <T, ARGS extends unknown[]>(
+export function lazy<T, ARGS extends unknown[]>(
 	getPromise: (...args: ARGS) => PromiseLike<T>,
 	...args: ARGS
-): PromiseLike<T> => {
+): PromiseLike<T> {
 	let promise: PromiseLike<T> | undefined
 	return {
 		then: (...cb) => {

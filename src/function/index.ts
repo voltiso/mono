@@ -10,3 +10,5 @@ export * from './call'
 export * from './apply'
 
 export * from './lazy'
+
+export * from './Return'

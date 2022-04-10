@@ -1,11 +1,11 @@
 import { lazy } from './lazy'
 
-describe('lazy', function () {
-	it('does not execute until awaited', async function () {
+describe('lazy', () => {
+	it('does not execute until awaited', async () => {
 		expect.hasAssertions()
 		let executed = false
 		// eslint-disable-next-line @typescript-eslint/require-await
-		const fun = async () => {
+		async function fun() {
 			executed = true
 		}
 		const promise = lazy(fun)
