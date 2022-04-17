@@ -1,10 +1,10 @@
 /* eslint-disable no-magic-numbers */
-type Not<X extends number> = X extends 0 ? 1 : 0
-
-export type Parity<L, O = 0, I = 1> = L extends readonly [unknown, ...infer T]
-	? Not<Parity<T>>
+type Parity_<L, _0, _1, acc extends _0 | _1> = L extends readonly [unknown, ...infer T]
+	? Parity_<T, _0, _1, acc extends _0 ? _1 : _0>
 	: L extends readonly []
-	? O
+	? acc
 	: L extends readonly unknown[]
-	? O | I
+	? _0 | _1
 	: never
+
+export type Parity<L extends readonly unknown[], _0 = 0, _1 = 1> = Parity_<L, _0, _1, _0>
