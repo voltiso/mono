@@ -15,7 +15,7 @@ type Rec_Op1<nodes extends unknown[], t, ts> = nodes extends [...infer ns, ['', 
 	? Rec<[...ns, [t, []]], ts>
 	: Rec<[...nodes, [t, []]], ts>
 
-type Rec_FixPrec<nodes extends unknown[], ts> = nodes extends [
+type Rec_FixPrecedence<nodes extends unknown[], ts> = nodes extends [
 	...infer ns,
 	[infer op1, [...infer args1]],
 	[infer op2, [infer a2, ...infer args2]]
@@ -24,7 +24,7 @@ type Rec_FixPrec<nodes extends unknown[], ts> = nodes extends [
 		? op2 extends string
 			? `&|^` extends `${string}${op2}${string}${op1}${string}`
 				? Rec<nodes, ts>
-				: Rec_FixPrec<[...ns, [op2, [[op1, [...args1, a2]], ...args2]]], ts>
+				: Rec_FixPrecedence<[...ns, [op2, [[op1, [...args1, a2]], ...args2]]], ts>
 			: Rec<nodes, ts>
 		: Rec<nodes, ts>
 	: Rec<nodes, ts>
@@ -37,7 +37,7 @@ type Rec_Op2<nodes, t extends string, ts> = nodes extends [...infer ns, [infer o
 		: // already have op
 		args extends [...infer as, infer b]
 		? op extends string
-			? Rec_FixPrec<[...ns, [op, as], [t, [b]]], ts>
+			? Rec_FixPrecedence<[...ns, [op, as], [t, [b]]], ts>
 			: never
 		: never
 	: never

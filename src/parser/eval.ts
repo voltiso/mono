@@ -58,7 +58,9 @@ type ExprString = string
 
 export type Expr = Ast | keyof Op | ExprString
 
-export type Eval<expr extends Expr = never, args extends unknown[] = []> = expr extends keyof Op
+export type PreprocessExpr<e extends Expr> = e extends keyof Op ? e : e extends string ? AstFromString<e> : e
+
+export type Eval<expr = never, args extends unknown[] = []> = expr extends keyof Op
 	? OpPacked<args>[expr]
 	: expr extends Ast
 	? EvalAst<expr, args>
