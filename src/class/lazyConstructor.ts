@@ -40,7 +40,7 @@ export function lazyConstructor<Class extends Newable>(getCls: () => Class): Cla
 
 	return new Proxy(Ctor, {
 		get(target, p, receiver) {
-			load()
+			if (p !== 'prototype') load()
 			return Reflect.get(target, p, receiver) as never
 		},
 	}) as never
