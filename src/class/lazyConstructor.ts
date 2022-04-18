@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Newable } from '../function'
 
 /**
@@ -9,11 +11,37 @@ import { Newable } from '../function'
  * // this works even if `TransactionBase` is inside a dependency cycle,
  * // and is still `undefined` at the moment when the `Transaction` class is being defined
  */
-export function lazyConstructor<Class extends Newable>(getCls: () => Class) {
+export function lazyConstructor<Class extends Newable>(getCls: () => Class): Class {
+	let Cls: Class | undefined
+
+	const proxyProto = {}
+
+	function load() {
+		if (!Cls) {
+			Cls = getCls()
+			Object.setPrototypeOf(proxyProto, Cls.prototype)
+			Object.setPrototypeOf(Ctor, Cls)
+		}
+		return Cls
+	}
+
 	// eslint-disable-next-line func-names
-	return function (...args: never[]) {
-		const Cls = getCls()
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	function Ctor(...args: never[]) {
+		const Cls = load()
 		return Reflect.construct(Cls, args, Cls)
-	} as unknown as Class
+	}
+
+	Ctor.prototype = new Proxy(proxyProto, {
+		get(target, p, receiver) {
+			load()
+			return Reflect.get(target, p, receiver) as never
+		},
+	})
+
+	return new Proxy(Ctor, {
+		get(target, p, receiver) {
+			load()
+			return Reflect.get(target, p, receiver) as never
+		},
+	}) as never
 }
