@@ -28,20 +28,17 @@ export function lazyConstructor<Class extends Newable>(getCls: () => Class): Cla
 	// eslint-disable-next-line func-names
 	function Ctor(...args: never[]) {
 		const Cls = load()
-		return Reflect.construct(Cls, args, Cls)
+		return Reflect.construct(Cls, args, new.target)
 	}
 
-	Ctor.prototype = new Proxy(proxyProto, {
-		get(target, p, receiver) {
-			load()
-			return Reflect.get(target, p, receiver) as never
-		},
-	})
+	Ctor.prototype = proxyProto
 
 	return new Proxy(Ctor, {
 		get(target, p, receiver) {
-			if (p !== 'prototype') load()
-			return Reflect.get(target, p, receiver) as never
+			// console.log('get Ctor', target, p, receiver)
+			if (p in target) return Reflect.get(target, p, receiver)
+			load()
+			return Reflect.get(target, p, receiver)
 		},
 	}) as never
 }
