@@ -14,6 +14,7 @@
 		"symbol/": true,
 		"bdd/": true,
 		"compiler-options/": true,
+		"parser/": true,
 
 		"dist/": true
 	},

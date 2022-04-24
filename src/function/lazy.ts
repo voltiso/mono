@@ -3,10 +3,23 @@ export function lazy<T, ARGS extends unknown[]>(
 	...args: ARGS
 ): PromiseLike<T> {
 	let promise: PromiseLike<T> | undefined
+
 	return {
-		then: (...cb) => {
+		then: (f, r) => {
 			if (!promise) promise = getPromise(...args)
-			return promise.then(...cb)
+
+			// // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			// const currentZone = Zone?.current
+
+			// // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			// if (currentZone) {
+			// 	// eslint-disable-next-line no-param-reassign
+			// 	if (f) f = currentZone.wrap(f, '@voltiso/ts-util/function/lazy')
+			// 	// eslint-disable-next-line no-param-reassign
+			// 	if (r) r = currentZone.wrap(r, '@voltiso/ts-util/function/lazy')
+			// }
+
+			return promise.then(f, r)
 		},
 	}
 }

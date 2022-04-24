@@ -23,6 +23,7 @@ specifiers:
   rimraf: ^3.0.2
   tsup: ^5.12.5
   typescript: ^4.6.3
+  zone.js: ^0.11.5
 
 devDependencies:
   '@types/benchmark': 2.1.1
@@ -47,6 +48,7 @@ devDependencies:
   rimraf: 3.0.2
   tsup: 5.12.5_typescript@4.6.3
   typescript: 4.6.3
+  zone.js: 0.11.5
 
 packages:
 
@@ -4348,4 +4350,10 @@ packages:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 20.2.9
+    dev: true
+
+  /zone.js/0.11.5:
+    resolution: {integrity: sha512-D1/7VxEuQ7xk6z/kAROe4SUbd9CzxY4zOwVGnGHerd/SgLIVU5f4esDzQUsOCeArn933BZfWMKydH7l7dPEp0g==}
+    dependencies:
+      tslib: 2.3.1
     dev: true
