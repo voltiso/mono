@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-type MergeDeepII<a, b> = a extends object
+type MergeDeepII<a, b> = b extends undefined
+	? a
+	: a extends object
 	? b extends object
 		? {
 				[k in keyof a | keyof b]: k extends keyof a & keyof b
@@ -38,6 +41,7 @@ function mergeDeepI(a: RSU, b: RSU) {
 	for (const k in b) {
 		if (r[k]?.constructor === Object && b[k]?.constructor === Object) r[k] = mergeDeepI(r[k] as RSU, b[k] as RSU)
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		else if (typeof a[k] !== 'undefined' && typeof b[k] === 'undefined') (r[k] as any) = a[k]
 		else (r[k] as any) = b[k]
 	}
 	return r

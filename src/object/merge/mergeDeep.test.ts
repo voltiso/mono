@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/ban-types */
@@ -27,7 +28,9 @@ describe('mergeDeep', () => {
 			IsIdentical<MergeDeep<{ a: 1; b: 1 }, { a: 2; b: 2 }>, { a: 2; b: 2 }>,
 			IsIdentical<MergeDeep<{ a: 1; b: 1 }, { a: 2; b: { ba: 2 } }>, { a: 2; b: { ba: 2 } }>,
 			IsIdentical<MergeDeep<{ a: 1; b: { bb: 1 } }, { a: 2; b: { ba: 2 } }>, { a: 2; b: { bb: 1; ba: 2 } }>,
-			IsIdentical<MergeDeep<{ a: 1; b: { bb: 1 } }, { a: 2; b: 2 }>, { a: 2; b: 2 }>
+			IsIdentical<MergeDeep<{ a: 1; b: { bb: 1 } }, { a: 2; b: 2 }>, { a: 2; b: 2 }>,
+			// skip undefined
+			IsIdentical<MergeDeep<{ a: 1 }, { a: undefined }>, { a: 1 }>
 		>()
 	})
 
@@ -36,5 +39,8 @@ describe('mergeDeep', () => {
 
 		expect(mergeDeep({ a: { a: 1 } }, { a: { b: 2 } })).toStrictEqual({ a: { a: 1, b: 2 } })
 		expect(mergeDeep({ a: { a: 1 } }, { a: 2 })).toStrictEqual({ a: 2 })
+
+		// skip undefined
+		expect(mergeDeep({ a: 1 }, { a: undefined })).toStrictEqual({ a: 1 })
 	})
 })
