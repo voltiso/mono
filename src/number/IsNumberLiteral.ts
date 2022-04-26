@@ -1,9 +1,3 @@
-export type IsNumberLiteral<X, T = true, F = false> = [X] extends [never]
-	? F
-	: X extends number
-	? number extends X
-		? F
-		: X extends object
-		? F
-		: T
-	: F
+import { IsLiteralOfType } from '../IsLiteral'
+
+export type IsNumberLiteral<X, T = true, F = false> = IsLiteralOfType<X, number, T, F>
