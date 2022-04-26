@@ -10,6 +10,7 @@
 		"string/": true,
 		"number/": true,
 		"function/": true,
+		"promise/": true,
 		"class/": true,
 		"symbol/": true,
 		"bdd/": true,

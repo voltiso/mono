@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "13.1.0",
+	"version": "14.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
@@ -38,6 +38,11 @@
 			"types": "./dist/function/index.d.ts",
 			"import": "./dist/function/index.mjs",
 			"require": "./dist/function/index.js"
+		},
+		"./promise": {
+			"types": "./dist/promise/index.d.ts",
+			"import": "./dist/promise/index.mjs",
+			"require": "./dist/promise/index.js"
 		},
 		"./class": {
 			"types": "./dist/class/index.d.ts",
@@ -85,6 +90,9 @@
 			"function": [
 				"dist/function"
 			],
+			"promise": [
+				"dist/promise"
+			],
 			"class": [
 				"dist/class"
 			],
@@ -113,6 +121,7 @@
 		"object/",
 		"string/",
 		"function/",
+		"promise/",
 		"class/",
 		"symbol/",
 		"parser/",
