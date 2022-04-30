@@ -5,6 +5,7 @@
 		"**/node_modules/": true,
 
 		"array/": true,
+		"set/": true,
 		"boolean/": true,
 		"object/": true,
 		"string/": true,

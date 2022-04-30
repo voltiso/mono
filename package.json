@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "14.4.0",
+	"version": "14.5.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
@@ -13,6 +13,11 @@
 			"types": "./dist/array/index.d.ts",
 			"import": "./dist/array/index.mjs",
 			"require": "./dist/array/index.js"
+		},
+		"./set": {
+			"types": "./dist/set/index.d.ts",
+			"import": "./dist/set/index.mjs",
+			"require": "./dist/set/index.js"
 		},
 		"./boolean": {
 			"types": "./dist/boolean/index.d.ts",
@@ -75,6 +80,9 @@
 			"array": [
 				"dist/array"
 			],
+			"set": [
+				"dist/set"
+			],
 			"boolean": [
 				"dist/boolean"
 			],
@@ -116,6 +124,7 @@
 	"files": [
 		"dist/",
 		"array/",
+		"set/",
 		"boolean/",
 		"number/",
 		"object/",
