@@ -1,12 +1,12 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable no-constructor-return */
-import { callableInstance } from './callableInstance'
+import { CallableInstance, callableInstance } from './callableInstance'
 import { staticImplements } from './staticImplements'
 
 function classCall(s: string): string
 function classCall(n: number): string
 
-function classCall(arg: string | number) {
+function classCall(this: Class_, arg: string | number) {
 	return `${arg}!`
 }
 
@@ -25,7 +25,7 @@ interface ClassConstructor<Derived extends Class_ = Class_> {
 	new (arg: number): Derived
 }
 
-type Class = Class_ & typeof classCall
+type Class = CallableInstance<Class_, typeof classCall>
 const Class = Class_ as ClassConstructor<Class>
 
 describe('callableInstance', () => {

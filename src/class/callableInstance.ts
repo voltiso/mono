@@ -12,3 +12,5 @@ export function callableInstance<This extends object, Fun extends (this: This, .
 	Object.setPrototypeOf(f, thisArg)
 	return f as any
 }
+
+export type CallableInstance<This extends object, Fun extends (this: This, ...args: never[]) => unknown> = This & Fun
