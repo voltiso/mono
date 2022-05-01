@@ -11,6 +11,7 @@ export * from './omit'
 export * from './pick'
 export * from './isConstructorOrProto'
 export * from './Nest'
+export * from './freeze'
 
 export type { Flatten as _ } from './flatten'
 export type { Flatten2 as __ } from './flatten'
