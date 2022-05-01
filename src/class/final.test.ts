@@ -6,8 +6,10 @@ import { final } from './final'
 class Base {
 	a = 0
 
-	constructor() {
+	constructor(fail = false) {
 		final(this, Base, 'f')
+
+		if (fail) final(this, Base, 'a')
 	}
 
 	f() {
@@ -15,7 +17,11 @@ class Base {
 	}
 }
 
-class Good extends Base {}
+class Good extends Base {
+	constructor(fail = false) {
+		super(fail)
+	}
+}
 
 class Bad extends Base {
 	override f() {
@@ -29,5 +35,7 @@ describe('freeze', () => {
 
 		expect(() => new Bad()).toThrow('final')
 		expect(() => new Good()).not.toThrow()
+
+		expect(() => new Good(true)).toThrow('not a method')
 	})
 })
