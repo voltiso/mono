@@ -4,6 +4,8 @@
 import { final } from './final'
 
 class Base {
+	a = 0
+
 	constructor() {
 		final(this, Base, 'f')
 	}
