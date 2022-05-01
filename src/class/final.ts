@@ -1,14 +1,14 @@
-type MethodKey<O> = string & keyof O
+type MethodKey<O> = string &
+	{
+		[k in keyof O]: O[k] extends (this: O, ...args: never[]) => unknown ? k : never
+	}[keyof O]
 
-// slow with complex generics!
-// type MethodKey<O> = string &
-// 	{
-// 		[k in keyof O]: O[k] extends (this: O, ...args: never[]) => unknown ? k : never
-// 	}[keyof O]
-
-export function final<This extends Base, Base extends object>(
-	thisArg: This,
-	Base: { prototype: Base; name: string },
+export function final<Base>(
+	thisArg: Record<MethodKey<Base>, unknown>,
+	Base: {
+		prototype: Base
+		name: string
+	},
 	...methods: MethodKey<Base>[]
 ) {
 	for (const m of methods) {

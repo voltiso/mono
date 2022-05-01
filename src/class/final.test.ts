@@ -9,6 +9,7 @@ class Base {
 	constructor(fail = false) {
 		final(this, Base, 'f')
 
+		// @ts-expect-error not a method
 		if (fail) final(this, Base, 'a')
 	}
 
