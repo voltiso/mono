@@ -16,7 +16,7 @@ export function clone(x: any) {
 			return x.map(clone)
 		} else if (typeof x.clone === 'function') {
 			return x.clone()
-		} else if (x instanceof Date) {
+		} else if (x.constructor === Date) {
 			return new Date(x)
 		} else {
 			// if (x.constructor === Object) {
