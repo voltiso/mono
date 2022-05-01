@@ -194,6 +194,16 @@ describe('Flatten', () => {
 		// Assert<X, Y>()
 	})
 
+	it('readonly', () => {
+		expect.assertions(0)
+
+		type A = Flatten<{ readonly a: 1 }>
+		Assert<IsIdentical<A, { readonly a: 1 }>>()
+
+		type B = Flatten<{ readonly a: 1 } & { readonly b: 2 }>
+		Assert<IsIdentical<B, { readonly a: 1; readonly b: 2 }>>()
+	})
+
 	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('fancy', () => {
 	// 	expect.assertions(0)

@@ -3,9 +3,30 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../IsEqual'
-import { merge, Merge, Merge2 } from './merge'
+import { merge, Merge, Merge2, MergeN } from './merge'
 
 describe('merge', () => {
+	it('works with functions', () => {
+		expect.assertions(0)
+		const f = merge(() => 1, { b: 2 } as const)
+		Assert.is<typeof f, () => 1>()
+		Assert.is<typeof f, { b: 2 }>()
+	})
+
+	it('works with call signatures', () => {
+		expect.assertions(0)
+		type X = {
+			(a: 1): 2
+			b: 99
+		}
+
+		type R = Merge<X, { b: 2 }>
+		Assert.is<R, { (a: 1): 2; b: 2 }>()
+
+		type S = Merge<{ b: 2 }, X>
+		Assert.is<S, { (a: 1): 2; b: 99 }>()
+	})
+
 	it('works', () => {
 		expect.hasAssertions()
 
@@ -25,6 +46,18 @@ describe('merge', () => {
 			IsIdentical<Merge<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { b: 2 } }>,
 			IsIdentical<Merge<{ a: 1 }, { b: 2 }, { c: 3 }>, { a: 1; b: 2; c: 3 }>
 		>()
+
+		type II = Merge2<
+			{
+				a: 1
+			},
+			{
+				a: 2
+				readonly b?: 2
+			}
+		>
+
+		Assert<IsIdentical<II, { a: 2; readonly b?: 2 }>>()
 
 		const aa = merge(
 			{
@@ -59,7 +92,7 @@ describe('merge', () => {
 		>()
 	})
 
-	it('optional (static)', () => {
+	it('Merge2 - optional (static)', () => {
 		expect.assertions(0)
 
 		type A = Merge2<{ a?: 1 }, { a?: 2 }>
@@ -72,6 +105,22 @@ describe('merge', () => {
 		Assert<IsIdentical<C, { a: 2 }>>()
 
 		type D = Merge2<{ a?: 1 }, { a: 2 }>
+		Assert<IsIdentical<D, { a: 2 }>>()
+	})
+
+	it('MergeN - optional (static)', () => {
+		expect.assertions(0)
+
+		type A = MergeN<[{ a?: 1 }, { a?: 2 }]>
+		Assert<IsIdentical<A, { a?: 1 | 2 }>>()
+
+		type B = MergeN<[{ a: 1 }, { a?: 2 }]>
+		Assert<IsIdentical<B, { a: 1 | 2 }>>()
+
+		type C = MergeN<[{ a: 1 }, { a: 2 }]>
+		Assert<IsIdentical<C, { a: 2 }>>()
+
+		type D = MergeN<[{ a?: 1 }, { a: 2 }]>
 		Assert<IsIdentical<D, { a: 2 }>>()
 	})
 })

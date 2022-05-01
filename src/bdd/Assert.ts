@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import { IsCompatible, IsEqual, IsIdentical, IsNonStrictEqual, IsRelated } from '../IsEqual'
-import { protoLink } from '../class/protoLink'
+import { protoLink } from '../class'
 
 interface Is<A, T = true, F = false> {
 	<B>(_?: B): IsIdentical<A, B, T, F>
