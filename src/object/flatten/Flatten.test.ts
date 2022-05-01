@@ -37,6 +37,9 @@ describe('Flatten', () => {
 				.identicalTo<typeof Date>()
 		)
 
+		// type B = Flatten<{ a: 1 } | { a: 1; b: 2 }>
+		// Assert<IsIdentical<B, { a: 1; b?: 2 }>>()
+
 		type Rec = Rec[] | string
 		Assert(Is<Flatten<Rec>>()<Rec>())
 

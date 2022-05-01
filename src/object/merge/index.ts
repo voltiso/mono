@@ -1,2 +1,2 @@
 export * from './merge'
-export * from './mergeDeep'
+export * from './deepMerge'
