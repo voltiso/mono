@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
+import { OptionalFromUndefined } from './object'
 import { SmartFlatten } from './object/flatten/SmartFlatten'
 
 /**
@@ -44,3 +45,13 @@ export type IsIdentical<A, B, T = true, F = false> = [IsCompatible<A, B>] extend
  * Recommended!
  */
 export type IsEqual<A, B, T = true, F = false> = IsIdentical<SmartFlatten<A>, SmartFlatten<B>, T, F>
+
+/**
+ * Same as `IsEqual`, but allows use of `undefined` and optional properties interchangeably
+ */
+export type IsNonStrictEqual<A, B, T = true, F = false> = IsEqual<
+	OptionalFromUndefined<A>,
+	OptionalFromUndefined<B>,
+	T,
+	F
+>

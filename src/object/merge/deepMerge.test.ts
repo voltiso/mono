@@ -73,4 +73,14 @@ describe('deepMerge', () => {
 		expect(deepMerge({ a: 1 }, { a: undefined })).toStrictEqual({ a: undefined })
 		expect(deepMerge({ a: undefined }, { a: undefined })).toStrictEqual({ a: undefined })
 	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('circular', () => {
+	// 	expect.assertions(0)
+
+	// 	type C = {
+	// 		c: DeepMerge2<C, { c: 1 }>
+	// 	}
+	// 	Assert<IsIdentical<C, { c: { c: 1 } }>>()
+	// })
 })

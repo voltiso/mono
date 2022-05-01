@@ -87,5 +87,25 @@ describe('isEqual', () => {
 			Is<Callable>() //
 				.identicalTo<(...args: never[]) => unknown>()
 		)
+
+		type C = {
+			c: {} & {
+				c: C
+			}
+		}
+
+		Assert(
+			Is<C>() //
+				.identicalTo<{ c: { c: C } }>()
+		)
+
+		Assert(
+			Is<{ a: 1 }>().not.nonStrictEqualTo<{ a?: 1 }>(),
+			Is<{ a: 1 }>().not.nonStrictEqualTo<{ a?: 1 | undefined }>(),
+			Is<{ a: 1 }>().not.nonStrictEqualTo<{ a: 1 | undefined }>(),
+			Is<{ a: 1 | undefined }>().nonStrictEqualTo<{ a?: 1 }>(),
+			Is<{ a: 1 | undefined }>().nonStrictEqualTo<{ a?: 1 | undefined }>()
+			//
+		)
 	})
 })
