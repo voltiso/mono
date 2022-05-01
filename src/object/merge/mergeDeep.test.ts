@@ -32,6 +32,8 @@ describe('mergeDeep', () => {
 			// skip undefined
 			IsIdentical<MergeDeep<{ a: 1 }, { a: undefined }>, { a: 1 }>
 		>()
+
+		// type A = MergeDeep2<X, { a: 1 }>
 	})
 
 	it('works', () => {

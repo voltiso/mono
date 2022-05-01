@@ -34,6 +34,9 @@ export type MergeDeep<
 	E extends [A] extends [readonly object[]] ? void : object | void = void
 > = [A] extends [readonly object[]] ? MergeDeepI<{}, A> : MergeDeepI<{}, readonly [A, B, C, D, E]>
 
+export type MergeDeep2<A extends object, B extends object> = MergeDeepI<{}, readonly [A, B]>
+export type MergeDeepN<Arr extends readonly object[]> = MergeDeepI<{}, Arr>
+
 type RSU = Record<string, Object>
 
 function mergeDeepI(a: RSU, b: RSU) {
