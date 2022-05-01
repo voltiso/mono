@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -15,14 +16,28 @@ export function clone(x: any) {
 			return x.map(clone)
 		} else if (typeof x.clone === 'function') {
 			return x.clone()
-		} else if (x.constructor === Object) {
+		} else if (x instanceof Date) {
+			return new Date(x)
+		} else {
+			// if (x.constructor === Object) {
 			const r = {} as any
-			for (const [k, v] of Object.entries(x)) {
-				r[k] = clone(v)
+			const keys = Object.getOwnPropertyNames(x)
+			for (const k of keys) {
+				r[k] = clone(x[k])
 			}
+
+			const symbolKeys = Object.getOwnPropertySymbols(x)
+			for (const k of symbolKeys) {
+				r[k] = clone(x[k])
+			}
+
+			Object.setPrototypeOf(r, Object.getPrototypeOf(x))
 			return r
-		} else if (typeof x.valueOf === 'function' && typeof x.constructor === 'function') {
-			return new x.constructor(x.valueOf())
-		} else throw new Error(`clone: unable to clone ${x}`)
+		}
+		// else
+		// else if (typeof x.valueOf === 'function' && typeof x.constructor === 'function') {
+		// 	return new x.constructor(x.valueOf())
+		// }
+		// else throw new Error(`clone: unable to clone ${x}`)
 	} else return x
 }
