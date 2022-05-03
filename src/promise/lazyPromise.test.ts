@@ -9,7 +9,7 @@
 import 'zone.js'
 import { protoLink } from '../class'
 
-import { lazy } from './lazy'
+import { lazyPromise } from './lazyPromise'
 
 function implicitPromiseConstructorName() {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -45,7 +45,7 @@ class DocRef {
 	constructor() {
 		return new Proxy(
 			protoLink(
-				lazy(() => this.get()),
+				lazyPromise(() => this.get()),
 				this
 			),
 			{
@@ -59,7 +59,7 @@ class DocRef {
 	}
 }
 
-describe('lazy', () => {
+describe('lazyPromise', () => {
 	it('does not execute until awaited', async () => {
 		expect.hasAssertions()
 		let executed = false
@@ -67,7 +67,7 @@ describe('lazy', () => {
 		async function fun() {
 			executed = true
 		}
-		const promise = lazy(fun)
+		const promise = lazyPromise(fun)
 		expect(executed).toBe(false)
 		await promise
 		expect(executed).toBe(true)
@@ -82,7 +82,7 @@ describe('lazy', () => {
 		}
 
 		// eslint-disable-next-line @typescript-eslint/require-await
-		const fun66 = lazy(() => {
+		const fun66 = lazyPromise(() => {
 			expect(Zone.current.name).toBe(`66`)
 			return fun(66)
 		})
@@ -95,7 +95,7 @@ describe('lazy', () => {
 					await fun(i)
 					await sleep(100)
 					expect(Zone.current.name).toBe(`${i}`)
-					await lazy(() => fun(i))
+					await lazyPromise(() => fun(i))
 					await sleep(100)
 					expect(Zone.current.name).toBe(`${i}`)
 					// eslint-disable-next-line jest/no-conditional-in-test

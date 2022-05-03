@@ -1,4 +1,4 @@
-export function lazy<T, ARGS extends unknown[]>(
+export function lazyPromise<T, ARGS extends unknown[]>(
 	getPromise: (...args: ARGS) => PromiseLike<T>,
 	...args: ARGS
 ): PromiseLike<T> {
