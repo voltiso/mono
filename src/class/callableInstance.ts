@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable func-style */
@@ -10,7 +13,14 @@ export function callableInstance<
 	const f = (...args: Parameters<This['_CALL']>) => {
 		return thisArg._CALL(...args)
 	}
-	Object.setPrototypeOf(f, thisArg)
+
+	// for (const p of Object.getOwnPropertyNames(thisArg)) {
+	// 	// @ts-ignore hack
+	// 	f[p] = thisArg[p]
+	// }
+
+	Object.defineProperties(f, Object.getOwnPropertyDescriptors(thisArg))
+	Object.setPrototypeOf(f, Object.getPrototypeOf(thisArg) as object)
 	return f as any
 }
 

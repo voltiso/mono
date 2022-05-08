@@ -1,13 +1,19 @@
+/* eslint-disable max-statements */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable no-constructor-return */
 import { CallableInstance, callableInstance } from './callableInstance'
 import { staticImplements } from './staticImplements'
 
+const sym = Symbol('sym')
+
 @staticImplements<ClassConstructor>()
 class Class_ {
 	constructor(arg: string | number) {
 		this._data = `${arg}?`
+		Object.defineProperty(this, 'nonEnum', {
+			enumerable: false,
+		})
 		return callableInstance(this)
 	}
 
@@ -17,6 +23,12 @@ class Class_ {
 	_CALL(arg: string | number) {
 		return `${arg}!`
 	}
+
+	nonEnum = 11
+
+	opt?: number;
+
+	[sym] = 99
 
 	_data: string | number
 }
@@ -38,5 +50,22 @@ describe('callableInstance', () => {
 
 		const x = c(123)
 		expect(x).toBe('123!')
+
+		expect(c.opt).toBeUndefined()
+
+		c.opt = 444
+		expect(c.opt).toBe(444)
+		expect({ ...c }).toStrictEqual({ [sym]: 99, _data: 'test?', opt: 444 })
+
+		expect(c.constructor).toBe(Class)
+		expect(Object.getPrototypeOf(c)).toBe(Class.prototype)
+
+		expect(c.nonEnum).toBe(11)
+
+		c.nonEnum = 22
+		expect(c.nonEnum).toBe(22)
+
+		c._data = 'aaa'
+		expect(c._data).toBe('aaa')
 	})
 })
