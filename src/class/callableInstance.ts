@@ -14,10 +14,13 @@ export function callableInstance<
 		return thisArg._CALL(...args)
 	}
 
-	// for (const p of Object.getOwnPropertyNames(thisArg)) {
-	// 	// @ts-ignore hack
-	// 	f[p] = thisArg[p]
-	// }
+	for (const name of Object.getOwnPropertyNames(f)) {
+		Reflect.deleteProperty(f, name)
+	}
+
+	for (const name of Object.getOwnPropertySymbols(f)) {
+		Reflect.deleteProperty(f, name)
+	}
 
 	Object.defineProperties(f, Object.getOwnPropertyDescriptors(thisArg))
 	Object.setPrototypeOf(f, Object.getPrototypeOf(thisArg) as object)

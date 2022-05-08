@@ -24,6 +24,10 @@ class Class_ {
 		return `${arg}!`
 	}
 
+	length() {
+		return 99
+	}
+
 	nonEnum = 11
 
 	opt?: number;
@@ -67,5 +71,7 @@ describe('callableInstance', () => {
 
 		c._data = 'aaa'
 		expect(c._data).toBe('aaa')
+
+		expect(c.length()).toBe(99)
 	})
 })
