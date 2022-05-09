@@ -80,4 +80,13 @@ describe('lazy', () => {
 		expect(x.s).toBe('abc')
 		expect(called).toBeTruthy()
 	})
+
+	it('instanceof', () => {
+		expect.hasAssertions()
+
+		class C {}
+		const c = lazy(() => new C())
+
+		expect(c).toBeInstanceOf(C)
+	})
 })
