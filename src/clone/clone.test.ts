@@ -13,6 +13,7 @@
 /* eslint-disable no-magic-numbers */
 
 import { callableInstance } from '../class'
+import { lazy } from '../lazy'
 import { clone } from './clone'
 
 class MyCloneable {
@@ -235,5 +236,35 @@ describe('clone', () => {
 		const c = clone(s)
 		expect(c).toStrictEqual(new Set([1, 2, 3]))
 		expect(c.secret).toBe(123)
+	})
+
+	it('clones lazy callable instances', () => {
+		expect.hasAssertions()
+
+		class C {
+			constructor() {
+				return callableInstance(this)
+			}
+
+			field = 3
+
+			static staticField = 33
+
+			_CALL() {
+				return 123
+			}
+		}
+
+		const c = lazy(() => new C())
+		const d = clone(c)
+
+		c.field = 4
+		C.staticField = 44
+
+		expect(c.field).toBe(4)
+		expect((c.constructor as any).staticField).toBe(44)
+
+		expect(d.field).toBe(3)
+		expect((d.constructor as any).staticField).toBe(44)
 	})
 })

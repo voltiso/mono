@@ -1,8 +1,10 @@
+/* eslint-disable max-statements */
 /* eslint-disable max-classes-per-file */
+import { lazy } from '../lazy'
 import { lazyConstructor } from './lazyConstructor'
 
 /* eslint-disable no-magic-numbers */
-class Base {
+class BaseX {
 	static staticField = 3
 
 	baseField = 0
@@ -12,7 +14,7 @@ class Base {
 	}
 }
 
-class Derived extends Base {
+class Derived extends BaseX {
 	derivedField = 8
 
 	derivedField2 = 1
@@ -29,7 +31,7 @@ class Derived extends Base {
 	}
 }
 
-class LazyDerived extends lazyConstructor(() => Base) {
+class LazyDerived extends lazyConstructor(() => BaseX) {
 	derivedField = 8
 
 	derivedField2 = 1
@@ -50,7 +52,7 @@ describe('lazyConstructor', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		expect(Base.staticField).toBe(3)
+		expect(BaseX.staticField).toBe(3)
 		expect(Derived.staticField).toBe(3)
 		expect(LazyDerived.staticField).toBe(3)
 
@@ -60,6 +62,18 @@ describe('lazyConstructor', () => {
 
 		const ld = new LazyDerived(55)
 		expect(ld.baseField).toBe(55)
+		expect(ld.derivedField).toBe(8)
+
+		expect(Object.getPrototypeOf(Object.getPrototypeOf(d))).toBe(BaseX.prototype)
+		expect(Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(ld)))).toBe(BaseX.prototype)
+	})
+
+	it('works with `lazy`', () => {
+		expect.hasAssertions()
+
+		const ld = lazy(() => new LazyDerived(66))
+
+		expect(ld.baseField).toBe(66)
 		expect(ld.derivedField).toBe(8)
 	})
 })

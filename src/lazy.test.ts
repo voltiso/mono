@@ -1,3 +1,8 @@
+/* eslint-disable no-constructor-return */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable class-methods-use-this */
+/* eslint-disable max-classes-per-file */
+/* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -89,4 +94,70 @@ describe('lazy', () => {
 
 		expect(c).toBeInstanceOf(C)
 	})
+
+	it('plain object', () => {
+		expect.hasAssertions()
+
+		const s = Symbol('b')
+
+		const a = {
+			a: 1,
+			[s]: 2,
+		}
+		const b = lazy(() => a)
+
+		expect(b.a).toBe(a.a)
+		b.a = 1111
+		expect(b.a).toBe(a.a)
+
+		expect(Object.getPrototypeOf(b)).toBe(Object.getPrototypeOf(a))
+
+		Object.setPrototypeOf(a, { base: 222 })
+		expect(Object.getPrototypeOf(b)).toBe(Object.getPrototypeOf(a))
+
+		expect(b.a).toBe(a.a)
+		expect(b[s]).toBe(a[s])
+
+		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'a'))
+		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'unknown'))
+		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'length'))
+		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'name'))
+		expect(Object.getOwnPropertyDescriptor(b, 'prototype')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'prototype')
+		)
+
+		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(Object.getOwnPropertyDescriptors(a))
+		expect(Object.getOwnPropertyNames(b)).toStrictEqual(Object.getOwnPropertyNames(a))
+		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(Object.getOwnPropertySymbols(a))
+	})
+
+	// can't make it work with constructors unfortunately...
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('constructor', () => {
+	// 	expect.hasAssertions()
+
+	// 	class C {
+	// 		constructor() {
+	// 			return callableInstance(this)
+	// 		}
+
+	// 		_CALL() {
+	// 			return 123
+	// 		}
+	// 	}
+
+	// 	const CC = lazy(() => C)
+
+	// 	function FunA() {}
+	// 	const FunB = () => {}
+	// 	FunB.prototype = FunA.prototype
+
+	// 	// @ts-ignore
+	// 	const x = new FunB()
+
+	// 	const cc = new CC()
+
+	// 	expect(cc).toBeInstanceOf(C)
+	// })
 })

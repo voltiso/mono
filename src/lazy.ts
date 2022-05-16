@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable func-style */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -5,10 +10,15 @@
 export function lazy<T extends object>(getValue: () => T): T {
 	let value: T
 
-	function obj(...args: unknown[]) {
+	/** Has to be an arrow function, since it doesn't define prototype */
+	const obj = ((...args: unknown[]) => {
 		load()
 		return (value as any)(...args) as never
-	}
+	}) as any
+
+	// delete obj.length
+	// delete obj.name
+	obj.prototype = {}
 
 	function load() {
 		if (typeof value === 'undefined') {
@@ -31,6 +41,21 @@ export function lazy<T extends object>(getValue: () => T): T {
 		getPrototypeOf(_t) {
 			load()
 			return Reflect.getPrototypeOf(value)
+		},
+
+		getOwnPropertyDescriptor(_t, p) {
+			load()
+			return Reflect.getOwnPropertyDescriptor(value, p)
+		},
+
+		ownKeys(_t) {
+			load()
+			return Reflect.ownKeys(value)
+		},
+
+		construct(_t, args, newTarget) {
+			load()
+			return Reflect.construct(value as any, args, newTarget)
 		},
 	}) as never
 }
