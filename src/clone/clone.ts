@@ -9,14 +9,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-function assign(r: any, x: any) {
-	const d = Object.getOwnPropertyDescriptors(x)
-	for (const v of Object.values(d)) {
-		if (v.get || v.set) throw new Error('cannot clone object with getters or setters')
-	}
-	Object.defineProperties(r, d)
-	Object.setPrototypeOf(r, Object.getPrototypeOf(x))
-}
+import { assign } from '../object'
 
 export function clone<X>(x: X): X
 

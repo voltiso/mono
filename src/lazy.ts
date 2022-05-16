@@ -6,6 +6,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+
+import { assign } from './object'
+
 /* eslint-disable max-params */
 export function lazy<T extends object>(getValue: () => T): T {
 	let value: T
@@ -23,7 +26,7 @@ export function lazy<T extends object>(getValue: () => T): T {
 	function load() {
 		if (typeof value === 'undefined') {
 			value = getValue()
-			Object.setPrototypeOf(obj, value)
+			assign(obj, value)
 		}
 	}
 
