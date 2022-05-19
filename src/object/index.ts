@@ -13,6 +13,7 @@ export * from './isConstructorOrProto'
 export * from './Nest'
 export * from './freeze'
 export * from './assign'
+export * from './Get'
 
 export type { Flatten as _ } from './flatten'
 export type { Flatten2 as __ } from './flatten'
