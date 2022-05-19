@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "18.3.0",
+	"version": "18.3.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
@@ -161,8 +161,8 @@
 		"@types/clone": "^2.1.1",
 		"@types/jest": "^27.5.1",
 		"@types/node": "^17.0.34",
-		"@typescript-eslint/eslint-plugin": "^5.24.0",
-		"@typescript-eslint/parser": "^5.24.0",
+		"@typescript-eslint/eslint-plugin": "^5.25.0",
+		"@typescript-eslint/parser": "^5.25.0",
 		"chalk": "4",
 		"clone": "^2.1.2",
 		"esbuild": "^0.14.39",
