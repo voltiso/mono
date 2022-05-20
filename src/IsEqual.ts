@@ -42,7 +42,7 @@ export type IsIdentical<A, B, T = true, F = false> = [IsCompatible<A, B>] extend
 /**
  * Same as IsIdentical, but less strict for intersections: {a:1} & {b:1} === {a:1; b:1}
  *
- * Recommended!
+ * Best of all, but complex
  */
 export type IsEqual<A, B, T = true, F = false> = IsIdentical<SmartFlatten<A>, SmartFlatten<B>, T, F>
 

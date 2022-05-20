@@ -14,6 +14,7 @@ export * from './Nest'
 export * from './freeze'
 export * from './assign'
 export * from './Get'
+export * from './HasIndex'
 
 export type { Flatten as _ } from './flatten'
 export type { Flatten2 as __ } from './flatten'
