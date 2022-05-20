@@ -5,6 +5,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable func-style */
 
+import { callableObject } from '../function'
+
 export function callableInstance<
 	This extends {
 		_CALL: (this: This, ...args: never[]) => unknown
@@ -14,17 +16,7 @@ export function callableInstance<
 		return thisArg._CALL(...args)
 	}
 
-	for (const name of Object.getOwnPropertyNames(f)) {
-		Reflect.deleteProperty(f, name)
-	}
-
-	for (const name of Object.getOwnPropertySymbols(f)) {
-		Reflect.deleteProperty(f, name)
-	}
-
-	Object.defineProperties(f, Object.getOwnPropertyDescriptors(thisArg))
-	Object.setPrototypeOf(f, Object.getPrototypeOf(thisArg) as object)
-	return f as any
+	return callableObject(thisArg, f) as never
 }
 
 export type CallableInstance<This extends { _CALL: (this: This, ...args: never[]) => unknown }> = This & This['_CALL']
