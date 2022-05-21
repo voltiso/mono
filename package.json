@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "19.2.2",
+	"version": "19.3.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"exports": {
