@@ -5,21 +5,19 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-type Path = readonly (string | number | symbol)[]
+import { IPath } from './Path'
 
-type Nest_<path extends Path, Acc> = path extends readonly []
+type Nest_<path, Acc> = path extends readonly []
 	? Acc
 	: path extends readonly [...infer T, infer H]
 	? H extends string | number | symbol
-		? T extends Path
-			? Nest_<T, { [k in H]: Acc }>
-			: never
+		? Nest_<T, { [k in H]: Acc }>
 		: never
 	: never
 
-type Nest<X, path extends Path> = Nest_<path, X>
+type Nest<X, path extends IPath> = Nest_<path, X>
 
-export function nest<X, path extends Path>(x: X, path: path): Nest<X, path> {
+export function nest<X, P extends IPath>(x: X, path: P): Nest<X, P> {
 	if (path.length === 0) return x as any
 
 	const r = {} as any

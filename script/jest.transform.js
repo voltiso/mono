@@ -12,7 +12,7 @@ require('esbuild-runner/register')
  * @param {string} filename
  */
 function process(src, filename) {
-	return transpile(src, filename, {
+	const code = transpile(src, filename, {
 		type: 'transform',
 		// debug: true,
 		esbuild: {
@@ -23,6 +23,7 @@ function process(src, filename) {
 			banner: '"use strict"',
 		},
 	})
+	return { code }
 }
 
 module.exports = { process }
