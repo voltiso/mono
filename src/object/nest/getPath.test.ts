@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+/* eslint-disable no-undefined */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../IsEqual'
 import { getPath, GetPath } from './getPath'
@@ -14,10 +16,35 @@ describe('getPath', () => {
 
 		type C = GetPath<{ a: { b: { c: 0 } } }, ['a', 'b', 'c']>
 		Assert<IsIdentical<C, 0>>()
+
+		type D = GetPath<{ a: { b: { c?: 0 } } }, ['a', 'b', 'c']>
+		Assert<IsIdentical<D, 0 | undefined>>()
+
+		type E = GetPath<{ a: { b?: { c: 0 } } }, ['a', 'b', 'c']>
+		Assert<IsIdentical<E, 0 | undefined>>()
+
+		type F = GetPath<undefined | { a: { b: { c: 0 } } }, ['a', 'b', 'c']>
+		Assert<IsIdentical<F, 0 | undefined>>()
+
+		type G = GetPath<{ a?: { b: { c: 0 } } }, ['a', 'b', 'c']>
+		Assert<IsIdentical<G, 0 | undefined>>()
 	})
 
 	it('works', () => {
 		expect.hasAssertions()
+
+		expect(getPath(undefined as undefined | { a: number }, ['a'])).toBeUndefined()
+
+		expect(
+			getPath(
+				{ a: {} } as
+					| undefined
+					| {
+							a?: { b?: { c?: number } }
+					  },
+				['a', 'b', 'c']
+			)
+		).toBeUndefined()
 
 		expect(getPath({ a: 0 }, [])).toStrictEqual({ a: 0 })
 		expect(getPath({ a: 0 }, ['a'])).toBe(0)
