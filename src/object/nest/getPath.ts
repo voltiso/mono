@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { get } from './get'
-import { Path } from './ObjectPath'
+import { Path } from './Path'
 
 export type GetPath_<O, P> = P extends readonly []
 	? O

@@ -1,3 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IPath } from './IPath'
 
-export type IPath = readonly (keyof any)[]
+export type Path<O> = IPath &
+	(
+		| readonly []
+		| {
+				[k in keyof O]: readonly [k, ...Path<O[k]>]
+		  }[keyof O]
+	)
