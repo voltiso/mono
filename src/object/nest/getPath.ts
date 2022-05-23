@@ -6,15 +6,31 @@ import { get } from './get'
 import { IPath } from './IPath'
 import { Path } from './Path'
 
-export type GetPath_<O, P> = O extends undefined
-	? undefined
-	: P extends readonly []
+export type GetPath_<O, P> = P extends readonly []
 	? O
-	: P extends readonly [infer H, ...infer T]
-	? H extends keyof O
-		? GetPath_<O[H], T>
+	: O extends undefined | null
+	? undefined
+	: O extends object
+	? P extends readonly [infer H, ...infer T]
+		? H extends keyof O
+			? GetPath_<O[H], T>
+			: undefined
 		: never
 	: never
+
+// export type GetPath_<O, P, acc> = P extends readonly []
+// 	? O | acc
+// 	: [O] extends [object | null | undefined]
+// 	? P extends readonly [infer H, ...infer T]
+// 		? H extends keyof Exclude<O, null | undefined>
+// 			? GetPath_<
+// 					Exclude<O, null | undefined>[H],
+// 					T,
+// 					acc | (null extends O ? undefined : never) | (undefined extends O ? undefined : never)
+// 			  >
+// 			: undefined
+// 		: never
+// 	: never
 
 export type GetPath<O extends object | undefined | null, P extends Path<O>> = GetPath_<O, P>
 
