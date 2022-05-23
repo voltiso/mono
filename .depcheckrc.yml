@@ -1,0 +1,4 @@
+ignores:
+  - assert
+  - '@jest/types'
+  - '@types/jest'
