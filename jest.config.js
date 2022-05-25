@@ -3,7 +3,7 @@ module.exports = {
 	transform: {
 		'\\.ts$': '<rootDir>/script/jest.transform.js',
 	},
-	moduleNameMapper: {
-		'firebase-admin/(.*)': ['firebase-admin/lib/$1'],
-	},
+	// moduleNameMapper: {
+	// 	'firebase-admin/(.*)': ['firebase-admin/lib/$1'],
+	// },
 }
