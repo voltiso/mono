@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
-import { Assert } from '../../bdd'
-import { IsIdentical } from '../../IsEqual'
-import { nest } from './Nest'
+import { Assert } from '../../../bdd'
+import { IsIdentical } from '../../../IsEqual'
+import { nest } from './nest'
 
 describe('Nest', () => {
 	it('works', () => {

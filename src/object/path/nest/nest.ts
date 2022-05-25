@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { IPath } from './IPath'
+import { IPath } from '../IPath'
 
 type Nest_<path, Acc> = path extends readonly []
 	? Acc
