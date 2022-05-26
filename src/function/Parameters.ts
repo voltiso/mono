@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// DOES NOT WORK with multiple same-arity overloads
+export type Parameters_<T> = T extends (...args: infer P) => unknown ? P : never
+
+// DOES NOT WORK with multiple same-arity overloads:
 
 //
 

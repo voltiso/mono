@@ -1,1 +1,1 @@
-export * from './getProperty'
+export * from './getProperty_'

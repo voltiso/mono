@@ -1,3 +1,3 @@
 export * from './GetPath'
+export * from './GetProperty'
 export * from './get'
-export type { GetProperty } from './_'

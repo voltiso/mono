@@ -47,6 +47,7 @@
 		"iife",
 		"Parens",
 		"plusplus",
+		"pnpm",
 		"prebuild",
 		"Schemable",
 		"Strs",

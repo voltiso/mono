@@ -12,7 +12,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-magic-numbers */
 
-import { callableInstance } from '../class'
+import { CALL, callableInstance } from '../class'
 import { lazy } from '../lazy'
 import { clone } from './clone'
 
@@ -205,14 +205,14 @@ describe('clone', () => {
 				return callableInstance(this)
 			}
 
-			_CALL() {
+			[CALL]() {
 				return 123
 			}
 
 			a = 1
 		}
 
-		type C = C_ & C_['_CALL']
+		type C = C_ & C_[CALL]
 		const C = C_ as new () => C
 
 		const c = new C()
@@ -246,13 +246,13 @@ describe('clone', () => {
 				return callableInstance(this)
 			}
 
+			[CALL]() {
+				return 123
+			}
+
 			field = 3
 
 			static staticField = 33
-
-			_CALL() {
-				return 123
-			}
 		}
 
 		const c = lazy(() => new C())

@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable no-constructor-return */
-import { CallableInstance, callableInstance } from './callableInstance'
+import { CALL, CallableInstance, callableInstance } from './callableInstance'
 import { staticImplements } from './staticImplements'
 
 const sym = Symbol('sym')
@@ -17,10 +17,10 @@ class Class_ {
 		return callableInstance(this)
 	}
 
-	_CALL(s: string): string
-	_CALL(n: number): string
+	[CALL](s: string): string
+	[CALL](n: number): string
 
-	_CALL(arg: string | number) {
+	[CALL](arg: string | number) {
 		return `${arg}!`
 	}
 
