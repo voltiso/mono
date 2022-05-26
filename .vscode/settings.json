@@ -48,6 +48,7 @@
 		"Parens",
 		"plusplus",
 		"prebuild",
+		"Schemable",
 		"Strs",
 		"tsup",
 		"voltiso"
