@@ -1,2 +1,2 @@
 export * from './Value'
-export * from './values'
+export * from './getValues'

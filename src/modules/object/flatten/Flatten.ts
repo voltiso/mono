@@ -15,3 +15,6 @@ export type Flatten2<T> = T extends abstract new (...args: never[]) => unknown
 	: T extends object
 	? { [k in keyof T]: Flatten<T[k]> }
 	: T
+
+export type _<T> = Flatten<T>
+export type __<T> = Flatten2<T>
