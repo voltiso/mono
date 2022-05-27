@@ -18,7 +18,10 @@ function append(str: string, x: string): string {
 	else return `${str.slice(0, -2)}, ${x} }`
 }
 
-export function stringFromObject_(obj: Record<keyof any, unknown>, params: ToStringParams) {
+export function stringFromObject_(
+	obj: Record<keyof any, unknown>,
+	params: ToStringParams
+) {
 	const entries = getEntries(obj)
 	if (entries.length === 0) return '{}'
 
@@ -31,7 +34,8 @@ export function stringFromObject_(obj: Record<keyof any, unknown>, params: ToStr
 		const propertyStr = stringFromProperty(property)
 
 		const cand = append(result, `${propertyStr}: ${toString(value)}`)
-		const shortCand = result === baseObjStr ? shortResult : append(result, '...')
+		const shortCand =
+			result === baseObjStr ? shortResult : append(result, '...')
 
 		if (cand.length > params.maxLength) {
 			if (shortCand.length > params.maxLength) return shortResult
@@ -48,7 +52,10 @@ export function stringFromObject_(obj: Record<keyof any, unknown>, params: ToStr
 	else return `${name} ${result}`
 }
 
-export function stringFromObject(f: Record<keyof any, unknown>, params?: Partial<ToStringParams> | undefined) {
+export function stringFromObject(
+	f: Record<keyof any, unknown>,
+	params?: Partial<ToStringParams> | undefined
+) {
 	const p = merge(defaultToStringParams, params)
 	return stringFromObject_(f, p)
 }

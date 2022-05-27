@@ -64,8 +64,12 @@ describe('lazyConstructor', () => {
 		expect(ld.baseField).toBe(55)
 		expect(ld.derivedField).toBe(8)
 
-		expect(Object.getPrototypeOf(Object.getPrototypeOf(d))).toBe(BaseX.prototype)
-		expect(Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(ld)))).toBe(BaseX.prototype)
+		expect(Object.getPrototypeOf(Object.getPrototypeOf(d))).toBe(
+			BaseX.prototype
+		)
+		expect(
+			Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(ld)))
+		).toBe(BaseX.prototype)
 
 		expect(ld instanceof BaseX).toBeTruthy()
 		expect(ld instanceof LazyDerived).toBeTruthy()

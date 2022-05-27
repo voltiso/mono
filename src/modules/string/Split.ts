@@ -1,4 +1,8 @@
-type Split_<T, Separator extends string, acc extends readonly unknown[]> = T extends `${infer A}${Separator}${infer B}`
+type Split_<
+	T,
+	Separator extends string,
+	acc extends readonly unknown[]
+> = T extends `${infer A}${Separator}${infer B}`
 	? Split_<B, Separator, readonly [...acc, A]>
 	: T extends ''
 	? acc
@@ -11,4 +15,8 @@ type Split_<T, Separator extends string, acc extends readonly unknown[]> = T ext
 	: never
 // : readonly [...acc, T]
 
-export type Split<str extends string, separator extends string = ''> = Split_<str, separator, readonly []>
+export type Split<str extends string, separator extends string = ''> = Split_<
+	str,
+	separator,
+	readonly []
+>

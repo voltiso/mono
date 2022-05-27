@@ -78,9 +78,15 @@ describe('isEqual', () => {
 		)
 
 		Assert(
-			Is<(a: string) => number>().compatibleWith<(this: bigint, a: string) => number>(), // hmm
-			Is<(a: string) => number>().not.identicalTo<(this: bigint, a: string) => number>(),
-			Is<(a: string) => number>().not.equalTo<(this: bigint, a: string) => number>()
+			Is<(a: string) => number>().compatibleWith<
+				(this: bigint, a: string) => number
+			>(), // hmm
+			Is<(a: string) => number>().not.identicalTo<
+				(this: bigint, a: string) => number
+			>(),
+			Is<(a: string) => number>().not.equalTo<
+				(this: bigint, a: string) => number
+			>()
 		)
 
 		Assert(

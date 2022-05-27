@@ -7,10 +7,15 @@ import { toString } from '../string'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type MethodKey<O> = string &
 	{
-		[k in keyof O]: O[k] extends (this: O, ...args: never[]) => unknown ? k : never
+		[k in keyof O]: O[k] extends (this: O, ...args: never[]) => unknown
+			? k
+			: never
 	}[keyof O]
 
-export function final<Base extends object, Keys extends (keyof Base | UnknownProperty)[]>(
+export function final<
+	Base extends object,
+	Keys extends (keyof Base | UnknownProperty)[]
+>(
 	thisArg: Record<MethodKey<Base>, unknown>,
 	Base: {
 		prototype: Base
@@ -19,7 +24,10 @@ export function final<Base extends object, Keys extends (keyof Base | UnknownPro
 	...keys: Keys
 ): void {
 	for (const m of keys) {
-		if (!hasProperty(Base.prototype, m) || typeof Base.prototype[m] !== 'function') {
+		if (
+			!hasProperty(Base.prototype, m) ||
+			typeof Base.prototype[m] !== 'function'
+		) {
 			throw new TsUtilError(`${toString(m)} is not a method in ${Base.name}`)
 		}
 

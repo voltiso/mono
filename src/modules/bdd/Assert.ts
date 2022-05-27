@@ -3,7 +3,13 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { IsCompatible, IsEqual, IsIdentical, IsNonStrictEqual, IsRelated } from '../../IsEqual'
+import {
+	IsCompatible,
+	IsEqual,
+	IsIdentical,
+	IsNonStrictEqual,
+	IsRelated,
+} from '../../IsEqual'
 import { protoLink } from '../class'
 
 interface Is<A, T = true, F = false> {

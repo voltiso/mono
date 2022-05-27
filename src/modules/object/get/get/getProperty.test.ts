@@ -11,7 +11,9 @@ describe('getProperty', () => {
 		expect.hasAssertions()
 
 		expect(getProperty({ a: 0 }, 'a')).toBe(0)
-		expect(() => getProperty({} as { a?: number }, 'a')).toThrow(`property not found @ getProperty({}, 'a')`)
+		expect(() => getProperty({} as { a?: number }, 'a')).toThrow(
+			`property not found @ getProperty({}, 'a')`
+		)
 
 		expect(() => getProperty({ a: 1 }, '__proto__')).toThrow('pollution')
 

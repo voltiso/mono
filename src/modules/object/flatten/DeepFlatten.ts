@@ -5,7 +5,12 @@ import { Callable, Newable } from '../../function'
 type DeepFlattenValue<T, k extends keyof T> = IsOptional<
 	T,
 	k,
-	CanBeUndefined<T, k, DeepFlatten<T[k]>, Exclude<DeepFlatten<T[k]>, undefined>>,
+	CanBeUndefined<
+		T,
+		k,
+		DeepFlatten<T[k]>,
+		Exclude<DeepFlatten<T[k]>, undefined>
+	>,
 	DeepFlatten<T[k]>
 >
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

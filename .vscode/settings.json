@@ -3,6 +3,7 @@
 	"files.eol": "\n",
 	"files.exclude": {
 		"**/node_modules/": true,
+		"dist/": true,
 
 		"array/": true,
 		"bdd/": true,
@@ -19,9 +20,7 @@
 		"promise/": true,
 		"set/": true,
 		"string/": true,
-		"symbol/": true,
-
-		// "dist/": true
+		"symbol/": true
 	},
 
 	// "explorer.experimental.fileNesting.enabled": true,

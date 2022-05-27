@@ -1,4 +1,8 @@
-type _Reverse<Arr, AccL extends unknown[], AccR extends unknown[]> = Arr extends []
+type _Reverse<
+	Arr,
+	AccL extends unknown[],
+	AccR extends unknown[]
+> = Arr extends []
 	? [...AccL, ...AccR]
 	: Arr extends [infer h, ...infer t]
 	? _Reverse<t, AccL, [h, ...AccR]>

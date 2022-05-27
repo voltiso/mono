@@ -187,8 +187,12 @@ describe('clone', () => {
 		c[sym] = 888
 
 		expect(Object.getPrototypeOf(cc)).toBe(Object.getPrototypeOf(c))
-		expect(Object.getOwnPropertyNames(cc)).toStrictEqual(Object.getOwnPropertyNames(c))
-		expect(Object.getOwnPropertySymbols(cc)).toStrictEqual(Object.getOwnPropertySymbols(c))
+		expect(Object.getOwnPropertyNames(cc)).toStrictEqual(
+			Object.getOwnPropertyNames(c)
+		)
+		expect(Object.getOwnPropertySymbols(cc)).toStrictEqual(
+			Object.getOwnPropertySymbols(c)
+		)
 		expect(c._a).toBe(234)
 		expect(cc._a).toBe(123)
 		expect(c[sym]).toBe(888)

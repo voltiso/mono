@@ -31,7 +31,10 @@ class _Cls {
 
 	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol) {
 		class Cls extends this {
-			static override readonly _staticData: (number | bigint | symbol)[] = [...super._staticData, arg]
+			static override readonly _staticData: (number | bigint | symbol)[] = [
+				...super._staticData,
+				arg,
+			]
 		}
 		return callableClass(Cls, Fun)
 	}
@@ -45,7 +48,10 @@ function Fun(s: symbol): typeof _Cls
 function Fun(b: bigint): typeof _Cls
 function Fun(b: string): string
 
-function Fun(this: typeof _Cls, arg: bigint | symbol | string): typeof _Cls | string {
+function Fun(
+	this: typeof _Cls,
+	arg: bigint | symbol | string
+): typeof _Cls | string {
 	if (typeof arg === 'string') return arg
 	else return this.addStaticData(arg)
 }

@@ -6,10 +6,16 @@
  * @param key keyof obj
  * @returns
  */
-export function isPolluting(obj: object, p: keyof any): p is 'constructor' | '__proto__' {
-	return (p === 'constructor' && typeof obj[p] === 'function') || p === '__proto__'
+export function isPolluting(
+	obj: object,
+	p: keyof any
+): p is 'constructor' | '__proto__' {
+	return (
+		(p === 'constructor' && typeof obj[p] === 'function') || p === '__proto__'
+	)
 }
 
 export function assertNotPolluting(obj: object, p: keyof any) {
-	if (isPolluting(obj, p)) throw new Error(`Prototype pollution ${obj.toString()}.${p}`)
+	if (isPolluting(obj, p))
+		throw new Error(`Prototype pollution ${obj.toString()}.${p}`)
 }

@@ -5,7 +5,10 @@
  * @param f function - will be modified
  * @returns modified `f`
  */
-export function callableObject<Obj extends object, Fun extends (...args: any) => unknown>(obj: Obj, f: Fun): Obj & Fun {
+export function callableObject<
+	Obj extends object,
+	Fun extends (...args: any) => unknown
+>(obj: Obj, f: Fun): Obj & Fun {
 	for (const name of Object.getOwnPropertyNames(f)) {
 		Reflect.deleteProperty(f, name)
 	}

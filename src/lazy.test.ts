@@ -71,10 +71,18 @@ describe('lazy', () => {
 		Object.setPrototypeOf(a, { base: 222 })
 		expect(Object.getPrototypeOf(b)).toBe(Object.getPrototypeOf(a))
 
-		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'a'))
-		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'unknown'))
-		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'length'))
-		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'name'))
+		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'a')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'unknown')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'length')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'name')
+		)
 		expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toStrictEqual(
 			Object.getOwnPropertyDescriptor(a, 'arguments')
 		)
@@ -82,9 +90,15 @@ describe('lazy', () => {
 			Object.getOwnPropertyDescriptor(a, 'prototype')
 		)
 
-		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(Object.getOwnPropertyDescriptors(a))
-		expect(Object.getOwnPropertyNames(b)).toStrictEqual(Object.getOwnPropertyNames(a))
-		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(Object.getOwnPropertySymbols(a))
+		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(
+			Object.getOwnPropertyDescriptors(a)
+		)
+		expect(Object.getOwnPropertyNames(b)).toStrictEqual(
+			Object.getOwnPropertyNames(a)
+		)
+		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(
+			Object.getOwnPropertySymbols(a)
+		)
 	})
 
 	it('call (non-arrow)', () => {
@@ -115,10 +129,18 @@ describe('lazy', () => {
 		Object.setPrototypeOf(a, { base: 222 })
 		expect(Object.getPrototypeOf(b)).toBe(Object.getPrototypeOf(a))
 
-		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'a'))
-		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'unknown'))
-		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'length'))
-		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'name'))
+		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'a')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'unknown')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'length')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'name')
+		)
 		expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toStrictEqual(
 			Object.getOwnPropertyDescriptor(a, 'arguments')
 		)
@@ -126,9 +148,15 @@ describe('lazy', () => {
 			Object.getOwnPropertyDescriptor(a, 'prototype')
 		)
 
-		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(Object.getOwnPropertyDescriptors(a))
-		expect(Object.getOwnPropertyNames(b)).toStrictEqual(Object.getOwnPropertyNames(a))
-		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(Object.getOwnPropertySymbols(a))
+		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(
+			Object.getOwnPropertyDescriptors(a)
+		)
+		expect(Object.getOwnPropertyNames(b)).toStrictEqual(
+			Object.getOwnPropertyNames(a)
+		)
+		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(
+			Object.getOwnPropertySymbols(a)
+		)
 	})
 
 	it('get (callable)', () => {
@@ -184,17 +212,31 @@ describe('lazy', () => {
 		expect(b.a).toBe(a.a)
 		expect(b[s]).toBe(a[s])
 
-		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'a'))
-		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'unknown'))
-		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'length'))
-		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(Object.getOwnPropertyDescriptor(a, 'name'))
+		expect(Object.getOwnPropertyDescriptor(b, 'a')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'a')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'unknown')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'unknown')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'length')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'length')
+		)
+		expect(Object.getOwnPropertyDescriptor(b, 'name')).toStrictEqual(
+			Object.getOwnPropertyDescriptor(a, 'name')
+		)
 		expect(Object.getOwnPropertyDescriptor(b, 'prototype')).toStrictEqual(
 			Object.getOwnPropertyDescriptor(a, 'prototype')
 		)
 
-		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(Object.getOwnPropertyDescriptors(a))
-		expect(Object.getOwnPropertyNames(b)).toStrictEqual(Object.getOwnPropertyNames(a))
-		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(Object.getOwnPropertySymbols(a))
+		expect(Object.getOwnPropertyDescriptors(b)).toStrictEqual(
+			Object.getOwnPropertyDescriptors(a)
+		)
+		expect(Object.getOwnPropertyNames(b)).toStrictEqual(
+			Object.getOwnPropertyNames(a)
+		)
+		expect(Object.getOwnPropertySymbols(b)).toStrictEqual(
+			Object.getOwnPropertySymbols(a)
+		)
 	})
 
 	// can't make it work with constructors unfortunately...

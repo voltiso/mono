@@ -36,7 +36,11 @@ describe('interface', () => {
 				return x + this.caa() // x + 11
 			}
 
-			_PROXY_OBJECT: { testProxy: number; otherProxyVal?: string; toDelete?: number } = {
+			_PROXY_OBJECT: {
+				testProxy: number
+				otherProxyVal?: string
+				toDelete?: number
+			} = {
 				testProxy: 123,
 				toDelete: 666,
 			}

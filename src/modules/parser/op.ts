@@ -10,7 +10,17 @@ declare const _def: unique symbol
 export type def = typeof _def
 export type Def<x, d> = x extends def ? d : x
 
-export interface Op<A = def, B = def, C = def, D = def, _E = def, _F = def, _G = def, _H = def, _I = def> {
+export interface Op<
+	A = def,
+	B = def,
+	C = def,
+	D = def,
+	_E = def,
+	_F = def,
+	_G = def,
+	_H = def,
+	_I = def
+> {
 	'!': IsFalsy<A, Def<B, true>, Def<C, false>>
 	'&': And<A, B, Def<C, true>, Def<D, false>>
 	'|': Or<A, B, Def<C, true>, Def<D, false>>
@@ -29,7 +39,19 @@ export interface Op<A = def, B = def, C = def, D = def, _E = def, _F = def, _G =
 export type IsString<A, T = true, F = false> = A extends string ? T : F
 export type IsSuperString<A, T = true, F = false> = string extends A ? T : F
 
-export type OpPacked<args extends unknown[]> = [...args, def, def, def, def, def, def, def, def, def, def] extends [
+export type OpPacked<args extends unknown[]> = [
+	...args,
+	def,
+	def,
+	def,
+	def,
+	def,
+	def,
+	def,
+	def,
+	def,
+	def
+] extends [
 	infer A,
 	infer B,
 	infer C,

@@ -10,9 +10,17 @@ export type Parameters_<T> = T extends (...args: infer P) => unknown ? P : never
 
 type _Parameters0<T> = T extends () => any ? [] : never
 
-type _Parameters1<T> = T extends (a: infer A) => any ? (unknown extends A ? never : [A]) : never
+type _Parameters1<T> = T extends (a: infer A) => any
+	? unknown extends A
+		? never
+		: [A]
+	: never
 
-type _Parameters2<T> = T extends (a: infer A, b: infer B) => any ? (unknown extends B ? never : [A, B]) : never
+type _Parameters2<T> = T extends (a: infer A, b: infer B) => any
+	? unknown extends B
+		? never
+		: [A, B]
+	: never
 
 type _Parameters3<T> = T extends (a: infer A, b: infer B, c: infer C) => any
 	? unknown extends C
@@ -20,7 +28,12 @@ type _Parameters3<T> = T extends (a: infer A, b: infer B, c: infer C) => any
 		: [A, B, C]
 	: never
 
-type _Parameters4<T> = T extends (a: infer A, b: infer B, c: infer C, d: infer D) => any
+type _Parameters4<T> = T extends (
+	a: infer A,
+	b: infer B,
+	c: infer C,
+	d: infer D
+) => any
 	? unknown extends D
 		? never
 		: [A, B, C, D]
@@ -39,27 +52,45 @@ export type ParametersNoUnknown<T extends (...args: any) => any> =
 
 type _ConstructorParameters0<T> = T extends abstract new () => any ? [] : never
 
-type _ConstructorParameters1<T> = T extends abstract new (a: infer A) => any ? (unknown extends A ? never : [A]) : never
+type _ConstructorParameters1<T> = T extends abstract new (a: infer A) => any
+	? unknown extends A
+		? never
+		: [A]
+	: never
 
-type _ConstructorParameters2<T> = T extends abstract new (a: infer A, b: infer B) => any
+type _ConstructorParameters2<T> = T extends abstract new (
+	a: infer A,
+	b: infer B
+) => any
 	? unknown extends B
 		? never
 		: [A, B]
 	: never
 
-type _ConstructorParameters3<T> = T extends abstract new (a: infer A, b: infer B, c: infer C) => any
+type _ConstructorParameters3<T> = T extends abstract new (
+	a: infer A,
+	b: infer B,
+	c: infer C
+) => any
 	? unknown extends C
 		? never
 		: [A, B, C]
 	: never
 
-type _ConstructorParameters4<T> = T extends abstract new (a: infer A, b: infer B, c: infer C, d: infer D) => any
+type _ConstructorParameters4<T> = T extends abstract new (
+	a: infer A,
+	b: infer B,
+	c: infer C,
+	d: infer D
+) => any
 	? unknown extends D
 		? never
 		: [A, B, C, D]
 	: never
 
-export type ConstructorParametersNoUnknown<T extends abstract new (...args: any) => any> =
+export type ConstructorParametersNoUnknown<
+	T extends abstract new (...args: any) => any
+> =
 	| _ConstructorParameters0<T>
 	| _ConstructorParameters1<T>
 	| _ConstructorParameters2<T>

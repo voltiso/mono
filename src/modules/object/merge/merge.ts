@@ -15,17 +15,24 @@ type _MergeN<objs, acc> = objs extends readonly []
 		: acc
 	: never
 
-export type MergeN<objs extends readonly (object | Nullish)[]> = _MergeN<objs, {}>
+export type MergeN<objs extends readonly (object | Nullish)[]> = _MergeN<
+	objs,
+	{}
+>
 
 type Part1<A, B> = {
 	[k in keyof A]: k extends keyof B
-		? Value<B, k> | (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
+		?
+				| Value<B, k>
+				| (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
 		: Value<A, k>
 }
 
 type Part2<A, B> = {
 	[k in keyof B]: k extends keyof A
-		? Value<B, k> | (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
+		?
+				| Value<B, k>
+				| (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
 		: Value<B, k>
 }
 
@@ -35,8 +42,14 @@ type Merge2Objects_<A, B> = (A extends Callable | Newable ? A : unknown) &
 
 type Merge2_<A, B> = Merge2Objects_<PartialIfNullish_<A>, PartialIfNullish_<B>>
 
-export type Merge2Objects<A extends object, B extends object> = Merge2Objects_<A, B>
-export type Merge2<A extends object | Nullish, B extends object | Nullish> = Merge2_<A, B>
+export type Merge2Objects<A extends object, B extends object> = Merge2Objects_<
+	A,
+	B
+>
+export type Merge2<
+	A extends object | Nullish,
+	B extends object | Nullish
+> = Merge2_<A, B>
 
 export type Merge<
 	A extends readonly object[] | object,
@@ -44,9 +57,13 @@ export type Merge<
 	C extends [A] extends [readonly object[]] ? void : object | void = void,
 	D extends [A] extends [readonly object[]] ? void : object | void = void,
 	E extends [A] extends [readonly object[]] ? void : object | void = void
-> = [A] extends [readonly object[]] ? MergeN<A> : _MergeN<readonly [A, B, C, D, E], {}>
+> = [A] extends [readonly object[]]
+	? MergeN<A>
+	: _MergeN<readonly [A, B, C, D, E], {}>
 
-export function merge<Objs extends readonly (object | Nullish)[]>(...objs: Objs): MergeN<Objs> {
+export function merge<Objs extends readonly (object | Nullish)[]>(
+	...objs: Objs
+): MergeN<Objs> {
 	let r = {}
 	for (const obj of objs) {
 		r = { ...r, ...obj }

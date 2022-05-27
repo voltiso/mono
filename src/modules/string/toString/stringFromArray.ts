@@ -21,7 +21,8 @@ export function stringFromArray_(arr: unknown[], params: ToStringParams) {
 
 	for (const v of arr) {
 		const cand = append(result, toString(v))
-		const shortCand = result === baseResult ? shortResult : append(result, '... ')
+		const shortCand =
+			result === baseResult ? shortResult : append(result, '... ')
 
 		if (cand.length > params.maxLength) {
 			if (shortCand.length > params.maxLength) return shortResult
@@ -35,7 +36,10 @@ export function stringFromArray_(arr: unknown[], params: ToStringParams) {
 	return result
 }
 
-export function stringFromArray(arr: unknown[], params?: Partial<ToStringParams> | undefined) {
+export function stringFromArray(
+	arr: unknown[],
+	params?: Partial<ToStringParams> | undefined
+) {
 	const p = merge(defaultToStringParams, params)
 	return stringFromArray_(arr, p)
 }

@@ -26,7 +26,14 @@ describe('object/entries', () => {
 		)
 	})
 
-	type InferableLiteral = number | string | symbol | bigint | boolean | null | undefined
+	type InferableLiteral =
+		| number
+		| string
+		| symbol
+		| bigint
+		| boolean
+		| null
+		| undefined
 
 	type InferableMutableTuple = RootSchemable[]
 	type InferableReadonlyTuple = readonly RootSchemable[]

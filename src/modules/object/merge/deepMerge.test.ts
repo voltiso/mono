@@ -20,15 +20,27 @@ describe('deepMerge', () => {
 		Assert<IsIdentical<DeepMerge2<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>>()
 		Assert<IsIdentical<DeepMerge2<{ a: 1; b: 3 }, { b: 2 }>, { a: 1; b: 2 }>>()
 
-		Assert<IsIdentical<DeepMerge2<{ a: 1; b: 3 }, { b?: 2 }>, { a: 1; b: 2 | 3 }>>()
+		Assert<
+			IsIdentical<DeepMerge2<{ a: 1; b: 3 }, { b?: 2 }>, { a: 1; b: 2 | 3 }>
+		>()
 
 		type C = DeepMerge2<{ a: 1; b?: 3 }, { b?: 2 }>
 		Assert<IsIdentical<C, { a: 1; b?: 2 | 3 }>>()
 
 		Assert<IsIdentical<DeepMerge2<{ a: 1; b?: 3 }, { b: 2 }>, { a: 1; b: 2 }>>()
 
-		Assert<IsIdentical<DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b: 2 }>, { a: 1; b: 2 }>>()
-		Assert<IsIdentical<DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b: { ba: 2 } }>, { a: 1; b: { ba: 2; bb: 2 } }>>()
+		Assert<
+			IsIdentical<
+				DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b: 2 }>,
+				{ a: 1; b: 2 }
+			>
+		>()
+		Assert<
+			IsIdentical<
+				DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b: { ba: 2 } }>,
+				{ a: 1; b: { ba: 2; bb: 2 } }
+			>
+		>()
 
 		type B = DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b?: { ba: 2 } }>
 		Assert<IsIdentical<B, { a: 1; b: { ba: 1 | 2; bb: 2 } }>>()
@@ -45,17 +57,38 @@ describe('deepMerge', () => {
 			IsIdentical<DeepMerge<[{ a: 1 }]>, { a: 1 }>,
 			IsIdentical<DeepMerge<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>,
 			IsIdentical<DeepMerge<[{ a: 1 }, { a: 2 }]>, { a: 2 }>,
-			IsIdentical<DeepMerge<[{ a: { a: 1 } }, { a: { b: 2 } }]>, { a: { a: 1; b: 2 } }>,
-			IsIdentical<DeepMerge<[{ a: 1 }, { b: 2 }, { c: 3 }]>, { a: 1; b: 2; c: 3 }>,
+			IsIdentical<
+				DeepMerge<[{ a: { a: 1 } }, { a: { b: 2 } }]>,
+				{ a: { a: 1; b: 2 } }
+			>,
+			IsIdentical<
+				DeepMerge<[{ a: 1 }, { b: 2 }, { c: 3 }]>,
+				{ a: 1; b: 2; c: 3 }
+			>,
 			IsIdentical<DeepMerge<{ a: 1 }>, { a: 1 }>,
 			IsIdentical<DeepMerge<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>,
 			IsIdentical<DeepMerge<{ a: 1 }, { a: 2 }>, { a: 2 }>,
-			IsIdentical<DeepMerge<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { a: 1; b: 2 } }>,
-			IsIdentical<DeepMerge<{ a: 1 }, { b: 2 }, { c: 3 }>, { a: 1; b: 2; c: 3 }>,
+			IsIdentical<
+				DeepMerge<{ a: { a: 1 } }, { a: { b: 2 } }>,
+				{ a: { a: 1; b: 2 } }
+			>,
+			IsIdentical<
+				DeepMerge<{ a: 1 }, { b: 2 }, { c: 3 }>,
+				{ a: 1; b: 2; c: 3 }
+			>,
 			IsIdentical<DeepMerge<{ a: 1; b: 1 }, { a: 2; b: 2 }>, { a: 2; b: 2 }>,
-			IsIdentical<DeepMerge<{ a: 1; b: 1 }, { a: 2; b: { ba: 2 } }>, { a: 2; b: { ba: 2 } }>,
-			IsIdentical<DeepMerge<{ a: 1; b: { bb: 1 } }, { a: 2; b: { ba: 2 } }>, { a: 2; b: { bb: 1; ba: 2 } }>,
-			IsIdentical<DeepMerge<{ a: 1; b: { bb: 1 } }, { a: 2; b: 2 }>, { a: 2; b: 2 }>,
+			IsIdentical<
+				DeepMerge<{ a: 1; b: 1 }, { a: 2; b: { ba: 2 } }>,
+				{ a: 2; b: { ba: 2 } }
+			>,
+			IsIdentical<
+				DeepMerge<{ a: 1; b: { bb: 1 } }, { a: 2; b: { ba: 2 } }>,
+				{ a: 2; b: { bb: 1; ba: 2 } }
+			>,
+			IsIdentical<
+				DeepMerge<{ a: 1; b: { bb: 1 } }, { a: 2; b: 2 }>,
+				{ a: 2; b: 2 }
+			>,
 			IsIdentical<DeepMerge<{ a: 1 }, { a: undefined }>, { a: undefined }>
 		>()
 	})
@@ -63,15 +96,21 @@ describe('deepMerge', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		expect(deepMerge({ a: { a: 1 } }, { a: { b: 2 } })).toStrictEqual({ a: { a: 1, b: 2 } })
+		expect(deepMerge({ a: { a: 1 } }, { a: { b: 2 } })).toStrictEqual({
+			a: { a: 1, b: 2 },
+		})
 		expect(deepMerge({ a: { a: 1 } }, { a: 2 })).toStrictEqual({ a: 2 })
 	})
 
 	it('does not skip undefined', () => {
 		expect.hasAssertions()
 
-		expect(deepMerge({ a: 1 }, { a: undefined })).toStrictEqual({ a: undefined })
-		expect(deepMerge({ a: undefined }, { a: undefined })).toStrictEqual({ a: undefined })
+		expect(deepMerge({ a: 1 }, { a: undefined })).toStrictEqual({
+			a: undefined,
+		})
+		expect(deepMerge({ a: undefined }, { a: undefined })).toStrictEqual({
+			a: undefined,
+		})
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests

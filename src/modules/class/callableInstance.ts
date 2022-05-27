@@ -27,7 +27,9 @@ type WithCall = {
  *
  * console.log(foo(3)) // 6
  */
-export function callableInstance<This extends WithCall>(thisArg: This): CallableInstance<This> {
+export function callableInstance<This extends WithCall>(
+	thisArg: This
+): CallableInstance<This> {
 	// eslint-disable-next-line func-style
 	const f = (...args: Parameters_<This[CALL]>) => {
 		return thisArg[CALL](...args)

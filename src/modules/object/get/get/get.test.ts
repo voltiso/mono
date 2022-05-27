@@ -80,10 +80,12 @@ describe('get', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		expect(() => get({} as { a?: number }, 'a')).toThrow(`property not found @ get({}, ['a'])`)
-		expect(() => get({ a: { b: 123 } } as { a?: { b: 123 | { c: 123 } } }, 'a', 'b', 'c')).toThrow(
-			`property not found @ get({ a: { b: 123 } }, ['a', 'b', 'c'])`
+		expect(() => get({} as { a?: number }, 'a')).toThrow(
+			`property not found @ get({}, ['a'])`
 		)
+		expect(() =>
+			get({ a: { b: 123 } } as { a?: { b: 123 | { c: 123 } } }, 'a', 'b', 'c')
+		).toThrow(`property not found @ get({ a: { b: 123 } }, ['a', 'b', 'c'])`)
 
 		expect(get({ a: 0 })).toStrictEqual({ a: 0 })
 		expect(get({ a: 0 }, 'a')).toBe(0)

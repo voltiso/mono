@@ -1,6 +1,10 @@
 type _PickCall0<T> = T extends () => infer R ? () => R : never
 
-type _PickCall1<T> = T extends (a: infer A) => infer R ? (unknown extends A ? never : (a: A) => R) : never
+type _PickCall1<T> = T extends (a: infer A) => infer R
+	? unknown extends A
+		? never
+		: (a: A) => R
+	: never
 
 type _PickCall2<T> = T extends (a: infer A, b: infer B) => infer R
 	? unknown extends B
@@ -14,7 +18,12 @@ type _PickCall3<T> = T extends (a: infer A, b: infer B, c: infer C) => infer R
 		: (...args: [A, B]) => R
 	: never
 
-type _PickCall4<T> = T extends (a: infer A, b: infer B, c: infer C, d: infer D) => infer R
+type _PickCall4<T> = T extends (
+	a: infer A,
+	b: infer B,
+	c: infer C,
+	d: infer D
+) => infer R
 	? unknown extends D
 		? never
 		: (...args: [A, B, C, D]) => R

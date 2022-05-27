@@ -11,7 +11,9 @@ import { Newable } from '../function'
  * // this works even if `TransactionBase` is inside a dependency cycle,
  * // and is still `undefined` at the moment when the `Transaction` class is being defined
  */
-export function lazyConstructor<Class extends Newable>(getCls: () => Class): Class {
+export function lazyConstructor<Class extends Newable>(
+	getCls: () => Class
+): Class {
 	let Cls: Class | undefined
 
 	const proxyProto = {}

@@ -7,11 +7,18 @@
 /* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/ban-types */
 
-type Constructor<Args extends unknown[] = unknown[], Inst = unknown> = new (...args: Args) => Inst
+type Constructor<Args extends unknown[] = unknown[], Inst = unknown> = new (
+	...args: Args
+) => Inst
 
 type Condition<X, C, T, F> = X extends C ? T : F
 
-type CMType<Inst> = Condition<Inst[keyof Inst], CallableFunction, keyof Inst, never>
+type CMType<Inst> = Condition<
+	Inst[keyof Inst],
+	CallableFunction,
+	keyof Inst,
+	never
+>
 type PMType<Inst> = Condition<Inst[keyof Inst], object, keyof Inst, never>
 
 export type Interface<
@@ -31,8 +38,10 @@ export function createClassInterface<
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	Class extends Constructor<any>,
 	Field extends keyof InstanceType<Class> & string,
-	CM extends CMType<InstanceType<Class>> = '_CALL' & CMType<InstanceType<Class>>,
-	PM extends PMType<InstanceType<Class>> = '_PROXY_OBJECT' & PMType<InstanceType<Class>>
+	CM extends CMType<InstanceType<Class>> = '_CALL' &
+		CMType<InstanceType<Class>>,
+	PM extends PMType<InstanceType<Class>> = '_PROXY_OBJECT' &
+		PMType<InstanceType<Class>>
 >(
 	Cls: Class,
 	fields: readonly Field[] | Field,
@@ -41,10 +50,14 @@ export function createClassInterface<
 		proxyObjectMethodName: PM | '_PROXY_OBJECT'
 	} = { callMethodName: '_CALL', proxyObjectMethodName: '_PROXY_OBJECT' }
 ) {
-	type R = Constructor<ConstructorParameters<Class>, Interface<InstanceType<Class>, Field, CM, PM>>
+	type R = Constructor<
+		ConstructorParameters<Class>,
+		Interface<InstanceType<Class>, Field, CM, PM>
+	>
 
 	function Construct(this: NewClass) {
-		const isCallable = (m: CM | '_CALL'): m is CM => Boolean((this._ as Record<any, unknown>)[m])
+		const isCallable = (m: CM | '_CALL'): m is CM =>
+			Boolean((this._ as Record<any, unknown>)[m])
 
 		let result: { _: InstanceType<Class> } = this
 
@@ -61,7 +74,8 @@ export function createClassInterface<
 			result = f
 		}
 
-		const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM => Boolean((this._ as Record<any, unknown>)[m])
+		const hasProxyObject = (m: PM | '_PROXY_OBJECT'): m is PM =>
+			Boolean((this._ as Record<any, unknown>)[m])
 
 		if (hasProxyObject(options.proxyObjectMethodName)) {
 			const m = options.proxyObjectMethodName
@@ -106,7 +120,9 @@ export function createClassInterface<
 	}
 
 	const prototype = Cls.prototype as InstanceType<Class> & {}
-	type NewInst = Pick<InstanceType<Class> & {}, Field> & { _: InstanceType<Class> }
+	type NewInst = Pick<InstanceType<Class> & {}, Field> & {
+		_: InstanceType<Class>
+	}
 	const newPrototype = NewClass.prototype as NewInst
 
 	appendInterface(newPrototype, prototype, fields, (x: { _: unknown }) => x._)
@@ -119,7 +135,11 @@ export function createInterface<
 	Field extends keyof Inst & string,
 	CM extends CMType<Inst> = '_CALL' & CMType<Inst>,
 	PM extends PMType<Inst> = '_PROXY_OBJECT' & PMType<Inst>
->(srcObj: Inst, fields: Field | readonly Field[], callMethodName: CM | '_CALL' = '_CALL') {
+>(
+	srcObj: Inst,
+	fields: Field | readonly Field[],
+	callMethodName: CM | '_CALL' = '_CALL'
+) {
 	type R = Interface<Inst, Field, CM, PM>
 
 	function isCallable(m: CM | '_CALL'): m is CM {
@@ -129,7 +149,9 @@ export function createInterface<
 	const dstObj = (
 		isCallable(callMethodName)
 			? (...args: unknown[]) => {
-					const r = (srcObj as unknown as Record<CM, CallableFunction>)[callMethodName](...args) as unknown
+					const r = (srcObj as unknown as Record<CM, CallableFunction>)[
+						callMethodName
+					](...args) as unknown
 					if (r === srcObj) return dstObj
 					else return r
 			  }
@@ -146,7 +168,10 @@ function isArray(arr: unknown): arr is unknown[] | readonly unknown[] {
 }
 
 // eslint-disable-next-line max-params
-export function appendInterface<R extends object, Field extends keyof R & string>(
+export function appendInterface<
+	R extends object,
+	Field extends keyof R & string
+>(
 	dstObj: Pick<R, Field>,
 	srcObj: R,
 	fields?: readonly Field[] | Field,
@@ -157,7 +182,8 @@ export function appendInterface<R extends object, Field extends keyof R & string
 	} else if (!isArray(fields)) fields = [fields]
 
 	for (const field of fields) {
-		if (!(field in srcObj)) throw new Error(`createInterface: ${field} not part of the source object`)
+		if (!(field in srcObj))
+			throw new Error(`createInterface: ${field} not part of the source object`)
 		// const source = srcObj[field]
 		Object.defineProperty(dstObj, field, {
 			get(this: any) {

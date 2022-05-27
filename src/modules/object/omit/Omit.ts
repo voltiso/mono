@@ -7,17 +7,20 @@ export type StrictOmit<T extends object, K extends keyof T> = {
 	[k in keyof T as k extends K ? never : k]: T[k]
 }
 
-export function omit<T extends object, K extends keyof T>(obj: T, keys: K | K[]): StrictOmit<T, K> {
+export function omit<T extends object, K extends keyof T>(
+	obj: T,
+	keys: K | K[]
+): StrictOmit<T, K> {
 	const { ...r } = obj
 	if (!Array.isArray(keys)) keys = [keys]
 	for (const key of keys) delete r[key]
 	return r as StrictOmit<T, K>
 }
 
-export function omitIfPresent<T extends object, K extends keyof T | string | number | symbol>(
-	obj: T,
-	keys: K | K[]
-): StrictOmit<T, K & keyof T> {
+export function omitIfPresent<
+	T extends object,
+	K extends keyof T | string | number | symbol
+>(obj: T, keys: K | K[]): StrictOmit<T, K & keyof T> {
 	const { ...r } = obj
 	if (!Array.isArray(keys)) keys = [keys]
 	for (const key of keys) delete r[key as unknown as keyof T]

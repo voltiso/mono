@@ -27,6 +27,11 @@ describe('DeepReplace', () => {
 		}
 		Assert<IsIdentical<D, { c: { c: C } }>>()
 
-		Assert<IsIdentical<DeepReplace2<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { a: 1; b: 2 } }>>()
+		Assert<
+			IsIdentical<
+				DeepReplace2<{ a: { a: 1 } }, { a: { b: 2 } }>,
+				{ a: { a: 1; b: 2 } }
+			>
+		>()
 	})
 })

@@ -16,7 +16,10 @@ export function stringFromFunction_(f: Function, params: ToStringParams) {
 	return r
 }
 
-export function stringFromFunction(f: Function, params?: Partial<ToStringParams> | undefined) {
+export function stringFromFunction(
+	f: Function,
+	params?: Partial<ToStringParams> | undefined
+) {
 	const p = merge(defaultToStringParams, params)
 	return stringFromFunction_(f, p)
 }

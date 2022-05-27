@@ -12,8 +12,12 @@ describe('value', () => {
 		Assert<IsIdentical<Value<{ a: number }, 'a'>, number>>()
 		Assert<IsIdentical<Value<{ a?: number }, 'a'>, number>>()
 
-		Assert<IsIdentical<Value<{ a: number | undefined }, 'a'>, number | undefined>>()
-		Assert<IsIdentical<Value<{ a?: number | undefined }, 'a'>, number | undefined>>()
+		Assert<
+			IsIdentical<Value<{ a: number | undefined }, 'a'>, number | undefined>
+		>()
+		Assert<
+			IsIdentical<Value<{ a?: number | undefined }, 'a'>, number | undefined>
+		>()
 
 		Assert<IsIdentical<Value<{ a: 1 } | { a: 2 }, 'a'>, 1 | 2>>()
 

@@ -4,7 +4,9 @@
  * Omit Construct and construct signatures
  * Does not work with overloads!
  */
-export type PickConstructNoUnknown<T extends abstract new (...args: any) => any> =
+export type PickConstructNoUnknown<
+	T extends abstract new (...args: any) => any
+> =
 	| _PickConstruct0<T>
 	| _PickConstruct1<T>
 	| _PickConstruct2<T>
@@ -42,7 +44,11 @@ type _PickConstruct2<T> = T extends new (a: infer A, b: infer B) => infer R
 		: abstract new (...args: [A]) => R
 	: never
 
-type _PickConstruct3<T> = T extends new (a: infer A, b: infer B, c: infer C) => infer R
+type _PickConstruct3<T> = T extends new (
+	a: infer A,
+	b: infer B,
+	c: infer C
+) => infer R
 	? unknown extends C
 		? never
 		: new (...args: [A, B]) => R
@@ -52,11 +58,21 @@ type _PickConstruct3<T> = T extends new (a: infer A, b: infer B, c: infer C) => 
 		: abstract new (...args: [A, B]) => R
 	: never
 
-type _PickConstruct4<T> = T extends new (a: infer A, b: infer B, c: infer C, d: infer D) => infer R
+type _PickConstruct4<T> = T extends new (
+	a: infer A,
+	b: infer B,
+	c: infer C,
+	d: infer D
+) => infer R
 	? unknown extends D
 		? never
 		: new (...args: [A, B, C, D]) => R
-	: T extends abstract new (a: infer A, b: infer B, c: infer C, d: infer D) => infer R
+	: T extends abstract new (
+			a: infer A,
+			b: infer B,
+			c: infer C,
+			d: infer D
+	  ) => infer R
 	? unknown extends D
 		? never
 		: abstract new (...args: [A, B, C, D]) => R

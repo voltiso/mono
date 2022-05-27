@@ -8,12 +8,21 @@ import { UnknownProperty } from '../../UnknownProperty'
 import { Value } from '../../value'
 import { TryGetProperty } from './tryGetProperty'
 
-export class GetPropertyError<Obj, Property extends keyof Obj | UnknownProperty> extends TsUtilError {
+export class GetPropertyError<
+	Obj,
+	Property extends keyof Obj | UnknownProperty
+> extends TsUtilError {
 	object: Obj
 	property: Property
 
-	constructor(object: Obj, property: Property, options?: ErrorOptions | undefined) {
-		const message = `property not found @ getProperty(${toString(object)}, ${toString(property)})`
+	constructor(
+		object: Obj,
+		property: Property,
+		options?: ErrorOptions | undefined
+	) {
+		const message = `property not found @ getProperty(${toString(
+			object
+		)}, ${toString(property)})`
 		super(message, options)
 		Error.captureStackTrace(this, this.constructor)
 

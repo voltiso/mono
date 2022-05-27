@@ -1,4 +1,9 @@
-export type Includes<Str extends string, Substr extends string, T = true, F = false> = string extends Str
+export type Includes<
+	Str extends string,
+	Substr extends string,
+	T = true,
+	F = false
+> = string extends Str
 	? boolean
 	: string extends Substr
 	? boolean

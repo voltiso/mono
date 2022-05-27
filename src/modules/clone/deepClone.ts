@@ -11,7 +11,8 @@ function deepAssign(r: any, x: any) {
 	const d = Object.getOwnPropertyDescriptors(x)
 	for (const v of Object.values(d)) {
 		if ('value' in v) v.value = deepClone(v.value)
-		if (v.get || v.set) throw new Error('cannot clone object with getters or setters')
+		if (v.get || v.set)
+			throw new Error('cannot clone object with getters or setters')
 	}
 	Object.defineProperties(r, d)
 	Object.setPrototypeOf(r, Object.getPrototypeOf(x))

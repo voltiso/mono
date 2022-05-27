@@ -13,7 +13,9 @@ describe('tryGetProperty', () => {
 		expect(tryGetProperty({ a: 0 }, 'a')).toBe(0)
 		expect(tryGetProperty({} as { a?: number }, 'a')).toBeUndefined()
 
-		expect(tryGetProperty(undefined as undefined | { a?: number }, 'a')).toBeUndefined()
+		expect(
+			tryGetProperty(undefined as undefined | { a?: number }, 'a')
+		).toBeUndefined()
 
 		// @ts-expect-error __proto__ does not exist
 		expect(() => tryGetProperty({ a: 1 }, '__proto__')).toThrow('pollution')

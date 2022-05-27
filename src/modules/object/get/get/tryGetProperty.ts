@@ -7,7 +7,10 @@ export type TryGetProperty<T, K> = (T & Record<keyof any, undefined>)[K]
 
 //
 
-export function tryGetProperty<O extends object, K extends keyof O>(o: O, k: K): TryGetProperty<O, K>
+export function tryGetProperty<O extends object, K extends keyof O>(
+	o: O,
+	k: K
+): TryGetProperty<O, K>
 export function tryGetProperty(o: undefined, k: unknown): undefined
 
 export function tryGetProperty<O extends object, K extends keyof O>(

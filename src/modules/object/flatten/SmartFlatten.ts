@@ -5,7 +5,12 @@ import { Callable, Newable } from '../../function'
 type SmartFlattenValue<T, k extends keyof T, e> = IsOptional<
 	T,
 	k,
-	CanBeUndefined<T, k, SmartFlattenImpl<T[k], e>, Exclude<SmartFlattenImpl<T[k], e>, undefined>>,
+	CanBeUndefined<
+		T,
+		k,
+		SmartFlattenImpl<T[k], e>,
+		Exclude<SmartFlattenImpl<T[k], e>, undefined>
+	>,
 	SmartFlattenImpl<T[k], e>
 >
 

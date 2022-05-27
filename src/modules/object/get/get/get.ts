@@ -24,7 +24,9 @@ export class GetError<Obj extends object, P extends IPath> extends TsUtilError {
 	path: P
 
 	constructor(object: Obj, path: P, options?: ErrorOptions | undefined) {
-		const message = `property not found @ get(${toString(object)}, ${toString(path)})`
+		const message = `property not found @ get(${toString(object)}, ${toString(
+			path
+		)})`
 		super(message, options)
 		Error.captureStackTrace(this, this.constructor)
 
@@ -37,14 +39,26 @@ export class GetError<Obj extends object, P extends IPath> extends TsUtilError {
 
 //
 
-export function get<O extends object, K extends keyof O>(o: O, k: K): GetProperty<O, K>
+export function get<O extends object, K extends keyof O>(
+	o: O,
+	k: K
+): GetProperty<O, K>
 
-export function get<O extends object, P extends Path<O>>(o: O, ...path: P): Get<O, P>
-export function get<O extends object, P extends Path<O>>(o: O, path: P): Get<O, P>
+export function get<O extends object, P extends Path<O>>(
+	o: O,
+	...path: P
+): Get<O, P>
+export function get<O extends object, P extends Path<O>>(
+	o: O,
+	path: P
+): Get<O, P>
 
 //
 
-export function get<O extends object, P extends Path<O>>(object: O, ...x: P | [P]): Get<O, P> {
+export function get<O extends object, P extends Path<O>>(
+	object: O,
+	...x: P | [P]
+): Get<O, P> {
 	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as (keyof any)[]
 	let r = object
 	try {

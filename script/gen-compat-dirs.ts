@@ -47,8 +47,8 @@ async function main() {
 			// eslint-disable-next-line no-await-in-loop
 			await fs.writeFile(
 				path.join(name, 'package.json'),
-				JSON.stringify(data, null, '\t'),
-				{ flag: 'wx' }
+				`${JSON.stringify(data, null, '\t')}\n`,
+				{ flag: 'w' }
 			)
 		} catch {}
 	}
