@@ -9,5 +9,5 @@
 	},
 
 	"include": ["**/*.*"],
-	"exclude": ["dist/**/*", "node_modules/**/*", "**/compiler-options/**/*"]
+	"exclude": ["dist/**/*", "node_modules/**/*", "**/modules/compiler-options/**/*"]
 }

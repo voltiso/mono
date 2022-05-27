@@ -5,20 +5,23 @@
 		"**/node_modules/": true,
 
 		"array/": true,
-		"set/": true,
-		"boolean/": true,
-		"object/": true,
-		"string/": true,
-		"number/": true,
-		"function/": true,
-		"promise/": true,
-		"class/": true,
-		"symbol/": true,
 		"bdd/": true,
+		"boolean/": true,
+		"class/": true,
+		"clone/": true,
 		"compiler-options/": true,
+		"error/": true,
+		"function/": true,
+		"null/": true,
+		"number/": true,
+		"object/": true,
 		"parser/": true,
+		"promise/": true,
+		"set/": true,
+		"string/": true,
+		"symbol/": true,
 
-		"dist/": true
+		// "dist/": true
 	},
 
 	// "explorer.experimental.fileNesting.enabled": true,
@@ -30,7 +33,11 @@
 	"jest.jestCommandLine": "node_modules/.bin/jest",
 	// "jest.autoRun": "off",
 	// "jest.autoRun": { "watch": true },
-	"jest.autoRun": { "watch": false, "onSave": "test-src-file", "onStartup": ["all-tests"] },
+	"jest.autoRun": {
+		"watch": false,
+		"onSave": "test-src-file",
+		"onStartup": ["all-tests"]
+	},
 	"jest.enableCodeLens": false, // code lines jump because of this
 
 	"typescript.tsdk": "node_modules/typescript/lib",
@@ -41,6 +48,7 @@
 	},
 
 	"cSpell.words": [
+		"cand",
 		"Cloneable",
 		"compat",
 		"esbuild",
@@ -51,6 +59,7 @@
 		"prebuild",
 		"Schemable",
 		"Strs",
+		"treeshake",
 		"tsup",
 		"voltiso"
 	]

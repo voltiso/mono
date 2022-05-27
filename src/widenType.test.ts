@@ -1,4 +1,4 @@
-import { Assert } from './bdd'
+import { Assert } from './modules/bdd'
 import { IsIdentical } from './IsEqual'
 import { widen } from './widenType'
 

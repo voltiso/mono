@@ -19,9 +19,9 @@ async function main() {
 		} catch {}
 
 		const data = {
-			types: `../dist/${name}/index.d.ts`,
-			module: `../dist/${name}/index.mjs`,
-			main: `../dist/${name}/index.js`,
+			types: `../dist/modules/${name}/index.d.ts`,
+			module: `../dist/modules/${name}/index.mjs`,
+			main: `../dist/modules/${name}/index.js`,
 		}
 
 		// eslint-disable-next-line no-await-in-loop
@@ -45,7 +45,11 @@ async function main() {
 
 		try {
 			// eslint-disable-next-line no-await-in-loop
-			await fs.writeFile(path.join(name, 'package.json'), JSON.stringify(data, null, '\t'), { flag: 'wx' })
+			await fs.writeFile(
+				path.join(name, 'package.json'),
+				JSON.stringify(data, null, '\t'),
+				{ flag: 'wx' }
+			)
 		} catch {}
 	}
 }

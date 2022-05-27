@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "23.0.0",
+	"version": "24.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"__________EXPORTS": "__________",
@@ -12,111 +12,135 @@
 			"require": "./dist/index.js"
 		},
 		"./array": {
-			"types": "./dist/array/index.d.ts",
-			"import": "./dist/array/index.mjs",
-			"require": "./dist/array/index.js"
-		},
-		"./set": {
-			"types": "./dist/set/index.d.ts",
-			"import": "./dist/set/index.mjs",
-			"require": "./dist/set/index.js"
-		},
-		"./boolean": {
-			"types": "./dist/boolean/index.d.ts",
-			"import": "./dist/boolean/index.mjs",
-			"require": "./dist/boolean/index.js"
-		},
-		"./number": {
-			"types": "./dist/number/index.d.ts",
-			"import": "./dist/number/index.mjs",
-			"require": "./dist/number/index.js"
-		},
-		"./object": {
-			"types": "./dist/object/index.d.ts",
-			"import": "./dist/object/index.mjs",
-			"require": "./dist/object/index.js"
-		},
-		"./string": {
-			"types": "./dist/string/index.d.ts",
-			"import": "./dist/string/index.mjs",
-			"require": "./dist/string/index.js"
-		},
-		"./function": {
-			"types": "./dist/function/index.d.ts",
-			"import": "./dist/function/index.mjs",
-			"require": "./dist/function/index.js"
-		},
-		"./promise": {
-			"types": "./dist/promise/index.d.ts",
-			"import": "./dist/promise/index.mjs",
-			"require": "./dist/promise/index.js"
-		},
-		"./class": {
-			"types": "./dist/class/index.d.ts",
-			"import": "./dist/class/index.mjs",
-			"require": "./dist/class/index.js"
-		},
-		"./symbol": {
-			"types": "./dist/symbol/index.d.ts",
-			"import": "./dist/symbol/index.mjs",
-			"require": "./dist/symbol/index.js"
-		},
-		"./parser": {
-			"types": "./dist/parser/index.d.ts",
-			"import": "./dist/parser/index.mjs",
-			"require": "./dist/parser/index.js"
+			"types": "./dist/modules/array/index.d.ts",
+			"import": "./dist/modules/array/index.mjs",
+			"require": "./dist/modules/array/index.js"
 		},
 		"./bdd": {
-			"types": "./dist/bdd/index.d.ts",
-			"import": "./dist/bdd/index.mjs",
-			"require": "./dist/bdd/index.js"
+			"types": "./dist/modules/bdd/index.d.ts",
+			"import": "./dist/modules/bdd/index.mjs",
+			"require": "./dist/modules/bdd/index.js"
+		},
+		"./boolean": {
+			"types": "./dist/modules/boolean/index.d.ts",
+			"import": "./dist/modules/boolean/index.mjs",
+			"require": "./dist/modules/boolean/index.js"
+		},
+		"./class": {
+			"types": "./dist/modules/class/index.d.ts",
+			"import": "./dist/modules/class/index.mjs",
+			"require": "./dist/modules/class/index.js"
+		},
+		"./clone": {
+			"types": "./dist/modules/clone/index.d.ts",
+			"import": "./dist/modules/clone/index.mjs",
+			"require": "./dist/modules/clone/index.js"
 		},
 		"./compiler-options": {
-			"types": "./dist/compiler-options/index.d.ts",
-			"import": "./dist/compiler-options/index.mjs",
-			"require": "./dist/compiler-options/index.js"
+			"types": "./dist/modules/compiler-options/index.d.ts",
+			"import": "./dist/modules/compiler-options/index.mjs",
+			"require": "./dist/modules/compiler-options/index.js"
+		},
+		"./error": {
+			"types": "./dist/modules/error/index.d.ts",
+			"import": "./dist/modules/error/index.mjs",
+			"require": "./dist/modules/error/index.js"
+		},
+		"./function": {
+			"types": "./dist/modules/function/index.d.ts",
+			"import": "./dist/modules/function/index.mjs",
+			"require": "./dist/modules/function/index.js"
+		},
+		"./null": {
+			"types": "./dist/modules/null/index.d.ts",
+			"import": "./dist/modules/null/index.mjs",
+			"require": "./dist/modules/null/index.js"
+		},
+		"./number": {
+			"types": "./dist/modules/number/index.d.ts",
+			"import": "./dist/modules/number/index.mjs",
+			"require": "./dist/modules/number/index.js"
+		},
+		"./object": {
+			"types": "./dist/modules/object/index.d.ts",
+			"import": "./dist/modules/object/index.mjs",
+			"require": "./dist/modules/object/index.js"
+		},
+		"./parser": {
+			"types": "./dist/modules/parser/index.d.ts",
+			"import": "./dist/modules/parser/index.mjs",
+			"require": "./dist/modules/parser/index.js"
+		},
+		"./promise": {
+			"types": "./dist/modules/promise/index.d.ts",
+			"import": "./dist/modules/promise/index.mjs",
+			"require": "./dist/modules/promise/index.js"
+		},
+		"./set": {
+			"types": "./dist/modules/set/index.d.ts",
+			"import": "./dist/modules/set/index.mjs",
+			"require": "./dist/modules/set/index.js"
+		},
+		"./string": {
+			"types": "./dist/modules/string/index.d.ts",
+			"import": "./dist/modules/string/index.mjs",
+			"require": "./dist/modules/string/index.js"
+		},
+		"./symbol": {
+			"types": "./dist/modules/symbol/index.d.ts",
+			"import": "./dist/modules/symbol/index.mjs",
+			"require": "./dist/modules/symbol/index.js"
 		}
 	},
 	"typesVersions": {
 		"*": {
 			"array": [
-				"dist/array"
-			],
-			"set": [
-				"dist/set"
-			],
-			"boolean": [
-				"dist/boolean"
-			],
-			"number": [
-				"dist/number"
-			],
-			"object": [
-				"dist/object"
-			],
-			"string": [
-				"dist/string"
-			],
-			"function": [
-				"dist/function"
-			],
-			"promise": [
-				"dist/promise"
-			],
-			"class": [
-				"dist/class"
-			],
-			"symbol": [
-				"dist/symbol"
-			],
-			"parser": [
-				"dist/parser"
+				"dist/modules/array"
 			],
 			"bdd": [
-				"dist/bdd"
+				"dist/modules/bdd"
+			],
+			"boolean": [
+				"dist/modules/boolean"
+			],
+			"class": [
+				"dist/modules/class"
+			],
+			"clone": [
+				"dist/modules/clone"
 			],
 			"compiler-options": [
-				"dist/compiler-options"
+				"dist/modules/compiler-options"
+			],
+			"error": [
+				"dist/modules/error"
+			],
+			"function": [
+				"dist/modules/function"
+			],
+			"null": [
+				"dist/modules/null"
+			],
+			"number": [
+				"dist/modules/number"
+			],
+			"object": [
+				"dist/modules/object"
+			],
+			"parser": [
+				"dist/modules/parser"
+			],
+			"promise": [
+				"dist/modules/promise"
+			],
+			"set": [
+				"dist/modules/set"
+			],
+			"string": [
+				"dist/modules/string"
+			],
+			"symbol": [
+				"dist/modules/symbol"
 			]
 		}
 	},
@@ -128,18 +152,21 @@
 	"files": [
 		"dist/",
 		"array/",
-		"set/",
+		"bdd/",
 		"boolean/",
+		"class/",
+		"clone/",
+		"compiler-options/",
+		"error/",
+		"function/",
+		"null/",
 		"number/",
 		"object/",
-		"string/",
-		"function/",
-		"promise/",
-		"class/",
-		"symbol/",
 		"parser/",
-		"bdd/",
-		"compiler-options/"
+		"promise/",
+		"set/",
+		"string/",
+		"symbol/"
 	],
 	"scripts": {
 		"__________TEST": "__________",
@@ -158,7 +185,7 @@
 		"prepare:husky": "husky install",
 		"prepublishOnly": "run-s test lint",
 		"__________MISC": "__________",
-		"clean": "rimraf dist database"
+		"clean": "rimraf dist array bdd boolean class clone compiler-options error function null number object parser promise set string symbol"
 	},
 	"dependencies": {
 		"assert": "^2.0.0"

@@ -1,18 +1,22 @@
-/dist/
 /node_modules/
 
+/dist/
+
 /array/
-/set/
+/bdd/
 /boolean/
+/class/
+/clone/
+/compiler-options/
+/error/
+/function/
+/null/
 /number/
 /object/
-/string/
-/function/
-/promise/
-/class/
-/symbol/
 /parser/
-/bdd/
-/compiler-options/
+/promise/
+/set/
+/string/
+/symbol/
 
 *.tgz

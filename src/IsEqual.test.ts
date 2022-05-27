@@ -2,8 +2,8 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/ban-types */
-import { Assert, Is } from './bdd'
-import { Callable } from './function'
+import { Assert, Is } from './modules/bdd'
+import { Callable } from './modules/function'
 import { IsIdentical } from './IsEqual'
 
 describe('isEqual', () => {
