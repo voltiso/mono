@@ -47,11 +47,13 @@ export type Merge2Objects<A extends object, B extends object> = Merge2Objects_<
 	B
 >
 
-type SuggestObject<T> =
+type SuggestObject_<T> =
 	| {
 			[k in keyof T]?: T[k] | Suggest<unknown> // auto-complete doesn't work for the nested value :(
 	  }
-	| Suggest<object>
+	| Suggest<object | Nullish>
+
+type SuggestObject<T> = SuggestObject_<Extract<T, object>>
 
 export type Merge2<
 	A extends object | Nullish,
@@ -75,6 +77,17 @@ export type Merge<
 > = [A] extends [readonly object[]]
 	? MergeN<A>
 	: _MergeN<readonly [A, B, C, D, E], {}>
+
+//
+
+export function merge<A extends object | Nullish, B extends SuggestObject<A>>(
+	objectA: A,
+	objectB: B
+): Merge2<A, B>
+
+export function merge<Objs extends readonly (object | Nullish)[]>(
+	...objs: Objs
+): MergeN<Objs>
 
 export function merge<Objs extends readonly (object | Nullish)[]>(
 	...objs: Objs
