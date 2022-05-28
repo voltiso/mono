@@ -1,4 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-types */
+import { Suggest } from '../../Suggest'
 
-export type UnknownProperty = keyof any & {}
+export type UnknownProperty = Suggest<keyof any>

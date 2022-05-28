@@ -1,5 +1,5 @@
-/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/ban-types */
+import { Suggest } from '../../../Suggest'
 import { Callable, Newable } from '../../function'
 import { Nullish } from '../../null'
 import { Flatten } from '../flatten'
@@ -46,17 +46,32 @@ export type Merge2Objects<A extends object, B extends object> = Merge2Objects_<
 	A,
 	B
 >
+
+type SuggestObject<T> =
+	| {
+			[k in keyof T]?: T[k] | Suggest<unknown> // auto-complete doesn't work for the nested value :(
+	  }
+	| Suggest<object>
+
 export type Merge2<
 	A extends object | Nullish,
-	B extends object | Nullish
+	B extends SuggestObject<A> | Nullish
 > = Merge2_<A, B>
 
 export type Merge<
 	A extends readonly object[] | object,
-	B extends [A] extends [readonly object[]] ? void : object | void = void,
-	C extends [A] extends [readonly object[]] ? void : object | void = void,
-	D extends [A] extends [readonly object[]] ? void : object | void = void,
-	E extends [A] extends [readonly object[]] ? void : object | void = void
+	B extends [A] extends [readonly object[]]
+		? void
+		: SuggestObject<A> | void = void,
+	C extends [A] extends [readonly object[]]
+		? void
+		: SuggestObject<A & B> | void = void,
+	D extends [A] extends [readonly object[]]
+		? void
+		: SuggestObject<A & B & C> | void = void,
+	E extends [A] extends [readonly object[]]
+		? void
+		: SuggestObject<A & B & C & D> | void = void
 > = [A] extends [readonly object[]]
 	? MergeN<A>
 	: _MergeN<readonly [A, B, C, D, E], {}>
