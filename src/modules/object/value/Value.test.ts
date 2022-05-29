@@ -33,4 +33,11 @@ describe('value', () => {
 		type D = Value<{ a: 1 } | {}, 'nonExisting'>
 		Assert<IsIdentical<D, never>>()
 	})
+
+	it('generics', <T extends { a?: 1 }>() => {
+		expect.assertions(0)
+
+		type A = Value<T, 'a'>
+		Assert.is<A, 1>()
+	})
 })

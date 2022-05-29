@@ -1,5 +1,14 @@
-export type CanBeUndefined<T, k extends keyof T, TT = true, FF = false> = {
-	[kk in keyof T]: T[kk] | (kk extends k ? undefined : never)
-} extends T
-	? TT
-	: FF
+export type CanBeUndefined<
+	Obj,
+	key extends keyof Obj,
+	True = true,
+	False = false
+> = Obj extends unknown
+	? {
+			[k in key]: undefined
+	  } extends {
+			[k in key]: Obj[k]
+	  }
+		? True
+		: False
+	: never

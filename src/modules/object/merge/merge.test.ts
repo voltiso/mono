@@ -5,7 +5,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
-import { merge, Merge, Merge2, MergeN } from './merge'
+import { merge, Merge, Merge2, Merge2Objects, MergeN } from './merge'
+import { PartialIfNullish } from '../PartialIfNullish'
+import { VPartial } from '../VPartial'
 
 describe('merge', () => {
 	it('works with functions', () => {
@@ -177,5 +179,35 @@ describe('merge', () => {
 
 		type D = MergeN<[{ a?: 1 }, { a: 2 }]>
 		Assert<IsIdentical<D, { a: 2 }>>()
+	})
+
+	type SomeType = {
+		a: 1
+		b: 2
+	}
+
+	it('Merge2 - generics', <T extends Partial<SomeType>>() => {
+		expect.assertions(0)
+
+		type A = Merge2<SomeType, Partial<SomeType>>
+		Assert.is<A, SomeType>()
+
+		type B = Merge2Objects<SomeType, T>
+		Assert.is<B, SomeType>()
+
+		type C = Merge2Objects<PartialIfNullish<SomeType>, T>
+		Assert.is<C, SomeType>()
+
+		type D = Merge2Objects<SomeType, VPartial<T>>
+		Assert.is<D, SomeType>()
+
+		type E = Merge2<SomeType, T>
+		Assert.is<E, SomeType>()
+
+		type F = Merge2<SomeType, null>
+		Assert.is<F, SomeType>()
+
+		type G = Merge2<T, SomeType>
+		Assert.is<G, SomeType>()
 	})
 })

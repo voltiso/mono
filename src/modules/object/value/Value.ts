@@ -9,8 +9,8 @@ export type Value<
 	k extends keyof T | UnknownProperty = keyof T
 > = T extends unknown
 	? k extends keyof T
-		? [IsOptional<T, k>] extends [true]
-			? [CanBeUndefined<T, k>] extends [true]
+		? IsOptional<T, k> extends true
+			? CanBeUndefined<T, k> extends true
 				? T[k]
 				: Exclude<T[k], undefined>
 			: T[k]

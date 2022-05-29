@@ -24,4 +24,11 @@ describe('PartialIfNullish', () => {
 		type E = PartialIfNullish<{ a: 1 } | null | undefined>
 		Assert<IsIdentical<E, { a?: 1 }>>()
 	})
+
+	it('generics', <T extends { a?: 1 }>() => {
+		expect.assertions(0)
+
+		type A = PartialIfNullish<T>
+		Assert.is<A, { a?: 1 }>()
+	})
 })

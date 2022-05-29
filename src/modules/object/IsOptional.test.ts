@@ -10,4 +10,14 @@ describe('isOptional', () => {
 		Assert.isSubtype<IsOptional<{ a?: 1 | undefined; b: 2 }, 'a'>, true>()
 		Assert.isSubtype<IsOptional<{ a: 1 | undefined; b: 2 }, 'a'>, false>()
 	})
+
+	it('generics', <T extends { a?: 1 }>() => {
+		expect.assertions(0)
+
+		type A = IsOptional<{ a?: 1 }, 'a'>
+		Assert.is<A, true>()
+
+		type B = IsOptional<T, 'a'>
+		Assert.is<B, true>()
+	})
 })
