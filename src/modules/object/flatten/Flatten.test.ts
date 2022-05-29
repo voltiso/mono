@@ -1,9 +1,11 @@
+/* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert, Is } from '../../bdd'
 import { IsCompatible, IsIdentical } from '../../../IsEqual'
-import { Flatten, Flatten2 } from './Flatten'
+import { Flatten, Flatten2, _ } from './Flatten'
+import { VOmit } from '../omit'
 
 describe('Flatten', () => {
 	it('works', () => {
@@ -202,6 +204,25 @@ describe('Flatten', () => {
 
 		type B = Flatten<{ readonly a: 1 } & { readonly b: 2 }>
 		Assert<IsIdentical<B, { readonly a: 1; readonly b: 2 }>>()
+	})
+
+	it('generics', <T extends { a?: 1; b?: 2 }>() => {
+		expect.assertions(0)
+
+		type A = _<T>
+		Assert.is<A, { a?: 1 }>()
+
+		type B1 = Omit<T, 'b'>
+		type B2 = VOmit<T, 'b'>
+
+		Assert.is<B1, { a?: 1 | undefined }>() // does not work!
+		Assert.is<B2, { a?: 1 }>() // better!
+
+		type C1 = _<Omit<T, 'b'>>
+		type C2 = _<VOmit<T, 'b'>>
+
+		Assert.is<C1, { a?: 1 | undefined }>() // does not work!
+		Assert.is<C2, { a?: 1 }>() // better!
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests

@@ -8,28 +8,31 @@ import { IsIdentical } from '../../../IsEqual'
 import { PartialIfNullish } from '../PartialIfNullish'
 import { VPartial } from '../VPartial'
 import { Merge2Simple } from './Merge2Simple'
+import { _ } from '../flatten'
 
 describe('Merge2Simple', () => {
 	it('works', () => {
 		expect.assertions(0)
 
 		Assert<
-			IsIdentical<Merge2Simple<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>,
-			IsIdentical<Merge2Simple<{ a: 1 }, { a: 2 }>, { a: 2 }>,
+			IsIdentical<_<Merge2Simple<{ a: 1 }, { b: 2 }>>, { a: 1; b: 2 }>,
+			IsIdentical<_<Merge2Simple<{ a: 1 }, { a: 2 }>>, { a: 2 }>,
 			IsIdentical<
-				Merge2Simple<{ a: { a: 1 } }, { a: { b: 2 } }>,
+				_<Merge2Simple<{ a: { a: 1 } }, { a: { b: 2 } }>>,
 				{ a: { b: 2 } }
 			>
 		>()
 
-		type II = Merge2Simple<
-			{
-				a: 1
-			},
-			{
-				a: 2
-				readonly b?: 2
-			}
+		type II = _<
+			Merge2Simple<
+				{
+					a: 1
+				},
+				{
+					a: 2
+					readonly b?: 2
+				}
+			>
 		>
 
 		Assert<IsIdentical<II, { a: 2; readonly b?: 2 }>>()
@@ -38,16 +41,16 @@ describe('Merge2Simple', () => {
 	it('optional', () => {
 		expect.assertions(0)
 
-		type A = Merge2Simple<{ a?: 1 }, { a?: 2 }>
+		type A = _<Merge2Simple<{ a?: 1 }, { a?: 2 }>>
 		Assert<IsIdentical<A, { a?: 2 }>>() // different than Merge2
 
-		type B = Merge2Simple<{ a: 1 }, { a?: 2 }>
+		type B = _<Merge2Simple<{ a: 1 }, { a?: 2 }>>
 		Assert<IsIdentical<B, { a?: 2 }>>() // different than Merge2
 
-		type C = Merge2Simple<{ a: 1 }, { a: 2 }>
+		type C = _<Merge2Simple<{ a: 1 }, { a: 2 }>>
 		Assert<IsIdentical<C, { a: 2 }>>()
 
-		type D = Merge2Simple<{ a?: 1 }, { a: 2 }>
+		type D = _<Merge2Simple<{ a?: 1 }, { a: 2 }>>
 		Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
