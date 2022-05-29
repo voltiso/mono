@@ -22,7 +22,7 @@ export function stringFromObject_(
 	obj: Record<keyof any, unknown>,
 	params: ToStringParams
 ) {
-	const entries = getEntries(obj)
+	const entries = getEntries(obj, params)
 	if (entries.length === 0) return '{}'
 
 	let result = baseObjStr

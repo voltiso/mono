@@ -73,7 +73,7 @@ describe('toString', () => {
 		}
 		const c = new C()
 
-		expect(toString(c, { maxLength: 80 })).toBe(
+		expect(toString(c, { maxLength: 80, includeSymbols: true })).toBe(
 			'C { 2: 2, a: 1, [Symbol(sym)]: Symbol(sym) }'
 		)
 	})
