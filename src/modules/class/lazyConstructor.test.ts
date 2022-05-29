@@ -1,6 +1,6 @@
 /* eslint-disable max-statements */
 /* eslint-disable max-classes-per-file */
-import { lazy } from '../../lazy'
+import { lazyValue } from '../../lazyValue'
 import { lazyConstructor } from './lazyConstructor'
 
 /* eslint-disable no-magic-numbers */
@@ -78,7 +78,7 @@ describe('lazyConstructor', () => {
 	it('works with `lazy`', () => {
 		expect.hasAssertions()
 
-		const ld = lazy(() => new LazyDerived(66))
+		const ld = lazyValue(() => new LazyDerived(66))
 
 		expect(ld.baseField).toBe(66)
 		expect(ld.derivedField).toBe(8)

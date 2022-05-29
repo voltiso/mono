@@ -7,15 +7,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
-import { lazy } from './lazy'
+import { lazyValue } from './lazyValue'
 
-describe('lazy', () => {
+describe('lazyValue', () => {
 	it('get', () => {
 		expect.hasAssertions()
 
 		let called = false
 
-		const x = lazy(() => {
+		const x = lazyValue(() => {
 			called = true
 			return { a: 1 }
 		})
@@ -30,7 +30,7 @@ describe('lazy', () => {
 
 		let called = false
 
-		const x = lazy(() => {
+		const x = lazyValue(() => {
 			called = true
 			return { a: 1 } as { a: number; b: number }
 		})
@@ -56,7 +56,7 @@ describe('lazy', () => {
 			s: 'abc',
 		})
 
-		const b = lazy(() => {
+		const b = lazyValue(() => {
 			called = true
 			return a
 		})
@@ -114,7 +114,7 @@ describe('lazy', () => {
 		})
 
 		// eslint-disable-next-line func-names
-		const b = lazy(function () {
+		const b = lazyValue(function () {
 			called = true
 			return a
 		})
@@ -164,7 +164,7 @@ describe('lazy', () => {
 
 		let called = false
 
-		const x = lazy(() => {
+		const x = lazyValue(() => {
 			called = true
 			function f() {
 				return 123
@@ -184,7 +184,7 @@ describe('lazy', () => {
 		expect.hasAssertions()
 
 		class C {}
-		const c = lazy(() => new C())
+		const c = lazyValue(() => new C())
 
 		expect(c).toBeInstanceOf(C)
 	})
@@ -198,7 +198,7 @@ describe('lazy', () => {
 			a: 1,
 			[s]: 2,
 		}
-		const b = lazy(() => a)
+		const b = lazyValue(() => a)
 
 		expect(b.a).toBe(a.a)
 		b.a = 1111

@@ -10,7 +10,7 @@
 import { assign } from './modules/object'
 
 /* eslint-disable max-params */
-export function lazy<T extends object>(getValue: () => T): T {
+export function lazyValue<T extends object>(getValue: () => T): T {
 	let value: T
 
 	/** Has to be an arrow function, since it doesn't define prototype */

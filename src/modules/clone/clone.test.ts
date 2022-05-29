@@ -13,7 +13,7 @@
 /* eslint-disable no-magic-numbers */
 
 import { CALL, callableInstance } from '../class'
-import { lazy } from '../../lazy'
+import { lazyValue } from '../../lazyValue'
 import { clone } from './clone'
 
 class MyCloneable {
@@ -259,7 +259,7 @@ describe('clone', () => {
 			static staticField = 33
 		}
 
-		const c = lazy(() => new C())
+		const c = lazyValue(() => new C())
 		const d = clone(c)
 
 		c.field = 4
