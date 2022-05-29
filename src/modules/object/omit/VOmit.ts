@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-param-reassign */
 // export type OmitForever<T, K extends keyof T> = {
 // 	[P in keyof T]: P extends K ? never : T[P]
 // }
 
-export type VOmit<T extends object, K extends keyof T> = T extends unknown
+import { Suggest } from '../../../Suggest'
+
+export type VOmit<
+	T extends object,
+	K extends keyof T | Suggest<keyof any>
+> = T extends unknown
 	? {
 			[k in keyof T as k extends K ? never : k]: T[k]
 	  }

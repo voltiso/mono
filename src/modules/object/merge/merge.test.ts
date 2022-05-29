@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
-import { merge, Merge, Merge2, Merge2Objects, MergeN } from './merge'
-import { PartialIfNullish } from '../PartialIfNullish'
-import { VPartial } from '../VPartial'
+import { merge, MergeNullish } from './merge'
+import { Merge2 } from './Merge2'
+import { MergeN } from './MergeN'
 
 describe('merge', () => {
 	it('works with functions', () => {
@@ -48,10 +48,10 @@ describe('merge', () => {
 			b: 99
 		}
 
-		type R = Merge<X, { b: 2 }>
+		type R = MergeNullish<X, { b: 2 }>
 		Assert.is<R, { (a: 1): 2; b: 2 }>()
 
-		type S = Merge<{ b: 2 }, X>
+		type S = MergeNullish<{ b: 2 }, X>
 		Assert.is<S, { (a: 1): 2; b: 99 }>()
 	})
 
@@ -59,20 +59,32 @@ describe('merge', () => {
 		expect.hasAssertions()
 
 		// @ts-expect-error either array or individual args
-		type _X = Merge<[{ a: 1 }], { b: 2 }>
+		type _X = MergeNullish<[{ a: 1 }], { b: 2 }>
 
 		Assert<
-			IsIdentical<Merge<[]>, {}>,
-			IsIdentical<Merge<[{ a: 1 }]>, { a: 1 }>,
-			IsIdentical<Merge<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>,
-			IsIdentical<Merge<[{ a: 1 }, { a: 2 }]>, { a: 2 }>,
-			IsIdentical<Merge<[{ a: { a: 1 } }, { a: { b: 2 } }]>, { a: { b: 2 } }>,
-			IsIdentical<Merge<[{ a: 1 }, { b: 2 }, { c: 3 }]>, { a: 1; b: 2; c: 3 }>,
-			IsIdentical<Merge<{ a: 1 }>, { a: 1 }>,
-			IsIdentical<Merge<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>,
-			IsIdentical<Merge<{ a: 1 }, { a: 2 }>, { a: 2 }>,
-			IsIdentical<Merge<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { b: 2 } }>,
-			IsIdentical<Merge<{ a: 1 }, { b: 2 }, { c: 3 }>, { a: 1; b: 2; c: 3 }>
+			IsIdentical<MergeNullish<[]>, {}>,
+			IsIdentical<MergeNullish<[{ a: 1 }]>, { a: 1 }>,
+			IsIdentical<MergeNullish<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>,
+			IsIdentical<MergeNullish<[{ a: 1 }, { a: 2 }]>, { a: 2 }>,
+			IsIdentical<
+				MergeNullish<[{ a: { a: 1 } }, { a: { b: 2 } }]>,
+				{ a: { b: 2 } }
+			>,
+			IsIdentical<
+				MergeNullish<[{ a: 1 }, { b: 2 }, { c: 3 }]>,
+				{ a: 1; b: 2; c: 3 }
+			>,
+			IsIdentical<MergeNullish<{ a: 1 }>, { a: 1 }>,
+			IsIdentical<MergeNullish<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>,
+			IsIdentical<MergeNullish<{ a: 1 }, { a: 2 }>, { a: 2 }>,
+			IsIdentical<
+				MergeNullish<{ a: { a: 1 } }, { a: { b: 2 } }>,
+				{ a: { b: 2 } }
+			>,
+			IsIdentical<
+				MergeNullish<{ a: 1 }, { b: 2 }, { c: 3 }>,
+				{ a: 1; b: 2; c: 3 }
+			>
 		>()
 
 		type II = Merge2<
@@ -143,28 +155,6 @@ describe('merge', () => {
 		Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
-	it('Merge2 - nullish', () => {
-		expect.assertions(0)
-
-		type A = Merge2<{ a: 1 }, null>
-		Assert<IsIdentical<A, { a: 1 }>>()
-
-		type B = Merge2<null, null>
-		Assert<IsIdentical<B, {}>>()
-
-		type C = Merge2<null, { a: 1 }>
-		Assert<IsIdentical<C, { a: 1 }>>()
-
-		type D = Merge2<{ a: 'a' } | null, { a: 'aa' } | null>
-		Assert<IsIdentical<D, { a?: 'a' | 'aa' }>>()
-
-		type E = Merge2<{ a: 'a' }, { a: 'aa' } | null>
-		Assert<IsIdentical<E, { a: 'a' | 'aa' }>>()
-
-		type F = Merge2<{ a?: 'a' } | undefined | null, { a: 'aa' }>
-		Assert<IsIdentical<F, { a: 'aa' }>>()
-	})
-
 	it('MergeN - optional (static)', () => {
 		expect.assertions(0)
 
@@ -179,35 +169,5 @@ describe('merge', () => {
 
 		type D = MergeN<[{ a?: 1 }, { a: 2 }]>
 		Assert<IsIdentical<D, { a: 2 }>>()
-	})
-
-	type SomeType = {
-		a: 1
-		b: 2
-	}
-
-	it('Merge2 - generics', <T extends Partial<SomeType>>() => {
-		expect.assertions(0)
-
-		type A = Merge2<SomeType, Partial<SomeType>>
-		Assert.is<A, SomeType>()
-
-		type B = Merge2Objects<SomeType, T>
-		Assert.is<B, SomeType>()
-
-		type C = Merge2Objects<PartialIfNullish<SomeType>, T>
-		Assert.is<C, SomeType>()
-
-		type D = Merge2Objects<SomeType, VPartial<T>>
-		Assert.is<D, SomeType>()
-
-		type E = Merge2<SomeType, T>
-		Assert.is<E, SomeType>()
-
-		type F = Merge2<SomeType, null>
-		Assert.is<F, SomeType>()
-
-		type G = Merge2<T, SomeType>
-		Assert.is<G, SomeType>()
 	})
 })

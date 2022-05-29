@@ -19,4 +19,4 @@ export type PartialIfNullish_<O> = strictNullChecks extends true
 	: O
 
 /** requires `strictNullChecks` */
-export type PartialIfNullish<T extends object | Nullish> = PartialIfNullish_<T>
+export type PartialIfNullish<O extends object | Nullish> = PartialIfNullish_<O>

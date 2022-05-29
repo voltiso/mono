@@ -9,10 +9,15 @@ import { PartialIfNullish } from '../PartialIfNullish'
 import { VPartial } from '../VPartial'
 import { Merge2Simple } from './Merge2Simple'
 import { _ } from '../flatten'
+import { VOmit } from '../omit'
+import { Merge2 } from './Merge2'
 
 describe('Merge2Simple', () => {
 	it('works', () => {
 		expect.assertions(0)
+
+		type A = Merge2Simple<{ a: 1; b: 2 }, { a: 2 }>
+		Assert<IsIdentical<A, { a: 2; b: 2 }>>()
 
 		Assert<
 			IsIdentical<_<Merge2Simple<{ a: 1 }, { b: 2 }>>, { a: 1; b: 2 }>,
@@ -97,10 +102,66 @@ describe('Merge2Simple', () => {
 		type E = Merge2Simple<SomeType, T>
 		Assert.is<E, T>() // different than Merge2
 
-		type F = Merge2Simple<SomeType, null>
-		Assert.is<F, SomeType>()
+		// type F = Merge2Simple<SomeType, null>
+		// Assert.is<F, SomeType>()
 
 		type G = Merge2Simple<T, SomeType>
 		Assert.is<G, SomeType>()
+	})
+
+	it('generics 2', <T extends SomeType>() => {
+		expect.assertions(0)
+
+		type B1 = Omit<T, 'c'> & { c: 3 }
+		type B2 = _<VOmit<T, 'c'> & { c: 3 }>
+		type B3 = Merge2<T, { c: 3 }>
+		// type B4 = Merge2Nullish<T, { c: 3 }>
+		type B5 = Merge2Simple<T, { c: 3 }>
+
+		Assert.is<B1, SomeType>()
+		Assert.is<B2, SomeType>()
+		Assert.is<B3, SomeType>()
+		// Assert.is<B4, Partial<SomeType>>() // doesn't work?? TODO
+		Assert.is<B5, SomeType>()
+
+		Assert.is<VOmit<T, 'c'> & { c: 3 }, SomeType>()
+	})
+
+	//
+
+	type SchemaOptions = {
+		optional: boolean
+		readonly: boolean
+		default: unknown
+	}
+
+	const OPTIONS = Symbol('OPTIONS')
+	type OPTIONS = typeof OPTIONS
+
+	interface ISchema {
+		get optional(): ISchema
+		[OPTIONS]: SchemaOptions
+	}
+
+	interface Schema<O extends SchemaOptions> extends ISchema {
+		[OPTIONS]: O
+		get optional(): Optional<this>
+	}
+
+	type Optional<S extends Schema<SchemaOptions>> = Schema<
+		Merge2Simple<S[OPTIONS], { optional: true }>
+	>
+
+	it('generics - complex', <This extends ISchema>() => {
+		expect.assertions(0)
+
+		type A = _<
+			VOmit<
+				_<Omit<This[OPTIONS], 'optional'> & { optional: true }>,
+				'optional'
+			> & { optional: true }
+		>
+
+		Assert.is<A, SchemaOptions>()
 	})
 })

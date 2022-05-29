@@ -1,64 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Suggest } from '../../../Suggest'
-import { Callable, Newable } from '../../function'
 import { Nullish } from '../../null'
-import { Flatten } from '../flatten'
-import { IsOptional } from '../IsOptional'
-import { PartialIfNullish_ } from '../PartialIfNullish'
-import { Value } from '../value'
-
-type _MergeN<objs, acc> = objs extends readonly []
-	? acc
-	: objs extends readonly [infer h, ...infer t]
-	? [h] extends [object | Nullish]
-		? _MergeN<t, Merge2_<acc, h>>
-		: acc
-	: never
-
-export type MergeN<objs extends readonly (object | Nullish)[]> = _MergeN<
-	objs,
-	{}
->
-
-type Part1<A, B> = {
-	[k in keyof A]: k extends keyof B
-		?
-				| Value<B, k>
-				| (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
-		: Value<A, k>
-}
-
-type Part2<A, B> = {
-	[k in keyof B]: k extends keyof A
-		?
-				| Value<B, k>
-				| (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
-		: Value<B, k>
-}
-
-type Merge2Objects_<A, B> = (A extends Callable | Newable ? A : unknown) &
-	(B extends Callable | Newable ? B : unknown) &
-	Flatten<Part1<A, B> & Part2<A, B>>
-
-type Merge2_<A, B> = Merge2Objects_<PartialIfNullish_<A>, PartialIfNullish_<B>>
-
-export type Merge2Objects<A extends object, B extends object> = Merge2Objects_<
-	A,
-	B
->
-
-type SuggestObject_<T> =
-	| {
-			[k in keyof T]?: T[k] | Suggest<unknown> // auto-complete doesn't work for the nested value :(
-	  }
-	| Suggest<object | Nullish>
-
-type SuggestObject<T> = SuggestObject_<Extract<T, object>>
-
-export type Merge2<
-	A extends object | Nullish,
-	B extends SuggestObject<A> | Nullish
-> = Merge2_<A, B>
+import { Merge2 } from './Merge2'
+import { Merge2Nullish } from './Merge2Nullish'
+import { MergeN } from './MergeN'
+import { MergeNNullish_, MergeNNullish } from './MergeNNullish'
+import { SuggestObject } from './SuggestObject'
+import { SuggestObjectNullish } from './SuggestObjectNullish'
 
 export type Merge<
 	A extends readonly object[] | object,
@@ -76,25 +23,54 @@ export type Merge<
 		: SuggestObject<A & B & C & D> | void = void
 > = [A] extends [readonly object[]]
 	? MergeN<A>
-	: _MergeN<readonly [A, B, C, D, E], {}>
+	: MergeNNullish_<readonly [A, B, C, D, E], {}>
 
 //
 
-export function merge<A extends object | Nullish, B extends SuggestObject<A>>(
+export type MergeNullish<
+	A extends readonly object[] | object,
+	B extends [A] extends [readonly object[]]
+		? void
+		: SuggestObjectNullish<A> | void = void,
+	C extends [A] extends [readonly object[]]
+		? void
+		: SuggestObjectNullish<A & B> | void = void,
+	D extends [A] extends [readonly object[]]
+		? void
+		: SuggestObjectNullish<A & B & C> | void = void,
+	E extends [A] extends [readonly object[]]
+		? void
+		: SuggestObjectNullish<A & B & C & D> | void = void
+> = [A] extends [readonly object[]]
+	? MergeN<A>
+	: MergeNNullish_<readonly [A, B, C, D, E], {}>
+
+//
+
+export function merge<A extends object, B extends SuggestObject<A>>(
 	objectA: A,
 	objectB: B
 ): Merge2<A, B>
 
-export function merge<Objs extends readonly (object | Nullish)[]>(
+export function merge<
+	A extends object | Nullish,
+	B extends SuggestObject<Extract<A, object>> | Nullish
+>(objectA: A, objectB: B): Merge2Nullish<A, B>
+
+export function merge<Objs extends readonly object[]>(
 	...objs: Objs
 ): MergeN<Objs>
 
 export function merge<Objs extends readonly (object | Nullish)[]>(
 	...objs: Objs
-): MergeN<Objs> {
+): MergeNNullish<Objs>
+
+export function merge<Objs extends readonly (object | Nullish)[]>(
+	...objs: Objs
+): MergeNNullish<Objs> {
 	let r = {}
 	for (const obj of objs) {
 		r = { ...r, ...obj }
 	}
-	return r as MergeN<Objs>
+	return r as MergeNNullish<Objs>
 }
