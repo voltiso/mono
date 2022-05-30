@@ -6,7 +6,8 @@ export class TsUtilError extends Error {
 		message?: string | undefined,
 		options?: ErrorOptions | undefined
 	) {
-		const prefixedMessage = `[${packageName}] ${message || ''}`
+		let prefixedMessage = `[${packageName}]`
+		if (message) prefixedMessage = `${prefixedMessage} ${message}`
 		super(prefixedMessage, options)
 		Error.captureStackTrace(this, this.constructor)
 		this.name = this.constructor.name
