@@ -4,16 +4,18 @@
 // 	[P in keyof T]: P extends K ? never : T[P]
 // }
 
-import { Suggest } from '../../../Suggest'
+import { AlsoAccept } from '../../../AlsoAccept'
 
-export type VOmit<
-	T extends object,
-	K extends keyof T | Suggest<keyof any>
-> = T extends unknown
+export type VOmit_<T, K> = T extends object
 	? {
 			[k in keyof T as k extends K ? never : k]: T[k]
 	  }
 	: never
+
+export type VOmit<
+	T extends object,
+	K extends keyof T | AlsoAccept<keyof any>
+> = VOmit_<T, K>
 
 export function omit<T extends object, K extends keyof T>(
 	obj: T,
@@ -34,6 +36,3 @@ export function omitIfPresent<
 	for (const key of keys) delete r[key as unknown as keyof T]
 	return r as unknown as VOmit<T, K & keyof T>
 }
-
-// const x = omit({ a: 123, v: 234 }, 'a')
-// const y = omit(x, 'v')
