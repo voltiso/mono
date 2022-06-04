@@ -7,7 +7,7 @@
  * @example
  * type Test<X extends 'a' | 'b' | AlsoAccept<string>> = never
  *
- * type R = Text<'... // accepts any `string`, but suggest 'a' or 'b'
+ * type R = Test<'... // accepts any `string`, but suggest 'a' or 'b'
  */
 export type AlsoAccept<X> = X & {}
 
