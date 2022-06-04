@@ -121,6 +121,15 @@ describe('Flatten', () => {
 		Assert<IsIdentical<Undef, undefined>>()
 	})
 
+	it('nullish (generic)', <N extends null>() => {
+		expect.assertions(0)
+
+		type A = Flatten<N>
+		Assert.is<A, null>()
+		// Assert.is<N, A>()
+		// Assert<IsIdentical<A, null>>()
+	})
+
 	it('TS types - unknown, ...', () => {
 		expect.assertions(0)
 
