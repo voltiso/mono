@@ -1,7 +1,7 @@
 /**
  * Has index signature?
  */
-export type HasIndex<
+export type HasIndexSignature<
 	X extends object,
 	T = true,
 	F = false

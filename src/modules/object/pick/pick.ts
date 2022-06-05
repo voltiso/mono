@@ -1,24 +1,41 @@
+// import { TsUtilError } from '../../error'
+// import { toString } from '../../string'
+import { getProperty } from '../get'
+
+type PickResult<O, K extends keyof O> = Required<Pick<O, K>>
+
 export function pick<O extends object, K extends keyof O>(
 	obj: O,
 	key: K
-): Pick<O, K>
+): PickResult<O, K>
 
 export function pick<O extends object, K extends keyof O>(
 	obj: O,
 	keys: K[]
-): Pick<O, K>
+): PickResult<O, K>
 
 export function pick<O extends object, K extends keyof O>(
 	obj: O,
 	keyOrKeys: K | K[]
-): Pick<O, K>
+): PickResult<O, K>
 
 export function pick<O extends object, K extends keyof O>(
 	obj: O,
 	keyOrKeys: K | K[]
-): Pick<O, K> {
+): PickResult<O, K> {
 	const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys]
-	const r = {} as Pick<O, K>
-	for (const key of keys) r[key] = obj[key]
+	const r = {} as PickResult<O, K>
+	for (const key of keys) {
+		const value = getProperty(obj, key)
+		// if (!Object.hasOwn(obj, key)) {
+		// 	throw new TsUtilError(
+		// 		`pick(${toString(obj)}, ${toString(keyOrKeys)}): key ${toString(
+		// 			key
+		// 		)} does not exist`
+		// 	)
+		// }
+
+		r[key] = value
+	}
 	return r
 }

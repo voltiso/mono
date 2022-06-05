@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { assertNotPolluting } from './isPolluting'
-import { isObject } from './isObject'
-import { TsUtilError } from '../error'
-import { toString } from '../string'
+import { assertNotPolluting } from '../../isPolluting'
+import { isObject } from '../../isObject'
+import { TsUtilError } from '../../../error'
+import { toString } from '../../../string'
 
 export function hasProperty<O extends object, K extends keyof any>(
 	o: O,

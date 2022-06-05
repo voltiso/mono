@@ -7,7 +7,7 @@
 import { TsUtilError } from '../../error'
 import { toString } from '../../string'
 import { Entry, IEntry } from '../entry'
-import { hasProperty } from '../hasProperty'
+import { hasProperty } from '../get/hasProperty/hasProperty'
 import { isPlain } from '../isPlain'
 import { IPath, Path } from '../Path'
 import { UnknownProperty } from '../UnknownProperty'
