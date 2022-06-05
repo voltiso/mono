@@ -3,9 +3,11 @@
  * Omit call, construct and index signatures
  */
 export type OmitSignatures<T> = {
-	[K in keyof T as string extends K
+	[k in keyof T as string extends k
 		? never
-		: number extends K
+		: number extends k
 		? never
-		: K]: T[K]
+		: symbol extends k
+		? never
+		: k]: T[k]
 }
