@@ -164,8 +164,20 @@ describe('Flatten', () => {
 
 	it('works with index signatures', () => {
 		expect.assertions(0)
+
 		type X = Flatten<{ b: 2; [k: string]: 1 | 2 } & { a: 1 }>
 		Assert<IsIdentical<X, { [k: string]: 1 | 2; a: 1; b: 2 }>>()
+
+		type A = Flatten<
+			{ [k: string]: number; [k: number]: 2; [k: symbol]: 3 } & { a: 123 }
+		>
+
+		Assert<
+			IsIdentical<
+				A,
+				{ [k: string]: number; [k: number]: 2; [k: symbol]: 3; a: 123 }
+			>
+		>()
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests

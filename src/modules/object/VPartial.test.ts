@@ -11,6 +11,9 @@ describe('Partial', () => {
 
 		type A = VPartial<{ a: 1 } & { b: 2 }>
 		Assert<IsIdentical<A, { a?: 1; b?: 2 }>>()
+
+		type B = Partial<{ a: 1 } & { b: 2 }>
+		Assert<IsIdentical<B, { a?: 1; b?: 2 }>>()
 	})
 
 	it('generics', <Obj extends { a?: 1 }>() => {
@@ -35,5 +38,15 @@ describe('Partial', () => {
 		Assert.is<Exclude<VPartial<Obj>[keyof Obj & 'a'], undefined>, 1>()
 		Assert.is<Value<C, 'a'>, 1>()
 		// Assert.is<C, Obj>() // does not work :(
+	})
+
+	it('index signatures', () => {
+		expect.assertions(0)
+
+		type A = Partial<{ [k: string]: 1 }>
+		Assert<IsIdentical<A, { [k: string]: 1 | undefined }>>() // bad!
+
+		type B = VPartial<{ [k: string]: 1 }>
+		Assert<IsIdentical<B, { [k: string]: 1 }>>()
 	})
 })

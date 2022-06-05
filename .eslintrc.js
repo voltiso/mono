@@ -64,5 +64,6 @@ module.exports = {
 		'id-length': 0,
 		'no-ternary': 0,
 		'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+		'no-warning-comments': 1,
 	},
 }

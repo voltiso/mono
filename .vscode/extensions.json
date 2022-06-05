@@ -4,6 +4,7 @@
 		"esbenp.prettier-vscode",
 		"Orta.vscode-jest",
 		"chrmarti.regex",
+		"stkb.rewrap",
 		"streetsidesoftware.code-spell-checker"
 		//
 	]

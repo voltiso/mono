@@ -1,7 +1,10 @@
+/* eslint-disable max-statements */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
 import { VOmit } from './VOmit'
+import { _ } from '../flatten'
 
 describe('Omit', () => {
 	it('works', () => {
@@ -54,5 +57,33 @@ describe('Omit', () => {
 
 		Assert.is<B1, { a: 1 }>()
 		Assert.is<B2, { a: 1 }>()
+	})
+
+	type Props = {
+		[k: string]: number
+		[k: number]: 1
+		[k: symbol]: 2
+	}
+
+	it('generics 3', <P extends Props, K extends keyof any>() => {
+		expect.assertions(0)
+
+		type A = VOmit<P, keyof P>
+		Assert.is<A, Props>()
+
+		// type AA = _<VOmit<P, keyof P>>
+		// Assert.is<AA, Props>() // :(
+
+		type B = VOmit<P, 'a'>
+		Assert.is<B, Props>()
+
+		type BB = _<VOmit<P, 'a'>>
+		Assert.is<BB, Props>()
+
+		type C = VOmit<P, K>
+		Assert.is<C, Props>()
+
+		// type CC = _<VOmit<P, K>>
+		// Assert.is<CC, Props>() // :(
 	})
 })
