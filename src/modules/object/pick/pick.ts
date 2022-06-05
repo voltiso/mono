@@ -4,26 +4,20 @@ import { getProperty } from '../get'
 
 type PickResult<O, K extends keyof O> = Required<Pick<O, K>>
 
-export function pick<O extends object, K extends keyof O>(
-	obj: O,
-	key: K
-): PickResult<O, K>
+// export function pick<O extends object, K extends keyof O>(
+// 	obj: O,
+// 	key: K
+// ): PickResult<O, K>
+
+// export function pick<O extends object, K extends keyof O>(
+// 	obj: O,
+// 	...keys: K[]
+// ): PickResult<O, K>
 
 export function pick<O extends object, K extends keyof O>(
 	obj: O,
-	keys: K[]
-): PickResult<O, K>
-
-export function pick<O extends object, K extends keyof O>(
-	obj: O,
-	keyOrKeys: K | K[]
-): PickResult<O, K>
-
-export function pick<O extends object, K extends keyof O>(
-	obj: O,
-	keyOrKeys: K | K[]
+	...keys: K[]
 ): PickResult<O, K> {
-	const keys = Array.isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys]
 	const r = {} as PickResult<O, K>
 	for (const key of keys) {
 		const value = getProperty(obj, key)

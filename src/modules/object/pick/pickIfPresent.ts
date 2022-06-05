@@ -11,15 +11,15 @@ type PickIfPresentResult<O, K extends keyof O | AlsoAccept<keyof any>> = _<
 	}
 >
 
-export function pickIfPresent<
-	O extends object,
-	K extends keyof O | AlsoAccept<keyof any>
->(obj: O, key: K): PickIfPresentResult<O, K>
+// export function pickIfPresent<
+// 	O extends object,
+// 	K extends keyof O | AlsoAccept<keyof any>
+// >(obj: O, key: K): PickIfPresentResult<O, K>
 
-export function pickIfPresent<
-	O extends object,
-	K extends keyof O | AlsoAccept<keyof any>
->(obj: O, ...keys: K[]): PickIfPresentResult<O, K>
+// export function pickIfPresent<
+// 	O extends object,
+// 	K extends keyof O | AlsoAccept<keyof any>
+// >(obj: O, ...keys: K[]): PickIfPresentResult<O, K>
 
 export function pickIfPresent<
 	O extends object,

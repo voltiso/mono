@@ -86,4 +86,47 @@ describe('Omit', () => {
 		// type CC = _<VOmit<P, K>>
 		// Assert.is<CC, Props>() // :(
 	})
+
+	it('index signature', () => {
+		expect.assertions(0)
+
+		type A = VOmit<{ [k: string]: number; a: 1; 2: 2 }, string>
+		Assert<IsIdentical<A, { 2: 2 }>>()
+
+		type B = VOmit<
+			{
+				[k: string]: number
+				a: 1
+				b: 33
+				2: 2
+			},
+			number | 'b' | 'asd'
+		>
+
+		Assert<
+			IsIdentical<
+				B,
+				{
+					[k: string]: number
+					a: 1
+				}
+			>
+		>()
+	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('generics and index signature', <P extends {
+	// 	magic: boolean
+	// }>() => {
+	// 	expect.assertions(0)
+
+	// 	type MyOmit<O, K> = {
+	// 		[k in keyof O as k extends K ? k : never]: O[k]
+	// 	}
+
+	// 	type A = MyOmit<P, 'css' & keyof P>
+
+	// 	const a = 0 as unknown as A
+	// 	void a.magic // :(
+	// })
 })
