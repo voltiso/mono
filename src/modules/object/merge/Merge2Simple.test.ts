@@ -157,9 +157,11 @@ describe('Merge2Simple', () => {
 
 		type A = _<
 			VOmit<
-				_<Omit<This[OPTIONS], 'optional'> & { optional: true }>,
+				_<VOmit<This[OPTIONS], 'optional'> & { optional: true }>,
 				'optional'
-			> & { optional: true }
+			> & {
+				optional: true
+			}
 		>
 
 		Assert.is<A, SchemaOptions>()

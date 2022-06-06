@@ -99,42 +99,4 @@ describe('Merge2Trivial', () => {
 
 		Assert.is<VOmit<T, 'c'> & { c: 3 }, SomeType>()
 	})
-
-	//
-
-	type SchemaOptions = {
-		optional: boolean
-		readonly: boolean
-		default: unknown
-	}
-
-	const OPTIONS = Symbol('OPTIONS')
-	type OPTIONS = typeof OPTIONS
-
-	interface ISchema {
-		get optional(): ISchema
-		[OPTIONS]: SchemaOptions
-	}
-
-	interface Schema<O extends SchemaOptions> extends ISchema {
-		[OPTIONS]: O
-		get optional(): Optional<this>
-	}
-
-	type Optional<S extends Schema<SchemaOptions>> = Schema<
-		Merge2Trivial<S[OPTIONS], { optional: true }>
-	>
-
-	it('generics - complex', <This extends ISchema>() => {
-		expect.assertions(0)
-
-		type A = _<
-			VOmit<
-				_<Omit<This[OPTIONS], 'optional'> & { optional: true }>,
-				'optional'
-			> & { optional: true }
-		>
-
-		Assert.is<A, SchemaOptions>()
-	})
 })

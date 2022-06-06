@@ -3,7 +3,7 @@
 /* eslint-disable no-magic-numbers */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
-import { VOmit } from './VOmit'
+import { VOmit, VOmit_ } from './VOmit'
 import { _ } from '../flatten'
 
 describe('Omit', () => {
@@ -90,7 +90,14 @@ describe('Omit', () => {
 	it('index signature', () => {
 		expect.assertions(0)
 
-		type A = VOmit<{ [k: string]: number; a: 1; 2: 2 }, string>
+		type A = VOmit<
+			{
+				[k: string]: number
+				a: 1
+				2: 2
+			},
+			string
+		>
 		Assert<IsIdentical<A, { 2: 2 }>>()
 
 		type B = VOmit<
@@ -112,6 +119,18 @@ describe('Omit', () => {
 				}
 			>
 		>()
+	})
+
+	it('vscode finds original definitions', () => {
+		expect.assertions(0)
+
+		type Base = {
+			readonly a?: 1
+			readonly b: 2
+		}
+
+		const x = {} as unknown as VOmit_<Base, 'b'>
+		void x.a
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests
