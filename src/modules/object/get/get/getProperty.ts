@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { AlsoAccept } from '../../../../AlsoAccept'
 import { TsUtilError } from '../../../error'
 import { toString } from '../../../string'
 import { isObject } from '../../isObject'
@@ -33,14 +34,15 @@ export class GetPropertyError<
 	}
 }
 
-export type GetProperty<T, K extends keyof T | keyof any> = K extends keyof T
-	? Value<T, K>
-	: Exclude<TryGetProperty<T, K>, undefined>
+export type GetProperty<
+	T extends object,
+	K extends keyof T | AlsoAccept<keyof any>
+> = K extends keyof T ? Value<T, K> : Exclude<TryGetProperty<T, K>, undefined>
 
-export function getProperty<Obj, Property extends keyof Obj | UnknownProperty>(
-	object: Obj,
-	property: Property
-): GetProperty<Obj, Property> {
+export function getProperty<
+	Obj extends object,
+	Property extends keyof Obj | UnknownProperty
+>(object: Obj, property: Property): GetProperty<Obj, Property> {
 	if (!isObject(object)) throw new GetPropertyError(object, property)
 
 	assertNotPolluting(object, property)

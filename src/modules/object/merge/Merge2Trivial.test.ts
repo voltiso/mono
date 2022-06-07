@@ -99,4 +99,25 @@ describe('Merge2Trivial', () => {
 
 		Assert.is<VOmit<T, 'c'> & { c: 3 }, SomeType>()
 	})
+
+	it('vscode - jump to definition (manual test...)', () => {
+		expect.assertions(0)
+
+		type A = {
+			readonly a?: 1
+			b: 2
+		}
+
+		type B = {
+			readonly b?: 3
+		}
+
+		const c = {} as unknown as Merge2Trivial<A, B>
+
+		// hit F12 here:
+		void c.a
+
+		// hit F12 here:
+		void c.b
+	})
 })

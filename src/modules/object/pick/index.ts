@@ -1,2 +1,7 @@
+export * from './PickIndexSignatures'
+export * from './PickPrecise'
+export * from './PickSimple'
+export * from './Pick_'
+export * from './VPick'
 export * from './pick'
 export * from './pickIfPresent'

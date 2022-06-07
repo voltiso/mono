@@ -7,7 +7,7 @@ import { merge, Merge2 } from '../merge'
 import { Value } from './Value'
 
 type GetValues<
-	Obj,
+	Obj extends object,
 	O extends IterationOptions
 > = O['includeSymbols'] extends true
 	? Value<Obj, keyof Obj>[]
@@ -19,7 +19,7 @@ export function getValues_<Obj extends object, O extends IterationOptions>(
 	obj: Obj,
 	options: O
 ): GetValues<Obj, O> {
-	let r = [] as GetValues<Obj, O>
+	let r = [] as unknown as GetValues<Obj, O>
 
 	if (options.includeNonEnumerable) {
 		for (const k of Object.getOwnPropertyNames(obj) as (string & keyof Obj)[]) {

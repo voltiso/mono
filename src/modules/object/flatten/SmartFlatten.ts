@@ -1,11 +1,11 @@
-import { CanBeUndefined } from '../CanBeUndefined'
-import { IsOptional } from '../IsOptional'
+import { CanBeUndefinedImpl } from '../CanBeUndefined'
+import { IsOptional_ } from '../IsOptional'
 import { Callable, Newable } from '../../function'
 
-type SmartFlattenValue<T, k extends keyof T, e> = IsOptional<
+type SmartFlattenValue<T, k extends keyof T, e> = IsOptional_<
 	T,
 	k,
-	CanBeUndefined<
+	CanBeUndefinedImpl<
 		T,
 		k,
 		SmartFlattenImpl<T[k], e>,

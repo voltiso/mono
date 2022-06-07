@@ -4,14 +4,14 @@ import { TsUtilError } from '../../../error'
 import { toString } from '../../../string'
 import { IPath, Path } from '../../Path'
 import { UnknownProperty } from '../../UnknownProperty'
-import { Value } from '../../value'
+import { Value_ } from '../../value'
 import { GetProperty, getProperty, GetPropertyError } from './getProperty'
 
 type Get_<O, P> = P extends readonly []
 	? O
 	: P extends readonly [infer H, ...infer T]
 	? H extends keyof O | UnknownProperty
-		? Get_<Value<O, H>, T>
+		? Get_<Value_<O, H>, T>
 		: never
 	: never
 
@@ -56,18 +56,18 @@ export function get<O extends object, P extends Path<O>>(
 //
 
 export function get<O extends object, P extends Path<O>>(
-	object: O,
+	obj: O,
 	...x: P | [P]
 ): Get<O, P> {
 	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as (keyof any)[]
-	let r = object
+	let r = obj
 	try {
 		for (const token of path) {
-			r = getProperty(r, token)
+			r = getProperty(r, token) as never
 		}
 	} catch (error) {
 		if (error instanceof GetPropertyError) {
-			throw new GetError(object, path)
+			throw new GetError(obj, path)
 		} else throw error
 	}
 	return r as never

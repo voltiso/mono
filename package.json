@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "33.0.3",
+	"version": "34.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"__________": "__________",
@@ -176,7 +176,7 @@
 		"lint": "run-s lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint": "eslint . --max-warnings=0",
+		"lint:eslint": "eslint .",
 		"lint:tsc": "tsc --project tsconfig.lint.json",
 		"__________BUILD": "__________",
 		"build": "run-s clean build:tsup build:gen-compat-dirs",

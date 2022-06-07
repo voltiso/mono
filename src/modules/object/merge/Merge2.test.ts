@@ -8,7 +8,7 @@ import { Merge2 } from './Merge2'
 describe('Merge2', () => {
 	type SomeType = { a: 1; b: 2 }
 
-	it('generics', <T extends Partial<SomeType>>() => {
+	it('generic', <T extends Partial<SomeType>>() => {
 		expect.assertions(0)
 
 		type A = Merge2<SomeType, Partial<SomeType>>

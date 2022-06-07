@@ -1,3 +1,5 @@
+import { SuggestObject } from './SuggestObject'
+
 export type Merge2Trivial_<A, B> = {
 	[k in keyof A | keyof B]: k extends keyof B
 		? B[k]
@@ -6,7 +8,7 @@ export type Merge2Trivial_<A, B> = {
 		: never
 }
 
-export type Merge2Trivial<A extends object, B extends object> = Merge2Trivial_<
-	A,
-	B
->
+export type Merge2Trivial<
+	A extends object,
+	B extends SuggestObject<A>
+> = Merge2Trivial_<A, B>

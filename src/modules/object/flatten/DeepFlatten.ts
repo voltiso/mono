@@ -1,11 +1,11 @@
-import { CanBeUndefined } from '../CanBeUndefined'
-import { IsOptional } from '../IsOptional'
+import { CanBeUndefinedImpl } from '../CanBeUndefined'
+import { IsOptional_ } from '../IsOptional'
 import { Callable, Newable } from '../../function'
 
-type DeepFlattenValue<T, k extends keyof T> = IsOptional<
+type DeepFlattenValue<T, k extends keyof T> = IsOptional_<
 	T,
 	k,
-	CanBeUndefined<
+	CanBeUndefinedImpl<
 		T,
 		k,
 		DeepFlatten<T[k]>,

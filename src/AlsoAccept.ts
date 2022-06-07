@@ -9,7 +9,7 @@
  *
  * type R = Test<'... // accepts any `string`, but suggest 'a' or 'b'
  */
-export type AlsoAccept<X> = X & {}
+export type AlsoAccept<X> = X extends {} ? X & {} : X
 
 export type ButReject<Obj extends object> = { [k in keyof Obj]?: never }
 export type ButRejectKey<K extends keyof any> = { [k in K]?: never }
