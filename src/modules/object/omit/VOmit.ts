@@ -8,7 +8,7 @@ import {
 } from '../HasIndexSignature'
 import { OmitSignatures } from './OmitSignatures'
 
-export type VOmit_<O, K> = O extends object
+type VOmitPrecise_<O, K> = O extends object
 	? _<
 			Pick<O, Exclude<keyof OmitSignatures<O>, K>> &
 				(HasSymbolIndexSignature<O> extends true
@@ -34,6 +34,18 @@ export type VOmit_<O, K> = O extends object
 					: unknown)
 	  >
 	: never
+
+type VOmitSimple_<O, K> = O extends object
+	? Pick<O, Exclude<keyof OmitSignatures<O>, K>>
+	: never
+
+export type VOmit_<O, K> = string extends keyof O
+	? VOmitPrecise_<O, K>
+	: number extends keyof O
+	? VOmitPrecise_<O, K>
+	: symbol extends keyof O
+	? VOmitPrecise_<O, K>
+	: VOmitSimple_<O, K>
 
 export type VOmit<
 	O extends object,

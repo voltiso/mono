@@ -71,8 +71,8 @@ describe('Omit', () => {
 		type A = VOmit<P, keyof P>
 		Assert.is<A, Props>()
 
-		// type AA = _<VOmit<P, keyof P>>
-		// Assert.is<AA, Props>() // :(
+		type AA = _<VOmit<P, keyof P>>
+		Assert.is<AA, Props>() // <3
 
 		type B = VOmit<P, 'a'>
 		Assert.is<B, Props>()
@@ -83,8 +83,8 @@ describe('Omit', () => {
 		type C = VOmit<P, K>
 		Assert.is<C, Props>()
 
-		// type CC = _<VOmit<P, K>>
-		// Assert.is<CC, Props>() // :(
+		type CC = _<VOmit<P, K>>
+		Assert.is<CC, Props>() // <3
 	})
 
 	it('index signature', () => {
