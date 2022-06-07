@@ -1,3 +1,4 @@
+import { HasIndexSignature } from '../HasIndexSignature'
 import { Pick_ } from '../pick'
 import { Value } from '../value'
 
@@ -6,7 +7,9 @@ import { Value } from '../value'
  * Omit call, construct and index signatures
  */
 export type OmitIndexSignatures<T> = T extends object
-	? Pick_<T, GetKeys<T>>
+	? HasIndexSignature<T> extends true
+		? Pick_<T, GetKeys<T>>
+		: T
 	: never
 
 type GetKeys<T> = Value<{
