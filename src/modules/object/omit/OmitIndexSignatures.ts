@@ -1,4 +1,5 @@
 import { Pick_ } from '../pick'
+import { Value } from '../value'
 
 // https://stackoverflow.com/a/51956054/1123898
 /**
@@ -8,7 +9,7 @@ export type OmitIndexSignatures<T> = T extends object
 	? Pick_<T, GetKeys<T>>
 	: never
 
-type GetKeys<T> = ValueOf<{
+type GetKeys<T> = Value<{
 	[k in keyof T as string extends k
 		? never
 		: number extends k
@@ -18,4 +19,4 @@ type GetKeys<T> = ValueOf<{
 		: k]: k
 }>
 
-type ValueOf<T> = T[keyof T]
+// type ValueOf<T> = T[keyof T]
