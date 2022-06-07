@@ -91,8 +91,6 @@ describe('Omit', () => {
 		Assert.is<A, Props>()
 
 		type AA = _<VOmit<P, keyof P>>
-		// TODO
-		// @ts-expect-error oops
 		Assert.is<AA, Props>()
 
 		//

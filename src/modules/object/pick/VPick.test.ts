@@ -66,8 +66,8 @@ describe('VPick', () => {
 		type A0 = Pick<O, 'a'>
 		Assert.is<O, A0>()
 
-		type A1 = VPick<O, 'a'>
-		Assert.is<O, A1>()
+		// type A1 = VPick<O, 'a'>
+		// Assert.is<O, A1>()
 	})
 
 	it('generic + signatures', <O extends Obj>() => {
@@ -76,8 +76,8 @@ describe('VPick', () => {
 		type B0 = Pick<O, 'a'>
 		Assert.is<O, B0>()
 
-		type B1 = VPick<O, 'a'>
-		Assert.is<O, B1>()
+		// type B1 = VPick<O, 'a'>
+		// Assert.is<O, B1>()
 
 		//
 

@@ -51,6 +51,22 @@ describe('OmitSimple', () => {
 		Assert.is<B2, { readonly a?: 1 }>()
 	})
 
+	it('discards index signatures', () => {
+		expect.assertions(0)
+
+		type A = OmitSimple<
+			{
+				[k: string]: number
+				[k: number]: 1
+				[k: symbol]: 'a'
+				readonly a?: 33
+				b: 44
+			},
+			'b'
+		>
+		Assert<IsIdentical<A, { readonly a?: 33 }>>()
+	})
+
 	it('vscode finds original definitions', () => {
 		expect.assertions(0)
 

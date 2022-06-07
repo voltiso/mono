@@ -2,7 +2,7 @@
 /* eslint-disable no-magic-numbers */
 import { IsIdentical } from '../../../IsEqual'
 import { Assert } from '../../bdd'
-import { PickSimple, PickSimple_ } from './PickSimple'
+import { PickSimple } from './PickSimple'
 
 describe('PickSimple', () => {
 	it('type', () => {
@@ -23,11 +23,31 @@ describe('PickSimple', () => {
 		type A0 = Pick<O, 'a'>
 		Assert.is<O, A0>()
 
-		type A1 = PickSimple<O, 'a'>
-		Assert.is<O, A1>()
+		// type A1 = PickSimple<O, 'a'>
+		// Assert.is<O, A1>()
 
-		type A2 = PickSimple_<O, 'a'>
-		Assert.is<O, A2>()
+		// type A2 = PickSimple_<O, 'a'>
+		// Assert.is<O, A2>()
+	})
+
+	it('discards index signatures', () => {
+		expect.assertions(0)
+
+		const sym = Symbol('sym')
+
+		type A = PickSimple<
+			{
+				[k: string]: number
+				[k: number]: 1
+				[k: symbol]: 'a'
+				readonly a?: 33
+				b: 44
+				3: 1
+				[sym]: 'a'
+			},
+			string
+		>
+		Assert<IsIdentical<A, { readonly a?: 33; b: 44 }>>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

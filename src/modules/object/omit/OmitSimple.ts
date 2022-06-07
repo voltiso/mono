@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AlsoAccept } from '../../../AlsoAccept'
 import { PickSimple_ } from '../pick/PickSimple'
+import { OmitIndexSignatures } from './OmitIndexSignatures'
 
-/** does not work with index signatures */
+/** Discards index signatures */
 export type OmitSimple_<O, K> = O extends object
-	? PickSimple_<O, Exclude<keyof O, K>>
+	? PickSimple_<O, Exclude<keyof OmitIndexSignatures<O>, K>>
 	: never
 
-/** does not work with index signatures */
+/** Discards index signatures */
 export type OmitSimple<
 	O extends object,
 	K extends keyof O | AlsoAccept<keyof any>
