@@ -5,7 +5,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
-import { PartialIfNullish } from '../PartialIfNullish'
 import { VPartial } from '../VPartial'
 import { Merge2Simple } from './Merge2Simple'
 import { _ } from '../flatten'
@@ -88,22 +87,19 @@ describe('Merge2Simple', () => {
 		expect.assertions(0)
 
 		type A = Merge2Simple<SomeType, Partial<SomeType>>
-		Assert.is<A, Partial<SomeType>>() // different than Merge2
+		Assert.is<A, Partial<SomeType>>()
 
-		type B = Merge2Simple<SomeType, T>
-		Assert.is<B, T>() // different than Merge2
+		// type B = Merge2Simple<SomeType, T>
+		// Assert.is<B, T>()
 
-		type C = Merge2Simple<PartialIfNullish<SomeType>, T>
-		Assert.is<C, T>() // different than Merge2
+		// type C = Merge2Simple<PartialIfNullish<SomeType>, T>
+		// Assert.is<C, T>()
 
 		type D = Merge2Simple<SomeType, VPartial<T>>
-		Assert.is<D, Partial<SomeType>>() // different than Merge2
+		Assert.is<D, Partial<SomeType>>()
 
-		type E = Merge2Simple<SomeType, T>
-		Assert.is<E, T>() // different than Merge2
-
-		// type F = Merge2Simple<SomeType, null>
-		// Assert.is<F, SomeType>()
+		// type E = Merge2Simple<SomeType, T>
+		// Assert.is<E, T>()
 
 		type G = Merge2Simple<T, SomeType>
 		Assert.is<G, SomeType>()
@@ -165,6 +161,25 @@ describe('Merge2Simple', () => {
 		>
 
 		Assert.is<A, SchemaOptions>()
+	})
+
+	it('discards index signatures', () => {
+		expect.assertions(0)
+
+		const sym = Symbol('sym')
+
+		type A = {
+			[k: string]: number
+			a: 1
+		}
+
+		type B = {
+			[k: symbol]: number
+			[sym]: 1
+		}
+
+		type R = Merge2Simple<A, B>
+		Assert<IsIdentical<R, { a: 1; [sym]: 1 }>>()
 	})
 
 	it('vscode - jump to definition (manual test...)', () => {
