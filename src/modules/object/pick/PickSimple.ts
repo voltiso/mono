@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AlsoAccept } from '../../../AlsoAccept'
-import { OmitIndexSignatures } from '../omit'
+import { OmitSignatures } from '../omit'
 
 /** Discards index signatures */
 export type PickSimple_<O, K> = Pick<
-	OmitIndexSignatures<O>,
-	K & keyof OmitIndexSignatures<O>
+	OmitSignatures<O>,
+	K & keyof OmitSignatures<O>
 >
 
 /** Discards index signatures */

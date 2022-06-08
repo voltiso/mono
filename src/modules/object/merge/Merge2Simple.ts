@@ -1,12 +1,9 @@
 import { _ } from '../flatten'
-import { OmitIndexSignatures, OmitSimple_ } from '../omit'
+import { OmitSignatures, OmitSimple_ } from '../omit'
 import { SuggestObject } from './SuggestObject'
 
 /** Discards index signatures */
-export type Merge2Simple_<A, B> = Impl<
-	OmitIndexSignatures<A>,
-	OmitIndexSignatures<B>
->
+export type Merge2Simple_<A, B> = Impl<OmitSignatures<A>, OmitSignatures<B>>
 
 /** Discards index signatures */
 export type Merge2Simple<

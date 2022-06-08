@@ -1,4 +1,3 @@
-import { HasIndexSignature } from '../HasIndexSignature'
 import { Pick_ } from '../pick'
 import { Value } from '../value'
 
@@ -6,11 +5,13 @@ import { Value } from '../value'
 /**
  * Omit call, construct and index signatures
  */
-export type OmitIndexSignatures<T> = T extends object
-	? HasIndexSignature<T> extends true
-		? Pick_<T, GetKeys<T>>
-		: T
-	: never
+export type OmitSignatures<T> = T extends object ? Pick_<T, GetKeys<T>> : never
+
+// export type OmitSignatures<T> = T extends object
+// 	? HasIndexSignature<T> extends true
+// 		? Pick_<T, GetKeys<T>>
+// 		: T
+// 	: never
 
 type GetKeys<T> = Value<{
 	[k in keyof T as string extends k
@@ -21,5 +22,3 @@ type GetKeys<T> = Value<{
 		? never
 		: k]: k
 }>
-
-// type ValueOf<T> = T[keyof T]

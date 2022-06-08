@@ -2,7 +2,7 @@
 /* eslint-disable no-magic-numbers */
 import { IsIdentical } from '../../../IsEqual'
 import { Assert } from '../../bdd'
-import { OmitIndexSignatures } from '../omit'
+import { OmitSignatures } from '../omit'
 import { Pick_ } from './Pick_'
 
 describe('Pick', () => {
@@ -73,7 +73,7 @@ describe('Pick', () => {
 			a: 1
 			b: 2
 		}
-		const obj = {} as unknown as Pick_<OmitIndexSignatures<Obj>, 'a'>
+		const obj = {} as unknown as Pick_<OmitSignatures<Obj>, 'a'>
 		// hit F12 here:
 		void obj.a
 	})

@@ -1,8 +1,8 @@
 import { _ } from '../flatten'
-import { OmitIndexSignatures } from '../omit'
+import { OmitSignatures } from '../omit'
 
 export type PickPrecise_<O, K> = _<
-	Pick<OmitIndexSignatures<O>, K & keyof OmitIndexSignatures<O>> &
+	Pick<OmitSignatures<O>, K & keyof OmitSignatures<O>> &
 		(string extends keyof O
 			? string extends K
 				? {

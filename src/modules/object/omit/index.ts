@@ -1,5 +1,5 @@
 export * from './OmitCall'
-export * from './OmitIndexSignatures'
+export * from './OmitSignatures'
 export * from './OmitPrecise'
 export * from './OmitSimple'
 export * from './OmitTrivial'

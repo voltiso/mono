@@ -5,7 +5,7 @@ import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
 import { VOmit } from './VOmit'
 import { _ } from '../flatten'
-import { OmitIndexSignatures } from './OmitIndexSignatures'
+import { OmitSignatures } from './OmitSignatures'
 import { VPick_ } from '../pick'
 import { OmitPrecise_ } from './OmitPrecise'
 import { OmitSimple, OmitSimple_ } from './OmitSimple'
@@ -125,7 +125,7 @@ describe('Omit', () => {
 			a: 1
 			2: 2
 		}
-		type A = VPick_<OmitIndexSignatures<AObj>, 2>
+		type A = VPick_<OmitSignatures<AObj>, 2>
 		Assert<IsIdentical<A, { 2: 2 }>>()
 
 		type BObj = {

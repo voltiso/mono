@@ -1,9 +1,9 @@
 /* eslint-disable no-magic-numbers */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
-import { OmitIndexSignatures } from './OmitIndexSignatures'
+import { OmitSignatures } from './OmitSignatures'
 
-describe('OmitIndexSignatures', () => {
+describe('OmitSignatures', () => {
 	it('works', () => {
 		expect.assertions(0)
 
@@ -19,7 +19,7 @@ describe('OmitIndexSignatures', () => {
 			2: 2
 			[sym]: 3
 		}
-		type X = OmitIndexSignatures<Obj>
+		type X = OmitSignatures<Obj>
 		Assert<IsIdentical<X, { num: number; [sym]: 3; 2: 2 }>>()
 	})
 
@@ -31,7 +31,7 @@ describe('OmitIndexSignatures', () => {
 			readonly a?: 1
 			b: 2
 		}
-		const x = {} as unknown as OmitIndexSignatures<Obj>
+		const x = {} as unknown as OmitSignatures<Obj>
 		void x.a
 	})
 })

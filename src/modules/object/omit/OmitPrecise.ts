@@ -7,11 +7,11 @@ import {
 	HasNumberIndexSignature,
 } from '../HasIndexSignature'
 import { Pick_ } from '../pick'
-import { OmitIndexSignatures } from './OmitIndexSignatures'
+import { OmitSignatures } from './OmitSignatures'
 
 export type OmitPrecise_<O, K> = O extends object
 	? _<
-			Pick_<O, Exclude<keyof OmitIndexSignatures<O>, K>> &
+			Pick_<O, Exclude<keyof OmitSignatures<O>, K>> &
 				(HasSymbolIndexSignature<O> extends true
 					? symbol extends K
 						? unknown
