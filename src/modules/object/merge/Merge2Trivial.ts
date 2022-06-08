@@ -1,13 +1,11 @@
+import { _ } from '../flatten'
+import { OmitTrivial_ } from '../omit'
 import { SuggestObject } from './SuggestObject'
 
-export type Merge2Trivial_<A, B> = {
-	[k in keyof A | keyof B]: k extends keyof B
-		? B[k]
-		: k extends keyof A
-		? A[k]
-		: never
-}
+/** Does not work with index signatures */
+export type Merge2Trivial_<A, B> = _<OmitTrivial_<A, keyof B> & B>
 
+/** Does not work with index signatures */
 export type Merge2Trivial<
 	A extends object,
 	B extends SuggestObject<A>
