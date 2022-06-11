@@ -39,5 +39,9 @@ describe('value', () => {
 
 		type A = Value_<T, 'a'>
 		Assert.is<A, 1>()
+
+		// type B = Value<T & object, keyof T>
+		// type BB = B extends undefined ? true : false
+		// Assert.is<BB, true>()
 	})
 })
