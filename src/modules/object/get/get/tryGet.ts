@@ -7,9 +7,7 @@ type TryGet_<O, P> = P extends readonly []
 	? undefined
 	: O extends object
 	? P extends readonly [infer H, ...infer T]
-		? H extends keyof O
-			? TryGet_<O[H], T>
-			: undefined
+		? TryGet_<TryGetProperty<O, H>, T>
 		: never
 	: never
 

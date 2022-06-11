@@ -7,6 +7,12 @@ import { IsIdentical } from '../../../../IsEqual'
 import { GetProperty, getProperty } from './getProperty'
 
 describe('getProperty', () => {
+	it('generic', <O extends object, K extends keyof O>() => {
+		expect.assertions(0)
+
+		Assert.is<GetProperty<O, K>, O[K]>()
+	})
+
 	it('works', () => {
 		expect.hasAssertions()
 

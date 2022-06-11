@@ -7,7 +7,7 @@ import { isObject } from '../../isObject'
 import { assertNotPolluting } from '../../isPolluting'
 import { UnknownProperty } from '../../UnknownProperty'
 import { Value } from '../../value'
-import { TryGetProperty } from './tryGetProperty'
+import { TryGetPropertyImpl } from './tryGetProperty'
 
 export class GetPropertyError<
 	Obj,
@@ -37,8 +37,17 @@ export class GetPropertyError<
 export type GetProperty<
 	T extends object,
 	K extends keyof T | AlsoAccept<keyof any>
-> = K extends keyof T ? Value<T, K> : Exclude<TryGetProperty<T, K>, undefined>
+> = K extends keyof T
+	? Value<T, K>
+	: Exclude<TryGetPropertyImpl<T, K>, undefined>
 
+/**
+ * Returns `object[property]`
+ *  - Throws on prototype pollution
+ *  - Throws on non-existing property
+ *  @returns `object[property]`
+ * @throws
+ */
 export function getProperty<
 	Obj extends object,
 	Property extends keyof Obj | UnknownProperty

@@ -7,7 +7,7 @@ import { IsIdentical } from '../../../../IsEqual'
 import { TryGet, tryGet } from './tryGet'
 
 describe('get', () => {
-	it('works - static', () => {
+	it('type', () => {
 		expect.assertions(0)
 
 		type A = TryGet<{ a: { b: { c: 0 } } }, []>
@@ -47,7 +47,27 @@ describe('get', () => {
 		Assert<IsIdentical<I, undefined>>()
 	})
 
-	it('works - static - unions', () => {
+	it('type - indexed', () => {
+		expect.assertions(0)
+
+		type A = TryGet<{ [k: string]: 0 }, [string]>
+		Assert<IsIdentical<A, 0 | undefined>>()
+
+		type B = TryGet<{ [k: string]: 0 }, ['test']>
+		Assert<IsIdentical<B, 0 | undefined>>()
+
+		// @ts-expect-error no property `test`
+		type C = TryGet<{ a: 1 }, ['test']>
+		Assert<IsIdentical<C, undefined>>()
+
+		type D = TryGet<{ [k: string]: number; test: 0 }, ['test']>
+		Assert<IsIdentical<D, 0>>()
+
+		type E = TryGet<{ [k: string]: number; test?: 0 }, ['test']>
+		Assert<IsIdentical<E, 0 | undefined>>()
+	})
+
+	it('type - unions', () => {
 		expect.assertions(0)
 
 		type A = TryGet<{ a: { b: 0 } } | { a: { b: 1 } }, ['a', 'b']>
