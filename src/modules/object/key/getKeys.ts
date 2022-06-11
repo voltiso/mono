@@ -3,7 +3,7 @@ import {
 	DefaultIterationOptions,
 	IterationOptions,
 } from '../IterationOptions'
-import { StringKeyof } from '../Keyof'
+import { StringKeyof } from './StringKeyof'
 import { merge, Merge2 } from '../merge'
 
 type GetKeys<Obj, O extends IterationOptions> = O['includeSymbols'] extends true

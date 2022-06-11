@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ToStringKey } from '../Keyof'
+import { ToStringKey } from '../key'
 import { Value } from '../value'
 
 export type IEntry = [keyof any, unknown]
