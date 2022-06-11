@@ -13,7 +13,7 @@ import {
 import { protoLink } from '../class'
 
 interface Is<A, T = true, F = false> {
-	<B>(_?: B): IsIdentical<A, B, T, F>
+	<B>(_?: B): A extends B ? T : F // subtypeOf
 	identicalTo<B>(_?: B): IsIdentical<A, B, T, F>
 
 	compatibleWith<B>(_?: B): IsCompatible<A, B, T, F>

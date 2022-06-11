@@ -12,7 +12,8 @@ describe('Assert', () => {
 			Is<number>().not.strictSubtypeOf<number>(),
 			Is(123 as const).strictSubtypeOf<number>(),
 			//
-			Is<U>().subtypeOf<number>()
+			Is<U>().subtypeOf<number>(),
+			Is<U>()<number>()
 			// Sometimes(Type<123>().is.subtypeOf<U>()),
 			// Sometimes(Type<'123'>().is.subtypeOf<U>())
 		)
