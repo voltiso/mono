@@ -1,3 +1,4 @@
+export * from './PickByValue'
 export * from './PickIndexSignatures'
 export * from './PickPrecise'
 export * from './PickSimple'
