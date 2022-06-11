@@ -1,5 +1,5 @@
-import { Assert } from '../bdd'
-import { IsIdentical } from '../../IsEqual'
+import { Assert } from '../../bdd'
+import { IsIdentical } from '../../../IsEqual'
 import { PickCallNoUnknown } from './PickCall'
 
 describe('PickCall', () => {

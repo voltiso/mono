@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Assert } from '../bdd'
-import { IsIdentical } from '../../IsEqual'
+import { IsIdentical } from '../../../IsEqual'
+import { Assert } from '../../bdd'
 import { PickConstructNoUnknown } from './PickConstruct'
 
 describe('PickConstruct', () => {
@@ -60,7 +60,7 @@ describe('PickConstruct', () => {
 			num: number
 		}
 
-		// @ts-expect-error error
+		// @ts-expect-error 'Input' does not satisfy 'abstract new (...args: any) => any'
 		type _ = PickConstructNoUnknown<Input>
 	})
 })

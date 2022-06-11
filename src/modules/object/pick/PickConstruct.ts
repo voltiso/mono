@@ -1,17 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+//
+
 /**
  * Omit Construct and construct signatures
- * Does not work with overloads!
+ *  - Does not work with overloads!
  */
-export type PickConstructNoUnknown<
-	T extends abstract new (...args: any) => any
-> =
+export type PickConstructNoUnknown_<T> =
 	| _PickConstruct0<T>
 	| _PickConstruct1<T>
 	| _PickConstruct2<T>
 	| _PickConstruct3<T>
 	| _PickConstruct4<T>
+
+/**
+ * Omit Construct and construct signatures
+ *  - Does not work with overloads!
+ */
+export type PickConstructNoUnknown<
+	T extends abstract new (...args: any) => any
+> = PickConstructNoUnknown_<T>
 
 //
 

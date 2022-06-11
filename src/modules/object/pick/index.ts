@@ -1,4 +1,6 @@
 export * from './PickByValue'
+export * from './PickCall'
+export * from './PickConstruct'
 export * from './PickIndexSignatures'
 export * from './PickOptional'
 export * from './PickPrecise'
