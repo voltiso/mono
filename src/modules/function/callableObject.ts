@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Create callable object
+ *  - Works with clone?
  * @param obj object to copy properties from (shallow copy)
  * @param f function - will be modified
  * @returns modified `f`
