@@ -1,10 +1,8 @@
 export * from './Callable'
-
 export * from './Parameters'
-
+export * from './Return'
+export * from './apply'
 export * from './bind'
 export * from './call'
-export * from './apply'
-
-export * from './Return'
 export * from './callableObject'
+export * from './callableProto'
