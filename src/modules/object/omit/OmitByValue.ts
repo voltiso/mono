@@ -1,5 +1,5 @@
 import { AlsoAccept } from '../../../AlsoAccept'
-import { Value } from '../value'
+import { Value } from '../key-value'
 
 export type OmitByValue<
 	Obj extends object,

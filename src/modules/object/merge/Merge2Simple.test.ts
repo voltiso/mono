@@ -5,11 +5,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
-import { VPartial } from '../VPartial'
 import { Merge2Simple } from './Merge2Simple'
 import { _ } from '../flatten'
-import { VOmit } from '../omit'
+import { VOmit } from '../pick-omit/omit'
 import { Merge2 } from './Merge2'
+import { VPartial } from '../map'
 
 describe('Merge2Simple', () => {
 	it('works', () => {

@@ -2,7 +2,7 @@
 import {
 	defaultIterationOptions,
 	IterationOptions,
-} from '../../object/IterationOptions'
+} from '../../object/key-value/IterationOptions'
 
 export interface ToStringParams extends IterationOptions {
 	maxLength: number

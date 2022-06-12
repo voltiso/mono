@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { DeepPartial } from '../DeepPartial'
-import { Value } from '../value'
 import { Flatten } from '../flatten'
 import { IsOptional } from '../IsOptional'
+import { Value } from '../key-value'
+import { DeepPartial } from '../map'
 
 export type DeepMerge2<
 	A,

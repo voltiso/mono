@@ -1,5 +1,5 @@
 import { _ } from '../flatten'
-import { OmitSignatures, OmitSimple_ } from '../omit'
+import { OmitSignatures, OmitSimple_ } from '../pick-omit/omit'
 import { SuggestObject } from './SuggestObject'
 
 /** Discards index signatures */

@@ -7,7 +7,7 @@ import { Assert } from '../../bdd'
 import { IsIdentical } from '../../../IsEqual'
 import { Merge2Trivial } from './Merge2Trivial'
 import { _ } from '../flatten'
-import { VOmit } from '../omit'
+import { VOmit } from '../pick-omit/omit'
 import { Merge2 } from './Merge2'
 
 describe('Merge2Trivial', () => {

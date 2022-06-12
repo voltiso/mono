@@ -1,6 +1,6 @@
-import { assertNotPolluting } from '../isPolluting'
+import { assertNotPolluting } from '../get-set/isPolluting'
+import { Value } from '../key-value'
 import { UnknownProperty } from '../UnknownProperty'
-import { Value } from '../value'
 
 type AllowedValue<
 	Obj extends object,

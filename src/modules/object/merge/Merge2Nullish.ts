@@ -1,5 +1,5 @@
 import { Nullish } from '../../null'
-import { PartialIfNullish_ } from '../PartialIfNullish'
+import { PartialIfNullish_ } from '../map'
 import { Merge2_ } from './Merge2'
 import { SuggestObjectNullish } from './SuggestObjectNullish'
 

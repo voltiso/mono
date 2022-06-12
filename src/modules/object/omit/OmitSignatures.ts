@@ -1,9 +1,9 @@
-import { Pick_ } from '../pick'
-import { Value } from '../value'
+import { Value } from '../key-value'
+import { Pick_ } from '../pick-omit'
 
-// https://stackoverflow.com/a/51956054/1123898
 /**
  * Omit call, construct and index signatures
+ *  - @see https://stackoverflow.com/a/51956054/1123898
  */
 export type OmitSignatures<T> = T extends object ? Pick_<T, GetKeys<T>> : never
 

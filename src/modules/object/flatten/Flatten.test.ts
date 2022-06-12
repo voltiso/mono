@@ -5,7 +5,7 @@
 import { Assert, Is } from '../../bdd'
 import { IsCompatible, IsIdentical } from '../../../IsEqual'
 import { Flatten, Flatten2, _ } from './Flatten'
-import { VOmit } from '../omit'
+import { VOmit } from '../pick-omit/omit'
 
 describe('Flatten', () => {
 	it('works', () => {

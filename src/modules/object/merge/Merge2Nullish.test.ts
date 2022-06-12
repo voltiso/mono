@@ -3,8 +3,7 @@
 /* eslint-disable no-magic-numbers */
 import { IsIdentical } from '../../../IsEqual'
 import { Assert } from '../../bdd'
-import { PartialIfNullish } from '../PartialIfNullish'
-import { VPartial } from '../VPartial'
+import { PartialIfNullish, VPartial } from '../map'
 import { Merge2Nullish } from './Merge2Nullish'
 
 describe('merge', () => {

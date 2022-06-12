@@ -1,7 +1,7 @@
 import { _ } from '../flatten'
 import { Callable, Newable } from '../../function'
 import { IsOptional_ } from '../IsOptional'
-import { Value_ } from '../value'
+import { Value_ } from '../key-value'
 import { SuggestObject } from './SuggestObject'
 
 type Part1<A, B> = {

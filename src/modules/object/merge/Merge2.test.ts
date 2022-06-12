@@ -1,8 +1,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
 import { Assert } from '../../bdd'
-import { PartialIfNullish } from '../PartialIfNullish'
-import { VPartial } from '../VPartial'
+import { PartialIfNullish, VPartial } from '../map'
 import { Merge2 } from './Merge2'
 
 describe('Merge2', () => {
