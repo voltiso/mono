@@ -78,7 +78,9 @@ function _Assert<
 }
 
 export const Assert = protoLink(_Assert, {
+	/** isSubtype */
 	is<_A extends B, B>() {},
+
 	isSubtype<_A extends B, B>() {},
 	isSupertype<A, _B extends A>() {},
 })
