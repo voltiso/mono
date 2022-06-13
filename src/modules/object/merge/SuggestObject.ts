@@ -2,7 +2,7 @@ import { AlsoAccept } from '../../../AlsoAccept'
 
 export type SuggestObject_<T> =
 	| {
-			[k in keyof T]?: T[k] | AlsoAccept<unknown> // auto-complete doesn't work for the nested value :(
+			[k in keyof T]?: SuggestObject_<T[k]>
 	  }
 	| AlsoAccept<object>
 

@@ -3,6 +3,7 @@ import { Flatten } from '../flatten'
 import { IsOptional } from '../IsOptional'
 import { Value } from '../key-value'
 import { DeepPartial } from '../map'
+import { SuggestObject } from './SuggestObject'
 
 export type DeepMerge2<
 	A,
@@ -94,6 +95,17 @@ function deepMerge_(a: RSU, b: RSU) {
 	}
 	return r
 }
+
+//
+
+export function deepMerge<
+	ObjA extends object,
+	ObjB extends SuggestObject<ObjA>
+>(objA: ObjA, objB: ObjB): DeepMerge2<ObjA, ObjB>
+
+export function deepMerge<Objs extends readonly object[]>(
+	...objs: Objs
+): DeepMerge<Objs>
 
 export function deepMerge<Objs extends readonly object[]>(
 	...objs: Objs

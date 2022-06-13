@@ -99,6 +99,7 @@ describe('deepMerge', () => {
 		expect(deepMerge({ a: { a: 1 } }, { a: { b: 2 } })).toStrictEqual({
 			a: { a: 1, b: 2 },
 		})
+
 		expect(deepMerge({ a: { a: 1 } }, { a: 2 })).toStrictEqual({ a: 2 })
 	})
 
