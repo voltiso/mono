@@ -173,7 +173,7 @@
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
-		"lint": "run-s lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint .",

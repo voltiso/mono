@@ -1,6 +1,10 @@
 {
 	"extends": "./tsconfig.base.json",
 
+	// if tsc-linting project with multiple tsconfig.json files,
+	// here's a setup for this to work fast
+	// (using ts project references)
+
 	"compilerOptions": {
 		// referenced project must emit
 		"noEmit": false,
@@ -8,8 +12,13 @@
 		"outDir": ".tsc-out"
 	},
 
-	"include": ["**/*.*", "package.json"],
+	"include": [
+		"**/*.*",
+		"package.json" // need to explicitly include? (if including it from code)
+		//
+	],
 	// "include": ["."],
+
 	"exclude": [
 		"dist",
 		"node_modules",

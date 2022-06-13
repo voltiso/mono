@@ -4,7 +4,7 @@
 	"compilerOptions": {
 		"outDir": "_outDir_PLEASE_OVERRIDE", // just in case - avoid polluting any dirs
 
-		"composite": true,
+		"composite": true, // possibly need to overwrite for TSUP builds!
 		"declaration": true,
 		// "emitDeclarationOnly": true,
 		"noEmit": true,
