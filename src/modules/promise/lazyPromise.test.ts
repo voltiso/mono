@@ -10,6 +10,7 @@ import 'zone.js'
 import { protoLink } from '../class'
 
 import { lazyPromise } from './lazyPromise'
+import { sleep } from './sleep'
 
 function implicitPromiseConstructorName() {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -30,12 +31,6 @@ function checkImplicitPromiseConstructorName() {
 
 // eslint-disable-next-line jest/require-hook
 checkImplicitPromiseConstructorName()
-
-function sleep(time: number) {
-	return new Promise<void>(r => {
-		setTimeout(() => r(), time)
-	})
-}
 
 class DocRef {
 	async get() {
