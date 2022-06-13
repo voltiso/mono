@@ -20,3 +20,6 @@
 /symbol/
 
 *.tgz
+*.log
+.tsc-out
+*.tsbuildinfo

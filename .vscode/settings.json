@@ -50,6 +50,7 @@
 		"cand",
 		"Cloneable",
 		"compat",
+		"eopt",
 		"esbuild",
 		"iife",
 		"Parens",

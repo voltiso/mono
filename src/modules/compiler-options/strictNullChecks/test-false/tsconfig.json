@@ -1,6 +1,12 @@
 {
+	"extends": "../../../../../tsconfig.base.json",
+
 	"compilerOptions": {
 		"strictNullChecks": false,
-		"exactOptionalPropertyTypes": false
-	}
+		"exactOptionalPropertyTypes": false,
+		"strictPropertyInitialization": false
+	},
+
+	"include": ["."],
+	"references": [{ "path": "../../../../.." }]
 }

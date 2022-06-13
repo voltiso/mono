@@ -1,13 +1,11 @@
 {
 	"extends": "./tsconfig.base.json",
 
-	"compilerOptions": {
-		"noEmit": true,
-
-		"allowJs": true,
-		"checkJs": true
-	},
-
 	"include": ["**/*.*"],
-	"exclude": ["dist/**/*", "node_modules/**/*"]
+	"exclude": [
+		"dist",
+		"node_modules",
+		".tsc-out"
+		//
+	]
 }

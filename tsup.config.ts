@@ -31,5 +31,16 @@ export default defineConfig({
 
 	// minify: true,
 
+	// esbuildOptions: (options, context) => {
+	// 	options.jsx = 'preserve'
+	// 	return options
+	// },
+
+	tsconfig: 'tsconfig.build.json',
+
+	// inject: ['./script/inject-react.ts'],
+
+	banner: { js: "'use strict'" },
+
 	treeshake: 'smallest',
 })
