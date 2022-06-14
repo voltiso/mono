@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-statements */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-magic-numbers */
 import { IsIdentical } from '../../IsEqual'
 import { Assert } from '../bdd'
 import { DeleteIt } from './deleteIt'
-import { ApplyPatch, forcePatch, patch } from './patch'
+import { ApplyPatch, forcePatch, patch, patchUpdate } from './patch'
 import { ReplaceIt, replaceIt } from './replaceIt'
 
 describe('patch', () => {
@@ -76,5 +78,17 @@ describe('patch', () => {
 		const a = { a: 0 }
 		const b = patch(a, { a: 0 })
 		expect(b).toBe(a)
+	})
+
+	it('patchUpdate', () => {
+		expect.hasAssertions()
+
+		const obj: any = { b: 9, a: { aa: { aaa: 'a' } } }
+
+		const a = patchUpdate(obj, { a: { bb: 99 } })
+		expect(a).toStrictEqual({ b: 9, a: { bb: 99 } })
+
+		const b = patch(obj, { a: { bb: 99 } })
+		expect(b).toStrictEqual({ b: 9, a: { aa: { aaa: 'a' }, bb: 99 } })
 	})
 })

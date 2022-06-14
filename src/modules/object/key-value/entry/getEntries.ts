@@ -37,9 +37,9 @@ import {
 	IterationOptions,
 } from '../IterationOptions'
 import { merge, Merge2 } from '../../merge'
-import { CoercedEntry } from './Entry'
+import { CoercedEntry, Entry } from './Entry'
 
-type GetEntries<
+export type GetCoercedEntries<
 	Obj extends object,
 	O extends IterationOptions
 > = O['includeSymbols'] extends true
@@ -47,6 +47,9 @@ type GetEntries<
 	: O['includeSymbols'] extends false
 	? Extract<CoercedEntry<Obj>, [string | number, unknown]>[]
 	: CoercedEntry<Obj>[] // generic use - include all
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type GetEntries<Obj extends object, _O extends IterationOptions> = Entry<Obj>[]
 
 /**
  * Similar to `Object.keys(obj)`
@@ -100,6 +103,34 @@ export function getEntries<
 	obj: Obj,
 	options?: O | undefined
 ): GetEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions> {
+	const myOptions = merge(defaultIterationOptions, options)
+	return getEntries_(obj, myOptions as never) as never
+}
+
+//
+
+export function getCoercedEntries<Obj extends object>(
+	obj: Obj
+): GetCoercedEntries<Obj, DefaultIterationOptions>
+
+export function getCoercedEntries<
+	Obj extends object,
+	O extends Partial<IterationOptions>
+>(
+	obj: Obj,
+	options: O
+): GetCoercedEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+
+export function getCoercedEntries<
+	Obj extends object,
+	O extends Partial<IterationOptions>
+>(
+	obj: Obj,
+	options?: O | undefined
+): GetCoercedEntries<
+	Obj,
+	Merge2<DefaultIterationOptions, O> & IterationOptions
+> {
 	const myOptions = merge(defaultIterationOptions, options)
 	return getEntries_(obj, myOptions as never) as never
 }

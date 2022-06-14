@@ -6,7 +6,7 @@ import { IsIdentical } from '../../../../IsEqual'
 import { Assert, Is } from '../../../bdd'
 import { Newable } from '../../../function'
 import { Entry } from './Entry'
-import { getEntries } from './getEntries'
+import { getCoercedEntries } from './getEntries'
 
 describe('object/entries', () => {
 	it('works - static', () => {
@@ -77,7 +77,7 @@ describe('object/entries', () => {
 			['a', 'a'],
 		])
 
-		const a = getEntries(obj, { includeSymbols: true })
+		const a = getCoercedEntries(obj, { includeSymbols: true })
 		expect(a).toStrictEqual([
 			['1', 1],
 			['a', 'a'],
@@ -95,7 +95,7 @@ describe('object/entries', () => {
 			>
 		>()
 
-		const b = getEntries(obj)
+		const b = getCoercedEntries(obj)
 		expect(b).toStrictEqual([
 			['1', 1],
 			['a', 'a'],
@@ -103,7 +103,7 @@ describe('object/entries', () => {
 		type B = typeof b[number]
 		Assert<IsIdentical<B, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
 
-		const c = getEntries(obj, { includeNonEnumerable: true })
+		const c = getCoercedEntries(obj, { includeNonEnumerable: true })
 		expect(c).toStrictEqual([
 			['1', 1],
 			['a', 'a'],
@@ -114,7 +114,7 @@ describe('object/entries', () => {
 
 		//
 
-		const d = getEntries(obj, {
+		const d = getCoercedEntries(obj, {
 			includeNonEnumerable: true,
 			includeSymbols: true,
 		})
