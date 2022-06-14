@@ -100,9 +100,9 @@ export function patch<X, PatchValue extends PatchFor<X>>(
 export function patchUpdate<
 	Obj extends object,
 	PatchValue extends PatchFor<Obj>
->(x: Obj, patchValue: PatchValue) {
+>(x: Obj, patchValue: PatchValue): Force<Obj, ApplyPatch<Obj, PatchValue>> {
 	const finalPatch = mapValues(patchValue, x =>
 		isPatchSentinel(x) ? x : (replaceIt(x) as never)
 	)
-	return forcePatch(x, finalPatch)
+	return forcePatch(x, finalPatch) as never
 }
