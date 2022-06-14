@@ -15,7 +15,7 @@ type Get_<O, P> = P extends readonly []
 		: never
 	: never
 
-export type Get<O extends object, P extends Path<O>> = Get_<O, P>
+export type Get<O, P extends Path<O>> = Get_<O, P>
 
 //
 

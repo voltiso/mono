@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "37.3.2",
+	"version": "38.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"__________": "__________",
@@ -72,6 +72,11 @@
 			"import": "./dist/modules/parser/index.mjs",
 			"require": "./dist/modules/parser/index.js"
 		},
+		"./patch": {
+			"types": "./dist/modules/patch/index.d.ts",
+			"import": "./dist/modules/patch/index.mjs",
+			"require": "./dist/modules/patch/index.js"
+		},
 		"./promise": {
 			"types": "./dist/modules/promise/index.d.ts",
 			"import": "./dist/modules/promise/index.mjs",
@@ -131,6 +136,9 @@
 			"parser": [
 				"dist/modules/parser"
 			],
+			"patch": [
+				"dist/modules/patch"
+			],
 			"promise": [
 				"dist/modules/promise"
 			],
@@ -164,6 +172,7 @@
 		"number/",
 		"object/",
 		"parser/",
+		"patch/",
 		"promise/",
 		"set/",
 		"string/",

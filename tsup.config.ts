@@ -15,6 +15,7 @@ export default defineConfig({
 		'src/modules/number/index.ts',
 		'src/modules/object/index.ts',
 		'src/modules/parser/index.ts',
+		'src/modules/patch/index.ts',
 		'src/modules/promise/index.ts',
 		'src/modules/set/index.ts',
 		'src/modules/string/index.ts',

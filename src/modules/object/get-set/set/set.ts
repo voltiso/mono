@@ -39,17 +39,18 @@ export class SetError<
 //
 
 /** `obj[property] = value` */
-export function trySet<
-	Obj extends object,
-	K extends keyof Obj | UnknownProperty
->(obj: Obj, property: K, value: K extends keyof Obj ? Obj[K] : unknown): void
+export function set<Obj extends object, K extends keyof Obj | UnknownProperty>(
+	obj: Obj,
+	property: K,
+	value: K extends keyof Obj ? Obj[K] : unknown
+): void
 
 /**
  * `obj[entry[0]] = entry[1]`
  * @param obj `object`
  * @param entry `[property, value]`
  * */
-export function trySet<Obj extends object, KV extends Entry<Obj>>(
+export function set<Obj extends object, KV extends Entry<Obj>>(
 	obj: Obj,
 	entry: KV
 ): void
@@ -64,13 +65,13 @@ export function trySet<Obj extends object, KV extends Entry<Obj>>(
  *
  * expect(obj).toStrictEqual({ a: { b: { c: 123 } } })
  */
-export function trySet<
+export function set<
 	Obj extends object,
 	P extends readonly [...Path<Obj>, UnknownProperty],
 	V
 >(obj: Obj, path: P, value: V): void
 
-export function trySet(
+export function set(
 	...args:
 		| readonly [object, IEntry]
 		| readonly [object, UnknownProperty, unknown]

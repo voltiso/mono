@@ -1,1 +1,2 @@
-export * from './trySet'
+export * from './set'
+export * from './setProperty'

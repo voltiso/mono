@@ -16,3 +16,9 @@ export * from './assumeType'
 export * from './lazyValue'
 export * from './narrowType'
 export * from './widenType'
+
+/**
+ * Let's just export everything globally too...
+ *  - If the consumer doesn't use ES6/tree-shaking, well... he should
+ * */
+export * from './modules'

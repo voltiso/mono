@@ -14,7 +14,7 @@ type Nest_<path, Acc> = path extends readonly []
 		: never
 	: never
 
-type Nest<X, path extends IPath> = Nest_<path, X>
+export type Nest<X, path extends IPath> = Nest_<path, X>
 
 export function nest<X, P extends IPath>(x: X, path: P): Nest<X, P> {
 	if (path.length === 0) return x as any
