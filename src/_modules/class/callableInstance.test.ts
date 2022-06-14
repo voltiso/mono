@@ -80,6 +80,10 @@ describe('callableInstance', () => {
 		expect.hasAssertions()
 
 		class Test {
+			fun() {
+				return this
+			}
+
 			[CALL]() {
 				return this
 			}
@@ -91,6 +95,7 @@ describe('callableInstance', () => {
 
 		const test = new Test() as CallableInstance<Test>
 
-		expect(test).toBe(test())
+		expect(test()).toBe(test)
+		expect(test.fun()).toBe(test)
 	})
 })
