@@ -2,6 +2,7 @@
 /**
  * Create callable object
  *  - Works with clone (if I remember correctly)
+ *  - Does not bind `this` context!
  * @param obj object to copy properties from (shallow copy)
  * @param f function - will be modified
  * @returns modified `f`

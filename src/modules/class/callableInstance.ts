@@ -32,7 +32,7 @@ export function callableInstance<This extends WithCall>(
 ): CallableInstance<This> {
 	// eslint-disable-next-line func-style
 	const f = (...args: Parameters_<This[CALL]>) => {
-		return thisArg[CALL](...args)
+		return thisArg[CALL].call(f, ...args)
 	}
 
 	return callableObject(thisArg, f)

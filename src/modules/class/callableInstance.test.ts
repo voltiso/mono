@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable max-statements */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-magic-numbers */
@@ -73,5 +74,23 @@ describe('callableInstance', () => {
 		expect(c._data).toBe('aaa')
 
 		expect(c.length()).toBe(99)
+	})
+
+	it('sets correct `this` context', () => {
+		expect.hasAssertions()
+
+		class Test {
+			[CALL]() {
+				return this
+			}
+
+			constructor() {
+				return callableInstance(this)
+			}
+		}
+
+		const test = new Test() as CallableInstance<Test>
+
+		expect(test).toBe(test())
 	})
 })
