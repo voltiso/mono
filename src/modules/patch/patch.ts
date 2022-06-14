@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undefined */
 import { AlsoAccept } from '../../AlsoAccept'
+import { Force } from '../../Assume'
 import { getEntries, isPlain, Merge2, ValueImpl } from '../object'
 import { DeleteIt, isDeleteIt } from './deleteIt'
 import { isReplaceIt, ReplaceIt } from './replaceIt'
@@ -16,7 +17,7 @@ export type PatchFor<X> =
 			  }
 			: never)
 	| ReplaceIt<X>
-	| DeleteIt
+	| (X extends undefined ? DeleteIt : never)
 	| X
 
 //
@@ -73,6 +74,6 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 export function patch<X, PatchValue extends PatchFor<X>>(
 	x: X,
 	patchValue: PatchValue
-): ApplyPatch<X, PatchValue> {
-	return forcePatch(x, patchValue)
+): Force<X, ApplyPatch<X, PatchValue>> {
+	return forcePatch(x, patchValue) as never
 }

@@ -3,10 +3,24 @@
 /* eslint-disable no-magic-numbers */
 import { IsIdentical } from '../../IsEqual'
 import { Assert } from '../bdd'
-import { forcePatch, patch } from './patch'
-import { replaceIt } from './replaceIt'
+import { DeleteIt } from './deleteIt'
+import { ApplyPatch, forcePatch, patch } from './patch'
+import { ReplaceIt, replaceIt } from './replaceIt'
 
 describe('patch', () => {
+	it('generic', <X>() => {
+		expect.assertions(0)
+
+		// type A = ApplyPatch<X, PatchFor<X>>
+		// Assert.is<A, X>()
+
+		type B = ApplyPatch<X, ReplaceIt<X>>
+		Assert.is<B, X>()
+
+		type C = ApplyPatch<X, DeleteIt>
+		Assert.is<C, undefined>()
+	})
+
 	it('works', () => {
 		expect.hasAssertions()
 
