@@ -5,8 +5,6 @@
 		"composite": false,
 		"noEmit": false,
 
-		"sourceMap": true,
-
 		"rootDir": "src"
 	},
 
