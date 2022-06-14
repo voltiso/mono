@@ -201,7 +201,8 @@
 		"build:tsc:cjs": "tsc -b tsconfig.build.cjs.json",
 		"build:genCompatDirs": "esr script/gen-compat-dirs.ts",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-p build test lint",
+		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p build test lint",
 		"__________MISC": "__________",
 		"clean": "rimraf dist array bdd boolean class clone compiler-options error function null number object parser promise set string symbol"
 	},
