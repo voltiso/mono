@@ -55,4 +55,26 @@ describe('patch', () => {
 		type C = typeof c
 		Assert<IsIdentical<C, { a: 1 }>>()
 	})
+
+	it('does not change original data (simple)', () => {
+		expect.hasAssertions()
+
+		const a = { a: 0 }
+		const originalA = a
+
+		const b = patch(a, { a: 1 })
+
+		expect(b).toStrictEqual({ a: 1 })
+		expect(a).toStrictEqual({ a: 0 })
+
+		expect(a).toBe(originalA)
+	})
+
+	it('does not modify if not needed (simple)', () => {
+		expect.hasAssertions()
+
+		const a = { a: 0 }
+		const b = patch(a, { a: 0 })
+		expect(b).toBe(a)
+	})
 })

@@ -2,7 +2,14 @@
 /* eslint-disable no-undefined */
 import { AlsoAccept } from '../../AlsoAccept'
 import { Force } from '../../Assume'
-import { getEntries, isPlain, Merge2, ValueImpl } from '../object'
+import {
+	getEntries,
+	getProperty,
+	isPlain,
+	Merge2,
+	setProperty,
+	ValueImpl,
+} from '../object'
 import { DeleteIt, isDeleteIt } from './deleteIt'
 import { isReplaceIt, ReplaceIt } from './replaceIt'
 
@@ -55,17 +62,22 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	x: X,
 	patchValue: PatchValue
 ): ApplyPatch<X, PatchValue> {
-	if (isDeleteIt(patchValue)) {
-		return undefined as never
-	} else if (isReplaceIt(patchValue)) {
-		return patchValue.__replaceIt as never
-	} else if (isPlain(patchValue)) {
-		const res: any = x || {}
+	if (isDeleteIt(patchValue)) return undefined as never
+	else if (isReplaceIt(patchValue)) return patchValue.__replaceIt as never
+	else if (isPlain(patchValue)) {
+		const res: any = { ...x }
+		let haveChange = false
 		for (const [key, val] of getEntries(patchValue)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			res[key] = forcePatch(res[key], val)
+			const oldValue = getProperty(res, key)
+			const newValue = forcePatch(oldValue, val)
+			if (newValue !== oldValue) {
+				setProperty(res, key, newValue as any)
+				haveChange = true
+			}
 		}
-		return res as never
+
+		if (haveChange) return res as never
+		else return x as never
 	} else return patchValue as never
 }
 
