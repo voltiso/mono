@@ -2,7 +2,7 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/ban-types */
 import { merge } from '../../object'
-import { toString } from '../../string'
+import { toString } from '..'
 import { defaultToStringParams, ToStringParams } from './ToStringParams'
 
 const baseResult = '[]'

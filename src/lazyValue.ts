@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-import { assign } from './modules/object'
+import { assign } from './_modules/object'
 
 /* eslint-disable max-params */
 export function lazyValue<T extends object>(getValue: () => T): T {

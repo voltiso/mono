@@ -1,6 +1,6 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
-import { Assert } from '../modules/bdd'
+import { Assert } from '../_modules/bdd'
 import {
 	NotProvidedNN,
 	OptionalArgumentNN,

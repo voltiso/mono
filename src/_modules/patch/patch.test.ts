@@ -91,4 +91,12 @@ describe('patch', () => {
 		const b = patch(obj, { a: { bb: 99 } })
 		expect(b).toStrictEqual({ b: 9, a: { aa: { aaa: 'a' }, bb: 99 } })
 	})
+
+	it('patchUpdate boolean', () => {
+		expect.hasAssertions()
+
+		const obj: any = { a: true }
+		const b = patchUpdate(obj, { a: false })
+		expect(b).toStrictEqual({ a: false })
+	})
 })

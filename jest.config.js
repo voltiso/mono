@@ -6,7 +6,7 @@ module.exports = {
 	testEnvironment: 'node',
 	modulePathIgnorePatterns: [
 		'/dist/',
-		'src/modules/compiler-options/', // do not run compiler-options static checks with ts-jest (checked by `pnpm lint:tsc`)
+		'src/_modules/compiler-options/', // do not run compiler-options static checks with ts-jest (checked by `pnpm lint:tsc`)
 		//
 	],
 	globals: {

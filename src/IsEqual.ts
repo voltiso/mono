@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
-import { OptionalFromUndefined } from './modules/object'
-import { SmartFlatten } from './modules/object/flatten/SmartFlatten'
+import { OptionalFromUndefined } from './_modules/object'
+import { SmartFlatten } from './_modules/object/flatten/SmartFlatten'
 
 /**
  * Is either a subtype of another one?

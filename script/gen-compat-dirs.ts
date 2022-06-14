@@ -19,9 +19,10 @@ async function main() {
 		} catch {}
 
 		const data = {
-			types: `../dist/modules/${name}/index.d.ts`,
-			module: `../dist/modules/${name}/index.mjs`,
-			main: `../dist/modules/${name}/index.js`,
+			types: `../dist/esm/_modules/${name}/index.d.ts`,
+			module: `../dist/esm/_modules/${name}/index.js`,
+			main: `../dist/cjs/_modules/${name}/index.js`,
+			sideEffects: false,
 		}
 
 		// eslint-disable-next-line no-await-in-loop

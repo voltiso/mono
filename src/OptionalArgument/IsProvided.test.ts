@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-statements */
 import { IsIdentical } from '../IsEqual'
-import { Assert } from '../modules/bdd'
+import { Assert } from '../_modules/bdd'
 import { IsProvided } from './IsProvided'
 import { NotProvided } from './OptionalArgument'
 

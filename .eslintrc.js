@@ -24,7 +24,7 @@ module.exports = {
 	ignorePatterns: [
 		'dist/**/*',
 		'node_modules/**/*',
-		// 'src/modules/compiler-options/**/*',
+		// 'src/_modules/compiler-options/**/*',
 	],
 	plugins: ['@typescript-eslint', 'import'],
 	rules: {

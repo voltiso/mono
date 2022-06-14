@@ -1,4 +1,4 @@
-import { Assert } from './modules/bdd'
+import { Assert } from './_modules/bdd'
 import { IsIdentical } from './IsEqual'
 import { narrow } from './narrowType'
 

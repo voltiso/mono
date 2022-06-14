@@ -17,12 +17,12 @@
 		"package.json" // need to explicitly include? (if including it from code)
 		//
 	],
-	// "include": ["."],
 
 	"exclude": [
 		"dist",
 		"node_modules",
 		".tsc-out",
+		//
 		"**/compiler-options/**/test-*"
 	]
 }

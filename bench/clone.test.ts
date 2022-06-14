@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { deepClone } from '../src/modules/clone'
+import { deepClone } from '../src/_modules/clone'
 import cloneLib from 'clone'
 
 const ITERS = 10 * 1000

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 // import { expect } from 'chai'
 import { createClassInterface, Interface } from './Interface'
-import { Unpack } from './modules/array/Unpack'
+import { Unpack } from './_modules/array/Unpack'
 
 describe('interface', () => {
 	it('works', () => {

@@ -1,3 +1,4 @@
 dist/
 .tsc-out/
+node_modules/
 pnpm-lock.yaml

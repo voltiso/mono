@@ -41,6 +41,8 @@
 		"jsx": "react-jsx", // for ts-jest
 		// "jsx": "preserve", // for next.js - they implement their own transforms
 
+		"disableSizeLimit": true,
+
 		//
 		// ______________________ STRICT options _______________________
 		"alwaysStrict": true,

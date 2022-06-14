@@ -1,4 +1,4 @@
-import { type } from '../../modules/symbol/type'
+import { type } from '../symbol/type'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type StaticError = {

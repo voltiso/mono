@@ -1,162 +1,162 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "38.3.1",
+	"version": "38.3.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"__________": "__________",
-	"__________EXPORTS": "__________",
 	"sideEffects": false,
+	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.js"
+			"types": "./dist/esm/index.d.ts",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
 		},
 		"./array": {
-			"types": "./dist/modules/array/index.d.ts",
-			"import": "./dist/modules/array/index.mjs",
-			"require": "./dist/modules/array/index.js"
+			"types": "./dist/esm/_modules/array/index.d.ts",
+			"import": "./dist/esm/_modules/array/index.js",
+			"require": "./dist/cjs/_modules/array/index.js"
 		},
 		"./bdd": {
-			"types": "./dist/modules/bdd/index.d.ts",
-			"import": "./dist/modules/bdd/index.mjs",
-			"require": "./dist/modules/bdd/index.js"
+			"types": "./dist/esm/_modules/bdd/index.d.ts",
+			"import": "./dist/esm/_modules/bdd/index.js",
+			"require": "./dist/cjs/_modules/bdd/index.js"
 		},
 		"./boolean": {
-			"types": "./dist/modules/boolean/index.d.ts",
-			"import": "./dist/modules/boolean/index.mjs",
-			"require": "./dist/modules/boolean/index.js"
+			"types": "./dist/esm/_modules/boolean/index.d.ts",
+			"import": "./dist/esm/_modules/boolean/index.js",
+			"require": "./dist/cjs/_modules/boolean/index.js"
 		},
 		"./class": {
-			"types": "./dist/modules/class/index.d.ts",
-			"import": "./dist/modules/class/index.mjs",
-			"require": "./dist/modules/class/index.js"
+			"types": "./dist/esm/_modules/class/index.d.ts",
+			"import": "./dist/esm/_modules/class/index.js",
+			"require": "./dist/cjs/_modules/class/index.js"
 		},
 		"./clone": {
-			"types": "./dist/modules/clone/index.d.ts",
-			"import": "./dist/modules/clone/index.mjs",
-			"require": "./dist/modules/clone/index.js"
+			"types": "./dist/esm/_modules/clone/index.d.ts",
+			"import": "./dist/esm/_modules/clone/index.js",
+			"require": "./dist/cjs/_modules/clone/index.js"
 		},
 		"./compiler-options": {
-			"types": "./dist/modules/compiler-options/index.d.ts",
-			"import": "./dist/modules/compiler-options/index.mjs",
-			"require": "./dist/modules/compiler-options/index.js"
+			"types": "./dist/esm/_modules/compiler-options/index.d.ts",
+			"import": "./dist/esm/_modules/compiler-options/index.js",
+			"require": "./dist/cjs/_modules/compiler-options/index.js"
 		},
 		"./error": {
-			"types": "./dist/modules/error/index.d.ts",
-			"import": "./dist/modules/error/index.mjs",
-			"require": "./dist/modules/error/index.js"
+			"types": "./dist/esm/_modules/error/index.d.ts",
+			"import": "./dist/esm/_modules/error/index.js",
+			"require": "./dist/cjs/_modules/error/index.js"
 		},
 		"./function": {
-			"types": "./dist/modules/function/index.d.ts",
-			"import": "./dist/modules/function/index.mjs",
-			"require": "./dist/modules/function/index.js"
+			"types": "./dist/esm/_modules/function/index.d.ts",
+			"import": "./dist/esm/_modules/function/index.js",
+			"require": "./dist/cjs/_modules/function/index.js"
 		},
 		"./null": {
-			"types": "./dist/modules/null/index.d.ts",
-			"import": "./dist/modules/null/index.mjs",
-			"require": "./dist/modules/null/index.js"
+			"types": "./dist/esm/_modules/null/index.d.ts",
+			"import": "./dist/esm/_modules/null/index.js",
+			"require": "./dist/cjs/_modules/null/index.js"
 		},
 		"./number": {
-			"types": "./dist/modules/number/index.d.ts",
-			"import": "./dist/modules/number/index.mjs",
-			"require": "./dist/modules/number/index.js"
+			"types": "./dist/esm/_modules/number/index.d.ts",
+			"import": "./dist/esm/_modules/number/index.js",
+			"require": "./dist/cjs/_modules/number/index.js"
 		},
 		"./object": {
-			"types": "./dist/modules/object/index.d.ts",
-			"import": "./dist/modules/object/index.mjs",
-			"require": "./dist/modules/object/index.js"
+			"types": "./dist/esm/_modules/object/index.d.ts",
+			"import": "./dist/esm/_modules/object/index.js",
+			"require": "./dist/cjs/_modules/object/index.js"
 		},
 		"./parser": {
-			"types": "./dist/modules/parser/index.d.ts",
-			"import": "./dist/modules/parser/index.mjs",
-			"require": "./dist/modules/parser/index.js"
+			"types": "./dist/esm/_modules/parser/index.d.ts",
+			"import": "./dist/esm/_modules/parser/index.js",
+			"require": "./dist/cjs/_modules/parser/index.js"
 		},
 		"./patch": {
-			"types": "./dist/modules/patch/index.d.ts",
-			"import": "./dist/modules/patch/index.mjs",
-			"require": "./dist/modules/patch/index.js"
+			"types": "./dist/esm/_modules/patch/index.d.ts",
+			"import": "./dist/esm/_modules/patch/index.js",
+			"require": "./dist/cjs/_modules/patch/index.js"
 		},
 		"./promise": {
-			"types": "./dist/modules/promise/index.d.ts",
-			"import": "./dist/modules/promise/index.mjs",
-			"require": "./dist/modules/promise/index.js"
+			"types": "./dist/esm/_modules/promise/index.d.ts",
+			"import": "./dist/esm/_modules/promise/index.js",
+			"require": "./dist/cjs/_modules/promise/index.js"
 		},
 		"./set": {
-			"types": "./dist/modules/set/index.d.ts",
-			"import": "./dist/modules/set/index.mjs",
-			"require": "./dist/modules/set/index.js"
+			"types": "./dist/esm/_modules/set/index.d.ts",
+			"import": "./dist/esm/_modules/set/index.js",
+			"require": "./dist/cjs/_modules/set/index.js"
 		},
 		"./string": {
-			"types": "./dist/modules/string/index.d.ts",
-			"import": "./dist/modules/string/index.mjs",
-			"require": "./dist/modules/string/index.js"
+			"types": "./dist/esm/_modules/string/index.d.ts",
+			"import": "./dist/esm/_modules/string/index.js",
+			"require": "./dist/cjs/_modules/string/index.js"
 		},
 		"./symbol": {
-			"types": "./dist/modules/symbol/index.d.ts",
-			"import": "./dist/modules/symbol/index.mjs",
-			"require": "./dist/modules/symbol/index.js"
+			"types": "./dist/esm/_modules/symbol/index.d.ts",
+			"import": "./dist/esm/_modules/symbol/index.js",
+			"require": "./dist/cjs/_modules/symbol/index.js"
 		}
 	},
 	"typesVersions": {
 		"*": {
 			"array": [
-				"dist/modules/array"
+				"dist/esm/_modules/array"
 			],
 			"bdd": [
-				"dist/modules/bdd"
+				"dist/esm/_modules/bdd"
 			],
 			"boolean": [
-				"dist/modules/boolean"
+				"dist/esm/_modules/boolean"
 			],
 			"class": [
-				"dist/modules/class"
+				"dist/esm/_modules/class"
 			],
 			"clone": [
-				"dist/modules/clone"
+				"dist/esm/_modules/clone"
 			],
 			"compiler-options": [
-				"dist/modules/compiler-options"
+				"dist/esm/_modules/compiler-options"
 			],
 			"error": [
-				"dist/modules/error"
+				"dist/esm/_modules/error"
 			],
 			"function": [
-				"dist/modules/function"
+				"dist/esm/_modules/function"
 			],
 			"null": [
-				"dist/modules/null"
+				"dist/esm/_modules/null"
 			],
 			"number": [
-				"dist/modules/number"
+				"dist/esm/_modules/number"
 			],
 			"object": [
-				"dist/modules/object"
+				"dist/esm/_modules/object"
 			],
 			"parser": [
-				"dist/modules/parser"
+				"dist/esm/_modules/parser"
 			],
 			"patch": [
-				"dist/modules/patch"
+				"dist/esm/_modules/patch"
 			],
 			"promise": [
-				"dist/modules/promise"
+				"dist/esm/_modules/promise"
 			],
 			"set": [
-				"dist/modules/set"
+				"dist/esm/_modules/set"
 			],
 			"string": [
-				"dist/modules/string"
+				"dist/esm/_modules/string"
 			],
 			"symbol": [
-				"dist/modules/symbol"
+				"dist/esm/_modules/symbol"
 			]
 		}
 	},
 	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/index.d.ts",
-	"module": "dist/index.mjs",
-	"main": "dist/index.js",
+	"types": "dist/esm/index.d.ts",
+	"module": "dist/esm/index.js",
+	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
 		"dist/",
@@ -186,25 +186,24 @@
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint .",
-		"lint:tsc": "run-s lint:tsc:root lint:tsc:snc lint:tsc:eopt",
+		"lint:tsc": "run-p lint:tsc:root lint:tsc:snc lint:tsc:eopt",
 		"lint:tsc:root": "tsc -b",
-		"lint:tsc:snc": "run-s lint:tsc:snc:t lint:tsc:snc:f",
-		"lint:tsc:snc:t": "tsc -b src/modules/compiler-options/strictNullChecks/test-true",
-		"lint:tsc:snc:f": "tsc -b src/modules/compiler-options/strictNullChecks/test-false",
-		"lint:tsc:eopt": "run-s lint:tsc:eopt:t lint:tsc:eopt:f",
-		"lint:tsc:eopt:t": "tsc -b src/modules/compiler-options/exactOptionalPropertyTypes/test-true",
-		"lint:tsc:eopt:f": "tsc -b src/modules/compiler-options/exactOptionalPropertyTypes/test-false",
+		"lint:tsc:snc": "run-p lint:tsc:snc:t lint:tsc:snc:f",
+		"lint:tsc:snc:t": "tsc -b src/_modules/compiler-options/strictNullChecks/test-true",
+		"lint:tsc:snc:f": "tsc -b src/_modules/compiler-options/strictNullChecks/test-false",
+		"lint:tsc:eopt": "run-p lint:tsc:eopt:t lint:tsc:eopt:f",
+		"lint:tsc:eopt:t": "tsc -b src/_modules/compiler-options/exactOptionalPropertyTypes/test-true",
+		"lint:tsc:eopt:f": "tsc -b src/_modules/compiler-options/exactOptionalPropertyTypes/test-false",
 		"__________BUILD": "__________",
-		"build": "run-s clean build:tsup build:gen-compat-dirs",
-		"build:tsup": "tsup",
-		"build:gen-compat-dirs": "esr script/gen-compat-dirs.ts",
+		"build": "run-s clean build:tsc build:genCompatDirs",
+		"build:tsc": "run-p build:tsc:esm build:tsc:cjs",
+		"build:tsc:esm": "tsc -b tsconfig.esm.build.json",
+		"build:tsc:cjs": "tsc -b tsconfig.cjs.build.json",
+		"build:genCompatDirs": "esr script/gen-compat-dirs.ts",
 		"__________PREPARE": "__________",
-		"prepare": "run-s build prepare:vtt",
-		"prepare:vtt": "echo TODO",
-		"prepublishOnly": "run-s test lint",
+		"prepublishOnly": "run-p build test lint",
 		"__________MISC": "__________",
-		"clean": "rimraf dist array bdd boolean class clone compiler-options error function null number object parser promise set string symbol",
-		"clean:vtt": "vtt clean"
+		"clean": "rimraf dist array bdd boolean class clone compiler-options error function null number object parser promise set string symbol"
 	},
 	"dependencies": {
 		"assert": "^2.0.0"
@@ -220,6 +219,7 @@
 		"chalk": "^4.1.2",
 		"clone": "^2.1.2",
 		"depcheck": "^1.4.3",
+		"esbuild": "^0.14.43",
 		"esbuild-runner": "^2.2.1",
 		"eslint": "^8.17.0",
 		"eslint-config-prettier": "^8.5.0",
@@ -229,10 +229,9 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"jest": "^28.1.1",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^2.6.2",
+		"prettier": "^2.7.0",
 		"rimraf": "^3.0.2",
 		"ts-jest": "^28.0.5",
-		"tsup": "^6.1.2",
 		"typescript": "^4.7.3",
 		"zone.js": "^0.11.5"
 	},

@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { Assume } from './Assume'
 import { IsIdentical } from './IsEqual'
-import { Assert } from './modules/bdd'
+import { Assert } from './_modules/bdd'
 
 describe('Assume', () => {
 	it('type', () => {

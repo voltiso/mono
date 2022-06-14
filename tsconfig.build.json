@@ -2,6 +2,14 @@
 	"extends": "./tsconfig.base.json",
 
 	"compilerOptions": {
-		"composite": false
-	}
+		"composite": false,
+		"noEmit": false
+	},
+
+	"include": ["src"],
+	"exclude": [
+		"**/*.test.ts",
+		"**/*.test.tsx"
+		//
+	]
 }
