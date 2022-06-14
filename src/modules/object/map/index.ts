@@ -1,4 +1,5 @@
 export * from './DeepPartial'
+export * from './DeepReadonly'
 export * from './MapOr'
 export * from './Mutable'
 export * from './OptionalFromUndefined'
