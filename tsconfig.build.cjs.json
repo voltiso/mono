@@ -6,5 +6,7 @@
 		"declaration": false,
 
 		"outDir": "dist/cjs"
-	}
+	},
+
+	"references": [{ "path": "./tsconfig.package.json" }]
 }

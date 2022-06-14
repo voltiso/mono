@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/ts-util",
-	"version": "38.3.2",
+	"version": "38.3.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/ts-util.git",
 	"__________": "__________",
@@ -197,8 +197,8 @@
 		"__________BUILD": "__________",
 		"build": "run-s clean build:tsc build:genCompatDirs",
 		"build:tsc": "run-p build:tsc:esm build:tsc:cjs",
-		"build:tsc:esm": "tsc -b tsconfig.esm.build.json",
-		"build:tsc:cjs": "tsc -b tsconfig.cjs.build.json",
+		"build:tsc:esm": "tsc -b tsconfig.build.esm.json",
+		"build:tsc:cjs": "tsc -b tsconfig.build.cjs.json",
 		"build:genCompatDirs": "esr script/gen-compat-dirs.ts",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-p build test lint",

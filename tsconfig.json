@@ -14,7 +14,7 @@
 
 	"include": [
 		"**/*.*",
-		"package.json" // need to explicitly include? (if including it from code)
+		"package.json"
 		//
 	],
 

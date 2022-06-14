@@ -6,5 +6,7 @@
 		"declaration": true,
 
 		"outDir": "dist/esm"
-	}
+	},
+
+	"references": [{ "path": "./tsconfig.package.json" }]
 }

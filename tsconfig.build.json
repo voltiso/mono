@@ -3,7 +3,9 @@
 
 	"compilerOptions": {
 		"composite": false,
-		"noEmit": false
+		"noEmit": false,
+
+		"rootDir": "src"
 	},
 
 	"include": ["src"],
