@@ -1,0 +1,16 @@
+{
+	"extends": "@ws/tsconfig/tsconfig.base.json",
+
+	"include": [
+		"**/*.*",
+		"package.json" // need to explicitly include? (if including it from code)
+		//
+	],
+
+	"exclude": [
+		"dist",
+		"node_modules",
+		".tsc-out"
+		//
+	]
+}

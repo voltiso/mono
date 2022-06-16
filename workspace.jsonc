@@ -1,0 +1,60 @@
+{
+  "$schema": "https://static.bit.dev/teambit/schemas/schema.json",
+  "teambit.workspace/workspace": {
+    /**
+		 * the name of the component workspace. used for development purposes.
+		 **/
+    "name": "voltiso",
+    "icon": "https://static.bit.dev/bit-logo.svg",
+    /**
+		 * default directory to place a component during `bit import` and `bit create`.
+		 * the following placeholders are available:
+		 * name - component name includes namespace, e.g. 'ui/button'.
+		 * scopeId - full scope-id includes the owner, e.g. 'teambit.compilation'.
+		 * scope - scope name only, e.g. 'compilation'.
+		 * owner - owner name in bit.dev, e.g. 'teambit'.
+		 **/
+    "defaultDirectory": "scopes/{scope}/{name}",
+    /**
+		 * default scope for all components in workspace.
+		 **/
+    "defaultScope": "voltiso.util"
+  },
+  "teambit.dependencies/dependency-resolver": {
+    "packageManager": "teambit.dependencies/pnpm",
+    "policy": {
+      "dependencies": {
+        "@broman/wcs-components.extensions.typescript": "0.0.1",
+        "@teambit/documenter.ui.paragraph": "4.1.5"
+      },
+      "peerDependencies": {}
+    }
+  },
+  /**
+	 * workspace variants allow to set different subsets of configuration for components in your
+	 * workspace. this is extremely useful for upgrading, aligning and building components with a new
+	 * set of dependencies. a rule can be a directory or a component-id/namespace, in which case,
+	 * wrap the rule with curly brackets (e.g. `"{ui/*}": {}`)
+	 * see https://bit.dev/docs/workspace/variants for more info.
+	 **/
+  "teambit.workspace/variants": {
+    /**
+		 * "*" is a special rule which applied on all components in the workspace.
+		 **/
+    "*": {
+      /**
+			 * uncomment to apply the chosen environment on all components.
+			 **/
+      "voltiso.env/node": {}
+    },
+    "scopes/util": {
+      "defaultScope": "voltiso.util"
+    },
+    "scopes/config": {
+      "defaultScope": "voltiso.config"
+    },
+    "scopes/env": {
+      "defaultScope": "voltiso.env"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+	"extends": "@ws/tsconfig/tsconfig.base.json",
+
+	"compilerOptions": {
+		"noEmit": false,
+
+		"rootDir": ".",
+		"outDir": "dist",
+
+		"resolveJsonModule": true
+	},
+
+	"files": ["package.json"],
+
+	"include": []
+}

@@ -1,11 +1,54 @@
 {
 	"recommendations": [
-		"dbaeumer.vscode-eslint",
+		/** Recommended user setting: `editor.formatOnSave` */
 		"esbenp.prettier-vscode",
+
+		/** Eslint errors underlined in VSCode editor */
+		"dbaeumer.vscode-eslint",
+
+		/** Stylelint (CSS) errors underlined in VSCode editor */
+		"stylelint.vscode-stylelint",
+
+		/**
+		 * Rename matching JSX tag
+		 *  - EXTREMELY useful before `editor.linkedEditing` works for JSX
+		 */
+		"formulahendry.auto-rename-tag",
+
+		/**
+		 * Right-click folder -> Export all modules
+		 * - EXTREMELY useful
+		 */
+		"eliostruyf.vscode-typescript-exportallmodules",
+
+		/** Jest testing pane (left-side of VSCode window) */
 		"Orta.vscode-jest",
+
+		/** Displays vulnerability pop-overs in `package.json` */
+		"redhat.fabric8-analytics",
+
+		/** Test Regex quickly (manually) */
 		"chrmarti.regex",
-		"stkb.rewrap",
-		"streetsidesoftware.code-spell-checker"
+
+		/**
+		 * Fix typos
+		 *  - Add underlined words to WORKSPACE settings!!
+		 */
+		"streetsidesoftware.code-spell-checker",
+
+		/** Will we use Bit? */
+		"bit.vscode-bit",
+
 		//
+
+		//
+		// FIREBASE-specifig extensions below
+		//
+
+		/** Firebase - explore FireStore from VSCode! */
+		"jsayol.firebase-explorer", // explore Firestore, etc.
+
+		/** Security rules syntax highlighting */
+		"toba.vsfire"
 	]
 }

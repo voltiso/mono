@@ -1,0 +1,30 @@
+{
+	"name": "voltiso",
+	"private": true,
+	"workspaces": [
+		"libs/*",
+		"modules/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"test": "turbo run test",
+		"lint": "turbo run lint",
+		"publish": "turbo run publish"
+	},
+	"devDependencies": {
+		"turbo": "^1.2.16"
+	},
+	"engines": {
+		"pnpm": ">=7.0.0",
+		"node": ">=16.0.0"
+	},
+	"packageManager": "pnpm@7.2.1",
+	"pnpm": {
+		"peerDependencyRules": {
+			"ignoreMissing": [
+				"esbuild",
+				"@babel/core"
+			]
+		}
+	}
+}

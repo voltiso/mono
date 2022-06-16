@@ -1,0 +1,22 @@
+{
+	"extends": "@ws/tsconfig/tsconfig.base.json",
+
+	"compilerOptions": {
+		"composite": false,
+		"noEmit": false,
+
+		"rootDir": "src"
+	},
+
+	"include": [
+		"src",
+		"modules/context",
+		"modules/deps"
+		//
+	],
+	"exclude": [
+		"**/*.test.ts",
+		"**/*.test.tsx"
+		//
+	]
+}

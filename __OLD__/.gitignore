@@ -1,0 +1,28 @@
+node_modules/
+
+dist/
+
+# /array/
+# /bdd/
+# /boolean/
+# /class/
+# /clone/
+# /compiler-options/
+# /error/
+# /function/
+# /null/
+# /number/
+# /object/
+# /parser/
+# /patch/
+# /promise/
+# /set/
+# /string/
+# /symbol/
+
+*.tgz
+*.log
+.tsc-out/
+*.tsbuildinfo
+
+.turbo/

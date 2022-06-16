@@ -1,32 +1,60 @@
 {
-	"files.encoding": "utf8",
-	"files.eol": "\n",
+	/** --------------------------------------------------------- */
+	//
+	// Suggested USER settings
+	//  - Maybe these shouldn't be here, but in User Settings!
+	//
 	"files.exclude": {
-		"**/node_modules/": true,
+		// "**/node_modules/": true,
 		// "dist/": true,
-
-		"array/": true,
-		"bdd/": true,
-		"boolean/": true,
-		"class/": true,
-		"clone/": true,
-		"compiler-options/": true,
-		"error/": true,
-		"function/": true,
-		"null/": true,
-		"number/": true,
-		"object/": true,
-		"parser/": true,
-		"promise/": true,
-		"set/": true,
-		"string/": true,
-		"symbol/": true
+		// "example-subdir-1/": true,
+		// "example-subdir-2/": true,
+		// "**/node_modules/": true,
+		// "dist/": true,
+		// "array/": true,
+		// "bdd/": true,
+		// "boolean/": true,
+		// "class/": true,
+		// "clone/": true,
+		// "compiler-options/": true,
+		// "error/": true,
+		// "function/": true,
+		// "null/": true,
+		// "number/": true,
+		// "object/": true,
+		// "parser/": true,
+		// "promise/": true,
+		// "set/": true,
+		// "string/": true,
+		// "symbol/": true
 	},
+
+	/** Best to allow JSON comments by default */
+	"files.associations": {
+		"*.json": "jsonc"
+	},
+
+	"editor.formatOnSave": true,
+
+	/**
+	 * Does NOT work for JSX currently
+	 *  - Use `formulahendry.auto-rename-tag` extension instead
+	 */
+	"editor.linkedEditing": true,
+
+	"jest.enableCodeLens": false, // code lines jump because of this
 
 	// "explorer.experimental.fileNesting.enabled": true,
 	// "explorer.experimental.fileNesting.expand": false,
 
-	"editor.formatOnSave": true,
+	//
+
+	/** --------------------------------------------------------- */
+	// Project-specific settings
+	//
+	"files.encoding": "utf8",
+	"files.eol": "\n",
+
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 
 	"jest.jestCommandLine": "node_modules/.bin/jest",
@@ -37,7 +65,6 @@
 		"onSave": "test-src-file",
 		"onStartup": ["all-tests"]
 	},
-	"jest.enableCodeLens": false, // code lines jump because of this
 
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
@@ -47,20 +74,53 @@
 	},
 
 	"cSpell.words": [
-		"cand",
-		"Cloneable",
+		"anymatch",
+		"Bartosz",
+		"chokidar",
 		"compat",
-		"eopt",
+		"concat",
 		"esbuild",
+		"execa",
+		"extglob",
+		"fastq",
+		"fsevents",
+		"globby",
 		"iife",
+		"iojs",
+		"isexe",
+		"joycon",
+		"lilconfig",
+		"microtask",
+		"minimatch",
+		"nodelib",
+		"npmrc",
+		"oltiso",
+		"outfile",
 		"Parens",
+		"picomatch",
 		"plusplus",
 		"pnpm",
+		"Podgruszecki",
+		"postcss",
 		"prebuild",
-		"Schemable",
-		"Strs",
+		"predeploy",
+		"prettierrc",
+		"readdirp",
+		"realpath",
+		"reusify",
+		"riscv",
+		"rollup",
+		"scandir",
+		"schemar",
+		"sdkconfig",
+		"subdir",
+		"sunos",
+		"teambit",
+		"thenify",
+		"transpiling",
 		"treeshake",
 		"tsup",
-		"voltiso"
+		"voltiso",
+		"wrappy"
 	]
 }

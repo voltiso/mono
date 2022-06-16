@@ -1,0 +1,240 @@
+{
+	"name": "@voltiso/ts-util",
+	"version": "38.3.6",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/ts-util.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"types": "./dist/esm/index.d.ts",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		},
+		"./array": {
+			"types": "./dist/esm/_modules/array/index.d.ts",
+			"import": "./dist/esm/_modules/array/index.js",
+			"require": "./dist/cjs/_modules/array/index.js"
+		},
+		"./bdd": {
+			"types": "./dist/esm/_modules/bdd/index.d.ts",
+			"import": "./dist/esm/_modules/bdd/index.js",
+			"require": "./dist/cjs/_modules/bdd/index.js"
+		},
+		"./boolean": {
+			"types": "./dist/esm/_modules/boolean/index.d.ts",
+			"import": "./dist/esm/_modules/boolean/index.js",
+			"require": "./dist/cjs/_modules/boolean/index.js"
+		},
+		"./class": {
+			"types": "./dist/esm/_modules/class/index.d.ts",
+			"import": "./dist/esm/_modules/class/index.js",
+			"require": "./dist/cjs/_modules/class/index.js"
+		},
+		"./clone": {
+			"types": "./dist/esm/_modules/clone/index.d.ts",
+			"import": "./dist/esm/_modules/clone/index.js",
+			"require": "./dist/cjs/_modules/clone/index.js"
+		},
+		"./compiler-options": {
+			"types": "./dist/esm/_modules/compiler-options/index.d.ts",
+			"import": "./dist/esm/_modules/compiler-options/index.js",
+			"require": "./dist/cjs/_modules/compiler-options/index.js"
+		},
+		"./error": {
+			"types": "./dist/esm/_modules/error/index.d.ts",
+			"import": "./dist/esm/_modules/error/index.js",
+			"require": "./dist/cjs/_modules/error/index.js"
+		},
+		"./function": {
+			"types": "./dist/esm/_modules/function/index.d.ts",
+			"import": "./dist/esm/_modules/function/index.js",
+			"require": "./dist/cjs/_modules/function/index.js"
+		},
+		"./null": {
+			"types": "./dist/esm/_modules/null/index.d.ts",
+			"import": "./dist/esm/_modules/null/index.js",
+			"require": "./dist/cjs/_modules/null/index.js"
+		},
+		"./number": {
+			"types": "./dist/esm/_modules/number/index.d.ts",
+			"import": "./dist/esm/_modules/number/index.js",
+			"require": "./dist/cjs/_modules/number/index.js"
+		},
+		"./object": {
+			"types": "./dist/esm/_modules/object/index.d.ts",
+			"import": "./dist/esm/_modules/object/index.js",
+			"require": "./dist/cjs/_modules/object/index.js"
+		},
+		"./parser": {
+			"types": "./dist/esm/_modules/parser/index.d.ts",
+			"import": "./dist/esm/_modules/parser/index.js",
+			"require": "./dist/cjs/_modules/parser/index.js"
+		},
+		"./patch": {
+			"types": "./dist/esm/_modules/patch/index.d.ts",
+			"import": "./dist/esm/_modules/patch/index.js",
+			"require": "./dist/cjs/_modules/patch/index.js"
+		},
+		"./promise": {
+			"types": "./dist/esm/_modules/promise/index.d.ts",
+			"import": "./dist/esm/_modules/promise/index.js",
+			"require": "./dist/cjs/_modules/promise/index.js"
+		},
+		"./set": {
+			"types": "./dist/esm/_modules/set/index.d.ts",
+			"import": "./dist/esm/_modules/set/index.js",
+			"require": "./dist/cjs/_modules/set/index.js"
+		},
+		"./string": {
+			"types": "./dist/esm/_modules/string/index.d.ts",
+			"import": "./dist/esm/_modules/string/index.js",
+			"require": "./dist/cjs/_modules/string/index.js"
+		},
+		"./symbol": {
+			"types": "./dist/esm/_modules/symbol/index.d.ts",
+			"import": "./dist/esm/_modules/symbol/index.js",
+			"require": "./dist/cjs/_modules/symbol/index.js"
+		}
+	},
+	"typesVersions": {
+		"*": {
+			"array": [
+				"dist/esm/_modules/array"
+			],
+			"bdd": [
+				"dist/esm/_modules/bdd"
+			],
+			"boolean": [
+				"dist/esm/_modules/boolean"
+			],
+			"class": [
+				"dist/esm/_modules/class"
+			],
+			"clone": [
+				"dist/esm/_modules/clone"
+			],
+			"compiler-options": [
+				"dist/esm/_modules/compiler-options"
+			],
+			"error": [
+				"dist/esm/_modules/error"
+			],
+			"function": [
+				"dist/esm/_modules/function"
+			],
+			"null": [
+				"dist/esm/_modules/null"
+			],
+			"number": [
+				"dist/esm/_modules/number"
+			],
+			"object": [
+				"dist/esm/_modules/object"
+			],
+			"parser": [
+				"dist/esm/_modules/parser"
+			],
+			"patch": [
+				"dist/esm/_modules/patch"
+			],
+			"promise": [
+				"dist/esm/_modules/promise"
+			],
+			"set": [
+				"dist/esm/_modules/set"
+			],
+			"string": [
+				"dist/esm/_modules/string"
+			],
+			"symbol": [
+				"dist/esm/_modules/symbol"
+			]
+		}
+	},
+	"__________EXPORTS FALLBACK": "__________",
+	"types": "dist/esm/index.d.ts",
+	"module": "dist/esm/index.js",
+	"main": "dist/cjs/index.js",
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"dist/",
+		"array/",
+		"bdd/",
+		"boolean/",
+		"class/",
+		"clone/",
+		"compiler-options/",
+		"error/",
+		"function/",
+		"null/",
+		"number/",
+		"object/",
+		"parser/",
+		"patch/",
+		"promise/",
+		"set/",
+		"string/",
+		"symbol/"
+	],
+	"scripts": {
+		"__________TEST": "__________",
+		"test": "jest",
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint .",
+		"lint:tsc": "run-p lint:tsc:root lint:tsc:snc lint:tsc:eopt",
+		"lint:tsc:root": "tsc -b",
+		"lint:tsc:snc": "run-p lint:tsc:snc:t lint:tsc:snc:f",
+		"lint:tsc:snc:t": "tsc -b src/_modules/compiler-options/strictNullChecks/test-true",
+		"lint:tsc:snc:f": "tsc -b src/_modules/compiler-options/strictNullChecks/test-false",
+		"lint:tsc:eopt": "run-p lint:tsc:eopt:t lint:tsc:eopt:f",
+		"lint:tsc:eopt:t": "tsc -b src/_modules/compiler-options/exactOptionalPropertyTypes/test-true",
+		"lint:tsc:eopt:f": "tsc -b src/_modules/compiler-options/exactOptionalPropertyTypes/test-false",
+		"__________BUILD": "__________",
+		"build": "run-s clean build:tsc build:genCompatDirs",
+		"build:tsc": "run-p build:tsc:esm build:tsc:cjs",
+		"build:tsc:esm": "tsc -b tsconfig.build.esm.json",
+		"build:tsc:cjs": "tsc -b tsconfig.build.cjs.json",
+		"build:genCompatDirs": "esr script/gen-compat-dirs.ts",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p build test lint",
+		"__________MISC": "__________",
+		"clean": "rimraf dist array bdd boolean class clone compiler-options error function null number object parser promise set string symbol"
+	},
+	"dependencies": {
+		"@workspace/ts-util--context": "workspace:*",
+		"@workspace/ts-util--deps": "workspace:*",
+		"assert": "^2.0.0"
+	},
+	"devDependencies": {
+		"@babel/plugin-transform-async-to-generator": "^7.17.12",
+		"@jest/types": "^28.1.1",
+		"@types/clone": "^2.1.1",
+		"@types/jest": "^28.1.1",
+		"@typescript-eslint/eslint-plugin": "^5.28.0",
+		"@typescript-eslint/parser": "^5.28.0",
+		"@ws/tsconfig": "workspace:*",
+		"chalk": "^4.1.2",
+		"clone": "^2.1.2",
+		"depcheck": "^1.4.3",
+		"esbuild-runner": "^2.2.1",
+		"eslint": "^8.17.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-jest": "^26.5.3",
+		"eslint-plugin-json": "^3.1.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"jest": "^28.1.1",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.7.0",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^28.0.5",
+		"typescript": "^4.7.3",
+		"zone.js": "^0.11.5"
+	}
+}
