@@ -6,7 +6,9 @@
 import { IsIdentical } from '../../IsEqual'
 import { Assert } from '../bdd'
 import { DeleteIt } from './deleteIt'
-import { ApplyPatch, forcePatch, patch, patchUpdate } from './patch'
+import { ApplyPatch, forcePatch, patch } from './patch'
+import { patchSet } from './patchSet'
+import { patchUpdate } from './patchUpdate'
 import { ReplaceIt, replaceIt } from './replaceIt'
 
 describe('patch', () => {
@@ -99,4 +101,29 @@ describe('patch', () => {
 		const b = patchUpdate(obj, { a: false })
 		expect(b).toStrictEqual({ a: false })
 	})
+
+	it('patchSet', () => {
+		expect.hasAssertions()
+
+		const obj = { a: 'aa', b: 'bb' } as { a: string; b?: string }
+
+		const patchValue = { a: 'bb' }
+
+		const a = patchSet(obj, patchValue)
+		expect(a).toStrictEqual(patchValue)
+		expect(a).toBe(patchValue)
+	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('patchSet - does not change if no update needed', () => {
+	// 	expect.hasAssertions()
+
+	// 	const obj = { a: 'aa', b: 'bb' } as { a: string; b?: string }
+
+	// 	const patchValue = { a: 'aa', b: 'bb' }
+
+	// 	const a = patchSet(obj, patchValue)
+	// 	expect(a).toStrictEqual(obj)
+	// 	expect(a).toBe(obj)
+	// })
 })

@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undefined */
 import { AlsoAccept } from '../../AlsoAccept'
@@ -5,15 +6,13 @@ import { Force } from '../../Assume'
 import {
 	getEntries,
 	isPlain,
-	mapValues,
 	Merge2,
 	setProperty,
 	tryGetProperty,
 	ValueImpl,
 } from '../object'
 import { DeleteIt, isDeleteIt } from './deleteIt'
-import { isReplaceIt, replaceIt, ReplaceIt } from './replaceIt'
-import { isPatchSentinel } from './Sentinel'
+import { isReplaceIt, ReplaceIt } from './replaceIt'
 
 export type Patch = unknown
 
@@ -65,8 +64,11 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	patchValue: PatchValue
 ): ApplyPatch<X, PatchValue> {
 	if (isDeleteIt(patchValue)) return undefined as never
-	else if (isReplaceIt(patchValue)) return patchValue.__replaceIt as never
-	else if (isPlain(patchValue)) {
+	else if (isReplaceIt(patchValue)) {
+		// if (deps.isEqual(x, patchValue.__replaceIt)) return x
+		// else
+		return patchValue.__replaceIt as never
+	} else if (isPlain(patchValue)) {
 		const res: any = { ...x }
 		let haveChange = false
 		for (const [key, val] of getEntries(patchValue)) {
@@ -90,19 +92,4 @@ export function patch<X, PatchValue extends PatchFor<X>>(
 	patchValue: PatchValue
 ): Force<X, ApplyPatch<X, PatchValue>> {
 	return forcePatch(x, patchValue) as never
-}
-
-//
-
-/**
- * Similar to `patch`, but performs shallow merge by default
- */
-export function patchUpdate<
-	Obj extends object,
-	PatchValue extends PatchFor<Obj>
->(x: Obj, patchValue: PatchValue): Force<Obj, ApplyPatch<Obj, PatchValue>> {
-	const finalPatch = mapValues(patchValue, x =>
-		isPatchSentinel(x) ? x : (replaceIt(x) as never)
-	)
-	return forcePatch(x, finalPatch) as never
 }
