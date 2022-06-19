@@ -1,0 +1,14 @@
+{
+	"extends": "@voltiso/config.ts/base",
+
+	"compilerOptions": {
+		"strictNullChecks": true,
+		"exactOptionalPropertyTypes": true,
+
+		"outDir": ".tsc-out"
+	},
+
+	"include": ["."],
+
+	"references": [{ "path": "../../../.." }]
+}

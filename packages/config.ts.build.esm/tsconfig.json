@@ -1,0 +1,14 @@
+{
+	"extends": "@voltiso/config.ts.build",
+
+	"compilerOptions": {
+		"module": "ESNext"
+		// "declaration": true,
+		// "declarationMap": true,
+
+		// !
+		// ! OVERWRITE WHEN EXTENDING !
+		// !
+		// "outDir": "dist/esm"
+	}
+}

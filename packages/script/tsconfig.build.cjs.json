@@ -1,0 +1,15 @@
+{
+	"extends": "@voltiso/config.ts.build.cjs/tsconfig",
+
+	"compilerOptions": {
+		"outDir": "dist/cjs",
+		"rootDir": "src"
+	},
+
+	"include": ["src"],
+	"exclude": [
+		"**/*.test.ts",
+		"**/*.test.tsx"
+		//
+	]
+}

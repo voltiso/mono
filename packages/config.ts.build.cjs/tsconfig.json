@@ -1,0 +1,13 @@
+{
+	"extends": "@voltiso/config.ts.build",
+
+	"compilerOptions": {
+		"module": "CommonJS"
+		// "declaration": false,
+
+		// !
+		// ! OVERWRITE WHEN EXTENDING !
+		// !
+		// "outDir": "dist/cjs"
+	}
+}

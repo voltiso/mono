@@ -1,0 +1,5 @@
+ignores:
+  - assert
+  - '@jest/types'
+  - '@types/jest'
+  - '@voltiso/config.ts'

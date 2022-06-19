@@ -1,0 +1,25 @@
+{
+	"name": "@voltiso/config.eslint.base",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/voltiso.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS FALLBACK": "__________",
+	"main": "index.js",
+	"__________DEPS": "__________",
+	"peerDependencies": {
+		"@typescript-eslint/eslint-plugin": "*",
+		"@typescript-eslint/parser": "*",
+		"eslint": "*",
+		"eslint-config-prettier": "*",
+		"eslint-plugin-import": "*",
+		"eslint-plugin-jest": "*",
+		"eslint-plugin-jsonc": "*",
+		"eslint-plugin-prettier": "*",
+		"typescript": "*"
+	},
+	"devDependencies": {
+		"@types/eslint": "^8.4.3"
+	}
+}

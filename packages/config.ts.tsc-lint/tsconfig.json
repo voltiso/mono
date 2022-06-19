@@ -1,0 +1,27 @@
+{
+	"extends": "@voltiso/config.ts",
+
+	// if tsc-linting project with multiple tsconfig.json files,
+	// here's a setup for this to work fast
+	// (using ts project references)
+
+	"compilerOptions": {
+		// referenced project must emit
+		"noEmit": false,
+		"emitDeclarationOnly": true,
+		"outDir": ".tsc-out"
+	}
+
+	// !
+	// ! OVERWRITE WHEN EXTENDING !
+	// !
+	// "include": [
+	// 	"**/*.*",
+	// 	"package.json"
+	// ],
+	// "exclude": [
+	// 	"dist",
+	// 	"node_modules",
+	// 	".tsc-out"
+	// ]
+}

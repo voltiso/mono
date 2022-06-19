@@ -1,26 +1,11 @@
-/node_modules/
+.tsc-out/
+_outDir_PLEASE_OVERRIDE
 
-/dist/
+node_modules/
 
-/array/
-/bdd/
-/boolean/
-/class/
-/clone/
-/compiler-options/
-/error/
-/function/
-/null/
-/number/
-/object/
-/parser/
-/patch/
-/promise/
-/set/
-/string/
-/symbol/
+dist/
 
 *.tgz
 *.log
-.tsc-out
 *.tsbuildinfo
+.turbo

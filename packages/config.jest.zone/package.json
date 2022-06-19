@@ -1,0 +1,20 @@
+{
+	"name": "@voltiso/config.jest.zone",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/voltiso.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/config.babel.zone": "workspace:^1.0.0"
+	},
+	"peerDependencies": {
+		"jest": "*",
+		"ts-jest": "*"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.42",
+		"ts-jest": "^28.0.5"
+	}
+}

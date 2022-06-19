@@ -1,0 +1,18 @@
+{
+	"name": "@voltiso/config.prettier",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/voltiso.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS FALLBACK": "__________",
+	"main": "index.js",
+	"__________DEPS": "__________",
+	"peerDependencies": {
+		"prettier": "*"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.42",
+		"prettier": "^2.7.0"
+	}
+}

@@ -1,0 +1,62 @@
+{
+	"name": "@voltiso/config.jest.esr",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/voltiso.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"types": "./dist/cjs/index.d.ts",
+			"require": "./dist/cjs/index.js"
+		},
+		"./transform": {
+			"types": "./dist/cjs/transform.d.ts",
+			"require": "./dist/cjs/transform.js"
+		}
+	},
+	"__________EXPORTS FALLBACK": "__________",
+	"types": "dist/cjs/index.d.ts",
+	"main": "dist/cjs/index.js",
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"dist"
+	],
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint .",
+		"lint:tsc": "tsc -b",
+		"__________BUILD": "__________",
+		"build": "run-p build:cjs",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p build test lint",
+		"__________MISC": "__________",
+		"v": "voltiso-script",
+		"clean": "run-p clean:rimraf",
+		"clean:rimraf": "rimraf dist"
+	},
+	"__________DEPS": "__________",
+	"peerDependencies": {
+		"jest": "*"
+	},
+	"devDependencies": {
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.eslint": "workspace:^1.0.0",
+		"@voltiso/config.ts.tsc-lint": "workspace:^1.0.0",
+		"depcheck": "^1.4.3",
+		"esbuild-runner": "^2.2.1",
+		"jest": "^28.1.1",
+		"npm-run-all": "^4.1.5",
+		"rimraf": "^3.0.2"
+	},
+	"dependencies": {
+		"esbuild": "^0.14.45"
+	}
+}

@@ -1,0 +1,79 @@
+{
+	"files": [],
+
+	"compilerOptions": {
+		"outDir": "_outDir_PLEASE_OVERRIDE", // just in case - avoid polluting any dirs
+
+		// TODO: we may want to remove declaration maps when publishing??
+		// TODO:  - but we don't care for now, it's just unbundled library size
+		// allows easy jump-to-source in this monorepo
+		"declarationMap": true,
+
+		"declaration": true,
+		// "emitDeclarationOnly": true,
+
+		"composite": true, // possibly need to overwrite for TSUP builds!
+		"noEmit": true,
+		"sourceMap": true,
+
+		//
+
+		"lib": ["ESNext"],
+		"module": "ESNext", // unused - tsup?
+		"target": "ESNext",
+		"moduleResolution": "node",
+
+		//
+		// ____________________ Node 16 recommended ____________________
+		// https://github.com/tsconfig/bases/blob/main/bases/node16.json
+		// "lib": ["ES2021"],
+		// "module": "CommonJS",
+		// "target": "ES2021",
+
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		// ____________________ Node 16 recommended ____________________
+		//
+
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+
+		"allowJs": true,
+		"checkJs": true,
+
+		"jsx": "react-jsx", // for ts-jest - also next.js does not transpile node_modules by default
+		// "jsx": "preserve", // for next.js - they implement their own transforms
+
+		"disableSizeLimit": true,
+
+		//
+		// ______________________ STRICT options _______________________
+		"alwaysStrict": true,
+		"strictNullChecks": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"useUnknownInCatchVariables": true,
+		//
+		"exactOptionalPropertyTypes": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"allowUnusedLabels": false, // undefined = warning
+		"allowUnreachableCode": false, // undefined = warning
+		//
+		"importsNotUsedAsValues": "error"
+		// ______________________ STRICT options _______________________
+		//
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"extends": "@voltiso/config.ts.build.esm.json",
+
+	"compilerOptions": {
+		"outDir": "dist/esm",
+		"rootDir": "src"
+	},
+
+	"include": ["src"],
+	"exclude": [
+		"**/*.test.ts",
+		"**/*.test.tsx"
+		//
+	]
+}

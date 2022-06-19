@@ -1,35 +1,94 @@
 {
-	"files.encoding": "utf8",
-	"files.eol": "\n",
+	/** --------------------------------------------------------- */
+	//
+	// Suggested USER settings
+	//  - Maybe these shouldn't be here, but in User Settings!
+	//  - But - there are project-specific settings here too - see "files.exclude" for "util"
+	//
 	"files.exclude": {
-		"**/node_modules/": true,
-		// "dist/": true,
+		// "**/node_modules/": true,
+		// "**/dist/": true,
+		"**/.tsc-out/": true,
+		"**/.turbo/": true,
 
-		"array/": true,
-		"bdd/": true,
-		"boolean/": true,
-		"class/": true,
-		"clone/": true,
-		"compiler-options/": true,
-		"error/": true,
-		"function/": true,
-		"null/": true,
-		"number/": true,
-		"object/": true,
-		"parser/": true,
-		"promise/": true,
-		"set/": true,
-		"string/": true,
-		"symbol/": true
+		/**
+		 * util - compat dirs
+		 */
+		"**/util/array/": true,
+		"**/util/bdd/": true,
+		"**/util/boolean/": true,
+		"**/util/class/": true,
+		"**/util/clone/": true,
+		"**/util/compiler-options/": true,
+		"**/util/error/": true,
+		"**/util/function/": true,
+		"**/util/null/": true,
+		"**/util/number/": true,
+		"**/util/object/": true,
+		"**/util/parser/": true,
+		"**/util/patch/": true,
+		"**/util/promise/": true,
+		"**/util/set/": true,
+		"**/util/string/": true,
+		"**/util/symbol/": true
 	},
+
+	/** allow JSON comments by default */
+	"files.associations": {
+		"*.json": "jsonc"
+	},
+
+	"editor.hover.delay": 200, // let's be fast
+
+	"editor.formatOnSave": true,
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true, // already handled by eslint
+
+	/**
+	 * Does NOT work for JSX currently
+	 *  - Use `formulahendry.auto-rename-tag` extension instead
+	 */
+	"editor.linkedEditing": true,
+
+	"jest.enableCodeLens": false, // fixes code lines jumps
 
 	// "explorer.experimental.fileNesting.enabled": true,
 	// "explorer.experimental.fileNesting.expand": false,
 
-	"editor.formatOnSave": true,
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"json",
+		"jsonc",
+		"json5",
+		"yaml"
+	],
+
+	//
+
+	//
+
+	//
+
+	/** --------------------------------------------------------- */
+	// Project-specific settings
+	//
+	// "eslint.options": { "overrideConfigFile": "./config/eslint.js" },
+	// "prettier.configPath": "./config/prettier.js",
+	// "jest.jestCommandLine": "pnpm test",
+
+	//
+
+	"files.encoding": "utf8",
+	"files.eol": "\n",
+
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 
-	"jest.jestCommandLine": "node_modules/.bin/jest",
+	// "jest.jestCommandLine": "node_modules/.bin/jest",
+	// "jest.jestCommandLine": "pnpm test",
+
 	// "jest.autoRun": "off",
 	// "jest.autoRun": { "watch": true },
 	"jest.autoRun": {
@@ -37,7 +96,6 @@
 		"onSave": "test-src-file",
 		"onStartup": ["all-tests"]
 	},
-	"jest.enableCodeLens": false, // code lines jump because of this
 
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
@@ -47,20 +105,60 @@
 	},
 
 	"cSpell.words": [
-		"cand",
-		"Cloneable",
+		"anymatch",
+		"Bartosz",
+		"chokidar",
+		"clier",
 		"compat",
+		"concat",
+		"deps",
 		"eopt",
 		"esbuild",
+		"execa",
+		"extglob",
+		"fastq",
+		"fsevents",
+		"globby",
 		"iife",
+		"iojs",
+		"isexe",
+		"joycon",
+		"lilconfig",
+		"microtask",
+		"minimatch",
+		"nodelib",
+		"npmrc",
+		"oltiso",
+		"Orta",
+		"outfile",
 		"Parens",
+		"picomatch",
 		"plusplus",
 		"pnpm",
+		"Podgruszecki",
+		"postcss",
 		"prebuild",
-		"Schemable",
-		"Strs",
+		"predeploy",
+		"prettierrc",
+		"readdirp",
+		"realpath",
+		"reusify",
+		"riscv",
+		"rollup",
+		"scandir",
+		"schemar",
+		"sdkconfig",
+		"stester",
+		"subdir",
+		"sunos",
+		"syncer",
+		"thenify",
+		"transpiling",
 		"treeshake",
 		"tsup",
-		"voltiso"
+		"Turborepo",
+		"voltiso",
+		"wrappy",
+		"Zonejs"
 	]
 }

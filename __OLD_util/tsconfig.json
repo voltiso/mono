@@ -1,0 +1,21 @@
+{
+	"extends": "@voltiso/config.ts/tsc-lint.json",
+
+	"compilerOptions": {
+		"outDir": ".tsc-out"
+	},
+
+	"include": [
+		"**/*.*",
+		"package.json"
+		//
+	],
+
+	"exclude": [
+		"dist",
+		"node_modules",
+		".tsc-out",
+		//
+		"**/compiler-options/**/test-*"
+	]
+}

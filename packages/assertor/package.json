@@ -1,0 +1,47 @@
+{
+	"name": "@voltiso/assertor",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/voltiso.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS FALLBACK": "__________",
+	"types": "dist/esm/index.d.ts",
+	"module": "dist/esm/index.js",
+	"main": "dist/cjs/index.js",
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"dist"
+	],
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________TEST": "__________",
+		"test": "jest",
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint .",
+		"lint:tsc": "tsc -b",
+		"__________BUILD": "__________",
+		"build": "run-p build:esm build:cjs",
+		"build:esm": "tsc -b tsconfig.build.esm.json",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p build test lint",
+		"__________MISC": "__________",
+		"v": "voltiso-script",
+		"clean": "run-p clean:rimraf",
+		"clean:rimraf": "rimraf dist"
+	},
+	"__________DEPS": "__________",
+	"devDependencies": {
+		"@voltiso/stester": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/util.type": "workspace:^1.0.0",
+		"jest": "^28.1.1",
+		"npm-run-all": "^4.1.5"
+	}
+}
