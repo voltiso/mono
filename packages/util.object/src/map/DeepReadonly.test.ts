@@ -1,29 +1,29 @@
 /* eslint-disable no-magic-numbers */
-import { Assert } from '../../bdd'
-import { IsIdentical } from '../../misc/IsEqual'
-import { DeepReadonly } from './DeepReadonly'
+import { Assert } from "../../bdd.js";
+import { IsIdentical } from "../../misc/IsEqual.js";
+import { DeepReadonly } from "./DeepReadonly.js";
 
-describe('DeepReadonly', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("DeepReadonly", () => {
+	it("works", () => {
+		expect.assertions(0);
 		type X = DeepReadonly<{
-			x: 0
-			a?: 1
+			x: 0;
+			a?: 1;
 			obj: {
-				a?: 11
-			}
-		}>
+				a?: 11;
+			};
+		}>;
 		Assert<
 			IsIdentical<
 				X,
 				{
-					readonly x: 0
-					readonly a?: 1
+					readonly x: 0;
+					readonly a?: 1;
 					readonly obj: {
-						readonly a?: 11
-					}
+						readonly a?: 11;
+					};
 				}
 			>
-		>()
-	})
-})
+		>();
+	});
+});

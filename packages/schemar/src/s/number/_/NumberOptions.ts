@@ -1,12 +1,12 @@
-import { defaultSchemaOptions, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions, SchemaOptions } from "../../../schema.js";
 
 export interface NumberOptions extends SchemaOptions {
-	_out: number
-	_in: number
+	_out: number;
+	_in: number;
 
-	integer: boolean
-	min: number | undefined
-	max: number | undefined
+	integer: boolean;
+	min: number | undefined;
+	max: number | undefined;
 }
 
 export const defaultNumberOptions = {
@@ -14,6 +14,6 @@ export const defaultNumberOptions = {
 	integer: false as const,
 	min: undefined,
 	max: undefined,
-}
+};
 
-export type DefaultNumberOptions = typeof defaultNumberOptions & NumberOptions
+export type DefaultNumberOptions = typeof defaultNumberOptions & NumberOptions;

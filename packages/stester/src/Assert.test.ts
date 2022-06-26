@@ -1,13 +1,13 @@
 /* eslint-disable no-magic-numbers */
-import { Assert, Is } from './Assert'
+import { Assert, Is } from "./Assert.js";
 
-describe('Assert', () => {
-	it('works', <U extends number>() => {
-		expect.assertions(0)
+describe("Assert", () => {
+	it("works", <U extends number>() => {
+		expect.assertions(0);
 
 		Assert(
 			Is<123>().subtypeOf<number>(),
-			Is('123' as const).not.subtypeOf<number>(),
+			Is("123" as const).not.subtypeOf<number>(),
 			Is<number>().not.strictSubtypeOf<number>(),
 			Is(123 as const).strictSubtypeOf<number>(),
 			//
@@ -15,17 +15,17 @@ describe('Assert', () => {
 			Is<U>()<number>()
 			// Sometimes(Type<123>().is.subtypeOf<U>()),
 			// Sometimes(Type<'123'>().is.subtypeOf<U>())
-		)
+		);
 
-		Assert.isSubtype<123, number>()
-
-		// @ts-expect-error is not subtype - error
-		Assert.isSubtype<'123', number>()
-
-		Assert.isSupertype<number, 123>()
+		Assert.isSubtype<123, number>();
 
 		// @ts-expect-error is not subtype - error
-		Assert.isSupertype<number, '123'>()
+		Assert.isSubtype<"123", number>();
+
+		Assert.isSupertype<number, 123>();
+
+		// @ts-expect-error is not subtype - error
+		Assert.isSupertype<number, "123">();
 
 		//
 
@@ -36,6 +36,6 @@ describe('Assert', () => {
 			Is<{ a: 1 | undefined }>().nonStrictEqualTo<{ a?: 1 }>(),
 			Is<{ a: 1 | undefined }>().nonStrictEqualTo<{ a?: 1 | undefined }>()
 			//
-		)
-	})
-})
+		);
+	});
+});

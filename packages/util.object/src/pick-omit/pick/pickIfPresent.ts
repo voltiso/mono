@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AlsoAccept } from '../../../misc/AlsoAccept'
-import { _ } from '../../flatten'
-import { hasOwnProperty } from '../../get-set/get'
+import { AlsoAccept } from "../../../misc/AlsoAccept.js";
+import { _ } from "../../flatten.js";
+import { hasOwnProperty } from "../../get-set/get.js";
 
 type PickIfPresentResult<O, K extends keyof O | AlsoAccept<keyof any>> = _<
 	{
-		[k in keyof O as k extends K ? k : never]: k extends keyof O ? O[k] : never
+		[k in keyof O as k extends K ? k : never]: k extends keyof O ? O[k] : never;
 	} & {
-		readonly [k in K]?: unknown
+		readonly [k in K]?: unknown;
 	}
->
+>;
 
 // export function pickIfPresent<
 // 	O extends object,
@@ -25,7 +25,7 @@ export function pickIfPresent<
 	O extends object,
 	K extends keyof O | AlsoAccept<keyof any>
 >(obj: O, ...keys: K[]): PickIfPresentResult<O, K> {
-	const r = {} as PickIfPresentResult<O, K>
+	const r = {} as PickIfPresentResult<O, K>;
 	for (const key of keys) {
 		// if (!Object.hasOwn(obj, key)) {
 		// 	throw new TsUtilError(
@@ -35,7 +35,7 @@ export function pickIfPresent<
 		// 	)
 		// }
 
-		if (hasOwnProperty(obj, key)) r[key] = obj[key] as never
+		if (hasOwnProperty(obj, key)) r[key] = obj[key] as never;
 	}
-	return r
+	return r;
 }

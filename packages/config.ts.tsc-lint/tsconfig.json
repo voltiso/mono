@@ -9,11 +9,15 @@
 		// referenced project must emit
 		"noEmit": false,
 		"emitDeclarationOnly": true,
-		"outDir": ".tsc-out"
+		
+	// !
+	// ! OVERRIDE WHEN EXTENDING !
+	// !
+		// "outDir": ".tsc-out"
 	}
 
 	// !
-	// ! OVERWRITE WHEN EXTENDING !
+	// ! OVERRIDE WHEN EXTENDING !
 	// !
 	// "include": [
 	// 	"**/*.*",

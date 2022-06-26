@@ -9,33 +9,33 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { assign } from '../object'
+import { assign } from "../object.js";
 
-export function clone<X>(x: X): X
+export function clone<X>(x: X): X;
 
 export function clone(x: any) {
-	if (typeof x?.clone === 'function') {
-		return x.clone()
-	} else if (typeof x === 'object') {
-		if (x === null) return null
+	if (typeof x?.clone === "function") {
+		return x.clone();
+	} else if (typeof x === "object") {
+		if (x === null) return null;
 		else if ([Date, Set, Map].includes(x.constructor)) {
-			const r = new x.constructor(x)
-			assign(r, x)
-			return r
+			const r = new x.constructor(x);
+			assign(r, x);
+			return r;
 		} else if (Array.isArray(x)) {
-			const r = [] as any
-			assign(r, x)
-			return r
+			const r = [] as any;
+			assign(r, x);
+			return r;
 		} else {
-			const r = {} as any
-			assign(r, x)
-			return r
+			const r = {} as any;
+			assign(r, x);
+			return r;
 		}
-	} else if (typeof x === 'function') {
+	} else if (typeof x === "function") {
 		function r(this: unknown, ...args: unknown[]) {
-			return Function.prototype.call.call(x, this, ...args)
+			return Function.prototype.call.call(x, this, ...args);
 		}
-		assign(r, x)
-		return r
-	} else return x
+		assign(r, x);
+		return r;
+	} else return x;
 }

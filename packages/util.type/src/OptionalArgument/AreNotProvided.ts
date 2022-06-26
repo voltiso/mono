@@ -1,4 +1,4 @@
-import type { IsProvided } from './IsProvided'
+import type { IsProvided } from "./IsProvided.js";
 
 type Rec<Ts, True, False> = Ts extends []
 	? True
@@ -6,7 +6,7 @@ type Rec<Ts, True, False> = Ts extends []
 	? IsProvided<Head> extends false
 		? Rec<Tail, True, False>
 		: False
-	: never
+	: never;
 
 export type AreNotProvided_<
 	Ts,
@@ -18,10 +18,10 @@ export type AreNotProvided_<
 			True,
 			False
 	  >
-	: never
+	: never;
 
 export type AreNotProvided<
 	Ts extends readonly unknown[],
 	True = true,
 	False = false
-> = AreNotProvided_<Ts, True, False>
+> = AreNotProvided_<Ts, True, False>;

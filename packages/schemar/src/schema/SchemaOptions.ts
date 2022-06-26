@@ -1,21 +1,21 @@
-import { CustomCheck } from './_/CustomCheck'
+import { CustomCheck } from "./_/CustomCheck.js";
 
 export type SchemaOptions = {
 	/** Type-only (no value at runtime) */
-	_out: unknown
+	_out: unknown;
 
 	/** Type-only (no value at runtime) */
-	_in: unknown
+	_in: unknown;
 
-	customChecks: readonly CustomCheck[]
+	customChecks: readonly CustomCheck[];
 
-	optional: boolean
-	readonly: boolean
-	default: unknown
-}
+	optional: boolean;
+	readonly: boolean;
+	default: unknown;
+};
 
-export const OPTIONS = Symbol('OPTIONS')
-export type OPTIONS = typeof OPTIONS
+export const OPTIONS = Symbol("OPTIONS");
+export type OPTIONS = typeof OPTIONS;
 
 export const defaultSchemaOptions = {
 	_out: 0 as unknown,
@@ -26,6 +26,6 @@ export const defaultSchemaOptions = {
 	optional: false as const,
 	readonly: false as const,
 	default: undefined,
-}
+};
 
-export type DefaultSchemaOptions = typeof defaultSchemaOptions
+export type DefaultSchemaOptions = typeof defaultSchemaOptions;

@@ -1,3 +1,8 @@
+/* eslint json-schema-validator/no-invalid: [
+      "error",
+      "https://turborepo.org/schema.json"
+   ]
+*/
 {
 	"$schema": "https://turborepo.org/schema.json",
 	"baseBranch": "origin/master",
@@ -12,16 +17,3 @@
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,7 +7,7 @@ module.exports = {
 }
 
 // // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const eslintrcBase = require('@voltiso/config.eslint.base')
+// const eslintrcBase = require('@voltiso/config.eslint')
 
 // /** @type {import('eslint').Linter.Config} */
 // module.exports = {

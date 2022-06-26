@@ -1,5 +1,5 @@
-import { Ast, AstFromString } from './ast'
-import { Op, OpPacked } from './op'
+import { Ast, AstFromString } from "./ast.js";
+import { Op, OpPacked } from "./op.js";
 
 type EvalAstArray_Acc<
 	r extends unknown[],
@@ -9,12 +9,12 @@ type EvalAstArray_Acc<
 	? EvalAstArray_Acc<[...r, EvalAst<a, args>], as, args>
 	: arr extends []
 	? r
-	: never
+	: never;
 
 type EvalAstArray<
 	arr extends unknown[],
 	args extends unknown[]
-> = EvalAstArray_Acc<[], arr, args>
+> = EvalAstArray_Acc<[], arr, args>;
 
 /**
  * - TODO: tail recursion
@@ -52,39 +52,39 @@ export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [
 			infer I,
 			...unknown[]
 	  ]
-	? ast extends '1'
+	? ast extends "1"
 		? A
-		: ast extends '2'
+		: ast extends "2"
 		? B
-		: ast extends '3'
+		: ast extends "3"
 		? C
-		: ast extends '4'
+		: ast extends "4"
 		? D
-		: ast extends '5'
+		: ast extends "5"
 		? E
-		: ast extends '6'
+		: ast extends "6"
 		? F
-		: ast extends '7'
+		: ast extends "7"
 		? G
-		: ast extends '8'
+		: ast extends "8"
 		? H
-		: ast extends '9'
+		: ast extends "9"
 		? I
 		: never
-	: never
+	: never;
 
 /**
  * - TODO: constrain it better, not just `string`
  */
-type ExprString = string
+type ExprString = string;
 
-export type Expr = Ast | keyof Op | ExprString
+export type Expr = Ast | keyof Op | ExprString;
 
 export type PreprocessExpr<e extends Expr> = e extends keyof Op
 	? e
 	: e extends string
 	? AstFromString<e>
-	: e
+	: e;
 
 export type Eval<
 	expr = never,
@@ -95,4 +95,4 @@ export type Eval<
 	? EvalAst<expr, args>
 	: expr extends string
 	? EvalAst<AstFromString<expr>, args>
-	: never
+	: never;

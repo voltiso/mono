@@ -1,11 +1,11 @@
-import { array } from '../../array'
-import { optional } from '../../misc'
-import { number } from '../../number'
-import { string } from '../../string'
-import { union } from '../../union'
-import { function as function_ } from '../../function'
-import { tuple } from '../../tuple'
-import { lazyValue } from '@voltiso/ts-util'
+import { array } from "../../array.js";
+import { optional } from "../../misc.js";
+import { number } from "../../number.js";
+import { string } from "../../string.js";
+import { union } from "../../union.js";
+import { function as function_ } from "../../function.js";
+import { tuple } from "../../tuple.js";
+import { lazyValue } from "@voltiso/ts-util";
 
 export const validationIssue = lazyValue(() => ({
 	path: array(union(string, number)),
@@ -18,4 +18,4 @@ export const validationIssue = lazyValue(() => ({
 	receivedDescription: string.optional,
 
 	toString: function_(tuple(), string),
-}))
+}));

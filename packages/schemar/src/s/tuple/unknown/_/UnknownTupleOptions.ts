@@ -1,13 +1,13 @@
-import { defaultSchemaOptions, SchemaOptions } from '../../../../schema'
+import { defaultSchemaOptions, SchemaOptions } from "../../../../schema.js";
 
 export interface UnknownTupleOptions extends SchemaOptions {
-	_out: readonly unknown[]
-	_in: readonly unknown[]
+	_out: readonly unknown[];
+	_in: readonly unknown[];
 
-	readonlyTuple: boolean
+	readonlyTuple: boolean;
 
-	minLength: number | undefined
-	maxLength: number | undefined
+	minLength: number | undefined;
+	maxLength: number | undefined;
 }
 
 export const defaultMutableUnknownTupleOptions = {
@@ -17,7 +17,7 @@ export const defaultMutableUnknownTupleOptions = {
 	readonlyTuple: false as const,
 	minLength: undefined,
 	maxLength: undefined,
-}
+};
 
 export const defaultReadonlyUnknownTupleOptions = {
 	...defaultSchemaOptions,
@@ -26,10 +26,10 @@ export const defaultReadonlyUnknownTupleOptions = {
 	readonlyTuple: true as const,
 	minLength: undefined,
 	maxLength: undefined,
-}
+};
 
 export type DefaultMutableUnknownTupleOptions =
-	typeof defaultMutableUnknownTupleOptions
+	typeof defaultMutableUnknownTupleOptions;
 
 export type DefaultReadonlyUnknownTupleOptions =
-	typeof defaultReadonlyUnknownTupleOptions
+	typeof defaultReadonlyUnknownTupleOptions;

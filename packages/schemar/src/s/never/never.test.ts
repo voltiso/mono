@@ -1,59 +1,59 @@
-import { IsIdentical } from '@voltiso/ts-util'
-import { Assert } from '@voltiso/ts-util/bdd'
-import { IRootSchema } from '../../schema'
-import { GetInputType, GetOutputType } from '../../GetType'
-import { CustomNever } from './CustomNever'
-import * as s from '..'
-import { NeverOptions } from './_/NeverOptions'
+import { IsIdentical } from "@voltiso/ts-util";
+import { Assert } from "@voltiso/ts-util/bdd";
+import { IRootSchema } from "../../schema.js";
+import { GetInputType, GetOutputType } from "../../GetType.js";
+import { CustomNever } from "./CustomNever.js";
+import * as s from "..";
+import { NeverOptions } from "./_/NeverOptions.js";
 
-describe('never', () => {
-	it('generic', <O extends NeverOptions>() => {
-		expect.assertions(0)
+describe("never", () => {
+	it("generic", <O extends NeverOptions>() => {
+		expect.assertions(0);
 
-		Assert.is<s.INever<O>, s.INever>()
-		Assert.is<CustomNever<O>, s.INever<O>>()
-		Assert.is<CustomNever<O>, s.INever>()
-	})
+		Assert.is<s.INever<O>, s.INever>();
+		Assert.is<CustomNever<O>, s.INever<O>>();
+		Assert.is<CustomNever<O>, s.INever>();
+	});
 
-	it('simple', () => {
-		expect.hasAssertions()
+	it("simple", () => {
+		expect.hasAssertions();
 
-		Assert.is<typeof s.never, IRootSchema>()
+		Assert.is<typeof s.never, IRootSchema>();
 
-		type A1 = GetOutputType<typeof s.never>
-		type A2 = GetInputType<typeof s.never>
-		Assert<IsIdentical<A1, never>>()
-		Assert<IsIdentical<A2, never>>()
+		type A1 = GetOutputType<typeof s.never>;
+		type A2 = GetInputType<typeof s.never>;
+		Assert<IsIdentical<A1, never>>();
+		Assert<IsIdentical<A2, never>>();
 
-		type B = s.Never['OutputType']
-		Assert.is<B, never>()
+		type B = s.Never["OutputType"];
+		Assert.is<B, never>();
 
-		type C = s.Never['OutputType']['optional']
-		Assert.is<C, never>()
+		type C = s.Never["OutputType"]["optional"];
+		Assert.is<C, never>();
 
-		type D = s.Never['OutputType']['optional']['optional']
-		Assert.is<D, never>()
+		type D = s.Never["OutputType"]["optional"]["optional"];
+		Assert.is<D, never>();
 
-		type E = s.Never['OutputType']['optional']['readonly']
-		Assert.is<E, never>()
+		type E = s.Never["OutputType"]["optional"]["readonly"];
+		Assert.is<E, never>();
 
-		const e = s.never.optional.readonly
-		expect(e.isReadonly).toBeTruthy()
-		expect(e.isOptional).toBeTruthy()
-		Assert.is<typeof e['isOptional'], true>()
-		Assert.is<typeof e['isReadonly'], true>()
+		const e = s.never.optional.readonly;
+		expect(e.isReadonly).toBeTruthy();
+		expect(e.isOptional).toBeTruthy();
+		Assert.is<typeof e["isOptional"], true>();
+		Assert.is<typeof e["isReadonly"], true>();
 
-		expect(s.never.extends(s.never)).toBeTruthy()
-		expect(s.never.extends(s.number)).toBeTruthy()
-		expect(s.never.extends(s.unknown)).toBeTruthy()
+		expect(s.never.extends(s.never)).toBeTruthy();
+		expect(s.never.extends(s.number)).toBeTruthy();
+		expect(s.never.extends(s.unknown)).toBeTruthy();
 
-		expect(s.never.extends(s.undefined)).toBeTruthy()
-		expect(s.number.extends(s.never)).toBeFalsy()
-		expect(s.string.extends(s.never)).toBeFalsy()
+		expect(s.never.extends(s.undefined)).toBeTruthy();
+		expect(s.number.extends(s.never)).toBeFalsy();
+		expect(s.string.extends(s.never)).toBeFalsy();
 
-		expect(s.unknown.extends(s.never)).toBeFalsy()
+		expect(s.unknown.extends(s.never)).toBeFalsy();
 
-		expect(s.null.extends(s.never)).toBeFalsy()
-		expect(s.undefined.extends(s.never)).toBeFalsy()
-	})
-})
+		expect(s.null.extends(s.never)).toBeFalsy();
+		expect(s.undefined.extends(s.never)).toBeFalsy();
+	});
+});

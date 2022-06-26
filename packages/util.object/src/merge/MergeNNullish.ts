@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Nullish } from '../../null'
-import { Merge2Nullish_ } from './Merge2Nullish'
+import { Nullish } from "../../null.js";
+import { Merge2Nullish_ } from "./Merge2Nullish.js";
 
 export type MergeNNullish_<objs, acc> = objs extends readonly []
 	? acc
@@ -8,7 +8,7 @@ export type MergeNNullish_<objs, acc> = objs extends readonly []
 	? [h] extends [object | Nullish]
 		? MergeNNullish_<t, Merge2Nullish_<acc, h>>
 		: acc
-	: never
+	: never;
 
 export type MergeNNullish<objs extends readonly (object | Nullish)[]> =
-	MergeNNullish_<objs, {}>
+	MergeNNullish_<objs, {}>;

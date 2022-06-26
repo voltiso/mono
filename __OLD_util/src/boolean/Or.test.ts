@@ -1,9 +1,9 @@
-import { Assert, Is } from '../bdd/Assert'
-import { Or } from './Or'
+import { Assert, Is } from "../bdd/Assert.js";
+import { Or } from "./Or.js";
 
-describe('or', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("or", () => {
+	it("works", () => {
+		expect.assertions(0);
 		Assert(
 			Is<Or<true, true>>() //
 				.identicalTo<true>(),
@@ -19,6 +19,6 @@ describe('or', () => {
 
 			Is<Or<boolean, boolean>>() //
 				.identicalTo<boolean>()
-		)
-	})
-})
+		);
+	});
+});

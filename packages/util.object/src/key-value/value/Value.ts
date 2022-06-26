@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CanBeUndefinedImpl } from '../../CanBeUndefined'
-import { IsOptionalImpl } from '../../IsOptional'
-import { AlsoAccept } from '../../../misc/AlsoAccept'
+import { CanBeUndefinedImpl } from "../../CanBeUndefined.js";
+import { IsOptionalImpl } from "../../IsOptional.js";
+import { AlsoAccept } from "../../../misc/AlsoAccept.js";
 
 export type Value<
 	Obj extends object,
 	Key extends keyof Obj | AlsoAccept<keyof any> = keyof Obj
-> = ValueImpl<Obj, Key>
+> = ValueImpl<Obj, Key>;
 
 export type Value_<Obj, Key = keyof Obj> = Obj extends object
 	? Key extends keyof Obj
 		? ValueImpl<Obj, Key>
 		: never
-	: never
+	: never;
 
 //
 
@@ -28,4 +28,4 @@ export type ValueImpl<
 				: Exclude<Obj[Key], undefined>
 			: Obj[Key]
 		: never
-	: never
+	: never;

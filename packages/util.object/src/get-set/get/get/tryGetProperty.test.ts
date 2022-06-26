@@ -2,82 +2,82 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-undefined */
 
-import { Assert } from '../../../../bdd'
-import { IsIdentical } from '../../../../misc/IsEqual'
-import { TryGetProperty, tryGetProperty } from './tryGetProperty'
+import { Assert } from "../../../../bdd.js";
+import { IsIdentical } from "../../../../misc/IsEqual.js";
+import { TryGetProperty, tryGetProperty } from "./tryGetProperty.js";
 
-describe('tryGetProperty', () => {
-	it('type - indexed', () => {
-		expect.assertions(0)
+describe("tryGetProperty", () => {
+	it("type - indexed", () => {
+		expect.assertions(0);
 
-		type A = TryGetProperty<{ [k: string]: 0 }, string>
-		Assert<IsIdentical<A, 0 | undefined>>()
+		type A = TryGetProperty<{ [k: string]: 0 }, string>;
+		Assert<IsIdentical<A, 0 | undefined>>();
 
-		type B = TryGetProperty<{ [k: string]: 0 }, 'test'>
-		Assert<IsIdentical<B, 0 | undefined>>()
+		type B = TryGetProperty<{ [k: string]: 0 }, "test">;
+		Assert<IsIdentical<B, 0 | undefined>>();
 
-		type C = TryGetProperty<{ a: 1 }, 'test'>
-		Assert<IsIdentical<C, undefined>>()
+		type C = TryGetProperty<{ a: 1 }, "test">;
+		Assert<IsIdentical<C, undefined>>();
 
-		type D = TryGetProperty<{ [k: string]: number; test: 0 }, 'test'>
-		Assert<IsIdentical<D, 0>>()
+		type D = TryGetProperty<{ [k: string]: number; test: 0 }, "test">;
+		Assert<IsIdentical<D, 0>>();
 
-		type E = TryGetProperty<{ [k: string]: number; test?: 0 }, 'test'>
-		Assert<IsIdentical<E, 0 | undefined>>()
-	})
+		type E = TryGetProperty<{ [k: string]: number; test?: 0 }, "test">;
+		Assert<IsIdentical<E, 0 | undefined>>();
+	});
 
-	it('works', () => {
-		expect.hasAssertions()
+	it("works", () => {
+		expect.hasAssertions();
 
-		expect(tryGetProperty({ a: 0 }, 'a')).toBe(0)
-		expect(tryGetProperty({} as { a?: number }, 'a')).toBeUndefined()
+		expect(tryGetProperty({ a: 0 }, "a")).toBe(0);
+		expect(tryGetProperty({} as { a?: number }, "a")).toBeUndefined();
 
 		expect(
-			tryGetProperty(undefined as undefined | { a?: number }, 'a')
-		).toBeUndefined()
+			tryGetProperty(undefined as undefined | { a?: number }, "a")
+		).toBeUndefined();
 
 		// @ts-expect-error __proto__ does not exist
-		expect(() => tryGetProperty({ a: 1 }, '__proto__')).toThrow('pollution')
+		expect(() => tryGetProperty({ a: 1 }, "__proto__")).toThrow("pollution");
 
 		// @ts-expect-error __proto__ does not exist
-		expect(() => tryGetProperty({ a: 1 }, 'constructor')).toThrow('pollution')
-	})
+		expect(() => tryGetProperty({ a: 1 }, "constructor")).toThrow("pollution");
+	});
 
-	it('works with private class fields', () => {
-		expect.hasAssertions()
+	it("works with private class fields", () => {
+		expect.hasAssertions();
 
 		class Foo {
-			private field
+			private field;
 
-			private unknownField: unknown
+			private unknownField: unknown;
 
-			#ecmaPrivate = 123 as const
-			#ecmaUnknownPrivate: unknown
+			#ecmaPrivate = 123 as const;
+			#ecmaUnknownPrivate: unknown;
 
 			constructor(field: 123) {
-				this.field = field
-				void this.field
-				void this.unknownField
-				void this.#ecmaPrivate
-				void this.#ecmaUnknownPrivate
+				this.field = field;
+				void this.field;
+				void this.unknownField;
+				void this.#ecmaPrivate;
+				void this.#ecmaUnknownPrivate;
 			}
 		}
 
-		const c = new Foo(123)
+		const c = new Foo(123);
 
 		// @ts-expect-error private
-		expect(c.field).toBe(123)
+		expect(c.field).toBe(123);
 
-		Assert<IsIdentical<Foo['field'], 123>>()
-		Assert<IsIdentical<Foo['unknownField'], unknown>>()
+		Assert<IsIdentical<Foo["field"], 123>>();
+		Assert<IsIdentical<Foo["unknownField"], unknown>>();
 
-		type A = TryGetProperty<Foo, 'field'>
-		Assert<IsIdentical<A, 123>>()
+		type A = TryGetProperty<Foo, "field">;
+		Assert<IsIdentical<A, 123>>();
 
-		type B = TryGetProperty<Foo, 'unknownField'>
-		Assert<IsIdentical<B, unknown>>()
+		type B = TryGetProperty<Foo, "unknownField">;
+		Assert<IsIdentical<B, unknown>>();
 
-		type C = TryGetProperty<Foo, 'nonExisting'>
-		Assert<IsIdentical<C, undefined>>()
-	})
-})
+		type C = TryGetProperty<Foo, "nonExisting">;
+		Assert<IsIdentical<C, undefined>>();
+	});
+});

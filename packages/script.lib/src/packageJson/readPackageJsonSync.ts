@@ -1,14 +1,14 @@
-import { VoltisoScriptError } from '../VoltisoScriptError'
-import { findPackageJsonSync } from './findPackageJson'
-import type { PackageJson } from './packageJson'
+import { VoltisoScriptError } from "../VoltisoScriptError.js";
+import { findPackageJsonSync } from "./findPackageJson.js";
+import type { PackageJson } from "./packageJson.js";
 
 export function readPackageJsonSync(): PackageJson {
-	const packageJsonPath = findPackageJsonSync()
+	const packageJsonPath = findPackageJsonSync();
 
 	if (!packageJsonPath)
-		throw new VoltisoScriptError(`cannot find 'package.json'`)
+		throw new VoltisoScriptError(`cannot find 'package.json'`);
 
-	const packageJson = require(packageJsonPath) as PackageJson
+	const packageJson = require(packageJsonPath) as PackageJson;
 
-	return packageJson
+	return packageJson;
 }

@@ -1,5 +1,5 @@
-import { AlsoAccept } from '@voltiso/util.type'
-import { Value } from '../key-value'
+import type { AlsoAccept } from "@voltiso/util.type";
+import type { Value } from "../key-value";
 
 export type OmitByValue<
 	Obj extends object,
@@ -7,6 +7,6 @@ export type OmitByValue<
 > = Omit<
 	Obj,
 	{
-		[k in keyof Obj]: Value<Obj, k> extends Val ? k : never
+		[k in keyof Obj]: Value<Obj, k> extends Val ? k : never;
 	}[keyof Obj]
->
+>;

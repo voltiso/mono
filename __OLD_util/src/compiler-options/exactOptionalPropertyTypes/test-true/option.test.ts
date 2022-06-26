@@ -1,9 +1,9 @@
-import { Assert } from '../../../bdd'
-import { exactOptionalPropertyTypes } from '../../exactOptionalPropertyTypes'
+import { Assert } from "../../../bdd.js";
+import { exactOptionalPropertyTypes } from "../../exactOptionalPropertyTypes.js";
 
-describe('exactOptionalPropertyTypes - true', () => {
-	it('works', () => {
-		expect.assertions(0)
-		Assert<exactOptionalPropertyTypes>()
-	})
-})
+describe("exactOptionalPropertyTypes - true", () => {
+	it("works", () => {
+		expect.assertions(0);
+		Assert<exactOptionalPropertyTypes>();
+	});
+});

@@ -1,8 +1,8 @@
-import { HasIndex, _ } from '@voltiso/ts-util/object'
-import { GetType_ } from './GetType'
-import { GetOptions } from './GetOptions'
-import { GetTypeOptions } from './GetTypeOptions'
-import { SchemaOptions } from '../schema'
+import { HasIndex, _ } from "@voltiso/ts-util/object";
+import { GetType_ } from "./GetType.js";
+import { GetOptions } from "./GetOptions.js";
+import { GetTypeOptions } from "./GetTypeOptions.js";
+import { SchemaOptions } from "../schema.js";
 
 type GetObjectTypeNoSignature<
 	T,
@@ -10,63 +10,63 @@ type GetObjectTypeNoSignature<
 	IO extends GetTypeOptions
 > = Finalize<
 	{
-		[k in keyof T as O[k]['readonly'] extends false
+		[k in keyof T as O[k]["readonly"] extends false
 			? IsOptional<O[k], IO, never, k>
-			: never]: T[k]
+			: never]: T[k];
 	} & {
-		[k in keyof T as O[k]['readonly'] extends false ? k : never]?: T[k]
+		[k in keyof T as O[k]["readonly"] extends false ? k : never]?: T[k];
 	} & {
 		readonly [k in keyof T as IsOptional<O[k], IO> extends false
 			? k
-			: never]: T[k]
+			: never]: T[k];
 	} & {
-		readonly [k in keyof T]?: T[k]
+		readonly [k in keyof T]?: T[k];
 	},
 	IO
->
+>;
 
 export type GetObjectType_<
 	T extends object,
 	IO extends GetTypeOptions
 > = HasIndex<T> extends true
 	? {
-			[k in keyof T]: GetType_<T[k], IO>
+			[k in keyof T]: GetType_<T[k], IO>;
 	  }
 	: HasIndex<T> extends false
 	? GetObjectTypeNoSignature<
 			{
-				[k in keyof T]: GetType_<T[k], IO>
+				[k in keyof T]: GetType_<T[k], IO>;
 			},
 			{
-				[k in keyof T]: GetOptions<T[k]>
+				[k in keyof T]: GetOptions<T[k]>;
 			},
 			IO
 	  >
-	: never
+	: never;
 
 type IsOptional<
 	O extends SchemaOptions,
 	IO extends GetTypeOptions,
 	T = true,
 	F = false
-> = O['optional'] extends true
+> = O["optional"] extends true
 	? T
-	: [O['default']] extends [undefined]
+	: [O["default"]] extends [undefined]
 	? F
-	: IO['kind'] extends 'in'
+	: IO["kind"] extends "in"
 	? T
-	: IO['kind'] extends 'out'
+	: IO["kind"] extends "out"
 	? F
-	: never
+	: never;
 
-type Finalize<T, IO extends GetTypeOptions> = IO['kind'] extends 'in'
+type Finalize<T, IO extends GetTypeOptions> = IO["kind"] extends "in"
 	? _<
 			{
-				[k in keyof T as object extends T[k] ? never : k]: T[k]
+				[k in keyof T as object extends T[k] ? never : k]: T[k];
 			} & {
-				[k in keyof T as object extends T[k] ? k : never]?: T[k]
+				[k in keyof T as object extends T[k] ? k : never]?: T[k];
 			}
 	  >
-	: IO['kind'] extends 'out'
+	: IO["kind"] extends "out"
 	? _<T>
-	: never
+	: never;

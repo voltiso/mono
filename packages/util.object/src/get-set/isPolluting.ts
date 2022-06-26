@@ -1,27 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { AlsoAccept } from '../../misc/AlsoAccept'
-import { VoltisoUtilError } from '../../error'
-import { toString } from '../../string'
+import type { AlsoAccept } from "../../misc/AlsoAccept";
+import { VoltisoError } from "../../error";
+import { toString } from "../../string";
 
 export class PrototypePollutionError<
 	Obj extends object,
 	Key extends keyof Obj | AlsoAccept<keyof any>
-> extends VoltisoUtilError {
-	obj: Obj
-	key: Key
+> extends VoltisoError {
+	obj: Obj;
+	key: Key;
 
 	constructor(obj: Obj, key: Key, options?: ErrorOptions | undefined) {
 		const message = `prototype pollution: cannot access property ${toString(
 			key
-		)} in object ${toString(obj)}`
+		)} in object ${toString(obj)}`;
 
-		super(message, options)
-		Error.captureStackTrace(this, this.constructor)
-		this.name = this.constructor.name
+		super(message, options);
+		Error.captureStackTrace(this, this.constructor);
+		this.name = this.constructor.name;
 
-		this.obj = obj
-		this.key = key
+		this.obj = obj;
+		this.key = key;
 	}
 }
 
@@ -36,16 +35,16 @@ export class PrototypePollutionError<
 export function isPolluting<Obj extends object>(
 	obj: Obj,
 	key: keyof Obj | AlsoAccept<keyof any>
-): key is 'constructor' | '__proto__' {
+): key is "constructor" | "__proto__" {
 	return (
-		(key === 'constructor' && typeof obj[key as keyof Obj] === 'function') ||
-		key === '__proto__'
-	)
+		(key === "constructor" && typeof obj[key as keyof Obj] === "function") ||
+		key === "__proto__"
+	);
 }
 
 export function assertNotPolluting<Obj extends object>(
 	obj: Obj,
 	key: keyof Obj | AlsoAccept<keyof any>
 ) {
-	if (isPolluting(obj, key)) throw new PrototypePollutionError(obj, key)
+	if (isPolluting(obj, key)) throw new PrototypePollutionError(obj, key);
 }

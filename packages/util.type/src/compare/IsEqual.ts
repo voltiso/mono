@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
-import type { SmartFlatten } from '../flatten'
-import type { OptionalFromUndefined } from '../OptionalFromUndefined'
+import type { SmartFlatten } from "../flatten.js";
+import type { OptionalFromUndefined } from "../OptionalFromUndefined.js";
 
 /**
  * Is either a subtype of another one?
@@ -10,14 +10,14 @@ export type IsRelated<A, B, T = true, F = false> = A extends B
 	? T
 	: B extends A
 	? T
-	: F
+	: F;
 
 /**
  * extends 2-way
  */
 export type IsCompatible<A, B, T = true, F = false> = [A, B] extends [B, A]
 	? T
-	: F
+	: F;
 
 /**
  * is (very) strictly equal https://stackoverflow.com/a/52473108/3570903
@@ -26,7 +26,7 @@ type IsAlmostSame<A, B, T = true, F = false> = (<X>() => X extends B
 	? 1
 	: 0) extends <X>() => X extends A ? 1 : 0
 	? T
-	: F
+	: F;
 
 type IsIdenticalIfFunction<A, B> = [A] extends [
 	(this: infer ThisA, ...args: any[]) => any
@@ -34,7 +34,7 @@ type IsIdenticalIfFunction<A, B> = [A] extends [
 	? [B] extends [(this: infer ThisB, ...args: any[]) => any]
 		? IsIdentical<ThisA, ThisB>
 		: true
-	: true
+	: true;
 
 // type IsIdenticalIfFunction<A, B> = IsIdentical<ThisParameterType<A>, ThisParameterType<B>>
 
@@ -49,7 +49,7 @@ export type IsIdentical<A, B, T = true, F = false> = [
 			? T
 			: F
 		: F
-	: F
+	: F;
 
 /**
  * Same as IsIdentical, but less strict for intersections: {a:1} & {b:1} === {a:1; b:1}
@@ -61,7 +61,7 @@ export type IsEqual<A, B, T = true, F = false> = IsIdentical<
 	SmartFlatten<B>,
 	T,
 	F
->
+>;
 
 /**
  * Same as `IsEqual`, but allows use of `undefined` and optional properties interchangeably
@@ -71,4 +71,4 @@ export type IsNonStrictEqual<A, B, T = true, F = false> = IsEqual<
 	OptionalFromUndefined<B>,
 	T,
 	F
->
+>;

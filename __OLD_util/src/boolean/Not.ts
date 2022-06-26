@@ -1,6 +1,6 @@
-import { IsTruthy } from './truthy-falsy'
+import { IsTruthy } from "./truthy-falsy.js";
 
 export type Not_B<A extends boolean, T = true, F = false> = A extends true
 	? F
-	: T
-export type Not<A, T = true, F = false> = Not_B<IsTruthy<A>, T, F>
+	: T;
+export type Not<A, T = true, F = false> = Not_B<IsTruthy<A>, T, F>;

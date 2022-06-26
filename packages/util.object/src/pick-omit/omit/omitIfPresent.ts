@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AlsoAccept } from '../../../misc/AlsoAccept'
-import { OmitSimple } from './OmitSimple'
+import { AlsoAccept } from "../../../misc/AlsoAccept.js";
+import { OmitSimple } from "./OmitSimple.js";
 
 // export function omitIfPresent<
 // 	O extends object,
@@ -16,7 +16,7 @@ export function omitIfPresent<
 	O extends object,
 	K extends keyof O | AlsoAccept<keyof any>
 >(obj: O, ...keys: K[]): OmitSimple<O, K> {
-	const { ...r } = obj
-	for (const key of keys) delete r[key as unknown as keyof O]
-	return r as unknown as OmitSimple<O, K>
+	const { ...r } = obj;
+	for (const key of keys) delete r[key as unknown as keyof O];
+	return r as unknown as OmitSimple<O, K>;
 }

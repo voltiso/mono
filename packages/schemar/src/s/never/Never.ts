@@ -1,11 +1,11 @@
-import { CustomNever } from './CustomNever'
-import { lazyValue } from '@voltiso/ts-util'
-import { Never_ } from './Never_'
-import { DefaultNeverOptions } from './_/NeverOptions'
+import { CustomNever } from "./CustomNever.js";
+import { lazyValue } from "@voltiso/ts-util";
+import { Never_ } from "./Never_.js";
+import { DefaultNeverOptions } from "./_/NeverOptions.js";
 
-type NeverConstructor = new () => Never
+type NeverConstructor = new () => Never;
 
-export type Never = CustomNever<DefaultNeverOptions>
-export const Never = Never_ as unknown as NeverConstructor
+export type Never = CustomNever<DefaultNeverOptions>;
+export const Never = Never_ as unknown as NeverConstructor;
 
-export const never = lazyValue(() => new Never())
+export const never = lazyValue(() => new Never());

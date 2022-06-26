@@ -8,7 +8,10 @@
 	"_________EXPORTS FALLBACK": "__________",
 	"main": "tsconfig.json",
 	"__________DEPS": "__________",
-	"peerDependencies": {
+	"dependencies": {
 		"typescript": "*"
+	},
+	"engines": {
+		"node": ">=16.0.0"
 	}
 }

@@ -1,44 +1,44 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
-import { IsIdentical } from '../../../misc/IsEqual'
-import { Assert } from '../../../bdd'
-import { OmitSignatures } from '../omit'
-import { Pick_ } from './Pick_'
+import { IsIdentical } from "../../../misc/IsEqual.js";
+import { Assert } from "../../../bdd.js";
+import { OmitSignatures } from "../omit.js";
+import { Pick_ } from "./Pick_.js";
 
-describe('Pick', () => {
-	it('type', () => {
-		expect.assertions(0)
+describe("Pick", () => {
+	it("type", () => {
+		expect.assertions(0);
 
-		type B = Pick_<{ readonly a?: 1; 2: 2 }, string>
-		Assert<IsIdentical<B, { readonly a?: 1 }>>()
+		type B = Pick_<{ readonly a?: 1; 2: 2 }, string>;
+		Assert<IsIdentical<B, { readonly a?: 1 }>>();
 
-		type A = Pick_<{ readonly a?: 1; b: 2 }, 'a'>
-		Assert<IsIdentical<A, { readonly a?: 1 }>>()
-	})
+		type A = Pick_<{ readonly a?: 1; b: 2 }, "a">;
+		Assert<IsIdentical<A, { readonly a?: 1 }>>();
+	});
 
 	type Obj = {
-		[k: string]: 1 | 2
-		[k: number]: 2
-		[k: symbol]: 3
-		a: 1
-	}
+		[k: string]: 1 | 2;
+		[k: number]: 2;
+		[k: symbol]: 3;
+		a: 1;
+	};
 
-	it('index signatures', () => {
-		expect.assertions(0)
+	it("index signatures", () => {
+		expect.assertions(0);
 
-		type A0 = Pick<Obj, 'a'>
-		Assert<IsIdentical<A0, { a: 1 }>>()
+		type A0 = Pick<Obj, "a">;
+		Assert<IsIdentical<A0, { a: 1 }>>();
 
-		type A1 = Pick_<Obj, 'a'>
-		Assert<IsIdentical<A1, { a: 1 }>>()
+		type A1 = Pick_<Obj, "a">;
+		Assert<IsIdentical<A1, { a: 1 }>>();
 
 		//
 
-		type B0 = Pick<Obj, 'a' | symbol>
-		Assert<IsIdentical<B0, { [k: symbol]: 3; a: 1 }>>()
+		type B0 = Pick<Obj, "a" | symbol>;
+		Assert<IsIdentical<B0, { [k: symbol]: 3; a: 1 }>>();
 
-		type B1 = Pick_<Obj, 'a' | symbol>
-		Assert<IsIdentical<B1, { [k: symbol]: 3; a: 1 }>>()
+		type B1 = Pick_<Obj, "a" | symbol>;
+		Assert<IsIdentical<B1, { [k: symbol]: 3; a: 1 }>>();
 
 		//
 
@@ -47,34 +47,34 @@ describe('Pick', () => {
 
 		// type C1 = Pick_<Obj, string>
 		// Assert<IsIdentical<C1, { [k: string]: 1 | 2; a: 1 }>>() // bad!
-	})
+	});
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	it('generic', <O extends Obj>() => {
-		expect.assertions(0)
+	it("generic", <O extends Obj>() => {
+		expect.assertions(0);
 
-		type A0 = Pick<O, 'a' | symbol>
-		Assert.is<A0, Obj>()
+		type A0 = Pick<O, "a" | symbol>;
+		Assert.is<A0, Obj>();
 
-		type A1 = Pick_<O, 'a' | symbol>
-		Assert.is<A1, Obj>()
+		type A1 = Pick_<O, "a" | symbol>;
+		Assert.is<A1, Obj>();
 
 		// type C0 = Pick<O, string>
 		// Assert.is<C0, Obj>() // bad!
 
 		// type C1 = Pick_<O, string>
 		// Assert.is<C1, Obj>() // bad!
-	})
+	});
 
-	it('vscode jump to definition (manual test...)', () => {
-		expect.assertions(0)
+	it("vscode jump to definition (manual test...)", () => {
+		expect.assertions(0);
 
 		type Obj = {
-			a: 1
-			b: 2
-		}
-		const obj = {} as unknown as Pick_<OmitSignatures<Obj>, 'a'>
+			a: 1;
+			b: 2;
+		};
+		const obj = {} as unknown as Pick_<OmitSignatures<Obj>, "a">;
 		// hit F12 here:
-		void obj.a
-	})
-})
+		void obj.a;
+	});
+});

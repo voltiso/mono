@@ -1,7 +1,7 @@
-import { VoltisoUtilError } from '../../../error'
-import { toString } from '../../../string'
-import { omitIfPresent } from './omitIfPresent'
-import { OmitSimple } from './OmitSimple'
+import type { OmitSimple } from "./OmitSimple";
+import { VoltisoError } from "@voltiso/util.error";
+import { toString } from "@voltiso/util.string";
+import { omitIfPresent } from "./omitIfPresent";
 
 // export function omit<O extends object, K extends keyof O>(
 // 	obj: O,
@@ -19,12 +19,12 @@ export function omit<O extends object, K extends keyof O>(
 ): OmitSimple<O, K> {
 	for (const key of keys) {
 		if (!Object.hasOwn(obj, key)) {
-			throw new VoltisoUtilError(
+			throw new VoltisoError(
 				`omit(${toString(obj)}, ${toString(keys)}): key ${toString(
 					key
 				)} does not exist`
-			)
+			);
 		}
 	}
-	return omitIfPresent(obj, ...keys)
+	return omitIfPresent(obj, ...keys);
 }

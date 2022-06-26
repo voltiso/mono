@@ -7,12 +7,12 @@
 	"sideEffects": false,
 	"__________DEPS": "__________",
 	"peerDependencies": {
-		"@babel/plugin-transform-async-to-generator": "*",
 		"@babel/core": "*",
+		"@babel/plugin-transform-async-to-generator": "*",
 		"zone.js": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.42",
-		"@babel/core": "^7.18.5"
+		"@babel/core": "^7.18.5",
+		"@types/node": "^18.0.0"
 	}
 }

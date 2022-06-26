@@ -39,7 +39,7 @@
 		"chalk": "^4.1.2"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.42",
+		"@types/node": "^18.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"@voltiso/config.ts.eslint": "workspace:^1.0.0",

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Nullish } from '../../null'
-import { strictNullChecks } from '../../compiler-options'
-import { VPartial } from './VPartial'
+import { Nullish } from "../../null.js";
+import { strictNullChecks } from "../../compiler-options.js";
+import { VPartial } from "./VPartial.js";
 
-type ExcludedPartial<T> = VPartial<Exclude<T, Nullish>>
+type ExcludedPartial<T> = VPartial<Exclude<T, Nullish>>;
 
 type NonNeverPartial<T> = ExcludedPartial<T> extends never
 	? {}
-	: ExcludedPartial<T>
+	: ExcludedPartial<T>;
 
 /** requires `strictNullChecks` */
 export type PartialIfNullish_<O> = strictNullChecks extends true
@@ -16,7 +16,7 @@ export type PartialIfNullish_<O> = strictNullChecks extends true
 		: undefined extends O
 		? NonNeverPartial<O>
 		: O
-	: O
+	: O;
 
 /** requires `strictNullChecks` */
-export type PartialIfNullish<O extends object | Nullish> = PartialIfNullish_<O>
+export type PartialIfNullish<O extends object | Nullish> = PartialIfNullish_<O>;

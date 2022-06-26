@@ -1,32 +1,32 @@
-import { Schemable } from '../../../schema'
-import { isLiteral } from '../../literal'
-import { isUnion } from '../../union'
-import { isBoolean } from '../IBoolean'
-import * as s from '../..'
+import { Schemable } from "../../../schema.js";
+import { isLiteral } from "../../literal.js";
+import { isUnion } from "../../union.js";
+import { isBoolean } from "../IBoolean.js";
+import * as s from "../..";
 
 export function collectTrueFalse(schemable: Schemable): {
-	haveTrue: boolean
-	haveFalse: boolean
+	haveTrue: boolean;
+	haveFalse: boolean;
 } {
-	const o = s.schema(schemable)
+	const o = s.schema(schemable);
 	if (isLiteral(o)) {
-		let haveTrue = false
-		let haveFalse = false
+		let haveTrue = false;
+		let haveFalse = false;
 		for (const t of o.getValues) {
-			if (t === true) haveTrue = true
-			else if (t === false) haveFalse = true
+			if (t === true) haveTrue = true;
+			else if (t === false) haveFalse = true;
 		}
-		return { haveTrue, haveFalse }
+		return { haveTrue, haveFalse };
 	} else if (isBoolean(o)) {
-		return { haveTrue: true, haveFalse: true }
+		return { haveTrue: true, haveFalse: true };
 	} else if (isUnion(o)) {
-		let haveTrue = false
-		let haveFalse = false
+		let haveTrue = false;
+		let haveFalse = false;
 		for (const t of o.getSchemas) {
-			const r = collectTrueFalse(t)
-			if (r.haveTrue) haveTrue = true
-			if (r.haveFalse) haveFalse = true
+			const r = collectTrueFalse(t);
+			if (r.haveTrue) haveTrue = true;
+			if (r.haveFalse) haveFalse = true;
 		}
-		return { haveTrue, haveFalse }
-	} else return { haveTrue: false, haveFalse: false }
+		return { haveTrue, haveFalse };
+	} else return { haveTrue: false, haveFalse: false };
 }

@@ -68,20 +68,33 @@
 AFTER you have your [PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) from GitHub in place:
 
 ```sh
-pnpm install @voltiso/util
-```
+pnpm install @voltiso/util.type
+pnpm install @voltiso/util.object
 
-Additional packages from this monorepo:
-
-```sh
 pnpm install @voltiso/config.ts
+pnpm install @voltiso/config.ts.build.esm
+
 pnpm install @voltiso/config.eslint
 pnpm install @voltiso/config.prettier
 pnpm install @voltiso/config.jest
 pnpm install @voltiso/config.babel
+# ...
+```
+
+See the `packages/*/` directories for the full list of available `@voltiso/*` packages.
+
+```sh
 
 pnpm install @voltiso/script
 ```
+
+> ⚠️ Peer deps of `@voltiso/*` packages are listed as deps!
+>
+> - Deps that should be peer have `*` version
+>   - Deps with normal semver are regular deps
+> - Hopefully we won't duplicate deps but share the ones up in the dep tree
+> - Not perfect, versioning was nice, but good for now
+> - pnpm's `auto-install-peers` is problematic - maybe will be improved in the future
 
 # 🧑‍🔬 Code _THIS_ library (`@voltiso/util`)
 

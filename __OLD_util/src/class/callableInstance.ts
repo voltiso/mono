@@ -1,11 +1,11 @@
-import { callableObject, Parameters_ } from '../function'
+import { callableObject, Parameters_ } from "../function.js";
 
-export const CALL = Symbol('CALL')
-export type CALL = typeof CALL
+export const CALL = Symbol("CALL");
+export type CALL = typeof CALL;
 
 type WithCall = {
-	[CALL](this: object, ...args: never[]): unknown
-}
+	[CALL](this: object, ...args: never[]): unknown;
+};
 
 /**
  * Define classes with callable instances.
@@ -32,10 +32,10 @@ export function callableInstance<This extends WithCall>(
 ): CallableInstance<This> {
 	// eslint-disable-next-line func-style
 	const f = (...args: Parameters_<This[CALL]>) => {
-		return thisArg[CALL].call(f, ...args)
-	}
+		return thisArg[CALL].call(f, ...args);
+	};
 
-	return callableObject(thisArg, f)
+	return callableObject(thisArg, f);
 }
 
-export type CallableInstance<This extends WithCall> = This & This[CALL]
+export type CallableInstance<This extends WithCall> = This & This[CALL];

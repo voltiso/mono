@@ -5,33 +5,39 @@
 	//  - Maybe these shouldn't be here, but in User Settings!
 	//  - But - there are project-specific settings here too - see "files.exclude" for "util"
 	//
+
+	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
+	"javascript.preferences.importModuleSpecifierEnding": "js", // needed for proper esm
+	"typescript.preferences.importModuleSpecifierEnding": "js", // needed for proper esm
+
 	"files.exclude": {
 		// "**/node_modules/": true,
 		// "**/dist/": true,
-		"**/.tsc-out/": true,
-		"**/.turbo/": true,
-
+		// "**/.tsc-out/": true,
+		// "**/.turbo/": true,
 		/**
 		 * util - compat dirs
 		 */
-		"**/util/array/": true,
-		"**/util/bdd/": true,
-		"**/util/boolean/": true,
-		"**/util/class/": true,
-		"**/util/clone/": true,
-		"**/util/compiler-options/": true,
-		"**/util/error/": true,
-		"**/util/function/": true,
-		"**/util/null/": true,
-		"**/util/number/": true,
-		"**/util/object/": true,
-		"**/util/parser/": true,
-		"**/util/patch/": true,
-		"**/util/promise/": true,
-		"**/util/set/": true,
-		"**/util/string/": true,
-		"**/util/symbol/": true
+		// "**/util/array/": true,
+		// "**/util/bdd/": true,
+		// "**/util/boolean/": true,
+		// "**/util/class/": true,
+		// "**/util/clone/": true,
+		// "**/util/compiler-options/": true,
+		// "**/util/error/": true,
+		// "**/util/function/": true,
+		// "**/util/null/": true,
+		// "**/util/number/": true,
+		// "**/util/object/": true,
+		// "**/util/parser/": true,
+		// "**/util/patch/": true,
+		// "**/util/promise/": true,
+		// "**/util/set/": true,
+		// "**/util/string/": true,
+		// "**/util/symbol/": true
 	},
+
+	"exportall.config.semis": false,
 
 	/** allow JSON comments by default */
 	"files.associations": {
@@ -55,20 +61,71 @@
 	// "explorer.experimental.fileNesting.enabled": true,
 	// "explorer.experimental.fileNesting.expand": false,
 
-	"eslint.validate": [
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-		"json",
-		"jsonc",
-		"json5",
-		"yaml"
+	"better-comments.tags": [
+		{
+			"tag": "!",
+			"color": "#FF2D00",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "?",
+			"color": "#3498DB",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "//",
+			"color": "#474747",
+			"strikethrough": true,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "todo",
+			"color": "#FF8C00",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "*",
+			"color": "#98C379",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "transparent",
+			"bold": false,
+			"italic": false
+		},
+		{
+			"tag": "⠀",
+			"color": "#FF5500aa",
+			"strikethrough": false,
+			"underline": false,
+			"backgroundColor": "#aaddff22",
+			"bold": true,
+			"italic": false
+		}
 	],
 
+	// "tag": "⎠ √☁ √ 🗲⎠  𝓥☁ 🗲 √ᘇ𝓦 🗲 ☁ 🌩️ 🗲🌩 ⛈ 🗲  ䷲ ⚡☁ ⓥ V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛ 🗲 𝙑☁ 𝙫☁ 🗲 🗲☁🗲 www asfdsf 🗲🌩Ѵ 🗲 𝙑 ☁ 𝙫  ѵѴ🗲 ",
+
+	//                        🌩
+	//                      🌩    🌩
+	// Copyright ⓥ 2022 🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com
 	//
 
-	//
+	// V͛͛͛͠͠͠o͛͛͛͛͠͠͠l͛͛͠͠͠t͛͛͠͠͠i͛͛͛͛͠͠͠s͛͛͛͛͛͠͠o͛͛͛͛͠͠
 
 	//
 
@@ -76,7 +133,6 @@
 	// Project-specific settings
 	//
 	// "eslint.options": { "overrideConfigFile": "./config/eslint.js" },
-	// "prettier.configPath": "./config/prettier.js",
 	// "jest.jestCommandLine": "pnpm test",
 
 	//
@@ -85,6 +141,35 @@
 	"files.eol": "\n",
 
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	// "prettier.configPath": "./config/dist/cjs/prettier.js",
+	// "prettier.enable": true,
+	// "prettier.withNodeModules": true,
+	// "prettier.enableDebugLogs": true,
+
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+
+	"prettier.documentSelectors": [
+		"**/.gitignore",
+		"**/.npmrc",
+		"**/.editorconfig"
+	],
+
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"json",
+		"jsonc",
+		"json5",
+		"yaml",
+		"toml",
+		"properties",
+		"ignore",
+		"editorconfig"
+	],
 
 	// "jest.jestCommandLine": "node_modules/.bin/jest",
 	// "jest.jestCommandLine": "pnpm test",
@@ -97,7 +182,7 @@
 		"onStartup": ["all-tests"]
 	},
 
-	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.tsdk": "./node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 
 	"debug.javascript.terminalOptions": {
@@ -107,25 +192,34 @@
 	"cSpell.words": [
 		"anymatch",
 		"Bartosz",
+		"browserslistrc",
 		"chokidar",
+		"cjsx",
 		"clier",
 		"compat",
 		"concat",
+		"ctsx",
 		"deps",
 		"eopt",
 		"esbuild",
 		"execa",
 		"extglob",
 		"fastq",
+		"flowtype",
 		"fsevents",
+		"gitignores",
 		"globby",
 		"iife",
 		"iojs",
 		"isexe",
 		"joycon",
+		"LGBTQ",
 		"lilconfig",
 		"microtask",
+		"milahu",
 		"minimatch",
+		"mjsx",
+		"mtsx",
 		"nodelib",
 		"npmrc",
 		"oltiso",
@@ -148,15 +242,26 @@
 		"scandir",
 		"schemar",
 		"sdkconfig",
+		"sharereplay",
+		"shrc",
+		"sonarjs",
 		"stester",
 		"subdir",
 		"sunos",
+		"switchmap",
 		"syncer",
+		"syncpack",
+		"takeuntil",
+		"takewhile",
 		"thenify",
+		"topromise",
 		"transpiling",
 		"treeshake",
+		"tsdoc",
 		"tsup",
 		"Turborepo",
+		"unist",
+		"V͛o͛",
 		"voltiso",
 		"wrappy",
 		"Zonejs"

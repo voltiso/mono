@@ -1,15 +1,15 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
-import { SimpleAssert } from '../SimpleAssert'
-import type { AreNotProvided } from './AreNotProvided'
-import type { NotProvided, OptionalArgument } from './OptionalArgument'
+import { SimpleAssert } from "../SimpleAssert.js";
+import type { AreNotProvided } from "./AreNotProvided.js";
+import type { NotProvided, OptionalArgument } from "./OptionalArgument.js";
 
-type IFun_<Result> = (...args: never[]) => Result
-type IFun<Result extends string = string> = IFun_<Result>
+type IFun_<Result> = (...args: never[]) => Result;
+type IFun<Result extends string = string> = IFun_<Result>;
 
 type Fun_<Args, Result> = Args extends readonly unknown[]
 	? (...args: Args) => Result
-	: never
+	: never;
 
 // type Fun<
 // 	Args extends OptionalArgument<number[]> = NotProvided,
@@ -48,30 +48,30 @@ type Fun_<Args, Result> = Args extends readonly unknown[]
 type Fun<
 	Args extends OptionalArgument<number[]> = NotProvided,
 	Result extends OptionalArgument<string> = NotProvided
-> = AreNotProvided<[Args, Result], IFun, Fun_<Args, Result>>
+> = AreNotProvided<[Args, Result], IFun, Fun_<Args, Result>>;
 
-describe('OptionalArgument', () => {
-	it('works', <Args extends number[], Result extends string>() => {
-		expect.assertions(0)
+describe("OptionalArgument", () => {
+	it("works", <Args extends number[], Result extends string>() => {
+		expect.assertions(0);
 
 		// Assert.is<Fun<Args, Result>, Fun_<Args, Result>>() // :(
 
-		SimpleAssert<IFun<Result>, IFun>()
+		SimpleAssert<IFun<Result>, IFun>();
 
 		// Assert.is<Fun<Args, Result>, IFun<Result>>() // :(
-		SimpleAssert<Fun<Args, Result>, IFun>()
-		SimpleAssert<Fun<Args, Result>, Fun>()
+		SimpleAssert<Fun<Args, Result>, IFun>();
+		SimpleAssert<Fun<Args, Result>, Fun>();
 
 		type TestA<Args extends number[], Result extends string> = Fun<
 			Args,
 			Result
 		> extends IFun<Result>
 			? 1
-			: 0
+			: 0;
 
-		type A = TestA<Args, Result>
+		type A = TestA<Args, Result>;
 
-		SimpleAssert<A, 0 | 1>()
+		SimpleAssert<A, 0 | 1>();
 		// Assert.is<A, 1>() // :(
 
 		//
@@ -81,10 +81,10 @@ describe('OptionalArgument', () => {
 			Result
 		> extends Fun_<Args, Result>
 			? 1
-			: 0
+			: 0;
 
-		type B = TestB<Args, Result>
-		SimpleAssert<B, 0 | 1>()
+		type B = TestB<Args, Result>;
+		SimpleAssert<B, 0 | 1>();
 		// Assert.is<B, 1>() // :(
-	})
-})
+	});
+});

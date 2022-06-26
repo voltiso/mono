@@ -1,8 +1,8 @@
-import { isObject } from '../object'
+import { isObject } from "../object.js";
 
 export function isSet(x: unknown): x is Set<unknown> {
-	if (x instanceof Set) return true
+	if (x instanceof Set) return true;
 
-	if (!isObject(x)) return false
-	return x.constructor.name === 'Set'
+	if (!isObject(x)) return false;
+	return x.constructor.name === "Set";
 }

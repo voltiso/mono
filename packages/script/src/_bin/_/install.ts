@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/require-await */
-import type { Command } from './Command'
-import { throwError } from './throwError'
+import type { Command } from "./Command.js";
+import { throwError } from "./throwError.js";
 
 /* eslint-disable func-style */
 export const install: Command = async ({ commandArgs }) => {
-	if (commandArgs.length > 0) throwError('install expects 0 arguments')
+	if (commandArgs.length > 0) throwError("install expects 0 arguments");
 
 	//
-}
+};

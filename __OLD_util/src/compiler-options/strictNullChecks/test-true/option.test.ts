@@ -1,9 +1,9 @@
-import { Assert } from '../../../bdd'
-import { strictNullChecks } from '../../strictNullChecks'
+import { Assert } from "../../../bdd.js";
+import { strictNullChecks } from "../../strictNullChecks.js";
 
-describe('Have_strictNullChecks', () => {
-	it('works', () => {
-		expect.assertions(0)
-		Assert<strictNullChecks>()
-	})
-})
+describe("Have_strictNullChecks", () => {
+	it("works", () => {
+		expect.assertions(0);
+		Assert<strictNullChecks>();
+	});
+});

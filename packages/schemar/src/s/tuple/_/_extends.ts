@@ -1,18 +1,18 @@
-import { assert } from '@voltiso/ts-util'
-import { ITuple } from '../ITuple'
-import * as s from '../..'
+import { assert } from "@voltiso/ts-util";
+import { ITuple } from "../ITuple.js";
+import * as s from "../..";
 
 export function _extends(thisTuple: ITuple, otherTuple: ITuple): boolean {
-	const a = thisTuple.getElementSchemas
-	const b = otherTuple.getElementSchemas
+	const a = thisTuple.getElementSchemas;
+	const b = otherTuple.getElementSchemas;
 
-	if (a.length !== b.length) return false
+	if (a.length !== b.length) return false;
 	for (let i = 0; i < a.length; ++i) {
-		const aa = a[i]
-		const bb = b[i]
-		assert(aa)
-		assert(bb)
-		if (!s.schema(aa).extends(bb)) return false
+		const aa = a[i];
+		const bb = b[i];
+		assert(aa);
+		assert(bb);
+		if (!s.schema(aa).extends(bb)) return false;
 	}
-	return true
+	return true;
 }

@@ -1,10 +1,10 @@
-import { If } from '@voltiso/ts-util'
-import { InferableMutableTuple, InferableReadonlyTuple } from '../schema'
-import { GetType_ } from './GetType'
-import { GetTypeOptions } from './GetTypeOptions'
+import { If } from "@voltiso/ts-util";
+import { InferableMutableTuple, InferableReadonlyTuple } from "../schema.js";
+import { GetType_ } from "./GetType.js";
+import { GetTypeOptions } from "./GetTypeOptions.js";
 
 interface GetTupleTypeOptions extends GetTypeOptions {
-	readonlyTuple: boolean
+	readonlyTuple: boolean;
 }
 
 type Rec<
@@ -12,14 +12,14 @@ type Rec<
 	acc extends unknown[],
 	O extends GetTupleTypeOptions
 > = T extends readonly []
-	? If<O['readonlyTuple'], readonly [...acc], acc>
+	? If<O["readonlyTuple"], readonly [...acc], acc>
 	: T extends readonly [infer h, ...infer t]
 	? Rec<t, [...acc, GetType_<h, O>], O>
 	: T extends readonly (infer E)[]
 	? Rec<[], [...acc, ...GetType_<E, O>[]], O>
-	: never
+	: never;
 
-export type GetTupleType_<T, O extends GetTupleTypeOptions> = Rec<T, [], O>
+export type GetTupleType_<T, O extends GetTupleTypeOptions> = Rec<T, [], O>;
 
 export type GetTupleType<
 	T,
@@ -32,4 +32,4 @@ export type GetTupleType<
 	? GetTupleType_<T, O & { readonlyTuple: false }>
 	: T extends readonly unknown[]
 	? GetTupleType_<T, O & { readonlyTuple: true }>
-	: never
+	: never;

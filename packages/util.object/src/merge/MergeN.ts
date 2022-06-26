@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Merge2_ } from './Merge2'
+import { Merge2_ } from "./Merge2.js";
 
 type _MergeN<objs, acc extends object> = objs extends readonly []
 	? acc
@@ -7,6 +7,6 @@ type _MergeN<objs, acc extends object> = objs extends readonly []
 	? [h] extends [object]
 		? _MergeN<t, Merge2_<acc, h>>
 		: acc
-	: never
+	: never;
 
-export type MergeN<objs extends readonly object[]> = _MergeN<objs, {}>
+export type MergeN<objs extends readonly object[]> = _MergeN<objs, {}>;

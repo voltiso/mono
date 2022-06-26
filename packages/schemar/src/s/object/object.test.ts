@@ -1,249 +1,253 @@
-import { IsIdentical } from '@voltiso/ts-util'
-import { Assert } from '@voltiso/ts-util/bdd'
-import { IRootSchema, RootSchemable } from '../../schema'
-import { GetInputType, GetOutputType } from '../../GetType'
-import { ObjectOptions } from './_/ObjectOptions'
-import { CustomObject } from './CustomObject'
-import * as s from '..'
+import { IsIdentical } from "@voltiso/ts-util";
+import { Assert } from "@voltiso/ts-util/bdd";
+import { IRootSchema, RootSchemable } from "../../schema.js";
+import { GetInputType, GetOutputType } from "../../GetType.js";
+import { ObjectOptions } from "./_/ObjectOptions.js";
+import { CustomObject } from "./CustomObject.js";
+import * as s from "..";
 
-describe('object', () => {
-	it('generic', <O extends ObjectOptions>() => {
-		expect.assertions(0)
+describe("object", () => {
+	it("generic", <O extends ObjectOptions>() => {
+		expect.assertions(0);
 
-		Assert.is<s.IObject<O>, s.IObject>()
-		Assert.is<CustomObject<O>, s.IObject<O>>()
-		Assert.is<CustomObject<O>, s.IObject>()
+		Assert.is<s.IObject<O>, s.IObject>();
+		Assert.is<CustomObject<O>, s.IObject<O>>();
+		Assert.is<CustomObject<O>, s.IObject>();
 
 		const obj = s.schema({
 			a: s.number,
-		})
+		});
 
-		Assert.is<typeof obj, s.IObject>()
-		Assert.is<typeof obj, IRootSchema>()
-		Assert.is<typeof obj, RootSchemable>()
-	})
+		Assert.is<typeof obj, s.IObject>();
+		Assert.is<typeof obj, IRootSchema>();
+		Assert.is<typeof obj, RootSchemable>();
+	});
 
-	it('extends', () => {
-		expect.hasAssertions()
+	it("extends", () => {
+		expect.hasAssertions();
 
-		expect(s.object.extends(s.object)).toBeTruthy()
-		expect(s.object({}).extends(s.object)).toBeTruthy()
-		expect(s.object.extends(s.object({}))).toBeTruthy()
+		expect(s.object.extends(s.object)).toBeTruthy();
+		expect(s.object({}).extends(s.object)).toBeTruthy();
+		expect(s.object.extends(s.object({}))).toBeTruthy();
 
-		expect(s.object({ a: s.number }).extends(s.object)).toBeTruthy()
-		const asd = s.object({ a: s.number })
-		expect(s.object.extends(asd)).toBeFalsy()
-		expect(s.object.extends({ a: s.number })).toBeFalsy()
+		expect(s.object({ a: s.number }).extends(s.object)).toBeTruthy();
+		const asd = s.object({ a: s.number });
+		expect(s.object.extends(asd)).toBeFalsy();
+		expect(s.object.extends({ a: s.number })).toBeFalsy();
 
 		expect(
 			s.object({ a: s.number }).extends(s.object({ a: s.unknown }))
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.object({ a: s.number }).extends(s.object({ a: s.number(123) }))
-		).toBeFalsy()
+		).toBeFalsy();
 
 		expect(
 			s
 				.object({ a: s.number, b: s.string })
 				.extends(s.object({ a: s.number(123) }))
-		).toBeFalsy()
+		).toBeFalsy();
 
 		expect(
 			s.object({ a: s.number, b: s.string }).extends(s.object({ a: s.number }))
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.object({ a: s.number, b: s.string }).extends(s.object({ c: s.number }))
-		).toBeFalsy()
+		).toBeFalsy();
 
-		Assert<IsIdentical<GetOutputType<typeof s.object>, object>>()
+		Assert<IsIdentical<GetOutputType<typeof s.object>, object>>();
 
-		const x = s.object({ a: s.number(1), b: s.number(2) })
-		type X = GetOutputType<typeof x>
-		Assert<IsIdentical<X, { a: 1; b: 2 }>>()
-		Assert<IsIdentical<GetInputType<typeof x>, { a: 1; b: 2 }>>()
+		const x = s.object({ a: s.number(1), b: s.number(2) });
+		type X = GetOutputType<typeof x>;
+		Assert<IsIdentical<X, { a: 1; b: 2 }>>();
+		Assert<IsIdentical<GetInputType<typeof x>, { a: 1; b: 2 }>>();
 
-		const y = s.object({ a: s.number(1), b: s.number(2).optional })
-		type Y = GetOutputType<typeof y>
-		Assert<IsIdentical<Y, { a: 1; b?: 2 }>>()
-		Assert<IsIdentical<GetInputType<typeof y>, { a: 1; b?: 2 }>>()
+		const y = s.object({ a: s.number(1), b: s.number(2).optional });
+		type Y = GetOutputType<typeof y>;
+		Assert<IsIdentical<Y, { a: 1; b?: 2 }>>();
+		Assert<IsIdentical<GetInputType<typeof y>, { a: 1; b?: 2 }>>();
 
 		//
-		;() => s.object({ a: s.string.readonly })
+		() => s.object({ a: s.string.readonly });
 
-		expect(s.object.extends(s.string)).toBeFalsy()
+		expect(s.object.extends(s.string)).toBeFalsy();
 
 		expect(
 			s.schema({ a: 1, b: s.string }).extends({ a: s.number })
-		).toBeTruthy()
-		expect(s.schema({ a: 1, b: s.never }).extends({ a: s.number })).toBeTruthy()
+		).toBeTruthy();
+		expect(
+			s.schema({ a: 1, b: s.never }).extends({ a: s.number })
+		).toBeTruthy();
 		expect(
 			s.schema({ a: 1, b: undefined }).extends({ a: s.number })
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.unknown })
-		).toBeFalsy()
-		expect(s.schema({ a: 1 }).extends({ a: s.number, b: s.never })).toBeFalsy()
+		).toBeFalsy();
+		expect(s.schema({ a: 1 }).extends({ a: s.number, b: s.never })).toBeFalsy();
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: undefined })
-		).toBeFalsy()
-	})
+		).toBeFalsy();
+	});
 
-	it('extends - optional', () => {
-		expect.hasAssertions()
+	it("extends - optional", () => {
+		expect.hasAssertions();
 
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.string.optional })
-		).toBeTruthy()
+		).toBeTruthy();
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.unknown.optional })
-		).toBeTruthy()
+		).toBeTruthy();
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.never.optional })
-		).toBeTruthy()
+		).toBeTruthy();
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.literal(true).optional })
-		).toBeTruthy()
-	})
+		).toBeTruthy();
+	});
 
-	it('extends - readonly', () => {
-		expect.hasAssertions()
+	it("extends - readonly", () => {
+		expect.hasAssertions();
 
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.string.readonly })
-		).toBeFalsy()
+		).toBeFalsy();
 		expect(
 			s.schema({ a: 1 }).extends({
 				a: s.number,
 				b: s.string.optional.readonly,
 			})
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.schema(1).readonly }).extends({ a: s.number })
-		).toBeFalsy()
+		).toBeFalsy();
 
 		expect(
 			s.schema({ a: s.schema(1).readonly }).extends({ a: s.number.readonly })
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.schema(1).readonly }).extends({
 				a: s.number.readonly.optional,
 			})
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.schema(1).readonly.optional }).extends({
 				a: s.number.readonly.optional,
 			})
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.schema(1).optional }).extends({
 				a: s.number.readonly.optional,
 			})
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.schema(1).optional }).extends({ a: s.number.readonly })
-		).toBeFalsy()
+		).toBeFalsy();
 
 		expect(
 			s.schema({ a: s.schema(1).optional.readonly }).extends({
 				a: s.number.optional,
 			})
-		).toBeFalsy()
-	})
+		).toBeFalsy();
+	});
 
-	it('check', () => {
-		expect.hasAssertions()
-		expect(s.schema({ a: s.number }).isValid({ a: 1 })).toBeTruthy()
-		expect(s.schema({ a: s.number }).isValid({})).toBeFalsy()
-		expect(s.schema({ a: s.number }).isValid({ a: '1' })).toBeFalsy()
-		expect(s.schema({ a: s.number }).isValid({ a: 1, b: 2 })).toBeFalsy()
-		expect(s.schema({ a: s.number.optional }).isValid({ a: 1 })).toBeTruthy()
+	it("check", () => {
+		expect.hasAssertions();
+		expect(s.schema({ a: s.number }).isValid({ a: 1 })).toBeTruthy();
+		expect(s.schema({ a: s.number }).isValid({})).toBeFalsy();
+		expect(s.schema({ a: s.number }).isValid({ a: "1" })).toBeFalsy();
+		expect(s.schema({ a: s.number }).isValid({ a: 1, b: 2 })).toBeFalsy();
+		expect(s.schema({ a: s.number.optional }).isValid({ a: 1 })).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.number.optional.readonly }).isValid({ a: 1 })
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema({ a: s.number.optional.readonly }).isValid({ a: undefined })
-		).toBeFalsy()
+		).toBeFalsy();
 
 		expect(
 			s.schema({ a: s.number.optional }).tryValidate({}).issues
-		).toStrictEqual([])
+		).toStrictEqual([]);
 
-		expect(s.schema({ a: s.number.optional.readonly }).isValid({})).toBeTruthy()
-	})
+		expect(
+			s.schema({ a: s.number.optional.readonly }).isValid({})
+		).toBeTruthy();
+	});
 
-	it('defaults', () => {
-		expect.hasAssertions()
+	it("defaults", () => {
+		expect.hasAssertions();
 
 		const x = s.schema({
 			a: s.number.default(123),
-		})
+		});
 
-		expect(x.tryValidate({}).value).toStrictEqual({ a: 123 })
-	})
+		expect(x.tryValidate({}).value).toStrictEqual({ a: 123 });
+	});
 
-	it('Type', () => {
-		expect.assertions(0)
+	it("Type", () => {
+		expect.assertions(0);
 
 		const x = s.object({
 			a: s.number.default(2 as const),
-		})
+		});
 
-		type Out = typeof x.OutputType
-		type In = typeof x.InputType
-		Assert<IsIdentical<Out, { a: number }>>()
-		Assert<IsIdentical<In, { a?: number }>>()
+		type Out = typeof x.OutputType;
+		type In = typeof x.InputType;
+		Assert<IsIdentical<Out, { a: number }>>();
+		Assert<IsIdentical<In, { a?: number }>>();
 
 		const y = s.schema({
-			rd: s.string.readonly.default('asd'),
+			rd: s.string.readonly.default("asd"),
 			r: s.string.readonly,
-			d: s.string.default('asd'),
+			d: s.string.default("asd"),
 			str: s.string,
 			o: s.string.optional,
 			ro: s.string.readonly.optional,
-		})
-		type Y = GetOutputType<typeof y>
+		});
+		type Y = GetOutputType<typeof y>;
 
 		Assert<
 			IsIdentical<
 				Y,
 				{
-					readonly rd: string
-					readonly r: string
-					d: string
-					str: string
-					o?: string
-					readonly ro?: string
+					readonly rd: string;
+					readonly r: string;
+					d: string;
+					str: string;
+					o?: string;
+					readonly ro?: string;
 				}
 			>
-		>()
+		>();
 
 		Assert<
 			IsIdentical<
 				GetInputType<typeof y>,
 				{
-					readonly rd?: string
-					readonly r: string
-					d?: string
-					str: string
-					o?: string
-					readonly ro?: string
+					readonly rd?: string;
+					readonly r: string;
+					d?: string;
+					str: string;
+					o?: string;
+					readonly ro?: string;
 				}
 			>
-		>()
-	})
+		>();
+	});
 
-	it('nested', () => {
-		expect.hasAssertions()
+	it("nested", () => {
+		expect.hasAssertions();
 
 		const t = s.schema({
 			a: {
@@ -251,35 +255,35 @@ describe('object', () => {
 					c: s.number.default(11),
 				},
 			},
-		})
+		});
 
-		type T = GetOutputType<typeof t>
-		Assert<IsIdentical<T, { a: { b: { c: number } } }>>()
+		type T = GetOutputType<typeof t>;
+		Assert<IsIdentical<T, { a: { b: { c: number } } }>>();
 
 		Assert<
 			IsIdentical<GetInputType<typeof t>, { a?: { b?: { c?: number } } }>
-		>()
+		>();
 
-		expect(t.tryValidate({}).value).toStrictEqual({ a: { b: { c: 11 } } })
-	})
+		expect(t.tryValidate({}).value).toStrictEqual({ a: { b: { c: 11 } } });
+	});
 
-	it('validate', () => {
-		expect.hasAssertions()
+	it("validate", () => {
+		expect.hasAssertions();
 
 		expect(() => s.object({ a: s.number }).validate({ a: 1, b: 123 })).toThrow(
-			'123'
-		)
+			"123"
+		);
 
 		expect(() => s.schema({ a: s.number }).validate({ a: 1, b: 123 })).toThrow(
-			'123'
-		)
-	})
+			"123"
+		);
+	});
 
-	it('pricing agreement', () => {
-		expect.hasAssertions()
+	it("pricing agreement", () => {
+		expect.hasAssertions();
 
-		const currency = s.string('USD').or(s.string('PLN'))
-		Assert<IsIdentical<GetOutputType<typeof currency>, 'USD' | 'PLN'>>()
+		const currency = s.string("USD").or(s.string("PLN"));
+		Assert<IsIdentical<GetOutputType<typeof currency>, "USD" | "PLN">>();
 
 		const pricingAgreement = {
 			currency: currency,
@@ -287,22 +291,22 @@ describe('object', () => {
 			hourlyRateByBidLevel: s.array(s.number.min(0)),
 			commission: s.number.min(0).max(1),
 			def: s.number.default(123),
-		}
+		};
 
-		type PricingAgreement = GetOutputType<typeof pricingAgreement>
+		type PricingAgreement = GetOutputType<typeof pricingAgreement>;
 
 		Assert<
 			IsIdentical<
 				PricingAgreement,
 				{
-					currency: 'USD' | 'PLN'
-					bidLevel: number
-					hourlyRateByBidLevel: number[]
-					commission: number
-					def: number
+					currency: "USD" | "PLN";
+					bidLevel: number;
+					hourlyRateByBidLevel: number[];
+					commission: number;
+					def: number;
 				}
 			>
-		>()
+		>();
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({
@@ -310,82 +314,82 @@ describe('object', () => {
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			})
-		).toThrow('USD')
+		).toThrow("USD");
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({
-				currency: 'ASD',
+				currency: "ASD",
 				bidLevel: 0,
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			})
-		).toThrow('USD')
+		).toThrow("USD");
 
 		expect(
 			s.schema(pricingAgreement).isValid({
-				currency: 'USD',
+				currency: "USD",
 				bidLevel: 0,
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 				def: 0,
 			})
-		).toBeTruthy()
+		).toBeTruthy();
 
 		expect(
 			s.schema(pricingAgreement).validate({
-				currency: 'USD',
+				currency: "USD",
 				bidLevel: 0,
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			})
 		).toStrictEqual({
-			currency: 'USD',
+			currency: "USD",
 			bidLevel: 0,
 			hourlyRateByBidLevel: [],
 			commission: 0.2,
 			def: 123,
-		})
+		});
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({
-				currency: 'USD',
+				currency: "USD",
 				bidLevel: -1,
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			})
-		).toThrow('bidLevel')
+		).toThrow("bidLevel");
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({
-				currency: 'PLN',
+				currency: "PLN",
 				bidLevel: 12,
 				hourlyRateByBidLevel: [-1],
 				commission: 0.2,
 			})
-		).toThrow('.hourlyRateByBidLevel[0]')
+		).toThrow(".hourlyRateByBidLevel[0]");
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({
-				currency: 'PLN',
+				currency: "PLN",
 				bidLevel: 12,
 				hourlyRateByBidLevel: [30],
 				commission: 1.1,
 			})
-		).toThrow('.commission')
+		).toThrow(".commission");
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({
-				currency: 'PLN',
+				currency: "PLN",
 				bidLevel: 12,
 				hourlyRateByBidLevel: [30],
 				commission: 1.0,
 				asd: undefined,
 			})
-		).toThrow('.asd')
-	})
+		).toThrow(".asd");
+	});
 
-	it('partial', () => {
-		expect.hasAssertions()
+	it("partial", () => {
+		expect.hasAssertions();
 
 		const ss = s.schema({
 			num: s.number.optional,
@@ -394,32 +398,32 @@ describe('object', () => {
 			nested: {
 				a: 1,
 			},
-		})
+		});
 
-		const ps = s.schema(ss).partial
-		expect(ps.validate({})).toStrictEqual({})
-		expect(() => ss.validate({})).toThrow('.str')
-		expect(() => ps.validate({ nested: {} })).toThrow('.nested.a')
+		const ps = s.schema(ss).partial;
+		expect(ps.validate({})).toStrictEqual({});
+		expect(() => ss.validate({})).toThrow(".str");
+		expect(() => ps.validate({ nested: {} })).toThrow(".nested.a");
 
-		type Ps = GetOutputType<typeof ps>
+		type Ps = GetOutputType<typeof ps>;
 
 		Assert<
 			IsIdentical<
 				Ps,
 				{
-					num?: number
-					str?: string
-					bigint?: bigint
+					num?: number;
+					str?: string;
+					bigint?: bigint;
 					nested?: {
-						a: number
-					}
+						a: number;
+					};
 				}
 			>
-		>()
-	})
+		>();
+	});
 
-	it('deepPartial', () => {
-		expect.hasAssertions()
+	it("deepPartial", () => {
+		expect.hasAssertions();
 
 		const ss = s.schema({
 			numDef: s.number.default(1),
@@ -429,26 +433,29 @@ describe('object', () => {
 			nested: {
 				a: 1,
 			},
-		})
+		});
 
-		const ps = s.schema(ss).deepPartial
-		expect(ps.validate({})).toStrictEqual({ numDef: 1 })
-		expect(ps.validate({ nested: {} })).toStrictEqual({ numDef: 1, nested: {} })
-		expect(() => ss.validate({})).toThrow('.str')
+		const ps = s.schema(ss).deepPartial;
+		expect(ps.validate({})).toStrictEqual({ numDef: 1 });
+		expect(ps.validate({ nested: {} })).toStrictEqual({
+			numDef: 1,
+			nested: {},
+		});
+		expect(() => ss.validate({})).toThrow(".str");
 
 		Assert<
 			IsIdentical<
 				GetOutputType<typeof ps>,
 				{
-					num?: number
-					numDef?: number
-					str?: string
-					bigint?: bigint
+					num?: number;
+					numDef?: number;
+					str?: string;
+					bigint?: bigint;
 					nested?: {
-						a?: number
-					}
+						a?: number;
+					};
 				}
 			>
-		>()
-	})
-})
+		>();
+	});
+});

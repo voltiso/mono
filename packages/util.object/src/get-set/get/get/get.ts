@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { VoltisoUtilError } from '../../../../error'
-import { toString } from '../../../../string'
-import { IPath, Path } from '../../../Path'
-import { UnknownProperty } from '../../../UnknownProperty'
-import { Value_ } from '../../../key-value'
-import { GetProperty, getProperty, GetPropertyError } from './getProperty'
+import type { IPath, Path } from "../../../Path";
+import type { UnknownProperty } from "../../../UnknownProperty";
+import type { Value_ } from "../../../key-value";
+import { VoltisoError } from "@voltiso/util.error";
+import { toString } from "@voltiso/util.string";
+import { GetProperty, getProperty, GetPropertyError } from "./getProperty";
 
 type Get_<O, P> = P extends readonly []
 	? O
@@ -13,30 +13,30 @@ type Get_<O, P> = P extends readonly []
 	? H extends keyof O | UnknownProperty
 		? Get_<Value_<O, H>, T>
 		: never
-	: never
+	: never;
 
-export type Get<O, P extends Path<O>> = Get_<O, P>
+export type Get<O, P extends Path<O>> = Get_<O, P>;
 
 //
 
 export class GetError<
 	Obj extends object,
 	P extends IPath
-> extends VoltisoUtilError {
-	object: Obj
-	path: P
+> extends VoltisoError {
+	object: Obj;
+	path: P;
 
 	constructor(object: Obj, path: P, options?: ErrorOptions | undefined) {
 		const message = `property not found @ get(${toString(object)}, ${toString(
 			path
-		)})`
-		super(message, options)
-		Error.captureStackTrace(this, this.constructor)
+		)})`;
+		super(message, options);
+		Error.captureStackTrace(this, this.constructor);
 
-		this.object = object
-		this.path = path
+		this.object = object;
+		this.path = path;
 
-		this.name = this.constructor.name
+		this.name = this.constructor.name;
 	}
 }
 
@@ -45,16 +45,16 @@ export class GetError<
 export function get<O extends object, K extends keyof O>(
 	o: O,
 	k: K
-): GetProperty<O, K>
+): GetProperty<O, K>;
 
 export function get<O extends object, P extends Path<O>>(
 	o: O,
 	...path: P
-): Get<O, P>
+): Get<O, P>;
 export function get<O extends object, P extends Path<O>>(
 	o: O,
 	path: P
-): Get<O, P>
+): Get<O, P>;
 
 //
 
@@ -62,16 +62,16 @@ export function get<O extends object, P extends Path<O>>(
 	obj: O,
 	...x: P | [P]
 ): Get<O, P> {
-	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as (keyof any)[]
-	let r = obj
+	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as (keyof any)[];
+	let r = obj;
 	try {
 		for (const token of path) {
-			r = getProperty(r, token) as never
+			r = getProperty(r, token) as never;
 		}
 	} catch (error) {
 		if (error instanceof GetPropertyError) {
-			throw new GetError(obj, path)
-		} else throw error
+			throw new GetError(obj, path);
+		} else throw error;
 	}
-	return r as never
+	return r as never;
 }

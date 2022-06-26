@@ -1,12 +1,12 @@
-import { defaultSchemaOptions, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions, SchemaOptions } from "../../../schema.js";
 
 export interface SymbolOptions extends SchemaOptions {
-	_out: symbol
-	_in: symbol
+	_out: symbol;
+	_in: symbol;
 }
 
 export const defaultSymbolOptions = {
 	...defaultSchemaOptions,
-}
+};
 
-export type DefaultSymbolOptions = typeof defaultSymbolOptions & SymbolOptions
+export type DefaultSymbolOptions = typeof defaultSymbolOptions & SymbolOptions;

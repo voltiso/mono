@@ -7,38 +7,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import cloneLib from 'clone'
-import { deepClone } from '../../src'
+import cloneLib from "clone";
+import { deepClone } from "../../src.js";
 
-const ITERS = 10 * 1000
+const ITERS = 10 * 1000;
 
 function bench(f: () => void) {
-	const t0 = process.hrtime()
+	const t0 = process.hrtime();
 	for (let i = 0; i < ITERS; ++i) {
-		f()
+		f();
 	}
-	const [s, us] = process.hrtime(t0)
-	return (s + us * 1e-9) / ITERS
+	const [s, us] = process.hrtime(t0);
+	return (s + us * 1e-9) / ITERS;
 }
 
-describe('bench/clone', () => {
-	it('is fast enough', () => {
-		expect.hasAssertions()
+describe("bench/clone", () => {
+	it("is fast enough", () => {
+		expect.hasAssertions();
 
 		const o = {
 			a: 123,
 			b: [1, 2, 3],
 			c: new Date(),
-		}
+		};
 
-		const myTime = bench(() => deepClone(o))
-		const otherTime = bench(() => cloneLib(o))
+		const myTime = bench(() => deepClone(o));
+		const otherTime = bench(() => cloneLib(o));
 
-		const q = myTime / otherTime
+		const q = myTime / otherTime;
 
 		// eslint-disable-next-line no-console
-		console.log('q ==', q)
+		console.log("q ==", q);
 
-		expect(q).toBeLessThan(4)
-	})
-})
+		expect(q).toBeLessThan(4);
+	});
+});

@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import type { Assert, Is } from '@voltiso/assertor'
-import { At, at } from './At'
+import { At, at } from './At.js'
 
 describe('object/at', () => {
 	it('works #1', () => {

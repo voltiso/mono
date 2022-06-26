@@ -1,19 +1,19 @@
-import { narrow } from './narrowType'
-import { Assert } from '@voltiso/stester'
-import type { IsIdentical } from './compare'
+import { narrow } from "./narrowType.js";
+import { Assert } from "@voltiso/stester";
+import type { IsIdentical } from "./compare.js";
 
-describe('narrowType', () => {
-	it('works #1', () => {
-		expect.assertions(0)
-		const s = 'asd' as const
+describe("narrowType", () => {
+	it("works #1", () => {
+		expect.assertions(0);
+		const s = "asd" as const;
 		// @ts-expect-error should not work
-		narrow(s).toType<'d'>()
-	})
+		narrow(s).toType<"d">();
+	});
 
-	it('works #2', () => {
-		expect.assertions(0)
-		const s = 'asd'
-		const x = narrow(s).toType<'d'>()
-		Assert<IsIdentical<typeof x, 'd'>>()
-	})
-})
+	it("works #2", () => {
+		expect.assertions(0);
+		const s = "asd";
+		const x = narrow(s).toType<"d">();
+		Assert<IsIdentical<typeof x, "d">>();
+	});
+});

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { IPath } from '../../../Path'
+import type { IPath } from "../../../Path.js";
 
 type Nest_<path, Acc> = path extends readonly []
 	? Acc
@@ -12,18 +12,18 @@ type Nest_<path, Acc> = path extends readonly []
 	? H extends string | number | symbol
 		? Nest_<T, { [k in H]: Acc }>
 		: never
-	: never
+	: never;
 
-export type Nest<X, path extends IPath> = Nest_<path, X>
+export type Nest<X, path extends IPath> = Nest_<path, X>;
 
 export function nest<X, P extends IPath>(x: X, path: P): Nest<X, P> {
-	if (path.length === 0) return x as any
+	if (path.length === 0) return x as any;
 
-	const r = {} as any
-	let c = r
+	const r = {} as any;
+	let c = r;
 	for (const token of path.slice(0, -1)) {
-		c = c[token] = {}
+		c = c[token] = {};
 	}
-	c[path.at(-1) as any] = x
-	return r
+	c[path.at(-1) as any] = x;
+	return r;
 }

@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
-import { Assert, Is } from '../bdd'
-import { IsNumberLiteral } from './IsNumberLiteral'
+import { Assert, Is } from "../bdd.js";
+import { IsNumberLiteral } from "./IsNumberLiteral.js";
 
-describe('number/IsNumberLiteral', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("number/IsNumberLiteral", () => {
+	it("works", () => {
+		expect.assertions(0);
 		Assert(
 			Is<IsNumberLiteral<123 | 444>>().true,
-			Is<IsNumberLiteral<123 | 'asd'>>().boolean,
-			Is<IsNumberLiteral<'asd'>>().false,
+			Is<IsNumberLiteral<123 | "asd">>().boolean,
+			Is<IsNumberLiteral<"asd">>().false,
 			Is<IsNumberLiteral<number>>().false,
 			Is<IsNumberLiteral<number | string>>().false,
-			Is<IsNumberLiteral<number | 'sdf'>>().false,
+			Is<IsNumberLiteral<number | "sdf">>().false,
 			Is<IsNumberLiteral<123 | string>>().boolean,
 			Is<IsNumberLiteral<never>>().false,
 			Is<IsNumberLiteral<any>>().false,
@@ -20,6 +20,6 @@ describe('number/IsNumberLiteral', () => {
 			Is<IsNumberLiteral<(number & { secretField: 123 }) | 123>>().boolean,
 			Is<IsNumberLiteral<(number & { secretField: 123 }) | object>>().false
 			//
-		)
-	})
-})
+		);
+	});
+});

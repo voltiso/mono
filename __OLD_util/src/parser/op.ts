@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { And } from '../boolean/And'
-import { Or } from '../boolean/Or'
-import { IsFalsy } from '../boolean/truthy-falsy'
-import { Xor } from '../boolean/Xor'
-import { IsSubtype, IsSupertype } from '../misc/IsSubtype'
-import { IsNumber, IsSuperNumber } from '../number'
+import { And } from "../boolean/And.js";
+import { Or } from "../boolean/Or.js";
+import { IsFalsy } from "../boolean/truthy-falsy.js";
+import { Xor } from "../boolean/Xor.js";
+import { IsSubtype, IsSupertype } from "../misc/IsSubtype.js";
+import { IsNumber, IsSuperNumber } from "../number.js";
 
-declare const _def: unique symbol
-export type def = typeof _def
-export type Def<x, d> = x extends def ? d : x
+declare const _def: unique symbol;
+export type def = typeof _def;
+export type Def<x, d> = x extends def ? d : x;
 
 export interface Op<
 	A = def,
@@ -21,23 +21,23 @@ export interface Op<
 	_H = def,
 	_I = def
 > {
-	'!': IsFalsy<A, Def<B, true>, Def<C, false>>
-	'&': And<A, B, Def<C, true>, Def<D, false>>
-	'|': Or<A, B, Def<C, true>, Def<D, false>>
-	'^': Xor<A, B, Def<C, true>, Def<D, false>>
+	"!": IsFalsy<A, Def<B, true>, Def<C, false>>;
+	"&": And<A, B, Def<C, true>, Def<D, false>>;
+	"|": Or<A, B, Def<C, true>, Def<D, false>>;
+	"^": Xor<A, B, Def<C, true>, Def<D, false>>;
 
-	'isSubtype': IsSubtype<A, B, Def<C, true>, Def<D, false>>
-	'isSupertype': IsSupertype<A, B, Def<C, true>, Def<D, false>>
+	isSubtype: IsSubtype<A, B, Def<C, true>, Def<D, false>>;
+	isSupertype: IsSupertype<A, B, Def<C, true>, Def<D, false>>;
 
-	'isString': IsString<A, Def<B, true>, Def<C, false>>
-	'isSuperString': IsSuperString<A, Def<B, true>, Def<C, false>>
+	isString: IsString<A, Def<B, true>, Def<C, false>>;
+	isSuperString: IsSuperString<A, Def<B, true>, Def<C, false>>;
 
-	'isNumber': IsNumber<A, Def<B, true>, Def<C, false>>
-	'isSuperNumber': IsSuperNumber<A, Def<B, true>, Def<C, false>>
+	isNumber: IsNumber<A, Def<B, true>, Def<C, false>>;
+	isSuperNumber: IsSuperNumber<A, Def<B, true>, Def<C, false>>;
 }
 
-export type IsString<A, T = true, F = false> = A extends string ? T : F
-export type IsSuperString<A, T = true, F = false> = string extends A ? T : F
+export type IsString<A, T = true, F = false> = A extends string ? T : F;
+export type IsSuperString<A, T = true, F = false> = string extends A ? T : F;
 
 export type OpPacked<args extends unknown[]> = [
 	...args,
@@ -64,4 +64,4 @@ export type OpPacked<args extends unknown[]> = [
 	...unknown[]
 ]
 	? Op<A, B, C, D, E, F, G, H, I>
-	: never
+	: never;

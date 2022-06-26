@@ -8,9 +8,16 @@
 		"noEmit": false,
 
 		"declaration": true,
-		"declarationMap": true,
+		"declarationMap": true
 
-		"rootDir": "src"
+		// !
+		// ! OVERWRITE WHEN EXTENDING !
+		// !
+		// "rootDir": "src",
+		// "baseUrl": ".",
+		// "paths": {
+		// 	"*": ["node_modules/*/"]
+		// }
 	}
 
 	// !

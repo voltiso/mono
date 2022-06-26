@@ -4,35 +4,35 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-magic-numbers */
-import { VoltisoUtilError } from '../../../error'
-import { toString } from '../../../string'
-import { Entry, IEntry } from '../../key-value'
-import { hasProperty } from '../get/hasProperty/hasProperty'
-import { isPlain } from '../../isPlain'
-import { IPath, Path } from '../../Path'
-import { UnknownProperty } from '../../UnknownProperty'
+import type { Entry, IEntry } from "../../key-value.js";
+import type { UnknownProperty } from "../../UnknownProperty.js";
+import type { IPath, Path } from "../../Path.js";
+import { VoltisoError } from "@voltiso/util.error";
+import { toString } from "@voltiso/util.string";
+import { hasProperty } from "../get/hasProperty/hasProperty.js";
+import { isPlain } from "../../isPlain.js";
 
 export class SetError<
 	Obj extends object,
 	P extends IPath,
 	V
-> extends VoltisoUtilError {
-	object: Obj
-	path: P
-	value: V
+> extends VoltisoError {
+	object: Obj;
+	path: P;
+	value: V;
 
 	constructor(obj: Obj, path: P, value: V, options?: ErrorOptions | undefined) {
 		const message = `property not present @ set(${toString(obj)}, ${toString(
 			path
-		)}, ${toString(value)})`
-		super(message, options)
+		)}, ${toString(value)})`;
+		super(message, options);
 
-		this.object = obj
-		this.path = path
-		this.value = value
+		this.object = obj;
+		this.path = path;
+		this.value = value;
 
-		Error.captureStackTrace(this, this.constructor)
-		this.name = this.constructor.name
+		Error.captureStackTrace(this, this.constructor);
+		this.name = this.constructor.name;
 	}
 }
 
@@ -43,7 +43,7 @@ export function set<Obj extends object, K extends keyof Obj | UnknownProperty>(
 	obj: Obj,
 	property: K,
 	value: K extends keyof Obj ? Obj[K] : unknown
-): void
+): void;
 
 /**
  * `obj[entry[0]] = entry[1]`
@@ -53,7 +53,7 @@ export function set<Obj extends object, K extends keyof Obj | UnknownProperty>(
 export function set<Obj extends object, KV extends Entry<Obj>>(
 	obj: Obj,
 	entry: KV
-): void
+): void;
 
 /**
  * Set a deeply nested value
@@ -69,7 +69,7 @@ export function set<
 	Obj extends object,
 	P extends readonly [...Path<Obj>, UnknownProperty],
 	V
->(obj: Obj, path: P, value: V): void
+>(obj: Obj, path: P, value: V): void;
 
 export function set(
 	...args:
@@ -78,19 +78,19 @@ export function set(
 		| readonly [object, IPath, unknown]
 ): void {
 	if (args.length === 2) {
-		const [object, [property, value]] = args
-		object[property as keyof typeof object] = value as never
+		const [object, [property, value]] = args;
+		object[property as keyof typeof object] = value as never;
 	} else if (Array.isArray(args[1])) {
-		const [obj, path, value] = args
-		let c = obj
+		const [obj, path, value] = args;
+		let c = obj;
 		for (const token of path.slice(0, -1)) {
 			if (!isPlain(c) || !hasProperty(c, token))
-				throw new SetError(obj, path, value)
-			c = c[token]
+				throw new SetError(obj, path, value);
+			c = c[token];
 		}
-		if (!isPlain(c)) throw new SetError(obj, path, value)
+		if (!isPlain(c)) throw new SetError(obj, path, value);
 	} else {
-		const [object, property, value] = args
-		object[property as keyof typeof object] = value as never
+		const [object, property, value] = args;
+		object[property as keyof typeof object] = value as never;
 	}
 }

@@ -31,25 +31,25 @@
 // 	return r as never
 // }
 
+import type { CoercedEntry, Entry } from "./Entry.js";
 import {
 	defaultIterationOptions,
 	DefaultIterationOptions,
 	IterationOptions,
-} from '../IterationOptions'
-import { merge, Merge2 } from '../../merge'
-import { CoercedEntry, Entry } from './Entry'
+} from "../IterationOptions";
+import { merge, Merge2 } from "../../merge.js";
 
 export type GetCoercedEntries<
 	Obj extends object,
 	O extends IterationOptions
-> = O['includeSymbols'] extends true
+> = O["includeSymbols"] extends true
 	? CoercedEntry<Obj>[]
-	: O['includeSymbols'] extends false
+	: O["includeSymbols"] extends false
 	? Extract<CoercedEntry<Obj>, [string | number, unknown]>[]
-	: CoercedEntry<Obj>[] // generic use - include all
+	: CoercedEntry<Obj>[]; // generic use - include all
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-type GetEntries<Obj extends object, _O extends IterationOptions> = Entry<Obj>[]
+type GetEntries<Obj extends object, _O extends IterationOptions> = Entry<Obj>[];
 
 /**
  * Similar to `Object.keys(obj)`
@@ -60,14 +60,14 @@ export function getEntries_<Obj extends object, O extends IterationOptions>(
 	obj: Obj,
 	options: O
 ): GetEntries<Obj, O> {
-	let r = [] as unknown as GetEntries<Obj, O>
+	let r = [] as unknown as GetEntries<Obj, O>;
 
 	if (options.includeNonEnumerable) {
 		for (const k of Object.getOwnPropertyNames(obj) as (string & keyof Obj)[]) {
 			// if (Object.getOwnPropertyDescriptor(obj, k)?.enumerable)
-			r.push([k, obj[k]] as never)
+			r.push([k, obj[k]] as never);
 		}
-	} else r = Object.entries(obj) as never
+	} else r = Object.entries(obj) as never;
 
 	if (options.includeSymbols) {
 		for (const k of Object.getOwnPropertySymbols(obj) as (symbol &
@@ -76,17 +76,17 @@ export function getEntries_<Obj extends object, O extends IterationOptions>(
 				options.includeNonEnumerable ||
 				Object.getOwnPropertyDescriptor(obj, k)?.enumerable
 			) {
-				r.push([k, obj[k]] as never)
+				r.push([k, obj[k]] as never);
 			}
 		}
 	}
 
-	return r
+	return r;
 }
 
 export function getEntries<Obj extends object>(
 	obj: Obj
-): GetEntries<Obj, DefaultIterationOptions>
+): GetEntries<Obj, DefaultIterationOptions>;
 
 export function getEntries<
 	Obj extends object,
@@ -94,7 +94,7 @@ export function getEntries<
 >(
 	obj: Obj,
 	options: O
-): GetEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+): GetEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>;
 
 export function getEntries<
 	Obj extends object,
@@ -103,15 +103,15 @@ export function getEntries<
 	obj: Obj,
 	options?: O | undefined
 ): GetEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions> {
-	const myOptions = merge(defaultIterationOptions, options)
-	return getEntries_(obj, myOptions as never) as never
+	const myOptions = merge(defaultIterationOptions, options);
+	return getEntries_(obj, myOptions as never) as never;
 }
 
 //
 
 export function getCoercedEntries<Obj extends object>(
 	obj: Obj
-): GetCoercedEntries<Obj, DefaultIterationOptions>
+): GetCoercedEntries<Obj, DefaultIterationOptions>;
 
 export function getCoercedEntries<
 	Obj extends object,
@@ -119,7 +119,10 @@ export function getCoercedEntries<
 >(
 	obj: Obj,
 	options: O
-): GetCoercedEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+): GetCoercedEntries<
+	Obj,
+	Merge2<DefaultIterationOptions, O> & IterationOptions
+>;
 
 export function getCoercedEntries<
 	Obj extends object,
@@ -131,6 +134,6 @@ export function getCoercedEntries<
 	Obj,
 	Merge2<DefaultIterationOptions, O> & IterationOptions
 > {
-	const myOptions = merge(defaultIterationOptions, options)
-	return getEntries_(obj, myOptions as never) as never
+	const myOptions = merge(defaultIterationOptions, options);
+	return getEntries_(obj, myOptions as never) as never;
 }

@@ -1,29 +1,29 @@
 /* eslint-disable no-magic-numbers */
-import type { Assume } from './Assume'
-import { Assert } from '@voltiso/stester'
-import type { IsIdentical } from './compare'
+import type { Assume } from "./Assume.js";
+import { Assert } from "@voltiso/stester";
+import type { IsIdentical } from "./compare.js";
 
-describe('Assume', () => {
-	it('type', () => {
-		expect.assertions(0)
+describe("Assume", () => {
+	it("type", () => {
+		expect.assertions(0);
 
-		Assert<IsIdentical<Assume<number, 123>, 123>>()
-		Assert<IsIdentical<Assume<number, number>, number>>()
+		Assert<IsIdentical<Assume<number, 123>, 123>>();
+		Assert<IsIdentical<Assume<number, number>, number>>();
 
-		Assert<IsIdentical<Assume<123, number>, never>>()
-	})
+		Assert<IsIdentical<Assume<123, number>, never>>();
+	});
 
-	it('generic', <Str extends string>() => {
-		expect.assertions(0)
+	it("generic", <Str extends string>() => {
+		expect.assertions(0);
 
-		type A = Assume<'a' | 'b', Str>
-		Assert.is<A, 'a' | 'b'>()
+		type A = Assume<"a" | "b", Str>;
+		Assert.is<A, "a" | "b">();
 
-		type B = Assume<1 | 2 | 3, Str>
-		Assert.is<B, never>()
+		type B = Assume<1 | 2 | 3, Str>;
+		Assert.is<B, never>();
 
-		type C = Assume<Str, 'a' | 'b'>
-		Assert.is<C, 'a' | 'b'>()
-		Assert.is<C, Str>()
-	})
-})
+		type C = Assume<Str, "a" | "b">;
+		Assert.is<C, "a" | "b">();
+		Assert.is<C, Str>();
+	});
+});

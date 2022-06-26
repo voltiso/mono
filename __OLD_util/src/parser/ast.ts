@@ -1,32 +1,32 @@
-import { Op } from './op'
-import { Tokenize } from './tokenize'
+import { Op } from "./op.js";
+import { Tokenize } from "./tokenize.js";
 
 export type Ast =
-	| '1'
-	| '2'
-	| '3'
-	| '4'
-	| '5'
-	| '6'
-	| '7'
-	| '8'
-	| '9'
-	| [keyof Op, Ast[]]
+	| "1"
+	| "2"
+	| "3"
+	| "4"
+	| "5"
+	| "6"
+	| "7"
+	| "8"
+	| "9"
+	| [keyof Op, Ast[]];
 
 type Finalize<nodes> = nodes extends [...unknown[], unknown, unknown]
-	? Rec_StepOut<nodes, ['!!']>
-	: nodes extends [['', [infer arg]]]
+	? Rec_StepOut<nodes, ["!!"]>
+	: nodes extends [["", [infer arg]]]
 	? arg
 	: nodes extends [infer node]
 	? node
-	: never
+	: never;
 
 type Rec_Op1<nodes extends unknown[], t, ts> = nodes extends [
 	...infer ns,
-	['', []]
+	["", []]
 ]
 	? Rec<[...ns, [t, []]], ts>
-	: Rec<[...nodes, [t, []]], ts>
+	: Rec<[...nodes, [t, []]], ts>;
 
 type Rec_FixPrecedence<nodes extends unknown[], ts> = nodes extends [
 	...infer ns,
@@ -43,15 +43,15 @@ type Rec_FixPrecedence<nodes extends unknown[], ts> = nodes extends [
 				  >
 			: Rec<nodes, ts>
 		: Rec<nodes, ts>
-	: Rec<nodes, ts>
+	: Rec<nodes, ts>;
 
 type Rec_Op2<nodes, t extends string, ts> = nodes extends [
 	...infer ns,
 	[infer op, infer args]
 ]
-	? [op, args] extends ['', [infer a]]
+	? [op, args] extends ["", [infer a]]
 		? Rec<[...ns, [t, [a]]], ts>
-		: [op, args] extends ['', [] | [unknown, unknown, ...unknown[]]]
+		: [op, args] extends ["", [] | [unknown, unknown, ...unknown[]]]
 		? never
 		: // already have op
 		args extends [...infer as, infer b]
@@ -59,19 +59,19 @@ type Rec_Op2<nodes, t extends string, ts> = nodes extends [
 			? Rec_FixPrecedence<[...ns, [op, as], [t, [b]]], ts>
 			: never
 		: never
-	: never
+	: never;
 
 type Rec_Lit<nodes, t, ts> = nodes extends [
 	...infer ns,
 	[infer op, [...infer args]]
 ]
 	? Rec<[...ns, [op, [...args, t]]], ts>
-	: never
+	: never;
 
 type Rec_StepIn<nodes extends unknown[], tokens> = Rec<
-	[...nodes, ['', []]],
+	[...nodes, ["", []]],
 	tokens
->
+>;
 
 type Rec_StepOut<nodes, tokens> = nodes extends [
 	...infer nodesRest,
@@ -79,30 +79,30 @@ type Rec_StepOut<nodes, tokens> = nodes extends [
 	infer b
 ]
 	? Rec<[...nodesRest, [op, [...args, b]]], tokens>
-	: never
+	: never;
 
 type Rec<nodes extends unknown[], tokens> = tokens extends [
 	infer t,
 	...infer ts
 ]
-	? t extends '!!'
+	? t extends "!!"
 		? Finalize<nodes>
-		: t extends '('
+		: t extends "("
 		? Rec_StepIn<nodes, ts>
-		: t extends ')'
+		: t extends ")"
 		? Rec_StepOut<nodes, ts>
 		: t extends string
-		? '&|^' extends `${string}${t}${string}`
+		? "&|^" extends `${string}${t}${string}`
 			? Rec_Op2<nodes, t, ts>
-			: '123456789' extends `${string}${t}${string}`
+			: "123456789" extends `${string}${t}${string}`
 			? Rec_Lit<nodes, t, ts>
 			: Rec_Op1<nodes, t, ts>
 		: never
-	: never
+	: never;
 
 export type AstFromTokens<tokens extends string[]> = Rec<
-	[['', []]],
-	[...tokens, '!!']
->
+	[["", []]],
+	[...tokens, "!!"]
+>;
 
-export type AstFromString<S> = AstFromTokens<Tokenize<S>>
+export type AstFromString<S> = AstFromTokens<Tokenize<S>>;

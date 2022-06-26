@@ -1,4 +1,4 @@
-import { _ } from '../flatten'
+import { _ } from "../flatten.js";
 
 /**
  * The built-in `Partial` doesn't work properly (@see `VPartial.test.ts`), so we implement our own
@@ -14,7 +14,7 @@ export type VPartial<Obj> = Obj extends unknown
 					? never
 					: symbol extends key
 					? never
-					: key]?: Obj[key]
+					: key]?: Obj[key];
 			} & {
 				[key in keyof Obj as string extends key
 					? key
@@ -22,7 +22,7 @@ export type VPartial<Obj> = Obj extends unknown
 					? key
 					: symbol extends key
 					? key
-					: never]: Obj[key]
+					: never]: Obj[key];
 			}
 	  >
-	: never
+	: never;

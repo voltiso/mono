@@ -1,9 +1,9 @@
-import { Assert, Is } from '../bdd/Assert'
-import { Xor } from './Xor'
+import { Assert, Is } from "../bdd/Assert.js";
+import { Xor } from "./Xor.js";
 
-describe('xor', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("xor", () => {
+	it("works", () => {
+		expect.assertions(0);
 
 		Assert(
 			Is<Xor<false, true>>() //
@@ -23,6 +23,6 @@ describe('xor', () => {
 
 			Is<Xor<true, boolean>>() //
 				.identicalTo<boolean>()
-		)
-	})
-})
+		);
+	});
+});

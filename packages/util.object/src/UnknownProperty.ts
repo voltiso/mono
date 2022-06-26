@@ -1,4 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AlsoAccept } from '../misc/AlsoAccept'
+import type { AlsoAccept } from "@voltiso/util.type";
 
-export type UnknownProperty = AlsoAccept<keyof any>
+export type UnknownProperty = AlsoAccept<keyof any>;

@@ -1,12 +1,12 @@
-import { lazyConstructor } from '@voltiso/ts-util/class'
-import { ISchema, Schema_ } from '../../schema'
-import { EXTENDS } from '../../schema/_/symbols'
-import { INever, IS_NEVER } from './INever'
+import { lazyConstructor } from "@voltiso/ts-util/class";
+import { ISchema, Schema_ } from "../../schema.js";
+import { EXTENDS } from "../../schema/_/symbols.js";
+import { INever, IS_NEVER } from "./INever.js";
 import {
 	DefaultNeverOptions,
 	defaultNeverOptions,
 	NeverOptions,
-} from './_/NeverOptions'
+} from "./_/NeverOptions";
 
 class Never__<O extends NeverOptions>
 	extends lazyConstructor(() => Schema_)<O>
@@ -16,7 +16,7 @@ class Never__<O extends NeverOptions>
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	override [EXTENDS](_other: ISchema): boolean {
-		return true
+		return true;
 	}
 }
 
@@ -24,6 +24,6 @@ class Never__<O extends NeverOptions>
 
 export class Never_ extends Never__<DefaultNeverOptions> {
 	constructor() {
-		super(defaultNeverOptions as never)
+		super(defaultNeverOptions as never);
 	}
 }

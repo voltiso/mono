@@ -1,7 +1,21 @@
 {
-	"files": [],
+	// "files": [],
+	"include": [
+		"/**/*",
+		"/**/.*"
+		//
+	],
+
+	"exclude": [
+		"/**/dist/",
+		// "/**/.*",
+		"/**/node_modules/"
+		//
+	],
 
 	"compilerOptions": {
+		// "rootDir": ".",
+
 		"outDir": "_outDir_PLEASE_OVERRIDE", // just in case - avoid polluting any dirs
 
 		// TODO: we may want to remove declaration maps when publishing??
@@ -12,7 +26,7 @@
 		"declaration": true,
 		// "emitDeclarationOnly": true,
 
-		"composite": true, // possibly need to overwrite for TSUP builds!
+		// "composite": true, // possibly need to overwrite for TSUP builds!
 		"noEmit": true,
 		"sourceMap": true,
 

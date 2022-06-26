@@ -1,38 +1,38 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-magic-numbers */
-import { IsIdentical } from '../../../misc/IsEqual'
-import { Assert } from '../../../bdd'
-import { OmitRequired } from './OmitRequired'
+import { IsIdentical } from "../../../misc/IsEqual.js";
+import { Assert } from "../../../bdd.js";
+import { OmitRequired } from "./OmitRequired.js";
 
-describe('OmitRequired', () => {
-	it('type', () => {
-		expect.assertions(0)
+describe("OmitRequired", () => {
+	it("type", () => {
+		expect.assertions(0);
 
-		type A = OmitRequired<{ readonly a?: 'a'; b: 'b' }>
-		Assert<IsIdentical<A, { readonly a?: 'a' }>>()
-	})
+		type A = OmitRequired<{ readonly a?: "a"; b: "b" }>;
+		Assert<IsIdentical<A, { readonly a?: "a" }>>();
+	});
 
 	type ObjA = {
-		readonly a?: 'aa'
-		b: 'bb'
-	}
+		readonly a?: "aa";
+		b: "bb";
+	};
 
-	it('generic', <O extends ObjA>() => {
-		expect.assertions(0)
+	it("generic", <O extends ObjA>() => {
+		expect.assertions(0);
 
-		type A = OmitRequired<O>
-		Assert.is<O, A>()
-	})
+		type A = OmitRequired<O>;
+		Assert.is<O, A>();
+	});
 
-	it('vscode jump to definition (manual test...)', () => {
-		expect.assertions(0)
+	it("vscode jump to definition (manual test...)", () => {
+		expect.assertions(0);
 
 		type Obj = {
-			readonly a?: 'aa'
-			b: 'bb'
-		}
-		const obj = {} as unknown as OmitRequired<Obj>
+			readonly a?: "aa";
+			b: "bb";
+		};
+		const obj = {} as unknown as OmitRequired<Obj>;
 		// hit F12 here:
-		void obj.a
-	})
-})
+		void obj.a;
+	});
+});

@@ -3,99 +3,103 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-magic-numbers */
 /* eslint-disable no-constructor-return */
-import { CALL, CallableInstance, callableInstance } from './callableInstance'
-import { staticImplements } from './staticImplements'
+import {
+	CALL,
+	CallableInstance,
+	callableInstance,
+} from "./callableInstance.js";
+import { staticImplements } from "./staticImplements.js";
 
-const sym = Symbol('sym')
+const sym = Symbol("sym");
 
 @staticImplements<ClassConstructor>()
 class Class_ {
 	constructor(arg: string | number) {
-		this._data = `${arg}?`
-		Object.defineProperty(this, 'nonEnum', {
+		this._data = `${arg}?`;
+		Object.defineProperty(this, "nonEnum", {
 			enumerable: false,
-		})
-		return callableInstance(this)
+		});
+		return callableInstance(this);
 	}
 
-	[CALL](s: string): string
-	[CALL](n: number): string
+	[CALL](s: string): string;
+	[CALL](n: number): string;
 
 	[CALL](arg: string | number) {
-		return `${arg}!`
+		return `${arg}!`;
 	}
 
 	length() {
-		return 99
+		return 99;
 	}
 
-	nonEnum = 11
+	nonEnum = 11;
 
 	opt?: number;
 
-	[sym] = 99
+	[sym] = 99;
 
-	_data: string | number
+	_data: string | number;
 }
 
 interface ClassConstructor<Derived extends Class_ = Class_> {
-	new (arg: string): Derived
-	new (arg: number): Derived
+	new (arg: string): Derived;
+	new (arg: number): Derived;
 }
 
-type Class = CallableInstance<Class_>
-const Class = Class_ as ClassConstructor<Class>
+type Class = CallableInstance<Class_>;
+const Class = Class_ as ClassConstructor<Class>;
 
-describe('callableInstance', () => {
-	it('works', () => {
-		expect.hasAssertions()
+describe("callableInstance", () => {
+	it("works", () => {
+		expect.hasAssertions();
 
-		const c = new Class('test')
-		expect(c._data).toBe('test?')
+		const c = new Class("test");
+		expect(c._data).toBe("test?");
 
-		const x = c(123)
-		expect(x).toBe('123!')
+		const x = c(123);
+		expect(x).toBe("123!");
 
-		expect(c.opt).toBeUndefined()
+		expect(c.opt).toBeUndefined();
 
-		c.opt = 444
-		expect(c.opt).toBe(444)
-		expect({ ...c }).toStrictEqual({ [sym]: 99, _data: 'test?', opt: 444 })
+		c.opt = 444;
+		expect(c.opt).toBe(444);
+		expect({ ...c }).toStrictEqual({ [sym]: 99, _data: "test?", opt: 444 });
 
-		expect(c.constructor).toBe(Class)
-		expect(Object.getPrototypeOf(c)).toBe(Class.prototype)
+		expect(c.constructor).toBe(Class);
+		expect(Object.getPrototypeOf(c)).toBe(Class.prototype);
 
-		expect(c.nonEnum).toBe(11)
+		expect(c.nonEnum).toBe(11);
 
-		c.nonEnum = 22
-		expect(c.nonEnum).toBe(22)
+		c.nonEnum = 22;
+		expect(c.nonEnum).toBe(22);
 
-		c._data = 'aaa'
-		expect(c._data).toBe('aaa')
+		c._data = "aaa";
+		expect(c._data).toBe("aaa");
 
-		expect(c.length()).toBe(99)
-	})
+		expect(c.length()).toBe(99);
+	});
 
-	it('sets correct `this` context', () => {
-		expect.hasAssertions()
+	it("sets correct `this` context", () => {
+		expect.hasAssertions();
 
 		class Test {
 			fun() {
-				return this
+				return this;
 			}
 
 			[CALL]() {
-				return this
+				return this;
 			}
 
 			constructor() {
-				return callableInstance(this)
+				return callableInstance(this);
 			}
 		}
 
-		const test = new Test() as CallableInstance<Test>
+		const test = new Test() as CallableInstance<Test>;
 
-		expect(test()).toBe(test)
-		expect(test.fun()).toBe(test)
-	})
-})
+		expect(test()).toBe(test);
+		expect(test.fun()).toBe(test);
+	});
+});

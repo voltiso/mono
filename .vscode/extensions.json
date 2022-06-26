@@ -1,3 +1,4 @@
+/** Copyright (c) 2022, Voltiso.com **/
 {
 	"recommendations": [
 		/** Recommended user setting: `editor.formatOnSave` */
@@ -48,6 +49,26 @@
 
 		/** GitHub-style Markdown preview */
 		"bierner.markdown-preview-github-styles",
+
+		/** `type-coverage` */
+		"york-yao.vscode-type-coverage",
+
+		/** Ballpark estimate how heavy the library might be after bundling */
+		"wix.vscode-import-cost",
+
+		/** .env syntax highlighting */
+		"mikestead.dotenv",
+
+		/** Newest TS version in VSCode - but please still use per-project TS installation */
+		"ms-vscode.vscode-typescript-next",
+
+		/** ? Screen-sharing VSCode?? */
+		"ms-vsliveshare.vsliveshare-pack",
+
+		//
+
+		// react-native - Exp - app.json validation, code completion
+		"byCedric.vscode-expo",
 
 		//
 

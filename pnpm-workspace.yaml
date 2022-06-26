@@ -3,5 +3,12 @@ packages:
 
 
 
-  - packages/config.*
+
+
+
+
+
+
+
+  - packages/*
   - config

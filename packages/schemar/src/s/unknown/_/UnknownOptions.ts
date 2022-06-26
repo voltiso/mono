@@ -1,7 +1,7 @@
-import { defaultSchemaOptions, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions, SchemaOptions } from "../../../schema.js";
 
-export type UnknownOptions = SchemaOptions
+export type UnknownOptions = SchemaOptions;
 
-export const defaultUnknownOptions = defaultSchemaOptions
+export const defaultUnknownOptions = defaultSchemaOptions;
 
-export type DefaultUnknownOptions = typeof defaultUnknownOptions
+export type DefaultUnknownOptions = typeof defaultUnknownOptions;

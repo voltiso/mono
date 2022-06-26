@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Flatten } from '../flatten'
-import { IsOptional } from '../IsOptional'
-import { Value } from '../key-value'
-import { DeepPartial } from '../map'
-import { SuggestObject } from './SuggestObject'
+import type { Flatten } from "../flatten.js";
+import type { IsOptional } from "../IsOptional.js";
+import type { Value } from "../key-value.js";
+import type { DeepPartial } from "../map.js";
+import type { SuggestObject } from "./SuggestObject.js";
 
 export type DeepMerge2<
 	A,
@@ -14,7 +14,7 @@ export type DeepMerge2<
 	AOptional extends true ? DeepPartial<A> : A,
 	BOptional extends true ? DeepPartial<B> : B,
 	BOptional
->
+>;
 
 type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 	? B extends object
@@ -31,7 +31,7 @@ type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 							: Value<A, k>
 						: k extends keyof B
 						? Value<B, k>
-						: never
+						: never;
 				} & {
 					[k in keyof A | keyof B as IsOptional<
 						A & B,
@@ -49,7 +49,7 @@ type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 							: Value<A, k>
 						: k extends keyof B
 						? Value<B, k>
-						: never
+						: never;
 				}
 		  >
 		: BOptional extends true
@@ -57,7 +57,7 @@ type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 		: B
 	: BOptional extends true
 	? A | B
-	: B
+	: B;
 
 type DeepMerge_<objs, acc> = objs extends readonly []
 	? acc
@@ -68,7 +68,7 @@ type DeepMerge_<objs, acc> = objs extends readonly []
 		[h] extends [never]
 		? DeepMerge_<t, acc>
 		: acc
-	: acc
+	: acc;
 
 export type DeepMerge<
 	A extends readonly object[] | object,
@@ -78,22 +78,22 @@ export type DeepMerge<
 	E extends [A] extends [readonly object[]] ? void : object | void = void
 > = [A] extends [readonly object[]]
 	? DeepMerge_<A, {}>
-	: DeepMerge_<readonly [A, B, C, D, E], {}>
+	: DeepMerge_<readonly [A, B, C, D, E], {}>;
 
-export type DeepMergeN<Arr extends readonly object[]> = DeepMerge_<Arr, {}>
+export type DeepMergeN<Arr extends readonly object[]> = DeepMerge_<Arr, {}>;
 
-type RSU = Record<string, Object>
+type RSU = Record<string, Object>;
 
 function deepMerge_(a: RSU, b: RSU) {
-	const r = { ...a }
+	const r = { ...a };
 	for (const k in b) {
 		if (r[k]?.constructor === Object && b[k]?.constructor === Object)
-			r[k] = deepMerge_(r[k] as RSU, b[k] as RSU)
+			r[k] = deepMerge_(r[k] as RSU, b[k] as RSU);
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		// else if (typeof a[k] !== 'undefined' && typeof b[k] === 'undefined') (r[k] as any) = a[k]
-		else (r[k] as unknown) = b[k]
+		else (r[k] as unknown) = b[k];
 	}
-	return r
+	return r;
 }
 
 //
@@ -101,18 +101,18 @@ function deepMerge_(a: RSU, b: RSU) {
 export function deepMerge<
 	ObjA extends object,
 	ObjB extends SuggestObject<ObjA>
->(objA: ObjA, objB: ObjB): DeepMerge2<ObjA, ObjB>
+>(objA: ObjA, objB: ObjB): DeepMerge2<ObjA, ObjB>;
 
 export function deepMerge<Objs extends readonly object[]>(
 	...objs: Objs
-): DeepMerge<Objs>
+): DeepMerge<Objs>;
 
 export function deepMerge<Objs extends readonly object[]>(
 	...objs: Objs
 ): DeepMerge<Objs> {
-	let r = {}
+	let r = {};
 	for (const obj of objs) {
-		r = deepMerge_(r, obj as RSU)
+		r = deepMerge_(r, obj as RSU);
 	}
-	return r as DeepMerge<Objs>
+	return r as DeepMerge<Objs>;
 }

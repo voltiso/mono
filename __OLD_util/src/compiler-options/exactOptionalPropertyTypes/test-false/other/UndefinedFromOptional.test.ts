@@ -1,27 +1,27 @@
-import { IsIdentical } from '../../../../misc/IsEqual'
-import { Assert } from '../../../../bdd'
-import { UndefinedFromOptional } from '../../../../object'
+import { IsIdentical } from "../../../../misc/IsEqual.js";
+import { Assert } from "../../../../bdd.js";
+import { UndefinedFromOptional } from "../../../../object.js";
 
-describe('UndefinedFromOptional', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("UndefinedFromOptional", () => {
+	it("works", () => {
+		expect.assertions(0);
 
-		type A = UndefinedFromOptional<{ x?: number }>
-		Assert<IsIdentical<A, { x?: number | undefined }>>()
+		type A = UndefinedFromOptional<{ x?: number }>;
+		Assert<IsIdentical<A, { x?: number | undefined }>>();
 
-		type B = UndefinedFromOptional<{ x: number }>
-		Assert<IsIdentical<B, { x: number }>>()
-	})
+		type B = UndefinedFromOptional<{ x: number }>;
+		Assert<IsIdentical<B, { x: number }>>();
+	});
 
-	it('vscode jump to definition (manual test...)', () => {
-		expect.assertions(0)
+	it("vscode jump to definition (manual test...)", () => {
+		expect.assertions(0);
 
 		type Obj = {
-			readonly a?: 0
-			b: 0
-		}
+			readonly a?: 0;
+			b: 0;
+		};
 
-		const obj = {} as unknown as UndefinedFromOptional<Obj>
-		void obj.a
-	})
-})
+		const obj = {} as unknown as UndefinedFromOptional<Obj>;
+		void obj.a;
+	});
+});

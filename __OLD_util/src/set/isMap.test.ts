@@ -1,16 +1,16 @@
 /* eslint-disable no-undefined */
-import { isMap } from './isMap'
+import { isMap } from "./isMap.js";
 
-describe('isMap', () => {
-	it('works', () => {
-		expect.hasAssertions()
+describe("isMap", () => {
+	it("works", () => {
+		expect.hasAssertions();
 
-		expect(isMap(new Set())).toBeFalsy()
-		expect(isMap(new Map())).toBeTruthy()
-		expect(isMap(new Date())).toBeFalsy()
+		expect(isMap(new Set())).toBeFalsy();
+		expect(isMap(new Map())).toBeTruthy();
+		expect(isMap(new Date())).toBeFalsy();
 
-		expect(isMap({})).toBeFalsy()
-		expect(isMap(null)).toBeFalsy()
-		expect(isMap(undefined)).toBeFalsy()
-	})
-})
+		expect(isMap({})).toBeFalsy();
+		expect(isMap(null)).toBeFalsy();
+		expect(isMap(undefined)).toBeFalsy();
+	});
+});

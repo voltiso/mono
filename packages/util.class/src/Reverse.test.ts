@@ -1,10 +1,10 @@
 /* eslint-disable no-magic-numbers */
-import { Assert, Is } from '../bdd/Assert'
-import { Reverse } from './Reverse'
+import { Assert, Is } from "../bdd/Assert.js";
+import { Reverse } from "./Reverse.js";
 
-describe('array/Reverse', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("array/Reverse", () => {
+	it("works", () => {
+		expect.assertions(0);
 		Assert(
 			Is<Reverse<readonly [1, 2, 3]>>() //
 				.identicalTo<readonly [3, 2, 1]>(),
@@ -20,6 +20,6 @@ describe('array/Reverse', () => {
 
 			Is<Reverse<[1, 2, 3, ...string[], 4, 5, 6]>>() //
 				.identicalTo<[6, 5, 4, ...string[], 3, 2, 1]>()
-		)
-	})
-})
+		);
+	});
+});

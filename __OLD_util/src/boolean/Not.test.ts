@@ -1,9 +1,9 @@
-import { Assert, Is } from '../bdd/Assert'
-import { Not } from './Not'
+import { Assert, Is } from "../bdd/Assert.js";
+import { Not } from "./Not.js";
 
-describe('not', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("not", () => {
+	it("works", () => {
+		expect.assertions(0);
 		Assert(
 			Is<Not<true>>() //
 				.identicalTo<false>(),
@@ -13,6 +13,6 @@ describe('not', () => {
 
 			Is<Not<boolean>>() //
 				.identicalTo<boolean>()
-		)
-	})
-})
+		);
+	});
+});

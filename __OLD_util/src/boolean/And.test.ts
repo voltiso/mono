@@ -1,8 +1,8 @@
-import { And } from './And'
+import { And } from "./And.js";
 
-describe('and', () => {
-	it('works', () => {
-		expect.assertions(0)
+describe("and", () => {
+	it("works", () => {
+		expect.assertions(0);
 		Assert(
 			Is<And<true, true>>() //
 				.identicalTo<true>(),
@@ -18,6 +18,6 @@ describe('and', () => {
 
 			Is<And<boolean, boolean>>() //
 				.identicalTo<boolean>()
-		)
-	})
-})
+		);
+	});
+});

@@ -1,6 +1,6 @@
-import { ISchema } from '../../../schema'
-import { isTuple, ITuple } from '../../tuple'
-import * as s from '../..'
+import { ISchema } from "../../../schema.js";
+import { isTuple, ITuple } from "../../tuple.js";
+import * as s from "../..";
 
 // type Fun<Args extends unknown[]> = (...args: Args) => 0
 
@@ -14,25 +14,25 @@ import * as s from '../..'
 // type D = Test<[1, 2], [1, 2, 3]> // 0
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
-	const aa = a.getElementSchemas
-	const bb = b.getElementSchemas
+	const aa = a.getElementSchemas;
+	const bb = b.getElementSchemas;
 
-	if (aa.length < bb.length) return false
+	if (aa.length < bb.length) return false;
 
 	for (let i = 0; i < bb.length; ++i) {
-		const ok = s.schema(aa[i]).extends(bb[i])
-		if (!ok) return false
+		const ok = s.schema(aa[i]).extends(bb[i]);
+		if (!ok) return false;
 	}
 
-	return true
+	return true;
 }
 
 /**
  * TODO: make it work with arrays with bounded lengths
  */
 export function _functionArgumentsExtends(a: ISchema, b: ISchema): boolean {
-	const aOk = isTuple(a)
-	const bOk = isTuple(b)
-	if (aOk && bOk) return _functionArgumentsExtends_(a, b)
-	else return a.extends(b)
+	const aOk = isTuple(a);
+	const bOk = isTuple(b);
+	if (aOk && bOk) return _functionArgumentsExtends_(a, b);
+	else return a.extends(b);
 }
