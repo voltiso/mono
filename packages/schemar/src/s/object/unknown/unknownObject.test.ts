@@ -1,18 +1,22 @@
-import { Assert } from "@voltiso/ts-util/bdd";
-import * as s from "../..";
-import { RootSchemable } from "../../../schema.js";
-import { CustomUnknownObject } from "./CustomUnknownObject.js";
-import { UnknownObjectOptions } from "./_/UnknownObjectOptions.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("object", () => {
-	it("generic", <O extends UnknownObjectOptions>() => {
-		expect.assertions(0);
+import { Assert } from '@voltiso/util'
 
-		Assert.is<s.IUnknownObject<O>, s.IUnknownObject>();
-		Assert.is<CustomUnknownObject<O>, s.IUnknownObject<O>>();
-		Assert.is<CustomUnknownObject<O>, s.IUnknownObject>();
+import type { RootSchemable } from '../../../schema'
+import type * as s from '../..'
+import type { UnknownObjectOptions } from './_/UnknownObjectOptions.js'
+import type { CustomUnknownObject } from './CustomUnknownObject.js'
 
-		Assert.is<typeof s.object, s.IUnknownObject>();
-		Assert.is<typeof s.object, RootSchemable>();
-	});
-});
+describe('object', () => {
+	it('generic', <O extends UnknownObjectOptions>() => {
+		expect.assertions(0)
+
+		Assert.is<s.IUnknownObject<O>, s.IUnknownObject>()
+		Assert.is<CustomUnknownObject<O>, s.IUnknownObject<O>>()
+		Assert.is<CustomUnknownObject<O>, s.IUnknownObject>()
+
+		Assert.is<typeof s.object, s.IUnknownObject>()
+		Assert.is<typeof s.object, RootSchemable>()
+	})
+})

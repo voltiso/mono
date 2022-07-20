@@ -1,16 +1,16 @@
-export type { GetType, GetOutputType, GetInputType } from './GetType'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+export { default } from './defaultExport.js'
+export { SchemarError, ValidationError } from './errors'
+export type { GetInputType, GetOutputType, GetType } from './GetType'
 export type {
-	ISchema,
-	IRootSchema,
-	RootSchemable,
-	InferableObject,
-	InferableTuple,
-	Schemable,
 	InferableMutableTuple,
+	InferableObject,
 	InferableReadonlyTuple,
+	InferableTuple,
+	IRootSchema,
+	ISchema,
+	RootSchemable,
+	Schemable,
 } from './schema'
-
-export type { ValidationError } from './errors'
-
-export { default } from './defaultExport'

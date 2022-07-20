@@ -1,4 +1,9 @@
-export const security = {
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const security = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['security'],
@@ -13,10 +18,10 @@ export const security = {
 		'security/detect-no-csrf-before-method-override': 2,
 		'security/detect-non-literal-fs-filename': 2,
 		'security/detect-non-literal-regexp': 2,
-		'security/detect-non-literal-require': 2,
+		'security/detect-non-literal-require': 0, // bugged when `require` called without argument
 		'security/detect-object-injection': 2,
 		'security/detect-possible-timing-attacks': 2,
 		'security/detect-pseudoRandomBytes': 2,
 		'security/detect-new-buffer': 2,
 	},
-}
+})

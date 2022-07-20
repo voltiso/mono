@@ -1,6 +1,10 @@
-import { codeFiles } from '../files'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const cssOverride = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { codeFiles } from '../files.js'
+
+export const cssOverride = defineEslintConfigOverride({
 	files: [...codeFiles, '*.css'],
 
 	plugins: ['css'],
@@ -19,4 +23,4 @@ export const cssOverride = {
 			},
 		},
 	},
-}
+})

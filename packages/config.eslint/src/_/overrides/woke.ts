@@ -1,8 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
 /** `eslint-plugin-woke` - educational plugin for learning new words ❤️ */
-export const wokeOverride = {
+export const wokeOverride = defineEslintConfigOverride({
 	files: '*',
 
 	plugins: ['woke'],
@@ -15,4 +17,4 @@ export const wokeOverride = {
 		'woke/profanity': 2,
 		'woke/racism': 0, // does not allow `prod` - can't disable...
 	},
-}
+})

@@ -1,0 +1,19 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const indentEmptyLines = defineEslintConfigOverride({
+	files: '*',
+
+	plugins: ['indent-empty-lines'],
+
+	rules: {
+		/**
+		 * Currently disabled - nice to have, but would have to resign from Prettier
+		 * completely
+		 */
+		'indent-empty-lines/indent-empty-lines': 0,
+		// 'indent-empty-lines/indent-empty-lines': ['error', 'tab'],
+	},
+})

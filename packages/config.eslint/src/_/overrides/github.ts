@@ -1,7 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const githubOverride = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+// import { codeFiles } from '../files.js'
+
+export const githubOverride = defineEslintConfigOverride({
 	extends: [
 		'plugin:github/recommended',
 		'plugin:github/internal',
@@ -9,7 +13,12 @@ export const githubOverride = {
 		'plugin:github/typescript',
 	],
 
-	files: ['*'],
+	files: '*',
+	// files: codeFiles,
 
 	plugins: ['github'],
-}
+
+	rules: {
+		'github/no-then': 0, // handles by `promise`
+	},
+})

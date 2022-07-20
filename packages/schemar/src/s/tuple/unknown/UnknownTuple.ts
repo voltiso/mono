@@ -1,13 +1,14 @@
-import { lazyValue } from "@voltiso/ts-util";
-import { CustomUnknownTuple } from "./CustomUnknownTuple.js";
-import {
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { lazyValue } from '@voltiso/util'
+
+import type {
 	DefaultMutableUnknownTupleOptions,
 	DefaultReadonlyUnknownTupleOptions,
-} from "./_/UnknownTupleOptions";
-import {
-	MutableUnknownTuple_,
-	ReadonlyUnknownTuple_,
-} from "./UnknownTuple_.js";
+} from './_/UnknownTupleOptions.js'
+import type { CustomUnknownTuple } from './CustomUnknownTuple.js'
+import { MutableUnknownTuple_, ReadonlyUnknownTuple_ } from './UnknownTuple_.js'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MutableUnknownTuple
@@ -20,19 +21,19 @@ export interface ReadonlyUnknownTuple
 //
 
 export const MutableUnknownTuple =
-	MutableUnknownTuple_ as unknown as MutableUnknownTupleConstructor;
+	MutableUnknownTuple_ as unknown as MutableUnknownTupleConstructor
 
 export const ReadonlyUnknownTuple =
-	ReadonlyUnknownTuple_ as unknown as ReadonlyUnknownTupleConstructor;
+	ReadonlyUnknownTuple_ as unknown as ReadonlyUnknownTupleConstructor
 
 //
 
-type MutableUnknownTupleConstructor = new () => MutableUnknownTuple;
-type ReadonlyUnknownTupleConstructor = new () => ReadonlyUnknownTuple;
+type MutableUnknownTupleConstructor = new () => MutableUnknownTuple
+type ReadonlyUnknownTupleConstructor = new () => ReadonlyUnknownTuple
 
 //
 
-export const readonlyTuple = lazyValue(() => new ReadonlyUnknownTuple());
-export const mutableTuple = lazyValue(() => new MutableUnknownTuple());
+export const readonlyTuple = lazyValue(() => new ReadonlyUnknownTuple())
+export const mutableTuple = lazyValue(() => new MutableUnknownTuple())
 
-export const tuple = mutableTuple;
+export const tuple = mutableTuple

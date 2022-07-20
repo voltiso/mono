@@ -1,5 +1,8 @@
-import { SchemarError } from "../../errors.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { SchemarError } from '../../errors'
 
 export function throwTypeOnlyFieldError(): never {
-	throw new SchemarError("Do not access `Out` at runtime (type-only field)");
+	throw new SchemarError('Do not access `Out` at runtime (type-only field)')
 }

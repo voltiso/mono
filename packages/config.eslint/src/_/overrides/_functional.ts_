@@ -1,0 +1,64 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import {
+	defineEslintConfigOverride,
+	defineEslintConfigOverrideRules,
+} from '@voltiso/config.eslint.lib'
+import { codeFiles } from '../files.js'
+
+const noMutationRules = defineEslintConfigOverrideRules({
+	'functional/immutable-data': 0,
+	'functional/no-let': 0,
+	'functional/no-method-signature': 0,
+	'functional/prefer-readonly-type': 0,
+})
+
+const noOopRules = defineEslintConfigOverrideRules({
+	'functional/no-class': 0, // meh... stupid
+	'functional/no-mixed-type': 0,
+	'functional/no-this-expression': 0,
+})
+
+const noStatementsRules = defineEslintConfigOverrideRules({
+	'functional/no-conditional-statement': 0,
+	'functional/no-expression-statement': 0,
+	'functional/no-loop-statement': 0,
+	'functional/no-return-void': 0,
+})
+
+const noExceptionsRules = defineEslintConfigOverrideRules({
+	'functional/no-promise-reject': 2,
+	'functional/no-throw-statement': 0,
+	'functional/no-try-statement': 0,
+})
+
+const curryingRules = defineEslintConfigOverrideRules({
+	'functional/functional-parameters': 0, // functions must have parameters
+})
+
+const stylisticRules = defineEslintConfigOverrideRules({
+	'functional/prefer-tacit': 2,
+})
+
+/** `eslint-plugin-functional` - functional programming */
+export const functional = defineEslintConfigOverride({
+	extends: [
+		'plugin:functional/external-recommended',
+		'plugin:functional/recommended',
+		'plugin:functional/stylistic',
+	],
+
+	files: codeFiles,
+
+	plugins: ['functional'],
+
+	rules: {
+		...noMutationRules,
+		...noOopRules,
+		...noStatementsRules,
+		...noExceptionsRules,
+		...curryingRules,
+		...stylisticRules,
+	},
+})

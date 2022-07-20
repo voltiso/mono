@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const next = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const next = defineEslintConfigOverride({
 	files: ['*'],
 
-	// eslint-disable-next-line sort-keys-fix/sort-keys-fix
 	extends: [
 		// 'next',
 		// 'next/core-web-vitals',
@@ -14,4 +15,4 @@ export const next = {
 	],
 
 	plugins: ['@next/eslint-plugin-next'],
-}
+})

@@ -1,35 +1,41 @@
-import { defaultSchemaOptions, SchemaOptions } from "../../../../schema.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { undef } from '@voltiso/util'
+
+import type { SchemaOptions } from '../../../../schema'
+import { defaultSchemaOptions } from '../../../../schema'
 
 export interface UnknownTupleOptions extends SchemaOptions {
-	_out: readonly unknown[];
-	_in: readonly unknown[];
+	_out: readonly unknown[]
+	_in: readonly unknown[]
 
-	readonlyTuple: boolean;
+	isReadonlyTuple: boolean
 
-	minLength: number | undefined;
-	maxLength: number | undefined;
+	minLength: number | undefined
+	maxLength: number | undefined
 }
 
 export const defaultMutableUnknownTupleOptions = {
 	...defaultSchemaOptions,
 	_out: 0 as unknown as unknown[],
 	_in: 0 as unknown as unknown[],
-	readonlyTuple: false as const,
-	minLength: undefined,
-	maxLength: undefined,
-};
+	isReadonlyTuple: false as const,
+	minLength: undef,
+	maxLength: undef,
+}
 
 export const defaultReadonlyUnknownTupleOptions = {
 	...defaultSchemaOptions,
 	_out: 0 as unknown as readonly unknown[],
 	_in: 0 as unknown as readonly unknown[],
-	readonlyTuple: true as const,
-	minLength: undefined,
-	maxLength: undefined,
-};
+	isReadonlyTuple: true as const,
+	minLength: undef,
+	maxLength: undef,
+}
 
 export type DefaultMutableUnknownTupleOptions =
-	typeof defaultMutableUnknownTupleOptions;
+	typeof defaultMutableUnknownTupleOptions
 
 export type DefaultReadonlyUnknownTupleOptions =
-	typeof defaultReadonlyUnknownTupleOptions;
+	typeof defaultReadonlyUnknownTupleOptions

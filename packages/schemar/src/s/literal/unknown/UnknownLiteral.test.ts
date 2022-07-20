@@ -1,14 +1,18 @@
-import { Assert } from "@voltiso/ts-util/bdd";
-import { CustomUnknownLiteral } from "./CustomUnknownLiteral.js";
-import { IUnknownLiteral } from "./IUnknownLiteral.js";
-import { UnknownLiteralOptions } from "./_/UnknownLiteralOptions.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("UnknownLiteral", () => {
-	it("generic", <O extends UnknownLiteralOptions>() => {
-		expect.assertions(0);
+import { Assert } from '@voltiso/util'
 
-		Assert.is<IUnknownLiteral<O>, IUnknownLiteral>();
-		Assert.is<CustomUnknownLiteral<O>, IUnknownLiteral<O>>();
-		Assert.is<CustomUnknownLiteral<O>, IUnknownLiteral>();
-	});
-});
+import type { UnknownLiteralOptions } from './_/UnknownLiteralOptions.js'
+import type { CustomUnknownLiteral } from './CustomUnknownLiteral.js'
+import type { IUnknownLiteral } from './IUnknownLiteral.js'
+
+describe('UnknownLiteral', () => {
+	it('generic', <O extends UnknownLiteralOptions>() => {
+		expect.assertions(0)
+
+		Assert.is<IUnknownLiteral<O>, IUnknownLiteral>()
+		Assert.is<CustomUnknownLiteral<O>, IUnknownLiteral<O>>()
+		Assert.is<CustomUnknownLiteral<O>, IUnknownLiteral>()
+	})
+})

@@ -1,3 +1,6 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 {
 	/** --------------------------------------------------------- */
 	//
@@ -7,8 +10,10 @@
 	//
 
 	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
-	"javascript.preferences.importModuleSpecifierEnding": "js", // needed for proper esm
-	"typescript.preferences.importModuleSpecifierEnding": "js", // needed for proper esm
+	"javascript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
+	"typescript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
+
+	"typescript.preferences.includePackageJsonAutoImports": "auto",
 
 	"files.exclude": {
 		// "**/node_modules/": true,
@@ -16,7 +21,7 @@
 		// "**/.tsc-out/": true,
 		// "**/.turbo/": true,
 		/**
-		 * util - compat dirs
+		 * Util - compat dirs
 		 */
 		// "**/util/array/": true,
 		// "**/util/bdd/": true,
@@ -39,16 +44,16 @@
 
 	"exportall.config.semis": false,
 
-	/** allow JSON comments by default */
+	/** Allow JSON comments by default */
 	"files.associations": {
 		"*.json": "jsonc"
 	},
 
-	"editor.hover.delay": 200, // let's be fast
+	"editor.hover.delay": 200, // Let's be fast
 
 	"editor.formatOnSave": true,
 	"files.insertFinalNewline": true,
-	"files.trimFinalNewlines": true, // already handled by eslint
+	"files.trimFinalNewlines": true, // Already handled by eslint
 
 	/**
 	 * Does NOT work for JSX currently
@@ -56,7 +61,7 @@
 	 */
 	"editor.linkedEditing": true,
 
-	"jest.enableCodeLens": false, // fixes code lines jumps
+	"jest.enableCodeLens": false, // Fixes code lines jumps
 
 	// "explorer.experimental.fileNesting.enabled": true,
 	// "explorer.experimental.fileNesting.expand": false,
@@ -133,7 +138,7 @@
 	// Project-specific settings
 	//
 	// "eslint.options": { "overrideConfigFile": "./config/eslint.js" },
-	// "jest.jestCommandLine": "pnpm test",
+	"jest.jestCommandLine": "pnpm jest",
 
 	//
 
@@ -178,8 +183,8 @@
 	// "jest.autoRun": { "watch": true },
 	"jest.autoRun": {
 		"watch": false,
-		"onSave": "test-src-file",
-		"onStartup": ["all-tests"]
+		"onSave": "test-src-file"
+		// "onStartup": ["all-tests"]
 	},
 
 	"typescript.tsdk": "./node_modules/typescript/lib",
@@ -191,13 +196,17 @@
 
 	"cSpell.words": [
 		"anymatch",
+		"autofix",
 		"Bartosz",
 		"browserslistrc",
+		"cand",
 		"chokidar",
 		"cjsx",
 		"clier",
+		"Coderho",
 		"compat",
 		"concat",
+		"csstype",
 		"ctsx",
 		"deps",
 		"eopt",
@@ -205,7 +214,9 @@
 		"execa",
 		"extglob",
 		"fastq",
+		"fela",
 		"flowtype",
+		"formatjs",
 		"fsevents",
 		"gitignores",
 		"globby",
@@ -213,19 +224,24 @@
 		"iojs",
 		"isexe",
 		"joycon",
+		"jsdom",
 		"LGBTQ",
 		"lilconfig",
+		"linebreak",
 		"microtask",
 		"milahu",
 		"minimatch",
 		"mjsx",
 		"mtsx",
+		"mutables",
 		"nodelib",
+		"nonblock",
 		"npmrc",
 		"oltiso",
 		"Orta",
 		"outfile",
 		"Parens",
+		"Paulo",
 		"picomatch",
 		"plusplus",
 		"pnpm",
@@ -240,6 +256,7 @@
 		"riscv",
 		"rollup",
 		"scandir",
+		"Schemable",
 		"schemar",
 		"sdkconfig",
 		"sharereplay",
@@ -253,16 +270,21 @@
 		"syncpack",
 		"takeuntil",
 		"takewhile",
+		"testid",
 		"thenify",
 		"topromise",
 		"transpiling",
 		"treeshake",
+		"tsclint",
 		"tsdoc",
 		"tsup",
 		"Turborepo",
+		"typecov",
+		"typeof",
 		"unist",
 		"V͛o͛",
 		"voltiso",
+		"whitespaces",
 		"wrappy",
 		"Zonejs"
 	]

@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const noSecrets = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const noSecrets = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['no-secrets'],
@@ -9,4 +11,4 @@ export const noSecrets = {
 	rules: {
 		'no-secrets/no-secrets': 'error',
 	},
-}
+})

@@ -1,7 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const nRulesPossibleErrors = {
+import {
+	defineEslintConfigOverride,
+	defineEslintConfigOverrideRules,
+} from '@voltiso/config.eslint.lib'
+
+const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/handle-callback-err': 2,
 	'n/no-callback-literal': 2,
 	'n/no-exports-assign': 2,
@@ -23,16 +28,22 @@ const nRulesPossibleErrors = {
 	//
 
 	// 'n/no-unpublished-require': 2, //! DISABLE?
-}
+})
 
-const nRulesBestPractices = {
+const nRulesBestPractices = defineEslintConfigOverrideRules({
 	'n/no-deprecated-api': 2,
-}
+})
 
-const nRulesStylisticIssues = {
+const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'n/callback-return': 2,
 	'n/exports-style': 2,
-	'n/file-extension-in-import': 2,
+
+	'n/file-extension-in-import': [
+		'error',
+		'always',
+		{ '.js': 'always', '.tsx': 'never' },
+	],
+
 	'n/global-require': 2,
 	'n/no-mixed-requires': 2,
 	'n/no-process-env': 2,
@@ -48,15 +59,15 @@ const nRulesStylisticIssues = {
 	'n/prefer-global/url-search-params': 2,
 	'n/prefer-promises/dns': 2,
 	'n/prefer-promises/fs': 2,
-}
+})
 
-const nRules = {
+const nRules = defineEslintConfigOverrideRules({
 	...nRulesPossibleErrors,
 	...nRulesBestPractices,
 	...nRulesStylisticIssues,
-}
+})
 
-export const nOverride = {
+export const nOverride = defineEslintConfigOverride({
 	extends: ['plugin:n/recommended'],
 
 	files: ['*'],
@@ -64,4 +75,4 @@ export const nOverride = {
 	plugins: ['n'],
 
 	rules: nRules,
-}
+})

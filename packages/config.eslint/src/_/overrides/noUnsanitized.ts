@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const noUnsanitized = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const noUnsanitized = defineEslintConfigOverride({
 	extends: ['plugin:no-unsanitized/DOM'],
 
 	files: ['*'],
@@ -12,4 +14,4 @@ export const noUnsanitized = {
 		'no-unsanitized/method': 'error',
 		'no-unsanitized/property': 'error',
 	},
-}
+})

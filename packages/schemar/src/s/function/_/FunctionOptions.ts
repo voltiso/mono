@@ -1,10 +1,11 @@
-import {
-	defaultSchemaOptions,
-	IRootSchema,
-	SchemaOptions,
-} from '../../../schema'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { lazyValue } from '@voltiso/util'
+
+import type { IRootSchema, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
 import * as s from '../..'
-import { lazyValue } from '@voltiso/ts-util'
 
 export interface FunctionOptions extends SchemaOptions {
 	_out: (...args: never) => unknown

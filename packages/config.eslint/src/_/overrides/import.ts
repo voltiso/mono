@@ -1,9 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
 import { codeFiles } from '../files.js'
 
-export const importOverride = {
+export const importOverride = defineEslintConfigOverride({
 	extends: [
 		'plugin:import/recommended',
 		'plugin:import/warnings',
@@ -18,6 +20,23 @@ export const importOverride = {
 	rules: {
 		'import/no-nodejs-modules': 0,
 		'import/no-unresolved': 2,
+		'import/no-namespace': 0,
+
+		// 'import/extensions': 0,
+
+		'import/extensions': [
+			'error',
+			'ignorePackages',
+			{
+				'': 'never',
+				ts: 'never',
+				tsx: 'never',
+			},
+		],
+
+		'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+		'import/no-relative-packages': 2,
+		'import/no-duplicates': 2,
 	},
 
 	settings: {
@@ -40,23 +59,23 @@ export const importOverride = {
 		},
 
 		'import/resolver': {
-			// node: {
-			// 	extensions: [
-			// 		'.ts',
-			// 		'.tsx',
-			// 		'.mts',
-			// 		'.mtsx',
-			// 		'.cts',
-			// 		'.ctsx',
-			// 		//
-			// 		'.js',
-			// 		'.jsx',
-			// 		'.mjs',
-			// 		'.mjsx',
-			// 		'.cjs',
-			// 		'.cjsx',
-			// 	],
-			// },
+			node: {
+				extensions: [
+					'.ts',
+					'.tsx',
+					'.mts',
+					'.mtsx',
+					'.cts',
+					'.ctsx',
+					//
+					'.js',
+					'.jsx',
+					'.mjs',
+					'.mjsx',
+					'.cjs',
+					'.cjsx',
+				],
+			},
 
 			typescript: {
 				/**
@@ -69,4 +88,4 @@ export const importOverride = {
 			},
 		},
 	},
-}
+})

@@ -1,6 +1,14 @@
-import { ISchema } from "../../../schema.js";
-import { isTuple, ITuple } from "../../tuple.js";
-import * as s from "../..";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable jsdoc/require-param */
+/* eslint-disable jsdoc/require-returns */
+/* eslint-disable jsdoc/require-example */
+
+import type { ISchema } from '../../../schema'
+import * as s from '../..'
+import type { ITuple } from '../../tuple'
+import { isTuple } from '../../tuple'
 
 // type Fun<Args extends unknown[]> = (...args: Args) => 0
 
@@ -14,25 +22,29 @@ import * as s from "../..";
 // type D = Test<[1, 2], [1, 2, 3]> // 0
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
-	const aa = a.getElementSchemas;
-	const bb = b.getElementSchemas;
+	const aa = a.getElementSchemas
+	const bb = b.getElementSchemas
 
-	if (aa.length < bb.length) return false;
+	if (aa.length < bb.length) return false
 
-	for (let i = 0; i < bb.length; ++i) {
-		const ok = s.schema(aa[i]).extends(bb[i]);
-		if (!ok) return false;
+	for (const [i, element] of bb.entries()) {
+		// eslint-disable-next-line security/detect-object-injection
+		const ok = s.schema(aa[i]).extends(element)
+
+		if (!ok) return false
 	}
 
-	return true;
+	return true
 }
 
+// eslint-disable-next-line prettier/prettier
 /**
  * TODO: make it work with arrays with bounded lengths
  */
 export function _functionArgumentsExtends(a: ISchema, b: ISchema): boolean {
-	const aOk = isTuple(a);
-	const bOk = isTuple(b);
-	if (aOk && bOk) return _functionArgumentsExtends_(a, b);
-	else return a.extends(b);
+	const aOk = isTuple(a)
+	const bOk = isTuple(b)
+
+	if (aOk && bOk) return _functionArgumentsExtends_(a, b)
+	else return a.extends(b)
 }

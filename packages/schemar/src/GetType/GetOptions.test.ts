@@ -1,35 +1,39 @@
-import { Assert } from "@voltiso/ts-util/bdd";
-import { number } from "../s/number.js";
-import { GetOptions } from "./GetOptions.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("GetOptions", () => {
-	it("works", () => {
-		expect.assertions(0);
+import { Assert } from '@voltiso/util'
 
-		const a = number;
-		type A = GetOptions<typeof a>;
-		Assert.is<A, { optional: false; readonly: false; default: undefined }>();
+import { number } from '../s/number'
+import type { GetOptions } from './GetOptions.js'
 
-		const b = number.readonly;
-		type B = GetOptions<typeof b>;
+describe('GetOptions', () => {
+	it('works', () => {
+		expect.assertions(0)
+
+		const a = number
+		type A = GetOptions<typeof a>
+		Assert.is<A, { isOptional: false; isReadonly: false; hasDefault: false }>()
+
+		const b = number.readonly
+		type B = GetOptions<typeof b>
 		Assert.is<
 			B,
 			{
-				optional: false;
-				readonly: true;
-				default: undefined;
+				isOptional: false
+				isReadonly: true
+				hasDefault: false
 			}
-		>();
+		>()
 
-		const e = number.optional.readonly;
-		type E = GetOptions<typeof e>;
+		const e = number.optional.readonly
+		type E = GetOptions<typeof e>
 		Assert.is<
 			E,
 			{
-				optional: true;
-				readonly: true;
-				default: undefined;
+				isOptional: true
+				isReadonly: true
+				hasDefault: false
 			}
-		>();
-	});
-});
+		>()
+	})
+})

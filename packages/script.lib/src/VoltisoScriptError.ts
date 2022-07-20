@@ -1,15 +1,15 @@
-import { packageJson } from "./packageJson.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+// const packageName = '@voltiso/script.lib'
 
 export class VoltisoScriptError extends Error {
 	constructor(
 		message?: string | undefined,
-		options?: ErrorOptions | undefined
+		options?: ErrorOptions | undefined,
 	) {
-		const packageName = packageJson.name;
-		let prefixedMessage = `[${packageName}]`;
-		if (message) prefixedMessage = `${prefixedMessage} ${message}`;
-		super(prefixedMessage, options);
-		Error.captureStackTrace(this, this.constructor);
-		this.name = this.constructor.name;
+		super(message, options)
+		Error.captureStackTrace(this, this.constructor)
+		this.name = 'VoltisoScriptError'
 	}
 }

@@ -1,0 +1,54 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '../../type'
+import { Assert } from '../../type'
+import { runAsync, runSync } from '../run.js'
+import type { SyncerFunction } from '../SyncerFunction.js'
+import type { SyncerIterator } from '../SyncerIterator.js'
+
+function* differentIntermediates(
+	s: string,
+	n: number,
+): SyncerIterator<number, string | number> {
+	const s2 = (yield {
+		sync: () => 'test',
+		async: async () => 'test',
+	}) as string
+
+	const n2 = (yield {
+		sync: () => 33,
+		async: async () => 33,
+	}) as number
+
+	return n + n2 + s.length + s2.length
+}
+
+describe('differentIntermediates', () => {
+	it('type', () => {
+		expect.assertions(0)
+
+		Assert<
+			IsIdentical<
+				typeof differentIntermediates,
+				SyncerFunction<[string, number], number, string | number>
+			>
+		>()
+	})
+
+	it('sync', () => {
+		expect.hasAssertions()
+
+		const r = runSync(differentIntermediates('my', 5))
+
+		expect(r).toBe(44)
+	})
+
+	it('async', async () => {
+		expect.hasAssertions()
+
+		const r = await runAsync(differentIntermediates('my', 5))
+
+		expect(r).toBe(44)
+	})
+})

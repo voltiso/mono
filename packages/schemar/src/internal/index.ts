@@ -1,3 +1,6 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export type { CustomArray } from '../s/array'
 export type { CustomBigint } from '../s/bigint'
 export type { CustomBoolean } from '../s/boolean'

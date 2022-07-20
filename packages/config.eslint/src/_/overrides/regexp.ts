@@ -1,11 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const regexpOverride = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const regexpOverride = defineEslintConfigOverride({
 	files: '*',
 
 	plugins: ['regexp'],
 
-	// eslint-disable-next-line sort-keys-fix/sort-keys-fix
 	extends: ['plugin:regexp/all'],
-}
+
+	rules: {
+		'regexp/no-unused-capturing-group': 0, // false-positives in `str.replace(/.../gu, match => ...)`
+	},
+})

@@ -1,8 +1,8 @@
-import {
-	defaultSchemaOptions,
-	InferableLiteral,
-	SchemaOptions,
-} from '../../../schema'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { InferableLiteral, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
 
 export interface LiteralOptions extends SchemaOptions {
 	_out: InferableLiteral

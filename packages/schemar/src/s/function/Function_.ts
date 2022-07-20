@@ -1,107 +1,111 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import {
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable max-classes-per-file */
+
+import type { OmitCall } from '@voltiso/util'
+import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+
+import { SchemarError } from '../../errors'
+import type {
+	InferableReadonlyTuple,
 	IRootSchema,
 	RootSchemable,
-	InferableReadonlyTuple,
-	Schema_,
-	OPTIONS,
-} from "../../schema";
-import { EXTENDS } from "../../schema/_/symbols.js";
-import {
-	CALL,
-	callableInstance,
-	lazyConstructor,
-} from "@voltiso/ts-util/class";
-import {
-	defaultFunctionOptions,
-	FunctionOptions,
-} from "./_/FunctionOptions.js";
-import { OmitCall } from "@voltiso/ts-util/object";
-import { isFunction, IS_FUNCTION } from "./IFunction.js";
-import { CustomFunction } from "./CustomFunction.js";
-import { Function } from "./Function.js";
-import { isArray } from "../array.js";
-import { isTuple } from "../tuple.js";
-import { SchemarError } from "../../errors.js";
-import * as s from "..";
-import { _functionArgumentsExtends } from "./_/_functionArgumentsExtends.js";
+} from '../../schema'
+import { OPTIONS, Schema_ } from '../../schema'
+import { EXTENDS } from '../../schema/_/symbols.js'
+import * as s from '..'
+import { isArray } from '../array'
+import { isTuple } from '../tuple'
+import { _functionArgumentsExtends } from './_/_functionArgumentsExtends.js'
+import type { FunctionOptions } from './_/FunctionOptions.js'
+import { defaultFunctionOptions } from './_/FunctionOptions.js'
+import type { CustomFunction } from './CustomFunction.js'
+import { Function } from './Function.js'
+import { IS_FUNCTION, isFunction } from './IFunction.js'
 
 class Function__<O extends FunctionOptions>
 	extends lazyConstructor(() => Schema_)<O>
 	implements OmitCall<CustomFunction<O>>
 {
-	readonly [IS_FUNCTION] = true;
+	readonly [IS_FUNCTION] = true
 
-	get getArgumentsSchema(): this[OPTIONS]["arguments"] {
-		return this[OPTIONS].arguments;
+	get getArgumentsSchema(): this[OPTIONS]['arguments'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].arguments
 	}
 
-	get getResultSchema(): this[OPTIONS]["result"] {
-		return this[OPTIONS].result;
+	get getResultSchema(): this[OPTIONS]['result'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].result
 	}
 
 	constructor(o: O) {
-		super(o);
+		super(o)
 
-		o.arguments = s.schema(o.arguments);
+		o.arguments = s.schema(o.arguments)
+
 		if (isArray(o.arguments)) {
-			o.arguments = o.arguments.readonlyArray as never;
+			o.arguments = o.arguments.readonlyArray as never
 		} else if (isTuple(o.arguments)) {
-			o.arguments = o.arguments.readonlyTuple as never;
+			o.arguments = o.arguments.readonlyTuple as never
 		} else {
 			throw new SchemarError(
-				"function: arguments schema should be array or tuple"
-			);
+				'function: arguments schema should be array or tuple',
+			)
 		}
 
-		return callableInstance(this) as never;
+		// eslint-disable-next-line no-constructor-return
+		return callableInstance(this) as never
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	[CALL]<
 		Args extends InferableReadonlyTuple | ((s.ITuple | s.IArray) & IRootSchema),
-		R extends RootSchemable
+		R extends RootSchemable,
 	>(args: Args, r: R): s.Function<Args, R> {
-		return new Function(args, r);
+		return new Function(args, r)
 	}
 
 	override [EXTENDS](other: IRootSchema): boolean {
 		if (isFunction(other)) {
 			const argsOk = _functionArgumentsExtends(
 				other.getArgumentsSchema,
-				this.getArgumentsSchema
-			);
+				this.getArgumentsSchema,
+			)
 
-			const rOk = this.getResultSchema.extends(other.getResultSchema);
+			const rOk = this.getResultSchema.extends(other.getResultSchema)
 
-			return argsOk && rOk;
-		} else return super[EXTENDS](other);
+			return argsOk && rOk
+			// eslint-disable-next-line security/detect-object-injection
+		} else return super[EXTENDS](other)
 	}
 
 	override _getIssuesImpl(x: unknown): s.ValidationIssue[] {
-		const issues = super._getIssuesImpl(x);
+		const issues = super._getIssuesImpl(x)
 
-		if (typeof x !== "function") {
+		if (typeof x !== 'function') {
 			issues.push(
 				new s.ValidationIssue({
-					expectedDescription: "be function",
+					expectedDescription: 'be function',
 					received: x,
-				})
-			);
+				}),
+			)
 		}
 
-		return issues;
+		return issues
 	}
 }
 
 export class Function_<
 	Args extends InferableReadonlyTuple | s.ITuple | s.IArray,
-	R extends RootSchemable
+	R extends RootSchemable,
 > extends Function__<never> {
 	constructor(args: Args, result: R) {
 		super({
 			...defaultFunctionOptions,
 			arguments: s.schema(args as never),
 			result: s.schema(result),
-		} as never);
+		} as never)
 	}
 }

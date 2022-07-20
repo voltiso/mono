@@ -1,8 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line unicorn/prevent-abbreviations
-export const extOverride = {
+/* eslint-disable unicorn/prevent-abbreviations */
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const extOverride = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['ext'],
@@ -14,4 +16,4 @@ export const extOverride = {
 			{ exceptBetweenSingleLines: true },
 		],
 	},
-}
+})

@@ -1,8 +1,8 @@
-import {
-	defaultSchemaOptions,
-	InferableObject,
-	SchemaOptions,
-} from '../../../schema'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { InferableObject, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
 
 export interface ObjectOptions extends SchemaOptions {
 	_out: object

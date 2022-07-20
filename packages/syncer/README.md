@@ -1,1 +1,0 @@
-# `@voltiso/util.array`

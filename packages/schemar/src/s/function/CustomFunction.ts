@@ -1,34 +1,36 @@
-import {
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type {
 	CustomSchema,
 	DefaultOptions,
 	InferableReadonlyTuple,
 	IRootSchema,
 	OptionalOptions,
+	OPTIONS,
 	ReadonlyOptions,
 	RootSchemable,
-} from "../../schema";
-import { IFunction } from "./IFunction.js";
-import { FunctionOptions } from "./_/FunctionOptions.js";
-import * as s from "..";
+} from '../../schema'
+import type * as s from '..'
+import type { FunctionOptions } from './_/FunctionOptions.js'
+import type { IFunction } from './IFunction.js'
 
 export interface CustomFunction<O extends FunctionOptions>
 	extends IFunction<O>,
 		CustomSchema<O> {
 	<
 		Args extends InferableReadonlyTuple | ((s.ITuple | s.IArray) & IRootSchema),
-		R extends RootSchemable
+		R extends RootSchemable,
 	>(
 		argumentsSchema: Args,
-		resultSchema: R
-	): s.Function<Args, R>;
+		resultSchema: R,
+	): s.Function<Args, R>
 
-	get optional(): Optional<this>;
-	get readonly(): Readonly<this>;
-	default<D>(defaultValue: D): Default<this, D>;
+	get optional(): Optional<this>
+	get readonly(): Readonly<this>
+	default(defaultValue: this[OPTIONS]['_out']): Default<this>
 }
 
-type Optional<This extends IFunction> = CustomFunction<OptionalOptions<This>>;
-type Readonly<This extends IFunction> = CustomFunction<ReadonlyOptions<This>>;
-type Default<This extends IFunction, D> = CustomFunction<
-	DefaultOptions<This, D>
->;
+type Optional<This extends IFunction> = CustomFunction<OptionalOptions<This>>
+type Readonly<This extends IFunction> = CustomFunction<ReadonlyOptions<This>>
+type Default<This extends IFunction> = CustomFunction<DefaultOptions<This>>

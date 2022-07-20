@@ -1,4 +1,12 @@
-const regexRules = {
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import {
+	defineEslintConfigOverride,
+	defineEslintConfigOverrideRules,
+} from '@voltiso/config.eslint.lib'
+
+const regexRules = defineEslintConfigOverrideRules({
 	// 'regex/invalid': [
 	// 	'error',
 	// 	[
@@ -36,13 +44,13 @@ const regexRules = {
 	// 		},
 	// 	],
 	// ],
-}
+})
 
 /** `eslint-plugin-regex` - custom eslint rules - can use instead of notice/notice, etc. */
-export const regexOverride = {
+export const regexOverride = defineEslintConfigOverride({
 	files: '*',
 
 	plugins: ['regex'],
 
 	rules: regexRules,
-}
+})

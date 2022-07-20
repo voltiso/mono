@@ -1,31 +1,35 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsIdentical } from "@voltiso/ts-util";
-import { Assert } from "@voltiso/ts-util/bdd";
-import { GetOutputType, GetType_ } from "../../GetType.js";
-import * as s from "..";
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
 
-describe("number", () => {
-	it("simple", () => {
-		expect.hasAssertions();
+import type { GetOutputType, GetType_ } from '../../GetType'
+import * as s from '..'
 
-		expect(s.bigint.extends(s.bigint)).toBeTruthy();
-		expect(s.bigint.extends(s.string)).toBeFalsy();
-		expect(s.bigint(123n).extends(s.bigint)).toBeTruthy();
-		expect(s.bigint(123n).extends(s.bigint(123n, 234n))).toBeTruthy();
-		expect(s.bigint(123n, 234n).extends(s.bigint(123n, 234n))).toBeTruthy();
-		expect(s.bigint(123n, 0n).extends(s.bigint(123n, 234n))).toBeFalsy();
+describe('number', () => {
+	it('simple', () => {
+		expect.hasAssertions()
 
-		type B = GetOutputType<typeof s.bigint>;
-		Assert<IsIdentical<B, bigint>>();
+		expect(s.bigint.extends(s.bigint)).toBeTruthy()
+		expect(s.bigint.extends(s.string)).toBeFalsy()
+		expect(s.bigint(123n).extends(s.bigint)).toBeTruthy()
+		expect(s.bigint(123n).extends(s.bigint(123n, 234n))).toBeTruthy()
+		expect(s.bigint(123n, 234n).extends(s.bigint(123n, 234n))).toBeTruthy()
+		expect(s.bigint(123n, 0n).extends(s.bigint(123n, 234n))).toBeFalsy()
 
-		const bl = s.bigint(123n, 234n);
-		type BL = GetOutputType<typeof bl>;
-		Assert<IsIdentical<BL, 123n | 234n>>();
-	});
+		type B = GetOutputType<typeof s.bigint>
+		Assert<IsIdentical<B, bigint>>()
 
-	it("default", () => {
-		expect.hasAssertions();
+		const bl = s.bigint(123n, 234n)
+		type BL = GetOutputType<typeof bl>
+		Assert<IsIdentical<BL, 123n | 234n>>()
+	})
+
+	it('default', () => {
+		expect.hasAssertions()
 
 		// // @ts-expect-error cannot have both optional and default
 		// ;() => s.bigint.optional.default(123)
@@ -34,31 +38,32 @@ describe("number", () => {
 		// ;() => s.bigint.default(123).optional
 
 		// @ts-expect-error cannot fix without default value
-		() => s.bigint.fix(undefined);
+		;() => s.bigint.fix(undef)
 
-		const n = s.bigint.default(123n as const);
-		expect(n.tryValidate(undefined).value).toBe(123n);
+		const n = s.bigint.default(123n as const)
 
-		Assert<IsIdentical<GetType_<typeof n, { kind: "out" }>, bigint>>();
-		Assert<IsIdentical<GetType_<typeof n, { kind: "in" }>, bigint>>();
-	});
+		expect(n.tryValidate(undef).value).toBe(123n)
 
-	it("check", () => {
-		expect.hasAssertions();
+		Assert<IsIdentical<GetType_<typeof n, { kind: 'out' }>, bigint>>()
+		Assert<IsIdentical<GetType_<typeof n, { kind: 'in' }>, bigint>>()
+	})
 
-		expect(s.bigint.isValid(123n)).toBeTruthy();
-		expect(s.bigint.isValid(123)).toBeFalsy();
-		expect(s.bigint.isValid("123n")).toBeFalsy();
-		expect(s.bigint.isValid("123")).toBeFalsy();
+	it('check', () => {
+		expect.hasAssertions()
 
-		expect(s.bigint(123n, 234n).isValid(123n)).toBeTruthy();
-		expect(s.bigint(123n, 234n).isValid(1n)).toBeFalsy();
-		expect(s.bigint(123n, 234n).isValid("123n")).toBeFalsy();
-		expect(s.bigint(123n, 234n).isValid("123")).toBeFalsy();
-	});
+		expect(s.bigint.isValid(123n)).toBeTruthy()
+		expect(s.bigint.isValid(123)).toBeFalsy()
+		expect(s.bigint.isValid('123n')).toBeFalsy()
+		expect(s.bigint.isValid('123')).toBeFalsy()
 
-	it("integer", () => {
-		expect.hasAssertions();
+		expect(s.bigint(123n, 234n).isValid(123n)).toBeTruthy()
+		expect(s.bigint(123n, 234n).isValid(1n)).toBeFalsy()
+		expect(s.bigint(123n, 234n).isValid('123n')).toBeFalsy()
+		expect(s.bigint(123n, 234n).isValid('123')).toBeFalsy()
+	})
+
+	it('integer', () => {
+		expect.hasAssertions()
 
 		// // @ts-expect-error cannot call `min` twice
 		// ;() => s.bigint.min.min
@@ -66,18 +71,18 @@ describe("number", () => {
 		// // @ts-expect-error cannot call `max` twice
 		// ;() => s.bigint.max.max
 
-		expect(() => s.bigint.validate(12)).toThrow("bigint");
+		expect(() => s.bigint.validate(12)).toThrow('bigint')
 
-		expect(() => s.bigint.min(123n).validate(12n)).toThrow("123");
-		expect(() => s.bigint.min(123n).max(999n).validate(12n)).toThrow("123");
-		expect(() => s.bigint.min(123n).max(999n).validate(1000n)).toThrow("999");
-		expect(() => s.bigint.max(999n).validate(1000n)).toThrow("999");
-	});
+		expect(() => s.bigint.min(123n).validate(12n)).toThrow('123')
+		expect(() => s.bigint.min(123n).max(999n).validate(12n)).toThrow('123')
+		expect(() => s.bigint.min(123n).max(999n).validate(1000n)).toThrow('999')
+		expect(() => s.bigint.max(999n).validate(1000n)).toThrow('999')
+	})
 
-	it("toString", () => {
-		expect.hasAssertions();
+	it('toString', () => {
+		expect.hasAssertions()
 
-		expect(s.bigint.toString()).toBe("bigint");
-		expect(s.bigint(1n, 2n, 3n).toString()).toBe("1n | 2n | 3n");
-	});
-});
+		expect(s.bigint.toString()).toBe('bigint')
+		expect(s.bigint(1n, 2n, 3n).toString()).toBe('1n | 2n | 3n')
+	})
+})

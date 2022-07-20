@@ -1,60 +1,66 @@
-/* eslint-disable max-statements */
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import {
 	runAsync,
 	runSync,
 	SyncerIterator,
 	SyncerSwitch,
-} from "@voltiso/syncer";
-import fs from "fs";
-import path from "path";
-import { VoltisoScriptError } from "../VoltisoScriptError";
+} from '@voltiso/syncer/util/src/syncer/index.js'
+import fs from 'node:fs'
+import path from 'node:path'
 
-type EnoentError = { code: "ENOENT" };
+import { VoltisoScriptError } from '../VoltisoScriptError.js'
+
+interface EnoentError {
+	code: 'ENOENT'
+}
 
 function isEnoentError(error: unknown): error is EnoentError {
-	return (error as EnoentError | null)?.code === "ENOENT";
+	return (error as EnoentError | null)?.code === 'ENOENT'
 }
 
 function _access(filePath: string, mode: number): SyncerSwitch<void> {
 	return {
+		// eslint-disable-next-line n/no-sync
 		sync: () => fs.accessSync(filePath, mode),
 		async: () => fs.promises.access(filePath, mode),
-	};
+	}
 }
 
 function* _findPackageJsonUncached(): SyncerIterator<string> {
-	const startingPath = path.resolve();
-	let currentPath = startingPath;
+	let currentPath = path.resolve()
 
-	let packageJsonPath;
+	let packageJsonPath
 
 	for (;;) {
-		console.log({ currentPath });
+		// console.log({ currentPath })
 
-		packageJsonPath = path.join(currentPath, "package.json");
+		packageJsonPath = path.join(currentPath, 'package.json')
 
 		try {
-			yield _access(packageJsonPath, fs.constants.R_OK);
-			break;
+			yield _access(packageJsonPath, fs.constants.R_OK)
+			break
 		} catch (error) {
-			if (!isEnoentError(error)) throw error;
+			if (!isEnoentError(error)) throw error
 		}
 
-		currentPath = path.dirname(currentPath);
-		if (currentPath === "/") {
+		currentPath = path.dirname(currentPath)
+
+		if (currentPath === '/') {
 			throw new VoltisoScriptError(
-				`cannot find package.json in ancestors of ${path.resolve()}`
-			);
+				`cannot find package.json in ancestors of ${path.resolve()}`,
+			)
 		}
 	}
 
-	return packageJsonPath;
+	return packageJsonPath
 }
 
 //
 
-let packageJsonPath: string | undefined;
-let packageJsonPathPromise: Promise<void> | undefined;
+let packageJsonPath: string | undefined
+let packageJsonPathPromise: Promise<void> | undefined
 
 function* _findPackageJson(): SyncerIterator<string, string | void> {
 	if (!packageJsonPath) {
@@ -62,31 +68,32 @@ function* _findPackageJson(): SyncerIterator<string, string | void> {
 		if (packageJsonPathPromise)
 			yield {
 				async: () => packageJsonPathPromise,
-			};
+			}
 
 		// still not loaded?
 		// note: if async operation is in progress, we force load sync again anyway
 		if (!packageJsonPath) {
-			// eslint-disable-next-line require-atomic-updates
 			packageJsonPath = (yield {
 				syncerIterator: _findPackageJsonUncached(),
-				onAsyncStart: (p) => {
-					packageJsonPathPromise = p;
+
+				onAsyncStart: p => {
+					packageJsonPathPromise = p
 				},
-			}) as string;
-			// eslint-disable-next-line require-atomic-updates
-			packageJsonPathPromise = undefined;
+			}) as string
+
+			packageJsonPathPromise = undefined
 		}
 	}
-	return packageJsonPath;
+
+	return packageJsonPath
 }
 
 //
 
-export async function findPackageJson(): Promise<string | undefined> {
-	return await runAsync(_findPackageJson());
+export function findPackageJson(): Promise<string | undefined> {
+	return runAsync(_findPackageJson())
 }
 
 export function findPackageJsonSync(): string | undefined {
-	return runSync(_findPackageJson());
+	return runSync(_findPackageJson())
 }

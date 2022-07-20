@@ -1,26 +1,4 @@
-export { default } from "./_/esr.js"
-export type { VoltisoJestEsrConfig } from "./_/esr.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-
-
-
-
-
-/**
- @typedef {
-    {
-        "userId": {
-        "profileImageLink": *,
-        "isBusinessUser": "isResellerUser"|"isBoolean"|  "isSubUser" |    "isNot",
-        "shareCode": number,
-        "referredBy": any,
-        },
-        id:number
-      }
-     } User
-     */
-
-
-
-
-		 
+export { jestEsrConfig as default } from './_/esr.js'

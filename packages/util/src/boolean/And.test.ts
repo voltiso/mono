@@ -1,0 +1,28 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { Assert, Is } from '../type'
+import type { And } from './And.js'
+
+describe('and', () => {
+	it('works', () => {
+		expect.assertions(0)
+
+		Assert(
+			Is<And<true, true>>() //
+				.identicalTo<true>(),
+
+			Is<And<true, false>>() //
+				.identicalTo<false>(),
+
+			Is<And<false, boolean>>() //
+				.identicalTo<false>(),
+
+			Is<And<true, boolean>>() //
+				.identicalTo<boolean>(),
+
+			Is<And<boolean, boolean>>() //
+				.identicalTo<boolean>(),
+		)
+	})
+})

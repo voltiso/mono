@@ -1,13 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const filenames = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const filenames = defineEslintConfigOverride({
 	files: '*',
 
 	plugins: ['filenames'],
 
 	rules: {
-		'filenames/match-regex': ['error', '^((\\..*|[A-Za-z0-9]+)+$)'],
+		// 'filenames/match-regex': [
+		// 	'error',
+		// 	'^_?((\\..*|[A-Za-z0-9]+)+)(_|_.test)?$',
+		// ],
+		//
+
+		'filenames/match-regex': 0,
+
 		// 'filenames/match-exported': [2, 'kebab'],
 	},
-}
+})

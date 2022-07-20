@@ -1,3 +1,6 @@
+# ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+# ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 root = true
 
 [*]
@@ -7,5 +10,8 @@ indent_style = tab
 indent_size = 2
 tab_width = 2
 max_line_length = 80
-trim_trailing_whitespace = true
+trim_trailing_whitespace = false #! incompatible with prettier - but we use it for `putout/align-spaces`
 insert_final_newline = true
+
+[*.{yml,yaml}]
+indent_style = space

@@ -1,12 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
-
 import { defineConfig } from './defineConfig.js'
 
-type PackageJson = {
-	readonly dependencies: Record<string, string>
+interface PackageJson {
+	readonly peerDependencies: Record<string, string>
 }
 
 /**
@@ -21,8 +19,8 @@ type PackageJson = {
  * @returns PackageJson
  */
 function getPackageJson(): PackageJson {
-	// eslint-disable-next-line n/no-missing-require, unicorn/prefer-module
-	return require('../../package') as never
+	// eslint-disable-next-line n/no-missing-require, unicorn/prefer-module, n/global-require
+	return require('../../package.json') as never
 }
 
 /** ! Code must be CLEAN for readability and DX 👌 */
@@ -48,10 +46,10 @@ export const basePrettierConfig = defineConfig({
 
 	embeddedLanguageFormatting: 'auto',
 
-	eslintIntegration: true,
+	// eslintIntegration: true, // unknown option?
 
 	/**
-	 * ! Obvious !
+	 * ! Obvious 😉 !
 	 *
 	 * - Tab is semantically correct for indenting things
 	 * - Use spaces for alignment
@@ -73,12 +71,12 @@ export const basePrettierConfig = defineConfig({
 	tsdoc: true,
 
 	/** Workaround for pnpm, see also @see https://github.com/prettier/prettier/issues/8474 */
-	plugins: Object.keys(getPackageJson().dependencies)
+	plugins: Object.keys(getPackageJson().peerDependencies)
 		.filter(
 			dep =>
 				dep.startsWith('@prettier/plugin') || dep.startsWith('prettier-plugin'),
 		)
-		// eslint-disable-next-line import/no-dynamic-require, unicorn/prefer-module, security/detect-non-literal-require, @typescript-eslint/no-unsafe-return
+		// eslint-disable-next-line import/no-dynamic-require, unicorn/prefer-module, @typescript-eslint/no-unsafe-return, n/global-require
 		.map(moduleId => require(moduleId)),
 
 	overrides: [
@@ -89,6 +87,7 @@ export const basePrettierConfig = defineConfig({
 				'.yarnrc',
 				'.*shrc',
 				'.gitignore',
+				'.prettierignore',
 				'.editorconfig',
 			],
 
@@ -98,10 +97,19 @@ export const basePrettierConfig = defineConfig({
 		},
 
 		{
-			files: ['*.json', '*.jsonc', '*.json5', '*.jsonx'],
+			files: ['*.json', '*.jsonc', '*.json5'],
 
 			options: {
 				parser: 'json',
+			},
+		},
+
+		/** `json-stringify` makes arrays multi-line - consistent with `pnpm` output 😎 */
+		{
+			files: ['package.json'],
+
+			options: {
+				parser: 'json-stringify',
 			},
 		},
 	],

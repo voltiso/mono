@@ -1,10 +1,13 @@
-import { DefaultSchemaOptions, OPTIONS } from "../schema/SchemaOptions.js";
-import {
-	ISchema,
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type {
 	InferableLiteral,
 	InferableObject,
 	InferableTuple,
-} from "../schema";
+	ISchema,
+} from '../schema'
+import type { DefaultSchemaOptions, OPTIONS } from '../schema/SchemaOptions.js'
 
 export type GetOptions<L> = L extends
 	| InferableLiteral
@@ -13,4 +16,4 @@ export type GetOptions<L> = L extends
 	? DefaultSchemaOptions
 	: L extends ISchema
 	? L[OPTIONS]
-	: never;
+	: never

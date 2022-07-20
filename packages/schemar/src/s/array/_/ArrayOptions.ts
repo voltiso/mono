@@ -1,20 +1,22 @@
-import {
-	defaultSchemaOptions,
-	IRootSchema,
-	SchemaOptions,
-} from "../../../schema";
-import { unknown } from "../../unknown.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { undef } from '@voltiso/util'
+
+import type { IRootSchema, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
+import { unknown } from '../../unknown'
 
 export interface ArrayOptions extends SchemaOptions {
-	_out: readonly unknown[];
-	_in: readonly unknown[];
+	_out: readonly unknown[]
+	_in: readonly unknown[]
 
-	element: IRootSchema;
+	element: IRootSchema
 
-	readonlyArray: boolean;
+	readonlyArray: boolean
 
-	minLength: number | undefined;
-	maxLength: number | undefined;
+	minLength: number | undefined
+	maxLength: number | undefined
 }
 
 //
@@ -22,22 +24,22 @@ export interface ArrayOptions extends SchemaOptions {
 const defaultArrayOptions = {
 	...defaultSchemaOptions,
 	element: unknown,
-	minLength: undefined,
-	maxLength: undefined,
-};
+	minLength: undef,
+	maxLength: undef,
+}
 
 export const defaultMutableArrayOptions = {
 	...defaultArrayOptions,
 	readonlyArray: false as const,
-};
+}
 
-export type DefaultMutableArrayOptions = typeof defaultMutableArrayOptions;
+export type DefaultMutableArrayOptions = typeof defaultMutableArrayOptions
 
 //
 
 export const defaultReadonlyArrayOptions = {
 	...defaultArrayOptions,
 	readonlyArray: true as const,
-};
+}
 
-export type DefaultReadonlyArrayOptions = typeof defaultReadonlyArrayOptions;
+export type DefaultReadonlyArrayOptions = typeof defaultReadonlyArrayOptions

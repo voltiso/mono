@@ -1,4 +1,9 @@
-export const sortClassMembers = {
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const sortClassMembers = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['sort-class-members'],
@@ -22,4 +27,4 @@ export const sortClassMembers = {
 		// 	},
 		// ],
 	},
-}
+})

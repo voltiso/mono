@@ -1,12 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { codeFiles } from '../files.js'
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const rxjs = {
+import { codeFilesNoMd } from '../files.js'
+
+export const rxjs = defineEslintConfigOverride({
 	extends: ['plugin:rxjs/recommended'],
 
-	files: codeFiles,
+	...codeFilesNoMd,
 
 	plugins: ['rxjs'],
 
@@ -51,4 +53,4 @@ export const rxjs = {
 		'rxjs/suffix-subjects': 2,
 		'rxjs/throw-error': 2,
 	},
-}
+})

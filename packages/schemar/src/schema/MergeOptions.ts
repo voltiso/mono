@@ -1,29 +1,34 @@
-import { Suggest } from "@voltiso/ts-util";
-import { ISchema } from "./ISchema.js";
-import { OPTIONS, SchemaOptions } from "./SchemaOptions.js";
-import { Merge2Simple } from "@voltiso/ts-util/object";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-type Merge<A extends object, B extends object> = Merge2Simple<A, B>;
+import type { AlsoAccept } from '@voltiso/util'
+
+import type { ISchema } from './ISchema.js'
+import type { OPTIONS, SchemaOptions } from './SchemaOptions.js'
+
+// type Merge<A extends object, B extends object> = Merge2Trivial_<A, B>
+// type Merge<A extends object, B extends object> = Merge2Simple<A, B>
 // type Merge<A, B> = Omit<A, keyof B> & B
+type Merge<A, B> = Omit<A, keyof B> & B
 
 export type MergeOptions<
 	S extends ISchema,
-	O extends Partial<SchemaOptions> | Suggest<object>
-> = Merge<S[OPTIONS], O>;
+	O extends Partial<SchemaOptions> | AlsoAccept<object>,
+> = Merge<S[OPTIONS], O>
 
 //
 
 export type OptionalOptions<This extends ISchema> = MergeOptions<
 	This,
-	{ optional: true }
->;
+	{ isOptional: true }
+>
 
 export type ReadonlyOptions<This extends ISchema> = MergeOptions<
 	This,
-	{ readonly: true }
->;
+	{ isReadonly: true }
+>
 
-export type DefaultOptions<This extends ISchema, D> = MergeOptions<
+export type DefaultOptions<This extends ISchema> = MergeOptions<
 	This,
-	{ default: D }
->;
+	{ hasDefault: true }
+>

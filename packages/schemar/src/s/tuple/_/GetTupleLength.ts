@@ -1,4 +1,9 @@
-import { InferableTuple } from "../../../schema.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable no-magic-numbers */
+
+import type { InferableTuple } from '../../../schema'
 
 type GetArrayLength<A extends readonly unknown[]> = A extends readonly []
 	? 0
@@ -21,12 +26,12 @@ type GetArrayLength<A extends readonly unknown[]> = A extends readonly []
 			unknown,
 			unknown,
 			unknown,
-			unknown
+			unknown,
 	  ]
 	? 7
 	: A extends readonly unknown[]
 	? number
-	: never;
+	: never
 
 export type GetTupleLength<X extends InferableTuple> =
-	X extends readonly unknown[] ? GetArrayLength<X> : never;
+	X extends readonly unknown[] ? GetArrayLength<X> : never

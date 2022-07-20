@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const noUseExtendNative = {
+export const noUseExtendNative = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['no-use-extend-native'],
@@ -13,4 +13,4 @@ export const noUseExtendNative = {
 	rules: {
 		'no-use-extend-native/no-use-extend-native': 1,
 	},
-}
+})

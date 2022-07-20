@@ -1,0 +1,33 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { jsonFiles } from '../files.js'
+
+export const i18nJson = {
+	files: jsonFiles,
+
+	extends: ['plugin:i18n-json/recommended'], // messes linting for `package.json`, uses deprecated deps, not maintained
+
+	plugins: ['i18n-json'],
+
+	rules: {
+		'i18n-json/valid-message-syntax': [
+			'error',
+			{
+				syntax: 'icu',
+			},
+		],
+
+		'i18n-json/valid-json': 2,
+
+		'i18n-json/sorted-keys': [
+			'error',
+			{
+				order: 'asc',
+				indentSpaces: 2,
+			},
+		],
+
+		'i18n-json/identical-keys': 2,
+	},
+}

@@ -1,7 +1,13 @@
-import { defaultSchemaOptions, SchemaOptions } from "../../../schema.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type UnknownSchemaOptions = SchemaOptions;
+import { lazyValue } from '@voltiso/util'
 
-export const defaultUnknownSchemaOptions = defaultSchemaOptions;
+import type { SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
 
-export type DefaultUnknownSchemaOptions = typeof defaultUnknownSchemaOptions;
+export type UnknownSchemaOptions = SchemaOptions
+
+export const defaultUnknownSchemaOptions = lazyValue(() => defaultSchemaOptions)
+
+export type DefaultUnknownSchemaOptions = typeof defaultUnknownSchemaOptions

@@ -1,16 +1,20 @@
-import { IsIdentical } from "@voltiso/ts-util";
-import { Assert } from "@voltiso/ts-util/bdd";
-import { ValidationIssue } from "./ValidationIssue.js";
-import { GetOutputType } from "../../../GetType.js";
-import { validationIssue } from "./validationIssueSchema.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("s.validationIssue", () => {
-	it("works", () => {
-		expect.assertions(0);
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-		type Got = GetOutputType<typeof validationIssue>;
-		type Want = ValidationIssue;
+import type { GetOutputType } from '../../../GetType'
+import type { ValidationIssue } from './ValidationIssue.js'
+import type { validationIssue } from './validationIssueSchema.js'
 
-		Assert<IsIdentical<Got, Want>>();
-	});
-});
+describe('s.validationIssue', () => {
+	it('works', () => {
+		expect.assertions(0)
+
+		type Got = GetOutputType<typeof validationIssue>
+		type Want = ValidationIssue
+
+		Assert<IsIdentical<Got, Want>>()
+	})
+})

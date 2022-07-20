@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const markdownOverride = {
+export const markdownOverride = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['markdown'],
 	extends: ['plugin:markdown/recommended'],
-}
+})

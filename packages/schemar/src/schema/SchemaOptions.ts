@@ -1,31 +1,42 @@
-import { CustomCheck } from "./_/CustomCheck.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { lazyValue, undef } from '@voltiso/util'
+
+import type { CustomCheck } from './_/CustomCheck.js'
 
 export type SchemaOptions = {
 	/** Type-only (no value at runtime) */
-	_out: unknown;
+	_out: unknown
 
 	/** Type-only (no value at runtime) */
-	_in: unknown;
+	_in: unknown
 
-	customChecks: readonly CustomCheck[];
+	customChecks: readonly CustomCheck[]
 
-	optional: boolean;
-	readonly: boolean;
-	default: unknown;
-};
+	isOptional: boolean
+	isReadonly: boolean
+	hasDefault: boolean
+	default: unknown
+}
 
-export const OPTIONS = Symbol("OPTIONS");
-export type OPTIONS = typeof OPTIONS;
+export const OPTIONS = Symbol('OPTIONS')
+export type OPTIONS = typeof OPTIONS
 
-export const defaultSchemaOptions = {
+// export const noDefault = Symbol('noDefault')
+// export type NoDefault = typeof noDefault
+
+export const defaultSchemaOptions = lazyValue(() => ({
 	_out: 0 as unknown,
 	_in: 0 as unknown,
 
 	customChecks: [] as const,
 
-	optional: false as const,
-	readonly: false as const,
-	default: undefined,
-};
+	isOptional: false as const,
+	isReadonly: false as const,
+	hasDefault: false as const,
 
-export type DefaultSchemaOptions = typeof defaultSchemaOptions;
+	default: undef as never,
+}))
+
+export type DefaultSchemaOptions = typeof defaultSchemaOptions

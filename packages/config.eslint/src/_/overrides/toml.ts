@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const toml = {
+export const toml = defineEslintConfigOverride({
 	files: ['*.toml'],
 
 	parser: 'toml-eslint-parser',
@@ -11,4 +11,4 @@ export const toml = {
 	plugins: ['toml'],
 
 	extends: ['plugin:toml/standard'],
-}
+})

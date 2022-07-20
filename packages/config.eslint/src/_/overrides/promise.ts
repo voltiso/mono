@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const promise = {
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+
+export const promise = defineEslintConfigOverride({
 	extends: ['plugin:promise/recommended'],
 
 	files: ['*'],
@@ -24,4 +26,4 @@ export const promise = {
 		'promise/prefer-await-to-then': 2,
 		'promise/valid-params': 'warn',
 	},
-}
+})

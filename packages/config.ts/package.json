@@ -2,7 +2,7 @@
 	"name": "@voltiso/config.ts",
 	"version": "1.0.0",
 	"license": "UNLICENSED",
-	"repository": "git://github.com/voltiso/voltiso.git",
+	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
 	"_________EXPORTS FALLBACK": "__________",

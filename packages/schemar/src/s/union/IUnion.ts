@@ -1,17 +1,22 @@
-import { AtLeast2 } from "@voltiso/ts-util/array";
-import { ISchema, RootSchemable } from "../../schema.js";
-import { UnionOptions } from "./_/UnionOptions.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const IS_UNION = Symbol("IS_UNION");
-export type IS_UNION = typeof IS_UNION;
+import type { AtLeast2 } from '@voltiso/util'
+
+import type { ISchema, RootSchemable } from '../../schema'
+import type { UnionOptions } from './_/UnionOptions.js'
+
+export const IS_UNION = Symbol('IS_UNION')
+export type IS_UNION = typeof IS_UNION
 
 export interface IUnion<O extends UnionOptions = UnionOptions>
 	extends ISchema<O> {
-	readonly [IS_UNION]: true;
+	readonly [IS_UNION]: true
 
-	get getSchemas(): [...AtLeast2<RootSchemable>];
+	get getSchemas(): [...AtLeast2<RootSchemable>]
 }
 
 export function isUnion(x: unknown): x is IUnion {
-	return !!(x as IUnion | null)?.[IS_UNION];
+	// eslint-disable-next-line security/detect-object-injection
+	return Boolean((x as IUnion | null)?.[IS_UNION])
 }

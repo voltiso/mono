@@ -1,0 +1,34 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsEqual } from '../type'
+import { Assert } from '../type'
+import type { ReplaceIf } from './Replace.js'
+
+describe('replace', () => {
+	it('works', () => {
+		expect.assertions(0)
+
+		// Assert.isSubtype<ReplaceIf<number, 123, 'isNumber'>, 123>()
+		Assert<
+			IsEqual<
+				ReplaceIf<['sdf', 2, 1, 'dfg', 2], 10, 'isString'>,
+				[10, 2, 1, 10, 2]
+			>
+		>()
+
+		Assert<
+			IsEqual<
+				ReplaceIf<[string, 'a', 'x'], null, 'isSuperString'>,
+				[null, 'a', 'x']
+			>
+		>()
+
+		Assert<
+			IsEqual<
+				ReplaceIf<['', 'asd', 0, 123], 'TEST', 'isNumber 1 & !!1'>,
+				['', 'asd', 0, 'TEST']
+			>
+		>()
+	})
+})

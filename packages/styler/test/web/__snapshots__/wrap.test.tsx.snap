@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`wrap complex 1`] = `
+<div
+  class="a xxxxx"
+  data-testid="test"
+  style="flex: 1;"
+>
+  <h1>
+    Hello!
+  </h1>
+  <p>
+    contentValue
+  </p>
+  <footer
+    data-testid="MyFooter1"
+  />
+  <footer
+    class="b"
+    data-testid="MyFooter2"
+  />
+  <span />
+</div>
+`;

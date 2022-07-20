@@ -1,8 +1,8 @@
-import {
-	defaultSchemaOptions,
-	RootSchemable,
-	SchemaOptions,
-} from '../../../schema'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { RootSchemable, SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
 
 export interface TupleOptions extends SchemaOptions {
 	_out: readonly unknown[]

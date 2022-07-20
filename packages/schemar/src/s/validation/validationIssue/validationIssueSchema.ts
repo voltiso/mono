@@ -1,21 +1,19 @@
-import { array } from "../../array.js";
-import { optional } from "../../misc.js";
-import { number } from "../../number.js";
-import { string } from "../../string.js";
-import { union } from "../../union.js";
-import { function as function_ } from "../../function.js";
-import { tuple } from "../../tuple.js";
-import { lazyValue } from "@voltiso/ts-util";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { lazyValue } from '@voltiso/util'
+
+import * as s from '../..'
 
 export const validationIssue = lazyValue(() => ({
-	path: array(union(string, number)),
-	name: string.optional,
+	path: s.array(s.union(s.string, s.number, s.symbol)),
+	name: s.string.optional,
 
-	expectedOneOf: array.optional,
-	expectedDescription: string.optional,
+	expectedOneOf: s.array.optional,
+	expectedDescription: s.string.optional,
 
-	received: optional,
-	receivedDescription: string.optional,
+	received: s.optional,
+	receivedDescription: s.string.optional,
 
-	toString: function_(tuple(), string),
-}));
+	toString: s.function(s.tuple(), s.string),
+}))

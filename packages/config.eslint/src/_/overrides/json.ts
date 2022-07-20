@@ -1,12 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
-
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 import { jsonFiles } from '../files.js'
 
 /** `json` with comments */
-export const jsonc = {
+export const jsonc = defineEslintConfigOverride({
 	files: jsonFiles,
 
 	extends: [
@@ -50,9 +49,13 @@ export const jsonc = {
 			{ ignores: ['@', '.'], 'kebab-case': true },
 		],
 
-		// 'jsonc/no-comments': 0,
+		'jsonc/no-comments': 0,
 		'jsonc/sort-keys': 0,
 		// 'putout/putout': 0,
+
+		'jsonc/array-element-newline': 0, // conflicts with `prettier`
+		'jsonc/array-bracket-newline': 0, // conflicts with `prettier`
+		'jsonc/object-curly-spacing': 0, // conflicts with `prettier`
 
 		// ! `json-files` breaks `prettier/prettier` ⬇️
 		// // ⬇️ eslint-plugin-json-files
@@ -65,13 +68,14 @@ export const jsonc = {
 		// 'json-files/sort-package-json': 'error',
 		// 'json-files/validate-schema': 'error',
 	},
-}
+})
 
 /** `json` without comments */
-export const json = {
-	files: ['package.json'],
+export const json = defineEslintConfigOverride({
+	files: ['package.json', 'turbo.json'],
 
 	rules: {
 		'notice/notice': 0,
+		'jsonc/no-comments': 2,
 	},
-}
+})

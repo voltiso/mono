@@ -1,19 +1,25 @@
-import { defaultSchemaOptions, SchemaOptions } from "../../../schema.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { undef } from '@voltiso/util'
+
+import type { SchemaOptions } from '../../../schema'
+import { defaultSchemaOptions } from '../../../schema'
 
 export interface NumberOptions extends SchemaOptions {
-	_out: number;
-	_in: number;
+	_out: number
+	_in: number
 
-	integer: boolean;
-	min: number | undefined;
-	max: number | undefined;
+	isInteger: boolean
+	min: number | undefined
+	max: number | undefined
 }
 
 export const defaultNumberOptions = {
 	...defaultSchemaOptions,
-	integer: false as const,
-	min: undefined,
-	max: undefined,
-};
+	isInteger: false as const,
+	min: undef,
+	max: undef,
+}
 
-export type DefaultNumberOptions = typeof defaultNumberOptions & NumberOptions;
+export type DefaultNumberOptions = typeof defaultNumberOptions & NumberOptions

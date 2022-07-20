@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
+import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const yaml = {
+export const yaml = defineEslintConfigOverride({
 	files: ['*.yaml', '*.yml'],
 
 	parser: 'yaml-eslint-parser',
@@ -11,4 +11,8 @@ export const yaml = {
 	plugins: ['yml'],
 
 	extends: ['plugin:yml/standard'],
-}
+
+	rules: {
+		'yml/quotes': 0, // conflicts with prettier
+	},
+})

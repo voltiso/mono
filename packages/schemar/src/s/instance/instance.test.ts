@@ -1,29 +1,33 @@
-import { Assert } from "@voltiso/ts-util/bdd";
-import * as s from "..";
-import { CustomInstance } from "./CustomInstance.js";
-import { IInstance } from "./IInstance.js";
-import { InstanceOptions } from "./_/InstanceOptions.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("instance", () => {
-	it("generic", <O extends InstanceOptions>() => {
-		expect.assertions(0);
+import { Assert } from '@voltiso/util'
 
-		Assert.is<IInstance<O>, IInstance>();
-		Assert.is<CustomInstance<O>, IInstance<O>>();
-		Assert.is<CustomInstance<O>, IInstance>();
-	});
+import * as s from '..'
+import type { InstanceOptions } from './_/InstanceOptions.js'
+import type { CustomInstance } from './CustomInstance.js'
+import type { IInstance } from './IInstance.js'
 
-	it("works", () => {
-		expect.hasAssertions();
+describe('instance', () => {
+	it('generic', <O extends InstanceOptions>() => {
+		expect.assertions(0)
 
-		expect(s.instance(Date).extends(s.instance(Date))).toBeTruthy();
-		expect(s.instance(Date).extends(s.instance(Number))).toBeFalsy();
-		expect(s.instance(Date).extends(s.string)).toBeFalsy();
+		Assert.is<IInstance<O>, IInstance>()
+		Assert.is<CustomInstance<O>, IInstance<O>>()
+		Assert.is<CustomInstance<O>, IInstance>()
+	})
 
-		expect(s.instance(Date).isValid(new Date())).toBeTruthy();
-		expect(s.instance(Date).isValid(123)).toBeFalsy();
+	it('works', () => {
+		expect.hasAssertions()
 
-		expect(s.schema(Date).isValid(Date)).toBeFalsy();
-		expect(s.schema(Date).isValid(new Date())).toBeTruthy();
-	});
-});
+		expect(s.instance(Date).extends(s.instance(Date))).toBeTruthy()
+		expect(s.instance(Date).extends(s.instance(Number))).toBeFalsy()
+		expect(s.instance(Date).extends(s.string)).toBeFalsy()
+
+		expect(s.instance(Date).isValid(new Date())).toBeTruthy()
+		expect(s.instance(Date).isValid(123)).toBeFalsy()
+
+		expect(s.schema(Date).isValid(Date)).toBeFalsy()
+		expect(s.schema(Date).isValid(new Date())).toBeTruthy()
+	})
+})

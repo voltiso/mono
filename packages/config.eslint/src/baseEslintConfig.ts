@@ -1,27 +1,33 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sort-keys-fix/sort-keys-fix */
+import { defineEslintConfig } from '@voltiso/config.eslint.lib'
 
 import { ignorePatterns } from './_/ignorePatterns.js'
 import {
 	anyOverride,
-	// eslint-disable-next-line unicorn/prevent-abbreviations
 	arrayFunc,
 	chaiFriendly,
 	codeOverride,
 	cypress,
+	// disableAutofix, // angular dep?! :(
 	editorconfig,
 	eslintComments,
 	etcOverride,
-	// eslint-disable-next-line unicorn/prevent-abbreviations
 	extOverride,
 	filenames,
-	fpOverride,
-	functional,
+	formatJs,
+	formatMessage,
+	// fpOverride,
+	// functional,
 	githubOverride,
 	html,
+	i18n,
+	i18next,
+	i18nText,
 	importOverride,
+	// i18nJson,
+	indentEmptyLines,
 	jsdocOverride,
 	json,
 	jsonc,
@@ -34,6 +40,7 @@ import {
 	noExplicitTypeExports,
 	noSecrets,
 	notice,
+	noticeHash,
 	noUnsanitized,
 	noUseExtendNative,
 	nOverride,
@@ -64,11 +71,10 @@ import {
 	wokeOverride,
 	yaml,
 } from './_/overrides'
-import type { EslintConfig } from './EslintConfig.js'
 
-// Const restrictedGlobals = require('confusing-browser-globals') // CRA config already does this
+// const restrictedGlobals = require('confusing-browser-globals') // CRA config already does this
 
-const config = {
+export const baseEslintConfig = defineEslintConfig({
 	// root: true, // ! override this explicitly
 
 	env: {
@@ -81,33 +87,29 @@ const config = {
 
 	extends: ['eslint:all'],
 
+	rules: {
+		//
+	},
+
 	overrides: [
-		anyOverride,
-
-		codeOverride,
-
 		// Configs / plugins
 		githubOverride,
-
 		react,
 		reactNative,
-
-		testOverride,
-
-		markdownOverride,
 
 		// Plugins
 		arrayFunc,
 		etcOverride,
 		extOverride,
-		fpOverride,
-		functional,
-		importOverride,
+		// fpOverride, // crap
+		// functional, // crap
 		jsdocOverride,
 		putoutOverride,
 		notice, // has to be before `json`
+		noticeHash, // has to be after `notice`
 		filenames,
 		nOverride,
+		importOverride,
 		wokeOverride,
 		unicorn,
 		optimizeRegex,
@@ -140,13 +142,29 @@ const config = {
 		storybook,
 		jsx,
 		editorconfig,
+		indentEmptyLines,
+		i18n,
+		i18next,
+		// i18nJson,
+		formatMessage,
+		formatJs,
+		i18nText,
+		// disableAutofix, // angular dep?! :(
 
-		json,
+		/** Null parser - parses anything */
+		anyOverride,
+
+		codeOverride,
+		chaiFriendly,
+		testOverride, // has to be after `fp`
+
+		markdownOverride,
+
 		jsonc,
+		json, // has to be after `jsonc`
 		toml,
 		yaml,
 
-		chaiFriendly,
 		prettierOverride,
 
 		/** `js` (no `ts`) */
@@ -161,6 +179,9 @@ const config = {
 			rules: {
 				'jsdoc/require-param-type': 0,
 				'jsdoc/require-returns-type': 0,
+
+				'editorconfig/indent': 0, // does not work with type args
+				'no-use-before-define': 0, // types can be used before define
 			},
 		},
 
@@ -188,7 +209,4 @@ const config = {
 			},
 		},
 	],
-} as const
-
-export type BaseEslintConfig = typeof config & EslintConfig
-export const baseEslintConfig = config as BaseEslintConfig
+})

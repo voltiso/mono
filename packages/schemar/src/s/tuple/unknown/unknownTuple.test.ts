@@ -1,26 +1,30 @@
-import { Assert } from "@voltiso/ts-util/bdd";
-import { CustomUnknownTuple } from "./CustomUnknownTuple.js";
-import { IUnknownTuple } from "./IUnknownTuple.js";
-import { UnknownTupleOptions } from "./_/UnknownTupleOptions.js";
-import * as s from "../..";
-import { IsIdentical } from "@voltiso/ts-util";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("array", () => {
-	it("generic", <O extends UnknownTupleOptions>() => {
-		expect.assertions(0);
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-		Assert.is<IUnknownTuple<O>, IUnknownTuple>();
-		Assert.is<CustomUnknownTuple<O>, IUnknownTuple<O>>();
-		Assert.is<CustomUnknownTuple<O>, IUnknownTuple>();
-	});
+import type * as s from '../..'
+import type { UnknownTupleOptions } from './_/UnknownTupleOptions.js'
+import type { CustomUnknownTuple } from './CustomUnknownTuple.js'
+import type { IUnknownTuple } from './IUnknownTuple.js'
 
-	it("type", () => {
-		expect.assertions(0);
+describe('array', () => {
+	it('generic', <O extends UnknownTupleOptions>() => {
+		expect.assertions(0)
 
-		type A = typeof s.tuple.OutputType;
-		Assert<IsIdentical<A, unknown[]>>();
+		Assert.is<IUnknownTuple<O>, IUnknownTuple>()
+		Assert.is<CustomUnknownTuple<O>, IUnknownTuple<O>>()
+		Assert.is<CustomUnknownTuple<O>, IUnknownTuple>()
+	})
 
-		type B = typeof s.readonlyTuple.OutputType;
-		Assert<IsIdentical<B, readonly unknown[]>>();
-	});
-});
+	it('type', () => {
+		expect.assertions(0)
+
+		type A = typeof s.tuple.OutputType
+		Assert<IsIdentical<A, unknown[]>>()
+
+		type B = typeof s.readonlyTuple.OutputType
+		Assert<IsIdentical<B, readonly unknown[]>>()
+	})
+})

@@ -1,39 +1,44 @@
-import { IsIdentical } from "@voltiso/ts-util";
-import { Assert } from "@voltiso/ts-util/bdd";
-import { number } from "../number.js";
-import { unknown } from "../unknown.js";
-import { IRootSchema } from "../../schema.js";
-import { GetOutputType } from "../../GetType.js";
-import { ISymbol } from "./ISymbol.js";
-import { SymbolOptions } from "./_/SymbolOptions.js";
-import { CustomSymbol } from "./CustomSymbol.js";
-import * as s from "..";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("symbol", () => {
-	it("generic", <O extends SymbolOptions>() => {
-		expect.assertions(0);
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-		Assert.is<ISymbol<O>, ISymbol>();
-		Assert.is<CustomSymbol<O>, ISymbol<O>>();
-		Assert.is<CustomSymbol<O>, ISymbol>();
-	});
+import type { GetOutputType } from '../../GetType'
+import type { IRootSchema } from '../../schema'
+import * as s from '..'
+import { number } from '../number'
+import { unknown } from '../unknown'
+import type { SymbolOptions } from './_/SymbolOptions.js'
+import type { CustomSymbol } from './CustomSymbol.js'
+import type { ISymbol } from './ISymbol.js'
 
-	it("simple", () => {
-		expect.hasAssertions();
+describe('symbol', () => {
+	it('generic', <O extends SymbolOptions>() => {
+		expect.assertions(0)
 
-		Assert.is<typeof s.symbol, IRootSchema>();
+		Assert.is<ISymbol<O>, ISymbol>()
+		Assert.is<CustomSymbol<O>, ISymbol<O>>()
+		Assert.is<CustomSymbol<O>, ISymbol>()
+	})
 
-		type A = GetOutputType<typeof s.symbol>;
-		Assert<IsIdentical<A, symbol>>();
+	it('simple', () => {
+		expect.hasAssertions()
 
-		expect(s.symbol.extends(s.symbol)).toBeTruthy();
-		expect(s.symbol.extends(null)).toBeFalsy();
-		expect(s.symbol.extends(unknown)).toBeTruthy();
-		expect(s.symbol.extends(number)).toBeFalsy();
+		Assert.is<typeof s.symbol, IRootSchema>()
 
-		const sym = Symbol("sym");
-		expect(s.symbol(sym).extends(s.symbol)).toBeTruthy();
-		expect(s.symbol(sym).extends(s.symbol(sym))).toBeTruthy();
-		expect(s.symbol.extends(s.symbol(sym))).toBeFalsy();
-	});
-});
+		type A = GetOutputType<typeof s.symbol>
+		Assert<IsIdentical<A, symbol>>()
+
+		expect(s.symbol.extends(s.symbol)).toBeTruthy()
+		expect(s.symbol.extends(null)).toBeFalsy()
+		expect(s.symbol.extends(unknown)).toBeTruthy()
+		expect(s.symbol.extends(number)).toBeFalsy()
+
+		const sym = Symbol('sym')
+
+		expect(s.symbol(sym).extends(s.symbol)).toBeTruthy()
+		expect(s.symbol(sym).extends(s.symbol(sym))).toBeTruthy()
+		expect(s.symbol.extends(s.symbol(sym))).toBeFalsy()
+	})
+})

@@ -1,0 +1,14 @@
+# ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+# ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+ignores:
+  - '@voltiso/config.eslint.lib'
+  - '@voltiso/config.jest.react'
+  - '@voltiso/config.ts'
+  - '@voltiso/config.ts.dom'
+  - '@voltiso/config.ts.build.cjs'
+  - '@voltiso/config.ts.build.esm'
+  - '@jest/types'
+  - jest-environment-jsdom
+  - '@types/react-test-renderer'
+  - metro-react-native-babel-preset

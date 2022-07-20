@@ -1,77 +1,81 @@
-import { Assert } from "@voltiso/ts-util/bdd";
-import { CustomLiteral } from "./CustomLiteral.js";
-import { ILiteral } from "./ILiteral.js";
-import { LiteralOptions } from "./_/LiteralOptions.js";
-import { InferableLiteral, RootSchemable } from "../../schema.js";
-import * as s from "..";
-import { IsIdentical } from "@voltiso/ts-util";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("s.literal", () => {
-	it("generic", <O extends LiteralOptions>() => {
-		expect.assertions(0);
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
 
-		Assert.is<s.ILiteral<O>, ILiteral>();
-		Assert.is<CustomLiteral<O>, ILiteral<O>>();
-		Assert.is<CustomLiteral<O>, ILiteral>();
+import type { InferableLiteral, RootSchemable } from '../../schema'
+import * as s from '..'
+import type { LiteralOptions } from './_/LiteralOptions.js'
+import type { CustomLiteral } from './CustomLiteral.js'
+import type { ILiteral } from './ILiteral.js'
 
-		type A = s.ILiteral<O>["OutputType"];
-		Assert.is<A, InferableLiteral>();
-	});
+describe('s.literal', () => {
+	it('generic', <O extends LiteralOptions>() => {
+		expect.assertions(0)
 
-	it("type", () => {
-		expect.assertions(0);
+		Assert.is<s.ILiteral<O>, ILiteral>()
+		Assert.is<CustomLiteral<O>, ILiteral<O>>()
+		Assert.is<CustomLiteral<O>, ILiteral>()
 
-		Assert.is<typeof s.literal, RootSchemable>();
+		type A = s.ILiteral<O>['OutputType']
+		Assert.is<A, InferableLiteral>()
+	})
 
-		const a = s.literal;
-		type A = typeof a.OutputType;
-		Assert<IsIdentical<A, InferableLiteral>>();
+	it('type', () => {
+		expect.assertions(0)
 
-		const b = s.literal(123);
-		type B = typeof b.OutputType;
-		Assert<IsIdentical<B, 123>>();
+		Assert.is<typeof s.literal, RootSchemable>()
 
-		const c = s.literal(123).optional;
-		type C = typeof c.OutputType;
-		Assert<IsIdentical<C, 123>>();
-	});
+		const a = s.literal
+		type A = typeof a.OutputType
+		Assert<IsIdentical<A, InferableLiteral>>()
 
-	it("simple", () => {
-		expect.hasAssertions();
+		const b = s.literal(123)
+		type B = typeof b.OutputType
+		Assert<IsIdentical<B, 123>>()
 
-		expect(s.literal.extends(s.literal)).toBeTruthy();
-		expect(s.literal.extends(123)).toBeFalsy();
+		const c = s.literal(123).optional
+		type C = typeof c.OutputType
+		Assert<IsIdentical<C, 123>>()
+	})
 
-		expect(s.literal.extends(s.boolean)).toBeFalsy();
-		expect(s.literal(true).extends(s.boolean)).toBeTruthy();
+	it('simple', () => {
+		expect.hasAssertions()
 
-		expect(s.literal(123).extends(s.literal)).toBeTruthy();
-		expect(s.schema(123).extends(s.literal)).toBeTruthy();
+		expect(s.literal.extends(s.literal)).toBeTruthy()
+		expect(s.literal.extends(123)).toBeFalsy()
 
-		expect(s.literal(123n).extends(s.literal)).toBeTruthy();
-		expect(s.schema(123n).extends(s.literal)).toBeTruthy();
+		expect(s.literal.extends(s.boolean)).toBeFalsy()
+		expect(s.literal(true).extends(s.boolean)).toBeTruthy()
 
-		expect(s.literal("a").extends(s.literal)).toBeTruthy();
-		expect(s.schema("a").extends(s.literal)).toBeTruthy();
+		expect(s.literal(123).extends(s.literal)).toBeTruthy()
+		expect(s.schema(123).extends(s.literal)).toBeTruthy()
 
-		expect(s.schema(s.boolean).extends(s.literal)).toBeTruthy();
-		expect(s.schema(true).extends(s.literal)).toBeTruthy();
-		expect(s.boolean(true).extends(s.literal)).toBeTruthy();
-		expect(s.boolean.extends(s.literal)).toBeTruthy();
-		expect(s.schema(true).extends(s.literal)).toBeTruthy();
+		expect(s.literal(123n).extends(s.literal)).toBeTruthy()
+		expect(s.schema(123n).extends(s.literal)).toBeTruthy()
 
-		expect(s.literal(null).extends(s.literal)).toBeTruthy();
-		expect(s.literal(undefined).extends(s.literal)).toBeTruthy();
+		expect(s.literal('a').extends(s.literal)).toBeTruthy()
+		expect(s.schema('a').extends(s.literal)).toBeTruthy()
 
-		expect(s.schema(null).extends(s.literal)).toBeTruthy();
-		expect(s.schema(undefined).extends(s.literal)).toBeTruthy();
+		expect(s.schema(s.boolean).extends(s.literal)).toBeTruthy()
+		expect(s.schema(true).extends(s.literal)).toBeTruthy()
+		expect(s.boolean(true).extends(s.literal)).toBeTruthy()
+		expect(s.boolean.extends(s.literal)).toBeTruthy()
+		expect(s.schema(true).extends(s.literal)).toBeTruthy()
 
-		expect(s.undefined.extends(s.literal)).toBeTruthy();
-		expect(s.null.extends(s.literal)).toBeTruthy();
+		expect(s.literal(null).extends(s.literal)).toBeTruthy()
+		expect(s.literal(undef).extends(s.literal)).toBeTruthy()
 
-		expect(s.literal.extends(s.unknown)).toBeTruthy();
-		expect(s.literal(123).extends(s.unknown)).toBeTruthy();
-		expect(s.literal(null).extends(s.unknown)).toBeTruthy();
-		expect(s.literal(undefined).extends(s.unknown)).toBeTruthy();
-	});
-});
+		expect(s.schema(null).extends(s.literal)).toBeTruthy()
+		expect(s.schema(undef).extends(s.literal)).toBeTruthy()
+
+		expect(s.undefined.extends(s.literal)).toBeTruthy()
+		expect(s.null.extends(s.literal)).toBeTruthy()
+
+		expect(s.literal.extends(s.unknown)).toBeTruthy()
+		expect(s.literal(123).extends(s.unknown)).toBeTruthy()
+		expect(s.literal(null).extends(s.unknown)).toBeTruthy()
+		expect(s.literal(undef).extends(s.unknown)).toBeTruthy()
+	})
+})

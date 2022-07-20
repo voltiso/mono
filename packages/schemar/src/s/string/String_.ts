@@ -1,24 +1,24 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable max-classes-per-file */
+
 import {
 	CALL,
 	callableInstance,
+	isDefined,
 	lazyConstructor,
-} from "@voltiso/ts-util/class";
-import { ISchema, OPTIONS, Schema_ } from "../../schema.js";
-import { EXTENDS } from "../../schema/_/symbols.js";
-import { RegExpEntry } from "./_/RegExpEntry.js";
-import {
-	DefaultStringOptions,
-	defaultStringOptions,
-	StringOptions,
-} from "./_/StringOptions";
-import { CustomString } from "./CustomString.js";
-import { isString, IS_STRING } from "./IString.js";
-import * as s from "..";
+} from '@voltiso/util'
+
+import type { ISchema } from '../../schema'
+import { OPTIONS, Schema_ } from '../../schema'
+import { EXTENDS } from '../../schema/_/symbols.js'
+import * as s from '..'
+import type { RegExpEntry } from './_/RegExpEntry.js'
+import type { DefaultStringOptions, StringOptions } from './_/StringOptions.js'
+import { defaultStringOptions } from './_/StringOptions.js'
+import type { CustomString } from './CustomString.js'
+import { IS_STRING, isString } from './IString.js'
 
 //
 
@@ -26,68 +26,67 @@ class SString__<O extends StringOptions>
 	extends lazyConstructor(() => Schema_)<O>
 	implements CustomString<O>
 {
-	readonly [IS_STRING] = true as const;
+	readonly [IS_STRING] = true as const
 
 	get getMinLength() {
-		return this[OPTIONS].minLength;
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].minLength
 	}
 
 	get getMaxLength() {
-		return this[OPTIONS].maxLength;
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].maxLength
 	}
 
 	get getRegExps() {
-		return this[OPTIONS].regExps;
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].regExps
 	}
 
 	constructor(o: O) {
-		super(o);
-		return callableInstance(this) as never;
+		super(o)
+		// eslint-disable-next-line no-constructor-return
+		return callableInstance(this) as never
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	[CALL]<L extends string>(...args: readonly L[] | [Set<L>]): s.Literal<L> {
-		return s.literal(...args);
+		return s.literal(...args)
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isString(other)) return true;
-		else return super[EXTENDS](other);
+		if (isString(other)) return true
+		// eslint-disable-next-line security/detect-object-injection
+		else return super[EXTENDS](other)
 	}
 
+	// eslint-disable-next-line max-lines-per-function
 	override _getIssuesImpl(x: unknown): s.ValidationIssue[] {
-		const issues = super._getIssuesImpl(x);
-		if (typeof x !== "string") {
-			issues.push(
-				new s.ValidationIssue({
-					expectedDescription: "be string",
-					received: x,
-				})
-			);
-		} else {
+		const issues = super._getIssuesImpl(x)
+
+		if (typeof x === 'string') {
 			if (
-				typeof this.getMinLength !== "undefined" &&
+				typeof this.getMinLength !== 'undefined' &&
 				x.length < this.getMinLength
 			) {
 				issues.push(
 					new s.ValidationIssue({
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `be of length at least ${this.getMinLength}`,
 						received: x.length,
-					})
-				);
+					}),
+				)
 			}
 
 			if (
-				typeof this.getMaxLength !== "undefined" &&
+				typeof this.getMaxLength !== 'undefined' &&
 				x.length > this.getMaxLength
 			) {
 				issues.push(
 					new s.ValidationIssue({
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `be of length at most ${this.getMaxLength}`,
 						received: x.length,
-					})
-				);
+					}),
+				)
 			}
 
 			for (const re of this.getRegExps) {
@@ -97,47 +96,59 @@ class SString__<O extends StringOptions>
 							expectedDescription:
 								re.expectedDescription ||
 								`pass RegExp(${re.regExp.toString()})`,
+
 							received: x,
-						})
-					);
+						}),
+					)
 				}
 			}
+		} else {
+			issues.push(
+				new s.ValidationIssue({
+					expectedDescription: 'be string',
+					received: x,
+				}),
+			)
 		}
-		return issues;
+
+		return issues
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	override _toString(): string {
-		return "string";
+		return 'string'
 	}
 
 	minLength<Min extends number>(minLength: Min): never {
-		return this._cloneWithOptions({ minLength }) as never;
+		return this._cloneWithOptions({ minLength }) as never
 	}
 
 	maxLength<Max extends number>(maxLength: Max): never {
-		return this._cloneWithOptions({ maxLength }) as never;
+		return this._cloneWithOptions({ maxLength }) as never
 	}
 
 	length<Min extends number, Max extends number>(
 		minLength: Min,
-		maxLength?: Max
+		maxLength?: Max,
 	): never {
-		if (typeof maxLength === "undefined")
-			maxLength = minLength as unknown as Max;
-		return this._cloneWithOptions({ minLength, maxLength }) as never;
+		if (typeof maxLength === 'undefined') {
+			// eslint-disable-next-line no-param-reassign
+			maxLength = minLength as unknown as Max
+		}
+
+		return this._cloneWithOptions({ minLength, maxLength }) as never
 	}
 
 	regex<R extends RegExp>(regExp: R, expectedDescription?: string): never {
-		const entry: RegExpEntry =
-			typeof expectedDescription !== "undefined"
-				? {
-						regExp,
-						expectedDescription,
-				  }
-				: { regExp };
+		const entry: RegExpEntry = isDefined(expectedDescription)
+			? {
+					regExp,
+					expectedDescription,
+			  }
+			: { regExp }
 
-		const regExps = [...this.getRegExps, entry];
-		return this._cloneWithOptions({ regExps }) as never;
+		const regExps = [...this.getRegExps, entry]
+		return this._cloneWithOptions({ regExps }) as never
 	}
 }
 
@@ -145,6 +156,6 @@ class SString__<O extends StringOptions>
 
 export class String_ extends SString__<DefaultStringOptions> {
 	constructor() {
-		super(defaultStringOptions);
+		super(defaultStringOptions)
 	}
 }

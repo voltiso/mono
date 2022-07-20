@@ -2,9 +2,17 @@
 	"name": "@voltiso/assertor",
 	"version": "1.0.0",
 	"license": "UNLICENSED",
-	"repository": "git://github.com/voltiso/voltiso.git",
+	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"types": "./dist/esm/index.d.ts",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		}
+	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/esm/index.d.ts",
 	"module": "dist/esm/index.js",
@@ -29,19 +37,32 @@
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s clean prepublishOnly:rest",
-		"prepublishOnly:rest": "run-p build test lint",
+		"prepublishOnly:rest": "run-p build test lint typecov",
 		"__________MISC": "__________",
-		"v": "voltiso-script",
-		"clean": "run-p clean:rimraf",
-		"clean:rimraf": "rimraf dist"
+		"clean": "rimraf dist",
+		"typecov": "run-s typecov:run typecov:fix",
+		"typecov:run": "type-coverage --project tsconfig.build.esm --update",
+		"typecov:fix": "prettier ./package.json --write"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@voltiso/stester": "workspace:^1.0.0",
+		"@types/assert": "^1.5.6",
+		"@voltiso/config.jest.esr": "workspace:^1.0.0",
+		"@voltiso/config.ts": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
-		"@voltiso/util.type": "workspace:^1.0.0",
-		"jest": "^28.1.1",
-		"npm-run-all": "^4.1.5"
+		"depcheck": "^1.4.3",
+		"jest": "^28.1.3",
+		"npm-run-all": "^4.1.5",
+		"type-coverage": "^2.22.0",
+		"typescript": "^4.7.4",
+		"zone.js": "^0.11.6"
+	},
+	"__________MISC": "__________",
+	"engines": {
+		"node": ">=16"
+	},
+	"dependencies": {
+		"assert": "^2.0.0"
 	}
 }

@@ -1,7 +1,0 @@
-export * from './Includes'
-export * from './IsStringLiteral'
-export * from './Join'
-export * from './Printable'
-export * from './Split'
-export * from './capitalize'
-export * from './toString'

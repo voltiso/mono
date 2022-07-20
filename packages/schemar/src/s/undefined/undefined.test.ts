@@ -1,29 +1,33 @@
-import { IsIdentical } from "@voltiso/ts-util";
-import { Assert } from "@voltiso/ts-util/bdd";
-import * as s from "..";
-import { GetOutputType } from "../../GetType.js";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("undefined", () => {
-	it("simple", () => {
-		expect.hasAssertions();
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
 
-		type A = GetOutputType<typeof s.undefined>;
-		Assert<IsIdentical<A, undefined>>();
+import type { GetOutputType } from '../../GetType'
+import * as s from '..'
 
-		expect(s.undefined.extends(s.unknown)).toBeTruthy();
-		expect(s.literal(undefined).extends(s.unknown)).toBeTruthy();
-		expect(s.schema(undefined).extends(s.unknown)).toBeTruthy();
+describe('undefined', () => {
+	it('simple', () => {
+		expect.hasAssertions()
 
-		expect(s.undefined.extends(s.undefined)).toBeTruthy();
-		expect(s.undefined.extends(undefined)).toBeTruthy();
+		type A = GetOutputType<typeof s.undefined>
+		Assert<IsIdentical<A, undefined>>()
 
-		expect(s.undefined.extends(s.null)).toBeFalsy();
-		expect(s.null.extends(s.undefined)).toBeFalsy();
+		expect(s.undefined.extends(s.unknown)).toBeTruthy()
+		expect(s.literal(undef).extends(s.unknown)).toBeTruthy()
+		expect(s.schema(undef).extends(s.unknown)).toBeTruthy()
 
-		expect(s.undefined.extends(s.number)).toBeFalsy();
-		expect(s.undefined.extends(s.never)).toBeFalsy();
+		expect(s.undefined.extends(s.undefined)).toBeTruthy()
+		expect(s.undefined.extends(undef)).toBeTruthy()
 
-		expect(s.never.extends(s.undefined)).toBeTruthy();
-		expect(s.never.extends(undefined)).toBeTruthy();
-	});
-});
+		expect(s.undefined.extends(s.null)).toBeFalsy()
+		expect(s.null.extends(s.undefined)).toBeFalsy()
+
+		expect(s.undefined.extends(s.number)).toBeFalsy()
+		expect(s.undefined.extends(s.never)).toBeFalsy()
+
+		expect(s.never.extends(s.undefined)).toBeTruthy()
+		expect(s.never.extends(undef)).toBeTruthy()
+	})
+})

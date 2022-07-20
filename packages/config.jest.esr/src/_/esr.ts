@@ -1,12 +1,17 @@
-import type { Config as JestConfig } from "jest";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const config = {
-	transform: {
-		"\\.ts$": "@voltiso/config.jest.esr/transform",
-	},
+import { defineJestConfig } from '@voltiso/config.jest.lib'
+
+export const jestEsrConfig = defineJestConfig({
 	// testEnvironment: 'node',
-	modulePathIgnorePatterns: ["^/dist/"],
-} as const;
+	modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
 
-export type VoltisoJestEsrConfig = typeof config & JestConfig;
-export default config as VoltisoJestEsrConfig;
+	moduleNameMapper: {
+		'^(\\..+)\\.js$': '$1',
+	},
+
+	transform: {
+		'\\.ts$': '@voltiso/config.jest.esr/dist/cjs/transform.js',
+	},
+} as const)

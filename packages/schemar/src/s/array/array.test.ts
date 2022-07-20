@@ -1,312 +1,316 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { IsIdentical } from "@voltiso/ts-util";
-import { Assert } from "@voltiso/ts-util/bdd";
-import { IRootSchema, RootSchemable } from "../../schema.js";
-import { GetInputType, GetOutputType } from "../../GetType.js";
-import { isString } from "../string.js";
-import { ArrayOptions } from "./_/ArrayOptions.js";
-import { CustomArray } from "./CustomArray.js";
-import { isArray } from "./IArray.js";
-import * as s from "..";
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-describe("array", () => {
-	it("generic", <O extends ArrayOptions>() => {
-		expect.assertions(0);
+/* eslint-disable max-lines */
 
-		Assert.is<s.IArray<O>, s.IArray>();
-		Assert.is<CustomArray<O>, s.IArray<O>>();
-		Assert.is<CustomArray<O>, s.IArray>();
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
 
-		const a = s.array(s.string.or(s.number));
-		Assert.is<typeof a, RootSchemable>();
-	});
+import type { GetInputType, GetOutputType } from '../../GetType'
+import type { IRootSchema, RootSchemable } from '../../schema'
+import * as s from '..'
+import { isString } from '../string'
+import type { ArrayOptions } from './_/ArrayOptions.js'
+import type { CustomArray } from './CustomArray.js'
+import { isArray } from './IArray.js'
 
-	it("simple", () => {
-		expect.hasAssertions();
+describe('array', () => {
+	it('generic', <O extends ArrayOptions>() => {
+		expect.assertions(0)
 
-		Assert.is<typeof s.array, IRootSchema>();
+		Assert.is<s.IArray<O>, s.IArray>()
+		Assert.is<CustomArray<O>, s.IArray<O>>()
+		Assert.is<CustomArray<O>, s.IArray>()
 
-		expect(isArray(s.array)).toBeTruthy();
-		expect(isArray(s.readonlyArray)).toBeTruthy();
+		const a = s.array(s.string.or(s.number))
+		Assert.is<typeof a, RootSchemable>()
+	})
 
-		expect(s.array.extends(s.array)).toBeTruthy();
-		expect(s.array.extends(s.unknown)).toBeTruthy();
-		expect(s.array(s.number).extends(s.unknown)).toBeTruthy();
-		expect(s.array(s.number).extends(s.array)).toBeTruthy();
-		expect(s.array(s.number).extends(s.array(s.unknown))).toBeTruthy();
-		expect(s.array(s.number(1, 2, 3)).extends(s.array(s.unknown))).toBeTruthy();
-		expect(s.array(s.number(1, 2, 3)).extends(s.array(s.number))).toBeTruthy();
+	it('simple', () => {
+		expect.hasAssertions()
+
+		Assert.is<typeof s.array, IRootSchema>()
+
+		expect(isArray(s.array)).toBeTruthy()
+		expect(isArray(s.readonlyArray)).toBeTruthy()
+
+		expect(s.array.extends(s.array)).toBeTruthy()
+		expect(s.array.extends(s.unknown)).toBeTruthy()
+		expect(s.array(s.number).extends(s.unknown)).toBeTruthy()
+		expect(s.array(s.number).extends(s.array)).toBeTruthy()
+		expect(s.array(s.number).extends(s.array(s.unknown))).toBeTruthy()
+		expect(s.array(s.number(1, 2, 3)).extends(s.array(s.unknown))).toBeTruthy()
+		expect(s.array(s.number(1, 2, 3)).extends(s.array(s.number))).toBeTruthy()
 		expect(
-			s.array(s.number(1, 2, 3)).extends(s.array(s.number(1, 2)))
-		).toBeFalsy();
+			s.array(s.number(1, 2, 3)).extends(s.array(s.number(1, 2))),
+		).toBeFalsy()
 
-		expect(s.tuple.extends(s.array)).toBeTruthy();
-		expect(s.readonlyTuple.extends(s.array)).toBeFalsy();
-		expect(s.tuple.extends(s.readonlyArray)).toBeTruthy();
+		expect(s.tuple.extends(s.array)).toBeTruthy()
+		expect(s.readonlyTuple.extends(s.array)).toBeFalsy()
+		expect(s.tuple.extends(s.readonlyArray)).toBeTruthy()
 
 		// mutable s.array has .push()
-		expect(s.array.extends(s.tuple)).toBeFalsy();
-		expect(s.array.extends(s.readonlyTuple)).toBeFalsy();
+		expect(s.array.extends(s.tuple)).toBeFalsy()
+		expect(s.array.extends(s.readonlyTuple)).toBeFalsy()
 
-		expect(s.readonlyTuple.extends(s.readonlyArray)).toBeTruthy();
+		expect(s.readonlyTuple.extends(s.readonlyArray)).toBeTruthy()
 
 		// readonly s.array is a readonly tuple (in contrast to mutables)
-		expect(s.readonlyArray.extends(s.readonlyTuple)).toBeTruthy();
+		expect(s.readonlyArray.extends(s.readonlyTuple)).toBeTruthy()
 
-		expect(s.array.extends(s.tuple())).toBeFalsy();
-		expect(s.array.extends(s.tuple(s.unknown))).toBeFalsy();
+		expect(s.array.extends(s.tuple())).toBeFalsy()
+		expect(s.array.extends(s.tuple(s.unknown))).toBeFalsy()
 
-		expect(s.readonlyArray(s.string).extends(s.readonlyTuple())).toBeTruthy();
+		expect(s.readonlyArray(s.string).extends(s.readonlyTuple())).toBeTruthy()
 		expect(
-			s.readonlyArray(s.string).extends(s.readonlyTuple(s.string, s.string))
-		).toBeTruthy();
+			s.readonlyArray(s.string).extends(s.readonlyTuple(s.string, s.string)),
+		).toBeTruthy()
 
 		expect(
 			s
-				.readonlyArray(s.string("a"))
-				.extends(s.readonlyTuple(s.string, s.string))
-		).toBeTruthy();
+				.readonlyArray(s.string('a'))
+				.extends(s.readonlyTuple(s.string, s.string)),
+		).toBeTruthy()
 
 		expect(
-			s.readonlyArray(s.string).extends(s.readonlyTuple(s.string, s.number))
-		).toBeFalsy();
+			s.readonlyArray(s.string).extends(s.readonlyTuple(s.string, s.number)),
+		).toBeFalsy()
 
 		expect(
-			s.array(s.string).extends(s.readonlyTuple(s.string, s.string))
-		).toBeFalsy();
+			s.array(s.string).extends(s.readonlyTuple(s.string, s.string)),
+		).toBeFalsy()
 
-		Assert<IsIdentical<GetOutputType<typeof s.array>, unknown[]>>();
-		Assert<IsIdentical<GetInputType<typeof s.array>, unknown[]>>();
+		Assert<IsIdentical<GetOutputType<typeof s.array>, unknown[]>>()
+		Assert<IsIdentical<GetInputType<typeof s.array>, unknown[]>>()
 
 		Assert<
 			IsIdentical<GetOutputType<typeof s.readonlyArray>, readonly unknown[]>
-		>();
+		>()
 
 		Assert<
 			IsIdentical<GetInputType<typeof s.readonlyArray>, readonly unknown[]>
-		>();
+		>()
 
-		const an = s.array(s.number);
-		Assert<IsIdentical<GetOutputType<typeof an>, number[]>>();
-		Assert<IsIdentical<GetInputType<typeof an>, number[]>>();
+		const an = s.array(s.number)
+		Assert<IsIdentical<GetOutputType<typeof an>, number[]>>()
+		Assert<IsIdentical<GetInputType<typeof an>, number[]>>()
 
-		const ro = s.readonlyArray(s.string);
-		expect(isString(ro.getElementSchema)).toBeTruthy();
-		type RoS = typeof ro.getElementSchema;
-		Assert<IsIdentical<RoS, s.String>>();
+		const ro = s.readonlyArray(s.string)
 
-		type Ro = GetOutputType<typeof ro>;
-		Assert<IsIdentical<Ro, readonly string[]>>();
-		Assert<IsIdentical<GetInputType<typeof ro>, readonly string[]>>();
+		expect(isString(ro.getElementSchema)).toBeTruthy()
 
-		const ro2 = s.array(s.string).readonlyArray;
-		type Ro2 = GetOutputType<typeof ro2>;
-		Assert<IsIdentical<Ro2, readonly string[]>>();
-		Assert<IsIdentical<GetInputType<typeof ro2>, readonly string[]>>();
+		type RoS = typeof ro.getElementSchema
+		Assert<IsIdentical<RoS, s.String>>()
+
+		type Ro = GetOutputType<typeof ro>
+		Assert<IsIdentical<Ro, readonly string[]>>()
+		Assert<IsIdentical<GetInputType<typeof ro>, readonly string[]>>()
+
+		const ro2 = s.array(s.string).readonlyArray
+		type Ro2 = GetOutputType<typeof ro2>
+		Assert<IsIdentical<Ro2, readonly string[]>>()
+		Assert<IsIdentical<GetInputType<typeof ro2>, readonly string[]>>()
 
 		// // @ts-expect-error cannot call readonlyArray twice
 		// ;() => s.array(s.string).readonlyArray.readonlyArray
 
-		expect(s.array.extends(s.readonlyArray)).toBeTruthy();
-		expect(s.readonlyArray.extends(s.array)).toBeFalsy();
+		expect(s.array.extends(s.readonlyArray)).toBeTruthy()
+		expect(s.readonlyArray.extends(s.array)).toBeFalsy()
 
-		expect(s.array(s.number).extends(s.readonlyArray)).toBeTruthy();
-		expect(s.readonlyArray(s.number).extends(s.array)).toBeFalsy();
+		expect(s.array(s.number).extends(s.readonlyArray)).toBeTruthy()
+		expect(s.readonlyArray(s.number).extends(s.array)).toBeFalsy()
 
-		expect(s.array.extends(s.array.readonlyArray)).toBeTruthy();
-		expect(s.array.readonlyArray.extends(s.array)).toBeFalsy();
+		expect(s.array.extends(s.array.readonlyArray)).toBeTruthy()
+		expect(s.array.readonlyArray.extends(s.array)).toBeFalsy()
 
-		expect(s.array(s.number).extends(s.array.readonlyArray)).toBeTruthy();
-		expect(s.array(s.number).readonlyArray.extends(s.array)).toBeFalsy();
+		expect(s.array(s.number).extends(s.array.readonlyArray)).toBeTruthy()
+		expect(s.array(s.number).readonlyArray.extends(s.array)).toBeFalsy()
 
-		const anl = s.array(s.number(123, 234));
-		Assert<IsIdentical<GetOutputType<typeof anl>, (123 | 234)[]>>();
-		Assert<IsIdentical<GetInputType<typeof anl>, (123 | 234)[]>>();
+		const anl = s.array(s.number(123, 234))
+		Assert<IsIdentical<GetOutputType<typeof anl>, (123 | 234)[]>>()
+		Assert<IsIdentical<GetInputType<typeof anl>, (123 | 234)[]>>()
 
-		Assert.is<typeof s.array, IRootSchema>();
-		Assert.is<typeof s.readonlyArray, IRootSchema>();
+		Assert.is<typeof s.array, IRootSchema>()
+		Assert.is<typeof s.readonlyArray, IRootSchema>()
 
-		Assert.is<typeof s.array, s.IArray>();
-		Assert.is<typeof an, s.IArray>();
-		Assert.is<typeof anl, s.IArray>();
-
-		expect(
-			s.readonlyArray(s.number(123)).extends(s.readonlyArray(s.number))
-		).toBeTruthy();
+		Assert.is<typeof s.array, s.IArray>()
+		Assert.is<typeof an, s.IArray>()
+		Assert.is<typeof anl, s.IArray>()
 
 		expect(
-			s.readonlyArray({ a: 1 }).extends(s.readonlyArray({ a: s.number }))
-		).toBeTruthy();
+			s.readonlyArray(s.number(123)).extends(s.readonlyArray(s.number)),
+		).toBeTruthy()
+
+		expect(
+			s.readonlyArray({ a: 1 }).extends(s.readonlyArray({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
 			s
 				.readonlyArray({ a: 1, b: s.string })
-				.extends(s.readonlyArray({ a: s.number }))
-		).toBeTruthy();
+				.extends(s.readonlyArray({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
 			s
 				.readonlyArray({ a: 1, b: s.never })
-				.extends(s.readonlyArray({ a: s.number }))
-		).toBeTruthy();
+				.extends(s.readonlyArray({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
 			s
 				.readonlyArray({ a: 1 })
-				.extends(s.readonlyArray({ a: s.number, b: s.string }))
-		).toBeFalsy();
+				.extends(s.readonlyArray({ a: s.number, b: s.string })),
+		).toBeFalsy()
 
 		expect(
 			s
 				.readonlyArray({ a: 1 })
-				.extends(s.readonlyArray({ a: s.number, b: s.never }))
-		).toBeFalsy();
+				.extends(s.readonlyArray({ a: s.number, b: s.never })),
+		).toBeFalsy()
 
 		expect(
-			s.readonlyArray({ a: 1 }).extends(s.readonlyArray({ a: s.string }))
-		).toBeFalsy();
+			s.readonlyArray({ a: 1 }).extends(s.readonlyArray({ a: s.string })),
+		).toBeFalsy()
 
 		expect(
-			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.number }))
-		).toBeTruthy();
+			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
-			s.array({ a: 1, b: s.string }).extends(s.readonlyArray({ a: s.number }))
-		).toBeTruthy();
+			s.array({ a: 1, b: s.string }).extends(s.readonlyArray({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
-			s.array({ a: 1, b: s.never }).extends(s.readonlyArray({ a: s.number }))
-		).toBeTruthy();
+			s.array({ a: 1, b: s.never }).extends(s.readonlyArray({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
-			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.number, b: s.string }))
-		).toBeFalsy();
+			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.number, b: s.string })),
+		).toBeFalsy()
 
 		expect(
-			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.number, b: s.never }))
-		).toBeFalsy();
+			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.number, b: s.never })),
+		).toBeFalsy()
 
 		expect(
-			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.string }))
-		).toBeFalsy();
+			s.array({ a: 1 }).extends(s.readonlyArray({ a: s.string })),
+		).toBeFalsy()
 
-		expect(s.array({ a: 1 }).extends(s.array({ a: s.number }))).toBeTruthy();
-
-		expect(
-			s.array({ a: 1, b: s.string }).extends(s.array({ a: s.number }))
-		).toBeTruthy();
+		expect(s.array({ a: 1 }).extends(s.array({ a: s.number }))).toBeTruthy()
 
 		expect(
-			s.array({ a: 1, b: s.never }).extends(s.array({ a: s.number }))
-		).toBeTruthy();
+			s.array({ a: 1, b: s.string }).extends(s.array({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
-			s.array({ a: 1 }).extends(s.array({ a: s.number, b: s.string }))
-		).toBeFalsy();
+			s.array({ a: 1, b: s.never }).extends(s.array({ a: s.number })),
+		).toBeTruthy()
 
 		expect(
-			s.array({ a: 1 }).extends(s.array({ a: s.number, b: s.never }))
-		).toBeFalsy();
-
-		expect(s.array({ a: 1 }).extends(s.array({ a: s.string }))).toBeFalsy();
+			s.array({ a: 1 }).extends(s.array({ a: s.number, b: s.string })),
+		).toBeFalsy()
 
 		expect(
-			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.number }))
-		).toBeFalsy();
+			s.array({ a: 1 }).extends(s.array({ a: s.number, b: s.never })),
+		).toBeFalsy()
+
+		expect(s.array({ a: 1 }).extends(s.array({ a: s.string }))).toBeFalsy()
 
 		expect(
-			s.readonlyArray({ a: 1, b: s.string }).extends(s.array({ a: s.number }))
-		).toBeFalsy();
+			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.number })),
+		).toBeFalsy()
 
 		expect(
-			s.readonlyArray({ a: 1, b: s.never }).extends(s.array({ a: s.number }))
-		).toBeFalsy();
-		expect(
-			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.number, b: s.string }))
-		).toBeFalsy();
-		expect(
-			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.number, b: s.never }))
-		).toBeFalsy();
-		expect(
-			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.string }))
-		).toBeFalsy();
-	});
-
-	it("type", () => {
-		expect.assertions(0);
-
-		const a = s.array(s.number);
-		type A = typeof a.OutputType;
-		Assert<IsIdentical<A, number[]>>();
-
-		const b = s.array(s.never);
-		type B = typeof b.OutputType;
-		Assert<IsIdentical<B, never[]>>();
-	});
-
-	it("isValid", () => {
-		expect.hasAssertions();
-		expect(s.array(s.number).isValid([1, 2, 3])).toBeTruthy();
-
-		expect(s.array(s.number).isValid([1, 2, "3"])).toBeFalsy();
-		expect(s.array(s.number).isValid(123)).toBeFalsy();
-	});
-
-	it("optional", () => {
-		expect.hasAssertions();
-
-		expect(s.array.isOptional).toBeFalsy();
-		expect(
-			s.schema({ a: s.array.optional }).isValid({ a: [1, 2, "3", "asd"] })
-		).toBeTruthy();
-		expect(s.schema({ a: s.array.optional }).isValid({})).toBeTruthy();
+			s.readonlyArray({ a: 1, b: s.string }).extends(s.array({ a: s.number })),
+		).toBeFalsy()
 
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, 3] })
-		).toBeTruthy();
+			s.readonlyArray({ a: 1, b: s.never }).extends(s.array({ a: s.number })),
+		).toBeFalsy()
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, "3"] })
-		).toBeFalsy();
+			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.number, b: s.string })),
+		).toBeFalsy()
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: undefined })
-		).toBeFalsy();
+			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.number, b: s.never })),
+		).toBeFalsy()
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({})
-		).toBeTruthy();
-	});
+			s.readonlyArray({ a: 1 }).extends(s.array({ a: s.string })),
+		).toBeFalsy()
+	})
 
-	it("toString", () => {
-		expect.hasAssertions();
+	it('type', () => {
+		expect.assertions(0)
 
-		expect(s.array.getElementSchema.toString()).toBe("unknown");
+		const a = s.array(s.number)
+		type A = typeof a.OutputType
+		Assert<IsIdentical<A, number[]>>()
 
-		expect(s.array.toString()).toBe("unknown[]");
-		expect(s.readonlyArray.toString()).toBe("readonly unknown[]");
+		const b = s.array(s.never)
+		type B = typeof b.OutputType
+		Assert<IsIdentical<B, never[]>>()
+	})
 
-		expect(s.readonlyArray(s.number).toString()).toBe("readonly number[]");
-	});
+	it('isValid', () => {
+		expect.hasAssertions()
+		expect(s.array(s.number).isValid([1, 2, 3])).toBeTruthy()
 
-	it("validate", () => {
-		expect.hasAssertions();
+		expect(s.array(s.number).isValid([1, 2, '3'])).toBeFalsy()
+		expect(s.array(s.number).isValid(123)).toBeFalsy()
+	})
 
-		expect(() => s.array(s.number).validate("asd")).toThrow("asd");
-		expect(() => s.array(s.number).validate([1, "asd"])).toThrow("asd");
-	});
+	it('optional', () => {
+		expect.hasAssertions()
 
-	it("AtLeast1 - type", () => {
-		expect.assertions(0);
+		expect(s.array.isOptional).toBeFalsy()
+		expect(
+			s.schema({ a: s.array.optional }).isValid({ a: [1, 2, '3', 'asd'] }),
+		).toBeTruthy()
+		expect(s.schema({ a: s.array.optional }).isValid({})).toBeTruthy()
 
-		const a = s.array(1).minLength(1);
-		type A = typeof a.OutputType;
-		Assert<IsIdentical<A, [1, ...1[]]>>();
+		expect(
+			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, 3] }),
+		).toBeTruthy()
+		expect(
+			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, '3'] }),
+		).toBeFalsy()
+		expect(
+			s.schema({ a: s.array(s.number).optional }).isValid({ a: undef }),
+		).toBeFalsy()
+		expect(s.schema({ a: s.array(s.number).optional }).isValid({})).toBeTruthy()
+	})
 
-		const b = a.minLength(1);
-		type B = typeof b.OutputType;
-		Assert<IsIdentical<B, [1, ...1[]]>>();
+	it('toString', () => {
+		expect.hasAssertions()
 
-		const c = s.readonlyArray(3).minLength(1);
-		type C = typeof c.OutputType;
-		Assert<IsIdentical<C, readonly [3, ...3[]]>>();
-	});
-});
+		expect(s.array.getElementSchema.toString()).toBe('unknown')
+
+		expect(s.array.toString()).toBe('unknown[]')
+		expect(s.readonlyArray.toString()).toBe('readonly unknown[]')
+
+		expect(s.readonlyArray(s.number).toString()).toBe('readonly number[]')
+	})
+
+	it('validate', () => {
+		expect.hasAssertions()
+
+		expect(() => s.array(s.number).validate('asd')).toThrow('asd')
+		expect(() => s.array(s.number).validate([1, 'asd'])).toThrow('asd')
+	})
+
+	it('AtLeast1 - type', () => {
+		expect.assertions(0)
+
+		const a = s.array(1).minLength(1)
+		type A = typeof a.OutputType
+		Assert<IsIdentical<A, [1, ...1[]]>>()
+
+		const b = a.minLength(1)
+		type B = typeof b.OutputType
+		Assert<IsIdentical<B, [1, ...1[]]>>()
+
+		const c = s.readonlyArray(3).minLength(1)
+		type C = typeof c.OutputType
+		Assert<IsIdentical<C, readonly [3, ...3[]]>>()
+	})
+})

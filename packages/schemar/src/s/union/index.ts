@@ -1,4 +1,7 @@
-export * from './CustomUnion'
-export * from './IUnion'
-export * from './Union'
-export * from './Union_'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+export * from './CustomUnion.js'
+export * from './IUnion.js'
+export * from './Union.js'
+export * from './Union_.js'
