@@ -26,7 +26,7 @@ export const testOverride = defineEslintConfigOverride({
 	rules: {
 		'jest-async/expect-return': 'error',
 		'jest/prefer-lowercase-title': 0,
-		'fp/no-unused-expression': 0,
+		// 'fp/no-unused-expression': 0,
 		'new-cap': 0,
 		'max-lines-per-function': 0,
 		'max-statements': 0,
@@ -66,6 +66,8 @@ export const testOverride = defineEslintConfigOverride({
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,
 		'@typescript-eslint/no-unsafe-member-access': 0,
+
+		'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
 
 		// 'jsdoc/require-example': 0,
 		// 'jsdoc/require-param': 0,

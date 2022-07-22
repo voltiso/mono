@@ -20,7 +20,7 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/add-newline-before-return': 0, // broken?
 		'putout/align-spaces': 'error',
 		'putout/array-element-newline': 0,
-		'putout/destructuring-as-function-argument': 'error',
+		'putout/destructuring-as-function-argument': 0,
 		'putout/function-declaration-paren-newline': 0,
 		'putout/keyword-spacing': 0, // conflicts with prettier
 		'putout/long-properties-destructuring': 'error',

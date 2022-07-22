@@ -3,9 +3,7 @@
 
 /* eslint-disable complexity */
 /* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable max-classes-per-file */
 // eslint-disable complexity
-/* eslint-disable max-lines-per-function */
 
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 

@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable max-lines-per-function */
 
 import type { VPartial } from '@voltiso/util'
 import { assertNotPolluting, getKeys } from '@voltiso/util'

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-classes-per-file */
-
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import type { IRootSchema } from '../../schema'

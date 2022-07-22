@@ -12,6 +12,10 @@ export const jestEsrConfig = defineJestConfig({
 	},
 
 	transform: {
-		'\\.ts$': '@voltiso/config.jest.esr/dist/cjs/transform.js',
+		// '\\.ts$': '@voltiso/config.jest.esr/transform',
+		// '\\.ts$': '@voltiso/config.jest.esr/dist/cjs/transform.js',
+		// '\\.ts$':
+		// 	'<rootDir>/node_modules/@voltiso/config.jest.esr/dist/cjs/transform.js',
+		'\\.ts$': './node_modules/@voltiso/config.jest.esr/dist/cjs/transform.js',
 	},
 } as const)

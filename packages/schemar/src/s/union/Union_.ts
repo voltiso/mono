@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-classes-per-file */
-
 import type { AtLeast2, Merge2Simple } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 

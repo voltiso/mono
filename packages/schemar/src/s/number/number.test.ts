@@ -88,8 +88,8 @@ describe('s.number', () => {
 		expect(s.number.isValid(123)).toBeTruthy()
 		expect(s.number.isValid('123')).toBeFalsy()
 
-		expect(s.number(123, 234).isValid(123)).toBeTruthy()
 		expect(s.number(123, 234).isValid(1)).toBeFalsy()
+		expect(s.number(123, 234).isValid(123)).toBeTruthy()
 		expect(s.number(123, 234).isValid('123')).toBeFalsy()
 	})
 

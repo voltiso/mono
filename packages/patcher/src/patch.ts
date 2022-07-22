@@ -2,7 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept, Force, Merge2, ValueImpl } from '@voltiso/util'
-import { getEntries, isPlain, setProperty, tryGetProperty } from '@voltiso/util'
+import {
+	getEntries,
+	isPlain,
+	setProperty,
+	tryGetProperty,
+	undef,
+} from '@voltiso/util'
 
 import type { DeleteIt } from './deleteIt.js'
 import { isDeleteIt } from './deleteIt.js'
@@ -58,7 +64,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	x: X,
 	patchValue: PatchValue,
 ): ApplyPatch<X, PatchValue> {
-	if (isDeleteIt(patchValue)) return undefined as never
+	if (isDeleteIt(patchValue)) return undef as never
 
 	if (isReplaceIt(patchValue)) {
 		// if (deps.isEqual(x, patchValue.__replaceIt)) return x
@@ -77,7 +83,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 			const newValue = forcePatch(oldValue, value)
 
 			if (newValue !== oldValue) {
-				setProperty(res, key, newValue)
+				setProperty(res, key, newValue as never)
 				haveChange = true
 			}
 		}

@@ -3,4 +3,4 @@
 
 'use strict'
 
-module.exports = require('@voltiso/config.prettier').default
+module.exports = require('@voltiso/config.prettier')

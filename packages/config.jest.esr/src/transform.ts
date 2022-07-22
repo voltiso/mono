@@ -3,7 +3,7 @@
 
 import { transpile } from 'esbuild-runner/lib/esbuild'
 
-export default {
+export = {
 	process(source: string, filename: string) {
 		const code = transpile(source, filename, {
 			type: 'transform',

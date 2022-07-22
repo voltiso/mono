@@ -8,13 +8,11 @@
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		}
 	},
 	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/esm/index.d.ts",
-	"module": "dist/esm/index.js",
+	"types": "dist/cjs/index.d.ts",
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
@@ -29,11 +27,9 @@
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint .",
-		"lint:tsc": "tsc -b",
+		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
 		"__________BUILD": "__________",
-		"build": "run-p build:esm build:cjs",
-		"build:esm": "tsc -b tsconfig.build.esm.json",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"build": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s clean prepublishOnly:rest",
 		"prepublishOnly:rest": "run-p build test lint",
@@ -51,12 +47,9 @@
 		"prettier-plugin-toml": "*"
 	},
 	"devDependencies": {
-		"@types/jest": "^28.1.6",
 		"@types/node": "^18.0.6",
-		"@voltiso/config.eslint": "workspace:^1.0.0",
 		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"depcheck": "^1.4.3",
 		"jest": "^28.1.3",
 		"npm-run-all": "^4.1.5",

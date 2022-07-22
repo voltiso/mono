@@ -27,6 +27,7 @@ export const babelReactNativeConfig = defineBabelConfig(api => {
 				},
 			],
 			'@babel/plugin-transform-strict-mode',
+			['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
 		],
 	} as const
 })

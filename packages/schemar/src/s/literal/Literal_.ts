@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-classes-per-file */
-
 import type { Merge2Simple } from '@voltiso/util'
 import { isSet, isSubset, lazyConstructor, toString } from '@voltiso/util'
 
@@ -11,12 +9,12 @@ import type { InferableLiteral } from '../../schema'
 import { OPTIONS, Schema_ } from '../../schema'
 import { EXTENDS } from '../../schema/_/symbols.js'
 import * as s from '..'
-import { getBaseSchema } from './_/getBaseSchema.js'
 import type {
 	DefaultLiteralOptions,
 	LiteralOptions,
 } from './_/LiteralOptions.js'
 import { defaultLiteralOptions } from './_/LiteralOptions.js'
+import { literalValueExtends } from './_/literalValueExtends.js'
 import type { CustomLiteral } from './CustomLiteral.js'
 import { IS_LITERAL, isLiteral } from './ILiteral.js'
 import { isUnknownLiteral } from './unknown'
@@ -43,8 +41,8 @@ class Literal__<O extends LiteralOptions>
 		let good = true
 
 		for (const l of this.getValues) {
-			// eslint-disable-next-line security/detect-object-injection
-			const isStillGood = getBaseSchema(l)[EXTENDS](other)
+			// const isStillGood = getBaseSchema(l)[EXTENDS](other)
+			const isStillGood = literalValueExtends(l, other)
 
 			if (!isStillGood) {
 				good = false

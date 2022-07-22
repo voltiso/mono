@@ -12,10 +12,10 @@ console.log(
 
 export const ignorePatterns = [
 	'!.*', // Lint hidden stuff (un-ignore)
-	'dist/',
-	'node_modules/',
-	'.tsc-out/',
-	'pnpm-lock.yaml',
+	'**/dist/',
+	'**/node_modules/',
+	'**/.tsc-out/',
+	'**/pnpm-lock.yaml',
 	...readGitignoreFiles({ cwd: '.' }),
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//

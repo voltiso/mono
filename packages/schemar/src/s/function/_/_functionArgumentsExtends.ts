@@ -1,10 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jsdoc/require-param */
-/* eslint-disable jsdoc/require-returns */
-/* eslint-disable jsdoc/require-example */
-
 import type { ISchema } from '../../../schema'
 import * as s from '../..'
 import type { ITuple } from '../../tuple'
@@ -37,10 +33,7 @@ function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 	return true
 }
 
-// eslint-disable-next-line prettier/prettier
-/**
- * TODO: make it work with arrays with bounded lengths
- */
+/** TODO: make it work with arrays with bounded lengths */
 export function _functionArgumentsExtends(a: ISchema, b: ISchema): boolean {
 	const aOk = isTuple(a)
 	const bOk = isTuple(b)

@@ -41,7 +41,7 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'n/file-extension-in-import': [
 		'error',
 		'always',
-		{ '.js': 'always', '.tsx': 'never' },
+		{ '.js': 'always', '.ts': 'never', '.tsx': 'never' },
 	],
 
 	'n/global-require': 2,

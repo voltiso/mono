@@ -4,6 +4,7 @@
 export { default } from './defaultExport.js'
 export { SchemarError, ValidationError } from './errors'
 export type { GetInputType, GetOutputType, GetType } from './GetType'
+export * from './internal'
 export type {
 	InferableMutableTuple,
 	InferableObject,

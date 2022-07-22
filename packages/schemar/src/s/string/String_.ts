@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-classes-per-file */
-
 import {
 	CALL,
 	callableInstance,
@@ -60,7 +58,6 @@ class SString__<O extends StringOptions>
 		else return super[EXTENDS](other)
 	}
 
-	// eslint-disable-next-line max-lines-per-function
 	override _getIssuesImpl(x: unknown): s.ValidationIssue[] {
 		const issues = super._getIssuesImpl(x)
 

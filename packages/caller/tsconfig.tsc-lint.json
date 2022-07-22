@@ -2,5 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts"
+	"extends": "@voltiso/config.ts",
+
+	"exclude": [
+		"dist/",
+		"node_modules/",
+		".tsc-out/"
+		//
+	]
 }

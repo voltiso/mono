@@ -2,17 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts.build.esm",
+	"extends": "@voltiso/config.ts.build.cjs",
 
 	"compilerOptions": {
-		"outDir": "dist/esm",
+		"lib": ["ESNext", "DOM"],
+
+		"outDir": "dist/cjs",
 		"rootDir": "src"
 	},
 
-	"include": ["src"],
-	"exclude": [
-		"**/*.test.ts",
-		"**/*.test.tsx"
-		//
-	]
+	"include": ["src"]
 }

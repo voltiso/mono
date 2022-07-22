@@ -58,6 +58,8 @@ export const importOverride = defineEslintConfigOverride({
 			],
 		},
 
+		'import/ignore': ['node_modules/react-native/index\\.js$'],
+
 		'import/resolver': {
 			node: {
 				extensions: [

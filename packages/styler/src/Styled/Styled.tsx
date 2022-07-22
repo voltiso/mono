@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-lines */
-
 import { assert } from '@voltiso/assertor'
 import type {
 	MapOrUndefined,
@@ -340,7 +338,6 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 		name: Name,
 		value?: PropValue<P, P[Name]>,
 	): ForcePatch<this, { [k in Name]?: P[Name] | undefined }> {
-		// eslint-disable-next-line fp/no-arguments
 		const myValue = arguments.length === 1 ? true : value
 		assert(typeof myValue !== 'undefined')
 		return this._clone({
@@ -642,7 +639,6 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 		propName: PropName,
 		defaultValue?: PV,
 	): Patch<this, { [k in PropName]?: PV | undefined }> {
-		// eslint-disable-next-line fp/no-arguments
 		const myDefaultValue = arguments.length === 2 ? defaultValue : false
 		return this._clone({
 			stack: [
@@ -707,7 +703,6 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 		propName: PropName,
 		defaultValue?: PV,
 	): Patch<this, { [k in PropName]?: PV | undefined }> {
-		// eslint-disable-next-line fp/no-arguments
 		const myDefaultValue = arguments.length === 2 ? defaultValue : false
 		return this._clone({
 			domDefaults: {

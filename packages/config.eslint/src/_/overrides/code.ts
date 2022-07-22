@@ -166,6 +166,8 @@ export const codeOverride = defineEslintConfigOverride({
 		'brace-style': 0,
 		'no-negated-condition': 0, // sometimes useful
 		'max-classes-per-file': 0,
+		'max-lines': 0,
 		'max-lines-per-function': 0,
+		'max-params': 0,
 	},
 })

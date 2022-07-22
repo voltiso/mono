@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-classes-per-file */
-
 import { assumeType, lazyConstructor } from '@voltiso/util'
 import * as VObject from '@voltiso/util'
 

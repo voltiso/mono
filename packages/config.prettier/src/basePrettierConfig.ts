@@ -19,8 +19,13 @@ interface PackageJson {
  * @returns PackageJson
  */
 function getPackageJson(): PackageJson {
-	// eslint-disable-next-line n/no-missing-require, unicorn/prefer-module, n/global-require
-	return require('../../package.json') as never
+	try {
+		// eslint-disable-next-line n/global-require, n/no-missing-require, unicorn/prefer-module
+		return require('../../package.json') as never
+	} catch {
+		// eslint-disable-next-line n/global-require, unicorn/prefer-module
+		return require('../package.json') as never
+	}
 }
 
 /** ! Code must be CLEAN for readability and DX 👌 */
