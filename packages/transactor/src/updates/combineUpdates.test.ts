@@ -3,8 +3,8 @@
 
 import { immutabilize } from '../immutabilize'
 import { DeleteIt, deleteIt, incrementIt, replaceIt } from '../it'
-import type { Updates } from './Updates'
-import { combineUpdates } from './Updates'
+import type { Updates } from './Updates.js'
+import { combineUpdates } from './Updates.js'
 
 describe('updates', function () {
 	it('should replace field', function () {

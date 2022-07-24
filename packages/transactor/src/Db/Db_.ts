@@ -9,10 +9,10 @@ import type { IndexedDoc } from '../Doc'
 import type { DbPathFromString } from '../Path'
 import { concatPath, DocPath } from '../Path'
 import { DocRefPattern, WeakDocRef } from '../Ref'
-import type { CanonicalPath } from './CanonicalPath'
-import type { DbContext, ParentContext } from './Context'
+import type { CanonicalPath } from './CanonicalPath.js'
+import type { DbContext, ParentContext } from './Context.js'
 import type { Db as IDb } from './Db.type'
-import type { DbConstructor } from './DbConstructor'
+import type { DbConstructor } from './DbConstructor.js'
 
 export type DbCallArgs = readonly string[] | readonly [DocPath]
 

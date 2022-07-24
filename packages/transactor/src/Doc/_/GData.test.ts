@@ -6,12 +6,12 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import { Doc } from '../..'
-import type { InferTI } from '../../CollectionRef/InferTI'
+import type { InferTI } from '../../CollectionRef/InferTI.js'
 import type { Data, DataWithId } from '../../Data'
-import type { IDocTI } from '../DocTI'
-import type { IndexedDocTI } from '../IndexedDoc'
-import type { GData, GDataPublicInput } from './GData'
-import type { IntrinsicFields } from './IntrinsicFields'
+import type { IDocTI } from '../DocTI.js'
+import type { IndexedDocTI } from '../IndexedDoc.js'
+import type { GData, GDataPublicInput } from './GData.js'
+import type { IntrinsicFields } from './IntrinsicFields.js'
 
 describe('Doc util', () => {
 	it('GData', () => {

@@ -696,6 +696,7 @@ importers:
     specifiers:
       '@types/js-yaml': ^4.0.5
       '@voltiso/assertor': workspace:^1.0.0
+      '@voltiso/config.jest.esr': workspace:^1.0.0
       '@voltiso/config.ts.build.cjs': workspace:^1.0.0
       '@voltiso/config.ts.build.esm': workspace:^1.0.0
       '@voltiso/firestore-like': workspace:^1.0.10
@@ -716,6 +717,7 @@ importers:
       js-yaml: 4.1.0
     devDependencies:
       '@types/js-yaml': 4.0.5
+      '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/firestore-like': link:../firestore-like

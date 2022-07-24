@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { WithDb } from '../Db'
-import type { DbContext } from '../Db/Context'
+import type { DbContext } from '../Db/Context.js'
 import type { WithTransaction } from '../Transaction'
 import type { Forbidden } from '../util'
-import type { WithTransactor } from './WithTransactor'
+import type { WithTransactor } from './WithTransactor.js'
 
 export type TransactorContext = DbContext &
 	WithTransactor &

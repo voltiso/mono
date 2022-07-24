@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '../_/assert'
+import { assert } from '../_/assert.js'
 import type { SyncerPromise } from '../syncer'
 import { runAsync, runSync } from '../syncer'
 import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson.js'

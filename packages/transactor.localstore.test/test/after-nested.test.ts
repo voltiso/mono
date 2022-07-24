@@ -5,10 +5,10 @@
 
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
+import { deleteIt, Doc, incrementIt } from '@voltiso/transactor'
 import * as gen from 'random-seed'
 
-import { deleteIt, Doc, incrementIt } from '../../transactor.localstore/src/index'
-import { createTransactor, database } from './common/index'
+import { createTransactor, database } from './common'
 
 const db = createTransactor()
 

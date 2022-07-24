@@ -4,7 +4,7 @@
 import type { Join } from '@voltiso/util'
 
 import type { Id } from '../Data'
-import type { DocTag } from '../DocTypes'
+import type { DocTag } from '../DocTypes.js'
 
 type IsSingleUnknownPathToken<A, T = true, F = false> = A extends DocTag
 	? T

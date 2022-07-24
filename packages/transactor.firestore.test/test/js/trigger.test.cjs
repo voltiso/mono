@@ -1,22 +1,31 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 'use strict'
 
 const { firestore, srcFirestore } = require('./common/index.cjs')
-const { createTransactor } = srcFirestore
+const { createFirestoreTransactor } = srcFirestore
+const { undef } = require('@voltiso/util')
 
-const db = createTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
 if (
+	// eslint-disable-next-line no-useless-call
 	function () {
-		// @ts-ignore
+		// @ts-expect-error ...
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return this
 	}.call(null) !== null
 )
-	throw new Error('[@voltiso/transactor] unable to call function with `this === null`')
+	throw new Error(
+		'[@voltiso/transactor] unable to call function with `this === null`',
+	)
 
 // eslint-disable-next-line jest/require-hook
 db('frog/{user}')
 	.beforeCommit(function () {
 		if (!this) return
+
 		if ((this['age'] || 0) < 18) throw new Error('frog too young')
 	})
 
@@ -29,7 +38,7 @@ db('frog/{user}')
 				path: path.toString(),
 				argId: id,
 			}
-		} else return undefined
+		} else return undef
 	})
 
 	.afterCreateOrUpdate(async ({ after, pathArgs }) => {
@@ -42,8 +51,10 @@ db('frog/{user}')
 describe('trigger', function () {
 	it('should process triggers', async function () {
 		expect.hasAssertions()
+
 		await db('frog', 'artur').delete()
 		await db('frog', 'artur').set({ age: 20 })
+
 		await expect(db('frog', 'artur').dataWithoutId()).resolves.toMatchObject({
 			argId: 'artur',
 			isAdmin: false,
@@ -57,11 +68,14 @@ describe('trigger', function () {
 
 	it('should cancel on exception', async () => {
 		expect.hasAssertions()
+
 		await db('frog', 'artur').delete()
 		await db('frog', 'artur').set({ age: 999 })
 		await db('frog', 'artur').set({ age: 935 })
 
-		await expect(db('frog', 'artur').set({ age: 16 })).rejects.toThrow('frog too young')
+		await expect(db('frog', 'artur').set({ age: 16 })).rejects.toThrow(
+			'frog too young',
+		)
 
 		await expect(db('frog/artur').dataWithId()).resolves.toMatchObject({
 			age: 935,

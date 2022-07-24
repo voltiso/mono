@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IDoc } from '../../Doc'
-import type { DocRef_ } from '../DocRef'
+import type { DocRef_ } from '../DocRef.js'
 
 export function getOnGetTriggers(this: DocRef_<IDoc>) {
 	if (this._onGets) return this._onGets

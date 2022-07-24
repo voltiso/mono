@@ -6,11 +6,11 @@ import type { Throw } from '@voltiso/util'
 
 import type { Db } from '..'
 import type { CollectionRef } from '../CollectionRef'
-import type { FirestoreLikeModule } from '../DatabaseContext'
+import type { FirestoreLikeModule } from '../DatabaseContext.js'
 import type { DTI, IDocConstructorNoBuilder } from '../Doc'
 import type { TransactionBody } from './methods'
-import { Transactor_ } from './Transactor_'
-import type { TransactorConstructor } from './TransactorConstructor'
+import { Transactor_ } from './Transactor_.js'
+import type { TransactorConstructor } from './TransactorConstructor.js'
 
 export interface Transactor extends Db {
 	runTransaction<R>(body: TransactionBody<R>): Promise<R>

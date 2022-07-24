@@ -3,7 +3,7 @@
 
 import type { _, If } from '@voltiso/util'
 
-import type { InferMethods } from '../CollectionRef/InferMethods'
+import type { InferMethods } from '../CollectionRef/InferMethods.js'
 import type { Data, DataWithId, DataWithoutId, Id } from '../Data'
 import type {
 	GData,
@@ -11,13 +11,13 @@ import type {
 	GUpdates_Replace,
 	GUpdates_Update,
 } from '../Doc/_'
-import type { GetFields } from '../Doc/Doc_'
-import type { DTI } from '../Doc/DocTI'
-import type { IDoc } from '../Doc/IDoc'
+import type { GetFields } from '../Doc/Doc_.js'
+import type { DTI } from '../Doc/DocTI.js'
+import type { IDoc } from '../Doc/IDoc.js'
 import type { DeleteIt } from '../it'
 import type { DocPath } from '../Path'
 import type { NestedPromise, Null } from './_'
-import type { IRefBase } from './IRef'
+import type { IRefBase } from './IRef.js'
 
 export interface RefBase<D extends IDoc, Exists extends boolean>
 	extends IRefBase,

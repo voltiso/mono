@@ -5,8 +5,8 @@ import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 	UnknownTrigger,
-} from '../../../Trigger/Trigger'
-import type { IDocTI } from '../../DocTI'
+} from '../../../Trigger/Trigger.js'
+import type { IDocTI } from '../../DocTI.js'
 
 export interface DocDerivedData extends IDocTI {
 	readonly afters: readonly UnknownTrigger[]

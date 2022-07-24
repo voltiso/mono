@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { callableObject } from '@voltiso/util'
+import { callableObject, lazyValue } from '@voltiso/util'
 
 import type { IDoc, IndexedDoc } from '../Doc'
-import type { DocTag, DocTypes } from '../DocTypes'
-import { DocRef } from '../Ref/DocRef'
-import type { Ref, WeakRef } from '../Ref/RefBase'
-import { WeakDocRef } from '../Ref/WeakDocRef'
+import type { DocTag, DocTypes } from '../DocTypes.js'
+import { DocRef } from '../Ref/DocRef.js'
+import type { Ref, WeakRef } from '../Ref/RefBase.js'
+import { WeakDocRef } from '../Ref/WeakDocRef.js'
 
 type GD<X extends IDoc | DocTag> = X extends IDoc
 	? X
@@ -21,12 +21,15 @@ interface SRef extends s.Schema<Ref<IndexedDoc>> {
 	<X extends IDoc | DocTag>(): s.Schema<Ref<GD<X>>>
 }
 export type { SRef as Ref }
-export const ref = callableObject(s.instance(DocRef), <
-	// eslint-disable-next-line etc/no-misused-generics
-	X extends IDoc | DocTag,
->(): s.Schema<Ref<GD<X>>> => {
-	return s.instance(DocRef) as never
-}) as unknown as SRef
+export const ref = lazyValue(
+	() =>
+		callableObject(s.instance(DocRef), <
+			// eslint-disable-next-line etc/no-misused-generics
+			X extends IDoc | DocTag,
+		>(): s.Schema<Ref<GD<X>>> => {
+			return s.instance(DocRef) as never
+		}) as unknown as SRef,
+)
 
 //
 

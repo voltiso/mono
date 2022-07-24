@@ -1,13 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './doc'
-export * from './DocFieldPath'
-export * from './DocRef'
-export * from './DocRefBase'
-export * from './DocRefPattern'
-export * from './IRef'
+export * from './doc.js'
+export * from './DocFieldPath.js'
+export * from './DocRef.js'
+export * from './DocRefBase.js'
+export * from './DocRefPattern.js'
+export * from './IRef.js'
 export * from './methods'
-export * from './RefBase'
-export * from './WeakDocRef'
-export * from './WithDocRef'
+export * from './RefBase.js'
+export * from './WeakDocRef.js'
+export * from './WithDocRef.js'

@@ -4,8 +4,8 @@
 import { Assert } from '@voltiso/util'
 
 import type { IRef } from '../Ref'
-import type { DbPathFromString } from './Path'
-import { CollectionPath } from './Path'
+import type { DbPathFromString } from './Path.js'
+import { CollectionPath } from './Path.js'
 
 describe('path', function () {
 	it('creates Path from string[]', function () {

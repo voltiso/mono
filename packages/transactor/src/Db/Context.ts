@@ -4,7 +4,7 @@
 import type { WithTransaction } from '../Transaction'
 import type { WithTransactor } from '../Transactor'
 import type { Forbidden } from '../util'
-import type { WithDb } from './WithDb'
+import type { WithDb } from './WithDb.js'
 
 type BaseContext = WithTransactor & Partial<WithTransaction>
 export type ParentContext = BaseContext & Forbidden<WithDb>

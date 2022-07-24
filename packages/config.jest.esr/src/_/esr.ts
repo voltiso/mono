@@ -3,19 +3,50 @@
 
 import { defineJestConfig } from '@voltiso/config.jest.lib'
 
+const extensions = [
+	'ts',
+	'js',
+	'cts',
+	'cjs',
+	'mts',
+	'mjs',
+	//
+	'tsx',
+	'jsx',
+	'ctsx',
+	'cjsx',
+	'mtsx',
+	'mjsx',
+]
+
+//
+
+const transform: Record<string, string> = {}
+
+for (const extension of extensions) {
+	transform[`\\.${extension}$`] =
+		'./node_modules/@voltiso/config.jest.esr/dist/cjs/transform.js'
+}
+
+//
+
+const moduleNameMapper: Record<string, string> = {}
+
+for (const extension of extensions) {
+	moduleNameMapper[`^(\\..+)\\.${extension}$`] = '$1'
+}
+
+//
+
 export const jestEsrConfig = defineJestConfig({
+	testMatch: [
+		'**/__tests__/**/*.?([cm])[jt]s?(x)',
+		'**/?(*.)+(spec|test).?([cm])[tj]s?(x)',
+	],
+
 	// testEnvironment: 'node',
 	modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
 
-	moduleNameMapper: {
-		'^(\\..+)\\.js$': '$1',
-	},
-
-	transform: {
-		// '\\.ts$': '@voltiso/config.jest.esr/transform',
-		// '\\.ts$': '@voltiso/config.jest.esr/dist/cjs/transform.js',
-		// '\\.ts$':
-		// 	'<rootDir>/node_modules/@voltiso/config.jest.esr/dist/cjs/transform.js',
-		'\\.ts$': './node_modules/@voltiso/config.jest.esr/dist/cjs/transform.js',
-	},
+	moduleNameMapper,
+	transform,
 } as const)

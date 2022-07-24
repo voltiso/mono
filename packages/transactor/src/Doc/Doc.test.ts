@@ -5,12 +5,12 @@ import * as s from '@voltiso/schemar'
 import type { IsSubtype } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
-import { Doc } from './Doc'
-import type { DocTI } from './Doc_'
+import { Doc } from './Doc.js'
+import type { DocTI } from './Doc_.js'
 import type { IDocConstructor } from './DocConstructor'
-import type { IDocTI } from './DocTI'
-import type { IDoc } from './IDoc'
-import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
+import type { IDocTI } from './DocTI.js'
+import type { IDoc } from './IDoc.js'
+import type { IndexedDoc, IndexedDocTI } from './IndexedDoc.js'
 
 declare module '../DocTypes' {
 	interface DocTypes {

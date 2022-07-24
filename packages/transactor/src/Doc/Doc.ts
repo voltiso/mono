@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '@voltiso/util'
-import { callableClass } from '@voltiso/util'
+import { callableClass, lazyConstructor } from '@voltiso/util'
 
 import type { DataWithId, DataWithoutId, Id, NestedData } from '../Data'
 import type { DocPath } from '../Path'
@@ -17,13 +17,13 @@ import type {
 	GUpdates_Replace,
 	GUpdates_Update,
 } from './_'
-import type { DocTI, GetFields } from './Doc_'
-import { Doc_ } from './Doc_'
-import { DocCall } from './DocCall'
+import type { DocTI, GetFields } from './Doc_.js'
+import { Doc_ } from './Doc_.js'
+import { DocCall } from './DocCall.js'
 import type { DocConstructor } from './DocConstructor'
-import type { DTI, IDocTI } from './DocTI'
-import type { IDoc } from './IDoc'
-import type { IndexedDocTI } from './IndexedDoc'
+import type { DTI, IDocTI } from './DocTI.js'
+import type { IDoc } from './IDoc.js'
+import type { IndexedDocTI } from './IndexedDoc.js'
 
 interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 	extends IDoc {
@@ -72,6 +72,6 @@ export type Doc<
 		: GData<TI> & GMethodPromises<TI>)
 
 export const Doc = callableClass(
-	Doc_,
+	lazyConstructor(() => Doc_),
 	DocCall,
 ) as unknown as DocConstructor<DocTI>

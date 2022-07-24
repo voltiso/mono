@@ -1,14 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type { LeafData } from '../../Data'
 import type { Ref } from '../../Ref'
-import { s } from '../../schemas'
-import { Doc } from '../Doc'
-import type { UpdatesFromData } from './UpdatesFromData'
+import { Doc } from '../Doc.js'
+import type { UpdatesFromData } from './UpdatesFromData.js'
 
 describe('Doc util', () => {
 	it('UpdatesFromData', () => {

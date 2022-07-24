@@ -33,7 +33,7 @@
 	],
 	"scripts": {
 		"__________TEST": "__________",
-		"test:all": "run-p test:this test:firestore test:localstore",
+		"test:all": "run-p test test:firestore test:localstore",
 		"test": "jest",
 		"test:firestore": "pnpm test --filter transactor.firestore.test",
 		"test:localstore": "pnpm test --filter transactor.localstore.test",
@@ -66,6 +66,7 @@
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
+		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"@voltiso/firestore-like": "workspace:^1.0.10",

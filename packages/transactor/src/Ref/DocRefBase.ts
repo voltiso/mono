@@ -7,7 +7,7 @@ import type * as s from '@voltiso/schemar'
 import type { If } from '@voltiso/util'
 import { clone, lazyPromise, protoLink, undef } from '@voltiso/util'
 
-import type { InferMethods } from '../CollectionRef/InferMethods'
+import type { InferMethods } from '../CollectionRef/InferMethods.js'
 import type { RefEntry } from '../common'
 import type { Data, DataWithId, DataWithoutId, Id } from '../Data'
 import { withoutId } from '../Data'
@@ -15,7 +15,7 @@ import type { IDoc } from '../Doc'
 import { DTI } from '../Doc'
 import type { ExecutionContext, GData, GDataPublicInput } from '../Doc/_'
 import { deleteIt, replaceIt } from '../it'
-import type { Method } from '../Method'
+import type { Method } from '../Method.js'
 import { DocPath } from '../Path'
 import type {
 	AfterTrigger,
@@ -31,10 +31,10 @@ import type {
 	TriggerEntry,
 } from './_'
 import { callMethod, dataOrNestedPromise, getMethods } from './_'
-import { DocFieldPath } from './DocFieldPath'
+import { DocFieldPath } from './DocFieldPath.js'
 import { IS_DOC_REF } from './IRef.js'
 import { get, update } from './methods'
-import type { RefBase } from './RefBase'
+import type { RefBase } from './RefBase.js'
 
 // @staticImplements<DocRefConstructor>()
 export class DocRefBase_<
@@ -152,12 +152,12 @@ export class DocRefBase_<
 	/** @returns `PromiseLike`! (`then`-only) */
 	set(data?: Data<GDataPublicInput<D[DTI]>>): PromiseLike<D> | any {
 		const dataWithoutId = withoutId(data || null, this.id)
-		return update(this._context, replaceIt(dataWithoutId) as any) as never // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
+		return update(this._context, replaceIt(dataWithoutId) as never) as never // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
 	}
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(updates: any): any {
-		return update(this._context, updates) as any // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
+		return update(this._context, updates as never) as any // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
 	}
 
 	/** @returns `PromiseLike`! (`then`-only) */

@@ -5,7 +5,7 @@ import { Assert } from '@voltiso/util'
 
 import type { IDoc, IDocTI } from '../Doc'
 import type { IRef } from '../Ref'
-import type { Relax } from './Relax'
+import type { Relax } from './Relax.js'
 
 describe('Relax', () => {
 	it('type', () => {

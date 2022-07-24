@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocRefBase_ } from '../DocRefBase'
+import type { DocRefBase_ } from '../DocRefBase.js'
 
 export function getMethods(this: DocRefBase_) {
 	if (this._methods) return this._methods

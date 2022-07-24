@@ -1,9 +1,9 @@
-'use strict'
-
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-unpublished-require */
+'use strict'
+
+// require('zone.js')
 
 const src = require('@voltiso/transactor')
 const srcFirestore = require('@voltiso/transactor.firestore')

@@ -3,7 +3,7 @@
 
 import { assert } from '@voltiso/assertor'
 
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContextWithTransaction } from './Context.js'
 
 /**
  * Assert cacheEntry exists for c.docPath, and return it

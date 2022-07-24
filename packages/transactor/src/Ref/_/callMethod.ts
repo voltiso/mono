@@ -7,15 +7,15 @@ import chalk from 'chalk'
 import type { WithDb } from '../../Db'
 import type { IDoc_, IDocTI } from '../../Doc'
 import type { ExecutionContext, GDoc } from '../../Doc/_'
-import type { Method } from '../../Method'
+import type { Method } from '../../Method.js'
 import type { Cache, WithTransaction } from '../../Transaction'
 import { isWithTransaction, methodGuard } from '../../Transaction'
 import type { ContextOverride, WithTransactor } from '../../Transactor'
 import { dump } from '../../util'
-import type { DocRefBase_ } from '../DocRefBase'
+import type { DocRefBase_ } from '../DocRefBase.js'
 import { transactionDocPathGet } from '../methods'
-import type { WithDocRef } from '../WithDocRef'
-import { processTriggers } from './processTriggers'
+import type { WithDocRef } from '../WithDocRef.js'
+import { processTriggers } from './processTriggers.js'
 
 export type CallMethodOptions = {
 	name: string
@@ -24,7 +24,9 @@ export type CallMethodOptions = {
 }
 
 export async function callMethod<
+	// eslint-disable-next-line etc/no-misused-generics
 	TI extends IDocTI,
+	// eslint-disable-next-line etc/no-misused-generics
 	EC extends ExecutionContext,
 	THIS extends GDoc<TI, EC>,
 	ARGS extends unknown[],
@@ -73,6 +75,7 @@ export async function callMethod<
 
 		assert(cache)
 
+		// eslint-disable-next-line security/detect-object-injection
 		const cachePath = cache[path]
 		assert(cachePath)
 
@@ -91,6 +94,7 @@ export async function callMethod<
 	if (!doc) throw new Error(`${debugName()} called on non-existing document`)
 	// data._._setContext(this.context)
 
+	// eslint-disable-next-line no-console
 	console.log(
 		'\n',
 		chalk.inverse('CALL method'),
@@ -102,9 +106,10 @@ export async function callMethod<
 	)
 
 	const result = await methodGuard(ctx, async () => {
-		return await method.call(doc as never, ...args) // CAST - hopefully document schema was validated properly in docPath.get
+		return method.call(doc as never, ...args) // CAST - hopefully document schema was validated properly in docPath.get
 	})
 
+	// eslint-disable-next-line security/detect-object-injection
 	const cacheEntry = transaction._cache[path]
 	assert(cacheEntry)
 	cacheEntry.write = true

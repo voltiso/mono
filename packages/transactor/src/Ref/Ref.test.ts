@@ -1,15 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line n/file-extension-in-import
 import * as s from '@voltiso/schemar'
 import { Assert, Is } from '@voltiso/util'
 
-import { Doc } from '../Doc/Doc'
+import { Doc } from '../Doc/Doc.js'
 import type { IDocConstructorNoBuilder } from '../Doc/DocConstructor'
-import type { IDoc } from '../Doc/IDoc'
-import type { IRef } from './IRef'
-import type { Ref, WeakRef } from './RefBase'
+import type { IDoc } from '../Doc/IDoc.js'
+import type { IRef } from './IRef.js'
+import type { Ref, WeakRef } from './RefBase.js'
 
 declare module '..' {
 	interface DocTypes {

@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Doc } from '../..'
-import type { DocTypes } from '../../DocTypes'
-import type { IDocTI } from '../DocTI'
+import type { DocTypes } from '../../DocTypes.js'
+import type { IDocTI } from '../DocTI.js'
 import type { ExecutionContext } from '.'
 
 type GDocByTag_<TI extends IDocTI> = TI['tag'] extends 'untagged'

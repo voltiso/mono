@@ -5,7 +5,7 @@ import type { IDoc } from '../Doc'
 import type {
 	AfterTriggerParams,
 	TriggerParams,
-} from '../Trigger/TriggerParams'
+} from '../Trigger/TriggerParams.js'
 
 export type After<D extends IDoc> = AfterTriggerParams<D>
 export type AfterCreate<D extends IDoc> = AfterTriggerParams<D, D, false, true>

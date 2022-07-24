@@ -1,12 +1,9 @@
+'use strict'
+
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-{
-	"extends": "@voltiso/config.ts",
-
-	"compilerOptions": {
-		"paths": {
-			"@voltiso/*": ["../*"]
-		}
-	}
+module.exports = {
+	// eslint-disable-next-line n/global-require
+	...require('@voltiso/config.jest.esr'),
 }

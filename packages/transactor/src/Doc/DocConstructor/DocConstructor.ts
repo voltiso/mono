@@ -5,14 +5,14 @@ import type * as s from '@voltiso/schemar'
 import type { _, Merge2 } from '@voltiso/util'
 
 import type { DataWithoutId } from '../../Data'
-import type { DocTag } from '../../DocTypes'
-import type { Method } from '../../Method'
+import type { DocTag } from '../../DocTypes.js'
+import type { Method } from '../../Method.js'
 import type { AfterTrigger, BeforeCommitTrigger } from '../../Trigger'
 import type { Context } from '..'
 import type { GDataInput, GI, GO, Promisify } from '../_'
-import type { DTI, IDocTI } from '../DocTI'
+import type { DTI, IDocTI } from '../DocTI.js'
 import type { DocDerivedData, NewFields } from './_'
-import type { MergeTI } from './_/MergeTI'
+import type { MergeTI } from './_/MergeTI.js'
 
 type MaybeWithName<Params> = [Params] | [string, Params]
 

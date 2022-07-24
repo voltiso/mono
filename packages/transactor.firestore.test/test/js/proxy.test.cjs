@@ -1,23 +1,32 @@
-const { firestore, srcFirestore } = require('./common/index.cjs')
-const { createTransactor } = srcFirestore
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const db = createTransactor(firestore, { requireSchemas: false })
+'use strict'
+
+const { firestore, srcFirestore } = require('./common/index.cjs')
+const { createFirestoreTransactor } = srcFirestore
+
+const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
 describe('proxy', function () {
 	it('should throw on immutable result change', async function () {
 		expect.hasAssertions()
+
 		const user = await db('user/adam').set({ age: 123 })
+
 		expect(() => {
-			// @ts-ignore
+			// @ts-expect-error ...
 			user.age = 234
 		}).toThrow('immutable')
 	})
 
 	it('should throw on immutable result change (nested)', async function () {
 		expect.hasAssertions()
+
 		const adam = await db('user/adam').set({ address: { street: 'a' } })
+
 		expect(() => {
-			// @ts-ignore
+			// @ts-expect-error ...
 			adam.address.street = 'b'
 		}).toThrow('immutable')
 	})

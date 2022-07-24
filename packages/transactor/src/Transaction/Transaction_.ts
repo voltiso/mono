@@ -5,11 +5,11 @@ import type * as Database from '@voltiso/firestore-like'
 import type { CALL } from '@voltiso/util'
 import { lazyConstructor, omit, staticImplements } from '@voltiso/util'
 
-import { Db } from '../Db/Db'
+import { Db } from '../Db/Db.js'
 import type { DocPath } from '../Path'
-import type { Cache } from './Cache'
-import type { ParentContext, TransactionContext } from './Context'
-import type { TransactionConstructor } from './TransactionConstructor'
+import type { Cache } from './Cache.js'
+import type { ParentContext, TransactionContext } from './Context.js'
+import type { TransactionConstructor } from './TransactionConstructor.js'
 
 @staticImplements<TransactionConstructor<Transaction>>()
 class Transaction extends lazyConstructor(() => Db) {

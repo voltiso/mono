@@ -4,9 +4,9 @@
 import { assert } from '@voltiso/assertor'
 import { lazyPromise, protoLink, undef } from '@voltiso/util'
 
-import type { NestedData } from '../Data/Data'
+import type { NestedData } from '../Data/Data.js'
 import type { WithTransaction } from '../Transaction'
-import type { WithDocRef } from './WithDocRef'
+import type { WithDocRef } from './WithDocRef.js'
 
 type Context = WithDocRef & Partial<WithTransaction>
 

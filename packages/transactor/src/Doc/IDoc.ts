@@ -3,9 +3,9 @@
 
 import type { Id } from '../Data'
 import type { DocPath } from '../Path'
-import type { IRef } from '../Ref/IRef'
-import type { Context } from './Context'
-import type { DTI, IDocTI } from './DocTI'
+import type { IRef } from '../Ref/IRef.js'
+import type { Context } from './Context.js'
+import type { DTI, IDocTI } from './DocTI.js'
 
 /**
  * Unknown Doc

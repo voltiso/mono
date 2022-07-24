@@ -3,12 +3,12 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { InferTI } from '../CollectionRef/InferTI'
+import type { InferTI } from '../CollectionRef/InferTI.js'
 import type { IDoc } from '../Doc'
 import type { GDocFields, GMethodPromises } from '../Doc/_'
 import type { DocRefParentContext } from './_'
-import { DocRefBase_ } from './DocRefBase'
-import type { WeakRef } from './RefBase'
+import { DocRefBase_ } from './DocRefBase.js'
+import type { WeakRef } from './RefBase.js'
 
 class WeakDocRef_<D extends IDoc> extends lazyConstructor(() => DocRefBase_)<
 	D,
@@ -20,6 +20,7 @@ class WeakDocRef_<D extends IDoc> extends lazyConstructor(() => DocRefBase_)<
 	}
 }
 
+// eslint-disable-next-line etc/no-misused-generics
 export type WeakDocRefConstructor = new <D extends IDoc>(
 	context: DocRefParentContext,
 	path: string,

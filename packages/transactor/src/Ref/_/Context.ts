@@ -5,7 +5,7 @@ import type { WithDb } from '../../Db'
 import type { WithTransaction } from '../../Transaction'
 import type { WithTransactor } from '../../Transactor'
 import type { Forbidden } from '../../util'
-import type { WithDocRef } from '../WithDocRef'
+import type { WithDocRef } from '../WithDocRef.js'
 
 export type DocRefBaseContext = WithTransactor &
 	Partial<WithTransaction> &

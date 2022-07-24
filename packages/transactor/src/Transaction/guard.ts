@@ -2,48 +2,50 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { WithDocRef } from '../Ref'
-import type { WithTransaction } from './WithTransaction'
+import type { WithTransaction } from './WithTransaction.js'
 
 /**
  * Guards an inline function; keeping tract of execContext and numTriggersNested
  *
- * @param f - Function to guard
+ * @param ctx - Context
+ * @param func - Function to guard
  */
 export const triggerGuard = async <R>(
-	c: WithTransaction & WithDocRef,
-	f: () => Promise<R>,
+	ctx: WithTransaction & WithDocRef,
+	func: () => Promise<R>,
 ): Promise<R> => {
-	const prevNumTriggersNested = c.transaction._numTriggersNested
-	const prevExecContext = c.transaction._execContext
+	const prevNumTriggersNested = ctx.transaction._numTriggersNested
+	const prevExecContext = ctx.transaction._execContext
 	try {
 		// eslint-disable-next-line no-plusplus
-		c.transaction._numTriggersNested++
-		c.transaction._execContext = c.docRef.path
-		return await f()
+		ctx.transaction._numTriggersNested++
+		ctx.transaction._execContext = ctx.docRef.path
+		return await func()
 	} finally {
-		c.transaction._numTriggersNested = prevNumTriggersNested
-		c.transaction._execContext = prevExecContext
+		ctx.transaction._numTriggersNested = prevNumTriggersNested
+		ctx.transaction._execContext = prevExecContext
 	}
 }
 
 /**
  * Guards an inline function; keeping tract of execContext and numMethodsNested
  *
- * @param f - Function to guard
+ * @param ctx - Context
+ * @param func - Function to guard
  */
 export const methodGuard = async <R>(
-	c: WithTransaction & WithDocRef,
-	f: () => Promise<R>,
+	ctx: WithTransaction & WithDocRef,
+	func: () => Promise<R>,
 ): Promise<R> => {
-	const prevNumMethodsNested = c.transaction._numMethodsNested
-	const prevExecContext = c.transaction._execContext
+	const prevNumMethodsNested = ctx.transaction._numMethodsNested
+	const prevExecContext = ctx.transaction._execContext
 	try {
 		// eslint-disable-next-line no-plusplus
-		c.transaction._numMethodsNested++
-		c.transaction._execContext = c.docRef.path
-		return await f()
+		ctx.transaction._numMethodsNested++
+		ctx.transaction._execContext = ctx.docRef.path
+		return await func()
 	} finally {
-		c.transaction._numMethodsNested = prevNumMethodsNested
-		c.transaction._execContext = prevExecContext
+		ctx.transaction._numMethodsNested = prevNumMethodsNested
+		ctx.transaction._execContext = prevExecContext
 	}
 }

@@ -2,9 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IDoc } from '../Doc'
-import type { DocTag, DocTypes } from '../DocTypes'
-import type { Ref } from './RefBase'
-import type { WeakDocRef } from './WeakDocRef'
+import type { DocTag, DocTypes } from '../DocTypes.js'
+import type { Ref } from './RefBase.js'
+import type { WeakDocRef } from './WeakDocRef.js'
 
 type GetDoc<X extends DocTag | IDoc> = X extends IDoc
 	? X

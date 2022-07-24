@@ -3,10 +3,10 @@
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
 
-import type { FirestoreLikeModule } from '../DatabaseContext'
+import type { FirestoreLikeModule } from '../DatabaseContext.js'
 import type { Options_, Transactor } from '.'
-import type { TransactorConstructorParameters } from './ConstructorParameters'
-import { Transactor_ } from './Transactor_'
+import type { TransactorConstructorParameters } from './ConstructorParameters.js'
+import { Transactor_ } from './Transactor_.js'
 
 export function createTransactor(): Transactor
 

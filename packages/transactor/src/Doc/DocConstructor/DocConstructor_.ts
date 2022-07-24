@@ -6,14 +6,17 @@ import * as s from '@voltiso/schemar'
 import type { OmitCall } from '@voltiso/util'
 import { callableClass, staticImplements } from '@voltiso/util'
 
-import type { DocTag } from '../../DocTypes'
-import type { Method } from '../../Method'
+import type { DocTag } from '../../DocTypes.js'
+import type { Method } from '../../Method.js'
 import { intrinsicFields } from '../../schemas'
-import type { AfterTrigger, BeforeCommitTrigger } from '../../Trigger/Trigger'
+import type {
+	AfterTrigger,
+	BeforeCommitTrigger,
+} from '../../Trigger/Trigger.js'
 import { DocCall } from '..'
 import type { GI } from '../_'
-import type { IDocTI } from '../DocTI'
-import { DTI } from '../DocTI'
+import type { IDocTI } from '../DocTI.js'
+import { DTI } from '../DocTI.js'
 import type { DocDerivedData, NewFields } from './_'
 import {
 	after,
@@ -24,7 +27,7 @@ import {
 	beforeCommit,
 	defaultDocDerivedData,
 } from './_'
-import type { IDocConstructor } from './IDocConstructor'
+import type { IDocConstructor } from './IDocConstructor.js'
 
 @staticImplements<OmitCall<IDocConstructor>>()
 class DocConstructor {

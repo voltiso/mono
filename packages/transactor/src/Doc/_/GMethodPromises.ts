@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDocTI } from '../DocTI'
+import type { IDocTI } from '../DocTI.js'
 
 export type Promisify<F> = F extends (...args: never[]) => PromiseLike<unknown>
 	? F

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Forbidden } from '../util'
-import type { Transaction_ } from './Transaction_'
+import type { Transaction_ } from './Transaction_.js'
 
 export type WithTransaction = { transaction: Transaction_ }
 

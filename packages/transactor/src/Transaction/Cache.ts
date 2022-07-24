@@ -5,7 +5,7 @@ import type { DataWithoutId } from '../Data'
 import type { Doc_ } from '../Doc'
 import type { WithDocRef } from '../Ref'
 import type { Updates } from '../updates'
-import type { WithTransaction } from './WithTransaction'
+import type { WithTransaction } from './WithTransaction.js'
 
 export type CacheEntry = {
 	data?: DataWithoutId | null // undefined -> unknown; null -> deleted

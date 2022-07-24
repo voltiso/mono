@@ -9,8 +9,8 @@ import type { WithDb } from '../../Db'
 import { Doc_ } from '../../Doc'
 import type { WithDocRef } from '../../Ref'
 import type { WithTransactor } from '../../Transactor'
-import type { CacheEntry } from '../Cache'
-import type { WithTransaction } from '../WithTransaction'
+import type { CacheEntry } from '../Cache.js'
+import type { WithTransaction } from '../WithTransaction.js'
 
 export function setCacheEntry(
 	this: WithTransaction & WithDocRef & WithDb & WithTransactor,

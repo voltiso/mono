@@ -7,10 +7,10 @@ import { Assert, Is } from '@voltiso/util'
 
 import type { Id } from '../..'
 import { Doc } from '../..'
-import type { DTI, IDocTI } from '../DocTI'
-import type { MergeTI } from './_/MergeTI'
-import type { DocConstructor } from './DocConstructor'
-import type { IDocConstructor } from './IDocConstructor'
+import type { DTI, IDocTI } from '../DocTI.js'
+import type { MergeTI } from './_/MergeTI.js'
+import type { DocConstructor } from './DocConstructor.js'
+import type { IDocConstructor } from './IDocConstructor.js'
 
 declare module '../..' {
 	interface DocTypes {

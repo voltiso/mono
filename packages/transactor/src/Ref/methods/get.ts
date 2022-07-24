@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { clone } from '@voltiso/util'
+import { clone, undef } from '@voltiso/util'
 
 import { fromFirestore } from '../../common'
 import type { DataWithoutId } from '../../Data'
@@ -21,13 +21,14 @@ import type { WithTransactor } from '../../Transactor'
 import { initLastDataSeen } from '../../Trigger'
 import { applyUpdates } from '../../updates'
 import type { Forbidden } from '../../util'
-import { applySchema } from '../_/applySchema'
-import { collectTriggerResult } from '../_/collectTriggerResult'
-import { getOnGetTriggers } from '../_/getOnGetTriggers'
-import { getSchema } from '../_/getSchema'
-import { validateAndSetCacheEntry } from '../_/validateAndSetCacheEntry'
-import type { WithDocRef } from '../WithDocRef'
+import { applySchema } from '../_/applySchema.js'
+import { collectTriggerResult } from '../_/collectTriggerResult.js'
+import { getOnGetTriggers } from '../_/getOnGetTriggers.js'
+import { getSchema } from '../_/getSchema.js'
+import { validateAndSetCacheEntry } from '../_/validateAndSetCacheEntry.js'
+import type { WithDocRef } from '../WithDocRef.js'
 
+// eslint-disable-next-line etc/no-misused-generics
 async function directDocPathGet<D extends IDoc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): Promise<D | null> {
@@ -56,16 +57,19 @@ async function directDocPathGet<D extends IDoc>(
 	else return null
 }
 
+// eslint-disable-next-line max-statements, complexity, etc/no-misused-generics, sonarjs/cognitive-complexity
 async function transactionDocPathGetImpl<D extends IDoc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
-	const { _ref: ref } = ctx.docRef
+	const { _ref: ref, id } = ctx.docRef
 	const { _cache, _databaseTransaction } = ctx.transaction
 
 	const path = ctx.docRef.path.toString()
 
+	// eslint-disable-next-line security/detect-object-injection
 	if (!(path in _cache)) _cache[path] = newCacheEntry(ctx)
 
+	// eslint-disable-next-line security/detect-object-injection
 	const cacheEntry = _cache[path]
 	assert(cacheEntry)
 
@@ -73,7 +77,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	const prevData = cacheEntry.data
 
-	if (cacheEntry.data === undefined) {
+	if (cacheEntry.data === undef) {
 		cacheEntry.data = fromFirestore(ctx, await _databaseTransaction.get(ref))
 
 		if (cacheEntry.data?.__voltiso)
@@ -83,14 +87,12 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 		// schema migration
 		if (schema && cacheEntry.data) {
-			const validatedData = await applySchema.call(ctx, {
+			const validatedData = applySchema.call(ctx, {
 				schema: schema.partial,
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
-			cacheEntry.data = validatedData
-				? withoutId(validatedData, ctx.docRef.id)
-				: null
+			cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 		}
 	}
 
@@ -110,13 +112,11 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 		if (schema && data) {
 			try {
-				const validatedData = await applySchema.call(ctx, {
+				const validatedData = applySchema.call(ctx, {
 					schema: schema.partial,
 					data,
 				})
-				cacheEntry.data = validatedData
-					? withoutId(validatedData, ctx.docRef.id)
-					: null
+				cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 
 				if (cacheEntry.data?.__voltiso)
 					cacheEntry.__voltiso = cacheEntry.data.__voltiso
@@ -147,16 +147,17 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	const onGetTriggers = getOnGetTriggers.call(ctx.docRef)
 
 	for (const { trigger, pathMatches } of onGetTriggers) {
-		const r = await trigger.call(cacheEntry.proxy as any, {
-			doc: cacheEntry.proxy as any,
+		// eslint-disable-next-line no-await-in-loop
+		const r = await trigger.call(cacheEntry.proxy as never, {
+			doc: cacheEntry.proxy as never,
 			...pathMatches,
 			path: ctx.docRef.path,
-			id: ctx.docRef.id as never,
+			id: id as never,
 			...ctx,
 		})
 
 		const data = collectTriggerResult(ctx, r)
-		await validateAndSetCacheEntry(ctx, data, schema?.partial)
+		validateAndSetCacheEntry(ctx, data, schema?.partial)
 	}
 
 	// // final schema check
@@ -167,6 +168,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	return cacheEntry.proxy as D | null
 }
 
+// eslint-disable-next-line etc/no-misused-generics
 export function transactionDocPathGet<D extends IDoc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): PromiseLike<D | null> {
@@ -181,10 +183,11 @@ export function transactionDocPathGet<D extends IDoc>(
 	const promise = transactionDocPathGetImpl(ctx)
 
 	// check if there's `await` outside this function
-	transaction._numFloatingPromises++
+	transaction._numFloatingPromises += 1
 	return {
+		// eslint-disable-next-line unicorn/no-thenable
 		then(f, r) {
-			transaction._numFloatingPromises--
+			transaction._numFloatingPromises -= 1
 
 			// // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			// const currentZone = Zone?.current
@@ -197,17 +200,22 @@ export function transactionDocPathGet<D extends IDoc>(
 			// 	if (r) r = currentZone.wrap(r, '@voltiso/util')
 			// }
 
-			return promise.then(f as any, r)
+			// eslint-disable-next-line promise/prefer-await-to-then
+			return promise.then(f as never, r)
 		},
 	}
 }
 
+// eslint-disable-next-line etc/no-misused-generics
 export function get<TI extends IDocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
 ): PromiseLike<GDoc<TI, 'outside'> | null> {
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
-	const ctxOverride = Zone.current.get('transactionContextOverride')
+	const ctxOverride = Zone.current.get('transactionContextOverride') as
+		| object
+		| undefined
 
+	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
 	if (isWithTransaction(ctx))

@@ -1,13 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PathMatches } from '../common/PathMatches'
+import type { PathMatches } from '../common/PathMatches.js'
 import type { Id } from '../Data'
 import type { Db } from '../Db'
 import type { DTI, IDoc } from '../Doc'
 import type { IntrinsicFields } from '../Doc/_'
 import type { DocPath } from '../Path'
-import type { DocRefContext } from '../Ref/_/Context'
+import type { DocRefContext } from '../Ref/_/Context.js'
 
 export type TriggerParams<D extends IDoc = IDoc, This = D | null> = {
 	doc: This

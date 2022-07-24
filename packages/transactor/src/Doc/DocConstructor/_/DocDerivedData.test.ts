@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { defaultDocDerivedData, DocDerivedData } from './DocDerivedData'
+import type { defaultDocDerivedData, DocDerivedData } from './DocDerivedData.js'
 
 describe('DocDerivedData', () => {
 	it('works (static)', () => {

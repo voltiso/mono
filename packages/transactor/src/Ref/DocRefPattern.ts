@@ -6,19 +6,19 @@ import { assert } from '@voltiso/assertor'
 import type { InferableObject } from '@voltiso/schemar'
 import { undef } from '@voltiso/util'
 
-import { getGetPathMatches } from '../common/PathMatches'
+import { getGetPathMatches } from '../common/PathMatches.js'
 import type { IDoc } from '../Doc'
-import type { IndexedDoc } from '../Doc/IndexedDoc'
-import type { Method } from '../Method'
+import type { IndexedDoc } from '../Doc/IndexedDoc.js'
+import type { Method } from '../Method.js'
 import { concatPath } from '../Path'
-import { DocPattern } from '../Path/Path'
+import { DocPattern } from '../Path/Path.js'
 import type { WithTransactor } from '../Transactor'
-import type { MethodEntry } from '../Transactor/Entry'
+import type { MethodEntry } from '../Transactor/Entry.js'
 import type {
 	AfterTrigger,
 	BeforeCommitTrigger,
 	OnGetTrigger,
-} from '../Trigger/Trigger'
+} from '../Trigger/Trigger.js'
 
 type Context = WithTransactor
 

@@ -3,7 +3,7 @@
 
 import type { OmitCall } from '@voltiso/util'
 
-import type { ParentContext } from './Context'
+import type { ParentContext } from './Context.js'
 import type { Db } from './Db.type'
 
 export interface DbConstructor<Derived extends OmitCall<Db> = Db> {

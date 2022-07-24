@@ -4,12 +4,12 @@
 import { assert } from '@voltiso/assertor'
 import { isDefined, undef } from '@voltiso/util'
 
-import { IndexedDoc } from '../..'
 import { databaseUpdate } from '../../common'
 import type { DataWithId } from '../../Data'
 import { withoutId } from '../../Data'
 import type { WithDb } from '../../Db'
-import type { IDoc } from '../../Doc/IDoc'
+import type { IDoc } from '../../Doc/IDoc.js'
+import { IndexedDoc } from '../../Doc/IndexedDoc.js'
 import type { DeleteIt, RootReplaceIt } from '../../it'
 import { isDeleteIt, isReplaceIt, ReplaceIt } from '../../it'
 import type { WithTransaction } from '../../Transaction'
@@ -21,18 +21,18 @@ import {
 } from '../../Transaction'
 import type { WithTransactor } from '../../Transactor'
 import { initLastDataSeen } from '../../Trigger'
-import type { Updates, UpdatesRecord } from '../../updates/Updates'
+import type { Updates, UpdatesRecord } from '../../updates/Updates.js'
 import {
 	applyUpdates,
 	combineUpdates,
 	dataFromUpdates,
-} from '../../updates/Updates'
+} from '../../updates/Updates.js'
 import type { Forbidden } from '../../util'
-import { getAfterTriggers } from '../_/getAfterTriggers'
-import { getBeforeCommits } from '../_/getBeforeCommits'
-import { getSchema } from '../_/getSchema'
-import { processTriggers } from '../_/processTriggers'
-import type { WithDocRef } from '../WithDocRef'
+import { getAfterTriggers } from '../_/getAfterTriggers.js'
+import { getBeforeCommits } from '../_/getBeforeCommits.js'
+import { getSchema } from '../_/getSchema.js'
+import { processTriggers } from '../_/processTriggers.js'
+import type { WithDocRef } from '../WithDocRef.js'
 import { transactionDocPathGet } from './get.js'
 
 type Ctx = WithTransactor & Partial<WithTransaction> & WithDocRef & WithDb

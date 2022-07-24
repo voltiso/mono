@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import type { IDoc } from '../../Doc'
-import type { DocRefBase_ } from '../DocRefBase'
-import type { IRef } from '../IRef'
-import { WeakDocRef } from '../WeakDocRef'
+import type { DocRefBase_ } from '../DocRefBase.js'
+import type { IRef } from '../IRef.js'
+import { WeakDocRef } from '../WeakDocRef.js'
 
 function forEachRef(o: any, f: (r: IRef) => void) {
 	if (o instanceof WeakDocRef) {

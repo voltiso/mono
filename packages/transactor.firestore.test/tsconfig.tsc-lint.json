@@ -5,8 +5,13 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"paths": {
-			"@voltiso/*": ["../*"]
-		}
-	}
+		"rootDir": "."
+	},
+
+	"exclude": [
+		"dist/",
+		"node_modules/",
+		".tsc-out/"
+		//
+	]
 }

@@ -5,8 +5,8 @@ import { assert } from '@voltiso/assertor'
 import { clone, undef } from '@voltiso/util'
 
 import type { WithDocRef } from '../Ref'
-import { getAfterTriggers } from '../Ref/_/getAfterTriggers'
-import type { CacheEntry } from '../Transaction/Cache'
+import { getAfterTriggers } from '../Ref/_/getAfterTriggers.js'
+import type { CacheEntry } from '../Transaction/Cache.js'
 
 export const initLastDataSeen = (ctx: WithDocRef, cacheEntry: CacheEntry) => {
 	if (cacheEntry.lastDataSeenByAfters) return

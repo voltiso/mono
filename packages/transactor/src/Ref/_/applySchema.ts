@@ -5,9 +5,9 @@ import type * as s from '@voltiso/schemar'
 import { ValidationError } from '@voltiso/schemar'
 import { isPlain } from '@voltiso/util'
 
-import type { Data, DataWithoutId } from '../../Data/Data'
+import type { Data, DataWithoutId } from '../../Data/Data.js'
 import type { WithTransactor } from '../../Transactor'
-import type { WithDocRef } from '../WithDocRef'
+import type { WithDocRef } from '../WithDocRef.js'
 
 type Params = {
 	schema: s.Schema<object>

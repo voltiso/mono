@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import '../../zone'
+import '../../zone.js'
 
 import { assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
@@ -15,23 +15,23 @@ import {
 } from '@voltiso/util'
 import chalk from 'chalk'
 
-import { databaseUpdate } from '../../common/database/databaseUpdate'
+import { databaseUpdate } from '../../common/database/databaseUpdate.js'
 import { withoutId } from '../../Data'
 import type { Doc, IDocTI } from '../../Doc'
 import { TransactorError } from '../../error'
 import { deleteIt, isDeleteIt, replaceIt } from '../../it'
 import { DocRef_ } from '../../Ref'
-import { getBeforeCommits } from '../../Ref/_/getBeforeCommits'
-import { processTriggers } from '../../Ref/_/processTriggers'
+import { getBeforeCommits } from '../../Ref/_/getBeforeCommits.js'
+import { processTriggers } from '../../Ref/_/processTriggers.js'
 import { Transaction_ } from '../../Transaction'
-import type { Cache, CacheEntry } from '../../Transaction/Cache'
-import { triggerGuard } from '../../Transaction/guard'
-import { setCacheEntry } from '../../Transaction/methods/setCacheEntry'
-import type { Transaction } from '../../Transaction/Transaction'
-import type { BeforeCommitTriggerParams } from '../../Trigger/TriggerParams'
-import { dump } from '../../util/dump'
-import { isEqual } from '../../util/isEqual'
-import type { Transactor_ } from '../Transactor_'
+import type { Cache, CacheEntry } from '../../Transaction/Cache.js'
+import { triggerGuard } from '../../Transaction/guard.js'
+import { setCacheEntry } from '../../Transaction/methods/setCacheEntry.js'
+import type { Transaction } from '../../Transaction/Transaction.js'
+import type { BeforeCommitTriggerParams } from '../../Trigger/TriggerParams.js'
+import { dump } from '../../util/dump.js'
+import { isEqual } from '../../util/isEqual.js'
+import type { Transactor_ } from '../Transactor_.js'
 
 export type TransactionBody<Result> = (db: Transaction) => Promise<Result>
 

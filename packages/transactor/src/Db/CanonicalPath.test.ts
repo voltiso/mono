@@ -5,7 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type { Id } from '../Data'
-import type { CanonicalPath } from './CanonicalPath'
+import type { CanonicalPath } from './CanonicalPath.js'
 
 describe('Db', () => {
 	it('works', () => {

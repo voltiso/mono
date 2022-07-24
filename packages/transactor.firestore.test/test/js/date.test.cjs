@@ -1,11 +1,17 @@
-const { firestore, srcFirestore } = require('./common/index.cjs')
-const { createTransactor } = srcFirestore
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const db = createTransactor(firestore, { requireSchemas: false })
+'use strict'
+
+const { firestore, srcFirestore } = require('./common/index.cjs')
+const { createFirestoreTransactor } = srcFirestore
+
+const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
 describe('date', function () {
 	it('should convert timestamp to date', async function () {
 		expect.hasAssertions()
+
 		const birth = new Date()
 
 		await db('usersOrNot/artur').set({

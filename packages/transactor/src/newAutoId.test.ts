@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { newAutoId } from './newAutoId'
+import { newAutoId } from './newAutoId.js'
 
 describe('newAutoId', () => {
 	it('works', () => {

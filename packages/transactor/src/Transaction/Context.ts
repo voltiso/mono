@@ -3,7 +3,7 @@
 
 import type { WithDb } from '../Db'
 import type { TransactorContext, WithTransactor } from '../Transactor'
-import type { WithTransaction } from './WithTransaction'
+import type { WithTransaction } from './WithTransaction.js'
 
 export type ParentContext = TransactorContext
 export type TransactionContext = WithTransactor & WithTransaction & WithDb

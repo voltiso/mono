@@ -11,7 +11,7 @@ import type {
 	AfterTriggerParams,
 	BeforeCommitTriggerParams,
 	TriggerParams,
-} from './TriggerParams'
+} from './TriggerParams.js'
 
 type Return<D extends IDoc> =
 	| Data<GDataInput<D[DTI]>>

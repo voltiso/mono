@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Id } from '../Data'
-import type { DTI, IDocTI } from '../Doc/DocTI'
-import type { IDoc } from '../Doc/IDoc'
+import type { DTI, IDocTI } from '../Doc/DocTI.js'
+import type { IDoc } from '../Doc/IDoc.js'
 import type { DocPath } from '../Path'
-import type { DocFieldPath } from './DocFieldPath'
+import type { DocFieldPath } from './DocFieldPath.js'
 
 export const IS_DOC_REF = Symbol('IS_DOC_REF')
 

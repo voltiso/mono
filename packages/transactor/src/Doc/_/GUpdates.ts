@@ -4,7 +4,10 @@
 import type { GetType, InferableObject } from '@voltiso/schemar'
 
 import type { DeleteIt, ReplaceIt } from '../../it'
-import type { UpdatesFromData, UpdatesFromData_Update } from './UpdatesFromData'
+import type {
+	UpdatesFromData,
+	UpdatesFromData_Update,
+} from './UpdatesFromData.js'
 
 export type GUpdates<Fields extends InferableObject> =
 	| UpdatesFromData<GetType<Fields>>

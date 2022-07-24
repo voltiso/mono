@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable func-names */
-
 import { assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 import chalk from 'chalk'
@@ -12,10 +10,10 @@ import type {
 	AfterTriggerParams,
 	BeforeCommitTriggerParams,
 	TriggerParams,
-} from '../../Trigger/TriggerParams'
+} from '../../Trigger/TriggerParams.js'
 import { dump } from '../../util'
 import type { IDoc } from '..'
-import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
+import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData.js'
 import type { GI } from '.'
 
 function assertBefore<D extends IDoc>(

@@ -3,9 +3,9 @@
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
 
-import type { ParentContext } from './Context'
-import type { Transaction } from './Transaction'
-import type { Transaction_ } from './Transaction_'
+import type { ParentContext } from './Context.js'
+import type { Transaction } from './Transaction.js'
+import type { Transaction_ } from './Transaction_.js'
 
 export interface TransactionConstructor<
 	Derived extends Transaction = Transaction_,
