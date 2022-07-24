@@ -11,7 +11,8 @@ describe('Relax', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<Relax<IDoc>, IDoc>()
+		type A = Relax<IDoc>
+		Assert.is<A, IDoc>()
 
 		Assert.is<Relax<IDoc>, IDoc>()
 

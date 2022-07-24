@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
-import { isObject } from '@voltiso/util'
+import { assumeType, isPlain } from '@voltiso/util'
 
 import { isDocumentReference } from './isDocumentReference.js'
 
@@ -12,17 +12,15 @@ export type RefEntry = {
 }
 
 export function isRefEntry(x: unknown): x is RefEntry {
-	if (!isObject(x)) return false
+	if (!isPlain(x)) return false
 
 	if (Object.keys(x).length !== 2) return false
 
-	if (!('__target' in x)) return false
+	assumeType<Partial<RefEntry>>(x)
 
-	if (typeof (x as RefEntry).__target !== 'object') return false
+	if (!isDocumentReference(x.__target)) return false
 
-	if (typeof (x as RefEntry).__isStrong !== 'boolean') return false
-
-	if (!isDocumentReference((x as RefEntry).__target)) return false
+	if (typeof x.__isStrong !== 'boolean') return false
 
 	return true
 }

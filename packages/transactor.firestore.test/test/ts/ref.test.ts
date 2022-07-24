@@ -2,10 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type { Id } from '@voltiso/transactor'
 import { createTransactor, Doc } from '@voltiso/transactor'
 import * as transactorSchemas from '@voltiso/transactor/schemas'
 import type { StaticError } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { Assert, Is } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore.js'
 
@@ -41,16 +42,25 @@ declare module '@voltiso/transactor' {
 }
 
 describe('ref', () => {
+	it('type', () => {
+		expect.assertions(0)
+
+		Assert.is<Id<Doctor>, Id>()
+		Assert(Is<Id>().not.subtypeOf<Id<Doctor>>())
+	})
+
 	it('checks numRefs on delete', async () => {
 		expect.hasAssertions()
 
 		await firestore.doc('doctor/d').delete()
 		await firestore.doc('patient/p').delete()
+
 		const d = await doctors.add({
 			profile: {
 				name: 'd',
 			},
 		})
+
 		const p = await patients.add({
 			profile: {
 				name: 'p',
@@ -59,10 +69,13 @@ describe('ref', () => {
 			},
 		})
 
+		//
 		;() => {
 			const p = patients(d.id)
 			Assert.is<typeof p, StaticError>()
 		}
+
+		//
 		;() =>
 			patients.add({
 				profile: {

@@ -4,6 +4,7 @@
 	"scripts": {
 		"build": "turbo run build",
 		"test": "turbo run test",
+		"lint": "turbo run lint",
 		"__________HOOKS": "__________",
 		"postinstall": "patch-package"
 	},
@@ -15,6 +16,7 @@
 		"@babel/plugin-transform-async-to-generator": "^7.18.6",
 		"@babel/plugin-transform-react-jsx": "^7.17.12",
 		"@babel/plugin-transform-strict-mode": "^7.18.6",
+		"@eslint/eslintrc": "^1.3.0",
 		"@milahu/patch-package": "^6.4.14",
 		"@next/eslint-plugin-next": "^12.2.3",
 		"@prettier/plugin-xml": "^2.2.0",

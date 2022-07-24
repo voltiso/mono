@@ -6,13 +6,13 @@ import { assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
 import { deepClone, isDefined, undef } from '@voltiso/util'
 
-import type { DocumentReference } from './DocumentReference'
-import { DocumentSnapshot } from './DocumentSnapshot'
-import { CongestionError, LocalstoreError } from './Error'
-import type { Localstore } from './Localstore'
-import { Lock } from './Lock'
-import type { DocPath } from './Path'
-import { applyUpdatesInPlace } from './util/applyUpdates'
+import type { DocumentReference } from './DocumentReference.js'
+import { DocumentSnapshot } from './DocumentSnapshot.js'
+import { CongestionError, LocalstoreError } from './Error.js'
+import type { Localstore } from './Localstore.js'
+import { Lock } from './Lock.js'
+import type { DocPath } from './Path.js'
+import { applyUpdatesInPlace } from './util/applyUpdates.js'
 
 function fail(_store: Localstore) {
 	// console.log(

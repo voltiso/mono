@@ -8,14 +8,14 @@ import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
 import { deepClone, isDefined } from '@voltiso/util'
 
-import type { CollectionReference } from './CollectionReference'
-import { DocumentSnapshot } from './DocumentSnapshot'
-import { LocalstoreError } from './Error'
-import type { Localstore } from './Localstore'
-import { Collection, Doc } from './Localstore'
-import type { DocPath } from './Path'
-import { applyUpdatesInPlace } from './util/applyUpdates'
-import { newAutoId } from './util/newAutoId'
+import type { CollectionReference } from './CollectionReference.js'
+import { DocumentSnapshot } from './DocumentSnapshot.js'
+import { LocalstoreError } from './Error.js'
+import type { Localstore } from './Localstore.js'
+import { Collection, Doc } from './Localstore.js'
+import type { DocPath } from './Path.js'
+import { applyUpdatesInPlace } from './util/applyUpdates.js'
+import { newAutoId } from './util/newAutoId.js'
 
 function failTransactionFor(store: Localstore, path: DocPath) {
 	const transaction = store._locks[path]?.transaction

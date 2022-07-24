@@ -27,8 +27,6 @@ function deepAssign(r: any, x: any) {
 export function deepClone<X>(x: X): X
 
 export function deepClone(x: any) {
-	// console.log('deepClone', x)
-
 	if (typeof x?.clone === 'function') {
 		return x.clone()
 	}

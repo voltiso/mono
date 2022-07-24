@@ -3,11 +3,11 @@
 
 import type * as Database from '@voltiso/firestore-like'
 
-import { CollectionReference } from './CollectionReference'
-import { DocumentReference } from './DocumentReference'
-import type { Lock } from './Lock'
-import type { DocPath } from './Path'
-import { Transaction } from './Transaction'
+import { CollectionReference } from './CollectionReference.js'
+import { DocumentReference } from './DocumentReference.js'
+import type { Lock } from './Lock.js'
+import type { DocPath } from './Path.js'
+import { Transaction } from './Transaction.js'
 
 // class Ref {
 // 	__ref: string

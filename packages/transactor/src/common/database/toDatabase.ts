@@ -29,7 +29,7 @@ export function toDatabaseUpdate(
 	ctx: DatabaseContext,
 	updates: Updates | NestedUpdates,
 ): FirestoreLike.UpdateData | FirestoreLike.UpdateDataNested {
-	if (isDocRef(updates)) return ctx.database.doc(updates.path.pathString)
+	if (isDocRef(updates)) return updates.toJSON()
 
 	if (updates instanceof Date) return updates
 

@@ -47,7 +47,7 @@
 		"prettier-plugin-toml": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^18.0.6",
+		"@types/node": "^18.6.0",
 		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"depcheck": "^1.4.3",

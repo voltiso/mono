@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import type * as Database from '@voltiso/firestore-like'
+import * as Database from '@voltiso/firestore-like'
 import { isPlain } from '@voltiso/util'
 
 import type {
@@ -33,7 +33,14 @@ function fromFirestoreRec(
 		return o.map(x => fromFirestoreRec(ctx, x))
 		// } else if (isRefLike(o)) {
 		// 	return new Ref(o.__ref) as unknown as T
+	} else if (Database.isDocumentReference(o)) {
+		// eslint-disable-next-line no-console
+		console.warn('found LEGACY STRONG REF', o.path)
+		return new DocRef(ctx, o.path)
 	} else if (isRefEntry(o)) {
+		// eslint-disable-next-line no-console
+		console.log('fromDatabase ref', o.__target, o.__isStrong)
+
 		if (o.__isStrong) return new DocRef(ctx, o.__target.path)
 		else return new WeakDocRef(ctx, o.__target.path)
 	} else if (isTimestamp(o)) return o.toDate()

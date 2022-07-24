@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Tagged, Throw } from '@voltiso/util'
+import type { Throw } from '@voltiso/util'
 
 import type { Data, Id } from '../Data'
 import type { IDoc, IDocConstructorNoBuilder } from '../Doc'
@@ -17,9 +17,7 @@ export interface CollectionRef<D extends IDoc = IDoc> {
 
 	/** Get Doc reference by Id */
 	(id: Id<D>): WeakDocRef<D>
-	<DD extends IDoc>(id: string & Tagged<DD>): Throw<
-		'wrong Id type' & { Doc: DD }
-	>
+	<DD extends IDoc>(id: Id<DD>): Throw<'wrong Id type' & { Doc: DD }>
 	(id: Id): WeakDocRef<D>
 
 	/** Add Doc to this Collection */

@@ -10,6 +10,10 @@
 		"test": {
 			"outputs": [],
 			"inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+		},
+
+		"lint": {
+			"outputs": []
 		}
 	}
 }
