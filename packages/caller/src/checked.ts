@@ -2,8 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { GetInputType, GetType, RootSchemable } from '@voltiso/schemar'
-// eslint-disable-next-line n/file-extension-in-import
-import * as s from '@voltiso/schemar/s'
+import * as s from '@voltiso/schemar'
 
 type PossiblyPromise<X> = X | Promise<X>
 

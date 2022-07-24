@@ -3,7 +3,7 @@
 
 import { SchemarError } from '@voltiso/schemar'
 // eslint-disable-next-line n/file-extension-in-import
-import * as s from '@voltiso/schemar/s'
+import * as s from '@voltiso/schemar'
 import type { Callable, Interface, Unpack } from '@voltiso/util'
 import { createClassInterface, deepMerge } from '@voltiso/util'
 import type {

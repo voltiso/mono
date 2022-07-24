@@ -61,23 +61,23 @@ export const importOverride = defineEslintConfigOverride({
 		'import/ignore': ['node_modules/react-native/index\\.js$'],
 
 		'import/resolver': {
-			node: {
-				extensions: [
-					'.ts',
-					'.tsx',
-					'.mts',
-					'.mtsx',
-					'.cts',
-					'.ctsx',
-					//
-					'.js',
-					'.jsx',
-					'.mjs',
-					'.mjsx',
-					'.cjs',
-					'.cjsx',
-				],
-			},
+			// node: {
+			// 	extensions: [
+			// 		'.ts',
+			// 		'.tsx',
+			// 		'.mts',
+			// 		'.mtsx',
+			// 		'.cts',
+			// 		'.ctsx',
+			// 		//
+			// 		'.js',
+			// 		'.jsx',
+			// 		'.mjs',
+			// 		'.mjsx',
+			// 		'.cjs',
+			// 		'.cjsx',
+			// 	],
+			// },
 
 			typescript: {
 				/**

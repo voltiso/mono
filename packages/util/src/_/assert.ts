@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '..'
-import { VoltisoError } from '../error'
+import { VoltisoUtilError } from '../error'
+import { lazyConstructor } from '../lazy'
+import type { AlsoAccept } from '../type'
 
-class AssertionError extends VoltisoError {
+class AssertionError extends lazyConstructor(() => VoltisoUtilError) {
 	constructor(
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,

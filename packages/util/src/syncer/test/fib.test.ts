@@ -5,9 +5,9 @@ import type { IsIdentical } from '../../type'
 import { Assert } from '../../type'
 import { runAsync, runSync } from '../run.js'
 import type { SyncerFunction } from '../SyncerFunction.js'
-import type { SyncerIterator } from '../SyncerIterator.js'
+import type { SyncerPromise } from '../SyncerPromise.js'
 
-function* fib(n: number): SyncerIterator<number, number> {
+function* fib(n: number): SyncerPromise<number, number> {
 	if (n === 0) return 0
 
 	if (n === 1)

@@ -18,8 +18,10 @@ const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/no-path-concat': 2,
 	'n/no-process-exit': 2,
 	'n/no-unpublished-bin': 2,
-	'n/no-unpublished-import': 2,
-	'n/no-unpublished-require': 2,
+
+	'n/no-unpublished-import': 0, // buggy?
+	'n/no-unpublished-require': 0,
+
 	'n/no-unsupported-features/es-builtins': 2,
 	'n/no-unsupported-features/es-syntax': 0, //! disabled
 	'n/no-unsupported-features/node-builtins': 2,
@@ -41,7 +43,11 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'n/file-extension-in-import': [
 		'error',
 		'always',
-		{ '.js': 'always', '.ts': 'never', '.tsx': 'never' },
+		// {
+		// 	'.js': 'always',
+		// 	'.ts': 'never',
+		// 	'.tsx': 'never',
+		// },
 	],
 
 	'n/global-require': 2,

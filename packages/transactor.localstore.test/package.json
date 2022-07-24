@@ -1,0 +1,33 @@
+{
+	"name": "@voltiso/transactor.localstore.test",
+	"private": true,
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________TEST": "__________",
+		"test": "jest",
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint .",
+		"lint:tsc": "tsc -b tsconfig.tsc-lint.json"
+	},
+	"__________DEPS": "__________",
+	"devDependencies": {
+		"@types/random-seed": "^0.3.3",
+		"@voltiso/assertor": "workspace:^1.0.0",
+		"@voltiso/config.jest.esr": "workspace:^1.0.0",
+		"@voltiso/localstore": "workspace:^2.0.0",
+		"@voltiso/schemar": "workspace:^11.0.0",
+		"@voltiso/transactor": "workspace:^8.0.0",
+		"@voltiso/transactor.localstore": "workspace:^8.0.0",
+		"@voltiso/util": "workspace:^39.0.0",
+		"depcheck": "^1.4.3",
+		"npm-run-all": "^4.1.5",
+		"random-seed": "^0.3.0"
+	},
+	"__________MISC": "__________",
+	"engines": {
+		"node": ">=16"
+	}
+}

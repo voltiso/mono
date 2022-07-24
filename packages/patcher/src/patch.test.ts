@@ -84,8 +84,36 @@ describe('patch', () => {
 	it('does not modify if not needed (simple)', () => {
 		expect.hasAssertions()
 
-		const a = { a: 0 }
+		const a = { a: 0, b: 'bb' }
 		const b = patch(a, { a: 0 })
+
+		expect(b).toBe(a)
+	})
+
+	it('does not modify if not needed (replaceIt)', () => {
+		expect.hasAssertions()
+
+		const a = { a: 0, b: 'bb' }
+		const b = patch(a, replaceIt({ a: 0, b: 'bb' }))
+
+		expect(b).toBe(a)
+	})
+
+	it('does not modify if not needed (patchSet)', () => {
+		expect.hasAssertions()
+
+		const a = { a: 0, b: 'bb' }
+		const b = patchSet(a, { a: 0, b: 'bb' })
+
+		expect(b).toBe(a)
+	})
+
+	it('does not modify if not needed (patchSet) - proto', () => {
+		expect.hasAssertions()
+
+		const a = { a: 0, b: 'bb' }
+		Object.setPrototypeOf(a, { c: 1 })
+		const b = patchSet(a, { a: 0, b: 'bb' })
 
 		expect(b).toBe(a)
 	})

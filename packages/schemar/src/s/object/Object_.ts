@@ -80,7 +80,6 @@ export class Object__<O extends ObjectOptions>
 			for (const [k, v] of VObject.getEntries(this.getShape)) {
 				const tv = s.schema(v)
 
-				// eslint-disable-next-line no-continue
 				if (tv.isOptional && !VObject.hasProperty(x, k)) continue
 
 				assumeType<IRootSchema>(tv)
@@ -130,7 +129,6 @@ export class Object__<O extends ObjectOptions>
 				// 	typeof tv.getDefault === 'undefined',
 				// 	"typeof tv.getDefault === 'undefined'"
 				// )
-				// eslint-disable-next-line no-continue
 				continue
 			}
 

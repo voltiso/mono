@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable promise/prefer-await-to-then */
-/* eslint-disable github/no-then */
 
 export function lazyPromise<T, ARGS extends unknown[]>(
 	getPromise: (...args: ARGS) => PromiseLike<T>,

@@ -4,16 +4,17 @@
 import {
 	cleanCompatDirs,
 	getCompatDirNames,
-	readPackageJson,
 	VoltisoScriptError,
 	writeCompatDirs,
 } from '@voltiso/script.lib'
+import { getPackageJsonCached } from '@voltiso/util'
+import * as path from 'node:path'
 
 import type { Command } from './Command.js'
 
 const subCommands = {
 	get: async () => {
-		const packageJson = await readPackageJson()
+		const packageJson = await getPackageJsonCached(path.resolve())
 		const directories = getCompatDirNames(packageJson)
 		// eslint-disable-next-line no-console
 		console.log(directories.join(' '))

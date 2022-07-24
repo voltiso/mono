@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '../nullish'
+import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '../proxy'
 
-/* eslint-disable max-lines-per-function */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -44,31 +43,14 @@ export function lazyValue<T extends object>(getValue: () => T): T {
 			return Reflect.getPrototypeOf(value)
 		},
 
-		getOwnPropertyDescriptor(_t, p) {
+		getOwnPropertyDescriptor(target, property) {
 			load()
-
-			const original = Object.getOwnPropertyDescriptor(obj, p)
-			const override = Reflect.getOwnPropertyDescriptor(value, p)
-
-			if (original?.configurable === false) {
-				return { ...original, ...override, configurable: original.configurable }
-			} else if (!original || original.configurable === true) {
-				if (override) return { ...override, configurable: true }
-				else return undef
-			} else return override
-			// return { ...original, ...override, configurable: original.configurable }
+			return forwardGetOwnPropertyDescriptor(value, target, property)
 		},
 
 		ownKeys(target) {
 			load()
-
-			const result = Reflect.ownKeys(value)
-
-			const moreKeys = Object.entries(Object.getOwnPropertyDescriptors(target))
-				.filter(([_property, descriptor]) => !descriptor.configurable)
-				.map(entry => entry[0])
-
-			return [...new Set([...result, ...moreKeys])]
+			return forwardOwnKeys(value, target)
 		},
 
 		construct(_t, args, newTarget) {

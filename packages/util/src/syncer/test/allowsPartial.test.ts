@@ -2,9 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { runAsync, runSync } from '../run.js'
-import type { SyncerIterator } from '../SyncerIterator.js'
+import type { SyncerPromise } from '../SyncerPromise.js'
 
-function* partialFunc(): SyncerIterator<number, number | undefined> {
+function* partialFunc(): SyncerPromise<number, number | undefined> {
 	const x = yield {
 		async: () => 11,
 	}
@@ -32,7 +32,7 @@ describe('allowsPartial', () => {
 	it('type - does not allow partial if Intermediate cannot be undefined', () => {
 		expect.assertions(0)
 
-		void function* (): SyncerIterator<number, number> {
+		void function* (): SyncerPromise<number, number> {
 			// @ts-expect-error partial!
 			const x = yield {
 				async: () => 11,

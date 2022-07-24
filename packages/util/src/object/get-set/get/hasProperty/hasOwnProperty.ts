@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '../../../../error'
+import { VoltisoUtilError } from '../../../../error'
 import { toString } from '../../../../string'
 import { isObject } from '../../../isObject.js'
 import { assertNotPolluting } from '../../isPolluting.js'
@@ -21,7 +21,7 @@ export function assertHasOwnProperty<O extends object, K extends keyof any>(
 	key: K,
 ): asserts key is K & keyof O {
 	if (!hasOwnProperty(obj, key)) {
-		throw new VoltisoError(
+		throw new VoltisoUtilError(
 			`assertHasOwnProperty(${toString(obj)}, ${toString(key)}) failed`,
 		)
 	}

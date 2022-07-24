@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '../../../../error'
+import { VoltisoUtilError } from '../../../../error'
+import { lazyConstructor } from '../../../../lazy'
 import { toString } from '../../../../string'
 import type { Value_ } from '../../../key-value'
 import type { IPath, Path } from '../../../Path'
@@ -24,7 +25,7 @@ export type Get<O, P extends Path<O>> = Get_<O, P>
 export class GetError<
 	Obj extends object,
 	P extends IPath,
-> extends VoltisoError {
+> extends lazyConstructor(() => VoltisoUtilError) {
 	object: Obj
 	path: P
 

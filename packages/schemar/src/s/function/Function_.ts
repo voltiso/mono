@@ -4,7 +4,7 @@
 import type { OmitCall } from '@voltiso/util'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
-import { SchemarError } from '../../errors'
+import { SchemarError } from '../../error'
 import type {
 	InferableReadonlyTuple,
 	IRootSchema,

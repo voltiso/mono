@@ -1,26 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-//! TODO: use findPackageJson util
-
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable n/global-require */
-/* eslint-disable unicorn/prefer-module */
-
-import type { PackageJson } from '../type'
-
-let packageJson: PackageJson | undefined
+import { getPackageJsonCachedSync } from '../package-json'
 
 export class VoltisoError extends Error {
 	constructor(
+		dir: string,
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		try {
-			if (!packageJson) packageJson = require('../../package.json')
-		} catch {}
-
-		let prefixedMessage = packageJson ? `[${packageJson.name}]` : ''
+		const packageJson = getPackageJsonCachedSync(dir)
+		let prefixedMessage = `[${packageJson.name}]`
 
 		if (message) prefixedMessage = `${prefixedMessage} ${message}`
 

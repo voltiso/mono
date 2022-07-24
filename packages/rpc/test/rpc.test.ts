@@ -5,7 +5,7 @@
 import express = require('express')
 import { checked } from '@voltiso/caller'
 // eslint-disable-next-line n/file-extension-in-import
-import * as s from '@voltiso/schemar/s'
+import * as s from '@voltiso/schemar'
 
 import { createClient } from '../src/client'
 import { createServer, createServerContext } from '../src/server'

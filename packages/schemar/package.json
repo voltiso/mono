@@ -11,18 +11,6 @@
 			"types": "./dist/esm/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
-		},
-		"./s": {
-			"types": "./dist/esm/s/index.d.ts",
-			"import": "./dist/esm/s/index.js",
-			"require": "./dist/cjs/s/index.js"
-		}
-	},
-	"typesVersions": {
-		"*": {
-			"s": [
-				"dist/esm/s"
-			]
 		}
 	},
 	"__________EXPORTS FALLBACK": "__________",
@@ -31,8 +19,7 @@
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
-		"dist/",
-		"s/"
+		"dist/"
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
@@ -62,6 +49,7 @@
 	},
 	"devDependencies": {
 		"@voltiso/config.jest.esr": "workspace:^1.0.0",
+		"@voltiso/config.ts": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"@voltiso/script": "workspace:^1.0.0",

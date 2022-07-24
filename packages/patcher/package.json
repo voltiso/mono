@@ -46,7 +46,8 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:^39.0.0"
+		"@voltiso/util": "workspace:^39.0.0",
+		"fast-equals": "^4.0.1"
 	},
 	"devDependencies": {
 		"@voltiso/config.jest.esr": "workspace:^1.0.0",

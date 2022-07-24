@@ -12,7 +12,11 @@
 	],
 
 	"exclude": [
+		"/**/dist",
 		"/**/dist/",
+		"/**/dist/*",
+		"/**/dist/**/*",
+		"../*/dist",
 		// "/**/.*",
 		"/**/node_modules/"
 		//
@@ -20,6 +24,10 @@
 
 	"compilerOptions": {
 		// "rootDir": ".",
+
+		// "paths": {
+		// 	"*": ["../*"] // Other packages in this monorepo
+		// },
 
 		"outDir": "_outDir_PLEASE_OVERRIDE", // Just in case - avoid polluting any dirs
 

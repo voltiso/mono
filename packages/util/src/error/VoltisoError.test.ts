@@ -7,7 +7,8 @@ describe('VoltisoError', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		const error = new VoltisoError()
+		// eslint-disable-next-line unicorn/prefer-module
+		const error = new VoltisoError(__dirname)
 
 		expect(error.message).toBe('[@voltiso/util]')
 	})

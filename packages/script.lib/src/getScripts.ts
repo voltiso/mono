@@ -28,8 +28,8 @@ export async function getScripts(path: string) {
 
 	let scripts = {}
 
-	for (const module of modules) {
-		scripts = { ...module, ...scripts }
+	for (const myModule of modules) {
+		scripts = { ...myModule, ...scripts }
 	}
 
 	return scripts

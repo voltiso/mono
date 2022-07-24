@@ -15,6 +15,15 @@
  * assumeType<string>(x) // now `x` is `string`!
  * ```
  *
+ * @example
+ *
+ * ```ts
+ * const x = ...
+ * assumeType<string, typeof x>(x) // narrow-only
+ * ```
+ *
  * @param _x - Variable to narrow type of
  */
-export function assumeType<T>(_x: unknown): asserts _x is T {}
+export function assumeType<T extends Supertype, Supertype = unknown>(
+	_x: Supertype,
+): asserts _x is T {}

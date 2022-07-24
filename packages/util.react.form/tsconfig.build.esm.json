@@ -8,7 +8,9 @@
 		"lib": ["DOM"],
 
 		"outDir": "dist/esm",
-		"rootDir": "src"
+		"rootDir": "src",
+
+		"baseUrl": "../.."
 	},
 
 	"include": ["src"]

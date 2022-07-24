@@ -23,7 +23,7 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/destructuring-as-function-argument': 0,
 		'putout/function-declaration-paren-newline': 0,
 		'putout/keyword-spacing': 0, // conflicts with prettier
-		'putout/long-properties-destructuring': 'error',
+		'putout/long-properties-destructuring': 0, // conflicts with prettier
 		'putout/multiple-properties-destructuring': 0,
 		'putout/newline-function-call-arguments': 0,
 		'putout/object-property-newline': 0, // not sure about this one - prettier accepts both

@@ -1,0 +1,50 @@
+{
+	"name": "@voltiso/util.esbuild",
+	"version": "1.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/mono.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS FALLBACK": "__________",
+	"types": "dist/esm/index.d.ts",
+	"module": "dist/esm/index.js",
+	"main": "dist/cjs/index.js",
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"dist"
+	],
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint .",
+		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
+		"__________BUILD": "__________",
+		"build": "run-p build:esm build:cjs",
+		"build:esm": "tsc -b tsconfig.build.esm.json",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p build test lint",
+		"__________MISC": "__________",
+		"clean": "rimraf dist"
+	},
+	"__________DEPS": "__________",
+	"dependencies": {
+		"esbuild-register": "^3.3.3"
+	},
+	"peerDependencies": {
+		"esbuild": ">= 0.14.49"
+	},
+	"devDependencies": {
+		"@types/node": "^18.0.6",
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"depcheck": "^1.4.3",
+		"esbuild": "^0.14.49",
+		"npm-run-all": "^4.1.5",
+		"rimraf": "^3.0.2"
+	}
+}

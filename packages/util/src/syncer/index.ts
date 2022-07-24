@@ -3,5 +3,5 @@
 
 export * from './run.js'
 export * from './SyncerFunction.js'
-export * from './SyncerIterator.js'
+export * from './SyncerPromise.js'
 export * from './SyncerSwitch.js'

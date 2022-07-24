@@ -82,6 +82,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/consistent-type-imports': 2,
 		'@typescript-eslint/no-extra-parens': 0, // conflicts with prettier
 		'@typescript-eslint/no-extra-semi': 0, // conflicts with prettier
+		'@typescript-eslint/no-invalid-this': 0,
 
 		// '@typescript-eslint/no-explicit-any': [
 		// 	'error',
@@ -152,13 +153,15 @@ export const codeOverride = defineEslintConfigOverride({
 		'operator-linebreak': 0,
 		'no-multiple-empty-lines': 0, // handled by prettier
 
-		'func-names': [
-			'error',
-			'always',
-			{
-				generators: 'never',
-			},
-		], // make unnamed functions arrow
+		'func-names': 0,
+
+		// 'func-names': [
+		// 	'error',
+		// 	'always',
+		// 	{
+		// 		generators: 'never',
+		// 	},
+		// ], // make unnamed functions arrow
 
 		'prefer-named-capture-group': 0, // handled by `regexp/prefer-named-capture-group`
 		'newline-per-chained-call': 0,
@@ -169,5 +172,6 @@ export const codeOverride = defineEslintConfigOverride({
 		'max-lines': 0,
 		'max-lines-per-function': 0,
 		'max-params': 0,
+		'no-continue': 0,
 	},
 })

@@ -14,5 +14,6 @@ export const sonar = defineEslintConfigOverride({
 		'sonarjs/elseif-without-else': 0,
 		'sonarjs/no-identical-expressions': 'error',
 		'sonarjs/no-inverted-boolean-check': 2,
+		'sonarjs/prefer-single-boolean-return': 0,
 	},
 })

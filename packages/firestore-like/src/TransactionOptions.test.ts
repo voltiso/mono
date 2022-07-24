@@ -1,0 +1,20 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+// eslint-disable-next-line n/file-extension-in-import
+import 'firebase-admin/firestore'
+
+import { Assert } from '@voltiso/util'
+
+import type { TransactionOptions } from './TransactionOptions'
+
+describe('TransactionOptions', () => {
+	it('is compatible with Firestore', () => {
+		expect.assertions(0)
+
+		Assert.is<
+			FirebaseFirestore.ReadWriteTransactionOptions,
+			TransactionOptions
+		>()
+	})
+})

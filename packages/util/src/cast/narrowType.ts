@@ -18,7 +18,7 @@
  */
 export function narrow<X>(x: X) {
 	return {
-		toType<T extends X>() {
+		toType<T extends X>(): T {
 			return x as T
 		},
 	}

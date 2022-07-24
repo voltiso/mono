@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line n/file-extension-in-import
-import * as s from '@voltiso/schemar/s'
+import * as s from '@voltiso/schemar'
 
 import { useForm } from './useForm'
 

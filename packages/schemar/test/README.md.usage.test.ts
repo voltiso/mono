@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import s from '../src/defaultExport.js'
+import s from '../src'
 
 describe('README.md - usage', () => {
 	it('works', () => {
@@ -21,7 +21,7 @@ describe('README.md - usage', () => {
 		}
 
 		expect(
-			s(mySchemable).validate({ name: 'a', version: '1.0.0' }),
+			s.schema(mySchemable).validate({ name: 'a', version: '1.0.0' }),
 		).toStrictEqual({
 			name: 'a',
 			version: '1.0.0',
@@ -33,7 +33,7 @@ describe('README.md - usage', () => {
 
 		// Infer TS Types
 
-		const mySchema = s(mySchemable)
+		const mySchema = s.schema(mySchemable)
 
 		type MySchema = typeof mySchema.OutputType
 		Assert<

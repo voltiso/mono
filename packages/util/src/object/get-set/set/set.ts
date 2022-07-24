@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '../../../error'
-import type { AlsoAccept } from '../../../misc/AlsoAccept.js'
+import { VoltisoUtilError } from '../../../error'
+import { lazyConstructor } from '../../../lazy'
 import { toString } from '../../../string'
+import type { AlsoAccept } from '../../../type/AlsoAccept.js'
 import { isPlain } from '../../isPlain.js'
 import type { Entry, IEntry } from '../../key-value'
 import type { IPath, Path } from '../../Path'
@@ -16,12 +17,11 @@ export class SetError<
 	Obj extends object,
 	P extends IPath,
 	V,
-> extends VoltisoError {
+> extends lazyConstructor(() => VoltisoUtilError) {
 	object: Obj
 	path: P
 	value: V
 
-	// eslint-disable-next-line max-params
 	constructor(obj: Obj, path: P, value: V, options?: ErrorOptions | undefined) {
 		const message = `property not present @ set(${toString(obj)}, ${toString(
 			path,

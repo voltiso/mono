@@ -3,7 +3,7 @@
 
 /* eslint-disable security/detect-object-injection */
 
-import type { AlsoAccept } from '../../../misc/AlsoAccept.js'
+import type { AlsoAccept } from '../../../type/AlsoAccept.js'
 import type { _ } from '../../flatten'
 import { hasOwnProperty } from '../../get-set'
 

@@ -3,7 +3,12 @@
 
 import type { PatchFor } from '@voltiso/patcher'
 import { patch, patchSet, patchUpdate, replaceIt } from '@voltiso/patcher'
-import { CALL, callableInstance } from '@voltiso/util'
+import {
+	CALL,
+	callableInstance,
+	forwardGetOwnPropertyDescriptor,
+	forwardOwnKeys,
+} from '@voltiso/util'
 import { useUpdate } from '@voltiso/util.react'
 import { useMemo } from 'react'
 
@@ -169,12 +174,18 @@ export function useStatePatcher<S extends StateObject>(
 				}
 			},
 
-			ownKeys(_target) {
-				return Reflect.ownKeys(statePatcher.raw)
+			ownKeys(target) {
+				return forwardOwnKeys(statePatcher.raw, target)
+				// return Reflect.ownKeys(statePatcher.raw)
 			},
 
-			getOwnPropertyDescriptor(_target, p) {
-				return Reflect.getOwnPropertyDescriptor(statePatcher.raw, p)
+			getOwnPropertyDescriptor(target, property) {
+				return forwardGetOwnPropertyDescriptor(
+					statePatcher.raw,
+					target,
+					property,
+				)
+				// return Reflect.getOwnPropertyDescriptor(statePatcher.raw, p)
 			},
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps

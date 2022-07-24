@@ -7,7 +7,7 @@ import { assert } from '@voltiso/assertor'
 import type { AtLeast1, Merge2Simple } from '@voltiso/util'
 import { clone, final, toString } from '@voltiso/util'
 
-import { SchemarError, ValidationError } from '../errors'
+import { SchemarError, ValidationError } from '../error'
 import { union } from '../s'
 import * as s from '../s'
 import { isUnion } from '../s/union'

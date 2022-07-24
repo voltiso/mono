@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type { Schema } from './unknownSchema'
+export type { Schema } from './TypeOnlySchema'
 export { schema } from './unknownSchema'
 // export { schema as default } from './unknownSchema'
 // export type { UnknownSchema, IUnknownSchema } from './unknownSchema'

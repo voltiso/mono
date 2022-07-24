@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '../../../../error'
-import type { AlsoAccept } from '../../../../misc'
+import { VoltisoUtilError } from '../../../../error'
+import { lazyConstructor } from '../../../../lazy'
 import { toString } from '../../../../string'
+import type { AlsoAccept } from '../../../../type'
 import { isObject } from '../../../isObject.js'
 import type { Value } from '../../../key-value'
 import type { UnknownProperty } from '../../../UnknownProperty.js'
@@ -13,7 +14,7 @@ import type { TryGetPropertyImpl } from './tryGetProperty.js'
 export class GetPropertyError<
 	Obj,
 	Property extends keyof Obj | UnknownProperty,
-> extends VoltisoError {
+> extends lazyConstructor(() => VoltisoUtilError) {
 	object: Obj
 	property: Property
 

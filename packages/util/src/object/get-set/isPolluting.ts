@@ -1,14 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '../../error'
-import type { AlsoAccept } from '../../misc/AlsoAccept.js'
+import { VoltisoUtilError } from '../../error'
+import { lazyConstructor } from '../../lazy'
 import { toString } from '../../string'
+import type { AlsoAccept } from '../../type/AlsoAccept.js'
 
 export class PrototypePollutionError<
 	Obj extends object,
 	Key extends keyof Obj | AlsoAccept<keyof any>,
-> extends VoltisoError {
+> extends lazyConstructor(() => VoltisoUtilError) {
 	obj: Obj
 	key: Key
 

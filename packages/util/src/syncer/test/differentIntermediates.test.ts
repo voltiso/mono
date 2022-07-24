@@ -5,12 +5,12 @@ import type { IsIdentical } from '../../type'
 import { Assert } from '../../type'
 import { runAsync, runSync } from '../run.js'
 import type { SyncerFunction } from '../SyncerFunction.js'
-import type { SyncerIterator } from '../SyncerIterator.js'
+import type { SyncerPromise } from '../SyncerPromise.js'
 
 function* differentIntermediates(
 	s: string,
 	n: number,
-): SyncerIterator<number, string | number> {
+): SyncerPromise<number, string | number> {
 	const s2 = (yield {
 		sync: () => 'test',
 		async: async () => 'test',

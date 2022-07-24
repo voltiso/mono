@@ -55,4 +55,16 @@ describe('boolean', () => {
 		type A = GetOutputType<typeof a>
 		Assert.is<A, false>()
 	})
+
+	it('optional', () => {
+		expect.assertions(0)
+
+		const inferable = {
+			b: s.boolean,
+			bOpt: s.boolean.optional,
+		}
+
+		type X = GetOutputType<typeof inferable>
+		Assert<IsIdentical<X, { b: boolean; bOpt?: boolean }>>()
+	})
 })

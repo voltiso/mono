@@ -8,6 +8,8 @@ node_modules/
 
 dist/
 
+traceDir/
+
 *.tgz
 *.log
 *.tsbuildinfo

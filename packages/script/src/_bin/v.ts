@@ -18,7 +18,6 @@ function isCommandName(string_: unknown): string_ is CommandName {
 }
 
 async function main(): Promise<void> {
-	// eslint-disable-next-line no-magic-numbers
 	const args = process.argv.slice(2)
 
 	const commandNames = Object.keys(commands) as CommandName[]
@@ -42,7 +41,7 @@ async function main(): Promise<void> {
 		return command({ commandArgs })
 	}
 
-	const scripts = await getScripts(process.cwd)
+	// const scripts = await getScripts(process.cwd)
 
 	let messages = ['Supported commands:', commandNamesStr]
 

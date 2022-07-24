@@ -27,7 +27,7 @@ export interface CustomObject<O extends ObjectOptions>
 	default(defaultValue: this[OPTIONS]['_out']): Default<this>
 }
 
-type MakePartial<This extends IObject> = IObject<
+type MakePartial<This extends IObject> = CustomObject<
 	MergeOptions<
 		This,
 		{
@@ -38,7 +38,7 @@ type MakePartial<This extends IObject> = IObject<
 	>
 >
 
-type MakeDeepPartial<This extends IObject> = IObject<
+type MakeDeepPartial<This extends IObject> = CustomObject<
 	MergeOptions<
 		This,
 		{

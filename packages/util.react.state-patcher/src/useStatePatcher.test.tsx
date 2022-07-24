@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
-import 'jest-expect-message'
+// import '@alex_neo/jest-expect-message'
+// import 'jest-expect-message'
+import '@testing-library/jest-dom'
 
 import { act, render, screen } from '@testing-library/react'
+import { CALL, callableInstance, undef } from '@voltiso/util'
 import type { FC } from 'react'
 
 import type { StatePatcher } from './useStatePatcher'
@@ -37,7 +38,7 @@ describe('useStatePatcher', () => {
 		view.rerender(<C />)
 
 		expect(state.a).toBe(prevA)
-		expect(state, 'state does not change on rerender').toBe(prevState)
+		expect(state).toBe(prevState) // state does not change on rerender
 		expect(c).toHaveTextContent('aa')
 
 		// #2 - rerender (auto)
@@ -45,9 +46,9 @@ describe('useStatePatcher', () => {
 			state.update({ a: 'bb' })
 		})
 
-		expect(c, 'state update should be triggered').toHaveTextContent('bb')
-		expect(state, 'immutable pattern').not.toBe(prevState)
-		expect(prevState.a, 'no stale values').toBe('bb')
+		expect(c).toHaveTextContent('bb') // state update should be triggered
+		expect(state).not.toBe(prevState) // immutable pattern
+		expect(prevState.a).toBe('bb') // no stale values
 
 		// #3 no re-render (same value)
 		prevState = state
@@ -58,8 +59,8 @@ describe('useStatePatcher', () => {
 			state({ a: 'bb' })
 		})
 
-		expect(state.raw, 'value did not change').toBe(prevRaw)
-		expect(renderId, 'no re-render').toBe(prevRenderId)
+		expect(state.raw).toBe(prevRaw) // value did not change
+		expect(renderId).toBe(prevRenderId) // no re-render
 
 		//
 
@@ -71,8 +72,8 @@ describe('useStatePatcher', () => {
 			state.set({ a: 'bb' })
 		})
 
-		expect(state.raw, 'value did not change').toBe(prevRaw)
-		expect(renderId, 'no re-render').toBe(prevRenderId)
+		expect(state.raw).toBe(prevRaw) // value did not change
+		expect(renderId).toBe(prevRenderId) // no re-render
 
 		//
 
@@ -84,10 +85,34 @@ describe('useStatePatcher', () => {
 		expect(c).toHaveTextContent('setter')
 	})
 
+	it('callableInstance works', () => {
+		expect.hasAssertions()
+
+		class C {
+			constructor() {
+				return callableInstance(this)
+			}
+
+			[CALL]() {
+				return this
+			}
+		}
+
+		const c = new C()
+
+		expect({ ...c }).toStrictEqual({})
+
+		/**
+		 * Does not work if the arrow function inside `callableInstance`
+		 * implementation is transpiled into a regular `function(){}`
+		 */
+		// expect(Reflect.ownKeys(c)).toStrictEqual([])
+	})
+
 	it('destructure', () => {
 		expect.hasAssertions()
 
-		let state: any
+		let state = undef as unknown as StatePatcher<{ a: string }>
 
 		const C: FC = () => {
 			state = useStatePatcher({ a: 'aa' })

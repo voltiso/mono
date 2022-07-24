@@ -62,12 +62,16 @@ export const testOverride = defineEslintConfigOverride({
 		'promise/avoid-new': 0,
 		'no-promise-executor-return': 0,
 		'jest/max-expects': 0, //! TODO: enable?
+		'no-await-in-loop': 0,
+		'sonarjs/no-duplicate-string': 0,
+		'unicorn/no-await-expression-member': 0,
+		'n/no-unpublished-import': 0,
 
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,
 		'@typescript-eslint/no-unsafe-member-access': 0,
 
-		'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
+		// 'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
 
 		// 'jsdoc/require-example': 0,
 		// 'jsdoc/require-param': 0,

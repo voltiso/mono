@@ -5,7 +5,7 @@
 /* eslint-disable jest/require-hook */
 
 import { runAsync, runSync } from '../run.js'
-import type { SyncerIterator } from '../SyncerIterator.js'
+import type { SyncerPromise } from '../SyncerPromise.js'
 
 describe('onAsyncStart', () => {
 	let anotherFuncFlag = false
@@ -15,7 +15,7 @@ describe('onAsyncStart', () => {
 		return 'hi'
 	}
 
-	function* func(): SyncerIterator<string, string> {
+	function* func(): SyncerPromise<string, string> {
 		const r = yield {
 			syncerIterator: anotherFunc(),
 

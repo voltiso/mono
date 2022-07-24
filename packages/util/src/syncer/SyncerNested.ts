@@ -2,21 +2,21 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import type { NotProvided, OptionalArgument } from '../OptionalArgument'
-import type { NotProvided, OptionalArgument } from '../OptionalArgument'
-import type { ISyncerIterator } from './SyncerIterator.js'
+import type { NotProvided, OptionalArgument } from '../type/optional-argument'
+import type { ISyncerPromise } from './SyncerPromise.js'
 
 export interface ISyncerNested {
 	onAsyncStart?:
-		| ((promise: PromiseLike<any>) => Promise<void> | void)
+		| ((promise: PromiseLike<any>) => PromiseLike<void> | void)
 		| undefined
-	syncerIterator: ISyncerIterator
+	syncerIterator: ISyncerPromise
 }
 
 export interface SyncerNested_<Intermediate> {
 	onAsyncStart?:
-		| ((promise: PromiseLike<Intermediate>) => Promise<void> | void)
+		| ((promise: PromiseLike<Intermediate>) => PromiseLike<void> | void)
 		| undefined
-	syncerIterator: ISyncerIterator<Intermediate>
+	syncerIterator: ISyncerPromise<Intermediate>
 }
 
 export type SyncerNested<

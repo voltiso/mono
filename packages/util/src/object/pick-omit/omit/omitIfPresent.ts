@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '../../../misc/AlsoAccept.js'
+import type { AlsoAccept } from '../../../type/AlsoAccept.js'
 import type { OmitSimple } from './OmitSimple.js'
 
 // export function omitIfPresent<

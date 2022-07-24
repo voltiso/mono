@@ -3,11 +3,12 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { jsonFiles } from '../files.js'
+import { filesInsideMd, jsonFiles } from '../files.js'
 
 /** `json` with comments */
 export const jsonc = defineEslintConfigOverride({
 	files: jsonFiles,
+	excludedFiles: filesInsideMd,
 
 	extends: [
 		// 'plugin:json/recommended', // ! breaks `prettier/prettier`

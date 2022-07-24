@@ -1,0 +1,62 @@
+{
+	"name": "@voltiso/localstore",
+	"version": "2.0.0",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/mono.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"types": "./dist/esm/index.d.ts",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		}
+	},
+	"__________EXPORTS FALLBACK": "__________",
+	"types": "dist/esm/index.d.ts",
+	"module": "dist/esm/index.js",
+	"main": "dist/cjs/index.js",
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"dist"
+	],
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint .",
+		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
+		"__________BUILD": "__________",
+		"build": "run-p build:esm build:cjs",
+		"build:esm": "tsc -b tsconfig.build.esm.json",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p build test lint typecov",
+		"__________MISC": "__________",
+		"clean": "rimraf dist",
+		"typecov": "run-s typecov:run typecov:fix",
+		"typecov:run": "type-coverage --project tsconfig.build.esm --update",
+		"typecov:fix": "prettier ./package.json --write"
+	},
+	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/assertor": "workspace:^1.0.0",
+		"@voltiso/firestore-like": "workspace:^1.0.10",
+		"@voltiso/util": "workspace:^39.0.0"
+	},
+	"devDependencies": {
+		"@voltiso/config.ts": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"depcheck": "^1.4.3",
+		"npm-run-all": "^4.1.5"
+	},
+	"__________MISC": "__________",
+	"engines": {
+		"node": ">=16"
+	}
+}

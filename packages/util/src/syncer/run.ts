@@ -4,8 +4,8 @@
 /* eslint-disable no-await-in-loop */
 import { isIterable } from '../array'
 import { lazyPromise } from '../lazy'
-import type { SyncerIterator } from './SyncerIterator.js'
 import { isSyncerNested } from './SyncerNested.js'
+import type { SyncerPromise } from './SyncerPromise.js'
 import { isSyncerSwitchAsync, isSyncerSwitchSync } from './SyncerSwitch.js'
 
 function isDone<T, TReturn>(
@@ -19,7 +19,7 @@ function isDone<T, TReturn>(
 //
 
 export async function runAsync<Return, Intermediate>(
-	iterator: SyncerIterator<Return, Intermediate>,
+	iterator: SyncerPromise<Return, Intermediate>,
 ): Promise<Return> {
 	let currentResult = iterator.next()
 
@@ -55,7 +55,7 @@ export async function runAsync<Return, Intermediate>(
 //
 
 export function runSync<Return, Intermediate>(
-	iterator: SyncerIterator<Return, Intermediate>,
+	iterator: SyncerPromise<Return, Intermediate>,
 ): Return {
 	let currentResult = iterator.next()
 

@@ -39,6 +39,7 @@ interface WithCall {
 export function callableInstance<This extends WithCall>(
 	thisArg: This,
 ): CallableInstance<This> {
+	//! do not transpile to `function(){}` - don't want to include non-configurable `prototype` property
 	// eslint-disable-next-line security/detect-object-injection
 	const f = (...args: Parameters_<This[CALL]>) => thisArg[CALL].call(f, ...args)
 

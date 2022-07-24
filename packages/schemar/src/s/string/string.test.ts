@@ -8,7 +8,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType } from '../../GetType'
+import type { GetOutputType, GetType } from '../../GetType'
 import * as s from '..'
 import type { StringOptions } from './_/StringOptions.js'
 import type { CustomString } from './CustomString.js'
@@ -129,7 +129,11 @@ describe('string', () => {
 
 		const a = s.schema({
 			str: s.string,
+			strOptional: s.string.optional,
 		})
+
+		type A = GetType<typeof a>
+		Assert<IsIdentical<A, { str: string; strOptional?: string }>>()
 
 		expect(a.validate({ str: '012' })).toStrictEqual({ str: '012' })
 

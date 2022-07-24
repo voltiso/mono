@@ -4,12 +4,13 @@ CLI wrapper for `@voltiso/script.lib`
 
 # Use in _YOUR_ project
 
-_FIRST_, follow steps [HERE](https://github.com/voltiso/util#use-in-your-project)
+_FIRST_, follow steps
+[HERE](https://github.com/voltiso/util#use-in-your-project)
 
 ### After you have your PAT in `~/.npmrc`:
 
 ```sh
-pnpm add -D `@voltiso/script`
+pnpm add -D $(@voltiso/script)
 ```
 
 ## CLI Usage
@@ -32,9 +33,9 @@ Easy to use with [`npm-run-all`](https://www.npmjs.com/package/npm-run-all)
 
 ```json
 {
-	...
+	// ...
 	"scripts": {
-		...
+		// ...
 		"build": "run-p build:cjs build:esm 'v compatDirs write'"
 	}
 }
@@ -44,4 +45,5 @@ Easy to use with [`npm-run-all`](https://www.npmjs.com/package/npm-run-all)
 
 ## Build
 
-NOTE: This package doesn't export anything - it's just the `voltiso-script` binary - so we only do `cjs` build (no `esm`)
+NOTE: This package doesn't export anything - it's just the `voltiso-script`
+binary - so we only do `cjs` build (no `esm`)

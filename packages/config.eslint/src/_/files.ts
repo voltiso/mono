@@ -6,11 +6,11 @@ export const tsFiles = ['*.ts', '*.tsx', '*.cts', '*.ctsx', '*.mts', '*.mtsx']
 
 export const codeFiles = [...jsFiles, ...tsFiles]
 
-export const codeInsideMdFiles = ['**/*.md/*.ts']
+export const filesInsideMd = ['**/*.md/*.*']
 
 export const codeFilesNoMd = {
 	files: codeFiles,
-	excludedFiles: codeInsideMdFiles,
+	excludedFiles: filesInsideMd,
 }
 
 export const jsonFiles = ['*.json', '*.jsonc', '*.json5']

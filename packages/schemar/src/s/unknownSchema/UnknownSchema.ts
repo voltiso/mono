@@ -17,7 +17,3 @@ export const UnknownSchema = UnknownSchema_ as unknown as UnknownConstructor
 type UnknownConstructor = new () => UnknownSchema
 
 export const schema = lazyValue(() => new UnknownSchema())
-
-export type Schema<T = unknown> = CustomUnknownSchema<
-	DefaultUnknownSchemaOptions & { _in: T; _out: T }
->

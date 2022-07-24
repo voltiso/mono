@@ -3,7 +3,7 @@ Schema validation.
 # Usage
 
 ```ts
-import s from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 
 const mySchemable = {
 	name: s.string,
@@ -14,7 +14,7 @@ const mySchemable = {
 	},
 }
 
-const result = s(mySchemable).validate({ name: 'a', version: '1.0.0' })
+const result = s.schema(mySchemable).validate({ name: 'a', version: '1.0.0' })
 // --> {
 // 	name: 'a',
 // 	version: '1.0.0',
@@ -27,7 +27,7 @@ const result = s(mySchemable).validate({ name: 'a', version: '1.0.0' })
 ## Infer TS Types
 
 ```ts
-const mySchema = s(mySchemable)
+const mySchema = s.schema(mySchemable)
 
 type MySchema = typeof mySchema.OutputType
 // --> {
@@ -52,11 +52,11 @@ type MySchemaInput = typeof mySchema.InputType
 
 ## Bundlers / Tree-shaking
 
-For proper bundler support, import from `@voltiso/schemar/s`:
+For proper bundler support, do not use the default import from `@voltiso/schemar`:
 
 ```ts
 // import s from '@voltiso/schemar' // bad
-import * as s from '@voltiso/schemar/s' // good - tree-shaking friendly
+import * as s from '@voltiso/schemar' // good - tree-shaking friendly (esbuild)
 
 const mySchemable = {
 	field: s.number,

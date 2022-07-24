@@ -5,9 +5,11 @@
 import { lazyValue } from '@voltiso/util'
 
 import type * as s from '..'
+import type { DefaultBooleanOptions } from './_/BooleanOptions.js'
 import { Boolean_ } from './Boolean_.js'
+import type { CustomBoolean } from './CustomBoolean.js'
 
-export interface Boolean extends Boolean_ {
+export interface Boolean extends CustomBoolean<DefaultBooleanOptions> {
 	<L extends boolean>(...literals: L[]): s.Literal<L>
 	<L extends boolean>(literals: Set<L>): s.Literal<L>
 	<L extends boolean>(...args: L[] | [Set<L>]): s.Literal<L>

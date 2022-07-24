@@ -4,7 +4,7 @@
 import type { UndefinedFromOptional } from '../object'
 
 export interface SyncerSwitchAsync<T = unknown> {
-	async: () => Promise<T> | T
+	async: () => PromiseLike<T> | T
 }
 
 export function isSyncerSwitchAsync(x: unknown): x is SyncerSwitchAsync {

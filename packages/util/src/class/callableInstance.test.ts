@@ -102,4 +102,23 @@ describe('callableInstance', () => {
 		expect(test()).toBe(test)
 		expect(test.fun()).toBe(test)
 	})
+
+	it('works with spread', () => {
+		expect.hasAssertions()
+
+		class C {
+			constructor() {
+				return callableInstance(this)
+			}
+
+			[CALL]() {
+				return this
+			}
+		}
+
+		const c = new C()
+
+		expect({ ...c }).toStrictEqual({})
+		expect(Reflect.ownKeys(c)).toStrictEqual([])
+	})
 })

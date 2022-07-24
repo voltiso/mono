@@ -3,11 +3,11 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { codeInsideMdFiles } from '../files.js'
+import { filesInsideMd } from '../files.js'
 
 export const notice = defineEslintConfigOverride({
 	files: '*',
-	excludedFiles: codeInsideMdFiles,
+	excludedFiles: filesInsideMd,
 
 	plugins: ['notice'],
 

@@ -124,13 +124,11 @@
 	},
 	"devDependencies": {
 		"@milahu/patch-package": "^6.4.14",
-		"@types/eslint": "^8.4.5",
 		"@types/node": "^18.0.6",
 		"@voltiso/config.ts": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"depcheck": "^1.4.3",
 		"eslint": "^8.18.0",
-		"eslint-define-config": "^1.5.1",
 		"npm-run-all": "^4.1.5"
 	},
 	"engines": {

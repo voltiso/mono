@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line n/file-extension-in-import
-import * as s from '@voltiso/schemar/s'
+import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
@@ -24,7 +23,6 @@ describe('checked', () => {
 			.param(s.string)
 			.result(s.number)
 			.function(function (str) {
-				// eslint-disable-next-line @typescript-eslint/no-invalid-this
 				return str.length + this.x
 			})
 
@@ -112,7 +110,6 @@ describe('checked', () => {
 			.param(s.number)
 			.result(s.number)
 			.function(function (x) {
-				// eslint-disable-next-line @typescript-eslint/no-invalid-this
 				return this.asd + x
 			})
 

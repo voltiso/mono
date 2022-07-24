@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { Assert } from '../type'
-import type { ISyncerIterator, SyncerIterator } from './SyncerIterator.js'
+import type { ISyncerPromise, SyncerPromise } from './SyncerPromise.js'
 
 describe('SyncerIterator', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<SyncerIterator<string, number>, ISyncerIterator>()
-		Assert.is<SyncerIterator<string, number>, ISyncerIterator<string>>()
+		Assert.is<SyncerPromise<string, number>, ISyncerPromise>()
+		Assert.is<SyncerPromise<string, number>, ISyncerPromise<string>>()
 	})
 })

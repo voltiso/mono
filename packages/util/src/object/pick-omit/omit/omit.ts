@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '../../../error/VoltisoError.js'
+import { VoltisoUtilError } from '../../../error'
 import { toString } from '../../../string'
 import { omitIfPresent } from './omitIfPresent.js'
 import type { OmitSimple } from './OmitSimple.js'
@@ -22,7 +22,7 @@ export function omit<O extends object, K extends keyof O>(
 ): OmitSimple<O, K> {
 	for (const key of keys) {
 		if (!Object.hasOwn(obj, key)) {
-			throw new VoltisoError(
+			throw new VoltisoUtilError(
 				`omit(${toString(obj)}, ${toString(keys)}): key ${toString(
 					key,
 				)} does not exist`,

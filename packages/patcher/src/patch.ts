@@ -9,6 +9,7 @@ import {
 	tryGetProperty,
 	undef,
 } from '@voltiso/util'
+import { deepEqual } from 'fast-equals'
 
 import type { DeleteIt } from './deleteIt.js'
 import { isDeleteIt } from './deleteIt.js'
@@ -67,9 +68,9 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	if (isDeleteIt(patchValue)) return undef as never
 
 	if (isReplaceIt(patchValue)) {
-		// if (deps.isEqual(x, patchValue.__replaceIt)) return x
-		// else
-		return patchValue.__replaceIt as never
+		// if (dequal(x, patchValue.__replaceIt)) return x as never
+		if (deepEqual(x, patchValue.__replaceIt)) return x as never
+		else return patchValue.__replaceIt as never
 	}
 
 	if (isPlain(patchValue)) {
@@ -89,8 +90,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		}
 
 		if (haveChange) return res as never
-
-		return x as never
+		else return x as never
 	}
 
 	return patchValue as never

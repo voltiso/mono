@@ -11,10 +11,7 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable unicorn/no-object-as-default-parameter */
-/* eslint-disable max-lines-per-function */
 /* eslint-disable tsdoc/syntax */
-/* eslint-disable jsdoc/require-returns */
-/* eslint-disable jsdoc/require-example */
 /* eslint-disable no-inner-declarations */
 /* eslint-disable no-constructor-return */
 /* eslint-disable no-param-reassign */
@@ -110,7 +107,6 @@ export function createClassInterface<
 					return Reflect.get(proxyObject, p) as unknown
 				},
 
-				// eslint-disable-next-line max-params
 				set(result, p, value, receiver) {
 					// call with null receiver to bypass proxy object (e.g. calls from derived class constructor)
 					const proxyObject = result._[m] as unknown as object
@@ -200,7 +196,6 @@ function isArray(array: unknown): array is unknown[] | readonly unknown[] {
 	return Array.isArray(array)
 }
 
-// eslint-disable-next-line max-params
 export function appendInterface<
 	R extends object,
 	Field extends keyof R & string,

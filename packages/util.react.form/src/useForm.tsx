@@ -2,8 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { GetInputType, InferableObject } from '@voltiso/schemar'
-// eslint-disable-next-line n/file-extension-in-import
-import * as s from '@voltiso/schemar/s'
+import * as s from '@voltiso/schemar'
 import type { StyledComponent } from '@voltiso/styler'
 import { style } from '@voltiso/styler'
 import { getKeys, getValues, undef } from '@voltiso/util'
