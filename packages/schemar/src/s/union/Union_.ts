@@ -64,7 +64,7 @@ class Union__<O extends UnionOptions>
 		if (!valid) {
 			issues.push(
 				new s.ValidationIssue({
-					expectedOneOf: this.getSchemas.map(t => s.schema(t).toString()),
+					expectedOneOf: this.getSchemas.map(t => s.schema(t)),
 					received: x,
 				}),
 			)

@@ -2,8 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DocTag } from '../DocTypes.js'
-import type { DocConstructor_, IDocTI } from '.'
-import type { NewFields } from './_'
+import type { NewFields } from './_/NewFields.js'
+import type { DocConstructor_ } from './DocConstructor'
+import type { IDocTI } from './DocTI.js'
 
 // eslint-disable-next-line etc/no-misused-generics
 export function DocCall<TI extends IDocTI, Tag extends DocTag>(tag: Tag): never

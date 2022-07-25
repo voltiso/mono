@@ -10,11 +10,12 @@ import type { Db } from '../Db'
 import { immutabilize } from '../immutabilize'
 import type { Method } from '../Method.js'
 import type { DocPath } from '../Path'
-import type { Ref } from '../Ref'
-import { DocRef, DocRef_ } from '../Ref'
-import type { DocRefContext } from '../Ref/_'
+import type { StrongRef } from '../Ref'
+import { StrongDocRef, StrongDocRef_ } from '../Ref'
+import type { DocRefContext } from '../Ref/_/Context.js'
 import type { Updates } from '../updates'
-import type { ExecutionContext, GData } from './_'
+import type { ExecutionContext } from './_/ExecutionContext.js'
+import type { GData } from './_/GData.js'
 import type { Context } from './Context.js'
 import type { Doc } from './Doc.js'
 import { DocConstructor_ } from './DocConstructor'
@@ -33,8 +34,8 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		}
 
 		return r as never
-	} else if (x instanceof DocRef_) {
-		return new DocRef_(ctx as never, x.path.pathString) as never
+	} else if (x instanceof StrongDocRef_) {
+		return new StrongDocRef_(ctx as never, x.path.pathString) as never
 	}
 
 	return x
@@ -127,8 +128,8 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		return this._context.docRef.path as never
 	}
 
-	get ref(): Ref<this> {
-		return new DocRef(
+	get ref(): StrongRef<this> {
+		return new StrongDocRef(
 			omit(this._context, 'docRef'),
 			this.path.pathString,
 		) as never

@@ -52,13 +52,21 @@ export interface ISchema<O extends SchemaOptions = SchemaOptions> {
 	get readonly(): ISchema
 	default(value: unknown): ISchema
 
+	// get optional(): MergeOptions<this, { isOptional: true }>
+	// get readonly(): MergeOptions<this, { isReadonly: true }>
+	// default(value: unknown): ISchema
+
 	extends(other: Schemable): boolean
 	[EXTENDS](other: ISchema): boolean
 
-	check(
+	withCheck(
 		checkIfValid: (x: this['InputType']) => boolean,
 		expectedDescription?: string | ((x: this['InputType']) => string),
 	): this
+
+	withFix<Out extends this['OutputType']>(
+		fixFunc: (x: this['InputType']) => Out | void,
+	): ISchema<O & { _out: Out }>
 
 	/**
 	 * Validate `this` schema, do not throw on failure

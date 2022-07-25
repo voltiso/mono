@@ -3,7 +3,7 @@
 
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import type { DTI, Id, Ref } from '@voltiso/transactor'
+import type { DTI, Id, StrongRef } from '@voltiso/transactor'
 import { createTransactor, Doc, method } from '@voltiso/transactor'
 import * as transactorSchemas from '@voltiso/transactor/schemas'
 import type { IsIdentical } from '@voltiso/util'
@@ -16,13 +16,13 @@ const db = createTransactor(firestore, firestoreModule)
 class DoctorD extends Doc('doctorD').fields({
 	public: {
 		name: s.string,
-		friend: transactorSchemas.ref<'doctorD'>().optional,
+		friend: transactorSchemas.strongRef<'doctorD'>().optional,
 		maybeFriend: transactorSchemas.weakRef<'doctorD'>().optional,
 	},
 }) {
 	@method
-	async setFriend(friend?: Ref<DoctorD>) {
-		type X = Ref<DoctorD>[DTI]['tag']
+	async setFriend(friend?: StrongRef<DoctorD>) {
+		type X = StrongRef<DoctorD>[DTI]['tag']
 		Assert<IsIdentical<X, 'doctorD'>>()
 
 		this.name = 'Mr Friendly'

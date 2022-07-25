@@ -8,7 +8,7 @@ import { Doc } from '../Doc/Doc.js'
 import type { IDocConstructorNoBuilder } from '../Doc/DocConstructor'
 import type { IDoc } from '../Doc/IDoc.js'
 import type { IRef } from './IRef.js'
-import type { Ref, WeakRef } from './RefBase.js'
+import type { StrongRef, WeakRef } from './RefBase.js'
 
 declare module '..' {
 	interface DocTypes {
@@ -23,7 +23,7 @@ class MyMysticDoctor extends Doc('myMysticDoctor')({}) {}
 ;() => Doc('doesNotExist')
 
 // @ts-expect-error does not exist in DocTypes interface
-;() => 0 as unknown as Ref<'doesNotExist'>
+;() => 0 as unknown as StrongRef<'doesNotExist'>
 
 class MyMysticClient extends Doc('myMysticClient') {}
 
@@ -33,15 +33,17 @@ describe('Ref', () => {
 
 		Assert.is<typeof MyMysticDoctor, IDocConstructorNoBuilder>()
 
-		Assert.is<Ref<MyMysticClient>, WeakRef<MyMysticClient>>()
+		Assert.is<StrongRef<MyMysticClient>, WeakRef<MyMysticClient>>()
 
 		Assert(
-			Is<Ref<MyMysticClient>>().not.relatedTo<Ref<MyMysticDoctor>>(),
-			Is<Ref<MyMysticClient>>().subtypeOf<IRef>(),
-			Is<IRef>().not.subtypeOf<Ref<MyMysticClient>>(),
+			Is<StrongRef<MyMysticClient>>().not.relatedTo<
+				StrongRef<MyMysticDoctor>
+			>(),
+			Is<StrongRef<MyMysticClient>>().subtypeOf<IRef>(),
+			Is<IRef>().not.subtypeOf<StrongRef<MyMysticClient>>(),
 
-			Is<Ref<MyMysticClient>>().subtypeOf<WeakRef<MyMysticClient>>(),
-			Is<WeakRef<MyMysticClient>>().not.subtypeOf<Ref<MyMysticClient>>(),
+			Is<StrongRef<MyMysticClient>>().subtypeOf<WeakRef<MyMysticClient>>(),
+			Is<WeakRef<MyMysticClient>>().not.subtypeOf<StrongRef<MyMysticClient>>(),
 		)
 	})
 
@@ -52,17 +54,17 @@ describe('Ref', () => {
 		class Ut2 extends Doc({ public: { a: s.string } }) {}
 
 		Assert.is<typeof Ut1, IDocConstructorNoBuilder>()
-		Assert.is<Ref<Ut1>, IRef>()
+		Assert.is<StrongRef<Ut1>, IRef>()
 
 		Assert(
 			Is<Ut1>().subtypeOf<IDoc>(),
 			Is<Ut2>().subtypeOf<IDoc>(),
 
-			Is<Ref<Ut1>>().subtypeOf<IRef>(),
-			Is<Ref<Ut2>>().subtypeOf<IRef>(),
+			Is<StrongRef<Ut1>>().subtypeOf<IRef>(),
+			Is<StrongRef<Ut2>>().subtypeOf<IRef>(),
 
 			Is<Ut1>().not.relatedTo<Ut2>(),
-			Is<Ref<Ut1>>().not.relatedTo<Ref<Ut2>>(),
+			Is<StrongRef<Ut1>>().not.relatedTo<StrongRef<Ut2>>(),
 		)
 	})
 })

@@ -25,7 +25,6 @@ export function toString_(x: unknown, parameters: ToStringOptions): string {
 
 	if (typeof x === 'function') return stringFromFunction_(x, parameters)
 
-	// else if (typeof x === 'symbol') return `Symbol(${x.toString()})`
 	if (Array.isArray(x)) return stringFromArray(x, parameters)
 
 	if (x instanceof Date) return x.toISOString()

@@ -4,7 +4,7 @@
 import type { IsSubtype } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { IntrinsicFields } from '../Doc/_'
+import type { IntrinsicFields } from '../schemas'
 import type { Data, DataWithId, DataWithoutId } from './Data.js'
 
 describe('Data', () => {

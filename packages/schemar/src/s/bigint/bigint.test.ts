@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
@@ -38,7 +36,7 @@ describe('number', () => {
 		// ;() => s.bigint.default(123).optional
 
 		// @ts-expect-error cannot fix without default value
-		;() => s.bigint.fix(undef)
+		;() => s.bigint.withFix(undef)
 
 		const n = s.bigint.default(123n as const)
 

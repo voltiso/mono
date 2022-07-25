@@ -19,8 +19,8 @@ import type { InferFields } from './InferFields.js'
 
 class Doctor extends Doc({
 	public: {
-		friend: ss.ref,
-		optionalFriend: ss.ref.optional,
+		friend: ss.strongRef,
+		optionalFriend: ss.strongRef.optional,
 	},
 
 	private: {

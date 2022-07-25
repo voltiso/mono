@@ -15,6 +15,7 @@ export function stringFromFunction_(f: Function, parameters: ToStringOptions) {
 		.replaceAll(/\s+/gu, ' ')
 		.replaceAll(/\(0, [^.]*\.(?<name>[^)]*)\)/gu, '$<name>')
 		.replace(/^\s*\((?<arg>[^),]+)\)/u, '$<arg>')
+		.replaceAll(/\{\s*\}$/gu, '{}')
 
 	if (r.length > parameters.maxLength) {
 		r = r.replace(/\s*\{.*\}\s*/u, '')

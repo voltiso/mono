@@ -5,18 +5,15 @@ import type { _, If } from '@voltiso/util'
 
 import type { InferMethods } from '../CollectionRef/InferMethods.js'
 import type { Data, DataWithId, DataWithoutId, Id } from '../Data'
-import type {
-	GData,
-	GDataPublicInput,
-	GUpdates_Replace,
-	GUpdates_Update,
-} from '../Doc/_'
+import type { GData, GDataPublicInput } from '../Doc/_/GData.js'
+import type { GUpdates_Replace, GUpdates_Update } from '../Doc/_/GUpdates.js'
 import type { GetFields } from '../Doc/Doc_.js'
 import type { DTI } from '../Doc/DocTI.js'
 import type { IDoc } from '../Doc/IDoc.js'
 import type { DeleteIt } from '../it'
 import type { DocPath } from '../Path'
-import type { NestedPromise, Null } from './_'
+import type { NestedPromise } from './_/NestedPromise.js'
+import type { Null } from './_/Null.js'
 import type { IRefBase } from './IRef.js'
 
 export interface RefBase<D extends IDoc, Exists extends boolean>
@@ -55,8 +52,8 @@ export interface RefBase<D extends IDoc, Exists extends boolean>
 	delete(): PromiseLike<null>
 }
 
-/** Target always exists */
-export type Ref<D extends IDoc> = RefBase<D, true>
+/** Target always exists, ref-counted */
+export type StrongRef<D extends IDoc> = RefBase<D, true>
 
 /** Target may be `null`, not ref-counted */
 export type WeakRef<D extends IDoc> = RefBase<D, boolean>

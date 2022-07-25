@@ -3,35 +3,33 @@
 
 import './zone.js'
 
-export type { CollectionRef } from './CollectionRef'
-export type { Id } from './Data'
-export type {
-	DatabaseContext,
-	FirestoreLikeModule as DatabaseStaticContext,
-} from './DatabaseContext.js'
-export { Db } from './Db'
-export {
-	after,
-	afterCreate,
-	afterCreateOrUpdate,
-	afterDelete,
-	afterUpdate,
-	beforeCommit,
-	method,
-	onGet,
-} from './decorators.js'
-export type { DocConstructor, IDoc } from './Doc'
-export { Doc, DTI, IndexedDoc } from './Doc'
+//
+
+export * as s from './schemas'
+
+//
+
+export * from './checkEnv.js'
+export * from './CollectionRef'
+export * from './common'
+export * from './Data'
+export * from './DatabaseContext.js'
+export * from './Db'
+export * from './decorators.js'
+export * from './Doc'
 export type { DocTypes } from './DocTypes.js'
-export type { TransactorError } from './error'
-export { deleteIt, incrementIt, replaceIt } from './it'
-export type { Method } from './Method.js'
-export { newAutoId } from './newAutoId.js'
-export { DocPath } from './Path'
-export type { DocRef, Ref, WeakDocRef, WeakRef } from './Ref'
-export { doc } from './Ref'
-export * as schemas from './schemas'
-export type { Transaction } from './Transaction'
-export type { Options } from './Transactor'
-export { createTransactor, Transactor } from './Transactor'
-export type { TriggerParams } from './TriggerParams'
+export type { DocFromTag, DocTag, DocType } from './DocTypes.js'
+export * from './error'
+export * from './immutabilize'
+export * from './it'
+export * from './Method.js'
+export * from './newAutoId.js'
+export * from './Path'
+export * from './Ref'
+export * from './Relax'
+export * from './Transaction'
+export * from './Transactor'
+export * from './Trigger'
+export * from './TriggerParams'
+export * from './updates'
+export * from './util'

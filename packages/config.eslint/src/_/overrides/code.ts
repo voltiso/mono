@@ -97,7 +97,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
 		'id-length': 0,
 
-		'lines-between-class-members': [
+		'@typescript-eslint/lines-between-class-members': [
 			'error',
 			'always',
 			{ exceptAfterSingleLine: true },
@@ -173,5 +173,14 @@ export const codeOverride = defineEslintConfigOverride({
 		'max-lines-per-function': 0,
 		'max-params': 0,
 		'no-continue': 0,
+
+		'padding-line-between-statements': [
+			'warn',
+			{
+				blankLine: 'always',
+				prev: 'function',
+				next: 'function',
+			},
+		],
 	},
 })

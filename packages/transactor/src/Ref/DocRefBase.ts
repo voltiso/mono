@@ -13,7 +13,8 @@ import type { Data, DataWithId, DataWithoutId, Id } from '../Data'
 import { withoutId } from '../Data'
 import type { IDoc } from '../Doc'
 import { DTI } from '../Doc'
-import type { ExecutionContext, GData, GDataPublicInput } from '../Doc/_'
+import type { ExecutionContext } from '../Doc/_/ExecutionContext.js'
+import type { GData, GDataPublicInput } from '../Doc/_/GData.js'
 import { deleteIt, replaceIt } from '../it'
 import type { Method } from '../Method.js'
 import { DocPath } from '../Path'
@@ -22,15 +23,13 @@ import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 } from '../Trigger'
-import type {
-	CallMethodOptions,
-	DocRefContext,
-	DocRefParentContext,
-	MethodEntry,
-	NestedPromise,
-	TriggerEntry,
-} from './_'
-import { callMethod, dataOrNestedPromise, getMethods } from './_'
+import type { CallMethodOptions } from './_/callMethod.js'
+import { callMethod } from './_/callMethod.js'
+import type { DocRefContext, DocRefParentContext } from './_/Context.js'
+import type { MethodEntry, TriggerEntry } from './_/data.js'
+import { getMethods } from './_/getMethods.js'
+import type { NestedPromise } from './_/NestedPromise.js'
+import { dataOrNestedPromise } from './_/NestedPromise.js'
 import { DocFieldPath } from './DocFieldPath.js'
 import { IS_DOC_REF } from './IRef.js'
 import { get, update } from './methods'

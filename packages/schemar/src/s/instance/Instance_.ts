@@ -49,10 +49,19 @@ export class Instance__<O extends InstanceOptions>
 
 		return issues
 	}
+
+	override _toString(): string {
+		// eslint-disable-next-line security/detect-object-injection
+		return `instanceof ${this[OPTIONS].constructor.name}`
+	}
 }
 
 export class Instance_<T extends object> extends Instance__<never> {
 	constructor(constructor: abstract new (...args: never[]) => T) {
+		while (constructor.name.startsWith('lazyConstructor'))
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-param-reassign
+			constructor = Object.getPrototypeOf(constructor)
+
 		super({ ...defaultInstanceOptions, constructor } as never)
 	}
 }

@@ -5,7 +5,7 @@ import type * as s from '@voltiso/schemar'
 
 import type { Context } from '..'
 import type { DTI, IDocTI } from '../DocTI.js'
-import type { DocDerivedData } from './_'
+import type { DocDerivedData } from './_/DocDerivedData.js'
 
 export interface IDocConstructorNoBuilder {
 	[DTI]: IDocTI

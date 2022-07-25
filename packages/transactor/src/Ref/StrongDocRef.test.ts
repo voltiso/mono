@@ -6,11 +6,11 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import { Doc } from '../Doc'
-import type { NestedPromise } from './_'
+import type { NestedPromise } from './_/NestedPromise.js'
 import type { IRef } from './IRef.js'
 import type { WeakDocRef } from './WeakDocRef.js'
 
-describe('DocRef', () => {
+describe('StrongDocRef', () => {
 	it('NestedPromise works with any', <B extends boolean>() => {
 		expect.assertions(0)
 

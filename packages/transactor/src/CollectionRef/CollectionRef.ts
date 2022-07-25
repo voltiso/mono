@@ -5,7 +5,7 @@ import type { Throw } from '@voltiso/util'
 
 import type { Data, Id } from '../Data'
 import type { IDoc, IDocConstructorNoBuilder } from '../Doc'
-import type { GDataPublicInput } from '../Doc/_'
+import type { GDataPublicInput } from '../Doc/_/GData.js'
 import type { CollectionPath } from '../Path/Path.js'
 import type { WeakDocRef } from '../Ref/WeakDocRef.js'
 import { CollectionRef_ } from './CollectionRef_.js'

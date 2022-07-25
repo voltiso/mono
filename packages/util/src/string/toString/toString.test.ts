@@ -13,6 +13,14 @@ describe('toString', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
+		class EmptyClass {}
+
+		expect(toString(EmptyClass)).toBe('class EmptyClass {}')
+
+		const emptyClass = new EmptyClass()
+
+		expect(toString(emptyClass)).toBe('EmptyClass {}')
+
 		expect(toString(123)).toBe('123')
 		expect(toString(123n)).toBe('123n')
 		expect(toString(true)).toBe('true')

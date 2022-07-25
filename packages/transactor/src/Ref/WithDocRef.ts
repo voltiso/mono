@@ -2,6 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IDoc } from '../Doc'
-import type { DocRef_ } from './DocRef.js'
+import type { StrongDocRef_ } from './StrongDocRef.js'
 
-export type WithDocRef = { docRef: DocRef_<IDoc> }
+export type WithDocRef = { docRef: StrongDocRef_<IDoc> }

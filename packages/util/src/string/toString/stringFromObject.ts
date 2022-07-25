@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { undef } from '../../nullish'
 import { getEntries, merge } from '../../object'
 import { toString } from './toString.js'
 import type { ToStringOptions } from './ToStringOptions.js'
@@ -15,7 +16,7 @@ function stringFromProperty(property: keyof any): string {
 const baseObjStr = '{ }'
 
 function append(str: string, x: string): string {
-	if (str === baseObjStr) return `{ ${x} }`
+	if (str.endsWith(baseObjStr)) return `${str.slice(0, -2)} ${x} }`
 
 	return `${str.slice(0, -2)}, ${x} }`
 }
@@ -24,12 +25,16 @@ export function stringFromObject_(
 	obj: Record<keyof any, unknown>,
 	parameters: ToStringOptions,
 ) {
+	let name: string | undefined = obj.constructor.name
+
+	if (name === 'Object') name = undef
+
 	const entries = getEntries(obj, parameters)
 
-	if (entries.length === 0) return '{}'
+	if (entries.length === 0) return name ? `${name} {}` : '{}'
 
-	let result = baseObjStr
-	let shortResult = '{...}'
+	let result = name ? `${name} ${baseObjStr}` : `${baseObjStr}`
+	let shortResult = name ? `${name} {...}` : '{...}'
 
 	for (const entry of entries) {
 		const [property, value] = entry
@@ -50,11 +55,7 @@ export function stringFromObject_(
 		shortResult = shortCand
 	}
 
-	const { name } = obj.constructor
-
-	if (['Object'].includes(name)) return result
-
-	return `${name} ${result}`
+	return result
 }
 
 export function stringFromObject(

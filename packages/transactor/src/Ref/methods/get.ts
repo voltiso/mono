@@ -10,7 +10,7 @@ import { withoutId } from '../../Data'
 import type { WithDb } from '../../Db'
 import type { IDoc, IDocTI } from '../../Doc'
 import { Doc, Doc_ } from '../../Doc'
-import type { GDoc } from '../../Doc/_'
+import type { GDoc } from '../../Doc/_/GDoc.js'
 import type { WithTransaction } from '../../Transaction'
 import {
 	isWithoutTransaction,

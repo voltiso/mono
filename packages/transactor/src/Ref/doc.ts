@@ -3,7 +3,7 @@
 
 import type { IDoc } from '../Doc'
 import type { DocTag, DocTypes } from '../DocTypes.js'
-import type { Ref } from './RefBase.js'
+import type { StrongRef } from './RefBase.js'
 import type { WeakDocRef } from './WeakDocRef.js'
 
 type GetDoc<X extends DocTag | IDoc> = X extends IDoc
@@ -13,7 +13,7 @@ type GetDoc<X extends DocTag | IDoc> = X extends IDoc
 	: never
 
 export function doc<X extends DocTag | IDoc>(
-	x: Ref<GetDoc<X>>,
+	x: StrongRef<GetDoc<X>>,
 ): WeakDocRef<GetDoc<X>> {
 	return x as never
 }

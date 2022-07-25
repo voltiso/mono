@@ -4,6 +4,7 @@
 import { lazyValue, undef } from '@voltiso/util'
 
 import type { CustomCheck } from './_/CustomCheck.js'
+import type { CustomFix } from './_/CustomFix.js'
 
 export type SchemaOptions = {
 	/** Type-only (no value at runtime) */
@@ -13,6 +14,7 @@ export type SchemaOptions = {
 	_in: unknown
 
 	customChecks: readonly CustomCheck[]
+	customFixes: readonly CustomFix[]
 
 	isOptional: boolean
 	isReadonly: boolean
@@ -31,6 +33,7 @@ export const defaultSchemaOptions = lazyValue(() => ({
 	_in: 0 as unknown,
 
 	customChecks: [] as const,
+	customFixes: [] as const,
 
 	isOptional: false as const,
 	isReadonly: false as const,

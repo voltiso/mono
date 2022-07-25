@@ -6,17 +6,17 @@ import { callableClass, lazyConstructor } from '@voltiso/util'
 
 import type { DataWithId, DataWithoutId, Id, NestedData } from '../Data'
 import type { DocPath } from '../Path'
-import type { Ref } from '../Ref'
+import type { StrongRef } from '../Ref'
+import type { ExecutionContext } from './_/ExecutionContext.js'
+import type { GData } from './_/GData.js'
+import type { GDoc } from './_/GDoc.js'
+import type { GMethodPromises } from './_/GMethodPromises.js'
 import type {
-	ExecutionContext,
-	GData,
-	GDoc,
-	GMethodPromises,
 	GUpdates,
 	GUpdates_Delete,
 	GUpdates_Replace,
 	GUpdates_Update,
-} from './_'
+} from './_/GUpdates.js'
 import type { DocTI, GetFields } from './Doc_.js'
 import { Doc_ } from './Doc_.js'
 import { DocCall } from './DocCall.js'
@@ -31,7 +31,7 @@ interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 
 	readonly id: Id<this>
 	readonly path: DocPath<TI['tag']>
-	readonly ref: Ref<this>
+	readonly ref: StrongRef<this>
 
 	// readonly id: Id<GDoc<TI, Ctx>>
 	// readonly id: Id<GetDocType<TI['tag']>>
@@ -43,19 +43,25 @@ interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 	dataWithoutId(): DataWithoutId<GData<TI>>
 	dataWithId(): DataWithId<GData<TI>>
 
+	//
+
 	update(
 		updates: _<GUpdates_Update<GetFields<TI, Ctx>>>,
 	): Promise<GDoc<TI, Ctx> | undefined>
+
 	update(
 		updates: _<GUpdates_Replace<GetFields<TI, Ctx>>>,
 	): Promise<GDoc<TI, Ctx>>
+
 	update(updates: GUpdates_Delete): Promise<null>
+
 	update(
 		updates: _<GUpdates<GetFields<TI, Ctx>>>,
 	): Promise<GDoc<TI, Ctx> | null | undefined>
 
-	delete(): Promise<null>
+	//
 
+	delete(): Promise<null>
 	methods: GMethodPromises<TI>
 
 	THS: this

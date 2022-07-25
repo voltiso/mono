@@ -64,7 +64,7 @@ describe('s.number', () => {
 		// ;() => s.number.default(123).optional
 
 		// @ts-expect-error cannot fix without default value
-		;() => s.number.fix(undef)
+		;() => s.number.withFix(undef)
 
 		//
 		;() => s.number.optional.integer

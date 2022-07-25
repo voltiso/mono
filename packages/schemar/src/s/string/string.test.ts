@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable jest/unbound-method */
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
 
 import type { GetOutputType, GetType } from '../../GetType'
 import * as s from '..'
@@ -108,7 +108,7 @@ describe('string', () => {
 
 		const slug = s.string
 			.length(1, 10)
-			.check(
+			.withCheck(
 				x => !['add'].includes(x),
 				x => `not equal '${x}'`,
 			)
@@ -138,5 +138,16 @@ describe('string', () => {
 		expect(a.validate({ str: '012' })).toStrictEqual({ str: '012' })
 
 		expect(() => a.validate('012')).toThrow('012')
+	})
+
+	it('withFix', () => {
+		expect.hasAssertions()
+
+		const a = s.string.withFix((str: string) =>
+			str.length > 3 ? str.slice(0, 3) : undef,
+		)
+
+		expect(a.validate('test')).toBe('tes')
+		expect(a.validate('ok')).toBe('ok')
 	})
 })

@@ -20,7 +20,7 @@ import { withoutId } from '../../Data'
 import type { Doc, IDocTI } from '../../Doc'
 import { TransactorError } from '../../error'
 import { deleteIt, isDeleteIt, replaceIt } from '../../it'
-import { DocRef_ } from '../../Ref'
+import { StrongDocRef_ } from '../../Ref'
 import { getBeforeCommits } from '../../Ref/_/getBeforeCommits.js'
 import { processTriggers } from '../../Ref/_/processTriggers.js'
 import { Transaction_ } from '../../Transaction'
@@ -109,7 +109,7 @@ export async function runTransaction<R>(
 					// process beforeCommits
 					for (const [path, cacheEntry] of getEntries(cache)) {
 						if (cacheEntry.write) {
-							const docRef = new DocRef_(transaction._context, path)
+							const docRef = new StrongDocRef_(transaction._context, path)
 							const ctx = { ...transaction._context, docRef }
 
 							// process normal triggers - they may not have been called if updates were made in-place, not via `update` method

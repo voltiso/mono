@@ -4,7 +4,7 @@
 import type { Doc } from '../..'
 import type { DocTypes } from '../../DocTypes.js'
 import type { IDocTI } from '../DocTI.js'
-import type { ExecutionContext } from '.'
+import type { ExecutionContext } from './ExecutionContext.js'
 
 type GDocByTag_<TI extends IDocTI> = TI['tag'] extends 'untagged'
 	? never

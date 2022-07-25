@@ -5,7 +5,7 @@
 
 import { assert } from '@voltiso/assertor'
 import type { AtLeast1, Merge2Simple } from '@voltiso/util'
-import { clone, final, toString } from '@voltiso/util'
+import { clone, final, isDefined, toString } from '@voltiso/util'
 
 import { SchemarError, ValidationError } from '../error'
 import { union } from '../s'
@@ -81,6 +81,17 @@ export abstract class Schema_<O extends SchemaOptions>
 		return result
 	}
 
+	get getCustomFixes(): O['customFixes'] {
+		// eslint-disable-next-line security/detect-object-injection
+		const result = this[OPTIONS].customFixes
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (!result)
+			throw new SchemarError(`getCustomFixes() returned ${toString(result)}`)
+
+		return result
+	}
+
 	constructor(o: O) {
 		assert(o, 'Schema_ constructor called with no options argument')
 		// eslint-disable-next-line security/detect-object-injection
@@ -93,7 +104,8 @@ export abstract class Schema_<O extends SchemaOptions>
 			'extends',
 			'tryValidate',
 			'validate',
-			'check',
+			'withCheck',
+			'withFix',
 			'toString',
 		)
 	}
@@ -121,8 +133,18 @@ export abstract class Schema_<O extends SchemaOptions>
 	}
 
 	private _fix(x: unknown): unknown {
-		const r = typeof x === 'undefined' && this.hasDefault ? this.getDefault : x
-		return this._fixImpl(r)
+		let result = x
+
+		if (typeof result === 'undefined' && this.hasDefault)
+			result = this.getDefault
+
+		for (const customFix of this.getCustomFixes) {
+			const nextValue = customFix.fix(result as never)
+
+			if (isDefined(nextValue)) result = nextValue
+		}
+
+		return this._fixImpl(result)
 	}
 
 	tryValidate(x: unknown): ValidationResult<this['OutputType']> {
@@ -200,7 +222,7 @@ export abstract class Schema_<O extends SchemaOptions>
 		return `${prefix}${this._toString()}${suffix}`
 	}
 
-	check(
+	withCheck(
 		checkIfValid: (x: this['InputType']) => boolean,
 		expectedDescription?: string | ((x: this['InputType']) => string),
 	): never {
@@ -216,6 +238,12 @@ export abstract class Schema_<O extends SchemaOptions>
 
 		return this._cloneWithOptions({
 			customChecks: [...this.getCustomChecks, entry],
+		}) as never
+	}
+
+	withFix(fixFunc: (x: this['InputType']) => this['OutputType'] | void): never {
+		return this._cloneWithOptions({
+			customFixes: [...this.getCustomFixes, { fix: fixFunc }],
 		}) as never
 	}
 

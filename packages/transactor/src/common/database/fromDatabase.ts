@@ -11,8 +11,8 @@ import type {
 	NestedData,
 	NestedDataNoArray,
 } from '../../Data/Data.js'
-import { DocRef, WeakDocRef } from '../../Ref'
-import type { DocRefBaseContext } from '../../Ref/_'
+import { StrongDocRef, WeakDocRef } from '../../Ref'
+import type { DocRefBaseContext } from '../../Ref/_/Context.js'
 import { isTimestamp } from '../../util'
 import { isRefEntry } from './RefEntry.js'
 
@@ -36,12 +36,11 @@ function fromFirestoreRec(
 	} else if (Database.isDocumentReference(o)) {
 		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', o.path)
-		return new DocRef(ctx, o.path)
+		return new StrongDocRef(ctx, o.path)
 	} else if (isRefEntry(o)) {
-		// eslint-disable-next-line no-console
-		console.log('fromDatabase ref', o.__target, o.__isStrong)
+		// console.log('fromDatabase ref', o.__target, o.__isStrong)
 
-		if (o.__isStrong) return new DocRef(ctx, o.__target.path)
+		if (o.__isStrong) return new StrongDocRef(ctx, o.__target.path)
 		else return new WeakDocRef(ctx, o.__target.path)
 	} else if (isTimestamp(o)) return o.toDate()
 	else if (isPlain(o)) {

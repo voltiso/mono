@@ -9,30 +9,30 @@ import type { GDocFields } from '../Doc/_/GDocFields.js'
 import type { GMethodPromises } from '../Doc/_/GMethodPromises.js'
 import type { DocRefParentContext } from './_/Context.js'
 import { DocRefBase_ } from './DocRefBase.js'
-import type { WeakRef } from './RefBase.js'
+import type { StrongRef } from './RefBase.js'
 
-class WeakDocRef_<D extends IDoc> extends lazyConstructor(() => DocRefBase_)<
-	D,
-	boolean,
-	'outside'
-> {
+export class StrongDocRef_<D extends IDoc> extends lazyConstructor(
+	() => DocRefBase_,
+)<D, true, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
-		super(context, path, false)
+		super(context, path, true)
 	}
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export type WeakDocRefConstructor = new <D extends IDoc>(
+export type StrongDocRefConstructor = new <D extends IDoc>(
 	context: DocRefParentContext,
 	path: string,
-) => WeakDocRef<D>
+) => StrongDocRef<D>
 
-export type WeakDocRef<D extends IDoc> = WeakRef<D> &
+export type StrongDocRef<D extends IDoc> = StrongRef<D> &
 	GDocFields<InferTI<D>> &
 	GMethodPromises<InferTI<D>>
 
-export const WeakDocRef = WeakDocRef_ as unknown as WeakDocRefConstructor
+export const StrongDocRef = lazyConstructor(
+	() => StrongDocRef_,
+) as unknown as StrongDocRefConstructor
 
-export function isWeakDocRef(x: unknown): x is WeakDocRef<IDoc> {
-	return typeof x === 'object' && (x as DocRefBase_ | null)?._isStrong === false
+export function isStrongDocRef(x: unknown): x is StrongDocRef<IDoc> {
+	return typeof x === 'object' && (x as DocRefBase_ | null)?._isStrong === true
 }

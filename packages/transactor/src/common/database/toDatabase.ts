@@ -3,17 +3,25 @@
 
 import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
+import type { Json } from '@voltiso/util'
 import { getKeys, isPlain, undef } from '@voltiso/util'
 
 import type { DataWithoutId, NestedData } from '../../Data/Data.js'
 import type { DatabaseContext } from '../../DatabaseContext.js'
 import { isDeleteIt, isIncrementIt, isReplaceIt } from '../../it'
-import { isDocRef } from '../../Ref'
 import type {
 	NestedUpdates,
 	Updates,
 	UpdatesRecord,
 } from '../../updates/Updates.js'
+
+interface WithToJSON {
+	toJSON: () => Json
+}
+
+function isWithToJSON(x: unknown): x is WithToJSON {
+	return typeof (x as WithToJSON | null)?.toJSON === 'function'
+}
 
 export function toDatabaseUpdate(
 	ctx: DatabaseContext,
@@ -29,7 +37,7 @@ export function toDatabaseUpdate(
 	ctx: DatabaseContext,
 	updates: Updates | NestedUpdates,
 ): FirestoreLike.UpdateData | FirestoreLike.UpdateDataNested {
-	if (isDocRef(updates)) return updates.toJSON()
+	if (isWithToJSON(updates)) return updates.toJSON()
 
 	if (updates instanceof Date) return updates
 
@@ -75,7 +83,8 @@ export function toDatabaseSet(
 	ctx: DatabaseContext,
 	obj: DataWithoutId | NestedData,
 ): FirestoreLike.DocumentData | FirestoreLike.DocumentDataNested {
-	if (isDocRef(obj)) return ctx.database.doc(obj.path.pathString)
+	if (isWithToJSON(obj)) return obj.toJSON()
+	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)
 
 	if (obj instanceof Date) return ctx.module.Timestamp.fromDate(obj)
 

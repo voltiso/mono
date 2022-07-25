@@ -14,7 +14,7 @@ import type {
 import { dump } from '../../util'
 import type { IDoc } from '..'
 import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData.js'
-import type { GI } from '.'
+import type { GI } from './GDoc.js'
 
 function assertBefore<D extends IDoc>(
 	x: AfterTriggerParams<D>,
@@ -63,7 +63,7 @@ function logTrigger<TI extends DocDerivedData>(
 	)
 }
 
-export function after<TI extends DocDerivedData>(
+export function withAfter<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: AfterTrigger<GI<TI>>,
@@ -81,7 +81,7 @@ export function after<TI extends DocDerivedData>(
 	}
 }
 
-export function afterUpdate<TI extends DocDerivedData>(
+export function withAfterUpdate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: AfterTrigger<GI<TI>, GI<TI>, true, true>,
@@ -103,7 +103,7 @@ export function afterUpdate<TI extends DocDerivedData>(
 	}
 }
 
-export function afterDelete<TI extends DocDerivedData>(
+export function withAfterDelete<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: AfterTrigger<GI<TI>, null, true, false>,
@@ -125,7 +125,7 @@ export function afterDelete<TI extends DocDerivedData>(
 	}
 }
 
-export function afterCreateOrUpdate<TI extends DocDerivedData>(
+export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: AfterTrigger<GI<TI>, GI<TI>, boolean, true>,
@@ -146,7 +146,7 @@ export function afterCreateOrUpdate<TI extends DocDerivedData>(
 	}
 }
 
-export function afterCreate<TI extends DocDerivedData>(
+export function withAfterCreate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: AfterTrigger<GI<TI>, GI<TI>, false, true>,
@@ -169,7 +169,7 @@ export function afterCreate<TI extends DocDerivedData>(
 	}
 }
 
-export function beforeCommit<TI extends DocDerivedData>(
+export function withBeforeCommit<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: BeforeCommitTrigger<GI<TI>>,
@@ -193,7 +193,7 @@ export function beforeCommit<TI extends DocDerivedData>(
 	}
 }
 
-export function onGet<TI extends DocDerivedData>(
+export function withOnGet<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: BeforeCommitTrigger<GI<TI>>,

@@ -3,7 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 
-import { schemaDeleteIt } from '../Ref/_'
+import { schemaDeleteIt } from '../Ref/_/applySchema.js'
 
 export * from './intrinsicFields.js'
 export * from './ref.js'
