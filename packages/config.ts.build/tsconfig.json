@@ -16,7 +16,23 @@
 		"noEmit": false,
 
 		"declaration": true,
-		"declarationMap": true
+		"declarationMap": true,
+
+		// Note: To transform paths for both the output .js and .d.ts files, you need both of the below entries
+		"plugins": [
+			// Transform paths in output .js files
+			{
+				"transform": "typescript-transform-paths",
+				"exclude": ["**/dist/**"]
+			},
+
+			// Transform paths in output .d.ts files (Include this line if you output declarations files)
+			{
+				"transform": "typescript-transform-paths",
+				"exclude": ["**/dist/**"],
+				"afterDeclarations": true
+			}
+		]
 
 		// !
 		// ! OVERWRITE WHEN EXTENDING !

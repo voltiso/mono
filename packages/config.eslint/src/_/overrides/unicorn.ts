@@ -59,4 +59,4 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/no-nested-ternary': 0,
 		'unicorn/prefer-ternary': 0,
 	},
-})
+} as const)

@@ -35,4 +35,4 @@ export const nodeDependencies = defineEslintConfigOverride({
 		...bestPractices,
 		...stylisticIssues,
 	},
-})
+} as const)

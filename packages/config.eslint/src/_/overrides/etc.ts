@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { codeFilesNoMd } from '../files.js'
+import { codeFilesNoMd } from '~/_/files'
 
 export const etcOverride = defineEslintConfigOverride({
 	extends: ['plugin:etc/recommended'],
@@ -32,4 +32,4 @@ export const etcOverride = defineEslintConfigOverride({
 		'etc/throw-error': 2,
 		'etc/underscore-internal': 2,
 	},
-})
+} as const)

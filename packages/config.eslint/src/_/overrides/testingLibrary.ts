@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { testFiles } from '../files.js'
+import { testFiles } from '~/_/files'
 
 export const testingLibrary = defineEslintConfigOverride({
 	files: testFiles,
@@ -11,4 +11,4 @@ export const testingLibrary = defineEslintConfigOverride({
 	plugins: ['testing-library'],
 
 	extends: ['plugin:testing-library/react'],
-})
+} as const)

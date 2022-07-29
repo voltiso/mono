@@ -13,4 +13,4 @@ export const noUseExtendNative = defineEslintConfigOverride({
 	rules: {
 		'no-use-extend-native/no-use-extend-native': 1,
 	},
-})
+} as const)

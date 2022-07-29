@@ -22,4 +22,4 @@ export const i18next = defineEslintConfigOverride({
 		// 	},
 		// ],
 	},
-})
+} as const)

@@ -5,7 +5,7 @@ import { VoltisoUtilError } from '../../../error'
 import { lazyConstructor } from '../../../lazy'
 import { toString } from '../../../string'
 import type { AlsoAccept } from '../../../type/AlsoAccept.js'
-import { isPlain } from '../../isPlain.js'
+import { isPlainObject } from '../../PlainObject.js'
 import type { Entry, IEntry } from '../../key-value'
 import type { IPath, Path } from '../../Path'
 import type { UnknownProperty } from '../../UnknownProperty.js'
@@ -94,13 +94,13 @@ export function set(
 		let c = obj
 
 		for (const token of path.slice(0, -1)) {
-			if (!isPlain(c) || !hasProperty(c, token))
+			if (!isPlainObject(c) || !hasProperty(c, token))
 				throw new SetError(obj, path, value)
 
 			c = getProperty(c, token)
 		}
 
-		if (!isPlain(c)) throw new SetError(obj, path, value)
+		if (!isPlainObject(c)) throw new SetError(obj, path, value)
 	} else {
 		const [object, property, value] = args
 		object[property as keyof typeof object] = value as never

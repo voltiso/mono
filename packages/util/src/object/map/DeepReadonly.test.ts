@@ -56,4 +56,12 @@ describe('DeepReadonly', () => {
 			>
 		>()
 	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('intersect', () => {
+	// 	expect.assertions(0)
+
+	// 	type A = ([1] | { a: 2 }) & ([number] | { a: number })
+	// 	type AA = DeepReadonly<A>
+	// })
 })

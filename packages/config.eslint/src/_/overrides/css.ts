@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { codeFiles } from '../files.js'
+import { codeFiles } from '~/_/files'
 
 export const cssOverride = defineEslintConfigOverride({
 	files: [...codeFiles, '*.css'],
@@ -24,4 +24,4 @@ export const cssOverride = defineEslintConfigOverride({
 			},
 		},
 	},
-})
+} as const)

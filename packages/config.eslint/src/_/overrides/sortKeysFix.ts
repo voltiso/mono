@@ -11,4 +11,4 @@ export const sortKeysFix = defineEslintConfigOverride({
 	rules: {
 		'sort-keys-fix/sort-keys-fix': 0, // well - whole plugin currently unused
 	},
-})
+} as const)

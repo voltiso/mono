@@ -10,8 +10,11 @@
 	//
 
 	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
-	"javascript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
-	"typescript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
+	"javascript.preferences.importModuleSpecifierEnding": "minimal", // Needed for proper esm
+	"typescript.preferences.importModuleSpecifierEnding": "minimal", // Needed for proper esm
+
+	"typescript.preferences.quoteStyle": "single",
+	"javascript.preferences.quoteStyle": "single",
 
 	"typescript.preferences.includePackageJsonAutoImports": "auto",
 
@@ -287,6 +290,7 @@
 		"tsclint",
 		"tsdoc",
 		"tsup",
+		"ttsc",
 		"Turborepo",
 		"typecov",
 		"typeof",

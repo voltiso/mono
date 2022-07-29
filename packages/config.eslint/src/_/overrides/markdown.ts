@@ -8,4 +8,4 @@ export const markdownOverride = defineEslintConfigOverride({
 
 	plugins: ['markdown'],
 	extends: ['plugin:markdown/recommended'],
-})
+} as const)

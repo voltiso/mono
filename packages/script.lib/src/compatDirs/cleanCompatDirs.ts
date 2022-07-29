@@ -5,8 +5,8 @@ import { getPackageJsonCached } from '@voltiso/util'
 import * as fs from 'node:fs/promises'
 import path from 'node:path'
 
-import { printInfo } from '../_/printInfo.js'
-import { getCompatDirNames } from './getCompatDirNames.js'
+import { printInfo } from '../_/printInfo'
+import { getCompatDirNames } from './getCompatDirNames'
 
 const dryRun = false // TODO: expose option
 

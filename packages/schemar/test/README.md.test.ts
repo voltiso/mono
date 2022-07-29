@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '../src'
+import * as s from '~'
 
 describe('README.md', () => {
 	it('bundlers / tree-shaking', () => {

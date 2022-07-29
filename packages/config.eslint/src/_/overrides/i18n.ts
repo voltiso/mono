@@ -16,4 +16,4 @@ export const i18n = defineEslintConfigOverride({
 		'i18n/no-russian-character': 1,
 		'i18n/no-thai-character': 1,
 	},
-})
+} as const)

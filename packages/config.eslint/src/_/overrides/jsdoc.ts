@@ -74,4 +74,4 @@ export const jsdocOverride = defineEslintConfigOverride({
 
 		'jsdoc/valid-types': 1,
 	},
-})
+} as const)

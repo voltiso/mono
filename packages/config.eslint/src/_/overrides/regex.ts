@@ -44,7 +44,7 @@ const regexRules = defineEslintConfigOverrideRules({
 	// 		},
 	// 	],
 	// ],
-})
+} as const)
 
 /** `eslint-plugin-regex` - custom eslint rules - can use instead of notice/notice, etc. */
 export const regexOverride = defineEslintConfigOverride({
@@ -53,4 +53,4 @@ export const regexOverride = defineEslintConfigOverride({
 	plugins: ['regex'],
 
 	rules: regexRules,
-})
+} as const)

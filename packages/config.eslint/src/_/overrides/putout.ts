@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { codeFiles } from '../files.js'
+import { codeFiles } from '~/_/files'
 
 export const putoutOverride = defineEslintConfigOverride({
 	extends: ['plugin:putout/recommended'],
@@ -60,4 +60,4 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/tape-remove-newline-before-t-end': 'error',
 		'putout/nonblock-statement-body-newline': 0,
 	},
-})
+} as const)

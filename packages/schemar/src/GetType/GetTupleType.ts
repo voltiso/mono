@@ -3,9 +3,10 @@
 
 import type { If } from '@voltiso/util'
 
-import type { InferableMutableTuple, InferableReadonlyTuple } from '../schema'
-import type { GetType_ } from './GetType.js'
-import type { GetTypeOptions } from './GetTypeOptions.js'
+import type { InferableMutableTuple, InferableReadonlyTuple } from '~'
+
+import type { GetType_ } from './GetType'
+import type { GetTypeOptions } from './GetTypeOptions'
 
 interface GetTupleTypeOptions extends GetTypeOptions {
 	readonlyTuple: boolean

@@ -24,4 +24,4 @@ export const formatJs = defineEslintConfigOverride({
 		'formatjs/no-id': 2,
 		'formatjs/no-complex-selectors': 2,
 	},
-})
+} as const)

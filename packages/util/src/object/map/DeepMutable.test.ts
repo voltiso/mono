@@ -6,7 +6,43 @@ import { Assert } from '../../type/static-assert'
 import type { DeepMutable } from './DeepMutable.js'
 
 describe('DeepMutable', () => {
-	it('works', () => {
+	it('array', () => {
+		expect.assertions(0)
+
+		type A = readonly string[]
+		type AA = DeepMutable<A>
+
+		Assert<IsIdentical<AA, string[]>>()
+	})
+
+	it('tuple', () => {
+		expect.assertions(0)
+
+		type A = readonly [1, 2, 3]
+		type AA = DeepMutable<A>
+
+		Assert<IsIdentical<AA, [1, 2, 3]>>()
+	})
+
+	it('tuple - nested', () => {
+		expect.assertions(0)
+
+		type A = readonly [1, 2, readonly [3, 4]]
+		type AA = DeepMutable<A>
+
+		Assert<IsIdentical<AA, [1, 2, [3, 4]]>>()
+	})
+
+	it('tuple of objects', () => {
+		expect.assertions(0)
+
+		type A = readonly [1, 2, { readonly a: 3 }]
+		type AA = DeepMutable<A>
+
+		Assert<IsIdentical<AA, [1, 2, { a: 3 }]>>()
+	})
+
+	it('complex', () => {
 		expect.assertions(0)
 
 		type Obj = {

@@ -18,4 +18,4 @@ export const cypress = defineEslintConfigOverride({
 		'cypress/no-async-tests': 'error',
 		'cypress/no-pause': 'error',
 	},
-})
+} as const)

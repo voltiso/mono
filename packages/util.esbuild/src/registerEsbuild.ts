@@ -3,7 +3,7 @@
 
 import type { register } from 'esbuild-register/dist/node'
 
-import { patchRequireForEsbuild } from './patchRequireForEsbuild.js'
+import { patchRequireForEsbuild } from './patchRequireForEsbuild'
 
 type RegisterOptions = Exclude<Parameters<typeof register>[0], undefined>
 

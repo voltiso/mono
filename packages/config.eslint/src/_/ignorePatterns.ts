@@ -19,4 +19,4 @@ export const ignorePatterns = [
 	...readGitignoreFiles({ cwd: '.' }),
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//
-]
+] as const

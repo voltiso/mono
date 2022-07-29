@@ -14,4 +14,4 @@ export const switchCase = defineEslintConfigOverride({
 		'switch-case/newline-between-switch-case': 0, // crashes eslint!
 		'switch-case/no-case-curly': 2,
 	},
-})
+} as const)

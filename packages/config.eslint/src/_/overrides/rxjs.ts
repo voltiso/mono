@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { codeFilesNoMd } from '../files.js'
+import { codeFilesNoMd } from '~/_/files'
 
 export const rxjs = defineEslintConfigOverride({
 	extends: ['plugin:rxjs/recommended'],
@@ -53,4 +53,4 @@ export const rxjs = defineEslintConfigOverride({
 		'rxjs/suffix-subjects': 2,
 		'rxjs/throw-error': 2,
 	},
-})
+} as const)

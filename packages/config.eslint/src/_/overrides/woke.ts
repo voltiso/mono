@@ -17,4 +17,4 @@ export const wokeOverride = defineEslintConfigOverride({
 		'woke/profanity': 2,
 		'woke/racism': 0, // does not allow `prod` - can't disable...
 	},
-})
+} as const)

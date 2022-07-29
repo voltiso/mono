@@ -3,7 +3,7 @@
 
 import { defineEslintConfig } from '@voltiso/config.eslint.lib'
 
-import { ignorePatterns } from './_/ignorePatterns.js'
+import { ignorePatterns } from './_/ignorePatterns'
 import {
 	anyOverride,
 	arrayFunc,
@@ -57,7 +57,7 @@ import {
 	security,
 	simpleImportSort,
 	sonar,
-	sortClassMembers,
+	// sortClassMembers,
 	sortKeysFix,
 	storybook,
 	switchCase,
@@ -74,6 +74,8 @@ import {
 
 // const restrictedGlobals = require('confusing-browser-globals') // CRA config already does this
 
+// const tsconfigPath = findTsconfigPathSync(process.cwd())
+
 export const baseEslintConfig = defineEslintConfig({
 	// root: true, // ! override this explicitly
 
@@ -87,8 +89,73 @@ export const baseEslintConfig = defineEslintConfig({
 
 	extends: ['eslint:all'],
 
+	parserOptions: {
+		ecmaFeatures: {
+			jsx: true,
+		},
+
+		ecmaVersion: 'latest',
+
+		project: ['tsconfig.json', 'packages/*/tsconfig.json'], //! you may want to override this
+		// project: tsconfigPath, //! you may want to override this
+		// tsconfigRootDir: __dirname, //! you may want to override this
+		sourceType: 'module',
+	},
+
+	settings: {
+		'import/parsers': {
+			'@typescript-eslint/parser': [
+				'.ts',
+				'.tsx',
+				'.mts',
+				'.mtsx',
+				'.cts',
+				'.ctsx',
+				//
+				'.js',
+				'.jsx',
+				'.mjs',
+				'.mjsx',
+				'.cjs',
+				'.cjsx',
+			],
+		},
+
+		'import/ignore': ['node_modules/react-native/index\\.js$'],
+
+		'import/resolver': {
+			// node: {
+			// 	extensions: [
+			// 		'.ts',
+			// 		'.tsx',
+			// 		'.mts',
+			// 		'.mtsx',
+			// 		'.cts',
+			// 		'.ctsx',
+			// 		//
+			// 		'.js',
+			// 		'.jsx',
+			// 		'.mjs',
+			// 		'.mjsx',
+			// 		'.cjs',
+			// 		'.cjsx',
+			// 	],
+			// },
+
+			typescript: {
+				/**
+				 * Always try to resolve types under `<root>@types` directory even it
+				 * doesn't contain any source code, like `@types/unist`
+				 */
+				alwaysTryTypes: true,
+
+				// project: 'packages/*/tsconfig.json',
+			},
+		},
+	},
+
 	rules: {
-		//
+		'max-lines': 0,
 	},
 
 	overrides: [
@@ -128,7 +195,7 @@ export const baseEslintConfig = defineEslintConfig({
 		noSecrets,
 		noUnsanitized,
 		security,
-		sortClassMembers,
+		// sortClassMembers,
 		sortKeysFix,
 		switchCase,
 		tsdoc,
@@ -205,8 +272,8 @@ export const baseEslintConfig = defineEslintConfig({
 			files: ['*.tsx', '*.jsx', '*.mtsx', '*.ctsx', '*.mjsx', '*.cjsx'],
 
 			rules: {
-				'import/no-nodejs-modules': 2,
+				'import/no-nodejs-modules': 1,
 			},
 		},
 	],
-})
+} as const)

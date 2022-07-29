@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import s from '../src'
+import s from '~'
 
 describe('README.md - usage', () => {
 	it('works', () => {

@@ -24,4 +24,4 @@ export const security = defineEslintConfigOverride({
 		'security/detect-pseudoRandomBytes': 2,
 		'security/detect-new-buffer': 2,
 	},
-})
+} as const)

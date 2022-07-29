@@ -16,4 +16,4 @@ export const eslintComments = defineEslintConfigOverride({
 		'eslint-comments/no-use': 0,
 		'eslint-comments/no-unlimited-disable': 0, // handled by unicorn
 	},
-})
+} as const)

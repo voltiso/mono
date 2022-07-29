@@ -3,7 +3,7 @@
 
 import type { PackageJson } from '@voltiso/util'
 
-import { VoltisoScriptError } from '../VoltisoScriptError.js'
+import { VoltisoScriptError } from '../VoltisoScriptError'
 
 export function getCompatDirNames(packageJson: PackageJson): string[] {
 	const obj = packageJson.typesVersions?.['*']

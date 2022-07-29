@@ -8,4 +8,4 @@ export const jsxAlly = defineEslintConfigOverride({
 
 	extends: ['plugin:jsx-a11y/recommended'],
 	plugins: ['jsx-a11y'],
-})
+} as const)

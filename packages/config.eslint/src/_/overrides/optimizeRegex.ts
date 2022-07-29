@@ -13,4 +13,4 @@ export const optimizeRegex = defineEslintConfigOverride({
 	rules: {
 		'optimize-regex/optimize-regex': 0, // ! bugged !
 	},
-})
+} as const)

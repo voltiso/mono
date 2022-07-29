@@ -4,7 +4,7 @@
 import type * as Database from '@voltiso/firestore-like'
 import { isDefined } from '@voltiso/util'
 
-import type { Transaction } from './Transaction.js'
+import type { Transaction } from './Transaction'
 
 export class Lock {
 	transaction: Transaction

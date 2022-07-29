@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { VoltisoUtilError, toString } from '../..'
 import type { Nullish } from '../../nullish'
 import type { Merge2 } from './Merge2.js'
 import type { Merge2Nullish } from './Merge2Nullish.js'
@@ -49,35 +50,49 @@ export type MergeNullish<
 
 //
 
+type HasArray<Ts> = Ts extends readonly []
+	? false
+	: Ts extends readonly [infer Head, ...infer Tail]
+	? Head extends readonly unknown[]
+		? true
+		: HasArray<Tail>
+	: never
+
 export function merge<A extends object, B extends SuggestObject<A>>(
 	objectA: A,
 	objectB: B,
-): Merge2<A, B>
+): HasArray<[A, B]> extends true ? never : Merge2<A, B>
 
 export function merge<
 	A extends object | Nullish,
 	B extends SuggestObject<Extract<A, object>> | Nullish,
->(objectA: A, objectB: B): Merge2Nullish<A, B>
+>(
+	objectA: A,
+	objectB: B,
+): HasArray<[A, B]> extends true ? never : Merge2Nullish<A, B>
 
 export function merge<Objs extends readonly object[]>(
 	...objs: Objs
-): MergeN<Objs>
+): HasArray<Objs> extends true ? never : MergeN<Objs>
 
 export function merge<Objs extends readonly (object | Nullish)[]>(
 	...objs: Objs
-): MergeNNullish<Objs>
+): HasArray<Objs> extends true ? never : MergeNNullish<Objs>
 
 export function merge<Objs extends readonly (object | Nullish)[]>(
 	...objs: Objs
-): MergeNNullish<Objs> {
+): HasArray<Objs> extends true ? never : MergeNNullish<Objs> {
 	let r = {}
 
-	for (const object of objs) {
+	for (const obj of objs) {
+		if (Array.isArray(obj))
+			throw new VoltisoUtilError(`merge: argument is array: ${toString(obj)}`)
+
 		r = {
 			...r,
-			...object,
+			...obj,
 		}
 	}
 
-	return r as MergeNNullish<Objs>
+	return r as never
 }

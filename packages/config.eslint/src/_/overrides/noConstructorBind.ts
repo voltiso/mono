@@ -12,4 +12,4 @@ export const noConstructorBind = defineEslintConfigOverride({
 		'no-constructor-bind/no-constructor-bind': 'error',
 		'no-constructor-bind/no-constructor-state': 'error',
 	},
-})
+} as const)

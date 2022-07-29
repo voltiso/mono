@@ -10,7 +10,7 @@ import {
 import { getPackageJsonCached } from '@voltiso/util'
 import * as path from 'node:path'
 
-import type { Command } from './Command.js'
+import type { Command } from './Command'
 
 const subCommands = {
 	get: async () => {

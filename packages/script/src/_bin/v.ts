@@ -3,7 +3,7 @@
 
 import { VoltisoScriptError } from '@voltiso/script.lib'
 
-import { compatDirs } from './_/compatDirs.js'
+import { compatDirs } from './_/compatDirs'
 
 const commands = {
 	compatDirs,

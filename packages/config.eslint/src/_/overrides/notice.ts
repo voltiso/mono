@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { filesInsideMd } from '../files.js'
+import { filesInsideMd } from '~/_/files'
 
 export const notice = defineEslintConfigOverride({
 	files: '*',
@@ -23,7 +23,7 @@ export const notice = defineEslintConfigOverride({
 			},
 		],
 	},
-})
+} as const)
 
 export const noticeHash = defineEslintConfigOverride({
 	files: [
@@ -47,4 +47,4 @@ export const noticeHash = defineEslintConfigOverride({
 			},
 		],
 	},
-})
+} as const)

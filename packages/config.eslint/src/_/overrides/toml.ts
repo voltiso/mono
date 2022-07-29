@@ -11,4 +11,4 @@ export const toml = defineEslintConfigOverride({
 	plugins: ['toml'],
 
 	extends: ['plugin:toml/standard'],
-})
+} as const)

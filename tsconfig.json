@@ -4,8 +4,5 @@
 {
 	"extends": "@voltiso/config.ts",
 
-	"exclude": [
-		"./packages/*/dist"
-		//
-	]
+	"exclude": ["./packages/"]
 }

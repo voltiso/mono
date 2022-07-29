@@ -11,4 +11,4 @@ export const preferArrow = defineEslintConfigOverride({
 	rules: {
 		'prefer-arrow/prefer-arrow-functions': 0, // well... this plugin is now unused
 	},
-})
+} as const)

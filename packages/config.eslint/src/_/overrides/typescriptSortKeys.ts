@@ -14,4 +14,4 @@ export const typescriptSortKeys = defineEslintConfigOverride({
 		'typescript-sort-keys/interface': 0, // no!
 		'typescript-sort-keys/string-enum': 'error',
 	},
-})
+} as const)

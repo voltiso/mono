@@ -19,4 +19,4 @@ export const arrayFunc = defineEslintConfigOverride({
 		// 'array-func/prefer-flat-map': 'error',
 		// 'array-func/prefer-flat': 'error',
 	},
-})
+} as const)

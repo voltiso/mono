@@ -16,4 +16,4 @@ export const jsx = defineEslintConfigOverride({
 		'jsx/mark-used-vars': 1,
 		'jsx/no-undef': 0, // does not work with boolean props
 	},
-})
+} as const)

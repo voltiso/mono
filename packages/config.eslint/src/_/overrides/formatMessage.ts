@@ -26,4 +26,4 @@ export const formatMessage = defineEslintConfigOverride({
 			// translations: './locales',
 		},
 	},
-})
+} as const)

@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { tsFiles } from '../files.js'
+import { tsFiles } from '~/_/files'
 
 export const tsdoc = defineEslintConfigOverride({
 	files: tsFiles,
@@ -13,4 +13,4 @@ export const tsdoc = defineEslintConfigOverride({
 	rules: {
 		'tsdoc/syntax': 2,
 	},
-})
+} as const)

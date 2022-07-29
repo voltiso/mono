@@ -19,4 +19,4 @@ export const filenames = defineEslintConfigOverride({
 
 		// 'filenames/match-exported': [2, 'kebab'],
 	},
-})
+} as const)

@@ -4,9 +4,10 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import * as s from '../s'
-import type { InferableObject, IRootSchema, RootSchemable } from '../schema'
-import type { GetInputType, GetOutputType } from './GetType.js'
+import type { RootSchema } from '~'
+import * as s from '~/schemas/index'
+
+import type { GetInputType, GetOutputType } from './GetType'
 
 describe('GetType', () => {
 	it('simple', () => {
@@ -15,7 +16,7 @@ describe('GetType', () => {
 		type A = GetOutputType<s.Number>
 		Assert<IsIdentical<A, number>>()
 
-		type B = GetOutputType<IRootSchema>
+		type B = GetOutputType<RootSchema>
 		Assert<IsIdentical<B, unknown>>()
 	})
 

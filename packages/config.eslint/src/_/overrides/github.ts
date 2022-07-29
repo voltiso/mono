@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-// import { codeFiles } from '../files.js'
+// import { codeFiles } from '~/_/files'
 
 export const githubOverride = defineEslintConfigOverride({
 	extends: [
@@ -21,4 +21,4 @@ export const githubOverride = defineEslintConfigOverride({
 	rules: {
 		'github/no-then': 0, // handles by `promise`
 	},
-})
+} as const)

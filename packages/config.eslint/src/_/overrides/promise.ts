@@ -26,4 +26,4 @@ export const promise = defineEslintConfigOverride({
 		'promise/prefer-await-to-then': 2,
 		'promise/valid-params': 'warn',
 	},
-})
+} as const)

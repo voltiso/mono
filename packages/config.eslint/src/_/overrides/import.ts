@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { codeFiles } from '../files.js'
+import { codeFiles } from '~/_/files'
 
 export const importOverride = defineEslintConfigOverride({
 	extends: [
@@ -22,72 +22,23 @@ export const importOverride = defineEslintConfigOverride({
 		'import/no-unresolved': 2,
 		'import/no-namespace': 0,
 
-		// 'import/extensions': 0,
+		'import/extensions': 1,
 
-		'import/extensions': [
-			'error',
-			'ignorePackages',
-			{
-				'': 'never',
-				ts: 'never',
-				tsx: 'never',
-			},
-		],
+		// 'import/extensions': [
+		// 	'error',
+		// 	'ignorePackages',
+		// 	{
+		// 		'': 'never',
+		// 		ts: 'never',
+		// 		tsx: 'never',
+		// 	},
+		// ],
 
-		'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+		'import/no-useless-path-segments': ['warn', { noUselessIndex: true }],
 		'import/no-relative-packages': 2,
-		'import/no-duplicates': 2,
+		'import/no-duplicates': 1,
+		// 'import/no-relative-parent-imports': 1, // use 'no-restricted-imports' instead
+
+		'import/namespace': 0, // buggy when using custom "paths" in `tsconfig.json`
 	},
-
-	settings: {
-		'import/parsers': {
-			'@typescript-eslint/parser': [
-				'.ts',
-				'.tsx',
-				'.mts',
-				'.mtsx',
-				'.cts',
-				'.ctsx',
-				//
-				'.js',
-				'.jsx',
-				'.mjs',
-				'.mjsx',
-				'.cjs',
-				'.cjsx',
-			],
-		},
-
-		'import/ignore': ['node_modules/react-native/index\\.js$'],
-
-		'import/resolver': {
-			// node: {
-			// 	extensions: [
-			// 		'.ts',
-			// 		'.tsx',
-			// 		'.mts',
-			// 		'.mtsx',
-			// 		'.cts',
-			// 		'.ctsx',
-			// 		//
-			// 		'.js',
-			// 		'.jsx',
-			// 		'.mjs',
-			// 		'.mjsx',
-			// 		'.cjs',
-			// 		'.cjsx',
-			// 	],
-			// },
-
-			typescript: {
-				/**
-				 * Always try to resolve types under `<root>@types` directory even it
-				 * doesn't contain any source code, like `@types/unist`
-				 */
-				alwaysTryTypes: true,
-
-				// Project: 'path/to/folder',
-			},
-		},
-	},
-})
+} as const)

@@ -14,4 +14,4 @@ export const noUnsanitized = defineEslintConfigOverride({
 		'no-unsanitized/method': 'error',
 		'no-unsanitized/property': 'error',
 	},
-})
+} as const)

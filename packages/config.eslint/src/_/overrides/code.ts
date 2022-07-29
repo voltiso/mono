@@ -6,10 +6,7 @@ import {
 	defineEslintConfigOverrideRules,
 } from '@voltiso/config.eslint.lib'
 
-import { codeFilesNoMd } from '../files.js'
-import { findTsconfigPathSync } from '../findTsconfigPath.js'
-
-const tsconfigPath = findTsconfigPathSync(process.cwd())
+import { codeFilesNoMd } from '~/_/files'
 
 const alreadyHandledByPrettier = defineEslintConfigOverrideRules({
 	'@typescript-eslint/comma-dangle': 0,
@@ -18,20 +15,20 @@ const alreadyHandledByPrettier = defineEslintConfigOverrideRules({
 	'quote-props': 0,
 	'object-curly-spacing': 0,
 	semi: 0,
-})
+} as const)
 
 const alreadyHandledByTsc = defineEslintConfigOverrideRules({
 	/** Already checked by TSC, can ignore with `_name` underscored variable name */
 	'@typescript-eslint/no-unused-vars': 0,
-})
+} as const)
 
 const alreadyHandledByUnicorn = defineEslintConfigOverrideRules({
 	/** Handled by `unicorn/prefer-module` */
 	'@typescript-eslint/no-var-requires': 0,
-})
+} as const)
 
 const functionalRecommendedRules = defineEslintConfigOverrideRules({
-	'@typescript-eslint/prefer-readonly': 2,
+	'@typescript-eslint/prefer-readonly': 1,
 
 	// '@typescript-eslint/prefer-readonly-parameter-types': [
 	// 	'error',
@@ -40,10 +37,10 @@ const functionalRecommendedRules = defineEslintConfigOverrideRules({
 
 	'@typescript-eslint/prefer-readonly-parameter-types': 0,
 
-	'@typescript-eslint/switch-exhaustiveness-check': 2,
+	'@typescript-eslint/switch-exhaustiveness-check': 1,
 	'no-var': 2,
-	'prefer-const': 2,
-})
+	'prefer-const': 1,
+} as const)
 
 /** All TS/JS files */
 export const codeOverride = defineEslintConfigOverride({
@@ -57,18 +54,6 @@ export const codeOverride = defineEslintConfigOverride({
 
 	parser: '@typescript-eslint/parser',
 
-	parserOptions: {
-		ecmaFeatures: {
-			jsx: true,
-		},
-
-		ecmaVersion: 'latest',
-
-		project: tsconfigPath,
-		// TsconfigRootDir: __dirname, //! you may want to override this
-		sourceType: 'module',
-	},
-
 	plugins: ['@typescript-eslint'],
 
 	rules: {
@@ -78,11 +63,12 @@ export const codeOverride = defineEslintConfigOverride({
 		...functionalRecommendedRules,
 
 		'@typescript-eslint/no-floating-promises': 2,
-		'@typescript-eslint/no-unnecessary-condition': 2,
-		'@typescript-eslint/consistent-type-imports': 2,
+		'@typescript-eslint/no-unnecessary-condition': 1, // sometimes buggy with generics?
+		'@typescript-eslint/consistent-type-imports': 1,
 		'@typescript-eslint/no-extra-parens': 0, // conflicts with prettier
 		'@typescript-eslint/no-extra-semi': 0, // conflicts with prettier
 		'@typescript-eslint/no-invalid-this': 0,
+		'@typescript-eslint/no-empty-interface': [1, { allowSingleExtends: true }],
 
 		// '@typescript-eslint/no-explicit-any': [
 		// 	'error',
@@ -90,11 +76,11 @@ export const codeOverride = defineEslintConfigOverride({
 		// ],
 
 		'@typescript-eslint/no-explicit-any': 0,
-		'@typescript-eslint/array-type': ['error', { default: 'array' }],
+		'@typescript-eslint/array-type': ['warn', { default: 'array' }],
 
-		'arrow-body-style': 2,
+		'arrow-body-style': 1,
 		'capitalized-comments': 'off',
-		'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
+		'func-style': ['warn', 'declaration', { allowArrowFunctions: true }],
 		'id-length': 0,
 
 		'@typescript-eslint/lines-between-class-members': [
@@ -105,19 +91,19 @@ export const codeOverride = defineEslintConfigOverride({
 
 		'no-console': 1,
 		'no-else-return': 0,
-		'no-magic-numbers': ['error', { ignore: [-2, -1, 0, 1, 2] }],
-		'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+		'no-magic-numbers': ['warn', { ignore: [-2, -1, 0, 1, 2] }],
+		'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
 		'no-shadow': 0, // we like to shadow
 		'no-ternary': 0, // ternary... hmm, ok.
 		'no-underscore-dangle': 0,
 		'no-use-before-define': 2,
 		'no-void': ['error', { allowAsStatement: true }],
-		'prefer-arrow-callback': 2,
+		'prefer-arrow-callback': 1,
 		'sort-imports': 0, // using `simple-import-sort/imports` instead (auto-fixable)
 
 		'sort-keys': 0, // using `sort-keys-fix` instead (auto-fixable)
 
-		'spaced-comment': ['error', 'always', { markers: ['!', '?'] }], //? allows this
+		'spaced-comment': ['warn', 'always', { markers: ['!', '?'] }], //? allows this
 
 		'one-var': 0,
 		'@typescript-eslint/no-shadow': 0,
@@ -182,5 +168,19 @@ export const codeOverride = defineEslintConfigOverride({
 				next: 'function',
 			},
 		],
+
+		'no-restricted-imports': [
+			'warn',
+			{
+				patterns: [
+					{
+						group: ['../*'],
+
+						message:
+							'Do not import from parent - use `paths` in `tsconfig.json` instead - e.g. `"~": "./src"`, `"~/*": "./src/*`',
+					},
+				],
+			},
+		],
 	},
-})
+} as const)

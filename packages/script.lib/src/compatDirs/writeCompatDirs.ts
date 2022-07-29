@@ -5,9 +5,9 @@ import { getPackageJsonCached } from '@voltiso/util'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
-import { printInfo } from '../_/printInfo.js'
-import { VoltisoScriptError } from '../VoltisoScriptError.js'
-import { getCompatDirNames } from './getCompatDirNames.js'
+import { printInfo } from '../_/printInfo'
+import { VoltisoScriptError } from '../VoltisoScriptError'
+import { getCompatDirNames } from './getCompatDirNames'
 
 export async function writeCompatDirs() {
 	const packageJson = await getPackageJsonCached(path.resolve())

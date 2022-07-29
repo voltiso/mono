@@ -7,11 +7,12 @@ import type {
 	InferableObject,
 	InferableTuple,
 	ISchema,
-	RootSchemable,
-} from '../schema'
-import type { GetObjectType_ } from './GetObjectType.js'
-import type { GetTupleType } from './GetTupleType.js'
-import type { GetTypeOptions } from './GetTypeOptions.js'
+	Schemable,
+} from '~'
+
+import type { GetObjectType_ } from './GetObjectType'
+import type { GetTupleType } from './GetTupleType'
+import type { GetTypeOptions } from './GetTypeOptions'
 
 export type GetType_<L, IO extends GetTypeOptions> = L extends InferableLiteral
 	? L
@@ -34,10 +35,7 @@ export type GetType<
 > = GetType_<S, Options>
 
 /** Proxy to `GetType` */
-export type GetOutputType<S extends RootSchemable> = GetType_<
-	S,
-	{ kind: 'out' }
->
+export type GetOutputType<S extends Schemable> = GetType_<S, { kind: 'out' }>
 
 /** Proxy to `GetType` */
-export type GetInputType<S extends RootSchemable> = GetType_<S, { kind: 'in' }>
+export type GetInputType<S extends Schemable> = GetType_<S, { kind: 'in' }>

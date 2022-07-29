@@ -3,8 +3,9 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type * as s from '../s'
-import { SchemarError } from './SchemarError.js'
+import type * as s from '~/schemas/index'
+
+import { SchemarError } from './SchemarError'
 
 export class ValidationError extends lazyConstructor(() => SchemarError) {
 	issues: s.ValidationIssue[]

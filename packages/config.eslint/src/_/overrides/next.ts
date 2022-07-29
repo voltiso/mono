@@ -15,4 +15,4 @@ export const next = defineEslintConfigOverride({
 	],
 
 	plugins: ['@next/eslint-plugin-next'],
-})
+} as const)

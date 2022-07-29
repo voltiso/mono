@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { filesInsideMd, jsonFiles } from '../files.js'
+import { filesInsideMd, jsonFiles } from '~/_/files'
 
 /** `json` with comments */
 export const jsonc = defineEslintConfigOverride({
@@ -58,6 +58,7 @@ export const jsonc = defineEslintConfigOverride({
 		'jsonc/array-element-newline': 0, // conflicts with `prettier`
 		'jsonc/array-bracket-newline': 0, // conflicts with `prettier`
 		'jsonc/object-curly-spacing': 0, // conflicts with `prettier`
+		'jsonc/object-property-newline': 0, // conflicts with `prettier`
 
 		// ! `json-files` breaks `prettier/prettier` ⬇️
 		// // ⬇️ eslint-plugin-json-files
@@ -70,7 +71,7 @@ export const jsonc = defineEslintConfigOverride({
 		// 'json-files/sort-package-json': 'error',
 		// 'json-files/validate-schema': 'error',
 	},
-})
+} as const)
 
 /** `json` without comments */
 export const json = defineEslintConfigOverride({
@@ -80,4 +81,4 @@ export const json = defineEslintConfigOverride({
 		'notice/notice': 0,
 		'jsonc/no-comments': 2,
 	},
-})
+} as const)

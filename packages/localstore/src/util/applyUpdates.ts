@@ -7,7 +7,7 @@
 import type * as Database from '@voltiso/firestore-like'
 import { deepClone, undef } from '@voltiso/util'
 
-import { DeleteIt, IncrementIt } from '../FieldValue.js'
+import { DeleteIt, IncrementIt } from '../FieldValue'
 
 export function applyUpdatesInPlace(
 	data: Database.DocumentData,

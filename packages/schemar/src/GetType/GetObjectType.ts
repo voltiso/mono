@@ -3,10 +3,10 @@
 
 import type { _, HasIndexSignature } from '@voltiso/util'
 
-import type { SchemaOptions } from '../schema'
-import type { GetOptions } from './GetOptions.js'
-import type { GetType_ } from './GetType.js'
-import type { GetTypeOptions } from './GetTypeOptions.js'
+import type { SchemaOptions } from '~'
+
+import type { GetType_, GetTypeOptions } from '.'
+import type { GetOptions } from './GetOptions'
 
 type GetObjectTypeNoSignature<
 	T,

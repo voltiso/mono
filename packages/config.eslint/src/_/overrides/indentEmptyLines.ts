@@ -16,4 +16,4 @@ export const indentEmptyLines = defineEslintConfigOverride({
 		'indent-empty-lines/indent-empty-lines': 0,
 		// 'indent-empty-lines/indent-empty-lines': ['error', 'tab'],
 	},
-})
+} as const)

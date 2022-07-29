@@ -9,4 +9,4 @@ export const editorconfig = defineEslintConfigOverride({
 	extends: ['plugin:editorconfig/all'],
 
 	plugins: ['editorconfig'],
-})
+} as const)

@@ -11,4 +11,4 @@ export const noSecrets = defineEslintConfigOverride({
 	rules: {
 		'no-secrets/no-secrets': 'error',
 	},
-})
+} as const)

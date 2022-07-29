@@ -16,4 +16,4 @@ export const sonar = defineEslintConfigOverride({
 		'sonarjs/no-inverted-boolean-check': 2,
 		'sonarjs/prefer-single-boolean-return': 0,
 	},
-})
+} as const)

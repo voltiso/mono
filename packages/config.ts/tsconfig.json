@@ -5,28 +5,26 @@
 	// "files": [],
 	"include": [
 		"/**/*",
-		"/**/.*",
-		"/**/.*/**/*"
+		"/**/.*"
+		// "/**/.*/**/*"
 		// "/**/.*/**/*.md"
 		//
 	],
 
 	"exclude": [
-		"/**/dist",
+		"/**/node_modules/",
 		"/**/dist/",
-		"/**/dist/*",
-		"/**/dist/**/*",
-		"../*/dist",
-		// "/**/.*",
-		"/**/node_modules/"
+		"/**/.*/**/*" // Hidden dirs (works?)
 		//
 	],
 
 	"compilerOptions": {
 		// "rootDir": ".",
 
+		// "baseUrl": ".", //! override this to make paths work
 		// "paths": {
-		// 	"*": ["../*"] // Other packages in this monorepo
+		// 	"~": ["src"],
+		// 	"~/*": ["src/*"]
 		// },
 
 		"outDir": "_outDir_PLEASE_OVERRIDE", // Just in case - avoid polluting any dirs

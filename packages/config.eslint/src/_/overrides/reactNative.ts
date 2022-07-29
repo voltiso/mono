@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-// import { codeFiles } from '../files.js'
+// import { codeFiles } from '~/_/files'
 
 export const reactNative = defineEslintConfigOverride({
 	files: '*',
@@ -24,4 +24,4 @@ export const reactNative = defineEslintConfigOverride({
 		'react-native/no-unused-styles': 2,
 		'react-native/split-platform-components': 2,
 	},
-})
+} as const)

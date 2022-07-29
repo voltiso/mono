@@ -3,8 +3,10 @@
 
 import type { Config as JestConfig } from 'jest'
 
-import type { DeepMutable } from './_/DeepMutable.js'
-import type { DeepReadonly } from './_/DeepReadonly.js'
+// eslint-disable-next-line import/no-relative-packages
+import type { DeepMutable } from './_symlinks/DeepMutable'
+// eslint-disable-next-line import/no-relative-packages
+import type { DeepReadonly } from './_symlinks/DeepReadonly'
 
 /**
  * Define new `jest` config - util for type inference (no-op at runtime)

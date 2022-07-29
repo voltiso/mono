@@ -43,10 +43,11 @@
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint . --max-warnings=0",
 		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
+		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-p build:esm build:cjs",
-		"build:esm": "tsc -b tsconfig.build.esm.json",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"build:esm": "ttsc -b tsconfig.build.esm.json",
+		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-p lint test:all",
 		"__________MISC": "__________",
@@ -56,7 +57,7 @@
 	"dependencies": {
 		"@voltiso/assertor": "workspace:^1.0.0",
 		"@voltiso/util": "workspace:^39.0.0",
-		"chalk": "^4.1.2",
+		"chalk": "^5.0.1",
 		"fast-equals": "^4.0.1",
 		"js-yaml": "^4.1.0"
 	},

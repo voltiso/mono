@@ -3,8 +3,8 @@
 
 import type * as Database from '@voltiso/firestore-like'
 
-import { DocumentReference } from './DocumentReference.js'
-import type { Localstore } from './Localstore.js'
+import { DocumentReference } from './DocumentReference'
+import type { Localstore } from './Localstore'
 
 export class CollectionReference implements Database.CollectionReference {
 	_store: Localstore

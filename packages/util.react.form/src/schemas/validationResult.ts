@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { GetType, ISchema, MergeOptions } from '@voltiso/schemar'
-// eslint-disable-next-line n/file-extension-in-import
 import * as s from '@voltiso/schemar'
 
 export type ASDF<A extends ISchema, B> = MergeOptions<A, B>

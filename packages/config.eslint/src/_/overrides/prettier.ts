@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-// import { codeFiles } from '../files.js'
+// import { codeFiles } from '~/_/files'
 
 export const prettierOverride = defineEslintConfigOverride({
 	files: ['*'],
@@ -16,6 +16,6 @@ export const prettierOverride = defineEslintConfigOverride({
 	extends: ['plugin:prettier/recommended'],
 
 	rules: {
-		'prettier/prettier': 'error',
+		'prettier/prettier': 'warn',
 	},
-})
+} as const)

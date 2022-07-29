@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-// import { codeFiles } from '../files.js'
+// import { codeFiles } from '~/_/files'
 
 export const react = defineEslintConfigOverride({
 	files: '*',
@@ -20,4 +20,4 @@ export const react = defineEslintConfigOverride({
 		'plugin:react-hooks/recommended',
 		'plugin:react-native/all',
 	],
-})
+} as const)

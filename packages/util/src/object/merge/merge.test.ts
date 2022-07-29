@@ -11,13 +11,13 @@ import type { Merge2 } from './Merge2.js'
 import type { MergeN } from './MergeN.js'
 
 describe('merge', () => {
-	it('works with functions', () => {
-		expect.assertions(0)
+	// it('works with functions', () => {
+	// 	expect.assertions(0)
 
-		const f = merge(() => 1, { b: 2 } as const)
-		Assert.is<typeof f, () => 1>()
-		Assert.is<typeof f, { b: 2 }>()
-	})
+	// 	const f = merge(() => 1, { b: 2 } as const)
+	// 	Assert.is<typeof f, () => 1>()
+	// 	Assert.is<typeof f, { b: 2 }>()
+	// })
 
 	it('works with nullish', () => {
 		expect.hasAssertions()
@@ -182,5 +182,17 @@ describe('merge', () => {
 
 		type D = MergeN<[{ a?: 1 }, { a: 2 }]>
 		Assert<IsIdentical<D, { a: 2 }>>()
+	})
+
+	it('does not accept arrays', () => {
+		expect.hasAssertions()
+
+		const arr = [1, 2, 3]
+
+		expect(() => merge(arr)).toThrow()
+
+		const func = () => merge(arr)
+		type A = ReturnType<typeof func>
+		Assert<IsIdentical<A, never>>()
 	})
 })

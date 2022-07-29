@@ -4,5 +4,5 @@
 // Babel is only required for running `react-native` jest tests
 // (not required for `react`)
 
-import { babelReactNativeConfig } from './_/babelReactNativeConfig.js'
+import { babelReactNativeConfig } from './_/babelReactNativeConfig'
 export = babelReactNativeConfig

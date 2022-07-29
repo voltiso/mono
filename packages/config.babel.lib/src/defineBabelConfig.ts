@@ -3,8 +3,8 @@
 
 import type { ConfigFunction, TransformOptions } from '@babel/core'
 
-import type { DeepMutable } from './_/DeepMutable.js'
-import type { DeepReadonly } from './_/DeepReadonly.js'
+import type { DeepMutable } from './_/DeepMutable'
+import type { DeepReadonly } from './_/DeepReadonly'
 
 type MyDeepMutable<X> = X extends (...args: infer Args) => infer R
 	? (...args: Args) => DeepMutable<R>

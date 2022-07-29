@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type * as s from '../s'
-import type { InferableLiteral, IRootSchema, RootSchemable } from '../schema'
+import type * as s from '../custom-/index'
+import type { InferableLiteral, IRootSchema, RootSchemable } from '../Schema/index'
 import type { GetTupleType } from './GetTupleType.js'
 
 describe('GetTupleType', () => {

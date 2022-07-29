@@ -3,7 +3,7 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { testFiles } from '../files.js'
+import { testFiles } from '~/_/files'
 
 export const testOverride = defineEslintConfigOverride({
 	files: testFiles,
@@ -66,6 +66,7 @@ export const testOverride = defineEslintConfigOverride({
 		'sonarjs/no-duplicate-string': 0,
 		'unicorn/no-await-expression-member': 0,
 		'n/no-unpublished-import': 0,
+		'no-void': 0,
 
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,
@@ -77,4 +78,4 @@ export const testOverride = defineEslintConfigOverride({
 		// 'jsdoc/require-param': 0,
 		// 'jsdoc/require-returns': 0,
 	},
-})
+} as const)
