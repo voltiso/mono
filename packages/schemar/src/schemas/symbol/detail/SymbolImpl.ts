@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DefaultSymbolOptions } from '~'
-import { defaultSymbolOptions, CustomSymbolImpl } from '~'
+import { CustomSymbolImpl, defaultSymbolOptions } from '~'
 
 export class Symbol_ extends CustomSymbolImpl<DefaultSymbolOptions> {
 	constructor() {

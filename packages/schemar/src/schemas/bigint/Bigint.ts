@@ -3,18 +3,17 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import type * as s from '../index'
-import type { DefaultBigintOptions } from './_/BigintOptions.js'
-import { Bigint_ } from './Bigint_.js'
-import type { CustomBigint } from './CustomBigint.js'
+import type { CustomBigint } from '~'
+import { BigintImpl } from '~'
+import type * as s from '~/schemas'
 
-export interface Bigint extends CustomBigint<DefaultBigintOptions> {
+export interface Bigint extends CustomBigint<{}> {
 	<L extends bigint>(...literals: L[]): s.Literal<L>
 	<L extends bigint>(literals: Set<L>): s.Literal<L>
 	<L extends bigint>(...args: L[] | [Set<L>]): s.Literal<L>
 }
 
-export const Bigint = Bigint_ as unknown as BigintConstructor
+export const Bigint = BigintImpl as unknown as BigintConstructor
 
 type BigintConstructor = new () => Bigint
 

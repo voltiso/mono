@@ -1,25 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SCHEMA_NAME, Schemable, SchemaName, SchemaOptions } from '~'
+import type { Schemable, SchemaOptions, ValidationResult } from '~'
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-} from './symbols'
+import type { OPTIONS, PARTIAL_OPTIONS } from './symbols'
 import { EXTENDS } from './symbols'
+
+export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
+export type SCHEMA_NAME = typeof SCHEMA_NAME
 
 // export const IS_SCHEMA = Symbol('IS_SCHEMA')
 // export type IS_SCHEMA = typeof IS_SCHEMA
 
 /** Every Schema is assignable to `ISchema` */
-export interface ISchema {
-	readonly [SCHEMA_NAME]: SchemaName
+export interface ISchema<T = unknown> {
+	readonly [SCHEMA_NAME]: string // SchemaName
 
-	readonly [BASE_OPTIONS]: SchemaOptions
-	readonly [DEFAULT_OPTIONS]: SchemaOptions
+	// readonly [BASE_OPTIONS]: SchemaOptions
+	// readonly [DEFAULT_OPTIONS]: SchemaOptions
 
 	readonly [PARTIAL_OPTIONS]: {}
 	readonly [OPTIONS]: SchemaOptions
@@ -30,7 +28,7 @@ export interface ISchema {
 	 * - Get the type using `typeof xxx.Type`
 	 * - Alias to `.Out`
 	 */
-	get Type(): unknown
+	get Type(): T
 
 	/**
 	 * Inferred Type (output - after fixing)
@@ -38,7 +36,7 @@ export interface ISchema {
 	 * - Get the type using `typeof xxx.Out`
 	 * - Type-only (no value at runtime)
 	 */
-	get OutputType(): unknown
+	get OutputType(): T
 
 	/**
 	 * Inferred Input Type (the schema is able to convert these into Output Type)
@@ -46,7 +44,7 @@ export interface ISchema {
 	 * - Get the type using `typeof xxx.In`
 	 * - Type-only (no value at runtime)
 	 */
-	get InputType(): unknown
+	get InputType(): T
 
 	get isOptional(): boolean
 	get isReadonly(): boolean
@@ -56,7 +54,7 @@ export interface ISchema {
 
 	get optional(): ISchema
 	get readonly(): ISchema
-	// default(value: any): ISchema
+	default(value: any): ISchema
 
 	extends(other: Schemable): boolean
 	[EXTENDS](other: ISchema): boolean
@@ -80,7 +78,7 @@ export interface ISchema {
 	 * @param x - Value to validate against `this` schema
 	 * @returns `ValidationResult` - either success or error with issue list
 	 */
-	// tryValidate(x: unknown): ValidationResult
+	tryValidate(x: unknown): ValidationResult
 
 	/**
 	 * Validate `this` schema, throw on failure
@@ -99,5 +97,5 @@ export interface ISchema {
 	 */
 	isValid(x: unknown): boolean
 
-	// or(other: ISchema): IUnion
+	// or(other: ISchema): ISchema
 }

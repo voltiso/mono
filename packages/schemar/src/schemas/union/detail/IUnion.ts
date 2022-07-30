@@ -3,20 +3,13 @@
 
 import type { AtLeast2 } from '@voltiso/util'
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	DefaultUnionOptions,
-	ISchema,
-	Schemable,
-	UnionOptions,
-} from '~'
+import type { ISchema, Schemable } from '~'
 import { SCHEMA_NAME } from '~'
 
 export interface IUnion extends ISchema {
 	readonly [SCHEMA_NAME]: 'Union'
-	readonly [BASE_OPTIONS]: UnionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnionOptions
+	// readonly [BASE_OPTIONS]: UnionOptions
+	// readonly [DEFAULT_OPTIONS]: DefaultUnionOptions
 
 	get getSchemas(): [...AtLeast2<Schemable>]
 }

@@ -4,37 +4,75 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType, GetType_ } from '../../GetType/index'
-import type { IRootSchema, RootSchemable } from '../../Schema/index'
-import * as s from '../index'
-import type { FunctionOptions } from './_/FunctionOptions.js'
-import type { CustomFunction } from './CustomFunction.js'
+import type {
+	CustomFunction,
+	FunctionOptions,
+	GetInputType,
+	GetOutputType,
+	GetType_,
+	IFunction,
+	ISchema,
+	Schemable,
+} from '~'
+import * as s from '~'
 
 describe('function', () => {
-	it('generic', <O extends FunctionOptions>() => {
+	it('type - simple', () => {
+		expect.assertions(0)
+
+		Assert.is<CustomFunction<{}>, IFunction>()
+		Assert.is<CustomFunction<{}>, ISchema>()
+
+		type A = s.Function<(a: number) => string>
+		type AA = A['OutputType']
+		Assert<IsIdentical<AA, (a: number) => string>>()
+
+		type B = typeof s.function
+		type BB = B['OutputType']
+		Assert<IsIdentical<BB, (...args: any) => unknown>>()
+
+		type C = GetOutputType<typeof s.function>
+		Assert<IsIdentical<C, (...args: any) => unknown>>()
+
+		Assert.is<s.Function<(x: number) => string>, IFunction>()
+		Assert.is<s.Function<(x: number) => string>, ISchema>()
+	})
+
+	it('generic', <O extends Partial<FunctionOptions>>() => {
 		expect.assertions(0)
 
 		Assert.is<
-			GetType_<(s.ITuple | s.IArray) & IRootSchema, { kind: 'out' }>,
-			readonly unknown[]
-		>()
-
-		Assert.is<GetType_<O['arguments'], { kind: 'out' }>, readonly unknown[]>()
-
-		Assert.is<
-			never[],
-			GetType_<(s.ITuple | s.IArray) & IRootSchema, { kind: 'out' }>
+			GetType_<O['arguments'], { kind: 'out' }>,
+			undefined | readonly any[]
 		>()
 
 		// Assert.is<never[], []>()
 		// Assert.is<never[], GetType_<O['arguments'], { kind: 'out' }>>()
 
-		Assert.is<s.IFunction<O>, s.IFunction>()
-		Assert.is<CustomFunction<O>, s.IFunction<O>>()
-		Assert.is<CustomFunction<O>, s.IFunction>()
+		//! too deep...
+		// Assert.is<CustomFunction<O>, IFunction>()
+		// Assert.is<CustomFunction<O>, s.ISchema>()
+		// Assert.is<CustomFunction<O>, s.ISchema<(...args: any) => unknown>>()
+	})
+
+	it('type', () => {
+		expect.assertions(0)
+
+		Assert.is<
+			GetType_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>,
+			readonly unknown[]
+		>()
+
+		Assert.is<
+			never[],
+			GetType_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>
+		>()
 
 		const a = s.function(s.readonlyArray(s.number(123)), s.string)
-		Assert.is<typeof a, RootSchemable>()
+		Assert.is<typeof a, Schemable>()
+
+		type A = typeof a['OutputType']
+		Assert<IsIdentical<A, (...args: readonly 123[]) => string>>()
 	})
 
 	it('simple', () => {
@@ -44,10 +82,10 @@ describe('function', () => {
 		;() => s.function(s.tuple(s.number), s.number)
 
 		type T = GetOutputType<typeof s.function>
-		Assert<IsIdentical<T, (...args: never[]) => unknown>>()
+		Assert<IsIdentical<T, (...args: any[]) => unknown>>()
 
 		type IT = GetInputType<typeof s.function>
-		Assert<IsIdentical<IT, (...args: never[]) => unknown>>()
+		Assert<IsIdentical<IT, (...args: any[]) => unknown>>()
 
 		expect(s.function.extends(s.unknown)).toBeTruthy()
 

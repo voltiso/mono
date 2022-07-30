@@ -1,25 +1,48 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '../../Schema/index'
-import type { GetTupleLength } from './_/GetTupleLength.js'
-import type { TupleOptions } from './_/TupleOptions.js'
+import type {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	DefaultTupleOptions,
+	ISchema,
+	MergeSchemaOptions,
+	OPTIONS,
+	SCHEMA_NAME,
+	Schemable,
+	TupleOptions,
+} from '~'
 
-export const IS_TUPLE = Symbol('IS_TUPLE')
-export type IS_TUPLE = typeof IS_TUPLE
+export interface ITuple extends ISchema {
+	readonly [SCHEMA_NAME]: 'Tuple'
 
-export interface ITuple<O extends TupleOptions = TupleOptions>
-	extends ISchema<O> {
-	readonly [IS_TUPLE]: true
+	readonly [BASE_OPTIONS]: TupleOptions
+	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
 
-	readonly isReadonlyTuple: O['readonlyTuple']
-	readonly getElementSchemas: O['elementSchemas']
-	readonly getLength: GetTupleLength<O['elementSchemas']>
+	readonly [OPTIONS]: TupleOptions
 
-	readonly readonlyTuple: ITuple
+	get Type(): readonly unknown[]
+	get OutputType(): readonly unknown[]
+	get InputType(): readonly unknown[]
+
+	get isReadonlyTuple(): boolean
+	get getElementSchemas(): Schemable[]
+	get getLength(): number
+
+	get readonlyTuple(): ITuple
 }
 
-export function isTuple(x: unknown): x is ITuple {
-	// eslint-disable-next-line security/detect-object-injection
-	return Boolean((x as ITuple | null)?.[IS_TUPLE])
+export interface IReadonlyTuple extends ITuple {
+	readonly [OPTIONS]: MergeSchemaOptions<
+		TupleOptions,
+		{ isMutableTuple: false }
+	>
+}
+
+export interface IMutableTuple extends ITuple {
+	readonly [OPTIONS]: MergeSchemaOptions<TupleOptions, { isMutableTuple: true }>
+
+	get Type(): unknown[]
+	get OutputType(): unknown[]
+	get InputType(): unknown[]
 }

@@ -1,50 +1,45 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	CustomSchema,
-	DefaultOptions,
-	DefineSchemaOptions,
-	OptionalOptions,
-	SCHEMA_OPTIONS,
-	ReadonlyOptions,
-} from '../../Schema/index'
-import type { BigintOptions } from './_/BigintOptions.js'
-import type { IBigint } from './IBigint.js'
+import type { Assume } from '@voltiso/util'
 
-export interface CustomBigint<O extends BigintOptions>
-	extends IBigint<O>,
-		CustomSchema<O> {
-	min<MinValue extends bigint>(minValue: MinValue): Min<this, MinValue>
-	max<MaxValue extends bigint>(maxValue: MaxValue): Max<this, MaxValue>
+import type {
+	BASE_OPTIONS,
+	BigintOptions,
+	CustomSchema,
+	DEFAULT_OPTIONS,
+	DefaultBigintOptions,
+	DefineSchema,
+	MergeSchemaOptions,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+} from '~'
+
+export interface CustomBigint<O extends Partial<BigintOptions>>
+	extends CustomSchema<O> {
+	readonly [SCHEMA_NAME]: 'Bigint'
+
+	readonly [BASE_OPTIONS]: BigintOptions
+	readonly [DEFAULT_OPTIONS]: DefaultBigintOptions
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	readonly [OPTIONS]: Assume<
+		BigintOptions,
+		MergeSchemaOptions<DefaultBigintOptions, O>
+	>
+
+	min<MinValue extends bigint>(
+		minValue: MinValue,
+	): DefineSchema<this, { min: MinValue }>
+
+	max<MaxValue extends bigint>(
+		maxValue: MaxValue,
+	): DefineSchema<this, { max: MaxValue }>
+
 	range<MinValue extends bigint, MaxValue extends bigint>(
 		minValue: MinValue,
 		maxValue: MaxValue,
-	): Range<this, MinValue, MaxValue>
-
-	//
-
-	get optional(): Optional<this>
-	get readonly(): Readonly<this>
-	default(defaultValue: this[OPTIONS]['_out']): Default<this>
+	): DefineSchema<this, { min: MinValue; max: MaxValue }>
 }
-
-type Min<S extends IBigint, MinValue extends bigint> = CustomBigint<
-	DefineSchemaOptions<S, { min: MinValue }>
->
-
-type Max<S extends IBigint, MaxValue extends bigint> = CustomBigint<
-	DefineSchemaOptions<S, { max: MaxValue }>
->
-
-type Range<
-	S extends IBigint,
-	MinValue extends bigint,
-	MaxValue extends bigint,
-> = CustomBigint<DefineSchemaOptions<S, { min: MinValue; max: MaxValue }>>
-
-//
-
-type Optional<This extends IBigint> = CustomBigint<OptionalOptions<This>>
-type Readonly<This extends IBigint> = CustomBigint<ReadonlyOptions<This>>
-type Default<This extends IBigint> = CustomBigint<DefaultOptions<This>>

@@ -3,32 +3,31 @@
 
 import type {
 	CustomSchema,
-	DefaultOptions,
-	DefineSchemaOptions,
-	OptionalOptions,
-	SCHEMA_OPTIONS,
-	ReadonlyOptions,
-	RootSchemable,
-} from '../../../Schema/index'
-import type * as s from '../../index'
-import type { UnknownTupleOptions } from './_/UnknownTupleOptions.js'
-import type { IUnknownTuple } from './IUnknownTuple.js'
+	DEFAULT_OPTIONS,
+	DefaultUnknownTupleOptions,
+	DefineSchema,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+	UnknownTupleOptions,
+} from '~'
 
-type GetTuple<
-	This extends IUnknownTuple,
-	T extends RootSchemable[],
-> = This[OPTIONS]['isReadonlyTuple'] extends true
-	? s.ReadonlyTuple<T>
-	: This[OPTIONS]['isReadonlyTuple'] extends false
-	? s.MutableTuple<T>
-	: never
+export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
+	extends CustomSchema<O> {
+	readonly [SCHEMA_NAME]: 'UnknownTuple'
 
-export interface CustomUnknownTuple<O extends UnknownTupleOptions>
-	extends IUnknownTuple<O>,
-		CustomSchema<O> {
-	<T extends RootSchemable[]>(...elementTypes: T): GetTuple<this, T>
+	readonly [PARTIAL_OPTIONS]: O
+	readonly [DEFAULT_OPTIONS]: DefaultUnknownTupleOptions
+
+	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
+	get getMinLength(): this[OPTIONS]['minLength']
+	get getMaxLength(): this[OPTIONS]['maxLength']
+
+	//
 
 	get readonlyTuple(): MakeReadonlyTuple<this>
+
+	//
 
 	minLength<Min extends number>(minLength: Min): MinLength<this, Min>
 	maxLength<Max extends number>(maxLength: Max): MaxLength<this, Max>
@@ -41,49 +40,20 @@ export interface CustomUnknownTuple<O extends UnknownTupleOptions>
 	length<ExactLength extends number>(
 		exactLength: ExactLength,
 	): Length<this, ExactLength>
-
-	get optional(): Optional<this>
-	get readonly(): Readonly<this>
-	default(defaultValue: this[OPTIONS]['_out']): Default<this>
 }
 
-type MakeReadonlyTuple<S extends IUnknownTuple> = CustomUnknownTuple<
-	DefineSchemaOptions<S, { readonlyTuple: true }>
+type MakeReadonlyTuple<S> = DefineSchema<S, { isReadonlyTuple: true }>
+
+type MinLength<S, Min extends number> = DefineSchema<S, { minLength: Min }>
+
+type MaxLength<S, Max extends number> = DefineSchema<S, { maxLength: Max }>
+
+type LengthRange<S, Min extends number, Max extends number> = DefineSchema<
+	S,
+	{ minLength: Min; maxLength: Max }
 >
 
-type MinLength<
-	S extends IUnknownTuple,
-	Min extends number,
-> = CustomUnknownTuple<DefineSchemaOptions<S, { minLength: Min }>>
-
-type MaxLength<
-	S extends IUnknownTuple,
-	Max extends number,
-> = CustomUnknownTuple<DefineSchemaOptions<S, { maxLength: Max }>>
-
-type LengthRange<
-	S extends IUnknownTuple,
-	Min extends number,
-	Max extends number,
-> = CustomUnknownTuple<
-	DefineSchemaOptions<S, { minLength: Min; maxLength: Max }>
->
-
-type Length<
-	S extends IUnknownTuple,
-	Length extends number,
-> = CustomUnknownTuple<
-	DefineSchemaOptions<S, { minLength: Length; maxLength: Length }>
->
-
-type Optional<This extends IUnknownTuple> = CustomUnknownTuple<
-	OptionalOptions<This>
->
-
-type Readonly<This extends IUnknownTuple> = CustomUnknownTuple<
-	ReadonlyOptions<This>
->
-
-type Default<This extends IUnknownTuple> = CustomUnknownTuple<
-	DefaultOptions<This>
+type Length<S, Length extends number> = DefineSchema<
+	S,
+	{ minLength: Length; maxLength: Length }
 >

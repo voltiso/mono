@@ -20,10 +20,10 @@ export interface IString extends ISchema {
 	get getMinLength(): number | undefined
 	get getMaxLength(): number | undefined
 
-	minLength(min: number): IString
-	maxLength(max: number): IString
-	length(exactLength: number): IString
-	lengthRange(min: number, max: number): IString
+	// minLength(min: number): IString
+	// maxLength(max: number): IString
+	// length(exactLength: number): IString
+	// lengthRange(min: number, max: number): IString
 }
 
 export function isString(x: unknown): x is IString {

@@ -1,14 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assumeType, isObject, lazyConstructor } from '@voltiso/util'
-import * as VObject from '@voltiso/util'
+import {
+	getEntries,
+	hasProperty,
+	isObject,
+	lazyConstructor,
+} from '@voltiso/util'
 
 import type {
 	CustomObject,
 	DefaultObjectOptions,
 	ISchema,
 	ObjectOptions,
+	Schemable,
 } from '~'
 import {
 	BASE_OPTIONS,
@@ -20,7 +25,7 @@ import {
 	partialShape,
 	SCHEMA_NAME,
 } from '~'
-import * as s from '~/schemas'
+import * as s from '~'
 
 export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
@@ -48,9 +53,9 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isObject(other)) {
-			for (const [k, v] of VObject.getEntries(other.getShape)) {
-				const hasThisK = VObject.hasProperty(this.getShape, k)
+		if (s.isObject(other)) {
+			for (const [k, v] of getEntries(other.getShape)) {
+				const hasThisK = hasProperty(this.getShape, k)
 				// eslint-disable-next-line security/detect-object-injection
 				const isOtherOptional = s.schema(other.getShape[k]).isOptional
 
@@ -80,12 +85,15 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				}),
 			)
 		} else {
-			for (const [k, v] of VObject.getEntries(this.getShape)) {
+			for (const [k, v] of getEntries(this.getShape) as [
+				keyof any,
+				Schemable,
+			][]) {
 				const tv = s.schema(v)
 
-				if (tv.isOptional && !VObject.hasProperty(x, k)) continue
+				if (tv.isOptional && !hasProperty(x, k)) continue
 
-				assumeType<IRootSchema>(tv)
+				// assumeType<ISchema>(tv)
 
 				const r = tv.tryValidate(x[k as keyof typeof x])
 
@@ -97,7 +105,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			}
 
 			for (const k in x) {
-				if (!VObject.hasProperty(this.getShape, k)) {
+				if (!hasProperty(this.getShape, k)) {
 					issues.push(
 						new s.ValidationIssue({
 							path: [k],
@@ -113,21 +121,20 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return issues
 	}
 
-	override _fixImpl(x: unknown): unknown {
-		if (typeof x !== 'undefined' && !VObject.isObject(x)) {
+	override _fixImpl(x: this[OPTIONS]['Input']): this[OPTIONS]['Output'] {
+		if (typeof x !== 'undefined' && !isObject(x)) {
 			return super._fixImpl(x)
 		}
 
 		const r = { ...x } as Record<keyof any, unknown>
 
-		for (const [key, schemable] of VObject.getEntries(this.getShape)) {
+		for (const [key, schemable] of getEntries(this.getShape) as [
+			keyof any,
+			Schemable,
+		][]) {
 			const schema = s.schema(schemable)
 
-			if (
-				!VObject.hasProperty(r, key) &&
-				schema.isOptional &&
-				!schema.hasDefault
-			) {
+			if (!hasProperty(r, key) && schema.isOptional && !schema.hasDefault) {
 				// assert(
 				// 	typeof tv.getDefault === 'undefined',
 				// 	"typeof tv.getDefault === 'undefined'"
@@ -135,12 +142,12 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				continue
 			}
 
-			assumeType<IRootSchema>(schema)
+			// assumeType<ISchema>(schema)
 
 			// eslint-disable-next-line security/detect-object-injection
 			r[key] = schema.tryValidate(r[key]).value
 		}
 
-		return r
+		return r as never
 	}
 }

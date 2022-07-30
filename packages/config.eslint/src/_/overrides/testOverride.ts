@@ -67,6 +67,7 @@ export const testOverride = defineEslintConfigOverride({
 		'unicorn/no-await-expression-member': 0,
 		'n/no-unpublished-import': 0,
 		'no-void': 0,
+		'jest/no-commented-out-tests': 1,
 
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,

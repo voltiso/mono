@@ -1,18 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Assume, VRequired } from '@voltiso/util'
+import type { Assume } from '@voltiso/util'
 
 import type {
 	DefineSchema,
 	MergeSchemaOptions,
-	SCHEMA_NAME,
 	Schemable,
-	SchemaName,
 	SchemaOptions,
+	Union,
+	ValidationResult,
 } from '~'
 
-import type { ISchema } from './ISchema'
+import type { ISchema, SCHEMA_NAME } from './ISchema'
 import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
@@ -21,15 +21,17 @@ import type {
 } from './symbols'
 import { EXTENDS } from './symbols'
 
-export interface CustomSchema<O extends Partial<SchemaOptions>>
-	extends ISchema {
+export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	//
-	readonly [SCHEMA_NAME]: SchemaName
+	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
 
-	readonly [PARTIAL_OPTIONS]: VRequired<O>
 	readonly [DEFAULT_OPTIONS]: this[BASE_OPTIONS]
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	// [OPTIONS]: this[BASE_OPTIONS]
 
 	readonly [OPTIONS]: Assume<
 		this[BASE_OPTIONS],
@@ -58,7 +60,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions>>
 
 	default<DefaultValue extends this[OPTIONS]['Output']>(
 		value: DefaultValue,
-	): DefineSchema<this, DefaultOptions<this, DefaultValue>>
+	): WithDefault<this, DefaultValue>
 
 	withCheck(
 		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
@@ -77,7 +79,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions>>
 	 * @param x - Value to validate against `this` schema
 	 * @returns `ValidationResult` - either success or error with issue list
 	 */
-	// tryValidate(x: unknown): ValidationResult
+	tryValidate(x: unknown): ValidationResult
 
 	/**
 	 * Validate `this` schema, throw on failure
@@ -87,6 +89,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions>>
 	 * @throws ValidationError
 	 */
 	validate(x: unknown): unknown
+	// validate<X>(
+	// 	x: X,
+	// ): X extends this[OPTIONS]['Input'] ? this[OPTIONS]['Output'] : never
 
 	/**
 	 * Do not return transformed value - just check if the value is valid
@@ -94,13 +99,21 @@ export interface CustomSchema<O extends Partial<SchemaOptions>>
 	 *
 	 * @param x - Value to validate against `this` schema
 	 */
-	isValid(x: unknown): boolean
+	isValid(x: unknown): x is this[OPTIONS]['Output']
+	// isValid(x: unknown): boolean
 
-	// or<Other extends ISchema>(other: Other): Union<[this, Other]>
+	or<Other extends Schemable>(other: Other): Union<[this, Other]>
 }
 
-type DefaultOptions<This extends ISchema, DefaultValue> = {
-	hasDefault: true
-	default: DefaultValue
-	Output: Exclude<This[OPTIONS]['Output'], undefined>
+type WithDefault<This, DefaultValue> = This extends {
+	[OPTIONS]: { Output: unknown }
 }
+	? DefineSchema<
+			This,
+			{
+				hasDefault: true
+				default: DefaultValue
+				Output: Exclude<This[OPTIONS]['Output'], undefined>
+			}
+	  >
+	: never

@@ -20,14 +20,14 @@ export class CustomUnknownSchemaImpl<O extends SchemaOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements IUnknownSchema
 {
-	readonly [SCHEMA_NAME]: 'UnknownSchema';
-	readonly [BASE_OPTIONS]: UnknownSchemaOptions;
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownSchemaOptions
+	declare readonly [SCHEMA_NAME]: 'UnknownSchema';
+	declare readonly [BASE_OPTIONS]: UnknownSchemaOptions;
+	declare readonly [DEFAULT_OPTIONS]: DefaultUnknownSchemaOptions
 
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this)
+		return callableInstance(this) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this

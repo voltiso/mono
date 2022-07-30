@@ -14,14 +14,14 @@ export const etcOverride = defineEslintConfigOverride({
 	plugins: ['etc'],
 
 	rules: {
-		'etc/no-assign-mutated-array': 2,
+		'etc/no-assign-mutated-array': 1,
 		'etc/no-commented-out-code': 0,
-		'etc/no-const-enum': 2,
-		'etc/no-deprecated': 2,
-		'etc/no-enum': 2,
-		'etc/no-implicit-any-catch': 2,
-		'etc/no-internal': 2,
-		'etc/no-misused-generics': 2,
+		'etc/no-const-enum': 1,
+		'etc/no-deprecated': 1,
+		'etc/no-enum': 1,
+		'etc/no-implicit-any-catch': 1,
+		'etc/no-internal': 1,
+		'etc/no-misused-generics': 1,
 		'etc/no-t': 0, // single-char type args
 		'etc/prefer-interface': 0, // no - sometimes we want type so that it's assignable to an interface with an index signature
 
@@ -29,7 +29,7 @@ export const etcOverride = defineEslintConfigOverride({
 		'etc/prefer-less-than': 0, // auto-fix not working properly!
 		// 'disable-autofix/etc/prefer-less-than': 2,
 
-		'etc/throw-error': 2,
-		'etc/underscore-internal': 2,
+		'etc/throw-error': 1,
+		'etc/underscore-internal': 1,
 	},
 } as const)

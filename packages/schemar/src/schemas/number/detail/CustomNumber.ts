@@ -1,14 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Assume } from '@voltiso/util'
+
 import type {
 	BASE_OPTIONS,
 	CustomSchema,
 	DEFAULT_OPTIONS,
 	DefaultNumberOptions,
 	DefineSchema,
+	MergeSchemaOptions,
 	NumberOptions,
 	OPTIONS,
+	PARTIAL_OPTIONS,
 	SCHEMA_NAME,
 } from '~'
 
@@ -20,21 +24,21 @@ export interface CustomNumber<O extends Partial<NumberOptions>>
 	readonly [BASE_OPTIONS]: NumberOptions
 	readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
 
-	// readonly [PARTIAL_OPTIONS]: O
+	readonly [PARTIAL_OPTIONS]: O
 
-	// readonly [OPTIONS]: Assume<
-	// 	this[BASE_OPTIONS],
-	// 	MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
-	// >
+	readonly [OPTIONS]: Assume<
+		NumberOptions,
+		MergeSchemaOptions<DefaultNumberOptions, O>
+	>
 
-	// readonly [OPTIONS]: Assume<
-	// 	NumberOptions,
-	// 	MergeSchemaOptions<DefaultNumberOptions, O>
-	// >
+	// readonly [BASE_OPTIONS]: NumberOptions
+	// readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
 
 	get isInteger(): this[OPTIONS]['isInteger']
 	get getMin(): this[OPTIONS]['min']
 	get getMax(): this[OPTIONS]['max']
+
+	//
 
 	get integer(): DefineSchema<this, { isInteger: true }>
 

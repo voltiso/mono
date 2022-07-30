@@ -1,21 +1,27 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '../../Schema/index'
-import type { FunctionOptions } from './_/FunctionOptions.js'
+import type {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	DefaultFunctionOptions,
+	FunctionOptions,
+	ISchema,
+	SCHEMA_NAME,
+} from '~'
 
-export const IS_FUNCTION = Symbol('IS_FUNCTION')
-export type IS_FUNCTION = typeof IS_FUNCTION
+type AnyFunction = (...args: any) => unknown
 
-export interface IFunction<O extends FunctionOptions = FunctionOptions>
-	extends ISchema<O> {
-	readonly [IS_FUNCTION]: true
+export interface IFunction<T extends AnyFunction = AnyFunction>
+	extends ISchema<T> {
+	//
+	readonly [SCHEMA_NAME]: 'Function'
 
-	get getArgumentsSchema(): FunctionOptions['arguments'] // O['arguments']
-	get getResultSchema(): O['result']
-}
+	readonly [BASE_OPTIONS]: FunctionOptions
+	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
 
-export function isFunction(x: unknown): x is IFunction {
-	// eslint-disable-next-line security/detect-object-injection
-	return Boolean((x as IFunction | null)?.[IS_FUNCTION])
+	//
+
+	get getArgumentsSchema(): ISchema
+	get getResultSchema(): ISchema
 }

@@ -1,23 +1,39 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '@voltiso/util'
-import { ISchema, isSchema } from '~'
-import * as s from '~/schemas'
+import { Assert, undef } from '@voltiso/util'
+
+import type { ISchema } from '~'
+import { isSchema } from '~'
+import * as s from '~'
 
 describe('unknown', () => {
 	it('isUnknown', () => {
 		expect.hasAssertions()
 
-		Assert.is<typeof s.unknown, ISchema>()
+		Assert.is<s.IUnknown, s.Schemable>()
+		Assert.is<s.IUnknown, s.Schema>()
+		Assert.is<typeof s.unknown, s.IUnknown>()
 
-		expect(isUnknown(s.unknown)).toBeTruthy()
+		expect(s.isUnknown(s.unknown)).toBeTruthy()
 
 		expect(isSchema(s.number)).toBeTruthy()
 		expect(isSchema(s.unknown)).toBeTruthy()
 		expect(isSchema(s.never)).toBeTruthy()
 		expect(isSchema(s.null)).toBeTruthy()
 		expect(isSchema(s.undefined)).toBeTruthy()
+	})
+
+	it('generic', <O extends Partial<s.UnknownOptions>>() => {
+		expect.assertions(0)
+
+		Assert.is<s.CustomUnknown<O>, s.IUnknown>()
+		Assert.is<s.CustomUnknown<O>, s.ISchema>()
+		Assert.is<s.CustomUnknown<O>, s.Schemable>()
+
+		Assert.is<s.Unknown, s.IUnknown>()
+		Assert.is<s.Unknown, s.ISchema>()
+		Assert.is<s.Unknown, s.Schemable>()
 	})
 
 	it('works', () => {
@@ -50,21 +66,22 @@ describe('unknown', () => {
 		expect(s.unknown.optional.toString()).toBe('?unknown')
 
 		// @ts-expect-error `_extends` does not exist
-		;() => s.unknown._extends
+		;() => void s.unknown._extends
 
 		// @ts-expect-error property does not exist
-		;() => s.unknown._fix
+		;() => void s.unknown._fix
 
 		// @ts-expect-error property does not exist
-		;() => s.unknown._check
+		;() => void s.unknown._check
 
 		// @ts-expect-error property does not exist
-		;() => s.unknown._toString
+		;() => void s.unknown._toString
 
 		// @ts-expect-error `_extends` does not exist
-		;() => s.unknown.optional._extends
+		;() => void s.unknown.optional._extends
 
 		//
+		// eslint-disable-next-line @typescript-eslint/unbound-method, jest/unbound-method
 		;() => s.unknown.or
 
 		//
@@ -89,6 +106,3 @@ describe('unknown', () => {
 		// ;() => s.unknown.default(123).or
 	})
 })
-function isUnknown(unknown: s.Unknown): any {
-	throw new Error('Function not implemented.')
-}

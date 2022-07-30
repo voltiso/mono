@@ -18,10 +18,11 @@ export interface INumber extends ISchema {
 
 	readonly [OPTIONS]: NumberOptions
 
-	// get isInteger(): boolean
-	// get getMin(): number | undefined
-	// get getMax(): number | undefined
+	get isInteger(): boolean
+	get getMin(): number | undefined
+	get getMax(): number | undefined
 
+	//! these cause too deep instantiation when checking if CustomNumber is assignable to INumber
 	// get integer(): INumber
 	// min(minValue: number): INumber
 	// max(maxValue: number): INumber

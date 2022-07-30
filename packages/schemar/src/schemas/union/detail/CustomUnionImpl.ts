@@ -6,8 +6,9 @@ import { lazyConstructor } from '@voltiso/util'
 import type {
 	CustomUnion,
 	DefaultUnionOptions,
+	ISchema,
 	IUnion,
-	Schema,
+	Schemable,
 	UnionOptions,
 } from '~'
 import {
@@ -15,12 +16,12 @@ import {
 	CustomSchemaImpl,
 	DEFAULT_OPTIONS,
 	EXTENDS,
-	isUnion,
 	OPTIONS,
 	schema,
 	SCHEMA_NAME,
 	ValidationIssue,
 } from '~'
+import * as s from '~'
 
 export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
@@ -35,14 +36,16 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		return this[OPTIONS].schemas as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
-		const otherTypes = isUnion(other) ? other.getSchemas : [other]
+	override [EXTENDS](other: ISchema): boolean {
+		const otherTypes: Schemable[] = s.isUnion(other)
+			? other.getSchemas
+			: [other]
 
-		for (const a of this.getSchemas) {
+		for (const a of this.getSchemas as Schemable[]) {
 			let good = false
 
 			for (const b of otherTypes) {
-				if (schema(a).extends(b)) {
+				if (s.schema(a).extends(b)) {
 					good = true
 					break
 				}
@@ -60,8 +63,8 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		let valid = false
 		let moreIssues = [] as ValidationIssue[]
 
-		for (const t of this.getSchemas) {
-			const r = schema(t).tryValidate(x)
+		for (const t of this.getSchemas as Schemable[]) {
+			const r = s.schema(t).tryValidate(x)
 
 			if (r.isValid) valid = true
 			else moreIssues = [...moreIssues, ...r.issues]
@@ -70,7 +73,10 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		if (!valid) {
 			issues.push(
 				new ValidationIssue({
-					expectedOneOf: this.getSchemas.map(t => schema(t)),
+					expectedOneOf: (this.getSchemas as unknown as Schemable[]).map(t =>
+						schema(t),
+					),
+
 					received: x,
 				}),
 			)

@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { areArrowFunctionsTranspiled } from '../../misc'
-import { isConstructor } from './isConstructor.js'
+import { areArrowFunctionsTranspiled } from '~/misc'
+
+import { isConstructor } from './isConstructor'
 
 describe('isConstructor', () => {
 	it('areArrowFunctionsTranspiled is false', () => {

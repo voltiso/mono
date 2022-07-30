@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType } from '../../GetType/index'
-import * as s from '../index'
+import type { GetInputType, GetOutputType } from '~'
+import * as s from '~/schemas'
 
 describe('union', () => {
 	it('works', () => {

@@ -4,5 +4,6 @@
 export * from './CustomNever'
 export * from './CustomNeverImpl'
 export * from './INever'
+export * from './isNever'
 export * from './NeverImpl'
 export * from './NeverOptions'

@@ -3,72 +3,58 @@
 
 /* eslint-disable @typescript-eslint/array-type */
 
-import type { Merge2Simple } from '@voltiso/util'
-import { lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { GetType_ } from '../../GetType/index'
-import type { RootSchemable } from '../../Schema/index'
-import * as s from '../index'
-import type { GetSchema_ } from '../unknownSchema/getSchema/index'
-import type {
-	DefaultMutableArrayOptions,
-	DefaultReadonlyArrayOptions,
-} from './_/ArrayOptions.js'
-import { MutableArray_, ReadonlyArray_ } from './Array_.js'
-import type { CustomArray } from './CustomArray.js'
+import type { CustomArray, GetSchema_, GetType_, Schemable } from '~'
+import { MutableArrayImpl, ReadonlyArrayImpl } from '~'
+import * as s from '~/schemas'
 
-export interface MutableArray<S extends RootSchemable>
-	extends CustomArray<
-		Merge2Simple<
-			DefaultMutableArrayOptions,
-			{
-				element: GetSchema_<S>
-				_out: GetType_<S, { kind: 'out' }>[]
-				_in: GetType_<S, { kind: 'in' }>[]
-			}
-		>
-	> {
-	<S extends RootSchemable>(elementSchema: S): MutableArray<S>
+export interface MutableArray<S extends Schemable>
+	extends CustomArray<{
+		element: GetSchema_<S>
+		Output: GetType_<S, { kind: 'out' }>[]
+		Input: GetType_<S, { kind: 'in' }>[]
+	}> {
+	<S extends Schemable>(elementSchema: S): MutableArray<S>
 }
 
-export interface ReadonlyArray<S extends RootSchemable>
-	extends CustomArray<
-		Merge2Simple<
-			DefaultReadonlyArrayOptions,
-			{
-				element: GetSchema_<S>
-				_out: readonly GetType_<S, { kind: 'out' }>[]
-				_in: readonly GetType_<S, { kind: 'in' }>[]
-			}
-		>
-	> {
-	<S extends RootSchemable>(elementSchema: S): ReadonlyArray<S>
+export interface ReadonlyArray<S extends Schemable>
+	extends CustomArray<{
+		element: GetSchema_<S>
+		Output: readonly GetType_<S, { kind: 'out' }>[]
+		Input: readonly GetType_<S, { kind: 'in' }>[]
+		isReadonlyArray: true
+	}> {
+	<S extends Schemable>(elementSchema: S): ReadonlyArray<S>
 }
 
 //
 
-export const ReadonlyArray =
-	ReadonlyArray_ as unknown as ReadonlyArrayConstructor
+export const ReadonlyArray = lazyConstructor(
+	() => ReadonlyArrayImpl,
+) as unknown as ReadonlyArrayConstructor
 
-export const MutableArray = MutableArray_ as unknown as MutableArrayConstructor
+export const MutableArray = lazyConstructor(
+	() => MutableArrayImpl,
+) as unknown as MutableArrayConstructor
 
 //
 
-type ReadonlyArrayConstructor = new <T extends RootSchemable>(
+type ReadonlyArrayConstructor = new <T extends Schemable>(
 	elementType: T,
 ) => ReadonlyArray<T>
 
-type MutableArrayConstructor = new <T extends RootSchemable>(
+type MutableArrayConstructor = new <T extends Schemable>(
 	elementType: T,
 ) => MutableArray<T>
 
 //
 
 export const readonlyArray: ReadonlyArray<s.Unknown> = lazyValue(
-	() => new ReadonlyArray(s.unknown),
+	() => new ReadonlyArray(s.unknown) as never,
 )
 export const mutableArray: MutableArray<s.Unknown> = lazyValue(
-	() => new MutableArray(s.unknown),
+	() => new MutableArray(s.unknown) as never,
 )
 
-export const array: MutableArray<s.Unknown> = mutableArray
+export const array: MutableArray<s.Unknown> = lazyValue(() => mutableArray)

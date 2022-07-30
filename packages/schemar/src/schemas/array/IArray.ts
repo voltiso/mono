@@ -1,25 +1,31 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '../../Schema/index'
-import type { ArrayOptions } from './_/ArrayOptions.js'
+import type { ArrayOptions, ISchema, OPTIONS, SCHEMA_NAME } from '~'
 
-export const IS_ARRAY = Symbol('IS_ARRAY')
-export type IS_ARRAY = typeof IS_ARRAY
+export interface IArray extends ISchema {
+	readonly [SCHEMA_NAME]: 'Array'
 
-export interface IArray<O extends ArrayOptions = ArrayOptions>
-	extends ISchema<O> {
-	readonly [IS_ARRAY]: true
+	[OPTIONS]: ArrayOptions
 
-	readonly getElementSchema: O['element']
-	readonly isReadonlyArray: O['readonlyArray']
-	readonly getMinLength: O['minLength']
-	readonly getMaxLength: O['maxLength']
+	// readonly [BASE_OPTIONS]: ArrayOptions
+	// readonly [DEFAULT_OPTIONS]: DefaultMutableArrayOptions
+
+	get Type(): readonly unknown[]
+	get OutputType(): readonly unknown[]
+	get InputType(): readonly unknown[]
+
+	readonly getElementSchema: ISchema
+	readonly isReadonlyArray: boolean
+	readonly getMinLength: number | undefined
+	readonly getMaxLength: number | undefined
 
 	readonly readonlyArray: IArray
 }
 
-export function isArray(x: unknown): x is IArray {
-	// eslint-disable-next-line security/detect-object-injection
-	return Boolean((x as IArray | null)?.[IS_ARRAY])
+export interface IReadonlyArray extends IArray {}
+export interface IMutableArray extends IArray {
+	get Type(): unknown[]
+	get OutputType(): unknown[]
+	get InputType(): unknown[]
 }

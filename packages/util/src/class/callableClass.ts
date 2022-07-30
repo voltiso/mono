@@ -1,12 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CallableWithThis, Newable, Return } from '../function'
-import type { Instance } from './Instance.js'
+import type { CallableWithThis, Newable, Return } from '~/function'
+
+import type { Instance } from './Instance'
 
 export function callableClass<
 	Class extends Newable,
-	Func extends CallableWithThis<never[], unknown, Class>,
+	Func extends CallableWithThis<any[], unknown, Class>,
 >(Cls: Class, func: Func): Class & Func {
 	function Ctor(...args: ConstructorParameters<Class>): Instance<Class>
 	function Ctor(...args: Parameters<Func>): Return<Func>

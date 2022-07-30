@@ -1,57 +1,48 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/ban-types */
-import type { Merge2Simple } from '@voltiso/util'
-import { lazyValue } from '@voltiso/util'
-
-import type { GetType_ } from '../../GetType/index'
 import type {
+	CustomFunction,
+	GetType,
+	IArray,
 	InferableReadonlyTuple,
-	IRootSchema,
-	RootSchemable,
-} from '../../Schema/index'
-import * as s from '../index'
-import type { GetSchema_ } from '../unknownSchema/getSchema/index'
-import type { DefaultFunctionOptions } from './_/FunctionOptions.js'
-import type { CustomFunction } from './CustomFunction.js'
-import { Function_ } from './Function_.js'
+	ISchema,
+	ITuple,
+	Schemable,
+} from '~'
+import { FunctionImpl } from '~'
 
 // type GetFunctionType<O extends FunctionOptions, P extends GetTypeOptions> = (
 // 	...args: GetType_<O['arguments'], P>
 // ) => GetType_<O['result'], P>
 
 export type Function<
-	Args extends InferableReadonlyTuple | ((s.ITuple | s.IArray) & IRootSchema),
-	R extends RootSchemable,
-> = CustomFunction<
-	Merge2Simple<
-		DefaultFunctionOptions,
-		{
-			arguments: GetSchema_<Args>
-			result: GetSchema_<R>
+	F extends (...args: any) => unknown,
+	// Args extends InferableReadonlyTuple | (s.ITuple | s.IArray),
+	// R extends Schemable,
+> = CustomFunction<{
+	arguments: ISchema<Parameters<F>>
+	result: ISchema<ReturnType<F>>
 
-			_out: (
-				...args: GetType_<Args, { kind: 'out' }>
-			) => GetType_<R, { kind: 'out' }>
+	Output: F
+	Input: F
 
-			_in: (
-				...args: GetType_<Args, { kind: 'in' }>
-			) => GetType_<R, { kind: 'in' }>
-		}
-	>
->
+	// Output: (
+	// 	...args: GetType_<Args, { kind: 'out' }>
+	// ) => GetType_<R, { kind: 'out' }>
 
-export const Function = Function_ as unknown as SFunctionConstructor
+	// Input: (
+	// 	...args: GetType_<Args, { kind: 'in' }>
+	// ) => GetType_<R, { kind: 'in' }>
+}>
 
-type SFunctionConstructor = new <
-	Args extends InferableReadonlyTuple | ((s.ITuple | s.IArray) & IRootSchema),
-	R extends RootSchemable,
+export const Function = FunctionImpl as unknown as FunctionConstructor
+
+type FunctionConstructor = new <
+	Args extends InferableReadonlyTuple | (ITuple | IArray),
+	R extends Schemable,
 >(
 	argumentsSchema: Args,
 	resultSchema: R,
-) => Function<Args, R>
-
-const function_ = lazyValue(() => new Function(s.array(s.never), s.unknown))
-
-export { function_ as function }
+	// eslint-disable-next-line @typescript-eslint/ban-types
+) => Function<(...args: GetType<Args>) => GetType<R>>

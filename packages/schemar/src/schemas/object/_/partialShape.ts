@@ -4,7 +4,7 @@
 import { getEntries } from '@voltiso/util'
 
 import type { GetSchema_NoReadonlyTuples_, InferableObject } from '~'
-import { isSchema, schema } from '~'
+import * as s from '~'
 
 export type PartialShape<O extends InferableObject> = {
 	[k in keyof O]: GetSchema_NoReadonlyTuples_<O[k]>['optional']
@@ -15,7 +15,7 @@ export function partialShape<O extends InferableObject>(o: O): PartialShape<O> {
 
 	for (const [k, v] of getEntries(shape)) {
 		// eslint-disable-next-line security/detect-object-injection
-		shape[k] = (isSchema(v) ? v : schema(v)).optional
+		shape[k] = (s.isSchema(v) ? v : s.schema(v)).optional
 	}
 
 	return shape as never

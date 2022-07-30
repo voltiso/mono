@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '../../type'
-import type { Newable } from './Newable.js'
+import { Assert, Is } from '~/type'
+
+import type { Newable } from './Newable'
 
 describe('Newable', () => {
 	it('works', () => {

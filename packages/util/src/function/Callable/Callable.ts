@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoThis } from './noThis.js'
+import type { NoThis } from './noThis'
 
 export type Callable<
-	Args extends unknown[] = never[],
+	Args extends unknown[] = any[],
 	R = unknown,
 	This = NoThis,
 > = [This] extends [NoThis]
@@ -12,7 +12,7 @@ export type Callable<
 	: (this: This, ...args: Args) => R
 
 export interface CallableWithThis<
-	Args extends unknown[] = never[],
+	Args extends unknown[] = any[],
 	R = unknown,
 	This = never,
 > {

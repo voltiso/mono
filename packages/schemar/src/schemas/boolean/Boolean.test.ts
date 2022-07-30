@@ -2,18 +2,24 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-import type { GetOutputType, ISchema } from '~'
+import { Assert, Is } from '@voltiso/util'
 
+import type { GetOutputType, ISchema } from '~'
+import * as s from '~'
 import type { BooleanOptions, CustomBoolean } from '~/schemas'
-import * as s from '~/schemas'
 
 describe('boolean', () => {
-	it('generic', <O extends BooleanOptions>() => {
+	it('generic', <O extends Partial<BooleanOptions>>() => {
 		expect.assertions(0)
 
 		Assert.is<CustomBoolean<O>, s.IBoolean>()
+		Assert.is<CustomBoolean<O>, s.ISchema>()
 	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('type', () => {
+	// 	expect.assertions(0)
+	// })
 
 	it('simple', () => {
 		expect.hasAssertions()
@@ -23,6 +29,32 @@ describe('boolean', () => {
 		const aa = s.boolean
 		type Aa = typeof aa.Type
 		Assert<IsIdentical<Aa, boolean>>()
+
+		type BooleanSchema = s.Schema<boolean>
+		// Assert.is<
+		// 	s.CustomSchema<{ Input: boolean; Output: boolean }>,
+		// 	BooleanSchema
+		// >()
+		// Assert.is<
+		// 	BooleanSchema,
+		// 	s.CustomSchema<{ Input: boolean; Output: boolean }>
+		// >()
+
+		type X = s.GetSchema<123>['OutputType']
+		Assert<IsIdentical<X, 123>>()
+
+		Assert.is<typeof aa, BooleanSchema>()
+
+		type NeverSchema = s.Schema<never>
+		type NeverOut = NeverSchema['OutputType']
+		Assert<IsIdentical<NeverOut, never>>()
+		// Assert.is<s.CustomSchema<{ Input: never; Output: never }>, NeverSchema>()
+		// Assert.is<NeverSchema, s.CustomSchema<{ Input: never; Output: never }>>()
+
+		// Assert.is<typeof aa, s.Schema<never>>()
+		Assert(Is<typeof aa>().not.subtypeOf<s.Schema<never>>())
+
+		Assert.is<typeof aa, s.Schema<boolean | string>>()
 
 		expect(s.boolean.extends(s.unknown)).toBeTruthy()
 		expect(s.boolean.extends(s.boolean)).toBeTruthy()

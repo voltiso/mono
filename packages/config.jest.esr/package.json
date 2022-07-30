@@ -43,7 +43,7 @@
 	"__________DEPS": "__________",
 	"dependencies": {
 		"@voltiso/config.jest.lib": "workspace:^1.0.0",
-		"esbuild": "^0.14.50",
+		"esbuild": "^0.14.51",
 		"esbuild-runner": "^2.2.1"
 	},
 	"devDependencies": {

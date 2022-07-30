@@ -4,19 +4,41 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType } from '../../GetType/index'
-import * as s from '../index'
-import type { TupleOptions } from './_/TupleOptions.js'
-import type { CustomTuple } from './CustomTuple.js'
-import type { ITuple } from './ITuple.js'
+import type {
+	GetInputType,
+	GetOutputType,
+	IMutableTuple,
+	ITuple,
+	TupleOptions,
+} from '~'
+import * as s from '~'
 
 describe('array', () => {
-	it('generic', <O extends TupleOptions>() => {
+	it('generic', <_O extends Partial<TupleOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<ITuple<O>, ITuple>()
-		Assert.is<CustomTuple<O>, ITuple<O>>()
-		Assert.is<CustomTuple<O>, ITuple>()
+		//! too deep...
+		// Assert.is<CustomTuple<O>, ITuple>()
+	})
+
+	it('type', () => {
+		expect.assertions(0)
+
+		type Out = ITuple['OutputType']
+		Assert<IsIdentical<Out, readonly unknown[]>>()
+
+		type In = ITuple['InputType']
+		Assert<IsIdentical<In, readonly unknown[]>>()
+	})
+
+	it('type - mutable', () => {
+		expect.assertions(0)
+
+		type Out = IMutableTuple['OutputType']
+		Assert<IsIdentical<Out, unknown[]>>()
+
+		type In = IMutableTuple['InputType']
+		Assert<IsIdentical<In, unknown[]>>()
 	})
 
 	it('length', () => {

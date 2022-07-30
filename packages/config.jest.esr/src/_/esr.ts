@@ -30,8 +30,12 @@ for (const extension of extensions) {
 
 //
 
-const moduleNameMapper: Record<string, string> = {}
+const moduleNameMapper: Record<string, string> = {
+	// '~': '<rootDir>', // use built files
+	'~': '<rootDir>/src'
+}
 
+// remove extensions
 for (const extension of extensions) {
 	moduleNameMapper[`^(\\..+)\\.${extension}$`] = '$1'
 }

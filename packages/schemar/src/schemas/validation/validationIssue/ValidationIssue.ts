@@ -3,8 +3,6 @@
 
 import { hasProperty, toString } from '@voltiso/util'
 
-import type { GetOutputType, validationIssue } from '~'
-
 import { expectedOneOfStr } from './_/expectedOneOfStr'
 import { pathToString } from './_/pathToString'
 
@@ -36,7 +34,7 @@ type ValidationIssueParams = {
 		| (Partial<ExpectedValue> & { expectedDescription: string })
 	)
 
-export class ValidationIssue implements GetOutputType<typeof validationIssue> {
+export class ValidationIssue {
 	path: (string | number | symbol)[]
 	name?: string
 

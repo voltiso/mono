@@ -3,28 +3,30 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import type {
-	DefaultMutableUnknownTupleOptions,
-	DefaultReadonlyUnknownTupleOptions,
-} from './_/UnknownTupleOptions.js'
-import type { CustomUnknownTuple } from './CustomUnknownTuple.js'
-import { MutableUnknownTuple_, ReadonlyUnknownTuple_ } from './UnknownTuple_.js'
+import type { CustomUnknownTuple, GetTuple, Schemable } from '~'
+import { MutableUnknownTupleImpl, ReadonlyUnknownTupleImpl } from '~'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface MutableUnknownTuple
-	extends CustomUnknownTuple<DefaultMutableUnknownTupleOptions> {}
+	extends CustomUnknownTuple<{ isReadonlyTuple: false }> {
+	<T extends readonly Schemable[]>(...elementTypes: T): GetTuple<this, [...T]>
+}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ReadonlyUnknownTuple
-	extends CustomUnknownTuple<DefaultReadonlyUnknownTupleOptions> {}
+	extends CustomUnknownTuple<{
+		isReadonlyTuple: true
+		Output: readonly unknown[]
+		Input: readonly unknown[]
+	}> {
+	<T extends readonly Schemable[]>(...elementTypes: T): GetTuple<this, [...T]>
+}
 
 //
 
 export const MutableUnknownTuple =
-	MutableUnknownTuple_ as unknown as MutableUnknownTupleConstructor
+	MutableUnknownTupleImpl as unknown as MutableUnknownTupleConstructor
 
 export const ReadonlyUnknownTuple =
-	ReadonlyUnknownTuple_ as unknown as ReadonlyUnknownTupleConstructor
+	ReadonlyUnknownTupleImpl as unknown as ReadonlyUnknownTupleConstructor
 
 //
 

@@ -3,12 +3,12 @@
 
 import { undef } from '@voltiso/util'
 
-import type { SchemaOptions } from '../../../Schema/index'
-import { defaultSchemaOptions } from '../../../Schema/index'
+import type { SchemaOptions } from '~'
+import { defaultSchemaOptions } from '~'
 
 export interface BigintOptions extends SchemaOptions {
-	_out: bigint
-	_in: bigint
+	Output: bigint
+	Input: bigint
 
 	min: bigint | undefined
 	max: bigint | undefined
@@ -16,8 +16,11 @@ export interface BigintOptions extends SchemaOptions {
 
 export const defaultBigintOptions = {
 	...defaultSchemaOptions,
+	Output: 0 as unknown as bigint,
+	Input: 0 as unknown as bigint,
+
 	min: undef,
 	max: undef,
 }
 
-export type DefaultBigintOptions = typeof defaultBigintOptions & BigintOptions
+export type DefaultBigintOptions = typeof defaultBigintOptions

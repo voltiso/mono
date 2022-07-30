@@ -3,8 +3,8 @@
 
 import { Assert } from '@voltiso/util'
 
-import { number } from '../schemas/number/index'
-import type { GetOptions } from './GetOptions'
+import type { GetOptions } from '~'
+import { number } from '~'
 
 describe('GetOptions', () => {
 	it('works', () => {

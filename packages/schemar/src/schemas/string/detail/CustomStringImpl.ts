@@ -34,6 +34,13 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 {
 	declare readonly [SCHEMA_NAME]: 'String';
 
+	// declare readonly [PARTIAL_OPTIONS]: O;
+
+	// declare readonly [OPTIONS]: Assume<
+	// 	StringOptions,
+	// 	MergeSchemaOptions<DefaultStringOptions, O>
+	// >
+
 	declare readonly [BASE_OPTIONS]: StringOptions;
 	declare readonly [DEFAULT_OPTIONS]: DefaultStringOptions
 

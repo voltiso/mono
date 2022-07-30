@@ -3,11 +3,7 @@
 
 import { undef } from '@voltiso/util'
 
-import {
-	type MergeSchemaOptions,
-	type SchemaOptions,
-	defaultSchemaOptions,
-} from '~'
+import { type SchemaOptions, defaultSchemaOptions } from '~'
 
 import type { RegExpEntry } from '.'
 
@@ -29,6 +25,3 @@ export const defaultStringOptions = {
 }
 
 export type DefaultStringOptions = typeof defaultStringOptions
-
-export type DefineStringOptions<O extends Partial<StringOptions>> =
-	MergeSchemaOptions<DefaultStringOptions, O>

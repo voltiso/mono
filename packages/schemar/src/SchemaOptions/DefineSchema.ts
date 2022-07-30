@@ -4,11 +4,14 @@
 import type {
 	DefinePartialSchemaOptions,
 	GetSchemaByName,
-	ISchema,
 	SCHEMA_NAME,
 } from '~'
 
-export type DefineSchema<S extends ISchema, O> = GetSchemaByName<
-	S[SCHEMA_NAME],
-	DefinePartialSchemaOptions<S, O>
->
+export type DefineSchema<S, O> = S extends { [SCHEMA_NAME]: string }
+	? GetSchemaByName<S[SCHEMA_NAME], DefinePartialSchemaOptions<S, O>>
+	: never
+
+// export type DefineSchema<S extends ISchema, O> = GetSchemaByName<
+// 	S[SCHEMA_NAME],
+// 	DefinePartialSchemaOptions<S, O>
+// >

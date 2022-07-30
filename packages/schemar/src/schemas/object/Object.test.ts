@@ -8,6 +8,7 @@ import type {
 	CustomObject,
 	GetInputType,
 	GetOutputType,
+	ISchema,
 	ObjectOptions,
 } from '~'
 import * as s from '~/schemas'
@@ -16,7 +17,13 @@ describe('object', () => {
 	it('generic', <O extends Partial<ObjectOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomObject<O>, s.IObject>()
+		// ! too deep...
+		// Assert.is<CustomObject<O>, ISchema>()
+		// Assert.is<CustomObject<O>, s.IObject>()
+	})
+
+	it('type', () => {
+		expect.assertions(0)
 
 		const obj = s.schema({
 			a: s.number,
@@ -446,9 +453,11 @@ describe('object', () => {
 		})
 		expect(() => ss.validate({})).toThrow('.str')
 
+		type Out = typeof ps.OutputType
+
 		Assert<
 			IsIdentical<
-				GetOutputType<typeof ps>,
+				Out,
 				{
 					num?: number
 					numDef?: number

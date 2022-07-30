@@ -4,17 +4,14 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType } from '../../../GetType/index'
-import type { IValidationResult, ValidationResult } from './validationResult.js'
-import { validationResult } from './validationResult.js'
+import type { GetOutputType, ValidationResult } from '~'
+import { validationResult } from '~'
 
 describe('s.validationResult', () => {
 	it('generic', <X>() => {
 		expect.assertions(0)
 
-		Assert.is<IValidationResult<X>, IValidationResult>()
-		Assert.is<ValidationResult<X>, IValidationResult<X>>()
-		Assert.is<ValidationResult<X>, IValidationResult>()
+		Assert.is<ValidationResult<X>, ValidationResult>()
 	})
 
 	it('works', () => {

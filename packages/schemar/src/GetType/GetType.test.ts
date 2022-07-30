@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { RootSchema } from '~'
+import type { InferableObject, ISchema, Schema, Schemable } from '~'
 import * as s from '~/schemas/index'
 
 import type { GetInputType, GetOutputType } from './GetType'
@@ -16,7 +16,7 @@ describe('GetType', () => {
 		type A = GetOutputType<s.Number>
 		Assert<IsIdentical<A, number>>()
 
-		type B = GetOutputType<RootSchema>
+		type B = GetOutputType<Schema>
 		Assert<IsIdentical<B, unknown>>()
 	})
 
@@ -62,7 +62,7 @@ describe('GetType', () => {
 	it('generic', () => {
 		expect.assertions(0)
 
-		type C = GetOutputType<RootSchemable>
+		type C = GetOutputType<Schemable>
 		Assert<IsIdentical<C, unknown>>()
 	})
 
@@ -86,7 +86,7 @@ describe('GetType', () => {
 		type A = OmitId<GetOutputType<TI['const']> & IntrinsicFields>
 
 		Assert.is<A, InferableObject>()
-		Assert.is<A, RootSchemable>()
+		Assert.is<A, Schemable>()
 	})
 
 	it('intersection', () => {
@@ -104,17 +104,17 @@ describe('GetType', () => {
 		Assert<IsIdentical<A, { a: number; b?: number }>>()
 	})
 
-	it('arrays - complex', <S extends (s.ITuple | s.IArray) & IRootSchema>() => {
+	it('arrays - complex', <S extends (s.ITuple | s.IArray) & ISchema>() => {
 		expect.assertions(0)
 
 		Assert.is<
-			GetOutputType<(s.ITuple | s.IArray) & IRootSchema>,
+			GetOutputType<(s.ITuple | s.IArray) & ISchema>,
 			readonly unknown[]
 		>()
 
 		Assert.is<GetOutputType<S>, readonly unknown[]>()
 
-		Assert.is<never[], GetOutputType<(s.ITuple | s.IArray) & IRootSchema>>()
+		Assert.is<never[], GetOutputType<(s.ITuple | s.IArray) & ISchema>>()
 
 		// Assert.is<never[], [1, 2, 3]>()
 		// Assert.is<never[], GetType<S>>()

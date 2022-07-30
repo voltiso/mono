@@ -1,15 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '../../Schema/index'
-import type { BigintOptions } from './_/BigintOptions.js'
+import type { ISchema } from '~'
+import { SCHEMA_NAME } from '~'
 
-export const IS_BIGINT = Symbol('IS_BIGINT')
-export type IS_BIGINT = typeof IS_BIGINT
-
-export interface IBigint<O extends BigintOptions = BigintOptions>
-	extends ISchema<O> {
-	readonly [IS_BIGINT]: true
+export interface IBigint extends ISchema {
+	readonly [SCHEMA_NAME]: 'Bigint'
 
 	get getMin(): bigint | undefined
 	get getMax(): bigint | undefined
@@ -17,5 +13,5 @@ export interface IBigint<O extends BigintOptions = BigintOptions>
 
 export function isBigint(x: unknown): x is IBigint {
 	// eslint-disable-next-line security/detect-object-injection
-	return Boolean((x as IBigint | null)?.[IS_BIGINT])
+	return (x as IBigint | null)?.[SCHEMA_NAME] === 'Bigint'
 }

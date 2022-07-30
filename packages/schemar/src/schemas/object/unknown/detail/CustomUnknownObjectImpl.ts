@@ -25,8 +25,16 @@ export class CustomUnknownObjectImpl<O extends Partial<UnknownObjectOptions>>
 	implements CustomUnknownObject<O>
 {
 	declare readonly [SCHEMA_NAME]: 'UnknownObject';
+
 	declare readonly [DEFAULT_OPTIONS]: DefaultUnknownObjectOptions;
-	declare readonly [BASE_OPTIONS]: DefaultUnknownObjectOptions
+	declare readonly [BASE_OPTIONS]: UnknownObjectOptions
+
+	// declare readonly [PARTIAL_OPTIONS]: O;
+
+	// declare readonly [OPTIONS]: Assume<
+	// 	UnknownObjectOptions,
+	// 	MergeSchemaOptions<DefaultUnknownObjectOptions, O>
+	// >
 
 	constructor(o: O) {
 		super(o)

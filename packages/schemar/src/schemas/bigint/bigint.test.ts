@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetOutputType, GetType_ } from '../../GetType/index'
-import * as s from '../index'
+import type { GetOutputType, GetType_ } from '~'
+import * as s from '~'
 
 describe('number', () => {
 	it('simple', () => {

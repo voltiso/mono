@@ -4,16 +4,17 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType } from '../GetType'
-import type { InferableReadonlyTuple } from '../Inferable'
-import * as s from '../custom-/index'
 import type {
+	CustomSchemaImpl,
 	DefaultSchemaOptions,
+	GetInputType,
+	GetOutputType,
+	InferableReadonlyTuple,
 	OPTIONS,
+	Schema,
 	SchemaOptions,
-} from '../SchemaOptions'
-import type { Schema } from './Schema.js'
-import type { CustomSchemaImpl } from './CustomSchemaImpl.js'
+} from '~'
+import * as s from '~'
 
 describe('Schema', () => {
 	it('generic', <O extends SchemaOptions>() => {
@@ -22,12 +23,31 @@ describe('Schema', () => {
 		Assert.is<Schema<O>, Schema>()
 	})
 
-	it('Schema_', () => {
+	it('SchemaImpl', () => {
 		expect.assertions(0)
 
 		type A = CustomSchemaImpl<DefaultSchemaOptions>['optional']['readonly']
 		Assert.is<A[OPTIONS], { optional: true; readonly: true }>()
 	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('type - optional', () => {
+	// 	expect.assertions(0)
+
+	// 	type A = s.Schema<readonly unknown[]>
+	// 	type AA = A['optional']
+
+	// 	Assert<
+	// 		IsIdentical<
+	// 			AA,
+	// 			s.CustomTypeOnly<{
+	// 				Output: readonly unknown[]
+	// 				Input: readonly unknown[]
+	// 				isOptional: true
+	// 			}>
+	// 		>
+	// 	>()
+	// })
 
 	it('works', () => {
 		expect.hasAssertions()

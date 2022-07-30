@@ -3,13 +3,13 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Inferable, RootSchemable } from '../Schemable.js'
+import type { Inferable, Schemable } from '~'
 
 describe('Schemable', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<RootSchemable[], Inferable>()
-		Assert.is<readonly RootSchemable[], Inferable>()
+		Assert.is<Schemable[], Inferable>()
+		Assert.is<readonly Schemable[], Inferable>()
 	})
 })

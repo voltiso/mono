@@ -15,8 +15,8 @@ export function getBaseSchema(inferableLiteral: InferableLiteral): ISchema {
 		case 'boolean':
 			return s.boolean
 
-		case 'function':
-			return s.function
+		// case 'function':
+		// 	return s.function
 
 		case 'number':
 			return s.number

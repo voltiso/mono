@@ -4,9 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType } from '../../../GetType/index'
-import type { ValidationIssue } from './ValidationIssue.js'
-import type { validationIssue } from './validationIssueSchema.js'
+import type { GetOutputType, ValidationIssue, validationIssue } from '~'
 
 describe('s.validationIssue', () => {
 	it('works', () => {

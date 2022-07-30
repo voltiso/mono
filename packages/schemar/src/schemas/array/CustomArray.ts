@@ -1,24 +1,46 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AtLeast1, If } from '@voltiso/util'
+import type { Assume, AtLeast1, If } from '@voltiso/util'
 
 import type {
+	ArrayOptions,
+	BASE_OPTIONS,
 	CustomSchema,
-	DefaultOptions,
-	DefineSchemaOptions,
-	OptionalOptions,
-	SCHEMA_OPTIONS,
-	ReadonlyOptions,
-} from '../../Schema/index'
-import type { ArrayOptions } from './_/ArrayOptions.js'
-import type { IArray } from './IArray.js'
+	DEFAULT_OPTIONS,
+	DefaultArrayOptions,
+	DefineSchema,
+	MergeSchemaOptions,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+} from '~'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore error TS2589: Type instantiation is excessively deep and possibly infinite.
-export interface CustomArray<O extends ArrayOptions>
-	extends IArray<O>,
-		CustomSchema<O> {
+export interface CustomArray<O extends Partial<ArrayOptions>>
+	extends CustomSchema<O> {
+	readonly [SCHEMA_NAME]: 'Array'
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	readonly [OPTIONS]: Assume<
+		ArrayOptions,
+		MergeSchemaOptions<DefaultArrayOptions, O>
+	>
+
+	readonly [BASE_OPTIONS]: ArrayOptions
+	readonly [DEFAULT_OPTIONS]: DefaultArrayOptions
+
+	//
+
+	get getElementSchema(): this[OPTIONS]['element']
+	get isReadonlyArray(): this[OPTIONS]['isReadonlyArray']
+	get getMinLength(): this[OPTIONS]['minLength']
+	get getMaxLength(): this[OPTIONS]['maxLength']
+
+	//
+
 	get readonlyArray(): MakeReadonlyArray<this>
 
 	minLength<Min extends number>(minLength: Min): MinLength<this, Min>
@@ -34,24 +56,22 @@ export interface CustomArray<O extends ArrayOptions>
 	): LengthRange<this, Min, Max>
 
 	//
-
-	get optional(): Optional<this>
-	get readonly(): Readonly<this>
-	default(defaultValue: this[OPTIONS]['Output']): Default<this>
 }
 
 //
 
-type MakeReadonlyArray<This extends IArray> = CustomArray<
-	DefineSchemaOptions<
-		This,
-		{
-			readonlyArray: true
-			_out: readonly [...This['OutputType']]
-			_in: readonly [...This['InputType']]
-		}
-	>
->
+type MakeReadonlyArray<This> = This extends {
+	[OPTIONS]: { Input: readonly unknown[]; Output: readonly unknown[] }
+}
+	? DefineSchema<
+			This,
+			{
+				readonlyArray: true
+				Output: readonly [...This[OPTIONS]['Output']]
+				Input: readonly [...This[OPTIONS]['Input']]
+			}
+	  >
+	: never
 
 //
 
@@ -61,43 +81,44 @@ type MaybeReadonly<T extends readonly unknown[], IsReadonly> = If<
 	T
 >
 
-type MinLength<This extends IArray, L extends number> = CustomArray<
-	DefineSchemaOptions<
-		This,
-		{
-			minLength: L
-			_out: MaybeReadonly<
-				L extends 1 ? AtLeast1<This['OutputType'][number]> : This['OutputType'],
-				This['isReadonlyArray']
-			>
-			_in: MaybeReadonly<
-				L extends 1 ? AtLeast1<This['InputType'][number]> : This['InputType'],
-				This['isReadonlyArray']
-			>
-		}
-	>
->
+type MinLength<This, L extends number> = This extends {
+	[OPTIONS]: {
+		Output: readonly unknown[]
+		Input: readonly unknown[]
+		isReadonlyArray: boolean
+	}
+}
+	? DefineSchema<
+			This,
+			{
+				minLength: L
+				Output: MaybeReadonly<
+					L extends 1
+						? AtLeast1<This[OPTIONS]['Output'][number]>
+						: This[OPTIONS]['Output'],
+					This[OPTIONS]['isReadonlyArray']
+				>
+				Input: MaybeReadonly<
+					L extends 1
+						? AtLeast1<This[OPTIONS]['Input'][number]>
+						: This[OPTIONS]['Input'],
+					This[OPTIONS]['isReadonlyArray']
+				>
+			}
+	  >
+	: never
 
 //
 
-type MaxLength<This extends IArray, L extends number> = CustomArray<
-	DefineSchemaOptions<This, { maxLength: L }>
->
+type MaxLength<This, L extends number> = DefineSchema<This, { maxLength: L }>
 
-type Length<This extends IArray, L extends number> = CustomArray<
-	DefineSchemaOptions<This, { minLength: L; maxLength: L }>
+type Length<This, L extends number> = DefineSchema<
+	This,
+	{ minLength: L; maxLength: L }
 >
 
 type LengthRange<
-	This extends IArray,
+	This,
 	MinLength extends number,
 	MaxLength extends number,
-> = CustomArray<
-	DefineSchemaOptions<This, { minLength: MinLength; maxLength: MaxLength }>
->
-
-//
-
-type Optional<This extends IArray> = CustomArray<OptionalOptions<This>>
-type Readonly<This extends IArray> = CustomArray<ReadonlyOptions<This>>
-type Default<This extends IArray> = CustomArray<DefaultOptions<This>>
+> = DefineSchema<This, { minLength: MinLength; maxLength: MaxLength }>

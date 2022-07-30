@@ -2,33 +2,26 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import type { Merge2Simple } from '@voltiso/util'
 
-import type { DefaultInstanceOptions } from './_/InstanceOptions.js'
-import type { CustomInstance } from './CustomInstance.js'
-import { Instance_ } from './Instance_.js'
+import type { CustomInstance } from '~'
+import { InstanceImpl } from '~'
 
-export type Instance<Inst extends object> = CustomInstance<
-	Merge2Simple<
-		DefaultInstanceOptions,
-		{
-			constructor: abstract new (...args: never[]) => Inst
-			_out: Inst
-			_in: Inst
-		}
-	>
->
+export type Instance<Inst extends object> = CustomInstance<{
+	constructor: abstract new (...args: any[]) => Inst
+	Output: Inst
+	Input: Inst
+}>
 
-export const Instance = Instance_ as unknown as InstanceConstructor
+export const Instance = InstanceImpl as unknown as InstanceConstructor
 
 type InstanceConstructor = new <Inst extends object>(
-	Constructor: abstract new (...args: never[]) => Inst,
+	Constructor: abstract new (...args: any[]) => Inst,
 ) => Instance<Inst>
 
 //
 
 export function instance<Inst extends object>(
-	Constructor: new (...args: never[]) => Inst,
+	Constructor: new (...args: any[]) => Inst,
 ) {
 	assert(Constructor)
 	return new Instance(Constructor)

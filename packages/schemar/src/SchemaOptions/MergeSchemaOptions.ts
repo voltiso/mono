@@ -1,20 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import type { _ } from '@voltiso/util'
+import type { _ } from '@voltiso/util'
 
-type _<T> = T extends any ? { [k in keyof T]: T[k] } : never
+// type _<T> = T extends any ? { [k in keyof T]: T[k] } : never
 
 // type MergeSchemaOptions<A extends object, B extends object> = Merge2Trivial_<A, B>
 // type MergeSchemaOptions<A extends object, B extends object> = Merge2Simple<A, B>
 
-// type MergeSchemaOptions<A, B> = Omit<A, keyof B> & B // 6s
-
-// type MergeSchemaOptions<A, B> = _<Omit<A, keyof B> & B>
-
-// type _<T> = { [k in keyof T]: T[k] }
+// export type MergeSchemaOptions<A, B> = Omit<A, keyof B> & B // 6s
 
 export type MergeSchemaOptions<A, B> = _<Omit<A, keyof B> & B>
+
+// type _<T> = { [k in keyof T]: T[k] }
 
 // type Finalize<X> = X extends SchemaOptions ? X : never
 

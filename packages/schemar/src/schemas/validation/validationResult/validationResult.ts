@@ -4,19 +4,19 @@
 import type { AtLeast1 } from '@voltiso/util'
 
 import type { Schemable, ValidationIssue } from '~'
-import { array, tuple, union, unknown, validationIssue } from '~'
+import * as s from '~'
 
 export const validationResult = <Value extends Schemable>(value: Value) =>
-	union(
+	s.union(
 		{
 			isValid: true,
 			value,
-			issues: tuple(),
+			issues: s.tuple(),
 		} as const,
 		{
 			isValid: false,
-			value: unknown,
-			issues: array(validationIssue).minLength(1),
+			value: s.unknown,
+			issues: s.array(s.validationIssue).minLength(1),
 		} as const,
 	)
 

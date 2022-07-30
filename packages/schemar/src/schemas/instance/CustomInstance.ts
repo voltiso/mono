@@ -1,28 +1,34 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Assume } from '@voltiso/util'
+
 import type {
+	BASE_OPTIONS,
 	CustomSchema,
-	DefaultOptions,
-	OptionalOptions,
-	SCHEMA_OPTIONS,
-	ReadonlyOptions,
-} from '../../Schema/index'
-import type { InstanceOptions } from './_/InstanceOptions.js'
-import type { IInstance } from './IInstance.js'
+	DEFAULT_OPTIONS,
+	DefaultInstanceOptions,
+	InstanceOptions,
+	MergeSchemaOptions,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+} from '~'
 
-export interface CustomInstance<O extends InstanceOptions>
-	extends IInstance<O>,
-		CustomSchema<O> {
+export interface CustomInstance<O extends Partial<InstanceOptions>>
+	extends CustomSchema<O> {
 	//
+	readonly [SCHEMA_NAME]: 'Instance'
 
-	get optional(): Optional<this>
-	get readonly(): Readonly<this>
-	default(defaultValue: this[OPTIONS]['_out']): Default<this>
+	readonly [BASE_OPTIONS]: InstanceOptions
+	readonly [DEFAULT_OPTIONS]: DefaultInstanceOptions
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	readonly [OPTIONS]: Assume<
+		InstanceOptions,
+		MergeSchemaOptions<DefaultInstanceOptions, O>
+	>
+
+	get getConstructor(): this[OPTIONS]['constructor']
 }
-
-type Optional<This extends IInstance> = CustomInstance<OptionalOptions<This>>
-
-type Readonly<This extends IInstance> = CustomInstance<ReadonlyOptions<This>>
-
-type Default<This extends IInstance> = CustomInstance<DefaultOptions<This>>

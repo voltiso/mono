@@ -1,24 +1,20 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	DefaultObjectOptions,
-	InferableObject,
-	ISchema,
-	ObjectOptions,
-} from '~'
+import type { InferableObject, ISchema, ObjectOptions, OPTIONS } from '~'
 import { SCHEMA_NAME } from '~'
 
 export interface IObject extends ISchema {
 	readonly [SCHEMA_NAME]: 'Object'
 
-	readonly [BASE_OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
+	[OPTIONS]: ObjectOptions
+
+	// readonly [BASE_OPTIONS]: ObjectOptions
+	// readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
 	get getShape(): InferableObject
 
+	//! these cause `instantiation too deep` errors when checking if `CustomObject` is assignable to `IObject`
 	get partial(): IObject
 	get deepPartial(): IObject
 }

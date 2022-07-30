@@ -3,30 +3,38 @@
 
 import { isSubset, lazyConstructor, toString } from '@voltiso/util'
 
-import type { CustomLiteral, DefineLiteralOptions, LiteralOptions } from '~'
+import type {
+	CustomLiteral,
+	DefaultLiteralOptions,
+	InferableLiteral,
+	ISchema,
+	LiteralOptions,
+} from '~'
 import {
-	type InferableLiteral,
-	type ISchema,
+	BASE_OPTIONS,
 	CustomSchemaImpl,
+	DEFAULT_OPTIONS,
 	EXTENDS,
 	isLiteral,
 	isUnknownLiteral,
 	literalValueExtends,
-	SCHEMA_OPTIONS,
+	OPTIONS,
 	SCHEMA_NAME,
 } from '~'
-import * as s from '~/schemas'
+import * as s from '~'
 
 export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomLiteral<O>
 {
-	readonly [SCHEMA_NAME] = 'Literal' as const
-	// readonly [IS_LITERAL] = true
+	readonly [SCHEMA_NAME] = 'Literal' as const;
 
-	get getValues(): DefineLiteralOptions<O>['values'] {
+	declare readonly [BASE_OPTIONS]: LiteralOptions;
+	declare readonly [DEFAULT_OPTIONS]: DefaultLiteralOptions
+
+	get getValues(): this[OPTIONS]['values'] {
 		// eslint-disable-next-line security/detect-object-injection
-		return this[SCHEMA_OPTIONS].values as never
+		return this[OPTIONS].values as never
 	}
 
 	// constructor(o: O) {
@@ -39,7 +47,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 
 		let good = true
 
-		for (const l of this.getValues) {
+		for (const l of this.getValues as unknown as InferableLiteral[]) {
 			// const isStillGood = getBaseSchema(l)[EXTENDS](other)
 			const isStillGood = literalValueExtends(l, other)
 
@@ -55,7 +63,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	override _getIssuesImpl(x: unknown): s.ValidationIssue[] {
 		const issues = super._getIssuesImpl(x)
 
-		if (!this.getValues.has(x as InferableLiteral)) {
+		if (!(this.getValues as Set<InferableLiteral>).has(x as InferableLiteral)) {
 			issues.push(
 				new s.ValidationIssue({
 					expectedOneOf: this.getValues,
@@ -68,6 +76,8 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	}
 
 	override _toString(): string {
-		return [...this.getValues].map(x => toString(x)).join(' | ')
+		return [...(this.getValues as unknown as InferableLiteral[])]
+			.map(x => toString(x))
+			.join(' | ')
 	}
 }

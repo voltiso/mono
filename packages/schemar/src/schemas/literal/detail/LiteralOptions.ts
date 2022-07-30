@@ -3,7 +3,7 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import type { InferableLiteral, MergeSchemaOptions, SchemaOptions } from '~'
+import type { InferableLiteral, SchemaOptions } from '~'
 import { defaultSchemaOptions } from '~'
 
 export interface LiteralOptions extends SchemaOptions {
@@ -20,6 +20,3 @@ export const defaultLiteralOptions = lazyValue(() => ({
 }))
 
 export type DefaultLiteralOptions = typeof defaultLiteralOptions
-
-export type DefineLiteralOptions<O extends Partial<LiteralOptions>> =
-	MergeSchemaOptions<DefaultLiteralOptions, O>

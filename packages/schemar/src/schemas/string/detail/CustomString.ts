@@ -1,14 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AtLeast1 } from '@voltiso/util'
+import type { Assume, AtLeast1 } from '@voltiso/util'
 
 import type {
 	BASE_OPTIONS,
 	CustomSchema,
 	DEFAULT_OPTIONS,
 	DefineSchema,
+	MergeSchemaOptions,
 	OPTIONS,
+	PARTIAL_OPTIONS,
 	SCHEMA_NAME,
 } from '~'
 
@@ -21,6 +23,13 @@ export interface CustomString<O extends Partial<StringOptions>>
 
 	readonly [BASE_OPTIONS]: StringOptions
 	readonly [DEFAULT_OPTIONS]: DefaultStringOptions
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	readonly [OPTIONS]: Assume<
+		StringOptions,
+		MergeSchemaOptions<DefaultStringOptions, O>
+	>
 
 	//
 

@@ -1,0 +1,81 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
+import type * as s from '~'
+
+describe('SchemaOfType', () => {
+	it('never', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<never>
+		Assert<IsIdentical<A, s.Never>>()
+	})
+
+	it('any', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<any>
+		Assert<IsIdentical<A, s.Any>>()
+	})
+
+	it('unknown', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<unknown>
+		Assert<IsIdentical<A, s.Unknown>>()
+	})
+
+	it('void', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<void>
+		Assert<IsIdentical<A, s.Void>>()
+	})
+
+	it('undefined', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<undefined>
+		Assert<IsIdentical<A, s.Literal<undefined>>>()
+	})
+
+	it('null', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<null>
+		Assert<IsIdentical<A, s.Literal<null>>>()
+	})
+
+	it('boolean', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<boolean>
+		Assert<IsIdentical<A, s.Boolean>>()
+
+		type B = s.SchemaOfType<true>
+		Assert<IsIdentical<B, s.Literal<true>>>()
+	})
+
+	it('array', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<number[]>
+		Assert<IsIdentical<A, s.MutableArray<number>>>()
+
+		type B = s.SchemaOfType<readonly number[]>
+		Assert<IsIdentical<B, s.ReadonlyArray<number>>>()
+	})
+
+	it('literal', () => {
+		expect.assertions(0)
+
+		type A = s.SchemaOfType<1 | 2 | 'a'>
+		Assert<IsIdentical<A, s.Literal<1> | s.Literal<2> | s.Literal<'a'>>>()
+		// TODO: combine literals
+	})
+
+	// TODO: union
+})

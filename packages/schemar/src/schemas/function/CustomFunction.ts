@@ -1,36 +1,37 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Assume } from '@voltiso/util'
+
 import type {
+	BASE_OPTIONS,
 	CustomSchema,
-	DefaultOptions,
-	InferableReadonlyTuple,
-	IRootSchema,
-	OptionalOptions,
-	SCHEMA_OPTIONS,
-	ReadonlyOptions,
-	RootSchemable,
-} from '../../Schema/index'
-import type * as s from '../index'
-import type { FunctionOptions } from './_/FunctionOptions.js'
-import type { IFunction } from './IFunction.js'
+	DEFAULT_OPTIONS,
+	DefaultFunctionOptions,
+	FunctionOptions,
+	MergeSchemaOptions,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+} from '~'
 
-export interface CustomFunction<O extends FunctionOptions>
-	extends IFunction<O>,
-		CustomSchema<O> {
-	<
-		Args extends InferableReadonlyTuple | ((s.ITuple | s.IArray) & IRootSchema),
-		R extends RootSchemable,
-	>(
-		argumentsSchema: Args,
-		resultSchema: R,
-	): s.Function<Args, R>
+export interface CustomFunction<O extends Partial<FunctionOptions>>
+	extends CustomSchema<O> {
+	//
+	readonly [SCHEMA_NAME]: 'Function'
 
-	get optional(): Optional<this>
-	get readonly(): Readonly<this>
-	default(defaultValue: this[OPTIONS]['_out']): Default<this>
+	readonly [BASE_OPTIONS]: FunctionOptions
+	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	readonly [OPTIONS]: Assume<
+		FunctionOptions,
+		MergeSchemaOptions<DefaultFunctionOptions, O>
+	>
+
+	//
+
+	get getArgumentsSchema(): this[OPTIONS]['arguments']
+	get getResultSchema(): this[OPTIONS]['result']
 }
-
-type Optional<This extends IFunction> = CustomFunction<OptionalOptions<This>>
-type Readonly<This extends IFunction> = CustomFunction<ReadonlyOptions<This>>
-type Default<This extends IFunction> = CustomFunction<DefaultOptions<This>>

@@ -3,7 +3,7 @@
 
 /* eslint-disable class-methods-use-this */
 
-import type { Assume, AtLeast1, Merge2Simple, VRequired } from '@voltiso/util'
+import type { Assume, AtLeast1, Merge2Simple } from '@voltiso/util'
 import { clone, final, isDefined, toString } from '@voltiso/util'
 
 import type {
@@ -13,7 +13,6 @@ import type {
 	MergeSchemaOptions,
 	Schema,
 	Schemable,
-	SchemaName,
 	SchemaOptions,
 } from '~'
 import {
@@ -35,12 +34,19 @@ import * as s from '~/schemas'
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>, ISchema
 {
-	declare readonly [SCHEMA_NAME]: SchemaName;
+	declare readonly [SCHEMA_NAME]: string; // SchemaName
+
+	declare readonly [PARTIAL_OPTIONS]: O;
+
+	// declare [OPTIONS]: Assume<
+	// 	SchemaOptions,
+	// 	MergeSchemaOptions<DefaultSchemaOptions, O>
+	// >
 
 	declare readonly [BASE_OPTIONS]: SchemaOptions;
 	declare readonly [DEFAULT_OPTIONS]: this[BASE_OPTIONS];
 
-	declare readonly [PARTIAL_OPTIONS]: VRequired<O>;
+	// declare readonly [PARTIAL_OPTIONS]: VRequired<O>;
 
 	[OPTIONS]: Assume<
 		this[BASE_OPTIONS],
@@ -187,10 +193,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			}
 	}
 
-	validate(x: unknown): this[OPTIONS]['Output'] {
+	validate(x: unknown): never {
 		const r = this.tryValidate(x)
 
-		if (r.isValid) return r.value
+		if (r.isValid) return r.value as never
 		else throw new ValidationError(r.issues)
 	}
 
@@ -280,7 +286,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		}) as never
 	}
 
-	or<Other extends Schema>(other: Other): never {
+	or<Other extends Schemable>(other: Other): never {
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
 		return s.union(this as never, other) as never
 	}
