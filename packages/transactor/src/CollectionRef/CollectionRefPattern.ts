@@ -1,14 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import { assertZod } from '../assertZod'
+// import { assertZod } from '~/assertZod'
 import type { InferableObject } from '@voltiso/schemar'
 
-import { getGetPathMatches } from '../common/PathMatches.js'
-import type { Method } from '../Method.js'
-import type { WithTransactor } from '../Transactor'
-import type { MethodEntry } from '../Transactor/Entry.js'
-import type { AfterTrigger, BeforeCommitTrigger } from '../Trigger/Trigger.js'
+import { getGetPathMatches } from '~/common/PathMatches'
+import type { Method } from '~/Method'
+import type { WithTransactor } from '~/Transactor'
+import type { MethodEntry } from '~/Transactor/Entry'
+import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
 
 type Context = WithTransactor
 

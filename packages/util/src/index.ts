@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './lazy/index'
 export * from './any'
 export * from './array'
 export * from './boolean'
@@ -11,6 +10,7 @@ export * from './clone'
 export * from './error'
 export * from './function'
 export * from './json'
+export * from './lazy'
 export * from './literal'
 export * from './misc'
 export * from './nullish'

@@ -3,8 +3,9 @@
 
 import type { Merge2Trivial } from '@voltiso/util'
 
-import type { DTI, IDoc, IDocConstructor } from '../Doc'
-import type { InferMethods } from './InferMethods.js'
+import type { DTI, IDoc, IDocConstructor } from '~/Doc'
+
+import type { InferMethods } from './InferMethods'
 
 type InferFromDoc<D extends IDoc> = Merge2Trivial<
 	D[DTI],

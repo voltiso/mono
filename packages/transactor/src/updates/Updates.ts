@@ -4,15 +4,15 @@
 import { assert } from '@voltiso/assertor'
 import { getKeys, undef } from '@voltiso/util'
 
-import type { DataWithoutId, NestedData } from '../Data/Data.js'
-import type { DeleteIt, NestedIt, RootReplaceIt } from '../it'
+import type { DataWithoutId, NestedData } from '~/Data/Data'
+import type { DeleteIt, NestedIt, RootReplaceIt } from '~/it'
 import {
 	deleteIt,
 	incrementIt,
 	isDeleteIt,
 	isIncrementIt,
 	isReplaceIt,
-} from '../it'
+} from '~/it'
 
 export interface UpdatesRecord {
 	id?: never

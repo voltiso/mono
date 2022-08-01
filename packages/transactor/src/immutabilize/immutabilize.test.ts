@@ -3,7 +3,7 @@
 
 import { assert } from '@voltiso/assertor'
 
-import { immutabilize } from './immutabilize.js'
+import { immutabilize } from './immutabilize'
 
 describe('immutabilize', function () {
 	it('should work with arrays', function () {

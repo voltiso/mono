@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DTI, IDoc, IDocConstructorNoBuilder } from '../Doc'
+import type { DTI, IDoc, IDocConstructorNoBuilder } from '~/Doc'
 
 // type _InferFields2<F, D extends IDoc> = _<{
 // 	[k in keyof F]: k extends keyof D

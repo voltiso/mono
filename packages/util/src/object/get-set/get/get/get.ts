@@ -1,14 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '../../../../error'
-import { lazyConstructor } from '../../../../lazy/index'
-import { toString } from '../../../../string'
-import type { Value_ } from '../../../key-value'
-import type { IPath, Path } from '../../../Path'
-import type { UnknownProperty } from '../../../UnknownProperty.js'
-import type { GetProperty } from './getProperty.js'
-import { getProperty, GetPropertyError } from './getProperty.js'
+import { VoltisoUtilError } from '~/error'
+import { lazyConstructor } from '~/lazy'
+import type { IPath, Path, UnknownProperty, Value_ } from '~/object'
+import { toString } from '~/string'
+
+import type { GetProperty } from './getProperty'
+import { getProperty, GetPropertyError } from './getProperty'
 
 type Get_<O, P> = P extends readonly []
 	? O

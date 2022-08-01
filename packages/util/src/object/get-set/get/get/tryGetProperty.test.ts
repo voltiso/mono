@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '../../../../nullish'
-import type { IsIdentical } from '../../../../type'
-import { Assert } from '../../../../type'
-import type { TryGetProperty } from './tryGetProperty.js'
-import { tryGetProperty } from './tryGetProperty.js'
+import { undef } from '~/nullish'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type/static-assert'
+
+import type { TryGetProperty } from './tryGetProperty'
+import { tryGetProperty } from './tryGetProperty'
 
 describe('tryGetProperty', () => {
 	it('type - indexed', () => {

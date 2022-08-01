@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Id } from '../Data'
-import type { DocPath } from '../Path'
-import type { IRef } from '../Ref/IRef.js'
-import type { Context } from './Context.js'
-import type { DTI, IDocTI } from './DocTI.js'
+import type { Id } from '~/Data'
+import type { DocPath } from '~/Path'
+import type { IRef } from '~/Ref/IRef'
+
+import type { DocContext } from './DocContext'
+import type { DTI, IDocTI } from './DocTI'
 
 /**
  * Unknown Doc
@@ -36,7 +37,7 @@ export type IDoc = {
  * - Every `Doc_` is assignable to it
  */
 export interface IDoc_ extends IDoc {
-	readonly _context: Context
+	readonly _context: DocContext
 	_setRaw(raw: unknown): void
 	// readonly db: Db
 }

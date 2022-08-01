@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, VoltisoUtilError } from '~'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { lazyConstructor } from '~/lazy/lazyConstructor'
 
 export class AssertionError extends lazyConstructor(() => VoltisoUtilError) {
 	constructor(

@@ -48,6 +48,8 @@ class Client extends Doc('refDelete_client')({
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		assert(this.rootTask === undef)
 
+		// type A = StrongRef<this>['id']
+
 		const task = await tasks.add({
 			id: this.id,
 			client: this.ref,
@@ -56,6 +58,12 @@ class Client extends Doc('refDelete_client')({
 		this.rootTask = task.ref
 	}
 }
+
+
+
+
+
+type IdClient = Id<Client>
 
 class ClientSlug extends Doc('refDelete_clientSlug')({
 	const: {

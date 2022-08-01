@@ -15,8 +15,8 @@
 	"javascript.preferences.importModuleSpecifierEnding": "minimal",
 	"typescript.preferences.importModuleSpecifierEnding": "minimal",
 
-	"javascript.preferences.importModuleSpecifier": "non-relative",
-	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"javascript.preferences.importModuleSpecifier": "shortest",
+	"typescript.preferences.importModuleSpecifier": "shortest",
 
 	"javascript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
 	"typescript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
@@ -193,14 +193,14 @@
 	// "jest.jestCommandLine": "node_modules/.bin/jest",
 	// "jest.jestCommandLine": "pnpm test",
 
-	// "jest.autoRun": "off",
+	"jest.autoRun": "off",
 	// "jest.autoRun": { "watch": true },
-	"jest.autoRun": {
-		"watch": false,
-		"onSave": "test-file"
-		// "onSave": "test-src-file"
-		// "onStartup": ["all-tests"]
-	},
+	// "jest.autoRun": {
+	// 	"watch": false,
+	// 	"onSave": "test-file"
+	// 	// "onSave": "test-src-file"
+	// 	// "onStartup": ["all-tests"]
+	// },
 
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,

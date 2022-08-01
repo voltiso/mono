@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Doc } from '../..'
-import type { DocTypes } from '../../DocTypes.js'
-import type { IDocTI } from '../DocTI.js'
-import type { ExecutionContext } from './ExecutionContext.js'
+import type { Doc } from '~'
+import type { IDocTI } from '~/Doc'
+import type { DocTypes } from '~/DocTypes'
+
+import type { ExecutionContext } from './ExecutionContext'
 
 type GDocByTag_<TI extends IDocTI> = TI['tag'] extends 'untagged'
 	? never

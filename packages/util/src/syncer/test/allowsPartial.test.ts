@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { runAsync, runSync } from '../run.js'
-import type { SyncerPromise } from '../SyncerPromise.js'
+import type { SyncerPromise } from '~/syncer'
+import { runAsync, runSync } from '~/syncer'
 
 function* partialFunc(): SyncerPromise<number, number | undefined> {
 	const x = yield {

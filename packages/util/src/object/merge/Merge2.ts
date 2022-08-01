@@ -1,11 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Callable, Newable } from '../../function'
-import type { _ } from '../flatten'
-import type { IsOptional_ } from '../IsOptional.js'
-import type { Value_ } from '../key-value'
-import type { SuggestObject } from './SuggestObject.js'
+import type { _, Callable, IsOptional_, Newable, Value_ } from '~'
+
+import type { SuggestObject } from './SuggestObject'
 
 type Part1<A, B> = {
 	[k in keyof A]: k extends keyof B

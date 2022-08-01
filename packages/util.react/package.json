@@ -22,7 +22,7 @@
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint .",
-		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
+		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-p build:esm build:cjs",
@@ -39,8 +39,8 @@
 		"react": "^18.1.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.18.9",
-		"@babel/plugin-proposal-decorators": "^7.18.9",
+		"@babel/core": "^7.18.10",
+		"@babel/plugin-proposal-decorators": "^7.18.10",
 		"@testing-library/react": "^13.3.0",
 		"@types/react": "^18.0.12",
 		"@voltiso/config.jest.react": "workspace:^1.0.0",

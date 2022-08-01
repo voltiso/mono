@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getProperty } from '../../get-set'
+import { getProperty } from '~/object'
 
-// import { TsUtilError } from '../../error'
-// import { toString } from '../../string'
+// import { TsUtilError } from '~'
+// import { toString } from '~'
 
 type PickResult<O, K extends keyof O> = Required<Pick<O, K>>
 

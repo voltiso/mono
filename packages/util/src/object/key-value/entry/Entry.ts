@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ToStringKey } from '../key'
-import type { Value } from '../value'
+import type { ToStringKey, Value } from '~'
 
 export type IEntry = [keyof any, unknown]
 

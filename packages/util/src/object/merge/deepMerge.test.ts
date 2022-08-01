@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '../../nullish'
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import type { DeepMerge, DeepMerge2 } from './deepMerge/deepMerge.js'
-import { deepMerge } from './deepMerge/deepMerge.js'
+import type { IsIdentical } from '~'
+import { undef } from '~/nullish'
+import { Assert } from '~/type'
+
+import type { DeepMerge, DeepMerge2 } from './deepMerge/deepMerge'
+import { deepMerge } from './deepMerge/deepMerge'
 
 describe('deepMerge', () => {
 	it('deepMerge2', () => {

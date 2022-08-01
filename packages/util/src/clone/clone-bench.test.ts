@@ -3,7 +3,7 @@
 
 import cloneLib from 'clone'
 
-import { deepClone } from './deepClone.js'
+import { deepClone } from './deepClone'
 
 const ITERS = 10 * 1000
 

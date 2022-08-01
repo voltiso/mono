@@ -3,9 +3,10 @@
 
 /* eslint-disable regexp/no-super-linear-move */
 
-import { merge } from '../../object'
-import type { ToStringOptions } from './ToStringOptions.js'
-import { defaultToStringOptions } from './ToStringOptions.js'
+import { merge } from '~/object'
+
+import type { ToStringOptions } from './ToStringOptions'
+import { defaultToStringOptions } from './ToStringOptions'
 
 /* eslint-disable @typescript-eslint/ban-types */
 

@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Newable } from '../../../function'
-import type { IsIdentical } from '../../../type'
-import { Assert, Is } from '../../../type'
-import type { Entry } from './Entry.js'
-import { getCoercedEntries } from './getEntries.js'
+import type { Newable } from '~/function'
+import type { IsIdentical } from '~/type'
+import { Assert, Is } from '~/type'
+
+import type { Entry } from './Entry'
+import { getCoercedEntries } from './getEntries'
 
 describe('object/entries', () => {
 	it('works - static', () => {

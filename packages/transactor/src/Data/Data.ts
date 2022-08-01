@@ -3,9 +3,10 @@
 
 import type { _, OmitSignatures } from '@voltiso/util'
 
-import type { IRef } from '../Ref'
-import type { IntrinsicFields } from '../schemas'
-import type { Id } from './Id.js'
+import type { IRef } from '~/Ref'
+import type { IntrinsicFields } from '~/schemas'
+
+import type { Id } from './Id'
 
 export type LeafData = boolean | string | number | null | Date | IRef
 

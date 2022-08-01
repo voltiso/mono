@@ -4,18 +4,18 @@
 import type * as s from '@voltiso/schemar'
 import type { _, Merge2 } from '@voltiso/util'
 
-import type { DataWithoutId } from '../../Data'
-import type { DocTag } from '../../DocTypes.js'
-import type { Method } from '../../Method.js'
-import type { AfterTrigger, BeforeCommitTrigger } from '../../Trigger'
-import type { GDataInput } from '../_/GData.js'
-import type { GI, GO } from '../_/GDoc.js'
-import type { Promisify } from '../_/GMethodPromises.js'
-import type { NewFields } from '../_/NewFields.js'
-import type { Context } from '../Context.js'
-import type { DTI, IDocTI } from '../DocTI.js'
-import type { DocDerivedData } from './_/DocDerivedData.js'
-import type { MergeTI } from './_/MergeTI.js'
+import type { DataWithoutId } from '~/Data'
+import type { DocContext, DTI, IDocTI } from '~/Doc'
+import type { GDataInput } from '~/Doc/_/GData'
+import type { GI, GO } from '~/Doc/_/GDoc'
+import type { Promisify } from '~/Doc/_/GMethodPromises'
+import type { NewFields } from '~/Doc/_/NewFields'
+import type { DocTag } from '~/DocTypes'
+import type { Method } from '~/Method'
+import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
+
+import type { DocDerivedData } from './_/DocDerivedData'
+import type { MergeTI } from './_/MergeTI'
 
 type MaybeWithName<Params> = [Params] | [string, Params]
 
@@ -25,7 +25,7 @@ export interface DocConstructor<TI extends IDocTI = IDocTI> {
 	[DTI]: TI
 	_: DocDerivedData
 
-	new (context: Context, data: DataWithoutId<GDataInput<TI>>): GO<TI>
+	new (context: DocContext, data: DataWithoutId<GDataInput<TI>>): GO<TI>
 
 	// <Derived>(): DocConstructor<___<Merge2<TI, { doc: Derived & DocU }>>>
 	<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>

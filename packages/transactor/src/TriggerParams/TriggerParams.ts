@@ -1,11 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDoc } from '../Doc'
-import type {
-	AfterTriggerParams,
-	TriggerParams,
-} from '../Trigger/TriggerParams.js'
+import type { IDoc } from '~/Doc'
+import type { AfterTriggerParams, TriggerParams } from '~/Trigger/TriggerParams'
 
 export type After<D extends IDoc> = AfterTriggerParams<D>
 export type AfterCreate<D extends IDoc> = AfterTriggerParams<D, D, false, true>

@@ -13,10 +13,6 @@ mockConsole()
 const src = require('@voltiso/transactor')
 const srcFirestore = require('@voltiso/transactor.firestore')
 
-// jest.mock('zod', () => {
-// 	throw new Error('test mock - zod not present')
-// })
-
 // Error.stackTraceLimit = 20
 
 const { initializeApp } = require('firebase-admin/app')

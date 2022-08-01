@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { WithDb } from '../../Db'
-import type { WithTransaction } from '../../Transaction'
-import type { WithTransactor } from '../../Transactor'
-import type { Forbidden } from '../../util'
-import type { WithDocRef } from '../WithDocRef.js'
+import type { WithDb } from '~/Db'
+import type { WithDocRef } from '~/Ref'
+import type { WithTransaction } from '~/Transaction'
+import type { WithTransactor } from '~/Transactor'
+import type { Forbidden } from '~/util'
 
 export type DocRefBaseContext = WithTransactor &
 	Partial<WithTransaction> &

@@ -4,8 +4,9 @@
 import type * as s from '@voltiso/schemar'
 import { Assert } from '@voltiso/util'
 
-import type { IDocTI } from '../DocTI.js'
-import type { GDoc } from './GDoc.js'
+import type { IDocTI } from '~/Doc'
+
+import type { GDoc } from './GDoc'
 
 describe('Doc util', () => {
 	it('GDoc basic', () => {

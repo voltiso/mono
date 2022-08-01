@@ -4,26 +4,27 @@
 import type { _ } from '@voltiso/util'
 import { callableClass, lazyConstructor } from '@voltiso/util'
 
-import type { DataWithId, DataWithoutId, Id, NestedData } from '../Data'
-import type { DocPath } from '../Path'
-import type { StrongRef } from '../Ref'
-import type { ExecutionContext } from './_/ExecutionContext.js'
-import type { GData } from './_/GData.js'
-import type { GDoc } from './_/GDoc.js'
-import type { GMethodPromises } from './_/GMethodPromises.js'
+import type { DataWithId, DataWithoutId, Id, NestedData } from '~/Data'
+import type { DocPath } from '~/Path'
+import type { StrongRef } from '~/Ref'
+
+import type { ExecutionContext } from './_/ExecutionContext'
+import type { GData } from './_/GData'
+import type { GDoc } from './_/GDoc'
+import type { GMethodPromises } from './_/GMethodPromises'
 import type {
 	GUpdates,
 	GUpdates_Delete,
 	GUpdates_Replace,
 	GUpdates_Update,
-} from './_/GUpdates.js'
-import type { DocTI, GetFields } from './Doc_.js'
-import { Doc_ } from './Doc_.js'
-import { DocCall } from './DocCall.js'
+} from './_/GUpdates'
+import type { DocTI, GetFields } from './Doc_'
+import { Doc_ } from './Doc_'
+import { DocCall } from './DocCall'
 import type { DocConstructor } from './DocConstructor'
-import type { DTI, IDocTI } from './DocTI.js'
-import type { IDoc } from './IDoc.js'
-import type { IndexedDocTI } from './IndexedDoc.js'
+import type { DTI, IDocTI } from './DocTI'
+import type { IDoc } from './IDoc'
+import type { IndexedDocTI } from './IndexedDoc'
 
 interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 	extends IDoc {

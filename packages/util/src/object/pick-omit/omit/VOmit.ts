@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '../../../type'
-import type { OmitPrecise_ } from './OmitPrecise.js'
-import type { OmitSimple_ } from './OmitSimple.js'
+import type { AlsoAccept } from '~'
+
+import type { OmitPrecise_ } from './OmitPrecise'
+import type { OmitSimple_ } from './OmitSimple'
 
 export type VOmit_<O, K> = string extends keyof O
 	? string extends K

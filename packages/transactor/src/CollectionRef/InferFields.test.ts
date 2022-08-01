@@ -5,16 +5,17 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { afterCreateOrUpdate, method } from '../decorators'
+import { afterCreateOrUpdate, method } from '~/decorators'
 import type {
 	DocConstructor,
 	DTI,
 	IDocConstructorNoBuilder,
 	IDocTI,
-} from '../Doc'
-import { Doc } from '../Doc'
-import type { IRef } from '../Ref'
-import * as ss from '../schemas'
+} from '~/Doc'
+import { Doc } from '~/Doc'
+import type { IRef } from '~/Ref'
+import * as ss from '~/schemas'
+
 import type { InferFields } from './InferFields'
 
 class Doctor extends Doc({

@@ -3,9 +3,10 @@
 
 // TODO does not work with generics + index signatures
 
-import type { IsIdentical } from '../../../type'
-import { Assert } from '../../../type'
-import type { VPick, VPick_ } from './VPick.js'
+import type { IsIdentical } from '~'
+import { Assert } from '~/type'
+
+import type { VPick, VPick_ } from './VPick'
 
 describe('VPick', () => {
 	it('type', () => {

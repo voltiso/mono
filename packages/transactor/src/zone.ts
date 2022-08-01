@@ -9,4 +9,5 @@
 // import 'zone.js/fesm2015/zone-testing-bundle'
 // import 'zone.js/fesm2015/zone-testing-node-bundle'
 
+// eslint-disable-next-line import/no-unassigned-import
 import 'zone.js'

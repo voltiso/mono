@@ -1,17 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import '../../zone.js'
+// eslint-disable-next-line import/no-unassigned-import
+import '~/zone'
 
 import type * as Database from '@voltiso/firestore-like'
 import { undef } from '@voltiso/util'
 
-import type { DataWithId, DataWithoutId } from '../../Data/Data.js'
-import type { DatabaseContext } from '../../DatabaseContext.js'
-import { isDeleteIt, isReplaceIt } from '../../it'
-import type { Updates } from '../../updates/Updates.js'
-import { isDatabase } from '../../util'
-import { toDatabaseSet, toDatabaseUpdate } from './toDatabase.js'
+import type { DataWithId, DataWithoutId } from '~/Data/Data'
+import type { DatabaseContext } from '~/DatabaseContext'
+import { isDeleteIt, isReplaceIt } from '~/it'
+import type { Updates } from '~/updates/Updates'
+import { isDatabase } from '~/util'
+
+import { toDatabaseSet, toDatabaseUpdate } from './toDatabase'
 
 type T = Database.Transaction | Database.Database
 

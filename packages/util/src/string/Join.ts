@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Print, Printable } from './Printable.js'
+import type { Print, Printable } from './Printable'
 
 type JoinImpl<Arr, Separator extends Printable> = Arr extends readonly [
 	infer H,

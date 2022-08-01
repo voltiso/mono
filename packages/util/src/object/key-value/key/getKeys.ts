@@ -1,14 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2 } from '../../merge'
-import { merge } from '../../merge'
-import type {
-	DefaultIterationOptions,
-	IterationOptions,
-} from '../IterationOptions.js'
-import { defaultIterationOptions } from '../IterationOptions.js'
-import type { StringKeyof } from './StringKeyof.js'
+import {
+	type DefaultIterationOptions,
+	type IterationOptions,
+	type Merge2,
+	defaultIterationOptions,
+	merge,
+} from '~/object'
+
+import type { StringKeyof } from './StringKeyof'
 
 type GetKeys<Obj, O extends IterationOptions> = O['includeSymbols'] extends true
 	? StringKeyof<Obj>[]

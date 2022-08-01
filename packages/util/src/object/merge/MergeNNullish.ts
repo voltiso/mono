@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish } from '../../nullish'
-import type { Merge2Nullish_ } from './Merge2Nullish.js'
+import type { Nullish } from '~'
+
+import type { Merge2Nullish_ } from './Merge2Nullish'
 
 export type MergeNNullish_<objs, accumulator> = objs extends readonly []
 	? accumulator

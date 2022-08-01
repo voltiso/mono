@@ -4,11 +4,11 @@
 import { assert } from '@voltiso/assertor'
 import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
 
-import type { CollectionRef } from '..'
-import type { CollectionRefPattern } from '../CollectionRef'
-import { DT } from '../Doc'
-import type { IndexedDoc } from '../Doc/IndexedDoc.js'
-import type { DocRefPattern, WeakDocRef } from '../Ref'
+import type { CollectionRef } from '~'
+import type { CollectionRefPattern } from '~/CollectionRef'
+import { DT } from '~/Doc'
+import type { IndexedDoc } from '~/Doc/IndexedDoc'
+import type { DocRefPattern, WeakDocRef } from '~/Ref'
 
 /** Should not contain `/` */
 export type PathToken = Opaque<string, 'PathToken'>

@@ -3,8 +3,9 @@
 
 import { Assert, Is } from '@voltiso/util'
 
-import type { IDocTI } from '../DocTI.js'
-import type { GDocFields } from './GDocFields.js'
+import type { IDocTI } from '~/Doc'
+
+import type { GDocFields } from './GDocFields'
 
 describe('GDocFields', () => {
 	it('works', () => {

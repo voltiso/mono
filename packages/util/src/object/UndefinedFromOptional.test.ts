@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../type/compare'
-import { Assert } from '../type/static-assert'
-import type { UndefinedFromOptional } from './UndefinedFromOptional.js'
+import type { IsIdentical } from '~'
+import { Assert } from '~/type'
+
+import type { UndefinedFromOptional } from './UndefinedFromOptional'
 
 describe('UndefinedFromOptional', () => {
 	it('works', () => {

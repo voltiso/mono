@@ -3,6 +3,8 @@
 
 import { defineEslintConfig } from '@voltiso/config.eslint.lib'
 
+import { codeFiles } from '~/detail/files'
+
 import { ignorePatterns } from './detail/ignorePatterns'
 import {
 	anyOverride,
@@ -104,24 +106,12 @@ export const baseEslintConfig = defineEslintConfig({
 
 	settings: {
 		'import/parsers': {
-			'@typescript-eslint/parser': [
-				'.ts',
-				'.tsx',
-				'.mts',
-				'.mtsx',
-				'.cts',
-				'.ctsx',
-				//
-				'.js',
-				'.jsx',
-				'.mjs',
-				'.mjsx',
-				'.cjs',
-				'.cjsx',
-			],
+			'@typescript-eslint/parser': codeFiles.map(s => s.slice(1)),
 		},
 
 		'import/ignore': ['node_modules/react-native/index\\.js$'],
+
+		'import/extensions': codeFiles.map(s => s.slice(1)),
 
 		'import/resolver': {
 			// node: {

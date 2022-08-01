@@ -1,14 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
+import type { IsIdentical } from '~'
+import { Assert } from '~/type'
+
 import type {
 	HasIndexSignature,
 	HasNumberIndexSignature,
 	HasStringIndexSignature,
 	HasSymbolIndexSignature,
-} from './HasIndexSignature.js'
+} from './HasIndexSignature'
 
 describe('HasIndexSignature', () => {
 	it('type', () => {

@@ -4,8 +4,8 @@
 /* eslint-disable require-yield */
 /* eslint-disable jest/require-hook */
 
-import { runAsync, runSync } from '../run.js'
-import type { SyncerPromise } from '../SyncerPromise.js'
+import { runAsync, runSync } from '~/syncer/run'
+import type { SyncerPromise } from '~/syncer/SyncerPromise'
 
 describe('onAsyncStart', () => {
 	let anotherFuncFlag = false

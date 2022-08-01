@@ -6,6 +6,12 @@ import {
 	defineEslintConfigOverrideRules,
 } from '@voltiso/config.eslint.lib'
 
+import { codeFiles } from '~/detail/files.js'
+
+
+
+
+
 const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/handle-callback-err': 1,
 	'n/no-callback-literal': 1,
@@ -40,15 +46,18 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'n/callback-return': 1,
 	'n/exports-style': 1,
 
+	// 'n/file-extension-in-import': 1,
+
 	'n/file-extension-in-import': [
 		'warn',
 		'always',
-		{
-			'.js': 'never',
-			'.jsx': 'never',
-			'.ts': 'never',
-			'.tsx': 'never',
-		},
+		Object.fromEntries(codeFiles.map(ext => [ext.slice(1), 'never'])),
+		// {
+		// 	'.js': 'never',
+		// 	'.jsx': 'never',
+		// 	'.ts': 'never',
+		// 	'.tsx': 'never',
+		// },
 	], // hmm...
 
 	// 'n/file-extension-in-import': [

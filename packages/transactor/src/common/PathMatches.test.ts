@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getGetPathMatches } from './PathMatches.js'
+import { getGetPathMatches } from './PathMatches'
 
 describe('getGetPathMatches', function () {
 	it('should work with 2 captures', function () {

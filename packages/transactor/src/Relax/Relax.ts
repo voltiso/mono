@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DTI, IDoc, IDocTI } from '../Doc'
-import type { IRef } from '../Ref'
+import type { DTI, IDoc, IDocTI } from '~/Doc'
+import type { IRef } from '~/Ref'
 
 type RelaxDoc<D extends IDoc> = IDoc &
 	Pick<D, Exclude<keyof IDoc, 'methods' | 'id' | 'ref' | 'update' | DTI>> & {

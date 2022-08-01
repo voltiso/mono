@@ -5,14 +5,15 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
-import type { IdSchema } from '../..'
-import { Doc } from '../..'
-import type { DTI, IDocTI } from '../DocTI.js'
-import type { MergeTI } from './_/MergeTI.js'
-import type { DocConstructor } from './DocConstructor.js'
-import type { IDocConstructor } from './IDocConstructor.js'
+import type { Id } from '~'
+import { Doc } from '~'
+import type { DTI, IDocTI } from '~/Doc'
 
-declare module '../..' {
+import type { MergeTI } from './_/MergeTI'
+import type { DocConstructor } from './DocConstructor'
+import type { IDocConstructor } from './IDocConstructor'
+
+declare module '~' {
 	interface DocTypes {
 		docConstructorTest: Doc
 	}
@@ -53,8 +54,8 @@ describe('DocConstructor', () => {
 		Assert<IsIdentical<MyDoc[DTI]['tag'], 'untagged'>>()
 
 		type MyId = MyDoc['id']
-		Assert<IsIdentical<MyId, IdSchema<MyDoc>>>()
-		Assert(Is<IdSchema>().not.subtypeOf<MyId>())
+		Assert<IsIdentical<MyId, Id<MyDoc>>>()
+		Assert(Is<Id>().not.subtypeOf<MyId>())
 	})
 
 	it('Id 2', () => {

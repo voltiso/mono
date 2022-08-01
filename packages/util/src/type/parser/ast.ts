@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Operation } from './Operation.js'
-import type { Tokenize } from './tokenize.js'
+import type { Operation } from './Operation'
+import type { Tokenize } from './tokenize'
 
 export type Ast =
 	| '1'

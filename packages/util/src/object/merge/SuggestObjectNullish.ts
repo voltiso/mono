@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish } from '../../nullish'
-import type { AlsoAccept } from '../../type/AlsoAccept.js'
+import type { AlsoAccept, Nullish } from '~'
 
 type SuggestObjectNullish__<T> = {
 	[k in keyof T]?: T[k] | AlsoAccept<unknown> // auto-complete doesn't work for the nested value :(

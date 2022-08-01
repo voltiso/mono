@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import { runAsync, runSync } from '../run.js'
-import type { SyncerFunction } from '../SyncerFunction.js'
-import type { SyncerPromise } from '../SyncerPromise.js'
+import { runAsync, runSync } from '~/syncer/run'
+import type { SyncerFunction } from '~/syncer/SyncerFunction'
+import type { SyncerPromise } from '~/syncer/SyncerPromise'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
 
 function* fib(n: number): SyncerPromise<number, number> {
 	if (n === 0) return 0

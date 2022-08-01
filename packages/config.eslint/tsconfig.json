@@ -5,6 +5,7 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
+		// "baseUrl": ".", // Required for eslint-plugin-import?
 		"paths": {
 			"~": ["./src"],
 			"~/*": ["./src/*"]

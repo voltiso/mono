@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { merge } from '../../object'
-import { toString } from './toString.js'
-import type { ToStringOptions } from './ToStringOptions.js'
-import { defaultToStringOptions } from './ToStringOptions.js'
+import { merge } from '~/object'
+
+import { toString } from './toString'
+import type { ToStringOptions } from './ToStringOptions'
+import { defaultToStringOptions } from './ToStringOptions'
 
 const baseResult = '[]'
 const baseShortResult = '[...]'

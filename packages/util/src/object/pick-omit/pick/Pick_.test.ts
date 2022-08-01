@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../../type'
-import { Assert } from '../../../type'
-import type { OmitSignatures } from '../omit'
-import type { Pick_ } from './Pick_.js'
+import type { IsIdentical, OmitSignatures } from '~'
+import { Assert } from '~/type'
+
+import type { Pick_ } from './Pick_'
 
 describe('Pick', () => {
 	it('type', () => {

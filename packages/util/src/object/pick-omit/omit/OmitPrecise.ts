@@ -1,15 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '../../../type'
-import type { _ } from '../../flatten'
-import type {
+import type { AlsoAccept , _ ,
 	HasNumberIndexSignature,
 	HasStringIndexSignature,
 	HasSymbolIndexSignature,
-} from '../../index-signature'
-import type { Pick_ } from '../pick'
-import type { OmitSignatures } from './OmitSignatures.js'
+, Pick_ } from '~'
+
+import type { OmitSignatures } from './OmitSignatures'
 
 export type OmitPrecise_<O, K> = O extends object
 	? _<

@@ -8,7 +8,15 @@
 		"strictNullChecks": true,
 		"exactOptionalPropertyTypes": true,
 
-		"outDir": ".tsc-out"
+		"outDir": ".tsc-out",
+
+		"baseUrl": "../../../..",
+		"paths": {
+			"_": ["./src/_"],
+			"_/*": ["./src/_/*"],
+			"~": ["./src"],
+			"~/*": ["./src/*"]
+		}
 	},
 
 	"include": ["."]

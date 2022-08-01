@@ -1,11 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import { runAsync, runSync } from '../run.js'
-import type { SyncerFunction } from '../SyncerFunction.js'
-import type { SyncerPromise } from '../SyncerPromise.js'
+import type { SyncerFunction, SyncerPromise } from '~/syncer'
+import { runAsync, runSync } from '~/syncer'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
 
 function* differentIntermediates(
 	s: string,

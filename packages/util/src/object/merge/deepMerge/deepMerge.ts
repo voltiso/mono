@@ -1,7 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DeepPartial, Flatten, IsOptional, SuggestObject, Value } from '~'
+import type {
+	DeepPartial,
+	Flatten,
+	IsOptional,
+	SuggestObject,
+	Value,
+} from '~/object'
 
 import { _deepMerge } from './_deepMerge'
 

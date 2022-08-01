@@ -3,10 +3,10 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { InferTI } from '~/CollectionRef/InferTI.js'
+import type { InferTI } from '~/CollectionRef/InferTI'
 import type { IDoc } from '~/Doc'
-import type { GDocFields } from '~/Doc/_/GDocFields.js'
-import type { GMethodPromises } from '~/Doc/_/GMethodPromises.js'
+import type { GDocFields } from '~/Doc/_/GDocFields'
+import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
 
 import type { DocRefParentContext } from './_/Context'
 import { DocRefBaseImpl } from './DocRefBase'

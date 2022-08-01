@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../compare'
-import { Assert } from '../static-assert'
-import type { IsProvided } from './IsProvided.js'
-import type { NotProvided } from './OptionalArgument.js'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
+
+import type { IsProvided } from './IsProvided'
+import type { NotProvided } from './OptionalArgument'
 
 describe('OptionalArgument', () => {
 	it('type', () => {

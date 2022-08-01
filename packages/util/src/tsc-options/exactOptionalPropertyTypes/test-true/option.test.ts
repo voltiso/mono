@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../../../type'
-import type { exactOptionalPropertyTypes } from '../exactOptionalPropertyTypes.js'
+import type { exactOptionalPropertyTypes } from '~'
+import { Assert } from '~/type'
 
 describe('exactOptionalPropertyTypes - true', () => {
 	it('works', () => {

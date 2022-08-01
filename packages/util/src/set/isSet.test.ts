@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-undefined */
-import { isSet } from './isSet.js'
+import { isSet } from './isSet'
 
 describe('isSet', () => {
 	it('works', () => {

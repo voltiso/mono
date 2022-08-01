@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-await-in-loop */
-import { lazyPromise } from '~/lazy/lazyPromise'
 import { isIterable } from '~/array/isIterable'
+import { lazyPromise } from '~/lazy/lazyPromise'
 
 import { isSyncerNested } from './SyncerNested'
 import type { SyncerPromise } from './SyncerPromise'

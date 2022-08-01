@@ -1,10 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '../../../../error'
-import { toString } from '../../../../string'
-import { isObject } from '../../../isObject.js'
-import { assertNotPolluting } from '../../isPolluting.js'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { assertNotPolluting, isObject } from '~/object'
+import { toString } from '~/string/toString/toString'
 
 export function hasOwnProperty<O extends object, K extends keyof any>(
 	o: O,

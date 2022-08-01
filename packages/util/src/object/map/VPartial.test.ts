@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import type { Value } from '../key-value'
-import type { VPartial } from './VPartial.js'
+import type { Value } from '~/object'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
+
+import type { VPartial } from './VPartial'
 
 describe('Partial', () => {
 	it('works', () => {

@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../static-assert'
-import type { Default, Unset } from './Operation.js'
+import { Assert } from '~/type/static-assert'
+
+import type { Default, Unset } from './Operation'
 
 describe('def', () => {
 	it('works', () => {

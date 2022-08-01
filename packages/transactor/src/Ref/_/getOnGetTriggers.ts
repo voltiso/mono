@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDoc } from '../../Doc'
-import type { StrongDocRefImpl } from '../StrongDocRef.js'
+import type { IDoc } from '~/Doc'
+import type { StrongDocRefImpl } from '~/Ref'
 
 export function getOnGetTriggers(this: StrongDocRefImpl<IDoc>) {
 	if (this._onGets) return this._onGets

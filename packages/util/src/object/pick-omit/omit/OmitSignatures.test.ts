@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../../type'
-import { Assert } from '../../../type'
-import type { OmitSignatures } from './OmitSignatures.js'
+import type { IsIdentical } from '~'
+import { Assert } from '~/type'
+
+import type { OmitSignatures } from './OmitSignatures'
 
 describe('OmitSignatures', () => {
 	it('works', () => {

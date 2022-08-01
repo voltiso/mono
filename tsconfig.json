@@ -4,5 +4,15 @@
 {
 	"extends": "@voltiso/config.ts",
 
-	"exclude": ["./packages/"]
+	"compilerOptions": {
+		"baseUrl": "."
+	},
+
+	"exclude": [
+		"/**/node_modules/",
+		"/**/dist/",
+		"/**/.*/**/*", // Hidden dirs (works?)
+		//
+		"./packages/"
+	]
 }

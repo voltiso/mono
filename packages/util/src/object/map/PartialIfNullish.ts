@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish } from '../../nullish'
-import type { strictNullChecks } from '../../tsc-options'
-import type { VPartial } from './VPartial.js'
+import type { Nullish, strictNullChecks } from '~'
+
+import type { VPartial } from './VPartial'
 
 type ExcludedPartial<T> = VPartial<Exclude<T, Nullish>>
 

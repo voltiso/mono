@@ -1,11 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import type { PartialIfNullish } from '../map/PartialIfNullish.js'
-import type { VPartial } from '../map/VPartial.js'
-import type { Merge2Nullish } from './Merge2Nullish.js'
+import type { IsIdentical, PartialIfNullish, VPartial } from '~'
+import { Assert } from '~/type'
+
+import type { Merge2Nullish } from './Merge2Nullish'
 
 describe('Merge2Nullish', () => {
 	type SomeType = {

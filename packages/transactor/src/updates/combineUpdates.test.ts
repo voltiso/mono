@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { immutabilize } from '../immutabilize'
-import { DeleteIt, deleteIt, incrementIt, replaceIt } from '../it'
-import type { Updates } from './Updates.js'
-import { combineUpdates } from './Updates.js'
+import { immutabilize } from '~/immutabilize'
+import { DeleteIt, deleteIt, incrementIt, replaceIt } from '~/it'
+
+import type { Updates } from './Updates'
+import { combineUpdates } from './Updates'
 
 describe('updates', function () {
 	it('should replace field', function () {

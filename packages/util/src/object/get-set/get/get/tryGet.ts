@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IPath, Path } from '../../../Path'
-import type { TryGetProperty } from './tryGetProperty.js'
-import { tryGetProperty } from './tryGetProperty.js'
+import type { IPath, Path } from '~/object'
+
+import type { TryGetProperty } from './tryGetProperty'
+import { tryGetProperty } from './tryGetProperty'
 
 type TryGet_<O, P> = P extends readonly []
 	? O

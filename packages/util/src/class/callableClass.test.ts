@@ -3,9 +3,10 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import type { IsIdentical } from '../type'
-import { Assert } from '../type'
-import { callableClass } from './callableClass.js'
+import type { IsIdentical } from '~'
+import { Assert } from '~/type'
+
+import { callableClass } from './callableClass'
 
 class _Cls {
 	constructor(n: number)

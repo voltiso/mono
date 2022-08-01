@@ -8,8 +8,8 @@ import { databaseUpdate } from '~/common'
 import type { DataWithId } from '~/Data'
 import { withoutId } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { IDoc } from '~/Doc/IDoc.js'
-import { IndexedDoc } from '~/Doc/IndexedDoc.js'
+import type { IDoc } from '~/Doc/IDoc'
+import { IndexedDoc } from '~/Doc/IndexedDoc'
 import { TransactorError } from '~/error'
 import type { DeleteIt, RootReplaceIt } from '~/it'
 import { isDeleteIt, isReplaceIt, ReplaceIt } from '~/it'
@@ -27,12 +27,12 @@ import {
 } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
-import type { Updates, UpdatesRecord } from '~/updates/Updates.js'
+import type { Updates, UpdatesRecord } from '~/updates/Updates'
 import {
 	applyUpdates,
 	combineUpdates,
 	dataFromUpdates,
-} from '~/updates/Updates.js'
+} from '~/updates/Updates'
 import type { Forbidden } from '~/util'
 
 import { transactionDocPathGet } from './get'

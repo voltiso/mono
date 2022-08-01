@@ -1,12 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IDocTI } from '~/Doc'
 import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 	UnknownTrigger,
-} from '../../../Trigger/Trigger.js'
-import type { IDocTI } from '../../DocTI.js'
+} from '~/Trigger'
 
 export interface DocDerivedData extends IDocTI {
 	readonly afters: readonly UnknownTrigger[]

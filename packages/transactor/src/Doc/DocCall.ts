@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocTag } from '../DocTypes.js'
-import type { NewFields } from './_/NewFields.js'
+import type { DocTag } from '~/DocTypes'
+
+import type { NewFields } from './_/NewFields'
 import type { DocConstructor_ } from './DocConstructor'
-import type { IDocTI } from './DocTI.js'
+import type { IDocTI } from './DocTI'
 
 // eslint-disable-next-line etc/no-misused-generics
 export function DocCall<TI extends IDocTI, Tag extends DocTag>(tag: Tag): never

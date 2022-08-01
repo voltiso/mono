@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsTruthy } from './truthy-falsy.js'
+import type { IsTruthy } from './truthy-falsy'
 
 export type Not_B<A extends boolean, T = true, F = false> = A extends true
 	? F

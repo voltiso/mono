@@ -3,8 +3,8 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IDoc } from './IDoc.js'
-import type { IndexedDoc } from './IndexedDoc.js'
+import type { IDoc } from './IDoc'
+import type { IndexedDoc } from './IndexedDoc'
 
 describe('IndexedDoc', () => {
 	it('works', () => {

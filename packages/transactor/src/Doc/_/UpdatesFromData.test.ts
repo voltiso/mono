@@ -5,10 +5,11 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { LeafData } from '../../Data'
-import type { StrongRef } from '../../Ref'
-import { Doc } from '../Doc.js'
-import type { UpdatesFromData } from './UpdatesFromData.js'
+import type { LeafData } from '~/Data'
+import { Doc } from '~/Doc'
+import type { StrongRef } from '~/Ref'
+
+import type { UpdatesFromData } from './UpdatesFromData'
 
 describe('Doc util', () => {
 	it('UpdatesFromData', () => {

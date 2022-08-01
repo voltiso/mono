@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../../../type'
-import { Assert } from '../../../../type'
-import type { Get } from './get.js'
-import { get } from './get.js'
+import type { Get } from '~/object/get-set/get/get/get'
+import { get } from '~/object/get-set/get/get/get'
+import type { IsIdentical } from '~/type/compare/IsEqual'
+import { Assert } from '~/type/static-assert/Assert'
 
 describe('get', () => {
 	it('works - static', () => {

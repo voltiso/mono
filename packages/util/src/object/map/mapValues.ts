@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { setProperty } from '../get-set'
-import { getEntries } from '../key-value'
+import { getEntries, setProperty } from '~/object'
 
 type Mapping<Obj extends object> = {
 	[key in keyof Obj]: (value: Obj[key]) => Obj[key]

@@ -14,7 +14,7 @@ describe('Newable', () => {
 
 		Assert(
 			Is<Newable>() //
-				.identicalTo<abstract new (...args: never[]) => unknown>(),
+				.identicalTo<abstract new (...args: any[]) => unknown>(),
 
 			Is<Newable<[number, string]>>() //
 				.identicalTo<abstract new (a: number, b: string) => unknown>(),

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../../../type'
-import type { strictNullChecks } from '../strictNullChecks.js'
+import type { strictNullChecks } from '~'
+import { Assert } from '~/type'
 
 describe('Have_strictNullChecks', () => {
 	it('works', () => {

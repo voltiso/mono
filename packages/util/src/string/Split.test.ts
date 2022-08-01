@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { type IsIdentical, Assert } from '../type'
-import type { Split } from './Split.js'
+import { type IsIdentical, Assert } from '~/type'
+
+import type { Split } from './Split'
 
 /* eslint-disable jest/no-commented-out-tests */
 

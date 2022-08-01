@@ -1,4 +1,7 @@
-import type { Instance } from '../index.js'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { Instance } from '~'
 
 export function isInstanceOf<
 	DerivedInstance extends object,
@@ -9,5 +12,6 @@ export function isInstanceOf<
 ): derived is DerivedInstance & Instance<BaseConstructor> {
 	while (Base.name.startsWith('lazyConstructor'))
 		Base = Object.getPrototypeOf(Base)
+
 	return derived instanceof Base
 }

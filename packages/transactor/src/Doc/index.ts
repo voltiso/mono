@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './Context.js'
-export * from './Doc.js'
-export * from './Doc_.js'
-export * from './DocCall.js'
+export * from './Doc'
+export * from './Doc_'
+export * from './DocCall'
 export * from './DocConstructor'
-export * from './DocTI.js'
-export * from './IDoc.js'
-export * from './IndexedDoc.js'
+export * from './DocContext'
+export * from './DocTI'
+export * from './IDoc'
+export * from './IndexedDoc'

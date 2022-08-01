@@ -3,7 +3,7 @@
 
 import type { _ } from '@voltiso/util'
 
-import type { IDocTI } from '../../DocTI.js'
+import type { IDocTI } from '~/Doc'
 
 export type MergeTI<X extends IDocTI> = _<{
 	tag: X['tag']

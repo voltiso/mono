@@ -3,9 +3,10 @@
 
 // TODO: does not work with generics!!
 
-import type { IsIdentical } from '../../../type'
-import { Assert } from '../../../type'
-import type { PickPrecise } from './PickPrecise.js'
+import type { IsIdentical } from '~'
+import { Assert } from '~/type'
+
+import type { PickPrecise } from './PickPrecise'
 
 describe('PickPrecise', () => {
 	it('type', () => {

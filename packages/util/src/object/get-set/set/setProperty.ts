@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { UnknownProperty } from '../../UnknownProperty.js'
-import { assertNotPolluting } from '../isPolluting.js'
-import type { AllowedValue } from './_/AllowedValue.js'
+import type { UnknownProperty } from '~/object'
+import { assertNotPolluting } from '~/object'
+
+import type { AllowedValue } from './_/AllowedValue'
 
 /**
  * Similar to `obj[property] = value`

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from './Merge2.js'
+import type { Merge2_ } from './Merge2'
 
 type _MergeN<objs, accumulator extends object> = objs extends readonly []
 	? accumulator

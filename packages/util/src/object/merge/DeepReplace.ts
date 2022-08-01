@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import { IsOptional } from '../IsOptional'
+// import { IsOptional } from '~'
 
 /** A very crude version of `DeepMerge` that allows recursive types */
 export type DeepReplace2<A, B> = A extends object

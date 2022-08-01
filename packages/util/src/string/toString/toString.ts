@@ -1,12 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isObject, merge } from '../../object'
-import { stringFromArray } from './stringFromArray.js'
-import { stringFromFunction_ } from './stringFromFunction.js'
-import { stringFromObject_ } from './stringFromObject.js'
-import type { ToStringOptions } from './ToStringOptions.js'
-import { defaultToStringOptions } from './ToStringOptions.js'
+import { isObject, merge } from '~/object'
+
+import { stringFromArray } from './stringFromArray'
+import { stringFromFunction_ } from './stringFromFunction'
+import { stringFromObject_ } from './stringFromObject'
+import type { ToStringOptions } from './ToStringOptions'
+import { defaultToStringOptions } from './ToStringOptions'
 
 interface WithToString {
 	toString(): string

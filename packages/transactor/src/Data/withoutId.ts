@@ -3,7 +3,7 @@
 
 import { omitIfPresent } from '@voltiso/util'
 
-import type { Id } from './Id.js'
+import type { Id } from './Id'
 
 export function withoutId(data: null, expectedId: Id): null
 export function withoutId<D extends object>(

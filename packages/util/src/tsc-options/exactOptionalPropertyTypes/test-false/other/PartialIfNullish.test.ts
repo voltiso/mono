@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PartialIfNullish } from '../../../../object'
-import type { IsIdentical } from '../../../../type'
-import { Assert } from '../../../../type'
+import type { IsIdentical, PartialIfNullish } from '~'
+import { Assert } from '~/type'
 
 describe('PartialIfNullish', () => {
 	it('works', () => {

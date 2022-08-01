@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './databaseUpdate.js'
-export * from './fromDatabase.js'
-export * from './isDocumentReference.js'
-export * from './RefEntry.js'
-export * from './toDatabase.js'
+export * from './databaseUpdate'
+export * from './fromDatabase'
+export * from './isDocumentReference'
+export * from './RefEntry'
+export * from './toDatabase'

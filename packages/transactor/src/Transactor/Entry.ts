@@ -3,8 +3,8 @@
 
 import type { InferableObject } from '@voltiso/schemar'
 
-import type { GetPathMatches } from '../common'
-import type { Method } from '../Method.js'
+import type { GetPathMatches } from '~/common'
+import type { Method } from '~/Method'
 
 export type SchemaEntry = {
 	getPathMatches: GetPathMatches

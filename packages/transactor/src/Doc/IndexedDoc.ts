@@ -4,10 +4,11 @@
 import type { Schemable } from '@voltiso/schemar'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { Method } from '../Method.js'
-import { Doc } from './Doc.js'
+import type { Method } from '~/Method'
+
+import { Doc } from './Doc'
 import type { DocConstructor } from './DocConstructor'
-import type { IDocTI } from './DocTI.js'
+import type { IDocTI } from './DocTI'
 
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends IDocTI {

@@ -7,7 +7,7 @@ import { isPlainObject } from '@voltiso/util'
 
 import type { WithDocRef } from '~'
 import { isWithTransaction } from '~'
-import type { Data, DataWithoutId } from '~/Data/Data.js'
+import type { Data, DataWithoutId } from '~/Data/Data'
 import type { WithTransactor } from '~/Transactor'
 
 import { schemaDeleteIt } from './_symbols'

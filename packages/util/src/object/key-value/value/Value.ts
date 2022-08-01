@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '../../../type/AlsoAccept.js'
-import type { CanBeUndefinedImpl } from '../../CanBeUndefined.js'
-import type { IsOptionalImpl } from '../../IsOptional.js'
+import type { CanBeUndefinedImpl, IsOptionalImpl } from '~/object'
+import type { AlsoAccept } from '~/type'
 
 export type Value<
 	Obj extends object,

@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '../../../type'
-import type { OmitSignatures } from '../omit'
+import type { AlsoAccept, OmitSignatures } from '~'
 
 /** Discards index signatures */
 export type PickSimple_<O, K> = Pick<

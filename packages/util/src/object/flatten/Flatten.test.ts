@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsCompatible, IsIdentical } from '../../type/compare'
-import { Assert } from '../../type/static-assert'
-import type { Flatten, Flatten2 } from './Flatten.js'
+import type { IsCompatible, IsIdentical } from '~'
+import { Assert } from '~/type'
+
+import type { Flatten, Flatten2 } from './Flatten'
 
 describe('Flatten', () => {
 	it('works', () => {

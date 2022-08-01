@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DataWithoutId } from '../Data'
-import type { Doc_ } from '../Doc'
-import type { WithDocRef } from '../Ref'
-import type { Updates } from '../updates'
-import type { WithTransaction } from './WithTransaction.js'
+import type { DataWithoutId } from '~/Data'
+import type { Doc_ } from '~/Doc'
+import type { WithDocRef } from '~/Ref'
+import type { Updates } from '~/updates'
+
+import type { WithTransaction } from './WithTransaction'
 
 export type CacheEntry = {
 	data?: DataWithoutId | null // undefined -> unknown; null -> deleted

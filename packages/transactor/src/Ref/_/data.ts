@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PathMatches } from '../../common/PathMatches.js'
-import type { Method } from '../../Method.js'
+import type { PathMatches } from '~/common'
+import type { Method } from '~/Method'
 
 export type TriggerEntry<T> = {
 	trigger: T

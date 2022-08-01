@@ -12,7 +12,7 @@ const db = createTransactor()
 class Dog extends Doc.public({
 	name: s.string,
 
-	oldField: transactorSchemas.deleteIt,
+	oldField: transactorSchemas.deleteItSchema,
 
 	detail: {
 		healthy: s.boolean.default(true),

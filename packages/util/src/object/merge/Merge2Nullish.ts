@@ -1,11 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { exactOptionalPropertyTypes } from '../..'
-import type { Nullish } from '../../nullish'
+import type { exactOptionalPropertyTypes, IsOptional_, Nullish } from '~'
+
 import type { CanBeUndefined_, Merge2_, PartialIfNullish_ } from '..'
-import type { IsOptional_ } from '../IsOptional.js'
-import type { SuggestObjectNullish } from './SuggestObjectNullish.js'
+import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 // export type Merge2Nullish_<A, B> = _<
 // 	A extends Nullish

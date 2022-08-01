@@ -1,14 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError, toString } from '../..'
-import type { Nullish } from '../../nullish'
-import type { Merge2 } from './Merge2.js'
-import type { Merge2Nullish } from './Merge2Nullish.js'
-import type { MergeN } from './MergeN.js'
-import type { MergeNNullish, MergeNNullish_ } from './MergeNNullish.js'
-import type { SuggestObject } from './SuggestObject.js'
-import type { SuggestObjectNullish } from './SuggestObjectNullish.js'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import type { Nullish } from '~/nullish'
+import { toString } from '~/string'
+
+import type { Merge2 } from './Merge2'
+import type { Merge2Nullish } from './Merge2Nullish'
+import type { MergeN } from './MergeN'
+import type { MergeNNullish, MergeNNullish_ } from './MergeNNullish'
+import type { SuggestObject } from './SuggestObject'
+import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 export type Merge<
 	A extends readonly object[] | object,

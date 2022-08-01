@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PickPrecise_ } from './PickPrecise.js'
-import type { PickSimple_ } from './PickSimple.js'
+import type { PickPrecise_ } from './PickPrecise'
+import type { PickSimple_ } from './PickSimple'
 
 export type VPick_<O, K> = string extends keyof O
 	? string extends K

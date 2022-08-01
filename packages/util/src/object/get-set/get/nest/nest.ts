@@ -5,8 +5,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { IPath } from '../../../Path'
-import { setProperty } from '../../set/setProperty.js'
+import type { IPath } from '~'
+import { setProperty } from '~/object'
 
 type Nest_<path, Accumulator> = path extends readonly []
 	? Accumulator

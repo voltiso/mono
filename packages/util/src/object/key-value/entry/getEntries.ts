@@ -34,15 +34,16 @@
 // 	return r as never
 // }
 
-import { getProperty } from '../../get-set'
-import type { Merge2 } from '../../merge'
-import { merge } from '../../merge'
-import type {
-	DefaultIterationOptions,
-	IterationOptions,
-} from '../IterationOptions.js'
-import { defaultIterationOptions } from '../IterationOptions.js'
-import type { CoercedEntry, Entry } from './Entry.js'
+import {
+	type DefaultIterationOptions,
+	type IterationOptions,
+	type Merge2,
+	defaultIterationOptions,
+	getProperty,
+	merge,
+} from '~/object'
+
+import type { CoercedEntry, Entry } from './Entry'
 
 export type GetCoercedEntries<
 	Obj extends object,

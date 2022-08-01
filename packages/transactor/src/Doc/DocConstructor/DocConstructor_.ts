@@ -6,15 +6,9 @@ import * as s from '@voltiso/schemar'
 import type { OmitCall } from '@voltiso/util'
 import { callableClass, staticImplements } from '@voltiso/util'
 
-import type { DocTag } from '../../DocTypes.js'
-import type { Method } from '../../Method.js'
-import { intrinsicFields } from '../../schemas'
-import type {
-	AfterTrigger,
-	BeforeCommitTrigger,
-} from '../../Trigger/Trigger.js'
-import type { GI } from '../_/GDoc.js'
-import type { NewFields } from '../_/NewFields.js'
+import { DocCall, DTI } from '~/Doc'
+import type { GI } from '~/Doc/_/GDoc'
+import type { NewFields } from '~/Doc/_/NewFields'
 import {
 	withAfter,
 	withAfterCreate,
@@ -22,13 +16,16 @@ import {
 	withAfterDelete,
 	withAfterUpdate,
 	withBeforeCommit,
-} from '../_/triggerCreators.js'
-import { DocCall } from '../DocCall.js'
-import type { IDocTI } from '../DocTI.js'
-import { DTI } from '../DocTI.js'
-import type { DocDerivedData } from './_/DocDerivedData.js'
-import { defaultDocDerivedData } from './_/DocDerivedData.js'
-import type { IDocConstructor } from './IDocConstructor.js'
+} from '~/Doc/_/triggerCreators'
+import type { IDocTI } from '~/Doc/DocTI'
+import type { DocTag } from '~/DocTypes'
+import type { Method } from '~/Method'
+import { intrinsicFields } from '~/schemas'
+import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
+
+import type { DocDerivedData } from './_/DocDerivedData'
+import { defaultDocDerivedData } from './_/DocDerivedData'
+import type { IDocConstructor } from './IDocConstructor'
 
 @staticImplements<OmitCall<IDocConstructor>>()
 class DocConstructor {

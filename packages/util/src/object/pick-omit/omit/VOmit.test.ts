@@ -1,14 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../../type'
-import { Assert } from '../../../type'
-import type { _ } from '../../flatten'
-import type { VPick_ } from '../pick'
-import type { OmitPrecise_ } from './OmitPrecise.js'
-import type { OmitSignatures } from './OmitSignatures.js'
-import type { OmitSimple, OmitSimple_ } from './OmitSimple.js'
-import type { VOmit } from './VOmit.js'
+import type { _, IsIdentical, VPick_ } from '~'
+import { Assert } from '~/type'
+
+import type { OmitPrecise_ } from './OmitPrecise'
+import type { OmitSignatures } from './OmitSignatures'
+import type { OmitSimple, OmitSimple_ } from './OmitSimple'
+import type { VOmit } from './VOmit'
 
 describe('Omit', () => {
 	it('works', () => {

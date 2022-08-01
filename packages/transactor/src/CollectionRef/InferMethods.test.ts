@@ -5,9 +5,10 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { afterCreateOrUpdate, method } from '../decorators.js'
-import { Doc } from '../Doc'
-import type { InferMethods } from './InferMethods.js'
+import { afterCreateOrUpdate, method } from '~/decorators'
+import { Doc } from '~/Doc'
+
+import type { InferMethods } from './InferMethods'
 
 class Doctor extends Doc({
 	private: {

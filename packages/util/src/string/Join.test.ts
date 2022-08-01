@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsEqual } from '../type'
-import { Assert } from '../type'
-import type { Join } from './Join.js'
+import type { IsEqual } from '~'
+import { Assert } from '~/type'
+
+import type { Join } from './Join'
 
 describe('join', () => {
 	it('works', () => {

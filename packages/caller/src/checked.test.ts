@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { checked } from './checked.js'
+import { checked } from './checked'
 
 describe('checked', () => {
 	it('type', () => {

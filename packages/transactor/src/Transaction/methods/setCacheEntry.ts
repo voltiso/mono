@@ -4,13 +4,12 @@
 import { assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 
-import type { DataWithoutId } from '../../Data'
-import type { WithDb } from '../../Db'
-import { Doc_ } from '../../Doc'
-import type { WithDocRef } from '../../Ref'
-import type { WithTransactor } from '../../Transactor'
-import type { CacheEntry } from '../Cache.js'
-import type { WithTransaction } from '../WithTransaction.js'
+import type { DataWithoutId } from '~/Data'
+import type { WithDb } from '~/Db'
+import { Doc_ } from '~/Doc'
+import type { WithDocRef } from '~/Ref'
+import type { CacheEntry, WithTransaction } from '~/Transaction'
+import type { WithTransactor } from '~/Transactor'
 
 export function setCacheEntry(
 	this: WithTransaction & WithDocRef & WithDb & WithTransactor,

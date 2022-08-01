@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _ } from '../../flatten'
-import type { OmitSignatures } from '../omit'
+import type { _, OmitSignatures } from '~'
 
 export type PickPrecise_<O, K> = _<
 	Pick<OmitSignatures<O>, K & keyof OmitSignatures<O>> &

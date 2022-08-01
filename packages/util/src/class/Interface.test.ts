@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Unpack } from '../array/Unpack.js'
-import type { Interface } from './Interface.js'
-import { createClassInterface } from './Interface.js'
+import type { Unpack } from '~'
+
+import type { Interface } from './Interface'
+import { createClassInterface } from './Interface'
 
 describe('interface', () => {
 	it('works', () => {

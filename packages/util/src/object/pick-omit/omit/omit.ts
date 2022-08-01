@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '../../../error'
-import { toString } from '../../../string'
-import { omitIfPresent } from './omitIfPresent.js'
-import type { OmitSimple } from './OmitSimple.js'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { toString } from '~/string'
+
+import { omitIfPresent } from './omitIfPresent'
+import type { OmitSimple } from './OmitSimple'
 
 // export function omit<O extends object, K extends keyof O>(
 // 	obj: O,

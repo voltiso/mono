@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2Nullish } from '../../../../object'
-import type { IsIdentical } from '../../../../type'
-import { Assert } from '../../../../type'
+import type { IsIdentical, Merge2Nullish } from '~'
+import { Assert } from '~/type'
 
 describe('Merge2Nullish', () => {
 	type SomeType = {

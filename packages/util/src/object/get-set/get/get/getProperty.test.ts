@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../../../type'
-import { Assert } from '../../../../type'
-import type { GetProperty } from './getProperty.js'
-import { getProperty } from './getProperty.js'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
+
+import type { GetProperty } from './getProperty'
+import { getProperty } from './getProperty'
 
 describe('getProperty', () => {
 	it('generic', <O extends object, K extends keyof O>() => {

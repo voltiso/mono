@@ -22,6 +22,7 @@ export = async () => {
 	await jestDevServer.setup({
 		command: `cd ${cwd} && ../node_modules/.bin/firebase emulators:start --only firestore --config firebase-${port}.json`,
 		port,
+		usedPortAction: 'error',
 	})
 
 	// eslint-disable-next-line n/no-process-env

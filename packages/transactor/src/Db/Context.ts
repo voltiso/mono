@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { WithTransaction } from '../Transaction'
-import type { WithTransactor } from '../Transactor'
-import type { Forbidden } from '../util'
-import type { WithDb } from './WithDb.js'
+import type { WithTransaction } from '~/Transaction'
+import type { WithTransactor } from '~/Transactor'
+import type { Forbidden } from '~/util'
 
-type BaseContext = WithTransactor & Partial<WithTransaction>
-export type ParentContext = BaseContext & Forbidden<WithDb>
-export type DbContext = BaseContext & WithDb
+import type { WithDb } from './WithDb'
+
+type BaseDbContext = WithTransactor & Partial<WithTransaction>
+export type DbParentContext = BaseDbContext & Forbidden<WithDb>
+export type DbContext = BaseDbContext & WithDb

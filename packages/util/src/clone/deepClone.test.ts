@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-import { deepClone } from './deepClone.js'
+import { deepClone } from './deepClone'
 
 class MyCloneable {
 	_priv = 999

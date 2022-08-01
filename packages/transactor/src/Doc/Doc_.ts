@@ -4,24 +4,25 @@
 import { assert } from '@voltiso/assertor'
 import { isPlainObject, lazyConstructor, omit } from '@voltiso/util'
 
-import type { DataWithId, DataWithoutId } from '../Data'
-import { withId } from '../Data'
-import type { Db } from '../Db'
-import { immutabilize } from '../immutabilize'
-import type { Method } from '../Method.js'
-import type { DocPath } from '../Path'
-import type { StrongRef } from '../Ref'
-import { StrongDocRef, StrongDocRefImpl } from '../Ref'
-import type { DocRefContext } from '../Ref/_/Context.js'
-import type { Updates } from '../updates'
-import type { ExecutionContext } from './_/ExecutionContext.js'
-import type { GData } from './_/GData.js'
-import type { Context } from './Context.js'
-import type { Doc } from './Doc.js'
+import type { DataWithId, DataWithoutId } from '~/Data'
+import { withId } from '~/Data'
+import type { Db } from '~/Db'
+import { immutabilize } from '~/immutabilize'
+import type { Method } from '~/Method'
+import type { DocPath } from '~/Path'
+import type { StrongRef } from '~/Ref'
+import { StrongDocRef, StrongDocRefImpl } from '~/Ref'
+import type { DocRefContext } from '~/Ref/_/Context'
+import type { Updates } from '~/updates'
+
+import type { ExecutionContext } from './_/ExecutionContext'
+import type { GData } from './_/GData'
+import type { Doc } from './Doc'
 import { DocConstructor_ } from './DocConstructor'
-import type { IDocTI } from './DocTI.js'
-import { DTI } from './DocTI.js'
-import type { IDoc_ } from './IDoc.js'
+import type { DocContext } from './DocContext'
+import type { IDocTI } from './DocTI'
+import { DTI } from './DocTI'
+import type { IDoc_ } from './IDoc'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -49,7 +50,7 @@ export class Doc_<TI extends IDocTI = IDocTI>
 
 	methods: Record<string, Method> = {}
 
-	constructor(context: Context, raw: DataWithoutId<GData<TI>>) {
+	constructor(context: DocContext, raw: DataWithoutId<GData<TI>>) {
 		super()
 
 		// eslint-disable-next-line no-param-reassign
@@ -105,7 +106,7 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		})
 	}
 
-	_context: Context
+	_context: DocContext
 
 	_raw!: DataWithoutId<GData<TI>>
 	_rawProxy!: DataWithoutId<GData<TI>>

@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '../../nullish'
-import { getEntries, merge } from '../../object'
-import { toString } from './toString.js'
-import type { ToStringOptions } from './ToStringOptions.js'
-import { defaultToStringOptions } from './ToStringOptions.js'
+import { undef } from '~'
+import { getEntries, merge } from '~/object'
+
+import { toString } from './toString'
+import type { ToStringOptions } from './ToStringOptions'
+import { defaultToStringOptions } from './ToStringOptions'
 
 function stringFromProperty(property: keyof any): string {
 	if (typeof property === 'symbol') return `[${property.toString()}]`

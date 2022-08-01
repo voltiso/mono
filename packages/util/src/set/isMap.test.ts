@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-undefined */
-import { isMap } from './isMap.js'
+import { isMap } from './isMap'
 
 describe('isMap', () => {
 	it('works', () => {

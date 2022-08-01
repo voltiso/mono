@@ -1,17 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '../../../error'
-import { lazyConstructor } from '../../../lazy/index'
-import { toString } from '../../../string'
-import type { AlsoAccept } from '../../../type/AlsoAccept.js'
-import { isPlainObject } from '../../PlainObject.js'
-import type { Entry, IEntry } from '../../key-value'
-import type { IPath, Path } from '../../Path'
-import type { UnknownProperty } from '../../UnknownProperty.js'
-import type { Get } from '../get'
-import { getProperty } from '../get'
-import { hasProperty } from '../get/hasProperty/hasProperty.js'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { lazyConstructor } from '~/lazy/lazyConstructor'
+import type { Get } from '~/object'
+import { getProperty, hasProperty, isPlainObject } from '~/object'
+import type { Entry, IEntry } from '~/object/key-value/entry/Entry'
+import type { IPath } from '~/object/Path/IPath'
+import type { Path } from '~/object/Path/Path'
+import type { UnknownProperty } from '~/object/UnknownProperty'
+import { toString } from '~/string/toString/toString'
+import type { AlsoAccept } from '~/type/AlsoAccept'
 
 export class SetError<
 	Obj extends object,

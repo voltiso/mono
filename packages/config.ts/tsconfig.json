@@ -21,7 +21,7 @@
 	"compilerOptions": {
 		// "rootDir": ".",
 
-		// "baseUrl": ".", //! override this to make paths work
+		// "baseUrl": "/", // ! you may want to override this
 		// "paths": {
 		// 	"~": ["src"],
 		// 	"~/*": ["src/*"]

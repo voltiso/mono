@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../../type'
-import { Assert } from '../../../type'
-import { pick } from './pick.js'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
+
+import { pick } from './pick'
 
 describe('pick', () => {
 	it('throws on non-existing keys', () => {

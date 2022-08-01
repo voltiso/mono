@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Ast, AstFromString } from './ast.js'
-import type { Operation, OperationPacked } from './Operation.js'
+import type { Ast, AstFromString } from './ast'
+import type { Operation, OperationPacked } from './Operation'
 
 type EvalAstArray_Accumulator<
 	r extends unknown[],

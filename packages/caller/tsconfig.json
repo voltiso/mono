@@ -5,13 +5,9 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"lib": ["DOM"]
-	},
-
-	"exclude": [
-		"dist/",
-		"node_modules/",
-		".tsc-out/"
-		//
-	]
+		"paths": {
+			// "~": ["./src"],
+			"~/*": ["./src/*"]
+		}
+	}
 }

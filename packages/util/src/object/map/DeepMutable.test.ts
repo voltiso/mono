@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type/compare'
-import { Assert } from '../../type/static-assert'
-import type { DeepMutable } from './DeepMutable.js'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type'
+
+import type { DeepMutable } from './DeepMutable'
 
 describe('DeepMutable', () => {
 	it('array', () => {

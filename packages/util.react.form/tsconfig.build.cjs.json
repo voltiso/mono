@@ -8,9 +8,9 @@
 		"lib": ["DOM"],
 
 		"outDir": "dist/cjs",
-		"rootDir": "src",
+		"rootDir": "src"
 
-		"baseUrl": "../.."
+		// "baseUrl": "../.."
 	},
 
 	"include": ["src"]

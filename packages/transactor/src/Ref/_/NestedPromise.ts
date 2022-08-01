@@ -4,9 +4,10 @@
 import type { IsAny } from '@voltiso/util'
 import { lazyPromise } from '@voltiso/util'
 
-import { DocFieldPath } from '../DocFieldPath.js'
-import type { DocRefBaseImpl } from '../DocRefBase.js'
-import type { Null } from './Null.js'
+import { DocFieldPath } from '~'
+import type { DocRefBaseImpl } from '~/Ref'
+
+import type { Null } from './Null'
 
 export type NestedPromise<data, Exists> = PromiseLike<data | Null<Exists>> &
 	(IsAny<data> extends true

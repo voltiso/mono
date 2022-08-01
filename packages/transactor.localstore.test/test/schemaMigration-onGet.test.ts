@@ -6,6 +6,7 @@ import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
 import { Doc, onGet } from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
+import { undef } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -14,7 +15,7 @@ const db = createTransactor()
 class Dog extends Doc.public({
 	name: s.string,
 
-	oldField: ss.deleteIt,
+	oldField: ss.deleteItSchema,
 
 	detail: {
 		healthy: s.boolean.default(true),

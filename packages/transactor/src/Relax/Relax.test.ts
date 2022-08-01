@@ -3,9 +3,10 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IDoc, IDocTI } from '../Doc'
-import type { IRef } from '../Ref'
-import type { Relax } from './Relax.js'
+import type { IDoc, IDocTI } from '~/Doc'
+import type { IRef } from '~/Ref'
+
+import type { Relax } from './Relax'
 
 describe('Relax', () => {
 	it('type', () => {

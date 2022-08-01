@@ -1,12 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// eslint-disable-next-line import/no-unassigned-import
 import 'zone.js'
 
-import { protoLink } from '../class/index'
-import { undef } from '../nullish/index'
-import { sleep } from '../promise/index'
-import { lazyPromise } from './lazyPromise.js'
+import { protoLink } from '~/class/protoLink'
+import { undef } from '~/nullish/undef'
+import { sleep } from '~/promise/sleep'
+
+import { lazyPromise } from './lazyPromise'
 
 class DocumentReference {
 	async get() {

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocRefBaseImpl } from '../DocRefBase.js'
+import type { DocRefBaseImpl } from '~/Ref'
 
 export function getBeforeCommits(this: DocRefBaseImpl) {
 	if (this._beforeCommits) return this._beforeCommits

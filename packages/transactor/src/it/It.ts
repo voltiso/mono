@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DataWithoutId, NestedData } from '../Data'
-import type { DeleteIt } from './DeleteIt.js'
-import type { IncrementIt } from './IncrementIt.js'
-import type { ReplaceIt } from './ReplaceIt.js'
+import type { DataWithoutId, NestedData } from '~/Data'
+
+import type { DeleteIt } from './DeleteIt'
+import type { IncrementIt } from './IncrementIt'
+import type { ReplaceIt } from './ReplaceIt'
 
 export type NestedReplaceIt = ReplaceIt<NestedData>
 export type RootReplaceIt = ReplaceIt<DataWithoutId>

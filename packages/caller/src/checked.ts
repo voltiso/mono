@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetInputType, GetType, RootSchemable } from '@voltiso/schemar'
+import type { GetInputType, GetType, Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 
 type PossiblyPromise<X> = X | Promise<X>
@@ -12,9 +12,9 @@ function isPromise<X>(x: X | Promise<X>): x is Promise<X> {
 }
 
 type G<
-	Self extends RootSchemable | null = RootSchemable | null,
-	Params extends readonly RootSchemable[] = readonly RootSchemable[],
-	Result extends RootSchemable | null = RootSchemable | null,
+	Self extends Schemable | null = Schemable | null,
+	Params extends readonly Schemable[] = readonly Schemable[],
+	Result extends Schemable | null = Schemable | null,
 > = {
 	self: Self
 	params: Params
@@ -32,7 +32,7 @@ class _Checked<T extends G> {
 		this._result = result
 	}
 
-	this<S extends RootSchemable>(
+	this<S extends Schemable>(
 		schema: S,
 	): Checked<G<S, T['params'], T['result']>> {
 		if (this._self) throw new Error('already have `this` schema')
@@ -41,7 +41,7 @@ class _Checked<T extends G> {
 		return new _Checked(schema, this._params, this._result) as any
 	}
 
-	param<S extends RootSchemable>(
+	param<S extends Schemable>(
 		schema: S,
 	): Checked<G<T['self'], [...T['params'], S], T['result']>> {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -50,7 +50,7 @@ class _Checked<T extends G> {
 		>(this._self, [...this._params, schema], this._result) as any
 	}
 
-	result<S extends RootSchemable>(
+	result<S extends Schemable>(
 		schema: S,
 	): Checked<G<T['self'], T['params'], S>> {
 		if (this._result) throw new Error('already have `result` schema')
@@ -69,7 +69,6 @@ class _Checked<T extends G> {
 		const argsSchema = s.schema(this._params)
 		const resultSchema = this._result ? s.schema(this._result) : null
 
-		// eslint-disable-next-line func-names
 		return function (
 			this: GetType<T>,
 			...args: GetInputType<T['params']>

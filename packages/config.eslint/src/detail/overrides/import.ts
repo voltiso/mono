@@ -9,7 +9,9 @@ import {
 import { codeFiles } from '~/detail/files'
 
 const staticAnalysisRules = defineEslintConfigOverrideRules({
+	// 'import/no-unresolved': 0, // handled by TS
 	'import/no-unresolved': ['error', { caseSensitiveStrict: true }],
+
 	'import/named': 0, // buggy when using import from '~' (tsconfig -> paths)?
 	'import/default': 2,
 	'import/namespace': 0, // buggy when using custom "paths" in `tsconfig.json`
@@ -49,7 +51,14 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/no-duplicates': 1,
 	'import/no-namespace': 0,
 
-	'import/extensions': 1,
+	'import/extensions': 0, // handled by eslint-plugin-n + PATCH
+
+	// 'import/extensions': [
+	// 	'warn',
+	// 	'always',
+	// 	// {js: 'never', ts: 'never'},
+	// 	Object.fromEntries(codeFiles.map(ext => [ext.slice(2), 'never'])),
+	// ],
 
 	// 'import/extensions': [
 	// 	'error',

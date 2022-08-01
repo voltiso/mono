@@ -10,7 +10,7 @@ import { withoutId } from '~/Data'
 import type { WithDb } from '~/Db'
 import type { IDoc, IDocTI } from '~/Doc'
 import { Doc, Doc_ } from '~/Doc'
-import type { GDoc } from '~/Doc/_/GDoc.js'
+import type { GDoc } from '~/Doc/_/GDoc'
 import { TransactorError } from '~/error'
 import { applySchema } from '~/Ref/_/applySchema'
 import { collectTriggerResult } from '~/Ref/_/collectTriggerResult'
@@ -123,6 +123,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 				const validatedData = applySchema.call(ctx, {
 					schema: schema.partial,
 					data,
+					bestEffort: true,
 				})
 				cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 
@@ -170,11 +171,12 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		validateAndSetCacheEntry(ctx, data, schema?.partial)
 	}
 
-	// do not enforce strict constraints until transaction commit (custom triggers may enforce constraints)
-	// // final schema check
-	// if (schema && cacheEntry.data) {
-	// 	validateAndSetCacheEntry(ctx, cacheEntry.data, schema.final)
-	// }
+	// do not enforce strict constraints yet? (custom triggers may enforce constraints)
+
+	// final schema check
+	if (schema && cacheEntry.data) {
+		validateAndSetCacheEntry(ctx, cacheEntry.data, schema.final)
+	}
 
 	return cacheEntry.proxy as D | null
 }

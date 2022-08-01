@@ -3,15 +3,16 @@
 
 import type { MaybePromise } from '@voltiso/util'
 
-import type { Data } from '../Data'
-import type { Doc, DTI, IDoc, IDocTI } from '../Doc'
-import type { GDataInput } from '../Doc/_/GData.js'
-import type { DeleteIt } from '../it'
+import type { Data } from '~/Data'
+import type { Doc, DTI, IDoc, IDocTI } from '~/Doc'
+import type { GDataInput } from '~/Doc/_/GData'
+import type { DeleteIt } from '~/it'
+
 import type {
 	AfterTriggerParams,
 	BeforeCommitTriggerParams,
 	TriggerParams,
-} from './TriggerParams.js'
+} from './TriggerParams'
 
 type Return<D extends IDoc> =
 	| Data<GDataInput<D[DTI]>>

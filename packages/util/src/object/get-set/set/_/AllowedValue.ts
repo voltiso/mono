@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Value } from '../../../key-value'
-import type { UnknownProperty } from '../../../UnknownProperty.js'
+import type { UnknownProperty, Value } from '~'
 
 export type AllowedValue<
 	Obj extends object,

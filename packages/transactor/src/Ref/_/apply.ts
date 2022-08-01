@@ -3,10 +3,11 @@
 
 import { isDefined } from '@voltiso/util'
 
-import type { DataWithoutId } from '../../Data'
-import type { Updates } from '../../updates'
-import { applyUpdates } from '../../updates'
-import type { DocRefContextWithTransaction } from './Context.js'
+import type { DataWithoutId } from '~/Data'
+import type { Updates } from '~/updates'
+import { applyUpdates } from '~/updates'
+
+import type { DocRefContextWithTransaction } from './Context'
 
 /**
  * (pure) Apply our updates to a given data - this may be called several times

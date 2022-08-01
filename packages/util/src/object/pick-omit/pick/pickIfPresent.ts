@@ -3,9 +3,9 @@
 
 /* eslint-disable security/detect-object-injection */
 
-import type { AlsoAccept } from '../../../type/AlsoAccept.js'
-import type { _ } from '../../flatten'
-import { hasOwnProperty } from '../../get-set'
+import type { _ } from '~/object'
+import { hasOwnProperty } from '~/object'
+import type { AlsoAccept } from '~/type'
 
 type PickIfPresentResult<O, K extends keyof O | AlsoAccept<keyof any>> = _<
 	{

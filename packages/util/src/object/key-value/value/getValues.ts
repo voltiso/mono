@@ -1,15 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getProperty } from '../../get-set'
-import type { Merge2 } from '../../merge'
-import { merge } from '../../merge'
-import type {
-	DefaultIterationOptions,
-	IterationOptions,
-} from '../IterationOptions.js'
-import { defaultIterationOptions } from '../IterationOptions.js'
-import type { Value } from './Value.js'
+import {
+	type DefaultIterationOptions,
+	type IterationOptions,
+	type Merge2,
+	defaultIterationOptions,
+	getProperty,
+	merge,
+} from '~/object'
+
+import type { Value } from './Value'
 
 type GetValues<
 	Obj extends object,

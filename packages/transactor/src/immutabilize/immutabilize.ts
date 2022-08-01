@@ -3,7 +3,7 @@
 
 import { toString } from '@voltiso/util'
 
-import { TransactorError } from '../error'
+import { TransactorError } from '~/error'
 
 const isObject = (obj: unknown): obj is object =>
 	Boolean(obj) && typeof obj === 'object'

@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../static-assert'
-import type { AstFromString } from './ast.js'
+import { Assert } from '~/type/static-assert'
+
+import type { AstFromString } from './ast'
 
 describe('ast', () => {
 	it('works', () => {

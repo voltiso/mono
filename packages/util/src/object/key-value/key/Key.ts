@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '../../../type/AlsoAccept.js'
-import type { Value } from '../value'
+import type { Value } from '~/object'
+import type { AlsoAccept } from '~/type'
 
 export type Key<
 	O extends object,

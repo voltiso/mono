@@ -3,13 +3,13 @@
 
 import type { _, If } from '@voltiso/util'
 
-import type { InferMethods } from '~/CollectionRef/InferMethods.js'
+import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { Data, DataWithId, DataWithoutId, Id } from '~/Data'
-import type { GData, GDataPublicInput } from '~/Doc/_/GData.js'
-import type { GUpdates_Replace, GUpdates_Update } from '~/Doc/_/GUpdates.js'
-import type { GetFields } from '~/Doc/Doc_.js'
-import type { DTI } from '~/Doc/DocTI.js'
-import type { IDoc } from '~/Doc/IDoc.js'
+import type { GData, GDataPublicInput } from '~/Doc/_/GData'
+import type { GUpdates_Replace, GUpdates_Update } from '~/Doc/_/GUpdates'
+import type { GetFields } from '~/Doc/Doc_'
+import type { DTI } from '~/Doc/DocTI'
+import type { IDoc } from '~/Doc/IDoc'
 import type { DeleteIt } from '~/it'
 import type { DocPath } from '~/Path'
 

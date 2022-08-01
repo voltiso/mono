@@ -1,13 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import type { _ } from '../flatten'
-import type { VPartial } from '../map'
-import type { VOmit } from '../pick-omit'
-import type { Merge2 } from './Merge2.js'
-import type { Merge2Simple } from './Merge2Simple.js'
+import type { _, IsIdentical, VOmit, VPartial } from '~'
+import { Assert } from '~/type'
+
+import type { Merge2 } from './Merge2'
+import type { Merge2Simple } from './Merge2Simple'
 
 describe('Merge2Simple', () => {
 	it('works', () => {

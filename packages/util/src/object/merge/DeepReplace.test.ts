@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsEqual, IsIdentical, IsNonStrictEqual } from '../../type'
-import { Assert } from '../../type'
-import type { DeepReplace2 } from './DeepReplace.js'
+import type { IsEqual, IsIdentical, IsNonStrictEqual } from '~'
+import { Assert } from '~/type'
+
+import type { DeepReplace2 } from './DeepReplace'
 
 describe('DeepReplace', () => {
 	it('works (static)', () => {

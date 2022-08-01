@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assumeType } from '../cast'
-import { VoltisoUtilError } from '../error'
-import type { UnknownProperty } from '../object'
-import { hasProperty } from '../object'
-import { toString } from '../string'
+import { assumeType } from '~/cast/assumeType'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { hasProperty } from '~/object/get-set/get/hasProperty/hasProperty'
+import type { UnknownProperty } from '~/object/UnknownProperty'
+import { toString } from '~/string/toString/toString'
 
 type MethodKey<O> = string &
 	{

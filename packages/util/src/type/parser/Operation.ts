@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { And, IsFalsy, Or, Xor } from '../../boolean'
-import type { IsNumber, IsSuperNumber } from '../../number'
-import type { IsSubtype, IsSupertype } from '../compare'
+import type { And, IsFalsy, Or, Xor } from '~/boolean'
+import type { IsNumber, IsSuperNumber } from '~/number'
+import type { IsSubtype, IsSupertype } from '~/type'
 
 declare const _unset: unique symbol
 export type Unset = typeof _unset

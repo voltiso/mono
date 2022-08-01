@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../type'
-import type { SyncerNested } from './SyncerNested.js'
+import { Assert } from '~/type'
+
+import type { SyncerNested } from './SyncerNested'
 
 describe('SyncerNested', () => {
 	it('type', () => {

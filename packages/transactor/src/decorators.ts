@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import type { DocConstructor, IDoc } from './Doc'
-import * as h from './Doc/_/triggerCreators.js'
+import * as h from './Doc/_/triggerCreators'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from './Trigger'
 
 export function method<

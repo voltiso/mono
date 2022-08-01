@@ -3,7 +3,7 @@
 
 //! TODO: use `@voltiso/patcher`
 
-import type { Data, NestedData } from '../Data/Data.js'
+import type { Data, NestedData } from '~/Data/Data'
 
 const IS_REPLACE_IT = Symbol('IS_REPLACE_IT')
 

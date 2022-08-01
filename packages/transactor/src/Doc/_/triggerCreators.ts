@@ -5,16 +5,17 @@ import { assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 import chalk from 'chalk'
 
-import type { AfterTrigger, BeforeCommitTrigger } from '../../Trigger'
+import type { IDoc } from '~/Doc'
+import type { DocDerivedData } from '~/Doc/DocConstructor/_/DocDerivedData'
+import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 import type {
 	AfterTriggerParams,
 	BeforeCommitTriggerParams,
 	TriggerParams,
-} from '../../Trigger/TriggerParams.js'
-import { dump } from '../../util'
-import type { IDoc } from '..'
-import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData.js'
-import type { GI } from './GDoc.js'
+} from '~/Trigger/TriggerParams'
+import { dump } from '~/util'
+
+import type { GI } from './GDoc'
 
 function assertBefore<D extends IDoc>(
 	x: AfterTriggerParams<D>,

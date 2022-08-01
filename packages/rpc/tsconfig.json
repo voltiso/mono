@@ -3,11 +3,4 @@
 
 {
 	"extends": "@voltiso/config.ts",
-
-	"exclude": [
-		"dist/",
-		"node_modules/",
-		".tsc-out/"
-		//
-	]
 }

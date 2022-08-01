@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CanBeUndefinedImpl } from '../CanBeUndefined.js'
-import type { IsOptional_ } from '../IsOptional.js'
+import type { CanBeUndefinedImpl, IsOptional_ } from '~'
 
 type DeepFlattenValue<T, k extends keyof T> = IsOptional_<
 	T,

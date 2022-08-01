@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../../type'
-import type { PartialIfNullish, VPartial } from '../map'
-import type { Merge2 } from './Merge2.js'
+import type { PartialIfNullish, VPartial } from '~'
+import { Assert } from '~/type'
+
+import type { Merge2 } from './Merge2'
 
 describe('Merge2', () => {
 	type SomeType = { a: 1; b: 2 }

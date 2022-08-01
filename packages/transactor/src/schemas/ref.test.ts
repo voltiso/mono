@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { IndexedDoc, StrongRefSchema } from '~'
+import type { IndexedDoc, StrongRef } from '~'
 import { Doc } from '~'
 
 import { strongRef } from '.'
@@ -30,7 +30,7 @@ describe('ref schema', () => {
 		const a = strongRef
 
 		type A = typeof a.OutputType
-		Assert<IsIdentical<A, StrongRefSchema<IndexedDoc>>>()
+		Assert<IsIdentical<A, StrongRef<IndexedDoc>>>()
 	})
 
 	it('type 2', () => {
@@ -42,9 +42,9 @@ describe('ref schema', () => {
 				Omit<A, '__voltiso'>,
 				{
 					readonly id?: never
-					myIndexedStrongRef: StrongRefSchema<IndexedDoc>
-					myCustomStrongRef: StrongRefSchema<RefTestDoc>
-					myOptionalIndexedStrongRef?: StrongRefSchema<IndexedDoc>
+					myIndexedStrongRef: StrongRef<IndexedDoc>
+					myCustomStrongRef: StrongRef<RefTestDoc>
+					myOptionalIndexedStrongRef?: StrongRef<IndexedDoc>
 				}
 			>
 		>()

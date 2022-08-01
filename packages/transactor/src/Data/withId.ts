@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DataWithId } from './Data.js'
-import type { Id } from './Id.js'
+import type { DataWithId } from './Data'
+import type { Id } from './Id'
 
 export function withId(data: null, id: Id): null
 export function withId<D extends object, I extends Id>(

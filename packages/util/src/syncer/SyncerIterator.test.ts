@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../type'
-import type { ISyncerPromise, SyncerPromise } from './SyncerPromise.js'
+import { Assert } from '~/type'
+
+import type { ISyncerPromise, SyncerPromise } from './SyncerPromise'
 
 describe('SyncerIterator', () => {
 	it('type', () => {

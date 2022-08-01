@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { CALL, callableInstance } from '~/class'
-import { lazyValue } from '~/lazy'
+import { lazyValue } from '~/lazy/lazyValue'
 import { undef } from '~/nullish'
 
 import { clone } from './clone'

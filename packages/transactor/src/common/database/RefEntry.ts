@@ -4,7 +4,7 @@
 import type * as Database from '@voltiso/firestore-like'
 import { assumeType, isPlainObject } from '@voltiso/util'
 
-import { isDocumentReference } from './isDocumentReference.js'
+import { isDocumentReference } from './isDocumentReference'
 
 export type RefEntry = {
 	__target: Database.DocumentReference

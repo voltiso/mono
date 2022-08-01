@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IterationOptions } from '../../object'
-import { defaultIterationOptions } from '../../object'
+import type { IterationOptions } from '~/object'
+import { defaultIterationOptions } from '~/object'
 
 export interface ToStringOptions extends IterationOptions {
 	maxLength: number

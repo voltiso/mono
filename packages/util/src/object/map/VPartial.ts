@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _ } from '../flatten'
+import type { _ } from '~/object'
 
 /**
  * The built-in `Partial` doesn't work properly (see `VPartial.test.ts`), so we

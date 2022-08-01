@@ -3,37 +3,31 @@
 
 /* eslint-disable no-magic-numbers */
 
-// import '../zone.js'
+// import '~/zone.js'
 
 import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { OmitCall, Tail } from '@voltiso/util'
 import { assumeType, call, staticImplements, undef } from '@voltiso/util'
 
-import { checkEnv } from '../checkEnv.js'
-import type { CollectionRef } from '../CollectionRef'
-import type {
-	DatabaseContext,
-	FirestoreLikeModule,
-} from '../DatabaseContext.js'
-import { Db } from '../Db'
-import type { IDocConstructorNoBuilder, IndexedDoc } from '../Doc'
-import type {
-	AfterTrigger,
-	BeforeCommitTrigger,
-	OnGetTrigger,
-} from '../Trigger'
+import { checkEnv } from '~/checkEnv'
+import type { CollectionRef } from '~/CollectionRef'
+import type { DatabaseContext, FirestoreLikeModule } from '~/DatabaseContext'
+import { Db } from '~/Db'
+import type { IDocConstructorNoBuilder, IndexedDoc } from '~/Doc'
+import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
+
 import type {
 	TransactorConstructorParameters,
 	TransactorConstructorParametersNoUndefined,
-} from './ConstructorParameters.js'
-import type { TransactorContext } from './Context.js'
-import type { MethodEntry, SchemaEntry, TriggerEntry } from './Entry.js'
+} from './ConstructorParameters'
+import type { TransactorContext } from './Context'
+import type { MethodEntry, SchemaEntry, TriggerEntry } from './Entry'
 import type { TransactionBody } from './methods'
 import { runTransaction } from './methods'
-import { Options_ } from './Options.js'
-import type { Transactor as ITransactor } from './Transactor.js'
-import type { TransactorConstructor } from './TransactorConstructor.js'
+import { Options_ } from './Options'
+import type { Transactor as ITransactor } from './Transactor'
+import type { TransactorConstructor } from './TransactorConstructor'
 
 // import { AsyncLocalStorage } from 'async_hooks'
 

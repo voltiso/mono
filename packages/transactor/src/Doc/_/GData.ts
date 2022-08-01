@@ -3,10 +3,10 @@
 
 import type { GetInputType, GetType } from '@voltiso/schemar'
 
-import type { IRef } from '../../Ref'
-import type { Relax } from '../../Relax'
-import type { DTI, IDocTI } from '../DocTI'
-import type { IDoc } from '../IDoc'
+import type { DTI, IDoc, IDocTI } from '~/Doc'
+import type { IRef } from '~/Ref'
+import type { Relax } from '~/Relax'
+
 import type { IntrinsicFields } from './IntrinsicFields'
 
 type OmitId<T> = T extends unknown

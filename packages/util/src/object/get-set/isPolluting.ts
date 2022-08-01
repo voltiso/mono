@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '../../error'
-import { lazyConstructor } from '../../lazy/index'
-import { toString } from '../../string'
-import type { AlsoAccept } from '../../type/AlsoAccept.js'
+import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { lazyConstructor } from '~/lazy/lazyConstructor'
+import { toString } from '~/string/toString/toString'
+import type { AlsoAccept } from '~/type/AlsoAccept'
 
 export class PrototypePollutionError<
 	Obj extends object,

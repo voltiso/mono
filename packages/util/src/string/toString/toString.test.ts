@@ -7,7 +7,7 @@
 /* eslint-disable jest/unbound-method */
 /* eslint-disable @typescript-eslint/unbound-method */
 
-import { toString } from './toString.js'
+import { toString } from './toString'
 
 describe('toString', () => {
 	it('works', () => {

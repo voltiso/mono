@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../type'
-import type { SyncerSwitch } from './SyncerSwitch.js'
+import { Assert } from '~/type'
+
+import type { SyncerSwitch } from './SyncerSwitch'
 
 describe('SyncerSwitch', () => {
 	it('generic', <X>() => {

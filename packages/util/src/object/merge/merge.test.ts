@@ -3,14 +3,16 @@
 
 /* eslint-disable no-undefined */
 
-import type { IsIdentical } from '../../type'
-import { Assert } from '../../type'
-import type { MergeNullish } from './merge.js'
-import { merge } from './merge.js'
-import type { Merge2 } from './Merge2.js'
-import type { MergeN } from './MergeN.js'
+import type { IsIdentical } from '~/type'
+import { Assert } from '~/type/static-assert'
+
+import type { MergeNullish } from './merge'
+import { merge } from './merge'
+import type { Merge2 } from './Merge2'
+import type { MergeN } from './MergeN'
 
 describe('merge', () => {
+	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('works with functions', () => {
 	// 	expect.assertions(0)
 
@@ -189,7 +191,7 @@ describe('merge', () => {
 
 		const arr = [1, 2, 3]
 
-		expect(() => merge(arr)).toThrow()
+		expect(() => merge(arr)).toThrow('array')
 
 		const func = () => merge(arr)
 		type A = ReturnType<typeof func>

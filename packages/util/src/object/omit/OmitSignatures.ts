@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Value } from '../key-value'
-import type { Pick_ } from '../pick-omit'
+import type { Pick_, Value } from '~'
 
 /**
  * Omit call, construct and index signatures

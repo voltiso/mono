@@ -5,7 +5,7 @@ import type { InferableObject } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { undef } from '@voltiso/util'
 
-import type { DocRefBaseImpl } from '../DocRefBase.js'
+import type { DocRefBaseImpl } from '~/Ref'
 
 // eslint-disable-next-line max-statements, complexity, sonarjs/cognitive-complexity
 export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {

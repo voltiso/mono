@@ -6,14 +6,10 @@ import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { Json } from '@voltiso/util'
 import { getKeys, isPlainObject, undef } from '@voltiso/util'
 
-import type { DataWithoutId, NestedData } from '../../Data/Data.js'
-import type { DatabaseContext } from '../../DatabaseContext.js'
-import { isDeleteIt, isIncrementIt, isReplaceIt } from '../../it'
-import type {
-	NestedUpdates,
-	Updates,
-	UpdatesRecord,
-} from '../../updates/Updates.js'
+import type { DataWithoutId, NestedData } from '~/Data/Data'
+import type { DatabaseContext } from '~/DatabaseContext'
+import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
+import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
 
 interface WithToJSON {
 	toJSON: () => Json

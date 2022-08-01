@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '../static-assert'
-import type { AreNotProvided } from './AreNotProvided.js'
-import type { NotProvided, OptionalArgument } from './OptionalArgument.js'
+import { Assert } from '~/type'
+
+import type { AreNotProvided } from './AreNotProvided'
+import type { NotProvided, OptionalArgument } from './OptionalArgument'
 
 type IFunc_<Result> = (...args: never[]) => Result
 type IFunc<Result extends string = string> = IFunc_<Result>

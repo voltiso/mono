@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '../../type'
-import type { Callable } from './Callable.js'
+import { Assert, Is } from '~/type'
+
+import type { Callable } from './Callable'
 
 describe('Callable', () => {
 	it('works', () => {
@@ -12,7 +13,7 @@ describe('Callable', () => {
 
 		Assert(
 			Is<Callable>() //
-				.identicalTo<(...args: never[]) => unknown>(),
+				.identicalTo<(...args: any[]) => unknown>(),
 
 			Is<Callable<[number, string]>>() //
 				.identicalTo<(a: number, b: string) => unknown>(),

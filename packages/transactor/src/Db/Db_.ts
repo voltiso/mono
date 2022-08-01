@@ -4,15 +4,16 @@
 import type { OmitCall } from '@voltiso/util'
 import { CALL, callableInstance, staticImplements } from '@voltiso/util'
 
-import { CollectionRef, CollectionRefPattern } from '../CollectionRef'
-import type { IndexedDoc } from '../Doc'
-import type { DbPathFromString } from '../Path'
-import { concatPath, DocPath } from '../Path'
-import { DocRefPattern, WeakDocRef } from '../Ref'
-import type { CanonicalPath } from './CanonicalPath.js'
-import type { DbContext, ParentContext } from './Context.js'
+import { CollectionRef, CollectionRefPattern } from '~'
+import type { IndexedDoc } from '~/Doc'
+import type { DbPathFromString } from '~/Path'
+import { concatPath, DocPath } from '~/Path'
+import { DocRefPattern, WeakDocRef } from '~/Ref'
+
+import type { CanonicalPath } from './CanonicalPath'
+import type { DbContext, DbParentContext } from './Context'
 import type { Db as IDb } from './Db.type'
-import type { DbConstructor } from './DbConstructor.js'
+import type { DbConstructor } from './DbConstructor'
 
 export type DbCallArgs = readonly string[] | readonly [DocPath]
 
@@ -25,7 +26,7 @@ export type DbCallResult<Args> = Args extends readonly string[]
 class Db implements OmitCall<IDb> {
 	_context: DbContext
 
-	constructor(parentContext: ParentContext) {
+	constructor(parentContext: DbParentContext) {
 		this._context = { ...parentContext, db: this as never }
 		const newThis = callableInstance(this)
 		newThis._context.db = newThis

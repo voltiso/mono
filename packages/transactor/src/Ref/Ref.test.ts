@@ -4,13 +4,14 @@
 import * as s from '@voltiso/schemar'
 import { Assert, Is } from '@voltiso/util'
 
-import { Doc } from '../Doc/Doc.js'
-import type { IDocConstructorNoBuilder } from '../Doc/DocConstructor'
-import type { IDoc } from '../Doc/IDoc.js'
-import type { IRef } from './IRef.js'
-import type { StrongRef, WeakRef } from './RefBase.js'
+import { Doc } from '~/Doc/Doc'
+import type { IDocConstructorNoBuilder } from '~/Doc/DocConstructor'
+import type { IDoc } from '~/Doc/IDoc'
 
-declare module '..' {
+import type { IRef } from './IRef'
+import type { StrongRef, WeakRef } from './RefBase'
+
+declare module '~' {
 	interface DocTypes {
 		myMysticDoctor: MyMysticDoctor
 		myMysticClient: MyMysticClient
