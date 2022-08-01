@@ -1,11 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { WithDocRef } from '../Ref'
-import type { WithTransaction } from './WithTransaction.js'
+import { toString } from '@voltiso/util'
+
+import { TransactorError } from '~'
+import type { WithDocRef } from '~/Ref'
+
+import type { WithTransaction } from './WithTransaction'
 
 /**
- * Guards an inline function; keeping tract of execContext and numTriggersNested
+ * Guards an inline function; keeping track of execContext and numTriggersNested
  *
  * @param ctx - Context
  * @param func - Function to guard
@@ -21,6 +25,14 @@ export const triggerGuard = async <R>(
 		ctx.transaction._numTriggersNested++
 		ctx.transaction._execContext = ctx.docRef.path
 		return await func()
+	} catch (error) {
+		if (ctx.transaction._error === null)
+			ctx.transaction._error =
+				error instanceof Error
+					? error
+					: new TransactorError(`Exotic error: ${toString(error)}`)
+
+		throw error
 	} finally {
 		ctx.transaction._numTriggersNested = prevNumTriggersNested
 		ctx.transaction._execContext = prevExecContext
@@ -28,7 +40,7 @@ export const triggerGuard = async <R>(
 }
 
 /**
- * Guards an inline function; keeping tract of execContext and numMethodsNested
+ * Guards an inline function; keeping track of execContext and numMethodsNested
  *
  * @param ctx - Context
  * @param func - Function to guard
@@ -44,6 +56,14 @@ export const methodGuard = async <R>(
 		ctx.transaction._numMethodsNested++
 		ctx.transaction._execContext = ctx.docRef.path
 		return await func()
+	} catch (error) {
+		if (ctx.transaction._error === null)
+			ctx.transaction._error =
+				error instanceof Error
+					? error
+					: new TransactorError(`Exotic error: ${toString(error)}`)
+
+		throw error
 	} finally {
 		ctx.transaction._numMethodsNested = prevNumMethodsNested
 		ctx.transaction._execContext = prevExecContext

@@ -2,31 +2,32 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { clone, undef } from '@voltiso/util'
+import { clone, toString, undef } from '@voltiso/util'
 
-import { fromFirestore } from '../../common'
-import type { DataWithoutId } from '../../Data'
-import { withoutId } from '../../Data'
-import type { WithDb } from '../../Db'
-import type { IDoc, IDocTI } from '../../Doc'
-import { Doc, Doc_ } from '../../Doc'
-import type { GDoc } from '../../Doc/_/GDoc.js'
-import type { WithTransaction } from '../../Transaction'
+import { fromFirestore } from '~/common'
+import type { DataWithoutId } from '~/Data'
+import { withoutId } from '~/Data'
+import type { WithDb } from '~/Db'
+import type { IDoc, IDocTI } from '~/Doc'
+import { Doc, Doc_ } from '~/Doc'
+import type { GDoc } from '~/Doc/_/GDoc.js'
+import { TransactorError } from '~/error'
+import { applySchema } from '~/Ref/_/applySchema'
+import { collectTriggerResult } from '~/Ref/_/collectTriggerResult'
+import { getOnGetTriggers } from '~/Ref/_/getOnGetTriggers'
+import { getSchema } from '~/Ref/_/getSchema'
+import { validateAndSetCacheEntry } from '~/Ref/_/validateAndSetCacheEntry'
+import type { WithDocRef } from '~/Ref/WithDocRef'
+import type { WithTransaction } from '~/Transaction'
 import {
 	isWithoutTransaction,
 	isWithTransaction,
 	newCacheEntry,
-} from '../../Transaction'
-import type { WithTransactor } from '../../Transactor'
-import { initLastDataSeen } from '../../Trigger'
-import { applyUpdates } from '../../updates'
-import type { Forbidden } from '../../util'
-import { applySchema } from '../_/applySchema.js'
-import { collectTriggerResult } from '../_/collectTriggerResult.js'
-import { getOnGetTriggers } from '../_/getOnGetTriggers.js'
-import { getSchema } from '../_/getSchema.js'
-import { validateAndSetCacheEntry } from '../_/validateAndSetCacheEntry.js'
-import type { WithDocRef } from '../WithDocRef.js'
+} from '~/Transaction'
+import type { WithTransactor } from '~/Transactor'
+import { initLastDataSeen } from '~/Trigger'
+import { applyUpdates } from '~/updates'
+import type { Forbidden } from '~/util'
 
 // eslint-disable-next-line etc/no-misused-generics
 async function directDocPathGet<D extends IDoc>(
@@ -87,12 +88,15 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 		// schema migration
 		if (schema && cacheEntry.data) {
+			// console.log('schema val', cacheEntry.data)
+
 			const validatedData = applySchema.call(ctx, {
 				schema: schema.partial,
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
 			cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
+			// console.log('schema val after', cacheEntry.data)
 		}
 	}
 
@@ -107,11 +111,15 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	const schemaCheck = cacheEntry.data !== prevData
 
+	// console.log('schemaCheck', schemaCheck)
+
 	if (schemaCheck) {
 		const data = cacheEntry.data
 
 		if (schema && data) {
 			try {
+				// console.log('applySchema partial', cacheEntry.data)
+
 				const validatedData = applySchema.call(ctx, {
 					schema: schema.partial,
 					data,
@@ -120,8 +128,10 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 				if (cacheEntry.data?.__voltiso)
 					cacheEntry.__voltiso = cacheEntry.data.__voltiso
+
+				// console.log('applySchema partial after', cacheEntry.data)
 			} catch (error) {
-				throw new Error(
+				throw new TransactorError(
 					`database corrupt: ${path} (${(error as Error).message})`,
 				)
 			}
@@ -160,9 +170,10 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		validateAndSetCacheEntry(ctx, data, schema?.partial)
 	}
 
+	// do not enforce strict constraints until transaction commit (custom triggers may enforce constraints)
 	// // final schema check
 	// if (schema && cacheEntry.data) {
-	// 	await validateAndSetCacheEntry(ctx, cacheEntry.data, schema.final)
+	// 	validateAndSetCacheEntry(ctx, cacheEntry.data, schema.final)
 	// }
 
 	return cacheEntry.proxy as D | null
@@ -218,9 +229,16 @@ export function get<TI extends IDocTI>(
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
-	if (isWithTransaction(ctx))
+	if (isWithTransaction(ctx)) {
+		if (ctx.transaction._error)
+			throw new TransactorError(
+				`Do not catch errors inside transactions - this transaction is supposed to fail. Caught error: ${toString(
+					ctx.transaction._error,
+				)}`,
+			)
+
 		return transactionDocPathGet<GDoc<TI, 'outside'>>(ctx)
-	else {
+	} else {
 		assert(isWithoutTransaction(ctx))
 		return directDocPathGet(ctx)
 	}

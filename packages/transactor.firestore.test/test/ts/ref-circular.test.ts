@@ -13,17 +13,17 @@ import { firestore, firestoreModule } from './common/firestore'
 
 const db = createTransactor(firestore, firestoreModule)
 
-class DoctorD extends Doc('doctorD').fields({
+class DoctorLorcan extends Doc('doctorLorcan').fields({
 	public: {
 		name: s.string,
-		friend: transactorSchemas.strongRef<'doctorD'>().optional,
-		maybeFriend: transactorSchemas.weakRef<'doctorD'>().optional,
+		friend: transactorSchemas.strongRef<'doctorLorcan'>().optional,
+		maybeFriend: transactorSchemas.weakRef<'doctorLorcan'>().optional,
 	},
 }) {
 	@method
-	async setFriend(friend?: StrongRef<DoctorD>) {
-		type X = StrongRef<DoctorD>[DTI]['tag']
-		Assert<IsIdentical<X, 'doctorD'>>()
+	async setFriend(friend?: StrongRef<DoctorLorcan>) {
+		type X = StrongRef<DoctorLorcan>[DTI]['tag']
+		Assert<IsIdentical<X, 'doctorLorcan'>>()
 
 		this.name = 'Mr Friendly'
 
@@ -31,18 +31,16 @@ class DoctorD extends Doc('doctorD').fields({
 		else delete this.friend
 	}
 }
-const doctors = db.register(DoctorD)
+const doctors = db.register(DoctorLorcan)
 
 declare module '@voltiso/transactor' {
 	interface DocTypes {
-		doctorD: DoctorD
-		client: Client
-
-		// wrongType: number
+		doctorLorcan: DoctorLorcan
+		clientXyz: ClientXyz
 	}
 }
 
-class Client extends Doc('client').public({
+class ClientXyz extends Doc('clientXyz').public({
 	asd: s.string,
 }) {}
 
@@ -51,8 +49,8 @@ describe('emu-ts', () => {
 		it('checks numRefs on delete', async () => {
 			expect.hasAssertions()
 
-			type ClientId = Client['id']
-			Assert<IsIdentical<ClientId, Id<Client>>>()
+			type ClientId = ClientXyz['id']
+			Assert<IsIdentical<ClientId, Id<ClientXyz>>>()
 
 			await firestore.doc('doctor/d').delete()
 			await firestore.doc('patient/p').delete()
@@ -66,9 +64,9 @@ describe('emu-ts', () => {
 				friend: a.ref,
 			})
 
-			Assert<IsIdentical<typeof b, DoctorD>>()
+			Assert<IsIdentical<typeof b, DoctorLorcan>>()
 
-			const c = 0 as unknown as Client
+			const c = 0 as unknown as ClientXyz
 			;() =>
 				doctors.add({
 					name: 'b',
@@ -76,7 +74,7 @@ describe('emu-ts', () => {
 					friend: c.ref,
 				})
 			assert(b.friend)
-			Assert<IsIdentical<typeof b.friend, Ref<DoctorD>>>()
+			Assert<IsIdentical<typeof b.friend, StrongRef<DoctorLorcan>>>()
 
 			const name = await b.friend.data.name
 
@@ -84,6 +82,10 @@ describe('emu-ts', () => {
 
 			await b.friend.methods.setFriend(b.ref)
 			await b.friend.methods.setFriend()
+
+			// await expect(doctors(b.id).data).resolves.toStrictEqual({
+			// 	numRefs: 1,
+			// })
 
 			await expect(doctors(a.id).data.__voltiso).resolves.toStrictEqual({
 				numRefs: 1,
@@ -97,22 +99,22 @@ describe('emu-ts', () => {
 		it('works with methods', async () => {
 			expect.hasAssertions()
 
-			// @ts-expect-error Assigning WeakRef to Ref
 			await expect(
-				doctors('adam' as Id<DoctorD>).setFriend(
-					doctors('artur' as Id<'doctorD'>),
+				doctors('adam' as Id<DoctorLorcan>).setFriend(
+					// @ts-expect-error Assigning WeakRef to StrongRef
+					doctors('artur' as Id<'doctorLorcan'>),
 				),
 			).rejects.toThrow('exist')
 
 			await expect(
-				doctors('adam').setFriend(doctors('artur') as Ref<DoctorD>),
+				doctors('adam').setFriend(doctors('artur') as StrongRef<DoctorLorcan>),
 			).rejects.toThrow('exist')
 
-			// @ts-expect-error DocType mismatch
-
 			await expect(
-				doctors('adam' as Id<Client>).setFriend(
-					doctors('artur') as Ref<DoctorD>,
+				// @ts-expect-error DocType mismatch
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+				doctors('adam' as Id<ClientXyz>).setFriend(
+					doctors('artur') as StrongRef<DoctorLorcan>,
 				),
 			).rejects.toThrow('exist')
 		})

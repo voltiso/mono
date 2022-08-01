@@ -5,14 +5,15 @@ import type * as Database from '@voltiso/firestore-like'
 import type { CALL } from '@voltiso/util'
 import { lazyConstructor, omit, staticImplements } from '@voltiso/util'
 
-import { Db } from '../Db/Db.js'
-import type { DocPath } from '../Path'
-import type { Cache } from './Cache.js'
-import type { ParentContext, TransactionContext } from './Context.js'
-import type { TransactionConstructor } from './TransactionConstructor.js'
+import { Db } from '~/Db/Db'
+import type { DocPath } from '~/Path'
 
-@staticImplements<TransactionConstructor<Transaction>>()
-class Transaction extends lazyConstructor(() => Db) {
+import type { Cache } from './Cache'
+import type { ParentContext, TransactionContext } from './Context'
+import type { TransactionConstructor } from './TransactionConstructor'
+
+@staticImplements<TransactionConstructor<TransactionImpl_>>()
+class TransactionImpl_ extends lazyConstructor(() => Db) {
 	declare _context: TransactionContext
 	_databaseTransaction: Database.Transaction
 
@@ -21,6 +22,7 @@ class Transaction extends lazyConstructor(() => Db) {
 	_numMethodsNested = 0
 	_numTriggersNested = 0
 	_isFinalizing = false
+	_error: Error | null = null
 	_execContext: DocPath | null = null
 
 	constructor(
@@ -34,5 +36,7 @@ class Transaction extends lazyConstructor(() => Db) {
 	}
 }
 
-export type Transaction_ = Transaction & Db[CALL]
-export const Transaction_ = Transaction as TransactionConstructor<Transaction_>
+export type TransactionImpl = TransactionImpl_ & Db[CALL]
+
+export const TransactionImpl =
+	TransactionImpl_ as TransactionConstructor<TransactionImpl_>

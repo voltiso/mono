@@ -13,7 +13,7 @@ const db = createTransactor()
 
 class Man extends Doc('man')({
 	private: {
-		woman: ss.ref<'woman'>(),
+		woman: ss.strongRef<'woman'>(),
 	},
 }) {
 	@afterCreate

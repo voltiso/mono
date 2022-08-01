@@ -15,8 +15,8 @@
 	"javascript.preferences.importModuleSpecifierEnding": "minimal",
 	"typescript.preferences.importModuleSpecifierEnding": "minimal",
 
-	"javascript.preferences.importModuleSpecifier": "shortest",
-	"typescript.preferences.importModuleSpecifier": "shortest",
+	"javascript.preferences.importModuleSpecifier": "non-relative",
+	"typescript.preferences.importModuleSpecifier": "non-relative",
 
 	"javascript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
 	"typescript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
@@ -252,6 +252,7 @@
 		"lilconfig",
 		"linebreak",
 		"localstore",
+		"Lorcan",
 		"microtask",
 		"milahu",
 		"minimatch",

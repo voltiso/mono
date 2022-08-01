@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import { createTransactor, StrongDocRef, WeakDocRef } from '@voltiso/transactor'
 import * as ts from '@voltiso/transactor/schemas'
 
-import { firestore, firestoreModule } from './common/firestore.js'
+import { firestore, firestoreModule } from './common/firestore'
 
 const db = createTransactor(firestore, firestoreModule)
 
@@ -18,7 +18,7 @@ describe('ref schema', () => {
 			myWeakRef: ts.weakRef,
 		}
 
-		expect(StrongDocRef.name).toBe('lazyConstructor(StrongDocRef_)')
+		expect(StrongDocRef.name).toBe('lazyConstructor(StrongDocRefImpl)')
 
 		const myWeakRef = db('a/b/c/d')
 		const myRef = new StrongDocRef(
@@ -39,6 +39,8 @@ describe('ref schema', () => {
 
 		expect(() =>
 			s.schema(mySchema).validate({ myRef: myWeakRef, myWeakRef }),
-		).toThrow(".myRef instanceof should be 'StrongDocRef_' (got 'WeakDocRef_')")
+		).toThrow(
+			"[@voltiso/schemar] .myRef instanceof should be 'StrongDocRefImpl' (got 'WeakDocRefImpl')",
+		)
 	})
 })

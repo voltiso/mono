@@ -10,10 +10,11 @@ import type {
 	DataWithoutId,
 	NestedData,
 	NestedDataNoArray,
-} from '../../Data/Data'
-import { StrongDocRef, WeakDocRef } from '../../Ref'
-import type { DocRefBaseContext } from '../../Ref/_/Context'
-import { isTimestamp } from '../../util'
+} from '~/Data/Data'
+import { StrongDocRef, WeakDocRef } from '~/Ref'
+import type { DocRefBaseContext } from '~/Ref/_/Context'
+import { isTimestamp } from '~/util'
+
 import { isRefEntry } from './RefEntry'
 
 function fromFirestoreRec(

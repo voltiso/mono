@@ -42,7 +42,7 @@
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint . --max-warnings=0",
-		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
+		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-p build:esm build:cjs",

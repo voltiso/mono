@@ -4,13 +4,15 @@
 import * as jestDevServer from 'jest-dev-server'
 import * as path from 'node:path'
 
-import { writeFirebaseJson } from './_/writeFirebaseJson.js'
+import { writeFirebaseJson } from './_/writeFirebaseJson'
 
 export = async () => {
-	const getPortModule = await import('get-port')
-	const getPort = getPortModule.default
+	// // eslint-disable-next-line import/dynamic-import-chunkname
+	// const getPortModule = await import('get-port')
+	// const getPort = getPortModule.default
 
-	const port = await getPort()
+	// const port = await getPort()
+	const port = 14_395
 
 	// eslint-disable-next-line unicorn/prefer-module
 	const cwd = path.resolve(__dirname, '..', 'emulator')
@@ -18,7 +20,7 @@ export = async () => {
 	await writeFirebaseJson({ cwd, port })
 
 	await jestDevServer.setup({
-		command: `cd ${cwd} && ../node_modules/.bin/firebase emulators:start --only firestore`,
+		command: `cd ${cwd} && ../node_modules/.bin/firebase emulators:start --only firestore --config firebase-${port}.json`,
 		port,
 	})
 

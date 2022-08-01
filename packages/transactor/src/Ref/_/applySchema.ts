@@ -5,17 +5,18 @@ import type * as s from '@voltiso/schemar'
 import { ValidationError } from '@voltiso/schemar'
 import { isPlainObject } from '@voltiso/util'
 
-import type { Data, DataWithoutId } from '../../Data/Data.js'
-import type { WithTransactor } from '../../Transactor'
-import type { WithDocRef } from '../WithDocRef.js'
+import type { WithDocRef } from '~'
+import { isWithTransaction } from '~'
+import type { Data, DataWithoutId } from '~/Data/Data.js'
+import type { WithTransactor } from '~/Transactor'
+
+import { schemaDeleteIt } from './_symbols'
 
 type Params = {
 	schema: s.Schema<object>
 	data: DataWithoutId
 	bestEffort?: boolean
 }
-
-export const schemaDeleteIt = Symbol('schemaDeleteIt')
 
 function processSentinels(x: unknown): Data | null {
 	if (isPlainObject(x)) {
@@ -39,7 +40,14 @@ export function applySchema(
 
 	const r = schema.tryValidate(data)
 
-	if (!r.isValid && !bestEffort) throw new ValidationError(r.issues)
+	if (!r.isValid && !bestEffort) {
+		const error = new ValidationError(r.issues)
+
+		if (isWithTransaction(this) && this.transaction._error === null)
+			this.transaction._error = error
+
+		throw error
+	}
 
 	return processSentinels(r.value)
 }

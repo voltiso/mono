@@ -1,14 +1,20 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Forbidden } from '../util'
-import type { Transaction_ } from './Transaction_.js'
+import type { AlsoAccept } from '@voltiso/util'
 
-export type WithTransaction = { transaction: Transaction_ }
+import type { Forbidden } from '~/util'
 
-export const isWithTransaction = (
-	x: Partial<WithTransaction>,
-): x is WithTransaction => Boolean(x.transaction)
+import type { TransactionImpl } from './TransactionImpl'
+
+export type WithTransaction = { transaction: TransactionImpl }
+
+export function isWithTransaction(
+	x: Partial<WithTransaction> | AlsoAccept<object>,
+): x is WithTransaction {
+	return Boolean((x as WithTransaction | null)?.transaction)
+}
+
 export const isWithoutTransaction = (
 	x: Partial<WithTransaction>,
 ): x is Forbidden<WithTransaction> => !x.transaction

@@ -13,12 +13,12 @@ export const putoutOverride = defineEslintConfigOverride({
 	plugins: ['putout'],
 
 	rules: {
-		'putout/add-newline-after-function-call': 'error',
-		'putout/add-newline-before-function-call': 'error',
+		'putout/add-newline-after-function-call': 1,
+		'putout/add-newline-before-function-call': 1,
 		'putout/add-newlines-between-specifiers': 0, // conflicts with imports sort
 		'putout/add-newlines-between-types-in-union': 0, // conflicts with prettier
 		'putout/add-newline-before-return': 0, // broken?
-		'putout/align-spaces': 'error',
+		'putout/align-spaces': 1,
 		'putout/array-element-newline': 0,
 		'putout/destructuring-as-function-argument': 0,
 		'putout/function-declaration-paren-newline': 0,
@@ -48,16 +48,16 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/putout': 0,
 
 		'putout/remove-empty-newline-after-import': 0,
-		'putout/remove-empty-newline-after-last-element': 'error',
+		'putout/remove-empty-newline-after-last-element': 1,
 		'putout/remove-empty-newline-after-last-specifier': 0, // handled by prettier
-		'putout/remove-empty-newline-before-first-specifier': 'error',
-		'putout/remove-empty-specifiers': 'error',
-		'putout/remove-newline-after-default-import': 'error',
-		'putout/remove-newline-from-empty-object': 'error',
-		'putout/single-property-destructuring': 'error',
-		'putout/tape-add-newline-before-assertion': 'error',
-		'putout/tape-add-newline-between-tests': 'error',
-		'putout/tape-remove-newline-before-t-end': 'error',
+		'putout/remove-empty-newline-before-first-specifier': 1,
+		'putout/remove-empty-specifiers': 1,
+		'putout/remove-newline-after-default-import': 1,
+		'putout/remove-newline-from-empty-object': 1,
+		'putout/single-property-destructuring': 1,
+		'putout/tape-add-newline-before-assertion': 1,
+		'putout/tape-add-newline-between-tests': 1,
+		'putout/tape-remove-newline-before-t-end': 1,
 		'putout/nonblock-statement-body-newline': 0,
 	},
 } as const)

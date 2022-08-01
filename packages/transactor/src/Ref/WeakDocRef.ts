@@ -3,19 +3,18 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { InferTI } from '../CollectionRef/InferTI.js'
-import type { IDoc } from '../Doc'
-import type { GDocFields } from '../Doc/_/GDocFields.js'
-import type { GMethodPromises } from '../Doc/_/GMethodPromises.js'
-import type { DocRefParentContext } from './_/Context.js'
-import { DocRefBaseImpl } from './DocRefBase.js'
-import type { WeakRef } from './RefBase.js'
+import type { InferTI } from '~/CollectionRef/InferTI.js'
+import type { IDoc } from '~/Doc'
+import type { GDocFields } from '~/Doc/_/GDocFields.js'
+import type { GMethodPromises } from '~/Doc/_/GMethodPromises.js'
 
-class WeakDocRef_<D extends IDoc> extends lazyConstructor(() => DocRefBaseImpl)<
-	D,
-	boolean,
-	'outside'
-> {
+import type { DocRefParentContext } from './_/Context'
+import { DocRefBaseImpl } from './DocRefBase'
+import type { WeakRef } from './RefBase'
+
+class WeakDocRefImpl<D extends IDoc> extends lazyConstructor(
+	() => DocRefBaseImpl,
+)<D, boolean, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
 		super(context, path, false)
 	}
@@ -31,7 +30,7 @@ export type WeakDocRef<D extends IDoc> = WeakRef<D> &
 	GDocFields<InferTI<D>> &
 	GMethodPromises<InferTI<D>>
 
-export const WeakDocRef = WeakDocRef_ as unknown as WeakDocRefConstructor
+export const WeakDocRef = WeakDocRefImpl as unknown as WeakDocRefConstructor
 
 export function isWeakDocRef(x: unknown): x is WeakDocRef<IDoc> {
 	return (

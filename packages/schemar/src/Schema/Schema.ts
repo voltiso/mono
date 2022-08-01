@@ -17,4 +17,8 @@ export type Schema<
 	? ISchema
 	: [O] extends [s.SchemaOptions]
 	? CustomSchema<O>
-	: s.ISchema<O>
+	: // : s.ISchema<O>
+	  s.CustomSchema<{
+			Output: O
+			Input: O
+	  }>

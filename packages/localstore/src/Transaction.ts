@@ -85,7 +85,7 @@ export class Transaction implements Database.Transaction {
 		checkIfFailed(this)
 
 		const lock = getLock(this._store, this, ref.path)
-		console.log('Transaction.set', ref, data, 'deepClone')
+		// console.log('Transaction.set', ref, data, 'deepClone')
 		lock.data = deepClone(data)
 	}
 
@@ -102,7 +102,7 @@ export class Transaction implements Database.Transaction {
 
 		let newData = data
 		if (data !== lock.data) {
-			console.log('Transaction.update', ref, updates, 'deepClone')
+			// console.log('Transaction.update', ref, updates, 'deepClone')
 			newData = deepClone(data)
 		}
 

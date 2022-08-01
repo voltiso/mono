@@ -3,20 +3,20 @@
 
 /* eslint-disable class-methods-use-this */
 
-import {
+import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
-	EXTENDS,
-	OPTIONS,
 	PARTIAL_OPTIONS,
 	SCHEMA_NAME,
 } from '_'
+import { EXTENDS, OPTIONS } from '_'
 import type { Assume, AtLeast1, Merge2Simple } from '@voltiso/util'
 import { clone, final, isDefined, toString } from '@voltiso/util'
 
 import type {
 	CustomFix,
 	CustomSchema,
+	DefaultSchemaOptions,
 	ISchema,
 	MergeSchemaOptions,
 	Schema,
@@ -37,6 +37,21 @@ import {
 	ValidationError,
 } from '~'
 import { isUnknownSchema, schema } from '~/custom-schemas/unknownSchema/index'
+
+//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+export interface CustomSchemaImpl<O> {
+	readonly [SCHEMA_NAME]: string // SchemaName
+
+	readonly [PARTIAL_OPTIONS]: O
+
+	// declare [OPTIONS]: Assume<
+	// 	SchemaOptions,
+	// 	MergeSchemaOptions<DefaultSchemaOptions, O>
+	// >
+
+	readonly [BASE_OPTIONS]: SchemaOptions
+	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
+}
 
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>, ISchema
@@ -141,6 +156,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	protected _getIssues(x: unknown): ValidationIssue[] {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof x === 'undefined' && this.hasDefault) return []
 		else return this._getIssuesImpl(x)
 	}
@@ -152,6 +168,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	private _fix(x: unknown): this[OPTIONS]['Output'] {
 		let result = x
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof result === 'undefined' && this.hasDefault)
 			result = this.getDefault
 
@@ -213,8 +230,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	extends(other: Schemable): boolean {
 		const otherType = schema(other)
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isOptional && !otherType.isOptional) return false
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonly && !otherType.isReadonly) return false
 
 		// eslint-disable-next-line security/detect-object-injection
@@ -227,14 +246,18 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	toString(): string {
 		const prefix =
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				: this.isReadonly
+				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				this.isReadonly
 				? 'readonly:'
-				: this.isOptional
+				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				this.isOptional
 				? '?'
 				: ''
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const suffix = this.hasDefault ? `=${toString(this.getDefault)}` : ''
 
 		return `${prefix}${this._toString()}${suffix}`
@@ -284,17 +307,4 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
 		return union(this as never, other) as never
 	}
-
-	//! esbuild bug: keep `declare` at the end (after all [computed] properties)
-	declare readonly [SCHEMA_NAME]: string; // SchemaName
-
-	declare readonly [PARTIAL_OPTIONS]: O;
-
-	// declare [OPTIONS]: Assume<
-	// 	SchemaOptions,
-	// 	MergeSchemaOptions<DefaultSchemaOptions, O>
-	// >
-
-	declare readonly [BASE_OPTIONS]: SchemaOptions;
-	declare readonly [DEFAULT_OPTIONS]: this[BASE_OPTIONS]
 }

@@ -3,16 +3,14 @@
 
 import type * as s from '@voltiso/schemar'
 
-import type { Id } from '../Data'
-import type { IDoc } from '../Doc'
-import type { WeakDocRef } from '../Ref'
+import type { Id } from '~/Data'
+import type { IDoc } from '~/Doc'
+import type { WeakDocRef } from '~/Ref'
 
-type SDocRef<D extends IDoc = IDoc> = s.Schema<WeakDocRef<D>>
-export type { SDocRef as DocRef }
+export type DocRefSchema<D extends IDoc = IDoc> = s.Schema<WeakDocRef<D>>
 
-export type OptionalDocRef<D extends IDoc = IDoc> = s.Schema<
+export type OptionalDocRefSchema<D extends IDoc = IDoc> = s.Schema<
 	WeakDocRef<D>
 >['optional']
 
-type SId<D extends IDoc> = s.Schema<Id<D>>
-export type { SId as Id }
+export type IdSchema<D extends IDoc> = s.Schema<Id<D>>

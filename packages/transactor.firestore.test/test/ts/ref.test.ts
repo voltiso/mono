@@ -8,7 +8,7 @@ import * as transactorSchemas from '@voltiso/transactor/schemas'
 import type { StaticError } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
-import { firestore, firestoreModule } from './common/firestore.js'
+import { firestore, firestoreModule } from './common/firestore'
 
 const db = createTransactor(firestore, firestoreModule)
 

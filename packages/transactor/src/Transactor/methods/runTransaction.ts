@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import '../../zone.js'
+// eslint-disable-next-line import/no-unassigned-import
+import '~/zone.js'
 
 import { assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
@@ -15,23 +16,23 @@ import {
 } from '@voltiso/util'
 import chalk from 'chalk'
 
-import { databaseUpdate } from '../../common/database/databaseUpdate.js'
-import { withoutId } from '../../Data'
-import type { Doc, IDocTI } from '../../Doc'
-import { TransactorError } from '../../error'
-import { deleteIt, isDeleteIt, replaceIt } from '../../it'
-import { StrongDocRefImpl } from '../../Ref'
-import { getBeforeCommits } from '../../Ref/_/getBeforeCommits.js'
-import { processTriggers } from '../../Ref/_/processTriggers.js'
-import { Transaction_ } from '../../Transaction'
-import type { Cache, CacheEntry } from '../../Transaction/Cache.js'
-import { triggerGuard } from '../../Transaction/guard.js'
-import { setCacheEntry } from '../../Transaction/methods/setCacheEntry.js'
-import type { Transaction } from '../../Transaction/Transaction.js'
-import type { BeforeCommitTriggerParams } from '../../Trigger/TriggerParams.js'
-import { dump } from '../../util/dump.js'
-import { isEqual } from '../../util/isEqual.js'
-import type { Transactor_ } from '../Transactor_.js'
+import { databaseUpdate } from '~/common/database/databaseUpdate.js'
+import { withoutId } from '~/Data'
+import type { Doc, IDocTI } from '~/Doc'
+import { TransactorError } from '~/error'
+import { deleteIt, isDeleteIt, replaceIt } from '~/it'
+import { StrongDocRefImpl } from '~/Ref'
+import { getBeforeCommits } from '~/Ref/_/getBeforeCommits.js'
+import { processTriggers } from '~/Ref/_/processTriggers.js'
+import { TransactionImpl } from '~/Transaction'
+import type { Cache, CacheEntry } from '~/Transaction/Cache.js'
+import { triggerGuard } from '~/Transaction/guard.js'
+import { setCacheEntry } from '~/Transaction/methods/setCacheEntry.js'
+import type { Transaction } from '~/Transaction/Transaction.js'
+import type { Transactor_ } from '~/Transactor'
+import type { BeforeCommitTriggerParams } from '~/Trigger/TriggerParams.js'
+import { dump } from '~/util/dump.js'
+import { isEqual } from '~/util/isEqual.js'
 
 export type TransactionBody<Result> = (db: Transaction) => Promise<Result>
 
@@ -61,7 +62,7 @@ export async function runTransaction<R>(
 
 	// eslint-disable-next-line sonarjs/cognitive-complexity
 	return this._database.runTransaction(databaseTransaction => {
-		const transaction = new Transaction_(this._context, databaseTransaction)
+		const transaction = new TransactionImpl(this._context, databaseTransaction)
 
 		// if (this._transactionLocalStorage.getStore() !== undefined)
 		if (zoneCurrent.get('transactionContextOverride'))

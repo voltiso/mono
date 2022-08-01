@@ -14,12 +14,12 @@ const db = createTransactor()
 
 class Client extends Doc('refDelete_client')({
 	public: {
-		displayName: s.string.length(1, 255),
+		displayName: s.string.lengthRange(1, 255),
 		slug: s.string,
 	},
 
 	private: {
-		rootTask: ss.ref<'refDelete_task'>(),
+		rootTask: ss.strongRef<'refDelete_task'>(),
 	},
 }) {
 	@afterDelete
@@ -45,6 +45,7 @@ class Client extends Doc('refDelete_client')({
 
 	@afterCreate
 	async createRootTask() {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		assert(this.rootTask === undef)
 
 		const task = await tasks.add({
@@ -58,7 +59,7 @@ class Client extends Doc('refDelete_client')({
 
 class ClientSlug extends Doc('refDelete_clientSlug')({
 	const: {
-		client: ss.ref<'refDelete_client'>(),
+		client: ss.strongRef<'refDelete_client'>(),
 	},
 }) {}
 
@@ -67,8 +68,8 @@ const clientSlugs = db.register(ClientSlug)
 
 class Task extends Doc('refDelete_task')({
 	const: {
-		parentTask: ss.ref<'refDelete_task'>().optional,
-		client: ss.ref<'refDelete_client'>(),
+		parentTask: ss.strongRef<'refDelete_task'>().optional,
+		client: ss.strongRef<'refDelete_client'>(),
 	},
 
 	public: {

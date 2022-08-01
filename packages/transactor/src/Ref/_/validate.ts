@@ -3,10 +3,11 @@
 
 import type * as s from '@voltiso/schemar'
 
-import type { DataWithoutId } from '../../Data'
-import { withoutId } from '../../Data'
-import { applySchema } from './applySchema.js'
-import type { DocRefContextWithTransaction } from './Context.js'
+import type { DataWithoutId } from '~/Data'
+import { withoutId } from '~/Data'
+
+import { applySchema } from './applySchema'
+import type { DocRefContextWithTransaction } from './Context'
 
 /**
  * (pure) Apply schema asd return new data

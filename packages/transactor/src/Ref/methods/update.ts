@@ -2,38 +2,40 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { isDefined, undef } from '@voltiso/util'
+import { isDefined, toString, undef } from '@voltiso/util'
 
-import { databaseUpdate } from '../../common'
-import type { DataWithId } from '../../Data'
-import { withoutId } from '../../Data'
-import type { WithDb } from '../../Db'
-import type { IDoc } from '../../Doc/IDoc.js'
-import { IndexedDoc } from '../../Doc/IndexedDoc.js'
-import type { DeleteIt, RootReplaceIt } from '../../it'
-import { isDeleteIt, isReplaceIt, ReplaceIt } from '../../it'
-import type { WithTransaction } from '../../Transaction'
+import { databaseUpdate } from '~/common'
+import type { DataWithId } from '~/Data'
+import { withoutId } from '~/Data'
+import type { WithDb } from '~/Db'
+import type { IDoc } from '~/Doc/IDoc.js'
+import { IndexedDoc } from '~/Doc/IndexedDoc.js'
+import { TransactorError } from '~/error'
+import type { DeleteIt, RootReplaceIt } from '~/it'
+import { isDeleteIt, isReplaceIt, ReplaceIt } from '~/it'
+import type { WithDocRef } from '~/Ref'
+import { getAfterTriggers } from '~/Ref/_/getAfterTriggers'
+import { getBeforeCommits } from '~/Ref/_/getBeforeCommits'
+import { getSchema } from '~/Ref/_/getSchema'
+import { processTriggers } from '~/Ref/_/processTriggers'
+import type { WithTransaction } from '~/Transaction'
 import {
 	isWithoutTransaction,
 	isWithTransaction,
 	newCacheEntry,
 	setCacheEntry,
-} from '../../Transaction'
-import type { WithTransactor } from '../../Transactor'
-import { initLastDataSeen } from '../../Trigger'
-import type { Updates, UpdatesRecord } from '../../updates/Updates.js'
+} from '~/Transaction'
+import type { WithTransactor } from '~/Transactor'
+import { initLastDataSeen } from '~/Trigger'
+import type { Updates, UpdatesRecord } from '~/updates/Updates.js'
 import {
 	applyUpdates,
 	combineUpdates,
 	dataFromUpdates,
-} from '../../updates/Updates.js'
-import type { Forbidden } from '../../util'
-import { getAfterTriggers } from '../_/getAfterTriggers.js'
-import { getBeforeCommits } from '../_/getBeforeCommits.js'
-import { getSchema } from '../_/getSchema.js'
-import { processTriggers } from '../_/processTriggers.js'
-import type { WithDocRef } from '../WithDocRef.js'
-import { transactionDocPathGet } from './get.js'
+} from '~/updates/Updates.js'
+import type { Forbidden } from '~/util'
+
+import { transactionDocPathGet } from './get'
 
 type Ctx = WithTransactor & Partial<WithTransaction> & WithDocRef & WithDb
 type CtxWithTransaction = Ctx & WithTransaction
@@ -326,8 +328,16 @@ export function update(
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
-	if (isWithTransaction(ctx)) return transactionUpdate.call(ctx, updates)
-	else {
+	if (isWithTransaction(ctx)) {
+		if (ctx.transaction._error)
+			throw new TransactorError(
+				`Do not catch errors inside transactions - this transaction is supposed to fail. Caught error: ${toString(
+					ctx.transaction._error,
+				)}`,
+			)
+
+		return transactionUpdate.call(ctx, updates)
+	} else {
 		assert(isWithoutTransaction(ctx))
 		return rawUpdate(ctx, updates)
 	}

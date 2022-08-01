@@ -15,7 +15,7 @@ const db = createTransactor()
 class MyDoctor extends Doc('MyDoctor').fields({
 	public: {
 		name: s.string,
-		friend: transactorSchemas.ref<'MyDoctor'>().optional,
+		friend: transactorSchemas.strongRef<'MyDoctor'>().optional,
 	},
 }) {
 	// declare friend?: Ref<Doctor>

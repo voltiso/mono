@@ -3,7 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 
-import { schemaDeleteIt } from '../Ref/_/applySchema'
+import { schemaDeleteIt } from '~/Ref/_/_symbols'
 
 export * from './intrinsicFields'
 export * from './ref'
@@ -21,4 +21,4 @@ export const autoId = s.string.regex(
 
 export const timestamp = s.instance(Date)
 
-export const deleteIt = s.symbol(schemaDeleteIt)
+export const deleteItSchema = s.unknown.withFix(() => schemaDeleteIt)

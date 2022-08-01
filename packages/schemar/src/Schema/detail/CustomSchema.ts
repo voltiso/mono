@@ -12,6 +12,7 @@ import { EXTENDS } from '_'
 import type { AlsoAccept, Assume } from '@voltiso/util'
 
 import type {
+	DefaultSchemaOptions,
 	DefineSchema,
 	MergeSchemaOptions,
 	Schemable,
@@ -28,7 +29,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 
 	readonly [BASE_OPTIONS]: SchemaOptions
 
-	readonly [DEFAULT_OPTIONS]: this[BASE_OPTIONS]
+	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
 
 	readonly [PARTIAL_OPTIONS]: O
 

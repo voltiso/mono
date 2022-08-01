@@ -12,13 +12,13 @@ import { createTransactor, database } from './common'
 const db = createTransactor()
 
 const slug = s.string
-	.length(1, 255)
+	.lengthRange(1, 255)
 	.regex(
 		// eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex, regexp/prefer-named-capture-group
 		/^[\da-z]+(-[\da-z]+)*$/u,
 		'Slug must be lowercase with single hyphen separators',
 	)
-	.check(
+	.withCheck(
 		s => !['add'].includes(s),
 		s => `Slug cannot equal '${s}'`,
 	)
@@ -48,7 +48,7 @@ class Banana extends Doc('banana')({
 }
 
 class BananaSlug extends Doc('bananaSlug').public({
-	banana: ss.ref<'banana'>(),
+	banana: ss.strongRef<'banana'>(),
 }) {}
 
 declare module '@voltiso/transactor' {

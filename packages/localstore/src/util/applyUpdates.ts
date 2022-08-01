@@ -36,7 +36,7 @@ export function applyUpdatesInPlace(
 			o[f] += v._n
 			// eslint-disable-next-line security/detect-object-injection
 		} else {
-			console.log('applyUpdatesInPlace', data, updates, 'deepClone')
+			// console.log('applyUpdatesInPlace', data, updates, 'deepClone')
 			o[f] = deepClone(v)
 		}
 	}

@@ -12,6 +12,7 @@ import type {
 	CustomNever,
 	CustomNumber,
 	CustomObject,
+	CustomSchema,
 	CustomString,
 	CustomSymbol,
 	CustomTuple,
@@ -82,7 +83,7 @@ export interface Schemas<O = {}> {
 //
 
 export type GetSchemaByName<schemaName, O> = string extends schemaName
-	? never
+	? CustomSchema<O>
 	: [schemaName] extends [keyof Schemas<O>]
 	? schemaName extends keyof Schemas<O>
 		? Schemas<O>[schemaName]

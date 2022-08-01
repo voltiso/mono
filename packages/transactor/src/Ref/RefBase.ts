@@ -3,18 +3,19 @@
 
 import type { _, If } from '@voltiso/util'
 
-import type { InferMethods } from '../CollectionRef/InferMethods.js'
-import type { Data, DataWithId, DataWithoutId, Id } from '../Data'
-import type { GData, GDataPublicInput } from '../Doc/_/GData.js'
-import type { GUpdates_Replace, GUpdates_Update } from '../Doc/_/GUpdates.js'
-import type { GetFields } from '../Doc/Doc_.js'
-import type { DTI } from '../Doc/DocTI.js'
-import type { IDoc } from '../Doc/IDoc.js'
-import type { DeleteIt } from '../it'
-import type { DocPath } from '../Path'
-import type { NestedPromise } from './_/NestedPromise.js'
-import type { Null } from './_/Null.js'
-import type { IRefBase } from './IRef.js'
+import type { InferMethods } from '~/CollectionRef/InferMethods.js'
+import type { Data, DataWithId, DataWithoutId, Id } from '~/Data'
+import type { GData, GDataPublicInput } from '~/Doc/_/GData.js'
+import type { GUpdates_Replace, GUpdates_Update } from '~/Doc/_/GUpdates.js'
+import type { GetFields } from '~/Doc/Doc_.js'
+import type { DTI } from '~/Doc/DocTI.js'
+import type { IDoc } from '~/Doc/IDoc.js'
+import type { DeleteIt } from '~/it'
+import type { DocPath } from '~/Path'
+
+import type { NestedPromise } from './_/NestedPromise'
+import type { Null } from './_/Null'
+import type { IRefBase } from './IRef'
 
 export interface RefBase<D extends IDoc, Exists extends boolean>
 	extends IRefBase,

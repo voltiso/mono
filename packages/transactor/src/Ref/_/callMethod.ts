@@ -4,19 +4,20 @@
 import { assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
-import type { WithDb } from '../../Db'
-import type { IDoc_, IDocTI } from '../../Doc'
-import type { ExecutionContext } from '../../Doc/_/ExecutionContext.js'
-import type { GDoc } from '../../Doc/_/GDoc.js'
-import type { Method } from '../../Method.js'
-import type { Cache, WithTransaction } from '../../Transaction'
-import { isWithTransaction, methodGuard } from '../../Transaction'
-import type { ContextOverride, WithTransactor } from '../../Transactor'
-import { dump } from '../../util'
-import type { DocRefBaseImpl } from '../DocRefBase.js'
-import { transactionDocPathGet } from '../methods'
-import type { WithDocRef } from '../WithDocRef.js'
-import { processTriggers } from './processTriggers.js'
+import type { WithDb } from '~/Db'
+import type { IDoc_, IDocTI } from '~/Doc'
+import type { ExecutionContext } from '~/Doc/_/ExecutionContext.js'
+import type { GDoc } from '~/Doc/_/GDoc.js'
+import type { Method } from '~/Method.js'
+import type { WithDocRef } from '~/Ref'
+import { transactionDocPathGet } from '~/Ref'
+import type { DocRefBaseImpl } from '~/Ref/DocRefBase'
+import type { Cache, WithTransaction } from '~/Transaction'
+import { isWithTransaction, methodGuard } from '~/Transaction'
+import type { ContextOverride, WithTransactor } from '~/Transactor'
+import { dump } from '~/util'
+
+import { processTriggers } from './processTriggers'
 
 export type CallMethodOptions = {
 	name: string

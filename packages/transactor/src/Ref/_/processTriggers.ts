@@ -4,19 +4,20 @@
 import { assert } from '@voltiso/assertor'
 import { clone, undef } from '@voltiso/util'
 
-import { withId } from '../../Data'
-import { immutabilize } from '../../immutabilize'
-import { isDeleteIt, isReplaceIt } from '../../it'
-import { triggerGuard } from '../../Transaction'
-import type { Updates } from '../../updates'
-import { isEqual } from '../../util'
-import { apply } from './apply.js'
-import { collectTriggerResult } from './collectTriggerResult.js'
-import type { DocRefContextWithTransaction } from './Context.js'
-import { getAfterTriggers } from './getAfterTriggers.js'
-import { getCacheEntry } from './getCacheEntry.js'
-import { getSchema } from './getSchema.js'
-import { validateAndSetCacheEntry } from './validateAndSetCacheEntry.js'
+import { withId } from '~/Data'
+import { immutabilize } from '~/immutabilize'
+import { isDeleteIt, isReplaceIt } from '~/it'
+import { triggerGuard } from '~/Transaction'
+import type { Updates } from '~/updates'
+import { isEqual } from '~/util'
+
+import { apply } from './apply'
+import { collectTriggerResult } from './collectTriggerResult'
+import type { DocRefContextWithTransaction } from './Context'
+import { getAfterTriggers } from './getAfterTriggers'
+import { getCacheEntry } from './getCacheEntry'
+import { getSchema } from './getSchema'
+import { validateAndSetCacheEntry } from './validateAndSetCacheEntry'
 
 async function processAfterTrigger(
 	c: DocRefContextWithTransaction,

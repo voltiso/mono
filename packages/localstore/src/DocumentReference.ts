@@ -78,7 +78,7 @@ export class DocumentReference implements Database.DocumentReference {
 
 		assert(doc)
 
-		console.log('DocumentReference.set', data, 'deepClone')
+		// console.log('DocumentReference.set', data, 'deepClone')
 
 		doc._data = deepClone(data)
 

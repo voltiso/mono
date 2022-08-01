@@ -4,18 +4,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import type { IDoc } from '../../Doc'
-import type { DocRefBaseImpl } from '../DocRefBase.js'
-import type { IRef } from '../IRef.js'
-import { WeakDocRef } from '../WeakDocRef.js'
+import { isStrongDocRef } from '~'
+import type { IDoc } from '~/Doc'
+import type { DocRefBaseImpl, IRef, WeakDocRef } from '~/Ref'
 
-function forEachRef(o: any, f: (r: IRef) => void) {
-	if (o instanceof WeakDocRef) {
-		f(o as any)
+function forEachStrongRef(o: any, f: (r: IRef) => void) {
+	if (isStrongDocRef(o)) {
+		f(o)
 	} else if (Array.isArray(o)) {
-		for (const v of o) forEachRef(v, f)
+		for (const v of o) forEachStrongRef(v, f)
 	} else if (o?.constructor === Object) {
-		for (const v of Object.values(o)) forEachRef(v, f)
+		for (const v of Object.values(o)) forEachStrongRef(v, f)
 	}
 }
 
@@ -40,13 +39,13 @@ export function getAfterTriggers(this: DocRefBaseImpl) {
 				// console.log('trigger', path.toString())
 				const m = new Map<string, { before: number; after: number }>()
 
-				forEachRef(before, r => {
+				forEachStrongRef(before, r => {
 					const path = r.path.pathString
 					const v = m.get(path) || { before: 0, after: 0 }
 					m.set(path, { ...v, before: v.before + 1 })
 				})
 
-				forEachRef(after, r => {
+				forEachStrongRef(after, r => {
 					const path = r.path.pathString
 					const v = m.get(path) || { before: 0, after: 0 }
 					m.set(path, { ...v, after: v.after + 1 })

@@ -3,6 +3,8 @@
 
 import { dump as yamlDump } from 'js-yaml'
 
+import { isDocumentReference } from '~'
+
 interface JSONable {
 	toJSON: () => unknown
 }
@@ -12,11 +14,13 @@ function isJSONable(x: unknown): x is JSONable {
 }
 
 export function dump(o: unknown) {
+	// console.log('dump', o)
 	return yamlDump(o, {
 		skipInvalid: true,
 
 		replacer: (_k, v: unknown) => {
 			if (isJSONable(v)) return v.toJSON()
+			else if (isDocumentReference(v)) return v.path
 			else return v
 		},
 	})

@@ -4,12 +4,13 @@
 import { assert } from '@voltiso/assertor'
 import { isDefined, undef } from '@voltiso/util'
 
-import type { DataWithoutId } from '../../Data'
-import { withoutId } from '../../Data'
-import { isDeleteIt } from '../../it'
-import type { AfterTrigger } from '../../Trigger'
-import type { DocRefContextWithTransaction } from './Context.js'
-import { getCacheEntry } from './getCacheEntry.js'
+import type { DataWithoutId } from '~/Data'
+import { withoutId } from '~/Data'
+import { isDeleteIt } from '~/it'
+import type { AfterTrigger } from '~/Trigger'
+
+import type { DocRefContextWithTransaction } from './Context'
+import { getCacheEntry } from './getCacheEntry'
 
 /**
  * (pure) Returns new data as modified by trigger (trigger may return new data,

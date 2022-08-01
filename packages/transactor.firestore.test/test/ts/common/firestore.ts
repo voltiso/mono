@@ -6,6 +6,9 @@ import { createTransactor } from '@voltiso/transactor'
 import { initializeApp } from 'firebase-admin/app'
 import type { Firestore } from 'firebase-admin/firestore'
 import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore'
+import mockConsole from 'jest-mock-console'
+
+mockConsole()
 
 initializeApp({ projectId: 'firestore-transactor' })
 
