@@ -2,11 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-await-in-loop */
-import { isIterable } from '../array'
-import { lazyPromise } from '../lazy'
-import { isSyncerNested } from './SyncerNested.js'
-import type { SyncerPromise } from './SyncerPromise.js'
-import { isSyncerSwitchAsync, isSyncerSwitchSync } from './SyncerSwitch.js'
+import { lazyPromise } from '~/lazy/lazyPromise'
+import { isIterable } from '~/array/isIterable'
+
+import { isSyncerNested } from './SyncerNested'
+import type { SyncerPromise } from './SyncerPromise'
+import { isSyncerSwitchAsync, isSyncerSwitchSync } from './SyncerSwitch'
 
 function isDone<T, TReturn>(
 	iteratorResult: IteratorResult<T, TReturn>,

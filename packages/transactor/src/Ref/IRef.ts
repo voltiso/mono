@@ -28,7 +28,7 @@ export interface IRefBase {
 	update(updates: any): PromiseLike<unknown>
 	delete(): PromiseLike<null>
 
-	clone(): this
+	// clone(): this
 	toJSON(): object
 }
 

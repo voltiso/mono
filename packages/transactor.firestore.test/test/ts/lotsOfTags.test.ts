@@ -7,32 +7,44 @@ import { createTransactor, Doc, method } from '@voltiso/transactor'
 import * as transactorSchemas from '@voltiso/transactor/schemas'
 import { Assert } from '@voltiso/util'
 
-import { firestore, firestoreModule } from './common/firestore.js'
+import { firestore, firestoreModule } from './common/firestore'
 
 const db = createTransactor(firestore, firestoreModule)
 
-class A extends Doc('a').public({ a: 1, b: transactorSchemas.ref<'b'>() }) {
+class A extends Doc('a').public({
+	a: 1,
+	b: transactorSchemas.strongRef<'b'>(),
+}) {
 	@method
 	async setFriend(b: Ref<B>) {
 		this.b = b
 	}
 }
 
-class B extends Doc('b').public({ b: 2, c: transactorSchemas.ref<'c'>() }) {
+class B extends Doc('b').public({
+	b: 2,
+	c: transactorSchemas.strongRef<'c'>(),
+}) {
 	@method
 	async setFriend(c: Ref<C>) {
 		this.c = c
 	}
 }
 
-class C extends Doc('c').public({ c: 3, d: transactorSchemas.ref<'d'>() }) {
+class C extends Doc('c').public({
+	c: 3,
+	d: transactorSchemas.strongRef<'d'>(),
+}) {
 	@method
 	async setFriend(d: Ref<D>) {
 		this.d = d
 	}
 }
 
-class D extends Doc('d').public({ d: 4, e: transactorSchemas.ref<'e'>() }) {
+class D extends Doc('d').public({
+	d: 4,
+	e: transactorSchemas.strongRef<'e'>(),
+}) {
 	@method
 	async setFriend(e: Ref<E>) {
 		this.e = e
@@ -41,7 +53,7 @@ class D extends Doc('d').public({ d: 4, e: transactorSchemas.ref<'e'>() }) {
 
 class E extends Doc('e').public({
 	d: s.number,
-	f: transactorSchemas.ref<'f'>(),
+	f: transactorSchemas.strongRef<'f'>(),
 }) {
 	@method
 	async setFriend(f: Ref<F>) {
@@ -51,7 +63,7 @@ class E extends Doc('e').public({
 
 class F extends Doc('f').public({
 	d: s.number,
-	g: transactorSchemas.ref<'g'>(),
+	g: transactorSchemas.strongRef<'g'>(),
 }) {
 	@method
 	async setFriend(g: Ref<G>) {
@@ -61,7 +73,7 @@ class F extends Doc('f').public({
 
 class G extends Doc('g').public({
 	d: s.number,
-	a: transactorSchemas.ref<'a'>(),
+	a: transactorSchemas.strongRef<'a'>(),
 }) {
 	@method
 	async setFriend(a: Ref<A>) {

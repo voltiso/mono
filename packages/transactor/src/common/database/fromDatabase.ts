@@ -3,18 +3,18 @@
 
 import { assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
-import { isPlain } from '@voltiso/util'
+import { isPlainObject } from '@voltiso/util'
 
 import type {
 	DataRecord,
 	DataWithoutId,
 	NestedData,
 	NestedDataNoArray,
-} from '../../Data/Data.js'
+} from '../../Data/Data'
 import { StrongDocRef, WeakDocRef } from '../../Ref'
-import type { DocRefBaseContext } from '../../Ref/_/Context.js'
+import type { DocRefBaseContext } from '../../Ref/_/Context'
 import { isTimestamp } from '../../util'
-import { isRefEntry } from './RefEntry.js'
+import { isRefEntry } from './RefEntry'
 
 function fromFirestoreRec(
 	ctx: DocRefBaseContext,
@@ -43,7 +43,7 @@ function fromFirestoreRec(
 		if (o.__isStrong) return new StrongDocRef(ctx, o.__target.path)
 		else return new WeakDocRef(ctx, o.__target.path)
 	} else if (isTimestamp(o)) return o.toDate()
-	else if (isPlain(o)) {
+	else if (isPlainObject(o)) {
 		const r: DataRecord = {}
 
 		for (const [key, val] of Object.entries(o)) {
@@ -64,7 +64,7 @@ export const fromFirestore = (
 	if (!data) return null
 	else {
 		const fixed = fromFirestoreRec(ctx, data)
-		assert(isPlain(fixed))
+		assert(isPlainObject(fixed))
 		return fixed as DataWithoutId
 	}
 }

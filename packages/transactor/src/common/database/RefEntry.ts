@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
-import { assumeType, isPlain } from '@voltiso/util'
+import { assumeType, isPlainObject } from '@voltiso/util'
 
 import { isDocumentReference } from './isDocumentReference.js'
 
@@ -12,7 +12,7 @@ export type RefEntry = {
 }
 
 export function isRefEntry(x: unknown): x is RefEntry {
-	if (!isPlain(x)) return false
+	if (!isPlainObject(x)) return false
 
 	if (Object.keys(x).length !== 2) return false
 

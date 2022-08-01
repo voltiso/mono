@@ -1,7 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Assume } from '@voltiso/util'
+import type {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+} from '_'
+import { EXTENDS } from '_'
+import type { AlsoAccept, Assume } from '@voltiso/util'
 
 import type {
 	DefineSchema,
@@ -12,14 +20,7 @@ import type {
 	ValidationResult,
 } from '~'
 
-import type { ISchema, SCHEMA_NAME } from './ISchema'
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-} from './symbols'
-import { EXTENDS } from './symbols'
+import type { ISchema } from './ISchema'
 
 export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	//
@@ -88,10 +89,10 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 * @returns Value after applying transformations (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	validate(x: unknown): unknown
-	// validate<X>(
-	// 	x: X,
-	// ): X extends this[OPTIONS]['Input'] ? this[OPTIONS]['Output'] : never
+	validate(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+	): this[OPTIONS]['Output']
+	// validate(x: unknown): unknown
 
 	/**
 	 * Do not return transformed value - just check if the value is valid

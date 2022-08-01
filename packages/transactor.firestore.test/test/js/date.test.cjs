@@ -4,12 +4,13 @@
 'use strict'
 
 const { firestore, srcFirestore } = require('./common/index.cjs')
+
 const { createFirestoreTransactor } = srcFirestore
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
-describe('date', function () {
-	it('should convert timestamp to date', async function () {
+describe('date', () => {
+	it('should convert timestamp to date', async () => {
 		expect.hasAssertions()
 
 		const birth = new Date()
@@ -19,7 +20,11 @@ describe('date', function () {
 			birth,
 		})
 
-		await expect(db('usersOrNot/artur').dataWithId()).resolves.toMatchObject({
+		const data = await db('usersOrNot/artur').dataWithId()
+
+		expect(data?.['birth']).toBeInstanceOf(Date)
+
+		expect(data).toMatchObject({
 			id: 'artur',
 			age: 20,
 			birth,

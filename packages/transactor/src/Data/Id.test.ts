@@ -6,7 +6,7 @@ import type { IsSubtype } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import { Doc } from '..'
-import type { Id } from './Id.js'
+import type { Id } from './Id'
 
 class MyDoc extends Doc('my-tag-data-1')({
 	public: {

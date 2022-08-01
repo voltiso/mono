@@ -4,13 +4,13 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { DeleteIt } from './deleteIt.js'
-import type { ApplyPatch } from './patch.js'
-import { forcePatch, patch } from './patch.js'
-import { patchSet } from './patchSet.js'
-import { patchUpdate } from './patchUpdate.js'
-import type { ReplaceIt } from './replaceIt.js'
-import { replaceIt } from './replaceIt.js'
+import type { DeleteIt } from './deleteIt'
+import type { ApplyPatch } from './patch'
+import { forcePatch, patch } from './patch'
+import { patchSet } from './patchSet'
+import { patchUpdate } from './patchUpdate'
+import type { ReplaceIt } from './replaceIt'
+import { replaceIt } from './replaceIt'
 
 describe('patch', () => {
 	it('generic', <X>() => {

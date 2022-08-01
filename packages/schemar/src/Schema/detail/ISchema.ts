@@ -1,13 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { OPTIONS, PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
+import { EXTENDS } from '_'
+
 import type { Schemable, SchemaOptions, ValidationResult } from '~'
-
-import type { OPTIONS, PARTIAL_OPTIONS } from './symbols'
-import { EXTENDS } from './symbols'
-
-export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
-export type SCHEMA_NAME = typeof SCHEMA_NAME
 
 // export const IS_SCHEMA = Symbol('IS_SCHEMA')
 // export type IS_SCHEMA = typeof IS_SCHEMA

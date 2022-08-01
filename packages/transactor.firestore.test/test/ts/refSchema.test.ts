@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { createTransactor, DocRef, WeakDocRef } from '@voltiso/transactor'
+import { createTransactor, StrongDocRef, WeakDocRef } from '@voltiso/transactor'
 import * as ts from '@voltiso/transactor/schemas'
 
 import { firestore, firestoreModule } from './common/firestore.js'
@@ -14,14 +14,14 @@ describe('ref schema', () => {
 		expect.hasAssertions()
 
 		const mySchema = {
-			myRef: ts.ref,
+			myRef: ts.strongRef,
 			myWeakRef: ts.weakRef,
 		}
 
-		expect(DocRef.name).toBe('DocRef_')
+		expect(StrongDocRef.name).toBe('lazyConstructor(StrongDocRef_)')
 
 		const myWeakRef = db('a/b/c/d')
-		const myRef = new DocRef(
+		const myRef = new StrongDocRef(
 			// @ts-expect-error `_context` is hidden
 			myWeakRef._context as never,
 			myWeakRef.path.pathString,
@@ -29,16 +29,16 @@ describe('ref schema', () => {
 
 		const aa = s.schema(mySchema).validate({ myRef, myWeakRef })
 
-		expect(aa.myRef).toBeInstanceOf(DocRef)
+		expect(aa.myRef).toBeInstanceOf(StrongDocRef)
 		expect(aa.myWeakRef).toBeInstanceOf(WeakDocRef)
 
 		const bb = s.schema(mySchema).validate({ myRef, myWeakRef: myRef })
 
-		expect(bb.myRef).toBeInstanceOf(DocRef)
+		expect(bb.myRef).toBeInstanceOf(StrongDocRef)
 		expect(bb.myWeakRef).toBeInstanceOf(WeakDocRef)
 
 		expect(() =>
 			s.schema(mySchema).validate({ myRef: myWeakRef, myWeakRef }),
-		).toThrow(".myRef instanceof should be 'DocRef_' (got 'WeakDocRef_')")
+		).toThrow(".myRef instanceof should be 'StrongDocRef_' (got 'WeakDocRef_')")
 	})
 })

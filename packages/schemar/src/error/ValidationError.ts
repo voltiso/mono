@@ -3,14 +3,14 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type * as s from '~/schemas/index'
+import type { ValidationIssue } from '~'
 
 import { SchemarError } from './SchemarError'
 
 export class ValidationError extends lazyConstructor(() => SchemarError) {
-	issues: s.ValidationIssue[]
+	issues: ValidationIssue[]
 
-	constructor(issues: s.ValidationIssue[]) {
+	constructor(issues: ValidationIssue[]) {
 		super(`${issues.map(issue => issue.toString()).join('\n')}`)
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'ValidationError'

@@ -5,7 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type { GetObjectType_, InferableObject } from '~'
-import * as s from '~/schemas'
+import * as s from '~'
 
 describe('GetObjectType', () => {
 	it('literal', () => {

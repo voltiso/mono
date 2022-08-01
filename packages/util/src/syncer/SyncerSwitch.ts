@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { UndefinedFromOptional } from '../object'
+import type { UndefinedFromOptional } from '~/object'
 
 export interface SyncerSwitchAsync<T = unknown> {
 	async: () => PromiseLike<T> | T

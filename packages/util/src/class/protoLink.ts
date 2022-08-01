@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '../_/assert.js'
-import type { Reverse } from '../array'
-import type { MergeN } from '../object'
+import { assert } from '_/assert'
+
+import type { Reverse } from '~/array'
+import type { MergeN } from '~/object'
 
 /* eslint-disable security/detect-object-injection */
 

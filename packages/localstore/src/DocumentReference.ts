@@ -40,6 +40,10 @@ export class DocumentReference implements Database.DocumentReference {
 		this.id = isDefined(id) ? id : newAutoId()
 	}
 
+	clone(): DocumentReference {
+		return new DocumentReference(this._collectionRef, this.id)
+	}
+
 	get(): MaybePromise<DocumentSnapshot> {
 		return this._get()
 	}
@@ -73,6 +77,8 @@ export class DocumentReference implements Database.DocumentReference {
 		const doc = collection._docs[id]
 
 		assert(doc)
+
+		console.log('DocumentReference.set', data, 'deepClone')
 
 		doc._data = deepClone(data)
 

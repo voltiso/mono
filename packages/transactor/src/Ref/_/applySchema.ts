@@ -3,7 +3,7 @@
 
 import type * as s from '@voltiso/schemar'
 import { ValidationError } from '@voltiso/schemar'
-import { isPlain } from '@voltiso/util'
+import { isPlainObject } from '@voltiso/util'
 
 import type { Data, DataWithoutId } from '../../Data/Data.js'
 import type { WithTransactor } from '../../Transactor'
@@ -18,7 +18,7 @@ type Params = {
 export const schemaDeleteIt = Symbol('schemaDeleteIt')
 
 function processSentinels(x: unknown): Data | null {
-	if (isPlain(x)) {
+	if (isPlainObject(x)) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const r = {} as any
 

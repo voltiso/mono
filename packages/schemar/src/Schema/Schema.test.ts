@@ -10,11 +10,21 @@ import type {
 	GetInputType,
 	GetOutputType,
 	InferableReadonlyTuple,
+	Literal,
 	OPTIONS,
 	Schema,
 	SchemaOptions,
+	String,
 } from '~'
-import * as s from '~'
+import {
+	array,
+	number,
+	readonlyArray,
+	readonlyTuple,
+	schema,
+	string,
+	tuple,
+} from '~'
 
 describe('Schema', () => {
 	it('generic', <O extends SchemaOptions>() => {
@@ -52,40 +62,40 @@ describe('Schema', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		const a = s.schema({ a: s.number(1) })
+		const a = schema({ a: number(1) })
 
-		expect(a.extends({ a: s.number })).toBeTruthy()
+		expect(a.extends({ a: number })).toBeTruthy()
 
 		type A = GetOutputType<typeof a>
 		Assert<IsIdentical<A, { a: 1 }>>()
 
-		const tLiteral = [s.number(123), s.string] as const
+		const tLiteral = [number(123), string] as const
 		Assert.is<typeof tLiteral, InferableReadonlyTuple>()
 
-		const b = s.schema(tLiteral)
+		const b = schema(tLiteral)
 
-		expect(b.extends(s.array)).toBeTruthy()
-		expect(b.extends(s.tuple(s.number, s.string))).toBeTruthy()
+		expect(b.extends(array)).toBeTruthy()
+		expect(b.extends(tuple(number, string))).toBeTruthy()
 
 		Assert<IsIdentical<GetOutputType<typeof b>, [123, string]>>()
 
-		const c = s.schema([s.number(123), s.string] as [s.Literal<123>, s.String])
+		const c = schema([number(123), string] as [Literal<123>, String])
 
-		expect(c.extends(s.array)).toBeTruthy()
-		expect(c.extends(s.tuple(s.number, s.string))).toBeTruthy()
+		expect(c.extends(array)).toBeTruthy()
+		expect(c.extends(tuple(number, string))).toBeTruthy()
 
 		Assert<IsIdentical<GetOutputType<typeof c>, [123, string]>>()
 		Assert<IsIdentical<GetInputType<typeof c>, [123, string]>>()
 
-		const dd = s.readonlyTuple([123, 'test'] as const)
+		const dd = readonlyTuple([123, 'test'] as const)
 
-		expect(dd.extends(s.readonlyArray)).toBeTruthy()
-		expect(dd.extends(s.array)).toBeFalsy()
+		expect(dd.extends(readonlyArray)).toBeTruthy()
+		expect(dd.extends(array)).toBeFalsy()
 
-		const d = s.schema([123, 'test'] as const)
+		const d = schema([123, 'test'] as const)
 
-		expect(d.extends(s.readonlyArray)).toBeTruthy()
-		expect(d.extends(s.array)).toBeTruthy() // can't possibly work with readonly [] argument
+		expect(d.extends(readonlyArray)).toBeTruthy()
+		expect(d.extends(array)).toBeTruthy() // can't possibly work with readonly [] argument
 
 		// Assert.is<GetType<ISchema<123>>, 123>()
 		// Assert.is<Schema<123>['InputType'], 123>()

@@ -3,7 +3,7 @@
 
 import { defineEslintConfig } from '@voltiso/config.eslint.lib'
 
-import { ignorePatterns } from './_/ignorePatterns'
+import { ignorePatterns } from './detail/ignorePatterns'
 import {
 	anyOverride,
 	arrayFunc,
@@ -70,7 +70,7 @@ import {
 	unusedImports,
 	wokeOverride,
 	yaml,
-} from './_/overrides'
+} from './detail/overrides'
 
 // const restrictedGlobals = require('confusing-browser-globals') // CRA config already does this
 

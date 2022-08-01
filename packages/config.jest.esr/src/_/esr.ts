@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable github/unescaped-html-literal */
+
 import { defineJestConfig } from '@voltiso/config.jest.lib'
 
 const extensions = [
@@ -32,7 +34,12 @@ for (const extension of extensions) {
 
 const moduleNameMapper: Record<string, string> = {
 	// '~': '<rootDir>', // use built files
-	'~': '<rootDir>/src'
+	'^~$': '<rootDir>/src',
+	'^~/(.*)': '<rootDir>/src/$1',
+	'^_$': '<rootDir>/src/_',
+	'^_/(.*)': '<rootDir>/src/_/$1',
+	// '#ansi-styles': './node_modules/chalk/source/vendor/ansi-styles/index.js', // for chalk
+	// '#supports-color': './node_modules/chalk/source/vendor/supports-color/index.js', // for chalk
 }
 
 // remove extensions
@@ -50,6 +57,8 @@ export const jestEsrConfig = defineJestConfig({
 
 	// testEnvironment: 'node',
 	modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
+
+	// transformIgnorePatterns: ['node_modules/(?!chalk)$'],
 
 	moduleNameMapper,
 	transform,

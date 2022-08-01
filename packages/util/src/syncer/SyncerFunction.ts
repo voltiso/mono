@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SyncerPromise } from './SyncerPromise.js'
+import type { SyncerPromise } from './SyncerPromise'
 
 export interface SyncerFunction<
 	Args extends unknown[] = never[],

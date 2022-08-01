@@ -24,9 +24,13 @@ function deepAssign(r: any, x: any) {
 	Object.setPrototypeOf(r, Object.getPrototypeOf(x))
 }
 
+// let cnt = 0
+
 export function deepClone<X>(x: X): X
 
 export function deepClone(x: any) {
+	// if(++cnt >= 20) throw new Error('asdfg')
+
 	if (typeof x?.clone === 'function') {
 		return x.clone()
 	}

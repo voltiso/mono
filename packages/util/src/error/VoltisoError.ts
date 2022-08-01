@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getPackageJsonCachedSync } from '../package-json'
+import { getPackageJsonCachedSync } from '~/package-json'
 
 export class VoltisoError extends Error {
 	constructor(

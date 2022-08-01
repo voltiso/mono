@@ -13,7 +13,7 @@ import type { Cache, WithTransaction } from '../../Transaction'
 import { isWithTransaction, methodGuard } from '../../Transaction'
 import type { ContextOverride, WithTransactor } from '../../Transactor'
 import { dump } from '../../util'
-import type { DocRefBase_ } from '../DocRefBase.js'
+import type { DocRefBaseImpl } from '../DocRefBase.js'
 import { transactionDocPathGet } from '../methods'
 import type { WithDocRef } from '../WithDocRef.js'
 import { processTriggers } from './processTriggers.js'
@@ -67,7 +67,7 @@ export async function callMethod<
 			assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
-			return (db.doc(path) as unknown as DocRefBase_)._callMethod(
+			return (db.doc(path) as unknown as DocRefBaseImpl)._callMethod(
 				method as never,
 				args,
 				options,

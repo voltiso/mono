@@ -3,11 +3,11 @@
 
 import * as s from '@voltiso/schemar'
 
-import { schemaDeleteIt } from '../Ref/_/applySchema.js'
+import { schemaDeleteIt } from '../Ref/_/applySchema'
 
-export * from './intrinsicFields.js'
-export * from './ref.js'
-export * from './types.js'
+export * from './intrinsicFields'
+export * from './ref'
+export * from './types'
 
 export const userId = s.string.regex(
 	/^[\dA-Za-z]{28}$/u,

@@ -25,7 +25,7 @@ const doctors = db('doctor').register(Doctor)
 class Patient extends Doc('patientW').public({
 	profile: {
 		name: s.string,
-		mainDoctor: transactorSchemas.ref<'doctorW'>(),
+		mainDoctor: transactorSchemas.strongRef<'doctorW'>(),
 		maybeDoctor: transactorSchemas.weakRef<'doctorW'>(),
 		x: s.number.optional,
 	},

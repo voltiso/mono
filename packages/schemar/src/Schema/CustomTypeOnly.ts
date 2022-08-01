@@ -1,9 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SCHEMA_NAME, SchemaOptions } from '~'
+import type { PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
 
-import type { CustomSchema, PARTIAL_OPTIONS } from '.'
+import type { SchemaOptions } from '~'
+
+import type { CustomSchema } from '.'
 
 export interface CustomTypeOnly<O extends Partial<SchemaOptions>>
 	extends CustomSchema<O> {

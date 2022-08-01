@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { VoltisoUtilError } from '../../../../error'
-import { lazyConstructor } from '../../../../lazy'
+import { lazyConstructor } from '../../../../lazy/index'
 import { toString } from '../../../../string'
 import type { Value_ } from '../../../key-value'
 import type { IPath, Path } from '../../../Path'

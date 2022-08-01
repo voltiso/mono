@@ -15,7 +15,7 @@ export = {
 				},
 			},
 		})
-		// return { code }
-		return { code: `"use strict";\n${code}` }
+		return { code }
+		// return { code: `"use strict";\n${code}` }
 	},
 }

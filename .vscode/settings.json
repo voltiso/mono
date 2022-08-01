@@ -10,13 +10,24 @@
 	//
 
 	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
-	"javascript.preferences.importModuleSpecifierEnding": "minimal", // Needed for proper esm
-	"typescript.preferences.importModuleSpecifierEnding": "minimal", // Needed for proper esm
+	// "javascript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
+	// "typescript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
+	"javascript.preferences.importModuleSpecifierEnding": "minimal",
+	"typescript.preferences.importModuleSpecifierEnding": "minimal",
+
+	"javascript.preferences.importModuleSpecifier": "shortest",
+	"typescript.preferences.importModuleSpecifier": "shortest",
+
+	"javascript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
+	"typescript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
 
 	"typescript.preferences.quoteStyle": "single",
 	"javascript.preferences.quoteStyle": "single",
 
 	"typescript.preferences.includePackageJsonAutoImports": "auto",
+
+	// "typeCoverage.strict": true,
+	// "typeCoverage.jsEnable": true,
 
 	"files.exclude": {
 		// "**/node_modules/": true,
@@ -186,7 +197,8 @@
 	// "jest.autoRun": { "watch": true },
 	"jest.autoRun": {
 		"watch": false,
-		"onSave": "test-src-file"
+		"onSave": "test-file"
+		// "onSave": "test-src-file"
 		// "onStartup": ["all-tests"]
 	},
 
@@ -207,6 +219,7 @@
 		"browserslistrc",
 		"cand",
 		"chokidar",
+		"chunkname",
 		"cjsx",
 		"clier",
 		"Coderho",
@@ -246,6 +259,7 @@
 		"mtsx",
 		"mutables",
 		"nala",
+		"nocheck",
 		"nodelib",
 		"nonblock",
 		"npmrc",

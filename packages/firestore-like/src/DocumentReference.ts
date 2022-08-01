@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isPlain, undef } from '@voltiso/util'
+import { isPlainObject, undef } from '@voltiso/util'
 
 import type { DocumentData } from './DocumentData'
 import type { DocumentSnapshot } from './DocumentSnapshot'
@@ -20,7 +20,7 @@ export type DocumentReference = {
 
 export function isDocumentReference(x: unknown): x is DocumentReference {
 	return (
-		!isPlain(x) &&
+		!isPlainObject(x) &&
 		(x as DocumentReference | null)?.update !== undef &&
 		(x as DocumentReference | null)?.set !== undef &&
 		(x as DocumentReference | null)?.path !== undef

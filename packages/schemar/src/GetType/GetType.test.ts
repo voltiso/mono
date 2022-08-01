@@ -4,8 +4,16 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { InferableObject, ISchema, Schema, Schemable } from '~'
-import * as s from '~/schemas/index'
+import type {
+	IArray,
+	InferableObject,
+	ISchema,
+	ITuple,
+	Number,
+	Schema,
+	Schemable,
+} from '~'
+import { number } from '~'
 
 import type { GetInputType, GetOutputType } from './GetType'
 
@@ -13,7 +21,7 @@ describe('GetType', () => {
 	it('simple', () => {
 		expect.assertions(0)
 
-		type A = GetOutputType<s.Number>
+		type A = GetOutputType<Number>
 		Assert<IsIdentical<A, number>>()
 
 		type B = GetOutputType<Schema>
@@ -24,19 +32,19 @@ describe('GetType', () => {
 		expect.assertions(0)
 
 		const a = {
-			num: s.number,
+			num: number,
 		}
 		type A = GetOutputType<typeof a>
 		Assert<IsIdentical<A, { num: number }>>()
 
 		const d = {
-			num: s.number.optional,
+			num: number.optional,
 		}
 		type D = GetOutputType<typeof d>
 		Assert<IsIdentical<D, { num?: number }>>()
 
 		const e = {
-			num: s.number.default(0),
+			num: number.default(0),
 		}
 		type E = GetInputType<typeof e>
 		Assert<IsIdentical<E, { num?: number }>>()
@@ -49,12 +57,12 @@ describe('GetType', () => {
 		expect.assertions(0)
 
 		type A = GetOutputType<{
-			[k: string]: s.Number
+			[k: string]: Number
 		}>
 		Assert<IsIdentical<A, { [k: string]: number }>>()
 
 		type B = GetOutputType<{
-			[k in string]: s.Number
+			[k in string]: Number
 		}>
 		Assert<IsIdentical<B, { [k: string]: number }>>()
 	})
@@ -93,28 +101,25 @@ describe('GetType', () => {
 		expect.assertions(0)
 
 		const a = {
-			a: s.number,
+			a: number,
 		}
 
 		const b = {
-			b: s.number.optional,
+			b: number.optional,
 		}
 
 		type A = GetOutputType<typeof a & typeof b>
 		Assert<IsIdentical<A, { a: number; b?: number }>>()
 	})
 
-	it('arrays - complex', <S extends (s.ITuple | s.IArray) & ISchema>() => {
+	it('arrays - complex', <S extends (ITuple | IArray) & ISchema>() => {
 		expect.assertions(0)
 
-		Assert.is<
-			GetOutputType<(s.ITuple | s.IArray) & ISchema>,
-			readonly unknown[]
-		>()
+		Assert.is<GetOutputType<(ITuple | IArray) & ISchema>, readonly unknown[]>()
 
 		Assert.is<GetOutputType<S>, readonly unknown[]>()
 
-		Assert.is<never[], GetOutputType<(s.ITuple | s.IArray) & ISchema>>()
+		Assert.is<never[], GetOutputType<(ITuple | IArray) & ISchema>>()
 
 		// Assert.is<never[], [1, 2, 3]>()
 		// Assert.is<never[], GetType<S>>()

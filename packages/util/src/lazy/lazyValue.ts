@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '../proxy'
+import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '~/proxy'
 
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable @typescript-eslint/no-empty-function */

@@ -3,4 +3,5 @@
 
 export * from './CustomTypeOnly'
 export * from './detail'
+export * from './isSchema'
 export * from './Schema'

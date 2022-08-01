@@ -5,10 +5,10 @@ import * as s from '@voltiso/schemar'
 import { callableObject, lazyValue, undef } from '@voltiso/util'
 
 import type { IDoc, IndexedDoc } from '../Doc'
-import type { DocTag, DocTypes } from '../DocTypes.js'
-import type { DocRefBase_ } from '../Ref'
+import type { DocTag, DocTypes } from '../DocTypes'
+import type { DocRefBaseImpl } from '../Ref'
 import { StrongDocRef, WeakDocRef } from '../Ref'
-import type { StrongRef, WeakRef } from '../Ref/RefBase.js'
+import type { StrongRef, WeakRef } from '../Ref/RefBase'
 
 type GD<X extends IDoc | DocTag> = X extends IDoc
 	? X
@@ -40,7 +40,7 @@ const fixableWeakRefSchema = lazyValue(() =>
 	weakRefSchema.or(strongRefSchema).withFix(x => {
 		if (strongRefSchema.isValid(x))
 			return new WeakDocRef(
-				(x as DocRefBase_)._context as never,
+				(x as DocRefBaseImpl)._context as never,
 				x.path.pathString,
 			)
 		else return undef

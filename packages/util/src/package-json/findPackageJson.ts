@@ -4,9 +4,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { VoltisoUtilError } from '../error'
-import type { SyncerPromise, SyncerSwitch } from '../syncer'
-import { runAsync, runSync } from '../syncer'
+// import { VoltisoUtilError } from '~/error' //! cycle
+import type { SyncerPromise, SyncerSwitch } from '~/syncer'
+import { runAsync, runSync } from '~/syncer/run'
 
 interface EnoentError {
 	code: 'ENOENT'
@@ -49,8 +49,8 @@ export function* findPackageJsonSyncer(
 		currentDir = path.dirname(currentDir)
 
 		if (currentDir === '/') {
-			throw new VoltisoUtilError(
-				`cannot find package.json in ancestors of ${startingDir}`,
+			throw new Error(
+				`[@voltiso/util] findPackageJson(): cannot find package.json in ancestors of ${startingDir}`,
 			)
 		}
 	}

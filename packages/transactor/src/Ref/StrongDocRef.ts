@@ -3,16 +3,16 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { InferTI } from '../CollectionRef/InferTI.js'
+import type { InferTI } from '../CollectionRef/InferTI'
 import type { IDoc } from '../Doc'
-import type { GDocFields } from '../Doc/_/GDocFields.js'
-import type { GMethodPromises } from '../Doc/_/GMethodPromises.js'
-import type { DocRefParentContext } from './_/Context.js'
-import { DocRefBase_ } from './DocRefBase.js'
-import type { StrongRef } from './RefBase.js'
+import type { GDocFields } from '../Doc/_/GDocFields'
+import type { GMethodPromises } from '../Doc/_/GMethodPromises'
+import type { DocRefParentContext } from './_/Context'
+import { DocRefBaseImpl } from './DocRefBase'
+import type { StrongRef } from './RefBase'
 
-export class StrongDocRef_<D extends IDoc> extends lazyConstructor(
-	() => DocRefBase_,
+export class StrongDocRefImpl<D extends IDoc> extends lazyConstructor(
+	() => DocRefBaseImpl,
 )<D, true, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
 		super(context, path, true)
@@ -30,9 +30,11 @@ export type StrongDocRef<D extends IDoc> = StrongRef<D> &
 	GMethodPromises<InferTI<D>>
 
 export const StrongDocRef = lazyConstructor(
-	() => StrongDocRef_,
+	() => StrongDocRefImpl,
 ) as unknown as StrongDocRefConstructor
 
 export function isStrongDocRef(x: unknown): x is StrongDocRef<IDoc> {
-	return typeof x === 'object' && (x as DocRefBase_ | null)?._isStrong === true
+	return (
+		typeof x === 'object' && (x as DocRefBaseImpl | null)?._isStrong === true
+	)
 }

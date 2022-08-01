@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NotProvided, OptionalArgument } from '../type/optional-argument'
-import type { ISyncerNested, SyncerNested } from './SyncerNested.js'
-import type { PartialSyncerSwitch, SyncerSwitch } from './SyncerSwitch.js'
+import type { NotProvided, OptionalArgument } from '~/type/optional-argument'
+
+import type { ISyncerNested, SyncerNested } from './SyncerNested'
+import type { PartialSyncerSwitch, SyncerSwitch } from './SyncerSwitch'
 
 export type ISyncerPromise<Return = unknown> = Generator<
 	PartialSyncerSwitch | ISyncerPromise | ISyncerNested,

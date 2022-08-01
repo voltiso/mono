@@ -50,8 +50,8 @@
 		/** GitHub-style Markdown preview */
 		"bierner.markdown-preview-github-styles",
 
-		/** `type-coverage` */
-		"york-yao.vscode-type-coverage",
+		// /** `type-coverage` */
+		// "york-yao.vscode-type-coverage",
 
 		/** Ballpark estimate how heavy the library might be after bundling */
 		"wix.vscode-import-cost",
@@ -67,7 +67,7 @@
 
 		//
 
-		// react-native - Exp - app.json validation, code completion
+		// `react-native` - Exp - app.json validation, code completion
 		"byCedric.vscode-expo",
 
 		//
@@ -77,7 +77,7 @@
 		//
 
 		/** Firebase - explore FireStore from VSCode! */
-		"jsayol.firebase-explorer", // explore Firestore, etc.
+		"jsayol.firebase-explorer", // Explore Firestore, etc.
 
 		/** Security rules syntax highlighting */
 		"toba.vsfire"

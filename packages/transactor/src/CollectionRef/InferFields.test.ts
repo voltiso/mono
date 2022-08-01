@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { afterCreateOrUpdate, method } from '../decorators.js'
+import { afterCreateOrUpdate, method } from '../decorators'
 import type {
 	DocConstructor,
 	DTI,
@@ -15,7 +15,7 @@ import type {
 import { Doc } from '../Doc'
 import type { IRef } from '../Ref'
 import * as ss from '../schemas'
-import type { InferFields } from './InferFields.js'
+import type { InferFields } from './InferFields'
 
 class Doctor extends Doc({
 	public: {

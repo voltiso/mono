@@ -30,6 +30,8 @@
 		"lint:depcheck": "depcheck",
 		"lint:eslint": "eslint . --max-warnings=0",
 		"lint:tsc": "tsc -b",
+		"__________FIX": "__________",
+		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-p build:esm build:cjs",
 		"build:esm": "ttsc -b tsconfig.build.esm.json",

@@ -7,10 +7,10 @@
 
 import { deepEqual } from 'fast-equals'
 
-import { DocRefBase_ } from '../Ref'
+import { DocRefBaseImpl } from '../Ref'
 
 function filter(x: any): unknown {
-	if (x instanceof DocRefBase_) return x.toJSON()
+	if (x instanceof DocRefBaseImpl) return x.toJSON()
 	else if (x?.constructor === Object) {
 		const r = {} as any
 

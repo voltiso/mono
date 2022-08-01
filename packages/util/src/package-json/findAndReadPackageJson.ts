@@ -4,18 +4,18 @@
 import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 
-import { assert } from '../_/assert.js'
-import type { SyncerPromise } from '../syncer'
-import { runAsync, runSync } from '../syncer'
-// import { VoltisoScriptError } from '../VoltisoScriptError.js'
-import { findPackageJsonSyncer } from './findPackageJson.js'
-import type { PackageJson } from './PackageJson.js'
+// import { assert } from '~/_internal/assert'
+import type { SyncerPromise } from '~/syncer'
+import { runAsync, runSync } from '~/syncer/run'
+
+import { findPackageJsonSyncer } from './findPackageJson'
+import type { PackageJson } from './PackageJson'
 
 export function* findAndReadPackageJsonSyncer(
 	dir?: string | undefined,
 ): SyncerPromise<PackageJson> {
 	const packageJsonPath = (yield findPackageJsonSyncer(dir)) as string
-	assert(packageJsonPath)
+	// assert(packageJsonPath)
 
 	const packageJsonBuffer = (yield {
 		// eslint-disable-next-line security/detect-non-literal-fs-filename

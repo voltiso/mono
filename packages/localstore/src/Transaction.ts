@@ -85,6 +85,7 @@ export class Transaction implements Database.Transaction {
 		checkIfFailed(this)
 
 		const lock = getLock(this._store, this, ref.path)
+		console.log('Transaction.set', ref, data, 'deepClone')
 		lock.data = deepClone(data)
 	}
 
@@ -99,7 +100,12 @@ export class Transaction implements Database.Transaction {
 				`NOT_FOUND: document ${ref.path} does not exist (cannot update)`,
 			)
 
-		const newData = data === lock.data ? data : deepClone(data)
+		let newData = data
+		if (data !== lock.data) {
+			console.log('Transaction.update', ref, updates, 'deepClone')
+			newData = deepClone(data)
+		}
+
 		applyUpdatesInPlace(newData, updates)
 	}
 

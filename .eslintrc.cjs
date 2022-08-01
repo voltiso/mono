@@ -20,6 +20,11 @@ module.exports = defineEslintConfig(baseEslintConfig, {
 				project: ['./tsconfig.json', './packages/*/tsconfig.json'],
 				tsconfigRootDir: __dirname,
 			},
+
+			// node: {
+			// 	project: ['./tsconfig.json', './packages/*/tsconfig.json'],
+			// 	tsconfigRootDir: __dirname,
+			// },
 		},
 	},
 })

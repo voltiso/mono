@@ -7,7 +7,7 @@ import type {
 	IsIdentical,
 	IsNonStrictEqual,
 	IsRelated,
-} from '../compare'
+} from '~'
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unsafe-return */

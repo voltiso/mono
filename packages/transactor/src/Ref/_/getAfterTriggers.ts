@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import type { IDoc } from '../../Doc'
-import type { DocRefBase_ } from '../DocRefBase.js'
+import type { DocRefBaseImpl } from '../DocRefBase.js'
 import type { IRef } from '../IRef.js'
 import { WeakDocRef } from '../WeakDocRef.js'
 
@@ -20,7 +20,7 @@ function forEachRef(o: any, f: (r: IRef) => void) {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export function getAfterTriggers(this: DocRefBase_) {
+export function getAfterTriggers(this: DocRefBaseImpl) {
 	if (this._afterTriggers) return this._afterTriggers
 
 	this._afterTriggers = []

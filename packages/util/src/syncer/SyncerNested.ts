@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import type { NotProvided, OptionalArgument } from '../OptionalArgument'
-import type { NotProvided, OptionalArgument } from '../type/optional-argument'
-import type { ISyncerPromise } from './SyncerPromise.js'
+import type { NotProvided, OptionalArgument } from '~/type/optional-argument'
+
+import type { ISyncerPromise } from './SyncerPromise'
 
 export interface ISyncerNested {
 	onAsyncStart?:

@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '../_/assert.js'
-import type { SyncerPromise } from '../syncer'
-import { runAsync, runSync } from '../syncer'
-import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson.js'
-import type { PackageJson } from './PackageJson.js'
+// import { assert } from '~/_internal/assert' //! cyclic dep
+import type { SyncerPromise } from '~/syncer'
+import { runAsync, runSync } from '~/syncer'
+
+import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson'
+import type { PackageJson } from './PackageJson'
 
 const cache = new Map<string, PackageJson>()
 const promises = new Map<string, PromiseLike<PackageJson>>()
@@ -40,7 +41,8 @@ export function* getPackageJsonCachedSyncer(
 		},
 	}
 
-	assert(result)
+	// assert(result)
+	if (!result) throw new Error('[@voltiso/util] getPackageJson() failed')
 
 	promises.delete(dir)
 	cache.set(dir, result)

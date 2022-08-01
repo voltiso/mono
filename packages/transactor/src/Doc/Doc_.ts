@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { isPlain, lazyConstructor, omit } from '@voltiso/util'
+import { isPlainObject, lazyConstructor, omit } from '@voltiso/util'
 
 import type { DataWithId, DataWithoutId } from '../Data'
 import { withId } from '../Data'
@@ -11,7 +11,7 @@ import { immutabilize } from '../immutabilize'
 import type { Method } from '../Method.js'
 import type { DocPath } from '../Path'
 import type { StrongRef } from '../Ref'
-import { StrongDocRef, StrongDocRef_ } from '../Ref'
+import { StrongDocRef, StrongDocRefImpl } from '../Ref'
 import type { DocRefContext } from '../Ref/_/Context.js'
 import type { Updates } from '../updates'
 import type { ExecutionContext } from './_/ExecutionContext.js'
@@ -24,7 +24,7 @@ import { DTI } from './DocTI.js'
 import type { IDoc_ } from './IDoc.js'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
-	if (isPlain(x)) {
+	if (isPlainObject(x)) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const r = {} as any
 
@@ -34,8 +34,8 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		}
 
 		return r as never
-	} else if (x instanceof StrongDocRef_) {
-		return new StrongDocRef_(ctx as never, x.path.pathString) as never
+	} else if (x instanceof StrongDocRefImpl) {
+		return new StrongDocRefImpl(ctx as never, x.path.pathString) as never
 	}
 
 	return x

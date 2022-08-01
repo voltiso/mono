@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CallableInstance } from './callableInstance.js'
-import { CALL, callableInstance } from './callableInstance.js'
-import { staticImplements } from './staticImplements.js'
+import type { CallableInstance } from './callableInstance'
+import { CALL, callableInstance } from './callableInstance'
+import { staticImplements } from './staticImplements'
 
 const sym = Symbol('sym')
 

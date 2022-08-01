@@ -3,6 +3,14 @@
 
 /* eslint-disable class-methods-use-this */
 
+import {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	EXTENDS,
+	OPTIONS,
+	PARTIAL_OPTIONS,
+	SCHEMA_NAME,
+} from '_'
 import type { Assume, AtLeast1, Merge2Simple } from '@voltiso/util'
 import { clone, final, isDefined, toString } from '@voltiso/util'
 
@@ -14,40 +22,25 @@ import type {
 	Schema,
 	Schemable,
 	SchemaOptions,
+	ValidationIssue,
+	ValidationResult,
 } from '~'
 import {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
 	defaultSchemaOptions,
-	EXTENDS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
+	isAny,
+	isUnion,
+	isUnknown,
 	processCustomChecks,
-	schema,
-	SCHEMA_NAME,
 	SchemarError,
 	throwTypeOnlyFieldError,
+	union,
 	ValidationError,
 } from '~'
-import * as s from '~/schemas'
+import { isUnknownSchema, schema } from '~/custom-schemas/unknownSchema/index'
 
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>, ISchema
 {
-	declare readonly [SCHEMA_NAME]: string; // SchemaName
-
-	declare readonly [PARTIAL_OPTIONS]: O;
-
-	// declare [OPTIONS]: Assume<
-	// 	SchemaOptions,
-	// 	MergeSchemaOptions<DefaultSchemaOptions, O>
-	// >
-
-	declare readonly [BASE_OPTIONS]: SchemaOptions;
-	declare readonly [DEFAULT_OPTIONS]: this[BASE_OPTIONS];
-
-	// declare readonly [PARTIAL_OPTIONS]: VRequired<O>;
-
 	[OPTIONS]: Assume<
 		this[BASE_OPTIONS],
 		MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
@@ -143,11 +136,11 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return r as never
 	}
 
-	protected _getIssuesImpl(_x: unknown): s.ValidationIssue[] {
+	protected _getIssuesImpl(_x: unknown): ValidationIssue[] {
 		return []
 	}
 
-	protected _getIssues(x: unknown): s.ValidationIssue[] {
+	protected _getIssues(x: unknown): ValidationIssue[] {
 		if (typeof x === 'undefined' && this.hasDefault) return []
 		else return this._getIssuesImpl(x)
 	}
@@ -171,7 +164,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this._fixImpl(result as never)
 	}
 
-	tryValidate(x: unknown): s.ValidationResult<this[OPTIONS]['Output']> {
+	tryValidate(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
 		const value = this._fix(x)
 
 		const issues = [
@@ -189,7 +182,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			return {
 				isValid: false,
 				value,
-				issues: issues as AtLeast1<s.ValidationIssue>,
+				issues: issues as AtLeast1<ValidationIssue>,
 			}
 	}
 
@@ -205,14 +198,15 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	[EXTENDS](other: Schema): boolean {
-		if (s.isUnion(other)) {
+		if (isUnion(other)) {
 			for (const b of other.getSchemas) {
 				if (this.extends(b as never)) return true
 			}
 
 			return false
-		} else if (s.isUnknownSchema(other)) return true
-		else if (s.isUnknown(other)) return true
+		} else if (isUnknownSchema(other)) return true
+		else if (isUnknown(other)) return true
+		else if (isAny(other)) return true
 		else return false
 	}
 
@@ -288,6 +282,19 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	or<Other extends Schemable>(other: Other): never {
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
-		return s.union(this as never, other) as never
+		return union(this as never, other) as never
 	}
+
+	//! esbuild bug: keep `declare` at the end (after all [computed] properties)
+	declare readonly [SCHEMA_NAME]: string; // SchemaName
+
+	declare readonly [PARTIAL_OPTIONS]: O;
+
+	// declare [OPTIONS]: Assume<
+	// 	SchemaOptions,
+	// 	MergeSchemaOptions<DefaultSchemaOptions, O>
+	// >
+
+	declare readonly [BASE_OPTIONS]: SchemaOptions;
+	declare readonly [DEFAULT_OPTIONS]: this[BASE_OPTIONS]
 }

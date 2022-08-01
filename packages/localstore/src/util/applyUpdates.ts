@@ -35,6 +35,9 @@ export function applyUpdatesInPlace(
 			// eslint-disable-next-line security/detect-object-injection
 			o[f] += v._n
 			// eslint-disable-next-line security/detect-object-injection
-		} else o[f] = deepClone(v)
+		} else {
+			console.log('applyUpdatesInPlace', data, updates, 'deepClone')
+			o[f] = deepClone(v)
+		}
 	}
 }

@@ -4,7 +4,7 @@
 import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { Json } from '@voltiso/util'
-import { getKeys, isPlain, undef } from '@voltiso/util'
+import { getKeys, isPlainObject, undef } from '@voltiso/util'
 
 import type { DataWithoutId, NestedData } from '../../Data/Data.js'
 import type { DatabaseContext } from '../../DatabaseContext.js'
@@ -37,9 +37,9 @@ export function toDatabaseUpdate(
 	ctx: DatabaseContext,
 	updates: Updates | NestedUpdates,
 ): FirestoreLike.UpdateData | FirestoreLike.UpdateDataNested {
-	if (isWithToJSON(updates)) return updates.toJSON()
-
 	if (updates instanceof Date) return updates
+
+	if (isWithToJSON(updates)) return updates.toJSON()
 
 	if (isIncrementIt(updates)) return ctx.module.FieldValue.increment(updates.n)
 
@@ -48,14 +48,14 @@ export function toDatabaseUpdate(
 
 	if (isDeleteIt(updates)) return ctx.module.FieldValue.delete()
 
-	if (isPlain(updates)) {
+	if (isPlainObject(updates)) {
 		const r: FirestoreLike.UpdateData = {}
 
 		for (const [key, val] of Object.entries(updates)) {
 			const rr = toDatabaseUpdate(ctx, val as never)
 
 			// if (Database.isTimestamp(rr)) r[key] = rr
-			if (isPlain(rr))
+			if (isPlainObject(rr))
 				for (const childKey of getKeys(rr)) {
 					// eslint-disable-next-line security/detect-object-injection
 					const val = (rr as FirestoreLike.DocumentData)[childKey]
@@ -83,10 +83,10 @@ export function toDatabaseSet(
 	ctx: DatabaseContext,
 	obj: DataWithoutId | NestedData,
 ): FirestoreLike.DocumentData | FirestoreLike.DocumentDataNested {
-	if (isWithToJSON(obj)) return obj.toJSON()
-	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)
-
 	if (obj instanceof Date) return ctx.module.Timestamp.fromDate(obj)
+
+	if (isWithToJSON(obj)) return obj.toJSON() as never
+	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)
 
 	if (isReplaceIt(obj)) return toDatabaseSet(ctx, obj.data as NestedData)
 
@@ -97,7 +97,7 @@ export function toDatabaseSet(
 
 	assert(!isDeleteIt(obj))
 
-	if (isPlain(obj)) {
+	if (isPlainObject(obj)) {
 		const r: FirestoreLike.DocumentData = {}
 
 		for (const [key, val] of Object.entries(obj)) {

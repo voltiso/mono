@@ -5,38 +5,38 @@ import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type * as s from '@voltiso/schemar'
 import type { If } from '@voltiso/util'
-import { clone, lazyPromise, protoLink, undef } from '@voltiso/util'
+import { lazyPromise, protoLink, undef } from '@voltiso/util'
 
-import type { InferMethods } from '../CollectionRef/InferMethods.js'
+import type { InferMethods } from '../CollectionRef/InferMethods'
 import type { RefEntry } from '../common'
 import type { Data, DataWithId, DataWithoutId, Id } from '../Data'
 import { withoutId } from '../Data'
 import type { IDoc } from '../Doc'
 import { DTI } from '../Doc'
-import type { ExecutionContext } from '../Doc/_/ExecutionContext.js'
-import type { GData, GDataPublicInput } from '../Doc/_/GData.js'
+import type { ExecutionContext } from '../Doc/_/ExecutionContext'
+import type { GData, GDataPublicInput } from '../Doc/_/GData'
 import { deleteIt, replaceIt } from '../it'
-import type { Method } from '../Method.js'
+import type { Method } from '../Method'
 import { DocPath } from '../Path'
 import type {
 	AfterTrigger,
 	BeforeCommitTrigger,
 	OnGetTrigger,
 } from '../Trigger'
-import type { CallMethodOptions } from './_/callMethod.js'
-import { callMethod } from './_/callMethod.js'
-import type { DocRefContext, DocRefParentContext } from './_/Context.js'
-import type { MethodEntry, TriggerEntry } from './_/data.js'
-import { getMethods } from './_/getMethods.js'
-import type { NestedPromise } from './_/NestedPromise.js'
-import { dataOrNestedPromise } from './_/NestedPromise.js'
-import { DocFieldPath } from './DocFieldPath.js'
-import { IS_DOC_REF } from './IRef.js'
+import type { CallMethodOptions } from './_/callMethod'
+import { callMethod } from './_/callMethod'
+import type { DocRefContext, DocRefParentContext } from './_/Context'
+import type { MethodEntry, TriggerEntry } from './_/data'
+import { getMethods } from './_/getMethods'
+import type { NestedPromise } from './_/NestedPromise'
+import { dataOrNestedPromise } from './_/NestedPromise'
+import { DocFieldPath } from './DocFieldPath'
+import { IS_DOC_REF } from './IRef'
 import { get, update } from './methods'
-import type { RefBase } from './RefBase.js'
+import type { RefBase } from './RefBase'
 
 // @staticImplements<DocRefConstructor>()
-export class DocRefBase_<
+export class DocRefBaseImpl<
 	D extends IDoc = IDoc,
 	Exists extends boolean = boolean,
 	_Ctx extends ExecutionContext = 'outside',
@@ -132,9 +132,9 @@ export class DocRefBase_<
 		) as never
 	}
 
-	clone(): this {
-		return clone(this)
-	}
+	// clone(): this {
+	// 	return clone(this)
+	// }
 
 	toJSON(): RefEntry {
 		return {

@@ -4,17 +4,17 @@
 import type { AlsoAccept, Force, Merge2, ValueImpl } from '@voltiso/util'
 import {
 	getEntries,
-	isPlain,
+	isPlainObject,
 	setProperty,
 	tryGetProperty,
 	undef,
 } from '@voltiso/util'
 import { deepEqual } from 'fast-equals'
 
-import type { DeleteIt } from './deleteIt.js'
-import { isDeleteIt } from './deleteIt.js'
-import type { ReplaceIt } from './replaceIt.js'
-import { isReplaceIt } from './replaceIt.js'
+import type { DeleteIt } from './deleteIt'
+import { isDeleteIt } from './deleteIt'
+import type { ReplaceIt } from './replaceIt'
+import { isReplaceIt } from './replaceIt'
 
 export type Patch = unknown
 
@@ -73,7 +73,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		else return patchValue.__replaceIt as never
 	}
 
-	if (isPlain(patchValue)) {
+	if (isPlainObject(patchValue)) {
 		const res: any = {
 			...x,
 		}

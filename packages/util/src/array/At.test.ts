@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '../type/static-assert'
-import type { At } from './At.js'
-import { at } from './At.js'
+import { Assert, Is } from '~/type/static-assert'
+
+import type { At } from './At'
+import { at } from './At'
 
 describe('object/at', () => {
 	it('works #1', () => {

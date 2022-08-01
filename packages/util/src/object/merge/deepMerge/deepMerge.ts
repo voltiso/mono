@@ -1,12 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Flatten } from '../../flatten'
-import type { IsOptional } from '../../IsOptional.js'
-import type { Value } from '../../key-value'
-import type { DeepPartial } from '../../map'
-import type { SuggestObject } from '../SuggestObject.js'
-import { _deepMerge } from './_deepMerge.js'
+import type { DeepPartial, Flatten, IsOptional, SuggestObject, Value } from '~'
+
+import { _deepMerge } from './_deepMerge'
 
 export type DeepMerge2<
 	A,

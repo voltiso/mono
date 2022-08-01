@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Newable } from '../function'
+import type { Newable } from '~/function'
 
 /**
  * Hack to mitigate problems with cyclic dependencies and ES6 class inheritance.

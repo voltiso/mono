@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { forcePatch } from './patch.js'
-import { replaceIt } from './replaceIt.js'
-import { isPatchSentinel } from './Sentinel.js'
+import { forcePatch } from './patch'
+import { replaceIt } from './replaceIt'
+import { isPatchSentinel } from './Sentinel'
 
 /** Similar to `patch`, but performs shallow merge by default */
 export function patchSet<Obj extends object, PatchValue extends Obj>(

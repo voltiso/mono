@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { MergeSchemaOptions, PARTIAL_OPTIONS } from '~'
+import type { PARTIAL_OPTIONS } from '_'
+
+import type { MergeSchemaOptions } from '~'
 
 export type DefinePartialSchemaOptions<S, O extends {}> = S extends {
 	[PARTIAL_OPTIONS]: {}

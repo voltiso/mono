@@ -8,10 +8,10 @@ import type { IDoc } from '../Doc'
 import type { GDocFields } from '../Doc/_/GDocFields.js'
 import type { GMethodPromises } from '../Doc/_/GMethodPromises.js'
 import type { DocRefParentContext } from './_/Context.js'
-import { DocRefBase_ } from './DocRefBase.js'
+import { DocRefBaseImpl } from './DocRefBase.js'
 import type { WeakRef } from './RefBase.js'
 
-class WeakDocRef_<D extends IDoc> extends lazyConstructor(() => DocRefBase_)<
+class WeakDocRef_<D extends IDoc> extends lazyConstructor(() => DocRefBaseImpl)<
 	D,
 	boolean,
 	'outside'
@@ -34,5 +34,7 @@ export type WeakDocRef<D extends IDoc> = WeakRef<D> &
 export const WeakDocRef = WeakDocRef_ as unknown as WeakDocRefConstructor
 
 export function isWeakDocRef(x: unknown): x is WeakDocRef<IDoc> {
-	return typeof x === 'object' && (x as DocRefBase_ | null)?._isStrong === false
+	return (
+		typeof x === 'object' && (x as DocRefBaseImpl | null)?._isStrong === false
+	)
 }

@@ -100,7 +100,8 @@
 		"allowUnusedLabels": false, // Undefined = warning
 		"allowUnreachableCode": false, // Undefined = warning
 		//
-		"importsNotUsedAsValues": "error"
+		"importsNotUsedAsValues": "error",
+		"preserveValueImports": false
 		// ______________________ STRICT options _______________________
 		//
 	}

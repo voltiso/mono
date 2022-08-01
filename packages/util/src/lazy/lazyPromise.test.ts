@@ -3,9 +3,9 @@
 
 import 'zone.js'
 
-import { protoLink } from '../class'
-import { undef } from '../nullish'
-import { sleep } from '../promise'
+import { protoLink } from '../class/index'
+import { undef } from '../nullish/index'
+import { sleep } from '../promise/index'
 import { lazyPromise } from './lazyPromise.js'
 
 class DocumentReference {
