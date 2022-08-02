@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-lines */
-
 import { screen } from '@testing-library/react'
 import type { IsEqual } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'

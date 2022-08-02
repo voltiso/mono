@@ -6,7 +6,8 @@ import type { ForwardRefRenderFunction } from 'react'
 
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
-import type { IForwardRefRenderFunction } from './IForwardRefRenderFunction.js'
+
+import type { IForwardRefRenderFunction } from './IForwardRefRenderFunction'
 
 describe('IForwardRefRenderFunction', () => {
 	it('generic', <P extends Props, C extends IStylable | null>() => {

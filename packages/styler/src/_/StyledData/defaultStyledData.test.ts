@@ -3,8 +3,8 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { DefaultStyledData } from './defaultStyledData.js'
-import type { IStyledData } from './IStyledData.js'
+import type { DefaultStyledData } from './defaultStyledData'
+import type { IStyledData } from './IStyledData'
 
 describe('defaultStyledData', () => {
 	it('type', () => {
