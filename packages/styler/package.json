@@ -25,7 +25,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint": "eslint . --max-warnings=0",
+		"lint:eslint": "cross-env NODE_OPTIONS=--max-old-space-size=8192 eslint .",
 		"lint:tsc": "run-p lint:tsc:root lint:tsc:native lint:tsc:web lint:tsc:tscOptions",
 		"lint:tsc:root": "tsc -b tsconfig.json",
 		"lint:tsc:native": "tsc -b test/native",

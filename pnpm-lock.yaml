@@ -35,6 +35,7 @@ importers:
       '@voltiso/config.ts': workspace:^1.0.0
       any-eslint-parser: ^1.0.1
       babel-jest: ^28.1.3
+      cross-env: ^7.0.3
       eslint: latest
       eslint-config-react-app: ^7.0.1
       eslint-import-resolver-typescript: ^3.4.0
@@ -129,6 +130,7 @@ importers:
       '@voltiso/config.ts': link:packages/config.ts
       any-eslint-parser: 1.0.1_eslint@8.21.0
       babel-jest: 28.1.3_@babel+core@7.18.10
+      cross-env: 7.0.3
       eslint: 8.21.0
       eslint-config-react-app: 7.0.1_z5klxkgz73xyecqhakk4wvdm3e
       eslint-import-resolver-typescript: 3.4.0_jatgrcxl4x7ywe7ak6cnjca2ae

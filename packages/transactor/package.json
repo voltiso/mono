@@ -41,7 +41,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint": "eslint . --max-warnings=0",
+		"lint:eslint": "cross-env NODE_OPTIONS=--max-old-space-size=8192 eslint .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",

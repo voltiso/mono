@@ -19,7 +19,9 @@
 				"test/**/*.ts",
 				"test/**/*.tsx",
 				"test/**/*.js",
-				"test/**/*.jsx"
+				"test/**/*.jsx",
+
+				"script/**/*.ts"
 			]
 		},
 
@@ -29,11 +31,13 @@
 				"src/**/*.*",
 				"test/**/*.*",
 				"script/**/*.*",
-				"**/*.md",
-				"**/*.cjs",
-				"**/*.yml",
-				"**/*.yaml",
-				"**/*.json"
+				"*.md",
+				"*.cjs",
+				".depcheckrc.yml",
+				"package.json",
+				"tsconfig.json",
+				"tsconfig.*.json",
+				".gitignore"
 			],
 			"outputs": []
 		},
@@ -43,14 +47,26 @@
 				"src/**/*.*",
 				"test/**/*.*",
 				"script/**/*.*",
-
-				"**/*.md",
-				"**/*.cjs",
-				"**/*.yml",
-				"**/*.yaml",
-				"**/*.json"
+				"*.md",
+				"*.cjs",
+				".depcheckrc.yml",
+				"package.json",
+				"tsconfig.json",
+				"tsconfig.*.json",
+				".gitignore"
 			],
-			"outputs": ["*"]
+			"outputs": [
+				"src/**/*.*",
+				"test/**/*.*",
+				"script/**/*.*",
+				"*.md",
+				"*.cjs",
+				".depcheckrc.yml",
+				"package.json",
+				"tsconfig.json",
+				"tsconfig.*.json",
+				".gitignore"
+			],
 		}
 	}
 }
