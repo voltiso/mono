@@ -9,8 +9,6 @@
 
 		"outDir": "dist/esm",
 		"rootDir": "src"
-
-		// "baseUrl": "../.."
 	},
 
 	"include": ["src"]

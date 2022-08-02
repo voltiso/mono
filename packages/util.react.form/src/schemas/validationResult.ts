@@ -1,10 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetType, ISchema, MergeOptions } from '@voltiso/schemar'
+import type { GetType } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-
-export type ASDF<A extends ISchema, B> = MergeOptions<A, B>
 
 export const validationResult = {
 	success: s.boolean,

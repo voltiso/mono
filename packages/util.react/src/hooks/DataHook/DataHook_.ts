@@ -3,7 +3,7 @@
 
 import { staticImplements, undef } from '@voltiso/util'
 
-import type { DataHookConstructor } from './DataHookConstructor.js'
+import type { DataHookConstructor } from './DataHookConstructor'
 
 @staticImplements<DataHookConstructor>()
 class DataHook<D extends object> {

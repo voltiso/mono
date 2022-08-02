@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { DataHook_ } from './DataHook_.js'
-import type { DataHookConstructor } from './DataHookConstructor.js'
+import { DataHook_ } from './DataHook_'
+import type { DataHookConstructor } from './DataHookConstructor'
 
 // type DataHookBase<D extends object> = DataHook_<D> & Partial<D>
 

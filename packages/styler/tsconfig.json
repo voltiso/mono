@@ -4,8 +4,6 @@
 {
 	"extends": "@voltiso/config.ts.dom",
 
-	// "include": ["."],
-
 	"exclude": [
 		"dist/",
 		"node_modules/",

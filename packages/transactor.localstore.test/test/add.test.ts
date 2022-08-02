@@ -1,12 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// import { createTransactor } from './common'
+import { createLocalstore } from '@voltiso/localstore'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
+import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
 
-import { createTransactor } from './common'
-
-const db = createTransactor()
+const database = createLocalstore()
+const db = createLocalstoreTransactor(database)
 
 class Client extends Doc.const({
 	rootTaskId: s.string,

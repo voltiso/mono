@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '~/error'
-import { assertNotPolluting, isObject } from '~/object'
-import { toString } from '~/string'
+import { VoltisoError } from '~/error/VoltisoError'
+import { assertNotPolluting } from '~/object/get-set/isPolluting'
+import { isObject } from '~/object/isObject'
+import { toString } from '~/string/toString/toString'
 
 export function hasProperty<O extends object, K extends keyof any>(
 	o: O,

@@ -59,11 +59,7 @@ class Client extends Doc('refDelete_client')({
 	}
 }
 
-
-
-
-
-type IdClient = Id<Client>
+// type IdClient = Id<Client>
 
 class ClientSlug extends Doc('refDelete_clientSlug')({
 	const: {

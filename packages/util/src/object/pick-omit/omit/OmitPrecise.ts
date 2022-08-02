@@ -1,11 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept , _ ,
+import type {
+	_,
+	AlsoAccept,
 	HasNumberIndexSignature,
 	HasStringIndexSignature,
 	HasSymbolIndexSignature,
-, Pick_ } from '~'
+	Pick_,
+} from '~'
 
 import type { OmitSignatures } from './OmitSignatures'
 

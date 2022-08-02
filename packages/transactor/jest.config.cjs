@@ -5,6 +5,7 @@
 
 const baseEsrConfig = require('@voltiso/config.jest.esr')
 
+//! need to create a new unique object!
 module.exports = {
 	...baseEsrConfig,
 }

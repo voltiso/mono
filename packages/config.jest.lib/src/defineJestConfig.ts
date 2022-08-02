@@ -3,9 +3,7 @@
 
 import type { Config as JestConfig } from 'jest'
 
-// eslint-disable-next-line import/no-relative-packages
 import type { DeepMutable } from './_symlinks/DeepMutable'
-// eslint-disable-next-line import/no-relative-packages
 import type { DeepReadonly } from './_symlinks/DeepReadonly'
 
 /**

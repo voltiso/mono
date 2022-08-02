@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetEdgeFromDirection } from './getEdgeFromDirection.js'
-import { getEdgeFromDirection } from './getEdgeFromDirection.js'
+import type { GetEdgeFromDirection } from './getEdgeFromDirection'
+import { getEdgeFromDirection } from './getEdgeFromDirection'
 
 describe('getEdgeFromDirection', () => {
 	it('works', () => {

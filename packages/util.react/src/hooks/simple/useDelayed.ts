@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { useConst } from './useConst.js'
-import { useUpdate } from './useUpdate.js'
+import { useConst } from './useConst'
+import { useUpdate } from './useUpdate'
 
 export const useDelayed = (x: unknown, delay = 0) => {
 	const update = useUpdate()

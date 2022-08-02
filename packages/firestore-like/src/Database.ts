@@ -15,7 +15,10 @@ export interface Database {
 	) => Promise<R>
 }
 
-export const isDatabase = (x: unknown): x is Database =>
-	Boolean((x as Database).runTransaction) &&
-	Boolean((x as Database).doc) &&
-	Boolean((x as Database).collection)
+export function isDatabase(x: unknown): x is Database {
+	return (
+		Boolean((x as Database | null)?.runTransaction) &&
+		Boolean((x as Database | null)?.doc) &&
+		Boolean((x as Database | null)?.collection)
+	)
+}

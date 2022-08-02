@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOtherDirection } from './getOtherDirection.js'
-import { getOtherDirection } from './getOtherDirection.js'
+import type { GetOtherDirection } from './getOtherDirection'
+import { getOtherDirection } from './getOtherDirection'
 
 describe('getOtherDirection', () => {
 	it('works', () => {

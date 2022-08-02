@@ -6,7 +6,5 @@
 
 	"compilerOptions": {
 		"lib": ["DOM"]
-
-		// "baseUrl": "../.."
 	}
 }

@@ -4,14 +4,11 @@
 {
 	"extends": "@voltiso/config.ts",
 
-	"compilerOptions": {
-		"lib": ["ESNext", "DOM"]
-	},
-
 	"exclude": [
 		"dist/",
 		"node_modules/",
-		".tsc-out/"
+		".tsc-out/",
 		//
+		"src/tsc-options/"
 	]
 }

@@ -4,7 +4,7 @@
 import { undef } from '@voltiso/util'
 import { useCallback, useMemo, useState } from 'react'
 
-import { LocalStorage } from '../LocalStorage'
+import { LocalStorage } from '~/LocalStorage'
 
 export function useLocalStorage<T>(key: string, def?: T) {
 	const storage = useMemo(() => new LocalStorage(key, def), [key, def])

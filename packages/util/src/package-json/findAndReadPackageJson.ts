@@ -4,9 +4,9 @@
 import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 
-// import { assert } from '~/_internal/assert'
-import type { SyncerPromise } from '~/syncer'
 import { runAsync, runSync } from '~/syncer/run'
+// import { assert } from '~/_internal/assert'
+import type { SyncerPromise } from '~/syncer/SyncerPromise'
 
 import { findPackageJsonSyncer } from './findPackageJson'
 import type { PackageJson } from './PackageJson'

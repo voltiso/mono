@@ -19,7 +19,7 @@
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint .",
-		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
+		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-p build:cjs",

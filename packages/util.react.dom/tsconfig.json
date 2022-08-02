@@ -5,13 +5,6 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"rootDir": "."
-	},
-
-	"exclude": [
-		"dist/",
-		"node_modules/",
-		".tsc-out/"
-		//
-	]
+		"lib": ["ESNext", "DOM"]
+	}
 }

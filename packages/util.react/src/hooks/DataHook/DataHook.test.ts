@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { DataHook } from './DataHook.js'
-import { dataHook } from './DataHookConstructor.js'
+import { DataHook } from './DataHook'
+import { dataHook } from './DataHookConstructor'
 
 describe('DataHook', () => {
 	it('works - data', () => {

@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { assert } from '~/_internal/assert' //! cyclic dep
-import type { SyncerPromise } from '~/syncer'
-import { runAsync, runSync } from '~/syncer'
+import { runAsync, runSync } from '~/syncer/run'
+import type { SyncerPromise } from '~/syncer/SyncerPromise'
 
 import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson'
 import type { PackageJson } from './PackageJson'

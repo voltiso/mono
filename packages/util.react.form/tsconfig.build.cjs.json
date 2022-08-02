@@ -9,8 +9,6 @@
 
 		"outDir": "dist/cjs",
 		"rootDir": "src"
-
-		// "baseUrl": "../.."
 	},
 
 	"include": ["src"]

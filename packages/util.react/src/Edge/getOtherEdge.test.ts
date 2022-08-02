@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOtherEdge } from './getOtherEdge.js'
-import { getOtherEdge } from './getOtherEdge.js'
+import type { GetOtherEdge } from './getOtherEdge'
+import { getOtherEdge } from './getOtherEdge'
 
 describe('getOtherEdge', () => {
 	it('works', () => {

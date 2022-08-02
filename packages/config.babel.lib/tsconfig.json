@@ -4,10 +4,10 @@
 {
 	"extends": "@voltiso/config.ts",
 
-	"exclude": [
-		"dist/",
-		"node_modules/",
-		".tsc-out/"
-		//
-	]
+	"compilerOptions": {
+		"paths": {
+			"~": ["./src"],
+			"~/*": ["./src/*"]
+		}
+	}
 }

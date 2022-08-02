@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { createLocalstore, FieldValue, Timestamp } from '@voltiso/localstore'
-import type { DatabaseStaticContext, Options } from '@voltiso/transactor'
+import type { FirestoreLikeModule, Options } from '@voltiso/transactor'
 import { createTransactor as origCreateTransactor } from '@voltiso/transactor'
 
 export const database = createLocalstore()
-export const staticContext: DatabaseStaticContext = {
+export const staticContext: FirestoreLikeModule = {
 	FieldValue,
 	Timestamp,
 }
