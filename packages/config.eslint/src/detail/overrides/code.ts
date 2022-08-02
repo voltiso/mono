@@ -81,7 +81,6 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/array-type': ['warn', { default: 'array' }],
 
 		'arrow-body-style': 1,
-		'capitalized-comments': 'off',
 		'func-style': ['warn', 'declaration', { allowArrowFunctions: true }],
 		'id-length': 0,
 

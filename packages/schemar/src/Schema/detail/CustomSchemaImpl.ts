@@ -30,13 +30,14 @@ import {
 	isAny,
 	isUnion,
 	isUnknown,
+	isUnknownSchema,
 	processCustomChecks,
+	schema,
 	SchemarError,
 	throwTypeOnlyFieldError,
 	union,
 	ValidationError,
 } from '~'
-import { isUnknownSchema, schema } from '~/custom-schemas/unknownSchema/index'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomSchemaImpl<O> {

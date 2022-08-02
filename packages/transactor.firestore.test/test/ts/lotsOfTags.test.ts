@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { IndexedDoc, Ref, WeakDocRef } from '@voltiso/transactor'
+import type { IndexedDoc, StrongRef, WeakDocRef } from '@voltiso/transactor'
 import { createTransactor, Doc, method } from '@voltiso/transactor'
 import * as transactorSchemas from '@voltiso/transactor/schemas'
 import { Assert } from '@voltiso/util'
@@ -16,7 +16,7 @@ class A extends Doc('a').public({
 	b: transactorSchemas.strongRef<'b'>(),
 }) {
 	@method
-	async setFriend(b: Ref<B>) {
+	async setFriend(b: StrongRef<B>) {
 		this.b = b
 	}
 }
@@ -26,7 +26,7 @@ class B extends Doc('b').public({
 	c: transactorSchemas.strongRef<'c'>(),
 }) {
 	@method
-	async setFriend(c: Ref<C>) {
+	async setFriend(c: StrongRef<C>) {
 		this.c = c
 	}
 }
@@ -36,7 +36,7 @@ class C extends Doc('c').public({
 	d: transactorSchemas.strongRef<'d'>(),
 }) {
 	@method
-	async setFriend(d: Ref<D>) {
+	async setFriend(d: StrongRef<D>) {
 		this.d = d
 	}
 }
@@ -46,7 +46,7 @@ class D extends Doc('d').public({
 	e: transactorSchemas.strongRef<'e'>(),
 }) {
 	@method
-	async setFriend(e: Ref<E>) {
+	async setFriend(e: StrongRef<E>) {
 		this.e = e
 	}
 }
@@ -56,7 +56,7 @@ class E extends Doc('e').public({
 	f: transactorSchemas.strongRef<'f'>(),
 }) {
 	@method
-	async setFriend(f: Ref<F>) {
+	async setFriend(f: StrongRef<F>) {
 		this.f = f
 	}
 }
@@ -66,7 +66,7 @@ class F extends Doc('f').public({
 	g: transactorSchemas.strongRef<'g'>(),
 }) {
 	@method
-	async setFriend(g: Ref<G>) {
+	async setFriend(g: StrongRef<G>) {
 		this.g = g
 	}
 }
@@ -76,7 +76,7 @@ class G extends Doc('g').public({
 	a: transactorSchemas.strongRef<'a'>(),
 }) {
 	@method
-	async setFriend(a: Ref<A>) {
+	async setFriend(a: StrongRef<A>) {
 		this.a = a
 	}
 }

@@ -7,7 +7,7 @@
 import type * as Database from '@voltiso/firestore-like'
 import { deepClone, undef } from '@voltiso/util'
 
-import { DeleteIt, IncrementIt } from '../FieldValue'
+import { DeleteIt, IncrementIt } from '~/FieldValue'
 
 export function applyUpdatesInPlace(
 	data: Database.DocumentData,
@@ -34,9 +34,9 @@ export function applyUpdatesInPlace(
 			o[f] = o[f] || 0
 			// eslint-disable-next-line security/detect-object-injection
 			o[f] += v._n
-			// eslint-disable-next-line security/detect-object-injection
 		} else {
 			// console.log('applyUpdatesInPlace', data, updates, 'deepClone')
+			// eslint-disable-next-line security/detect-object-injection
 			o[f] = deepClone(v)
 		}
 	}

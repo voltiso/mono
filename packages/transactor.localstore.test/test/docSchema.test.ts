@@ -8,10 +8,14 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc.public({
-	specialty: s.string.optional,
-}).private({
-	secret: s.string,
+class Doctor extends Doc({
+	public: {
+		specialty: s.string.optional,
+	},
+
+	private: {
+		secret: s.string,
+	},
 }) {}
 
 class Patient extends Doc.public({
@@ -20,14 +24,14 @@ class Patient extends Doc.public({
 
 const patients = db('patient').register(Patient)
 
-describe('docSchema', function () {
-	it('should validate schema', async function () {
+describe('docSchema', () => {
+	it('should validate schema', async () => {
 		expect.hasAssertions()
 
 		await database.doc('patient/a').delete()
 
-		// @ts-expect-error `secret`: wrong type
 		await expect(
+			// @ts-expect-error `secret`: wrong type
 			patients('a').set({ doctor: { id: 'aaa', secret: 123 } }),
 		).rejects.toThrow('secret')
 		await expect(patients('a')).resolves.toBeNull()

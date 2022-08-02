@@ -3,14 +3,13 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomBigint } from '~'
+import type { CustomBigint, Literal } from '~'
 import { BigintImpl } from '~'
-import type * as s from '~/custom-schemas/index'
 
 export interface Bigint extends CustomBigint<{}> {
-	<L extends bigint>(...literals: L[]): s.Literal<L>
-	<L extends bigint>(literals: Set<L>): s.Literal<L>
-	<L extends bigint>(...args: L[] | [Set<L>]): s.Literal<L>
+	<L extends bigint>(...literals: L[]): Literal<L>
+	<L extends bigint>(literals: Set<L>): Literal<L>
+	<L extends bigint>(...args: L[] | [Set<L>]): Literal<L>
 }
 
 export const Bigint = lazyConstructor(

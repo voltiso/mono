@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DeleteIt } from './deleteIt.js'
-import { isDeleteIt } from './deleteIt.js'
-import type { ReplaceIt } from './replaceIt.js'
-import { isReplaceIt } from './replaceIt.js'
+import type { DeleteIt } from './deleteIt'
+import { isDeleteIt } from './deleteIt'
+import type { ReplaceIt } from './replaceIt'
+import { isReplaceIt } from './replaceIt'
 
 type PatchSentinel = DeleteIt | ReplaceIt
 

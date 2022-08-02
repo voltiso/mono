@@ -4,7 +4,13 @@
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
-import { after, afterCreate, afterDelete, Doc } from '@voltiso/transactor'
+import {
+	after,
+	afterCreate,
+	afterDelete,
+	beforeCommit,
+	Doc,
+} from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
 import { undef } from '@voltiso/util'
 
@@ -19,9 +25,14 @@ class Client extends Doc('refDelete_client')({
 	},
 
 	private: {
-		rootTask: ss.strongRef<'refDelete_task'>(),
+		rootTask: ss.strongRef<'refDelete_task'>().optional,
 	},
 }) {
+	@beforeCommit
+	async checkIfValid(p: TriggerParams.BeforeCommit<Client>) {
+		if (p.doc) assert(p.doc.rootTask, 'rootTask should be present')
+	}
+
 	@afterDelete
 	async deleteRootTask(p: TriggerParams.AfterDelete<Client>) {
 		assert(p.before.rootTask)
@@ -44,8 +55,8 @@ class Client extends Doc('refDelete_client')({
 	}
 
 	@afterCreate
-	async createRootTask() {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	async createRootTask(this: Client) {
+		//! TODO it should work with polymorphic `this`
 		assert(this.rootTask === undef)
 
 		// type A = StrongRef<this>['id']

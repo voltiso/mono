@@ -7,13 +7,14 @@ import type {
 	CustomUnknownObject,
 	DefaultUnknownObjectOptions,
 	InferableObject,
+	Object,
 } from '~'
 import { UnknownObjectImpl } from '~'
-import type * as s from '~/custom-schemas/index'
 
 export interface UnknownObject
 	extends CustomUnknownObject<DefaultUnknownObjectOptions> {
-	<S extends InferableObject>(shape: S): s.Object<S>
+	// eslint-disable-next-line @typescript-eslint/ban-types
+	<S extends InferableObject>(shape: S): Object<S>
 }
 
 export const UnknownObject = lazyConstructor(

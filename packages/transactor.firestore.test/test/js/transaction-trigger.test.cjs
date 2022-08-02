@@ -5,6 +5,7 @@
 
 const { incrementIt } = require('@voltiso/transactor')
 const { firestore, srcFirestore } = require('./common/index.cjs')
+
 const { createFirestoreTransactor } = srcFirestore
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })

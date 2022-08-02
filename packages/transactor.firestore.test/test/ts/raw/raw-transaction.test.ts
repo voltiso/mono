@@ -6,7 +6,7 @@ import { assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
-import { firestore } from '../common/firestore.js'
+import { firestore } from '../common/firestore'
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 

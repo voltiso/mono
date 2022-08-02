@@ -1,16 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type DefaultIterationOptions,
-	type IterationOptions,
-	type Merge2,
-	defaultIterationOptions,
-	getProperty,
-	merge,
-} from '~/object'
-
-import type { Value } from './Value'
+import { getProperty } from '~/object/get-set/get/get/getProperty'
+import type {
+	DefaultIterationOptions,
+	IterationOptions,
+} from '~/object/key-value/IterationOptions'
+import { defaultIterationOptions } from '~/object/key-value/IterationOptions'
+import type { Value } from '~/object/key-value/value/Value'
+import { merge } from '~/object/merge/merge'
+import type { Merge2 } from '~/object/merge/Merge2'
 
 type GetValues<
 	Obj extends object,

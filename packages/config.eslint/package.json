@@ -110,7 +110,6 @@
 		"eslint-plugin-typescript-sort-keys": ">=2.1.0",
 		"eslint-plugin-unicorn": "*",
 		"eslint-plugin-unused-imports": ">=2.0.0",
-		"eslint-plugin-woke": "*",
 		"eslint-plugin-yml": "*",
 		"jest": "*",
 		"jsonc-eslint-parser": ">=2.1.0",

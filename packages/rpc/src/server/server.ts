@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SchemarError } from '@voltiso/schemar'
-// eslint-disable-next-line n/file-extension-in-import
 import * as s from '@voltiso/schemar'
 import type { Callable, Interface, Unpack } from '@voltiso/util'
 import { createClassInterface, deepMerge } from '@voltiso/util'

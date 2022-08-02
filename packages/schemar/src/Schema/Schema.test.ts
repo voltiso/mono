@@ -12,7 +12,6 @@ import type {
 	InferableReadonlyTuple,
 	Literal,
 	OPTIONS,
-	Schema,
 	SchemaOptions,
 	String,
 } from '~'

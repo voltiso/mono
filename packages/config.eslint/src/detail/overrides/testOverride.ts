@@ -68,10 +68,16 @@ export const testOverride = defineEslintConfigOverride({
 		'n/no-unpublished-import': 0,
 		'no-void': 0,
 		'jest/no-commented-out-tests': 1,
+		'import/no-unassigned-import': 0,
+		'no-restricted-imports': 0, // allow '../*' imports
 
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,
 		'@typescript-eslint/no-unsafe-member-access': 0,
+
+		// change 'error' to 'warn'
+		'jest-formatting/padding-around-all': 1,
+		'jest/prefer-to-be': 1,
 
 		// 'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
 

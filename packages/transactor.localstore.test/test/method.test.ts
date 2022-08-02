@@ -54,4 +54,36 @@ describe('method', function () {
 			'numFloatingPromises: 3',
 		)
 	})
+
+	it('method inside transaction', async () => {
+		expect.hasAssertions()
+
+		await counters('asd').set({})
+
+		await db.runTransaction(async () => {
+			await counters('asd').increment(2)
+
+			await expect(counters('asd').data.value).resolves.toBe(3)
+		})
+
+		await expect(counters('asd').data.value).resolves.toBe(3)
+	})
+
+	it('method inside failed transaction', async () => {
+		expect.hasAssertions()
+
+		await counters('asd').set({})
+
+		const promise = db.runTransaction(async () => {
+			await counters('asd').increment(2)
+
+			await expect(counters('asd').data.value).resolves.toBe(3)
+
+			throw new Error('qwerty')
+		})
+
+		await expect(promise).rejects.toThrow('qwerty')
+
+		await expect(counters('asd').data.value).resolves.toBe(1)
+	})
 })

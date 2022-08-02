@@ -4,10 +4,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomBoolean, DefaultBooleanOptions, Literal } from '~'
+import type { CustomBoolean, Literal } from '~'
 import { BooleanImpl } from '~'
 
-export interface Boolean extends CustomBoolean<DefaultBooleanOptions> {
+export interface Boolean extends CustomBoolean<{}> {
 	<L extends boolean>(...literals: L[]): Literal<L>
 	<L extends boolean>(literals: Set<L>): Literal<L>
 	<L extends boolean>(...args: L[] | [Set<L>]): Literal<L>

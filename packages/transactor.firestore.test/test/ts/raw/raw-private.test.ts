@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'
 import { createTransactor, DocPath } from '@voltiso/transactor'
 
-import { firestore, firestoreModule } from '../common/firestore.js'
+import { firestore, firestoreModule } from '../common/firestore'
 
 const db = createTransactor(firestore, firestoreModule, {
 	requireSchemas: false,
@@ -25,7 +26,6 @@ db('nurse/*')
 	})
 	.method('fail', async function (path: string) {
 		// const { db } = this
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		await db(new DocPath(path)).update({ specialty: 'fireman' })
 	})
 	.method('good', async function () {
@@ -89,6 +89,8 @@ describe('raw-private', function () {
 		await db('nurse/a').set({})
 		await db('nurse/a').methods['setSpecialty']!('magician')
 		const doc = await db('nurse/a')
+
+		assert(doc)
 
 		expect(doc.dataWithId()).toMatchObject({
 			id: 'a',

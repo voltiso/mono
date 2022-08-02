@@ -18,4 +18,6 @@ module.exports = defineJestConfig({
 	...jestEsrConfig,
 	globalSetup: './script/jest-globalSetup.ts',
 	globalTeardown: './script/jest-globalTeardown.ts',
+	// forceExit: true, //! :(
+	detectOpenHandles: true,
 })

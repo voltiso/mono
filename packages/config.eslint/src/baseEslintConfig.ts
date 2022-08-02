@@ -70,7 +70,7 @@ import {
 	typescriptSortKeys,
 	unicorn,
 	unusedImports,
-	wokeOverride,
+	// wokeOverride,
 	yaml,
 } from './detail/overrides'
 
@@ -90,6 +90,11 @@ export const baseEslintConfig = defineEslintConfig({
 	ignorePatterns,
 
 	extends: ['eslint:all'],
+
+	rules: {
+		'max-lines': 0,
+		'capitalized-comments': 0,
+	},
 
 	parserOptions: {
 		ecmaFeatures: {
@@ -144,10 +149,6 @@ export const baseEslintConfig = defineEslintConfig({
 		},
 	},
 
-	rules: {
-		'max-lines': 0,
-	},
-
 	overrides: [
 		// Configs / plugins
 		githubOverride,
@@ -167,7 +168,7 @@ export const baseEslintConfig = defineEslintConfig({
 		filenames,
 		nOverride,
 		importOverride,
-		wokeOverride,
+		// wokeOverride, // learned all the words already and enriched my vocabulary
 		unicorn,
 		optimizeRegex,
 		preferArrow,

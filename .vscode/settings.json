@@ -15,8 +15,8 @@
 	"javascript.preferences.importModuleSpecifierEnding": "minimal",
 	"typescript.preferences.importModuleSpecifierEnding": "minimal",
 
-	"javascript.preferences.importModuleSpecifier": "shortest",
-	"typescript.preferences.importModuleSpecifier": "shortest",
+	"javascript.preferences.importModuleSpecifier": "non-relative",
+	"typescript.preferences.importModuleSpecifier": "non-relative",
 
 	"javascript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
 	"typescript.preferences.autoImportFileExcludePatterns": ["*/dist/*"],
@@ -152,6 +152,7 @@
 	// Project-specific settings
 	//
 	// "eslint.options": { "overrideConfigFile": "./config/eslint.js" },
+	"jest.nodeEnv": { "NODE_OPTIONS": "--experimental-vm-modules" }, // needed for dynamic `import()` in `jest` tests
 	"jest.jestCommandLine": "pnpm jest",
 
 	//
@@ -166,13 +167,25 @@
 	// "prettier.enableDebugLogs": true,
 
 	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
 		"source.fixAll.eslint": true
 	},
 
-	"prettier.documentSelectors": [
-		"**/.gitignore",
-		"**/.npmrc",
-		"**/.editorconfig"
+	"eslint.workingDirectories": [{ "pattern": "./packages/*/" }, "."],
+
+	"eslint.probe": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"json",
+		"jsonc",
+		"json5",
+		"yaml",
+		"toml",
+		"properties",
+		"ignore",
+		"editorconfig"
 	],
 
 	"eslint.validate": [
@@ -188,6 +201,33 @@
 		"properties",
 		"ignore",
 		"editorconfig"
+	],
+
+	"eslint.run": "onSave",
+	"eslint.packageManager": "pnpm",
+	"eslint.useESLintClass": true,
+	"eslint.format.enable": true,
+	"eslint.lintTask.enable": true,
+
+	"eslint.codeActionsOnSave.mode": "all", // Slower
+	// "eslint.codeActionsOnSave.mode": "problems", // faster
+
+	// Only turn on what's frequently used - better editor responsiveness
+	"eslint.codeActionsOnSave.rules": [
+		"prettier/prettier",
+		"import/no-useless-path-segments",
+		"simple-import-sort/imports",
+		"@typescript-eslint/consistent-type-imports",
+		"import/no-duplicates",
+		"n/file-extension-in-import",
+		"import/newline-after-import",
+		"notice/notice"
+	],
+
+	"prettier.documentSelectors": [
+		"**/.gitignore",
+		"**/.npmrc",
+		"**/.editorconfig"
 	],
 
 	// "jest.jestCommandLine": "node_modules/.bin/jest",
@@ -270,6 +310,7 @@
 		"Parens",
 		"Paulo",
 		"picomatch",
+		"pkill",
 		"plusplus",
 		"pnpm",
 		"Podgruszecki",

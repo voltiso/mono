@@ -4,6 +4,7 @@
 'use strict'
 
 const { firestore, srcFirestore } = require('./common/index.cjs')
+
 const { createFirestoreTransactor } = srcFirestore
 
 describe('transactor', function () {

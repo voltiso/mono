@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable woke/gender */
-
+import { assert } from '@voltiso/assertor'
 import type { TriggerParams } from '@voltiso/transactor'
 import { afterCreate, afterDelete, Doc } from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
@@ -13,11 +12,12 @@ const db = createTransactor()
 
 class Man extends Doc('man')({
 	private: {
-		woman: ss.strongRef<'woman'>(),
+		woman: ss.strongRef<'woman'>().optional,
 	},
 }) {
 	@afterCreate
-	async createWoman(p: TriggerParams.AfterCreate<Man>) {
+	async createWoman(this: Man, p: TriggerParams.AfterCreate<Man>) {
+		//! TODO it should work with polymorphic `this`
 		const woman = await women.add({
 			id: p.id,
 			man: this.ref,
@@ -27,6 +27,7 @@ class Man extends Doc('man')({
 
 	@afterDelete
 	async deleteWoman(p: TriggerParams.AfterDelete<Man>) {
+		assert(p.before.woman)
 		await p.before.woman.delete()
 	}
 }

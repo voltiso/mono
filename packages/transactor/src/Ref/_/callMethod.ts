@@ -39,6 +39,13 @@ export async function callMethod<
 	args: ARGS,
 	options: CallMethodOptions,
 ): Promise<R> {
+	const ctxOverride = Zone.current.get('transactionContextOverride') as
+		| object
+		| undefined
+
+	// eslint-disable-next-line no-param-reassign
+	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
+
 	const { name, localDoc } = options // argSchema
 	const { transactor, transaction, docRef: docPath } = ctx
 	const path = docPath.path.toString()

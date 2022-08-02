@@ -3,7 +3,7 @@
 
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
-import { firestore } from '../common/firestore.js'
+import { firestore } from '../common/firestore'
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 const dbWithSchema = createFirestoreTransactor(firestore, {

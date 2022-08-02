@@ -32,6 +32,9 @@ describe('Data', () => {
 		it('assignability', () => {
 			expect.assertions(0)
 
+			Assert.is<IsSubtype<string, Id>, true>()
+			Assert.is<IsSubtype<string, MyId>, false>()
+
 			type MyId = MyDoc['id']
 			Assert.is<MyId, Id>()
 			Assert.is<IsSubtype<Id, MyId>, false>()

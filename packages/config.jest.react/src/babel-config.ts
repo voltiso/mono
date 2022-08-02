@@ -5,4 +5,5 @@
 // (not required for `react`)
 
 import { babelReactNativeConfig } from './_/babelReactNativeConfig'
+
 export = babelReactNativeConfig

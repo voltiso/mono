@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import type { Nullish } from '~/nullish'
-import { toString } from '~/string'
+import { toString } from '~/string/toString/toString'
 
 import type { Merge2 } from './Merge2'
 import type { Merge2Nullish } from './Merge2Nullish'

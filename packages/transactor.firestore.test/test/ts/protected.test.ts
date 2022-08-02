@@ -5,7 +5,7 @@
 import * as s from '@voltiso/schemar'
 import { createTransactor, Doc, IndexedDoc } from '@voltiso/transactor'
 
-import { firestore, firestoreModule } from './common/firestore.js'
+import { firestore, firestoreModule } from './common/firestore'
 
 const db = createTransactor(firestore, firestoreModule, {
 	requireSchemas: false,

@@ -5,6 +5,7 @@
 
 /* eslint-disable no-undef */
 const { firestore, srcFirestore } = require('./common/index.cjs')
+
 const { createFirestoreTransactor } = srcFirestore
 
 function promiseConstructorName() {

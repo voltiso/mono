@@ -10,11 +10,17 @@
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "eslint .",
-		"lint:tsc": "tsc -b"
+		"lint:tsc": "tsc -b",
+		"__________TS_TRACE": "__________",
+		"trace": "run-s trace:clean trace:generate trace:analyze",
+		"trace:clean": "rimraf traceDir",
+		"trace:generate": "tsc --generateTrace traceDir",
+		"trace:analyze": "analyze-trace traceDir"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@types/random-seed": "^0.3.3",
+		"@typescript/analyze-trace": "^0.9.0",
 		"@voltiso/assertor": "workspace:^1.0.0",
 		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/localstore": "workspace:^2.0.0",
@@ -23,8 +29,10 @@
 		"@voltiso/transactor.localstore": "workspace:^8.0.0",
 		"@voltiso/util": "workspace:^39.0.0",
 		"depcheck": "^1.4.3",
+		"jest-mock-console": "^2.0.0",
 		"npm-run-all": "^4.1.5",
-		"random-seed": "^0.3.0"
+		"random-seed": "^0.3.0",
+		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",
 	"engines": {

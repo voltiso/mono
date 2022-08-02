@@ -5,6 +5,7 @@
 
 /* eslint-disable jest/require-hook */
 const { firestore, srcFirestore } = require('./common/index.cjs')
+
 const { createFirestoreTransactor } = srcFirestore
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })

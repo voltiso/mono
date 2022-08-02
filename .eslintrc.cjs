@@ -9,7 +9,12 @@ const { defineEslintConfig } = require('@voltiso/config.eslint.lib')
 const project = [
 	'tsconfig.json',
 	'packages/*/tsconfig.json',
-	'packages/util/src/tsc-options/*/*/tsconfig.json',
+	'packages/*/*/tsconfig.json',
+	'packages/*/*/*/tsconfig.json',
+	'packages/*/*/*/*/tsconfig.json',
+	'packages/*/*/*/*/*/tsconfig.json',
+	'packages/*/*/*/*/*/*/tsconfig.json',
+	// 'packages/util/src/tsc-options/*/*/tsconfig.json',
 ]
 
 module.exports = defineEslintConfig(baseEslintConfig, {

@@ -6,11 +6,7 @@ import {
 	defineEslintConfigOverrideRules,
 } from '@voltiso/config.eslint.lib'
 
-import { codeFiles } from '~/detail/files.js'
-
-
-
-
+import { codeFiles } from '~/detail/files'
 
 const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/handle-callback-err': 1,

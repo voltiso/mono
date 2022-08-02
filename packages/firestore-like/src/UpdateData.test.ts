@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { Assert } from '@voltiso/util'
-// eslint-disable-next-line n/file-extension-in-import
 import type * as FirebaseFirestore from 'firebase-admin/firestore'
 
 import type { UpdateData } from './UpdateData'

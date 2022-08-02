@@ -5,7 +5,7 @@ import type { PARTIAL_OPTIONS } from '_'
 
 import type { MergeSchemaOptions } from '~'
 
-export type DefinePartialSchemaOptions<S, O extends {}> = S extends {
+export type DefinePartialSchemaOptions<S, O> = S extends {
 	[PARTIAL_OPTIONS]: {}
 }
 	? MergeSchemaOptions<S[PARTIAL_OPTIONS], O>

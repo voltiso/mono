@@ -6,20 +6,23 @@ import { Assert, Is } from '@voltiso/util'
 
 import type { GetOutputType, ISchema } from '~'
 import * as s from '~'
-import type { BooleanOptions, CustomBoolean } from '~/custom-schemas/index'
+import type { BooleanOptions, CustomBoolean } from '~/custom-schemas'
 
 describe('boolean', () => {
-	it('generic', <O extends Partial<BooleanOptions>>() => {
+	it('generic', <_O extends Partial<BooleanOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomBoolean<O>, s.IBoolean>()
-		Assert.is<CustomBoolean<O>, s.ISchema>()
+		// ! too deep!
+		// Assert.is<CustomBoolean<O>, s.IBoolean>()
+		// Assert.is<CustomBoolean<O>, s.ISchema>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
-	// it('type', () => {
-	// 	expect.assertions(0)
-	// })
+	it('type', () => {
+		expect.assertions(0)
+
+		const opt = s.boolean.optional
+		Assert<IsIdentical<typeof opt, CustomBoolean<{ isOptional: true }>>>()
+	})
 
 	it('simple', () => {
 		expect.hasAssertions()
@@ -29,8 +32,14 @@ describe('boolean', () => {
 		const aa = s.boolean
 		type Aa = typeof aa.Type
 		Assert<IsIdentical<Aa, boolean>>()
+		Assert.is<typeof aa, ISchema<boolean>>()
+
+		type X = s.GetSchema<123>['OutputType']
+		Assert<IsIdentical<X, 123>>()
 
 		type BooleanSchema = s.Schema<boolean>
+		Assert.is<BooleanSchema, ISchema<boolean>>()
+
 		// Assert.is<
 		// 	s.CustomSchema<{ Input: boolean; Output: boolean }>,
 		// 	BooleanSchema
@@ -39,11 +48,6 @@ describe('boolean', () => {
 		// 	BooleanSchema,
 		// 	s.CustomSchema<{ Input: boolean; Output: boolean }>
 		// >()
-
-		type X = s.GetSchema<123>['OutputType']
-		Assert<IsIdentical<X, 123>>()
-
-		Assert.is<typeof aa, BooleanSchema>()
 
 		type NeverSchema = s.Schema<never>
 		type NeverOut = NeverSchema['OutputType']
@@ -54,7 +58,7 @@ describe('boolean', () => {
 		// Assert.is<typeof aa, s.Schema<never>>()
 		Assert(Is<typeof aa>().not.subtypeOf<s.Schema<never>>())
 
-		Assert.is<typeof aa, s.Schema<boolean | string>>()
+		Assert.is<typeof aa, ISchema<boolean | string>>()
 
 		expect(s.isBoolean(s.boolean)).toBeTruthy()
 

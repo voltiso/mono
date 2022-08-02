@@ -4,10 +4,10 @@
 import type { Force } from '@voltiso/util'
 import { mapValues } from '@voltiso/util'
 
-import type { ApplyPatch, PatchFor } from './patch.js'
-import { forcePatch } from './patch.js'
-import { replaceIt } from './replaceIt.js'
-import { isPatchSentinel } from './Sentinel.js'
+import type { ApplyPatch, PatchFor } from './patch'
+import { forcePatch } from './patch'
+import { replaceIt } from './replaceIt'
+import { isPatchSentinel } from './Sentinel'
 
 /** Similar to `patch`, but performs shallow merge by default */
 export function patchUpdate<

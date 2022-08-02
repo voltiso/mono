@@ -49,6 +49,8 @@ for (const extension of extensions) {
 
 //
 
+// const esLibs = ['get-port']
+
 export const jestEsrConfig = defineJestConfig({
 	testMatch: [
 		'**/__tests__/**/*.?([cm])[jt]s?(x)',
@@ -58,7 +60,7 @@ export const jestEsrConfig = defineJestConfig({
 	// testEnvironment: 'node',
 	modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
 
-	// transformIgnorePatterns: ['node_modules/(?!chalk)$'],
+	// transformIgnorePatterns: [`node_modules/.*(?!${esLibs.join('|')})`],
 
 	moduleNameMapper,
 	transform,

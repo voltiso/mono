@@ -3,22 +3,20 @@
 
 import type { AlsoAccept, NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type * as s from '~'
+import type { SchemaOptions } from '~'
 
 import type { CustomSchema, ISchema } from '.'
 
 export type Schema<
-	O extends OptionalArgument<
-		s.SchemaOptions | AlsoAccept<unknown>
-	> = NotProvided,
+	O extends OptionalArgument<SchemaOptions | AlsoAccept<unknown>> = NotProvided,
 > = [O] extends [never]
-	? s.ISchema<never>
+	? ISchema<never>
 	: [O] extends [NotProvided]
 	? ISchema
-	: [O] extends [s.SchemaOptions]
+	: [O] extends [SchemaOptions]
 	? CustomSchema<O>
 	: // : s.ISchema<O>
-	  s.CustomSchema<{
+	  CustomSchema<{
 			Output: O
 			Input: O
 	  }>

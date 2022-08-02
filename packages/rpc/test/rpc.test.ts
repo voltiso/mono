@@ -4,13 +4,15 @@
 /* eslint-disable jest/prefer-hooks-on-top */
 import express = require('express')
 import { checked } from '@voltiso/caller'
-// eslint-disable-next-line n/file-extension-in-import
 import * as s from '@voltiso/schemar'
+import mockConsole from 'jest-mock-console'
+import type { Server } from 'node:http'
 
-import { createClient } from '../src/client'
-import { createServer, createServerContext } from '../src/server'
+import { createClient } from '~/client'
+import { createServer, createServerContext } from '~/server'
 
-const port = 3126
+// eslint-disable-next-line jest/require-hook
+mockConsole()
 
 // SERVER
 
@@ -37,10 +39,20 @@ const myServer = createServer(ctx).handlers({
 	},
 })
 
-const httpServer = express()
-	.use(express.json())
-	.post('/rpc', myServer)
-	.listen(port)
+// eslint-disable-next-line jest/require-hook
+let port = 0
+
+let httpServer: Server
+
+// eslint-disable-next-line jest/require-top-level-describe, jest/no-hooks
+beforeAll(async () => {
+	// eslint-disable-next-line import/dynamic-import-chunkname
+	const getPort = (await import('get-port')).default
+	port = await getPort()
+	// port = 12_345
+
+	httpServer = express().use(express.json()).post('/rpc', myServer).listen(port)
+})
 
 // CLIENT
 

@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Server, ServerTI } from './server.js'
+import type { Server, ServerTI } from './server'
 
 describe('rpc-server', () => {
 	it('static checks', () => {

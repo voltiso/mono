@@ -10,10 +10,14 @@ import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
 const database = createLocalstore()
 const db = createLocalstoreTransactor(database)
 
-class Client extends Doc.const({
-	rootTaskId: s.string,
-}).public({
-	displayName: s.string,
+class Client extends Doc({
+	const: {
+		rootTaskId: s.string,
+	},
+
+	public: {
+		displayName: s.string,
+	},
 }) {}
 
 const clients = db('client').register(Client)

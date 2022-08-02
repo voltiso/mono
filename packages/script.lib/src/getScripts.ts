@@ -21,7 +21,7 @@ export async function getScripts(path: string) {
 	const modules = await Promise.all(
 		paths.map(async p => {
 			const finalPath = join(p, scriptsFile)
-			// eslint-disable-next-line no-unsanitized/method
+			// eslint-disable-next-line no-unsanitized/method, import/dynamic-import-chunkname
 			return (await import(finalPath)) as Record<string, Script>
 		}),
 	)

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { createFirestoreTransactor, firestore } from '../common/firestore.js'
+import { createFirestoreTransactor, firestore } from '../common/firestore'
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 

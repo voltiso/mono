@@ -3,4 +3,11 @@
 
 {
 	"extends": "@voltiso/config.ts",
+
+	"compilerOptions": {
+		"paths": {
+			// "~": ["./src"],
+			"~/*": ["./src/*"]
+		}
+	}
 }

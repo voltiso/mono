@@ -18,7 +18,8 @@ import type {
 	Schema,
 	Schemable,
 } from '~'
-import { instance, isSchema, literal, object, tuple } from '~'
+import { isSchema } from '~'
+import { instance, literal, object, tuple } from '~/custom-schemas'
 
 export type GetSchema_<S> = S extends InferableLiteral
 	? Literal<S>

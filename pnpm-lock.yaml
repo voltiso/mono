@@ -91,7 +91,6 @@ importers:
       eslint-plugin-typescript-sort-keys: ^2.1.0
       eslint-plugin-unicorn: latest
       eslint-plugin-unused-imports: ^2.0.0
-      eslint-plugin-woke: ^1.0.1
       eslint-plugin-yml: ^1.1.0
       jest: ^28.1.3
       jest-environment-jsdom: ^28.1.1
@@ -186,7 +185,6 @@ importers:
       eslint-plugin-typescript-sort-keys: 2.1.0_iosr3hrei2tubxveewluhu5lhy
       eslint-plugin-unicorn: 43.0.2_eslint@8.21.0
       eslint-plugin-unused-imports: 2.0.0_i7ihj7mda6acsfp32zwgvvndem
-      eslint-plugin-woke: 1.0.1_eslint@8.21.0
       eslint-plugin-yml: 1.1.0_eslint@8.21.0
       jest: 28.1.3_7qzuj6pgg6sta4e2pjlhrsnyuu
       jest-environment-jsdom: 28.1.3
@@ -212,7 +210,6 @@ importers:
       '@voltiso/config.ts.build.esm': workspace:^1.0.0
       assert: ^2.0.0
       depcheck: ^1.4.3
-      jest: ^28.1.3
       npm-run-all: ^4.1.5
       type-coverage: ^2.22.0
       typescript: ^4.7.4
@@ -224,7 +221,6 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       depcheck: 1.4.3
-      jest: 28.1.3
       npm-run-all: 4.1.5
       type-coverage: 2.22.0_typescript@4.7.4
       typescript: 4.7.4
@@ -530,10 +526,13 @@ importers:
       '@voltiso/config.ts.build.esm': workspace:^1.0.0
       '@voltiso/schemar': workspace:^11.0.0
       '@voltiso/util': workspace:^39.0.0
+      cross-env: ^7.0.3
       cross-fetch: ^3.1.5
       depcheck: ^1.4.3
       express: ^4.17.3
+      get-port: ^6.1.2
       jest: ^28.1.3
+      jest-mock-console: ^2.0.0
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
       typescript: ^4.6.3
@@ -548,9 +547,12 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      cross-env: 7.0.3
       depcheck: 1.4.3
       express: 4.18.1
+      get-port: 6.1.2
       jest: 28.1.3_@types+node@18.6.3
+      jest-mock-console: 2.0.0_jest@28.1.3
       npm-run-all: 4.1.5
       rimraf: 3.0.2
       typescript: 4.7.4
@@ -765,6 +767,7 @@ importers:
       depcheck: ^1.4.3
       firebase-admin: ^11.0.1
       firebase-tools: ^11.4.1
+      get-port: ^6.1.2
       jest: ^28.1.3
       jest-dev-server: ^6.1.1
       jest-mock-console: ^2.0.0
@@ -787,6 +790,7 @@ importers:
       depcheck: 1.4.3
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
       firebase-tools: 11.4.1
+      get-port: 6.1.2
       jest: 28.1.3
       jest-dev-server: 6.1.1
       jest-mock-console: 2.0.0_jest@28.1.3
@@ -815,6 +819,7 @@ importers:
   packages/transactor.localstore.test:
     specifiers:
       '@types/random-seed': ^0.3.3
+      '@typescript/analyze-trace': ^0.9.0
       '@voltiso/assertor': workspace:^1.0.0
       '@voltiso/config.jest.esr': workspace:^1.0.0
       '@voltiso/localstore': workspace:^2.0.0
@@ -823,10 +828,13 @@ importers:
       '@voltiso/transactor.localstore': workspace:^8.0.0
       '@voltiso/util': workspace:^39.0.0
       depcheck: ^1.4.3
+      jest-mock-console: ^2.0.0
       npm-run-all: ^4.1.5
       random-seed: ^0.3.0
+      rimraf: ^3.0.2
     devDependencies:
       '@types/random-seed': 0.3.3
+      '@typescript/analyze-trace': 0.9.0
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/localstore': link:../localstore
@@ -835,8 +843,10 @@ importers:
       '@voltiso/transactor.localstore': link:../transactor.localstore
       '@voltiso/util': link:../util
       depcheck: 1.4.3
+      jest-mock-console: 2.0.0
       npm-run-all: 4.1.5
       random-seed: 0.3.0
+      rimraf: 3.0.2
 
   packages/util:
     specifiers:
@@ -6469,6 +6479,19 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
+  /@typescript/analyze-trace/0.9.0:
+    resolution: {integrity: sha512-ihq2JoR7peLMUjgDFIbT6mbYdLeDG0j/lMyAqIF3Sf4ndUWWXD+/ONOFPCWo3g8buAU1893LeasDb+0QERrCkQ==}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      jsonparse: 1.3.1
+      jsonstream-next: 3.0.0
+      p-limit: 3.1.0
+      split2: 3.2.2
+      treeify: 1.1.0
+      yargs: 16.2.0
+    dev: true
+
   /@vue/compiler-core/3.2.37:
     resolution: {integrity: sha512-81KhEjo7YAOh0vQJoSmAD68wLfYqJvoiD4ulyedzF+OEk/bk6/hx3fTNVfuzugIIaTrOx4PGx6pAiBRe5e9Zmg==}
     dependencies:
@@ -8314,6 +8337,14 @@ packages:
     hasBin: true
     dependencies:
       cross-spawn: 6.0.5
+    dev: true
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: true
 
   /cross-fetch/3.1.5:
@@ -10298,16 +10329,6 @@ packages:
       eslint-rule-composer: 0.3.0
     dev: true
 
-  /eslint-plugin-woke/1.0.1_eslint@8.21.0:
-    resolution: {integrity: sha512-cDRyZMNJkrbycju6OKhGnF29j0kbzV9AnLk3IPz6Kn0vWrSf8RyUdS5at97o/CJ8SEN2e6furQch1o/0LIrfMg==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      eslint: '*'
-    dependencies:
-      eslint: 8.21.0
-      requireindex: 1.1.0
-    dev: true
-
   /eslint-plugin-yml/1.1.0_eslint@8.21.0:
     resolution: {integrity: sha512-64g3vWwolk9d+FykuqxXGLn3oGEK2ZecIAyfIEsyuSHBQkR8utp5h8e75R6tGph1IRggoGl27QQ2oi2M1IF1Vw==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -11468,6 +11489,11 @@ packages:
   /get-package-type/0.1.0:
     resolution: {integrity: sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==}
     engines: {node: '>=8.0.0'}
+    dev: true
+
+  /get-port/6.1.2:
+    resolution: {integrity: sha512-BrGGraKm2uPqurfGVj/z97/zv8dPleC6x9JBNRTrDNtCkkRF4rPwrQXFgL7+I+q8QSdU4ntLQX2D7KIxSy8nGw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
   /get-set-props/0.1.0:
@@ -13217,12 +13243,18 @@ packages:
       stack-utils: 2.0.5
     dev: true
 
+  /jest-mock-console/2.0.0:
+    resolution: {integrity: sha512-7zrKtXVut+6doalosFxw/2O9spLepQJ9VukODtyLIub2fFkWKe1TyQrxr/GyQogTQcdkHfhvFJdx1OEzLqf/mw==}
+    peerDependencies:
+      jest: '>= 22.4.2'
+    dev: true
+
   /jest-mock-console/2.0.0_jest@28.1.3:
     resolution: {integrity: sha512-7zrKtXVut+6doalosFxw/2O9spLepQJ9VukODtyLIub2fFkWKe1TyQrxr/GyQogTQcdkHfhvFJdx1OEzLqf/mw==}
     peerDependencies:
       jest: '>= 22.4.2'
     dependencies:
-      jest: 28.1.3
+      jest: 28.1.3_@types+node@18.6.3
     dev: true
 
   /jest-mock/28.1.3:
@@ -13818,6 +13850,20 @@ packages:
 
   /jsonify/0.0.0:
     resolution: {integrity: sha512-trvBk1ki43VZptdBI5rIlG4YOzyeH/WefQt5rj1grasPn4iiZWKet8nkgc4GlsAylaztn0qZfUYOiTsASJFdNA==}
+    dev: true
+
+  /jsonparse/1.3.1:
+    resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
+    engines: {'0': node >= 0.2.0}
+    dev: true
+
+  /jsonstream-next/3.0.0:
+    resolution: {integrity: sha512-aAi6oPhdt7BKyQn1SrIIGZBt0ukKuOUE1qV6kJ3GgioSOYzsRc8z9Hfr1BVmacA/jLe9nARfmgMGgn68BqIAgg==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      jsonparse: 1.3.1
+      through2: 4.0.2
     dev: true
 
   /jsonwebtoken/8.5.1:
@@ -18047,6 +18093,12 @@ packages:
       extend-shallow: 3.0.2
     dev: true
 
+  /split2/3.2.2:
+    resolution: {integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==}
+    dependencies:
+      readable-stream: 3.6.0
+    dev: true
+
   /sprintf-js/1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
     dev: true
@@ -18583,6 +18635,12 @@ packages:
       xtend: 4.0.2
     dev: true
 
+  /through2/4.0.2:
+    resolution: {integrity: sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==}
+    dependencies:
+      readable-stream: 3.6.0
+    dev: true
+
   /timers-ext/0.1.7:
     resolution: {integrity: sha512-b85NUNzTSdodShTIbky6ZF02e8STtVVfD+fu4aXXShEELpozH+bCpJLYMPZbsABN2wDH7fJpqIoXxJpzbf0NqQ==}
     dependencies:
@@ -18708,6 +18766,11 @@ packages:
   /tree-kill/1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
+    dev: true
+
+  /treeify/1.1.0:
+    resolution: {integrity: sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==}
+    engines: {node: '>=0.6'}
     dev: true
 
   /trim-newlines/3.0.1:

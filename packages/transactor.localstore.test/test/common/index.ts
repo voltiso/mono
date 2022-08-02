@@ -4,6 +4,9 @@
 import { createLocalstore, FieldValue, Timestamp } from '@voltiso/localstore'
 import type { FirestoreLikeModule, Options } from '@voltiso/transactor'
 import { createTransactor as origCreateTransactor } from '@voltiso/transactor'
+import mockConsole from 'jest-mock-console'
+
+mockConsole()
 
 export const database = createLocalstore()
 export const staticContext: FirestoreLikeModule = {

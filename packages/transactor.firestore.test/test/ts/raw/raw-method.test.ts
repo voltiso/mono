@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { Doc } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
-import { firestore } from '../common/firestore.js'
+import { firestore } from '../common/firestore'
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
@@ -17,25 +17,11 @@ db('president/*')
 	.method('increment', function (this: Doc & { value: number }, x: number) {
 		this.value += x
 	})
-	// .method(
-	// 	'incrementChecked',
-	// 	function (x) {
-	// 		this.value += x
-	// 	}
-	// 	// number
-	// )
-	.method(
-		'incrementObj',
-		// 'incrementCheckedObj',
-		function ({ incrementBy }) {
-			this['value'] += incrementBy
-		},
-		// {
-		// 	incrementBy: number,
-		// }
-	)
+	.method('incrementObj', function (params: { incrementBy: number }) {
+		;(this['value'] as number) += params.incrementBy
+	})
 	.method('floatSomePromises', async function () {
-		console.log('floatSomePromises')
+		// console.log('floatSomePromises')
 		// const db = this.db
 		promises.push(db('thief/a').set({ age: 1 })) // A
 

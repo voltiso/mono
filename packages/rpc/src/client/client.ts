@@ -9,7 +9,7 @@
 import { createClassInterface } from '@voltiso/util'
 import fetch from 'cross-fetch'
 
-import type { Server, ServerTI } from '../server/server.js'
+import type { Server, ServerTI } from '~/server/server'
 
 type ClientOptions = {
 	log: boolean
