@@ -254,7 +254,7 @@ export const baseEslintConfig = defineEslintConfig({
 			rules: {
 				'@typescript-eslint/no-var-requires': 0,
 				'import/no-commonjs': 0,
-				strict: ['error', 'global'],
+				strict: ['warn', 'global'],
 			},
 		},
 
