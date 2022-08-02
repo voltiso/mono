@@ -18,6 +18,7 @@ export const ignorePatterns = [
 	'**/pnpm-lock.yaml',
 	'**/traceDir/',
 	'**/.turbo/',
+	'**/firebase-*.json',
 	...readGitignoreFiles({ cwd: '.' }),
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//

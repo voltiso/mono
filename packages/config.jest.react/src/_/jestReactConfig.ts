@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineJestConfig } from '@voltiso/config.jest.lib'
+import { defineJestConfig, moduleNameMapper } from '@voltiso/config.jest.lib'
 
 const esModules = ['react-native', '@react-native']
 
@@ -28,9 +28,7 @@ export const jestReactConfig = defineJestConfig({
 	// 	__DEV__: true,
 	// },
 
-	moduleNameMapper: {
-		'^(\\..+)\\.js$': '$1',
-	},
+	moduleNameMapper,
 
 	// globals: {
 	// 	'ts-jest': {
