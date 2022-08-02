@@ -8,8 +8,19 @@
 		},
 
 		"test": {
+			"dependsOn": ["^build"],
 			"outputs": [],
-			"inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+			"inputs": [
+				"src/**/*.ts",
+				"src/**/*.tsx",
+				"src/**/*.js",
+				"src/**/*.jsx",
+
+				"test/**/*.ts",
+				"test/**/*.tsx",
+				"test/**/*.js",
+				"test/**/*.jsx"
+			]
 		},
 
 		"lint": {
@@ -32,6 +43,7 @@
 				"src/**/*.*",
 				"test/**/*.*",
 				"script/**/*.*",
+
 				"**/*.md",
 				"**/*.cjs",
 				"**/*.yml",
