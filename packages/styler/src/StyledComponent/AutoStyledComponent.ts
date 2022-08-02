@@ -3,9 +3,10 @@
 
 import type { NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type { Props as Properties } from '../react-types'
-import type { IStyledComponent } from './IStyledComponent.js'
-import type { StyledComponent_ } from './StyledComponent.js'
+import type { Props as Properties } from '~/react-types'
+
+import type { IStyledComponent } from './IStyledComponent'
+import type { StyledComponent_ } from './StyledComponent'
 
 /** With Element already provided */
 export type StyledComponent<

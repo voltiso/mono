@@ -3,7 +3,7 @@
 
 import type { ReactElement } from 'react'
 
-import type { Props } from '../Props'
+import type { Props } from '~/react-types/Props/Props'
 
 export interface FunctionComponent<P extends Props = {}> {
 	(props: P): ReactElement | null

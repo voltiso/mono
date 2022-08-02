@@ -5,10 +5,9 @@ import type { GetProperty, Throw, VOmit } from '@voltiso/util'
 
 import type { MergeProps_, Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
+import type { IStyled } from '~/Styled'
 import type { StyledComponent } from '~/StyledComponent'
 import type { StyledHoc } from '~/StyledHoc'
-
-import type { IStyled } from '../IStyled'
 
 export type Patch<
 	This extends IStyled,

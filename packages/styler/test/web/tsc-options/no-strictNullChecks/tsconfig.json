@@ -7,10 +7,15 @@
 	"compilerOptions": {
 		"strictNullChecks": false,
 		"exactOptionalPropertyTypes": false,
-		"strictPropertyInitialization": false
-	},
+		"strictPropertyInitialization": false,
 
-	"include": ["."]
+		"paths": {
+			"~": ["../../../../src"],
+			"~/*": ["../../../../src/*"]
+		}
+	}
+
+	// "include": ["."]
 
 	// "references": [{ "path": "../../../.." }]
 }

@@ -13,28 +13,29 @@ import { assertNotPolluting, getKeys, isDefined } from '@voltiso/util'
 import type { ComponentPropsWithRef } from 'react'
 import { forwardRef } from 'react'
 
-import type { IndexedCssProps, IndexedCssPropsSingle } from '../_/CssProps'
+import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
 import type {
 	IStyledDataMod as IStyledDataModule,
 	StyledData,
 	StyledDataWithTypeInfo,
-} from '../_/StyledData'
-import type { ChildElement } from '../_/StyledData/_/ChildElement'
-import type { GetModProps as GetModuleProps } from '../_/StyledData/GetModProps.js'
-import type { Css, CssObject } from '../Css.js'
-import type { MergeProps, Props } from '../react-types'
-import type { IStylable, OuterProps } from '../Stylable'
-import type { StyledComponent } from '../StyledComponent'
-import { mergeCssProps } from './_/mergeCssProps.js'
-import { mergeDefaults } from './_/mergeDefaults.js'
-import type { ForcePatch, Patch, PatchRemoveProps } from './_/Patch.js'
-import type { PropValue } from './_/PropValue.js'
-import { render } from './_/render.js'
+} from '~/_/StyledData'
+import type { ChildElement } from '~/_/StyledData/_/ChildElement'
+import type { GetModProps as GetModuleProps } from '~/_/StyledData/GetModProps'
+import type { Css, CssObject } from '~/Css'
+import type { MergeProps, Props } from '~/react-types'
+import type { IStylable, OuterProps } from '~/Stylable'
+import type { StyledComponent } from '~/StyledComponent'
+
+import { mergeCssProps } from './_/mergeCssProps'
+import { mergeDefaults } from './_/mergeDefaults'
+import type { ForcePatch, Patch, PatchRemoveProps } from './_/Patch'
+import type { PropValue } from './_/PropValue'
+import { render } from './_/render'
 import type { MapProps } from './_/Stack'
-import type { StyleFromProps } from './_/StyleFromProps.js'
-import type { PropsFromCssProps } from './_detail/PropsFromCssProps.js'
-import { isStyled } from './isStyled.js'
-import { IStyled } from './IStyled.js'
+import type { StyleFromProps } from './_/StyleFromProps'
+import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
+import { isStyled } from './isStyled'
+import { IStyled } from './IStyled'
 
 class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	protected _data: StyledDataWithTypeInfo<P, C>

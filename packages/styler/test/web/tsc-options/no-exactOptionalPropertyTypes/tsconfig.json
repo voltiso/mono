@@ -5,10 +5,15 @@
 	"extends": "@voltiso/config.ts.dom",
 
 	"compilerOptions": {
-		"exactOptionalPropertyTypes": false
-	},
+		"exactOptionalPropertyTypes": false,
 
-	"include": ["."]
+		"paths": {
+			"~": ["../../../../src"],
+			"~/*": ["../../../../src/*"]
+		}
+	}
+
+	// "include": ["."]
 
 	// "references": [{ "path": "../../../.." }]
 }

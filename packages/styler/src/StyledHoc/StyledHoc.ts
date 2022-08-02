@@ -4,13 +4,13 @@
 import type { PickCallNoUnknown, PickConstructNoUnknown } from '@voltiso/util'
 import type { ComponentPropsWithRef } from 'react'
 
-import type { StyledComponent } from '..'
-import type { MergeProps, MergeProps_, Props } from '../react-types'
-import type { InnerProps } from '../Stylable'
-import type { StylableIntrinsic } from '../Stylable/_/StylableIntrinsic'
-import type { StylableJsxCall_Infer } from '../Stylable/_/StylableJsxCall'
-import type { StylableJsxConstruct_Infer } from '../Stylable/_/StylableJsxConstruct'
-import type { Styled_ } from '../Styled'
+import type { StyledComponent } from '~'
+import type { MergeProps, MergeProps_, Props } from '~/react-types'
+import type { InnerProps } from '~/Stylable'
+import type { StylableIntrinsic } from '~/Stylable/_/StylableIntrinsic'
+import type { StylableJsxCall_Infer } from '~/Stylable/_/StylableJsxCall'
+import type { StylableJsxConstruct_Infer } from '~/Stylable/_/StylableJsxConstruct'
+import type { Styled_ } from '~/Styled'
 
 /**
  * Curried: `Element => StyledComponent`

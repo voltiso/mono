@@ -5,16 +5,17 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { ChangeEvent, FC, ReactElement, RefObject } from 'react'
 
-import type { Css } from '../Css.js'
-import type { Props } from '../react-types'
-import type { Stylable } from '../Stylable'
-import type { StylableIntrinsic } from '../Stylable/_/StylableIntrinsic'
-import type { StylableJsxCall } from '../Stylable/_/StylableJsxCall'
-import type { StylableJsxConstruct } from '../Stylable/_/StylableJsxConstruct'
-import type { StyledComponent } from '../StyledComponent'
-import type { StyledHoc } from './AutoStyledHoc.js'
-import type { IStyledHoc, IStyledHocCall } from './IStyledHoc.js'
-import type { StyledHocCall } from './StyledHoc.js'
+import type { Css } from '~/Css'
+import type { Props } from '~/react-types'
+import type { Stylable } from '~/Stylable'
+import type { StylableIntrinsic } from '~/Stylable/_/StylableIntrinsic'
+import type { StylableJsxCall } from '~/Stylable/_/StylableJsxCall'
+import type { StylableJsxConstruct } from '~/Stylable/_/StylableJsxConstruct'
+import type { StyledComponent } from '~/StyledComponent'
+
+import type { StyledHoc } from './AutoStyledHoc'
+import type { IStyledHoc, IStyledHocCall } from './IStyledHoc'
+import type { StyledHocCall } from './StyledHoc'
 
 describe('StyledHoc', () => {
 	it('generic', <P extends Props>() => {

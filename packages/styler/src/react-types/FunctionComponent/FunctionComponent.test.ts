@@ -3,9 +3,10 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../Props'
-import type { FunctionComponent } from './FunctionComponent.js'
-import type { IFunctionComponent } from './IFunctionComponent.js'
+import type { Props } from '~/react-types'
+
+import type { FunctionComponent } from './FunctionComponent'
+import type { IFunctionComponent } from './IFunctionComponent'
 
 describe('FunctionComponent', () => {
 	it('generic', <P extends Props>() => {

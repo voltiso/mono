@@ -1,4 +1,5 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './IForwardRefExoticComponent'
+export * from './CssProps'
+export * from './StyledData'

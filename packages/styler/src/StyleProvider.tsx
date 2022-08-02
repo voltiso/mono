@@ -5,7 +5,7 @@ import type { IRenderer } from 'fela'
 import type { ReactNode } from 'react'
 import { Component } from 'react'
 import { RendererProvider, ThemeProvider, useFela } from 'react-fela'
-// import { getRenderer } from '../style/getRenderer'
+// import { getRenderer } from '~/style/getRenderer'
 
 // const fallbackRenderer = getRenderer()
 

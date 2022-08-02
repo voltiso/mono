@@ -6,7 +6,7 @@ import type * as CSS from 'csstype'
 import type { IStyleExtension, IStylePrimitiveExtension } from 'fela'
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-import type { IsReactNative } from './IsReactNative.js'
+import type { IsReactNative } from './IsReactNative'
 
 /** Copied over `IStyle` from `fela` with fixes for `exactOptionalPropertyTypes` */
 export type Css = CssObject | CssCustom | IStyleExtension

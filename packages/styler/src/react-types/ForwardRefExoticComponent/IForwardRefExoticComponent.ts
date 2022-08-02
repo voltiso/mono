@@ -3,7 +3,7 @@
 
 import type { ReactElement, WeakValidationMap } from 'react'
 
-import type { Props as Properties } from '..'
+import type { Props as Properties } from '~'
 
 export interface IExoticComponent {
 	(props: any): ReactElement | null

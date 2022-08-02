@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IStylable } from '../Stylable'
-import type { IStyled } from '../Styled'
-import type { IStyledComponent } from '../StyledComponent'
-import type { ThrowWrongInnerProps } from './ThrowWrongInnerProps.js'
+import type { IStylable } from '~/Stylable'
+import type { IStyled } from '~/Styled'
+import type { IStyledComponent } from '~/StyledComponent'
+
+import type { ThrowWrongInnerProps } from './ThrowWrongInnerProps'
 
 /**
  * Curried `Element => StyledComponent`

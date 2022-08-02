@@ -4,7 +4,7 @@
 // import { Merge2Simple_ } from '@voltiso/util'
 import type { Merge2Trivial_ } from '@voltiso/util'
 
-import type { Props } from './Props.js'
+import type { Props } from './Props'
 
 type Finalize<X> = X extends Props ? X : X & Props
 

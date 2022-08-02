@@ -9,12 +9,13 @@ import type {
 	ComponentPropsWithRef,
 } from 'react'
 
-import type { Css } from '../Css.js'
-import type { Props as Properties } from '../react-types'
-import type { IStylable, OuterProps as OuterProperties } from '../Stylable'
-import type { IStyled, Styled } from '../Styled'
-import type { StyledComponent } from './AutoStyledComponent.js'
-import type { IStyledComponent } from './IStyledComponent.js'
+import type { Css } from '~/Css'
+import type { Props as Properties } from '~/react-types'
+import type { IStylable, OuterProps as OuterProperties } from '~/Stylable'
+import type { IStyled, Styled } from '~/Styled'
+
+import type { StyledComponent } from './AutoStyledComponent'
+import type { IStyledComponent } from './IStyledComponent'
 
 describe('StyledComponent', () => {
 	it('type', () => {

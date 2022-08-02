@@ -3,12 +3,13 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../react-types'
+import type { Props } from '~/react-types'
+
 import type {
 	NativeOuterProps,
 	OuterPropsBase,
 	WebOuterProps,
-} from './OuterProps.js'
+} from './OuterProps'
 
 describe('OuterProps', () => {
 	it('type', () => {

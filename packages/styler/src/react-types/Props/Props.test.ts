@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IndexedProps, Props } from './Props.js'
+import type { IndexedProps, Props } from './Props'
 
 describe('Props', () => {
 	it('type', () => {

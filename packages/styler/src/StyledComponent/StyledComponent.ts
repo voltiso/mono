@@ -7,9 +7,9 @@ import type { ForwardRefExoticComponent } from 'react'
 import type {
 	MergeProps as MergeProperties,
 	Props as Properties,
-} from '../react-types'
-import type { IStylable, OuterProps as OuterProperties } from '../Stylable'
-import type { Styled_ } from '../Styled'
+} from '~/react-types'
+import type { IStylable, OuterProps as OuterProperties } from '~/Stylable'
+import type { Styled_ } from '~/Styled'
 
 /** With Element already provided */
 interface StyledComponent<P extends Properties>

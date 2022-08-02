@@ -8,15 +8,16 @@ import type {
 	NamedExoticComponent,
 } from 'react'
 
-import type { Props as Properties } from '../Props'
+import type { Props } from '~/react-types'
+
 import type {
 	IExoticComponent,
 	IForwardRefExoticComponent,
 	INamedExoticComponent,
-} from './IForwardRefExoticComponent.js'
+} from './IForwardRefExoticComponent'
 
 describe('IForwardRefExoticComponent', () => {
-	it('generic', <P extends Properties>() => {
+	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
 		Assert.is<ExoticComponent<P>, IExoticComponent>()

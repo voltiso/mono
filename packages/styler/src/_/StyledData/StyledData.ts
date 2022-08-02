@@ -3,11 +3,10 @@
 
 import type { VPartial } from '@voltiso/util'
 
+import type { CssProps } from '~/_/CssProps/CssProps'
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
 import type { IStack } from '~/Styled/_/Stack'
-
-import type { CssProps } from '../CssProps'
 
 export interface StyledData<P extends Props, C extends IStylable | null> {
 	element: C

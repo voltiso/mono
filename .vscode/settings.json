@@ -222,7 +222,8 @@
 		"n/file-extension-in-import",
 		"import/newline-after-import",
 		"notice/notice",
-		"@typescript-eslint/padding-line-between-statements"
+		"@typescript-eslint/padding-line-between-statements",
+		"simple-import-sort/exports"
 	],
 
 	"prettier.documentSelectors": [

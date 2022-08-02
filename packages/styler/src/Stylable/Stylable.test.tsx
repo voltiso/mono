@@ -4,9 +4,10 @@
 import { Assert, Is } from '@voltiso/util'
 import type { ChangeEvent, FC, RefObject } from 'react'
 
-import type { Props } from '../react-types'
-import type { Stylable } from './AutoStylable.js'
-import type { IStylable } from './IStylable.js'
+import type { Props } from '~/react-types'
+
+import type { Stylable } from './AutoStylable'
+import type { IStylable } from './IStylable'
 
 describe('Stylable', () => {
 	it('generic', <P extends Props>() => {

@@ -3,8 +3,8 @@
 
 import type { StyleProp } from 'react-native'
 
-import type { IsReactNative } from '../IsReactNative.js'
-import type { Props } from '../react-types'
+import type { IsReactNative } from '~/IsReactNative'
+import type { Props } from '~/react-types'
 
 export interface WebInnerProps extends Props {
 	className?: string | undefined

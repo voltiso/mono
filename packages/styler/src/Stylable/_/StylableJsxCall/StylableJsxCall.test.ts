@@ -9,10 +9,11 @@ import type {
 import { Assert, Is } from '@voltiso/util'
 import type { FC } from 'react'
 
-import type { StylableJsxConstruct_ } from '../StylableJsxConstruct/StylableJsxConstruct'
-import type { InnerProps } from './~/InnerProps'
+import type { Props } from '~/react-types'
+import type { InnerProps } from '~/Stylable'
+import type { StylableJsxConstruct_ } from '~/Stylable/_/StylableJsxConstruct'
+
 import type { StylableJsxCall } from './AutoStylableJsxCall'
-import type { Props } from './react-types'
 import type { IStylableJsxCall, StylableJsxCall_Infer } from './StylableJsxCall'
 
 describe('StylableJsxCall', () => {

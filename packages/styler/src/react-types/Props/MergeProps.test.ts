@@ -4,8 +4,8 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { MergeProps } from './MergeProps.js'
-import type { Props } from './Props.js'
+import type { MergeProps } from './MergeProps'
+import type { Props } from './Props'
 
 describe('MergeProps', () => {
 	it('simple', () => {

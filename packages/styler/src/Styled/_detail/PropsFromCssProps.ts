@@ -8,8 +8,7 @@ import type {
 	IndexedCssProps,
 	IndexedCssPropsSingle,
 } from '~/_/CssProps'
-
-import type { PropValueFromCssProp } from '../_/PropValueFromCssProp'
+import type { PropValueFromCssProp } from '~/Styled/_/PropValueFromCssProp'
 
 export type PropsFromCssProps<
 	CP extends IndexedCssProps | IndexedCssPropsSingle,

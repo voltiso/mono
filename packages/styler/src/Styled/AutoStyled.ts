@@ -3,10 +3,11 @@
 
 import type { NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type { Props } from '../react-types'
-import type { IStylable } from '../Stylable'
-import type { IStyled } from './IStyled.js'
-import { Styled_ } from './Styled.js'
+import type { Props } from '~/react-types'
+import type { IStylable } from '~/Stylable'
+
+import type { IStyled } from './IStyled'
+import { Styled_ } from './Styled'
 
 export type Styled<
 	P extends OptionalArgument<Props> = NotProvided,
