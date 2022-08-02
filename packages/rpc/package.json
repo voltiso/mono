@@ -45,7 +45,7 @@
 		"__________LINT": "__________",
 		"lint": "run-s lint:depcheck lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
-		"lint:eslint": "cross-env NODE_OPTIONS=--max-old-space-size=8192 eslint .",
+		"lint:eslint": "eslint .",
 		"lint:tsc": "tsc -b",
 		"__________BUILD": "__________",
 		"build": "run-p build:esm build:cjs",

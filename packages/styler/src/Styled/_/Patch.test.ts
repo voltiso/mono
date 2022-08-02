@@ -4,7 +4,7 @@
 import type { _, VOmit } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { MergeProps, Props } from '../../react-types'
+import type { MergeProps, Props } from '~/react-types'
 
 describe('Path', () => {
 	it('generic', <P0 extends Props, P1 extends Props>() => {

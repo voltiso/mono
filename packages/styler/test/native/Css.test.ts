@@ -5,8 +5,9 @@ import { Assert } from '@voltiso/util'
 import type { IStyleExtension } from 'fela'
 import type { ImageStyle, ViewStyle } from 'react-native'
 
-import type { Css } from '../../src'
-import type { CssCustom } from '../../src/Css.js'
+import type { Css } from '~'
+
+import type { CssCustom } from '../../src/Css'
 
 describe('Css (react-native)', () => {
 	it('works', () => {

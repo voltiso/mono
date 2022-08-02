@@ -4,6 +4,8 @@
 import type { GetType } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 
+//! TODO: use schemar?
+
 export const validationResult = {
 	success: s.boolean,
 

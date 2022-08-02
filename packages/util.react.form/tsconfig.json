@@ -5,6 +5,11 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"lib": ["DOM"]
+		"lib": ["DOM"],
+
+		"paths": {
+			// "~": ["./src"],
+			"~/*": ["./src/*"]
+		}
 	}
 }

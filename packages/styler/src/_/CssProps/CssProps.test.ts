@@ -4,14 +4,12 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { IndexedProps, Props } from '../../react-types'
-import type { CssProp } from './CssProp.js'
-import type { CssProps } from './CssProps.js'
-import type { ICssProp } from './ICssProp.js'
-import type {
-	IndexedCssProps,
-	IndexedCssPropsSingle,
-} from './IndexedCssProps.js'
+import type { IndexedProps, Props } from '~/react-types'
+
+import type { CssProp } from './CssProp'
+import type { CssProps } from './CssProps'
+import type { ICssProp } from './ICssProp'
+import type { IndexedCssProps, IndexedCssPropsSingle } from './IndexedCssProps'
 
 describe('CssProps', () => {
 	it('generic', <P extends Props>() => {

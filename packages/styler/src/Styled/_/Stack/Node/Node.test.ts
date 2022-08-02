@@ -3,8 +3,9 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../../../../react-types'
-import type { INode, Node } from './Node.js'
+import type { Props } from '~/react-types'
+
+import type { INode, Node } from './Node'
 
 describe('Node', () => {
 	it('generic', <P extends Props>() => {

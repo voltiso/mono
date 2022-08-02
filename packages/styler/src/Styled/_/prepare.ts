@@ -7,8 +7,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { isDefined } from '@voltiso/util'
 
-import type { Css } from '../../Css.js'
-import { ThemePath } from '../../ThemePath.js'
+import type { Css } from '~/Css'
+import { ThemePath } from '~/ThemePath'
 
 function readPath(o: any, path: string[]): unknown {
 	if (!path[0]) {

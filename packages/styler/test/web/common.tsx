@@ -9,7 +9,7 @@ import typescript from 'fela-plugin-typescript'
 import webPreset from 'fela-preset-web'
 import type { ReactNode } from 'react'
 
-import { StyleProvider } from '../../src'
+import { StyleProvider } from '~'
 
 let renderer: IRenderer | undefined
 

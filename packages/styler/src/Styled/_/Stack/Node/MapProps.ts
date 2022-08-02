@@ -3,7 +3,7 @@
 
 import type { VPartial } from '@voltiso/util'
 
-import type { Props } from '../../../../react-types'
+import type { Props } from '~/react-types'
 
 export interface IMapProps {
 	(outerProps: any): Props

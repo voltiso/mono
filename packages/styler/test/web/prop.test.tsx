@@ -3,7 +3,8 @@
 
 import { screen } from '@testing-library/react'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('prop', () => {

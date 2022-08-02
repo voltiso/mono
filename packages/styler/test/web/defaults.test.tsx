@@ -3,8 +3,9 @@
 
 import { screen } from '@testing-library/react'
 
-import { style } from '../../src'
-import { renderApp } from './common.js'
+import { style } from '~'
+
+import { renderApp } from './common'
 
 describe('defaults', () => {
 	it('prop has priority', () => {

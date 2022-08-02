@@ -4,8 +4,9 @@
 import { Assert } from '@voltiso/util'
 import { View } from 'react-native'
 
-import type { IsReactNative } from '../../src'
-import { style } from '../../src'
+import type { IsReactNative } from '~'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('cssProps', () => {

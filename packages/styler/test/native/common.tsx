@@ -8,7 +8,7 @@ import type { IRenderer } from 'fela'
 import { createRenderer } from 'fela-native'
 import type { ReactNode } from 'react'
 
-import { StyleProvider } from '../../src'
+import { StyleProvider } from '~'
 
 let renderer: IRenderer | undefined
 

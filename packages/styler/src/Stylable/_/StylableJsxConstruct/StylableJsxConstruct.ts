@@ -3,8 +3,8 @@
 
 import type { Component } from 'react'
 
-import type { Props } from '../../../react-types'
-import type { InnerProps, InnerProps_Subtype } from '../../InnerProps.js'
+import type { Props } from '~/react-types'
+import type { InnerProps, InnerProps_Subtype } from '~/Stylable/InnerProps'
 
 /**
  * FC-like types that can be styled using style(...), and have additional props

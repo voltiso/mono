@@ -6,9 +6,10 @@ import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { StyledComponent } from '../../src'
-import { style } from '../../src'
-import { renderApp } from './common.js'
+import type { StyledComponent } from '~'
+import { style } from '~'
+
+import { renderApp } from './common'
 
 describe('defineProps', () => {
 	it('works with interfaces', () => {

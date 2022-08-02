@@ -4,7 +4,14 @@
 {
 	"extends": "@voltiso/config.ts",
 
-	"include": ["."]
+	"compilerOptions": {
+		"paths": {
+			"~": ["../../src"],
+			"~/*": ["../../src/*"]
+		}
+	}
+
+	// "include": ["."]
 
 	// "references": [{ "path": "../../tsconfig.lint.json" }]
 }

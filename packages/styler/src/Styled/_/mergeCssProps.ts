@@ -3,7 +3,7 @@
 
 import { getEntries, setProperty, tryGetProperty } from '@voltiso/util'
 
-import type { IndexedCssProps, IndexedCssPropsSingle } from '../../_/CssProps'
+import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
 
 export function mergeCssProps(
 	a: IndexedCssProps,

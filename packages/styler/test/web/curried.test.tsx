@@ -6,7 +6,8 @@ import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import { undef } from '@voltiso/util'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('curried', () => {

@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Props } from '../../react-types'
-import type { IStyledData } from './IStyledData.js'
+import type { Props } from '~/react-types'
+
+import type { IStyledData } from './IStyledData'
 
 export interface IStyledDataWithTypeInfo<P extends Props = Props>
 	extends IStyledData {

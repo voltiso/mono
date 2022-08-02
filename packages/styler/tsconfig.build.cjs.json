@@ -8,7 +8,12 @@
 		"lib": ["DOM", "DOM.Iterable"],
 
 		"outDir": "dist/cjs",
-		"rootDir": "src"
+		"rootDir": "src",
+
+		"paths": {
+			"~": ["./src"],
+			"~/*": ["./src/*"]
+		}
 	},
 
 	"include": ["src"]

@@ -3,9 +3,9 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../../../../react-types'
-import type { IMapProps, MapProps } from './MapProps.js'
-import type { IMapPropsNode, MapPropsNode } from './MapPropsNode.js'
+import type { IMapProps, MapProps } from './MapProps'
+import type { IMapPropsNode, MapPropsNode } from './MapPropsNode'
+import type { Props } from './react-types'
 
 describe('MapPropsNode', () => {
 	it('generic', <OP extends Props, IP extends Props>() => {

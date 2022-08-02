@@ -4,15 +4,22 @@
 {
 	"extends": "@voltiso/config.ts.dom",
 
-	"include": ["."],
+	// "include": ["."],
+
+	"compilerOptions": {
+		"paths": {
+			"~": ["../../src"],
+			"~/*": ["../../src/*"]
+		}
+	},
 
 	"exclude": [
 		"dist/",
 		"node_modules/",
 		".tsc-out/",
 		"test/",
-		"tsc-options/"
 		//
+		"tsc-options/"
 	]
 
 	// "references": [{ "path": "../../tsconfig.lint.json" }]

@@ -8,7 +8,8 @@ import type { IsEqual } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 import type { FC } from 'react'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 const Button = style('button')

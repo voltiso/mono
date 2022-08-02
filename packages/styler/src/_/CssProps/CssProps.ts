@@ -3,8 +3,9 @@
 
 import type { Keyof } from '@voltiso/util'
 
-import type { Props } from '../../react-types'
-import type { CssProp } from './CssProp.js'
+import type { Props } from '~/react-types'
+
+import type { CssProp } from './CssProp'
 
 export type CssProps<P extends Props> = {
 	[k in Keyof<P>]: CssProp<P[k]>[]

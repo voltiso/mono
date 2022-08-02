@@ -11,7 +11,8 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 const Button = style('button')

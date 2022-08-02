@@ -1,11 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	ChildElement,
-	IChildElement,
-} from '../../../../_/StyledData/_/ChildElement'
-import type { Props } from '../../../../react-types'
+import type { ChildElement } from '~/_/StyledData/_/ChildElement/ChildElement'
+import type { IChildElement } from '~/_/StyledData/_/ChildElement/IChildElement'
+import type { Props } from '~/react-types'
 
 export interface IWrapNode {
 	wrap: IChildElement[]

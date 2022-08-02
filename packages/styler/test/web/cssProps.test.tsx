@@ -5,8 +5,9 @@ import { screen } from '@testing-library/react'
 import type { IsIdentical, Throw } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { style } from '../../src'
-import { renderApp } from './common.js'
+import { style } from '~'
+
+import { renderApp } from './common'
 
 describe('cssProps', () => {
 	it('works', () => {

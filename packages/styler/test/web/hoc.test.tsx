@@ -3,8 +3,9 @@
 
 import { screen } from '@testing-library/react'
 
-import type { StyledComponent } from '../../src'
-import { style } from '../../src'
+import type { StyledComponent } from '~'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('hoc', () => {

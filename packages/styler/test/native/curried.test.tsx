@@ -6,7 +6,8 @@
 import { undef } from '@voltiso/util'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('curried', () => {

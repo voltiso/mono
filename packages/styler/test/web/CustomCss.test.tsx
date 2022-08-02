@@ -3,7 +3,7 @@
 
 import { undef } from '@voltiso/util'
 
-import { style } from '../../src'
+import { style } from '~'
 
 describe('CustomCss', () => {
 	it('works (static)', () => {

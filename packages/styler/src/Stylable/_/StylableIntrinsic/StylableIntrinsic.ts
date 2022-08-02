@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsReactNative } from '../../../IsReactNative'
-import type { Props } from '../../../react-types'
-import type { InnerProps } from '../../InnerProps'
+import type { IsReactNative } from '~/IsReactNative'
+import type { Props } from '~/react-types'
+import type { InnerProps } from '~/Stylable/InnerProps'
 
 type StylableIntrinsic<P extends Props> = IsReactNative extends false
 	? {

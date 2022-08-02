@@ -3,8 +3,9 @@
 
 import type { NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type { Props } from '../../../react-types'
-import type { IStylableJsxCall, StylableJsxCall_ } from './StylableJsxCall.js'
+import type { Props } from '~/react-types'
+
+import type { IStylableJsxCall, StylableJsxCall_ } from './StylableJsxCall'
 
 export type StylableJsxCall<
 	P extends OptionalArgument<Props> | NotProvided = NotProvided,

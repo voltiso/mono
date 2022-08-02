@@ -3,13 +3,14 @@
 
 import type { VPartial } from '@voltiso/util'
 
-import type { Props } from '../../../../react-types'
-import type { GetStyleNode, IGetStyleNode } from './GetStyleNode.js'
-import type { IMapPropsNode, MapPropsNode } from './MapPropsNode.js'
-import type { IPropsNode, PropsNode } from './PropsNode.js'
-import type { IRemovePropsNode, RemovePropsNode } from './RemovePropsNode.js'
-import type { StyleNode } from './StyleNode.js'
-import type { IWrapNode, WrapNode } from './WrapNode.js'
+import type { Props } from '~/react-types'
+
+import type { GetStyleNode, IGetStyleNode } from './GetStyleNode'
+import type { IMapPropsNode, MapPropsNode } from './MapPropsNode'
+import type { IPropsNode, PropsNode } from './PropsNode'
+import type { IRemovePropsNode, RemovePropsNode } from './RemovePropsNode'
+import type { StyleNode } from './StyleNode'
+import type { IWrapNode, WrapNode } from './WrapNode'
 
 export type INode =
 	| StyleNode

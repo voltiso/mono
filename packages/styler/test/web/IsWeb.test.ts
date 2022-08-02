@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IsReactNative } from '../../src/IsReactNative.js'
+import type { IsReactNative } from '~'
 
 describe('isWeb', () => {
 	it('works', () => {

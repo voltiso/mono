@@ -3,11 +3,12 @@
 
 import type { NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type { Props } from '../../../react-types'
+import type { Props } from '~/react-types'
+
 import type {
 	IStylableIntrinsic,
 	StylableIntrinsic_,
-} from './StylableIntrinsic.js'
+} from './StylableIntrinsic'
 
 export type StylableIntrinsic<
 	P extends OptionalArgument<Props> | NotProvided = NotProvided,

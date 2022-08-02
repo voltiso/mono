@@ -3,11 +3,12 @@
 
 import type { NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type { Props } from '../../../react-types'
+import type { Props } from '~/react-types'
+
 import type {
 	IStylableJsxConstruct,
 	StylableJsxConstruct_,
-} from './StylableJsxConstruct.js'
+} from './StylableJsxConstruct'
 
 export type StylableJsxConstruct<
 	P extends OptionalArgument<Props> | NotProvided = NotProvided,

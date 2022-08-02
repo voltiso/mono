@@ -4,7 +4,8 @@
 import { render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 
-import { createTheme, style, StyleProvider } from '../../src'
+import { createTheme, style, StyleProvider } from '~'
+
 import { getRenderer } from './common'
 
 type Theme = {

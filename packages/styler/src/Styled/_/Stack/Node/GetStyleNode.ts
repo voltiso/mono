@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Css } from '../../../../Css.js'
-import type { Props } from '../../../../react-types'
+import type { Css } from '~/Css'
+import type { Props } from '~/react-types'
 
 export interface GetStyleNode<P extends Props> {
 	getStyle(props: P): Css

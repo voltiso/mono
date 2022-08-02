@@ -4,8 +4,8 @@
 import { Assert } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 
-import type { Props } from '../../../react-types'
-import type { IStylable } from '../../../Stylable'
+import type { Props } from '~/react-types'
+import type { IStylable } from '~/Stylable'
 import type { IForwardRefRenderFunction } from './IForwardRefRenderFunction.js'
 
 describe('IForwardRefRenderFunction', () => {

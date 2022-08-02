@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import { style } from '../../src'
+import { style } from '~'
 
 describe('assign', () => {
 	it('extended', () => {

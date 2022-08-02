@@ -3,9 +3,10 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../../../../react-types'
-import type { ChildElement } from './ChildElement.js'
-import type { IChildElement } from './IChildElement.js'
+import type { Props } from '~/react-types'
+
+import type { ChildElement } from './ChildElement'
+import type { IChildElement } from './IChildElement'
 
 describe('ChildElement', () => {
 	it('generic', <P extends Props>() => {

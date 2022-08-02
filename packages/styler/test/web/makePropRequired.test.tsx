@@ -5,7 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { ComponentProps } from 'react'
 
-import { style } from '../../src'
+import { style } from '~'
 
 describe('makePropRequired', () => {
 	it('works (type-only)', () => {

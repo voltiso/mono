@@ -5,8 +5,8 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { StyleProp } from 'react-native'
 
-import type { Props, Stylable, Styled, StyledComponent } from '../../src'
-import { style } from '../../src'
+import type { Props, Stylable, Styled, StyledComponent } from '~'
+import { style } from '~'
 
 describe('Styled (react-native)', () => {
 	it('generic', <P extends Props, C extends Stylable>() => {

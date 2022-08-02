@@ -3,7 +3,7 @@
 
 import type { ChangeEventHandler } from 'react'
 
-import type { ValidationResult } from '../schemas/validationResult'
+import type { ValidationResult } from '~/schemas/validationResult'
 
 export interface CheckboxProps {
 	id?: string | undefined

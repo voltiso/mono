@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Props } from '../../../../react-types'
-import type { IMapProps, MapProps } from './MapProps.js'
+import type { Props } from '~/react-types'
+
+import type { IMapProps, MapProps } from './MapProps'
 
 export interface IMapPropsNode {
 	mapProps: IMapProps

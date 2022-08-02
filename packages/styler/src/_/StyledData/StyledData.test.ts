@@ -3,10 +3,11 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../../react-types'
-import type { IStylable } from '../../Stylable'
-import type { IStyledData } from './IStyledData.js'
-import type { StyledData } from './StyledData.js'
+import type { Props } from '~/react-types'
+import type { IStylable } from '~/Stylable'
+
+import type { IStyledData } from './IStyledData'
+import type { StyledData } from './StyledData'
 
 describe('StyledData', () => {
 	it('generic', <P extends Props, C extends IStylable | null>() => {

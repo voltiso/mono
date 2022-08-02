@@ -3,8 +3,9 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Props } from '../../../../react-types'
-import type { GetStyleNode, IGetStyleNode } from './GetStyleNode.js'
+import type { Props } from '~/react-types'
+
+import type { GetStyleNode, IGetStyleNode } from './GetStyleNode'
 
 describe('GetStyleNode', () => {
 	it('generic', <P extends Props>() => {

@@ -4,7 +4,7 @@
 	"scripts": {
 		"build": "turbo run build",
 		"test": "turbo run test",
-		"lint": "turbo run lint",
+		"lint": "turbo run lint --concurrency 2 # high RAM usage!",
 		"fix": "turbo run fix",
 		"__________HOOKS": "__________",
 		"postinstall": "patch-package"

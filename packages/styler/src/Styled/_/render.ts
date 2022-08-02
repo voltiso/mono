@@ -9,13 +9,14 @@ import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'
 
-import type { CssProps } from '../../_/CssProps'
-import type { StyledData } from '../../_/StyledData'
-import type { Css } from '../../Css.js'
-import type { Props } from '../../react-types'
-import type { IStylable, OuterProps } from '../../Stylable'
-import { consumeCssProps } from './consumeCssProps.js'
-import { prepare } from './prepare.js'
+import type { CssProps } from '~/_/CssProps'
+import type { StyledData } from '~/_/StyledData'
+import type { Css } from '~/Css'
+import type { Props } from '~/react-types'
+import type { IStylable, OuterProps } from '~/Stylable'
+
+import { consumeCssProps } from './consumeCssProps'
+import { prepare } from './prepare'
 import {
 	isGetStyleNode,
 	isMapPropsNode,

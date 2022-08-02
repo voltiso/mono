@@ -7,7 +7,8 @@ import { screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('wrap', () => {

@@ -7,7 +7,8 @@ import { Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
 import type { ComponentProps } from 'react'
 
-import { style } from '../../src'
+import { style } from '~'
+
 import { renderApp } from './common'
 
 describe('newCssProps', () => {

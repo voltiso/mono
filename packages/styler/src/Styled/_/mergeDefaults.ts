@@ -3,7 +3,7 @@
 
 import { isDefined } from '@voltiso/util'
 
-import type { Props } from '../../react-types'
+import type { Props } from '~/react-types'
 
 export function mergeDefaults(
 	thisDefaults: Props,
