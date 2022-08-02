@@ -25,7 +25,7 @@ export = async () => {
 		command: `cd ${cwd} && ../node_modules/.bin/firebase emulators:start --only firestore --config firebase-${port}.json`,
 		port,
 		usedPortAction: 'error',
-		launchTimeout: 20_000, // needs more time if ran via `turbo` (for some reason?)
+		launchTimeout: 40_000, // needs more time if ran via `turbo` (for some reason?)
 	})
 
 	// eslint-disable-next-line n/no-process-env
