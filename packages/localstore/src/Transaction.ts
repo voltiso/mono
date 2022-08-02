@@ -101,6 +101,7 @@ export class Transaction implements Database.Transaction {
 			)
 
 		let newData = data
+
 		if (data !== lock.data) {
 			// console.log('Transaction.update', ref, updates, 'deepClone')
 			newData = deepClone(data)

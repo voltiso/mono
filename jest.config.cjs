@@ -5,7 +5,6 @@
 
 // const fs = require('node:fs')
 
-// eslint-disable-next-line n/no-unpublished-require
 const { defineJestConfig } = require('@voltiso/config.jest.lib')
 
 // const allPackages = fs

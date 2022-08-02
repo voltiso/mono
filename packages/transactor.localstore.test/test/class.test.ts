@@ -34,6 +34,7 @@ class Doctor extends Doc.fields({
 	@method
 	async good() {
 		// @ts-expect-error
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		await doctors(this.id).update({ specialty: 'fireman' })
 		return true
 	}

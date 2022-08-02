@@ -13,10 +13,31 @@
 		},
 
 		"lint": {
+			"dependsOn": ["^build"],
+			"inputs": [
+				"src/**/*.*",
+				"test/**/*.*",
+				"script/**/*.*",
+				"**/*.md",
+				"**/*.cjs",
+				"**/*.yml",
+				"**/*.yaml",
+				"**/*.json"
+			],
 			"outputs": []
 		},
 
 		"fix": {
+			"inputs": [
+				"src/**/*.*",
+				"test/**/*.*",
+				"script/**/*.*",
+				"**/*.md",
+				"**/*.cjs",
+				"**/*.yml",
+				"**/*.yaml",
+				"**/*.json"
+			],
 			"outputs": ["*"]
 		}
 	}

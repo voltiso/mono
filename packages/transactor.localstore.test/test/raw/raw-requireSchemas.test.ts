@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createTransactor } from '../common/index'
+import { createTransactor } from '../common'
 
 const db = createTransactor({ requireSchemas: false })
 const dbWithSchema = createTransactor({ requireSchemas: true })

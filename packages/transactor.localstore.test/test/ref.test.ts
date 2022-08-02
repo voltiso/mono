@@ -2,9 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { DTI, StrongRef } from '@voltiso/transactor'
+import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
+import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
@@ -81,30 +82,30 @@ describe('ref', () => {
 		await d.delete()
 	})
 
-	// it('await ref', async () => {
-	// 	expect.hasAssertions()
+	it('await ref', async () => {
+		expect.hasAssertions()
 
-	// 	await database.doc('doctor/d').delete()
-	// 	await database.doc('patient/p').delete()
-	// 	const d = await doctors.add({
-	// 		profile: {
-	// 			name: 'd',
-	// 			specialty: 'abc',
-	// 		},
-	// 	})
+		await database.doc('doctor/d').delete()
+		await database.doc('patient/p').delete()
+		const d = await doctors.add({
+			profile: {
+				name: 'd',
+				specialty: 'abc',
+			},
+		})
 
-	// 	Assert.is<DoctorX, IDoc>()
-	// 	Assert<IsIdentical<typeof d, DoctorX>>()
+		Assert.is<DoctorX, IDoc>()
+		Assert<IsIdentical<typeof d, DoctorX>>()
 
-	// 	const p = await patients.add({
-	// 		profile: {
-	// 			name: 'p',
-	// 			mainDoctor: d.ref,
-	// 		},
-	// 	})
-	// 	const dd = await p.profile.mainDoctor
-	// 	Assert<IsIdentical<typeof dd, DoctorX>>()
+		const p = await patients.add({
+			profile: {
+				name: 'p',
+				mainDoctor: d.ref,
+			},
+		})
+		const dd = await p.profile.mainDoctor
+		Assert<IsIdentical<typeof dd, DoctorX>>()
 
-	// 	expect(dd.profile.name).toBe('d')
-	// })
+		expect(dd.profile.name).toBe('d')
+	})
 })

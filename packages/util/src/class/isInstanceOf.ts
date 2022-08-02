@@ -11,7 +11,8 @@ export function isInstanceOf<
 	Base: BaseConstructor,
 ): derived is DerivedInstance & Instance<BaseConstructor> {
 	while (Base.name.startsWith('lazyConstructor'))
-		Base = Object.getPrototypeOf(Base)
+		// eslint-disable-next-line no-param-reassign
+		Base = Object.getPrototypeOf(Base) as never
 
 	return derived instanceof Base
 }

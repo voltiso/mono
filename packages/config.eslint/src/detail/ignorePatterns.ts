@@ -16,6 +16,8 @@ export const ignorePatterns = [
 	'**/node_modules/',
 	'**/.tsc-out/',
 	'**/pnpm-lock.yaml',
+	'**/traceDir/',
+	'**/.turbo/',
 	...readGitignoreFiles({ cwd: '.' }),
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//
