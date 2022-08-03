@@ -73,15 +73,16 @@ AFTER you have your
 from GitHub in place:
 
 ```sh
-pnpm install @voltiso/util
+pnpm add @voltiso/util
 
-pnpm install @voltiso/config.ts
-pnpm install @voltiso/config.ts.build.esm
+pnpm add @voltiso/config.ts
+pnpm add @voltiso/config.ts.build.esm
 
-pnpm install @voltiso/config.eslint
-pnpm install @voltiso/config.prettier
-pnpm install @voltiso/config.jest
-pnpm install @voltiso/config.babel
+pnpm add @voltiso/config.eslint
+pnpm add @voltiso/config.prettier
+pnpm add @voltiso/config.jest.esr
+pnpm add @voltiso/config.babel.zone
+
 # ...
 ```
 
@@ -92,20 +93,7 @@ packages.
 pnpm install @voltiso/script
 ```
 
-> ⚠️ Peer deps of `@voltiso/*` packages are listed as deps!
->
-> - Deps that should be peer have `*` version
->   - Deps with normal semver are regular deps
-> - Hopefully we won't duplicate deps but share the ones up in the dep tree
-> - Not perfect, versioning was nice, but good for now
-> - pnpm's `auto-install-peers` is problematic - maybe will be improved in the
->   future
-
-# 🧑‍🔬 Code _THIS_ library (`@voltiso/util`)
-
-- Do **not** install anything in workspace root
-  - We don't want node to climb up here to find some global `node_modules`!
-  - Global scripts use `config/` dir to install any global deps
+# 🧑‍🔬 Contribute - code _THIS_ library (`@voltiso/util`)
 
 ## 🚀 Build
 
@@ -143,14 +131,6 @@ Consists of (in parallel):
 pnpm test
 ```
 
-Currently only `packages/util/` has tests.
-
 ### Using `Orta.vscode-jest` extension
 
 The 'lab' icon is in the left pane.
-
-> **NOTE**
->
-> The root `jest.config.js` file is used only by this extension.
->
-> - This is because `Orta.vscode-jest` doesn't support sub-dirs 🤷

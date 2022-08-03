@@ -5,7 +5,9 @@
 		"build": "turbo run build",
 		"test": "turbo run test",
 		"lint": "turbo run lint --concurrency 2 # high RAM usage!",
+		"lint:w": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint .",
 		"fix": "turbo run fix",
+		"fix:w": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint . --fix",
 		"__________HOOKS": "__________",
 		"postinstall": "patch-package"
 	},
