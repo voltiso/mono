@@ -10,19 +10,7 @@
 		"test": {
 			"dependsOn": ["^build"],
 			"outputs": [],
-			"inputs": [
-				"src/**/*.ts",
-				"src/**/*.tsx",
-				"src/**/*.js",
-				"src/**/*.jsx",
-
-				"test/**/*.ts",
-				"test/**/*.tsx",
-				"test/**/*.js",
-				"test/**/*.jsx",
-
-				"script/**/*.ts"
-			]
+			"inputs": ["src/**/*.*", "test/**/*.*", "script/**/*.*"]
 		},
 
 		"lint": {
