@@ -36,12 +36,12 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:^39.0.0"
+		"@voltiso/util": "workspace:*"
 	},
 	"devDependencies": {
-		"@voltiso/config.ts": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/config.ts": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
 		"depcheck": "^1.4.3",
 		"eslint": "^8.18.0",
 		"eslint-define-config": "^1.6.0",

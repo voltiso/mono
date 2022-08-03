@@ -60,9 +60,9 @@
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@types/clone": "^2.1.1",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
 		"clone": "^2.1.2",
 		"depcheck": "^1.4.3",
 		"jest": "^28.1.3",

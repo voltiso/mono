@@ -44,7 +44,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/config.jest.lib": "workspace:^1.0.0"
+		"@voltiso/config.jest.lib": "workspace:*"
 	},
 	"peerDependencies": {
 		"@voltiso/__config.babel.zone": "*",

@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "8.0.2",
+	"version": "8.0.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
@@ -55,9 +55,9 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/assertor": "workspace:^1.0.0",
-		"@voltiso/firestore-like": "workspace:^1.0.10",
-		"@voltiso/util": "workspace:^39.0.0",
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/firestore-like": "workspace:*",
+		"@voltiso/util": "workspace:*",
 		"chalk": "^4.1.2",
 		"fast-equals": "^4.0.1",
 		"js-yaml": "^4.1.0"
@@ -68,10 +68,10 @@
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
-		"@voltiso/schemar": "workspace:^11.0.0",
+		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
+		"@voltiso/schemar": "workspace:*",
 		"depcheck": "^1.4.3",
 		"npm-run-all": "^4.1.5",
 		"rimraf": "^3.0.2",

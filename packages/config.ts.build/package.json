@@ -9,7 +9,7 @@
 	"main": "tsconfig.json",
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/config.ts": "workspace:^1.0.0"
+		"@voltiso/config.ts": "workspace:*"
 	},
 	"peerDependencies": {
 		"typescript": "*"

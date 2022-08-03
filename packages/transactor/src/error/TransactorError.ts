@@ -8,8 +8,7 @@ export class TransactorError extends VoltisoError {
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		// eslint-disable-next-line unicorn/prefer-module
-		super(__dirname, message, options)
+		super(message, { ...options, packageInfo: { name: '@voltiso/transactor' } })
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'TransactorError'
 	}

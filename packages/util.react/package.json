@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.react",
-	"version": "6.0.0",
+	"version": "6.0.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -43,9 +43,9 @@
 		"@babel/plugin-proposal-decorators": "^7.18.10",
 		"@testing-library/react": "^13.3.0",
 		"@types/react": "^18.0.12",
-		"@voltiso/config.jest.react": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/config.jest.react": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
 		"depcheck": "^1.4.3",
 		"npm-run-all": "^4.1.5",
 		"react": "^18.1.0",
@@ -57,6 +57,6 @@
 		"node": ">=16"
 	},
 	"dependencies": {
-		"@voltiso/util": "workspace:^39.0.0"
+		"@voltiso/util": "workspace:*"
 	}
 }

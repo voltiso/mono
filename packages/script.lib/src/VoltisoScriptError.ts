@@ -8,8 +8,7 @@ export class VoltisoScriptError extends VoltisoError {
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		// eslint-disable-next-line unicorn/prefer-module
-		super(__dirname, message, options)
+		super(message, { ...options, packageInfo: { name: '@voltiso/script.lib' } })
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoScriptError'
 	}

@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/localstore",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -45,14 +45,14 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/assertor": "workspace:^1.0.0",
-		"@voltiso/firestore-like": "workspace:^1.0.10",
-		"@voltiso/util": "workspace:^39.0.0"
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/firestore-like": "workspace:*",
+		"@voltiso/util": "workspace:*"
 	},
 	"devDependencies": {
-		"@voltiso/config.ts": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/config.ts": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
 		"depcheck": "^1.4.3",
 		"npm-run-all": "^4.1.5"
 	},

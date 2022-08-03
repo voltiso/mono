@@ -39,19 +39,19 @@
 		"clean:cjs": "rimraf dist/cjs"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/util": "workspace:*"
+	},
 	"devDependencies": {
-		"@types/clone": "^2.1.1",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
-		"depcheck": "^1.4.3"
+		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
+		"depcheck": "^1.4.3",
+		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",
 	"engines": {
 		"node": ">=16"
-	},
-	"dependencies": {
-		"@voltiso/assertor": "workspace:^1.0.0",
-		"@voltiso/util": "workspace:^39.0.0"
 	}
 }

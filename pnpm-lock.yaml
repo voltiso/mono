@@ -28,11 +28,11 @@ importers:
       '@types/node': ^18.6.3
       '@typescript-eslint/eslint-plugin': latest
       '@typescript-eslint/parser': ^5.32.0
-      '@voltiso/config.eslint': workspace:^1.0.0
-      '@voltiso/config.eslint.lib': workspace:^1.0.0
-      '@voltiso/config.jest.lib': workspace:^1.0.0
-      '@voltiso/config.prettier': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
+      '@voltiso/config.eslint': workspace:*
+      '@voltiso/config.eslint.lib': workspace:*
+      '@voltiso/config.jest.lib': workspace:*
+      '@voltiso/config.prettier': workspace:*
+      '@voltiso/config.ts': workspace:*
       any-eslint-parser: ^1.0.1
       babel-jest: ^28.1.3
       cross-env: ^7.0.3
@@ -209,9 +209,9 @@ importers:
   packages/assertor:
     specifiers:
       '@types/assert': ^1.5.6
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
       assert: ^2.0.0
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
@@ -233,11 +233,11 @@ importers:
 
   packages/caller:
     specifiers:
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/schemar': workspace:^11.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/schemar': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
@@ -256,9 +256,9 @@ importers:
     specifiers:
       '@babel/core': ^7.18.10
       '@types/babel__core': ^7.1.19
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
@@ -277,8 +277,8 @@ importers:
   packages/config.babel.zone:
     specifiers:
       '@babel/core': ^7.18.10
-      '@voltiso/config.babel.lib': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
+      '@voltiso/config.babel.lib': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
     dependencies:
@@ -292,9 +292,9 @@ importers:
   packages/config.eslint:
     specifiers:
       '@types/node': ^18.6.3
-      '@voltiso/config.eslint.lib': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
+      '@voltiso/config.eslint.lib': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
       depcheck: ^1.4.3
       eslint: latest
       eslint-gitignore: ^0.1.0
@@ -312,10 +312,10 @@ importers:
 
   packages/config.eslint.lib:
     specifiers:
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       eslint: latest
       eslint-define-config: ^1.6.0
@@ -337,9 +337,9 @@ importers:
 
   packages/config.jest.esr:
     specifiers:
-      '@voltiso/config.jest.lib': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
+      '@voltiso/config.jest.lib': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
       depcheck: ^1.4.3
       esbuild: ^0.14.51
       esbuild-runner: ^2.2.1
@@ -360,9 +360,9 @@ importers:
 
   packages/config.jest.lib:
     specifiers:
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
       depcheck: ^1.4.3
       jest: ^28.1.3
       npm-run-all: ^4.1.5
@@ -382,10 +382,10 @@ importers:
     specifiers:
       '@testing-library/jest-dom': ^5.16.4
       '@types/babel__core': ^7.1.19
-      '@voltiso/config.babel.lib': workspace:^1.0.0
-      '@voltiso/config.jest.lib': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
+      '@voltiso/config.babel.lib': workspace:*
+      '@voltiso/config.jest.lib': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
@@ -406,8 +406,8 @@ importers:
   packages/config.prettier:
     specifiers:
       '@types/node': ^18.6.3
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
       depcheck: ^1.4.3
       jest: ^28.1.3
       npm-run-all: ^4.1.5
@@ -429,25 +429,25 @@ importers:
 
   packages/config.ts.build:
     specifiers:
-      '@voltiso/config.ts': workspace:^1.0.0
+      '@voltiso/config.ts': workspace:*
     dependencies:
       '@voltiso/config.ts': link:../config.ts
 
   packages/config.ts.build.cjs:
     specifiers:
-      '@voltiso/config.ts.build': workspace:^1.0.0
+      '@voltiso/config.ts.build': workspace:*
     dependencies:
       '@voltiso/config.ts.build': link:../config.ts.build
 
   packages/config.ts.build.esm:
     specifiers:
-      '@voltiso/config.ts.build': workspace:^1.0.0
+      '@voltiso/config.ts.build': workspace:*
     dependencies:
       '@voltiso/config.ts.build': link:../config.ts.build
 
   packages/config.ts.dom:
     specifiers:
-      '@voltiso/config.ts': workspace:^1.0.0
+      '@voltiso/config.ts': workspace:*
       typescript: '*'
     dependencies:
       '@voltiso/config.ts': link:../config.ts
@@ -456,11 +456,11 @@ importers:
   packages/firestore-like:
     specifiers:
       '@firebase/app-types': ^0.7.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       firebase-admin: ^11.0.1
       npm-run-all: ^4.1.5
@@ -480,12 +480,12 @@ importers:
 
   packages/localstore:
     specifiers:
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/firestore-like': workspace:^1.0.10
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/firestore-like': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
     dependencies:
@@ -501,11 +501,11 @@ importers:
 
   packages/patcher:
     specifiers:
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       fast-equals: ^4.0.1
       jest: ^28.1.3
@@ -530,12 +530,12 @@ importers:
     specifiers:
       '@types/express': ^4.17.13
       '@types/node': ^18.6.3
-      '@voltiso/caller': workspace:^1.0.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/schemar': workspace:^11.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/caller': workspace:*
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/schemar': workspace:*
+      '@voltiso/util': workspace:*
       cross-env: ^7.0.3
       cross-fetch: ^3.1.5
       depcheck: ^1.4.3
@@ -569,13 +569,13 @@ importers:
 
   packages/schemar:
     specifiers:
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/script': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/script': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
@@ -595,11 +595,11 @@ importers:
   packages/script:
     specifiers:
       '@types/node': ^18.6.3
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/script.lib': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/script.lib': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       typescript: ^4.7.3
@@ -618,15 +618,17 @@ importers:
   packages/script.lib:
     specifiers:
       '@types/node': ^18.6.3
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util': workspace:*
+      '@voltiso/util.package-json': workspace:^39.0.0
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       typescript: ^4.7.3
     dependencies:
       '@voltiso/util': link:../util
+      '@voltiso/util.package-json': link:../util.package-json
     devDependencies:
       '@types/node': 18.6.3
       '@voltiso/config.ts': link:../config.ts
@@ -646,14 +648,14 @@ importers:
       '@types/react-native': ^0.69.5
       '@types/react-test-renderer': ^18.0.0
       '@types/testing-library__jest-dom': ^5.14.3
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.eslint.lib': workspace:^1.0.0
-      '@voltiso/config.jest.react': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/config.ts.dom': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.eslint.lib': workspace:*
+      '@voltiso/config.jest.react': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/config.ts.dom': workspace:*
+      '@voltiso/util': workspace:*
       csstype: ^3.1.0
       depcheck: ^1.4.3
       fela: ^12.1.2
@@ -712,13 +714,13 @@ importers:
   packages/transactor:
     specifiers:
       '@types/js-yaml': ^4.0.5
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/firestore-like': workspace:^1.0.10
-      '@voltiso/schemar': workspace:^11.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/firestore-like': workspace:*
+      '@voltiso/schemar': workspace:*
+      '@voltiso/util': workspace:*
       chalk: ^4.1.2
       depcheck: ^1.4.3
       fast-equals: ^4.0.1
@@ -728,6 +730,7 @@ importers:
       zone.js: ^0.11.7
     dependencies:
       '@voltiso/assertor': link:../assertor
+      '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/util': link:../util
       chalk: 4.1.2
       fast-equals: 4.0.1
@@ -737,7 +740,6 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/schemar': link:../schemar
       depcheck: 1.4.3
       npm-run-all: 4.1.5
@@ -747,9 +749,9 @@ importers:
   packages/transactor.firestore:
     specifiers:
       '@firebase/app-types': ^0.7.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/transactor': workspace:^8.0.0
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/transactor': workspace:*
       depcheck: ^1.4.3
       firebase-admin: ^11.0.1
       npm-run-all: ^4.1.5
@@ -767,15 +769,15 @@ importers:
       '@firebase/app-types': ^0.7.0
       '@types/jest-dev-server': ^5.0.0
       '@types/random-seed': ^0.3.3
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.jest.lib': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/schemar': workspace:^11.0.0
-      '@voltiso/transactor': workspace:^8.0.0
-      '@voltiso/transactor.firestore': workspace:^8.0.0
-      '@voltiso/util': workspace:^39.0.0
-      '@voltiso/util.esbuild': workspace:^1.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.jest.lib': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/schemar': workspace:*
+      '@voltiso/transactor': workspace:*
+      '@voltiso/transactor.firestore': workspace:*
+      '@voltiso/util': workspace:*
+      '@voltiso/util.esbuild': workspace:*
       depcheck: ^1.4.3
       firebase-admin: ^11.0.1
       firebase-tools: ^11.4.1
@@ -812,11 +814,11 @@ importers:
 
   packages/transactor.localstore:
     specifiers:
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/firestore-like': workspace:^1.0.10
-      '@voltiso/localstore': workspace:^2.0.0
-      '@voltiso/transactor': workspace:^8.0.0
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/firestore-like': workspace:*
+      '@voltiso/localstore': workspace:*
+      '@voltiso/transactor': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
     devDependencies:
@@ -832,13 +834,13 @@ importers:
     specifiers:
       '@types/random-seed': ^0.3.3
       '@typescript/analyze-trace': ^0.9.0
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/localstore': workspace:^2.0.0
-      '@voltiso/schemar': workspace:^11.0.0
-      '@voltiso/transactor': workspace:^8.0.0
-      '@voltiso/transactor.localstore': workspace:^8.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/localstore': workspace:*
+      '@voltiso/schemar': workspace:*
+      '@voltiso/transactor': workspace:*
+      '@voltiso/transactor.localstore': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       jest: ^28.1.3
       jest-mock-console: ^2.0.0
@@ -865,9 +867,9 @@ importers:
   packages/util:
     specifiers:
       '@types/clone': ^2.1.1
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
       clone: ^2.1.2
       depcheck: ^1.4.3
       jest: ^28.1.3
@@ -895,8 +897,8 @@ importers:
   packages/util.esbuild:
     specifiers:
       '@types/node': ^18.6.3
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
       depcheck: ^1.4.3
       esbuild: ^0.14.51
       esbuild-register: ^3.3.3
@@ -915,22 +917,22 @@ importers:
 
   packages/util.package-json:
     specifiers:
-      '@types/clone': ^2.1.1
-      '@voltiso/assertor': workspace:^1.0.0
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/assertor': workspace:*
+      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
+      rimraf: ^3.0.2
     dependencies:
       '@voltiso/assertor': link:../assertor
       '@voltiso/util': link:../util
     devDependencies:
-      '@types/clone': 2.1.1
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       depcheck: 1.4.3
+      rimraf: 3.0.2
 
   packages/util.react:
     specifiers:
@@ -938,10 +940,10 @@ importers:
       '@babel/plugin-proposal-decorators': ^7.18.10
       '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.12
-      '@voltiso/config.jest.react': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
+      '@voltiso/config.jest.react': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       react: ^18.1.0
@@ -967,9 +969,9 @@ importers:
     specifiers:
       '@types/react': ^18.0.15
       '@types/react-dom': ^18.0.6
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/util.react': workspace:^6.0.0
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/util.react': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       react: ^18.1.0
@@ -989,15 +991,15 @@ importers:
   packages/util.react.form:
     specifiers:
       '@types/react': ^18.0.15
-      '@voltiso/config.jest.react': workspace:^1.0.0
-      '@voltiso/config.ts': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/schemar': workspace:^11.0.0
-      '@voltiso/styler': workspace:^10.0.0
-      '@voltiso/util': workspace:^39.0.0
-      '@voltiso/util.react': workspace:^6.0.0
-      '@voltiso/util.react.state-patcher': workspace:^6.0.0
+      '@voltiso/config.jest.react': workspace:*
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/schemar': workspace:*
+      '@voltiso/styler': workspace:*
+      '@voltiso/util': workspace:*
+      '@voltiso/util.react': workspace:*
+      '@voltiso/util.react.state-patcher': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       react: ^18.1.0
@@ -1025,12 +1027,12 @@ importers:
       '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.12
       '@types/testing-library__jest-dom': ^5.14.3
-      '@voltiso/config.jest.react': workspace:^1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:^1.0.0
-      '@voltiso/config.ts.build.esm': workspace:^1.0.0
-      '@voltiso/patcher': workspace:^1.0.0
-      '@voltiso/util': workspace:^39.0.0
-      '@voltiso/util.react': workspace:^6.0.0
+      '@voltiso/config.jest.react': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
+      '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/patcher': workspace:*
+      '@voltiso/util': workspace:*
+      '@voltiso/util.react': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       react: ^18.1.0
@@ -13286,7 +13288,7 @@ packages:
     peerDependencies:
       jest: '>= 22.4.2'
     dependencies:
-      jest: 28.1.3
+      jest: 28.1.3_@types+node@18.6.3
     dev: true
 
   /jest-mock/28.1.3:

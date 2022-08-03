@@ -8,8 +8,7 @@ export class LocalstoreError extends VoltisoError {
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		// eslint-disable-next-line unicorn/prefer-module
-		super(__dirname, message, options)
+		super(message, { ...options, packageInfo: { name: '@voltiso/localstore' } })
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'LocalstoreError'
 	}

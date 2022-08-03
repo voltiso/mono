@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/rpc",
-	"version": "2.0.0",
+	"version": "2.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -58,17 +58,17 @@
 		"clean": "rimraf dist"
 	},
 	"dependencies": {
-		"@voltiso/schemar": "workspace:^11.0.0",
-		"@voltiso/util": "workspace:^39.0.0",
+		"@voltiso/schemar": "workspace:*",
+		"@voltiso/util": "workspace:*",
 		"cross-fetch": "^3.1.5"
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.13",
 		"@types/node": "^18.6.3",
-		"@voltiso/caller": "workspace:^1.0.0",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/caller": "workspace:*",
+		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.3",
 		"express": "^4.17.3",

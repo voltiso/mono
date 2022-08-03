@@ -36,10 +36,10 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/schemar": "workspace:^11.0.0",
-		"@voltiso/util": "workspace:^39.0.0",
-		"@voltiso/util.react": "workspace:^6.0.0",
-		"@voltiso/util.react.state-patcher": "workspace:^6.0.0"
+		"@voltiso/schemar": "workspace:*",
+		"@voltiso/util": "workspace:*",
+		"@voltiso/util.react": "workspace:*",
+		"@voltiso/util.react.state-patcher": "workspace:*"
 	},
 	"peerDependencies": {
 		"@voltiso/styler": ">= 10.0.0",
@@ -47,11 +47,11 @@
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.15",
-		"@voltiso/config.jest.react": "workspace:^1.0.0",
-		"@voltiso/config.ts": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
-		"@voltiso/styler": "workspace:^10.0.0",
+		"@voltiso/config.jest.react": "workspace:*",
+		"@voltiso/config.ts": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
+		"@voltiso/styler": "workspace:*",
 		"depcheck": "^1.4.3",
 		"npm-run-all": "^4.1.5",
 		"react": "^18.1.0"

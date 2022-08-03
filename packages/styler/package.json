@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/styler",
-	"version": "10.0.0",
+	"version": "10.0.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
@@ -44,8 +44,8 @@
 		"clean": "rimraf dist"
 	},
 	"dependencies": {
-		"@voltiso/assertor": "workspace:^1.0.0",
-		"@voltiso/util": "workspace:^39.0.0"
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/util": "workspace:*"
 	},
 	"peerDependencies": {
 		"fela": "^12.1.2",
@@ -61,12 +61,12 @@
 		"@types/react-native": "^0.69.5",
 		"@types/react-test-renderer": "^18.0.0",
 		"@types/testing-library__jest-dom": "^5.14.3",
-		"@voltiso/config.eslint.lib": "workspace:^1.0.0",
-		"@voltiso/config.jest.react": "workspace:^1.0.0",
-		"@voltiso/config.ts": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
-		"@voltiso/config.ts.dom": "workspace:^1.0.0",
+		"@voltiso/config.eslint.lib": "workspace:*",
+		"@voltiso/config.jest.react": "workspace:*",
+		"@voltiso/config.ts": "workspace:*",
+		"@voltiso/config.ts.build.cjs": "workspace:*",
+		"@voltiso/config.ts.build.esm": "workspace:*",
+		"@voltiso/config.ts.dom": "workspace:*",
 		"csstype": "^3.1.0",
 		"depcheck": "^1.4.3",
 		"fela": "^12.1.2",
