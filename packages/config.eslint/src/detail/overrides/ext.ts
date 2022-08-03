@@ -10,7 +10,7 @@ export const extOverride = defineEslintConfigOverride({
 
 	rules: {
 		'ext/lines-between-object-properties': [
-			'error',
+			'warn',
 			'always',
 			{ exceptBetweenSingleLines: true },
 		],

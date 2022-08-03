@@ -5,13 +5,13 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
+import type { IntrinsicFields } from '~'
 import { Doc } from '~'
 import type { InferTI } from '~/CollectionRef/InferTI'
 import type { Data, DataWithId } from '~/Data'
 import type { IDocTI, IndexedDocTI } from '~/Doc'
 
 import type { GData, GDataPublicInput } from './GData'
-import type { IntrinsicFields } from './IntrinsicFields'
 
 describe('Doc util', () => {
 	it('GData', () => {

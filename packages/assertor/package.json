@@ -36,12 +36,12 @@
 		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s clean prepublishOnly:rest",
-		"prepublishOnly:rest": "run-p build test lint typecov",
+		"prepublishOnly:rest": "run-p build lint",
 		"__________MISC": "__________",
 		"clean": "rimraf dist",
-		"typecov": "run-s typecov:run typecov:fix",
-		"typecov:run": "type-coverage --project tsconfig.build.esm --update",
-		"typecov:fix": "prettier ./package.json --write"
+		"//typecov": "run-s typecov:run typecov:fix",
+		"//typecov:run": "type-coverage --project tsconfig.build.esm --update",
+		"//typecov:fix": "prettier ./package.json --write"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
@@ -51,6 +51,7 @@
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"depcheck": "^1.4.3",
 		"npm-run-all": "^4.1.5",
+		"rimraf": "^3.0.2",
 		"type-coverage": "^2.22.0",
 		"typescript": "^4.7.4"
 	},

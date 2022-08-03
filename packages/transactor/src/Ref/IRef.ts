@@ -19,7 +19,7 @@ export interface IRefBase {
 	readonly path: DocPath
 
 	readonly data: DocFieldPath
-	readonly methods: object
+	readonly methods: {}
 
 	dataWithId(): PromiseLike<unknown>
 	dataWithoutId(): PromiseLike<unknown>

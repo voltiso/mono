@@ -70,6 +70,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-invalid-this': 0,
 		'@typescript-eslint/no-empty-interface': [1, { allowSingleExtends: true }],
 		'@typescript-eslint/padding-line-between-statements': 1,
+		'@typescript-eslint/no-unsafe-assignment': 1,
 
 		'@typescript-eslint/no-unsafe-return': 1,
 

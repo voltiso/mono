@@ -10,8 +10,11 @@ import { Doc } from './Doc'
 import type { DocConstructor } from './DocConstructor'
 import type { IDocTI } from './DocTI'
 
+declare const IS_INDEXED: unique symbol
+
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends IDocTI {
+	readonly [IS_INDEXED]: true
 	// tag: string
 
 	const: Record<string, Schemable>

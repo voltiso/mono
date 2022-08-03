@@ -28,7 +28,7 @@ export type IDoc = {
 
 	delete(): Promise<null>
 
-	methods: object
+	methods: {}
 } // & GData<IDocTI>
 
 /**

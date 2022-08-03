@@ -28,7 +28,7 @@ export interface IDocTI {
 	private: { id?: never }
 	protected: { id?: never }
 
-	methods: object
+	methods: {}
 
 	// doc?: IDoc | undefined
 	// docInside?: IDoc | undefined

@@ -6,8 +6,7 @@ import type { GetInputType, GetType } from '@voltiso/schemar'
 import type { DTI, IDoc, IDocTI } from '~/Doc'
 import type { IRef } from '~/Ref'
 import type { Relax } from '~/Relax'
-
-import type { IntrinsicFields } from './IntrinsicFields'
+import type { IntrinsicFields } from '~/schemas/intrinsicFields'
 
 type OmitId<T> = T extends unknown
 	? {
