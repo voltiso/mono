@@ -1,6 +1,6 @@
 {
-	"name": "@voltiso/util.react",
-	"version": "6.0.0",
+	"name": "@voltiso/util.package-json",
+	"version": "39.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -26,37 +26,32 @@
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-p build:esm build:cjs",
-		"build:esm": "ttsc -b tsconfig.build.esm.json",
-		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
+		"build:esm": "run-s clean:esm build:esm:1",
+		"build:esm:1": "ttsc -b tsconfig.build.esm.json",
+		"build:cjs": "run-s clean:cjs build:cjs:1",
+		"build:cjs:1": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s clean prepublishOnly:rest",
-		"prepublishOnly:rest": "run-p build test lint",
+		"prepublishOnly": "run-s build prepublishOnly:test-lint",
+		"prepublishOnly:test-lint": "run-p test lint",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "rimraf dist",
+		"clean:esm": "rimraf dist/esm",
+		"clean:cjs": "rimraf dist/cjs"
 	},
 	"__________DEPS": "__________",
-	"peerDependencies": {
-		"react": "^17.0.0"
-	},
 	"devDependencies": {
-		"@babel/core": "^7.18.10",
-		"@babel/plugin-proposal-decorators": "^7.18.10",
-		"@testing-library/react": "^13.3.0",
-		"@types/react": "^18.0.12",
-		"@voltiso/config.jest.react": "workspace:^1.0.0",
+		"@types/clone": "^2.1.1",
+		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
-		"depcheck": "^1.4.3",
-		"npm-run-all": "^4.1.5",
-		"react": "^18.1.0",
-		"react-dom": "^18.1.0",
-		"rimraf": "^3.0.2"
+		"depcheck": "^1.4.3"
 	},
 	"__________MISC": "__________",
 	"engines": {
 		"node": ">=16"
 	},
 	"dependencies": {
+		"@voltiso/assertor": "workspace:^1.0.0",
 		"@voltiso/util": "workspace:^39.0.0"
 	}
 }

@@ -1,21 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
+import type { PackageJson, SyncerPromise } from '@voltiso/util'
+import { runAsync, runSync } from '@voltiso/util'
 import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 
-import { runAsync, runSync } from '~/syncer/run'
-// import { assert } from '~/_internal/assert'
-import type { SyncerPromise } from '~/syncer/SyncerPromise'
-
 import { findPackageJsonSyncer } from './findPackageJson'
-import type { PackageJson } from './PackageJson'
 
 export function* findAndReadPackageJsonSyncer(
 	dir?: string | undefined,
 ): SyncerPromise<PackageJson> {
-	const packageJsonPath = (yield findPackageJsonSyncer(dir)) as string
-	// assert(packageJsonPath)
+	const packageJsonPath = (yield findPackageJsonSyncer(dir)) as string | null
+	assert(packageJsonPath)
 
 	const packageJsonBuffer = (yield {
 		// eslint-disable-next-line security/detect-non-literal-fs-filename

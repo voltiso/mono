@@ -4,12 +4,29 @@
 import { VoltisoError } from './VoltisoError'
 
 describe('VoltisoError', () => {
-	it('works', () => {
+	it('works with package name', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line unicorn/prefer-module
-		const error = new VoltisoError(__dirname)
+		const error = new VoltisoError('test', { packageInfo: { name: 'pName' } })
 
-		expect(error.message).toBe('[@voltiso/util]')
+		expect(error.message).toBe('[pName] test')
+	})
+
+	it('works with package name and version', () => {
+		expect.hasAssertions()
+
+		const error = new VoltisoError('test', {
+			packageInfo: { name: 'pName', version: '1.0.0' },
+		})
+
+		expect(error.message).toBe('[pName:1.0.0] test')
+	})
+
+	it('works with just a message', () => {
+		expect.hasAssertions()
+
+		const error = new VoltisoError('test')
+
+		expect(error.message).toBe('test')
 	})
 })
