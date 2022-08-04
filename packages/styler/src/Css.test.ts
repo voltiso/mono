@@ -9,8 +9,20 @@ describe('Css', () => {
 	it('simple', () => {
 		expect.assertions(0)
 
+		const more = {} as Css
+
 		const a = {
 			height: '100vh',
+			opacity: 0,
+
+			animationName: {
+				to: {
+					opacity: 1,
+					transform: 'unset',
+				},
+			},
+
+			...more,
 		} as const
 
 		Assert.is<typeof a, Css>()

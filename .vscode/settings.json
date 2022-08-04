@@ -224,7 +224,8 @@
 		"notice/notice",
 		"@typescript-eslint/padding-line-between-statements",
 		"simple-import-sort/exports",
-		"unused-imports/no-unused-imports"
+		"unused-imports/no-unused-imports",
+		"ext/lines-between-object-properties"
 	],
 
 	"prettier.documentSelectors": [
