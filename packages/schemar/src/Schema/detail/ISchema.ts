@@ -23,14 +23,14 @@ export interface ISchema<T = unknown> {
 	 * Type-only (no value at runtime)
 	 *
 	 * - Get the type using `typeof xxx.Type`
-	 * - Alias to `.Out`
+	 * - Alias to `.OutputType`
 	 */
 	get Type(): T
 
 	/**
 	 * Inferred Type (output - after fixing)
 	 *
-	 * - Get the type using `typeof xxx.Out`
+	 * - Get the type using `typeof xxx.OutputType`
 	 * - Type-only (no value at runtime)
 	 */
 	get OutputType(): T
@@ -38,18 +38,22 @@ export interface ISchema<T = unknown> {
 	/**
 	 * Inferred Input Type (the schema is able to convert these into Output Type)
 	 *
-	 * - Get the type using `typeof xxx.In`
+	 * - Get the type using `typeof xxx.InputType`
 	 * - Type-only (no value at runtime)
 	 */
 	get InputType(): T
 
 	get isOptional(): boolean
+	get isStrictOptional(): boolean
+
 	get isReadonly(): boolean
 
 	get hasDefault(): boolean
 	get getDefault(): unknown
 
 	get optional(): ISchema
+	get strictOptional(): ISchema
+
 	get readonly(): ISchema
 	default(value: any): ISchema
 

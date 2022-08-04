@@ -82,6 +82,11 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this[OPTIONS].isOptional as never
 	}
 
+	get isStrictOptional(): this[OPTIONS]['isStrictOptional'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].isStrictOptional as never
+	}
+
 	get isReadonly(): this[OPTIONS]['isReadonly'] {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isReadonly as never
@@ -162,11 +167,11 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		else return this._getIssuesImpl(x)
 	}
 
-	protected _fixImpl(x: this[OPTIONS]['Input']): this[OPTIONS]['Output'] {
+	protected _fixImpl(x: unknown): unknown {
 		return x as never
 	}
 
-	private _fix(x: unknown): this[OPTIONS]['Output'] {
+	private _fix(x: unknown): unknown {
 		let result = x
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -182,13 +187,17 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this._fixImpl(result as never)
 	}
 
-	tryValidate(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
-		const value = this._fix(x)
-
-		const issues = [
+	getIssues(value: unknown): ValidationIssue[] {
+		return [
 			...this._getIssues(value),
 			...processCustomChecks(this.getCustomChecks, value),
 		]
+	}
+
+	tryValidate(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
+		const value = this._fix(x) as never
+
+		const issues = this.getIssues(value)
 
 		if (issues.length === 0)
 			return {
@@ -211,8 +220,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		else throw new ValidationError(r.issues)
 	}
 
-	isValid(x: unknown): x is this[OPTIONS]['Output'] {
+	isFixable(x: unknown): x is this[OPTIONS]['Input'] {
 		return this.tryValidate(x).isValid
+	}
+
+	isValid(x: unknown): x is this[OPTIONS]['Output'] {
+		return this.getIssues(x).length === 0
 	}
 
 	[EXTENDS](other: Schema): boolean {
@@ -291,6 +304,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	get optional(): never {
 		return this._cloneWithOptions({ isOptional: true as const }) as never
+	}
+
+	get strictOptional(): never {
+		return this._cloneWithOptions({ isStrictOptional: true as const }) as never
 	}
 
 	get readonly(): never {

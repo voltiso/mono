@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util",
-	"version": "40.0.0",
+	"version": "40.1.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -47,8 +47,7 @@
 		"build:cjs": "run-s clean:cjs build:cjs:1",
 		"build:cjs:1": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s build prepublishOnly:1",
-		"prepublishOnly:1": "run-p test lint",
+		"prepublishOnly": "run-s build test",
 		"__________MISC": "__________",
 		"clean": "rimraf dist",
 		"clean:esm": "rimraf dist/esm",

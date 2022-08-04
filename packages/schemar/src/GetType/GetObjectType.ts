@@ -55,6 +55,8 @@ type IsOptional<
 	F = false,
 > = O['isOptional'] extends true
 	? T
+	: O['isStrictOptional'] extends true
+	? T
 	: O['hasDefault'] extends false
 	? // : [O['default']] extends [undefined]
 	  F

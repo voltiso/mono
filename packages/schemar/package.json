@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/schemar",
-	"version": "11.0.2",
+	"version": "12.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -37,8 +37,7 @@
 		"build:esm": "ttsc -b tsconfig.build.esm.json",
 		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-p prepublishOnly:build lint",
-		"prepublishOnly:build": "run-s clean build test",
+		"prepublishOnly": "run-s build test",
 		"__________MISC": "__________",
 		"v": "voltiso-script",
 		"clean": "run-p clean:rimraf",

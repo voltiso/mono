@@ -47,7 +47,7 @@ describe('GetType', () => {
 			num: number.default(0),
 		}
 		type E = GetInputType<typeof e>
-		Assert<IsIdentical<E, { num?: number }>>()
+		Assert<IsIdentical<E, { num?: number | undefined }>>()
 
 		type E2 = GetOutputType<typeof e>
 		Assert<IsIdentical<E2, { num: number }>>()

@@ -57,9 +57,9 @@ describe('README.md - usage', () => {
 				{
 					name: string
 					version: string
-					license?: string
+					license?: string | undefined
 					dependencies?: {
-						'@voltiso/schemar'?: string
+						'@voltiso/schemar'?: string | undefined
 					}
 				}
 			>

@@ -117,6 +117,16 @@ describe('checked', () => {
 		expect(f.call({ asd: 123 }, 5)).toBe(128)
 	})
 
+	it('type-checks result', () => {
+		expect.assertions(0)
+
+		checked
+			.param(s.string)
+			.result(s.number)
+			// @ts-expect-error 'test' should be number
+			.function((_x: string) => 'test')
+	})
+
 	it('exact return type (no additional properties)', () => {
 		expect.hasAssertions()
 

@@ -13,6 +13,7 @@ import {
 	hasProperty,
 	isObject,
 	lazyConstructor,
+	undef,
 } from '@voltiso/util'
 
 import type {
@@ -25,10 +26,12 @@ import type {
 import {
 	CustomSchemaImpl,
 	deepPartialShape,
+	deepStrictPartialShape,
 	isObject as sIsObject,
 	isUnknownObject,
 	partialShape,
 	schema,
+	strictPartialShape,
 	ValidationIssue,
 } from '~'
 
@@ -55,9 +58,21 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		}) as never
 	}
 
+	get strictPartial(): never {
+		return this._cloneWithOptions({
+			shape: strictPartialShape(this.getShape as never) as unknown as never,
+		}) as never
+	}
+
 	get deepPartial(): never {
 		return this._cloneWithOptions({
 			shape: deepPartialShape(this.getShape as never) as unknown as never,
+		}) as never
+	}
+
+	get deepStrictPartial(): never {
+		return this._cloneWithOptions({
+			shape: deepStrictPartialShape(this.getShape as never) as unknown as never,
 		}) as never
 	}
 
@@ -100,11 +115,15 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			][]) {
 				const tv = schema(v)
 
-				if (tv.isOptional && !hasProperty(x, k)) continue
+				const isOptional = tv.isOptional || tv.isStrictOptional
+
+				if (isOptional && !hasProperty(x, k)) continue
 
 				// assumeType<ISchema>(tv)
 
-				const r = tv.tryValidate(x[k as keyof typeof x])
+				const value = x[k as keyof typeof x]
+
+				const r = tv.tryValidate(value)
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [k, ...issue.path]
@@ -130,8 +149,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return issues
 	}
 
-	override _fixImpl(x: this[OPTIONS]['Input']): this[OPTIONS]['Output'] {
-		if (typeof x !== 'undefined' && !isObject(x)) {
+	override _fixImpl(x: unknown): unknown {
+		if (x !== undef && !isObject(x)) {
 			return super._fixImpl(x)
 		}
 
@@ -143,7 +162,9 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		][]) {
 			const mySchema = schema(schemable)
 
-			if (!hasProperty(r, key) && mySchema.isOptional && !mySchema.hasDefault) {
+			const isOptional = mySchema.isOptional || mySchema.isStrictOptional
+
+			if (!hasProperty(r, key) && isOptional && !mySchema.hasDefault) {
 				// assert(
 				// 	typeof tv.getDefault === 'undefined',
 				// 	"typeof tv.getDefault === 'undefined'"
@@ -154,7 +175,12 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			// assumeType<ISchema>(mySchema)
 
 			// eslint-disable-next-line security/detect-object-injection
-			r[key] = mySchema.tryValidate(r[key]).value
+			const result = mySchema.tryValidate(r[key])
+			// eslint-disable-next-line security/detect-object-injection
+			r[key] = result.value
+
+			// eslint-disable-next-line security/detect-object-injection
+			if (result.value === undef && mySchema.isOptional) delete r[key]
 		}
 
 		return r as never

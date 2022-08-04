@@ -18,6 +18,7 @@ import type {
 	Schemable,
 	SchemaOptions,
 	Union,
+	ValidationIssue,
 	ValidationResult,
 } from '~'
 
@@ -40,11 +41,40 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 		MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
 	>
 
-	get Type(): this[OPTIONS]['Output']
+	/**
+	 * Type-only (no value at runtime)
+	 *
+	 * - Get the type using `typeof xxx.Type`
+	 * - Alias to `.OutputType`
+	 */
+	get Type(): this['OutputType']
+
+	/**
+	 * Inferred Type (output - after fixing)
+	 *
+	 * - Get the type using `typeof xxx.OutputType`
+	 * - Type-only (no value at runtime)
+	 */
 	get OutputType(): this[OPTIONS]['Output']
-	get InputType(): this[OPTIONS]['Input']
+	// | (this[OPTIONS]['isOptional'] extends true ? undefined : never)
+
+	/**
+	 * Inferred Input Type (the schema is able to convert these into Output Type)
+	 *
+	 * - Get the type using `typeof xxx.InputType`
+	 * - Type-only (no value at runtime)
+	 */
+	get InputType():
+		| this[OPTIONS]['Input']
+		| (this[OPTIONS]['isOptional'] extends true
+				? undefined
+				: this[OPTIONS]['hasDefault'] extends true
+				? undefined
+				: never)
 
 	get isOptional(): this[OPTIONS]['isOptional']
+	get isStrictOptional(): this[OPTIONS]['isStrictOptional']
+
 	get isReadonly(): this[OPTIONS]['isReadonly']
 
 	get hasDefault(): this[OPTIONS]['hasDefault']
@@ -57,9 +87,26 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 
 	// builder
 
+	/**
+	 * Define object property to be optional or undefined
+	 *
+	 * - Validation will remove `undefined` properties if `this` schema does not
+	 *   accept `undefined` by itself
+	 */
 	get optional(): DefineSchema<this, { isOptional: true }>
+
+	/**
+	 * Same as `optional`, but does not auto-remove `undefined` properties
+	 *
+	 * - `undefined` in the input value is considered invalid (similar to
+	 *   `exactOptionalPropertyTypes`)
+	 */
+	get strictOptional(): DefineSchema<this, { isStrictOptional: true }>
+
+	/** Define object property to be `readonly` */
 	get readonly(): DefineSchema<this, { isReadonly: true }>
 
+	/** Specify default value if the input value is `undefined` */
 	default<DefaultValue extends this[OPTIONS]['Output']>(
 		value: DefaultValue,
 	): WithDefault<this, DefaultValue>
@@ -81,7 +128,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 * @param x - Value to validate against `this` schema
 	 * @returns `ValidationResult` - either success or error with issue list
 	 */
-	tryValidate(x: unknown): ValidationResult
+	tryValidate(x: this[OPTIONS]['Input'] | AlsoAccept<unknown>): ValidationResult
 
 	/**
 	 * Validate `this` schema, throw on failure
@@ -93,16 +140,32 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	validate(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
 	): this[OPTIONS]['Output']
-	// validate(x: unknown): unknown
+
+	/**
+	 * Check if `x` is already valid (without applying fixes)
+	 *
+	 * @param x - Value to validate against `this` schema, without applying fixes
+	 */
+	getIssues(x: this[OPTIONS]['Input'] | AlsoAccept<unknown>): ValidationIssue[]
 
 	/**
 	 * Do not return transformed value - just check if the value is valid
-	 * according to the schema
+	 * according to the schema (after applying fixes)
 	 *
 	 * @param x - Value to validate against `this` schema
 	 */
-	isValid(x: unknown): x is this[OPTIONS]['Output']
-	// isValid(x: unknown): boolean
+	isFixable(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+	): x is this[OPTIONS]['Input']
+
+	/**
+	 * Check if `x` is already valid (without applying fixes)
+	 *
+	 * @param x - Value to validate against `this` schema, without applying fixes
+	 */
+	isValid(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+	): x is this[OPTIONS]['Output']
 
 	or<Other extends Schemable>(other: Other): Union<[this, Other]>
 }

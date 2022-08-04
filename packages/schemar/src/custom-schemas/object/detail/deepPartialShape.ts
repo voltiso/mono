@@ -32,3 +32,32 @@ export function deepPartialShape<O extends InferableObject>(
 
 	return shape as never
 }
+
+//
+
+type ProcessStrictEntry<S> = S extends IObject
+	? S['deepStrictPartial']['strictOptional']
+	: S extends ISchema
+	? S['strictOptional']
+	: never
+
+export type DeepStrictPartialShape<O extends InferableObject> = {
+	[k in keyof O]: ProcessStrictEntry<GetSchema_<O[k]>>
+}
+
+export function deepStrictPartialShape<O extends InferableObject>(
+	o: O,
+): DeepStrictPartialShape<O> {
+	const shape = { ...o } as InferableObject
+
+	for (const [key, schemable] of getEntries(shape)) {
+		let mySchema = schema(schemable) as unknown as ISchema
+
+		if (isObject(mySchema)) mySchema = mySchema.deepStrictPartial
+
+		// eslint-disable-next-line security/detect-object-injection
+		shape[key] = mySchema.strictOptional as never
+	}
+
+	return shape as never
+}

@@ -74,7 +74,7 @@ describe('s.number', () => {
 		type Out = GetType_<typeof n, { kind: 'out' }>
 		type In = GetType_<typeof n, { kind: 'in' }>
 		Assert<IsIdentical<Out, number>>()
-		Assert<IsIdentical<In, number>>()
+		Assert<IsIdentical<In, number | undefined>>()
 	})
 
 	it('check', () => {

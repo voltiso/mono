@@ -14,6 +14,7 @@ export type SchemaOptions = {
 	customFixes: readonly CustomFix[]
 
 	isOptional: boolean
+	isStrictOptional: boolean
 	isReadonly: boolean
 	hasDefault: boolean
 	default: unknown

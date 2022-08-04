@@ -15,9 +15,11 @@ export interface IObject extends ISchema {
 
 	get getShape(): InferableObject
 
-	//! these cause `instantiation too deep` errors when checking if `CustomObject` is assignable to `IObject`
 	get partial(): IObject
+	get strictPartial(): IObject
+
 	get deepPartial(): IObject
+	get deepStrictPartial(): IObject
 }
 
 export function isObject(x: unknown): x is IObject {

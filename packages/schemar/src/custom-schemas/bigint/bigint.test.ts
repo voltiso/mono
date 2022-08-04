@@ -43,7 +43,9 @@ describe('number', () => {
 		expect(n.tryValidate(undef).value).toBe(123n)
 
 		Assert<IsIdentical<GetType_<typeof n, { kind: 'out' }>, bigint>>()
-		Assert<IsIdentical<GetType_<typeof n, { kind: 'in' }>, bigint>>()
+		Assert<
+			IsIdentical<GetType_<typeof n, { kind: 'in' }>, bigint | undefined>
+		>()
 	})
 
 	it('check', () => {

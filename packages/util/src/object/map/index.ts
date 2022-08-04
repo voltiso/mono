@@ -3,11 +3,13 @@
 
 export * from './DeepMutable'
 export * from './DeepPartial'
+export * from './DeepPartialOrUndefined'
 export * from './DeepReadonly'
 export * from './MapOr'
 export * from './mapValues'
 export * from './Mutable'
 export * from './OptionalFromUndefined'
 export * from './PartialIfNullish'
+export * from './PartialOrUndefined'
 export * from './VPartial'
 export * from './VRequired'

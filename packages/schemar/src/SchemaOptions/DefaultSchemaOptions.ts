@@ -11,6 +11,8 @@ export const defaultSchemaOptions = lazyValue(() => ({
 	customFixes: [] as const,
 
 	isOptional: false as const,
+	isStrictOptional: false as const,
+
 	isReadonly: false as const,
 	hasDefault: false as const,
 

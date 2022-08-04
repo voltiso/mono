@@ -36,18 +36,18 @@ describe('GetObjectType', () => {
 		type AOut = GetObjectType_<typeof a, { kind: 'out' }>
 		type AIn = GetObjectType_<typeof a, { kind: 'in' }>
 		Assert<IsIdentical<AOut, { opt: number }>>()
-		Assert<IsIdentical<AIn, { opt?: number }>>()
+		Assert<IsIdentical<AIn, { opt?: number | undefined }>>()
 
 		const b = s.object(a)
 		type BOut = typeof b.OutputType
 		type BIn = typeof b.InputType
 		Assert<IsIdentical<BOut, { opt: number }>>()
-		Assert<IsIdentical<BIn, { opt?: number }>>()
+		Assert<IsIdentical<BIn, { opt?: number | undefined }>>()
 
 		type COut = GetObjectType_<typeof b.getShape, { kind: 'out' }>
 		type CIn = GetObjectType_<typeof b.getShape, { kind: 'in' }>
 		Assert<IsIdentical<COut, { opt: number }>>()
-		Assert<IsIdentical<CIn, { opt?: number }>>()
+		Assert<IsIdentical<CIn, { opt?: number | undefined }>>()
 	})
 
 	it('index', () => {
