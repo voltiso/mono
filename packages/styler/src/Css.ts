@@ -8,12 +8,18 @@ import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
 import type { IsReactNative } from './IsReactNative'
 
+type AllowArrays<O> = { [k in keyof O]: O[k] | readonly O[k][] }
+
 /** Copied over `IStyle` from `fela` with fixes for `exactOptionalPropertyTypes` */
-export type Css = CssObject | CssCustom | IStyleExtension
+export type Css = AllowArrays<CssObject> | CssCustom | IStyleExtension
 
 export type CssObject = CssProperties & CssPseudos
 
-/** Changes from `fela`: added `| undefined` */
+/**
+ * Changes from `fela`:
+ *
+ * - Add `| undefined`
+ */
 export interface CssCustom {
 	[prop: string]: CssCustomPrimitive | Css | undefined
 }
