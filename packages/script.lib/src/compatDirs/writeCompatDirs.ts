@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getPackageJsonCached } from '@voltiso/util.package-json'
+import { getPackageJsonCached } from '@voltiso/util.find-package-json'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 

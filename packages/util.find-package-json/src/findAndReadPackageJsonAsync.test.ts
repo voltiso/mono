@@ -12,7 +12,7 @@ describe('findAndReadPackageJson', () => {
 		// eslint-disable-next-line unicorn/prefer-module
 		const packageJson = await runAsync(findAndReadPackageJsonSyncer(__dirname))
 
-		expect(packageJson.name).toBe('@voltiso/util.package-json')
+		expect(packageJson.name).toBe('@voltiso/util.find-package-json')
 	})
 
 	it('sync', () => {
@@ -21,6 +21,6 @@ describe('findAndReadPackageJson', () => {
 		// eslint-disable-next-line unicorn/prefer-module
 		const packageJson = runSync(findAndReadPackageJsonSyncer(__dirname))
 
-		expect(packageJson.name).toBe('@voltiso/util.package-json')
+		expect(packageJson.name).toBe('@voltiso/util.find-package-json')
 	})
 })

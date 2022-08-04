@@ -1,5 +1,5 @@
 {
-	"name": "@voltiso/util.package-json",
+	"name": "@voltiso/util.find-package-json",
 	"version": "39.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",

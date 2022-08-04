@@ -7,7 +7,7 @@ import {
 	VoltisoScriptError,
 	writeCompatDirs,
 } from '@voltiso/script.lib'
-import { getPackageJsonCached } from '@voltiso/util'
+import { getPackageJsonCached } from '@voltiso/util.find-package-json'
 import * as path from 'node:path'
 
 import type { Command } from './Command'
