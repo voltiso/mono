@@ -14,5 +14,6 @@ export const yaml = defineEslintConfigOverride({
 
 	rules: {
 		'yml/quotes': 0, // conflicts with prettier
+		'yml/plain-scalar': 1,
 	},
 } as const)

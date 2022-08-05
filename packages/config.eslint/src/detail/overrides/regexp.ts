@@ -12,5 +12,8 @@ export const regexpOverride = defineEslintConfigOverride({
 
 	rules: {
 		'regexp/no-unused-capturing-group': 0, // false-positives in `str.replace(/.../gu, match => ...)`
+
+		'require-unicode-regexp': 0,
+		'regexp/require-unicode-regexp': 1,
 	},
 } as const)

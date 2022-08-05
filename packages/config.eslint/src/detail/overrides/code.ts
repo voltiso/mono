@@ -71,7 +71,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-empty-interface': [1, { allowSingleExtends: true }],
 		'@typescript-eslint/padding-line-between-statements': 1,
 		'@typescript-eslint/no-unsafe-assignment': 1,
-
+		'@typescript-eslint/no-unsafe-member-access': 1,
 		'@typescript-eslint/no-unsafe-return': 1,
 
 		// '@typescript-eslint/no-explicit-any': [
@@ -131,7 +131,10 @@ export const codeOverride = defineEslintConfigOverride({
 
 		'init-declarations': 0,
 		'nonblock-statement-body-position': 0,
-		'max-statements': ['warn', { max: 30 }],
+
+		'max-statements': 0,
+		// 'max-statements': ['warn', { max: 30 }],
+
 		'no-empty': ['error', { allowEmptyCatch: true }],
 		'arrow-parens': 0, // conflicts with prettier
 		'@typescript-eslint/space-before-function-paren': 0, // conflicts with prettier
@@ -141,8 +144,9 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-duplicate-imports': 0, // handled by `import/no-duplicates`
 		'operator-linebreak': 0,
 		'no-multiple-empty-lines': 0, // handled by prettier
-
+		'no-param-reassign': 1,
 		'func-names': 0,
+		'no-undefined': 1,
 
 		// 'func-names': [
 		// 	'error',
@@ -162,6 +166,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'max-lines-per-function': 0,
 		'max-params': 0,
 		'no-continue': 0,
+		'default-param-last': 1,
 
 		'padding-line-between-statements': [
 			'warn',

@@ -10,10 +10,10 @@ export const sonar = defineEslintConfigOverride({
 	plugins: ['sonarjs'],
 
 	rules: {
-		'sonarjs/cognitive-complexity': 'error',
+		'sonarjs/cognitive-complexity': 0, // hmm, may be useful
 		'sonarjs/elseif-without-else': 0,
-		'sonarjs/no-identical-expressions': 'error',
-		'sonarjs/no-inverted-boolean-check': 2,
+		'sonarjs/no-identical-expressions': 1,
+		'sonarjs/no-inverted-boolean-check': 1,
 		'sonarjs/prefer-single-boolean-return': 0,
 	},
 } as const)

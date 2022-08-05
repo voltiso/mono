@@ -22,7 +22,10 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'import/no-webpack-loader-syntax': 2,
 	'import/no-self-import': 2,
 	'import/no-cycle': 0, //! hmm... might be useful !
-	'import/no-useless-path-segments': ['warn', { noUselessIndex: true }],
+
+	'@voltiso/no-useless-path-segments': ['warn', { noUselessIndex: true }],
+	// 'import/no-useless-path-segments': ['warn', { noUselessIndex: true }],
+
 	// 'import/no-relative-parent-imports': 1, // use 'no-restricted-imports' instead
 	'import/no-relative-packages': 2,
 })

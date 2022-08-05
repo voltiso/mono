@@ -2,8 +2,7 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@toml-tools/lexer'
-  - '@types/node'
-  - '@voltiso/config.jest.esr'
+  - import-meta-resolve
+  - '~'
   - '@voltiso/config.ts'
   - '@voltiso/config.ts.build.cjs'

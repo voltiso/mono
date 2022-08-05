@@ -185,7 +185,8 @@
 		"toml",
 		"properties",
 		"ignore",
-		"editorconfig"
+		"editorconfig",
+		"markdown"
 	],
 
 	"eslint.validate": [
@@ -200,7 +201,8 @@
 		"toml",
 		"properties",
 		"ignore",
-		"editorconfig"
+		"editorconfig",
+		"markdown"
 	],
 
 	"eslint.run": "onSave",
@@ -215,7 +217,8 @@
 	// Only turn on what's frequently used - better editor responsiveness
 	"eslint.codeActionsOnSave.rules": [
 		"prettier/prettier",
-		"import/no-useless-path-segments",
+		// "import/no-useless-path-segments",
+		"@voltiso/no-useless-path-segments",
 		"simple-import-sort/imports",
 		"@typescript-eslint/consistent-type-imports",
 		"import/no-duplicates",
@@ -225,7 +228,8 @@
 		"@typescript-eslint/padding-line-between-statements",
 		"simple-import-sort/exports",
 		"unused-imports/no-unused-imports",
-		"ext/lines-between-object-properties"
+		"ext/lines-between-object-properties",
+		"yml/plain-scalar"
 	],
 
 	"prettier.documentSelectors": [
@@ -276,6 +280,7 @@
 		"dequal",
 		"eopt",
 		"esbuild",
+		"estree",
 		"execa",
 		"extglob",
 		"fastq",
@@ -304,6 +309,7 @@
 		"mjsx",
 		"mtsx",
 		"mutables",
+		"Nagashima",
 		"nala",
 		"nocheck",
 		"nodelib",
@@ -346,10 +352,12 @@
 		"testid",
 		"thenify",
 		"topromise",
+		"Toru",
 		"transpiling",
 		"treeshake",
 		"tsclint",
 		"tsdoc",
+		"TSES",
 		"tsup",
 		"ttsc",
 		"Turborepo",

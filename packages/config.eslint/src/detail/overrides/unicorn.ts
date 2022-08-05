@@ -18,9 +18,12 @@ export const unicorn = defineEslintConfigOverride({
 
 		'unicorn/filename-case': 0, // does not allow `someName_.ts`
 
-		'unicorn/import-index': 2,
+		'unicorn/import-index': 1,
+		'unicorn/import-style': 1,
 
 		'unicorn/prevent-abbreviations': 0,
+
+		'unicorn/prefer-node-protocol': 1,
 
 		// 'unicorn/prevent-abbreviations': [
 		// 	'error',
@@ -58,5 +61,7 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/no-null': 0,
 		'unicorn/no-nested-ternary': 0,
 		'unicorn/prefer-ternary': 0,
+
+		'unicorn/no-array-reduce': 1,
 	},
 } as const)

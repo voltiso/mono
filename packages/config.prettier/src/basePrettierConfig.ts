@@ -79,7 +79,7 @@ export const basePrettierConfig = defineConfig({
 	plugins: Object.keys(getPackageJson().peerDependencies)
 		.filter(
 			dep =>
-				dep.startsWith('@prettier/plugin') || dep.startsWith('prettier-plugin'),
+				dep.startsWith('@prettier/plugin') || dep.includes('prettier-plugin'),
 		)
 		// eslint-disable-next-line import/no-dynamic-require, unicorn/prefer-module, @typescript-eslint/no-unsafe-return, n/global-require
 		.map(moduleId => require(moduleId)),

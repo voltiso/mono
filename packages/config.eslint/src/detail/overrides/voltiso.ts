@@ -3,14 +3,13 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-import { tsFiles } from '~/detail/files'
+export const voltisoOverride = defineEslintConfigOverride({
+	files: ['*'],
 
-export const tsdoc = defineEslintConfigOverride({
-	files: tsFiles,
-
-	plugins: ['tsdoc'],
+	plugins: ['@voltiso/eslint-plugin'],
 
 	rules: {
-		'tsdoc/syntax': 'warn',
+		// 'n/file-extension-in-import': 0,
+		// '@voltiso/file-extension-in-import': 1,
 	},
 } as const)

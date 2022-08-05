@@ -70,6 +70,7 @@ import {
 	typescriptSortKeys,
 	unicorn,
 	unusedImports,
+	voltisoOverride,
 	// wokeOverride,
 	yaml,
 } from './detail/overrides'
@@ -225,6 +226,8 @@ export const baseEslintConfig = defineEslintConfig({
 
 		prettierOverride,
 
+		voltisoOverride,
+
 		/** `js` (no `ts`) */
 		{
 			files: ['*.js', '*.jsx', '*.cjs', '*.cjsx', '*.mjs', '*.mjsx'],
@@ -240,6 +243,8 @@ export const baseEslintConfig = defineEslintConfig({
 
 				'editorconfig/indent': 0, // does not work with type args
 				'no-use-before-define': 0, // types can be used before define
+
+				'jsdoc/check-param-names': 0,
 			},
 		},
 

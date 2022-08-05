@@ -44,17 +44,12 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 
 	// 'n/file-extension-in-import': 1,
 
-	'n/file-extension-in-import': [
+	// 'n/file-extension-in-import': [
+	'@voltiso/file-extension-in-import': [
 		'warn',
 		'always',
 		Object.fromEntries(codeFiles.map(ext => [ext.slice(1), 'never'])),
-		// {
-		// 	'.js': 'never',
-		// 	'.jsx': 'never',
-		// 	'.ts': 'never',
-		// 	'.tsx': 'never',
-		// },
-	], // hmm...
+	],
 
 	// 'n/file-extension-in-import': [
 	// 	'error',
