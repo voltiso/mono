@@ -7,6 +7,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useCurrent } from '~/hooks'
 import { LocalStorage } from '~/LocalStorage'
 
+//
+
 export function useLocalStorage<T>(
 	key: string,
 	def?: T,
@@ -24,6 +26,13 @@ export function useLocalStorage<T, Key extends string | undefined>(
 	Key extends undefined ? undefined : Key extends string ? T : never,
 	(x?: T) => void,
 ]
+
+export function useLocalStorage<T>(
+	key: string | undefined,
+	def?: T,
+): readonly [T | undefined, (x?: T) => void]
+
+//
 
 export function useLocalStorage<T>(
 	key: string | undefined,
