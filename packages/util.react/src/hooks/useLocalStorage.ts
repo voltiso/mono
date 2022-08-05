@@ -17,10 +17,13 @@ export function useLocalStorage<T>(
 	def?: T,
 ): readonly [undefined, (x?: T) => void]
 
-export function useLocalStorage<T>(
-	key: string | undefined,
+export function useLocalStorage<T, Key extends string | undefined>(
+	key: Key,
 	def?: T,
-): readonly [T | undefined, (x?: T) => void]
+): readonly [
+	Key extends undefined ? undefined : Key extends string ? T : never,
+	(x?: T) => void,
+]
 
 export function useLocalStorage<T>(
 	key: string | undefined,
