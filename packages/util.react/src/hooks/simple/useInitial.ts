@@ -9,12 +9,12 @@ import { useRef } from 'react'
  * @example
  *
  * ```ts
- * const myData = useConst({ foo: 'bar' }) // always returns the same object
+ * const myData = useInitial({ foo: 'bar' }) // always returns the same object
  * ```
  *
- * @param x - Initial value
+ * @param initialValue - Initial value
  * @returns The initial value
  */
-export function useConst<X>(x: X) {
-	return useRef(x).current
+export function useInitial<X>(initialValue: X) {
+	return useRef(initialValue).current
 }

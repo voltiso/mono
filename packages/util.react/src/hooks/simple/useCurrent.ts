@@ -14,11 +14,13 @@ import { useRef } from 'react'
  * const upToDateState = useCurrent({ foo: 'currentFooValue' })
  * ```
  *
- * @param x - Object with current properties to use by callbacks
+ * @param currentValues - Object with current properties to use by callbacks
  * @returns Proxy to the current value (always the same Proxy object)
  */
-export function useCurrent<X extends object>(x: X): X {
-	return Object.setPrototypeOf(useRef({}).current, x) as X
+export function useCurrent<Current extends object>(
+	currentValues: Current,
+): Current {
+	return Object.setPrototypeOf(useRef({}).current, currentValues) as Current
 }
 
 // export function useCurrent<X extends object>(x: X): X {

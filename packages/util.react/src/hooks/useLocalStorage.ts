@@ -2,8 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isDefined, undef } from '@voltiso/util'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
+import { useInitial, useUpdate } from '~/hooks'
 import { LocalStorage } from '~/LocalStorage'
 
 //
@@ -37,7 +38,8 @@ export function useLocalStorage<T>(
 	key: string | undefined,
 	def?: T,
 ): readonly [T | undefined, (x?: T) => void] {
-	const [x, setX] = useState<T>()
+	const update = useUpdate()
+	const mutable = useInitial({ x: undef as T | undefined })
 
 	// const current = useCurrent({ x, key, def })
 
@@ -47,8 +49,8 @@ export function useLocalStorage<T>(
 	}, [def, key])
 
 	useEffect(() => {
-		setX(storage?.data)
-	}, [storage?.data])
+		mutable.x = storage?.data
+	}, [mutable, storage])
 
 	const set = useCallback(
 		(x?: T) => {
@@ -61,11 +63,12 @@ export function useLocalStorage<T>(
 			if (x === undef) storage.clear()
 			else {
 				storage.data = x
-				setX(x)
+				mutable.x = x
+				update()
 			}
 		},
-		[storage],
+		[mutable, storage, update],
 	)
 
-	return [x, set] as const
+	return [mutable.x, set] as const
 }
