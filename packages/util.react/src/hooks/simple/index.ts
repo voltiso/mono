@@ -4,5 +4,6 @@
 export * from './useConst'
 export * from './useCurrent'
 export * from './useDelayed'
+export * from './useOnMount'
 export * from './useOnUnmount'
 export * from './useUpdate'
