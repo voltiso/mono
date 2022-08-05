@@ -4,7 +4,6 @@
 import { isDefined, undef } from '@voltiso/util'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useCurrent } from '~/hooks'
 import { LocalStorage } from '~/LocalStorage'
 
 //
@@ -40,7 +39,7 @@ export function useLocalStorage<T>(
 ): readonly [T | undefined, (x?: T) => void] {
 	const [x, setX] = useState<T>()
 
-	const current = useCurrent({ x, key, def })
+	// const current = useCurrent({ x, key, def })
 
 	const storage = useMemo(() => {
 		if (isDefined(key)) return new LocalStorage(key, def)
@@ -53,11 +52,11 @@ export function useLocalStorage<T>(
 
 	const set = useCallback(
 		(x?: T) => {
-			if (!storage)
-				throw new Error(
-					// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-					`useLocalStorage: cannot set value ${current.x} for local storage key ${current.key}`,
-				)
+			if (!storage) return
+			// throw new Error(
+			// 	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+			// 	`useLocalStorage: cannot set value ${current.x} for local storage key ${current.key}`,
+			// )
 
 			if (x === undef) storage.clear()
 			else {
@@ -65,7 +64,7 @@ export function useLocalStorage<T>(
 				setX(x)
 			}
 		},
-		[storage, current], // TODO: implement eslint rule to not depend on current.*
+		[storage],
 	)
 
 	return [x, set] as const

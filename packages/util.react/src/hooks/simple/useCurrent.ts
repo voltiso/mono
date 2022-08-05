@@ -3,6 +3,8 @@
 
 import { useRef } from 'react'
 
+// TODO: implement eslint rule to not depend on current.*
+
 /**
  * Update values without the need to update callbacks
  *
