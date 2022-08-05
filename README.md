@@ -133,21 +133,4 @@ pnpm test
 
 ### Using `Orta.vscode-jest` extension
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 The 'lab' icon is in the left pane.

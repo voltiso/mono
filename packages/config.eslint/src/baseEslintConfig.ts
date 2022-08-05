@@ -35,7 +35,7 @@ import {
 	jsonc,
 	jsx,
 	jsxAlly,
-	markdownOverride,
+	markdownOverrides,
 	next,
 	noConstructorBind,
 	nodeDependencies,
@@ -217,7 +217,7 @@ export const baseEslintConfig = defineEslintConfig({
 		chaiFriendly,
 		testOverride, // has to be after `fp`
 
-		markdownOverride,
+		...markdownOverrides,
 
 		jsonc,
 		json, // has to be after `jsonc`

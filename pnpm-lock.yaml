@@ -33,7 +33,7 @@ importers:
       '@voltiso/config.jest.lib': workspace:*
       '@voltiso/config.prettier': workspace:*
       '@voltiso/config.ts': workspace:*
-      '@voltiso/eslint-plugin': workspace:*
+      '@voltiso/eslint-plugin': workspace:1.0.0
       '@voltiso/prettier-plugin-toml': ^0.3.3
       any-eslint-parser: ^1.0.1
       babel-jest: ^28.1.3

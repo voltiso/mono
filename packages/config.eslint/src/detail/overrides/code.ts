@@ -73,6 +73,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-unsafe-assignment': 1,
 		'@typescript-eslint/no-unsafe-member-access': 1,
 		'@typescript-eslint/no-unsafe-return': 1,
+		'@typescript-eslint/restrict-template-expressions': 1,
 
 		// '@typescript-eslint/no-explicit-any': [
 		// 	'error',
