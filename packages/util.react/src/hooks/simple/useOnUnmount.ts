@@ -9,5 +9,5 @@ export const useOnUnmount = (
 	deps?: React.DependencyList,
 ) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(() => handleUnmount, deps)
+	useEffect(() => handleUnmount, deps || [])
 }
