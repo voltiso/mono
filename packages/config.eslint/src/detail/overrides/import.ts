@@ -13,14 +13,14 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'import/no-unresolved': ['error', { caseSensitiveStrict: true }],
 
 	'import/named': 0, // buggy when using import from '~' (tsconfig -> paths)?
-	'import/default': 2,
+	'import/default': 1,
 	'import/namespace': 0, // buggy when using custom "paths" in `tsconfig.json`
-	'import/no-restricted-paths': 2,
-	'import/no-absolute-path': 2,
-	'import/no-dynamic-require': 2,
+	'import/no-restricted-paths': 1,
+	'import/no-absolute-path': 1,
+	'import/no-dynamic-require': 1,
 	'import/no-internal-modules': 0, //! hmm... configure and enable?
-	'import/no-webpack-loader-syntax': 2,
-	'import/no-self-import': 2,
+	'import/no-webpack-loader-syntax': 0,
+	'import/no-self-import': 1,
 	'import/no-cycle': 0, //! hmm... might be useful !
 
 	'@voltiso/no-useless-path-segments': ['warn', { noUselessIndex: true }],
@@ -31,21 +31,21 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 })
 
 const helpfulWarningsRules = defineEslintConfigOverrideRules({
-	'import/export': 2,
-	'import/no-named-as-default': 2,
-	'import/no-named-as-default-member': 2,
-	'import/no-deprecated': 2,
+	'import/export': 1,
+	'import/no-named-as-default': 1,
+	'import/no-named-as-default-member': 1,
+	'import/no-deprecated': 1,
 	'import/no-extraneous-dependencies': 0, // buggy with non-relative paths duplicate across projects in monorepo
-	'import/no-mutable-exports': 2,
-	'import/no-unused-modules': 2,
+	'import/no-mutable-exports': 1,
+	'import/no-unused-modules': 1,
 })
 
 const moduleSystemsRules = defineEslintConfigOverrideRules({
 	'import/unambiguous': 1,
-	'import/no-commonjs': 2,
-	'import/no-amd': 2,
+	'import/no-commonjs': 1,
+	'import/no-amd': 1,
 	'import/no-nodejs-modules': 0,
-	'import/no-import-module-exports': 2,
+	'import/no-import-module-exports': 1,
 })
 
 const styleGuideRules = defineEslintConfigOverrideRules({

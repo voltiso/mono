@@ -148,6 +148,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-param-reassign': 1,
 		'func-names': 0,
 		'no-undefined': 1,
+		'no-implicit-coercion': 1,
 
 		// 'func-names': [
 		// 	'error',

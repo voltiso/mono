@@ -250,7 +250,13 @@ export const baseEslintConfig = defineEslintConfig({
 
 		// `cjs` (js/ts)
 		{
-			files: ['*.cjs', '*.cjsx', '*.cts', '*.ctsx'],
+			files: [
+				'*.cjs',
+				'*.cjsx',
+				'*.cts',
+				'*.ctsx',
+				'next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
+			],
 
 			parserOptions: {
 				sourceType: 'script',
@@ -260,6 +266,7 @@ export const baseEslintConfig = defineEslintConfig({
 				'@typescript-eslint/no-var-requires': 0,
 				'import/no-commonjs': 0,
 				strict: ['warn', 'global'],
+				'unicorn/prefer-module': 0,
 			},
 		},
 

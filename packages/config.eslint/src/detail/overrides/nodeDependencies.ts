@@ -14,12 +14,12 @@ const possibleErrors = defineEslintConfigOverrideRules({
 
 const bestPractices = defineEslintConfigOverrideRules({
 	'node-dependencies/absolute-version': ['error', 'never'],
-	'node-dependencies/no-deprecated': 2,
-	'node-dependencies/no-restricted-deps': 2,
+	'node-dependencies/no-deprecated': 1,
+	'node-dependencies/no-restricted-deps': 1,
 })
 
 const stylisticIssues = defineEslintConfigOverrideRules({
-	'node-dependencies/prefer-caret-range-version': 2,
+	'node-dependencies/prefer-caret-range-version': 1,
 	'node-dependencies/prefer-tilde-range-version': 0,
 })
 
