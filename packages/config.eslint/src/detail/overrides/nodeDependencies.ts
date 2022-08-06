@@ -13,7 +13,7 @@ const possibleErrors = defineEslintConfigOverrideRules({
 })
 
 const bestPractices = defineEslintConfigOverrideRules({
-	'node-dependencies/absolute-version': ['error', 'never'],
+	'node-dependencies/absolute-version': ['warn', 'never'],
 	'node-dependencies/no-deprecated': 1,
 	'node-dependencies/no-restricted-deps': 1,
 })

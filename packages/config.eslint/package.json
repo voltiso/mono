@@ -4,11 +4,6 @@
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		"types": "./dist/cjs/index.d.ts",
-		"require": "./dist/cjs/index.js"
-	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/cjs/index.d.ts",
 	"main": "dist/cjs/index.js",

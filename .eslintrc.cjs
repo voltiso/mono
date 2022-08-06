@@ -3,7 +3,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const baseEslintConfig = require('@voltiso/config.eslint')
+// const baseEslintConfig = require('@voltiso/config.eslint')
 const { defineEslintConfig } = require('@voltiso/config.eslint.lib')
 
 const project = [
@@ -17,7 +17,9 @@ const project = [
 	// 'packages/util/src/tsc-options/*/*/tsconfig.json',
 ]
 
-module.exports = defineEslintConfig(baseEslintConfig, {
+module.exports = defineEslintConfig({
+	extends: ['@voltiso/eslint-config'],
+
 	root: true,
 
 	parserOptions: {
