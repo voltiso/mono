@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/styler",
-	"version": "10.0.4",
+	"version": "10.0.5",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
@@ -43,7 +43,6 @@
 		"clean": "rimraf dist"
 	},
 	"dependencies": {
-		"@voltiso/assertor": "workspace:*",
 		"@voltiso/util": "workspace:*"
 	},
 	"peerDependencies": {

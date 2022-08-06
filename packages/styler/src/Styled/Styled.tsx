@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+// import { assert } from '@voltiso/assertor'
 import type {
 	MapOrUndefined,
 	PickOptional,
@@ -340,7 +340,7 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 		value?: PropValue<P, P[Name]>,
 	): ForcePatch<this, { [k in Name]?: P[Name] | undefined }> {
 		const myValue = arguments.length === 1 ? true : value
-		assert(typeof myValue !== 'undefined')
+		// assert(typeof myValue !== 'undefined')
 		return this._clone({
 			stack: [{ props: { [name]: myValue } }],
 		}) as never
