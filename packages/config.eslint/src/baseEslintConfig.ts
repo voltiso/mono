@@ -240,10 +240,10 @@ export const baseEslintConfig = defineEslintConfig({
 
 		voltisoOverride,
 
-		/** `js` (no `ts`) */
-		{
-			files: ['*.js', '*.jsx', '*.cjs', '*.cjsx', '*.mjs', '*.mjsx'],
-		},
+		// /** `js` (no `ts`) */
+		// {
+		// 	files: ['*.js', '*.jsx', '*.cjs', '*.cjsx', '*.mjs', '*.mjsx'],
+		// },
 
 		/** `ts` (no `js`) */
 		{
