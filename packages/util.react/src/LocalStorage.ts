@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '@voltiso/util'
-
 export class LocalStorage<T> {
 	key: string
 	defaultValue: T | undefined
@@ -22,7 +20,7 @@ export class LocalStorage<T> {
 				: null
 
 		if (r !== null) return JSON.parse(r) as T
-		else if (this.defaultValue !== undef) return this.defaultValue
+		else if (this.hasDefaultValue) return this.defaultValue as T
 		else
 			throw new Error(
 				`util.react.LocalStorage: '${this.key}' does not exist (forgot to supply defaultValue?)`,
