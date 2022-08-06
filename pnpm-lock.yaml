@@ -41,7 +41,6 @@ importers:
       eslint: latest
       eslint-config-react-app: ^7.0.1
       eslint-import-resolver-typescript: ^3.4.0
-      eslint-plugin-array-func: ^3.1.7
       eslint-plugin-chai-friendly: ^0.7.2
       eslint-plugin-cypress: ^2.12.1
       eslint-plugin-editorconfig: ^4.0.2
@@ -138,7 +137,6 @@ importers:
       eslint: 8.21.0
       eslint-config-react-app: 7.0.1_z5klxkgz73xyecqhakk4wvdm3e
       eslint-import-resolver-typescript: 3.4.0_jatgrcxl4x7ywe7ak6cnjca2ae
-      eslint-plugin-array-func: 3.1.7_eslint@8.21.0
       eslint-plugin-chai-friendly: 0.7.2_eslint@8.21.0
       eslint-plugin-cypress: 2.12.1_eslint@8.21.0
       eslint-plugin-editorconfig: 4.0.2
@@ -301,11 +299,13 @@ importers:
       depcheck: ^1.4.3
       eslint: latest
       eslint-gitignore: ^0.1.0
+      eslint-plugin-array-func: '>= 3.1.7'
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
     dependencies:
       '@voltiso/config.eslint.lib': link:../config.eslint.lib
       eslint-gitignore: 0.1.0_eslint@8.21.0
+      eslint-plugin-array-func: 3.1.7_eslint@8.21.0
     devDependencies:
       '@types/node': 18.6.4
       '@voltiso/config.ts': link:../config.ts
@@ -9628,7 +9628,7 @@ packages:
       eslint: '*'
     dependencies:
       eslint: 8.21.0
-    dev: true
+    dev: false
 
   /eslint-plugin-chai-friendly/0.7.2_eslint@8.21.0:
     resolution: {integrity: sha512-LOIfGx5sZZ5FwM1shr2GlYAWV9Omdi+1/3byuVagvQNoGUuU0iHhp7AfjA1uR+4dJ4Isfb4+FwBJgQajIw9iAg==}
