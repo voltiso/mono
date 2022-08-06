@@ -4,6 +4,7 @@
 import { useCallback, useState } from 'react'
 
 export function useUpdate() {
-	const [_, set] = useState(0)
-	return useCallback(() => set(x => x + 1), [])
+	// eslint-disable-next-line react/hook-use-state
+	const [_x, setX] = useState(0)
+	return useCallback(() => setX(x => x + 1), [])
 }

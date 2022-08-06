@@ -3,6 +3,8 @@
 
 ignores:
   - '~'
+  - '@babel/core'
+  - '@babel/preset-env'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest.react'
   - '@voltiso/config.ts'

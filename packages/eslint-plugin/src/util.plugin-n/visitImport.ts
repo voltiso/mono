@@ -84,7 +84,7 @@ export function visitImport(
 		},
 
 		// @ts-expect-error well...
-		'Program:exit': function () {
+		'Program:exit'() {
 			// eslint-disable-next-line promise/prefer-await-to-callbacks
 			callback(targets)
 		},

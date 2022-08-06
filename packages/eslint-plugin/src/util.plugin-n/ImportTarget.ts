@@ -8,7 +8,7 @@
 import type { Node } from 'estree'
 import * as path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import resolve from 'resolve'
+import * as resolve from 'resolve'
 
 import { defaultResolve as importResolve } from '~/converted-esm/import-meta-resolve'
 

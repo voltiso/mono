@@ -21,7 +21,15 @@ export const react = defineEslintConfigOverride({
 		'react/forbid-elements': 1,
 		'react/forbid-foreign-prop-types': 1,
 		'react/forbid-prop-types': 1,
-		'react/function-component-definition': 1,
+
+		'react/function-component-definition': [
+			'warn',
+			{
+				namedComponents: 'arrow-function',
+				unnamedComponents: 'arrow-function',
+			},
+		],
+
 		'react/hook-use-state': 1,
 		'react/iframe-missing-sandbox': 1,
 		'react/jsx-boolean-value': 1,
@@ -31,9 +39,23 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-curly-spacing': 1,
 		'react/jsx-curly-newline': 1,
 		'react/jsx-equals-spacing': 1,
-		'react/jsx-filename-extension': 1,
+
+		'react/jsx-filename-extension': [
+			'warn',
+			{ allow: 'as-needed', extensions: ['.jsx', '.tsx'] },
+		],
+
 		'react/jsx-first-prop-new-line': 1,
-		'react/jsx-handler-names': 1,
+
+		'react/jsx-handler-names': 0, // bugged - does not allow `handlers.nameChanged`
+
+		// 'react/jsx-handler-names': [
+		// 	'warn',
+		// 	{
+		// 		eventHandlerPrefix: '',
+		// 	},
+		// ],
+
 		'react/jsx-indent': 1,
 		'react/jsx-indent-props': 1,
 		'react/jsx-key': 1,
@@ -55,7 +77,9 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-pascal-case': 1,
 		'react/jsx-fragments': 1,
 		'react/jsx-props-no-multi-spaces': 1,
-		'react/jsx-props-no-spreading': 1,
+
+		'react/jsx-props-no-spreading': 0, // spreading is useful
+
 		'react/jsx-sort-default-props': 1,
 		'react/jsx-sort-props': 1,
 		'react/jsx-space-before-closing': 1,
@@ -77,7 +101,9 @@ export const react = defineEslintConfigOverride({
 		'react/no-direct-mutation-state': 1,
 		'react/no-find-dom-node': 1,
 		'react/no-is-mounted': 1,
-		'react/no-multi-comp': 1,
+
+		'react/no-multi-comp': 0, // can have several components per file
+
 		'react/no-namespace': 1,
 		'react/no-set-state': 1,
 		'react/no-string-refs': 1,
@@ -99,7 +125,9 @@ export const react = defineEslintConfigOverride({
 		'react/prefer-stateless-function': 1,
 		'react/prop-types': 1,
 		'react/react-in-jsx-scope': 1,
-		'react/require-default-props': 1,
+
+		'react/require-default-props': 0, // not using prop-types
+
 		'react/require-optimization': 1,
 		'react/require-render-return': 1,
 		'react/self-closing-comp': 1,

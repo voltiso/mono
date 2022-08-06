@@ -3,6 +3,9 @@
 
 import eslintBaseConfig = require('@voltiso/config.eslint')
 
+// eslint-disable-next-line import/no-unassigned-import
+import '@rushstack/eslint-patch/modern-module-resolution'
+
 export = eslintBaseConfig
 
 // export = {

@@ -14,7 +14,7 @@ export const testOverride = defineEslintConfigOverride({
 
 	extends: [
 		/** React - CRA */
-		'react-app/jest',
+		// 'react-app/jest',
 
 		'plugin:jest/all',
 		'plugin:jest-dom/recommended', // seems to have all rules enabled?
@@ -78,6 +78,8 @@ export const testOverride = defineEslintConfigOverride({
 		// change 'error' to 'warn'
 		'jest-formatting/padding-around-all': 1,
 		'jest/prefer-to-be': 1,
+
+		'react/jsx-no-useless-fragment': 0,
 
 		// 'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
 
