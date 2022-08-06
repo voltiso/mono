@@ -5,12 +5,14 @@ import { undef } from '@voltiso/util'
 
 export class LocalStorage<T> {
 	key: string
-	defaultValue?: T
+	defaultValue: T | undefined
+	hasDefaultValue: boolean
 
 	constructor(key: string, defaultValue?: T) {
 		this.key = key
 
-		if (defaultValue !== undef) this.defaultValue = defaultValue
+		this.hasDefaultValue = arguments.length >= 2
+		this.defaultValue = defaultValue
 	}
 
 	get data(): T {
@@ -21,7 +23,10 @@ export class LocalStorage<T> {
 
 		if (r !== null) return JSON.parse(r) as T
 		else if (this.defaultValue !== undef) return this.defaultValue
-		else throw new Error(`LocalStorage: '${this.key}' does not exist`)
+		else
+			throw new Error(
+				`util.react.LocalStorage: '${this.key}' does not exist (forgot to supply defaultValue?)`,
+			)
 	}
 
 	set data(x: T) {
