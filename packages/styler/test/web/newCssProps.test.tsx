@@ -83,7 +83,7 @@ describe('newCssProps', () => {
 		)
 		// @ts-expect-error myColor is required
 		;<Button />
-		renderApp(<Button myColor={'green'} />)
+		renderApp(<Button myColor='green' />)
 
 		const button = screen.getByRole('button')
 
@@ -98,7 +98,7 @@ describe('newCssProps', () => {
 		const Button = style.newCssProp('myColor', (c?: Property.Color) => ({
 			color: c,
 		}))('button')
-		renderApp(<Button myColor={'green'} />)
+		renderApp(<Button myColor='green' />)
 
 		const button = screen.getByRole('button')
 

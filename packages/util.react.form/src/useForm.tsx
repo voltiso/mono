@@ -7,7 +7,7 @@ import type { StyledComponent } from '@voltiso/styler'
 import { style } from '@voltiso/styler'
 import { getKeys, getValues, undef } from '@voltiso/util'
 import { LocalStorage, useConst, useCurrent } from '@voltiso/util.react'
-import { useStatePatcher } from '@voltiso/util.react.state-patcher'
+import { useStatePatcher } from '@voltiso/util.react.patcher'
 import type { FormEvent } from 'react'
 import { forwardRef, useCallback, useEffect, useMemo } from 'react'
 

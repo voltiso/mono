@@ -1,10 +1,18 @@
 {
 	"name": "@voltiso/util.react",
-	"version": "7.3.0",
+	"version": "7.3.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"types": "./dist/esm/index.d.ts",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		}
+	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/esm/index.d.ts",
 	"module": "dist/esm/index.js",
@@ -34,6 +42,10 @@
 		"clean": "rimraf dist"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/util": "workspace:*",
+		"react-intersection-observer": "^9.4.0"
+	},
 	"peerDependencies": {
 		"react": "^18.0.0 || ^17.0.0"
 	},
@@ -57,9 +69,5 @@
 	"__________MISC": "__________",
 	"engines": {
 		"node": ">=16"
-	},
-	"dependencies": {
-		"@voltiso/util": "workspace:*",
-		"react-intersection-observer": "^9.4.0"
 	}
 }

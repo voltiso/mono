@@ -5,6 +5,7 @@ ignores:
   - '~'
   - '@babel/core'
   - '@babel/preset-env'
+  - '@babel/plugin-transform-react-jsx'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest.react'
   - '@voltiso/config.ts'

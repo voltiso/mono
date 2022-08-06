@@ -80,6 +80,8 @@ export const testOverride = defineEslintConfigOverride({
 		'jest/prefer-to-be': 1,
 
 		'react/jsx-no-useless-fragment': 0,
+		'react/button-has-type': 0,
+		'react/jsx-no-bind': 0,
 
 		// 'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
 

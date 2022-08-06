@@ -81,7 +81,7 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 
 						return this._clone({ element }) as never
 				  }
-				: // eslint-disable-next-line react/display-name
+				: // eslint-disable-next-line react/display-name, react/require-optimization
 				  forwardRef<unknown, P & OuterProps>((props, reference) =>
 						render<P, C & IStylable>(
 							props,

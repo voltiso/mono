@@ -14,7 +14,9 @@ export const react = defineEslintConfigOverride({
 		'react/boolean-prop-naming': 1,
 		'react/button-has-type': 1,
 		'react/default-props-match-prop-types': 1,
-		'react/destructuring-assignment': 1,
+
+		'react/destructuring-assignment': 0, // god, why...
+
 		'react/display-name': 1,
 		'react/forbid-component-props': 1,
 		'react/forbid-dom-props': 1,
@@ -67,7 +69,9 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-no-constructed-context-values': 1,
 		'react/jsx-no-duplicate-props': 1,
 		'react/jsx-no-leaked-render': 1,
-		'react/jsx-no-literals': 1,
+
+		'react/jsx-no-literals': 0,
+
 		'react/jsx-no-script-url': 1,
 		'react/jsx-no-target-blank': 1,
 		'react/jsx-no-useless-fragment': 1,
@@ -81,7 +85,9 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-props-no-spreading': 0, // spreading is useful
 
 		'react/jsx-sort-default-props': 1,
-		'react/jsx-sort-props': 1,
+
+		'react/jsx-sort-props': 0,
+
 		'react/jsx-space-before-closing': 1,
 		'react/jsx-tag-spacing': 1,
 		'react/jsx-uses-react': 1,
@@ -132,7 +138,9 @@ export const react = defineEslintConfigOverride({
 		'react/require-render-return': 1,
 		'react/self-closing-comp': 1,
 		'react/sort-comp': 1,
-		'react/sort-prop-types': 1,
+
+		'react/sort-prop-types': 0,
+
 		'react/state-in-constructor': 1,
 		'react/static-property-placement': 1,
 		'react/style-prop-object': 1,

@@ -61,10 +61,10 @@ describe('cssProps', () => {
 		const StrippedSvg = Svg.forgetProps('border', 'gap')
 
 		// @ts-expect-error no `border`
-		;() => <StrippedSvg border={true} />
+		;() => <StrippedSvg border />
 
 		// @ts-expect-error no `gap`
-		;() => <StrippedSvg gap={true} />
+		;() => <StrippedSvg gap />
 
 		// good!
 		;() => <StrippedSvg magic />
@@ -73,7 +73,7 @@ describe('cssProps', () => {
 
 		renderApp(
 			<GoodSvg
-				data-testid={'a'}
+				data-testid='a'
 				margin={8}
 			/>,
 		)

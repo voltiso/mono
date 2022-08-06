@@ -13,7 +13,7 @@ import type {
 import { Assert, undef } from '@voltiso/util'
 import type { ComponentProps } from 'react'
 
-import { style } from '../../../../src'
+import { style } from '~'
 
 describe('defineProps', () => {
 	it('compiler options is set', () => {

@@ -47,6 +47,13 @@
 	},
 	"packageManager": "pnpm@7.6.0",
 	"pnpm": {
+		"packageExtensions": {
+			"fela-native": {
+				"peerDependencies": {
+					"react-native": "*"
+				}
+			}
+		},
 		"peerDependencyRules": {
 			"allowedVersions": {
 				"react": "*"

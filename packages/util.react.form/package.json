@@ -38,7 +38,7 @@
 		"@voltiso/schemar": "workspace:*",
 		"@voltiso/util": "workspace:*",
 		"@voltiso/util.react": "workspace:*",
-		"@voltiso/util.react.state-patcher": "workspace:*"
+		"@voltiso/util.react.patcher": "workspace:*"
 	},
 	"peerDependencies": {
 		"@voltiso/styler": ">= 10.0.0",

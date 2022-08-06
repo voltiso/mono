@@ -88,7 +88,9 @@ describe('wrap', () => {
 		renderApp(
 			<MyDiv
 				data-testid='test'
+				// eslint-disable-next-line react/forbid-component-props
 				className='xxxxx'
+				// eslint-disable-next-line react/forbid-component-props
 				style={{ flex: 1 }}
 				css={{ margin: 1 }}
 				content='contentValue'

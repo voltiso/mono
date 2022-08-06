@@ -4,7 +4,7 @@
 import type { Component } from 'react'
 
 import type { Props } from '~/react-types'
-import type { InnerProps, InnerProps_Subtype } from '~/Stylable/InnerProps'
+import type { InnerProps, InnerPropsSubtype } from '~/Stylable/InnerProps'
 
 /**
  * FC-like types that can be styled using style(...), and have additional props
@@ -20,7 +20,7 @@ export type { StylableJsxConstruct as StylableJsxConstruct_ }
 
 /** FC-like types that can be styled using style(...) */
 export type IStylableJsxConstruct = new (
-	props: InnerProps & InnerProps_Subtype,
+	props: InnerProps & InnerPropsSubtype,
 ) => Component //! OK?
 
 // /** FC-like types that can be styled using style(...) */
@@ -35,6 +35,6 @@ export type IStylableJsxConstruct = new (
 //
 
 /** Friends with function overload resolution */
-export type StylableJsxConstruct_Infer<PP extends InnerProps> = new (
+export type StylableJsxConstructInfer<PP extends InnerProps> = new (
 	props: PP,
 ) => Required<PP> extends Required<InnerProps> ? Component : never

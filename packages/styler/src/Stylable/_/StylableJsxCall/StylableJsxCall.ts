@@ -4,7 +4,7 @@
 import type { ReactElement } from 'react'
 
 import type { Props } from '~/react-types'
-import type { InnerProps, InnerProps_Subtype } from '~/Stylable/InnerProps'
+import type { InnerProps, InnerPropsSubtype } from '~/Stylable/InnerProps'
 
 /**
  * FC-like types that can be styled using style(...), and have additional props
@@ -21,7 +21,7 @@ export type { StylableJsxCall as StylableJsxCall_ }
 
 /** FC-like types that can be styled using style(...) */
 export interface IStylableJsxCall {
-	(props: InnerProps & InnerProps_Subtype): ReactElement | null //! OK?
+	(props: InnerProps & InnerPropsSubtype): ReactElement | null //! OK?
 	// <PP extends InnerProps>(props: PP & InnerProps_Subtype): ReactElement | null
 }
 
@@ -32,7 +32,7 @@ export interface IStylableJsxCall {
 //
 
 /** Friends with function overload resolution */
-export interface StylableJsxCall_Infer<PP extends InnerProps> {
+export interface StylableJsxCallInfer<PP extends InnerProps> {
 	(props: PP): Required<PP> extends Required<InnerProps>
 		? ReactElement | null
 		: never

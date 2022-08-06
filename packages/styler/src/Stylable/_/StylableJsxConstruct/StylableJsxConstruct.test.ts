@@ -12,7 +12,7 @@ import type { ComponentClass, FC } from 'react'
 import type { Props } from '~/react-types/Props/Props'
 import type {
 	StylableJsxCall,
-	StylableJsxCall_Infer,
+	StylableJsxCallInfer,
 } from '~/Stylable/_/StylableJsxCall'
 import type { InnerProps } from '~/Stylable/InnerProps'
 
@@ -76,7 +76,7 @@ describe('StylableJsx', () => {
 
 		function get<P extends InnerProps>(
 			_component:
-				| PickCallNoUnknown_<StylableJsxCall_Infer<P>>
+				| PickCallNoUnknown_<StylableJsxCallInfer<P>>
 				| PickConstructNoUnknown_<StylableJsxConstruct_<P>>,
 		): P {
 			return 0 as never

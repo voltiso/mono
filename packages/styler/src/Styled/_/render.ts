@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/cognitive-complexity */
-
 import type { VPartial } from '@voltiso/util'
 import { assertNotPolluting, getKeys } from '@voltiso/util'
 import type { ForwardedRef } from 'react'

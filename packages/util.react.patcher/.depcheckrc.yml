@@ -2,7 +2,10 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
+  - react-native
   - '@babel/core'
+  - '@babel/preset-env'
+  - '@babel/plugin-transform-react-jsx'
   - '@babel/plugin-proposal-decorators'
   - '@voltiso/config.jest.react'
   - '@voltiso/config.ts.build.cjs'

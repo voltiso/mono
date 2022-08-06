@@ -8,8 +8,8 @@ import type { StyledComponent } from '~'
 import type { MergeProps, MergeProps_, Props } from '~/react-types'
 import type { InnerProps } from '~/Stylable'
 import type { StylableIntrinsic } from '~/Stylable/_/StylableIntrinsic'
-import type { StylableJsxCall_Infer } from '~/Stylable/_/StylableJsxCall'
-import type { StylableJsxConstruct_Infer } from '~/Stylable/_/StylableJsxConstruct'
+import type { StylableJsxCallInfer } from '~/Stylable/_/StylableJsxCall'
+import type { StylableJsxConstructInfer } from '~/Stylable/_/StylableJsxConstruct'
 import type { Styled_ } from '~/Styled'
 
 /**
@@ -31,13 +31,13 @@ export interface StyledHocCall<P extends Props> {
 
 	/** Style a FC-like (callable) component */
 	<PP extends InnerProps>(
-		stylableFunctionComponent: PickCallNoUnknown<StylableJsxCall_Infer<PP>>,
+		stylableFunctionComponent: PickCallNoUnknown<StylableJsxCallInfer<PP>>,
 	): StyledComponent<MergeProps<PP, P>>
 
 	/** Style a class-like (newable) component */
 	<PP extends InnerProps>(
 		stylableClassComponent: PickConstructNoUnknown<
-			StylableJsxConstruct_Infer<PP>
+			StylableJsxConstructInfer<PP>
 		>,
 	): StyledComponent<MergeProps<PP, P>>
 
@@ -50,8 +50,8 @@ export interface StyledHocCall<P extends Props> {
 	<PP extends InnerProps, S extends StylableIntrinsic>(
 		stylable:
 			| S
-			| PickCallNoUnknown<StylableJsxCall_Infer<PP>>
-			| PickConstructNoUnknown<StylableJsxConstruct_Infer<PP>>,
+			| PickCallNoUnknown<StylableJsxCallInfer<PP>>
+			| PickConstructNoUnknown<StylableJsxConstructInfer<PP>>,
 	): StylableIntrinsic extends S
 		? StyledComponent<MergeProps<PP, P>>
 		: StyledComponent<MergeProps_<ComponentPropsWithRef<S>, P>>

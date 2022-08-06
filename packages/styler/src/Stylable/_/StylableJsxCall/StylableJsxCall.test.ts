@@ -14,7 +14,7 @@ import type { InnerProps } from '~/Stylable'
 import type { StylableJsxConstruct_ } from '~/Stylable/_/StylableJsxConstruct'
 
 import type { StylableJsxCall } from './AutoStylableJsxCall'
-import type { IStylableJsxCall, StylableJsxCall_Infer } from './StylableJsxCall'
+import type { IStylableJsxCall, StylableJsxCallInfer } from './StylableJsxCall'
 
 describe('StylableJsxCall', () => {
 	it('generic', <P extends Props>() => {
@@ -55,7 +55,7 @@ describe('StylableJsxCall', () => {
 
 		function get<P extends InnerProps>(
 			_component:
-				| PickCallNoUnknown_<StylableJsxCall_Infer<P>>
+				| PickCallNoUnknown_<StylableJsxCallInfer<P>>
 				| PickConstructNoUnknown_<StylableJsxConstruct_<P>>,
 		): P {
 			return 0 as never

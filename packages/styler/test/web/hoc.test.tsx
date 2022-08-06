@@ -45,14 +45,14 @@ describe('hoc', () => {
 		;() => (
 			// @ts-expect-error `other` is required
 			<AfterGood
-				magic={true}
+				magic
 				css={{ borderRadius: 4 }}
 			/>
 		)
 
 		renderApp(
 			<AfterGood
-				magic={true}
+				magic
 				css={{ borderRadius: 4 }}
 				other
 			/>,

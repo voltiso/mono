@@ -149,6 +149,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'func-names': 0,
 		'no-undefined': 1,
 		'no-implicit-coercion': 1,
+		camelcase: 1,
 
 		// 'func-names': [
 		// 	'error',

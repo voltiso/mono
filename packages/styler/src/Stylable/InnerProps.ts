@@ -20,4 +20,4 @@ export type InnerProps = IsReactNative extends true
 	? WebInnerProps
 	: never
 
-export type InnerProps_Subtype = { -readonly [k in keyof InnerProps]-?: never }
+export type InnerPropsSubtype = { -readonly [k in keyof InnerProps]-?: never }
