@@ -4,4 +4,3 @@
 ignores:
   - '@types/babel__core'
   - '@voltiso/config.ts.build.cjs'
-  - '@voltiso/config.ts.build.esm'

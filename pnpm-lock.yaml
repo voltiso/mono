@@ -239,7 +239,6 @@ importers:
       '@voltiso/config.babel.lib': workspace:*
       '@voltiso/config.jest.lib': workspace:*
       '@voltiso/config.ts.build.cjs': workspace:*
-      '@voltiso/config.ts.build.esm': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
       rimraf: ^3.0.2
@@ -251,7 +250,6 @@ importers:
     devDependencies:
       '@types/babel__core': 7.1.19
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       depcheck: 1.4.3
       npm-run-all: 4.1.5
       rimraf: 3.0.2
@@ -1023,6 +1021,8 @@ importers:
     specifiers:
       '@babel/core': ^7.18.10
       '@babel/plugin-proposal-decorators': ^7.18.10
+      '@babel/plugin-transform-react-jsx': '>= 7.18.10'
+      '@babel/preset-env': ^7.18.10
       '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.12
       '@voltiso/config.jest.react': workspace:*
@@ -1033,12 +1033,17 @@ importers:
       npm-run-all: ^4.1.5
       react: ^18.1.0
       react-dom: ^18.1.0
+      react-intersection-observer: ^9.4.0
+      react-native: ^0.69.3
       rimraf: ^3.0.2
     dependencies:
       '@voltiso/util': link:../util
+      react-intersection-observer: 9.4.0_react@18.2.0
     devDependencies:
       '@babel/core': 7.18.10
       '@babel/plugin-proposal-decorators': 7.18.10_@babel+core@7.18.10
+      '@babel/plugin-transform-react-jsx': 7.18.10_@babel+core@7.18.10
+      '@babel/preset-env': 7.18.10_@babel+core@7.18.10
       '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.15
       '@voltiso/config.jest.react': link:../config.jest.react
@@ -1048,6 +1053,7 @@ importers:
       npm-run-all: 4.1.5
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-native: 0.69.3_xzu3cbnm5p7kp3yqoosaven72e
       rimraf: 3.0.2
 
   packages/util.react.dom:
@@ -13601,7 +13607,7 @@ packages:
     resolution: {integrity: sha512-iCix/+z812fUqa6KlOxaTkY6LQQDoXIe/VljXkGIvpygSCmYyhjQpfQVZEVVPezFmUBYXNdabdQ6cYx6JX3yMg==}
     dependencies:
       metro-core: 0.70.3
-      rimraf: 2.6.3
+      rimraf: 2.7.1
     dev: true
 
   /metro-config/0.70.3:
@@ -13881,7 +13887,7 @@ packages:
       mime-types: 2.1.35
       node-fetch: 2.6.7
       nullthrows: 1.1.1
-      rimraf: 2.6.3
+      rimraf: 2.7.1
       serialize-error: 2.1.0
       source-map: 0.5.7
       strip-ansi: 6.0.1
@@ -15697,6 +15703,14 @@ packages:
       react: 18.2.0
     dev: true
 
+  /react-intersection-observer/9.4.0_react@18.2.0:
+    resolution: {integrity: sha512-v0403CmomOVlzhqFXlzOxg0ziLcVq8mfbP0AwAcEQWgZmR2OulOT79Ikznw4UlB3N+jlUYqLMe4SDHUOyp0t2A==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -15802,7 +15816,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: true
 
   /read-pkg-up/7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}

@@ -3,4 +3,6 @@
 
 export * from './DataHook'
 export * from './simple'
+export * from './useLazyLoad'
 export * from './useLocalStorage'
+export * from './useRestoreHeight'

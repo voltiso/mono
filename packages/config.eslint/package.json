@@ -50,7 +50,6 @@
 		"any-eslint-parser": ">= 1.0.1",
 		"confusing-browser-globals": "*",
 		"eslint": ">= 8.18.0",
-		"eslint-config-react-app": "*",
 		"eslint-import-resolver-typescript": "*",
 		"eslint-plugin-array-func": ">=3.1.7",
 		"eslint-plugin-chai-friendly": ">=0.7.2",

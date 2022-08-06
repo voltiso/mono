@@ -53,7 +53,9 @@ import {
 	promise,
 	putoutOverride,
 	react,
+	reactHooks,
 	reactNative,
+	reactNativeGlobals,
 	regexOverride,
 	regexpOverride,
 	rxjs,
@@ -103,6 +105,8 @@ export const baseEslintConfig = defineEslintConfig({
 			jsx: true,
 		},
 
+		jsxPragma: null, // for @typescript/eslint-parser
+
 		ecmaVersion: 'latest',
 
 		project: ['tsconfig.json', 'packages/*/tsconfig.json'], //! you may want to override this
@@ -112,6 +116,10 @@ export const baseEslintConfig = defineEslintConfig({
 	},
 
 	settings: {
+		react: {
+			version: 'detect',
+		},
+
 		'import/parsers': {
 			'@typescript-eslint/parser': codeFiles.map(s => s.slice(1)),
 		},
@@ -155,7 +163,9 @@ export const baseEslintConfig = defineEslintConfig({
 		// Configs / plugins
 		githubOverride,
 		react,
+		reactHooks,
 		reactNative,
+		reactNativeGlobals,
 
 		// Plugins
 		arrayFunc,

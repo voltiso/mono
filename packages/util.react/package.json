@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.react",
-	"version": "7.1.2",
+	"version": "7.2.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -40,6 +40,8 @@
 	"devDependencies": {
 		"@babel/core": "^7.18.10",
 		"@babel/plugin-proposal-decorators": "^7.18.10",
+		"@babel/plugin-transform-react-jsx": ">= 7.18.10",
+		"@babel/preset-env": "^7.18.10",
 		"@testing-library/react": "^13.3.0",
 		"@types/react": "^18.0.12",
 		"@voltiso/config.jest.react": "workspace:*",
@@ -49,6 +51,7 @@
 		"npm-run-all": "^4.1.5",
 		"react": "^18.1.0",
 		"react-dom": "^18.1.0",
+		"react-native": "^0.69.3",
 		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",
@@ -56,6 +59,7 @@
 		"node": ">=16"
 	},
 	"dependencies": {
-		"@voltiso/util": "workspace:*"
+		"@voltiso/util": "workspace:*",
+		"react-intersection-observer": "^9.4.0"
 	}
 }
