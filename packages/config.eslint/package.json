@@ -128,7 +128,7 @@
 		"yaml-eslint-parser": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^18.6.3",
+		"@types/node": "^18.6.4",
 		"@voltiso/config.ts": "workspace:*",
 		"@voltiso/config.ts.build.cjs": "workspace:*",
 		"@voltiso/eslint-plugin": "workspace:^1.0.0",

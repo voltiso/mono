@@ -42,14 +42,14 @@
 	},
 	"__________DEPS": "__________",
 	"peerDependencies": {
-		"@voltiso/prettier-plugin-toml": "*",
 		"@prettier/plugin-xml": "*",
+		"@voltiso/prettier-plugin-toml": "*",
 		"prettier": "*",
 		"prettier-plugin-jsdoc": "*",
 		"prettier-plugin-sh": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^18.6.3",
+		"@types/node": "^18.6.4",
 		"@voltiso/config.jest.esr": "workspace:*",
 		"@voltiso/config.ts.build.cjs": "workspace:*",
 		"depcheck": "^1.4.3",

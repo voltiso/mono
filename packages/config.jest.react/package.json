@@ -42,7 +42,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@testing-library/jest-dom": "^5.16.4",
+		"@testing-library/jest-dom": "^5.16.5",
 		"@voltiso/config.babel.lib": "workspace:*",
 		"@voltiso/config.jest.lib": "workspace:*"
 	},
