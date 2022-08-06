@@ -330,16 +330,20 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:*
       '@voltiso/eslint-plugin': workspace:^1.0.0
       any-eslint-parser: '>= 1.0.1'
+      confusing-browser-globals: '>= 1.0.11'
       depcheck: ^1.4.3
       eslint: '>= 8.18.0'
       eslint-config-react-app: '>= 7.0.1'
       eslint-import-resolver-typescript: '>= 3.4.0'
       eslint-plugin-array-func: '>= 3.1.7'
       eslint-plugin-chai-friendly: '>= 0.7.2'
+      eslint-plugin-css: '>= 0.6.0'
       eslint-plugin-cypress: '>= 2.12.1'
       eslint-plugin-editorconfig: '>= 4.0.2'
+      eslint-plugin-eslint-comments: '>= 3.2.0'
       eslint-plugin-etc: '>= 2.0.2'
       eslint-plugin-ext: '>= 0.1.0'
+      eslint-plugin-filenames: '>= 1.3.2'
       eslint-plugin-format-message: '>= 6.2.4'
       eslint-plugin-formatjs: '>= 4.0.2'
       eslint-plugin-github: '>= 4.3.7'
@@ -349,13 +353,16 @@ importers:
       eslint-plugin-i18next: '>= 6.0.0-4'
       eslint-plugin-import: '>= 2.26.0'
       eslint-plugin-indent-empty-lines: '>= 1.0.2'
+      eslint-plugin-jest: '>= 26.7.0'
       eslint-plugin-jest-async: '>= 1.0.3'
       eslint-plugin-jest-dom: '>= 4.0.2'
       eslint-plugin-jest-formatting: '>= 3.1.0'
       eslint-plugin-jsdoc: '>= 39.3.4'
+      eslint-plugin-json: '>= 3.1.0'
       eslint-plugin-json-schema-validator: '>= 4.0.0'
       eslint-plugin-jsonc: '>= 2.3.0'
       eslint-plugin-jsx: '>= 0.1.0'
+      eslint-plugin-jsx-a11y: '>= 6.6.1'
       eslint-plugin-markdown: '>= 3.0.0'
       eslint-plugin-n: '>= 15.2.4'
       eslint-plugin-no-constructor-bind: '>= 2.0.4'
@@ -370,7 +377,10 @@ importers:
       eslint-plugin-prettier: '>= 4.2.1'
       eslint-plugin-promise: '>= 6.0.0'
       eslint-plugin-putout: '>= 16.0.1'
+      eslint-plugin-react: '>= 7.30.1'
+      eslint-plugin-react-hooks: '>= 4.6.0'
       eslint-plugin-react-native: '>= 4.0.0'
+      eslint-plugin-react-native-globals: '>= 0.1.2'
       eslint-plugin-regex: '>= 1.9.1'
       eslint-plugin-regexp: '>= 1.8.0'
       eslint-plugin-rxjs: '>= 5.0.2'
@@ -380,16 +390,20 @@ importers:
       eslint-plugin-sort-keys-fix: '>= 1.1.2'
       eslint-plugin-storybook: '>= 0.6.3'
       eslint-plugin-switch-case: '>= 1.1.2'
+      eslint-plugin-testing-library: '>= 5.6.0'
       eslint-plugin-toml: '>= 0.3.1'
       eslint-plugin-tsdoc: '>= 0.2.16'
       eslint-plugin-typescript-sort-keys: '>= 2.1.0'
       eslint-plugin-unicorn: '>= 42.0.0'
       eslint-plugin-unused-imports: '>= 2.0.0'
       eslint-plugin-yml: '>= 1.1.0'
+      jsonc-eslint-parser: '>= 2.1.0'
       prettier: '>= 2.7.1'
       putout: '>= 27.0.1'
       rimraf: ^3.0.2
+      toml-eslint-parser: ^0.4.0
       typescript: '>= 4.7.4'
+      yaml-eslint-parser: ^1.1.0
     dependencies:
       '@babel/core': 7.18.10
       '@babel/plugin-syntax-flow': 7.18.6_@babel+core@7.18.10
@@ -400,14 +414,18 @@ importers:
       '@voltiso/config.eslint': link:../config.eslint
       '@voltiso/eslint-plugin': link:../eslint-plugin
       any-eslint-parser: 1.0.1_eslint@8.21.0
+      confusing-browser-globals: 1.0.11
       eslint-config-react-app: 7.0.1_g7usgzedur3b6qn6rmgttczpue
       eslint-import-resolver-typescript: 3.4.0_jatgrcxl4x7ywe7ak6cnjca2ae
       eslint-plugin-array-func: 3.1.7_eslint@8.21.0
       eslint-plugin-chai-friendly: 0.7.2_eslint@8.21.0
+      eslint-plugin-css: 0.6.0_eslint@8.21.0
       eslint-plugin-cypress: 2.12.1_eslint@8.21.0
       eslint-plugin-editorconfig: 4.0.2
+      eslint-plugin-eslint-comments: 3.2.0_eslint@8.21.0
       eslint-plugin-etc: 2.0.2_qugx7qdu5zevzvxaiqyxfiwquq
       eslint-plugin-ext: 0.1.0
+      eslint-plugin-filenames: 1.3.2_eslint@8.21.0
       eslint-plugin-format-message: 6.2.4_eslint@8.21.0
       eslint-plugin-formatjs: 4.0.2_eslint@8.21.0
       eslint-plugin-github: 4.3.7_5igphm5bzrwrg5cdwytxjjsdzq
@@ -417,13 +435,16 @@ importers:
       eslint-plugin-i18next: 6.0.0-4
       eslint-plugin-import: 2.26.0_klqlxqqxnpnfpttri4irupweri
       eslint-plugin-indent-empty-lines: 1.0.2
+      eslint-plugin-jest: 26.7.0_bqjo633dpfdihlvg5bmomzewvm
       eslint-plugin-jest-async: 1.0.3
       eslint-plugin-jest-dom: 4.0.2_eslint@8.21.0
       eslint-plugin-jest-formatting: 3.1.0_eslint@8.21.0
       eslint-plugin-jsdoc: 39.3.4_eslint@8.21.0
+      eslint-plugin-json: 3.1.0
       eslint-plugin-json-schema-validator: 4.0.0_eslint@8.21.0
       eslint-plugin-jsonc: 2.3.1_eslint@8.21.0
       eslint-plugin-jsx: 0.1.0
+      eslint-plugin-jsx-a11y: 6.6.1_eslint@8.21.0
       eslint-plugin-markdown: 3.0.0_eslint@8.21.0
       eslint-plugin-n: 15.2.4_eslint@8.21.0
       eslint-plugin-no-constructor-bind: 2.0.4
@@ -438,7 +459,10 @@ importers:
       eslint-plugin-prettier: 4.2.1_po3yoeeutu52wwqsoi2mwzccke
       eslint-plugin-promise: 6.0.0_eslint@8.21.0
       eslint-plugin-putout: 16.0.1_ni5kuamcooiyroyn5rxmweimmu
+      eslint-plugin-react: 7.30.1_eslint@8.21.0
+      eslint-plugin-react-hooks: 4.6.0_eslint@8.21.0
       eslint-plugin-react-native: 4.0.0_eslint@8.21.0
+      eslint-plugin-react-native-globals: 0.1.2
       eslint-plugin-regex: 1.9.1_eslint@8.21.0
       eslint-plugin-regexp: 1.8.0_eslint@8.21.0
       eslint-plugin-rxjs: 5.0.2_qugx7qdu5zevzvxaiqyxfiwquq
@@ -448,13 +472,17 @@ importers:
       eslint-plugin-sort-keys-fix: 1.1.2
       eslint-plugin-storybook: 0.6.3_qugx7qdu5zevzvxaiqyxfiwquq
       eslint-plugin-switch-case: 1.1.2
+      eslint-plugin-testing-library: 5.6.0_qugx7qdu5zevzvxaiqyxfiwquq
       eslint-plugin-toml: 0.3.1_eslint@8.21.0
       eslint-plugin-tsdoc: 0.2.16
       eslint-plugin-typescript-sort-keys: 2.1.0_iosr3hrei2tubxveewluhu5lhy
       eslint-plugin-unicorn: 43.0.2_eslint@8.21.0
       eslint-plugin-unused-imports: 2.0.0_i7ihj7mda6acsfp32zwgvvndem
       eslint-plugin-yml: 1.1.0_eslint@8.21.0
+      jsonc-eslint-parser: 2.1.0
       putout: 27.0.1
+      toml-eslint-parser: 0.4.0
+      yaml-eslint-parser: 1.1.0
     devDependencies:
       '@voltiso/config.ts': link:../config.ts
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
@@ -8555,7 +8583,7 @@ packages:
       eslint-plugin-jsx-a11y: 6.6.1_eslint@8.21.0
       eslint-plugin-react: 7.30.1_eslint@8.21.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.21.0
-      eslint-plugin-testing-library: 5.5.1_qugx7qdu5zevzvxaiqyxfiwquq
+      eslint-plugin-testing-library: 5.6.0_qugx7qdu5zevzvxaiqyxfiwquq
       typescript: 4.7.4
     transitivePeerDependencies:
       - '@babel/plugin-syntax-flow'
@@ -8696,6 +8724,19 @@ packages:
       eslint: '>=3.0.0'
     dependencies:
       eslint: 8.21.0
+    dev: false
+
+  /eslint-plugin-css/0.6.0_eslint@8.21.0:
+    resolution: {integrity: sha512-cQ+FsHNmVVSfMhiZnhhBvvdmzNF2oDvuY9oSpfGGMJctwDQiKtZ1rdALb0psHfobg8nBPwkgHg4i8JQhI8lXJQ==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '>=7.0.0'
+    dependencies:
+      colord: 2.9.2
+      eslint: 8.21.0
+      eslint-utils: 3.0.0_eslint@8.21.0
+      known-css-properties: 0.24.0
+      postcss-value-parser: 4.2.0
     dev: false
 
   /eslint-plugin-cypress/2.12.1_eslint@8.21.0:
@@ -8972,6 +9013,27 @@ packages:
       - typescript
     dev: false
 
+  /eslint-plugin-jest/26.7.0_bqjo633dpfdihlvg5bmomzewvm:
+    resolution: {integrity: sha512-/YNitdfG3o3cC6juZziAdkk6nfJt01jXVfj4AgaYVLs7bupHzRDL5K+eipdzhDXtQsiqaX1TzfwSuRlEgeln1A==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': ^5.0.0
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+      jest: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/eslint-plugin':
+        optional: true
+      jest:
+        optional: true
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
+      '@typescript-eslint/utils': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
+      eslint: 8.21.0
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+    dev: false
+
   /eslint-plugin-jsdoc/39.3.4_eslint@8.21.0:
     resolution: {integrity: sha512-dYWXhMMHJaq++bY2hyByhgiRzt5qQ7XdfQGiHrU9f3APSSVZ/HuOnXuvUUX7W0jO55Udsu4/7iRlpF/yLFQdSA==}
     engines: {node: ^14 || ^16 || ^17 || ^18}
@@ -9009,6 +9071,14 @@ packages:
       yaml-eslint-parser: 1.1.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /eslint-plugin-json/3.1.0:
+    resolution: {integrity: sha512-MrlG2ynFEHe7wDGwbUuFPsaT2b1uhuEFhJ+W1f1u+1C2EkXmTYJp4B1aAdQQ8M+CC3t//N/oRKiIVw14L2HR1g==}
+    engines: {node: '>=12.0'}
+    dependencies:
+      lodash: 4.17.21
+      vscode-json-languageservice: 4.2.1
     dev: false
 
   /eslint-plugin-jsonc/2.3.1_eslint@8.21.0:
@@ -9404,8 +9474,8 @@ packages:
       lodash.zipobject: 4.1.3
     dev: false
 
-  /eslint-plugin-testing-library/5.5.1_qugx7qdu5zevzvxaiqyxfiwquq:
-    resolution: {integrity: sha512-plLEkkbAKBjPxsLj7x4jNapcHAg2ernkQlKKrN2I8NrQwPISZHyCUNvg5Hv3EDqOQReToQb5bnqXYbkijJPE/g==}
+  /eslint-plugin-testing-library/5.6.0_qugx7qdu5zevzvxaiqyxfiwquq:
+    resolution: {integrity: sha512-y63TRzPhGCMNsnUwMGJU1MFWc/3GvYw+nzobp9QiyNTTKsgAt5RKAOT1I34+XqVBpX1lC8bScoOjCkP7iRv0Mw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0, npm: '>=6'}
     peerDependencies:
       eslint: ^7.5.0 || ^8.0.0
@@ -12952,7 +13022,6 @@ packages:
 
   /jsonc-parser/3.1.0:
     resolution: {integrity: sha512-DRf0QjnNeCUds3xTjKlQQ3DpJD51GvDjJfnxUVWg6PZTo2otSm+slzNAxU/35hF8/oJIKoG9slq30JYOsF2azg==}
-    dev: true
 
   /jsonfile/2.4.0:
     resolution: {integrity: sha512-PKllAqbgLgxHaj8TElYymKCAgrASebJrWpTnEkOaTowt23VKXXN0sUeriJ+eh7y6ufb/CC5ap11pz71/cM0hUw==}
@@ -13150,6 +13219,10 @@ packages:
   /klona/2.0.5:
     resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
     engines: {node: '>= 8'}
+    dev: false
+
+  /known-css-properties/0.24.0:
+    resolution: {integrity: sha512-RTSoaUAfLvpR357vWzAz/50Q/BmHfmE6ETSWfutT0AJiw10e6CmcdYRQJlLRd95B53D0Y2aD1jSxD3V3ySF+PA==}
     dev: false
 
   /known-css-properties/0.25.0:
@@ -18539,6 +18612,32 @@ packages:
       acorn: 8.8.0
       acorn-walk: 8.2.0
     dev: true
+
+  /vscode-json-languageservice/4.2.1:
+    resolution: {integrity: sha512-xGmv9QIWs2H8obGbWg+sIPI/3/pFgj/5OWBhNzs00BkYQ9UaB2F6JJaGB/2/YOZJ3BvLXQTC4Q7muqU25QgAhA==}
+    dependencies:
+      jsonc-parser: 3.1.0
+      vscode-languageserver-textdocument: 1.0.5
+      vscode-languageserver-types: 3.17.2
+      vscode-nls: 5.0.1
+      vscode-uri: 3.0.3
+    dev: false
+
+  /vscode-languageserver-textdocument/1.0.5:
+    resolution: {integrity: sha512-1ah7zyQjKBudnMiHbZmxz5bYNM9KKZYz+5VQLj+yr8l+9w3g+WAhCkUkWbhMEdC5u0ub4Ndiye/fDyS8ghIKQg==}
+    dev: false
+
+  /vscode-languageserver-types/3.17.2:
+    resolution: {integrity: sha512-zHhCWatviizPIq9B7Vh9uvrH6x3sK8itC84HkamnBWoDFJtzBf7SWlpLCZUit72b3os45h6RWQNC9xHRDF8dRA==}
+    dev: false
+
+  /vscode-nls/5.0.1:
+    resolution: {integrity: sha512-hHQV6iig+M21lTdItKPkJAaWrxALQb/nqpVffakO4knJOh3DrU2SXOMzUzNgo1eADPzu3qSsJY1weCzvR52q9A==}
+    dev: false
+
+  /vscode-uri/3.0.3:
+    resolution: {integrity: sha512-EcswR2S8bpR7fD0YPeS7r2xXExrScVMxg4MedACaWHEtx9ftCF/qHG1xGkolzTPcEmjTavCQgbVzHUIdTMzFGA==}
+    dev: false
 
   /w3c-hr-time/1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}

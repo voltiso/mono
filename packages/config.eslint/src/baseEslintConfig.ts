@@ -40,6 +40,7 @@ import {
 	noConstructorBind,
 	nodeDependencies,
 	noExplicitTypeExports,
+	noOnlyTests,
 	noSecrets,
 	notice,
 	noticeHash,
@@ -216,6 +217,7 @@ export const baseEslintConfig = defineEslintConfig({
 		codeOverride,
 		chaiFriendly,
 		testOverride, // has to be after `fp`
+		noOnlyTests,
 
 		...markdownOverrides,
 

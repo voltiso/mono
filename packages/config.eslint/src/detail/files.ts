@@ -9,6 +9,7 @@ export const jsFiles = [
 	'*.mjs',
 	'*.mjsx',
 ] as const
+
 export const tsFiles = [
 	'*.ts',
 	'*.tsx',
