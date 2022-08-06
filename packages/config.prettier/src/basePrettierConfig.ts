@@ -4,6 +4,7 @@
 import { defineConfig } from './defineConfig'
 
 interface PackageJson {
+	readonly dependencies: Record<string, string>
 	readonly peerDependencies: Record<string, string>
 }
 
@@ -27,6 +28,20 @@ function getPackageJson(): PackageJson {
 		return require('../package.json') as never
 	}
 }
+
+function getDependencies(): Record<string, string> {
+	const packageJson = getPackageJson()
+	return { ...packageJson.dependencies, ...packageJson.peerDependencies }
+}
+
+const pluginNames = Object.keys(getDependencies()).filter(
+	dep => dep.startsWith('@prettier/plugin') || dep.includes('prettier-plugin'),
+)
+
+// eslint-disable-next-line import/no-dynamic-require, n/global-require, @typescript-eslint/no-unsafe-return, unicorn/prefer-module
+const plugins = pluginNames.map(name => require(name))
+
+// console.log('prettier plugins', plugins)
 
 /** ! Code must be CLEAN for readability and DX 👌 */
 export const basePrettierConfig = defineConfig({
@@ -75,14 +90,8 @@ export const basePrettierConfig = defineConfig({
 
 	tsdoc: true,
 
-	/** Workaround for pnpm, see also @see https://github.com/prettier/prettier/issues/8474 */
-	plugins: Object.keys(getPackageJson().peerDependencies)
-		.filter(
-			dep =>
-				dep.startsWith('@prettier/plugin') || dep.includes('prettier-plugin'),
-		)
-		// eslint-disable-next-line import/no-dynamic-require, unicorn/prefer-module, @typescript-eslint/no-unsafe-return, n/global-require
-		.map(moduleId => require(moduleId)),
+	/** Workaround for pnpm, @see https://github.com/prettier/prettier/issues/8474 */
+	plugins,
 
 	overrides: [
 		{

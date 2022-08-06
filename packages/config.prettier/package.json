@@ -1,16 +1,10 @@
 {
 	"name": "@voltiso/config.prettier",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		".": {
-			"require": "./dist/cjs/index.js"
-		}
-	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/cjs/index.d.ts",
 	"main": "dist/cjs/index.js",
@@ -41,12 +35,14 @@
 		"clean:rimraf": "rimraf dist"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"@prettier/plugin-xml": "^2.2.0",
+		"@voltiso/prettier-plugin-toml": "^0.3.3",
+		"prettier-plugin-jsdoc": "^0.3.38",
+		"prettier-plugin-sh": "^0.12.8"
+	},
 	"peerDependencies": {
-		"@prettier/plugin-xml": "*",
-		"@voltiso/prettier-plugin-toml": "*",
-		"prettier": "*",
-		"prettier-plugin-jsdoc": "*",
-		"prettier-plugin-sh": "*"
+		"prettier": "*"
 	},
 	"devDependencies": {
 		"@types/node": "^18.6.4",
