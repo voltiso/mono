@@ -63,5 +63,6 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/prefer-ternary': 0,
 
 		'unicorn/no-array-reduce': 1,
+		'unicorn/numeric-separators-style': 1,
 	},
 } as const)

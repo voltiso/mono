@@ -9,6 +9,7 @@ import * as ReactDOM from 'react-dom'
 type PortalContext = {
 	element?: HTMLElement | null
 	children?: ReactNode
+	updateSource?: () => void
 }
 
 function getUseDestination(context: PortalContext) {
@@ -27,6 +28,8 @@ function getUseDestination(context: PortalContext) {
 		const ref = useCallback((instance: HTMLElement | null) => {
 			// console.log('set ref')
 			context.element = instance
+
+			if (context.updateSource) context.updateSource()
 		}, [])
 
 		return useMemo(() => ({ ref, children: context.children }), [ref])
@@ -37,12 +40,13 @@ export function usePortal() {
 	const context = useMemo<PortalContext>(() => ({}), [])
 
 	const Source = useCallback<FC<{ children?: ReactNode }>>(
-		p => {
+		props => {
 			// console.log('Source: render')
 
 			if (typeof window !== 'undefined') {
 				// eslint-disable-next-line react-hooks/rules-of-hooks
 				const update = useUpdate()
+				context.updateSource = update
 				// eslint-disable-next-line react-hooks/rules-of-hooks
 				useLayoutEffect(() => {
 					// console.log('Source: useLayoutEffect()')
@@ -52,9 +56,9 @@ export function usePortal() {
 
 			if (context.element) {
 				delete context.children
-				return ReactDOM.createPortal(p.children, context.element)
+				return ReactDOM.createPortal(props.children, context.element)
 			} else {
-				context.children = p.children
+				context.children = props.children
 				return null
 			}
 		},

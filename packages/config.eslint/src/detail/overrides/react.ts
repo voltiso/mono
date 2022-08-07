@@ -66,7 +66,9 @@ export const react = defineEslintConfigOverride({
 
 		'react/jsx-max-props-per-line': 1,
 		'react/jsx-newline': 1,
-		'react/jsx-no-bind': 1,
+
+		'react/jsx-no-bind': ['warn', { allowArrowFunctions: true }],
+
 		'react/jsx-no-comment-textnodes': 1,
 		'react/jsx-no-constructed-context-values': 1,
 		'react/jsx-no-duplicate-props': 1,

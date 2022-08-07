@@ -49,7 +49,7 @@
 		"@babel/preset-env": "^7.18.10",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.3.0",
-		"@types/react": "^18.0.12",
+		"@types/react": "^18.0.16",
 		"@types/testing-library__jest-dom": "^5.14.3",
 		"@voltiso/config.jest.react": "workspace:*",
 		"@voltiso/config.ts.build.cjs": "workspace:*",

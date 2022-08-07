@@ -11,7 +11,6 @@ import type {
 } from '@voltiso/util'
 import { assertNotPolluting, getKeys, isDefined } from '@voltiso/util'
 import type { ComponentPropsWithRef } from 'react'
-import { forwardRef } from 'react'
 
 import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
 import type {
@@ -23,14 +22,14 @@ import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import type { GetModProps as GetModuleProps } from '~/_/StyledData/GetModProps'
 import type { Css, CssObject } from '~/Css'
 import type { MergeProps, Props } from '~/react-types'
-import type { IStylable, OuterProps } from '~/Stylable'
+import type { IStylable } from '~/Stylable'
 import type { StyledComponent } from '~/StyledComponent'
 
+import { getComponent } from './_/getComponent'
 import { mergeCssProps } from './_/mergeCssProps'
 import { mergeDefaults } from './_/mergeDefaults'
 import type { ForcePatch, Patch, PatchRemoveProps } from './_/Patch'
 import type { PropValue } from './_/PropValue'
-import { render } from './_/render'
 import type { MapProps } from './_/Stack'
 import type { StyleFromProps } from './_/StyleFromProps'
 import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
@@ -81,14 +80,7 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 
 						return this._clone({ element }) as never
 				  }
-				: // eslint-disable-next-line react/display-name, react/require-optimization
-				  forwardRef<unknown, P & OuterProps>((props, reference) =>
-						render<P, C & IStylable>(
-							props,
-							reference,
-							data as StyledData<P, C & IStylable>,
-						),
-				  )
+				: getComponent(data as never)
 
 		Object.setPrototypeOf(r, this)
 		// eslint-disable-next-line no-constructor-return

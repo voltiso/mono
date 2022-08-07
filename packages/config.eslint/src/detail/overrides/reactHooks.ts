@@ -13,7 +13,7 @@ export const reactHooks = defineEslintConfigOverride({
 	extends: ['plugin:react-hooks/recommended'],
 
 	rules: {
-		'react-hooks/rules-of-hooks': 2,
+		'react-hooks/rules-of-hooks': 1,
 		'react-hooks/exhaustive-deps': 1,
 	},
 } as const)
