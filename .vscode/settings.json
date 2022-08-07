@@ -229,7 +229,8 @@
 		"simple-import-sort/exports",
 		"unused-imports/no-unused-imports",
 		"ext/lines-between-object-properties",
-		"yml/plain-scalar"
+		"yml/plain-scalar",
+		"object-shorthand"
 	],
 
 	"prettier.documentSelectors": [

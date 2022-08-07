@@ -65,6 +65,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:*",
 		"@voltiso/config.ts.build.esm": "workspace:*",
 		"@voltiso/config.ts.dom": "workspace:*",
+		"@voltiso/util": "workspace:^40.1.0",
 		"csstype": "^3.1.0",
 		"depcheck": "^1.4.3",
 		"fela": "^12.2.0",

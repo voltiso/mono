@@ -148,6 +148,7 @@ importers:
       '@voltiso/config.ts': workspace:*
       '@voltiso/config.ts.build.cjs': workspace:*
       '@voltiso/eslint-plugin': workspace:*
+      '@voltiso/styler': workspace:^10.1.3
       depcheck: ^1.4.3
       eslint: ^8.18.0
       eslint-gitignore: ^0.1.0
@@ -161,6 +162,7 @@ importers:
       '@voltiso/config.ts': link:../config.ts
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/eslint-plugin': link:../eslint-plugin
+      '@voltiso/styler': link:../styler
       depcheck: 1.4.3
       eslint: 8.21.0
       npm-run-all: 4.1.5
@@ -740,7 +742,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:*
       '@voltiso/config.ts.build.esm': workspace:*
       '@voltiso/config.ts.dom': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/util': workspace:^40.1.0
       csstype: ^3.1.0
       depcheck: ^1.4.3
       fela: ^12.2.0
@@ -759,8 +761,6 @@ importers:
       react-test-renderer: ^18.2.0
       rimraf: ^3.0.2
       typescript: ^4.7.4
-    dependencies:
-      '@voltiso/util': link:../util
     devDependencies:
       '@babel/core': 7.18.10
       '@babel/plugin-transform-react-jsx': 7.18.10_@babel+core@7.18.10
@@ -779,6 +779,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.ts.dom': link:../config.ts.dom
+      '@voltiso/util': link:../util
       csstype: 3.1.0
       depcheck: 1.4.3
       fela: 12.2.0
@@ -1032,6 +1033,7 @@ importers:
       '@voltiso/config.jest.react': workspace:*
       '@voltiso/config.ts.build.cjs': workspace:*
       '@voltiso/config.ts.build.esm': workspace:*
+      '@voltiso/styler': workspace:^10.1.3
       '@voltiso/util': workspace:*
       depcheck: ^1.4.3
       npm-run-all: ^4.1.5
@@ -1053,6 +1055,7 @@ importers:
       '@voltiso/config.jest.react': link:../config.jest.react
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/styler': link:../styler
       depcheck: 1.4.3
       npm-run-all: 4.1.5
       react: 18.2.0

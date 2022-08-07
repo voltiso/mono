@@ -149,6 +149,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'func-names': 0,
 		'no-implicit-coercion': 1,
 		camelcase: 1,
+		'object-shorthand': 1,
 
 		'consistent-return': 1,
 		// 'consistent-return': 0, // a bit pain to return `undefined` explicitly in branches?

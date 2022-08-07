@@ -25,7 +25,9 @@ export const jsdocOverride = defineEslintConfigOverride({
 		'jsdoc/check-param-names': 1,
 		'jsdoc/check-property-names': 1,
 		'jsdoc/check-syntax': 1,
-		'jsdoc/check-tag-names': 1,
+
+		'jsdoc/check-tag-names': ['warn', { definedTags: ['defaultValue'] }],
+
 		// 'jsdoc/check-tag-names': ['warn', { definedTags: ['type'] }],
 		'jsdoc/check-types': 1,
 		'jsdoc/check-values': 1,
