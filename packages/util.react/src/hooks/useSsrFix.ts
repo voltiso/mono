@@ -8,8 +8,10 @@ import { useInitial, useUpdate } from '~/hooks'
 export function useSsrFix() {
 	const mutable = useInitial({ isFirstRender: true })
 	const update = useUpdate()
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useLayoutEffect(update, [])
+
+	if (typeof window !== 'undefined')
+		// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+		useLayoutEffect(update, [])
 
 	const result = useMemo(
 		() => ({ isFirstRender: mutable.isFirstRender }),
