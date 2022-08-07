@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/styler",
-	"version": "10.0.5",
+	"version": "10.0.6",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
@@ -38,7 +38,7 @@
 		"build:esm": "ttsc -b tsconfig.build.esm.json",
 		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s clean build test",
+		"prepublishOnly": "run-s test clean build",
 		"__________MISC": "__________",
 		"clean": "rimraf dist"
 	},
