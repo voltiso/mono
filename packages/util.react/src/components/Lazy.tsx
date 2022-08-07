@@ -14,6 +14,7 @@ import { Suspense, useMemo, useState } from 'react'
 import { combineRefCallbacks } from '~/combineRefCallbacks'
 import { Lifecycle } from '~/components'
 import { useCurrent, useLazyLoad, useRestoreHeight } from '~/hooks'
+import { useSsrFix } from '~/hooks/useSsrFix'
 
 export const Lazy: FC<
 	ComponentPropsWithRef<'div'> & {
@@ -35,9 +36,13 @@ export const Lazy: FC<
 
 	const [isLoaded, setIsLoaded] = useState(false)
 
-	// const height = undef
+	// make SSR work (first render should not use LocalStorage)
+	const ssrFix = useSsrFix()
+
 	const height =
-		isLoaded || !restoreHeight.height ? undef : `${restoreHeight.height}px`
+		ssrFix.isFirstRender || isLoaded || !restoreHeight.height
+			? undefined
+			: `${restoreHeight.height}px`
 
 	const finalRef = useMemo(
 		() =>

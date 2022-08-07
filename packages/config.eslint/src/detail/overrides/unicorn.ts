@@ -55,7 +55,8 @@ export const unicorn = defineEslintConfigOverride({
 		// 	},
 		// ],
 
-		'unicorn/no-useless-undefined': ['error', { checkArguments: false }],
+		'unicorn/no-useless-undefined': 0, // consistent-return
+		// 'unicorn/no-useless-undefined': ['error', { checkArguments: false }],
 
 		'unicorn/no-keyword-prefix': 0,
 		'unicorn/no-null': 0,

@@ -147,9 +147,12 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-multiple-empty-lines': 0, // handled by prettier
 		'no-param-reassign': 1,
 		'func-names': 0,
-		'no-undefined': 1,
 		'no-implicit-coercion': 1,
 		camelcase: 1,
+
+		'consistent-return': 1,
+		// 'consistent-return': 0, // a bit pain to return `undefined` explicitly in branches?
+		'no-undefined': 0,
 
 		// 'func-names': [
 		// 	'error',
@@ -170,6 +173,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'max-params': 0,
 		'no-continue': 0,
 		'default-param-last': 1,
+		'max-statements-per-line': 0, // prettier
 
 		'padding-line-between-statements': [
 			'warn',

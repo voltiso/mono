@@ -10,4 +10,4 @@
  * - `undefined` can be shadowed - not safe
  * - Using `void 0` explicitly is not readable - bad style
  */
-export const undef: undefined = void 0
+export const undef: undefined = /* #__PURE__*/ void 0

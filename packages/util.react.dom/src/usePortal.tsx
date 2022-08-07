@@ -1,82 +1,135 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { useUpdate } from '@voltiso/util.react'
 import type { FC, ReactNode } from 'react'
-import { useCallback, useLayoutEffect, useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 import * as ReactDOM from 'react-dom'
 
 type PortalContext = {
-	element?: HTMLElement | null
-	children?: ReactNode
-	updateSource?: () => void
+	Element?: keyof JSX.IntrinsicElements
+	renderTarget?: HTMLElement | undefined
+
+	originalDestination?: HTMLElement
+	destinationParent?: ParentNode
+
+	firstRenderChildren?: ReactNode
+
+	areChildrenConsumed?: boolean
+
+	// isPortalCreated?: boolean
+	// isPortalConsumed?: boolean
 }
 
-function getUseDestination(context: PortalContext) {
-	return () => {
-		if (typeof window !== 'undefined') {
-			const update = useUpdate()
-			useLayoutEffect(() => {
-				// console.log('Destination: useLayoutEffect()')
-				update()
-			}, [update])
+function createElement(elementType: keyof JSX.IntrinsicElements) {
+	if (typeof document !== 'undefined')
+		return document.createElement(elementType)
+	else return undefined
+}
+
+// type PortalOptions = {
+// 	elementType: keyof JSX.IntrinsicElements
+// }
+
+function getSource(ctx: PortalContext) {
+	const Source: FC<{
+		children?: ReactNode
+		Element?: keyof JSX.IntrinsicElements | undefined
+	}> = props => {
+		const update = useUpdate()
+
+		if (typeof window !== 'undefined')
+			// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+			useLayoutEffect(update, [])
+
+		if (!ctx.Element) {
+			ctx.Element = props.Element || 'div'
 		}
 
-		// if (!c.children && !c.element)
-		// 	throw new Error('Portal: Destination must be after Source, and they both need to be inside `portal.Provider`')
+		if (!ctx.areChildrenConsumed) {
+			// console.log(
+			// 	'Source: firstRenderChildren not consumed yet - do not create portal',
+			// 	props,
+			// )
+			ctx.firstRenderChildren = props.children
+			return null
+		} else {
+			// console.log('Source: portal children', props)
 
-		const ref = useCallback((instance: HTMLElement | null) => {
-			// console.log('set ref')
-			context.element = instance
+			if (!ctx.renderTarget) ctx.renderTarget = createElement(ctx.Element)
 
-			if (context.updateSource) context.updateSource()
-		}, [])
-
-		return useMemo(() => ({ ref, children: context.children }), [ref])
+			if (ctx.renderTarget) {
+				delete ctx.firstRenderChildren
+				return ReactDOM.createPortal(props.children, ctx.renderTarget)
+			} else return null // server?
+		}
 	}
+
+	return Source
+}
+
+function getDestination(ctx: PortalContext) {
+	const Destination: FC<Record<string, never>> = () => {
+		const update = useUpdate()
+
+		if (typeof window !== 'undefined')
+			// eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps
+			useLayoutEffect(update, [])
+
+		const RelaxedElementType = ctx.Element as 'div' | 'span' // for TS not to complain
+
+		if (!ctx.renderTarget) {
+			const children = ctx.firstRenderChildren
+			// console.log('Destination: no portal yet', children)
+			// delete ctx.firstRenderChildren
+
+			ctx.areChildrenConsumed = true
+			return <RelaxedElementType>{children}</RelaxedElementType>
+		} else {
+			// console.log('Destination: have portal')
+
+			return (
+				<RelaxedElementType
+					ref={destination => {
+						// console.log('setRef', destination)
+
+						if (destination) {
+							// console.log('mount')
+
+							ctx.originalDestination = destination
+							ctx.destinationParent = destination.parentNode!
+
+							ctx.destinationParent.replaceChild(ctx.renderTarget!, destination)
+						} else {
+							// console.log('unmount')
+
+							ctx.destinationParent!.replaceChild(
+								ctx.originalDestination!,
+								ctx.renderTarget!,
+							)
+						}
+					}}
+				/>
+			)
+		}
+	}
+	return Destination
 }
 
 export function usePortal() {
-	const context = useMemo<PortalContext>(() => ({}), [])
+	// console.log('parent: render')
 
-	const Source = useCallback<FC<{ children?: ReactNode }>>(
-		props => {
-			// console.log('Source: render')
+	const ctx = useMemo<PortalContext>(() => ({}), [])
+	const Source = useMemo(() => getSource(ctx), [ctx])
+	const Destination = useMemo(() => getDestination(ctx), [ctx])
 
-			if (typeof window !== 'undefined') {
-				// eslint-disable-next-line react-hooks/rules-of-hooks
-				const update = useUpdate()
-				context.updateSource = update
-				// eslint-disable-next-line react-hooks/rules-of-hooks
-				useLayoutEffect(() => {
-					// console.log('Source: useLayoutEffect()')
-					update()
-				}, [update])
-			}
-
-			if (context.element) {
-				delete context.children
-				return ReactDOM.createPortal(props.children, context.element)
-			} else {
-				context.children = props.children
-				return null
-			}
-		},
-		[context],
+	return useMemo(
+		() => ({
+			Source,
+			Destination,
+		}),
+		[Destination, Source],
 	)
-
-	const useDestination = useMemo(() => getUseDestination(context), [context])
-
-	const Destination: FC = () => {
-		// console.log('Destination: render')
-		const destination = useDestination()
-
-		return <div ref={destination.ref}>{destination.children}</div>
-	}
-
-	return {
-		Source,
-		Destination,
-		useDestination,
-	}
 }

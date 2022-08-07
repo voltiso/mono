@@ -35,6 +35,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
+		"@voltiso/util": "workspace:^40.1.0",
 		"@voltiso/util.react": "workspace:*"
 	},
 	"peerDependencies": {
