@@ -328,8 +328,8 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.32.0
       '@typescript-eslint/parser': ^5.32.0
       '@voltiso/config.eslint': workspace:*
-      '@voltiso/config.ts': workspace:1.0.0
-      '@voltiso/config.ts.build.cjs': workspace:1.0.0
+      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts.build.cjs': workspace:*
       '@voltiso/eslint-plugin': workspace:*
       any-eslint-parser: ^1.0.1
       confusing-browser-globals: ^1.0.11
