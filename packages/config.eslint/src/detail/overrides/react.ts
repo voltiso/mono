@@ -61,7 +61,9 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-indent': 1,
 		'react/jsx-indent-props': 1,
 		'react/jsx-key': 1,
-		'react/jsx-max-depth': 1,
+
+		'react/jsx-max-depth': 0,
+
 		'react/jsx-max-props-per-line': 1,
 		'react/jsx-newline': 1,
 		'react/jsx-no-bind': 1,
@@ -124,7 +126,9 @@ export const react = defineEslintConfigOverride({
 		'react/no-unsafe': 1,
 		'react/no-unstable-nested-components': 1,
 		'react/no-unused-class-component-methods': 1,
-		'react/no-unused-prop-types': 1,
+
+		'react/no-unused-prop-types': 0, // not using prop-types
+
 		'react/no-unused-state': 1,
 		'react/no-will-update-set-state': 1,
 		'react/prefer-es6-class': 1,

@@ -1,24 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { useConst, useUpdate } from '@voltiso/util.react'
+import { useUpdate } from '@voltiso/util.react'
 import type { FC, ReactNode } from 'react'
-import { createContext, useCallback, useContext, useLayoutEffect } from 'react'
-import { createPortal as createPortal_ } from 'react-dom'
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useLayoutEffect,
+	useMemo,
+} from 'react'
+import * as ReactDOM from 'react-dom'
 
-type C = {
+type PortalContext = {
 	element?: HTMLElement | null
 	children?: ReactNode
 }
 
 export const createPortal = () => {
-	const Context = createContext<C>({})
-
-	const Root: FC<{ children: ReactNode }> = p => {
-		const r = useConst<C>({})
-		// const value = useMemo(() => ({ children, setElement }), [])
-		return <Context.Provider value={r}>{p.children}</Context.Provider>
-	}
+	const Context = createContext<PortalContext>({})
 
 	const Source: FC<{ children?: ReactNode }> = p => {
 		// console.log('Source: render')
@@ -33,20 +33,18 @@ export const createPortal = () => {
 			}, [update])
 		}
 
-		const c = useContext(Context)
+		const context = useContext(Context)
 
-		if (c.element) {
-			delete c.children
-			return createPortal_(p.children, c.element)
+		if (context.element) {
+			delete context.children
+			return ReactDOM.createPortal(p.children, context.element)
 		} else {
-			c.children = p.children
+			context.children = p.children
 			return null
 		}
 	}
 
-	const Destination: FC = () => {
-		// console.log('Destination: render')
-
+	const useDestination = () => {
 		if (typeof window !== 'undefined') {
 			// eslint-disable-next-line react-hooks/rules-of-hooks
 			const update = useUpdate()
@@ -57,20 +55,36 @@ export const createPortal = () => {
 			}, [update])
 		}
 
-		const c = useContext(Context)
-
 		// if (!c.children && !c.element)
-		// 	throw new Error('Portal: Destination must be after Source, and they both need to be inside Root')
+		// 	throw new Error('Portal: Destination must be after Source, and they both need to be inside `portal.Provider`')
+
+		const context = useContext(Context)
 
 		const ref = useCallback(
 			(el: HTMLElement | null) => {
 				// console.log('set ref')
-				c.element = el
+				context.element = el
 			},
-			[c],
+			[context],
 		)
-		return <div ref={ref}>{c.children}</div>
+
+		return useMemo(
+			() => ({ ref, children: context.children }),
+			[context.children, ref],
+		)
 	}
 
-	return { Root, Source, Destination }
+	const Destination: FC = () => {
+		// console.log('Destination: render')
+		const destination = useDestination()
+
+		return <div ref={destination.ref}>{destination.children}</div>
+	}
+
+	return {
+		Provider: Context.Provider,
+		Source,
+		Destination,
+		useDestination,
+	}
 }
