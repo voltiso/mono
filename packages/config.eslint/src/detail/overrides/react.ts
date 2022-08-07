@@ -74,7 +74,9 @@ export const react = defineEslintConfigOverride({
 
 		'react/jsx-no-script-url': 1,
 		'react/jsx-no-target-blank': 1,
-		'react/jsx-no-useless-fragment': 1,
+
+		'react/jsx-no-useless-fragment': ['warn', { allowExpressions: true }],
+
 		'react/jsx-one-expression-per-line': 1,
 		'react/jsx-no-undef': 1,
 		'react/jsx-curly-brace-presence': 1,
@@ -129,7 +131,9 @@ export const react = defineEslintConfigOverride({
 		'react/prefer-exact-props': 1,
 		'react/prefer-read-only-props': 1,
 		'react/prefer-stateless-function': 1,
-		'react/prop-types': 1,
+
+		'react/prop-types': 0, // not using prop-types
+
 		'react/react-in-jsx-scope': 1,
 
 		'react/require-default-props': 0, // not using prop-types
