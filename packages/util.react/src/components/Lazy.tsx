@@ -40,9 +40,7 @@ export const Lazy: FC<
 	const ssrFix = useSsrFix()
 
 	const height =
-		ssrFix.isFirstRender || isLoaded || !restoreHeight.height
-			? undefined
-			: `${restoreHeight.height}px`
+		isLoaded || !restoreHeight.height ? undefined : `${restoreHeight.height}px`
 
 	const finalRef = useMemo(
 		() =>
@@ -65,7 +63,7 @@ export const Lazy: FC<
 			{...otherProps}
 			ref={finalRef}
 			style={{
-				height,
+				height: ssrFix.isFirstRender ? undefined : height,
 				...style,
 			}}
 		>
