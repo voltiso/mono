@@ -14,15 +14,16 @@ export function useLazyLoad(options?: IntersectionOptions | undefined) {
 	})
 
 	// const [element, setElement] = useState<HTMLElement>()
-	const current = useCurrent<{ element: HTMLElement | null }>({ element: null })
+	const current = useCurrent<{ element: unknown | null }>({ element: null })
 
 	const myRef = useMemo(
-		() => (el: HTMLElement | null) => {
-			if (el === current.element) return
+		() =>
+			<Element>(instance: Element | null) => {
+				if (instance === current.element) return
 
-			current.element = el
-			ref(el)
-		},
+				current.element = instance
+				ref(instance as never)
+			},
 		[current, ref],
 	)
 

@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isDefined, undef } from '@voltiso/util'
-import type { RefCallback } from 'react'
 import { useEffect, useMemo } from 'react'
 
 import { useInitial } from '~/hooks'
@@ -10,7 +9,8 @@ import { LocalStorage } from '~/LocalStorage'
 
 type UseRestoreHeight = {
 	height: number | undefined
-	ref: RefCallback<HTMLElement>
+	// eslint-disable-next-line etc/no-misused-generics
+	ref: <Element extends HTMLElement>(instance: Element | null) => void
 }
 
 //
@@ -65,7 +65,7 @@ export function useRestoreHeight(
 	return {
 		height,
 
-		ref: (instance: HTMLElement | null) => {
+		ref: <Element extends HTMLElement>(instance: Element | null) => {
 			mutable.instance = instance
 
 			// if (instance && height) instance.style.minHeight = `${height}px`

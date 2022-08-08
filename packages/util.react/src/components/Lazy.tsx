@@ -5,27 +5,26 @@ import { undef } from '@voltiso/util'
 import type {
 	ComponentPropsWithRef,
 	CSSProperties,
-	FC,
+	ForwardRefRenderFunction,
 	ReactNode,
-	RefCallback,
 } from 'react'
-import { Suspense, useMemo, useState } from 'react'
+import { forwardRef, Suspense, useState } from 'react'
 
-import { combineRefCallbacks } from '~/combineRefCallbacks'
 import { Lifecycle } from '~/components'
 import { useCurrent, useLazyLoad, useRestoreHeight } from '~/hooks'
 import { useSsrFix } from '~/hooks/useSsrFix'
+import { refs } from '~/refs'
 
-export const Lazy: FC<
+const LazyRender: ForwardRefRenderFunction<
+	HTMLDivElement,
 	ComponentPropsWithRef<'div'> & {
 		storageKey?: string | undefined
 
 		children: ReactNode
 		style?: CSSProperties | undefined
-		ref?: RefCallback<HTMLDivElement> | undefined
 	}
-> = props => {
-	const { children, storageKey, ref, style, ...otherProps } = props
+> = (props, ref) => {
+	const { children, storageKey, style, ...otherProps } = props
 
 	const finalStorageKey = storageKey
 		? `@voltiso/util.react.Lazy(${storageKey})`
@@ -42,14 +41,6 @@ export const Lazy: FC<
 	const height =
 		isLoaded || !restoreHeight.height ? undefined : `${restoreHeight.height}px`
 
-	const finalRef = useMemo(
-		() =>
-			ref
-				? combineRefCallbacks(lazy.ref, restoreHeight.ref, ref)
-				: combineRefCallbacks(lazy.ref, restoreHeight.ref),
-		[lazy.ref, ref, restoreHeight.ref],
-	)
-
 	// console.log('lazy.show', lazy.show)
 	// console.log('isLoaded', isLoaded)
 	// console.log('height', height)
@@ -61,7 +52,7 @@ export const Lazy: FC<
 	return (
 		<div
 			{...otherProps}
-			ref={finalRef}
+			ref={refs(lazy.ref, restoreHeight.ref, ref)}
 			style={{
 				height: ssrFix.isFirstRender ? undefined : height,
 				...style,
@@ -76,3 +67,7 @@ export const Lazy: FC<
 		</div>
 	)
 }
+
+LazyRender.displayName = 'Lazy.render'
+
+export const Lazy = forwardRef(LazyRender)

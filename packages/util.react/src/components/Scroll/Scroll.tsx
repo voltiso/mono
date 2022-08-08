@@ -1,71 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ComponentProps, FC, ReactNode } from 'react'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import type { ComponentProps, ForwardRefRenderFunction } from 'react'
+import { forwardRef, useEffect, useLayoutEffect, useState } from 'react'
 
 import { useCurrent, useInitial, useLocalStorage } from '~/hooks'
+import { refs } from '~/refs'
 
-export type ScrollProps = {
-	scrollRestorationKey?: string | undefined
+import { isNavigationBackForward } from './isNavigationBackForward'
+import type { ValidScrollProps } from './ScrollProps'
 
-	/**
-	 * Specify how often should `scrollTop` be saved to `localStorage`
-	 *
-	 * - Requires setting the `scrollRestorationKey`
-	 *
-	 * @defaultValue `1000`
-	 */
-	saveScrollInterval?: number | undefined
-	onSaveScroll?: ((y: number) => void) | undefined
-
-	// Element?: keyof JSX.IntrinsicElements | undefined
-
-	/**
-	 * Auto-set `scrollBehavior: 'smooth'` after a delay (ms)
-	 *
-	 * @defaultValue `1000`
-	 */
-	setSmoothAfterDelay?: number | 'off' | undefined
-
-	children?: ReactNode | undefined
-	style?: React.CSSProperties | undefined
-}
-
-export type ValidScrollProps = ScrollProps &
-	(
-		| {
-				scrollRestorationKey: string
-				saveScrollInterval?: number | undefined
-		  }
-		| { saveScrollInterval?: undefined }
-	)
-
-function getLocationHref() {
-	return typeof window !== 'undefined' ? window.location.href : undefined
-}
-
-const initialLocationHref = getLocationHref()
-let historyChanged = false
-
-function isNavigationBackForward() {
-	if (historyChanged) return true
-
-	const locationHref = getLocationHref()
-
-	if (locationHref !== initialLocationHref) {
-		historyChanged = true
-		return true
-	} else
-		return (
-			// eslint-disable-next-line etc/no-deprecated
-			window.performance.navigation.type ===
-			// eslint-disable-next-line etc/no-deprecated
-			window.performance.navigation.TYPE_BACK_FORWARD
-		)
-}
-
-export const Scroll: FC<ValidScrollProps & ComponentProps<'div'>> = props => {
+const ScrollRenderFunction: ForwardRefRenderFunction<
+	HTMLDivElement,
+	ValidScrollProps & ComponentProps<'div'>
+> = (props, ref) => {
 	const { children, scrollRestorationKey, onSaveScroll, ...otherProps } = props
 
 	const [scrollBehavior, setScrollBehavior] = useState<'smooth' | undefined>()
@@ -146,9 +94,9 @@ export const Scroll: FC<ValidScrollProps & ComponentProps<'div'>> = props => {
 	return (
 		<div
 			{...otherProps}
-			ref={instance => {
+			ref={refs(ref, instance => {
 				mutable.element = instance
-			}}
+			})}
 			style={{
 				scrollBehavior,
 				...otherProps.style,
@@ -158,6 +106,10 @@ export const Scroll: FC<ValidScrollProps & ComponentProps<'div'>> = props => {
 		</div>
 	)
 }
+
+ScrollRenderFunction.displayName = 'Scroll.render'
+
+export const Scroll = forwardRef(ScrollRenderFunction)
 
 Scroll.defaultProps = {
 	saveScrollInterval: 1000,
