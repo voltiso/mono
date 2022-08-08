@@ -67,8 +67,6 @@ export function useRestoreHeight(
 
 		ref: <Element extends HTMLElement>(instance: Element | null) => {
 			mutable.instance = instance
-
-			// if (instance && height) instance.style.minHeight = `${height}px`
 		},
 	}
 }

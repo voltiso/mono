@@ -11,7 +11,7 @@ import type {
 import { forwardRef, Suspense, useState } from 'react'
 
 import { Lifecycle } from '~/components'
-import { useCurrent, useLazyLoad, useRestoreHeight, useSsrFix } from '~/hooks'
+import { useInitial, useLazyLoad, useRestoreHeight, useSsrFix } from '~/hooks'
 import { refs } from '~/refs'
 
 const LazyRender: ForwardRefRenderFunction<
@@ -32,20 +32,25 @@ const LazyRender: ForwardRefRenderFunction<
 	const lazy = useLazyLoad()
 	const restoreHeight = useRestoreHeight(finalStorageKey)
 
+	const mutable = useInitial({
+		restoredHeight: restoreHeight.height,
+	})
+
 	const [isLoaded, setIsLoaded] = useState(false)
 
 	// make SSR work (first render should not use LocalStorage)
 	const ssrFix = useSsrFix()
 
-	const height =
-		isLoaded || !restoreHeight.height ? undefined : `${restoreHeight.height}px`
+	const height = mutable.restoredHeight
+		? `${mutable.restoredHeight}px`
+		: undefined
 
 	// console.log('lazy.show', lazy.show)
 	// console.log('isLoaded', isLoaded)
 	// console.log('height', height)
 
-	const handle = useCurrent({
-		firstRender: () => setIsLoaded(true),
+	const handle = useInitial({
+		layoutFirstRender: () => setIsLoaded(true),
 	})
 
 	return (
@@ -59,7 +64,9 @@ const LazyRender: ForwardRefRenderFunction<
 		>
 			{Boolean(lazy.show) && (
 				<Suspense fallback={<div style={{ height }} />}>
-					{!isLoaded && <Lifecycle onFirstRender={handle.firstRender} />}
+					{!isLoaded && (
+						<Lifecycle onLayoutFirstRender={handle.layoutFirstRender} />
+					)}
 					{children}
 				</Suspense>
 			)}
