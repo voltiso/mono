@@ -31,11 +31,11 @@ export type ScrollProps = {
 
 //
 
-export type ValidScrollProps = ScrollProps &
-	(
-		| {
-				scrollRestorationKey: string
-				saveScrollInterval?: number | undefined
-		  }
-		| { saveScrollInterval?: undefined }
-	)
+// export type ValidScrollProps = ScrollProps &
+// 	(
+// 		| {
+// 				scrollRestorationKey: string
+// 				saveScrollInterval?: number | undefined
+// 		  }
+// 		| { saveScrollInterval?: undefined }
+// 	)

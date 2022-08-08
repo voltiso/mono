@@ -8,11 +8,11 @@ import { useCurrent, useInitial, useLocalStorage } from '~/hooks'
 import { refs } from '~/refs'
 
 import { isNavigationBackForward } from './isNavigationBackForward'
-import type { ScrollProps, ValidScrollProps } from './ScrollProps'
+import type { ScrollProps } from './ScrollProps'
 
 const ScrollRenderFunction: ForwardRefRenderFunction<
 	HTMLDivElement,
-	ValidScrollProps & ComponentProps<'div'>
+	ScrollProps & ComponentProps<'div'>
 > = (props, ref) => {
 	const {
 		children,
@@ -22,7 +22,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		setSmoothAfterDelay,
 		style,
 		...otherProps
-	} = props as ScrollProps
+	} = props
 
 	const [scrollBehavior, setScrollBehavior] = useState<'smooth' | undefined>()
 
