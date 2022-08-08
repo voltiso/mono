@@ -4,16 +4,22 @@
 import { useEffect, useState } from 'react'
 
 export function useIsPageLoaded() {
-	if (typeof document === 'undefined') return true // ssr
+	if (typeof document === 'undefined') return false // ssr
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [isPageLoaded, setIsPageLoaded] = useState(
-		() => document.readyState === 'complete',
+		false, // consistent with server
+		// () => document.readyState === 'complete',
 	)
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	useEffect(() => {
 		if (isPageLoaded) return undefined
+
+		if (document.readyState === 'complete') {
+			setIsPageLoaded(true)
+			return undefined
+		}
 
 		const callback = () => {
 			setIsPageLoaded(true)
