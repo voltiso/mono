@@ -190,10 +190,10 @@ export const codeOverride = defineEslintConfigOverride({
 			{
 				patterns: [
 					{
-						group: ['../*'],
+						group: ['../../*'],
 
 						message:
-							'Do not import from parent - use `paths` in `tsconfig.json` instead - e.g. `"~": "./src"`, `"~/*": "./src/*`',
+							'Do not import from `../../*` - use `paths` in `tsconfig.json` instead - e.g. `"~": "./src"`, `"~/*": "./src/*`',
 					},
 				],
 			},

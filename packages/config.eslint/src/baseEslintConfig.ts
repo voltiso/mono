@@ -12,6 +12,7 @@ import {
 	chaiFriendly,
 	codeOverride,
 	cypress,
+	destructuring,
 	// disableAutofix, // angular dep?! :(
 	editorconfig,
 	eslintComments,
@@ -179,6 +180,7 @@ export const baseEslintConfig = defineEslintConfig({
 		noticeHash, // has to be after `notice`
 		filenames,
 		nOverride,
+		destructuring,
 		importOverride,
 		// wokeOverride, // learned all the words already and enriched my vocabulary
 		unicorn,

@@ -3,10 +3,12 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
+import { codeFiles } from '../files'
+
 export const arrayFunc = defineEslintConfigOverride({
 	extends: ['plugin:array-func/all'],
 
-	files: ['*'],
+	files: codeFiles,
 
 	plugins: ['array-func'],
 
