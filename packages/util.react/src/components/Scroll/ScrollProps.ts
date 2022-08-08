@@ -7,6 +7,13 @@ export type ScrollProps = {
 	scrollRestorationKey?: string | undefined
 
 	/**
+	 * - Requires setting the `scrollRestorationKey`
+	 *
+	 * @defaultValue `0`
+	 */
+	scrollRestorationDelay?: number | undefined
+
+	/**
 	 * Specify how often should `scrollTop` be saved to `localStorage`
 	 *
 	 * - Requires setting the `scrollRestorationKey`
@@ -27,6 +34,12 @@ export type ScrollProps = {
 
 	children?: ReactNode | undefined
 	style?: React.CSSProperties | undefined
+}
+
+export const defaultScrollProps = {
+	scrollRestorationDelay: 0,
+	saveScrollInterval: 1_000,
+	setSmoothAfterDelay: 1_000,
 }
 
 //

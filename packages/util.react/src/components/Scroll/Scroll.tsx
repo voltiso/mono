@@ -9,6 +9,7 @@ import { refs } from '~/refs'
 
 import { isNavigationBackForward } from './isNavigationBackForward'
 import type { ScrollProps } from './ScrollProps'
+import { defaultScrollProps } from './ScrollProps'
 
 const ScrollRenderFunction: ForwardRefRenderFunction<
 	HTMLDivElement,
@@ -17,6 +18,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	const {
 		children,
 		scrollRestorationKey,
+		scrollRestorationDelay,
 		onSaveScroll,
 		saveScrollInterval,
 		setSmoothAfterDelay,
@@ -42,12 +44,20 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	if (typeof window !== 'undefined') {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useEffect(() => {
-			if (!isNavigationBackForward()) return
+			if (!isNavigationBackForward()) return undefined
 
-			if (!current.scrollRestoration?.scrollTop) return
+			const top = current.scrollRestoration?.scrollTop
 
-			mutable.element?.scroll({ top: current.scrollRestoration.scrollTop })
-		}, [current, mutable, scrollRestorationKey])
+			if (!top) return undefined
+
+			const timeout = setTimeout(() => {
+				mutable.element?.scroll({ top })
+			}, scrollRestorationDelay)
+
+			return () => {
+				clearTimeout(timeout)
+			}
+		}, [current, mutable, scrollRestorationDelay, scrollRestorationKey])
 	}
 
 	//
@@ -120,7 +130,4 @@ ScrollRenderFunction.displayName = 'Scroll'
 
 export const Scroll = forwardRef(ScrollRenderFunction)
 
-Scroll.defaultProps = {
-	saveScrollInterval: 1_000,
-	setSmoothAfterDelay: 1_000,
-}
+Scroll.defaultProps = defaultScrollProps
