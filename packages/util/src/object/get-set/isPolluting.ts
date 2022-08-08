@@ -110,6 +110,20 @@ export function isPolluting(
 //
 
 /**
+ * Throw if `obj[key]` could cause Prototype Pollution, for any `obj`
+ *
+ * @param key - Any property name
+ * @throws `PrototypePollutionError` on prototype pollution
+ */
+export function assertNotPolluting<Key extends keyof any>(
+	key: Key,
+): asserts key is Key extends 'constructor'
+	? never
+	: Key extends '__proto__'
+	? never
+	: Key
+
+/**
  * Throw if `obj[key]` would cause Prototype Pollution
  *
  * @param obj - An object
