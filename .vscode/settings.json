@@ -231,7 +231,8 @@
 		"ext/lines-between-object-properties",
 		"yml/plain-scalar",
 		"object-shorthand",
-		"spaced-comment"
+		"spaced-comment",
+		"unicorn/numeric-separators-style"
 	],
 
 	"prettier.documentSelectors": [

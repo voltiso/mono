@@ -10,6 +10,7 @@ import { useCurrent } from '~/hooks'
 export function useLazyLoad(options?: IntersectionOptions | undefined) {
 	const { ref, inView } = useInView({
 		triggerOnce: true,
+		threshold: 0.000_1,
 		...options,
 	})
 
