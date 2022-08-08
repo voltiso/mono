@@ -69,4 +69,10 @@ const LazyRender: ForwardRefRenderFunction<
 
 LazyRender.displayName = 'Lazy.render'
 
+/**
+ * `Lazy` will start rendering `children` after it's visible in viewport.
+ *
+ * It will persist its height in `localStorage` and set is as `style` prop
+ * before the actual content is rendered. (no `styler`)
+ */
 export const Lazy = forwardRef(LazyRender)

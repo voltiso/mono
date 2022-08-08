@@ -39,15 +39,21 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	const current = useCurrent({ scrollRestoration, onSaveScroll })
 
-	if (typeof window !== 'undefined')
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		useLayoutEffect(() => {
+	if (typeof window !== 'undefined') {
+		const restoreScroll = () => {
 			if (!isNavigationBackForward()) return
 
 			if (!current.scrollRestoration?.scrollTop) return
 
 			mutable.element?.scroll({ top: current.scrollRestoration.scrollTop })
-		}, [current, mutable, scrollRestorationKey])
+		}
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		useLayoutEffect(restoreScroll, [current, mutable, scrollRestorationKey])
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		useEffect(restoreScroll, [current, mutable, scrollRestorationKey])
+	}
 
 	//
 
