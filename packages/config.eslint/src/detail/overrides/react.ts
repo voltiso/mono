@@ -144,7 +144,7 @@ export const react = defineEslintConfigOverride({
 
 		'react/require-default-props': 0, // not using prop-types
 
-		'react/require-optimization': 1,
+		'react/require-optimization': 0, // hmm
 		'react/require-render-return': 1,
 		'react/self-closing-comp': 1,
 		'react/sort-comp': 1,
