@@ -230,7 +230,8 @@
 		"unused-imports/no-unused-imports",
 		"ext/lines-between-object-properties",
 		"yml/plain-scalar",
-		"object-shorthand"
+		"object-shorthand",
+		"spaced-comment"
 	],
 
 	"prettier.documentSelectors": [

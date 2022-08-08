@@ -53,7 +53,7 @@ const LazyRender: ForwardRefRenderFunction<
 			{...otherProps}
 			ref={refs(lazy.ref, restoreHeight.ref, ref)}
 			style={{
-				height, //: ssrFix.isFirstRender ? undefined : height,
+				height, // : ssrFix.isFirstRender ? undefined : height,
 				...style,
 			}}
 		>

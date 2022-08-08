@@ -340,6 +340,7 @@ importers:
       eslint-plugin-chai-friendly: ^0.7.2
       eslint-plugin-css: ^0.6.0
       eslint-plugin-cypress: ^2.12.1
+      eslint-plugin-destructuring: ^2.2.1
       eslint-plugin-editorconfig: ^4.0.2
       eslint-plugin-eslint-comments: ^3.2.0
       eslint-plugin-etc: ^2.0.2
@@ -354,7 +355,7 @@ importers:
       eslint-plugin-i18next: ^6.0.0-4
       eslint-plugin-import: ^2.26.0
       eslint-plugin-indent-empty-lines: ^1.0.2
-      eslint-plugin-jest: ^26.7.0
+      eslint-plugin-jest: ^26.8.0
       eslint-plugin-jest-async: ^1.0.3
       eslint-plugin-jest-dom: ^4.0.2
       eslint-plugin-jest-formatting: ^3.1.0
@@ -400,7 +401,7 @@ importers:
       eslint-plugin-yml: ^1.1.0
       jsonc-eslint-parser: ^2.1.0
       prettier: ^2.7.1
-      putout: ^27.0.1
+      putout: ^27.1.0
       rimraf: ^3.0.2
       toml-eslint-parser: ^0.4.0
       typescript: ^4.7.4
@@ -422,6 +423,7 @@ importers:
       eslint-plugin-chai-friendly: 0.7.2_eslint@8.21.0
       eslint-plugin-css: 0.6.0_eslint@8.21.0
       eslint-plugin-cypress: 2.12.1_eslint@8.21.0
+      eslint-plugin-destructuring: 2.2.1
       eslint-plugin-editorconfig: 4.0.2
       eslint-plugin-eslint-comments: 3.2.0_eslint@8.21.0
       eslint-plugin-etc: 2.0.2_qugx7qdu5zevzvxaiqyxfiwquq
@@ -436,7 +438,7 @@ importers:
       eslint-plugin-i18next: 6.0.0-4
       eslint-plugin-import: 2.26.0_klqlxqqxnpnfpttri4irupweri
       eslint-plugin-indent-empty-lines: 1.0.2
-      eslint-plugin-jest: 26.7.0_bqjo633dpfdihlvg5bmomzewvm
+      eslint-plugin-jest: 26.8.0_bqjo633dpfdihlvg5bmomzewvm
       eslint-plugin-jest-async: 1.0.3
       eslint-plugin-jest-dom: 4.0.2_eslint@8.21.0
       eslint-plugin-jest-formatting: 3.1.0_eslint@8.21.0
@@ -459,7 +461,7 @@ importers:
       eslint-plugin-prefer-arrow: 1.2.3_eslint@8.21.0
       eslint-plugin-prettier: 4.2.1_po3yoeeutu52wwqsoi2mwzccke
       eslint-plugin-promise: 6.0.0_eslint@8.21.0
-      eslint-plugin-putout: 16.0.1_ni5kuamcooiyroyn5rxmweimmu
+      eslint-plugin-putout: 16.0.1_5hvzthalguegtr7jmp4b6a2nsi
       eslint-plugin-react: 7.30.1_eslint@8.21.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.21.0
       eslint-plugin-react-native: 4.0.0_eslint@8.21.0
@@ -481,7 +483,7 @@ importers:
       eslint-plugin-unused-imports: 2.0.0_i7ihj7mda6acsfp32zwgvvndem
       eslint-plugin-yml: 1.1.0_eslint@8.21.0
       jsonc-eslint-parser: 2.1.0
-      putout: 27.0.1
+      putout: 27.1.0
       toml-eslint-parser: 0.4.0
       yaml-eslint-parser: 1.1.0
     devDependencies:
@@ -3493,7 +3495,7 @@ packages:
       - supports-color
     dev: false
 
-  /@putout/engine-loader/7.1.1_putout@27.0.1:
+  /@putout/engine-loader/7.1.1_putout@27.1.0:
     resolution: {integrity: sha512-rMYVC2TzZM4uelkBPJh7qAE2NMRk5WZujkrFbgoefMHWngCK6mkQv85ImrxtsuBPqT4F4cb1t76rTONNyE0GIQ==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -3504,7 +3506,7 @@ packages:
       diff-match-patch: 1.0.5
       nano-memoize: 1.3.0
       once: 1.4.0
-      putout: 27.0.1
+      putout: 27.1.0
       try-catch: 3.0.1
       try-to-catch: 3.0.1
     transitivePeerDependencies:
@@ -3528,11 +3530,11 @@ packages:
       - supports-color
     dev: false
 
-  /@putout/engine-processor/6.1.0_putout@27.0.1:
+  /@putout/engine-processor/6.1.0_putout@27.1.0:
     resolution: {integrity: sha512-zAqtApNI8E6Mh60VwKaFRoURKU9lGgxPVODRS3rWRfjjIpHhm7EfayBXvl6s0+RKaTLtjRZypILyfwDlD9Q54Q==}
     engines: {node: '>=16'}
     dependencies:
-      '@putout/engine-loader': 7.1.1_putout@27.0.1
+      '@putout/engine-loader': 7.1.1_putout@27.1.0
       nano-memoize: 1.3.0
       once: 1.4.0
       picomatch: 2.3.1
@@ -3542,8 +3544,8 @@ packages:
       - supports-color
     dev: false
 
-  /@putout/engine-runner/13.7.0:
-    resolution: {integrity: sha512-ANO/2nINMbrAaIeWma59J2KvAzjwQfXmcZMd6iBI9uqFjUAVbynU0lFSUFFyxK8hPM3n39Rq5IYkiQHez85BWg==}
+  /@putout/engine-runner/14.0.0:
+    resolution: {integrity: sha512-CdXHeWZbbzFSWEMvgGSXy75zSP458tjAI9gAlDrkyh1V2b8oWVF+DVjSGQ2IoxtXXnO4t/ZduwbnMGnc/BJ6Lg==}
     engines: {node: '>=16'}
     dependencies:
       '@babel/traverse': 7.18.11
@@ -3570,105 +3572,105 @@ packages:
       eslint: 8.21.0
     dev: false
 
-  /@putout/formatter-codeframe/4.0.1_putout@27.0.1:
+  /@putout/formatter-codeframe/4.0.1_putout@27.1.0:
     resolution: {integrity: sha512-qiwtnO7NafrB9SqfCvbN0QzBDAXPk37qxv2N0h4JCq/bHva0I5S3q7/UafipMlsYOup5nYtG5DWPqXFtXCsn2Q==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       '@babel/code-frame': 7.18.6
-      '@putout/formatter-json': 2.0.0_putout@27.0.1
+      '@putout/formatter-json': 2.0.0_putout@27.1.0
       chalk: 4.1.2
-      putout: 27.0.1
+      putout: 27.1.0
       table: 6.8.0
     dev: false
 
-  /@putout/formatter-dump/4.0.1_putout@27.0.1:
+  /@putout/formatter-dump/4.0.1_putout@27.1.0:
     resolution: {integrity: sha512-jTuobQDleBZzfMIq0Ckrh++g7S6DOjHfK537uqgM/BhARtW1qH/SoLZfONRxxR6Rz4nVvRH6D/nsNnh4/EO00Q==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      '@putout/formatter-json': 2.0.0_putout@27.0.1
+      '@putout/formatter-json': 2.0.0_putout@27.1.0
       chalk: 4.1.2
-      putout: 27.0.1
+      putout: 27.1.0
       table: 6.8.0
     dev: false
 
-  /@putout/formatter-frame/3.0.0_putout@27.0.1:
+  /@putout/formatter-frame/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-rL7u/eTvnPhQp/bru3jhkwIoMiBI36N/VXbmLP72c0U4hDYnyjH9AEwgtQfo6t+owgkMzGSFea6Q0a0AjFaMZA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      '@putout/formatter-codeframe': 4.0.1_putout@27.0.1
-      putout: 27.0.1
+      '@putout/formatter-codeframe': 4.0.1_putout@27.1.0
+      putout: 27.1.0
     dev: false
 
-  /@putout/formatter-json-lines/3.0.0_putout@27.0.1:
+  /@putout/formatter-json-lines/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-Np+Zpm/FqQpjiIatTg6k8+KUq4JfnfXYcoUJ3s4wwNq+OQqc1T/b2fPkctddwTei/fsh7s7wXgcAUxu8B+J3Yw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/formatter-json/2.0.0_putout@27.0.1:
+  /@putout/formatter-json/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-g+mpOU/s+ciQDkukKwTg5WGmQKFlfca/cpdeYQmuVFsbabkcFAVA5QWMQiGvmXx4Cg9PuJXvhYKfGB0zCcGCiw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=22.5'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/formatter-memory/3.0.1_putout@27.0.1:
+  /@putout/formatter-memory/3.0.1_putout@27.1.0:
     resolution: {integrity: sha512-xlhTLtu3QUdUvO7R2G9c5z6Nuy5OwF7JShZ6A6qiy2bLooFkyDi12c+4kUVJmDoKZwvjXJOe7iexa5vP8axKHg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      '@putout/formatter-dump': 4.0.1_putout@27.0.1
+      '@putout/formatter-dump': 4.0.1_putout@27.1.0
       chalk: 4.1.2
       cli-progress: 3.11.2
       format-io: 2.0.0
       montag: 1.2.1
       once: 1.4.0
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/formatter-progress-bar/3.0.2_putout@27.0.1:
+  /@putout/formatter-progress-bar/3.0.2_putout@27.1.0:
     resolution: {integrity: sha512-z+4ugM5/7gl4hj8yV/oGDGZbg9I4Rg/ScQBQ7EbXu2bv2zdqw28XGJDT2b0GjAlmUF/Q+h/6itdgm0F3ockn2w==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      '@putout/formatter-dump': 4.0.1_putout@27.0.1
+      '@putout/formatter-dump': 4.0.1_putout@27.1.0
       chalk: 4.1.2
       cli-progress: 3.11.2
       once: 1.4.0
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/formatter-progress/4.0.0_putout@27.0.1:
+  /@putout/formatter-progress/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-GHCzfChQdHLqIlUngCuNVpOw8SDv9ij3b7t14mRyreWNgzOrCm+JWOOO6IcvUOiajKpwKxzb48leAypangAp3A==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      '@putout/formatter-dump': 4.0.1_putout@27.0.1
-      putout: 27.0.1
+      '@putout/formatter-dump': 4.0.1_putout@27.1.0
+      putout: 27.1.0
     dev: false
 
-  /@putout/formatter-stream/4.0.1_putout@27.0.1:
+  /@putout/formatter-stream/4.0.1_putout@27.1.0:
     resolution: {integrity: sha512-9B+zUYHtJE15VeaZ6Zp641FG4QY7EDZ/Te+ubfTEFP0VFPSDWkwcXoVfT1mgDuz9HMdryqHccu6DswYoekbUVQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       chalk: 4.1.2
-      putout: 27.0.1
+      putout: 27.1.0
       table: 6.8.0
     dev: false
 
@@ -3679,7 +3681,7 @@ packages:
       '@babel/types': 7.18.10
     dev: false
 
-  /@putout/operator-add-args/3.1.0_putout@27.0.1:
+  /@putout/operator-add-args/3.1.0_putout@27.1.0:
     resolution: {integrity: sha512-H/gpWqQpoGgoR/9vWjYr2tCBoU3zhvFAZfAIecKcIcum8JJLI9YosBUFidVPJQbC2uaKCzbulD/wEkfJrEzuuQ==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -3688,12 +3690,12 @@ packages:
       '@babel/types': 7.18.10
       '@putout/compare': 9.2.1
       '@putout/engine-parser': 5.1.1
-      putout: 27.0.1
+      putout: 27.1.0
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@putout/operator-declare/4.6.1_putout@27.0.1:
+  /@putout/operator-declare/4.6.1_putout@27.1.0:
     resolution: {integrity: sha512-6B54Q12+uNhvvORbZQ3aMtcZTPoeumzMFPlZkv6sppAzkiVr+CevSlrywqpUtmUtjRR/VY9ZNSB5mR1RoOiqNQ==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -3701,986 +3703,986 @@ packages:
     dependencies:
       '@putout/compare': 9.2.1
       '@putout/operate': 8.4.0
-      putout: 27.0.1
+      putout: 27.1.0
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@putout/operator-regexp/1.0.0_putout@27.0.1:
+  /@putout/operator-regexp/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-ts9QqsrpPCcXH9uao8ZjgxjvhdhaT7rZYy0JDKkfv0tptC55LEN8b9/0G4ZfVTm39C+7V+WFrDR0bDccyPd0yw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=20'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
       regexp-tree: 0.1.24
     dev: false
 
-  /@putout/plugin-apply-array-at/2.1.0_putout@27.0.1:
+  /@putout/plugin-apply-array-at/2.1.0_putout@27.1.0:
     resolution: {integrity: sha512-r12LkGa1m6ebTVMl3HgZfKnYL/SkwQPEvfyzxB5beDiqDC2vRzTYSkl1Hy7or9uMwtIUcZow5kc4ynFtdQt5eg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-comparison-order/1.1.0_putout@27.0.1:
+  /@putout/plugin-apply-comparison-order/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-gIRTKHNZLurchnltoZ3WVt35IycDg2vb9BB0LAo+ElkWtJ9O8157yllUutLybQxcnIMmXu4pLEsSo9Yc0EzsFQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-destructuring/5.2.1_putout@27.0.1:
+  /@putout/plugin-apply-destructuring/5.2.1_putout@27.1.0:
     resolution: {integrity: sha512-DUA9mHL55OTyktHQjjx+FmJO6v9V2yR7u4r+vKlG9Q2tZv6U1WZc0jiRvW4soA5TNEv4Ftwut0MxoKl2ctZwlQ==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.3'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-early-return/2.0.0_putout@27.0.1:
+  /@putout/plugin-apply-early-return/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-pvmBlipG83c2CIsIZSaIVcelX4jztD6/zxvggvP7klAfRKXYJ6WT/BGBzkndeNNl4LXPi7hHTlj3Hkx8Z2bCag==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-if-condition/1.0.0_putout@27.0.1:
+  /@putout/plugin-apply-if-condition/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-jHGt6uQ/BfCHgwf5mFKhHdYE1T3NDMoC4szdEMq/8X6xQ4ECjUxN9MPdYLyxT2aCNCUlxdN/GUQK7J5JYYQqrg==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-is-array/3.0.0_putout@27.0.1:
+  /@putout/plugin-apply-is-array/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-JQqkiYV0nRVmXYszF/WeIcRldRCBBthII5wOov6IFr5FtRxtVYKpEp4Bn95Jz1X1+uvGhICzmB/emZBoj+XjEA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-numeric-separators/1.2.1_putout@27.0.1:
+  /@putout/plugin-apply-numeric-separators/1.2.1_putout@27.1.0:
     resolution: {integrity: sha512-+DV/rDKS0nwYd9xx0CPIXeOHRAyvYNLN7pMV00uEdr8i7nKIVLi4cazEU/8y7qEK6BFrI1YMaZvEEogkvqteXw==}
     engines: {node: '>=10'}
     peerDependencies:
       putout: '>=9'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-apply-optional-chaining/2.0.2_putout@27.0.1:
+  /@putout/plugin-apply-optional-chaining/2.0.2_putout@27.1.0:
     resolution: {integrity: sha512-vyxX/jGrXxi0vJaebRP1VZxxnrUaHHsPpin6kSduiJO0pPABLwoi9d2btT/gqI6dRnJizDWDiALMGXOQY+yCVw==}
     engines: {node: '>=10'}
     peerDependencies:
       putout: '>=9'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-browserlist/1.0.1_putout@27.0.1:
+  /@putout/plugin-browserlist/1.0.1_putout@27.1.0:
     resolution: {integrity: sha512-MYnYSVmr6jhwP+ZlZlcqSspfjRbpg83faE+f+2z2VP7SpuYpWWK60moGnhEl/RylBBQzUP9zjKOrtA2Io+Xfgw==}
     engines: {node: '>=12'}
     peerDependencies:
       putout: '>=11'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-apply-to-spread/3.1.0_putout@27.0.1:
+  /@putout/plugin-convert-apply-to-spread/3.1.0_putout@27.1.0:
     resolution: {integrity: sha512-fLu4oVSuUdXgn//ZDzF4Oe7kKc+fKbVmtJQetpa+OjLfmZ2Mwyu0yWqOpCAUpHSz/EHISd+V88465f/mW9pq4Q==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-arguments-to-rest/1.3.0_putout@27.0.1:
+  /@putout/plugin-convert-arguments-to-rest/1.3.0_putout@27.1.0:
     resolution: {integrity: sha512-vFAGp8emMSADIyzjDdg51a+Geiv8hNnRSrUjJB81d5ioQbURcJZ1GW7KgfZweDmApnL/MkvJ9o/N8f7c88cFkA==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=4.31'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-array-copy-to-slice/2.0.0_putout@27.0.1:
+  /@putout/plugin-convert-array-copy-to-slice/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-ZkThndnC4wkcWCpv/0f2VxSdKvsBYx+m1H5u7gI4UlGPMwj+xtgTUobA4Pt0iTBtw4a7i2xQYgRytoMPquLu2A==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=20'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-assignment-to-arrow-function/1.2.0_putout@27.0.1:
+  /@putout/plugin-convert-assignment-to-arrow-function/1.2.0_putout@27.1.0:
     resolution: {integrity: sha512-zLYy4hUDPx3CXw5OxWR0Opy8qQJ31W/VO6WLsbCz3NYVgjydoMuQM3UxIL2LuLkd2yEtTOW8bjudLX7a+sUcJg==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=15'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-assignment-to-comparison/1.0.0_putout@27.0.1:
+  /@putout/plugin-convert-assignment-to-comparison/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-3EHAqqebm0aGamwEasOg/0jxBcbiQgyMNMsOFqWddf8s9/jolNJelndK9q6A+No4XlA4Cj90hdI0YUNQ8xp73w==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=15'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-bitwise-to-logical/1.0.0_putout@27.0.1:
+  /@putout/plugin-convert-bitwise-to-logical/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-AAI6kDWE1vbU3VwbPzAmM/LF6ZJs1cGxbql4nupSD4ip/womWd0zzm0i3AG9UetfdDEUC2elB0HrIRHC/F+1jw==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-commonjs-to-esm/9.2.0_putout@27.0.1:
+  /@putout/plugin-convert-commonjs-to-esm/9.2.0_putout@27.1.0:
     resolution: {integrity: sha512-BVnsyAANkHgSrxyacdjk8P3xAIbottOjTkIbnUagaqr0Sn9SgfvApl9bjZOZyjz7z6SORKw1ORqNioYeMRwUrA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       just-camel-case: 4.0.2
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-comparison-to-boolean/3.0.1_putout@27.0.1:
+  /@putout/plugin-convert-comparison-to-boolean/3.0.1_putout@27.1.0:
     resolution: {integrity: sha512-/o4HcTbf6h/XDoQY+GzoEGcx08uT+JfX6kAV5hd5EisxEF88rgYTFVw8yY3EK5vnGrmfQudIjQkxVcmE14qIJA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-concat-to-flat/1.0.0_putout@27.0.1:
+  /@putout/plugin-convert-concat-to-flat/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-5vpw+xZ+00xQW6Ql9Ku6MrARV/EPq1KrTAHYYaBTLyMZcpNaM3L+LYJ08/Cc1/mm64ufBa3LTaFJtr9PrzmuHA==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-const-to-let/1.1.3_putout@27.0.1:
+  /@putout/plugin-convert-const-to-let/1.1.3_putout@27.1.0:
     resolution: {integrity: sha512-OgRRyU9dxIwsIVAomoNNkRiO00NDLMPeLRGHZMntK66IXcL9qStYvDwD7AXN6/FJa1Cxbb62wQU1glPjn4ZPAQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-equal-to-strict-equal/1.1.0_putout@27.0.1:
+  /@putout/plugin-convert-equal-to-strict-equal/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-H6H4Qu7lCBSyTj16olpB2D9PFH1owy08ORcFOfmvyvuLYDqJybyycMk4sHDvU4cQDhsHYfEGXJOeAaKnoxEtLA==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.17'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-esm-to-commonjs/5.0.0_putout@27.0.1:
+  /@putout/plugin-convert-esm-to-commonjs/5.0.0_putout@27.1.0:
     resolution: {integrity: sha512-d4vGTMdoaNWuwXFf/sDwa/ewVWopqfVH+WS7lKlIhx4n89TD5qCru4NQPg/J144ygcdGYUgBrTmMtax3enbQHg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-for-each-to-for-of/7.1.2_putout@27.0.1:
+  /@putout/plugin-convert-for-each-to-for-of/7.1.2_putout@27.1.0:
     resolution: {integrity: sha512-KH7HgUroLzi78aKeXrwIZIsJ8FFU+UoeUxERxNGwPgPgZTR2L/YSP3grDLxYfv9aq0Ak/jNL2ZOzRZpKHUEMjw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=24'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-for-in-to-for-of/2.0.0_putout@27.0.1:
+  /@putout/plugin-convert-for-in-to-for-of/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-uE9h/o30PMio2yP+YbaHWfce1n++5DyeuG05zHaaMIMX7/MkQM3B9nrWHp9u9TIdGqxTyu6J5AZ4cWwRRe9G3w==}
     engines: {node: '>=10'}
     peerDependencies:
       putout: '>=9'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-for-to-for-of/4.0.0_putout@27.0.1:
+  /@putout/plugin-convert-for-to-for-of/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-MRu3/87ajVKcWZUSmvQ3yD/wL/4+Q7x6U2wnDOUfUMgua5zsBeImLUm2J6amNhmWmAPC5HMYHqIMKzUWAw5VPg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-imul-to-multiplication/1.0.0_putout@27.0.1:
+  /@putout/plugin-convert-imul-to-multiplication/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-BCNkkZVDWGr1kS8NDO0XrPplc238UGrzZQMgIKA1Es4oCI0V9UcvQ84ykcLE9sDzMGo+XojxIhl0T1rXUTtfrg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-index-of-to-includes/1.1.0_putout@27.0.1:
+  /@putout/plugin-convert-index-of-to-includes/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-d2w/GwYwtaq1ArW5VJA+CpSIPiRI1Lp4zJIGcQENj0zOyTwJ7OWP8SqHlqWOSoK6YpMoMFSDdlH1JU5NBTsx8Q==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=8'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-map-to-for-of/2.0.2_putout@27.0.1:
+  /@putout/plugin-convert-map-to-for-of/2.0.2_putout@27.1.0:
     resolution: {integrity: sha512-EFEkC21OAZ4G0bFJkCwp6liej4s5DzoK/oFIms7vLe3PuEiEUK9sBRxqGjjlbV4xlC5XjgkJ03vtQaPVqfWvNw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-math-pow/5.0.1_putout@27.0.1:
+  /@putout/plugin-convert-math-pow/5.0.1_putout@27.1.0:
     resolution: {integrity: sha512-/WxkeVrBIjK2qPx8MJ44wVKJ66EQHfGyfVjxLzjHmW03GTeL2K5t9XovjkwfGXZ7tk96tZ4A3atjlU0Lr5+MSA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-mock-require-to-mock-import/4.1.0_putout@27.0.1:
+  /@putout/plugin-convert-mock-require-to-mock-import/4.1.0_putout@27.1.0:
     resolution: {integrity: sha512-4FkGCLh6xnyqrTnMyQiHZpbl7uNig8efvBuIPj9+LqTBqg79Wsv0EVLbzL/7c7hH0RFhUTICEW0tBJ9XIuM2Wg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-object-assign-to-merge-spread/6.0.0_putout@27.0.1:
+  /@putout/plugin-convert-object-assign-to-merge-spread/6.0.0_putout@27.1.0:
     resolution: {integrity: sha512-EdEgVRhIXZq6bV0WVcUwz0Zm72eEeWrWcccuKYnmUgJ20rL0LpUmxdVuTvDEzDsX4WjQXku32ACfAn/nUEfwiA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-quotes-to-backticks/2.1.0_putout@27.0.1:
+  /@putout/plugin-convert-quotes-to-backticks/2.1.0_putout@27.1.0:
     resolution: {integrity: sha512-kf6JWMQG41R7i376ef6ljD47u2X/c76Y8pOLPBhL2/82wTIEkzVAg5DmoZVlYzb7sM8GcYCAbxSJUwI43FvQSA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-reduce-to-for-of/1.4.0_putout@27.0.1:
+  /@putout/plugin-convert-reduce-to-for-of/1.4.0_putout@27.1.0:
     resolution: {integrity: sha512-drPp/G5HAJ4RjT4kvZvInyq5OVemgOfFmh5ww5kSYnXDxFjWUU83v1TXuQO6QCeR3q7zes25xUzg2fuGcNtdfA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-sqrt-to-hypot/1.0.1_putout@27.0.1:
+  /@putout/plugin-convert-sqrt-to-hypot/1.0.1_putout@27.1.0:
     resolution: {integrity: sha512-5WSDmkEg+9jUkb5iEl9FCEc0gsUv9tR43pSd1EdiVmn2TtyOrI6Df/mGGP7zMfwXSDsFRk0RAv38EE+H60uuWA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-template-to-string/1.0.0_putout@27.0.1:
+  /@putout/plugin-convert-template-to-string/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-Oh/MN4Irc6b3qafOSh3VQ+qw/DVZq2FSKt200XKpJw1HXcUk8RpPxNnG3xTpn2vTe/qK2e4VDtlLgdxUNo0onA==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-to-arrow-function/3.0.0_putout@27.0.1:
+  /@putout/plugin-convert-to-arrow-function/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-0bqurAj6elhSiLW+AOimEWSgNdoQuLNqj4dQHrVo4RZCfbtYLL2yqiv4Y5PfGS7+Le6dFuwxEcyj9L3+u9EnYg==}
     engines: {node: '>=12'}
     peerDependencies:
       putout: '>=10'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-convert-typeof-to-is-type/2.0.0_putout@27.0.1:
+  /@putout/plugin-convert-typeof-to-is-type/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-2CcXbASkkBuToLIj72NGXdzSfqP5+AuihDGCxWyA1gHmJn14N14kB+hR98nuVBdqUN1HrCpH4bvRdWnqiuikXA==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=23'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-declare-before-reference/1.3.0_putout@27.0.1:
+  /@putout/plugin-declare-before-reference/1.3.0_putout@27.1.0:
     resolution: {integrity: sha512-h1A234hhknLW2a4mSeiYoI0Mz2WplatjCMBK04p2U6h3sUADZcKFcFWACYytM/Nu0TBmQkuFz2Ay2f4R4OwwKQ==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=21'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-declare-imports-first/1.0.0_putout@27.0.1:
-    resolution: {integrity: sha512-OA2et6f0JTHmqj/UOKgGGio8ceaYEksNLnobszyOGD1qJFoKWmW22psYP/mpoLtNn/uW/jh/pKoo1V3Zw5zUYA==}
+  /@putout/plugin-declare-imports-first/2.0.0_putout@27.1.0:
+    resolution: {integrity: sha512-UJ73+FGcRwTIyNht/H50hRYSegQLtU8dITLlias6xJE2nqSVXJA7vHGASoS600mS/FHs9pDjxzRHU7y+tLCiOQ==}
     engines: {node: '>=16'}
     peerDependencies:
-      putout: '>=26'
+      putout: '>=27'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-declare-undefined-variables/7.2.0_putout@27.0.1:
+  /@putout/plugin-declare-undefined-variables/7.2.0_putout@27.1.0:
     resolution: {integrity: sha512-8nUabVepsrdFWzJvflRDknS1f2CK7ZOYvMDR01SRvybjpCyiiQSIfyJDy4Dyk+8DuF8ZgMVLCdoqAZ0qw1K8ig==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-eslint/4.2.0_putout@27.0.1:
+  /@putout/plugin-eslint/4.2.0_putout@27.1.0:
     resolution: {integrity: sha512-79wnz3rYHaQS4qEBD1IoGRCY/so/KKDFPe3j/P3l97X915mnDYdHeG4/h8PS+hq4gJXzhMll/axxRoBmLHvfTw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-extract-object-properties/8.3.0_putout@27.0.1:
+  /@putout/plugin-extract-object-properties/8.3.0_putout@27.1.0:
     resolution: {integrity: sha512-IMerdqUbwvHUF211Y5vFH8oUFxWC7l7TOVsO+5jYuHx+EVBOSei2vCNLGFo2iHnkDSbSlrz1GCl+edWHcPDnCA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-extract-sequence-expressions/3.0.1_putout@27.0.1:
+  /@putout/plugin-extract-sequence-expressions/3.0.1_putout@27.1.0:
     resolution: {integrity: sha512-I2GPWfme/GptL2WWFfYqUkbWpDzSrWjljyVx0oPGxEJHFLUciWnJi9oqyQmVJT+IoT0lH3e64gjlk27cCtOvIA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-github/3.1.0_putout@27.0.1:
+  /@putout/plugin-github/3.1.0_putout@27.1.0:
     resolution: {integrity: sha512-CsyQ7lfYaTzKRQm5buJT1WHQ8bRdCxtVrcDCC4qhFd7UHi/Mf5VMdqe5ovNr1oTZpW2L+r9soNE5PhikkA2GDA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       fast-deep-equal: 3.1.3
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-gitignore/3.1.0_putout@27.0.1:
+  /@putout/plugin-gitignore/3.1.0_putout@27.1.0:
     resolution: {integrity: sha512-Ik409hROJgaBySxu2b1o8ToaKrMFXFupDOJ9W+yoyTQAJlWy9zgY3ef7w+kkGdPmedBDv4bQBNBhVW67O5eV5A==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=14'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-madrun/14.4.0_putout@27.0.1:
+  /@putout/plugin-madrun/14.4.0_putout@27.1.0:
     resolution: {integrity: sha512-CqDH+wc2mLExy1I4W+dIYW4X4MIaTc27YBSxntzMWqraFtrZ0W6U98IuYQs8hj523QVaq4ngUKCxTgvwI8ZKfw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-merge-destructuring-properties/6.2.1_putout@27.0.1:
+  /@putout/plugin-merge-destructuring-properties/6.2.1_putout@27.1.0:
     resolution: {integrity: sha512-XFrDVkDDhnpe4suz74INl1uA4CIVJ/HwH632G2Ds9nKDQ2OmW/3th+85AvgRU+4T/L/gQJ/2c5DL+EQVG8Qwug==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=24'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-merge-duplicate-imports/6.1.0_putout@27.0.1:
-    resolution: {integrity: sha512-012lAtc3RlNS98gPouCAy1yoXjOmnqJxhNZLA5zino/z98vKaM98hLUx6CYCXmyHC/qXDeofuBxkUpsI1Bkl9Q==}
+  /@putout/plugin-merge-duplicate-imports/7.0.0_putout@27.1.0:
+    resolution: {integrity: sha512-l1iExFf17aFZhao3wG2seA+haMdHVFp8uwcWAWs+PrAJ1UHb/m34w3TBrCX634vh0o+tpTE55Qz+ZiozztvsvA==}
     engines: {node: '>=16'}
     peerDependencies:
-      putout: '>=25'
+      putout: '>=27'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-merge-if-statements/3.1.0_putout@27.0.1:
+  /@putout/plugin-merge-if-statements/3.1.0_putout@27.1.0:
     resolution: {integrity: sha512-reny9bMEO3Fnn7uUUMUnLjltNAfgKau4rl7OYSPhfaHRzZMSwNZU70kc7AV2grobo6WZpQhp4/FmTeVoVLUjyw==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.17'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-montag/1.0.0_putout@27.0.1:
+  /@putout/plugin-montag/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-BLQSroXUunfiIycGUiZT7bAHIUiJpk6W3W14FJ1+14En9000fbRFyVL0wvTl7Vu03J9DDSVELqKI7hzrR/NtPQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-new/1.1.0_putout@27.0.1:
+  /@putout/plugin-new/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-s8ulDF2jasxEeFKTfX4zEHJWsb9u4A23U7mn/6sFNiPU3VQhA5SoC5FVcI+9sMcyf7tkZP3lAc7IGIOBij13PA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-nodejs/4.8.1_putout@27.0.1:
-    resolution: {integrity: sha512-JScKURacmY6lVnKJojlomXZj6fpxlJ9LuPduAoDIe3z0oiFnRuAf4cDKoZz5cXJURqSw/qRtWw1wmCGWWBorSQ==}
+  /@putout/plugin-nodejs/5.0.0_putout@27.1.0:
+    resolution: {integrity: sha512-nPdPT/KFKmLdTaidaQGkSCmC8rFSdZ0yv9mAHPiNpX+nxFi0d1m3p8hvxYskjulHRPQ8AZG9InoRXHIVMXR0Bw==}
     engines: {node: '>=16'}
     peerDependencies:
-      putout: '>=25'
+      putout: '>=27'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-npmignore/2.0.1_putout@27.0.1:
+  /@putout/plugin-npmignore/2.0.1_putout@27.1.0:
     resolution: {integrity: sha512-+WAS7Pu/+OaycigK59rcRH0VqapM0rA7BOXx8NQH5aOgVkKFDQ6BrXh0mCGskG3PsYRCNoObzlDAz713P38OaQ==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=14'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-package-json/4.1.0_putout@27.0.1:
+  /@putout/plugin-package-json/4.1.0_putout@27.1.0:
     resolution: {integrity: sha512-9HYQwCR5hQ7NDBFKrBopF9Gk7Pnu5gKHvOiiDSFWgicM6PX225G768VBNWGCsOv93GuzYwcyZF4xO9YpRlLzbA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-promises/8.4.0_putout@27.0.1:
+  /@putout/plugin-promises/8.4.0_putout@27.1.0:
     resolution: {integrity: sha512-wQRkhDxjTRkCn+Vqh3EN/jUcXumh2pj3Sb6D9MhCtRfT5YkyrszId+xL5FtUU86gpScrjxJd8kuNpE3/lq4KvA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       fullstore: 3.0.0
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-putout-config/2.0.0_putout@27.0.1:
+  /@putout/plugin-putout-config/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-woc1KPAfUQM+F/6BuKZFu7h75mmfIA6K6nAceA3eh+D9uLSszlaClHYNUjULb+aYo+O4sG7ZjtX/fqE14FlHsw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=21'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-putout/11.12.0_putout@27.0.1:
+  /@putout/plugin-putout/11.12.0_putout@27.1.0:
     resolution: {integrity: sha512-kj7RWcSJeOO/6vfNmi+jSyhtrkoBTgzFPQ9ngV4Xh8i+fF0ia9h4N6GjwvWTCAEbepD5EMnEzzFC2/EEk/sK3g==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       fullstore: 3.0.0
-      just-camel-case: 6.0.1
-      putout: 27.0.1
+      just-camel-case: 6.1.0
+      putout: 27.1.0
       try-catch: 3.0.1
     dev: false
 
-  /@putout/plugin-regexp/5.5.0_putout@27.0.1:
+  /@putout/plugin-regexp/5.5.0_putout@27.1.0:
     resolution: {integrity: sha512-JvZ8Di66I6mtcC8R32cRkN4BeT0yoqIwd8Ufv/7/wbk2lt0bngsZNeEmZOXJ8ghZpAQUeHs4yPKOtgweLUD0EQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
       regexp-tree: 0.1.24
       try-catch: 3.0.1
     dev: false
 
-  /@putout/plugin-remove-boolean-from-assertions/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-boolean-from-assertions/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-g8q6uImRupCpXfA5d9OV8+3M4q69vKVpUkDBwSNkh89seTiRE79QmTg4lTR/Bsha5wHa/velXCYnknoeIa7h8Q==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-boolean-from-logical-expressions/4.0.0_putout@27.0.1:
+  /@putout/plugin-remove-boolean-from-logical-expressions/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-dBbCsBXm1msMLesdJDM3T8vTX1LOV1oU7vmOZOZ0XbKX9f3nKHna3FTZvyW9Im7WCywo59I1Es+CHcWha/vLlw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=17'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-console/4.0.0_putout@27.0.1:
+  /@putout/plugin-remove-console/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-JmH4UnaNpSrqj7jJ3Tv7R1vEwX9xAYHNnhitsAxJFwamkCn0OZnapSm+MCW6osb/c5YLX7TjtfcHmIg0/xJM8A==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-constant-conditions/4.0.0_putout@27.0.1:
+  /@putout/plugin-remove-constant-conditions/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-8Dj4k7yaVvNw3j0O3fyPZEks3MWWP1CP83bMJBBFb2mbMxuIKce9AMPmqfxorjeY2PBZQbG3G+mnhcnA1H22og==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-debugger/5.0.0_putout@27.0.1:
+  /@putout/plugin-remove-debugger/5.0.0_putout@27.1.0:
     resolution: {integrity: sha512-a5Qp8+yWl9I2pGs6YrW4lnCRALcW1Uqh9CGcHnSPfh1mYguUHSAx/grb27ugLeZS4ycOjN+GX3UiFE1qYw0dtQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-duplicate-case/2.0.0_putout@27.0.1:
+  /@putout/plugin-remove-duplicate-case/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-R39s4AaceZRwS032foZ9r3YlxeuHSlJM9A6Lz5G1PDuuAaXE2dXgp0ya6c3NvwMR+RpCETahnoSg9Z1LXxN71A==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-duplicate-keys/3.0.0_putout@27.0.1:
+  /@putout/plugin-remove-duplicate-keys/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-9IZXP2RTTUaCYV+jn48QLoG1/kVZSz8ISeUYzLY3aNamajmkw523WK4cqxvrvZ4FdpmE/P3HH4UFjR6wDwgnuw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       fullstore: 3.0.0
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-duplicates-from-logical-expressions/1.0.0_putout@27.0.1:
+  /@putout/plugin-remove-duplicates-from-logical-expressions/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-aQqPGIxg31OrjJXH1nwf/e19bKjHwly1z8Fwn+8TPZFFcfZg6tt3iDtmEt49LsPldEXkkRrq3JRh/YHPzfbNXw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=13'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-empty/8.2.0_putout@27.0.1:
+  /@putout/plugin-remove-empty/8.2.0_putout@27.1.0:
     resolution: {integrity: sha512-kd0FRHD89ahnk85Yzi5e8A4kt/PLoIyiYBm5p5u7a7D/UvkyiyIXmv6j2NTaQakHAWWgKt3xGoah+/G7biSlMw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-iife/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-iife/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-c39o/CxBS7KQBEppiGNhtf82HmvCI4jSrZqDMC8XhG34tidcpGf17mOEPv9OSrKLjBqZXEvnEPvlg6gF0F+v7w==}
     engines: {node: '>=12'}
     peerDependencies:
       putout: '>=10'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-nested-blocks/6.3.0_putout@27.0.1:
+  /@putout/plugin-remove-nested-blocks/6.3.0_putout@27.1.0:
     resolution: {integrity: sha512-H4acUrKSuqHAWLeIZNZ37LLqHDFrncdu2NxArBLkjZXSYl1e4LCVJbEmfjtk3gqsBax2bQO32H+ir/FOHQRgdw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-unreachable-code/1.2.0_putout@27.0.1:
+  /@putout/plugin-remove-unreachable-code/1.2.0_putout@27.1.0:
     resolution: {integrity: sha512-3UkXYoeXVeSfcTrHENsRhbmsh4oxUgIpsAkFn7knKmi/WCVH7n0jQXUX+RRziX4E0sgs79mFodnMhQWtqMFXZg==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=4.31'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-unreferenced-variables/2.2.0_putout@27.0.1:
+  /@putout/plugin-remove-unreferenced-variables/2.2.0_putout@27.1.0:
     resolution: {integrity: sha512-YuKFXSTsCNwnVtd4MD8BtZDugoASviVZ/qgIRRkxhHUBQxdFB7i6wjXnwijemYbdCqqU8nXP87MdUtxH1gfVlg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-unused-expressions/5.0.0_putout@27.0.1:
+  /@putout/plugin-remove-unused-expressions/5.0.0_putout@27.1.0:
     resolution: {integrity: sha512-PaWZ4OTZrE7iUyV8SblwKyW103Nt3Yrx1EItfqzQfG8/01Mpm1l89QPgSUDPPMShCspLI3ZKFWFoV+26rLoD5g==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-unused-for-of-variables/3.0.0_putout@27.0.1:
+  /@putout/plugin-remove-unused-for-of-variables/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-zt5lE9x74MzL4MysKqjYYhsAA46ylwM3iPMzDvmEfCb+cc+DG9rWXiVTqbtI//xsUzqMwVxoXWSOcgN4RbqlZA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-unused-private-fields/2.1.0_putout@27.0.1:
+  /@putout/plugin-remove-unused-private-fields/2.1.0_putout@27.1.0:
     resolution: {integrity: sha512-g+hZPUDuJMCSrN4r2pWD5vPLGBouD651gbD2n1furOzEXFbduzpbMZqmn2pEBvOLu2e+61m03nLX3AUZmSgEYQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-unused-variables/4.0.0_putout@27.0.1:
+  /@putout/plugin-remove-unused-variables/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-eklJ36UCh1E3+Ft6TGyIa9CfcuwPo4n49RRlWtpwYqrDFjzzDUqIyahh29g4ANUvB76VSSN2nLj/Dy8ScaY/EA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-arguments/6.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-arguments/6.1.0_putout@27.1.0:
     resolution: {integrity: sha512-PVXFWRXUlN1EdNkX4e1Ca83tDqAePD8Iixe7mtCOu1Dio54YqbTJSk3eB6t3qaRoJcHGgeOpT2MSt9n3FRnQyA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-array-constructor/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-array-constructor/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-WBLzp29qDq24BXDZ51j4846M02aOq7DVcP8uIawbIoN7zo0ZzMUh445/JjNE82YZIZcKksr/OkKXLOhnaxKMPg==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-array-entries/1.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-array-entries/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-ArLWIUXH1ajRPRe/6Pv4MhW3HAFoet4dy1fMlYVa+2i2ydjVYsKnwdJU70cI9B2Mo25JQXUY5yskkSaRQx339g==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=23'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-array-from/2.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-array-from/2.1.0_putout@27.1.0:
     resolution: {integrity: sha512-/iUlLKb/aAg9H4W8skl/hoFf3dLl0whMI5/PO30BVdTaY3VUVQnV35Gvp67HLNsqx3kM+8hxPBIdH8ZfQSH2Mg==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.17'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-assign/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-assign/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-lfTkCAVYKacsEuZRjVogH29FUH9xE3+7+15VEVzPPMiBdsACOJ9561yldXeqy6u/+9rwmmkYr8W1Bt7VyQEyvg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-conditions/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-conditions/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-xq9OKyN5IO3sDJZFijWB9NGker6jJ8dAzSs4mYbSKVPNNe6Hw+Yzz1OQEkUTBiFjTLoZmsgIywO/ZO9ugmNPQw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-constructor/1.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-constructor/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-K/HAWhsO65T1pPkYjHEH1u8pG7sz69sqzU509b4mWQx6C4rWNRCEkucuF1MQT2eNaawrHE+TUfzJOWoQ2J90vw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-continue/1.0.1_putout@27.0.1:
+  /@putout/plugin-remove-useless-continue/1.0.1_putout@27.1.0:
     resolution: {integrity: sha512-GnW3BDbNQwWuleqeH6efy0AUS5ksEUtro69kONLQ4TNVsYCKONpmEzdQaXzFN3cd/2keV2n6uhj5Eq50iqXkyw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=16'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-else/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-else/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-sYh2gOwh0E1Qr+OO9KU29EdfLomESmWrPXZmEL25sOFhSRe1oqmkC5W5vWt2zsMBt7RrTJ9atAW+akf0E2numw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-escape/3.1.1_putout@27.0.1:
+  /@putout/plugin-remove-useless-escape/3.1.1_putout@27.1.0:
     resolution: {integrity: sha512-k0EHZ8JAip0ep3Quz6bgscDVvbBxXzDa3fNRu1pbbWYamc8+fPHhZoF22CrACel7cDPUWcGvpQ1rwAB5Dm8wVQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
       emoji-regex: 10.1.0
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-for-of/2.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-for-of/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-e1pQBm1aPA4zmQY0Bd6egdoa4SiVGlsufeeNxIZiH+OCFPXkKxkdh1HFLqVF2RNWAVWbBtzGz39Q5o3UEzhP+Q==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=15'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-functions/2.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-functions/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-bLqrtOrdtl8Ryo+ampCcATGvYYWebeDSPmkSQCcZ3yyepGxfc1YBwT/jF6jtBx1g+jBeqm7hwghQPH3ZBRhiig==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=21'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-map/1.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-map/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-/5VQNb1YkcTZ16FqFrSfoILgGqsMJ6zIaKP1LlhZa3Xt1svLoN2Y2NIve9mSn7NgxFWnR1eUZPaeXl+FT+ltog==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=18'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-operand/2.1.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-operand/2.1.0_putout@27.1.0:
     resolution: {integrity: sha512-Et+8ZHBRD1zTHjYu71lC22rRuwayI4r4yQw+kibvwIEgVvLBbJu8DhlTKKjWkH04BQWEtigSwd/kKQSL0bVo+Q==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-replace/1.0.4_putout@27.0.1:
+  /@putout/plugin-remove-useless-replace/1.0.4_putout@27.1.0:
     resolution: {integrity: sha512-w4TdcqM/9UOjv3YtyRldV49P95o32MIYyVe4aSxyAD4m29f/tnzD11RsCDC20mHZzSK3BIVpB72guK2U0ylqGQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-return/4.2.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-return/4.2.0_putout@27.1.0:
     resolution: {integrity: sha512-fCqK+YGMNEv2TefxblhiLoR195ns0DIynMFWuQ7xHI14PmxyYwY8sOAEIxJxNJIWxrrQ6e/w6AFiS0FyX3kd1Q==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=22'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-spread/6.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-spread/6.0.0_putout@27.1.0:
     resolution: {integrity: sha512-cI1JJ6QlSaAYT8ps43k0f8XLo5zOl5qxBpGVH8MAr40gEX/gQLDUmG48XI6ty8XQySC4hHl4wfpDBJCXgbXRDg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-template-expressions/1.2.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-template-expressions/1.2.0_putout@27.1.0:
     resolution: {integrity: sha512-GP4NsXjxioCUWYXQdaiTnrZrNB946gOaZEp0Av5hTbzpaCZQrzSgus4368gHDUqsfKhnfYYk7KS8miW9tDw+Bw==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.7'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-type-conversion/2.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-type-conversion/2.0.0_putout@27.1.0:
     resolution: {integrity: sha512-wPglZa7HwMShlD1J3ZnI5Z/HIPyeskvz+3o6/Gu2HpfFKND2m79YPvg2Hnvcb2j6Ylfat0g95CqX06dKRavF5Q==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-typeof/1.0.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-typeof/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-C5nN1IwJeYhpqp7I2B4ki6jHhuc9cNAv0Z2DbTVE17J9HItsEShQgEyxGTxjGEb4dl2vOat2MHF70DbY6OFepg==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.7'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-remove-useless-variables/7.3.0_putout@27.0.1:
+  /@putout/plugin-remove-useless-variables/7.3.0_putout@27.1.0:
     resolution: {integrity: sha512-Kw+Pf7qW8npBYcOIWy4aA0YHONmWH/wXHwpukGLxaSNlNLLHqrmdk9x85vOrDxoo8MsQiEIKjsxMwvgBx/Nx8Q==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-reuse-duplicate-init/4.0.0_putout@27.0.1:
+  /@putout/plugin-reuse-duplicate-init/4.0.0_putout@27.1.0:
     resolution: {integrity: sha512-xhi8QxDFnvmZv2leGD3TmtKhoQiIT5J4VxI+TGEZjGNo0atDUq1c231jHKcObo/PjZB2pl9vFB97sidzYcwhLQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-simplify-assignment/1.0.0_putout@27.0.1:
+  /@putout/plugin-simplify-assignment/1.0.0_putout@27.1.0:
     resolution: {integrity: sha512-fXbW/jmdn9G0Gja0BSM07R68QNZLfIJoaGoL6tXgyfmZPUgqEL1ftIDQMQwQux66yh+sQ1FdyEx/2/anyYqsjw==}
     engines: {node: '>=14'}
     peerDependencies:
       putout: '>=18'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-simplify-logical-expressions/3.0.0_putout@27.0.1:
+  /@putout/plugin-simplify-logical-expressions/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-E29CqjfuA/KDvtikwMX6f872eWdScRAB6TBCHI/p5TEtFuXu/ixyaCLNo2MPhII9jAjgVD1Thq7s2k0qiKPFEg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-simplify-ternary/3.0.0_putout@27.0.1:
+  /@putout/plugin-simplify-ternary/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-90oGsH1CIAhRr8UTbY8p33KZbnkx28balDYV5gbeK8DSxRE1g2jIoDP81JZdaAmSZtYDZhsMD6FtTOtd1dIkjA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-split-nested-destructuring/1.1.0_putout@27.0.1:
+  /@putout/plugin-split-nested-destructuring/1.1.0_putout@27.1.0:
     resolution: {integrity: sha512-XApOtNxICcLairRHI+VeCUaD1u99kKPRLL6FB4DJHZeMvAWnQX0crGGmTXHoyEI3EXqVoV3/tcYiyJSHHctO5w==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.17'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-split-variable-declarations/2.1.1_putout@27.0.1:
+  /@putout/plugin-split-variable-declarations/2.1.1_putout@27.1.0:
     resolution: {integrity: sha512-cTfSYS9LVE5We5Fu12bFnrRAy+tXjTvmT4D+HurJ2e2FCYUn2/vmUDZARIfhqucinF2lv1jDOBA0VbT/b11TJg==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
       putout: '>=7.17'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-strict-mode/5.2.0_putout@27.0.1:
+  /@putout/plugin-strict-mode/5.2.0_putout@27.1.0:
     resolution: {integrity: sha512-ksqSNafiqfjY8xjn4edMlyEIkj1lnqBptAMabZI13Ej2GMVkqwFs+XlD4UZkzjsBvQpiP7v7+E/M1RHw6UWuvg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-tape/9.14.0_putout@27.0.1:
+  /@putout/plugin-tape/9.14.0_putout@27.1.0:
     resolution: {integrity: sha512-VFhAPEZvJSwUOz3sB8dExxVBjrKQ+K9QiQVv7jcsUw+IcWIbQ636iCYCzSEZGVzKF8HUj7vKfjkihj1j+FN6UQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-try-catch/1.3.0_putout@27.0.1:
+  /@putout/plugin-try-catch/1.3.0_putout@27.1.0:
     resolution: {integrity: sha512-kyTlvwjQB1R36SaH2jttkOzzNxQRofPENEpVuaZIlgDFIoFRx8YLbF+75ENFs3QAjY6r7We1VqJMEgLBWX4Jiw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=25'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-typescript/2.4.0_putout@27.0.1:
-    resolution: {integrity: sha512-NxVkyN5K9qidA6n7vHQ77ufqHF/fo4sVBBhP0Z68QUoJWf5TPyEcfFAFAn90RzZAKUCSrWm3KGVtFumHZA5IXQ==}
+  /@putout/plugin-typescript/3.0.0_putout@27.1.0:
+    resolution: {integrity: sha512-HgWYszaiZxVUiy3B8ZqGzm29SoSzmOEQnWa8jkfwB90+uBYD4hfmeikJDaM29kbXHjaMU2P4KLxtGjReqk+Xgw==}
     engines: {node: '>=16'}
     peerDependencies:
-      putout: '>=25'
+      putout: '>=27'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/plugin-webpack/1.4.0_putout@27.0.1:
+  /@putout/plugin-webpack/1.4.0_putout@27.1.0:
     resolution: {integrity: sha512-IktpkxwoIO+RrOLC839DFQStHUH/zqABbHadDb1qQrbUaHgebcNHMbmfL7t8G3SQSJlC+Oa8z1mAyQxDbr7pcw==}
     engines: {node: '>=12'}
     peerDependencies:
       putout: '>=10'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/processor-css/5.0.1_putout@27.0.1:
+  /@putout/processor-css/5.0.1_putout@27.1.0:
     resolution: {integrity: sha512-qayN3i7yqzrCoLSUQV2UUz/m3c28u6PmKHqf2nPP9v45kIcPWrXev40/G8YHlnku6HTd2AQoVRLhpkl3vJFttQ==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -4688,50 +4690,50 @@ packages:
     dependencies:
       cosmiconfig: 7.0.1
       deepmerge: 4.2.2
-      putout: 27.0.1
+      putout: 27.1.0
       stylelint: 14.9.1
       stylelint-config-standard: 26.0.0_stylelint@14.9.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@putout/processor-ignore/3.0.0_putout@27.0.1:
+  /@putout/processor-ignore/3.0.0_putout@27.1.0:
     resolution: {integrity: sha512-+L39wM+skir4hejfHlfgjpIfnJDXqiO17VApJfwc896OcZW0l1A0EtuDCxlNi90BwsZ1pcjsTL7VPhb5+yg/sw==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/processor-javascript/4.1.0_putout@27.0.1:
+  /@putout/processor-javascript/4.1.0_putout@27.1.0:
     resolution: {integrity: sha512-w7jY6H1mb2xm1MEbgfLZDEDmaF00/snQh8C6F+2QfTr4KZld0MEqkcICxNisA8mx3mzJgmIlNyFD2Q1ts4n14w==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
     dev: false
 
-  /@putout/processor-json/5.0.0_putout@27.0.1:
+  /@putout/processor-json/5.0.0_putout@27.1.0:
     resolution: {integrity: sha512-+kh8odqHubtdrL2t7AjhGi0fa9moPiJvYkMfVZJr6sJQZA/r7gVesKM6kE3ZdkWhOlLL4xqH/qZVMowsaKZFXg==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      putout: 27.0.1
+      putout: 27.1.0
       remove-blank-lines: 1.4.1
     dev: false
 
-  /@putout/processor-markdown/7.3.0_putout@27.0.1:
+  /@putout/processor-markdown/7.3.0_putout@27.1.0:
     resolution: {integrity: sha512-fml4+GoT9LqtuwOKPtqetDakITGiQB5TiU0p/B8bmxgr1l56OcV3ccfW+ybk8TU3ZJx8WIrQweDthr5KNJ9UgQ==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      '@putout/processor-json': 5.0.0_putout@27.0.1
+      '@putout/processor-json': 5.0.0_putout@27.1.0
       once: 1.4.0
-      putout: 27.0.1
+      putout: 27.1.0
       remark-parse: 10.0.1
       remark-preset-lint-consistent: 5.1.1
       remark-stringify: 10.0.2
@@ -4742,15 +4744,15 @@ packages:
       - supports-color
     dev: false
 
-  /@putout/processor-yaml/4.1.0_putout@27.0.1:
+  /@putout/processor-yaml/4.1.0_putout@27.1.0:
     resolution: {integrity: sha512-7ihLoyBPmp6qDDMwTZYBPU/NxuFzHG0TkCVrtSIBFVArJIafRQyRVDToVm1C0LzpU0HL6CmolSxI5NCYjXozqA==}
     engines: {node: '>=16'}
     peerDependencies:
       putout: '>=26'
     dependencies:
-      '@putout/processor-json': 5.0.0_putout@27.0.1
-      just-kebab-case: 4.0.3
-      putout: 27.0.1
+      '@putout/processor-json': 5.0.0_putout@27.1.0
+      just-kebab-case: 4.1.0
+      putout: 27.1.0
       try-catch: 3.0.1
       yaml: 2.1.1
     dev: false
@@ -8501,6 +8503,13 @@ packages:
       globals: 11.12.0
     dev: false
 
+  /eslint-plugin-destructuring/2.2.1:
+    resolution: {integrity: sha512-I/jbm7E3xamiFqn8NLwyhZkDjCb0lTFIykNxIWwDwHsTlU+8hR4gDQmrXTWdyDHG9k1i2uFeHMhoMAtERNWp4w==}
+    engines: {node: '>=4'}
+    dependencies:
+      lodash.zipobject: 4.1.3
+    dev: false
+
   /eslint-plugin-editorconfig/4.0.2:
     resolution: {integrity: sha512-soh4tQsztLlX2c9xb+HjeaZiF6Os/S6An5ZsF1fYCm5mZYm+5m7f3y+eUWqJpT3sKi0JjxuRLtxE/VpmLtDzfA==}
     engines: {node: '>=14', npm: '>=8'}
@@ -8730,8 +8739,8 @@ packages:
       eslint: 8.21.0
     dev: false
 
-  /eslint-plugin-jest/26.7.0_bqjo633dpfdihlvg5bmomzewvm:
-    resolution: {integrity: sha512-/YNitdfG3o3cC6juZziAdkk6nfJt01jXVfj4AgaYVLs7bupHzRDL5K+eipdzhDXtQsiqaX1TzfwSuRlEgeln1A==}
+  /eslint-plugin-jest/26.8.0_bqjo633dpfdihlvg5bmomzewvm:
+    resolution: {integrity: sha512-IyGhk+PpDgIA99OBPHo+l2aTtt8yAeB1IgPwXOQZSzi8ag/t1MsLZBN2MKL1sj6ahlkaxbkhlm7ll+NPcMcjaQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': ^5.0.0
@@ -9010,7 +9019,7 @@ packages:
       eslint: 8.21.0
     dev: false
 
-  /eslint-plugin-putout/16.0.1_ni5kuamcooiyroyn5rxmweimmu:
+  /eslint-plugin-putout/16.0.1_5hvzthalguegtr7jmp4b6a2nsi:
     resolution: {integrity: sha512-5MdS0Hnzcb5HKGLLGzW67LkqE0/pvBg84qZxwplAM0VViyNMKZICQr3clB6rOgbqtW/ZTWZDRs9W91DMiy5eVA==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -9028,7 +9037,7 @@ packages:
       align-spaces: 1.0.4
       eslint: 8.21.0
       eslint-plugin-n: 15.2.4_eslint@8.21.0
-      putout: 27.0.1
+      putout: 27.1.0
       try-catch: 3.0.1
       typescript: 4.7.4
     transitivePeerDependencies:
@@ -12823,16 +12832,16 @@ packages:
     resolution: {integrity: sha512-df6QI/EIq+6uHe/wtaa9Qq7/pp4wr4pJC/r1+7XhVL6m5j03G6h9u9/rIZr8rDASX7CxwDPQnZjffCo2e6PRLw==}
     dev: false
 
-  /just-camel-case/6.0.1:
-    resolution: {integrity: sha512-cFuLe+LDw0sOLDiaftpasYMNe3g8X5BZbmJcr9GZ8nL8ViR5x6ML3KrAq1+nftFJ+lesSr1nZKsCNp8WcN8O8A==}
+  /just-camel-case/6.1.0:
+    resolution: {integrity: sha512-mxOfjhAHmahcWrrSlA76jVATNKbfBSlDRS0xOlECD/vbe/FrlXhECHcwD6vJ/V5Vjuk1+A2LwHJRlqPDMa/l0A==}
     dev: false
 
   /just-kebab-case/1.1.0:
     resolution: {integrity: sha512-QkuwuBMQ9BQHMUEkAtIA4INLrkmnnveqlFB1oFi09gbU0wBdZo6tTnyxNWMR84zHxBuwK7GLAwqN8nrvVxOLTA==}
     dev: false
 
-  /just-kebab-case/4.0.3:
-    resolution: {integrity: sha512-T1afsOXLXs1ezkWq02qrJwJLh6eib5ISr8/jkh56k5YnDhDuOvyd++QlMO9YUofwVbAi9JRTEms2yTs+WZ8TLQ==}
+  /just-kebab-case/4.1.0:
+    resolution: {integrity: sha512-3Wb/59S9Jy96J++RGyZyU8z/njlwcDHaxHa/fakMsdTJ0MWJddpuVpO1Sohern+l7kWRyidbZy2XYi/kt3XDQw==}
     dev: false
 
   /jwa/1.4.1:
@@ -15378,8 +15387,8 @@ packages:
       escape-goat: 2.1.1
     dev: true
 
-  /putout/27.0.1:
-    resolution: {integrity: sha512-3Mu4b6vxwdiLGIbrYmp2gkMwcUP2tB/1i37KurkDbqBnLSHeLsVoYsBrp8Duyp2mvu5TutFO6hUryjt6xXQuAQ==}
+  /putout/27.1.0:
+    resolution: {integrity: sha512-+yF1IT/o4FZyUQLV07L0MaoihB5NdJr44IfwBkwYQkm4n3rGALCXemmifDmQ4n5wQRfaXfbQt84FsSixJIo5NQ==}
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
@@ -15392,135 +15401,135 @@ packages:
       '@putout/cli-ruler': 2.0.0
       '@putout/cli-validate-args': 1.1.1
       '@putout/compare': 9.2.1
-      '@putout/engine-loader': 7.1.1_putout@27.0.1
+      '@putout/engine-loader': 7.1.1_putout@27.1.0
       '@putout/engine-parser': 5.1.1
-      '@putout/engine-processor': 6.1.0_putout@27.0.1
-      '@putout/engine-runner': 13.7.0
-      '@putout/formatter-codeframe': 4.0.1_putout@27.0.1
-      '@putout/formatter-dump': 4.0.1_putout@27.0.1
-      '@putout/formatter-frame': 3.0.0_putout@27.0.1
-      '@putout/formatter-json': 2.0.0_putout@27.0.1
-      '@putout/formatter-json-lines': 3.0.0_putout@27.0.1
-      '@putout/formatter-memory': 3.0.1_putout@27.0.1
-      '@putout/formatter-progress': 4.0.0_putout@27.0.1
-      '@putout/formatter-progress-bar': 3.0.2_putout@27.0.1
-      '@putout/formatter-stream': 4.0.1_putout@27.0.1
+      '@putout/engine-processor': 6.1.0_putout@27.1.0
+      '@putout/engine-runner': 14.0.0
+      '@putout/formatter-codeframe': 4.0.1_putout@27.1.0
+      '@putout/formatter-dump': 4.0.1_putout@27.1.0
+      '@putout/formatter-frame': 3.0.0_putout@27.1.0
+      '@putout/formatter-json': 2.0.0_putout@27.1.0
+      '@putout/formatter-json-lines': 3.0.0_putout@27.1.0
+      '@putout/formatter-memory': 3.0.1_putout@27.1.0
+      '@putout/formatter-progress': 4.0.0_putout@27.1.0
+      '@putout/formatter-progress-bar': 3.0.2_putout@27.1.0
+      '@putout/formatter-stream': 4.0.1_putout@27.1.0
       '@putout/operate': 8.4.0
-      '@putout/operator-add-args': 3.1.0_putout@27.0.1
-      '@putout/operator-declare': 4.6.1_putout@27.0.1
-      '@putout/operator-regexp': 1.0.0_putout@27.0.1
-      '@putout/plugin-apply-array-at': 2.1.0_putout@27.0.1
-      '@putout/plugin-apply-comparison-order': 1.1.0_putout@27.0.1
-      '@putout/plugin-apply-destructuring': 5.2.1_putout@27.0.1
-      '@putout/plugin-apply-early-return': 2.0.0_putout@27.0.1
-      '@putout/plugin-apply-if-condition': 1.0.0_putout@27.0.1
-      '@putout/plugin-apply-is-array': 3.0.0_putout@27.0.1
-      '@putout/plugin-apply-numeric-separators': 1.2.1_putout@27.0.1
-      '@putout/plugin-apply-optional-chaining': 2.0.2_putout@27.0.1
-      '@putout/plugin-browserlist': 1.0.1_putout@27.0.1
-      '@putout/plugin-convert-apply-to-spread': 3.1.0_putout@27.0.1
-      '@putout/plugin-convert-arguments-to-rest': 1.3.0_putout@27.0.1
-      '@putout/plugin-convert-array-copy-to-slice': 2.0.0_putout@27.0.1
-      '@putout/plugin-convert-assignment-to-arrow-function': 1.2.0_putout@27.0.1
-      '@putout/plugin-convert-assignment-to-comparison': 1.0.0_putout@27.0.1
-      '@putout/plugin-convert-bitwise-to-logical': 1.0.0_putout@27.0.1
-      '@putout/plugin-convert-commonjs-to-esm': 9.2.0_putout@27.0.1
-      '@putout/plugin-convert-comparison-to-boolean': 3.0.1_putout@27.0.1
-      '@putout/plugin-convert-concat-to-flat': 1.0.0_putout@27.0.1
-      '@putout/plugin-convert-const-to-let': 1.1.3_putout@27.0.1
-      '@putout/plugin-convert-equal-to-strict-equal': 1.1.0_putout@27.0.1
-      '@putout/plugin-convert-esm-to-commonjs': 5.0.0_putout@27.0.1
-      '@putout/plugin-convert-for-each-to-for-of': 7.1.2_putout@27.0.1
-      '@putout/plugin-convert-for-in-to-for-of': 2.0.0_putout@27.0.1
-      '@putout/plugin-convert-for-to-for-of': 4.0.0_putout@27.0.1
-      '@putout/plugin-convert-imul-to-multiplication': 1.0.0_putout@27.0.1
-      '@putout/plugin-convert-index-of-to-includes': 1.1.0_putout@27.0.1
-      '@putout/plugin-convert-map-to-for-of': 2.0.2_putout@27.0.1
-      '@putout/plugin-convert-math-pow': 5.0.1_putout@27.0.1
-      '@putout/plugin-convert-mock-require-to-mock-import': 4.1.0_putout@27.0.1
-      '@putout/plugin-convert-object-assign-to-merge-spread': 6.0.0_putout@27.0.1
-      '@putout/plugin-convert-quotes-to-backticks': 2.1.0_putout@27.0.1
-      '@putout/plugin-convert-reduce-to-for-of': 1.4.0_putout@27.0.1
-      '@putout/plugin-convert-sqrt-to-hypot': 1.0.1_putout@27.0.1
-      '@putout/plugin-convert-template-to-string': 1.0.0_putout@27.0.1
-      '@putout/plugin-convert-to-arrow-function': 3.0.0_putout@27.0.1
-      '@putout/plugin-convert-typeof-to-is-type': 2.0.0_putout@27.0.1
-      '@putout/plugin-declare-before-reference': 1.3.0_putout@27.0.1
-      '@putout/plugin-declare-imports-first': 1.0.0_putout@27.0.1
-      '@putout/plugin-declare-undefined-variables': 7.2.0_putout@27.0.1
-      '@putout/plugin-eslint': 4.2.0_putout@27.0.1
-      '@putout/plugin-extract-object-properties': 8.3.0_putout@27.0.1
-      '@putout/plugin-extract-sequence-expressions': 3.0.1_putout@27.0.1
-      '@putout/plugin-github': 3.1.0_putout@27.0.1
-      '@putout/plugin-gitignore': 3.1.0_putout@27.0.1
-      '@putout/plugin-madrun': 14.4.0_putout@27.0.1
-      '@putout/plugin-merge-destructuring-properties': 6.2.1_putout@27.0.1
-      '@putout/plugin-merge-duplicate-imports': 6.1.0_putout@27.0.1
-      '@putout/plugin-merge-if-statements': 3.1.0_putout@27.0.1
-      '@putout/plugin-montag': 1.0.0_putout@27.0.1
-      '@putout/plugin-new': 1.1.0_putout@27.0.1
-      '@putout/plugin-nodejs': 4.8.1_putout@27.0.1
-      '@putout/plugin-npmignore': 2.0.1_putout@27.0.1
-      '@putout/plugin-package-json': 4.1.0_putout@27.0.1
-      '@putout/plugin-promises': 8.4.0_putout@27.0.1
-      '@putout/plugin-putout': 11.12.0_putout@27.0.1
-      '@putout/plugin-putout-config': 2.0.0_putout@27.0.1
-      '@putout/plugin-regexp': 5.5.0_putout@27.0.1
-      '@putout/plugin-remove-boolean-from-assertions': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-boolean-from-logical-expressions': 4.0.0_putout@27.0.1
-      '@putout/plugin-remove-console': 4.0.0_putout@27.0.1
-      '@putout/plugin-remove-constant-conditions': 4.0.0_putout@27.0.1
-      '@putout/plugin-remove-debugger': 5.0.0_putout@27.0.1
-      '@putout/plugin-remove-duplicate-case': 2.0.0_putout@27.0.1
-      '@putout/plugin-remove-duplicate-keys': 3.0.0_putout@27.0.1
-      '@putout/plugin-remove-duplicates-from-logical-expressions': 1.0.0_putout@27.0.1
-      '@putout/plugin-remove-empty': 8.2.0_putout@27.0.1
-      '@putout/plugin-remove-iife': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-nested-blocks': 6.3.0_putout@27.0.1
-      '@putout/plugin-remove-unreachable-code': 1.2.0_putout@27.0.1
-      '@putout/plugin-remove-unreferenced-variables': 2.2.0_putout@27.0.1
-      '@putout/plugin-remove-unused-expressions': 5.0.0_putout@27.0.1
-      '@putout/plugin-remove-unused-for-of-variables': 3.0.0_putout@27.0.1
-      '@putout/plugin-remove-unused-private-fields': 2.1.0_putout@27.0.1
-      '@putout/plugin-remove-unused-variables': 4.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-arguments': 6.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-array-constructor': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-array-entries': 1.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-array-from': 2.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-assign': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-conditions': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-constructor': 1.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-continue': 1.0.1_putout@27.0.1
-      '@putout/plugin-remove-useless-else': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-escape': 3.1.1_putout@27.0.1
-      '@putout/plugin-remove-useless-for-of': 2.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-functions': 2.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-map': 1.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-operand': 2.1.0_putout@27.0.1
-      '@putout/plugin-remove-useless-replace': 1.0.4_putout@27.0.1
-      '@putout/plugin-remove-useless-return': 4.2.0_putout@27.0.1
-      '@putout/plugin-remove-useless-spread': 6.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-template-expressions': 1.2.0_putout@27.0.1
-      '@putout/plugin-remove-useless-type-conversion': 2.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-typeof': 1.0.0_putout@27.0.1
-      '@putout/plugin-remove-useless-variables': 7.3.0_putout@27.0.1
-      '@putout/plugin-reuse-duplicate-init': 4.0.0_putout@27.0.1
-      '@putout/plugin-simplify-assignment': 1.0.0_putout@27.0.1
-      '@putout/plugin-simplify-logical-expressions': 3.0.0_putout@27.0.1
-      '@putout/plugin-simplify-ternary': 3.0.0_putout@27.0.1
-      '@putout/plugin-split-nested-destructuring': 1.1.0_putout@27.0.1
-      '@putout/plugin-split-variable-declarations': 2.1.1_putout@27.0.1
-      '@putout/plugin-strict-mode': 5.2.0_putout@27.0.1
-      '@putout/plugin-tape': 9.14.0_putout@27.0.1
-      '@putout/plugin-try-catch': 1.3.0_putout@27.0.1
-      '@putout/plugin-typescript': 2.4.0_putout@27.0.1
-      '@putout/plugin-webpack': 1.4.0_putout@27.0.1
-      '@putout/processor-css': 5.0.1_putout@27.0.1
-      '@putout/processor-ignore': 3.0.0_putout@27.0.1
-      '@putout/processor-javascript': 4.1.0_putout@27.0.1
-      '@putout/processor-json': 5.0.0_putout@27.0.1
-      '@putout/processor-markdown': 7.3.0_putout@27.0.1
-      '@putout/processor-yaml': 4.1.0_putout@27.0.1
+      '@putout/operator-add-args': 3.1.0_putout@27.1.0
+      '@putout/operator-declare': 4.6.1_putout@27.1.0
+      '@putout/operator-regexp': 1.0.0_putout@27.1.0
+      '@putout/plugin-apply-array-at': 2.1.0_putout@27.1.0
+      '@putout/plugin-apply-comparison-order': 1.1.0_putout@27.1.0
+      '@putout/plugin-apply-destructuring': 5.2.1_putout@27.1.0
+      '@putout/plugin-apply-early-return': 2.0.0_putout@27.1.0
+      '@putout/plugin-apply-if-condition': 1.0.0_putout@27.1.0
+      '@putout/plugin-apply-is-array': 3.0.0_putout@27.1.0
+      '@putout/plugin-apply-numeric-separators': 1.2.1_putout@27.1.0
+      '@putout/plugin-apply-optional-chaining': 2.0.2_putout@27.1.0
+      '@putout/plugin-browserlist': 1.0.1_putout@27.1.0
+      '@putout/plugin-convert-apply-to-spread': 3.1.0_putout@27.1.0
+      '@putout/plugin-convert-arguments-to-rest': 1.3.0_putout@27.1.0
+      '@putout/plugin-convert-array-copy-to-slice': 2.0.0_putout@27.1.0
+      '@putout/plugin-convert-assignment-to-arrow-function': 1.2.0_putout@27.1.0
+      '@putout/plugin-convert-assignment-to-comparison': 1.0.0_putout@27.1.0
+      '@putout/plugin-convert-bitwise-to-logical': 1.0.0_putout@27.1.0
+      '@putout/plugin-convert-commonjs-to-esm': 9.2.0_putout@27.1.0
+      '@putout/plugin-convert-comparison-to-boolean': 3.0.1_putout@27.1.0
+      '@putout/plugin-convert-concat-to-flat': 1.0.0_putout@27.1.0
+      '@putout/plugin-convert-const-to-let': 1.1.3_putout@27.1.0
+      '@putout/plugin-convert-equal-to-strict-equal': 1.1.0_putout@27.1.0
+      '@putout/plugin-convert-esm-to-commonjs': 5.0.0_putout@27.1.0
+      '@putout/plugin-convert-for-each-to-for-of': 7.1.2_putout@27.1.0
+      '@putout/plugin-convert-for-in-to-for-of': 2.0.0_putout@27.1.0
+      '@putout/plugin-convert-for-to-for-of': 4.0.0_putout@27.1.0
+      '@putout/plugin-convert-imul-to-multiplication': 1.0.0_putout@27.1.0
+      '@putout/plugin-convert-index-of-to-includes': 1.1.0_putout@27.1.0
+      '@putout/plugin-convert-map-to-for-of': 2.0.2_putout@27.1.0
+      '@putout/plugin-convert-math-pow': 5.0.1_putout@27.1.0
+      '@putout/plugin-convert-mock-require-to-mock-import': 4.1.0_putout@27.1.0
+      '@putout/plugin-convert-object-assign-to-merge-spread': 6.0.0_putout@27.1.0
+      '@putout/plugin-convert-quotes-to-backticks': 2.1.0_putout@27.1.0
+      '@putout/plugin-convert-reduce-to-for-of': 1.4.0_putout@27.1.0
+      '@putout/plugin-convert-sqrt-to-hypot': 1.0.1_putout@27.1.0
+      '@putout/plugin-convert-template-to-string': 1.0.0_putout@27.1.0
+      '@putout/plugin-convert-to-arrow-function': 3.0.0_putout@27.1.0
+      '@putout/plugin-convert-typeof-to-is-type': 2.0.0_putout@27.1.0
+      '@putout/plugin-declare-before-reference': 1.3.0_putout@27.1.0
+      '@putout/plugin-declare-imports-first': 2.0.0_putout@27.1.0
+      '@putout/plugin-declare-undefined-variables': 7.2.0_putout@27.1.0
+      '@putout/plugin-eslint': 4.2.0_putout@27.1.0
+      '@putout/plugin-extract-object-properties': 8.3.0_putout@27.1.0
+      '@putout/plugin-extract-sequence-expressions': 3.0.1_putout@27.1.0
+      '@putout/plugin-github': 3.1.0_putout@27.1.0
+      '@putout/plugin-gitignore': 3.1.0_putout@27.1.0
+      '@putout/plugin-madrun': 14.4.0_putout@27.1.0
+      '@putout/plugin-merge-destructuring-properties': 6.2.1_putout@27.1.0
+      '@putout/plugin-merge-duplicate-imports': 7.0.0_putout@27.1.0
+      '@putout/plugin-merge-if-statements': 3.1.0_putout@27.1.0
+      '@putout/plugin-montag': 1.0.0_putout@27.1.0
+      '@putout/plugin-new': 1.1.0_putout@27.1.0
+      '@putout/plugin-nodejs': 5.0.0_putout@27.1.0
+      '@putout/plugin-npmignore': 2.0.1_putout@27.1.0
+      '@putout/plugin-package-json': 4.1.0_putout@27.1.0
+      '@putout/plugin-promises': 8.4.0_putout@27.1.0
+      '@putout/plugin-putout': 11.12.0_putout@27.1.0
+      '@putout/plugin-putout-config': 2.0.0_putout@27.1.0
+      '@putout/plugin-regexp': 5.5.0_putout@27.1.0
+      '@putout/plugin-remove-boolean-from-assertions': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-boolean-from-logical-expressions': 4.0.0_putout@27.1.0
+      '@putout/plugin-remove-console': 4.0.0_putout@27.1.0
+      '@putout/plugin-remove-constant-conditions': 4.0.0_putout@27.1.0
+      '@putout/plugin-remove-debugger': 5.0.0_putout@27.1.0
+      '@putout/plugin-remove-duplicate-case': 2.0.0_putout@27.1.0
+      '@putout/plugin-remove-duplicate-keys': 3.0.0_putout@27.1.0
+      '@putout/plugin-remove-duplicates-from-logical-expressions': 1.0.0_putout@27.1.0
+      '@putout/plugin-remove-empty': 8.2.0_putout@27.1.0
+      '@putout/plugin-remove-iife': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-nested-blocks': 6.3.0_putout@27.1.0
+      '@putout/plugin-remove-unreachable-code': 1.2.0_putout@27.1.0
+      '@putout/plugin-remove-unreferenced-variables': 2.2.0_putout@27.1.0
+      '@putout/plugin-remove-unused-expressions': 5.0.0_putout@27.1.0
+      '@putout/plugin-remove-unused-for-of-variables': 3.0.0_putout@27.1.0
+      '@putout/plugin-remove-unused-private-fields': 2.1.0_putout@27.1.0
+      '@putout/plugin-remove-unused-variables': 4.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-arguments': 6.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-array-constructor': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-array-entries': 1.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-array-from': 2.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-assign': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-conditions': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-constructor': 1.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-continue': 1.0.1_putout@27.1.0
+      '@putout/plugin-remove-useless-else': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-escape': 3.1.1_putout@27.1.0
+      '@putout/plugin-remove-useless-for-of': 2.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-functions': 2.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-map': 1.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-operand': 2.1.0_putout@27.1.0
+      '@putout/plugin-remove-useless-replace': 1.0.4_putout@27.1.0
+      '@putout/plugin-remove-useless-return': 4.2.0_putout@27.1.0
+      '@putout/plugin-remove-useless-spread': 6.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-template-expressions': 1.2.0_putout@27.1.0
+      '@putout/plugin-remove-useless-type-conversion': 2.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-typeof': 1.0.0_putout@27.1.0
+      '@putout/plugin-remove-useless-variables': 7.3.0_putout@27.1.0
+      '@putout/plugin-reuse-duplicate-init': 4.0.0_putout@27.1.0
+      '@putout/plugin-simplify-assignment': 1.0.0_putout@27.1.0
+      '@putout/plugin-simplify-logical-expressions': 3.0.0_putout@27.1.0
+      '@putout/plugin-simplify-ternary': 3.0.0_putout@27.1.0
+      '@putout/plugin-split-nested-destructuring': 1.1.0_putout@27.1.0
+      '@putout/plugin-split-variable-declarations': 2.1.1_putout@27.1.0
+      '@putout/plugin-strict-mode': 5.2.0_putout@27.1.0
+      '@putout/plugin-tape': 9.14.0_putout@27.1.0
+      '@putout/plugin-try-catch': 1.3.0_putout@27.1.0
+      '@putout/plugin-typescript': 3.0.0_putout@27.1.0
+      '@putout/plugin-webpack': 1.4.0_putout@27.1.0
+      '@putout/processor-css': 5.0.1_putout@27.1.0
+      '@putout/processor-ignore': 3.0.0_putout@27.1.0
+      '@putout/processor-javascript': 4.1.0_putout@27.1.0
+      '@putout/processor-json': 5.0.0_putout@27.1.0
+      '@putout/processor-markdown': 7.3.0_putout@27.1.0
+      '@putout/processor-yaml': 4.1.0_putout@27.1.0
       '@putout/traverse': 5.0.0
       ajv: 8.11.0
       chalk: 4.1.2
