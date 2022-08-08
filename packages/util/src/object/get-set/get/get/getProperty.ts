@@ -68,7 +68,8 @@ export function getProperty<
 
 	assertNotPolluting(object, property)
 
-	if (!(property in object)) throw new GetPropertyError(object, property)
+	if (!((property as keyof any) in object))
+		throw new GetPropertyError(object, property)
 
 	return object[property as keyof Obj] as never
 }

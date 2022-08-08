@@ -13,7 +13,7 @@ export function hasProperty<O extends object, K extends keyof any>(
 	if (!isObject(o)) return false
 
 	assertNotPolluting(o, k)
-	return k in o
+	return (k as keyof any) in o
 }
 
 export function assertHasProperty<O extends object, K extends keyof any>(
