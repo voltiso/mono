@@ -55,7 +55,7 @@ export function useRestoreHeight(
 			const height = mutable.instance.clientHeight
 			localStorage.data = height
 			// eslint-disable-next-line no-magic-numbers
-		}, 1000)
+		}, 1_000)
 
 		return () => {
 			clearInterval(interval)

@@ -20,6 +20,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		onSaveScroll,
 		saveScrollInterval,
 		setSmoothAfterDelay,
+		style,
 		...otherProps
 	} = props as ScrollProps
 
@@ -68,7 +69,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 					scrollTop: mutable.element.scrollTop,
 				})
 			}
-		}, props.saveScrollInterval)
+		}, saveScrollInterval)
 
 		return () => {
 			clearInterval(interval)
@@ -76,7 +77,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	}, [
 		current,
 		mutable,
-		props.saveScrollInterval,
+		saveScrollInterval,
 		scrollRestoration,
 		scrollRestorationKey,
 		setScrollRestoration,
@@ -86,14 +87,14 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	// enable smooth scrolling only after initial page scroll is done (e.g. scroll-to-hash)
 	useEffect(() => {
-		if (typeof props.setSmoothAfterDelay !== 'number') return undefined
+		if (typeof setSmoothAfterDelay !== 'number') return undefined
 
 		const timeout = setTimeout(
 			() => setScrollBehavior('smooth'),
-			props.setSmoothAfterDelay,
+			setSmoothAfterDelay,
 		)
 		return () => clearTimeout(timeout)
-	}, [props.setSmoothAfterDelay])
+	}, [setSmoothAfterDelay])
 
 	//
 
@@ -106,7 +107,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 			})}
 			style={{
 				scrollBehavior,
-				...otherProps.style,
+				...style,
 			}}
 		>
 			{children}
@@ -119,6 +120,6 @@ ScrollRenderFunction.displayName = 'Scroll.render'
 export const Scroll = forwardRef(ScrollRenderFunction)
 
 Scroll.defaultProps = {
-	saveScrollInterval: 1000,
-	setSmoothAfterDelay: 1000,
+	saveScrollInterval: 1_000,
+	setSmoothAfterDelay: 1_000,
 }
