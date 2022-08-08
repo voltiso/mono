@@ -2,6 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './consumeCssProps'
+export * from './defineFunctionComponent'
+export * from './getComponent'
+export * from './getElementName'
 export * from './mergeCssProps'
 export * from './mergeDefaults'
 export * from './Patch'

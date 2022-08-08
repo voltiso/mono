@@ -116,7 +116,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	)
 }
 
-ScrollRenderFunction.displayName = 'Scroll.render'
+ScrollRenderFunction.displayName = 'Scroll'
 
 export const Scroll = forwardRef(ScrollRenderFunction)
 

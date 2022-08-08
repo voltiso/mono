@@ -152,7 +152,9 @@
 	// Project-specific settings
 	//
 	// "eslint.options": { "overrideConfigFile": "./config/eslint.js" },
-	"jest.nodeEnv": { "NODE_OPTIONS": "--experimental-vm-modules" }, // needed for dynamic `import()` in `jest` tests
+	"jest.nodeEnv": {
+		"NODE_OPTIONS": "--experimental-vm-modules"
+	}, // needed for dynamic `import()` in `jest` tests
 	"jest.jestCommandLine": "pnpm jest",
 
 	//
@@ -210,6 +212,8 @@
 	"eslint.useESLintClass": true,
 	"eslint.format.enable": true,
 	"eslint.lintTask.enable": true,
+
+	"eslint.execArgv": ["--max_old_space_size=16384"],
 
 	"eslint.codeActionsOnSave.mode": "all", // Slower
 	// "eslint.codeActionsOnSave.mode": "problems", // faster

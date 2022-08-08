@@ -14,17 +14,18 @@ export class LocalStorage<T> {
 	}
 
 	get data(): T {
-		const r =
+		const stringData =
 			typeof window !== 'undefined'
 				? window.localStorage.getItem(this.key)
 				: null
 
-		if (r !== null) return JSON.parse(r) as T
-		else if (this.hasDefaultValue) return this.defaultValue as T
-		else
-			throw new Error(
-				`util.react.LocalStorage: '${this.key}' does not exist (forgot to supply defaultValue?)`,
-			)
+		if (stringData !== null) return JSON.parse(stringData) as T
+
+		if (this.hasDefaultValue) return this.defaultValue as T
+
+		throw new Error(
+			`util.react.LocalStorage: '${this.key}' does not exist (forgot to supply defaultValue?)`,
+		)
 	}
 
 	set data(x: T) {

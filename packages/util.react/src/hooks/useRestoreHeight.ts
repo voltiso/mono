@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isDefined, undef } from '@voltiso/util'
+import { isDefined } from '@voltiso/util'
 import { useEffect, useMemo } from 'react'
 
 import { useInitial } from '~/hooks'
@@ -36,18 +36,18 @@ export function useRestoreHeight(
 		if (isDefined(localStorageKey))
 			return new LocalStorage<number | undefined>(
 				`@voltiso/util.react.useRestoreHeight(${localStorageKey})`,
-				undef,
+				undefined,
 			)
-		else return undef
+		else return undefined
 	}, [localStorageKey])
 
 	const height = useMemo(
-		() => (localStorage ? localStorage.data : undef),
+		() => (localStorage ? localStorage.data : undefined),
 		[localStorage],
 	)
 
 	useEffect(() => {
-		if (!localStorage) return undef
+		if (!localStorage) return undefined
 
 		const interval = setInterval(() => {
 			if (!mutable.instance) return

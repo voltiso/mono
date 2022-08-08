@@ -58,7 +58,7 @@ const LazyRender: ForwardRefRenderFunction<
 			{...otherProps}
 			ref={refs(lazy.ref, restoreHeight.ref, ref)}
 			style={{
-				height: ssrFix.isFirstRender ? undefined : height,
+				height: ssrFix.isFirstRender || lazy.show ? undefined : height,
 				...style,
 			}}
 		>
@@ -74,7 +74,7 @@ const LazyRender: ForwardRefRenderFunction<
 	)
 }
 
-LazyRender.displayName = 'Lazy.render'
+LazyRender.displayName = 'Lazy'
 
 /**
  * `Lazy` will start rendering `children` after it's visible in viewport.

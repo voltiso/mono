@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// TODO: unused
-
 import type { ForwardedRef, ReactElement } from 'react'
 
 export interface IForwardRefRenderFunction {
