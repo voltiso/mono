@@ -10,7 +10,7 @@ import type {
 } from 'react'
 
 import type { Css } from '~/Css'
-import type { Props as Properties } from '~/react-types'
+import type { Props } from '~/react-types'
 import type { IStylable, OuterProps as OuterProperties } from '~/Stylable'
 import type { IStyled, Styled } from '~/Styled'
 
@@ -33,10 +33,7 @@ describe('StyledComponent', () => {
 		Assert.is<StyledComponent<OptionalProperties>, IStyled>()
 		Assert.is<StyledComponent<OptionalProperties>, Styled>()
 
-		Assert.is<
-			StyledComponent<OptionalProperties>,
-			StyledComponent<Properties>
-		>()
+		Assert.is<StyledComponent<OptionalProperties>, StyledComponent<Props>>()
 		Assert.is<StyledComponent<OptionalProperties>, StyledComponent<{}>>()
 
 		// auto-IStyledComponent
@@ -60,7 +57,7 @@ describe('StyledComponent', () => {
 		// Assert.is<StyledComponent<RequiredProps>, StyledComponent<{}>>()
 	})
 
-	it('generic', <P extends Properties>() => {
+	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
 		Assert.is<StyledComponent<P>, IStyledComponent>()
@@ -110,15 +107,15 @@ describe('StyledComponent', () => {
 
 		type SampleCss = { margin: 8 }
 
-		type Easy = ComponentProps<StyledComponent<Properties>>
+		type Easy = ComponentProps<StyledComponent<Props>>
 		Assert.is<Easy, OuterProperties>()
 		Assert.is<SampleCss, Easy['css']>()
 
-		type EasyReference = ComponentPropsWithRef<StyledComponent<Properties>>
+		type EasyReference = ComponentPropsWithRef<StyledComponent<Props>>
 		Assert.is<EasyReference, OuterProperties>()
 		Assert.is<SampleCss, EasyReference['css']>()
 
-		type EasyNoReference = ComponentPropsWithoutRef<StyledComponent<Properties>>
+		type EasyNoReference = ComponentPropsWithoutRef<StyledComponent<Props>>
 		Assert.is<EasyNoReference, OuterProperties>()
 		Assert.is<SampleCss, EasyNoReference['css']>()
 	})

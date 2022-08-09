@@ -4,7 +4,7 @@
 import type { ReactElement } from 'react'
 
 import type { Props } from '~/react-types'
-import type { InnerProps, InnerPropsSubtype } from '~/Stylable/InnerProps'
+import type { InnerProps } from '~/Stylable/InnerProps'
 
 /**
  * FC-like types that can be styled using style(...), and have additional props
@@ -21,9 +21,12 @@ export type { StylableJsxCall as StylableJsxCall_ }
 
 /** FC-like types that can be styled using style(...) */
 export interface IStylableJsxCall {
-	(props: InnerProps & InnerPropsSubtype): ReactElement | null //! OK?
-	// <PP extends InnerProps>(props: PP & InnerProps_Subtype): ReactElement | null
+	(props: any): ReactElement | null
 }
+// export interface IStylableJsxCall {
+// 	(props: InnerProps & InnerPropsSubtype): ReactElement | null //! OK?
+// 	// <PP extends InnerProps>(props: PP & InnerProps_Subtype): ReactElement | null
+// }
 
 //
 

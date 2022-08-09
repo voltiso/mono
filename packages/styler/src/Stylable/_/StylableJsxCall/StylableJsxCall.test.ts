@@ -6,7 +6,7 @@ import type {
 	PickCallNoUnknown_,
 	PickConstructNoUnknown_,
 } from '@voltiso/util'
-import { Assert, Is } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 import type { FC } from 'react'
 
 import type { Props } from '~/react-types'
@@ -27,8 +27,8 @@ describe('StylableJsxCall', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<IStylableJsxCall>())
-		Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<StylableJsxCall>())
+		// Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<IStylableJsxCall>())
+		// Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<StylableJsxCall>())
 
 		Assert.is<FC<{ className?: string | undefined }>, StylableJsxCall>()
 
@@ -70,6 +70,17 @@ describe('StylableJsxCall', () => {
 					a: string
 				}
 			>
+		>()
+	})
+
+	it('type #3', () => {
+		expect.assertions(0)
+
+		Assert.is<(props: { className: string }) => null, StylableJsxCall>()
+
+		Assert.is<
+			(props: { className: string; other: number }) => null,
+			StylableJsxCall
 		>()
 	})
 })

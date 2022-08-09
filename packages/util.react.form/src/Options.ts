@@ -3,14 +3,16 @@
 
 import type { GetType, InferableObject } from '@voltiso/schemar'
 import type { Stylable } from '@voltiso/styler'
+import type { PartialOrUndefined } from '@voltiso/util'
 
 import type { CheckboxProps } from './_/CheckboxProps'
 import type { FormProps } from './FormProps'
 import type { TextProps } from './TextProps'
 import type { Validators } from './Validators'
 
-export interface Options<S extends InferableObject> {
+export type Options<S extends InferableObject> = {
 	schema: S
+} & PartialOrUndefined<{
 	storageKey?: string
 	validators?: Validators<GetType<S>>
 	onBeforeSubmit?: () => Promise<void> | void
@@ -20,4 +22,4 @@ export interface Options<S extends InferableObject> {
 	Form?: Stylable<FormProps>
 	Text?: Stylable<TextProps>
 	Checkbox?: Stylable<CheckboxProps>
-}
+}>

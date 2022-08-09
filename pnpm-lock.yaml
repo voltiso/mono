@@ -10,6 +10,7 @@ importers:
       '@babel/plugin-proposal-decorators': ^7.18.10
       '@babel/plugin-transform-async-to-generator': ^7.18.6
       '@babel/plugin-transform-strict-mode': ^7.18.6
+      '@babel/preset-env': ^7.18.10
       '@milahu/patch-package': ^6.4.14
       '@types/jest': ^28.1.6
       '@types/node': ^18.6.4
@@ -26,6 +27,8 @@ importers:
       metro-react-native-babel-preset: ^0.72.0
       npm-run-all: ^4.1.5
       prettier: ^2.7.1
+      react: ^18.2.0
+      react-native: ^0.69.3
       ts-node: ^10.9.1
       ttypescript: ^1.5.13
       turbo: ^1.4.2
@@ -36,6 +39,7 @@ importers:
       '@babel/plugin-proposal-decorators': 7.18.10_@babel+core@7.18.10
       '@babel/plugin-transform-async-to-generator': 7.18.6_@babel+core@7.18.10
       '@babel/plugin-transform-strict-mode': 7.18.6_@babel+core@7.18.10
+      '@babel/preset-env': 7.18.10_@babel+core@7.18.10
       '@milahu/patch-package': 6.4.14
       '@types/jest': 28.1.6
       '@types/node': 18.6.4
@@ -52,6 +56,8 @@ importers:
       metro-react-native-babel-preset: 0.72.0
       npm-run-all: 4.1.5
       prettier: 2.7.1
+      react: 18.2.0
+      react-native: 0.69.3_xzu3cbnm5p7kp3yqoosaven72e
       ts-node: 10.9.1_hn66opzbaneygq52jmwjxha6su
       ttypescript: 1.5.13_6oasmw356qmm23djlsjgkwvrtm
       turbo: 1.4.2
@@ -1092,6 +1098,8 @@ importers:
 
   packages/util.react.form:
     specifiers:
+      '@babel/core': ^7.18.10
+      '@babel/plugin-transform-react-jsx': ^7.18.10
       '@types/react': ^18.0.16
       '@voltiso/config.jest.react': workspace:*
       '@voltiso/config.ts': workspace:*
@@ -1111,6 +1119,8 @@ importers:
       '@voltiso/util.react': link:../util.react
       '@voltiso/util.react.patcher': link:../util.react.patcher
     devDependencies:
+      '@babel/core': 7.18.10
+      '@babel/plugin-transform-react-jsx': 7.18.10_@babel+core@7.18.10
       '@types/react': 18.0.16
       '@voltiso/config.jest.react': link:../config.jest.react
       '@voltiso/config.ts': link:../config.ts
@@ -5722,7 +5732,7 @@ packages:
   /@vue/compiler-sfc/3.2.37:
     resolution: {integrity: sha512-+7i/2+9LYlpqDv+KTtWhOZH+pa8/HnX/905MdVmAcI/mPQOBwkHHIzrsEsucyOIZQYMkXUiTkmZq5am/NyXKkg==}
     dependencies:
-      '@babel/parser': 7.16.4
+      '@babel/parser': 7.18.11
       '@vue/compiler-core': 3.2.37
       '@vue/compiler-dom': 3.2.37
       '@vue/compiler-ssr': 3.2.37

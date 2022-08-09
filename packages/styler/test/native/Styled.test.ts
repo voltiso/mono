@@ -39,10 +39,11 @@ describe('Styled (react-native)', () => {
 		Assert<
 			IsIdentical<
 				A,
-				StyledComponent<{
-					a?: 1
-					style?: unknown
-				}>
+				StyledComponent<{}, typeof GoodComponent>
+				// StyledComponent<{
+				// 	a?: 1
+				// 	style?: unknown
+				// }>
 			>
 		>()
 
@@ -54,7 +55,8 @@ describe('Styled (react-native)', () => {
 		const b = style(HardGood)
 		type B = typeof b
 		Assert<
-			IsIdentical<B, StyledComponent<{ a: 1; style?: StyleProp<unknown> }>>
+			IsIdentical<B, StyledComponent<{}, typeof HardGood>>
+			// IsIdentical<B, StyledComponent<{ a: 1; style?: StyleProp<unknown> }>>
 		>()
 	})
 })

@@ -79,6 +79,9 @@ export const testOverride = defineEslintConfigOverride({
 		'jest-formatting/padding-around-all': 1,
 		'jest/prefer-to-be': 1,
 
+		/** Hmm... quite verbose! and often we have type-only tests */
+		'jest/prefer-expect-assertions': 0,
+
 		'react/jsx-no-useless-fragment': 0,
 		'react/button-has-type': 0,
 		'react/jsx-no-bind': 0,

@@ -34,4 +34,33 @@ describe('props', () => {
 
 		expect(screen.getByText('a')).toHaveStyle({ color: 'blue' })
 	})
+
+	it('chains', () => {
+		expect.hasAssertions()
+
+		const Button = style('input')
+			.props({ type: 'checkbox' })
+			.props({ type: 'button' })
+
+		renderApp(<Button data-testid='a' />)
+
+		expect(screen.getByTestId('a')).toHaveAttribute('type', 'button')
+	})
+
+	it('chains with inline props', () => {
+		expect.hasAssertions()
+
+		const Button = style('input')
+			.props({ type: 'checkbox' })
+			.props({ type: 'button' })
+
+		renderApp(
+			<Button
+				data-testid='a'
+				type='radio'
+			/>,
+		)
+
+		expect(screen.getByTestId('a')).toHaveAttribute('type', 'radio')
+	})
 })

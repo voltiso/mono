@@ -257,7 +257,7 @@ describe('style', () => {
 	it('cssProp (present)', () => {
 		expect.hasAssertions()
 
-		const MyButton = style('button').newCssProp('large', { height: 1000 })
+		const MyButton = style('button').newCssProp('large', { height: 1_000 })
 		renderApp(<MyButton large />)
 
 		const button = screen.getByRole('button')
@@ -270,7 +270,7 @@ describe('style', () => {
 	it('cssProp (not present)', () => {
 		expect.hasAssertions()
 
-		const MyButton = style('button').newCssProp('large', { height: 1000 })
+		const MyButton = style('button').newCssProp('large', { height: 1_000 })
 		renderApp(<MyButton />)
 
 		const button = screen.getByRole('button')
@@ -284,7 +284,7 @@ describe('style', () => {
 		expect.hasAssertions()
 
 		const MyButton = style('button').newCssProps({
-			large: { height: 1000 },
+			large: { height: 1_000 },
 		})
 		renderApp(<MyButton large />)
 
@@ -299,7 +299,7 @@ describe('style', () => {
 		expect.hasAssertions()
 
 		const MyButton = style('button').newCssProps({
-			large: { height: 1000 },
+			large: { height: 1_000 },
 		})
 		renderApp(<MyButton />)
 
@@ -318,7 +318,7 @@ describe('style', () => {
 				height: p + 100,
 			}),
 		})
-		renderApp(<MyButton h={1000} />)
+		renderApp(<MyButton h={1_000} />)
 
 		const button = screen.getByRole('button')
 

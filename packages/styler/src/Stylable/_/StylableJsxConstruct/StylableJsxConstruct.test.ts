@@ -6,7 +6,7 @@ import type {
 	PickCallNoUnknown_,
 	PickConstructNoUnknown_,
 } from '@voltiso/util'
-import { Assert, Is } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 import type { ComponentClass, FC } from 'react'
 
 import type { Props } from '~/react-types/Props/Props'
@@ -33,13 +33,13 @@ describe('StylableJsx', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert(
-			Is<ComponentClass<{ a?: 'aa' }>>().not.subtypeOf<IStylableJsxConstruct>(),
-		)
+		// Assert(
+		// 	Is<ComponentClass<{ a?: 'aa' }>>().not.subtypeOf<IStylableJsxConstruct>(),
+		// )
 
-		Assert(
-			Is<ComponentClass<{ a?: 'aa' }>>().not.subtypeOf<StylableJsxConstruct>(),
-		)
+		// Assert(
+		// 	Is<ComponentClass<{ a?: 'aa' }>>().not.subtypeOf<StylableJsxConstruct>(),
+		// )
 
 		Assert.is<
 			ComponentClass<{ className?: string | undefined }>,

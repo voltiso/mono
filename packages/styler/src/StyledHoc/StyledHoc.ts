@@ -1,15 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PickCallNoUnknown, PickConstructNoUnknown } from '@voltiso/util'
-import type { ComponentPropsWithRef } from 'react'
+import type { Throw } from '@voltiso/util'
+import type { ComponentProps } from 'react'
 
-import type { StyledComponent } from '~'
-import type { MergeProps, MergeProps_, Props } from '~/react-types'
-import type { InnerProps } from '~/Stylable'
-import type { StylableIntrinsic } from '~/Stylable/_/StylableIntrinsic'
-import type { StylableJsxCallInfer } from '~/Stylable/_/StylableJsxCall'
-import type { StylableJsxConstructInfer } from '~/Stylable/_/StylableJsxConstruct'
+import type {
+	InnerProps,
+	IsReactNative,
+	IStylable,
+	IStylableIntrinsic,
+	IStylableJsxCall,
+	IStylableJsxConstruct,
+	StyledComponent,
+} from '~'
+import type { Props } from '~/react-types'
 import type { Styled_ } from '~/Styled'
 
 /**
@@ -25,34 +29,73 @@ export type { StyledHoc as StyledHoc_ }
 
 //
 
+export type ThrowMissingRequiredInnerProps<P extends Props> =
+	IsReactNative extends true
+		? Throw<'props should include `style`' & { Got: P }>
+		: Throw<'props should include `className`' & { Got: P }>
+
+export type GetStyledComponent<P, C extends IStylable> = Required<
+	ComponentProps<C>
+> extends Required<InnerProps>
+	? StyledComponent<P, C>
+	: ThrowMissingRequiredInnerProps<ComponentProps<C>>
+
 export interface StyledHocCall<P extends Props> {
-	/** Style the already styled (identity function in this case) */
-	<P extends Props>(alreadyStyled: StyledComponent<P>): StyledComponent<P>
+	//
+
+	/**
+	 * Style the already styled (identity function in this case)
+	 *
+	 * ! TODO: merge styles/props in both runtime and typings
+	 */
+	<PP extends Props, C extends IStylable>(
+		alreadyStyled: StyledComponent<PP, C>,
+	): StyledComponent<PP, C>
+
+	//
 
 	/** Style a FC-like (callable) component */
-	<PP extends InnerProps>(
-		stylableFunctionComponent: PickCallNoUnknown<StylableJsxCallInfer<PP>>,
-	): StyledComponent<MergeProps<PP, P>>
+	<C extends IStylableJsxCall>(
+		stylableFunctionComponent: C,
+	): GetStyledComponent<P, C>
+	// <PP extends InnerProps>(
+	// 	stylableFunctionComponent: PickCallNoUnknown<StylableJsxCallInfer<PP>>,
+	// ): StyledComponent<MergeProps<PP, P>>
+
+	//
 
 	/** Style a class-like (newable) component */
-	<PP extends InnerProps>(
-		stylableClassComponent: PickConstructNoUnknown<
-			StylableJsxConstructInfer<PP>
-		>,
-	): StyledComponent<MergeProps<PP, P>>
+	<C extends IStylableJsxConstruct>(
+		stylableClassComponent: C,
+	): GetStyledComponent<P, C>
+	// <PP extends InnerProps>(
+	// 	stylableClassComponent: PickConstructNoUnknown<
+	// 		StylableJsxConstructInfer<PP>
+	// 	>,
+	// ): StyledComponent<MergeProps<PP, P>>
+
+	//
 
 	/** Style an intrinsic element ('div', 'button', ...) */
-	<S extends StylableIntrinsic>(stylableIntrinsicElement: S): StyledComponent<
-		MergeProps_<ComponentPropsWithRef<S>, P>
-	>
+	<C extends IStylableIntrinsic>(
+		stylableIntrinsicElement: C,
+	): GetStyledComponent<P, C>
+	// <S extends StylableIntrinsic>(stylableIntrinsicElement: S): StyledComponent<
+	// 	MergeProps_<ComponentPropsWithRef<S>, P>
+	// >
+
+	//
+
+	//
 
 	/** All overloads combined (for usage in generic contexts) */
-	<PP extends InnerProps, S extends StylableIntrinsic>(
-		stylable:
-			| S
-			| PickCallNoUnknown<StylableJsxCallInfer<PP>>
-			| PickConstructNoUnknown<StylableJsxConstructInfer<PP>>,
-	): StylableIntrinsic extends S
-		? StyledComponent<MergeProps<PP, P>>
-		: StyledComponent<MergeProps_<ComponentPropsWithRef<S>, P>>
+	<C extends IStylable>(stylable: C): GetStyledComponent<P, C>
+	// <PP extends InnerProps, S extends StylableIntrinsic>(
+	// 	stylable:
+	// 		| S
+	// 		| PickCallNoUnknown<StylableJsxCallInfer<PP>>
+	// 		| PickConstructNoUnknown<StylableJsxConstructInfer<PP>>,
+	// ): StylableIntrinsic extends S
+	// 	? StyledComponent<MergeProps<PP, P>>
+	// 	: StyledComponent<MergeProps_<ComponentPropsWithRef<S>, P>>
 }

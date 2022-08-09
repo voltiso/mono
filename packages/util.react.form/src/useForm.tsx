@@ -6,7 +6,7 @@ import * as s from '@voltiso/schemar'
 import type { StyledComponent } from '@voltiso/styler'
 import { style } from '@voltiso/styler'
 import { getKeys, getValues, undef } from '@voltiso/util'
-import { LocalStorage, useConst, useCurrent } from '@voltiso/util.react'
+import { LocalStorage, useCurrent, useInitial } from '@voltiso/util.react'
 import { useStatePatcher } from '@voltiso/util.react.patcher'
 import type { FormEvent } from 'react'
 import { forwardRef, useCallback, useEffect, useMemo } from 'react'
@@ -29,27 +29,20 @@ import type { UseFormResult } from './UseFormResult'
 import type { ValidationResults } from './ValidationResults'
 import type { Validator } from './Validators'
 
-export function useForm<S extends InferableObject>({
-	schema: schemable,
-	storageKey,
-	validators,
-	onBeforeSubmit,
-	onCancelSubmit,
-	onSubmit,
-	onError,
-	Form = 'form',
-	Text = 'input',
-	Checkbox = style('input').prop('type', 'checkbox'),
-}: Options<S>): UseFormResult<S> {
+// const glo = style('input').prop('type', 'checkbox')
+
+export function useForm<S extends InferableObject>(
+	options: Options<S>,
+): UseFormResult<S> {
+	const current = useCurrent(options)
+
+	const Form = options.Form || ('form' as const)
+	const Text = options.Text || ('input' as const)
+
+	const Checkbox = options.Checkbox || DefaultCheckbox
+
 	type I = GetInputType<S>
 
-	const c = useCurrent({
-		onBeforeSubmit,
-		onCancelSubmit,
-		onSubmit,
-		onError,
-		validators,
-	})
 
 	const schema = useMemo(() => s.schema(schemable), [schemable])
 
@@ -68,7 +61,7 @@ export function useForm<S extends InferableObject>({
 		validationResults: {} as ValidationResults<I>,
 	})
 
-	const r = useConst({
+	const r = useInitial({
 		inputs: [] as { name: string; inst: HTMLElement }[],
 		// dirty: false,
 	})
@@ -98,16 +91,16 @@ export function useForm<S extends InferableObject>({
 
 	const handleError = useCallback(
 		async (e: unknown) => {
-			if (c.onError && e instanceof Error) await c.onError(e)
+			if (current.onError && e instanceof Error) await current.onError(e)
 			// eslint-disable-next-line no-console
 			else console.error('unhandled exotic error', e)
 		},
-		[c],
+		[current],
 	)
 
 	const validate = useCallback(
-		// eslint-disable-next-line max-statements, complexity, unicorn/no-object-as-default-parameter, sonarjs/cognitive-complexity
-		async (options: { beforeSubmit: boolean } = { beforeSubmit: false }) => {
+		// eslint-disable-next-line complexity, unicorn/no-object-as-default-parameter
+		async (options = { beforeSubmit: false }) => {
 			try {
 				let focusSet = false
 				// console.log('validate 1')
@@ -142,8 +135,12 @@ export function useForm<S extends InferableObject>({
 				}
 
 				for (const k of getKeys(state.data)) {
-					// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
-					if (!validationResults[k] && !(c.validators || ({} as any))[k]) {
+					if (
+						// eslint-disable-next-line security/detect-object-injection
+						!validationResults[k] &&
+						// eslint-disable-next-line security/detect-object-injection
+						!(current.validators || ({} as any))[k]
+					) {
 						// eslint-disable-next-line security/detect-object-injection
 						validationResults[k] = { success: true }
 					}
@@ -162,8 +159,8 @@ export function useForm<S extends InferableObject>({
 					setFocus()
 				}
 
-				if (!focusSet && options.beforeSubmit && c.onBeforeSubmit)
-					await c.onBeforeSubmit()
+				if (!focusSet && options.beforeSubmit && current.onBeforeSubmit)
+					await current.onBeforeSubmit()
 
 				// console.log('vr', s.validationResults)
 
@@ -171,7 +168,7 @@ export function useForm<S extends InferableObject>({
 				try {
 					const prevData = state.data
 					await Promise.all(
-						(Object.entries(c.validators || {}) as [keyof I, Validator][])
+						(Object.entries(current.validators || {}) as [keyof I, Validator][])
 
 							// eslint-disable-next-line security/detect-object-injection
 							.filter(([field, _]) => !state.validationResults[field])
@@ -188,7 +185,7 @@ export function useForm<S extends InferableObject>({
 								}
 
 								if (r.success === false && options.beforeSubmit && !focusSet) {
-									if (c.onCancelSubmit) await c.onCancelSubmit()
+									if (current.onCancelSubmit) await current.onCancelSubmit()
 
 									focusSet = true
 									setFocus()
@@ -206,7 +203,7 @@ export function useForm<S extends InferableObject>({
 			}
 			return null
 		},
-		[c, handleError, state, setFocus, schema],
+		[current, handleError, state, setFocus, schema],
 	)
 
 	const register = useCallback(
@@ -241,15 +238,9 @@ export function useForm<S extends InferableObject>({
 		return style(C)
 	}, [Form, state]) as StyledComponent<FormProps>
 
-	const StyledText = useMemo(
-		() => style(Text),
-		[Text],
-	) as StyledComponent<TextProps>
+	const StyledText = useMemo(() => style(Text), [Text])
 
-	const StyledCheckbox = useMemo(
-		() => style(Checkbox),
-		[Checkbox],
-	) as StyledComponent<CheckboxProps>
+	const StyledCheckbox = useMemo(() => style(Checkbox), [Checkbox])
 
 	const OForm: OFormType = useMemo(
 		() =>
@@ -266,14 +257,14 @@ export function useForm<S extends InferableObject>({
 					if (!data) return
 
 					try {
-						await c.onSubmit(data as never)
+						await current.onSubmit(data as never)
 						storage?.clear()
 					} catch (error) {
 						await handleError(error)
 					}
 				},
 			}),
-		[StyledForm, c, handleError, r.inputs, storage, validate],
+		[StyledForm, current, handleError, r.inputs, storage, validate],
 	)
 
 	const OText: OTextType<S> = useMemo(

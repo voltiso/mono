@@ -29,7 +29,7 @@ export function render<P extends Props, C extends IStylable>(
 	ref: ForwardedRef<unknown>,
 	data: StyledData<P, C>,
 ) {
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// eslint-disable-next-line react-hooks/rules-of-hooks, destructuring/no-rename
 	const { css: getFelaCss, theme } = useFela()
 
 	const { css, ...otherProps } = props

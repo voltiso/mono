@@ -3,16 +3,25 @@
 
 import type { NotProvided, OptionalArgument } from '@voltiso/util'
 
-import type { Props as Properties } from '~/react-types'
+import type { IStylable } from '~'
+import type { Props } from '~/react-types'
 
 import type { IStyledComponent } from './IStyledComponent'
 import type { StyledComponent_ } from './StyledComponent'
 
+// export type StyledComponentCConstraint<P> = P extends Props
+// 	? IStylable
+// 	: P extends NotProvided
+// 	? never
+// 	: never
+
 /** With Element already provided */
 export type StyledComponent<
-	P extends OptionalArgument<Properties> = NotProvided,
+	P extends OptionalArgument<Props> = NotProvided,
+	C extends IStylable = IStylable,
+	// C extends StyledComponentCConstraint<P> = StyledComponentCConstraint<P>,
 > = P extends NotProvided
 	? IStyledComponent
-	: P extends Properties
-	? StyledComponent_<P>
+	: P extends Props
+	? StyledComponent_<P, C>
 	: never

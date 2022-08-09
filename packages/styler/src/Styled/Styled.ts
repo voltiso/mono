@@ -25,6 +25,7 @@ import type { MergeProps, Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
 import type { StyledComponent } from '~/StyledComponent'
 
+import type { GetStyledProps as G } from '.'
 import { getComponent } from './_/getComponent'
 import { mergeCssProps } from './_/mergeCssProps'
 import { mergeDefaults } from './_/mergeDefaults'
@@ -117,9 +118,9 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param styleFromProps - Function returning CSS style to merge, given props
 	 * @returns Builder for further chaining
 	 */
-	css(styleFromProps: StyleFromProps<P>): Patch<this>
+	css(styleFromProps: StyleFromProps<G<P, C>>): Patch<this>
 
-	css(style: Css | StyleFromProps<P>): Patch<this> {
+	css(style: Css | StyleFromProps<G<P, C>>): Patch<this> {
 		const stackNode =
 			typeof style === 'function' ? { getStyle: style } : { style }
 
@@ -142,7 +143,9 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 */
 	cssProps<PropNames extends (keyof CssObject & string)[]>(
 		...propNames: PropNames
-	): Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }> {
+	): Patch<this, Pick<CssObject, PropNames[number]>> {
+		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>
+
 		const cssProps = {} as IndexedCssProps
 
 		for (const propName of propNames) {
@@ -301,10 +304,10 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param value - Prop value
 	 * @returns Builder for further chaining
 	 */
-	prop<Name extends keyof P>(
+	prop<Name extends keyof G<P, C>>(
 		name: Name,
-		value: PropValue<P, P[Name]>,
-	): ForcePatch<this, { [k in Name]?: P[Name] | undefined }>
+		value: PropValue<G<P, C>, G<P, C>[Name]>,
+	): ForcePatch<this, { [k in Name]?: G<P, C>[Name] | undefined }>
 
 	/**
 	 * Set known boolean prop to `true`
@@ -321,16 +324,16 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @returns Builder for further chaining
 	 */
 	prop<
-		Name extends keyof P &
+		Name extends keyof G<P, C> &
 			keyof {
-				[k in keyof P as boolean extends P[k] ? k : never]: never
+				[k in keyof G<P, C> as boolean extends G<P, C>[k] ? k : never]: never
 			},
-	>(name: Name): ForcePatch<this, { [k in Name]?: P[Name] | undefined }>
+	>(name: Name): ForcePatch<this, { [k in Name]?: G<P, C>[Name] | undefined }>
 
-	prop<Name extends keyof P & string>(
+	prop<Name extends keyof G<P, C> & string>(
 		name: Name,
-		value?: PropValue<P, P[Name]>,
-	): ForcePatch<this, { [k in Name]?: P[Name] | undefined }> {
+		value?: PropValue<G<P, C>, G<P, C>[Name]>,
+	): ForcePatch<this, { [k in Name]?: G<P, C>[Name] | undefined }> {
 		const myValue = arguments.length === 1 ? true : value
 		// assert(typeof myValue !== 'undefined')
 		return this._clone({
@@ -352,9 +355,14 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param props - Props values to set
 	 * @returns Builder for further chaining
 	 */
-	props<PP extends Partial<P>>(
-		props: PP,
-	): ForcePatch<this, { [k in keyof PP & keyof P]?: P[k] | undefined }> {
+	props<PP extends Partial<G<P, C>>>(
+		props: G<P, C> | PP,
+	): ForcePatch<
+		this,
+		{
+			[k in keyof PP & keyof G<P, C>]?: G<P, C>[k] | undefined
+		}
+	> {
 		return this._clone({
 			stack: [{ props }],
 		}) as never
@@ -375,15 +383,15 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param propFromProps - Function returning prop value given all props
 	 * @returns Builder for further chaining
 	 */
-	computeProp<Name extends keyof P & string>(
+	computeProp<Name extends keyof G<P, C> & string>(
 		name: Name,
-		propFromProps: (props: P) => P[Name],
+		propFromProps: (props: G<P, C>) => G<P, C>[Name],
 	): Patch<this> {
 		return this._clone({
 			stack: [
 				{
-					mapProps: ((p: P) => ({
-						[name as keyof P]: propFromProps(p),
+					mapProps: ((p: G<P, C>) => ({
+						[name as keyof G<P, C>]: propFromProps(p),
 					})) as never,
 				},
 			],
@@ -405,9 +413,9 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param mapProp - Function returning prop value, based on previous optional prop value
 	 * @returns Builder for further chaining
 	 */
-	mapProp<PropName extends keyof P, TT>(
+	mapProp<PropName extends keyof G<P, C>, TT>(
 		propName: PropName,
-		mapProp: (x?: TT) => P[PropName],
+		mapProp: (x?: TT) => G<P, C>[PropName],
 	): ForcePatch<this, { [k in PropName]?: TT | undefined }>
 
 	/**
@@ -426,19 +434,19 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 *   prop value
 	 * @returns Builder for further chaining
 	 */
-	mapProp<PropName extends keyof P, TT>(
+	mapProp<PropName extends keyof G<P, C>, TT>(
 		propName: PropName,
-		mapProp: (x: TT) => P[PropName],
+		mapProp: (x: TT) => G<P, C>[PropName],
 	): ForcePatch<this, { [k in PropName]: TT }>
 
-	mapProp<PropName extends keyof P, TT>(
+	mapProp<PropName extends keyof G<P, C>, TT>(
 		propName: PropName,
-		mapProp: (x?: TT) => P[PropName],
+		mapProp: (x?: TT) => G<P, C>[PropName],
 	): ForcePatch<this, { [p in PropName]?: TT | undefined }> {
 		return this._clone({
 			stack: [
 				{
-					mapProps: (p: P) => ({
+					mapProps: (p: G<P, C>) => ({
 						...p,
 						// eslint-disable-next-line security/detect-object-injection
 						[propName]: mapProp(p[propName] as never),
@@ -462,9 +470,9 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param mapProps - Function returning some props, based on previous props
 	 * @returns Builder for further chaining
 	 */
-	mapProps<G extends MapProps<P, P>>(
-		mapProps: G,
-	): PatchRemoveProps<this, keyof ReturnType<G>> {
+	mapProps<MP extends MapProps<G<P, C>, G<P, C>>>(
+		mapProps: MP,
+	): PatchRemoveProps<this, keyof ReturnType<MP>> {
 		return this._clone({
 			stack: [{ mapProps }] as never,
 		}) as never
@@ -887,9 +895,9 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param _propNames - Prop names
 	 * @returns Builder for further chaining
 	 */
-	makePropsRequired<PropName extends keyof P>(
+	makePropsRequired<PropName extends keyof G<P, C>>(
 		..._propNames: PropName[]
-	): ForcePatch<this, { [k in PropName]-?: Exclude<P[k], undefined> }> {
+	): ForcePatch<this, { [k in PropName]-?: Exclude<G<P, C>[k], undefined> }> {
 		return this as never
 	}
 
@@ -909,9 +917,9 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param _propNames - Prop names (unused at runtime; type-only)
 	 * @returns Builder for further chaining
 	 */
-	makePropsOptional<PropName extends keyof P>(
+	makePropsOptional<PropName extends keyof G<P, C>>(
 		..._propNames: PropName[]
-	): ForcePatch<this, { [k in PropName]+?: P[k] | undefined }> {
+	): ForcePatch<this, { [k in PropName]+?: G<P, C>[k] | undefined }> {
 		return this as never
 	}
 
@@ -931,7 +939,7 @@ class Styled<P extends Props, C extends IStylable | null> extends IStyled {
 	 * @param _propNames - Unused in runtime - for type inference only
 	 * @returns Builder for further chaining
 	 */
-	forgetProps<PropName extends keyof P>(
+	forgetProps<PropName extends keyof G<P, C>>(
 		..._propNames: PropName[]
 	): PatchRemoveProps<this, PropName> {
 		return this as never

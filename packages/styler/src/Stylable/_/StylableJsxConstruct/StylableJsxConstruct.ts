@@ -4,7 +4,7 @@
 import type { Component } from 'react'
 
 import type { Props } from '~/react-types'
-import type { InnerProps, InnerPropsSubtype } from '~/Stylable/InnerProps'
+import type { InnerProps } from '~/Stylable/InnerProps'
 
 /**
  * FC-like types that can be styled using style(...), and have additional props
@@ -19,14 +19,10 @@ export type { StylableJsxConstruct as StylableJsxConstruct_ }
 //
 
 /** FC-like types that can be styled using style(...) */
-export type IStylableJsxConstruct = new (
-	props: InnerProps & InnerPropsSubtype,
-) => Component //! OK?
-
-// /** FC-like types that can be styled using style(...) */
-// export type IStylableJsxConstruct = new <PP extends InnerProps>(
-// 	props: PP & InnerProps_Subtype,
-// ) => Component
+export type IStylableJsxConstruct = new (props: any) => Component //! OK?
+// export type IStylableJsxConstruct = new (
+// 	props: InnerProps & InnerPropsSubtype,
+// ) => Component //! OK?
 
 //
 

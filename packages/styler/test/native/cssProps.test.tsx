@@ -4,7 +4,7 @@
 import { Assert } from '@voltiso/util'
 import { View } from 'react-native'
 
-import type { IsReactNative } from '~'
+import type { IsReactNative, IStylable, IStylableJsxCall } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -19,6 +19,10 @@ describe('cssProps', () => {
 		;() => style('button')
 
 		const StyledView = style(View)
+
+		Assert.is<typeof StyledView, IStylable>()
+		// Assert.is<typeof StyledView, IStylableJsxConstruct>()
+		Assert.is<typeof StyledView, IStylableJsxCall>()
 
 		const MyView = StyledView.cssProps('flex', 'backgroundColor', 'margin')
 		;<MyView /> // check if optional

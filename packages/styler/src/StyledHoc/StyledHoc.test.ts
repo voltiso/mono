@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { ChangeEvent, FC, ReactElement, RefObject } from 'react'
 
@@ -69,13 +69,23 @@ describe('StyledHoc', () => {
 			validationResult?: string | undefined
 		}
 
-		//
-		;() => style(0 as unknown as StylableJsxCall<TextProps>)
+		const aa = () => style(0 as unknown as StylableJsxCall<TextProps>)
+		type AA = ReturnType<typeof aa>
+		Assert.is<AA, StyledComponent>()
 
-		//
-		;() => style(0 as unknown as StylableJsxConstruct<TextProps>)
+		const bb = () => style(0 as unknown as StylableJsxConstruct<TextProps>)
+		type BB = ReturnType<typeof bb>
+		Assert.is<BB, StyledComponent>()
 
-		//
+		type XX = React.DetailedHTMLProps<
+			React.HTMLAttributes<HTMLElement>,
+			HTMLElement
+		>['className']
+		Assert<IsIdentical<XX, string | undefined>>()
+
+		const cc = () => style(0 as unknown as StylableIntrinsic<TextProps>)
+		type CC = ReturnType<typeof cc>
+		Assert.is<CC, StyledComponent>()
 		;() => style(0 as unknown as StylableIntrinsic<TextProps>)
 
 		//
@@ -94,22 +104,30 @@ describe('StyledHoc', () => {
 
 		//
 
-		// @ts-expect-error missing className prop
-		;() => style({} as unknown as FC)
+		// // @ts-expect-error missing className prop
+		// ;() => style({} as unknown as FC)
+		const a = style({} as unknown as FC)
+		Assert.is<typeof a, StaticError>()
 
-		// @ts-expect-error missing className prop
-		;() => style({} as unknown as (props: {}) => ReactElement | null)
+		// // @ts-expect-error missing className prop
+		// ;() => style({} as unknown as (props: {}) => ReactElement | null)
+		const b = style({} as unknown as (props: {}) => ReactElement | null)
+		Assert.is<typeof b, StaticError>()
 
-		// @ts-expect-error missing className prop
-		;() => style({} as unknown as FC<{ href: string }>)
+		// // @ts-expect-error missing className prop
+		// ;() => style({} as unknown as FC<{ href: string }>)
+		const c = style({} as unknown as FC<{ href: string }>)
+		Assert.is<typeof c, StaticError>()
 
 		// ...better!
 		;() => style({} as unknown as FC<{ href: string; className?: string }>)
 
 		//
 
-		// @ts-expect-error missing className prop
-		;() => style({} as unknown as (props: { a: 1 }) => ReactElement)
+		// // @ts-expect-error missing className prop
+		// ;() => style({} as unknown as (props: { a: 1 }) => ReactElement)
+		const dd = style({} as unknown as (props: { a: 1 }) => ReactElement)
+		Assert.is<typeof dd, StaticError>()
 
 		// ...better!
 		;() =>
@@ -125,24 +143,15 @@ describe('StyledHoc', () => {
 		//
 
 		// also good
-		const d = () =>
-			style(
-				{} as unknown as (props: {
-					readonly className: string
-					otherRequired: string
-				}) => ReactElement,
-			)
+		type DInner = (props: {
+			readonly className: string
+			otherRequired: string
+		}) => ReactElement
+
+		const d = () => style({} as unknown as DInner)
 
 		type D = ReturnType<typeof d>
 
-		Assert<
-			IsIdentical<
-				D,
-				StyledComponent<{
-					readonly className: string
-					otherRequired: string
-				}>
-			>
-		>()
+		Assert<IsIdentical<D, StyledComponent<{}, DInner>>>()
 	})
 })

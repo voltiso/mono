@@ -4,10 +4,8 @@
 import { Assert, Is } from '@voltiso/util'
 import type { ChangeEvent, FC, RefObject } from 'react'
 
+import type { IStylable, Stylable } from '~'
 import type { Props } from '~/react-types'
-
-import type { Stylable } from './AutoStylable'
-import type { IStylable } from './IStylable'
 
 describe('Stylable', () => {
 	it('generic', <P extends Props>() => {
@@ -20,7 +18,7 @@ describe('Stylable', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<Stylable>())
+		// Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<Stylable>())
 
 		Assert.is<FC<{ className?: string }>, IStylable>()
 		Assert.is<FC<{ className?: string | undefined; a?: 'aa' }>, Stylable>()
@@ -64,11 +62,11 @@ describe('Stylable', () => {
 
 		Assert(Is<'input'>().not.subtypeOf<Stylable<CustomRequiredTextProps>>())
 
-		type BadTextProps = CustomTextProps & {
-			checked?: boolean
-		}
+		// type BadTextProps = CustomTextProps & {
+		// 	checked?: boolean
+		// }
 
-		Assert(Is<'input'>().not.subtypeOf<Stylable<BadTextProps>>()) // missing undefined... should pass?
+		// Assert(Is<'input'>().not.subtypeOf<Stylable<BadTextProps>>()) // missing undefined... should pass?
 	})
 
 	it('playground', () => {
