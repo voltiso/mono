@@ -4,14 +4,14 @@
 import type { IsIdentical } from '~/type'
 import { Assert } from '~/type'
 
-import type { DeepMutable } from './DeepMutable'
+import type { DeepMutable_ } from './DeepMutable'
 
 describe('DeepMutable', () => {
 	it('array', () => {
 		expect.assertions(0)
 
 		type A = readonly string[]
-		type AA = DeepMutable<A>
+		type AA = DeepMutable_<A>
 
 		Assert<IsIdentical<AA, string[]>>()
 	})
@@ -20,7 +20,7 @@ describe('DeepMutable', () => {
 		expect.assertions(0)
 
 		type A = readonly [1, 2, 3]
-		type AA = DeepMutable<A>
+		type AA = DeepMutable_<A>
 
 		Assert<IsIdentical<AA, [1, 2, 3]>>()
 	})
@@ -29,7 +29,7 @@ describe('DeepMutable', () => {
 		expect.assertions(0)
 
 		type A = readonly [1, 2, readonly [3, 4]]
-		type AA = DeepMutable<A>
+		type AA = DeepMutable_<A>
 
 		Assert<IsIdentical<AA, [1, 2, [3, 4]]>>()
 	})
@@ -38,7 +38,7 @@ describe('DeepMutable', () => {
 		expect.assertions(0)
 
 		type A = readonly [1, 2, { readonly a: 3 }]
-		type AA = DeepMutable<A>
+		type AA = DeepMutable_<A>
 
 		Assert<IsIdentical<AA, [1, 2, { a: 3 }]>>()
 	})
@@ -56,7 +56,7 @@ describe('DeepMutable', () => {
 			readonly d: { readonly a: number; readonly b: readonly string[] }
 		}
 
-		type A = DeepMutable<Obj>
+		type A = DeepMutable_<Obj>
 		Assert<
 			IsIdentical<
 				A,

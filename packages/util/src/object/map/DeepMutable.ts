@@ -1,36 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type DeepMutable<T> = T extends (...args: any[]) => any
-	? T
-	: T extends object
-	? {
-			-readonly [k in keyof T]: DeepMutable<T[k]>
-	  }
-	: T
+export type DeepMutable_<T> = {
+	-readonly [k in keyof T]: DeepMutable_<T[k]>
+}
 
-// type DeepMutableArrayRec<
-// 	Arr extends unknown[],
-// 	Acc extends unknown[],
-// > = Arr extends []
-// 	? Acc
-// 	: Arr extends [infer Head, ...infer Tail]
-// 	? DeepMutableArrayRec<Tail, [...Acc, DeepMutable<Head>]>
-// 	: Arr extends (infer El)[]
-// 	? DeepMutable<El>[]
-// 	: never
+export type DeepMutable<T extends object | unknown[]> = DeepMutable_<T>
 
-// type DeepMutableArray<Arr extends readonly unknown[]> = DeepMutableArrayRec<
-// 	[...Arr],
-// 	[]
-// >
+//
 
-// export type DeepMutable<T> = T extends (...args: any[]) => any
-// 	? T
-// 	: T extends readonly unknown[]
-// 	? DeepMutableArray<T>
-// 	: T extends object
-// 	? {
-// 			-readonly [k in keyof T]: DeepMutable<T[k]>
-// 	  }
-// 	: T
+export type $DeepMutable_<T> = T extends any ? DeepMutable_<T> : never
+
+export type $DeepMutable<T extends object | unknown[]> = $DeepMutable_<T>

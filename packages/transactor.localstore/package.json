@@ -24,7 +24,7 @@
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________TEST": "__________",
-		"test": "pnpm test --filter transactor.localstore.test",
+		"test:all": "pnpm test --filter transactor.localstore.test",
 		"__________LINT": "__________",
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
@@ -37,8 +37,8 @@
 		"build:esm": "ttsc -b tsconfig.build.esm.json",
 		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s clean prepublishOnly:rest",
-		"prepublishOnly:rest": "run-p build test lint",
+		"prepublishOnly": "run-s clean build prepublishOnly:rest",
+		"prepublishOnly:rest": "run-p test:all lint",
 		"__________MISC": "__________",
 		"clean": "rimraf dist"
 	},
