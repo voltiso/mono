@@ -10,13 +10,11 @@
 		"fix:w": "run-s fix:w:prettier fix:w:eslint",
 		"fix:w:prettier": "prettier --write .",
 		"fix:w:eslint": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint --fix .",
-		"check": "run-s test lint",
-		"__________HOOKS": "__________",
-		"postinstall": "patch-package"
+		"check": "turbo run build test lint",
+		"__________HOOKS": "__________"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@milahu/patch-package": "^6.4.14",
 		"@types/jest": "^28.1.6",
 		"@types/node": "^18.6.5",
 		"@voltiso/config.eslint.lib": "workspace:*",

@@ -25,7 +25,7 @@
 	"scripts": {
 		"__________TEST": "__________",
 		"test:all": "run-p test:localstore",
-		"test:localstore": "pnpm test --filter transactor.localstore.test",
+		"test:localstore": "pnpm -w turbo test --filter transactor.localstore.test",
 		"__________LINT": "__________",
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",

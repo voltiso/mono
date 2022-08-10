@@ -26,8 +26,6 @@ const librariesToTransform = [
 ]
 
 export const jestEsrConfig = defineJestConfig({
-	// preset: 'react-native',
-
 	testMatch: [
 		'**/__tests__/**/*.?([cm])[jt]s?(x)',
 		'**/?(*.)+(spec|test).?([cm])[tj]s?(x)',
