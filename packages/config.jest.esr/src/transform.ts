@@ -4,7 +4,6 @@
 /* eslint-disable no-console */
 /* eslint-disable n/no-sync */
 
-// import { transpile } from 'esbuild-runner/lib/esbuild'
 import * as esbuild from 'esbuild'
 import flowRemoveTypes from 'flow-remove-types'
 import * as path from 'node:path'
