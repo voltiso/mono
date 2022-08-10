@@ -207,16 +207,19 @@ describe('lazyValue', () => {
 
 				arguments: {
 					...expected['arguments'],
+					// eslint-disable-next-line jest/no-conditional-expect
 					configurable: expect.any(Boolean),
 				},
 
 				caller: {
 					...expected['caller'],
+					// eslint-disable-next-line jest/no-conditional-expect
 					configurable: expect.any(Boolean),
 				},
 
 				prototype: {
 					...expected['prototype'],
+					// eslint-disable-next-line jest/no-conditional-expect
 					configurable: expect.any(Boolean),
 				},
 			})
@@ -275,7 +278,7 @@ describe('lazyValue', () => {
 
 		expect(b.a).toBe(a.a)
 
-		b.a = 1111
+		b.a = 1_111
 
 		expect(b.a).toBe(a.a)
 
@@ -331,6 +334,7 @@ describe('lazyValue', () => {
 		if (areArrowFunctionsTranspiled) {
 			// eslint-disable-next-line jest/no-conditional-expect
 			expect(Object.getOwnPropertyNames(b)).toStrictEqual(
+				// eslint-disable-next-line jest/no-conditional-expect
 				expect.arrayContaining(Object.getOwnPropertyNames(a)),
 			)
 		} else {

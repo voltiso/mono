@@ -1,20 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	IsIdentical,
-	PickCallNoUnknown_,
-	PickConstructNoUnknown_,
-} from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { Assert, Is } from '@voltiso/util'
 import type { FC } from 'react'
 
 import type { Props } from '~/react-types'
-import type { InnerProps } from '~/Stylable'
-import type { StylableJsxConstruct_ } from '~/Stylable/_/StylableJsxConstruct'
 
 import type { StylableJsxCall } from './AutoStylableJsxCall'
-import type { IStylableJsxCall, StylableJsxCallInfer } from './StylableJsxCall'
+import type { IStylableJsxCall } from './StylableJsxCall'
 
 describe('StylableJsxCall', () => {
 	it('generic', <P extends Props>() => {
@@ -50,29 +43,6 @@ describe('StylableJsxCall', () => {
 		Assert.is<FC<{ className: string; a?: 'aa' }>, StylableJsxCall>()
 	})
 
-	it('type #2', () => {
-		expect.assertions(0)
-
-		function get<P extends InnerProps>(
-			_component:
-				| PickCallNoUnknown_<StylableJsxCallInfer<P>>
-				| PickConstructNoUnknown_<StylableJsxConstruct_<P>>,
-		): P {
-			return 0 as never
-		}
-
-		const a = get(0 as unknown as FC<{ className: string; a: string }>)
-		Assert<
-			IsIdentical<
-				typeof a,
-				{
-					className: string
-					a: string
-				}
-			>
-		>()
-	})
-
 	it('type #3', () => {
 		expect.assertions(0)
 
@@ -82,5 +52,18 @@ describe('StylableJsxCall', () => {
 			(props: { className: string; other: number }) => null,
 			StylableJsxCall
 		>()
+	})
+
+	it('type #4 - does not accept', () => {
+		expect.assertions(0)
+
+		Assert(
+			Is<
+				(props: { someProp?: boolean }) => null
+			>().not.subtypeOf<StylableJsxCall>(),
+		)
+
+		// ! bivariance does not help here!! have to manually check if props are empty `{}`
+		// Assert(Is<(props: {}) => null>().not.subtypeOf<StylableJsxCall>())
 	})
 })

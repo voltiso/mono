@@ -1,11 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/ban-types */
-export type DeepPartial<T> = T extends Function
-	? T
-	: T extends object
+/** Non-distributive `DeepPartial` without type constraints */
+export type DeepPartial_<T> = [
+	{
+		[k in keyof T]?: DeepPartial_<T[k]>
+	},
+][0]
+
+/** Non-distributive `DeepPartial` with type constraints */
+export type DeepPartial<T extends object> = DeepPartial_<T>
+
+//
+
+/** Distributed DeepPartial without type constraints */
+export type $DeepPartial_<T> = T extends any
 	? {
-			[k in keyof T]?: DeepPartial<T[k]>
+			[k in keyof T]?: DeepPartial_<T[k]>
 	  }
-	: T
+	: never
+
+/** Distributed `DeepPartial` with type constraints */
+export type $DeepPartial<T extends object> = $DeepPartial_<T>

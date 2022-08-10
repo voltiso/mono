@@ -7,6 +7,7 @@ import { codeFiles } from '~/detail/files'
 
 import { ignorePatterns } from './detail/ignorePatterns'
 import {
+	additionalMarkdownOverrides,
 	anyOverride,
 	arrayFunc,
 	chaiFriendly,
@@ -36,7 +37,7 @@ import {
 	jsonc,
 	jsx,
 	jsxAlly,
-	markdownOverrides,
+	markdownOverride,
 	next,
 	noConstructorBind,
 	nodeDependencies,
@@ -231,7 +232,7 @@ export const baseEslintConfig = defineEslintConfig({
 		testOverride, // has to be after `fp`
 		noOnlyTests,
 
-		...markdownOverrides,
+		markdownOverride,
 
 		jsonc,
 		json, // has to be after `jsonc`
@@ -292,5 +293,7 @@ export const baseEslintConfig = defineEslintConfig({
 				'import/no-nodejs-modules': 1,
 			},
 		},
+
+		...additionalMarkdownOverrides,
 	],
 } as const)

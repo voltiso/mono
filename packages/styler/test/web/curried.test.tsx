@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import '@testing-library/jest-dom'
-
 import { screen } from '@testing-library/react'
 import { undef } from '@voltiso/util'
 

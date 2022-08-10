@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical, PartialIfNullish, VPartial } from '~'
+import type { $PartialComplex_, IsIdentical, PartialIfNullish } from '~'
 import { Assert } from '~/type'
 
 import type { Merge2Nullish } from './Merge2Nullish'
@@ -46,7 +46,7 @@ describe('Merge2Nullish', () => {
 		type C = Merge2Nullish<PartialIfNullish<SomeType>, T>
 		Assert.is<C, SomeType>()
 
-		type D = Merge2Nullish<SomeType, VPartial<T>>
+		type D = Merge2Nullish<SomeType, $PartialComplex_<T>>
 		Assert.is<D, SomeType>()
 
 		type E = Merge2Nullish<SomeType, T>

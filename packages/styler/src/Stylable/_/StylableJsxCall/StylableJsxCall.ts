@@ -10,33 +10,13 @@ import type { InnerProps } from '~/Stylable/InnerProps'
  * FC-like types that can be styled using style(...), and have additional props
  * assignable to `P`
  */
-interface StylableJsxCall<P extends Props> {
-	(props: P & InnerProps): ReactElement | null //! OK?
-	// <PP extends P & InnerProps>(props: PP): ReactElement | null
-}
-
-export type { StylableJsxCall as StylableJsxCall_ }
+export type StylableJsxCall_<P extends Props> = {
+	bivarianceHack(props: P & InnerProps): ReactElement | null
+}['bivarianceHack']
 
 //
 
 /** FC-like types that can be styled using style(...) */
-export interface IStylableJsxCall {
-	(props: any): ReactElement | null
-}
-// export interface IStylableJsxCall {
-// 	(props: InnerProps & InnerPropsSubtype): ReactElement | null //! OK?
-// 	// <PP extends InnerProps>(props: PP & InnerProps_Subtype): ReactElement | null
-// }
-
-//
-
-//
-
-//
-
-/** Friends with function overload resolution */
-export interface StylableJsxCallInfer<PP extends InnerProps> {
-	(props: PP): Required<PP> extends Required<InnerProps>
-		? ReactElement | null
-		: never
-}
+export type IStylableJsxCall = {
+	bivarianceHack(props: InnerProps): ReactElement | null
+}['bivarianceHack']

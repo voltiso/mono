@@ -4,13 +4,13 @@
 import type { IsIdentical } from '~/type'
 import { Assert } from '~/type'
 
-import type { DeepReadonly } from './DeepReadonly'
+import type { DeepReadonly_ } from './DeepReadonly'
 
 describe('DeepReadonly', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = DeepReadonly<{
+		type X = DeepReadonly_<{
 			x: 0
 			a?: 1
 			obj: {
@@ -41,7 +41,7 @@ describe('DeepReadonly', () => {
 			d: { a: number; b: string[] }
 		}
 
-		type A = DeepReadonly<Obj>
+		type A = DeepReadonly_<Obj>
 		Assert<
 			IsIdentical<
 				A,

@@ -5,7 +5,7 @@ import cloneLib from 'clone'
 
 import { deepClone } from './deepClone'
 
-const ITERS = 10 * 1000
+const ITERS = 10 * 1_000
 
 function bench(f: () => void) {
 	const t0 = process.hrtime()

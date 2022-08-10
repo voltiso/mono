@@ -41,7 +41,7 @@
 		"@voltiso/util.find-package-json": "workspace:^39.0.0"
 	},
 	"devDependencies": {
-		"@types/node": "^18.6.4",
+		"@types/node": "^18.6.5",
 		"@voltiso/config.ts": "workspace:*",
 		"@voltiso/config.ts.build.cjs": "workspace:*",
 		"@voltiso/config.ts.build.esm": "workspace:*",

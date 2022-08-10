@@ -3,7 +3,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const baseJestConfig = require('@voltiso/config.jest.react')
+const baseJestConfig = require('@voltiso/config.jest.esr')
 
 //! need to create a new unique object!
 module.exports = {

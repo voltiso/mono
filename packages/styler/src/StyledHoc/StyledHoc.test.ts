@@ -5,6 +5,7 @@ import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { ChangeEvent, FC, ReactElement, RefObject } from 'react'
 
+import type { Styled } from '~'
 import type { Css } from '~/Css'
 import type { Props } from '~/react-types'
 import type { Stylable } from '~/Stylable'
@@ -97,10 +98,11 @@ describe('StyledHoc', () => {
 	it('call signature', () => {
 		expect.assertions(0)
 
-		const style = {} as unknown as StyledHoc<{}>
+		const style = function () {} as unknown as StyledHoc<{}>
 
 		// easy
-		;() => style({} as unknown as FC<{ className?: string | undefined }>)
+		const a0 = style({} as unknown as FC<{ className?: string | undefined }>)
+		Assert.is<typeof a0, FC>()
 
 		//
 
@@ -120,7 +122,19 @@ describe('StyledHoc', () => {
 		Assert.is<typeof c, StaticError>()
 
 		// ...better!
-		;() => style({} as unknown as FC<{ href: string; className?: string }>)
+		const cc = style({} as unknown as FC<{ href: string; className?: string }>)
+		Assert<
+			IsIdentical<
+				typeof cc,
+				StyledComponent<
+					{},
+					FC<{
+						href: string
+						className?: string
+					}>
+				>
+			>
+		>()
 
 		//
 
@@ -130,13 +144,13 @@ describe('StyledHoc', () => {
 		Assert.is<typeof dd, StaticError>()
 
 		// ...better!
-		;() =>
-			style(
-				{} as unknown as (props: {
-					a: 1
-					className?: string | undefined
-				}) => ReactElement,
-			)
+		const ddd = style(
+			{} as unknown as (props: {
+				a: 1
+				className?: string | undefined
+			}) => ReactElement,
+		)
+		Assert.is<typeof ddd, Styled>()
 
 		//
 

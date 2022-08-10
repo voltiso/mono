@@ -7,12 +7,11 @@ ignores:
   - '@babel/preset-env'
   - '@babel/plugin-transform-react-jsx'
   - '@voltiso/config.eslint.lib'
-  - '@voltiso/config.jest.react'
+  - '@voltiso/config.jest.esr'
   - '@voltiso/config.ts'
   - '@voltiso/config.ts.dom'
   - '@voltiso/config.ts.build.cjs'
   - '@voltiso/config.ts.build.esm'
   - '@jest/types'
-  - jest-environment-jsdom
   - '@types/react-test-renderer'
-  - metro-react-native-babel-preset
+  - '@types/testing-library__jest-dom' # extend-expect

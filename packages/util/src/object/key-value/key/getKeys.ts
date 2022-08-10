@@ -4,7 +4,7 @@
 import {
 	type DefaultIterationOptions,
 	type IterationOptions,
-	type Merge2,
+	type Merge2Complex,
 	defaultIterationOptions,
 	merge,
 } from '~/object'
@@ -69,7 +69,7 @@ export function getKeys<
 >(
 	object: Obj,
 	options: O,
-): GetKeys<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+): GetKeys<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions>
 
 export function getKeys<
 	Obj extends object,
@@ -77,7 +77,7 @@ export function getKeys<
 >(
 	object: Obj,
 	options?: O | undefined,
-): GetKeys<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions> {
+): GetKeys<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions> {
 	const myOptions = merge(defaultIterationOptions, options)
 	return getKeys_(object, myOptions as never) as never
 }

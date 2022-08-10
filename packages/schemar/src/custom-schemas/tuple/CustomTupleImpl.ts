@@ -1,15 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	type PARTIAL_OPTIONS,
-	EXTENDS,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import type { Assume } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
 import { lazyConstructor } from '@voltiso/util'
 
 import type {
@@ -17,7 +10,6 @@ import type {
 	GetTupleLength,
 	ISchema,
 	ITuple,
-	MergeSchemaOptions,
 	TupleOptions,
 } from '~'
 import {
@@ -36,12 +28,12 @@ export interface CustomTupleImpl<O> {
 	readonly [BASE_OPTIONS]: TupleOptions
 	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
 
-	readonly [PARTIAL_OPTIONS]: O
+	// readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: Assume<
-		TupleOptions,
-		MergeSchemaOptions<DefaultTupleOptions, O>
-	>
+	// readonly [OPTIONS]: Assume<
+	// 	TupleOptions,
+	// 	MergeSchemaOptions<DefaultTupleOptions, O>
+	// >
 }
 
 export class CustomTupleImpl<O extends Partial<TupleOptions>>
@@ -79,13 +71,11 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 	override [EXTENDS](other: ISchema): boolean {
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 

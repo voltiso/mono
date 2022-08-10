@@ -4,15 +4,15 @@
 import type { IsIdentical } from '~/type'
 import { Assert } from '~/type'
 
-import type { DeepPartial } from './DeepPartial'
+import type { DeepPartial_ } from './DeepPartial'
 
 describe('DeepPartial', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = DeepPartial<{
+		type X = DeepPartial_<{
 			x: 0
-			a: 1
+			a: 'test'
 			obj: {
 				a: 11
 			}
@@ -22,7 +22,7 @@ describe('DeepPartial', () => {
 				X,
 				{
 					x?: 0
-					a?: 1
+					a?: 'test'
 					obj?: {
 						a?: 11
 					}

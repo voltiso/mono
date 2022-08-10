@@ -1,3 +1,6 @@
-import type { Omit_, _ } from '@voltiso/util'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type OmitProps<P, PropName> = _<Omit_<P, PropName>>
+import type { _ } from '@voltiso/util'
+
+export type OmitProps_<P, PropName> = _<Omit<P, PropName & string>>

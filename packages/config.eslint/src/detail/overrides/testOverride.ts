@@ -70,6 +70,8 @@ export const testOverride = defineEslintConfigOverride({
 		'jest/no-commented-out-tests': 1,
 		'import/no-unassigned-import': 0,
 		'no-restricted-imports': 0, // allow '../*' imports
+		'no-invalid-this': 0,
+		'no-useless-constructor': 0,
 
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,

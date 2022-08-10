@@ -2,17 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable complexity */
-/* eslint-disable sonarjs/cognitive-complexity */
 
 import {
 	type BASE_OPTIONS,
 	type DEFAULT_OPTIONS,
-	type PARTIAL_OPTIONS,
 	EXTENDS,
 	OPTIONS,
 	SCHEMA_NAME,
 } from '_'
-import type { Assume } from '@voltiso/util'
 import {
 	CALL,
 	callableInstance,
@@ -25,7 +22,6 @@ import type {
 	CustomArray,
 	DefaultArrayOptions,
 	ISchema,
-	MergeSchemaOptions,
 	Schemable,
 } from '~'
 import {
@@ -39,15 +35,15 @@ import {
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomArrayImpl<O> {
-	readonly [PARTIAL_OPTIONS]: O
-
-	readonly [OPTIONS]: Assume<
-		ArrayOptions,
-		MergeSchemaOptions<DefaultArrayOptions, O>
-	>
-
 	readonly [BASE_OPTIONS]: ArrayOptions
 	readonly [DEFAULT_OPTIONS]: DefaultArrayOptions
+
+	// readonly [PARTIAL_OPTIONS]: O
+
+	// readonly [OPTIONS]: Assume<
+	// 	ArrayOptions,
+	// 	MergeSchemaOptions<DefaultArrayOptions, O>
+	// >
 }
 
 export class CustomArrayImpl<O extends Partial<ArrayOptions>>
@@ -97,13 +93,11 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
 
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyArray &&
 			!other.isReadonlyTuple
 		)
@@ -111,7 +105,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 		// readonly arrays can extend readonly tuples
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyArray) {
 			if (isTuple(other)) {
 				const thisMinLength =
@@ -223,7 +216,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			this.getElementSchema as unknown as ISchema
 		).toString()
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`
 		else return `${elementTypeStr}[]`
 	}

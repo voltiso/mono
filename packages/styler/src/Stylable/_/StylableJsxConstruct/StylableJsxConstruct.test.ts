@@ -1,26 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	IsIdentical,
-	PickCallNoUnknown_,
-	PickConstructNoUnknown_,
-} from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { ComponentClass, FC } from 'react'
 
 import type { Props } from '~/react-types/Props/Props'
-import type {
-	StylableJsxCall,
-	StylableJsxCallInfer,
-} from '~/Stylable/_/StylableJsxCall'
-import type { InnerProps } from '~/Stylable/InnerProps'
+import type { StylableJsxCall } from '~/Stylable/_/StylableJsxCall'
 
 import type { StylableJsxConstruct } from './AutoStylableJsxConstruct'
-import type {
-	IStylableJsxConstruct,
-	StylableJsxConstruct_,
-} from './StylableJsxConstruct'
+import type { IStylableJsxConstruct } from './StylableJsxConstruct'
 
 describe('StylableJsx', () => {
 	it('generic', <P extends Props>() => {
@@ -69,28 +57,5 @@ describe('StylableJsx', () => {
 		//
 
 		Assert.is<FC<{ className: string; a?: 'aa' }>, StylableJsxCall>()
-	})
-
-	it('type #2', () => {
-		expect.assertions(0)
-
-		function get<P extends InnerProps>(
-			_component:
-				| PickCallNoUnknown_<StylableJsxCallInfer<P>>
-				| PickConstructNoUnknown_<StylableJsxConstruct_<P>>,
-		): P {
-			return 0 as never
-		}
-
-		const a = get(0 as unknown as FC<{ className: string; a: string }>)
-		Assert<
-			IsIdentical<
-				typeof a,
-				{
-					className: string
-					a: string
-				}
-			>
-		>()
 	})
 })

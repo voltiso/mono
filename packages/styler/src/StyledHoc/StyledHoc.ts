@@ -2,15 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Throw } from '@voltiso/util'
-import type { ComponentProps } from 'react'
+import type { Component, ComponentProps, FunctionComponent } from 'react'
 
 import type {
 	InnerProps,
 	IsReactNative,
 	IStylable,
 	IStylableIntrinsic,
-	IStylableJsxCall,
-	IStylableJsxConstruct,
 	StyledComponent,
 } from '~'
 import type { Props } from '~/react-types'
@@ -29,15 +27,17 @@ export type { StyledHoc as StyledHoc_ }
 
 //
 
-export type ThrowMissingRequiredInnerProps<P extends Props> =
-	IsReactNative extends true
-		? Throw<'props should include `style`' & { Got: P }>
-		: Throw<'props should include `className`' & { Got: P }>
+export type ThrowMissingRequiredInnerProps<P> = IsReactNative extends true
+	? Throw<'props should include `style` - instead got:' & P>
+	: Throw<'props should include `className` - instead got:' & P>
 
-export type GetStyledComponent<P, C extends IStylable> = Required<
-	ComponentProps<C>
-> extends Required<InnerProps>
-	? StyledComponent<P, C>
+export type GetStyledComponent<
+	P,
+	C extends keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>,
+> = C extends IStylable
+	? keyof InnerProps extends keyof ComponentProps<C>
+		? StyledComponent<P, C>
+		: ThrowMissingRequiredInnerProps<ComponentProps<C>>
 	: ThrowMissingRequiredInnerProps<ComponentProps<C>>
 
 export interface StyledHocCall<P extends Props> {
@@ -55,17 +55,17 @@ export interface StyledHocCall<P extends Props> {
 	//
 
 	/** Style a FC-like (callable) component */
-	<C extends IStylableJsxCall>(
+	<C extends FunctionComponent<any>>(
 		stylableFunctionComponent: C,
 	): GetStyledComponent<P, C>
-	// <PP extends InnerProps>(
-	// 	stylableFunctionComponent: PickCallNoUnknown<StylableJsxCallInfer<PP>>,
-	// ): StyledComponent<MergeProps<PP, P>>
+	// <C extends IStylableJsxCall>(
+	// 	stylableFunctionComponent: C,
+	// ): GetStyledComponent<P, C>
 
 	//
 
 	/** Style a class-like (newable) component */
-	<C extends IStylableJsxConstruct>(
+	<C extends new (props: any) => Component<any, any>>(
 		stylableClassComponent: C,
 	): GetStyledComponent<P, C>
 	// <PP extends InnerProps>(
@@ -89,7 +89,14 @@ export interface StyledHocCall<P extends Props> {
 	//
 
 	/** All overloads combined (for usage in generic contexts) */
-	<C extends IStylable>(stylable: C): GetStyledComponent<P, C>
+	<
+		C extends
+			| FunctionComponent<any>
+			| (new (props: any) => Component<any, any>)
+			| keyof JSX.IntrinsicElements,
+	>(
+		stylable: C,
+	): GetStyledComponent<P, C>
 	// <PP extends InnerProps, S extends StylableIntrinsic>(
 	// 	stylable:
 	// 		| S

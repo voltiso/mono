@@ -37,7 +37,7 @@
 import {
 	type DefaultIterationOptions,
 	type IterationOptions,
-	type Merge2,
+	type Merge2Complex,
 	defaultIterationOptions,
 	getProperty,
 	merge,
@@ -105,7 +105,7 @@ export function getEntries<
 >(
 	obj: Obj,
 	options: O,
-): GetEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+): GetEntries<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions>
 
 export function getEntries<
 	Obj extends object,
@@ -113,7 +113,10 @@ export function getEntries<
 >(
 	obj: Obj,
 	options?: O | undefined,
-): GetEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions> {
+): GetEntries<
+	Obj,
+	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
+> {
 	const myOptions = merge(defaultIterationOptions, options)
 	return getEntries_(obj, myOptions as never) as never
 }
@@ -130,7 +133,10 @@ export function getCoercedEntries<
 >(
 	obj: Obj,
 	options: O,
-): GetCoercedEntries<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+): GetCoercedEntries<
+	Obj,
+	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
+>
 
 export function getCoercedEntries<
 	Obj extends object,
@@ -140,7 +146,7 @@ export function getCoercedEntries<
 	options?: O | undefined,
 ): GetCoercedEntries<
 	Obj,
-	Merge2<DefaultIterationOptions, O> & IterationOptions
+	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
 > {
 	const myOptions = merge(defaultIterationOptions, options)
 	return getEntries_(obj, myOptions as never) as never

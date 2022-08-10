@@ -3,9 +3,9 @@
 
 import type { Nullish, strictNullChecks } from '~'
 
-import type { VPartial } from './VPartial'
+import type { $PartialComplex_ } from './PartialComplex'
 
-type ExcludedPartial<T> = VPartial<Exclude<T, Nullish>>
+type ExcludedPartial<T> = $PartialComplex_<Exclude<T, Nullish>>
 
 type NonNeverPartial<T> = ExcludedPartial<T> extends never
 	? {}

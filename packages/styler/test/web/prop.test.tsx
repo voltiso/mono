@@ -3,6 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import { Assert } from '@voltiso/util'
+import type { ChangeEventHandler } from 'react'
 
 import type { Stylable } from '~'
 import { style } from '~'
@@ -23,8 +24,6 @@ describe('prop', () => {
 			ref?: ((inst: HTMLInputElement | null) => void) | undefined | null
 			checked?: boolean | undefined
 			onChange?: ChangeEventHandler<HTMLInputElement> | undefined
-
-			validationResult?: ValidationResult | undefined
 		}
 
 		Assert.is<typeof a, Stylable<CheckboxProps>>()

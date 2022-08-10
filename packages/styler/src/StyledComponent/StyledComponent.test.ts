@@ -9,13 +9,10 @@ import type {
 	ComponentPropsWithRef,
 } from 'react'
 
+import type { IStylable, IStyled, OuterProps, Props, Styled } from '~'
 import type { Css } from '~/Css'
-import type { Props } from '~/react-types'
-import type { IStylable, OuterProps as OuterProperties } from '~/Stylable'
-import type { IStyled, Styled } from '~/Styled'
 
-import type { StyledComponent } from './AutoStyledComponent'
-import type { IStyledComponent } from './IStyledComponent'
+import type { IStyledComponent, StyledComponent } from '.'
 
 describe('StyledComponent', () => {
 	it('type', () => {
@@ -35,9 +32,18 @@ describe('StyledComponent', () => {
 
 		Assert.is<StyledComponent<OptionalProperties>, StyledComponent<Props>>()
 		Assert.is<StyledComponent<OptionalProperties>, StyledComponent<{}>>()
+	})
 
-		// auto-IStyledComponent
-		// Assert.is<StyledComponent<OptionalProps>, StyledComponent>()
+	it('type - second argument', () => {
+		expect.assertions(0)
+
+		// type A = ComponentProps<StyledComponent_<{ a: 1 }, Stylable>>
+
+		Assert.is<StyledComponent<{}, 'button'>, StyledComponent>()
+		Assert.is<StyledComponent<{}, 'button'>, StyledComponent<{}>>()
+
+		Assert.is<StyledComponent<{ a: 1 }, 'button'>, StyledComponent>()
+		Assert.is<StyledComponent<{ a: 1 }, 'button'>, StyledComponent<{ a: 1 }>>()
 	})
 
 	it('type - hard', () => {
@@ -108,32 +114,15 @@ describe('StyledComponent', () => {
 		type SampleCss = { margin: 8 }
 
 		type Easy = ComponentProps<StyledComponent<Props>>
-		Assert.is<Easy, OuterProperties>()
+		Assert.is<Easy, OuterProps>()
 		Assert.is<SampleCss, Easy['css']>()
 
 		type EasyReference = ComponentPropsWithRef<StyledComponent<Props>>
-		Assert.is<EasyReference, OuterProperties>()
+		Assert.is<EasyReference, OuterProps>()
 		Assert.is<SampleCss, EasyReference['css']>()
 
 		type EasyNoReference = ComponentPropsWithoutRef<StyledComponent<Props>>
-		Assert.is<EasyNoReference, OuterProperties>()
+		Assert.is<EasyNoReference, OuterProps>()
 		Assert.is<SampleCss, EasyNoReference['css']>()
 	})
-
-	// eslint-disable-next-line jest/no-commented-out-tests
-	// it('always has OuterProps - hard', <P extends Props>() => {
-	// 	expect.assertions(0)
-
-	// 	type Hard = ComponentProps<StyledComponent<P>>
-	// 	Assert.is<Hard, OuterProps>()
-	// 	Assert.is<SampleCss, Hard['css']>()
-
-	// 	type HardRef = ComponentPropsWithRef<StyledComponent<P>>
-	// 	Assert.is<HardRef, OuterProps>()
-	// 	Assert.is<SampleCss, HardRef['css']>()
-
-	// 	type HardNoRef = ComponentPropsWithoutRef<StyledComponent<P>>
-	// 	Assert.is<HardNoRef, OuterProps>()
-	// 	// Assert.is<SampleCss, HardNoRef['css']>() // React Typings not perfect...
-	// })
 })

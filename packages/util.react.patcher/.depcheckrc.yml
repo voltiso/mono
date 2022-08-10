@@ -7,6 +7,6 @@ ignores:
   - '@babel/preset-env'
   - '@babel/plugin-transform-react-jsx'
   - '@babel/plugin-proposal-decorators'
-  - '@voltiso/config.jest.react'
+  - '@voltiso/config.jest.esr'
   - '@voltiso/config.ts.build.cjs'
   - '@voltiso/config.ts.build.esm'

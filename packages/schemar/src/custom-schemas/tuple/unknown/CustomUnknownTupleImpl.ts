@@ -67,17 +67,14 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		: O['isReadonlyTuple'] extends false
 		? MutableTuple<T>
 		: never {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyTuple) return new ReadonlyTuple(elementSchemas) as never
 		else return new MutableTuple(elementSchemas) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isUnknownTuple(other) && this.isReadonlyTuple && !other.isReadonlyTuple)
 			return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 

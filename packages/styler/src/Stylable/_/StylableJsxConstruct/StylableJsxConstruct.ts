@@ -1,14 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Component } from 'react'
+import { Component } from 'react'
 
 import type { Props } from '~/react-types'
 import type { InnerProps } from '~/Stylable/InnerProps'
 
 /**
- * FC-like types that can be styled using style(...), and have additional props
- * assignable to `P`
+ * Class-like types that can be styled using style(...), and have additional
+ * props assignable to `P`
  */
 type StylableJsxConstruct<P extends Props> = new <PP extends P & InnerProps>(
 	props: PP,
@@ -18,19 +18,14 @@ export type { StylableJsxConstruct as StylableJsxConstruct_ }
 
 //
 
-/** FC-like types that can be styled using style(...) */
-export type IStylableJsxConstruct = new (props: any) => Component //! OK?
+declare class IStylableJsxBivarianceHack extends Component {
+	constructor(props: InnerProps)
+}
+
+/** Class-like types that can be styled using style(...) */
+export type IStylableJsxConstruct = typeof IStylableJsxBivarianceHack
+
+// export type IStylableJsxConstruct = { new (props: any): Component } //! OK?
 // export type IStylableJsxConstruct = new (
 // 	props: InnerProps & InnerPropsSubtype,
 // ) => Component //! OK?
-
-//
-
-//
-
-//
-
-/** Friends with function overload resolution */
-export type StylableJsxConstructInfer<PP extends InnerProps> = new (
-	props: PP,
-) => Required<PP> extends Required<InnerProps> ? Component : never

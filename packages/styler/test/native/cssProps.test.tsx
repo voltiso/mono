@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import { View } from 'react-native'
 
@@ -15,8 +16,8 @@ describe('cssProps', () => {
 
 		Assert.is<IsReactNative, true>()
 
-		// @ts-expect-error not available in react-native mode
-		;() => style('button')
+		const a = style('button')
+		Assert.is<typeof a, StaticError>()
 
 		const StyledView = style(View)
 

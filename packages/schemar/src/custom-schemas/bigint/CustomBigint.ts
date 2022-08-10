@@ -1,21 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import type { Assume } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
 
 import type {
 	BigintOptions,
 	CustomSchema,
 	DefaultBigintOptions,
 	DefineSchema,
-	MergeSchemaOptions,
 } from '~'
 
 export interface CustomBigint<O extends Partial<BigintOptions>>
@@ -25,12 +17,12 @@ export interface CustomBigint<O extends Partial<BigintOptions>>
 	readonly [BASE_OPTIONS]: BigintOptions
 	readonly [DEFAULT_OPTIONS]: DefaultBigintOptions
 
-	readonly [PARTIAL_OPTIONS]: O
+	// readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: Assume<
-		BigintOptions,
-		MergeSchemaOptions<DefaultBigintOptions, O>
-	>
+	// readonly [OPTIONS]: Assume<
+	// 	BigintOptions,
+	// 	MergeSchemaOptions<DefaultBigintOptions, O>
+	// >
 
 	min<MinValue extends bigint>(
 		minValue: MinValue,

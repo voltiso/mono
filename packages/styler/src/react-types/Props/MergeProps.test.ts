@@ -4,14 +4,14 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { MergeProps } from './MergeProps'
+import type { MergeProps_ } from './MergeProps'
 import type { Props } from './Props'
 
 describe('MergeProps', () => {
 	it('simple', () => {
 		expect.assertions(0)
 
-		type A = MergeProps<{ a: 1 }, { b: 2 }>
+		type A = MergeProps_<{ a: 1 }, { b: 2 }>
 		Assert<
 			IsIdentical<
 				A,
@@ -29,7 +29,7 @@ describe('MergeProps', () => {
 	it('generic', <P0 extends Props, P1 extends Props>() => {
 		expect.assertions(0)
 
-		type A = MergeProps<P0, P1>
+		type A = MergeProps_<P0, P1>
 		Assert.is<A, Props>()
 	})
 
@@ -60,7 +60,7 @@ describe('MergeProps', () => {
 			b?: 0
 		}
 
-		const obj = {} as MergeProps<ObjA, ObjB>
+		const obj = {} as MergeProps_<ObjA, ObjB>
 
 		void obj.a
 		void obj.b

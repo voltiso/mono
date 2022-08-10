@@ -29,7 +29,7 @@ function deepAssign(r: any, x: any) {
 export function deepClone<X>(x: X): X
 
 export function deepClone(x: any) {
-	// if(++cnt >= 20) throw new Error('asdfg')
+	// if(++cnt >= 20) throw new Error('bad')
 
 	if (typeof x?.clone === 'function') {
 		return x.clone()
@@ -57,6 +57,7 @@ export function deepClone(x: any) {
 
 	if (typeof x === 'function') {
 		function r(this: unknown, ...args: unknown[]) {
+			// eslint-disable-next-line no-invalid-this
 			return Function.prototype.call.call(x, this, ...args)
 		}
 		deepAssign(r, x)

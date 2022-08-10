@@ -4,7 +4,6 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
-/* eslint-disable jest/unbound-method */
 /* eslint-disable @typescript-eslint/unbound-method */
 
 import { toString } from './toString'

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable no-console */
+
 import * as jestDevServer from 'jest-dev-server'
 
 import { getCwd } from './_/getCwd'
@@ -12,11 +14,13 @@ export = async () => {
 	const getPortModule = await import('get-port')
 	const getPort = getPortModule.default
 
-	const port = await getPort()
 	// const port = 14_395
+	const port = await getPort()
+	console.log('using port', port)
 
 	const firebaseJsonPath = getFirebaseJsonPath({ port })
 
+	console.log('writing firebase.json to', firebaseJsonPath)
 	await writeFirebaseJson({ firebaseJsonPath, port })
 
 	const cwd = getCwd()
@@ -27,6 +31,8 @@ export = async () => {
 		usedPortAction: 'error',
 		launchTimeout: 40_000, // needs more time if ran via `turbo` (for some reason?)
 	})
+
+	console.log('firebase emulator started!')
 
 	// eslint-disable-next-line n/no-process-env
 	process.env['FIRESTORE_EMULATOR_HOST'] = `localhost:${port}`

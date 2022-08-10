@@ -1,14 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-undefined */
-
 import type { IsIdentical } from '~/type'
 import { Assert } from '~/type/static-assert'
 
 import type { MergeNullish } from './merge'
 import { merge } from './merge'
-import type { Merge2 } from './Merge2'
+import type { Merge2Complex } from './Merge2Complex'
 import type { MergeN } from './MergeN'
 
 describe('merge', () => {
@@ -102,7 +100,7 @@ describe('merge', () => {
 			>
 		>()
 
-		type II = Merge2<
+		type II = Merge2Complex<
 			{
 				a: 1
 			},
@@ -150,23 +148,23 @@ describe('merge', () => {
 	it('Merge2', () => {
 		expect.assertions(0)
 
-		type A = Merge2<{ a: 'a' }, { b: 'b' }>
+		type A = Merge2Complex<{ a: 'a' }, { b: 'b' }>
 		Assert<IsIdentical<A, { a: 'a'; b: 'b' }>>()
 	})
 
 	it('Merge2 - optional (static)', () => {
 		expect.assertions(0)
 
-		type A = Merge2<{ a?: 1 }, { a?: 2 }>
+		type A = Merge2Complex<{ a?: 1 }, { a?: 2 }>
 		Assert<IsIdentical<A, { a?: 1 | 2 }>>()
 
-		type B = Merge2<{ a: 1 }, { a?: 2 }>
+		type B = Merge2Complex<{ a: 1 }, { a?: 2 }>
 		Assert<IsIdentical<B, { a: 1 | 2 }>>()
 
-		type C = Merge2<{ a: 1 }, { a: 2 }>
+		type C = Merge2Complex<{ a: 1 }, { a: 2 }>
 		Assert<IsIdentical<C, { a: 2 }>>()
 
-		type D = Merge2<{ a?: 1 }, { a: 2 }>
+		type D = Merge2Complex<{ a?: 1 }, { a: 2 }>
 		Assert<IsIdentical<D, { a: 2 }>>()
 	})
 

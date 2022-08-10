@@ -105,8 +105,8 @@ describe('s.number', () => {
 
 		expect(() => s.number.min(123).validate(12)).toThrow('123')
 		expect(() => s.number.min(123).max(999).validate(12)).toThrow('123')
-		expect(() => s.number.min(123).max(999).validate(1000)).toThrow('999')
-		expect(() => s.number.max(999).validate(1000)).toThrow('999')
+		expect(() => s.number.min(123).max(999).validate(1_000)).toThrow('999')
+		expect(() => s.number.max(999).validate(1_000)).toThrow('999')
 	})
 
 	it('toString', () => {

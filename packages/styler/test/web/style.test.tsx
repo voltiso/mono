@@ -6,7 +6,7 @@ import type { IsEqual } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 import type { FC } from 'react'
 
-import { style } from '~'
+import { style, STYLED_DATA } from '~'
 
 import { renderApp } from './common'
 
@@ -359,11 +359,9 @@ describe('style', () => {
 			color: 'red',
 		})
 
-		// @ts-expect-error protected
-		expect(AnotherButton._data.stack).toHaveLength(6)
+		expect(AnotherButton[STYLED_DATA].stack).toHaveLength(6)
 
-		// @ts-expect-error protected
-		expect(Component._data.stack).toHaveLength(6)
+		expect(Component[STYLED_DATA].stack).toHaveLength(6)
 	})
 
 	it('inner ref is called', () => {

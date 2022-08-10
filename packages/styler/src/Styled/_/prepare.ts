@@ -40,12 +40,14 @@ export function prepare<X>(x: X, theme: object): X {
 	}
 
 	if (typeof x === 'string') {
-		return x.replace(
-			// eslint-disable-next-line regexp/prefer-named-capture-group
-			/\$\{([^}]*)\}/gu,
-			match =>
-				`${prepare(readPath(theme, match.slice(2, -1).split('.')), theme)}`,
-		) as any
+		if (!x.includes('$')) return x
+		else
+			return x.replace(
+				// eslint-disable-next-line regexp/prefer-named-capture-group
+				/\$\{([^}]*)\}/gu,
+				match =>
+					`${prepare(readPath(theme, match.slice(2, -1).split('.')), theme)}`,
+			) as any
 	}
 
 	return x as any

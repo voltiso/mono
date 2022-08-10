@@ -1,18 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, PARTIAL_OPTIONS } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { Assume } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
-import type {
-	DefaultNeverOptions,
-	INever,
-	MergeSchemaOptions,
-	NeverOptions,
-	Schema,
-} from '~'
+import type { DefaultNeverOptions, INever, NeverOptions, Schema } from '~'
 import { CustomSchemaImpl } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
@@ -20,11 +13,11 @@ export interface CustomNeverImpl<O> {
 	readonly [DEFAULT_OPTIONS]: DefaultNeverOptions
 	readonly [BASE_OPTIONS]: NeverOptions
 
-	readonly [PARTIAL_OPTIONS]: O
-	readonly [OPTIONS]: Assume<
-		NeverOptions,
-		MergeSchemaOptions<DefaultNeverOptions, O>
-	>
+	// readonly [PARTIAL_OPTIONS]: O
+	// readonly [OPTIONS]: Assume<
+	// 	NeverOptions,
+	// 	MergeSchemaOptions<DefaultNeverOptions, O>
+	// >
 }
 
 export class CustomNeverImpl<O extends Partial<NeverOptions>>

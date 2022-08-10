@@ -85,9 +85,12 @@ export const noUselessPathSegments = createRule<
 		const options = context.options[0]
 
 		function checkSourceValue(source: { value: string }) {
+			// eslint-disable-next-line destructuring/no-rename
 			const { value: importPath } = source
 
 			function reportWithProposedPath(proposedPath: string) {
+				if (proposedPath.length > importPath.length) return
+
 				context.report({
 					node: source as never,
 					// Note: Using messageIds is not possible due to the support for ESLint 2 and 3

@@ -4,12 +4,10 @@
 import {
 	type BASE_OPTIONS,
 	type DEFAULT_OPTIONS,
-	type PARTIAL_OPTIONS,
 	EXTENDS,
 	OPTIONS,
 	SCHEMA_NAME,
 } from '_'
-import type { Assume } from '@voltiso/util'
 import {
 	CALL,
 	callableInstance,
@@ -17,12 +15,7 @@ import {
 	lazyConstructor,
 } from '@voltiso/util'
 
-import type {
-	DefaultBigintOptions,
-	ISchema,
-	Literal,
-	MergeSchemaOptions,
-} from '~'
+import type { DefaultBigintOptions, ISchema, Literal } from '~'
 import {
 	type BigintOptions,
 	type CustomBigint,
@@ -37,12 +30,12 @@ export interface CustomBigintImpl<O> {
 	readonly [BASE_OPTIONS]: BigintOptions
 	readonly [DEFAULT_OPTIONS]: DefaultBigintOptions
 
-	readonly [PARTIAL_OPTIONS]: O
+	// readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: Assume<
-		BigintOptions,
-		MergeSchemaOptions<DefaultBigintOptions, O>
-	>
+	// readonly [OPTIONS]: Assume<
+	// 	BigintOptions,
+	// 	MergeSchemaOptions<DefaultBigintOptions, O>
+	// >
 }
 
 export class CustomBigintImpl<O extends Partial<BigintOptions>>

@@ -16,8 +16,11 @@ const jestEsrConfig = require('@voltiso/config.jest.esr')
 //! need to create a new unique object!
 module.exports = defineJestConfig({
 	...jestEsrConfig,
+	testEnvironment: 'node',
+
 	globalSetup: './script/jest-globalSetup.ts',
 	globalTeardown: './script/jest-globalTeardown.ts',
+
 	// forceExit: true, //! :(
 	detectOpenHandles: true,
 })

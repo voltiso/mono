@@ -54,9 +54,9 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return this[OPTIONS].maxLength as never
 	}
 
-	get getRegExps() {
+	get getRegExps(): this[OPTIONS]['regExps'] {
 		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS].regExps
+		return this[OPTIONS].regExps as never
 	}
 
 	constructor(o: O) {

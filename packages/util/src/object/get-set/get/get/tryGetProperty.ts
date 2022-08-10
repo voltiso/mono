@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '~/nullish/undef'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import type { IsOptionalImpl } from '~/object/IsOptional'
 import type { AlsoAccept } from '~/type'
@@ -38,7 +37,7 @@ export function tryGetProperty<
 	O extends object,
 	K extends keyof O | AlsoAccept<keyof any>,
 >(o: O | undefined, k: K): TryGetProperty<O, K> | undefined {
-	if (!o) return undef
+	if (!o) return undefined
 
 	assertNotPolluting(o, k)
 	return o[k as keyof O] as never

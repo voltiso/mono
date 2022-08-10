@@ -1,31 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import type {
-	Assume,
-	DeepPartial,
-	DeepPartialOrUndefined,
+	DeepPartial_,
+	DeepPartialOrUndefined_,
 	PartialOrUndefined_,
 } from '@voltiso/util'
 
 import type {
 	CustomSchema,
-	DeepPartialShape,
-	DeepStrictPartialShape,
+	DeepPartialShape_,
+	DeepStrictPartialShape_,
 	DefaultObjectOptions,
 	DefineSchema,
 	InferableObject,
-	MergeSchemaOptions,
 	ObjectOptions,
-	PartialShape,
-	StrictPartialShape,
+	PartialShape_,
+	StrictPartialShape_,
 } from '~'
 
 export interface CustomObject<O extends Partial<ObjectOptions>>
@@ -35,12 +27,12 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 	readonly [BASE_OPTIONS]: ObjectOptions
 	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
-	readonly [PARTIAL_OPTIONS]: O
+	// readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: Assume<
-		ObjectOptions,
-		MergeSchemaOptions<DefaultObjectOptions, O>
-	>
+	// readonly [OPTIONS]: Assume<
+	// 	ObjectOptions,
+	// 	MergeSchemaOptions<DefaultObjectOptions, O>
+	// >
 
 	//
 
@@ -48,35 +40,35 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	//
 
-	get partial(): GetPartial<this>
-	get strictPartial(): GetStrictPartial<this>
+	get partial(): _GetPartial_<this>
+	get strictPartial(): _GetStrictPartial_<this>
 
-	get deepPartial(): GetDeepPartial<this>
-	get deepStrictPartial(): GetDeepStrictPartial<this>
+	get deepPartial(): _GetDeepPartial_<this>
+	get deepStrictPartial(): _GetDeepStrictPartial_<this>
 }
 
 //
 
-type ObjectLike = {
-	[OPTIONS]: { shape: InferableObject; Output: unknown; Input: unknown }
+export type _ObjectLike = {
+	[OPTIONS]: { shape: InferableObject; Output: object; Input: object }
 }
 
-type GetPartial<This> = This extends ObjectLike
+export type _GetPartial_<This> = [This] extends [_ObjectLike]
 	? DefineSchema<
 			This,
 			{
-				shape: PartialShape<This[OPTIONS]['shape']>
+				shape: PartialShape_<This[OPTIONS]['shape']>
 				Output: Partial<This[OPTIONS]['Output']>
 				Input: PartialOrUndefined_<This[OPTIONS]['Input']>
 			}
 	  >
 	: never
 
-type GetStrictPartial<This> = This extends ObjectLike
+export type _GetStrictPartial_<This> = [This] extends [_ObjectLike]
 	? DefineSchema<
 			This,
 			{
-				shape: StrictPartialShape<This[OPTIONS]['shape']>
+				shape: StrictPartialShape_<This[OPTIONS]['shape']>
 				Output: Partial<This[OPTIONS]['Output']>
 				Input: Partial<This[OPTIONS]['Input']>
 			}
@@ -85,24 +77,24 @@ type GetStrictPartial<This> = This extends ObjectLike
 
 //
 
-type GetDeepPartial<This> = This extends ObjectLike
+export type _GetDeepPartial_<This> = [This] extends [_ObjectLike]
 	? DefineSchema<
 			This,
 			{
-				shape: DeepPartialShape<This[OPTIONS]['shape']>
-				Output: DeepPartial<This[OPTIONS]['Output']>
-				Input: DeepPartialOrUndefined<This[OPTIONS]['Input']>
+				shape: DeepPartialShape_<This[OPTIONS]['shape']>
+				Output: DeepPartial_<This[OPTIONS]['Output']>
+				Input: DeepPartialOrUndefined_<This[OPTIONS]['Input']>
 			}
 	  >
 	: never
 
-type GetDeepStrictPartial<This> = This extends ObjectLike
+export type _GetDeepStrictPartial_<This> = [This] extends [_ObjectLike]
 	? DefineSchema<
 			This,
 			{
-				shape: DeepStrictPartialShape<This[OPTIONS]['shape']>
-				Output: DeepPartial<This[OPTIONS]['Output']>
-				Input: DeepPartial<This[OPTIONS]['Input']>
+				shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
+				Output: DeepPartial_<This[OPTIONS]['Output']>
+				Input: DeepPartial_<This[OPTIONS]['Input']>
 			}
 	  >
 	: never

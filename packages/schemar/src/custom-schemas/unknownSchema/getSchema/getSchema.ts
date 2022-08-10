@@ -38,7 +38,7 @@ export type GetSchema_<S> = S extends InferableLiteral
 
 export type GetSchema<S extends Schemable> = GetSchema_<S>
 
-export type GetSchema_NoReadonlyTuples_<T> = T extends InferableLiteral
+export type GetSchemaWithoutReadonlyTuples_<T> = T extends InferableLiteral
 	? Literal<T>
 	: T extends Newable
 	? Instance<T>
@@ -51,23 +51,24 @@ export type GetSchema_NoReadonlyTuples_<T> = T extends InferableLiteral
 	  Object<T>
 	: never
 
-export type GetSchema_NoReadonlyTuples<T extends Schemable> =
-	GetSchema_NoReadonlyTuples_<T>
+export type GetSchemaWithoutReadonlyTuples<T extends Schemable> =
+	GetSchemaWithoutReadonlyTuples_<T>
 
 //
 
 export function getSchema<T extends Inferable>(
 	t: T,
-): GetSchema_NoReadonlyTuples<T>
+): GetSchemaWithoutReadonlyTuples<T>
+
 export function getSchema<T extends Schema>(t: T): T
 
 export function getSchema<T extends Schemable>(
 	t: T,
-): GetSchema_NoReadonlyTuples<T>
+): GetSchemaWithoutReadonlyTuples<T>
 
 export function getSchema<T extends Schemable>(
 	t: T,
-): GetSchema_NoReadonlyTuples<T> {
+): GetSchemaWithoutReadonlyTuples<T> {
 	if (
 		t === null ||
 		['string', 'number', 'symbol', 'boolean', 'bigint', 'undefined'].includes(

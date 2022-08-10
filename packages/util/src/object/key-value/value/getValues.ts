@@ -9,7 +9,7 @@ import type {
 import { defaultIterationOptions } from '~/object/key-value/IterationOptions'
 import type { Value } from '~/object/key-value/value/Value'
 import { merge } from '~/object/merge/merge'
-import type { Merge2 } from '~/object/merge/Merge2'
+import type { Merge2Complex } from '~/object/merge/Merge2Complex'
 
 type GetValues<
 	Obj extends object,
@@ -71,7 +71,7 @@ export function getValues<
 >(
 	obj: Obj,
 	options: O,
-): GetValues<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions>
+): GetValues<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions>
 
 export function getValues<
 	Obj extends object,
@@ -79,7 +79,10 @@ export function getValues<
 >(
 	obj: Obj,
 	options?: O | undefined,
-): GetValues<Obj, Merge2<DefaultIterationOptions, O> & IterationOptions> {
+): GetValues<
+	Obj,
+	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
+> {
 	const myOptions = merge(defaultIterationOptions, options)
 	return getValues_(obj, myOptions as never) as never
 }

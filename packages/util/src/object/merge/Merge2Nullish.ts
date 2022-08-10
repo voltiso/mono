@@ -3,7 +3,7 @@
 
 import type { exactOptionalPropertyTypes, IsOptional_, Nullish } from '~'
 
-import type { CanBeUndefined_, Merge2_, PartialIfNullish_ } from '..'
+import type { CanBeUndefined_, Merge2Complex_, PartialIfNullish_ } from '..'
 import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 // export type Merge2Nullish_<A, B> = _<
@@ -35,7 +35,7 @@ import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 //
 
-type Merge2NullishBasic_<A, B> = Merge2_<
+type Merge2NullishBasic_<A, B> = Merge2Complex_<
 	PartialIfNullish_<A>,
 	PartialIfNullish_<B>
 >

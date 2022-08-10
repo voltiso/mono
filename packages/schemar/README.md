@@ -52,7 +52,8 @@ type MySchemaInput = typeof mySchema.InputType
 
 ## Bundlers / Tree-shaking
 
-For proper bundler support, do not use the default import from `@voltiso/schemar`:
+For proper bundler support, do not use the default import from
+`@voltiso/schemar`:
 
 ```ts
 // import s from '@voltiso/schemar' // bad

@@ -80,9 +80,9 @@ describe('interface', () => {
 
 		expect(c.gx).toBe(1)
 
-		c.setterX = 1239
+		c.setterX = 1_239
 
-		expect(c.gx).toBe(1239)
+		expect(c.gx).toBe(1_239)
 
 		expect(c(12)).toBe(23)
 		expect(c.caa()).toBe(11)

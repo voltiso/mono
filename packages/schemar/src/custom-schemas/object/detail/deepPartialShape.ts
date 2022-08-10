@@ -6,15 +6,21 @@ import { getEntries } from '@voltiso/util'
 import type { GetSchema_, InferableObject, IObject, ISchema } from '~'
 import { isObject, schema } from '~'
 
-type ProcessEntry<S> = S extends IObject
+export type DeepPartialShapeProcessEntry_<S> = S extends IObject
 	? S['deepPartial']['optional']
 	: S extends ISchema
 	? S['optional']
 	: never
 
-export type DeepPartialShape<O extends InferableObject> = {
-	[k in keyof O]: ProcessEntry<GetSchema_<O[k]>>
+//
+
+export type DeepPartialShape_<O> = {
+	[k in keyof O]: DeepPartialShapeProcessEntry_<GetSchema_<O[k]>>
 }
+
+export type DeepPartialShape<O extends InferableObject> = DeepPartialShape_<O>
+
+//
 
 export function deepPartialShape<O extends InferableObject>(
 	o: O,
@@ -35,15 +41,22 @@ export function deepPartialShape<O extends InferableObject>(
 
 //
 
-type ProcessStrictEntry<S> = S extends IObject
+export type DeepStrictPartialShapeProcessStrictEntry_<S> = [S] extends [IObject]
 	? S['deepStrictPartial']['strictOptional']
-	: S extends ISchema
+	: [S] extends [ISchema]
 	? S['strictOptional']
 	: never
 
-export type DeepStrictPartialShape<O extends InferableObject> = {
-	[k in keyof O]: ProcessStrictEntry<GetSchema_<O[k]>>
+//
+
+export type DeepStrictPartialShape_<O> = {
+	[k in keyof O]: DeepStrictPartialShapeProcessStrictEntry_<GetSchema_<O[k]>>
 }
+
+export type DeepStrictPartialShape<O extends InferableObject> =
+	DeepStrictPartialShape_<O>
+
+//
 
 export function deepStrictPartialShape<O extends InferableObject>(
 	o: O,

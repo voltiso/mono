@@ -4,7 +4,6 @@
 import type { Schemable } from '~'
 import { isBoolean, isLiteral, isUnion, schema } from '~'
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function collectTrueFalse(schemable: Schemable): {
 	haveTrue: boolean
 	haveFalse: boolean

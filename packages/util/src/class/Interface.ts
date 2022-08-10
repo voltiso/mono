@@ -4,12 +4,10 @@
 /** DEPRECATE? */
 
 /* eslint-disable jsdoc/require-param-description */
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable etc/no-misused-generics */
 /* eslint-disable unicorn/no-this-assignment */
 /* eslint-disable security/detect-object-injection */
-/* eslint-disable sonarjs/cognitive-complexity */
 /* eslint-disable unicorn/no-object-as-default-parameter */
 /* eslint-disable tsdoc/syntax */
 /* eslint-disable no-inner-declarations */

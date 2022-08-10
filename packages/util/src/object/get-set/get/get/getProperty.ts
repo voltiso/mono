@@ -6,7 +6,7 @@ import { lazyConstructor } from '~/lazy/lazyConstructor'
 import type { TryGetPropertyImpl } from '~/object/get-set/get/get/tryGetProperty'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { isObject } from '~/object/isObject'
-import type { Value } from '~/object/key-value/value/Value'
+import type { Value_ } from '~/object/key-value/value/Value'
 import type { UnknownProperty } from '~/object/UnknownProperty'
 import { toString } from '~/string/toString/toString'
 import type { AlsoAccept } from '~/type/AlsoAccept'
@@ -36,12 +36,14 @@ export class GetPropertyError<
 	}
 }
 
+export type GetProperty_<T, K> = K extends keyof T
+	? Value_<T, K>
+	: Exclude<TryGetPropertyImpl<T, K>, undefined>
+
 export type GetProperty<
 	T extends object,
 	K extends keyof T | AlsoAccept<keyof any>,
-> = K extends keyof T
-	? Value<T, K>
-	: Exclude<TryGetPropertyImpl<T, K>, undefined>
+> = GetProperty_<T, K>
 
 /**
  * Returns `object[property]`

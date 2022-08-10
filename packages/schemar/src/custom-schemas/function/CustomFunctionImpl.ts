@@ -4,12 +4,10 @@
 import {
 	type BASE_OPTIONS,
 	type DEFAULT_OPTIONS,
-	type PARTIAL_OPTIONS,
 	EXTENDS,
 	OPTIONS,
 	SCHEMA_NAME,
 } from '_'
-import type { Assume } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type {
@@ -19,7 +17,6 @@ import type {
 	IArray,
 	ISchema,
 	ITuple,
-	MergeSchemaOptions,
 } from '~'
 import {
 	_functionArgumentsExtends,
@@ -38,12 +35,12 @@ export interface CustomFunctionImpl<O> {
 	readonly [BASE_OPTIONS]: FunctionOptions
 	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
 
-	readonly [PARTIAL_OPTIONS]: O
+	// readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: Assume<
-		FunctionOptions,
-		MergeSchemaOptions<DefaultFunctionOptions, O>
-	>
+	// readonly [OPTIONS]: Assume<
+	// 	FunctionOptions,
+	// 	MergeSchemaOptions<DefaultFunctionOptions, O>
+	// >
 }
 
 export class CustomFunctionImpl<O extends Partial<FunctionOptions>>

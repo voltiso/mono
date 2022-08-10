@@ -8,6 +8,8 @@ import type { Firestore } from 'firebase-admin/firestore'
 import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore'
 import mockConsole from 'jest-mock-console'
 
+// console.log('FIRESTORE_EMULATOR_HOST', process.env['FIRESTORE_EMULATOR_HOST'])
+
 mockConsole()
 
 initializeApp({ projectId: 'firestore-transactor' })

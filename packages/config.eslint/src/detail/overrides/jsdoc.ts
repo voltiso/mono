@@ -71,7 +71,7 @@ export const jsdocOverride = defineEslintConfigOverride({
 		'jsdoc/require-property-name': 1,
 		'jsdoc/require-property-type': 1,
 		'jsdoc/require-returns': 0,
-		'jsdoc/require-returns-check': 1,
+		'jsdoc/require-returns-check': 0, // does not work with function overloads
 		'jsdoc/require-returns-description': 1,
 		'jsdoc/require-returns-type': 1,
 		'jsdoc/require-throws': 1,

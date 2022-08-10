@@ -3,6 +3,7 @@
 
 export * from './apply'
 export * from './bind'
+export * from './Bivariant'
 export * from './call'
 export * from './Callable'
 export * from './callableObject'

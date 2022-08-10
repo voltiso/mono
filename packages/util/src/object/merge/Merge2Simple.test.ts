@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, IsIdentical, VOmit, VPartial } from '~'
+import type { _, $_, $PartialComplex_, IsIdentical, OmitSuperComplex } from '~'
 import { Assert } from '~/type'
 
-import type { Merge2 } from './Merge2'
+import type { Merge2Complex } from './Merge2Complex'
 import type { Merge2Simple } from './Merge2Simple'
 
 describe('Merge2Simple', () => {
@@ -91,7 +91,7 @@ describe('Merge2Simple', () => {
 		// type C = Merge2Simple<PartialIfNullish<SomeType>, T>
 		// Assert.is<C, T>()
 
-		type D = Merge2Simple<SomeType, VPartial<T>>
+		type D = Merge2Simple<SomeType, $PartialComplex_<T>>
 		Assert.is<D, Partial<SomeType>>()
 
 		// type E = Merge2Simple<SomeType, T>
@@ -105,8 +105,8 @@ describe('Merge2Simple', () => {
 		expect.assertions(0)
 
 		type B1 = Omit<T, 'c'> & { c: 3 }
-		type B2 = _<VOmit<T, 'c'> & { c: 3 }>
-		type B3 = Merge2<T, { c: 3 }>
+		type B2 = _<OmitSuperComplex<T, 'c'> & { c: 3 }>
+		type B3 = Merge2Complex<T, { c: 3 }>
 		// type B4 = Merge2Nullish<T, { c: 3 }>
 		type B5 = Merge2Simple<T, { c: 3 }>
 
@@ -116,7 +116,7 @@ describe('Merge2Simple', () => {
 		// Assert.is<B4, Partial<SomeType>>() // doesn't work?? TODO
 		Assert.is<B5, SomeType>()
 
-		Assert.is<VOmit<T, 'c'> & { c: 3 }, SomeType>()
+		Assert.is<OmitSuperComplex<T, 'c'> & { c: 3 }, SomeType>()
 	})
 
 	//
@@ -147,9 +147,9 @@ describe('Merge2Simple', () => {
 	it('generics - complex', <This extends ISchema>() => {
 		expect.assertions(0)
 
-		type A = _<
-			VOmit<
-				_<VOmit<This[OPTIONS], 'optional'> & { optional: true }>,
+		type A = $_<
+			OmitSuperComplex<
+				$_<OmitSuperComplex<This[OPTIONS], 'optional'> & { optional: true }>,
 				'optional'
 			> & {
 				optional: true

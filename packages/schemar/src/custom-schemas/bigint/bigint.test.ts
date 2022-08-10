@@ -75,8 +75,8 @@ describe('number', () => {
 
 		expect(() => s.bigint.min(123n).validate(12n)).toThrow('123')
 		expect(() => s.bigint.min(123n).max(999n).validate(12n)).toThrow('123')
-		expect(() => s.bigint.min(123n).max(999n).validate(1000n)).toThrow('999')
-		expect(() => s.bigint.max(999n).validate(1000n)).toThrow('999')
+		expect(() => s.bigint.min(123n).max(999n).validate(1_000n)).toThrow('999')
+		expect(() => s.bigint.max(999n).validate(1_000n)).toThrow('999')
 	})
 
 	it('toString', () => {

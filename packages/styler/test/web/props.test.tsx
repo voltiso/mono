@@ -63,4 +63,11 @@ describe('props', () => {
 
 		expect(screen.getByTestId('a')).toHaveAttribute('type', 'radio')
 	})
+
+	it('does not allow unknown props', () => {
+		expect.assertions(0)
+
+		// @ts-expect-error `unknownProp` does not exist
+		style('button').props({ unknownProp: 'test' })
+	})
 })

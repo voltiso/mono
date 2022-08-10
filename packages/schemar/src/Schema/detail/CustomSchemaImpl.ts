@@ -162,7 +162,6 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	protected _getIssues(x: unknown): ValidationIssue[] {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof x === 'undefined' && this.hasDefault) return []
 		else return this._getIssuesImpl(x)
 	}
@@ -174,7 +173,6 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	private _fix(x: unknown): unknown {
 		let result = x
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof result === 'undefined' && this.hasDefault)
 			result = this.getDefault
 
@@ -244,10 +242,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	extends(other: Schemable): boolean {
 		const otherType = schema(other)
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isOptional && !otherType.isOptional) return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonly && !otherType.isReadonly) return false
 
 		// eslint-disable-next-line security/detect-object-injection
@@ -260,18 +256,14 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	toString(): string {
 		const prefix =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				this.isReadonly
+				: this.isReadonly
 				? 'readonly:'
-				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				this.isOptional
+				: this.isOptional
 				? '?'
 				: ''
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const suffix = this.hasDefault ? `=${toString(this.getDefault)}` : ''
 
 		return `${prefix}${this._toString()}${suffix}`

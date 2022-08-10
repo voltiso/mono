@@ -5,7 +5,7 @@ import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import type { Nullish } from '~/nullish'
 import { toString } from '~/string/toString/toString'
 
-import type { Merge2 } from './Merge2'
+import type { Merge2Complex } from './Merge2Complex'
 import type { Merge2Nullish } from './Merge2Nullish'
 import type { MergeN } from './MergeN'
 import type { MergeNNullish, MergeNNullish_ } from './MergeNNullish'
@@ -63,7 +63,7 @@ type HasArray<Ts> = Ts extends readonly []
 export function merge<A extends object, B extends SuggestObject<A>>(
 	objectA: A,
 	objectB: B,
-): HasArray<[A, B]> extends true ? never : Merge2<A, B>
+): HasArray<[A, B]> extends true ? never : Merge2Complex<A, B>
 
 export function merge<
 	A extends object | Nullish,

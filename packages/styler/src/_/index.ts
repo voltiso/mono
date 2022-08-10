@@ -3,3 +3,4 @@
 
 export * from './CssProps'
 export * from './StyledData'
+export * from './symbols'

@@ -3,7 +3,9 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-const basicMarkdownOverride = defineEslintConfigOverride({
+import { filesInsideMd } from '../files'
+
+export const markdownOverride = defineEslintConfigOverride({
 	files: ['*.md'],
 
 	plugins: ['markdown'],
@@ -16,9 +18,12 @@ const basicMarkdownOverride = defineEslintConfigOverride({
 	// },
 } as const)
 
-export const markdownOverrides = [
-	basicMarkdownOverride,
-	// {
-	// 	//
-	// },
+export const additionalMarkdownOverrides = [
+	{
+		files: filesInsideMd,
+
+		rules: {
+			'import/unambiguous': 0,
+		},
+	},
 ] as const

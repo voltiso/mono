@@ -119,7 +119,7 @@ describe('clone', () => {
 		expect.hasAssertions()
 
 		const f = () => 123
-		f.magic = 1234
+		f.magic = 1_234
 
 		const ff = clone(f)
 
@@ -138,7 +138,7 @@ describe('clone', () => {
 			const multiply = (typeof this === 'number' ? this : this?.x) || 1
 			return arg * multiply + 1
 		}
-		f.magic = 1234
+		f.magic = 1_234
 		Object.setPrototypeOf(f, base)
 
 		const ff = clone(f)
@@ -149,8 +149,8 @@ describe('clone', () => {
 		// @ts-expect-error does not exist
 		expect(ff.x).toBe(3)
 
-		expect(f.magic).toBe(1234)
-		expect(ff.magic).toBe(1234)
+		expect(f.magic).toBe(1_234)
+		expect(ff.magic).toBe(1_234)
 
 		expect(f(11)).toBe(12)
 		expect(ff(11)).toBe(12)

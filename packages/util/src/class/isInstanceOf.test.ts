@@ -9,7 +9,7 @@ describe('isInstanceOf', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		const date = new Date(2022)
+		const date = new Date(2_022)
 
 		expect(isInstanceOf(date, Date)).toBeTruthy()
 		expect(isInstanceOf(date, Object)).toBeTruthy()

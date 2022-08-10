@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	DeepPartial,
-	Flatten,
+	_,
+	DeepPartial_,
 	IsOptional,
 	SuggestObject,
 	Value,
@@ -17,14 +17,14 @@ export type DeepMerge2<
 	AOptional extends boolean = false,
 	BOptional extends boolean = false,
 > = DeepMerge2_<
-	AOptional extends true ? DeepPartial<A> : A,
-	BOptional extends true ? DeepPartial<B> : B,
+	AOptional extends true ? DeepPartial_<A> : A,
+	BOptional extends true ? DeepPartial_<B> : B,
 	BOptional
 >
 
 type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 	? B extends object
-		? Flatten<
+		? _<
 				{
 					[k in keyof A | keyof B as IsOptional<
 						A & B,

@@ -1,36 +1,70 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PartialIfNullish, VPartial } from '~'
+import type { IsIdentical, Merge2 } from '~'
 import { Assert } from '~/type'
 
-import type { Merge2 } from './Merge2'
-
 describe('Merge2', () => {
-	type SomeType = { a: 1; b: 2 }
-
-	it('generic', <T extends Partial<SomeType>>() => {
+	it('works', () => {
 		expect.assertions(0)
 
-		type A = Merge2<SomeType, Partial<SomeType>>
-		Assert.is<A, SomeType>()
+		type A = Merge2<{ a: 1; b: 2 }, { a: 2 }>
+		Assert<IsIdentical<A, { a: 2; b: 2 }>>()
 
-		type B = Merge2<SomeType, T>
-		Assert.is<B, SomeType>()
+		Assert<
+			IsIdentical<Merge2<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>,
+			IsIdentical<Merge2<{ a: 1 }, { a: 2 }>, { a: 2 }>,
+			IsIdentical<Merge2<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { b: 2 } }>
+		>()
+	})
 
-		type C = Merge2<PartialIfNullish<SomeType>, T>
-		Assert.is<C, SomeType>()
+	it('optional', () => {
+		expect.assertions(0)
 
-		type D = Merge2<SomeType, VPartial<T>>
-		Assert.is<D, SomeType>()
+		type D = Merge2<{ a?: 1 }, { a: 2 }>
+		Assert<IsIdentical<D, { a: 2 }>>()
+	})
 
-		type E = Merge2<SomeType, T>
-		Assert.is<E, SomeType>()
+	type SomeType = {
+		a: 1
+		b: 2
+	}
 
-		// type F = Merge2<SomeType, null>
-		// Assert.is<F, SomeType>()
+	it('generics', <T extends Partial<SomeType>>() => {
+		expect.assertions(0)
 
 		type G = Merge2<T, SomeType>
 		Assert.is<G, SomeType>()
+	})
+
+	it('generics 2', <T extends SomeType>() => {
+		expect.assertions(0)
+
+		type B3 = Merge2<T, { c: 3 }>
+		type B5 = Merge2<T, { c: 3 }>
+
+		Assert.is<B3, SomeType>()
+		Assert.is<B5, SomeType>()
+	})
+
+	it('vscode - jump to definition (manual test...)', () => {
+		expect.assertions(0)
+
+		type A = {
+			readonly a?: 1
+			b: 2
+		}
+
+		type B = {
+			readonly b?: 3
+		}
+
+		const c = {} as unknown as Merge2<A, B>
+
+		// hit F12 here:
+		void c.a
+
+		// hit F12 here:
+		void c.b
 	})
 })

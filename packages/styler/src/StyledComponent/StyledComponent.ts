@@ -3,14 +3,14 @@
 
 import type { ComponentPropsWithRef, ForwardRefExoticComponent } from 'react'
 
-import type { MergeProps, MergeProps_, Props } from '~/react-types'
+import type { MergeProps_, Props } from '~/react-types'
 import type { IStylable, OuterProps } from '~/Stylable'
 import type { Styled_ } from '~/Styled'
 
 export type StyledComponentProps<
 	P extends Props,
 	C extends IStylable,
-> = MergeProps<MergeProps_<P, ComponentPropsWithRef<C>>, OuterProps>
+> = MergeProps_<MergeProps_<ComponentPropsWithRef<C>, P>, OuterProps>
 
 /** With Element already provided */
 interface StyledComponent<P extends Props, C extends IStylable>
