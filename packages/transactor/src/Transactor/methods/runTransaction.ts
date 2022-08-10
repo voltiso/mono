@@ -51,7 +51,7 @@ const getCacheSnapshot = (cache: Cache) => {
 }
 
 export async function runTransaction<R>(
-	this: Transactor_,
+	ctx: Transactor_,
 	body: (t: Transaction) => Promise<R>,
 ): Promise<R> {
 	const zoneCurrent = Zone.current // firestore library code destroys current zone! (?!)
@@ -60,9 +60,8 @@ export async function runTransaction<R>(
 		// maxAttempts: 1,
 	}
 
-	// eslint-disable-next-line sonarjs/cognitive-complexity
-	return this._database.runTransaction(databaseTransaction => {
-		const transaction = new TransactionImpl(this._context, databaseTransaction)
+	return ctx._database.runTransaction(databaseTransaction => {
+		const transaction = new TransactionImpl(ctx._context, databaseTransaction)
 
 		// if (this._transactionLocalStorage.getStore() !== undefined)
 		if (zoneCurrent.get('transactionContextOverride'))
@@ -82,7 +81,6 @@ export async function runTransaction<R>(
 			},
 		})
 
-		// eslint-disable-next-line max-statements
 		return zoneChild.run(async () => {
 			const cache = transaction._cache
 
@@ -117,7 +115,7 @@ export async function runTransaction<R>(
 							// eslint-disable-next-line max-depth, no-await-in-loop
 							if (isDefined(cacheEntry.data)) await processTriggers(ctx)
 
-							const beforeCommits = getBeforeCommits.call(docRef)
+							const beforeCommits = getBeforeCommits(docRef)
 
 							// eslint-disable-next-line max-depth
 							for (const { trigger, pathMatches } of beforeCommits) {
@@ -145,9 +143,9 @@ export async function runTransaction<R>(
 								// eslint-disable-next-line max-depth
 								if (isDefined(r)) {
 									// eslint-disable-next-line max-depth
-									if (isDeleteIt(r)) setCacheEntry.call(ctx, cacheEntry, null)
+									if (isDeleteIt(r)) setCacheEntry(ctx, cacheEntry, null)
 									else {
-										setCacheEntry.call(
+										setCacheEntry(
 											ctx,
 											cacheEntry,
 											withoutId(r as never, docRef.id) as never,
@@ -196,7 +194,7 @@ export async function runTransaction<R>(
 
 			for (const [path, cacheEntry] of Object.entries(cache)) {
 				if (cacheEntry.write) {
-					const dbCtx = this._databaseContext
+					const dbCtx = ctx._databaseContext
 					assert(dbCtx)
 
 					if (isDefined(cacheEntry.updates)) {
@@ -205,7 +203,7 @@ export async function runTransaction<R>(
 						await databaseUpdate(
 							dbCtx,
 							databaseTransaction,
-							this._database.doc(path),
+							ctx._database.doc(path),
 							cacheEntry.updates,
 						)
 					} else if (cacheEntry.data === null) {
@@ -213,7 +211,7 @@ export async function runTransaction<R>(
 						await databaseUpdate(
 							dbCtx,
 							databaseTransaction,
-							this._database.doc(path),
+							ctx._database.doc(path),
 							deleteIt(),
 						)
 					} else {
@@ -222,7 +220,7 @@ export async function runTransaction<R>(
 						await databaseUpdate(
 							dbCtx,
 							databaseTransaction,
-							this._database.doc(path),
+							ctx._database.doc(path),
 							replaceIt(cacheEntry.data),
 						)
 					}

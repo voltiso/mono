@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { VPartial } from '@voltiso/util'
-
 import type {
 	IndexedCssProps,
 	IndexedCssPropsSingle,
@@ -16,19 +14,19 @@ export interface IStyledData {
 
 	stack: IStack
 
-	defaults: VPartial<Props>
-	domDefaults: VPartial<Props>
+	defaults: Partial<Props>
+	domDefaults: Partial<Props>
 
 	cssProps: IndexedCssProps
 }
 
-export type IStyledDataMod = VPartial<{
+export type IStyledDataMod = Partial<{
 	element: IStylable | null
 
 	stack: IStack
 
-	defaults: VPartial<Props>
-	domDefaults: VPartial<Props>
+	defaults: Partial<Props>
+	domDefaults: Partial<Props>
 
 	cssProps: IndexedCssProps | IndexedCssPropsSingle
 }>

@@ -33,7 +33,7 @@ import type { Forbidden } from '~/util'
 async function directDocPathGet<D extends IDoc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): Promise<D | null> {
-	const onGetTriggers = getOnGetTriggers.call(ctx.docRef)
+	const onGetTriggers = getOnGetTriggers(ctx.docRef)
 	const schema = getSchema(ctx.docRef)
 	const needTransaction = onGetTriggers.length > 0 || schema
 
@@ -58,11 +58,11 @@ async function directDocPathGet<D extends IDoc>(
 	else return null
 }
 
-// eslint-disable-next-line max-statements, complexity, etc/no-misused-generics, sonarjs/cognitive-complexity
+// eslint-disable-next-line etc/no-misused-generics
 async function transactionDocPathGetImpl<D extends IDoc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
-	const { _ref: ref, id } = ctx.docRef
+	const { _ref, id } = ctx.docRef
 	const { _cache, _databaseTransaction } = ctx.transaction
 
 	const path = ctx.docRef.path.toString()
@@ -79,7 +79,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	const prevData = cacheEntry.data
 
 	if (cacheEntry.data === undef) {
-		cacheEntry.data = fromFirestore(ctx, await _databaseTransaction.get(ref))
+		cacheEntry.data = fromFirestore(ctx, await _databaseTransaction.get(_ref))
 
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
@@ -155,7 +155,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	initLastDataSeen(ctx, cacheEntry)
 
-	const onGetTriggers = getOnGetTriggers.call(ctx.docRef)
+	const onGetTriggers = getOnGetTriggers(ctx.docRef)
 
 	for (const { trigger, pathMatches } of onGetTriggers) {
 		// eslint-disable-next-line no-await-in-loop
@@ -185,8 +185,8 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 export function transactionDocPathGet<D extends IDoc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): PromiseLike<D | null> {
-	const { docRef: docPath, transaction } = ctx
-	const { path } = docPath
+	const { docRef, transaction } = ctx
+	const { path } = docRef
 
 	if (transaction._isFinalizing)
 		throw new Error(

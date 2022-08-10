@@ -5,16 +5,18 @@ import type { _ } from '@voltiso/util'
 
 import type { IDocTI } from '~/Doc'
 
-export type MergeTI<X extends IDocTI> = _<{
-	tag: X['tag']
+export type MergeTI<TI extends IDocTI> = _<{
+	tag: TI['tag']
 
-	const: _<X['const']>
-	public: _<X['public']>
-	private: _<X['private']>
-	protected: _<X['protected']>
+	const: _<TI['const']>
+	public: _<TI['public']>
+	private: _<TI['private']>
+	protected: _<TI['protected']>
 
-	methods: X['methods']
+	methods: TI['methods']
 
 	// doc: X['doc']
 	// docInside: X['docInside']
 }>
+
+export type $MergeTI<TI> = TI extends IDocTI ? MergeTI<TI> : never

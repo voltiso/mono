@@ -8,7 +8,7 @@
 import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { OmitCall, Tail } from '@voltiso/util'
-import { assumeType, call, staticImplements, undef } from '@voltiso/util'
+import { assumeType, staticImplements, undef } from '@voltiso/util'
 
 import { checkEnv } from '~/checkEnv'
 import type { CollectionRef } from '~/CollectionRef'
@@ -136,9 +136,9 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 
 	runTransaction<R>(
 		body: TransactionBody<R>,
-		...args: Tail<Parameters<typeof runTransaction>>
+		...args: Tail<Tail<Parameters<typeof runTransaction>>>
 	) {
-		return call(runTransaction, this, body, ...args)
+		return runTransaction(this, body, ...args)
 	}
 
 	get requireSchemas() {

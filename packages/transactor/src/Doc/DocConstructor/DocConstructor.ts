@@ -15,11 +15,11 @@ import type { Method } from '~/Method'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
-import type { MergeTI } from './_/MergeTI'
+import type { $MergeTI } from './_/MergeTI'
 
 type MaybeWithName<Params> = [Params] | [string, Params]
 
-type ___<X extends IDocTI> = DocConstructor<MergeTI<X>>
+type ___<X extends IDocTI> = X extends any ? DocConstructor<$MergeTI<X>> : never
 
 export interface DocConstructor<TI extends IDocTI = IDocTI> {
 	[DTI]: TI

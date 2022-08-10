@@ -24,7 +24,10 @@ describe('Doc util', () => {
 
 		// const docO = 0 as unknown as GO<TI>
 		// const x = docO.dataWithId()
-		type X = ReturnType<GDoc<TI, 'outside'>['dataWithId']>
+		type X = TI extends any
+			? ReturnType<GDoc<TI, 'outside'>['dataWithId']>
+			: never
+
 		Assert.isSubtype<
 			X,
 			{ readonly id: string; __voltiso?: { numRefs: number } }

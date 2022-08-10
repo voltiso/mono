@@ -4,17 +4,17 @@
 import type { IDoc } from '~/Doc'
 import type { StrongDocRefImpl } from '~/Ref'
 
-export function getOnGetTriggers(this: StrongDocRefImpl<IDoc>) {
-	if (this._onGets) return this._onGets
+export function getOnGetTriggers(docRef: StrongDocRefImpl<IDoc>) {
+	if (docRef._onGets) return docRef._onGets
 
-	this._onGets = []
+	docRef._onGets = []
 
-	for (const { getPathMatches, trigger } of this._context.transactor
+	for (const { getPathMatches, trigger } of docRef._context.transactor
 		._allOnGets) {
-		const pathMatches = getPathMatches(this.path.toString())
+		const pathMatches = getPathMatches(docRef.path.toString())
 
-		if (pathMatches) this._onGets.push({ pathMatches, trigger })
+		if (pathMatches) docRef._onGets.push({ pathMatches, trigger })
 	}
 
-	return this._onGets
+	return docRef._onGets
 }

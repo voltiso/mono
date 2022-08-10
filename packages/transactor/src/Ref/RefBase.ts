@@ -6,7 +6,7 @@ import type { _, If } from '@voltiso/util'
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { Data, DataWithId, DataWithoutId, Id } from '~/Data'
 import type { GData, GDataPublicInput } from '~/Doc/_/GData'
-import type { GUpdates_Replace, GUpdates_Update } from '~/Doc/_/GUpdates'
+import type { UpdatesFromSchema } from '~/Doc/_/UpdatesFromSchema'
 import type { GetFields } from '~/Doc/Doc_'
 import type { DTI } from '~/Doc/DocTI'
 import type { IDoc } from '~/Doc/IDoc'
@@ -43,10 +43,10 @@ export interface RefBase<D extends IDoc, Exists extends boolean>
 	set(data?: Data<GDataPublicInput<D[DTI]>>): PromiseLike<D>
 
 	update(
-		updates: _<GUpdates_Update<GetFields<D[DTI], 'outside'>>>,
+		updates: _<UpdatesFromSchema.Update<GetFields<D[DTI], 'outside'>>>,
 	): PromiseLike<D | undefined>
 	update(
-		updates: _<GUpdates_Replace<GetFields<D[DTI], 'outside'>>>,
+		updates: _<UpdatesFromSchema.Replace<GetFields<D[DTI], 'outside'>>>,
 	): PromiseLike<D>
 	update(updates: DeleteIt): PromiseLike<null>
 

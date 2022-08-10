@@ -40,6 +40,7 @@ export const testOverride = defineEslintConfigOverride({
 		'max-classes-per-file': 0,
 		'sonarjs/no-identical-functions': 0,
 		'unicorn/consistent-function-scoping': 0,
+		'unicorn/numeric-separators-style': 0,
 		'prefer-arrow-callback': 0,
 		'security/detect-object-injection': 0,
 		'unicorn/no-null': 0,
@@ -71,6 +72,7 @@ export const testOverride = defineEslintConfigOverride({
 		'import/no-unassigned-import': 0,
 		'no-restricted-imports': 0, // allow '../*' imports
 		'no-invalid-this': 0,
+		'@typescript-eslint/no-invalid-this': 0,
 		'no-useless-constructor': 0,
 
 		// allow `any`

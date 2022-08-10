@@ -48,7 +48,7 @@ describe('patch', () => {
 
 		expect(b).toStrictEqual({ a: 1, b: 0 })
 
-		Assert<IsIdentical<typeof b, { a: 1; b: number }>>()
+		Assert<IsIdentical<typeof b, { readonly a: 1; b: number }>>()
 
 		// @ts-expect-error `b` missing
 		;() => patch({ a: 0, b: 0 }, replaceIt({ a: 1 as const }))

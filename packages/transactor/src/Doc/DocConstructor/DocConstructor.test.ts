@@ -32,7 +32,7 @@ describe('DocConstructor', () => {
 		Assert.is<DocConstructor<TI>, IDocConstructor>()
 		Assert(Is<IDocConstructor>().not.subtypeOf<DocConstructor<TI>>())
 
-		Assert.is<MergeTI<TI>, IDocTI>()
+		Assert.is<TI extends any ? MergeTI<TI> : never, IDocTI>()
 	})
 
 	it('merge', () => {

@@ -61,6 +61,7 @@ export = {
 		try {
 			const result = esbuild.transformSync(code, {
 				// target: 'node16',
+
 				format: 'cjs',
 
 				// loader: {
@@ -71,7 +72,7 @@ export = {
 				loader: isJsx ? 'jsx' : (getLoaderFromFilename(filename) as never),
 
 				supported: {
-					'async-await': false, // to make `zone.js` work (can also use the general `target: 'ES2016' setting`)
+					'async-await': false, // to make `zone.js` work (can also use the general `target: 'ES2016'` setting)
 				},
 			})
 

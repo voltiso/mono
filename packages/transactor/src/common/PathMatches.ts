@@ -33,7 +33,7 @@ export const getGetPathMatches = (pattern: string): GetPathMatches => {
 		)
 	}
 
-	// eslint-disable-next-line require-unicode-regexp, security/detect-non-literal-regexp
+	// eslint-disable-next-line security/detect-non-literal-regexp
 	const re = new RegExp(`^${currentPattern}$`)
 
 	return (path: string): PathMatches | null => {

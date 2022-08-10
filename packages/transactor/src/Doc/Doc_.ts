@@ -136,15 +136,15 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		) as never
 	}
 
-	get data(): DataWithoutId<GData<TI>> {
+	get data(): TI extends any ? DataWithoutId<GData<TI>> : never {
 		return this._raw as never
 	}
 
-	dataWithoutId(): DataWithoutId<GData<TI>> {
+	dataWithoutId(): TI extends any ? DataWithoutId<GData<TI>> : never {
 		return this._raw as never
 	}
 
-	dataWithId(): DataWithId<GData<TI>> {
+	dataWithId(): TI extends any ? DataWithId<GData<TI>> : never {
 		return withId(this._raw, this.id) as never
 	}
 

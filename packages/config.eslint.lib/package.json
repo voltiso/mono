@@ -29,6 +29,7 @@
 		"build:esm": "ttsc -b tsconfig.build.esm.json",
 		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
+		"prepare": "run-s build",
 		"prepublishOnly": "run-s lint:depcheck clean build test",
 		"__________MISC": "__________",
 		"v": "voltiso-script",
@@ -36,9 +37,6 @@
 		"clean:rimraf": "rimraf dist"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/util": "workspace:*"
-	},
 	"devDependencies": {
 		"@voltiso/config.ts": "workspace:*",
 		"@voltiso/config.ts.build.cjs": "workspace:*",

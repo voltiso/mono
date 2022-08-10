@@ -31,7 +31,6 @@ function isRecord(
 	return updates?.constructor === Object
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 	if (isDeleteIt(b)) return b
 

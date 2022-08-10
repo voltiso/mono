@@ -47,11 +47,13 @@ class CollectionRef<
 			return this._context.db.doc(
 				this._path.toString(),
 				id,
-			) as unknown as WeakDocRef<GO<TI>>
+			) as unknown as TI extends any ? WeakDocRef<GO<TI>> : never
 		}, this) as never
 	}
 
-	add(data: Data<GDataPublicInput<TI>>): PromiseLike<GDoc<TI, Ctx>> {
+	add(
+		data: TI extends any ? Data<GDataPublicInput<TI>> : never,
+	): PromiseLike<GDoc<TI, Ctx>> {
 		// data = data || {}
 
 		const id = data.id as string | undefined

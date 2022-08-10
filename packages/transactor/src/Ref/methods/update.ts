@@ -53,7 +53,6 @@ type StripParams = {
 const isRecord = (updates: Updates): updates is UpdatesRecord =>
 	updates.constructor === Object
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 	if (updates instanceof ReplaceIt) {
 		check.call(this, updates.data, params)
@@ -123,10 +122,10 @@ async function rawUpdate(
 	check.call(ctx, updates)
 
 	const afterTriggers = getAfterTriggers.call(ctx.docRef)
-	const beforeCommits = getBeforeCommits.call(ctx.docRef)
+	const beforeCommits = getBeforeCommits(ctx.docRef)
 	const schema = getSchema(ctx.docRef)
 
-	const { _ref: ref } = ctx.docRef
+	const { _ref } = ctx.docRef
 	const path = ctx.docRef.path.toString()
 
 	let data: DataWithId | null | undefined // undefined -> unknown; null -> deleted
@@ -148,7 +147,7 @@ async function rawUpdate(
 		data = await databaseUpdate(
 			ctx.transactor._databaseContext,
 			ctx.transactor._database,
-			ref,
+			_ref,
 			updates,
 		)
 	}
@@ -185,7 +184,6 @@ async function transactionUpdateImpl(
 	options: Partial<StripParams>,
 ): Promise<IndexedDoc | null | undefined>
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 async function transactionUpdateImpl(
 	ctx: CtxWithTransaction,
 	updates: Updates,
@@ -198,7 +196,7 @@ async function transactionUpdateImpl(
 	// returns undefined if unknown (usually update performed on a document without a trigger or schema)
 
 	const afterTriggers = getAfterTriggers.call(ctx.docRef)
-	const beforeCommits = getBeforeCommits.call(ctx.docRef)
+	const beforeCommits = getBeforeCommits(ctx.docRef)
 
 	const schema = getSchema(ctx.docRef)
 
@@ -265,7 +263,7 @@ async function transactionUpdateImpl(
 			delete cacheEntry.updates
 		}
 
-		if (isDefined(data)) setCacheEntry.call(ctx, cacheEntry, data)
+		if (isDefined(data)) setCacheEntry(ctx, cacheEntry, data)
 	}
 
 	if (isDefined(cacheEntry.data)) initLastDataSeen(ctx, cacheEntry)
@@ -278,11 +276,11 @@ function transactionUpdate(
 	updates: Updates,
 	options: Partial<StripParams> = {},
 ): PromiseLike<IDoc | null | undefined> {
-	const { transaction, docRef: docPath } = this
+	const { transaction, docRef } = this
 
 	if (transaction._isFinalizing)
 		throw new Error(
-			`db('${docPath.path.toString()}').update() called after transaction body (missing await?)`,
+			`db('${docRef.path.toString()}').update() called after transaction body (missing await?)`,
 		)
 
 	const promise = transactionUpdateImpl(this, updates, options)

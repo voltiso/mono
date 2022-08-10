@@ -12,7 +12,7 @@ export const eslintComments = defineEslintConfigOverride({
 
 	rules: {
 		'eslint-comments/disable-enable-pair': 0,
-		'eslint-comments/no-unused-disable': 'error',
+		'eslint-comments/no-unused-disable': 1,
 		'eslint-comments/no-use': 0,
 		'eslint-comments/no-unlimited-disable': 0, // handled by unicorn
 	},

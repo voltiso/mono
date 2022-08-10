@@ -67,7 +67,10 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/consistent-type-imports': 1,
 		'@typescript-eslint/no-extra-parens': 0, // conflicts with prettier
 		'@typescript-eslint/no-extra-semi': 0, // conflicts with prettier
-		'@typescript-eslint/no-invalid-this': 0,
+
+		'no-invalid-this': 0,
+		'@typescript-eslint/no-invalid-this': 1,
+
 		'@typescript-eslint/no-empty-interface': [1, { allowSingleExtends: true }],
 		'@typescript-eslint/padding-line-between-statements': 1,
 		'@typescript-eslint/no-unsafe-assignment': 1,
@@ -104,6 +107,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-void': ['error', { allowAsStatement: true }],
 		'prefer-arrow-callback': 1,
 		'sort-imports': 0, // using `simple-import-sort/imports` instead (auto-fixable)
+		complexity: 0,
 
 		'sort-keys': 0, // using `sort-keys-fix` instead (auto-fixable)
 
@@ -118,6 +122,11 @@ export const codeOverride = defineEslintConfigOverride({
 		// ],
 
 		'@typescript-eslint/no-redeclare': 0,
+
+		'@typescript-eslint/no-namespace': [
+			'warn',
+			{ allowDeclarations: true, allowDefinitionFiles: true },
+		],
 
 		'@typescript-eslint/ban-types': [
 			'error',
@@ -148,7 +157,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-param-reassign': 1,
 		'func-names': 0,
 		'no-implicit-coercion': 1,
-		camelcase: 1,
+		camelcase: 1, // sometimes underscores are useful? or better use type-only namespaces?
 		'object-shorthand': 1,
 		'no-useless-constructor': 1,
 
@@ -176,6 +185,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-continue': 0,
 		'default-param-last': 1,
 		'max-statements-per-line': 0, // prettier
+		'no-useless-rename': 1,
 
 		'padding-line-between-statements': [
 			'warn',

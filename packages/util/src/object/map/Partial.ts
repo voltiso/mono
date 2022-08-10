@@ -1,6 +1,4 @@
-'use strict'
-
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-module.exports = require('@voltiso/config.jest.react/babel')
+export type $Partial_<O> = O extends any ? Partial<O> : never

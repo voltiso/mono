@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { VPartial } from '@voltiso/util'
-
 import type { CssProps } from '~/_/CssProps/CssProps'
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
@@ -13,8 +11,8 @@ export interface StyledData<P extends Props, C extends IStylable | null> {
 
 	stack: IStack // not Stack<P> - outer props `P` are not necessarily supertype
 
-	defaults: VPartial<P>
-	domDefaults: VPartial<P>
+	defaults: Partial<P>
+	domDefaults: Partial<P>
 
 	cssProps: CssProps<P>
 }

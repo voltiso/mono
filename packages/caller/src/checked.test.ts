@@ -51,7 +51,7 @@ describe('checked', () => {
 			.param({ a: s.number })
 			.param({ b: s.number.max(1000) })
 			.result(s.number.min(123))
-			.function(({ a }, { b }) => a + b)
+			.function((a, b) => a.a + b.b)
 
 		expect(f({ a: 111 }, { b: 222 })).toBe(333)
 		expect(() => f({ a: 1 }, { b: 2 })).toThrow('123')

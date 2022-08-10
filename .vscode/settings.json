@@ -238,7 +238,8 @@
 		"spaced-comment",
 		"unicorn/numeric-separators-style",
 		"react/jsx-curly-brace-presence",
-		"jest-formatting/padding-around-all"
+		"jest-formatting/padding-around-all",
+		"no-useless-rename"
 	],
 
 	"prettier.documentSelectors": [

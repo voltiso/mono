@@ -25,5 +25,5 @@ export function validateAndSetCacheEntry(
 	const cacheEntry = getCacheEntry(context)
 	// eslint-disable-next-line no-param-reassign
 	data = validate(context, data, schema)
-	setCacheEntry.call(context, cacheEntry, data)
+	setCacheEntry(context, cacheEntry, data)
 }

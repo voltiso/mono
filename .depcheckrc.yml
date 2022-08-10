@@ -1,4 +1,0 @@
-ignores:
-  - react-native # for jest tests run from vscode extension (root cwd)
-  - react # peer dep of `react-native`
-  - '@babel/preset-env' # peer dep of `react-native`

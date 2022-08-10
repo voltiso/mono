@@ -40,7 +40,6 @@ export function clone(x: any) {
 
 	if (typeof x === 'function') {
 		function r(this: unknown, ...args: unknown[]) {
-			// eslint-disable-next-line no-invalid-this
 			return Function.prototype.call.call(x, this, ...args)
 		}
 		assign(r, x)

@@ -39,6 +39,7 @@
 		"@voltiso/config.ts": "workspace:*",
 		"@voltiso/config.ts.build.cjs": "workspace:*",
 		"@voltiso/config.ts.build.esm": "workspace:*",
+		"@voltiso/eslint-config": "workspace:^1.1.0",
 		"depcheck": "^1.4.3",
 		"jest": "^28.1.3",
 		"npm-run-all": "^4.1.5",

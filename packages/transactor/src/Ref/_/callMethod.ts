@@ -47,8 +47,8 @@ export async function callMethod<
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
 
 	const { name, localDoc } = options // argSchema
-	const { transactor, transaction, docRef: docPath } = ctx
-	const path = docPath.path.toString()
+	const { transactor, transaction, docRef } = ctx
+	const path = docRef.path.toString()
 
 	const debugName = () =>
 		name ? `db("${path}").${name}()` : `db('${path}').pathMethod()`

@@ -3,20 +3,20 @@
 
 import type { DocRefBaseImpl } from '~/Ref'
 
-export function getBeforeCommits(this: DocRefBaseImpl) {
-	if (this._beforeCommits) return this._beforeCommits
+export function getBeforeCommits(docRef: DocRefBaseImpl) {
+	if (docRef._beforeCommits) return docRef._beforeCommits
 
-	this._beforeCommits = []
+	docRef._beforeCommits = []
 
-	for (const { getPathMatches, trigger } of this._context.transactor
+	for (const { getPathMatches, trigger } of docRef._context.transactor
 		._allBeforeCommits) {
-		const pathMatches = getPathMatches(this.path.toString())
+		const pathMatches = getPathMatches(docRef.path.toString())
 
-		if (pathMatches) this._beforeCommits.push({ pathMatches, trigger })
+		if (pathMatches) docRef._beforeCommits.push({ pathMatches, trigger })
 	}
 
-	if (this._context.transactor.refCounters) {
-		this._beforeCommits.push({
+	if (docRef._context.transactor.refCounters) {
+		docRef._beforeCommits.push({
 			pathMatches: { pathArgs: [], pathParams: {} },
 
 			trigger: ({ doc, path, __voltiso }) => {
@@ -31,5 +31,5 @@ export function getBeforeCommits(this: DocRefBaseImpl) {
 		})
 	}
 
-	return this._beforeCommits
+	return docRef._beforeCommits
 }

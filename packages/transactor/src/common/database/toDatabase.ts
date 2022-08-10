@@ -28,7 +28,6 @@ export function toDatabaseUpdate(
 	nestedUpdates: NestedUpdates,
 ): FirestoreLike.UpdateDataNested
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function toDatabaseUpdate(
 	ctx: DatabaseContext,
 	updates: Updates | NestedUpdates,

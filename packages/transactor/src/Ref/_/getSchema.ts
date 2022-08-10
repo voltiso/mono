@@ -7,14 +7,13 @@ import { undef } from '@voltiso/util'
 
 import type { DocRefBaseImpl } from '~/Ref'
 
-// eslint-disable-next-line max-statements, complexity, sonarjs/cognitive-complexity
 export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 	if (d._schema !== undef) {
 		return d._schema
 	}
 
 	const {
-		_options: options,
+		_options,
 		_allConstSchemas,
 		_allPublicSchemas,
 		_allPrivateSchemas,
@@ -58,7 +57,7 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 		privateSchemas.length === 0 &&
 		protectedSchemas.length === 0
 	) {
-		if (options.requireSchemas)
+		if (_options.requireSchemas)
 			throw new Error(
 				`missing schema for ${path} - add a schema, or set requireSchemas = false`,
 			)

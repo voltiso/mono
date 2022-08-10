@@ -12,12 +12,7 @@ import type { ExecutionContext } from './_/ExecutionContext'
 import type { GData } from './_/GData'
 import type { GDoc } from './_/GDoc'
 import type { GMethodPromises } from './_/GMethodPromises'
-import type {
-	GUpdates,
-	GUpdates_Delete,
-	GUpdates_Replace,
-	GUpdates_Update,
-} from './_/GUpdates'
+import type { UpdatesFromSchema } from './_/UpdatesFromSchema'
 import type { DocTI, GetFields } from './Doc_'
 import { Doc_ } from './Doc_'
 import { DocCall } from './DocCall'
@@ -40,24 +35,24 @@ interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 	// readonly ref: Ref<GDoc<TI>>
 	// readonly ref: Ref<DocTypes[TI['tag']]>
 
-	readonly data: DataWithoutId<GData<TI>>
-	dataWithoutId(): DataWithoutId<GData<TI>>
-	dataWithId(): DataWithId<GData<TI>>
+	readonly data: TI extends any ? DataWithoutId<GData<TI>> : never
+	dataWithoutId(): TI extends any ? DataWithoutId<GData<TI>> : never
+	dataWithId(): TI extends any ? DataWithId<GData<TI>> : never
 
 	//
 
 	update(
-		updates: _<GUpdates_Update<GetFields<TI, Ctx>>>,
+		updates: _<UpdatesFromSchema.Update<GetFields<TI, Ctx>>>,
 	): Promise<GDoc<TI, Ctx> | undefined>
 
 	update(
-		updates: _<GUpdates_Replace<GetFields<TI, Ctx>>>,
+		updates: _<UpdatesFromSchema.Replace<GetFields<TI, Ctx>>>,
 	): Promise<GDoc<TI, Ctx>>
 
-	update(updates: GUpdates_Delete): Promise<null>
+	update(updates: UpdatesFromSchema.Delete): Promise<null>
 
 	update(
-		updates: _<GUpdates<GetFields<TI, Ctx>>>,
+		updates: _<UpdatesFromSchema<GetFields<TI, Ctx>>>,
 	): Promise<GDoc<TI, Ctx> | null | undefined>
 
 	//

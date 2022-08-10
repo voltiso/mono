@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { VPartial } from '@voltiso/util'
 import { assertNotPolluting, getKeys } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
@@ -44,7 +43,9 @@ export function render<P extends Props, C extends IStylable>(
 
 	if (typeof css !== 'undefined') styles.push(prepare(css, theme))
 
-	const consumedCssProps = {} as VPartial<CssProps<P>>
+	const consumedCssProps = {} as P extends any
+		? Required<Partial<CssProps<P>>>
+		: never
 
 	function consume(p: Props) {
 		consumeCssProps({

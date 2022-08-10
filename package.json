@@ -10,7 +10,7 @@
 		"fix:w": "run-s fix:w:prettier fix:w:eslint",
 		"fix:w:prettier": "prettier --write .",
 		"fix:w:eslint": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint --fix .",
-		"check": "turbo run build test lint",
+		"check": "turbo run test lint",
 		"__________HOOKS": "__________"
 	},
 	"__________DEPS": "__________",

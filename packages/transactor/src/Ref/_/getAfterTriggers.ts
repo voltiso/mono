@@ -18,7 +18,6 @@ function forEachStrongRef(o: any, f: (r: IRef) => void) {
 	}
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function getAfterTriggers(this: DocRefBaseImpl) {
 	if (this._afterTriggers) return this._afterTriggers
 

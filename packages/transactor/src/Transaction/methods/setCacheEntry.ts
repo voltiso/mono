@@ -12,7 +12,7 @@ import type { CacheEntry, WithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 
 export function setCacheEntry(
-	this: WithTransaction & WithDocRef & WithDb & WithTransactor,
+	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
 	entry: CacheEntry,
 	data: DataWithoutId | null,
 ) {
@@ -22,7 +22,7 @@ export function setCacheEntry(
 		if (!data) entry.proxy = null
 		else if (entry.proxy) entry.proxy._setRaw(data)
 		else {
-			entry.proxy = new Doc_(this, data)
+			entry.proxy = new Doc_(ctx, data)
 		}
 	}
 

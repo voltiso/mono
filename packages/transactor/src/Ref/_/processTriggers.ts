@@ -73,7 +73,7 @@ async function processAfterTrigger(
 async function loop(c: DocRefContextWithTransaction) {
 	const afterTriggers = getAfterTriggers.call(c.docRef)
 
-	const MAX_ITERS = 1000
+	const MAX_ITERS = 1_000
 
 	for (let iter = 0; ; ++iter) {
 		if (iter >= MAX_ITERS) throw new Error('Trigger loop')

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { VPartial } from '@voltiso/util'
-
 import type { Props } from '~/react-types'
 
 import type { GetStyleNode, IGetStyleNode } from './GetStyleNode'
@@ -22,8 +20,8 @@ export type INode =
 
 export type Node<P extends Props> =
 	| StyleNode
-	| GetStyleNode<VPartial<P>>
+	| GetStyleNode<Partial<P>>
 	| PropsNode<P>
-	| MapPropsNode<VPartial<P>, VPartial<P>>
+	| MapPropsNode<Partial<P>, Partial<P>>
 	| RemovePropsNode<P>
 	| WrapNode<P>

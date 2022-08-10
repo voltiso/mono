@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import 'zone.js'
+import 'zone.js/fesm2015/zone-testing-node-bundle'
 
 import { protoLink } from '~/class/protoLink'
 import { undef } from '~/nullish/undef'
