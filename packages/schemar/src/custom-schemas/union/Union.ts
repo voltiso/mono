@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type { AtLeast2 } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
@@ -32,6 +32,6 @@ export function union<Ts extends AtLeast2<Schemable>>(...types: Ts): Union<Ts> {
 		else ts.push(t)
 	}
 
-	assert(ts.length >= 2)
+	$assert(ts.length >= 2)
 	return new Union(ts as never) as never
 }

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { toString } from '@voltiso/util'
 
 import type { InferableLiteral, ISchema } from '~'
@@ -37,7 +37,7 @@ export function getBaseSchema(inferableLiteral: InferableLiteral): ISchema {
 
 		case 'object':
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			assert(inferableLiteral === null)
+			$assert(inferableLiteral === null)
 			return literal
 
 		case 'undefined':

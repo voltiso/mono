@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { CustomInstance } from '~'
@@ -26,7 +26,7 @@ type InstanceConstructor = new <Inst extends object>(
 export function instance<Inst extends object>(
 	Constructor: new (...args: any[]) => Inst,
 ) {
-	assert(Constructor)
+	$assert(Constructor)
 	return new Instance(Constructor)
 }
 

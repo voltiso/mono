@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 
 import type { ITuple } from '~'
 import { schema } from '~'
@@ -15,8 +15,8 @@ export function _extends(thisTuple: ITuple, otherTuple: ITuple): boolean {
 	for (const [i, aa] of a.entries()) {
 		// eslint-disable-next-line security/detect-object-injection
 		const bb = b[i]
-		assert(aa)
-		assert(bb)
+		$assert(aa)
+		$assert(bb)
 
 		if (!schema(aa).extends(bb)) return false
 	}

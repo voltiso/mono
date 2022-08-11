@@ -21,6 +21,9 @@
 	],
 
 	"compilerOptions": {
+		"plugins": [
+			{"transform": ""}
+		],
 		// "rootDir": ".",
 
 		// "baseUrl": "/", // ! you may want to override this
