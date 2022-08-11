@@ -18,8 +18,13 @@ module.exports = defineJestConfig({
 	...jestEsrConfig,
 	testEnvironment: 'node',
 
-	globalSetup: './script/jest-globalSetup.ts',
-	globalTeardown: './script/jest-globalTeardown.ts',
+	globalSetup: './jest/globalSetup.ts',
+	globalTeardown: './jest/globalTeardown.ts',
+
+	setupFilesAfterEnv: [
+		...jestEsrConfig.setupFilesAfterEnv,
+		'./jest/setupAfterEnv.ts',
+	],
 
 	// forceExit: true, //! :(
 	detectOpenHandles: true,

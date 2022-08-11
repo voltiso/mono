@@ -18,7 +18,7 @@ function bench(f: () => void) {
 	return (s + us * 1e-9) / ITERS
 }
 
-describe('clone-clone', () => {
+describe('clone', () => {
 	it('is fast enough', () => {
 		expect.hasAssertions()
 
@@ -36,6 +36,6 @@ describe('clone-clone', () => {
 		// eslint-disable-next-line no-console
 		console.log('q ==', q)
 
-		expect(q).toBeLessThan(4)
+		expect(q).toBeLessThan(5)
 	})
 })

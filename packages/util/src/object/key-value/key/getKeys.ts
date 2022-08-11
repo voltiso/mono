@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { VoltisoUtilError } from '~/error'
+import { isMap, isSet } from '~/map-set'
 import {
 	type DefaultIterationOptions,
 	type IterationOptions,
@@ -8,6 +10,7 @@ import {
 	defaultIterationOptions,
 	merge,
 } from '~/object'
+import { toString } from '~/string'
 
 import type { StringKeyof } from './StringKeyof'
 
@@ -21,6 +24,13 @@ export function getKeys_<Obj extends object, O extends IterationOptions>(
 	object: Obj,
 	options: O,
 ): GetKeys<Obj, O> {
+	if (isSet(object) || isMap(object))
+		throw new VoltisoUtilError(
+			`getKeys called on Map or Set: getKeys(${toString(object)}, ${toString(
+				options,
+			)})`,
+		)
+
 	let r = [] as unknown as GetKeys<Obj, O>
 
 	if (options.includeNonEnumerable) {

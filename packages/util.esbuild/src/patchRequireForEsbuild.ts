@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-invalid-this */
-
 export function patchRequireForEsbuild() {
 	// eslint-disable-next-line n/global-require, unicorn/prefer-module
 	const Module = require('node:module') as NodeRequire

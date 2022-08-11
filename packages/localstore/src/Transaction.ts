@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
 import { deepClone, isDefined, undef } from '@voltiso/util'
@@ -51,7 +51,7 @@ function getLock(store: Localstore, transaction: Transaction, path: DocPath) {
 
 	if (lockedByOther) fail(store)
 
-	if (lock) assert(lock.transaction === transaction)
+	if (lock) $assert(lock.transaction === transaction)
 	// eslint-disable-next-line no-multi-assign, security/detect-object-injection
 	else lock = store._locks[path] = new Lock(transaction, undef)
 

@@ -9,5 +9,3 @@ ignores:
   - '@babel/plugin-proposal-decorators'
   - '@babel/plugin-transform-react-jsx'
   - '@voltiso/config.jest.esr'
-  - '@voltiso/config.ts.build.cjs'
-  - '@voltiso/config.ts.build.esm'

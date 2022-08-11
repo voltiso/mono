@@ -1,7 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import 'zone.js'
+import 'zone.js/dist/zone-testing-node-bundle'
+
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'
 import { createTransactor, DocPath } from '@voltiso/transactor'
@@ -90,7 +93,7 @@ describe('raw-private', function () {
 		await db('nurse/a').methods['setSpecialty']!('magician')
 		const doc = await db('nurse/a')
 
-		assert(doc)
+		$assert(doc)
 
 		expect(doc.dataWithId()).toMatchObject({
 			id: 'a',

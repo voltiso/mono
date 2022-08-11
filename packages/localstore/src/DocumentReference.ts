@@ -3,7 +3,7 @@
 
 /* eslint-disable security/detect-object-injection */
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
 import { deepClone, isDefined } from '@voltiso/util'
@@ -70,13 +70,13 @@ export class DocumentReference implements Database.DocumentReference {
 
 		const collection = collections[collectionPath]
 
-		assert(collection)
+		$assert(collection)
 
 		if (!collection._docs[id]) collection._docs[id] = new Doc({})
 
 		const doc = collection._docs[id]
 
-		assert(doc)
+		$assert(doc)
 
 		// console.log('DocumentReference.set', data, 'deepClone')
 
@@ -100,7 +100,7 @@ export class DocumentReference implements Database.DocumentReference {
 			)
 
 		const collection = collections[collectionPath]
-		assert(collection)
+		$assert(collection)
 
 		const doc = collection._docs[id]
 
@@ -126,7 +126,7 @@ export class DocumentReference implements Database.DocumentReference {
 		if (!collections[collectionPath]) return
 
 		const collection = collections[collectionPath]
-		assert(collection)
+		$assert(collection)
 
 		delete collection._docs[id]
 

@@ -1,9 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { exactOptionalPropertyTypes, IsOptional_, Nullish } from '~'
+import type { Nullish } from '~/nullish'
+import type { CanBeUndefined_, IsOptional_, PartialIfNullish_ } from '~/object'
+import type { exactOptionalPropertyTypes } from '~/tsc-options'
 
-import type { CanBeUndefined_, Merge2Complex_, PartialIfNullish_ } from '..'
+import type { Merge2Complex_ } from './Merge2Complex'
 import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 // export type Merge2Nullish_<A, B> = _<

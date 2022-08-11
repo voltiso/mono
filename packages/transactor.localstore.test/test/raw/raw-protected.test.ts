@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Doc } from '@voltiso/transactor'
 
@@ -87,7 +87,7 @@ describe('raw-protected', function () {
 		await db('doctor/a').set({})
 		await db('doctor/a').methods['setSpecialty']!('magician')
 		const doc = await db('doctor/a')
-		assert(doc)
+		$assert(doc)
 
 		expect(doc.data).toMatchObject({
 			// id: 'a',

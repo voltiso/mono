@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
 
 import type { CollectionRef } from '~'
@@ -145,7 +145,7 @@ export class DocPath<
 
 	constructor(str: S) {
 		super(str)
-		assert(isDocPathString(str))
+		$assert(isDocPathString(str))
 	}
 
 	get id() {
@@ -159,7 +159,7 @@ const isCollectionPathString = (str: string): str is CollectionPathString =>
 export class CollectionPath<S extends string = string> extends Path<S> {
 	constructor(str: S) {
 		super(str)
-		assert(isCollectionPathString(str))
+		$assert(isCollectionPathString(str))
 	}
 }
 
@@ -169,7 +169,7 @@ const isDocPatternString = (str: string): str is DocPatternString =>
 export class DocPattern<S extends string = string> extends Pattern<S> {
 	constructor(str: S) {
 		super(str)
-		assert(isDocPatternString(str))
+		$assert(isDocPatternString(str))
 	}
 }
 
@@ -181,7 +181,7 @@ const isCollectionPatternString = (
 export class CollectionPattern<S extends string = string> extends Pattern<S> {
 	constructor(str: S) {
 		super(str)
-		assert(isCollectionPatternString(str))
+		$assert(isCollectionPatternString(str))
 	}
 }
 

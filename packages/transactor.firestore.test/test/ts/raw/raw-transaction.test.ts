@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
@@ -63,7 +63,7 @@ describe('raw-transaction', () => {
 		// @ts-ignore
 		expect(adam.age).toBe(234)
 
-		assert(adam)
+		$assert(adam)
 
 		expect(adam['x']).toBeUndefined()
 	})

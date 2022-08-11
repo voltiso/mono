@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import { undef } from '@voltiso/util'
 
@@ -57,7 +57,7 @@ class CollectionRef<
 		// data = data || {}
 
 		const id = data.id as string | undefined
-		assert(id === undef || typeof id === 'string')
+		$assert(id === undef || typeof id === 'string')
 
 		const ref = this._context.transactor._database.collection(
 			this._path.toString(),

@@ -3,7 +3,6 @@
 
 ignores:
   - '~'
-  - '@voltiso/config.ts'
   - '@voltiso/config.jest.lib'
   - '@voltiso/config.jest.esr'
   - '@voltiso/util.esbuild'

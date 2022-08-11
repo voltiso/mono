@@ -5,7 +5,7 @@
 	"extends": "@voltiso/config.ts.build.esm",
 
 	"compilerOptions": {
-		"lib": ["DOM", "DOM.Iterable"],
+		"lib": ["DOM"],
 
 		"outDir": "dist/esm",
 		"rootDir": "src",

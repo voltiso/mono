@@ -13,9 +13,7 @@
 			"_/*": ["./src/_/*"],
 			"~": ["./src"],
 			"~/*": ["./src/*"]
-		},
-
-		"plugins": [{ "transform": "@voltiso/assertor/transform" }]
+		}
 	},
 
 	"include": ["src"]

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
@@ -72,7 +72,7 @@ export async function callMethod<
 				'transactionContextOverride',
 			) as ContextOverride
 
-			assert(ctxOverride)
+			$assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
 			return (db.doc(path) as unknown as DocRefBaseImpl)._callMethod(
@@ -82,13 +82,12 @@ export async function callMethod<
 			)
 		})
 
-		assert(cache)
+		$assert(cache)
 
-		// eslint-disable-next-line security/detect-object-injection
-		const cachePath = cache[path]
-		assert(cachePath)
+		const cacheEntry = cache.get(path)
+		$assert(cacheEntry)
 
-		const data = cachePath.data
+		const data = cacheEntry.data
 
 		if (!data) throw new Error(`${debugName()} called on non-existing document`)
 
@@ -97,7 +96,7 @@ export async function callMethod<
 		return result as never
 	}
 
-	assert(isWithTransaction(ctx))
+	$assert(isWithTransaction(ctx))
 	const doc = await transactionDocPathGet<GDoc<TI, 'inside'>>(ctx)
 
 	if (!doc) throw new Error(`${debugName()} called on non-existing document`)
@@ -118,9 +117,8 @@ export async function callMethod<
 		return method.call(doc as never, ...args) // CAST - hopefully document schema was validated properly in docPath.get
 	})
 
-	// eslint-disable-next-line security/detect-object-injection
-	const cacheEntry = transaction._cache[path]
-	assert(cacheEntry)
+	const cacheEntry = transaction._cache.get(path)
+	$assert(cacheEntry)
 	cacheEntry.write = true
 
 	await processTriggers(ctx)

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
 import { after, Doc } from '@voltiso/transactor'
@@ -37,7 +37,7 @@ class Banana extends Doc('banana')({
 			}
 
 			if (p.after) {
-				assert(p.doc)
+				$assert(p.doc)
 				await bananaSlugs.add({
 					id: p.after.slug,
 					banana: p.doc.ref,

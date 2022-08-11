@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
 import { Doc, onGet } from '@voltiso/transactor'
@@ -28,13 +28,13 @@ class Dog extends Doc.public({
 		if (!p.doc) return
 
 		// @ts-expect-error no such field (in theory)
-		assert(this.oldField2)
+		$assert(this.oldField2)
 
 		// @ts-expect-error no such field (in theory)
 		delete this.oldField2
 
 		// @ts-expect-error no such field (in theory)
-		assert(this.oldField2 === undef)
+		$assert(this.oldField2 === undef)
 
 		this.requiredField = 123
 	}

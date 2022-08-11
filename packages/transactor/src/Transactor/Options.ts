@@ -32,8 +32,8 @@ export class Options_ {
 		// 		)
 		// 	this.databaseStaticContext = firestoreContext
 		// }
-		// assert(!!this.databaseStaticContext.FieldValue)
-		// assert(!!this.databaseStaticContext.Timestamp)
+		// $assert(!!this.databaseStaticContext.FieldValue)
+		// $assert(!!this.databaseStaticContext.Timestamp)
 
 		// this.prefix = prefix || ''
 		this.requireSchemas = isDefined(requireSchemas) ? requireSchemas : true

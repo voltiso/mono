@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type { InferableObject } from '@voltiso/schemar'
 import { undef } from '@voltiso/util'
 
@@ -86,8 +86,8 @@ export class DocRefPattern {
 				const { doc, after, ...rest } = p
 
 				if (this) {
-					assert(doc)
-					assert(after)
+					$assert(doc)
+					$assert(after)
 					return (trigger as unknown as AfterTrigger).call(this, {
 						doc,
 						after,
@@ -109,9 +109,9 @@ export class DocRefPattern {
 				const { doc, before, after, ...rest } = p
 
 				if (!before) {
-					assert(after)
-					assert(this)
-					assert(doc)
+					$assert(after)
+					$assert(this)
+					$assert(doc)
 					return (trigger as unknown as AfterTrigger).call(this, {
 						doc,
 						before,
@@ -134,9 +134,9 @@ export class DocRefPattern {
 				const { doc, before, after, ...rest } = p
 
 				if (!after) {
-					assert(before)
-					assert(this === null)
-					assert(doc === null)
+					$assert(before)
+					$assert(this === null)
+					$assert(doc === null)
 					return (trigger as unknown as AfterTrigger).call(this, {
 						doc,
 						before,

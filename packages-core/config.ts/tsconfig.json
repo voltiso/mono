@@ -1,0 +1,110 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	// "files": [],
+	"include": [
+		"/**/*",
+		"/**/.*"
+		// "/**/.*/**/*"
+		// "/**/.*/**/*.md"
+		//
+	],
+
+	"exclude": [
+		"/**/node_modules/",
+		"/**/dist/",
+		"/**/.turbo/",
+		"/**/.tsc-lint/",
+		"/**/.*/**/*" // Hidden dirs (works?)
+		//
+	],
+
+	"compilerOptions": {
+		// "rootDir": "/",
+
+		// "baseUrl": "/", // ! you may want to override this
+		// "paths": {
+		// 	"~": ["src"],
+		// 	"~/*": ["src/*"]
+		// },
+
+		"outDir": "_outDir_PLEASE_OVERRIDE", // Just in case - avoid polluting any dirs
+
+		// TODO: we may want to remove declaration maps when publishing??
+		// TODO:  - but we don't care for now, it's just unbundled library size
+		// Allows easy jump-to-source in this monorepo
+		"declarationMap": true,
+
+		"declaration": true,
+		// "emitDeclarationOnly": true,
+
+		// "composite": true, // possibly need to overwrite for TSUP builds!
+		"noEmit": true,
+		"sourceMap": true,
+
+		//
+
+		"lib": ["ES2021", "ES2022.Error", "ES2022.Array"], // 2022-08-11 - no `Object.ownKeys` (ES2022) in Safari
+		// "lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"module": "ESNext", // Unused - tsup?
+		"target": "ESNext",
+
+		/** `Node16` or `NodeNext` required for `exports` field in `package.json` */
+		"moduleResolution": "NodeNext",
+
+		//
+		// ____________________ Node 16 recommended ____________________
+		// https://github.com/tsconfig/bases/blob/main/bases/node16.json
+		// "lib": ["ES2021"],
+		// "module": "CommonJS",
+		// "target": "ES2021",
+
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		// ____________________ Node 16 recommended ____________________
+		//
+
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+
+		"allowJs": true,
+		"checkJs": true,
+
+		"jsx": "react-jsx", // For ts-jest - also next.js does not transpile node_modules by default
+		// "jsx": "preserve", // for next.js - they implement their own transforms
+
+		"disableSizeLimit": true,
+
+		//
+		// ______________________ STRICT options _______________________
+		"alwaysStrict": true,
+		"strictNullChecks": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"useUnknownInCatchVariables": true,
+		//
+		"exactOptionalPropertyTypes": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"allowUnusedLabels": false, // Undefined = warning
+		"allowUnreachableCode": false, // Undefined = warning
+		//
+		"importsNotUsedAsValues": "error",
+		"preserveValueImports": false
+		// ______________________ STRICT options _______________________
+		//
+	}
+}

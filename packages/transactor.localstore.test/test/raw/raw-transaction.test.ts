@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 
 import { createTransactor } from '../common'
@@ -85,7 +85,7 @@ describe('raw-transaction', function () {
 		// @ts-expect-error ...
 		expect(adam.age).toBe(234)
 
-		assert(adam)
+		$assert(adam)
 
 		expect(adam['x']).toBeUndefined()
 	})

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { isDefined, undef } from '@voltiso/util'
 
 import type { DataWithoutId } from '~/Data'
@@ -31,7 +31,7 @@ export function collectTriggerResult(
 			? null
 			: (withoutId(triggerResult as never, ctx.docRef.id) as never)
 	else {
-		assert(cacheEntry.data !== undef)
+		$assert(cacheEntry.data !== undef)
 		return cacheEntry.data as never
 	}
 }

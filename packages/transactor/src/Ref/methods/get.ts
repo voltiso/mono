@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { clone, toString, undef } from '@voltiso/util'
 
 import { fromFirestore } from '~/common'
@@ -40,7 +40,7 @@ async function directDocPathGet<D extends IDoc>(
 	let data: DataWithoutId | null
 
 	if (needTransaction) {
-		assert(!ctx.transaction)
+		$assert(!ctx.transaction)
 		data = await ctx.transactor.runTransaction(async () => {
 			const doc = await ctx.db.doc(ctx.docRef.path.pathString)
 
@@ -52,7 +52,7 @@ async function directDocPathGet<D extends IDoc>(
 		data = fromFirestore(ctx, await _ref.get())
 	}
 
-	assert(!ctx.transaction)
+	$assert(!ctx.transaction)
 
 	if (data) return new Doc(ctx, data) as unknown as D
 	else return null
@@ -67,12 +67,10 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	const path = ctx.docRef.path.toString()
 
-	// eslint-disable-next-line security/detect-object-injection
-	if (!(path in _cache)) _cache[path] = newCacheEntry(ctx)
+	if (!_cache.has(path)) _cache.set(path, newCacheEntry(ctx))
 
-	// eslint-disable-next-line security/detect-object-injection
-	const cacheEntry = _cache[path]
-	assert(cacheEntry)
+	const cacheEntry = _cache.get(path)
+	$assert(cacheEntry)
 
 	const schema = getSchema(ctx.docRef)
 
@@ -142,7 +140,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	if (!cacheEntry.proxy)
 		cacheEntry.proxy = cacheEntry.data ? new Doc_(ctx, cacheEntry.data) : null
 	else if (cacheEntry.data) {
-		assert(cacheEntry.proxy)
+		$assert(cacheEntry.proxy)
 		cacheEntry.proxy._setRaw(cacheEntry.data)
 	}
 
@@ -241,7 +239,7 @@ export function get<TI extends IDocTI>(
 
 		return transactionDocPathGet<GDoc<TI, 'outside'>>(ctx)
 	} else {
-		assert(isWithoutTransaction(ctx))
+		$assert(isWithoutTransaction(ctx))
 		return directDocPathGet(ctx)
 	}
 }

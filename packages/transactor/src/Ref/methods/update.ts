@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { isDefined, toString, undef } from '@voltiso/util'
 
 import { databaseUpdate } from '~/common'
@@ -121,7 +121,7 @@ async function rawUpdate(
 ): Promise<IndexedDoc | null | undefined> {
 	check.call(ctx, updates)
 
-	const afterTriggers = getAfterTriggers.call(ctx.docRef)
+	const afterTriggers = getAfterTriggers(ctx.docRef)
 	const beforeCommits = getBeforeCommits(ctx.docRef)
 	const schema = getSchema(ctx.docRef)
 
@@ -143,7 +143,7 @@ async function rawUpdate(
 			return doc ? doc.dataWithId() : null
 		})
 	} else {
-		assert(ctx.transactor._databaseContext)
+		$assert(ctx.transactor._databaseContext)
 		data = await databaseUpdate(
 			ctx.transactor._databaseContext,
 			ctx.transactor._database,
@@ -195,7 +195,7 @@ async function transactionUpdateImpl(
 ): Promise<IDoc | null | undefined> {
 	// returns undefined if unknown (usually update performed on a document without a trigger or schema)
 
-	const afterTriggers = getAfterTriggers.call(ctx.docRef)
+	const afterTriggers = getAfterTriggers(ctx.docRef)
 	const beforeCommits = getBeforeCommits(ctx.docRef)
 
 	const schema = getSchema(ctx.docRef)
@@ -212,12 +212,10 @@ async function transactionUpdateImpl(
 		// eslint-disable-next-line no-param-reassign
 		onPrivateField = 'ignore'
 
-	// eslint-disable-next-line security/detect-object-injection
-	if (!(path in _cache)) _cache[path] = newCacheEntry(ctx)
+	if (!_cache.has(path)) _cache.set(path, newCacheEntry(ctx))
 
-	// eslint-disable-next-line security/detect-object-injection
-	const cacheEntry = _cache[path]
-	assert(cacheEntry)
+	const cacheEntry = _cache.get(path)
+	$assert(cacheEntry)
 	cacheEntry.write = true
 
 	const needReadWrite = Boolean(
@@ -258,7 +256,7 @@ async function transactionUpdateImpl(
 		}
 
 		if (isReplaceIt(cacheEntry.updates) || isDeleteIt(cacheEntry.updates)) {
-			assert(data === undef)
+			$assert(data === undef)
 			data = dataFromUpdates(cacheEntry.updates)
 			delete cacheEntry.updates
 		}
@@ -336,7 +334,7 @@ export function update(
 
 		return transactionUpdate.call(ctx, updates)
 	} else {
-		assert(isWithoutTransaction(ctx))
+		$assert(isWithoutTransaction(ctx))
 		return rawUpdate(ctx, updates)
 	}
 }

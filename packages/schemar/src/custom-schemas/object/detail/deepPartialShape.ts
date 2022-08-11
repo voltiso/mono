@@ -20,6 +20,10 @@ export type DeepPartialShape_<O> = {
 
 export type DeepPartialShape<O extends InferableObject> = DeepPartialShape_<O>
 
+export type $DeepPartialShape_<O> = O extends any ? DeepPartialShape_<O> : never
+
+export type $DeepPartialShape<O extends InferableObject> = $DeepPartialShape_<O>
+
 //
 
 export function deepPartialShape<O extends InferableObject>(

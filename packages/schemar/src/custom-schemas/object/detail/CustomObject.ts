@@ -14,7 +14,6 @@ import type {
 	DeepStrictPartialShape_,
 	DefaultObjectOptions,
 	DefineSchema,
-	InferableObject,
 	ObjectOptions,
 	PartialShape_,
 	StrictPartialShape_,
@@ -50,7 +49,7 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 //
 
 export type _ObjectLike = {
-	[OPTIONS]: { shape: InferableObject; Output: object; Input: object }
+	[OPTIONS]: { shape: any; Output: any; Input: any }
 }
 
 export type _GetPartial_<This> = [This] extends [_ObjectLike]

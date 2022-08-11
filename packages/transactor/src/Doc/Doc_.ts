@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { isPlainObject, lazyConstructor, omit } from '@voltiso/util'
 
 import type { DataWithId, DataWithoutId } from '~/Data'
@@ -60,8 +60,8 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		this._setRaw(raw)
 
 		// assert the ! members
-		assert(this._raw)
-		assert(this._rawProxy)
+		$assert(this._raw)
+		$assert(this._rawProxy)
 
 		// add methods
 		const docRef = this._context.docRef

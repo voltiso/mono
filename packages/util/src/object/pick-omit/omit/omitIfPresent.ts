@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept } from '~'
+import { assertNotPolluting } from '~/object/get-set/isPolluting'
+import type { AlsoAccept } from '~/type'
 
 import type { OmitSimple } from './OmitSimple'
 
@@ -21,7 +22,10 @@ export function omitIfPresent<
 >(obj: O, ...keys: K[]): OmitSimple<O, K> {
 	const { ...r } = obj
 
-	for (const key of keys) delete r[key as unknown as keyof O]
+	for (const key of keys) {
+		assertNotPolluting(key)
+		delete r[key as unknown as keyof O]
+	}
 
 	return r as unknown as OmitSimple<O, K>
 }

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { getKeys, undef } from '@voltiso/util'
 
 import type { DataWithoutId, NestedData } from '~/Data/Data'
@@ -51,7 +51,7 @@ function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 		for (const field of getKeys(b)) {
 			// eslint-disable-next-line security/detect-object-injection
 			const bVal = b[field]
-			assert(bVal !== undef)
+			$assert(bVal !== undef)
 
 			// eslint-disable-next-line security/detect-object-injection
 			const rField = r[field]
@@ -70,13 +70,13 @@ function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 
 export function combineUpdates(a: Updates, b: Updates): Updates {
 	const r = combineUpdatesRec(a, b)
-	assert(r !== null)
+	$assert(r !== null)
 	return r as never
 }
 
 const dataFromUpdatesRec = (updates: NestedUpdates): NestedData => {
-	assert(!isDeleteIt(updates))
-	assert(!isIncrementIt(updates))
+	$assert(!isDeleteIt(updates))
+	$assert(!isIncrementIt(updates))
 
 	if (isReplaceIt(updates)) return updates.data
 
@@ -86,7 +86,7 @@ const dataFromUpdatesRec = (updates: NestedUpdates): NestedData => {
 		for (const field of getKeys(updates)) {
 			// eslint-disable-next-line security/detect-object-injection
 			const updatesVal = updates[field]
-			assert(updatesVal !== undef)
+			$assert(updatesVal !== undef)
 
 			// eslint-disable-next-line security/detect-object-injection
 			if (isDeleteIt(updates[field])) continue
@@ -131,8 +131,8 @@ export const applyUpdates = (
 	}
 
 	const combined = data ? combineUpdates(data, updates) : updates
-	// if (data && final) assert(data.id === final.id)
+	// if (data && final) $assert(data.id === final.id)
 	// if (final) final.id = id
-	// assert(final?.id)
+	// $assert(final?.id)
 	return dataFromUpdates(combined)
 }

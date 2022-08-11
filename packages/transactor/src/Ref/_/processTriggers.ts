@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
-import { clone, undef } from '@voltiso/util'
+import { $assert } from '@voltiso/assertor'
+import { clone } from '@voltiso/util'
 
 import { withId } from '~/Data'
 import { immutabilize } from '~/immutabilize'
@@ -20,25 +20,25 @@ import { getSchema } from './getSchema'
 import { validateAndSetCacheEntry } from './validateAndSetCacheEntry'
 
 async function processAfterTrigger(
-	c: DocRefContextWithTransaction,
+	ctx: DocRefContextWithTransaction,
 	idx: number,
 ): Promise<boolean> {
-	const cacheEntry = getCacheEntry(c)
-	const afterTriggers = getAfterTriggers.call(c.docRef)
-	const schema = getSchema(c.docRef)
-	const id = c.docRef.id
+	const cacheEntry = getCacheEntry(ctx)
+	const afterTriggers = getAfterTriggers(ctx.docRef)
+	const schema = getSchema(ctx.docRef)
+	const id = ctx.docRef.id
 
 	// eslint-disable-next-line security/detect-object-injection
 	const afterTrigger = afterTriggers[idx]
-	assert(afterTrigger)
+	$assert(afterTrigger)
 	const { trigger, pathMatches } = afterTrigger
 
-	assert(cacheEntry.lastDataSeenByAfters)
+	$assert(cacheEntry.lastDataSeenByAfters)
 	// eslint-disable-next-line security/detect-object-injection
 	const prevLastSeen = cacheEntry.lastDataSeenByAfters[idx]
-	assert(prevLastSeen !== undef)
+	$assert(prevLastSeen !== undefined)
 
-	assert(cacheEntry.data !== undef)
+	$assert(cacheEntry.data !== undefined)
 
 	const before = prevLastSeen
 	const after = cacheEntry.data
@@ -49,20 +49,20 @@ async function processAfterTrigger(
 	// eslint-disable-next-line security/detect-object-injection
 	cacheEntry.lastDataSeenByAfters[idx] = clone(after)
 
-	await triggerGuard(c, async () => {
-		assert(cacheEntry.proxy !== undef)
+	await triggerGuard(ctx, async () => {
+		$assert(cacheEntry.proxy !== undefined)
 
 		const r = await trigger.call(cacheEntry.proxy as never, {
 			doc: cacheEntry.proxy as never,
 			before: immutabilize(withId(before, id)),
 			after: immutabilize(withId(after, id)),
 			...pathMatches,
-			path: c.docRef.path,
+			path: ctx.docRef.path,
 			id: id as never,
-			...c,
+			...ctx,
 		})
-		const data = collectTriggerResult(c, r)
-		validateAndSetCacheEntry(c, data, schema?.partial)
+		const data = collectTriggerResult(ctx, r)
+		validateAndSetCacheEntry(ctx, data, schema?.partial)
 	})
 
 	// eslint-disable-next-line security/detect-object-injection
@@ -71,7 +71,7 @@ async function processAfterTrigger(
 
 /** Start executing triggers from the beginning if data change is detected */
 async function loop(c: DocRefContextWithTransaction) {
-	const afterTriggers = getAfterTriggers.call(c.docRef)
+	const afterTriggers = getAfterTriggers(c.docRef)
 
 	const MAX_ITERS = 1_000
 
@@ -110,7 +110,7 @@ export async function processTriggers(
 	const cacheEntry = getCacheEntry(c)
 
 	cacheEntry.write = true
-	assert(cacheEntry.data !== undef)
+	$assert(cacheEntry.data !== undefined)
 
 	const schema = getSchema(c.docRef)
 
@@ -120,8 +120,8 @@ export async function processTriggers(
 	// eslint-disable-next-line no-lone-blocks
 	{
 		const data = apply(c, cacheEntry.data, p?.updates)
-		assert(!isReplaceIt(data))
-		assert(!isDeleteIt(data))
+		$assert(!isReplaceIt(data))
+		$assert(!isDeleteIt(data))
 		validateAndSetCacheEntry(c, data, schema?.partial)
 	}
 

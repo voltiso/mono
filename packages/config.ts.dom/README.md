@@ -1,1 +1,0 @@
-# `@voltiso/config.ts.dom`

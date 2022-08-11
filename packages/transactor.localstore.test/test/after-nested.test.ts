@@ -3,7 +3,7 @@
 
 /* eslint-disable jest/require-hook */
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { deleteIt, Doc, incrementIt } from '@voltiso/transactor'
 import * as gen from 'random-seed'
@@ -91,12 +91,12 @@ describe('after - nested', function () {
 		await doctors('anthony').update({ num: incrementIt(1) })
 		await db.runTransaction(async () => {
 			const anthony = await doctors('anthony')
-			assert(anthony)
+			$assert(anthony)
 			anthony.num += 1
 			cutoff = -1
 		})
 		const anthony = await doctors('anthony')
-		assert(anthony)
+		$assert(anthony)
 
 		expect(anthony.a).toBe(anthony.num)
 		expect(anthony.b).toBe(anthony.num)

@@ -17,7 +17,7 @@ class TransactionImpl_ extends lazyConstructor(() => Db) {
 	declare _context: TransactionContext
 	_databaseTransaction: Database.Transaction
 
-	_cache: Cache = {}
+	_cache: Cache = new Map()
 	_numFloatingPromises = 0
 	_numMethodsNested = 0
 	_numTriggersNested = 0

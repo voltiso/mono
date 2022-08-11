@@ -8,6 +8,7 @@ import {
 	callableInstance,
 	forwardGetOwnPropertyDescriptor,
 	forwardOwnKeys,
+	hasOwnProperty,
 } from '@voltiso/util'
 import { useUpdate } from '@voltiso/util.react'
 import { useMemo } from 'react'
@@ -76,6 +77,17 @@ class StatePatcher_<S extends StateObject> {
 		return this._rawState
 	}
 
+	/** Modifies `initialState`! */
+	constructor(initialState: S, forceUpdate: () => void) {
+		this._rawState = initialState
+		this._forceUpdate = forceUpdate
+
+		this._swapProto()
+
+		// eslint-disable-next-line no-constructor-return
+		return callableInstance(this)
+	}
+
 	private _swapProto() {
 		Object.setPrototypeOf(this._rawState, StatePatcher_.prototype)
 		Object.setPrototypeOf(this, this._rawState)
@@ -116,17 +128,6 @@ class StatePatcher_<S extends StateObject> {
 	[CALL](updateValue: PatchFor<S>): void {
 		return this.update(updateValue)
 	}
-
-	/** Modifies `initialState`! */
-	constructor(initialState: S, forceUpdate: () => void) {
-		this._rawState = initialState
-		this._forceUpdate = forceUpdate
-
-		this._swapProto()
-
-		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this)
-	}
 }
 
 //
@@ -166,7 +167,7 @@ export function useStatePatcher<S extends StateObject>(
 	const handler: ProxyHandler<StatePatcher<S>> = useMemo(
 		() => ({
 			set(t, p, v, r) {
-				if (Object.hasOwn(t, p)) {
+				if (hasOwnProperty(t, p)) {
 					return Reflect.set(t, p, v, r)
 				} else {
 					t.patch({ [p]: replaceIt(v) } as never)

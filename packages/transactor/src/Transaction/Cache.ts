@@ -20,7 +20,7 @@ export type CacheEntry = {
 	isProcessingTriggers: boolean
 }
 
-export type Cache = Record<string, CacheEntry>
+export type Cache = Map<string, CacheEntry>
 
 export const newCacheEntry = (
 	_ctx: WithDocRef & WithTransaction,

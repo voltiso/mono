@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type * as s from '@voltiso/schemar'
 import type { If } from '@voltiso/util'
@@ -58,7 +58,7 @@ export class DocRefBaseImpl<
 	}
 
 	get id(): Id<D> {
-		assert(this._path.id)
+		$assert(this._path.id)
 		return this._path.id as never
 	}
 

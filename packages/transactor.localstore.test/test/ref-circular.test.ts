@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc, doc } from '@voltiso/transactor'
 import * as transactorSchemas from '@voltiso/transactor/schemas'
@@ -50,7 +50,7 @@ describe('localstore', () => {
 			})
 			// a.ref.get()
 			Assert<IsIdentical<typeof b, MyDoctor>>()
-			assert(b.friend)
+			$assert(b.friend)
 
 			const f = await b.friend
 			Assert<IsIdentical<typeof f, MyDoctor>>()

@@ -18,24 +18,24 @@ function forEachStrongRef(o: any, f: (r: IRef) => void) {
 	}
 }
 
-export function getAfterTriggers(this: DocRefBaseImpl) {
-	if (this._afterTriggers) return this._afterTriggers
+export function getAfterTriggers(docRef: DocRefBaseImpl) {
+	if (docRef._afterTriggers) return docRef._afterTriggers
 
-	this._afterTriggers = []
+	docRef._afterTriggers = []
 
-	for (const { getPathMatches, trigger } of this._context.transactor
+	for (const { getPathMatches, trigger } of docRef._context.transactor
 		._allAfterTriggers) {
-		const pathMatches = getPathMatches(this.path.toString())
+		const pathMatches = getPathMatches(docRef.path.toString())
 
-		if (pathMatches) this._afterTriggers.push({ pathMatches, trigger })
+		if (pathMatches) docRef._afterTriggers.push({ pathMatches, trigger })
 	}
 
-	if (this._context.transactor.refCounters) {
-		this._afterTriggers.push({
+	if (docRef._context.transactor.refCounters) {
+		docRef._afterTriggers.push({
 			pathMatches: { pathArgs: [], pathParams: {} },
 
 			trigger: async ({ before, after, path, db }) => {
-				// console.log('trigger', path.toString())
+				// console.log('ref counting trigger', path.toString())
 				const m = new Map<string, { before: number; after: number }>()
 
 				forEachStrongRef(before, r => {
@@ -53,6 +53,10 @@ export function getAfterTriggers(this: DocRefBaseImpl) {
 				for (const [targetPath, ba] of m.entries()) {
 					const diff = ba.after - ba.before
 
+					// console.log(
+					// 	`NUM REFS += ${diff} (${path.toString()} -> ${targetPath})`,
+					// )
+
 					if (diff === 0) continue
 
 					const docPath = db(targetPath) as unknown as WeakDocRef<IDoc>
@@ -65,8 +69,9 @@ export function getAfterTriggers(this: DocRefBaseImpl) {
 							`ref: referenced doc does not exist ${path.pathString} -> ${targetPath}`,
 						)
 
-					// console.log(`NUM REFS += ${diff} (${path.toString()} -> ${targetPath})`)
 					__voltiso.numRefs += diff
+
+					// console.log('__voltiso.numRefs', __voltiso.numRefs)
 
 					if (__voltiso.numRefs < ba.after) {
 						throw new Error(
@@ -80,5 +85,5 @@ export function getAfterTriggers(this: DocRefBaseImpl) {
 		})
 	}
 
-	return this._afterTriggers
+	return docRef._afterTriggers
 }

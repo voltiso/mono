@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { Json } from '@voltiso/util'
 import { getKeys, isPlainObject, undef } from '@voltiso/util'
@@ -54,7 +54,7 @@ export function toDatabaseUpdate(
 				for (const childKey of getKeys(rr)) {
 					// eslint-disable-next-line security/detect-object-injection
 					const val = (rr as FirestoreLike.DocumentData)[childKey]
-					assert(val !== undef)
+					$assert(val !== undef)
 					r[`${key}.${childKey}`] = val
 				}
 			// eslint-disable-next-line security/detect-object-injection
@@ -90,7 +90,7 @@ export function toDatabaseSet(
 			'firestoreSet: incrementField() sentinel not allowed - are you trying to update non-existing document?',
 		)
 
-	assert(!isDeleteIt(obj))
+	$assert(!isDeleteIt(obj))
 
 	if (isPlainObject(obj)) {
 		const r: FirestoreLike.DocumentData = {}

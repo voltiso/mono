@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
 import {
@@ -30,12 +30,12 @@ class Client extends Doc('refDelete_client')({
 }) {
 	@beforeCommit
 	async checkIfValid(p: TriggerParams.BeforeCommit<Client>) {
-		if (p.doc) assert(p.doc.rootTask, 'rootTask should be present')
+		if (p.doc) $assert(p.doc.rootTask, 'rootTask should be present')
 	}
 
 	@afterDelete
 	async deleteRootTask(p: TriggerParams.AfterDelete<Client>) {
-		assert(p.before.rootTask)
+		$assert(p.before.rootTask)
 		await p.before.rootTask.delete()
 	}
 
@@ -45,7 +45,7 @@ class Client extends Doc('refDelete_client')({
 			if (p.before) await clientSlugs(p.before.slug).delete()
 
 			if (p.after) {
-				assert(p.doc)
+				$assert(p.doc)
 				await clientSlugs.add({
 					id: p.after.slug,
 					client: p.doc.ref,
@@ -57,7 +57,7 @@ class Client extends Doc('refDelete_client')({
 	@afterCreate
 	async createRootTask(this: Client) {
 		//! TODO it should work with polymorphic `this`
-		assert(this.rootTask === undef)
+		$assert(this.rootTask === undef)
 
 		// type A = StrongRef<this>['id']
 

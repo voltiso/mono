@@ -5,8 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
-import type { IsIdentical } from '@voltiso/util'
-import { Assert, Is } from '@voltiso/util'
+import { Assert, Is, IsIdentical } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { hasOwnProperty } from '~'
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { toString } from '~/string'
 
@@ -22,7 +23,7 @@ export function omit<O extends object, K extends keyof O>(
 	...keys: K[]
 ): OmitSimple<O, K> {
 	for (const key of keys) {
-		if (!Object.hasOwn(obj, key)) {
+		if (!hasOwnProperty(obj, key)) {
 			throw new VoltisoUtilError(
 				`omit(${toString(obj)}, ${toString(keys)}): key ${toString(
 					key,

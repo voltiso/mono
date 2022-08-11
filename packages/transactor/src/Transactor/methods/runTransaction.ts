@@ -4,16 +4,9 @@
 // eslint-disable-next-line import/no-unassigned-import
 import '~/zone'
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
-import {
-	clone,
-	getEntries,
-	getKeys,
-	getValues,
-	isDefined,
-	undef,
-} from '@voltiso/util'
+import { clone, isDefined, undef } from '@voltiso/util'
 import chalk from 'chalk'
 
 import { databaseUpdate } from '~/common/database/databaseUpdate'
@@ -39,7 +32,7 @@ export type TransactionBody<Result> = (db: Transaction) => Promise<Result>
 const getCacheSnapshot = (cache: Cache) => {
 	const r = {} as Record<string, Partial<CacheEntry>>
 
-	for (const [k, v] of Object.entries(cache)) {
+	for (const [k, v] of cache.entries()) {
 		// eslint-disable-next-line security/detect-object-injection
 		const entry = (r[k] = {}) as Partial<CacheEntry>
 
@@ -93,11 +86,7 @@ export async function runTransaction<R>(
 				// loop final after and beforeCommit triggers while there are changes in cache
 				for (;;) {
 					// detect local changes and set write=true
-					for (const path of getKeys(cache)) {
-						// eslint-disable-next-line security/detect-object-injection
-						const cacheEntry = cache[path]
-						assert(cacheEntry)
-
+					for (const cacheEntry of cache.values()) {
 						if (
 							!cacheEntry.write &&
 							!isEqual(cacheEntry.data, cacheEntry.originalData)
@@ -106,7 +95,7 @@ export async function runTransaction<R>(
 					}
 
 					// process beforeCommits
-					for (const [path, cacheEntry] of getEntries(cache)) {
+					for (const [path, cacheEntry] of cache.entries()) {
 						if (cacheEntry.write) {
 							const docRef = new StrongDocRefImpl(transaction._context, path)
 							const ctx = { ...transaction._context, docRef }
@@ -122,7 +111,7 @@ export async function runTransaction<R>(
 								let r: Awaited<ReturnType<typeof trigger>>
 								// eslint-disable-next-line no-await-in-loop
 								await triggerGuard(ctx, async () => {
-									assert(isDefined(cacheEntry.proxy))
+									$assert(isDefined(cacheEntry.proxy))
 
 									const params: BeforeCommitTriggerParams<
 										Doc<IDocTI, 'inside'>
@@ -170,7 +159,7 @@ export async function runTransaction<R>(
 					)
 				}
 			} catch (error) {
-				for (const cacheEntry of getValues(cache)) {
+				for (const cacheEntry of cache.values()) {
 					delete cacheEntry.proxy
 				}
 
@@ -192,13 +181,13 @@ export async function runTransaction<R>(
 					`numFloatingPromises: ${transaction._numFloatingPromises} (missing await?)`,
 				)
 
-			for (const [path, cacheEntry] of Object.entries(cache)) {
+			for (const [path, cacheEntry] of cache.entries()) {
 				if (cacheEntry.write) {
 					const dbCtx = ctx._databaseContext
-					assert(dbCtx)
+					$assert(dbCtx)
 
 					if (isDefined(cacheEntry.updates)) {
-						assert(cacheEntry.data === undef)
+						$assert(cacheEntry.data === undef)
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
 							dbCtx,
@@ -215,7 +204,7 @@ export async function runTransaction<R>(
 							deleteIt(),
 						)
 					} else {
-						assert(cacheEntry.data)
+						$assert(cacheEntry.data)
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
 							dbCtx,

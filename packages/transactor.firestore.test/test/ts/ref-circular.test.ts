@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { DTI, Id, StrongRef } from '@voltiso/transactor'
 import { createTransactor, Doc, method } from '@voltiso/transactor'
@@ -73,7 +73,7 @@ describe('emu-ts', () => {
 					// @ts-expect-error ref type mismatch
 					friend: c.ref,
 				})
-			assert(b.friend)
+			$assert(b.friend)
 			Assert<IsIdentical<typeof b.friend, StrongRef<DoctorLorcan>>>()
 
 			const name = await b.friend.data.name

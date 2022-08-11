@@ -34,6 +34,8 @@
 // 	return r as never
 // }
 
+import { VoltisoUtilError } from '~/error'
+import { isMap, isSet } from '~/map-set'
 import {
 	type DefaultIterationOptions,
 	type IterationOptions,
@@ -42,6 +44,7 @@ import {
 	getProperty,
 	merge,
 } from '~/object'
+import { toString } from '~/string'
 
 import type { CoercedEntry, Entry } from './Entry'
 
@@ -63,31 +66,40 @@ type GetEntries<Obj extends object, _O extends IterationOptions> = Entry<Obj>[]
  *
  * @example NonEnumerable properties
  *
- * @param obj - Object
+ * @param object - Object
  * @param options - Configure to enable iteration over symbol properties and/or
  * @returns Entries of `obj` - `[key, value]`
+ * @throws When called on Map or Set
  */
 export function getEntries_<Obj extends object, O extends IterationOptions>(
-	obj: Obj,
+	object: Obj,
 	options: O,
 ): GetEntries<Obj, O> {
+	if (isSet(object) || isMap(object))
+		throw new VoltisoUtilError(
+			`getKeys called on Map or Set: getKeys(${toString(object)}, ${toString(
+				options,
+			)})`,
+		)
+
 	let r = [] as unknown as GetEntries<Obj, O>
 
 	if (options.includeNonEnumerable) {
-		for (const k of Object.getOwnPropertyNames(obj) as (string & keyof Obj)[]) {
+		for (const k of Object.getOwnPropertyNames(object) as (string &
+			keyof Obj)[]) {
 			// if (Object.getOwnPropertyDescriptor(obj, k)?.enumerable)
-			r.push([k, getProperty(obj, k)] as never)
+			r.push([k, getProperty(object, k)] as never)
 		}
-	} else r = Object.entries(obj) as never
+	} else r = Object.entries(object) as never
 
 	if (options.includeSymbols) {
-		for (const k of Object.getOwnPropertySymbols(obj) as (symbol &
+		for (const k of Object.getOwnPropertySymbols(object) as (symbol &
 			keyof Obj)[]) {
 			if (
 				options.includeNonEnumerable ||
-				Object.getOwnPropertyDescriptor(obj, k)?.enumerable
+				Object.getOwnPropertyDescriptor(object, k)?.enumerable
 			) {
-				r.push([k, getProperty(obj, k)] as never)
+				r.push([k, getProperty(object, k)] as never)
 			}
 		}
 	}

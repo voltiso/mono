@@ -1,0 +1,23 @@
+# ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+# ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+ignores:
+  - '@types/jest'
+  - '@types/node'
+  - '@voltiso/assertor.transform'
+  - '@voltiso/config.eslint.lib'
+  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest.lib'
+  - '@voltiso/config.prettier'
+  - '@voltiso/config.ts'
+  - '@voltiso/config.ts.build.cjs'
+  - '@voltiso/config.ts.build.esm'
+  - eslint-import-resolver-typescript
+  - jest
+  - rimraf
+  - ts-node
+  - ttypescript
+  - type-coverage
+  - typescript
+  - typescript-transform-paths
+  - zone.js

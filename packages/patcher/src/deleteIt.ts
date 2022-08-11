@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 export type DeleteIt = {
 	__deleteIt: true
 }
@@ -12,5 +10,5 @@ export const deleteIt: DeleteIt = {
 }
 
 export function isDeleteIt(x: any): x is DeleteIt {
-	return Object.hasOwn(x || {}, '__deleteIt')
+	return Object.prototype.hasOwnProperty.call(x || {}, '__deleteIt')
 }

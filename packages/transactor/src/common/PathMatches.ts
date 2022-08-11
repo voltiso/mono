@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 
 type PathParams = Record<string, string>
 type PathArgs = string[]
@@ -17,7 +17,7 @@ export const getGetPathMatches = (pattern: string): GetPathMatches => {
 	// eslint-disable-next-line regexp/prefer-named-capture-group
 	const params = [...pattern.matchAll(/\{([^{}]*)\}/gu)].map(r => {
 		const res = r[1]
-		assert(typeof res === 'string')
+		$assert(typeof res === 'string')
 		return res
 	})
 

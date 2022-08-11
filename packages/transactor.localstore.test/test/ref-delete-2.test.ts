@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type { TriggerParams } from '@voltiso/transactor'
 import { afterCreate, afterDelete, Doc } from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
@@ -27,7 +27,7 @@ class Man extends Doc('man')({
 
 	@afterDelete
 	async deleteWoman(p: TriggerParams.AfterDelete<Man>) {
-		assert(p.before.woman)
+		$assert(p.before.woman)
 		await p.before.woman.delete()
 	}
 }

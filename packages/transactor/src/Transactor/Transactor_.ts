@@ -5,7 +5,7 @@
 
 // import '~/zone.js'
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { OmitCall, Tail } from '@voltiso/util'
 import { assumeType, staticImplements, undef } from '@voltiso/util'
@@ -46,13 +46,13 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 	}
 
 	get _databaseModule(): FirestoreLikeModule {
-		assert(this._databaseContext)
+		$assert(this._databaseContext)
 		return this._databaseContext.module
 	}
 
 	get databaseModule(): DatabaseContext {
-		// assert(this._databaseContext.database)
-		// assert(this._databaseContext.module)
+		// $assert(this._databaseContext.database)
+		// $assert(this._databaseContext.module)
 		return this._databaseContext as DatabaseContext
 	}
 
@@ -117,7 +117,7 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 		this._options = new Options_(partialOptions)
 
 		if (database) {
-			assert(myModule)
+			$assert(myModule)
 			this.init(database, myModule)
 		}
 

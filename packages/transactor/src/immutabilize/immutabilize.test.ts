@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 
 import { immutabilize } from './immutabilize'
 
@@ -25,7 +25,7 @@ describe('immutabilize', function () {
 
 		expect(arr[2]?.[0]).toBe(3)
 		expect(() => {
-			assert(arr[2])
+			$assert(arr[2])
 			arr[2][0] = 2
 		}).toThrow('immutable')
 	})

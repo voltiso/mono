@@ -81,7 +81,6 @@ pnpm add @voltiso/config.ts.build.esm
 pnpm add @voltiso/config.eslint
 pnpm add @voltiso/config.prettier
 pnpm add @voltiso/config.jest.esr
-pnpm add @voltiso/config.babel.zone
 
 # ...
 ```

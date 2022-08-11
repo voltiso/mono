@@ -1,0 +1,34 @@
+{
+	"name": "@voltiso/assertor.test",
+	"private": true,
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/mono.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________TEST": "__________",
+		"test": "run-s test:clean test:build test:jest",
+		"test:clean": "rimraf dist",
+		"test:build": "ttsc -b tsconfig.build.cjs.json",
+		"test:jest": "jest",
+		"__________LINT": "__________",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
+		"lint:depcheck": "depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:eslint": "eslint --max-warnings=0 .",
+		"lint:tsc": "tsc -b",
+		"fix": "run-s fix:prettier fix:eslint",
+		"fix:prettier": "prettier --write .",
+		"fix:eslint": "eslint --fix ."
+	},
+	"__________DEPS": "__________",
+	"devDependencies": {
+		"@voltiso/assertor": "workspace:^2.0.0",
+		"@voltiso/config.jest.esr": "workspace:^1.0.0"
+	},
+	"__________MISC": "__________",
+	"engines": {
+		"node": ">=16"
+	}
+}

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
 import { isPlainObject } from '@voltiso/util'
 
@@ -65,7 +65,7 @@ export const fromFirestore = (
 	if (!data) return null
 	else {
 		const fixed = fromFirestoreRec(ctx, data)
-		assert(isPlainObject(fixed))
+		$assert(isPlainObject(fixed))
 		return fixed as DataWithoutId
 	}
 }

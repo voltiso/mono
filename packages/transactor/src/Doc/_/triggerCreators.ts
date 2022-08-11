@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 import chalk from 'chalk'
 
@@ -20,27 +20,27 @@ import type { GI } from './GDoc'
 function assertBefore<D extends IDoc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, D | null, true, boolean> {
-	assert(x.before)
+	$assert(x.before)
 }
 
 function assertNotBefore<D extends IDoc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, D | null, false, boolean> {
-	assert(!x.before)
+	$assert(!x.before)
 }
 
 function assertAfter<D extends IDoc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, D, boolean, true> {
-	assert(x.doc)
-	assert(x.after)
+	$assert(x.doc)
+	$assert(x.after)
 }
 
 function assertNotAfter<D extends IDoc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, null, boolean, false> {
-	assert(!x.doc)
-	assert(!x.after)
+	$assert(!x.doc)
+	$assert(!x.after)
 }
 
 function logTrigger<TI extends DocDerivedData>(
@@ -160,7 +160,7 @@ export function withAfterCreate<TI extends DocDerivedData>(
 			function (this: GI<TI> | null, p: AfterTriggerParams<GI<TI>>) {
 				if (!p.before && p.after) {
 					logTrigger(name, 'after', 'CREATE', p)
-					assert(this)
+					$assert(this)
 					assertNotBefore(p)
 					assertAfter(p)
 					return f.call(this, p) as never
