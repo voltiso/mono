@@ -20,7 +20,7 @@ import {
 	eslintComments,
 	etcOverride,
 	extOverride,
-	filenames,
+	// filenames,
 	formatJs,
 	formatMessage,
 	// fpOverride,
@@ -32,7 +32,7 @@ import {
 	i18nText,
 	importOverride,
 	// i18nJson,
-	indentEmptyLines,
+	// indentEmptyLines,
 	jsdocOverride,
 	json,
 	jsonc,
@@ -50,8 +50,8 @@ import {
 	noUnsanitized,
 	noUseExtendNative,
 	nOverride,
-	optimizeRegex,
-	preferArrow,
+	// optimizeRegex,
+	// preferArrow,
 	prettierOverride,
 	promise,
 	putoutOverride,
@@ -66,7 +66,7 @@ import {
 	simpleImportSort,
 	sonar,
 	// sortClassMembers,
-	sortKeysFix,
+	// sortKeysFix,
 	storybook,
 	switchCase,
 	testingLibrary,
@@ -85,6 +85,21 @@ import {
 
 // const tsconfigPath = findTsconfigPathSync(process.cwd())
 
+// const rulesHandledByPrettier = {
+// 	'arrow-parens': 0,
+// 	'function-paren-newline': 0,
+// 	'implicit-arrow-linebreak': 0,
+// 	'no-multiple-empty-lines': 0,
+// 	'no-tabs': 0,
+// 	'@typescript-eslint/space-before-function-paren': 0,
+// 	'max-len': 0,
+// 	'array-element-newline': 0,
+// 	'lines-around-comment': 0, // conflict
+// 	'object-property-newline': 0, // conflict
+// 	'curly': 0,
+// 	'dot-location': 0,
+// }
+
 export const baseEslintConfig = defineEslintConfig({
 	// root: true, // ! override this explicitly
 
@@ -101,6 +116,8 @@ export const baseEslintConfig = defineEslintConfig({
 	rules: {
 		'max-lines': 0,
 		'capitalized-comments': 0,
+
+		// ...rulesHandledByPrettier,
 	},
 
 	parserOptions: {
@@ -108,7 +125,7 @@ export const baseEslintConfig = defineEslintConfig({
 			jsx: true,
 		},
 
-		jsxPragma: null, // for @typescript/eslint-parser
+		jsxPragma: null as never, // for @typescript/eslint-parser
 
 		ecmaVersion: 'latest',
 
@@ -163,6 +180,14 @@ export const baseEslintConfig = defineEslintConfig({
 	},
 
 	overrides: [
+		// fpOverride, // crap
+		// functional, // crap
+		// wokeOverride, // learned all the words already and enriched my vocabulary
+		// sortClassMembers,
+		// indentEmptyLines,
+		// i18nJson,
+		// disableAutofix, // angular dep?! :(
+
 		// Configs / plugins
 		githubOverride,
 		react,
@@ -174,20 +199,17 @@ export const baseEslintConfig = defineEslintConfig({
 		arrayFunc,
 		etcOverride,
 		extOverride,
-		// fpOverride, // crap
-		// functional, // crap
 		jsdocOverride,
 		putoutOverride,
 		notice, // has to be before `json`
 		noticeHash, // has to be after `notice`
-		filenames,
+		// filenames,
 		nOverride,
 		destructuring,
 		importOverride,
-		// wokeOverride, // learned all the words already and enriched my vocabulary
 		unicorn,
-		optimizeRegex,
-		preferArrow,
+		// optimizeRegex,
+		// preferArrow,
 		promise,
 		regexOverride,
 		regexpOverride,
@@ -202,8 +224,7 @@ export const baseEslintConfig = defineEslintConfig({
 		noSecrets,
 		noUnsanitized,
 		security,
-		// sortClassMembers,
-		sortKeysFix,
+		// sortKeysFix,
 		switchCase,
 		tsdoc,
 		typescriptSortKeys,
@@ -216,14 +237,11 @@ export const baseEslintConfig = defineEslintConfig({
 		storybook,
 		jsx,
 		editorconfig,
-		indentEmptyLines,
 		i18n,
 		i18next,
-		// i18nJson,
 		formatMessage,
 		formatJs,
 		i18nText,
-		// disableAutofix, // angular dep?! :(
 		es,
 
 		/** Null parser - parses anything */

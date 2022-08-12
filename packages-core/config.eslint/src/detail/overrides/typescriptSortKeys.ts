@@ -3,8 +3,10 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
+import { codeFiles } from '../files'
+
 export const typescriptSortKeys = defineEslintConfigOverride({
-	files: ['*'],
+	files: codeFiles,
 
 	plugins: ['typescript-sort-keys'],
 
@@ -12,6 +14,6 @@ export const typescriptSortKeys = defineEslintConfigOverride({
 
 	rules: {
 		'typescript-sort-keys/interface': 0, // no!
-		'typescript-sort-keys/string-enum': 'error',
+		'typescript-sort-keys/string-enum': 1,
 	},
 } as const)

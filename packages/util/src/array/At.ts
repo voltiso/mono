@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '_/assert'
+import { VoltisoUtilError } from '~/error'
+import { assertNotPolluting } from '~/object/get-set/isPolluting'
+import { toString } from '~/string'
 
 /* eslint-disable no-magic-numbers */
 
@@ -49,12 +51,19 @@ export function isRelativeIndexable(
 	return typeof (array as RelativeIndexable<unknown>).at === 'function'
 }
 
+/** @throws On `undefined` return values */
 export function at<Arr, Index extends number & keyof Arr>(
 	array: Arr,
 	index: Index,
 ): Exclude<At<Arr, Index>, undefined> {
+	assertNotPolluting(index)
 	// eslint-disable-next-line security/detect-object-injection
 	const r = isRelativeIndexable(array) ? array.at(index) : array[index]
-	assert(typeof r !== 'undefined')
+
+	if (typeof r === 'undefined')
+		throw new VoltisoUtilError(
+			`at(${toString(array)}, ${toString(index)}) returned 'undefined'`,
+		)
+
 	return r as Exclude<At<Arr, Index>, undefined>
 }

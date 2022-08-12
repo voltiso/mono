@@ -90,8 +90,9 @@ export const codeOverride = defineEslintConfigOverride({
 		'func-style': ['warn', 'declaration', { allowArrowFunctions: true }],
 		'id-length': 0,
 
+		'lines-between-class-members': 0,
 		'@typescript-eslint/lines-between-class-members': [
-			'error',
+			'warn',
 			'always',
 			{ exceptAfterSingleLine: true },
 		],
@@ -146,14 +147,8 @@ export const codeOverride = defineEslintConfigOverride({
 		// 'max-statements': ['warn', { max: 30 }],
 
 		'no-empty': ['error', { allowEmptyCatch: true }],
-		'arrow-parens': 0, // conflicts with prettier
-		'@typescript-eslint/space-before-function-paren': 0, // conflicts with prettier
 		'no-mixed-spaces-and-tabs': 0, // prettier sometimes does it for alignment - this rule does not account for alignment
-		'function-paren-newline': 0, // conflicts with prettier
-		'implicit-arrow-linebreak': 0, // conflicts with prettier
-		'no-duplicate-imports': 0, // handled by `import/no-duplicates`
 		'operator-linebreak': 0,
-		'no-multiple-empty-lines': 0, // handled by prettier
 		'no-param-reassign': 1,
 		'func-names': 0,
 		'no-implicit-coercion': 1,
@@ -161,6 +156,8 @@ export const codeOverride = defineEslintConfigOverride({
 		'object-shorthand': 1,
 		'no-useless-constructor': 1,
 		'no-useless-computed-key': 1,
+
+		'no-duplicate-imports': 0, // handled by `import/no-duplicates`
 
 		'consistent-return': 1,
 		// 'consistent-return': 0, // a bit pain to return `undefined` explicitly in branches?

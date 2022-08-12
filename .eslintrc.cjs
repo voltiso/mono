@@ -10,22 +10,20 @@ const project = [
 	'tsconfig.json',
 	//
 	'packages/*/tsconfig.json',
-	'packages/*/*/tsconfig.json',
-	'packages/*/*/*/tsconfig.json',
-	'packages/*/*/*/*/tsconfig.json',
-	'packages/*/*/*/*/*/tsconfig.json',
-	'packages/*/*/*/*/*/*/tsconfig.json',
 	//
 	'packages-core/*/tsconfig.json',
-	'packages-core/*/*/tsconfig.json',
-	'packages-core/*/*/*/tsconfig.json',
-	'packages-core/*/*/*/*/tsconfig.json',
-	'packages-core/*/*/*/*/*/tsconfig.json',
-	'packages-core/*/*/*/*/*/*/tsconfig.json',
 ]
 
+// eslint-disable-next-line n/no-process-env
+const isFastMode = !process.env['FULL']
+
+// eslint-disable-next-line no-console
+console.log(new Date().toISOString(), 'eslint config:', isFastMode ? 'FAST' : 'FULL')
+
 module.exports = defineEslintConfig({
-	extends: ['@voltiso/eslint-config'],
+	extends: [
+		isFastMode ? '@voltiso/eslint-config-fast' : '@voltiso/eslint-config',
+	],
 
 	root: true,
 
@@ -40,11 +38,6 @@ module.exports = defineEslintConfig({
 				project,
 				tsconfigRootDir: __dirname,
 			},
-
-			// node: {
-			// 	project: ['./tsconfig.json', './packages/*/tsconfig.json'],
-			// 	tsconfigRootDir: __dirname,
-			// },
 		},
 	},
 })

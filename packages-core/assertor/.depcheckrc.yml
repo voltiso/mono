@@ -3,4 +3,5 @@
 
 ignores:
   - assert
+  - '@voltiso/assertor.transform'
   - '@types/assert'

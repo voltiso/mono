@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '_/assert'
+import { $assert } from '@voltiso/assertor'
 
 import { areArrowFunctionsTranspiled } from '~/misc'
 
@@ -173,7 +173,7 @@ describe('lazyValue', () => {
 		)
 
 		const expected = Object.getOwnPropertyDescriptor(a, 'arguments')
-		assert(expected)
+		$assert(expected)
 		delete expected.configurable
 
 		expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toMatchObject(

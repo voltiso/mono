@@ -9,7 +9,8 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint": "eslint --max-warnings=0 .",
+		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
+		"lint:eslint:fast": "eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix"
 	},
@@ -22,7 +23,7 @@
 		"@voltiso/schemar": "workspace:12.0.2",
 		"@voltiso/transactor": "workspace:8.0.4",
 		"@voltiso/transactor.firestore": "workspace:8.0.0",
-		"@voltiso/util": "workspace:42.2.0",
+		"@voltiso/util": "workspace:42.2.1",
 		"@voltiso/util.esbuild": "workspace:1.0.0",
 		"firebase-admin": "^11.0.1",
 		"firebase-tools": "^11.6.0",

@@ -2,10 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
+import type { IDoc, StrongRef } from '@voltiso/transactor'
+import type { DTI } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 import * as ss from '@voltiso/transactor/schemas'
-import { Assert, Is, IsIdentical } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, Is } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 

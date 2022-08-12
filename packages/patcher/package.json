@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/patcher",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -21,14 +21,15 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint": "eslint --max-warnings=0 .",
+		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
+		"lint:eslint:fast": "eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build": "run-s clean build:build",
 		"build:build": "run-p build:esm build:cjs",
-		"build:esm": "ttsc -b tsconfig.build.esm.json",
-		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
+		"build:esm": "tsc -b tsconfig.build.esm.json",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s clean prepublishOnly:rest",
 		"prepublishOnly:rest": "run-p build test lint typecov",
@@ -40,7 +41,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:42.2.0",
+		"@voltiso/util": "workspace:42.2.1",
 		"fast-equals": "^4.0.1"
 	},
 	"devDependencies": {

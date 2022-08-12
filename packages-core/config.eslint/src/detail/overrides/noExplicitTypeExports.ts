@@ -6,7 +6,7 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 export const noExplicitTypeExports = defineEslintConfigOverride({
 	files: ['*'],
 
-	plugins: ['eslint-plugin-no-explicit-type-exports'],
+	plugins: ['no-explicit-type-exports'],
 
 	rules: {
 		'no-explicit-type-exports/no-explicit-type-exports': 2,

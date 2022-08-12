@@ -45,13 +45,14 @@
 		"__________LINT": "__________",
 		"lint": "run-s depcheck lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
-		"lint:eslint": "eslint --max-warnings=0 .",
+		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
+		"lint:eslint:fast": "eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"__________BUILD": "__________",
 		"build": "run-s clean build:build",
 		"build:build": "run-p build:esm build:cjs",
-		"build:esm": "ttsc -b tsconfig.build.esm.json",
-		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
+		"build:esm": "tsc -b tsconfig.build.esm.json",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s build test",
 		"__________MISC": "__________",
@@ -59,7 +60,7 @@
 	},
 	"dependencies": {
 		"@voltiso/schemar": "workspace:12.0.2",
-		"@voltiso/util": "workspace:42.2.0",
+		"@voltiso/util": "workspace:42.2.1",
 		"cross-fetch": "^3.1.5"
 	},
 	"devDependencies": {

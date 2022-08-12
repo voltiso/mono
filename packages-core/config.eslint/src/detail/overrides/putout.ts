@@ -50,7 +50,7 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/remove-empty-newline-after-import': 0,
 		'putout/remove-empty-newline-after-last-element': 1,
 		'putout/remove-empty-newline-after-last-specifier': 0, // handled by prettier
-		'putout/remove-empty-newline-before-first-specifier': 1,
+		'putout/remove-empty-newline-before-first-specifier': 0, // handled by prettier
 		'putout/remove-empty-specifiers': 1,
 		'putout/remove-newline-after-default-import': 1,
 		'putout/remove-newline-from-empty-object': 1,

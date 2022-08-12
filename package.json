@@ -8,7 +8,7 @@
 		"build:core": "turbo run build-core",
 		"build:rest": "turbo run build",
 		"test": "turbo run test",
-		"lint": "turbo run lint --concurrency 2 # high RAM usage!",
+		"lint": "turbo run lint # high RAM usage!",
 		"check": "run-s test lint",
 		"depcheck": "run-p depcheck:w depcheck:packages",
 		"depcheck:w": "depcheck",
@@ -19,14 +19,16 @@
 		"lint:w": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint .",
 		"fix:w": "run-s fix:w:prettier fix:w:eslint",
 		"fix:w:prettier": "prettier --write .",
-		"fix:w:eslint": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint --fix ."
+		"fix:w:eslint": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint --fix .",
+		"__________PREPARE": "__________",
+		"prepare": "ts-patch install -s"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@types/jest": "^28.1.6",
 		"@types/node": "^18.7.1",
 		"@voltiso/assertor.transform": "workspace:^1.0.0",
-		"@voltiso/config.eslint.lib": "workspace:^1.0.0",
+		"@voltiso/config.eslint.lib": "workspace:^1.0.1",
 		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/config.jest.lib": "workspace:^1.0.0",
 		"@voltiso/config.prettier": "workspace:^1.0.6",
@@ -34,6 +36,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"@voltiso/eslint-config": "workspace:^1.1.1",
+		"@voltiso/eslint-config-fast": "workspace:^1.0.0",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.3",
 		"eslint": "*",
@@ -42,7 +45,7 @@
 		"prettier": "^2.7.1",
 		"rimraf": "^3.0.2",
 		"ts-node": "^10.9.1",
-		"ttypescript": "^1.5.13",
+		"ts-patch": "^2.0.2",
 		"turbo": "^1.4.3",
 		"type-coverage": "^2.22.0",
 		"typescript": "^4.7.4",
@@ -51,8 +54,8 @@
 	},
 	"__________ENGINES": "__________",
 	"engines": {
-		"node": "^16.0.0",
-		"pnpm": "^7.0.0"
+		"node": ">= 16",
+		"pnpm": ">= 7"
 	},
 	"packageManager": "pnpm@7.6.0",
 	"pnpm": {

@@ -22,18 +22,26 @@
 			"outputs": []
 		},
 
-		"lint": {
+		"lint:eslint:fast": {
+			"inputs": ["**", ":!dist/"],
+			"outputs": []
+		},
+
+		"lint:eslint:full": {
 			"dependsOn": ["^build"],
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},
 
 		"lint:depcheck": {
-			"dependsOn": ["^build"],
-			"outputs": []
+			"cache": false
 		},
 
-		"fix": {
+		"fix:prettier": {
+			"cache": false
+		},
+
+		"fix:eslint": {
 			"cache": false
 		},
 

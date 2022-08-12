@@ -13,12 +13,11 @@ export const arrayFunc = defineEslintConfigOverride({
 	plugins: ['array-func'],
 
 	rules: {
-		// 'array-func/from-map': 'error',
-		// 'array-func/array-from': 'error',
-		// 'array-func/no-unnecessary-this-arg': 'error',
+		'array-func/from-map': 1,
+		'array-func/no-unnecessary-this-arg': 1,
 		'array-func/prefer-array-from': 0, // spread operator better!
-		// 'array-func/avoid-reverse': 'error',
-		// 'array-func/prefer-flat-map': 'error',
-		// 'array-func/prefer-flat': 'error',
+		'array-func/avoid-reverse': 1,
+		'array-func/prefer-flat-map': 1,
+		'array-func/prefer-flat': 1,
 	},
 } as const)

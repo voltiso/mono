@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '_/assert'
-
 import type { Reverse } from '~/array'
+import { VoltisoUtilError } from '~/error'
 import type { MergeN } from '~/object'
+import { toString } from '~/string'
 
 /* eslint-disable security/detect-object-injection */
 
@@ -19,7 +19,12 @@ export function protoLink<Args extends object[]>(
 
 	for (let index = beforeLast; index >= 0; --index) {
 		const oldProto = Object.getPrototypeOf(args[index]) as object
-		assert(oldProto === Object.prototype || oldProto === Function.prototype)
+
+		if (!(oldProto === Object.prototype || oldProto === Function.prototype))
+			throw new VoltisoUtilError(
+				`protoLink(...${toString(args)}) assertion failed`,
+			)
+
 		Object.setPrototypeOf(args[index], args[index + 1] as object)
 	}
 

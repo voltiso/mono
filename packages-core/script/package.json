@@ -21,13 +21,14 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint": "eslint --max-warnings=0 .",
+		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
+		"lint:eslint:fast": "eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
 		"build-core": "run-s clean build:build",
 		"build:build": "run-p build:cjs",
-		"build:cjs": "ttsc -b tsconfig.build.cjs.json",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepare": "run-s build:cjs",
 		"prepublishOnly": "run-p build-core test lint",
@@ -37,7 +38,6 @@
 	"__________DEPS": "__________",
 	"dependencies": {
 		"@voltiso/script.lib": "workspace:^1.0.1",
-		"@voltiso/util": "workspace:^42.2.0",
 		"@voltiso/util.node": "workspace:^1.0.0"
 	},
 	"devDependencies": {
