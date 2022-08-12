@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/caller",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -25,7 +25,7 @@
 		"__________TEST": "__________",
 		"test": "jest --silent",
 		"__________LINT": "__________",
-		"lint": "run-s depcheck lint:eslint lint:tsc",
+		"lint": "run-s lint:depcheck lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
 		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
@@ -38,9 +38,7 @@
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s build test",
 		"__________MISC": "__________",
-		"v": "voltiso-script",
-		"clean": "run-p clean:rimraf",
-		"clean:rimraf": "rimraf dist"
+		"clean": "rimraf dist"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

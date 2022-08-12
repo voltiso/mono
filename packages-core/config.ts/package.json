@@ -7,8 +7,17 @@
 	"sideEffects": false,
 	"_________EXPORTS FALLBACK": "__________",
 	"main": "tsconfig.json",
-	"__________DEPS": "__________",
-	"engines": {
-		"node": ">=16.0.0"
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"tsconfig.json"
+	],
+	"__________SCRIPTS": "__________",
+	"scripts": {
+		"__________LINT": "__________",
+		"lint": "run-s lint:prettier lint:depcheck",
+		"lint:prettier": "prettier --check .",
+		"lint:depcheck": "depcheck",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "run-s lint"
 	}
 }
