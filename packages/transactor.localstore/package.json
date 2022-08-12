@@ -8,7 +8,7 @@
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"types": "./dist/esm/index.d.ts",
+			"types": "./dist/cjs/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		}
@@ -29,8 +29,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
@@ -51,9 +50,9 @@
 		"@voltiso/transactor": ">= 8.0.0"
 	},
 	"devDependencies": {
-		"@voltiso/firestore-like": "workspace:1.0.10",
-		"@voltiso/localstore": "workspace:2.0.1",
-		"@voltiso/transactor": "workspace:8.0.4"
+		"@voltiso/firestore-like": "workspace:*",
+		"@voltiso/localstore": "workspace:*",
+		"@voltiso/transactor": "workspace:*"
 	},
 	"__________MISC": "__________",
 	"engines": {

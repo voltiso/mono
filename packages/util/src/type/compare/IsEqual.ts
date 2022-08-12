@@ -18,13 +18,13 @@ export type IsCompatible<A, B, T = true, F = false> = [A, B] extends [B, A]
 	: F
 
 /** Is (very) strictly equal https://stackoverflow.com/a/52473108/3570903 */
-type IsAlmostSame<A, B, T = true, F = false> = (<X>() => X extends B
+export type IsAlmostSame<A, B, T = true, F = false> = (<X>() => X extends B
 	? 1
 	: 0) extends <X>() => X extends A ? 1 : 0
 	? T
 	: F
 
-type IsIdenticalIfFunction<A, B> = [A] extends [
+export type IsIdenticalIfFunction<A, B> = [A] extends [
 	(this: infer ThisA, ...args: any) => any,
 ]
 	? [B] extends [(this: infer ThisB, ...args: any) => any]

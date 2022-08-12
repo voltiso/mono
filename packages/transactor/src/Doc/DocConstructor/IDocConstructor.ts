@@ -1,23 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Schemable } from '@voltiso/schemar'
 import type * as s from '@voltiso/schemar'
 
-import type { DocContext, DTI, IDocTI } from '~/Doc'
+import type { DocContext, DTI, IDoc, IDocTI } from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
 export interface IDocConstructorNoBuilder {
 	[DTI]: IDocTI
-	new (context: DocContext, data: never): unknown
+	new (context: DocContext, data: any): IDoc
 
 	_: DocDerivedData
 
 	schemaWithoutId: s.Schema
-	schemableWithoutId: { id?: never }
+	schemableWithoutId: Record<string, Schemable>
 
 	schemaWithId: s.Schema
-	schemableWithId: { id: s.String }
+	schemableWithId: Record<string, Schemable>
 }
 
 /**
@@ -32,10 +33,9 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 	tag(tag: any): unknown
 	fields(f: any): unknown
 
-	const(s: object): unknown
+	publicOnCreation(s: object): unknown
 	public(s: object): unknown
 	private(s: object): unknown
-	protected(s: object): unknown
 
 	after(t: any): unknown
 	after(name: string, t: any): unknown

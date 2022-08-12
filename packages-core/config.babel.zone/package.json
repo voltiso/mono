@@ -18,8 +18,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
@@ -36,7 +35,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/config.babel.lib": "workspace:1.0.0"
+		"@voltiso/config.babel.lib": "workspace:*"
 	},
 	"peerDependencies": {
 		"@babel/core": "*",

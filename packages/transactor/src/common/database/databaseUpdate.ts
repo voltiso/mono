@@ -7,9 +7,11 @@ import '~/zone'
 import type * as Database from '@voltiso/firestore-like'
 import { undef } from '@voltiso/util'
 
-import type { DataWithId, DataWithoutId } from '~/Data/Data'
+import type { WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
+import type { IDoc } from '~/Doc'
 import { isDeleteIt, isReplaceIt } from '~/it'
+import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates/Updates'
 import { isDatabase } from '~/util'
 
@@ -49,8 +51,8 @@ const databaseSet = async (
 	ctx: DatabaseContext,
 	t: T,
 	ref: Database.DocumentReference,
-	data: DataWithoutId,
-): Promise<DataWithId> => {
+	data: IntrinsicFields,
+): Promise<WithId<IntrinsicFields, IDoc>> => {
 	const firestoreData = toDatabaseSet(ctx, data)
 
 	if (isDatabase(t)) {

@@ -32,9 +32,8 @@ export class DocRefPattern {
 		// this.pattern = createDocPatternWithPrefix.call(this.context, args)
 	}
 
-	const(schema: InferableObject) {
-		// assertZod()
-		this.context.transactor._allConstSchemas.push({
+	publicOnCreation(schema: InferableObject) {
+		this.context.transactor._allPublicOnCreationSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
 		})
@@ -53,15 +52,6 @@ export class DocRefPattern {
 	private(schema: InferableObject) {
 		// assertZod()
 		this.context.transactor._allPrivateSchemas.push({
-			getPathMatches: getGetPathMatches(this.pattern.toString()),
-			schema,
-		})
-		return this
-	}
-
-	protected(schema: InferableObject) {
-		// assertZod()
-		this.context.transactor._allProtectedSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
 		})

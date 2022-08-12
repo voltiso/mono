@@ -17,10 +17,9 @@ export interface IndexedDocTI extends IDocTI {
 	readonly [IS_INDEXED]: true
 	// tag: string
 
-	const: Record<string, Schemable>
+	publicOnCreation: Record<string, Schemable>
 	public: Record<string, Schemable>
 	private: Record<string, Schemable>
-	protected: Record<string, Schemable>
 	//
 	methods: Record<string, OmitThisParameter<Method>>
 	//
@@ -28,6 +27,7 @@ export interface IndexedDocTI extends IDocTI {
 }
 
 export type IndexedDoc = Doc<IndexedDocTI>
+
 export const IndexedDoc = lazyConstructor(
 	() => Doc,
 ) as unknown as DocConstructor<IndexedDocTI>

@@ -5,16 +5,16 @@ import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type * as s from '@voltiso/schemar'
 import type { If } from '@voltiso/util'
-import { lazyPromise, protoLink, undef } from '@voltiso/util'
+import { lazyPromise, protoLink } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { RefEntry } from '~/common'
-import type { Data, DataWithId, DataWithoutId, Id } from '~/Data'
+import type { Id, WithId } from '~/Data'
 import { withoutId } from '~/Data'
 import type { IDoc } from '~/Doc'
 import { DTI } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { GData, GDataPublicInput } from '~/Doc/_/GData'
+import type { GetData, GetPublicCreationInputData } from '~/Doc/_/GData'
 import { deleteIt, replaceIt } from '~/it'
 import type { Method } from '~/Method'
 import { DocPath } from '~/Path'
@@ -62,11 +62,11 @@ export class DocRefBaseImpl<
 		return this._path.id as never
 	}
 
-	_methods?: MethodEntry[] = undef
+	_methods?: MethodEntry[] = undefined
 
-	_afterTriggers?: TriggerEntry<AfterTrigger>[] = undef
-	_beforeCommits?: TriggerEntry<BeforeCommitTrigger>[] = undef
-	_onGets?: TriggerEntry<OnGetTrigger>[] = undef
+	_afterTriggers?: TriggerEntry<AfterTrigger>[] = undefined
+	_beforeCommits?: TriggerEntry<BeforeCommitTrigger>[] = undefined
+	_onGets?: TriggerEntry<OnGetTrigger>[] = undefined
 
 	_schema:
 		| {
@@ -74,12 +74,10 @@ export class DocRefBaseImpl<
 				partial: s.Schema<object>
 		  }
 		| null // null -> no schema
-		| undefined = // undefined -> unknown yet
-		undef
+		| undefined = undefined // undefined -> unknown yet
 
-	_constSchema?: s.InferableObject = undef
-	_privateSchema?: s.InferableObject = undef
-	_protectedSchema?: s.InferableObject = undef
+	_publicOnCreationSchema?: s.InferableObject = undefined
+	_privateSchema?: s.InferableObject = undefined
 
 	methods: D[DTI]['methods'] & InferMethods<D> = {} as D[DTI]['methods'] &
 		InferMethods<D>
@@ -146,7 +144,7 @@ export class DocRefBaseImpl<
 	}
 
 	/** @returns `PromiseLike`! (`then`-only) */
-	set(data?: Data<GDataPublicInput<D[DTI]>>): PromiseLike<D> | any {
+	set(data?: GetPublicCreationInputData<D[DTI], D>): PromiseLike<D> | any {
 		const dataWithoutId = withoutId(data || null, this.id)
 		return update(this._context, replaceIt(dataWithoutId) as never) as never // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
 	}
@@ -162,12 +160,12 @@ export class DocRefBaseImpl<
 	}
 
 	/** - TODO: Detect floating promises */
-	get data(): NestedPromise<DataWithoutId<GData<D[DTI]>>, Exists> {
+	get data(): NestedPromise<GetData<D[DTI]>, Exists> {
 		return this.dataWithoutId()
 	}
 
 	/** - TODO: Detect floating promises */
-	dataWithId(): NestedPromise<DataWithId<GData<D[DTI]>>, Exists> {
+	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists> {
 		return dataOrNestedPromise(
 			this as never,
 			// eslint-disable-next-line promise/prefer-await-to-then
@@ -176,7 +174,7 @@ export class DocRefBaseImpl<
 	}
 
 	/** - TODO: Detect floating promises */
-	dataWithoutId(): NestedPromise<DataWithoutId<GData<D[DTI]>>, Exists> {
+	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists> {
 		return dataOrNestedPromise(
 			this as never,
 			// eslint-disable-next-line promise/prefer-await-to-then

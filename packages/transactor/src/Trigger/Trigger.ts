@@ -3,9 +3,8 @@
 
 import type { MaybePromise } from '@voltiso/util'
 
-import type { Data } from '~/Data'
 import type { Doc, DTI, IDoc, IDocTI } from '~/Doc'
-import type { GDataInput } from '~/Doc/_/GData'
+import type { GetInputData } from '~/Doc/_/GData'
 import type { DeleteIt } from '~/it'
 
 import type {
@@ -14,11 +13,7 @@ import type {
 	TriggerParams,
 } from './TriggerParams'
 
-type Return<D extends IDoc> =
-	| Data<GDataInput<D[DTI]>>
-	| DeleteIt
-	| undefined
-	| void
+type Return<D extends IDoc> = GetInputData<D[DTI]> | DeleteIt | undefined | void
 
 export type AfterTrigger<
 	D extends IDoc = Doc<IDocTI, 'inside'>,

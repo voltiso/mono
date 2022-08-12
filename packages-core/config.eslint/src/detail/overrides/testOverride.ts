@@ -75,6 +75,7 @@ export const testOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-invalid-this': 0,
 		'no-useless-constructor': 0,
 		'n/no-extraneous-import': 0,
+		'require-atomic-updates': 0,
 
 		// allow `any`
 		'@typescript-eslint/no-unsafe-assignment': 0,

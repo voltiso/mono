@@ -4,13 +4,16 @@
 import type { _, If } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
-import type { Data, DataWithId, DataWithoutId, Id } from '~/Data'
-import type { GData, GDataPublicInput } from '~/Doc/_/GData'
-import type { UpdatesFromSchema } from '~/Doc/_/UpdatesFromSchema'
-import type { GetFields } from '~/Doc/Doc_'
+import type { Id, WithId } from '~/Data'
+import type { UpdatesFromData } from '~/Doc'
+import type {
+	GetData,
+	GetPublicCreationInputData,
+	GetUpdateDataByCtx,
+} from '~/Doc/_/GData'
 import type { DTI } from '~/Doc/DocTI'
 import type { IDoc } from '~/Doc/IDoc'
-import type { DeleteIt } from '~/it'
+import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
 
 import type { NestedPromise } from './_/NestedPromise'
@@ -28,11 +31,11 @@ export interface RefBase<D extends IDoc, Exists extends boolean>
 	readonly id: Id<D>
 	readonly path: DocPath<D[DTI]['tag']>
 
-	readonly data: NestedPromise<DataWithoutId<GData<D[DTI]>>, Exists>
+	readonly data: NestedPromise<GetData<D[DTI]>, Exists>
 	readonly methods: D[DTI]['methods'] & InferMethods<D>
 
-	dataWithId(): NestedPromise<DataWithId<GData<D[DTI]>>, Exists>
-	dataWithoutId(): NestedPromise<DataWithoutId<GData<D[DTI]>>, Exists>
+	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists>
+	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists>
 
 	get(): PromiseLike<If<Exists, D, null>>
 
@@ -40,15 +43,24 @@ export interface RefBase<D extends IDoc, Exists extends boolean>
 	// 	? PromiseLike<D>
 	// 	: Throw<'Cannot set without argument - some fields are required'> & Data<GDataPublicInput<D>>
 
-	set(data?: Data<GDataPublicInput<D[DTI]>>): PromiseLike<D>
+	set(data?: GetPublicCreationInputData<D[DTI], IDoc>): PromiseLike<D>
+
+	//
 
 	update(
-		updates: _<UpdatesFromSchema.Update<GetFields<D[DTI], 'outside'>>>,
+		updates: UpdatesFromData.Update<
+			GetUpdateDataByCtx<D[DTI], 'outside'>,
+			GetData<D[DTI]>
+		>,
 	): PromiseLike<D | undefined>
+
 	update(
-		updates: _<UpdatesFromSchema.Replace<GetFields<D[DTI], 'outside'>>>,
+		updates: ReplaceIt<GetUpdateDataByCtx<D[DTI], 'outside'>>,
 	): PromiseLike<D>
+
 	update(updates: DeleteIt): PromiseLike<null>
+
+	//
 
 	delete(): PromiseLike<null>
 }

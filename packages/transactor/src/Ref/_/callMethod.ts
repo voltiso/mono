@@ -5,9 +5,8 @@ import { $assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
-import type { IDoc_, IDocTI } from '~/Doc'
+import type { Doc, IDoc_, IDocTI } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { GDoc } from '~/Doc/_/GDoc'
 import type { Method } from '~/Method'
 import type { WithDocRef } from '~/Ref'
 import { transactionDocPathGet } from '~/Ref'
@@ -30,7 +29,7 @@ export async function callMethod<
 	TI extends IDocTI,
 	// eslint-disable-next-line etc/no-misused-generics
 	EC extends ExecutionContext,
-	THIS extends GDoc<TI, EC>,
+	THIS extends Doc<TI, EC>,
 	ARGS extends unknown[],
 	R,
 >(
@@ -87,7 +86,7 @@ export async function callMethod<
 		const cacheEntry = cache.get(path)
 		$assert(cacheEntry)
 
-		const data = cacheEntry.data
+		const { data } = cacheEntry
 
 		if (!data) throw new Error(`${debugName()} called on non-existing document`)
 
@@ -97,7 +96,7 @@ export async function callMethod<
 	}
 
 	$assert(isWithTransaction(ctx))
-	const doc = await transactionDocPathGet<GDoc<TI, 'inside'>>(ctx)
+	const doc = await transactionDocPathGet<Doc<TI, 'inside'>>(ctx)
 
 	if (!doc) throw new Error(`${debugName()} called on non-existing document`)
 	// data._._setContext(this.context)
@@ -113,9 +112,10 @@ export async function callMethod<
 		chalk.green(dump(doc.dataWithoutId())),
 	)
 
-	const result = await methodGuard(ctx, async () => {
-		return method.call(doc as never, ...args) // CAST - hopefully document schema was validated properly in docPath.get
-	})
+	const result = await methodGuard(
+		ctx,
+		async () => method.call(doc as never, ...args), // CAST - hopefully document schema was validated properly in docPath.get
+	)
 
 	const cacheEntry = transaction._cache.get(path)
 	$assert(cacheEntry)

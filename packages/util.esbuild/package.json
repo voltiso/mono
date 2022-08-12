@@ -19,8 +19,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
@@ -42,8 +41,8 @@
 		"esbuild": ">= 0.14.49"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.1",
-		"esbuild": "^0.15.1",
+		"@types/node": "^18.7.2",
+		"esbuild": "^0.15.2",
 		"rimraf": "^3.0.2"
 	}
 }

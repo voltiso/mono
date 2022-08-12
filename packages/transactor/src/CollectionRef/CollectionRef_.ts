@@ -5,12 +5,12 @@ import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import { undef } from '@voltiso/util'
 
-import type { Data, Id } from '~/Data'
+import type { Id } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { IDoc, IDocConstructor, IDocTI } from '~/Doc'
+import type { Doc, IDoc, IDocConstructor, IDocTI } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { GDataPublicInput } from '~/Doc/_/GData'
-import type { GDoc, GO } from '~/Doc/_/GDoc'
+import type { GetPublicCreationInputData } from '~/Doc/_/GData'
+import type { GO } from '~/Doc/_/GDoc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import { CollectionPath, concatPath } from '~/Path'
 import { WeakDocRef } from '~/Ref'
@@ -43,17 +43,17 @@ class CollectionRef<
 		this._path = new CollectionPath(concatPath(input))
 
 		// eslint-disable-next-line no-constructor-return
-		return Object.setPrototypeOf((id: Id<D>) => {
-			return this._context.db.doc(
-				this._path.toString(),
-				id,
-			) as unknown as TI extends any ? WeakDocRef<GO<TI>> : never
-		}, this) as never
+		return Object.setPrototypeOf(
+			(id: Id<D>) =>
+				this._context.db.doc(
+					this._path.toString(),
+					id,
+				) as unknown as TI extends any ? WeakDocRef<GO<TI>> : never,
+			this,
+		) as never
 	}
 
-	add(
-		data: TI extends any ? Data<GDataPublicInput<TI>> : never,
-	): PromiseLike<GDoc<TI, Ctx>> {
+	add(data: GetPublicCreationInputData<TI, D>): PromiseLike<Doc<TI, Ctx>> {
 		// data = data || {}
 
 		const id = data.id as string | undefined
@@ -64,7 +64,7 @@ class CollectionRef<
 		)
 
 		const docRef: Database.DocumentReference = id ? ref.doc(id) : ref.doc()
-		const path = docRef.path
+		const { path } = docRef
 		const docPath = new WeakDocRef<IndexedDoc>(this._context, path)
 
 		// const dataWithId: DataWithId = { ...data, id: docRef.id }
@@ -78,16 +78,16 @@ class CollectionRef<
 	): ICollectionRef<InstanceType<Cls>> {
 		// console.log('register', cls._)
 		const { db } = this._context
-		const _ = cls._
+		const { _ } = cls
 		const docPattern = db.docPattern(this._path, '*')
 
-		if (Object.keys(_.const).length > 0) docPattern.const(_.const)
+		if (Object.keys(_.publicOnCreation).length > 0)
+			docPattern.publicOnCreation(_.publicOnCreation as never)
 
-		if (Object.keys(_.public).length > 0) docPattern.public(_.public)
+		if (Object.keys(_.public).length > 0) docPattern.public(_.public as never)
 
-		if (Object.keys(_.private).length > 0) docPattern.private(_.private)
-
-		if (Object.keys(_.protected).length > 0) docPattern.protected(_.protected)
+		if (Object.keys(_.private).length > 0)
+			docPattern.private(_.private as never)
 
 		for (const after of _.afters) docPattern.after(after)
 

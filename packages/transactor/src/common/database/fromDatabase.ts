@@ -5,12 +5,8 @@ import { $assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
 import { isPlainObject } from '@voltiso/util'
 
-import type {
-	DataRecord,
-	DataWithoutId,
-	NestedData,
-	NestedDataNoArray,
-} from '~/Data/Data'
+import type { IntrinsicFields } from '~'
+import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
 import { StrongDocRef, WeakDocRef } from '~/Ref'
 import type { DocRefBaseContext } from '~/Ref/_/Context'
 import { isTimestamp } from '~/util'
@@ -59,13 +55,13 @@ function fromFirestoreRec(
 export const fromFirestore = (
 	ctx: DocRefBaseContext,
 	doc: Database.DocumentSnapshot,
-): DataWithoutId | null => {
+): IntrinsicFields | null => {
 	const data = doc.data()
 
 	if (!data) return null
 	else {
 		const fixed = fromFirestoreRec(ctx, data)
 		$assert(isPlainObject(fixed))
-		return fixed as DataWithoutId
+		return fixed as IntrinsicFields
 	}
 }

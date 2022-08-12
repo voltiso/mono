@@ -1,12 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { InferableObject } from '@voltiso/schemar'
 import type * as s from '@voltiso/schemar'
-import type { _, Merge2 } from '@voltiso/util'
+import type { _, Assume, Merge2, Throw } from '@voltiso/util'
 
-import type { DataWithoutId } from '~/Data'
-import type { DocContext, DTI, IDocTI } from '~/Doc'
-import type { GDataInput } from '~/Doc/_/GData'
+import type { Doc, DocContext, DTI, IDocTI } from '~/Doc'
+import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
 import type { Promisify } from '~/Doc/_/GMethodPromises'
 import type { NewFields } from '~/Doc/_/NewFields'
@@ -25,21 +25,22 @@ export interface DocConstructor<TI extends IDocTI = IDocTI> {
 	[DTI]: TI
 	_: DocDerivedData
 
-	new (context: DocContext, data: DataWithoutId<GDataInput<TI>>): GO<TI>
+	new (context: DocContext, data: GetInputData<TI>): Doc<TI, 'outside'>
 
 	// <Derived>(): DocConstructor<___<Merge2<TI, { doc: Derived & DocU }>>>
 	<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
-	<F extends NewFields>(f: F): ___<TI & F>
+	<F extends NewFields>(f: F): keyof F extends keyof NewFields
+		? ___<TI & F>
+		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFields> }>
 
 	tag<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
 	fields<F extends NewFields>(f: F): ___<TI & F>
 
-	const<S extends Record<string, s.Schemable>>(s: S): ___<TI & { const: S }>
+	publicOnCreation<S extends Record<string, s.Schemable>>(
+		s: S,
+	): ___<TI & { publicOnCreation: S }>
 	public<S extends Record<string, s.Schemable>>(s: S): ___<TI & { public: S }>
 	private<S extends Record<string, s.Schemable>>(s: S): ___<TI & { private: S }>
-	protected<S extends Record<string, s.Schemable>>(
-		s: S,
-	): ___<TI & { protected: S }> // TypeofDoc<_<Omit<TI, 'protected'> & { protected: _<TI['protected'] & S> }>>
 
 	after(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI> | null>>
@@ -66,21 +67,27 @@ export interface DocConstructor<TI extends IDocTI = IDocTI> {
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
 
 	schemaWithoutId: s.Object<
-		TI['const'] & TI['public'] & TI['private'] & TI['protected']
+		Assume<
+			InferableObject,
+			TI['publicOnCreation'] & TI['public'] & TI['private']
+		>
 	>
-	schemableWithoutId: TI['const'] &
-		TI['public'] &
-		TI['private'] &
-		TI['protected']
+
+	schemableWithoutId: TI['publicOnCreation'] & TI['public'] & TI['private']
 
 	schemaWithId: s.Object<
-		Omit<TI['const'] & TI['public'] & TI['private'] & TI['protected'], 'id'> & {
-			id: s.String
-		}
+		TI['publicOnCreation'] &
+			TI['public'] &
+			TI['private'] & {
+				id: s.String
+			}
 	>
+
 	schemableWithId: _<
-		Omit<TI['const'] & TI['public'] & TI['private'] & TI['protected'], 'id'> & {
-			id: s.String
-		}
+		TI['publicOnCreation'] &
+			TI['public'] &
+			TI['private'] & {
+				id: s.String
+			}
 	>
 }

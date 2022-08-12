@@ -8,7 +8,7 @@
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"types": "./dist/esm/index.d.ts",
+			"types": "./dist/cjs/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		}
@@ -29,8 +29,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b tsconfig.tsc-lint.json",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",

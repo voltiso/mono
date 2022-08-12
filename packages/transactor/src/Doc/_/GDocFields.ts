@@ -4,8 +4,8 @@
 import type { IDocTI } from '~/Doc'
 import type { DocFieldPath } from '~/Ref/DocFieldPath'
 
-import type { GData } from './GData'
+import type { GetData } from './GData'
 
 export type GDocFields<TI extends IDocTI> = {
-	[k in keyof GData<TI>]: DocFieldPath<GData<TI>[k]>
+	[k in keyof GetData<TI>]: DocFieldPath<GetData<TI>[k]>
 }

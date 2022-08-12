@@ -34,7 +34,7 @@ describe('method', function () {
 		expect.hasAssertions()
 
 		const counter = await counters.add({})
-		const id = counter.id
+		const { id } = counter
 
 		expect(id).toBeDefined()
 

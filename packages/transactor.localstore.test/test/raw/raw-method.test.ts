@@ -32,15 +32,16 @@ describe('raw-method', function () {
 		expect.hasAssertions()
 
 		const counter = await db('counter').add({})
-		const id = counter.id
 
-		expect(id).toBeDefined()
+		expect(counter.id).toBeDefined()
 
 		await counter.methods['increment']!(100)
-		await db('counter', id).methods['incrementObj']!({ incrementBy: 1000 })
+		await db('counter', counter.id).methods['incrementObj']!({
+			incrementBy: 1000,
+		})
 
-		expect(counter.dataWithId()).toMatchObject({ id, value: 100 }) // this object is not updated!
-		expect((await db('counter', id))!['value']).toBe(1100)
+		expect(counter.dataWithId()).toMatchObject({ id: counter.id, value: 100 }) // this object is not updated!
+		expect((await db('counter', counter.id))!['value']).toBe(1100)
 	})
 
 	it('should detect floating promises', async function () {

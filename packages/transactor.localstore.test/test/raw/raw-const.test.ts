@@ -14,7 +14,7 @@ interface Transfer extends Doc {
 
 // eslint-disable-next-line jest/require-hook
 db('transfer/*')
-	.const({
+	.publicOnCreation({
 		amount: s.number.min(0),
 	})
 	.public({

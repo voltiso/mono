@@ -23,9 +23,7 @@ const _strongRefSchema: s.Instance<StrongDocRef<IDoc>> = lazyValue(() =>
 const _strongRefCall = <
 	// eslint-disable-next-line etc/no-misused-generics
 	X,
->(): s.Schema<StrongRef<FindDoc<X>>> => {
-	return _strongRefSchema as never
-}
+>(): s.Schema<StrongRef<FindDoc<X>>> => _strongRefSchema as never
 
 export interface StrongRefSchema extends s.Schema<StrongRef<IndexedDoc>> {
 	// eslint-disable-next-line etc/no-misused-generics
@@ -45,7 +43,7 @@ const _fixableWeakRefSchema = lazyValue(() =>
 	_weakRefSchema.or(_strongRefSchema).withFix(x => {
 		if (_strongRefSchema.isValid(x))
 			return new WeakDocRef(
-				(x as DocRefBaseImpl)._context as never,
+				(x as unknown as DocRefBaseImpl)._context as never,
 				x.path.pathString,
 			)
 		else return undef
@@ -58,10 +56,11 @@ export interface WeakRefSchema extends s.Schema<WeakRef<IndexedDoc>> {
 }
 export const weakRef = lazyValue(
 	() =>
-		callableObject(_fixableWeakRefSchema, <
-			// eslint-disable-next-line etc/no-misused-generics
-			X extends IDoc | DocTag,
-		>(): s.Schema<WeakRef<FindDoc<X>>> => {
-			return _fixableWeakRefSchema as never
-		}) as unknown as WeakRefSchema,
+		callableObject(
+			_fixableWeakRefSchema,
+			<
+				// eslint-disable-next-line etc/no-misused-generics
+				X extends IDoc | DocTag,
+			>(): s.Schema<WeakRef<FindDoc<X>>> => _fixableWeakRefSchema as never,
+		) as unknown as WeakRefSchema,
 )

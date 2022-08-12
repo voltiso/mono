@@ -52,7 +52,7 @@ export const DocFieldPath = class {
 				)
 			}
 
-			let data: NestedData = doc.dataWithoutId()
+			let data: NestedData = doc.dataWithoutId() as never
 
 			for (const field of fields) {
 				// if (!isNestedDataRecord(data) || data[field] === undefined)
@@ -68,7 +68,7 @@ export const DocFieldPath = class {
 						`${ctx.docRef.path.toString()}.${fields.join('.')} does not exist`,
 					)
 
-				const nextData: NestedData | undefined = data[field as never] as never
+				const nextData: NestedData | undefined = data[field as never]
 				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				$assert(nextData !== undef)
 				data = nextData

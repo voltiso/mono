@@ -3,7 +3,6 @@
 
 import type * as s from '@voltiso/schemar'
 
-import type { DataWithoutId } from '~/Data'
 import { setCacheEntry } from '~/Transaction'
 
 import type { DocRefContextWithTransaction } from './Context'
@@ -19,7 +18,7 @@ import { validate } from './validate'
  */
 export function validateAndSetCacheEntry(
 	context: DocRefContextWithTransaction,
-	data: DataWithoutId | null,
+	data: object | null,
 	schema: s.Schema<object> | null | undefined,
 ): void {
 	const cacheEntry = getCacheEntry(context)

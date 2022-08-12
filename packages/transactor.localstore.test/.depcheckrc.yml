@@ -3,3 +3,4 @@
 
 ignores:
   - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest.lib'

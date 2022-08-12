@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line import/no-unassigned-import, n/no-extraneous-import
+// eslint-disable-next-line import/no-unassigned-import
 import 'zone.js'
 // eslint-disable-next-line import/no-unassigned-import
 import 'zone.js/fesm2015/zone-testing-node-bundle'

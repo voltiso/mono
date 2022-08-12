@@ -21,9 +21,9 @@ export class CollectionRefPattern {
 		this.pattern = pattern
 	}
 
-	const(schema: InferableObject) {
+	publicOnCreation(schema: InferableObject) {
 		// assertZod()
-		this.context.transactor._allConstSchemas.push({
+		this.context.transactor._allPublicOnCreationSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern),
 			schema,
 		})
@@ -40,14 +40,6 @@ export class CollectionRefPattern {
 	private(schema: InferableObject) {
 		// assertZod()
 		this.context.transactor._allPrivateSchemas.push({
-			getPathMatches: getGetPathMatches(this.pattern),
-			schema,
-		})
-	}
-
-	protected(schema: InferableObject) {
-		// assertZod()
-		this.context.transactor._allProtectedSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern),
 			schema,
 		})

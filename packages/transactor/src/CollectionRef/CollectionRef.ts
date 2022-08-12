@@ -3,9 +3,8 @@
 
 import type { Throw } from '@voltiso/util'
 
-import type { Data, Id } from '~/Data'
-import type { IDoc, IDocConstructorNoBuilder } from '~/Doc'
-import type { GDataPublicInput } from '~/Doc/_/GData'
+import type { Id } from '~/Data'
+import type { GetPublicCreationInputData, IDoc } from '~/Doc'
 import type { CollectionPath } from '~/Path/Path'
 import type { WeakDocRef } from '~/Ref/WeakDocRef'
 
@@ -18,18 +17,20 @@ export interface CollectionRef<D extends IDoc = IDoc> {
 
 	/** Get Doc reference by Id */
 	(id: Id<D>): WeakDocRef<D>
-	<DD extends IDoc>(id: Id<DD>): IDoc extends DD
-		? WeakDocRef<D>
-		: Throw<'wrong Id type' & { Doc: DD }>
+	<DD extends IDoc>(id: Id<DD>): DD extends any
+		? IDoc extends DD
+			? WeakDocRef<D>
+			: Throw<'wrong Id type' & { Doc: DD }>
+		: never
 	// (id: Id): WeakDocRef<D>
 
 	/** Add Doc to this Collection */
-	add(data: Data<GDataPublicInput<InferTI<D>>>): PromiseLike<D>
+	add(data: GetPublicCreationInputData<InferTI<D>, IDoc>): PromiseLike<D>
 
 	/** Register Doc class/type for this Collection */
-	register<Cls extends IDocConstructorNoBuilder>(
+	register<Cls extends new (...args: any) => IDoc>(
 		cls: Cls,
-	): CollectionRef<InstanceType<Cls>>
+	): Cls extends any ? CollectionRef<InstanceType<Cls>> : never
 }
 
 export const CollectionRef = CollectionRef_ as unknown as new <

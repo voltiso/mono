@@ -6,11 +6,11 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 import { codeFiles } from '~/detail/files'
 
 export const putoutOverride = defineEslintConfigOverride({
-	extends: ['plugin:putout/recommended'],
-
 	files: codeFiles,
 
 	plugins: ['putout'],
+
+	// extends: ['plugin:putout/recommended'], // disables some eslint rules that we want
 
 	rules: {
 		'putout/add-newline-after-function-call': 1,
@@ -20,14 +20,16 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/add-newline-before-return': 0, // broken?
 		'putout/align-spaces': 1,
 		'putout/array-element-newline': 0,
-		'putout/destructuring-as-function-argument': 0,
 		'putout/function-declaration-paren-newline': 0,
 		'putout/keyword-spacing': 0, // conflicts with prettier
-		'putout/long-properties-destructuring': 0, // conflicts with prettier
-		'putout/multiple-properties-destructuring': 0,
 		'putout/newline-function-call-arguments': 0,
 		'putout/object-property-newline': 0, // not sure about this one - prettier accepts both
 		'putout/objects-braces-inside-array': 0,
+
+		'putout/destructuring-as-function-argument': 0,
+		'putout/long-properties-destructuring': 0, // conflicts with prettier
+		'putout/multiple-properties-destructuring': 0,
+		'putout/single-property-destructuring': 0,
 
 		// 'putout/putout': [
 		// 	'error',
@@ -54,7 +56,6 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/remove-empty-specifiers': 1,
 		'putout/remove-newline-after-default-import': 1,
 		'putout/remove-newline-from-empty-object': 1,
-		'putout/single-property-destructuring': 1,
 		'putout/tape-add-newline-before-assertion': 1,
 		'putout/tape-add-newline-between-tests': 1,
 		'putout/tape-remove-newline-before-t-end': 1,

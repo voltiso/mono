@@ -61,17 +61,19 @@ class Db implements OmitCall<IDb> {
 		else return new WeakDocRef<IndexedDoc>(this._context, path) as never
 	}
 
-	doc(...pathTokens: readonly string[]) {
+	doc(...pathTokens: readonly string[]): WeakDocRef<IndexedDoc> {
 		// $assert(this.context)
 		return new WeakDocRef<IndexedDoc>(this._context, concatPath(pathTokens))
 	}
 
-	collection(...pathTokens: readonly string[]) {
+	collection(...pathTokens: readonly string[]): CollectionRef<IndexedDoc> {
 		// $assert(this.context)
 		return new CollectionRef<IndexedDoc>(this._context, pathTokens)
 	}
 
-	docPattern(...pathTokens: readonly { toString: () => string }[]) {
+	docPattern(
+		...pathTokens: readonly { toString: () => string }[]
+	): DocRefPattern {
 		// $assert(this.context)
 		return new DocRefPattern(
 			this._context,

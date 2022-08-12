@@ -11,7 +11,7 @@ const database = createLocalstore()
 const db = createLocalstoreTransactor(database)
 
 class Client extends Doc({
-	const: {
+	publicOnCreation: {
 		rootTaskId: s.string,
 	},
 

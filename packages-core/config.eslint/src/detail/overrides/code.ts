@@ -77,6 +77,8 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-unsafe-member-access': 1,
 		'@typescript-eslint/no-unsafe-return': 1,
 		'@typescript-eslint/restrict-template-expressions': 1,
+		'@typescript-eslint/no-unsafe-argument': 1,
+		'@typescript-eslint/space-before-function-paren': 0, // prettier
 
 		// '@typescript-eslint/no-explicit-any': [
 		// 	'error',
@@ -97,6 +99,7 @@ export const codeOverride = defineEslintConfigOverride({
 			{ exceptAfterSingleLine: true },
 		],
 
+		'prefer-destructuring': 0, // hmm, buggy for non-local variables
 		'no-console': 1,
 		'no-else-return': 0,
 		'no-magic-numbers': ['warn', { ignore: [-2, -1, 0, 1, 2] }],

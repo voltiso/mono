@@ -8,8 +8,8 @@ import type { GetTupleType } from './GetTupleType'
 import type { GetTypeOptions } from './GetTypeOptions'
 
 export type GetType_<L, IO extends GetTypeOptions> = L extends {
-	get InputType(): unknown
-	get OutputType(): unknown
+	readonly InputType: any
+	readonly OutputType: any
 }
 	? IO['kind'] extends 'in'
 		? L['InputType']
@@ -22,6 +22,8 @@ export type GetType_<L, IO extends GetTypeOptions> = L extends {
 	? GetTupleType<L, IO>
 	: L extends InferableObject
 	? GetObjectType_<L, IO>
+	: object extends L
+	? object
 	: never
 
 /** Infer type, or identity if already an Inferable */

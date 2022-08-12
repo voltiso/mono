@@ -4,7 +4,6 @@
 import { $assert } from '@voltiso/assertor'
 import { isDefined, undef } from '@voltiso/util'
 
-import type { DataWithoutId } from '~/Data'
 import { withoutId } from '~/Data'
 import { isDeleteIt } from '~/it'
 import type { AfterTrigger } from '~/Trigger'
@@ -23,7 +22,7 @@ import { getCacheEntry } from './getCacheEntry'
 export function collectTriggerResult(
 	ctx: DocRefContextWithTransaction,
 	triggerResult: Awaited<ReturnType<AfterTrigger>>,
-): DataWithoutId | null {
+): object | null {
 	const cacheEntry = getCacheEntry(ctx)
 
 	if (isDefined(triggerResult))

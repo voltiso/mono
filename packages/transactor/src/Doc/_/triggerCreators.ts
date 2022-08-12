@@ -5,7 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 import chalk from 'chalk'
 
-import type { IDoc } from '~/Doc'
+import type { Doc, IDoc } from '~/Doc'
 import type { DocDerivedData } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 import type {
@@ -173,14 +173,17 @@ export function withAfterCreate<TI extends DocDerivedData>(
 export function withBeforeCommit<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	f: BeforeCommitTrigger<GI<TI>>,
+	f: BeforeCommitTrigger<Doc<TI, 'inside'>>,
 ): TI {
 	return {
 		..._,
 
 		beforeCommits: [
 			..._.beforeCommits,
-			function (this: GI<TI> | null, p: BeforeCommitTriggerParams<GI<TI>>) {
+			function (
+				this: Doc<TI, 'inside'> | null,
+				p: BeforeCommitTriggerParams<GI<TI>>,
+			) {
 				const before = this?.dataWithId() || null
 				const after = this?.dataWithId() || null
 				logTrigger(name, 'before', 'COMMIT', {
@@ -188,7 +191,7 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 					before: before as never, // :(
 					after: after as never, // :(
 				})
-				return f.call(this, p) as never
+				return f.call(this, p as never) as never
 			},
 		],
 	}

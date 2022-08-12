@@ -16,7 +16,7 @@ const pluginsToPick = [
 	//
 	// ! used
 	'@typescript-eslint',
-	// '@typescript-eslint/eslint-plugin',
+	'@typescript-eslint/eslint-plugin',
 	'jest',
 	'security',
 	'simple-import-sort',
@@ -27,14 +27,16 @@ const pluginsToPick = [
 	'tsdoc',
 	'markdown',
 	'promise',
+	'etc',
+	'n', // n/no-extraneous-require
 
 	'@voltiso',
 	'@voltiso/eslint-plugin',
 
 	// ! framework-specific
-	'react',
-	'react-hooks',
-	'@next/eslint-plugin-next',
+	// 'react',
+	// 'react-hooks',
+	// '@next/eslint-plugin-next',
 
 	//
 	//
@@ -47,7 +49,6 @@ const pluginsToPick = [
 	// 'editorconfig',
 	// 'es',
 	// 'eslint-comments',
-	// 'etc',
 	// 'ext',
 	// 'format-message',
 	// 'formatjs',
@@ -65,7 +66,6 @@ const pluginsToPick = [
 	// 'jsonc',
 	// 'jsx',
 	// 'jsx-a11y',
-	// 'n',
 	// 'no-constructor-bind',
 	// 'no-explicit-type-exports',
 	// 'no-secrets',

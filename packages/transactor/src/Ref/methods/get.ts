@@ -5,12 +5,11 @@ import { $assert } from '@voltiso/assertor'
 import { clone, toString, undef } from '@voltiso/util'
 
 import { fromFirestore } from '~/common'
-import type { DataWithoutId } from '~/Data'
 import { withoutId } from '~/Data'
 import type { WithDb } from '~/Db'
 import type { IDoc, IDocTI } from '~/Doc'
-import { Doc, Doc_ } from '~/Doc'
-import type { GDoc } from '~/Doc/_/GDoc'
+import { Doc } from '~/Doc'
+import { Doc_ } from '~/Doc'
 import { TransactorError } from '~/error'
 import { applySchema } from '~/Ref/_/applySchema'
 import { collectTriggerResult } from '~/Ref/_/collectTriggerResult'
@@ -37,7 +36,7 @@ async function directDocPathGet<D extends IDoc>(
 	const schema = getSchema(ctx.docRef)
 	const needTransaction = onGetTriggers.length > 0 || schema
 
-	let data: DataWithoutId | null
+	let data: object | null
 
 	if (needTransaction) {
 		$assert(!ctx.transaction)
@@ -54,7 +53,7 @@ async function directDocPathGet<D extends IDoc>(
 
 	$assert(!ctx.transaction)
 
-	if (data) return new Doc(ctx, data) as unknown as D
+	if (data) return new Doc(ctx, data as never) as unknown as D
 	else return null
 }
 
@@ -111,29 +110,25 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	// console.log('schemaCheck', schemaCheck)
 
-	if (schemaCheck) {
-		const data = cacheEntry.data
+	if (schemaCheck && schema && cacheEntry.data) {
+		try {
+			// console.log('applySchema partial', cacheEntry.data)
 
-		if (schema && data) {
-			try {
-				// console.log('applySchema partial', cacheEntry.data)
+			const validatedData = applySchema.call(ctx, {
+				schema: schema.partial,
+				data: cacheEntry.data,
+				bestEffort: true,
+			})
+			cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 
-				const validatedData = applySchema.call(ctx, {
-					schema: schema.partial,
-					data,
-					bestEffort: true,
-				})
-				cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
+			if (cacheEntry.data?.__voltiso)
+				cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
-				if (cacheEntry.data?.__voltiso)
-					cacheEntry.__voltiso = cacheEntry.data.__voltiso
-
-				// console.log('applySchema partial after', cacheEntry.data)
-			} catch (error) {
-				throw new TransactorError(
-					`database corrupt: ${path} (${(error as Error).message})`,
-				)
-			}
+			// console.log('applySchema partial after', cacheEntry.data)
+		} catch (error) {
+			throw new TransactorError(
+				`database corrupt: ${path} (${(error as Error).message})`,
+			)
 		}
 	}
 
@@ -220,7 +215,7 @@ export function transactionDocPathGet<D extends IDoc>(
 // eslint-disable-next-line etc/no-misused-generics
 export function get<TI extends IDocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
-): PromiseLike<GDoc<TI, 'outside'> | null> {
+): PromiseLike<Doc<TI, 'outside'> | null> {
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
 	const ctxOverride = Zone.current.get('transactionContextOverride') as
 		| object
@@ -237,7 +232,7 @@ export function get<TI extends IDocTI>(
 				)}`,
 			)
 
-		return transactionDocPathGet<GDoc<TI, 'outside'>>(ctx)
+		return transactionDocPathGet<Doc<TI, 'outside'>>(ctx)
 	} else {
 		$assert(isWithoutTransaction(ctx))
 		return directDocPathGet(ctx)

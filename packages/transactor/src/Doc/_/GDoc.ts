@@ -5,8 +5,6 @@ import type { Doc } from '~'
 import type { IDocTI } from '~/Doc'
 import type { DocTypes } from '~/DocTypes'
 
-import type { ExecutionContext } from './ExecutionContext'
-
 type GDocByTag_<TI extends IDocTI> = TI['tag'] extends 'untagged'
 	? never
 	: DocTypes[TI['tag']]
@@ -23,13 +21,11 @@ export type GDocByTag<TI extends IDocTI> = GDocByTag_<TI> extends never
 // 	? Exclude<TI['docInside'], undefined>
 // 	: never
 
-export type GDoc<TI extends IDocTI, Ctx extends ExecutionContext> = Doc<TI, Ctx>
-
 /**
  * Get Doc from DocTI - inside execution context (can access public, const,
  * private, protected)
  */
-export type GI<TI extends IDocTI> = GDoc<TI, 'inside'>
+export type GI<TI extends IDocTI> = Doc<TI, 'inside'>
 
 /** Get Doc from DocTI - outside execution context (can access public only) */
-export type GO<TI extends IDocTI> = GDoc<TI, 'outside'>
+export type GO<TI extends IDocTI> = Doc<TI, 'outside'>

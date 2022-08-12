@@ -6,7 +6,8 @@ import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { Json } from '@voltiso/util'
 import { getKeys, isPlainObject, undef } from '@voltiso/util'
 
-import type { DataWithoutId, NestedData } from '~/Data/Data'
+import type { IntrinsicFields } from '~'
+import type { NestedData } from '~/Data/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
@@ -67,7 +68,7 @@ export function toDatabaseUpdate(
 
 export function toDatabaseSet(
 	ctx: DatabaseContext,
-	obj: DataWithoutId,
+	obj: IntrinsicFields,
 ): FirestoreLike.DocumentData
 export function toDatabaseSet(
 	ctx: DatabaseContext,
@@ -76,7 +77,7 @@ export function toDatabaseSet(
 
 export function toDatabaseSet(
 	ctx: DatabaseContext,
-	obj: DataWithoutId | NestedData,
+	obj: IntrinsicFields | NestedData,
 ): FirestoreLike.DocumentData | FirestoreLike.DocumentDataNested {
 	if (obj instanceof Date) return ctx.module.Timestamp.fromDate(obj)
 

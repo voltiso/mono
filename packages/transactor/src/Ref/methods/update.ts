@@ -5,7 +5,6 @@ import { $assert } from '@voltiso/assertor'
 import { isDefined, toString, undef } from '@voltiso/util'
 
 import { databaseUpdate } from '~/common'
-import type { DataWithId } from '~/Data'
 import { withoutId } from '~/Data'
 import type { WithDb } from '~/Db'
 import type { IDoc } from '~/Doc/IDoc'
@@ -47,7 +46,6 @@ type CtxWithoutTransaction = WithTransactor &
 type StripParams = {
 	onConstField: 'error' | 'ignore'
 	onPrivateField: 'error' | 'ignore'
-	onProtectedField: 'error' | 'ignore'
 }
 
 const isRecord = (updates: Updates): updates is UpdatesRecord =>
@@ -64,11 +62,11 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 	const { docRef } = this
 	const path = docRef.path.toString()
 
-	const { onConstField, onPrivateField, onProtectedField } = params || {}
+	const { onConstField, onPrivateField } = params || {}
 
 	if (onConstField === 'error') {
 		getSchema(docRef)
-		for (const key in docRef._constSchema) {
+		for (const key in docRef._publicOnCreationSchema) {
 			if (key in updates)
 				throw new Error(
 					`cannot modify const field '${path}.${key}' from outside`,
@@ -86,34 +84,29 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 			}
 		}
 	}
-
-	if (onProtectedField === 'error') {
-		getSchema(docRef)
-		for (const key in docRef._protectedSchema) {
-			if (key in updates)
-				throw new Error(
-					`cannot modify protected field '${path}.${key}' from outside methods or triggers`,
-				)
-		}
-	}
 }
 
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: UpdatesRecord,
 ): Promise<IndexedDoc | undefined>
+
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: RootReplaceIt,
 ): Promise<IndexedDoc>
+
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: DeleteIt,
 ): Promise<null>
+
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: Updates,
 ): Promise<IndexedDoc | null | undefined>
+
+//
 
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
@@ -128,7 +121,7 @@ async function rawUpdate(
 	const { _ref } = ctx.docRef
 	const path = ctx.docRef.path.toString()
 
-	let data: DataWithId | null | undefined // undefined -> unknown; null -> deleted
+	let data: object | null | undefined // undefined -> unknown; null -> deleted
 
 	const needTransaction = Boolean(
 		schema ||
@@ -190,7 +183,6 @@ async function transactionUpdateImpl(
 	{
 		onConstField = 'error',
 		onPrivateField = 'error',
-		onProtectedField = 'error',
 	}: Partial<StripParams> = {},
 ): Promise<IDoc | null | undefined> {
 	// returns undefined if unknown (usually update performed on a document without a trigger or schema)
@@ -201,12 +193,7 @@ async function transactionUpdateImpl(
 	const schema = getSchema(ctx.docRef)
 
 	const path = ctx.docRef.path.toString()
-	const { _numTriggersNested, _numMethodsNested, _cache, _execContext } =
-		ctx.transaction
-
-	if (_numTriggersNested > 0 || _numMethodsNested > 0)
-		// eslint-disable-next-line no-param-reassign
-		onProtectedField = 'ignore'
+	const { _cache, _execContext } = ctx.transaction
 
 	if (_execContext?.pathString === ctx.docRef.path.pathString)
 		// eslint-disable-next-line no-param-reassign
@@ -232,20 +219,18 @@ async function transactionUpdateImpl(
 			check.call(ctx, updates, {
 				onConstField,
 				onPrivateField,
-				onProtectedField,
 			})
 		else
 			check.call(ctx, updates, {
 				onConstField: 'ignore',
 				onPrivateField,
-				onProtectedField,
 			})
 
 		await processTriggers(ctx, { updates })
 	} else {
 		check.call(ctx, updates)
 
-		let data = cacheEntry.data
+		let { data } = cacheEntry
 
 		if (isDefined(data)) {
 			data = applyUpdates(data, updates)

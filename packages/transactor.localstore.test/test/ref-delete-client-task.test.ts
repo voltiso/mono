@@ -73,7 +73,7 @@ class Client extends Doc('refDelete_client')({
 // type IdClient = Id<Client>
 
 class ClientSlug extends Doc('refDelete_clientSlug')({
-	const: {
+	publicOnCreation: {
 		client: ss.strongRef<'refDelete_client'>(),
 	},
 }) {}
@@ -82,7 +82,7 @@ const clients = db.register(Client)
 const clientSlugs = db.register(ClientSlug)
 
 class Task extends Doc('refDelete_task')({
-	const: {
+	publicOnCreation: {
 		parentTask: ss.strongRef<'refDelete_task'>().optional,
 		client: ss.strongRef<'refDelete_client'>(),
 	},

@@ -3,7 +3,6 @@
 
 import type * as s from '@voltiso/schemar'
 
-import type { DataWithoutId } from '~/Data'
 import { withoutId } from '~/Data'
 
 import { applySchema } from './applySchema'
@@ -19,7 +18,7 @@ import type { DocRefContextWithTransaction } from './Context'
  */
 export function validate(
 	ctx: DocRefContextWithTransaction,
-	data: DataWithoutId | null,
+	data: object | null,
 	schema: s.Schema<object> | null | undefined,
 ) {
 	if (data && schema) {

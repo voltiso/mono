@@ -4,7 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 
-import type { DataWithoutId } from '~/Data'
+import type { IntrinsicFields } from '~'
 import type { WithDb } from '~/Db'
 import { Doc_ } from '~/Doc'
 import type { WithDocRef } from '~/Ref'
@@ -14,7 +14,7 @@ import type { WithTransactor } from '~/Transactor'
 export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
 	entry: CacheEntry,
-	data: DataWithoutId | null,
+	data: IntrinsicFields | null,
 ) {
 	if (entry.data) $assert(entry.__voltiso === entry.data.__voltiso)
 

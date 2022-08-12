@@ -20,8 +20,8 @@ export type IDoc = {
 	readonly path: DocPath
 	readonly ref: IRef
 
-	readonly data: { id?: never }
-	dataWithoutId(): { id?: never }
+	readonly data: object
+	dataWithoutId(): object
 	dataWithId(): { id: Id }
 
 	update(updates: any): Promise<IDoc | null | undefined>

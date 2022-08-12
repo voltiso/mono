@@ -23,13 +23,13 @@ export type DT = typeof DT
 export interface IDocTI {
 	tag: string
 
-	const: { id?: never }
-	public: { id?: never }
-	private: { id?: never }
-	protected: { id?: never }
+	publicOnCreation: object
 
-	methods: {}
+	public: object
+	private: object
 
-	// doc?: IDoc | undefined
-	// docInside?: IDoc | undefined
+	// constPrivate: object
+	// constPublic: object
+
+	methods: object
 }

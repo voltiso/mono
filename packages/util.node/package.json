@@ -23,8 +23,7 @@
 		"lint:slow": "run-p lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "run-s fix:prettier fix:eslint",
 		"fix:prettier": "prettier --write .",
@@ -47,11 +46,11 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:^42.2.1"
+		"@voltiso/util": "workspace:*"
 	},
 	"devDependencies": {
-		"@voltiso/assertor": "workspace:^2.0.0",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0"
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/config.jest.esr": "workspace:*"
 	},
 	"__________MISC": "__________",
 	"engines": {

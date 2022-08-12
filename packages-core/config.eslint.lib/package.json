@@ -25,8 +25,7 @@
 		"lint:slow": "run-p lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
@@ -42,7 +41,7 @@
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@voltiso/assertor.transform": "workspace:^1.0.0",
+		"@voltiso/assertor.transform": "workspace:*",
 		"eslint": "^8.21.0",
 		"eslint-define-config": "^1.6.0",
 		"rimraf": "^3.0.2"

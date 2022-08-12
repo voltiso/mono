@@ -16,13 +16,15 @@ export interface DocDerivedData extends IDocTI {
 
 export const defaultDocDerivedData = {
 	tag: 'untagged',
-	const: {},
-	private: {},
-	protected: {},
+
+	publicOnCreation: {},
 	public: {},
+	private: {},
+
 	afters: [],
 	beforeCommits: [],
 	onGets: [],
+
 	methods: {},
 } as const
 

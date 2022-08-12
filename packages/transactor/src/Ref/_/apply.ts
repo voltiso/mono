@@ -3,7 +3,6 @@
 
 import { isDefined } from '@voltiso/util'
 
-import type { DataWithoutId } from '~/Data'
 import type { Updates } from '~/updates'
 import { applyUpdates } from '~/updates'
 
@@ -19,7 +18,7 @@ import type { DocRefContextWithTransaction } from './Context'
  */
 export function apply(
 	ctx: DocRefContextWithTransaction,
-	data: DataWithoutId | null,
+	data: object | null,
 	updates?: Updates,
 ) {
 	return isDefined(updates)

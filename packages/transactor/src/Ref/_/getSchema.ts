@@ -14,23 +14,21 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 
 	const {
 		_options,
-		_allConstSchemas,
+		_allPublicOnCreationSchemas,
 		_allPublicSchemas,
 		_allPrivateSchemas,
-		_allProtectedSchemas,
 	} = d._context.transactor
 
-	const constSchemas: InferableObject[] = []
+	const publicOnCreationSchemas: InferableObject[] = []
 	const publicSchemas: InferableObject[] = []
 	const privateSchemas: InferableObject[] = []
-	const protectedSchemas: InferableObject[] = []
 
 	const path = d.path.toString()
 
-	for (const { getPathMatches, schema } of _allConstSchemas) {
+	for (const { getPathMatches, schema } of _allPublicOnCreationSchemas) {
 		const { pathParams, pathArgs } = getPathMatches(path) || {}
 
-		if (pathParams || pathArgs) constSchemas.push(schema)
+		if (pathParams || pathArgs) publicOnCreationSchemas.push(schema)
 	}
 
 	for (const { getPathMatches, schema } of _allPublicSchemas) {
@@ -45,38 +43,29 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 		if (pathParams || pathArgs) privateSchemas.push(schema)
 	}
 
-	for (const { getPathMatches, schema } of _allProtectedSchemas) {
-		const { pathParams, pathArgs } = getPathMatches(path) || {}
-
-		if (pathParams || pathArgs) protectedSchemas.push(schema)
-	}
-
 	if (
-		constSchemas.length === 0 &&
+		publicOnCreationSchemas.length === 0 &&
 		publicSchemas.length === 0 &&
-		privateSchemas.length === 0 &&
-		protectedSchemas.length === 0
+		privateSchemas.length === 0
 	) {
 		if (_options.requireSchemas)
 			throw new Error(
 				`missing schema for ${path} - add a schema, or set requireSchemas = false`,
 			)
 
-		d._constSchema = {}
+		d._publicOnCreationSchema = {}
 		d._privateSchema = {}
-		d._protectedSchema = {}
 
 		return (d._schema = null)
 	}
 
 	let thisSchema: InferableObject = {}
-	d._constSchema = {}
+	d._publicOnCreationSchema = {}
 	d._privateSchema = {}
-	d._protectedSchema = {}
 
-	for (const schema of constSchemas) {
+	for (const schema of publicOnCreationSchemas) {
 		thisSchema = { ...thisSchema, ...schema }
-		d._constSchema = { ...d._constSchema, ...schema }
+		d._publicOnCreationSchema = { ...d._publicOnCreationSchema, ...schema }
 	}
 
 	for (const schema of publicSchemas) {
@@ -86,11 +75,6 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 	for (const schema of privateSchemas) {
 		thisSchema = { ...thisSchema, ...schema }
 		d._privateSchema = { ...d._privateSchema, ...schema }
-	}
-
-	for (const schema of protectedSchemas) {
-		thisSchema = { ...thisSchema, ...schema }
-		d._protectedSchema = { ...d._protectedSchema, ...schema }
 	}
 
 	const final = s.schema({

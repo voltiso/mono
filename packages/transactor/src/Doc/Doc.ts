@@ -4,16 +4,16 @@
 import type { _ } from '@voltiso/util'
 import { callableClass, lazyConstructor } from '@voltiso/util'
 
-import type { DataWithId, DataWithoutId, Id, NestedData } from '~/Data'
+import type { Id, NestedData, WithId } from '~/Data'
+import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
 import type { StrongRef } from '~/Ref'
 
 import type { ExecutionContext } from './_/ExecutionContext'
-import type { GData } from './_/GData'
-import type { GDoc } from './_/GDoc'
+import type { GetData, GetUpdateDataByCtx } from './_/GData'
 import type { GMethodPromises } from './_/GMethodPromises'
-import type { UpdatesFromSchema } from './_/UpdatesFromSchema'
-import type { DocTI, GetFields } from './Doc_'
+import type { UpdatesFromData } from './_/UpdatesFromData'
+import type { DocTI } from './Doc_'
 import { Doc_ } from './Doc_'
 import { DocCall } from './DocCall'
 import type { DocConstructor } from './DocConstructor'
@@ -35,25 +35,25 @@ interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 	// readonly ref: Ref<GDoc<TI>>
 	// readonly ref: Ref<DocTypes[TI['tag']]>
 
-	readonly data: TI extends any ? DataWithoutId<GData<TI>> : never
-	dataWithoutId(): TI extends any ? DataWithoutId<GData<TI>> : never
-	dataWithId(): TI extends any ? DataWithId<GData<TI>> : never
+	readonly data: GetData<TI>
+	dataWithoutId(): GetData<TI>
+	dataWithId(): WithId<GetData<TI>, this>
 
 	//
 
 	update(
-		updates: _<UpdatesFromSchema.Update<GetFields<TI, Ctx>>>,
-	): Promise<GDoc<TI, Ctx> | undefined>
+		updates: UpdatesFromData.Update<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
+	): Promise<Doc<TI, Ctx> | undefined>
 
 	update(
-		updates: _<UpdatesFromSchema.Replace<GetFields<TI, Ctx>>>,
-	): Promise<GDoc<TI, Ctx>>
+		updates: _<ReplaceIt<GetUpdateDataByCtx<TI, Ctx>>>,
+	): Promise<Doc<TI, Ctx>>
 
-	update(updates: UpdatesFromSchema.Delete): Promise<null>
+	update(updates: DeleteIt): Promise<null>
 
 	update(
-		updates: _<UpdatesFromSchema<GetFields<TI, Ctx>>>,
-	): Promise<GDoc<TI, Ctx> | null | undefined>
+		updates: UpdatesFromData<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
+	): Promise<Doc<TI, Ctx> | null | undefined>
 
 	//
 
@@ -71,9 +71,9 @@ export type Doc<
 		? {
 				[k: string]: NestedData
 		  }
-		: GData<TI> & GMethodPromises<TI>)
+		: GetData<TI> & GMethodPromises<TI>)
 
 export const Doc = callableClass(
-	lazyConstructor(() => Doc_),
+	lazyConstructor(() => Doc_ as never),
 	DocCall,
 ) as unknown as DocConstructor<DocTI>

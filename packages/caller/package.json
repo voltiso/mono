@@ -27,8 +27,7 @@
 		"__________LINT": "__________",
 		"lint": "run-s depcheck lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
@@ -45,11 +44,11 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/schemar": "workspace:12.0.2"
+		"@voltiso/schemar": "workspace:*"
 	},
 	"devDependencies": {
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/util": "workspace:42.2.1",
+		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/util": "workspace:*",
 		"rimraf": "^3.0.2"
 	}
 }

@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, OmitSignatures } from '@voltiso/util'
+import type { _ } from '@voltiso/util'
 
+import type { IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
-import type { IntrinsicFields } from '~/schemas'
 
 import type { Id } from './Id'
 
@@ -22,17 +22,20 @@ export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arr
 
 // type TDataDef = DataRecord // & TData
 
-type DefaultFields = IntrinsicFields
+export type WithId<Data, Doc extends IDoc> = _<Data & { id: Id<Doc> }>
 
-export type DataWithId<
-	F extends DefaultFields = DefaultFields,
-	I extends Id = Id,
-> = 'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id: I } & F>
+// export type DataWithId<
+// 	F extends IntrinsicFields = IntrinsicFields,
+// 	I extends Id = Id,
+// > = 'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id: I } & F>
 
-export type DataWithoutId<F extends DefaultFields = DefaultFields> =
-	'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id?: never } & F>
+// export type DataWithoutId<F extends DefaultFields = DefaultFields> =
+// 	F extends any ? _<{ readonly id?: never } & F> : never
 
-export type Data<
-	F extends object = DefaultFields,
-	I extends Id = Id,
-> = 'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id?: I } & F>
+// export type DataWithoutId<F extends DefaultFields = DefaultFields> =
+// 	'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id?: never } & F>
+
+// export type Data<
+// 	F extends object = DefaultFields,
+// 	I extends Id = Id,
+// > = 'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id?: I } & F>

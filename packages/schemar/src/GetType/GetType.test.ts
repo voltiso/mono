@@ -75,7 +75,7 @@ describe('GetType', () => {
 	})
 
 	interface IDocTI {
-		const: { id?: never; a: 1 }
+		publicOnCreation: { id?: never; a: 1 }
 		public: { id?: never }
 	}
 
@@ -91,7 +91,7 @@ describe('GetType', () => {
 			  }
 			: never
 
-		type A = OmitId<GetOutputType<TI['const']> & IntrinsicFields>
+		type A = OmitId<GetOutputType<TI['publicOnCreation']> & IntrinsicFields>
 
 		Assert.is<A, InferableObject>()
 		Assert.is<A, Schemable>()

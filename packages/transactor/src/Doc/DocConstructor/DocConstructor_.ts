@@ -42,12 +42,14 @@ class DocConstructor {
 		)
 	}
 
-	static const<F extends Record<string, Schemable>>(schema: F): any {
+	//
+
+	static publicOnCreation<F extends Record<string, Schemable>>(schema: F): any {
 		return callableClass(
 			class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
-					const: { ...super._.const, ...schema },
+					publicOnCreation: { ...super._.publicOnCreation, ...schema },
 				}
 			},
 			DocCall,
@@ -72,34 +74,26 @@ class DocConstructor {
 				static override readonly _ = {
 					...super._,
 					private: { ...super._.private, ...schema },
-				}
+				} as never
 			},
 			DocCall,
 		)
 	}
 
-	static protected<F extends Record<string, Schemable>>(schema: F): any {
-		return callableClass(
-			class extends this {
-				static override readonly _ = {
-					...super._,
-					protected: { ...super._.protected, ...schema },
-				}
-			},
-			DocCall,
-		)
-	}
+	//
 
 	static fields<F extends NewFields>(f: F): any {
 		return callableClass(
 			class extends this {
 				static override readonly _ = {
 					...super._,
-					const: { ...super._.const, ...f.const },
+					publicOnCreation: {
+						...super._.publicOnCreation,
+						...f.publicOnCreation,
+					},
 					public: { ...super._.public, ...f.public },
 					private: { ...super._.private, ...f.private },
-					protected: { ...super._.protected, ...f.protected },
-				}
+				} as never
 			},
 			DocCall,
 		)
@@ -107,10 +101,9 @@ class DocConstructor {
 
 	static get schemableWithoutId() {
 		return {
-			...this._.const,
-			...this._.private,
-			...this._.protected,
+			...this._.publicOnCreation,
 			...this._.public,
+			...this._.private,
 			...intrinsicFields,
 		}
 	}
@@ -251,7 +244,7 @@ class DocConstructor {
 				static override readonly _: DocDerivedData = withBeforeCommit(
 					super._ as unknown as TI,
 					name,
-					f,
+					f as never,
 				)
 			},
 			DocCall,

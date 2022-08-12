@@ -8,7 +8,7 @@
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"types": "./dist/esm/index.d.ts",
+			"types": "./dist/cjs/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		}
@@ -33,8 +33,7 @@
 		"lint:slow": "run-p lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"__________FIX": "__________",
 		"fix": "run-s fix:prettier fix:eslint",
@@ -59,12 +58,12 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:^42.2.1"
+		"@voltiso/util": "workspace:*"
 	},
 	"devDependencies": {
-		"@voltiso/assertor": "workspace:^2.0.0",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/script": "workspace:^1.0.0",
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/script": "workspace:*",
 		"rimraf": "^3.0.2"
 	}
 }

@@ -4,7 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import { isPlainObject, lazyConstructor, omit } from '@voltiso/util'
 
-import type { DataWithId, DataWithoutId } from '~/Data'
+import type { WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
 import { immutabilize } from '~/immutabilize'
@@ -15,14 +15,13 @@ import { StrongDocRef, StrongDocRefImpl } from '~/Ref'
 import type { DocRefContext } from '~/Ref/_/Context'
 import type { Updates } from '~/updates'
 
-import type { ExecutionContext } from './_/ExecutionContext'
-import type { GData } from './_/GData'
+import type { GetData } from './_/GData'
 import type { Doc } from './Doc'
 import { DocConstructor_ } from './DocConstructor'
 import type { DocContext } from './DocContext'
 import type { IDocTI } from './DocTI'
 import { DTI } from './DocTI'
-import type { IDoc_ } from './IDoc'
+import type { IDoc, IDoc_ } from './IDoc'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -50,7 +49,7 @@ export class Doc_<TI extends IDocTI = IDocTI>
 
 	methods: Record<string, Method> = {}
 
-	constructor(context: DocContext, raw: DataWithoutId<GData<TI>>) {
+	constructor(context: DocContext, raw: GetData<TI>) {
 		super()
 
 		// eslint-disable-next-line no-param-reassign
@@ -64,7 +63,7 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		$assert(this._rawProxy)
 
 		// add methods
-		const docRef = this._context.docRef
+		const { docRef } = this._context
 		const methods = docRef._getMethods()
 
 		for (const { name, method, ...pathMatches } of methods) {
@@ -100,18 +99,16 @@ export class Doc_<TI extends IDocTI = IDocTI>
 				else return Reflect.set(this._rawProxy, p, value)
 			},
 
-			deleteProperty: (_target, p) => {
-				return Reflect.deleteProperty(this._rawProxy, p)
-			},
+			deleteProperty: (_target, p) => Reflect.deleteProperty(this._rawProxy, p),
 		})
 	}
 
 	_context: DocContext
 
-	_raw!: DataWithoutId<GData<TI>>
-	_rawProxy!: DataWithoutId<GData<TI>>
+	_raw!: GetData<TI>
+	_rawProxy!: GetData<TI>
 
-	_setRaw(raw: DataWithoutId<GData<TI>>) {
+	_setRaw(raw: GetData<TI>) {
 		this._raw = raw
 		this._rawProxy = this._context.transaction
 			? raw
@@ -136,15 +133,15 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		) as never
 	}
 
-	get data(): TI extends any ? DataWithoutId<GData<TI>> : never {
+	get data(): GetData<TI> {
 		return this._raw as never
 	}
 
-	dataWithoutId(): TI extends any ? DataWithoutId<GData<TI>> : never {
+	dataWithoutId(): GetData<TI> {
 		return this._raw as never
 	}
 
-	dataWithId(): TI extends any ? DataWithId<GData<TI>> : never {
+	dataWithId(): WithId<GetData<TI>, IDoc> {
 		return withId(this._raw, this.id) as never
 	}
 
@@ -170,12 +167,3 @@ export class Doc_<TI extends IDocTI = IDocTI>
 export interface DocTI extends IDocTI {
 	tag: 'untagged'
 }
-
-export type GetFields<
-	TI extends IDocTI,
-	Ctx extends ExecutionContext,
-> = Ctx extends 'outside'
-	? TI['public'] & TI['protected']
-	: Ctx extends 'inside'
-	? TI['public'] & TI['protected'] & TI['private'] & TI['const']
-	: never

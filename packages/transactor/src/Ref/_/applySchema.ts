@@ -7,18 +7,17 @@ import { isPlainObject } from '@voltiso/util'
 
 import type { WithDocRef } from '~'
 import { isWithTransaction } from '~'
-import type { Data, DataWithoutId } from '~/Data/Data'
 import type { WithTransactor } from '~/Transactor'
 
 import { schemaDeleteIt } from './_symbols'
 
 type Params = {
 	schema: s.Schema<object>
-	data: DataWithoutId
+	data: object
 	bestEffort?: boolean
 }
 
-function processSentinels(x: unknown): Data | null {
+function processSentinels(x: unknown): object | null {
 	if (isPlainObject(x)) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const r = {} as any
@@ -35,7 +34,7 @@ function processSentinels(x: unknown): Data | null {
 export function applySchema(
 	this: WithTransactor & WithDocRef,
 	params: Params,
-): Data | null {
+): object | null {
 	const { data, schema, bestEffort } = params
 
 	const r = schema.tryValidate(data)

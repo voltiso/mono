@@ -9,6 +9,6 @@
 	"main": "tsconfig.json",
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/config.ts.build": "workspace:1.0.0"
+		"@voltiso/config.ts.build": "workspace:*"
 	}
 }

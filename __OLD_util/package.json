@@ -9,102 +9,102 @@
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"types": "./dist/esm/index.d.ts",
+			"types": "./dist/cjs/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		},
 		"./array": {
-			"types": "./dist/esm/array/index.d.ts",
+			"types": "./dist/cjs/array/index.d.ts",
 			"import": "./dist/esm/array/index.js",
 			"require": "./dist/cjs/array/index.js"
 		},
 		"./bdd": {
-			"types": "./dist/esm/bdd/index.d.ts",
+			"types": "./dist/cjs/bdd/index.d.ts",
 			"import": "./dist/esm/bdd/index.js",
 			"require": "./dist/cjs/bdd/index.js"
 		},
 		"./boolean": {
-			"types": "./dist/esm/boolean/index.d.ts",
+			"types": "./dist/cjs/boolean/index.d.ts",
 			"import": "./dist/esm/boolean/index.js",
 			"require": "./dist/cjs/boolean/index.js"
 		},
 		"./class": {
-			"types": "./dist/esm/class/index.d.ts",
+			"types": "./dist/cjs/class/index.d.ts",
 			"import": "./dist/esm/class/index.js",
 			"require": "./dist/cjs/class/index.js"
 		},
 		"./clone": {
-			"types": "./dist/esm/clone/index.d.ts",
+			"types": "./dist/cjs/clone/index.d.ts",
 			"import": "./dist/esm/clone/index.js",
 			"require": "./dist/cjs/clone/index.js"
 		},
 		"./compiler-options": {
-			"types": "./dist/esm/compiler-options/index.d.ts",
+			"types": "./dist/cjs/compiler-options/index.d.ts",
 			"import": "./dist/esm/compiler-options/index.js",
 			"require": "./dist/cjs/compiler-options/index.js"
 		},
 		"./error": {
-			"types": "./dist/esm/error/index.d.ts",
+			"types": "./dist/cjs/error/index.d.ts",
 			"import": "./dist/esm/error/index.js",
 			"require": "./dist/cjs/error/index.js"
 		},
 		"./function": {
-			"types": "./dist/esm/function/index.d.ts",
+			"types": "./dist/cjs/function/index.d.ts",
 			"import": "./dist/esm/function/index.js",
 			"require": "./dist/cjs/function/index.js"
 		},
 		"./lazy": {
-			"types": "./dist/esm/lazy/index.d.ts",
+			"types": "./dist/cjs/lazy/index.d.ts",
 			"import": "./dist/esm/lazy/index.js",
 			"require": "./dist/cjs/lazy/index.js"
 		},
 		"./misc": {
-			"types": "./dist/esm/misc/index.d.ts",
+			"types": "./dist/cjs/misc/index.d.ts",
 			"import": "./dist/esm/misc/index.js",
 			"require": "./dist/cjs/misc/index.js"
 		},
 		"./null": {
-			"types": "./dist/esm/null/index.d.ts",
+			"types": "./dist/cjs/null/index.d.ts",
 			"import": "./dist/esm/null/index.js",
 			"require": "./dist/cjs/null/index.js"
 		},
 		"./number": {
-			"types": "./dist/esm/number/index.d.ts",
+			"types": "./dist/cjs/number/index.d.ts",
 			"import": "./dist/esm/number/index.js",
 			"require": "./dist/cjs/number/index.js"
 		},
 		"./object": {
-			"types": "./dist/esm/object/index.d.ts",
+			"types": "./dist/cjs/object/index.d.ts",
 			"import": "./dist/esm/object/index.js",
 			"require": "./dist/cjs/object/index.js"
 		},
 		"./parser": {
-			"types": "./dist/esm/parser/index.d.ts",
+			"types": "./dist/cjs/parser/index.d.ts",
 			"import": "./dist/esm/parser/index.js",
 			"require": "./dist/cjs/parser/index.js"
 		},
 		"./patch": {
-			"types": "./dist/esm/patch/index.d.ts",
+			"types": "./dist/cjs/patch/index.d.ts",
 			"import": "./dist/esm/patch/index.js",
 			"require": "./dist/cjs/patch/index.js"
 		},
 		"./promise": {
-			"types": "./dist/esm/promise/index.d.ts",
+			"types": "./dist/cjs/promise/index.d.ts",
 			"import": "./dist/esm/promise/index.js",
 			"require": "./dist/cjs/promise/index.js"
 		},
 		"./set": {
-			"types": "./dist/esm/set/index.d.ts",
+			"types": "./dist/cjs/set/index.d.ts",
 			"import": "./dist/esm/set/index.js",
 			"require": "./dist/cjs/set/index.js"
 		},
 		"./string": {
-			"types": "./dist/esm/string/index.d.ts",
+			"types": "./dist/cjs/string/index.d.ts",
 			"import": "./dist/esm/string/index.js",
 			"require": "./dist/cjs/string/index.js"
 		},
 		"./symbol": {
-			"types": "./dist/esm/symbol/index.d.ts",
+			"types": "./dist/cjs/symbol/index.d.ts",
 			"import": "./dist/esm/symbol/index.js",
 			"require": "./dist/cjs/symbol/index.js"
 		}
@@ -206,8 +206,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "run-p lint:tsc:root lint:tsc:snc lint:tsc:eopt",
 		"lint:tsc:root": "tsc -b",
 		"lint:tsc:snc": "run-p lint:tsc:snc:t lint:tsc:snc:f",

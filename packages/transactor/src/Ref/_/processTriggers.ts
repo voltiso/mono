@@ -54,8 +54,8 @@ async function processAfterTrigger(
 
 		const r = await trigger.call(cacheEntry.proxy as never, {
 			doc: cacheEntry.proxy as never,
-			before: immutabilize(withId(before, id)),
-			after: immutabilize(withId(after, id)),
+			before: immutabilize(withId(before, id)) as never,
+			after: immutabilize(withId(after, id)) as never,
 			...pathMatches,
 			path: ctx.docRef.path,
 			id: id as never,

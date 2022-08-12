@@ -16,3 +16,5 @@ traceDir/
 .turbo
 
 firebase-*.json
+
+output_path

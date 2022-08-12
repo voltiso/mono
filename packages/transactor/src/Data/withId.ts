@@ -1,18 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DataWithId } from './Data'
+import type { IDoc } from '~/Doc'
+
+import type { WithId } from './Data'
 import type { Id } from './Id'
 
 export function withId(data: null, id: Id): null
-export function withId<D extends object, I extends Id>(
-	data: D,
-	id: I,
-): DataWithId<Omit<D, 'id'>, I>
-export function withId<D extends object | null, I extends Id>(
-	data: D,
-	id: I,
-): D extends null ? null : DataWithId<Omit<D, 'id'>, I>
+
+export function withId<Data extends object, Doc extends IDoc>(
+	data: Data,
+	id: Id<Doc>,
+): WithId<Omit<Data, 'id'>, Doc>
+
+export function withId<Data extends object | null, Doc extends IDoc>(
+	data: Data,
+	id: Id<Doc>,
+): Data extends null ? null : WithId<Omit<Data, 'id'>, Doc>
+
+//
 
 export function withId(data: object | null, id: Id) {
 	if (data === null) return null

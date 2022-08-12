@@ -14,7 +14,7 @@ const db = createTransactor()
 const slug = s.string
 	.lengthRange(1, 255)
 	.regex(
-		// eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex, regexp/prefer-named-capture-group
+		// eslint-disable-next-line security/detect-unsafe-regex, unicorn/no-unsafe-regex
 		/^[\da-z]+(-[\da-z]+)*$/u,
 		'Slug must be lowercase with single hyphen separators',
 	)

@@ -1,17 +1,17 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "8.0.4",
+	"version": "9.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
-			"types": "./dist/esm/index.d.ts",
+			"types": "./dist/cjs/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		},
 		"./schemas": {
-			"types": "./dist/esm/schemas/index.d.ts",
+			"types": "./dist/cjs/schemas/index.d.ts",
 			"import": "./dist/esm/schemas/index.js",
 			"require": "./dist/cjs/schemas/index.js"
 		}
@@ -32,6 +32,8 @@
 		"dist/"
 	],
 	"scripts": {
+		"__________DEV": "__________",
+		"dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
 		"__________TEST": "__________",
 		"test:all": "run-p test test:firestore test:localstore",
 		"test": "jest",
@@ -41,8 +43,7 @@
 		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint:full",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
-		"lint:eslint:full": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:eslint:fast": "eslint --max-warnings=0 .",
+		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "run-s fix:prettier fix:eslint",
 		"fix:prettier": "prettier --write .",
@@ -60,8 +61,8 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/firestore-like": "workspace:^1.0.10",
-		"@voltiso/util": "workspace:^42.2.1",
+		"@voltiso/firestore-like": "workspace:*",
+		"@voltiso/util": "workspace:*",
 		"chalk": "^4.1.2",
 		"fast-equals": "^4.0.1",
 		"js-yaml": "^4.1.0"
@@ -71,10 +72,10 @@
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
-		"@voltiso/assertor": "workspace:^2.0.0",
-		"@voltiso/schemar": "workspace:^12.0.2",
+		"@voltiso/assertor": "workspace:*",
+		"@voltiso/schemar": "workspace:*",
 		"rimraf": "^3.0.2",
-		"zone.js": "^0.11.7"
+		"zone.js": "^0.11.8"
 	},
 	"__________MISC": "__________",
 	"engines": {

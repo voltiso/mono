@@ -8,10 +8,9 @@ import type { IDocTI } from '~/Doc'
 export type MergeTI<TI extends IDocTI> = _<{
 	tag: TI['tag']
 
-	const: _<TI['const']>
+	publicOnCreation: _<TI['publicOnCreation']>
 	public: _<TI['public']>
 	private: _<TI['private']>
-	protected: _<TI['protected']>
 
 	methods: TI['methods']
 

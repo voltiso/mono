@@ -68,10 +68,9 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 
 	_allMethods: MethodEntry[] = []
 
-	_allConstSchemas: SchemaEntry[] = []
+	_allPublicOnCreationSchemas: SchemaEntry[] = []
 	_allPublicSchemas: SchemaEntry[] = []
 	_allPrivateSchemas: SchemaEntry[] = []
-	_allProtectedSchemas: SchemaEntry[] = []
 
 	_allAfterTriggers: TriggerEntry<AfterTrigger>[] = []
 	_allBeforeCommits: TriggerEntry<BeforeCommitTrigger>[] = []
