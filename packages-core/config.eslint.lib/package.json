@@ -41,7 +41,7 @@
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@voltiso/assertor.transform": "workspace:*",
+		"@voltiso/assertor.transform": "workspace:^",
 		"eslint": "^8.21.0",
 		"eslint-define-config": "^1.6.0",
 		"rimraf": "^3.0.2"

@@ -48,11 +48,11 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:*"
+		"@voltiso/util": "workspace:^"
 	},
 	"devDependencies": {
 		"@firebase/app-types": "^0.7.0",
-		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/config.jest.esr": "workspace:^",
 		"firebase-admin": "^11.0.1",
 		"rimraf": "^3.0.2"
 	},

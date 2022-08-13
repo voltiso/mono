@@ -39,7 +39,7 @@
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@voltiso/assertor.transform": "workspace:*"
+		"@voltiso/assertor.transform": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {

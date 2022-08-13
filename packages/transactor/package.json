@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "9.0.0",
+	"version": "9.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
@@ -31,6 +31,7 @@
 	"files": [
 		"dist/"
 	],
+	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________DEV": "__________",
 		"dev": "cross-env ASSERTOR_NO_STRIP=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
@@ -38,7 +39,7 @@
 		"test": "jest",
 		"test:all": "pnpm -w exec turbo run test --filter=...transactor",
 		"__________LINT": "__________",
-		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint:full",
+		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
 		"lint:depcheck": "depcheck",
 		"lint:prettier": "prettier --check .",
 		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
@@ -58,8 +59,8 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/firestore-like": "workspace:*",
-		"@voltiso/util": "workspace:*",
+		"@voltiso/firestore-like": "workspace:^",
+		"@voltiso/util": "workspace:^",
 		"chalk": "^4.1.2",
 		"fast-equals": "^4.0.1",
 		"js-yaml": "^4.1.0"
@@ -69,8 +70,8 @@
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
-		"@voltiso/assertor": "workspace:*",
-		"@voltiso/schemar": "workspace:*",
+		"@voltiso/assertor": "workspace:^",
+		"@voltiso/schemar": "workspace:^",
 		"rimraf": "^3.0.2",
 		"zone.js": "^0.11.8"
 	},

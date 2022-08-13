@@ -46,14 +46,14 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/firestore-like": "workspace:*",
-		"@voltiso/util": "workspace:*"
+		"@voltiso/firestore-like": "workspace:^",
+		"@voltiso/util": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {
 		"node": ">=16"
 	},
 	"devDependencies": {
-		"@voltiso/assertor": "workspace:*"
+		"@voltiso/assertor": "workspace:^"
 	}
 }

@@ -760,7 +760,7 @@ class Styled<P extends Props, C extends IStylable | null> {
 	/**
 	 * Define new optional props, defaulting to `defaultValues`
 	 *
-	 * - DO NOT provide `NewProps` type - it should be inferred. To provide custom
+	 * - DO NOT provide the `PP` type - it should be inferred. To provide custom
 	 *   Props type, use `defineProps<DefinedProps>()` instead
 	 * - To render props to DOM, use `newDomProps` instead
 	 *
@@ -776,12 +776,12 @@ class Styled<P extends Props, C extends IStylable | null> {
 	 * @returns Builder for further chaining
 	 */
 	newProps<PP extends Props>(
-		defaultValues?: Partial<UndefinedFromOptional<PP>> &
-			Required<PickOptional<UndefinedFromOptional<Omit<PP, 'children'>>>>,
+		defaultValues: PP, // Partial<UndefinedFromOptional<PP>> &
+		// Required<PickOptional<UndefinedFromOptional<Omit<PP, 'children'>>>>,
 	): Patch_<this, { [k in keyof PP]?: PP[k] | undefined }> {
 		return this._clone({
-			stack: [{ removeProps: getKeys(defaultValues || {}) }],
-			defaults: defaultValues || {},
+			stack: [{ removeProps: getKeys(defaultValues) }],
+			defaults: defaultValues,
 		}) as never
 	}
 
@@ -839,7 +839,6 @@ class Styled<P extends Props, C extends IStylable | null> {
 			>,
 	): ForcePatch_<this, UndefinedFromOptional<DefinedProps>>
 
-	// eslint-disable-next-line sonarjs/no-identical-functions
 	defineProps<DefinedProps extends Props>(
 		defaultValues?: Partial<UndefinedFromOptional<DefinedProps>> &
 			MapOrUndefined<

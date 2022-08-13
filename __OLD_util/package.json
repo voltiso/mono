@@ -230,8 +230,8 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util.misc": "workspace:*",
-		"@voltiso/util.object": "workspace:*",
+		"@voltiso/util.misc": "workspace:^",
+		"@voltiso/util.object": "workspace:^",
 		"assert": "^2.0.0"
 	},
 	"devDependencies": {
@@ -239,7 +239,7 @@
 		"@types/clone": "^2.1.1",
 		"@types/jest": "^28.1.1",
 		"@types/node": "^17.0.42",
-		"@voltiso/script": "workspace:*",
+		"@voltiso/script": "workspace:^",
 		"clone": "^2.1.2",
 		"depcheck": "^1.4.3",
 		"jest": "^28.1.1",

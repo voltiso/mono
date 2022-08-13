@@ -50,9 +50,9 @@
 		"@voltiso/transactor": ">= 8.0.0"
 	},
 	"devDependencies": {
-		"@voltiso/firestore-like": "workspace:*",
-		"@voltiso/localstore": "workspace:*",
-		"@voltiso/transactor": "workspace:*"
+		"@voltiso/firestore-like": "workspace:^",
+		"@voltiso/localstore": "workspace:^",
+		"@voltiso/transactor": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {

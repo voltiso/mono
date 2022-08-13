@@ -12,13 +12,21 @@ const project = [
 	'packages/*/tsconfig.json',
 	//
 	'packages-core/*/tsconfig.json',
+	//
+	'packages/styler/test/native/tsconfig.json',
+	'packages/styler/test/web/tsconfig.json',
+	'packages/styler/test/web/tsc-options/*/tsconfig.json',
 ]
 
 // eslint-disable-next-line n/no-process-env
 const isFastMode = !process.env['FULL']
 
 // eslint-disable-next-line no-console
-console.log(new Date().toISOString(), 'eslint config:', isFastMode ? 'FAST' : 'FULL')
+console.log(
+	new Date().toISOString(),
+	'eslint config:',
+	isFastMode ? 'FAST' : 'FULL',
+)
 
 module.exports = defineEslintConfig({
 	extends: [

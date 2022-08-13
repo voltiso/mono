@@ -35,7 +35,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/config.babel.lib": "workspace:*"
+		"@voltiso/config.babel.lib": "workspace:^"
 	},
 	"peerDependencies": {
 		"@babel/core": "*",

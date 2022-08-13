@@ -4,10 +4,13 @@
 import { screen } from '@testing-library/react'
 import type { IsEqual } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
+import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
 	ComponentPropsWithRef,
+	DOMAttributes,
 	ForwardRefRenderFunction,
+	ReactNode,
 } from 'react'
 import { forwardRef } from 'react'
 
@@ -113,5 +116,26 @@ describe('forwardRef', () => {
 			height: '33px',
 			borderRadius: '22px',
 		})
+	})
+
+	it('type-test from api-shop', () => {
+		expect.assertions(0)
+
+		const render: ForwardRefRenderFunction<
+			HTMLAnchorElement | null,
+			{
+				href?: string
+				children?: ReactNode
+				css?: IStyle
+				className?: string | undefined
+			} & DOMAttributes<HTMLAnchorElement>
+		> = (_props, _ref) => null
+
+		render.displayName = 'VLink'
+
+		const VLink = style(forwardRef(render))
+
+		//
+		;() => <VLink />
 	})
 })

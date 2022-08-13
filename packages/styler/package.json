@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/styler",
-	"version": "11.0.1",
+	"version": "11.0.6",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________EXPORTS": "__________",
@@ -16,9 +16,11 @@
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
-		"dist/"
+		"dist"
 	],
 	"scripts": {
+		"__________DEV": "__________",
+		"dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
@@ -46,7 +48,13 @@
 		"__________MISC": "__________",
 		"clean": "rimraf dist"
 	},
+	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/util": "workspace:^"
+	},
 	"peerDependencies": {
+		"@types/react": "^18.0.0 || ^17.0.0",
+		"csstype": "^3.1.0",
 		"fela": "^12.1.2",
 		"react": "^18.0.0 || ^17.0.0",
 		"react-fela": "^12.1.2"
@@ -62,9 +70,8 @@
 		"@types/react-native": "^0.69.5",
 		"@types/react-test-renderer": "^18.0.0",
 		"@types/testing-library__jest-dom": "^5.14.5",
-		"@voltiso/config.eslint.lib": "workspace:*",
-		"@voltiso/config.jest.esr": "workspace:*",
-		"@voltiso/util": "workspace:*",
+		"@voltiso/config.eslint.lib": "workspace:^",
+		"@voltiso/config.jest.esr": "workspace:^",
 		"csstype": "^3.1.0",
 		"fela": "^12.2.0",
 		"fela-native": "^12.2.0",

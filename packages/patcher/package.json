@@ -40,11 +40,11 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:*",
+		"@voltiso/util": "workspace:^",
 		"fast-equals": "^4.0.1"
 	},
 	"devDependencies": {
-		"@voltiso/config.jest.esr": "workspace:*",
+		"@voltiso/config.jest.esr": "workspace:^",
 		"jest": "^28.1.3",
 		"rimraf": "^3.0.2"
 	},

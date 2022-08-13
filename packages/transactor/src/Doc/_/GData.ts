@@ -4,14 +4,14 @@
 import type { GetInputType, GetType } from '@voltiso/schemar'
 import type { _ } from '@voltiso/util'
 
-import type { Id } from '~/Data'
-import type { IDoc } from '~/Doc'
+import type { Id, WithId } from '~/Data'
+import type { ExecutionContext, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 import type { Relax } from '~/Relax'
 import type { IntrinsicFields } from '~/schemas/intrinsicFields'
 
 export type GetData<
-	TI extends { publicOnCreation: any; public: any; private: any },
+	TI extends { publicOnCreation?: any; public?: any; private?: any },
 > = _<
 	GetType<TI['publicOnCreation']> &
 		GetType<TI['public']> &
@@ -19,19 +19,37 @@ export type GetData<
 		IntrinsicFields
 >
 
-export type GetInputData<TI> = TI extends {
-	publicOnCreation: any
-	public: any
-	private: any
-}
-	? GetInputType<TI['publicOnCreation']> &
-			GetInputType<TI['public']> &
-			GetInputType<TI['private']>
-	: never
+export type GetDataWithId<
+	TI extends { publicOnCreation?: any; public?: any; private?: any },
+	Doc extends IDoc = IDoc,
+> = WithId<GetData<TI>, Doc>
 
-export type GetPublicData<TI extends { public: any }> = TI extends any
-	? GetType<TI['public']>
-	: never
+//
+
+export type GetInputData<
+	TI extends {
+		publicOnCreation?: any
+		public?: any
+		private?: any
+	},
+> = _<
+	GetInputType<TI['publicOnCreation']> &
+		GetInputType<TI['public']> &
+		GetInputType<TI['private']>
+>
+
+export type GetInputDataWithId<
+	TI extends {
+		publicOnCreation?: any
+		public?: any
+		private?: any
+	},
+	Doc extends IDoc = IDoc,
+> = WithId<GetInputData<TI>, Doc>
+
+//
+
+export type GetPublicData<TI extends { public?: any }> = GetType<TI['public']>
 
 export type RelaxRefs<X> = X extends IRef
 	? Relax<X>
@@ -41,28 +59,26 @@ export type RelaxRefs<X> = X extends IRef
 	  }
 	: X
 
-export type GetPublicCreationInputData<TI, Doc extends IDoc> = TI extends {
-	public: any
-	publicOnCreation: any
-}
-	? _<
-			{ id?: Id<Doc> | undefined } & RelaxRefs<
-				GetInputType<TI['publicOnCreation']>
-			> &
-				RelaxRefs<GetInputType<TI['public']>>
-	  >
-	: never
+export type GetPublicCreationInputData<
+	TI extends { public?: any; publicOnCreation?: any },
+	Doc extends IDoc = IDoc,
+> = _<
+	{ id?: Id<Doc> | undefined } & RelaxRefs<
+		GetInputType<TI['publicOnCreation']>
+	> &
+		RelaxRefs<GetInputType<TI['public']>>
+>
 
-export type GetPublicInputData<TI> = TI extends { public: any }
-	? RelaxRefs<GetInputType<TI['public']>>
-	: never
+export type GetPublicInputData<TI extends { public?: any }> = RelaxRefs<
+	GetInputType<TI['public']>
+>
 
 //
 
 export type GetCreationDataByCtx<
 	TI,
-	Ctx,
-	Doc extends IDoc,
+	Ctx extends ExecutionContext,
+	Doc extends IDoc = IDoc,
 > = Ctx extends 'inside'
 	? GetInputData<TI>
 	: Ctx extends 'outside'

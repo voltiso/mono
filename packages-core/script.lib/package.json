@@ -36,8 +36,8 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:*",
-		"@voltiso/util.node": "workspace:*"
+		"@voltiso/util": "workspace:^",
+		"@voltiso/util.node": "workspace:^"
 	},
 	"devDependencies": {
 		"@types/node": "^18.7.2"

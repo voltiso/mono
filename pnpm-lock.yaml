@@ -8,16 +8,16 @@ importers:
     specifiers:
       '@types/jest': ^28.1.6
       '@types/node': ^18.7.2
-      '@voltiso/assertor.transform': workspace:*
-      '@voltiso/config.eslint.lib': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/config.jest.lib': workspace:*
-      '@voltiso/config.prettier': workspace:*
-      '@voltiso/config.ts': workspace:*
-      '@voltiso/config.ts.build.cjs': workspace:*
-      '@voltiso/config.ts.build.esm': workspace:*
-      '@voltiso/eslint-config': workspace:*
-      '@voltiso/eslint-config-fast': workspace:*
+      '@voltiso/assertor.transform': workspace:^
+      '@voltiso/config.eslint.lib': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.jest.lib': workspace:^
+      '@voltiso/config.prettier': workspace:^
+      '@voltiso/config.ts': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/eslint-config': workspace:^
+      '@voltiso/eslint-config-fast': workspace:^
       cross-env: ^7.0.3
       depcheck: ^1.4.3
       eslint: '*'
@@ -62,14 +62,14 @@ importers:
 
   packages-core/assertor:
     specifiers:
-      '@voltiso/assertor.transform': workspace:*
+      '@voltiso/assertor.transform': workspace:^
     devDependencies:
       '@voltiso/assertor.transform': link:../assertor.transform
 
   packages-core/assertor.test:
     specifiers:
-      '@voltiso/assertor': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
     devDependencies:
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
@@ -93,7 +93,7 @@ importers:
   packages-core/config.babel.zone:
     specifiers:
       '@babel/core': ^7.18.10
-      '@voltiso/config.babel.lib': workspace:*
+      '@voltiso/config.babel.lib': workspace:^
     dependencies:
       '@voltiso/config.babel.lib': link:../config.babel.lib
     devDependencies:
@@ -102,7 +102,7 @@ importers:
   packages-core/config.eslint:
     specifiers:
       '@types/node': ^18.7.2
-      '@voltiso/config.eslint.lib': workspace:*
+      '@voltiso/config.eslint.lib': workspace:^
       eslint: ^8.21.0
       eslint-gitignore: ^0.1.0
       rimraf: ^3.0.2
@@ -116,7 +116,7 @@ importers:
 
   packages-core/config.eslint.lib:
     specifiers:
-      '@voltiso/assertor.transform': workspace:*
+      '@voltiso/assertor.transform': workspace:^
       eslint: ^8.21.0
       eslint-define-config: ^1.6.0
       rimraf: ^3.0.2
@@ -133,7 +133,7 @@ importers:
       '@testing-library/jest-dom': ^5.16.5
       '@types/react': ^18.0.17
       '@types/testing-library__jest-dom': ^5.14.5
-      '@voltiso/config.jest.lib': workspace:*
+      '@voltiso/config.jest.lib': workspace:^
       esbuild: ^0.15.2
       flow-remove-types: ^2.184.0
       jest-environment-jsdom: ^28.1.3
@@ -167,7 +167,7 @@ importers:
     specifiers:
       '@prettier/plugin-xml': ^2.2.0
       '@types/node': ^18.7.2
-      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/config.jest.esr': workspace:^
       '@voltiso/prettier-plugin-toml': ^0.3.3
       jest: ^28.1.3
       prettier: ^2.7.1
@@ -191,21 +191,36 @@ importers:
 
   packages-core/config.ts.build:
     specifiers:
-      '@voltiso/config.ts': workspace:*
+      '@voltiso/config.ts': workspace:^
+      npm-run-all: ^4.1.5
+      prettier: ^2.7.1
     dependencies:
       '@voltiso/config.ts': link:../config.ts
+    devDependencies:
+      npm-run-all: 4.1.5
+      prettier: 2.7.1
 
   packages-core/config.ts.build.cjs:
     specifiers:
-      '@voltiso/config.ts.build': workspace:*
+      '@voltiso/config.ts.build': workspace:^
+      npm-run-all: ^4.1.5
+      prettier: ^2.7.1
     dependencies:
       '@voltiso/config.ts.build': link:../config.ts.build
+    devDependencies:
+      npm-run-all: 4.1.5
+      prettier: 2.7.1
 
   packages-core/config.ts.build.esm:
     specifiers:
-      '@voltiso/config.ts.build': workspace:*
+      '@voltiso/config.ts.build': workspace:^
+      npm-run-all: ^4.1.5
+      prettier: ^2.7.1
     dependencies:
       '@voltiso/config.ts.build': link:../config.ts.build
+    devDependencies:
+      npm-run-all: 4.1.5
+      prettier: 2.7.1
 
   packages-core/eslint-config:
     specifiers:
@@ -216,8 +231,8 @@ importers:
       '@rushstack/eslint-patch': ^1.1.4
       '@typescript-eslint/eslint-plugin': ^5.33.0
       '@typescript-eslint/parser': ^5.33.0
-      '@voltiso/config.eslint': workspace:*
-      '@voltiso/eslint-plugin': workspace:*
+      '@voltiso/config.eslint': workspace:^
+      '@voltiso/eslint-plugin': workspace:^
       any-eslint-parser: ^1.0.1
       confusing-browser-globals: ^1.0.11
       eslint: ^8.21.0
@@ -371,9 +386,9 @@ importers:
   packages-core/eslint-config-fast:
     specifiers:
       '@typescript-eslint/parser': ^5.33.0
-      '@voltiso/config.eslint': workspace:*
-      '@voltiso/config.eslint.lib': workspace:*
-      '@voltiso/eslint-plugin': workspace:*
+      '@voltiso/config.eslint': workspace:^
+      '@voltiso/config.eslint.lib': workspace:^
+      '@voltiso/eslint-plugin': workspace:^
       eslint: ^8.21.0
       eslint-plugin-array-func: ^3.1.7
       eslint-plugin-chai-friendly: ^0.7.2
@@ -514,7 +529,7 @@ importers:
       '@types/is-core-module': ^2.2.0
       '@types/resolve': ^1.20.2
       '@typescript-eslint/utils': ^5.33.0
-      '@voltiso/assertor.transform': workspace:*
+      '@voltiso/assertor.transform': workspace:^
       builtins: ^5.0.1
       eslint: ^8.21.0
       eslint-module-utils: ^2.7.4
@@ -543,8 +558,8 @@ importers:
   packages-core/script:
     specifiers:
       '@types/node': ^18.7.2
-      '@voltiso/script.lib': workspace:*
-      '@voltiso/util.node': workspace:*
+      '@voltiso/script.lib': workspace:^
+      '@voltiso/util.node': workspace:^
     dependencies:
       '@voltiso/script.lib': link:../script.lib
       '@voltiso/util.node': link:../../packages/util.node
@@ -554,8 +569,8 @@ importers:
   packages-core/script.lib:
     specifiers:
       '@types/node': ^18.7.2
-      '@voltiso/util': workspace:*
-      '@voltiso/util.node': workspace:*
+      '@voltiso/util': workspace:^
+      '@voltiso/util.node': workspace:^
     dependencies:
       '@voltiso/util': link:../../packages/util
       '@voltiso/util.node': link:../../packages/util.node
@@ -564,9 +579,9 @@ importers:
 
   packages/caller:
     specifiers:
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/schemar': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/util': workspace:^
       rimraf: ^3.0.2
     dependencies:
       '@voltiso/schemar': link:../schemar
@@ -578,8 +593,8 @@ importers:
   packages/firestore-like:
     specifiers:
       '@firebase/app-types': ^0.7.0
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/util': workspace:^
       firebase-admin: ^11.0.1
       rimraf: ^3.0.2
     dependencies:
@@ -592,9 +607,9 @@ importers:
 
   packages/localstore:
     specifiers:
-      '@voltiso/assertor': workspace:*
-      '@voltiso/firestore-like': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/firestore-like': workspace:^
+      '@voltiso/util': workspace:^
     dependencies:
       '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/util': link:../util
@@ -603,8 +618,8 @@ importers:
 
   packages/patcher:
     specifiers:
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/util': workspace:^
       fast-equals: ^4.0.1
       jest: ^28.1.3
       rimraf: ^3.0.2
@@ -620,10 +635,10 @@ importers:
     specifiers:
       '@types/express': ^4.17.13
       '@types/node': ^18.7.2
-      '@voltiso/caller': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/schemar': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/caller': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/util': workspace:^
       cross-env: ^7.0.3
       cross-fetch: ^3.1.5
       express: ^4.18.1
@@ -649,10 +664,10 @@ importers:
 
   packages/schemar:
     specifiers:
-      '@voltiso/assertor': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/script': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/script': workspace:^
+      '@voltiso/util': workspace:^
       rimraf: ^3.0.2
     dependencies:
       '@voltiso/util': link:../util
@@ -674,9 +689,9 @@ importers:
       '@types/react-native': ^0.69.5
       '@types/react-test-renderer': ^18.0.0
       '@types/testing-library__jest-dom': ^5.14.5
-      '@voltiso/config.eslint.lib': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/config.eslint.lib': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/util': workspace:^
       csstype: ^3.1.0
       fela: ^12.2.0
       fela-native: ^12.2.0
@@ -690,6 +705,8 @@ importers:
       react-native: ^0.69.4
       react-test-renderer: ^18.2.0
       rimraf: ^3.0.2
+    dependencies:
+      '@voltiso/util': link:../util
     devDependencies:
       '@babel/core': 7.18.10
       '@babel/plugin-transform-react-jsx': 7.18.10_@babel+core@7.18.10
@@ -703,7 +720,6 @@ importers:
       '@types/testing-library__jest-dom': 5.14.5
       '@voltiso/config.eslint.lib': link:../../packages-core/config.eslint.lib
       '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/util': link:../util
       csstype: 3.1.0
       fela: 12.2.0
       fela-native: 12.2.0_react-native@0.69.4
@@ -721,10 +737,10 @@ importers:
   packages/transactor:
     specifiers:
       '@types/js-yaml': ^4.0.5
-      '@voltiso/assertor': workspace:*
-      '@voltiso/firestore-like': workspace:*
-      '@voltiso/schemar': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/firestore-like': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/util': workspace:^
       chalk: ^4.1.2
       fast-equals: ^4.0.1
       js-yaml: ^4.1.0
@@ -746,7 +762,7 @@ importers:
   packages/transactor.firestore:
     specifiers:
       '@firebase/app-types': ^0.7.0
-      '@voltiso/transactor': workspace:*
+      '@voltiso/transactor': workspace:^
       firebase-admin: ^11.0.1
     devDependencies:
       '@firebase/app-types': 0.7.0
@@ -758,14 +774,14 @@ importers:
       '@firebase/app-types': ^0.7.0
       '@types/jest-dev-server': ^5.0.0
       '@types/random-seed': ^0.3.3
-      '@voltiso/assertor': workspace:*
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/config.jest.lib': workspace:^1.0.0
-      '@voltiso/schemar': workspace:*
-      '@voltiso/transactor': workspace:*
-      '@voltiso/transactor.firestore': workspace:*
-      '@voltiso/util': workspace:*
-      '@voltiso/util.esbuild': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.jest.lib': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/transactor': workspace:^
+      '@voltiso/transactor.firestore': workspace:^
+      '@voltiso/util': workspace:^
+      '@voltiso/util.esbuild': workspace:^
       firebase-admin: ^11.0.1
       firebase-tools: ^11.6.0
       get-port: ^6.1.2
@@ -797,9 +813,9 @@ importers:
 
   packages/transactor.localstore:
     specifiers:
-      '@voltiso/firestore-like': workspace:*
-      '@voltiso/localstore': workspace:*
-      '@voltiso/transactor': workspace:*
+      '@voltiso/firestore-like': workspace:^
+      '@voltiso/localstore': workspace:^
+      '@voltiso/transactor': workspace:^
     devDependencies:
       '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/localstore': link:../localstore
@@ -809,14 +825,14 @@ importers:
     specifiers:
       '@types/random-seed': ^0.3.3
       '@typescript/analyze-trace': ^0.9.0
-      '@voltiso/assertor': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/config.jest.lib': workspace:*
-      '@voltiso/localstore': workspace:*
-      '@voltiso/schemar': workspace:*
-      '@voltiso/transactor': workspace:*
-      '@voltiso/transactor.localstore': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.jest.lib': workspace:^
+      '@voltiso/localstore': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/transactor': workspace:^
+      '@voltiso/transactor.localstore': workspace:^
+      '@voltiso/util': workspace:^
       jest: ^28.1.3
       random-seed: ^0.3.0
       rimraf: ^3.0.2
@@ -840,8 +856,8 @@ importers:
   packages/util:
     specifiers:
       '@types/clone': ^2.1.1
-      '@voltiso/assertor': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
       clone: ^2.1.2
       jest: ^28.1.3
       package-json: ^8.1.0
@@ -872,9 +888,9 @@ importers:
 
   packages/util.node:
     specifiers:
-      '@voltiso/assertor': workspace:*
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/util': workspace:^
     dependencies:
       '@voltiso/util': link:../util
     devDependencies:
@@ -889,8 +905,8 @@ importers:
       '@babel/preset-env': ^7.18.10
       '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.17
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/util': workspace:*
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/util': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0
       react-intersection-observer: ^9.4.0
@@ -916,7 +932,7 @@ importers:
     specifiers:
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
-      '@voltiso/util.react': workspace:*
+      '@voltiso/util.react': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0
       rimraf: ^3.0.2
@@ -937,10 +953,10 @@ importers:
       '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.17
       '@types/testing-library__jest-dom': ^5.14.5
-      '@voltiso/config.jest.esr': workspace:*
-      '@voltiso/patcher': workspace:*
-      '@voltiso/util': workspace:*
-      '@voltiso/util.react': workspace:*
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/patcher': workspace:^
+      '@voltiso/util': workspace:^
+      '@voltiso/util.react': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0
       react-native: ^0.69.4
@@ -12936,7 +12952,7 @@ packages:
     resolution: {integrity: sha512-iCix/+z812fUqa6KlOxaTkY6LQQDoXIe/VljXkGIvpygSCmYyhjQpfQVZEVVPezFmUBYXNdabdQ6cYx6JX3yMg==}
     dependencies:
       metro-core: 0.70.3
-      rimraf: 2.7.1
+      rimraf: 2.6.3
 
   /metro-config/0.70.3:
     resolution: {integrity: sha512-SSCDjSTygoCgzoj61DdrBeJzZDRwQxUEfcgc6t6coxWSExXNR4mOngz0q4SAam49Bmjq9J2Jft6qUKnUTPrRgA==}
@@ -13156,7 +13172,7 @@ packages:
       mime-types: 2.1.35
       node-fetch: 2.6.7
       nullthrows: 1.1.1
-      rimraf: 2.7.1
+      rimraf: 2.6.3
       serialize-error: 2.1.0
       source-map: 0.5.7
       strip-ansi: 6.0.1
@@ -15623,6 +15639,7 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
 
   /rimraf/3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}

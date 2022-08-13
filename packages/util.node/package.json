@@ -46,11 +46,11 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:*"
+		"@voltiso/util": "workspace:^"
 	},
 	"devDependencies": {
-		"@voltiso/assertor": "workspace:*",
-		"@voltiso/config.jest.esr": "workspace:*"
+		"@voltiso/assertor": "workspace:^",
+		"@voltiso/config.jest.esr": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {
