@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/rpc",
-	"version": "2.0.3",
+	"version": "2.0.4",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -43,7 +43,7 @@
 		"__________TEST": "__________",
 		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
 		"__________LINT": "__________",
-		"lint": "run-s depcheck lint:eslint lint:tsc",
+		"lint": "run-s lint:depcheck lint:eslint lint:tsc",
 		"lint:depcheck": "depcheck",
 		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
