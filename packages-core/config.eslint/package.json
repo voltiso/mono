@@ -121,8 +121,10 @@
 		"yaml-eslint-parser": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.2",
-		"eslint": "^8.21.0",
+		"@types/node": "^18.7.5",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"eslint": "^8.22.0",
 		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",

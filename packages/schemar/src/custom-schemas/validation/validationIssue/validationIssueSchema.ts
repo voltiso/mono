@@ -8,6 +8,7 @@ import {
 	function as function_,
 	number,
 	optional,
+	schema,
 	string,
 	symbol,
 	tuple,
@@ -26,3 +27,6 @@ export const validationIssue = lazyValue(() => ({
 
 	toString: function_(tuple(), string),
 }))
+
+const s = schema(validationIssue)
+export type Test = /** @inline */ typeof s.OutputType

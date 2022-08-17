@@ -17,41 +17,39 @@ if (isEnabled) {
 }
 
 export function assertorTransform(_program: ts.Program, _pluginOptions: {}) {
-	return (ctx: ts.TransformationContext) => {
-		return (sourceFile: ts.SourceFile) => {
-			function visitor(node: ts.Node): ts.Node {
-				if (!isEnabled) return node
+	return (ctx: ts.TransformationContext) => (sourceFile: ts.SourceFile) => {
+		function visitor(node: ts.Node): ts.Node {
+			if (!isEnabled) return node
 
-				/** Comment-out `$assert` calls */
-				if (
-					ts.isCallExpression(node) &&
-					node.expression.getText() === '$assert'
-				) {
-					const notEmittedNode = ts.factory.createNotEmittedStatement(node)
-					return ts.addSyntheticLeadingComment(
-						notEmittedNode,
-						ts.SyntaxKind.MultiLineCommentTrivia,
-						node.getText(),
-					)
-				}
-
-				/** Comment-out imports from `@voltiso/assertor` */
-				if (
-					ts.isImportDeclaration(node) &&
-					ts.isStringLiteral(node.moduleSpecifier) &&
-					node.moduleSpecifier.text.startsWith('@voltiso/assertor')
-				) {
-					const notEmittedNode = ts.factory.createNotEmittedStatement(node)
-					return ts.addSyntheticLeadingComment(
-						notEmittedNode,
-						ts.SyntaxKind.MultiLineCommentTrivia,
-						node.getText(),
-					)
-				}
-
-				return ts.visitEachChild(node, visitor, ctx)
+			/** Comment-out `$assert` calls */
+			if (
+				ts.isCallExpression(node) &&
+				node.expression.getText() === '$assert'
+			) {
+				const notEmittedNode = ts.factory.createNotEmittedStatement(node)
+				return ts.addSyntheticLeadingComment(
+					notEmittedNode,
+					ts.SyntaxKind.MultiLineCommentTrivia,
+					node.getText(),
+				)
 			}
-			return ts.visitEachChild(sourceFile, visitor, ctx)
+
+			/** Comment-out imports from `@voltiso/assertor` */
+			if (
+				ts.isImportDeclaration(node) &&
+				ts.isStringLiteral(node.moduleSpecifier) &&
+				node.moduleSpecifier.text.startsWith('@voltiso/assertor')
+			) {
+				const notEmittedNode = ts.factory.createNotEmittedStatement(node)
+				return ts.addSyntheticLeadingComment(
+					notEmittedNode,
+					ts.SyntaxKind.MultiLineCommentTrivia,
+					node.getText(),
+				)
+			}
+
+			return ts.visitEachChild(node, visitor, ctx)
 		}
+		return ts.visitEachChild(sourceFile, visitor, ctx)
 	}
 }

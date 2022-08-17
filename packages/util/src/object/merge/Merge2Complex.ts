@@ -5,7 +5,7 @@ import type { _, Callable, IsOptional_, Newable, Value_ } from '~'
 
 import type { SuggestObject } from './SuggestObject'
 
-type Part1<A, B> = {
+/** @inline */ type Part1<A, B> = {
 	[k in keyof A]: k extends keyof B
 		?
 				| Value_<B, k>
@@ -13,7 +13,7 @@ type Part1<A, B> = {
 		: Value_<A, k>
 }
 
-type Part2<A, B> = {
+/** @inline */ type Part2<A, B> = {
 	[k in keyof B]: k extends keyof A
 		?
 				| Value_<B, k>
@@ -21,13 +21,13 @@ type Part2<A, B> = {
 		: Value_<B, k>
 }
 
-export type Merge2Complex_<A, B> = (A extends Callable | Newable
+/** @inline */ export type Merge2Complex_<A, B> = (A extends Callable | Newable
 	? A
 	: unknown) &
 	(B extends Callable | Newable ? B : unknown) &
 	_<Part1<A, B> & Part2<A, B>>
 
-export type Merge2Complex<
+/** @inline */ export type Merge2Complex<
 	A extends object,
 	B extends SuggestObject<A>,
 > = Merge2Complex_<A, B>

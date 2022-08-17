@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`alias works 1`] = `
+"export declare type Flatten<T> = [{
+    [k in keyof T]: T[k];
+}][0];
+/** @inline */ export declare type InlineFlatten<T> = [{
+    [k in keyof T]: T[k];
+}][0];
+export declare type A = {
+    a: 1;
+};
+export declare type B = {
+    b: 1;
+};
+export declare type Normal = Flatten<A & B>;
+export declare type Inlined = /*InlineFlatten<A & B>*/ { a: 1; b: 1; };
+export declare type UnableToInline<B> = InlineFlatten<A & B>;
+//# sourceMappingURL=alias.d.ts.map"
+`;

@@ -1,0 +1,14 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	"$schema": "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+
+	"tagDefinitions": [
+		{
+			"tagName": "@inline",
+			"syntaxKind": "modifier",
+			"allowMultiple": false
+		}
+	]
+}

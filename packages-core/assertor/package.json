@@ -39,7 +39,9 @@
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@voltiso/assertor.transform": "workspace:^"
+		"@voltiso/assertor.transform": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {

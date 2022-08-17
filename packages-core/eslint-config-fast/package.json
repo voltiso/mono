@@ -39,7 +39,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@typescript-eslint/parser": "^5.33.0",
+		"@typescript-eslint/parser": "^5.33.1",
 		"@voltiso/config.eslint": "workspace:^",
 		"@voltiso/config.eslint.lib": "workspace:^",
 		"@voltiso/eslint-plugin": "workspace:^",
@@ -61,14 +61,14 @@
 		"eslint-plugin-i18n-text": "^1.0.1",
 		"eslint-plugin-i18next": "^6.0.0-4",
 		"eslint-plugin-import": "^2.26.0",
-		"eslint-plugin-jest": "^26.8.2",
+		"eslint-plugin-jest": "^26.8.3",
 		"eslint-plugin-jest-async": "^1.0.3",
 		"eslint-plugin-jest-dom": "^4.0.2",
 		"eslint-plugin-jest-formatting": "^3.1.0",
 		"eslint-plugin-jsdoc": "^39.3.6",
 		"eslint-plugin-json": "^3.1.0",
 		"eslint-plugin-json-schema-validator": "^4.0.1",
-		"eslint-plugin-jsonc": "^2.3.1",
+		"eslint-plugin-jsonc": "^2.4.0",
 		"eslint-plugin-jsx": "^0.1.0",
 		"eslint-plugin-jsx-a11y": "^6.6.1",
 		"eslint-plugin-markdown": "^3.0.0",
@@ -87,7 +87,7 @@
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-native": "^4.0.0",
 		"eslint-plugin-react-native-globals": "^0.1.2",
-		"eslint-plugin-regex": "^1.9.1",
+		"eslint-plugin-regex": "^1.10.0",
 		"eslint-plugin-regexp": "^1.8.0",
 		"eslint-plugin-rxjs": "^5.0.2",
 		"eslint-plugin-security": "^1.5.0",
@@ -109,7 +109,8 @@
 		"prettier": "*"
 	},
 	"devDependencies": {
-		"eslint": "^8.21.0",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"eslint": "^8.22.0",
 		"prettier": "^2.7.1",
 		"typescript": "^4.7.4"
 	}

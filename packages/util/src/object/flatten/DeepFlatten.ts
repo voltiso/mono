@@ -3,7 +3,7 @@
 
 import type { CanBeUndefinedImpl, IsOptional_ } from '~'
 
-type DeepFlattenValue<T, k extends keyof T> = IsOptional_<
+/** @inline */ type DeepFlattenValue<T, k extends keyof T> = IsOptional_<
 	T,
 	k,
 	CanBeUndefinedImpl<
@@ -14,7 +14,7 @@ type DeepFlattenValue<T, k extends keyof T> = IsOptional_<
 	>,
 	DeepFlatten<T[k]>
 >
-export type DeepFlatten<T> = T extends (...args: any) => any
+/** @inline */ export type DeepFlatten<T> = T extends (...args: any) => any
 	? T
 	: T extends abstract new (...args: any) => any
 	? T

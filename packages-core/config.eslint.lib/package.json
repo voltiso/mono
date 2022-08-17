@@ -42,7 +42,9 @@
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@voltiso/assertor.transform": "workspace:^",
-		"eslint": "^8.21.0",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"eslint": "^8.22.0",
 		"eslint-define-config": "^1.6.0",
 		"rimraf": "^3.0.2"
 	},

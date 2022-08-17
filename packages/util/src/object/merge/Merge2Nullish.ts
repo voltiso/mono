@@ -37,12 +37,12 @@ import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 //
 
-type Merge2NullishBasic_<A, B> = Merge2Complex_<
+/** @inline */ type Merge2NullishBasic_<A, B> = Merge2Complex_<
 	PartialIfNullish_<A>,
 	PartialIfNullish_<B>
 >
 
-type Finalize<A, B, Result> = {
+/** @inline */ type Finalize<A, B, Result> = {
 	[k in keyof Result]: IsOptional_<Result, k> extends true
 		? Result[k]
 		: CanBeUndefined_<A, k> extends false
@@ -52,7 +52,7 @@ type Finalize<A, B, Result> = {
 		: Result[k]
 }
 
-export type Merge2Nullish_<A, B> = exactOptionalPropertyTypes extends true
+/** @inline */ export type Merge2Nullish_<A, B> = exactOptionalPropertyTypes extends true
 	? Merge2NullishBasic_<A, B>
 	: Finalize<A, B, Merge2NullishBasic_<A, B>>
 
@@ -103,7 +103,7 @@ export type Merge2Nullish_<A, B> = exactOptionalPropertyTypes extends true
 // 			>
 // 	>
 
-export type Merge2Nullish<
+/** @inline */ export type Merge2Nullish<
 	A extends object | Nullish,
 	B extends SuggestObjectNullish<A> | Nullish,
 > = Merge2Nullish_<A, B>

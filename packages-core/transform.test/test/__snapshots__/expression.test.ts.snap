@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`expression works 1`] = `
+"export declare class NonGeneric {
+    Type: string;
+}
+export interface Generic<T> {
+    get Type(): T;
+}
+export declare type A = NonGeneric['Type'];
+export declare type A_ = /*NonGeneric['Type']*/ string;
+export declare type G0<T> = Generic<T>['Type'];
+export declare type G0_<T> = Generic<T>['Type'];
+export declare type G1 = Generic<string>['Type'];
+export declare type G1_ = /*Generic<string>['Type']*/ string;
+//# sourceMappingURL=expression.d.ts.map"
+`;

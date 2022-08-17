@@ -3,14 +3,22 @@
 
 import type { _, __, Callable, Newable } from '~'
 
-/** DistributedFlattenAnything */
+/**
+ * DistributedFlattenAnything
+ *
+ * @inline
+ */
 export type $$_<T> = T extends Callable | Newable
 	? T
 	: T extends object
 	? _<T>
 	: T
 
-/** DistributedFlattenAnything2 */
+/**
+ * DistributedFlattenAnything2
+ *
+ * @inline
+ */
 export type $$__<T> = T extends Callable | Newable
 	? T
 	: T extends object

@@ -63,6 +63,9 @@
 	"devDependencies": {
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/config.tsdoc": "workspace:^1.0.0",
 		"@voltiso/script": "workspace:^",
 		"rimraf": "^3.0.2"
 	}

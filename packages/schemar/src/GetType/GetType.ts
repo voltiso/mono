@@ -7,6 +7,7 @@ import type { GetObjectType_ } from './GetObjectType'
 import type { GetTupleType } from './GetTupleType'
 import type { GetTypeOptions } from './GetTypeOptions'
 
+/** @inline */
 export type GetType_<L, IO extends GetTypeOptions> = L extends {
 	readonly InputType: any
 	readonly OutputType: any
@@ -26,14 +27,26 @@ export type GetType_<L, IO extends GetTypeOptions> = L extends {
 	? object
 	: never
 
-/** Infer type, or identity if already an Inferable */
+/**
+ * Infer type, or identity if already an Inferable
+ *
+ * @inline
+ */
 export type GetType<
 	S, // extends ISchema | Inferable,
 	Options extends GetTypeOptions = { kind: 'out' },
 > = GetType_<S, Options>
 
-/** Proxy to `GetType` */
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
 export type GetOutputType<S> = GetType_<S, { kind: 'out' }>
 
-/** Proxy to `GetType` */
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
 export type GetInputType<S> = GetType_<S, { kind: 'in' }>

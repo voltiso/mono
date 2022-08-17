@@ -71,6 +71,8 @@
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
 		"@voltiso/assertor": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"@voltiso/schemar": "workspace:^",
 		"rimraf": "^3.0.2",
 		"zone.js": "^0.11.8"

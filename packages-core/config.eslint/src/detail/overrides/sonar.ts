@@ -15,6 +15,12 @@ export const sonar = defineEslintConfigOverride({
 		'sonarjs/prefer-single-boolean-return': 0,
 		'sonarjs/no-collapsible-if': 0, // unicorn has auto-fix for this!!
 
+		/**
+		 * Nope - variable name can serve as comment, and it's easier to add
+		 * console.log for debugging
+		 */
+		'sonarjs/prefer-immediate-return': 0,
+
 		'sonarjs/no-identical-expressions': 1,
 		'sonarjs/no-inverted-boolean-check': 1,
 	},
