@@ -67,6 +67,8 @@
 		"@types/node": "^18.7.5",
 		"@voltiso/caller": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"cross-env": "^7.0.3",
 		"express": "^4.18.1",
 		"get-port": "^6.1.2",

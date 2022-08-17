@@ -4,9 +4,7 @@
 	"scripts": {
 		"__________TURBO - PER-PACKAGE": "__________",
 		"dev": "turbo run dev",
-		"build": "turbo run build-core build",
-		"build:core": "turbo run build-core",
-		"build:rest": "turbo run build",
+		"build": "turbo run build",
 		"test": "turbo run test",
 		"lint": "turbo run lint # high RAM usage!",
 		"check": "run-s test lint",

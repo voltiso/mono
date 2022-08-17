@@ -12,11 +12,6 @@
 			"outputs": ["dist/**"]
 		},
 
-		"build-core": {
-			"dependsOn": ["^build"],
-			"outputs": ["dist/**"]
-		},
-
 		"test": {
 			"dependsOn": ["^build"],
 			"inputs": ["**", ":!dist/"],

@@ -72,6 +72,8 @@
 		"@types/testing-library__jest-dom": "^5.14.5",
 		"@voltiso/config.eslint.lib": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
 		"csstype": "^3.1.0",
 		"fela": "^12.2.0",
 		"fela-native": "^12.2.0",
