@@ -14,7 +14,7 @@ export const prepareWorkspace = `turbo run build:cjs ${corePackages
 	.map(packageName => `--filter=...@voltiso/${packageName}`)
 	.join(' ')}`
 
-export const uninstallWorkspace = [turbo('uninstall'), 'uninstall']
+export const cleanWorkspace = [turbo('clean'), 'clean']
 
 //!
 //! Per-package
@@ -44,7 +44,7 @@ export const typecov = [
 	'prettier --write ./package.json',
 ]
 
-export const uninstall = 'rimraf node_modules'
+export const clean = 'rimraf node_modules dist'
 
 export const prepublishOnly = [
 	turbo(
@@ -66,8 +66,6 @@ export const prepublishOnly = [
 // export const eslint = 'eslint .'
 // export const tsclint = 'tsc -b'
 
-// /** Clean */
-// export const clean = 'rimraf dist'
 
 // /** `type-coverage` */
 // export const typecov = [

@@ -8,7 +8,7 @@
 		"test": "turbo run test",
 		"lint": "turbo run lint",
 		"__________WORKSPACE + PACKAGES": "__________",
-		"uninstall": "v uninstallWorkspace",
+		"w:clean": "v cleanWorkspace",
 		"__________PREPARE WORKSPACE": "__________",
 		"prepare": "run-s prepare:ts-patch prepare:script prepare:run",
 		"prepare:ts-patch": "ts-patch install -s",
