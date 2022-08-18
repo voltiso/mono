@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SCHEMA_NAME } from '_'
-import type { AtLeast2 } from '@voltiso/util'
 
 import type { ISchema, Schemable_ } from '~'
 
@@ -11,7 +10,7 @@ export interface IUnion extends ISchema {
 	// readonly [BASE_OPTIONS]: UnionOptions
 	// readonly [DEFAULT_OPTIONS]: DefaultUnionOptions
 
-	get getSchemas(): [...AtLeast2<Schemable_>]
+	get getSchemas(): Schemable_[]
 }
 
 export function isUnion(x: unknown): x is IUnion {

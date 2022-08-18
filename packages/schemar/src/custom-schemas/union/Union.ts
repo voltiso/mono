@@ -2,13 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import type { AtLeast2 } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { CustomUnion, GetType_, Schemable_ } from '~'
 import { isUnion, UnionImpl } from '~'
 
-export type Union<Ts extends AtLeast2<Schemable_>> = CustomUnion<{
+export type Union<Ts extends Schemable_[]> = CustomUnion<{
 	schemas: Ts
 	Output: GetType_<Ts[number], { kind: 'out' }>
 	Input: GetType_<Ts[number], { kind: 'in' }>
@@ -18,13 +17,13 @@ export const Union = lazyConstructor(
 	() => UnionImpl,
 ) as unknown as UnionConstructor
 
-type UnionConstructor = new <Ts extends AtLeast2<Schemable_>>(
+type UnionConstructor = new <Ts extends Schemable_[]>(
 	schemas: Ts,
 ) => Union<Ts>
 
 //
 
-export function union<Ts extends AtLeast2<Schemable_>>(
+export function union<Ts extends Schemable_[]>(
 	...types: Ts
 ): Union<Ts> {
 	let ts = [] as Schemable_[]
