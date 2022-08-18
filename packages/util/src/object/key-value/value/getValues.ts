@@ -12,7 +12,7 @@ import { defaultIterationOptions } from '~/object/key-value/IterationOptions'
 import type { Value } from '~/object/key-value/value/Value'
 import { merge } from '~/object/merge/merge'
 import type { Merge2Complex } from '~/object/merge/Merge2Complex'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
 type GetValues<
 	Obj extends object,
@@ -29,7 +29,7 @@ export function getValues_<Obj extends object, O extends IterationOptions>(
 ): GetValues<Obj, O> {
 	if (isSet(obj) || isMap(obj))
 		throw new VoltisoUtilError(
-			`getKeys called on Map or Set: getKeys(${toString(obj)}, ${toString(
+			`getKeys called on Map or Set: getKeys(${stringFrom(obj)}, ${stringFrom(
 				options,
 			)})`,
 		)

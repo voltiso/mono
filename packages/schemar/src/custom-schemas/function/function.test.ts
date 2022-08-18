@@ -5,6 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type {
+	$GetType_,
 	CustomFunction,
 	FunctionOptions,
 	GetInputType,
@@ -42,7 +43,7 @@ describe('function', () => {
 		expect.assertions(0)
 
 		Assert.is<
-			GetType_<O['arguments'], { kind: 'out' }>,
+			$GetType_<O['arguments'], { kind: 'out' }>,
 			undefined | readonly any[]
 		>()
 

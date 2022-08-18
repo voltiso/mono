@@ -15,7 +15,7 @@ import type {
 } from '~'
 import { number } from '~'
 
-import type { GetInputType, GetOutputType } from './GetType'
+import type { $GetOutputType, GetInputType, GetOutputType } from './GetType'
 
 describe('GetType', () => {
 	it('simple', () => {
@@ -117,7 +117,7 @@ describe('GetType', () => {
 
 		Assert.is<GetOutputType<(ITuple | IArray) & ISchema>, readonly unknown[]>()
 
-		Assert.is<GetOutputType<S>, readonly unknown[]>()
+		Assert.is<$GetOutputType<S>, readonly unknown[]>()
 
 		Assert.is<never[], GetOutputType<(ITuple | IArray) & ISchema>>()
 

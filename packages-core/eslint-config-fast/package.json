@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/eslint-config-fast",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -39,6 +39,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
+		"@rushstack/eslint-patch": "^1.1.4",
 		"@typescript-eslint/parser": "^5.33.1",
 		"@voltiso/config.eslint": "workspace:^",
 		"@voltiso/config.eslint.lib": "workspace:^",

@@ -24,8 +24,14 @@ export type GDocByTag<TI extends IDocTI> = GDocByTag_<TI> extends never
 /**
  * Get Doc from DocTI - inside execution context (can access public, const,
  * private, protected)
+ *
+ * @inline
  */
 export type GI<TI extends IDocTI> = Doc<TI, 'inside'>
 
-/** Get Doc from DocTI - outside execution context (can access public only) */
+/**
+ * Get Doc from DocTI - outside execution context (can access public only)
+ *
+ * @inline
+ */
 export type GO<TI extends IDocTI> = Doc<TI, 'outside'>

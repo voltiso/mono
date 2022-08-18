@@ -4,7 +4,7 @@
 import { undef } from '~'
 import { getEntries, merge } from '~/object'
 
-import { toString } from './toString'
+import { stringFrom } from './stringFrom'
 import type { ToStringOptions } from './ToStringOptions'
 import { defaultToStringOptions } from './ToStringOptions'
 
@@ -42,7 +42,7 @@ export function stringFromObject_(
 
 		const propertyStr = stringFromProperty(property)
 
-		const cand = append(result, `${propertyStr}: ${toString(value)}`)
+		const cand = append(result, `${propertyStr}: ${stringFrom(value)}`)
 		const shortCand =
 			result === baseObjStr ? shortResult : append(result, '...')
 

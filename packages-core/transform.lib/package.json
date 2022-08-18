@@ -42,7 +42,6 @@
 		"typescript": "*"
 	},
 	"devDependencies": {
-		"chalk": "^4.1.2",
 		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",

@@ -22,7 +22,8 @@ export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arr
 
 // type TDataDef = DataRecord // & TData
 
-export type WithId<Data, Doc extends IDoc = IDoc> = _<Data & { id: Id<Doc> }>
+/** @inline */
+export type WithId<Data, Doc extends IDoc = IDoc> = _<{ id: Id<Doc> } & Data>
 
 // export type DataWithId<
 // 	F extends IntrinsicFields = IntrinsicFields,

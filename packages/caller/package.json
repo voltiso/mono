@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/caller",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -41,13 +41,14 @@
 		"clean": "rimraf dist"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
+	"peerDependencies": {
 		"@voltiso/schemar": "workspace:^"
 	},
 	"devDependencies": {
 		"@voltiso/config.jest.esr": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/schemar": "workspace:^",
 		"@voltiso/util": "workspace:^",
 		"rimraf": "^3.0.2"
 	}

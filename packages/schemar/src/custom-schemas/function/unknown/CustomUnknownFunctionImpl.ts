@@ -1,15 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	SCHEMA_NAME,
-} from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import type {
+	$GetOutputType,
 	CustomUnknownFunction,
 	DefaultUnknownFunctionOptions,
 	GetOutputType,
@@ -79,7 +76,7 @@ export class CustomUnknownFunctionImpl<
 		argumentsSchema: Args,
 		resultSchema: R,
 		// eslint-disable-next-line @typescript-eslint/ban-types
-	): Function<(...args: GetOutputType<Args>) => GetOutputType<R>> {
+	): Function<(...args: $GetOutputType<Args>) => GetOutputType<R>> {
 		return new Function(argumentsSchema as never, resultSchema) as never
 	}
 }

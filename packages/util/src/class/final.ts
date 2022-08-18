@@ -5,7 +5,7 @@ import { assumeType } from '~/cast/assumeType'
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { hasProperty } from '~/object/get-set/get/hasProperty/hasProperty'
 import type { UnknownProperty } from '~/object/UnknownProperty'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 
 type MethodKey<O> = string &
 	{
@@ -32,7 +32,7 @@ export function final<
 			typeof Base.prototype[m] !== 'function'
 		) {
 			throw new VoltisoUtilError(
-				`${toString(m)} is not a method in ${Base.name}`,
+				`${stringFrom(m)} is not a method in ${Base.name}`,
 			)
 		}
 
@@ -41,7 +41,7 @@ export function final<
 		// eslint-disable-next-line security/detect-object-injection
 		if (thisArg[m] !== Base.prototype[m]) {
 			throw new VoltisoUtilError(
-				`method ${toString(m)} is final (cannot override)`,
+				`method ${stringFrom(m)} is final (cannot override)`,
 			)
 		}
 	}

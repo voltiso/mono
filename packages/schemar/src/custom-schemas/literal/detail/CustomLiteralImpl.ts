@@ -3,7 +3,7 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
 import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
-import { isSubset, lazyConstructor, toString } from '@voltiso/util'
+import { isSubset, lazyConstructor, stringFrom } from '@voltiso/util'
 
 import type {
 	CustomLiteral,
@@ -77,7 +77,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 
 	override _toString(): string {
 		return [...(this.getValues as unknown as InferableLiteral[])]
-			.map(x => toString(x))
+			.map(x => stringFrom(x))
 			.join(' | ')
 	}
 }

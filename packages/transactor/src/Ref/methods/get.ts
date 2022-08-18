@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { clone, toString, undef } from '@voltiso/util'
+import { clone, stringFrom, undef } from '@voltiso/util'
 
 import { fromFirestore } from '~/common'
 import { withoutId } from '~/Data'
@@ -227,7 +227,7 @@ export function get<TI extends IDocTI>(
 	if (isWithTransaction(ctx)) {
 		if (ctx.transaction._error)
 			throw new TransactorError(
-				`Do not catch errors inside transactions - this transaction is supposed to fail. Caught error: ${toString(
+				`Do not catch errors inside transactions - this transaction is supposed to fail. Caught error: ${stringFrom(
 					ctx.transaction._error,
 				)}`,
 			)

@@ -5,23 +5,25 @@ import type { Newable } from '@voltiso/util'
 import { isConstructor } from '@voltiso/util'
 
 import type {
-	Inferable,
+	Inferable_,
 	InferableLiteral,
 	InferableMutableTuple,
 	InferableObject,
+	InferableObject_,
 	InferableReadonlyTuple,
 	Instance,
+	ISchema_,
 	Literal,
 	MutableTuple,
 	Object,
 	ReadonlyTuple,
 	Schema,
-	Schemable,
+	Schemable_,
 } from '~'
 import { isSchema } from '~'
 import { instance, literal, object, tuple } from '~/custom-schemas'
 
-export type GetSchema_<S> = S extends InferableLiteral
+export type GetSchema_<S> = [S] extends [InferableLiteral]
 	? Literal<S>
 	: S extends Newable
 	? Instance<S>
@@ -36,37 +38,45 @@ export type GetSchema_<S> = S extends InferableLiteral
 	  Object<S>
 	: never
 
-export type GetSchema<S extends Schemable> = GetSchema_<S>
+export type GetSchema<S extends Schemable_> = GetSchema_<S>
+
+export type $GetSchema_<S> = S extends any ? GetSchema_<S> : never
+
+export type $GetSchema<S extends Schemable_> = S extends any
+	? GetSchema_<S>
+	: never
+
+//
 
 export type GetSchemaWithoutReadonlyTuples_<T> = T extends InferableLiteral
 	? Literal<T>
 	: T extends Newable
 	? Instance<T>
-	: T extends Schema
+	: T extends ISchema_
 	? T
 	: T extends InferableReadonlyTuple
 	? MutableTuple<[...T]>
-	: T extends InferableObject
+	: T extends InferableObject_
 	? // eslint-disable-next-line @typescript-eslint/ban-types
 	  Object<T>
 	: never
 
-export type GetSchemaWithoutReadonlyTuples<T extends Schemable> =
+export type GetSchemaWithoutReadonlyTuples<T extends Schemable_> =
 	GetSchemaWithoutReadonlyTuples_<T>
 
 //
 
-export function getSchema<T extends Inferable>(
+export function getSchema<T extends Inferable_>(
 	t: T,
 ): GetSchemaWithoutReadonlyTuples<T>
 
-export function getSchema<T extends Schema>(t: T): T
+export function getSchema<T extends ISchema_>(t: T): T
 
-export function getSchema<T extends Schemable>(
+export function getSchema<T extends Schemable_>(
 	t: T,
 ): GetSchemaWithoutReadonlyTuples<T>
 
-export function getSchema<T extends Schemable>(
+export function getSchema<T extends Schemable_>(
 	t: T,
 ): GetSchemaWithoutReadonlyTuples<T> {
 	if (

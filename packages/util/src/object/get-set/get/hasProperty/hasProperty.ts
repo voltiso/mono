@@ -4,7 +4,7 @@
 import { VoltisoError } from '~/error/VoltisoError'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { isObject } from '~/object/isObject'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 
 export function hasProperty<O extends object, K extends keyof any>(
 	o: O,
@@ -22,7 +22,7 @@ export function assertHasProperty<O extends object, K extends keyof any>(
 ): asserts key is K & keyof O {
 	if (!hasProperty(obj, key)) {
 		throw new VoltisoError(
-			`assertHasProperty(${toString(obj)}, ${toString(key)}) failed`,
+			`assertHasProperty(${stringFrom(obj)}, ${stringFrom(key)}) failed`,
 		)
 	}
 }

@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
 /* eslint-disable no-magic-numbers */
 
@@ -62,7 +62,7 @@ export function at<Arr, Index extends number & keyof Arr>(
 
 	if (typeof r === 'undefined')
 		throw new VoltisoUtilError(
-			`at(${toString(array)}, ${toString(index)}) returned 'undefined'`,
+			`at(${stringFrom(array)}, ${stringFrom(index)}) returned 'undefined'`,
 		)
 
 	return r as Exclude<At<Arr, Index>, undefined>

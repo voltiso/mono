@@ -3,3 +3,4 @@
 
 ignores:
   - '@voltiso/eslint-config'
+  - '@voltiso/config.ts.build.cjs'

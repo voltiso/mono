@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableTuple } from '~'
-
 /* eslint-disable no-magic-numbers */
 
 type GetArrayLength<A extends readonly unknown[]> = A extends readonly []
@@ -33,5 +31,6 @@ type GetArrayLength<A extends readonly unknown[]> = A extends readonly []
 	? number
 	: never
 
-export type GetTupleLength<X extends InferableTuple> =
-	X extends readonly unknown[] ? GetArrayLength<X> : never
+export type GetTupleLength_<X> = X extends readonly unknown[]
+	? GetArrayLength<X>
+	: never

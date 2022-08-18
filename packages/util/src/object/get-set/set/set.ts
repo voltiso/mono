@@ -9,7 +9,7 @@ import type { Entry, IEntry } from '~/object/key-value/entry/Entry'
 import type { IPath } from '~/object/Path/IPath'
 import type { Path } from '~/object/Path/Path'
 import type { UnknownProperty } from '~/object/UnknownProperty'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
 
 export class SetError<
@@ -22,9 +22,9 @@ export class SetError<
 	value: V
 
 	constructor(obj: Obj, path: P, value: V, options?: ErrorOptions | undefined) {
-		const message = `property not present @ set(${toString(obj)}, ${toString(
+		const message = `property not present @ set(${stringFrom(obj)}, ${stringFrom(
 			path,
-		)}, ${toString(value)})`
+		)}, ${stringFrom(value)})`
 		super(message, options)
 
 		this.object = obj

@@ -16,6 +16,6 @@ export class NumberImpl extends lazyConstructor(() => CustomNumberImpl)<{}> {
 
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<L extends number>(...args: L[] | [Set<L>]): Literal<L> {
-		return literal(...args)
+		return literal<L>(...args)
 	}
 }

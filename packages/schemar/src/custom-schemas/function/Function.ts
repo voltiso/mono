@@ -4,8 +4,8 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import type {
+	$GetType,
 	CustomFunction,
-	GetType,
 	IArray,
 	InferableReadonlyTuple,
 	ISchema,
@@ -43,10 +43,10 @@ export const Function = lazyConstructor(
 ) as unknown as FunctionConstructor
 
 type FunctionConstructor = new <
-	Args extends InferableReadonlyTuple | (ITuple | IArray),
+	Args extends InferableReadonlyTuple | ITuple | IArray,
 	R extends Schemable,
 >(
 	argumentsSchema: Args,
 	resultSchema: R,
 	// eslint-disable-next-line @typescript-eslint/ban-types
-) => Function<(...args: GetType<Args>) => GetType<R>>
+) => Function<(...args: $GetType<Args>) => $GetType<R>>

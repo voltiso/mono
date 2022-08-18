@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema, ITuple } from '~'
+import type { ISchema, ITuple, Schemable } from '~'
 import { isTuple, schema } from '~'
 
 // type Fun<Args extends unknown[]> = (...args: Args) => 0
@@ -23,7 +23,7 @@ function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 
 	for (const [i, element] of bb.entries()) {
 		// eslint-disable-next-line security/detect-object-injection
-		const ok = schema(aa[i]).extends(element)
+		const ok = schema(aa[i] as Schemable).extends(element)
 
 		if (!ok) return false
 	}

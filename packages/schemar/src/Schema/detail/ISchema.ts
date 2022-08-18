@@ -4,13 +4,18 @@
 import type { OPTIONS, PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
 import { EXTENDS } from '_'
 
-import type { Schemable, SchemaOptions, ValidationResult } from '~'
+import type { Schemable_, SchemaOptions, ValidationResult } from '~'
 
 // export const IS_SCHEMA = Symbol('IS_SCHEMA')
 // export type IS_SCHEMA = typeof IS_SCHEMA
 
+export interface ISchema_<T = unknown> {
+	readonly [SCHEMA_NAME]: string
+	get Type(): T
+}
+
 /** Every Schema is assignable to `ISchema` */
-export interface ISchema<T = unknown> {
+export interface ISchema<T = unknown> extends ISchema_ {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	// readonly [BASE_OPTIONS]: SchemaOptions
@@ -57,7 +62,7 @@ export interface ISchema<T = unknown> {
 	get readonly(): ISchema
 	default(value: any): ISchema
 
-	extends(other: Schemable): boolean
+	extends(other: Schemable_): boolean
 	[EXTENDS](other: ISchema): boolean
 
 	withCheck(

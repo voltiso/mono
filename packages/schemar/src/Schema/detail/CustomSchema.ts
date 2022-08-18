@@ -16,6 +16,7 @@ import type {
 	DefineSchema,
 	MergeSchemaOptions,
 	Schemable,
+	Schemable_,
 	SchemaOptions,
 	Union,
 	ValidationIssue,
@@ -82,7 +83,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 		? never
 		: this[OPTIONS]['Output']
 
-	extends(other: Schemable): boolean
+	extends(other: Schemable_): boolean
 	[EXTENDS](other: ISchema): boolean
 
 	// builder

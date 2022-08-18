@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { hasProperty, toString } from '@voltiso/util'
+import { hasProperty, stringFrom } from '@voltiso/util'
 
 import { expectedOneOfStr } from './_/expectedOneOfStr'
 import { pathToString } from './_/pathToString'
@@ -81,10 +81,10 @@ export class ValidationIssue {
 
 		const have =
 			haveReceived && haveReceivedDescription
-				? `${this.receivedDescription as string} (${toString(this.received)})`
+				? `${this.receivedDescription as string} (${stringFrom(this.received)})`
 				: haveReceivedDescription
 				? (this.receivedDescription as string)
-				: toString(this.received)
+				: stringFrom(this.received)
 
 		const r = []
 

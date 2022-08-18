@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transform",
-	"version": "1.0.0",
+	"version": "1.1.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -38,18 +38,18 @@
 		"clean": "rimraf dist"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/transform.lib": "workspace:^1.0.0",
+		"chalk": "4"
+	},
 	"peerDependencies": {
 		"typescript": "*"
 	},
 	"devDependencies": {
-		"chalk": "^4.1.2",
 		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",
 	"engines": {
 		"node": ">=16"
-	},
-	"dependencies": {
-		"@voltiso/transform.lib": "workspace:^1.0.0"
 	}
 }

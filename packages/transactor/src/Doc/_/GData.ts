@@ -10,6 +10,7 @@ import type { IRef } from '~/Ref'
 import type { Relax } from '~/Relax'
 import type { IntrinsicFields } from '~/schemas/intrinsicFields'
 
+/** @inline */
 export type GetData<
 	TI extends { publicOnCreation?: any; public?: any; private?: any },
 > = _<
@@ -19,6 +20,7 @@ export type GetData<
 		IntrinsicFields
 >
 
+/** @inline */
 export type GetDataWithId<
 	TI extends { publicOnCreation?: any; public?: any; private?: any },
 	Doc extends IDoc = IDoc,
@@ -26,6 +28,7 @@ export type GetDataWithId<
 
 //
 
+/** @inline */
 export type GetInputData<
 	TI extends {
 		publicOnCreation?: any
@@ -38,6 +41,7 @@ export type GetInputData<
 		GetInputType<TI['private']>
 >
 
+/** @inline */
 export type GetInputDataWithId<
 	TI extends {
 		publicOnCreation?: any
@@ -49,8 +53,10 @@ export type GetInputDataWithId<
 
 //
 
+/** @inline */
 export type GetPublicData<TI extends { public?: any }> = GetType<TI['public']>
 
+/** @inline */
 export type RelaxRefs<X> = X extends IRef
 	? Relax<X>
 	: X extends object
@@ -59,6 +65,7 @@ export type RelaxRefs<X> = X extends IRef
 	  }
 	: X
 
+/** @inline */
 export type GetPublicCreationInputData<
 	TI extends { public?: any; publicOnCreation?: any },
 	Doc extends IDoc = IDoc,
@@ -69,12 +76,14 @@ export type GetPublicCreationInputData<
 		RelaxRefs<GetInputType<TI['public']>>
 >
 
+/** @inline */
 export type GetPublicInputData<TI extends { public?: any }> = RelaxRefs<
 	GetInputType<TI['public']>
 >
 
 //
 
+/** @inline */
 export type GetCreationDataByCtx<
 	TI,
 	Ctx extends ExecutionContext,
@@ -85,6 +94,7 @@ export type GetCreationDataByCtx<
 	? GetPublicCreationInputData<TI, Doc>
 	: never
 
+/** @inline */
 export type GetUpdateDataByCtx<TI, Ctx> = Ctx extends 'inside'
 	? GetInputData<TI>
 	: Ctx extends 'outside'

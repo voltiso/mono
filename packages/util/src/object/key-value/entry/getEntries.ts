@@ -44,7 +44,7 @@ import {
 	getProperty,
 	merge,
 } from '~/object'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
 import type { CoercedEntry, Entry } from './Entry'
 
@@ -77,9 +77,9 @@ export function getEntries_<Obj extends object, O extends IterationOptions>(
 ): GetEntries<Obj, O> {
 	if (isSet(object) || isMap(object))
 		throw new VoltisoUtilError(
-			`getKeys called on Map or Set: getKeys(${toString(object)}, ${toString(
-				options,
-			)})`,
+			`getKeys called on Map or Set: getKeys(${stringFrom(
+				object,
+			)}, ${stringFrom(options)})`,
 		)
 
 	let r = [] as unknown as GetEntries<Obj, O>

@@ -4,7 +4,7 @@
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import type {
-	GetType,
+	$GetType,
 	IArray,
 	InferableReadonlyTuple,
 	ISchema,
@@ -33,7 +33,7 @@ export class FunctionImpl<
 		Args extends InferableReadonlyTuple | ((ITuple | IArray) & ISchema),
 		R extends Schemable,
 		// eslint-disable-next-line @typescript-eslint/ban-types
-	>(args: Args, r: R): Function<(...args: GetType<Args>) => R> {
+	>(args: Args, r: R): Function<(...args: $GetType<Args>) => R> {
 		return new Function(args, r) as never
 	}
 }

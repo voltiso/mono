@@ -52,7 +52,7 @@ export type _ObjectLike = {
 	[OPTIONS]: { shape: any; Output: any; Input: any }
 }
 
-export type _GetPartial_<This> = [This] extends [_ObjectLike]
+export type _GetPartial_<This> = This extends _ObjectLike
 	? DefineSchema<
 			This,
 			{
@@ -63,7 +63,7 @@ export type _GetPartial_<This> = [This] extends [_ObjectLike]
 	  >
 	: never
 
-export type _GetStrictPartial_<This> = [This] extends [_ObjectLike]
+export type _GetStrictPartial_<This> = This extends _ObjectLike
 	? DefineSchema<
 			This,
 			{
@@ -76,7 +76,7 @@ export type _GetStrictPartial_<This> = [This] extends [_ObjectLike]
 
 //
 
-export type _GetDeepPartial_<This> = [This] extends [_ObjectLike]
+export type _GetDeepPartial_<This> = This extends _ObjectLike
 	? DefineSchema<
 			This,
 			{
@@ -87,7 +87,7 @@ export type _GetDeepPartial_<This> = [This] extends [_ObjectLike]
 	  >
 	: never
 
-export type _GetDeepStrictPartial_<This> = [This] extends [_ObjectLike]
+export type _GetDeepStrictPartial_<This> = This extends _ObjectLike
 	? DefineSchema<
 			This,
 			{

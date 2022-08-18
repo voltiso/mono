@@ -7,7 +7,7 @@ import { lazyConstructor } from '@voltiso/util'
 
 import type {
 	DefaultTupleOptions,
-	GetTupleLength,
+	GetTupleLength_,
 	ISchema,
 	ITuple,
 	TupleOptions,
@@ -47,7 +47,7 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 		return this[OPTIONS].isReadonlyTuple as never
 	}
 
-	get getLength(): GetTupleLength<this[OPTIONS]['elementSchemas']> {
+	get getLength(): GetTupleLength_<this[OPTIONS]['elementSchemas']> {
 		return this.getElementSchemas.length as never
 	}
 
@@ -113,7 +113,7 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 				++idx
 			) {
 				// eslint-disable-next-line security/detect-object-injection
-				const t = this.getElementSchemas[idx]
+				const t = this.getElementSchemas[idx] as ISchema
 				// eslint-disable-next-line security/detect-object-injection
 				const r = schema(t).tryValidate(x[idx])
 

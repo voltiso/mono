@@ -52,9 +52,10 @@ import type { SuggestObjectNullish } from './SuggestObjectNullish'
 		: Result[k]
 }
 
-/** @inline */ export type Merge2Nullish_<A, B> = exactOptionalPropertyTypes extends true
-	? Merge2NullishBasic_<A, B>
-	: Finalize<A, B, Merge2NullishBasic_<A, B>>
+/** @inline */ export type Merge2Nullish_<A, B> =
+	exactOptionalPropertyTypes extends true
+		? Merge2NullishBasic_<A, B>
+		: Finalize<A, B, Merge2NullishBasic_<A, B>>
 
 //
 

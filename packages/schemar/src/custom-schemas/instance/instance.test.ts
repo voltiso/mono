@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, lazyConstructor, toString } from '@voltiso/util'
+import { Assert, lazyConstructor, stringFrom } from '@voltiso/util'
 
 import type { InstanceOptions } from '~'
 import * as s from '~'
@@ -62,8 +62,8 @@ describe('instance', () => {
 
 		const a = new A()
 
-		expect(toString(A)).toBe('class A {}')
-		expect(toString(a)).toBe('A {}')
+		expect(stringFrom(A)).toBe('class A {}')
+		expect(stringFrom(a)).toBe('A {}')
 
 		const date = new Date('2022')
 

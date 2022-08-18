@@ -8,12 +8,14 @@ import { lazyConstructor } from '@voltiso/util'
 import type {
 	CustomUnion,
 	DefaultUnionOptions,
-	ISchema,
 	IUnion,
-	Schemable,
 	UnionOptions,
-} from '~'
-import { CustomSchemaImpl, isUnion, schema, ValidationIssue } from '~'
+} from '~/custom-schemas'
+import { schema, ValidationIssue } from '~/custom-schemas'
+import { isUnion } from '~/custom-schemas'
+import type { ISchema } from '~/Schema'
+import { CustomSchemaImpl } from '~/Schema'
+import type { Schemable, Schemable_ } from '~/Schemable'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnionImpl<O> {
@@ -33,7 +35,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		const otherTypes: Schemable[] = isUnion(other) ? other.getSchemas : [other]
+		const otherTypes: Schemable_[] = isUnion(other) ? other.getSchemas : [other]
 
 		for (const a of this.getSchemas as Schemable[]) {
 			let good = false

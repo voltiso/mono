@@ -33,10 +33,12 @@ const pluginsToPick = [
 	'@voltiso',
 	'@voltiso/eslint-plugin',
 
+	'eslint-comments', // !
+
 	// ! framework-specific
-	// 'react',
-	// 'react-hooks',
-	// '@next/eslint-plugin-next',
+	'react',
+	'react-hooks',
+	'@next/eslint-plugin-next',
 
 	//
 	//
@@ -48,7 +50,6 @@ const pluginsToPick = [
 	// 'cypress',
 	// 'editorconfig',
 	// 'es',
-	// 'eslint-comments',
 	// 'ext',
 	// 'format-message',
 	// 'formatjs',

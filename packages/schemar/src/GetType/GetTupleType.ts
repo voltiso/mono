@@ -8,7 +8,7 @@ import type { InferableMutableTuple, InferableReadonlyTuple } from '~'
 import type { GetType_ } from './GetType'
 import type { GetTypeOptions } from './GetTypeOptions'
 
-interface GetTupleTypeOptions extends GetTypeOptions {
+export interface GetTupleTypeOptions extends GetTypeOptions {
 	readonlyTuple: boolean
 }
 
@@ -24,9 +24,9 @@ type Rec<
 	? Rec<[], [...acc, ...GetType_<E, O>[]], O>
 	: never
 
-export type GetTupleType_<T, O extends GetTupleTypeOptions> = Rec<T, [], O>
+export type GetTupleTypeImpl_<T, O extends GetTupleTypeOptions> = Rec<T, [], O>
 
-export type GetTupleType<
+export type GetTupleType_<
 	T,
 	O extends GetTypeOptions & { readonlyTuple?: never },
 > = InferableReadonlyTuple extends T
@@ -34,7 +34,12 @@ export type GetTupleType<
 	: InferableMutableTuple extends T
 	? unknown[]
 	: T extends unknown[]
-	? GetTupleType_<T, O & { readonlyTuple: false }>
+	? GetTupleTypeImpl_<T, O & { readonlyTuple: false }>
 	: T extends readonly unknown[]
-	? GetTupleType_<T, O & { readonlyTuple: true }>
+	? GetTupleTypeImpl_<T, O & { readonlyTuple: true }>
 	: never
+
+export type $GetTupleType_<
+	T,
+	O extends GetTypeOptions & { readonlyTuple?: never },
+> = T extends any ? (O extends any ? GetTupleType_<T, O> : never) : never

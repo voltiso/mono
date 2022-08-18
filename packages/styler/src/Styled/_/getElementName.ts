@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { toString } from '@voltiso/util'
+import { stringFrom } from '@voltiso/util'
 
 import type { IStylable } from '~/Stylable/IStylable'
 
@@ -17,5 +17,5 @@ export function getElementName(element: IStylable): string {
 	if (typeof element === 'string') return element
 	else if (hasDisplayName(element)) return element.displayName
 	else if (element.name) return element.name
-	else return toString(element)
+	else return stringFrom(element)
 }

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { toString } from '@voltiso/util'
+import { stringFrom } from '@voltiso/util'
 
 import { TransactorError } from '~/error'
 
@@ -28,7 +28,7 @@ export const immutabilize = <T>(obj: T, message = 'object is immutable'): T => {
 		set: (target, field, value, receiver) => {
 			if (receiver === proxy)
 				throw new TransactorError(
-					`${message} (.${field.toString()} = ${toString(value)})`,
+					`${message} (.${field.toString()} = ${stringFrom(value)})`,
 				)
 
 			return Reflect.set(target, field, value, receiver)

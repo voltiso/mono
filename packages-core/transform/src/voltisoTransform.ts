@@ -4,6 +4,7 @@
 // import { stringFromSyntaxKind } from '@voltiso/transform.lib'
 // import { strict as assert } from 'node:assert'
 import { stringFromSyntaxKind } from '@voltiso/transform.lib'
+import chalk from 'chalk'
 import * as ts from 'typescript'
 
 export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
@@ -58,16 +59,22 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		return result
 	}
 
-	function collectSymbolNames(node: ts.Node): string[] {
-		let result = [] as string[]
+	function collectSymbolNames(node: ts.Node): Set<string> {
+		const result = new Set<string>()
 
 		if (ts.isTypeReferenceNode(node) && ts.isIdentifier(node.typeName)) {
-			result = [...result, node.typeName.text]
+			result.add(node.typeName.text)
 		}
 
 		node.forEachChild(child => {
-			result = [...result, ...collectSymbolNames(child)]
+			const newSymbols = collectSymbolNames(child)
+			for (const newSymbol of newSymbols) result.add(newSymbol)
 		})
+
+		// locally declared symbols
+		if (ts.isMappedTypeNode(node)) {
+			result.delete(node.typeParameter.name.text)
+		}
 
 		return result
 	}
@@ -76,7 +83,6 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		const symbol = type.symbol as ts.Symbol | undefined
 		// console.log('getJSDocTags', typeChecker.typeToString(type))
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const declaration = symbol?.declarations?.[0]
 		if (!declaration) return []
 
@@ -197,15 +203,22 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		node = ts.getOriginalNode(node)
 		const sourceFile = node.getSourceFile()
 		const lineCol = ts.getLineAndCharacterOfPosition(sourceFile, node.pos)
-		return `${sourceFile.fileName}:${lineCol.line+1}:${lineCol.character+1}`
+		return `${sourceFile.fileName}:${lineCol.line + 1}:${lineCol.character + 1}`
 	}
 
 	return (ctx: ts.TransformationContext) => (sourceFile: ts.SourceFile) => {
-		// const typeSymbols = new Set(
-		// 	typeChecker
-		// 		.getSymbolsInScope(sourceFile, ts.SymbolFlags.Type)
-		// 		.map(symbol => symbol.name),
-		// )
+		const typeSymbols = new Set(
+			typeChecker
+				.getSymbolsInScope(
+					sourceFile,
+					// eslint-disable-next-line no-bitwise
+					ts.SymbolFlags.Type |
+						ts.SymbolFlags.Class |
+						ts.SymbolFlags.Interface |
+						ts.SymbolFlags.ModuleMember,
+				)
+				.map(symbol => symbol.name),
+		)
 
 		function getNodeText(node: ts.Node): string | undefined {
 			try {
@@ -225,9 +238,7 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 
 		function simplifyAndAddComment(originalNode: ts.Node): ts.Node {
 			let node = originalNode
-			// eslint-disable-next-line no-param-reassign
 			node = simplifyNode(node)
-			// eslint-disable-next-line no-param-reassign
 			const comment = getNodeText(ts.getOriginalNode(originalNode))
 			if (comment)
 				node = ts.addSyntheticLeadingComment(
@@ -236,6 +247,19 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 					comment,
 				)
 			return node
+		}
+
+		function hasNodeOfType(node: ts.Node, kind: ts.SyntaxKind): boolean {
+			if (node.kind === kind) return true
+
+			let result = false
+
+			node.forEachChild(child => {
+				const hasChildNodeOfType = hasNodeOfType(child, kind)
+				if (hasChildNodeOfType) result = true
+			})
+
+			return result
 		}
 
 		function canBeInlined(node: ts.Node): boolean {
@@ -251,14 +275,35 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 			}
 
 			const newNode = simplifyNode(node)
-			const newSymbolNames = new Set(collectSymbolNames(newNode))
+			if (hasNodeOfType(newNode, ts.SyntaxKind.MappedType)) return false
+
+			const newSymbolNames = collectSymbolNames(newNode)
 
 			// console.log(newSymbolNames)
 
 			const symbolNames = collectSymbolNames(node)
 			for (const symbolName of symbolNames) newSymbolNames.delete(symbolName)
 
-			return newSymbolNames.size === 0
+			// console.log('remaining symbols', newSymbolNames)
+
+			for (const symbol of newSymbolNames) {
+				if (typeSymbols.has(symbol)) newSymbolNames.delete(symbol)
+			}
+
+			const canBeInlined = newSymbolNames.size === 0
+
+			if (!canBeInlined) {
+				const message = `\n[@voltiso/transform] unable to inline ${
+					getNodeText(node) || stringFromSyntaxKind(node.kind)
+				} - symbols out of scope: ${[...newSymbolNames].join(
+					', ',
+				)} \n  @ ${getNodePositionStr(node)}`
+
+				// eslint-disable-next-line no-console
+				console.warn(chalk.bgRed(message))
+			}
+
+			return canBeInlined
 		}
 
 		// function canTargetBeInlined(node: ts.Node): boolean {
@@ -341,17 +386,17 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 						'\n',
 						'[@voltiso/transform] inlining type expression:',
 						getNodeText(originalNode),
-						'@',
+						'\n  @',
 						getNodePositionStr(originalNode),
 					)
 					node = simplifyAndAddComment(node)
 				} else {
-					// eslint-disable-next-line no-console
-					console.warn(
-						`[@voltiso/transform] type expression cannot be inlined: ${
-							getNodeText(originalNode) || stringFromSyntaxKind(node.kind)
-						} @ ${getNodePositionStr(originalNode)}`,
-					)
+					// // eslint-disable-next-line no-console
+					// console.warn(
+					// 	`[@voltiso/transform] type expression cannot be inlined: ${
+					// 		getNodeText(originalNode) || stringFromSyntaxKind(node.kind)
+					// 	} @ ${getNodePositionStr(originalNode)}`,
+					// )
 				}
 			} else if (ts.isTypeReferenceNode(node)) {
 				const type = typeChecker.getTypeAtLocation(node)

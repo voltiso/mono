@@ -10,8 +10,8 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS, OPTIONS } from '_'
-import type { Assume, AtLeast1, Merge2Simple } from '@voltiso/util'
-import { clone, final, isDefined, toString } from '@voltiso/util'
+import type { Assume, AtLeast1, Merge2 } from '@voltiso/util'
+import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
 import type {
 	CustomFix,
@@ -112,9 +112,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		// eslint-disable-next-line security/detect-object-injection
 		const result = this[OPTIONS].customChecks
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!result)
-			throw new SchemarError(`getCustomChecks() returned ${toString(result)}`)
+			throw new SchemarError(`getCustomChecks() returned ${stringFrom(result)}`)
 
 		return result as never
 	}
@@ -123,9 +122,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		// eslint-disable-next-line security/detect-object-injection
 		const result = this[OPTIONS].customFixes
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!result)
-			throw new SchemarError(`getCustomFixes() returned ${toString(result)}`)
+			throw new SchemarError(`getCustomFixes() returned ${stringFrom(result)}`)
 
 		return result as never
 	}
@@ -150,7 +148,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	protected _cloneWithOptions<
 		OO extends { readonly [k in keyof this[OPTIONS]]?: unknown },
-	>(o: OO): CustomSchema<Merge2Simple<O, OO> & SchemaOptions> {
+	>(o: OO): CustomSchema<Merge2<O, OO> & SchemaOptions> {
 		const r = clone(this)
 		// eslint-disable-next-line security/detect-object-injection
 		r[OPTIONS] = { ...r[OPTIONS], ...o }
@@ -264,7 +262,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 				? '?'
 				: ''
 
-		const suffix = this.hasDefault ? `=${toString(this.getDefault)}` : ''
+		const suffix = this.hasDefault ? `=${stringFrom(this.getDefault)}` : ''
 
 		return `${prefix}${this._toString()}${suffix}`
 	}

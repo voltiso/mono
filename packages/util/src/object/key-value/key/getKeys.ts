@@ -10,7 +10,7 @@ import {
 	defaultIterationOptions,
 	merge,
 } from '~/object'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
 import type { StringKeyof } from './StringKeyof'
 
@@ -26,9 +26,9 @@ export function getKeys_<Obj extends object, O extends IterationOptions>(
 ): GetKeys<Obj, O> {
 	if (isSet(object) || isMap(object))
 		throw new VoltisoUtilError(
-			`getKeys called on Map or Set: getKeys(${toString(object)}, ${toString(
-				options,
-			)})`,
+			`getKeys called on Map or Set: getKeys(${stringFrom(
+				object,
+			)}, ${stringFrom(options)})`,
 		)
 
 	let r = [] as unknown as GetKeys<Obj, O>

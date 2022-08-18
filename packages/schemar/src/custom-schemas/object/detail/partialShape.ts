@@ -1,30 +1,39 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { GetProperty_ } from '@voltiso/util'
 import { getEntries } from '@voltiso/util'
 
-import type { GetSchemaWithoutReadonlyTuples_, InferableObject } from '~'
+import type {
+	GetSchemaWithoutReadonlyTuples_,
+	InferableObject_,
+	ISchema,
+} from '~'
 import { isSchema, schema } from '~'
 
 //
 
 export type StrictPartialShape_<O> = {
-	[k in keyof O]: GetSchemaWithoutReadonlyTuples_<O[k]>['strictOptional']
+	[k in keyof O]: GetProperty_<
+		GetSchemaWithoutReadonlyTuples_<O[k]>,
+		'strictOptional'
+	>
 }
 
-export type StrictPartialShape<O extends InferableObject> =
+export type StrictPartialShape<O extends InferableObject_> =
 	StrictPartialShape_<O>
 
 //
 
-export function strictPartialShape<O extends InferableObject>(
+export function strictPartialShape<O extends InferableObject_>(
 	o: O,
 ): StrictPartialShape<O> {
-	const shape = { ...o } as InferableObject
+	const shape = { ...o } as InferableObject_
 
 	for (const [k, v] of getEntries(shape)) {
 		// eslint-disable-next-line security/detect-object-injection
-		shape[k] = (isSchema(v) ? v : schema(v)).strictOptional
+		const vSchema = (isSchema(v) ? v : schema(v)) as ISchema
+		shape[k] = vSchema.strictOptional as never
 	}
 
 	return shape as never
@@ -32,20 +41,26 @@ export function strictPartialShape<O extends InferableObject>(
 
 //
 
-export type PartialShape_<O extends InferableObject> = {
-	[k in keyof O]: GetSchemaWithoutReadonlyTuples_<O[k]>['optional']
+export type PartialShape_<O> = {
+	[k in keyof O]: GetProperty_<
+		GetSchemaWithoutReadonlyTuples_<O[k]>,
+		'optional'
+	>
 }
 
-export type PartialShape<O extends InferableObject> = PartialShape_<O>
+export type PartialShape<O extends InferableObject_> = PartialShape_<O>
 
 //
 
-export function partialShape<O extends InferableObject>(o: O): PartialShape<O> {
-	const shape = { ...o } as InferableObject
+export function partialShape<O extends InferableObject_>(
+	o: O,
+): PartialShape<O> {
+	const shape = { ...o } as InferableObject_
 
 	for (const [k, v] of getEntries(shape)) {
 		// eslint-disable-next-line security/detect-object-injection
-		shape[k] = (isSchema(v) ? v : schema(v)).optional
+		const vSchema = (isSchema(v) ? v : schema(v)) as ISchema
+		shape[k] = vSchema.optional as never
 	}
 
 	return shape as never

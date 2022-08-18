@@ -4,10 +4,12 @@
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 
 import type {
+	CustomCheck,
+	CustomFix,
 	DefaultTupleOptions,
 	ISchema,
 	MergeSchemaOptions,
-	Schemable,
+	Schemable_,
 	TupleOptions,
 } from '~'
 
@@ -24,7 +26,7 @@ export interface ITuple extends ISchema {
 	get InputType(): readonly unknown[]
 
 	get isReadonlyTuple(): boolean
-	get getElementSchemas(): Schemable[]
+	get getElementSchemas(): Schemable_[]
 	get getLength(): number
 
 	get readonlyTuple(): ITuple
@@ -38,6 +40,13 @@ export interface IReadonlyTuple extends ITuple {
 	>
 }
 
+/**
+ * For inlining
+ *
+ * @internal
+ */
+export type _unused_ITuple = CustomCheck | CustomFix
+
 export interface IMutableTuple extends ITuple {
 	readonly [OPTIONS]: MergeSchemaOptions<TupleOptions, { isMutableTuple: true }>
 
@@ -45,4 +54,3 @@ export interface IMutableTuple extends ITuple {
 	get OutputType(): unknown[]
 	get InputType(): unknown[]
 }
-

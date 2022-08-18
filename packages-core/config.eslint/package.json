@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/config.eslint",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
@@ -121,9 +121,10 @@
 		"yaml-eslint-parser": "*"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.5",
+		"@types/node": "^18.7.6",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/eslint-plugin": "workspace:^1.0.2",
 		"eslint": "^8.22.0",
 		"rimraf": "^3.0.2"
 	},

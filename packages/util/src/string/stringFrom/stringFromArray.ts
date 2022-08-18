@@ -3,7 +3,7 @@
 
 import { merge } from '~/object'
 
-import { toString } from './toString'
+import { stringFrom } from './stringFrom'
 import type { ToStringOptions } from './ToStringOptions'
 import { defaultToStringOptions } from './ToStringOptions'
 
@@ -26,7 +26,7 @@ export function stringFromArray_(
 	let shortResult = baseShortResult
 
 	for (const v of array) {
-		const cand = append(result, toString(v))
+		const cand = append(result, stringFrom(v))
 		const shortCand =
 			result === baseResult ? shortResult : append(result, '... ')
 

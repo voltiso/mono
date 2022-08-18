@@ -3,7 +3,11 @@
 
 import type { CanBeUndefinedImpl, IsOptional_ } from '~'
 
-/** @inline */ type SmartFlattenValue<T, k extends keyof T, Encountered> = IsOptional_<
+/** @inline */ type SmartFlattenValue<
+	T,
+	k extends keyof T,
+	Encountered,
+> = IsOptional_<
 	T,
 	k,
 	CanBeUndefinedImpl<
@@ -15,7 +19,9 @@ import type { CanBeUndefinedImpl, IsOptional_ } from '~'
 	SmartFlattenImpl<T[k], Encountered>
 >
 
-/** @inline */ type SmartFlattenImpl<T, Encountered> = T extends (...args: any) => any
+/** @inline */ type SmartFlattenImpl<T, Encountered> = T extends (
+	...args: any
+) => any
 	? T
 	: T extends abstract new (...args: any) => any
 	? T

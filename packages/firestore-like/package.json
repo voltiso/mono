@@ -53,8 +53,8 @@
 	"devDependencies": {
 		"@firebase/app-types": "^0.7.0",
 		"@voltiso/config.jest.esr": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^1.0.0",
-		"@voltiso/config.ts.build.esm": "workspace:^1.0.0",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
 		"firebase-admin": "^11.0.1",
 		"rimraf": "^3.0.2"
 	},

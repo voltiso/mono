@@ -8,7 +8,7 @@ import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { isObject } from '~/object/isObject'
 import type { Value_ } from '~/object/key-value/value/Value'
 import type { UnknownProperty } from '~/object/UnknownProperty'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
 
 export class GetPropertyError<
@@ -23,9 +23,9 @@ export class GetPropertyError<
 		property: Property,
 		options?: ErrorOptions | undefined,
 	) {
-		const message = `property not found @ getProperty(${toString(
+		const message = `property not found @ getProperty(${stringFrom(
 			object,
-		)}, ${toString(property)})`
+		)}, ${stringFrom(property)})`
 		super(message, options)
 		Error.captureStackTrace(this, this.constructor)
 
@@ -36,14 +36,14 @@ export class GetPropertyError<
 	}
 }
 
-export type GetProperty_<T, K> = K extends keyof T
+export type GetPropertyComplex_<T, K> = K extends keyof T
 	? Value_<T, K>
 	: Exclude<TryGetPropertyImpl<T, K>, undefined>
 
-export type GetProperty<
+export type GetPropertyComplex<
 	T extends object,
 	K extends keyof T | AlsoAccept<keyof any>,
-> = GetProperty_<T, K>
+> = GetPropertyComplex_<T, K>
 
 /**
  * Returns `object[property]`
@@ -65,7 +65,7 @@ export type GetProperty<
 export function getProperty<
 	Obj extends object,
 	Property extends keyof Obj | UnknownProperty,
->(object: Obj, property: Property): GetProperty<Obj, Property> {
+>(object: Obj, property: Property): GetPropertyComplex<Obj, Property> {
 	if (!isObject(object)) throw new GetPropertyError(object, property)
 
 	assertNotPolluting(object, property)

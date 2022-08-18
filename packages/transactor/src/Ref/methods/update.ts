@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { isDefined, toString, undef } from '@voltiso/util'
+import { isDefined, stringFrom, undef } from '@voltiso/util'
 
 import { databaseUpdate } from '~/common'
 import { withoutId } from '~/Data'
@@ -312,7 +312,7 @@ export function update(
 	if (isWithTransaction(ctx)) {
 		if (ctx.transaction._error)
 			throw new TransactorError(
-				`Do not catch errors inside transactions - this transaction is supposed to fail. Caught error: ${toString(
+				`Do not catch errors inside transactions - this transaction is supposed to fail. Caught error: ${stringFrom(
 					ctx.transaction._error,
 				)}`,
 			)

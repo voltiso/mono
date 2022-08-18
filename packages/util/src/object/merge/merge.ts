@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import type { Nullish } from '~/nullish'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 
 import type { Merge2Complex } from './Merge2Complex'
 import type { Merge2Nullish } from './Merge2Nullish'
@@ -88,7 +88,7 @@ export function merge<Objs extends readonly (object | Nullish)[]>(
 
 	for (const obj of objs) {
 		if (Array.isArray(obj))
-			throw new VoltisoUtilError(`merge: argument is array: ${toString(obj)}`)
+			throw new VoltisoUtilError(`merge: argument is array: ${stringFrom(obj)}`)
 
 		r = {
 			...r,

@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/schemar",
-	"version": "12.0.3",
+	"version": "12.1.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -61,11 +61,12 @@
 		"@voltiso/util": "workspace:^"
 	},
 	"devDependencies": {
+		"@typescript/analyze-trace": "^0.9.0",
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/config.tsdoc": "workspace:^1.0.0",
+		"@voltiso/config.tsdoc": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"rimraf": "^3.0.2"
 	}

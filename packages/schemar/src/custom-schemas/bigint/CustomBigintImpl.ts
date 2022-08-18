@@ -67,7 +67,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<L extends bigint>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
-		return literal(literals)
+		return literal<L>(literals as never) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {

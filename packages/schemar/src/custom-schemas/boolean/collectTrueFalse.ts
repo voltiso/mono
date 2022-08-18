@@ -1,14 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Schemable } from '~'
+import type { ISchema, Schemable_ } from '~'
 import { isBoolean, isLiteral, isUnion, schema } from '~'
 
-export function collectTrueFalse(schemable: Schemable): {
+export function collectTrueFalse(schemable: Schemable_): {
 	haveTrue: boolean
 	haveFalse: boolean
 } {
-	const o = schema(schemable)
+	const o = schema(schemable) as ISchema
 
 	if (isLiteral(o)) {
 		let haveTrue = false

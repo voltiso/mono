@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { assertNotPolluting } from '~/object'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 
 export function hasOwnProperty<O extends object, K extends keyof any>(
 	o: O,
@@ -21,7 +21,7 @@ export function assertHasOwnProperty<O extends object, K extends keyof any>(
 ): asserts key is K & keyof O {
 	if (!hasOwnProperty(obj, key)) {
 		throw new VoltisoUtilError(
-			`assertHasOwnProperty(${toString(obj)}, ${toString(key)}) failed`,
+			`assertHasOwnProperty(${stringFrom(obj)}, ${stringFrom(key)}) failed`,
 		)
 	}
 }

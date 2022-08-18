@@ -4,7 +4,6 @@
 import { getProperty } from '~/object'
 
 // import { TsUtilError } from '~'
-// import { toString } from '~'
 
 type PickResult<O, K extends keyof O> = Required<Pick<O, K>>
 

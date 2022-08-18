@@ -4,9 +4,9 @@
 import { VoltisoUtilError } from '~/error'
 import { lazyConstructor } from '~/lazy'
 import type { IPath, Path, UnknownProperty, Value_ } from '~/object'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
-import type { GetProperty } from './getProperty'
+import type { GetPropertyComplex } from './getProperty'
 import { getProperty, GetPropertyError } from './getProperty'
 
 type Get_<O, P> = P extends readonly []
@@ -29,9 +29,9 @@ export class GetError<
 	path: P
 
 	constructor(object: Obj, path: P, options?: ErrorOptions | undefined) {
-		const message = `property not found @ get(${toString(object)}, ${toString(
-			path,
-		)})`
+		const message = `property not found @ get(${stringFrom(
+			object,
+		)}, ${stringFrom(path)})`
 		super(message, options)
 		Error.captureStackTrace(this, this.constructor)
 
@@ -47,7 +47,7 @@ export class GetError<
 export function get<O extends object, K extends keyof O>(
 	o: O,
 	k: K,
-): GetProperty<O, K>
+): GetPropertyComplex<O, K>
 
 export function get<O extends object, P extends Path<O>>(
 	o: O,

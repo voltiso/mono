@@ -4,26 +4,27 @@
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
 import type {
+	$GetOutputType,
 	CustomUnknownFunction,
 	Function,
 	GetOutputType,
-	InferableReadonlyTuple,
-	ISchema,
+	InferableTuple_,
+	ISchema_,
 	Schemable,
 } from '~'
 import { UnknownFunctionImpl } from '~'
 
-type MakeMutable<X> = X extends readonly unknown[] ? [...X] : X
+type MakeMutable<X> = X extends readonly unknown[] ? [...X] : never
 
 export interface UnknownFunction extends CustomUnknownFunction<{}> {
 	<
-		Args extends InferableReadonlyTuple | ISchema<readonly unknown[]>,
+		Args extends InferableTuple_ | ISchema_<readonly unknown[]>,
 		R extends Schemable,
 	>(
 		argumentsSchema: Args,
 		resultSchema: R,
 		// eslint-disable-next-line @typescript-eslint/ban-types
-	): Function<(...args: MakeMutable<GetOutputType<Args>>) => GetOutputType<R>>
+	): Function<(...args: MakeMutable<$GetOutputType<Args>>) => GetOutputType<R>>
 }
 
 export const UnknownFunction = lazyConstructor(

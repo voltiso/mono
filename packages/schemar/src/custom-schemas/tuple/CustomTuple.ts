@@ -14,7 +14,7 @@ import type {
 	CustomSchema,
 	DefaultTupleOptions,
 	DefineSchema,
-	GetTupleLength,
+	GetTupleLength_,
 	MergeSchemaOptions,
 	TupleOptions,
 } from '~'
@@ -39,7 +39,7 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
 	get getElementSchemas(): this[OPTIONS]['elementSchemas']
-	get getLength(): GetTupleLength<this[OPTIONS]['elementSchemas']>
+	get getLength(): GetTupleLength_<this[OPTIONS]['elementSchemas']>
 
 	//
 

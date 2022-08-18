@@ -16,9 +16,9 @@ mockConsole()
 
 // SERVER
 
-const ctx = createServerContext()
+const context = createServerContext()
 
-const myServer = createServer(ctx).handlers({
+const handlers = {
 	myGroup: {
 		helloWorld: checked
 			.param(s.number.max(123))
@@ -35,9 +35,11 @@ const myServer = createServer(ctx).handlers({
 	auth: {
 		echoToken: checked
 			.result(s.string)
-			.function(() => ctx.req.headers.authorization!),
+			.function(() => context.request.headers.authorization!),
 	},
-})
+}
+
+const myServer = createServer({context, handlers})
 
 // eslint-disable-next-line jest/require-hook
 let port = 0
@@ -60,7 +62,7 @@ describe('client', function () {
 	it('works', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer>(
+		const myClient = createClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
@@ -71,7 +73,7 @@ describe('client', function () {
 	it('works with async', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer>(
+		const myClient = createClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
@@ -81,7 +83,7 @@ describe('client', function () {
 	it('works with token', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer>(
+		const myClient = createClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 		myClient.setToken('test')
@@ -92,7 +94,7 @@ describe('client', function () {
 	it('network error', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer>(`http://localhost:7444/rpc`)
+		const myClient = createClient<typeof myServer.handlers>(`http://localhost:7444/rpc`)
 		myClient.setToken('test')
 
 		await expect(myClient.auth.echoToken()).rejects.toThrow('echoToken')

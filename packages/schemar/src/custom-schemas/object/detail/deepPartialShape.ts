@@ -6,9 +6,11 @@ import { getEntries } from '@voltiso/util'
 import type { GetSchema_, InferableObject, IObject, ISchema } from '~'
 import { isObject, schema } from '~'
 
-export type DeepPartialShapeProcessEntry_<S> = S extends IObject
+export type DeepPartialShapeProcessEntry_<S> = S extends /* IObject*/ {
+	deepPartial: { optional: any }
+}
 	? S['deepPartial']['optional']
-	: S extends ISchema
+	: S extends /* ISchema*/ { optional: any }
 	? S['optional']
 	: never
 

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { toString } from '@voltiso/util'
+import { stringFrom } from '@voltiso/util'
 
 import { TransactorError } from '~'
 import type { WithDocRef } from '~/Ref'
@@ -30,11 +30,13 @@ export const triggerGuard = async <R>(
 			ctx.transaction._error =
 				error instanceof Error
 					? error
-					: new TransactorError(`Exotic error: ${toString(error)}`)
+					: new TransactorError(`Exotic error: ${stringFrom(error)}`)
 
 		throw error
 	} finally {
+		// eslint-disable-next-line require-atomic-updates
 		ctx.transaction._numTriggersNested = prevNumTriggersNested
+		// eslint-disable-next-line require-atomic-updates
 		ctx.transaction._execContext = prevExecContext
 	}
 }
@@ -61,11 +63,13 @@ export const methodGuard = async <R>(
 			ctx.transaction._error =
 				error instanceof Error
 					? error
-					: new TransactorError(`Exotic error: ${toString(error)}`)
+					: new TransactorError(`Exotic error: ${stringFrom(error)}`)
 
 		throw error
 	} finally {
+		// eslint-disable-next-line require-atomic-updates
 		ctx.transaction._numMethodsNested = prevNumMethodsNested
+		// eslint-disable-next-line require-atomic-updates
 		ctx.transaction._execContext = prevExecContext
 	}
 }

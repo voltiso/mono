@@ -4,7 +4,7 @@
 import type { Reverse } from '~/array'
 import { VoltisoUtilError } from '~/error'
 import type { MergeN } from '~/object'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
 /* eslint-disable security/detect-object-injection */
 
@@ -22,7 +22,7 @@ export function protoLink<Args extends object[]>(
 
 		if (!(oldProto === Object.prototype || oldProto === Function.prototype))
 			throw new VoltisoUtilError(
-				`protoLink(...${toString(args)}) assertion failed`,
+				`protoLink(...${stringFrom(args)}) assertion failed`,
 			)
 
 		Object.setPrototypeOf(args[index], args[index + 1] as object)

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { toString } from '@voltiso/util'
+import { stringFrom } from '@voltiso/util'
 
 import type { InferableLiteral, ISchema } from '~'
 import {
@@ -13,39 +13,39 @@ import {
 	number,
 	string,
 	symbol,
-} from '~'
+} from '~/custom-schemas'
 
 export function getBaseSchema(inferableLiteral: InferableLiteral): ISchema {
 	switch (typeof inferableLiteral) {
 		case 'bigint':
-			return bigint
+			return bigint as never
 
 		case 'boolean':
-			return boolean
+			return boolean as never
 
 		case 'function':
-			return function_
+			return function_ as never
 
 		case 'number':
-			return number
+			return number as never
 
 		case 'string':
-			return string
+			return string as never
 
 		case 'symbol':
-			return symbol
+			return symbol as never
 
 		case 'object':
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			$assert(inferableLiteral === null)
-			return literal
+			return literal as never
 
 		case 'undefined':
-			return literal
+			return literal as never
 
 		default:
 			throw new Error(
-				`getBaseSchema(${toString(
+				`getBaseSchema(${stringFrom(
 					inferableLiteral,
 				)} unknown typeof ${typeof inferableLiteral}`,
 			)

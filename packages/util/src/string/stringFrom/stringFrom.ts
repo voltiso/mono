@@ -9,17 +9,17 @@ import { stringFromObject_ } from './stringFromObject'
 import type { ToStringOptions } from './ToStringOptions'
 import { defaultToStringOptions } from './ToStringOptions'
 
-interface WithToString {
+export interface WithToString {
 	toString(): string
 }
 
-function isWithToString(x: unknown): x is WithToString {
+export function isWithToString(x: unknown): x is WithToString {
 	// eslint-disable-next-line @typescript-eslint/unbound-method
 	const f = (x as WithToString | undefined)?.toString
 	return typeof f === 'function' && f !== Object.prototype.toString
 }
 
-export function toString_(x: unknown, parameters: ToStringOptions): string {
+export function stringFrom_(x: unknown, parameters: ToStringOptions): string {
 	if (typeof x === 'string') return `'${x}'`
 
 	if (typeof x === 'bigint') return `${x}n`
@@ -45,12 +45,12 @@ export function toString_(x: unknown, parameters: ToStringOptions): string {
 	throw new Error('toString: unsupported argument type')
 }
 
-export function toString(
+export function stringFrom(
 	x: unknown,
 	parameters?: Partial<ToStringOptions> | undefined,
 ) {
 	const p = merge(defaultToStringOptions, parameters)
-	let r = toString_(x, p)
+	let r = stringFrom_(x, p)
 
 	if (r.length > p.maxLength) {
 		const dots = '...'

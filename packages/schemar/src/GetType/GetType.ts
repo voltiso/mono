@@ -1,17 +1,32 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableLiteral, InferableObject, InferableTuple } from '~'
+import type {
+	Inferable_,
+	InferableLiteral,
+	InferableObject,
+	InferableTuple,
+	ISchema_,
+} from '~'
 
 import type { GetObjectType_ } from './GetObjectType'
-import type { GetTupleType } from './GetTupleType'
+import type { GetTupleType_ } from './GetTupleType'
 import type { GetTypeOptions } from './GetTypeOptions'
 
-/** @inline */
-export type GetType_<L, IO extends GetTypeOptions> = L extends {
-	readonly InputType: any
-	readonly OutputType: any
-}
+/**
+ * Infer type, or identity if already an Inferable
+ *
+ * @inline
+ */
+export type GetType_<
+	L,
+	IO extends GetTypeOptions = { kind: 'out' },
+> = object extends L
+	? object
+	: L extends {
+			readonly InputType: any
+			readonly OutputType: any
+	  }
 	? IO['kind'] extends 'in'
 		? L['InputType']
 		: IO['kind'] extends 'out'
@@ -20,11 +35,9 @@ export type GetType_<L, IO extends GetTypeOptions> = L extends {
 	: L extends InferableLiteral
 	? L
 	: L extends InferableTuple
-	? GetTupleType<L, IO>
+	? GetTupleType_<L, IO>
 	: L extends InferableObject
 	? GetObjectType_<L, IO>
-	: object extends L
-	? object
 	: never
 
 /**
@@ -33,20 +46,64 @@ export type GetType_<L, IO extends GetTypeOptions> = L extends {
  * @inline
  */
 export type GetType<
-	S, // extends ISchema | Inferable,
+	S extends ISchema_ | Inferable_,
 	Options extends GetTypeOptions = { kind: 'out' },
 > = GetType_<S, Options>
 
 /**
- * Proxy to `GetType`
+ * Infer type, or identity if already an Inferable
  *
  * @inline
  */
-export type GetOutputType<S> = GetType_<S, { kind: 'out' }>
+export type $GetType_<
+	S,
+	Options extends GetTypeOptions = { kind: 'out' },
+> = S extends any ? (Options extends any ? GetType_<S, Options> : never) : never
+
+/**
+ * Infer type, or identity if already an Inferable
+ *
+ * @inline
+ */
+export type $GetType<
+	S extends ISchema_ | Inferable_,
+	Options extends GetTypeOptions = { kind: 'out' },
+> = S extends any ? (Options extends any ? GetType_<S, Options> : never) : never
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type GetInputType<S> = GetType_<S, { kind: 'in' }>
+export type GetOutputType<S extends ISchema_ | Inferable_> = GetType_<
+	S,
+	{ kind: 'out' }
+>
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
+export type $GetOutputType<S extends ISchema_ | Inferable_> = S extends any
+	? GetOutputType<S>
+	: never
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
+export type GetInputType<S extends ISchema_ | Inferable_> = GetType_<
+	S,
+	{ kind: 'in' }
+>
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
+export type $GetInputType<S extends ISchema_ | Inferable_> = S extends any
+	? GetInputType<S>
+	: never

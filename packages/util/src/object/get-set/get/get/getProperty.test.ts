@@ -4,14 +4,14 @@
 import type { IsIdentical } from '~/type'
 import { Assert } from '~/type'
 
-import type { GetProperty } from './getProperty'
+import type { GetPropertyComplex } from './getProperty'
 import { getProperty } from './getProperty'
 
 describe('getProperty', () => {
 	it('generic', <O extends object, K extends keyof O>() => {
 		expect.assertions(0)
 
-		Assert.is<GetProperty<O, K>, O[K]>()
+		Assert.is<GetPropertyComplex<O, K>, O[K]>()
 	})
 
 	it('works', () => {
@@ -73,28 +73,28 @@ describe('getProperty', () => {
 		Assert<IsIdentical<Foo['field'], 123>>()
 		Assert<IsIdentical<Foo['unknownField'], unknown>>()
 
-		type A = GetProperty<Foo, 'field'>
+		type A = GetPropertyComplex<Foo, 'field'>
 		Assert<IsIdentical<A, 123>>()
 
-		type B = GetProperty<Foo, 'unknownField'>
+		type B = GetPropertyComplex<Foo, 'unknownField'>
 		Assert<IsIdentical<B, unknown>>()
 
-		type C = GetProperty<Foo, 'nonExisting'>
+		type C = GetPropertyComplex<Foo, 'nonExisting'>
 		Assert<IsIdentical<C, never>>()
 
-		type D = GetProperty<Foo, 'undef'>
+		type D = GetPropertyComplex<Foo, 'undef'>
 		Assert<IsIdentical<D, never>>() // WRONG! should be undefined
 
-		type E = GetProperty<Foo, 'optUndef'>
+		type E = GetPropertyComplex<Foo, 'optUndef'>
 		Assert<IsIdentical<E, never>>() // WRONG! should be undefined
 
-		type F = GetProperty<Foo, 'optNever'>
+		type F = GetPropertyComplex<Foo, 'optNever'>
 		Assert<IsIdentical<F, never>>()
 
-		type G = GetProperty<Foo, 'optString'>
+		type G = GetPropertyComplex<Foo, 'optString'>
 		Assert<IsIdentical<G, string>>()
 
-		type H = GetProperty<Foo, 'optStringUndef'>
+		type H = GetPropertyComplex<Foo, 'optStringUndef'>
 		Assert<IsIdentical<H, string>>() // WRONG! should be string | undefined
 	})
 })

@@ -4,6 +4,7 @@
 import type { LeafData } from '~/Data'
 import type { DeleteIt, IncrementIt, ReplaceIt } from '~/it'
 
+/** @inline */
 export type UpdatesFromData<T, OutputType> =
 	| UpdatesFromData.Update<T, OutputType>
 	| UpdatesFromData.Replace<T>
@@ -11,6 +12,7 @@ export type UpdatesFromData<T, OutputType> =
 	| (T extends number ? IncrementIt : never)
 
 export declare namespace UpdatesFromData {
+	/** @inline */
 	export type Update<T, OutputType> = unknown extends T
 		? unknown
 		: object extends Required<T>
@@ -24,5 +26,6 @@ export declare namespace UpdatesFromData {
 				>
 		  }
 
+	/** @inline */
 	export type Replace<T> = ReplaceIt<T>
 }

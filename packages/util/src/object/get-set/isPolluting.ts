@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { lazyConstructor } from '~/lazy/lazyConstructor'
-import { toString } from '~/string/toString/toString'
+import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
 
 export class PrototypePollutionError<
@@ -35,9 +35,9 @@ export class PrototypePollutionError<
 			haveObjectArg ? args : [undefined, ...args]
 		) as [Obj, Key, ErrorOptions | undefined]
 
-		let message = `prototype pollution: cannot access property ${toString(key)}`
+		let message = `prototype pollution: cannot access property ${stringFrom(key)}`
 
-		if (obj) message = `${message} in object ${toString(obj)}`
+		if (obj) message = `${message} in object ${stringFrom(obj)}`
 
 		super(message, options)
 		Error.captureStackTrace(this, this.constructor)

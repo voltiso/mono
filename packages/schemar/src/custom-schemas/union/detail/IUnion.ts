@@ -4,14 +4,14 @@
 import { SCHEMA_NAME } from '_'
 import type { AtLeast2 } from '@voltiso/util'
 
-import type { ISchema, Schemable } from '~'
+import type { ISchema, Schemable_ } from '~'
 
 export interface IUnion extends ISchema {
 	readonly [SCHEMA_NAME]: 'Union'
 	// readonly [BASE_OPTIONS]: UnionOptions
 	// readonly [DEFAULT_OPTIONS]: DefaultUnionOptions
 
-	get getSchemas(): [...AtLeast2<Schemable>]
+	get getSchemas(): [...AtLeast2<Schemable_>]
 }
 
 export function isUnion(x: unknown): x is IUnion {

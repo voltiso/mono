@@ -1,10 +1,4 @@
 {
-	"name": "@voltiso/transform.test",
-	"private": true,
-	"license": "UNLICENSED",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________TEST": "__________",
@@ -29,7 +23,7 @@
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.tsdoc": "workspace:^1.0.0",
+		"@voltiso/config.tsdoc": "workspace:^",
 		"@voltiso/transform": "workspace:^",
 		"@voltiso/util": "workspace:^"
 	},

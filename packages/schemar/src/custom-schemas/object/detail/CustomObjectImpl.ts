@@ -80,7 +80,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				if (!hasThisK && !isOtherOptional) return false
 				// eslint-disable-next-line security/detect-object-injection
-				else if (hasThisK && !schema(this.getShape[k]).extends(v))
+				else if (hasThisK && !schema(this.getShape[k] as Schemable).extends(v))
 					// eslint-disable-next-line sonarjs/no-duplicated-branches
 					return false
 			}

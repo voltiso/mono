@@ -3,79 +3,40 @@
 
 import { SchemarError } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import type { Callable, Interface, Unpack } from '@voltiso/util'
-import { createClassInterface, deepMerge } from '@voltiso/util'
-import type {
-	Request as ExpressRequest,
-	Response as ExpressResponse,
-} from 'express'
-import { AsyncLocalStorage } from 'node:async_hooks'
+import { CALL, callableInstance } from '@voltiso/util'
 
-type Handler = Callable
-type Handlers = { [k: string]: Handlers | Handler }
+import type { Handlers } from '../_shared/Handler'
+import type { Request } from './Request'
+import type { Response } from './Response'
+import { ServerContext } from './ServerContext'
+import type { ServerOptions } from './ServerOptions'
 
-// interface AnyServerTI {
-// 	request: any
-// 	response: any
-// 	handlers: any
-// }
-
-type Request = {
-	body: unknown
-}
-
-type Response = {
-	json(json: unknown): Response
-	status(httpCode: number): Response
-	end(): void
-}
-
-export interface ServerTI {
-	// extends AnyServerTI {
-	req: Request
-	res: Response
-	handlers: object
-}
-
-interface Context<TI extends ServerTI> {
-	req: TI['req']
-	res: TI['res']
-}
-
-type Promisify<H> = H extends (...args: any[]) => PromiseLike<any>
-	? H
-	: H extends (...args: infer Args) => infer R
-	? (...args: Args) => Promise<R>
-	: H extends object
-	? { [k in keyof H]: Promisify<H[k]> }
-	: never
-
-class _Server<TI extends ServerTI> {
-	_ = {
-		handlers: {},
-	} as {
-		handlers: Handlers
-		context: ServerContext<TI>
-	}
+export class Server_<
+	TRequest extends Request,
+	TResponse extends Response,
+	THandlers extends Handlers,
+> {
+	_context: ServerContext<TRequest, TResponse>
+	_handlers: THandlers
 
 	get context() {
-		return this._.context
+		return this._context
 	}
 
-	constructor(serverContext?: ServerContext<TI>) {
-		this._.context = serverContext || new ServerContext<TI>()
+	get handlers() {
+		return this._handlers
 	}
 
-	handlers<HH extends Handlers>(
-		handlers: HH,
-	): Server<TI & { handlers: Promisify<HH> }> {
-		this._.handlers = deepMerge(this._.handlers, handlers) as Handlers
-		return this as unknown as Server<TI & { handlers: Promisify<HH> }>
+	constructor(options: ServerOptions<TRequest, TResponse, THandlers>) {
+		this._context = options.context || new ServerContext<TRequest, TResponse>()
+		this._handlers = options.handlers
+		// eslint-disable-next-line no-constructor-return
+		return callableInstance(this)
 	}
 
-	_CALL(req: TI['req'], res: TI['res']) {
-		void this._.context._.storage.run({ req, res }, async () => {
-			const { path, args } = req.body as { path: string[]; args: unknown[] }
+	[CALL](request: TRequest, response: TResponse) {
+		void this._context._storage.run({ request, response }, async () => {
+			const { path, args } = request.body as { path: string[]; args: unknown[] }
 			const logName = `rpc.${path.join('.')}(${args
 				.map(a => JSON.stringify(a))
 				.join(', ')})`
@@ -85,7 +46,7 @@ class _Server<TI extends ServerTI> {
 				// eslint-disable-next-line no-console
 				console.log(logName)
 
-				let h: any = this._.handlers
+				let h: any = this._handlers
 
 				for (const p of path) {
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -105,81 +66,45 @@ class _Server<TI extends ServerTI> {
 				// eslint-disable-next-line no-console
 				console.log(logName, '===', JSON.stringify(result))
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-				res.json({ result })
+				response.json({ result })
 			} catch (error) {
 				// eslint-disable-next-line no-console
 				console.error(logName, 'throws', error)
 
 				if (error instanceof SchemarError) {
 					// eslint-disable-next-line no-magic-numbers
-					res.status(400).json({ error })
+					response.status(400).json({ error })
 				} else if (error instanceof Error) {
 					// eslint-disable-next-line no-magic-numbers
-					res.status(400).json({ error: error.message })
+					response.status(400).json({ error: error.message })
 					// eslint-disable-next-line no-magic-numbers
-				} else res.status(500).end()
+				} else response.status(500).end()
 			}
 		})
 	}
 }
 
-const publicFields = ['handlers'] as const
+//
 
-export const Server = createClassInterface(_Server, publicFields)
-export type Server<TI extends ServerTI = ServerTI> = Interface<
-	_Server<TI>,
-	Unpack<typeof publicFields>
-> & {
-	_typeInfo: TI
-}
+export type ServerCall<TRequest extends Request, TResponse extends Response> = (
+	request: TRequest,
+	response: TResponse,
+) => void
 
-export class ServerContext<TI extends ServerTI> {
-	_ = {
-		storage: new AsyncLocalStorage<Context<TI>>(),
-	} as {
-		storage: AsyncLocalStorage<Context<TI>>
-		typeInfo: TI
-	}
+export type Server<
+	TRequest extends Request,
+	TResponse extends Response,
+	THandlers extends Handlers,
+> = Server_<TRequest, TResponse, THandlers> & ServerCall<TRequest, TResponse>
 
-	get req(): TI['req'] {
-		const store = this._.storage.getStore()
+export const Server = Server_ as ServerConstructor
 
-		if (!store)
-			throw new Error('cannot retrieve request object outside RPC context')
+//
 
-		return store.req
-	}
-
-	get res(): TI['res'] {
-		const store = this._.storage.getStore()
-
-		if (!store)
-			throw new Error('cannot retrieve request object outside RPC context')
-
-		return store.res
-	}
-}
-
-export function createServerContext<
-	// eslint-disable-next-line etc/no-misused-generics
-	_Request = ExpressRequest,
-	// eslint-disable-next-line etc/no-misused-generics
-	_Response = ExpressResponse,
->() {
-	return new ServerContext<
-		ServerTI & {
-			req: _Request
-			res: _Response
-		}
-	>()
-}
-
-export function createServer(): Server<
-	ServerTI & { req: ExpressRequest; res: ExpressResponse }
->
-export function createServer<SC extends ServerContext<ServerTI>>(
-	serverContext: SC,
-): Server<SC['_']['typeInfo']>
-export function createServer(serverContext?: ServerContext<ServerTI>) {
-	return new Server(serverContext)
-}
+export type ServerConstructor = new <
+	TRequest extends Request,
+	TResponse extends Response,
+	THandlers extends Handlers,
+>(
+	options: ServerOptions<TRequest, TResponse, THandlers>,
+) => Server<TRequest, TResponse, THandlers>

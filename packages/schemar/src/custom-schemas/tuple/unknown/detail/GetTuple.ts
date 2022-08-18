@@ -3,9 +3,9 @@
 
 import type { OPTIONS } from '_'
 
-import type { MutableTuple, ReadonlyTuple, Schemable } from '~'
+import type { MutableTuple, ReadonlyTuple, Schemable_ } from '~'
 
-export type GetTuple<This, T extends Schemable[]> = This extends {
+export type GetTuple<This, T extends Schemable_[]> = This extends {
 	[OPTIONS]: { isReadonlyTuple: boolean }
 }
 	? This[OPTIONS]['isReadonlyTuple'] extends true

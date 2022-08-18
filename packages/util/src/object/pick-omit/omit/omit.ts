@@ -3,7 +3,7 @@
 
 import { hasOwnProperty } from '~'
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
-import { toString } from '~/string'
+import { stringFrom } from '~/string'
 
 import { omitIfPresent } from './omitIfPresent'
 import type { OmitSimple } from './OmitSimple'
@@ -25,7 +25,7 @@ export function omit<O extends object, K extends keyof O>(
 	for (const key of keys) {
 		if (!hasOwnProperty(obj, key)) {
 			throw new VoltisoUtilError(
-				`omit(${toString(obj)}, ${toString(keys)}): key ${toString(
+				`omit(${stringFrom(obj)}, ${stringFrom(keys)}): key ${stringFrom(
 					key,
 				)} does not exist`,
 			)

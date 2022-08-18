@@ -6,7 +6,10 @@ import type { _, OmitSignatures, OmitSimple_ } from '~'
 import type { SuggestObject } from './SuggestObject'
 
 /** Discards index signatures */
-/** @inline */ export type Merge2Simple_<A, B> = Impl<OmitSignatures<A>, OmitSignatures<B>>
+/** @inline */ export type Merge2Simple_<A, B> = Impl<
+	OmitSignatures<A>,
+	OmitSignatures<B>
+>
 
 /** Discards index signatures */
 /** @inline */ export type Merge2Simple<

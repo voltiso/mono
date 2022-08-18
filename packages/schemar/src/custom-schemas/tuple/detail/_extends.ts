@@ -3,7 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 
-import type { ITuple } from '~'
+import type { ITuple, Schemable } from '~'
 import { schema } from '~'
 
 export function _extends(thisTuple: ITuple, otherTuple: ITuple): boolean {
@@ -18,7 +18,7 @@ export function _extends(thisTuple: ITuple, otherTuple: ITuple): boolean {
 		$assert(aa)
 		$assert(bb)
 
-		if (!schema(aa).extends(bb)) return false
+		if (!schema(aa as Schemable).extends(bb)) return false
 	}
 
 	return true

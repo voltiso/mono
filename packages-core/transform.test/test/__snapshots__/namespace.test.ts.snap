@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`namespace works 1`] = `
+"import type { Test } from './_/external-stuff';
+export declare type Flatten<T> = [{
+    [k in keyof T]: T[k];
+}][0];
+/** @inline */ export declare type InlineFlatten<T> = [{
+    [k in keyof T]: T[k];
+}][0];
+declare const obj: {
+    a: Test.A;
+    b: Test.B;
+};
+export declare type Inlined = /*InlineFlatten<typeof obj>*/ { a: A; b: B; };
+export {};
+//# sourceMappingURL=namespace.d.ts.map"
+`;
