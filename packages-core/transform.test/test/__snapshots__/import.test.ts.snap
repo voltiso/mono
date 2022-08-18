@@ -2,6 +2,6 @@
 
 exports[`import works 1`] = `
 "import type { ExternalInterface, IncludesExternal } from './_/external-stuff';
-export declare type A = /*IncludesExternal*/ { ex: ExternalInterface | { a: 1; }; } & ExternalInterface;
+export declare type A = /* IncludesExternal */ { ex: ExternalInterface | { a: 1; }; } & ExternalInterface;
 //# sourceMappingURL=import.d.ts.map"
 `;

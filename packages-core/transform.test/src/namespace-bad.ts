@@ -14,9 +14,4 @@ const obj = {
 	b: 0 as unknown as Test.B,
 }
 
-type A = Test.A
-type B = Test.B
-
-export type _unused_namespace = A | B
-
-export type Inlined = InlineFlatten<typeof obj>
+export type CannotBeInlined = InlineFlatten<typeof obj>

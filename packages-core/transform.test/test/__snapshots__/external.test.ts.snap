@@ -3,7 +3,7 @@
 exports[`external works 1`] = `
 "import type { ExternalButGood, SneakyExternal } from './_/external-stuff';
 export declare type A = ExternalButGood;
-export declare type A_ = /*ExternalButGood*/ { a: 1; } & { b: 2; };
+export declare type A_ = /* ExternalButGood */ { a: 1; } & { b: 2; };
 export declare type B = SneakyExternal;
 export declare type B_ = SneakyExternal;
 //# sourceMappingURL=external.d.ts.map"

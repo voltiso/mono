@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`member works 1`] = `
+"import type { _ } from '@voltiso/util';
+export interface Schema {
+    get NonInlined(): /* _<{ a: 1 } & { b: 2 }> */ { a: 1; b: 2; };
+    /** @inline */
+    get Inlined(): /* _<{ a: 1 } & { b: 2 }> */ { a: 1; b: 2; };
+}
+declare const a: Schema;
+export declare type NonInlined = typeof a.NonInlined;
+export declare type Inlined = /* typeof a.Inlined */ { a: 1; b: 2; };
+export declare type NonInlined2 = Schema['NonInlined'];
+export declare type Inlined2 = /* Schema['Inlined'] */ { a: 1; b: 2; };
+export {};
+//# sourceMappingURL=member.d.ts.map"
+`;

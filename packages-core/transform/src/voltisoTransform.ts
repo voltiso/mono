@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import { stringFromSyntaxKind } from '@voltiso/transform.lib'
-// import { strict as assert } from 'node:assert'
 import { stringFromSyntaxKind } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import * as ts from 'typescript'
@@ -20,12 +18,6 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 			delete type.aliasTypeArguments
 		}
 
-		// if (ts.isTypeReferenceNode(node)) {
-		// 	// 	const outerType = typeChecker.getTypeAtLocation(node.parent)
-		// 	// console.log('!!!!!!!!!!!!!!', { type, outerType })
-		// 	// delete type.aliasSymbol
-		// }
-
 		const typeNode: ts.Node | undefined = typeChecker.typeToTypeNode(
 			type,
 			undefined,
@@ -33,31 +25,24 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		)
 		if (!typeNode) return node
 
-		// while (
-		// 	ts.isTypeReferenceNode(typeNode) &&
-		// 	(typeNode.typeArguments || []).length === 0
-		// ) {
-		// 	typeNode
-		// }
-
 		if (typeNode.kind === ts.SyntaxKind.AnyKeyword) return node
 
 		return typeNode
 	}
 
-	function collectSymbols(node: ts.Node): ts.Symbol[] {
-		let result = [] as ts.Symbol[]
+	// function collectSymbols(node: ts.Node): ts.Symbol[] {
+	// 	let result = [] as ts.Symbol[]
 
-		const type = typeChecker.getTypeAtLocation(node)
-		const symbol = type.symbol as ts.Symbol | undefined
-		if (symbol) result = [...result, symbol]
+	// 	const type = typeChecker.getTypeAtLocation(node)
+	// 	const symbol = type.symbol as ts.Symbol | undefined
+	// 	if (symbol) result = [...result, symbol]
 
-		node.forEachChild(child => {
-			result = [...result, ...collectSymbols(child)]
-		})
+	// 	node.forEachChild(child => {
+	// 		result = [...result, ...collectSymbols(child)]
+	// 	})
 
-		return result
-	}
+	// 	return result
+	// }
 
 	function collectSymbolNames(node: ts.Node): Set<string> {
 		const result = new Set<string>()
@@ -79,123 +64,30 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		return result
 	}
 
-	function getJSDocTags(type: ts.Type): readonly ts.JSDocTag[] {
-		const symbol = type.symbol as ts.Symbol | undefined
-		// console.log('getJSDocTags', typeChecker.typeToString(type))
+	// function getJSDocTags(type: ts.Type): readonly ts.JSDocTag[] {
+	// 	const symbol = type.symbol as ts.Symbol | undefined
+	// 	// console.log('getJSDocTags', typeChecker.typeToString(type))
 
-		const declaration = symbol?.declarations?.[0]
-		if (!declaration) return []
+	// 	const declaration = symbol?.declarations?.[0]
+	// 	if (!declaration) return []
 
-		let originalNode = ts.getOriginalNode(declaration) as ts.Node | undefined
+	// 	let originalNode = ts.getOriginalNode(declaration) as ts.Node | undefined
 
-		for (;;) {
-			if (!originalNode) return []
+	// 	for (;;) {
+	// 		if (!originalNode) return []
 
-			if (
-				ts.isTypeParameterDeclaration(originalNode) ||
-				ts.isTypeAliasDeclaration(originalNode)
-			)
-				break
+	// 		if (
+	// 			ts.isTypeParameterDeclaration(originalNode) ||
+	// 			ts.isTypeAliasDeclaration(originalNode)
+	// 		)
+	// 			break
 
-			originalNode = originalNode.parent
-		}
-
-		//
-
-		return ts.getJSDocTags(originalNode)
-	}
-
-	// function hasPropertyJSDocInlineTag(
-	// 	objectType: ts.TypeNode,
-	// 	indexType: ts.TypeNode,
-	// ) {
-	// 	if (!ts.isTypeReferenceNode(objectType)) return false
-	// 	if (!ts.isLiteralTypeNode(indexType)) return false
-
-	// 	console.log(
-	// 		'hasPropertyJSDocInlineTag',
-	// 		objectType.getText(),
-	// 		indexType.getText(),
-	// 	)
-
-	// 	const type = typeChecker.getTypeAtLocation(objectType)
-	// 	const symbol = type.symbol
-	// 	const declaration = symbol.declarations?.[0]
-
-	// 	const originalNode = ts.getOriginalNode(declaration)
-	// 	if (!originalNode) return false
-
-	// 	console.log('originalNode', stringFromSyntaxKind(originalNode.kind))
-
-	// 	if (ts.isInterfaceDeclaration(originalNode)) {
-	// 		for (const member of originalNode.members) {
-	// 			// console.log(
-	// 			// 	'member',
-	// 			// 	member.getText(),
-	// 			// 	stringFromSyntaxKind(member.kind),
-	// 			// )
-
-	// 			assert(ts.isIdentifier(member.name!))
-
-	// 			console.log(
-	// 				'member name',
-	// 				member.name.getText(),
-	// 				stringFromSyntaxKind(member.name.kind),
-	// 				stringFromSyntaxKind(indexType.literal.kind),
-	// 			)
-
-	// 			if (member.name === indexType.literal) {
-	// 				const propertyType = typeChecker.getTypeAtLocation(member)
-	// 				console.log('propertyType', typeChecker.typeToString(propertyType))
-	// 				const result = hasJSDocInlineTag(propertyType)
-	// 				if (result) return true
-	// 			}
-	// 		}
+	// 		originalNode = originalNode.parent
 	// 	}
 
-	// 	// let child: ts.Node | undefined
+	// 	//
 
-	// 	// objectType.forEachChild(currentChild => {
-	// 	// 	console.log('child', ts.getOriginalNode(currentChild).parent.getText())
-	// 	// 	// console.log('child', stringFromSyntaxKind(currentChild.kind))
-	// 	// 	child = currentChild
-	// 	// })
-
-	// 	// if (!child) return false
-
-	// 	// const tags = ts.getJSDocTags(child)
-
-	// 	// for (const tag of tags) if (tag.tagName.text === 'inline') return true
-
-	// 	return false
-	// }
-
-	function hasJSDocTag(type: ts.Type, tagName: string) {
-		const tags = getJSDocTags(type)
-		for (const tag of tags) if (tag.tagName.text === tagName) return true
-		return false
-	}
-
-	function hasJSDocInlineTag(type: ts.Type) {
-		return hasJSDocTag(type, 'inline')
-	}
-
-	// function hasNodeJSDocInlineTag(node: ts.Node) {
-	// 	const tags = ts.getJSDocTags(node)
-	// 	console.log('tags', tags)
-	// 	for(const tag of tags) if(tag.tagName.text === 'inline') return true
-	// 	return false
-	// }
-
-	// function canBeSimplified(node: ts.Node): boolean {
-	// 	return (
-	// 		(ts.isIndexedAccessTypeNode(node) &&
-	// 			hasPropertyJSDocInlineTag(node.objectType, node.indexType)) ||
-	// 		ts.isConditionalTypeNode(node) ||
-	// 		(ts.isTypeReferenceNode(node) &&
-	// 			hasJSDocInlineTag(typeChecker.getTypeAtLocation(node)) &&
-	// 			canBeInlined(node))
-	// 	)
+	// 	return ts.getJSDocTags(originalNode)
 	// }
 
 	function getNodePositionStr(node: ts.Node) {
@@ -222,7 +114,7 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 
 		function getNodeText(node: ts.Node): string | undefined {
 			try {
-				return node.getText(sourceFile)
+				return node.getText(sourceFile).replaceAll(/\s+/g, ' ')
 			} catch {
 				return undefined
 			}
@@ -244,7 +136,7 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 				node = ts.addSyntheticLeadingComment(
 					node,
 					ts.SyntaxKind.MultiLineCommentTrivia,
-					comment,
+					` ${comment} `,
 				)
 			return node
 		}
@@ -265,17 +157,20 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		function canBeInlined(node: ts.Node): boolean {
 			// console.log('canBeInlined?', stringFromSyntaxKind(node.kind))
 
-			const symbols = collectSymbols(node)
+			// const symbols = collectSymbols(node)
 
-			for (const symbol of symbols) {
-				const declaration = symbol.declarations?.[0]
-				if (!declaration) return false // unresolved
+			// for (const symbol of symbols) {
+			// 	const declaration = symbol.declarations?.[0]
+			// 	if (!declaration) return false // unresolved
 
-				if (declaration.kind === ts.SyntaxKind.TypeParameter) return false
-			}
+			// 	if (declaration.kind === ts.SyntaxKind.TypeParameter) return false
+			// }
 
 			const newNode = simplifyNode(node)
-			if (hasNodeOfType(newNode, ts.SyntaxKind.MappedType)) return false
+			if (hasNodeOfType(newNode, ts.SyntaxKind.MappedType)) {
+				// console.warn('not inlining mapped types')
+				return false
+			}
 
 			const newSymbolNames = collectSymbolNames(newNode)
 
@@ -306,56 +201,6 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 			return canBeInlined
 		}
 
-		// function canTargetBeInlined(node: ts.Node): boolean {
-		// 	// console.log()
-		// 	// console.log('canTargetBeInlined', getNodeText(node))
-
-		// 	// node = simplifyNode(node)
-
-		// 	// console.log('!!!!!', symbols)
-
-		// 	// return true
-
-		// 	const type = typeChecker.getTypeAtLocation(node)
-
-		// 	console.log()
-		// 	console.log('canTargetBeInlined', getNodeText(node))
-		// 	console.log('type is', typeChecker.typeToString(type))
-
-		// 	const symbols = collectSymbols(node)
-		// 	console.log('symbols', symbols)
-
-		// 	const newNode = simplifyNode(node)
-
-		// 	console.log('new node is', stringFromSyntaxKind(newNode.kind))
-
-		// 	const newSymbols = collectSymbols(newNode)
-		// 	console.log('new symbols', newSymbols)
-
-		// 	return true
-
-		// 	// for (const symbol of symbols) {
-		// 	// 	const id = (symbol as { id?: number }).id
-		// 	// 	if (id === undefined) continue
-
-		// 	// 	const declaration = symbol.declarations?.[0]
-		// 	// 	if (!declaration) {
-		// 	// 		// console.log('no declaration', symbol.name)
-		// 	// 		return false
-		// 	// 	}
-
-		// 	// 	if (ts.isTypeParameterDeclaration(declaration)) continue
-
-		// 	// 	// console.log('check symbol', declaration.getText())
-
-		// 	// 	if (!typeSymbolIds.has(id)) {
-		// 	// 		console.log({ typeSymbolIds, symbol })
-		// 	// 		return false
-		// 	// 	}
-		// 	// }
-		// 	// return true
-		// }
-
 		function hasNodeInlineComment(node: ts.Node): boolean {
 			const nodeFullText = getNodeFullText(node)
 			if (nodeFullText === undefined) return false
@@ -376,8 +221,6 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		function visitor(originalNode: ts.Node): ts.Node {
 			let node = originalNode
 
-			// console.log('VISIT', node.getText(sourceFile))
-
 			if (ts.isTypeNode(node) && hasNodeInlineComment(node)) {
 				// const type = typeChecker.getTypeAtLocation(node)
 				if (canBeInlined(node)) {
@@ -390,26 +233,54 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 						getNodePositionStr(originalNode),
 					)
 					node = simplifyAndAddComment(node)
-				} else {
-					// // eslint-disable-next-line no-console
-					// console.warn(
-					// 	`[@voltiso/transform] type expression cannot be inlined: ${
-					// 		getNodeText(originalNode) || stringFromSyntaxKind(node.kind)
-					// 	} @ ${getNodePositionStr(originalNode)}`,
-					// )
 				}
-			} else if (ts.isTypeReferenceNode(node)) {
-				const type = typeChecker.getTypeAtLocation(node)
-				if (hasJSDocInlineTag(type) && canBeInlined(node)) {
-					// eslint-disable-next-line no-console
-					console.log(
-						'\n',
-						'[@voltiso/transform] inlining type alias:',
-						getNodeText(originalNode) || stringFromSyntaxKind(node.kind),
-						'\n  @',
-						getNodePositionStr(originalNode),
-					)
-					node = simplifyAndAddComment(node)
+			} else if (
+				ts.isTypeReferenceNode(node) ||
+				ts.isIndexedAccessTypeNode(node) ||
+				ts.isTypeQueryNode(node)
+			) {
+				const symbolNode = ts.isTypeReferenceNode(node)
+					? node.typeName
+					: ts.isIndexedAccessTypeNode(node)
+					? node.indexType.getChildAt(0)
+					: ts.isTypeQueryNode(node)
+					? node.exprName
+					: node
+
+				let symbol = typeChecker.getSymbolAtLocation(symbolNode)
+
+				// if (symbol) console.log('found symbol', symbol.name)
+
+				// if (ts.isTypeReferenceNode(node))
+				// 	console.log(
+				// 		'found TypeReferenceNode',
+				// 		getNodeText(originalNode),
+				// 		symbol?.name,
+				// 	)
+
+				if (symbol) {
+					// eslint-disable-next-line no-bitwise
+					if (symbol.flags & ts.SymbolFlags.Alias) {
+						symbol = typeChecker.getAliasedSymbol(symbol)
+					}
+
+					const tags = symbol.getJsDocTags()
+					const hasInlineTag = tags.map(tag => tag.name).includes('inline')
+
+					// if (hasInlineTag)
+					// console.log('inline tag found at', getNodePositionStr(originalNode))
+
+					if (hasInlineTag && canBeInlined(node)) {
+						// eslint-disable-next-line no-console
+						console.log(
+							'\n',
+							'[@voltiso/transform] inlining type alias:',
+							getNodeText(originalNode) || stringFromSyntaxKind(node.kind),
+							'\n  @',
+							getNodePositionStr(originalNode),
+						)
+						node = simplifyAndAddComment(node)
+					}
 				}
 			}
 
