@@ -17,15 +17,11 @@ export const Union = lazyConstructor(
 	() => UnionImpl,
 ) as unknown as UnionConstructor
 
-type UnionConstructor = new <Ts extends Schemable_[]>(
-	schemas: Ts,
-) => Union<Ts>
+type UnionConstructor = new <Ts extends Schemable_[]>(schemas: Ts) => Union<Ts>
 
 //
 
-export function union<Ts extends Schemable_[]>(
-	...types: Ts
-): Union<Ts> {
+export function union<Ts extends Schemable_[]>(...types: Ts): Union<Ts> {
 	let ts = [] as Schemable_[]
 
 	for (const t of types) {

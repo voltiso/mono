@@ -6,20 +6,14 @@
 		"dev": "turbo run dev",
 		"build": "turbo run build",
 		"test": "turbo run test",
-		"lint": "turbo run lint # high RAM usage!",
-		"check": "run-s test lint",
-		"depcheck": "run-p depcheck:w depcheck:packages",
-		"depcheck:w": "depcheck",
-		"depcheck:packages": "turbo run lint:depcheck",
-		"fix": "turbo run fix",
-		"clean": "turbo run clean",
-		"__________WORKSPACE LEVEL": "__________",
-		"lint:w": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint .",
-		"fix:w": "run-s fix:w:prettier fix:w:eslint",
-		"fix:w:prettier": "prettier --write .",
-		"fix:w:eslint": "cross-env NODE_OPTIONS=--max_old_space_size=16384 eslint --fix .",
-		"__________PREPARE": "__________",
-		"prepare": "ts-patch install -s"
+		"lint": "turbo run lint",
+		"__________WORKSPACE + PACKAGES": "__________",
+		"uninstall": "v uninstallWorkspace",
+		"__________PREPARE WORKSPACE": "__________",
+		"prepare": "run-s prepare:ts-patch prepare:script prepare:run",
+		"prepare:ts-patch": "ts-patch install -s",
+		"prepare:script": "turbo run build:cjs --filter @voltiso/script",
+		"prepare:run": "v prepareWorkspace"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
@@ -33,7 +27,9 @@
 		"@voltiso/config.ts": "workspace:^",
 		"@voltiso/eslint-config": "workspace:^",
 		"@voltiso/eslint-config-fast": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"@voltiso/transform": "workspace:^",
+		"@voltiso/util.node": "workspace:^",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.3",
 		"eslint": "*",
@@ -51,8 +47,8 @@
 	},
 	"__________ENGINES": "__________",
 	"engines": {
-		"node": ">= 16",
-		"pnpm": ">= 7"
+		"node": "16",
+		"pnpm": "7"
 	},
 	"packageManager": "pnpm@7.6.0",
 	"pnpm": {

@@ -18,7 +18,6 @@
 		"lint:prettier": "prettier --check .",
 		"lint:depcheck": "depcheck",
 		"__________PREPARE": "__________",
-		"prepare": "pnpm -w prepare",
 		"prepublishOnly": "run-s lint"
 	},
 	"__________DEPS": "__________",

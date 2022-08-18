@@ -31,7 +31,6 @@
 		"build:build": "run-p build:cjs",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepare": "run-s build:cjs",
 		"prepublishOnly": "run-p lint:fast build test",
 		"__________MISC": "__________",
 		"v": "voltiso-script",
@@ -92,7 +91,6 @@
 		"eslint-plugin-no-use-extend-native": "*",
 		"eslint-plugin-node-dependencies": "*",
 		"eslint-plugin-notice": "*",
-		"eslint-plugin-prettier": "*",
 		"eslint-plugin-promise": "*",
 		"eslint-plugin-putout": "*",
 		"eslint-plugin-react": "*",
@@ -115,7 +113,6 @@
 		"eslint-plugin-unused-imports": ">=2.0.0",
 		"eslint-plugin-yml": "*",
 		"jsonc-eslint-parser": ">= 2.1.0",
-		"prettier": "*",
 		"putout": "*",
 		"toml-eslint-parser": "*",
 		"yaml-eslint-parser": "*"
@@ -130,7 +127,7 @@
 	},
 	"__________MISC": "__________",
 	"engines": {
-		"node": ">=16",
-		"pnpm": ">=7"
+		"node": "16",
+		"pnpm": "7"
 	}
 }

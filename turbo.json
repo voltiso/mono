@@ -2,34 +2,48 @@
 	"$schema": "https://turborepo.org/schema.json",
 
 	"pipeline": {
+		"_prepare": {
+			"dependsOn": ["^build:cjs"],
+			"cache": false
+		},
+
 		"dev": {
 			"cache": false
 		},
 
-		"build": {
-			"dependsOn": ["^build"],
-			"outputs": ["dist/**"]
+		"build:esm": {
+			"dependsOn": ["^build:esm"],
+			"outputs": ["dist/esm/**"]
+		},
+
+		"build:cjs": {
+			"dependsOn": ["^build:cjs"],
+			"outputs": ["dist/cjs/**"]
 		},
 
 		"test": {
-			"dependsOn": ["^build"],
+			"dependsOn": ["^build:cjs"],
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},
 
-		"lint:eslint:fast": {
+		"lint:eslint": {
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},
 
-		"lint:eslint:full": {
-			"dependsOn": ["^build"],
+		"lint:tsc": {
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},
 
-		"lint:depcheck": {
+		"depcheck": {
 			"cache": false
+		},
+
+		"typecov": {
+			"inputs": ["src"],
+			"outputs": ["package.json"]
 		},
 
 		"fix:prettier": {
@@ -40,7 +54,7 @@
 			"cache": false
 		},
 
-		"clean": {
+		"uninstall": {
 			"cache": false
 		}
 	}

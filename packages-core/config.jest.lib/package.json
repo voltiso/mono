@@ -28,7 +28,6 @@
 		"build:esm": "tsc -b tsconfig.build.esm.json",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepare": "run-s build:cjs",
 		"prepublishOnly": "run-p build test lint",
 		"__________MISC": "__________",
 		"v": "voltiso-script",

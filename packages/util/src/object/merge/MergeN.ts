@@ -3,10 +3,7 @@
 
 import type { Merge2Complex_ } from './Merge2Complex'
 
-export type _MergeN<
-	objs,
-	accumulator extends object,
-> = objs extends readonly []
+export type _MergeN<objs, accumulator extends object> = objs extends readonly []
 	? accumulator
 	: objs extends readonly [infer h, ...infer t]
 	? [h] extends [object]
@@ -14,7 +11,4 @@ export type _MergeN<
 		: accumulator
 	: never
 
-export type MergeN<objs extends readonly object[]> = _MergeN<
-	objs,
-	{}
->
+export type MergeN<objs extends readonly object[]> = _MergeN<objs, {}>

@@ -11,11 +11,11 @@ export const prettierOverride = defineEslintConfigOverride({
 	/** Do not use prettier for JS/TS, because it does not allow for `putout/align-spaces` */
 	// excludedFiles: codeFiles,
 
-	plugins: ['prettier'],
+	// plugins: ['prettier'],
 
-	extends: ['plugin:prettier/recommended'],
+	// extends: ['plugin:prettier/recommended'],
 
 	rules: {
-		'prettier/prettier': 'warn',
+		// 'prettier/prettier': 1,
 	},
 } as const)

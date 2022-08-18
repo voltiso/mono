@@ -16,7 +16,9 @@ importers:
       '@voltiso/config.ts': workspace:^
       '@voltiso/eslint-config': workspace:^
       '@voltiso/eslint-config-fast': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/transform': workspace:^
+      '@voltiso/util.node': workspace:^
       cross-env: ^7.0.3
       depcheck: ^1.4.3
       eslint: '*'
@@ -42,7 +44,9 @@ importers:
       '@voltiso/config.ts': link:packages-core/config.ts
       '@voltiso/eslint-config': link:packages-core/eslint-config
       '@voltiso/eslint-config-fast': link:packages-core/eslint-config-fast
+      '@voltiso/script': link:packages-core/script
       '@voltiso/transform': link:packages-core/transform
+      '@voltiso/util.node': link:packages/util.node
       cross-env: 7.0.3
       depcheck: 1.4.3
       eslint: 8.22.0
@@ -610,9 +614,11 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/script.lib': workspace:^
+      '@voltiso/util.esbuild': workspace:^1.0.0
       '@voltiso/util.node': workspace:^
     dependencies:
       '@voltiso/script.lib': link:../script.lib
+      '@voltiso/util.esbuild': link:../../packages/util.esbuild
       '@voltiso/util.node': link:../../packages/util.node
     devDependencies:
       '@types/node': 18.7.6
@@ -1017,8 +1023,8 @@ importers:
   packages/util.esbuild:
     specifiers:
       '@types/node': ^18.7.6
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^2.0.1
+      '@voltiso/config.ts.build.esm': workspace:^2.0.1
       esbuild: ^0.15.5
       esbuild-register: ^3.3.3
       rimraf: ^3.0.2
