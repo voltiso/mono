@@ -33,6 +33,8 @@ const pluginsToPick = [
 	'@voltiso',
 	'@voltiso/eslint-plugin',
 
+	'regexp', // require 'u' unicode flag
+
 	'eslint-comments', // !
 
 	// ! framework-specific
@@ -77,7 +79,6 @@ const pluginsToPick = [
 	// 'react-native',
 	// 'react-native-globals',
 	// 'regex',
-	// 'regexp',
 	// 'switch-case',
 	// 'testing-library',
 	// 'toml',

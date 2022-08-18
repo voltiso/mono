@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`chain works 1`] = `
+"/** @inline */
+export declare type DeepReadonly_<T> = {
+    readonly [k in keyof T]: DeepReadonly_<T[k]>;
+};
+/** @inline */
+export declare type DeepReadonly<T extends object> = DeepReadonly_<T>;
+/** @inline */
+export declare type $DeepReadonly_<T> = T extends any ? DeepReadonly_<T> : never;
+/** @inline */
+export declare type $DeepReadonly<T extends object> = $DeepReadonly_<T>;
+//# sourceMappingURL=chain.d.ts.map"
+`;

@@ -5,7 +5,7 @@ import type { Nullish } from '~'
 
 import type { Merge2Nullish_ } from './Merge2Nullish'
 
-/** @inline */ export type MergeNNullish_<objs, accumulator> =
+export type MergeNNullish_<objs, accumulator> =
 	objs extends readonly []
 		? accumulator
 		: objs extends readonly [infer h, ...infer t]

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`import get-type 1`] = `
+"/**
+ * Infer type, or identity if already an Inferable
+ *
+ * @inline
+ */
+export declare type GetType_<L> = object extends L ? object : never;
+/**
+ * Infer type, or identity if already an Inferable
+ *
+ * @inline
+ */
+export declare type GetType<S extends string> = /* GetType_<S> */ object extends S ? S & object : never;
+//# sourceMappingURL=get-type.d.ts.map"
+`;
