@@ -46,7 +46,7 @@ describe('stringFrom', () => {
 			stringFrom((x: string) => stringFrom(x || `(${x})`) || stringFrom(x), {
 				maxLength: 80,
 			}),
-		// eslint-disable-next-line no-template-curly-in-string
+			// eslint-disable-next-line no-template-curly-in-string
 		).toBe('x => stringFrom(x || `(${x})`) || stringFrom(x)')
 
 		expect(stringFrom(stringFrom, { maxLength: 40 })).toBe(

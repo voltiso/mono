@@ -35,7 +35,9 @@ export class PrototypePollutionError<
 			haveObjectArg ? args : [undefined, ...args]
 		) as [Obj, Key, ErrorOptions | undefined]
 
-		let message = `prototype pollution: cannot access property ${stringFrom(key)}`
+		let message = `prototype pollution: cannot access property ${stringFrom(
+			key,
+		)}`
 
 		if (obj) message = `${message} in object ${stringFrom(obj)}`
 

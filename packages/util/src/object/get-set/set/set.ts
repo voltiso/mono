@@ -22,9 +22,9 @@ export class SetError<
 	value: V
 
 	constructor(obj: Obj, path: P, value: V, options?: ErrorOptions | undefined) {
-		const message = `property not present @ set(${stringFrom(obj)}, ${stringFrom(
-			path,
-		)}, ${stringFrom(value)})`
+		const message = `property not present @ set(${stringFrom(
+			obj,
+		)}, ${stringFrom(path)}, ${stringFrom(value)})`
 		super(message, options)
 
 		this.object = obj
