@@ -12,7 +12,7 @@ import type {
 	GetUpdateDataByCtx,
 } from '~/Doc/_/GData'
 import type { DTI } from '~/Doc/DocTI'
-import type { IDoc } from '~/Doc/IDoc'
+import type { DocLike, IDoc } from '~/Doc/IDoc'
 import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
 
@@ -20,7 +20,7 @@ import type { NestedPromise } from './_/NestedPromise'
 import type { Null } from './_/Null'
 import type { IRefBase } from './IRef'
 
-export interface RefBase<D extends IDoc, Exists extends boolean>
+export interface RefBase<D extends DocLike, Exists extends boolean>
 	extends IRefBase,
 		PromiseLike<D | Null<Exists>> {
 	[DTI]: D[DTI]
@@ -66,7 +66,7 @@ export interface RefBase<D extends IDoc, Exists extends boolean>
 }
 
 /** Target always exists, ref-counted */
-export type StrongRef<D extends IDoc> = RefBase<D, true>
+export type StrongRef<D extends DocLike> = RefBase<D, true>
 
 /** Target may be `null`, not ref-counted */
-export type WeakRef<D extends IDoc> = RefBase<D, boolean>
+export type WeakRef<D extends DocLike> = RefBase<D, boolean>

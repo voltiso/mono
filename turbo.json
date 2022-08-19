@@ -2,11 +2,6 @@
 	"$schema": "https://turborepo.org/schema.json",
 
 	"pipeline": {
-		"_prepare": {
-			"dependsOn": ["^build:cjs"],
-			"cache": false
-		},
-
 		"dev": {
 			"cache": false
 		},
@@ -46,16 +41,8 @@
 			"outputs": ["package.json"]
 		},
 
-		"fix:prettier": {
-			"cache": false
-		},
+		"fix:prettier": {},
 
-		"fix:eslint": {
-			"cache": false
-		},
-
-		"clean": {
-			"cache": false
-		}
+		"fix:eslint": {}
 	}
 }

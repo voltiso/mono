@@ -7,7 +7,13 @@ import { undef } from '@voltiso/util'
 
 import type { Id } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { Doc, IDoc, IDocConstructor, IDocTI } from '~/Doc'
+import type {
+	Doc,
+	DocConstructorLike,
+	IDoc,
+	IDocConstructor,
+	IDocTI,
+} from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { GetPublicCreationInputData } from '~/Doc/_/GData'
 import type { GO } from '~/Doc/_/GDoc'
@@ -73,12 +79,12 @@ class CollectionRef<
 		return docPath.set(data) as never
 	}
 
-	register<Cls extends IDocConstructor>(
+	register<Cls extends DocConstructorLike>(
 		cls: Cls,
 	): ICollectionRef<InstanceType<Cls>> {
 		// console.log('register', cls._)
 		const { db } = this._context
-		const { _ } = cls
+		const { _ } = cls as unknown as IDocConstructor
 		const docPattern = db.docPattern(this._path, '*')
 
 		if (Object.keys(_.publicOnCreation).length > 0)

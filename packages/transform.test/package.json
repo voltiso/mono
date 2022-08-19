@@ -1,4 +1,8 @@
 {
+	"name": "@voltiso/transform.test",
+	"private": true,
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/mono.git",
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________TEST": "__________",

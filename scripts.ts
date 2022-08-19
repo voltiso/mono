@@ -5,27 +5,42 @@
 
 import { getPackageJsonCachedSync } from '@voltiso/util.node'
 
+function turbo(...scriptNames: string[]) {
+	return `pnpm -w exec turbo run --filter=${
+		packageJson.name || '//'
+	} ${scriptNames.join(' ')}`
+}
+
+function turboAllPackages(...scriptNames: string[]) {
+	return `pnpm -w exec turbo run ${scriptNames.join(' ')}`
+}
+
 const packageJson = getPackageJsonCachedSync(process.cwd())
 
 //!
 //! Workspace-level
 
-const corePackages = ['eslint-config', 'eslint-config-fast', 'config.jest.esr']
+// const corePackages = ['eslint-config', 'eslint-config-fast', 'config.jest.esr']
 
-export const prepareWorkspace = `turbo run build:cjs ${corePackages
-	.map(packageName => `--filter=...@voltiso/${packageName}`)
-	.join(' ')}`
+export const prepareWorkspace = `turbo run build:cjs --filter=//^...`
 
-export const cleanWorkspace = [turbo('clean'), 'clean']
+export const checkWorkspace = [
+	'prepareWorkspace',
+	turboAllPackages(
+		'build:cjs',
+		'build:esm',
+		'fix:prettier',
+		'test',
+		'lint:eslint',
+		'lint:tsc',
+	),
+	turboAllPackages('depcheck'),
+]
+
+// export const cleanWorkspace = [turbo('clean'), 'clean']
 
 //!
 //! Per-package
-
-function turbo(...scriptNames: string[]) {
-	return `pnpm -w exec turbo run --filter ${
-		packageJson.name
-	} ${scriptNames.join(' ')}`
-}
 
 export const build = turbo('build:esm', 'build:cjs')
 
@@ -65,7 +80,6 @@ export const prepublishOnly = [
 // export const prettier = 'prettier --check .'
 // export const eslint = 'eslint .'
 // export const tsclint = 'tsc -b'
-
 
 // /** `type-coverage` */
 // export const typecov = [

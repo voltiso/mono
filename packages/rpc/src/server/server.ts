@@ -86,15 +86,14 @@ export class Server_<
 
 //
 
-export type ServerCall<TRequest extends Request, TResponse extends Response> = (
-	request: TRequest,
-	response: TResponse,
-) => void
+export type ServerCall<TRequest extends Request, TResponse extends Response> = {
+	bivarianceHack(request: TRequest, response: TResponse): void
+}['bivarianceHack']
 
 export type Server<
-	TRequest extends Request,
-	TResponse extends Response,
-	THandlers extends Handlers,
+	TRequest extends Request = Request,
+	TResponse extends Response = Response,
+	THandlers extends Handlers = Handlers,
 > = Server_<TRequest, TResponse, THandlers> & ServerCall<TRequest, TResponse>
 
 export const Server = Server_ as ServerConstructor

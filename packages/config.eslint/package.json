@@ -27,13 +27,10 @@
 		"lint:tsc": "tsc -b",
 		"fix": "eslint . --fix",
 		"__________BUILD": "__________",
-		"build": "run-s clean build:build",
-		"build:build": "run-p build:cjs",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-p lint:fast build test",
 		"__________MISC": "__________",
-		"v": "voltiso-script",
 		"clean": "run-p clean:rimraf",
 		"clean:rimraf": "rimraf dist"
 	},

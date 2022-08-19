@@ -6,14 +6,18 @@ import type { DocPath } from '~/Path'
 import type { IRef } from '~/Ref/IRef'
 
 import type { DocContext } from './DocContext'
-import type { DTI, IDocTI } from './DocTI'
+import type { DocTILike, DTI, IDocTI } from './DocTI'
+
+export interface DocLike {
+	[DTI]: DocTILike
+}
 
 /**
  * Unknown Doc
  *
  * - Every `Doc` is assignable to it
  */
-export type IDoc = {
+export interface IDoc extends DocLike {
 	[DTI]: IDocTI
 
 	readonly id: Id

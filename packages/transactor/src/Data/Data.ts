@@ -3,7 +3,7 @@
 
 import type { _ } from '@voltiso/util'
 
-import type { IDoc } from '~/Doc'
+import type { DocLike, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 
 import type { Id } from './Id'
@@ -23,7 +23,7 @@ export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arr
 // type TDataDef = DataRecord // & TData
 
 /** @inline */
-export type WithId<Data, Doc extends IDoc = IDoc> = _<{ id: Id<Doc> } & Data>
+export type WithId<Data, Doc extends DocLike = IDoc> = _<{ id: Id<Doc> } & Data>
 
 // export type DataWithId<
 // 	F extends IntrinsicFields = IntrinsicFields,

@@ -4,7 +4,7 @@
 import type { Throw } from '@voltiso/util'
 
 import type { Id } from '~/Data'
-import type { GetPublicCreationInputData, IDoc } from '~/Doc'
+import type { DocLike, GetPublicCreationInputData, IDoc } from '~/Doc'
 import type { CollectionPath } from '~/Path/Path'
 import type { WeakDocRef } from '~/Ref/WeakDocRef'
 
@@ -12,7 +12,7 @@ import { CollectionRef_ } from './CollectionRef_'
 import type { InferTI } from './InferTI'
 
 /** Collection reference */
-export interface CollectionRef<D extends IDoc = IDoc> {
+export interface CollectionRef<D extends DocLike = IDoc> {
 	readonly path: CollectionPath
 
 	/** Get Doc reference by Id */

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDocTI } from '~/Doc'
+import type { DocTILike } from '~/Doc'
 
 /** @inline */
 export type Promisify<F> = F extends (...args: never[]) => PromiseLike<unknown>
@@ -16,6 +16,6 @@ type OTP<F> = F extends (...args: infer Args) => infer R
 	: never
 
 /** @inline */
-export type GMethodPromises<TI extends IDocTI> = {
+export type GMethodPromises<TI extends DocTILike> = {
 	[k in keyof TI['methods']]: Promisify<OTP<TI['methods'][k]>>
 }

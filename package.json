@@ -1,5 +1,4 @@
 {
-	"name": "workspace",
 	"private": true,
 	"__________SCRIPTS": "__________",
 	"scripts": {
@@ -9,20 +8,20 @@
 		"build:cjs": "turbo run build:cjs",
 		"build:esm": "turbo run build:esm",
 		"test": "turbo run test",
-		"lint": "turbo run lint",
-		"__________WORKSPACE + PACKAGES": "__________",
-		"w:clean": "v cleanWorkspace",
+		"lint": "turbo run fix:prettier lint:tsc lint:eslint",
+		"depcheck": "turbo run depcheck",
+		"check": "v checkWorkspace",
 		"__________PREPARE WORKSPACE": "__________",
 		"prepare": "run-s prepare:ts-patch prepare:script prepare:run",
 		"prepare:ts-patch": "ts-patch install -s",
-		"prepare:script": "turbo run build:cjs --filter @voltiso/script",
+		"prepare:script": "turbo run build:cjs --filter=@voltiso/script",
 		"prepare:run": "v prepareWorkspace"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@types/jest": "^28.1.7",
 		"@types/node": "^18.7.6",
-		"@voltiso/assertor.transform": "workspace:^",
+		"@voltiso/assertor.transform": "workspace:^1.0.0",
 		"@voltiso/config.eslint.lib": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.jest.lib": "workspace:^",

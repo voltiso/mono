@@ -3,8 +3,8 @@
 
 import type { Tagged } from '@voltiso/util'
 
-import type { DTI, IDoc } from '~/Doc'
+import type { DocLike, DTI, IDoc } from '~/Doc'
 
-export type Id<D extends IDoc = IDoc> = string &
+export type Id<D extends DocLike = IDoc> = string &
 	(IDoc extends D ? unknown : Tagged<'Doc' & { tag: D[DTI]['tag'] }>)
 // (IDoc extends D ? unknown : Tagged<'Doc' & Relax<D[DTI]>>)

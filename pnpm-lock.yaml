@@ -8,7 +8,7 @@ importers:
     specifiers:
       '@types/jest': ^28.1.7
       '@types/node': ^18.7.6
-      '@voltiso/assertor.transform': workspace:^
+      '@voltiso/assertor.transform': workspace:^1.0.0
       '@voltiso/config.eslint.lib': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.jest.lib': workspace:^
@@ -36,16 +36,16 @@ importers:
     devDependencies:
       '@types/jest': 28.1.7
       '@types/node': 18.7.6
-      '@voltiso/assertor.transform': link:packages-core/assertor.transform
-      '@voltiso/config.eslint.lib': link:packages-core/config.eslint.lib
-      '@voltiso/config.jest.esr': link:packages-core/config.jest.esr
-      '@voltiso/config.jest.lib': link:packages-core/config.jest.lib
-      '@voltiso/config.prettier': link:packages-core/config.prettier
-      '@voltiso/config.ts': link:packages-core/config.ts
-      '@voltiso/eslint-config': link:packages-core/eslint-config
-      '@voltiso/eslint-config-fast': link:packages-core/eslint-config-fast
-      '@voltiso/script': link:packages-core/script
-      '@voltiso/transform': link:packages-core/transform
+      '@voltiso/assertor.transform': link:packages/assertor.transform
+      '@voltiso/config.eslint.lib': link:packages/config.eslint.lib
+      '@voltiso/config.jest.esr': link:packages/config.jest.esr
+      '@voltiso/config.jest.lib': link:packages/config.jest.lib
+      '@voltiso/config.prettier': link:packages/config.prettier
+      '@voltiso/config.ts': link:packages/config.ts
+      '@voltiso/eslint-config': link:packages/eslint-config
+      '@voltiso/eslint-config-fast': link:packages/eslint-config-fast
+      '@voltiso/script': link:packages/script
+      '@voltiso/transform': link:packages/transform
       '@voltiso/util.node': link:packages/util.node
       cross-env: 7.0.3
       depcheck: 1.4.3
@@ -62,7 +62,7 @@ importers:
       typescript-transform-paths: 3.3.1_typescript@4.7.4
       zone.js: 0.11.8
 
-  packages-core/assertor:
+  packages/assertor:
     specifiers:
       '@voltiso/assertor.transform': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
@@ -72,7 +72,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
-  packages-core/assertor.test:
+  packages/assertor.test:
     specifiers:
       '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
@@ -82,13 +82,29 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
 
-  packages-core/assertor.transform:
+  packages/assertor.transform:
     specifiers:
       rimraf: ^3.0.2
     devDependencies:
       rimraf: 3.0.2
 
-  packages-core/config.babel.lib:
+  packages/caller:
+    specifiers:
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/util': workspace:^
+      rimraf: ^3.0.2
+    devDependencies:
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/schemar': link:../schemar
+      '@voltiso/util': link:../util
+      rimraf: 3.0.2
+
+  packages/config.babel.lib:
     specifiers:
       '@babel/core': ^7.18.10
       '@types/babel__core': ^7.1.19
@@ -102,7 +118,7 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       rimraf: 3.0.2
 
-  packages-core/config.babel.zone:
+  packages/config.babel.zone:
     specifiers:
       '@babel/core': ^7.18.10
       '@voltiso/config.babel.lib': workspace:^
@@ -115,7 +131,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
-  packages-core/config.eslint:
+  packages/config.eslint:
     specifiers:
       '@types/node': ^18.7.6
       '@voltiso/config.eslint.lib': workspace:^
@@ -136,7 +152,7 @@ importers:
       eslint: 8.22.0
       rimraf: 3.0.2
 
-  packages-core/config.eslint.lib:
+  packages/config.eslint.lib:
     specifiers:
       '@voltiso/assertor.transform': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
@@ -152,7 +168,7 @@ importers:
       eslint-define-config: 1.6.0
       rimraf: 3.0.2
 
-  packages-core/config.jest.esr:
+  packages/config.jest.esr:
     specifiers:
       '@babel/core': ^7.18.10
       '@babel/preset-env': ^7.18.10
@@ -183,7 +199,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       rimraf: 3.0.2
 
-  packages-core/config.jest.lib:
+  packages/config.jest.lib:
     specifiers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
@@ -195,7 +211,7 @@ importers:
       jest: 28.1.3
       rimraf: 3.0.2
 
-  packages-core/config.prettier:
+  packages/config.prettier:
     specifiers:
       '@prettier/plugin-xml': ^2.2.0
       '@types/node': ^18.7.6
@@ -220,10 +236,10 @@ importers:
       prettier: 2.7.1
       rimraf: 3.0.2
 
-  packages-core/config.ts:
+  packages/config.ts:
     specifiers: {}
 
-  packages-core/config.ts.build:
+  packages/config.ts.build:
     specifiers:
       '@voltiso/assertor.transform': workspace:^
       '@voltiso/config.ts': workspace:^
@@ -242,7 +258,7 @@ importers:
       prettier: 2.7.1
       typescript: 4.7.4
 
-  packages-core/config.ts.build.cjs:
+  packages/config.ts.build.cjs:
     specifiers:
       '@voltiso/config.ts.build': workspace:^
       npm-run-all: ^4.1.5
@@ -253,7 +269,7 @@ importers:
       npm-run-all: 4.1.5
       prettier: 2.7.1
 
-  packages-core/config.ts.build.esm:
+  packages/config.ts.build.esm:
     specifiers:
       '@voltiso/config.ts.build': workspace:^
       npm-run-all: ^4.1.5
@@ -264,10 +280,10 @@ importers:
       npm-run-all: 4.1.5
       prettier: 2.7.1
 
-  packages-core/config.tsdoc:
+  packages/config.tsdoc:
     specifiers: {}
 
-  packages-core/eslint-config:
+  packages/eslint-config:
     specifiers:
       '@babel/core': ^7.18.10
       '@babel/plugin-syntax-flow': ^7.18.6
@@ -430,7 +446,7 @@ importers:
       prettier: 2.7.1
       typescript: 4.7.4
 
-  packages-core/eslint-config-fast:
+  packages/eslint-config-fast:
     specifiers:
       '@rushstack/eslint-patch': ^1.1.4
       '@typescript-eslint/parser': ^5.33.1
@@ -573,7 +589,7 @@ importers:
       prettier: 2.7.1
       typescript: 4.7.4
 
-  packages-core/eslint-plugin:
+  packages/eslint-plugin:
     specifiers:
       '@types/eslint': ^8.4.5
       '@types/estree': ^1.0.0
@@ -608,87 +624,6 @@ importers:
       rimraf: 3.0.2
       typescript: 4.7.4
 
-  packages-core/script:
-    specifiers:
-      '@types/node': ^18.7.6
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/script.lib': workspace:^
-      '@voltiso/util.esbuild': workspace:^1.0.0
-      '@voltiso/util.node': workspace:^
-    dependencies:
-      '@voltiso/script.lib': link:../script.lib
-      '@voltiso/util.esbuild': link:../../packages/util.esbuild
-      '@voltiso/util.node': link:../../packages/util.node
-    devDependencies:
-      '@types/node': 18.7.6
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-
-  packages-core/script.lib:
-    specifiers:
-      '@types/node': ^18.7.6
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/util': workspace:^
-      '@voltiso/util.node': workspace:^
-    dependencies:
-      '@voltiso/util': link:../../packages/util
-      '@voltiso/util.node': link:../../packages/util.node
-    devDependencies:
-      '@types/node': 18.7.6
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-
-  packages-core/transform:
-    specifiers:
-      '@voltiso/transform.lib': workspace:^1.0.0
-      chalk: '4'
-      rimraf: ^3.0.2
-    dependencies:
-      '@voltiso/transform.lib': link:../transform.lib
-      chalk: 4.1.2
-    devDependencies:
-      rimraf: 3.0.2
-
-  packages-core/transform.lib:
-    specifiers:
-      rimraf: ^3.0.2
-    devDependencies:
-      rimraf: 3.0.2
-
-  packages-core/transform.test:
-    specifiers:
-      '@voltiso/assertor': workspace:^
-      '@voltiso/config.jest.esr': workspace:^
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.tsdoc': workspace:^
-      '@voltiso/transform': workspace:^
-      '@voltiso/util': workspace:^
-    devDependencies:
-      '@voltiso/assertor': link:../assertor
-      '@voltiso/config.jest.esr': link:../config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.tsdoc': link:../config.tsdoc
-      '@voltiso/transform': link:../transform
-      '@voltiso/util': link:../../packages/util
-
-  packages/caller:
-    specifiers:
-      '@voltiso/config.jest.esr': workspace:^
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/schemar': workspace:^
-      '@voltiso/util': workspace:^
-      rimraf: ^3.0.2
-    devDependencies:
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
-      '@voltiso/schemar': link:../schemar
-      '@voltiso/util': link:../util
-      rimraf: 3.0.2
-
   packages/firestore-like:
     specifiers:
       '@firebase/app-types': ^0.7.0
@@ -702,9 +637,9 @@ importers:
       '@voltiso/util': link:../util
     devDependencies:
       '@firebase/app-types': 0.7.0
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
       rimraf: 3.0.2
 
@@ -719,9 +654,9 @@ importers:
       '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/util': link:../util
     devDependencies:
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
   packages/patcher:
     specifiers:
@@ -736,9 +671,9 @@ importers:
       '@voltiso/util': link:../util
       fast-equals: 4.0.1
     devDependencies:
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       jest: 28.1.3
       rimraf: 3.0.2
 
@@ -767,9 +702,9 @@ importers:
       '@types/express': 4.17.13
       '@types/node': 18.7.6
       '@voltiso/caller': link:../caller
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       cross-env: 7.0.3
       express: 4.18.1
       get-port: 6.1.2
@@ -792,13 +727,45 @@ importers:
       '@voltiso/util': link:../util
     devDependencies:
       '@typescript/analyze-trace': 0.9.0
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
-      '@voltiso/config.tsdoc': link:../../packages-core/config.tsdoc
-      '@voltiso/script': link:../../packages-core/script
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/config.tsdoc': link:../config.tsdoc
+      '@voltiso/script': link:../script
       rimraf: 3.0.2
+
+  packages/script:
+    specifiers:
+      '@types/node': ^18.7.6
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script.lib': workspace:^
+      '@voltiso/util.esbuild': workspace:^
+      '@voltiso/util.node': workspace:^1.0.0
+    dependencies:
+      '@voltiso/script.lib': link:../script.lib
+      '@voltiso/util.esbuild': link:../util.esbuild
+      '@voltiso/util.node': link:../util.node
+    devDependencies:
+      '@types/node': 18.7.6
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+
+  packages/script.lib:
+    specifiers:
+      '@types/node': ^18.7.6
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/util': workspace:^
+      '@voltiso/util.node': workspace:^1.0.0
+    dependencies:
+      '@voltiso/util': link:../util
+      '@voltiso/util.node': link:../util.node
+    devDependencies:
+      '@types/node': 18.7.6
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
   packages/styler:
     specifiers:
@@ -843,10 +810,10 @@ importers:
       '@types/react-native': 0.69.5
       '@types/react-test-renderer': 18.0.0
       '@types/testing-library__jest-dom': 5.14.5
-      '@voltiso/config.eslint.lib': link:../../packages-core/config.eslint.lib
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.eslint.lib': link:../config.eslint.lib
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       csstype: 3.1.0
       fela: 12.2.0
       fela-native: 12.2.0_react-native@0.69.4
@@ -884,10 +851,10 @@ importers:
       js-yaml: 4.1.0
     devDependencies:
       '@types/js-yaml': 4.0.5
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
-      '@voltiso/config.tsdoc': link:../../packages-core/config.tsdoc
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/config.tsdoc': link:../config.tsdoc
       '@voltiso/schemar': link:../schemar
       rimraf: 3.0.2
       zone.js: 0.11.8
@@ -901,8 +868,8 @@ importers:
       firebase-admin: ^11.0.1
     devDependencies:
       '@firebase/app-types': 0.7.0
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/transactor': link:../transactor
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
 
@@ -931,9 +898,9 @@ importers:
       '@firebase/app-types': 0.7.0
       '@types/jest-dev-server': 5.0.0
       '@types/random-seed': 0.3.3
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.jest.lib': link:../../packages-core/config.jest.lib
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.jest.lib': link:../config.jest.lib
       '@voltiso/schemar': link:../schemar
       '@voltiso/transactor': link:../transactor
       '@voltiso/transactor.firestore': link:../transactor.firestore
@@ -956,8 +923,8 @@ importers:
       '@voltiso/localstore': workspace:^
       '@voltiso/transactor': workspace:^
     devDependencies:
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/localstore': link:../localstore
       '@voltiso/transactor': link:../transactor
@@ -981,9 +948,9 @@ importers:
     devDependencies:
       '@types/random-seed': 0.3.3
       '@typescript/analyze-trace': 0.9.0
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.jest.lib': link:../../packages-core/config.jest.lib
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.jest.lib': link:../config.jest.lib
       '@voltiso/localstore': link:../localstore
       '@voltiso/schemar': link:../schemar
       '@voltiso/transactor': link:../transactor
@@ -993,6 +960,39 @@ importers:
       random-seed: 0.3.0
       rimraf: 3.0.2
       zone.js: 0.11.8
+
+  packages/transform:
+    specifiers:
+      '@voltiso/transform.lib': workspace:^1.0.0
+      chalk: '4'
+      rimraf: ^3.0.2
+    dependencies:
+      '@voltiso/transform.lib': link:../transform.lib
+      chalk: 4.1.2
+    devDependencies:
+      rimraf: 3.0.2
+
+  packages/transform.lib:
+    specifiers:
+      rimraf: ^3.0.2
+    devDependencies:
+      rimraf: 3.0.2
+
+  packages/transform.test:
+    specifiers:
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.tsdoc': workspace:^
+      '@voltiso/transform': workspace:^
+      '@voltiso/util': workspace:^
+    devDependencies:
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.tsdoc': link:../config.tsdoc
+      '@voltiso/transform': link:../transform
+      '@voltiso/util': link:../util
 
   packages/util:
     specifiers:
@@ -1009,11 +1009,11 @@ importers:
       zone.js: ^0.11.8
     devDependencies:
       '@types/clone': 2.1.1
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
-      '@voltiso/config.tsdoc': link:../../packages-core/config.tsdoc
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/config.tsdoc': link:../config.tsdoc
       clone: 2.1.2
       jest: 28.1.3
       package-json: 8.1.0
@@ -1032,8 +1032,8 @@ importers:
       esbuild-register: 3.3.3_esbuild@0.15.5
     devDependencies:
       '@types/node': 18.7.6
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       esbuild: 0.15.5
       rimraf: 3.0.2
 
@@ -1047,10 +1047,10 @@ importers:
     dependencies:
       '@voltiso/util': link:../util
     devDependencies:
-      '@voltiso/assertor': link:../../packages-core/assertor
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
   packages/util.react:
     specifiers:
@@ -1079,9 +1079,9 @@ importers:
       '@babel/preset-env': 7.18.10_@babel+core@7.18.10
       '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.17
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.69.4_euumf47qgywupl3wi5tuav3owu
@@ -1102,8 +1102,8 @@ importers:
     devDependencies:
       '@types/react': 18.0.17
       '@types/react-dom': 18.0.6
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       rimraf: 3.0.2
@@ -1137,9 +1137,9 @@ importers:
       '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.17
       '@types/testing-library__jest-dom': 5.14.5
-      '@voltiso/config.jest.esr': link:../../packages-core/config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../../packages-core/config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../../packages-core/config.ts.build.esm
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.69.4_euumf47qgywupl3wi5tuav3owu
@@ -2920,7 +2920,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.7.3
+      '@types/node': 18.7.6
       jest-mock: 28.1.3
 
   /@jest/expect-utils/28.1.3:
@@ -2946,7 +2946,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@sinonjs/fake-timers': 9.1.2
-      '@types/node': 18.7.3
+      '@types/node': 18.7.6
       jest-message-util: 28.1.3
       jest-mock: 28.1.3
       jest-util: 28.1.3
@@ -3064,7 +3064,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       '@types/yargs': 15.0.14
       chalk: 4.1.2
 
@@ -3074,7 +3074,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       '@types/yargs': 16.0.4
       chalk: 4.1.2
 
@@ -5127,7 +5127,7 @@ packages:
   /@types/jsdom/16.2.15:
     resolution: {integrity: sha512-nwF87yjBKuX/roqGYerZZM0Nv1pZDMAT5YhOHYeM/72Fic+VEqJh4nyoqoapzJnW3pUlfxPY5FhgsJtM+dRnQQ==}
     dependencies:
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       '@types/parse5': 6.0.3
       '@types/tough-cookie': 4.0.2
     dev: false
@@ -5204,9 +5204,6 @@ packages:
 
   /@types/node/18.7.2:
     resolution: {integrity: sha512-ce7MIiaYWCFv6A83oEultwhBXb22fxwNOQf5DIxWA4WXvDQ7K+L0fbWl/YOfCzlR5B/uFkSnVBhPcOfOECcWvA==}
-
-  /@types/node/18.7.3:
-    resolution: {integrity: sha512-LJgzOEwWuMTBxHzgBR/fhhBOWrvBjvO+zPteUgbbuQi80rYIZHrk1mNbRUqPZqSLP2H7Rwt1EFLL/tNLD1Xx/w==}
 
   /@types/node/18.7.5:
     resolution: {integrity: sha512-NcKK6Ts+9LqdHJaW6HQmgr7dT/i3GOHG+pt6BiWv++5SnjtRd4NXeiuN2kA153SjhXPR/AhHIPHPbrsbpUVOww==}
@@ -8358,7 +8355,7 @@ packages:
       '@formatjs/ts-transformer': 3.9.9
       '@types/eslint': 8.4.5
       '@types/picomatch': 2.3.0
-      '@typescript-eslint/typescript-estree': 5.33.0_typescript@4.7.4
+      '@typescript-eslint/typescript-estree': 5.33.1_typescript@4.7.4
       emoji-regex: 10.1.0
       eslint: 8.22.0
       picomatch: 2.3.1
@@ -9025,7 +9022,7 @@ packages:
     peerDependencies:
       eslint: ^7.5.0 || ^8.0.0
     dependencies:
-      '@typescript-eslint/utils': 5.33.0_4rv7y5c6xz3vfxwhbrcxxi73bq
+      '@typescript-eslint/utils': 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
       eslint: 8.22.0
     transitivePeerDependencies:
       - supports-color
@@ -9937,7 +9934,6 @@ packages:
   /flow-parser/0.185.0:
     resolution: {integrity: sha512-VWpXjEbQbIGQvB6CyWwx56wMioGZ6w2s8qJlFiuE3S7D8O+xE5t988i1u2TGFO5TLSzQPUhfIOzPpLYA93H9Jg==}
     engines: {node: '>=0.4.0'}
-    dev: false
 
   /flow-remove-types/2.185.0:
     resolution: {integrity: sha512-G7e6HopsPmCP1EoN9/w4n4+SAkllt/u1EL2HgPtY42nZOKoGKDJjadeII1FDmKkoHRcwTDspnvgkBovRpcpR6Q==}
@@ -11803,7 +11799,7 @@ packages:
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
       '@types/jsdom': 16.2.15
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       jest-mock: 28.1.3
       jest-util: 28.1.3
       jsdom: 19.0.0
@@ -11840,7 +11836,7 @@ packages:
     dependencies:
       '@jest/types': 27.5.1
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       anymatch: 3.1.2
       fb-watchman: 2.0.1
       graceful-fs: 4.2.10
@@ -11916,7 +11912,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 18.7.3
+      '@types/node': 18.7.6
 
   /jest-pnp-resolver/1.2.2_jest-resolve@28.1.3:
     resolution: {integrity: sha512-olV41bKSMm8BdnuMsewT4jqlZ8+3TCARAXjZGT9jcoSnrfUnRCqnMoF9XEeoWjbzObpqF9dRhHQj0Xb9QdF6/w==}
@@ -12027,7 +12023,7 @@ packages:
     resolution: {integrity: sha512-jZCyo6iIxO1aqUxpuBlwTDMkzOAJS4a3eYz3YzgxxVQFwLeSA7Jfq5cbqCY+JLvTDrWirgusI/0KwxKMgrdf7w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       graceful-fs: 4.2.10
 
   /jest-snapshot/28.1.3:
@@ -12066,7 +12062,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       chalk: 4.1.2
       ci-info: 3.3.2
       graceful-fs: 4.2.10
@@ -12124,7 +12120,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.7.2
+      '@types/node': 18.7.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -12280,7 +12276,7 @@ packages:
       '@babel/register': 7.18.9_@babel+core@7.18.10
       babel-core: 7.0.0-bridge.0_@babel+core@7.18.10
       chalk: 4.1.2
-      flow-parser: 0.121.0
+      flow-parser: 0.185.0
       graceful-fs: 4.2.10
       micromatch: 3.1.10
       neo-async: 2.6.2
@@ -13226,7 +13222,7 @@ packages:
     resolution: {integrity: sha512-iCix/+z812fUqa6KlOxaTkY6LQQDoXIe/VljXkGIvpygSCmYyhjQpfQVZEVVPezFmUBYXNdabdQ6cYx6JX3yMg==}
     dependencies:
       metro-core: 0.70.3
-      rimraf: 2.6.3
+      rimraf: 2.7.1
 
   /metro-config/0.70.3:
     resolution: {integrity: sha512-SSCDjSTygoCgzoj61DdrBeJzZDRwQxUEfcgc6t6coxWSExXNR4mOngz0q4SAam49Bmjq9J2Jft6qUKnUTPrRgA==}
@@ -13450,7 +13446,7 @@ packages:
       mime-types: 2.1.35
       node-fetch: 2.6.7
       nullthrows: 1.1.1
-      rimraf: 2.6.3
+      rimraf: 2.7.1
       serialize-error: 2.1.0
       source-map: 0.5.7
       strip-ansi: 6.0.1
@@ -15909,7 +15905,6 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
-    dev: true
 
   /rimraf/3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}

@@ -4,7 +4,7 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { IDoc } from '~/Doc'
+import type { DocLike, IDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
 
@@ -26,7 +26,7 @@ export type WeakDocRefConstructor = new <D extends IDoc>(
 	path: string,
 ) => WeakDocRef<D>
 
-export type WeakDocRef<D extends IDoc> = WeakRef<D> &
+export type WeakDocRef<D extends DocLike> = WeakRef<D> &
 	GDocFields<InferTI<D>> &
 	GMethodPromises<InferTI<D>>
 

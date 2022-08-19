@@ -30,7 +30,7 @@
 		"fix:eslint": "eslint --fix .",
 		"__________BUILD": "__________",
 		"build": "v build",
-		"build:cjs": "v buildCjs",
+		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"build:esm": "v buildEsm",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-p build lint:fast test"

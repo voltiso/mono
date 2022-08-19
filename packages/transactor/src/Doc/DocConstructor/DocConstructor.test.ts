@@ -23,6 +23,8 @@ describe('DocConstructor', () => {
 	it('DocConstructor < DocConstructorU', () => {
 		expect.assertions(0)
 
+		Assert.is<DocConstructor, IDocConstructor>()
+
 		Assert(Is<DocConstructor>().strictSubtypeOf<IDocConstructor>())
 	})
 
@@ -41,7 +43,7 @@ describe('DocConstructor', () => {
 		type X = MergeTI<
 			Omit<IDocTI, 'tag'> & { tag: 'doctorD' } & { public: { asd: s.Number } }
 		>
-		Assert<IsIdentical<X['public'], { id?: never; asd: s.Number }>>()
+		Assert<IsIdentical<X['public'], { asd: s.Number }>>()
 		Assert<IsIdentical<X['tag'], 'doctorD'>>()
 	})
 
