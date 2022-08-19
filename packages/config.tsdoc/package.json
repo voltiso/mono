@@ -15,8 +15,12 @@
 	"scripts": {
 		"__________LINT": "__________",
 		"lint": "v lint",
+		"lint:eslint": "v lintEslint",
 		"depcheck": "depcheck",
+		"fix": "v fix",
+		"fix:prettier": "v fixPrettier",
+		"fix:eslint": "v fixEslint",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s lint"
+		"prepublishOnly": "v prepublishOnlyFast"
 	}
 }

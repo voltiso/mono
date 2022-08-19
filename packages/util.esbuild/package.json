@@ -25,12 +25,12 @@
 		"fix:eslint": "v fixEslint",
 		"__________BUILD": "__________",
 		"build": "v build",
-		"build:cjs": "v buildCjs",
+		"build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+		"build:cjs:clean": "rimraf dist/cjs",
+		"build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
 		"build:esm": "v buildEsm",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast",
-		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"prepublishOnly": "v prepublishOnlyFast"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

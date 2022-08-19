@@ -20,8 +20,7 @@ describe('s.validationResult', () => {
 		const a = validationResult(123 as const)
 
 		type Got = GetOutputType<typeof a>
-		type Want = ValidationResult<unknown>
-		// type Want = ValidationResult<123>
+		type Want = ValidationResult<123>
 
 		Assert.is<Got, Want>()
 		Assert.is<Want, Got>()

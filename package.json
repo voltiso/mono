@@ -31,7 +31,6 @@
 		"@voltiso/eslint-config-fast": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"@voltiso/transform": "workspace:^",
-		"@voltiso/util.node": "workspace:^",
 		"cross-env": "^7.0.3",
 		"depcheck": "^1.4.3",
 		"eslint": "*",

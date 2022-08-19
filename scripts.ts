@@ -1,11 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/no-duplicate-string */
-
 //! shared scripts - run using `v` binary from `@voltiso/script`
 
-import { getPackageJsonCachedSync } from '@voltiso/util.node'
+/* eslint-disable sonarjs/no-duplicate-string */
+
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+
+const packageJson = JSON.parse(
+	// eslint-disable-next-line security/detect-non-literal-fs-filename, n/no-sync
+	fs.readFileSync(path.join(process.cwd(), 'package.json')).toString(),
+) as { name?: string }
+
+//
 
 function turbo(...scriptNames: string[]) {
 	return `pnpm -w exec turbo run --filter=${
@@ -24,8 +32,6 @@ function turboAllPackages(...scriptNames: string[]) {
 		' ',
 	)} --output-logs=new-only`
 }
-
-const packageJson = getPackageJsonCachedSync(process.cwd())
 
 //!
 //! Workspace-level
@@ -62,8 +68,8 @@ export const fixPrettier = 'prettier --write --loglevel error .'
 
 export const depcheck = 'depcheck'
 
-export const lintTsc = 'tsc -b'
 export const lintEslint = 'cross-env FULL=1 eslint --max-warnings=0 .'
+export const lintTsc = 'tsc -b'
 
 export const typecov = [
 	'type-coverage --project tsconfig.build.cjs --update',

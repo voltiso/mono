@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/config.ts.build.cjs",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -15,14 +15,18 @@
 	"scripts": {
 		"__________LINT": "__________",
 		"lint": "v lint",
-		"depcheck": "depcheck",
-		"fix:prettier": "v fixPrettier",
 		"lint:eslint": "v lintEslint",
+		"depcheck": "depcheck",
+		"fix": "v fix",
+		"fix:prettier": "v fixPrettier",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly"
+		"prepublishOnly": "v prepublishOnlyFast"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
+	"peerDependencies": {
+		"@voltiso/config.ts.build": "workspace:^"
+	},
+	"devDependencies": {
 		"@voltiso/config.ts.build": "workspace:^"
 	}
 }

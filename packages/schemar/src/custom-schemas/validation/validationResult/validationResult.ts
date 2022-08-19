@@ -3,14 +3,18 @@
 
 import type { AtLeast1 } from '@voltiso/util'
 
-import type { Schemable, ValidationIssue } from '~'
-import { array, tuple, union, unknown, validationIssue } from '~'
+//! ts-transform-paths does not work for '~'
+// eslint-disable-next-line no-restricted-imports
+import type { Schemable_ } from '../../..'
+import type { ValidationIssue } from '../..'
+import { array, tuple, union, unknown, validationIssue } from '../..'
 
-export const validationResult = <Value extends Schemable>(value: Value) =>
-	union(
+export function validationResult<Value extends Schemable_>(value: Value) {
+	return union(
 		{
 			isValid: true,
-			value,
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+			value: value as Value, //! TS bug?
 			issues: tuple(),
 		} as const,
 		{
@@ -19,6 +23,7 @@ export const validationResult = <Value extends Schemable>(value: Value) =>
 			issues: array(validationIssue).minLength(1),
 		} as const,
 	)
+}
 
 export type ValidationResult<V = unknown> =
 	| {

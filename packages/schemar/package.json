@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/schemar",
-	"version": "12.2.1",
+	"version": "12.2.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -34,6 +34,7 @@
 		"depcheck": "depcheck",
 		"lint:eslint": "v lintEslint",
 		"lint:tsc": "v lintTsc",
+		"lint:dist:tsc": "v lintDistTsc",
 		"__________FIX": "__________",
 		"fix": "v fix",
 		"fix:prettier": "v fixPrettier",

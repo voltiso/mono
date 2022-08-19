@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/config.ts.build",
-	"version": "2.0.3",
+	"version": "2.0.6",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -15,20 +15,24 @@
 	"scripts": {
 		"__________LINT": "__________",
 		"lint": "v lint",
-		"depcheck": "depcheck",
-		"fix:prettier": "v fixPrettier",
 		"lint:eslint": "v lintEslint",
+		"depcheck": "depcheck",
+		"fix": "v fix",
+		"fix:prettier": "v fixPrettier",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly"
+		"prepublishOnly": "v prepublishOnlyFast"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
+	"peerDependencies": {
 		"@voltiso/assertor.transform": "workspace:^",
 		"@voltiso/config.ts": "workspace:^",
 		"@voltiso/transform": "workspace:^",
 		"typescript-transform-paths": "^3.3.1"
 	},
 	"devDependencies": {
+		"@voltiso/assertor.transform": "workspace:^",
+		"@voltiso/config.ts": "workspace:^",
+		"@voltiso/transform": "workspace:^",
 		"typescript": "^4.7.4"
 	}
 }
