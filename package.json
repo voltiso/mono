@@ -1,10 +1,13 @@
 {
+	"name": "workspace",
 	"private": true,
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________TURBO - PER-PACKAGE": "__________",
 		"dev": "turbo run dev",
-		"build": "turbo run build",
+		"build": "turbo run build:cjs build:esm",
+		"build:cjs": "turbo run build:cjs",
+		"build:esm": "turbo run build:esm",
 		"test": "turbo run test",
 		"lint": "turbo run lint",
 		"__________WORKSPACE + PACKAGES": "__________",

@@ -5,10 +5,12 @@
 
 import { getPackageJsonCachedSync } from '@voltiso/util.node'
 
+const packageJson = getPackageJsonCachedSync(process.cwd())
+
 //!
 //! Workspace-level
 
-const corePackages = ['util', 'eslint-config', 'eslint-config-fast']
+const corePackages = ['eslint-config', 'eslint-config-fast', 'config.jest.esr']
 
 export const prepareWorkspace = `turbo run build:cjs ${corePackages
 	.map(packageName => `--filter=...@voltiso/${packageName}`)
@@ -18,8 +20,6 @@ export const cleanWorkspace = [turbo('clean'), 'clean']
 
 //!
 //! Per-package
-
-const packageJson = getPackageJsonCachedSync(process.cwd())
 
 function turbo(...scriptNames: string[]) {
 	return `pnpm -w exec turbo run --filter ${

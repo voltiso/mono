@@ -54,7 +54,7 @@
 			"cache": false
 		},
 
-		"uninstall": {
+		"clean": {
 			"cache": false
 		}
 	}

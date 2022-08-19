@@ -120,14 +120,17 @@ async function runScript(commandName: string, ...commandArgs: string[]) {
 			console.log('[@voltiso/script]', commandName, ...commandArgs)
 
 			// eslint-disable-next-line promise/avoid-new, no-await-in-loop
-			await new Promise((resolve, reject) => {
+			await new Promise<void>((resolve, reject) => {
 				const childProcess = spawn([commandName, ...commandArgs].join(' '), {
 					shell: true,
 					stdio: 'inherit',
 				})
 
 				childProcess.on('error', reject)
-				childProcess.on('close', resolve)
+				childProcess.on('close', code => {
+					if (code) reject(new Error(`Non-zero exit code: ${code}`))
+					else resolve()
+				})
 			})
 
 			// console.log('exec done')
