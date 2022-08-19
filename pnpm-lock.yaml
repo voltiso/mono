@@ -245,7 +245,6 @@ importers:
       '@voltiso/config.ts': workspace:^
       '@voltiso/transform': workspace:^
       npm-run-all: ^4.1.5
-      prettier: ^2.7.1
       typescript: ^4.7.4
       typescript-transform-paths: ^3.3.1
     dependencies:
@@ -255,7 +254,6 @@ importers:
       typescript-transform-paths: 3.3.1_typescript@4.7.4
     devDependencies:
       npm-run-all: 4.1.5
-      prettier: 2.7.1
       typescript: 4.7.4
 
   packages/config.ts.build.cjs:
@@ -336,7 +334,6 @@ importers:
       eslint-plugin-no-use-extend-native: ^0.5.0
       eslint-plugin-node-dependencies: ^0.9.1
       eslint-plugin-notice: ^0.9.10
-      eslint-plugin-prettier: ^4.2.1
       eslint-plugin-promise: ^6.0.0
       eslint-plugin-putout: ^16.0.1
       eslint-plugin-react: ^7.30.1
@@ -359,7 +356,6 @@ importers:
       eslint-plugin-unused-imports: ^2.0.0
       eslint-plugin-yml: ^1.1.0
       jsonc-eslint-parser: ^2.1.0
-      prettier: ^2.7.1
       putout: ^27.1.0
       toml-eslint-parser: ^0.4.0
       typescript: ^4.7.4
@@ -414,7 +410,6 @@ importers:
       eslint-plugin-no-use-extend-native: 0.5.0
       eslint-plugin-node-dependencies: 0.9.1_eslint@8.22.0
       eslint-plugin-notice: 0.9.10_eslint@8.22.0
-      eslint-plugin-prettier: 4.2.1_2xd4q2tc5cqa5as7uugqhp6oue
       eslint-plugin-promise: 6.0.0_eslint@8.22.0
       eslint-plugin-putout: 16.0.1_snup3jrx2ssxf7xfovitskqpqe
       eslint-plugin-react: 7.30.1_eslint@8.22.0
@@ -443,7 +438,6 @@ importers:
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       eslint: 8.22.0
-      prettier: 2.7.1
       typescript: 4.7.4
 
   packages/eslint-config-fast:
@@ -492,7 +486,6 @@ importers:
       eslint-plugin-no-use-extend-native: ^0.5.0
       eslint-plugin-node-dependencies: ^0.9.1
       eslint-plugin-notice: ^0.9.10
-      eslint-plugin-prettier: ^4.2.1
       eslint-plugin-promise: ^6.0.0
       eslint-plugin-putout: ^16.0.1
       eslint-plugin-react: ^7.30.1
@@ -514,7 +507,6 @@ importers:
       eslint-plugin-unicorn: ^43.0.2
       eslint-plugin-unused-imports: ^2.0.0
       eslint-plugin-yml: ^1.1.0
-      prettier: ^2.7.1
       putout: ^27.1.0
       typescript: ^4.7.4
     dependencies:
@@ -560,7 +552,6 @@ importers:
       eslint-plugin-no-use-extend-native: 0.5.0
       eslint-plugin-node-dependencies: 0.9.1_eslint@8.22.0
       eslint-plugin-notice: 0.9.10_eslint@8.22.0
-      eslint-plugin-prettier: 4.2.1_2xd4q2tc5cqa5as7uugqhp6oue
       eslint-plugin-promise: 6.0.0_eslint@8.22.0
       eslint-plugin-putout: 16.0.1_snup3jrx2ssxf7xfovitskqpqe
       eslint-plugin-react: 7.30.1_eslint@8.22.0
@@ -586,7 +577,6 @@ importers:
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       eslint: 8.22.0
-      prettier: 2.7.1
       typescript: 4.7.4
 
   packages/eslint-plugin:
@@ -8801,22 +8791,6 @@ packages:
       find-root: 1.1.0
       lodash: 4.17.21
       metric-lcs: 0.1.2
-    dev: false
-
-  /eslint-plugin-prettier/4.2.1_2xd4q2tc5cqa5as7uugqhp6oue:
-    resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      eslint: '>=7.28.0'
-      eslint-config-prettier: '*'
-      prettier: '>=2.0.0'
-    peerDependenciesMeta:
-      eslint-config-prettier:
-        optional: true
-    dependencies:
-      eslint: 8.22.0
-      prettier: 2.7.1
-      prettier-linter-helpers: 1.0.0
     dev: false
 
   /eslint-plugin-prettier/4.2.1_i2cojdczqdiurzgttlwdgf764e:
