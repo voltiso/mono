@@ -20,7 +20,7 @@ import {
 import type { IDocTI } from '~/Doc/DocTI'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
-import { intrinsicFields } from '~/schemas'
+import { sIntrinsicFields } from '~/schemas'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
@@ -87,10 +87,12 @@ class DocConstructor {
 			class extends this {
 				static override readonly _ = {
 					...super._,
+
 					publicOnCreation: {
 						...super._.publicOnCreation,
 						...f.publicOnCreation,
 					},
+
 					public: { ...super._.public, ...f.public },
 					private: { ...super._.private, ...f.private },
 				} as never
@@ -104,7 +106,7 @@ class DocConstructor {
 			...this._.publicOnCreation,
 			...this._.public,
 			...this._.private,
-			...intrinsicFields,
+			...sIntrinsicFields,
 		}
 	}
 

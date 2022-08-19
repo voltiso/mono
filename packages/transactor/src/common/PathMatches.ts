@@ -14,7 +14,6 @@ export interface PathMatches {
 export type GetPathMatches = (path: string) => PathMatches | null
 
 export const getGetPathMatches = (pattern: string): GetPathMatches => {
-	// eslint-disable-next-line regexp/prefer-named-capture-group
 	const params = [...pattern.matchAll(/\{([^{}]*)\}/gu)].map(r => {
 		const res = r[1]
 		$assert(typeof res === 'string')

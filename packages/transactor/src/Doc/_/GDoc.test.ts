@@ -4,15 +4,13 @@
 import type * as s from '@voltiso/schemar'
 import { Assert } from '@voltiso/util'
 
-import type { IDocTI } from '~/Doc'
-
-import type { GDoc } from './GDoc'
+import type { Doc, IDocTI } from '~/Doc'
 
 describe('Doc util', () => {
 	it('GDoc basic', () => {
 		expect.assertions(0)
 
-		type X = ReturnType<GDoc<IDocTI, 'outside'>['dataWithId']>
+		type X = ReturnType<Doc<IDocTI, 'outside'>['dataWithId']>
 		Assert.isSubtype<
 			X,
 			{ readonly id: string; __voltiso?: { numRefs: number } }
@@ -25,7 +23,7 @@ describe('Doc util', () => {
 		// const docO = 0 as unknown as GO<TI>
 		// const x = docO.dataWithId()
 		type X = TI extends any
-			? ReturnType<GDoc<TI, 'outside'>['dataWithId']>
+			? ReturnType<Doc<TI, 'outside'>['dataWithId']>
 			: never
 
 		Assert.isSubtype<
@@ -40,7 +38,7 @@ describe('Doc util', () => {
 
 		type TI = IDocTI & { public: { asd: s.Number } }
 		Assert.isSubtype<
-			GDoc<TI, 'outside'>['dataWithId'],
+			Doc<TI, 'outside'>['dataWithId'],
 			() => { asd: number; __voltiso?: { numRefs: number } }
 		>()
 	})

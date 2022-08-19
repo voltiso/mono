@@ -4,8 +4,8 @@
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
+import { sStrongRef } from '@voltiso/transactor'
 import { after, Doc } from '@voltiso/transactor'
-import * as ss from '@voltiso/transactor/schemas'
 
 import { createTransactor, database } from './common'
 
@@ -48,7 +48,7 @@ class Banana extends Doc('banana')({
 }
 
 class BananaSlug extends Doc('bananaSlug').public({
-	banana: ss.strongRef<'banana'>(),
+	banana: sStrongRef<'banana'>(),
 }) {}
 
 declare module '@voltiso/transactor' {

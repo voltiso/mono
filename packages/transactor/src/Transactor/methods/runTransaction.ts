@@ -173,6 +173,7 @@ export async function runTransaction<R>(
 				)
 				throw error
 			} finally {
+				// eslint-disable-next-line require-atomic-updates
 				transaction._isFinalizing = true
 			}
 

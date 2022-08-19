@@ -28,7 +28,11 @@ const pluginsToPick = [
 	'markdown',
 	'promise',
 	'etc',
+	'ext',
+	'no-secrets',
 	'n', // n/no-extraneous-require
+	'unused-imports',
+	// 'json-schema-validator', // ! hangs on tsdoc.json??
 
 	'@voltiso',
 	'@voltiso/eslint-plugin',
@@ -52,7 +56,6 @@ const pluginsToPick = [
 	// 'cypress',
 	// 'editorconfig',
 	// 'es',
-	// 'ext',
 	// 'format-message',
 	// 'formatjs',
 	// 'github',
@@ -65,13 +68,11 @@ const pluginsToPick = [
 	// 'jest-formatting',
 	// 'jsdoc',
 	// 'json',
-	// 'json-schema-validator',
 	// 'jsonc',
 	// 'jsx',
 	// 'jsx-a11y',
 	// 'no-constructor-bind',
 	// 'no-explicit-type-exports',
-	// 'no-secrets',
 	// 'no-unsanitized',
 	// 'no-use-extend-native',
 	// 'node-dependencies',
@@ -83,7 +84,6 @@ const pluginsToPick = [
 	// 'testing-library',
 	// 'toml',
 	// 'typescript-sort-keys',
-	// 'unused-imports',
 	// 'yml',
 
 	// ! not using for now

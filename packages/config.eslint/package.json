@@ -72,8 +72,7 @@
 		"eslint-plugin-jest-dom": "*",
 		"eslint-plugin-jest-formatting": "*",
 		"eslint-plugin-jsdoc": "*",
-		"eslint-plugin-json": ">=3.1.0",
-		"eslint-plugin-json-schema-validator": "*",
+		"eslint-plugin-json": "*",
 		"eslint-plugin-jsonc": "*",
 		"eslint-plugin-jsx": ">=0.1.0",
 		"eslint-plugin-jsx-a11y": ">=6.6.0",
@@ -111,6 +110,179 @@
 		"putout": "*",
 		"toml-eslint-parser": "*",
 		"yaml-eslint-parser": "*"
+	},
+	"peerDependenciesMeta": {
+		"eslint-plugin-array-func": {
+			"optional": true
+		},
+		"eslint-plugin-chai-friendly": {
+			"optional": true
+		},
+		"eslint-plugin-css": {
+			"optional": true
+		},
+		"eslint-plugin-cypress": {
+			"optional": true
+		},
+		"eslint-plugin-destructuring": {
+			"optional": true
+		},
+		"eslint-plugin-editorconfig": {
+			"optional": true
+		},
+		"eslint-plugin-es": {
+			"optional": true
+		},
+		"eslint-plugin-eslint-comments": {
+			"optional": true
+		},
+		"eslint-plugin-etc": {
+			"optional": true
+		},
+		"eslint-plugin-ext": {
+			"optional": true
+		},
+		"eslint-plugin-format-message": {
+			"optional": true
+		},
+		"eslint-plugin-formatjs": {
+			"optional": true
+		},
+		"eslint-plugin-github": {
+			"optional": true
+		},
+		"eslint-plugin-html": {
+			"optional": true
+		},
+		"eslint-plugin-i18n": {
+			"optional": true
+		},
+		"eslint-plugin-i18n-text": {
+			"optional": true
+		},
+		"eslint-plugin-i18next": {
+			"optional": true
+		},
+		"eslint-plugin-import": {
+			"optional": true
+		},
+		"eslint-plugin-jest": {
+			"optional": true
+		},
+		"eslint-plugin-jest-async": {
+			"optional": true
+		},
+		"eslint-plugin-jest-dom": {
+			"optional": true
+		},
+		"eslint-plugin-jest-formatting": {
+			"optional": true
+		},
+		"eslint-plugin-jsdoc": {
+			"optional": true
+		},
+		"eslint-plugin-json": {
+			"optional": true
+		},
+		"eslint-plugin-jsonc": {
+			"optional": true
+		},
+		"eslint-plugin-jsx": {
+			"optional": true
+		},
+		"eslint-plugin-jsx-a11y": {
+			"optional": true
+		},
+		"eslint-plugin-markdown": {
+			"optional": true
+		},
+		"eslint-plugin-n": {
+			"optional": true
+		},
+		"eslint-plugin-no-constructor-bind": {
+			"optional": true
+		},
+		"eslint-plugin-no-explicit-type-exports": {
+			"optional": true
+		},
+		"eslint-plugin-no-secrets": {
+			"optional": true
+		},
+		"eslint-plugin-no-unsanitized": {
+			"optional": true
+		},
+		"eslint-plugin-no-use-extend-native": {
+			"optional": true
+		},
+		"eslint-plugin-node-dependencies": {
+			"optional": true
+		},
+		"eslint-plugin-notice": {
+			"optional": true
+		},
+		"eslint-plugin-promise": {
+			"optional": true
+		},
+		"eslint-plugin-putout": {
+			"optional": true
+		},
+		"eslint-plugin-react": {
+			"optional": true
+		},
+		"eslint-plugin-react-hooks": {
+			"optional": true
+		},
+		"eslint-plugin-react-native": {
+			"optional": true
+		},
+		"eslint-plugin-react-native-globals": {
+			"optional": true
+		},
+		"eslint-plugin-regex": {
+			"optional": true
+		},
+		"eslint-plugin-regexp": {
+			"optional": true
+		},
+		"eslint-plugin-rxjs": {
+			"optional": true
+		},
+		"eslint-plugin-security": {
+			"optional": true
+		},
+		"eslint-plugin-simple-import-sort": {
+			"optional": true
+		},
+		"eslint-plugin-sonarjs": {
+			"optional": true
+		},
+		"eslint-plugin-storybook": {
+			"optional": true
+		},
+		"eslint-plugin-switch-case": {
+			"optional": true
+		},
+		"eslint-plugin-testing-library": {
+			"optional": true
+		},
+		"eslint-plugin-toml": {
+			"optional": true
+		},
+		"eslint-plugin-tsdoc": {
+			"optional": true
+		},
+		"eslint-plugin-typescript-sort-keys": {
+			"optional": true
+		},
+		"eslint-plugin-unicorn": {
+			"optional": true
+		},
+		"eslint-plugin-unused-imports": {
+			"optional": true
+		},
+		"eslint-plugin-yml": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@types/node": "^18.7.6",

@@ -30,12 +30,12 @@ export interface StrongRefSchema extends s.Schema<StrongRef<IndexedDoc>> {
 	<X extends IDoc | DocTag>(): s.Schema<StrongRef<FindDoc<X>>>
 }
 
-export const strongRef: StrongRefSchema = lazyValue(
+export const sStrongRef: StrongRefSchema = lazyValue(
 	() => callableObject(_strongRefSchema, _strongRefCall) as never,
 )
 //
 
-export const ref = strongRef
+export const sRef = sStrongRef
 
 const _weakRefSchema = lazyValue(() => s.instance(WeakDocRef))
 
@@ -54,7 +54,7 @@ export interface WeakRefSchema extends s.Schema<WeakRef<IndexedDoc>> {
 	// eslint-disable-next-line etc/no-misused-generics
 	<X extends IDoc | DocTag>(): s.Schema<WeakRef<FindDoc<X>>>
 }
-export const weakRef = lazyValue(
+export const sWeakRef = lazyValue(
 	() =>
 		callableObject(
 			_fixableWeakRefSchema,

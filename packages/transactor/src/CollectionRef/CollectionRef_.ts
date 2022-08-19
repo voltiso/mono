@@ -62,7 +62,7 @@ class CollectionRef<
 	add(data: GetPublicCreationInputData<TI, D>): PromiseLike<Doc<TI, Ctx>> {
 		// data = data || {}
 
-		const id = data.id as string | undefined
+		const id = data.id
 		$assert(id === undef || typeof id === 'string')
 
 		const ref = this._context.transactor._database.collection(

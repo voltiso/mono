@@ -3,8 +3,8 @@
 
 import * as s from '@voltiso/schemar'
 import type { IndexedDoc, StrongRef, WeakDocRef } from '@voltiso/transactor'
+import { sStrongRef } from '@voltiso/transactor'
 import { createTransactor, Doc, method } from '@voltiso/transactor'
-import * as transactorSchemas from '@voltiso/transactor/schemas'
 import { Assert } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
@@ -13,7 +13,7 @@ const db = createTransactor(firestore, firestoreModule)
 
 class A extends Doc('a').public({
 	a: 1,
-	b: transactorSchemas.strongRef<'b'>(),
+	b: sStrongRef<'b'>(),
 }) {
 	@method
 	async setFriend(b: StrongRef<B>) {
@@ -23,7 +23,7 @@ class A extends Doc('a').public({
 
 class B extends Doc('b').public({
 	b: 2,
-	c: transactorSchemas.strongRef<'c'>(),
+	c: sStrongRef<'c'>(),
 }) {
 	@method
 	async setFriend(c: StrongRef<C>) {
@@ -33,7 +33,7 @@ class B extends Doc('b').public({
 
 class C extends Doc('c').public({
 	c: 3,
-	d: transactorSchemas.strongRef<'d'>(),
+	d: sStrongRef<'d'>(),
 }) {
 	@method
 	async setFriend(d: StrongRef<D>) {
@@ -43,7 +43,7 @@ class C extends Doc('c').public({
 
 class D extends Doc('d').public({
 	d: 4,
-	e: transactorSchemas.strongRef<'e'>(),
+	e: sStrongRef<'e'>(),
 }) {
 	@method
 	async setFriend(e: StrongRef<E>) {
@@ -53,7 +53,7 @@ class D extends Doc('d').public({
 
 class E extends Doc('e').public({
 	d: s.number,
-	f: transactorSchemas.strongRef<'f'>(),
+	f: sStrongRef<'f'>(),
 }) {
 	@method
 	async setFriend(f: StrongRef<F>) {
@@ -63,7 +63,7 @@ class E extends Doc('e').public({
 
 class F extends Doc('f').public({
 	d: s.number,
-	g: transactorSchemas.strongRef<'g'>(),
+	g: sStrongRef<'g'>(),
 }) {
 	@method
 	async setFriend(g: StrongRef<G>) {
@@ -73,7 +73,7 @@ class F extends Doc('f').public({
 
 class G extends Doc('g').public({
 	d: s.number,
-	a: transactorSchemas.strongRef<'a'>(),
+	a: sStrongRef<'a'>(),
 }) {
 	@method
 	async setFriend(a: StrongRef<A>) {

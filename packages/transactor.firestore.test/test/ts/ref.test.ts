@@ -3,8 +3,8 @@
 
 import * as s from '@voltiso/schemar'
 import type { Id } from '@voltiso/transactor'
+import { sStrongRef, sWeakRef } from '@voltiso/transactor'
 import { createTransactor, Doc } from '@voltiso/transactor'
-import * as transactorSchemas from '@voltiso/transactor/schemas'
 import type { StaticError } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
@@ -25,8 +25,8 @@ const doctors = db('doctor').register(Doctor)
 class Patient extends Doc('patientW').public({
 	profile: {
 		name: s.string,
-		mainDoctor: transactorSchemas.strongRef<'doctorW'>(),
-		maybeDoctor: transactorSchemas.weakRef<'doctorW'>(),
+		mainDoctor: sStrongRef<'doctorW'>(),
+		maybeDoctor: sWeakRef<'doctorW'>(),
 		x: s.number.optional,
 	},
 

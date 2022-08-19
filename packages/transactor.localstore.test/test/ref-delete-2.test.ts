@@ -3,8 +3,8 @@
 
 import { $assert } from '@voltiso/assertor'
 import type { TriggerParams } from '@voltiso/transactor'
+import { sRef, sStrongRef } from '@voltiso/transactor'
 import { afterCreate, afterDelete, Doc } from '@voltiso/transactor'
-import * as ss from '@voltiso/transactor/schemas'
 
 import { createTransactor } from './common'
 
@@ -12,7 +12,7 @@ const db = createTransactor()
 
 class Man extends Doc('man')({
 	private: {
-		woman: ss.strongRef<'woman'>().optional,
+		woman: sStrongRef<'woman'>().optional,
 	},
 }) {
 	@afterCreate
@@ -34,7 +34,7 @@ class Man extends Doc('man')({
 
 class Woman extends Doc('woman')({
 	public: {
-		man: ss.ref<'man'>(),
+		man: sRef<'man'>(),
 	},
 }) {}
 

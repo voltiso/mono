@@ -49,8 +49,9 @@ export async function callMethod<
 	const { transactor, transaction, docRef } = ctx
 	const path = docRef.path.toString()
 
-	const debugName = () =>
-		name ? `db("${path}").${name}()` : `db('${path}').pathMethod()`
+	function debugName() {
+		return name ? `db("${path}").${name}()` : `db('${path}').pathMethod()`
+	}
 
 	if (transaction?._isFinalizing)
 		throw new Error(

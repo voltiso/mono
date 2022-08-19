@@ -2,10 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { IDoc, StrongRef } from '@voltiso/transactor'
-import type { DTI } from '@voltiso/transactor'
+import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
+import { sStrongRef } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
-import * as ss from '@voltiso/transactor/schemas'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
@@ -24,7 +23,7 @@ const doctors = db('doctorX').register(DoctorX)
 class Patient extends Doc.public({
 	profile: {
 		name: s.string,
-		mainDoctor: ss.strongRef<DoctorX>(),
+		mainDoctor: sStrongRef<DoctorX>(),
 	},
 }) {}
 const patients = db('patientX').register(Patient)

@@ -13,6 +13,12 @@ function turbo(...scriptNames: string[]) {
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
+function turboDependents(...scriptNames: string[]) {
+	return `pnpm -w exec turbo run --filter=...^${
+		packageJson.name || '//'
+	} ${scriptNames.join(' ')} --output-logs=new-only`
+}
+
 function turboAllPackages(...scriptNames: string[]) {
 	return `pnpm -w exec turbo run ${scriptNames.join(
 		' ',
@@ -24,9 +30,7 @@ const packageJson = getPackageJsonCachedSync(process.cwd())
 //!
 //! Workspace-level
 
-// const corePackages = ['eslint-config', 'eslint-config-fast', 'config.jest.esr']
-
-export const prepareWorkspace = `turbo run build:cjs --filter=//^... --output-logs=none`
+export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=none`
 
 export const checkWorkspace = [
 	'prepareWorkspace',
@@ -41,10 +45,11 @@ export const checkWorkspace = [
 	),
 ]
 
-// export const cleanWorkspace = [turbo('clean'), 'clean']
-
 //!
 //! Per-package
+
+export const dev =
+	'cross-env ASSERTOR_NO_STRIP=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
 
 export const build = turbo('build:esm', 'build:cjs')
 export const fix = turbo('fix:eslint', 'fix:prettier')
@@ -67,7 +72,10 @@ export const typecov = [
 
 export const clean = 'rimraf node_modules dist'
 
+// export const testDependents = turbo('...^test')
+
 export const prepublishOnly = [
+	'prepareWorkspace',
 	turbo(
 		'build:esm',
 		'build:cjs',
@@ -76,8 +84,9 @@ export const prepublishOnly = [
 		'fix:prettier',
 		'lint:eslint',
 		'lint:tsc',
+		'depcheck',
 	),
-	turbo('depcheck'),
+	turboDependents('test')
 ]
 
 // /** Lint */

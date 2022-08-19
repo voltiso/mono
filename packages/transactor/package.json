@@ -1,30 +1,10 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "9.0.3",
+	"version": "10.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		".": {
-			"types": "./dist/cjs/index.d.ts",
-			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
-		},
-		"./schemas": {
-			"types": "./dist/cjs/schemas/index.d.ts",
-			"import": "./dist/esm/schemas/index.js",
-			"require": "./dist/cjs/schemas/index.js"
-		}
-	},
-	"typesVersions": {
-		"*": {
-			"schemas": [
-				"dist/esm/schemas"
-			]
-		}
-	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/cjs/index.d.ts",
 	"module": "dist/esm/index.js",
@@ -36,10 +16,9 @@
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________DEV": "__________",
-		"dev": "cross-env ASSERTOR_NO_STRIP=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+		"dev": "v dev",
 		"__________TEST": "__________",
 		"test": "jest",
-		"test:all": "pnpm -w exec turbo run test --filter=...transactor",
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"depcheck": "depcheck",
@@ -71,6 +50,7 @@
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
 		"@voltiso/assertor": "workspace:^",
+		"@voltiso/config.jest.esr": "workspace:^1.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/config.tsdoc": "workspace:^1.0.0",
@@ -80,6 +60,7 @@
 	},
 	"__________MISC": "__________",
 	"engines": {
-		"node": ">=16"
+		"node": "16",
+		"pnpm": "7"
 	}
 }

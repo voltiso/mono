@@ -3,8 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import { Doc, doc } from '@voltiso/transactor'
-import * as transactorSchemas from '@voltiso/transactor/schemas'
+import { Doc, doc, sStrongRef } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
@@ -15,7 +14,7 @@ const db = createTransactor()
 class MyDoctor extends Doc('MyDoctor').fields({
 	public: {
 		name: s.string,
-		friend: transactorSchemas.strongRef<'MyDoctor'>().optional,
+		friend: sStrongRef<'MyDoctor'>().optional,
 	},
 }) {
 	// declare friend?: Ref<Doctor>

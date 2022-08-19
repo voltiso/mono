@@ -4,6 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
+import { sStrongRef } from '@voltiso/transactor'
 import {
 	after,
 	afterCreate,
@@ -11,7 +12,6 @@ import {
 	beforeCommit,
 	Doc,
 } from '@voltiso/transactor'
-import * as ss from '@voltiso/transactor/schemas'
 import { undef } from '@voltiso/util'
 
 import { createTransactor } from './common'
@@ -25,7 +25,7 @@ class Client extends Doc('refDelete_client')({
 	},
 
 	private: {
-		rootTask: ss.strongRef<'refDelete_task'>().optional,
+		rootTask: sStrongRef<'refDelete_task'>().optional,
 	},
 }) {
 	@beforeCommit
@@ -74,7 +74,7 @@ class Client extends Doc('refDelete_client')({
 
 class ClientSlug extends Doc('refDelete_clientSlug')({
 	publicOnCreation: {
-		client: ss.strongRef<'refDelete_client'>(),
+		client: sStrongRef<'refDelete_client'>(),
 	},
 }) {}
 
@@ -83,8 +83,8 @@ const clientSlugs = db.register(ClientSlug)
 
 class Task extends Doc('refDelete_task')({
 	publicOnCreation: {
-		parentTask: ss.strongRef<'refDelete_task'>().optional,
-		client: ss.strongRef<'refDelete_client'>(),
+		parentTask: sStrongRef<'refDelete_task'>().optional,
+		client: sStrongRef<'refDelete_client'>(),
 	},
 
 	public: {

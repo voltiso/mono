@@ -8,7 +8,7 @@ import type { Id, WithId } from '~/Data'
 import type { ExecutionContext, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 import type { Relax } from '~/Relax'
-import type { IntrinsicFields } from '~/schemas/intrinsicFields'
+import type { IntrinsicFields } from '~/schemas/sIntrinsicFields'
 
 /** @inline */
 export type GetData<

@@ -2,8 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { Doc } from '@voltiso/transactor'
-import * as transactorSchemas from '@voltiso/transactor/schemas'
+import { Doc, sDeleteIt } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
@@ -12,7 +11,7 @@ const db = createTransactor()
 class Dog extends Doc.public({
 	name: s.string,
 
-	oldField: transactorSchemas.deleteItSchema,
+	oldField: sDeleteIt,
 
 	detail: {
 		healthy: s.boolean.default(true),

@@ -3,9 +3,9 @@
 
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import type { DTI, Id, StrongRef } from '@voltiso/transactor'
+import type { DTI, Id, StrongRef} from '@voltiso/transactor';
+import { sStrongRef, sWeakRef } from '@voltiso/transactor'
 import { createTransactor, Doc, method } from '@voltiso/transactor'
-import * as transactorSchemas from '@voltiso/transactor/schemas'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
@@ -16,8 +16,8 @@ const db = createTransactor(firestore, firestoreModule)
 class DoctorLorcan extends Doc('doctorLorcan').fields({
 	public: {
 		name: s.string,
-		friend: transactorSchemas.strongRef<'doctorLorcan'>().optional,
-		maybeFriend: transactorSchemas.weakRef<'doctorLorcan'>().optional,
+		friend: sStrongRef<'doctorLorcan'>().optional,
+		maybeFriend: sWeakRef<'doctorLorcan'>().optional,
 	},
 }) {
 	@method

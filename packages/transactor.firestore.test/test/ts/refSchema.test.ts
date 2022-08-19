@@ -2,8 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { createTransactor, StrongDocRef, WeakDocRef } from '@voltiso/transactor'
-import * as ts from '@voltiso/transactor/schemas'
+import {
+	createTransactor,
+	sStrongRef,
+	StrongDocRef,
+	sWeakRef,
+	WeakDocRef,
+} from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
@@ -14,8 +19,8 @@ describe('ref schema', () => {
 		expect.hasAssertions()
 
 		const mySchema = {
-			myRef: ts.strongRef,
-			myWeakRef: ts.weakRef,
+			myRef: sStrongRef,
+			myWeakRef: sWeakRef,
 		}
 
 		expect(StrongDocRef.name).toBe('lazyConstructor(StrongDocRefImpl)')

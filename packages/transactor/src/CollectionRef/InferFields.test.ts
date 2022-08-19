@@ -20,8 +20,8 @@ import type { InferFields } from './InferFields'
 
 class Doctor extends Doc({
 	public: {
-		friend: ss.strongRef,
-		optionalFriend: ss.strongRef.optional,
+		friend: ss.sStrongRef,
+		optionalFriend: ss.sStrongRef.optional,
 	},
 
 	private: {

@@ -17,7 +17,7 @@ export const jsonc = defineEslintConfigOverride({
 		// 'plugin:jsonc/recommended-with-jsonc',
 		'plugin:jsonc/all',
 
-		'plugin:json-schema-validator/recommended',
+		// 'plugin:json-schema-validator/recommended', // ! hangs!
 	],
 
 	// parser: 'jsonc-eslint-parser',
@@ -25,7 +25,7 @@ export const jsonc = defineEslintConfigOverride({
 		// 'json', // ! breaks `prettier/prettier`
 		'jsonc',
 
-		'json-schema-validator',
+		// 'json-schema-validator', // ! hangs!
 
 		// 'json-files', // ! breaks `prettier/prettier` // does not work with `jsonc-eslint-parser`
 	],

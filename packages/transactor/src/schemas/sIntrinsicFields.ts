@@ -4,10 +4,10 @@
 import type { GetType } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 
-export const intrinsicFields = {
+export const sIntrinsicFields = {
 	__voltiso: s.object({
 		numRefs: s.number,
 	}).optional,
 }
 
-export type IntrinsicFields = GetType<typeof intrinsicFields>
+export type IntrinsicFields = /** @inline */ GetType<typeof sIntrinsicFields>

@@ -94,7 +94,7 @@ export const react = defineEslintConfigOverride({
 
 		'react/jsx-sort-props': 0,
 
-		'react/jsx-space-before-closing': 1,
+		'react/jsx-space-before-closing': 0, // deprecated
 		'react/jsx-tag-spacing': 1,
 		'react/jsx-uses-react': 1,
 		'react/jsx-uses-vars': 1,
