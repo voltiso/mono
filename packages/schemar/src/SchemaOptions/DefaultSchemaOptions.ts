@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue, undef } from '@voltiso/util'
+import { lazyValue } from '@voltiso/util'
 
 export const defaultSchemaOptions = lazyValue(() => ({
 	Output: 0 as unknown,
@@ -16,7 +16,8 @@ export const defaultSchemaOptions = lazyValue(() => ({
 	isReadonly: false as const,
 	hasDefault: false as const,
 
-	default: undef as never,
+	default: undefined as never,
+	getDefault: undefined as never,
 }))
 
 export type DefaultSchemaOptions = typeof defaultSchemaOptions

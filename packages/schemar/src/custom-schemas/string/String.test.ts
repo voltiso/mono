@@ -5,7 +5,7 @@
 /* eslint-disable security/detect-unsafe-regex */
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
 import type {
 	CustomString,
@@ -159,7 +159,7 @@ describe('string', () => {
 		expect.hasAssertions()
 
 		const a = s.string.withFix((str: string) =>
-			str.length > 3 ? str.slice(0, 3) : undef,
+			str.length > 3 ? str.slice(0, 3) : undefined,
 		)
 
 		expect(a.validate('test')).toBe('tes')

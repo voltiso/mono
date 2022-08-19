@@ -3,4 +3,4 @@
 
 import * as s from '@voltiso/schemar'
 
-export const timestamp = s.instance(Date)
+export const sTimestamp = s.instance(Date)

@@ -3,12 +3,8 @@
 
 /* eslint-disable class-methods-use-this */
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '_'
+import { SCHEMA_NAME } from '_'
 import { EXTENDS, OPTIONS } from '_'
 import type { Assume, AtLeast1, Merge2 } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
@@ -105,15 +101,17 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			throw new SchemarError(`getDefault() no default value specified`)
 
 		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS].default as never
+		if (this[OPTIONS].getDefault) return this[OPTIONS].getDefault() as never
+		// eslint-disable-next-line security/detect-object-injection
+		else return this[OPTIONS].default as never
 	}
 
 	get getCustomChecks(): this[OPTIONS]['customChecks'] {
 		// eslint-disable-next-line security/detect-object-injection
 		const result = this[OPTIONS].customChecks
 
-		if (!result)
-			throw new SchemarError(`getCustomChecks() returned ${stringFrom(result)}`)
+		// if (!result)
+		// 	throw new SchemarError(`getCustomChecks() returned ${stringFrom(result)}`)
 
 		return result as never
 	}
@@ -122,8 +120,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		// eslint-disable-next-line security/detect-object-injection
 		const result = this[OPTIONS].customFixes
 
-		if (!result)
-			throw new SchemarError(`getCustomFixes() returned ${stringFrom(result)}`)
+		// if (!result)
+		// 	throw new SchemarError(`getCustomFixes() returned ${stringFrom(result)}`)
 
 		return result as never
 	}
@@ -304,11 +302,18 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this._cloneWithOptions({ isReadonly: true as const }) as never
 	}
 
-	default<D>(value: D): never {
-		return this._cloneWithOptions({
-			hasDefault: true as const,
-			default: value,
-		}) as never
+	default<D>(arg: D | (() => D)): never {
+		// eslint-disable-next-line security/detect-object-injection
+		if (typeof arg === 'function' && this[SCHEMA_NAME] !== 'Function')
+			return this._cloneWithOptions({
+				hasDefault: true as const,
+				getDefault: arg,
+			}) as never
+		else
+			return this._cloneWithOptions({
+				hasDefault: true as const,
+				default: arg,
+			}) as never
 	}
 
 	or<Other extends Schemable>(other: Other): never {

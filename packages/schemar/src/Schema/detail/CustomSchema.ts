@@ -107,10 +107,19 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	/** Define object property to be `readonly` */
 	get readonly(): DefineSchema<this, { isReadonly: true }>
 
+	//
+
 	/** Specify default value if the input value is `undefined` */
 	default<DefaultValue extends this[OPTIONS]['Output']>(
 		value: DefaultValue,
 	): WithDefault<this, DefaultValue>
+
+	/** Specify default value if the input value is `undefined` */
+	default<DefaultValue extends this[OPTIONS]['Output']>(
+		getValue: () => DefaultValue,
+	): WithDefault<this, DefaultValue>
+
+	//
 
 	withCheck(
 		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,

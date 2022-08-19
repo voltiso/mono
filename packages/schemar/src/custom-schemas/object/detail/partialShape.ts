@@ -31,8 +31,8 @@ export function strictPartialShape<O extends InferableObject_>(
 	const shape = { ...o } as InferableObject_
 
 	for (const [k, v] of getEntries(shape)) {
-		// eslint-disable-next-line security/detect-object-injection
 		const vSchema = (isSchema(v) ? v : schema(v)) as ISchema
+		// eslint-disable-next-line security/detect-object-injection
 		shape[k] = vSchema.strictOptional as never
 	}
 
@@ -58,8 +58,8 @@ export function partialShape<O extends InferableObject_>(
 	const shape = { ...o } as InferableObject_
 
 	for (const [k, v] of getEntries(shape)) {
-		// eslint-disable-next-line security/detect-object-injection
 		const vSchema = (isSchema(v) ? v : schema(v)) as ISchema
+		// eslint-disable-next-line security/detect-object-injection
 		shape[k] = vSchema.optional as never
 	}
 

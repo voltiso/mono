@@ -60,7 +60,8 @@ export interface ISchema<T = unknown> extends ISchema_ {
 	get strictOptional(): ISchema
 
 	get readonly(): ISchema
-	default(value: any): ISchema
+	default(value: T): ISchema
+	default(getValue: () => T): ISchema
 
 	extends(other: Schemable_): boolean
 	[EXTENDS](other: ISchema): boolean

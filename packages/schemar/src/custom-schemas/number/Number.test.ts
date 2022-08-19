@@ -77,6 +77,19 @@ describe('s.number', () => {
 		Assert<IsIdentical<In, number | undefined>>()
 	})
 
+	it('default - function argument', () => {
+		expect.hasAssertions()
+
+		const n = s.number.default(() => 123)
+
+		expect(n.tryValidate(undef).value).toBe(123)
+
+		type Out = GetType_<typeof n, { kind: 'out' }>
+		type In = GetType_<typeof n, { kind: 'in' }>
+		Assert<IsIdentical<Out, number>>()
+		Assert<IsIdentical<In, number | undefined>>()
+	})
+
 	it('check', () => {
 		expect.hasAssertions()
 

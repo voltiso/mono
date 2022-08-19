@@ -18,4 +18,5 @@ export type SchemaOptions = {
 	isReadonly: boolean
 	hasDefault: boolean
 	default: unknown
+	getDefault: (() => unknown) | undefined
 }
