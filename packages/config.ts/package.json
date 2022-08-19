@@ -16,7 +16,9 @@
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"depcheck": "depcheck",
+		"fix:prettier": "v fixPrettier",
+		"lint:eslint": "v lintEslint",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s lint"
+		"prepublishOnly": "v prepublishOnly"
 	}
 }
