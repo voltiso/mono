@@ -119,6 +119,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'generator-star-spacing': 0, // prettier
 		'class-methods-use-this': 1,
 		'new-cap': 0,
+		'require-atomic-updates': 1,
 		'sort-imports': 0, // using `simple-import-sort/imports` instead (auto-fixable)
 		complexity: 0,
 
@@ -164,7 +165,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-param-reassign': 1,
 		'func-names': 0,
 		'no-implicit-coercion': 1,
-		camelcase: 1, // sometimes underscores are useful? or better use type-only namespaces?
+		camelcase: 0, // sometimes underscores are useful? or better use type-only namespaces?
 		'object-shorthand': 1,
 		'no-useless-constructor': 1,
 		'no-useless-computed-key': 1,

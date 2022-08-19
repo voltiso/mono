@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/rpc",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -8,14 +8,17 @@
 	"__________EXPORTS": "__________",
 	"exports": {
 		".": {
+			"types": "./dist/cjs/index.d.ts",
 			"import": "./dist/esm/index.js",
 			"require": "./dist/cjs/index.js"
 		},
 		"./client": {
+			"types": "./dist/cjs/client/index.d.ts",
 			"import": "./dist/esm/client/index.js",
 			"require": "./dist/cjs/client/index.js"
 		},
 		"./server": {
+			"types": "./dist/cjs/server/index.d.ts",
 			"import": "./dist/esm/server/index.js",
 			"require": "./dist/cjs/server/index.js"
 		}
@@ -23,10 +26,10 @@
 	"typesVersions": {
 		"*": {
 			"client": [
-				"dist/esm/client"
+				"dist/cjs/client"
 			],
 			"server": [
-				"dist/esm/server"
+				"dist/cjs/server"
 			]
 		}
 	},
@@ -60,6 +63,18 @@
 		"@voltiso/schemar": "workspace:^",
 		"@voltiso/util": "workspace:^",
 		"cross-fetch": "^3.1.5"
+	},
+	"peerDependencies": {
+		"express": "^4.18.1",
+		"@types/express": "^4.17.13"
+	},
+	"peerDependenciesMeta": {
+		"express": {
+			"optional": true
+		},
+		"@types/express": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@types/express": "^4.17.13",

@@ -269,9 +269,6 @@ importers:
 
   packages/eslint-config:
     specifiers:
-      '@babel/core': ^7.18.10
-      '@babel/plugin-syntax-flow': ^7.18.6
-      '@babel/plugin-transform-react-jsx': ^7.18.10
       '@next/eslint-plugin-next': ^12.2.5
       '@rushstack/eslint-patch': ^1.1.4
       '@typescript-eslint/eslint-plugin': ^5.33.1
@@ -346,9 +343,6 @@ importers:
       typescript: ^4.7.4
       yaml-eslint-parser: ^1.1.0
     dependencies:
-      '@babel/core': 7.18.10
-      '@babel/plugin-syntax-flow': 7.18.6_@babel+core@7.18.10
-      '@babel/plugin-transform-react-jsx': 7.18.10_@babel+core@7.18.10
       '@next/eslint-plugin-next': 12.2.5
       '@rushstack/eslint-patch': 1.1.4
       '@typescript-eslint/eslint-plugin': 5.33.1_vsoshirnpb7xw6mr7xomgfas2i
@@ -806,10 +800,10 @@ importers:
     specifiers:
       '@types/js-yaml': ^4.0.5
       '@voltiso/assertor': workspace:^
-      '@voltiso/config.jest.esr': workspace:^1.0.0
+      '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/config.tsdoc': workspace:^1.0.0
+      '@voltiso/config.tsdoc': workspace:^
       '@voltiso/firestore-like': workspace:^
       '@voltiso/schemar': workspace:^
       '@voltiso/util': workspace:^

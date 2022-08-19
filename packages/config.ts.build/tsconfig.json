@@ -18,8 +18,14 @@
 		"declaration": true,
 		"declarationMap": true,
 
-		// Note: To transform paths for both the output .js and .d.ts files, you need both of the below entries
 		"plugins": [
+			{ "transform": "@voltiso/assertor.transform" },
+
+			{
+				"transform": "@voltiso/transform",
+				"afterDeclarations": true
+			},
+
 			// Transform paths in output .js files
 			{
 				"transform": "typescript-transform-paths",
@@ -30,13 +36,6 @@
 			{
 				"transform": "typescript-transform-paths",
 				"exclude": ["**/dist/**"],
-				"afterDeclarations": true
-			},
-
-			{ "transform": "@voltiso/assertor.transform" },
-
-			{
-				"transform": "@voltiso/transform",
 				"afterDeclarations": true
 			}
 		]

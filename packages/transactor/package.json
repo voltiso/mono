@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "10.0.1",
+	"version": "10.0.2",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -50,10 +50,10 @@
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
 		"@voltiso/assertor": "workspace:^",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
+		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/config.tsdoc": "workspace:^1.0.0",
+		"@voltiso/config.tsdoc": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
 		"rimraf": "^3.0.2",
 		"zone.js": "^0.11.8"

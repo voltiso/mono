@@ -12,7 +12,7 @@ import {
 	symbol,
 	tuple,
 	union,
-} from '~'
+} from '../..' //! ts-transform-paths does not work here!!!
 
 export const validationIssue = lazyValue(() => ({
 	path: array(union(string, number, symbol)),

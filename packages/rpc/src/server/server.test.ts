@@ -2,9 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { Assert } from '@voltiso/util'
-import type { Handlers } from '~/_shared'
-import type { Request, Response } from '.'
 
+import type { Handlers } from '~/_shared'
+
+import type { Request, Response } from '.'
 import type { Server } from './server'
 
 describe('rpc-server', () => {
