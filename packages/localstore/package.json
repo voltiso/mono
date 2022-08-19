@@ -37,7 +37,7 @@
 		"build:esm": "v buildEsm",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-p lint prepublishOnly:rest",
+		"prepublishOnly": "v prepublishOnly",
 		"prepublishOnly:rest": "run-s clean build test:all",
 		"__________MISC": "__________",
 		"clean": "rimraf dist"

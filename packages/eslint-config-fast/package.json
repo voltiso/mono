@@ -30,7 +30,7 @@
 		"build": "v build",
 		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-p build lint:fast test",
+		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
 		"clean": "rimraf dist"
 	},

@@ -44,7 +44,7 @@
 		"build:esm": "v buildEsm",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s test clean build",
+		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
 		"clean": "rimraf dist"
 	},

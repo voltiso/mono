@@ -36,12 +36,10 @@
 		"build:esm": "v buildEsm",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-s clean prepublishOnly:rest",
+		"prepublishOnly": "v prepublishOnly",
 		"prepublishOnly:rest": "run-p build test lint",
 		"__________MISC": "__________",
-		"v": "voltiso-script",
-		"clean": "run-p clean:rimraf",
-		"clean:rimraf": "rimraf dist"
+		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

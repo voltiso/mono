@@ -29,7 +29,7 @@
 		"build": "v build",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-p build test lint",
+		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
 		"clean": "rimraf dist"
 	},
