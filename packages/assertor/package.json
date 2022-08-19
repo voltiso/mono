@@ -18,14 +18,13 @@
 		"__________TEST": "__________",
 		"test": "echo no tests yet!",
 		"__________LINT": "__________",
-		"lint": "run-p lint:depcheck lint:prettier lint:tsc lint:eslint",
-		"lint:depcheck": "depcheck",
-		"lint:prettier": "prettier --check .",
-		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
-		"lint:tsc": "tsc -b",
-		"fix": "run-s fix:prettier fix:eslint",
+		"lint": "v lint",
+		"depcheck": "depcheck",
+		"lint:eslint": "v lintEslint",
+		"lint:tsc": "v lintTsc",
+		"fix": "v fix",
 		"fix:prettier": "v fixPrettier",
-		"fix:eslint": "eslint --fix .",
+		"fix:eslint": "v fixEslint",
 		"__________BUILD": "__________",
 		"build": "v build",
 		"build:esm": "v buildEsm",
@@ -43,6 +42,6 @@
 	},
 	"__________MISC": "__________",
 	"engines": {
-		"node": ">=16"
+		"node": "16"
 	}
 }

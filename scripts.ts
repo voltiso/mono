@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/no-duplicate-string */
+
 //! shared scripts - run using `v` binary from `@voltiso/script`
 
 import { getPackageJsonCachedSync } from '@voltiso/util.node'
@@ -24,7 +26,7 @@ const packageJson = getPackageJsonCachedSync(process.cwd())
 
 // const corePackages = ['eslint-config', 'eslint-config-fast', 'config.jest.esr']
 
-export const prepareWorkspace = `turbo run build:cjs --filter=//^...`
+export const prepareWorkspace = `turbo run build:cjs --filter=//^... --output-logs=none`
 
 export const checkWorkspace = [
 	'prepareWorkspace',
@@ -45,6 +47,8 @@ export const checkWorkspace = [
 //! Per-package
 
 export const build = turbo('build:esm', 'build:cjs')
+export const fix = turbo('fix:eslint', 'fix:prettier')
+export const lint = turbo('lint:tsc', 'lint:eslint')
 
 export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
 export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']

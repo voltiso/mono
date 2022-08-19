@@ -38,5 +38,6 @@ export const prettierOverride = defineEslintConfigOverride({
 		'multiline-ternary': 0,
 		'no-mixed-operators': 0,
 		'array-bracket-newline': 0,
+		'semi-style': 0,
 	},
 } as const)

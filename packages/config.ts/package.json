@@ -14,9 +14,8 @@
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________LINT": "__________",
-		"lint": "run-s lint:prettier lint:depcheck",
-		"lint:prettier": "prettier --check .",
-		"lint:depcheck": "depcheck",
+		"lint": "v lint",
+		"depcheck": "depcheck",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "run-s lint"
 	}
