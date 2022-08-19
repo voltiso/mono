@@ -43,7 +43,7 @@
 		"build:esm": "v buildEsm",
 		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
 		"clean": "v clean",
 		"__________TS_TRACE": "__________",
