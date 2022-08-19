@@ -33,7 +33,7 @@
 		},
 
 		"depcheck": {
-			"cache": false
+			"outputs": []
 		},
 
 		"typecov": {

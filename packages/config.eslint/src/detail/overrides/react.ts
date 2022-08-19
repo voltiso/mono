@@ -58,8 +58,8 @@ export const react = defineEslintConfigOverride({
 		// 	},
 		// ],
 
-		'react/jsx-indent': 1,
-		'react/jsx-indent-props': 1,
+		'react/jsx-indent': 0, // prettier
+		'react/jsx-indent-props': 0, // prettier
 		'react/jsx-key': 1,
 
 		'react/jsx-max-depth': 0,
@@ -81,7 +81,7 @@ export const react = defineEslintConfigOverride({
 
 		'react/jsx-no-useless-fragment': ['warn', { allowExpressions: true }],
 
-		'react/jsx-one-expression-per-line': 1,
+		'react/jsx-one-expression-per-line': 0,
 		'react/jsx-no-undef': 1,
 		'react/jsx-curly-brace-presence': 1,
 		'react/jsx-pascal-case': 1,

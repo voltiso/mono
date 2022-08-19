@@ -32,5 +32,11 @@ export const prettierOverride = defineEslintConfigOverride({
 		'arrow-parens': 0,
 		'array-element-newline': 0,
 		'implicit-arrow-linebreak': 0,
+		'func-call-spacing': 0,
+		'object-property-newline': 0,
+		'no-extra-parens': 0,
+		'multiline-ternary': 0,
+		'no-mixed-operators': 0,
+		'array-bracket-newline': 0,
 	},
 } as const)

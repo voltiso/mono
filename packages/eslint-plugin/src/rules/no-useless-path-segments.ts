@@ -27,7 +27,7 @@ function toRelativePath(relativePath: string): string {
 	// eslint-disable-next-line regexp/require-unicode-regexp
 	const stripped = relativePath.replace(/\/$/g, '') // Remove trailing /
 
-	// eslint-disable-next-line regexp/prefer-named-capture-group, regexp/require-unicode-regexp
+	// eslint-disable-next-line regexp/require-unicode-regexp
 	return /^((\.\.)|(\.))($|\/)/.test(stripped) ? stripped : `./${stripped}`
 }
 

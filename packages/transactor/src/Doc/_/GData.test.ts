@@ -32,7 +32,7 @@ describe('Doc util', () => {
 			IsIdentical<
 				MyData2,
 				{
-					// readonly id?: string
+					id?: string | undefined
 					[k: string]: unknown
 				}
 			>
@@ -47,7 +47,7 @@ describe('Doc util', () => {
 		Assert.is<
 			D,
 			{
-				readonly id?: string
+				readonly id?: string | undefined
 				a: number
 			}
 		>()

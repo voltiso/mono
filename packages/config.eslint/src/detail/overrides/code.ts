@@ -92,12 +92,17 @@ export const codeOverride = defineEslintConfigOverride({
 		'func-style': ['warn', 'declaration', { allowArrowFunctions: true }],
 		'id-length': 0,
 
+		//
+
 		'lines-between-class-members': 0,
+
 		'@typescript-eslint/lines-between-class-members': [
 			'warn',
 			'always',
 			{ exceptAfterSingleLine: true },
 		],
+
+		//
 
 		'prefer-destructuring': 0, // hmm, buggy for non-local variables
 		'no-console': 1,

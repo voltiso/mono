@@ -19,7 +19,7 @@
 		"lint:eslint": "cross-env FULL=1 eslint --max-warnings=0 .",
 		"lint:tsc": "tsc -b",
 		"fix": "run-s fix:prettier fix:eslint",
-		"fix:prettier": "prettier --write .",
+		"fix:prettier": "v fixPrettier",
 		"fix:eslint": "eslint --fix ."
 	},
 	"__________DEPS": "__________",

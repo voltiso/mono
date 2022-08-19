@@ -8,11 +8,13 @@ import { getPackageJsonCachedSync } from '@voltiso/util.node'
 function turbo(...scriptNames: string[]) {
 	return `pnpm -w exec turbo run --filter=${
 		packageJson.name || '//'
-	} ${scriptNames.join(' ')}`
+	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
 function turboAllPackages(...scriptNames: string[]) {
-	return `pnpm -w exec turbo run ${scriptNames.join(' ')}`
+	return `pnpm -w exec turbo run ${scriptNames.join(
+		' ',
+	)} --output-logs=new-only`
 }
 
 const packageJson = getPackageJsonCachedSync(process.cwd())
@@ -27,14 +29,14 @@ export const prepareWorkspace = `turbo run build:cjs --filter=//^...`
 export const checkWorkspace = [
 	'prepareWorkspace',
 	turboAllPackages(
-		'build:cjs',
-		'build:esm',
+		'depcheck',
 		'fix:prettier',
 		'test',
+		'build:cjs',
+		'build:esm',
 		'lint:eslint',
 		'lint:tsc',
 	),
-	turboAllPackages('depcheck'),
 ]
 
 // export const cleanWorkspace = [turbo('clean'), 'clean']
@@ -47,7 +49,7 @@ export const build = turbo('build:esm', 'build:cjs')
 export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
 export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']
 
-export const fixPrettier = 'prettier --write .'
+export const fixPrettier = 'prettier --write --loglevel error .'
 
 export const depcheck = 'depcheck'
 
