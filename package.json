@@ -20,7 +20,7 @@
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@types/jest": "^28.1.7",
-		"@types/node": "^18.7.6",
+		"@types/node": "^18.7.7",
 		"@voltiso/assertor.transform": "workspace:^1.0.0",
 		"@voltiso/config.eslint.lib": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
