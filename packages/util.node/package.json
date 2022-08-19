@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.node",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -19,11 +19,9 @@
 		"test": "jest",
 		"__________LINT": "__________",
 		"lint": "v lint",
-		"lint:fast": "run-p lint:depcheck lint:prettier",
-		"lint:slow": "run-p lint:eslint lint:tsc",
-		"depcheck": "depcheck",
 		"lint:eslint": "v lintEslint",
 		"lint:tsc": "v lintTsc",
+		"depcheck": "depcheck",
 		"fix": "v fix",
 		"fix:prettier": "v fixPrettier",
 		"fix:eslint": "v fixEslint",
@@ -32,11 +30,12 @@
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"build:esm": "v buildEsm",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "run-p build lint:fast test"
+		"prepublishOnly": "v prepublishOnly"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:^"
+		"@voltiso/util": "workspace:^",
+		"@voltiso/util.package-json": "workspace:^"
 	},
 	"devDependencies": {
 		"@voltiso/assertor": "workspace:^",

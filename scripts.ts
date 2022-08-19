@@ -66,7 +66,7 @@ export const lintTsc = 'tsc -b'
 export const lintEslint = 'cross-env FULL=1 eslint --max-warnings=0 .'
 
 export const typecov = [
-	'type-coverage --project tsconfig.build.esm --update',
+	'type-coverage --project tsconfig.build.cjs --update',
 	'prettier --write ./package.json',
 ]
 
@@ -86,7 +86,21 @@ export const prepublishOnly = [
 		'lint:tsc',
 		'depcheck',
 	),
-	turboDependents('test')
+	turboDependents('test'),
+]
+
+export const prepublishOnlyFast = [
+	'prepareWorkspace',
+	turbo(
+		'build:esm',
+		'build:cjs',
+		'test',
+		'typecov',
+		'fix:prettier',
+		// 'lint:eslint',
+		'lint:tsc',
+		'depcheck',
+	),
 ]
 
 // /** Lint */

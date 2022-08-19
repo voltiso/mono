@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/config.eslint",
-	"version": "1.1.2",
+	"version": "1.1.4",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
@@ -26,7 +26,9 @@
 		"lint:tsc": "v lintTsc",
 		"fix": "v fix",
 		"__________BUILD": "__________",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+		"build:cjs:clean": "rimraf dist/cjs",
+		"build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
@@ -38,9 +40,6 @@
 		"eslint-gitignore": "^0.1.0"
 	},
 	"peerDependencies": {
-		"@babel/core": ">= 7.0.0-0",
-		"@babel/plugin-syntax-flow": ">= 7.14.5",
-		"@babel/plugin-transform-react-jsx": ">= 7.14.9",
 		"@next/eslint-plugin-next": ">= 12.1.6",
 		"@typescript-eslint/eslint-plugin": ">= 5.29.0",
 		"@typescript-eslint/parser": ">= 5.29.0",
@@ -112,6 +111,21 @@
 		"yaml-eslint-parser": "*"
 	},
 	"peerDependenciesMeta": {
+		"@next/eslint-plugin-next": {
+			"optional": true
+		},
+		"@typescript-eslint/eslint-plugin": {
+			"optional": true
+		},
+		"any-eslint-parser": {
+			"optional": true
+		},
+		"confusing-browser-globals": {
+			"optional": true
+		},
+		"eslint-import-resolver-typescript": {
+			"optional": true
+		},
 		"eslint-plugin-array-func": {
 			"optional": true
 		},
@@ -282,6 +296,15 @@
 		},
 		"eslint-plugin-yml": {
 			"optional": true
+		},
+		"jsonc-eslint-parser": {
+			"optional": true
+		},
+		"toml-eslint-parser": {
+			"optional": true
+		},
+		"yaml-eslint-parser": {
+			"optional": true
 		}
 	},
 	"devDependencies": {
@@ -289,8 +312,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/eslint-plugin": "workspace:^1.0.2",
-		"eslint": "^8.22.0",
-		"rimraf": "^3.0.2"
+		"eslint": "^8.22.0"
 	},
 	"__________MISC": "__________",
 	"engines": {

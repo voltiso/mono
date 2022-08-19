@@ -116,6 +116,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'no-void': ['error', { allowAsStatement: true }],
 		'prefer-arrow-callback': 1,
 		'no-confusing-arrow': 1,
+		'generator-star-spacing': 0, // prettier
 		'sort-imports': 0, // using `simple-import-sort/imports` instead (auto-fixable)
 		complexity: 0,
 

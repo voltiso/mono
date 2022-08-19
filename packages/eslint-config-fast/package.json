@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/eslint-config-fast",
-	"version": "1.0.2",
+	"version": "1.0.4",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -30,9 +30,9 @@
 		"build": "v build",
 		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

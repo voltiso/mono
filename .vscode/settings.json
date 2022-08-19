@@ -210,8 +210,8 @@
 	// "eslint.run": "onSave",
 	"eslint.packageManager": "pnpm",
 	"eslint.useESLintClass": true,
-	"eslint.format.enable": true,
-	"eslint.lintTask.enable": true,
+	// "eslint.format.enable": true,
+	// "eslint.lintTask.enable": true,
 
 	"eslint.execArgv": ["--max_old_space_size=16384"],
 

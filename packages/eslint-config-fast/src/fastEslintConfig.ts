@@ -34,6 +34,8 @@ const pluginsToPick = [
 	'unused-imports',
 	// 'json-schema-validator', // ! hangs on tsdoc.json??
 
+	'yml',
+
 	'@voltiso',
 	'@voltiso/eslint-plugin',
 
@@ -84,7 +86,6 @@ const pluginsToPick = [
 	// 'testing-library',
 	// 'toml',
 	// 'typescript-sort-keys',
-	// 'yml',
 
 	// ! not using for now
 	// 'rxjs',

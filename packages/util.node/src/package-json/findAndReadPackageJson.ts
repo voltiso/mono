@@ -2,8 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import type { PackageJson, SyncerPromise } from '@voltiso/util'
+import type { SyncerPromise } from '@voltiso/util'
 import { runAsync, runSync } from '@voltiso/util'
+import type { PackageJson } from '@voltiso/util.package-json'
 import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 

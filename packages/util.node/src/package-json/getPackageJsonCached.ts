@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PackageJson, SyncerPromise } from '@voltiso/util'
+import type { SyncerPromise } from '@voltiso/util'
 import { runAsync, runSync } from '@voltiso/util'
+import type { PackageJson } from '@voltiso/util.package-json'
 
 import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson'
 
