@@ -402,46 +402,6 @@ describe('object', () => {
 		).toThrow('.asd')
 	})
 
-	it('partial', () => {
-		expect.hasAssertions()
-
-		const ss = s.infer({
-			num: s.number.optional,
-			str: s.string,
-			bigint: s.bigint.optional,
-
-			nested: {
-				a: 1,
-			},
-		})
-
-		const ps = s.infer(ss).strictPartial
-
-		expect(ps.validate({})).toStrictEqual({})
-		expect(() => ss.validate({})).toThrow('.str')
-		expect(() => ps.validate({ nested: {} })).toThrow('.nested.a')
-
-		expect(ps.validate({ str: 'test', num: undef })).toStrictEqual({
-			str: 'test',
-		})
-
-		type Ps = OutputType<typeof ps>
-
-		Assert<
-			IsIdentical<
-				Ps,
-				{
-					num?: number
-					str?: string
-					bigint?: bigint
-					nested?: {
-						a: number
-					}
-				}
-			>
-		>()
-	})
-
 	it('optional - accepts undefined', () => {
 		expect.hasAssertions()
 
@@ -454,46 +414,5 @@ describe('object', () => {
 		expect(s.schema(sTest).isFixable({ num: undef })).toBeTruthy()
 		expect(s.schema(sTest).isValid({ num: undef })).toBeFalsy()
 		expect(s.schema(sTest).isValid({ num: 'str' })).toBeFalsy()
-	})
-
-	it('deepPartial', () => {
-		expect.hasAssertions()
-
-		const ss = s.infer({
-			numDef: s.number.default(1),
-			num: s.number.optional,
-			str: s.string,
-			bigint: s.bigint.optional,
-
-			nested: {
-				a: 1,
-			},
-		})
-
-		const ps = s.infer(ss).deepPartial
-
-		expect(ps.validate({})).toStrictEqual({ numDef: 1 })
-		expect(ps.validate({ nested: {} })).toStrictEqual({
-			numDef: 1,
-			nested: {},
-		})
-		expect(() => ss.validate({})).toThrow('.str')
-
-		type Out = typeof ps.OutputType
-
-		Assert<
-			IsIdentical<
-				Out,
-				{
-					num?: number
-					numDef?: number
-					str?: string
-					bigint?: bigint
-					nested?: {
-						a?: number
-					}
-				}
-			>
-		>()
 	})
 })

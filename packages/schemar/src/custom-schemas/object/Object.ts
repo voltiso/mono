@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomObject, ObjectType_, InferableObjectLike } from '~'
+import type { CustomObject, InferableObjectLike, ObjectType_ } from '~'
 import { ObjectImpl } from '~'
 
 export type Object<Shape extends InferableObjectLike> = CustomObject<{

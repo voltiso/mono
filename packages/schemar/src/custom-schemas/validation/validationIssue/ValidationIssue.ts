@@ -17,7 +17,7 @@ type ExpectedValue =
 	  }
 
 type ValidationIssueParams = {
-	path?: string[]
+	path?: (keyof any)[]
 	name?: string
 } & (
 	| {
@@ -35,7 +35,7 @@ type ValidationIssueParams = {
 	)
 
 export class ValidationIssue {
-	path: (string | number | symbol)[]
+	path: (keyof any)[]
 	name?: string
 
 	expectedOneOf?: unknown[]

@@ -20,7 +20,6 @@ module.exports = defineJestConfig({
 
 	projects: [
 		'packages/*/jest.config.cjs',
-		'packages-core/*/jest.config.cjs',
 		//
 	],
 })

@@ -11,8 +11,6 @@ const project = [
 	//
 	'packages/*/tsconfig.json',
 	//
-	'packages-core/*/tsconfig.json',
-	//
 	'packages/styler/test/native/tsconfig.json',
 	'packages/styler/test/web/tsconfig.json',
 	'packages/styler/test/web/tsc-options/*/tsconfig.json',

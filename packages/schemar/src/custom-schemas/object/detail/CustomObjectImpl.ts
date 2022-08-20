@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
@@ -25,10 +26,14 @@ import {
 	isObject as sIsObject,
 	isUnknownObject,
 	partialShape,
-	schema,
 	strictPartialShape,
 	ValidationIssue,
 } from '~'
+import { number } from '~/custom-schemas/number'
+import { string } from '~/custom-schemas/string'
+import { symbol } from '~/custom-schemas/symbol'
+import { union } from '~/custom-schemas/union'
+import { schema } from '~/custom-schemas/unknownSchema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomObjectImpl<O> {
@@ -45,6 +50,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['shape'] as never
+	}
+
+	get getIndexSignatures(): this[OPTIONS]['indexSignatures'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS]['indexSignatures'] as never
 	}
 
 	get partial(): never {
@@ -68,6 +78,19 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	get deepStrictPartial(): never {
 		return this._cloneWithOptions({
 			shape: deepStrictPartialShape(this.getShape as never) as unknown as never,
+		}) as never
+	}
+
+	index(...args: [Schemable] | [Schemable, Schemable]): never {
+		const [keySchema, valueSchema] =
+			args.length === 2 ? args : [union(string, number, symbol), args[0]]
+
+		return this._cloneWithOptions({
+			indexSignatures: [
+				// eslint-disable-next-line security/detect-object-injection
+				...this[OPTIONS].indexSignatures,
+				{ keySchema, valueSchema },
+			],
 		}) as never
 	}
 
@@ -103,10 +126,9 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				}),
 			)
 		} else {
-			for (const [k, v] of getEntries(this.getShape) as [
-				keyof any,
-				Schemable,
-			][]) {
+			for (const [k, v] of getEntries(this.getShape, {
+				includeSymbols: true,
+			}) as [keyof any, Schemable][]) {
 				const tv = schema(v)
 
 				const isOptional = tv.isOptional || tv.isStrictOptional
@@ -126,16 +148,89 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				}
 			}
 
-			for (const k in x) {
-				if (!hasProperty(this.getShape, k)) {
-					issues.push(
-						new ValidationIssue({
-							path: [k],
-							expectedDescription: 'not be present',
-							// eslint-disable-next-line security/detect-object-injection
-							received: x[k],
-						}),
-					)
+			for (const [key, value] of getEntries(x as Record<keyof any, unknown>, {
+				includeSymbols: true,
+			})) {
+				if (!hasProperty(this.getShape, key)) {
+					//! util TODO: hasProperty should only type-guard for literal types
+					// eslint-disable-next-line security/detect-object-injection
+					if (this[OPTIONS].indexSignatures.length === 0)
+						issues.push(
+							new ValidationIssue({
+								path: [key],
+								expectedDescription: 'not be present',
+								// eslint-disable-next-line security/detect-object-injection
+								received: x[key],
+							}),
+						)
+					else {
+						let keyIssues: ValidationIssue[] = []
+						let valueIssues: ValidationIssue[] = []
+
+						// eslint-disable-next-line security/detect-object-injection
+						for (const { keySchema, valueSchema } of this[OPTIONS]
+							.indexSignatures) {
+							const sKeySchema = schema(keySchema)
+							const sValueSchema = schema(valueSchema)
+
+							const keyResult = sKeySchema.tryValidate(key)
+
+							if (!keyResult.isValid) {
+								keyIssues.push(
+									new ValidationIssue({
+										path: [key as keyof any],
+										expectedDescription: `match index signature key: ${sKeySchema.toString()}`,
+										received: key,
+									}),
+								)
+
+								for (const childIssue of keyResult.issues) {
+									childIssue.path = [key, ...childIssue.path]
+								}
+
+								keyIssues = [...keyIssues, ...keyResult.issues]
+								continue
+							}
+
+							const valueResult = sValueSchema.tryValidate(value)
+
+							if (!valueResult.isValid) {
+								valueIssues.push(
+									new ValidationIssue({
+										path: [key as keyof any],
+										expectedDescription: `match index signature value: ${sValueSchema.toString()}`,
+										received: value,
+									}),
+								)
+
+								for (const childIssue of valueResult.issues) {
+									childIssue.path = [key, ...childIssue.path]
+								}
+
+								valueIssues = [...valueIssues, ...valueResult.issues]
+							}
+						}
+
+						if (valueIssues.length > 0) {
+							issues = [...issues, ...valueIssues]
+						} else if (keyIssues.length > 0) {
+							issues.push(
+								new ValidationIssue({
+									path: [key as keyof any],
+									expectedDescription: `match one of index signature keys`,
+
+									// eslint-disable-next-line security/detect-object-injection
+									expectedOneOf: this[OPTIONS].indexSignatures.map(signature =>
+										schema(signature.keySchema),
+									),
+
+									received: key,
+								}),
+							)
+
+							issues = [...issues, ...keyIssues]
+						}
+					}
 				}
 			}
 		}

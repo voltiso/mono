@@ -3,6 +3,7 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 import type {
+	_,
 	DeepPartial_,
 	DeepPartialOrUndefined_,
 	PartialOrUndefined_,
@@ -16,7 +17,10 @@ import type {
 	DefineSchema,
 	ObjectOptions,
 	PartialShape_,
+	SchemableLike,
+	SimpleSchema,
 	StrictPartialShape_,
+	Type,
 } from '~'
 
 export interface CustomObject<O extends Partial<ObjectOptions>>
@@ -35,6 +39,8 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	//
 
+	get getIndexSignatures(): this[OPTIONS]['indexSignatures']
+
 	get getShape(): this[OPTIONS]['shape']
 
 	//
@@ -44,6 +50,15 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	get deepPartial(): _GetDeepPartial_<this>
 	get deepStrictPartial(): _GetDeepStrictPartial_<this>
+
+	index<TKeySchema extends SchemableLike, TValueSchema extends SchemableLike>(
+		keySchema: TKeySchema,
+		valueSchema: TValueSchema,
+	): _GetIndex<this, TKeySchema, TValueSchema>
+
+	index<TValueSchema extends SchemableLike>(
+		valueSchema: TValueSchema,
+	): _GetIndex<this, SimpleSchema<keyof any>, TValueSchema>
 }
 
 //
@@ -51,6 +66,28 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 export type _ObjectLike = {
 	[OPTIONS]: { shape: any; Output: any; Input: any }
 }
+
+export type _GetIndex<
+	This,
+	TKeySchema extends SchemableLike,
+	TValueSchema extends SchemableLike,
+> = This extends _ObjectLike
+	? DefineSchema<
+			This,
+			{
+				Output: _<
+					This[OPTIONS]['Output'] & {
+						[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+					}
+				>
+				Input: _<
+					This[OPTIONS]['Input'] & {
+						[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+					}
+				>
+			}
+	  >
+	: never
 
 export type _GetPartial_<This> = This extends _ObjectLike
 	? DefineSchema<

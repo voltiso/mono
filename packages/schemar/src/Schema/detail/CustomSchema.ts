@@ -9,7 +9,13 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
-import type { AlsoAccept, Assume, IsCompatible } from '@voltiso/util'
+import type {
+	_,
+	AlsoAccept,
+	Assume,
+	IsCompatible,
+	IsIdentical,
+} from '@voltiso/util'
 
 import type {
 	DefaultSchemaOptions,
@@ -94,6 +100,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 *
 	 * - Validation will remove `undefined` properties if `this` schema does not
 	 *   accept `undefined` by itself
+	 *
+	 * @inline
 	 */
 	get optional(): DefineSchema<this, { isOptional: true }>
 
@@ -102,31 +110,47 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 *
 	 * - `undefined` in the input value is considered invalid (similar to
 	 *   `exactOptionalPropertyTypes`)
+	 *
+	 * @inline
 	 */
 	get strictOptional(): DefineSchema<this, { isStrictOptional: true }>
 
-	/** Define object property to be `readonly` */
+	/**
+	 * Define object property to be `readonly`
+	 *
+	 * @inline
+	 */
 	get readonly(): DefineSchema<this, { isReadonly: true }>
 
 	//
 
-	/** Specify default value if the input value is `undefined` */
+	/**
+	 * Specify default value if the input value is `undefined`
+	 *
+	 * @inline
+	 */
 	default<DefaultValue extends this[OPTIONS]['Output']>(
 		value: DefaultValue,
 	): WithDefault<this, DefaultValue>
 
-	/** Specify default value if the input value is `undefined` */
+	/**
+	 * Specify default value if the input value is `undefined`
+	 *
+	 * @inline
+	 */
 	default<DefaultValue extends this[OPTIONS]['Output']>(
 		getValue: () => DefaultValue,
 	): WithDefault<this, DefaultValue>
 
 	//
 
+	/** @inline */
 	withCheck(
 		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
 		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
 	): this
 
+	/** @inline */
 	withFix<Out extends this[OPTIONS]['Output']>(
 		fixFunc: (x: this[OPTIONS]['Input']) => Out | void,
 	): DefineSchema<this, { Output: Out }>
@@ -182,6 +206,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 * Create union of this schema an one other schema
 	 *
 	 * - Alternatively, we can use global `union` function
+	 *
+	 * @inline
 	 */
 	or<Other extends Schemable>(other: Other): Union<[this, Other]>
 
@@ -197,18 +223,60 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	get simple(): Simplify<this>
 }
 
+/** @inline */
+export type CanBeSimpleSchema<
+	S extends {
+		OutputType: any
+		InputType: any
+		[PARTIAL_OPTIONS]: any
+	},
+	True = true,
+	False = false,
+> = 'isOptional' extends keyof S[PARTIAL_OPTIONS]
+	? False
+	: 'isReadonly' extends keyof S[PARTIAL_OPTIONS]
+	? False
+	: false extends IsCompatible<S['OutputType'], S['InputType']>
+	? False
+	: True
+
+/** @inline */
 export type Simplify<
 	This extends {
 		OutputType: any
 		InputType: any
+		[PARTIAL_OPTIONS]: any
 	},
-> = IsCompatible<This['OutputType'], This['InputType']> extends true
-	? SimpleSchema<This['OutputType']>
-	: CustomSchema<{
-			Output: This['OutputType']
-			Input: This['InputType']
-	  }>
+> = CanBeSimpleSchema<This> extends true
+	? SimpleSchema<This[PARTIAL_OPTIONS]['Output']>
+	: CustomSchema<
+			_<
+				Pick<
+					This[PARTIAL_OPTIONS],
+					Extract<keyof This[PARTIAL_OPTIONS], 'isOptional' | 'isReadonly'>
+				> &
+					IsIdentical<
+						This['OutputType'],
+						unknown,
+						unknown,
+						{ Output: This['OutputType'] }
+					> &
+					IsIdentical<
+						This['InputType'],
+						unknown,
+						unknown,
+						{ Input: This['InputType'] }
+					>
+			>
+	  >
+// : CustomSchema<{
+// 		Output: This['OutputType']
+// 		Input: This['InputType']
+// 		isOptional: This['isOptional']
+// 		isReadonly: This['isReadonly']
+//   }>
 
+/** @inline */
 export type WithDefault<This, DefaultValue> = This extends {
 	[OPTIONS]: { Output: unknown }
 }

@@ -58,18 +58,18 @@ export const dev =
 	'cross-env ASSERTOR_NO_STRIP=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
 
 export const build = turbo('build:esm', 'build:cjs')
-export const fix = turbo('fix:eslint', 'fix:prettier')
-export const lint = turbo('lint:tsc', 'lint:eslint')
-
 export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
 export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']
 
-export const fixPrettier = 'prettier --write --loglevel error .'
-
-export const depcheck = 'depcheck'
-
+export const lint = turbo('lint:tsc', 'lint:eslint')
 export const lintEslint = 'cross-env FULL=1 eslint --max-warnings=0 .'
 export const lintTsc = 'tsc -b'
+
+export const fix = turbo('fix:eslint', 'fix:prettier')
+export const fixPrettier = 'prettier --write --loglevel error .'
+export const fixEslint = 'eslint --fix --max-warnings=0 .'
+
+export const depcheck = 'depcheck'
 
 export const typecov = [
 	'type-coverage --project tsconfig.build.cjs --update',

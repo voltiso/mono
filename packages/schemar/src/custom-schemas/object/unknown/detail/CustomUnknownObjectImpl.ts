@@ -6,6 +6,7 @@ import {
 	type DEFAULT_OPTIONS,
 	type SCHEMA_NAME,
 	EXTENDS,
+	OPTIONS,
 } from '_'
 import { CALL, callableInstance, getKeys, lazyConstructor } from '@voltiso/util'
 
@@ -16,6 +17,7 @@ import type {
 	ISchema,
 	UnknownObjectOptions,
 } from '~'
+import { CustomObjectImpl, defaultObjectOptions } from '~'
 import { CustomSchemaImpl, isObject, isUnknownObject, Object } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
@@ -36,6 +38,26 @@ export class CustomUnknownObjectImpl<O extends Partial<UnknownObjectOptions>>
 	// 	UnknownObjectOptions,
 	// 	MergeSchemaOptions<DefaultUnknownObjectOptions, O>
 	// >
+
+	// eslint-disable-next-line class-methods-use-this
+	get getIndexSignatures() {
+		return [] as []
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	get getShape() {
+		return {}
+	}
+
+	index(...args: any) {
+		const r = new CustomObjectImpl({
+			...defaultObjectOptions,
+			// eslint-disable-next-line security/detect-object-injection
+			...this[OPTIONS],
+		})
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+		return r.index(...args)
+	}
 
 	constructor(o: O) {
 		super(o)
