@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { Assume } from '@voltiso/util'
 
 type PossiblyPromise<X> = X | Promise<X>
 
@@ -62,7 +61,7 @@ class _Checked<T extends G> {
 	function(
 		f: (
 			this: s.Type<T['self']>,
-			...args: Assume<s.Type<T['params']>, unknown[]>
+			...args: s.TupleType_<T['params']>
 		) => PossiblyPromise<s.InputType<T['result']>>,
 	) {
 		const thisSchema = this._self ? s.schema(this._self) : null
@@ -71,7 +70,7 @@ class _Checked<T extends G> {
 
 		return function (
 			this: s.Type<T>,
-			...args: Assume<s.InputType<T['params']>, unknown[]>
+			...args: s.TupleType_<T['params'], { kind: 'in' }>
 		): PossiblyPromise<s.Type<T['result']>> {
 			if (thisSchema) (thisSchema as s.Schema).validate(this) // throw on error
 
