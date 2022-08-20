@@ -2,11 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Throw } from '@voltiso/util'
-import type { ComponentPropsWithoutRef, ElementType } from 'react'
 
 import type { STYLED_TYPE_INFO } from '~/_/symbols'
-import type { MergeProps_ } from '~/react-types'
-import type { IStylable } from '~/Stylable'
+import type {
+	ComponentPropsWithoutRef_,
+	ElementTypeLike,
+	MergeProps_,
+} from '~/react-types'
+import type { StylableLike } from '~/Stylable'
 import type { StyledComponent } from '~/StyledComponent'
 import type { StyledHoc } from '~/StyledHoc'
 
@@ -14,8 +17,8 @@ import type { OmitProps_ } from './OmitProps'
 
 export type GetComponentProps_<C> = C extends null
 	? {}
-	: C extends ElementType
-	? ComponentPropsWithoutRef<C>
+	: C extends ElementTypeLike
+	? ComponentPropsWithoutRef_<C>
 	: never
 
 // export type GetComponentProps<C extends ElementType | null> =
@@ -54,7 +57,7 @@ export type ForcePatch_<
 	C = This['component'],
 > = C extends null
 	? StyledHoc<MergeProps_<This[STYLED_TYPE_INFO]['P'], P>>
-	: C extends IStylable
+	: C extends StylableLike
 	? StyledComponent<MergeProps_<This[STYLED_TYPE_INFO]['P'], P>, C>
 	: never
 
@@ -72,7 +75,7 @@ export type PatchRemoveProps_<
 	C = This['component'],
 > = C extends null
 	? StyledHoc<OmitProps_<This[STYLED_TYPE_INFO]['P'], PropName>>
-	: C extends IStylable
+	: C extends StylableLike
 	? StyledComponent<OmitProps_<This[STYLED_TYPE_INFO]['P'], PropName>, C>
 	: never
 

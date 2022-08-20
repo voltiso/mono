@@ -68,7 +68,9 @@ describe('wrap', () => {
 				props => (
 					<>
 						<H1>Hello!</H1>
+
 						<p>{props.content}</p>
+
 						{props.children}
 					</>
 				),

@@ -22,6 +22,7 @@ export const StyleProvider = <Theme extends object>(props: Props<Theme>) => {
 		// @ts-expect-error hmm...
 		<RendererProvider renderer={renderer}>
 			{/* @ts-expect-error hmm... */}
+
 			<ThemeProvider theme={theme}>{props.children}</ThemeProvider>
 		</RendererProvider>
 	)

@@ -120,6 +120,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'class-methods-use-this': 1,
 		'new-cap': 0,
 		'require-atomic-updates': 1,
+		'jsx-quotes': 0,
 		'sort-imports': 0, // using `simple-import-sort/imports` instead (auto-fixable)
 		complexity: 0,
 

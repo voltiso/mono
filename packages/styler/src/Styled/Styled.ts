@@ -9,7 +9,6 @@ import type {
 	UndefinedFromOptional,
 } from '@voltiso/util'
 import { assertNotPolluting, getKeys, isDefined } from '@voltiso/util'
-import type { ComponentPropsWithRef } from 'react'
 
 import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
 import type {
@@ -20,8 +19,12 @@ import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import type { GetModProps as GetModuleProps } from '~/_/StyledData/GetModProps'
 import { STYLED_DATA, STYLED_TYPE_INFO } from '~/_/symbols'
 import type { Css, CssObject } from '~/Css'
-import type { MergeProps_, Props } from '~/react-types'
-import type { IStylable } from '~/Stylable'
+import type {
+	ComponentPropsWithRef_,
+	FastMergeProps_,
+	Props,
+} from '~/react-types'
+import type { StylableLike } from '~/Stylable'
 import type { StyledComponent } from '~/StyledComponent'
 
 import type { $GetStyledProps as G } from '.'
@@ -35,7 +38,7 @@ import type { MapProps } from './_/Stack'
 import type { StyleFromProps } from './_/StyleFromProps'
 import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
 
-class Styled<P extends Props, C extends IStylable | null> {
+class Styled<P extends Props, C extends StylableLike | null> {
 	declare readonly [STYLED_TYPE_INFO]: { P: P }
 
 	private readonly [STYLED_DATA]: StyledData<P, C>
@@ -87,9 +90,9 @@ class Styled<P extends Props, C extends IStylable | null> {
 
 		const r =
 			data.element === null
-				? <E extends IStylable>(
+				? <E extends StylableLike>(
 						element: E,
-				  ): StyledComponent<MergeProps_<ComponentPropsWithRef<E>, P>> => {
+				  ): StyledComponent<FastMergeProps_<ComponentPropsWithRef_<E>, P>> => {
 						if (isStyled(element)) return element as never
 
 						return this._clone({ element }) as never

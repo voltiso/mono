@@ -3,7 +3,7 @@
 
 import { Component } from 'react'
 
-import type { Props } from '~/react-types'
+import type { ComponentLike, Props } from '~/react-types'
 import type { InnerProps } from '~/Stylable/InnerProps'
 
 /**
@@ -17,6 +17,10 @@ type StylableJsxConstruct<P extends Props> = new <PP extends P & InnerProps>(
 export type { StylableJsxConstruct as StylableJsxConstruct_ }
 
 //
+
+export type StylableJsxConstructLike = abstract new (
+	props: any,
+) => ComponentLike
 
 declare class IStylableJsxBivarianceHack extends Component {
 	constructor(props: InnerProps)

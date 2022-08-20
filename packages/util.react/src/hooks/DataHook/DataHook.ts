@@ -1,36 +1,42 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { DataHook_ } from './DataHook_'
-import type { DataHookConstructor } from './DataHookConstructor'
+import type { Merge2_ } from '@voltiso/util'
 
-// type DataHookBase<D extends object> = DataHook_<D> & Partial<D>
+import type { DataHookConstructor } from '.'
 
-export type DataHookLoading<D extends object> = DataHook_<D> & {
-	readonly data: D
-	readonly loading: true
-	readonly exists?: undefined
-} & { [k in keyof D]: undefined }
+class DataHookImpl<D extends object> {
+	/** - `undefined` === not known yet */
+	readonly data?: D | null
 
-export type DataHookExists<D extends object> = DataHook_<D> & {
-	readonly data: D
-	readonly exists: true
-} & D
+	readonly loading: boolean
 
-export type DataHookNotExists<D extends object> = DataHook_<D> & {
-	readonly data: null
-	readonly exists: false
-} & { [k in keyof D]: never }
+	readonly error?: Error
 
-export type DataHookError<D extends object> = DataHook_<D> & {
-	readonly error: Error
-	readonly exists?: undefined
-} & { [k in keyof D]: never }
+	get exists() {
+		if (this.data === undefined) return undefined
+		else return this.data !== null
+	}
 
-export type DataHook<D extends object> =
-	| DataHookLoading<D>
-	| DataHookExists<D>
-	| DataHookNotExists<D>
-	| DataHookError<D>
+	constructor(p: { loading?: boolean; data?: D | null; error?: Error }) {
+		this.loading = p.loading || false
 
-export const DataHook = DataHook_ as DataHookConstructor
+		if (typeof p.data !== 'undefined') this.data = p.data
+
+		if (p.error) this.error = p.error
+
+		Object.freeze(this)
+
+		// eslint-disable-next-line no-constructor-return
+		return new Proxy(this, {
+			get: (t, p, r) => {
+				if (!this.data || p in t) return Reflect.get(t, p, r) as unknown
+				else return Reflect.get(this.data, p, r) as unknown
+			},
+		})
+	}
+}
+
+export type DataHook<D extends object> = Merge2_<Partial<D>, DataHookImpl<D>>
+
+export const DataHook = DataHookImpl as DataHookConstructor

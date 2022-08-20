@@ -11,10 +11,7 @@
 		"lint:eslint": "v lintEslint",
 		"lint:tsc": "v lintTsc",
 		"__________TS_TRACE": "__________",
-		"trace": "run-s trace:clean trace:generate trace:analyze",
-		"trace:clean": "rimraf traceDir",
-		"trace:generate": "tsc --generateTrace traceDir",
-		"trace:analyze": "analyze-trace traceDir"
+		"trace": "v trace"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {

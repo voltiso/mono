@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 
-import type { StyledComponent } from '~'
+import type { IStylable, StyledComponent } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -16,7 +16,9 @@ describe('hoc', () => {
 			magic: boolean
 		}
 
-		function withColor<P extends WantProps>(C: StyledComponent<P>) {
+		function withColor<P extends WantProps, C extends IStylable>(
+			C: StyledComponent<P, C>,
+		) {
 			return C.css(p => ({
 				color: p.magic ? 'purple' : 'white',
 			}))

@@ -39,6 +39,8 @@ export type StylableIntrinsic_<P extends Props> = P extends unknown
 
 //
 
+export type IntrinsicElementLike = IsReactNative extends false ? string : never
+
 export type IStylableIntrinsic = IsReactNative extends false
 	? keyof JSX.IntrinsicElements
 	: never

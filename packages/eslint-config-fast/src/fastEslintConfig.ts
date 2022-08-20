@@ -36,6 +36,8 @@ const pluginsToPick = [
 
 	'yml',
 
+	'testing-library',
+
 	'@voltiso',
 	'@voltiso/eslint-plugin',
 
@@ -83,7 +85,6 @@ const pluginsToPick = [
 	// 'react-native-globals',
 	// 'regex',
 	// 'switch-case',
-	// 'testing-library',
 	// 'toml',
 	// 'typescript-sort-keys',
 

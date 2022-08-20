@@ -3,13 +3,17 @@
 
 import type { IsAny, IsIdentical, IsSubtype } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
-import type {
-	ComponentProps,
-	ComponentPropsWithoutRef,
-	ComponentPropsWithRef,
-} from 'react'
+import type { ComponentProps } from 'react'
 
-import type { IStylable, IStyled, OuterProps, Props, Styled } from '~'
+import type {
+	ComponentPropsWithoutRef_,
+	ComponentPropsWithRef_,
+	IStylable,
+	IStyled,
+	OuterProps,
+	Props,
+	Styled,
+} from '~'
 import type { Css } from '~/Css'
 
 import type { IStyledComponent, StyledComponent } from '.'
@@ -43,7 +47,10 @@ describe('StyledComponent', () => {
 		Assert.is<StyledComponent<{}, 'button'>, StyledComponent<{}>>()
 
 		Assert.is<StyledComponent<{ a: 1 }, 'button'>, StyledComponent>()
-		Assert.is<StyledComponent<{ a: 1 }, 'button'>, StyledComponent<{ a: 1 }>>()
+		Assert.is<
+			StyledComponent<{ abc: 1 }, 'button'>,
+			StyledComponent<{ abc: 1 }>
+		>()
 	})
 
 	it('type - hard', () => {
@@ -88,10 +95,10 @@ describe('StyledComponent', () => {
 	it('is usable', <Comp extends IStyledComponent>() => {
 		expect.assertions(0)
 
-		type A = ComponentPropsWithRef<IStyledComponent>
+		type A = ComponentPropsWithRef_<IStyledComponent>
 		Assert<IsAny<A>>()
 
-		type B = ComponentPropsWithoutRef<IStyledComponent>
+		type B = ComponentPropsWithoutRef_<IStyledComponent>
 		Assert<
 			IsIdentical<
 				B,
@@ -103,7 +110,7 @@ describe('StyledComponent', () => {
 			>
 		>() // not ideal
 
-		type C = ComponentPropsWithRef<Comp>
+		type C = ComponentPropsWithRef_<Comp>
 
 		Assert.is<C, { cssS: Css }>() // hmm (?)
 	})
@@ -117,11 +124,11 @@ describe('StyledComponent', () => {
 		Assert.is<Easy, OuterProps>()
 		Assert.is<SampleCss, Easy['css']>()
 
-		type EasyReference = ComponentPropsWithRef<StyledComponent<Props>>
+		type EasyReference = ComponentPropsWithRef_<StyledComponent<Props>>
 		Assert.is<EasyReference, OuterProps>()
 		Assert.is<SampleCss, EasyReference['css']>()
 
-		type EasyNoReference = ComponentPropsWithoutRef<StyledComponent<Props>>
+		type EasyNoReference = ComponentPropsWithoutRef_<StyledComponent<Props>>
 		Assert.is<EasyNoReference, OuterProps>()
 		Assert.is<SampleCss, EasyNoReference['css']>()
 	})

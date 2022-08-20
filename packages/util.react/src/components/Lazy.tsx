@@ -67,6 +67,7 @@ const LazyRender: ForwardRefRenderFunction<
 					{!isLoaded && (
 						<Lifecycle onLayoutFirstRender={handle.layoutFirstRender} />
 					)}
+
 					{children}
 				</Suspense>
 			)}

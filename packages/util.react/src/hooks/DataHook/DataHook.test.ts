@@ -22,7 +22,7 @@ describe('DataHook', () => {
 		Assert<IsIdentical<typeof r.exists, boolean | undefined>>()
 
 		if (r.exists) {
-			Assert<IsIdentical<typeof r.a, number>>()
+			Assert<IsIdentical<typeof r.a, number | undefined>>()
 		}
 	})
 

@@ -4,7 +4,7 @@
 import type { _ } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { MergeProps_, Props } from '~/react-types'
+import type { FastMergeProps_, Props } from '~/react-types'
 
 describe('Path', () => {
 	it('generic', <P0 extends Props, P1 extends Props>() => {
@@ -49,7 +49,7 @@ describe('Path', () => {
 		// type X = Merge2Simple<P0, P1>
 		// Assert.is<X, Props>() // :(
 
-		type R = MergeProps_<P0, P1>
+		type R = FastMergeProps_<P0, P1>
 		Assert.is<R, Props>() // :)
 	})
 })

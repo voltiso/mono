@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/styler",
-	"version": "11.0.6",
+	"version": "11.0.8",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -46,7 +46,8 @@
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean",
+		"trace": "v trace"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
@@ -64,6 +65,7 @@
 		"@babel/plugin-transform-react-jsx": "^7.18.10",
 		"@babel/preset-env": "^7.18.10",
 		"@jest/types": "^28.1.3",
+		"@radix-ui/react-checkbox": "^1.0.0",
 		"@testing-library/react": "^13.3.0",
 		"@testing-library/react-native": "^11.0.0",
 		"@types/react": "^18.0.17",
@@ -80,12 +82,10 @@
 		"fela-plugin-typescript": "^12.2.0",
 		"fela-preset-web": "^12.2.0",
 		"jest": "^28.1.3",
-		"prettier": "^2.7.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-fela": "^12.2.0",
 		"react-native": "^0.69.4",
-		"react-test-renderer": "^18.2.0",
-		"rimraf": "^3.0.2"
+		"react-test-renderer": "^18.2.0"
 	}
 }

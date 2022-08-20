@@ -3,7 +3,7 @@
 
 import type { ReactElement } from 'react'
 
-import type { Props } from '~/react-types'
+import type { Props, ReactElementLike } from '~/react-types'
 import type { InnerProps } from '~/Stylable/InnerProps'
 
 /**
@@ -15,6 +15,8 @@ export type StylableJsxCall_<P extends Props> = {
 }['bivarianceHack']
 
 //
+
+export type StylableJsxCallLike = (props: any) => ReactElementLike | null
 
 /** FC-like types that can be styled using style(...) */
 export type IStylableJsxCall = {

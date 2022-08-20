@@ -6,11 +6,11 @@ import type {
 	IndexedCssPropsSingle,
 } from '~/_/CssProps/IndexedCssProps'
 import type { Props } from '~/react-types'
-import type { IStylable } from '~/Stylable'
+import type { StylableLike } from '~/Stylable'
 import type { IStack } from '~/Styled/_/Stack'
 
 export interface IStyledData {
-	element: IStylable | null
+	element: StylableLike | null
 
 	stack: IStack
 
@@ -21,7 +21,7 @@ export interface IStyledData {
 }
 
 export type IStyledDataMod = Partial<{
-	element: IStylable | null
+	element: StylableLike | null
 
 	stack: IStack
 

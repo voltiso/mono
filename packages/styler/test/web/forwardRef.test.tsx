@@ -7,13 +7,13 @@ import { Assert } from '@voltiso/util'
 import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
-	ComponentPropsWithRef,
 	DOMAttributes,
 	ForwardRefRenderFunction,
 	ReactNode,
 } from 'react'
 import { forwardRef } from 'react'
 
+import type { ComponentPropsWithRef_ } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -97,7 +97,7 @@ describe('forwardRef', () => {
 			/>
 		)
 
-		const Button = forwardRef<HTMLAnchorElement, ComponentPropsWithRef<'a'>>(
+		const Button = forwardRef<HTMLAnchorElement, ComponentPropsWithRef_<'a'>>(
 			render,
 		)
 

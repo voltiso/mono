@@ -76,6 +76,12 @@ export const typecov = [
 	'prettier --write ./package.json',
 ]
 
+export const trace = [
+	'rimraf traceDir',
+	'tsc --generateTrace traceDir',
+	'analyze-trace traceDir',
+]
+
 export const clean = 'rimraf node_modules dist'
 
 // export const testDependents = turbo('...^test')
