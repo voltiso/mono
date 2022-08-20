@@ -6,7 +6,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType, GetType_, NumberOptions } from '~'
+import type { InputType, NumberOptions, OutputType, Type_ } from '~'
 import * as s from '~'
 
 describe('s.number', () => {
@@ -34,13 +34,13 @@ describe('s.number', () => {
 		expect(s.number(123, 234).extends(s.number(123, 234))).toBeTruthy()
 		expect(s.number(123, 0).extends(s.number(123, 234))).toBeFalsy()
 
-		type N = GetOutputType<typeof s.number>
+		type N = OutputType<typeof s.number>
 		Assert<IsIdentical<N, number>>()
 
 		const nl = s.number(123, 234)
-		type NL = GetOutputType<typeof nl>
+		type NL = OutputType<typeof nl>
 		Assert<IsIdentical<NL, 123 | 234>>()
-		Assert<IsIdentical<GetInputType<typeof nl>, 123 | 234>>()
+		Assert<IsIdentical<InputType<typeof nl>, 123 | 234>>()
 
 		type No = typeof s.number.optional.Type
 		Assert<IsIdentical<No, number>>()
@@ -71,8 +71,8 @@ describe('s.number', () => {
 
 		expect(n.tryValidate(undef).value).toBe(123)
 
-		type Out = GetType_<typeof n, { kind: 'out' }>
-		type In = GetType_<typeof n, { kind: 'in' }>
+		type Out = Type_<typeof n, { kind: 'out' }>
+		type In = Type_<typeof n, { kind: 'in' }>
 		Assert<IsIdentical<Out, number>>()
 		Assert<IsIdentical<In, number | undefined>>()
 	})
@@ -84,8 +84,8 @@ describe('s.number', () => {
 
 		expect(n.tryValidate(undef).value).toBe(123)
 
-		type Out = GetType_<typeof n, { kind: 'out' }>
-		type In = GetType_<typeof n, { kind: 'in' }>
+		type Out = Type_<typeof n, { kind: 'out' }>
+		type In = Type_<typeof n, { kind: 'in' }>
 		Assert<IsIdentical<Out, number>>()
 		Assert<IsIdentical<In, number | undefined>>()
 	})

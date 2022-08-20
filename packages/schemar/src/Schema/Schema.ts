@@ -16,7 +16,11 @@ export type Schema<
 	: [O] extends [SchemaOptions]
 	? CustomSchema<O>
 	: // : s.ISchema<O>
-	  CustomSchema<{
-			Output: O
-			Input: O
-	  }>
+	  SimpleSchema<O>
+// CustomSchema<{
+// 	Output: O
+// 	Input: O
+// }>
+
+export interface SimpleSchema<T>
+	extends CustomSchema<{ Output: T; Input: T }> {}

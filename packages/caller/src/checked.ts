@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetInputType, GetType, Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import type { Assume } from '@voltiso/util'
 
 type PossiblyPromise<X> = X | Promise<X>
 
@@ -12,9 +12,9 @@ function isPromise<X>(x: X | Promise<X>): x is Promise<X> {
 }
 
 type G<
-	Self extends Schemable | null = Schemable | null,
-	Params extends readonly Schemable[] = readonly Schemable[],
-	Result extends Schemable | null = Schemable | null,
+	Self extends s.SchemableLike | null = s.SchemableLike | null,
+	Params extends readonly s.SchemableLike[] = readonly s.SchemableLike[],
+	Result extends s.SchemableLike | null = s.SchemableLike | null,
 > = {
 	self: Self
 	params: Params
@@ -32,7 +32,7 @@ class _Checked<T extends G> {
 		this._result = result
 	}
 
-	this<S extends Schemable>(
+	this<S extends s.SchemableLike>(
 		schema: S,
 	): Checked<G<S, T['params'], T['result']>> {
 		if (this._self) throw new Error('already have `this` schema')
@@ -41,7 +41,7 @@ class _Checked<T extends G> {
 		return new _Checked(schema, this._params, this._result) as any
 	}
 
-	param<S extends Schemable>(
+	param<S extends s.SchemableLike>(
 		schema: S,
 	): Checked<G<T['self'], [...T['params'], S], T['result']>> {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -50,7 +50,7 @@ class _Checked<T extends G> {
 		>(this._self, [...this._params, schema], this._result) as any
 	}
 
-	result<S extends Schemable>(
+	result<S extends s.SchemableLike>(
 		schema: S,
 	): Checked<G<T['self'], T['params'], S>> {
 		if (this._result) throw new Error('already have `result` schema')
@@ -61,83 +61,89 @@ class _Checked<T extends G> {
 
 	function(
 		f: (
-			this: GetType<T['self']>,
-			...args: GetType<T['params']>
-		) => PossiblyPromise<GetInputType<T['result']>>,
+			this: s.Type<T['self']>,
+			...args: Assume<s.Type<T['params']>, unknown[]>
+		) => PossiblyPromise<s.InputType<T['result']>>,
 	) {
 		const thisSchema = this._self ? s.schema(this._self) : null
 		const argsSchema = s.schema(this._params)
 		const resultSchema = this._result ? s.schema(this._result) : null
 
 		return function (
-			this: GetType<T>,
-			...args: GetInputType<T['params']>
-		): PossiblyPromise<GetType<T['result']>> {
-			if (thisSchema) thisSchema.validate(this) // throw on error
+			this: s.Type<T>,
+			...args: Assume<s.InputType<T['params']>, unknown[]>
+		): PossiblyPromise<s.Type<T['result']>> {
+			if (thisSchema) (thisSchema as s.Schema).validate(this) // throw on error
 
-			const vArgs = argsSchema.validate(args) // throw on error
+			const vArgs = (argsSchema as s.Schema).validate(args) // throw on error
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-			const r = (f as any).call(this, ...vArgs)
-			const handler = (r: GetInputType<T['result']>) =>
-				(resultSchema ? resultSchema.validate(r) : r) as GetType<T['result']>
+			const r = (f as any).call(this, ...(vArgs as unknown[]))
+			function handler(r: s.InputType<T['result']>) {
+				return (
+					resultSchema ? (resultSchema as s.Schema).validate(r) : r
+				) as never
+			}
 
 			// eslint-disable-next-line promise/prefer-await-to-then
 			if (isPromise(r)) return r.then(handler)
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-			return handler(r)
+			return handler(r as never)
 		}
 	}
 }
 
-interface WithoutThis<T extends G> {
+export interface WithoutThis<T extends G> {
 	function(
-		f: (...args: GetType<T['params']>) => GetInputType<T['result']>,
-	): (...args: GetInputType<T['params']>) => GetType<T['result']>
-
-	function(
-		f: (...args: GetType<T['params']>) => Promise<GetInputType<T['result']>>,
-	): (...args: GetInputType<T['params']>) => Promise<GetType<T['result']>>
+		f: (...args: s.TupleType_<T['params']>) => s.InputType<T['result']>,
+	): (...args: s.TupleType_<T['params'], { kind: 'in' }>) => s.Type<T['result']>
 
 	function(
 		f: (
-			...args: GetType<T['params']>
-		) => PossiblyPromise<GetInputType<T['result']>>,
+			...args: s.TupleType_<T['params']>
+		) => Promise<s.InputType<T['result']>>,
 	): (
-		...args: GetInputType<T['params']>
-	) => PossiblyPromise<GetType<T['result']>>
+		...args: s.TupleType_<T['params'], { kind: 'in' }>
+	) => Promise<s.Type<T['result']>>
+
+	function(
+		f: (
+			...args: s.TupleType_<T['params']>
+		) => PossiblyPromise<s.InputType<T['result']>>,
+	): (
+		...args: s.TupleType_<T['params'], { kind: 'in' }>
+	) => PossiblyPromise<s.Type<T['result']>>
 }
 
-interface WithThis<T extends G> {
+export interface WithThis<T extends G> {
 	function(
 		f: (
-			this: GetType<T['self']>,
-			...args: GetType<T['params']>
-		) => GetInputType<T['result']>,
+			this: s.Type<T['self']>,
+			...args: s.TupleType_<T['params']>
+		) => s.InputType<T['result']>,
 	): (
-		this: GetType<T['self']>,
-		...args: GetInputType<T['params']>
-	) => GetType<T['result']>
+		this: s.Type<T['self']>,
+		...args: s.TupleType_<T['params'], { kind: 'in' }>
+	) => s.Type<T['result']>
 
 	function(
 		f: (
-			this: GetType<T['self']>,
-			...args: GetType<T['params']>
-		) => Promise<GetInputType<T['result']>>,
+			this: s.Type<T['self']>,
+			...args: s.TupleType_<T['params']>
+		) => Promise<s.InputType<T['result']>>,
 	): (
-		this: GetType<T['self']>,
-		...args: GetInputType<T['params']>
-	) => Promise<GetType<T['result']>>
+		this: s.Type<T['self']>,
+		...args: s.TupleType_<T['params'], { kind: 'in' }>
+	) => Promise<s.Type<T['result']>>
 
 	function(
 		f: (
-			this: GetType<T['self']>,
-			...args: GetType<T['params']>
-		) => PossiblyPromise<GetInputType<T['result']>>,
+			this: s.Type<T['self']>,
+			...args: s.TupleType_<T['params']>
+		) => PossiblyPromise<s.InputType<T['result']>>,
 	): (
-		this: GetType<T['self']>,
-		...args: GetInputType<T['params']>
-	) => PossiblyPromise<GetType<T['result']>>
+		this: s.Type<T['self']>,
+		...args: s.TupleType_<T['params'], { kind: 'in' }>
+	) => PossiblyPromise<s.Type<T['result']>>
 }
 
 type Checked<T extends G> = Pick<

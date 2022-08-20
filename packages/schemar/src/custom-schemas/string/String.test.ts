@@ -7,13 +7,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type {
-	CustomString,
-	GetOutputType,
-	GetType,
-	ISchema,
-	StringOptions,
-} from '~'
+import type { CustomString, ISchema, OutputType, StringOptions, Type } from '~'
 import * as s from '~'
 
 describe('string', () => {
@@ -52,11 +46,11 @@ describe('string', () => {
 		expect(s.string('asd', 'sdf').extends(s.string('asd', 'sdf'))).toBeTruthy()
 		expect(s.string('asd', '').extends(s.string('asd', 'sdf'))).toBeFalsy()
 
-		type N = GetOutputType<typeof s.string>
+		type N = OutputType<typeof s.string>
 		Assert<IsIdentical<N, string>>()
 
 		const nl = s.string('asd', 'sdf')
-		type NL = GetOutputType<typeof nl>
+		type NL = OutputType<typeof nl>
 		Assert<IsIdentical<NL, 'asd' | 'sdf'>>()
 	})
 
@@ -147,7 +141,7 @@ describe('string', () => {
 			strOptional: s.string.optional,
 		})
 
-		type A = GetType<typeof a>
+		type A = Type<typeof a>
 		Assert<IsIdentical<A, { str: string; strOptional?: string }>>()
 
 		expect(a.validate({ str: '012' })).toStrictEqual({ str: '012' })

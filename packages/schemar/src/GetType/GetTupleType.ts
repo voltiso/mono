@@ -5,41 +5,44 @@ import type { If } from '@voltiso/util'
 
 import type { InferableMutableTuple, InferableReadonlyTuple } from '~'
 
-import type { GetType_ } from './GetType'
+import type { Type_ } from './GetType'
 import type { GetTypeOptions } from './GetTypeOptions'
 
 export interface GetTupleTypeOptions extends GetTypeOptions {
 	readonlyTuple: boolean
 }
 
-type Rec<
+export type _TupleTypeImplRec<
 	T,
 	acc extends unknown[],
 	O extends GetTupleTypeOptions,
 > = T extends readonly []
 	? If<O['readonlyTuple'], readonly [...acc], acc>
 	: T extends readonly [infer h, ...infer t]
-	? Rec<t, [...acc, GetType_<h, O>], O>
+	? _TupleTypeImplRec<t, [...acc, Type_<h, O>], O>
 	: T extends readonly (infer E)[]
-	? Rec<[], [...acc, ...GetType_<E, O>[]], O>
+	? _TupleTypeImplRec<[], [...acc, ...Type_<E, O>[]], O>
 	: never
 
-export type GetTupleTypeImpl_<T, O extends GetTupleTypeOptions> = Rec<T, [], O>
-
-export type GetTupleType_<
+export type _TupleTypeImpl<
 	T,
-	O extends GetTypeOptions & { readonlyTuple?: never },
+	O extends GetTupleTypeOptions,
+> = _TupleTypeImplRec<T, [], O>
+
+export type TupleType_<
+	T,
+	O extends GetTypeOptions & { readonlyTuple?: never } = { kind: 'out' },
 > = InferableReadonlyTuple extends T
 	? readonly unknown[]
 	: InferableMutableTuple extends T
 	? unknown[]
 	: T extends unknown[]
-	? GetTupleTypeImpl_<T, O & { readonlyTuple: false }>
+	? _TupleTypeImpl<T, O & { readonlyTuple: false }>
 	: T extends readonly unknown[]
-	? GetTupleTypeImpl_<T, O & { readonlyTuple: true }>
+	? _TupleTypeImpl<T, O & { readonlyTuple: true }>
 	: never
 
-export type $GetTupleType_<
+export type $TupleType_<
 	T,
-	O extends GetTypeOptions & { readonlyTuple?: never },
-> = T extends any ? (O extends any ? GetTupleType_<T, O> : never) : never
+	O extends GetTypeOptions & { readonlyTuple?: never } = { kind: 'out' },
+> = T extends any ? (O extends any ? TupleType_<T, O> : never) : never

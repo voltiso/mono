@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetInputType, GetType } from '@voltiso/schemar'
+import type { InputType, Type } from '@voltiso/schemar'
 import type { _ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
@@ -14,9 +14,9 @@ import type { IntrinsicFields } from '~/schemas/sIntrinsicFields'
 export type GetData<
 	TI extends { publicOnCreation?: any; public?: any; private?: any },
 > = _<
-	GetType<TI['publicOnCreation']> &
-		GetType<TI['public']> &
-		GetType<TI['private']> &
+	Type<TI['publicOnCreation']> &
+		Type<TI['public']> &
+		Type<TI['private']> &
 		IntrinsicFields
 >
 
@@ -36,9 +36,9 @@ export type GetInputData<
 		private?: any
 	},
 > = _<
-	GetInputType<TI['publicOnCreation']> &
-		GetInputType<TI['public']> &
-		GetInputType<TI['private']>
+	InputType<TI['publicOnCreation']> &
+		InputType<TI['public']> &
+		InputType<TI['private']>
 >
 
 /** @inline */
@@ -54,7 +54,7 @@ export type GetInputDataWithId<
 //
 
 /** @inline */
-export type GetPublicData<TI extends { public?: any }> = GetType<TI['public']>
+export type GetPublicData<TI extends { public?: any }> = Type<TI['public']>
 
 /** @inline */
 export type RelaxRefs<X> = X extends IRef
@@ -70,15 +70,13 @@ export type GetPublicCreationInputData<
 	TI extends { public?: any; publicOnCreation?: any },
 	Doc extends IDoc = IDoc,
 > = _<
-	{ id?: Id<Doc> | undefined } & RelaxRefs<
-		GetInputType<TI['publicOnCreation']>
-	> &
-		RelaxRefs<GetInputType<TI['public']>>
+	{ id?: Id<Doc> | undefined } & RelaxRefs<InputType<TI['publicOnCreation']>> &
+		RelaxRefs<InputType<TI['public']>>
 >
 
 /** @inline */
 export type GetPublicInputData<TI extends { public?: any }> = RelaxRefs<
-	GetInputType<TI['public']>
+	InputType<TI['public']>
 >
 
 //

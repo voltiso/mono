@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType, ValidationResult } from '~'
+import type { OutputType, ValidationResult } from '~'
 import { validationResult } from '~'
 
 describe('s.validationResult', () => {
@@ -19,7 +19,7 @@ describe('s.validationResult', () => {
 
 		const a = validationResult(123 as const)
 
-		type Got = GetOutputType<typeof a>
+		type Got = OutputType<typeof a>
 		type Want = ValidationResult<123>
 
 		Assert.is<Got, Want>()

@@ -3,14 +3,14 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema, Schemable_ } from '~'
+import type { ISchema, SchemableLike } from '~'
 
 export interface IUnion extends ISchema {
 	readonly [SCHEMA_NAME]: 'Union'
 	// readonly [BASE_OPTIONS]: UnionOptions
 	// readonly [DEFAULT_OPTIONS]: DefaultUnionOptions
 
-	get getSchemas(): Schemable_[]
+	get getSchemas(): SchemableLike[]
 }
 
 export function isUnion(x: unknown): x is IUnion {

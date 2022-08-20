@@ -5,15 +5,15 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type {
-	$GetType_,
+	$Type_,
 	CustomFunction,
 	FunctionOptions,
-	GetInputType,
-	GetOutputType,
-	GetType_,
 	IFunction,
+	InputType,
 	ISchema,
+	OutputType,
 	Schemable,
+	Type_,
 } from '~'
 import * as s from '~'
 
@@ -32,7 +32,7 @@ describe('function', () => {
 		type BB = B['OutputType']
 		Assert<IsIdentical<BB, (...args: any) => unknown>>()
 
-		type C = GetOutputType<typeof s.function>
+		type C = OutputType<typeof s.function>
 		Assert<IsIdentical<C, (...args: any) => unknown>>()
 
 		Assert.is<s.Function<(x: number) => string>, IFunction>()
@@ -43,7 +43,7 @@ describe('function', () => {
 		expect.assertions(0)
 
 		Assert.is<
-			$GetType_<O['arguments'], { kind: 'out' }>,
+			$Type_<O['arguments'], { kind: 'out' }>,
 			undefined | readonly any[]
 		>()
 
@@ -60,13 +60,13 @@ describe('function', () => {
 		expect.assertions(0)
 
 		Assert.is<
-			GetType_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>,
+			Type_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>,
 			readonly unknown[]
 		>()
 
 		Assert.is<
 			never[],
-			GetType_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>
+			Type_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>
 		>()
 
 		const a = s.function(s.readonlyArray(s.number(123)), s.string)
@@ -82,10 +82,10 @@ describe('function', () => {
 		//
 		;() => s.function(s.tuple(s.number), s.number)
 
-		type T = GetOutputType<typeof s.function>
+		type T = OutputType<typeof s.function>
 		Assert<IsIdentical<T, (...args: any[]) => unknown>>()
 
-		type IT = GetInputType<typeof s.function>
+		type IT = InputType<typeof s.function>
 		Assert<IsIdentical<IT, (...args: any[]) => unknown>>()
 
 		expect(s.function.extends(s.function)).toBeTruthy()
@@ -128,9 +128,9 @@ describe('function', () => {
 		).toBeTruthy()
 
 		const a = s.function(s.array(s.number), s.string('asd'))
-		type A = GetOutputType<typeof a>
+		type A = OutputType<typeof a>
 		Assert<IsIdentical<A, (...args: number[]) => 'asd'>>()
-		Assert<IsIdentical<GetInputType<typeof a>, (...args: number[]) => 'asd'>>()
+		Assert<IsIdentical<InputType<typeof a>, (...args: number[]) => 'asd'>>()
 
 		expect(() => s.function.validate(123)).toThrow('function')
 		expect(() => s.function.validate(null)).toThrow('function')

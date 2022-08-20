@@ -9,15 +9,16 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
-import type { AlsoAccept, Assume } from '@voltiso/util'
+import type { AlsoAccept, Assume, IsCompatible } from '@voltiso/util'
 
 import type {
 	DefaultSchemaOptions,
 	DefineSchema,
 	MergeSchemaOptions,
 	Schemable,
-	Schemable_,
+	SchemableLike,
 	SchemaOptions,
+	SimpleSchema,
 	Union,
 	ValidationIssue,
 	ValidationResult,
@@ -83,7 +84,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 		? never
 		: this[OPTIONS]['Output']
 
-	extends(other: Schemable_): boolean
+	extends(other: SchemableLike): boolean
 	[EXTENDS](other: ISchema): boolean
 
 	// builder
@@ -177,10 +178,38 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
 	): x is this[OPTIONS]['Output']
 
+	/**
+	 * Create union of this schema an one other schema
+	 *
+	 * - Alternatively, we can use global `union` function
+	 */
 	or<Other extends Schemable>(other: Other): Union<[this, Other]>
+
+	/**
+	 * Simplify and flatten TS type
+	 *
+	 * - No-op at runtime (identity function)
+	 * - Use `@voltiso/transform` to output simplified types in `*.d.ts` files
+	 * - Useful when exporting from module - faster editor experience for lib consumers
+	 *
+	 * @inline
+	 */
+	get simple(): Simplify<this>
 }
 
-type WithDefault<This, DefaultValue> = This extends {
+export type Simplify<
+	This extends {
+		OutputType: any
+		InputType: any
+	},
+> = IsCompatible<This['OutputType'], This['InputType']> extends true
+	? SimpleSchema<This['OutputType']>
+	: CustomSchema<{
+			Output: This['OutputType']
+			Input: This['InputType']
+	  }>
+
+export type WithDefault<This, DefaultValue> = This extends {
 	[OPTIONS]: { Output: unknown }
 }
 	? DefineSchema<

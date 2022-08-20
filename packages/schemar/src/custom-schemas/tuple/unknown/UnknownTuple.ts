@@ -3,12 +3,15 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomUnknownTuple, GetTuple, Schemable_ } from '~'
+import type { CustomUnknownTuple, GetTuple, SchemableLike } from '~'
 import { MutableUnknownTupleImpl, ReadonlyUnknownTupleImpl } from '~'
 
 export interface MutableUnknownTuple
 	extends CustomUnknownTuple<{ isReadonlyTuple: false }> {
-	<T extends readonly Schemable_[]>(...elementTypes: T): GetTuple<this, [...T]>
+	<T extends readonly SchemableLike[]>(...elementTypes: T): GetTuple<
+		this,
+		[...T]
+	>
 }
 
 export interface ReadonlyUnknownTuple
@@ -17,7 +20,10 @@ export interface ReadonlyUnknownTuple
 		Output: readonly unknown[]
 		Input: readonly unknown[]
 	}> {
-	<T extends readonly Schemable_[]>(...elementTypes: T): GetTuple<this, [...T]>
+	<T extends readonly SchemableLike[]>(...elementTypes: T): GetTuple<
+		this,
+		[...T]
+	>
 }
 
 //

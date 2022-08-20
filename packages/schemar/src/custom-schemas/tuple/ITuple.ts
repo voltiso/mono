@@ -9,7 +9,7 @@ import type {
 	DefaultTupleOptions,
 	ISchema,
 	MergeSchemaOptions,
-	Schemable_,
+	SchemableLike,
 	TupleOptions,
 } from '~'
 
@@ -26,7 +26,7 @@ export interface ITuple extends ISchema {
 	get InputType(): readonly unknown[]
 
 	get isReadonlyTuple(): boolean
-	get getElementSchemas(): Schemable_[]
+	get getElementSchemas(): SchemableLike[]
 	get getLength(): number
 
 	get readonlyTuple(): ITuple

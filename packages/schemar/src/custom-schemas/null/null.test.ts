@@ -4,14 +4,14 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType } from '~'
+import type { OutputType } from '~'
 import * as s from '~'
 
 describe('null', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A = GetOutputType<typeof s.null>
+		type A = OutputType<typeof s.null>
 		Assert<IsIdentical<A, null>>()
 
 		expect(s.null.extends(s.null)).toBeTruthy()

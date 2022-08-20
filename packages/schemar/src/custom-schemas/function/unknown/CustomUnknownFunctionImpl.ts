@@ -6,12 +6,12 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import type {
-	$GetOutputType,
+	$OutputType,
 	CustomUnknownFunction,
 	DefaultUnknownFunctionOptions,
-	GetOutputType,
 	InferableReadonlyTuple,
 	ISchema,
+	OutputType,
 	Schemable,
 	UnknownFunctionOptions,
 } from '~'
@@ -76,7 +76,7 @@ export class CustomUnknownFunctionImpl<
 		argumentsSchema: Args,
 		resultSchema: R,
 		// eslint-disable-next-line @typescript-eslint/ban-types
-	): Function<(...args: $GetOutputType<Args>) => GetOutputType<R>> {
+	): Function<(...args: $OutputType<Args>) => OutputType<R>> {
 		return new Function(argumentsSchema as never, resultSchema) as never
 	}
 }

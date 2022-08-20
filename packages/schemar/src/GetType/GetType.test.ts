@@ -15,16 +15,16 @@ import type {
 } from '~'
 import { number } from '~'
 
-import type { $GetOutputType, GetInputType, GetOutputType } from './GetType'
+import type { $OutputType, InputType, OutputType } from './GetType'
 
 describe('GetType', () => {
 	it('simple', () => {
 		expect.assertions(0)
 
-		type A = GetOutputType<Number>
+		type A = OutputType<Number>
 		Assert<IsIdentical<A, number>>()
 
-		type B = GetOutputType<Schema>
+		type B = OutputType<Schema>
 		Assert<IsIdentical<B, unknown>>()
 	})
 
@@ -34,34 +34,34 @@ describe('GetType', () => {
 		const a = {
 			num: number,
 		}
-		type A = GetOutputType<typeof a>
+		type A = OutputType<typeof a>
 		Assert<IsIdentical<A, { num: number }>>()
 
 		const d = {
 			num: number.optional,
 		}
-		type D = GetOutputType<typeof d>
+		type D = OutputType<typeof d>
 		Assert<IsIdentical<D, { num?: number }>>()
 
 		const e = {
 			num: number.default(0),
 		}
-		type E = GetInputType<typeof e>
+		type E = InputType<typeof e>
 		Assert<IsIdentical<E, { num?: number | undefined }>>()
 
-		type E2 = GetOutputType<typeof e>
+		type E2 = OutputType<typeof e>
 		Assert<IsIdentical<E2, { num: number }>>()
 	})
 
 	it('index', () => {
 		expect.assertions(0)
 
-		type A = GetOutputType<{
+		type A = OutputType<{
 			[k: string]: Number
 		}>
 		Assert<IsIdentical<A, { [k: string]: number }>>()
 
-		type B = GetOutputType<{
+		type B = OutputType<{
 			[k in string]: Number
 		}>
 		Assert<IsIdentical<B, { [k: string]: number }>>()
@@ -70,7 +70,7 @@ describe('GetType', () => {
 	it('generic', () => {
 		expect.assertions(0)
 
-		type C = GetOutputType<Schemable>
+		type C = OutputType<Schemable>
 		Assert<IsIdentical<C, unknown>>()
 	})
 
@@ -91,7 +91,7 @@ describe('GetType', () => {
 			  }
 			: never
 
-		type A = OmitId<GetOutputType<TI['publicOnCreation']> & IntrinsicFields>
+		type A = OmitId<OutputType<TI['publicOnCreation']> & IntrinsicFields>
 
 		Assert.is<A, InferableObject>()
 		Assert.is<A, Schemable>()
@@ -108,18 +108,18 @@ describe('GetType', () => {
 			b: number.optional,
 		}
 
-		type A = GetOutputType<typeof a & typeof b>
+		type A = OutputType<typeof a & typeof b>
 		Assert<IsIdentical<A, { a: number; b?: number }>>()
 	})
 
 	it('arrays - complex', <S extends (ITuple | IArray) & ISchema>() => {
 		expect.assertions(0)
 
-		Assert.is<GetOutputType<(ITuple | IArray) & ISchema>, readonly unknown[]>()
+		Assert.is<OutputType<(ITuple | IArray) & ISchema>, readonly unknown[]>()
 
-		Assert.is<$GetOutputType<S>, readonly unknown[]>()
+		Assert.is<$OutputType<S>, readonly unknown[]>()
 
-		Assert.is<never[], GetOutputType<(ITuple | IArray) & ISchema>>()
+		Assert.is<never[], OutputType<(ITuple | IArray) & ISchema>>()
 
 		// Assert.is<never[], [1, 2, 3]>()
 		// Assert.is<never[], GetType<S>>()

@@ -5,11 +5,11 @@ import type { AtLeast1 } from '@voltiso/util'
 
 //! ts-transform-paths does not work for '~'
 // eslint-disable-next-line no-restricted-imports
-import type { Schemable_ } from '../../..'
+import type { SchemableLike } from '../../..'
 import type { ValidationIssue } from '../..'
 import { array, tuple, union, unknown, validationIssue } from '../..'
 
-export function validationResult<Value extends Schemable_>(value: Value) {
+export function validationResult<Value extends SchemableLike>(value: Value) {
 	return union(
 		{
 			isValid: true,

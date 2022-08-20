@@ -320,4 +320,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
 		return union(this as never, other) as never
 	}
+
+	get simple(): never {
+		return this as never
+	}
 }

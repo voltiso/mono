@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType, ObjectOptions } from '~'
+import type { InputType, ObjectOptions, OutputType } from '~'
 import * as s from '~'
 
 describe('object', () => {
@@ -63,23 +63,23 @@ describe('object', () => {
 			s.object({ a: s.number, b: s.string }).extends(s.object({ c: s.number })),
 		).toBeFalsy()
 
-		Assert<IsIdentical<GetOutputType<typeof s.object>, object>>()
+		Assert<IsIdentical<OutputType<typeof s.object>, object>>()
 
 		const x = s.object({ a: s.number(1), b: s.number(2) })
-		type X = GetOutputType<typeof x>
+		type X = OutputType<typeof x>
 		Assert<IsIdentical<X, { a: 1; b: 2 }>>()
-		type XX = GetInputType<typeof x>
+		type XX = InputType<typeof x>
 		Assert<IsIdentical<XX, { a: 1; b: 2 }>>()
 
 		const y = s.object({ a: s.number(1), b: s.number(2).optional })
-		type Y = GetOutputType<typeof y>
+		type Y = OutputType<typeof y>
 		Assert<IsIdentical<Y, { a: 1; b?: 2 }>>()
-		Assert<IsIdentical<GetInputType<typeof y>, { a: 1; b?: 2 | undefined }>>()
+		Assert<IsIdentical<InputType<typeof y>, { a: 1; b?: 2 | undefined }>>()
 
 		const z = s.object({ a: s.number(1), b: s.number(2).strictOptional })
-		type Z = GetOutputType<typeof z>
+		type Z = OutputType<typeof z>
 		Assert<IsIdentical<Z, { a: 1; b?: 2 }>>()
-		Assert<IsIdentical<GetInputType<typeof z>, { a: 1; b?: 2 }>>()
+		Assert<IsIdentical<InputType<typeof z>, { a: 1; b?: 2 }>>()
 
 		// () => s.object({ a: s.string.readonly })
 
@@ -220,7 +220,7 @@ describe('object', () => {
 			ro: s.string.readonly.optional,
 			rso: s.string.readonly.strictOptional,
 		})
-		type Y = GetOutputType<typeof y>
+		type Y = OutputType<typeof y>
 
 		Assert<
 			IsIdentical<
@@ -238,7 +238,7 @@ describe('object', () => {
 			>
 		>()
 
-		type YY = GetInputType<typeof y>
+		type YY = InputType<typeof y>
 
 		Assert<
 			IsIdentical<
@@ -268,12 +268,12 @@ describe('object', () => {
 			},
 		})
 
-		type T = GetOutputType<typeof t>
+		type T = OutputType<typeof t>
 		Assert<IsIdentical<T, { a: { b: { c: number } } }>>()
 
 		Assert<
 			IsIdentical<
-				GetInputType<typeof t>,
+				InputType<typeof t>,
 				{ a?: { b?: { c?: number | undefined } } }
 			>
 		>()
@@ -297,7 +297,7 @@ describe('object', () => {
 		expect.hasAssertions()
 
 		const currency = s.string('USD').or(s.string('PLN'))
-		Assert<IsIdentical<GetOutputType<typeof currency>, 'USD' | 'PLN'>>()
+		Assert<IsIdentical<OutputType<typeof currency>, 'USD' | 'PLN'>>()
 
 		const pricingAgreement = {
 			currency,
@@ -307,7 +307,7 @@ describe('object', () => {
 			def: s.number.default(123),
 		}
 
-		type PricingAgreement = GetOutputType<typeof pricingAgreement>
+		type PricingAgreement = OutputType<typeof pricingAgreement>
 
 		Assert<
 			IsIdentical<
@@ -405,7 +405,7 @@ describe('object', () => {
 	it('partial', () => {
 		expect.hasAssertions()
 
-		const ss = s.schema({
+		const ss = s.infer({
 			num: s.number.optional,
 			str: s.string,
 			bigint: s.bigint.optional,
@@ -415,7 +415,7 @@ describe('object', () => {
 			},
 		})
 
-		const ps = s.schema(ss).strictPartial
+		const ps = s.infer(ss).strictPartial
 
 		expect(ps.validate({})).toStrictEqual({})
 		expect(() => ss.validate({})).toThrow('.str')
@@ -425,7 +425,7 @@ describe('object', () => {
 			str: 'test',
 		})
 
-		type Ps = GetOutputType<typeof ps>
+		type Ps = OutputType<typeof ps>
 
 		Assert<
 			IsIdentical<
@@ -459,7 +459,7 @@ describe('object', () => {
 	it('deepPartial', () => {
 		expect.hasAssertions()
 
-		const ss = s.schema({
+		const ss = s.infer({
 			numDef: s.number.default(1),
 			num: s.number.optional,
 			str: s.string,
@@ -470,7 +470,7 @@ describe('object', () => {
 			},
 		})
 
-		const ps = s.schema(ss).deepPartial
+		const ps = s.infer(ss).deepPartial
 
 		expect(ps.validate({})).toStrictEqual({ numDef: 1 })
 		expect(ps.validate({ nested: {} })).toStrictEqual({

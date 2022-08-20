@@ -5,10 +5,10 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type {
-	GetInputType,
-	GetOutputType,
 	IMutableTuple,
+	InputType,
 	ITuple,
+	OutputType,
 	TupleOptions,
 } from '~'
 import * as s from '~'
@@ -126,38 +126,36 @@ describe('array', () => {
 
 		expect(s.string.extends(s.tuple(s.string).or(s.string))).toBeTruthy()
 
-		type A = GetOutputType<typeof s.tuple>
+		type A = OutputType<typeof s.tuple>
 		Assert<IsIdentical<A, unknown[]>>()
-		Assert<IsIdentical<GetOutputType<typeof s.tuple>, unknown[]>>()
+		Assert<IsIdentical<OutputType<typeof s.tuple>, unknown[]>>()
 
 		Assert<
-			IsIdentical<GetOutputType<typeof s.readonlyTuple>, readonly unknown[]>
+			IsIdentical<OutputType<typeof s.readonlyTuple>, readonly unknown[]>
 		>()
-		Assert<
-			IsIdentical<GetInputType<typeof s.readonlyTuple>, readonly unknown[]>
-		>()
+		Assert<IsIdentical<InputType<typeof s.readonlyTuple>, readonly unknown[]>>()
 
 		const roSimple = s.readonlyTuple()
-		type RoSimple = GetOutputType<typeof roSimple>
+		type RoSimple = OutputType<typeof roSimple>
 		Assert<IsIdentical<RoSimple, readonly []>>()
-		Assert<IsIdentical<GetOutputType<typeof roSimple>, readonly []>>()
+		Assert<IsIdentical<OutputType<typeof roSimple>, readonly []>>()
 
 		const t = s.tuple()
-		Assert<IsIdentical<GetOutputType<typeof t>, []>>()
-		Assert<IsIdentical<GetOutputType<typeof t>, []>>()
+		Assert<IsIdentical<OutputType<typeof t>, []>>()
+		Assert<IsIdentical<OutputType<typeof t>, []>>()
 
 		const ts = s.tuple(s.string)
-		Assert<IsIdentical<GetOutputType<typeof ts>, [string]>>()
-		Assert<IsIdentical<GetOutputType<typeof ts>, [string]>>()
+		Assert<IsIdentical<OutputType<typeof ts>, [string]>>()
+		Assert<IsIdentical<OutputType<typeof ts>, [string]>>()
 
 		const ro = ts.readonlyTuple
-		type X = GetOutputType<typeof ro>
+		type X = OutputType<typeof ro>
 		Assert<IsIdentical<X, readonly [string]>>()
-		Assert<IsIdentical<GetInputType<typeof ro>, readonly [string]>>()
+		Assert<IsIdentical<InputType<typeof ro>, readonly [string]>>()
 
 		const ro2 = s.readonlyTuple(s.string)
-		Assert<IsIdentical<GetOutputType<typeof ro2>, readonly [string]>>()
-		Assert<IsIdentical<GetOutputType<typeof ro2>, readonly [string]>>()
+		Assert<IsIdentical<OutputType<typeof ro2>, readonly [string]>>()
+		Assert<IsIdentical<OutputType<typeof ro2>, readonly [string]>>()
 
 		expect(s.tuple(s.string).extends(s.array)).toBeTruthy()
 		expect(s.tuple(s.string).extends(s.tuple(s.string))).toBeTruthy()

@@ -14,7 +14,7 @@ import type {
 } from '~'
 import { CustomSchemaImpl } from '~'
 
-import { getSchema } from './getSchema'
+import { infer } from './infer'
 
 export interface CustomUnknownSchemaImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownSchemaOptions
@@ -35,6 +35,6 @@ export class CustomUnknownSchemaImpl<O extends SchemaOptions>
 
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<S extends Schemable>(schemable: S) {
-		return getSchema(schemable)
+		return infer(schemable)
 	}
 }

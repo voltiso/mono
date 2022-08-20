@@ -4,34 +4,30 @@
 import type { GetProperty_ } from '@voltiso/util'
 import { getEntries } from '@voltiso/util'
 
-import type {
-	GetSchemaWithoutReadonlyTuples_,
-	InferableObject_,
-	ISchema,
-} from '~'
+import type { InferableObjectLike, InferSchemaNoReadonlyTuple_ } from '~'
 import { isSchema, schema } from '~'
 
 //
 
 export type StrictPartialShape_<O> = {
 	[k in keyof O]: GetProperty_<
-		GetSchemaWithoutReadonlyTuples_<O[k]>,
+		InferSchemaNoReadonlyTuple_<O[k]>,
 		'strictOptional'
 	>
 }
 
-export type StrictPartialShape<O extends InferableObject_> =
+export type StrictPartialShape<O extends InferableObjectLike> =
 	StrictPartialShape_<O>
 
 //
 
-export function strictPartialShape<O extends InferableObject_>(
+export function strictPartialShape<O extends InferableObjectLike>(
 	o: O,
 ): StrictPartialShape<O> {
-	const shape = { ...o } as InferableObject_
+	const shape = { ...o } as InferableObjectLike
 
 	for (const [k, v] of getEntries(shape)) {
-		const vSchema = (isSchema(v) ? v : schema(v)) as ISchema
+		const vSchema = isSchema(v) ? v : schema(v)
 		// eslint-disable-next-line security/detect-object-injection
 		shape[k] = vSchema.strictOptional as never
 	}
@@ -42,23 +38,20 @@ export function strictPartialShape<O extends InferableObject_>(
 //
 
 export type PartialShape_<O> = {
-	[k in keyof O]: GetProperty_<
-		GetSchemaWithoutReadonlyTuples_<O[k]>,
-		'optional'
-	>
+	[k in keyof O]: GetProperty_<InferSchemaNoReadonlyTuple_<O[k]>, 'optional'>
 }
 
-export type PartialShape<O extends InferableObject_> = PartialShape_<O>
+export type PartialShape<O extends InferableObjectLike> = PartialShape_<O>
 
 //
 
-export function partialShape<O extends InferableObject_>(
+export function partialShape<O extends InferableObjectLike>(
 	o: O,
 ): PartialShape<O> {
-	const shape = { ...o } as InferableObject_
+	const shape = { ...o } as InferableObjectLike
 
 	for (const [k, v] of getEntries(shape)) {
-		const vSchema = (isSchema(v) ? v : schema(v)) as ISchema
+		const vSchema = isSchema(v) ? v : schema(v)
 		// eslint-disable-next-line security/detect-object-injection
 		shape[k] = vSchema.optional as never
 	}

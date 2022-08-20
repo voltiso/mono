@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType } from '~'
+import type { InputType, OutputType } from '~'
 import * as s from '~'
 
 describe('union', () => {
@@ -12,19 +12,19 @@ describe('union', () => {
 		expect.hasAssertions()
 
 		const sn = s.union(s.string, s.number)
-		type Sn = GetOutputType<typeof sn>
+		type Sn = OutputType<typeof sn>
 		Assert<IsIdentical<Sn, string | number>>()
-		Assert<IsIdentical<GetInputType<typeof sn>, string | number>>()
+		Assert<IsIdentical<InputType<typeof sn>, string | number>>()
 
 		const sn2 = s.string.or(s.number)
-		type Sn2 = GetOutputType<typeof sn2>
+		type Sn2 = OutputType<typeof sn2>
 		Assert<IsIdentical<Sn2, string | number>>()
-		Assert<IsIdentical<GetInputType<typeof sn2>, string | number>>()
+		Assert<IsIdentical<InputType<typeof sn2>, string | number>>()
 
 		const snb = s.union(sn, s.bigint)
-		type Snb = GetOutputType<typeof snb>
+		type Snb = OutputType<typeof snb>
 		Assert<IsIdentical<Snb, string | number | bigint>>()
-		Assert<IsIdentical<GetInputType<typeof snb>, string | number | bigint>>()
+		Assert<IsIdentical<InputType<typeof snb>, string | number | bigint>>()
 
 		expect(s.string.extends(s.string.or(s.number))).toBeTruthy()
 		expect(s.string.or(s.number).extends(s.string.or(s.number))).toBeTruthy()

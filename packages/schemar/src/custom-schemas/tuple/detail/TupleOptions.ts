@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Schemable_, SchemaOptions } from '~'
+import type { SchemableLike, SchemaOptions } from '~'
 import { defaultSchemaOptions } from '~'
 
 export interface TupleOptions extends SchemaOptions {
@@ -9,7 +9,7 @@ export interface TupleOptions extends SchemaOptions {
 	Input: readonly unknown[]
 
 	isReadonlyTuple: boolean
-	elementSchemas: Schemable_[]
+	elementSchemas: SchemableLike[]
 }
 
 //
@@ -20,7 +20,7 @@ export const defaultTupleOptions = {
 	Input: 0 as unknown as readonly unknown[],
 
 	isReadonlyTuple: false as const,
-	elementSchemas: 0 as unknown as Schemable_[],
+	elementSchemas: 0 as unknown as SchemableLike[],
 }
 export type DefaultTupleOptions = typeof defaultTupleOptions
 

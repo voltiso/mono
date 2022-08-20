@@ -4,16 +4,16 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetObjectType_, InferableObject } from '~'
+import type { ObjectType_, InferableObject } from '~'
 import * as s from '~'
 
 describe('GetObjectType', () => {
 	it('literal', () => {
 		expect.assertions(0)
 
-		Assert.is<GetObjectType_<{}, { kind: 'out' }>, {}>()
+		Assert.is<ObjectType_<{}, { kind: 'out' }>, {}>()
 
-		type X = GetObjectType_<{ a: 1; b: number; c: s.String }, { kind: 'out' }>
+		type X = ObjectType_<{ a: 1; b: number; c: s.String }, { kind: 'out' }>
 		Assert<IsIdentical<X, { a: 1; b: number; c: string }>>()
 	})
 
@@ -23,7 +23,7 @@ describe('GetObjectType', () => {
 		const a = {
 			opt: s.number.optional,
 		}
-		type A = GetObjectType_<typeof a, { kind: 'out' }>
+		type A = ObjectType_<typeof a, { kind: 'out' }>
 		Assert<IsIdentical<A, { opt?: number }>>()
 	})
 
@@ -33,8 +33,8 @@ describe('GetObjectType', () => {
 		const a = {
 			opt: s.number.default(123 as const),
 		}
-		type AOut = GetObjectType_<typeof a, { kind: 'out' }>
-		type AIn = GetObjectType_<typeof a, { kind: 'in' }>
+		type AOut = ObjectType_<typeof a, { kind: 'out' }>
+		type AIn = ObjectType_<typeof a, { kind: 'in' }>
 		Assert<IsIdentical<AOut, { opt: number }>>()
 		Assert<IsIdentical<AIn, { opt?: number | undefined }>>()
 
@@ -44,8 +44,8 @@ describe('GetObjectType', () => {
 		Assert<IsIdentical<BOut, { opt: number }>>()
 		Assert<IsIdentical<BIn, { opt?: number | undefined }>>()
 
-		type COut = GetObjectType_<typeof b.getShape, { kind: 'out' }>
-		type CIn = GetObjectType_<typeof b.getShape, { kind: 'in' }>
+		type COut = ObjectType_<typeof b.getShape, { kind: 'out' }>
+		type CIn = ObjectType_<typeof b.getShape, { kind: 'in' }>
 		Assert<IsIdentical<COut, { opt: number }>>()
 		Assert<IsIdentical<CIn, { opt?: number | undefined }>>()
 	})
@@ -53,7 +53,7 @@ describe('GetObjectType', () => {
 	it('index', () => {
 		expect.assertions(0)
 
-		type A = GetObjectType_<InferableObject, { kind: 'out' }>
+		type A = ObjectType_<InferableObject, { kind: 'out' }>
 		Assert<
 			IsIdentical<
 				A,

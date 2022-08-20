@@ -4,15 +4,15 @@
 import type { AtLeast2 } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { GetType_, Schemable } from '~'
+import type { Schemable, Type_ } from '~'
 import { CustomUnionImpl, defaultUnionOptions } from '~'
 
 export class UnionImpl<T extends AtLeast2<Schemable>> extends lazyConstructor(
 	() => CustomUnionImpl,
 )<{
 	schemas: T
-	Output: GetType_<T[number], { kind: 'out' }>
-	Input: GetType_<T[number], { kind: 'in' }>
+	Output: Type_<T[number], { kind: 'out' }>
+	Input: Type_<T[number], { kind: 'in' }>
 }> {
 	constructor(schemas: T) {
 		super({ ...defaultUnionOptions, schemas } as never)

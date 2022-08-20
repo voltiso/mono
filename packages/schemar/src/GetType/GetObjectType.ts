@@ -5,22 +5,22 @@ import type { _, HasIndexSignature } from '@voltiso/util'
 
 import type { SchemaOptions } from '~'
 
-import type { GetType_, GetTypeOptions } from '.'
+import type { GetTypeOptions, Type_ } from '.'
 import type { GetOptions } from './GetOptions'
 
-type GetObjectTypeNoSignature<
+export type _ObjectTypeNoSignature<
 	T,
 	O extends Record<keyof T, SchemaOptions>,
 	IO extends GetTypeOptions,
-> = Finalize<
+> = _ObjectTypeFinalize<
 	{
 		[k in keyof T as O[k]['isReadonly'] extends false
-			? IsOptional<O[k], IO, never, k>
+			? _ObjectTypeIsOptional<O[k], IO, never, k>
 			: never]: T[k]
 	} & {
 		[k in keyof T as O[k]['isReadonly'] extends false ? k : never]?: T[k]
 	} & {
-		readonly [k in keyof T as IsOptional<O[k], IO> extends false
+		readonly [k in keyof T as _ObjectTypeIsOptional<O[k], IO> extends false
 			? k
 			: never]: T[k]
 	} & {
@@ -29,17 +29,17 @@ type GetObjectTypeNoSignature<
 	IO
 >
 
-export type GetObjectType_<
+export type ObjectType_<
 	T extends object,
-	IO extends GetTypeOptions,
+	IO extends GetTypeOptions = { kind: 'out' },
 > = HasIndexSignature<T> extends true
 	? {
-			[k in keyof T]: GetType_<T[k], IO>
+			[k in keyof T]: Type_<T[k], IO>
 	  }
 	: HasIndexSignature<T> extends false
-	? GetObjectTypeNoSignature<
+	? _ObjectTypeNoSignature<
 			{
-				[k in keyof T]: GetType_<T[k], IO>
+				[k in keyof T]: Type_<T[k], IO>
 			},
 			{
 				[k in keyof T]: GetOptions<T[k]>
@@ -48,7 +48,7 @@ export type GetObjectType_<
 	  >
 	: never
 
-type IsOptional<
+export type _ObjectTypeIsOptional<
 	O extends SchemaOptions,
 	IO extends GetTypeOptions,
 	T = true,
@@ -66,7 +66,10 @@ type IsOptional<
 	? F
 	: never
 
-type Finalize<T, IO extends GetTypeOptions> = IO['kind'] extends 'in'
+export type _ObjectTypeFinalize<
+	T,
+	IO extends GetTypeOptions,
+> = IO['kind'] extends 'in'
 	? _<
 			{
 				[k in keyof T as object extends T[k] ? never : k]: T[k]

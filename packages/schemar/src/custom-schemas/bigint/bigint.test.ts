@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetOutputType, GetType_ } from '~'
+import type { OutputType, Type_ } from '~'
 import * as s from '~'
 
 describe('number', () => {
@@ -18,11 +18,11 @@ describe('number', () => {
 		expect(s.bigint(123n, 234n).extends(s.bigint(123n, 234n))).toBeTruthy()
 		expect(s.bigint(123n, 0n).extends(s.bigint(123n, 234n))).toBeFalsy()
 
-		type B = GetOutputType<typeof s.bigint>
+		type B = OutputType<typeof s.bigint>
 		Assert<IsIdentical<B, bigint>>()
 
 		const bl = s.bigint(123n, 234n)
-		type BL = GetOutputType<typeof bl>
+		type BL = OutputType<typeof bl>
 		Assert<IsIdentical<BL, 123n | 234n>>()
 	})
 
@@ -42,10 +42,8 @@ describe('number', () => {
 
 		expect(n.tryValidate(undef).value).toBe(123n)
 
-		Assert<IsIdentical<GetType_<typeof n, { kind: 'out' }>, bigint>>()
-		Assert<
-			IsIdentical<GetType_<typeof n, { kind: 'in' }>, bigint | undefined>
-		>()
+		Assert<IsIdentical<Type_<typeof n, { kind: 'out' }>, bigint>>()
+		Assert<IsIdentical<Type_<typeof n, { kind: 'in' }>, bigint | undefined>>()
 	})
 
 	it('check', () => {

@@ -6,11 +6,11 @@ import { Assert, undef } from '@voltiso/util'
 
 import type {
 	ArrayOptions,
-	GetInputType,
-	GetOutputType,
 	IArray,
 	IMutableArray,
+	InputType,
 	ISchema,
+	OutputType,
 	Schema,
 	Schemable,
 } from '~'
@@ -129,20 +129,18 @@ describe('array', () => {
 			s.array(s.string).extends(s.readonlyTuple(s.string, s.string)),
 		).toBeFalsy()
 
-		Assert<IsIdentical<GetOutputType<typeof s.array>, unknown[]>>()
-		Assert<IsIdentical<GetInputType<typeof s.array>, unknown[]>>()
+		Assert<IsIdentical<OutputType<typeof s.array>, unknown[]>>()
+		Assert<IsIdentical<InputType<typeof s.array>, unknown[]>>()
 
 		Assert<
-			IsIdentical<GetOutputType<typeof s.readonlyArray>, readonly unknown[]>
+			IsIdentical<OutputType<typeof s.readonlyArray>, readonly unknown[]>
 		>()
 
-		Assert<
-			IsIdentical<GetInputType<typeof s.readonlyArray>, readonly unknown[]>
-		>()
+		Assert<IsIdentical<InputType<typeof s.readonlyArray>, readonly unknown[]>>()
 
 		const an = s.array(s.number)
-		Assert<IsIdentical<GetOutputType<typeof an>, number[]>>()
-		Assert<IsIdentical<GetInputType<typeof an>, number[]>>()
+		Assert<IsIdentical<OutputType<typeof an>, number[]>>()
+		Assert<IsIdentical<InputType<typeof an>, number[]>>()
 
 		const ro = s.readonlyArray(s.string)
 
@@ -151,14 +149,14 @@ describe('array', () => {
 		type RoS = typeof ro.getElementSchema
 		Assert<IsIdentical<RoS, s.String>>()
 
-		type Ro = GetOutputType<typeof ro>
+		type Ro = OutputType<typeof ro>
 		Assert<IsIdentical<Ro, readonly string[]>>()
-		Assert<IsIdentical<GetInputType<typeof ro>, readonly string[]>>()
+		Assert<IsIdentical<InputType<typeof ro>, readonly string[]>>()
 
 		const ro2 = s.array(s.string).readonlyArray
-		type Ro2 = GetOutputType<typeof ro2>
+		type Ro2 = OutputType<typeof ro2>
 		Assert<IsIdentical<Ro2, readonly string[]>>()
-		Assert<IsIdentical<GetInputType<typeof ro2>, readonly string[]>>()
+		Assert<IsIdentical<InputType<typeof ro2>, readonly string[]>>()
 
 		// // @ts-expect-error cannot call readonlyArray twice
 		// ;() => s.array(s.string).readonlyArray.readonlyArray
@@ -177,8 +175,8 @@ describe('array', () => {
 		expect(s.array(s.number).readonlyArray.extends(s.array)).toBeFalsy()
 
 		const anl = s.array(s.number(123, 234))
-		Assert<IsIdentical<GetOutputType<typeof anl>, (123 | 234)[]>>()
-		Assert<IsIdentical<GetInputType<typeof anl>, (123 | 234)[]>>()
+		Assert<IsIdentical<OutputType<typeof anl>, (123 | 234)[]>>()
+		Assert<IsIdentical<InputType<typeof anl>, (123 | 234)[]>>()
 
 		Assert.is<typeof s.array, ISchema>()
 		Assert.is<typeof s.readonlyArray, ISchema>()

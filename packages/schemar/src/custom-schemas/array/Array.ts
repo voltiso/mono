@@ -5,26 +5,32 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomArray, GetSchema_, GetType_, Schemable_, Unknown } from '~'
+import type {
+	CustomArray,
+	InferSchema_,
+	SchemableLike,
+	Type_,
+	Unknown,
+} from '~'
 import { MutableArrayImpl, ReadonlyArrayImpl, unknown } from '~'
 
-export interface MutableArray<S extends Schemable_>
+export interface MutableArray<S extends SchemableLike>
 	extends CustomArray<{
-		element: GetSchema_<S>
-		Output: GetType_<S, { kind: 'out' }>[]
-		Input: GetType_<S, { kind: 'in' }>[]
+		element: InferSchema_<S>
+		Output: Type_<S, { kind: 'out' }>[]
+		Input: Type_<S, { kind: 'in' }>[]
 	}> {
-	<S extends Schemable_>(elementSchema: S): MutableArray<S>
+	<S extends SchemableLike>(elementSchema: S): MutableArray<S>
 }
 
-export interface ReadonlyArray<S extends Schemable_>
+export interface ReadonlyArray<S extends SchemableLike>
 	extends CustomArray<{
-		element: GetSchema_<S>
-		Output: readonly GetType_<S, { kind: 'out' }>[]
-		Input: readonly GetType_<S, { kind: 'in' }>[]
+		element: InferSchema_<S>
+		Output: readonly Type_<S, { kind: 'out' }>[]
+		Input: readonly Type_<S, { kind: 'in' }>[]
 		isReadonlyArray: true
 	}> {
-	<S extends Schemable_>(elementSchema: S): ReadonlyArray<S>
+	<S extends SchemableLike>(elementSchema: S): ReadonlyArray<S>
 }
 
 //
@@ -39,11 +45,11 @@ export const MutableArray = lazyConstructor(
 
 //
 
-type ReadonlyArrayConstructor = new <T extends Schemable_>(
+type ReadonlyArrayConstructor = new <T extends SchemableLike>(
 	elementType: T,
 ) => ReadonlyArray<T>
 
-type MutableArrayConstructor = new <T extends Schemable_>(
+type MutableArrayConstructor = new <T extends SchemableLike>(
 	elementType: T,
 ) => MutableArray<T>
 

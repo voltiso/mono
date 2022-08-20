@@ -4,13 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type {
-	GetInputType,
-	GetOutputType,
-	IAny,
-	ISchema,
-	NeverOptions,
-} from '~'
+import type { IAny, InputType, ISchema, NeverOptions, OutputType } from '~'
 import * as s from '~'
 
 describe('any', () => {
@@ -28,8 +22,8 @@ describe('any', () => {
 
 		Assert.is<typeof s.any, ISchema>()
 
-		type A1 = GetOutputType<typeof s.any>
-		type A2 = GetInputType<typeof s.any>
+		type A1 = OutputType<typeof s.any>
+		type A2 = InputType<typeof s.any>
 		Assert<IsIdentical<A1, any>>()
 		Assert<IsIdentical<A2, any>>()
 

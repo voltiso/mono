@@ -23,11 +23,13 @@
 		},
 
 		"lint:eslint": {
+			"dependsOn": ["^build:cjs"],
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},
 
 		"lint:tsc": {
+			"dependsOn": ["^build:cjs"],
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},
@@ -37,6 +39,7 @@
 		},
 
 		"typecov": {
+			"dependsOn": ["^build:cjs"],
 			"inputs": ["src"],
 			"outputs": ["package.json"]
 		},

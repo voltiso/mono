@@ -5,7 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import * as s from '~'
-import type { GetType } from '~/GetType'
+import type { Type } from '~/GetType'
 
 describe('object', () => {
 	it('complex object - theme', () => {
@@ -62,10 +62,10 @@ describe('object', () => {
 			},
 		}
 
-		const sPartialTheme = s.schema(sTheme).deepPartial
+		const sPartialTheme = s.infer(sTheme).deepPartial
 
-		type Theme = GetType<typeof sTheme>
-		type PartialTheme = GetType<typeof sPartialTheme>
+		type Theme = Type<typeof sTheme>
+		type PartialTheme = Type<typeof sPartialTheme>
 
 		Assert<
 			IsIdentical<

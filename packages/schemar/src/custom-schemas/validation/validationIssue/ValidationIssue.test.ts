@@ -4,13 +4,13 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType, ValidationIssue, validationIssue } from '~'
+import type { OutputType, ValidationIssue, validationIssue } from '~'
 
 describe('s.validationIssue', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type Got = GetOutputType<typeof validationIssue>
+		type Got = OutputType<typeof validationIssue>
 		type Want = ValidationIssue
 
 		Assert<IsIdentical<Got, Want>>()

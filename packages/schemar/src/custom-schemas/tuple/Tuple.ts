@@ -3,21 +3,21 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomTuple, GetTupleTypeImpl_, Schemable_ } from '~'
+import type { _TupleTypeImpl, CustomTuple, SchemableLike } from '~'
 import { MutableTupleImpl, ReadonlyTupleImpl } from '~'
 
-export interface MutableTuple<T extends Schemable_[]>
+export interface MutableTuple<T extends SchemableLike[]>
 	extends CustomTuple<{
 		elementSchemas: T
-		Output: GetTupleTypeImpl_<T, { kind: 'out'; readonlyTuple: false }>
-		Input: GetTupleTypeImpl_<T, { kind: 'in'; readonlyTuple: false }>
+		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
+		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: false }>
 	}> {}
 
-export interface ReadonlyTuple<T extends Schemable_[]>
+export interface ReadonlyTuple<T extends SchemableLike[]>
 	extends CustomTuple<{
 		elementSchemas: T
-		Output: GetTupleTypeImpl_<T, { kind: 'out'; readonlyTuple: true }>
-		Input: GetTupleTypeImpl_<T, { kind: 'in'; readonlyTuple: true }>
+		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
+		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
 		isReadonlyTuple: true
 	}> {}
 
@@ -33,10 +33,10 @@ export const ReadonlyTuple = lazyConstructor(
 
 //
 
-type MutableTupleConstructor = new <T extends Schemable_[]>(
+type MutableTupleConstructor = new <T extends SchemableLike[]>(
 	...elementSchemas: T
 ) => MutableTuple<T>
 
-type ReadonlyTupleConstructor = new <T extends Schemable_[]>(
+type ReadonlyTupleConstructor = new <T extends SchemableLike[]>(
 	...elementSchemas: T
 ) => ReadonlyTuple<T>

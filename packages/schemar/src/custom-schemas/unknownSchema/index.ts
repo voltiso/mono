@@ -3,7 +3,7 @@
 
 export * from './CustomUnknownSchema'
 export * from './CustomUnknownSchemaImpl'
-export * from './getSchema'
+export * from './infer'
 export * from './IUnknownSchema'
 export * from './UnknownSchema'
 export * from './UnknownSchemaImpl'

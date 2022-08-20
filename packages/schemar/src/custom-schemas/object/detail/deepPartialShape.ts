@@ -3,7 +3,7 @@
 
 import { getEntries } from '@voltiso/util'
 
-import type { GetSchema_, InferableObject, IObject, ISchema } from '~'
+import type { InferableObject, InferSchema_, IObject, ISchema } from '~'
 import { isObject, schema } from '~'
 
 export type DeepPartialShapeProcessEntry_<S> = S extends /* IObject*/ {
@@ -17,7 +17,7 @@ export type DeepPartialShapeProcessEntry_<S> = S extends /* IObject*/ {
 //
 
 export type DeepPartialShape_<O> = {
-	[k in keyof O]: DeepPartialShapeProcessEntry_<GetSchema_<O[k]>>
+	[k in keyof O]: DeepPartialShapeProcessEntry_<InferSchema_<O[k]>>
 }
 
 export type DeepPartialShape<O extends InferableObject> = DeepPartialShape_<O>
@@ -56,7 +56,7 @@ export type DeepStrictPartialShapeProcessStrictEntry_<S> = [S] extends [IObject]
 //
 
 export type DeepStrictPartialShape_<O> = {
-	[k in keyof O]: DeepStrictPartialShapeProcessStrictEntry_<GetSchema_<O[k]>>
+	[k in keyof O]: DeepStrictPartialShapeProcessStrictEntry_<InferSchema_<O[k]>>
 }
 
 export type DeepStrictPartialShape<O extends InferableObject> =

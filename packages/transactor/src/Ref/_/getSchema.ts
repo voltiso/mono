@@ -77,7 +77,7 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 		d._privateSchema = { ...d._privateSchema, ...schema }
 	}
 
-	const final = s.schema({
+	const final = s.infer({
 		...thisSchema,
 
 		__voltiso: s.object({

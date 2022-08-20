@@ -4,7 +4,7 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import type {
-	$GetType,
+	$Type,
 	CustomFunction,
 	IArray,
 	InferableReadonlyTuple,
@@ -49,4 +49,4 @@ type FunctionConstructor = new <
 	argumentsSchema: Args,
 	resultSchema: R,
 	// eslint-disable-next-line @typescript-eslint/ban-types
-) => Function<(...args: $GetType<Args>) => $GetType<R>>
+) => Function<(...args: $Type<Args>) => $Type<R>>

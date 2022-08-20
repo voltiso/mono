@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetInputType, GetOutputType, VoidOptions } from '~'
+import type { InputType, OutputType, VoidOptions } from '~'
 import * as s from '~'
 
 describe('void', () => {
@@ -17,8 +17,8 @@ describe('void', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A1 = GetOutputType<typeof s.void>
-		type A2 = GetInputType<typeof s.void>
+		type A1 = OutputType<typeof s.void>
+		type A2 = InputType<typeof s.void>
 		Assert<IsIdentical<A1, void>>()
 		Assert<IsIdentical<A2, void>>()
 

@@ -7,14 +7,15 @@ import { Assert } from '@voltiso/util'
 import type {
 	CustomSchemaImpl,
 	DefaultSchemaOptions,
-	GetInputType,
-	GetOutputType,
 	InferableReadonlyTuple,
+	InputType,
 	Literal,
 	OPTIONS,
+	OutputType,
 	SchemaOptions,
 	String,
 } from '~'
+import { infer } from '~'
 import {
 	array,
 	number,
@@ -66,26 +67,26 @@ describe('Schema', () => {
 
 		expect(a.extends({ a: number })).toBeTruthy()
 
-		type A = GetOutputType<typeof a>
+		type A = OutputType<typeof a>
 		Assert<IsIdentical<A, { a: 1 }>>()
 
 		const tLiteral = [number(123), string] as const
 		Assert.is<typeof tLiteral, InferableReadonlyTuple>()
 
-		const b = schema(tLiteral)
+		const b = infer(tLiteral)
 
 		expect(b.extends(array)).toBeTruthy()
 		expect(b.extends(tuple(number, string))).toBeTruthy()
 
-		Assert<IsIdentical<GetOutputType<typeof b>, [123, string]>>()
+		Assert<IsIdentical<OutputType<typeof b>, [123, string]>>()
 
 		const c = schema([number(123), string] as [Literal<123>, String])
 
 		expect(c.extends(array)).toBeTruthy()
 		expect(c.extends(tuple(number, string))).toBeTruthy()
 
-		Assert<IsIdentical<GetOutputType<typeof c>, [123, string]>>()
-		Assert<IsIdentical<GetInputType<typeof c>, [123, string]>>()
+		Assert<IsIdentical<OutputType<typeof c>, [123, string]>>()
+		Assert<IsIdentical<InputType<typeof c>, [123, string]>>()
 
 		const dd = readonlyTuple([123, 'test'] as const)
 

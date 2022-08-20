@@ -1,18 +1,10 @@
 {
 	"name": "@voltiso/schemar",
-	"version": "12.2.3",
+	"version": "13.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		".": {
-			"types": "./dist/cjs/index.d.ts",
-			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
-		}
-	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/cjs/index.d.ts",
 	"module": "dist/esm/index.js",
@@ -55,13 +47,11 @@
 		"@voltiso/util": "workspace:^"
 	},
 	"devDependencies": {
-		"@typescript/analyze-trace": "^0.9.0",
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/config.tsdoc": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"rimraf": "^3.0.2"
+		"@voltiso/script": "workspace:^"
 	}
 }

@@ -4,14 +4,14 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { GetOutputType } from '~'
+import type { OutputType } from '~'
 import * as s from '~'
 
 describe('undefined', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A = GetOutputType<typeof s.undefined>
+		type A = OutputType<typeof s.undefined>
 		Assert<IsIdentical<A, undefined>>()
 
 		expect(s.undefined.extends(s.unknown)).toBeTruthy()

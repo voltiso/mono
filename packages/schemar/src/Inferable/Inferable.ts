@@ -3,7 +3,7 @@
 
 import type { Newable } from '@voltiso/util'
 
-import type { Schemable, Schemable_ } from '~'
+import type { Schemable, SchemableLike } from '~'
 
 export type InferableLiteral =
 	| number
@@ -28,12 +28,12 @@ export type Inferable =
 
 //
 
-export type InferableObject_ = { [k: keyof any]: Schemable_ }
+export type InferableObjectLike = { [k: keyof any]: SchemableLike }
 
-export type InferableTuple_ = readonly Schemable_[]
+export type InferableTupleLike = readonly SchemableLike[]
 
-export type Inferable_ =
-	| InferableObject_
-	| InferableTuple_
+export type InferableLike =
+	| InferableObjectLike
+	| InferableTupleLike
 	| InferableLiteral
 	| Newable

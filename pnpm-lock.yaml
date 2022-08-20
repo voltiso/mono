@@ -675,7 +675,6 @@ importers:
 
   packages/schemar:
     specifiers:
-      '@typescript/analyze-trace': ^0.9.0
       '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
@@ -683,18 +682,15 @@ importers:
       '@voltiso/config.tsdoc': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
-      rimraf: ^3.0.2
     dependencies:
       '@voltiso/util': link:../util
     devDependencies:
-      '@typescript/analyze-trace': 0.9.0
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc
       '@voltiso/script': link:../script
-      rimraf: 3.0.2
 
   packages/script:
     specifiers:

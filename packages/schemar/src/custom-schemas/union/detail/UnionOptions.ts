@@ -3,17 +3,17 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import type { Schemable_, SchemaOptions } from '~'
+import type { SchemableLike, SchemaOptions } from '~'
 import { defaultSchemaOptions } from '~'
 
 export interface UnionOptions extends SchemaOptions {
-	schemas: Schemable_[]
+	schemas: SchemableLike[]
 }
 
 export const defaultUnionOptions = lazyValue(() => ({
 	...defaultSchemaOptions,
 
-	schemas: 0 as unknown as Schemable_[],
+	schemas: 0 as unknown as SchemableLike[],
 }))
 
 export type DefaultUnionOptions = typeof defaultUnionOptions

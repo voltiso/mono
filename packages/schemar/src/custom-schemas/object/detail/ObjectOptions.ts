@@ -1,14 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject_, SchemaOptions } from '~'
+import type { InferableObjectLike, SchemaOptions } from '~'
 import { defaultSchemaOptions } from '~'
 
 export interface ObjectOptions extends SchemaOptions {
 	Output: object
 	Input: object
 
-	shape: InferableObject_
+	shape: InferableObjectLike
 }
 
 export const defaultObjectOptions = {
@@ -16,7 +16,7 @@ export const defaultObjectOptions = {
 	Output: 0 as unknown as object,
 	Input: 0 as unknown as object,
 
-	shape: 0 as unknown as InferableObject_,
+	shape: 0 as unknown as InferableObjectLike,
 }
 
 export type DefaultObjectOptions = typeof defaultObjectOptions

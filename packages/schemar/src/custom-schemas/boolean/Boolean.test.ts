@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
-import type { GetOutputType, ISchema } from '~'
+import type { ISchema, OutputType } from '~'
 import * as s from '~'
 import type { BooleanOptions, CustomBoolean } from '~/custom-schemas'
 
@@ -34,7 +34,7 @@ describe('boolean', () => {
 		Assert<IsIdentical<Aa, boolean>>()
 		Assert.is<typeof aa, ISchema<boolean>>()
 
-		type X = s.GetSchema<123>['OutputType']
+		type X = s.InferSchema<123>['OutputType']
 		Assert<IsIdentical<X, 123>>()
 
 		type BooleanSchema = s.Schema<boolean>
@@ -86,7 +86,7 @@ describe('boolean', () => {
 		expect(s.boolean.extends(s.boolean(true))).toBeFalsy()
 
 		const a = s.boolean(false)
-		type A = GetOutputType<typeof a>
+		type A = OutputType<typeof a>
 		Assert.is<A, false>()
 	})
 
@@ -98,7 +98,7 @@ describe('boolean', () => {
 			bOpt: s.boolean.optional,
 		}
 
-		type X = GetOutputType<typeof inferable>
+		type X = OutputType<typeof inferable>
 		Assert<IsIdentical<X, { b: boolean; bOpt?: boolean }>>()
 	})
 })

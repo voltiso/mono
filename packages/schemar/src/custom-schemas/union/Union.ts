@@ -4,25 +4,27 @@
 import { $assert } from '@voltiso/assertor'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomUnion, GetType_, Schemable_ } from '~'
+import type { CustomUnion, SchemableLike, Type_ } from '~'
 import { isUnion, UnionImpl } from '~'
 
-export type Union<Ts extends Schemable_[]> = CustomUnion<{
+export type Union<Ts extends SchemableLike[]> = CustomUnion<{
 	schemas: Ts
-	Output: GetType_<Ts[number], { kind: 'out' }>
-	Input: GetType_<Ts[number], { kind: 'in' }>
+	Output: Type_<Ts[number], { kind: 'out' }>
+	Input: Type_<Ts[number], { kind: 'in' }>
 }>
 
 export const Union = lazyConstructor(
 	() => UnionImpl,
 ) as unknown as UnionConstructor
 
-type UnionConstructor = new <Ts extends Schemable_[]>(schemas: Ts) => Union<Ts>
+type UnionConstructor = new <Ts extends SchemableLike[]>(
+	schemas: Ts,
+) => Union<Ts>
 
 //
 
-export function union<Ts extends Schemable_[]>(...types: Ts): Union<Ts> {
-	let ts = [] as Schemable_[]
+export function union<Ts extends SchemableLike[]>(...types: Ts): Union<Ts> {
+	let ts = [] as SchemableLike[]
 
 	for (const t of types) {
 		if (isUnion(t)) ts = [...ts, ...t.getSchemas]

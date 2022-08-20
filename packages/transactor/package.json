@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "10.0.2",
+	"version": "10.0.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -45,7 +45,7 @@
 		"js-yaml": "^4.1.0"
 	},
 	"peerDependencies": {
-		"@voltiso/schemar": ">= 11.0.0"
+		"@voltiso/schemar": "workspace:^"
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",

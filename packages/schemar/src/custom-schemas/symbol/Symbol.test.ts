@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetOutputType, SymbolOptions } from '~'
+import type { OutputType, SymbolOptions } from '~'
 import { number, unknown } from '~'
 import * as s from '~/custom-schemas'
 
@@ -19,7 +19,7 @@ describe('symbol', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A = GetOutputType<typeof s.symbol>
+		type A = OutputType<typeof s.symbol>
 		Assert<IsIdentical<A, symbol>>()
 
 		expect(s.symbol.extends(s.symbol)).toBeTruthy()
