@@ -163,6 +163,20 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		else return super[EXTENDS](other)
 	}
 
+	protected override _fixImpl(x: unknown): unknown {
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
+
+		if (Array.isArray(x)) {
+			// eslint-disable-next-line no-param-reassign
+			x = x.map(element =>
+				(schema(this.getElementSchema) as ISchema).fix(element),
+			)
+		}
+
+		return x
+	}
+
 	override _getIssuesImpl(x: unknown): ValidationIssue[] {
 		let issues = super._getIssuesImpl(x)
 

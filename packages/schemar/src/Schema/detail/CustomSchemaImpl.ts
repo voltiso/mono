@@ -129,7 +129,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		final(
 			this,
 			CustomSchemaImpl,
-			'_fix',
+			'fix',
 			'extends',
 			'tryValidate',
 			'validate',
@@ -162,20 +162,20 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return x as never
 	}
 
-	private _fix(x: unknown): unknown {
+	fix<X>(x: X): X | this[OPTIONS]['Output'] {
 		let result = x
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof result === 'undefined' && this.hasDefault)
-			result = this.getDefault
+			result = this.getDefault as never
 
 		for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
 			const nextValue = customFix.fix(result as never)
 
-			if (isDefined(nextValue)) result = nextValue
+			if (isDefined(nextValue)) result = nextValue as never
 		}
 
-		return this._fixImpl(result as never)
+		return this._fixImpl(result as never) as never
 	}
 
 	getIssues(value: unknown): ValidationIssue[] {
@@ -186,7 +186,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	tryValidate(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
-		const value = this._fix(x) as never
+		const value = this.fix(x) as never
 
 		const issues = this.getIssues(value)
 

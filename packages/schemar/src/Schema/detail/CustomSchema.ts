@@ -151,6 +151,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 
 	//
 
+	/** Best-effort fix - same as `tryValidate`, but does not generate issues list */
+	fix<X>(x: X): X | this[OPTIONS]['Output']
+
 	/**
 	 * Validate `this` schema, do not throw on failure
 	 *

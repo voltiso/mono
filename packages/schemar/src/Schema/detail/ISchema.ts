@@ -87,6 +87,9 @@ export interface ISchema<T = unknown> extends ISchemaLike {
 
 	toString(): string
 
+	/** Best-effort fix - same as `tryValidate`, but does not generate issues list */
+	fix(x: unknown): unknown
+
 	/**
 	 * Validate `this` schema, do not throw on failure
 	 *
