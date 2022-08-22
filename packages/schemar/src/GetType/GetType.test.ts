@@ -40,6 +40,8 @@ describe('GetType', () => {
 	})
 
 	it('object', () => {
+		expect.assertions(0)
+
 		type A = Type_<object>
 		Assert<IsIdentical<A, object>>()
 	})

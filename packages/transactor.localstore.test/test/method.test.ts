@@ -11,15 +11,15 @@ const db = createTransactor({ requireSchemas: false })
 class Counter extends Doc.public({
 	value: s.number.default(1),
 })
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('increment', function (x: number) {
 		this.value += x
 	})
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('incrementObj', function ({ incrementBy }: { incrementBy: number }) {
 		this.value += incrementBy
 	})
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('floatSomePromises', async function () {
 		// const db = this.db
 		void db('user/a').set({ age: 1 })

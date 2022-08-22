@@ -54,7 +54,7 @@ class OrderApiTest extends Doc('orderApiTest')({
 
 	public: sPublicFields,
 })
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('addHistoryStamp', function () {
 		const newHistoryStamp: Record<string, unknown> = {}
 
@@ -68,7 +68,7 @@ class OrderApiTest extends Doc('orderApiTest')({
 		newHistoryStamp['createdAt'] = new Date().toISOString()
 		this.history.push(newHistoryStamp as HistoryStamp)
 	})
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('toFinalized', async function () {
 		if (this.status !== 'payment')
 			throw new Error('this order status is not "payment"')

@@ -26,6 +26,7 @@ export const testOverride = defineEslintConfigOverride({
 	rules: {
 		'jest-async/expect-return': 2,
 
+		'etc/no-deprecated': 0,
 		'security/detect-non-literal-fs-filename': 0,
 		'jest/prefer-lowercase-title': 0,
 		// 'fp/no-unused-expression': 0,

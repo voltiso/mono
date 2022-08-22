@@ -42,12 +42,10 @@ db('frog/{user}')
 		} else return undef
 	})
 
-	.afterCreateOrUpdate(async ({ after, pathArgs }) => {
-		return {
-			...after,
-			pathArgs,
-		}
-	})
+	.afterCreateOrUpdate(async ({ after, pathArgs }) => ({
+		...after,
+		pathArgs,
+	}))
 
 describe('trigger', function () {
 	it('should process triggers', async function () {

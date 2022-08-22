@@ -13,14 +13,14 @@ class Doctor extends Doc.private({
 	specialty: s.string.optional,
 	ofWhat: s.string.optional,
 })
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('setSpecialty', function (specialty: string) {
 		this.specialty = specialty
 	})
 	.afterCreateOrUpdate('set ofWhat', function () {
 		if (this.specialty === 'master') this.ofWhat = 'universe'
 	})
-	// eslint-disable-next-line etc/no-deprecated
+
 	.method('good', async function () {
 		// @ts-expect-error
 		await doctors(this.id).update({ specialty: 'fireman' })
