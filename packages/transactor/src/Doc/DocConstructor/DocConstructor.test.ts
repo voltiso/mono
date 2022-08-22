@@ -7,7 +7,7 @@ import { Assert, Is } from '@voltiso/util'
 
 import type { Id } from '~'
 import { Doc } from '~'
-import type { DTI, DocTI } from '~/Doc'
+import type { DocTI, DTI } from '~/Doc'
 
 import type { MergeTI } from './_/MergeTI'
 import type { DocConstructor } from './DocConstructor'

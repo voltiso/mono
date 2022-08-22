@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DTI, IDoc, DocTI } from '~/Doc'
+import type { DocTI, DTI, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 
 type RelaxDoc<D extends IDoc> = IDoc &

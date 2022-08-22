@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IDoc, DocTI } from '~/Doc'
+import type { DocTI, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 
 import type { Relax } from './Relax'

@@ -8,9 +8,7 @@ import * as s from '@voltiso/schemar'
 import { sIntrinsicFields } from '~'
 import type { DocRefBaseImpl } from '~/Ref'
 
-export function getIdSchemas(
-	d: DocRefBaseImpl<any>,
-) {
+export function getIdSchemas(d: DocRefBaseImpl<any>) {
 	if (d._idSchemas !== undefined) return d._idSchemas
 
 	const { _allIdSchemas } = d._context.transactor

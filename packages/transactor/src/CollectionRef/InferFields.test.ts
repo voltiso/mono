@@ -8,9 +8,9 @@ import { Assert } from '@voltiso/util'
 import { afterCreateOrUpdate, method } from '~/decorators'
 import type {
 	DocConstructor,
+	DocTI,
 	DTI,
 	IDocConstructorNoBuilder,
-	DocTI,
 } from '~/Doc'
 import { Doc } from '~/Doc'
 import type { IRef } from '~/Ref'

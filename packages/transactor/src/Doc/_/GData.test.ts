@@ -58,7 +58,10 @@ describe('Doc util', () => {
 
 		type X = GetData<IndexedDocTI>
 		Assert<
-			IsIdentical<X, { [x: string]: unknown; __voltiso?: { numRefs: number } }>
+			IsIdentical<
+				X,
+				{ [x: string]: unknown; __voltiso?: IntrinsicFields['__voltiso'] }
+			>
 		>()
 	})
 
@@ -66,6 +69,6 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		type X = GetData<DocTI>
-		Assert<IsIdentical<X, { __voltiso?: { numRefs: number } }>>()
+		Assert<IsIdentical<X, { __voltiso?: IntrinsicFields['__voltiso'] }>>()
 	})
 })

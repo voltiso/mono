@@ -10,8 +10,8 @@ import type { FirestoreLikeModule } from '~/DatabaseContext'
 import type { DTI } from '~/Doc'
 
 import type { TransactionBody } from './methods'
-import { TransactorImpl } from './TransactorImpl'
 import type { TransactorConstructor } from './TransactorConstructor'
+import { TransactorImpl } from './TransactorImpl'
 
 export interface Transactor extends Db {
 	runTransaction<R>(body: TransactionBody<R>): Promise<R>

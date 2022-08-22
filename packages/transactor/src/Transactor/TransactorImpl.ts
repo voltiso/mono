@@ -28,8 +28,8 @@ import type {
 	SchemaEntry,
 	TriggerEntry,
 } from './Entry'
-import type { TransactionBody } from './methods/index'
-import { runTransaction } from './methods/index'
+import type { TransactionBody } from './methods'
+import { runTransaction } from './methods'
 import { Options_ } from './Options'
 import type { Transactor as ITransactor } from './Transactor'
 import type { TransactorConstructor } from './TransactorConstructor'

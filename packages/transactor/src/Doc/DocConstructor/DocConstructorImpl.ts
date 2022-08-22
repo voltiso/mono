@@ -218,7 +218,7 @@ export class DocConstructorImpl {
 					public: { ...super._.public, ...f.public },
 					private: { ...super._.private, ...f.private },
 
-					suppressMissingSchemaError: true
+					suppressMissingSchemaError: true,
 				} as never
 			},
 			DocCall,

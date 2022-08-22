@@ -154,7 +154,7 @@ export class DocRefBaseImpl<
 
 		const idSchemas = getIdSchemas(this)
 
-		for(const idSchema of idSchemas) {
+		for (const idSchema of idSchemas) {
 			idSchema.validate(this.id)
 		}
 

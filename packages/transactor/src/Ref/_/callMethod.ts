@@ -5,7 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
-import type { Doc, IDocImpl, DocTI } from '~/Doc'
+import type { Doc, DocTI, IDocImpl } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { Method } from '~/Method'
 import type { WithDocRef } from '~/Ref'

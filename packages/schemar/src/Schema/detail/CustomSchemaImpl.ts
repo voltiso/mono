@@ -254,11 +254,11 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				: this.isReadonly
+				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				this.isReadonly
 				? 'readonly:'
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				: this.isOptional
+				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				this.isOptional
 				? '?'
 				: ''
 

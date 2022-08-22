@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { DocConstructor, IDocConstructor, DocTI } from '~'
+import type { DocConstructor, DocTI, IDocConstructor } from '~'
 
 import type { $MergeTI, MergeTI } from './MergeTI'
 

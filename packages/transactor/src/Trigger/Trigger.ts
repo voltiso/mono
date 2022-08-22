@@ -13,7 +13,11 @@ import type {
 	TriggerParams,
 } from './TriggerParams'
 
-type Return<D extends DocLike> = GetInputData<D[DTI]> | DeleteIt | undefined | void
+type Return<D extends DocLike> =
+	| GetInputData<D[DTI]>
+	| DeleteIt
+	| undefined
+	| void
 
 export type AfterTrigger<
 	D extends DocLike = Doc<DocTI, 'inside'>,

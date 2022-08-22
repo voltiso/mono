@@ -79,7 +79,7 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		Target extends DocConstructorLike,
 		Name extends keyof Target[DTI]['aggregates'],
 		// eslint-disable-next-line etc/no-misused-generics
-		InitialValue extends NestedData
+		InitialValue extends NestedData,
 	>(
 		targetDoc: Target,
 		name: Name,
