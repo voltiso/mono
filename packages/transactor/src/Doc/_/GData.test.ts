@@ -8,7 +8,7 @@ import { Assert } from '@voltiso/util'
 import type { GetPublicCreationInputData, IntrinsicFields, WithId } from '~'
 import { Doc } from '~'
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { IDocTI, IndexedDocTI } from '~/Doc'
+import type { DocTI, IndexedDocTI } from '~/Doc'
 
 import type { GetData } from './GData'
 
@@ -16,7 +16,7 @@ describe('Doc util', () => {
 	it('GData', () => {
 		expect.assertions(0)
 
-		type TI = IDocTI & { public: { num: s.Number } }
+		type TI = DocTI & { public: { num: s.Number } }
 		type MyData = WithId<GetData<TI>>
 		Assert.isSubtype<
 			MyData,
@@ -65,7 +65,7 @@ describe('Doc util', () => {
 	it('GData - IDocTI', () => {
 		expect.assertions(0)
 
-		type X = GetData<IDocTI>
+		type X = GetData<DocTI>
 		Assert<IsIdentical<X, { __voltiso?: { numRefs: number } }>>()
 	})
 })

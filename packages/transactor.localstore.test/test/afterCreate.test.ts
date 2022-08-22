@@ -20,7 +20,7 @@ class Doctor extends Doc.public({
 
 const doctors = db('doctor').register(Doctor)
 
-describe('afterCreate', function () {
+describe('afterCreate', () => {
 	it('triggers on creation', async function () {
 		expect.hasAssertions()
 

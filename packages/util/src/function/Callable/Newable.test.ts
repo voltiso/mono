@@ -12,15 +12,17 @@ describe('Newable', () => {
 		Assert.isSubtype<abstract new (x: number) => number, Newable>()
 		Assert.isSubtype<new (x: number) => number, Newable>()
 
+		Assert.isSubtype<new (x: number) => { a: 1 }, Newable<number[], { a: 1 }>>()
+
 		Assert(
 			Is<Newable>() //
-				.identicalTo<abstract new (...args: any[]) => unknown>(),
+				.identicalTo<abstract new (...args: any) => unknown>(),
 
 			Is<Newable<[number, string]>>() //
 				.identicalTo<abstract new (a: number, b: string) => unknown>(),
 
-			Is<Newable<[], number>>() //
-				.identicalTo<abstract new () => number>(),
+			Is<Newable<[], { a: number }>>() //
+				.identicalTo<abstract new () => { a: number }>(),
 		)
 	})
 })

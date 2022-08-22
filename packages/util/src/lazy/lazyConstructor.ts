@@ -38,7 +38,7 @@ export function lazyConstructor<Class extends Newable>(
 		}
 	}
 
-	function Ctor(...args: never[]) {
+	function Ctor(...args: any) {
 		load(cls)
 		return Reflect.construct(cls, args, new.target) as never
 	}

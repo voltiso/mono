@@ -5,7 +5,9 @@ import type { InferableObject } from '@voltiso/schemar'
 import type * as s from '@voltiso/schemar'
 import type { _, Assume, Merge2, Throw } from '@voltiso/util'
 
-import type { Doc, DocContext, DTI, IDocTI } from '~/Doc'
+import type { DocConstructorLike, NestedData } from '~'
+import type { AggregatorHandlers } from '~/Aggregator'
+import type { Doc, DocContext, DocTI, DTI } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
 import type { Promisify } from '~/Doc/_/GMethodPromises'
@@ -19,9 +21,9 @@ import type { $MergeTI } from './_/MergeTI'
 
 type MaybeWithName<Params> = [Params] | [string, Params]
 
-type ___<X extends IDocTI> = X extends any ? DocConstructor<$MergeTI<X>> : never
+type ___<X extends DocTI> = X extends any ? DocConstructor<$MergeTI<X>> : never
 
-export interface DocConstructor<TI extends IDocTI = IDocTI> {
+export interface DocConstructor<TI extends DocTI = DocTI> {
 	[DTI]: TI
 	_: DocDerivedData
 
@@ -39,32 +41,50 @@ export interface DocConstructor<TI extends IDocTI = IDocTI> {
 	publicOnCreation<S extends Record<string, s.Schemable>>(
 		s: S,
 	): ___<TI & { publicOnCreation: S }>
+
 	public<S extends Record<string, s.Schemable>>(s: S): ___<TI & { public: S }>
 	private<S extends Record<string, s.Schemable>>(s: S): ___<TI & { private: S }>
 
 	after(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI> | null>>
 	): DocConstructor<TI>
+
 	afterUpdate(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI>, true, true>>
 	): DocConstructor<TI>
+
 	afterCreateOrUpdate(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI>, boolean, true>>
 	): DocConstructor<TI>
+
 	afterCreate(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI>, false, true>>
 	): DocConstructor<TI>
+
 	afterDelete(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, null, true, false>>
 	): DocConstructor<TI>
+
 	beforeCommit(
 		...args: MaybeWithName<BeforeCommitTrigger<GI<TI>>>
 	): DocConstructor<TI>
 
+	/** @deprecated Use `@method` decorator instead */
 	method: <N extends string, M extends Method<GO<TI>, any[]>>(
 		name: N,
 		m: M,
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
+
+	aggregate<
+		Target extends DocConstructorLike,
+		Name extends keyof Target[DTI]['aggregates'],
+		// eslint-disable-next-line etc/no-misused-generics
+		InitialValue extends NestedData
+	>(
+		targetDoc: Target,
+		name: Name,
+		handlers: AggregatorHandlers<this, Target, Name, InitialValue>,
+	): DocConstructor<TI>
 
 	schemaWithoutId: s.Object<
 		Assume<

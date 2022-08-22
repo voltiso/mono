@@ -8,7 +8,7 @@ import type { FirestoreLikeModule } from '~/DatabaseContext'
 import type { TransactorConstructorParameters } from './ConstructorParameters'
 import type { Options_ } from './Options'
 import type { Transactor } from './Transactor'
-import { Transactor_ } from './Transactor_'
+import { TransactorImpl } from './TransactorImpl'
 
 export function createTransactor(): Transactor
 
@@ -28,5 +28,5 @@ export function createTransactor(
 ): Transactor
 
 export function createTransactor(...args: TransactorConstructorParameters) {
-	return new Transactor_(...args)
+	return new TransactorImpl(...args)
 }

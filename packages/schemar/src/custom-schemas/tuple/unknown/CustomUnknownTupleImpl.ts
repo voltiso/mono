@@ -1,13 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type DEFAULT_OPTIONS,
-	type PARTIAL_OPTIONS,
-	EXTENDS,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '_'
+import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '_'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import type {
@@ -67,14 +62,17 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		: O['isReadonlyTuple'] extends false
 		? MutableTuple<T>
 		: never {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyTuple) return new ReadonlyTuple(elementSchemas) as never
 		else return new MutableTuple(elementSchemas) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isUnknownTuple(other) && this.isReadonlyTuple && !other.isReadonlyTuple)
 			return false
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 

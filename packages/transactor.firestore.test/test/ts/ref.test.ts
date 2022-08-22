@@ -85,10 +85,10 @@ describe('ref', () => {
 				},
 			})
 
-		await expect(patients(p.id).data.__voltiso).resolves.toStrictEqual({
+		await expect(patients(p.id).data.__voltiso).resolves.toMatchObject({
 			numRefs: 0,
 		})
-		await expect(doctors(d.id).data.__voltiso).resolves.toStrictEqual({
+		await expect(doctors(d.id).data.__voltiso).resolves.toMatchObject({
 			numRefs: 1,
 		})
 		await expect(doctors(d.id).delete()).rejects.toThrow('numRefs')

@@ -29,12 +29,6 @@ describe('number', () => {
 	it('default', () => {
 		expect.hasAssertions()
 
-		// // @ts-expect-error cannot have both optional and default
-		// ;() => s.bigint.optional.default(123)
-
-		// // @ts-expect-error cannot have both optional and default
-		// ;() => s.bigint.default(123).optional
-
 		// @ts-expect-error cannot fix without default value
 		;() => s.bigint.withFix(undef)
 

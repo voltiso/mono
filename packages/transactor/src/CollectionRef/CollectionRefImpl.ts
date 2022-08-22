@@ -3,16 +3,15 @@
 
 import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
-import { undef } from '@voltiso/util'
 
 import type { Id } from '~/Data'
 import type { WithDb } from '~/Db'
 import type {
 	Doc,
 	DocConstructorLike,
+	DocTI,
 	IDoc,
 	IDocConstructor,
-	IDocTI,
 } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { GetPublicCreationInputData } from '~/Doc/_/GData'
@@ -27,10 +26,10 @@ import type { InferTI } from './InferTI'
 
 type Context = WithTransactor & WithDb
 
-class CollectionRef<
+export class CollectionRefImpl<
 	D extends IDoc,
 	Ctx extends ExecutionContext = 'outside',
-	TI extends IDocTI = InferTI<D>,
+	TI extends DocTI = InferTI<D>,
 > {
 	// [DTI]: TI
 	private readonly _context: Context
@@ -63,7 +62,7 @@ class CollectionRef<
 		// data = data || {}
 
 		const id = data.id
-		$assert(id === undef || typeof id === 'string')
+		$assert(id === undefined || typeof id === 'string')
 
 		const ref = this._context.transactor._database.collection(
 			this._path.toString(),
@@ -90,10 +89,15 @@ class CollectionRef<
 		if (Object.keys(_.publicOnCreation).length > 0)
 			docPattern.publicOnCreation(_.publicOnCreation as never)
 
-		if (Object.keys(_.public).length > 0) docPattern.public(_.public as never)
+		if (_.suppressMissingSchemaError || Object.keys(_.public).length > 0)
+			docPattern.public(_.public as never)
 
 		if (Object.keys(_.private).length > 0)
 			docPattern.private(_.private as never)
+
+		if (_.id !== undefined) {
+			docPattern.id(_.id)
+		}
 
 		for (const after of _.afters) docPattern.after(after)
 
@@ -108,5 +112,3 @@ class CollectionRef<
 		return this as never
 	}
 }
-
-export { CollectionRef as CollectionRef_ }

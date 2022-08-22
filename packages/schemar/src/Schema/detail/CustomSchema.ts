@@ -9,13 +9,7 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
-import type {
-	_,
-	AlsoAccept,
-	Assume,
-	IsCompatible,
-	IsIdentical,
-} from '@voltiso/util'
+import type { _, AlsoAccept, IsCompatible, IsIdentical } from '@voltiso/util'
 
 import type {
 	DefaultSchemaOptions,
@@ -44,9 +38,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 
 	// [OPTIONS]: this[BASE_OPTIONS]
 
-	readonly [OPTIONS]: Assume<
-		this[BASE_OPTIONS],
-		MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
+	readonly [OPTIONS]: MergeSchemaOptions<
+		this[DEFAULT_OPTIONS],
+		this[PARTIAL_OPTIONS]
 	>
 
 	/**
@@ -129,7 +123,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 *
 	 * @inline
 	 */
-	default<DefaultValue extends this[OPTIONS]['Output']>(
+	default<DefaultValue extends this[OPTIONS]['Input']>(
 		value: DefaultValue,
 	): WithDefault<this, DefaultValue>
 
@@ -138,7 +132,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 *
 	 * @inline
 	 */
-	default<DefaultValue extends this[OPTIONS]['Output']>(
+	default<DefaultValue extends this[OPTIONS]['Input']>(
 		getValue: () => DefaultValue,
 	): WithDefault<this, DefaultValue>
 
@@ -278,7 +272,7 @@ export type Simplify<
 
 /** @inline */
 export type WithDefault<This, DefaultValue> = This extends {
-	[OPTIONS]: { Output: unknown }
+	readonly [OPTIONS]: { readonly Output: unknown }
 }
 	? DefineSchema<
 			This,

@@ -40,18 +40,21 @@ describe('object', () => {
 			normalField: 'test',
 			test: 'badValue',
 		}
+
 		expect(() => a.validate(badValue)).toThrow('badValue')
 
 		const badKey = {
 			normalField: 'test',
 			[Symbol('test')]: 444,
 		}
+
 		expect(() => a.validate(badKey)).toThrow('test')
 
 		const badNormalField = {
 			normalField: 123,
 			test: 8,
 		}
+
 		expect(() => a.validate(badNormalField)).toThrow('123')
 	})
 
@@ -87,6 +90,7 @@ describe('object', () => {
 			normalField: 'test',
 			test: Symbol('badValue'),
 		}
+
 		expect(() => a.validate(badValue)).toThrow('badValue')
 	})
 
@@ -104,6 +108,7 @@ describe('object', () => {
 		const badValue = {
 			test: 'badValue',
 		}
+
 		expect(() => a.validate(badValue)).toThrow('badValue')
 	})
 })

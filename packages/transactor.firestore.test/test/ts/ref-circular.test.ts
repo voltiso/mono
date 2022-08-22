@@ -87,7 +87,7 @@ describe('emu-ts', () => {
 			// 	numRefs: 1,
 			// })
 
-			await expect(doctors(a.id).data.__voltiso).resolves.toStrictEqual({
+			await expect(doctors(a.id).data.__voltiso).resolves.toMatchObject({
 				numRefs: 1,
 			})
 			await expect(doctors(a.id).delete()).rejects.toThrow('numRefs')

@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { undef } from '@voltiso/util'
 
-import type { IntrinsicFields } from '~'
+import type { PartialIntrinsicFields } from '~'
+import { sVoltisoEntry } from '~'
 import type { WithDb } from '~/Db'
-import { Doc_ } from '~/Doc'
+import { DocImpl } from '~/Doc'
 import type { WithDocRef } from '~/Ref'
 import type { CacheEntry, WithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
@@ -14,7 +14,7 @@ import type { WithTransactor } from '~/Transactor'
 export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
 	entry: CacheEntry,
-	data: IntrinsicFields | null,
+	data: PartialIntrinsicFields | null,
 ) {
 	if (entry.data) $assert(entry.__voltiso === entry.data.__voltiso)
 
@@ -22,17 +22,15 @@ export function setCacheEntry(
 		if (!data) entry.proxy = null
 		else if (entry.proxy) entry.proxy._setRaw(data)
 		else {
-			entry.proxy = new Doc_(ctx, data)
+			entry.proxy = new DocImpl(ctx, data)
 		}
 	}
 
-	$assert(entry.proxy !== undef)
+	$assert(entry.proxy !== undefined)
 
 	entry.data = entry.proxy ? entry.proxy._raw : entry.proxy
 
-	// $assert(entry.data === entry.proxy?.data)
-
-	entry.__voltiso = data?.__voltiso || entry.__voltiso || { numRefs: 0 }
+	entry.__voltiso = sVoltisoEntry.validate(data?.__voltiso || entry.__voltiso)
 
 	if (entry.data) entry.data.__voltiso = entry.__voltiso
 

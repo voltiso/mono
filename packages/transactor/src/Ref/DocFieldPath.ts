@@ -4,6 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import { lazyPromise, protoLink, undef } from '@voltiso/util'
 
+import { sVoltisoEntry } from '~'
 import type { NestedData } from '~/Data/Data'
 import type { WithTransaction } from '~/Transaction'
 
@@ -11,6 +12,7 @@ import type { WithDocRef } from './WithDocRef'
 
 type Context = WithDocRef & Partial<WithTransaction>
 
+/** @throws When either Doc or path does not exist */
 export type DocFieldPath<D = unknown> = PromiseLike<D> &
 	(D extends object ? { [k in keyof D]: DocFieldPath<D[k]> } : unknown)
 
@@ -33,7 +35,7 @@ export const DocFieldPath = class {
 				if (!cacheEntry) return null
 
 				if (!cacheEntry.__voltiso) {
-					cacheEntry.__voltiso = { numRefs: 0 }
+					cacheEntry.__voltiso = sVoltisoEntry.validate(undefined)
 
 					if (cacheEntry.data) {
 						$assert(!cacheEntry.data.__voltiso)

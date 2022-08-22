@@ -4,9 +4,11 @@
 import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type * as s from '@voltiso/schemar'
+import type { ISchema } from '@voltiso/schemar'
 import type { If } from '@voltiso/util'
 import { lazyPromise, protoLink } from '@voltiso/util'
 
+import type { DeepPartialIntrinsicFieldsSchema, IntrinsicFieldsSchema } from '~'
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { RefEntry } from '~/common'
 import type { Id, WithId } from '~/Data'
@@ -25,6 +27,7 @@ import { callMethod } from './_/callMethod'
 import type { DocRefContext, DocRefParentContext } from './_/Context'
 import type { MethodEntry, TriggerEntry } from './_/data'
 import { getMethods } from './_/getMethods'
+import { getIdSchemas } from './_/getSchema'
 import type { NestedPromise } from './_/NestedPromise'
 import { dataOrNestedPromise } from './_/NestedPromise'
 import { DocFieldPath } from './DocFieldPath'
@@ -68,10 +71,12 @@ export class DocRefBaseImpl<
 	_beforeCommits?: TriggerEntry<BeforeCommitTrigger>[] = undefined
 	_onGets?: TriggerEntry<OnGetTrigger>[] = undefined
 
+	_idSchemas?: ISchema<string>[] = undefined
+
 	_schema:
 		| {
-				final: s.Schema<object>
-				partial: s.Schema<object>
+				final: IntrinsicFieldsSchema
+				partial: DeepPartialIntrinsicFieldsSchema
 		  }
 		| null // null -> no schema
 		| undefined = undefined // undefined -> unknown yet
@@ -145,8 +150,18 @@ export class DocRefBaseImpl<
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	set(data?: GetPublicCreationInputData<D[DTI], D>): PromiseLike<D> | any {
-		const dataWithoutId = withoutId(data || null, this.id)
-		return update(this._context, replaceIt(dataWithoutId) as never) as never // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
+		const dataWithoutId = withoutId(data || null, this.id) || {}
+
+		const idSchemas = getIdSchemas(this)
+
+		for(const idSchema of idSchemas) {
+			idSchema.validate(this.id)
+		}
+
+		return update(
+			this._context,
+			replaceIt(dataWithoutId as never) as never,
+		) as never // don't chain anything here - we're returning a magic promise to the client code that is aware of being awaited or not
 	}
 
 	/** @returns `PromiseLike`! (`then`-only) */

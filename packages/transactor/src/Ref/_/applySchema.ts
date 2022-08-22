@@ -1,23 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as s from '@voltiso/schemar'
 import { ValidationError } from '@voltiso/schemar'
 import { isPlainObject } from '@voltiso/util'
 
-import type { WithDocRef } from '~'
+import type {
+	DeepPartialIntrinsicFieldsSchema,
+	IntrinsicFields,
+	WithDocRef,
+} from '~'
 import { isWithTransaction } from '~'
 import type { WithTransactor } from '~/Transactor'
 
 import { schemaDeleteIt } from './_symbols'
 
 type Params = {
-	schema: s.Schema<object>
+	schema: DeepPartialIntrinsicFieldsSchema
 	data: object
 	bestEffort?: boolean
 }
 
-function processSentinels(x: unknown): object | null {
+function processSentinels(x: unknown): IntrinsicFields | null {
 	if (isPlainObject(x)) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const r = {} as any
@@ -34,7 +37,7 @@ function processSentinels(x: unknown): object | null {
 export function applySchema(
 	this: WithTransactor & WithDocRef,
 	params: Params,
-): object | null {
+): IntrinsicFields | null {
 	const { data, schema, bestEffort } = params
 
 	const r = schema.tryValidate(data)

@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as s from '@voltiso/schemar'
-
+import type { DeepPartialIntrinsicFieldsSchema } from '~'
 import { withoutId } from '~/Data'
 
 import { applySchema } from './applySchema'
@@ -19,7 +18,7 @@ import type { DocRefContextWithTransaction } from './Context'
 export function validate(
 	ctx: DocRefContextWithTransaction,
 	data: object | null,
-	schema: s.Schema<object> | null | undefined,
+	schema: DeepPartialIntrinsicFieldsSchema | null | undefined,
 ) {
 	if (data && schema) {
 		const validatedData = applySchema.call(ctx, { schema, data })

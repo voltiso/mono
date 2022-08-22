@@ -10,7 +10,7 @@ import type {
 	DocConstructor,
 	DTI,
 	IDocConstructorNoBuilder,
-	IDocTI,
+	DocTI,
 } from '~/Doc'
 import { Doc } from '~/Doc'
 import type { IRef } from '~/Ref'
@@ -81,6 +81,6 @@ describe('InferFields', () => {
 		expect.assertions(0)
 
 		type XX = InferFields<X>
-		Assert.is<XX, Omit<IDocTI, 'tag' | 'methods' | 'doc' | 'docInside'>>()
+		Assert.is<XX, Omit<DocTI, 'tag' | 'methods' | 'doc' | 'docInside'>>()
 	})
 })

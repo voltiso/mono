@@ -3,7 +3,7 @@
 
 //! TODO: use `@voltiso/patcher`
 
-import type { IntrinsicFields } from '~'
+import type { PartialIntrinsicFields } from '~'
 import type { NestedData } from '~/Data/Data'
 
 const IS_REPLACE_IT = Symbol('IS_REPLACE_IT')
@@ -19,7 +19,7 @@ export class ReplaceIt<T> {
 
 // export function replaceIt<T extends Data>(data: T): ReplaceIt<T>
 // export function replaceIt<T extends NestedData>(data: T): ReplaceIt<T>
-export function replaceIt<T extends IntrinsicFields | NestedData>(
+export function replaceIt<T extends PartialIntrinsicFields | NestedData>(
 	data: T,
 ): ReplaceIt<T> {
 	return new ReplaceIt(data)

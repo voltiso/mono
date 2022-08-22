@@ -71,11 +71,13 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 	override [EXTENDS](other: ISchema): boolean {
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 

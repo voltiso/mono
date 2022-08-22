@@ -1,29 +1,38 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDocTI } from '~/Doc'
+import type { Aggregator } from '~'
+import type { DocTI } from '~/Doc'
 import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 	UnknownTrigger,
 } from '~/Trigger'
 
-export interface DocDerivedData extends IDocTI {
+export interface DocDerivedData extends DocTI {
 	readonly afters: readonly UnknownTrigger[]
 	readonly beforeCommits: readonly BeforeCommitTrigger[]
 	readonly onGets: readonly OnGetTrigger[]
+
+	readonly aggregators: readonly Aggregator[]
+
+	readonly suppressMissingSchemaError?: boolean
 }
 
 export const defaultDocDerivedData = {
 	tag: 'untagged',
 
+	id: undefined,
+
 	publicOnCreation: {},
 	public: {},
 	private: {},
+	aggregates: {},
 
 	afters: [],
 	beforeCommits: [],
 	onGets: [],
+	aggregators: [],
 
 	methods: {},
 } as const

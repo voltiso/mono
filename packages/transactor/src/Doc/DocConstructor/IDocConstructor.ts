@@ -3,16 +3,17 @@
 
 import type * as s from '@voltiso/schemar'
 
-import type { DocContext, DocLike, DTI, IDoc, IDocTI } from '~/Doc'
+import type { DocContext, DocLike, DocTI, DocTILike, DTI, IDoc } from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
 export interface DocConstructorLike {
+	[DTI]: DocTILike
 	new (...args: any): DocLike
 }
 
 export interface IDocConstructorNoBuilder extends DocConstructorLike {
-	[DTI]: IDocTI
+	[DTI]: DocTI
 	new (context: DocContext, data: any): IDoc
 
 	_: DocDerivedData

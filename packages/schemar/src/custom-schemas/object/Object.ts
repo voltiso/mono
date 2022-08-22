@@ -17,6 +17,6 @@ export const Object = lazyConstructor(
 	() => ObjectImpl,
 ) as unknown as ObjectConstructor
 
-type ObjectConstructor = new <Shape extends InferableObjectLike>(
+export type ObjectConstructor = new <Shape extends InferableObjectLike>(
 	shape: Shape,
 ) => Object<Shape>

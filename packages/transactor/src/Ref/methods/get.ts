@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { clone, stringFrom, undef } from '@voltiso/util'
+import { clone, stringFrom } from '@voltiso/util'
 
 import { fromFirestore } from '~/common'
 import { withoutId } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { IDoc, IDocTI } from '~/Doc'
+import type { DocTI, IDoc } from '~/Doc'
 import { Doc } from '~/Doc'
-import { Doc_ } from '~/Doc'
+import { DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
 import { applySchema } from '~/Ref/_/applySchema'
 import { collectTriggerResult } from '~/Ref/_/collectTriggerResult'
@@ -75,13 +75,15 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	const prevData = cacheEntry.data
 
-	if (cacheEntry.data === undef) {
+	if (cacheEntry.data === undefined) {
 		cacheEntry.data = fromFirestore(ctx, await _databaseTransaction.get(_ref))
 
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
 		cacheEntry.originalData = clone(cacheEntry.data)
+
+		// console.log({cacheEntry})
 
 		// schema migration
 		if (schema && cacheEntry.data) {
@@ -133,7 +135,9 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	}
 
 	if (!cacheEntry.proxy)
-		cacheEntry.proxy = cacheEntry.data ? new Doc_(ctx, cacheEntry.data) : null
+		cacheEntry.proxy = cacheEntry.data
+			? new DocImpl(ctx, cacheEntry.data)
+			: null
 	else if (cacheEntry.data) {
 		$assert(cacheEntry.proxy)
 		cacheEntry.proxy._setRaw(cacheEntry.data)
@@ -141,6 +145,8 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	if (cacheEntry.proxy) {
 		cacheEntry.data = cacheEntry.proxy._raw
+
+		// $assert(cacheEntry.data.__voltiso)
 
 		if (cacheEntry.data.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
@@ -213,7 +219,7 @@ export function transactionDocPathGet<D extends IDoc>(
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export function get<TI extends IDocTI>(
+export function get<TI extends DocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
 ): PromiseLike<Doc<TI, 'outside'> | null> {
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()

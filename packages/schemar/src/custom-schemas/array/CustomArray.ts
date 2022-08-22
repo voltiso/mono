@@ -1,21 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import type { Assume, AtLeast1, If } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
+import type { AtLeast1, If } from '@voltiso/util'
 
 import type {
 	ArrayOptions,
 	CustomSchema,
 	DefaultArrayOptions,
 	DefineSchema,
-	MergeSchemaOptions,
 } from '~'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -24,12 +17,12 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Array'
 
-	readonly [PARTIAL_OPTIONS]: O
+	// readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: Assume<
-		ArrayOptions,
-		MergeSchemaOptions<DefaultArrayOptions, O>
-	>
+	// readonly [OPTIONS]: Assume<
+	// 	ArrayOptions,
+	// 	MergeSchemaOptions<DefaultArrayOptions, O>
+	// >
 
 	readonly [BASE_OPTIONS]: ArrayOptions
 	readonly [DEFAULT_OPTIONS]: DefaultArrayOptions

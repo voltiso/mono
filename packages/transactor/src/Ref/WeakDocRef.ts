@@ -12,7 +12,7 @@ import type { DocRefParentContext } from './_/Context'
 import { DocRefBaseImpl } from './DocRefBase'
 import type { WeakRef } from './RefBase'
 
-class WeakDocRefImpl<D extends IDoc> extends lazyConstructor(
+export class WeakDocRefImpl<D extends IDoc> extends lazyConstructor(
 	() => DocRefBaseImpl,
 )<D, boolean, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {

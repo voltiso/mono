@@ -3,7 +3,7 @@
 
 import { Assert, Is } from '@voltiso/util'
 
-import type { IDocTI } from '~/Doc'
+import type { DocTI } from '~/Doc'
 
 import type { GDocFields } from './GDocFields'
 
@@ -11,7 +11,7 @@ describe('GDocFields', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = GDocFields<IDocTI>
+		type X = GDocFields<DocTI>
 		Assert(
 			Is<X>().identicalTo<{
 				__voltiso?: PromiseLike<{ numRefs: number } | undefined>

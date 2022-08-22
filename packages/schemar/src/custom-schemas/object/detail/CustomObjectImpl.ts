@@ -153,7 +153,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			})) {
 				if (!hasProperty(this.getShape, key)) {
 					//! util TODO: hasProperty should only type-guard for literal types
-					// eslint-disable-next-line security/detect-object-injection
+					// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unnecessary-condition
 					if (this[OPTIONS].indexSignatures.length === 0)
 						issues.push(
 							new ValidationIssue({
@@ -219,10 +219,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key as keyof any],
 									expectedDescription: `match one of index signature keys`,
 
-									// eslint-disable-next-line security/detect-object-injection
-									expectedOneOf: this[OPTIONS].indexSignatures.map(signature =>
-										schema(signature.keySchema),
-									),
+									expectedOneOf:
+										// eslint-disable-next-line security/detect-object-injection
+										(this[OPTIONS] as ObjectOptions).indexSignatures.map(
+											signature => schema(signature.keySchema),
+										),
 
 									received: key,
 								}),

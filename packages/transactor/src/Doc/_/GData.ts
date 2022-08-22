@@ -1,23 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InputType, Type } from '@voltiso/schemar'
-import type { _ } from '@voltiso/util'
+import type { InputType, Type, Type_ } from '@voltiso/schemar'
+import type { _, $_ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
 import type { ExecutionContext, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 import type { Relax } from '~/Relax'
-import type { IntrinsicFields } from '~/schemas/sIntrinsicFields'
+import type { PartialIntrinsicFields } from '~/schemas/sIntrinsicFields'
 
 /** @inline */
 export type GetData<
 	TI extends { publicOnCreation?: any; public?: any; private?: any },
-> = _<
-	Type<TI['publicOnCreation']> &
-		Type<TI['public']> &
-		Type<TI['private']> &
-		IntrinsicFields
+> = $_<
+	Type_<TI['publicOnCreation']> &
+		Type_<TI['public']> &
+		Type_<TI['private']> &
+		PartialIntrinsicFields
 >
 
 /** @inline */

@@ -17,11 +17,11 @@ import type { Updates } from '~/updates'
 
 import type { GetData } from './_/GData'
 import type { Doc } from './Doc'
-import { DocConstructor_ } from './DocConstructor'
+import { DocConstructorImpl } from './DocConstructor'
 import type { DocContext } from './DocContext'
-import type { IDocTI } from './DocTI'
+import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
-import type { IDoc, IDoc_ } from './IDoc'
+import type { IDoc, IDocImpl } from './IDoc'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -41,9 +41,9 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	return x
 }
 
-export class Doc_<TI extends IDocTI = IDocTI>
-	extends lazyConstructor(() => DocConstructor_)
-	implements IDoc_
+export class DocImpl<TI extends DocTI = DocTI>
+	extends lazyConstructor(() => DocConstructorImpl)
+	implements IDocImpl
 {
 	declare [DTI]: TI
 
@@ -149,10 +149,6 @@ export class Doc_<TI extends IDocTI = IDocTI>
 		return this._context.db
 	}
 
-	// async update(updates: _<GUpdates_Update<Fields<TI, Ctx>>>): Promise<GDoc<TI, Ctx> | undefined>
-	// async update(updates: _<GUpdates_Replace<Fields<TI, Ctx>>>): Promise<GDoc<TI, Ctx>>
-	// async update(updates: GUpdates_Delete): Promise<null>
-
 	async update(
 		updates: Updates,
 	): Promise<Doc<TI, 'outside'> | null | undefined> {
@@ -164,6 +160,6 @@ export class Doc_<TI extends IDocTI = IDocTI>
 	}
 }
 
-export interface DocTI extends IDocTI {
+export interface UntaggedDocTI extends DocTI {
 	tag: 'untagged'
 }

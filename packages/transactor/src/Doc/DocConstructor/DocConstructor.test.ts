@@ -7,7 +7,7 @@ import { Assert, Is } from '@voltiso/util'
 
 import type { Id } from '~'
 import { Doc } from '~'
-import type { DTI, IDocTI } from '~/Doc'
+import type { DTI, DocTI } from '~/Doc'
 
 import type { MergeTI } from './_/MergeTI'
 import type { DocConstructor } from './DocConstructor'
@@ -28,20 +28,20 @@ describe('DocConstructor', () => {
 		Assert(Is<DocConstructor>().strictSubtypeOf<IDocConstructor>())
 	})
 
-	it('assignability #2', <TI extends IDocTI>() => {
+	it('assignability #2', <TI extends DocTI>() => {
 		expect.assertions(0)
 
 		Assert.is<DocConstructor<TI>, IDocConstructor>()
 		Assert(Is<IDocConstructor>().not.subtypeOf<DocConstructor<TI>>())
 
-		Assert.is<TI extends any ? MergeTI<TI> : never, IDocTI>()
+		Assert.is<TI extends any ? MergeTI<TI> : never, DocTI>()
 	})
 
 	it('merge', () => {
 		expect.assertions(0)
 
 		type X = MergeTI<
-			Omit<IDocTI, 'tag'> & { tag: 'doctorD' } & { public: { asd: s.Number } }
+			Omit<DocTI, 'tag'> & { tag: 'doctorD' } & { public: { asd: s.Number } }
 		>
 		Assert<IsIdentical<X['public'], { asd: s.Number }>>()
 		Assert<IsIdentical<X['tag'], 'doctorD'>>()

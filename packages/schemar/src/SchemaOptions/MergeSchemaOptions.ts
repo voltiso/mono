@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $Merge2_ } from '@voltiso/util'
+import type { $_ } from '@voltiso/util'
 
 // type _<T> = T extends any ? { [k in keyof T]: T[k] } : never
 
@@ -10,7 +10,9 @@ import type { $Merge2_ } from '@voltiso/util'
 
 // export type MergeSchemaOptions<A, B> = Omit<A, keyof B> & B // 6s
 
-export type MergeSchemaOptions<A, B> = $Merge2_<A, B>
+export type MergeSchemaOptions<A, B> = $_<
+	Pick<A, Exclude<keyof A, keyof B>> & Required<B>
+>
 
 // type _<T> = { [k in keyof T]: T[k] }
 

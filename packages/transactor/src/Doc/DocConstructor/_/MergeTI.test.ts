@@ -3,15 +3,15 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { DocConstructor, IDocConstructor, IDocTI } from '~'
+import type { DocConstructor, IDocConstructor, DocTI } from '~'
 
 import type { $MergeTI, MergeTI } from './MergeTI'
 
 describe('MergeTI', () => {
-	it('type', <TI extends IDocTI>() => {
+	it('type', <TI extends DocTI>() => {
 		expect.assertions(0)
 
-		Assert.is<TI extends any ? MergeTI<TI> : never, IDocTI>()
+		Assert.is<TI extends any ? MergeTI<TI> : never, DocTI>()
 
 		Assert.is<DocConstructor<$MergeTI<TI>>, IDocConstructor>()
 	})

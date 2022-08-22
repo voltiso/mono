@@ -11,7 +11,7 @@ import chalk from 'chalk'
 
 import { databaseUpdate } from '~/common/database/databaseUpdate'
 import { withoutId } from '~/Data'
-import type { Doc, IDocTI } from '~/Doc'
+import type { Doc, DocTI } from '~/Doc'
 import { TransactorError } from '~/error'
 import { deleteIt, isDeleteIt, replaceIt } from '~/it'
 import { StrongDocRefImpl } from '~/Ref'
@@ -22,7 +22,7 @@ import type { Cache, CacheEntry } from '~/Transaction/Cache'
 import { triggerGuard } from '~/Transaction/guard'
 import { setCacheEntry } from '~/Transaction/methods/setCacheEntry'
 import type { Transaction } from '~/Transaction/Transaction'
-import type { Transactor_ } from '~/Transactor'
+import type { TransactorImpl } from '~/Transactor'
 import type { BeforeCommitTriggerParams } from '~/Trigger/TriggerParams'
 import { dump } from '~/util/dump'
 import { isEqual } from '~/util/isEqual'
@@ -44,7 +44,7 @@ const getCacheSnapshot = (cache: Cache) => {
 }
 
 export async function runTransaction<R>(
-	ctx: Transactor_,
+	ctx: TransactorImpl,
 	body: (t: Transaction) => Promise<R>,
 ): Promise<R> {
 	const zoneCurrent = Zone.current // firestore library code destroys current zone! (?!)
@@ -113,18 +113,21 @@ export async function runTransaction<R>(
 								await triggerGuard(ctx, async () => {
 									$assert(isDefined(cacheEntry.proxy))
 
+									$assert(cacheEntry.__voltiso)
+
 									const params: BeforeCommitTriggerParams<
-										Doc<IDocTI, 'inside'>
+										Doc<DocTI, 'inside'>
 									> = {
 										doc: cacheEntry.proxy as never,
 										...pathMatches,
 										path: docRef.path as never,
 										id: docRef.id as never,
 										...docRef._context,
+										__voltiso: cacheEntry.__voltiso,
 									}
 
-									if (cacheEntry.__voltiso)
-										params.__voltiso = cacheEntry.__voltiso
+									// if (cacheEntry.__voltiso)
+									// 	params.__voltiso = cacheEntry.__voltiso
 
 									r = await trigger.call(cacheEntry.proxy as never, params)
 								})

@@ -100,7 +100,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 				)
 			}
 
-			for (const re of this.getRegExps) {
+			for (const re of this.getRegExps as RegExpEntry[]) {
 				if (!re.regExp.test(x)) {
 					issues.push(
 						new ValidationIssue({

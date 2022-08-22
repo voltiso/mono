@@ -12,10 +12,11 @@ import type {
 	Number,
 	Schema,
 	Schemable,
+	SchemableLike,
 } from '~'
 import { number } from '~'
 
-import type { $OutputType, InputType, OutputType } from './GetType'
+import type { $OutputType, InputType, OutputType, Type_ } from './GetType'
 
 describe('GetType', () => {
 	it('simple', () => {
@@ -26,6 +27,21 @@ describe('GetType', () => {
 
 		type B = OutputType<Schema>
 		Assert<IsIdentical<B, unknown>>()
+	})
+
+	it('variance', <S extends { OutputType: string; InputType: string }>() => {
+		expect.assertions(0)
+
+		type A = OutputType<S>
+		Assert.is<A, string>()
+
+		type B = OutputType<SchemableLike>
+		Assert<IsIdentical<B, unknown>>()
+	})
+
+	it('object', () => {
+		type A = Type_<object>
+		Assert<IsIdentical<A, object>>()
 	})
 
 	it('literal', () => {

@@ -13,15 +13,15 @@ import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetUpdateDataByCtx } from './_/GData'
 import type { GMethodPromises } from './_/GMethodPromises'
 import type { UpdatesFromData } from './_/UpdatesFromData'
-import type { DocTI } from './Doc_'
-import { Doc_ } from './Doc_'
 import { DocCall } from './DocCall'
 import type { DocConstructor } from './DocConstructor'
-import type { DTI, IDocTI } from './DocTI'
+import type { UntaggedDocTI } from './DocImpl'
+import { DocImpl } from './DocImpl'
+import type { DocTI, DTI } from './DocTI'
 import type { IDoc } from './IDoc'
 import type { IndexedDocTI } from './IndexedDoc'
 
-interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
+export interface DocBase<TI extends DocTI, Ctx extends ExecutionContext>
 	extends IDoc {
 	[DTI]: TI
 
@@ -64,7 +64,7 @@ interface DocBase<TI extends IDocTI, Ctx extends ExecutionContext>
 }
 
 export type Doc<
-	TI extends IDocTI = IDocTI,
+	TI extends DocTI = DocTI,
 	Ctx extends ExecutionContext = ExecutionContext,
 > = DocBase<TI, Ctx> &
 	(TI extends IndexedDocTI
@@ -74,6 +74,6 @@ export type Doc<
 		: GetData<TI> & GMethodPromises<TI>)
 
 export const Doc = callableClass(
-	lazyConstructor(() => Doc_ as never),
+	lazyConstructor(() => DocImpl as never),
 	DocCall,
-) as unknown as DocConstructor<DocTI>
+) as unknown as DocConstructor<UntaggedDocTI>

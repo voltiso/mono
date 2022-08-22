@@ -18,15 +18,10 @@ import type { GetTypeOptions } from './GetTypeOptions'
  *
  * @inline
  */
-export type Type_<
-	L,
-	IO extends GetTypeOptions = { kind: 'out' },
-> = object extends L
-	? object
-	: L extends {
-			readonly InputType: any
-			readonly OutputType: any
-	  }
+export type Type_<L, IO extends GetTypeOptions = { kind: 'out' }> = L extends {
+	readonly InputType: any
+	readonly OutputType: any
+}
 	? IO['kind'] extends 'in'
 		? L['InputType']
 		: IO['kind'] extends 'out'
@@ -38,6 +33,8 @@ export type Type_<
 	? TupleType_<L, IO>
 	: L extends InferableObject
 	? ObjectType_<L, IO>
+	: object extends L
+	? object
 	: never
 
 /**

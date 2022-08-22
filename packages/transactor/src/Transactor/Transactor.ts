@@ -7,10 +7,10 @@ import type { Throw } from '@voltiso/util'
 import type { Db } from '~'
 import type { CollectionRef } from '~/CollectionRef'
 import type { FirestoreLikeModule } from '~/DatabaseContext'
-import type { DTI, IDocConstructorNoBuilder } from '~/Doc'
+import type { DTI } from '~/Doc'
 
 import type { TransactionBody } from './methods'
-import { Transactor_ } from './Transactor_'
+import { TransactorImpl } from './TransactorImpl'
 import type { TransactorConstructor } from './TransactorConstructor'
 
 export interface Transactor extends Db {
@@ -18,12 +18,12 @@ export interface Transactor extends Db {
 
 	register<
 		// eslint-disable-next-line etc/no-misused-generics
-		Cls extends IDocConstructorNoBuilder & { [DTI]: { tag: 'untagged' } },
+		Cls extends { [DTI]: { tag: 'untagged' } },
 	>(
 		cls: Cls,
 	): Throw<'db.register requires Doc tag'>
 
-	register<Cls extends IDocConstructorNoBuilder>(
+	register<Cls extends abstract new (...args: any) => any>(
 		cls: Cls,
 	): CollectionRef<InstanceType<Cls>>
 
@@ -46,4 +46,4 @@ export interface Transactor extends Db {
 
 //
 
-export const Transactor = Transactor_ as unknown as TransactorConstructor
+export const Transactor = TransactorImpl as unknown as TransactorConstructor

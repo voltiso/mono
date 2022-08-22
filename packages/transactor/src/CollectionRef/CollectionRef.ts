@@ -8,7 +8,7 @@ import type { DocLike, GetPublicCreationInputData, IDoc } from '~/Doc'
 import type { CollectionPath } from '~/Path/Path'
 import type { WeakDocRef } from '~/Ref/WeakDocRef'
 
-import { CollectionRef_ } from './CollectionRef_'
+import { CollectionRefImpl } from './CollectionRefImpl'
 import type { InferTI } from './InferTI'
 
 /** Collection reference */
@@ -33,9 +33,9 @@ export interface CollectionRef<D extends DocLike = IDoc> {
 	): Cls extends any ? CollectionRef<InstanceType<Cls>> : never
 }
 
-export const CollectionRef = CollectionRef_ as unknown as new <
+export const CollectionRef = CollectionRefImpl as unknown as new <
 	// eslint-disable-next-line etc/no-misused-generics
 	Doc extends IDoc,
 >(
-	...args: ConstructorParameters<typeof CollectionRef_>
+	...args: ConstructorParameters<typeof CollectionRefImpl>
 ) => CollectionRef<Doc>

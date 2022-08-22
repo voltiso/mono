@@ -91,11 +91,13 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
 
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyArray &&
 			!other.isReadonlyTuple
 		)
@@ -103,6 +105,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 		// readonly arrays can extend readonly tuples
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyArray) {
 			if (isTuple(other)) {
 				const thisMinLength =
@@ -214,6 +217,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			this.getElementSchema as unknown as ISchema
 		).toString()
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`
 		else return `${elementTypeStr}[]`
 	}

@@ -1,6 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '@voltiso/assertor'
+
+import { TransactorError } from '~'
 import type { DocRefBaseImpl } from '~/Ref'
 
 export function getBeforeCommits(docRef: DocRefBaseImpl) {
@@ -20,12 +23,28 @@ export function getBeforeCommits(docRef: DocRefBaseImpl) {
 			pathMatches: { pathArgs: [], pathParams: {} },
 
 			trigger: ({ doc, path, __voltiso }) => {
-				if (!doc && __voltiso && __voltiso.numRefs !== 0) {
-					throw new Error(
-						`cannot delete ${path.toString()}: numRefs is ${
-							__voltiso.numRefs
-						} (should be 0)`,
-					)
+				$assert(__voltiso)
+				if (!doc) {
+					if (__voltiso.numRefs !== 0) {
+						throw new TransactorError(
+							`cannot delete ${path.toString()}: numRefs is ${
+								__voltiso.numRefs
+							} (should be 0)`,
+						)
+					}
+
+					//
+
+					for (const [aggregatorName, targetInfo] of Object.entries(
+						__voltiso.aggregateTarget,
+					)) {
+						if (targetInfo.numSources !== 0)
+							throw new TransactorError(
+								`cannot delete ${path.toString()}: it's an active aggregation target (${
+									targetInfo.numSources
+								} documents currently aggregated) - aggregator name: ${aggregatorName}`,
+							)
+					}
 				}
 			},
 		})

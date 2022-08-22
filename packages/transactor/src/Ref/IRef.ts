@@ -3,7 +3,7 @@
 
 import type { Id } from '~/Data'
 import type { DocTILike, DTI } from '~/Doc/DocTI'
-import type { DocLike } from '~/Doc/IDoc'
+import type { DocLike, IDoc } from '~/Doc/IDoc'
 import type { DocPath } from '~/Path'
 
 import type { DocFieldPath } from './DocFieldPath'
@@ -37,4 +37,4 @@ export interface IRefBase extends RefBaseLike {
 	toJSON(): object
 }
 
-export interface IRef extends IRefBase, PromiseLike<DocLike | null> {}
+export interface IRef extends IRefBase, PromiseLike<IDoc | null> {}

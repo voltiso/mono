@@ -22,17 +22,22 @@ import type {
 	TransactorConstructorParametersNoUndefined,
 } from './ConstructorParameters'
 import type { TransactorContext } from './Context'
-import type { MethodEntry, SchemaEntry, TriggerEntry } from './Entry'
-import type { TransactionBody } from './methods'
-import { runTransaction } from './methods'
+import type {
+	IdSchemaEntry,
+	MethodEntry,
+	SchemaEntry,
+	TriggerEntry,
+} from './Entry'
+import type { TransactionBody } from './methods/index'
+import { runTransaction } from './methods/index'
 import { Options_ } from './Options'
 import type { Transactor as ITransactor } from './Transactor'
 import type { TransactorConstructor } from './TransactorConstructor'
 
 // import { AsyncLocalStorage } from 'async_hooks'
 
-@staticImplements<TransactorConstructor<Transactor>>()
-class Transactor extends Db implements OmitCall<ITransactor> {
+@staticImplements<TransactorConstructor<TransactorImpl>>()
+export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 	declare _context: TransactorContext
 
 	_databaseContext: DatabaseContext | undefined = undef
@@ -68,6 +73,8 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 
 	_allMethods: MethodEntry[] = []
 
+	_allIdSchemas: IdSchemaEntry[] = []
+
 	_allPublicOnCreationSchemas: SchemaEntry[] = []
 	_allPublicSchemas: SchemaEntry[] = []
 	_allPrivateSchemas: SchemaEntry[] = []
@@ -80,7 +87,7 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 
 	constructor(...args: TransactorConstructorParameters) {
 		checkEnv()
-		super({ transactor: undef as unknown as Transactor }) // hack
+		super({ transactor: undef as unknown as TransactorImpl }) // hack
 		this._context.transactor = this
 
 		let database: FirestoreLike.Database | undefined
@@ -152,5 +159,3 @@ class Transactor extends Db implements OmitCall<ITransactor> {
 		return this._options.refCounters
 	}
 }
-
-export { Transactor as Transactor_ }

@@ -215,7 +215,7 @@ export function withOnGet<TI extends DocDerivedData>(
 					before: before as never,
 					after: after as never,
 				})
-				return f.call(this, p) as never
+				return f.call(this, p as never) as never
 			},
 		],
 	}

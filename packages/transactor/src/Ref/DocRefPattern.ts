@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { $assert } from '@voltiso/assertor'
-import type { InferableObject } from '@voltiso/schemar'
+import type { InferableObject, ISchemaLike } from '@voltiso/schemar'
 import { undef } from '@voltiso/util'
 
 import { getGetPathMatches } from '~/common/PathMatches'
@@ -30,6 +30,14 @@ export class DocRefPattern {
 		this.context = context
 		this.pattern = new DocPattern(concatPath(args))
 		// this.pattern = createDocPatternWithPrefix.call(this.context, args)
+	}
+
+	id(schema: ISchemaLike<string>) {
+		this.context.transactor._allIdSchemas.push({
+			getPathMatches: getGetPathMatches(this.pattern.toString()),
+			schema,
+		})
+		return this
 	}
 
 	publicOnCreation(schema: InferableObject) {

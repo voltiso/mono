@@ -4,7 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import { getKeys, undef } from '@voltiso/util'
 
-import type { IntrinsicFields } from '~'
+import type { PartialIntrinsicFields } from '~'
 import type { NestedData } from '~/Data/Data'
 import type { DeleteIt, NestedIt, RootReplaceIt } from '~/it'
 import {
@@ -102,7 +102,9 @@ const dataFromUpdatesRec = (updates: NestedUpdates): NestedData => {
 	return updates
 }
 
-export const dataFromUpdates = (updates: Updates): IntrinsicFields | null => {
+export const dataFromUpdates = (
+	updates: Updates,
+): PartialIntrinsicFields | null => {
 	if (isDeleteIt(updates)) return null
 
 	if (isReplaceIt(updates)) return updates.data
@@ -121,10 +123,10 @@ export const dataFromUpdates = (updates: Updates): IntrinsicFields | null => {
 }
 
 export const applyUpdates = (
-	data: IntrinsicFields | null,
+	data: Updates | null,
 	updates: Updates,
 	debug?: { path: string },
-): IntrinsicFields | null => {
+): PartialIntrinsicFields | null => {
 	if (data === null && !isReplaceIt(updates) && !isDeleteIt(updates)) {
 		throw new Error(
 			`NOT_FOUND: cannot update non-existing document ${debug?.path || ''}`,

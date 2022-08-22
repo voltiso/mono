@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OPTIONS, PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
 import { EXTENDS } from '_'
 
 import type { SchemableLike, SchemaOptions, ValidationResult } from '~'
@@ -12,16 +12,18 @@ import type { SchemableLike, SchemaOptions, ValidationResult } from '~'
 export interface ISchemaLike<T = unknown> {
 	readonly [SCHEMA_NAME]: string
 	get Type(): T
+	get OutputType(): T
+	get InputType(): T
 }
 
 /** Every Schema is assignable to `ISchema` */
 export interface ISchema<T = unknown> extends ISchemaLike {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
-	// readonly [BASE_OPTIONS]: SchemaOptions
-	// readonly [DEFAULT_OPTIONS]: SchemaOptions
+	readonly [BASE_OPTIONS]: SchemaOptions
+	readonly [DEFAULT_OPTIONS]: SchemaOptions
 
-	readonly [PARTIAL_OPTIONS]: {}
+	readonly [PARTIAL_OPTIONS]: {} // Partial<SchemaOptions>
 	readonly [OPTIONS]: SchemaOptions
 
 	/**

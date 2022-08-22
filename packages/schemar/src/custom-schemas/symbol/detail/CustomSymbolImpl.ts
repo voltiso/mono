@@ -39,7 +39,7 @@ export class CustomSymbolImpl<O extends Partial<SymbolOptions>>
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<L extends symbol>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
-		return literal(literals)
+		return literal(literals) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {

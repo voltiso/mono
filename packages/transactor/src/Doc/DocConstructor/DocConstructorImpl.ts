@@ -1,11 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Schemable } from '@voltiso/schemar'
+import { $assert } from '@voltiso/assertor'
+import type { InferableObjectLike, ISchema, Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type { OmitCall } from '@voltiso/util'
+import { assertNotPolluting } from '@voltiso/util'
 import { callableClass, staticImplements } from '@voltiso/util'
 
+import type { DocConstructor, IAggregatorHandlers, NestedData } from '~'
+import { isStrongDocRef, isWeakDocRef } from '~'
+import { TransactorError } from '~'
 import { DocCall, DTI } from '~/Doc'
 import type { GI } from '~/Doc/_/GDoc'
 import type { NewFields } from '~/Doc/_/NewFields'
@@ -17,7 +22,7 @@ import {
 	withAfterUpdate,
 	withBeforeCommit,
 } from '~/Doc/_/triggerCreators'
-import type { IDocTI } from '~/Doc/DocTI'
+import type { DocTI } from '~/Doc/DocTI'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
@@ -28,8 +33,8 @@ import { defaultDocDerivedData } from './_/DocDerivedData'
 import type { IDocConstructor } from './IDocConstructor'
 
 @staticImplements<OmitCall<IDocConstructor>>()
-class DocConstructor {
-	declare static [DTI]: IDocTI
+export class DocConstructorImpl {
+	declare static [DTI]: DocTI
 
 	static readonly _: DocDerivedData = defaultDocDerivedData
 
@@ -43,6 +48,18 @@ class DocConstructor {
 	}
 
 	//
+
+	static id<S extends ISchema<string>>(schema: S): any {
+		return callableClass(
+			class extends this {
+				static override readonly _: DocDerivedData = {
+					...super._,
+					id: schema,
+				}
+			},
+			DocCall,
+		)
+	}
 
 	static publicOnCreation<F extends Record<string, Schemable>>(schema: F): any {
 		return callableClass(
@@ -80,6 +97,109 @@ class DocConstructor {
 		)
 	}
 
+	static aggregate(
+		targetDocConstructor: DocConstructor,
+		name: string,
+		handlers: IAggregatorHandlers,
+	): any {
+		assertNotPolluting(name)
+		return this.after(
+			`aggregate<${targetDocConstructor._.tag}.${name}>`,
+			async ({ before, after, path }) => {
+				const data = before || after
+				$assert(data)
+				$assert(data.__voltiso)
+
+				if (handlers.filter) {
+					const filterResult = await handlers.filter.call(data)
+					if (!filterResult) return
+				}
+
+				const targetHandlerResult = handlers.target.call(data)
+				let target = await targetHandlerResult
+
+				if (!target) {
+					const handlerReturnedRef =
+						isWeakDocRef(targetHandlerResult) ||
+						isStrongDocRef(targetHandlerResult)
+
+					if (handlerReturnedRef && handlers.autoCreateTarget) {
+						try {
+							target = await targetHandlerResult.set()
+						} catch (error) {
+							// eslint-disable-next-line no-console
+							console.error(
+								`aggregate trigger for source '${path.toString()}': unable to auto-create target: ${targetHandlerResult.path.toString()}`,
+							)
+							throw error
+						}
+					} else {
+						let additionalInfo = ''
+						if (!handlers.autoCreateTarget)
+							additionalInfo =
+								' - hint: pass `autoCreateTarget: true` to your aggregator options if this would not violate your constraints'
+
+						const targetDescription = handlerReturnedRef
+							? targetHandlerResult.path.toString()
+							: `null - for more info, return DocRef instead of null Doc from your target() handler - this will also make it possible to auto-create target document if 'autoCreateTarget' is set (note: your target() function must not be async, because DocRef is derived from PromiseLike and is automatically unwrapped when awaited)${additionalInfo}`
+
+						throw new TransactorError(
+							`aggregate trigger for source '${path.toString()}': target does not exist: '${targetDescription}'${additionalInfo}`,
+						)
+					}
+				}
+
+				if (before && after)
+					$assert(
+						// eslint-disable-next-line security/detect-object-injection
+						before.__voltiso?.aggregateSource[name] ===
+							// eslint-disable-next-line security/detect-object-injection
+							after.__voltiso?.aggregateSource[name],
+						'hmmm',
+					)
+
+				// eslint-disable-next-line security/detect-object-injection
+				const sourceInfo = data.__voltiso.aggregateSource[name]
+
+				// eslint-disable-next-line security/detect-object-injection
+				const targetInfo = target.data.__voltiso?.aggregateTarget[name] || {
+					value: handlers.initialValue as NestedData,
+					numSources: 0,
+				}
+
+				const wasAlreadyProcessed = sourceInfo
+
+				if (before && wasAlreadyProcessed) {
+					targetInfo.value = (await handlers.exclude.call(
+						before,
+						targetInfo.value,
+					)) as never
+					targetInfo.numSources -= 1
+				}
+
+				$assert(targetInfo.numSources >= 0)
+
+				if (after) {
+					targetInfo.value = (await handlers.include.call(
+						after,
+						targetInfo.value,
+					)) as never
+					targetInfo.numSources += 1
+
+					// update source
+					$assert(after.__voltiso)
+					// eslint-disable-next-line security/detect-object-injection
+					after.__voltiso.aggregateSource[name] = true
+				}
+
+				// update target
+				$assert(target.data.__voltiso)
+				// eslint-disable-next-line security/detect-object-injection
+				target.data.__voltiso.aggregateTarget[name] = targetInfo
+			},
+		)
+	}
+
 	//
 
 	static fields<F extends NewFields>(f: F): any {
@@ -88,6 +208,8 @@ class DocConstructor {
 				static override readonly _ = {
 					...super._,
 
+					id: 'id' in f ? f.id : (super._.id as never),
+
 					publicOnCreation: {
 						...super._.publicOnCreation,
 						...f.publicOnCreation,
@@ -95,23 +217,25 @@ class DocConstructor {
 
 					public: { ...super._.public, ...f.public },
 					private: { ...super._.private, ...f.private },
+
+					suppressMissingSchemaError: true
 				} as never
 			},
 			DocCall,
 		)
 	}
 
-	static get schemableWithoutId() {
+	static get schemableWithoutId(): InferableObjectLike {
 		return {
 			...this._.publicOnCreation,
 			...this._.public,
 			...this._.private,
-			...sIntrinsicFields,
-		}
+			...sIntrinsicFields.getShape,
+		} as never
 	}
 
-	static get schemableWithId() {
-		return { ...this.schemableWithoutId, id: s.string }
+	static get schemableWithId(): InferableObjectLike {
+		return { ...this.schemableWithoutId, id: s.string } as InferableObjectLike
 	}
 
 	static get schemaWithoutId() {
@@ -269,5 +393,3 @@ class DocConstructor {
 		)
 	}
 }
-
-export { DocConstructor as DocConstructor_ }

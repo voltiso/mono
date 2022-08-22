@@ -1,14 +1,37 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject } from '@voltiso/schemar'
+import { $assert } from '@voltiso/assertor'
+import type { InferableObject, ISchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import { undef } from '@voltiso/util'
 
+import { sIntrinsicFields } from '~'
 import type { DocRefBaseImpl } from '~/Ref'
 
+export function getIdSchemas(
+	d: DocRefBaseImpl<any>,
+) {
+	if (d._idSchemas !== undefined) return d._idSchemas
+
+	const { _allIdSchemas } = d._context.transactor
+
+	const idSchemas: ISchema<string>[] = []
+
+	const path = d.path.toString()
+
+	for (const { getPathMatches, schema } of _allIdSchemas) {
+		const { pathParams, pathArgs } = getPathMatches(path) || {}
+
+		if (pathParams || pathArgs) idSchemas.push(schema as never)
+	}
+
+	d._idSchemas = idSchemas
+
+	return d._idSchemas
+}
+
 export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
-	if (d._schema !== undef) {
+	if (d._schema !== undefined) {
 		return d._schema
 	}
 
@@ -79,13 +102,13 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 
 	const final = s.infer({
 		...thisSchema,
-
-		__voltiso: s.object({
-			numRefs: s.number,
-		}).optional,
+		...sIntrinsicFields.getShape,
 	})
 
 	const partial = final.deepPartial
+
+	$assert(final)
+	$assert(partial)
 
 	d._schema = { final, partial }
 	return d._schema

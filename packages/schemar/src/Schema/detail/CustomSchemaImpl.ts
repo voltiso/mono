@@ -6,7 +6,7 @@
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '_'
 import { SCHEMA_NAME } from '_'
 import { EXTENDS, OPTIONS } from '_'
-import type { Assume, AtLeast1, Merge2 } from '@voltiso/util'
+import type { AtLeast1, Merge2 } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
 import type {
@@ -41,11 +41,6 @@ export interface CustomSchemaImpl<O> {
 
 	readonly [PARTIAL_OPTIONS]: O
 
-	// declare [OPTIONS]: Assume<
-	// 	SchemaOptions,
-	// 	MergeSchemaOptions<DefaultSchemaOptions, O>
-	// >
-
 	readonly [BASE_OPTIONS]: SchemaOptions
 	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
 }
@@ -53,10 +48,9 @@ export interface CustomSchemaImpl<O> {
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>, ISchema
 {
-	[OPTIONS]: Assume<
-		this[BASE_OPTIONS],
-		MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
-	>
+	[OPTIONS]: O extends any
+		? MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
+		: never
 
 	/** Type-only property (no value at runtime) */
 	get Type(): this[OPTIONS]['Output'] {
@@ -96,12 +90,13 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	get getDefault(): this[OPTIONS]['hasDefault'] extends false
 		? never
 		: this[OPTIONS]['Output'] {
-		// eslint-disable-next-line security/detect-object-injection
+		// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unnecessary-condition
 		if (!this[OPTIONS].hasDefault)
 			throw new SchemarError(`getDefault() no default value specified`)
 
 		// eslint-disable-next-line security/detect-object-injection
-		if (this[OPTIONS].getDefault) return this[OPTIONS].getDefault() as never
+		const getDefault = (this[OPTIONS] as SchemaOptions).getDefault
+		if (getDefault) return getDefault() as never
 		// eslint-disable-next-line security/detect-object-injection
 		else return this[OPTIONS].default as never
 	}
@@ -158,6 +153,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	protected _getIssues(x: unknown): ValidationIssue[] {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof x === 'undefined' && this.hasDefault) return []
 		else return this._getIssuesImpl(x)
 	}
@@ -169,6 +165,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	private _fix(x: unknown): unknown {
 		let result = x
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof result === 'undefined' && this.hasDefault)
 			result = this.getDefault
 
@@ -238,8 +235,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	extends(other: Schemable): boolean {
 		const otherType = schema(other)
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isOptional && !otherType.isOptional) return false
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonly && !otherType.isReadonly) return false
 
 		// eslint-disable-next-line security/detect-object-injection
@@ -252,14 +251,18 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	toString(): string {
 		const prefix =
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				: this.isReadonly
 				? 'readonly:'
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				: this.isOptional
 				? '?'
 				: ''
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const suffix = this.hasDefault ? `=${stringFrom(this.getDefault)}` : ''
 
 		return `${prefix}${this._toString()}${suffix}`

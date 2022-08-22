@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _ } from '@voltiso/util'
+import type { $_ } from '@voltiso/util'
 
 import type { DocLike, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
@@ -23,7 +23,9 @@ export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arr
 // type TDataDef = DataRecord // & TData
 
 /** @inline */
-export type WithId<Data, Doc extends DocLike = IDoc> = _<{ id: Id<Doc> } & Data>
+export type WithId<Data, Doc extends DocLike = IDoc> = $_<
+	{ id: Id<Doc> } & Data
+>
 
 // export type DataWithId<
 // 	F extends IntrinsicFields = IntrinsicFields,

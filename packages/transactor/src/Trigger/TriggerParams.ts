@@ -4,12 +4,12 @@
 import type { PathMatches } from '~/common/PathMatches'
 import type { Id } from '~/Data'
 import type { Db } from '~/Db'
-import type { DTI, IDoc } from '~/Doc'
+import type { DocLike, DTI, IDoc } from '~/Doc'
 import type { DocPath } from '~/Path'
 import type { DocRefContext } from '~/Ref/_/Context'
 import type { IntrinsicFields } from '~/schemas'
 
-export type TriggerParams<D extends IDoc = IDoc, This = D | null> = {
+export type TriggerParams<D extends DocLike = IDoc, This = D | null> = {
 	doc: This
 
 	path: DocPath<D[DTI]['tag']>
@@ -20,7 +20,7 @@ export type TriggerParams<D extends IDoc = IDoc, This = D | null> = {
 	DocRefContext
 
 export type AfterTriggerParams<
-	D extends IDoc = IDoc,
+	D extends DocLike = IDoc,
 	This = D | null,
 	Before extends boolean = boolean,
 	After extends boolean = boolean,
@@ -37,5 +37,5 @@ export type AfterTriggerParams<
 		: never
 }
 
-export type BeforeCommitTriggerParams<D extends IDoc> = TriggerParams<D> &
+export type BeforeCommitTriggerParams<D extends DocLike> = TriggerParams<D> &
 	IntrinsicFields

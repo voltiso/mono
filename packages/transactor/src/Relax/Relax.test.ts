@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IDoc, IDocTI } from '~/Doc'
+import type { IDoc, DocTI } from '~/Doc'
 import type { IRef } from '~/Ref'
 
 import type { Relax } from './Relax'
@@ -17,7 +17,7 @@ describe('Relax', () => {
 
 		Assert.is<Relax<IDoc>, IDoc>()
 
-		Assert.is<Relax<IDocTI>, IDocTI>()
+		Assert.is<Relax<DocTI>, DocTI>()
 		Assert.is<Relax<IRef>, IRef>()
 	})
 })

@@ -1,22 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IntrinsicFields } from '~'
-import type { Doc_ } from '~/Doc'
+import type { IntrinsicFields, PartialIntrinsicFields } from '~'
+import type { DocImpl } from '~/Doc'
 import type { WithDocRef } from '~/Ref'
 import type { Updates } from '~/updates'
 
 import type { WithTransaction } from './WithTransaction'
 
 export type CacheEntry = {
-	data?: IntrinsicFields | null | undefined // undefined -> unknown; null -> deleted
-	originalData?: IntrinsicFields | null | undefined
+	data?: PartialIntrinsicFields | null | undefined // undefined -> unknown; null -> deleted
+	originalData?: PartialIntrinsicFields | null | undefined
 	updates?: Updates
-	proxy?: Doc_ | null // undefined -> unknown; null -> deleted
-	__voltiso?: { numRefs: number }
+	proxy?: DocImpl | null // undefined -> unknown; null -> deleted
+	__voltiso?: IntrinsicFields['__voltiso']
 
 	write: boolean
-	lastDataSeenByAfters?: (IntrinsicFields | null)[]
+	lastDataSeenByAfters?: (PartialIntrinsicFields | null)[]
 	isProcessingTriggers: boolean
 }
 

@@ -12,13 +12,18 @@ describe('MergeSchemaOptions', () => {
 		test: 123
 	}
 
-	it('generic', <O extends MySchemaOptions, _OO extends Partial<SchemaOptions>>() => {
+	it('generic', <O extends MySchemaOptions, PO extends Partial<SchemaOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<MergeSchemaOptions<O, { optional: true }>, SchemaOptions>()
-		// Assert.is<MergeSchemaOptions<O, OO>, SchemaOptions>()
+		type A = MergeSchemaOptions<O, PO>
+		Assert.is<A, SchemaOptions>()
 
-		// type A = MergeSchemaOptions<O, OO>['isOptional']
-		// Assert.is<A, boolean>()
+		Assert.is<MergeSchemaOptions<O, { isOptional: true }>, SchemaOptions>()
+
+		const getDefault = 0 as unknown as A['getDefault']
+
+		if (getDefault) {
+			;() => getDefault()
+		}
 	})
 })

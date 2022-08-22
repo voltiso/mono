@@ -4,7 +4,11 @@
 import type { Schemable } from '@voltiso/schemar'
 
 export type NewFields = {
+	id?: Schemable
+
 	publicOnCreation?: Record<string, Schemable>
 	public?: Record<string, Schemable>
 	private?: Record<string, Schemable>
+
+	aggregates?: Record<string, Schemable>
 }

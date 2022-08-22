@@ -4,6 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
+import { $assert } from '@voltiso/assertor'
+
 import { isStrongDocRef } from '~'
 import type { IDoc } from '~/Doc'
 import type { DocRefBaseImpl, IRef, WeakDocRef } from '~/Ref'
@@ -64,10 +66,12 @@ export function getAfterTriggers(docRef: DocRefBaseImpl) {
 					// eslint-disable-next-line no-await-in-loop
 					const __voltiso = await docPath.__voltiso // returns __voltiso from transaction cache if doc is already deleted
 
-					if (!__voltiso)
-						throw new Error(
-							`ref: referenced doc does not exist ${path.pathString} -> ${targetPath}`,
-						)
+					$assert(__voltiso)
+
+					// if (!__voltiso)
+					// 	throw new Error(
+					// 		`ref: referenced doc does not exist ${path.pathString} -> ${targetPath}`,
+					// 	)
 
 					__voltiso.numRefs += diff
 

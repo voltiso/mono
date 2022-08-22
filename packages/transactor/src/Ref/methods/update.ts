@@ -48,8 +48,9 @@ type StripParams = {
 	onPrivateField: 'error' | 'ignore'
 }
 
-const isRecord = (updates: Updates): updates is UpdatesRecord =>
-	updates.constructor === Object
+function isRecord(updates: Updates): updates is UpdatesRecord {
+	return updates.constructor === Object
+}
 
 function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 	if (updates instanceof ReplaceIt) {
@@ -112,6 +113,7 @@ async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: Updates,
 ): Promise<IndexedDoc | null | undefined> {
+	$assert(updates)
 	check.call(ctx, updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
@@ -186,6 +188,7 @@ async function transactionUpdateImpl(
 	}: Partial<StripParams> = {},
 ): Promise<IDoc | null | undefined> {
 	// returns undefined if unknown (usually update performed on a document without a trigger or schema)
+	$assert(updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
 	const beforeCommits = getBeforeCommits(ctx.docRef)
@@ -259,6 +262,7 @@ function transactionUpdate(
 	updates: Updates,
 	options: Partial<StripParams> = {},
 ): PromiseLike<IDoc | null | undefined> {
+	$assert(updates)
 	const { transaction, docRef } = this
 
 	if (transaction._isFinalizing)
@@ -301,6 +305,8 @@ export function update(
 	ctx: Ctx,
 	updates: Updates,
 ): PromiseLike<IDoc | null | undefined> {
+	$assert(updates)
+
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
 	const ctxOverride = Zone.current.get('transactionContextOverride') as
 		| object

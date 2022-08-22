@@ -3,10 +3,10 @@
 
 export * from './_'
 export * from './Doc'
-export * from './Doc_'
 export * from './DocCall'
 export * from './DocConstructor'
 export * from './DocContext'
+export * from './DocImpl'
 export * from './DocTI'
 export * from './IDoc'
 export * from './IndexedDoc'

@@ -3,6 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
+import { sVoltisoEntry } from '@voltiso/transactor'
 import { sStrongRef } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
@@ -68,13 +69,17 @@ describe('ref', () => {
 				},
 			})
 
-		await expect(patients(p.id).data.__voltiso).resolves.toStrictEqual({
-			numRefs: 0,
-		})
+		await expect(patients(p.id).data.__voltiso).resolves.toStrictEqual(
+			sVoltisoEntry.validate({
+				numRefs: 0,
+			}),
+		)
 
-		await expect(doctors(d.id).data.__voltiso).resolves.toStrictEqual({
-			numRefs: 1,
-		})
+		await expect(doctors(d.id).data.__voltiso).resolves.toStrictEqual(
+			sVoltisoEntry.validate({
+				numRefs: 1,
+			}),
+		)
 
 		await expect(doctors(d.id).delete()).rejects.toThrow('numRefs')
 

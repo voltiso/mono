@@ -5,7 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
-import type { Doc, IDoc_, IDocTI } from '~/Doc'
+import type { Doc, IDocImpl, DocTI } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { Method } from '~/Method'
 import type { WithDocRef } from '~/Ref'
@@ -21,12 +21,12 @@ import { processTriggers } from './processTriggers'
 export type CallMethodOptions = {
 	name: string
 	// argSchema?: Schema<unknown>
-	localDoc?: IDoc_
+	localDoc?: IDocImpl
 }
 
 export async function callMethod<
 	// eslint-disable-next-line etc/no-misused-generics
-	TI extends IDocTI,
+	TI extends DocTI,
 	// eslint-disable-next-line etc/no-misused-generics
 	EC extends ExecutionContext,
 	THIS extends Doc<TI, EC>,

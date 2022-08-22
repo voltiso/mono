@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { ObjectType_, InferableObject } from '~'
+import type { InferableObject, ObjectType_ } from '~'
 import * as s from '~'
 
 describe('GetObjectType', () => {

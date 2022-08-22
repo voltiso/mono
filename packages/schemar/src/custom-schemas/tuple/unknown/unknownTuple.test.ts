@@ -4,19 +4,14 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type {
-	CustomUnknownTuple,
-	IUnknownTuple,
-	readonlyTuple,
-	tuple,
-	UnknownTupleOptions,
-} from '~'
+import type { readonlyTuple, tuple, UnknownTupleOptions } from '~'
 
 describe('array', () => {
-	it('generic', <O extends UnknownTupleOptions>() => {
+	it('generic', <_O extends UnknownTupleOptions>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomUnknownTuple<O>, IUnknownTuple>()
+		//! too deep...
+		// Assert.is<CustomUnknownTuple<O>, IUnknownTuple>()
 	})
 
 	it('type', () => {

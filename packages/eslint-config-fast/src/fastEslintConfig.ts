@@ -37,6 +37,7 @@ const pluginsToPick = [
 	'yml',
 
 	'testing-library',
+	'jest-formatting',
 
 	'@voltiso',
 	'@voltiso/eslint-plugin',
@@ -69,7 +70,6 @@ const pluginsToPick = [
 	// 'i18next',
 	// 'jest-async',
 	// 'jest-dom',
-	// 'jest-formatting',
 	// 'jsdoc',
 	// 'json',
 	// 'jsonc',

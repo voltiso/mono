@@ -12,6 +12,7 @@ import type {
 	CustomNever,
 	CustomNumber,
 	CustomObject,
+	CustomRecord,
 	CustomSchema,
 	CustomString,
 	CustomSymbol,
@@ -22,6 +23,7 @@ import type {
 	CustomUnknownFunction,
 	CustomUnknownLiteral,
 	CustomUnknownObject,
+	CustomUnknownRecord,
 	CustomUnknownSchema,
 	CustomVoid,
 } from '~'
@@ -51,6 +53,9 @@ export interface Schemas<O = {}> {
 
 	Object: CustomObject<O>
 	UnknownObject: CustomUnknownObject<O>
+
+	Record: CustomRecord<O>
+	UnknownRecord: CustomUnknownRecord<O>
 
 	Array: CustomArray<O>
 	Tuple: CustomTuple<O>

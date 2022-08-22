@@ -6,9 +6,9 @@ import type { IsSubtype } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
 import { Doc } from './Doc'
-import type { DocTI } from './Doc_'
+import type { UntaggedDocTI } from './DocImpl'
 import type { IDocConstructor } from './DocConstructor'
-import type { IDocTI } from './DocTI'
+import type { DocTI } from './DocTI'
 import type { IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
 
@@ -25,7 +25,7 @@ class AnotherTest extends Doc('anotherTest')({
 }) {}
 
 describe('doc', () => {
-	it('static asserts', <TI extends IDocTI>() => {
+	it('static asserts', <TI extends DocTI>() => {
 		expect.assertions(0)
 
 		type DocId = IDoc['id']
@@ -37,8 +37,8 @@ describe('doc', () => {
 		Assert.is<IndexedDoc, IDoc>()
 		Assert.is<IsSubtype<IDoc, IndexedDoc>, false>()
 
-		Assert.is<IndexedDocTI, IDocTI>()
-		Assert.is<IsSubtype<IDocTI, IndexedDocTI>, false>()
+		Assert.is<IndexedDocTI, DocTI>()
+		Assert.is<IsSubtype<DocTI, IndexedDocTI>, false>()
 
 		// Assert<IsCompatible<Doc<DocTI>, GDoc<DocTI, 'outside'>>>()
 
@@ -49,7 +49,7 @@ describe('doc', () => {
 	it('has intrinsic fields', () => {
 		expect.assertions(0)
 
-		Assert.is<Doc<DocTI>, { __voltiso?: { numRefs: number } }>()
+		Assert.is<Doc<UntaggedDocTI>, { __voltiso?: { numRefs: number } }>()
 	})
 
 	it('infers ref data', () => {

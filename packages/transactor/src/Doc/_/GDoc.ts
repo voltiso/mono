@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Doc } from '~'
-import type { IDocTI } from '~/Doc'
+import type { DocTI } from '~/Doc'
 import type { DocTypes } from '~/DocTypes'
 
-type GDocByTag_<TI extends IDocTI> = TI['tag'] extends 'untagged'
+type GDocByTag_<TI extends DocTI> = TI['tag'] extends 'untagged'
 	? never
 	: DocTypes[TI['tag']]
 
-export type GDocByTag<TI extends IDocTI> = GDocByTag_<TI> extends never
+export type GDocByTag<TI extends DocTI> = GDocByTag_<TI> extends never
 	? GO<TI>
 	: GDocByTag_<TI>
 
@@ -27,11 +27,11 @@ export type GDocByTag<TI extends IDocTI> = GDocByTag_<TI> extends never
  *
  * @inline
  */
-export type GI<TI extends IDocTI> = Doc<TI, 'inside'>
+export type GI<TI extends DocTI> = Doc<TI, 'inside'>
 
 /**
  * Get Doc from DocTI - outside execution context (can access public only)
  *
  * @inline
  */
-export type GO<TI extends IDocTI> = Doc<TI, 'outside'>
+export type GO<TI extends DocTI> = Doc<TI, 'outside'>
