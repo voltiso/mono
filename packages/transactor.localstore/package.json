@@ -52,6 +52,7 @@
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/firestore-like": "workspace:^",
 		"@voltiso/localstore": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"@voltiso/transactor": "workspace:^"
 	},
 	"__________MISC": "__________",

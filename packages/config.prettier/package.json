@@ -46,8 +46,8 @@
 		"@types/node": "^18.7.7",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"jest": "^28.1.3",
-		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2"
+		"prettier": "^2.7.1"
 	}
 }

@@ -21,6 +21,7 @@
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.jest.lib": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"@voltiso/transactor": "workspace:^",
 		"@voltiso/transactor.firestore": "workspace:^",
 		"@voltiso/util": "workspace:^",

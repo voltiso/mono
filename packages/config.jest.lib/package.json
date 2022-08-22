@@ -34,7 +34,6 @@
 	"devDependencies": {
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
-		"jest": "^28.1.3",
-		"rimraf": "^3.0.2"
+		"jest": "^28.1.3"
 	}
 }

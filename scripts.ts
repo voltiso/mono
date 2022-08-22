@@ -36,7 +36,7 @@ function turboAllPackages(...scriptNames: string[]) {
 //!
 //! Workspace-level
 
-export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=none`
+export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=new-only`
 
 export const checkWorkspace = [
 	'prepareWorkspace',

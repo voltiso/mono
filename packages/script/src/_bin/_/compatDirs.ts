@@ -7,14 +7,15 @@ import {
 	VoltisoScriptError,
 	writeCompatDirs,
 } from '@voltiso/script.lib'
-import { getPackageJsonCached } from '@voltiso/util.node'
 import * as path from 'node:path'
 
 import type { Command } from './Command'
 
 const subCommands = {
 	get: async () => {
-		const packageJson = await getPackageJsonCached(path.resolve())
+		// eslint-disable-next-line import/dynamic-import-chunkname
+		const utilNode = await import('@voltiso/util.node')
+		const packageJson = await utilNode.getPackageJsonCached(path.resolve())
 		const directories = getCompatDirNames(packageJson)
 		// eslint-disable-next-line no-console
 		console.log(directories.join(' '))

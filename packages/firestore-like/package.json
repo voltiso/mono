@@ -53,6 +53,7 @@
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"firebase-admin": "^11.0.1",
 		"rimraf": "^3.0.2"
 	},

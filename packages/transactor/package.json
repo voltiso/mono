@@ -55,6 +55,7 @@
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/config.tsdoc": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"rimraf": "^3.0.2",
 		"zone.js": "^0.11.8"
 	},

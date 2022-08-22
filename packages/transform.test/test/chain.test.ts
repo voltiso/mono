@@ -8,7 +8,9 @@ describe('chain', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
-		const file = await fs.readFile(path.join(__dirname, '../dist/cjs/chain.d.ts'))
+		const file = await fs.readFile(
+			path.join(__dirname, '../dist/cjs/chain.d.ts'),
+		)
 
 		expect(file.toString()).toMatchSnapshot()
 	})

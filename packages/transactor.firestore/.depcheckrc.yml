@@ -3,3 +3,5 @@
 
 ignores:
   - '@firebase/app-types'
+  - '@voltiso/config.ts.build.cjs'
+  - '@voltiso/config.ts.build.esm'

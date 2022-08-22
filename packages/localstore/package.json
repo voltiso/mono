@@ -50,7 +50,8 @@
 	"devDependencies": {
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^"
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/script": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {

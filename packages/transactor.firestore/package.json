@@ -49,6 +49,7 @@
 	"devDependencies": {
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/script": "workspace:^",
 		"@firebase/app-types": "^0.7.0",
 		"@voltiso/transactor": "workspace:^",
 		"firebase-admin": "^11.0.1"

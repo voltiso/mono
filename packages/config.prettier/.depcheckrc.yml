@@ -8,3 +8,4 @@ ignores:
   - '@toml-tools/lexer'
   - '@types/node'
   - '@voltiso/config.jest.esr'
+  - '@voltiso/config.ts.build.cjs'

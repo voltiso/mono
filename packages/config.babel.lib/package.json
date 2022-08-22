@@ -37,6 +37,6 @@
 		"@types/babel__core": "^7.1.19",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
-		"rimraf": "^3.0.2"
+		"@voltiso/script": "workspace:^"
 	}
 }

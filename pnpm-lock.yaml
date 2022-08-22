@@ -9,7 +9,7 @@ importers:
       '@types/jest': ^28.1.7
       '@types/node': ^18.7.7
       '@typescript/analyze-trace': ^0.9.0
-      '@voltiso/assertor.transform': workspace:^1.0.0
+      '@voltiso/assertor.transform': workspace:^
       '@voltiso/config.eslint.lib': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.jest.lib': workspace:^
@@ -77,10 +77,12 @@ importers:
       '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/script': workspace:^
     devDependencies:
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/script': link:../script
 
   packages/assertor.transform:
     specifiers:
@@ -94,6 +96,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/schemar': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       rimraf: ^3.0.2
     devDependencies:
@@ -101,6 +104,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/schemar': link:../schemar
+      '@voltiso/script': link:../script
       '@voltiso/util': link:../util
       rimraf: 3.0.2
 
@@ -110,13 +114,13 @@ importers:
       '@types/babel__core': ^7.1.19
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      rimraf: ^3.0.2
+      '@voltiso/script': workspace:^
     devDependencies:
       '@babel/core': 7.18.10
       '@types/babel__core': 7.1.19
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      rimraf: 3.0.2
+      '@voltiso/script': link:../script
 
   packages/config.babel.zone:
     specifiers:
@@ -124,12 +128,14 @@ importers:
       '@voltiso/config.babel.lib': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
     dependencies:
       '@voltiso/config.babel.lib': link:../config.babel.lib
     devDependencies:
       '@babel/core': 7.18.10
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
 
   packages/config.eslint:
     specifiers:
@@ -180,7 +186,6 @@ importers:
       jest-environment-jsdom: ^28.1.3
       react: ^18.2.0
       react-native: ^0.69.4
-      rimraf: ^3.0.2
     dependencies:
       '@babel/core': 7.18.10
       '@babel/preset-env': 7.18.10_@babel+core@7.18.10
@@ -195,19 +200,16 @@ importers:
       '@types/react': 18.0.17
       '@types/testing-library__jest-dom': 5.14.5
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      rimraf: 3.0.2
 
   packages/config.jest.lib:
     specifiers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       jest: ^28.1.3
-      rimraf: ^3.0.2
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       jest: 28.1.3
-      rimraf: 3.0.2
 
   packages/config.prettier:
     specifiers:
@@ -216,11 +218,11 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/prettier-plugin-toml': ^0.3.3
+      '@voltiso/script': workspace:^
       jest: ^28.1.3
       prettier: ^2.7.1
       prettier-plugin-jsdoc: ^0.3.38
       prettier-plugin-sh: ^0.12.8
-      rimraf: ^3.0.2
     dependencies:
       '@prettier/plugin-xml': 2.2.0
       '@voltiso/prettier-plugin-toml': 0.3.3_prettier@2.7.1
@@ -230,9 +232,9 @@ importers:
       '@types/node': 18.7.7
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/script': link:../script
       jest: 28.1.3_@types+node@18.7.7
       prettier: 2.7.1
-      rimraf: 3.0.2
 
   packages/config.ts:
     specifiers: {}
@@ -273,6 +275,7 @@ importers:
       '@voltiso/config.eslint': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/eslint-plugin': workspace:^
+      '@voltiso/script': workspace:^
       any-eslint-parser: ^1.0.1
       confusing-browser-globals: ^1.0.11
       eslint: ^8.22.0
@@ -410,6 +413,7 @@ importers:
       yaml-eslint-parser: 1.1.0
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/script': link:../script
       eslint: 8.22.0
       typescript: 4.7.4
 
@@ -421,6 +425,7 @@ importers:
       '@voltiso/config.eslint.lib': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/eslint-plugin': workspace:^
+      '@voltiso/script': workspace:^
       eslint: ^8.22.0
       eslint-plugin-array-func: ^3.1.7
       eslint-plugin-chai-friendly: ^0.7.2
@@ -547,6 +552,7 @@ importers:
       putout: 27.1.0
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/script': link:../script
       eslint: 8.22.0
       typescript: 4.7.4
 
@@ -559,6 +565,7 @@ importers:
       '@typescript-eslint/utils': ^5.33.1
       '@voltiso/assertor.transform': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/script': workspace:^
       builtins: ^5.0.1
       eslint: ^8.22.0
       eslint-module-utils: ^2.7.4
@@ -580,6 +587,7 @@ importers:
       '@types/resolve': 1.20.2
       '@voltiso/assertor.transform': link:../assertor.transform
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/script': link:../script
       eslint: 8.22.0
       import-meta-resolve: 2.1.0
       rimraf: 3.0.2
