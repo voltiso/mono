@@ -7,8 +7,8 @@ import type { ITuple, Schemable } from '~'
 import { schema } from '~'
 
 export function _extends(thisTuple: ITuple, otherTuple: ITuple): boolean {
-	const a = thisTuple.getElementSchemas
-	const b = otherTuple.getElementSchemas
+	const a = thisTuple.getShape
+	const b = otherTuple.getShape
 
 	if (a.length !== b.length) return false
 

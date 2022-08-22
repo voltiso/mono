@@ -4,9 +4,9 @@
 import {
 	type BASE_OPTIONS,
 	type DEFAULT_OPTIONS,
-	type SCHEMA_NAME,
 	EXTENDS,
 	OPTIONS,
+	SCHEMA_NAME,
 } from '_'
 import { CALL, callableInstance, getKeys, lazyConstructor } from '@voltiso/util'
 
@@ -32,6 +32,8 @@ export class CustomUnknownObjectImpl<O extends Partial<UnknownObjectOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownObject<O>
 {
+	readonly [SCHEMA_NAME] = 'UnknownObject' as const
+
 	// declare readonly [PARTIAL_OPTIONS]: O;
 
 	// declare readonly [OPTIONS]: Assume<

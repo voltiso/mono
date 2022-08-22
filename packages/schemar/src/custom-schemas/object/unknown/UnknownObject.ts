@@ -3,8 +3,11 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomUnknownObject, InferableObject, Object } from '~'
-import { UnknownObjectImpl } from '~'
+import type { InferableObject } from '~/Inferable'
+
+import type { Object } from '../Object'
+import type { CustomUnknownObject } from './detail/CustomUnknownObject'
+import { UnknownObjectImpl } from './detail/UnknownObjectImpl'
 
 export interface UnknownObject extends CustomUnknownObject<{}> {
 	// eslint-disable-next-line @typescript-eslint/ban-types

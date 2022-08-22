@@ -4,10 +4,12 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
 import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
+import { $assert } from '@voltiso/assertor'
 import {
 	getEntries,
+	getKeys,
+	getValues,
 	hasProperty,
-	isObject,
 	lazyConstructor,
 	undef,
 } from '@voltiso/util'
@@ -16,9 +18,11 @@ import type {
 	CustomObject,
 	DefaultObjectOptions,
 	ISchema,
+	ObjectIndexSignatureEntry,
 	ObjectOptions,
 	Schemable,
 } from '~'
+import { isSchema } from '~'
 import {
 	CustomSchemaImpl,
 	deepPartialShape,
@@ -46,6 +50,19 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	implements CustomObject<O>
 {
 	readonly [SCHEMA_NAME] = 'Object' as const
+
+	constructor(partialOptions: O) {
+		super(partialOptions)
+
+		for (const value of getValues(this.getShape, { includeSymbols: true })) {
+			if (isSchema(value) && value.hasDefault) {
+				// eslint-disable-next-line security/detect-object-injection
+				this[OPTIONS].hasDefault = true as never
+				// eslint-disable-next-line security/detect-object-injection
+				this[OPTIONS].default = {} as never
+			}
+		}
+	}
 
 	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
@@ -240,39 +257,88 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	}
 
 	override _fixImpl(x: unknown): unknown {
-		if (x !== undef && !isObject(x)) {
-			return super._fixImpl(x)
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
+
+		let autoCreated = false
+		if (x === undefined) {
+			// eslint-disable-next-line no-param-reassign
+			x = {}
+			autoCreated = true
 		}
 
-		const r = { ...x } as Record<keyof any, unknown>
+		if (typeof x === 'object') {
+			// eslint-disable-next-line no-param-reassign
+			x = { ...x } as Record<keyof any, unknown>
 
-		for (const [key, schemable] of getEntries(this.getShape) as [
-			keyof any,
-			Schemable,
-		][]) {
-			const mySchema = schema(schemable)
+			for (const [key, schemable] of getEntries(this.getShape) as [
+				keyof any,
+				Schemable,
+			][]) {
+				const mySchema = schema(schemable)
 
-			const isOptional = mySchema.isOptional || mySchema.isStrictOptional
+				const isOptional = mySchema.isOptional || mySchema.isStrictOptional
 
-			if (!hasProperty(r, key) && isOptional && !mySchema.hasDefault) {
-				// assert(
-				// 	typeof tv.getDefault === 'undefined',
-				// 	"typeof tv.getDefault === 'undefined'"
-				// )
-				continue
+				$assert(typeof x === 'object' && x)
+
+				if (!hasProperty(x, key) && isOptional && !mySchema.hasDefault) {
+					// assert(
+					// 	typeof tv.getDefault === 'undefined',
+					// 	"typeof tv.getDefault === 'undefined'"
+					// )
+					continue
+				}
+
+				// assumeType<ISchema>(mySchema)
+
+				const result = mySchema.tryValidate(x[key as keyof typeof x])
+				x[key as keyof typeof x] = result.value as never
+
+				if (result.value === undef && mySchema.isOptional)
+					delete x[key as keyof typeof x]
 			}
 
-			// assumeType<ISchema>(mySchema)
+			$assert(typeof x === 'object' && x)
 
-			// eslint-disable-next-line security/detect-object-injection
-			const result = mySchema.tryValidate(r[key])
-			// eslint-disable-next-line security/detect-object-injection
-			r[key] = result.value
+			for (let [xKey, xValue] of getEntries(x, { includeSymbols: true }) as [
+				keyof any,
+				unknown,
+			][]) {
+				const originalXKey = xKey
+				if (xKey in this.getShape) continue
 
-			// eslint-disable-next-line security/detect-object-injection
-			if (result.value === undef && mySchema.isOptional) delete r[key]
+				for (const indexSignature of this
+					.getIndexSignatures as ObjectIndexSignatureEntry[]) {
+					const keyValidationResult = schema(
+						indexSignature.keySchema,
+					).tryValidate(xKey)
+
+					const valueValidationResult = schema(
+						indexSignature.valueSchema,
+					).tryValidate(xValue)
+
+					if (keyValidationResult.isValid && valueValidationResult.isValid) {
+						xKey = keyValidationResult.value as never
+						xValue = valueValidationResult.value
+					}
+				}
+
+				delete x[originalXKey as keyof typeof x]
+				x[xKey as keyof typeof x] = xValue as never
+			}
 		}
 
-		return r as never
+		if (
+			autoCreated &&
+			getKeys(x as never, { includeSymbols: true }).length === 0
+		) {
+			// eslint-disable-next-line no-param-reassign
+			x = undefined
+		}
+
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
+
+		return x as never
 	}
 }

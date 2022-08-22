@@ -9,31 +9,30 @@ import { EXTENDS, OPTIONS } from '_'
 import type { AtLeast1, Merge2 } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
+import { isAny } from '~/custom-schemas/any'
+import { isUnion } from '~/custom-schemas/union'
+import { union } from '~/custom-schemas/union'
+import { isUnknown } from '~/custom-schemas/unknown'
+import { isUnknownSchema } from '~/custom-schemas/unknownSchema'
+import { schema } from '~/custom-schemas/unknownSchema'
+import type { ValidationIssue } from '~/custom-schemas/validation/validationIssue'
+import type { ValidationResult } from '~/custom-schemas/validation/validationResult'
+import { ValidationError } from '~/error'
+import { SchemarError } from '~/error/SchemarError'
+import type { Schemable } from '~/Schemable'
 import type {
-	CustomFix,
-	CustomSchema,
 	DefaultSchemaOptions,
-	ISchema,
 	MergeSchemaOptions,
-	Schema,
-	Schemable,
 	SchemaOptions,
-	ValidationIssue,
-	ValidationResult,
-} from '~'
-import {
-	defaultSchemaOptions,
-	isAny,
-	isUnion,
-	isUnknown,
-	isUnknownSchema,
-	processCustomChecks,
-	schema,
-	SchemarError,
-	throwTypeOnlyFieldError,
-	union,
-	ValidationError,
-} from '~'
+} from '~/SchemaOptions'
+import { defaultSchemaOptions } from '~/SchemaOptions'
+
+import type { Schema } from '../Schema'
+import type { CustomFix } from './CustomFix'
+import type { CustomSchema } from './CustomSchema'
+import type { ISchema } from './ISchema'
+import { processCustomChecks } from './processCustomChecks'
+import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomSchemaImpl<O> {

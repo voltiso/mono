@@ -257,6 +257,15 @@ describe('object', () => {
 		>()
 	})
 
+	it('no object auto-default', () => {
+		expect.hasAssertions()
+
+		expect(s.object({}).hasDefault).toBe(false)
+		expect(s.infer({}).hasDefault).toBe(false)
+		// expect(s.infer({}).hasDefault).toBe(true)
+		// expect(s.infer({}).getDefault).toStrictEqual({})
+	})
+
 	it('nested', () => {
 		expect.hasAssertions()
 

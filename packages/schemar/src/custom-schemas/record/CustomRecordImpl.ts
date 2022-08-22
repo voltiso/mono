@@ -62,8 +62,14 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	}
 
 	override _fixImpl(x: unknown): unknown {
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
 		const proxy = _getCustomObjectImpl(this)
-		return proxy._fixImpl(x)
+		// eslint-disable-next-line no-param-reassign
+		x = proxy._fixImpl(x)
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
+		return x
 	}
 }
 

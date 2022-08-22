@@ -9,7 +9,7 @@ import { CustomTupleImpl, defaultMutableTupleOptions } from '~'
 export class MutableTupleImpl<T extends Schemable[]> extends lazyConstructor(
 	() => CustomTupleImpl,
 )<{}> {
-	constructor(elementSchemas: T) {
-		super({ ...defaultMutableTupleOptions, elementSchemas } as never)
+	constructor(shape: T) {
+		super({ ...defaultMutableTupleOptions, shape } as never)
 	}
 }

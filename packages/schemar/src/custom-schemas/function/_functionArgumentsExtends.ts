@@ -16,8 +16,8 @@ import { isTuple, schema } from '~'
 // type D = Test<[1, 2], [1, 2, 3]> // 0
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
-	const aa = a.getElementSchemas
-	const bb = b.getElementSchemas
+	const aa = a.getShape
+	const bb = b.getShape
 
 	if (aa.length < bb.length) return false
 

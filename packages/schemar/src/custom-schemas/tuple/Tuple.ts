@@ -8,14 +8,14 @@ import { MutableTupleImpl, ReadonlyTupleImpl } from '~'
 
 export interface MutableTuple<T extends SchemableLike[]>
 	extends CustomTuple<{
-		elementSchemas: T
+		shape: T
 		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
 		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: false }>
 	}> {}
 
 export interface ReadonlyTuple<T extends SchemableLike[]>
 	extends CustomTuple<{
-		elementSchemas: T
+		shape: T
 		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
 		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
 		isReadonlyTuple: true
@@ -34,9 +34,9 @@ export const ReadonlyTuple = lazyConstructor(
 //
 
 type MutableTupleConstructor = new <T extends SchemableLike[]>(
-	...elementSchemas: T
+	...shape: T
 ) => MutableTuple<T>
 
 type ReadonlyTupleConstructor = new <T extends SchemableLike[]>(
-	...elementSchemas: T
+	...shape: T
 ) => ReadonlyTuple<T>

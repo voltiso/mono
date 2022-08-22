@@ -38,8 +38,8 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 	//
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
-	get getElementSchemas(): this[OPTIONS]['elementSchemas']
-	get getLength(): GetTupleLength_<this[OPTIONS]['elementSchemas']>
+	get getShape(): this[OPTIONS]['shape']
+	get getLength(): GetTupleLength_<this[OPTIONS]['shape']>
 
 	//
 

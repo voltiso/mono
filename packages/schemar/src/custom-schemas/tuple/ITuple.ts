@@ -26,7 +26,7 @@ export interface ITuple extends ISchema {
 	get InputType(): readonly unknown[]
 
 	get isReadonlyTuple(): boolean
-	get getElementSchemas(): SchemableLike[]
+	get getShape(): SchemableLike[]
 	get getLength(): number
 
 	get readonlyTuple(): ITuple

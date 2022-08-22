@@ -9,7 +9,7 @@ export interface TupleOptions extends SchemaOptions {
 	Input: readonly unknown[]
 
 	isReadonlyTuple: boolean
-	elementSchemas: SchemableLike[]
+	shape: SchemableLike[]
 }
 
 //
@@ -20,7 +20,7 @@ export const defaultTupleOptions = {
 	Input: 0 as unknown as readonly unknown[],
 
 	isReadonlyTuple: false as const,
-	elementSchemas: 0 as unknown as SchemableLike[],
+	shape: 0 as unknown as SchemableLike[],
 }
 export type DefaultTupleOptions = typeof defaultTupleOptions
 

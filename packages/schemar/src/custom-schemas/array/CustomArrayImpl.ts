@@ -122,7 +122,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 				if (thisMaxLength < other.getLength) return false
 
-				for (const t of other.getElementSchemas) {
+				for (const t of other.getShape) {
 					if (!(this.getElementSchema as unknown as ISchema).extends(t))
 						return false
 				}
@@ -173,6 +173,9 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				(schema(this.getElementSchema) as ISchema).fix(element),
 			)
 		}
+
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
 
 		return x
 	}

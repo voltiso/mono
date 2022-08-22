@@ -9,7 +9,7 @@ import { CustomTupleImpl, defaultReadonlyTupleOptions } from '~'
 export class ReadonlyTupleImpl<T extends Schemable[]> extends lazyConstructor(
 	() => CustomTupleImpl,
 )<never> {
-	constructor(elementSchemas: T) {
-		super({ ...defaultReadonlyTupleOptions, elementSchemas } as never)
+	constructor(shape: T) {
+		super({ ...defaultReadonlyTupleOptions, shape } as never)
 	}
 }

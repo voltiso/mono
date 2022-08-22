@@ -101,15 +101,15 @@ export function infer<T extends SchemableLike>(
 export function infer<T extends SchemableLike>(
 	t: T,
 ): InferSchemaNoReadonlyTuple<T> {
-	if (
+	if (isSchema(t)) return t as never
+	else if (
 		t === null ||
 		['string', 'number', 'symbol', 'boolean', 'bigint', 'undefined'].includes(
 			typeof t,
 		)
 	) {
 		return literal(t as InferableLiteral) as never
-	} else if (isSchema(t)) return t as never
-	else if (isConstructor(t)) {
+	} else if (isConstructor(t)) {
 		return instance(t) as never
 	} else if (Array.isArray(t)) return tuple(...t) as never
 	else return object(t as never) as never

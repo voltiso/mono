@@ -47,13 +47,13 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 		return this[OPTIONS].isReadonlyTuple as never
 	}
 
-	get getLength(): GetTupleLength_<this[OPTIONS]['elementSchemas']> {
-		return this.getElementSchemas.length as never
+	get getLength(): GetTupleLength_<this[OPTIONS]['shape']> {
+		return this.getShape.length as never
 	}
 
-	get getElementSchemas(): this[OPTIONS]['elementSchemas'] {
+	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS].elementSchemas as never
+		return this[OPTIONS].shape as never
 	}
 
 	// constructor(o: O) {
@@ -92,13 +92,16 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 		// eslint-disable-next-line no-param-reassign
 		x = super._fixImpl(x)
 
-		if (Array.isArray(x) && x.length === this.getElementSchemas.length) {
+		if (Array.isArray(x) && x.length === this.getShape.length) {
 			// eslint-disable-next-line no-param-reassign
 			x = x.map((element, idx) =>
 				// eslint-disable-next-line security/detect-object-injection
-				schema(this.getElementSchemas[idx]).fix(element),
+				schema(this.getShape[idx]).fix(element),
 			)
 		}
+
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
 
 		return x
 	}
@@ -115,22 +118,18 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 				}),
 			)
 		} else {
-			if (this.getElementSchemas.length !== x.length)
+			if (this.getShape.length !== x.length)
 				issues.push(
 					new ValidationIssue({
 						name: 'tuple size',
-						expected: this.getElementSchemas.length,
+						expected: this.getShape.length,
 						received: x.length,
 					}),
 				)
 
-			for (
-				let idx = 0;
-				idx < Math.min(this.getElementSchemas.length, x.length);
-				++idx
-			) {
+			for (let idx = 0; idx < Math.min(this.getShape.length, x.length); ++idx) {
 				// eslint-disable-next-line security/detect-object-injection
-				const t = this.getElementSchemas[idx] as ISchema
+				const t = this.getShape[idx] as ISchema
 				// eslint-disable-next-line security/detect-object-injection
 				const r = schema(t).tryValidate(x[idx])
 

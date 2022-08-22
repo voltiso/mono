@@ -5,7 +5,7 @@ import type { IArray, ITuple, Schemable } from '~'
 import { schema } from '~'
 
 export function _extendsArray(thisTuple: ITuple, otherArray: IArray): boolean {
-	for (const t of thisTuple.getElementSchemas)
+	for (const t of thisTuple.getShape)
 		if (!schema(t as Schemable).extends(otherArray.getElementSchema))
 			return false
 
