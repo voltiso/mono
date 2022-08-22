@@ -30,9 +30,11 @@ class Transfer extends Doc.publicOnCreation({
 
 		if (this.triggerCondition) this.amount = 1919
 	})
+	// eslint-disable-next-line etc/no-deprecated
 	.method('test', function (x: number) {
 		return x * 2
 	})
+	// eslint-disable-next-line etc/no-deprecated
 	.method('debugChangeAmount', function (x: number) {
 		this.amount = x
 	}) {}

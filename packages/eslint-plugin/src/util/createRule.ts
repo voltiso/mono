@@ -3,7 +3,6 @@
 
 import { ESLintUtils } from '@typescript-eslint/utils'
 
-// eslint-disable-next-line new-cap
 export const createRule = ESLintUtils.RuleCreator(
-	name => `https://voltiso.com/eslint/rule/${name}`,
+	name => `https://www.voltiso.com/eslint/rules/${name}`,
 )

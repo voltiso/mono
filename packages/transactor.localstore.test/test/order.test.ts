@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetType } from '@voltiso/schemar'
+import type { Type } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
 
@@ -45,7 +45,7 @@ const sPublicFields = {
 
 const sHistoryStamp = { ...sPublicFields, createdAt: s.string }
 
-type HistoryStamp = GetType<typeof sHistoryStamp>
+type HistoryStamp = Type<typeof sHistoryStamp>
 
 class OrderApiTest extends Doc('orderApiTest')({
 	private: {
@@ -54,6 +54,7 @@ class OrderApiTest extends Doc('orderApiTest')({
 
 	public: sPublicFields,
 })
+	// eslint-disable-next-line etc/no-deprecated
 	.method('addHistoryStamp', function () {
 		const newHistoryStamp: Record<string, unknown> = {}
 
@@ -67,6 +68,7 @@ class OrderApiTest extends Doc('orderApiTest')({
 		newHistoryStamp['createdAt'] = new Date().toISOString()
 		this.history.push(newHistoryStamp as HistoryStamp)
 	})
+	// eslint-disable-next-line etc/no-deprecated
 	.method('toFinalized', async function () {
 		if (this.status !== 'payment')
 			throw new Error('this order status is not "payment"')

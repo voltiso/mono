@@ -194,8 +194,9 @@ export function useStatePatcher<S extends StateObject>(
 	)
 
 	// let's pretend we're immutable
-	return useMemo(() => {
-		return new Proxy(statePatcher, handler)
+	return useMemo(
+		() => new Proxy(statePatcher, handler),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [statePatcher.raw])
+		[statePatcher.raw],
+	)
 }
