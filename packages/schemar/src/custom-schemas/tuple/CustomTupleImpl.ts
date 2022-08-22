@@ -88,6 +88,21 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 		else return super[EXTENDS](other)
 	}
 
+	protected override _fixImpl(x: unknown): unknown {
+		// eslint-disable-next-line no-param-reassign
+		x = super._fixImpl(x)
+
+		if (Array.isArray(x) && x.length === this.getElementSchemas.length) {
+			// eslint-disable-next-line no-param-reassign
+			x = x.map((element, idx) =>
+				// eslint-disable-next-line security/detect-object-injection
+				schema(this.getElementSchemas[idx]).fix(element),
+			)
+		}
+
+		return x
+	}
+
 	override _getIssuesImpl(x: unknown): ValidationIssue[] {
 		let issues = super._getIssuesImpl(x)
 
