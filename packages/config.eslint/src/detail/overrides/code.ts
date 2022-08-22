@@ -123,6 +123,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'jsx-quotes': 0,
 		'sort-imports': 0, // using `simple-import-sort/imports` instead (auto-fixable)
 		complexity: 0,
+		'wrap-iife': 0,
 
 		'sort-keys': 0, // using `sort-keys-fix` instead (auto-fixable)
 

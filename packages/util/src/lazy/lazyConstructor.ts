@@ -40,7 +40,7 @@ export function lazyConstructor<Class extends Newable>(
 
 	function Ctor(...args: any) {
 		load(cls)
-		return Reflect.construct(cls, args, new.target) as never
+		return Reflect.construct(cls, args as never, new.target) as never
 	}
 
 	Ctor.prototype = proxyProto

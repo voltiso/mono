@@ -599,6 +599,7 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       firebase-admin: ^11.0.1
       rimraf: ^3.0.2
@@ -609,6 +610,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
       rimraf: 3.0.2
 
@@ -618,6 +620,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/firestore-like': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
     dependencies:
       '@voltiso/firestore-like': link:../firestore-like
@@ -626,12 +629,14 @@ importers:
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
 
   packages/patcher:
     specifiers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       fast-equals: ^4.0.1
       jest: ^28.1.3
@@ -643,6 +648,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       jest: 28.1.3
       rimraf: 3.0.2
 
@@ -655,6 +661,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/schemar': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       cross-env: ^7.0.3
       cross-fetch: ^3.1.5
@@ -674,6 +681,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       cross-env: 7.0.3
       express: 4.18.1
       get-port: 6.1.2
@@ -751,6 +759,7 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       csstype: ^3.1.0
       fela: ^12.2.0
@@ -781,6 +790,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       csstype: 3.1.0
       fela: 12.2.0
       fela-native: 12.2.0_react-native@0.69.4
@@ -803,6 +813,7 @@ importers:
       '@voltiso/config.tsdoc': workspace:^
       '@voltiso/firestore-like': workspace:^
       '@voltiso/schemar': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       chalk: ^4.1.2
       fast-equals: ^4.0.1
@@ -823,6 +834,7 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc
       '@voltiso/schemar': link:../schemar
+      '@voltiso/script': link:../script
       rimraf: 3.0.2
       zone.js: 0.11.8
 
@@ -831,12 +843,14 @@ importers:
       '@firebase/app-types': ^0.7.0
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/transactor': workspace:^
       firebase-admin: ^11.0.1
     devDependencies:
       '@firebase/app-types': 0.7.0
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       '@voltiso/transactor': link:../transactor
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
 
@@ -849,6 +863,7 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.jest.lib': workspace:^
       '@voltiso/schemar': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/transactor': workspace:^
       '@voltiso/transactor.firestore': workspace:^
       '@voltiso/util': workspace:^
@@ -869,6 +884,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.jest.lib': link:../config.jest.lib
       '@voltiso/schemar': link:../schemar
+      '@voltiso/script': link:../script
       '@voltiso/transactor': link:../transactor
       '@voltiso/transactor.firestore': link:../transactor.firestore
       '@voltiso/util': link:../util
@@ -888,44 +904,44 @@ importers:
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/firestore-like': workspace:^
       '@voltiso/localstore': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/transactor': workspace:^
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/localstore': link:../localstore
+      '@voltiso/script': link:../script
       '@voltiso/transactor': link:../transactor
 
   packages/transactor.localstore.test:
     specifiers:
       '@types/random-seed': ^0.3.3
-      '@typescript/analyze-trace': ^0.9.0
       '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.jest.lib': workspace:^
       '@voltiso/localstore': workspace:^
       '@voltiso/schemar': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/transactor': workspace:^
       '@voltiso/transactor.localstore': workspace:^
       '@voltiso/util': workspace:^
       jest: ^28.1.3
       random-seed: ^0.3.0
-      rimraf: ^3.0.2
       zone.js: ^0.11.8
     devDependencies:
       '@types/random-seed': 0.3.3
-      '@typescript/analyze-trace': 0.9.0
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.jest.lib': link:../config.jest.lib
       '@voltiso/localstore': link:../localstore
       '@voltiso/schemar': link:../schemar
+      '@voltiso/script': link:../script
       '@voltiso/transactor': link:../transactor
       '@voltiso/transactor.localstore': link:../transactor.localstore
       '@voltiso/util': link:../util
       jest: 28.1.3
       random-seed: 0.3.0
-      rimraf: 3.0.2
       zone.js: 0.11.8
 
   packages/transform:
@@ -1041,6 +1057,7 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -1060,6 +1077,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.69.4_euumf47qgywupl3wi5tuav3owu
@@ -1071,6 +1089,7 @@ importers:
       '@types/react-dom': ^18.0.6
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util.react': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -1082,6 +1101,7 @@ importers:
       '@types/react-dom': 18.0.6
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       rimraf: 3.0.2
@@ -1098,6 +1118,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/patcher': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
       react: ^18.2.0
@@ -1118,6 +1139,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/script': link:../script
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.69.4_euumf47qgywupl3wi5tuav3owu
