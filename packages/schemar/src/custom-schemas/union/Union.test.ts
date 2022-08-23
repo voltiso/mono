@@ -36,10 +36,10 @@ describe('union', () => {
 		expect(s.string('sdf').or(s.string('asd')).extends(s.string)).toBeTruthy()
 	})
 
-	it('withFix', () => {
+	it('fix', () => {
 		expect.hasAssertions()
 
-		const a = s.string.or(s.number).withFix(x => x.toString())
+		const a = s.string.or(s.number).fix(x => x.toString())
 
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')
@@ -51,14 +51,12 @@ describe('union', () => {
 		Assert<IsIdentical<Out, string>>()
 	})
 
-	it('withFix (maybe undefined)', () => {
+	it('fix (maybe undefined)', () => {
 		expect.hasAssertions()
 
 		const a = s.string
 			.or(s.number)
-			.withFix((x): string | void =>
-				typeof x === 'number' ? x.toString() : undef,
-			)
+			.fix((x): string | void => (typeof x === 'number' ? x.toString() : undef))
 
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')

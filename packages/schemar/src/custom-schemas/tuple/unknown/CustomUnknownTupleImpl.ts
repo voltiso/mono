@@ -8,8 +8,8 @@ import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 import type {
 	CustomUnknownTuple,
 	DefaultUnknownTupleOptions,
-	ISchema,
 	Schemable,
+	SchemaLike,
 	UnknownTupleOptions,
 } from '~'
 import {
@@ -67,7 +67,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		else return new MutableTuple(shape) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: SchemaLike): boolean {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isUnknownTuple(other) && this.isReadonlyTuple && !other.isReadonlyTuple)
 			return false

@@ -5,6 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type {
+	$CustomTuple,
 	IMutableTuple,
 	InputType,
 	ITuple,
@@ -14,11 +15,10 @@ import type {
 import * as s from '~'
 
 describe('array', () => {
-	it('generic', <_O extends Partial<TupleOptions>>() => {
+	it('generic', <O extends Partial<TupleOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep...
-		// Assert.is<CustomTuple<O>, ITuple>()
+		Assert.is<$CustomTuple<O>, ITuple>()
 	})
 
 	it('type', () => {
@@ -28,7 +28,7 @@ describe('array', () => {
 		Assert<IsIdentical<Out, readonly unknown[]>>()
 
 		type In = ITuple['InputType']
-		Assert<IsIdentical<In, readonly unknown[]>>()
+		Assert<IsIdentical<In, readonly unknown[] | undefined>>()
 	})
 
 	it('type - mutable', () => {

@@ -4,15 +4,14 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, lazyConstructor, stringFrom } from '@voltiso/util'
 
-import type { InstanceOptions } from '~'
+import type { CustomInstance, IInstance, InstanceOptions } from '~'
 import * as s from '~'
 
 describe('instance', () => {
-	it('generic', <_O extends Partial<InstanceOptions>>() => {
+	it('generic', <O extends Partial<InstanceOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep...
-		// Assert.is<CustomInstance<O>, IInstance>()
+		Assert.is<CustomInstance<O>, IInstance>()
 	})
 
 	it('works', () => {

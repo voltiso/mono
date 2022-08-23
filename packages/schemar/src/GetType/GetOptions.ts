@@ -8,7 +8,6 @@ import type {
 	InferableLiteral,
 	InferableObject,
 	InferableTuple,
-	ISchema,
 } from '~'
 
 export type GetOptions<L> = L extends
@@ -16,6 +15,6 @@ export type GetOptions<L> = L extends
 	| InferableObject
 	| InferableTuple
 	? DefaultSchemaOptions
-	: L extends ISchema
+	: L extends { [OPTIONS]: any }
 	? L[OPTIONS]
 	: never

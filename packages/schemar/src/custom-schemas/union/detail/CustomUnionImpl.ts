@@ -62,7 +62,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		let moreIssues = [] as ValidationIssue[]
 
 		for (const t of this.getSchemas as Schemable[]) {
-			const r = schema(t).tryValidate(x)
+			const r = schema(t).exec(x)
 
 			if (r.isValid) valid = true
 			else moreIssues = [...moreIssues, ...r.issues]

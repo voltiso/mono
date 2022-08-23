@@ -7,6 +7,10 @@ import { lazyConstructor } from '@voltiso/util'
 import type { CustomUnion, SchemableLike, Type_ } from '~'
 import { isUnion, UnionImpl } from '~'
 
+export type $Union<Ts extends SchemableLike[]> = Ts extends any
+	? Union<Ts>
+	: never
+
 export type Union<Ts extends SchemableLike[]> = CustomUnion<{
 	schemas: Ts
 	Output: Type_<Ts[number], { kind: 'out' }>

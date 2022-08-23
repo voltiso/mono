@@ -15,15 +15,20 @@ import type { SchemableLike, SchemaOptions, ValidationResult } from '~'
 // export const IS_SCHEMA = Symbol('IS_SCHEMA')
 // export type IS_SCHEMA = typeof IS_SCHEMA
 
-export interface ISchemaLike<T = unknown> {
+export interface SchemaLike<T = unknown> {
 	readonly [SCHEMA_NAME]: string
+
+	readonly [OPTIONS]: any
+
 	get Type(): T
 	get OutputType(): T
-	get InputType(): T
+	get InputType(): T | undefined
+	get simple(): any
+	tryValidate(x: unknown): unknown
 }
 
 /** Every Schema is assignable to `ISchema` */
-export interface ISchema<T = unknown> extends ISchemaLike {
+export interface ISchema<T = unknown> extends SchemaLike<T> {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
@@ -54,7 +59,7 @@ export interface ISchema<T = unknown> extends ISchemaLike {
 	 * - Get the type using `typeof xxx.InputType`
 	 * - Type-only (no value at runtime)
 	 */
-	get InputType(): T
+	get InputType(): T | undefined
 
 	get isOptional(): boolean
 	get isStrictOptional(): boolean
@@ -64,39 +69,42 @@ export interface ISchema<T = unknown> extends ISchemaLike {
 	get hasDefault(): boolean
 	get getDefault(): unknown
 
-	get optional(): ISchema
-	get strictOptional(): ISchema
+	get optional(): any // ISchema
+	get strictOptional(): any // ISchema
 
-	get readonly(): ISchema
-	default(value: T): ISchema
-	default(getValue: () => T): ISchema
+	get readonly(): any // ISchema
+	default(value: T): any // ISchema
+	default(getValue: () => T): any // ISchema
 
 	extends(other: SchemableLike): boolean
-	[EXTENDS](other: ISchema): boolean
+	[EXTENDS](other: SchemaLike): boolean
 
-	withCheck(
-		checkIfValid: (x: any) => boolean,
+	check(
+		isValid: (x: any) => boolean,
 		expectedDescription?: string | ((x: any) => string),
-	): ISchema
+	): any // ISchema
 
-	withFix(fixFunc: (x: any) => unknown): ISchema
+	fix(fixFunc: (x: any) => unknown): any // ISchema
 
 	//
-	// RootSchema
+
 	//
 
-	toString(): string
+	Narrow(): any // ISchema
+	Widen(): any // ISchema | StaticError
+	Cast(): any // ISchema | StaticError
 
-	/** Best-effort fix - same as `tryValidate`, but does not generate issues list */
-	fix(x: unknown): unknown
+	NarrowOutput(): any // ISchema
+	WidenOutput(): any // ISchema | StaticError
+	CastOutput(): any // ISchema | StaticError
 
-	/**
-	 * Validate `this` schema, do not throw on failure
-	 *
-	 * @param x - Value to validate against `this` schema
-	 * @returns `ValidationResult` - either success or error with issue list
-	 */
-	tryValidate(x: unknown): ValidationResult
+	NarrowInput(): any // ISchema
+	WidenInput(): any // ISchema | StaticError
+	CastInput(): any // ISchema | StaticError
+
+	//
+
+	//
 
 	/**
 	 * Validate `this` schema, throw on failure
@@ -108,6 +116,22 @@ export interface ISchema<T = unknown> extends ISchemaLike {
 	validate(x: unknown): unknown
 
 	/**
+	 * Best-effort fix - same as `exec(x).value`, but does not generate issues list
+	 *
+	 * @param x - Value to validate against `this` schema
+	 * @returns Value after applying transformations (e.g. defaults)
+	 */
+	tryValidate(x: unknown): unknown
+
+	/**
+	 * Validate `this` schema, do not throw on failure
+	 *
+	 * @param x - Value to validate against `this` schema
+	 * @returns `ValidationResult` - either success or error with issue list
+	 */
+	exec(x: unknown): ValidationResult
+
+	/**
 	 * Do not return transformed value - just check if the value is valid
 	 * according to the schema
 	 *
@@ -115,7 +139,9 @@ export interface ISchema<T = unknown> extends ISchemaLike {
 	 */
 	isValid(x: unknown): boolean
 
-	// or(other: ISchema): ISchema //!
+	or(other: any /* ISchema*/): any // ISchema //!
 
-	// get simple(): ISchema //!
+	get simple(): any // ISchema //!
+
+	toString(): string
 }

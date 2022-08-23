@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "10.1.2",
+	"version": "10.1.3",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -34,7 +34,9 @@
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean",
+		"trace": "v trace",
+		"trace:run": "v traceRun"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
@@ -56,7 +58,6 @@
 		"@voltiso/config.tsdoc": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
 		"@voltiso/script": "workspace:^",
-		"rimraf": "^3.0.2",
 		"zone.js": "^0.11.8"
 	},
 	"__________MISC": "__________",

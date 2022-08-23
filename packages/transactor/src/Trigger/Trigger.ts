@@ -3,7 +3,7 @@
 
 import type { MaybePromise } from '@voltiso/util'
 
-import type { Doc, DocLike, DocTI, DTI, IDoc } from '~/Doc'
+import type { Doc, DocLike, DocTI, DTI } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { DeleteIt } from '~/it'
 
@@ -13,7 +13,7 @@ import type {
 	TriggerParams,
 } from './TriggerParams'
 
-type Return<D extends DocLike> =
+export type TriggerReturn<D extends DocLike> =
 	| GetInputData<D[DTI]>
 	| DeleteIt
 	| undefined
@@ -24,22 +24,22 @@ export type AfterTrigger<
 	This = D | null,
 	Before extends boolean = boolean,
 	After extends boolean = boolean,
-	R = Return<D>,
+	R = TriggerReturn<D>,
 	Params = AfterTriggerParams<D, This, Before, After>,
 > = (this: This, params: Params) => MaybePromise<R>
 
 export type OnGetTrigger<
 	D extends DocLike = Doc<DocTI, 'inside'>,
 	This = D | null,
-	R = Return<D>,
+	R = TriggerReturn<D>,
 > = (this: This, params: TriggerParams<D, This>) => MaybePromise<R>
 
-export type UnknownTrigger = <D extends IDoc>(
+export type UnknownTrigger = <D extends DocLike>(
 	this: D | null,
 	params: TriggerParams<D>,
-) => MaybePromise<Return<D>>
+) => MaybePromise<TriggerReturn<D>>
 
 export type BeforeCommitTrigger<D extends DocLike = Doc<DocTI, 'inside'>> = (
 	this: D | null,
 	params: BeforeCommitTriggerParams<D>,
-) => MaybePromise<Return<D>>
+) => MaybePromise<TriggerReturn<D>>

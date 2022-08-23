@@ -4,35 +4,43 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { Schema, SchemaOptions } from '~'
+import type {
+	Schema,
+	Schemable,
+	SchemableLike,
+	SchemaOptions,
+	SimpleSchema,
+} from '~'
 import { schema, unknown } from '~'
 
 import type { CustomSchema } from '.'
 
 describe('CustomSchema', () => {
-	it('generic', <_O extends Partial<SchemaOptions>>() => {
+	it('generic', <O extends Partial<SchemaOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep
-		// Assert.is<CustomSchema<O>, ISchema>()
+		Assert.is<CustomSchema<O>, Schema>()
+		Assert.is<CustomSchema<O>, Schemable>()
+		Assert.is<CustomSchema<O>, SchemableLike>()
 	})
 
 	it('type', () => {
 		expect.assertions(0)
 
-		type MySchema = Schema<Date>
+		type MySchema = SimpleSchema<Date>
 
 		type X = MySchema['isReadonly']
 		Assert<IsIdentical<X, false>>()
 
 		type A = MySchema['optional']
+
 		Assert<
 			IsIdentical<
 				A,
 				CustomSchema<{
+					isOptional: true
 					Output: Date
 					Input: Date
-					isOptional: true
 				}>
 			>
 		>()
@@ -48,9 +56,9 @@ describe('CustomSchema', () => {
 		expect.assertions(0)
 
 		const mySchema = schema({
-			field: unknown as unknown as Schema<Date>,
-			optionalField: unknown as unknown as Schema<Date>['optional'],
-			readonlyField: unknown as unknown as Schema<Date>['readonly'],
+			field: unknown as unknown as SimpleSchema<Date>,
+			optionalField: unknown as unknown as SimpleSchema<Date>['optional'],
+			readonlyField: unknown as unknown as SimpleSchema<Date>['readonly'],
 		})
 		type MySchema = typeof mySchema.OutputType
 

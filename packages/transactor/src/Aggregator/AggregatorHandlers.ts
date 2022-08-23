@@ -4,7 +4,7 @@
 import type { Type } from '@voltiso/schemar'
 import type { MaybePromise } from '@voltiso/util'
 
-import type { GetDataWithId, IDoc, IRef, NestedData } from '~'
+import type { DocLike, GetDataWithId, NestedData, RefLike } from '~'
 import type { DocConstructorLike } from '~/Doc/DocConstructor'
 import type { DTI } from '~/Doc/DocTI'
 import type { DocTypes } from '~/DocTypes'
@@ -14,7 +14,7 @@ export interface IAggregatorHandlers {
 	initialValue?: unknown
 
 	filter?(this: object): boolean | PromiseLike<boolean>
-	target(this: object): IRef | MaybePromise<IDoc> //! Promise<IRef> - ! how to support promises??
+	target(this: object): RefLike | MaybePromise<DocLike> //! Promise<IRef> - ! how to support promises??
 
 	autoCreateTarget?: boolean | undefined
 

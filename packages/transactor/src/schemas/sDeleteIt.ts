@@ -5,4 +5,4 @@ import * as s from '@voltiso/schemar'
 
 import { schemaDeleteIt } from '~/Ref/_/_symbols'
 
-export const sDeleteIt = s.unknown.withFix(() => schemaDeleteIt)
+export const sDeleteIt = s.unknown.fix(() => schemaDeleteIt)

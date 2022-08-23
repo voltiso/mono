@@ -12,11 +12,4 @@ export interface CustomAny<O extends Partial<AnyOptions>>
 
 	readonly [BASE_OPTIONS]: AnyOptions
 	readonly [DEFAULT_OPTIONS]: DefaultAnyOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	AnyOptions,
-	// 	MergeSchemaOptions<DefaultAnyOptions, O>
-	// >
 }

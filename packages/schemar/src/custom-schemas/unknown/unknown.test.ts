@@ -24,12 +24,12 @@ describe('unknown', () => {
 		expect(isSchema(s.undefined)).toBeTruthy()
 	})
 
-	it('generic', <_O extends Partial<s.UnknownOptions>>() => {
+	it('generic', <O extends Partial<s.UnknownOptions>>() => {
 		expect.assertions(0)
 
-		// Assert.is<s.CustomUnknown<O>, s.IUnknown>() // ! too deep...
-		// Assert.is<s.CustomUnknown<O>, s.ISchema>() // ! too deep...
-		// Assert.is<s.CustomUnknown<O>, s.Schemable>() // ! too deep...
+		Assert.is<s.CustomUnknown<O>, s.IUnknown>()
+		Assert.is<s.CustomUnknown<O>, s.ISchema>()
+		Assert.is<s.CustomUnknown<O>, s.Schemable>()
 
 		Assert.is<s.Unknown, s.IUnknown>()
 		Assert.is<s.Unknown, s.ISchema>()
@@ -48,7 +48,7 @@ describe('unknown', () => {
 
 		expect(s.unknown.extends(s.string)).toBeFalsy()
 
-		expect(s.unknown.tryValidate(123).isValid).toBeTruthy()
+		expect(s.unknown.exec(123).isValid).toBeTruthy()
 
 		expect(s.unknown.validate(123)).toBe(123)
 

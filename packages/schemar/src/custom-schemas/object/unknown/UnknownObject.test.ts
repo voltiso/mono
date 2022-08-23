@@ -3,14 +3,18 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IUnknownObject, object, UnknownObjectOptions } from '~'
+import type {
+	CustomUnknownObject,
+	IUnknownObject,
+	object,
+	UnknownObjectOptions,
+} from '~'
 
 describe('object', () => {
-	it('generic', <_O extends Partial<UnknownObjectOptions>>() => {
+	it('generic', <O extends Partial<UnknownObjectOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep!
-		// Assert.is<CustomUnknownObject<O>, IUnknownObject>()
+		Assert.is<CustomUnknownObject<O>, IUnknownObject>()
 	})
 
 	it('type', () => {

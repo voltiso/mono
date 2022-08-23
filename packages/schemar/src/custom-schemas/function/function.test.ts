@@ -5,6 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type {
+	$CustomFunction,
 	$Type_,
 	CustomFunction,
 	FunctionOptions,
@@ -12,6 +13,7 @@ import type {
 	InputType,
 	ISchema,
 	OutputType,
+	Schema,
 	Schemable,
 	Type_,
 } from '~'
@@ -50,10 +52,9 @@ describe('function', () => {
 		// Assert.is<never[], []>()
 		// Assert.is<never[], GetType_<O['arguments'], { kind: 'out' }>>()
 
-		//! too deep...
-		// Assert.is<CustomFunction<O>, IFunction>()
-		// Assert.is<CustomFunction<O>, s.ISchema>()
-		// Assert.is<CustomFunction<O>, s.ISchema<(...args: any) => unknown>>()
+		Assert.is<$CustomFunction<O>, IFunction>()
+		Assert.is<CustomFunction<O>, Schema>()
+		Assert.is<$CustomFunction<O>, ISchema<(...args: any) => unknown>>()
 	})
 
 	it('type', () => {

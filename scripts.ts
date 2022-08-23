@@ -76,11 +76,12 @@ export const typecov = [
 	'prettier --write ./package.json',
 ]
 
-export const trace = [
+export const traceRun = [
 	'rimraf traceDir',
-	'tsc --generateTrace traceDir',
+	'tsc --generateTrace traceDir | gnomon',
 	'analyze-trace traceDir',
 ]
+export const trace = turbo("trace:run")
 
 export const clean = 'rimraf node_modules dist'
 

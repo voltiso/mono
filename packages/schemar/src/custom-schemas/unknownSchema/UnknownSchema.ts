@@ -5,25 +5,24 @@ import { lazyConstructor, lazyValue } from '@voltiso/util'
 
 import type {
 	CustomUnknownSchema,
-	Inferable,
-	InferableLike,
-	InferSchema,
-	ISchema,
-	ISchemaLike,
+	InferSchema_,
 	SchemableLike,
+	Simplify,
 } from '~'
 import { UnknownSchemaImpl } from '~'
 
 export interface InferAndSimplifyFunction {
-	<S extends SchemableLike>(schemable: S): ISchemaLike extends S
-		? ISchema
-		: InferableLike extends S
-		? ISchema
-		: Inferable extends S
-		? ISchema
-		: ISchema extends S
-		? ISchema
-		: InferSchema<S>['simple']
+	<S extends SchemableLike>(schemable: S): Simplify<InferSchema_<S>>
+
+	// <S extends SchemableLike>(schemable: S): SchemaLike extends S
+	// 	? Schema
+	// 	: InferableLike extends S
+	// 	? Schema
+	// 	: Inferable extends S
+	// 	? Schema
+	// 	: ISchema extends S
+	// 	? Schema
+	// 	: InferSchema<S>['simple']
 }
 
 export interface UnknownSchema

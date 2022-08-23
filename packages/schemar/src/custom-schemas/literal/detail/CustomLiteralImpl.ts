@@ -32,7 +32,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 {
 	readonly [SCHEMA_NAME] = 'Literal' as const
 
-	get getValues(): this[OPTIONS]['values'] {
+	get getValues(): Set<this[OPTIONS]['Output']> {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].values as never
 	}

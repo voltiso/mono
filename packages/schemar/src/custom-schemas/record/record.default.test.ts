@@ -10,7 +10,7 @@ const sOrderProduct = s.schema({
 	productId: s.string,
 })
 
-const sPrefixedString = s.string.withFix(x =>
+const sPrefixedString = s.string.fix(x =>
 	typeof x === 'string' && !x.startsWith('_') ? `_${x}` : x,
 )
 

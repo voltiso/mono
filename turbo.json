@@ -46,6 +46,16 @@
 
 		"fix:prettier": {},
 
-		"fix:eslint": {}
+		"fix:eslint": {},
+
+		"trace:run": {
+			"dependsOn": ["^build:cjs"],
+			"outputs": ["traceDir"]
+		},
+
+		"trace": {
+			"dependsOn": ["trace:run"],
+			"outputs": []
+		}
 	}
 }

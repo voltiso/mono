@@ -3,15 +3,15 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import type { ISchema, SchemaOptions } from '~'
+import type { Schema, SchemaLike, SchemaOptions } from '~'
 import { any, array, defaultSchemaOptions, unknown } from '~'
 
 export interface FunctionOptions extends SchemaOptions {
-	Output: (...args: any) => unknown
-	Input: (...args: any) => unknown
+	Output: (...args: any) => any
+	Input: (...args: any) => any
 
-	arguments: ISchema<any[]>
-	result: ISchema<unknown>
+	arguments: SchemaLike<any[]>
+	result: SchemaLike<unknown>
 }
 
 export const defaultFunctionOptions = lazyValue(() => ({
@@ -19,8 +19,8 @@ export const defaultFunctionOptions = lazyValue(() => ({
 	Output: 0 as unknown as (...args: any) => unknown,
 	Input: 0 as unknown as (...args: any) => unknown,
 
-	arguments: array(any) as unknown as ISchema<any[]>,
-	result: unknown as unknown as ISchema<unknown>,
+	arguments: array(any) as unknown as Schema<any[]>,
+	result: unknown as unknown as Schema<unknown>,
 }))
 
 export type DefaultFunctionOptions = typeof defaultFunctionOptions

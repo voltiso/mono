@@ -10,20 +10,23 @@ import type {
 	ISchema,
 	MergeSchemaOptions,
 	SchemableLike,
+	SchemaLike,
 	TupleOptions,
 } from '~'
 
-export interface ITuple extends ISchema {
+export interface TupleLike<T extends readonly unknown[] = readonly unknown[]>
+	extends SchemaLike<T> {
+	readonly [SCHEMA_NAME]: 'Tuple'
+}
+
+export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
+	extends ISchema<T> {
 	readonly [SCHEMA_NAME]: 'Tuple'
 
 	readonly [BASE_OPTIONS]: TupleOptions
 	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
 
 	readonly [OPTIONS]: TupleOptions
-
-	get Type(): readonly unknown[]
-	get OutputType(): readonly unknown[]
-	get InputType(): readonly unknown[]
 
 	get isReadonlyTuple(): boolean
 	get getShape(): SchemableLike[]

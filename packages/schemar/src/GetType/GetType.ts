@@ -6,7 +6,7 @@ import type {
 	InferableLiteral,
 	InferableObject,
 	InferableTuple,
-	ISchemaLike,
+	SchemaLike,
 } from '~'
 
 import type { ObjectType_ } from './GetObjectType'
@@ -43,7 +43,7 @@ export type Type_<L, IO extends GetTypeOptions = { kind: 'out' }> = L extends {
  * @inline
  */
 export type Type<
-	S extends ISchemaLike | InferableLike,
+	S extends SchemaLike | InferableLike,
 	Options extends GetTypeOptions = { kind: 'out' },
 > = Type_<S, Options>
 
@@ -63,7 +63,7 @@ export type $Type_<
  * @inline
  */
 export type $Type<
-	S extends ISchemaLike | InferableLike,
+	S extends SchemaLike | InferableLike,
 	Options extends GetTypeOptions = { kind: 'out' },
 > = S extends any ? Type_<S, Options> : never
 
@@ -72,7 +72,7 @@ export type $Type<
  *
  * @inline
  */
-export type OutputType<S extends ISchemaLike | InferableLike> = Type_<
+export type OutputType<S extends SchemaLike | InferableLike> = Type_<
 	S,
 	{ kind: 'out' }
 >
@@ -82,7 +82,7 @@ export type OutputType<S extends ISchemaLike | InferableLike> = Type_<
  *
  * @inline
  */
-export type $OutputType<S extends ISchemaLike | InferableLike> = S extends any
+export type $OutputType<S extends SchemaLike | InferableLike> = S extends any
 	? OutputType<S>
 	: never
 
@@ -91,7 +91,7 @@ export type $OutputType<S extends ISchemaLike | InferableLike> = S extends any
  *
  * @inline
  */
-export type InputType<S extends ISchemaLike | InferableLike> = Type_<
+export type InputType<S extends SchemaLike | InferableLike> = Type_<
 	S,
 	{ kind: 'in' }
 >
@@ -101,6 +101,6 @@ export type InputType<S extends ISchemaLike | InferableLike> = Type_<
  *
  * @inline
  */
-export type $InputType<S extends ISchemaLike | InferableLike> = S extends any
+export type $InputType<S extends SchemaLike | InferableLike> = S extends any
 	? InputType<S>
 	: never

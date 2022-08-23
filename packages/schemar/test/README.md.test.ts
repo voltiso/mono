@@ -11,7 +11,7 @@ describe('README.md', () => {
 			field: s.number,
 		}
 
-		const { isValid } = s.schema(mySchemable).tryValidate({ field: 123 })
+		const { isValid } = s.schema(mySchemable).exec({ field: 123 })
 
 		expect(isValid).toBeTruthy()
 	})

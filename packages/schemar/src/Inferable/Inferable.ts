@@ -30,7 +30,11 @@ export type Inferable =
 
 export type InferableObjectLike = { [k: keyof any]: SchemableLike }
 
-export type InferableTupleLike = readonly SchemableLike[]
+export type InferableMutableTupleLike = SchemableLike[]
+export type InferableReadonlyTupleLike = readonly SchemableLike[]
+export type InferableTupleLike =
+	| InferableMutableTupleLike
+	| InferableReadonlyTupleLike
 
 export type InferableLike =
 	| InferableObjectLike

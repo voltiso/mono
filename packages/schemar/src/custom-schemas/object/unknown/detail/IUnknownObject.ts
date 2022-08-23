@@ -3,7 +3,11 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema } from '~'
+import type { ISchema, SchemaLike } from '~'
+
+export interface UnknownObjectLike extends SchemaLike<object> {
+	readonly [SCHEMA_NAME]: 'UnknownObject'
+}
 
 export interface IUnknownObject extends ISchema {
 	readonly [SCHEMA_NAME]: 'UnknownObject'

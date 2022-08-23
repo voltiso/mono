@@ -5,17 +5,17 @@ import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import type {
 	$Type,
-	IArray,
-	InferableReadonlyTuple,
-	ISchema,
-	ITuple,
-	Schemable,
+	ArrayLike,
+	InferableReadonlyTupleLike,
+	SchemableLike,
+	SchemaLike,
+	TupleLike,
 } from '~'
 import { CustomFunctionImpl, defaultFunctionOptions, Function, schema } from '~'
 
 export class FunctionImpl<
-	Args extends InferableReadonlyTuple | ITuple | IArray,
-	R extends Schemable,
+	Args extends InferableReadonlyTupleLike | TupleLike | ArrayLike,
+	R extends SchemableLike,
 > extends lazyConstructor(() => CustomFunctionImpl)<never> {
 	constructor(args: Args, result: R) {
 		super({
@@ -30,8 +30,10 @@ export class FunctionImpl<
 
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<
-		Args extends InferableReadonlyTuple | ((ITuple | IArray) & ISchema),
-		R extends Schemable,
+		Args extends
+			| InferableReadonlyTupleLike
+			| ((TupleLike | ArrayLike) & SchemaLike),
+		R extends SchemableLike,
 		// eslint-disable-next-line @typescript-eslint/ban-types
 	>(args: Args, r: R): Function<(...args: $Type<Args>) => R> {
 		return new Function(args, r) as never

@@ -4,17 +4,23 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { IAny, InputType, ISchema, NeverOptions, OutputType } from '~'
+import type {
+	AnyOptions,
+	CustomAny,
+	IAny,
+	InputType,
+	ISchema,
+	OutputType,
+} from '~'
 import * as s from '~'
 
 describe('any', () => {
-	it('generic', <_O extends Partial<NeverOptions>>() => {
+	it('generic', <O extends Partial<AnyOptions>>() => {
 		expect.assertions(0)
 
 		Assert.is<IAny, ISchema>()
-
-		// ! too deep...
-		// Assert.is<CustomAny<O>, IAny>()
+		Assert.is<CustomAny<O>, ISchema>()
+		Assert.is<CustomAny<O>, IAny>()
 	})
 
 	it('simple', () => {

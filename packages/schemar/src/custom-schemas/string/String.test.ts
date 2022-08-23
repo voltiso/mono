@@ -7,18 +7,26 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { CustomString, ISchema, OutputType, StringOptions, Type } from '~'
+import type {
+	$CustomString,
+	CustomString,
+	ISchema,
+	IString,
+	OutputType,
+	Schema,
+	StringOptions,
+	Type,
+} from '~'
 import * as s from '~'
 
 describe('string', () => {
-	it('generic', <_O extends Partial<StringOptions>>() => {
+	it('generic', <O extends Partial<StringOptions>>() => {
 		expect.assertions(0)
 
 		Assert.is<s.IString, ISchema>()
 
-		// ! too deep...
-		// Assert.is<CustomString<O>, Schema>()
-		// Assert.is<CustomString<O>, IString>()
+		Assert.is<CustomString<O>, Schema>()
+		Assert.is<$CustomString<O>, IString>()
 	})
 
 	it('type', () => {
@@ -58,12 +66,12 @@ describe('string', () => {
 		expect.hasAssertions()
 
 		expect(s.string.validate('123')).toBeTruthy()
-		expect(s.string.tryValidate(123).isValid).toBeFalsy()
+		expect(s.string.exec(123).isValid).toBeFalsy()
 
 		expect(s.string('123', '234').validate('123')).toBeTruthy()
-		expect(s.string('123', '234').tryValidate(1).isValid).toBeFalsy()
-		expect(s.string('123', '234').tryValidate('1').isValid).toBeFalsy()
-		expect(s.string('123', '234').tryValidate(123).isValid).toBeFalsy()
+		expect(s.string('123', '234').exec(1).isValid).toBeFalsy()
+		expect(s.string('123', '234').exec('1').isValid).toBeFalsy()
+		expect(s.string('123', '234').exec(123).isValid).toBeFalsy()
 	})
 
 	it('toString', () => {
@@ -91,7 +99,7 @@ describe('string', () => {
 		expect(s.string.minLength(3).validate('abc')).toBeTruthy()
 		expect(() => s.string.minLength(3).validate('ab')).toThrow('3')
 
-		expect(s.string.maxLength(3).tryValidate('abc').isValid).toBeTruthy()
+		expect(s.string.maxLength(3).exec('abc').isValid).toBeTruthy()
 		expect(() => s.string.maxLength(3).validate('abcd')).toThrow('3')
 
 		expect(() => s.string.lengthRange(2, 3).validate('abcd')).toThrow('3')
@@ -117,7 +125,7 @@ describe('string', () => {
 
 		const slug = s.string
 			.lengthRange(1, 10)
-			.withCheck(
+			.check(
 				x => !['add'].includes(x),
 				x => `not equal '${x}'`,
 			)
@@ -149,10 +157,10 @@ describe('string', () => {
 		expect(() => a.validate('012')).toThrow('012')
 	})
 
-	it('withFix', () => {
+	it('fix', () => {
 		expect.hasAssertions()
 
-		const a = s.string.withFix((str: string) =>
+		const a = s.string.fix((str: string) =>
 			str.length > 3 ? str.slice(0, 3) : undefined,
 		)
 

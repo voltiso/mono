@@ -43,7 +43,6 @@ export function useForm<S extends InferableObject>(
 
 	// type I = GetInputType<S>
 
-
 	// const schema = useMemo(() => s.schema(schemable), [schemable])
 
 	// const storage = useMemo<LocalStorage<Partial<I>> | undefined>(() => {
@@ -104,7 +103,7 @@ export function useForm<S extends InferableObject>(
 	// 		try {
 	// 			let focusSet = false
 	// 			// console.log('validate 1')
-	// 			const r = schema.tryValidate(state.data)
+	// 			const r = schema.exec(state.data)
 	// 			let validationResults: ValidationResults<I> = {}
 
 	// 			if (!r.isValid) {

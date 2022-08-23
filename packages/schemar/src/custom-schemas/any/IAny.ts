@@ -1,9 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { type BASE_OPTIONS, type DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
+import { SCHEMA_NAME } from '_'
 
-import type { AnyOptions, DefaultAnyOptions, ISchema } from '~'
+import type { AnyOptions, DefaultAnyOptions, ISchema, SchemaLike } from '~'
+
+export interface AnyLike extends SchemaLike<any> {
+	readonly [SCHEMA_NAME]: 'Any'
+}
 
 export interface IAny extends ISchema {
 	readonly [SCHEMA_NAME]: 'Any'

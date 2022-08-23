@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type CustomCheck<InputType = any> = {
+import type { BivariantCallable_ } from '@voltiso/util'
+
+export type CustomCheck<InputType = unknown> = {
 	checkIfValid(x: unknown): boolean
-	expectedDescription?: string | ((x: InputType) => string)
+	expectedDescription?: string | BivariantCallable_<(x: InputType) => string>
 }

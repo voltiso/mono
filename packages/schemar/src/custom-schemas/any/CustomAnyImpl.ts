@@ -1,15 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	SCHEMA_NAME,
-} from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { AnyOptions, DefaultAnyOptions, IAny, Schema } from '~'
+import type { AnyOptions, DefaultAnyOptions, Schema } from '~'
 import {
 	CustomSchemaImpl,
 	isAny,
@@ -24,10 +20,9 @@ export interface CustomAnyImpl<O> {
 	readonly [BASE_OPTIONS]: AnyOptions
 }
 
-export class CustomAnyImpl<O extends Partial<AnyOptions>>
-	extends lazyConstructor(() => CustomSchemaImpl)<O>
-	implements IAny
-{
+export class CustomAnyImpl<
+	O extends Partial<AnyOptions>,
+> extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	readonly [SCHEMA_NAME] = 'Any' as const;
 
 	// eslint-disable-next-line class-methods-use-this

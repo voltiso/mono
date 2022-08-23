@@ -14,6 +14,9 @@ import type {
 	UnknownObjectOptions,
 } from '~'
 
+export type $CustomUnknownObject<O extends Partial<UnknownObjectOptions>> =
+	O extends any ? CustomUnknownObject<O> : never
+
 export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'UnknownObject'

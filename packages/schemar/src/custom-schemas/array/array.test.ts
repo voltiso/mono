@@ -5,6 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
 import type {
+	$CustomArray,
 	ArrayOptions,
 	IArray,
 	IMutableArray,
@@ -18,11 +19,10 @@ import { isArray, isString } from '~'
 import * as s from '~'
 
 describe('array', () => {
-	it('generic', <_O extends Partial<ArrayOptions>>() => {
+	it('generic', <O extends Partial<ArrayOptions>>() => {
 		expect.assertions(0)
 
-		// ! too deep...
-		// Assert.is<CustomArray<O>, s.IArray>()
+		Assert.is<$CustomArray<O>, IArray>()
 	})
 
 	it('type', () => {
@@ -60,7 +60,7 @@ describe('array', () => {
 		Assert<IsIdentical<Out, readonly unknown[]>>()
 
 		type In = IArray['InputType']
-		Assert<IsIdentical<In, readonly unknown[]>>()
+		Assert<IsIdentical<In, readonly unknown[] | undefined>>()
 	})
 
 	it('interface type - mutable', () => {
@@ -183,7 +183,7 @@ describe('array', () => {
 
 		Assert.is<typeof s.array, s.IArray>()
 		Assert.is<typeof an, s.IArray>()
-		// Assert.is<typeof anl, s.IArray>() // ! too deep...
+		Assert.is<typeof anl, s.IArray>()
 
 		expect(
 			s.readonlyArray(s.number(123)).extends(s.readonlyArray(s.number)),

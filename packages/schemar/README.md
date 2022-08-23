@@ -63,6 +63,6 @@ const mySchemable = {
 	field: s.number,
 }
 
-const { isValid } = s.schema(mySchemable).tryValidate({ field: 123 })
+const { isValid } = s.schema(mySchemable).exec({ field: 123 })
 // --> true
 ```

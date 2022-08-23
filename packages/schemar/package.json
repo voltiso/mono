@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/schemar",
-	"version": "14.0.0",
+	"version": "15.0.1",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -40,7 +40,8 @@
 		"__________MISC": "__________",
 		"clean": "v clean",
 		"__________TS_TRACE": "__________",
-		"trace": "v trace"
+		"trace": "v trace",
+		"trace:run": "v traceRun"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

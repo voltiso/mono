@@ -30,11 +30,11 @@ describe('number', () => {
 		expect.hasAssertions()
 
 		// @ts-expect-error cannot fix without default value
-		;() => s.bigint.withFix(undef)
+		;() => s.bigint.fix(undef)
 
 		const n = s.bigint.default(123n as const)
 
-		expect(n.tryValidate(undef).value).toBe(123n)
+		expect(n.exec(undef).value).toBe(123n)
 
 		Assert<IsIdentical<Type_<typeof n, { kind: 'out' }>, bigint>>()
 		Assert<IsIdentical<Type_<typeof n, { kind: 'in' }>, bigint | undefined>>()

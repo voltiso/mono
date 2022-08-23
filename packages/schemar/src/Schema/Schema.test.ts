@@ -9,11 +9,10 @@ import type {
 	DefaultSchemaOptions,
 	InferableReadonlyTuple,
 	InputType,
-	Literal,
 	OPTIONS,
 	OutputType,
+	Schema,
 	SchemaOptions,
-	String,
 } from '~'
 import { infer } from '~'
 import {
@@ -27,11 +26,10 @@ import {
 } from '~'
 
 describe('Schema', () => {
-	it('generic', <_O extends SchemaOptions>() => {
+	it('generic', <O extends SchemaOptions>() => {
 		expect.assertions(0)
 
-		//! too deep...
-		// Assert.is<Schema<O>, Schema>()
+		Assert.is<Schema<O>, Schema>()
 	})
 
 	it('SchemaImpl', () => {
@@ -40,25 +38,6 @@ describe('Schema', () => {
 		type A = CustomSchemaImpl<DefaultSchemaOptions>['optional']['readonly']
 		Assert.is<A[OPTIONS], { optional: true; readonly: true }>()
 	})
-
-	// eslint-disable-next-line jest/no-commented-out-tests
-	// it('type - optional', () => {
-	// 	expect.assertions(0)
-
-	// 	type A = s.Schema<readonly unknown[]>
-	// 	type AA = A['optional']
-
-	// 	Assert<
-	// 		IsIdentical<
-	// 			AA,
-	// 			s.CustomTypeOnly<{
-	// 				Output: readonly unknown[]
-	// 				Input: readonly unknown[]
-	// 				isOptional: true
-	// 			}>
-	// 		>
-	// 	>()
-	// })
 
 	it('works', () => {
 		expect.hasAssertions()
@@ -80,13 +59,13 @@ describe('Schema', () => {
 
 		Assert<IsIdentical<OutputType<typeof b>, [123, string]>>()
 
-		const c = schema([number(123), string] as [Literal<123>, String])
+		const c = schema([number(123), string] as const)
 
 		expect(c.extends(array)).toBeTruthy()
 		expect(c.extends(tuple(number, string))).toBeTruthy()
 
-		Assert<IsIdentical<OutputType<typeof c>, [123, string]>>()
-		Assert<IsIdentical<InputType<typeof c>, [123, string]>>()
+		Assert<IsIdentical<OutputType<typeof c>, readonly [123, string]>>()
+		Assert<IsIdentical<InputType<typeof c>, readonly [123, string]>>()
 
 		const dd = readonlyTuple([123, 'test'] as const)
 

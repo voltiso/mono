@@ -12,11 +12,8 @@ export interface CustomNever<O extends Partial<NeverOptions>>
 
 	readonly [BASE_OPTIONS]: NeverOptions
 	readonly [DEFAULT_OPTIONS]: DefaultNeverOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	NeverOptions,
-	// 	MergeSchemaOptions<DefaultNeverOptions, O>
-	// >
 }
+
+export type $CustomNever<O extends Partial<NeverOptions>> = O extends any
+	? CustomNever<O>
+	: never

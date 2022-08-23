@@ -4,14 +4,21 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { InputType, ISchema, NeverOptions, OutputType } from '~'
+import type {
+	$CustomNever,
+	INever,
+	InputType,
+	ISchema,
+	NeverOptions,
+	OutputType,
+} from '~'
 import * as s from '~'
 
 describe('never', () => {
-	it('generic', <_O extends Partial<NeverOptions>>() => {
+	it('generic', <O extends Partial<NeverOptions>>() => {
 		expect.assertions(0)
 
-		// Assert.is<CustomNever<O>, INever>() // ! too deep...
+		Assert.is<$CustomNever<O>, INever>()
 	})
 
 	it('simple', () => {

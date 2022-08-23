@@ -1,15 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from '@voltiso/util'
-
 import type { DocConstructorLike, DocLike, DTI } from '~/Doc'
 
 import type { InferMethods } from './InferMethods'
 
 //
 
-export type InferFromDoc<D extends DocLike> = Merge2_<D[DTI], { doc: D }> & {
+export type InferFromDoc<D extends DocLike> = D[DTI] & {
 	methods: InferMethods<D>
 } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
 

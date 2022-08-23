@@ -1,39 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import type { Assume } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 
 import type {
 	CustomSchema,
 	DefaultTupleOptions,
 	DefineSchema,
 	GetTupleLength_,
-	MergeSchemaOptions,
 	TupleOptions,
 } from '~'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore error TS2589: Type instantiation is excessively deep and possibly infinite.
+export type $CustomTuple<O extends Partial<TupleOptions>> = O extends any
+	? CustomTuple<O>
+	: never
+
 export interface CustomTuple<O extends Partial<TupleOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Tuple'
 
 	readonly [BASE_OPTIONS]: TupleOptions
 	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
-
-	readonly [PARTIAL_OPTIONS]: O
-
-	readonly [OPTIONS]: Assume<
-		TupleOptions,
-		MergeSchemaOptions<DefaultTupleOptions, O>
-	>
 
 	//
 

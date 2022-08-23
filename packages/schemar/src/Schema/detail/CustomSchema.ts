@@ -9,13 +9,18 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
-import type { _, AlsoAccept, IsCompatible, IsIdentical } from '@voltiso/util'
+import type {
+	_,
+	AlsoAccept,
+	IsCompatible,
+	IsIdentical,
+	Throw,
+} from '@voltiso/util'
 
 import type {
 	DefaultSchemaOptions,
 	DefineSchema,
 	MergeSchemaOptions,
-	Schemable,
 	SchemableLike,
 	SchemaOptions,
 	SimpleSchema,
@@ -24,9 +29,15 @@ import type {
 	ValidationResult,
 } from '~'
 
-import type { ISchema } from './ISchema'
+import type { ISchema, SchemaLike } from './ISchema'
 
-export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
+export type $CustomSchema<O extends Partial<SchemaOptions> = {}> = O extends any
+	? CustomSchema<O>
+	: never
+
+export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
+	extends ISchema,
+		SchemaLike {
 	//
 	readonly [SCHEMA_NAME]: string // SchemaName
 
@@ -85,7 +96,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 		: this[OPTIONS]['Output']
 
 	extends(other: SchemableLike): boolean
-	[EXTENDS](other: ISchema): boolean
+	[EXTENDS](other: SchemaLike): boolean
 
 	// builder
 
@@ -139,28 +150,95 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	//
 
 	/** @inline */
-	withCheck(
+	check(
 		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
 		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
 	): this
 
 	/** @inline */
-	withFix<Out extends this[OPTIONS]['Output']>(
+	fix<Out extends this[OPTIONS]['Output']>(
 		fixFunc: (x: this[OPTIONS]['Input']) => Out | void,
 	): DefineSchema<this, { Output: Out }>
 
 	//
 
-	/** Best-effort fix - same as `tryValidate`, but does not generate issues list */
-	fix<X>(x: X): X | this[OPTIONS]['Output']
+	//
 
-	/**
-	 * Validate `this` schema, do not throw on failure
-	 *
-	 * @param x - Value to validate against `this` schema
-	 * @returns `ValidationResult` - either success or error with issue list
-	 */
-	tryValidate(x: this[OPTIONS]['Input'] | AlsoAccept<unknown>): ValidationResult
+	Narrow<
+		// eslint-disable-next-line etc/no-misused-generics
+		NewType extends this['OutputType'] & this['InputType'],
+	>(): DefineSchema<this, { Output: NewType; Input: NewType }>
+
+	// eslint-disable-next-line etc/no-misused-generics
+	Widen<NewType>(): this['OutputType'] | this['InputType'] extends NewType
+		? DefineSchema<this, { Output: NewType; Input: NewType }>
+		: Throw<
+				'Widen: NewType is not supertype' & TypeCastErrorDetail<this, NewType>
+		  >
+
+	// eslint-disable-next-line etc/no-misused-generics
+	Cast<NewType>(): this['OutputType'] | this['InputType'] extends NewType
+		? DefineSchema<this, { Output: NewType; Input: NewType }>
+		: NewType extends this['OutputType'] & this['InputType']
+		? DefineSchema<this, { Output: NewType; Input: NewType }>
+		: Throw<
+				'Cast: NewType is not subtype or supertype' &
+					TypeCastErrorDetail<this, NewType>
+		  >
+
+	//
+
+	NarrowOutput<
+		// eslint-disable-next-line etc/no-misused-generics
+		NewType extends this['OutputType'],
+	>(): DefineSchema<this, { Output: NewType }>
+
+	// eslint-disable-next-line etc/no-misused-generics
+	WidenOutput<NewType>(): this['OutputType'] extends NewType
+		? DefineSchema<this, { Output: NewType }>
+		: Throw<
+				'WidenOutput: NewType is not supertype' &
+					TypeCastErrorDetailOutput<this, NewType>
+		  >
+
+	// eslint-disable-next-line etc/no-misused-generics
+	CastOutput<NewType>(): this['OutputType'] extends NewType
+		? DefineSchema<this, { Output: NewType }>
+		: NewType extends this['OutputType']
+		? DefineSchema<this, { Output: NewType }>
+		: Throw<
+				'CastOutput: NewType is not subtype or supertype' &
+					TypeCastErrorDetailOutput<this, NewType>
+		  >
+
+	//
+
+	NarrowInput<
+		// eslint-disable-next-line etc/no-misused-generics
+		NewType extends this['InputType'],
+	>(): DefineSchema<this, { Input: NewType }>
+
+	// eslint-disable-next-line etc/no-misused-generics
+	WidenInput<NewType>(): this['InputType'] extends NewType
+		? DefineSchema<this, { Input: NewType }>
+		: Throw<
+				'WidenInput: NewType is not supertype' &
+					TypeCastErrorDetailInput<this, NewType>
+		  >
+
+	// eslint-disable-next-line etc/no-misused-generics
+	CastInput<NewType>(): this['InputType'] extends NewType
+		? DefineSchema<this, { Input: NewType }>
+		: NewType extends this['InputType']
+		? DefineSchema<this, { Input: NewType }>
+		: Throw<
+				'CastInput: NewType is not subtype or supertype' &
+					TypeCastErrorDetailInput<this, NewType>
+		  >
+
+	//
+
+	//
 
 	/**
 	 * Validate `this` schema, throw on failure
@@ -172,6 +250,22 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	validate(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
 	): this[OPTIONS]['Output']
+
+	/**
+	 * Best-effort fix - same as `exec(x).value`, but does not generate issues list
+	 *
+	 * @param x - Value to validate against `this` schema
+	 * @returns Value after applying transformations (e.g. defaults)
+	 */
+	tryValidate<X>(x: X): X | this[OPTIONS]['Output']
+
+	/**
+	 * Validate `this` schema, do not throw on failure
+	 *
+	 * @param x - Value to validate against `this` schema
+	 * @returns `ValidationResult` - either success or error with issue list
+	 */
+	exec(x: this[OPTIONS]['Input'] | AlsoAccept<unknown>): ValidationResult
 
 	/**
 	 * Check if `x` is already valid (without applying fixes)
@@ -206,7 +300,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}> {
 	 *
 	 * @inline
 	 */
-	or<Other extends Schemable>(other: Other): Union<[this, Other]>
+	or<Other extends SchemableLike>(other: Other): Union<[this, Other]>
 
 	/**
 	 * Simplify and flatten TS type
@@ -225,13 +319,13 @@ export type CanBeSimpleSchema<
 	S extends {
 		OutputType: any
 		InputType: any
-		[PARTIAL_OPTIONS]: any
+		[OPTIONS]: any
 	},
 	True = true,
 	False = false,
-> = 'isOptional' extends keyof S[PARTIAL_OPTIONS]
+> = true extends S[OPTIONS]['isOptional']
 	? False
-	: 'isReadonly' extends keyof S[PARTIAL_OPTIONS]
+	: true extends S[OPTIONS]['isReadonly']
 	? False
 	: false extends IsCompatible<S['OutputType'], S['InputType']>
 	? False
@@ -242,16 +336,22 @@ export type Simplify<
 	This extends {
 		OutputType: any
 		InputType: any
-		[PARTIAL_OPTIONS]: any
+		[OPTIONS]: any
 	},
-> = CanBeSimpleSchema<This> extends true
-	? SimpleSchema<This[PARTIAL_OPTIONS]['Output']>
+> = SchemaLike<never> extends This
+	? This
+	: ISchema<never> extends This
+	? This
+	: CanBeSimpleSchema<This> extends true
+	? SimpleSchema<This[OPTIONS]['Output']>
 	: CustomSchema<
 			_<
-				Pick<
-					This[PARTIAL_OPTIONS],
-					Extract<keyof This[PARTIAL_OPTIONS], 'isOptional' | 'isReadonly'>
-				> &
+				(This[OPTIONS]['isOptional'] extends false
+					? {}
+					: { isOptional: This[OPTIONS]['isOptional'] }) &
+					(This[OPTIONS]['isReadonly'] extends false
+						? {}
+						: { isReadonly: This[OPTIONS]['isReadonly'] }) &
 					IsIdentical<
 						This['OutputType'],
 						unknown,
@@ -266,12 +366,6 @@ export type Simplify<
 					>
 			>
 	  >
-// : CustomSchema<{
-// 		Output: This['OutputType']
-// 		Input: This['InputType']
-// 		isOptional: This['isOptional']
-// 		isReadonly: This['isReadonly']
-//   }>
 
 /** @inline */
 export type WithDefault<This, DefaultValue> = This extends {
@@ -286,3 +380,28 @@ export type WithDefault<This, DefaultValue> = This extends {
 			}
 	  >
 	: never
+
+export type TypeCastErrorDetail<
+	This extends { OutputType: any; InputType: any },
+	NewType,
+> = {
+	NewType: NewType
+	CurrentOutputType: This['OutputType']
+	CurrentInputType: This['InputType']
+}
+
+export type TypeCastErrorDetailOutput<
+	This extends { OutputType: any },
+	NewType,
+> = {
+	NewType: NewType
+	CurrentOutputType: This['OutputType']
+}
+
+export type TypeCastErrorDetailInput<
+	This extends { InputType: any },
+	NewType,
+> = {
+	NewType: NewType
+	CurrentInputType: This['InputType']
+}

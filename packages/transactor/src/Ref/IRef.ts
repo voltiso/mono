@@ -37,4 +37,6 @@ export interface IRefBase extends RefBaseLike {
 	toJSON(): object
 }
 
+export interface RefLike extends RefBaseLike, PromiseLike<DocLike | null> {}
+
 export interface IRef extends IRefBase, PromiseLike<IDoc | null> {}

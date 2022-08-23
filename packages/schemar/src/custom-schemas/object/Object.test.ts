@@ -4,27 +4,32 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { InputType, ObjectOptions, OutputType } from '~'
+import type {
+	$CustomObject,
+	CustomObject,
+	InputType,
+	ObjectOptions,
+	OutputType,
+	Schema,
+} from '~'
 import * as s from '~'
 
 describe('object', () => {
-	it('generic', <_O extends Partial<ObjectOptions>>() => {
+	it('generic', <O extends Partial<ObjectOptions>>() => {
 		expect.assertions(0)
 
-		// ! too deep...
-		// Assert.is<CustomObject<O>, ISchema>()
-		// Assert.is<CustomObject<O>, s.IObject>()
+		Assert.is<CustomObject<O>, Schema>()
+		Assert.is<$CustomObject<O>, s.IObject>()
 	})
 
 	it('type', () => {
 		expect.assertions(0)
 
-		// const obj = s.schema({
-		// 	a: s.number,
-		// })
+		const obj = s.object({
+			a: s.number,
+		})
 
-		// ! too deep...
-		// Assert.is<typeof obj, s.IObject>()
+		Assert.is<typeof obj, s.IObject>()
 	})
 
 	it('extends', () => {
@@ -181,9 +186,7 @@ describe('object', () => {
 			s.schema({ a: s.number.optional.readonly }).isValid({ a: undef }),
 		).toBeFalsy()
 
-		expect(
-			s.schema({ a: s.number.optional }).tryValidate({}).issues,
-		).toStrictEqual([])
+		expect(s.schema({ a: s.number.optional }).exec({}).issues).toStrictEqual([])
 
 		expect(s.schema({ a: s.number.optional.readonly }).isValid({})).toBeTruthy()
 	})
@@ -195,7 +198,7 @@ describe('object', () => {
 			a: s.number.default(123),
 		})
 
-		expect(x.tryValidate({}).value).toStrictEqual({ a: 123 })
+		expect(x.exec({}).value).toStrictEqual({ a: 123 })
 	})
 
 	it('Type', () => {
@@ -287,7 +290,7 @@ describe('object', () => {
 			>
 		>()
 
-		expect(t.tryValidate({}).value).toStrictEqual({ a: { b: { c: 11 } } })
+		expect(t.exec({}).value).toStrictEqual({ a: { b: { c: 11 } } })
 	})
 
 	it('validate', () => {

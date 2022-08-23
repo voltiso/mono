@@ -1,16 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '@voltiso/util'
-
-import type { ISchema, SchemaOptions } from '~'
+import type { SchemaLike, SchemaOptions } from '~'
 import { defaultSchemaOptions, unknown } from '~'
 
 export interface ArrayOptions extends SchemaOptions {
 	Output: readonly unknown[]
 	Input: readonly unknown[]
 
-	element: ISchema
+	element: SchemaLike
 
 	isReadonlyArray: boolean
 
@@ -28,8 +26,8 @@ export const defaultArrayOptions = {
 	isReadonlyArray: false as const,
 
 	element: unknown,
-	minLength: undef,
-	maxLength: undef,
+	minLength: undefined,
+	maxLength: undefined,
 }
 
 export type DefaultArrayOptions = typeof defaultArrayOptions

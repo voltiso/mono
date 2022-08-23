@@ -12,11 +12,4 @@ export interface CustomUnknown<O extends Partial<UnknownOptions>>
 
 	readonly [BASE_OPTIONS]: UnknownOptions
 	readonly [DEFAULT_OPTIONS]: DefaultUnknownOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	UnknownOptions,
-	// 	MergeSchemaOptions<DefaultUnknownOptions, O>
-	// >
 }

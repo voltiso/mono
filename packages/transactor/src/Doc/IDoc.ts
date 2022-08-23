@@ -13,7 +13,8 @@ import type { DocTI, DocTILike, DTI } from './DocTI'
 
 export interface DocLike {
 	[DTI]: DocTILike
-	dataWithId(): any
+	dataWithId(): unknown
+	data: PartialIntrinsicFields
 }
 
 /**

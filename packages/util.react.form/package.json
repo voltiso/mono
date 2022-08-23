@@ -31,7 +31,8 @@
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
 		"clean": "v clean",
-		"trace": "v trace"
+		"trace": "v trace",
+		"trace:run": "v traceRun"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

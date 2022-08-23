@@ -5,10 +5,9 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
 
 import type { DefaultFunctionOptions, FunctionOptions, ISchema } from '~'
 
-type AnyFunction = (...args: any) => unknown
-
-export interface IFunction<T extends AnyFunction = AnyFunction>
-	extends ISchema<T> {
+export interface IFunction<
+	T extends (...args: any) => any = (...args: any) => any,
+> extends ISchema<T> {
 	//
 	readonly [SCHEMA_NAME]: 'Function'
 
@@ -17,6 +16,6 @@ export interface IFunction<T extends AnyFunction = AnyFunction>
 
 	//
 
-	get getArgumentsSchema(): ISchema
-	get getResultSchema(): ISchema
+	get getArgumentsSchema(): any
+	get getResultSchema(): any
 }

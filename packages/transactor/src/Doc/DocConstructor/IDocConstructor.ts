@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as s from '@voltiso/schemar'
+import type { SchemaLike } from '@voltiso/schemar'
 
-import type { DocContext, DocLike, DocTI, DocTILike, DTI, IDoc } from '~/Doc'
+import type { DocContext, DocLike, DocTI, DocTILike, DTI } from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
@@ -14,14 +14,14 @@ export interface DocConstructorLike {
 
 export interface IDocConstructorNoBuilder extends DocConstructorLike {
 	[DTI]: DocTI
-	new (context: DocContext, data: any): IDoc
+	new (context: DocContext, data: any): DocLike
 
 	_: DocDerivedData
 
-	schemaWithoutId: s.Schema
+	schemaWithoutId: SchemaLike
 	schemableWithoutId: object // Record<string, Schemable>
 
-	schemaWithId: s.Schema
+	schemaWithId: SchemaLike
 	schemableWithId: object // Record<string, Schemable>
 }
 

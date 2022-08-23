@@ -17,7 +17,7 @@ export interface CollectionRef<D extends DocLike = IDoc> {
 
 	/** Get Doc reference by Id */
 	(id: Id<D>): WeakDocRef<D>
-	<DD extends IDoc>(id: Id<DD>): DD extends any
+	<DD extends DocLike>(id: Id<DD>): DD extends any
 		? IDoc extends DD
 			? WeakDocRef<D>
 			: Throw<'wrong Id type' & { Doc: DD }>
@@ -28,7 +28,7 @@ export interface CollectionRef<D extends DocLike = IDoc> {
 	add(data: GetPublicCreationInputData<InferTI<D>, IDoc>): PromiseLike<D>
 
 	/** Register Doc class/type for this Collection */
-	register<Cls extends new (...args: any) => IDoc>(
+	register<Cls extends new (...args: any) => DocLike>(
 		cls: Cls,
 	): Cls extends any ? CollectionRef<InstanceType<Cls>> : never
 }

@@ -14,11 +14,11 @@ export type _ObjectTypeNoSignature<
 	IO extends GetTypeOptions,
 > = _ObjectTypeFinalize<
 	{
-		[k in keyof T as O[k]['isReadonly'] extends false
+		[k in keyof T as false extends O[k]['isReadonly']
 			? _ObjectTypeIsOptional<O[k], IO, never, k>
 			: never]: T[k]
 	} & {
-		[k in keyof T as O[k]['isReadonly'] extends false ? k : never]?: T[k]
+		[k in keyof T as false extends O[k]['isReadonly'] ? k : never]?: T[k]
 	} & {
 		readonly [k in keyof T as _ObjectTypeIsOptional<O[k], IO> extends false
 			? k

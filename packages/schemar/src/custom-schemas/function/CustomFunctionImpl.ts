@@ -15,8 +15,9 @@ import type {
 	DefaultFunctionOptions,
 	FunctionOptions,
 	IArray,
-	ISchema,
 	ITuple,
+	Schema,
+	SchemaLike,
 } from '~'
 import {
 	_functionArgumentsExtends,
@@ -81,7 +82,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		this[OPTIONS].arguments = argumentsSchema
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: SchemaLike): boolean {
 		if (isUnknownFunction(other)) return true
 		else if (isFunction(other)) {
 			const argsOk: boolean = _functionArgumentsExtends(
@@ -89,7 +90,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 				this.getArgumentsSchema as never,
 			)
 
-			const rOk = (this.getResultSchema as unknown as ISchema).extends(
+			const rOk = (this.getResultSchema as unknown as Schema).extends(
 				other.getResultSchema as never,
 			)
 

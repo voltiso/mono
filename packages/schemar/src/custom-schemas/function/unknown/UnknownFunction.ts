@@ -8,9 +8,9 @@ import type {
 	CustomUnknownFunction,
 	Function,
 	InferableTupleLike,
-	ISchemaLike,
 	OutputType,
 	Schemable,
+	SchemaLike,
 } from '~'
 import { UnknownFunctionImpl } from '~'
 
@@ -18,7 +18,7 @@ type MakeMutable<X> = X extends readonly unknown[] ? [...X] : never
 
 export interface UnknownFunction extends CustomUnknownFunction<{}> {
 	<
-		Args extends InferableTupleLike | ISchemaLike<readonly unknown[]>,
+		Args extends InferableTupleLike | SchemaLike<readonly unknown[]>,
 		R extends Schemable,
 	>(
 		argumentsSchema: Args,

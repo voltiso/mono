@@ -13,15 +13,12 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 	readonly [BASE_OPTIONS]: FunctionOptions
 	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
 
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	FunctionOptions,
-	// 	MergeSchemaOptions<DefaultFunctionOptions, O>
-	// >
-
 	//
 
 	get getArgumentsSchema(): this[OPTIONS]['arguments']
 	get getResultSchema(): this[OPTIONS]['result']
 }
+
+export type $CustomFunction<O extends Partial<FunctionOptions>> = O extends any
+	? CustomFunction<O>
+	: never

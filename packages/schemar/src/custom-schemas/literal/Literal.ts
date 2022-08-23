@@ -7,7 +7,6 @@ import type { CustomLiteral, InferableLiteral } from '~'
 import { LiteralImpl } from '~'
 
 export type Literal<T extends InferableLiteral> = CustomLiteral<{
-	values: Set<T>
 	Output: T
 	Input: T
 }>

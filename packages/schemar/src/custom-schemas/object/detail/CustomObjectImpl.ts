@@ -120,7 +120,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				if (!hasThisK && !isOtherOptional) return false
 				// eslint-disable-next-line security/detect-object-injection
-				else if (hasThisK && !schema(this.getShape[k] as Schemable).extends(v))
+				else if (hasThisK && !schema(this.getShape[k]).extends(v))
 					// eslint-disable-next-line sonarjs/no-duplicated-branches
 					return false
 			}
@@ -156,7 +156,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				const value = x[k as keyof typeof x]
 
-				const r = tv.tryValidate(value)
+				const r = tv.exec(value)
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [k, ...issue.path]
@@ -190,7 +190,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 							const sKeySchema = schema(keySchema)
 							const sValueSchema = schema(valueSchema)
 
-							const keyResult = sKeySchema.tryValidate(key)
+							const keyResult = sKeySchema.exec(key)
 
 							if (!keyResult.isValid) {
 								keyIssues.push(
@@ -209,7 +209,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 								continue
 							}
 
-							const valueResult = sValueSchema.tryValidate(value)
+							const valueResult = sValueSchema.exec(value)
 
 							if (!valueResult.isValid) {
 								valueIssues.push(
@@ -291,7 +291,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				// assumeType<ISchema>(mySchema)
 
-				const result = mySchema.tryValidate(x[key as keyof typeof x])
+				const result = mySchema.exec(x[key as keyof typeof x])
 				x[key as keyof typeof x] = result.value as never
 
 				if (result.value === undef && mySchema.isOptional)
@@ -309,13 +309,13 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				for (const indexSignature of this
 					.getIndexSignatures as ObjectIndexSignatureEntry[]) {
-					const keyValidationResult = schema(
-						indexSignature.keySchema,
-					).tryValidate(xKey)
+					const keyValidationResult = schema(indexSignature.keySchema).exec(
+						xKey,
+					)
 
-					const valueValidationResult = schema(
-						indexSignature.valueSchema,
-					).tryValidate(xValue)
+					const valueValidationResult = schema(indexSignature.valueSchema).exec(
+						xValue,
+					)
 
 					if (keyValidationResult.isValid && valueValidationResult.isValid) {
 						xKey = keyValidationResult.value as never

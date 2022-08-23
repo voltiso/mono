@@ -19,7 +19,7 @@ import type { ValidationIssue } from '~/custom-schemas/validation/validationIssu
 import type { ValidationResult } from '~/custom-schemas/validation/validationResult'
 import { ValidationError } from '~/error'
 import { SchemarError } from '~/error/SchemarError'
-import type { Schemable } from '~/Schemable'
+import type { Schemable, SchemableLike } from '~/Schemable'
 import type {
 	DefaultSchemaOptions,
 	MergeSchemaOptions,
@@ -27,10 +27,9 @@ import type {
 } from '~/SchemaOptions'
 import { defaultSchemaOptions } from '~/SchemaOptions'
 
-import type { Schema } from '../Schema'
 import type { CustomFix } from './CustomFix'
 import type { CustomSchema } from './CustomSchema'
-import type { ISchema } from './ISchema'
+import type { SchemaLike } from './ISchema'
 import { processCustomChecks } from './processCustomChecks'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 
@@ -45,7 +44,7 @@ export interface CustomSchemaImpl<O> {
 }
 
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
-	implements CustomSchema<O>, ISchema
+	implements CustomSchema<O>
 {
 	[OPTIONS]: O extends any
 		? MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
@@ -128,12 +127,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		final(
 			this,
 			CustomSchemaImpl,
-			'fix',
 			'extends',
-			'tryValidate',
 			'validate',
-			'withCheck',
-			'withFix',
+			'tryValidate',
+			'exec',
+			'fix',
+			'check',
 			'toString',
 		)
 	}
@@ -161,7 +160,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return x as never
 	}
 
-	fix<X>(x: X): X | this[OPTIONS]['Output'] {
+	tryValidate<X>(x: X): X | this[OPTIONS]['Output'] {
 		let result = x
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -184,8 +183,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		]
 	}
 
-	tryValidate(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
-		const value = this.fix(x) as never
+	exec(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
+		const value = this.tryValidate(x) as never
 
 		const issues = this.getIssues(value)
 
@@ -204,21 +203,21 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	validate(x: unknown): never {
-		const r = this.tryValidate(x)
+		const r = this.exec(x)
 
 		if (r.isValid) return r.value as never
 		else throw new ValidationError(r.issues)
 	}
 
 	isFixable(x: unknown): x is this[OPTIONS]['Input'] {
-		return this.tryValidate(x).isValid
+		return this.exec(x).isValid
 	}
 
 	isValid(x: unknown): x is this[OPTIONS]['Output'] {
 		return this.getIssues(x).length === 0
 	}
 
-	[EXTENDS](other: Schema): boolean {
+	[EXTENDS](other: SchemaLike): boolean {
 		if (isUnion(other)) {
 			for (const b of other.getSchemas) {
 				if (this.extends(b as never)) return true
@@ -267,7 +266,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return `${prefix}${this._toString()}${suffix}`
 	}
 
-	withCheck(
+	check(
 		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
 		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
 	): never {
@@ -286,7 +285,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		}) as never
 	}
 
-	withFix(fixFunc: (x: this[OPTIONS]['Input']) => never): never {
+	fix(fixFunc: (x: this[OPTIONS]['Input']) => never): never {
 		return this._cloneWithOptions({
 			customFixes: [...this.getCustomFixes, { fix: fixFunc }],
 		}) as never
@@ -318,12 +317,48 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			}) as never
 	}
 
-	or<Other extends Schemable>(other: Other): never {
+	or<Other extends SchemableLike>(other: Other): never {
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
 		return union(this as never, other) as never
 	}
 
 	get simple(): never {
+		return this as never
+	}
+
+	Narrow(): never {
+		return this as never
+	}
+
+	Widen(): never {
+		return this as never
+	}
+
+	Cast(): never {
+		return this as never
+	}
+
+	NarrowOutput(): never {
+		return this as never
+	}
+
+	WidenOutput(): never {
+		return this as never
+	}
+
+	CastOutput(): never {
+		return this as never
+	}
+
+	NarrowInput(): never {
+		return this as never
+	}
+
+	WidenInput(): never {
+		return this as never
+	}
+
+	CastInput(): never {
 		return this as never
 	}
 }

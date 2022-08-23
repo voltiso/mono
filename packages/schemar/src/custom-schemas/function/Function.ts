@@ -5,37 +5,21 @@ import { lazyConstructor } from '@voltiso/util'
 
 import type {
 	$Type,
+	ArrayLike,
 	CustomFunction,
-	IArray,
-	InferableReadonlyTuple,
-	ISchema,
-	ITuple,
-	Schemable,
+	InferableReadonlyTupleLike,
+	SchemableLike,
+	SimpleSchema,
+	TupleLike,
 } from '~'
 import { FunctionImpl } from '~'
 
-// type GetFunctionType<O extends FunctionOptions, P extends GetTypeOptions> = (
-// 	...args: GetType_<O['arguments'], P>
-// ) => GetType_<O['result'], P>
-
-export type Function<
-	F extends (...args: any) => unknown,
-	// Args extends InferableReadonlyTuple | (s.ITuple | s.IArray),
-	// R extends Schemable,
-> = CustomFunction<{
-	arguments: ISchema<Parameters<F>>
-	result: ISchema<ReturnType<F>>
+export type Function<F extends (...args: any) => any> = CustomFunction<{
+	arguments: SimpleSchema<Parameters<F>>
+	result: SimpleSchema<ReturnType<F>>
 
 	Output: F
 	Input: F
-
-	// Output: (
-	// 	...args: GetType_<Args, { kind: 'out' }>
-	// ) => GetType_<R, { kind: 'out' }>
-
-	// Input: (
-	// 	...args: GetType_<Args, { kind: 'in' }>
-	// ) => GetType_<R, { kind: 'in' }>
 }>
 
 export const Function = lazyConstructor(
@@ -43,8 +27,8 @@ export const Function = lazyConstructor(
 ) as unknown as FunctionConstructor
 
 type FunctionConstructor = new <
-	Args extends InferableReadonlyTuple | ITuple | IArray,
-	R extends Schemable,
+	Args extends InferableReadonlyTupleLike | TupleLike | ArrayLike,
+	R extends SchemableLike,
 >(
 	argumentsSchema: Args,
 	resultSchema: R,

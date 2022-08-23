@@ -18,7 +18,7 @@ const slug = s.string
 		/^[\da-z]+(-[\da-z]+)*$/u,
 		'Slug must be lowercase with single hyphen separators',
 	)
-	.withCheck(
+	.check(
 		s => !['add'].includes(s),
 		s => `Slug cannot equal '${s}'`,
 	)

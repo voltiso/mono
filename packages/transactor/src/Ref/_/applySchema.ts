@@ -40,7 +40,7 @@ export function applySchema(
 ): IntrinsicFields | null {
 	const { data, schema, bestEffort } = params
 
-	const r = schema.tryValidate(data)
+	const r = schema.exec(data)
 
 	if (!r.isValid && !bestEffort) {
 		const error = new ValidationError(r.issues)

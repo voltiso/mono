@@ -4,18 +4,15 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { RecordOptions } from '~'
+import type { CustomRecord, ISchema, RecordOptions } from '~'
 import * as s from '~'
 
 describe('record', () => {
-	it('generic', <_O extends Partial<RecordOptions>>() => {
+	it('generic', <O extends Partial<RecordOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep...
-		// Assert.is<CustomRecord<O>, ISchema>()
-
-		//! too deep...
-		// Assert.is<CustomRecord<O>, s.IRecord>()
+		Assert.is<CustomRecord<O>, ISchema>()
+		Assert.is<CustomRecord<O>, s.IRecord>()
 	})
 
 	it('type', () => {
@@ -23,8 +20,7 @@ describe('record', () => {
 
 		const obj = s.record(s.string, s.number)
 
-		//! too deep...
-		// Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
+		Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
 
 		Assert.is<typeof obj, s.IRecord>()
 

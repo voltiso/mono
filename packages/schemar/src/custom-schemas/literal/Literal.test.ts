@@ -4,15 +4,20 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { InferableLiteral, LiteralOptions, Schemable } from '~'
+import type {
+	CustomLiteral,
+	ILiteral,
+	InferableLiteral,
+	LiteralOptions,
+	Schemable,
+} from '~'
 import * as s from '~'
 
 describe('s.literal', () => {
 	it('generic', <O extends Partial<LiteralOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep...
-		// Assert.is<CustomLiteral<O>, ILiteral>()
+		Assert.is<CustomLiteral<O>, ILiteral>()
 
 		type A = s.CustomLiteral<O>['OutputType']
 		Assert.is<A, InferableLiteral>()

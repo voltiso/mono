@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import type { InferableObject, ISchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 
@@ -105,9 +104,12 @@ export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
 
 	const partial = final.deepPartial
 
-	$assert(final)
-	$assert(partial)
+	// $assert(final)
+	// $assert(partial)
 
-	d._schema = { final, partial }
+	d._schema = {
+		final: final.simple,
+		partial: partial.simple,
+	}
 	return d._schema
 }

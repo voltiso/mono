@@ -40,7 +40,7 @@ export const sRef = sStrongRef
 const _weakRefSchema = lazyValue(() => s.instance(WeakDocRef))
 
 const _fixableWeakRefSchema = lazyValue(() =>
-	_weakRefSchema.or(_strongRefSchema).withFix(x => {
+	_weakRefSchema.or(_strongRefSchema).fix(x => {
 		if (_strongRefSchema.isValid(x))
 			return new WeakDocRef(
 				(x as unknown as DocRefBaseImpl)._context as never,
@@ -50,7 +50,7 @@ const _fixableWeakRefSchema = lazyValue(() =>
 	}),
 )
 
-export interface WeakRefSchema extends s.Schema<WeakRef<IndexedDoc>> {
+export interface WeakRefSchema extends s.ISchema<WeakRef<IndexedDoc>> {
 	// eslint-disable-next-line etc/no-misused-generics
 	<X extends IDoc | DocTag>(): s.Schema<WeakRef<FindDoc<X>>>
 }

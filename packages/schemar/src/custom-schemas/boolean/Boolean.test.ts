@@ -6,15 +6,18 @@ import { Assert, Is } from '@voltiso/util'
 
 import type { ISchema, OutputType } from '~'
 import * as s from '~'
-import type { BooleanOptions, CustomBoolean } from '~/custom-schemas'
+import type {
+	$CustomBoolean,
+	BooleanOptions,
+	CustomBoolean,
+} from '~/custom-schemas'
 
 describe('boolean', () => {
-	it('generic', <_O extends Partial<BooleanOptions>>() => {
+	it('generic', <O extends Partial<BooleanOptions>>() => {
 		expect.assertions(0)
 
-		// ! too deep!
-		// Assert.is<CustomBoolean<O>, s.IBoolean>()
-		// Assert.is<CustomBoolean<O>, s.ISchema>()
+		Assert.is<$CustomBoolean<O>, s.IBoolean>()
+		Assert.is<CustomBoolean<O>, s.ISchema>()
 	})
 
 	it('type', () => {

@@ -8,8 +8,7 @@ import { lazyConstructor } from '@voltiso/util'
 import type {
 	DefaultTupleOptions,
 	GetTupleLength_,
-	ISchema,
-	ITuple,
+	SchemaLike,
 	TupleOptions,
 } from '~'
 import {
@@ -36,10 +35,9 @@ export interface CustomTupleImpl<O> {
 	// >
 }
 
-export class CustomTupleImpl<O extends Partial<TupleOptions>>
-	extends lazyConstructor(() => CustomSchemaImpl)<O>
-	implements ITuple
-{
+export class CustomTupleImpl<
+	O extends Partial<TupleOptions>,
+> extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	readonly [SCHEMA_NAME] = 'Tuple' as const
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple'] {
@@ -68,7 +66,7 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 		return this._cloneWithOptions({ isReadonlyTuple: false }) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -96,7 +94,7 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 			// eslint-disable-next-line no-param-reassign
 			x = x.map((element, idx) =>
 				// eslint-disable-next-line security/detect-object-injection
-				schema(this.getShape[idx]).fix(element),
+				schema(this.getShape[idx]).tryValidate(element),
 			)
 		}
 
@@ -129,9 +127,9 @@ export class CustomTupleImpl<O extends Partial<TupleOptions>>
 
 			for (let idx = 0; idx < Math.min(this.getShape.length, x.length); ++idx) {
 				// eslint-disable-next-line security/detect-object-injection
-				const t = this.getShape[idx] as ISchema
+				const t = this.getShape[idx] as SchemaLike
 				// eslint-disable-next-line security/detect-object-injection
-				const r = schema(t).tryValidate(x[idx])
+				const r = schema(t).exec(x[idx])
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [...issue.path, idx]

@@ -1,25 +1,34 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DEFAULT_OPTIONS } from '_'
 import { type OPTIONS, SCHEMA_NAME } from '_'
 
-import type { InferableObject, ISchema, ObjectOptions } from '~'
+import type {
+	DefaultObjectOptions,
+	InferableObjectLike,
+	ISchema,
+	ObjectOptions,
+	SchemaLike,
+} from '~'
 
-export interface IObject extends ISchema {
+export interface ObjectLike extends SchemaLike<object> {
+	readonly [SCHEMA_NAME]: 'Object'
+}
+
+export interface IObject extends ISchema<object> {
 	readonly [SCHEMA_NAME]: 'Object'
 
-	[OPTIONS]: ObjectOptions
+	readonly [OPTIONS]: ObjectOptions
+	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
-	// readonly [BASE_OPTIONS]: ObjectOptions
-	// readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
+	get getShape(): InferableObjectLike
 
-	get getShape(): InferableObject
+	get partial(): any
+	get strictPartial(): any
 
-	get partial(): IObject
-	get strictPartial(): IObject
-
-	get deepPartial(): IObject
-	get deepStrictPartial(): IObject
+	get deepPartial(): any
+	get deepStrictPartial(): any
 }
 
 export function isObject(x: unknown): x is IObject {

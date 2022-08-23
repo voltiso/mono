@@ -11,7 +11,8 @@
 		"lint:eslint": "v lintEslint",
 		"lint:tsc": "v lintTsc",
 		"__________TS_TRACE": "__________",
-		"trace": "v trace"
+		"trace": "v trace",
+		"trace:run": "v traceRun"
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {

@@ -6,16 +6,22 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
-import type { InputType, NumberOptions, OutputType, Type_ } from '~'
+import type {
+	CustomNumber,
+	InputType,
+	NumberOptions,
+	OutputType,
+	Schema,
+	Type_,
+} from '~'
 import * as s from '~'
 
 describe('s.number', () => {
-	it('generic', <_O extends Partial<NumberOptions>>() => {
+	it('generic', <O extends Partial<NumberOptions>>() => {
 		expect.assertions(0)
 
-		//! too deep...
-		// Assert.is<CustomNumber<O>, Schema>()
-		// Assert.is<CustomNumber<O>, s.INumber>()
+		Assert.is<CustomNumber<O>, Schema>()
+		Assert.is<CustomNumber<O>, s.INumber>()
 	})
 
 	it('simple', () => {
@@ -59,17 +65,17 @@ describe('s.number', () => {
 		// ;() => s.number.default(123).optional
 
 		// @ts-expect-error cannot fix without default value
-		;() => s.number.withFix(undef)
+		;() => s.number.fix(undef)
 
 		//
 		;() => s.number.optional.integer
 
-		expect(s.number.optional.tryValidate(undef).value).toBeUndefined()
-		expect(s.number.optional.tryValidate(undef).isValid).toBeFalsy()
+		expect(s.number.optional.exec(undef).value).toBeUndefined()
+		expect(s.number.optional.exec(undef).isValid).toBeFalsy()
 
 		const n = s.number.default(123)
 
-		expect(n.tryValidate(undef).value).toBe(123)
+		expect(n.exec(undef).value).toBe(123)
 
 		type Out = Type_<typeof n, { kind: 'out' }>
 		type In = Type_<typeof n, { kind: 'in' }>
@@ -82,7 +88,7 @@ describe('s.number', () => {
 
 		const n = s.number.default(() => 123)
 
-		expect(n.tryValidate(undef).value).toBe(123)
+		expect(n.exec(undef).value).toBe(123)
 
 		type Out = Type_<typeof n, { kind: 'out' }>
 		type In = Type_<typeof n, { kind: 'in' }>

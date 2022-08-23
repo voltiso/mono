@@ -12,11 +12,8 @@ export interface CustomBoolean<O extends Partial<BooleanOptions>>
 
 	readonly [BASE_OPTIONS]: BooleanOptions
 	readonly [DEFAULT_OPTIONS]: DefaultBooleanOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	BooleanOptions,
-	// 	MergeSchemaOptions<DefaultBooleanOptions, O>
-	// >
 }
+
+export type $CustomBoolean<O extends Partial<BooleanOptions>> = O extends any
+	? CustomBoolean<O>
+	: never

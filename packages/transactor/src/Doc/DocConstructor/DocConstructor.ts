@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject } from '@voltiso/schemar'
 import type * as s from '@voltiso/schemar'
-import type { _, Assume, Merge2, Throw } from '@voltiso/util'
+import type { _, $_, Merge2, Throw } from '@voltiso/util'
 
 import type { DocConstructorLike, NestedData } from '~'
 import type { AggregatorHandlers } from '~/Aggregator'
@@ -86,28 +85,17 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		handlers: AggregatorHandlers<this, Target, Name, InitialValue>,
 	): DocConstructor<TI>
 
-	schemaWithoutId: s.Object<
-		Assume<
-			InferableObject,
-			TI['publicOnCreation'] & TI['public'] & TI['private']
-		>
+	schemableWithoutId: $_<
+		TI['publicOnCreation'] & TI['public'] & TI['private'] & {}
 	>
+	schemaWithoutId: s.Object<this['schemableWithoutId']>
 
-	schemableWithoutId: TI['publicOnCreation'] & TI['public'] & TI['private']
-
-	schemaWithId: s.Object<
-		TI['publicOnCreation'] &
+	schemableWithId: $_<
+		{
+			id: s.String
+		} & TI['publicOnCreation'] &
 			TI['public'] &
-			TI['private'] & {
-				id: s.String
-			}
+			TI['private']
 	>
-
-	schemableWithId: _<
-		TI['publicOnCreation'] &
-			TI['public'] &
-			TI['private'] & {
-				id: s.String
-			}
-	>
+	schemaWithId: s.Object<this['schemableWithId']>
 }

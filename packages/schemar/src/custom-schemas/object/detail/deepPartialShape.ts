@@ -36,7 +36,7 @@ export function deepPartialShape<O extends InferableObject>(
 	for (const [key, schemable] of getEntries(shape)) {
 		let mySchema = schema(schemable) as unknown as ISchema
 
-		if (isObject(mySchema)) mySchema = mySchema.deepPartial
+		if (isObject(mySchema)) mySchema = mySchema.deepPartial as never
 
 		// eslint-disable-next-line security/detect-object-injection
 		shape[key] = mySchema.optional as never
@@ -72,7 +72,7 @@ export function deepStrictPartialShape<O extends InferableObject>(
 	for (const [key, schemable] of getEntries(shape)) {
 		let mySchema = schema(schemable) as unknown as ISchema
 
-		if (isObject(mySchema)) mySchema = mySchema.deepStrictPartial
+		if (isObject(mySchema)) mySchema = mySchema.deepStrictPartial as never
 
 		// eslint-disable-next-line security/detect-object-injection
 		shape[key] = mySchema.strictOptional as never

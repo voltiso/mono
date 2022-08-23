@@ -23,6 +23,10 @@ import type {
 	Type,
 } from '~'
 
+export type $CustomObject<O extends Partial<ObjectOptions>> = O extends any
+	? CustomObject<O>
+	: never
+
 export interface CustomObject<O extends Partial<ObjectOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Object'

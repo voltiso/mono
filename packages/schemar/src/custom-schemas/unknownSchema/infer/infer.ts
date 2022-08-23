@@ -7,18 +7,18 @@ import { isConstructor } from '@voltiso/util'
 import type {
 	InferableLike,
 	InferableLiteral,
-	InferableMutableTuple,
-	InferableObject,
+	InferableMutableTupleLike,
 	InferableObjectLike,
 	InferableReadonlyTuple,
+	InferableReadonlyTupleLike,
 	Instance,
-	ISchemaLike,
+	ISchema,
 	Literal,
 	MutableTuple,
 	Object,
 	ReadonlyTuple,
-	Schema,
 	SchemableLike,
+	SchemaLike,
 } from '~'
 import { isSchema } from '~'
 import { instance, literal, object, tuple } from '~/custom-schemas'
@@ -27,13 +27,15 @@ export type InferSchema_<S> = [S] extends [InferableLiteral]
 	? Literal<S>
 	: S extends Newable
 	? Instance<S>
-	: S extends Schema
+	: S extends ISchema
 	? S
-	: S extends InferableMutableTuple
+	: S extends SchemaLike
+	? ISchema
+	: S extends InferableMutableTupleLike
 	? MutableTuple<S>
-	: S extends InferableReadonlyTuple
+	: S extends InferableReadonlyTupleLike
 	? ReadonlyTuple<[...S]>
-	: S extends InferableObject
+	: S extends InferableObjectLike
 	? // eslint-disable-next-line @typescript-eslint/ban-types
 	  Object<S>
 	: never
@@ -52,7 +54,7 @@ export type InferSchemaNoReadonlyTuple_<T> = T extends InferableLiteral
 	? Literal<T>
 	: T extends Newable
 	? Instance<T>
-	: T extends ISchemaLike
+	: T extends SchemaLike
 	? T
 	: T extends InferableReadonlyTuple
 	? MutableTuple<[...T]>
@@ -82,7 +84,7 @@ export function infer<T extends InferableLike>(
  *
  * @param schema - A value that is already a schema
  */
-export function infer<T extends ISchemaLike>(schema: T): T
+export function infer<T extends SchemaLike>(schema: T): T
 
 /**
  * Infer schema (not type!)

@@ -8,6 +8,10 @@ import type { CustomSchema, DefineSchema } from '~'
 
 import type { DefaultStringOptions, RegExpEntry, StringOptions } from '.'
 
+export type $CustomString<O extends Partial<StringOptions>> = O extends any
+	? CustomString<O>
+	: never
+
 export interface CustomString<O extends Partial<StringOptions>>
 	extends CustomSchema<O> {
 	//
@@ -15,13 +19,6 @@ export interface CustomString<O extends Partial<StringOptions>>
 
 	readonly [BASE_OPTIONS]: StringOptions
 	readonly [DEFAULT_OPTIONS]: DefaultStringOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	StringOptions,
-	// 	MergeSchemaOptions<DefaultStringOptions, O>
-	// >
 
 	//
 

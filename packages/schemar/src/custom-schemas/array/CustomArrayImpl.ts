@@ -20,6 +20,7 @@ import type {
 	CustomArray,
 	DefaultArrayOptions,
 	ISchema,
+	Schema,
 	Schemable,
 } from '~'
 import {
@@ -35,13 +36,6 @@ import {
 export interface CustomArrayImpl<O> {
 	readonly [BASE_OPTIONS]: ArrayOptions
 	readonly [DEFAULT_OPTIONS]: DefaultArrayOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	ArrayOptions,
-	// 	MergeSchemaOptions<DefaultArrayOptions, O>
-	// >
 }
 
 export class CustomArrayImpl<O extends Partial<ArrayOptions>>
@@ -170,7 +164,9 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		if (Array.isArray(x)) {
 			// eslint-disable-next-line no-param-reassign
 			x = x.map(element =>
-				(schema(this.getElementSchema) as ISchema).fix(element),
+				(schema(this.getElementSchema) as unknown as Schema).tryValidate(
+					element,
+				),
 			)
 		}
 
@@ -216,7 +212,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			}
 
 			for (const [idx, e] of x.entries()) {
-				const c = (this.getElementSchema as unknown as ISchema).tryValidate(e)
+				const c = (this.getElementSchema as unknown as ISchema).exec(e)
 
 				if (!c.isValid) {
 					for (const issue of c.issues) issue.path = [idx, ...issue.path]

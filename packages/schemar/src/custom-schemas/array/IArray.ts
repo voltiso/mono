@@ -3,32 +3,31 @@
 
 import type { OPTIONS, SCHEMA_NAME } from '_'
 
-import type { ISchema } from '~'
+import type { ISchema, SchemaLike } from '~'
 
 import type { ArrayOptions } from '.'
 
-export interface IArray extends ISchema {
+export interface ArrayLike<T extends readonly unknown[] = readonly unknown[]>
+	extends SchemaLike<T> {
+	readonly [SCHEMA_NAME]: 'Array'
+}
+
+export interface IArray extends ISchema<readonly unknown[]> {
 	readonly [SCHEMA_NAME]: 'Array'
 
 	[OPTIONS]: ArrayOptions
 
-	// readonly [BASE_OPTIONS]: ArrayOptions
-	// readonly [DEFAULT_OPTIONS]: DefaultMutableArrayOptions
-
-	get Type(): readonly unknown[]
-	get OutputType(): readonly unknown[]
-	get InputType(): readonly unknown[]
-
-	readonly getElementSchema: ISchema
+	readonly getElementSchema: SchemaLike
 	readonly isReadonlyArray: boolean
 	readonly getMinLength: number | undefined
 	readonly getMaxLength: number | undefined
 
-	readonly readonlyArray: IArray
-	readonly mutableArray: IArray
+	readonly readonlyArray: any
+	readonly mutableArray: any
 }
 
 export interface IReadonlyArray extends IArray {}
+
 export interface IMutableArray extends IArray {
 	get Type(): unknown[]
 	get OutputType(): unknown[]
