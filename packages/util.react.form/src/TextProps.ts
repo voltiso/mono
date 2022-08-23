@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { ValidationResult } from '@voltiso/schemar'
 import type { ChangeEvent, RefObject } from 'react'
-
-import type * as s from './schemas/index'
 
 export type TextProps = {
 	id?: string | undefined
@@ -15,5 +14,5 @@ export type TextProps = {
 	value?: string | number | readonly string[] | undefined
 	onChange?: undefined | ((e: ChangeEvent<HTMLInputElement>) => void)
 
-	validationResult?: s.ValidationResult | undefined
+	validationResult?: ValidationResult | undefined
 }

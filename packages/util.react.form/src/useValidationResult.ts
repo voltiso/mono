@@ -1,13 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject, ISchema } from '@voltiso/schemar'
+import type { InferableObject, ISchema, ValidationResult } from '@voltiso/schemar'
 import { assumeType } from '@voltiso/util'
 import { useContext } from 'react'
 
 import type { FieldName } from './_/FieldName'
 import { Context } from './Context'
-import type { ValidationResult } from './schemas/index'
 import type { ValidationResults } from './ValidationResults'
 
 export function useValidationResult<

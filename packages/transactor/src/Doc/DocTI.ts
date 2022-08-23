@@ -5,8 +5,8 @@ import type { ISchemaLike, SchemableLike } from '@voltiso/schemar'
 
 /** Doc Type Info Tag */
 // export const DTI = Symbol('DTI')
-export declare const DTI: unique symbol
-// export const DTI: unique symbol = 0 as never // declare is not enough for esbuild
+// export declare const DTI: unique symbol // problematic with esbuild
+export const DTI: unique symbol = 0 as never // declare is not enough for esbuild
 
 /** Doc Type Info Tag */
 export type DTI = typeof DTI

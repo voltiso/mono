@@ -26,11 +26,11 @@
 		"__________BUILD": "__________",
 		"build": "v build",
 		"build:esm": "v buildEsm",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {

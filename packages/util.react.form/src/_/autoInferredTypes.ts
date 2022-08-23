@@ -4,7 +4,7 @@
 // below types are auto-inferred using VSCode - but the useForm function failed to export without them
 // (type too long to serialize - explicit type annotation required)
 
-import type { GetInputType, InferableObject } from '@voltiso/schemar'
+import type { InferableObject,InputType } from '@voltiso/schemar'
 import type { StyledComponent } from '@voltiso/styler'
 import type { FC, FormEvent } from 'react'
 
@@ -30,7 +30,7 @@ export interface OTextType<S extends InferableObject>
 	extends StyledComponent<
 		Omit<
 			Omit<TextProps, 'field'> & {
-				field: FieldName<GetInputType<S>, string>
+				field: FieldName<InputType<S>, string>
 			},
 			'ref' | 'value' | 'onChange' | 'id'
 		>
@@ -41,7 +41,7 @@ export interface OCheckboxType<
 > extends StyledComponent<
 		Omit<
 			Omit<CheckboxProps, 'field'> & {
-				field: FieldName<GetInputType<S>, boolean>
+				field: FieldName<InputType<S>, boolean>
 			},
 			'ref' | 'value' | 'onChange' | 'id'
 		>
@@ -49,5 +49,5 @@ export interface OCheckboxType<
 
 export interface OCheckboxSetType<S extends InferableObject>
 	extends FC<{
-		field: FieldName<GetInputType<S>, string[]> & string
+		field: FieldName<InputType<S>, string[]> & string
 	}> {}
