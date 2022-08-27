@@ -8,11 +8,11 @@ import { CustomInstanceImpl, defaultInstanceOptions } from '~'
 export class InstanceImpl<T extends object> extends lazyConstructor(
 	() => CustomInstanceImpl,
 )<{}> {
-	constructor(constructor: abstract new (...args: never[]) => T) {
-		while (constructor.name.startsWith('lazyConstructor'))
+	constructor(Constructor: abstract new (...args: never[]) => T) {
+		while (Constructor.name.startsWith('lazyConstructor'))
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-param-reassign
-			constructor = Object.getPrototypeOf(constructor)
+			Constructor = Object.getPrototypeOf(Constructor)
 
-		super({ ...defaultInstanceOptions, constructor } as never)
+		super({ ...defaultInstanceOptions, Constructor } as never)
 	}
 }

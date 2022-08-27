@@ -11,6 +11,6 @@ export const tsdoc = defineEslintConfigOverride({
 	plugins: ['tsdoc'],
 
 	rules: {
-		'tsdoc/syntax': 'warn',
+		'tsdoc/syntax': 1,
 	},
 } as const)

@@ -13,7 +13,7 @@ export type Primitive =
 /**
  * Is `x` a `Primitive`?
  *
- * - `Primitive` is `null | undefined | string | number | boolean | symbol | bigint`
+ * - `Primitive` is anything but object or function
  *
  * @example
  *

@@ -36,7 +36,7 @@
 	},
 	"__________DEPS": "__________",
 	"peerDependencies": {
-		"typescript": "^4.7.4 || *"
+		"typescript": "4.7.4 || *"
 	},
 	"__________MISC": "__________",
 	"engines": {

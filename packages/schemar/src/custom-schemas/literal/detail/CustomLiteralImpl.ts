@@ -42,7 +42,8 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	// }
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isLiteral(other)) return isSubset(this.getValues, other.getValues)
+		if (isLiteral(other))
+			return isSubset(this.getValues, other.getValues as never)
 		else if (isUnknownLiteral(other)) return true
 
 		let good = true

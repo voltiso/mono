@@ -44,7 +44,9 @@ export type IsIdentical<A, B, T = true, F = false> = [
 	: F
 
 /**
- * Same as IsIdentical, but less strict for intersections: `{a:1} & {b:1} === {a:1; b:1}`
+ * Same as IsIdentical, but less strict for intersections:
+ *
+ * - `{a:1} & {b:1}` equals `{a:1; b:1}`
  *
  * Best of all, but complex
  */

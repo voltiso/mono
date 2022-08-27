@@ -3,6 +3,7 @@
 
 import type { CallableInstance } from './callableInstance'
 import { CALL, callableInstance } from './callableInstance'
+// eslint-disable-next-line unused-imports/no-unused-imports
 import { staticImplements } from './staticImplements'
 
 const sym = Symbol('sym')

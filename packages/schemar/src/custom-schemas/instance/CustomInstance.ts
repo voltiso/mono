@@ -20,5 +20,5 @@ export interface CustomInstance<O extends Partial<InstanceOptions>>
 	// 	MergeSchemaOptions<DefaultInstanceOptions, O>
 	// >
 
-	get getConstructor(): this[OPTIONS]['constructor']
+	get getConstructor(): this[OPTIONS]['Constructor']
 }

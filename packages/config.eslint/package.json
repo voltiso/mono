@@ -39,6 +39,13 @@
 		"@voltiso/config.eslint.lib": "workspace:^",
 		"eslint-gitignore": "^0.1.0"
 	},
+	"devDependencies": {
+		"@types/node": "^18.7.13",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/eslint-plugin": "workspace:^1.0.2",
+		"eslint": "^8.23.0"
+	},
 	"peerDependencies": {
 		"@next/eslint-plugin-next": ">= 12.1.6",
 		"@typescript-eslint/eslint-plugin": ">= 5.29.0",
@@ -109,6 +116,7 @@
 		"jsonc-eslint-parser": ">= 2.1.0",
 		"putout": "*",
 		"toml-eslint-parser": "*",
+		"typescript": "^4.8.2",
 		"yaml-eslint-parser": "*"
 	},
 	"peerDependenciesMeta": {
@@ -307,16 +315,12 @@
 		"toml-eslint-parser": {
 			"optional": true
 		},
+		"typescript": {
+			"optional": true
+		},
 		"yaml-eslint-parser": {
 			"optional": true
 		}
-	},
-	"devDependencies": {
-		"@types/node": "^18.7.13",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/eslint-plugin": "workspace:^1.0.2",
-		"eslint": "^8.23.0"
 	},
 	"__________MISC": "__________",
 	"engines": {

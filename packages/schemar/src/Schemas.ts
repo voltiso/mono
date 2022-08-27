@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { $Omit } from '@voltiso/util'
+
 import type {
 	CustomAny,
 	CustomArray,
@@ -26,12 +28,15 @@ import type {
 	CustomUnknownRecord,
 	CustomUnknownSchema,
 	CustomVoid,
+	SchemaOptions,
 } from '~'
 
-export interface Schemas<O = {}> {
+export interface Schemas<
+	O extends Partial<SchemaOptions> & { Output?: any; Input?: any } = {},
+> {
 	TypeOnly: CustomTypeOnly<O>
 
-	Never: CustomNever<O>
+	Never: CustomNever<$Omit<O, 'Output' | 'Input'>>
 	Void: CustomVoid<O>
 	Any: CustomAny<O>
 	Unknown: CustomUnknown<O>
@@ -87,7 +92,10 @@ export interface Schemas<O = {}> {
 
 //
 
-export type GetSchemaByName<schemaName, O> = string extends schemaName
+export type GetSchemaByName<
+	schemaName,
+	O extends Partial<SchemaOptions>,
+> = string extends schemaName
 	? CustomSchema<O>
 	: [schemaName] extends [keyof Schemas<O>]
 	? schemaName extends keyof Schemas<O>

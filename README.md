@@ -94,6 +94,14 @@ pnpm install @voltiso/script
 
 # 🧑‍🔬 Contribute - code _THIS_ library (`@voltiso/util`)
 
+## 🔍 Check
+
+Build, lint, test everything:
+
+```sh
+pnpm check
+```
+
 ## 🚀 Build
 
 ```sh
@@ -102,14 +110,8 @@ pnpm build
 
 Consists of (in parallel):
 
-- `esm`
-- `cjs`
-
-> **NOTE**
->
-> `packages/util/` depends on `packages/script/`
->
-> - So `packages/script/` is built on `prepare`
+- `build:esm`
+- `build:cjs`
 
 ## 🦋 Lint
 
@@ -117,18 +119,18 @@ Consists of (in parallel):
 pnpm lint
 ```
 
-Consists of (in parallel):
-
-- `eslint`
-- `tsc`
-- `depcheck`
-- `prettier`
-
 ## 🧪 Test
 
 ```sh
 pnpm test
 ```
+
+## Dependency version issues
+
+- `typescript`:
+  - `< 4.8.0` problem linting `styler/test/native`
+  - `>= 4.8.0` (no eslint support yet, `eslint-plugin-unused-imports` bugged for
+    decorators - see `callableInstance.test.ts`)
 
 ### Using `Orta.vscode-jest` extension
 

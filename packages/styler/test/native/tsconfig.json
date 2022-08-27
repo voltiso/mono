@@ -9,9 +9,9 @@
 			"~": ["../../src"],
 			"~/*": ["../../src/*"]
 		}
-	}
+	},
 
-	// "include": ["."]
+	"include": ["."]
 
 	// "references": [{ "path": "../../tsconfig.lint.json" }]
 }

@@ -103,12 +103,12 @@
 	"peerDependencies": {
 		"eslint": "*",
 		"eslint-import-resolver-typescript": "^3.4.2",
-		"typescript": "< 4.8.0"
+		"typescript": "^4.8.2"
 	},
 	"devDependencies": {
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"eslint": "^8.23.0",
-		"typescript": "< 4.8.0"
+		"typescript": "^4.8.2"
 	}
 }

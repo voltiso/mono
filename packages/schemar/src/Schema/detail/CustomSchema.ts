@@ -252,7 +252,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	): this[OPTIONS]['Output']
 
 	/**
-	 * Best-effort fix - same as `exec(x).value`, but does not generate issues list
+	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
+	 * list
 	 *
 	 * @param x - Value to validate against `this` schema
 	 * @returns Value after applying transformations (e.g. defaults)
@@ -307,7 +308,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * - No-op at runtime (identity function)
 	 * - Use `@voltiso/transform` to output simplified types in `*.d.ts` files
-	 * - Useful when exporting from module - faster editor experience for lib consumers
+	 * - Useful when exporting from module - faster editor experience for lib
+	 *   consumers
 	 *
 	 * @inline
 	 */

@@ -3,7 +3,6 @@
 
 /* eslint-disable testing-library/prefer-screen-queries */
 
-import { undef } from '@voltiso/util'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import { style } from '~'
@@ -31,7 +30,7 @@ describe('curried', () => {
 		expect.hasAssertions()
 
 		const myStyle = style.newRequiredProps({ red: false }).css(p => ({
-			color: p.red ? 'red' : undef,
+			color: p.red ? 'red' : undefined,
 		}))
 
 		const MyView = myStyle(View)
@@ -40,7 +39,7 @@ describe('curried', () => {
 		;<MyView />
 
 		const MyView2 = MyView.newRequiredProp('bgRed', false).css(p => ({
-			backgroundColor: p.bgRed ? 'red' : undef,
+			backgroundColor: p.bgRed ? 'red' : undefined,
 		}))
 
 		// @ts-expect-error `red` missing
@@ -70,7 +69,7 @@ describe('curried', () => {
 		const myStyle = style
 			.newProps({ red: false as boolean | undefined })
 			.css(p => ({
-				color: p.red ? 'red' : undef,
+				color: p.red ? 'red' : undefined,
 			}))
 
 		const MyTouchableOpacity = myStyle(TouchableOpacity)
@@ -94,7 +93,7 @@ describe('curried', () => {
 			.css({ color: 'purple' })
 			.newProps({ red: false as boolean | undefined })
 			.css(p => ({
-				color: p.red ? 'red' : undef,
+				color: p.red ? 'red' : undefined,
 			}))
 
 		const MyScrollView = myStyle(ScrollView)

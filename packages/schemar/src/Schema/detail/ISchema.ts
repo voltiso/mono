@@ -25,6 +25,7 @@ export interface SchemaLike<T = unknown> {
 	get InputType(): T | undefined
 	get simple(): any
 	tryValidate(x: unknown): unknown
+	extends(x: unknown): boolean
 }
 
 /** Every Schema is assignable to `ISchema` */
@@ -116,7 +117,8 @@ export interface ISchema<T = unknown> extends SchemaLike<T> {
 	validate(x: unknown): unknown
 
 	/**
-	 * Best-effort fix - same as `exec(x).value`, but does not generate issues list
+	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
+	 * list
 	 *
 	 * @param x - Value to validate against `this` schema
 	 * @returns Value after applying transformations (e.g. defaults)

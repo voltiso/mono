@@ -43,9 +43,9 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	// 	MergeSchemaOptions<DefaultInstanceOptions, O>
 	// >
 
-	get getConstructor(): this[OPTIONS]['constructor'] {
+	get getConstructor(): this[OPTIONS]['Constructor'] {
 		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS].constructor as never
+		return this[OPTIONS].Constructor as never
 	}
 
 	// constructor(o: O) {
@@ -76,6 +76,6 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 
 	override _toString(): string {
 		// eslint-disable-next-line security/detect-object-injection
-		return `instanceof ${this[OPTIONS].constructor.name}`
+		return `instanceof ${this[OPTIONS].Constructor.name}`
 	}
 }

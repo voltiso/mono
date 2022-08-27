@@ -7,7 +7,8 @@ import type { _ } from '~/object'
  * The built-in `Partial` doesn't work properly (see `VPartial.test.ts`), so we
  * implement our own
  *
- * - Prefixed with `V` to resolve ambiguity with the built-in version (auto-imports, etc.)
+ * - Prefixed with `V` to resolve ambiguity with the built-in version
+ *   (auto-imports, etc.)
  */
 export type $PartialComplex_<Obj> = Obj extends unknown
 	? _<
