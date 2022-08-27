@@ -226,6 +226,7 @@ describe('newCssProps', () => {
 		expect.hasAssertions()
 
 		const Button = style('button').newCssProps({
+			/** Desc */
 			red: { color: 'red' },
 		})
 

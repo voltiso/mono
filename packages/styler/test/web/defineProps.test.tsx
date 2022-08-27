@@ -6,7 +6,7 @@ import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { StyledComponent } from '~'
+import type { IStyledComponent } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -83,7 +83,7 @@ describe('defineProps', () => {
 		//
 		const a = () => style('button').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
-		Assert.is<A, StyledComponent>()
+		Assert.is<A, IStyledComponent>()
 	})
 
 	it('does not require default for children', () => {
@@ -99,7 +99,7 @@ describe('defineProps', () => {
 		//
 		const a = () => style('div').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
-		Assert.is<A, StyledComponent>()
+		Assert.is<A, IStyledComponent>()
 	})
 
 	it('does not require defaults for already present props', () => {

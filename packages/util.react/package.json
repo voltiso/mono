@@ -49,7 +49,7 @@
 		"react": "^18.0.0 || ^17.0.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.18.10",
+		"@babel/core": "^7.18.13",
 		"@babel/plugin-proposal-decorators": "^7.18.10",
 		"@babel/plugin-transform-react-jsx": "^7.18.10",
 		"@babel/preset-env": "^7.18.10",
@@ -61,7 +61,7 @@
 		"@voltiso/script": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-native": "^0.69.4",
+		"react-native": "^0.69.5",
 		"rimraf": "^3.0.2"
 	},
 	"__________MISC": "__________",

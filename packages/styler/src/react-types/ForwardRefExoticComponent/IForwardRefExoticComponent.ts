@@ -3,7 +3,7 @@
 
 import type { ReactElement, WeakValidationMap } from 'react'
 
-import type { Props as Properties } from '~'
+import type { Props } from '~'
 
 export interface IExoticComponent {
 	(props: any): ReactElement | null
@@ -14,7 +14,7 @@ export interface INamedExoticComponent extends IExoticComponent {
 	displayName?: string | undefined
 }
 
-export interface IForwardRefExoticComponent<P extends Properties = Properties>
+export interface IForwardRefExoticComponent<P extends Props = Props>
 	extends INamedExoticComponent {
 	defaultProps?: Partial<P> | undefined
 	propTypes?: WeakValidationMap</* P*/ any> | undefined

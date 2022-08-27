@@ -6,8 +6,12 @@ import type { NotProvided, OptionalArgument } from '@voltiso/util'
 import type { Props } from '~/react-types'
 
 import type { IStylable } from './IStylable'
-import type { Stylable_ } from './Stylable'
+import type { StylableWithProps } from './Stylable'
 
 /** Element types that can be styled using style(...), and require P as props */
 export type Stylable<P extends OptionalArgument<Props> = NotProvided> =
-	P extends NotProvided ? IStylable : P extends Props ? Stylable_<P> : never
+	P extends NotProvided
+		? IStylable
+		: P extends Props
+		? StylableWithProps<P>
+		: never

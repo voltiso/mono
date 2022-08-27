@@ -8,94 +8,96 @@ import type {
 	Throw,
 	UndefinedFromOptional,
 } from '@voltiso/util'
-import { assertNotPolluting, getKeys, isDefined } from '@voltiso/util'
+import { assertNotPolluting, getKeys } from '@voltiso/util'
 
+import type { Stylable, StyledTypeInfo } from '~'
 import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
 import type {
 	IStyledDataMod as IStyledDataModule,
 	StyledData,
 } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
-import type { GetModProps as GetModuleProps } from '~/_/StyledData/GetModProps'
-import { STYLED_DATA, STYLED_TYPE_INFO } from '~/_/symbols'
-import type { Css, CssObject } from '~/Css'
-import type {
-	ComponentPropsWithRef_,
-	FastMergeProps_,
-	Props,
-} from '~/react-types'
-import type { StylableLike } from '~/Stylable'
-import type { StyledComponent } from '~/StyledComponent'
+import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
+import type { Css } from '~/Css'
+import type { Props } from '~/react-types'
 
-import type { $GetStyledProps as G } from '.'
+import type { $GetStyledLikeProps as P } from '.'
 import { isStyled } from '.'
 import { getComponent } from './_/getComponent'
 import { mergeCssProps } from './_/mergeCssProps'
 import { mergeDefaults } from './_/mergeDefaults'
-import type { ForcePatch_, Patch_, PatchRemoveProps_ } from './_/Patch'
+import type { ForcePatch, Patch, PatchRemoveProps } from './_/Patch'
 import type { PropValue } from './_/PropValue'
 import type { MapProps } from './_/Stack'
 import type { StyleFromProps } from './_/StyleFromProps'
 import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
+import type { GetStyledTypeInfo as G } from './GetStyledTypeInfo'
 
-class Styled<P extends Props, C extends StylableLike | null> {
-	declare readonly [STYLED_TYPE_INFO]: { P: P }
+export class Styled<$ extends Partial<StyledTypeInfo>> {
+	declare readonly [$]: G<$>;
+	readonly [DATA]: StyledData<G<$>>
 
-	private readonly [STYLED_DATA]: StyledData<P, C>
-
-	get component(): C {
+	get component(): G<$>['Component'] {
 		// eslint-disable-next-line security/detect-object-injection
-		return this[STYLED_DATA].element
+		return this[DATA].component as never
 	}
 
-	private _clone<NewData extends IStyledDataModule>(
-		newData: NewData,
-	): Patch_<this, GetModuleProps<NewData>> {
-		return new Styled({
-			element: isDefined(newData.element)
-				? newData.element
-				: // eslint-disable-next-line security/detect-object-injection
-				  this[STYLED_DATA].element,
+	private _clone<NewData extends IStyledDataModule>(newData: NewData): never {
+		if (newData.stack) {
+			// eslint-disable-next-line security/detect-object-injection
+			const alreadyHaveCustomCss = this[DATA].stack.at(-1)?.customCss
+			const incomingCustomCss = newData.customCss
 
-			stack: isDefined(newData.stack)
+			if (alreadyHaveCustomCss || incomingCustomCss) {
+				const customCss = { ...alreadyHaveCustomCss, ...incomingCustomCss }
+				// eslint-disable-next-line no-param-reassign
+				newData = {
+					...newData,
+					stack: newData.stack.map(node => ({ ...node, customCss })),
+				}
+			}
+		}
+
+		return new Styled({
+			// eslint-disable-next-line security/detect-object-injection
+			component: newData.component || this[DATA].component,
+
+			stack: newData.stack
 				? // eslint-disable-next-line security/detect-object-injection
-				  [...this[STYLED_DATA].stack, ...newData.stack]
+				  [...this[DATA].stack, ...newData.stack]
 				: // eslint-disable-next-line security/detect-object-injection
-				  this[STYLED_DATA].stack,
+				  this[DATA].stack,
 
 			defaults: mergeDefaults(
 				// eslint-disable-next-line security/detect-object-injection
-				this[STYLED_DATA].defaults,
+				this[DATA].defaults,
 				newData.defaults,
 				newData.domDefaults,
 			),
 
 			domDefaults: mergeDefaults(
 				// eslint-disable-next-line security/detect-object-injection
-				this[STYLED_DATA].domDefaults,
+				this[DATA].domDefaults,
 				newData.domDefaults,
 			),
 
 			cssProps: mergeCssProps(
 				// eslint-disable-next-line security/detect-object-injection
-				this[STYLED_DATA].cssProps,
+				this[DATA].cssProps,
 				newData.cssProps,
 			) as never,
 		}) as never
 	}
 
-	constructor(data: StyledData<P, C>) {
+	constructor(data: StyledData<G<$>>) {
 		// eslint-disable-next-line security/detect-object-injection
-		this[STYLED_DATA] = data
+		this[DATA] = data
 
 		const r =
-			data.element === null
-				? <E extends StylableLike>(
-						element: E,
-				  ): StyledComponent<FastMergeProps_<ComponentPropsWithRef_<E>, P>> => {
-						if (isStyled(element)) return element as never
-
-						return this._clone({ element }) as never
+			data.component === null
+				? (component: Stylable) => {
+						if (isStyled(component)) return component as never
+						return this._clone({ component })
 				  }
 				: getComponent(data as never)
 
@@ -103,6 +105,8 @@ class Styled<P extends Props, C extends StylableLike | null> {
 		// eslint-disable-next-line no-constructor-return
 		return r as never
 	}
+
+	//
 
 	/**
 	 * Override CSS style
@@ -118,7 +122,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param style - CSS style to merge
 	 * @returns Builder for further chaining
 	 */
-	css(style: Css): Patch_<this>
+	css(style: Css): this
 
 	/**
 	 * Override CSS style, based on props
@@ -134,13 +138,13 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param styleFromProps - Function returning CSS style to merge, given props
 	 * @returns Builder for further chaining
 	 */
-	css(styleFromProps: StyleFromProps<G<P, C>>): Patch_<this>
+	css(styleFromProps: StyleFromProps<P<$>>): this
 
-	css(style: Css | StyleFromProps<G<P, C>>): Patch_<this> {
+	css(style: Css | StyleFromProps<P<$>>): this {
 		const stackNode =
 			typeof style === 'function' ? { getStyle: style } : { style }
 
-		return this._clone({ stack: [stackNode] } as never) as never
+		return this._clone({ stack: [stackNode] } as never)
 	}
 
 	/**
@@ -157,9 +161,9 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param propNames - List of prop names to map
 	 * @returns Builder for further chaining
 	 */
-	cssProps<PropNames extends (keyof CssObject & string)[]>(
+	cssProps<PropNames extends (keyof Css & string)[]>(
 		...propNames: PropNames
-	): Patch_<this, Pick<CssObject, PropNames[number]>> {
+	): Patch<this, { Props: Pick<Css, PropNames[number]> }> {
 		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>
 
 		const cssProps = {} as IndexedCssProps
@@ -178,7 +182,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 		return this._clone({
 			stack: [{ removeProps: propNames as never }],
 			cssProps,
-		}) as never
+		})
 	}
 
 	/**
@@ -199,7 +203,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	newCssProp<PropName extends string>(
 		propName: PropName,
 		style: Css,
-	): Patch_<this, { [k in PropName]?: boolean | undefined }>
+	): Patch<this, { Props: { [k in PropName]?: boolean | undefined } }>
 
 	/**
 	 * Define a new prop that maps to CSS style - #1: prop is optional
@@ -230,8 +234,8 @@ class Styled<P extends Props, C extends StylableLike | null> {
 		propName: PropName,
 		styleFromProp: StyleFromProp,
 	): Parameters<StyleFromProp> extends []
-		? Patch_<this, { [k in PropName]?: boolean | undefined }>
-		: Patch_<this, { [k in PropName]?: PV | undefined }>
+		? Patch<this, { Props: { [k in PropName]?: boolean | undefined } }>
+		: Patch<this, { Props: { [k in PropName]?: PV | undefined } }>
 
 	/**
 	 * Define a new prop that maps to CSS style - #2: prop is mandatory
@@ -254,13 +258,12 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	newCssProp<PropName extends string, PV>(
 		propName: PropName,
 		styleFromProp: (propValue: PV) => Css,
-	): Patch_<this, { [k in PropName]: PV }>
+	): Patch<this, { Props: { [k in PropName]: PV } }>
 
-	newCssProp<
-		PropName extends string,
-		S extends Css | ((propValue: unknown) => Css),
-	>(propName: PropName, style: S): never {
-		// Patch<this, { [k in PropName]?: PropValueFromCssProp<S> }>
+	newCssProp<PropName extends string, PV>(
+		propName: PropName,
+		style: Css | ((propValue: PV) => Css),
+	): Patch<this, { Props: { [k in PropName]?: PV } }> {
 		return this._clone({
 			stack: [
 				{
@@ -271,7 +274,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 			cssProps: {
 				[propName]: style,
 			},
-		}) as never
+		})
 	}
 
 	/**
@@ -293,7 +296,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 */
 	newCssProps<CP extends IndexedCssPropsSingle>(
 		cssProps: CP,
-	): Patch_<this, PropsFromCssProps<CP>> {
+	): Patch<this, { Props: PropsFromCssProps<CP> }> {
 		return this._clone({
 			stack: [
 				{
@@ -302,7 +305,62 @@ class Styled<P extends Props, C extends StylableLike | null> {
 			],
 
 			cssProps,
-		}) as never
+		})
+	}
+
+	//
+
+	/**
+	 * Define new custom CSS Property
+	 *
+	 * @param customCssPropertyName - Name of the new CSS custom property
+	 * @param style - CSS styles object
+	 * @returns Builder for further chaining
+	 */
+	newCustomCssProperty<CssName extends string>(
+		customCssPropertyName: CssName,
+		style: Css,
+	): Patch<this, { CustomCss: { [k in CssName]?: boolean | undefined } }>
+
+	/**
+	 * Define new custom CSS Property
+	 *
+	 * @param customCssPropertyName - Name of the new CSS custom property
+	 * @param getStyle - Function returning CSS styles object
+	 * @returns Builder for further chaining
+	 */
+	newCustomCssProperty<CssName extends string, PV>(
+		customCssPropertyName: CssName,
+		getStyle: (propertyValue: PV) => Css,
+	): Patch<this, { CustomCss: { [k in CssName]?: PV | undefined } }>
+
+	// eslint-disable-next-line etc/no-misused-generics
+	newCustomCssProperty<CssName extends string, PV>(
+		customCssPropertyName: CssName,
+		style: Css | ((cssValue: unknown) => Css),
+	): Patch<this, { CustomCss: { [k in CssName]?: PV | undefined } }> {
+		return this._clone({
+			stack: [{}],
+			customCss: { [customCssPropertyName]: style },
+		})
+	}
+
+	//
+
+	/**
+	 * Define new custom CSS properties
+	 *
+	 * @param customCssProperties - An object mapping new CSS property names to
+	 *   CSS objects
+	 * @returns Builder for further chaining
+	 */
+	newCustomCssProperties<CP extends IndexedCssPropsSingle>(
+		customCssProperties: CP,
+	): Patch<this, { CustomCss: PropsFromCssProps<CP> }> {
+		return this._clone({
+			stack: [{}],
+			customCss: customCssProperties,
+		})
 	}
 
 	/**
@@ -320,10 +378,10 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param value - Prop value
 	 * @returns Builder for further chaining
 	 */
-	prop<Name extends keyof G<P, C>>(
+	prop<Name extends keyof P<$>>(
 		name: Name,
-		value: PropValue<G<P, C>, G<P, C>[Name]>,
-	): ForcePatch_<this, { [k in Name]?: G<P, C>[Name] | undefined }>
+		value: PropValue<P<$>, P<$>[Name]>,
+	): ForcePatch<this, { Props: { [k in Name]?: P<$>[Name] | undefined } }>
 
 	/**
 	 * Set known boolean prop to `true`
@@ -340,21 +398,23 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @returns Builder for further chaining
 	 */
 	prop<
-		Name extends keyof G<P, C> &
+		Name extends keyof P<$> &
 			keyof {
-				[k in keyof G<P, C> as boolean extends G<P, C>[k] ? k : never]: never
+				[k in keyof P<$> as boolean extends P<$>[k] ? k : never]: never
 			},
-	>(name: Name): ForcePatch_<this, { [k in Name]?: G<P, C>[Name] | undefined }>
-
-	prop<Name extends keyof G<P, C> & string>(
+	>(
 		name: Name,
-		value?: PropValue<G<P, C>, G<P, C>[Name]>,
-	): ForcePatch_<this, { [k in Name]?: G<P, C>[Name] | undefined }> {
+	): ForcePatch<this, { Props: { [k in Name]?: P<$>[Name] | undefined } }>
+
+	prop<Name extends keyof P<$> & string>(
+		name: Name,
+		value?: PropValue<P<$>, P<$>[Name]>,
+	): ForcePatch<this, { Props: { [k in Name]?: P<$>[Name] | undefined } }> {
 		const myValue = arguments.length === 1 ? true : value
 		// assert(typeof myValue !== 'undefined')
 		return this._clone({
 			stack: [{ props: { [name]: myValue } }],
-		}) as never
+		})
 	}
 
 	/**
@@ -371,17 +431,19 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param props - Props values to set
 	 * @returns Builder for further chaining
 	 */
-	props<PP extends Partial<G<P, C>>>(
+	props<PP extends Partial<P<$>>>(
 		props: PP,
-	): ForcePatch_<
+	): ForcePatch<
 		this,
 		{
-			[k in keyof PP]?: k extends keyof G<P, C> ? G<P, C>[k] | undefined : never
+			Props: {
+				[k in keyof PP]?: k extends keyof P<$> ? P<$>[k] | undefined : never
+			}
 		}
 	> {
 		return this._clone({
 			stack: [{ props }],
-		}) as never
+		})
 	}
 
 	/**
@@ -399,19 +461,19 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param propFromProps - Function returning prop value given all props
 	 * @returns Builder for further chaining
 	 */
-	computeProp<Name extends keyof G<P, C> & string>(
+	computeProp<Name extends keyof P<$> & string>(
 		name: Name,
-		propFromProps: (props: G<P, C>) => G<P, C>[Name],
-	): Patch_<this> {
+		propFromProps: (props: P<$>) => P<$>[Name],
+	): this {
 		return this._clone({
 			stack: [
 				{
-					mapProps: ((p: G<P, C>) => ({
-						[name as keyof G<P, C>]: propFromProps(p),
+					mapProps: ((p: P<$>) => ({
+						[name as keyof P<$>]: propFromProps(p),
 					})) as never,
 				},
 			],
-		}) as never
+		})
 	}
 
 	/**
@@ -426,13 +488,14 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * ```
 	 *
 	 * @param propName - Prop name
-	 * @param mapProp - Function returning prop value, based on previous optional prop value
+	 * @param mapProp - Function returning prop value, based on previous optional
+	 *   prop value
 	 * @returns Builder for further chaining
 	 */
-	mapProp<PropName extends keyof G<P, C>, TT>(
+	mapProp<PropName extends keyof P<$>, TT>(
 		propName: PropName,
-		mapProp: (x?: TT) => G<P, C>[PropName],
-	): ForcePatch_<this, { [k in PropName]?: TT | undefined }>
+		mapProp: (x?: TT) => P<$>[PropName],
+	): ForcePatch<this, { Props: { [k in PropName]?: TT | undefined } }>
 
 	/**
 	 * Map prop value (and possibly type) - #2: input prop mandatory
@@ -450,26 +513,26 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 *   prop value
 	 * @returns Builder for further chaining
 	 */
-	mapProp<PropName extends keyof G<P, C>, TT>(
+	mapProp<PropName extends keyof P<$>, TT>(
 		propName: PropName,
-		mapProp: (x: TT) => G<P, C>[PropName],
-	): ForcePatch_<this, { [k in PropName]: TT }>
+		mapProp: (x: TT) => P<$>[PropName],
+	): ForcePatch<this, { Props: { [k in PropName]: TT } }>
 
-	mapProp<PropName extends keyof G<P, C>, TT>(
+	mapProp<PropName extends keyof P<$>, TT>(
 		propName: PropName,
-		mapProp: (x?: TT) => G<P, C>[PropName],
-	): ForcePatch_<this, { [p in PropName]?: TT | undefined }> {
+		mapProp: (x?: TT) => P<$>[PropName],
+	): ForcePatch<this, { Props: { [p in PropName]?: TT | undefined } }> {
 		return this._clone({
 			stack: [
 				{
-					mapProps: (p: G<P, C>) => ({
+					mapProps: (p: P<$>) => ({
 						...p,
 						// eslint-disable-next-line security/detect-object-injection
 						[propName]: mapProp(p[propName] as never),
 					}),
 				},
 			] as never,
-		}) as never
+		})
 	}
 
 	/**
@@ -486,12 +549,12 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param mapProps - Function returning some props, based on previous props
 	 * @returns Builder for further chaining
 	 */
-	mapProps<MP extends MapProps<G<P, C>, G<P, C>>>(
+	mapProps<MP extends MapProps<P<$>, P<$>>>(
 		mapProps: MP,
-	): PatchRemoveProps_<this, keyof ReturnType<MP>> {
+	): PatchRemoveProps<this, keyof ReturnType<MP>> {
 		return this._clone({
 			stack: [{ mapProps }] as never,
-		}) as never
+		})
 	}
 
 	//
@@ -514,7 +577,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 */
 	newRequiredProp<PropName extends string>(
 		booleanPropName: PropName,
-	): Patch_<this, { [k in PropName]: boolean }>
+	): Patch<this, { Props: { [k in PropName]: boolean } }>
 
 	/**
 	 * Define new required prop
@@ -528,27 +591,27 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * ```
 	 *
 	 * @param propName - Prop name
-	 * @param _exampleValue - Unused example prop value (used only for type inference)
+	 * @param _exampleValue - Unused example prop value (used only for type
+	 *   inference)
 	 * @returns Builder for further chaining
 	 */
 	newRequiredProp<PropName extends string, PV>(
 		propName: PropName,
-
 		_exampleValue: PV,
-	): Patch_<this, { [k in PropName]: PV }>
+	): Patch<this, { Props: { [k in PropName]: PV } }>
 
 	newRequiredProp<PropName extends string, PV>(
 		propName: PropName,
 
 		_exampleValue?: PV,
-	): Patch_<this, { [k in PropName]: PV }> {
+	): Patch<this, { Props: { [k in PropName]: PV } }> {
 		return this._clone({
 			stack: [
 				{
 					removeProps: [propName],
 				},
 			],
-		}) as never
+		})
 	}
 
 	//
@@ -575,7 +638,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 */
 	newRequiredDomProp<PropName extends string>(
 		booleanPropName: PropName,
-	): Patch_<this, { [k in PropName]: boolean }>
+	): Patch<this, { Props: { [k in PropName]: boolean } }>
 
 	/**
 	 * Define new required DOM prop
@@ -593,20 +656,19 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 *
 	 *
 	 * @param propName - Prop name
-	 * @param _exampleValue - Unused example prop value (used only for type inference)
+	 * @param _exampleValue - Unused example prop value (used only for type
+	 *   inference)
 	 * @returns Builder for further chaining
 	 */
 	newRequiredDomProp<PropName extends string, PV>(
 		propName: PropName,
-
 		_exampleValue: PV,
-	): Patch_<this, { [k in PropName]: PV }>
+	): Patch<this, { Props: { [k in PropName]: PV } }>
 
 	newRequiredDomProp<PropName extends string, PV>(
 		_propName: PropName,
-
 		_exampleValue?: PV,
-	): Patch_<this, { [k in PropName]: PV }> {
+	): Patch<this, { Props: { [k in PropName]: PV } }> {
 		return this as never
 	}
 
@@ -630,7 +692,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 */
 	newProp<PropName extends string>(
 		booleanPropName: PropName,
-	): Patch_<this, { [k in PropName]?: boolean | undefined }>
+	): Patch<this, { Props: { [k in PropName]?: boolean | undefined } }>
 
 	/**
 	 * Define new optional prop defaulting to `defaultValue`
@@ -650,12 +712,12 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	newProp<PropName extends string, PV>(
 		propName: PropName,
 		defaultValue: PV,
-	): Patch_<this, { [k in PropName]?: PV | undefined }>
+	): Patch<this, { Props: { [k in PropName]?: PV | undefined } }>
 
 	newProp<PropName extends string, PV>(
 		propName: PropName,
 		defaultValue?: PV,
-	): Patch_<this, { [k in PropName]?: PV | undefined }> {
+	): Patch<this, { Props: { [k in PropName]?: PV | undefined } }> {
 		const myDefaultValue = arguments.length === 2 ? defaultValue : false
 		return this._clone({
 			stack: [
@@ -667,7 +729,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 			defaults: {
 				[propName]: myDefaultValue,
 			},
-		}) as never
+		})
 	}
 
 	//
@@ -692,7 +754,7 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 */
 	newDomProp<PropName extends string>(
 		booleanPropName: PropName,
-	): Patch_<this, { [k in PropName]?: boolean | undefined }>
+	): Patch<this, { Props: { [k in PropName]?: boolean | undefined } }>
 
 	/**
 	 * Define new optional DOM prop defaulting to `defaultValue`
@@ -714,18 +776,18 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	newDomProp<PropName extends string, PV>(
 		propName: PropName,
 		defaultValue: PV,
-	): Patch_<this, { [k in PropName]?: PV | undefined }>
+	): Patch<this, { Props: { [k in PropName]?: PV | undefined } }>
 
 	newDomProp<PropName extends string, PV>(
 		propName: PropName,
 		defaultValue?: PV,
-	): Patch_<this, { [k in PropName]?: PV | undefined }> {
+	): Patch<this, { Props: { [k in PropName]?: PV | undefined } }> {
 		const myDefaultValue = arguments.length === 2 ? defaultValue : false
 		return this._clone({
 			domDefaults: {
 				[propName]: myDefaultValue,
 			},
-		}) as never
+		})
 	}
 
 	//
@@ -743,17 +805,20 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * <Button big />
 	 * ```
 	 *
-	 * @param _exampleValues - Unused example values (used only for type inference)
+	 * @param _exampleValues - Unused example values (used only for type
+	 *   inference)
 	 * @returns Builder for further chaining
 	 */
-	newRequiredProps<PP extends Props>(_exampleValues: PP): Patch_<this, PP> {
+	newRequiredProps<PP extends Props>(
+		_exampleValues: PP,
+	): Patch<this, { Props: PP }> {
 		return this._clone({
 			stack: [
 				{
 					removeProps: getKeys(_exampleValues),
 				},
 			],
-		}) as never
+		})
 	}
 
 	//
@@ -781,11 +846,11 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	newProps<PP extends Props>(
 		defaultValues: PP, // Partial<UndefinedFromOptional<PP>> &
 		// Required<PickOptional<UndefinedFromOptional<Omit<PP, 'children'>>>>,
-	): Patch_<this, { [k in keyof PP]?: PP[k] | undefined }> {
+	): Patch<this, { Props: { [k in keyof PP]?: PP[k] | undefined } }> {
 		return this._clone({
 			stack: [{ removeProps: getKeys(defaultValues) }],
 			defaults: defaultValues,
-		}) as never
+		})
 	}
 
 	//
@@ -795,7 +860,8 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	/**
 	 * Define props by providing `DefinedProps` type
 	 *
-	 * - Provide `NewProps` type To infer from `defaultValues`, use `newProps()` instead
+	 * - Provide `NewProps` type To infer from `defaultValues`, use `newProps()`
+	 *   instead
 	 * - To render props to DOM, use `newDomProps` instead
 	 *
 	 * @example
@@ -809,9 +875,9 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 */
 	// eslint-disable-next-line etc/no-misused-generics
 	defineProps<DefinedProps extends Props>(): keyof PickOptional<
-		Omit<DefinedProps, 'children' | keyof P>
+		Omit<DefinedProps, 'children' | keyof $['Props']>
 	> extends never
-		? ForcePatch_<this, UndefinedFromOptional<DefinedProps>>
+		? ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 		: Throw<
 				'defineProps requires providing default values for optional props' & {
 					missingDefaults: keyof PickOptional<DefinedProps> & string // need to filter out `undefined` - TS bug??
@@ -819,9 +885,11 @@ class Styled<P extends Props, C extends StylableLike | null> {
 		  >
 
 	/**
-	 * Define props by providing `DefinedProps` type, defaulting to `defaultValues`
+	 * Define props by providing `DefinedProps` type, defaulting to
+	 * `defaultValues`
 	 *
-	 * - Provide `NewProps` type To infer from `defaultValues`, use `newProps()` instead
+	 * - Provide `NewProps` type To infer from `defaultValues`, use `newProps()`
+	 *   instead
 	 * - To render props to DOM, use `newDomProps` instead
 	 *
 	 * @example
@@ -838,20 +906,26 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	defineProps<DefinedProps extends Props>(
 		defaultValues: Partial<UndefinedFromOptional<DefinedProps>> &
 			MapOrUndefined<
-				Required<PickOptional<Omit<DefinedProps, 'children' | keyof P>>>
+				Required<
+					PickOptional<Omit<DefinedProps, 'children' | keyof $['Props']>>
+				>
 			>,
-	): ForcePatch_<this, UndefinedFromOptional<DefinedProps>>
+	): ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 
 	defineProps<DefinedProps extends Props>(
 		defaultValues?: Partial<UndefinedFromOptional<DefinedProps>> &
 			MapOrUndefined<
-				Required<PickOptional<Omit<DefinedProps, 'children' | keyof P>>>
+				Required<
+					PickOptional<Omit<DefinedProps, 'children' | keyof $['Props']>>
+				>
 			>,
-	): ForcePatch_<this, UndefinedFromOptional<DefinedProps>> | StaticError {
+	):
+		| ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
+		| StaticError {
 		return this._clone({
 			stack: [{ removeProps: getKeys(defaultValues || {}) }],
 			defaults: defaultValues || {},
-		}) as never
+		})
 	}
 
 	//
@@ -864,11 +938,14 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * - DOM props are rendered to DOM (useful for `data-xxx` props)
 	 * - No-op at runtime (type-only)
 	 *
-	 * @param _exampleValues - Unused example values (used only for type inference)
+	 * @param _exampleValues - Unused example values (used only for type
+	 *   inference)
 	 * @returns Builder for further chaining
 	 */
 
-	newRequiredDomProps<PP extends Props>(_exampleValues: PP): Patch_<this, PP> {
+	newRequiredDomProps<PP extends Props>(
+		_exampleValues: PP,
+	): Patch<this, { Props: PP }> {
 		return this as never
 	}
 
@@ -888,10 +965,12 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param defaultValues - Default values
 	 * @returns Builder for further chaining
 	 */
-	newDomProps<PP extends Props>(defaultValues: PP): Patch_<this, Partial<PP>> {
+	newDomProps<PP extends Props>(
+		defaultValues: PP,
+	): Patch<this, { Props: Partial<PP> }> {
 		return this._clone({
 			domDefaults: defaultValues,
-		}) as never
+		})
 	}
 
 	//
@@ -910,9 +989,12 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param _propNames - Prop names
 	 * @returns Builder for further chaining
 	 */
-	makePropsRequired<PropName extends keyof G<P, C>>(
+	makePropsRequired<PropName extends keyof P<$>>(
 		..._propNames: PropName[]
-	): ForcePatch_<this, { [k in PropName]-?: Exclude<G<P, C>[k], undefined> }> {
+	): ForcePatch<
+		this,
+		{ Props: { [k in PropName]-?: Exclude<P<$>[k], undefined> } }
+	> {
 		return this as never
 	}
 
@@ -932,9 +1014,9 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param _propNames - Prop names (unused at runtime; type-only)
 	 * @returns Builder for further chaining
 	 */
-	makePropsOptional<PropName extends keyof G<P, C> & string>(
+	makePropsOptional<PropName extends keyof P<$> & string>(
 		..._propNames: PropName[]
-	): ForcePatch_<this, { [k in PropName]+?: G<P, C>[k] | undefined }> {
+	): ForcePatch<this, { Props: { [k in PropName]+?: P<$>[k] | undefined } }> {
 		return this as never
 	}
 
@@ -954,9 +1036,9 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param _propNames - Unused in runtime - for type inference only
 	 * @returns Builder for further chaining
 	 */
-	forgetProps<PropName extends keyof G<P, C> & string>(
+	forgetProps<PropName extends keyof P<$> & string>(
 		..._propNames: PropName[]
-	): PatchRemoveProps_<this, PropName> {
+	): PatchRemoveProps<this, PropName> {
 		return this as never
 	}
 
@@ -979,8 +1061,8 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	 * @param childElements - Children to wrap
 	 * @returns Builder for further chaining
 	 */
-	wrap(...childElements: ChildElement<G<P, C>>[]): Patch_<this> {
-		return this._clone({ stack: [{ wrap: childElements }] }) as never
+	wrap(...childElements: ChildElement<P<$>>[]): this {
+		return this._clone({ stack: [{ wrap: childElements }] })
 	}
 
 	// wrapBefore(...childElements: ChildElement<P>[]): Patch<this> {
@@ -989,5 +1071,3 @@ class Styled<P extends Props, C extends StylableLike | null> {
 	// 	}) as never
 	// }
 }
-
-export { Styled as Styled_ }

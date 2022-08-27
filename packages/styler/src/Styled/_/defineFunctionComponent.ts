@@ -12,7 +12,8 @@ import type { IForwardRefExoticComponent, IForwardRefRenderFunction } from '~'
  *
  * @param name - Component name to set as both `Function.name` and `displayName`
  * @param Component - A function component to change name of
- * @returns - The exact same component after setting its `name` and `displayName`
+ * @returns - The exact same component after setting its `name` and
+ *   `displayName`
  */
 export function defineFunctionComponent<
 	ExtendsFC extends FC | IForwardRefRenderFunction | IForwardRefExoticComponent,

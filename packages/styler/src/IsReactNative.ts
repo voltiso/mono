@@ -7,5 +7,8 @@ import type { IsAny } from '@voltiso/util'
 // @ts-ignore this will fail under react-native (no `dom` lib)
 type Document = typeof document
 
-/** Determine environment - assumes `react-native` if there's no global `document` object */
+/**
+ * Determine environment - assumes `react-native` if there's no global
+ * `document` object
+ */
 export type IsReactNative = IsAny<Document>

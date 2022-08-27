@@ -4,7 +4,7 @@
 import { getEntries, tryGetProperty } from '@voltiso/util'
 
 import type { IndexedCssProps } from '~/_/CssProps'
-import type { Css } from '~/Css'
+import type { Css } from '~/Css/Css'
 import type { IndexedProps } from '~/react-types'
 
 import { prepare } from './prepare'

@@ -1,19 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
+import type { Styled } from '~'
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
 
-import type { Styled } from './AutoStyled'
 import type { IStyled } from './IStyled'
 
 describe('Styled', () => {
 	it('generic', <P extends Props, C extends IStylable | null>() => {
 		expect.assertions(0)
 
-		Assert.is<Styled<P, C>, IStyled>()
-		Assert.is<Styled<P, C>, Styled>()
+		Assert.is<Styled<{ Props: P; Component: C }>, IStyled | StaticError>()
 	})
 })

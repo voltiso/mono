@@ -6,11 +6,13 @@
  *
  * - Must be `type`, not `interface` - only then it's assignable to `IndexedProps`
  */
-export type Props = {
-	// [k: string]: unknown // can't have even this... @see `Props.test.ts`
-	// [k: number]: never // cannot have! @see `Props.test.ts`
-	// [k: symbol]: never // cannot have! @see `Props.test.ts`
-}
+export type Props = {}
+
+// {
+// [k: string]: unknown // can't have even this... @see `Props.test.ts`
+// [k: number]: never // cannot have! @see `Props.test.ts`
+// [k: symbol]: never // cannot have! @see `Props.test.ts`
+// }
 
 /**
  * Indexed Props

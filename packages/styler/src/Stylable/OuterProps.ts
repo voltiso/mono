@@ -3,26 +3,28 @@
 
 import type { StyleProp } from 'react-native'
 
-import type { Css } from '~/Css'
+import type { Css, CustomCss } from '~/Css'
 import type { IsReactNative } from '~/IsReactNative'
 import type { Props } from '~/react-types'
 
-export interface OuterPropsBase extends Props {
-	css?: Css | undefined
+export interface OuterPropsBase<AdditionalProperties = {}> extends Props {
+	css?: CustomCss<AdditionalProperties> | undefined
 }
 
-export interface WebOuterProps extends OuterPropsBase {
+export interface WebOuterProps<CustomCss = {}>
+	extends OuterPropsBase<CustomCss> {
 	className?: string | undefined
 	style?: Css | undefined
 }
 
-export interface NativeOuterProps extends OuterPropsBase {
+export interface NativeOuterProps<CustomCss = {}>
+	extends OuterPropsBase<CustomCss> {
 	className?: never
 	style?: StyleProp<unknown> | undefined
 }
 
-export type OuterProps = IsReactNative extends true
-	? NativeOuterProps
+export type OuterProps<CustomCss = {}> = IsReactNative extends true
+	? NativeOuterProps<CustomCss>
 	: IsReactNative extends false
-	? WebOuterProps
+	? WebOuterProps<CustomCss>
 	: never

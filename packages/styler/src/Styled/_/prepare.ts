@@ -5,9 +5,10 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { isDefined } from '@voltiso/util'
+import { $assert } from '@voltiso/assertor'
+import { isDefined, isPlainObject } from '@voltiso/util'
 
-import type { Css } from '~/Css'
+import type { CssProp } from '~'
 import { ThemePath } from '~/ThemePath'
 
 function readPath(o: any, path: string[]): unknown {
@@ -20,19 +21,41 @@ function readPath(o: any, path: string[]): unknown {
 	return readPath(o[path[0]], path.slice(1))
 }
 
-function isPlain(x: unknown): x is object {
-	return (x as object | undefined)?.constructor === Object
-}
-
-export function prepare<X>(x: X, theme: object): X {
-	if (isPlain(x)) {
-		const r: Css = {}
+export function prepare<X>(x: X, theme: object, customCss?: object): X {
+	if (isPlainObject(x)) {
+		let r: object = {}
+		let haveChange = false
 
 		for (const [k, v] of Object.entries(x)) {
-			if (isDefined(v)) r[k as keyof Css] = prepare(v, theme) as never
+			if (v === undefined) {
+				haveChange = true // removing undefined entry
+				continue
+			}
+
+			if (customCss && k in customCss) {
+				const customCssEntry = customCss[
+					k as keyof typeof customCss
+				] as CssProp<unknown>
+
+				const cssValues =
+					typeof customCssEntry === 'function'
+						? customCssEntry(v)
+						: customCssEntry
+
+				$assert(typeof cssValues === 'object')
+
+				const preparedCustomCss = prepare(cssValues, theme, customCss)
+
+				r = { ...preparedCustomCss, ...r }
+				haveChange = true
+			} else {
+				const newValue = prepare(v, theme) as never
+				if (newValue !== v) haveChange = true
+				r[k as keyof typeof r] = newValue
+			}
 		}
 
-		return r as any
+		return haveChange ? r : (x as any)
 	}
 
 	if (x instanceof ThemePath) {
@@ -41,12 +64,14 @@ export function prepare<X>(x: X, theme: object): X {
 
 	if (typeof x === 'string') {
 		if (!x.includes('$')) return x
-		else
+		else {
+			// replace all
 			return x.replace(
 				/\$\{([^}]*)\}/gu,
 				match =>
 					`${prepare(readPath(theme, match.slice(2, -1).split('.')), theme)}`,
 			) as any
+		}
 	}
 
 	return x as any

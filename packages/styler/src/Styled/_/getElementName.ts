@@ -3,7 +3,7 @@
 
 import { stringFrom } from '@voltiso/util'
 
-import type { IStylable } from '~/Stylable/IStylable'
+import type { StylableLike } from '~/Stylable/IStylable'
 
 type WithDisplayName = {
 	displayName: string
@@ -13,7 +13,7 @@ function hasDisplayName(x: unknown): x is WithDisplayName {
 	return typeof (x as WithDisplayName | null)?.displayName === 'string'
 }
 
-export function getElementName(element: IStylable): string {
+export function getElementName(element: StylableLike): string {
 	if (typeof element === 'string') return element
 	else if (hasDisplayName(element)) return element.displayName
 	else if (element.name) return element.name

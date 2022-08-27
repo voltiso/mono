@@ -16,7 +16,7 @@ const project = [
 	'packages/styler/test/web/tsc-options/*/tsconfig.json',
 	//
 	'packages/util/src/tsc-options/*/test-true/tsconfig.json',
-	'packages/util/src/tsc-options/*/test-false/tsconfig.json'
+	'packages/util/src/tsc-options/*/test-false/tsconfig.json',
 ]
 
 // eslint-disable-next-line n/no-process-env

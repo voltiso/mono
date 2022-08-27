@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { Css } from '~/Css'
+import type { Css } from '~/Css/Css'
 
 describe('Css', () => {
 	it('simple', () => {

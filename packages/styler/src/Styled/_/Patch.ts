@@ -1,17 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Throw } from '@voltiso/util'
+import type { Merge2, Throw } from '@voltiso/util'
 
-import type { STYLED_TYPE_INFO } from '~/_/symbols'
+import type { GetStyled, StyledLike, StyledTypeInfo } from '~'
+import type { STYLED_TYPE_INFO as TI } from '~/_/symbols'
 import type {
 	ComponentPropsWithoutRef_,
 	ElementTypeLike,
 	MergeProps_,
 } from '~/react-types'
-import type { StylableLike } from '~/Stylable'
-import type { StyledComponent } from '~/StyledComponent'
-import type { StyledHoc } from '~/StyledHoc'
 
 import type { OmitProps_ } from './OmitProps'
 
@@ -26,61 +24,47 @@ export type GetComponentProps_<C> = C extends null
 
 //
 
-type StyledLike = {
-	readonly component: any
-	readonly [STYLED_TYPE_INFO]: { P: any }
-}
+export type Patch<
+	This extends StyledLike,
+	$ extends Partial<StyledTypeInfo>,
+> = PatchImpl<This, Merge2<This[TI], Required<$>>>
 
-export type Patch_<This extends StyledLike, P = {}, C = This['component']> = (
-	| keyof This[STYLED_TYPE_INFO]['P']
-	| keyof GetComponentProps_<C>
+export type PatchImpl<This extends StyledLike, $ extends StyledTypeInfo> = (
+	| keyof This[TI]['Props']
+	| keyof GetComponentProps_<$['Component']>
 ) &
-	keyof P extends never
-	? ForcePatch_<This, P, C>
+	keyof $['Props'] extends never
+	? ForcePatchImpl<This, $>
 	: Throw<
-			'Error: Props already exist' & {
-				duplicateProps: keyof This[STYLED_TYPE_INFO]['P'] & keyof P
+			'Props already exist' & {
+				duplicateProps: (
+					| keyof This[TI]['Props']
+					| keyof GetComponentProps_<$['Component']>
+				) &
+					keyof $['Props']
 			}
 	  >
 
-// export type Patch<
-// 	This extends IStyled,
-// 	P extends Props = {},
-// 	C extends IStylable | null = This['component'],
-// > = Patch_<This, P, C>
+//
+
+export type ForcePatch<
+	This extends StyledLike,
+	$ extends Partial<StyledTypeInfo>,
+> = ForcePatchImpl<This, Merge2<This[TI], Required<$>>>
+
+export type ForcePatchImpl<
+	This extends StyledLike,
+	$ extends StyledTypeInfo,
+> = GetStyled<{
+	Component: $['Component']
+	Props: MergeProps_<This[TI]['Props'], $['Props']>
+	CustomCss: MergeProps_<This[TI]['CustomCss'], $['CustomCss']>
+}>
 
 //
 
-export type ForcePatch_<
-	This extends StyledLike,
-	P = {},
-	C = This['component'],
-> = C extends null
-	? StyledHoc<MergeProps_<This[STYLED_TYPE_INFO]['P'], P>>
-	: C extends StylableLike
-	? StyledComponent<MergeProps_<This[STYLED_TYPE_INFO]['P'], P>, C>
-	: never
-
-// export type ForcePatch<
-// 	This extends IStyled,
-// 	P extends Props = {},
-// 	C extends IStylable | null = This['component'],
-// > = ForcePatch_<This, P, C>
-
-//
-
-export type PatchRemoveProps_<
-	This extends StyledLike,
-	PropName,
-	C = This['component'],
-> = C extends null
-	? StyledHoc<OmitProps_<This[STYLED_TYPE_INFO]['P'], PropName>>
-	: C extends StylableLike
-	? StyledComponent<OmitProps_<This[STYLED_TYPE_INFO]['P'], PropName>, C>
-	: never
-
-// export type PatchRemoveProps<
-// 	This extends StyledLike & { component: IStylable | null },
-// 	PropName extends keyof GetProperty_<This, '_data'>['P'],
-// 	C extends IStylable | null = This['component'],
-// > = PatchRemoveProps_<This, PropName, C>
+export type PatchRemoveProps<This extends StyledLike, PropName> = GetStyled<{
+	Component: This[TI]['Component']
+	Props: OmitProps_<This[TI]['Props'], PropName>
+	CustomCss: This[TI]['CustomCss']
+}>

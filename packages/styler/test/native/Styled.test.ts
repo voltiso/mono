@@ -5,17 +5,24 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { StyleProp } from 'react-native'
 
-import type { Props, Stylable, Styled, StyledComponent } from '~'
+import type {
+	GetStyledComponent,
+	IStyled,
+	IStyledComponent,
+	Stylable,
+	StyledComponent,
+	StyledComponentWithProps,
+} from '~'
 import { style } from '~'
 
 describe('Styled (react-native)', () => {
-	it('generic', <P extends Props, C extends Stylable>() => {
+	it('generic', <P extends {}, C extends Stylable>() => {
 		expect.assertions(0)
 
-		Assert.is<StyledComponent<P>, Styled>()
-		Assert.is<StyledComponent<P>, StyledComponent>()
+		Assert.is<GetStyledComponent<{ Props: P }>, IStyled>()
+		Assert.is<GetStyledComponent<{ Props: P }>, IStyledComponent>()
 
-		Assert.is<Styled<P, C>, Styled>()
+		Assert.is<StyledComponentWithProps<C, P>, IStyled>()
 	})
 
 	it('does not allow components without InnerProps', () => {
@@ -36,16 +43,7 @@ describe('Styled (react-native)', () => {
 		const a = style(GoodComponent)
 		type A = typeof a
 
-		Assert<
-			IsIdentical<
-				A,
-				StyledComponent<{}, typeof GoodComponent>
-				// StyledComponent<{
-				// 	a?: 1
-				// 	style?: unknown
-				// }>
-			>
-		>()
+		Assert<IsIdentical<A, StyledComponent<typeof GoodComponent>>>()
 
 		//
 
@@ -54,9 +52,6 @@ describe('Styled (react-native)', () => {
 		const HardGood = (_props: { a: 1; style?: StyleProp<unknown> }) => null
 		const b = style(HardGood)
 		type B = typeof b
-		Assert<
-			IsIdentical<B, StyledComponent<{}, typeof HardGood>>
-			// IsIdentical<B, StyledComponent<{ a: 1; style?: StyleProp<unknown> }>>
-		>()
+		Assert<IsIdentical<B, StyledComponent<typeof HardGood>>>()
 	})
 })

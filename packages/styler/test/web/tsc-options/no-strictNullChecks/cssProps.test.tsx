@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical, Throw } from '@voltiso/util'
+import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import { style } from '~'
@@ -34,11 +34,10 @@ describe('cssProps', () => {
 		Assert<
 			IsIdentical<
 				typeof BadSvg,
-				Throw<
-					'Error: Props already exist' & {
+				StaticError &
+					'Props already exist' & {
 						duplicateProps: 'border' | 'gap'
 					}
-				>
 			>
 		>()
 

@@ -5,27 +5,29 @@ import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { ChangeEvent, FC, ReactElement, RefObject } from 'react'
 
-import type { Styled } from '~'
-import type { Css } from '~/Css'
+import type {
+	Css,
+	GetStyledHoc,
+	IStyled,
+	IStyledComponent,
+	StyledComponent,
+} from '~'
 import type { Props } from '~/react-types'
 import type { Stylable } from '~/Stylable'
 import type { StylableIntrinsic } from '~/Stylable/_/StylableIntrinsic'
 import type { StylableJsxCall } from '~/Stylable/_/StylableJsxCall'
 import type { StylableJsxConstruct } from '~/Stylable/_/StylableJsxConstruct'
-import type { StyledComponent } from '~/StyledComponent'
 
-import type { StyledHoc } from './AutoStyledHoc'
 import type { IStyledHoc, IStyledHocCall } from './IStyledHoc'
-import type { StyledHocCall } from './StyledHoc'
+import type { StyledHocCall } from './StyledHocCall'
 
 describe('StyledHoc', () => {
-	it('generic', <P extends Props>() => {
+	it('generic', <P extends Props, CP extends Props>() => {
 		expect.assertions(0)
 
-		Assert.is<StyledHoc<P>, IStyledHoc>()
-		Assert.is<StyledHoc<P>, StyledHoc>()
+		Assert.is<GetStyledHoc<{ Props: P }>, IStyledHoc>()
 
-		Assert.is<StyledHocCall<P>, IStyledHocCall>()
+		Assert.is<StyledHocCall<{ Props: P; CustomCss: CP }>, IStyledHocCall>()
 
 		// Assert.is<Styled<P>, Styled<Props>>()
 	})
@@ -40,7 +42,7 @@ describe('StyledHoc', () => {
 			style?: Css | undefined
 		}
 
-		type StyledGoodProps = StyledHoc<GoodProps>
+		type StyledGoodProps = GetStyledHoc<{ Props: GoodProps }>
 		Assert.is<StyledGoodProps, IStyledHoc>()
 
 		type BadProps = {
@@ -48,14 +50,14 @@ describe('StyledHoc', () => {
 			b?: 2
 		}
 
-		type StyledBadProps = StyledHoc<BadProps>
+		type StyledBadProps = GetStyledHoc<{ Props: BadProps }>
 		Assert.is<StyledBadProps, IStyledHoc>()
 	})
 
 	it('style the stylable', () => {
 		expect.assertions(0)
 
-		const style = {} as unknown as StyledHoc<{}>
+		const style = {} as unknown as GetStyledHoc<{}>
 
 		type TextProps = {
 			id?: string | undefined
@@ -72,11 +74,11 @@ describe('StyledHoc', () => {
 
 		const aa = () => style(0 as unknown as StylableJsxCall<TextProps>)
 		type AA = ReturnType<typeof aa>
-		Assert.is<AA, StyledComponent>()
+		Assert.is<AA, IStyledComponent>()
 
 		const bb = () => style(0 as unknown as StylableJsxConstruct<TextProps>)
 		type BB = ReturnType<typeof bb>
-		Assert.is<BB, StyledComponent>()
+		Assert.is<BB, IStyledComponent>()
 
 		type XX = React.DetailedHTMLProps<
 			React.HTMLAttributes<HTMLElement>,
@@ -86,19 +88,19 @@ describe('StyledHoc', () => {
 
 		const cc = () => style(0 as unknown as StylableIntrinsic<TextProps>)
 		type CC = ReturnType<typeof cc>
-		Assert.is<CC, StyledComponent>()
+		Assert.is<CC, IStyledComponent>()
 		;() => style(0 as unknown as StylableIntrinsic<TextProps>)
 
 		//
 		const a = () => style(0 as unknown as Stylable<TextProps>)
 		type A = ReturnType<typeof a>
-		Assert.is<A, StyledComponent>()
+		Assert.is<A, IStyledComponent>()
 	})
 
 	it('call signature', () => {
 		expect.assertions(0)
 
-		const style = function () {} as unknown as StyledHoc<{}>
+		const style = function () {} as unknown as GetStyledHoc<{}>
 
 		// easy
 		const a0 = style({} as unknown as FC<{ className?: string | undefined }>)
@@ -127,7 +129,6 @@ describe('StyledHoc', () => {
 			IsIdentical<
 				typeof cc,
 				StyledComponent<
-					{},
 					FC<{
 						href: string
 						className?: string
@@ -150,7 +151,7 @@ describe('StyledHoc', () => {
 				className?: string | undefined
 			}) => ReactElement,
 		)
-		Assert.is<typeof ddd, Styled>()
+		Assert.is<typeof ddd, IStyled>()
 
 		//
 
@@ -166,6 +167,6 @@ describe('StyledHoc', () => {
 
 		type D = ReturnType<typeof d>
 
-		Assert<IsIdentical<D, StyledComponent<{}, DInner>>>()
+		Assert<IsIdentical<D, StyledComponent<DInner>>>()
 	})
 })

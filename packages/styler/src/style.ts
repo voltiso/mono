@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defaultStyledData } from './_/StyledData'
-import { StyledHoc } from './StyledHoc'
+import { Styled } from './Styled'
+import type { StyledHoc } from './StyledHoc'
 
-export const style = new StyledHoc<{}>(defaultStyledData)
+export const style = new Styled(defaultStyledData) as unknown as StyledHoc

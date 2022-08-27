@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { render, screen } from '@testing-library/react'
+import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
 
 import { createTheme, style, StyleProvider } from '~'
@@ -9,6 +10,8 @@ import { createTheme, style, StyleProvider } from '~'
 import { getRenderer } from './common'
 
 type Theme = {
+	primaryColor: Property.Color
+
 	a: {
 		boxShadow: string
 		b: {
@@ -27,6 +30,8 @@ const renderApp = (children: ReactNode) =>
 			renderer={getRenderer()}
 			theme={
 				{
+					primaryColor: 'mystic',
+
 					a: {
 						boxShadow: `dashed ${t.a.b.c[11]}px`,
 
@@ -120,6 +125,27 @@ describe('theme', () => {
 
 		expect(button).toHaveStyle({
 			boxShadow: `dashed 222px green`,
+		})
+	})
+
+	it('theme as prop', () => {
+		expect.hasAssertions()
+
+		const Button = style('button')
+			.newProps({
+				backgroundColor: 'pink' as Property.Color,
+			})
+			.css(props => ({
+				backgroundColor:
+					props.backgroundColor === 'mystic' ? 'purple' : 'green',
+			}))
+
+		renderApp(<Button backgroundColor={t.primaryColor} />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			backgroundColor: 'purple',
 		})
 	})
 })

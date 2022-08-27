@@ -35,7 +35,7 @@ describe('cssProps', () => {
 			IsIdentical<
 				typeof BadSvg,
 				Throw<
-					'Error: Props already exist' & {
+					'Props already exist' & {
 						duplicateProps: 'border' | 'gap'
 					}
 				>

@@ -87,7 +87,10 @@ describe('style', () => {
 
 		renderApp(
 			<RedButton
-				css={{ color: 'green', '&[data-state=asd]': { color: 'purple' } }}
+				css={{
+					color: 'green',
+					nested: { '&[data-state=asd]': { color: 'purple' } },
+				}}
 			/>,
 		)
 
@@ -102,7 +105,17 @@ describe('style', () => {
 	it('overwrite css => css #2', () => {
 		expect.hasAssertions()
 
-		renderApp(<OtherRedButton css={{ margin: 88 }} />)
+		renderApp(
+			<OtherRedButton
+				css={{
+					nested: {
+						nested: {
+							margin: 88,
+						},
+					},
+				}}
+			/>,
+		)
 
 		const button = screen.getByRole('button')
 

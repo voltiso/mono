@@ -1,8 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Props } from '~'
+import type { StylableLike } from '~'
 
-export type StyledTypeInfo = {
-	P: Props
+export interface StyledTypeInfo {
+	Component: StylableLike | null
+	Props: {}
+	CustomCss: {}
 }

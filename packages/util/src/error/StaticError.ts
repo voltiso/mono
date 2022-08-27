@@ -14,4 +14,4 @@ export interface StaticError {
  * type MyGeneric<T> = T extends string ? ... : Throw<"MyGeneric: T should be string" & {Got: T}>
  * ```
  */
-export type Throw<message> = StaticError & message
+export type Throw<message> = [StaticError & message][0]

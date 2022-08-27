@@ -1,0 +1,54 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { _ } from '@voltiso/util'
+
+import type {
+	ComponentClassLike,
+	FunctionComponentLike,
+	GetStyledComponentImpl,
+	StylableIntrinsic,
+	StyledLike,
+	StyledTypeInfo,
+} from '~'
+
+export interface StyledHocCall<
+	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
+> {
+	/**
+	 * Style the already styled (identity function in this case)
+	 *
+	 * ! TODO: merge styles/props in both runtime and typings
+	 */
+	<C extends StyledLike>(alreadyStyled: C): C
+
+	//
+
+	/** Style a FC-like (callable) component */
+	<C extends FunctionComponentLike>(
+		stylableFunctionComponent: C,
+	): GetStyledComponentImpl<_<{ Component: C } & $>>
+
+	//
+
+	/** Style a class-like (newable) component */
+	<C extends ComponentClassLike>(
+		stylableClassComponent: C,
+	): GetStyledComponentImpl<_<{ Component: C } & $>>
+
+	//
+
+	/** Style an intrinsic element ('div', 'button', ...) */
+	<C extends StylableIntrinsic>(
+		stylableIntrinsicElement: C,
+	): GetStyledComponentImpl<_<{ Component: C } & $>>
+
+	//
+
+	//
+
+	/** All overloads combined (for usage in generic contexts) */
+	<C extends FunctionComponentLike | ComponentClassLike | StylableIntrinsic>(
+		stylable: C,
+	): GetStyledComponentImpl<_<{ Component: C } & $>>
+}

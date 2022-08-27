@@ -31,15 +31,18 @@
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@typescript-eslint/utils": "^5.33.1",
+		"@typescript-eslint/utils": "^5.35.1",
 		"builtins": "^5.0.1",
 		"eslint-module-utils": "^2.7.4",
 		"is-core-module": "^2.10.0",
 		"resolve": "^1.22.1"
+	},
+	"peerDependencies": {
+		"typescript": "< 4.8.0"
 	},
 	"devDependencies": {
 		"@types/eslint": "^8.4.6",
@@ -49,9 +52,8 @@
 		"@voltiso/assertor.transform": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/script": "workspace:^",
-		"eslint": "^8.22.0",
+		"eslint": "^8.23.0",
 		"import-meta-resolve": "^2.1.0",
-		"rimraf": "^3.0.2",
-		"typescript": "^4.7.4"
+		"typescript": "< 4.8.0"
 	}
 }

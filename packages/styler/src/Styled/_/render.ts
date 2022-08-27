@@ -6,11 +6,12 @@ import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'
 
+import type { StyledTypeInfo } from '~'
 import type { CssProps } from '~/_/CssProps'
 import type { StyledData } from '~/_/StyledData'
-import type { Css } from '~/Css'
+import type { Css } from '~/Css/Css'
 import type { Props } from '~/react-types'
-import type { IStylable, OuterProps } from '~/Stylable'
+import type { OuterProps } from '~/Stylable'
 
 import { consumeCssProps } from './consumeCssProps'
 import { prepare } from './prepare'
@@ -23,10 +24,10 @@ import {
 	isWrapNode,
 } from './Stack'
 
-export function render<P extends Props, C extends IStylable>(
-	props: P & OuterProps,
+export function render<$ extends StyledTypeInfo>(
+	props: $['Props'] & OuterProps,
 	ref: ForwardedRef<unknown>,
-	data: StyledData<P, C>,
+	data: StyledData<$>,
 ) {
 	// eslint-disable-next-line react-hooks/rules-of-hooks, destructuring/no-rename
 	const { css: getFelaCss, theme } = useFela()
@@ -37,14 +38,22 @@ export function render<P extends Props, C extends IStylable>(
 
 	let p = ref ? { ...otherProps, ref } : otherProps
 
+	// prepare props - dangerous for e.g. `ref`
+	for (const k of Object.keys(p) as (keyof typeof p)[]) {
+		assertNotPolluting(k)
+		// eslint-disable-next-line security/detect-object-injection
+		p[k] = prepare(p[k], theme) as never
+	}
+
 	const stack = data.stack
 
 	const styles: Css[] = []
 
-	if (typeof css !== 'undefined') styles.push(prepare(css, theme))
+	if (typeof css !== 'undefined')
+		styles.push(prepare(css, theme, stack.at(-1)?.customCss))
 
-	const consumedCssProps = {} as P extends any
-		? Required<Partial<CssProps<P>>>
+	const consumedCssProps = {} as $ extends any
+		? Required<Partial<CssProps<$['Props']>>>
 		: never
 
 	function consume(p: Props) {
@@ -59,11 +68,6 @@ export function render<P extends Props, C extends IStylable>(
 
 	consume(p)
 
-	// let children = [] as (ReactElement | null)[]
-	// let overrideChildren = false
-
-	// let nextChildKey = 0
-
 	for (let i = stack.length - 1; i >= 0; --i) {
 		// eslint-disable-next-line security/detect-object-injection
 		const node = stack[i]
@@ -71,9 +75,15 @@ export function render<P extends Props, C extends IStylable>(
 		if (isRemovePropsNode(node)) {
 			for (const prop of node.removeProps) delete p[prop as never]
 		} else if (isStyleNode(node)) {
-			styles.push(prepare(node.style, theme))
+			styles.push(prepare(node.style, theme, node.customCss))
 		} else if (isGetStyleNode(node)) {
-			styles.push(prepare(node.getStyle({ ...data.defaults, ...p }), theme))
+			styles.push(
+				prepare(
+					node.getStyle({ ...data.defaults, ...p }),
+					theme,
+					node.customCss,
+				),
+			)
 		} else if (isPropsNode(node)) {
 			consume(node.props)
 			p = { ...node.props, ...p }
@@ -106,13 +116,7 @@ export function render<P extends Props, C extends IStylable>(
 				...p,
 				...node.mapProps({ ...data.defaults, ...p } as never),
 			}
-		} else throw new Error('style: unknown stack Node')
-	}
-
-	for (const k of Object.keys(p) as (keyof typeof p)[]) {
-		assertNotPolluting(p, k)
-		// eslint-disable-next-line security/detect-object-injection
-		p[k] = prepare(p[k], theme) as never
+		}
 	}
 
 	p = { ...data.domDefaults, ...p }
@@ -133,7 +137,7 @@ export function render<P extends Props, C extends IStylable>(
 	}
 
 	function getFinalReactNativeProps() {
-		let style = felaValue as Css
+		let style = felaValue as unknown as Css
 
 		if (p.style) style = { ...style, ...(p.style as unknown as object) }
 
@@ -153,5 +157,5 @@ export function render<P extends Props, C extends IStylable>(
 	// 	}
 	// }
 
-	return createElement(data.element as never, finalProps as never)
+	return createElement(data.component as never, finalProps as never)
 }

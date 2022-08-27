@@ -73,6 +73,7 @@ import {
 	testOverride,
 	toml,
 	tsdoc,
+	turbo,
 	typescriptSortKeys,
 	unicorn,
 	unusedImports,
@@ -258,6 +259,8 @@ export const baseEslintConfig = defineEslintConfig({
 		json, // has to be after `jsonc`
 		toml,
 		yaml,
+
+		turbo,
 
 		prettierOverride,
 

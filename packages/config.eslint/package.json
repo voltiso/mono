@@ -101,6 +101,7 @@
 		"eslint-plugin-testing-library": ">=5.5.1",
 		"eslint-plugin-toml": "*",
 		"eslint-plugin-tsdoc": ">=0.2.16",
+		"eslint-plugin-turbo": "*",
 		"eslint-plugin-typescript-sort-keys": ">=2.1.0",
 		"eslint-plugin-unicorn": "*",
 		"eslint-plugin-unused-imports": ">=2.0.0",
@@ -285,6 +286,9 @@
 		"eslint-plugin-tsdoc": {
 			"optional": true
 		},
+		"eslint-plugin-turbo": {
+			"optional": true
+		},
 		"eslint-plugin-typescript-sort-keys": {
 			"optional": true
 		},
@@ -308,11 +312,11 @@
 		}
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.7",
+		"@types/node": "^18.7.13",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/eslint-plugin": "workspace:^1.0.2",
-		"eslint": "^8.22.0"
+		"eslint": "^8.23.0"
 	},
 	"__________MISC": "__________",
 	"engines": {

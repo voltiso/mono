@@ -1,11 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IStylable } from '~/Stylable'
-import type { IStyled } from '~/Styled'
+import type { StylableLike } from '~/Stylable'
+import type { IStyled, StyledLike } from '~/Styled'
 import type { IStyledComponent } from '~/StyledComponent'
 
 import type { ThrowWrongInnerProps } from './ThrowWrongInnerProps'
+
+export interface StyledHocLike extends StyledLike, IStyledHocCall {}
 
 /**
  * Curried `Element => StyledComponent`
@@ -17,7 +19,7 @@ export interface IStyledHoc extends IStyled, IStyledHocCall {}
 //
 
 export interface IStyledHocCall {
-	<E extends IStylable>(Element: E): E extends IStyledHoc
+	<E extends StylableLike>(Element: E): E extends StyledHocLike
 		? E
 		: IStyledComponent | ThrowWrongInnerProps
 }

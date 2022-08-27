@@ -80,8 +80,10 @@ export const traceRun = [
 	'rimraf traceDir',
 	'tsc --generateTrace traceDir | gnomon',
 	'analyze-trace traceDir',
+	'simplify-trace-types traceDir/types.json traceDir/types-simplified.json',
+	'code traceDir/types-simplified.json',
 ]
-export const trace = turbo("trace:run")
+export const trace = turbo('trace:run')
 
 export const clean = 'rimraf node_modules dist'
 

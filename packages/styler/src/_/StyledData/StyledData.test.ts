@@ -10,9 +10,12 @@ import type { IStyledData } from './IStyledData'
 import type { StyledData } from './StyledData'
 
 describe('StyledData', () => {
-	it('generic', <P extends Props, C extends IStylable | null>() => {
+	it('generic', <P extends Props, C extends IStylable | null, CC extends {}>() => {
 		expect.assertions(0)
 
-		Assert.is<StyledData<P, C>, IStyledData>()
+		Assert.is<
+			StyledData<{ Props: P; Component: C; CustomCss: CC }>,
+			IStyledData
+		>()
 	})
 })

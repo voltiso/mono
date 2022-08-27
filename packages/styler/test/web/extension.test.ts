@@ -3,10 +3,10 @@
 
 import { style } from '~'
 
-declare module 'fela' {
-	interface IStyleExtension {
+declare module '~' {
+	interface CssExtension {
 		/** Center child using 'flex' */
-		c: boolean
+		c?: boolean | undefined
 	}
 }
 

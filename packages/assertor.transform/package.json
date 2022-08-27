@@ -32,14 +32,11 @@
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
 	"peerDependencies": {
-		"typescript": "*"
-	},
-	"devDependencies": {
-		"rimraf": "^3.0.2"
+		"typescript": "^4.7.4 || *"
 	},
 	"__________MISC": "__________",
 	"engines": {

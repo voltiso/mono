@@ -4,7 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
 export const defaultStyledData = {
-	element: null as null,
+	component: null as null,
+
 	childElements: null as null,
 
 	stack: [] as never[],

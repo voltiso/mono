@@ -1,11 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '@voltiso/util'
-
 import { style } from '~'
 
-describe('CustomCss', () => {
+describe('undefined', () => {
 	it('works (static)', () => {
 		expect.assertions(0)
 
@@ -14,7 +12,7 @@ describe('CustomCss', () => {
 		;() => (
 			<Div
 				css={{
-					animationDuration: undef,
+					animationDuration: undefined,
 				}}
 			/>
 		)
@@ -27,7 +25,7 @@ describe('CustomCss', () => {
 						from: { margin: 0 },
 					},
 
-					animationDuration: undef,
+					animationDuration: undefined,
 				}}
 			/>
 		)

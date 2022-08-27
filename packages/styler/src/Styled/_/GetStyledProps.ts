@@ -4,29 +4,24 @@
 import type {
 	ComponentPropsWithRef_,
 	ElementTypeLike,
-	FastMergeProps_,
+	MergeProps_,
+	StyledTypeInfo,
 } from '~'
 
-// /** Distribute over `P` and `C` */
-// export type $GetStyledProps<P, C> = P extends any
-// 	? C extends null
-// 		? P
-// 		: C extends ComponentClassLike<infer PP>
-// 		? MergeProps_<PP, P>
-// 		: C extends FunctionComponentLike<infer PP>
-// 		? MergeProps_<PP, P>
-// 		: C extends string
-// 		? C extends keyof JSX.IntrinsicElements
-// 			? MergeProps_<JSX.IntrinsicElements[C], P>
-// 			: never
-// 		: never
-// 	: never
+import type {
+	GetStyledLikeTypeInfo as GL,
+	GetStyledTypeInfo as G,
+} from '../GetStyledTypeInfo'
+
+export type $GetStyledProps<$ extends Partial<StyledTypeInfo>> =
+	$GetStyledPropsImpl<G<$>['Component'], G<$>['Props']>
+
+export type $GetStyledLikeProps<$ extends Partial<StyledTypeInfo>> =
+	$GetStyledPropsImpl<GL<$>['Component'], GL<$>['Props']>
 
 /** Distribute over `P` and `C` */
-export type $GetStyledProps<P, C> = P extends any
-	? C extends null
-		? P
-		: C extends ElementTypeLike
-		? FastMergeProps_<ComponentPropsWithRef_<C>, P>
-		: never
+export type $GetStyledPropsImpl<C, P> = C extends null
+	? P
+	: C extends ElementTypeLike
+	? MergeProps_<ComponentPropsWithRef_<C>, P>
 	: never
