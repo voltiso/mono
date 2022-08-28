@@ -11,6 +11,8 @@ describe('cssProps', () => {
 		expect.assertions(0)
 
 		const Button = style('button').cssProps('flex', 'backgroundColor')
+
+		//
 		;<Button /> // check if optional
 	})
 

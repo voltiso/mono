@@ -20,7 +20,7 @@ export interface CssWeb
 		_Css_OriginalWeb {}
 
 /** `Css` with additional properties */
-export type CustomCssWeb<C> = C & CssWeb
+export type CustomCssWeb<C extends {}> = C & CssWeb
 
 /** @internal */
 export type _Css_WithExtensionWeb = {

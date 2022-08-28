@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/styler",
-	"version": "12.0.4",
+	"version": "12.0.5",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -44,7 +44,7 @@
 		"build:cjs": "v buildCjs",
 		"build:esm": "v buildEsm",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
 		"clean": "v clean",
 		"trace": "v trace",

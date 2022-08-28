@@ -11,14 +11,13 @@ import type {
 import { assertNotPolluting, getKeys } from '@voltiso/util'
 
 import type { Stylable, StyledTypeInfo } from '~'
-import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
+import type { IndexedCssPropsSingle } from '~/_/CssProps'
 import type {
 	IStyledDataMod as IStyledDataModule,
 	StyledData,
 } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
-import type { Css } from '~/Css'
 import type { Props } from '~/react-types'
 
 import type { $GetStyledLikeProps as P } from '.'
@@ -31,7 +30,10 @@ import type { PropValue } from './_/PropValue'
 import type { MapProps } from './_/Stack'
 import type { StyleFromProps } from './_/StyleFromProps'
 import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
-import type { GetStyledTypeInfo as G } from './GetStyledTypeInfo'
+import type {
+	GetStyledCss as C,
+	GetStyledTypeInfo as G,
+} from './GetStyledTypeInfo'
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
 	declare readonly [$]: G<$>;
@@ -122,7 +124,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 * @param style - CSS style to merge
 	 * @returns Builder for further chaining
 	 */
-	css(style: Css): this
+	css(style: C<$>): this
 
 	/**
 	 * Override CSS style, based on props
@@ -140,7 +142,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	css(styleFromProps: StyleFromProps<P<$>>): this
 
-	css(style: Css | StyleFromProps<P<$>>): this {
+	css(style: C<$> | StyleFromProps<P<$>>): this {
 		const stackNode =
 			typeof style === 'function' ? { getStyle: style } : { style }
 
@@ -161,15 +163,17 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 * @param propNames - List of prop names to map
 	 * @returns Builder for further chaining
 	 */
-	cssProps<PropNames extends (keyof Css & string)[]>(
+	cssProps<PropNames extends (keyof C<$>)[]>(
 		...propNames: PropNames
-	): Patch<this, { Props: Pick<Css, PropNames[number]> }> {
+	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore union too complex to represent?
+	Patch<this, { Props: Pick<C<$>, PropNames[number]> }> {
 		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>
 
-		const cssProps = {} as IndexedCssProps
+		const cssProps = {} as Record<string, unknown[]>
 
-		for (const propName of propNames) {
-			assertNotPolluting(cssProps, propName)
+		for (const propName of propNames as string[]) {
+			assertNotPolluting(propName)
 
 			// eslint-disable-next-line security/detect-object-injection
 			cssProps[propName] = [
@@ -181,7 +185,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 
 		return this._clone({
 			stack: [{ removeProps: propNames as never }],
-			cssProps,
+			cssProps: cssProps as never,
 		})
 	}
 
@@ -202,7 +206,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	newCssProp<PropName extends string>(
 		propName: PropName,
-		style: Css,
+		style: C<$>,
 	): Patch<this, { Props: { [k in PropName]?: boolean | undefined } }>
 
 	/**
@@ -229,7 +233,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		PropName extends string,
 		// eslint-disable-next-line etc/no-misused-generics
 		PV,
-		StyleFromProp extends (propValue?: PV) => Css,
+		StyleFromProp extends (propValue?: PV) => C<$>,
 	>(
 		propName: PropName,
 		styleFromProp: StyleFromProp,
@@ -257,12 +261,12 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	newCssProp<PropName extends string, PV>(
 		propName: PropName,
-		styleFromProp: (propValue: PV) => Css,
+		styleFromProp: (propValue: PV) => C<$>,
 	): Patch<this, { Props: { [k in PropName]: PV } }>
 
 	newCssProp<PropName extends string, PV>(
 		propName: PropName,
-		style: Css | ((propValue: PV) => Css),
+		style: C<$> | ((propValue: PV) => C<$>),
 	): Patch<this, { Props: { [k in PropName]?: PV | boolean | undefined } }> {
 		return this._clone({
 			stack: [
@@ -319,7 +323,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	newCustomCssProperty<CssName extends string>(
 		customCssPropertyName: CssName,
-		style: Css,
+		style: C<$>,
 	): Patch<this, { CustomCss: { [k in CssName]?: boolean | undefined } }>
 
 	/**
@@ -331,13 +335,13 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	newCustomCssProperty<CssName extends string, PV>(
 		customCssPropertyName: CssName,
-		getStyle: (propertyValue: PV) => Css,
+		getStyle: (propertyValue: PV) => C<$>,
 	): Patch<this, { CustomCss: { [k in CssName]?: PV | undefined } }>
 
 	// eslint-disable-next-line etc/no-misused-generics
 	newCustomCssProperty<CssName extends string, PV>(
 		customCssPropertyName: CssName,
-		style: Css | ((cssValue: unknown) => Css),
+		style: C<$> | ((cssValue: unknown) => C<$>),
 	): Patch<this, { CustomCss: { [k in CssName]?: PV | undefined } }> {
 		return this._clone({
 			stack: [{}],

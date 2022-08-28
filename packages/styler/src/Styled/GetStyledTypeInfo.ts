@@ -3,6 +3,7 @@
 
 import type { Merge2 } from '@voltiso/util'
 
+import type { Css, CustomCss } from '~'
 import type { Stylable, StylableLike } from '~/Stylable'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
@@ -15,3 +16,6 @@ export type GetStyledLikeTypeInfo<$ extends Partial<StyledTypeInfo>> = Merge2<
 	{ Component: StylableLike | null; Props: {}; CustomCss: {} },
 	Required<$>
 >
+
+export type GetStyledCss<$ extends Partial<StyledTypeInfo>> =
+	$['CustomCss'] extends {} ? CustomCss<$['CustomCss']> : Css

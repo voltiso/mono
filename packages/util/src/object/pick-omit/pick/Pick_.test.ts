@@ -4,7 +4,7 @@
 import type { IsIdentical, OmitSignatures } from '~'
 import { Assert } from '~/type'
 
-import type { Pick_ } from './Pick_'
+import type { $Pick_, Pick_ } from './Pick_'
 
 describe('Pick', () => {
 	it('type', () => {
@@ -56,7 +56,7 @@ describe('Pick', () => {
 		type A0 = Pick<O, 'a' | symbol>
 		Assert.is<A0, Obj>()
 
-		type A1 = Pick_<O, 'a' | symbol>
+		type A1 = $Pick_<O, 'a' | symbol>
 		Assert.is<A1, Obj>()
 
 		// type C0 = Pick<O, string>

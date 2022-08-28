@@ -8,6 +8,6 @@ import type { CssWeb, CustomCssWeb } from './web'
 
 export type Css = IsReactNative extends true ? CssReactNative : CssWeb
 
-export type CustomCss<C> = IsReactNative extends true
+export type CustomCss<C extends {}> = IsReactNative extends true
 	? CustomCssReactNative<C>
 	: CustomCssWeb<C>
