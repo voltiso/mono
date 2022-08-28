@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, Merge2 } from '@voltiso/util'
+import type { _, Merge2_ } from '@voltiso/util'
 
 import type { StyledTypeInfo } from '~'
 import type { Props } from '~/react-types'
@@ -35,7 +35,7 @@ export interface StyledHocWithProps<P extends Props>
 export interface CustomStyledHoc<
 	$ extends Partial<Pick<StyledTypeInfo, 'Props' | 'CustomCss'>>,
 > extends CustomStyledHocImpl<
-		Merge2<{ Props: {}; CustomCss: {} }, Required<$>>
+		Merge2_<{ Props: {}; CustomCss: {} }, Required<$>>
 	> {}
 
 /**

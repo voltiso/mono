@@ -263,7 +263,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	newCssProp<PropName extends string, PV>(
 		propName: PropName,
 		style: Css | ((propValue: PV) => Css),
-	): Patch<this, { Props: { [k in PropName]?: PV } }> {
+	): Patch<this, { Props: { [k in PropName]?: PV | boolean | undefined } }> {
 		return this._clone({
 			stack: [
 				{
@@ -525,11 +525,12 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		return this._clone({
 			stack: [
 				{
-					mapProps: (p: P<$>) => ({
-						...p,
-						// eslint-disable-next-line security/detect-object-injection
-						[propName]: mapProp(p[propName] as never),
-					}),
+					mapProps: (p: P<$>) =>
+						({
+							...p,
+							// eslint-disable-next-line security/detect-object-injection
+							[propName]: mapProp(p[propName] as never),
+						} as never),
 				},
 			] as never,
 		})

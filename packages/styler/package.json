@@ -1,102 +1,102 @@
 {
-  "name": "@voltiso/styler",
-  "version": "12.0.0",
-  "license": "UNLICENSED",
-  "repository": "git://github.com/voltiso/mono.git",
-  "__________": "__________",
-  "sideEffects": false,
-  "__________EXPORTS": "__________",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    }
-  },
-  "__________EXPORTS FALLBACK": "__________",
-  "types": "dist/cjs/index.d.ts",
-  "module": "dist/esm/index.js",
-  "main": "dist/cjs/index.js",
-  "__________PUBLISH WHITELIST": "__________",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "__________DEV": "__________",
-    "dev": "v dev",
-    "__________TEST": "__________",
-    "test": "jest",
-    "__________LINT": "__________",
-    "lint": "v lint",
-    "depcheck": "depcheck",
-    "lint:eslint": "v lintEslint",
-    "lint:tsc": "run-p lint:tsc:root lint:tsc:native lint:tsc:web lint:tsc:tscOptions",
-    "lint:tsc:root": "tsc -b tsconfig.json",
-    "lint:tsc:native": "tsc -b test/native",
-    "lint:tsc:web": "tsc -b test/web",
-    "lint:tsc:tscOptions": "run-p lint:tsc:tscOptions:a lint:tsc:tscOptions:b",
-    "lint:tsc:tscOptions:a": "tsc -b test/web/tsc-options/no-exactOptionalPropertyTypes",
-    "lint:tsc:tscOptions:b": "tsc -b test/web/tsc-options/no-strictNullChecks",
-    "fix": "v fix",
-    "fix:prettier": "v fixPrettier",
-    "fix:eslint": "v fixEslint",
-    "__________BUILD": "__________",
-    "build": "v build",
-    "build:esm": "v buildEsm",
-    "build:cjs": "tsc -b tsconfig.build.cjs.json",
-    "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnly",
-    "__________MISC": "__________",
-    "clean": "v clean",
-    "trace": "v trace",
-    "trace:run": "v traceRun",
-    "typecov": "v typecov"
-  },
-  "__________DEPS": "__________",
-  "dependencies": {
-    "@voltiso/util": "workspace:^"
-  },
-  "peerDependencies": {
-    "@types/react": "^18.0.0 || ^17.0.0",
-    "csstype": "^3.1.0",
-    "fela": "^12.1.2",
-    "react": "^18.0.0 || ^17.0.0",
-    "react-fela": "^12.1.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.18.13",
-    "@babel/plugin-transform-react-jsx": "^7.18.10",
-    "@babel/preset-env": "^7.18.10",
-    "@jest/types": "^29.0.1",
-    "@radix-ui/react-checkbox": "^1.0.0",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/react-native": "^11.0.0",
-    "@types/react": "^18.0.17",
-    "@types/react-native": "^0.69.5",
-    "@types/react-test-renderer": "^18.0.0",
-    "@types/testing-library__jest-dom": "^5.14.5",
-    "@voltiso/assertor": "workspace:^2.0.0",
-    "@voltiso/config.eslint.lib": "workspace:^",
-    "@voltiso/config.jest.esr": "workspace:^",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
-    "@voltiso/script": "workspace:^",
-    "csstype": "^3.1.0",
-    "fela": "^12.2.0",
-    "fela-native": "^12.2.0",
-    "fela-plugin-typescript": "^12.2.0",
-    "fela-preset-web": "^12.2.0",
-    "jest": "^29.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-fela": "^12.2.0",
-    "react-native": "^0.69.5",
-    "react-test-renderer": "^18.2.0"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "16"
-  },
-  "typeCoverage": {
-    "is": 99.21
-  }
+	"name": "@voltiso/styler",
+	"version": "12.0.4",
+	"license": "UNLICENSED",
+	"repository": "git://github.com/voltiso/mono.git",
+	"__________": "__________",
+	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		}
+	},
+	"__________EXPORTS FALLBACK": "__________",
+	"types": "dist/cjs/index.d.ts",
+	"module": "dist/esm/index.js",
+	"main": "dist/cjs/index.js",
+	"__________PUBLISH WHITELIST": "__________",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"__________DEV": "__________",
+		"dev": "v dev",
+		"__________TEST": "__________",
+		"test": "jest",
+		"__________LINT": "__________",
+		"lint": "v lint",
+		"depcheck": "depcheck",
+		"lint:eslint": "v lintEslint",
+		"lint:tsc": "run-p lint:tsc:root lint:tsc:native lint:tsc:web lint:tsc:tscOptions",
+		"lint:tsc:root": "tsc -b tsconfig.json",
+		"lint:tsc:native": "tsc -b test/native",
+		"lint:tsc:web": "tsc -b test/web",
+		"lint:tsc:tscOptions": "run-p lint:tsc:tscOptions:a lint:tsc:tscOptions:b",
+		"lint:tsc:tscOptions:a": "tsc -b test/web/tsc-options/no-exactOptionalPropertyTypes",
+		"lint:tsc:tscOptions:b": "tsc -b test/web/tsc-options/no-strictNullChecks",
+		"fix": "v fix",
+		"fix:prettier": "v fixPrettier",
+		"fix:eslint": "v fixEslint",
+		"__________BUILD": "__________",
+		"build": "v build",
+		"build:cjs": "v buildCjs",
+		"build:esm": "v buildEsm",
+		"__________PREPARE": "__________",
+		"prepublishOnly": "v prepublishOnly",
+		"__________MISC": "__________",
+		"clean": "v clean",
+		"trace": "v trace",
+		"trace:run": "v traceRun",
+		"typecov": "v typecov"
+	},
+	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/util": "workspace:^"
+	},
+	"peerDependencies": {
+		"@types/react": "^18.0.0 || ^17.0.0",
+		"csstype": "^3.1.0",
+		"fela": "^12.1.2",
+		"react": "^18.0.0 || ^17.0.0",
+		"react-fela": "^12.1.2"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.18.13",
+		"@babel/plugin-transform-react-jsx": "^7.18.10",
+		"@babel/preset-env": "^7.18.10",
+		"@jest/types": "^29.0.1",
+		"@radix-ui/react-checkbox": "^1.0.0",
+		"@testing-library/react": "^13.3.0",
+		"@testing-library/react-native": "^11.0.0",
+		"@types/react": "^18.0.17",
+		"@types/react-native": "^0.69.5",
+		"@types/react-test-renderer": "^18.0.0",
+		"@types/testing-library__jest-dom": "^5.14.5",
+		"@voltiso/assertor": "workspace:^2.0.0",
+		"@voltiso/config.eslint.lib": "workspace:^",
+		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/script": "workspace:^",
+		"csstype": "^3.1.0",
+		"fela": "^12.2.0",
+		"fela-native": "^12.2.0",
+		"fela-plugin-typescript": "^12.2.0",
+		"fela-preset-web": "^12.2.0",
+		"jest": "^29.0.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-fela": "^12.2.0",
+		"react-native": "^0.69.5",
+		"react-test-renderer": "^18.2.0"
+	},
+	"__________MISC": "__________",
+	"engines": {
+		"node": "16"
+	},
+	"typeCoverage": {
+		"is": 99.23
+	}
 }

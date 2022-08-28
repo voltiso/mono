@@ -1,11 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Css } from '.'
+import type { AlsoAccept } from '@voltiso/util'
+
+import type { Css } from './Css'
 
 export interface CssExtension {
 	//
 
 	/** Typing for `fela-plugin-typescript` */
-	nested?: Css | undefined
+	nested?: Css | AlsoAccept<object> | undefined
 }

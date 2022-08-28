@@ -89,6 +89,7 @@ describe('style', () => {
 			<RedButton
 				css={{
 					color: 'green',
+
 					nested: { '&[data-state=asd]': { color: 'purple' } },
 				}}
 			/>,

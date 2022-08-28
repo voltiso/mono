@@ -101,3 +101,9 @@ export type GetStyledImpl<$ extends StyledTypeInfo> = $ extends {
 	: $ extends { Component: StylableLike }
 	? GetStyledComponentImpl<$>
 	: never
+
+export type GetStyledImplN<
+	C extends StylableLike | null,
+	P extends {},
+	CC extends {},
+> = GetStyledImpl<{ Component: C; Props: P; CustomCss: CC }>

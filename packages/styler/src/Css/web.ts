@@ -28,7 +28,7 @@ export type _Css_WithExtensionWeb = {
 		| CssExtensionWeb[k]
 		| (k extends keyof CssPropertiesAndPseudosWeb
 				? CssPropertiesAndPseudosWeb[k]
-				: unknown)
+				: never)
 }
 
 /** @internal */
