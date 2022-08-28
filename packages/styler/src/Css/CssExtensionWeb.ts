@@ -12,6 +12,9 @@ import type { CssWeb } from './web'
  * - Use TS declaration merging
  */
 export interface CssExtensionWeb extends CssExtension {
+	':nth-child(odd)'?: CssWeb | undefined
+	':nth-child(even)'?: CssWeb | undefined
+
 	/** Typings for `fela-plugin-embedded` */
 	animationName?:
 		| {

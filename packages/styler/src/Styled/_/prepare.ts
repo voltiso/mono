@@ -21,12 +21,25 @@ function readPath(o: any, path: string[]): unknown {
 	return readPath(o[path[0]], path.slice(1))
 }
 
+export type WithNested = { nested: object }
+
+export function isWithNested(x: unknown): x is WithNested {
+	return isPlainObject((x as WithNested | null)?.nested)
+}
+
 export function prepare<X>(x: X, theme: object, customCss?: object): X {
 	if (isPlainObject(x)) {
 		let r: object = {}
 		let haveChange = false
 
+		if (isWithNested(x)) {
+			r = { ...prepare(x.nested, theme, customCss) }
+			haveChange = true
+		}
+
 		for (const [k, v] of Object.entries(x)) {
+			if (k === 'nested') continue
+
 			if (v === undefined) {
 				haveChange = true // removing undefined entry
 				continue

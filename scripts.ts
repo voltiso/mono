@@ -72,7 +72,7 @@ export const fixEslint = 'eslint --fix --max-warnings=0 .'
 export const depcheck = 'depcheck'
 
 export const typecov = [
-	'type-coverage --project tsconfig.build.cjs --update',
+	'type-coverage --project tsconfig.build.cjs --update || true',
 	'prettier --write ./package.json',
 ]
 

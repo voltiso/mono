@@ -40,7 +40,7 @@
 
 		"typecov": {
 			"dependsOn": ["^build:cjs"],
-			"inputs": ["src"],
+			"inputs": ["src", "package.json"],
 			"outputs": ["package.json"]
 		},
 

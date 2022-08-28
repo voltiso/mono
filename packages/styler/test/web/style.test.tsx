@@ -421,4 +421,22 @@ describe('style', () => {
 		// @ts-expect-error no className prop
 		const CC = style(C)
 	})
+
+	it('merges nested', () => {
+		expect.hasAssertions()
+
+		const A = style('button')
+			.css({ nested: { nested: { color: 'red' } } })
+			.css({ nested: { backgroundColor: 'purple' } })
+			.css({ color: 'green' })
+
+		renderApp(<A />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'green',
+			backgroundColor: 'purple',
+		})
+	})
 })

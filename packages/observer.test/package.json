@@ -1,6 +1,6 @@
 {
-	"name": "@voltiso/patcher",
-	"version": "1.0.2",
+	"name": "@voltiso/observer",
+	"version": "1.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -23,28 +23,15 @@
 		"lint:eslint": "v lintEslint",
 		"lint:tsc": "v lintTsc",
 		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "v buildCjs",
-		"build:esm": "v buildEsm",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
-		"prepublishOnly:rest": "run-p build test lint typecov",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
 		"clean": "v clean",
 		"typecov": "v typecov"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/util": "workspace:^",
-		"fast-equals": "^4.0.3"
-	},
 	"devDependencies": {
-		"@voltiso/config.jest.esr": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"jest": "^29.0.1"
+		"@voltiso/config.jest.esr": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {

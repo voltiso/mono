@@ -632,6 +632,15 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
 
+  packages/observer:
+    specifiers:
+      '@voltiso/config.jest.esr': workspace:^1.0.0
+      rxjs: ^7.5.6
+    dependencies:
+      rxjs: 7.5.6
+    devDependencies:
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+
   packages/patcher:
     specifiers:
       '@voltiso/config.jest.esr': workspace:^
@@ -16255,7 +16264,6 @@ packages:
     resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==}
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /sade/1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}

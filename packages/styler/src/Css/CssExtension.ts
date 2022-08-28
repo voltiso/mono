@@ -9,5 +9,5 @@ export interface CssExtension {
 	//
 
 	/** Typing for `fela-plugin-typescript` */
-	nested?: Css | AlsoAccept<object> | undefined
+	nested?: Css | AlsoAccept<Record<string, Css>> | undefined
 }
