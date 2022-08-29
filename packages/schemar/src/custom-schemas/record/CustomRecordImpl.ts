@@ -1,38 +1,31 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
+import * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomObjectImpl, ISchema } from '~'
-import type { ValidationIssue } from '~'
+import type { CustomObjectImpl } from '~'
 import { object } from '~'
 import { CustomSchemaImpl } from '~'
 
-import type { CustomRecord } from './CustomRecord'
-import type { DefaultRecordOptions, RecordOptions } from './RecordOptions'
-
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {
-	readonly [BASE_OPTIONS]: RecordOptions
-	readonly [DEFAULT_OPTIONS]: DefaultRecordOptions
+	readonly [t.BASE_OPTIONS]: t.RecordOptions
+	readonly [t.DEFAULT_OPTIONS]: t.DefaultRecordOptions
 }
 
-export class CustomRecordImpl<O extends Partial<RecordOptions>>
+export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
-	implements CustomRecord<O>
+	implements t.CustomRecord<O>
 {
-	readonly [SCHEMA_NAME] = 'Record' as const
+	readonly [t.SCHEMA_NAME] = 'Record' as const
 
-	get getKeySchema(): this[OPTIONS]['keySchema'] {
-		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS]['keySchema'] as never
+	get getKeySchema(): this[t.OPTIONS]['keySchema'] {
+		return this[t.OPTIONS]['keySchema'] as never
 	}
 
-	get getValueSchema(): this[OPTIONS]['valueSchema'] {
-		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS]['valueSchema'] as never
+	get getValueSchema(): this[t.OPTIONS]['valueSchema'] {
+		return this[t.OPTIONS]['valueSchema'] as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -43,20 +36,19 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	get getIndexSignatures(): any {
 		return [
 			{
-				// eslint-disable-next-line security/detect-object-injection
-				keySchema: this[OPTIONS].keySchema,
-				// eslint-disable-next-line security/detect-object-injection
-				valueSchema: this[OPTIONS].valueSchema,
+				keySchema: this[t.OPTIONS].keySchema,
+
+				valueSchema: this[t.OPTIONS].valueSchema,
 			},
 		]
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	override [EXTENDS](_other: ISchema): boolean {
+	override [t.EXTENDS](_other: t.ISchema): boolean {
 		throw new Error('not implemented')
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
+	override _getIssuesImpl(x: unknown): t.ValidationIssue[] {
 		const proxy = _getCustomObjectImpl(this)
 		return proxy._getIssuesImpl(x)
 	}
@@ -74,12 +66,11 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 }
 
 function _getCustomObjectImpl(self: {
-	[OPTIONS]: RecordOptions
+	[t.OPTIONS]: t.RecordOptions
 }): CustomObjectImpl<{}> {
 	return object.index(
-		// eslint-disable-next-line security/detect-object-injection
-		self[OPTIONS].keySchema,
-		// eslint-disable-next-line security/detect-object-injection
-		self[OPTIONS].valueSchema,
+		self[t.OPTIONS].keySchema,
+
+		self[t.OPTIONS].valueSchema,
 	) as never
 }

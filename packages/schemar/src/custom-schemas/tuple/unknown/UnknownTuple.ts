@@ -1,45 +1,28 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomUnknownTuple, GetTuple, SchemableLike } from '~'
 import { MutableUnknownTupleImpl, ReadonlyUnknownTupleImpl } from '~'
 
-export interface MutableUnknownTuple
-	extends CustomUnknownTuple<{ isReadonlyTuple: false }> {
-	<T extends readonly SchemableLike[]>(...elementTypes: T): GetTuple<
-		this,
-		[...T]
-	>
-}
-
-export interface ReadonlyUnknownTuple
-	extends CustomUnknownTuple<{
-		isReadonlyTuple: true
-		Output: readonly unknown[]
-		Input: readonly unknown[]
-	}> {
-	<T extends readonly SchemableLike[]>(...elementTypes: T): GetTuple<
-		this,
-		[...T]
-	>
-}
-
 //
+
+export type MutableUnknownTuple = t.MutableUnknownTuple
 
 export const MutableUnknownTuple = lazyConstructor(
 	() => MutableUnknownTupleImpl,
-) as unknown as MutableUnknownTupleConstructor
-
-export const ReadonlyUnknownTuple = lazyConstructor(
-	() => ReadonlyUnknownTupleImpl,
-) as unknown as ReadonlyUnknownTupleConstructor
+) as unknown as t.MutableUnknownTupleConstructor
 
 //
 
-type MutableUnknownTupleConstructor = new () => MutableUnknownTuple
-type ReadonlyUnknownTupleConstructor = new () => ReadonlyUnknownTuple
+export type ReadonlyUnknownTuple = t.ReadonlyUnknownTuple
+
+export const ReadonlyUnknownTuple = lazyConstructor(
+	() => ReadonlyUnknownTupleImpl,
+) as unknown as t.ReadonlyUnknownTupleConstructor
+
+//
 
 //
 

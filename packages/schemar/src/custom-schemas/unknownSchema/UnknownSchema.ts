@@ -1,38 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type {
-	CustomUnknownSchema,
-	InferSchema_,
-	SchemableLike,
-	Simplify,
-} from '~'
-import { UnknownSchemaImpl } from '~'
+import { UnknownSchemaImpl } from './UnknownSchemaImpl'
 
-export interface InferAndSimplifyFunction {
-	<S extends SchemableLike>(schemable: S): Simplify<InferSchema_<S>>
-
-	// <S extends SchemableLike>(schemable: S): SchemaLike extends S
-	// 	? Schema
-	// 	: InferableLike extends S
-	// 	? Schema
-	// 	: Inferable extends S
-	// 	? Schema
-	// 	: ISchema extends S
-	// 	? Schema
-	// 	: InferSchema<S>['simple']
-}
-
-export interface UnknownSchema
-	extends CustomUnknownSchema<{}>,
-		InferAndSimplifyFunction {}
+export type UnknownSchema = t.UnknownSchema
 
 export const UnknownSchema = lazyConstructor(
 	() => UnknownSchemaImpl,
-) as unknown as UnknownConstructor
-
-export type UnknownConstructor = new () => UnknownSchema
+) as unknown as t.UnknownSchemaConstructor
 
 export const schema = lazyValue(() => new UnknownSchema())

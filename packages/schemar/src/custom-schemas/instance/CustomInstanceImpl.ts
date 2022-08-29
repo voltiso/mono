@@ -1,28 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import type { Constructor } from '@voltiso/util'
-import { lazyConstructor } from '@voltiso/util'
-
 import type {
+	BASE_OPTIONS,
 	CustomInstance,
+	DEFAULT_OPTIONS,
 	DefaultInstanceOptions,
 	InstanceOptions,
 	ISchema,
-} from '~'
-import {
-	CustomSchemaImpl,
-	getConstructorName,
-	isInstance,
-	ValidationIssue,
-} from '~'
+} from '@voltiso/schemar.types'
+import { isInstance } from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { Constructor } from '@voltiso/util'
+import { lazyConstructor } from '@voltiso/util'
+
+import { CustomSchemaImpl } from '~/Schema'
+
+import { ValidationIssue } from '../validation'
+import { _getInstanceConstructorName } from './_/getConstructorName'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomInstanceImpl<O> {
@@ -66,7 +61,8 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 				new ValidationIssue({
 					name: 'instanceof',
 					expected: (this.getConstructor as unknown as Constructor).name,
-					received: getConstructorName(x),
+					// eslint-disable-next-line etc/no-internal
+					received: _getInstanceConstructorName(x),
 				}),
 			)
 		}

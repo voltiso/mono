@@ -1,31 +1,29 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	SCHEMA_NAME,
-} from '_'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
-
 import type {
+	BASE_OPTIONS,
 	BooleanOptions,
 	CustomBoolean,
+	DEFAULT_OPTIONS,
 	DefaultBooleanOptions,
 	ISchema,
 	Literal,
-} from '~'
+} from '@voltiso/schemar.types'
 import {
-	collectTrueFalse,
-	CustomSchemaImpl,
 	isBoolean,
 	isLiteral,
 	isUnion,
 	isUnknownLiteral,
-	literal,
-	ValidationIssue,
-} from '~'
+} from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+
+import { CustomSchemaImpl } from '~/Schema'
+
+import { literal } from '../literal'
+import { ValidationIssue } from '../validation'
+import { _booleanCollectTrueFalse } from './_booleanCollectTrueFalse'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBooleanImpl<O> {
@@ -59,7 +57,8 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		if (isBoolean(other)) return true
 		else if (isUnknownLiteral(other)) return true
 		else if (isLiteral(other) || isUnion(other)) {
-			const { haveTrue, haveFalse } = collectTrueFalse(other)
+			// eslint-disable-next-line etc/no-internal
+			const { haveTrue, haveFalse } = _booleanCollectTrueFalse(other)
 			return haveTrue && haveFalse
 			// eslint-disable-next-line security/detect-object-injection
 		} else return super[EXTENDS](other)

@@ -3,33 +3,38 @@
 
 /* eslint-disable class-methods-use-this */
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '_'
-import { SCHEMA_NAME } from '_'
-import { EXTENDS, OPTIONS } from '_'
+import type {
+	BASE_OPTIONS,
+	CustomFix,
+	CustomSchema,
+	DEFAULT_OPTIONS,
+	DefaultSchemaOptions,
+	MergeSchemaOptions,
+	PARTIAL_OPTIONS,
+	Schemable,
+	SchemableLike,
+	SchemaLike,
+	SchemaOptions,
+	ValidationIssue,
+} from '@voltiso/schemar.types'
+import type { ValidationResult } from '@voltiso/schemar.types'
+import {
+	isAny,
+	isUnion,
+	isUnknown,
+	isUnknownSchema,
+} from '@voltiso/schemar.types'
+import { SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS } from '@voltiso/schemar.types'
 import type { AtLeast1, Merge2 } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
-import { isAny } from '~/custom-schemas/any'
-import { isUnion } from '~/custom-schemas/union'
 import { union } from '~/custom-schemas/union'
-import { isUnknown } from '~/custom-schemas/unknown'
-import { isUnknownSchema } from '~/custom-schemas/unknownSchema'
 import { schema } from '~/custom-schemas/unknownSchema'
-import type { ValidationIssue } from '~/custom-schemas/validation/validationIssue'
-import type { ValidationResult } from '~/custom-schemas/validation/validationResult'
 import { ValidationError } from '~/error'
 import { SchemarError } from '~/error/SchemarError'
-import type { Schemable, SchemableLike } from '~/Schemable'
-import type {
-	DefaultSchemaOptions,
-	MergeSchemaOptions,
-	SchemaOptions,
-} from '~/SchemaOptions'
-import { defaultSchemaOptions } from '~/SchemaOptions'
 
-import type { CustomFix } from './CustomFix'
-import type { CustomSchema } from './CustomSchema'
-import type { SchemaLike } from './ISchema'
+import { defaultSchemaOptions } from '..'
 import { processCustomChecks } from './processCustomChecks'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 

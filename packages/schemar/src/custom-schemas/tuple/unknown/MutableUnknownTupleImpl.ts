@@ -4,7 +4,7 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomUnknownTupleImpl } from './CustomUnknownTupleImpl'
-import { defaultMutableUnknownTupleOptions } from './UnknownTupleOptions'
+import { defaultMutableUnknownTupleOptions } from './defaultUnknownTupleOptions'
 
 //
 

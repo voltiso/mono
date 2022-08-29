@@ -2,37 +2,25 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
+import * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomUnion, SchemableLike, Type_ } from '~'
-import { isUnion, UnionImpl } from '~'
+import { UnionImpl } from '~'
 
-export type $Union<Ts extends SchemableLike[]> = Ts extends any
-	? Union<Ts>
-	: never
-
-export type Union<Ts extends SchemableLike[]> = CustomUnion<{
-	schemas: Ts
-	Output: Type_<Ts[number], { kind: 'out' }>
-	Input: Type_<Ts[number], { kind: 'in' }>
-}>
+export type Union<Ts extends t.SchemableLike[]> = t.Union<Ts>
 
 export const Union = lazyConstructor(
 	() => UnionImpl,
-) as unknown as UnionConstructor
-
-type UnionConstructor = new <Ts extends SchemableLike[]>(
-	schemas: Ts,
-) => Union<Ts>
+) as unknown as t.UnionConstructor
 
 //
 
-export function union<Ts extends SchemableLike[]>(...types: Ts): Union<Ts> {
-	let ts = [] as SchemableLike[]
+export function union<Ts extends t.SchemableLike[]>(...types: Ts): Union<Ts> {
+	let ts = [] as t.SchemableLike[]
 
-	for (const t of types) {
-		if (isUnion(t)) ts = [...ts, ...t.getSchemas]
-		else ts.push(t)
+	for (const type of types) {
+		if (t.isUnion(type)) ts = [...ts, ...type.getSchemas]
+		else ts.push(type)
 	}
 
 	$assert(ts.length >= 2)

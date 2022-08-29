@@ -1,13 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '_'
+import type {
+	BigintOptions,
+	CustomBigint,
+	DefaultBigintOptions,
+	ISchema,
+	Literal,
+} from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
+import * as t from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import {
 	CALL,
 	callableInstance,
@@ -15,15 +18,10 @@ import {
 	lazyConstructor,
 } from '@voltiso/util'
 
-import type { DefaultBigintOptions, ISchema, Literal } from '~'
-import {
-	type BigintOptions,
-	type CustomBigint,
-	CustomSchemaImpl,
-	isBigint,
-	literal,
-	ValidationIssue,
-} from '~'
+import { CustomSchemaImpl } from '~/Schema'
+
+import { literal } from '../literal'
+import { ValidationIssue } from '../validation'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBigintImpl<O> {
@@ -71,7 +69,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isBigint(other)) return true
+		if (t.isBigint(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}

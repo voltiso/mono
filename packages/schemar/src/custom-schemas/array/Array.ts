@@ -3,37 +3,14 @@
 
 /* eslint-disable @typescript-eslint/array-type */
 
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type {
-	CustomArray,
-	InferSchema_,
-	SchemableLike,
-	Type_,
-	Unknown,
-} from '~'
 import { MutableArrayImpl, ReadonlyArrayImpl, unknown } from '~'
 
-export interface MutableArray<S extends SchemableLike>
-	extends CustomArray<{
-		element: InferSchema_<S>
-		Output: Type_<S, { kind: 'out' }>[]
-		Input: Type_<S, { kind: 'in' }>[]
-	}> {
-	<S extends SchemableLike>(elementSchema: S): MutableArray<S>
-}
-
-export interface ReadonlyArray<S extends SchemableLike>
-	extends CustomArray<{
-		element: InferSchema_<S>
-		Output: readonly Type_<S, { kind: 'out' }>[]
-		Input: readonly Type_<S, { kind: 'in' }>[]
-		isReadonlyArray: true
-	}> {
-	<S extends SchemableLike>(elementSchema: S): ReadonlyArray<S>
-}
-
 //
+
+export type ReadonlyArray<S extends t.SchemableLike> = t.ReadonlyArray<S>
 
 export const ReadonlyArray = lazyConstructor(
 	() => ReadonlyArrayImpl,
@@ -45,21 +22,21 @@ export const MutableArray = lazyConstructor(
 
 //
 
-type ReadonlyArrayConstructor = new <T extends SchemableLike>(
+type ReadonlyArrayConstructor = new <T extends t.SchemableLike>(
 	elementType: T,
 ) => ReadonlyArray<T>
 
-type MutableArrayConstructor = new <T extends SchemableLike>(
+type MutableArrayConstructor = new <T extends t.SchemableLike>(
 	elementType: T,
-) => MutableArray<T>
+) => t.MutableArray<T>
 
 //
 
-export const readonlyArray: ReadonlyArray<Unknown> = lazyValue(
+export const readonlyArray: ReadonlyArray<t.Unknown> = lazyValue(
 	() => new ReadonlyArray(unknown) as never,
 )
-export const mutableArray: MutableArray<Unknown> = lazyValue(
+export const mutableArray: t.MutableArray<t.Unknown> = lazyValue(
 	() => new MutableArray(unknown) as never,
 )
 
-export const array: MutableArray<Unknown> = lazyValue(() => mutableArray)
+export const array: t.MutableArray<t.Unknown> = lazyValue(() => mutableArray)

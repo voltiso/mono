@@ -1,9 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
-
 import type {
 	$CustomArray,
 	ArrayOptions,
@@ -14,8 +11,11 @@ import type {
 	OutputType,
 	Schema,
 	Schemable,
-} from '~'
-import { isArray, isString } from '~'
+} from '@voltiso/schemar.types'
+import { isArray, isString } from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('array', () => {
@@ -28,14 +28,14 @@ describe('array', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<s.IArray, s.ISchema>()
+		Assert.is<IArray, ISchema>()
 
-		Assert.is<s.IArray, s.Schema>()
+		Assert.is<IArray, Schema>()
 
 		const a = s.array(s.string.or(s.number))
 		Assert.is<typeof a, Schemable>()
 
-		Assert.is<typeof a, s.Schema<(string | number)[]>>()
+		Assert.is<typeof a, Schema<(string | number)[]>>()
 
 		type A = typeof a.OutputType
 		Assert<IsIdentical<A, (string | number)[]>>()
@@ -181,9 +181,9 @@ describe('array', () => {
 		Assert.is<typeof s.array, ISchema>()
 		Assert.is<typeof s.readonlyArray, ISchema>()
 
-		Assert.is<typeof s.array, s.IArray>()
-		Assert.is<typeof an, s.IArray>()
-		Assert.is<typeof anl, s.IArray>()
+		Assert.is<typeof s.array, IArray>()
+		Assert.is<typeof an, IArray>()
+		Assert.is<typeof anl, IArray>()
 
 		expect(
 			s.readonlyArray(s.number(123)).extends(s.readonlyArray(s.number)),

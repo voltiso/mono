@@ -1,13 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	ArrayOptions,
+	BASE_OPTIONS,
+	CustomArray,
+	DEFAULT_OPTIONS,
+	DefaultArrayOptions,
+	ISchema,
+	Schema,
+	Schemable,
+} from '@voltiso/schemar.types'
 import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
 	EXTENDS,
+	isArray,
+	isTuple,
+	isUnknownTuple,
 	OPTIONS,
 	SCHEMA_NAME,
-} from '_'
+} from '@voltiso/schemar.types'
 import {
 	CALL,
 	callableInstance,
@@ -15,22 +26,10 @@ import {
 	lazyConstructor,
 } from '@voltiso/util'
 
-import type {
-	ArrayOptions,
-	CustomArray,
-	DefaultArrayOptions,
-	ISchema,
-	Schema,
-	Schemable,
-} from '~'
-import {
-	CustomSchemaImpl,
-	isArray,
-	isTuple,
-	isUnknownTuple,
-	schema,
-	ValidationIssue,
-} from '~'
+import { CustomSchemaImpl } from '~'
+
+import { schema } from '../unknownSchema'
+import { ValidationIssue } from '../validation'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomArrayImpl<O> {

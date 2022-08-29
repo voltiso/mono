@@ -3,7 +3,7 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import { unknown } from '~'
+import { unknown } from './unknown'
 
 export const optional = lazyValue(() => unknown.optional)
 export const readonly = lazyValue(() => unknown.readonly)

@@ -1,9 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	CustomUnknownLiteral,
+	InferableLiteral,
+	Literal,
+} from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomUnknownLiteral, InferableLiteral, Literal } from '~'
 import { UnknownLiteralImpl } from '~'
 
 export interface UnknownLiteral extends CustomUnknownLiteral<{}> {

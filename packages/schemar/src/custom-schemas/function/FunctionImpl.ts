@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
-
 import type {
 	$Type,
 	ArrayLike,
@@ -10,8 +8,13 @@ import type {
 	SchemableLike,
 	SchemaLike,
 	TupleLike,
-} from '~'
-import { CustomFunctionImpl, defaultFunctionOptions, Function, schema } from '~'
+} from '@voltiso/schemar.types'
+import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+
+import { schema } from '../unknownSchema'
+import { CustomFunctionImpl } from './CustomFunctionImpl'
+import { defaultFunctionOptions } from './defaultFunctionOptions'
+import type * as s from './Function'
 
 export class FunctionImpl<
 	Args extends InferableReadonlyTupleLike | TupleLike | ArrayLike,
@@ -34,8 +37,7 @@ export class FunctionImpl<
 			| InferableReadonlyTupleLike
 			| ((TupleLike | ArrayLike) & SchemaLike),
 		R extends SchemableLike,
-		// eslint-disable-next-line @typescript-eslint/ban-types
-	>(args: Args, r: R): Function<(...args: $Type<Args>) => R> {
-		return new Function(args, r) as never
+	>(args: Args, r: R): s.Function<(...args: $Type<Args>) => R> {
+		return new FunctionImpl(args, r) as never
 	}
 }

@@ -1,19 +1,21 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
-import { EXTENDS } from '_'
+import type {
+	BASE_OPTIONS,
+	CustomUnknownRecord,
+	DEFAULT_OPTIONS,
+	DefaultUnknownRecordOptions,
+	ISchema,
+	Record,
+	SCHEMA_NAME,
+	SchemableLike,
+	UnknownRecordOptions,
+} from '@voltiso/schemar.types'
+import { EXTENDS } from '@voltiso/schemar.types'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
-import type { ISchema, SchemableLike } from '~'
-import { CustomSchemaImpl } from '~'
-
-import { Record } from '..'
-import type { CustomUnknownRecord } from './CustomUnknownRecord'
-import type {
-	DefaultUnknownRecordOptions,
-	UnknownRecordOptions,
-} from './UnknownRecordOptions'
+import { CustomSchemaImpl, RecordImpl } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownRecordImpl<O> {
@@ -50,7 +52,7 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	>(
 		...args: [TKeySchema, TValueSchema] | [TValueSchema]
 	): Record<TKeySchema, TValueSchema> {
-		return new Record(...(args as [any, any])) as never
+		return new RecordImpl(...(args as [any, any])) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this

@@ -46,7 +46,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/util": "workspace:^"
+    "@voltiso/util": "workspace:^45.0.0"
   },
   "devDependencies": {
     "@voltiso/config.ts.build.cjs": "workspace:^",
@@ -56,6 +56,6 @@
   },
   "__________MISC": "__________",
   "typeCoverage": {
-    "is": 1.0
+    "is": 1
   }
 }

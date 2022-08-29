@@ -4,7 +4,7 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomUnknownTupleImpl } from './CustomUnknownTupleImpl'
-import { defaultReadonlyUnknownTupleOptions } from './UnknownTupleOptions'
+import { defaultReadonlyUnknownTupleOptions } from './defaultUnknownTupleOptions'
 
 export class ReadonlyUnknownTupleImpl extends lazyConstructor(
 	() => CustomUnknownTupleImpl,

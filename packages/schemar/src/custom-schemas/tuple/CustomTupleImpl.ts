@@ -1,26 +1,29 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
-import { lazyConstructor } from '@voltiso/util'
-
 import type {
+	_GetArrayLength_,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
 	DefaultTupleOptions,
-	GetTupleLength_,
 	SchemaLike,
 	TupleOptions,
-} from '~'
+} from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar.types'
 import {
-	_extends,
-	_extendsArray,
-	CustomSchemaImpl,
+	EXTENDS,
 	isArray,
 	isTuple,
 	isUnknownTuple,
-	schema,
-	ValidationIssue,
-} from '~'
+	OPTIONS,
+	SCHEMA_NAME,
+} from '@voltiso/schemar.types'
+import { lazyConstructor } from '@voltiso/util'
+
+import { CustomSchemaImpl } from '~'
+
+import { schema, ValidationIssue } from '..'
+import { _tupleExtends, _tupleExtendsArray } from '.'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomTupleImpl<O> {
@@ -45,7 +48,8 @@ export class CustomTupleImpl<
 		return this[OPTIONS].isReadonlyTuple as never
 	}
 
-	get getLength(): GetTupleLength_<this[OPTIONS]['shape']> {
+	// eslint-disable-next-line etc/no-internal
+	get getLength(): _GetArrayLength_<this[OPTIONS]['shape']> {
 		return this.getShape.length as never
 	}
 
@@ -69,19 +73,17 @@ export class CustomTupleImpl<
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 
-		if (isTuple(other)) return _extends(this, other)
+		if (isTuple(other)) return _tupleExtends(this, other)
 		else if (isUnknownTuple(other)) return true
-		else if (isArray(other)) return _extendsArray(this, other)
+		else if (isArray(other)) return _tupleExtendsArray(this, other)
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
@@ -104,7 +106,7 @@ export class CustomTupleImpl<
 		return x
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
+	override _getIssuesImpl(x: unknown): t.ValidationIssue[] {
 		let issues = super._getIssuesImpl(x)
 
 		if (!Array.isArray(x)) {

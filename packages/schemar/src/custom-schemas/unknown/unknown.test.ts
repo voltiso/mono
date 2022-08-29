@@ -3,7 +3,7 @@
 
 import { Assert, undef } from '@voltiso/util'
 
-import type { ISchema } from '~'
+import type { ISchema } from '@voltiso/schemar.types'
 import { isSchema } from '~'
 import * as s from '~'
 

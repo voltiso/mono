@@ -4,7 +4,7 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomUnknownRecordImpl } from './CustomUnknownRecordImpl'
-import { defaultUnknownRecordOptions } from './UnknownRecordOptions'
+import { defaultUnknownRecordOptions } from './defaultUnknownRecordOptions'
 
 export class UnknownRecordImpl extends lazyConstructor(
 	() => CustomUnknownRecordImpl,

@@ -615,6 +615,12 @@ importers:
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
       rimraf: 3.0.2
 
+  packages/injector:
+    specifiers:
+      '@voltiso/config.jest.esr': workspace:^
+    devDependencies:
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+
   packages/localstore:
     specifiers:
       '@voltiso/assertor': workspace:^
@@ -632,12 +638,18 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
 
-  packages/observer:
+  packages/observer.custom:
     specifiers:
       '@voltiso/config.jest.esr': workspace:^1.0.0
       rxjs: ^7.5.6
     dependencies:
       rxjs: 7.5.6
+    devDependencies:
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+
+  packages/observer.test:
+    specifiers:
+      '@voltiso/config.jest.esr': workspace:^
     devDependencies:
       '@voltiso/config.jest.esr': link:../config.jest.esr
 
@@ -650,7 +662,6 @@ importers:
       '@voltiso/util': workspace:^
       fast-equals: ^4.0.3
       jest: ^29.0.1
-      rimraf: ^3.0.2
     dependencies:
       '@voltiso/util': link:../util
       fast-equals: 4.0.3
@@ -660,7 +671,6 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
       jest: 29.0.1
-      rimraf: 3.0.2
 
   packages/rpc:
     specifiers:
@@ -706,13 +716,36 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/config.tsdoc': workspace:^
+      '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
     dependencies:
+      '@voltiso/schemar.types': link:../schemar.types
       '@voltiso/util': link:../util
     devDependencies:
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/config.tsdoc': link:../config.tsdoc
+      '@voltiso/script': link:../script
+
+  packages/schemar.no-op:
+    specifiers:
+      '@voltiso/schemar.types': workspace:^16.0.0
+    dependencies:
+      '@voltiso/schemar.types': link:../schemar.types
+
+  packages/schemar.types:
+    specifiers:
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/config.tsdoc': workspace:^
+      '@voltiso/script': workspace:^
+      '@voltiso/util': workspace:^45.0.0
+    dependencies:
+      '@voltiso/util': link:../util
+    devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc

@@ -1,16 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomNever } from '.'
 import { CustomNeverImpl } from '.'
 
-type NeverConstructor = new () => Never
+export type Never = t.Never
 
-export type Never = CustomNever<{}>
 export const Never = lazyConstructor(
 	() => CustomNeverImpl,
-) as unknown as NeverConstructor
+) as unknown as t.NeverConstructor
 
 export const never = lazyValue(() => new Never())

@@ -1,9 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemableLike, SimpleSchema } from '~'
+import type {
+	_GetUnknownObjectIndex,
+	SchemableLike,
+	SimpleSchema,
+} from '@voltiso/schemar.types'
 
-import type { _GetUnknownObjectIndex } from '..'
 import { UnknownObject } from '..'
 
 export function recordCall<

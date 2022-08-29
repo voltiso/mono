@@ -1,19 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema, ITuple, Schemable } from '~'
-import { isTuple, schema } from '~'
+import type { ISchema, ITuple, Schemable } from '@voltiso/schemar.types'
+import { isTuple } from '@voltiso/schemar.types'
 
-// type Fun<Args extends unknown[]> = (...args: Args) => 0
-
-// type Test<A extends unknown[], B extends unknown[]> = Fun<B> extends Fun<A>
-// 	? 1
-// 	: 0
-
-// type A = Test<[1], unknown[]> // 1
-// type B = Test<unknown[], [1]> // 0
-// type C = Test<[1, 2, 3], [1, 2]> // 1
-// type D = Test<[1, 2], [1, 2, 3]> // 0
+import { schema } from '~/custom-schemas/unknownSchema'
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 	const aa = a.getShape

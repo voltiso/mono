@@ -5,7 +5,7 @@ Schema validation.
 ```ts
 import * as s from '@voltiso/schemar'
 
-const mySchemable = {
+const myShape = {
 	name: s.string,
 	version: s.string.regex(/^[0-9]+\.[0-9]+\.[0-9]+$/), // simplified
 	license: s.string.regex(/^[A-Z][0-9]$/).optional,
@@ -14,7 +14,7 @@ const mySchemable = {
 	},
 }
 
-const result = s.schema(mySchemable).validate({ name: 'a', version: '1.0.0' })
+const value = s.schema(myShape).validate({ name: 'a', version: '1.0.0' })
 // --> {
 // 	name: 'a',
 // 	version: '1.0.0',
@@ -27,7 +27,7 @@ const result = s.schema(mySchemable).validate({ name: 'a', version: '1.0.0' })
 ## Infer TS Types
 
 ```ts
-const mySchema = s.schema(mySchemable)
+const mySchema = s.schema(myShape)
 
 type MySchema = typeof mySchema.OutputType
 // --> {
@@ -50,19 +50,19 @@ type MySchemaInput = typeof mySchema.InputType
 // }
 ```
 
-## Bundlers / Tree-shaking
-
-For proper bundler support, do not use the default import from
-`@voltiso/schemar`:
+## `exec` - get full validation information and issues list
 
 ```ts
-// import s from '@voltiso/schemar' // bad
-import * as s from '@voltiso/schemar' // good - tree-shaking friendly (esbuild)
+import * as s from '@voltiso/schemar'
 
-const mySchemable = {
+const myShape = {
 	field: s.number,
 }
 
-const { isValid } = s.schema(mySchemable).exec({ field: 123 })
-// --> true
+const result = s.schema(myShape).exec({ field: 123 })
+// --> {
+// 	isValid: true,
+// 	issues: [],
+// 	value: { field: 123 },
+// }
 ```

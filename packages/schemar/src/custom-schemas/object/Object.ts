@@ -1,22 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/ban-types */
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomObject, InferableObjectLike, ObjectType_ } from '~'
 import { ObjectImpl } from '~'
 
-export type Object<Shape extends InferableObjectLike> = CustomObject<{
-	shape: Shape
-	Output: ObjectType_<Shape, { kind: 'out' }>
-	Input: ObjectType_<Shape, { kind: 'in' }>
-}>
+export type Object<Shape extends t.InferableObjectLike> = t.Object<Shape>
 
 export const Object = lazyConstructor(
 	() => ObjectImpl,
-) as unknown as ObjectConstructor
-
-export type ObjectConstructor = new <Shape extends InferableObjectLike>(
-	shape: Shape,
-) => Object<Shape>
+) as unknown as t.ObjectConstructor

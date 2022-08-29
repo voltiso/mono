@@ -215,8 +215,8 @@
 
 	"eslint.execArgv": ["--max_old_space_size=16384"],
 
-	// "eslint.codeActionsOnSave.mode": "all", // Slower
-	"eslint.codeActionsOnSave.mode": "problems", // faster
+	"eslint.codeActionsOnSave.mode": "all", // slower
+	// "eslint.codeActionsOnSave.mode": "problems", // faster
 
 	// // Only turn on what's frequently used - better editor responsiveness
 	// "eslint.codeActionsOnSave.rules": [

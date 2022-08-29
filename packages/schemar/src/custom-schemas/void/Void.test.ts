@@ -1,17 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	CustomVoid,
+	InputType,
+	IVoid,
+	OutputType,
+	VoidOptions,
+} from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { CustomVoid, InputType, OutputType, VoidOptions } from '~'
-import * as s from '~'
+import * as s from '~/custom-schemas'
 
 describe('void', () => {
 	it('generic', <O extends Partial<VoidOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomVoid<O>, s.IVoid>()
+		Assert.is<CustomVoid<O>, IVoid>()
 	})
 
 	it('simple', () => {

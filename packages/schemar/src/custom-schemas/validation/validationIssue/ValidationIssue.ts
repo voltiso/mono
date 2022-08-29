@@ -1,40 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type * as t from '@voltiso/schemar.types'
+import type { ValidationIssueConstructor } from '@voltiso/schemar.types'
 import { hasProperty, stringFrom } from '@voltiso/util'
 
 import { expectedOneOfStr } from './_/expectedOneOfStr'
 import { pathToString } from './_/pathToString'
 
-type ExpectedValue =
-	| {
-			expected: unknown
-			expectedOneOf?: never
-	  }
-	| {
-			expected?: never
-			expectedOneOf: unknown[] | Set<unknown>
-	  }
-
-type ValidationIssueParams = {
-	path?: (keyof any)[]
-	name?: string
-} & (
-	| {
-			received: unknown
-			receivedDescription?: string
-	  }
-	| {
-			received?: unknown
-			receivedDescription: string
-	  }
-) &
-	(
-		| (ExpectedValue & { expectedDescription?: string })
-		| (Partial<ExpectedValue> & { expectedDescription: string })
-	)
-
-export class ValidationIssue {
+export class ValidationIssueImpl implements t.ValidationIssue {
 	path: (keyof any)[]
 	name?: string
 
@@ -44,7 +18,7 @@ export class ValidationIssue {
 	received?: unknown
 	receivedDescription?: string
 
-	constructor(p: ValidationIssueParams) {
+	constructor(p: t.ValidationIssueParams) {
 		this.path = p.path || []
 
 		if (p.name) this.name = p.name
@@ -97,3 +71,8 @@ export class ValidationIssue {
 		return r.join(' ')
 	}
 }
+
+export type ValidationIssue = t.ValidationIssue
+
+export const ValidationIssue =
+	ValidationIssueImpl as unknown as ValidationIssueConstructor

@@ -1,0 +1,5 @@
+export * from './CustomString'
+export * from './IString'
+export * from './RegExpEntry'
+export * from './String'
+export * from './StringOptions'

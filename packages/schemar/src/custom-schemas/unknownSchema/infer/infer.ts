@@ -1,70 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Newable } from '@voltiso/util'
-import { isConstructor } from '@voltiso/util'
-
 import type {
 	InferableLike,
 	InferableLiteral,
-	InferableMutableTupleLike,
-	InferableObjectLike,
-	InferableReadonlyTuple,
-	InferableReadonlyTupleLike,
-	Instance,
-	ISchema,
-	Literal,
-	MutableTuple,
-	Object,
-	ReadonlyTuple,
+	InferSchemaNoReadonlyTuple,
 	SchemableLike,
 	SchemaLike,
-} from '~'
+} from '@voltiso/schemar.types'
+import { isConstructor } from '@voltiso/util'
+
 import { isSchema } from '~'
 import { instance, literal, object, tuple } from '~/custom-schemas'
 
-export type InferSchema_<S> = [S] extends [InferableLiteral]
-	? Literal<S>
-	: S extends Newable
-	? Instance<S>
-	: S extends ISchema
-	? S
-	: S extends SchemaLike
-	? ISchema
-	: S extends InferableMutableTupleLike
-	? MutableTuple<S>
-	: S extends InferableReadonlyTupleLike
-	? ReadonlyTuple<[...S]>
-	: S extends InferableObjectLike
-	? // eslint-disable-next-line @typescript-eslint/ban-types
-	  Object<S>
-	: never
-
-export type InferSchema<S extends SchemableLike> = InferSchema_<S>
-
-export type $InferSchema_<S> = S extends any ? InferSchema_<S> : never
-
-export type $InferSchema<S extends SchemableLike> = S extends any
-	? InferSchema_<S>
-	: never
-
 //
-
-export type InferSchemaNoReadonlyTuple_<T> = T extends InferableLiteral
-	? Literal<T>
-	: T extends Newable
-	? Instance<T>
-	: T extends SchemaLike
-	? T
-	: T extends InferableReadonlyTuple
-	? MutableTuple<[...T]>
-	: T extends InferableObjectLike
-	? // eslint-disable-next-line @typescript-eslint/ban-types
-	  Object<T>
-	: never
-
-export type InferSchemaNoReadonlyTuple<T extends SchemableLike> =
-	InferSchemaNoReadonlyTuple_<T>
 
 //
 
@@ -116,5 +65,3 @@ export function infer<T extends SchemableLike>(
 	} else if (Array.isArray(t)) return tuple(...t) as never
 	else return object(t as never) as never
 }
-
-export type InferSchemaFunction = typeof infer

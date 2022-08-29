@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '_'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
+import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import * as t from '@voltiso/schemar.types'
 
 import type {
 	CustomUnknownTuple,
@@ -11,11 +12,9 @@ import type {
 	Schemable,
 	SchemaLike,
 	UnknownTupleOptions,
-} from '~'
+} from '@voltiso/schemar.types'
 import {
 	CustomSchemaImpl,
-	isArray,
-	isUnknownTuple,
 	MutableTuple,
 	ReadonlyTuple,
 	unknown,
@@ -58,9 +57,9 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	[CALL]<T extends Schemable[]>(
 		...shape: T
 	): O['isReadonlyTuple'] extends true
-		? ReadonlyTuple<T>
+		? t.ReadonlyTuple<T>
 		: O['isReadonlyTuple'] extends false
-		? MutableTuple<T>
+		? t.MutableTuple<T>
 		: never {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyTuple) return new ReadonlyTuple(shape) as never
@@ -69,20 +68,24 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 
 	override [EXTENDS](other: SchemaLike): boolean {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (isUnknownTuple(other) && this.isReadonlyTuple && !other.isReadonlyTuple)
+		if (
+			t.isUnknownTuple(other) &&
+			this.isReadonlyTuple &&
+			!other.isReadonlyTuple
+		)
 			return false
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
+		if (t.isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 
-		if (isUnknownTuple(other)) return true
-		else if (isArray(other)) return unknown.extends(other.getElementSchema)
+		if (t.isUnknownTuple(other)) return true
+		else if (t.isArray(other)) return unknown.extends(other.getElementSchema)
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
+	override _getIssuesImpl(x: unknown): t.ValidationIssue[] {
 		const issues = super._getIssuesImpl(x)
 
 		if (!Array.isArray(x))

@@ -1,11 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { EXTENDS, SCHEMA_NAME } from '_'
+import type {
+	DefaultNeverOptions,
+	NeverOptions,
+	SchemaLike,
+} from '@voltiso/schemar.types'
+import type {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+} from '@voltiso/schemar.types/src/_'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types/src/_'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { DefaultNeverOptions, NeverOptions, SchemaLike } from '~'
 import { CustomSchemaImpl } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead

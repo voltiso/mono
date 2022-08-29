@@ -4,15 +4,19 @@
 import * as s from '~'
 
 describe('README.md', () => {
-	it('bundlers / tree-shaking', () => {
+	it('exec', () => {
 		expect.hasAssertions()
 
-		const mySchemable = {
+		const myShape = {
 			field: s.number,
 		}
 
-		const { isValid } = s.schema(mySchemable).exec({ field: 123 })
+		const result = s.schema(myShape).exec({ field: 123 })
 
-		expect(isValid).toBeTruthy()
+		expect(result).toStrictEqual({
+			isValid: true,
+			issues: [],
+			value: { field: 123 },
+		})
 	})
 })

@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { OutputType, Type_ } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-import type { OutputType, Type_ } from '~'
 import * as s from '~'
 
 describe('number', () => {
@@ -30,11 +30,11 @@ describe('number', () => {
 		expect.hasAssertions()
 
 		// @ts-expect-error cannot fix without default value
-		;() => s.bigint.fix(undef)
+		;() => s.bigint.fix(undefined)
 
 		const n = s.bigint.default(123n as const)
 
-		expect(n.exec(undef).value).toBe(123n)
+		expect(n.exec(undefined).value).toBe(123n)
 
 		Assert<IsIdentical<Type_<typeof n, { kind: 'out' }>, bigint>>()
 		Assert<IsIdentical<Type_<typeof n, { kind: 'in' }>, bigint | undefined>>()

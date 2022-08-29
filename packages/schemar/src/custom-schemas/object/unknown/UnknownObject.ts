@@ -1,23 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { InferableObject } from '~/Inferable'
+import { UnknownObjectImpl } from './_/UnknownObjectImpl'
 
-import type { Object } from '../Object'
-import type { CustomUnknownObject } from './detail/CustomUnknownObject'
-import { UnknownObjectImpl } from './detail/UnknownObjectImpl'
-
-export interface UnknownObject extends CustomUnknownObject<{}> {
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	<S extends InferableObject>(shape: S): Object<S>
-}
+export type UnknownObject = t.UnknownObject
 
 export const UnknownObject = lazyConstructor(
 	() => UnknownObjectImpl,
-) as unknown as UnknownObjectConstructor
-
-type UnknownObjectConstructor = new () => UnknownObject
+) as unknown as t.UnknownObjectConstructor
 
 export const object = lazyValue(() => new UnknownObject())

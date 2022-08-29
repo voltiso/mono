@@ -1,18 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { EXTENDS, SCHEMA_NAME } from '_'
-import { lazyConstructor } from '@voltiso/util'
-
-import type { AnyOptions, DefaultAnyOptions, Schema } from '~'
+import type {
+	AnyOptions,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	DefaultAnyOptions,
+	Schema,
+} from '@voltiso/schemar.types'
 import {
-	CustomSchemaImpl,
+	EXTENDS,
 	isAny,
 	isUnknown,
 	isUnknownSchema,
-	SchemarError,
-} from '~'
+	SCHEMA_NAME,
+} from '@voltiso/schemar.types'
+import { lazyConstructor } from '@voltiso/util'
+
+import { CustomSchemaImpl, SchemarError } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomAnyImpl<O> {

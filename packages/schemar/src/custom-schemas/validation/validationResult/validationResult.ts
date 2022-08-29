@@ -1,13 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AtLeast1 } from '@voltiso/util'
+import type { SchemableLike } from '@voltiso/schemar.types'
 
-//! ts-transform-paths does not work for '~'
-// eslint-disable-next-line no-restricted-imports
-import type { SchemableLike } from '../../..'
-import type { ValidationIssue } from '../..'
-import { array, tuple, union, unknown, validationIssue } from '../..'
+import { array } from '~/custom-schemas/array'
+import { tuple } from '~/custom-schemas/tuple'
+import { union } from '~/custom-schemas/union'
+import { unknown } from '~/custom-schemas/unknown'
+
+import { validationIssue } from '../validationIssue'
 
 export function validationResult<Value extends SchemableLike>(value: Value) {
 	return union(
@@ -24,15 +25,3 @@ export function validationResult<Value extends SchemableLike>(value: Value) {
 		} as const,
 	)
 }
-
-export type ValidationResult<V = unknown> =
-	| {
-			readonly isValid: true
-			readonly value: V
-			readonly issues: []
-	  }
-	| {
-			readonly isValid: false
-			readonly value: unknown
-			readonly issues: AtLeast1<ValidationIssue>
-	  }

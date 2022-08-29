@@ -1,12 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Schemable } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { Schemable } from '~'
-import { defaultReadonlyArrayOptions, schema } from '~'
-
+import { schema } from '../unknownSchema'
 import { CustomArrayImpl } from './CustomArrayImpl'
+import { defaultReadonlyArrayOptions } from './defaultArrayOptions'
 
 //
 

@@ -1,20 +1,21 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { SCHEMA_NAME } from '_'
+import type {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	DefaultUnknownSchemaOptions,
+	IUnknownSchema,
+	Schemable,
+	SchemaOptions,
+	UnknownSchemaOptions,
+} from '@voltiso/schemar.types'
+import { SCHEMA_NAME } from '@voltiso/schemar.types'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { Schemable } from '~/Schemable/Schemable'
-import type { SchemaOptions } from '~/SchemaOptions'
 
 import { infer } from './infer'
-import type { IUnknownSchema } from './IUnknownSchema'
-import type {
-	DefaultUnknownSchemaOptions,
-	UnknownSchemaOptions,
-} from './UnknownSchemaOptions'
 
 export interface CustomUnknownSchemaImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownSchemaOptions

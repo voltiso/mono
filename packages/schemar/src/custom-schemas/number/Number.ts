@@ -1,26 +1,20 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/ban-types */
+import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomNumber, Literal } from '~'
 import { NumberImpl } from '~'
-
-export const Number = lazyConstructor(
-	() => NumberImpl,
-) as unknown as NumberConstructor
-
-export interface Number extends CustomNumber<{}> {
-	<L extends number>(...literals: L[]): Literal<L>
-	<L extends number>(literals: Set<L>): Literal<L>
-	<L extends number>(...args: L[] | [Set<L>]): Literal<L>
-}
-
-type NumberConstructor = new () => Number
 
 //
 
-// eslint-disable-next-line no-new-wrappers
-export const number: Number = lazyValue(() => new Number())
+export type Number_ = t.Number
+
+export const Number_ = lazyConstructor(
+	() => NumberImpl,
+) as unknown as t.NumberConstructor
+
+export { Number_ as Number }
+
+export const number: Number_ = lazyValue(() => new Number_())
 export const integer = lazyValue(() => number.integer)

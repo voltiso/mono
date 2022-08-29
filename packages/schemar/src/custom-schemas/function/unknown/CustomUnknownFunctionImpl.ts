@@ -1,10 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { EXTENDS, SCHEMA_NAME } from '_'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
-
 import type {
 	$OutputType,
 	CustomUnknownFunction,
@@ -14,13 +10,15 @@ import type {
 	OutputType,
 	Schemable,
 	UnknownFunctionOptions,
-} from '~'
-import {
-	CustomSchemaImpl,
-	Function,
-	isUnknownFunction,
-	ValidationIssue,
-} from '~'
+} from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
+import { isUnknownFunction } from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+
+import * as s from '~/custom-schemas/function'
+import { ValidationIssue } from '~/custom-schemas/validation'
+import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownFunctionImpl<O> {
@@ -75,8 +73,7 @@ export class CustomUnknownFunctionImpl<
 	>(
 		argumentsSchema: Args,
 		resultSchema: R,
-		// eslint-disable-next-line @typescript-eslint/ban-types
-	): Function<(...args: $OutputType<Args>) => OutputType<R>> {
-		return new Function(argumentsSchema as never, resultSchema) as never
+	): s.Function<(...args: $OutputType<Args>) => OutputType<R>> {
+		return new s.Function(argumentsSchema as never, resultSchema) as never
 	}
 }

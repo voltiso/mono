@@ -1,31 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import { lazyConstructor } from '@voltiso/util'
-
 import type {
+	BASE_OPTIONS,
 	CustomFunction,
+	DEFAULT_OPTIONS,
 	DefaultFunctionOptions,
 	FunctionOptions,
 	IArray,
 	ITuple,
 	Schema,
 	SchemaLike,
-} from '~'
+} from '@voltiso/schemar.types'
+import { isUnknownFunction } from '@voltiso/schemar.types'
+import * as t from '@voltiso/schemar.types'
+import { isArray, isTuple } from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { lazyConstructor } from '@voltiso/util'
+
 import {
 	_functionArgumentsExtends,
 	CustomSchemaImpl,
-	isArray,
-	isFunction,
-	isTuple,
-	isUnknownFunction,
 	schema,
 	SchemarError,
 	ValidationIssue,
@@ -84,7 +79,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (isUnknownFunction(other)) return true
-		else if (isFunction(other)) {
+		else if (t.isFunction(other)) {
 			const argsOk: boolean = _functionArgumentsExtends(
 				other.getArgumentsSchema as never,
 				this.getArgumentsSchema as never,

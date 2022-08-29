@@ -1,18 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Schema, Type } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import * as s from '~'
-import type { Type } from '~/GetType'
 
 describe('object', () => {
 	it('complex object - theme', () => {
 		expect.assertions(0)
 
-		const sColor = s.string.maxLength(32) as unknown as s.Schema<string>
-		const sTransition = s.string.maxLength(64) as unknown as s.Schema<string>
+		const sColor = s.string.maxLength(32) as unknown as Schema<string>
+		const sTransition = s.string.maxLength(64) as unknown as Schema<string>
 
 		const sTheme = {
 			color: {

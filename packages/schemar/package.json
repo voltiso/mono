@@ -46,6 +46,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
+    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
@@ -58,6 +59,6 @@
   },
   "__________MISC": "__________",
   "typeCoverage": {
-    "is": 99.43
+    "is": 1.0
   }
 }

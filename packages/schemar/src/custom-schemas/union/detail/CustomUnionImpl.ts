@@ -1,21 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '_'
+import type {
+	BASE_OPTIONS,
+	CustomUnion,
+	DEFAULT_OPTIONS,
+	DefaultUnionOptions,
+	ISchema,
+	IUnion,
+	Schemable,
+	SchemableLike,
+	UnionOptions,
+} from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { isUnion } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import type {
-	CustomUnion,
-	DefaultUnionOptions,
-	IUnion,
-	UnionOptions,
-} from '~/custom-schemas'
 import { schema, ValidationIssue } from '~/custom-schemas'
-import { isUnion } from '~/custom-schemas'
-import type { ISchema } from '~/Schema'
 import { CustomSchemaImpl } from '~/Schema'
-import type { Schemable, SchemableLike } from '~/Schemable'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnionImpl<O> {

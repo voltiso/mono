@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { ValidationIssue } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
-
-import type { ValidationIssue } from '~'
 
 import { SchemarError } from './SchemarError'
 
