@@ -49,5 +49,10 @@
   "__________MISC": "__________",
   "typeCoverage": {
     "is": 1
+  },
+  "devDependencies": {
+    "@voltiso/config.ts.build.cjs": "workspace:^2.0.2",
+    "@voltiso/config.ts.build.esm": "workspace:^2.0.2",
+    "@voltiso/util": "workspace:^45.0.0"
   }
 }

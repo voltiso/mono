@@ -732,9 +732,16 @@ importers:
 
   packages/schemar.no-op:
     specifiers:
+      '@voltiso/config.ts.build.cjs': workspace:^2.0.2
+      '@voltiso/config.ts.build.esm': workspace:^2.0.2
       '@voltiso/schemar.types': workspace:^16.0.0
+      '@voltiso/util': workspace:^45.0.0
     dependencies:
       '@voltiso/schemar.types': link:../schemar.types
+    devDependencies:
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/util': link:../util
 
   packages/schemar.types:
     specifiers:

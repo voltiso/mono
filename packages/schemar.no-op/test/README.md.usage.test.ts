@@ -4,13 +4,13 @@
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import s from '~'
+import * as s from '~'
 
 describe('README.md - usage', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		const mySchemable = {
+		const myShape = {
 			name: s.string,
 			version: s.string.regex(/^\d+\.\d+\.\d+$/u), // simplified
 			license: s.string.regex(/^[A-Z]\d$/u).optional,
@@ -20,20 +20,19 @@ describe('README.md - usage', () => {
 			},
 		}
 
-		expect(
-			s.schema(mySchemable).validate({ name: 'a', version: '1.0.0' }),
-		).toStrictEqual({
-			name: 'a',
-			version: '1.0.0',
+		const arg = { name: 'a', version: '1.0.0' }
 
-			dependencies: {
-				'@voltiso/schemar': '9.0.0',
-			},
+		expect(s.schema(myShape).validate(arg)).toBe(arg) // no real schema checking
+
+		expect(s.schema(myShape).exec(arg)).toStrictEqual({
+			isValid: true,
+			value: arg,
+			issues: [],
 		})
 
 		// Infer TS Types
 
-		const mySchema = s.schema(mySchemable)
+		const mySchema = s.schema(myShape)
 
 		type MySchema = typeof mySchema.OutputType
 		Assert<

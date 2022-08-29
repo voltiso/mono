@@ -7,11 +7,11 @@ describe('README.md', () => {
 	it('bundlers / tree-shaking', () => {
 		expect.hasAssertions()
 
-		const mySchemable = {
+		const myShape = {
 			field: s.number,
 		}
 
-		const { isValid } = s.schema(mySchemable).exec({ field: 123 })
+		const { isValid } = s.schema(myShape).exec({ field: 123 })
 
 		expect(isValid).toBeTruthy()
 	})
