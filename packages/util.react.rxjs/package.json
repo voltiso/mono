@@ -1,10 +1,18 @@
 {
-	"name": "@voltiso/util.react.form",
+	"name": "@voltiso/util.react.rxjs",
 	"version": "1.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
+	"__________EXPORTS": "__________",
+	"exports": {
+		".": {
+			"types": "./dist/cjs/index.d.ts",
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.js"
+		}
+	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/cjs/index.d.ts",
 	"module": "dist/esm/index.js",
@@ -15,6 +23,8 @@
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
+		"__________DEV": "__________",
+		"dev": "v dev",
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
@@ -28,42 +38,24 @@
 		"build:esm": "v buildEsm",
 		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
-		"clean": "v clean",
-		"trace": "v trace",
-		"trace:run": "v traceRun"
+		"clean": "rimraf dist"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/schemar": "workspace:^",
-		"@voltiso/util": "workspace:^",
-		"@voltiso/util.react": "workspace:^",
-		"@voltiso/util.react.patcher": "workspace:^"
-	},
 	"peerDependencies": {
-		"@voltiso/styler": "workspace:^",
-		"react": ">= 18.1.0",
+		"react": "^18.0.0 || ^17.0.0",
 		"rxjs": "^7.5.6"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.18.13",
-		"@babel/preset-env": "^7.18.10",
-		"@testing-library/react": "^13.3.0",
 		"@types/react": "^18.0.17",
-		"@voltiso/config.jest.esr": "workspace:^1.0.0",
-		"@voltiso/observer": "workspace:^1.0.0",
-		"@voltiso/script": "workspace:^",
-		"@voltiso/styler": "workspace:^",
-		"depcheck": "^1.4.3",
-		"npm-run-all": "^4.1.5",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
 		"react": "^18.2.0",
-		"react-native": "^0.69.5",
-		"rimraf": "^3.0.2",
 		"rxjs": "^7.5.6"
 	},
 	"__________MISC": "__________",
 	"engines": {
-		"node": ">=16"
+		"node": "16"
 	}
 }

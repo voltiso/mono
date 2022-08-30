@@ -1,6 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { style } from '@voltiso/styler'
+{
+	"extends": "@voltiso/config.ts",
 
-export const DefaultCheckbox = style('input').prop('type', 'checkbox')
+	"compilerOptions": {
+		"lib": ["DOM"],
+
+		"paths": {
+			"~/*": ["./src/*"]
+		}
+	}
+}

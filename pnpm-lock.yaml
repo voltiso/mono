@@ -1123,7 +1123,6 @@ importers:
       react-dom: ^18.2.0
       react-intersection-observer: ^9.4.0
       react-native: ^0.69.5
-      rimraf: ^3.0.2
     dependencies:
       '@voltiso/util': link:../util
       react-intersection-observer: 9.4.0_react@18.2.0
@@ -1141,7 +1140,6 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.69.5_kid3h7giugg7ucuix5c2yjdzyy
-      rimraf: 3.0.2
 
   packages/util.react.dom:
     specifiers:
@@ -1170,8 +1168,10 @@ importers:
     specifiers:
       '@babel/core': ^7.18.13
       '@babel/preset-env': ^7.18.10
+      '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.17
       '@voltiso/config.jest.esr': workspace:^1.0.0
+      '@voltiso/observer': workspace:^1.0.0
       '@voltiso/schemar': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/styler': workspace:^
@@ -1183,6 +1183,7 @@ importers:
       react: ^18.2.0
       react-native: ^0.69.5
       rimraf: ^3.0.2
+      rxjs: ^7.5.6
     dependencies:
       '@voltiso/schemar': link:../schemar
       '@voltiso/util': link:../util
@@ -1191,8 +1192,10 @@ importers:
     devDependencies:
       '@babel/core': 7.18.13
       '@babel/preset-env': 7.18.10_@babel+core@7.18.13
+      '@testing-library/react': 13.3.0_react@18.2.0
       '@types/react': 18.0.17
       '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/observer': link:../observer
       '@voltiso/script': link:../script
       '@voltiso/styler': link:../styler
       depcheck: 1.4.3
@@ -1200,6 +1203,7 @@ importers:
       react: 18.2.0
       react-native: 0.69.5_kid3h7giugg7ucuix5c2yjdzyy
       rimraf: 3.0.2
+      rxjs: 7.5.6
 
   packages/util.react.patcher:
     specifiers:
@@ -1239,6 +1243,20 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.69.5_kid3h7giugg7ucuix5c2yjdzyy
       rimraf: 3.0.2
+
+  packages/util.react.rxjs:
+    specifiers:
+      '@types/react': ^18.0.17
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      react: ^18.2.0
+      rxjs: ^7.5.6
+    devDependencies:
+      '@types/react': 18.0.17
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      react: 18.2.0
+      rxjs: 7.5.6
 
 packages:
 
@@ -5189,6 +5207,19 @@ packages:
       '@types/react-dom': 18.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: true
+
+  /@testing-library/react/13.3.0_react@18.2.0:
+    resolution: {integrity: sha512-DB79aA426+deFgGSjnf5grczDPiL4taK3hFaa+M5q7q20Kcve9eQottOG5kZ74KEr55v0tU2CQormSSDK87zYQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '*'
+      react-dom: ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.18.9
+      '@testing-library/dom': 8.17.1
+      '@types/react-dom': 18.0.6
+      react: 18.2.0
     dev: true
 
   /@toml-tools/lexer/0.3.1:

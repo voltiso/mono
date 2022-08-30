@@ -1,37 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InputType, InferableObject } from '@voltiso/schemar'
-import * as s from '@voltiso/schemar'
-import type { StyledComponent } from '@voltiso/styler'
-import { style } from '@voltiso/styler'
-import { getKeys, getValues, undef } from '@voltiso/util'
-import { LocalStorage, useCurrent, useInitial } from '@voltiso/util.react'
-import { useStatePatcher } from '@voltiso/util.react.patcher'
-import type { FormEvent } from 'react'
-import { forwardRef, useCallback, useEffect, useMemo } from 'react'
+import { useCurrent } from '@voltiso/util.react'
 
-import type {
-	OCheckboxSetType,
-	OCheckboxType,
-	OFormType,
-	OTextType,
-} from './_/autoInferredTypes'
-import type { CheckboxProps } from './_/CheckboxProps'
-import type { FieldName } from './_/FieldName'
-import { getArrayValues } from './_/getArrayValues'
-import { Context } from './Context'
-import type { FormProps } from './FormProps'
 import type { Options } from './Options'
-import type { ValidationResult } from './schemas/validationResult'
-import type { TextProps } from './TextProps'
 import type { UseFormResult } from './UseFormResult'
-import type { ValidationResults } from './ValidationResults'
-import type { Validator } from './Validators'
+import * as s from '@voltiso/schemar.types'
 
 // const glo = style('input').prop('type', 'checkbox')
 
-export function useForm<S extends InferableObject>(
+export const injectUseForm = (diContext: {schema: }) useForm<S extends Schemable>(
 	options: Options<S>,
 ): UseFormResult<S> {
 	const current = useCurrent(options)

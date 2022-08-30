@@ -19,7 +19,8 @@
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
-		"dist"
+		"dist",
+		"src"
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
@@ -34,11 +35,11 @@
 		"__________BUILD": "__________",
 		"build": "v build",
 		"build:esm": "v buildEsm",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
+		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
-		"clean": "rimraf dist"
+		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
@@ -61,11 +62,10 @@
 		"@voltiso/script": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-native": "^0.69.5",
-		"rimraf": "^3.0.2"
+		"react-native": "^0.69.5"
 	},
 	"__________MISC": "__________",
 	"engines": {
-		"node": ">=16"
+		"node": "16"
 	}
 }
