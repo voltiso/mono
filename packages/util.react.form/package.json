@@ -1,7 +1,7 @@
 {
 	"name": "@voltiso/util.react.form",
 	"version": "1.0.0",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,

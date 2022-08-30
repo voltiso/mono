@@ -1,7 +1,7 @@
 {
 	"name": "@voltiso/util.react.patcher",
 	"version": "6.0.3",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,

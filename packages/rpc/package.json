@@ -1,7 +1,7 @@
 {
 	"name": "@voltiso/rpc",
 	"version": "3.0.1",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,

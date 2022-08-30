@@ -1,7 +1,7 @@
 {
 	"name": "@voltiso/config.ts.build",
 	"version": "2.0.6",
-	"license": "UNLICENSED",
+	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
