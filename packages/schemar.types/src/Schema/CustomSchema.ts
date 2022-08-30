@@ -20,6 +20,7 @@ import type {
 import type {
 	DefaultSchemaOptions,
 	DefineSchema,
+	InferSchema_,
 	MergeSchemaOptions,
 	SchemableLike,
 	SchemaOptions,
@@ -310,7 +311,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	get simple(): Simplify<this>
+	get simple(): SimplifySchema<this>
 }
 
 /** @inline */
@@ -331,7 +332,10 @@ export type CanBeSimpleSchema<
 	: True
 
 /** @inline */
-export type Simplify<
+export type Simplify<S extends SchemableLike> = SimplifySchema<InferSchema_<S>>
+
+/** @inline */
+export type SimplifySchema<
 	This extends {
 		OutputType: any
 		InputType: any

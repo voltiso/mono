@@ -4,8 +4,9 @@
 import { screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
+import type { Property } from 'csstype'
 
-import type { CustomStyledHoc, StyledLike } from '~'
+import type { Css, CustomStyledHoc, StyledLike } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -126,6 +127,32 @@ describe('customCss', () => {
 
 		expect(button).toHaveStyle({
 			color: 'red',
+		})
+	})
+
+	it('hoc', () => {
+		expect.hasAssertions()
+
+		function marginY(x: Property.Margin | number | boolean): Css {
+			if (typeof x === 'boolean' && !x) return {}
+			const margin = typeof x === 'boolean' ? 123 : x
+			return {
+				marginTop: margin,
+				marginBottom: margin,
+			}
+		}
+
+		const myStyle = style.newCustomCssProperties({ marginY })
+
+		const Button = myStyle('button')
+
+		renderApp(<Button css={{ marginY: '12px' }} />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			marginTop: '12px',
+			marginBottom: '12px',
 		})
 	})
 })

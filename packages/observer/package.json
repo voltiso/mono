@@ -1,5 +1,5 @@
 {
-	"name": "@voltiso/injector",
+	"name": "@voltiso/observer",
 	"version": "1.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
@@ -15,6 +15,8 @@
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
+		"__________DEV": "__________",
+		"dev": "v dev",
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
@@ -28,17 +30,36 @@
 		"build:cjs": "v buildCjs",
 		"build:esm": "v buildEsm",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast",
+		"prepublishOnly": "v prepublishOnly",
 		"__________MISC": "__________",
 		"clean": "v clean",
 		"typecov": "v typecov"
 	},
 	"__________DEPS": "__________",
+	"peerDependencies": {
+		"@voltiso/schemar.types": "workspace:^",
+		"rxjs": "^7.5.6"
+	},
+	"peerDependenciesMeta": {
+		"@voltiso/schemar.types": {
+			"optional": true
+		}
+	},
 	"devDependencies": {
-		"@voltiso/config.jest.esr": "workspace:^"
+		"@voltiso/assertor": "workspace:^2.0.0",
+		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^",
+		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/schemar.types": "workspace:^",
+		"@voltiso/script": "workspace:^",
+		"rxjs": "^7.5.6"
 	},
 	"__________MISC": "__________",
 	"engines": {
 		"node": "16"
+	},
+	"dependencies": {
+		"@voltiso/patcher": "workspace:^1.0.2",
+		"@voltiso/util": "workspace:^45.0.0"
 	}
 }

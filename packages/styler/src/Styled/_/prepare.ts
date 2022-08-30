@@ -55,12 +55,14 @@ export function prepare<X>(x: X, theme: object, customCss?: object): X {
 						? customCssEntry(v)
 						: customCssEntry
 
-				$assert(typeof cssValues === 'object')
+				if (typeof customCssEntry === 'function' || Boolean(v)) {
+					$assert(typeof cssValues === 'object')
 
-				const preparedCustomCss = prepare(cssValues, theme, customCss)
+					const preparedCustomCss = prepare(cssValues, theme, customCss)
 
-				r = { ...preparedCustomCss, ...r }
-				haveChange = true
+					r = { ...preparedCustomCss, ...r }
+					haveChange = true
+				}
 			} else {
 				const newValue = prepare(v, theme) as never
 				if (newValue !== v) haveChange = true

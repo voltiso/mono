@@ -82,9 +82,23 @@ export type OutputType<S extends SchemaLike | InferableLike> = Type_<
  *
  * @inline
  */
+export type OutputType_<S> = Type_<S, { kind: 'out' }>
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
 export type $OutputType<S extends SchemaLike | InferableLike> = S extends any
-	? OutputType<S>
+	? OutputType_<S>
 	: never
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
+export type $OutputType_<S> = S extends any ? OutputType_<S> : never
 
 /**
  * Proxy to `GetType`
@@ -101,6 +115,20 @@ export type InputType<S extends SchemaLike | InferableLike> = Type_<
  *
  * @inline
  */
+export type InputType_<S> = Type_<S, { kind: 'in' }>
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
 export type $InputType<S extends SchemaLike | InferableLike> = S extends any
-	? InputType<S>
+	? InputType_<S>
 	: never
+
+/**
+ * Proxy to `GetType`
+ *
+ * @inline
+ */
+export type $InputType_<S> = S extends any ? InputType_<S> : never

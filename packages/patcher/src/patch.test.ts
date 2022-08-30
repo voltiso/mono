@@ -130,6 +130,12 @@ describe('patch', () => {
 		const b = patch(obj, { a: { bb: 99 } })
 
 		expect(b).toStrictEqual({ b: 9, a: { aa: { aaa: 'a' }, bb: 99 } })
+
+		const c = patchUpdate(123, 234 as const)
+
+		expect(c).toBe(234)
+
+		Assert<IsIdentical<typeof c, 234>>()
 	})
 
 	it('patchUpdate boolean', () => {

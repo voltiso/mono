@@ -30,6 +30,8 @@ export type PatchFor<X> =
 	| (X extends undefined ? DeleteIt : never)
 	| X
 
+export type $PatchFor<X> = X extends any ? PatchFor<X> : never
+
 //
 
 export type ForcePatchFor<X> =

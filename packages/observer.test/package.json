@@ -1,5 +1,5 @@
 {
-	"name": "@voltiso/observer",
+	"name": "@voltiso/observer.test",
 	"version": "1.0.0",
 	"license": "UNLICENSED",
 	"repository": "git://github.com/voltiso/mono.git",
@@ -31,7 +31,10 @@
 	},
 	"__________DEPS": "__________",
 	"devDependencies": {
-		"@voltiso/config.jest.esr": "workspace:^"
+		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/observer": "workspace:^1.0.0",
+		"@voltiso/schemar": "workspace:^16.0.0",
+		"@voltiso/script": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {

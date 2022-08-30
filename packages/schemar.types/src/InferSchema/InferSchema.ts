@@ -2,12 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Newable } from '@voltiso/util'
+
 import type {
+	Instance,
 	Literal,
 	MutableTuple,
-	ReadonlyTuple,
 	Object,
-	Instance,
+	ReadonlyTuple,
 } from '~/custom-schemas'
 import type {
 	InferableLiteral,

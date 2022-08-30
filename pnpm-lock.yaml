@@ -618,8 +618,12 @@ importers:
   packages/injector:
     specifiers:
       '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^2.0.2
+      '@voltiso/config.ts.build.esm': workspace:^2.0.2
     devDependencies:
       '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
   packages/localstore:
     specifiers:
@@ -638,20 +642,40 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
 
-  packages/observer.custom:
+  packages/observer:
     specifiers:
-      '@voltiso/config.jest.esr': workspace:^1.0.0
+      '@voltiso/assertor': workspace:^2.0.0
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/patcher': workspace:^1.0.2
+      '@voltiso/schemar.types': workspace:^
+      '@voltiso/script': workspace:^
+      '@voltiso/util': workspace:^45.0.0
       rxjs: ^7.5.6
     dependencies:
-      rxjs: 7.5.6
+      '@voltiso/patcher': link:../patcher
+      '@voltiso/util': link:../util
     devDependencies:
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/schemar.types': link:../schemar.types
+      '@voltiso/script': link:../script
+      rxjs: 7.5.6
 
   packages/observer.test:
     specifiers:
       '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/observer': workspace:^1.0.0
+      '@voltiso/schemar': workspace:^16.0.0
+      '@voltiso/script': workspace:^
     devDependencies:
       '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/observer': link:../observer
+      '@voltiso/schemar': link:../schemar
+      '@voltiso/script': link:../script
 
   packages/patcher:
     specifiers:
@@ -16304,6 +16328,7 @@ packages:
     resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==}
     dependencies:
       tslib: 2.4.0
+    dev: true
 
   /sade/1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
