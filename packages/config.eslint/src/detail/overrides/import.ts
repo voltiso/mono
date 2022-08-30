@@ -9,7 +9,7 @@ import {
 import { codeFiles } from '~/detail/files'
 
 const staticAnalysisRules = defineEslintConfigOverrideRules({
-	// 'import/no-unresolved': 0, // handled by TS
+	'import/no-unresolved': 0, // handled by TS
 	// 'import/no-unresolved': ['error', { caseSensitiveStrict: true }],
 
 	'import/no-relative-packages': 2,

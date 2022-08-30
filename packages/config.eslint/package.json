@@ -26,11 +26,11 @@
 		"lint:tsc": "v lintTsc",
 		"fix": "v fix",
 		"__________BUILD": "__________",
-		"build:cjs": "run-s build:cjs:clean build:cjs:tsc",
-		"build:cjs:clean": "rimraf dist/cjs",
-		"build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+		"build": "v build",
+		"build:cjs": "v buildCjs",
+		"build:esm": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
 		"clean": "v clean"
 	},
@@ -44,6 +44,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/eslint-plugin": "workspace:^1.0.2",
+		"@voltiso/script": "workspace:^1.0.0",
 		"eslint": "^8.23.0"
 	},
 	"peerDependencies": {

@@ -147,6 +147,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/eslint-plugin': workspace:^1.0.2
+      '@voltiso/script': workspace:^1.0.0
       eslint: ^8.23.0
       eslint-gitignore: ^0.1.0
     dependencies:
@@ -157,6 +158,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/eslint-plugin': link:../eslint-plugin
+      '@voltiso/script': link:../script
       eslint: 8.23.0
 
   packages/config.eslint.lib:
@@ -614,16 +616,6 @@ importers:
       '@voltiso/script': link:../script
       firebase-admin: 11.0.1_@firebase+app-types@0.7.0
       rimraf: 3.0.2
-
-  packages/injector:
-    specifiers:
-      '@voltiso/config.jest.esr': workspace:^
-      '@voltiso/config.ts.build.cjs': workspace:^2.0.2
-      '@voltiso/config.ts.build.esm': workspace:^2.0.2
-    devDependencies:
-      '@voltiso/config.jest.esr': link:../config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
   packages/localstore:
     specifiers:
