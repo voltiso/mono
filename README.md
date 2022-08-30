@@ -24,6 +24,8 @@
 
 # 📥 Use in your project
 
+> ❗ Since our repo is no longer private, and it's MIT-open-sourced now, the packages will be moved to *npmjs* in the near future.
+
 > ⚠️ Different `.npmrc` needed in **BOTH**:
 >
 > - Your **`$HOME`** dir

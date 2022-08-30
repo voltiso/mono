@@ -330,6 +330,7 @@
 		"nocheck",
 		"nodelib",
 		"nonblock",
+		"npmjs",
 		"npmrc",
 		"oltiso",
 		"Orta",
