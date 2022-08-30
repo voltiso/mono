@@ -42,7 +42,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"eslint": "^8.23.0",
-		"eslint-define-config": "^1.6.0",
+		"eslint-define-config": "^1.7.0",
 		"rimraf": "^3.0.2"
 	},
 	"__________ENGINES": "__________",
