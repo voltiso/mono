@@ -1,18 +1,32 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject } from '@voltiso/schemar'
-
 import type {
-	OCheckboxSetType,
-	OCheckboxType,
-	OFormType,
-	OTextType,
-} from './_/autoInferredTypes'
+	GetShape,
+	SchemableLike,
+	SchemableObjectLike,
+	SchemableWithShape,
+} from '@voltiso/schemar.types'
+import type { DOMAttributes } from 'react'
 
-export interface UseFormResult<S extends InferableObject> {
-	Form: OFormType
-	Text: OTextType<S>
-	Checkbox: OCheckboxType<S>
-	CheckboxSet: OCheckboxSetType<S>
-}
+export type UseFormResultFields<S extends SchemableLike> =
+	S extends SchemableWithShape
+		? {
+				[k in keyof GetShape<S>]: UseFormResultFields<GetShape<S>[k]>
+		  }
+		: {
+				props: {
+					onChange: Exclude<
+						DOMAttributes<HTMLInputElement>['onChange'],
+						undefined
+					>
+				}
+				
+				issues:
+		  }
+
+export type UseFormResult<S extends SchemableObjectLike> = {
+	props: {
+		onSubmit: Exclude<DOMAttributes<HTMLFormElement>['onSubmit'], undefined>
+	}
+} & UseFormResultFields<S>

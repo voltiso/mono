@@ -1166,43 +1166,28 @@ importers:
 
   packages/util.react.form:
     specifiers:
-      '@babel/core': ^7.18.13
-      '@babel/preset-env': ^7.18.10
       '@testing-library/react': ^13.3.0
       '@types/react': ^18.0.17
-      '@voltiso/config.jest.esr': workspace:^1.0.0
-      '@voltiso/observer': workspace:^1.0.0
-      '@voltiso/schemar': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/observer': workspace:^
+      '@voltiso/schemar': workspace:^16.0.0
+      '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
-      '@voltiso/styler': workspace:^
-      '@voltiso/util': workspace:^
-      '@voltiso/util.react': workspace:^
-      '@voltiso/util.react.patcher': workspace:^
-      depcheck: ^1.4.3
-      npm-run-all: ^4.1.5
+      '@voltiso/util': workspace:^45.0.0
       react: ^18.2.0
-      react-native: ^0.69.5
-      rimraf: ^3.0.2
+      react-dom: ^18.2.0
       rxjs: ^7.5.6
-    dependencies:
-      '@voltiso/schemar': link:../schemar
-      '@voltiso/util': link:../util
-      '@voltiso/util.react': link:../util.react
-      '@voltiso/util.react.patcher': link:../util.react.patcher
     devDependencies:
-      '@babel/core': 7.18.13
-      '@babel/preset-env': 7.18.10_@babel+core@7.18.13
-      '@testing-library/react': 13.3.0_react@18.2.0
+      '@testing-library/react': 13.3.0_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.17
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/observer': link:../observer
+      '@voltiso/schemar': link:../schemar
+      '@voltiso/schemar.types': link:../schemar.types
       '@voltiso/script': link:../script
-      '@voltiso/styler': link:../styler
-      depcheck: 1.4.3
-      npm-run-all: 4.1.5
+      '@voltiso/util': link:../util
       react: 18.2.0
-      react-native: 0.69.5_kid3h7giugg7ucuix5c2yjdzyy
-      rimraf: 3.0.2
+      react-dom: 18.2.0_react@18.2.0
       rxjs: 7.5.6
 
   packages/util.react.patcher:
@@ -5207,19 +5192,6 @@ packages:
       '@types/react-dom': 18.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: true
-
-  /@testing-library/react/13.3.0_react@18.2.0:
-    resolution: {integrity: sha512-DB79aA426+deFgGSjnf5grczDPiL4taK3hFaa+M5q7q20Kcve9eQottOG5kZ74KEr55v0tU2CQormSSDK87zYQ==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      react: '*'
-      react-dom: ^18.0.0
-    dependencies:
-      '@babel/runtime': 7.18.9
-      '@testing-library/dom': 8.17.1
-      '@types/react-dom': 18.0.6
-      react: 18.2.0
     dev: true
 
   /@toml-tools/lexer/0.3.1:
