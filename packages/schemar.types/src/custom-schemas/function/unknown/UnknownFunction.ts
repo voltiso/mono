@@ -12,7 +12,9 @@ import type {
 } from '~'
 
 /** @internal */
-export type _MakeArrayMutable_<X> = X extends readonly unknown[] ? [...X] : never
+export type _MakeArrayMutable_<X> = X extends readonly unknown[]
+	? [...X]
+	: never
 
 export interface UnknownFunction extends CustomUnknownFunction<{}> {
 	<
@@ -21,6 +23,6 @@ export interface UnknownFunction extends CustomUnknownFunction<{}> {
 	>(
 		argumentsSchema: Args,
 		resultSchema: R,
-		// eslint-disable-next-line @typescript-eslint/ban-types
+		// eslint-disable-next-line @typescript-eslint/ban-types, etc/no-internal
 	): Function<(...args: _MakeArrayMutable_<$OutputType<Args>>) => OutputType<R>>
 }

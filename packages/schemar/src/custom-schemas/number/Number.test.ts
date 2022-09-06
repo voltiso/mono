@@ -3,9 +3,6 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
-
 import type {
 	CustomNumber,
 	InputType,
@@ -13,7 +10,11 @@ import type {
 	OutputType,
 	Schema,
 	Type_,
-} from '~'
+} from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('s.number', () => {
@@ -21,7 +22,7 @@ describe('s.number', () => {
 		expect.assertions(0)
 
 		Assert.is<CustomNumber<O>, Schema>()
-		Assert.is<CustomNumber<O>, s.INumber>()
+		Assert.is<CustomNumber<O>, t.INumber>()
 	})
 
 	it('simple', () => {

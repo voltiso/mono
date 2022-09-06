@@ -3,10 +3,11 @@
 
 /* eslint-disable jest/prefer-hooks-on-top */
 import express = require('express')
+import type { Server } from 'node:http'
+
 import { checked } from '@voltiso/caller'
 import * as s from '@voltiso/schemar'
 import mockConsole from 'jest-mock-console'
-import type { Server } from 'node:http'
 
 import { createClient } from '~/client'
 import { createServer, createServerContext } from '~/server'
@@ -39,7 +40,7 @@ const handlers = {
 	},
 }
 
-const myServer = createServer({context, handlers})
+const myServer = createServer({ context, handlers })
 
 // eslint-disable-next-line jest/require-hook
 let port = 0
@@ -94,7 +95,9 @@ describe('client', function () {
 	it('network error', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer.handlers>(`http://localhost:7444/rpc`)
+		const myClient = createClient<typeof myServer.handlers>(
+			`http://localhost:7444/rpc`,
+		)
 		myClient.setToken('test')
 
 		await expect(myClient.auth.echoToken()).rejects.toThrow('echoToken')

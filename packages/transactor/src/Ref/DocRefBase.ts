@@ -3,8 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import type * as s from '@voltiso/schemar'
-import type { ISchema } from '@voltiso/schemar'
+import type { InferableObject, ISchema } from '@voltiso/schemar.types'
 import type { If } from '@voltiso/util'
 import { lazyPromise, protoLink } from '@voltiso/util'
 
@@ -81,8 +80,8 @@ export class DocRefBaseImpl<
 		| null // null -> no schema
 		| undefined = undefined // undefined -> unknown yet
 
-	_publicOnCreationSchema?: s.InferableObject = undefined
-	_privateSchema?: s.InferableObject = undefined
+	_publicOnCreationSchema?: InferableObject = undefined
+	_privateSchema?: InferableObject = undefined
 
 	methods: D[DTI]['methods'] & InferMethods<D> = {} as D[DTI]['methods'] &
 		InferMethods<D>

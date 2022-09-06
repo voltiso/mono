@@ -14,7 +14,10 @@ import { isLiteral, isUnknownLiteral } from '@voltiso/schemar.types'
 import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { isSubset, lazyConstructor, stringFrom } from '@voltiso/util'
 
-import { CustomSchemaImpl, literalValueExtends, ValidationIssue } from '~'
+import { ValidationIssue } from '~/custom-schemas/validation'
+import { CustomSchemaImpl } from '~/Schema'
+
+import { literalValueExtends } from './literalValueExtends'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomLiteralImpl<O> {

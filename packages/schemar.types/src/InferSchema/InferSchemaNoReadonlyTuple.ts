@@ -1,5 +1,9 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { Newable } from '@voltiso/util'
-import type { Literal, MutableTuple, Instance, Object } from '~/custom-schemas'
+
+import type { Instance, Literal, MutableTuple, Object } from '~/custom-schemas'
 import type {
 	InferableLiteral,
 	InferableObjectLike,
@@ -18,7 +22,7 @@ export type InferSchemaNoReadonlyTuple_<T> = T extends InferableLiteral
 	? MutableTuple<[...T]>
 	: T extends InferableObjectLike
 	? // eslint-disable-next-line @typescript-eslint/ban-types
-	  Object<T>
+	  Object<{ -readonly [k in keyof T]: T[k] }>
 	: never
 
 export type InferSchemaNoReadonlyTuple<T extends SchemableLike> =

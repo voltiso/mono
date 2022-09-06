@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	BivariantUnknownFunction,
 	DefaultSchemaOptions,
 	SchemaLike,
 	SchemaOptions,
-	BivariantUnknownFunction,
 } from '~'
 
 export interface FunctionOptions extends SchemaOptions {

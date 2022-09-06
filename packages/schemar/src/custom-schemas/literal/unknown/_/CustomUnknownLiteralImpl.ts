@@ -14,7 +14,8 @@ import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { isUnknownLiteral } from '@voltiso/schemar.types'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
-import { CustomSchemaImpl, LiteralImpl } from '~'
+import { LiteralImpl } from '~/custom-schemas/literal'
+import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownLiteralImpl<O> {

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { OutputType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
@@ -30,7 +31,7 @@ describe('object', () => {
 			str: 'test',
 		})
 
-		type Ps = s.OutputType<typeof ps>
+		type Ps = OutputType<typeof ps>
 
 		Assert<
 			IsIdentical<

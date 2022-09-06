@@ -1,18 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	CustomUnknownSymbol,
+	IUnknownSymbol,
+	OutputType,
+	UnknownSymbolOptions,
+} from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { CustomSymbol, ISymbol, OutputType, SymbolOptions } from '~'
 import { number, unknown } from '~'
 import * as s from '~/custom-schemas'
 
 describe('symbol', () => {
-	it('generic', <O extends SymbolOptions>() => {
+	it('generic', <O extends UnknownSymbolOptions>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomSymbol<O>, ISymbol>()
+		Assert.is<CustomUnknownSymbol<O>, IUnknownSymbol>()
 	})
 
 	it('simple', () => {

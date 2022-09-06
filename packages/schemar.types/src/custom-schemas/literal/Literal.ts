@@ -1,4 +1,8 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { InferableLiteral } from '~/Inferable'
+
 import type { CustomLiteral } from './CustomLiteral'
 
 export type Literal<T extends InferableLiteral> = CustomLiteral<{

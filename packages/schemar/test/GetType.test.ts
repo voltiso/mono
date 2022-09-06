@@ -1,22 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
+	$OutputType,
 	IArray,
 	InferableObject,
+	InputType,
 	ISchema,
 	ITuple,
 	Number,
+	OutputType,
 	Schema,
 	Schemable,
 	SchemableLike,
-} from '~'
-import { number } from '~'
+	Type_,
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-import type { $OutputType, InputType, OutputType, Type_ } from './GetType'
+import * as s from '~'
 
 describe('GetType', () => {
 	it('simple', () => {
@@ -50,19 +52,19 @@ describe('GetType', () => {
 		expect.assertions(0)
 
 		const a = {
-			num: number,
+			num: s.number,
 		}
 		type A = OutputType<typeof a>
 		Assert<IsIdentical<A, { num: number }>>()
 
 		const d = {
-			num: number.optional,
+			num: s.number.optional,
 		}
 		type D = OutputType<typeof d>
 		Assert<IsIdentical<D, { num?: number }>>()
 
 		const e = {
-			num: number.default(0),
+			num: s.number.default(0),
 		}
 		type E = InputType<typeof e>
 		Assert<IsIdentical<E, { num?: number | undefined }>>()
@@ -119,11 +121,11 @@ describe('GetType', () => {
 		expect.assertions(0)
 
 		const a = {
-			a: number,
+			a: s.number,
 		}
 
 		const b = {
-			b: number.optional,
+			b: s.number.optional,
 		}
 
 		type A = OutputType<typeof a & typeof b>

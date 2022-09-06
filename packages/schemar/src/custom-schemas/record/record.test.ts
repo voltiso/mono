@@ -1,10 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	CustomRecord,
+	ISchema,
+	RecordOptions,
+} from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { CustomRecord, ISchema, RecordOptions } from '~'
 import * as s from '~'
 
 describe('record', () => {
@@ -12,7 +17,7 @@ describe('record', () => {
 		expect.assertions(0)
 
 		Assert.is<CustomRecord<O>, ISchema>()
-		Assert.is<CustomRecord<O>, s.IRecord>()
+		Assert.is<CustomRecord<O>, t.IRecord>()
 	})
 
 	it('type', () => {
@@ -22,14 +27,14 @@ describe('record', () => {
 
 		Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
 
-		Assert.is<typeof obj, s.IRecord>()
+		Assert.is<typeof obj, t.IRecord>()
 
 		const defaulted = s.record(s.string, s.number).default({})
 
 		Assert<
 			IsIdentical<
 				typeof defaulted,
-				s.CustomRecord<{
+				t.CustomRecord<{
 					Output: { [k: string]: number }
 					Input: { [k: string]: number }
 					keySchema: s.String

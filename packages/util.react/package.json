@@ -5,14 +5,6 @@
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
 	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		".": {
-			"types": "./dist/cjs/index.d.ts",
-			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
-		}
-	},
 	"__________EXPORTS FALLBACK": "__________",
 	"types": "dist/cjs/index.d.ts",
 	"module": "dist/esm/index.js",
@@ -24,6 +16,8 @@
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
+		"__________DEV": "__________",
+		"dev": "v dev",
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
@@ -50,19 +44,19 @@
 		"react": "^18.0.0 || ^17.0.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.18.13",
-		"@babel/plugin-proposal-decorators": "^7.18.10",
-		"@babel/plugin-transform-react-jsx": "^7.18.10",
-		"@babel/preset-env": "^7.18.10",
-		"@testing-library/react": "^13.3.0",
-		"@types/react": "^18.0.17",
+		"@babel/core": "^7.19.0",
+		"@babel/plugin-proposal-decorators": "^7.19.0",
+		"@babel/plugin-transform-react-jsx": "^7.19.0",
+		"@babel/preset-env": "^7.19.0",
+		"@testing-library/react": "^13.4.0",
+		"@types/react": "^18.0.18",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-native": "^0.69.5"
+		"react-native": "^0.70.0"
 	},
 	"__________MISC": "__________",
 	"engines": {

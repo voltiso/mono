@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { InputType, OutputType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-import type { InputType, OutputType } from '~'
 import * as s from '~'
 
 describe('union', () => {
@@ -56,7 +56,9 @@ describe('union', () => {
 
 		const a = s.string
 			.or(s.number)
-			.fix((x): string | void => (typeof x === 'number' ? x.toString() : undef))
+			.fix((x): string | void =>
+				typeof x === 'number' ? x.toString() : undefined,
+			)
 
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')

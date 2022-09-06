@@ -39,18 +39,18 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@babel/core": "^7.18.13",
-		"@babel/preset-env": "^7.18.10",
+		"@babel/core": "^7.19.0",
+		"@babel/preset-env": "^7.19.0",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@voltiso/config.jest.lib": "workspace:^",
-		"esbuild": "^0.15.6",
-		"flow-remove-types": "^2.185.2",
-		"jest-environment-jsdom": "^29.0.1",
+		"esbuild": "^0.15.7",
+		"flow-remove-types": "^2.186.0",
+		"jest-environment-jsdom": "^29.0.2",
 		"react": "^18.2.0",
-		"react-native": "^0.69.5"
+		"react-native": "^0.70.0"
 	},
 	"devDependencies": {
-		"@types/react": "^18.0.17",
+		"@types/react": "^18.0.18",
 		"@types/testing-library__jest-dom": "^5.14.5",
 		"@voltiso/config.ts.build.cjs": "workspace:^"
 	}

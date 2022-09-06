@@ -1,11 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
-	CustomSchemaImpl,
 	DefaultSchemaOptions,
 	InferableReadonlyTuple,
 	InputType,
@@ -13,7 +9,11 @@ import type {
 	OutputType,
 	Schema,
 	SchemaOptions,
-} from '~'
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
+import type { CustomSchemaImpl } from '~'
 import { infer } from '~'
 import {
 	array,
@@ -41,6 +41,9 @@ describe('Schema', () => {
 
 	it('works', () => {
 		expect.hasAssertions()
+
+		expect(number.extends(number)).toBeTruthy()
+		expect(number(1).extends(number)).toBeTruthy()
 
 		const a = schema({ a: number(1) })
 

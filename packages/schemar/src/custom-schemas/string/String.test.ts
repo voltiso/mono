@@ -4,9 +4,6 @@
 /* eslint-disable unicorn/no-unsafe-regex */
 /* eslint-disable security/detect-unsafe-regex */
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
 	$CustomString,
 	CustomString,
@@ -16,14 +13,17 @@ import type {
 	Schema,
 	StringOptions,
 	Type,
-} from '~'
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('string', () => {
 	it('generic', <O extends Partial<StringOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<s.IString, ISchema>()
+		Assert.is<IString, ISchema>()
 
 		Assert.is<CustomString<O>, Schema>()
 		Assert.is<$CustomString<O>, IString>()
@@ -32,16 +32,16 @@ describe('string', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<typeof s.string, s.IString>()
+		Assert.is<typeof s.string, IString>()
 
 		const a = s.string.optional
 		Assert<IsIdentical<typeof a, CustomString<{ isOptional: true }>>>()
 
 		const ss = s.string.optional.readonly
-		Assert.is<typeof ss, s.IString>()
+		Assert.is<typeof ss, IString>()
 
 		const ss2 = s.string.readonly.optional
-		Assert.is<typeof ss2, s.IString>()
+		Assert.is<typeof ss2, IString>()
 	})
 
 	it('simple', () => {

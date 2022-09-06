@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as s from '@voltiso/schemar'
+import type * as t from '@voltiso/schemar.types'
 import type { _, $_, Merge2, Throw } from '@voltiso/util'
 
 import type { DocConstructorLike, NestedData } from '~'
@@ -37,12 +38,12 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 	tag<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
 	fields<F extends NewFields>(f: F): ___<TI & F>
 
-	publicOnCreation<S extends Record<string, s.Schemable>>(
+	publicOnCreation<S extends Record<string, t.Schemable>>(
 		s: S,
 	): ___<TI & { publicOnCreation: S }>
 
-	public<S extends Record<string, s.Schemable>>(s: S): ___<TI & { public: S }>
-	private<S extends Record<string, s.Schemable>>(s: S): ___<TI & { private: S }>
+	public<S extends Record<string, t.Schemable>>(s: S): ___<TI & { public: S }>
+	private<S extends Record<string, t.Schemable>>(s: S): ___<TI & { private: S }>
 
 	after(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI> | null>>
@@ -88,7 +89,8 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 	schemableWithoutId: $_<
 		TI['publicOnCreation'] & TI['public'] & TI['private'] & {}
 	>
-	schemaWithoutId: s.Object<this['schemableWithoutId']>
+
+	schemaWithoutId: t.Object<this['schemableWithoutId']>
 
 	schemableWithId: $_<
 		{

@@ -3,9 +3,11 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 import type { AtLeast1, If } from '@voltiso/util'
-import type { ArrayOptions, DefaultArrayOptions } from './ArrayOptions'
+
 import type { CustomSchema } from '~/Schema'
 import type { DefineSchema } from '~/SchemaOptions'
+
+import type { ArrayOptions, DefaultArrayOptions } from './ArrayOptions'
 
 export type $CustomArray<O extends Partial<ArrayOptions>> = O extends any
 	? CustomArray<O>

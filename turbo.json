@@ -7,7 +7,7 @@
 		},
 
 		"build:esm": {
-			"dependsOn": ["^build:esm"],
+			"dependsOn": ["^build:esm", "^build:cjs"],
 			"outputs": ["dist/esm/**"]
 		},
 

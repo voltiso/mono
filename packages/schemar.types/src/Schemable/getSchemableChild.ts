@@ -15,6 +15,10 @@ export type GetShape_<S> = S extends SchemaLike
 		: never
 	: S
 
+export type GetDeepShape_<S> = [S] extends [{ [OPTIONS]: { shape: any } }]
+	? { [k in S[OPTIONS]['shape']]: GetDeepShape_<S[OPTIONS]['shape'][k]> }
+	: S
+
 export type SchemableWithShape =
 	| ObjectLike
 	| ArrayLike

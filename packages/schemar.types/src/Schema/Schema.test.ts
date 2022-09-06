@@ -39,7 +39,7 @@ describe('Schema', () => {
 	})
 
 	it('works', () => {
-		expect.hasAssertions()
+		expect.assertions(0)
 
 		const a = schema({ a: number(1) })
 

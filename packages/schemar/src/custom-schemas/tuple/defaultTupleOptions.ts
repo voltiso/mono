@@ -1,6 +1,9 @@
-import { defaultSchemaOptions } from '~/Schema'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as t from '@voltiso/schemar.types'
+
+import { defaultSchemaOptions } from '~/Schema'
 
 export const defaultTupleOptions = {
 	...defaultSchemaOptions,

@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Rule } from 'eslint'
 import * as path from 'node:path'
+
+import type { Rule } from 'eslint'
 
 import { isTypescript } from './isTypescript'
 

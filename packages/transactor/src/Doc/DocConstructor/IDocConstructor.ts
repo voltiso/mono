@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemaLike } from '@voltiso/schemar'
+import type { SchemaLike } from '@voltiso/schemar.types'
 
 import type { DocContext, DocLike, DocTI, DocTILike, DTI } from '~/Doc'
 

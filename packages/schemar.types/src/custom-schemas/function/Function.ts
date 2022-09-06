@@ -1,8 +1,12 @@
-import type { TupleLike, ArrayLike } from '~/custom-schemas'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { ArrayLike, TupleLike } from '~/custom-schemas'
 import type { $Type } from '~/GetType'
 import type { InferableReadonlyTupleLike } from '~/Inferable'
 import type { SimpleSchema } from '~/Schema'
 import type { SchemableLike } from '~/Schemable'
+
 import type { CustomFunction } from './CustomFunction'
 
 export type Function<F extends (...args: any) => any> = CustomFunction<{

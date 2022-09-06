@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InputType, Type, Type_ } from '@voltiso/schemar'
+import type { InputType, Type, Type_ } from '@voltiso/schemar.types'
 import type { _, $_ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
@@ -12,7 +12,11 @@ import type { PartialIntrinsicFields } from '~/schemas/sIntrinsicFields'
 
 /** @inline */
 export type GetData<
-	TI extends { publicOnCreation?: any; public?: any; private?: any },
+	TI extends {
+		publicOnCreation?: any
+		public?: any
+		private?: any
+	},
 > = $_<
 	Type_<TI['publicOnCreation']> &
 		Type_<TI['public']> &
@@ -83,7 +87,7 @@ export type GetPublicInputData<TI extends { public?: any }> = RelaxRefs<
 
 /** @inline */
 export type GetCreationDataByCtx<
-	TI,
+	TI extends { publicOnCreation?: any; public?: any; private?: any },
 	Ctx extends ExecutionContext,
 	Doc extends IDoc = IDoc,
 > = Ctx extends 'inside'
@@ -93,7 +97,10 @@ export type GetCreationDataByCtx<
 	: never
 
 /** @inline */
-export type GetUpdateDataByCtx<TI, Ctx> = Ctx extends 'inside'
+export type GetUpdateDataByCtx<
+	TI extends { publicOnCreation?: any; public?: any; private?: any },
+	Ctx,
+> = Ctx extends 'inside'
 	? GetInputData<TI>
 	: Ctx extends 'outside'
 	? GetPublicInputData<TI>

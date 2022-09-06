@@ -15,7 +15,7 @@ export const Instance = lazyConstructor(
 //
 
 export function instance<Inst extends object>(
-	Constructor: new (...args: any[]) => Inst,
+	Constructor: new (...args: any) => Inst,
 ) {
 	$assert(Constructor)
 	return new Instance(Constructor)

@@ -70,9 +70,9 @@ describe('simple', () => {
 			observerA = x
 			called.push('a')
 		})
-		
+
 		expect(observerC).toBe(123)
-		
+
 		expect(called).toStrictEqual(['c', 'c2', 'a'])
 
 		called = []

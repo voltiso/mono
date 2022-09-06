@@ -2,8 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import type { InferableObjectLike, ISchema, Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import type {
+	InferableObjectLike,
+	ISchema,
+	Schemable,
+} from '@voltiso/schemar.types'
 import type { OmitCall } from '@voltiso/util'
 import { assertNotPolluting } from '@voltiso/util'
 import { callableClass, staticImplements } from '@voltiso/util'
@@ -195,7 +199,7 @@ export class DocConstructorImpl {
 				// update target
 				$assert(target.data.__voltiso)
 				// eslint-disable-next-line security/detect-object-injection
-				target.data.__voltiso.aggregateTarget[name] = targetInfo
+				target.data.__voltiso.aggregateTarget[name] = targetInfo as never
 			},
 		)
 	}

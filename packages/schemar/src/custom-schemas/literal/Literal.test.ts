@@ -1,16 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
-
 import type {
 	CustomLiteral,
 	ILiteral,
 	InferableLiteral,
 	LiteralOptions,
 	Schemable,
-} from '~'
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('s.literal', () => {
@@ -19,7 +19,7 @@ describe('s.literal', () => {
 
 		Assert.is<CustomLiteral<O>, ILiteral>()
 
-		type A = s.CustomLiteral<O>['OutputType']
+		type A = CustomLiteral<O>['OutputType']
 		Assert.is<A, InferableLiteral>()
 	})
 

@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { GetOptions } from '@voltiso/schemar.types'
 import { Assert } from '@voltiso/util'
 
-import type { GetOptions } from '~'
 import { number } from '~'
 
 describe('GetOptions', () => {

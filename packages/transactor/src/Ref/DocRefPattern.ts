@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { $assert } from '@voltiso/assertor'
-import type { InferableObject, SchemaLike } from '@voltiso/schemar'
+import type { InferableObject, SchemaLike } from '@voltiso/schemar.types'
 import { undef } from '@voltiso/util'
 
 import { getGetPathMatches } from '~/common/PathMatches'

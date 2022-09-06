@@ -41,7 +41,8 @@
 	},
 	"__________DEPS": "__________",
 	"peerDependencies": {
-		"@voltiso/schemar": "workspace:^"
+		"@voltiso/schemar": "workspace:^",
+		"@voltiso/schemar.types": "workspace:^"
 	},
 	"devDependencies": {
 		"@voltiso/config.jest.esr": "workspace:^",
@@ -49,6 +50,7 @@
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
+		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/util": "workspace:^",
 		"rimraf": "^3.0.2"
 	}

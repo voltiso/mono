@@ -1,9 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
 	$CustomFunction,
 	$Type_,
@@ -16,7 +13,11 @@ import type {
 	Schema,
 	Schemable,
 	Type_,
-} from '~'
+} from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('function', () => {
@@ -32,10 +33,10 @@ describe('function', () => {
 
 		type B = typeof s.function
 		type BB = B['OutputType']
-		Assert<IsIdentical<BB, (...args: any) => unknown>>()
+		Assert<IsIdentical<BB, (...args: unknown[]) => unknown>>()
 
 		type C = OutputType<typeof s.function>
-		Assert<IsIdentical<C, (...args: any) => unknown>>()
+		Assert<IsIdentical<C, (...args: unknown[]) => unknown>>()
 
 		Assert.is<s.Function<(x: number) => string>, IFunction>()
 		Assert.is<s.Function<(x: number) => string>, ISchema>()
@@ -61,13 +62,13 @@ describe('function', () => {
 		expect.assertions(0)
 
 		Assert.is<
-			Type_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>,
+			Type_<(t.ITuple | t.IArray) & ISchema, { kind: 'out' }>,
 			readonly unknown[]
 		>()
 
 		Assert.is<
 			never[],
-			Type_<(s.ITuple | s.IArray) & ISchema, { kind: 'out' }>
+			Type_<(t.ITuple | t.IArray) & ISchema, { kind: 'out' }>
 		>()
 
 		const a = s.function(s.readonlyArray(s.number(123)), s.string)
@@ -84,10 +85,10 @@ describe('function', () => {
 		;() => s.function(s.tuple(s.number), s.number)
 
 		type T = OutputType<typeof s.function>
-		Assert<IsIdentical<T, (...args: any[]) => unknown>>()
+		Assert<IsIdentical<T, (...args: unknown[]) => unknown>>()
 
 		type IT = InputType<typeof s.function>
-		Assert<IsIdentical<IT, (...args: any[]) => unknown>>()
+		Assert<IsIdentical<IT, (...args: unknown[]) => unknown>>()
 
 		expect(s.function.extends(s.function)).toBeTruthy()
 		expect(s.function.extends(s.unknown)).toBeTruthy()

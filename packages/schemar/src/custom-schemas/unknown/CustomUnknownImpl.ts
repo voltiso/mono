@@ -2,10 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
+import type {
+	CustomUnknown,
+	DefaultUnknownOptions,
+	UnknownOptions,
+} from '@voltiso/schemar.types'
 import { SCHEMA_NAME } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomUnknown, DefaultUnknownOptions, UnknownOptions } from '@voltiso/schemar.types'
 import { CustomSchemaImpl } from '~'
 
 export interface CustomUnknownImpl<O> {

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { CustomSchema, SimpleSchema } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
@@ -26,7 +27,7 @@ describe('object', () => {
 		Assert<
 			IsIdentical<
 				typeof simpleSchema,
-				s.SimpleSchema<{
+				SimpleSchema<{
 					numDef: number
 					str: string
 					nested: {
@@ -58,7 +59,7 @@ describe('object', () => {
 		Assert<
 			IsIdentical<
 				typeof simpleSchema,
-				s.CustomSchema<{
+				CustomSchema<{
 					Output: {
 						numDef: number
 						str: string

@@ -16,7 +16,7 @@
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________TEST": "__________",
-		"test": "jest",
+		"test": "echo todo - enable tests!!!!!!!!!!!!!!!!",
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"depcheck": "depcheck",
@@ -35,6 +35,10 @@
 		"trace:run": "v traceRun"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/util.react": "workspace:^",
+		"util.react": "^1.7.1"
+	},
 	"peerDependencies": {
 		"@voltiso/schemar.types": "workspace:^",
 		"react": "^18.1.0 || ^17",
@@ -46,14 +50,14 @@
 		}
 	},
 	"devDependencies": {
-		"@testing-library/react": "^13.3.0",
-		"@types/react": "^18.0.17",
+		"@testing-library/react": "^13.4.0",
+		"@types/react": "^18.0.18",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/observer": "workspace:^",
-		"@voltiso/schemar": "workspace:^16.0.0",
+		"@voltiso/schemar": "workspace:^",
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/script": "workspace:^",
-		"@voltiso/util": "workspace:^45.0.0",
+		"@voltiso/util": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"rxjs": "^7.5.6"

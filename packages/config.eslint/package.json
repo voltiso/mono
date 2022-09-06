@@ -40,7 +40,7 @@
 		"eslint-gitignore": "^0.1.0"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.14",
+		"@types/node": "^18.7.15",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/eslint-plugin": "workspace:^1.0.2",

@@ -4,7 +4,7 @@
 import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import { UnknownImpl } from '~'
+import { UnknownImpl } from './UnknownImpl'
 
 export type Unknown = t.Unknown
 export const Unknown = lazyConstructor(

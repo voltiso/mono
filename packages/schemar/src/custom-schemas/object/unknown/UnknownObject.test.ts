@@ -1,14 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
-
 import type {
 	CustomUnknownObject,
 	IUnknownObject,
-	object,
+	UnknownObject,
 	UnknownObjectOptions,
-} from '~'
+} from '@voltiso/schemar.types'
+import { Assert } from '@voltiso/util'
 
 describe('object', () => {
 	it('generic', <O extends Partial<UnknownObjectOptions>>() => {
@@ -20,6 +19,6 @@ describe('object', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<typeof object, IUnknownObject>()
+		Assert.is<UnknownObject, IUnknownObject>()
 	})
 })

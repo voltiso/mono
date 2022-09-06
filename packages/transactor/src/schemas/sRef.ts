@@ -2,32 +2,33 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type * as t from '@voltiso/schemar.types'
 import { callableObject, lazyValue, undef } from '@voltiso/util'
 
-import type { IDoc, IndexedDoc } from '~/Doc'
+import type { DocLike, IDoc, IndexedDoc } from '~/Doc'
 import type { DocTag, DocTypes } from '~/DocTypes'
 import type { DocRefBaseImpl } from '~/Ref'
 import { StrongDocRef, WeakDocRef } from '~/Ref'
 import type { StrongRef, WeakRef } from '~/Ref/RefBase'
 
-type FindDoc<X> = X extends IDoc
+type FindDoc<X> = X extends DocLike
 	? X
 	: X extends keyof DocTypes
 	? DocTypes[X]
 	: never
 
-const _strongRefSchema: s.Instance<StrongDocRef<IDoc>> = lazyValue(() =>
+const _strongRefSchema: t.Instance<StrongDocRef<IDoc>> = lazyValue(() =>
 	s.instance(StrongDocRef),
 )
 
 const _strongRefCall = <
 	// eslint-disable-next-line etc/no-misused-generics
 	X,
->(): s.Schema<StrongRef<FindDoc<X>>> => _strongRefSchema as never
+>(): t.Schema<StrongRef<FindDoc<X>>> => _strongRefSchema as never
 
-export interface StrongRefSchema extends s.Schema<StrongRef<IndexedDoc>> {
+export interface StrongRefSchema extends t.Schema<StrongRef<IndexedDoc>> {
 	// eslint-disable-next-line etc/no-misused-generics
-	<X extends IDoc | DocTag>(): s.Schema<StrongRef<FindDoc<X>>>
+	<X extends IDoc | DocTag>(): t.Schema<StrongRef<FindDoc<X>>>
 }
 
 export const sStrongRef: StrongRefSchema = lazyValue(
@@ -50,9 +51,9 @@ const _fixableWeakRefSchema = lazyValue(() =>
 	}),
 )
 
-export interface WeakRefSchema extends s.ISchema<WeakRef<IndexedDoc>> {
+export interface WeakRefSchema extends t.ISchema<WeakRef<IndexedDoc>> {
 	// eslint-disable-next-line etc/no-misused-generics
-	<X extends IDoc | DocTag>(): s.Schema<WeakRef<FindDoc<X>>>
+	<X extends IDoc | DocTag>(): t.Schema<WeakRef<FindDoc<X>>>
 }
 export const sWeakRef = lazyValue(
 	() =>
@@ -61,6 +62,6 @@ export const sWeakRef = lazyValue(
 			<
 				// eslint-disable-next-line etc/no-misused-generics
 				X extends IDoc | DocTag,
-			>(): s.Schema<WeakRef<FindDoc<X>>> => _fixableWeakRefSchema as never,
+			>(): t.Schema<WeakRef<FindDoc<X>>> => _fixableWeakRefSchema as never,
 		) as unknown as WeakRefSchema,
 )

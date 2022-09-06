@@ -1,10 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	CustomInstance,
+	IInstance,
+	InstanceOptions,
+} from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, lazyConstructor, stringFrom } from '@voltiso/util'
 
-import type { CustomInstance, IInstance, InstanceOptions } from '~'
 import * as s from '~'
 
 describe('instance', () => {

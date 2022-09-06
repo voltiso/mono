@@ -3,7 +3,7 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import { literal } from '~'
+import { literal } from '../literal/unknown'
 
 const null_ = lazyValue(() => literal(null))
 

@@ -29,7 +29,8 @@ function get(
  * Gets "resolvePaths" setting.
  *
  * 1. This checks `options` property, then returns it if exists.
- * 2. This checks `settings.n` | `settings.node` property, then returns it if exists.
+ * 2. This checks `settings.n` | `settings.node` property, then returns it if
+ *    exists.
  * 3. This returns `[]`.
  *
  * @param context - The rule context.

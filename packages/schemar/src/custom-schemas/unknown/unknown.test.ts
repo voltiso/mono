@@ -1,9 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type {
+	CustomUnknown,
+	ISchema,
+	IUnknown,
+	Schema,
+	Schemable,
+	UnknownOptions,
+} from '@voltiso/schemar.types'
+import * as t from '@voltiso/schemar.types'
 import { Assert, undef } from '@voltiso/util'
 
-import type { ISchema } from '@voltiso/schemar.types'
 import { isSchema } from '~'
 import * as s from '~'
 
@@ -11,11 +19,11 @@ describe('unknown', () => {
 	it('isUnknown', () => {
 		expect.hasAssertions()
 
-		Assert.is<s.IUnknown, s.Schemable>()
-		Assert.is<s.IUnknown, s.Schema>()
-		Assert.is<typeof s.unknown, s.IUnknown>()
+		Assert.is<IUnknown, Schemable>()
+		Assert.is<IUnknown, Schema>()
+		Assert.is<typeof s.unknown, IUnknown>()
 
-		expect(s.isUnknown(s.unknown)).toBeTruthy()
+		expect(t.isUnknown(s.unknown)).toBeTruthy()
 
 		expect(isSchema(s.number)).toBeTruthy()
 		expect(isSchema(s.unknown)).toBeTruthy()
@@ -24,16 +32,16 @@ describe('unknown', () => {
 		expect(isSchema(s.undefined)).toBeTruthy()
 	})
 
-	it('generic', <O extends Partial<s.UnknownOptions>>() => {
+	it('generic', <O extends Partial<UnknownOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<s.CustomUnknown<O>, s.IUnknown>()
-		Assert.is<s.CustomUnknown<O>, s.ISchema>()
-		Assert.is<s.CustomUnknown<O>, s.Schemable>()
+		Assert.is<CustomUnknown<O>, IUnknown>()
+		Assert.is<CustomUnknown<O>, ISchema>()
+		Assert.is<CustomUnknown<O>, Schemable>()
 
-		Assert.is<s.Unknown, s.IUnknown>()
-		Assert.is<s.Unknown, s.ISchema>()
-		Assert.is<s.Unknown, s.Schemable>()
+		Assert.is<s.Unknown, IUnknown>()
+		Assert.is<s.Unknown, ISchema>()
+		Assert.is<s.Unknown, Schemable>()
 	})
 
 	it('works', () => {

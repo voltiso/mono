@@ -4,10 +4,11 @@
 // eslint-disable-next-line tsdoc/syntax
 /** @author Toru Nagashima See LICENSE file in root directory for full license. */
 
+import path from 'node:path'
+
 import type { Rule } from 'eslint'
 import type { Node } from 'estree'
 import isCoreModule from 'is-core-module'
-import path from 'node:path'
 
 import {
 	getResolvePaths,

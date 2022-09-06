@@ -2,10 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
-import * as t from '@voltiso/schemar.types'
-
 import type {
 	CustomUnknownTuple,
 	DefaultUnknownTupleOptions,
@@ -13,6 +9,10 @@ import type {
 	SchemaLike,
 	UnknownTupleOptions,
 } from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import * as t from '@voltiso/schemar.types'
+import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+
 import {
 	CustomSchemaImpl,
 	MutableTuple,
@@ -67,9 +67,9 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	}
 
 	override [EXTENDS](other: SchemaLike): boolean {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (
 			t.isUnknownTuple(other) &&
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)

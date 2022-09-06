@@ -99,9 +99,7 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 		assumeType<TransactorConstructorParametersNoUndefined, typeof args>(args)
 
 		switch (args.length) {
-			// @ts-expect-error works in `typescript@4.8.0-dev`
 			case 1:
-				// @ts-expect-error works in `typescript@4.8.0-dev`
 				;[partialOptions] = args
 				break
 
@@ -109,9 +107,7 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 				;[database, myModule] = args
 				break
 
-			// @ts-expect-error works in `typescript@4.8.0-dev`
 			case 3:
-				// @ts-expect-error works in `typescript@4.8.0-dev`
 				;[database, myModule, partialOptions] = args
 				break
 

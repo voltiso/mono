@@ -2,19 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	BASE_OPTIONS,
 	CustomNumber,
+	DEFAULT_OPTIONS,
 	DefaultNumberOptions,
 	ISchema,
 	NumberOptions,
 } from '@voltiso/schemar.types'
-import {
-	type BASE_OPTIONS,
-	type DEFAULT_OPTIONS,
-	EXTENDS,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import { isDefined, isNumber, lazyConstructor } from '@voltiso/util'
+import * as t from '@voltiso/schemar.types'
+import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { isDefined, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl, ValidationIssue } from '~'
 
@@ -46,7 +43,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isNumber(other)) return true
+		if (t.isNumber(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}

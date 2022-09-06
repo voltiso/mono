@@ -1,13 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IndexedDoc, StrongRef } from '@voltiso/transactor'
+import { Doc, sStrongRef } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
-
-import type { IndexedDoc, StrongRef } from '~'
-import { Doc } from '~'
-
-import { sStrongRef } from '.'
 
 class RefTestDoc extends Doc('refTestDoc')({
 	public: {
@@ -17,7 +14,7 @@ class RefTestDoc extends Doc('refTestDoc')({
 	},
 }) {}
 
-declare module '~' {
+declare module '@voltiso/transactor' {
 	interface DocTypes {
 		refTestDoc: RefTestDoc
 	}

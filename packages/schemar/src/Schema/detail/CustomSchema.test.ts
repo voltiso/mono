@@ -1,19 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
+	CustomSchema,
 	Schema,
 	Schemable,
 	SchemableLike,
 	SchemaOptions,
 	SimpleSchema,
-} from '~'
-import { schema, unknown } from '~'
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
-import type { CustomSchema } from '.'
+import { schema, unknown } from '~'
 
 describe('CustomSchema', () => {
 	it('generic', <O extends Partial<SchemaOptions>>() => {

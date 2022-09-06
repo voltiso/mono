@@ -1,7 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, InferableObjectLike, SchemableLike, SchemaOptions } from '~'
+import type {
+	DefaultSchemaOptions,
+	InferableObjectLike,
+	SchemableLike,
+	SchemaOptions,
+} from '~'
 
 export type ObjectIndexSignatureEntry = {
 	keySchema: SchemableLike
@@ -17,7 +22,7 @@ export interface ObjectOptions extends SchemaOptions {
 	indexSignatures: ObjectIndexSignatureEntry[]
 }
 
-export interface  DefaultObjectOptions extends DefaultSchemaOptions {
+export interface DefaultObjectOptions extends DefaultSchemaOptions {
 	Output: object
 	Input: object
 

@@ -5,9 +5,10 @@
 
 /** @author Toru Nagashima See LICENSE file in root directory for full license. */
 
-import type { Node } from 'estree'
 import * as path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+
+import type { Node } from 'estree'
 import * as resolve from 'resolve'
 
 import { defaultResolve as importResolve } from '~/converted-esm/import-meta-resolve'
@@ -22,7 +23,8 @@ export type GetFilePathOptions = {
  *
  * @param isModule - The flag which indicates this id is a module.
  * @param id - The id to resolve.
- * @param options - The options of node-resolve module. It requires `options.basedir`.
+ * @param options - The options of node-resolve module. It requires
+ *   `options.basedir`.
  * @param moduleType - Whether the target was require-ed or imported
  * @returns The resolved path.
  */

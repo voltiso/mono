@@ -1,4 +1,8 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { Literal } from '~/custom-schemas'
+
 import type { CustomString } from './CustomString'
 
 export interface String extends CustomString<{}> {

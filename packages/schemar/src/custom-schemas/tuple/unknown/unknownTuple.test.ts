@@ -1,16 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
 	CustomUnknownTuple,
 	IUnknownTuple,
-	readonlyTuple,
-	tuple,
+	MutableUnknownTuple,
 	UnknownTupleOptions,
-} from '~'
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
+import type { ReadonlyUnknownTuple } from '.'
 
 describe('array', () => {
 	it('generic', <O extends UnknownTupleOptions>() => {
@@ -22,10 +22,10 @@ describe('array', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type A = typeof tuple.OutputType
+		type A = MutableUnknownTuple['OutputType']
 		Assert<IsIdentical<A, unknown[]>>()
 
-		type B = typeof readonlyTuple.OutputType
+		type B = ReadonlyUnknownTuple['OutputType']
 		Assert<IsIdentical<B, readonly unknown[]>>()
 	})
 })

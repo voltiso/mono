@@ -11,7 +11,7 @@ export interface LiteralOptions extends SchemaOptions {
 }
 
 export interface DefaultLiteralOptions extends DefaultSchemaOptions {
-	Output: InferableLiteral,
+	Output: InferableLiteral
 	Input: InferableLiteral
 
 	values: Set<never>

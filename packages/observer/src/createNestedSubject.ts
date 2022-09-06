@@ -3,7 +3,7 @@
 
 import type * as s from '@voltiso/schemar.types'
 
-import type { NestedSubject } from './NestedSubject'
+import type { NestedSubject, NestedSubjectWithSchema } from './NestedSubject'
 import { NestedSubjectImpl } from './NestedSubject'
 
 export type ObserverDiContext = {
@@ -14,5 +14,5 @@ export const injectCreateNestedSubject =
 	(diContext: ObserverDiContext) =>
 	<S extends s.Schemable>(
 		options: Omit<NestedSubject.RootOptions<S>, 'diContext'>,
-	): NestedSubject<S> =>
+	): NestedSubjectWithSchema<S> =>
 		new NestedSubjectImpl({ ...options, diContext }) as never

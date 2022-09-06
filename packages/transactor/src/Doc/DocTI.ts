@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemableLike, SchemaLike } from '@voltiso/schemar'
+import type { SchemableLike, SchemaLike } from '@voltiso/schemar.types'
 
 /** Doc Type Info Tag */
 // export const DTI = Symbol('DTI')
@@ -40,9 +40,9 @@ export interface DocTI extends DocTILike {
 
 	tag: string
 
-	publicOnCreation: object
-	public: object
-	private: object
+	publicOnCreation: {}
+	public: {}
+	private: {}
 
 	methods: object
 

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { assertZod } from '~/assertZod'
-import type { InferableObject } from '@voltiso/schemar'
+import type { InferableObject } from '@voltiso/schemar.types'
 
 import { getGetPathMatches } from '~/common/PathMatches'
 import type { Method } from '~/Method'

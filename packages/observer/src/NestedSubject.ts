@@ -15,6 +15,7 @@ import type {
 } from '@voltiso/schemar.types'
 import { getSchemableChild } from '@voltiso/schemar.types'
 import { assertNotPolluting } from '@voltiso/util'
+import type { Observable } from 'rxjs'
 import { BehaviorSubject } from 'rxjs'
 
 import type { ObserverDiContext } from './createNestedSubject'
@@ -38,7 +39,17 @@ export function isNestedSubjectChildOptions(
 	return Boolean((x as NestedSubject.ChildOptions | null)?.parent)
 }
 
-export type NestedSubject<S extends SchemableLike> = {
+export type NestedObservable<T> = Observable<T> & {
+	[k in keyof T]: NestedObservable<T[k]>
+}
+
+export type NestedObservableWithSchema<S extends SchemableLike> = {
+	get schemable(): S
+} & Observable<Type_<S>> & {
+		[k in keyof GetShape_<S>]: NestedObservableWithSchema<GetShape_<S>[k]>
+	}
+
+export type NestedSubjectWithSchema<S extends SchemableLike> = {
 	get schemable(): S
 
 	set(x: InputType_<S>): void
@@ -50,7 +61,7 @@ export type NestedSubject<S extends SchemableLike> = {
 	update(x: PatchFor<InputType_<S>>): void
 	updateUnchecked(x: PatchFor<OutputType_<S>>): void
 } & BehaviorSubject<Type_<S>> & {
-		[k in keyof GetShape_<S>]: NestedSubject<GetShape_<S>[k]>
+		[k in keyof GetShape_<S>]: NestedSubjectWithSchema<GetShape_<S>[k]>
 	}
 
 export class NestedSubjectImpl<S extends SchemableLike> {

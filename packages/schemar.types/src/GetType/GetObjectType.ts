@@ -8,6 +8,7 @@ import type { SchemaOptions } from '~'
 import type { GetTypeOptions, Type_ } from '.'
 import type { GetOptions } from './GetOptions'
 
+/** @inline */
 export type _ObjectTypeNoSignature<
 	T,
 	O extends Record<keyof T, SchemaOptions>,
@@ -29,6 +30,7 @@ export type _ObjectTypeNoSignature<
 	IO
 >
 
+/** @inline */
 export type ObjectType_<
 	T extends object,
 	IO extends GetTypeOptions = { kind: 'out' },
@@ -48,6 +50,7 @@ export type ObjectType_<
 	  >
 	: never
 
+/** @inline */
 export type _ObjectTypeIsOptional<
 	O extends SchemaOptions,
 	IO extends GetTypeOptions,
@@ -66,6 +69,7 @@ export type _ObjectTypeIsOptional<
 	? F
 	: never
 
+/** @inline */
 export type _ObjectTypeFinalize<
 	T,
 	IO extends GetTypeOptions,

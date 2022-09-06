@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject, ISchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import type { InferableObject, ISchema } from '@voltiso/schemar.types'
 
 import { sIntrinsicFields } from '~'
 import type { DocRefBaseImpl } from '~/Ref'

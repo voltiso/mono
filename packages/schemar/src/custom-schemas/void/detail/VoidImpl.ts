@@ -3,7 +3,8 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import { CustomVoidImpl, defaultVoidOptions } from '~'
+import { defaultVoidOptions } from '../defaultVoidOptions'
+import { CustomVoidImpl } from './CustomVoidImpl'
 
 export class VoidImpl extends lazyConstructor(() => CustomVoidImpl)<{}> {
 	constructor() {

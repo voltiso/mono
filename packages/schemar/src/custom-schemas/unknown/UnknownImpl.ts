@@ -4,8 +4,7 @@
 import type { DefaultUnknownOptions } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import { CustomUnknownImpl } from '~'
-
+import { CustomUnknownImpl } from './CustomUnknownImpl'
 import { defaultUnknownOptions } from './defaultUnknownOptions'
 
 export class UnknownImpl extends lazyConstructor(

@@ -117,7 +117,6 @@ export async function processTriggers(
 	// const beforeAllTriggers = immutabilize(clone(withId(cacheEntry.data, id)))
 
 	// apply updates
-	// eslint-disable-next-line no-lone-blocks
 	{
 		const data = apply(c, cacheEntry.data, p?.updates)
 		$assert(!isReplaceIt(data))

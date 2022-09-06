@@ -19,6 +19,6 @@
 		"fix:prettier": "v fixPrettier",
 		"lint:eslint": "v lintEslint",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly"
+		"prepublishOnly": "v prepublishOnlyFast"
 	}
 }

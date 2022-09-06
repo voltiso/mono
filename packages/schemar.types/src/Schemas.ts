@@ -17,7 +17,6 @@ import type {
 	CustomRecord,
 	CustomSchema,
 	CustomString,
-	CustomUnknownSymbol,
 	CustomTuple,
 	CustomTypeOnly,
 	CustomUnion,
@@ -27,6 +26,7 @@ import type {
 	CustomUnknownObject,
 	CustomUnknownRecord,
 	CustomUnknownSchema,
+	CustomUnknownSymbol,
 	CustomVoid,
 	SchemaOptions,
 } from '~'

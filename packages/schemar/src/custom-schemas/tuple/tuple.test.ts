@@ -1,9 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
-
 import type {
 	$CustomTuple,
 	IMutableTuple,
@@ -11,7 +8,10 @@ import type {
 	ITuple,
 	OutputType,
 	TupleOptions,
-} from '~'
+} from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('array', () => {

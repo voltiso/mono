@@ -73,16 +73,20 @@ export class CustomTupleImpl<
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 
+		// eslint-disable-next-line etc/no-internal
 		if (isTuple(other)) return _tupleExtends(this, other)
 		else if (isUnknownTuple(other)) return true
+		// eslint-disable-next-line etc/no-internal
 		else if (isArray(other)) return _tupleExtendsArray(this, other)
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)

@@ -1,3 +1,6 @@
-export * from './Never'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export * from './defaultNeverOptions'
 export * from './detail'
+export * from './Never'

@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Merge2_ } from '@voltiso/util'
+
 import type {
 	DefaultSchemaOptions,
 	SchemaLike,

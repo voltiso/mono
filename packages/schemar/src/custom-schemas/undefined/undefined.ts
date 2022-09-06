@@ -3,7 +3,7 @@
 
 import { lazyValue, undef } from '@voltiso/util'
 
-import { literal } from '~'
+import { literal } from '../literal'
 
 const undefined_ = lazyValue(() => literal(undef))
 

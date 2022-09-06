@@ -1,6 +1,10 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { InferableObject } from '~/Inferable'
 import type { InferSchema_ } from '~/InferSchema'
 import type { ISchema } from '~/Schema'
+
 import type { IObject } from './IObject'
 
 //

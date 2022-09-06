@@ -18,7 +18,7 @@
 		"__________DEV": "__________",
 		"dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
 		"__________TEST": "__________",
-		"test": "jest --silent",
+		"test": "jest",
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"lint:fast": "run-p lint:depcheck lint:prettier",
@@ -59,6 +59,6 @@
 	},
 	"__________MISC": "__________",
 	"typeCoverage": {
-		"is": 99.62
+		"is": 99.63
 	}
 }

@@ -1,9 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
-
 import type {
 	$CustomObject,
 	CustomObject,
@@ -11,7 +8,11 @@ import type {
 	ObjectOptions,
 	OutputType,
 	Schema,
-} from '~'
+} from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar.types'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, undef } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('object', () => {
@@ -19,7 +20,7 @@ describe('object', () => {
 		expect.assertions(0)
 
 		Assert.is<CustomObject<O>, Schema>()
-		Assert.is<$CustomObject<O>, s.IObject>()
+		Assert.is<$CustomObject<O>, t.IObject>()
 	})
 
 	it('type', () => {
@@ -29,7 +30,7 @@ describe('object', () => {
 			a: s.number,
 		})
 
-		Assert.is<typeof obj, s.IObject>()
+		Assert.is<typeof obj, t.IObject>()
 	})
 
 	it('extends', () => {

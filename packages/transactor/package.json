@@ -42,12 +42,13 @@
 	"dependencies": {
 		"@voltiso/firestore-like": "workspace:^",
 		"@voltiso/util": "workspace:^",
-		"chalk": "^4.1.2",
+		"chalk": "^4",
 		"fast-equals": "^4.0.3",
 		"js-yaml": "^4.1.0"
 	},
 	"peerDependencies": {
-		"@voltiso/schemar": "workspace:^"
+		"@voltiso/schemar": "workspace:^",
+		"@voltiso/schemar.types": "workspace:^"
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
@@ -57,6 +58,7 @@
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/config.tsdoc": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
+		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"zone.js": "^0.11.8"
 	},

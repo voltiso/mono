@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/array-type */
-
 import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
@@ -11,6 +9,7 @@ import { MutableArrayImpl, ReadonlyArrayImpl, unknown } from '~'
 //
 
 export type ReadonlyArray<S extends t.SchemableLike> = t.ReadonlyArray<S>
+export type MutableArray<S extends t.SchemableLike> = t.MutableArray<S>
 
 export const ReadonlyArray = lazyConstructor(
 	() => ReadonlyArrayImpl,
@@ -22,17 +21,17 @@ export const MutableArray = lazyConstructor(
 
 //
 
-type ReadonlyArrayConstructor = new <T extends t.SchemableLike>(
+export type ReadonlyArrayConstructor = new <T extends t.SchemableLike>(
 	elementType: T,
-) => ReadonlyArray<T>
+) => t.ReadonlyArray<T>
 
-type MutableArrayConstructor = new <T extends t.SchemableLike>(
+export type MutableArrayConstructor = new <T extends t.SchemableLike>(
 	elementType: T,
 ) => t.MutableArray<T>
 
 //
 
-export const readonlyArray: ReadonlyArray<t.Unknown> = lazyValue(
+export const readonlyArray: t.ReadonlyArray<t.Unknown> = lazyValue(
 	() => new ReadonlyArray(unknown) as never,
 )
 export const mutableArray: t.MutableArray<t.Unknown> = lazyValue(

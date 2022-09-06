@@ -18,7 +18,7 @@
 		"__________DEV": "__________",
 		"dev": "v dev",
 		"__________TEST": "__________",
-		"test": "jest",
+		"test": "echo no tests yet!",
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"depcheck": "depcheck",

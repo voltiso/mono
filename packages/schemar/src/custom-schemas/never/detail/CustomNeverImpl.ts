@@ -6,11 +6,8 @@ import type {
 	NeverOptions,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-} from '@voltiso/schemar.types/src/_'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types/src/_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~'

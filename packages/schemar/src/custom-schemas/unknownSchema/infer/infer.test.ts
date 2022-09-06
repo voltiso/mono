@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { InferSchema } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
@@ -12,21 +13,21 @@ describe('getSchema', () => {
 	it('works - static', () => {
 		expect.assertions(0)
 
-		Assert<IsIdentical<s.InferSchema<true>, s.Literal<true>>>()
-		Assert<IsIdentical<s.InferSchema<false>, s.Literal<false>>>()
+		Assert<IsIdentical<InferSchema<true>, s.Literal<true>>>()
+		Assert<IsIdentical<InferSchema<false>, s.Literal<false>>>()
 		// Assert<IsIdentical<GetSchema<boolean>, never>>()
 
-		Assert<IsIdentical<s.InferSchema<123>, s.Literal<123>>>()
+		Assert<IsIdentical<InferSchema<123>, s.Literal<123>>>()
 		// Assert<IsIdentical<GetSchema<number>, never>>()
 
-		Assert<IsIdentical<s.InferSchema<'abc'>, s.Literal<'abc'>>>()
+		Assert<IsIdentical<InferSchema<'abc'>, s.Literal<'abc'>>>()
 		// Assert<IsIdentical<GetSchema<string>, never>>()
 
-		Assert<IsIdentical<s.InferSchema<12n>, s.Literal<12n>>>()
+		Assert<IsIdentical<InferSchema<12n>, s.Literal<12n>>>()
 		// Assert<IsIdentical<GetSchema<bigint>, never>>()
 
 		const sym = Symbol('sym')
-		Assert<IsIdentical<s.InferSchema<typeof sym>, s.Literal<typeof sym>>>()
+		Assert<IsIdentical<InferSchema<typeof sym>, s.Literal<typeof sym>>>()
 		// Assert<IsIdentical<GetSchema<symbol>, never>>()
 	})
 

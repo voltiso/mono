@@ -74,7 +74,8 @@ export const isPatternString = (str: string): str is PatternString =>
 	(str.includes('*') || str.includes('{') || str.includes('}'))
 
 /**
- * Check if `str` is valid and return `PathString` (identity function; type-only)
+ * Check if `str` is valid and return `PathString` (identity function;
+ * type-only)
  *
  * @param str - Path string to be checked
  * @returns `str` as `PathToken`
@@ -95,7 +96,10 @@ export function createPatternString<S extends string>(
 	return str
 }
 
-/** Encapsulates FireStore paths. Keeps both `PathString` and `PathToken[]` computed. */
+/**
+ * Encapsulates FireStore paths. Keeps both `PathString` and `PathToken[]`
+ * computed.
+ */
 class Path<S extends string = string> {
 	pathString: PathString<S>
 	pathTokens: readonly PathToken[]

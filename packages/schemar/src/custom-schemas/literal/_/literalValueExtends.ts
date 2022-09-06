@@ -5,7 +5,7 @@ import type { InferableLiteral, ISchema } from '@voltiso/schemar.types'
 import { isVoid } from '@voltiso/schemar.types'
 import { EXTENDS } from '@voltiso/schemar.types'
 
-import { getBaseSchema } from '~'
+import { getBaseSchema } from './getBaseSchema'
 
 export function literalValueExtends(a: InferableLiteral, b: ISchema): boolean {
 	if (typeof a === 'undefined' && isVoid(b)) return true

@@ -27,7 +27,7 @@
 		"fix:eslint": "v fixEslint",
 		"__________BUILD": "__________",
 		"build": "v build",
-		"build:esm": "v buildEsm",
+		"build:esm": "tsc -b tsconfig.build.esm.json",
 		"build:cjs": "tsc -b tsconfig.build.cjs.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnly",
@@ -37,7 +37,7 @@
 	"__________DEPS": "__________",
 	"dependencies": {
 		"@voltiso/transform.lib": "workspace:^",
-		"chalk": "4"
+		"chalk": "^4"
 	},
 	"peerDependencies": {
 		"typescript": "4.7.4 || *"

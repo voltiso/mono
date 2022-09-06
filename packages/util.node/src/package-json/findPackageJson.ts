@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SyncerPromise, SyncerSwitch } from '@voltiso/util'
-import { runAsync, runSync } from '@voltiso/util'
 import fs from 'node:fs'
 import path from 'node:path'
+
+import type { SyncerPromise, SyncerSwitch } from '@voltiso/util'
+import { runAsync, runSync } from '@voltiso/util'
 
 interface EnoentError {
 	code: 'ENOENT'

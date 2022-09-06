@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type * as t from '@voltiso/schemar.types'
 
 type PossiblyPromise<X> = X | Promise<X>
 
@@ -11,9 +12,9 @@ function isPromise<X>(x: X | Promise<X>): x is Promise<X> {
 }
 
 type G<
-	Self extends s.SchemableLike | null = s.SchemableLike | null,
-	Params extends readonly s.SchemableLike[] = readonly s.SchemableLike[],
-	Result extends s.SchemableLike | null = s.SchemableLike | null,
+	Self extends t.SchemableLike | null = t.SchemableLike | null,
+	Params extends readonly t.SchemableLike[] = readonly t.SchemableLike[],
+	Result extends t.SchemableLike | null = t.SchemableLike | null,
 > = {
 	self: Self
 	params: Params
@@ -31,7 +32,7 @@ class _Checked<T extends G> {
 		this._result = result
 	}
 
-	this<S extends s.SchemableLike>(
+	this<S extends t.SchemableLike>(
 		schema: S,
 	): Checked<G<S, T['params'], T['result']>> {
 		if (this._self) throw new Error('already have `this` schema')
@@ -40,7 +41,7 @@ class _Checked<T extends G> {
 		return new _Checked(schema, this._params, this._result) as any
 	}
 
-	param<S extends s.SchemableLike>(
+	param<S extends t.SchemableLike>(
 		schema: S,
 	): Checked<G<T['self'], [...T['params'], S], T['result']>> {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -49,7 +50,7 @@ class _Checked<T extends G> {
 		>(this._self, [...this._params, schema], this._result) as any
 	}
 
-	result<S extends s.SchemableLike>(
+	result<S extends t.SchemableLike>(
 		schema: S,
 	): Checked<G<T['self'], T['params'], S>> {
 		if (this._result) throw new Error('already have `result` schema')
@@ -60,26 +61,26 @@ class _Checked<T extends G> {
 
 	function(
 		f: (
-			this: s.Type<T['self']>,
-			...args: s.TupleType_<T['params']>
-		) => PossiblyPromise<s.InputType<T['result']>>,
+			this: t.Type<T['self']>,
+			...args: t.TupleType_<T['params']>
+		) => PossiblyPromise<t.InputType<T['result']>>,
 	) {
 		const thisSchema = this._self ? s.schema(this._self) : null
 		const argsSchema = s.schema(this._params)
 		const resultSchema = this._result ? s.schema(this._result) : null
 
 		return function (
-			this: s.Type<T>,
-			...args: s.TupleType_<T['params'], { kind: 'in' }>
-		): PossiblyPromise<s.Type<T['result']>> {
-			if (thisSchema) (thisSchema as s.Schema).validate(this) // throw on error
+			this: t.Type<T>,
+			...args: t.TupleType_<T['params'], { kind: 'in' }>
+		): PossiblyPromise<t.Type<T['result']>> {
+			if (thisSchema) (thisSchema as t.Schema).validate(this) // throw on error
 
-			const vArgs = (argsSchema as s.Schema).validate(args) // throw on error
+			const vArgs = (argsSchema as t.Schema).validate(args) // throw on error
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			const r = (f as any).call(this, ...(vArgs as unknown[]))
-			function handler(r: s.InputType<T['result']>) {
+			function handler(r: t.InputType<T['result']>) {
 				return (
-					resultSchema ? (resultSchema as s.Schema).validate(r) : r
+					resultSchema ? (resultSchema as t.Schema).validate(r) : r
 				) as never
 			}
 
@@ -93,66 +94,66 @@ class _Checked<T extends G> {
 
 export interface WithoutThis<T extends G> {
 	function(
-		f: (...args: s.TupleType_<T['params']>) => s.InputType<T['result']>,
-	): (...args: s.TupleType_<T['params'], { kind: 'in' }>) => s.Type<T['result']>
+		f: (...args: t.TupleType_<T['params']>) => t.InputType<T['result']>,
+	): (...args: t.TupleType_<T['params'], { kind: 'in' }>) => t.Type<T['result']>
 
 	function(
 		f: (
-			...args: s.TupleType_<T['params']>
-		) => Promise<s.InputType<T['result']>>,
+			...args: t.TupleType_<T['params']>
+		) => Promise<t.InputType<T['result']>>,
 	): (
-		...args: s.TupleType_<T['params'], { kind: 'in' }>
-	) => Promise<s.Type<T['result']>>
+		...args: t.TupleType_<T['params'], { kind: 'in' }>
+	) => Promise<t.Type<T['result']>>
 
 	function(
 		f: (
-			...args: s.TupleType_<T['params']>
-		) => PossiblyPromise<s.InputType<T['result']>>,
+			...args: t.TupleType_<T['params']>
+		) => PossiblyPromise<t.InputType<T['result']>>,
 	): (
-		...args: s.TupleType_<T['params'], { kind: 'in' }>
-	) => PossiblyPromise<s.Type<T['result']>>
+		...args: t.TupleType_<T['params'], { kind: 'in' }>
+	) => PossiblyPromise<t.Type<T['result']>>
 }
 
 export interface WithThis<T extends G> {
 	function(
 		f: (
-			this: s.Type<T['self']>,
-			...args: s.TupleType_<T['params']>
-		) => s.InputType<T['result']>,
+			this: t.Type<T['self']>,
+			...args: t.TupleType_<T['params']>
+		) => t.InputType<T['result']>,
 	): (
-		this: s.Type<T['self']>,
-		...args: s.TupleType_<T['params'], { kind: 'in' }>
-	) => s.Type<T['result']>
+		this: t.Type<T['self']>,
+		...args: t.TupleType_<T['params'], { kind: 'in' }>
+	) => t.Type<T['result']>
 
 	function(
 		f: (
-			this: s.Type<T['self']>,
-			...args: s.TupleType_<T['params']>
-		) => Promise<s.InputType<T['result']>>,
+			this: t.Type<T['self']>,
+			...args: t.TupleType_<T['params']>
+		) => Promise<t.InputType<T['result']>>,
 	): (
-		this: s.Type<T['self']>,
-		...args: s.TupleType_<T['params'], { kind: 'in' }>
-	) => Promise<s.Type<T['result']>>
+		this: t.Type<T['self']>,
+		...args: t.TupleType_<T['params'], { kind: 'in' }>
+	) => Promise<t.Type<T['result']>>
 
 	function(
 		f: (
-			this: s.Type<T['self']>,
-			...args: s.TupleType_<T['params']>
-		) => PossiblyPromise<s.InputType<T['result']>>,
+			this: t.Type<T['self']>,
+			...args: t.TupleType_<T['params']>
+		) => PossiblyPromise<t.InputType<T['result']>>,
 	): (
-		this: s.Type<T['self']>,
-		...args: s.TupleType_<T['params'], { kind: 'in' }>
-	) => PossiblyPromise<s.Type<T['result']>>
+		this: t.Type<T['self']>,
+		...args: t.TupleType_<T['params'], { kind: 'in' }>
+	) => PossiblyPromise<t.Type<T['result']>>
 }
 
 type Checked<T extends G> = Pick<
 	_Checked<T>,
 	| 'param'
-	| ([s.Void] extends [T['self']] ? 'this' : never)
-	| ([s.Never] extends [T['result']] ? 'result' : never)
+	| ([t.Void] extends [T['self']] ? 'this' : never)
+	| ([t.Never] extends [T['result']] ? 'result' : never)
 > &
-	([s.Void] extends [T['self']] ? WithoutThis<T> : WithThis<T>)
+	([t.Void] extends [T['self']] ? WithoutThis<T> : WithThis<T>)
 
 export const checked = new _Checked(null, [], null) as unknown as Checked<
-	G<s.Void, readonly [], s.Never | s.Schema<Promise<void>>>
+	G<t.Void, readonly [], t.Never | t.Schema<Promise<void>>>
 >

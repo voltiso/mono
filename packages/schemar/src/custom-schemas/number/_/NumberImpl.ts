@@ -3,8 +3,11 @@
 
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
-import type { Literal } from '~'
-import { CustomNumberImpl, defaultNumberOptions, literal } from '~'
+import type { Literal } from '~/custom-schemas/literal'
+import { literal } from '~/custom-schemas/literal'
+
+import { defaultNumberOptions } from '../defaultNumberOptions'
+import { CustomNumberImpl } from './CustomNumberImpl'
 
 export class NumberImpl extends lazyConstructor(() => CustomNumberImpl)<{}> {
 	constructor() {
