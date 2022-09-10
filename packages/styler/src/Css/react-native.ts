@@ -1,24 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable etc/no-internal */
+import type {
+	CssPropertiesReactNative,
+	CssReactNative,
+} from '~/Css-declaration-merging'
 
-import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
-
-import type { CssExtensionReactNative } from './CssExtensionReactNative'
-import type { CssOverridesReactNative } from './CssOverrides'
-import type { CssProperties } from './CssProperties'
-import type { MergeCss3 } from './MergeCss'
-
-/**
- * CSS properties (after allowing arrays)
- *
- * - To add custom CSS properties, use TS declaration merging
- */
-export interface CssReactNative
-	extends CssOverridesReactNative,
-		_Css_WithExtensionReactNative,
-		_Css_OriginalReactNative {}
+import type { CssExtensionReactNative } from '../Css-declaration-merging/CssExtensionReactNative'
+import type { CssOverridesReactNative } from '../Css-declaration-merging/CssOverrides'
 
 /** `Css` with additional properties */
 export type CustomCssReactNative<C> = C & CssReactNative
@@ -37,7 +26,3 @@ export type _Css_OriginalReactNative = Omit<
 	CssPropertiesReactNative,
 	keyof CssExtensionReactNative | keyof CssOverridesReactNative
 >
-
-export interface CssPropertiesReactNative
-	extends MergeCss3<ViewStyle, TextStyle, ImageStyle>,
-		CssProperties {}

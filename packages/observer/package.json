@@ -57,7 +57,7 @@
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/schemar": "workspace:^16.0.0",
+		"@voltiso/schemar": "workspace:^",
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"rxjs": "^7.5.6"

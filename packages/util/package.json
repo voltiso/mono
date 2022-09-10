@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util",
-	"version": "45.0.0",
+	"version": "45.1.0",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -59,7 +59,7 @@
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/config.tsdoc": "workspace:^1.0.0",
 		"clone": "^2.1.2",
-		"jest": "^29.0.2",
+		"jest": "^29.0.3",
 		"zone.js": "^0.11.8"
 	},
 	"__________MISC": "__________",

@@ -50,7 +50,7 @@ export const rxjs = defineEslintConfigOverride({
 		'rxjs/no-unsafe-switchmap': 1,
 		'rxjs/no-unsafe-takeuntil': 1,
 		'rxjs/prefer-observer': 1,
-		'rxjs/suffix-subjects': 1,
+		'rxjs/suffix-subjects': 0,
 		'rxjs/throw-error': 1,
 	},
 } as const)

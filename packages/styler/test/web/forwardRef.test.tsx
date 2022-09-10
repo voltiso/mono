@@ -75,7 +75,8 @@ describe('forwardRef', () => {
 			{ myProp: boolean } & React.RefAttributes<HTMLButtonElement>
 		>
 
-		const styledComponent = style(component)
+		//
+		;() => style(component)
 	})
 
 	it('works with forwardRef<any>', () => {

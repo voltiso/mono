@@ -1,8 +1,6 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
 export * from './any'
 export * from './array'
+export * from './assert'
 export * from './boolean'
 export * from './cast'
 export * from './class'

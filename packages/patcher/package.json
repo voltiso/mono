@@ -46,7 +46,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/script": "workspace:^",
-		"jest": "^29.0.2"
+		"jest": "^29.0.3"
 	},
 	"__________MISC": "__________",
 	"engines": {

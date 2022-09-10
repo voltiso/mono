@@ -3,7 +3,7 @@
 
 import type { AlsoAccept } from '@voltiso/util'
 
-import type { Css } from './Css'
+import type { Css } from '../Css/Css'
 
 export interface CssExtension {
 	//

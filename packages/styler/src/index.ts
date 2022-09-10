@@ -3,13 +3,8 @@
 
 export * from './_'
 // ! need to explicitly export interfaces that are supposed to work with declaration merging
+export * from './Css'
 export type {
-	_Css_OriginalReactNative,
-	_Css_OriginalWeb,
-	_Css_WithExtensionReactNative,
-	_Css_WithExtensionWeb,
-	_WithArrays,
-	Css,
 	CssExtension,
 	CssExtensionReactNative,
 	CssExtensionWeb,
@@ -20,16 +15,9 @@ export type {
 	CssPropertiesAndPseudosWeb,
 	CssPropertiesReactNative,
 	CssPropertiesWeb,
-	CssPropertiesWithArraysWeb,
-	CssPseudosWeb,
 	CssReactNative,
 	CssWeb,
-	CustomCss,
-	CustomCssReactNative,
-	CustomCssWeb,
-	MergeCss,
-	MergeCss3,
-} from './Css'
+} from './Css-declaration-merging'
 export * from './IsReactNative'
 export * from './react-types'
 export * from './Stylable'

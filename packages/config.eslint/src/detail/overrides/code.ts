@@ -76,6 +76,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-unsafe-assignment': 1,
 		'@typescript-eslint/no-unsafe-member-access': 1,
 		'@typescript-eslint/no-unsafe-return': 1,
+		'@typescript-eslint/no-unsafe-call': 1,
 		'@typescript-eslint/restrict-template-expressions': 1,
 		'@typescript-eslint/no-unsafe-argument': 1,
 		'@typescript-eslint/space-before-function-paren': 0, // prettier
@@ -200,6 +201,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'max-statements-per-line': 0, // prettier
 		'no-useless-rename': 1,
 		'prefer-object-has-own': 0, // not available in Safari
+		'no-return-await': 1,
 
 		'padding-line-between-statements': [
 			'warn',

@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/schemar.types",
-	"version": "16.0.1",
+	"version": "16.0.4",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -11,8 +11,7 @@
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
-		"dist",
-		"src"
+		"dist"
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
@@ -46,7 +45,7 @@
 		"typecov": "v typecov"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
+	"peerDependencies": {
 		"@voltiso/util": "workspace:^"
 	},
 	"devDependencies": {
@@ -54,7 +53,8 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/config.tsdoc": "workspace:^",
-		"@voltiso/script": "workspace:^"
+		"@voltiso/script": "workspace:^",
+		"@voltiso/util": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"typeCoverage": {

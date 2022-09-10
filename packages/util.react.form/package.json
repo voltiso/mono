@@ -51,7 +51,7 @@
 	},
 	"devDependencies": {
 		"@testing-library/react": "^13.4.0",
-		"@types/react": "^18.0.18",
+		"@types/react": "^18.0.19",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/observer": "workspace:^",
 		"@voltiso/schemar": "workspace:^",

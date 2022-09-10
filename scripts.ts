@@ -91,6 +91,7 @@ export const clean = 'rimraf node_modules dist'
 
 export const prepublishOnly = [
 	'prepareWorkspace',
+
 	turbo(
 		'build:esm',
 		'build:cjs',
@@ -101,11 +102,13 @@ export const prepublishOnly = [
 		'lint:tsc',
 		'depcheck',
 	),
+
 	turboDependents('test'),
 ]
 
 export const prepublishOnlyFast = [
 	'prepareWorkspace',
+
 	turbo(
 		'build:esm',
 		'build:cjs',
@@ -116,6 +119,10 @@ export const prepublishOnlyFast = [
 		'lint:tsc',
 		'depcheck',
 	),
+
+	`pnpm -w exec turbo run --filter=${
+		packageJson.name || '//'
+	}.test test --output-logs=new-only`,
 ]
 
 // /** Lint */

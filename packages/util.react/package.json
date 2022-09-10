@@ -49,7 +49,7 @@
 		"@babel/plugin-transform-react-jsx": "^7.19.0",
 		"@babel/preset-env": "^7.19.0",
 		"@testing-library/react": "^13.4.0",
-		"@types/react": "^18.0.18",
+		"@types/react": "^18.0.19",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
