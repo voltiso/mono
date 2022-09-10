@@ -36,20 +36,28 @@
 		"typecov": "v typecov"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"@voltiso/patcher": "workspace:^",
+		"@voltiso/util": "workspace:^"
+	},
 	"peerDependencies": {
+		"@voltiso/schemar": "workspace:^",
 		"@voltiso/schemar.types": "workspace:^",
 		"rxjs": "^7.5.6"
 	},
 	"peerDependenciesMeta": {
+		"@voltiso/schemar": {
+			"optional": true
+		},
 		"@voltiso/schemar.types": {
 			"optional": true
 		}
 	},
 	"devDependencies": {
-		"@voltiso/assertor": "workspace:^2.0.0",
-		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/schemar": "workspace:^16.0.0",
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"rxjs": "^7.5.6"
@@ -58,8 +66,7 @@
 	"engines": {
 		"node": "16"
 	},
-	"dependencies": {
-		"@voltiso/patcher": "workspace:^1.0.2",
-		"@voltiso/util": "workspace:^45.0.0"
+	"typeCoverage": {
+		"is": 99.26
 	}
 }

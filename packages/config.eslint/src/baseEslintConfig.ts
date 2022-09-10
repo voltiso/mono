@@ -303,8 +303,20 @@ export const baseEslintConfig = defineEslintConfig({
 			rules: {
 				'@typescript-eslint/no-var-requires': 0,
 				'import/no-commonjs': 0,
-				strict: ['warn', 'global'],
 				'unicorn/prefer-module': 0,
+			},
+		},
+
+		// `cjs` (js-only)
+		{
+			files: [
+				'*.cjs',
+				'*.cjsx',
+				'next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
+			],
+
+			rules: {
+				strict: ['warn', 'global'],
 			},
 		},
 

@@ -44,6 +44,8 @@ const pluginsToPick = [
 
 	'regexp', // require 'u' unicode flag
 
+	'rxjs',
+
 	'eslint-comments', // !
 
 	// ! framework-specific
@@ -88,8 +90,7 @@ const pluginsToPick = [
 	// 'toml',
 	// 'typescript-sort-keys',
 
-	// ! not using for now
-	// 'rxjs',
+	// ! not used for now
 	// 'storybook',
 
 	// ! definitely NOT USED

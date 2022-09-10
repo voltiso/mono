@@ -8,6 +8,7 @@ import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
 	DOMAttributes,
+	ForwardRefExoticComponent,
 	ForwardRefRenderFunction,
 	ReactNode,
 } from 'react'
@@ -56,6 +57,37 @@ describe('forwardRef', () => {
 					/>
 				),
 			),
+		)
+
+		renderApp(<Component big={false} />)
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			height: '100px',
+			color: 'red',
+		})
+	})
+
+	it('forwardRef - complex', () => {
+		expect.assertions(0)
+
+		const component = 0 as unknown as React.ForwardRefExoticComponent<
+			{ myProp: boolean } & React.RefAttributes<HTMLButtonElement>
+		>
+
+		const styledComponent = style(component)
+	})
+
+	it('works with forwardRef<any>', () => {
+		expect.hasAssertions()
+
+		const Component = style(
+			forwardRef((props, ref) => (
+				<AnotherButton
+					ref={ref}
+					{...props}
+				/>
+			)) as ForwardRefExoticComponent<any>,
 		)
 
 		renderApp(<Component big={false} />)

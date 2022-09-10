@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoScriptError } from '@voltiso/script.lib'
-import { registerEsbuild } from '@voltiso/util.esbuild'
 import { spawn } from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
+
+import { VoltisoScriptError } from '@voltiso/script.lib'
+import { registerEsbuild } from '@voltiso/util.esbuild'
 
 import { compatDirs } from './_/compatDirs'
 

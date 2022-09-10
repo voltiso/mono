@@ -1,21 +1,21 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { injectCreateNestedSubject } from '@voltiso/observer'
+import { injectCreateNestedSubjectWithSchema } from '@voltiso/observer'
 import * as s from '@voltiso/schemar'
 
 const observerDiContext = {
 	schema: s.schema,
 }
 
-const createNestedSubject = injectCreateNestedSubject(observerDiContext)
+const createNestedSubjectWithSchema = injectCreateNestedSubjectWithSchema(observerDiContext)
 
 describe('simple', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
 		expect(() =>
-			createNestedSubject({
+			createNestedSubjectWithSchema({
 				schemable: {
 					a: {
 						b: {
@@ -28,7 +28,7 @@ describe('simple', () => {
 			}),
 		).toThrow('.x')
 
-		const data = createNestedSubject({
+		const data = createNestedSubjectWithSchema({
 			initialValue: { x: 33 },
 
 			schemable: {

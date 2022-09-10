@@ -638,23 +638,23 @@ importers:
 
   packages/observer:
     specifiers:
-      '@voltiso/assertor': workspace:^2.0.0
-      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/patcher': workspace:^1.0.2
+      '@voltiso/patcher': workspace:^
+      '@voltiso/schemar': workspace:^16.0.0
       '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
-      '@voltiso/util': workspace:^45.0.0
+      '@voltiso/util': workspace:^
       rxjs: ^7.5.6
     dependencies:
       '@voltiso/patcher': link:../patcher
       '@voltiso/util': link:../util
     devDependencies:
       '@voltiso/assertor': link:../assertor
-      '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
       '@voltiso/script': link:../script
       rxjs: 7.5.6
@@ -763,7 +763,7 @@ importers:
 
   packages/schemar.types:
     specifiers:
-      '@voltiso/config.jest.esr': workspace:^1.0.0
+      '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/config.tsdoc': workspace:^
@@ -1151,6 +1151,7 @@ importers:
     specifiers:
       '@types/react': ^18.0.18
       '@types/react-dom': ^18.0.6
+      '@voltiso/assertor': workspace:^2.0.0
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/script': workspace:^
@@ -1163,6 +1164,7 @@ importers:
     devDependencies:
       '@types/react': 18.0.18
       '@types/react-dom': 18.0.6
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
@@ -1176,10 +1178,10 @@ importers:
       '@types/react': ^18.0.18
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/observer': workspace:^
-      '@voltiso/schemar': workspace:^16.0.0
+      '@voltiso/schemar': workspace:^
       '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
-      '@voltiso/util': workspace:^45.0.0
+      '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0

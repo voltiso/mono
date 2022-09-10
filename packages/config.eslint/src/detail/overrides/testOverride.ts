@@ -95,6 +95,11 @@ export const testOverride = defineEslintConfigOverride({
 		'react/button-has-type': 0,
 		'react/jsx-no-bind': 0,
 
+		'rxjs/no-ignored-subscription': 0,
+		'rxjs/no-ignored-error': 0,
+		'rxjs/finnish': 0,
+		'rxjs/suffix-subjects': 0,
+
 		// 'jest/valid-expect': ['error', { maxArgs: 2 }], // @alex_neo/jest-expect-message
 
 		// 'jsdoc/require-example': 0,
