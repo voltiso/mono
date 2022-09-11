@@ -11,7 +11,7 @@ import type {
 
 import type { Type } from '~/GetType'
 import type { CustomSchema, SimpleSchema } from '~/Schema'
-import type { SchemableLike } from '~/Schemable'
+import type { GetDeepShape_, SchemableLike } from '~/Schemable'
 import type { DefineSchema } from '~/SchemaOptions'
 
 import type {
@@ -32,18 +32,12 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 	readonly [BASE_OPTIONS]: ObjectOptions
 	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	ObjectOptions,
-	// 	MergeSchemaOptions<DefaultObjectOptions, O>
-	// >
-
 	//
 
 	get getIndexSignatures(): this[OPTIONS]['indexSignatures']
 
 	get getShape(): this[OPTIONS]['shape']
+	get getDeepShape(): GetDeepShape_<this>
 
 	//
 

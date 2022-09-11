@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type Parameters_<T> = T extends (...args: infer P) => unknown ? P : never
+export type Parameters_<T> = T extends (...args: infer P) => any ? P : never
 
 // DOES NOT WORK with multiple same-arity overloads:
 

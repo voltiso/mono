@@ -68,10 +68,11 @@ export function getProperty<
 >(object: Obj, property: Property): GetPropertyComplex<Obj, Property> {
 	if (!isObject(object)) throw new GetPropertyError(object, property)
 
-	assertNotPolluting(object, property)
+	assertNotPolluting(property)
 
-	if (!((property as keyof any) in object))
-		throw new GetPropertyError(object, property)
+	// ! no check - it may be proxy object 🤔
+	// if (!((property as keyof any) in object))
+	// 	throw new GetPropertyError(object, property)
 
 	return object[property as keyof Obj] as never
 }

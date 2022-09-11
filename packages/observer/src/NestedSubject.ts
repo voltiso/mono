@@ -4,10 +4,26 @@
 import type { PatchFor } from '@voltiso/patcher'
 import type { BehaviorSubject } from 'rxjs'
 
-export type NestedSubject<T> = {
+import type { NestedSubjectReservedField } from './_/NestedSubjectReservedFields'
+
+export type NestedSubjectBase<T> = {
 	set(x: T): void
 	patch(x: PatchFor<T>): void
 	update(x: PatchFor<T>): void
-} & BehaviorSubject<T> & {
-		[k in keyof T]: NestedSubject<T[k]>
+}
+
+export type NestedSubject<T> = NestedSubjectBase<T> &
+	BehaviorSubject<T> &
+	Omit<
+		{
+			[k in keyof T]: NestedSubject<T[k]>
+		},
+		NestedSubjectReservedField
+	> & {
+		_: {
+			[k in keyof T]: NestedSubject<T[k]>
+		}
+
+		// // eslint-disable-next-line rxjs/finnish
+		// asReadonly: ReadonlyNestedSubject<T>
 	}

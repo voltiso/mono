@@ -7,7 +7,7 @@ import type { MaybePromise } from '@voltiso/util'
 import type { DocLike, GetDataWithId, NestedData, RefLike } from '~'
 import type { DocConstructorLike } from '~/Doc/DocConstructor'
 import type { DTI } from '~/Doc/DocTI'
-import type { DocTypes } from '~/DocTypes'
+import type { DocTypes } from '~/DocTypes-module-augmentation'
 import type { WeakDocRef } from '~/Ref/WeakDocRef'
 
 export interface IAggregatorHandlers {

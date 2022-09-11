@@ -23,6 +23,7 @@ export interface IObject extends ISchema<object> {
 	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
 	get getShape(): InferableObjectLike
+	get getDeepShape(): InferableObjectLike
 
 	get partial(): any
 	get strictPartial(): any

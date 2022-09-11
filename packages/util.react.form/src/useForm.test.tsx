@@ -1,51 +1,53 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { render } from '@testing-library/react'
-import { injectCreateNestedSubject } from '@voltiso/observer'
+import { act, render } from '@testing-library/react'
+import { $assert } from '@voltiso/assertor'
+import { createNestedSubjectWithSchema } from '@voltiso/observer'
 import { ValidationIssue } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { sleep } from '@voltiso/util'
+import { useObservable } from '@voltiso/util.react.rxjs'
 import { ReplaySubject } from 'rxjs'
 
-import { injectUseForm } from './useForm'
-
-const useForm = injectUseForm({schema: s.schema})
-const createNestedSubject = injectCreateNestedSubject({ schema: s.schema })
+import { useForm } from './useForm'
+import type { UseForm } from './UseForm-types'
 
 describe('useForm', () => {
 	it('works', () => {
-		expect.assertions(0)
+		expect.hasAssertions()
 
-		const appState = createNestedSubject({
+		const sFormData = {
+			name: s.string.maxLength(5),
+			num: s.number,
+			strArr: s.array(s.string),
+			isCustomer: s.boolean,
+		}
+
+		const appState$ = createNestedSubjectWithSchema({
 			schemable: {
-				formData: {
-				name: s.string.maxLength(5),
-				num: s.number,
-				strArr: s.array(s.string),
-				isCustomer: s.boolean,
-				},
-
-				formState: useForm.stateSchema.optional
+				formData: sFormData,
 			},
 
 			initialValue: {
 				formData: {
-				num: 123,
-				name: 'test',
-				strArr: ['a', 'b'],
-				isCustomer: true,
-				}
+					num: 123,
+					name: 'test',
+					strArr: ['a', 'b'],
+					isCustomer: true,
+				},
 			},
 		})
 
+		let form$: UseForm.Result<typeof sFormData> | undefined
+
 		const Component = () => {
-			const form = useForm({
-				data: appState.formData,
-				state: appState.formState,
+			form$ = useForm({
+				data$: appState$.formData,
 
 				validators: {
 					name: async (value: string) => {
+						// eslint-disable-next-line rxjs/no-ignored-replay-buffer
 						const subject = new ReplaySubject<ValidationIssue>()
 
 						async function run() {
@@ -83,17 +85,35 @@ describe('useForm', () => {
 				},
 			})
 
+			const formProps = useObservable(form$.props)
+			const fields = useObservable(form$.fields)
+
 			return (
 				<>
-					<form {...form.props}>
-						<input {...form.name} />
+					<form {...formProps}>
+						<input {...fields.name.props} />
 
-						<input {...form.isCustomer} />
+						<input {...fields.isCustomer.props} />
 					</form>
 				</>
 			)
 		}
 
-		renderApp(<Component />)
+		render(<Component />)
+
+		$assert(form$)
+
+		expect(form$.fields.name.props._.value?.value).toBe('test')
+
+		act(() => {
+			$assert(form$)
+
+			form$.fields.name.props.onChange.value({
+				target: { value: 'test2' } as never,
+			} as never)
+		})
+
+		expect(appState$.formData.name.value).toBe('test2')
+		expect(form$.fields.name.props._.value?.value).toBe('test2')
 	})
 })

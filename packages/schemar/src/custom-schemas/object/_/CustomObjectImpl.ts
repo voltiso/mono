@@ -6,6 +6,7 @@ import { $assert } from '@voltiso/assertor'
 import type {
 	CustomObject,
 	DefaultObjectOptions,
+	GetDeepShape_,
 	ISchema,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
@@ -15,6 +16,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
 import { isUnknownObject } from '@voltiso/schemar.types'
 import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { getDeepShape } from '@voltiso/schemar.types'
 import {
 	getEntries,
 	getKeys,
@@ -67,6 +69,10 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['shape'] as never
+	}
+
+	get getDeepShape(): GetDeepShape_<this> {
+		return getDeepShape(this)
 	}
 
 	get getIndexSignatures(): this[OPTIONS]['indexSignatures'] {

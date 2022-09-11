@@ -1,9 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line import/no-unassigned-import
-import '~/zone'
-
 import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import { clone, isDefined, undef } from '@voltiso/util'

@@ -3,7 +3,7 @@
 
 import type { Doc } from '~'
 import type { DocTI } from '~/Doc'
-import type { DocTypes } from '~/DocTypes'
+import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 type GDocByTag_<TI extends DocTI> = TI['tag'] extends 'untagged'
 	? never

@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IDoc } from '~/Doc'
-import type { DocTag, DocTypes } from '~/DocTypes'
+import type { DocTag } from '~/DocTypes'
+import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { StrongRef } from './RefBase'
 import type { WeakDocRef } from './WeakDocRef'

@@ -1173,29 +1173,35 @@ importers:
     specifiers:
       '@testing-library/react': ^13.4.0
       '@types/react': ^18.0.19
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^2.0.2
+      '@voltiso/config.ts.build.esm': workspace:^2.0.2
       '@voltiso/observer': workspace:^
       '@voltiso/schemar': workspace:^
       '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
+      '@voltiso/util.react.rxjs': workspace:^
       react: ^18.2.0
       react-dom: ^18.2.0
       rxjs: ^7.5.6
-      util.react: ^1.7.1
     dependencies:
       '@voltiso/util.react': link:../util.react
-      util.react: 1.7.1
     devDependencies:
       '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.19
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/observer': link:../observer
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
       '@voltiso/script': link:../script
       '@voltiso/util': link:../util
+      '@voltiso/util.react.rxjs': link:../util.react.rxjs
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       rxjs: 7.5.6
@@ -7139,10 +7145,6 @@ packages:
       isobject: 3.0.1
       static-extend: 0.1.2
 
-  /classnames/2.3.1:
-    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
-    dev: false
-
   /clean-git-ref/2.0.1:
     resolution: {integrity: sha512-bLSptAy2P0s6hU4PzuIMKmMJJSE6gLXGH1cntDu7bWJUksvuM+7ReOK61mozULErYvP6a15rnYl0zFDef+pyPw==}
     dev: false
@@ -9838,11 +9840,6 @@ packages:
       assign-symbols: 1.0.0
       is-extendable: 1.0.1
 
-  /extend/3.0.1:
-    resolution: {integrity: sha512-u1aUSYGdAQxyguoP919qsgj24krDCtaO/DJFNPwFmojMmKp14gtCTVsc8lQSqRDFrwAch+mxMWC8/6ZJPz5Hpw==}
-    dev: false
-    optional: true
-
   /extend/3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
 
@@ -11292,14 +11289,6 @@ packages:
   /hyphenate-style-name/1.0.4:
     resolution: {integrity: sha512-ygGZLjmXfPHj+ZWh6LwbC37l43MhfztxetbFCoYTM2VjkIUpeHgSNn7QIyVFj7YQ1Wl9Cbw5sholVJPzWvC2MQ==}
     dev: true
-
-  /icon.react/0.2.3:
-    resolution: {integrity: sha512-e3Y/u2yGVIvjDg0yD6vIrwx25XeFA6hgyZUpehxtAD2bihbGN0NKiMx7XZSR1T6UxCSv30eB7Zum04ta6XH6PA==}
-    requiresBuild: true
-    dependencies:
-      react-spread-props: 0.1.1
-    dev: false
-    optional: true
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -15899,20 +15888,6 @@ packages:
       - bufferutil
       - utf-8-validate
 
-  /react-dom/16.14.0_react@16.14.0:
-    resolution: {integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==}
-    requiresBuild: true
-    peerDependencies:
-      react: '*'
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-      react: 16.14.0
-      scheduler: 0.19.1
-    dev: false
-    optional: true
-
   /react-dom/18.2.0_react@18.2.0:
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
     peerDependencies:
@@ -16028,15 +16003,6 @@ packages:
       react: 18.2.0
       react-is: 18.2.0
 
-  /react-spread-props/0.1.1:
-    resolution: {integrity: sha512-OBl5OlQZzjorfGriA1QWaHl/n+5R3jjx9qlI2v7zv6tURp5AeTJtiS+gMxEfbK4tJfI8Y+zoKOFNZ6hSd1l8ww==}
-    dependencies:
-      prop-types: 15.8.1
-      safe-extend: 3.0.6
-      util.react: 1.7.1
-    dev: false
-    optional: true
-
   /react-test-renderer/18.2.0_react@18.2.0:
     resolution: {integrity: sha512-JWD+aQ0lh2gvh4NM3bBM42Kx+XybOxCpgYK7F8ugAlpaTSnWsX+39Z4XkOykGZAHrjwwTZT3x3KxswVWxHPUqA==}
     peerDependencies:
@@ -16047,17 +16013,6 @@ packages:
       react-shallow-renderer: 16.15.0_react@18.2.0
       scheduler: 0.23.0
     dev: true
-
-  /react/16.14.0:
-    resolution: {integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==}
-    engines: {node: '>=0.10.0'}
-    requiresBuild: true
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-    dev: false
-    optional: true
 
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -16783,13 +16738,6 @@ packages:
   /safe-buffer/5.2.1:
     resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==}
 
-  /safe-extend/3.0.6:
-    resolution: {integrity: sha512-IfvUz4w02uH4IGTXvZu1/a9PgUh7j3McRiuGlk09ZK5h4mHRRBZoCAK/26uATNl0CriZwvEa8Ay2CcoddEbCcQ==}
-    dependencies:
-      extend: 3.0.1
-    dev: false
-    optional: true
-
   /safe-regex/1.1.0:
     resolution: {integrity: sha512-aJXcif4xnaNUzvUuC5gcb46oTS7zvg4jpMTnuqtrEPlR3vFr4pxtdTwaF1Qs3Enjn9HK+ZlwQui+a7z0SywIzg==}
     dependencies:
@@ -16825,14 +16773,6 @@ packages:
     dependencies:
       xmlchars: 2.2.0
     dev: false
-
-  /scheduler/0.19.1:
-    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-    dev: false
-    optional: true
 
   /scheduler/0.22.0:
     resolution: {integrity: sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==}
@@ -17743,10 +17683,6 @@ packages:
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
-  /themes-classname/2.0.0:
-    resolution: {integrity: sha512-URL7X23zxccQs6BwwdUYk1prxDyR1TQxcnumyQEmtdHtTWFlAq+0AD3ghqzRpZRt2YU4d9/az1pl9jPt/Ghk8A==}
-    dev: false
-
   /throat/5.0.0:
     resolution: {integrity: sha512-fcwX4mndzpLQKBS1DVYhGAcYaYt7vsHNIvQV+WXMvnow5cgjPphq5CaayLaGsjRdSCKZFNGt7/GYAuXaNOiYCA==}
 
@@ -18562,17 +18498,6 @@ packages:
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-
-  /util.react/1.7.1:
-    resolution: {integrity: sha512-y1kf2aVF2R+9P6hthQi64l77YQ0a3kpJ4JnqpLf/TRomNqWBNV0++V29ci/j34MiNCzqZxZD09OxSrLGtStF2g==}
-    dependencies:
-      classnames: 2.3.1
-      themes-classname: 2.0.0
-    optionalDependencies:
-      icon.react: 0.2.3
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-    dev: false
 
   /utils-merge/1.0.1:
     resolution: {integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=}

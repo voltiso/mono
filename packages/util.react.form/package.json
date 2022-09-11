@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.react.form",
-	"version": "1.0.0",
+	"version": "0.1.2",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -16,7 +16,7 @@
 	"__________SCRIPTS": "__________",
 	"scripts": {
 		"__________TEST": "__________",
-		"test": "echo todo - enable tests!!!!!!!!!!!!!!!!",
+		"test": "jest",
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"depcheck": "depcheck",
@@ -28,18 +28,20 @@
 		"build:esm": "v buildEsm",
 		"build:cjs": "v buildCjs",
 		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
+		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
 		"clean": "v clean",
 		"trace": "v trace",
-		"trace:run": "v traceRun"
+		"trace:run": "v traceRun",
+		"typecov": "v typecov"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util.react": "workspace:^",
-		"util.react": "^1.7.1"
+		"@voltiso/util.react": "workspace:^"
 	},
 	"peerDependencies": {
+		"@types/react": "^18.0.19",
+		"@voltiso/observer": "workspace:^",
 		"@voltiso/schemar.types": "workspace:^",
 		"react": "^18.1.0 || ^17",
 		"rxjs": "^7.5.6"
@@ -52,18 +54,25 @@
 	"devDependencies": {
 		"@testing-library/react": "^13.4.0",
 		"@types/react": "^18.0.19",
+		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
+		"@voltiso/config.ts.build.cjs": "workspace:^2.0.2",
+		"@voltiso/config.ts.build.esm": "workspace:^2.0.2",
 		"@voltiso/observer": "workspace:^",
 		"@voltiso/schemar": "workspace:^",
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"@voltiso/util": "workspace:^",
+		"@voltiso/util.react.rxjs": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"rxjs": "^7.5.6"
 	},
 	"__________MISC": "__________",
 	"engines": {
-		"node": ">=16"
+		"node": "16"
+	},
+	"typeCoverage": {
+		"is": 100
 	}
 }

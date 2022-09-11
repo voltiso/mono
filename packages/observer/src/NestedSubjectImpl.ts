@@ -7,6 +7,7 @@ import { patch } from '@voltiso/patcher'
 import { patchUpdate } from '@voltiso/patcher'
 import type {
 	GetShape_,
+	InferSchema_,
 	InputType_,
 	OutputType_,
 	Schemable,
@@ -40,12 +41,30 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 		[k in keyof GetShape_<S>]?: NestedSubjectImpl<GetShape_<S>[k]>
 	} = {}
 
-	get schemable(): S {
-		$assert(
-			typeof this._schemable !== 'undefined',
-			'get schemable() called on NestedSubject without schema',
-		)
+	get schemable(): S | undefined {
+		// $assert(
+		// 	typeof this._schemable !== 'undefined',
+		// 	'get schemable() called on NestedSubject without schema',
+		// )
 		return this._schemable
+	}
+
+	get schema(): InferSchema_<S> | undefined {
+		if(!this._schemable) return undefined
+		$assert(this._diContext)
+		return this._diContext.schema(this._schemable) as never
+	}
+
+	get _() {
+		return new Proxy(
+			{},
+			{
+				get: (_target, property, _receiver) => {
+					$assert(typeof property === 'string')
+					return new NestedSubjectImpl({ parent: this, key: property }) as never
+				},
+			},
+		)
 	}
 
 	constructor(options: NestedSubjectWithSchemaRootOptions<S>)
@@ -85,10 +104,18 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 			this._diContext = options.parent._diContext
 			this._parent = options.parent
 			this._parentKey = options.key
-			this._schemable = getSchemableChild(
-				options.parent.schemable,
-				options.key,
-			) as never
+
+			// console.log({ PARENT_IS: options.parent, CHILD_KEY: options.key })
+
+			// console.log({
+			// 	PARENT: options.parent._schemable,
+			// 	SELF: getSchemableChild(options.parent._schemable, options.key),
+			// })
+
+			this._schemable = options.parent.schemable
+				? (getSchemableChild(options.parent.schemable, options.key) as never)
+				: undefined
+
 			this._subject$ = new BehaviorSubject(
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				options.parent._subject$.value?.[options.key],

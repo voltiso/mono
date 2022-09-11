@@ -7,3 +7,5 @@ ignores:
   - '@babel/core'
   - '@babel/preset-env'
   - '@voltiso/config.jest.esr'
+  - '@voltiso/config.ts.build.cjs'
+  - '@voltiso/config.ts.build.esm'

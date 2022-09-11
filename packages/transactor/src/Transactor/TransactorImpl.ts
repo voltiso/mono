@@ -1,10 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-magic-numbers */
-
-// import '~/zone.js'
-
 import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { OmitCall, Tail } from '@voltiso/util'
@@ -107,12 +103,13 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 				;[database, myModule] = args
 				break
 
+			// eslint-disable-next-line no-magic-numbers
 			case 3:
 				;[database, myModule, partialOptions] = args
 				break
 
 			default:
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-magic-numbers
 				if (args.length > 3) throw new Error('expected 0, 1 or 2 arguments')
 		}
 

@@ -12,7 +12,7 @@ import type { DocTI } from './DocTI'
 import type { IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
 
-declare module '../DocTypes' {
+declare module '..' {
 	interface DocTypes {
 		anotherTest: AnotherTest
 	}

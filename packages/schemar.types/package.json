@@ -57,6 +57,9 @@
 		"@voltiso/util": "workspace:^"
 	},
 	"__________MISC": "__________",
+	"engines": {
+		"node": "16"
+	},
 	"typeCoverage": {
 		"is": 98.85
 	}

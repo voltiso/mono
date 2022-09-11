@@ -3,7 +3,7 @@
 
 import type { Newable } from '@voltiso/util'
 
-import type { ObjectLike, Schemable, SchemableLike } from '~'
+import type { IObject, ObjectLike, Schemable, SchemableLike } from '~'
 
 export type InferableLiteral =
 	| number
@@ -28,6 +28,7 @@ export type Inferable =
 
 //
 
+export type SchemableObject = InferableObject | IObject
 export type SchemableObjectLike = InferableObjectLike | ObjectLike
 
 export type InferableObjectLike = { [k: keyof any]: SchemableLike }

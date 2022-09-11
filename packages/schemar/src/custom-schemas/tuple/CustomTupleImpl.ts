@@ -6,10 +6,12 @@ import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	DefaultTupleOptions,
+	GetDeepShape_,
 	SchemaLike,
 	TupleOptions,
 } from '@voltiso/schemar.types'
 import type * as t from '@voltiso/schemar.types'
+import { getDeepShape } from '@voltiso/schemar.types'
 import {
 	EXTENDS,
 	isArray,
@@ -56,6 +58,10 @@ export class CustomTupleImpl<
 	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].shape as never
+	}
+
+	get getDeepShape(): GetDeepShape_<this> {
+		return getDeepShape(this)
 	}
 
 	// constructor(o: O) {
