@@ -3,7 +3,7 @@
 
 import { isCallable } from '@voltiso/util'
 
-import type { NestedSubject } from './NestedSubject'
+import type { NestedSubject } from './_/NestedSubject'
 import { NestedSubjectImpl } from './NestedSubjectImpl'
 
 export function createNestedSubject<T>(

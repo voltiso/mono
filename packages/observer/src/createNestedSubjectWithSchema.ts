@@ -5,8 +5,8 @@ import * as s from '@voltiso/schemar'
 import type { SchemableObjectLike } from '@voltiso/schemar.types'
 
 import type { NestedSubjectWithSchemaRootOptions } from './_'
+import type { NestedSubjectWithSchema } from './_/NestedSubjectWithSchema'
 import { NestedSubjectImpl } from './NestedSubjectImpl'
-import type { NestedSubjectWithSchema } from './NestedSubjectWithSchema'
 
 export const createNestedSubjectWithSchema = <S extends SchemableObjectLike>(
 	options: Omit<NestedSubjectWithSchemaRootOptions<S>, 'diContext'>,

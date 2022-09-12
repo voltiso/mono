@@ -6,6 +6,7 @@ import type { PatchFor } from '@voltiso/patcher'
 import { patch } from '@voltiso/patcher'
 import { patchUpdate } from '@voltiso/patcher'
 import type {
+	GetDeepShape_,
 	GetShape_,
 	InferSchema_,
 	InputType_,
@@ -27,6 +28,14 @@ import type {
 import { isNestedSubjectChildOptions } from './_'
 import { _nestedSubjectUpdateToRoot } from './_/_nestedSubjectUpdateToRoot'
 import { _validate } from './_/_validate'
+
+export function isWithGetShape(x: unknown): x is { getShape: unknown } {
+	return typeof (x as { getShape: unknown } | null)?.getShape !== 'undefined'
+}
+
+export function isWithGetDeepShape(x: unknown): x is { getDeepShape: unknown } {
+	return typeof (x as { getDeepShape: unknown } | null) !== 'undefined'
+}
 
 export class NestedSubjectImpl<S extends SchemableLike> {
 	readonly _diContext: ObserverDiContext | undefined
@@ -53,6 +62,20 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 		if (!this._schemable) return undefined
 		$assert(this._diContext)
 		return this._diContext.schema(this._schemable) as never
+	}
+
+	get shape(): GetShape_<S> | undefined {
+		if (!this._schemable) return undefined
+		const schema = this.schema
+		$assert(isWithGetShape(schema))
+		return schema.getShape as never
+	}
+
+	get deepShape(): GetDeepShape_<S> | undefined {
+		if (!this._schemable) return undefined
+		const schema = this.schema
+		$assert(isWithGetDeepShape(schema))
+		return schema.getDeepShape as never
 	}
 
 	get _() {

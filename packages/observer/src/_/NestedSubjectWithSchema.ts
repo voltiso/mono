@@ -3,6 +3,7 @@
 
 import type { PatchFor } from '@voltiso/patcher'
 import type {
+	GetDeepShape_,
 	GetShape_,
 	InferSchema_,
 	InputType_,
@@ -12,12 +13,14 @@ import type {
 } from '@voltiso/schemar.types'
 import type { BehaviorSubject } from 'rxjs'
 
-import type { NestedSubjectReservedField } from './_/NestedSubjectReservedFields'
 import type { NestedSubject } from './NestedSubject'
+import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 
 export type NestedSubjectWithSchemaBase<S extends SchemableLike> = {
 	get schemable(): S
 	get schema(): InferSchema_<S>
+	get shape(): GetShape_<S>
+	get deepShape(): GetDeepShape_<S>
 
 	set(x: InputType_<S>): void
 	setUnchecked(x: OutputType_<S>): void

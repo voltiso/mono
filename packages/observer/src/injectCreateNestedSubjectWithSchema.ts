@@ -4,8 +4,8 @@
 import type { Schemable } from '@voltiso/schemar.types'
 
 import type { NestedSubjectWithSchemaRootOptions, ObserverDiContext } from './_'
+import type { NestedSubjectWithSchema } from './_/NestedSubjectWithSchema'
 import { NestedSubjectImpl } from './NestedSubjectImpl'
-import type { NestedSubjectWithSchema } from './NestedSubjectWithSchema'
 
 export const injectCreateNestedSubjectWithSchema =
 	(diContext: ObserverDiContext) =>

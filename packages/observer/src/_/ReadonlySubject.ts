@@ -3,6 +3,4 @@
 
 import type { Observable } from 'rxjs'
 
-export type NestedObservable<T> = Observable<T> & {
-	[k in keyof T]: NestedObservable<T[k]>
-}
+export type ReadonlySubject<T> = Observable<T> & { value: T }
