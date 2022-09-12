@@ -3,7 +3,8 @@
 
 /* eslint-disable no-magic-numbers */
 
-import { randomBytes } from 'node:crypto'
+// import { randomBytes } from 'node:crypto'
+import randomBytes from 'randombytes'
 
 import type { Id } from './Data'
 

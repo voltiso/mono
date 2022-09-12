@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/transactor",
-	"version": "10.1.4",
+	"version": "10.1.5",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -44,7 +44,8 @@
 		"@voltiso/util": "workspace:^",
 		"chalk": "^4",
 		"fast-equals": "^4.0.3",
-		"js-yaml": "^4.1.0"
+		"js-yaml": "^4.1.0",
+		"randombytes": "^2.1.0"
 	},
 	"peerDependencies": {
 		"@voltiso/schemar": "workspace:^",
@@ -53,6 +54,7 @@
 	},
 	"devDependencies": {
 		"@types/js-yaml": "^4.0.5",
+		"@types/randombytes": "^2.0.0",
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",

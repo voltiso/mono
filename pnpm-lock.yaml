@@ -875,6 +875,7 @@ importers:
   packages/transactor:
     specifiers:
       '@types/js-yaml': ^4.0.5
+      '@types/randombytes': ^2.0.0
       '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
@@ -888,6 +889,7 @@ importers:
       chalk: ^4
       fast-equals: ^4.0.3
       js-yaml: ^4.1.0
+      randombytes: ^2.1.0
       zone.js: ^0.11.8
     dependencies:
       '@voltiso/firestore-like': link:../firestore-like
@@ -895,8 +897,10 @@ importers:
       chalk: 4.1.2
       fast-equals: 4.0.3
       js-yaml: 4.1.0
+      randombytes: 2.1.0
     devDependencies:
       '@types/js-yaml': 4.0.5
+      '@types/randombytes': 2.0.0
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
@@ -1250,12 +1254,18 @@ importers:
       '@types/react': ^18.0.19
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/patcher': workspace:^1.1.0
+      '@voltiso/util': workspace:^
+      '@voltiso/util.react': workspace:^
       react: ^18.2.0
       rxjs: ^7.5.6
     devDependencies:
       '@types/react': 18.0.19
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/patcher': link:../patcher
+      '@voltiso/util': link:../util
+      '@voltiso/util.react': link:../util.react
       react: 18.2.0
       rxjs: 7.5.6
 
@@ -5587,6 +5597,12 @@ packages:
 
   /@types/random-seed/0.3.3:
     resolution: {integrity: sha512-kHsCbIRHNXJo6EN5W8EA5b4i1hdT6jaZke5crBPLUcLqaLdZ0QBq8QVMbafHzhjFF83Cl9qlee2dChD18d/kPg==}
+    dev: true
+
+  /@types/randombytes/2.0.0:
+    resolution: {integrity: sha512-bz8PhAVlwN72vqefzxa14DKNT8jK/mV66CSjwdVQM/k3Th3EPKfUtdMniwZgMedQTFuywAsfjnZsg+pEnltaMA==}
+    dependencies:
+      '@types/node': 18.7.16
     dev: true
 
   /@types/range-parser/1.2.4:
@@ -15836,6 +15852,12 @@ packages:
     dependencies:
       json-stringify-safe: 5.0.1
     dev: true
+
+  /randombytes/2.1.0:
+    resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
+    dependencies:
+      safe-buffer: 5.2.1
+    dev: false
 
   /range-parser/1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}

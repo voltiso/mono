@@ -109,7 +109,7 @@ function _initializeResult<S extends SchemableObjectLike>(
 				// 				await handleError(error)
 				// 			}
 
-				void options.onSubmit(options.data$)
+				void options.onSubmit(options.data$.value)
 			},
 
 			ref: () => {

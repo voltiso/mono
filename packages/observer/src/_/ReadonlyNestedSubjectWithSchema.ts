@@ -1,17 +1,27 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Type_ } from '@voltiso/schemar.types'
+
 import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 import type { ReadonlySubjectWithSchema } from './ReadonlySubjectWithSchema'
 
-export type ReadonlyNestedSubjectWithSchema<T> = ReadonlySubjectWithSchema<T> &
+export type ReadonlyNestedSubjectWithSchema<S> = ReadonlySubjectWithSchema<S> &
 	Omit<
 		{
-			[k in keyof T]: ReadonlyNestedSubjectWithSchema<T[k]>
+			[k in keyof S]: ReadonlyNestedSubjectWithSchema<S[k]>
 		},
 		NestedSubjectReservedField
 	> & {
-		_: {
-			[k in keyof T]: ReadonlyNestedSubjectWithSchema<T[k]>
+		readonly _: {
+			[k in keyof S]: ReadonlyNestedSubjectWithSchema<S[k]>
 		}
 	}
+
+export type ReadonlyNestedSubjectWithSchemaLike<S> = {
+	get value(): Type_<S>
+
+	get schemable(): S
+
+	readonly _: any
+}

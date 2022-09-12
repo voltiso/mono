@@ -7,12 +7,13 @@ import {
 	isPlainObject,
 	setProperty,
 	tryGetProperty,
-	undef,
 } from '@voltiso/util'
 import { deepEqual } from 'fast-equals'
 
 import type { DeleteIt } from './deleteIt'
 import { isDeleteIt } from './deleteIt'
+import type { KeepIt } from './keepIt'
+import { isKeepIt } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
 import { isReplaceIt } from './replaceIt'
 
@@ -55,6 +56,8 @@ export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt
 	? undefined
 	: P extends ReplaceIt<infer R>
 	? R
+	: P extends KeepIt
+	? X
 	: P extends object
 	? X extends object
 		? Merge2<X, ApplyPatchSub<X, P>>
@@ -67,10 +70,11 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	x: X,
 	patchValue: PatchValue,
 ): ApplyPatch<X, PatchValue> {
-	if (isDeleteIt(patchValue)) return undef as never
+	if (isDeleteIt(patchValue)) return undefined as never
+
+	if (isKeepIt(patchValue)) return x as never
 
 	if (isReplaceIt(patchValue)) {
-		// if (dequal(x, patchValue.__replaceIt)) return x as never
 		if (deepEqual(x, patchValue.__replaceIt)) return x as never
 		else return patchValue.__replaceIt as never
 	}
@@ -79,6 +83,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		const res: any = {
 			...x,
 		}
+
 		let haveChange = false
 
 		for (const [key, value] of getEntries(patchValue)) {

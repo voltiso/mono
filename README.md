@@ -24,50 +24,6 @@
 
 # 📥 Use in your project
 
-> ❗ Since our repo is no longer private, and it's MIT-open-sourced now, the packages will be moved to *npmjs* in the near future.
-
-> ⚠️ Different `.npmrc` needed in **BOTH**:
->
-> - Your **`$HOME`** dir
-> - Your **project dir**
-
-## Your **`$HOME`** dir
-
-### ⬇️ `~/.npmrc`
-
-```r
-//npm.pkg.github.com/:_authToken=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-> | ⚠️  | Replace `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`                                                                                                                 |
-> | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-> |     | ...with **_YOUR_ [GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)** |
-
----
-
-## Your **project dir**
-
-- e.g. `my-project/`
-  - (where your `package.json` is)
-- But for monorepos:
-  - Monorepo **root** dir
-
-### `my-project/.npmrc`
-
-```sh
-@voltiso:registry='https://npm.pkg.github.com'
-# auto-install-peers=true # optional - consistent with `npm@7` # ! DOES NOT WORK?
-```
-
-`auto-install-peers` should install deps e.g. when you install
-`@voltiso/config.*`
-
-- (config packages for `prettier`, `eslint`, `tsconfig`, `babel`, `jest`, ...)
-- `auto-install-peers` makes `pnpm` behavior similar to `npm@7`
-  - We should use it... once it works properly
-  - It works when adding a package explicitly, but does not work on clean
-    `pnpm install`
-
 ## 💾 Install
 
 AFTER you have your

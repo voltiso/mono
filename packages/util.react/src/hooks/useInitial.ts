@@ -5,20 +5,6 @@ import { isCallable } from '@voltiso/util'
 import { useRef } from 'react'
 
 /**
- * - Equivalent to `useRef(initialValue).current`
- *
- * @example
- *
- * ```ts
- * const myData = useInitial({ foo: 'bar' }) // always returns the same object
- * ```
- *
- * @param initialValue - Initial value
- * @returns The initial value
- */
-export function useInitial<X>(initialValue: X): X
-
-/**
  * - Equivalent to `useRef(() => initialValue).current`
  *
  * @example
@@ -31,6 +17,20 @@ export function useInitial<X>(initialValue: X): X
  * @returns The initial value
  */
 export function useInitial<X>(getInitialValue: () => X): X
+
+/**
+ * - Equivalent to `useRef(initialValue).current`
+ *
+ * @example
+ *
+ * ```ts
+ * const myData = useInitial({ foo: 'bar' }) // always returns the same object
+ * ```
+ *
+ * @param initialValue - Initial value
+ * @returns The initial value
+ */
+export function useInitial<X>(initialValue: X): X
 
 /**
  * All overloads combined (see JSDoc for previous overloads)

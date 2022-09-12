@@ -5,7 +5,7 @@ import type { GetDeepShape_, GetShape_, InferSchema_, Type_ } from '@voltiso/sch
 import type { Observable } from 'rxjs'
 
 export type ReadonlySubjectWithSchema<S> = Observable<Type_<S>> & {
-	value: Type_<S>
+	get value(): Type_<S>
 
 	get schemable(): S
 	get schema(): InferSchema_<S>

@@ -2,10 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { useEffect, useState } from 'react'
-import type { BehaviorSubject, Observable, OperatorFunction } from 'rxjs'
+import type { BehaviorSubject, Observable } from 'rxjs'
+import { isObservable } from 'rxjs'
 
-export function isBehaviorSubject(x: unknown): x is BehaviorSubject<unknown> {
-	return typeof (x as BehaviorSubject<unknown> | null)?.getValue === 'function'
+// eslint-disable-next-line etc/no-misused-generics
+export function isBehaviorSubject<T = unknown>(
+	x: unknown,
+): x is BehaviorSubject<T> {
+	return typeof (x as BehaviorSubject<T> | null)?.getValue === 'function'
 }
 
 //
@@ -17,41 +21,50 @@ export function isBehaviorSubject(x: unknown): x is BehaviorSubject<unknown> {
  *   getter (mitigate empty render)
  */
 export function useObservable<T>(
-	observable$: BehaviorSubject<T> | Observable<T>,
-	...piped: OperatorFunction<T, T>[]
+	observable$: BehaviorSubject<T> | Observable<T> | T,
+	// ...piped: OperatorFunction<T, T>[]
 ): T
 
-export function useObservable<T>(
+export function useObservable(
 	observable$: undefined,
-	...piped: OperatorFunction<T, T>[]
+	// ...piped: OperatorFunction<T, T>[]
 ): undefined
 
 export function useObservable<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | undefined,
-	...piped: OperatorFunction<T, T>[]
+	observable$: BehaviorSubject<T> | Observable<T> | T | undefined,
+	// ...piped: OperatorFunction<T, T>[]
 ): T | undefined
 
 export function useObservable<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | undefined,
-	...piped: OperatorFunction<T, T>[]
-) {
+	observable$: BehaviorSubject<T> | Observable<T> | T | undefined,
+	// ...piped: OperatorFunction<T, T>[]
+): T | undefined {
 	const [value, setValue] = useState<T>()
 
 	useEffect(() => {
-		if (!observable$) return undefined
+		if (!observable$ || !isObservable(observable$)) return undefined
 
-		const subscription = (
-			observable$.pipe as (...piped: OperatorFunction<T, T>[]) => Observable<T>
-		)(
-			...piped,
-			// eslint-disable-next-line rxjs/no-ignored-error
-		).subscribe(value => setValue(value))
+		// eslint-disable-next-line rxjs/no-ignored-error
+		const subscription = observable$.subscribe(value => setValue(value))
+
+		// const subscription = (
+		// 	observable$.pipe as (...piped: OperatorFunction<T, T>[]) => Observable<T>
+		// )(
+		// 	...piped,
+		// 	// eslint-disable-next-line rxjs/no-ignored-error
+		// ).subscribe(value => setValue(value))
 
 		return () => {
 			subscription.unsubscribe()
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [observable$, ...piped])
+	}, [
+		observable$,
+		// ...piped
+	])
 
-	return isBehaviorSubject(observable$) ? observable$.value : value
+	return isBehaviorSubject<T>(observable$)
+		? observable$.value
+		: isObservable(observable$)
+		? value
+		: observable$
 }

@@ -27,7 +27,7 @@ export namespace UseForm {
 		validators?: UseFormValidators<Type<S>> | undefined
 		// onBeforeSubmit?: () => Promise<void> | void
 		// onCancelSubmit?: () => Promise<void> | void
-		onSubmit: (data$: NestedSubjectWithSchema<S>) => Promise<void> | void
+		onSubmit: (data$: Type_<S>) => Promise<void> | void
 		// onError?: (error: Error) => Promise<void> | void
 	}
 

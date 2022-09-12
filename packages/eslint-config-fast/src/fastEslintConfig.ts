@@ -46,6 +46,9 @@ const pluginsToPick = [
 
 	'rxjs',
 
+	'github',
+	'jsx-a11y',
+
 	'eslint-comments', // !
 
 	// ! framework-specific
@@ -65,7 +68,6 @@ const pluginsToPick = [
 	// 'es',
 	// 'format-message',
 	// 'formatjs',
-	// 'github',
 	// 'html',
 	// 'i18n',
 	// 'i18n-text',
@@ -76,7 +78,6 @@ const pluginsToPick = [
 	// 'json',
 	// 'jsonc',
 	// 'jsx',
-	// 'jsx-a11y',
 	// 'no-constructor-bind',
 	// 'no-explicit-type-exports',
 	// 'no-unsanitized',

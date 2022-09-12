@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/config.eslint.lib",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -37,12 +37,14 @@
 		"clean": "rimraf dist"
 	},
 	"__________DEPS": "__________",
+	"dependencies": {
+		"eslint-define-config": "^1.7.0"
+	},
 	"devDependencies": {
 		"@voltiso/assertor.transform": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"eslint": "^8.23.0",
-		"eslint-define-config": "^1.7.0",
 		"rimraf": "^3.0.2"
 	},
 	"__________ENGINES": "__________",
