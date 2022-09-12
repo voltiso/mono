@@ -13,6 +13,7 @@ import type {
 import type { BehaviorSubject } from 'rxjs'
 
 import type { NestedSubjectReservedField } from './_/NestedSubjectReservedFields'
+import type { NestedSubject } from './NestedSubject'
 
 export type NestedSubjectWithSchemaBase<S extends SchemableLike> = {
 	get schemable(): S
@@ -28,16 +29,18 @@ export type NestedSubjectWithSchemaBase<S extends SchemableLike> = {
 	updateUnchecked(x: PatchFor<OutputType_<S>>): void
 }
 
+/** @internal */
+export type _GetNested<S extends SchemableLike> = [GetShape_<S>] extends [never]
+	? { [k in keyof Type_<S>]: NestedSubject<Type_<S>[k]> }
+	: {
+			[k in keyof GetShape_<S>]: NestedSubjectWithSchema<GetShape_<S>[k]>
+	  }
+
 export type NestedSubjectWithSchema<S extends SchemableLike> =
 	NestedSubjectWithSchemaBase<S> &
 		BehaviorSubject<Type_<S>> &
-		Omit<
-			{
-				[k in keyof GetShape_<S>]: NestedSubjectWithSchema<GetShape_<S>[k]>
-			},
-			NestedSubjectReservedField
-		> & {
-			_: {
-				[k in keyof GetShape_<S>]: NestedSubjectWithSchema<GetShape_<S>[k]>
-			}
+		// eslint-disable-next-line etc/no-internal
+		Omit<_GetNested<S>, NestedSubjectReservedField> & {
+			// eslint-disable-next-line etc/no-internal
+			_: _GetNested<S>
 		}

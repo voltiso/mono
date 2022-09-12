@@ -50,7 +50,7 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 	}
 
 	get schema(): InferSchema_<S> | undefined {
-		if(!this._schemable) return undefined
+		if (!this._schemable) return undefined
 		$assert(this._diContext)
 		return this._diContext.schema(this._schemable) as never
 	}

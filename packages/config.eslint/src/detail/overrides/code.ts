@@ -108,7 +108,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'prefer-destructuring': 0, // hmm, buggy for non-local variables
 		'no-console': 1,
 		'no-else-return': 0,
-		'no-magic-numbers': ['warn', { ignore: [-2, -1, 0, 1, 2] }],
+		'no-magic-numbers': ['warn', { ignore: [-3, -2, -1, 0, 1, 2, 3] }],
 		'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
 		'no-shadow': 0, // we like to shadow
 		'no-ternary': 0, // ternary... hmm, ok.
