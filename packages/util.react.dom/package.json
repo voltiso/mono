@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.react.dom",
-	"version": "7.0.1",
+	"version": "7.0.2",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -33,10 +33,9 @@
 		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/util.react": "workspace:^"
-	},
+	"dependencies": {},
 	"peerDependencies": {
+		"@voltiso/util.react": "workspace:^",
 		"react": "^18.0.0 || ^17.0.0",
 		"react-dom": "^18.0.0 || ^17.0.0"
 	},
@@ -47,6 +46,7 @@
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"@voltiso/script": "workspace:^",
+		"@voltiso/util.react": "workspace:^",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"rimraf": "^3.0.2"

@@ -8,9 +8,10 @@ const observerDiContext = {
 	schema: s.schema,
 }
 
-const createNestedSubjectWithSchema = injectCreateNestedSubjectWithSchema(observerDiContext)
+const createNestedSubjectWithSchema =
+	injectCreateNestedSubjectWithSchema(observerDiContext)
 
-describe('simple', () => {
+describe('NestedSubjectWithSchema', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
@@ -53,6 +54,12 @@ describe('simple', () => {
 
 		let called: string[] = []
 
+		let observerA: unknown = {}
+		data.a.subscribe(x => {
+			observerA = x
+			called.push('a')
+		})
+
 		let observerC = 0
 		data.a.b.c.subscribe(x => {
 			observerC = x
@@ -65,15 +72,9 @@ describe('simple', () => {
 			called.push('c2')
 		})
 
-		let observerA: unknown = {}
-		data.a.subscribe(x => {
-			observerA = x
-			called.push('a')
-		})
-
 		expect(observerC).toBe(123)
 
-		expect(called).toStrictEqual(['c', 'c2', 'a'])
+		expect(called).toStrictEqual(['a', 'c', 'c2'])
 
 		called = []
 

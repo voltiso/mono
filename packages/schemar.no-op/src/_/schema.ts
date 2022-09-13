@@ -17,9 +17,9 @@ export const _schemaBase = {
 		return {
 			isValid: true,
 			issues: [],
-			value
+			value,
 		}
-	}
+	},
 }
 
 /** @internal */

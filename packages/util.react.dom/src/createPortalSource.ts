@@ -17,9 +17,9 @@ export function createPortalSource(ctx: PortalContext): PortalSource {
 			// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
 			useLayoutEffect(update, [])
 
-		if (!ctx.Element) {
-			ctx.Element = props.Element || 'div'
-		}
+		// if (!ctx.Element) {
+		// 	ctx.Element = props.Element || 'div'
+		// }
 
 		if (!ctx.areChildrenConsumed) {
 			// console.log(
@@ -32,7 +32,7 @@ export function createPortalSource(ctx: PortalContext): PortalSource {
 			// console.log('Source: portal children', props)
 
 			// eslint-disable-next-line etc/no-internal
-			if (!ctx.renderTarget) ctx.renderTarget = _createElement(ctx.Element)
+			if (!ctx.renderTarget) ctx.renderTarget = _createElement('div')
 
 			if (ctx.renderTarget) {
 				delete ctx.firstRenderChildren

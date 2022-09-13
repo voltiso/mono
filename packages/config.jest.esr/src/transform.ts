@@ -4,9 +4,10 @@
 /* eslint-disable no-console */
 /* eslint-disable n/no-sync */
 
+import * as path from 'node:path'
+
 import * as esbuild from 'esbuild'
 import flowRemoveTypes from 'flow-remove-types'
-import * as path from 'node:path'
 
 //
 

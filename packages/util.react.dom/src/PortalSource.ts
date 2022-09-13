@@ -5,5 +5,5 @@ import type { FC, ReactNode } from 'react'
 
 export type PortalSource = FC<{
 	children?: ReactNode
-	Element?: keyof JSX.IntrinsicElements | undefined
+	// Element?: keyof JSX.IntrinsicElements | undefined
 }>

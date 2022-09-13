@@ -15,6 +15,12 @@ export type NestedSubjectRootOptions = {
 export type NestedSubjectWithSchemaRootOptions<S> = {
 	diContext: ObserverDiContext
 	schemable: S
+
+	/**
+	 * Initial value
+	 *
+	 * @defaultValue `{}`
+	 */
 	initialValue?: InputType_<S> | AlsoAccept<unknown>
 }
 

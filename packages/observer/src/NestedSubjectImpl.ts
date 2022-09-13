@@ -153,13 +153,19 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 		} else {
 			assumeType<NestedSubjectWithSchemaRootOptions<S>>(options)
 			this._diContext = options.diContext
+
 			this._schemable = options.schemable
+
 			this._subject$ = new BehaviorSubject(
 				// eslint-disable-next-line etc/no-internal
 				_validate({
 					diContext: this._diContext,
 					schemable: this._schemable,
-					value: options.initialValue,
+
+					value:
+						typeof options.initialValue !== 'undefined'
+							? options.initialValue
+							: {},
 				}),
 			) as never
 

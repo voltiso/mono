@@ -29,11 +29,11 @@ export type NestedSubject<T> = NestedSubjectBase<T> &
 	BehaviorSubject<T> &
 	Omit<
 		{
-			[k in keyof T]: NestedSubject<T[k]>
+			[k in keyof T]-?: NestedSubject<Exclude<T[k], undefined>>
 		},
 		NestedSubjectReservedField
 	> & {
 		_: {
-			[k in keyof T]: NestedSubject<T[k]>
+			[k in keyof T]-?: NestedSubject<Exclude<T[k], undefined>>
 		}
 	}

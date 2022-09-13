@@ -11,7 +11,7 @@ export function _validate(options: {
 	schemable?: SchemableLike
 	value: unknown
 }) {
-	if (options.diContext)
+	if (options.diContext && typeof options.schemable !== 'undefined')
 		return options.diContext.schema(options.schemable).validate(options.value)
 	else return options.value
 }

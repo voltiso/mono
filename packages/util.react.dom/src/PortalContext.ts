@@ -4,7 +4,7 @@
 import type { ReactNode } from 'react'
 
 export type PortalContext = {
-	Element?: keyof JSX.IntrinsicElements
+	// Element?: keyof JSX.IntrinsicElements
 	renderTarget?: HTMLElement | undefined
 
 	originalDestination?: HTMLElement

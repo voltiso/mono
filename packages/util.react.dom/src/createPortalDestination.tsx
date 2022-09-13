@@ -16,7 +16,9 @@ export function createPortalDestination(ctx: PortalContext): PortalDestination {
 			// eslint-disable-next-line react-hooks/rules-of-hooks, react-hooks/exhaustive-deps
 			useLayoutEffect(update, [])
 
-		const RelaxedElementType = ctx.Element as 'div' | 'span' // for TS not to complain
+		// const Element = ctx.Element as 'div' | 'span' // for TS not to complain
+
+		const Element = 'div'
 
 		if (!ctx.renderTarget) {
 			const children = ctx.firstRenderChildren
@@ -24,12 +26,12 @@ export function createPortalDestination(ctx: PortalContext): PortalDestination {
 			// delete ctx.firstRenderChildren
 
 			ctx.areChildrenConsumed = true
-			return <RelaxedElementType>{children}</RelaxedElementType>
+			return <Element>{children}</Element>
 		} else {
 			// console.log('Destination: have portal')
 
 			return (
-				<RelaxedElementType
+				<Element
 					ref={destination => {
 						// console.log('setRef', destination)
 
