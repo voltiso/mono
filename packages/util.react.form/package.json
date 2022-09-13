@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.react.form",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -42,6 +42,7 @@
 	"peerDependencies": {
 		"@types/react": "^18.0.19",
 		"@voltiso/observer": "workspace:^",
+		"@voltiso/schemar": "workspace:^",
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/util": "workspace:^",
 		"react": "^18.1.0 || ^17",
