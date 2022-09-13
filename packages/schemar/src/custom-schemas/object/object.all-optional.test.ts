@@ -1,0 +1,67 @@
+import type { InputType, OutputType } from '@voltiso/schemar.types'
+import { Assert, IsIdentical } from '@voltiso/util'
+import * as s from '~'
+
+describe('object', () => {
+	it('all-optional', () => {
+		expect.hasAssertions()
+
+		const mySchema = {
+			nested: {
+				a: s.string.optional,
+			},
+		}
+
+		type In = InputType<typeof mySchema>
+		Assert<
+			IsIdentical<
+				In,
+				| {
+						nested?:
+							| {
+									a?: string | undefined
+							  }
+							| undefined
+				  }
+				| undefined
+			>
+		>()
+
+		type Out = OutputType<typeof mySchema>
+		Assert<
+			IsIdentical<
+				Out,
+				{
+					nested: {
+						a?: string
+					}
+				}
+			>
+		>()
+
+		// pass-through - correct value
+		expect(
+			s.schema(mySchema).validate({ nested: { a: 'test' } }),
+		).toStrictEqual({ nested: { a: 'test' } })
+
+		// removes `undefined` optional properties
+		expect(
+			s.schema(mySchema).validate({ nested: { a: undefined } }),
+		).toStrictEqual({ nested: {} })
+
+		// pass-through - correct value
+		expect(s.schema(mySchema).validate({ nested: {} })).toStrictEqual({
+			nested: {},
+		})
+
+		// creates missing inferable sub-objects
+		expect(s.schema(mySchema).validate({})).toStrictEqual({
+			nested: {},
+		})
+
+		// creates everything
+		expect(s.schema(mySchema).validate(undefined)).toStrictEqual({
+			nested: {},
+		})
+	})
+})

@@ -27,13 +27,13 @@ describe('InferSchema', () => {
 		Assert<IsIdentical<B, IObject>>()
 
 		type C = InferSchema<Object<InferableObject>>
-		Assert<IsIdentical<C, IObject>>()
+		Assert<IsIdentical<C, Object<InferableObject>>>()
 
 		type D = InferSchema<SchemableObject>
 		Assert<IsIdentical<D, Object<InferableObject> | IObject>>()
 
 		type E = InferSchema<SchemableObjectLike>
-		Assert<IsIdentical<E, Object<InferableObject> | IObject>>()
+		Assert<IsIdentical<E, IObject>>()
 
 		type F = InferSchema<SchemaLike>
 		Assert<IsIdentical<F, ISchema>>

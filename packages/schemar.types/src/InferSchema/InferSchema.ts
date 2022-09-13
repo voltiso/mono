@@ -3,19 +3,10 @@
 
 import type { Newable } from '@voltiso/util'
 
-import type {
-	Instance,
-	IObject,
-	Literal,
-	MutableTuple,
-	Object,
-	ObjectLike,
-	ReadonlyTuple,
-} from '~/custom-schemas'
+import type * as t from '~/custom-schemas'
 import type {
 	InferableLiteral,
 	InferableMutableTupleLike,
-	InferableObject,
 	InferableObjectLike,
 	InferableReadonlyTupleLike,
 } from '~/Inferable'
@@ -23,27 +14,23 @@ import type { ISchema, SchemaLike } from '~/Schema'
 import type { SchemableLike } from '~/Schemable'
 
 export type InferSchema_<S> = S extends Newable
-	? Instance<S>
+	? t.Instance<S>
 	: S extends InferableMutableTupleLike
-	? MutableTuple<S>
+	? t.MutableTuple<S>
 	: S extends InferableReadonlyTupleLike
-	? ReadonlyTuple<[...S]>
-	: S extends InferableObjectLike
-	? // eslint-disable-next-line @typescript-eslint/ban-types
-	  Object<InferableObject>
-	: S extends ObjectLike
-	? IObject
-	: S extends InferableObjectLike
-	? // eslint-disable-next-line @typescript-eslint/ban-types
-	  Object<S>
-	: S extends ISchema
-	? S
+	? t.ReadonlyTuple<[...S]>
+	: InferableObjectLike extends S
+	? t.IObject
 	: SchemaLike extends S
 	? ISchema
+	: t.ObjectLike extends S
+	? t.IObject
+	: S extends InferableObjectLike
+	? t.Object<S>
 	: S extends SchemaLike
 	? S
 	: S extends InferableLiteral
-	? Literal<S>
+	? t.Literal<S>
 	: never
 
 export type InferSchema<S extends SchemableLike> = InferSchema_<S>

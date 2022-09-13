@@ -19,9 +19,9 @@ import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { getDeepShape } from '@voltiso/schemar.types'
 import {
 	getEntries,
-	getKeys,
 	getValues,
 	hasProperty,
+	isObject,
 	lazyConstructor,
 	undef,
 } from '@voltiso/util'
@@ -141,10 +141,10 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	override _getIssuesImpl(x: unknown): ValidationIssue[] {
 		let issues = super._getIssuesImpl(x)
 
-		if (typeof x !== 'object' || x === null) {
+		if (!isObject(x)) {
 			issues.push(
 				new ValidationIssue({
-					expectedDescription: 'be object (non-null)',
+					expectedDescription: 'be object',
 					received: x,
 				}),
 			)
@@ -266,11 +266,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		// eslint-disable-next-line no-param-reassign
 		x = super._fixImpl(x)
 
-		let autoCreated = false
+		// let autoCreated = false
 		if (x === undefined) {
 			// eslint-disable-next-line no-param-reassign
 			x = {}
-			autoCreated = true
+			// autoCreated = true
 		}
 
 		if (typeof x === 'object') {
@@ -334,13 +334,13 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			}
 		}
 
-		if (
-			autoCreated &&
-			getKeys(x as never, { includeSymbols: true }).length === 0
-		) {
-			// eslint-disable-next-line no-param-reassign
-			x = undefined
-		}
+		// if (
+		// 	autoCreated &&
+		// 	getKeys(x as never, { includeSymbols: true }).length === 0
+		// ) {
+		// 	// eslint-disable-next-line no-param-reassign
+		// 	x = undefined
+		// }
 
 		// eslint-disable-next-line no-param-reassign
 		x = super._fixImpl(x)

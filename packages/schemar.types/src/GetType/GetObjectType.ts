@@ -13,6 +13,7 @@ export type _ObjectTypeNoSignature<
 	T,
 	O extends Record<keyof T, SchemaOptions>,
 	IO extends GetTypeOptions,
+	// eslint-disable-next-line etc/no-internal
 > = _ObjectTypeFinalize<
 	{
 		[k in keyof T as false extends O[k]['isReadonly']
@@ -69,18 +70,20 @@ export type _ObjectTypeIsOptional<
 	? F
 	: never
 
-/** @inline */
+/** @inline @internal */
 export type _ObjectTypeFinalize<
 	T,
 	IO extends GetTypeOptions,
 > = IO['kind'] extends 'in'
-	? _<
+	? _ObjectTypeFinalize2<
 			{
 				[k in keyof T as object extends T[k] ? never : k]: T[k]
 			} & {
-				[k in keyof T as object extends T[k] ? k : never]?: T[k]
+				[k in keyof T as object extends T[k] ? k : never]?: T[k] | undefined
 			}
 	  >
 	: IO['kind'] extends 'out'
 	? _<T>
 	: never
+
+export type _ObjectTypeFinalize2<T> = object extends T ? _<T> | undefined : _<T>

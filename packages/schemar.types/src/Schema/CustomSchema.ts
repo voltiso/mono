@@ -9,27 +9,21 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
-import type {
-	_,
-	AlsoAccept,
-	IsCompatible,
-	IsIdentical,
-	Throw,
-} from '@voltiso/util'
+import type { AlsoAccept, Throw } from '@voltiso/util'
 
 import type {
 	DefaultSchemaOptions,
 	DefineSchema,
-	InferSchema_,
 	MergeSchemaOptions,
 	SchemableLike,
 	SchemaOptions,
-	SimpleSchema,
 	Union,
 	ValidationIssue,
 	ValidationResult,
 } from '~'
 import type { ISchema, SchemaLike } from '~/Schema'
+
+import type { SimplifySchema } from './Simplify'
 
 export type $CustomSchema<O extends Partial<SchemaOptions> = {}> = O extends any
 	? CustomSchema<O>
@@ -313,62 +307,6 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	get simple(): SimplifySchema<this>
 }
-
-/** @inline */
-export type CanBeSimpleSchema<
-	S extends {
-		OutputType: any
-		InputType: any
-		[OPTIONS]: any
-	},
-	True = true,
-	False = false,
-> = true extends S[OPTIONS]['isOptional']
-	? False
-	: true extends S[OPTIONS]['isReadonly']
-	? False
-	: false extends IsCompatible<S['OutputType'], S['InputType']>
-	? False
-	: True
-
-/** @inline */
-export type Simplify<S extends SchemableLike> = SimplifySchema<InferSchema_<S>>
-
-/** @inline */
-export type SimplifySchema<
-	This extends {
-		OutputType: any
-		InputType: any
-		[OPTIONS]: any
-	},
-> = SchemaLike<never> extends This
-	? This
-	: ISchema<never> extends This
-	? This
-	: CanBeSimpleSchema<This> extends true
-	? SimpleSchema<This[OPTIONS]['Output']>
-	: CustomSchema<
-			_<
-				(This[OPTIONS]['isOptional'] extends false
-					? {}
-					: { isOptional: This[OPTIONS]['isOptional'] }) &
-					(This[OPTIONS]['isReadonly'] extends false
-						? {}
-						: { isReadonly: This[OPTIONS]['isReadonly'] }) &
-					IsIdentical<
-						This['OutputType'],
-						unknown,
-						unknown,
-						{ Output: This['OutputType'] }
-					> &
-					IsIdentical<
-						This['InputType'],
-						unknown,
-						unknown,
-						{ Input: This['InputType'] }
-					>
-			>
-	  >
 
 /** @inline */
 export type WithDefault<This, DefaultValue> = This extends {

@@ -15,7 +15,7 @@ export type ObjectIndexSignatureEntry = {
 
 export interface ObjectOptions extends SchemaOptions {
 	Output: object
-	Input: object
+	Input: object | undefined
 
 	shape: InferableObjectLike
 
