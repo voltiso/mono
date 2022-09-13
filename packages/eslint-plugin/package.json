@@ -35,7 +35,7 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@typescript-eslint/utils": "^5.36.2",
+		"@typescript-eslint/utils": "^5.37.0",
 		"builtins": "^5.0.1",
 		"eslint-module-utils": "^2.7.4",
 		"is-core-module": "^2.10.0",
@@ -52,7 +52,7 @@
 		"@voltiso/assertor.transform": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/script": "workspace:^",
-		"eslint": "^8.23.0",
+		"eslint": "^8.23.1",
 		"import-meta-resolve": "^2.1.0",
 		"typescript": "^4.8.3"
 	}

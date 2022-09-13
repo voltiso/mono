@@ -49,7 +49,8 @@ export type GetPropertyComplex<
  * Returns `object[property]`
  *
  * - Throws on prototype pollution
- * - Throws on non-existing property
+ * - Throws on non-existing property (use `tryGetProperty` to return `undefined`
+ *   instead)
  *
  * @example
  *
@@ -70,9 +71,15 @@ export function getProperty<
 
 	assertNotPolluting(property)
 
-	// ! no check - it may be proxy object 🤔
-	// if (!((property as keyof any) in object))
-	// 	throw new GetPropertyError(object, property)
+	const result = object[property as keyof Obj]
 
-	return object[property as keyof Obj] as never
+	// ! it may be proxy object 🤔
+	if (
+		typeof result === 'undefined' &&
+		!((property as keyof any) in object) &&
+		!Object.prototype.hasOwnProperty.call(object, property)
+	)
+		throw new GetPropertyError(object, property)
+
+	return result as never
 }

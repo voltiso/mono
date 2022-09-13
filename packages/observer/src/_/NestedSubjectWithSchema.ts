@@ -7,16 +7,35 @@ import type {
 	GetShape_,
 	InferSchema_,
 	InputType_,
+	ISchema,
 	OutputType_,
 	SchemableLike,
 	Type_,
 } from '@voltiso/schemar.types'
+import type { IBehaviorSubject } from '@voltiso/util.rxjs'
 import type { BehaviorSubject } from 'rxjs'
 
 import type { NestedSubject } from './NestedSubject'
 import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 
-export type NestedSubjectWithSchemaBase<S extends SchemableLike> = {
+export type INestedSubjectWithSchemaBase = {
+	get schemable(): SchemableLike
+	get schema(): ISchema
+	get shape(): unknown
+	get deepShape(): unknown
+
+	set(x: unknown): void
+	setUnchecked(x: unknown): void
+
+	patch(x: unknown): void
+	patchUnchecked(x: unknown): void
+
+	update(x: unknown): void
+	updateUnchecked(x: unknown): void
+}
+
+export interface NestedSubjectWithSchemaBase<S extends SchemableLike>
+	extends INestedSubjectWithSchemaBase {
 	get schemable(): S
 	get schema(): InferSchema_<S>
 	get shape(): GetShape_<S>
@@ -32,12 +51,22 @@ export type NestedSubjectWithSchemaBase<S extends SchemableLike> = {
 	updateUnchecked(x: PatchFor<OutputType_<S>>): void
 }
 
+//
+
 /** @internal */
 export type _GetNested<S extends SchemableLike> = [GetShape_<S>] extends [never]
 	? { [k in keyof Type_<S>]: NestedSubject<Type_<S>[k]> }
 	: {
 			[k in keyof GetShape_<S>]: NestedSubjectWithSchema<GetShape_<S>[k]>
 	  }
+
+//
+
+export interface INestedSubjectWithSchema
+	extends INestedSubjectWithSchemaBase,
+		IBehaviorSubject {
+	_: {}
+}
 
 export type NestedSubjectWithSchema<S extends SchemableLike> =
 	NestedSubjectWithSchemaBase<S> &

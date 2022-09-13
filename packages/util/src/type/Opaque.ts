@@ -1,9 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-declare const tag: unique symbol
+export declare const TAG: unique symbol
+export type TAG = typeof TAG
+
 export interface Tagged<Token> {
-	readonly [tag]: Token
+	readonly [TAG]: Token
 }
 
 export type Opaque<X, name> = X & Tagged<name>

@@ -2,14 +2,27 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { PatchFor } from '@voltiso/patcher'
+import type { IBehaviorSubject } from '@voltiso/util.rxjs'
 import type { BehaviorSubject } from 'rxjs'
 
 import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 
-export type NestedSubjectBase<T> = {
+export interface INestedSubjectBase {
+	set(x: unknown): void
+	patch(x: unknown): void
+	update(x: unknown): void
+}
+
+export interface NestedSubjectBase<T> {
 	set(x: T): void
 	patch(x: PatchFor<T>): void
 	update(x: PatchFor<T>): void
+}
+
+//
+
+export interface INestedSubject extends INestedSubjectBase, IBehaviorSubject {
+	_: {}
 }
 
 export type NestedSubject<T> = NestedSubjectBase<T> &

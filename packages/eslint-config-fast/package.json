@@ -37,7 +37,7 @@
 	"__________DEPS": "__________",
 	"dependencies": {
 		"@rushstack/eslint-patch": "^1.1.4",
-		"@typescript-eslint/parser": "^5.36.2",
+		"@typescript-eslint/parser": "^5.37.0",
 		"@voltiso/config.eslint": "workspace:^",
 		"@voltiso/config.eslint.lib": "workspace:^",
 		"@voltiso/eslint-plugin": "workspace:^",
@@ -79,7 +79,7 @@
 		"eslint-plugin-node-dependencies": "^0.9.1",
 		"eslint-plugin-notice": "^0.9.10",
 		"eslint-plugin-promise": "^6.0.1",
-		"eslint-plugin-putout": "^16.2.1",
+		"eslint-plugin-putout": "^16.3.0",
 		"eslint-plugin-react": "^7.31.8",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-native": "^4.0.0",
@@ -99,7 +99,7 @@
 		"eslint-plugin-unicorn": "^43.0.2",
 		"eslint-plugin-unused-imports": "^2.0.0",
 		"eslint-plugin-yml": "^1.2.0",
-		"putout": "^27.7.0"
+		"putout": "^27.8.0"
 	},
 	"peerDependencies": {
 		"eslint": "*",
@@ -108,7 +108,7 @@
 	"devDependencies": {
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/script": "workspace:^",
-		"eslint": "^8.23.0",
+		"eslint": "^8.23.1",
 		"typescript": "^4.8.3"
 	}
 }

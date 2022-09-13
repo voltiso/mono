@@ -71,7 +71,7 @@
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/react-native": "^11.0.0",
 		"@types/react": "^18.0.19",
-		"@types/react-native": "^0.69.8",
+		"@types/react-native": "^0.70.0",
 		"@types/react-test-renderer": "^18.0.0",
 		"@types/testing-library__jest-dom": "^5.14.5",
 		"@voltiso/assertor": "workspace:^2.0.0",

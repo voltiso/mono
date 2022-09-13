@@ -40,7 +40,7 @@
 		"esbuild": ">= 0.14.49"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.16",
+		"@types/node": "^18.7.17",
 		"@voltiso/config.ts.build.cjs": "workspace:^2.0.1",
 		"@voltiso/config.ts.build.esm": "workspace:^2.0.1",
 		"esbuild": "^0.15.7",

@@ -26,7 +26,12 @@ describe('useForm', () => {
 
 		const appState$ = createNestedSubjectWithSchema({
 			schemable: {
-				formData: sFormData,
+				formData: {
+					name: s.string.optional,
+					num: s.number,
+					strArr: s.array(s.string),
+					isCustomer: s.unknown,
+				},
 			},
 
 			initialValue: {
@@ -43,6 +48,8 @@ describe('useForm', () => {
 
 		const Component = () => {
 			form$ = useForm({
+				schemable: sFormData,
+
 				data$: appState$.formData,
 
 				validators: {

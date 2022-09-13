@@ -3,10 +3,13 @@
 
 import type { NestedSubject } from '@voltiso/observer'
 import { createNestedSubject } from '@voltiso/observer'
+import * as s from '@voltiso/schemar'
 import type {
 	InferableLiteral,
+	SchemableObject,
 	SchemableObjectLike,
 	SchemaLike,
+	Type_,
 } from '@voltiso/schemar.types'
 import type { Path } from '@voltiso/util'
 import { deepMapValues, get } from '@voltiso/util'
@@ -52,20 +55,23 @@ function _initializeResult<S extends SchemableObjectLike>(
 	options: UseForm.Options<S>,
 	mutable: UseForm.MutableState<S>,
 ): UseForm.RawResult<S> {
-	const deepShape = options.data$.schema.getDeepShape
+	const deepShape = s.infer(options.schemable as SchemableObject).getDeepShape
+
+	const data$ = (options.data$ ||
+		createNestedSubject<Type_<S>>()) as NestedSubject<Type_<S>>
 
 	const fields = deepMapValues(
 		deepShape,
 		(_value: SchemaLike | InferableLiteral, path) => ({
 			props: {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-				value: get(options.data$.value, ...(path as any)),
+				value: get(data$.value, ...(path as any)),
 
 				onChange: (event: ChangeEvent<HTMLInputElement>) => {
 					const value = event.target.value
 
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					get(options.data$, ...(path as any)).set(value as never)
+					get(data$, ...(path as any)).set(value as never)
 
 					const valuePropPath = [
 						...path,
@@ -109,7 +115,7 @@ function _initializeResult<S extends SchemableObjectLike>(
 				// 				await handleError(error)
 				// 			}
 
-				void options.onSubmit(options.data$.value)
+				void options.onSubmit(data$.value)
 			},
 
 			ref: () => {

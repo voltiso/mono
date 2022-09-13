@@ -11,8 +11,7 @@
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
-		"dist",
-		"src"
+		"dist"
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {

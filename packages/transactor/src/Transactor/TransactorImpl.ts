@@ -58,6 +58,7 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 	}
 
 	init(database: FirestoreLike.Database, module: FirestoreLikeModule): void {
+		checkEnv()
 		this._databaseContext = {
 			database,
 			module,
@@ -82,7 +83,6 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 	// _transactionLocalStorage: AsyncLocalStorage<ContextOverride>
 
 	constructor(...args: TransactorConstructorParameters) {
-		checkEnv()
 		super({ transactor: undef as unknown as TransactorImpl }) // hack
 		this._context.transactor = this
 
@@ -103,13 +103,12 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 				;[database, myModule] = args
 				break
 
-			// eslint-disable-next-line no-magic-numbers
 			case 3:
 				;[database, myModule, partialOptions] = args
 				break
 
 			default:
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-magic-numbers
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (args.length > 3) throw new Error('expected 0, 1 or 2 arguments')
 		}
 

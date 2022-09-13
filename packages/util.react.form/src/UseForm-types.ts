@@ -2,8 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	INestedSubject,
+	INestedSubjectWithSchema,
 	NestedSubject,
-	NestedSubjectWithSchema,
 	ReadonlyNestedSubject,
 } from '@voltiso/observer'
 import type {
@@ -22,8 +23,13 @@ import type { UseFormValidators } from './Validators'
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UseForm {
 	export type Options<S extends SchemableObjectLike> = {
-		data$: NestedSubjectWithSchema<S>
-		// state: NestedSubject<UseFormState>
+		schemable: S
+
+		data$?: INestedSubject | INestedSubjectWithSchema | undefined
+		// | NestedSubject<Type_<S>>
+		// | NestedSubjectWithSchema<S>
+		// | AlsoAccept<INestedSubject | INestedSubjectWithSchema>
+
 		validators?: UseFormValidators<Type<S>> | undefined
 		// onBeforeSubmit?: () => Promise<void> | void
 		// onCancelSubmit?: () => Promise<void> | void
