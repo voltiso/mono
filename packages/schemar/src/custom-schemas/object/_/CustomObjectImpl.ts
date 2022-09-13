@@ -267,11 +267,10 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		x = super._fixImpl(x)
 
 		// let autoCreated = false
-		if (x === undefined) {
-			// eslint-disable-next-line no-param-reassign
-			x = {}
-			// autoCreated = true
-		}
+		// if (x === undefined) {
+		// x = {}
+		// autoCreated = true
+		// }
 
 		if (typeof x === 'object') {
 			// eslint-disable-next-line no-param-reassign

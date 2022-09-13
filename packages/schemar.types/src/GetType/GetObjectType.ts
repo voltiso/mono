@@ -51,6 +51,17 @@ export type ObjectType_<
 	  >
 	: never
 
+export type ImplicitObjectType_<
+	T extends object,
+	IO extends GetTypeOptions,
+> = IO['kind'] extends 'in'
+	? object extends ObjectType_<T, IO>
+		? ObjectType_<T, IO> | undefined
+		: ObjectType_<T, IO>
+	: IO['kind'] extends 'out'
+	? ObjectType_<T, IO>
+	: never
+
 /** @inline */
 export type _ObjectTypeIsOptional<
 	O extends SchemaOptions,
@@ -75,7 +86,7 @@ export type _ObjectTypeFinalize<
 	T,
 	IO extends GetTypeOptions,
 > = IO['kind'] extends 'in'
-	? _ObjectTypeFinalize2<
+	? _<
 			{
 				[k in keyof T as object extends T[k] ? never : k]: T[k]
 			} & {
@@ -85,5 +96,3 @@ export type _ObjectTypeFinalize<
 	: IO['kind'] extends 'out'
 	? _<T>
 	: never
-
-export type _ObjectTypeFinalize2<T> = object extends T ? _<T> | undefined : _<T>

@@ -9,7 +9,7 @@ import type {
 } from '~/Inferable'
 import type { SchemaLike } from '~/Schema'
 
-import type { ObjectType_ } from './GetObjectType'
+import type { ImplicitObjectType_ } from './GetObjectType'
 import type { TupleType_ } from './GetTupleType'
 import type { GetTypeOptions } from './GetTypeOptions'
 
@@ -32,7 +32,7 @@ export type Type_<L, IO extends GetTypeOptions = { kind: 'out' }> = L extends {
 	: L extends InferableTuple
 	? TupleType_<L, IO>
 	: L extends InferableObject
-	? ObjectType_<L, IO>
+	? ImplicitObjectType_<L, IO>
 	: object extends L
 	? object
 	: never

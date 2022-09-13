@@ -5,10 +5,11 @@ import type {
 	InferableLike,
 	InferableLiteral,
 	InferSchemaNoReadonlyTuple,
+	ISchema,
 	SchemableLike,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import { isConstructor } from '@voltiso/util'
+import { getValues, isConstructor } from '@voltiso/util'
 
 import { isSchema } from '~'
 import { instance, literal, object, tuple } from '~/custom-schemas'
@@ -63,5 +64,25 @@ export function infer<T extends SchemableLike>(
 	} else if (isConstructor(t)) {
 		return instance(t) as never
 	} else if (Array.isArray(t)) return tuple(...t) as never
-	else return object(t as never) as never
+	else {
+		/**
+		 * If possible, default to `{}` so that it accepts `undefined` (only
+		 * possible if no input properties are required)
+		 */
+		let allChildrenOptional = true
+		for (const value of getValues(t as object, { includeSymbols: true })) {
+			const childSchema = infer(value) as ISchema
+			if (
+				!childSchema.isOptional &&
+				!childSchema.isStrictOptional &&
+				!childSchema.hasDefault
+			) {
+				allChildrenOptional = false
+				break
+			}
+		}
+		if (allChildrenOptional)
+			return object(t as never).default({} as never) as never
+		else return object(t as never) as never
+	}
 }

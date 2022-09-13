@@ -26,7 +26,7 @@ export type InferSchema_<S> = S extends Newable
 	: t.ObjectLike extends S
 	? t.IObject
 	: S extends InferableObjectLike
-	? t.Object<S>
+	? t.ImplicitObject<S>
 	: S extends SchemaLike
 	? S
 	: S extends InferableLiteral

@@ -265,9 +265,9 @@ describe('object', () => {
 		expect.hasAssertions()
 
 		expect(s.object({}).hasDefault).toBe(false)
-		expect(s.infer({}).hasDefault).toBe(false)
-		// expect(s.infer({}).hasDefault).toBe(true)
-		// expect(s.infer({}).getDefault).toStrictEqual({})
+
+		expect(s.schema({}).hasDefault).toBe(true)
+		expect(s.infer({}).hasDefault).toBe(true)
 	})
 
 	it('nested', () => {
@@ -281,13 +281,25 @@ describe('object', () => {
 			},
 		})
 
-		type T = OutputType<typeof t>
-		Assert<IsIdentical<T, { a: { b: { c: number } } }>>()
+		type Out = OutputType<typeof t>
+		Assert<IsIdentical<Out, { a: { b: { c: number } } }>>()
 
+		type In = InputType<typeof t>
 		Assert<
 			IsIdentical<
-				InputType<typeof t>,
-				{ a?: { b?: { c?: number | undefined } } }
+				In,
+				| {
+						a?:
+							| {
+									b?:
+										| {
+												c?: number | undefined
+										  }
+										| undefined
+							  }
+							| undefined
+				  }
+				| undefined
 			>
 		>()
 

@@ -1,5 +1,10 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { InputType, OutputType } from '@voltiso/schemar.types'
-import { Assert, IsIdentical } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
+
 import * as s from '~'
 
 describe('object', () => {
@@ -63,5 +68,19 @@ describe('object', () => {
 		expect(s.schema(mySchema).validate(undefined)).toStrictEqual({
 			nested: {},
 		})
+
+		// ! explicit `s.object`
+
+		// explicit s.object does not default to `{}` (does not accept `undefined` as input)
+		expect(() => s.object(mySchema).validate(undefined)).toThrow('undefined')
+
+		expect(s.object(mySchema).validate({})).toStrictEqual({ nested: {} })
+
+		// ! implicit `s.infer`
+
+		// explicit s.object does not default to `{}` (does not accept `undefined` as input)
+		expect(s.infer(mySchema).validate(undefined)).toStrictEqual({ nested: {} })
+
+		expect(s.infer(mySchema).validate({})).toStrictEqual({ nested: {} })
 	})
 })
