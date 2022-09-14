@@ -12,6 +12,7 @@ import type {
 	Type_,
 } from '@voltiso/schemar.types'
 import type { Path } from '@voltiso/util'
+import { tryGet } from '@voltiso/util'
 import { deepMapValues, get } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
 import type { ChangeEvent, FormEvent } from 'react'
@@ -65,7 +66,7 @@ function _initializeResult<S extends SchemableObjectLike>(
 		(_value: SchemaLike | InferableLiteral, path) => ({
 			props: {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-				value: get(data$.value, ...(path as any)),
+				value: tryGet(data$.value, ...(path as any)),
 
 				onChange: (event: ChangeEvent<HTMLInputElement>) => {
 					const value = event.target.value

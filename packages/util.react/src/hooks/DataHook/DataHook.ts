@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from '@voltiso/util'
+import type { Merge2Reverse_ } from '@voltiso/util'
 
 import type { DataHookConstructor } from '.'
 
@@ -13,17 +13,22 @@ class DataHookImpl<D extends object> {
 
 	readonly error?: Error
 
-	get exists() {
-		if (this.data === undefined) return undefined
+	get exists(): boolean | undefined {
+		if (typeof this.data === 'undefined') return undefined
 		else return this.data !== null
 	}
 
-	constructor(p: { loading?: boolean; data?: D | null; error?: Error }) {
+	constructor(p: {
+		loading?: boolean
+		data?: D | null
+		error?: Error | string
+	}) {
 		this.loading = p.loading || false
 
 		if (typeof p.data !== 'undefined') this.data = p.data
 
-		if (p.error) this.error = p.error
+		if (p.error)
+			this.error = typeof p.error === 'string' ? new Error(p.error) : p.error
 
 		Object.freeze(this)
 
@@ -37,6 +42,50 @@ class DataHookImpl<D extends object> {
 	}
 }
 
-export type DataHook<D extends object> = Merge2_<Partial<D>, DataHookImpl<D>>
+export type DataHookLoading<D extends object> = Merge2Reverse_<
+	{
+		readonly data?: undefined
+		readonly loading: true
+		readonly error?: undefined
+		readonly exists: undefined
+	},
+	{ [k in keyof D]?: undefined }
+>
 
-export const DataHook = DataHookImpl as DataHookConstructor
+export type DataHookError<D extends object> = Merge2Reverse_<
+	{
+		readonly data?: undefined
+		readonly loading: false
+		readonly error: Error
+		readonly exists: undefined
+	},
+	{ [k in keyof D]?: undefined }
+>
+
+export type DataHookExists<D extends object> = Merge2Reverse_<
+	{
+		readonly data: D
+		readonly loading: false
+		readonly error?: undefined
+		readonly exists: true
+	},
+	D
+>
+
+export type DataHookNotExists<D extends object> = Merge2Reverse_<
+	{
+		readonly data: null
+		readonly loading: false
+		readonly error?: undefined
+		readonly exists: false
+	},
+	{ [k in keyof D]?: undefined }
+>
+
+export type DataHook<D extends object> =
+	| DataHookLoading<D>
+	| DataHookError<D>
+	| DataHookExists<D>
+	| DataHookNotExists<D>
+
+export const DataHook = DataHookImpl as unknown as DataHookConstructor

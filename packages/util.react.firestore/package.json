@@ -1,6 +1,6 @@
 {
-	"name": "@voltiso/util.react",
-	"version": "7.11.1",
+	"name": "@voltiso/util.react.firestore",
+	"version": "0.0.1",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -15,8 +15,6 @@
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
-		"__________DEV": "__________",
-		"dev": "v dev",
 		"__________TEST": "__________",
 		"test": "jest",
 		"__________LINT": "__________",
@@ -32,33 +30,35 @@
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnlyFast",
 		"__________MISC": "__________",
-		"clean": "v clean"
+		"clean": "v clean",
+		"trace": "v trace",
+		"trace:run": "v traceRun",
+		"typecov": "v typecov"
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"@voltiso/util": "workspace:^",
-		"react-intersection-observer": "^9.4.0"
+		"@voltiso/util.react": "workspace:^"
 	},
 	"peerDependencies": {
-		"react": "^18.0.0 || ^17.0.0"
+		"@types/react": "^18.0.19",
+		"react": "^18.1.0 || ^17"
+	},
+	"peerDependenciesMeta": {
+		"rxjs": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
-		"@babel/core": "^7.19.0",
-		"@babel/plugin-proposal-decorators": "^7.19.0",
-		"@babel/plugin-transform-react-jsx": "^7.19.0",
-		"@babel/preset-env": "^7.19.0",
-		"@testing-library/react": "^13.4.0",
 		"@types/react": "^18.0.19",
-		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-native": "^0.70.0"
+		"react": "^18.2.0"
 	},
 	"__________MISC": "__________",
 	"engines": {
 		"node": "16"
+	},
+	"typeCoverage": {
+		"is": 0
 	}
 }

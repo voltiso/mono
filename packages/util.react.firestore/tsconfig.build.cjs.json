@@ -1,0 +1,20 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	"extends": "@voltiso/config.ts.build.cjs",
+
+	"compilerOptions": {
+		"lib": ["DOM"],
+
+		"outDir": "dist/cjs",
+		"rootDir": "src",
+
+		"paths": {
+			"~": ["./src"],
+			"~/*": ["./src/*"]
+		}
+	},
+
+	"include": ["src"]
+}

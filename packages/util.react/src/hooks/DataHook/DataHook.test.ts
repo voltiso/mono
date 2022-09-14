@@ -11,7 +11,7 @@ describe('DataHook', () => {
 	it('works - data', () => {
 		expect.hasAssertions()
 
-		const r = dataHook({ data: { a: 1 } })
+		const r = dataHook({ data: { a: 1 } }) as DataHook<{ a: number }>
 
 		expect(r.data?.a).toBe(1)
 		expect(r.a).toBe(1)
@@ -22,7 +22,7 @@ describe('DataHook', () => {
 		Assert<IsIdentical<typeof r.exists, boolean | undefined>>()
 
 		if (r.exists) {
-			Assert<IsIdentical<typeof r.a, number | undefined>>()
+			Assert<IsIdentical<typeof r.a, number>>()
 		}
 	})
 
