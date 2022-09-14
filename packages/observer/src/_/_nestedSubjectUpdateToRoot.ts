@@ -6,7 +6,10 @@ import type { NestedSubjectImpl } from '~/NestedSubjectImpl'
 /** @internal */
 export function _nestedSubjectUpdateToRoot(node: NestedSubjectImpl<any>) {
 	while (node._parent) {
+		// console.log('set exists', node._subject$.value)
+		node._exists = true
 		let parentValue = node._parent._subject$.value as object
+
 		if (Array.isArray(parentValue)) {
 			const newParentValue = [...(parentValue as unknown[])]
 			newParentValue[node._parentKey as never] = node._subject$.value
@@ -16,6 +19,7 @@ export function _nestedSubjectUpdateToRoot(node: NestedSubjectImpl<any>) {
 				...parentValue,
 				[node._parentKey as never]: node._subject$.value as never,
 			}
+			// if (!node._exists) delete parentValue[node._parentKey as never]
 		}
 
 		node._parent._subject$.next(parentValue)

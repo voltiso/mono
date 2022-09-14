@@ -3,11 +3,13 @@
 
 import type { DeleteIt } from './deleteIt'
 import { isDeleteIt } from './deleteIt'
+import type { KeepIt } from './keepIt'
+import { isKeepIt } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
 import { isReplaceIt } from './replaceIt'
 
-type PatchSentinel = DeleteIt | ReplaceIt
+export type PatchSentinel = DeleteIt | ReplaceIt | KeepIt
 
 export function isPatchSentinel(x: unknown): x is PatchSentinel {
-	return isDeleteIt(x) || isReplaceIt(x)
+	return isDeleteIt(x) || isReplaceIt(x) || isKeepIt(x)
 }

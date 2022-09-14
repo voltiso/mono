@@ -6,6 +6,7 @@ import type { Observable } from 'rxjs'
 
 export type ReadonlySubjectWithSchema<S> = Observable<Type_<S>> & {
 	get value(): Type_<S>
+	get exists(): boolean
 
 	get schemable(): S
 	get schema(): InferSchema_<S>

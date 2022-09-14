@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept, Force, Merge2, ValueImpl } from '@voltiso/util'
+import { assertNotPolluting } from '@voltiso/util'
 import {
 	getEntries,
 	isPlainObject,
@@ -22,6 +23,7 @@ export type Patch = unknown
 //
 
 export type PatchFor<X> =
+	| KeepIt
 	| (X extends object
 			? {
 					[key in keyof X]?: PatchFor<X[key]>
@@ -87,11 +89,19 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		let haveChange = false
 
 		for (const [key, value] of getEntries(patchValue)) {
+			assertNotPolluting(key)
+
 			const oldValue = tryGetProperty(res, key)
 			const newValue = forcePatch(oldValue, value)
 
 			if (newValue !== oldValue) {
 				setProperty(res, key, newValue as never)
+				haveChange = true
+			}
+
+			if (Object.prototype.hasOwnProperty.call(x, key) && isDeleteIt(value)) {
+				// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+				delete res[key]
 				haveChange = true
 			}
 		}

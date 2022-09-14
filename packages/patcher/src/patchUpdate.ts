@@ -18,7 +18,8 @@ export function patchUpdate<Obj, PatchValue extends PatchFor<Obj>>(
 
 	const finalPatch = mapValues(
 		patchValue as PatchFor<Record<keyof any, unknown>>,
-		(x: unknown) => (isPatchSentinel(x) ? x : (replaceIt(x) as never)),
+		((x: unknown) =>
+			isPatchSentinel(x) ? x : (replaceIt(x) as never)) as never,
 	)
 	return forcePatch(x, finalPatch) as never
 }

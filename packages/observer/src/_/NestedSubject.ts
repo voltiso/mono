@@ -11,12 +11,16 @@ export interface INestedSubjectBase {
 	set(x: unknown): void
 	patch(x: unknown): void
 	update(x: unknown): void
+	delete(): void
+	get exists(): boolean
 }
 
 export interface NestedSubjectBase<T> {
 	set(x: T): void
 	patch(x: PatchFor<T>): void
 	update(x: PatchFor<T>): void
+	delete(): void
+	get exists(): boolean
 }
 
 //

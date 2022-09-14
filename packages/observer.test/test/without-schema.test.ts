@@ -9,6 +9,11 @@ describe('NestedSubject', () => {
 
 		const data$ = createNestedSubject<{ a?: { b?: { c: number } } }>({ a: {} })
 
+		expect(data$.exists).toBeTruthy()
+		expect(data$.a.exists).toBeTruthy()
+		expect(data$.a.b.exists).toBeFalsy()
+		expect(data$.a.b.c.exists).toBeFalsy()
+
 		let observedB = { c: 0 }
 		let observedC = 0
 
@@ -29,11 +34,29 @@ describe('NestedSubject', () => {
 		data$.a.b.c.set(1)
 
 		expect(data$.a.b.c.value).toBe(1)
-		expect(data$.a.b.value).toStrictEqual({ c: 1 })
 		expect(data$.value).toStrictEqual({ a: { b: { c: 1 } } })
+		expect(data$.a.b.value).toStrictEqual({ c: 1 })
+
+		expect(data$.exists).toBeTruthy()
+		expect(data$.a.exists).toBeTruthy()
+		expect(data$.a.b.exists).toBeTruthy()
+		expect(data$.a.b.c.exists).toBeTruthy()
 
 		expect(observedB).toStrictEqual({ c: 1 })
 		expect(observedC).toBe(1)
 		expect(called).toStrictEqual(['c', 'b'])
+
+		called = []
+
+		data$.a.delete()
+
+		expect(observedB).toBeUndefined()
+		expect(observedC).toBeUndefined()
+		expect(called).toStrictEqual(['c', 'b'])
+
+		expect(data$.exists).toBeTruthy()
+		expect(data$.a.exists).toBeFalsy()
+		expect(data$.a.b.exists).toBeFalsy()
+		expect(data$.a.b.c.exists).toBeFalsy()
 	})
 })

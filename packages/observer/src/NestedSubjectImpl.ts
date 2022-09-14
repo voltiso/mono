@@ -3,6 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 import type { PatchFor } from '@voltiso/patcher'
+import { deleteIt } from '@voltiso/patcher'
 import { patch } from '@voltiso/patcher'
 import { patchUpdate } from '@voltiso/patcher'
 import type {
@@ -45,6 +46,11 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 	readonly _schemable: S | undefined
 	// eslint-disable-next-line rxjs/no-exposed-subjects
 	readonly _subject$: BehaviorSubject<Type_<S>>
+	_exists: boolean
+
+	get exists() {
+		return this._exists
+	}
 
 	readonly _children: {
 		[k in keyof GetShape_<S>]?: NestedSubjectImpl<GetShape_<S>[k]>
@@ -101,23 +107,30 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 			| NestedSubjectChildOptions,
 	) {
 		const proxyHandlers = {
-			get: (target: object, property: keyof any, receiver: unknown) => {
+			get: (_target: object, property: keyof any, receiver: unknown) => {
 				if (property in this)
 					return Reflect.get(this, property, receiver) as never
-				else if (property in target || typeof property !== 'string') {
-					const result = Reflect.get(target, property, receiver) as unknown
-					if (typeof result === 'function') return result.bind(target) as never
+				else if (property in this._subject$ || typeof property !== 'string') {
+					const result = Reflect.get(
+						this._subject$,
+						property,
+						receiver,
+					) as unknown
+					if (typeof result === 'function')
+						return result.bind(this._subject$) as never
 					else return result
 				} else {
 					assertNotPolluting(property)
 					if (property in this._children)
 						// eslint-disable-next-line security/detect-object-injection
 						return this._children[property] as never
-					else
+					else {
+						// console.log('create child', property)
 						return new NestedSubjectImpl({
 							parent: this,
 							key: property,
 						}) as never
+					}
 				}
 			},
 		}
@@ -144,7 +157,14 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 				options.parent._subject$.value?.[options.key],
 			) as never
 
-			const self = new Proxy(this._subject$, proxyHandlers)
+			this._exists =
+				typeof options.parent._subject$.value === 'object' &&
+				Object.prototype.hasOwnProperty.call(
+					options.parent._subject$.value,
+					options.key,
+				)
+
+			const self = new Proxy(this, proxyHandlers)
 
 			$assert(!(options.key in options.parent._children))
 			this._parent._children[options.key as never] = self as never
@@ -169,7 +189,9 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 				}),
 			) as never
 
-			const self = new Proxy(this._subject$, proxyHandlers)
+			this._exists = true
+
+			const self = new Proxy(this, proxyHandlers)
 			// eslint-disable-next-line no-constructor-return
 			return self as never
 		}
@@ -177,6 +199,7 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 
 	update(updates: PatchFor<InputType_<S>>) {
 		const newValue = patchUpdate(this._subject$.value, updates as never)
+		// console.log('UPDATE', this._subject$.value, updates, newValue)
 		this.set(newValue)
 	}
 
@@ -209,25 +232,42 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 	}
 
 	setUnchecked(newValue: OutputType_<S>): void {
+		// this._exists = true
 		if (newValue === this._subject$.value) return // no change
 
 		// eslint-disable-next-line etc/no-internal
-		this._set(newValue)
+		this._set(newValue, true)
 
 		// eslint-disable-next-line etc/no-internal
 		_nestedSubjectUpdateToRoot(this)
 	}
 
+	delete(): void {
+		if (!this._exists) return
+
+		$assert(this._parent)
+		$assert(this._parentKey)
+		this._parent.update({
+			[this._parentKey]: deleteIt,
+		})
+	}
+
 	/** @internal */
-	_set(newValue: OutputType_<S>): void {
-		if (newValue === this._subject$.value) return // no change (prune)
+	_set(newValue: OutputType_<S>, exists: boolean): void {
+		if (newValue === this._subject$.value && this._exists === exists) return // no change (prune)
+
+		this._exists = exists
 
 		for (const [key, child] of Object.entries(this._children) as [
 			keyof typeof this._children,
 			NestedSubjectImpl<SchemableLike>,
 		][]) {
 			// eslint-disable-next-line etc/no-internal
-			child._set(newValue?.[key as never])
+			child._set(
+				newValue?.[key as never],
+				Boolean(newValue) &&
+					Object.prototype.hasOwnProperty.call(newValue, key),
+			)
 		}
 
 		this._subject$.next(newValue)

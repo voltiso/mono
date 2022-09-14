@@ -20,6 +20,7 @@ export type ReadonlyNestedSubjectWithSchema<S> = ReadonlySubjectWithSchema<S> &
 
 export type ReadonlyNestedSubjectWithSchemaLike<S> = {
 	get value(): Type_<S>
+	get exists(): boolean
 
 	get schemable(): S
 

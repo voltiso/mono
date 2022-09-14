@@ -5,6 +5,8 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
 import type { DeleteIt } from './deleteIt'
+import { deleteIt } from './deleteIt'
+import { keepIt } from './keepIt'
 import type { ApplyPatch } from './patch'
 import { forcePatch, patch } from './patch'
 import { patchSet } from './patchSet'
@@ -134,6 +136,17 @@ describe('patch', () => {
 		const c = patchUpdate(123, 234 as const)
 
 		expect(c).toBe(234)
+
+		// @ts-expect-error `a` is required
+		;() => patchUpdate({ a: 1 }, { a: deleteIt })
+
+		const d = patchUpdate({ a: 1, b: 2 } as { a?: number }, { a: deleteIt })
+
+		expect(d).toStrictEqual({ b: 2 })
+
+		const e = patchUpdate({ a: 1, b: 2 }, { a: keepIt })
+
+		expect(e).toStrictEqual({ a: 1, b: 2 })
 
 		Assert<IsIdentical<typeof c, 234>>()
 	})

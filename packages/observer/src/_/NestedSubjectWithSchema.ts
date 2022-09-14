@@ -32,6 +32,8 @@ export type INestedSubjectWithSchemaBase = {
 
 	update(x: unknown): void
 	updateUnchecked(x: unknown): void
+
+	delete(): void
 }
 
 export interface NestedSubjectWithSchemaBase<S extends SchemableLike>
@@ -49,6 +51,8 @@ export interface NestedSubjectWithSchemaBase<S extends SchemableLike>
 
 	update(x: PatchFor<InputType_<S>>): void
 	updateUnchecked(x: PatchFor<OutputType_<S>>): void
+
+	delete(): void
 }
 
 //
