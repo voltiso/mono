@@ -55,7 +55,7 @@
 	},
 	"devDependencies": {
 		"@testing-library/react": "^13.4.0",
-		"@types/react": "^18.0.19",
+		"@types/react": "^18.0.20",
 		"@voltiso/assertor": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^2.0.2",

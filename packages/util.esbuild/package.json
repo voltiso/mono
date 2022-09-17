@@ -28,7 +28,9 @@
 		"build:cjs": "run-s build:cjs:clean build:cjs:tsc",
 		"build:cjs:clean": "rimraf dist/cjs",
 		"build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
-		"build:esm": "v buildEsm",
+		"build:esm": "run-s build:esm:clean build:esm:tsc",
+		"build:esm:clean": "rimraf dist/esm",
+		"build:esm:tsc": "tsc -b tsconfig.build.esm.json",
 		"__________PREPARE": "__________",
 		"prepublishOnly": "v prepublishOnlyFast"
 	},
@@ -40,7 +42,7 @@
 		"esbuild": ">= 0.14.49"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.17",
+		"@types/node": "^18.7.18",
 		"@voltiso/config.ts.build.cjs": "workspace:^2.0.1",
 		"@voltiso/config.ts.build.esm": "workspace:^2.0.1",
 		"esbuild": "^0.15.7",

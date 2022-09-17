@@ -28,6 +28,8 @@ import { initLastDataSeen } from '~/Trigger'
 import { applyUpdates } from '~/updates'
 import type { Forbidden } from '~/util'
 
+import type { IRef } from '..'
+
 // eslint-disable-next-line etc/no-misused-generics
 async function directDocPathGet<D extends IDoc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
@@ -161,7 +163,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		const r = await trigger.call(cacheEntry.proxy as never, {
 			doc: cacheEntry.proxy as never,
 			...pathMatches,
-			path: ctx.docRef.path,
+			path: (ctx.docRef as unknown as IRef).path,
 			id: id as never,
 			...ctx,
 		})

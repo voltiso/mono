@@ -77,8 +77,8 @@
 		}
 	},
 	"devDependencies": {
-		"@types/express": "^4.17.13",
-		"@types/node": "^18.7.17",
+		"@types/express": "^4.17.14",
+		"@types/node": "^18.7.18",
 		"@voltiso/caller": "workspace:^",
 		"@voltiso/config.jest.esr": "workspace:^",
 		"@voltiso/config.ts.build.cjs": "workspace:^",

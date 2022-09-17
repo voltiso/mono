@@ -1,12 +1,21 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { NestedSubject, ReadonlyNestedSubject } from '@voltiso/observer'
 import { isBehaviorSubject } from '@voltiso/util.rxjs'
 import { useEffect, useState } from 'react'
 import type { BehaviorSubject, Observable } from 'rxjs'
 import { isObservable } from 'rxjs'
 
-//
+/**
+ * Need to list all types explicitly for the type inference to work properly in
+ * all contexts (TS limitation?)
+ */
+export type ObservableUnion<T> =
+	| BehaviorSubject<T>
+	| Observable<T>
+	| NestedSubject<T>
+	| ReadonlyNestedSubject<T>
 
 /**
  * Subscribe to `observable$` and get its value
@@ -15,7 +24,7 @@ import { isObservable } from 'rxjs'
  *   getter (mitigate empty render)
  */
 export function useObservable<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | T,
+	observable$: ObservableUnion<T> | T,
 	// ...piped: OperatorFunction<T, T>[]
 ): T
 
@@ -25,12 +34,12 @@ export function useObservable(
 ): undefined
 
 export function useObservable<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | T | undefined,
+	observable$: ObservableUnion<T> | T | undefined,
 	// ...piped: OperatorFunction<T, T>[]
 ): T | undefined
 
 export function useObservable<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | T | undefined,
+	observable$: ObservableUnion<T> | T | undefined,
 	// ...piped: OperatorFunction<T, T>[]
 ): T | undefined {
 	const [value, setValue] = useState<T>()

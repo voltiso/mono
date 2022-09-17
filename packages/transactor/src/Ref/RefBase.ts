@@ -19,6 +19,8 @@ import type { DocPath } from '~/Path'
 import type { NestedPromise } from './_/NestedPromise'
 import type { Null } from './_/Null'
 import type { IRefBase } from './IRef'
+import type { StrongDocRef } from './StrongDocRef'
+import type { WeakDocRef } from './WeakDocRef'
 
 export interface RefBase<D extends DocLike, Exists extends boolean>
 	extends IRefBase,
@@ -36,6 +38,11 @@ export interface RefBase<D extends DocLike, Exists extends boolean>
 
 	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists>
 	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists>
+
+	//
+
+	get asStrongRef(): StrongDocRef<D>
+	get asWeakRef(): WeakDocRef<D>
 
 	//
 

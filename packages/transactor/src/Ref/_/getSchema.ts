@@ -4,6 +4,7 @@
 import * as s from '@voltiso/schemar'
 import type { InferableObject, ISchema } from '@voltiso/schemar.types'
 
+import type { DocLike } from '~'
 import { sIntrinsicFields } from '~'
 import type { DocRefBaseImpl } from '~/Ref'
 
@@ -27,7 +28,9 @@ export function getIdSchemas(d: DocRefBaseImpl<any>) {
 	return d._idSchemas
 }
 
-export function getSchema(d: DocRefBaseImpl): DocRefBaseImpl['_schema'] {
+export function getSchema(
+	d: DocRefBaseImpl<DocLike>,
+): DocRefBaseImpl['_schema'] {
 	if (d._schema !== undefined) {
 		return d._schema
 	}

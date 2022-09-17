@@ -3,10 +3,11 @@
 
 import { $assert } from '@voltiso/assertor'
 
+import type { DocLike } from '~'
 import { TransactorError } from '~'
 import type { DocRefBaseImpl } from '~/Ref'
 
-export function getBeforeCommits(docRef: DocRefBaseImpl) {
+export function getBeforeCommits(docRef: DocRefBaseImpl<DocLike>) {
 	if (docRef._beforeCommits) return docRef._beforeCommits
 
 	docRef._beforeCommits = []

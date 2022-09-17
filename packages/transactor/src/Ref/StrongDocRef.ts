@@ -4,7 +4,7 @@
 import { lazyConstructor } from '@voltiso/util'
 
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { IDoc } from '~/Doc'
+import type { DocLike, IDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
 
@@ -12,7 +12,7 @@ import type { DocRefParentContext } from './_/Context'
 import { DocRefBaseImpl } from './DocRefBase'
 import type { StrongRef } from './RefBase'
 
-export class StrongDocRefImpl<D extends IDoc> extends lazyConstructor(
+export class StrongDocRefImpl<D extends DocLike> extends lazyConstructor(
 	() => DocRefBaseImpl,
 )<D, true, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
@@ -21,12 +21,12 @@ export class StrongDocRefImpl<D extends IDoc> extends lazyConstructor(
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export type StrongDocRefConstructor = new <D extends IDoc>(
+export type StrongDocRefConstructor = new <D extends DocLike>(
 	context: DocRefParentContext,
 	path: string,
 ) => StrongDocRef<D>
 
-export type StrongDocRef<D extends IDoc> = StrongRef<D> &
+export type StrongDocRef<D extends DocLike> = StrongRef<D> &
 	GDocFields<InferTI<D>> &
 	GMethodPromises<InferTI<D>>
 

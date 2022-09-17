@@ -46,22 +46,22 @@ export class Server_<
 				// eslint-disable-next-line no-console
 				console.log(logName)
 
-				let h: any = this._handlers
+				let handler: any = this._handlers
 
 				for (const p of path) {
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					if (!Object.keys(h).includes(p))
+					if (!Object.keys(handler).includes(p))
 						throw new Error(`method ${path.join('.')} does not exist`)
 
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
-					h = h[p]
+					handler = handler[p]
 				}
 
-				if (typeof h !== 'function')
+				if (typeof handler !== 'function')
 					throw new Error(`method ${path.join('.')} does not exist`)
 
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-				const result = await h(...args)
+				const result = await handler(...args)
 
 				// eslint-disable-next-line no-console
 				console.log(logName, '===', JSON.stringify(result))

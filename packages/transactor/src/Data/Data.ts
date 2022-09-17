@@ -4,11 +4,11 @@
 import type { $_ } from '@voltiso/util'
 
 import type { DocLike, IDoc } from '~/Doc'
-import type { IRef } from '~/Ref'
+import type { RefLike } from '~/Ref'
 
 import type { Id } from './Id'
 
-export type LeafData = boolean | string | number | null | Date | IRef
+export type LeafData = boolean | string | number | null | Date | RefLike
 
 // NestedData
 export type DataRecord = {

@@ -11,6 +11,7 @@ import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
 
+import type { IRef } from '../IRef'
 import { apply } from './apply'
 import { collectTriggerResult } from './collectTriggerResult'
 import type { DocRefContextWithTransaction } from './Context'
@@ -57,7 +58,7 @@ async function processAfterTrigger(
 			before: immutabilize(withId(before, id)) as never,
 			after: immutabilize(withId(after, id)) as never,
 			...pathMatches,
-			path: ctx.docRef.path,
+			path: (ctx.docRef as unknown as IRef).path,
 			id: id as never,
 			...ctx,
 		})

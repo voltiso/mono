@@ -9,20 +9,24 @@ import type {
 	SchemaLike,
 } from '@voltiso/schemar.types'
 import type { If } from '@voltiso/util'
+import { omit } from '@voltiso/util'
 import { lazyPromise, protoLink } from '@voltiso/util'
 
-import type { DeepPartialIntrinsicFieldsSchema, IntrinsicFieldsSchema } from '~'
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { RefEntry } from '~/common'
 import type { Id, WithId } from '~/Data'
 import { withoutId } from '~/Data'
-import type { IDoc } from '~/Doc'
+import type { DocLike, IDoc } from '~/Doc'
 import { DTI } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { GetData, GetPublicCreationInputData } from '~/Doc/_/GData'
 import { deleteIt, replaceIt } from '~/it'
 import type { Method } from '~/Method'
 import { DocPath } from '~/Path'
+import type {
+	DeepPartialIntrinsicFieldsSchema,
+	IntrinsicFieldsSchema,
+} from '~/schemas/sIntrinsicFields'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
 
 import { getAggregateSchemas } from './_'
@@ -38,10 +42,12 @@ import { DocFieldPath } from './DocFieldPath'
 import { IS_DOC_REF } from './IRef'
 import { get, update } from './methods'
 import type { RefBase } from './RefBase'
+import { StrongDocRef } from './StrongDocRef'
+import { WeakDocRef } from './WeakDocRef'
 
 // @staticImplements<DocRefConstructor>()
 export class DocRefBaseImpl<
-	D extends IDoc = IDoc,
+	D extends DocLike = IDoc,
 	Exists extends boolean = boolean,
 	_Ctx extends ExecutionContext = 'outside',
 > implements RefBase<D, Exists>
@@ -96,6 +102,20 @@ export class DocRefBaseImpl<
 
 	get aggregateSchemas(): never {
 		return getAggregateSchemas(this) as never
+	}
+
+	get asStrongRef() {
+		return new StrongDocRef<D>(
+			omit(this._context, 'docRef'),
+			this._path.toString(),
+		)
+	}
+
+	get asWeakRef() {
+		return new WeakDocRef<D>(
+			omit(this._context, 'docRef'),
+			this._path.toString(),
+		)
 	}
 
 	constructor(
@@ -201,8 +221,11 @@ export class DocRefBaseImpl<
 	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists> {
 		return dataOrNestedPromise(
 			this as never,
-			// eslint-disable-next-line promise/prefer-await-to-then
-			() => this.get().then(doc => (doc ? doc.dataWithoutId() : null)) as never,
+			() =>
+				// eslint-disable-next-line promise/prefer-await-to-then
+				this.get().then(doc =>
+					doc ? (doc as IDoc).dataWithoutId() : null,
+				) as never,
 		) as never
 	}
 

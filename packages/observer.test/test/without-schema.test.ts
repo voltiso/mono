@@ -2,6 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { createNestedSubject } from '@voltiso/observer'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
 describe('NestedSubject', () => {
 	it('works', () => {
@@ -14,8 +16,8 @@ describe('NestedSubject', () => {
 		expect(data$.a.b.exists).toBeFalsy()
 		expect(data$.a.b.c.exists).toBeFalsy()
 
-		let observedB = { c: 0 }
-		let observedC = 0
+		let observedB: { c: number } | undefined
+		let observedC: number | undefined
 
 		let called = [] as string[]
 
@@ -25,6 +27,7 @@ describe('NestedSubject', () => {
 		})
 
 		data$.a.b.c.subscribe(c => {
+			Assert<IsIdentical<typeof c, number | undefined>>()
 			observedC = c
 			called.push('c')
 		})
@@ -59,4 +62,15 @@ describe('NestedSubject', () => {
 		expect(data$.a.b.exists).toBeFalsy()
 		expect(data$.a.b.c.exists).toBeFalsy()
 	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('union types', () => {
+	// 	expect.hasAssertions()
+
+	// 	type MyType = { a?: true } | { a?: false }
+
+	// 	const data$ = createNestedSubject<MyType>({})
+
+	// 	data$.a
+	// })
 })

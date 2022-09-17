@@ -19,7 +19,7 @@ type FindDoc<X> = X extends DocLike
 	: never
 
 const _strongRefSchema: t.Instance<StrongDocRef<IDoc>> = lazyValue(() =>
-	s.instance(StrongDocRef),
+	s.instance(StrongDocRef<IDoc>),
 )
 
 const _strongRefCall = <

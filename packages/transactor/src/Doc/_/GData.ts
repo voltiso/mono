@@ -5,7 +5,7 @@ import type { InputType, Type, Type_ } from '@voltiso/schemar.types'
 import type { _, $_ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
-import type { ExecutionContext, IDoc } from '~/Doc'
+import type { DocLike, ExecutionContext, IDoc } from '~/Doc'
 import type { IRef } from '~/Ref'
 import type { Relax } from '~/Relax'
 import type { PartialIntrinsicFields } from '~/schemas/sIntrinsicFields'
@@ -72,7 +72,7 @@ export type RelaxRefs<X> = X extends IRef
 /** @inline */
 export type GetPublicCreationInputData<
 	TI extends { public?: any; publicOnCreation?: any },
-	Doc extends IDoc = IDoc,
+	Doc extends DocLike = IDoc,
 > = _<
 	{ id?: Id<Doc> | undefined } & RelaxRefs<InputType<TI['publicOnCreation']>> &
 		RelaxRefs<InputType<TI['public']>>

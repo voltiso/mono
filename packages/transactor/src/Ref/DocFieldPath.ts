@@ -4,6 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import { lazyPromise, protoLink, undef } from '@voltiso/util'
 
+import type { IDoc } from '~'
 import { sVoltisoEntry } from '~'
 import type { NestedData } from '~/Data/Data'
 import type { WithTransaction } from '~/Transaction'
@@ -54,7 +55,7 @@ export const DocFieldPath = class {
 				)
 			}
 
-			let data: NestedData = doc.dataWithoutId() as never
+			let data: NestedData = (doc as IDoc).dataWithoutId() as never
 
 			for (const field of fields) {
 				// if (!isNestedDataRecord(data) || data[field] === undefined)

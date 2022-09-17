@@ -33,14 +33,13 @@
 		"clean": "v clean"
 	},
 	"__________DEPS": "__________",
-	"dependencies": {},
 	"peerDependencies": {
 		"@voltiso/util.react": "workspace:^",
 		"react": "^18.0.0 || ^17.0.0",
 		"react-dom": "^18.0.0 || ^17.0.0"
 	},
 	"devDependencies": {
-		"@types/react": "^18.0.19",
+		"@types/react": "^18.0.20",
 		"@types/react-dom": "^18.0.6",
 		"@voltiso/assertor": "workspace:^2.0.0",
 		"@voltiso/config.ts.build.cjs": "workspace:^",

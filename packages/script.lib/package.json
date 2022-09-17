@@ -34,11 +34,11 @@
 	"__________DEPS": "__________",
 	"dependencies": {
 		"@voltiso/util": "workspace:^",
-		"@voltiso/util.node": "workspace:^1.0.0",
-		"@voltiso/util.package-json": "workspace:^1.0.0"
+		"@voltiso/util.node": "workspace:^",
+		"@voltiso/util.package-json": "workspace:^"
 	},
 	"devDependencies": {
-		"@types/node": "^18.7.17",
+		"@types/node": "^18.7.18",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^"
 	}

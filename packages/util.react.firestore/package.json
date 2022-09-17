@@ -49,7 +49,7 @@
 		}
 	},
 	"devDependencies": {
-		"@types/react": "^18.0.19",
+		"@types/react": "^18.0.20",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
 		"react": "^18.2.0"

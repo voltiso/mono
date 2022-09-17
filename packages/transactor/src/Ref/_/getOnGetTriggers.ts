@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDoc } from '~/Doc'
+import type { DocLike } from '~/Doc'
 import type { StrongDocRefImpl } from '~/Ref'
 
-export function getOnGetTriggers(docRef: StrongDocRefImpl<IDoc>) {
+export function getOnGetTriggers(docRef: StrongDocRefImpl<DocLike>) {
 	if (docRef._onGets) return docRef._onGets
 
 	docRef._onGets = []

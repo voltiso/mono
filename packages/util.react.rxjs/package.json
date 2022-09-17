@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.react.rxjs",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -26,7 +26,7 @@
 		"__________DEV": "__________",
 		"dev": "v dev",
 		"__________TEST": "__________",
-		"test": "echo no tests yet!",
+		"test": "jest",
 		"__________LINT": "__________",
 		"lint": "v lint",
 		"depcheck": "depcheck",
@@ -44,6 +44,7 @@
 	},
 	"__________DEPS": "__________",
 	"peerDependencies": {
+		"@voltiso/observer": "workspace:^",
 		"@voltiso/patcher": "workspace:^",
 		"@voltiso/util": "workspace:^",
 		"@voltiso/util.react": "workspace:^",
@@ -51,10 +52,16 @@
 		"react": "^18.0.0 || ^17.0.0",
 		"rxjs": "^7.5.6"
 	},
+	"peerDependenciesMeta": {
+		"@voltiso/observer": {
+			"optional": true
+		}
+	},
 	"devDependencies": {
-		"@types/react": "^18.0.19",
+		"@types/react": "^18.0.20",
 		"@voltiso/config.ts.build.cjs": "workspace:^",
 		"@voltiso/config.ts.build.esm": "workspace:^",
+		"@voltiso/observer": "workspace:^",
 		"@voltiso/patcher": "workspace:^",
 		"@voltiso/util": "workspace:^",
 		"@voltiso/util.react": "workspace:^",

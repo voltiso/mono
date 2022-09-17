@@ -12,7 +12,7 @@ import type { DocRefParentContext } from './_/Context'
 import { DocRefBaseImpl } from './DocRefBase'
 import type { WeakRef } from './RefBase'
 
-export class WeakDocRefImpl<D extends IDoc> extends lazyConstructor(
+export class WeakDocRefImpl<D extends DocLike> extends lazyConstructor(
 	() => DocRefBaseImpl,
 )<D, boolean, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
@@ -21,7 +21,7 @@ export class WeakDocRefImpl<D extends IDoc> extends lazyConstructor(
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export type WeakDocRefConstructor = new <D extends IDoc>(
+export type WeakDocRefConstructor = new <D extends DocLike>(
 	context: DocRefParentContext,
 	path: string,
 ) => WeakDocRef<D>

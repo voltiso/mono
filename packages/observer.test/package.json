@@ -32,9 +32,10 @@
 	"__________DEPS": "__________",
 	"devDependencies": {
 		"@voltiso/config.jest.esr": "workspace:^",
-		"@voltiso/observer": "workspace:^1.0.0",
-		"@voltiso/schemar": "workspace:^16.0.0",
-		"@voltiso/script": "workspace:^"
+		"@voltiso/observer": "workspace:^",
+		"@voltiso/schemar": "workspace:^",
+		"@voltiso/script": "workspace:^",
+		"@voltiso/util": "workspace:^"
 	},
 	"__________MISC": "__________",
 	"engines": {
