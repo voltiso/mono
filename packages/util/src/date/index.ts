@@ -1,6 +1,5 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type ICssProp<CustomCss extends object> =
-	| CustomCss
-	| ((propValue: any) => CustomCss)
+export * from './addDays'
+export * from './addMonths'

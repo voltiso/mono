@@ -65,8 +65,8 @@ function _initializeResult<S extends SchemableObjectLike>(
 		deepShape,
 		(_value: SchemaLike | InferableLiteral, path) => ({
 			props: {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-				value: tryGet(data$.value, ...(path as any)),
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
+				value: tryGet(data$.value, ...(path as any)) || '',
 
 				onChange: (event: ChangeEvent<HTMLInputElement>) => {
 					const value = event.target.value

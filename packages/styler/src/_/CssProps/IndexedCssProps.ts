@@ -3,10 +3,10 @@
 
 import type { ICssProp } from './ICssProp'
 
-export interface IndexedCssProps {
-	[k: string]: ICssProp[]
+export interface IndexedCssProps<CustomCss extends object> {
+	[k: string]: ICssProp<CustomCss>[]
 }
 
-export interface IndexedCssPropsSingle {
-	[k: string]: ICssProp
+export interface IndexedCssPropsSingle<CustomCss extends object> {
+	[k: string]: ICssProp<CustomCss>
 }

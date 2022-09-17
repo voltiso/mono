@@ -246,4 +246,25 @@ describe('newCssProps', () => {
 			color: 'blue',
 		})
 	})
+
+	it('custom css', () => {
+		expect.hasAssertions()
+
+		const Button = style('button')
+			.newCustomCssProperties({
+				marginY: x => ({ marginTop: x, marginBottom: x }),
+			})
+			.newCssProps({
+				myProp: { marginY: 999 },
+			})
+
+		renderApp(<Button myProp />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			marginTop: '999px',
+			marginBottom: '999px',
+		})
+	})
 })

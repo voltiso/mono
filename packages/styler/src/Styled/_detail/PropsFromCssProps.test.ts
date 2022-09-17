@@ -9,16 +9,16 @@ import type { Props } from '~/react-types'
 import type { PropsFromCssProps } from './PropsFromCssProps'
 
 describe('PropsFromCssProps', () => {
-	it('generic', <CP extends IndexedCssPropsSingle>() => {
+	it('generic', <CP extends IndexedCssPropsSingle<CssProps>, CssProps extends object>() => {
 		expect.assertions(0)
 
-		Assert.is<PropsFromCssProps<CP>, Props>()
+		Assert.is<PropsFromCssProps<CP, CssProps>, Props>()
 	})
 
-	it('type', () => {
+	it('type', <CssProps extends object>() => {
 		expect.assertions(0)
 
-		type A = PropsFromCssProps<IndexedCssPropsSingle>
+		type A = PropsFromCssProps<IndexedCssPropsSingle<CssProps>, CssProps>
 		Assert.is<A, Props>()
 	})
 })

@@ -5,10 +5,10 @@ import { getEntries, setProperty, tryGetProperty } from '@voltiso/util'
 
 import type { IndexedCssProps, IndexedCssPropsSingle } from '~/_/CssProps'
 
-export function mergeCssProps(
-	a: IndexedCssProps,
-	b: IndexedCssProps | IndexedCssPropsSingle | undefined,
-): IndexedCssProps {
+export function mergeCssProps<CustomCss extends object>(
+	a: IndexedCssProps<CustomCss>,
+	b: IndexedCssProps<CustomCss> | IndexedCssPropsSingle<CustomCss> | undefined,
+): IndexedCssProps<CustomCss> {
 	if (!b) return a
 
 	const r = { ...a }

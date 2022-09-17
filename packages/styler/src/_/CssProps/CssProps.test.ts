@@ -12,41 +12,41 @@ import type { ICssProp } from './ICssProp'
 import type { IndexedCssProps, IndexedCssPropsSingle } from './IndexedCssProps'
 
 describe('CssProps', () => {
-	it('generic', <P extends Props>() => {
+	it('generic', <P extends Props, CustomCss extends object>() => {
 		expect.assertions(0)
 
-		Assert.is<CssProps<P>, IndexedCssProps>()
+		Assert.is<CssProps<P, CustomCss>, IndexedCssProps<CustomCss>>()
 	})
 
-	it('type', () => {
+	it('type', <CustomCss extends object>() => {
 		expect.assertions(0)
 
-		type A = CssProps<IndexedProps>
+		type A = CssProps<IndexedProps, CustomCss>
 		Assert<
 			IsIdentical<
 				A,
 				{
-					[x: string]: CssProp<unknown>[]
+					[x: string]: CssProp<unknown, CustomCss>[]
 				}
 			>
 		>()
 
-		type B = IndexedCssProps
+		type B = IndexedCssProps<CustomCss>
 		Assert<
 			IsIdentical<
 				B,
 				{
-					[x: string]: ICssProp[]
+					[x: string]: ICssProp<CustomCss>[]
 				}
 			>
 		>()
 
-		type C = IndexedCssPropsSingle
+		type C = IndexedCssPropsSingle<CustomCss>
 		Assert<
 			IsIdentical<
 				C,
 				{
-					[x: string]: ICssProp
+					[x: string]: ICssProp<CustomCss>
 				}
 			>
 		>()

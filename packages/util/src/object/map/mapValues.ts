@@ -1,17 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Value } from '~/object'
 import { getEntries, setProperty } from '~/object'
 
-type Mapping<Obj extends object> = {
-	[key in keyof Obj]: (value: Obj[key]) => Obj[key]
-}[keyof Obj]
-
-export function mapValues<Obj extends object, M extends Mapping<Obj>>(
+export function mapValues<Obj extends object, B>(
 	obj: Obj,
-	mapping: M,
-): Obj {
-	const result = {} as Obj
+	mapping: (value: Value<Obj>) => B,
+): Record<keyof Obj, B> {
+	const result = {} as Record<keyof Obj, B>
 
 	for (const [key, value] of getEntries(obj)) {
 		setProperty(result, key, mapping(value) as never)

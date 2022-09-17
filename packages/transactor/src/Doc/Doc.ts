@@ -41,6 +41,10 @@ export interface DocBase<TI extends DocTI, Ctx extends ExecutionContext>
 
 	//
 
+	// get aggregateSchemas(): TI['aggregates']
+
+	//
+
 	update(
 		updates: UpdatesFromData.Update<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
 	): Promise<Doc<TI, Ctx> | undefined>

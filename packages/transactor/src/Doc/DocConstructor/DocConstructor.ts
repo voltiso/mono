@@ -5,9 +5,8 @@ import type * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
 import type { _, $_, Merge2, Throw } from '@voltiso/util'
 
-import type { DocConstructorLike, NestedData } from '~'
 import type { AggregatorHandlers } from '~/Aggregator'
-import type { Doc, DocContext, DocTI, DTI } from '~/Doc'
+import type { Doc, DocContext, DocLike, DocTI, DTI } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
 import type { Promisify } from '~/Doc/_/GMethodPromises'
@@ -75,16 +74,13 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		m: M,
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
 
-	aggregate<
-		Target extends DocConstructorLike,
+	// eslint-disable-next-line etc/no-misused-generics
+	aggregate<Target extends DocLike>(): <
 		Name extends keyof Target[DTI]['aggregates'],
-		// eslint-disable-next-line etc/no-misused-generics
-		InitialValue extends NestedData,
 	>(
-		targetDoc: Target,
 		name: Name,
-		handlers: AggregatorHandlers<this, Target, Name, InitialValue>,
-	): DocConstructor<TI>
+		handlers: AggregatorHandlers<this, Target, Name>,
+	) => DocConstructor<TI>
 
 	schemableWithoutId: $_<
 		TI['publicOnCreation'] & TI['public'] & TI['private'] & {}

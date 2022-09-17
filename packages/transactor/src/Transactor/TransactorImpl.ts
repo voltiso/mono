@@ -76,6 +76,8 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 	_allPublicSchemas: SchemaEntry[] = []
 	_allPrivateSchemas: SchemaEntry[] = []
 
+	_allAggregateSchemas: SchemaEntry[] = []
+
 	_allAfterTriggers: TriggerEntry<AfterTrigger>[] = []
 	_allBeforeCommits: TriggerEntry<BeforeCommitTrigger>[] = []
 	_allOnGets: TriggerEntry<OnGetTrigger>[] = []

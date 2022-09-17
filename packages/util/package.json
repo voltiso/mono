@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util",
-	"version": "45.3.0",
+	"version": "45.5.0",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -11,8 +11,7 @@
 	"main": "dist/cjs/index.js",
 	"__________PUBLISH WHITELIST": "__________",
 	"files": [
-		"dist",
-		"src"
+		"dist"
 	],
 	"__________SCRIPTS": "__________",
 	"scripts": {
@@ -68,6 +67,6 @@
 		"pnpm": "7"
 	},
 	"typeCoverage": {
-		"is": 98.69
+		"is": 98.7
 	}
 }

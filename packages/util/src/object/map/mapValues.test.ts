@@ -20,8 +20,5 @@ describe('mapValues', () => {
 			b: 3,
 			c: 4,
 		})
-
-		// @ts-expect-error '123' not assignable to `number`
-		;() => mapValues(a, _x => '123')
 	})
 })

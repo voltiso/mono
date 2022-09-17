@@ -7,7 +7,13 @@ if (process.env['NODE_ENV'] !== 'test' && typeof expect === 'undefined')
 		'[@voltiso/assertor] included without `jest` environment (assert pruning in production did not work?) - NODE_ENV should be `test` or `expect` should be defined',
 	)
 
-export { strict as $assert } from 'node:assert'
+export function $assert(
+	condition: unknown,
+	message?: string | undefined,
+): asserts condition {
+	if (!condition)
+		throw new Error(message ? `$assert failed: ${message}` : `$assert failed`)
+}
 
 // export function $assert(
 // 	value: unknown,

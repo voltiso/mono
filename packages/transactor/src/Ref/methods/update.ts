@@ -254,7 +254,7 @@ async function transactionUpdateImpl(
 
 	if (isDefined(cacheEntry.data)) initLastDataSeen(ctx, cacheEntry)
 
-	return cacheEntry.proxy
+	return cacheEntry.proxy as never
 }
 
 function transactionUpdate(

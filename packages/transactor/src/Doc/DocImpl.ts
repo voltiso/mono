@@ -11,7 +11,9 @@ import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
 import type { StrongRef } from '~/Ref'
-import { StrongDocRef, StrongDocRefImpl } from '~/Ref'
+import { StrongDocRef } from '~/Ref'
+import { isStrongDocRef } from '~/Ref'
+import { StrongDocRefImpl } from '~/Ref'
 import type { DocRefContext } from '~/Ref/_/Context'
 import type { Updates } from '~/updates'
 
@@ -21,7 +23,7 @@ import { DocConstructorImpl } from './DocConstructor'
 import type { DocContext } from './DocContext'
 import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
-import type { IDoc, IDocImpl } from './IDoc'
+import type { IDoc } from './IDoc'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -41,13 +43,14 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	return x
 }
 
-export class DocImpl<TI extends DocTI = DocTI>
-	extends lazyConstructor(() => DocConstructorImpl)
-	implements IDocImpl
-{
+export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
+	() => DocConstructorImpl,
+) {
 	declare [DTI]: TI
 
 	methods: Record<string, Method> = {}
+
+	_ref?: StrongRef<this> = undefined
 
 	constructor(context: DocContext, raw: GetData<TI>) {
 		super()
@@ -84,6 +87,8 @@ export class DocImpl<TI extends DocTI = DocTI>
 			// eslint-disable-next-line security/detect-object-injection
 			this.methods[name] = docMethod
 		}
+
+		if (isStrongDocRef(docRef)) this._ref = docRef as never
 
 		// Object.freeze(this)
 		Object.seal(this)
@@ -127,10 +132,12 @@ export class DocImpl<TI extends DocTI = DocTI>
 	}
 
 	get ref(): StrongRef<this> {
-		return new StrongDocRef(
-			omit(this._context, 'docRef'),
-			this.path.pathString,
-		) as never
+		if (!this._ref)
+			this._ref = new StrongDocRef(
+				omit(this._context, 'docRef'),
+				this.path.pathString,
+			) as never
+		return this._ref as never
 	}
 
 	get data(): GetData<TI> {
@@ -157,6 +164,26 @@ export class DocImpl<TI extends DocTI = DocTI>
 
 	async delete() {
 		return (await this._context.docRef.delete()) as never
+	}
+
+	// get schemableWithId(): object {
+	// 	return (this.constructor as IDocConstructor).schemableWithId
+	// }
+
+	// get schemableWithoutId(): object {
+	// 	return (this.constructor as IDocConstructor).schemableWithoutId
+	// }
+
+	// get schemaWithId() {
+	// 	return (this.constructor as IDocConstructor).schemaWithId
+	// }
+
+	// get schemaWithoutId() {
+	// 	return (this.constructor as IDocConstructor).schemaWithoutId
+	// }
+
+	get aggregateSchemas() {
+		return this.ref.aggregateSchemas
 	}
 }
 

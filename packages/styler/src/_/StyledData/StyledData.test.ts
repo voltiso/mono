@@ -15,7 +15,7 @@ describe('StyledData', () => {
 
 		Assert.is<
 			StyledData<{ Props: P; Component: C; CustomCss: CC }>,
-			IStyledData
+			IStyledData<object>
 		>()
 	})
 })

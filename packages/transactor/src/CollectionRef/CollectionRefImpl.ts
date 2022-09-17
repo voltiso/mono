@@ -95,6 +95,9 @@ export class CollectionRefImpl<
 		if (Object.keys(_.private).length > 0)
 			docPattern.private(_.private as never)
 
+		if (Object.keys(_.aggregates).length > 0)
+			docPattern.aggregates(_.aggregates as never)
+
 		if (_.id !== undefined) {
 			docPattern.id(_.id)
 		}

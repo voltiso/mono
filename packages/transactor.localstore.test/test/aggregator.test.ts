@@ -36,7 +36,7 @@ class Week extends Doc('myWeek')({
 	id: sDate,
 
 	aggregates: {
-		numWomenThisWeek: s.number,
+		numWomenThisWeek: s.number.default(0),
 	},
 }) {}
 
@@ -50,14 +50,10 @@ class Day extends Doc('myDay')({
 	public: {
 		numWomen: s.number.default(0),
 	},
-}).aggregate(Week, 'numWomenThisWeek', {
+}).aggregate<Week>()('numWomenThisWeek', {
 	target() {
 		return weeks(getLastSunday(this.id))
 	},
-
-	autoCreateTarget: true,
-
-	initialValue: 0,
 
 	include(acc) {
 		return acc + this.numWomen

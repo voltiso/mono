@@ -66,6 +66,16 @@ export class DocRefPattern {
 		return this
 	}
 
+	aggregates(schema: InferableObject) {
+		this.context.transactor._allAggregateSchemas.push({
+			getPathMatches: getGetPathMatches(this.pattern.toString()),
+			schema,
+		})
+		return this
+	}
+
+	//
+
 	after<D extends IDoc = IndexedDoc>(trigger: AfterTrigger<D>) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),

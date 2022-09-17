@@ -4,10 +4,10 @@
 import { createPatch } from '@voltiso/patcher'
 import type { DeepPartial_ } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
+import { isBehaviorSubject } from '@voltiso/util.rxjs'
 import type { DependencyList } from 'react'
 import type { BehaviorSubject, Observable } from 'rxjs'
 
-import { isBehaviorSubject } from '.'
 import { useObservableEffect } from './useObservableEffect'
 
 export function useObservableDeltaEffect<T>(

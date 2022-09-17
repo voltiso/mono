@@ -10,6 +10,6 @@ describe('defaultStyledData', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<DefaultStyledData, IStyledData>()
+		Assert.is<DefaultStyledData, IStyledData<object>>()
 	})
 })

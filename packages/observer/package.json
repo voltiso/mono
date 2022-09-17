@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/observer",
-	"version": "1.2.0",
+	"version": "1.2.3",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -45,14 +45,6 @@
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/util.rxjs": "workspace:^",
 		"rxjs": "^7.5.6"
-	},
-	"peerDependenciesMeta": {
-		"@voltiso/schemar": {
-			"optional": true
-		},
-		"@voltiso/schemar.types": {
-			"optional": true
-		}
 	},
 	"devDependencies": {
 		"@voltiso/assertor": "workspace:^",

@@ -38,35 +38,38 @@ export function render<$ extends StyledTypeInfo>(
 
 	let p = ref ? { ...otherProps, ref } : otherProps
 
+	const stack = data.stack
+
+	const finalCustomCss = stack.at(-1)?.customCss
+
 	// prepare props - dangerous for e.g. `ref`
 	for (const k of Object.keys(p) as (keyof typeof p)[]) {
 		assertNotPolluting(k)
 		// eslint-disable-next-line security/detect-object-injection
-		p[k] = prepare(p[k], theme) as never
+		p[k] = prepare(p[k], theme, finalCustomCss) as never
 	}
-
-	const stack = data.stack
 
 	const styles: Css[] = []
 
 	if (typeof css !== 'undefined')
-		styles.push(prepare(css, theme, stack.at(-1)?.customCss))
+		styles.push(prepare(css, theme, finalCustomCss))
 
 	const consumedCssProps = {} as $ extends any
-		? Required<Partial<CssProps<$['Props']>>>
+		? Required<Partial<CssProps<$['Props'], object>>>
 		: never
 
-	function consume(p: Props) {
+	function consume(p: Props, customCss?: object | undefined) {
 		consumeCssProps({
 			props: p,
 			consumed: consumedCssProps,
 			all: data.cssProps,
 			theme,
 			styles,
+			customCss,
 		})
 	}
 
-	consume(p)
+	consume(p, finalCustomCss)
 
 	for (let i = stack.length - 1; i >= 0; --i) {
 		// eslint-disable-next-line security/detect-object-injection
@@ -85,7 +88,7 @@ export function render<$ extends StyledTypeInfo>(
 				),
 			)
 		} else if (isPropsNode(node)) {
-			consume(node.props)
+			consume(node.props, node.customCss)
 			p = { ...node.props, ...p }
 		} else if (isWrapNode(node)) {
 			// overrideChildren = true

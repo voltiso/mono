@@ -34,6 +34,8 @@ export type INestedSubjectWithSchemaBase = {
 	updateUnchecked(x: unknown): void
 
 	delete(): void
+
+	get exists(): boolean
 }
 
 export interface NestedSubjectWithSchemaBase<S extends SchemableLike>

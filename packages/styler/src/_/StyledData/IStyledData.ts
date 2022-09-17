@@ -9,7 +9,7 @@ import type { Props } from '~/react-types'
 import type { Stylable, StylableLike } from '~/Stylable'
 import type { IStack } from '~/Styled/_/Stack'
 
-export interface IStyledData {
+export interface IStyledData<CustomCss extends object> {
 	component: StylableLike | null
 
 	stack: IStack
@@ -17,11 +17,11 @@ export interface IStyledData {
 	defaults: Partial<Props>
 	domDefaults: Partial<Props>
 
-	cssProps: IndexedCssProps
+	cssProps: IndexedCssProps<CustomCss>
 	// customCss: IndexedCssProps
 }
 
-export type IStyledDataMod = Partial<{
+export type IStyledDataMod<CustomCss extends object> = Partial<{
 	component: Stylable | null
 
 	stack: IStack
@@ -29,6 +29,6 @@ export type IStyledDataMod = Partial<{
 	defaults: Partial<Props>
 	domDefaults: Partial<Props>
 
-	cssProps: IndexedCssProps | IndexedCssPropsSingle
-	customCss: IndexedCssProps | IndexedCssPropsSingle
+	cssProps: IndexedCssProps<CustomCss> | IndexedCssPropsSingle<CustomCss>
+	customCss: IndexedCssProps<CustomCss> | IndexedCssPropsSingle<CustomCss>
 }>

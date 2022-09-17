@@ -355,6 +355,7 @@
 		"rushstack",
 		"scandir",
 		"Schemable",
+		"Schemables",
 		"schemar",
 		"sdkconfig",
 		"setstate",

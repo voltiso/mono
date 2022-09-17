@@ -9,13 +9,14 @@ import type {
 import type { PropValueFromCssProp } from '~/Styled/_/PropValueFromCssProp'
 
 export type PropsFromCssProps<
-	CP extends IndexedCssProps | IndexedCssPropsSingle,
+	CP extends IndexedCssProps<CustomCss> | IndexedCssPropsSingle<CustomCss>,
+	CustomCss extends object,
 > = {
 	[k in keyof CP]?:
 		| undefined
-		| (CP[k] extends ICssProp
-				? PropValueFromCssProp<CP[k]>
-				: CP[k] extends ICssProp[]
-				? PropValueFromCssProp<CP[k][number]>
+		| (CP[k] extends ICssProp<CustomCss>
+				? PropValueFromCssProp<CP[k], CustomCss>
+				: CP[k] extends ICssProp<CustomCss>[]
+				? PropValueFromCssProp<CP[k][number], CustomCss>
 				: never)
 }

@@ -44,7 +44,9 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		return this[DATA].component as never
 	}
 
-	private _clone<NewData extends IStyledDataModule>(newData: NewData): never {
+	private _clone<NewData extends IStyledDataModule<C<$>>>(
+		newData: NewData,
+	): never {
 		if (newData.stack) {
 			// eslint-disable-next-line security/detect-object-injection
 			const alreadyHaveCustomCss = this[DATA].stack.at(-1)?.customCss
@@ -298,9 +300,9 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 *   returning CSS style based on prop value
 	 * @returns Builder for further chaining
 	 */
-	newCssProps<CP extends IndexedCssPropsSingle>(
+	newCssProps<CP extends IndexedCssPropsSingle<C<$>>>(
 		cssProps: CP,
-	): Patch<this, { Props: PropsFromCssProps<CP> }> {
+	): Patch<this, { Props: PropsFromCssProps<CP, C<$>> }> {
 		return this._clone({
 			stack: [
 				{
@@ -358,9 +360,9 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 *   CSS objects
 	 * @returns Builder for further chaining
 	 */
-	newCustomCssProperties<CP extends IndexedCssPropsSingle>(
+	newCustomCssProperties<CP extends IndexedCssPropsSingle<C<$>>>(
 		customCssProperties: CP,
-	): Patch<this, { CustomCss: PropsFromCssProps<CP> }> {
+	): Patch<this, { CustomCss: PropsFromCssProps<CP, C<$>> }> {
 		return this._clone({
 			stack: [{}],
 			customCss: customCssProperties,

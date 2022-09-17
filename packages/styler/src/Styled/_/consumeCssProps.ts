@@ -9,21 +9,28 @@ import type { IndexedProps } from '~/react-types'
 
 import { prepare } from './prepare'
 
-export function consumeCssProps(p: {
+export function consumeCssProps<CustomCss extends object>(params: {
 	props: IndexedProps
-	consumed: IndexedCssProps
-	all: IndexedCssProps
+	consumed: IndexedCssProps<CustomCss>
+	all: IndexedCssProps<CustomCss>
 	styles: Css[]
 	theme: object
+	customCss?: object | undefined
 }) {
-	for (const [prop, value] of getEntries(p.props)) {
-		const list = tryGetProperty(p.all, prop) || []
+	// console.log('consumeCssProps', params.customCss)
+	for (const [prop, value] of getEntries(params.props)) {
+		const list = tryGetProperty(params.all, prop) || []
 
 		for (const entry of [...list].reverse()) {
 			if (typeof entry === 'function') {
 				if (entry.length > 0 || Boolean(value))
-					p.styles.push(prepare(entry(value as never), p.theme))
-			} else if (value) p.styles.push(prepare(entry, p.theme) as never)
+					params.styles.push(
+						prepare(entry(value as never), params.theme, params.customCss),
+					)
+			} else if (value)
+				params.styles.push(
+					prepare(entry, params.theme, params.customCss) as never,
+				)
 		}
 	}
 }

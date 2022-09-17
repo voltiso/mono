@@ -27,7 +27,12 @@ export function isWithNested(x: unknown): x is WithNested {
 	return isPlainObject((x as WithNested | null)?.nested)
 }
 
-export function prepare<X>(x: X, theme: object, customCss?: object): X {
+export function prepare<X>(
+	x: X,
+	theme: object,
+	customCss: object | undefined,
+): X {
+	// console.log('prepare', x, customCss)
 	if (isPlainObject(x)) {
 		let r: object = {}
 		let haveChange = false
@@ -45,14 +50,16 @@ export function prepare<X>(x: X, theme: object, customCss?: object): X {
 				continue
 			}
 
+			// console.log(k, v, customCss)
+
 			if (customCss && k in customCss) {
 				const customCssEntry = customCss[
 					k as keyof typeof customCss
-				] as CssProp<unknown>
+				] as CssProp<unknown, object>
 
 				const cssValues =
 					typeof customCssEntry === 'function'
-						? customCssEntry(v)
+						? (customCssEntry(v) as object)
 						: customCssEntry
 
 				if (typeof customCssEntry === 'function' || Boolean(v)) {
@@ -64,7 +71,7 @@ export function prepare<X>(x: X, theme: object, customCss?: object): X {
 					haveChange = true
 				}
 			} else {
-				const newValue = prepare(v, theme) as never
+				const newValue = prepare(v, theme, customCss) as never
 				if (newValue !== v) haveChange = true
 				r[k as keyof typeof r] = newValue
 			}
@@ -74,7 +81,7 @@ export function prepare<X>(x: X, theme: object, customCss?: object): X {
 	}
 
 	if (x instanceof ThemePath) {
-		return prepare(readPath(theme, x.path), theme) as any
+		return prepare(readPath(theme, x.path), theme, customCss) as any
 	}
 
 	if (typeof x === 'string') {
@@ -84,7 +91,11 @@ export function prepare<X>(x: X, theme: object, customCss?: object): X {
 			return x.replace(
 				/\$\{([^}]*)\}/gu,
 				match =>
-					`${prepare(readPath(theme, match.slice(2, -1).split('.')), theme)}`,
+					`${prepare(
+						readPath(theme, match.slice(2, -1).split('.')),
+						theme,
+						customCss,
+					)}`,
 			) as any
 		}
 	}

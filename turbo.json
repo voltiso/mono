@@ -40,7 +40,7 @@
 
 		"typecov": {
 			"dependsOn": ["^build:cjs"],
-			"inputs": ["src", "package.json"],
+			"inputs": ["src/**", "package.json"],
 			"outputs": ["package.json"]
 		},
 
@@ -50,7 +50,7 @@
 
 		"trace:run": {
 			"dependsOn": ["^build:cjs"],
-			"outputs": ["traceDir"]
+			"outputs": ["traceDir/**"]
 		},
 
 		"trace": {

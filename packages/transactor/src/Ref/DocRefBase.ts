@@ -3,7 +3,11 @@
 
 import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import type { InferableObject, ISchema } from '@voltiso/schemar.types'
+import type {
+	InferableObject,
+	ISchema,
+	SchemaLike,
+} from '@voltiso/schemar.types'
 import type { If } from '@voltiso/util'
 import { lazyPromise, protoLink } from '@voltiso/util'
 
@@ -21,6 +25,7 @@ import type { Method } from '~/Method'
 import { DocPath } from '~/Path'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
 
+import { getAggregateSchemas } from './_'
 import type { CallMethodOptions } from './_/callMethod'
 import { callMethod } from './_/callMethod'
 import type { DocRefContext, DocRefParentContext } from './_/Context'
@@ -71,6 +76,7 @@ export class DocRefBaseImpl<
 	_onGets?: TriggerEntry<OnGetTrigger>[] = undefined
 
 	_idSchemas?: ISchema<string>[] = undefined
+	_aggregateSchemas?: Record<string, SchemaLike> = undefined
 
 	_schema:
 		| {
@@ -87,6 +93,10 @@ export class DocRefBaseImpl<
 		InferMethods<D>
 
 	_isStrong: boolean
+
+	get aggregateSchemas(): never {
+		return getAggregateSchemas(this) as never
+	}
 
 	constructor(
 		context: DocRefParentContext,

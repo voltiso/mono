@@ -37,6 +37,12 @@ export interface RefBase<D extends DocLike, Exists extends boolean>
 	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists>
 	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists>
 
+	//
+
+	get aggregateSchemas(): D[DTI]['aggregates']
+
+	//
+
 	get(): PromiseLike<If<Exists, D, null>>
 
 	// set(): object extends Data<GDataPublicInput<D>>

@@ -3,4 +3,5 @@
 
 export * from './IObservable'
 export * from './IObserver'
+export * from './isBehaviorSubject'
 export * from './ISubject'

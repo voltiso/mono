@@ -647,7 +647,7 @@ importers:
       '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
-      '@voltiso/util.rxjs': workspace:^0.0.1
+      '@voltiso/util.rxjs': workspace:^
       rxjs: ^7.5.6
     dependencies:
       '@voltiso/patcher': link:../patcher
@@ -1165,8 +1165,6 @@ importers:
       react: ^18.2.0
       react-dom: ^18.2.0
       rimraf: ^3.0.2
-    dependencies:
-      '@voltiso/util.react': link:../util.react
     devDependencies:
       '@types/react': 18.0.19
       '@types/react-dom': 18.0.6
@@ -1174,9 +1172,25 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
+      '@voltiso/util.react': link:../util.react
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       rimraf: 3.0.2
+
+  packages/util.react.firestore:
+    specifiers:
+      '@types/react': ^18.0.19
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/util.react': workspace:^
+      react: ^18.2.0
+    dependencies:
+      '@voltiso/util.react': link:../util.react
+    devDependencies:
+      '@types/react': 18.0.19
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      react: 18.2.0
 
   packages/util.react.form:
     specifiers:
@@ -1262,6 +1276,7 @@ importers:
       '@voltiso/patcher': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
+      '@voltiso/util.rxjs': workspace:^0.0.1
       react: ^18.2.0
       rxjs: ^7.5.6
     devDependencies:
@@ -1271,6 +1286,7 @@ importers:
       '@voltiso/patcher': link:../patcher
       '@voltiso/util': link:../util
       '@voltiso/util.react': link:../util.react
+      '@voltiso/util.rxjs': link:../util.rxjs
       react: 18.2.0
       rxjs: 7.5.6
 

@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { SchemaLike } from '@voltiso/schemar.types'
 import type { _ } from '@voltiso/util'
 
-import type { PartialIntrinsicFields } from '~'
+import type { IDocConstructor, PartialIntrinsicFields } from '~'
 import type { Id } from '~/Data'
 import type { DocPath } from '~/Path'
 import type { IRef } from '~/Ref/IRef'
@@ -15,6 +16,12 @@ export interface DocLike {
 	[DTI]: DocTILike
 	dataWithId(): unknown
 	data: PartialIntrinsicFields
+
+	// get schemaWithoutId(): SchemaLike
+	// get schemableWithoutId(): object // Record<string, Schemable>
+
+	// get schemaWithId(): SchemaLike
+	// get schemableWithId(): object // Record<string, Schemable>
 }
 
 /**
@@ -38,6 +45,17 @@ export interface IDoc extends DocLike {
 	delete(): Promise<null>
 
 	methods: {}
+
+	readonly constructor: IDocConstructor
+
+	get schemaWithoutId(): SchemaLike
+	get schemableWithoutId(): object // Record<string, Schemable>
+
+	get schemaWithId(): SchemaLike
+	get schemableWithId(): object // Record<string, Schemable>
+
+	// get aggregateSchemas(): Record<string, SchemaLike>
+	get aggregateSchemas(): Record<string, SchemaLike>
 } // & GData<IDocTI>
 
 /**
