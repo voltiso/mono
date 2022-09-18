@@ -11,8 +11,14 @@ export function $assert(
 	condition: unknown,
 	message?: string | undefined,
 ): asserts condition {
-	if (!condition)
-		throw new Error(message ? `$assert failed: ${message}` : `$assert failed`)
+	if (!condition) {
+		const finalMessage = message
+			? `[@voltiso/assertor] $assert(${
+					condition as string
+			  }, '${message}') failed`
+			: `[@voltiso/assertor] $assert(${condition as string}) failed`
+		throw new Error(finalMessage)
+	}
 }
 
 // export function $assert(

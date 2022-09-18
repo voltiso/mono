@@ -5,7 +5,7 @@ import srcSimple from '~/simple'
 
 describe('simple', () => {
 	it('src', () => {
-		expect(() => srcSimple(1)).toThrow('0 == true')
+		expect(() => srcSimple(1)).toThrow('[@voltiso/assertor] $assert(0) failed')
 	})
 
 	it('dist', async () => {

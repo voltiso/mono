@@ -6,8 +6,10 @@ export function assert(
 	condition: unknown,
 	message?: string | undefined,
 ): asserts condition {
-	if (!condition)
-		throw new Error(
-			message ? `Assertion Failed: ${message}` : `Assertion Failed`,
-		)
+	if (!condition) {
+		const finalMessage = message
+			? `[@voltiso/util] assert(${condition as string}, '${message}') failed`
+			: `[@voltiso/util] assert(${condition as string}) failed`
+		throw new Error(finalMessage)
+	}
 }

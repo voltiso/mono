@@ -29,10 +29,9 @@
 		// 	"~/*": ["src/*"]
 		// },
 
-		"outDir": "_outDir_PLEASE_OVERRIDE", // Just in case - avoid polluting any dirs
+		// "outDir": "_outDir_PLEASE_OVERRIDE", // Just in case - avoid polluting any dirs
 
-		// TODO: we may want to remove declaration maps when publishing??
-		// TODO:  - but we don't care for now, it's just unbundled 1rary size
+		// TODO: we may want to remove declaration maps when publishing?
 		// Allows easy jump-to-source in this monorepo
 		"declarationMap": true,
 

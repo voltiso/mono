@@ -42,6 +42,19 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 		return result
 	}
 
+	function collectNodesOfKind(node: ts.Node, kind: ts.SyntaxKind): ts.Node[] {
+		let nodesOfKind: ts.Node[] = []
+
+		if (node.kind === kind) nodesOfKind.push(node)
+
+		node.forEachChild(child => {
+			const moreNodesOfKind = collectNodesOfKind(child, kind)
+			nodesOfKind = [...nodesOfKind, ...moreNodesOfKind]
+		})
+
+		return nodesOfKind
+	}
+
 	// function getJSDocTags(type: ts.Type): readonly ts.JSDocTag[] {
 	// 	const symbol = type.symbol as ts.Symbol | undefined
 	// 	// console.log('getJSDocTags', typeChecker.typeToString(type))
@@ -198,31 +211,58 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 				return false
 			}
 
-			const newSymbolNames = collectSymbolNames(newNode)
+			const symbolsOutOfScope = collectSymbolNames(newNode)
 
 			// console.log(newSymbolNames)
 
 			const symbolNames = collectSymbolNames(node)
-			for (const symbolName of symbolNames) newSymbolNames.delete(symbolName)
+			for (const symbolName of symbolNames) symbolsOutOfScope.delete(symbolName)
 
 			// console.log('remaining symbols', newSymbolNames)
 
-			for (const symbol of newSymbolNames) {
-				if (typeSymbols.has(symbol)) newSymbolNames.delete(symbol)
+			for (const symbol of symbolsOutOfScope) {
+				if (typeSymbols.has(symbol)) symbolsOutOfScope.delete(symbol)
 			}
 
-			const canBeInlined = newSymbolNames.size === 0
+			const hasSymbolsOutOfScope = symbolsOutOfScope.size > 0
 
-			if (!canBeInlined && options?.warn) {
+			if (hasSymbolsOutOfScope && options?.warn) {
 				const message = `\n[@voltiso/transform] unable to inline ${
 					getNodeText(node) || stringFromSyntaxKind(node.kind)
-				} - symbols out of scope: ${[...newSymbolNames].join(
+				} - symbols out of scope: ${[...symbolsOutOfScope].join(
 					', ',
 				)} \n  @ ${getNodePositionStr(node)}`
 
 				// eslint-disable-next-line no-console
 				console.warn(chalk.bgRed(message))
 			}
+
+			const importTypeNodes = collectNodesOfKind(
+				newNode,
+				ts.SyntaxKind.ImportType,
+			)
+
+			let containsImportAbsolutePath = false
+
+			for (const importTypeNode of importTypeNodes) {
+				const child = getFirstChildOrSelf(getFirstChildOrSelf(importTypeNode))
+				if (ts.isStringLiteral(child) && child.text.startsWith('/')) {
+					containsImportAbsolutePath = true
+
+					if (options?.warn) {
+						const message = `\n[@voltiso/transform] unable to inline ${
+							getNodeText(node) || stringFromSyntaxKind(node.kind)
+						} - resulting node text would include absolute disk path import of '${
+							child.text
+						}' \n  @ ${getNodePositionStr(node)}`
+
+						// eslint-disable-next-line no-console
+						console.warn(chalk.bgRed(message))
+					}
+				}
+			}
+
+			const canBeInlined = !hasSymbolsOutOfScope && !containsImportAbsolutePath
 
 			return canBeInlined
 		}
