@@ -6,36 +6,50 @@
 
 const moduleName = '@voltiso/transactor'
 
-function promiseConstructorName() {
-	return Promise.name
-}
+// function promiseConstructorName() {
+// 	return Promise.name
+// }
 
-function checkPromiseConstructorName() {
-	const name = promiseConstructorName()
-	// console.log(`[${moduleName}] Promise.name === ${name}`)
+const zoneAwarePromiseKey = '__zone_symbol__uncaughtPromiseErrors'
 
-	if (name !== 'ZoneAwarePromise') {
+function checkPromiseConstructor() {
+	if (!(zoneAwarePromiseKey in Promise)) {
 		throw new Error(
-			`[${moduleName}] zone.js not imported correctly: Promise.name === ${name}`,
+			`[${moduleName}] zone.js not imported correctly: Promise does not seem to be ZoneAwarePromise (constructor name ${Promise.name})`,
 		)
 	}
+	// const name = promiseConstructorName()
+
+	// console.log(`[${moduleName}] Promise.name === ${name}`)
+
+	// if (name !== 'ZoneAwarePromise') {
+	// 	throw new Error(
+	// 		`[${moduleName}] zone.js not imported correctly: Promise.name === ${name}`,
+	// 	)
+	// }
 }
 
-function implicitPromiseConstructorName() {
+function getImplicitPromiseConstructor() {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	return (async () => {})().constructor.name
+	return (async () => {})().constructor
 }
 
 function checkImplicitPromiseConstructorName() {
-	const name = implicitPromiseConstructorName()
+	const ImplicitPromise = getImplicitPromiseConstructor()
+
+	if (!(zoneAwarePromiseKey in ImplicitPromise)) {
+		throw new Error(
+			`[${moduleName}] zone.js not imported correctly: implicit Promise does not seem to be ZoneAwarePromise (constructor name ${ImplicitPromise.name})`,
+		)
+	}
 
 	// console.log(`[${moduleName}] implicit Promise constructor name: ${name}`)
 
-	if (name !== 'ZoneAwarePromise') {
-		throw new Error(
-			`[${moduleName}] zone.js not imported correctly: implicit Promise constructor name === ${name}. Make sure to transpile to ES2016 or earlier.`,
-		)
-	}
+	// if (name !== 'ZoneAwarePromise') {
+	// 	throw new Error(
+	// 		`[${moduleName}] zone.js not imported correctly: implicit Promise constructor name === ${name}. Make sure to transpile to ES2016 or earlier.`,
+	// 	)
+	// }
 }
 
 function checkStrictMode() {
@@ -52,6 +66,6 @@ function checkStrictMode() {
 
 export function checkEnv() {
 	checkStrictMode()
-	checkPromiseConstructorName()
+	checkPromiseConstructor()
 	checkImplicitPromiseConstructorName()
 }
