@@ -4,7 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
-import { deepClone, isDefined, undef } from '@voltiso/util'
+import { deepClone, isDefined } from '@voltiso/util'
 
 import type { DocumentReference } from './DocumentReference'
 import { DocumentSnapshot } from './DocumentSnapshot'
@@ -53,7 +53,7 @@ function getLock(store: Localstore, transaction: Transaction, path: DocPath) {
 
 	if (lock) $assert(lock.transaction === transaction)
 	// eslint-disable-next-line no-multi-assign, security/detect-object-injection
-	else lock = store._locks[path] = new Lock(transaction, undef)
+	else lock = store._locks[path] = new Lock(transaction, undefined)
 
 	return lock
 }
@@ -75,7 +75,7 @@ export class Transaction implements Database.Transaction {
 		if (Database.isDocumentReference(ref)) {
 			const lock = getLock(this._store, this, ref.path)
 			const data = getData(lock, ref)
-			return new DocumentSnapshot(data || undef)
+			return new DocumentSnapshot(data || undefined)
 		} else {
 			throw new Error('not implemented')
 		}
@@ -95,19 +95,17 @@ export class Transaction implements Database.Transaction {
 		const lock = getLock(this._store, this, ref.path)
 		const data = getData(lock, ref)
 
-		if (data === null)
+		if (!data)
 			throw new LocalstoreError(
 				`NOT_FOUND: document ${ref.path} does not exist (cannot update)`,
 			)
 
-		let newData = data
-
-		if (data !== lock.data) {
+		if (!lock.data) {
 			// console.log('Transaction.update', ref, updates, 'deepClone')
-			newData = deepClone(data)
+			lock.data = deepClone(data)
 		}
 
-		applyUpdatesInPlace(newData, updates)
+		applyUpdatesInPlace(lock.data, updates)
 	}
 
 	delete(ref: DocumentReference): void {

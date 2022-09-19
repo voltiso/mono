@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { Assert } from '@voltiso/util'
-import type * as FirebaseFirestore from 'firebase-admin/firestore'
+import type * as Firestore from 'firebase/firestore'
 
-import type { Query } from './Query'
+import type { FirestoreError } from './FirestoreError'
 
-describe('Query', () => {
+describe('FirestoreError', () => {
 	it('is compatible with Firestore', () => {
 		expect.assertions(0)
 
-		Assert.is<FirebaseFirestore.Query, Query>()
+		Assert.is<Firestore.FirestoreError, FirestoreError>()
 	})
 })

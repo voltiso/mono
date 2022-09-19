@@ -336,8 +336,17 @@ describe('array', () => {
 	it('validate', () => {
 		expect.hasAssertions()
 
-		expect(() => s.array(s.number).validate('asd')).toThrow('asd')
+		expect(() => s.array(s.number).validate('asd')).toThrow(
+			`should be array (got 'asd')`,
+		)
+
 		expect(() => s.array(s.number).validate([1, 'asd'])).toThrow('asd')
+
+		expect(() =>
+			s
+				.array({ displayName: s.string.minLength(1) })
+				.validate([{ displayName: '' }]),
+		).toThrow(`[0].displayName should be of length at least 1 (got 0)`)
 	})
 
 	it('AtLeast1 - type', () => {

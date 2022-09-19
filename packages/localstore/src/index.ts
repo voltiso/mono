@@ -1,7 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export { FieldValue } from './FieldValue'
-export type { Localstore } from './Localstore'
-export { createLocalstore } from './Localstore'
-export { Timestamp } from './Timestamp'
+export * from './CollectionReference'
+export * from './DocumentReference'
+export * from './DocumentSnapshot'
+export * from './Error'
+export * from './FieldValue'
+export * from './Localstore'
+export * from './Lock'
+export * from './Path'
+export * from './Timestamp'
+export * from './Transaction'
+export * from './util'

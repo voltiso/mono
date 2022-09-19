@@ -54,8 +54,10 @@ describe('checked', () => {
 			.function((a, b) => a.a + b.b)
 
 		expect(f({ a: 111 }, { b: 222 })).toBe(333)
-		expect(() => f({ a: 1 }, { b: 2 })).toThrow('123')
-		expect(() => f({ a: 1 }, { b: 1001 })).toThrow('1000')
+		expect(() => f({ a: 1 }, { b: 2 })).toThrow('should at least 123 (got 3)')
+		expect(() => f({ a: 1 }, { b: 1001 })).toThrow(
+			'[1].b should at most 1000 (got 1001)',
+		)
 	})
 
 	it('arg - async', async () => {
@@ -113,7 +115,10 @@ describe('checked', () => {
 				return this.asd + x
 			})
 
-		expect(() => f.call({ asd: 1 }, 123)).toThrow('123')
+		expect(() => f.call({ asd: 1 }, 123)).toThrow(
+			'.asd should at least 123 (got 1)',
+		)
+
 		expect(f.call({ asd: 123 }, 5)).toBe(128)
 	})
 
@@ -135,17 +140,38 @@ describe('checked', () => {
 			.result({ a: s.number })
 			.function(x => ({ a: x, qwerty: 123 }))
 
-		expect(() => f(50)).toThrow('qwerty')
+		expect(() => f(50)).toThrow('.qwerty should not be present (got 123)')
 	})
 
-	it('does not allow returning without result schema', () => {
-		expect.hasAssertions()
+	it('void result - implicit', () => {
+		expect.assertions(0)
 
-		// @ts-expect-error result schema required
-		const f = checked.param(s.number).function(x => x + 1)
+		const a = checked.function(() => {})
+		const b = checked.function(async () => {})
 
-		expect(f(50)).toBe(51)
+		Assert<IsIdentical<typeof a, () => void>>()
+		Assert<IsIdentical<typeof b, () => Promise<void>>>()
 	})
+
+	it('void result - explicit', () => {
+		expect.assertions(0)
+
+		const a = checked.result(s.void).function(() => {})
+		const b = checked.result(s.void).function(async () => {})
+
+		Assert<IsIdentical<typeof a, () => void>>()
+		Assert<IsIdentical<typeof b, () => Promise<void>>>()
+	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('does not allow returning without result schema', () => {
+	// 	expect.hasAssertions()
+
+	// 	// @ts-expect-error result schema required
+	// 	const f = checked.param(s.number).function(x => x + 1)
+
+	// 	expect(f(50)).toBe(51)
+	// })
 
 	it('does not require schema for Promise<void> result', async () => {
 		expect.hasAssertions()

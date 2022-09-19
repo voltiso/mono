@@ -6,10 +6,10 @@ import type { Handlers, PromisifyHandlers } from '~/_shared'
 import type { ClientOptions } from './ClientOptions'
 import { ClientPath } from './ClientPath'
 
-export class ClientImpl {
+export class ClientImpl<THandlers extends Handlers> {
 	_url: string
 	_token = ''
-	_options: ClientOptions
+	_options: ClientOptions<THandlers>
 
 	get url() {
 		return this._url
@@ -23,7 +23,7 @@ export class ClientImpl {
 		return this._options
 	}
 
-	constructor(url: string, options: ClientOptions) {
+	constructor(url: string, options: ClientOptions<THandlers>) {
 		this._url = url
 		this._options = options
 
@@ -43,14 +43,14 @@ export class ClientImpl {
 	}
 }
 
-export type Client<THandlers extends Handlers = Handlers> = ClientImpl & PromisifyHandlers<THandlers>
+export type Client<THandlers extends Handlers = Handlers> =
+	ClientImpl<THandlers> & PromisifyHandlers<THandlers>
 
 export const Client = ClientImpl as ClientConstructor
 
 //
 
-// eslint-disable-next-line etc/no-misused-generics
 export type ClientConstructor = new <THandlers extends Handlers>(
 	url: string,
-	options: ClientOptions,
+	options: ClientOptions<THandlers>,
 ) => Client<THandlers>

@@ -8,20 +8,26 @@ import { stringFrom } from '~/string'
 import { omitIfPresent } from './omitIfPresent'
 import type { OmitSimple } from './OmitSimple'
 
-// export function omit<O extends object, K extends keyof O>(
-// 	obj: O,
-// 	key: K
-// ): VOmit<O, K>
-
-// export function omit<O extends object, K extends keyof O>(
-// 	obj: O,
-// 	...keys: K[]
-// ): VOmit<O, K>
-
 export function omit<O extends object, K extends keyof O>(
 	obj: O,
 	...keys: K[]
-): OmitSimple<O, K> {
+): OmitSimple<O, K>
+
+export function omit(obj: undefined, ...keys: never[]): undefined
+
+export function omit(obj: null, ...keys: never[]): null
+
+export function omit<O extends object, K extends keyof O>(
+	obj: O | undefined | null,
+	...keys: K[]
+): OmitSimple<O, K> | undefined | null
+
+export function omit<O extends object, K extends keyof O>(
+	obj: O | undefined | null,
+	...keys: K[]
+): OmitSimple<O, K> | undefined | null {
+	if (!obj) return obj as never
+
 	for (const key of keys) {
 		if (!hasOwnProperty(obj, key)) {
 			throw new VoltisoUtilError(

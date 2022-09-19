@@ -7,6 +7,8 @@ import type { Server } from 'node:http'
 
 import { checked } from '@voltiso/caller'
 import * as s from '@voltiso/schemar'
+import type { IsIdentical, MaybePromise } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 import mockConsole from 'jest-mock-console'
 
 import { createClient } from '~/client'
@@ -31,6 +33,14 @@ const handlers = {
 			.result(s.number)
 
 			.function(async x => 2 * x),
+	},
+
+	doctor: {
+		add: checked.function(async () => {}),
+	},
+
+	specialty: {
+		add: checked.function(() => {}),
 	},
 
 	auth: {
@@ -59,8 +69,30 @@ beforeAll(async () => {
 
 // CLIENT
 
-describe('client', function () {
-	it('works', async function () {
+describe('client', () => {
+	it('type', () => {
+		expect.assertions(0)
+
+		const myClient = createClient<typeof myServer.handlers>(
+			`http://localhost:${port}/rpc`,
+		)
+
+		Assert<
+			IsIdentical<
+				typeof myClient.doctor.add,
+				() => Promise<void> & { local: MaybePromise<void> }
+			>
+		>()
+
+		Assert<
+			IsIdentical<
+				typeof myClient.specialty.add,
+				() => Promise<void> & { local: MaybePromise<void> }
+			>
+		>()
+	})
+
+	it('works', async () => {
 		expect.hasAssertions()
 
 		const myClient = createClient<typeof myServer.handlers>(

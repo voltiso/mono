@@ -3,3 +3,4 @@
 
 export type Path = string
 export type DocPath = Path
+export type CollectionPath = Path

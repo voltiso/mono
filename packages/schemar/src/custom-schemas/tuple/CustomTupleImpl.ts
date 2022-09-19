@@ -144,7 +144,7 @@ export class CustomTupleImpl<
 				const r = schema(t).exec(x[idx])
 
 				if (!r.isValid) {
-					for (const issue of r.issues) issue.path = [...issue.path, idx]
+					for (const issue of r.issues) issue.path = [idx, ...issue.path]
 
 					issues = [...issues, ...r.issues]
 				}

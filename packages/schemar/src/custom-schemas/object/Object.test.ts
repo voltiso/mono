@@ -310,12 +310,18 @@ describe('object', () => {
 		expect.hasAssertions()
 
 		expect(() => s.object({ a: s.number }).validate({ a: 1, b: 123 })).toThrow(
-			'123',
+			'.b should not be present (got 123)',
 		)
 
 		expect(() => s.schema({ a: s.number }).validate({ a: 1, b: 123 })).toThrow(
 			'123',
 		)
+
+		expect(() =>
+			s
+				.schema({ displayName: s.string.minLength(1) })
+				.validate({ displayName: '' }),
+		).toThrow('.displayName should be of length at least 1 (got 0)')
 	})
 
 	it('pricing agreement', () => {
@@ -362,7 +368,9 @@ describe('object', () => {
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			}),
-		).toThrow('USD')
+		).toThrow(
+			`[@voltiso/schemar] .currency should be one of ['USD', 'PLN'] (got 'ASD')`,
+		)
 
 		expect(
 			s.schema(pricingAgreement).isValid({

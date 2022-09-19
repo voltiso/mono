@@ -4,9 +4,12 @@
 /* eslint-disable security/detect-object-injection */
 
 import { $assert } from '@voltiso/assertor'
+import type { DocumentData } from '@voltiso/firestore-like'
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
 import { deepClone, isDefined } from '@voltiso/util'
+import { newAutoId } from '@voltiso/util.firestore'
+import type { Observable } from 'rxjs'
 
 import type { CollectionReference } from './CollectionReference'
 import { DocumentSnapshot } from './DocumentSnapshot'
@@ -14,8 +17,9 @@ import { LocalstoreError } from './Error'
 import type { Localstore } from './Localstore'
 import { Collection, Doc } from './Localstore'
 import type { DocPath } from './Path'
+import { getOrCreateDoc } from './util'
 import { applyUpdatesInPlace } from './util/applyUpdates'
-import { newAutoId } from './util/newAutoId'
+import { updateCollectionSubject } from './util/updateCollectionSubject'
 
 function failTransactionFor(store: Localstore, path: DocPath) {
 	const transaction = store._locks[path]?.transaction
@@ -49,38 +53,24 @@ export class DocumentReference implements Database.DocumentReference {
 	}
 
 	_get(): DocumentSnapshot {
-		return new DocumentSnapshot(
-			this._store._collections[this._collectionRef._path]?._docs[
-				this.id
-			]?._data,
-		)
+		const data =
+			this._store._collections[this._collectionRef._path]?._docs[this.id]?.data$
+				.value
+
+		return new DocumentSnapshot(data === null ? undefined : data)
 	}
 
 	set(data: Database.DocumentData): MaybePromise<void> {
-		return this._set(data)
+		return this._set(deepClone(data))
 	}
 
-	_set(data: Database.DocumentData) {
-		const collections = this._store._collections
-		const collectionPath = this._collectionRef._path
-		const id = this.id
+	_set(data: Database.DocumentData | null) {
+		const doc = getOrCreateDoc(this._store, this._collectionRef._path, this.id)
+		doc.data$.next(data)
 
-		if (!collections[collectionPath])
-			collections[collectionPath] = new Collection()
-
-		const collection = collections[collectionPath]
-
+		const collection = this._store._collections[this._collectionRef._path]
 		$assert(collection)
-
-		if (!collection._docs[id]) collection._docs[id] = new Doc({})
-
-		const doc = collection._docs[id]
-
-		$assert(doc)
-
-		// console.log('DocumentReference.set', data, 'deepClone')
-
-		doc._data = deepClone(data)
+		updateCollectionSubject(collection)
 
 		failTransactionFor(this._store, this.path)
 	}
@@ -104,32 +94,39 @@ export class DocumentReference implements Database.DocumentReference {
 
 		const doc = collection._docs[id]
 
-		if (!doc)
+		if (!doc?.data$.value)
 			throw new LocalstoreError(
-				`document ${this.path} does not exist (cannot update)`,
+				`NOT_FOUND: document ${this.path} does not exist (cannot update)`,
 			)
 
-		applyUpdatesInPlace(doc._data, updates)
+		const newData = { ...doc.data$.value }
+		applyUpdatesInPlace(newData, updates)
+		doc.data$.next(newData)
+		updateCollectionSubject(collection)
 
 		failTransactionFor(this._store, this.path)
 	}
 
 	delete(): MaybePromise<void> {
-		return this._delete()
+		this._delete()
 	}
 
-	_delete() {
+	_delete(): void {
+		this._set(null)
+	}
+
+	get data$(): Observable<DocumentData | null> {
 		const collections = this._store._collections
 		const collectionPath = this._collectionRef._path
-		const id = this.id
 
-		if (!collections[collectionPath]) return
+		// eslint-disable-next-line no-multi-assign
+		const collection = (collections[collectionPath] =
+			collections[collectionPath] || new Collection())
 
-		const collection = collections[collectionPath]
-		$assert(collection)
+		// eslint-disable-next-line no-multi-assign
+		const doc = (collection._docs[this.id] =
+			collection._docs[this.id] || new Doc(null))
 
-		delete collection._docs[id]
-
-		failTransactionFor(this._store, this.path)
+		return doc.data$
 	}
 }

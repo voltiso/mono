@@ -97,7 +97,9 @@ describe('string', () => {
 		// ;() => s.string.length(3, 10).maxLength
 
 		expect(s.string.minLength(3).validate('abc')).toBeTruthy()
-		expect(() => s.string.minLength(3).validate('ab')).toThrow('3')
+		expect(() => s.string.minLength(3).validate('ab')).toThrow(
+			'[@voltiso/schemar] should be of length at least 3 (got 2)',
+		)
 
 		expect(s.string.maxLength(3).exec('abc').isValid).toBeTruthy()
 		expect(() => s.string.maxLength(3).validate('abcd')).toThrow('3')

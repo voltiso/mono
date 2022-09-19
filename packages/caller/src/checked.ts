@@ -94,16 +94,16 @@ class _Checked<T extends G> {
 
 export interface WithoutThis<T extends G> {
 	function(
-		f: (...args: t.TupleType_<T['params']>) => t.InputType<T['result']>,
-	): (...args: t.TupleType_<T['params'], { kind: 'in' }>) => t.Type<T['result']>
-
-	function(
 		f: (
 			...args: t.TupleType_<T['params']>
 		) => Promise<t.InputType<T['result']>>,
 	): (
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
 	) => Promise<t.Type<T['result']>>
+
+	function(
+		f: (...args: t.TupleType_<T['params']>) => t.InputType<T['result']>,
+	): (...args: t.TupleType_<T['params'], { kind: 'in' }>) => t.Type<T['result']>
 
 	function(
 		f: (
@@ -150,10 +150,10 @@ type Checked<T extends G> = Pick<
 	_Checked<T>,
 	| 'param'
 	| ([t.Void] extends [T['self']] ? 'this' : never)
-	| ([t.Never] extends [T['result']] ? 'result' : never)
+	| ([t.Void] extends [T['result']] ? 'result' : never)
 > &
 	([t.Void] extends [T['self']] ? WithoutThis<T> : WithThis<T>)
 
 export const checked = new _Checked(null, [], null) as unknown as Checked<
-	G<t.Void, readonly [], t.Never | t.Schema<Promise<void>>>
+	G<t.Void, readonly [], t.Void>
 >

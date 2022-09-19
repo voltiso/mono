@@ -101,9 +101,6 @@ function _initializeResult<S extends SchemableObjectLike>(
 	return {
 		props: {
 			onSubmit: (event: FormEvent<HTMLFormElement>) => {
-				// eslint-disable-next-line no-console
-				console.log('onSubmit')
-
 				event.preventDefault()
 
 				// const data = await validate({ beforeSubmit: true })
@@ -142,7 +139,7 @@ export const useForm = <S extends SchemableObjectLike>(
 		[],
 	)
 
-	return mutable.result$
+	return mutable.result$ as never
 
 	// const handleError = useCallback(
 	// 	async (e: unknown) => {

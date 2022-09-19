@@ -180,4 +180,16 @@ describe('array', () => {
 		expect(s.tuple(s.number, s.string).or(s.number).isValid('2')).toBeFalsy()
 		expect(s.tuple(s.number, s.string).isValid('2')).toBeFalsy()
 	})
+
+	it('validate', () => {
+		expect.hasAssertions()
+
+		expect(() => s.tuple(s.number.min(1)).validate(0)).toThrow(
+			'Array.isArray should be true (got false)',
+		)
+
+		expect(() => s.tuple({ a: s.number.min(1) }).validate([{ a: 0 }])).toThrow(
+			'[0].a should at least 1',
+		)
+	})
 })

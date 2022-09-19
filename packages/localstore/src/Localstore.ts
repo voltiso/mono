@@ -1,34 +1,35 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DocumentData } from '@voltiso/firestore-like'
 import type * as Database from '@voltiso/firestore-like'
+import { BehaviorSubject } from 'rxjs'
 
 import { CollectionReference } from './CollectionReference'
 import { DocumentReference } from './DocumentReference'
 import type { Lock } from './Lock'
-import type { DocPath } from './Path'
+import type { CollectionPath, DocPath } from './Path'
 import { Transaction } from './Transaction'
 
-// class Ref {
-// 	__ref: string
-// 	constructor(path: string) {
-// 		this.__ref = path
-// 	}
-// }
-
-type Path = string
-type CollectionPath = Path
-
 export class Doc {
-	_data: Database.DocumentData
+	// eslint-disable-next-line rxjs/no-exposed-subjects
+	data$: BehaviorSubject<Database.DocumentData | null>
 
-	constructor(data: Database.DocumentData) {
-		this._data = data
+	constructor(data: Database.DocumentData | null) {
+		// eslint-disable-next-line rxjs/no-explicit-generics
+		this.data$ = new BehaviorSubject<Database.DocumentData | null>(data)
 	}
 }
 
 export class Collection {
 	_docs: Record<string, Doc> = {}
+
+	// eslint-disable-next-line rxjs/no-exposed-subjects
+	_docs$: BehaviorSubject<Record<string, DocumentData>>
+
+	constructor() {
+		this._docs$ = new BehaviorSubject<Record<string, DocumentData>>({})
+	}
 }
 
 export class Localstore implements Database.Database {

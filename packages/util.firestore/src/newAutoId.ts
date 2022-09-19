@@ -6,10 +6,8 @@
 // import { randomBytes } from 'node:crypto'
 import randomBytes from 'randombytes'
 
-import type { Id } from './Data'
-
 // copied from 'firebase-admin/firestore'
-export function newAutoId(): Id {
+export function newAutoId(): string {
 	// eslint-disable-next-line no-secrets/no-secrets
 	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 	let autoId = ''
