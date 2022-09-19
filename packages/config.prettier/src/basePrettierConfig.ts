@@ -124,6 +124,7 @@ export const basePrettierConfig = defineConfig({
 
 			options: {
 				parser: 'json-stringify',
+				useTabs: false
 			},
 		},
 	],
