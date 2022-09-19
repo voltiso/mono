@@ -43,7 +43,7 @@
 		"@babel/preset-env": "^7.19.1",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@voltiso/config.jest.lib": "workspace:^",
-		"esbuild": "^0.15.7",
+		"esbuild": "^0.15.8",
 		"flow-remove-types": "^2.187.0",
 		"jest-environment-jsdom": "^29.0.3",
 		"react": "^18.2.0",
