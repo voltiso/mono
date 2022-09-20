@@ -57,7 +57,7 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/first': 1,
 
 	'import/exports-last': 0,
-	'import/no-duplicates': 0, // simple-import-sort
+	'import/no-duplicates': 1, // simple-import-sort does not handle this
 	'import/no-namespace': 0,
 	'import/extensions': 0, // handled by eslint-plugin-n + PATCH
 
