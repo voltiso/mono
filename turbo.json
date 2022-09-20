@@ -23,7 +23,7 @@
 		},
 
 		"lint:eslint": {
-			"dependsOn": ["^build:cjs"],
+			"dependsOn": ["^build:cjs", "build:cjs"],
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},

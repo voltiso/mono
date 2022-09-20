@@ -44,7 +44,8 @@ export const jsonc = defineEslintConfigOverride({
 		// ],
 		// 'json/*': 2,
 		// 'jsonc/array-element-newline': 0,
-		'jsonc/indent': ['error', 'tab'],
+		// 'jsonc/indent': ['error', 'tab'],
+		'jsonc/indent': 0, // handled by prettier
 
 		'jsonc/key-name-casing': [
 			'error',

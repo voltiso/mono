@@ -73,7 +73,6 @@ export const depcheck = 'depcheck'
 
 export const typecov = [
 	'type-coverage --project tsconfig.build.cjs --update || true',
-	'prettier --write ./package.json',
 ]
 
 export const traceRun = [

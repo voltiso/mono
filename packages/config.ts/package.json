@@ -1,24 +1,24 @@
 {
-	"name": "@voltiso/config.ts",
-	"version": "1.0.2",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"_________EXPORTS FALLBACK": "__________",
-	"main": "tsconfig.json",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"tsconfig.json"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"fix:prettier": "v fixPrettier",
-		"lint:eslint": "v lintEslint",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast"
-	}
+  "name": "@voltiso/config.ts",
+  "version": "1.0.2",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "_________EXPORTS FALLBACK": "__________",
+  "main": "tsconfig.json",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "tsconfig.json"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "fix:prettier": "v fixPrettier",
+    "lint:eslint": "v lintEslint",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast"
+  }
 }

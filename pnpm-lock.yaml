@@ -1198,18 +1198,11 @@ importers:
 
   packages/util.react.firestore:
     specifiers:
-      '@types/react': ^18.0.20
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/util.react': workspace:^
-      react: ^18.2.0
-    dependencies:
-      '@voltiso/util.react': link:../util.react
     devDependencies:
-      '@types/react': 18.0.20
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      react: 18.2.0
 
   packages/util.react.form:
     specifiers:
