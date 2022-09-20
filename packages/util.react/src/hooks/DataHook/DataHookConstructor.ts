@@ -11,7 +11,7 @@ import { DataHook } from './DataHook'
 
 export interface DataHookConstructor {
 	// eslint-disable-next-line etc/no-misused-generics
-	new <D extends object>(p: { loading: boolean }): DataHook<D>
+	new <D extends object>(p: { isLoading: boolean }): DataHook<D>
 	new <D extends object>(p: { data: D | null }): DataHook<D>
 	// eslint-disable-next-line etc/no-misused-generics
 	new <D extends object>(p: { error: Error }): DataHook<D>
@@ -19,7 +19,7 @@ export interface DataHookConstructor {
 
 // eslint-disable-next-line etc/no-misused-generics
 export function dataHook<D extends object>(p: {
-	loading: true
+	isLoading: true
 }): DataHookLoading<D>
 
 export function dataHook<D extends object>(p: { data: D }): DataHookExists<D>
@@ -40,7 +40,7 @@ export function dataHook<D extends object>(p: {
 
 export function dataHook<D extends object>(p: {
 	data?: D | null | undefined
-	loading?: boolean | undefined
+	isLoading?: boolean | undefined
 	error?: Error | string | undefined
 }): DataHook<D>
 

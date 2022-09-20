@@ -9,7 +9,7 @@ class DataHookImpl<D extends object> {
 	/** - `undefined` === not known yet */
 	readonly data?: D | null
 
-	readonly loading: boolean
+	readonly isLoading: boolean
 
 	readonly error?: Error
 
@@ -19,11 +19,11 @@ class DataHookImpl<D extends object> {
 	}
 
 	constructor(p: {
-		loading?: boolean
+		isLoading?: boolean
 		data?: D | null
 		error?: Error | string
 	}) {
-		this.loading = p.loading || false
+		this.isLoading = p.isLoading || false
 
 		if (typeof p.data !== 'undefined') this.data = p.data
 
@@ -45,7 +45,7 @@ class DataHookImpl<D extends object> {
 export type DataHookLoading<D extends object> = Merge2Reverse_<
 	{
 		readonly data?: undefined
-		readonly loading: true
+		readonly isLoading: true
 		readonly error?: undefined
 		readonly exists: undefined
 	},
@@ -55,7 +55,7 @@ export type DataHookLoading<D extends object> = Merge2Reverse_<
 export type DataHookError<D extends object> = Merge2Reverse_<
 	{
 		readonly data?: undefined
-		readonly loading: false
+		readonly isLoading: false
 		readonly error: Error
 		readonly exists: undefined
 	},
@@ -65,7 +65,7 @@ export type DataHookError<D extends object> = Merge2Reverse_<
 export type DataHookExists<D extends object> = Merge2Reverse_<
 	{
 		readonly data: D
-		readonly loading: false
+		readonly isLoading: false
 		readonly error?: undefined
 		readonly exists: true
 	},
@@ -75,7 +75,7 @@ export type DataHookExists<D extends object> = Merge2Reverse_<
 export type DataHookNotExists<D extends object> = Merge2Reverse_<
 	{
 		readonly data: null
-		readonly loading: false
+		readonly isLoading: false
 		readonly error?: undefined
 		readonly exists: false
 	},

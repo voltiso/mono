@@ -15,7 +15,7 @@ describe('DataHook', () => {
 
 		expect(r.data?.a).toBe(1)
 		expect(r.a).toBe(1)
-		expect(r.loading).toBeFalsy()
+		expect(r.isLoading).toBeFalsy()
 		expect(r.error).toBeUndefined()
 
 		Assert<IsIdentical<typeof r.a, number | undefined>>()
@@ -32,17 +32,17 @@ describe('DataHook', () => {
 		const r = new DataHook({ data: null })
 
 		expect(r.data).toBeNull()
-		expect(r.loading).toBeFalsy()
+		expect(r.isLoading).toBeFalsy()
 		expect(r.error).toBeUndefined()
 	})
 
 	it('works - loading', () => {
 		expect.hasAssertions()
 
-		const r = new DataHook({ loading: true })
+		const r = new DataHook({ isLoading: true })
 
 		expect(r.data).toBeUndefined()
-		expect(r.loading).toBeTruthy()
+		expect(r.isLoading).toBeTruthy()
 		expect(r.error).toBeUndefined()
 	})
 
@@ -52,7 +52,7 @@ describe('DataHook', () => {
 		const r = new DataHook({ error: new Error('test') })
 
 		expect(r.data).toBeUndefined()
-		expect(r.loading).toBeFalsy()
+		expect(r.isLoading).toBeFalsy()
 		expect(r.error?.message).toBe('test')
 	})
 })
