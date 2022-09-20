@@ -1,59 +1,59 @@
 {
-	"name": "@voltiso/eslint-plugin",
-	"version": "1.0.2",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/cjs/index.d.ts",
-	"main": "dist/cjs/index.js",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________TEST": "__________",
-		"test": "echo no tests yet!",
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"depcheck": "depcheck",
-		"fix": "v fix",
-		"fix:prettier": "v fixPrettier",
-		"fix:eslint": "eslint . --fix",
-		"check": "run-p fix:prettier lint test",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
-		"__________MISC": "__________",
-		"clean": "v clean"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@typescript-eslint/utils": "^5.37.0",
-		"builtins": "^5.0.1",
-		"eslint-module-utils": "^2.7.4",
-		"is-core-module": "^2.10.0",
-		"resolve": "^1.22.1"
-	},
-	"peerDependencies": {
-		"typescript": "^4.8.2"
-	},
-	"devDependencies": {
-		"@types/eslint": "^8.4.6",
-		"@types/estree": "^1.0.0",
-		"@types/is-core-module": "^2.2.0",
-		"@types/resolve": "^1.20.2",
-		"@voltiso/assertor.transform": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"eslint": "^8.23.1",
-		"import-meta-resolve": "^2.1.0",
-		"typescript": "^4.8.3"
-	}
+  "name": "@voltiso/eslint-plugin",
+  "version": "1.0.2",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________TEST": "__________",
+    "test": "echo no tests yet!",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "depcheck": "depcheck",
+    "fix": "v fix",
+    "fix:prettier": "v fixPrettier",
+    "fix:eslint": "eslint . --fix",
+    "check": "run-p fix:prettier lint test",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "tsc -b tsconfig.build.cjs.json",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnly",
+    "__________MISC": "__________",
+    "clean": "v clean"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@typescript-eslint/utils": "^5.37.0",
+    "builtins": "^5.0.1",
+    "eslint-module-utils": "^2.7.4",
+    "is-core-module": "^2.10.0",
+    "resolve": "^1.22.1"
+  },
+  "peerDependencies": {
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.4.6",
+    "@types/estree": "^1.0.0",
+    "@types/is-core-module": "^2.2.0",
+    "@types/resolve": "^1.20.2",
+    "@voltiso/assertor.transform": "workspace:^",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/script": "workspace:^",
+    "eslint": "^8.23.1",
+    "import-meta-resolve": "^2.1.0",
+    "typescript": "^4.8.3"
+  }
 }

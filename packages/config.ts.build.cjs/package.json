@@ -1,32 +1,32 @@
 {
-	"name": "@voltiso/config.ts.build.cjs",
-	"version": "2.0.2",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"_________EXPORTS FALLBACK": "__________",
-	"main": "tsconfig.json",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"tsconfig.json"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"lint:eslint": "v lintEslint",
-		"depcheck": "depcheck",
-		"fix": "v fix",
-		"fix:prettier": "v fixPrettier",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast"
-	},
-	"__________DEPS": "__________",
-	"peerDependencies": {
-		"@voltiso/config.ts.build": "workspace:^"
-	},
-	"devDependencies": {
-		"@voltiso/config.ts.build": "workspace:^"
-	}
+  "name": "@voltiso/config.ts.build.cjs",
+  "version": "2.0.2",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "_________EXPORTS FALLBACK": "__________",
+  "main": "tsconfig.json",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "tsconfig.json"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "lint:eslint": "v lintEslint",
+    "depcheck": "depcheck",
+    "fix": "v fix",
+    "fix:prettier": "v fixPrettier",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast"
+  },
+  "__________DEPS": "__________",
+  "peerDependencies": {
+    "@voltiso/config.ts.build": "workspace:^"
+  },
+  "devDependencies": {
+    "@voltiso/config.ts.build": "workspace:^"
+  }
 }
