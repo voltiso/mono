@@ -5,7 +5,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { $assert } from '@voltiso/assertor'
-import { get, isPlainObject } from '@voltiso/util'
+import { isPlainObject } from '@voltiso/util'
 
 import type { CssProp } from '~'
 import { ThemePath } from '~/ThemePath'
@@ -25,10 +25,14 @@ function isWith0(x: unknown): x is { [0]: unknown } {
 }
 
 function readPath(obj: object, path: string[]): unknown {
-	const result = get(obj, path as never)
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+	let result = obj as any
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+	for (const key of path) result = result[key]
 	return isWith0(result) ? result[0] : result
 }
 
+/** `fela` mutates objects - make sure to return a deep fresh object here */
 export function prepare<X>(
 	x: X,
 	params: {
@@ -48,12 +52,9 @@ export function prepare<X>(
 	// console.log('prepare', x, customCss)
 	if (isPlainObject(x)) {
 		let r: object = {}
-		let haveChange = false
 
-		if (!params.isPreparingProps && isWithNested(x)) {
+		if (!params.isPreparingProps && isWithNested(x))
 			r = { ...prepare(x.nested, params) }
-			haveChange = true
-		}
 
 		for (const [k, v] of Object.entries(x)) {
 			/** Unsafe - do not do when preparing props */
@@ -61,7 +62,7 @@ export function prepare<X>(
 
 			/** Unsafe - do not do when preparing props */
 			if (!params.isPreparingProps && v === undefined) {
-				haveChange = true // removing undefined entry
+				// removing undefined entry
 				continue
 			}
 
@@ -86,16 +87,14 @@ export function prepare<X>(
 					const preparedCustomCss = prepare(cssValues, params)
 
 					r = { ...preparedCustomCss, ...r }
-					haveChange = true
 				}
 			} else {
 				const newValue = prepare(v, params) as never
-				if (newValue !== v) haveChange = true
 				r[k as keyof typeof r] = newValue
 			}
 		}
 
-		return haveChange ? r : (x as any)
+		return r as never
 	}
 
 	if (x instanceof ThemePath) {

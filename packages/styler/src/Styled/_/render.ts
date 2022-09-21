@@ -28,8 +28,9 @@ export function render<$ extends StyledTypeInfo>(
 	ref: ForwardedRef<unknown>,
 	data: StyledData<$>,
 ) {
-	// eslint-disable-next-line react-hooks/rules-of-hooks, destructuring/no-rename
-	const { css: getFelaCss, theme } = useFela()
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const fela = useFela()
+	const theme = fela.theme
 
 	const { css, ...otherProps } = props
 	// const css = props.css
@@ -41,12 +42,14 @@ export function render<$ extends StyledTypeInfo>(
 
 	const finalCustomCss = stack.at(-1)?.customCss
 
-	// ! prepare props - dangerous - do not pass customCss
-	for (const k of Object.keys(p) as (keyof typeof p)[]) {
-		// assertNotPolluting(k)
-		// eslint-disable-next-line security/detect-object-injection
-		p[k] = prepare(p[k], { theme }) as never
-	}
+	// // ! BAD IDEA: prepare props - dangerous - do not pass customCss
+	// for (const k of Object.keys(p) as (keyof typeof p)[]) {
+	// 	if (k === 'children') continue // dangerous and slow
+
+	// 	// assertNotPolluting(k)
+	// 	// eslint-disable-next-line security/detect-object-injection
+	// 	p[k] = prepare(p[k], { theme, isPreparingProps: true }) as never
+	// }
 
 	const styles: Css[] = []
 
@@ -69,6 +72,18 @@ export function render<$ extends StyledTypeInfo>(
 
 	consume(p, finalCustomCss)
 
+	function prepareProps(
+		props: object,
+		params: { theme: object; customCss?: object | undefined },
+	) {
+		const result = {} as Record<string, unknown>
+		for (const [prop, value] of Object.entries(props)) {
+			// eslint-disable-next-line security/detect-object-injection
+			result[prop] = prepare(value, params)
+		}
+		return result
+	}
+
 	for (let i = stack.length - 1; i >= 0; --i) {
 		// eslint-disable-next-line security/detect-object-injection
 		const node = stack[i]
@@ -78,8 +93,13 @@ export function render<$ extends StyledTypeInfo>(
 		} else if (isStyleNode(node)) {
 			styles.push(prepare(node.style, { theme, customCss: node.customCss }))
 		} else if (isGetStyleNode(node)) {
+			const props = prepareProps(
+				{ ...data.defaults, ...p },
+				{ theme, customCss: node.customCss },
+			)
+			const style = node.getStyle(props)
 			styles.push(
-				prepare(node.getStyle({ ...data.defaults, ...p }), {
+				prepare(style, {
 					theme,
 					customCss: node.customCss,
 				}),
@@ -112,16 +132,20 @@ export function render<$ extends StyledTypeInfo>(
 			// 	? [...children, ...newChildElements]
 			// 	: [...newChildElements, ...children]
 		} else if (isMapPropsNode(node)) {
+			const inputProps = prepareProps(
+				{ ...data.defaults, ...p },
+				{ theme, customCss: node.customCss },
+			)
 			p = {
 				...p,
-				...node.mapProps({ ...data.defaults, ...p } as never),
+				...node.mapProps(inputProps),
 			}
 		}
 	}
 
 	p = { ...data.domDefaults, ...p }
 
-	const felaValue = getFelaCss([...styles].reverse() as never)
+	const felaValue = fela.css([...styles].reverse() as never)
 
 	const isReactNative = typeof felaValue !== 'string'
 
