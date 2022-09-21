@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/styler",
-  "version": "12.1.2",
+  "version": "12.1.5",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -71,7 +71,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/react-native": "^11.1.0",
     "@types/react": "^18.0.20",
-    "@types/react-native": "^0.70.1",
+    "@types/react-native": "^0.70.2",
     "@types/react-test-renderer": "^18.0.0",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@voltiso/assertor": "workspace:^2.0.0",
@@ -97,6 +97,6 @@
     "node": "16"
   },
   "typeCoverage": {
-    "is": 99.14
+    "is": 99.4
   }
 }

@@ -3,12 +3,12 @@
 
 import { Assert } from '@voltiso/util'
 import type { ComponentClass, FC } from 'react'
-
-import type { Props } from '~/react-types/Props/Props'
-import type { StylableJsxCall } from '~/Stylable/_/StylableJsxCall'
-
-import type { StylableJsxConstruct } from './AutoStylableJsxConstruct'
-import type { IStylableJsxConstruct } from './StylableJsxConstruct'
+import type {
+	IStylableJsxConstruct,
+	Props,
+	StylableJsxCall,
+	StylableJsxConstruct,
+} from '~'
 
 describe('StylableJsx', () => {
 	it('generic', <P extends Props>() => {

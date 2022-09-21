@@ -11,6 +11,13 @@ export declare namespace ReduceEslintConfig {
 		 * @defaultValue `undefined` = pick all
 		 */
 		pluginsToPick?: string[] | undefined
+
+		/**
+		 * Omit config that mentions `pluginsToOmit`
+		 *
+		 * @defaultValue `undefined` = do not omit anything
+		 */
+		pluginsToOmit?: string[] | undefined
 	}
 }
 
@@ -18,8 +25,6 @@ export function reduceRules<Rules extends EslintConfig['rules']>(
 	rules: Rules,
 	options: ReduceEslintConfig.Options,
 ): Rules {
-	if (!options.pluginsToPick) return rules
-
 	return Object.fromEntries(
 		Object.entries(rules as never).filter(([name, _value]) => {
 			if (!name.includes('/')) return true // core eslint rule?
@@ -28,7 +33,12 @@ export function reduceRules<Rules extends EslintConfig['rules']>(
 
 			if (!ruleNamePrefix) return true // never happens?
 
-			return options.pluginsToPick?.includes(ruleNamePrefix)
+			const shouldPick =
+				!options.pluginsToPick || options.pluginsToPick.includes(ruleNamePrefix)
+
+			return (
+				shouldPick && !(options.pluginsToOmit || []).includes(ruleNamePrefix)
+			)
 		}),
 	) as never
 }
@@ -38,14 +48,17 @@ export function reducePlugins<
 >(plugins: Plugins, options: ReduceEslintConfig.Options): Plugins {
 	if (!options.pluginsToPick) return plugins
 
-	return plugins.filter(name => options.pluginsToPick?.includes(name)) as never
+	return plugins.filter(name => {
+		const shouldPick =
+			!options.pluginsToPick || options.pluginsToPick.includes(name)
+
+		return shouldPick && !(options.pluginsToOmit || []).includes(name)
+	}) as never
 }
 
 export function reduceExtends<
 	Extends extends Exclude<EslintConfig['extends'] & string[], undefined>,
 >(extendsList: Extends, options: ReduceEslintConfig.Options): Partial<Extends> {
-	if (!options.pluginsToPick) return extendsList
-
 	return extendsList.filter(extendsEntry => {
 		if (extendsEntry.startsWith('eslint:')) return true
 
@@ -54,7 +67,10 @@ export function reduceExtends<
 		// console.log('reduceExtends pluginName', pluginName)
 		if (!pluginName) return true // never happens?
 
-		return options.pluginsToPick?.includes(pluginName)
+		const shouldPick =
+			!options.pluginsToPick || options.pluginsToPick.includes(pluginName)
+
+		return shouldPick && !(options.pluginsToOmit || []).includes(pluginName)
 	}) as never
 }
 
@@ -97,7 +113,7 @@ export function reduceEslintConfig<Cfg extends EslintConfig>(
 ): Partial<Cfg> {
 	const result = { ...config }
 
-	if (result.overrides && options.pluginsToPick) {
+	if (result.overrides && (options.pluginsToPick || options.pluginsToOmit)) {
 		result.overrides = result.overrides
 			.map(override =>
 				reduceEslintConfigOverride(override as EslintConfigOverride, options),

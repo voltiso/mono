@@ -3,4 +3,5 @@
 
 export * from './IStyledHoc'
 export * from './StyledHoc'
+export * from './StyledHocCall'
 export * from './ThrowWrongInnerProps'

@@ -39,7 +39,7 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-closing-bracket-location': 1,
 		'react/jsx-closing-tag-location': 1,
 		'react/jsx-curly-spacing': 1,
-		'react/jsx-curly-newline': 1,
+		'react/jsx-curly-newline': 0, // conflicts with prettier
 		'react/jsx-equals-spacing': 1,
 
 		'react/jsx-filename-extension': [
@@ -72,7 +72,7 @@ export const react = defineEslintConfigOverride({
 		'react/jsx-no-comment-textnodes': 1,
 		'react/jsx-no-constructed-context-values': 1,
 		'react/jsx-no-duplicate-props': 1,
-		'react/jsx-no-leaked-render': 1,
+		'react/jsx-no-leaked-render': 0, // ! hmm
 
 		'react/jsx-no-literals': 0,
 

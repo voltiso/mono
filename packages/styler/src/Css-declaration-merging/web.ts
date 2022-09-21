@@ -18,12 +18,13 @@ import type { CssProperties } from './CssProperties'
  *
  * - To add custom CSS properties, use TS declaration merging
  */
-export interface CssWeb
-	extends CssOverridesWeb,
+export interface CssWeb<
+	CustomCss extends object,
+> extends CssOverridesWeb<CustomCss>,
 		// eslint-disable-next-line etc/no-internal
-		_Css_WithExtensionWeb,
+		_Css_WithExtensionWeb<CustomCss>,
 		// eslint-disable-next-line etc/no-internal
-		_Css_OriginalWeb {}
+		_Css_OriginalWeb<CustomCss> {}
 
 export interface CssPropertiesWeb
 	extends csstype.Properties<number | string>,
@@ -34,6 +35,6 @@ export interface CssPropertiesWeb
  *
  * - To add custom CSS properties, use TS declaration merging
  */
-export interface CssPropertiesAndPseudosWeb
+export interface CssPropertiesAndPseudosWeb<CustomCss extends object>
 	extends CssPropertiesWithArraysWeb,
-		CssPseudosWeb {}
+		CssPseudosWeb<CustomCss> {}

@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-// ! need to explicitly export interfaces that are supposed to work with declaration merging
 export * from './Css'
+// ! need to explicitly export interfaces that are supposed to work with declaration merging
 export type {
 	CssExtension,
 	CssExtensionReactNative,
@@ -27,4 +27,6 @@ export * from './StyledComponent'
 export * from './StyledHoc'
 export * from './StyledTypeInfo'
 export * from './StyleProvider'
+// ! need to explicitly export interfaces that are supposed to work with declaration merging
+export type { StylerConfig } from './StylerConfig-declaration-merging'
 export * from './ThemePath'

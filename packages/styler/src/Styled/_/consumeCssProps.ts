@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getEntries, tryGetProperty } from '@voltiso/util'
-
 import type { IndexedCssProps } from '~/_/CssProps'
 import type { Css } from '~/Css/Css'
 import type { IndexedProps } from '~/react-types'
@@ -11,25 +9,34 @@ import { prepare } from './prepare'
 
 export function consumeCssProps<CustomCss extends object>(params: {
 	props: IndexedProps
-	consumed: IndexedCssProps<CustomCss>
-	all: IndexedCssProps<CustomCss>
+	cssProps: IndexedCssProps<CustomCss>
 	styles: Css[]
 	theme: object
-	customCss?: object | undefined
+	customCss: object | undefined
 }) {
 	// console.log('consumeCssProps', params.customCss)
-	for (const [prop, value] of getEntries(params.props)) {
-		const list = tryGetProperty(params.all, prop) || []
+	for (const [prop, value] of Object.entries(params.props)) {
+		// assertNotPolluting(prop)
+		// eslint-disable-next-line security/detect-object-injection
+		const list = params.cssProps[prop] || []
+
+		// const value = prepare(rawValue, params.theme, params.customCss)
 
 		for (const entry of [...list].reverse()) {
 			if (typeof entry === 'function') {
 				if (entry.length > 0 || Boolean(value))
 					params.styles.push(
-						prepare(entry(value as never), params.theme, params.customCss),
+						prepare(entry(value as never), {
+							theme: params.theme,
+							customCss: params.customCss,
+						}),
 					)
 			} else if (value)
 				params.styles.push(
-					prepare(entry, params.theme, params.customCss) as never,
+					prepare(entry, {
+						theme: params.theme,
+						customCss: params.customCss,
+					}) as never,
 				)
 		}
 	}

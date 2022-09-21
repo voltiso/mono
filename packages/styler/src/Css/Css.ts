@@ -4,11 +4,14 @@
 import type { CssReactNative, CssWeb } from '~/Css-declaration-merging'
 import type { IsReactNative } from '~/IsReactNative'
 
-import type { CustomCssReactNative } from './react-native'
-import type { CustomCssWeb } from './web'
+export type Css<AdditionalCss extends object = {}> = IsReactNative extends true
+	? CssReactNative<AdditionalCss>
+	: CssWeb<AdditionalCss>
 
-export type Css = IsReactNative extends true ? CssReactNative : CssWeb
+export type CustomCss<AdditionalCss extends object> = AdditionalCss &
+	Css<AdditionalCss>
 
-export type CustomCss<C extends {}> = IsReactNative extends true
-	? CustomCssReactNative<C>
-	: CustomCssWeb<C>
+// export type CustomCss<AdditionalCss extends object> = Merge2Reverse_<
+// 	AdditionalCss,
+// 	Css<AdditionalCss>
+// >

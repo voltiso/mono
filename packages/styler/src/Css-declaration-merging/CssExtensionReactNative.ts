@@ -8,6 +8,7 @@ import type { CssExtension } from './CssExtension'
  *
  * - Use TS declaration merging
  */
-export interface CssExtensionReactNative extends CssExtension {
+export interface CssExtensionReactNative<CustomCss extends object>
+	extends CssExtension<CustomCss> {
 	//
 }

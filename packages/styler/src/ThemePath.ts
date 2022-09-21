@@ -8,17 +8,18 @@ export class ThemePath {
 
 		// eslint-disable-next-line no-constructor-return
 		return new Proxy(this, {
-			get: (t, p, r) => {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-				if (typeof p === 'symbol' || p in t) return Reflect.get(t, p, r)
+			get: (target, key, receiver) => {
+				if (typeof key === 'symbol' || key in target)
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+					return Reflect.get(target, key, receiver)
 
-				return new ThemePath([...this.path, p])
+				return new ThemePath([...this.path, key])
 			},
 		})
 	}
 
 	toString() {
-		return `\${${this.path.join('.')}}`
+		return `$__STYLER__{${this.path.join('.')}}`
 	}
 }
 

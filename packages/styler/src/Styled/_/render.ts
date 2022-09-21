@@ -1,13 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assertNotPolluting, getKeys } from '@voltiso/util'
+import { getKeys } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'
 
 import type { StyledTypeInfo } from '~'
-import type { CssProps } from '~/_/CssProps'
 import type { StyledData } from '~/_/StyledData'
 import type { Css } from '~/Css/Css'
 import type { Props } from '~/react-types'
@@ -42,27 +41,26 @@ export function render<$ extends StyledTypeInfo>(
 
 	const finalCustomCss = stack.at(-1)?.customCss
 
-	// prepare props - dangerous for e.g. `ref`
+	// ! prepare props - dangerous - do not pass customCss
 	for (const k of Object.keys(p) as (keyof typeof p)[]) {
-		assertNotPolluting(k)
+		// assertNotPolluting(k)
 		// eslint-disable-next-line security/detect-object-injection
-		p[k] = prepare(p[k], theme, finalCustomCss) as never
+		p[k] = prepare(p[k], { theme }) as never
 	}
 
 	const styles: Css[] = []
 
 	if (typeof css !== 'undefined')
-		styles.push(prepare(css, theme, finalCustomCss))
+		styles.push(prepare(css, { theme, customCss: finalCustomCss }))
 
-	const consumedCssProps = {} as $ extends any
-		? Required<Partial<CssProps<$['Props'], object>>>
-		: never
+	// const consumedCssProps = {} as $ extends any
+	// 	? Required<Partial<CssProps<$['Props'], object>>>
+	// 	: never
 
-	function consume(p: Props, customCss?: object | undefined) {
+	function consume(props: Props, customCss?: object | undefined) {
 		consumeCssProps({
-			props: p,
-			consumed: consumedCssProps,
-			all: data.cssProps,
+			props,
+			cssProps: data.cssProps,
 			theme,
 			styles,
 			customCss,
@@ -78,14 +76,13 @@ export function render<$ extends StyledTypeInfo>(
 		if (isRemovePropsNode(node)) {
 			for (const prop of node.removeProps) delete p[prop as never]
 		} else if (isStyleNode(node)) {
-			styles.push(prepare(node.style, theme, node.customCss))
+			styles.push(prepare(node.style, { theme, customCss: node.customCss }))
 		} else if (isGetStyleNode(node)) {
 			styles.push(
-				prepare(
-					node.getStyle({ ...data.defaults, ...p }),
+				prepare(node.getStyle({ ...data.defaults, ...p }), {
 					theme,
-					node.customCss,
-				),
+					customCss: node.customCss,
+				}),
 			)
 		} else if (isPropsNode(node)) {
 			consume(node.props, node.customCss)

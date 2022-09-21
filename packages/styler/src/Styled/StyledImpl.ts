@@ -8,9 +8,9 @@ import type {
 	Throw,
 	UndefinedFromOptional,
 } from '@voltiso/util'
-import { assertNotPolluting, getKeys } from '@voltiso/util'
 
 import type { Stylable, StyledTypeInfo } from '~'
+import { isStyled } from '~'
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
 import type {
 	IStyledDataMod as IStyledDataModule,
@@ -20,8 +20,7 @@ import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
 import type { Props } from '~/react-types'
 
-import type { $GetStyledLikeProps as P } from '.'
-import { isStyled } from '.'
+import type { $GetStyledLikeProps as P } from './_'
 import { getComponent } from './_/getComponent'
 import { mergeCssProps } from './_/mergeCssProps'
 import { mergeDefaults } from './_/mergeDefaults'
@@ -37,7 +36,7 @@ import type {
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
 	declare readonly [$]: G<$>;
-	readonly [DATA]: StyledData<G<$>>
+	readonly [DATA]: StyledData<G<$>, C<$>>
 
 	get component(): G<$>['Component'] {
 		// eslint-disable-next-line security/detect-object-injection
@@ -93,7 +92,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		}) as never
 	}
 
-	constructor(data: StyledData<G<$>>) {
+	constructor(data: StyledData<G<$>, C<$>>) {
 		// eslint-disable-next-line security/detect-object-injection
 		this[DATA] = data
 
@@ -168,14 +167,14 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	cssProps<PropNames extends (keyof C<$>)[]>(
 		...propNames: PropNames
 	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore union too complex to represent?
+	// @ts-ignore TS2590: Expression produces a union type that is too complex to represent.
 	Patch<this, { Props: Pick<C<$>, PropNames[number]> }> {
 		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>
 
 		const cssProps = {} as Record<string, unknown[]>
 
 		for (const propName of propNames as string[]) {
-			assertNotPolluting(propName)
+			// assertNotPolluting(propName)
 
 			// eslint-disable-next-line security/detect-object-injection
 			cssProps[propName] = [
@@ -306,7 +305,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		return this._clone({
 			stack: [
 				{
-					removeProps: getKeys(cssProps),
+					removeProps: Object.keys(cssProps),
 				},
 			],
 
@@ -822,7 +821,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		return this._clone({
 			stack: [
 				{
-					removeProps: getKeys(_exampleValues),
+					removeProps: Object.keys(_exampleValues),
 				},
 			],
 		})
@@ -855,7 +854,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		// Required<PickOptional<UndefinedFromOptional<Omit<PP, 'children'>>>>,
 	): Patch<this, { Props: { [k in keyof PP]?: PP[k] | undefined } }> {
 		return this._clone({
-			stack: [{ removeProps: getKeys(defaultValues) }],
+			stack: [{ removeProps: Object.keys(defaultValues) }],
 			defaults: defaultValues,
 		})
 	}
@@ -930,7 +929,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		| ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 		| StaticError {
 		return this._clone({
-			stack: [{ removeProps: getKeys(defaultValues || {}) }],
+			stack: [{ removeProps: Object.keys(defaultValues || {}) }],
 			defaults: defaultValues || {},
 		})
 	}

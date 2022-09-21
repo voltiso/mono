@@ -2,9 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface CssOverrides {
+export interface CssOverrides<_CustomCss extends object> {
 	//
 }
 
-export interface CssOverridesWeb extends CssOverrides {}
-export interface CssOverridesReactNative extends CssOverrides {}
+export interface CssOverridesWeb<CustomCss extends object>
+	extends CssOverrides<CustomCss> {}
+
+export interface CssOverridesReactNative<CustomCss extends object>
+	extends CssOverrides<CustomCss> {}

@@ -5,8 +5,10 @@
 import '@rushstack/eslint-patch/modern-module-resolution'
 
 import baseEslintConfig from '@voltiso/config.eslint'
-import { defineEslintConfig } from '@voltiso/config.eslint.lib'
-import { reduceEslintConfig } from '@voltiso/config.eslint.lib'
+import {
+	defineEslintConfig,
+	reduceEslintConfig,
+} from '@voltiso/config.eslint.lib'
 
 const pluginsToPick = [
 	'import', // ! slow

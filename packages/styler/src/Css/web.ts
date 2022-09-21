@@ -12,28 +12,27 @@ import type {
 import type { CssExtensionWeb } from '../Css-declaration-merging/CssExtensionWeb'
 import type { CssOverridesWeb } from '../Css-declaration-merging/CssOverrides'
 
-/** `Css` with additional properties */
-export type CustomCssWeb<C extends {}> = C & CssWeb
-
 /** @internal */
-export type _Css_WithExtensionWeb = {
-	[k in keyof CssExtensionWeb]:
-		| CssExtensionWeb[k]
-		| (k extends keyof CssPropertiesAndPseudosWeb
-				? CssPropertiesAndPseudosWeb[k]
+export type _Css_WithExtensionWeb<CustomCss extends object> = {
+	[k in keyof CssExtensionWeb<CustomCss>]:
+		| CssExtensionWeb<CustomCss>[k]
+		| (k extends keyof CssPropertiesAndPseudosWeb<CustomCss>
+				? CssPropertiesAndPseudosWeb<CustomCss>[k]
 				: never)
 }
 
 /** @internal */
-export type _Css_OriginalWeb = Omit<
-	CssPropertiesAndPseudosWeb,
-	keyof CssExtensionWeb | keyof CssOverridesWeb
+export type _Css_OriginalWeb<CustomCss extends object> = Omit<
+	CssPropertiesAndPseudosWeb<CustomCss>,
+	keyof CssExtensionWeb<CustomCss> | keyof CssOverridesWeb<CustomCss>
 >
 
 //
 
 /** Changes from `fela`: added `| undefined` */
-export type CssPseudosWeb = { [K in CSS.Pseudos]?: CssWeb | undefined }
+export type CssPseudosWeb<CustomCss extends object> = {
+	[K in CSS.Pseudos]?: CssWeb<CustomCss> | undefined
+}
 
 /** Allow arrays */
 export type CssPropertiesWithArraysWeb = _WithArrays<CssPropertiesWeb>

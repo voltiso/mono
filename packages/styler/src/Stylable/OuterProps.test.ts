@@ -11,13 +11,13 @@ import type {
 	WebOuterProps,
 } from './OuterProps'
 
-describe('OuterProps', () => {
+describe('OuterProps', <CustomCss extends object>() => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<OuterPropsBase, Props>()
+		Assert.is<OuterPropsBase<CustomCss>, Props>()
 
-		Assert.is<WebOuterProps, Props>()
-		Assert.is<NativeOuterProps, Props>()
+		Assert.is<WebOuterProps<CustomCss>, Props>()
+		Assert.is<NativeOuterProps<CustomCss>, Props>()
 	})
 })

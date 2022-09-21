@@ -11,23 +11,24 @@ import type { CssWeb } from './web'
  *
  * - Use TS declaration merging
  */
-export interface CssExtensionWeb extends CssExtension {
-	':nth-child(odd)'?: CssWeb | undefined
-	':nth-child(even)'?: CssWeb | undefined
+export interface CssExtensionWeb<CustomCss extends object>
+	extends CssExtension<CustomCss> {
+	':nth-child(odd)'?: CssWeb<CustomCss> | undefined
+	':nth-child(even)'?: CssWeb<CustomCss> | undefined
 
 	/** Typings for `fela-plugin-embedded` */
 	animationName?:
 		| {
-				from?: CssWeb | undefined
-				to?: CssWeb | undefined
-				'0%'?: CssWeb | undefined
-				'25%'?: CssWeb | undefined
-				'33%'?: CssWeb | undefined
-				'50%'?: CssWeb | undefined
-				'67%'?: CssWeb | undefined
-				'75%'?: CssWeb | undefined
-				'100%'?: CssWeb | undefined
-				[k: string]: CssWeb | undefined
+				from?: CssWeb<CustomCss> | undefined
+				to?: CssWeb<CustomCss> | undefined
+				'0%'?: CssWeb<CustomCss> | undefined
+				'25%'?: CssWeb<CustomCss> | undefined
+				'33%'?: CssWeb<CustomCss> | undefined
+				'50%'?: CssWeb<CustomCss> | undefined
+				'67%'?: CssWeb<CustomCss> | undefined
+				'75%'?: CssWeb<CustomCss> | undefined
+				'100%'?: CssWeb<CustomCss> | undefined
+				[k: string]: CssWeb<CustomCss> | undefined
 		  }
 		| undefined
 

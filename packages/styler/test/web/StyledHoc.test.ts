@@ -10,16 +10,16 @@ import type {
 	GetStyledHoc,
 	IStyled,
 	IStyledComponent,
+	IStyledHoc,
+	IStyledHocCall,
+	Props,
+	Stylable,
+	StylableIntrinsic,
+	StylableJsxCall,
+	StylableJsxConstruct,
 	StyledComponent,
+	StyledHocCall,
 } from '~'
-import type { Props } from '~/react-types'
-import type { Stylable } from '~/Stylable'
-import type { StylableIntrinsic } from '~/Stylable/_/StylableIntrinsic'
-import type { StylableJsxCall } from '~/Stylable/_/StylableJsxCall'
-import type { StylableJsxConstruct } from '~/Stylable/_/StylableJsxConstruct'
-
-import type { IStyledHoc, IStyledHocCall } from './IStyledHoc'
-import type { StyledHocCall } from './StyledHocCall'
 
 describe('StyledHoc', () => {
 	it('generic', <P extends Props, CP extends Props>() => {

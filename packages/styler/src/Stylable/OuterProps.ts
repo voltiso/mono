@@ -7,25 +7,25 @@ import type { Css, CustomCss } from '~/Css'
 import type { IsReactNative } from '~/IsReactNative'
 import type { Props } from '~/react-types'
 
-export interface OuterPropsBase<AdditionalProperties extends {} = {}>
-	extends Props {
-	css?: CustomCss<AdditionalProperties> | undefined
+export interface OuterPropsBase<AdditionalCss extends object> extends Props {
+	css?: CustomCss<AdditionalCss> | undefined
 }
 
-export interface WebOuterProps<CustomCss extends {} = {}>
+export interface WebOuterProps<CustomCss extends object = {}>
 	extends OuterPropsBase<CustomCss> {
 	className?: string | undefined
 	style?: Css | undefined
 }
 
-export interface NativeOuterProps<CustomCss extends {} = {}>
+export interface NativeOuterProps<CustomCss extends object = {}>
 	extends OuterPropsBase<CustomCss> {
 	className?: never
 	style?: StyleProp<unknown> | undefined
 }
 
-export type OuterProps<CustomCss extends {} = {}> = IsReactNative extends true
-	? NativeOuterProps<CustomCss>
-	: IsReactNative extends false
-	? WebOuterProps<CustomCss>
-	: never
+export type OuterProps<CustomCss extends object = {}> =
+	IsReactNative extends true
+		? NativeOuterProps<CustomCss>
+		: IsReactNative extends false
+		? WebOuterProps<CustomCss>
+		: never

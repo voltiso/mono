@@ -27,7 +27,7 @@
     "check": "run-p fix:prettier lint test",
     "__________BUILD": "__________",
     "build": "v build",
-    "build:cjs": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs": "v buildCjs",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnly",
     "__________MISC": "__________",
@@ -35,7 +35,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@typescript-eslint/utils": "^5.37.0",
+    "@typescript-eslint/utils": "^5.38.0",
     "builtins": "^5.0.1",
     "eslint-module-utils": "^2.7.4",
     "is-core-module": "^2.10.0",

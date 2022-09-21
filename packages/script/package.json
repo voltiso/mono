@@ -1,52 +1,56 @@
 {
-	"name": "@voltiso/script",
-	"version": "1.0.0",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXECUTABLES": "__________",
-	"bin": {
-		"voltiso-script": "dist/cjs/_bin/v.js",
-		"v": "dist/cjs/_bin/v.js"
-	},
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist/esm",
-		"dist/cjs"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________DEV": "__________",
-		"dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "tsc -b tsconfig.build.cjs.json",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast",
-		"__________MISC": "__________",
-		"clean": "rimraf dist"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/script.lib": "workspace:^",
-		"@voltiso/util.esbuild": "workspace:^",
-		"@voltiso/util.node": "workspace:^"
-	},
-	"devDependencies": {
-		"@types/node": "^18.7.18",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^"
-	},
-	"__________ENGINES": "__________",
-	"engines": {
-		"node": "16",
-		"pnpm": "7"
-	}
+  "name": "@voltiso/script",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXECUTABLES": "__________",
+  "bin": {
+    "voltiso-script": "dist/cjs/_bin/v.js",
+    "v": "dist/cjs/_bin/v.js"
+  },
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist/esm",
+    "dist/cjs"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs:clean": "rimraf dist/cjs",
+    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:esm": "run-s build:esm:clean build:esm:tsc",
+    "build:esm:clean": "rimraf dist/esm",
+    "build:esm:tsc": "tsc -b tsconfig.build.esm.json",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast",
+    "__________MISC": "__________",
+    "clean": "rimraf dist"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/script.lib": "workspace:^",
+    "@voltiso/util.esbuild": "workspace:^",
+    "@voltiso/util.node": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^"
+  },
+  "__________ENGINES": "__________",
+  "engines": {
+    "node": "16"
+  }
 }

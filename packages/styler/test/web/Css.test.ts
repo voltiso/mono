@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { Assert, Is } from '@voltiso/util'
 
-import type { Css } from '~/Css/Css'
+import type { Css } from '~'
 
 describe('Css', () => {
 	it('simple', () => {
@@ -36,5 +36,21 @@ describe('Css', () => {
 		} as const
 
 		Assert.is<typeof a, Css>()
+	})
+
+	it('nested', () => {
+		expect.assertions(0)
+
+		const a = {
+			nested: {
+				'@media(...)': {
+					marginX: 1,
+				},
+			},
+		}
+
+		Assert(Is<typeof a>().not.subtypeOf<Css>())
+
+		Assert.is<typeof a, Css<{ marginX: number }>>()
 	})
 })

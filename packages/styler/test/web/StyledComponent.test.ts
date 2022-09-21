@@ -9,19 +9,16 @@ import type {
 	ComponentPropsWithoutRef_,
 	ComponentPropsWithRef_,
 	Css,
+	GetStyled,
+	GetStyledComponent,
 	IStylable,
 	IStyled,
+	IStyledComponent,
 	OuterProps,
 	Props,
 	StylableLike,
-} from '~'
-
-import type {
-	GetStyled,
-	GetStyledComponent,
-	IStyledComponent,
 	StyledComponentLike,
-} from '.'
+} from '~'
 
 describe('StyledComponent', () => {
 	it('type', () => {

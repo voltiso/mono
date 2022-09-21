@@ -17,12 +17,13 @@ import type { CssProperties } from './CssProperties'
  *
  * - To add custom CSS properties, use TS declaration merging
  */
-export interface CssReactNative
-	extends CssOverridesReactNative,
+export interface CssReactNative<
+	CustomCss extends object,
+> extends CssOverridesReactNative<CustomCss>,
 		// eslint-disable-next-line etc/no-internal
-		_Css_WithExtensionReactNative,
+		_Css_WithExtensionReactNative<CustomCss>,
 		// eslint-disable-next-line etc/no-internal
-		_Css_OriginalReactNative {}
+		_Css_OriginalReactNative<CustomCss> {}
 
 export interface CssPropertiesReactNative
 	extends MergeCss3<ViewStyle, TextStyle, ImageStyle>,
