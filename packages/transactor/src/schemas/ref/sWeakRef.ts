@@ -7,7 +7,7 @@ import { callableObject, lazyValue } from '@voltiso/util'
 
 import type { IDoc, IndexedDoc } from '~/Doc'
 import type { DocTag } from '~/DocTypes'
-import type { DocRefImpl } from '~/Ref'
+import type { DocRefBaseImpl } from '~/Ref'
 import { WeakDocRefImpl } from '~/Ref'
 import type { WeakRef } from '~/Ref/RefBase'
 
@@ -24,7 +24,7 @@ const _fixableWeakRefSchema = lazyValue(() =>
 		// eslint-disable-next-line etc/no-internal
 		if (_strongRefSchema.isValid(x))
 			return new WeakDocRefImpl<IDoc>(
-				(x as unknown as DocRefImpl)._context as never,
+				(x as unknown as DocRefBaseImpl)._context as never,
 				x.path.pathString,
 			)
 		else return undefined

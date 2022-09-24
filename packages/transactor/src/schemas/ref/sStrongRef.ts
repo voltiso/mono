@@ -37,3 +37,5 @@ export const sStrongRef: StrongRefSchema = lazyValue(
 	// eslint-disable-next-line etc/no-internal
 	() => callableObject(_strongRefSchema, _strongRefCall) as never,
 )
+
+export const sRef = sStrongRef

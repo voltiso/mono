@@ -8,7 +8,7 @@ import type { WithDb } from '~/Db'
 import type { Doc, DocTI, IDocImpl } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { Method } from '~/Method'
-import type { DocRefImpl, WithDocRef } from '~/Ref'
+import type { DocRefBaseImpl, WithDocRef } from '~/Ref'
 import { transactionDocPathGet } from '~/Ref'
 import type { Cache, WithTransaction } from '~/Transaction'
 import { isWithTransaction, methodGuard } from '~/Transaction'
@@ -74,7 +74,7 @@ export async function callMethod<
 			$assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
-			return (db.doc(path) as unknown as DocRefImpl)._callMethod(
+			return (db.doc(path) as unknown as DocRefBaseImpl)._callMethod(
 				method as never,
 				args,
 				options,

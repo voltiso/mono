@@ -7,29 +7,32 @@ import { callableObject, lazyValue } from '@voltiso/util'
 
 import type { IDoc, IndexedDoc } from '~/Doc'
 import type { DocTag } from '~/DocTypes'
-import type { DocRef, Ref, RefBase } from '~/Ref'
-import { DocRefImpl } from '~/Ref'
+import type { DocRefBase, Ref, RefBase } from '~/Ref'
+import { DocRefBaseImpl } from '~/Ref'
 
 import type { FindDoc } from './_'
 
 /** @internal */
-const _refSchema = lazyValue(
-	() => s.instance(DocRefImpl<IDoc>) as unknown as t.Instance<DocRef<IDoc>>,
+export const _refBaseSchema = lazyValue(
+	() =>
+		s.instance(DocRefBaseImpl<IDoc>) as unknown as t.Instance<
+			DocRefBase<IDoc, boolean>
+		>,
 )
 
 /** @internal */
-export const _refCall = <
+export const _refBaseCall = <
 	// eslint-disable-next-line etc/no-misused-generics
 	X,
 	// eslint-disable-next-line etc/no-internal
->(): t.Schema<Ref<FindDoc<X>>> => _refSchema as never
+>(): t.Schema<Ref<FindDoc<X>>> => _refBaseSchema as never
 
-export interface RefSchema extends t.Schema<RefBase<IndexedDoc, boolean>> {
+export interface RefBaseSchema extends t.Schema<RefBase<IndexedDoc, boolean>> {
 	// eslint-disable-next-line etc/no-misused-generics
 	<X extends IDoc | DocTag>(): t.Schema<RefBase<FindDoc<X>, boolean>>
 }
 
-export const sRef: RefSchema = lazyValue(
+export const sRefBase: RefBaseSchema = lazyValue(
 	// eslint-disable-next-line etc/no-internal
-	() => callableObject(_refSchema, _refCall) as never,
+	() => callableObject(_refBaseSchema, _refBaseCall) as never,
 )

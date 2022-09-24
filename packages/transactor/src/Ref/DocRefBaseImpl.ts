@@ -45,7 +45,7 @@ import { StrongDocRef } from './StrongDocRef'
 import { WeakDocRef } from './WeakDocRef'
 
 // @staticImplements<DocRefConstructor>()
-export class DocRefImpl<
+export class DocRefBaseImpl<
 	D extends DocLike = IDoc,
 	Exists extends boolean = boolean,
 	_Ctx extends ExecutionContext = 'outside',

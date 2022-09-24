@@ -5,9 +5,9 @@ import * as s from '@voltiso/schemar'
 import type { SchemaLike } from '@voltiso/schemar.types'
 import { mapValues } from '@voltiso/util'
 
-import type { DocRefImpl } from '~/Ref'
+import type { DocRefBaseImpl } from '~/Ref'
 
-export function getAggregateSchemas(d: DocRefImpl<any>) {
+export function getAggregateSchemas(d: DocRefBaseImpl<any>) {
 	if (d._aggregateSchemas !== undefined) return d._aggregateSchemas
 
 	const { _allAggregateSchemas } = d._context.transactor

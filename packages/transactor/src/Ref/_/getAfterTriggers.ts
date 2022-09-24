@@ -9,7 +9,7 @@ import { $assert } from '@voltiso/assertor'
 import type { DocLike } from '~'
 import { isStrongDocRef } from '~'
 import type { IDoc } from '~/Doc'
-import type { DocRefImpl, IRef, WeakDocRef } from '~/Ref'
+import type { DocRefBaseImpl, IRef, WeakDocRef } from '~/Ref'
 
 function forEachStrongRef(o: any, f: (r: IRef) => void) {
 	if (isStrongDocRef(o)) {
@@ -21,7 +21,7 @@ function forEachStrongRef(o: any, f: (r: IRef) => void) {
 	}
 }
 
-export function getAfterTriggers(docRef: DocRefImpl<DocLike>) {
+export function getAfterTriggers(docRef: DocRefBaseImpl<DocLike>) {
 	if (docRef._afterTriggers) return docRef._afterTriggers
 
 	docRef._afterTriggers = []
