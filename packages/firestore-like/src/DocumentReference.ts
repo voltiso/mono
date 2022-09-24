@@ -1,28 +1,47 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isPlainObject, undef } from '@voltiso/util'
+import type { MaybePromise } from '@voltiso/util'
+import { assumeType } from '@voltiso/util'
 
 import type { DocumentData } from './DocumentData'
 import type { DocumentSnapshot } from './DocumentSnapshot'
 import type { UpdateData } from './UpdateData'
 
-type MaybePromise<X> = X | Promise<X>
-
-export type DocumentReference = {
-	get: () => MaybePromise<DocumentSnapshot>
-	set: (data: DocumentData) => MaybePromise<unknown>
-	update: (data: UpdateData) => MaybePromise<unknown>
-	delete: () => MaybePromise<unknown>
-	id: string
-	path: string
+export interface DocumentReference {
+	readonly id: string
+	readonly path: string
 }
 
 export function isDocumentReference(x: unknown): x is DocumentReference {
-	return (
-		!isPlainObject(x) &&
-		(x as DocumentReference | null)?.update !== undef &&
-		(x as DocumentReference | null)?.set !== undef &&
-		(x as DocumentReference | null)?.path !== undef
-	)
+	assumeType<DocumentReference | null>(x)
+	return Boolean(x?.id && x.path)
+}
+
+//
+
+export interface ServerDocumentReference extends DocumentReference {
+	get(): MaybePromise<DocumentSnapshot>
+	set(data: DocumentData): MaybePromise<unknown>
+	update(data: UpdateData): MaybePromise<unknown>
+	delete(): MaybePromise<unknown>
+}
+
+export function isServerDocumentReference(
+	x: unknown,
+): x is ServerDocumentReference {
+	assumeType<Partial<ServerDocumentReference> | null>(x)
+	return Boolean(x?.update && x.set && x.path && x.id)
+}
+
+//
+
+export interface ClientDocumentReference extends DocumentReference {
+	readonly type: 'document'
+}
+
+export function isClientDocumentReference(
+	x: unknown,
+): x is ClientDocumentReference {
+	return (x as ClientDocumentReference | null)?.type === 'document'
 }

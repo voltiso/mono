@@ -13,21 +13,21 @@ import { isTimestamp } from '~/util'
 
 import { isRefEntry } from './RefEntry'
 
-function fromFirestoreRec(
+function fromDatabaseRec(
 	ctx: DocRefBaseContext,
 	o: Database.DocumentDataNestedNoArray,
 ): NestedDataNoArray
-function fromFirestoreRec(
+function fromDatabaseRec(
 	ctx: DocRefBaseContext,
 	o: Database.DocumentDataNested,
 ): NestedDataNoArray
 
-function fromFirestoreRec(
+function fromDatabaseRec(
 	ctx: DocRefBaseContext,
 	o: Database.DocumentDataNested,
 ): NestedData {
 	if (Array.isArray(o)) {
-		return o.map(x => fromFirestoreRec(ctx, x))
+		return o.map(x => fromDatabaseRec(ctx, x))
 		// } else if (isRefLike(o)) {
 		// 	return new Ref(o.__ref) as unknown as T
 	} else if (Database.isDocumentReference(o)) {
@@ -45,22 +45,22 @@ function fromFirestoreRec(
 
 		for (const [key, val] of Object.entries(o)) {
 			// eslint-disable-next-line security/detect-object-injection
-			r[key] = fromFirestoreRec(ctx, val as never)
+			r[key] = fromDatabaseRec(ctx, val as never)
 		}
 
 		return r
 	} else return o
 }
 
-export const fromFirestore = (
+export const fromDatabase = (
 	ctx: DocRefBaseContext,
-	doc: Database.DocumentSnapshot,
+	doc: Database.DocumentSnapshot | Database.QueryDocumentSnapshot,
 ): IntrinsicFields | null => {
 	const data = doc.data()
 
 	if (!data) return null
 	else {
-		const fixed = fromFirestoreRec(ctx, data)
+		const fixed = fromDatabaseRec(ctx, data)
 		$assert(isPlainObject(fixed))
 		return fixed as IntrinsicFields
 	}

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
-import { assumeType, isObject, undef } from '@voltiso/util'
+import { assumeType, isObject } from '@voltiso/util'
 
 export function isDocumentReference(
 	x: unknown,
@@ -12,6 +12,6 @@ export function isDocumentReference(
 	assumeType<Partial<Database.DocumentReference>>(x)
 
 	return Boolean(
-		x.delete && x.get && x.id !== undef && x.path && x.set && x.update,
+		x.id !== undefined && x.path && x.set && x.update && x.delete && x.get,
 	)
 }

@@ -4,7 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import { clone, stringFrom } from '@voltiso/util'
 
-import { fromFirestore } from '~/common'
+import { fromDatabase } from '~/common'
 import { withoutId } from '~/Data'
 import type { WithDb } from '~/Db'
 import type { DocTI, IDoc } from '~/Doc'
@@ -49,7 +49,7 @@ async function directDocPathGet<D extends IDoc>(
 		})
 	} else {
 		const { _ref } = ctx.docRef
-		data = fromFirestore(ctx, await _ref.get())
+		data = fromDatabase(ctx, await _ref.get())
 	}
 
 	$assert(!ctx.transaction)
@@ -77,7 +77,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	const prevData = cacheEntry.data
 
 	if (cacheEntry.data === undefined) {
-		cacheEntry.data = fromFirestore(ctx, await _databaseTransaction.get(_ref))
+		cacheEntry.data = fromDatabase(ctx, await _databaseTransaction.get(_ref))
 
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso

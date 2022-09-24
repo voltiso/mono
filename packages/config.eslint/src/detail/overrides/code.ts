@@ -167,7 +167,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'operator-linebreak': 0,
 		'no-param-reassign': 1,
 		'func-names': 0,
-		'no-implicit-coercion': 1,
+		'no-implicit-coercion': 0,
 		camelcase: 0, // sometimes underscores are useful? or better use type-only namespaces?
 		'object-shorthand': 1,
 		'no-useless-constructor': 1,

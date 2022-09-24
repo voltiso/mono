@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocumentReference } from './DocumentReference'
+import type { ServerDocumentReference } from './DocumentReference'
 import type { Timestamp } from './Timestamp'
 
 export type Primitive =
@@ -10,7 +10,7 @@ export type Primitive =
 	| boolean
 	| Timestamp
 	| Date // should be converted to `Timestamp`
-	| DocumentReference
+	| ServerDocumentReference
 	| null
 
 export type DocumentDataNestedNoArray =
