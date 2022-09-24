@@ -83,3 +83,6 @@ export type StrongRef<D extends DocLike> = RefBase<D, true>
 
 /** Target may be `null`, not ref-counted */
 export type WeakRef<D extends DocLike> = RefBase<D, boolean>
+
+/** Either `WeakRef` or `StrongRef` */
+export type Ref<D extends DocLike> = WeakRef<D> | StrongRef<D>

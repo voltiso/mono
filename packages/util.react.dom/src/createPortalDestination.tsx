@@ -5,6 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import { useUpdate } from '@voltiso/util.react'
 import { useLayoutEffect } from 'react'
 
+import { _createElement } from './_createElements'
 import type { PortalContext } from './PortalContext'
 import type { PortalDestination } from './PortalDestination'
 
@@ -20,13 +21,13 @@ export function createPortalDestination(ctx: PortalContext): PortalDestination {
 
 		const Element = 'div'
 
-		if (!ctx.renderTarget) {
-			const children = ctx.firstRenderChildren
-			// console.log('Destination: no portal yet', children)
-			// delete ctx.firstRenderChildren
+		// eslint-disable-next-line etc/no-internal
+		if (!ctx.renderTarget) ctx.renderTarget = _createElement('div')
+		ctx.areChildrenConsumed = true
 
-			ctx.areChildrenConsumed = true
-			return <Element>{children}</Element>
+		if (ctx.firstRenderChildren || !ctx.renderTarget) {
+			// console.log('Destination: no portal yet', ctx.firstRenderChildren)
+			return <Element>{ctx.firstRenderChildren}</Element>
 		} else {
 			// console.log('Destination: have portal')
 

@@ -1,67 +1,67 @@
 {
-	"name": "@voltiso/localstore",
-	"version": "2.1.0",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		".": {
-			"types": "./dist/cjs/index.d.ts",
-			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
-		}
-	},
-	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/cjs/index.d.ts",
-	"module": "dist/esm/index.js",
-	"main": "dist/cjs/index.js",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________DEV": "__________",
-		"dev": "v dev",
-		"__________TEST": "__________",
-		"test:all": "run-p test:localstore",
-		"test:localstore": "pnpm -w turbo test --filter transactor.localstore.test",
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "v buildCjs",
-		"build:esm": "v buildEsm",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
-		"prepublishOnly:rest": "run-s clean build test:all",
-		"__________MISC": "__________",
-		"clean": "rimraf dist"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/firestore-like": "workspace:^",
-		"@voltiso/util": "workspace:^",
-		"@voltiso/util.firestore": "workspace:^"
-	},
-	"peerDependencies": {
-		"rxjs": "^7.5.6"
-	},
-	"devDependencies": {
-		"@voltiso/assertor": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"rxjs": "^7.5.6"
-	},
-	"__________MISC": "__________",
-	"engines": {
-		"node": ">=16"
-	}
+  "name": "@voltiso/localstore",
+  "version": "2.1.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
+    "__________TEST": "__________",
+    "test:all": "run-p test:localstore",
+    "test:localstore": "pnpm -w turbo test --filter transactor.localstore.test",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "v buildCjs",
+    "build:esm": "v buildEsm",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnly",
+    "prepublishOnly:rest": "run-s clean build test:all",
+    "__________MISC": "__________",
+    "clean": "rimraf dist"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/firestore-like": "workspace:^",
+    "@voltiso/util": "workspace:^",
+    "@voltiso/util.firestore": "workspace:^"
+  },
+  "peerDependencies": {
+    "rxjs": "^7.5.6"
+  },
+  "devDependencies": {
+    "@voltiso/assertor": "workspace:^",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/script": "workspace:^",
+    "rxjs": "^7.5.6"
+  },
+  "__________MISC": "__________",
+  "engines": {
+    "node": "16"
+  }
 }

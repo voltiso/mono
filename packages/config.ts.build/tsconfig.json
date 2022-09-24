@@ -23,7 +23,8 @@
 
 			{
 				"transform": "@voltiso/transform",
-				"afterDeclarations": true
+				"afterDeclarations": true,
+				"onInlineError": "fail"
 			},
 
 			// Transform paths in output .js files

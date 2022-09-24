@@ -17,6 +17,7 @@
 			{
 				"transform": "@voltiso/transform",
 				"afterDeclarations": true
+				// "onInlineError": "fail"
 			}
 		]
 	},

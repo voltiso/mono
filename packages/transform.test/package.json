@@ -26,11 +26,12 @@
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
+    "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util": "workspace:^"
   },
   "__________MISC": "__________",
   "engines": {
-    "node": ">=16"
+    "node": "16"
   }
 }

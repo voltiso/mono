@@ -1,67 +1,67 @@
 {
-	"name": "@voltiso/firestore-like",
-	"version": "1.0.11",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXPORTS": "__________",
-	"exports": {
-		".": {
-			"types": "./dist/cjs/index.d.ts",
-			"import": "./dist/esm/index.js",
-			"require": "./dist/cjs/index.js"
-		}
-	},
-	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/cjs/index.d.ts",
-	"module": "dist/esm/index.js",
-	"main": "dist/cjs/index.js",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________DEV": "__________",
-		"dev": "v dev",
-		"__________TEST": "__________",
-		"test": "jest",
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "v buildCjs",
-		"build:esm": "v buildEsm",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast",
-		"prepublishOnly:rest": "run-p build test lint",
-		"__________MISC": "__________",
-		"clean": "rimraf dist",
-		"//typecov": "run-s typecov:run typecov:fix",
-		"//typecov:run": "type-coverage --project tsconfig.build.esm --update",
-		"//typecov:fix": "prettier ./package.json --write"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/util": "workspace:^"
-	},
-	"devDependencies": {
-		"@firebase/app-types": "^0.7.0",
-		"@voltiso/config.jest.esr": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"firebase": "^9.10.0",
-		"firebase-admin": "^11.0.1",
-		"rimraf": "^3.0.2"
-	},
-	"__________MISC": "__________",
-	"engines": {
-		"node": ">=16"
-	}
+  "name": "@voltiso/firestore-like",
+  "version": "1.0.12",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
+    "__________TEST": "__________",
+    "test": "jest",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "v buildCjs",
+    "build:esm": "v buildEsm",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast",
+    "prepublishOnly:rest": "run-p build test lint",
+    "__________MISC": "__________",
+    "clean": "rimraf dist",
+    "//typecov": "run-s typecov:run typecov:fix",
+    "//typecov:run": "type-coverage --project tsconfig.build.esm --update",
+    "//typecov:fix": "prettier ./package.json --write"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/util": "workspace:^"
+  },
+  "devDependencies": {
+    "@firebase/app-types": "^0.7.0",
+    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/script": "workspace:^",
+    "firebase": "^9.10.0",
+    "firebase-admin": "^11.0.1",
+    "rimraf": "^3.0.2"
+  },
+  "__________MISC": "__________",
+  "engines": {
+    "node": "16"
+  }
 }

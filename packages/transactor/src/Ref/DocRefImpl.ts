@@ -9,8 +9,7 @@ import type {
 	SchemaLike,
 } from '@voltiso/schemar.types'
 import type { If } from '@voltiso/util'
-import { omit } from '@voltiso/util'
-import { lazyPromise, protoLink } from '@voltiso/util'
+import { lazyPromise, omit, protoLink } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { RefEntry } from '~/common'
@@ -46,7 +45,7 @@ import { StrongDocRef } from './StrongDocRef'
 import { WeakDocRef } from './WeakDocRef'
 
 // @staticImplements<DocRefConstructor>()
-export class DocRefBaseImpl<
+export class DocRefImpl<
 	D extends DocLike = IDoc,
 	Exists extends boolean = boolean,
 	_Ctx extends ExecutionContext = 'outside',

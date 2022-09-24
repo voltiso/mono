@@ -9,12 +9,14 @@ export type Primitive =
 	| number
 	| boolean
 	| Timestamp
+	| Date // should be converted to `Timestamp`
 	| DocumentReference
 	| null
 
 export type DocumentDataNestedNoArray =
 	| Primitive
 	| { [k in string]: DocumentDataNested }
+
 export type DocumentDataNested =
 	| DocumentDataNestedNoArray
 	| DocumentDataNestedNoArray[]

@@ -7,7 +7,7 @@ import type { IPath, Path, UnknownProperty, Value_ } from '~/object'
 import { stringFrom } from '~/string'
 
 import type { GetPropertyComplex } from './getProperty'
-import { GetPropertyError } from './getProperty'
+import { getProperty, GetPropertyError } from './getProperty'
 
 type Get_<O, P> = P extends readonly []
 	? O
@@ -70,8 +70,8 @@ export function get<O extends object, P extends Path<O>>(
 	try {
 		for (const token of path) {
 			// assertNotPolluting(token)
-			// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
-			r = r[token] as never
+			// r = r[token] as never
+			r = getProperty(r, token) as never
 		}
 	} catch (error) {
 		throw error instanceof GetPropertyError ? new GetError(obj, path) : error

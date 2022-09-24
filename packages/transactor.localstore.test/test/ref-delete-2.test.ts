@@ -3,8 +3,13 @@
 
 import { $assert } from '@voltiso/assertor'
 import type { TriggerParams } from '@voltiso/transactor'
-import { sRef, sStrongRef } from '@voltiso/transactor'
-import { afterCreate, afterDelete, Doc } from '@voltiso/transactor'
+import {
+	afterCreate,
+	afterDelete,
+	Doc,
+	sRef,
+	sStrongRef,
+} from '@voltiso/transactor'
 
 import { createTransactor } from './common'
 

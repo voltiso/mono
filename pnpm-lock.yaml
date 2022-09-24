@@ -1042,12 +1042,14 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.tsdoc': workspace:^
+      '@voltiso/script': workspace:^
       '@voltiso/transform': workspace:^
       '@voltiso/util': workspace:^
     devDependencies:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.tsdoc': link:../config.tsdoc
+      '@voltiso/script': link:../script
       '@voltiso/transform': link:../transform
       '@voltiso/util': link:../util
 
@@ -1176,7 +1178,7 @@ importers:
     specifiers:
       '@types/react': ^18.0.20
       '@types/react-dom': ^18.0.6
-      '@voltiso/assertor': workspace:^2.0.0
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/script': workspace:^
@@ -1195,14 +1197,6 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       rimraf: 3.0.2
-
-  packages/util.react.firestore:
-    specifiers:
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-    devDependencies:
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
 
   packages/util.react.form:
     specifiers:

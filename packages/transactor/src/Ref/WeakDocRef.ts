@@ -9,11 +9,11 @@ import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
 
 import type { DocRefParentContext } from './_/Context'
-import { DocRefBaseImpl } from './DocRefBase'
+import { DocRefImpl } from './DocRefImpl'
 import type { WeakRef } from './RefBase'
 
 export class WeakDocRefImpl<D extends DocLike> extends lazyConstructor(
-	() => DocRefBaseImpl,
+	() => DocRefImpl,
 )<D, boolean, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
 		super(context, path, false)
@@ -33,7 +33,5 @@ export type WeakDocRef<D extends DocLike> = WeakRef<D> &
 export const WeakDocRef = WeakDocRefImpl as unknown as WeakDocRefConstructor
 
 export function isWeakDocRef(x: unknown): x is WeakDocRef<IDoc> {
-	return (
-		typeof x === 'object' && (x as DocRefBaseImpl | null)?._isStrong === false
-	)
+	return typeof x === 'object' && (x as DocRefImpl | null)?._isStrong === false
 }

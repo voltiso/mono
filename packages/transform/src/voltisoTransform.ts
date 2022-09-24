@@ -5,7 +5,14 @@ import { stringFromSyntaxKind } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import * as ts from 'typescript'
 
-export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
+export type VoltisoTransformOptions = {
+	onInlineError?: 'fail' | undefined
+}
+
+export function voltisoTransform(
+	program: ts.Program,
+	pluginOptions: VoltisoTransformOptions,
+) {
 	const typeChecker = program.getTypeChecker()
 
 	// function collectSymbols(node: ts.Node): ts.Symbol[] {
@@ -235,6 +242,8 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 
 				// eslint-disable-next-line no-console
 				console.warn(chalk.bgRed(message))
+
+				if (pluginOptions.onInlineError === 'fail') throw new Error(message)
 			}
 
 			const importTypeNodes = collectNodesOfKind(
@@ -258,6 +267,8 @@ export function voltisoTransform(program: ts.Program, _pluginOptions: {}) {
 
 						// eslint-disable-next-line no-console
 						console.warn(chalk.bgRed(message))
+
+						if (pluginOptions.onInlineError === 'fail') throw new Error(message)
 					}
 				}
 			}

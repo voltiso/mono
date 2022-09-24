@@ -5,7 +5,7 @@ import type * as Database from '@voltiso/firestore-like'
 
 export interface FirestoreLikeModule {
 	FieldValue: Database.TypeofFieldValue
-	Timestamp: Database.TypeofTimestamp
+	// Timestamp: Database.TypeofTimestamp
 }
 
 export interface DatabaseContext {

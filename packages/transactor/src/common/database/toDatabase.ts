@@ -80,7 +80,8 @@ export function toDatabaseSet(
 	ctx: DatabaseContext,
 	obj: PartialIntrinsicFields | NestedData,
 ): FirestoreLike.DocumentData | FirestoreLike.DocumentDataNested {
-	if (obj instanceof Date) return ctx.module.Timestamp.fromDate(obj)
+	/* Date should be auto-converted to Timestamp */
+	if (obj instanceof Date) return obj // return ctx.module.Timestamp.fromDate(obj)
 
 	if (isWithToJSON(obj)) return obj.toJSON() as never
 	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)

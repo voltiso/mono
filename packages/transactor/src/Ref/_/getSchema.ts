@@ -6,9 +6,9 @@ import type { InferableObject, ISchema } from '@voltiso/schemar.types'
 
 import type { DocLike } from '~'
 import { sIntrinsicFields } from '~'
-import type { DocRefBaseImpl } from '~/Ref'
+import type { DocRefImpl } from '~/Ref'
 
-export function getIdSchemas(d: DocRefBaseImpl<any>) {
+export function getIdSchemas(d: DocRefImpl<any>) {
 	if (d._idSchemas !== undefined) return d._idSchemas
 
 	const { _allIdSchemas } = d._context.transactor
@@ -28,9 +28,7 @@ export function getIdSchemas(d: DocRefBaseImpl<any>) {
 	return d._idSchemas
 }
 
-export function getSchema(
-	d: DocRefBaseImpl<DocLike>,
-): DocRefBaseImpl['_schema'] {
+export function getSchema(d: DocRefImpl<DocLike>): DocRefImpl['_schema'] {
 	if (d._schema !== undefined) {
 		return d._schema
 	}

@@ -9,8 +9,12 @@ import type {
 	InstanceOptions,
 	ISchema,
 } from '@voltiso/schemar.types'
-import { isInstance } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import {
+	EXTENDS,
+	isInstance,
+	OPTIONS,
+	SCHEMA_NAME,
+} from '@voltiso/schemar.types'
 import type { Constructor } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
