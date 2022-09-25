@@ -3,3 +3,4 @@
 
 export * from './initLastDataSeen'
 export * from './Trigger'
+export * from './TriggerParams'

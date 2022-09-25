@@ -175,7 +175,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 
 	// final schema check
 	if (schema && cacheEntry.data) {
-		validateAndSetCacheEntry(ctx, cacheEntry.data, schema.final)
+		validateAndSetCacheEntry(ctx, cacheEntry.data, schema.partial)
 	}
 
 	return cacheEntry.proxy as D | null
