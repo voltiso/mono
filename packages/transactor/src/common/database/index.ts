@@ -3,6 +3,5 @@
 
 export * from './databaseUpdate'
 export * from './fromDatabase'
-export * from './isDocumentReference'
 export * from './RefEntry'
 export * from './toDatabase'

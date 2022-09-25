@@ -1,10 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as Database from '@voltiso/firestore-like'
+import * as Database from '@voltiso/firestore-like'
 import { assumeType, isPlainObject } from '@voltiso/util'
-
-import { isDocumentReference } from './isDocumentReference'
 
 export type RefEntry = {
 	__target: Database.DocumentReference
@@ -18,7 +16,7 @@ export function isRefEntry(x: unknown): x is RefEntry {
 
 	assumeType<Partial<RefEntry>>(x)
 
-	if (!isDocumentReference(x.__target)) return false
+	if (!Database.isDocumentReference(x.__target)) return false
 
 	if (typeof x.__isStrong !== 'boolean') return false
 

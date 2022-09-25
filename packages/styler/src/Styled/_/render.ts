@@ -79,7 +79,7 @@ export function render<$ extends StyledTypeInfo>(
 		const result = {} as Record<string, unknown>
 		for (const [prop, value] of Object.entries(props)) {
 			// eslint-disable-next-line security/detect-object-injection
-			result[prop] = prepare(value, params)
+			result[prop] = prepare(value, { ...params, isPreparingProps: true })
 		}
 		return result
 	}

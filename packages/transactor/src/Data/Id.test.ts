@@ -5,7 +5,8 @@ import * as s from '@voltiso/schemar'
 import type { IsSubtype } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import { Doc } from '..'
+import { Doc } from '~/Doc'
+
 import type { Id } from './Id'
 
 class MyDoc extends Doc('my-tag-data-1')({

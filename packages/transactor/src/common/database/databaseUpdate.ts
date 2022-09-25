@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
+import { isDatabase } from '@voltiso/firestore-like'
 import { undef } from '@voltiso/util'
 
 import type { WithId } from '~/Data'
@@ -10,7 +11,6 @@ import type { IDoc } from '~/Doc'
 import { isDeleteIt, isReplaceIt } from '~/it'
 import type { PartialIntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates/Updates'
-import { isDatabase } from '~/util'
 
 import { toDatabaseSet, toDatabaseUpdate } from './toDatabase'
 
@@ -32,7 +32,7 @@ function assertNotInTransaction() {
 		)
 }
 
-const databaseDelete = async (t: T, ref: Database.DocumentReference) => {
+const databaseDelete = async (t: T, ref: Database.ServerDocumentReference) => {
 	if (isDatabase(t)) {
 		assertNotInTransaction()
 		await ref.delete()
@@ -47,7 +47,7 @@ const databaseDelete = async (t: T, ref: Database.DocumentReference) => {
 const databaseSet = async (
 	ctx: DatabaseContext,
 	t: T,
-	ref: Database.DocumentReference,
+	ref: Database.ServerDocumentReference,
 	data: PartialIntrinsicFields,
 ): Promise<WithId<PartialIntrinsicFields, IDoc>> => {
 	const firestoreData = toDatabaseSet(ctx, data)
@@ -66,7 +66,7 @@ const databaseSet = async (
 export async function databaseUpdate(
 	ctx: DatabaseContext,
 	t: T,
-	ref: Database.DocumentReference,
+	ref: Database.ServerDocumentReference,
 	updates: Updates,
 ) {
 	// console.log('firestoreUpdate', ref.path, updates)

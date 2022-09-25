@@ -9,25 +9,25 @@ import type { IntrinsicFields } from '~'
 import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
 import { StrongDocRef, WeakDocRef } from '~/Ref'
 import type { DocRefBaseContext } from '~/Ref/_/Context'
-import { isTimestamp } from '~/util'
 
 import { isRefEntry } from './RefEntry'
 
-function fromDatabaseRec(
+export function fromDatabaseData(
 	ctx: DocRefBaseContext,
 	o: Database.DocumentDataNestedNoArray,
 ): NestedDataNoArray
-function fromDatabaseRec(
+
+export function fromDatabaseData(
 	ctx: DocRefBaseContext,
 	o: Database.DocumentDataNested,
 ): NestedDataNoArray
 
-function fromDatabaseRec(
+export function fromDatabaseData(
 	ctx: DocRefBaseContext,
 	o: Database.DocumentDataNested,
 ): NestedData {
 	if (Array.isArray(o)) {
-		return o.map(x => fromDatabaseRec(ctx, x))
+		return o.map(x => fromDatabaseData(ctx, x))
 		// } else if (isRefLike(o)) {
 		// 	return new Ref(o.__ref) as unknown as T
 	} else if (Database.isDocumentReference(o)) {
@@ -39,18 +39,20 @@ function fromDatabaseRec(
 
 		if (o.__isStrong) return new StrongDocRef(ctx, o.__target.path)
 		else return new WeakDocRef(ctx, o.__target.path)
-	} else if (isTimestamp(o)) return o.toDate()
+	} else if (Database.isTimestamp(o)) return o.toDate()
 	else if (isPlainObject(o)) {
 		const r: DataRecord = {}
 
 		for (const [key, val] of Object.entries(o)) {
 			// eslint-disable-next-line security/detect-object-injection
-			r[key] = fromDatabaseRec(ctx, val as never)
+			r[key] = fromDatabaseData(ctx, val as never)
 		}
 
 		return r
 	} else return o
 }
+
+//
 
 export const fromDatabase = (
 	ctx: DocRefBaseContext,
@@ -60,7 +62,7 @@ export const fromDatabase = (
 
 	if (!data) return null
 	else {
-		const fixed = fromDatabaseRec(ctx, data)
+		const fixed = fromDatabaseData(ctx, data)
 		$assert(isPlainObject(fixed))
 		return fixed as IntrinsicFields
 	}

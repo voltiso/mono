@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { isDocumentReference } from '@voltiso/firestore-like'
 import { dump as yamlDump } from 'js-yaml'
-
-import { isDocumentReference } from '~'
 
 interface JSONable {
 	toJSON: () => unknown

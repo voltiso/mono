@@ -532,7 +532,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 				{
 					mapProps: (p: P<$>) =>
 						({
-							...p,
 							// eslint-disable-next-line security/detect-object-injection
 							[propName]: mapProp(p[propName] as never),
 						} as never),

@@ -62,7 +62,7 @@ export class DocRefBaseImpl<
 	declare then: RefBase<D, Exists>['then']
 
 	_context: DocRefContext
-	_ref: FirestoreLike.DocumentReference
+	_ref: FirestoreLike.ServerDocumentReference
 	_path: DocPath<D[DTI]['tag']>
 
 	get path(): DocPath<D[DTI]['tag']> {
