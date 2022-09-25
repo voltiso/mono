@@ -4,9 +4,10 @@
 import { $assert } from '@voltiso/assertor'
 import { lazyPromise, protoLink, undef } from '@voltiso/util'
 
-import type { IDoc } from '~'
-import { sVoltisoEntry } from '~'
 import type { NestedData } from '~/Data/Data'
+import type { IDoc } from '~/Doc'
+import { TransactorError } from '~/error'
+import { sVoltisoEntry } from '~/schemas'
 import type { WithTransaction } from '~/Transaction'
 
 import type { WithDocRef } from './WithDocRef'
@@ -50,7 +51,7 @@ export const DocFieldPath = class {
 
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!doc) {
-				throw new Error(
+				throw new TransactorError(
 					`${ctx.docRef.path.pathString}.${fields.join('.')} does not exist`,
 				)
 			}
@@ -67,7 +68,7 @@ export const DocFieldPath = class {
 					data === undef ||
 					!(field in data)
 				)
-					throw new Error(
+					throw new TransactorError(
 						`${ctx.docRef.path.toString()}.${fields.join('.')} does not exist`,
 					)
 

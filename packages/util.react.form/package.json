@@ -1,80 +1,80 @@
 {
-	"name": "@voltiso/util.react.form",
-	"version": "0.2.5",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/cjs/index.d.ts",
-	"module": "dist/esm/index.js",
-	"main": "dist/cjs/index.js",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________TEST": "__________",
-		"test": "jest",
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:esm": "v buildEsm",
-		"build:cjs": "v buildCjs",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnlyFast",
-		"__________MISC": "__________",
-		"clean": "v clean",
-		"trace": "v trace",
-		"trace:run": "v traceRun",
-		"typecov": "v typecov"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/util.react": "workspace:^"
-	},
-	"peerDependencies": {
-		"@types/react": "^18.0.19",
-		"@voltiso/observer": "workspace:^",
-		"@voltiso/schemar": "workspace:^",
-		"@voltiso/schemar.types": "workspace:^",
-		"@voltiso/util": "workspace:^",
-		"react": "^18.1.0 || ^17",
-		"rxjs": "^7.5.6"
-	},
-	"peerDependenciesMeta": {
-		"rxjs": {
-			"optional": true
-		}
-	},
-	"devDependencies": {
-		"@testing-library/react": "^13.4.0",
-		"@types/react": "^18.0.20",
-		"@voltiso/assertor": "workspace:^",
-		"@voltiso/config.jest.esr": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^2.0.2",
-		"@voltiso/config.ts.build.esm": "workspace:^2.0.2",
-		"@voltiso/observer": "workspace:^",
-		"@voltiso/schemar": "workspace:^",
-		"@voltiso/schemar.types": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"@voltiso/util": "workspace:^",
-		"@voltiso/util.react.rxjs": "workspace:^",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"rxjs": "^7.5.6"
-	},
-	"__________MISC": "__________",
-	"engines": {
-		"node": "16"
-	},
-	"typeCoverage": {
-		"is": 100
-	}
+  "name": "@voltiso/util.react.form",
+  "version": "0.2.5",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________TEST": "__________",
+    "test": "jest",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:esm": "v buildEsm",
+    "build:cjs": "v buildCjs",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast",
+    "__________MISC": "__________",
+    "clean": "v clean",
+    "trace": "v trace",
+    "trace:run": "v traceRun",
+    "typecov": "v typecov"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/util.react": "workspace:^"
+  },
+  "peerDependencies": {
+    "@types/react": "^18.0.19",
+    "@voltiso/observer": "workspace:^",
+    "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar.types": "workspace:^",
+    "@voltiso/util": "workspace:^",
+    "react": "^18.1.0 || ^17",
+    "rxjs": "^7.5.6"
+  },
+  "peerDependenciesMeta": {
+    "rxjs": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@testing-library/react": "^13.4.0",
+    "@types/react": "^18.0.21",
+    "@voltiso/assertor": "workspace:^",
+    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/observer": "workspace:^",
+    "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar.types": "workspace:^",
+    "@voltiso/script": "workspace:^",
+    "@voltiso/util": "workspace:^",
+    "@voltiso/util.react.rxjs": "workspace:^",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rxjs": "^7.5.7"
+  },
+  "__________MISC": "__________",
+  "engines": {
+    "node": "16"
+  },
+  "typeCoverage": {
+    "is": 100
+  }
 }

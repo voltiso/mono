@@ -3,6 +3,8 @@
 
 import { omitIfPresent } from '@voltiso/util'
 
+import { TransactorError } from '~/error'
+
 import type { Id } from './Id'
 
 export function withoutId(data: null, expectedId: Id): null
@@ -20,7 +22,7 @@ export function withoutId(data: { id?: string } | null, expectedId: Id) {
 
 	// expectedId is mandatory so that we don't ever forget
 	if (data.id && expectedId !== data.id)
-		throw new Error(
+		throw new TransactorError(
 			`'id' field mismatch: expected ${expectedId}, got ${data.id}`,
 		)
 

@@ -18,16 +18,17 @@ export const DT = Symbol('DT')
 export type DT = typeof DT
 
 export interface DocTILike {
-	id: any
+	id: unknown
 
-	tag: any
+	tag: string
 
-	publicOnCreation: any
-	public: any
+	publicOnCreation: {}
+	public: {}
+	private: {}
 
-	methods: any
+	methods: object
 
-	aggregates: any
+	aggregates: {}
 }
 
 /**
@@ -37,14 +38,6 @@ export interface DocTILike {
  */
 export interface DocTI extends DocTILike {
 	id: SchemaLike<string> | undefined
-
-	tag: string
-
-	publicOnCreation: {}
-	public: {}
-	private: {}
-
-	methods: object
 
 	aggregates: Record<string, SchemaLike>
 }

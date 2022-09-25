@@ -69,7 +69,7 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 		getSchema(docRef)
 		for (const key in docRef._publicOnCreationSchema) {
 			if (key in updates)
-				throw new Error(
+				throw new TransactorError(
 					`cannot modify const field '${path}.${key}' from outside`,
 				)
 		}
@@ -79,7 +79,7 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 		getSchema(docRef)
 		for (const key in docRef._privateSchema) {
 			if (key in updates) {
-				throw new Error(
+				throw new TransactorError(
 					`cannot modify private field '${path}.${key}' from outside`,
 				)
 			}
@@ -266,7 +266,7 @@ function transactionUpdate(
 	const { transaction, docRef } = this
 
 	if (transaction._isFinalizing)
-		throw new Error(
+		throw new TransactorError(
 			`db('${docRef.path.toString()}').update() called after transaction body (missing await?)`,
 		)
 

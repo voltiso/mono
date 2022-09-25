@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { getKeys, undef } from '@voltiso/util'
+import { getKeys, stringFrom, undef } from '@voltiso/util'
 
-import type { PartialIntrinsicFields } from '~'
 import type { NestedData } from '~/Data/Data'
+import { TransactorError } from '~/error'
 import type { DeleteIt, NestedIt, RootReplaceIt } from '~/it'
 import {
 	deleteIt,
@@ -14,6 +14,7 @@ import {
 	isIncrementIt,
 	isReplaceIt,
 } from '~/it'
+import type { PartialIntrinsicFields } from '~/schemas'
 
 export interface UpdatesRecord {
 	id?: never
@@ -41,9 +42,13 @@ function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 		if (isIncrementIt(a)) return incrementIt(a.n + b.n)
 		else if (typeof a === 'number') return a + b.n
 		else if (isDeleteIt(a))
-			throw new Error(`cannot increment field value: undefined += ${b.n}`)
-		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-		else throw new Error(`cannot increment field value: ${a} += ${b.n}`)
+			throw new TransactorError(
+				`cannot increment field value: undefined += ${b.n}`,
+			)
+		else
+			throw new TransactorError(
+				`cannot increment field value: ${stringFrom(a)} += ${b.n}`,
+			)
 	}
 
 	if (isRecord(a) && isRecord(b)) {
@@ -128,7 +133,7 @@ export const applyUpdates = (
 	debug?: { path: string },
 ): PartialIntrinsicFields | null => {
 	if (data === null && !isReplaceIt(updates) && !isDeleteIt(updates)) {
-		throw new Error(
+		throw new TransactorError(
 			`NOT_FOUND: cannot update non-existing document ${debug?.path || ''}`,
 		)
 	}

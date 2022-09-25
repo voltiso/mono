@@ -5,6 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import { clone } from '@voltiso/util'
 
 import { withId } from '~/Data'
+import { TransactorError } from '~/error'
 import { immutabilize } from '~/immutabilize'
 import { isDeleteIt, isReplaceIt } from '~/it'
 import { triggerGuard } from '~/Transaction'
@@ -77,7 +78,7 @@ async function loop(c: DocRefContextWithTransaction) {
 	const MAX_ITERS = 1_000
 
 	for (let iter = 0; ; ++iter) {
-		if (iter >= MAX_ITERS) throw new Error('Trigger loop')
+		if (iter >= MAX_ITERS) throw new TransactorError('Trigger loop')
 
 		let change = false
 

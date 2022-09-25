@@ -43,7 +43,7 @@
     "prettier": "*"
   },
   "devDependencies": {
-    "@types/node": "^18.7.18",
+    "@types/node": "^18.7.21",
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/script": "workspace:^",

@@ -6,10 +6,11 @@
 
 import { $assert } from '@voltiso/assertor'
 
-import type { DocLike } from '~'
-import { isStrongDocRef } from '~'
-import type { IDoc } from '~/Doc'
+import type { IntrinsicFields } from '~'
+import type { DocLike, IDoc } from '~/Doc'
+import { TransactorError } from '~/error'
 import type { DocRefBaseImpl, IRef, WeakDocRef } from '~/Ref'
+import { isStrongDocRef } from '~/Ref'
 
 function forEachStrongRef(o: any, f: (r: IRef) => void) {
 	if (isStrongDocRef(o)) {
@@ -63,14 +64,24 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<DocLike>) {
 					if (diff === 0) continue
 
 					const docPath = db(targetPath) as unknown as WeakDocRef<IDoc>
-					// ! TODO !
-					// eslint-disable-next-line no-await-in-loop
-					const __voltiso = await docPath.__voltiso // returns __voltiso from transaction cache if doc is already deleted
+
+					// ! TODO ! no-await-in-loop
+
+					let __voltiso: IntrinsicFields['__voltiso'] | undefined
+
+					try {
+						// eslint-disable-next-line no-await-in-loop
+						__voltiso = await docPath.__voltiso // returns __voltiso from transaction cache if doc is already deleted
+					} catch {
+						throw new TransactorError(
+							`ref trigger for ${path.toString()}: get StrongRef target ${targetPath} failed (database corrupt?)`,
+						)
+					}
 
 					$assert(__voltiso)
 
 					// if (!__voltiso)
-					// 	throw new Error(
+					// 	throw new TransactorError(
 					// 		`ref: referenced doc does not exist ${path.pathString} -> ${targetPath}`,
 					// 	)
 
@@ -79,8 +90,8 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<DocLike>) {
 					// console.log('__voltiso.numRefs', __voltiso.numRefs)
 
 					if (__voltiso.numRefs < ba.after) {
-						throw new Error(
-							`ref: ${path.toString()} refCounter === ${
+						throw new TransactorError(
+							`ref trigger for ${path.toString()}: ${targetPath.toString()}.__voltiso.numRefs === ${
 								__voltiso.numRefs
 							} too small - database corrupt`,
 						)

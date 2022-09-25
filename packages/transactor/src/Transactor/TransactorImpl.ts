@@ -11,6 +11,7 @@ import type { CollectionRef } from '~/CollectionRef'
 import type { DatabaseContext, FirestoreLikeModule } from '~/DatabaseContext'
 import { Db } from '~/Db'
 import type { IDocConstructorNoBuilder, IndexedDoc } from '~/Doc'
+import { TransactorError } from '~/error'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
 
 import type {
@@ -40,7 +41,7 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 
 	get _database(): FirestoreLike.Database {
 		if (!this._databaseContext) {
-			throw new Error('please init() first')
+			throw new TransactorError('please init() first')
 		}
 
 		return this._databaseContext.database
@@ -111,7 +112,8 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 
 			default:
 				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				if (args.length > 3) throw new Error('expected 0, 1 or 2 arguments')
+				if (args.length > 3)
+					throw new TransactorError('expected 0, 1 or 2 arguments')
 		}
 
 		this._options = new Options_(partialOptions)
@@ -126,7 +128,7 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 
 	register<Cls extends IDocConstructorNoBuilder>(cls: Cls): any {
 		if (cls._.tag === 'untagged')
-			throw new Error('db.register(Cls) requires a class tag')
+			throw new TransactorError('db.register(Cls) requires a class tag')
 
 		const collection = this._context.db(
 			cls._.tag,

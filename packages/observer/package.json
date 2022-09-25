@@ -54,7 +54,7 @@
 		"@voltiso/schemar.types": "workspace:^",
 		"@voltiso/script": "workspace:^",
 		"@voltiso/util.rxjs": "workspace:^",
-		"rxjs": "^7.5.6"
+		"rxjs": "^7.5.7"
 	},
 	"__________MISC": "__________",
 	"engines": {

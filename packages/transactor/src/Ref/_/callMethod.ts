@@ -5,8 +5,9 @@ import { $assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
-import type { Doc, DocTI, IDocImpl } from '~/Doc'
+import type { Doc, DocImpl, DocTI, IDocImpl } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
+import { TransactorError } from '~/error'
 import type { Method } from '~/Method'
 import type { DocRefBaseImpl, WithDocRef } from '~/Ref'
 import { transactionDocPathGet } from '~/Ref'
@@ -53,12 +54,12 @@ export async function callMethod<
 	}
 
 	if (transaction?._isFinalizing)
-		throw new Error(
+		throw new TransactorError(
 			`${debugName()} called after transaction body (missing await?)`,
 		)
 
 	// if (argSchema) {
-	// 	if (args.length !== 1) throw new Error('argSchema requires the function to be called with 1 argument')
+	// 	if (args.length !== 1) throw new TransactorError('argSchema requires the function to be called with 1 argument')
 	// 	await argSchema.validateAsync(args[0], transactor.options.validateOptions)
 	// }
 
@@ -88,7 +89,10 @@ export async function callMethod<
 
 		const { data } = cacheEntry
 
-		if (!data) throw new Error(`${debugName()} called on non-existing document`)
+		if (!data)
+			throw new TransactorError(
+				`${debugName()} called on non-existing document`,
+			)
 
 		if (localDoc) localDoc._setRaw(data)
 
@@ -98,19 +102,22 @@ export async function callMethod<
 	$assert(isWithTransaction(ctx))
 	const doc = await transactionDocPathGet<Doc<TI, 'inside'>>(ctx)
 
-	if (!doc) throw new Error(`${debugName()} called on non-existing document`)
+	if (!doc)
+		throw new TransactorError(`${debugName()} called on non-existing document`)
 	// data._._setContext(this.context)
 
-	// eslint-disable-next-line no-console
-	console.log(
-		'\n',
-		chalk.inverse('CALL method'),
-		chalk.blueBright(name),
-		'\n',
-		path,
-		'\n',
-		chalk.green(dump(doc.dataWithoutId())),
-	)
+	if ((doc as unknown as DocImpl)._context.transactor._options.log) {
+		// eslint-disable-next-line no-console
+		console.log(
+			'\n',
+			chalk.inverse('CALL method'),
+			chalk.blueBright(name),
+			'\n',
+			path,
+			'\n',
+			chalk.green(dump(doc.dataWithoutId())),
+		)
+	}
 
 	const result = await methodGuard(
 		ctx,
@@ -124,7 +131,7 @@ export async function callMethod<
 	await processTriggers(ctx)
 
 	if (transaction._isFinalizing)
-		throw new Error(
+		throw new TransactorError(
 			`${debugName()} called after transaction body (missing await?)`,
 		)
 

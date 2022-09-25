@@ -47,20 +47,22 @@ function logTrigger<TI extends DocDerivedData>(
 	name: string,
 	when: 'before' | 'after' | 'on',
 	event: string,
-	p: AfterTriggerParams<GI<TI>>,
+	params: AfterTriggerParams<GI<TI>>,
 ) {
+	if (!params.transactor._options.log) return
+
 	// eslint-disable-next-line no-console
 	console.log(
 		'\n',
 		chalk.inverse(when, event, 'trigger'),
 		chalk.blueBright(name),
 		'\n',
-		p.path.pathString,
+		params.path.pathString,
 		'\n',
 		'\n',
-		chalk.red(dump(p.before)),
+		chalk.red(dump(params.before)),
 		'\n',
-		chalk.green(dump(p.after)),
+		chalk.green(dump(params.after)),
 	)
 }
 

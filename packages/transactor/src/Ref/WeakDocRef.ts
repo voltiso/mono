@@ -3,7 +3,7 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { InferTI } from '~/CollectionRef/InferTI'
+import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
 import type { DocLike, IDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
@@ -27,8 +27,8 @@ export type WeakDocRefConstructor = new <D extends DocLike>(
 ) => WeakDocRef<D>
 
 export type WeakDocRef<D extends DocLike> = WeakRef<D> &
-	GDocFields<InferTI<D>> &
-	GMethodPromises<InferTI<D>>
+	GDocFields<InferTIFromDoc<D>> &
+	GMethodPromises<InferTIFromDoc<D>>
 
 export const WeakDocRef = WeakDocRefImpl as unknown as WeakDocRefConstructor
 

@@ -4,9 +4,10 @@
 import * as s from '@voltiso/schemar'
 import type { InferableObject, ISchema } from '@voltiso/schemar.types'
 
-import type { DocLike } from '~'
-import { sIntrinsicFields } from '~'
+import type { DocLike } from '~/Doc'
+import { TransactorError } from '~/error'
 import type { DocRefBaseImpl } from '~/Ref'
+import { sIntrinsicFields } from '~/schemas'
 
 export function getIdSchemas(d: DocRefBaseImpl<any>) {
 	if (d._idSchemas !== undefined) return d._idSchemas
@@ -72,7 +73,7 @@ export function getSchema(
 		privateSchemas.length === 0
 	) {
 		if (_options.requireSchemas)
-			throw new Error(
+			throw new TransactorError(
 				`missing schema for ${path} - add a schema, or set requireSchemas = false`,
 			)
 

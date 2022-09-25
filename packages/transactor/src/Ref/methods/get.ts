@@ -189,7 +189,7 @@ export function transactionDocPathGet<D extends IDoc>(
 	const { path } = docRef
 
 	if (transaction._isFinalizing)
-		throw new Error(
+		throw new TransactorError(
 			`db('${path.toString()}').get() called after transaction body (missing await?)`,
 		)
 

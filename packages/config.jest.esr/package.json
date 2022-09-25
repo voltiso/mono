@@ -45,14 +45,14 @@
     "@babel/preset-env": "^7.19.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@voltiso/config.jest.lib": "workspace:^",
-    "esbuild": "^0.15.8",
+    "esbuild": "^0.15.9",
     "flow-remove-types": "^2.187.1",
     "jest-environment-jsdom": "^29.0.3",
     "react": "^18.2.0",
     "react-native": "^0.70.1"
   },
   "devDependencies": {
-    "@types/react": "^18.0.20",
+    "@types/react": "^18.0.21",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@voltiso/config.ts.build.cjs": "workspace:^"
   }

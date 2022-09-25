@@ -6,10 +6,11 @@ import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { Json } from '@voltiso/util'
 import { getKeys, isPlainObject, undef } from '@voltiso/util'
 
-import type { PartialIntrinsicFields } from '~'
 import type { NestedData } from '~/Data/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
+import { TransactorError } from '~/error'
 import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
+import type { PartialIntrinsicFields } from '~/schemas'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
 
 interface WithToJSON {
@@ -40,7 +41,7 @@ export function toDatabaseUpdate(
 	if (isIncrementIt(updates)) return ctx.module.FieldValue.increment(updates.n)
 
 	if (isReplaceIt(updates))
-		throw new Error('firestore does not support ReplaceField')
+		throw new TransactorError('firestore does not support ReplaceField')
 
 	if (isDeleteIt(updates)) return ctx.module.FieldValue.delete()
 
@@ -89,7 +90,7 @@ export function toDatabaseSet(
 	if (isReplaceIt(obj)) return toDatabaseSet(ctx, obj.data as NestedData)
 
 	if (isIncrementIt(obj))
-		throw new Error(
+		throw new TransactorError(
 			'firestoreSet: incrementField() sentinel not allowed - are you trying to update non-existing document?',
 		)
 

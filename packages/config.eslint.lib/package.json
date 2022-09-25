@@ -48,7 +48,7 @@
     "@voltiso/assertor.transform": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
-    "eslint": "^8.23.1",
+    "eslint": "^8.24.0",
     "rimraf": "^3.0.2"
   },
   "__________ENGINES": "__________",

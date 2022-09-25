@@ -150,27 +150,33 @@ export async function runTransaction<R>(
 					if (isEqual(newCacheSnapshot, cacheSnapshot)) break
 
 					cacheSnapshot = newCacheSnapshot
-					// eslint-disable-next-line no-console
-					console.log(
-						'\n',
-						chalk.inverse('REPEAT TRIGGERS - CACHE CHANGED'),
-						'\n',
-						dump(cacheSnapshot),
-					)
+
+					if (ctx._options.log) {
+						// eslint-disable-next-line no-console
+						console.log(
+							'\n',
+							chalk.inverse('REPEAT TRIGGERS - CACHE CHANGED'),
+							'\n',
+							dump(cacheSnapshot),
+						)
+					}
 				}
 			} catch (error) {
 				for (const cacheEntry of cache.values()) {
 					delete cacheEntry.proxy
 				}
 
-				// eslint-disable-next-line no-console
-				console.log(
-					'\n',
-					chalk.inverse('TRANSACTION CACHE AFTER ERROR'),
-					'\n',
+				if (ctx._options.log) {
+					// eslint-disable-next-line no-console
+					console.log(
+						'\n',
+						chalk.inverse('TRANSACTION CACHE AFTER ERROR'),
+						'\n',
 
-					dump(cache),
-				)
+						dump(cache),
+					)
+				}
+
 				throw error
 			} finally {
 				// eslint-disable-next-line require-atomic-updates
@@ -178,7 +184,7 @@ export async function runTransaction<R>(
 			}
 
 			if (transaction._numFloatingPromises)
-				throw new Error(
+				throw new TransactorError(
 					`numFloatingPromises: ${transaction._numFloatingPromises} (missing await?)`,
 				)
 

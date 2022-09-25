@@ -8,6 +8,7 @@ import { undef } from '@voltiso/util'
 import type { WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import type { IDoc } from '~/Doc'
+import { TransactorError } from '~/error'
 import { isDeleteIt, isReplaceIt } from '~/it'
 import type { PartialIntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates/Updates'
@@ -20,14 +21,16 @@ function assertInTransaction() {
 	const ctxOverride = Zone.current.get('transactionContextOverride') as unknown
 
 	if (!ctxOverride)
-		throw new Error('Illegal Database operation: expected to be in transaction')
+		throw new TransactorError(
+			'Illegal Database operation: expected to be in transaction',
+		)
 }
 
 function assertNotInTransaction() {
 	const ctxOverride = Zone.current.get('transactionContextOverride') as unknown
 
 	if (ctxOverride)
-		throw new Error(
+		throw new TransactorError(
 			'Illegal Database operation: expected to NOT be in transaction',
 		)
 }

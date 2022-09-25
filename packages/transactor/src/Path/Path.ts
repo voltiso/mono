@@ -4,10 +4,10 @@
 import { $assert } from '@voltiso/assertor'
 import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
 
-import type { CollectionRef } from '~'
-import type { CollectionRefPattern } from '~/CollectionRef'
+import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
 import { DT } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
+import { TransactorError } from '~/error'
 import type { DocRefPattern, WeakDocRef } from '~/Ref'
 
 /** Should not contain `/` */
@@ -29,7 +29,8 @@ export const isPathToken = (str: string): str is PathToken => !str.includes('/')
  * @throws `Error` if `str` contains `/`
  */
 export function createPathToken<S extends string>(str: S): PathToken {
-	if (!isPathToken(str)) throw new Error(`${str} is not a valid PathToken`)
+	if (!isPathToken(str))
+		throw new TransactorError(`${str} is not a valid PathToken`)
 
 	return str
 }
@@ -82,7 +83,8 @@ export const isPatternString = (str: string): str is PatternString =>
  * @throws `Error` if `str` is not a valid `PathString` - contains `//`
  */
 export function createPathString<S extends string>(str: S): PathString<S> {
-	if (!isPathString(str)) throw new Error(`${str} is not a valid PathString`)
+	if (!isPathString(str))
+		throw new TransactorError(`${str} is not a valid PathString`)
 
 	return str
 }
@@ -91,7 +93,7 @@ export function createPatternString<S extends string>(
 	str: S,
 ): PatternString<S> {
 	if (!isPatternString(str))
-		throw new Error(`${str} is not a valid PatternString`)
+		throw new TransactorError(`${str} is not a valid PatternString`)
 
 	return str
 }

@@ -7,16 +7,16 @@ import type { InferMethods } from './InferMethods'
 
 //
 
-export type InferFromDoc<D extends DocLike> = D[DTI] & {
+export type InferTIFromDoc<D extends DocLike> = D[DTI] & {
 	methods: InferMethods<D>
 } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
 
-export type InferFromCls<Cls extends DocConstructorLike> = InferFromDoc<
+export type InferTIFromCls<Cls extends DocConstructorLike> = InferTIFromDoc<
 	InstanceType<Cls>
 >
 
 export type InferTI<X> = X extends DocConstructorLike
-	? InferFromCls<X>
+	? InferTIFromCls<X>
 	: X extends DocLike
-	? InferFromDoc<X>
+	? InferTIFromDoc<X>
 	: never
