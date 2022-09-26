@@ -9,15 +9,17 @@ import type { DocPath } from '~/Path'
 import type { DocFieldPath } from './DocFieldPath'
 
 export const IS_DOC_REF = Symbol('IS_DOC_REF')
+export type IS_DOC_REF = typeof IS_DOC_REF
 
 export interface RefBaseLike {
-	[IS_DOC_REF]: any
+	[IS_DOC_REF]: true
 }
 
 export interface IRefBase extends RefBaseLike {
 	[IS_DOC_REF]: true
 
 	[DTI]: DocTILike
+	readonly Exists: boolean
 
 	readonly id: Id
 	readonly path: DocPath

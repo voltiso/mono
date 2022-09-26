@@ -14,8 +14,7 @@ export interface DocumentReference {
 }
 
 export function isDocumentReference(x: unknown): x is DocumentReference {
-	assumeType<DocumentReference | null>(x)
-	return Boolean(x?.id && x.path)
+	return isClientDocumentReference(x) || isServerDocumentReference(x)
 }
 
 //

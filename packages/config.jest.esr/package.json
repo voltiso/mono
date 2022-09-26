@@ -35,7 +35,7 @@
     "build:cjs:clean": "rimraf dist/cjs",
     "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
     "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnly",
+    "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
     "clean": "v clean"
   },

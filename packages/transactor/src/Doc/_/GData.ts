@@ -6,8 +6,6 @@ import type { _, $_ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
 import type { DocLike, ExecutionContext, IDoc } from '~/Doc'
-import type { IRef } from '~/Ref'
-import type { Relax } from '~/Relax'
 import type { PartialIntrinsicFields } from '~/schemas/sIntrinsicFields'
 
 /** @inline */
@@ -60,27 +58,27 @@ export type GetInputDataWithId<
 /** @inline */
 export type GetPublicData<TI extends { public?: any }> = Type<TI['public']>
 
-/** @inline */
-export type RelaxRefs<X> = X extends IRef
-	? Relax<X>
-	: X extends object
-	? {
-			[k in keyof X]: RelaxRefs<X[k]>
-	  }
-	: X
+// /** @inline */
+// export type RelaxRefs<X> = X extends IRef
+// 	? Relax<X>
+// 	: X extends object
+// 	? {
+// 			[k in keyof X]: RelaxRefs<X[k]>
+// 	  }
+// 	: X
 
 /** @inline */
 export type GetPublicCreationInputData<
 	TI extends { public?: any; publicOnCreation?: any },
 	Doc extends DocLike = IDoc,
 > = _<
-	{ id?: Id<Doc> | undefined } & RelaxRefs<InputType<TI['publicOnCreation']>> &
-		RelaxRefs<InputType<TI['public']>>
+	{ id?: Id<Doc> | undefined } & InputType<TI['publicOnCreation']> &
+		InputType<TI['public']>
 >
 
 /** @inline */
-export type GetPublicInputData<TI extends { public?: any }> = RelaxRefs<
-	InputType<TI['public']>
+export type GetPublicInputData<TI extends { public?: any }> = InputType<
+	TI['public']
 >
 
 //

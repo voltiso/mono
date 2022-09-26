@@ -4,13 +4,13 @@
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
-import { sStrongRef } from '@voltiso/transactor'
 import {
 	after,
 	afterCreate,
 	afterDelete,
 	beforeCommit,
 	Doc,
+	sStrongRef,
 } from '@voltiso/transactor'
 import { undef } from '@voltiso/util'
 

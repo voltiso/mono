@@ -15,7 +15,6 @@ export function patchRequireForEsbuild() {
 			if (id.endsWith('.js')) {
 				return originalRequire.call(
 					this,
-					// eslint-disable-next-line no-magic-numbers
 					id.slice(0, Math.max(0, id.length - 3)),
 				) as never
 			} else throw error

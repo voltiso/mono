@@ -28,7 +28,7 @@ export interface RefBase<D extends DocLike, Exists extends boolean>
 	[DTI]: D[DTI]
 
 	/** Type-only field */
-	Exists: Exists
+	readonly Exists: Exists
 
 	readonly id: Id<D>
 	readonly path: DocPath<D[DTI]['tag']>

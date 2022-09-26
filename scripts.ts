@@ -40,15 +40,9 @@ export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^..
 
 export const checkWorkspace = [
 	'prepareWorkspace',
-	turboAllPackages(
-		'depcheck',
-		'fix:prettier',
-		'test',
-		'build:cjs',
-		'build:esm',
-		'lint:eslint',
-		'lint:tsc',
-	),
+	// turboAllPackages('fix:prettier'),
+	turboAllPackages('build:cjs'),
+	turboAllPackages('depcheck', 'test', 'build:esm', 'lint:eslint', 'lint:tsc'),
 ]
 
 //!

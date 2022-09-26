@@ -29,7 +29,7 @@
 		},
 
 		"lint:tsc": {
-			"dependsOn": ["^build:cjs", "fix:prettier"],
+			"dependsOn": ["^build:cjs"],
 			"inputs": ["**", ":!dist/"],
 			"outputs": []
 		},

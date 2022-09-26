@@ -2,16 +2,17 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DocTI, DTI, IDoc } from '~/Doc'
-import type { IRef } from '~/Ref'
+import type { IRef, IS_DOC_REF } from '~/Ref'
 
-type RelaxDoc<D extends IDoc> = IDoc &
+export type RelaxDoc<D extends IDoc> = IDoc &
 	Pick<D, Exclude<keyof IDoc, 'methods' | 'id' | 'ref' | 'update' | DTI>> & {
 		[DTI]: RelaxDocTI<D[DTI]>
 	}
 
-type RelaxDocTI<TI extends DocTI> = DocTI & Omit<TI, 'methods'>
+export type RelaxDocTI<TI extends DocTI> = DocTI & Omit<TI, 'methods'>
 
-type RelaxRef<R extends IRef> = R
+export type RelaxRef<R extends IRef> = IRef &
+	Pick<R, IS_DOC_REF | 'Exists' | DTI>
 
 export type Relax<X extends IDoc | DocTI | IRef> = X extends IDoc
 	? RelaxDoc<X>

@@ -8,7 +8,7 @@
     "build:cjs": "turbo run build:cjs",
     "build:esm": "turbo run build:esm",
     "test": "turbo run test",
-    "lint": "turbo run fix:prettier lint:tsc lint:eslint",
+    "lint": "turbo run lint:tsc lint:eslint",
     "depcheck": "turbo run depcheck",
     "check": "v checkWorkspace",
     "__________PREPARE WORKSPACE": "__________",

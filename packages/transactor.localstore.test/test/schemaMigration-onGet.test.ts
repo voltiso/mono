@@ -4,9 +4,7 @@
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
-import { sVoltisoEntry } from '@voltiso/transactor'
-import { sDeleteIt } from '@voltiso/transactor'
-import { Doc, onGet } from '@voltiso/transactor'
+import { Doc, onGet,sDeleteIt , sVoltisoEntry  } from '@voltiso/transactor'
 import { undef } from '@voltiso/util'
 
 import { createTransactor, database } from './common'

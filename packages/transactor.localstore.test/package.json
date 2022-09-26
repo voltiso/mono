@@ -22,6 +22,7 @@
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/localstore": "workspace:^",
     "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transactor": "workspace:^",
     "@voltiso/transactor.localstore": "workspace:^",

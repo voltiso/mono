@@ -11,7 +11,7 @@
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist/"
+    "dist"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
@@ -44,11 +44,11 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/schemar.types": "workspace:^16.0.0"
+    "@voltiso/schemar.types": "workspace:^"
   },
   "devDependencies": {
-    "@voltiso/config.ts.build.cjs": "workspace:^2.0.2",
-    "@voltiso/config.ts.build.esm": "workspace:^2.0.2",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/util": "workspace:^45.0.0"
   },
   "__________MISC": "__________",
