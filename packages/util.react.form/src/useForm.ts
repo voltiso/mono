@@ -6,14 +6,14 @@ import { createNestedSubject } from '@voltiso/observer'
 import * as s from '@voltiso/schemar'
 import type {
 	InferableLiteral,
+	InferableObject,
 	SchemableObject,
 	SchemableObjectLike,
 	SchemaLike,
 	Type_,
 } from '@voltiso/schemar.types'
 import type { Path } from '@voltiso/util'
-import { tryGet } from '@voltiso/util'
-import { deepMapValues, get } from '@voltiso/util'
+import { deepMapValues, get, tryGet } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
 import type { ChangeEvent, FormEvent } from 'react'
 import { useMemo } from 'react'
@@ -63,39 +63,50 @@ function _initializeResult<S extends SchemableObjectLike>(
 
 	const fields = deepMapValues(
 		deepShape,
-		(_value: SchemaLike | InferableLiteral, path) => ({
-			props: {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
-				value: tryGet(data$.value, ...(path as any)) || '',
+		(_value: SchemaLike | InferableLiteral, path) => {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+			const dataValue$ = get(data$, ...(path as any))
 
-				onChange: (event: ChangeEvent<HTMLInputElement>) => {
-					const value = event.target.value
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+			const deepShapeEntry = s.schema(get(deepShape as any, ...(path as any)) as unknown as InferableObject)
 
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					get(data$, ...(path as any)).set(value as never)
+			return {
+				issues: [],
 
-					const valuePropPath = [
-						...path,
-						'props',
-						'_',
-						'value',
-					] as unknown as Path<typeof mutable.result$.fields>
+				props: {
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
+					value: tryGet(data$.value, ...(path as any)) || '',
 
-					const valueProp$ = get(
-						mutable.result$.fields,
-						...valuePropPath,
-					) as NestedSubject<unknown>
+					onChange: (event: ChangeEvent<HTMLInputElement>) => {
+						const value = event.target.value
 
-					valueProp$.set(value)
+						dataValue$.set(value as never)
+
+						const valuePropPath = [
+							...path,
+							'props',
+							'_',
+							'value',
+						] as unknown as Path<typeof mutable.result$.fields>
+
+						const valueProp$ = get(
+							mutable.result$.fields,
+							...valuePropPath,
+						) as NestedSubject<unknown>
+
+						valueProp$.set(value)
+
+						deepShapeEntry
+					},
+
+					ref: (instance: HTMLInputElement | null) => {
+						if (instance) {
+							_register(mutable, path, instance)
+						}
+					},
 				},
-
-				ref: (instance: HTMLInputElement | null) => {
-					if (instance) {
-						_register(mutable, path, instance)
-					}
-				},
-			},
-		}),
+			}
+		},
 	) as unknown as UseForm.ResultFields<S>
 
 	return {

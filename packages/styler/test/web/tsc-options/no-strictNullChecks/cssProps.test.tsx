@@ -43,7 +43,10 @@ describe('cssProps', () => {
 			>
 		>()
 
-		const StrippedSvg = Svg.forgetProps('border', 'gap')
+		const StrippedSvg = Svg.forgetProps('border', 'gap', 'fill')
+
+		// @ts-expect-error no `fill`
+		;() => <StrippedSvg fill='red' />
 
 		// @ts-expect-error no `border`
 		;() => <StrippedSvg border />

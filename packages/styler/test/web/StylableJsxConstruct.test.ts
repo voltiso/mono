@@ -3,6 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 import type { ComponentClass, FC } from 'react'
+
 import type {
 	IStylableJsxConstruct,
 	Props,

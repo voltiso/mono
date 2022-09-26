@@ -1043,7 +1043,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	forgetProps<PropName extends keyof P<$> & string>(
 		..._propNames: PropName[]
-	): PatchRemoveProps<this, PropName> {
+	): ForcePatch<this, { Props: { [k in PropName]?: never } }> {
 		return this as never
 	}
 

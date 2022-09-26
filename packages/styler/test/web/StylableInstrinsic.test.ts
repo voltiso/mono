@@ -3,9 +3,8 @@
 
 import type { _ } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
-import type { IStylableIntrinsic, StylableIntrinsic } from '~'
 
-import type { Props } from '~'
+import type { IStylableIntrinsic, Props, StylableIntrinsic } from '~'
 
 describe('StylableIntrinsic', () => {
 	it('generic', <P extends Props>() => {
