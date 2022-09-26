@@ -6,13 +6,18 @@ import { createTransactor } from './common'
 const db = createTransactor({ requireSchemas: false })
 
 describe('intrinsic fields', () => {
-	it('returns null __voltiso for non-existing documents', async () => {
+	it('returns default __voltiso for non-existing documents (inside transaction)', async () => {
 		expect.hasAssertions()
 
-		await expect(
-			db('someDinosaurCollection', 'someNonExistingDoc').__voltiso,
-		).rejects.toThrow(
-			'someDinosaurCollection/someNonExistingDoc.__voltiso does not exist',
-		)
+		const path = ['someDinosaurCollection', 'someNonExistingDoc'] as const
+
+		await db.runTransaction(async () => {
+			const docRef = db(...path)
+			await docRef.get()
+
+			await expect(db(...path).__voltiso).resolves.toMatchObject({
+				numRefs: 0,
+			})
+		})
 	})
 })

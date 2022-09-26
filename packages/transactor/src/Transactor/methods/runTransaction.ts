@@ -14,6 +14,7 @@ import { deleteIt, isDeleteIt, replaceIt } from '~/it'
 import { StrongDocRefImpl } from '~/Ref'
 import { getBeforeCommits } from '~/Ref/_/getBeforeCommits'
 import { processTriggers } from '~/Ref/_/processTriggers'
+import { sVoltisoEntry } from '~/schemas'
 import { TransactionImpl } from '~/Transaction'
 import type { Cache, CacheEntry } from '~/Transaction/Cache'
 import { triggerGuard } from '~/Transaction/guard'
@@ -84,16 +85,33 @@ export async function runTransaction<R>(
 				for (;;) {
 					// detect local changes and set write=true
 					for (const cacheEntry of cache.values()) {
+						// if (!cacheEntry.write) {
+						// 	console.log(
+						// 		'check if should write',
+						// 		cacheEntry.data,
+						// 		cacheEntry.originalData,
+						// 	)
+						// }
+
 						if (
 							!cacheEntry.write &&
-							!isEqual(cacheEntry.data, cacheEntry.originalData)
-						)
+							(!isEqual(cacheEntry.data, cacheEntry.originalData) ||
+								(!cacheEntry.data &&
+									!isEqual(
+										cacheEntry.__voltiso,
+										sVoltisoEntry.validate(undefined),
+									)))
+						) {
+							// console.log('detected change in', cacheEntry.data, cacheEntry.__voltiso)
 							cacheEntry.write = true
+						}
 					}
 
 					// process beforeCommits
 					for (const [path, cacheEntry] of cache.entries()) {
+						// console.log('process beforeCommits for', path)
 						if (cacheEntry.write) {
+							// console.log('should write!')
 							const docRef = new StrongDocRefImpl(transaction._context, path)
 							const ctx = { ...transaction._context, docRef }
 
@@ -121,6 +139,7 @@ export async function runTransaction<R>(
 										id: docRef.id as never,
 										...docRef._context,
 										__voltiso: cacheEntry.__voltiso,
+										possiblyExists: cacheEntry.possiblyExists,
 									}
 
 									// if (cacheEntry.__voltiso)

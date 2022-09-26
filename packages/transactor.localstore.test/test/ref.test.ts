@@ -3,9 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
-import { sVoltisoEntry } from '@voltiso/transactor'
-import { sStrongRef } from '@voltiso/transactor'
-import { Doc } from '@voltiso/transactor'
+import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
@@ -90,8 +88,9 @@ describe('ref', () => {
 	it('await ref', async () => {
 		expect.hasAssertions()
 
-		await database.doc('doctor/d').delete()
-		await database.doc('patient/p').delete()
+		await database.doc('doctorX/d').delete()
+		await database.doc('patientX/p').delete()
+
 		const d = await doctors.add({
 			profile: {
 				name: 'd',

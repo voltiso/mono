@@ -62,12 +62,17 @@ async function directDocPathGet<D extends IDoc>(
 async function transactionDocPathGetImpl<D extends IDoc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
+	// console.log('transactionDocPathGetImpl', ctx.docRef.path.toString())
+
 	const { _ref, id } = ctx.docRef
 	const { _cache, _databaseTransaction } = ctx.transaction
 
 	const path = ctx.docRef.path.toString()
 
-	if (!_cache.has(path)) _cache.set(path, newCacheEntry(ctx))
+	if (!_cache.has(path)) {
+		// console.log('create cacheEntry for', path)
+		_cache.set(path, newCacheEntry(ctx))
+	}
 
 	const cacheEntry = _cache.get(path)
 	$assert(cacheEntry)
@@ -165,6 +170,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 			path: (ctx.docRef as unknown as IRef).path,
 			id: id as never,
 			...ctx,
+			possiblyExists: cacheEntry.possiblyExists,
 		})
 
 		const data = collectTriggerResult(ctx, r)

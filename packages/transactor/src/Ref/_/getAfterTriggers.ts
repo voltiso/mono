@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import { $assert } from '@voltiso/assertor'
+import { assert } from '@voltiso/util'
 
 import type { IntrinsicFields } from '~'
 import type { DocLike, IDoc } from '~/Doc'
@@ -63,22 +63,23 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<DocLike>) {
 
 					if (diff === 0) continue
 
-					const docPath = db(targetPath) as unknown as WeakDocRef<IDoc>
+					const targetDocRef = db(targetPath) as unknown as WeakDocRef<IDoc>
 
 					// ! TODO ! no-await-in-loop
-
+					// eslint-disable-next-line no-await-in-loop
+					const targetDoc = await targetDocRef
 					let __voltiso: IntrinsicFields['__voltiso'] | undefined
 
 					try {
+						// ! TODO ! no-await-in-loop
 						// eslint-disable-next-line no-await-in-loop
-						__voltiso = await docPath.__voltiso // returns __voltiso from transaction cache if doc is already deleted
+						__voltiso = await targetDocRef.__voltiso // returns __voltiso from transaction cache if doc is already deleted
+						assert(__voltiso)
 					} catch {
 						throw new TransactorError(
 							`ref trigger for ${path.toString()}: get StrongRef target ${targetPath} failed (database corrupt?)`,
 						)
 					}
-
-					$assert(__voltiso)
 
 					// if (!__voltiso)
 					// 	throw new TransactorError(
@@ -87,9 +88,13 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<DocLike>) {
 
 					__voltiso.numRefs += diff
 
-					// console.log('__voltiso.numRefs', __voltiso.numRefs)
+					// console.log('__voltiso.numRefs', targetDocRef.path.toString(), __voltiso.numRefs)
 
-					if (__voltiso.numRefs < ba.after) {
+					/** If the database is partial, check only if targetDoc exists */
+					const shouldCheck =
+						!docRef._context.transactor._options.partial || !!targetDoc
+
+					if (shouldCheck && __voltiso.numRefs < ba.after) {
 						throw new TransactorError(
 							`ref trigger for ${path.toString()}: ${targetPath.toString()}.__voltiso.numRefs === ${
 								__voltiso.numRefs

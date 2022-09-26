@@ -32,12 +32,20 @@ export class Options_ {
 	log: boolean
 
 	/**
+	 * Is database partial? Partial database assumes some docs may be missing
+	 * (like in a local cache)
+	 *
+	 * @defaultValue `false`
+	 */
+	partial: boolean
+
+	/**
 	 * Create a mutable Options object, default all not provided values
 	 *
 	 * @param o - Partial options - others will be defaulted
 	 */
 	constructor(o: Partial<Options_>) {
-		const { requireSchemas, refCounters, log, ...rest } = o
+		const { requireSchemas, refCounters, log, partial, ...rest } = o
 		const unknownKeys = Object.keys(rest)
 
 		if (unknownKeys.length > 0)
@@ -61,6 +69,7 @@ export class Options_ {
 		this.refCounters = isDefined(refCounters) ? refCounters : true
 		// this.validateOptions = { presence: 'required', ...validateOptions }
 		this.log = isDefined(log) ? log : false
+		this.partial = isDefined(partial) ? partial : false
 	}
 }
 

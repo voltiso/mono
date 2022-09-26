@@ -45,7 +45,7 @@ async function processAfterTrigger(
 	const before = prevLastSeen
 	const after = cacheEntry.data
 
-	// console.log('process after trigger', path, before, after)
+	// console.log('process after trigger', before, after)
 	if (isEqual(before, after)) return false
 
 	// eslint-disable-next-line security/detect-object-injection
@@ -62,6 +62,7 @@ async function processAfterTrigger(
 			path: (ctx.docRef as unknown as IRef).path,
 			id: id as never,
 			...ctx,
+			possiblyExists: cacheEntry.possiblyExists,
 		})
 		const data = collectTriggerResult(ctx, r)
 		validateAndSetCacheEntry(ctx, data, schema?.partial)
@@ -102,38 +103,42 @@ type Params = {
 /**
  * Process triggers implementation
  *
- * @param c - Context
- * @param p - Params
+ * @param ctx - Context
+ * @param params - Params
  */
 export async function processTriggers(
-	c: DocRefContextWithTransaction,
-	p?: Params,
+	ctx: DocRefContextWithTransaction,
+	params?: Params,
 ) {
-	const cacheEntry = getCacheEntry(c)
+	const cacheEntry = getCacheEntry(ctx)
 
 	cacheEntry.write = true
 	$assert(cacheEntry.data !== undefined)
 
-	const schema = getSchema(c.docRef)
+	const schema = getSchema(ctx.docRef)
 
 	// const beforeAllTriggers = immutabilize(clone(withId(cacheEntry.data, id)))
 
 	// apply updates
-	{
-		const data = apply(c, cacheEntry.data, p?.updates)
-		$assert(!isReplaceIt(data))
-		$assert(!isDeleteIt(data))
-		validateAndSetCacheEntry(c, data, schema?.partial)
-	}
+	const data = apply(ctx, cacheEntry.data, params?.updates)
+	$assert(!isReplaceIt(data))
+	$assert(!isDeleteIt(data))
+	// console.log('apply updates', cacheEntry.data, params?.updates, data)
+	validateAndSetCacheEntry(ctx, data, schema?.partial, !!params?.updates)
 
 	if (cacheEntry.isProcessingTriggers) return
 
 	try {
 		cacheEntry.isProcessingTriggers = true
-		await loop(c)
+		await loop(ctx)
 	} finally {
 		cacheEntry.isProcessingTriggers = false
 	}
 
-	validateAndSetCacheEntry(c, cacheEntry.data, schema?.final)
+	validateAndSetCacheEntry(
+		ctx,
+		cacheEntry.data,
+		schema?.final,
+		!!params?.updates,
+	)
 }

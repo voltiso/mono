@@ -151,6 +151,14 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 		this._options.requireSchemas = x
 	}
 
+	get partial() {
+		return this._options.partial
+	}
+
+	set partial(x: boolean) {
+		this._options.partial = x
+	}
+
 	get refCounters() {
 		return this._options.refCounters
 	}

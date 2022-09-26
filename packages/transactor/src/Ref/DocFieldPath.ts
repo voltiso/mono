@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { lazyPromise, protoLink, undef } from '@voltiso/util'
+import { assert, lazyPromise, protoLink, undef } from '@voltiso/util'
 
 import type { NestedData } from '~/Data/Data'
 import type { IDoc } from '~/Doc'
@@ -27,6 +27,14 @@ export const DocFieldPath = class {
 		this._fields = fields
 
 		const getPromise = async () => {
+			// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
+			const ctxOverride = Zone.current.get('transactionContextOverride') as
+				| object
+				| undefined
+
+			// eslint-disable-next-line no-param-reassign
+			if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
+
 			const doc = await ctx.docRef.get()
 
 			if (fields.length === 1 && fields[0] === '__voltiso' && ctx.transaction) {
@@ -34,9 +42,15 @@ export const DocFieldPath = class {
 					ctx.docRef.path.pathString,
 				)
 
-				if (!cacheEntry) return null
+				// if (!cacheEntry) {
+				// 	console.log('getPromise: sorry, no cacheEntry')
+				// 	return null
+				// }
+
+				assert(cacheEntry)
 
 				if (!cacheEntry.__voltiso) {
+					// console.log('getPromise: create __voltiso entry')
 					cacheEntry.__voltiso = sVoltisoEntry.validate(undefined)
 
 					if (cacheEntry.data) {
@@ -44,6 +58,8 @@ export const DocFieldPath = class {
 						cacheEntry.data.__voltiso = cacheEntry.__voltiso
 					}
 				}
+
+				// console.log('getPromise: returning', cacheEntry.__voltiso)
 
 				$assert(cacheEntry.__voltiso)
 				return cacheEntry.__voltiso

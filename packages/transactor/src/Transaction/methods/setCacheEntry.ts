@@ -15,7 +15,14 @@ export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
 	entry: CacheEntry,
 	data: PartialIntrinsicFields | null,
+	hadUpdates = true,
 ) {
+	if (ctx.transactor._options.partial && !data && hadUpdates) {
+		// console.log('cannot possibly exist', ctx.docRef.path.toString())
+		if (ctx.docRef.path.toString().endsWith('2')) throw new Error('asdf')
+		entry.possiblyExists = false
+	}
+
 	if (entry.data) $assert(entry.__voltiso === entry.data.__voltiso)
 
 	if (data !== entry.data) {

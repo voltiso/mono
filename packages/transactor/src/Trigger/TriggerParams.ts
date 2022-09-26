@@ -16,6 +16,8 @@ export type TriggerParams<D extends DocLike = IDoc, This = D | null> = {
 	id: Id<D>
 
 	db: Db
+
+	possiblyExists: boolean
 } & PathMatches &
 	DocRefContext
 

@@ -23,12 +23,15 @@ export function getBeforeCommits(docRef: DocRefBaseImpl<DocLike>) {
 		docRef._beforeCommits.push({
 			pathMatches: { pathArgs: [], pathParams: {} },
 
-			trigger: ({ doc, path, __voltiso }) => {
+			trigger: ({ doc, path, __voltiso, possiblyExists }) => {
+				// console.log('delete check trigger', path, __voltiso, { possiblyExists })
+				if (possiblyExists) return
+
 				$assert(__voltiso)
 				if (!doc) {
 					if (__voltiso.numRefs !== 0) {
 						throw new TransactorError(
-							`cannot delete ${path.toString()}: numRefs is ${
+							`${path.toString()} is referenced but not present: numRefs is ${
 								__voltiso.numRefs
 							} (should be 0)`,
 						)

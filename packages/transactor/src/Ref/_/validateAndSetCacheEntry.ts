@@ -18,9 +18,10 @@ export function validateAndSetCacheEntry(
 	context: DocRefContextWithTransaction,
 	data: object | null,
 	schema: object | null | undefined,
+	hadUpdates = true,
 ): void {
 	const cacheEntry = getCacheEntry(context)
 	// eslint-disable-next-line no-param-reassign
 	data = validate(context, data, schema as never)
-	setCacheEntry(context, cacheEntry, data as never)
+	setCacheEntry(context, cacheEntry, data as never, hadUpdates)
 }
