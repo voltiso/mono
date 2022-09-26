@@ -160,10 +160,6 @@ export class DocRefBaseImpl<
 		) as never
 	}
 
-	// clone(): this {
-	// 	return clone(this)
-	// }
-
 	toJSON(): RefEntry {
 		return {
 			__target: this._ref,

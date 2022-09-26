@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { isDefined, stringFrom, undef } from '@voltiso/util'
+import { isDefined, stringFrom } from '@voltiso/util'
 
 import { databaseUpdate } from '~/common'
 import { withoutId } from '~/Data'
@@ -25,7 +25,6 @@ import {
 	setCacheEntry,
 } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
-import { initLastDataSeen } from '~/Trigger'
 import type { Updates, UpdatesRecord } from '~/updates/Updates'
 import {
 	applyUpdates,
@@ -244,15 +243,13 @@ async function transactionUpdateImpl(
 		}
 
 		if (isReplaceIt(cacheEntry.updates) || isDeleteIt(cacheEntry.updates)) {
-			$assert(data === undef)
+			$assert(data === undefined)
 			data = dataFromUpdates(cacheEntry.updates)
 			delete cacheEntry.updates
 		}
 
 		if (isDefined(data)) setCacheEntry(ctx, cacheEntry, data)
 	}
-
-	if (isDefined(cacheEntry.data)) initLastDataSeen(ctx, cacheEntry)
 
 	return cacheEntry.proxy as never
 }

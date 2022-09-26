@@ -1,13 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import * as path from 'node:path'
+
 import {
 	cleanCompatDirs,
 	getCompatDirNames,
 	VoltisoScriptError,
 	writeCompatDirs,
 } from '@voltiso/script.lib'
-import * as path from 'node:path'
 
 import type { Command } from './Command'
 

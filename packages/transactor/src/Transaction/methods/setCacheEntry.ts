@@ -3,13 +3,15 @@
 
 import { $assert } from '@voltiso/assertor'
 
-import type { PartialIntrinsicFields } from '~'
-import { sVoltisoEntry } from '~'
 import type { WithDb } from '~/Db'
 import { DocImpl } from '~/Doc'
 import type { WithDocRef } from '~/Ref'
+import type { PartialIntrinsicFields } from '~/schemas'
+import { sVoltisoEntry } from '~/schemas'
 import type { CacheEntry, WithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
+import { initLastDataSeen } from '~/Trigger'
+import { deepCloneData } from '~/util'
 
 export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
@@ -42,4 +44,8 @@ export function setCacheEntry(
 	if (entry.data) entry.data.__voltiso = entry.__voltiso
 
 	if (entry.data) $assert(entry.__voltiso === entry.data.__voltiso)
+
+	if (entry.originalData === undefined)
+		entry.originalData = deepCloneData(entry.data)
+	initLastDataSeen(ctx, entry)
 }

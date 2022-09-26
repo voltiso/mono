@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { clone } from '@voltiso/util'
 
 import { withId } from '~/Data'
 import { TransactorError } from '~/error'
@@ -10,7 +9,7 @@ import { immutabilize } from '~/immutabilize'
 import { isDeleteIt, isReplaceIt } from '~/it'
 import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
-import { isEqual } from '~/util'
+import { deepCloneData, isEqual } from '~/util'
 
 import type { IRef } from '../IRef'
 import { apply } from './apply'
@@ -49,7 +48,7 @@ async function processAfterTrigger(
 	if (isEqual(before, after)) return false
 
 	// eslint-disable-next-line security/detect-object-injection
-	cacheEntry.lastDataSeenByAfters[idx] = clone(after)
+	cacheEntry.lastDataSeenByAfters[idx] = deepCloneData(after)
 
 	await triggerGuard(ctx, async () => {
 		$assert(cacheEntry.proxy !== undefined)
@@ -116,8 +115,6 @@ export async function processTriggers(
 	$assert(cacheEntry.data !== undefined)
 
 	const schema = getSchema(ctx.docRef)
-
-	// const beforeAllTriggers = immutabilize(clone(withId(cacheEntry.data, id)))
 
 	// apply updates
 	const data = apply(ctx, cacheEntry.data, params?.updates)

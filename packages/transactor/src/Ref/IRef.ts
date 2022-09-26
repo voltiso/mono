@@ -35,7 +35,6 @@ export interface IRefBase extends RefBaseLike {
 	update(updates: any): PromiseLike<unknown>
 	delete(): PromiseLike<null>
 
-	// clone(): this
 	toJSON(): object
 }
 

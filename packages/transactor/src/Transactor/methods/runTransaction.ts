@@ -3,7 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
-import { clone, isDefined, undef } from '@voltiso/util'
+import { isDefined, undef } from '@voltiso/util'
 import chalk from 'chalk'
 
 import { databaseUpdate } from '~/common/database/databaseUpdate'
@@ -22,6 +22,7 @@ import { setCacheEntry } from '~/Transaction/methods/setCacheEntry'
 import type { Transaction } from '~/Transaction/Transaction'
 import type { TransactorImpl } from '~/Transactor'
 import type { BeforeCommitTriggerParams } from '~/Trigger/TriggerParams'
+import { deepCloneData } from '~/util'
 import { dump } from '~/util/dump'
 import { isEqual } from '~/util/isEqual'
 
@@ -34,8 +35,7 @@ const getCacheSnapshot = (cache: Cache) => {
 		// eslint-disable-next-line security/detect-object-injection
 		const entry = (r[k] = {}) as Partial<CacheEntry>
 
-		if ('data' in v) entry.data = clone(v.data)
-		// entry.lastDataSeenByAfters = clone(v.lastDataSeenByAfters)
+		if ('data' in v) entry.data = deepCloneData(v.data)
 	}
 
 	return r

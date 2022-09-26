@@ -116,8 +116,20 @@ export class DocConstructorImpl {
 
 			return this.after(
 				`aggregate<${name}>`,
-				// `aggregate<${targetDocConstructor._.tag}.${name}>`,
 				async ({ before, after, path }) => {
+					// ignore self-change
+					if (
+						before &&
+						after &&
+						// eslint-disable-next-line security/detect-object-injection
+						before.__voltiso?.aggregateSource[name] !==
+							// eslint-disable-next-line security/detect-object-injection
+							after.__voltiso?.aggregateSource[name]
+					) {
+						return
+					}
+
+					// console.log('aggregate', before, after)
 					const data = before || after
 					$assert(data)
 					$assert(data.__voltiso)
@@ -176,15 +188,6 @@ export class DocConstructorImpl {
 								)
 							}
 						}
-
-						if (before && after)
-							$assert(
-								// eslint-disable-next-line security/detect-object-injection
-								before.__voltiso?.aggregateSource[name] ===
-									// eslint-disable-next-line security/detect-object-injection
-									after.__voltiso?.aggregateSource[name],
-								'hmmm',
-							)
 
 						// eslint-disable-next-line security/detect-object-injection
 						const sourceInfo = data.__voltiso.aggregateSource[name]

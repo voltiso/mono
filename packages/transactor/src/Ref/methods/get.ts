@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { clone, stringFrom } from '@voltiso/util'
+import { stringFrom } from '@voltiso/util'
 
 import { fromDatabase } from '~/common'
 import { withoutId } from '~/Data'
@@ -26,6 +26,7 @@ import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
 import { applyUpdates } from '~/updates'
 import type { Forbidden } from '~/util'
+import { deepCloneData } from '~/util'
 
 import type { IRef } from '..'
 
@@ -87,7 +88,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
-		cacheEntry.originalData = clone(cacheEntry.data)
+		cacheEntry.originalData = deepCloneData(cacheEntry.data)
 
 		// console.log({cacheEntry})
 
@@ -104,6 +105,10 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 			// console.log('schema val after', cacheEntry.data)
 		}
 	}
+
+	// console.log('orig', cacheEntry.originalData)
+	$assert(cacheEntry.originalData !== undefined)
+	initLastDataSeen(ctx, cacheEntry)
 
 	if (cacheEntry.updates) {
 		cacheEntry.data = applyUpdates(cacheEntry.data, cacheEntry.updates)
@@ -157,8 +162,6 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		if (cacheEntry.data.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 	}
-
-	initLastDataSeen(ctx, cacheEntry)
 
 	const onGetTriggers = getOnGetTriggers(ctx.docRef)
 

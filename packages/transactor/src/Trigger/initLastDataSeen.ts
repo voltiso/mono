@@ -1,19 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
-import { clone, undef } from '@voltiso/util'
-
 import type { WithDocRef } from '~/Ref'
 import { getAfterTriggers } from '~/Ref/_/getAfterTriggers'
 import type { CacheEntry } from '~/Transaction/Cache'
+import { deepCloneData } from '~/util'
 
-export const initLastDataSeen = (ctx: WithDocRef, cacheEntry: CacheEntry) => {
-	if (cacheEntry.lastDataSeenByAfters) return
+export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {
+	if (cacheEntry.lastDataSeenByAfters || cacheEntry.originalData === undefined)
+		return
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
 
-	$assert(cacheEntry.data !== undef)
-	const data = clone(cacheEntry.data)
+	const data = deepCloneData(cacheEntry.originalData)
 	cacheEntry.lastDataSeenByAfters = afterTriggers.map(_ => data)
 }
