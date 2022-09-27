@@ -99,7 +99,7 @@ export class CollectionRefImpl<
 			docPattern.aggregates(_.aggregates as never)
 
 		if (_.id !== undefined) {
-			docPattern.id(_.id)
+			docPattern.id(_.id as never)
 		}
 
 		for (const after of _.afters) docPattern.after(after)

@@ -37,7 +37,7 @@ export interface DocTILike {
  * - Every Doc Type Info (`DocTI`) is assignable to it
  */
 export interface DocTI extends DocTILike {
-	id: SchemaLike<string> | undefined
+	id: unknown
 
 	aggregates: Record<string, SchemaLike>
 }

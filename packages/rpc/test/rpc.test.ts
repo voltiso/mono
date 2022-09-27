@@ -80,14 +80,20 @@ describe('client', () => {
 		Assert<
 			IsIdentical<
 				typeof myClient.doctor.add,
-				() => Promise<void> & { local: MaybePromise<void> }
+				() => Promise<void> & {
+					local: MaybePromise<void>
+					localOrRemote: MaybePromise<void>
+				}
 			>
 		>()
 
 		Assert<
 			IsIdentical<
 				typeof myClient.specialty.add,
-				() => Promise<void> & { local: MaybePromise<void> }
+				() => Promise<void> & {
+					local: MaybePromise<void>
+					localOrRemote: MaybePromise<void>
+				}
 			>
 		>()
 	})

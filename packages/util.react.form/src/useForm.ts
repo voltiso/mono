@@ -11,6 +11,7 @@ import type {
 	SchemableObjectLike,
 	SchemaLike,
 	Type_,
+	ValidationIssue,
 } from '@voltiso/schemar.types'
 import type { Path } from '@voltiso/util'
 import { deepMapValues, get, tryGet } from '@voltiso/util'
@@ -67,8 +68,10 @@ function _initializeResult<S extends SchemableObjectLike>(
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 			const dataValue$ = get(data$, ...(path as any))
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-			const deepShapeEntry = s.schema(get(deepShape as any, ...(path as any)) as unknown as InferableObject)
+			const deepShapeEntry = s.schema(
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+				get(deepShape as any, ...(path as any)) as unknown as InferableObject,
+			)
 
 			return {
 				issues: [],
@@ -96,7 +99,16 @@ function _initializeResult<S extends SchemableObjectLike>(
 
 						valueProp$.set(value)
 
-						deepShapeEntry
+						const validationResult = deepShapeEntry.exec(value)
+						const issuesPath = [...path, 'issues'] as unknown as Path<
+							typeof mutable.result$.fields
+						>
+						const issues$ = get(
+							mutable.result$.fields,
+							...issuesPath,
+						) as NestedSubject<ValidationIssue[]>
+
+						issues$.set(validationResult.issues)
 					},
 
 					ref: (instance: HTMLInputElement | null) => {

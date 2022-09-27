@@ -23,8 +23,8 @@ type MaybeWithName<Params> = [Params] | [string, Params]
 type ___<X extends DocTI> = X extends any ? DocConstructor<$MergeTI<X>> : never
 
 export interface DocConstructor<TI extends DocTI = DocTI> {
-	[DTI]: TI
-	_: DocDerivedData
+	readonly [DTI]: TI
+	readonly _: DocDerivedData
 
 	new (context: DocContext, data: GetInputData<TI>): Doc<TI, 'outside'>
 
@@ -82,18 +82,22 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		handlers: AggregatorHandlers<this, Target, Name>,
 	) => DocConstructor<TI>
 
-	schemableWithoutId: $_<
+	get schemableWithoutId(): $_<
 		TI['publicOnCreation'] & TI['public'] & TI['private'] & {}
 	>
 
-	schemaWithoutId: t.Object<this['schemableWithoutId']>
+	get schemaWithoutId(): t.Object<this['schemableWithoutId']>
 
-	schemableWithId: $_<
+	get schemableWithId(): $_<
 		{
-			id: s.String
+			id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
 		} & TI['publicOnCreation'] &
 			TI['public'] &
 			TI['private']
 	>
-	schemaWithId: s.Object<this['schemableWithId']>
+
+	get schemaWithId(): s.Object<this['schemableWithId']>
+
+	// get idSchema(): TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+	get idSchema(): TI['id'] extends undefined ? t.String : TI['id']
 }

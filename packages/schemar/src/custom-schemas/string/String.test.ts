@@ -11,6 +11,7 @@ import type {
 	IString,
 	OutputType,
 	Schema,
+	SchemaLike,
 	StringOptions,
 	Type,
 } from '@voltiso/schemar.types'
@@ -42,6 +43,9 @@ describe('string', () => {
 
 		const ss2 = s.string.readonly.optional
 		Assert.is<typeof ss2, IString>()
+
+		Assert.is<CustomString<{ minLength: 1 }>, SchemaLike<string>>()
+		Assert.is<CustomString<{ minLength: 1 }>, SchemaLike>()
 	})
 
 	it('simple', () => {

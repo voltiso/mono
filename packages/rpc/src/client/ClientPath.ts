@@ -16,14 +16,14 @@ import type { Client } from './Client'
 function callLocal(
 	clientPath: ClientPath,
 	args: unknown[],
-): MaybePromise<unknown> | null {
+): MaybePromise<unknown> | void {
 	const options = clientPath._client._options
 	const localHandler = tryGet(
 		options.localHandlers,
 		clientPath._path as never,
 	) as unknown
 
-	if (typeof localHandler === 'undefined') return null
+	if (typeof localHandler === 'undefined') return undefined
 
 	if (!isCallable(localHandler))
 		throw new Error(
@@ -67,7 +67,7 @@ export class ClientPath {
 		const localPromise = callLocal(this, args)
 
 		const call = async () => {
-			await localPromise // ! TODO: maybe call in parallel
+			await localPromise
 
 			const body = {
 				path: this._path,
@@ -132,9 +132,21 @@ export class ClientPath {
 		}
 
 		const remotePromise = call() as Promise<unknown> & {
-			local?: MaybePromise<unknown>
+			local: MaybePromise<unknown>
+			localOrRemote: MaybePromise<unknown>
 		}
+
+		const callLocalOrRemote = async () => {
+			try {
+				return await localPromise
+			} catch {}
+
+			return remotePromise
+		}
+
 		remotePromise.local = localPromise
+		remotePromise.localOrRemote = callLocalOrRemote()
+
 		return remotePromise
 	}
 }

@@ -1,66 +1,66 @@
 {
-	"name": "@voltiso/observer",
-	"version": "1.2.4",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/cjs/index.d.ts",
-	"module": "dist/esm/index.js",
-	"main": "dist/cjs/index.js",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________DEV": "__________",
-		"dev": "v dev",
-		"__________TEST": "__________",
-		"test": "echo no tests yet!",
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "v buildCjs",
-		"build:esm": "v buildEsm",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
-		"__________MISC": "__________",
-		"clean": "v clean",
-		"typecov": "v typecov"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/patcher": "workspace:^",
-		"@voltiso/util": "workspace:^"
-	},
-	"peerDependencies": {
-		"@voltiso/schemar": "workspace:^",
-		"@voltiso/schemar.types": "workspace:^",
-		"@voltiso/util.rxjs": "workspace:^",
-		"rxjs": "^7.5.6"
-	},
-	"devDependencies": {
-		"@voltiso/assertor": "workspace:^",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/schemar": "workspace:^",
-		"@voltiso/schemar.types": "workspace:^",
-		"@voltiso/script": "workspace:^",
-		"@voltiso/util.rxjs": "workspace:^",
-		"rxjs": "^7.5.7"
-	},
-	"__________MISC": "__________",
-	"engines": {
-		"node": "16"
-	},
-	"typeCoverage": {
-		"is": 99.02
-	}
+  "name": "@voltiso/observer",
+  "version": "1.2.5",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
+    "__________TEST": "__________",
+    "test": "echo no tests yet!",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "v buildCjs",
+    "build:esm": "v buildEsm",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnly",
+    "__________MISC": "__________",
+    "clean": "v clean",
+    "typecov": "v typecov"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/patcher": "workspace:^",
+    "@voltiso/util": "workspace:^"
+  },
+  "peerDependencies": {
+    "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar.types": "workspace:^",
+    "@voltiso/util.rxjs": "workspace:^",
+    "rxjs": "^7.5.6"
+  },
+  "devDependencies": {
+    "@voltiso/assertor": "workspace:^",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar.types": "workspace:^",
+    "@voltiso/script": "workspace:^",
+    "@voltiso/util.rxjs": "workspace:^",
+    "rxjs": "^7.5.7"
+  },
+  "__________MISC": "__________",
+  "engines": {
+    "node": "16"
+  },
+  "typeCoverage": {
+    "is": 99.03
+  }
 }

@@ -7,6 +7,7 @@ import type {
 	InferableObjectLike,
 	ISchema,
 	Schemable,
+	SchemaLike,
 } from '@voltiso/schemar.types'
 import type { OmitCall } from '@voltiso/util'
 import {
@@ -44,7 +45,7 @@ import type { IDocConstructor } from './IDocConstructor'
 export class DocConstructorImpl {
 	declare static [DTI]: DocTI
 
-	static readonly _: DocDerivedData = defaultDocDerivedData
+	static _: DocDerivedData = defaultDocDerivedData
 
 	static tag<Tag extends DocTag>(tag: Tag): any {
 		return callableClass(
@@ -284,7 +285,15 @@ export class DocConstructorImpl {
 	}
 
 	static get schemableWithId(): InferableObjectLike {
-		return { ...this.schemableWithoutId, id: s.string } as InferableObjectLike
+		return {
+			...this.schemableWithoutId,
+			id: this.idSchema,
+		} as InferableObjectLike
+	}
+
+	static get idSchema(): SchemaLike<string> {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		return (this._.id as never) || s.string
 	}
 
 	static get schemaWithoutId() {

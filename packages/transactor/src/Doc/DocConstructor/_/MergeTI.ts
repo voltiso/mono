@@ -3,9 +3,9 @@
 
 import type { _ } from '@voltiso/util'
 
-import type { DocTI } from '~/Doc'
+import type { DocTILike } from '~/Doc'
 
-export type MergeTI<TI extends DocTI> = _<{
+export type MergeTI<TI extends DocTILike> = _<{
 	tag: TI['tag']
 
 	id: TI['id']
@@ -22,4 +22,4 @@ export type MergeTI<TI extends DocTI> = _<{
 	// docInside: X['docInside']
 }>
 
-export type $MergeTI<TI> = TI extends DocTI ? MergeTI<TI> : never
+export type $MergeTI<TI> = TI extends DocTILike ? MergeTI<TI> : never

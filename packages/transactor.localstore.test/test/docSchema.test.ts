@@ -2,13 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type { CustomString } from '@voltiso/schemar.types'
 import { Doc } from '@voltiso/transactor'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
 class Doctor extends Doc({
+	id: s.string.maxLength(3),
+
 	public: {
 		specialty: s.string.optional,
 	},
@@ -47,5 +52,22 @@ describe('docSchema', () => {
 		await expect(patients('a').dataWithoutId()).resolves.toMatchObject({
 			doctor: { id: 'aaa', secret: 'asd' },
 		})
+
+		Assert<
+			IsIdentical<typeof Doctor.idSchema, CustomString<{ maxLength: 3 }>>
+		>()
+
+		Assert<
+			IsIdentical<
+				typeof Doctor.schemaWithId.getShape.id,
+				CustomString<{ maxLength: 3 }>
+			>
+		>()
+
+		expect(() => Doctor.schemaWithId.getShape.id.validate('12345')).toThrow(
+			'at most 3',
+		)
+
+		expect(() => Doctor.idSchema.validate('12345')).toThrow('at most 3')
 	})
 })

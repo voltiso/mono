@@ -3,9 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 import type { PatchFor } from '@voltiso/patcher'
-import { deleteIt } from '@voltiso/patcher'
-import { patch } from '@voltiso/patcher'
-import { patchUpdate } from '@voltiso/patcher'
+import { deleteIt, patch, patchUpdate } from '@voltiso/patcher'
 import type {
 	GetDeepShape_,
 	GetShape_,
@@ -216,6 +214,10 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 	patchUnchecked(patchValue: PatchFor<OutputType_<S>>) {
 		const newValue = patch(this._subject$.value, patchValue)
 		this.setUnchecked(newValue)
+	}
+
+	next(newValue: InputType_<S>): void {
+		this.set(newValue)
 	}
 
 	set(newValue: InputType_<S>): void {

@@ -12,10 +12,15 @@ import type {
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import { isUnknownFunction } from '@voltiso/schemar.types'
+import {
+	EXTENDS,
+	isArray,
+	isTuple,
+	isUnknownFunction,
+	OPTIONS,
+	SCHEMA_NAME,
+} from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { isArray, isTuple } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import {
