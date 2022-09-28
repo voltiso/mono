@@ -10,11 +10,10 @@ import type {
 	Props,
 	StylableLike,
 	Styled,
+	StyledComponentProps,
 	StyledLike,
 	StyledTypeInfo,
 } from '~'
-
-import type { StyledComponentProps } from '.'
 
 /** With Element already provided */
 export interface CustomStyledComponent<

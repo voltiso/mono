@@ -1,12 +1,20 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical, StaticError } from '@voltiso/util'
+import type { $Omit, IsIdentical, StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
-import type { ChangeEvent, FC, ReactElement, RefObject } from 'react'
+import type {
+	ChangeEvent,
+	ComponentProps,
+	FC,
+	ReactElement,
+	RefObject,
+} from 'react'
 
 import type {
 	$IsStylable,
+	ComponentProps_,
+	ComponentPropsWithRef_,
 	Css,
 	GetStyledHoc,
 	IStyled,
@@ -20,6 +28,7 @@ import type {
 	StylableJsxConstruct,
 	StyledComponent,
 	StyledHocCall,
+	WebOuterProps,
 } from '~'
 
 describe('StyledHoc', () => {
@@ -99,7 +108,8 @@ describe('StyledHoc', () => {
 	})
 
 	it('style the stylable - generic', <S extends Stylable<{
-		myProp: boolean
+		a?: number
+		b?: string
 	}>>() => {
 		expect.assertions(0)
 
@@ -112,6 +122,49 @@ describe('StyledHoc', () => {
 		type A = ReturnType<typeof a>
 
 		Assert.is<A, IStyled>()
+
+		type B = ComponentProps<A>
+		Assert.is<'a', keyof B>()
+		Assert.is<'b', keyof B>()
+
+		type C = ComponentProps<S>
+		Assert.is<'a', keyof C>()
+		Assert.is<'b', keyof C>()
+
+		type D = ComponentPropsWithRef_<A>
+		Assert.is<'a', keyof D>()
+		Assert.is<'b', keyof D>()
+
+		type E = ComponentProps<StyledComponent<S>>
+		Assert.is<'a', keyof E>()
+		Assert.is<'b', keyof E>()
+
+		type F = $Omit<ComponentPropsWithRef_<S>, keyof WebOuterProps<{}>>
+		Assert.is<'a', keyof F>()
+		Assert.is<'b', keyof F>()
+	})
+
+	it('style the stylable - `size` prop', <S extends Stylable<{
+		size?: number
+		b?: string
+	}>>() => {
+		expect.assertions(0)
+
+		const style = {} as unknown as GetStyledHoc<{}>
+
+		const a = () => style(0 as unknown as S)
+		type A = ReturnType<typeof a>
+
+		Assert.is<A, IStyled>()
+
+		type C = ComponentProps_<S>
+
+		Assert.is<'size', keyof C>()
+		Assert.is<'b', keyof C>()
+
+		type D = ComponentProps<A>
+		Assert.is<'size', keyof D>()
+		Assert.is<'b', keyof D>()
 	})
 
 	it('call signature', () => {

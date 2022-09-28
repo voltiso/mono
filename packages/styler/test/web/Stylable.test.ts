@@ -54,7 +54,8 @@ describe('Stylable', () => {
 			magic?: boolean | undefined
 		}
 
-		Assert.is<'input', Stylable<CustomTextProps>>()
+		// do not allow unknown DOM attributes
+		Assert(Is<'input'>().not.subtypeOf<Stylable<CustomTextProps>>())
 
 		type CustomRequiredTextProps = CustomTextProps & {
 			requiredMagic: boolean

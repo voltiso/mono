@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _ } from '@voltiso/util'
+import type { _, $Omit_ } from '@voltiso/util'
 
 // export type MergeProps_<A, B> = Merge2_<A, B>
 
@@ -13,7 +13,7 @@ import type { _ } from '@voltiso/util'
 // 		: never
 // }
 
-export type FastMergeProps_<A, B> = B & Omit<A, keyof B>
+export type FastMergeProps_<A, B> = B & $Omit_<A, keyof B>
 
 export type MergeProps_<A, B> = B extends undefined
 	? A

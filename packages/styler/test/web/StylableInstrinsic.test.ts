@@ -4,7 +4,12 @@
 import type { _ } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { IStylableIntrinsic, Props, StylableIntrinsic } from '~'
+import type {
+	IsReactNative,
+	IStylableIntrinsic,
+	Props,
+	StylableIntrinsic,
+} from '~'
 
 describe('StylableIntrinsic', () => {
 	it('generic', <P extends Props>() => {
@@ -27,5 +32,29 @@ describe('StylableIntrinsic', () => {
 		expect.assertions(0)
 
 		Assert.is<JSX.IntrinsicElements[K], {}>()
+	})
+
+	it('does not accept unknown props', () => {
+		expect.assertions(0)
+
+		Assert.is<IsReactNative, false>()
+		type A = StylableIntrinsic<{ size?: never; bbb?: never }>
+		Assert.is<A, never>()
+	})
+
+	it('accepts multiple props', () => {
+		expect.assertions(0)
+
+		Assert.is<IsReactNative, false>()
+		type A = StylableIntrinsic<{ size?: never; type?: never }>
+		Assert.is<'input', A>()
+	})
+
+	it('does not accept super-type props', () => {
+		expect.assertions(0)
+
+		Assert.is<IsReactNative, false>()
+		type A = StylableIntrinsic<{ size?: never; type?: unknown }>
+		Assert.is<A, never>()
 	})
 })
