@@ -3,7 +3,9 @@
 
 import type {
 	$OutputType,
+	BASE_OPTIONS,
 	CustomUnknownFunction,
+	DEFAULT_OPTIONS,
 	DefaultUnknownFunctionOptions,
 	InferableReadonlyTuple,
 	ISchema,
@@ -11,9 +13,7 @@ import type {
 	Schemable,
 	UnknownFunctionOptions,
 } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
-import { isUnknownFunction } from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, isUnknownFunction, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
 
 import * as s from '~/custom-schemas/function'
@@ -73,7 +73,7 @@ export class CustomUnknownFunctionImpl<
 	>(
 		argumentsSchema: Args,
 		resultSchema: R,
-	): s.Function<(...args: $OutputType<Args>) => OutputType<R>> {
+	): s.Function<(...args: [...$OutputType<Args>]) => OutputType<R>> {
 		return new s.Function(argumentsSchema as never, resultSchema) as never
 	}
 }

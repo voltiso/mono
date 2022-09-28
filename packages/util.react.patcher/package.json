@@ -42,8 +42,8 @@
     "react": "^18.0.0 || ^17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.1",
-    "@babel/preset-env": "^7.19.1",
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.21",

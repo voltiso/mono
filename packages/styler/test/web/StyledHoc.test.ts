@@ -6,6 +6,7 @@ import { Assert } from '@voltiso/util'
 import type { ChangeEvent, FC, ReactElement, RefObject } from 'react'
 
 import type {
+	$IsStylable,
 	Css,
 	GetStyledHoc,
 	IStyled,
@@ -95,6 +96,22 @@ describe('StyledHoc', () => {
 		const a = () => style(0 as unknown as Stylable<TextProps>)
 		type A = ReturnType<typeof a>
 		Assert.is<A, IStyledComponent>()
+	})
+
+	it('style the stylable - generic', <S extends Stylable<{
+		myProp: boolean
+	}>>() => {
+		expect.assertions(0)
+
+		type X = $IsStylable<S>
+		Assert.is<X, true>()
+
+		const style = {} as unknown as GetStyledHoc<{}>
+
+		const a = () => style(0 as unknown as S)
+		type A = ReturnType<typeof a>
+
+		Assert.is<A, IStyled>()
 	})
 
 	it('call signature', () => {

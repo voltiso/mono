@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { screen } from '@testing-library/react'
-import type { IsEqual } from '@voltiso/util'
+import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 import type { FC } from 'react'
 
@@ -38,7 +38,10 @@ const OtherRedButton3 = OtherRedButton2.mapProps(props => ({
 	big: props.id === 'BIG',
 }))
 
-const AnotherButton = OtherRedButton2.mapProp('big', (x?: boolean) => !x)
+const AnotherButton = OtherRedButton2.mapProp('big', (x?: boolean) => {
+	Assert<IsIdentical<typeof x, boolean | undefined>>()
+	return !x
+})
 
 const OnClickMapped = AnotherButton.mapProp(
 	'onClick',

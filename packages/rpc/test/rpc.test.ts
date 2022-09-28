@@ -7,7 +7,7 @@ import type { Server } from 'node:http'
 
 import { checked } from '@voltiso/caller'
 import * as s from '@voltiso/schemar'
-import type { IsIdentical, MaybePromise } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import mockConsole from 'jest-mock-console'
 
@@ -81,8 +81,8 @@ describe('client', () => {
 			IsIdentical<
 				typeof myClient.doctor.add,
 				() => Promise<void> & {
-					local: MaybePromise<void>
-					localOrRemote: MaybePromise<void>
+					local: Promise<void>
+					localOrRemote: Promise<void>
 				}
 			>
 		>()
@@ -91,8 +91,8 @@ describe('client', () => {
 			IsIdentical<
 				typeof myClient.specialty.add,
 				() => Promise<void> & {
-					local: MaybePromise<void>
-					localOrRemote: MaybePromise<void>
+					local: Promise<void>
+					localOrRemote: Promise<void>
 				}
 			>
 		>()

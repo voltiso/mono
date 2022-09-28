@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
@@ -23,6 +22,6 @@ export function union<Ts extends t.SchemableLike[]>(...types: Ts): Union<Ts> {
 		else ts.push(type)
 	}
 
-	$assert(ts.length >= 2)
+	// $assert(ts.length >= 2)
 	return new Union(ts as never) as never
 }

@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as t from '@voltiso/schemar.types'
-import type { ValidationIssueConstructor } from '@voltiso/schemar.types'
 import { hasProperty, stringFrom } from '@voltiso/util'
 
 import { expectedOneOfStr } from './_/expectedOneOfStr'
@@ -35,7 +34,9 @@ export class ValidationIssueImpl implements t.ValidationIssue {
 			this.expectedDescription = p.expectedDescription
 	}
 
-	toString(): string {
+	toString(
+		options?: { skipReceived?: boolean | undefined } | undefined,
+	): string {
 		const haveExpected = typeof this.expectedOneOf !== 'undefined'
 		const haveExpectedDescription =
 			typeof this.expectedDescription !== 'undefined'
@@ -66,7 +67,9 @@ export class ValidationIssueImpl implements t.ValidationIssue {
 
 		if (this.name) r.push(this.name)
 
-		r.push('should', want, `(got ${have})`)
+		r.push('should', want)
+
+		if (!options?.skipReceived) r.push(`(got ${have})`)
 
 		return r.join(' ')
 	}
@@ -75,4 +78,4 @@ export class ValidationIssueImpl implements t.ValidationIssue {
 export type ValidationIssue = t.ValidationIssue
 
 export const ValidationIssue =
-	ValidationIssueImpl as unknown as ValidationIssueConstructor
+	ValidationIssueImpl as unknown as t.ValidationIssueConstructor

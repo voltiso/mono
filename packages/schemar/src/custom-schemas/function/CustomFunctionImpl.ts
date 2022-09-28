@@ -23,13 +23,13 @@ import {
 import * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import {
-	_functionArgumentsExtends,
-	CustomSchemaImpl,
-	schema,
-	SchemarError,
-	ValidationIssue,
-} from '~'
+import { SchemarError } from '~/error'
+import { CustomSchemaImpl } from '~/Schema'
+
+import { _flattenUnion, union } from '../union'
+import { schema } from '../unknownSchema'
+import { ValidationIssue } from '../validation'
+import { _functionArgumentsExtends } from './_functionArgumentsExtends'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomFunctionImpl<O> {
@@ -63,23 +63,34 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	constructor(o: FunctionOptions & O) {
 		super(o)
 
-		let argumentsSchema = schema(
+		const argumentsSchema = schema(
 			// eslint-disable-next-line security/detect-object-injection
 			this[OPTIONS].arguments as never,
 		) as unknown as IArray | ITuple
 
-		if (isArray(argumentsSchema)) {
-			argumentsSchema = argumentsSchema.mutableArray as never
-		} else if (isTuple(argumentsSchema)) {
-			argumentsSchema = argumentsSchema.mutableTuple as never
-		} else {
-			throw new SchemarError(
-				'function: arguments schema should be array or tuple',
-			)
-		}
+		// eslint-disable-next-line etc/no-internal
+		let argumentsUnionSchemas = _flattenUnion(argumentsSchema).getSchemas
+
+		argumentsUnionSchemas = argumentsUnionSchemas.map(s => {
+			if (isArray(s)) {
+				return s.mutableArray as never
+			} else if (isTuple(s)) {
+				return s.mutableTuple as never
+			} else {
+				throw new SchemarError(
+					'function: arguments schema should be array or tuple',
+				)
+			}
+		})
+
+		const finalArgumentsSchema =
+			argumentsUnionSchemas.length === 1
+				? argumentsUnionSchemas[0]
+				: union(...argumentsUnionSchemas)
 
 		// eslint-disable-next-line security/detect-object-injection
-		this[OPTIONS].arguments = argumentsSchema
+		this[OPTIONS].arguments = finalArgumentsSchema as never
+		// ! TODO - typings for arguments are incorrect
 	}
 
 	override [EXTENDS](other: SchemaLike): boolean {

@@ -64,7 +64,7 @@ export class ClientPath {
 	}
 
 	[CALL](...args: unknown[]) {
-		const localPromise = callLocal(this, args)
+		const localPromise = Promise.resolve(callLocal(this, args))
 
 		const call = async () => {
 			await localPromise
@@ -132,8 +132,8 @@ export class ClientPath {
 		}
 
 		const remotePromise = call() as Promise<unknown> & {
-			local: MaybePromise<unknown>
-			localOrRemote: MaybePromise<unknown>
+			local: Promise<unknown>
+			localOrRemote: Promise<unknown>
 		}
 
 		const callLocalOrRemote = async () => {

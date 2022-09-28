@@ -45,17 +45,28 @@ export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
 			}
 	  >
 
+export type $IsStylable<C extends StylableLike> = C extends any
+	? keyof InnerProps extends keyof ComponentProps_<C>
+		? true
+		: false
+	: never
+
 /** With Element already provided */
 export type GetStyledComponentImpl<
 	$ extends StyledTypeInfo & { Component: StylableLike },
-> = keyof InnerProps extends keyof ComponentProps_<$['Component']>
-	? keyof $['CustomCss'] extends never
-		? GetStyledComponentNoCustomCss<$['Component'], $['Props']>
-		: CustomStyledComponent<
-				$['Component'],
-				{ Props: $['Props']; CustomCss: $['CustomCss'] }
-		  >
-	: ThrowMissingRequiredInnerProps<ComponentProps_<$['Component']>>
+	Component extends StylableLike = $['Component'],
+> = Component extends any
+	? $IsStylable<Component> extends true
+		? keyof $['CustomCss'] extends never
+			? GetStyledComponentNoCustomCss<$['Component'], $['Props']>
+			: CustomStyledComponent<
+					$['Component'],
+					{ Props: $['Props']; CustomCss: $['CustomCss'] }
+			  >
+		: $IsStylable<Component> extends false
+		? ThrowMissingRequiredInnerProps<ComponentProps_<$['Component']>>
+		: never
+	: never
 
 //
 

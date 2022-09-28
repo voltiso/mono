@@ -39,7 +39,7 @@ export interface ValidationIssue {
 	received?: unknown
 	receivedDescription?: string
 
-	toString(): string
+	toString(options?: { skipReceived?: boolean | undefined } | undefined): string
 }
 
 export interface ValidationIssueConstructor {
