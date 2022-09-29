@@ -68,7 +68,9 @@ describe('theme', () => {
 	it('string literal', () => {
 		expect.hasAssertions()
 		expect(`${t.a.b.c[11]}px solid red`).toBe(
-			'$__STYLER__{a.b.c.11}px solid red',
+			// eslint-disable-next-line no-template-curly-in-string
+			'${a.b.c.11}px solid red',
+			// '$__STYLER__{a.b.c.11}px solid red',
 		)
 
 		const Button = style('button').css({

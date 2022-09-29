@@ -8,7 +8,7 @@ import { $assert } from '@voltiso/assertor'
 import { isPlainObject } from '@voltiso/util'
 
 import type { CssProp } from '~'
-import { ThemePath } from '~/ThemePath'
+import { isThemePath } from '~/ThemePath'
 
 export type WithNested = { nested: object }
 
@@ -97,16 +97,18 @@ export function prepare<X>(
 		return r as never
 	}
 
-	if (x instanceof ThemePath) {
+	if (isThemePath(x)) {
 		return prepare(readPath(params.theme, x.path as never), params) as any
 	}
 
 	if (typeof x === 'string') {
-		if (!x.includes('$__STYLER__')) return x
+		if (!x.includes('${')) return x
+		// if (!x.includes('$__STYLER__{')) return x
 		else {
 			// replace all
 			return x.replace(
-				/\$__STYLER__\{([^}]*)\}/gu,
+				/\$\{([^}]*)\}/gu,
+				// /\$__STYLER__\{([^}]*)\}/gu,
 				(_, match: string) =>
 					`${prepare(
 						readPath(params.theme, match.split('.') as never),
