@@ -14,21 +14,21 @@ export interface OuterPropsBase<AdditionalCss extends object> extends Props {
 		| undefined
 }
 
-export interface WebOuterProps<CustomCss extends object = {}>
-	extends OuterPropsBase<CustomCss> {
+export interface WebOuterProps<AdditionalCss extends object = {}>
+	extends OuterPropsBase<AdditionalCss> {
 	className?: string | undefined
 	style?: Css | undefined
 }
 
-export interface NativeOuterProps<CustomCss extends object = {}>
-	extends OuterPropsBase<CustomCss> {
+export interface NativeOuterProps<AdditionalCss extends object = {}>
+	extends OuterPropsBase<AdditionalCss> {
 	className?: never
 	style?: StyleProp<unknown> | undefined
 }
 
-export type OuterProps<CustomCss extends object = {}> =
+export type OuterProps<AdditionalCss extends object = {}> =
 	IsReactNative extends true
-		? NativeOuterProps<CustomCss>
+		? NativeOuterProps<AdditionalCss>
 		: IsReactNative extends false
-		? WebOuterProps<CustomCss>
+		? WebOuterProps<AdditionalCss>
 		: never

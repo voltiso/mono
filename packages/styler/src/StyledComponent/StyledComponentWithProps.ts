@@ -11,11 +11,11 @@ import type { OuterProps, StylableLike } from '~/Stylable'
 
 export type StyledComponentProps<
 	C extends StylableLike | NativeElement,
-	P extends Props,
-	CP extends object,
+	P extends object,
+	CustomCss extends object,
 > = C extends NativeElement
-	? P & OuterProps<CP>
-	: FastMergeProps_<ComponentPropsWithRef_<C>, P & OuterProps<CP>>
+	? P & OuterProps<CustomCss>
+	: FastMergeProps_<ComponentPropsWithRef_<C>, P & OuterProps<CustomCss>>
 
 /** With Element already provided */
 export interface StyledComponentWithProps<

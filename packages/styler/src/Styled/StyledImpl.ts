@@ -130,7 +130,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	): Patch<this, { Component: T }>
 
 	/** Forward ref and css, add props P */
-	forwardRef<T extends IntrinsicElement, P>(
+	forwardRef<T extends IntrinsicElement, P extends object>(
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
 			$['CustomCss'],
@@ -147,7 +147,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	): Patch<this, { Component: T }>
 
 	/** Forward ref (but not css), add all props of T, add props P */
-	forwardRef<T extends IntrinsicElement, P>(
+	forwardRef<T extends IntrinsicElement, P extends object>(
 		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
 	): Patch<this, { Component: T; Props: P }>
 

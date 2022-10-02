@@ -10,7 +10,9 @@ export type GetNativeElement<T extends NativeElement | IntrinsicElement> =
 	T extends NativeElement
 		? T
 		: T extends IntrinsicElement
-		? JSX.IntrinsicElements[T]['ref'] extends LegacyRef<infer R> | undefined
-			? R
+		? 'ref' extends keyof JSX.IntrinsicElements[T]
+			? JSX.IntrinsicElements[T]['ref'] extends LegacyRef<infer R> | undefined
+				? R
+				: never
 			: never
 		: never
