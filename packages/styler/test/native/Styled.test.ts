@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { StyleProp } from 'react-native'
 
@@ -19,8 +19,11 @@ describe('Styled (react-native)', () => {
 	it('generic', <P extends {}, C extends Stylable>() => {
 		expect.assertions(0)
 
-		Assert.is<GetStyledComponent<{ Props: P }>, IStyled>()
-		Assert.is<GetStyledComponent<{ Props: P }>, IStyledComponent>()
+		Assert.is<GetStyledComponent<{ Props: P }>, IStyled | StaticError>()
+		Assert.is<
+			GetStyledComponent<{ Props: P }>,
+			IStyledComponent | StaticError
+		>()
 
 		Assert.is<StyledComponentWithProps<C, P>, IStyled>()
 	})

@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
+import { deepCloneData } from '@voltiso/util.firestore'
 
 import type { WithDb } from '~/Db'
 import { DocImpl } from '~/Doc'
@@ -11,7 +12,6 @@ import { sVoltisoEntry } from '~/schemas'
 import type { CacheEntry, WithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
-import { deepCloneData } from '~/util'
 
 export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,

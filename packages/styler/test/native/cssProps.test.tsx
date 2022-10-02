@@ -20,13 +20,14 @@ describe('cssProps', () => {
 		// Assert.is<typeof a, StaticError>()
 
 		const StyledView = style(View)
+		;() => <StyledView /> // check if optional
 
 		Assert.is<typeof StyledView, IStylable>()
 		// Assert.is<typeof StyledView, IStylableJsxConstruct>()
 		Assert.is<typeof StyledView, IStylableJsxCall>()
 
 		const MyView = StyledView.cssProps('flex', 'backgroundColor', 'margin')
-		;<MyView /> // check if optional
+		;() => <MyView /> // check if optional
 		const { getByTestId } = renderApp(
 			<MyView
 				testID='a'

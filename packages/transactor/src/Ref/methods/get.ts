@@ -3,6 +3,7 @@
 
 import { $assert } from '@voltiso/assertor'
 import { stringFrom } from '@voltiso/util'
+import { deepCloneData } from '@voltiso/util.firestore'
 
 import { fromDatabase } from '~/common'
 import { withoutId } from '~/Data'
@@ -26,9 +27,8 @@ import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
 import { applyUpdates } from '~/updates'
 import type { Forbidden } from '~/util'
-import { deepCloneData } from '~/util'
 
-import type { IRef } from '..'
+import type { IRef } from '../IRef'
 
 // eslint-disable-next-line etc/no-misused-generics
 async function directDocPathGet<D extends IDoc>(

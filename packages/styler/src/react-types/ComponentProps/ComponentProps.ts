@@ -1,7 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PropsWithoutRef, PropsWithRef, RefAttributes } from 'react'
+import type {
+	ForwardRefRenderFunction,
+	PropsWithoutRef,
+	PropsWithRef,
+	RefAttributes,
+} from 'react'
+
+import type { ForwardRefAndCssRenderFunction } from '~'
 
 import type { ComponentLike, ReactElementLike } from '../ElementType'
 
@@ -10,6 +17,10 @@ export type JSXElementConstructorLike<P> =
 	| (new (props: P) => ComponentLike)
 
 export type ComponentProps_<T> = T extends JSXElementConstructorLike<infer P>
+	? P
+	: T extends ForwardRefRenderFunction<any, infer P>
+	? P
+	: T extends ForwardRefAndCssRenderFunction<any, any, infer P>
 	? P
 	: T extends keyof JSX.IntrinsicElements
 	? JSX.IntrinsicElements[T]

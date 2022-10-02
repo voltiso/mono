@@ -4,7 +4,8 @@
 import { $assert } from '@voltiso/assertor'
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
-import { deepClone, isDefined } from '@voltiso/util'
+import { isDefined } from '@voltiso/util'
+import { deepCloneData } from '@voltiso/util.firestore'
 
 import type { DocumentReference } from './DocumentReference'
 import { DocumentSnapshot } from './DocumentSnapshot'
@@ -85,8 +86,7 @@ export class Transaction implements Database.Transaction {
 		checkIfFailed(this)
 
 		const lock = getLock(this._store, this, ref.path)
-		// console.log('Transaction.set', ref, data, 'deepClone')
-		lock.data = deepClone(data)
+		lock.data = deepCloneData(data)
 	}
 
 	update(ref: DocumentReference, updates: Database.UpdateData): void {
@@ -101,8 +101,7 @@ export class Transaction implements Database.Transaction {
 			)
 
 		if (!lock.data) {
-			// console.log('Transaction.update', ref, updates, 'deepClone')
-			lock.data = deepClone(data)
+			lock.data = deepCloneData(data)
 		}
 
 		applyUpdatesInPlace(lock.data, updates)

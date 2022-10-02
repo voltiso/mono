@@ -19,6 +19,15 @@ export function getComponent<
 	const renderFunctionName = `StyledComponent<${elementName}>`
 	const forwardRefName = `forwardRef(${renderFunctionName})`
 
+	// // forward ref (but not css)
+	// if (typeof data.component === 'function' && data.component.length === 2) {
+	// 	// eslint-disable-next-line no-param-reassign
+	// 	data = {
+	// 		...data,
+	// 		component: forwardRef(data.component as never),
+	// 	}
+	// }
+
 	const renderFunction: IForwardRefRenderFunction = defineFunctionComponent(
 		renderFunctionName,
 		(props: $['Props'] & OuterProps, ref: ForwardedRef<unknown>) =>

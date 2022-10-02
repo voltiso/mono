@@ -5,10 +5,10 @@ import { $assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
 import { isPlainObject } from '@voltiso/util'
 
-import type { IntrinsicFields } from '~'
 import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
-import { StrongDocRef, WeakDocRef } from '~/Ref'
+import { isDocRef, StrongDocRef, WeakDocRef } from '~/Ref'
 import type { DocRefBaseContext } from '~/Ref/_/Context'
+import type { IntrinsicFields } from '~/schemas'
 
 import { isRefEntry } from './RefEntry'
 
@@ -30,6 +30,8 @@ export function fromDatabaseData(
 		return o.map(x => fromDatabaseData(ctx, x))
 		// } else if (isRefLike(o)) {
 		// 	return new Ref(o.__ref) as unknown as T
+	} else if (isDocRef(o)) {
+		return o
 	} else if (Database.isDocumentReference(o)) {
 		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', o.path)

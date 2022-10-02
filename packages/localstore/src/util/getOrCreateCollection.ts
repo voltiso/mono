@@ -9,7 +9,5 @@ export function getOrCreateCollection(
 	path: CollectionPath,
 ): Collection {
 	// eslint-disable-next-line security/detect-object-injection
-	return (store._collections[path] =
-		// eslint-disable-next-line security/detect-object-injection
-		store._collections[path] || new Collection())
+	return (store._collections[path] ||= new Collection())
 }

@@ -8,7 +8,7 @@ export class DocumentSnapshot implements Database.DocumentSnapshot {
 
 	constructor(data: Database.DocumentData | undefined) {
 		this._data = data
-		// this._data = deepClone(data)
+		// this._data = deepCloneData(data)
 	}
 
 	data(): Database.DocumentData | undefined {

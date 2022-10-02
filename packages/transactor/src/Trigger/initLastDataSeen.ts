@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { deepCloneData } from '@voltiso/util.firestore'
+
 import type { WithDocRef } from '~/Ref'
 import { getAfterTriggers } from '~/Ref/_/getAfterTriggers'
 import type { CacheEntry } from '~/Transaction/Cache'
-import { deepCloneData } from '~/util'
 
 export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {
 	if (cacheEntry.lastDataSeenByAfters || cacheEntry.originalData === undefined)

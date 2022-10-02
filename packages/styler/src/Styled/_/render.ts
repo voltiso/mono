@@ -1,16 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '@voltiso/assertor'
 import { getKeys } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'
 
-import type { StyledTypeInfo } from '~'
-import type { StyledData } from '~/_/StyledData'
+import type { IForwardRefAndCssRenderFunction, StyledTypeInfo } from '~'
+import type { IForwardRefRenderFunction, StyledData } from '~/_/StyledData'
 import type { Css } from '~/Css/Css'
-import type { Props } from '~/react-types'
-import type { OuterProps } from '~/Stylable'
+import type { IForwardedRef, Props } from '~/react-types'
+import type { NativeInnerProps, OuterProps, WebInnerProps } from '~/Stylable'
 
 import { consumeCssProps } from './consumeCssProps'
 import { prepare } from './prepare'
@@ -22,6 +23,61 @@ import {
 	isStyleNode,
 	isWrapNode,
 } from './Stack'
+
+/** @internal */
+function _getCssArray(css: Css | readonly Css[] | undefined): Css[] {
+	return Array.isArray(css) ? (css as Css[]) : css ? [css as Css] : []
+}
+
+/** @internal */
+function _prepareProps(
+	props: object,
+	params: { theme: object; customCss?: object | undefined },
+) {
+	const result = {} as Record<string, unknown>
+	for (const [prop, value] of Object.entries(props)) {
+		// eslint-disable-next-line security/detect-object-injection
+		result[prop] = prepare(value, { ...params, isPreparingProps: true })
+	}
+	return result
+}
+
+/** @internal */
+function _getFinalWebProps(className: string, props: WebInnerProps) {
+	let finalClassName = className
+
+	if (typeof props.className === 'string')
+		finalClassName = `${finalClassName} ${props.className as unknown as string}`
+
+	finalClassName = finalClassName.trim()
+
+	return finalClassName === '' ? props : { ...props, className: finalClassName }
+}
+
+/** @internal */
+function _getFinalNativeProps(css: Css, props: NativeInnerProps) {
+	let style = css
+
+	if (props.style) style = { ...style, ...(props.style as unknown as object) }
+
+	if (getKeys(style).length === 0) return props
+
+	return { ...props, style }
+}
+
+/** @internal */
+function _getFinalProps(
+	felaValue: string | Css,
+	props: WebInnerProps | NativeInnerProps,
+) {
+	const isReactNative = typeof felaValue !== 'string'
+
+	return isReactNative
+		? // eslint-disable-next-line etc/no-internal
+		  _getFinalNativeProps(felaValue, props as NativeInnerProps)
+		: // eslint-disable-next-line etc/no-internal
+		  _getFinalWebProps(felaValue, props as WebInnerProps)
+}
 
 export function render<$ extends StyledTypeInfo>(
 	props: $['Props'] & OuterProps,
@@ -51,10 +107,15 @@ export function render<$ extends StyledTypeInfo>(
 	// 	p[k] = prepare(p[k], { theme, isPreparingProps: true }) as never
 	// }
 
+	// eslint-disable-next-line etc/no-internal
+	const cssArray = _getCssArray(css)
+	cssArray.reverse()
+
 	const styles: Css[] = []
 
-	if (typeof css !== 'undefined')
+	for (const css of cssArray) {
 		styles.push(prepare(css, { theme, customCss: finalCustomCss }))
+	}
 
 	// const consumedCssProps = {} as $ extends any
 	// 	? Required<Partial<CssProps<$['Props'], object>>>
@@ -72,18 +133,6 @@ export function render<$ extends StyledTypeInfo>(
 
 	consume(p, finalCustomCss)
 
-	function prepareProps(
-		props: object,
-		params: { theme: object; customCss?: object | undefined },
-	) {
-		const result = {} as Record<string, unknown>
-		for (const [prop, value] of Object.entries(props)) {
-			// eslint-disable-next-line security/detect-object-injection
-			result[prop] = prepare(value, { ...params, isPreparingProps: true })
-		}
-		return result
-	}
-
 	for (let i = stack.length - 1; i >= 0; --i) {
 		// eslint-disable-next-line security/detect-object-injection
 		const node = stack[i]
@@ -93,7 +142,8 @@ export function render<$ extends StyledTypeInfo>(
 		} else if (isStyleNode(node)) {
 			styles.push(prepare(node.style, { theme, customCss: node.customCss }))
 		} else if (isGetStyleNode(node)) {
-			const props = prepareProps(
+			// eslint-disable-next-line etc/no-internal
+			const props = _prepareProps(
 				{ ...data.defaults, ...p },
 				{ theme, customCss: node.customCss },
 			)
@@ -132,7 +182,8 @@ export function render<$ extends StyledTypeInfo>(
 			// 	? [...children, ...newChildElements]
 			// 	: [...newChildElements, ...children]
 		} else if (isMapPropsNode(node)) {
-			const inputProps = prepareProps(
+			// eslint-disable-next-line etc/no-internal
+			const inputProps = _prepareProps(
 				{ ...data.defaults, ...p },
 				{ theme, customCss: node.customCss },
 			)
@@ -145,41 +196,29 @@ export function render<$ extends StyledTypeInfo>(
 
 	p = { ...data.domDefaults, ...p }
 
+	const shouldForwardCss =
+		typeof data.component === 'function' && data.component.length === 3
+
+	if (shouldForwardCss) {
+		$assert(!('css' in p))
+		// $assert('ref' in p)
+		const { ref, ...finalProps } = p as { ref?: IForwardedRef }
+		return (data.component as IForwardRefAndCssRenderFunction)(
+			finalProps,
+			ref,
+			styles,
+		)
+	}
+
 	const felaValue = fela.css([...styles].reverse() as never)
 
-	const isReactNative = typeof felaValue !== 'string'
+	// eslint-disable-next-line etc/no-internal
+	const renderedProps = _getFinalProps(felaValue, p)
 
-	function getFinalReactProps() {
-		let finalClassName = felaValue
-
-		if (typeof p.className === 'string')
-			finalClassName = `${finalClassName} ${p.className as unknown as string}`
-
-		finalClassName = finalClassName.trim()
-
-		return finalClassName === '' ? p : { ...p, className: finalClassName }
+	if (typeof data.component === 'function' && data.component.length >= 2) {
+		const { ref, ...finalProps } = renderedProps as { ref: IForwardedRef }
+		return (data.component as IForwardRefRenderFunction)(finalProps, ref)
 	}
 
-	function getFinalReactNativeProps() {
-		let style = felaValue as unknown as Css
-
-		if (p.style) style = { ...style, ...(p.style as unknown as object) }
-
-		if (getKeys(style).length === 0) return p
-
-		return { ...p, style }
-	}
-
-	const finalProps = isReactNative
-		? getFinalReactNativeProps()
-		: getFinalReactProps()
-
-	// if (overrideChildren) {
-	// 	finalProps = {
-	// 		...finalProps,
-	// 		children,
-	// 	}
-	// }
-
-	return createElement(data.component as never, finalProps as never)
+	return createElement(data.component as never, renderedProps as never)
 }

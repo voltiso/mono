@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomStyledComponent } from '~'
+import type { CustomStyledComponent, NativeElement } from '~'
 import type {
 	ComponentPropsWithRef_,
 	FastMergeProps_,
@@ -10,14 +10,16 @@ import type {
 import type { OuterProps, StylableLike } from '~/Stylable'
 
 export type StyledComponentProps<
-	C extends StylableLike,
+	C extends StylableLike | NativeElement,
 	P extends Props,
 	CP extends object,
-> = FastMergeProps_<ComponentPropsWithRef_<C>, P & OuterProps<CP>>
+> = C extends NativeElement
+	? P & OuterProps<CP>
+	: FastMergeProps_<ComponentPropsWithRef_<C>, P & OuterProps<CP>>
 
 /** With Element already provided */
 export interface StyledComponentWithProps<
-	C extends StylableLike,
+	C extends StylableLike | NativeElement,
 	P extends Props,
 > extends CustomStyledComponent<
 		C,

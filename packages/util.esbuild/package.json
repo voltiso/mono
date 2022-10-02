@@ -45,7 +45,7 @@
     "@types/node": "^18.7.23",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
-    "esbuild": "^0.15.9",
+    "esbuild": "^0.15.10",
     "rimraf": "^3.0.2"
   }
 }

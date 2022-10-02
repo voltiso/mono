@@ -1,6 +1,6 @@
 {
 	"name": "@voltiso/util.firestore",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"license": "MIT",
 	"repository": "git://github.com/voltiso/mono.git",
 	"__________": "__________",
@@ -36,7 +36,8 @@
 	},
 	"__________DEPS": "__________",
 	"dependencies": {
-		"randombytes": "^2.1.0"
+		"randombytes": "^2.1.0",
+    "@voltiso/util": "workspace:^"
 	},
 	"devDependencies": {
 		"@types/randombytes": "^2.0.0",

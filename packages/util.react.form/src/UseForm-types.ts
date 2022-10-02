@@ -45,6 +45,8 @@ export namespace UseForm {
 	export type MutableState<S extends SchemableObjectLike> = {
 		inputs: UseForm.InputState[]
 
+		issuesByPath: Map<string, ValidationIssue[]>
+
 		result$: NestedSubject<UseForm.RawResult<S>>
 	}
 

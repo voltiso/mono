@@ -5,7 +5,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type * as Database from '@voltiso/firestore-like'
-import { deepClone, undef } from '@voltiso/util'
+import { deepCloneData } from '@voltiso/util.firestore'
 
 import { DeleteIt, IncrementIt } from '~/FieldValue'
 
@@ -19,7 +19,7 @@ export function applyUpdatesInPlace(
 
 		for (const token of pathTokens.slice(0, -1)) {
 			// eslint-disable-next-line security/detect-object-injection
-			if (o[token] === undef) o[token] = {}
+			if (o[token] === undefined) o[token] = {}
 
 			// eslint-disable-next-line security/detect-object-injection
 			o = o[token]
@@ -31,13 +31,12 @@ export function applyUpdatesInPlace(
 		if (v instanceof DeleteIt) delete o[f]
 		else if (v instanceof IncrementIt) {
 			// eslint-disable-next-line security/detect-object-injection
-			o[f] = o[f] || 0
+			o[f] ||= 0
 			// eslint-disable-next-line security/detect-object-injection
 			o[f] += v._n
 		} else {
-			// console.log('applyUpdatesInPlace', data, updates, 'deepClone')
 			// eslint-disable-next-line security/detect-object-injection
-			o[f] = deepClone(v)
+			o[f] = deepCloneData(v)
 		}
 	}
 }

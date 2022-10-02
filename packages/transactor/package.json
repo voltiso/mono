@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/transactor",
-  "version": "13.4.5",
+  "version": "13.5.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -42,6 +42,7 @@
   "dependencies": {
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/util": "workspace:^",
+    "@voltiso/util.firestore": "workspace:^0.1.0",
     "chalk": "^4",
     "fast-equals": "^4.0.3",
     "js-yaml": "^4.1.0"

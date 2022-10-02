@@ -21,27 +21,6 @@ import { useMemo } from 'react'
 
 import type { UseForm } from './UseForm-types'
 
-// function _setFocus<S extends SchemableObjectLike>(
-// 	mutableState: UseForm.MutableState<S>,
-// ) {
-// 	for (const input of mutableState.inputs) {
-// 		const issues = get(
-// 			mutableState.result$,
-// 			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-// 			...(input.path as any),
-// 		) as ValidationIssue[]
-// 		if (issues.length > 0) {
-// 			input.element.focus()
-// 			if (input.element instanceof HTMLInputElement) {
-// 				const position = input.element.value.length
-// 				input.element.selectionStart = position
-// 				input.element.selectionEnd = position
-// 			}
-// 			break
-// 		}
-// 	}
-// }
-
 function _register<S extends SchemableObjectLike>(
 	mutableState: UseForm.MutableState<S>,
 	path: (keyof any)[],
@@ -65,16 +44,28 @@ function _initializeResult<S extends SchemableObjectLike>(
 	const fields = deepMapValues(
 		deepShape,
 		(_value: SchemaLike | InferableLiteral, path) => {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-			const dataValue$ = get(data$, ...(path as any))
+			const dataValue$ = get(
+				data$,
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+				...(path as any),
+			) as unknown as NestedSubject<string>
 
 			const deepShapeEntry = s.schema(
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				get(deepShape as any, ...(path as any)) as unknown as InferableObject,
 			)
 
+			const validate = (value: string) => {
+				const validationResult = deepShapeEntry.exec(value)
+				mutable.issuesByPath.set(path.join('.'), validationResult.issues)
+				return validationResult
+			}
+
+			// check for initial issues
+			const initialValidationResult = validate(dataValue$.value)
+
 			return {
-				issues: [],
+				issues: initialValidationResult.issues,
 
 				props: {
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
@@ -82,7 +73,6 @@ function _initializeResult<S extends SchemableObjectLike>(
 
 					onChange: (event: ChangeEvent<HTMLInputElement>) => {
 						const value = event.target.value
-
 						dataValue$.set(value as never)
 
 						const valuePropPath = [
@@ -99,7 +89,8 @@ function _initializeResult<S extends SchemableObjectLike>(
 
 						valueProp$.set(value)
 
-						const validationResult = deepShapeEntry.exec(value)
+						const validationResult = validate(value)
+
 						const issuesPath = [...path, 'issues'] as unknown as Path<
 							typeof mutable.result$.fields
 						>
@@ -126,21 +117,27 @@ function _initializeResult<S extends SchemableObjectLike>(
 			onSubmit: (event: FormEvent<HTMLFormElement>) => {
 				event.preventDefault()
 
-				// const data = await validate({ beforeSubmit: true })
-
-				// 			if (!data) return
-				// 			try {
-				// 				await current.onSubmit(data as never)
-				// 				storage?.clear()
-				// 			} catch (error) {
-				// 				await handleError(error)
-				// 			}
+				for (const input of mutable.inputs) {
+					const path = input.path.join('.')
+					const issues = mutable.issuesByPath.get(path) || []
+					if (issues.length > 0) {
+						// do not submit - set focus on first issue
+						input.element.focus()
+						if (input.element instanceof HTMLInputElement) {
+							const position = input.element.value.length
+							input.element.selectionStart = position
+							input.element.selectionEnd = position
+						}
+						return
+					}
+				}
 
 				void options.onSubmit(data$.value)
 			},
 
-			ref: () => {
-				mutable.inputs.length = 0
+			ref: instance => {
+				// reset input refs list on re-render
+				if (!instance) mutable.inputs.length = 0
 			},
 		},
 
@@ -151,10 +148,11 @@ function _initializeResult<S extends SchemableObjectLike>(
 export const useForm = <S extends SchemableObjectLike>(
 	options: UseForm.Options<S>,
 ): UseForm.Result<S> => {
-	const mutable = useInitial<UseForm.MutableState<S>>({
+	const mutable = useInitial<UseForm.MutableState<S>>(() => ({
 		inputs: [] as never,
+		issuesByPath: new Map<string, ValidationIssue[]>(),
 		result$: 0 as never,
-	})
+	}))
 
 	mutable.result$ = useMemo(
 		() => createNestedSubject(_initializeResult<S>(options, mutable)),

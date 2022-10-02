@@ -17,4 +17,6 @@ export interface StyledData<
 	domDefaults: Partial<$['Props']>
 
 	cssProps: CssProps<$['Props'], CustomCss>
+
+	_currentCss?: object
 }

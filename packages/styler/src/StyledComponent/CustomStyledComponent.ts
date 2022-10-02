@@ -7,6 +7,7 @@ import type { ForwardRefExoticComponent } from 'react'
 import type {
 	ComponentPropsWithRef_,
 	FastMergeProps_,
+	NativeElement,
 	Props,
 	StylableLike,
 	Styled,
@@ -17,7 +18,7 @@ import type {
 
 /** With Element already provided */
 export interface CustomStyledComponent<
-	C extends StylableLike,
+	C extends StylableLike | NativeElement,
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
 > extends Styled<_<{ Component: C } & $>>,
 		ForwardRefExoticComponent<

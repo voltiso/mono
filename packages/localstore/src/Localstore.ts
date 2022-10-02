@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocumentData } from '@voltiso/firestore-like'
 import type * as Database from '@voltiso/firestore-like'
 import { BehaviorSubject } from 'rxjs'
 
@@ -25,10 +24,10 @@ export class Collection {
 	_docs: Record<string, Doc> = {}
 
 	// eslint-disable-next-line rxjs/no-exposed-subjects
-	_docs$: BehaviorSubject<Record<string, DocumentData>>
+	_docs$: BehaviorSubject<Record<string, Database.DocumentData>>
 
 	constructor() {
-		this._docs$ = new BehaviorSubject<Record<string, DocumentData>>({})
+		this._docs$ = new BehaviorSubject<Record<string, Database.DocumentData>>({})
 	}
 }
 

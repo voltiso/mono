@@ -7,10 +7,12 @@ import { Assert } from '@voltiso/util'
 import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
+	ComponentPropsWithRef,
 	DOMAttributes,
 	ForwardRefExoticComponent,
 	ForwardRefRenderFunction,
 	ReactNode,
+	Ref,
 } from 'react'
 import { forwardRef } from 'react'
 
@@ -151,11 +153,79 @@ describe('forwardRef', () => {
 		})
 	})
 
+	it('style the render function directly', () => {
+		expect.hasAssertions()
+
+		const RenderButton: ForwardRefRenderFunction<
+			HTMLButtonElement,
+			ComponentProps<'button'>
+		> = (props, ref) => (
+			<button
+				ref={ref}
+				{...props}
+			/>
+		)
+
+		Assert.is<typeof RenderButton, ForwardRefRenderFunction<any>>()
+
+		const Button = style(RenderButton)
+		Assert.is<
+			ComponentPropsWithRef<typeof Button>['ref'],
+			Ref<HTMLButtonElement> | undefined
+		>()
+
+		let instance: HTMLButtonElement | null = null
+
+		renderApp(
+			<Button
+				ref={inst => {
+					instance = inst
+				}}
+			/>,
+		)
+
+		expect(instance).toBeInstanceOf(HTMLButtonElement)
+	})
+
+	it('forward ref and css', () => {
+		expect.hasAssertions()
+
+		const RawButton = style('button')
+
+		const myStyle = style.defineProps<{ content: string }>()
+
+		const Button = myStyle<HTMLButtonElement>((props, ref, css) => (
+			<RawButton
+				{...props}
+				ref={ref}
+				css={[{ marginTop: 123, padding: 22 }, css]}
+			>
+				{props.content}
+			</RawButton>
+		))
+
+		renderApp(
+			<Button
+				content='myContent'
+				css={{ margin: 11, paddingTop: 222 }}
+			/>,
+		)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toContainHTML('myContent')
+
+		expect(button).toHaveStyle({
+			margin: '11px',
+			padding: '222px 22px 22px 22px',
+		})
+	})
+
 	it('type-test from api-shop', () => {
 		expect.assertions(0)
 
 		const render: ForwardRefRenderFunction<
-			HTMLAnchorElement | null,
+			HTMLAnchorElement,
 			{
 				href?: string
 				children?: ReactNode

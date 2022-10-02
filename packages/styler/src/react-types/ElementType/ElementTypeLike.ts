@@ -10,7 +10,7 @@ export type ReactElementLike<P = any> = {
 }
 
 export type FunctionComponentLike<P = any> = {
-	(props: any, context?: any): ReactElementLike<P> | null
+	(props: any): ReactElementLike<P> | null
 }
 
 export type ComponentLike<P = any> = {

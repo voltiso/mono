@@ -8,7 +8,10 @@ import type { IsReactNative } from '~/IsReactNative'
 import type { Props } from '~/react-types'
 
 export interface OuterPropsBase<AdditionalCss extends object> extends Props {
-	css?: CustomCss<AdditionalCss> | undefined
+	css?:
+		| CustomCss<AdditionalCss>
+		| readonly CustomCss<AdditionalCss>[]
+		| undefined
 }
 
 export interface WebOuterProps<CustomCss extends object = {}>

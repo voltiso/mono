@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
+import { deepCloneData } from '@voltiso/util.firestore'
 
 import { withId } from '~/Data'
 import { TransactorError } from '~/error'
@@ -9,7 +10,7 @@ import { immutabilize } from '~/immutabilize'
 import { isDeleteIt, isReplaceIt } from '~/it'
 import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
-import { deepCloneData, isEqual } from '~/util'
+import { isEqual } from '~/util'
 
 import type { IRef } from '../IRef'
 import { apply } from './apply'

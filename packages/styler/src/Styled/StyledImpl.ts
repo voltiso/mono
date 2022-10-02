@@ -867,8 +867,8 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	/**
 	 * Define props by providing `DefinedProps` type
 	 *
-	 * - Provide `NewProps` type To infer from `defaultValues`, use `newProps()`
-	 *   instead
+	 * - Provide `NewProps` type
+	 * - To infer from `defaultValues`, use `newProps()` instead
 	 * - To render props to DOM, use `newDomProps` instead
 	 *
 	 * @example

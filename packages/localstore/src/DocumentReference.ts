@@ -4,11 +4,10 @@
 /* eslint-disable security/detect-object-injection */
 
 import { $assert } from '@voltiso/assertor'
-import type { DocumentData } from '@voltiso/firestore-like'
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
-import { deepClone, isDefined } from '@voltiso/util'
-import { newAutoId } from '@voltiso/util.firestore'
+import { isDefined } from '@voltiso/util'
+import { deepCloneData, newAutoId } from '@voltiso/util.firestore'
 import type { Observable } from 'rxjs'
 
 import type { CollectionReference } from './CollectionReference'
@@ -61,7 +60,7 @@ export class DocumentReference implements Database.DocumentReference {
 	}
 
 	set(data: Database.DocumentData): MaybePromise<void> {
-		return this._set(deepClone(data))
+		return this._set(deepCloneData(data))
 	}
 
 	_set(data: Database.DocumentData | null) {
@@ -115,17 +114,15 @@ export class DocumentReference implements Database.DocumentReference {
 		this._set(null)
 	}
 
-	get data$(): Observable<DocumentData | null> {
+	get data$(): Observable<Database.DocumentData | null> {
 		const collections = this._store._collections
 		const collectionPath = this._collectionRef._path
 
 		// eslint-disable-next-line no-multi-assign
-		const collection = (collections[collectionPath] =
-			collections[collectionPath] || new Collection())
+		const collection = (collections[collectionPath] ||= new Collection())
 
 		// eslint-disable-next-line no-multi-assign
-		const doc = (collection._docs[this.id] =
-			collection._docs[this.id] || new Doc(null))
+		const doc = (collection._docs[this.id] ||= new Doc(null))
 
 		return doc.data$
 	}

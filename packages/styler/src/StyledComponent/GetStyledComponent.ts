@@ -2,14 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Merge2, Throw } from '@voltiso/util'
+import type { ForwardRefRenderFunction } from 'react'
+import type { NativeMethods } from 'react-native'
 
 import type {
 	CustomStyledComponent,
 	CustomStyledHoc,
+	ForwardRefAndCssRenderFunction,
 	InnerProps,
 	IsReactNative,
 	IStylable,
 	StylableLike,
+	StyledComponentWithProps,
 	StyledHoc,
 	StyledHocWithProps,
 	StyledTypeInfo,
@@ -17,10 +21,9 @@ import type {
 import type { ComponentProps_, Props } from '~/react-types'
 
 import type { StyledComponent } from './StyledComponent'
-import type { StyledComponentWithProps } from './StyledComponentWithProps'
 
 export type GetStyledComponentNoCustomCss<
-	C extends StylableLike,
+	C extends StylableLike | NativeElement,
 	P extends Props,
 > = keyof P extends never ? StyledComponent<C> : StyledComponentWithProps<C, P>
 
@@ -45,25 +48,58 @@ export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
 			}
 	  >
 
-export type $IsStylable<C extends StylableLike> = C extends any
-	? keyof InnerProps extends keyof ComponentProps_<C>
+export type NativeElement = IsReactNative extends true
+	? NativeMethods
+	: IsReactNative extends false
+	? HTMLElement
+	: never
+
+export type IsStylable_<C> = keyof InnerProps extends keyof ComponentProps_<C>
+	? true
+	: false
+
+export type $IsStylableForwardRef_<C> = C extends ForwardRefRenderFunction<
+	any,
+	infer P
+>
+	? keyof InnerProps extends keyof P
 		? true
 		: false
-	: never
+	: false
+
+export type $IsStylableForwardRefAndCss_<C> =
+	C extends ForwardRefAndCssRenderFunction<any, any, infer P>
+		? keyof InnerProps extends keyof P
+			? true
+			: false
+		: false
+
+export type $IsStylable_<C> = C extends any ? IsStylable_<C> : never
+
+export type $IsStylableComponentOrForwardRefOrNativeElement_<X> =
+	X extends NativeElement
+		? true
+		: $IsStylableForwardRef_<X> extends true
+		? true
+		: $IsStylableForwardRefAndCss_<X> extends true
+		? true
+		: IsStylable_<X> extends true
+		? true
+		: false
 
 /** With Element already provided */
 export type GetStyledComponentImpl<
-	$ extends StyledTypeInfo & { Component: StylableLike },
-	Component extends StylableLike = $['Component'],
+	$ extends StyledTypeInfo & { Component: StylableLike | NativeElement },
+	Component extends StylableLike | NativeElement = $['Component'],
 > = Component extends any
-	? $IsStylable<Component> extends true
+	? $IsStylableComponentOrForwardRefOrNativeElement_<Component> extends true
 		? keyof $['CustomCss'] extends never
 			? GetStyledComponentNoCustomCss<$['Component'], $['Props']>
 			: CustomStyledComponent<
 					$['Component'],
 					{ Props: $['Props']; CustomCss: $['CustomCss'] }
 			  >
-		: $IsStylable<Component> extends false
+		: $IsStylableComponentOrForwardRefOrNativeElement_<Component> extends false
 		? ThrowMissingRequiredInnerProps<ComponentProps_<$['Component']>>
 		: never
 	: never
@@ -109,12 +145,12 @@ export type GetStyledImpl<$ extends StyledTypeInfo> = $ extends {
 	Component: null
 }
 	? GetStyledHocImpl<$>
-	: $ extends { Component: StylableLike }
+	: $ extends { Component: StylableLike | NativeElement }
 	? GetStyledComponentImpl<$>
 	: never
 
 export type GetStyledImplN<
-	C extends StylableLike | null,
+	C extends StylableLike | NativeElement | null,
 	P extends {},
 	CC extends {},
 > = GetStyledImpl<{ Component: C; Props: P; CustomCss: CC }>

@@ -12,7 +12,6 @@ import type {
 } from 'react'
 
 import type {
-	$IsStylable,
 	ComponentProps_,
 	ComponentPropsWithRef_,
 	Css,
@@ -112,9 +111,6 @@ describe('StyledHoc', () => {
 		b?: string
 	}>>() => {
 		expect.assertions(0)
-
-		type X = $IsStylable<S>
-		Assert.is<X, true>()
 
 		const style = {} as unknown as GetStyledHoc<{}>
 
