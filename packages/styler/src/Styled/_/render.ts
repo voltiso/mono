@@ -108,8 +108,7 @@ export function render<$ extends StyledTypeInfo>(
 	// }
 
 	// eslint-disable-next-line etc/no-internal
-	const cssArray = _getCssArray(css)
-	cssArray.reverse()
+	const cssArray = [..._getCssArray(css)].reverse()
 
 	const styles: Css[] = []
 
