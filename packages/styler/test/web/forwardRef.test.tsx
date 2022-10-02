@@ -197,7 +197,10 @@ describe('forwardRef', () => {
 
 		const myStyle = style.defineProps<{ content: string }>()
 
-		const Button = myStyle.forwardRef<'button'>((props, ref, css) => {
+		const Button = myStyle.forwardRef<
+			'button',
+			{ onClick?: (() => void) | undefined }
+		>((props, ref, css) => {
 			Assert<IsIdentical<typeof props.children, ReactNode | undefined>>()
 
 			expect(Array.isArray(css)).toBeTruthy()

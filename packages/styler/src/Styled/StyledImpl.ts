@@ -138,7 +138,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 			$['CustomCss'],
 			FastMergeProps_<$ComponentProps<T> & $['Props'], P>
 		>,
-	): Patch<this, { Component: T; Props: P }>
+	): ForcePatch<this, { Component: T; Props: P }>
 
 	/** Forward ref (but not css), add all props of T */
 	forwardRef<T extends IntrinsicElement>(
