@@ -197,8 +197,6 @@ describe('forwardRef', () => {
 
 		const myStyle = style.defineProps<{ content: string }>()
 
-		// type B = ComponentProps_<'button'>['ref']
-
 		const Button = myStyle.forwardRef<'button'>((props, ref, css) => {
 			Assert<IsIdentical<typeof props.children, ReactNode | undefined>>()
 

@@ -25,7 +25,8 @@ import type { IStyledDataMod, StyledData } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
 import type {
-	ComponentProps_,
+	$ComponentProps,
+	FastMergeProps_,
 	ForwardRefRenderFunction,
 	Props,
 } from '~/react-types'
@@ -126,7 +127,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
 			$['CustomCss'],
-			ComponentProps_<T> & $['Props']
+			$ComponentProps<T> & $['Props']
 		>,
 	): Patch<this, { Component: T }>
 
@@ -135,7 +136,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
 			$['CustomCss'],
-			P & $['Props']
+			FastMergeProps_<$ComponentProps<T> & $['Props'], P>
 		>,
 	): Patch<this, { Component: T; Props: P }>
 
@@ -143,7 +144,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	forwardRef<T extends IntrinsicElement>(
 		renderFunction: ForwardRefRenderFunction<
 			T,
-			ComponentProps_<T> & $['Props']
+			$ComponentProps<T> & $['Props']
 		>,
 	): Patch<this, { Component: T }>
 

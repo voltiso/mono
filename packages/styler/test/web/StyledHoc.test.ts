@@ -12,7 +12,7 @@ import type {
 } from 'react'
 
 import type {
-	ComponentProps_,
+	$ComponentProps,
 	ComponentPropsWithRef_,
 	Css,
 	GetStyledHoc,
@@ -153,7 +153,7 @@ describe('StyledHoc', () => {
 
 		Assert.is<A, IStyled>()
 
-		type C = ComponentProps_<S>
+		type C = $ComponentProps<S>
 
 		Assert.is<'size', keyof C>()
 		Assert.is<'b', keyof C>()

@@ -5,7 +5,7 @@ import type { BivariantCallable } from '@voltiso/util'
 import type { ForwardedRef, ReactElement } from 'react'
 
 import type {
-	ComponentProps_,
+	$ComponentProps,
 	GetNativeElement,
 	IntrinsicElement,
 	NativeElement,
@@ -28,7 +28,7 @@ export interface ForwardRefAndCssRenderFunction<
 	P = T extends NativeElement
 		? {}
 		: T extends IntrinsicElement
-		? ComponentProps_<T>
+		? $ComponentProps<T>
 		: never,
 > {
 	(

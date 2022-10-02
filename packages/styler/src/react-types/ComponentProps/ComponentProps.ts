@@ -16,7 +16,7 @@ export type JSXElementConstructorLike<P> =
 	| ((props: P) => ReactElementLike | null)
 	| (new (props: P) => ComponentLike)
 
-export type ComponentProps_<T> = T extends JSXElementConstructorLike<infer P>
+export type $ComponentProps<T> = T extends JSXElementConstructorLike<infer P>
 	? P
 	: T extends ForwardRefRenderFunction<any, infer P>
 	? P
@@ -30,6 +30,6 @@ export type ComponentPropsWithRef_<T> = T extends new (
 	props: infer P,
 ) => ComponentLike
 	? PropsWithoutRef<P> & RefAttributes<InstanceType<T>>
-	: PropsWithRef<ComponentProps_<T>>
+	: PropsWithRef<$ComponentProps<T>>
 
-export type ComponentPropsWithoutRef_<T> = PropsWithoutRef<ComponentProps_<T>>
+export type ComponentPropsWithoutRef_<T> = PropsWithoutRef<$ComponentProps<T>>

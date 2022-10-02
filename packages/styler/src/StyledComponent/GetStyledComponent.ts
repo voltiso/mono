@@ -18,7 +18,7 @@ import type {
 	StyledHocWithProps,
 	StyledTypeInfo,
 } from '~'
-import type { ComponentProps_, Props } from '~/react-types'
+import type { $ComponentProps, Props } from '~/react-types'
 
 import type { StyledComponent } from './StyledComponent'
 
@@ -54,7 +54,7 @@ export type NativeElement = IsReactNative extends true
 	? HTMLElement
 	: never
 
-export type IsStylable_<C> = keyof InnerProps extends keyof ComponentProps_<C>
+export type IsStylable_<C> = keyof InnerProps extends keyof $ComponentProps<C>
 	? true
 	: false
 
@@ -100,7 +100,7 @@ export type GetStyledComponentImpl<
 					{ Props: $['Props']; CustomCss: $['CustomCss'] }
 			  >
 		: $IsStylableComponentOrForwardRefOrNativeElement_<Component> extends false
-		? ThrowMissingRequiredInnerProps<ComponentProps_<$['Component']>>
+		? ThrowMissingRequiredInnerProps<$ComponentProps<$['Component']>>
 		: never
 	: never
 
