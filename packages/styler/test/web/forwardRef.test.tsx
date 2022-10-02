@@ -199,16 +199,20 @@ describe('forwardRef', () => {
 
 		// type B = ComponentProps_<'button'>['ref']
 
-		const Button = myStyle.forwardRef<'button'>((props, ref, css) => (
-			<RawButton
-				{...props}
-				ref={ref}
-				css={[{ marginTop: 123, padding: 22 }, css]}
-				onClick={() => {}}
-			>
-				{props.content}
-			</RawButton>
-		))
+		const Button = myStyle.forwardRef<'button'>((props, ref, css) => {
+			Assert<IsIdentical<typeof props.children, ReactNode | undefined>>()
+
+			return (
+				<RawButton
+					{...props}
+					ref={ref}
+					css={[{ marginTop: 123, padding: 22 }, css]}
+					onClick={() => {}}
+				>
+					{props.content}
+				</RawButton>
+			)
+		})
 
 		let instance: HTMLButtonElement | null = null
 

@@ -3,12 +3,13 @@
 
 import type {
 	MapOrUndefined,
+	Merge2Reverse,
 	PickOptional,
 	StaticError,
 	Throw,
 	UndefinedFromOptional,
 } from '@voltiso/util'
-import type { ForwardedRef } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 
 import type {
 	ForwardRefAndCssRenderFunction,
@@ -152,24 +153,42 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	): Patch<this, { Component: T; Props: P }>
 
 	/** Forward ref (but not css) */
-	forwardRef<
-		T extends NativeElement,
-		P extends Props = { ref?: ForwardedRef<T> | undefined },
-	>(
+	forwardRef<T extends NativeElement, P extends Props = {}>(
 		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
-	): Patch<this, { Component: T; Props: P }>
+	): Patch<
+		this,
+		{
+			Component: T
+			Props: Merge2Reverse<
+				P,
+				{
+					ref?: ForwardedRef<T> | undefined
+					children?: ReactNode | undefined
+				}
+			>
+		}
+	>
 
 	/** Forward ref and css */
-	forwardRef<
-		T extends NativeElement,
-		P extends Props = { ref?: ForwardedRef<T> | undefined },
-	>(
+	forwardRef<T extends NativeElement, P extends Props = {}>(
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
 			$['CustomCss'],
 			P & $['Props']
 		>,
-	): Patch<this, { Component: T; Props: P }>
+	): Patch<
+		this,
+		{
+			Component: T
+			Props: Merge2Reverse<
+				P,
+				{
+					ref?: ForwardedRef<T> | undefined
+					children?: ReactNode | undefined
+				}
+			>
+		}
+	>
 
 	forwardRef<T extends NativeElement, P extends Props>(
 		renderFunction:
