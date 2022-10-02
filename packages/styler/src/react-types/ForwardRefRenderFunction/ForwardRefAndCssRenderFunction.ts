@@ -18,7 +18,7 @@ export type IForwardRefAndCssRenderFunction = BivariantCallable<
 	(
 		props: {},
 		ref: IForwardedRef | undefined,
-		css: Css | Css[],
+		css: readonly Css[],
 	) => ReactElement | null
 > & { displayName?: string | undefined }
 
@@ -34,6 +34,6 @@ export interface ForwardRefAndCssRenderFunction<
 	(
 		props: P,
 		ref: ForwardedRef<GetNativeElement<T>>,
-		css: TCss,
+		css: readonly TCss[],
 	): ReactElement | null
 }

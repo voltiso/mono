@@ -200,11 +200,13 @@ describe('forwardRef', () => {
 		const Button = myStyle.forwardRef<'button'>((props, ref, css) => {
 			Assert<IsIdentical<typeof props.children, ReactNode | undefined>>()
 
+			expect(Array.isArray(css)).toBeTruthy()
+
 			return (
 				<RawButton
 					{...props}
 					ref={ref}
-					css={[{ marginTop: 123, padding: 22 }, css]}
+					css={[{ marginTop: 123, padding: 22 }, ...css]}
 					onClick={() => {}}
 				>
 					{props.content}
