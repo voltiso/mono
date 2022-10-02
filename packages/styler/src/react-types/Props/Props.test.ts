@@ -9,7 +9,6 @@ describe('Props', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<Props, IndexedProps>()
 		Assert.is<IndexedProps, Props>()
 
 		Assert.is<

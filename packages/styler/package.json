@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/styler",
-  "version": "13.3.6",
+  "version": "13.3.7",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -97,6 +97,6 @@
     "node": "16"
   },
   "typeCoverage": {
-    "is": 99.35
+    "is": 99.28
   }
 }

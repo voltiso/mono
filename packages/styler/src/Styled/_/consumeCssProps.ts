@@ -3,12 +3,12 @@
 
 import type { IndexedCssProps } from '~/_/CssProps'
 import type { Css } from '~/Css/Css'
-import type { IndexedProps } from '~/react-types'
+import type { Props } from '~/react-types'
 
 import { prepare } from './prepare'
 
 export function consumeCssProps<CustomCss extends object>(params: {
-	props: IndexedProps
+	props: Props
 	cssProps: IndexedCssProps<CustomCss>
 	styles: Css[]
 	theme: object
