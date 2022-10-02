@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { screen } from '@testing-library/react'
-import type { IsEqual } from '@voltiso/util'
+import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import type { IStyle } from 'fela'
 import type {
@@ -16,7 +16,7 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 
-import type { ComponentPropsWithRef_ } from '~'
+import type { ComponentPropsWithRef_, GetNativeElement } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -153,7 +153,7 @@ describe('forwardRef', () => {
 		})
 	})
 
-	it('style the render function directly', () => {
+	it('forwardRef', () => {
 		expect.hasAssertions()
 
 		const RenderButton: ForwardRefRenderFunction<
@@ -168,7 +168,7 @@ describe('forwardRef', () => {
 
 		Assert.is<typeof RenderButton, ForwardRefRenderFunction<any>>()
 
-		const Button = style(RenderButton)
+		const Button = style.forwardRef(RenderButton)
 		Assert.is<
 			ComponentPropsWithRef<typeof Button>['ref'],
 			Ref<HTMLButtonElement> | undefined
@@ -187,29 +187,42 @@ describe('forwardRef', () => {
 		expect(instance).toBeInstanceOf(HTMLButtonElement)
 	})
 
-	it('forward ref and css', () => {
+	it('forwardRef and css', () => {
 		expect.hasAssertions()
 
 		const RawButton = style('button')
 
+		type A = GetNativeElement<'button'>
+		Assert<IsIdentical<A, HTMLButtonElement>>()
+
 		const myStyle = style.defineProps<{ content: string }>()
 
-		const Button = myStyle<HTMLButtonElement>((props, ref, css) => (
+		// type B = ComponentProps_<'button'>['ref']
+
+		const Button = myStyle.forwardRef<'button'>((props, ref, css) => (
 			<RawButton
 				{...props}
 				ref={ref}
 				css={[{ marginTop: 123, padding: 22 }, css]}
+				onClick={() => {}}
 			>
 				{props.content}
 			</RawButton>
 		))
 
+		let instance: HTMLButtonElement | null = null
+
 		renderApp(
 			<Button
+				ref={inst => {
+					instance = inst
+				}}
 				content='myContent'
 				css={{ margin: 11, paddingTop: 222 }}
 			/>,
 		)
+
+		expect(instance).toBeInstanceOf(HTMLButtonElement)
 
 		const button = screen.getByRole('button')
 

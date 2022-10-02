@@ -16,7 +16,7 @@ import type { Props } from '~/react-types'
 // 	: never
 
 //! still slow
-export type StylableIntrinsic_<P extends Props> = P extends any
+export type StylableIntrinsicElement_<P extends Props> = P extends any
 	? IsReactNative extends false
 		? Partial<P> extends P
 			? {
@@ -43,9 +43,11 @@ export type StylableIntrinsic_<P extends Props> = P extends any
 
 export type IntrinsicElementLike = IsReactNative extends false ? string : never
 
-export type IStylableIntrinsic = IsReactNative extends false
+export type IntrinsicElement = IsReactNative extends false
 	? keyof JSX.IntrinsicElements
 	: never
+
+export type IStylableIntrinsicElement = IntrinsicElement
 
 // export type IStylableIntrinsic = IsReactNative extends false
 // 	? {

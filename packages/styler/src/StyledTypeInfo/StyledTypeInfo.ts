@@ -5,6 +5,6 @@ import type { NativeElement, StylableLike } from '~'
 
 export interface StyledTypeInfo {
 	Component: StylableLike | NativeElement | null
-	Props: {}
-	CustomCss: {}
+	Props: unknown
+	CustomCss: unknown
 }

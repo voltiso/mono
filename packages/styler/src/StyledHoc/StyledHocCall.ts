@@ -1,48 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, BivariantCallable } from '@voltiso/util'
-import type {
-	ExoticComponent,
-	ForwardedRef,
-	ForwardRefRenderFunction,
-	ReactElement,
-	RefObject,
-} from 'react'
+import type { _ } from '@voltiso/util'
+import type { ExoticComponent } from 'react'
 
 import type {
 	ComponentClassLike,
-	Css,
 	FunctionComponentLike,
 	GetStyledComponentImpl,
-	IForwardedRef,
-	NativeElement,
-	Props,
 	StylableIntrinsic,
 	StyledLike,
 	StyledTypeInfo,
 } from '~'
-
-export type IntrinsicElementFor<E> = {
-	[k in keyof JSX.IntrinsicElements]: Exclude<
-		Extract<JSX.IntrinsicElements[k]['ref'], RefObject<unknown>>['current'],
-		null
-	> extends E
-		? k
-		: never
-}[keyof JSX.IntrinsicElements]
-
-export type IForwardRefAndCssRenderFunction = BivariantCallable<
-	(
-		props: {},
-		ref: IForwardedRef | undefined,
-		css: Css | Css[],
-	) => ReactElement | null
-> & { displayName?: string | undefined }
-
-export interface ForwardRefAndCssRenderFunction<T, TCss = Css, P = {}> {
-	(props: P, ref: ForwardedRef<T>, css: TCss): ReactElement | null
-}
 
 export interface StyledHocCall<
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
@@ -63,27 +32,6 @@ export interface StyledHocCall<
 	<C extends FunctionComponentLike | ExoticComponent<any>>(
 		stylableFunctionComponent: C,
 	): GetStyledComponentImpl<_<{ Component: C } & $>>
-
-	/** Forward ref */
-	<T extends NativeElement, P extends Props>(
-		forwardRefRenderFunction: ForwardRefRenderFunction<T, P>,
-	): GetStyledComponentImpl<
-		_<
-			{
-				Component: T
-				Props: P
-			} & $
-		>
-	>
-
-	/** Forward ref and css */
-	<T extends NativeElement>(
-		forwardRefAndCssRenderFunction: ForwardRefAndCssRenderFunction<
-			T,
-			$['CustomCss'],
-			$['Props']
-		>,
-	): GetStyledComponentImpl<_<{ Component: T } & $>>
 
 	//
 

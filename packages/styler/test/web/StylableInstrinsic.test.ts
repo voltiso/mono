@@ -6,7 +6,7 @@ import { Assert } from '@voltiso/util'
 
 import type {
 	IsReactNative,
-	IStylableIntrinsic,
+	IStylableIntrinsicElement,
 	Props,
 	StylableIntrinsic,
 } from '~'
@@ -15,7 +15,7 @@ describe('StylableIntrinsic', () => {
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
-		Assert.is<StylableIntrinsic<P>, IStylableIntrinsic>()
+		Assert.is<StylableIntrinsic<P>, IStylableIntrinsicElement>()
 	})
 
 	it('every JSX intrinsic element has className?', () => {

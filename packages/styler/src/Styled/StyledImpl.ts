@@ -8,17 +8,26 @@ import type {
 	Throw,
 	UndefinedFromOptional,
 } from '@voltiso/util'
+import type { ForwardedRef } from 'react'
 
-import type { Stylable, StyledTypeInfo } from '~'
+import type {
+	ForwardRefAndCssRenderFunction,
+	IntrinsicElement,
+	IStyled,
+	NativeElement,
+	Stylable,
+	StyledTypeInfo,
+} from '~'
 import { isStyled } from '~'
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
-import type {
-	IStyledDataMod as IStyledDataModule,
-	StyledData,
-} from '~/_/StyledData'
+import type { IStyledDataMod, StyledData } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
-import type { Props } from '~/react-types'
+import type {
+	ComponentProps_,
+	ForwardRefRenderFunction,
+	Props,
+} from '~/react-types'
 
 import type { $GetStyledLikeProps as P } from './_'
 import { getComponent } from './_/getComponent'
@@ -43,7 +52,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		return this[DATA].component as never
 	}
 
-	private _clone<NewData extends IStyledDataModule<C<$>>>(
+	private _clone<NewData extends IStyledDataMod<C<$>>>(
 		newData: NewData,
 	): never {
 		if (newData.stack) {
@@ -63,7 +72,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 
 		return new Styled({
 			// eslint-disable-next-line security/detect-object-injection
-			component: newData.component || this[DATA].component,
+			component: (newData.component || this[DATA].component) as never,
 
 			stack: newData.stack
 				? // eslint-disable-next-line security/detect-object-injection
@@ -107,6 +116,69 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		Object.setPrototypeOf(r, this)
 		// eslint-disable-next-line no-constructor-return
 		return r as never
+	}
+
+	//
+
+	/** Forward ref and css */
+	forwardRef<T extends IntrinsicElement>(
+		renderFunction: ForwardRefAndCssRenderFunction<
+			T,
+			$['CustomCss'],
+			ComponentProps_<T> & $['Props']
+		>,
+	): Patch<this, { Component: T }>
+
+	/** Forward ref and css, add props P */
+	forwardRef<T extends IntrinsicElement, P>(
+		renderFunction: ForwardRefAndCssRenderFunction<
+			T,
+			$['CustomCss'],
+			P & $['Props']
+		>,
+	): Patch<this, { Component: T; Props: P }>
+
+	/** Forward ref (but not css), add all props of T */
+	forwardRef<T extends IntrinsicElement>(
+		renderFunction: ForwardRefRenderFunction<
+			T,
+			ComponentProps_<T> & $['Props']
+		>,
+	): Patch<this, { Component: T }>
+
+	/** Forward ref (but not css), add all props of T, add props P */
+	forwardRef<T extends IntrinsicElement, P>(
+		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
+	): Patch<this, { Component: T; Props: P }>
+
+	/** Forward ref (but not css) */
+	forwardRef<
+		T extends NativeElement,
+		P extends Props = { ref?: ForwardedRef<T> | undefined },
+	>(
+		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
+	): Patch<this, { Component: T; Props: P }>
+
+	/** Forward ref and css */
+	forwardRef<
+		T extends NativeElement,
+		P extends Props = { ref?: ForwardedRef<T> | undefined },
+	>(
+		renderFunction: ForwardRefAndCssRenderFunction<
+			T,
+			$['CustomCss'],
+			P & $['Props']
+		>,
+	): Patch<this, { Component: T; Props: P }>
+
+	forwardRef<T extends NativeElement, P extends Props>(
+		renderFunction:
+			| ForwardRefRenderFunction<T, P & $['Props']>
+			| ForwardRefAndCssRenderFunction<T, $['CustomCss'], P & $['Props']>,
+	): IStyled | StaticError {
+		return this._clone({
+			component: renderFunction as never,
+		})
 	}
 
 	//
