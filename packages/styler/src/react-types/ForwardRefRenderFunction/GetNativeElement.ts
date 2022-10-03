@@ -1,18 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { LegacyRef } from 'react'
+import type { ComponentProps, ComponentType, LegacyRef } from 'react'
 
 import type { IntrinsicElement, NativeElement } from '~'
 
-/** Get native element from intrinsic element */
-export type GetNativeElement<T extends NativeElement | IntrinsicElement> =
-	T extends NativeElement
-		? T
-		: T extends IntrinsicElement
-		? 'ref' extends keyof JSX.IntrinsicElements[T]
-			? JSX.IntrinsicElements[T]['ref'] extends LegacyRef<infer R> | undefined
-				? R
-				: never
+/** Get native element from intrinsic element or component */
+export type GetNativeElement<
+	T extends NativeElement | IntrinsicElement | ComponentType<any>,
+> = T extends NativeElement
+	? T
+	: T extends IntrinsicElement | ComponentType<any>
+	? 'ref' extends keyof ComponentProps<T>
+		? ComponentProps<T>['ref'] extends LegacyRef<infer R> | undefined
+			? R
 			: never
 		: never
+	: never

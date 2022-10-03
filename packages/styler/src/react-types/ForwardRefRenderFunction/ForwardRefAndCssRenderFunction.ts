@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { BivariantCallable } from '@voltiso/util'
-import type { ForwardedRef, ReactElement } from 'react'
+import type { ComponentType, ForwardedRef, ReactElement } from 'react'
 
 import type {
 	$ComponentProps,
@@ -23,12 +23,14 @@ export type IForwardRefAndCssRenderFunction = BivariantCallable<
 > & { displayName?: string | undefined }
 
 export interface ForwardRefAndCssRenderFunction<
-	T extends NativeElement | IntrinsicElement,
+	T extends NativeElement | IntrinsicElement | ComponentType<any>,
 	TCss = Css,
 	P = T extends NativeElement
 		? {}
 		: T extends IntrinsicElement
-		? $ComponentProps<T>
+		? Omit<JSX.IntrinsicElements[T], 'ref' | 'css'>
+		: T extends ComponentType<any>
+		? Omit<$ComponentProps<T>, 'ref' | 'css'>
 		: never,
 > {
 	(

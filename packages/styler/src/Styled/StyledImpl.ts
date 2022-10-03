@@ -8,7 +8,7 @@ import type {
 	Throw,
 	UndefinedFromOptional,
 } from '@voltiso/util'
-import type { ForwardedRef, ReactNode } from 'react'
+import type { ComponentType, ForwardedRef, ReactNode } from 'react'
 
 import type {
 	ForwardRefAndCssRenderFunction,
@@ -122,16 +122,16 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	//
 
 	/** Forward ref and css */
-	forwardRef<T extends IntrinsicElement>(
+	forwardRef<T extends IntrinsicElement | ComponentType<any>>(
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
 			$['CustomCss'],
-			$ComponentProps<T> & $['Props']
+			Omit<$ComponentProps<T> & $['Props'], 'ref' | 'css'>
 		>,
 	): ForcePatch<this, { Component: T }>
 
 	/** Forward ref and css, add props P */
-	forwardRef<T extends IntrinsicElement, P extends Props>(
+	forwardRef<T extends IntrinsicElement | ComponentType<any>, P extends Props>(
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
 			$['CustomCss'],
@@ -140,7 +140,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	): ForcePatch<this, { Component: T; Props: P }>
 
 	/** Forward ref (but not css), add all props of T */
-	forwardRef<T extends IntrinsicElement>(
+	forwardRef<T extends IntrinsicElement | ComponentType<any>>(
 		renderFunction: ForwardRefRenderFunction<
 			T,
 			$ComponentProps<T> & $['Props']
@@ -148,24 +148,25 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	): ForcePatch<this, { Component: T }>
 
 	/** Forward ref (but not css), add all props of T, add props P */
-	forwardRef<T extends IntrinsicElement, P extends Props>(
+	forwardRef<T extends IntrinsicElement | ComponentType<any>, P extends Props>(
 		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
 	): ForcePatch<this, { Component: T; Props: P }>
 
 	/** Forward ref (but not css) */
-	forwardRef<T extends NativeElement, P extends Props = {}>(
+	forwardRef<T extends NativeElement, P extends Props>(
 		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
 	): ForcePatch<
 		this,
 		{
 			Component: T
-			Props: FastMergeProps_<
-				{
-					ref?: ForwardedRef<T> | undefined
-					children?: ReactNode | undefined
-				},
-				P
-			>
+			Props: P
+			// Props: FastMergeProps_<
+			// 	{
+			// 		ref?: ForwardedRef<T> | undefined
+			// 		children?: ReactNode | undefined
+			// 	},
+			// 	P
+			// >
 		}
 	>
 

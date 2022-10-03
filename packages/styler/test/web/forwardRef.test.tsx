@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { Assert, Is } from '@voltiso/util'
 import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
@@ -217,6 +217,9 @@ describe('forwardRef', () => {
 			)
 		})
 
+		type B = GetNativeElement<typeof Button>
+		Assert<IsIdentical<B, HTMLButtonElement>>()
+
 		let instance: HTMLButtonElement | null = null
 
 		renderApp(
@@ -239,6 +242,34 @@ describe('forwardRef', () => {
 			margin: '11px',
 			padding: '222px 22px 22px 22px',
 		})
+	})
+
+	it('forward ref and css - component', () => {
+		expect.hasAssertions()
+
+		const Button = style('button').newCssProps({
+			magic: {
+				margin: 123,
+			},
+		})
+
+		const Another = style.forwardRef<typeof Button>((props, ref, css) => {
+			Assert(Is<'ref'>().not.subtypeOf<keyof typeof props>())
+
+			return (
+				<Button
+					ref={ref}
+					css={css}
+					{...props}
+				/>
+			)
+		})
+
+		renderApp(<Another magic />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({ margin: '123px' })
 	})
 
 	it('type-test from api-shop', () => {
