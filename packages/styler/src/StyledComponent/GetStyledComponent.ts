@@ -5,22 +5,23 @@ import type { Merge2, Throw } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 import type { NativeMethods } from 'react-native'
 
+import type { IsReactNative } from '~/IsReactNative'
 import type {
-	CustomStyledComponent,
-	CustomStyledHoc,
+	$ComponentProps,
 	ForwardRefAndCssRenderFunction,
-	InnerProps,
-	IsReactNative,
-	IStylable,
-	StylableLike,
-	StyledComponentWithProps,
+	Props,
+} from '~/react-types'
+import type { InnerProps, IStylable, StylableLike } from '~/Stylable'
+import type {
+	CustomStyledHoc,
 	StyledHoc,
 	StyledHocWithProps,
-	StyledTypeInfo,
-} from '~'
-import type { $ComponentProps, Props } from '~/react-types'
+} from '~/StyledHoc'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
+import type { CustomStyledComponent } from './CustomStyledComponent'
 import type { StyledComponent } from './StyledComponent'
+import type { StyledComponentWithProps } from './StyledComponentWithProps'
 
 export type GetStyledComponentNoCustomCss<
 	C extends StylableLike | NativeElement,

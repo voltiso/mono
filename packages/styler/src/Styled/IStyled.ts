@@ -1,11 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { STYLED_TYPE_INFO as $, StyledData, StyledTypeInfo } from '~'
-import { STYLED_DATA } from '~'
+import type { StyledData } from '~/_/StyledData'
+import type { STYLED_TYPE_INFO } from '~/_/symbols'
+import { STYLED_DATA } from '~/_/symbols'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 export interface IStyled {
-	readonly [$]: StyledTypeInfo
+	readonly [STYLED_TYPE_INFO]: StyledTypeInfo
 	readonly [STYLED_DATA]: StyledData
 }
 

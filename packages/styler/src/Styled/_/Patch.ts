@@ -3,14 +3,12 @@
 
 import type { $Merge2_, Merge2_, Throw } from '@voltiso/util'
 
-import type {
-	GetStyledImplN,
-	StylableLike,
-	StyledLike,
-	StyledTypeInfo,
-} from '~'
 import type { STYLED_TYPE_INFO as TI } from '~/_/symbols'
 import type { ComponentPropsWithoutRef_, MergeProps_ } from '~/react-types'
+import type { StylableLike } from '~/Stylable'
+import type { StyledLike } from '~/Styled'
+import type { GetStyledImplN } from '~/StyledComponent'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import type { OmitProps_ } from './OmitProps'
 

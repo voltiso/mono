@@ -3,7 +3,7 @@
 
 import type { Merge2 } from '@voltiso/util'
 
-import type { Css, CustomCss } from '~'
+import type { Css, CustomCss } from '~/Css'
 import type { Stylable, StylableLike } from '~/Stylable'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
 

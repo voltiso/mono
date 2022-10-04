@@ -3,7 +3,8 @@
 
 import type { ComponentProps, ComponentType, LegacyRef } from 'react'
 
-import type { IntrinsicElement, NativeElement } from '~'
+import type { IntrinsicElement } from '~/Stylable'
+import type { NativeElement } from '~/StyledComponent'
 
 /** Get native element from intrinsic element or component */
 export type GetNativeElement<

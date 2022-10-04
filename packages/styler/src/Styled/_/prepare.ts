@@ -7,7 +7,7 @@
 import { $assert } from '@voltiso/assertor'
 import { isPlainObject } from '@voltiso/util'
 
-import type { CssProp } from '~'
+import type { CssProp } from '~/_/CssProps'
 import { isThemePath } from '~/ThemePath'
 
 export type WithNested = { nested: object }

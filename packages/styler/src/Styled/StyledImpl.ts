@@ -10,15 +10,6 @@ import type {
 } from '@voltiso/util'
 import type { ComponentType, ForwardedRef, ReactNode } from 'react'
 
-import type {
-	ForwardRefAndCssRenderFunction,
-	IntrinsicElement,
-	IStyled,
-	NativeElement,
-	Stylable,
-	StyledTypeInfo,
-} from '~'
-import { isStyled } from '~'
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
 import type { IStyledDataMod, StyledData } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
@@ -26,9 +17,13 @@ import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
 import type {
 	$ComponentProps,
 	FastMergeProps_,
+	ForwardRefAndCssRenderFunction,
 	ForwardRefRenderFunction,
 	Props,
 } from '~/react-types'
+import type { IntrinsicElement, Stylable } from '~/Stylable'
+import type { NativeElement } from '~/StyledComponent'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import type { $GetStyledLikeProps as P } from './_'
 import { getComponent } from './_/getComponent'
@@ -43,6 +38,8 @@ import type {
 	GetStyledCss as C,
 	GetStyledTypeInfo as G,
 } from './GetStyledTypeInfo'
+import type { IStyled } from './IStyled'
+import { isStyled } from './IStyled'
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
 	declare readonly [$]: G<$>;

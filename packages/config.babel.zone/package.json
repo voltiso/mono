@@ -1,48 +1,48 @@
 {
-	"name": "@voltiso/config.babel.zone",
-	"version": "1.0.0",
-	"license": "MIT",
-	"repository": "git://github.com/voltiso/mono.git",
-	"__________": "__________",
-	"sideEffects": false,
-	"__________EXPORTS FALLBACK": "__________",
-	"types": "dist/cjs/index.d.ts",
-	"main": "dist/cjs/index.js",
-	"__________PUBLISH WHITELIST": "__________",
-	"files": [
-		"dist"
-	],
-	"__________SCRIPTS": "__________",
-	"scripts": {
-		"__________LINT": "__________",
-		"lint": "v lint",
-		"depcheck": "depcheck",
-		"lint:eslint": "v lintEslint",
-		"lint:tsc": "v lintTsc",
-		"fix": "v fix",
-		"__________BUILD": "__________",
-		"build": "v build",
-		"build:cjs": "v buildCjs",
-		"__________PREPARE": "__________",
-		"prepublishOnly": "v prepublishOnly",
-		"prepublishOnly:rest": "run-p build test lint",
-		"__________MISC": "__________",
-		"clean": "v clean"
-	},
-	"__________DEPS": "__________",
-	"dependencies": {
-		"@voltiso/config.babel.lib": "workspace:^"
-	},
-	"peerDependencies": {
-		"@babel/core": "*",
-		"@babel/plugin-transform-async-to-generator": "*",
-		"@babel/preset-env": "*",
-		"@babel/preset-typescript": "*"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.19.3",
-		"@voltiso/config.ts.build.cjs": "workspace:^",
-		"@voltiso/config.ts.build.esm": "workspace:^",
-		"@voltiso/script": "workspace:^"
-	}
+  "name": "@voltiso/config.babel.zone",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "v buildCjs",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnly",
+    "prepublishOnly:rest": "run-p build test lint",
+    "__________MISC": "__________",
+    "clean": "v clean"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/config.babel.lib": "workspace:^"
+  },
+  "peerDependencies": {
+    "@babel/core": "*",
+    "@babel/plugin-transform-async-to-generator": "*",
+    "@babel/preset-env": "*",
+    "@babel/preset-typescript": "*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/script": "workspace:^"
+  }
 }

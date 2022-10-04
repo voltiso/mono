@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Css, StyledTypeInfo } from '~'
 import type { CssProps } from '~/_/CssProps/CssProps'
+import type { Css } from '~/Css'
 import type { IStack } from '~/Styled/_/Stack'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 export interface StyledData<
 	$ extends StyledTypeInfo = StyledTypeInfo,

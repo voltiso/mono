@@ -4,15 +4,13 @@
 import type { BivariantCallable } from '@voltiso/util'
 import type { ComponentType, ForwardedRef, ReactElement } from 'react'
 
-import type {
-	$ComponentProps,
-	GetNativeElement,
-	IntrinsicElement,
-	NativeElement,
-} from '~'
 import type { Css } from '~/Css'
+import type { IntrinsicElement } from '~/Stylable'
+import type { NativeElement } from '~/StyledComponent'
 
+import type { $ComponentProps } from '../ComponentProps'
 import type { IForwardedRef } from '../ForwardRefExoticComponent'
+import type { GetNativeElement } from './GetNativeElement'
 
 export type IForwardRefAndCssRenderFunction = BivariantCallable<
 	(

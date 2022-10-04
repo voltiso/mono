@@ -3,9 +3,9 @@
 
 import type { _, Merge2_ } from '@voltiso/util'
 
-import type { StyledTypeInfo } from '~'
 import type { Props } from '~/react-types'
 import type { Styled } from '~/Styled'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import type { StyledHocCall } from './StyledHocCall'
 

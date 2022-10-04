@@ -1,13 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomStyledComponent, NativeElement } from '~'
 import type {
 	ComponentPropsWithRef_,
 	FastMergeProps_,
 	Props,
 } from '~/react-types'
 import type { OuterProps, StylableLike } from '~/Stylable'
+
+import type { CustomStyledComponent } from './CustomStyledComponent'
+import type { NativeElement } from './GetStyledComponent'
 
 export type StyledComponentProps<
 	C extends StylableLike | NativeElement,

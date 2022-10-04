@@ -7,14 +7,14 @@ import type { ForwardRefExoticComponent } from 'react'
 import type {
 	ComponentPropsWithRef_,
 	FastMergeProps_,
-	NativeElement,
 	Props,
-	StylableLike,
-	Styled,
-	StyledComponentProps,
-	StyledLike,
-	StyledTypeInfo,
-} from '~'
+} from '~/react-types'
+import type { StylableLike } from '~/Stylable'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
+
+import type { Styled, StyledLike } from '../Styled'
+import type { NativeElement } from './GetStyledComponent'
+import type { StyledComponentProps } from './StyledComponentWithProps'
 
 /** With Element already provided */
 export interface CustomStyledComponent<

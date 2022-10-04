@@ -5,8 +5,8 @@ import type {
 	ComponentPropsWithRef_,
 	ElementTypeLike,
 	MergeProps_,
-	StyledTypeInfo,
-} from '~'
+} from '~/react-types'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import type {
 	GetStyledLikeTypeInfo as GL,

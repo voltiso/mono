@@ -3,7 +3,7 @@
 
 import type { Merge2 } from '@voltiso/util'
 
-import type { STYLED_TYPE_INFO as $ } from '~'
+import type { STYLED_TYPE_INFO as $ } from '~/_/symbols'
 import type { StylableLike } from '~/Stylable'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
 

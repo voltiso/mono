@@ -3,11 +3,11 @@
 
 import type { FC } from 'react'
 
+import type { IForwardRefRenderFunction } from '~/_/StyledData'
 import type {
 	IForwardRefAndCssRenderFunction,
 	IForwardRefExoticComponent,
-	IForwardRefRenderFunction,
-} from '~'
+} from '~/react-types'
 
 /**
  * ! hacky !

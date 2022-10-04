@@ -7,11 +7,15 @@ import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'
 
-import type { IForwardRefAndCssRenderFunction, StyledTypeInfo } from '~'
 import type { IForwardRefRenderFunction, StyledData } from '~/_/StyledData'
 import type { Css } from '~/Css/Css'
-import type { IForwardedRef, Props } from '~/react-types'
+import type {
+	IForwardedRef,
+	IForwardRefAndCssRenderFunction,
+	Props,
+} from '~/react-types'
 import type { NativeInnerProps, OuterProps, WebInnerProps } from '~/Stylable'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import { consumeCssProps } from './consumeCssProps'
 import { prepare } from './prepare'

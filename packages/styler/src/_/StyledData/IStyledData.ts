@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NativeElement } from '~'
 import type {
 	IndexedCssProps,
 	IndexedCssPropsSingle,
@@ -9,6 +8,7 @@ import type {
 import type { Props } from '~/react-types'
 import type { Stylable, StylableLike, StylableRenderFunction } from '~/Stylable'
 import type { IStack } from '~/Styled/_/Stack'
+import type { NativeElement } from '~/StyledComponent'
 
 export interface IStyledData<CustomCss extends object> {
 	component: StylableLike | null

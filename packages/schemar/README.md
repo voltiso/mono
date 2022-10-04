@@ -16,11 +16,11 @@ const myShape = {
 
 const value = s.schema(myShape).validate({ name: 'a', version: '1.0.0' })
 // --> {
-// 	name: 'a',
-// 	version: '1.0.0',
-// 	dependencies: {
-// 		'@voltiso/schemar': '9.0.0',
-// 	},
+//  	name: 'a',
+//  	version: '1.0.0',
+//  	dependencies: {
+//      '@voltiso/schemar': '9.0.0',
+// 	 },
 // }
 ```
 
@@ -31,22 +31,22 @@ const mySchema = s.schema(myShape)
 
 type MySchema = typeof mySchema.OutputType
 // --> {
-// 	name: string
-// 	version: string
-// 	license?: string
-// 	dependencies: {
-// 		'@voltiso/schemar': string
-// 	}
+// 	 name: string
+// 	 version: string
+// 	 license?: string
+// 	 dependencies: {
+// 	 	 '@voltiso/schemar': string
+// 	 }
 // }
 
 type MySchemaInput = typeof mySchema.InputType
 // --> {
-// 	name: string
-// 	version: string
-// 	license?: string
-// 	dependencies?: {
-// 		'@voltiso/schemar'?: string
-// 	}
+//   name: string;
+//   version: string;
+//   license?: string | undefined;
+//   dependencies?: {
+//     "@voltiso/schemar"?: string | undefined;
+//   } | undefined;
 // }
 ```
 
@@ -61,8 +61,8 @@ const myShape = {
 
 const result = s.schema(myShape).exec({ field: 123 })
 // --> {
-// 	isValid: true,
-// 	issues: [],
-// 	value: { field: 123 },
+// 	 isValid: true,
+// 	 issues: [],
+// 	 value: { field: 123 },
 // }
 ```

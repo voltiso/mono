@@ -4,11 +4,11 @@
 import type { StaticError } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { Styled } from '~'
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
 
 import type { IStyled } from './IStyled'
+import type { Styled } from './StyledImpl'
 
 describe('Styled', () => {
 	it('generic', <P extends Props, C extends IStylable | null>() => {

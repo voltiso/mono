@@ -3,12 +3,9 @@
 
 import type { ForwardRefRenderFunction } from 'react'
 
-import type {
-	Css,
-	ForwardRefAndCssRenderFunction,
-	InnerProps,
-	NativeElement,
-} from '~'
+import type { Css } from '~/Css'
+import type { ForwardRefAndCssRenderFunction } from '~/react-types'
+import type { NativeElement } from '~/StyledComponent'
 
 import type {
 	IntrinsicElementLike,
@@ -22,6 +19,7 @@ import type {
 	IStylableJsxConstruct,
 	StylableJsxConstructLike,
 } from './_/StylableJsxConstruct/StylableJsxConstruct'
+import type { InnerProps } from './InnerProps'
 
 export type StylableLike =
 	| StylableJsxCallLike

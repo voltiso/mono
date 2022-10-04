@@ -42,8 +42,8 @@
   "dependencies": {
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "@voltiso/util.firestore": "workspace:^0.1.0",
-    "chalk": "^4",
+    "@voltiso/util.firestore": "workspace:^",
+    "chalk": "^4.1.2",
     "fast-equals": "^4.0.3",
     "js-yaml": "^4.1.0"
   },

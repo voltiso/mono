@@ -4,14 +4,11 @@
 import type { _ } from '@voltiso/util'
 import type { ExoticComponent } from 'react'
 
-import type {
-	ComponentClassLike,
-	FunctionComponentLike,
-	GetStyledComponentImpl,
-	StylableIntrinsic,
-	StyledLike,
-	StyledTypeInfo,
-} from '~'
+import type { ComponentClassLike, FunctionComponentLike } from '~/react-types'
+import type { StylableIntrinsic } from '~/Stylable'
+import type { StyledLike } from '~/Styled'
+import type { GetStyledComponentImpl } from '~/StyledComponent'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 export interface StyledHocCall<
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,

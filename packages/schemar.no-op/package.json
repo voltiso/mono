@@ -49,7 +49,7 @@
   "devDependencies": {
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
-    "@voltiso/util": "workspace:^45.0.0"
+    "@voltiso/util": "workspace:^"
   },
   "__________MISC": "__________",
   "typeCoverage": {

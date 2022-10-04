@@ -46,7 +46,7 @@
     "package-json": "^8.1.0"
   },
   "devDependencies": {
-    "@voltiso/config.ts": "workspace:^1.0.0",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^"

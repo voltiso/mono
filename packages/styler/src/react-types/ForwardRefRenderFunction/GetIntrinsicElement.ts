@@ -3,7 +3,7 @@
 
 import type { RefObject } from 'react'
 
-import type { NativeElement } from '~'
+import type { NativeElement } from '~/StyledComponent'
 
 /** Slow and not perfect - avoid conversion this way (native to intrinsic) */
 export type GetIntrinsicElement<T extends NativeElement> = {

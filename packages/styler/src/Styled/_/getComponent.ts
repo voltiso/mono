@@ -4,10 +4,12 @@
 import type { ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 
-import type { IForwardRefRenderFunction, StylableLike, StyledTypeInfo } from '~'
+import type { IForwardRefRenderFunction } from '~/_/StyledData'
 import type { StyledData } from '~/_/StyledData/StyledData'
+import type { StylableLike } from '~/Stylable'
 import type { OuterProps } from '~/Stylable/OuterProps'
 import { getElementName } from '~/Styled/_/getElementName'
+import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import { defineFunctionComponent } from './defineFunctionComponent'
 import { render } from './render'

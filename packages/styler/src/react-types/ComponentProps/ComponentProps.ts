@@ -8,9 +8,8 @@ import type {
 	RefAttributes,
 } from 'react'
 
-import type { ForwardRefAndCssRenderFunction } from '~'
-
 import type { ComponentLike, ReactElementLike } from '../ElementType'
+import type { ForwardRefAndCssRenderFunction } from '../ForwardRefRenderFunction'
 
 export type JSXElementConstructorLike<P> =
 	| ((props: P) => ReactElementLike | null)
