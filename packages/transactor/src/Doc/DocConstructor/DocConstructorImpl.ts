@@ -18,7 +18,7 @@ import {
 	zip,
 } from '@voltiso/util'
 
-import type { DocLike, IAggregatorHandlers, IDoc, RefLike } from '~'
+import type { DocLike, DocRefLike, IAggregatorHandlers, IDoc } from '~'
 import { isStrongDocRef, isWeakDocRef, TransactorError } from '~'
 import { DocCall, DTI } from '~/Doc'
 import type { GI } from '~/Doc/_/GDoc'
@@ -106,143 +106,141 @@ export class DocConstructorImpl {
 		)
 	}
 
-	static aggregate() {
-		return (name: string, handlers: IAggregatorHandlers): any => {
-			assertNotPolluting(name)
+	static aggregateInto(
+		_targetTag: string,
+		name: string,
+		handlers: IAggregatorHandlers,
+	): any {
+		assertNotPolluting(name)
 
-			const autoCreateTarget =
-				typeof handlers.autoCreateTarget !== 'undefined'
-					? handlers.autoCreateTarget
-					: true
+		const autoCreateTarget =
+			typeof handlers.autoCreateTarget !== 'undefined'
+				? handlers.autoCreateTarget
+				: true
 
-			return this.after(
-				`aggregate<${name}>`,
-				async ({ before, after, path }) => {
-					// ignore self-change
-					if (
-						before &&
-						after &&
-						// eslint-disable-next-line security/detect-object-injection
-						before.__voltiso?.aggregateSource[name] !==
-							// eslint-disable-next-line security/detect-object-injection
-							after.__voltiso?.aggregateSource[name]
-					) {
-						return
-					}
+		return this.after(`aggregate<${name}>`, async ({ before, after, path }) => {
+			// ignore self-change
+			if (
+				before &&
+				after &&
+				// eslint-disable-next-line security/detect-object-injection
+				before.__voltiso?.aggregateSource[name] !==
+					// eslint-disable-next-line security/detect-object-injection
+					after.__voltiso?.aggregateSource[name]
+			) {
+				return
+			}
 
-					// console.log('aggregate', before, after)
-					const data = before || after
-					$assert(data)
-					$assert(data.__voltiso)
+			// console.log('aggregate', before, after)
+			const data = before || after
+			$assert(data)
+			$assert(data.__voltiso)
 
-					if (handlers.filter) {
-						const filterResult = await handlers.filter.call(data)
-						if (!filterResult) return
-					}
+			if (handlers.filter) {
+				const filterResult = await handlers.filter.call(data)
+				if (!filterResult) return
+			}
 
-					const targetHandlerResult = handlers.target.call(data)
-					const awaitedTargetHandlerResult = await targetHandlerResult
+			const targetHandlerResult = handlers.target.call(data)
+			const awaitedTargetHandlerResult = await targetHandlerResult
 
-					const [targets, awaitedTargets] =
-						awaitedTargetHandlerResult === null
-							? [[targetHandlerResult as RefLike], [awaitedTargetHandlerResult]]
-							: Array.isArray(awaitedTargetHandlerResult)
-							? [
-									awaitedTargetHandlerResult,
-									await Promise.all(awaitedTargetHandlerResult),
-							  ]
-							: [
-									[targetHandlerResult as DocLike | RefLike],
-									[awaitedTargetHandlerResult],
-							  ]
+			const [targets, awaitedTargets] =
+				awaitedTargetHandlerResult === null
+					? [[targetHandlerResult as DocRefLike], [awaitedTargetHandlerResult]]
+					: Array.isArray(awaitedTargetHandlerResult)
+					? [
+							awaitedTargetHandlerResult,
+							await Promise.all(awaitedTargetHandlerResult),
+					  ]
+					: [
+							[targetHandlerResult as DocLike | DocRefLike],
+							[awaitedTargetHandlerResult],
+					  ]
 
-					for (const [target, awaitedTarget] of zip(targets, awaitedTargets)) {
-						let finalTarget = awaitedTarget
+			for (const [target, awaitedTarget] of zip(targets, awaitedTargets)) {
+				let finalTarget = awaitedTarget
 
-						if (!finalTarget) {
-							const handlerReturnedRef =
-								isWeakDocRef(target) || isStrongDocRef(target)
+				if (!finalTarget) {
+					const handlerReturnedRef =
+						isWeakDocRef(target) || isStrongDocRef(target)
 
-							if (handlerReturnedRef && autoCreateTarget) {
-								try {
-									// eslint-disable-next-line no-await-in-loop
-									finalTarget = await target.set()
-								} catch (error) {
-									// eslint-disable-next-line no-console
-									console.error(
-										`aggregate trigger for source '${path.toString()}': unable to auto-create target: ${target.path.toString()}`,
-									)
-									throw error
-								}
-							} else {
-								let additionalInfo = ''
-								if (!autoCreateTarget)
-									additionalInfo =
-										' - hint: pass `autoCreateTarget: true` to your aggregator options if this would not violate your constraints'
-
-								const targetDescription = handlerReturnedRef
-									? target.path.toString()
-									: `null - for more info, return DocRef instead of null Doc from your target() handler - this will also make it possible to auto-create target document if 'autoCreateTarget' is set (note: your target() function must not be async, because DocRef is derived from PromiseLike and is automatically unwrapped when awaited)${additionalInfo}`
-
-								throw new TransactorError(
-									`aggregate trigger for source '${path.toString()}': target does not exist: '${targetDescription}'${additionalInfo}`,
-								)
-							}
-						}
-
-						// eslint-disable-next-line security/detect-object-injection
-						const sourceInfo = data.__voltiso.aggregateSource[name]
-
-						assumeType<IDoc>(finalTarget)
-
-						// eslint-disable-next-line security/detect-object-injection
-						const targetInfo = finalTarget.data.__voltiso?.aggregateTarget[
-							name
-						] || {
-							value: s
-								// eslint-disable-next-line security/detect-object-injection
-								.schema(finalTarget.aggregateSchemas[name])
-								.validate(handlers.initialValue),
-
-							numSources: 0,
-						}
-
-						const wasAlreadyProcessed = sourceInfo
-
-						if (before && wasAlreadyProcessed) {
+					if (handlerReturnedRef && autoCreateTarget) {
+						try {
 							// eslint-disable-next-line no-await-in-loop
-							targetInfo.value = (await handlers.exclude.call(
-								before,
-								targetInfo.value,
-							)) as never
-							targetInfo.numSources -= 1
+							finalTarget = await target.set()
+						} catch (error) {
+							// eslint-disable-next-line no-console
+							console.error(
+								`aggregate trigger for source '${path.toString()}': unable to auto-create target: ${target.path.toString()}`,
+							)
+							throw error
 						}
+					} else {
+						let additionalInfo = ''
+						if (!autoCreateTarget)
+							additionalInfo =
+								' - hint: pass `autoCreateTarget: true` to your aggregator options if this would not violate your constraints'
 
-						$assert(targetInfo.numSources >= 0)
+						const targetDescription = handlerReturnedRef
+							? target.path.toString()
+							: `null - for more info, return DocRef instead of null Doc from your target() handler - this will also make it possible to auto-create target document if 'autoCreateTarget' is set (note: your target() function must not be async, because DocRef is derived from PromiseLike and is automatically unwrapped when awaited)${additionalInfo}`
 
-						if (after) {
-							// eslint-disable-next-line no-await-in-loop
-							targetInfo.value = (await handlers.include.call(
-								after,
-								targetInfo.value,
-							)) as never
-							targetInfo.numSources += 1
-
-							// update source
-							$assert(after.__voltiso)
-							// eslint-disable-next-line security/detect-object-injection
-							after.__voltiso.aggregateSource[name] = true
-						}
-
-						// update target
-						$assert(finalTarget.data.__voltiso)
-						// eslint-disable-next-line security/detect-object-injection
-						finalTarget.data.__voltiso.aggregateTarget[name] =
-							targetInfo as never
+						throw new TransactorError(
+							`aggregate trigger for source '${path.toString()}': target does not exist: '${targetDescription}'${additionalInfo}`,
+						)
 					}
-				},
-			)
-		}
+				}
+
+				// eslint-disable-next-line security/detect-object-injection
+				const sourceInfo = data.__voltiso.aggregateSource[name]
+
+				assumeType<IDoc>(finalTarget)
+
+				// eslint-disable-next-line security/detect-object-injection
+				const targetInfo = finalTarget.data.__voltiso?.aggregateTarget[
+					name
+				] || {
+					value: s
+						// eslint-disable-next-line security/detect-object-injection
+						.schema(finalTarget.aggregateSchemas[name])
+						.validate(handlers.initialValue),
+
+					numSources: 0,
+				}
+
+				const wasAlreadyProcessed = sourceInfo
+
+				if (before && wasAlreadyProcessed) {
+					// eslint-disable-next-line no-await-in-loop
+					targetInfo.value = (await handlers.exclude.call(
+						before,
+						targetInfo.value,
+					)) as never
+					targetInfo.numSources -= 1
+				}
+
+				$assert(targetInfo.numSources >= 0)
+
+				if (after) {
+					// eslint-disable-next-line no-await-in-loop
+					targetInfo.value = (await handlers.include.call(
+						after,
+						targetInfo.value,
+					)) as never
+					targetInfo.numSources += 1
+
+					// update source
+					$assert(after.__voltiso)
+					// eslint-disable-next-line security/detect-object-injection
+					after.__voltiso.aggregateSource[name] = true
+				}
+
+				// update target
+				$assert(finalTarget.data.__voltiso)
+				// eslint-disable-next-line security/detect-object-injection
+				finalTarget.data.__voltiso.aggregateTarget[name] = targetInfo as never
+			}
+		})
 	}
 
 	//

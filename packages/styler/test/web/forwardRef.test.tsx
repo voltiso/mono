@@ -242,6 +242,22 @@ describe('forwardRef', () => {
 			margin: '11px',
 			padding: '222px 22px 22px 22px',
 		})
+
+		const AnotherButton = Button.css({ margin: 42 })
+
+		renderApp(
+			<AnotherButton
+				data-testid='button'
+				content='test'
+				css={{ margin: 4242 }}
+			/>,
+		)
+
+		const anotherButton = screen.getByTestId('button')
+
+		expect(anotherButton).toHaveStyle({
+			margin: '4242px',
+		})
 	})
 
 	it('forward ref and css - component', () => {

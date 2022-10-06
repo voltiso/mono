@@ -45,6 +45,10 @@ export function toDatabaseUpdate(
 
 	if (isDeleteIt(updates)) return ctx.module.FieldValue.delete()
 
+	// if (Array.isArray(updates)) {
+	// 	return updates.map(x => toDatabaseUpdate(ctx, x)) as never
+	// }
+
 	if (isPlainObject(updates)) {
 		const r: FirestoreLike.UpdateData = {}
 
@@ -95,6 +99,10 @@ export function toDatabaseSet(
 		)
 
 	$assert(!isDeleteIt(obj))
+
+	if (Array.isArray(obj)) {
+		return obj.map(x => toDatabaseSet(ctx, x)) as never
+	}
 
 	if (isPlainObject(obj)) {
 		const r: FirestoreLike.DocumentData = {}

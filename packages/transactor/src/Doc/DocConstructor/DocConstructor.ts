@@ -6,12 +6,13 @@ import type * as t from '@voltiso/schemar.types'
 import type { _, $_, Merge2, Throw } from '@voltiso/util'
 
 import type { AggregatorHandlers } from '~/Aggregator'
-import type { Doc, DocContext, DocLike, DocTI, DTI } from '~/Doc'
+import type { Doc, DocContext, DocTI, DTI } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
 import type { Promisify } from '~/Doc/_/GMethodPromises'
 import type { NewFields } from '~/Doc/_/NewFields'
 import type { DocTag } from '~/DocTypes'
+import type { DocTypes } from '~/DocTypes-module-augmentation'
 import type { Method } from '~/Method'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
@@ -74,13 +75,18 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		m: M,
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
 
-	// eslint-disable-next-line etc/no-misused-generics
-	aggregate<Target extends DocLike>(): <
-		Name extends keyof Target[DTI]['aggregates'],
+	aggregateInto<
+		Target extends keyof DocTypes,
+		Name extends keyof DocTypes[Target][DTI]['aggregates'],
 	>(
+		target: Target,
 		name: Name,
-		handlers: AggregatorHandlers<this, Target, Name>,
-	) => DocConstructor<TI>
+		handlers: AggregatorHandlers<
+			DocConstructor<TI>,
+			DocTypes[Target],
+			t.Type_<DocTypes[Target][DTI]['aggregates'][Name]>
+		>,
+	): DocConstructor<TI>
 
 	get schemableWithoutId(): $_<
 		TI['publicOnCreation'] & TI['public'] & TI['private'] & {}
@@ -98,6 +104,5 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 	get schemaWithId(): s.Object<this['schemableWithId']>
 
-	// get idSchema(): TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
-	get idSchema(): TI['id'] extends undefined ? t.String : TI['id']
+	get idSchema(): unknown extends TI['id'] ? t.String : TI['id']
 }

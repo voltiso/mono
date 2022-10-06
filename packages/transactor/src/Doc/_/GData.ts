@@ -2,11 +2,26 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InputType, Type, Type_ } from '@voltiso/schemar.types'
-import type { _, $_ } from '@voltiso/util'
+import type { _, $_, Merge2Reverse_ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
 import type { DocLike, ExecutionContext, IDoc } from '~/Doc'
-import type { PartialIntrinsicFields } from '~/schemas/sIntrinsicFields'
+import type { VoltisoEntry } from '~/schemas/sIntrinsicFields'
+
+/** @internal */
+export type _GetAggregateTargetEntry<T> = [
+	{
+		value: T
+		numSources: number
+	},
+][0]
+
+export type _GetAggregateTarget<T> = [
+	{
+		// eslint-disable-next-line etc/no-internal
+		[k in keyof T]: _GetAggregateTargetEntry<T[k]>
+	},
+][0]
 
 /** @inline */
 export type GetData<
@@ -14,12 +29,19 @@ export type GetData<
 		publicOnCreation?: any
 		public?: any
 		private?: any
+		aggregates?: any
 	},
 > = $_<
 	Type_<TI['publicOnCreation']> &
 		Type_<TI['public']> &
-		Type_<TI['private']> &
-		PartialIntrinsicFields
+		Type_<TI['private']> & {
+			__voltiso?: Merge2Reverse_<
+				{
+					aggregateTarget: _GetAggregateTarget<Type_<TI['aggregates']>>
+				},
+				VoltisoEntry
+			>
+		}
 >
 
 /** @inline */

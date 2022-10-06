@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { Type } from '@voltiso/schemar.types'
+import type { Type_ } from '@voltiso/schemar.types'
 
 export const sVoltisoEntry = s
 	.object({
@@ -10,7 +10,7 @@ export const sVoltisoEntry = s
 
 		aggregateTarget: s
 			.record(s.string, {
-				value: s.any,
+				value: s.any, // s.unknown.Narrow<NestedData>(),
 				numSources: s.number,
 			})
 			.default({}),
@@ -18,6 +18,8 @@ export const sVoltisoEntry = s
 		aggregateSource: s.record(s.string, s.literal(true)).default({}),
 	})
 	.default({})
+
+export type VoltisoEntry = /** @inline */ Type_<typeof sVoltisoEntry>
 
 export const sIntrinsicFields = s.infer({
 	__voltiso: sVoltisoEntry,
@@ -27,5 +29,5 @@ export type IntrinsicFieldsSchema = typeof sIntrinsicFields.simple
 export type DeepPartialIntrinsicFieldsSchema =
 	typeof sIntrinsicFields.deepPartial.simple
 
-export type IntrinsicFields = /** @inline */ Type<typeof sIntrinsicFields>
+export type IntrinsicFields = /** @inline */ Type_<typeof sIntrinsicFields>
 export type PartialIntrinsicFields = Partial<IntrinsicFields>

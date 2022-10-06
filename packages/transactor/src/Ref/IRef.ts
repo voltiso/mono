@@ -11,11 +11,11 @@ import type { DocFieldPath } from './DocFieldPath'
 export const IS_DOC_REF = Symbol('IS_DOC_REF')
 export type IS_DOC_REF = typeof IS_DOC_REF
 
-export interface RefBaseLike {
+export interface RefLike {
 	[IS_DOC_REF]: true
 }
 
-export interface IRefBase extends RefBaseLike {
+export interface IRefBase extends RefLike {
 	[IS_DOC_REF]: true
 
 	[DTI]: DocTILike
@@ -38,6 +38,6 @@ export interface IRefBase extends RefBaseLike {
 	toJSON(): object
 }
 
-export interface RefLike extends RefBaseLike, PromiseLike<DocLike | null> {}
+export interface DocRefLike extends RefLike, PromiseLike<DocLike | null> {}
 
 export interface IRef extends IRefBase, PromiseLike<IDoc | null> {}

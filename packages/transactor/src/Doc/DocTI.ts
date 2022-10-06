@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemaLike } from '@voltiso/schemar.types'
-
 /** Doc Type Info Tag */
 // export const DTI = Symbol('DTI')
 // export declare const DTI: unique symbol // problematic with esbuild
@@ -28,7 +26,7 @@ export interface DocTILike {
 
 	methods: object
 
-	aggregates: {}
+	aggregates: any
 }
 
 /**
@@ -37,7 +35,5 @@ export interface DocTILike {
  * - Every Doc Type Info (`DocTI`) is assignable to it
  */
 export interface DocTI extends DocTILike {
-	id: unknown
-
-	aggregates: Record<string, SchemaLike>
+	aggregates: {}
 }

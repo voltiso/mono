@@ -40,7 +40,7 @@
     "@voltiso/util.react": "workspace:^"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.19",
+    "@types/react": "^18.0.21",
     "@voltiso/observer": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/schemar.types": "workspace:^",

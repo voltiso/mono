@@ -60,7 +60,19 @@ describe('Doc util', () => {
 		Assert<
 			IsIdentical<
 				X,
-				{ [x: string]: unknown; __voltiso?: IntrinsicFields['__voltiso'] }
+				{
+					[x: string]: unknown
+					__voltiso?: {
+						aggregateTarget: {
+							[x: string]: {
+								value: unknown
+								numSources: number
+							}
+						}
+						numRefs: number
+						aggregateSource: Record<string, true>
+					}
+				}
 			>
 		>()
 	})
@@ -69,6 +81,17 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		type X = GetData<DocTI>
-		Assert<IsIdentical<X, { __voltiso?: IntrinsicFields['__voltiso'] }>>()
+		Assert<
+			IsIdentical<
+				X,
+				{
+					__voltiso?: {
+						aggregateTarget: {}
+						numRefs: number
+						aggregateSource: Record<string, true>
+					}
+				}
+			>
+		>()
 	})
 })

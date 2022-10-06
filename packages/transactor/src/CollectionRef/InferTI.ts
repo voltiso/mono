@@ -15,8 +15,9 @@ export type InferTIFromCls<Cls extends DocConstructorLike> = InferTIFromDoc<
 	InstanceType<Cls>
 >
 
-export type InferTI<X> = X extends DocConstructorLike
-	? InferTIFromCls<X>
-	: X extends DocLike
-	? InferTIFromDoc<X>
-	: never
+export type InferTI<X extends DocConstructorLike | DocLike> =
+	X extends DocConstructorLike
+		? InferTIFromCls<X>
+		: X extends DocLike
+		? InferTIFromDoc<X>
+		: never

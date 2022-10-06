@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.react",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -40,6 +40,7 @@
     "react-intersection-observer": "^9.4.0"
   },
   "peerDependencies": {
+    "@types/react": "^18.0.21",
     "react": "^18.0.0 || ^17.0.0"
   },
   "devDependencies": {
@@ -55,7 +56,7 @@
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.70.1"
+    "react-native": "^0.70.2"
   },
   "__________MISC": "__________",
   "engines": {

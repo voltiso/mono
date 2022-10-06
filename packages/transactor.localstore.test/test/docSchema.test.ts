@@ -11,7 +11,13 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc({
+declare module '@voltiso/transactor' {
+	interface DocTypes {
+		xyz: Doctor
+	}
+}
+
+class Doctor extends Doc('xyz')({
 	id: s.string.maxLength(3),
 
 	public: {

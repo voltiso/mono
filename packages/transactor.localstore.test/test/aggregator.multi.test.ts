@@ -2,8 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type { ISchema } from '@voltiso/schemar.types'
+import type { DTI, GetData } from '@voltiso/transactor'
 import { Doc, sTimestamp } from '@voltiso/transactor'
-import { nextDay } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, nextDay } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
@@ -33,7 +36,7 @@ class ShiftBase extends Doc('shift')({
 	},
 }) {}
 
-class Shift extends ShiftBase.aggregate<Day>()('shifts', {
+class Shift extends ShiftBase.aggregateInto('day', 'shifts', {
 	target() {
 		const dayIds = [] as string[]
 
@@ -72,7 +75,7 @@ class Day extends Doc('day')({
 	id: sDate,
 
 	aggregates: {
-		shifts: s.array(ShiftBase.schemableWithId).default([]),
+		shifts: s.array(ShiftBase.schemableWithId).default([]).simple,
 	},
 }) {}
 
@@ -83,6 +86,34 @@ const days = db.register(Day)
 describe('aggregator', () => {
 	it('multi', async () => {
 		expect.hasAssertions()
+
+		Assert<IsIdentical<Doc[DTI]['aggregates'], {}>>()
+
+		type DA = Day[DTI]['aggregates']
+		Assert.is<DA, { shifts: ISchema }>()
+
+		type A = GetData<Day[DTI]>
+		Assert<
+			IsIdentical<
+				A,
+				{
+					__voltiso?: {
+						aggregateTarget: {
+							shifts: {
+								value: {
+									id: string
+									from: Date
+									to: Date
+								}[]
+								numSources: number
+							}
+						}
+						numRefs: number
+						aggregateSource: Record<string, true>
+					}
+				}
+			>
+		>()
 
 		// `id` schema violation
 		await expect(async () => days.add({})).rejects.toThrow('RegExp')
@@ -103,9 +134,9 @@ describe('aggregator', () => {
 		}
 
 		const shiftC = await shifts.add(shiftCData)
-		
+
 		await shifts.add(shiftBData)
-		
+
 		await shifts.add(shiftAData)
 
 		await expect(days('2022-10-12').__voltiso).resolves.toMatchObject({

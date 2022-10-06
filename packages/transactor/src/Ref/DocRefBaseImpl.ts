@@ -207,8 +207,11 @@ export class DocRefBaseImpl<
 	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists> {
 		return dataOrNestedPromise(
 			this as never,
-			// eslint-disable-next-line promise/prefer-await-to-then
-			() => this.get().then(doc => (doc ? doc.dataWithId() : null)) as never,
+			() =>
+				// eslint-disable-next-line promise/prefer-await-to-then
+				this.get().then(doc =>
+					doc ? (doc.dataWithId() as never) : null,
+				) as never,
 		) as never
 	}
 

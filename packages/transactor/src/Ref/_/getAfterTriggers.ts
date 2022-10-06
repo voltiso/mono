@@ -16,9 +16,9 @@ function forEachStrongRef(o: any, f: (r: IRef) => void) {
 	if (isStrongDocRef(o)) {
 		f(o)
 	} else if (Array.isArray(o)) {
-		for (const v of o) forEachStrongRef(v, f)
+		for (const child of o) forEachStrongRef(child, f)
 	} else if (o?.constructor === Object) {
-		for (const v of Object.values(o)) forEachStrongRef(v, f)
+		for (const child of Object.values(o)) forEachStrongRef(child, f)
 	}
 }
 

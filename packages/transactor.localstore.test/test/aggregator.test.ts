@@ -50,7 +50,7 @@ class Day extends Doc('myDay')({
 	public: {
 		numWomen: s.number.default(0),
 	},
-}).aggregate<Week>()('numWomenThisWeek', {
+}).aggregateInto('myWeek', 'numWomenThisWeek', {
 	target() {
 		return weeks(getLastSunday(this.id))
 	},
@@ -77,17 +77,17 @@ describe('aggregator', () => {
 		await days.add({
 			id: '2022-10-10',
 		})
-		
+
 		await days.add({
 			id: '2022-10-12',
-			numWomen: 10
+			numWomen: 10,
 		})
 
 		await days.add({
 			id: '2022-10-14',
 			numWomen: 100,
 		})
-		
+
 		await days.add({
 			id: '2022-10-17',
 			numWomen: 1000,
@@ -97,11 +97,11 @@ describe('aggregator', () => {
 			aggregateTarget: {
 				numWomenThisWeek: {
 					value: 110,
-					numSources: 3
-				}
-			}
+					numSources: 3,
+				},
+			},
 		})
-		
+
 		await expect(weeks('2022-10-16').__voltiso).resolves.toMatchObject({
 			aggregateTarget: {
 				numWomenThisWeek: {
@@ -112,7 +112,7 @@ describe('aggregator', () => {
 		})
 
 		await expect(weeks('2022-10-16').delete()).rejects.toThrow('aggregation')
-		
+
 		await days('2022-10-17').delete()
 
 		await expect(weeks('2022-10-16').delete()).resolves.toBeNull()

@@ -20,7 +20,7 @@
   "__________DEPS": "__________",
   "devDependencies": {
     "@types/jest": "^29.1.1",
-    "@types/node": "^18.8.1",
+    "@types/node": "^18.8.2",
     "@typescript/analyze-trace": "^0.9.1",
     "@voltiso/assertor.transform": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",

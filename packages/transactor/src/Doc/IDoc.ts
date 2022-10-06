@@ -13,15 +13,9 @@ import type { DocContext } from './DocContext'
 import type { DocTI, DocTILike, DTI } from './DocTI'
 
 export interface DocLike {
-	[DTI]: DocTILike
-	dataWithId(): unknown
-	data: PartialIntrinsicFields
-
-	// get schemaWithoutId(): SchemaLike
-	// get schemableWithoutId(): object // Record<string, Schemable>
-
-	// get schemaWithId(): SchemaLike
-	// get schemableWithId(): object // Record<string, Schemable>
+	readonly [DTI]: DocTILike
+	dataWithId(): any
+	readonly data: any
 }
 
 /**

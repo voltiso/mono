@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept, Force, Merge2, ValueImpl } from '@voltiso/util'
-import { assertNotPolluting } from '@voltiso/util'
 import {
+	assertNotPolluting,
 	getEntries,
 	isPlainObject,
 	setProperty,

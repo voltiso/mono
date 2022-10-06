@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Schemable } from '@voltiso/schemar.types'
+import type { Schema, Schemable } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { Method } from '~/Method'
@@ -23,7 +23,7 @@ export interface IndexedDocTI extends DocTI {
 	//
 	methods: Record<string, OmitThisParameter<Method>>
 	//
-	// doc: IndexedDoc
+	aggregates: Record<string, Schema>
 }
 
 export type IndexedDoc = Doc<IndexedDocTI>

@@ -199,6 +199,8 @@ export function render<$ extends StyledTypeInfo>(
 
 	p = { ...data.domDefaults, ...p }
 
+	styles.reverse()
+
 	const shouldForwardCss =
 		typeof data.component === 'function' && data.component.length === 3
 
@@ -213,7 +215,7 @@ export function render<$ extends StyledTypeInfo>(
 		)
 	}
 
-	const felaValue = fela.css([...styles].reverse() as never)
+	const felaValue = fela.css(styles as never)
 
 	// eslint-disable-next-line etc/no-internal
 	const renderedProps = _getFinalProps(felaValue, p)

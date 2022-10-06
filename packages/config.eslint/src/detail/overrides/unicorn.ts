@@ -15,6 +15,7 @@ export const unicorn = defineEslintConfigOverride({
 	rules: {
 		'unicorn/import-index': 1, // deprecated but cool
 
+		'unicorn/switch-case-braces': 0,
 		//
 		//
 		//
