@@ -4,6 +4,7 @@
 import { Assert, Is } from '@voltiso/util'
 
 import type { DocTI } from '~/Doc'
+import type { DocFieldPath } from '~/DocRef'
 
 import type { GDocFields } from './GDocFields'
 
@@ -14,14 +15,11 @@ describe('GDocFields', () => {
 		type X = GDocFields<DocTI>
 		Assert(
 			Is<X>().identicalTo<{
-				__voltiso?: PromiseLike<
-					| {
-							aggregateTarget: {}
-							numRefs: number
-							aggregateSource: Record<string, true>
-					  }
-					| undefined
-				>
+				__voltiso: DocFieldPath<{
+					aggregateTarget: {}
+					numRefs: number
+					aggregateSource: Record<string, Record<string, true>>
+				}>
 			}>(),
 		)
 	})

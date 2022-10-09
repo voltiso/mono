@@ -10,11 +10,9 @@ import chalk from 'chalk'
 import { databaseUpdate } from '~/common/database/databaseUpdate'
 import { withoutId } from '~/Data'
 import type { Doc, DocTI } from '~/Doc'
+import { getBeforeCommits, processTriggers, StrongDocRefImpl } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { deleteIt, isDeleteIt, replaceIt } from '~/it'
-import { StrongDocRefImpl } from '~/Ref'
-import { getBeforeCommits } from '~/Ref/_/getBeforeCommits'
-import { processTriggers } from '~/Ref/_/processTriggers'
 import { sVoltisoEntry } from '~/schemas'
 import { TransactionImpl } from '~/Transaction'
 import type { Cache, CacheEntry } from '~/Transaction/Cache'
@@ -81,10 +79,12 @@ export async function runTransaction<R>(
 
 				let cacheSnapshot = getCacheSnapshot(cache)
 
+				// console.log('snap', cacheSnapshot)
+
 				// loop final after and beforeCommit triggers while there are changes in cache
 				for (;;) {
 					// detect local changes and set write=true
-					for (const cacheEntry of cache.values()) {
+					for (const [_path, cacheEntry] of cache.entries()) {
 						// if (!cacheEntry.write) {
 						// 	console.log(
 						// 		'check if should write',
@@ -102,37 +102,74 @@ export async function runTransaction<R>(
 										sVoltisoEntry.validate(undefined),
 									)))
 						) {
-							// console.log('detected change in', cacheEntry.data, cacheEntry.__voltiso)
+							// console.log(
+							// 	'detected change',
+							// 	path,
+							// 	cacheEntry.data,
+							// 	cacheEntry.__voltiso,
+							// )
 							cacheEntry.write = true
 						}
 					}
 
-					// process beforeCommits
+					//
+
+					// process triggers (again)
 					for (const [path, cacheEntry] of cache.entries()) {
-						// console.log('process beforeCommits for', path)
-						if (cacheEntry.write) {
-							// console.log('should write!')
-							const docRef = new StrongDocRefImpl(transaction._context, path)
-							const ctx = { ...transaction._context, docRef }
+						if (!cacheEntry.write) continue
 
-							// process normal triggers - they may not have been called if updates were made in-place, not via `update` method
-							// eslint-disable-next-line max-depth, no-await-in-loop
-							if (isDefined(cacheEntry.data)) await processTriggers(ctx)
+						// console.log('should write!')
+						const docRef = new StrongDocRefImpl(transaction._context, path)
+						const ctx = { ...transaction._context, docRef }
 
-							const beforeCommits = getBeforeCommits(docRef)
+						// process normal triggers - they may not have been called if updates were made in-place, not via `update` method
+						// eslint-disable-next-line no-await-in-loop
+						if (isDefined(cacheEntry.data)) await processTriggers(ctx)
+					}
 
-							// eslint-disable-next-line max-depth
-							for (const { trigger, pathMatches } of beforeCommits) {
-								let r: Awaited<ReturnType<typeof trigger>>
-								// eslint-disable-next-line no-await-in-loop
-								await triggerGuard(ctx, async () => {
-									$assert(isDefined(cacheEntry.proxy))
+					const nextCacheSnapshot = getCacheSnapshot(cache)
 
-									$assert(cacheEntry.__voltiso)
+					// start over?
+					if (!isEqual(nextCacheSnapshot, cacheSnapshot)) {
+						cacheSnapshot = nextCacheSnapshot
 
-									const params: BeforeCommitTriggerParams<
-										Doc<DocTI, 'inside'>
-									> = {
+						if (ctx._options.log) {
+							// eslint-disable-next-line no-console
+							console.log(
+								'\n',
+								chalk.inverse(
+									'REPEAT TRIGGERS - CACHE CHANGED after regular triggers',
+								),
+								'\n',
+								dump(cacheSnapshot),
+							)
+						}
+
+						continue
+					}
+
+					//
+
+					// process before-commits
+					for (const [path, cacheEntry] of cache.entries()) {
+						if (!cacheEntry.write) continue
+
+						// console.log('should write!')
+						const docRef = new StrongDocRefImpl(transaction._context, path)
+						const ctx = { ...transaction._context, docRef }
+
+						const beforeCommits = getBeforeCommits(docRef)
+
+						for (const { trigger, pathMatches } of beforeCommits) {
+							let r: Awaited<ReturnType<typeof trigger>>
+							// eslint-disable-next-line no-await-in-loop
+							await triggerGuard(ctx, async () => {
+								$assert(isDefined(cacheEntry.proxy))
+
+								$assert(cacheEntry.__voltiso)
+
+								const params: BeforeCommitTriggerParams<Doc<DocTI, 'inside'>> =
+									{
 										doc: cacheEntry.proxy as never,
 										...pathMatches,
 										path: docRef.path as never,
@@ -142,43 +179,49 @@ export async function runTransaction<R>(
 										possiblyExists: cacheEntry.possiblyExists,
 									}
 
-									// if (cacheEntry.__voltiso)
-									// 	params.__voltiso = cacheEntry.__voltiso
+								r = await trigger.call(
+									cacheEntry.proxy as never,
+									params as never,
+								)
+							})
 
-									r = await trigger.call(cacheEntry.proxy as never, params)
-								})
-
+							// eslint-disable-next-line max-depth
+							if (isDefined(r)) {
 								// eslint-disable-next-line max-depth
-								if (isDefined(r)) {
-									// eslint-disable-next-line max-depth
-									if (isDeleteIt(r)) setCacheEntry(ctx, cacheEntry, null)
-									else {
-										setCacheEntry(
-											ctx,
-											cacheEntry,
-											withoutId(r as never, docRef.id) as never,
-										)
-									}
+								if (isDeleteIt(r)) setCacheEntry(ctx, cacheEntry, null)
+								else {
+									setCacheEntry(
+										ctx,
+										cacheEntry,
+										withoutId(r as never, docRef.id) as never,
+									)
 								}
 							}
 						}
 					}
 
-					const newCacheSnapshot = getCacheSnapshot(cache)
+					const finalCacheSnapshot = getCacheSnapshot(cache)
 
-					if (isEqual(newCacheSnapshot, cacheSnapshot)) break
+					// start over?
+					if (!isEqual(finalCacheSnapshot, cacheSnapshot)) {
+						cacheSnapshot = finalCacheSnapshot
 
-					cacheSnapshot = newCacheSnapshot
+						if (ctx._options.log) {
+							// eslint-disable-next-line no-console
+							console.log(
+								'\n',
+								chalk.inverse(
+									'REPEAT TRIGGERS - CACHE CHANGED after before-commits',
+								),
+								'\n',
+								dump(cacheSnapshot),
+							)
+						}
 
-					if (ctx._options.log) {
-						// eslint-disable-next-line no-console
-						console.log(
-							'\n',
-							chalk.inverse('REPEAT TRIGGERS - CACHE CHANGED'),
-							'\n',
-							dump(cacheSnapshot),
-						)
+						continue
 					}
+
+					break
 				}
 			} catch (error) {
 				for (const cacheEntry of cache.values()) {

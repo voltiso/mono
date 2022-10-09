@@ -6,12 +6,12 @@
 import type {
 	CustomNumber,
 	InputType,
+	INumber,
 	NumberOptions,
 	OutputType,
 	Schema,
 	Type_,
 } from '@voltiso/schemar.types'
-import type * as t from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
@@ -22,7 +22,7 @@ describe('s.number', () => {
 		expect.assertions(0)
 
 		Assert.is<CustomNumber<O>, Schema>()
-		Assert.is<CustomNumber<O>, t.INumber>()
+		Assert.is<CustomNumber<O>, INumber>()
 	})
 
 	it('simple', () => {
@@ -77,6 +77,9 @@ describe('s.number', () => {
 		const n = s.number.default(123)
 
 		expect(n.exec(undef).value).toBe(123)
+
+		expect(n.isFixable(undefined)).toBeTruthy()
+		expect(n.isValid(undefined)).toBeFalsy()
 
 		type Out = Type_<typeof n, { kind: 'out' }>
 		type In = Type_<typeof n, { kind: 'in' }>

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { IndexedDoc } from '@voltiso/transactor'
+import { IndexedDoc, sVoltisoEntry } from '@voltiso/transactor'
 
 import { createTransactor } from './common'
 
@@ -27,6 +27,7 @@ describe('update', function () {
 		expect(r).toBeUndefined()
 
 		await expect(doctors('anthony').dataWithoutId()).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
 			asd: 1,
 			sdf: 2,
 		})
@@ -63,7 +64,10 @@ describe('update', function () {
 
 			expect(r).toBeUndefined()
 
-			await expect(doctors('anthony').dataWithoutId()).resolves.toStrictEqual({
+			const anthonyData = await doctors('anthony').dataWithoutId()
+
+			expect(anthonyData).toStrictEqual({
+				__voltiso: sVoltisoEntry.validate(undefined),
 				asd: 1,
 				sdf: 2,
 			})

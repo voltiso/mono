@@ -3,16 +3,23 @@
 
 import type * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
-import type { _, $_, Merge2, Throw } from '@voltiso/util'
+import type { _, $_, Merge2, OmitSignatures, Throw } from '@voltiso/util'
 
 import type { AggregatorHandlers } from '~/Aggregator'
-import type { Doc, DocContext, DocTI, DTI } from '~/Doc'
+import type {
+	Doc,
+	DocBuilderPluginLike,
+	DocConstructorLike,
+	DocContext,
+	DocTI,
+	DTI,
+	Promisify,
+} from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
-import type { Promisify } from '~/Doc/_/GMethodPromises'
 import type { NewFields } from '~/Doc/_/NewFields'
+import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { DocTag } from '~/DocTypes'
-import type { DocTypes } from '~/DocTypes-module-augmentation'
 import type { Method } from '~/Method'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
@@ -75,17 +82,25 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		m: M,
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
 
+	/** Apply custom plugin */
+	with<Plugin extends DocBuilderPluginLike<TI['tag']>>(
+		plugin: Plugin,
+	): Plugin['name'] extends keyof OmitSignatures<DocBuilderPluginResult>
+		? DocConstructor<DocBuilderPluginResult<TI>[Plugin['name']]>
+		: DocConstructor<TI>
+
+	/**
+	 * - Use `aggregate` plugin instead if facing recursive types issues
+	 * - Because of better modular design and tree-shaking, this will probably be
+	 *   deprecated in favor of `with(aggregate(...))` plugin
+	 */
 	aggregateInto<
-		Target extends keyof DocTypes,
-		Name extends keyof DocTypes[Target][DTI]['aggregates'],
+		Target extends DocConstructorLike,
+		Name extends keyof Target[DTI]['aggregates'],
 	>(
 		target: Target,
 		name: Name,
-		handlers: AggregatorHandlers<
-			DocConstructor<TI>,
-			DocTypes[Target],
-			t.Type_<DocTypes[Target][DTI]['aggregates'][Name]>
-		>,
+		handlers: AggregatorHandlers<TI, InstanceType<Target>, Name>,
 	): DocConstructor<TI>
 
 	get schemableWithoutId(): $_<

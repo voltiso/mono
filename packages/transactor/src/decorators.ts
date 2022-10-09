@@ -5,12 +5,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import type { DocConstructorImpl, IDoc } from './Doc'
+import type { DocConstructorImpl, DocLike } from './Doc'
 import * as h from './Doc/_/triggerCreators'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from './Trigger'
 
 export function method<
-	D extends IDoc & { [k in Name]: (...args: never[]) => Promise<unknown> },
+	D extends DocLike & { [k in Name]: (...args: never[]) => Promise<unknown> },
 	Name extends keyof D,
 >(doc: D, name: Name) {
 	const ctor = (doc as any).constructor as typeof DocConstructorImpl
@@ -25,7 +25,7 @@ export function method<
 }
 
 export function afterCreateOrUpdate<
-	D extends IDoc & { [k in Name]: AfterTrigger<D, D, boolean, true> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, D, boolean, true> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -33,7 +33,7 @@ export function afterCreateOrUpdate<
 }
 
 export function afterCreate<
-	D extends IDoc & { [k in Name]: AfterTrigger<D, D, false, true> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, D, false, true> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -41,7 +41,7 @@ export function afterCreate<
 }
 
 export function afterDelete<
-	D extends IDoc & { [k in Name]: AfterTrigger<D, null, true, false> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, null, true, false> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -49,7 +49,7 @@ export function afterDelete<
 }
 
 export function afterUpdate<
-	D extends IDoc & { [k in Name]: AfterTrigger<D, D, true, true> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, D, true, true> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -57,7 +57,7 @@ export function afterUpdate<
 }
 
 export function after<
-	D extends IDoc & { [k in Name]: AfterTrigger<D> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -65,7 +65,7 @@ export function after<
 }
 
 export function beforeCommit<
-	D extends IDoc & { [k in Name]: BeforeCommitTrigger<D> },
+	D extends DocLike & { [k in Name]: BeforeCommitTrigger<D> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -73,7 +73,7 @@ export function beforeCommit<
 }
 
 export function onGet<
-	D extends IDoc & { [k in Name]: OnGetTrigger<D> },
+	D extends DocLike & { [k in Name]: OnGetTrigger<D> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl

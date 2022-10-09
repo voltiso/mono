@@ -4,6 +4,7 @@
 export * from './AlsoAccept'
 export * from './compare'
 export * from './If'
+export * from './IsUnion'
 export * from './Opaque'
 export * from './optional-argument'
 export * from './parser'

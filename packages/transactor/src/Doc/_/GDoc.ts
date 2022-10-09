@@ -1,13 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Doc } from '~'
-import type { DocTI } from '~/Doc'
+import type { Doc, DocTI } from '~/Doc'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 type GDocByTag_<TI extends DocTI> = TI['tag'] extends 'untagged'
 	? never
-	: DocTypes[TI['tag']]
+	: TI['tag'] extends keyof DocTypes
+	? DocTypes[TI['tag']]
+	: never
 
 export type GDocByTag<TI extends DocTI> = GDocByTag_<TI> extends never
 	? GO<TI>

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createTransactor, incrementIt } from '@voltiso/transactor'
+import { createTransactor, incrementIt, sVoltisoEntry } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
@@ -46,7 +46,11 @@ describe('incrementIt', function () {
 
 		await expect(
 			db('userB/artur/project/tds').dataWithId(),
-		).resolves.toStrictEqual({ id: 'tds', numProjects: 1 })
+		).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
+			id: 'tds',
+			numProjects: 1,
+		})
 	})
 
 	it('passes-through updates to firestore (no throw on undefined += x) - in transaction', async function () {
@@ -61,6 +65,7 @@ describe('incrementIt', function () {
 		})
 
 		await expect(db('userB/artur/project/tds').data).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
 			numProjects: 1,
 		})
 	})

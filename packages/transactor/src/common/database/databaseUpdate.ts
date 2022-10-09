@@ -10,7 +10,7 @@ import type { DatabaseContext } from '~/DatabaseContext'
 import type { IDoc } from '~/Doc'
 import { TransactorError } from '~/error'
 import { isDeleteIt, isReplaceIt } from '~/it'
-import type { PartialIntrinsicFields } from '~/schemas'
+import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates/Updates'
 
 import { toDatabaseSet, toDatabaseUpdate } from './toDatabase'
@@ -51,8 +51,8 @@ const databaseSet = async (
 	ctx: DatabaseContext,
 	t: T,
 	ref: Database.ServerDocumentReference,
-	data: PartialIntrinsicFields,
-): Promise<WithId<PartialIntrinsicFields, IDoc>> => {
+	data: IntrinsicFields,
+): Promise<WithId<IntrinsicFields, IDoc>> => {
 	const firestoreData = toDatabaseSet(ctx, data)
 
 	if (isDatabase(t)) {
@@ -75,7 +75,7 @@ export async function databaseUpdate(
 	// console.log('firestoreUpdate', ref.path, updates)
 
 	if (isReplaceIt(updates)) {
-		return databaseSet(ctx, t, ref, updates.data)
+		return databaseSet(ctx, t, ref, updates.data as never)
 	}
 
 	if (isDeleteIt(updates)) return databaseDelete(t, ref)

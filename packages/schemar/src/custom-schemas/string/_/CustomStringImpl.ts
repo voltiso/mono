@@ -11,8 +11,7 @@ import type {
 	RegExpEntry,
 	StringOptions,
 } from '@voltiso/schemar.types'
-import { isString } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, isString, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import {
 	CALL,
 	callableInstance,

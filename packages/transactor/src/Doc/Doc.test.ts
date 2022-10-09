@@ -5,10 +5,11 @@ import * as s from '@voltiso/schemar'
 import type { IsSubtype } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
+import type { DocBase } from './Doc'
 import { Doc } from './Doc'
 import type { IDocConstructor } from './DocConstructor'
 import type { UntaggedDocTI } from './DocImpl'
-import type { DocTI } from './DocTI'
+import type { DocTI, DocTILike } from './DocTI'
 import type { IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
 
@@ -30,6 +31,8 @@ describe('doc', () => {
 
 		type DocId = IDoc['id']
 		Assert(Is<DocId>().identicalTo<string>())
+
+		Assert.is<DocBase<DocTILike, 'outside'>, IDoc>()
 
 		Assert.is<Doc, IDoc>()
 		Assert.is<Doc<TI>, IDoc>()

@@ -5,12 +5,13 @@ import type { PathMatches } from '~/common/PathMatches'
 import type { Id } from '~/Data'
 import type { Db } from '~/Db'
 import type { DocLike, DTI, IDoc } from '~/Doc'
+import type { DocRefContext } from '~/DocRef'
 import type { DocPath } from '~/Path'
-import type { DocRefContext } from '~/Ref/_/Context'
-import type { IntrinsicFields } from '~/schemas'
+import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
 export type TriggerParams<D extends DocLike = IDoc, This = D | null> = {
 	doc: This
+	__voltiso: VoltisoEntry
 
 	path: DocPath<D[DTI]['tag']>
 	id: Id<D>

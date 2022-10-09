@@ -5,7 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import { undef } from '@voltiso/util'
 import chalk from 'chalk'
 
-import type { Doc, IDoc } from '~/Doc'
+import type { Doc, DocLike } from '~/Doc'
 import type { DocDerivedData } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 import type {
@@ -17,26 +17,26 @@ import { dump } from '~/util'
 
 import type { GI } from './GDoc'
 
-function assertBefore<D extends IDoc>(
+function assertBefore<D extends DocLike>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, D | null, true, boolean> {
 	$assert(x.before)
 }
 
-function assertNotBefore<D extends IDoc>(
+function assertNotBefore<D extends DocLike>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, D | null, false, boolean> {
 	$assert(!x.before)
 }
 
-function assertAfter<D extends IDoc>(
+function assertAfter<D extends DocLike>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, D, boolean, true> {
 	$assert(x.doc)
 	$assert(x.after)
 }
 
-function assertNotAfter<D extends IDoc>(
+function assertNotAfter<D extends DocLike>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, null, boolean, false> {
 	$assert(!x.doc)
@@ -194,8 +194,8 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 					after: after as never, // :(
 				})
 				return f.call(this, p as never) as never
-			},
-		],
+			} as never,
+		] as never,
 	}
 }
 
@@ -218,7 +218,7 @@ export function withOnGet<TI extends DocDerivedData>(
 					after: after as never,
 				})
 				return f.call(this, p as never) as never
-			},
+			} as never,
 		],
 	}
 }

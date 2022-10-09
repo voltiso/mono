@@ -18,15 +18,15 @@ export type DT = typeof DT
 export interface DocTILike {
 	id: unknown
 
-	tag: string
+	tag: any
 
 	publicOnCreation: {}
 	public: {}
 	private: {}
 
-	methods: object
+	methods: {}
 
-	aggregates: any
+	aggregates: {}
 }
 
 /**
@@ -35,5 +35,5 @@ export interface DocTILike {
  * - Every Doc Type Info (`DocTI`) is assignable to it
  */
 export interface DocTI extends DocTILike {
-	aggregates: {}
+	// aggregates: {}
 }

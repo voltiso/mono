@@ -16,16 +16,17 @@ import type {
 	SchemaLike,
 	SchemaOptions,
 	ValidationIssue,
+	ValidationResult,
 } from '@voltiso/schemar.types'
-import type { ValidationResult } from '@voltiso/schemar.types'
 import {
+	EXTENDS,
 	isAny,
 	isUnion,
 	isUnknown,
 	isUnknownSchema,
+	OPTIONS,
+	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import { SCHEMA_NAME } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS } from '@voltiso/schemar.types'
 import type { AtLeast1, Merge2 } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
@@ -156,9 +157,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	protected _getIssues(x: unknown): ValidationIssue[] {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (typeof x === 'undefined' && this.hasDefault) return []
-		else return this._getIssuesImpl(x)
+		// if (typeof x === 'undefined' && this.hasDefault) return []
+		return this._getIssuesImpl(x)
 	}
 
 	protected _fixImpl(x: unknown): unknown {

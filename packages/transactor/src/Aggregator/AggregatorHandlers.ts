@@ -1,18 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Type_ } from '@voltiso/schemar.types'
 import type { MaybePromise } from '@voltiso/util'
 
-import type { DocLike, DocRefLike, GetDataWithId } from '~'
-import type { DocConstructorLike } from '~/Doc/DocConstructor'
-import type { DTI } from '~/Doc/DocTI'
-import type { DocTypes } from '~/DocTypes-module-augmentation'
-import type { WeakRef } from '~/Ref'
+import type { DocLike, GetDataWithId } from '~/Doc'
+import type { DocTILike, DTI } from '~/Doc/DocTI'
+import type { DocRefLike } from '~/DocRef'
 
 export interface IAggregatorHandlers {
 	initialValue?: unknown
 
 	filter?(this: object): boolean | PromiseLike<boolean>
+
 	target(
 		this: object,
 	): MaybePromise<(DocLike | DocRefLike)[]> | MaybePromise<DocLike> | DocRefLike
@@ -23,28 +23,41 @@ export interface IAggregatorHandlers {
 	exclude(this: object, acc: unknown): MaybePromise<unknown>
 }
 
-export interface AggregatorHandlers<
-	This extends DocConstructorLike,
-	Target extends { [DTI]: { aggregates: any; tag: any } },
-	Acc,
-> extends IAggregatorHandlers {
-	initialValue?: Acc
+export type GetAggregate<
+	Target extends DocLike,
+	Name,
+	Kind extends 'out' | 'in',
+> = Name extends keyof Target[DTI]['aggregates']
+	? Type_<Target[DTI]['aggregates'][Name], { kind: Kind }>
+	: never
 
-	filter?(this: GetDataWithId<This[DTI]>): boolean
+//
+
+export interface AggregatorHandlers<
+	SourceTI extends DocTILike,
+	Target extends DocLike,
+	Name extends keyof Target[DTI]['aggregates'],
+> {
+	initialValue?: GetAggregate<Target, Name, 'out'> // out, not in - to mitigate bugs
+
+	filter?(this: GetDataWithId<SourceTI>): MaybePromise<boolean>
 
 	target(
-		this: GetDataWithId<This[DTI]>,
+		this: GetDataWithId<SourceTI>,
 	):
-		| MaybePromise<
-				(DocTypes[Target[DTI]['tag']] | WeakRef<DocTypes[Target[DTI]['tag']]>)[]
-		  >
-		| MaybePromise<DocTypes[Target[DTI]['tag']]>
-		| WeakRef<DocTypes[Target[DTI]['tag']]>
+		| MaybePromise<(Target | DocRefLike<Target[DTI]>)[]>
+		| MaybePromise<Target>
+		| DocRefLike<Target[DTI]>
+
+	autoCreateTarget?: boolean | undefined
 
 	include(
-		this: GetDataWithId<This[DTI]>,
-		acc: Acc, // | InitialValue
-	): MaybePromise<Acc>
+		this: GetDataWithId<SourceTI>,
+		acc: GetAggregate<Target, Name, 'out'>, // | InitialValue
+	): MaybePromise<GetAggregate<Target, Name, 'out'>> // out, not in - to mitigate bugs
 
-	exclude(this: GetDataWithId<This[DTI]>, acc: Acc): MaybePromise<Acc>
+	exclude(
+		this: GetDataWithId<SourceTI>,
+		acc: GetAggregate<Target, Name, 'out'>,
+	): MaybePromise<GetAggregate<Target, Name, 'out'>> // out, not in - to mitigate bugs
 }

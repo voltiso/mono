@@ -5,12 +5,13 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
-import type { GetPublicCreationInputData, IntrinsicFields, WithId } from '~'
-import { Doc } from '~'
 import type { InferTI } from '~/CollectionRef/InferTI'
+import type { WithId } from '~/Data'
 import type { DocTI, IndexedDocTI } from '~/Doc'
+import { Doc } from '~/Doc'
+import type { IntrinsicFields } from '~/schemas'
 
-import type { GetData } from './GData'
+import type { GetData, GetPublicCreationInputData } from './GData'
 
 describe('Doc util', () => {
 	it('GData', () => {
@@ -62,7 +63,7 @@ describe('Doc util', () => {
 				X,
 				{
 					[x: string]: unknown
-					__voltiso?: {
+					__voltiso: {
 						aggregateTarget: {
 							[x: string]: {
 								value: unknown
@@ -70,7 +71,7 @@ describe('Doc util', () => {
 							}
 						}
 						numRefs: number
-						aggregateSource: Record<string, true>
+						aggregateSource: Record<string, Record<string, true>>
 					}
 				}
 			>
@@ -85,10 +86,10 @@ describe('Doc util', () => {
 			IsIdentical<
 				X,
 				{
-					__voltiso?: {
+					__voltiso: {
 						aggregateTarget: {}
 						numRefs: number
-						aggregateSource: Record<string, true>
+						aggregateSource: Record<string, Record<string, true>>
 					}
 				}
 			>

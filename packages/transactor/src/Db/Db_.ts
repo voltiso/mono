@@ -4,11 +4,11 @@
 import type { OmitCall } from '@voltiso/util'
 import { CALL, callableInstance, staticImplements } from '@voltiso/util'
 
-import { CollectionRef, CollectionRefPattern } from '~'
+import { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
 import type { IndexedDoc } from '~/Doc'
+import { DocRefPattern, WeakDocRef } from '~/DocRef'
 import type { DbPathFromString } from '~/Path'
 import { concatPath, DocPath } from '~/Path'
-import { DocRefPattern, WeakDocRef } from '~/Ref'
 
 import type { CanonicalPath } from './CanonicalPath'
 import type { DbContext, DbParentContext } from './Context'
@@ -28,7 +28,7 @@ class Db implements OmitCall<IDb> {
 
 	constructor(parentContext: DbParentContext) {
 		this._context = { ...parentContext, db: this as never }
-		const newThis = callableInstance(this)
+		const newThis = callableInstance(this) as Db_
 		newThis._context.db = newThis
 		// eslint-disable-next-line no-constructor-return
 		return newThis
@@ -58,17 +58,17 @@ class Db implements OmitCall<IDb> {
 			else return new DocRefPattern(this._context, path) as never
 		} else if (newPathTokens.length % 2 === 1)
 			return new CollectionRef(this._context, path) as never
-		else return new WeakDocRef<IndexedDoc>(this._context, path) as never
+		else return new WeakDocRef(this._context, path) as never
 	}
 
 	doc(...pathTokens: readonly string[]): WeakDocRef<IndexedDoc> {
 		// $assert(this.context)
-		return new WeakDocRef<IndexedDoc>(this._context, concatPath(pathTokens))
+		return new WeakDocRef(this._context, concatPath(pathTokens)) as never
 	}
 
 	collection(...pathTokens: readonly string[]): CollectionRef<IndexedDoc> {
 		// $assert(this.context)
-		return new CollectionRef<IndexedDoc>(this._context, pathTokens)
+		return new CollectionRef(this._context, pathTokens) as never
 	}
 
 	docPattern(

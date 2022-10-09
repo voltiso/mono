@@ -7,7 +7,7 @@ import { Assert } from '@voltiso/util'
 
 import type { LeafData } from '~/Data'
 import { Doc } from '~/Doc'
-import type { StrongRef } from '~/Ref'
+import type { StrongDocRefBase } from '~/DocRef'
 
 import type { UpdatesFromData } from './UpdatesFromData'
 
@@ -23,9 +23,9 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		class MyDoc extends Doc.public({ num: s.number }) {}
-		Assert<IsIdentical<MyDoc['ref'], StrongRef<MyDoc>>>()
-		Assert.isSubtype<StrongRef<MyDoc>, LeafData>()
-		type X = UpdatesFromData<StrongRef<MyDoc>, StrongRef<MyDoc>>
-		Assert.isSubtype<StrongRef<MyDoc>, X>()
+		Assert<IsIdentical<MyDoc['ref'], StrongDocRefBase<MyDoc>>>()
+		Assert.isSubtype<StrongDocRefBase<MyDoc>, LeafData>()
+		type X = UpdatesFromData<StrongDocRefBase<MyDoc>, StrongDocRefBase<MyDoc>>
+		Assert.isSubtype<StrongDocRefBase<MyDoc>, X>()
 	})
 })

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { sVoltisoEntry } from '@voltiso/transactor'
+
 import { createTransactor, database } from './common'
 
 const db = createTransactor({ requireSchemas: false })
@@ -11,6 +13,11 @@ describe('data', () => {
 
 		await database.doc('testData/a').set({ a: 1 })
 
-		await expect(db('testData/a').data).resolves.toStrictEqual({ a: 1 })
+		await db('testData/a').data // !!!
+
+		await expect(db('testData/a').data).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
+			a: 1,
+		})
 	})
 })

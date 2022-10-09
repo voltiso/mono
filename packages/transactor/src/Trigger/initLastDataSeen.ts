@@ -3,8 +3,8 @@
 
 import { deepCloneData } from '@voltiso/util.firestore'
 
-import type { WithDocRef } from '~/Ref'
-import { getAfterTriggers } from '~/Ref/_/getAfterTriggers'
+import type { WithDocRef } from '~/DocRef'
+import { getAfterTriggers } from '~/DocRef'
 import type { CacheEntry } from '~/Transaction/Cache'
 
 export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {

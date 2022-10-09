@@ -3,11 +3,13 @@
 
 import type { OmitSignatures } from '@voltiso/util'
 
-import type { IDoc } from './Doc'
-import type { DocTypes } from './DocTypes-module-augmentation'
+import type { DocTypes } from '~/DocTypes-module-augmentation'
 
+// export type DocTag = _<keyof DocTypes>
+// export type DocTag = keyof DocTypes
 export type DocTag = keyof OmitSignatures<DocTypes>
 
-export type DocType = Extract<DocTypes[keyof DocTypes], IDoc>
+// export type DocType = Value<DocTypes>
+// export type DocType = Extract<DocTypes[keyof DocTypes], IDoc>
 
-export type DocFromTag<Tag extends DocTag> = DocTypes[Tag]
+// export type DocFromTag<Tag extends DocTag> = DocTypes[Tag]

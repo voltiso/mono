@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InputType, Type, Type_ } from '@voltiso/schemar.types'
-import type { _, $_, Merge2Reverse_ } from '@voltiso/util'
+import type { _, $_, HasIndexSignature, Merge2Reverse_ } from '@voltiso/util'
 
 import type { Id, WithId } from '~/Data'
 import type { DocLike, ExecutionContext, IDoc } from '~/Doc'
@@ -16,12 +16,20 @@ export type _GetAggregateTargetEntry<T> = [
 	},
 ][0]
 
-export type _GetAggregateTarget<T> = [
-	{
-		// eslint-disable-next-line etc/no-internal
-		[k in keyof T]: _GetAggregateTargetEntry<T[k]>
-	},
-][0]
+/** @internal */
+export type _$GetAggregateTarget<T extends object> = T extends any
+	? HasIndexSignature<T> extends true
+		? {
+				// eslint-disable-next-line etc/no-internal
+				[k in keyof T]: _GetAggregateTargetEntry<T[k]>
+		  }
+		: HasIndexSignature<T> extends false
+		? {
+				// eslint-disable-next-line etc/no-internal
+				[k in keyof T]?: _GetAggregateTargetEntry<T[k]>
+		  }
+		: never
+	: never
 
 /** @inline */
 export type GetData<
@@ -35,9 +43,10 @@ export type GetData<
 	Type_<TI['publicOnCreation']> &
 		Type_<TI['public']> &
 		Type_<TI['private']> & {
-			__voltiso?: Merge2Reverse_<
+			__voltiso: Merge2Reverse_<
 				{
-					aggregateTarget: _GetAggregateTarget<Type_<TI['aggregates']>>
+					// eslint-disable-next-line etc/no-internal
+					aggregateTarget: _$GetAggregateTarget<Type_<TI['aggregates']>>
 				},
 				VoltisoEntry
 			>
@@ -47,7 +56,7 @@ export type GetData<
 /** @inline */
 export type GetDataWithId<
 	TI extends { publicOnCreation?: any; public?: any; private?: any },
-	Doc extends IDoc = IDoc,
+	Doc extends DocLike = IDoc,
 > = WithId<GetData<TI>, Doc>
 
 //
@@ -59,7 +68,7 @@ export type GetInputData<
 		public?: any
 		private?: any
 	},
-> = _<
+> = $_<
 	InputType<TI['publicOnCreation']> &
 		InputType<TI['public']> &
 		InputType<TI['private']>
@@ -72,7 +81,7 @@ export type GetInputDataWithId<
 		public?: any
 		private?: any
 	},
-	Doc extends IDoc = IDoc,
+	Doc extends DocLike = IDoc,
 > = WithId<GetInputData<TI>, Doc>
 
 //
@@ -94,7 +103,9 @@ export type GetPublicCreationInputData<
 	TI extends { public?: any; publicOnCreation?: any },
 	Doc extends DocLike = IDoc,
 > = _<
-	{ id?: Id<Doc> | undefined } & InputType<TI['publicOnCreation']> &
+	{
+		id?: Id<Doc> | undefined
+	} & InputType<TI['publicOnCreation']> &
 		InputType<TI['public']>
 >
 
@@ -109,7 +120,7 @@ export type GetPublicInputData<TI extends { public?: any }> = InputType<
 export type GetCreationDataByCtx<
 	TI extends { publicOnCreation?: any; public?: any; private?: any },
 	Ctx extends ExecutionContext,
-	Doc extends IDoc = IDoc,
+	Doc extends DocLike = IDoc,
 > = Ctx extends 'inside'
 	? GetInputData<TI>
 	: Ctx extends 'outside'

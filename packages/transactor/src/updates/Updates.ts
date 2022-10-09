@@ -14,7 +14,7 @@ import {
 	isIncrementIt,
 	isReplaceIt,
 } from '~/it'
-import type { PartialIntrinsicFields } from '~/schemas'
+import type { IntrinsicFields } from '~/schemas'
 
 export interface UpdatesRecord {
 	id?: never
@@ -107,12 +107,10 @@ const dataFromUpdatesRec = (updates: NestedUpdates): NestedData => {
 	return updates
 }
 
-export const dataFromUpdates = (
-	updates: Updates,
-): PartialIntrinsicFields | null => {
+export const dataFromUpdates = (updates: Updates): IntrinsicFields | null => {
 	if (isDeleteIt(updates)) return null
 
-	if (isReplaceIt(updates)) return updates.data
+	if (isReplaceIt(updates)) return updates.data as never
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const r = {} as any
@@ -131,7 +129,7 @@ export const applyUpdates = (
 	data: Updates | null,
 	updates: Updates,
 	debug?: { path: string },
-): PartialIntrinsicFields | null => {
+): IntrinsicFields | null => {
 	if (data === null && !isReplaceIt(updates) && !isDeleteIt(updates)) {
 		throw new TransactorError(
 			`NOT_FOUND: cannot update non-existing document ${debug?.path || ''}`,

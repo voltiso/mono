@@ -5,8 +5,8 @@ import type { Throw } from '@voltiso/util'
 
 import type { Id } from '~/Data'
 import type { DocLike, GetPublicCreationInputData, IDoc } from '~/Doc'
+import type { WeakDocRef } from '~/DocRef'
 import type { CollectionPath } from '~/Path/Path'
-import type { WeakDocRef } from '~/Ref/WeakDocRef'
 
 import { CollectionRefImpl } from './CollectionRefImpl'
 import type { InferTI } from './InferTI'
@@ -17,11 +17,13 @@ export interface CollectionRef<D extends DocLike = IDoc> {
 
 	/** Get Doc reference by Id */
 	(id: Id<D>): WeakDocRef<D>
+
 	<DD extends DocLike>(id: Id<DD>): DD extends any
 		? IDoc extends DD
 			? WeakDocRef<D>
 			: Throw<'wrong Id type' & { Doc: DD }>
 		: never
+
 	// (id: Id): WeakDocRef<D>
 
 	/** Add Doc to this Collection */

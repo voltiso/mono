@@ -3,7 +3,7 @@
 
 'use strict'
 
-const { incrementIt } = require('@voltiso/transactor')
+const { incrementIt, sVoltisoEntry } = require('@voltiso/transactor')
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -49,7 +49,11 @@ describe('incrementIt', function () {
 
 		await expect(
 			db('friend/artur/project/tds').dataWithId(),
-		).resolves.toStrictEqual({ id: 'tds', numProjects: 1 })
+		).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
+			id: 'tds',
+			numProjects: 1,
+		})
 	})
 
 	it('passes-through updates to firestore (no throw on undefined += x) - in transaction', async function () {
@@ -64,6 +68,7 @@ describe('incrementIt', function () {
 		})
 
 		await expect(db('friend/artur/project/tds').data).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
 			numProjects: 1,
 		})
 	})

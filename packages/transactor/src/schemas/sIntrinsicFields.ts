@@ -15,7 +15,7 @@ export const sVoltisoEntry = s
 			})
 			.default({}),
 
-		aggregateSource: s.record(s.string, s.literal(true)).default({}),
+		aggregateSource: s.record(s.string, s.record(s.string, true)).default({}),
 	})
 	.default({})
 
@@ -30,4 +30,7 @@ export type DeepPartialIntrinsicFieldsSchema =
 	typeof sIntrinsicFields.deepPartial.simple
 
 export type IntrinsicFields = /** @inline */ Type_<typeof sIntrinsicFields>
-export type PartialIntrinsicFields = Partial<IntrinsicFields>
+// export type PartialIntrinsicFields = /** @inline */ Partial<IntrinsicFields>
+
+export type IntrinsicFieldsLike = { __voltiso: any }
+// export type PartialIntrinsicFieldsLike = { __voltiso?: any }

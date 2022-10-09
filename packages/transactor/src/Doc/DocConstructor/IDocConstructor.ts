@@ -3,7 +3,14 @@
 
 import type { ISchema } from '@voltiso/schemar.types'
 
-import type { DocContext, DocLike, DocTI, DocTILike, DTI } from '~/Doc'
+import type {
+	DocBuilderPlugin,
+	DocContext,
+	DocLike,
+	DocTI,
+	DocTILike,
+	DTI,
+} from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
@@ -61,7 +68,10 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 	beforeCommit(t: any): unknown
 	beforeCommit(name: string, t: any): unknown
 
-	method(name: string, m: any): unknown
+	// /** @deprecated */
+	// method(name: string, m: any): unknown
+
+	with(plugin: DocBuilderPlugin<any>): unknown
 
 	get schemableWithId(): object
 	get schemaWithId(): ISchema

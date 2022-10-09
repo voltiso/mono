@@ -6,8 +6,8 @@ import * as Database from '@voltiso/firestore-like'
 import { isPlainObject } from '@voltiso/util'
 
 import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
-import { isDocRef, StrongDocRef, WeakDocRef } from '~/Ref'
-import type { DocRefBaseContext } from '~/Ref/_/Context'
+import type { DocRefBaseContext } from '~/DocRef'
+import { isDocRef, StrongDocRef, WeakDocRef } from '~/DocRef'
 import type { IntrinsicFields } from '~/schemas'
 
 import { isRefEntry } from './RefEntry'

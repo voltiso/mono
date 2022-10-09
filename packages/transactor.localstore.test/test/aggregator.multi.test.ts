@@ -36,7 +36,21 @@ class ShiftBase extends Doc('shift')({
 	},
 }) {}
 
-class Shift extends ShiftBase.aggregateInto('day', 'shifts', {
+//
+
+class Day extends Doc('day')({
+	id: sDate,
+
+	aggregates: {
+		shifts: s.array(ShiftBase.schemableWithId).default([]).simple,
+	},
+}) {}
+
+const days = db.register(Day)
+
+//
+
+class Shift extends ShiftBase.aggregateInto(Day, 'shifts', {
 	target() {
 		const dayIds = [] as string[]
 
@@ -71,18 +85,6 @@ const shifts = db.register(Shift)
 
 //
 
-class Day extends Doc('day')({
-	id: sDate,
-
-	aggregates: {
-		shifts: s.array(ShiftBase.schemableWithId).default([]).simple,
-	},
-}) {}
-
-const days = db.register(Day)
-
-//
-
 describe('aggregator', () => {
 	it('multi', async () => {
 		expect.hasAssertions()
@@ -109,7 +111,7 @@ describe('aggregator', () => {
 							}
 						}
 						numRefs: number
-						aggregateSource: Record<string, true>
+						aggregateSource: Record<string, Record<string, true>>
 					}
 				}
 			>

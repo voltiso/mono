@@ -7,8 +7,8 @@ import { callableObject } from '~/function/callableObject'
 export const CALL = Symbol('CALL')
 export type CALL = typeof CALL
 
-interface WithCall {
-	[CALL](this: object, ...args: never[]): unknown
+export interface WithCall {
+	[CALL](this: object, ...args: any): unknown
 }
 
 /**

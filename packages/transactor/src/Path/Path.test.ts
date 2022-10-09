@@ -3,7 +3,7 @@
 
 import { Assert } from '@voltiso/util'
 
-import type { IRef } from '~/Ref'
+import type { IDocRefBase } from '~/DocRef'
 
 import type { DbPathFromString } from './Path'
 import { CollectionPath } from './Path'
@@ -24,6 +24,6 @@ describe('path', function () {
 		expect.assertions(0)
 
 		type X = DbPathFromString<'asd/...' | 'sdf/...'>
-		Assert.is<X, IRef>()
+		Assert.is<X, IDocRefBase>()
 	})
 })

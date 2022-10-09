@@ -10,7 +10,7 @@ import type { NestedData } from '~/Data/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import { TransactorError } from '~/error'
 import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
-import type { PartialIntrinsicFields } from '~/schemas'
+import type { IntrinsicFields } from '~/schemas'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
 
 interface WithToJSON {
@@ -73,7 +73,7 @@ export function toDatabaseUpdate(
 
 export function toDatabaseSet(
 	ctx: DatabaseContext,
-	obj: PartialIntrinsicFields,
+	obj: IntrinsicFields,
 ): FirestoreLike.DocumentData
 
 export function toDatabaseSet(
@@ -83,7 +83,7 @@ export function toDatabaseSet(
 
 export function toDatabaseSet(
 	ctx: DatabaseContext,
-	obj: PartialIntrinsicFields | NestedData,
+	obj: IntrinsicFields | NestedData,
 ): FirestoreLike.DocumentData | FirestoreLike.DocumentDataNested {
 	/* Date should be auto-converted to Timestamp */
 	if (obj instanceof Date) return obj // return ctx.module.Timestamp.fromDate(obj)

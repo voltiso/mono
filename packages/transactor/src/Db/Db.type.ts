@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CollectionRef } from '~'
+import type { CollectionRef } from '~/CollectionRef'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
-import type { DocRefPattern, WeakDocRef } from '~/Ref'
+import type { DocRefPattern, WeakDocRef } from '~/DocRef'
 
 import type { DbCallArgs, DbCallResult } from './Db_'
 

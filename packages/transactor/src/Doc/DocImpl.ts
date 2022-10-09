@@ -1,20 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
-import { isPlainObject, lazyConstructor, omit } from '@voltiso/util'
+import type { Schema } from '@voltiso/schemar.types'
+import {
+	assert,
+	isPlainObject,
+	lazyConstructor,
+	omit,
+	stringFrom,
+} from '@voltiso/util'
 
 import type { WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
+import type { DocRefContext, StrongDocRefBase } from '~/DocRef'
+import { isStrongDocRef, StrongDocRef, StrongDocRefImpl } from '~/DocRef'
 import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
-import type { StrongRef } from '~/Ref'
-import { isStrongDocRef, StrongDocRef, StrongDocRefImpl } from '~/Ref'
-import type { DocRefContext } from '~/Ref/_/Context'
 import type { Updates } from '~/updates'
 
+import { TransactorError } from '..'
 import type { GetData } from './_/GData'
 import type { Doc } from './Doc'
 import { DocConstructorImpl } from './DocConstructor'
@@ -48,10 +54,12 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	methods: Record<string, Method> = {}
 
-	_ref?: StrongRef<this> = undefined
+	_ref?: StrongDocRefBase<this> = undefined
 
 	constructor(context: DocContext, raw: GetData<TI>) {
 		super()
+
+		assert(raw.__voltiso)
 
 		// eslint-disable-next-line no-param-reassign
 		raw = patchContextInRefs(raw, context)
@@ -60,8 +68,8 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		this._setRaw(raw)
 
 		// assert the ! members
-		$assert(this._raw)
-		$assert(this._rawProxy)
+		assert(this._raw)
+		assert(this._rawProxy)
 
 		// add methods
 		const { docRef } = this._context
@@ -94,12 +102,22 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return new Proxy(this, {
 			get: (target, p, receiver: unknown) => {
 				if (p in target) return Reflect.get(target, p, receiver) as never
+				else if (p in this._raw.__voltiso.aggregateTarget)
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, security/detect-object-injection
+					return (this._raw.__voltiso.aggregateTarget as any)[p].value as never
 				else return Reflect.get(this._rawProxy, p) as never
 			},
 
 			set: (target, p, value, receiver: unknown) => {
-				if (p in target) return Reflect.set(target, p, value, receiver)
-				else return Reflect.set(this._rawProxy, p, value)
+				if (typeof p !== 'string' || p in target)
+					return Reflect.set(target, p, value, receiver)
+
+				if (p in this._raw.__voltiso.aggregateTarget)
+					throw new TransactorError(
+						`cannot set aggregate ${p} to a new value ${stringFrom(value)}`,
+					)
+
+				return Reflect.set(this._rawProxy, p, value)
 			},
 
 			deleteProperty: (_target, p) => Reflect.deleteProperty(this._rawProxy, p),
@@ -129,7 +147,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this._context.docRef.path as never
 	}
 
-	get ref(): StrongRef<this> {
+	get ref(): StrongDocRefBase<this> {
 		if (!this._ref)
 			this._ref = new StrongDocRef(
 				omit(this._context, 'docRef'),
@@ -172,13 +190,13 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	// 	return (this.constructor as IDocConstructor).schemableWithoutId
 	// }
 
-	// get schemaWithId() {
-	// 	return (this.constructor as IDocConstructor).schemaWithId
-	// }
+	get schemaWithoutId(): Schema<GetData<TI>> | undefined {
+		return this.ref.schemaWithoutId as never
+	}
 
-	// get schemaWithoutId() {
-	// 	return (this.constructor as IDocConstructor).schemaWithoutId
-	// }
+	get schemaWithId(): Schema<WithId<GetData<TI>>> | undefined {
+		return this.ref.schemaWithId as never
+	}
 
 	get aggregateSchemas() {
 		return this.ref.aggregateSchemas

@@ -2,7 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { DTI, IDoc, StrongRef } from '@voltiso/transactor'
+import type {
+	DTI,
+	Id,
+	IDoc,
+	StrongDocRef,
+	StrongDocRefBase,
+} from '@voltiso/transactor'
 import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
@@ -28,17 +34,40 @@ class Patient extends Doc.public({
 const patients = db('patientX').register(Patient)
 
 describe('ref', () => {
+	it('type', () => {
+		expect.assertions(0)
+
+		type DoctorData = ReturnType<DoctorX['dataWithId']>
+		Assert<
+			IsIdentical<
+				DoctorData,
+				{
+					id: Id<DoctorX>
+					profile: {
+						name: string
+						specialty: string
+					}
+					__voltiso?: {
+						aggregateTarget: {}
+						numRefs: number
+						aggregateSource: Record<string, Record<string, true>>
+					}
+				}
+			>
+		>()
+	})
+
 	it('checks numRefs on delete', async () => {
 		expect.hasAssertions()
 
-		Assert(Is<StrongRef<DoctorX>>().not.relatedTo<StrongRef<Patient>>())
+		Assert(Is<StrongDocRef<DoctorX>>().not.relatedTo<StrongDocRef<Patient>>())
 
-		Assert(Is<StrongRef<DoctorX>>().not.relatedTo<typeof p.ref>())
+		Assert(Is<StrongDocRef<DoctorX>>().not.relatedTo<typeof p.ref>())
 
 		Assert(Is<typeof d>().not.relatedTo<typeof p>())
 		Assert(Is<typeof d.ref>().not.relatedTo<typeof p.ref>())
 
-		Assert.is<StrongRef<DoctorX>[DTI]['tag'], 'untagged'>()
+		Assert.is<StrongDocRef<DoctorX>[DTI]['tag'], 'untagged'>()
 
 		await database.doc('doctor/d').delete()
 		await database.doc('patient/p').delete()
@@ -49,7 +78,7 @@ describe('ref', () => {
 			},
 		})
 
-		Assert(Is(d.ref).identicalTo<StrongRef<DoctorX>>())
+		Assert(Is(d.ref).identicalTo<StrongDocRefBase<DoctorX>>())
 
 		const p = await patients.add({
 			profile: {

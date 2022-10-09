@@ -72,6 +72,8 @@ describe('class', () => {
 		const doc = await things.add({ thingA: 123 })
 		await things('ggggg').set({ thingB: 234 })
 
+		await things(doc.id).data // !!!
+
 		await expect(things(doc.id).data).resolves.toMatchObject({ thingA: 123 })
 		await expect(things('ggggg').dataWithId()).resolves.toMatchObject({
 			id: 'ggggg',

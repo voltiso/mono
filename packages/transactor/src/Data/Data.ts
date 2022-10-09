@@ -4,7 +4,7 @@
 import type { $_ } from '@voltiso/util'
 
 import type { DocLike, IDoc } from '~/Doc'
-import type { DocRefLike } from '~/Ref'
+import type { DocRefLike } from '~/DocRef'
 
 import type { Id } from './Id'
 
@@ -20,25 +20,7 @@ export const isNestedDataRecord = (x: NestedData): x is DataRecord =>
 export type NestedDataNoArray = DataRecord | LeafData
 export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arrays not possible
 
-// type TDataDef = DataRecord // & TData
-
 /** @inline */
-export type WithId<Data, Doc extends DocLike = IDoc> = $_<
-	{ id: Id<Doc> } & Data
->
-
-// export type DataWithId<
-// 	F extends IntrinsicFields = IntrinsicFields,
-// 	I extends Id = Id,
-// > = 'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id: I } & F>
-
-// export type DataWithoutId<F extends DefaultFields = DefaultFields> =
-// 	F extends any ? _<{ readonly id?: never } & F> : never
-
-// export type DataWithoutId<F extends DefaultFields = DefaultFields> =
-// 	'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id?: never } & F>
-
-// export type Data<
-// 	F extends object = DefaultFields,
-// 	I extends Id = Id,
-// > = 'id' extends keyof OmitSignatures<F> ? never : _<{ readonly id?: I } & F>
+export type WithId<Data, Doc extends DocLike = IDoc> = Doc extends any
+	? $_<{ id: Id<Doc> } & Data>
+	: never

@@ -21,7 +21,7 @@ class MyDoc2 extends Doc('my-tag-data-2')({
 	},
 }) {}
 
-declare module '..' {
+declare module '~/DocTypes-module-augmentation' {
 	interface DocTypes {
 		'my-tag-data-1': MyDoc
 		'my-tag-data-2': MyDoc2

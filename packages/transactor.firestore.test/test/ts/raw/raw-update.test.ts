@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createTransactor } from '@voltiso/transactor'
+import { createTransactor, sVoltisoEntry } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from '../common/firestore'
 
@@ -26,6 +26,7 @@ describe('raw-update', function () {
 		expect(r).toBeUndefined()
 
 		await expect(db('nurseX/anthony').dataWithoutId()).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
 			asd: 1,
 			sdf: 2,
 		})
@@ -63,7 +64,11 @@ describe('raw-update', function () {
 			expect(r).toBeUndefined()
 
 			await expect(db('nurseX/anthony').dataWithoutId()).resolves.toStrictEqual(
-				{ asd: 1, sdf: 2 },
+				{
+					__voltiso: sVoltisoEntry.validate(undefined),
+					asd: 1,
+					sdf: 2,
+				},
 			)
 		})
 	})

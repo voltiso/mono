@@ -16,9 +16,7 @@ class MyDoctor extends Doc('MyDoctor').fields({
 		name: s.string,
 		friend: sStrongRef<'MyDoctor'>().optional,
 	},
-}) {
-	// declare friend?: Ref<Doctor>
-}
+}) {}
 
 declare module '@voltiso/transactor' {
 	interface DocTypes {
@@ -27,11 +25,6 @@ declare module '@voltiso/transactor' {
 }
 
 const doctors = db.register(MyDoctor)
-
-// class Client extends Doc.public({
-// 	asd: z.string,
-// }) {}
-// const clients = db('client').register(Client)
 
 describe('localstore', () => {
 	describe('ref', () => {

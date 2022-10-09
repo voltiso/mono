@@ -6,6 +6,8 @@ import { lazyConstructor } from '@voltiso/util'
 
 import type { Method } from '~/Method'
 
+import type { ExecutionContext, NestedData } from '..'
+import type { DocBase } from './Doc'
 import { Doc } from './Doc'
 import type { DocConstructor } from './DocConstructor'
 import type { DocTI } from './DocTI'
@@ -26,7 +28,16 @@ export interface IndexedDocTI extends DocTI {
 	aggregates: Record<string, Schema>
 }
 
-export type IndexedDoc = Doc<IndexedDocTI>
+//
+
+export interface IndexedDocBase
+	extends DocBase<IndexedDocTI, ExecutionContext> {
+	// [k: string]: NestedData | Value<DocBase<IndexedDocTI, ExecutionContext>
+}
+
+export type IndexedDoc = IndexedDocBase & {
+	[k: string]: NestedData
+}
 
 export const IndexedDoc = lazyConstructor(
 	() => Doc,

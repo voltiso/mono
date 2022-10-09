@@ -2,7 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { Doc } from '@voltiso/transactor'
+import type { DocBuilderPlugin } from '@voltiso/transactor'
+import { aggregate, Doc } from '@voltiso/transactor'
+import type { IsIdentical } from '@voltiso/util'
+import { Assert, assert } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
@@ -42,27 +45,38 @@ class Week extends Doc('myWeek')({
 
 const weeks = db.register(Week)
 
+type WeekData = ReturnType<Week['dataWithId']>
+
 //
 
-class Day extends Doc('myDay')({
+class DayBase extends Doc('myDay')({
 	id: sDate,
 
 	public: {
 		numWomen: s.number.default(0),
 	},
-}).aggregateInto('myWeek', 'numWomenThisWeek', {
-	target() {
-		return weeks(getLastSunday(this.id))
-	},
-
-	include(acc) {
-		return acc + this.numWomen
-	},
-
-	exclude(acc) {
-		return acc - this.numWomen
-	},
 }) {}
+
+const plugin: DocBuilderPlugin<'myDay'> = aggregate(
+	'myDay',
+	'myWeek',
+	'numWomenThisWeek',
+	{
+		target() {
+			return weeks(getLastSunday(this.id))
+		},
+
+		include(acc) {
+			return acc + this.numWomen
+		},
+
+		exclude(acc) {
+			return acc - this.numWomen
+		},
+	},
+)
+
+class Day extends DayBase.with(plugin) {}
 
 const days = db.register(Day)
 
@@ -93,6 +107,12 @@ describe('aggregator', () => {
 			numWomen: 1000,
 		})
 
+		type A = WeekData['__voltiso']['aggregateTarget']['numWomenThisWeek']
+		Assert.is<undefined, A>()
+
+		type B = Week['numWomenThisWeek']
+		Assert<IsIdentical<B, { value: number; numSources: number }>>()
+
 		await expect(weeks('2022-10-09').__voltiso).resolves.toMatchObject({
 			aggregateTarget: {
 				numWomenThisWeek: {
@@ -101,6 +121,13 @@ describe('aggregator', () => {
 				},
 			},
 		})
+
+		const doc = await weeks('2022-10-09')
+		assert(doc)
+
+		expect(doc.numWomenThisWeek).toBe(110)
+
+		await expect(weeks('2022-10-09').numWomenThisWeek).resolves.toBe(110)
 
 		await expect(weeks('2022-10-16').__voltiso).resolves.toMatchObject({
 			aggregateTarget: {

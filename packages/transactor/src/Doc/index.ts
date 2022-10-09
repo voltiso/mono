@@ -3,10 +3,12 @@
 
 export * from './_'
 export * from './Doc'
+export * from './DocBuilderPlugin'
 export * from './DocCall'
 export * from './DocConstructor'
 export * from './DocContext'
 export * from './DocImpl'
+export * from './DocRelated'
 export * from './DocTI'
 export * from './IDoc'
 export * from './IndexedDoc'

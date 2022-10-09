@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { sVoltisoEntry } from '@voltiso/transactor'
+
 import { createTransactor } from '../common'
 
 const db = createTransactor({ requireSchemas: false, refCounters: false })
@@ -21,6 +23,7 @@ describe('raw-update', function () {
 		expect(r).toBeUndefined()
 
 		await expect(db('doctor/anthony').dataWithoutId()).resolves.toStrictEqual({
+			__voltiso: sVoltisoEntry.validate(undefined),
 			asd: 1,
 			sdf: 2,
 		})
@@ -58,7 +61,11 @@ describe('raw-update', function () {
 			expect(r).toBeUndefined()
 
 			await expect(db('doctor/anthony').dataWithoutId()).resolves.toStrictEqual(
-				{ asd: 1, sdf: 2 },
+				{
+					__voltiso: sVoltisoEntry.validate(undefined),
+					asd: 1,
+					sdf: 2,
+				},
 			)
 		})
 	})

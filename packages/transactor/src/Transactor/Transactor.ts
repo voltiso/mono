@@ -4,9 +4,9 @@
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { Throw } from '@voltiso/util'
 
-import type { Db } from '~'
 import type { CollectionRef } from '~/CollectionRef'
 import type { FirestoreLikeModule } from '~/DatabaseContext'
+import type { Db } from '~/Db'
 import type { DTI } from '~/Doc'
 
 import type { TransactionBody } from './methods'

@@ -5,15 +5,15 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
-import type { Id } from '~'
-import { Doc } from '~'
+import type { Id } from '~/Data'
 import type { DocTI, DTI } from '~/Doc'
+import { Doc } from '~/Doc'
 
 import type { MergeTI } from './_/MergeTI'
 import type { DocConstructor } from './DocConstructor'
 import type { IDocConstructor } from './IDocConstructor'
 
-declare module '~' {
+declare module '../..' {
 	interface DocTypes {
 		docConstructorTest: Doc
 	}

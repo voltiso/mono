@@ -3,8 +3,8 @@
 
 import { stringFrom } from '@voltiso/util'
 
-import { TransactorError } from '~'
-import type { WithDocRef } from '~/Ref'
+import type { WithDocRef } from '~/DocRef'
+import { TransactorError } from '~/error'
 
 import type { WithTransaction } from './WithTransaction'
 
