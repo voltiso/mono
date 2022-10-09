@@ -1,15 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { MaybePromise } from '@voltiso/util'
+import type { MaybePromise, Mutable } from '@voltiso/util'
 import {
 	CALL,
 	callableInstance,
 	isCallable,
+	lazyPromise,
 	stringFrom,
 	tryGet,
 } from '@voltiso/util'
 import fetch from 'cross-fetch'
+
+import type { RpcResult } from '~/_shared'
 
 import type { Client } from './Client'
 
@@ -35,17 +38,72 @@ function callLocal(
 	return localHandler(...args) as never
 }
 
+async function callRemote(clientPath: ClientPath, args: unknown[]) {
+	const body = {
+		path: clientPath._path,
+		args,
+	}
+
+	const headers: Record<string, string> = {
+		'Content-Type': 'application/json',
+	}
+
+	if (clientPath._client.token)
+		headers['Authorization'] = `Bearer ${clientPath._client._token}`
+
+	const message = `rpc.${clientPath._path.join('.')}(${args
+		.map(x => JSON.stringify(x))
+		.join(', ')})`
+
+	// eslint-disable-next-line no-console
+	if (clientPath._client._options.log) console.log(`${message}...`)
+
+	const detail: string[] = []
+
+	try {
+		const response = await fetch(clientPath._client._url, {
+			method: 'post',
+			body: JSON.stringify(body),
+			headers,
+		})
+
+		detail.push(`HTTP ${response.status}`)
+
+		// eslint-disable-next-line no-magic-numbers
+		if (response.status === 200) {
+			const data = (await response.json()) as { result: unknown }
+			// await localPromise
+			return data.result
+		}
+
+		try {
+			const json = (await response.json()) as { error?: unknown }
+			const error = json.error
+
+			// console.log('er', error)
+			if (error) detail.push(JSON.stringify(error))
+		} catch {}
+	} catch (error) {
+		const message =
+			error instanceof Error
+				? `${error.stack || error.message}`
+				: `Exotic error: ${stringFrom(error)}`
+
+		detail.push(message)
+	}
+
+	const finalMessage = [message, ...detail].join(': ')
+
+	// eslint-disable-next-line no-console
+	if (clientPath._client.options.log) console.error(finalMessage)
+
+	// await localPromise
+	throw new Error(finalMessage)
+}
+
 export class ClientPath {
 	_client: Client
 	_path: readonly string[]
-
-	// get client() {
-	// 	return this._client
-	// }
-
-	// get path() {
-	// 	return this._path
-	// }
 
 	constructor(client: Client, path: readonly string[]) {
 		this._client = client
@@ -63,90 +121,29 @@ export class ClientPath {
 		})
 	}
 
-	[CALL](...args: unknown[]) {
+	[CALL](...args: unknown[]): RpcResult<unknown> {
 		const localPromise = Promise.resolve(callLocal(this, args))
+		const remotePromise = callRemote(this, args)
 
 		const call = async () => {
-			await localPromise
-
-			const body = {
-				path: this._path,
-				args,
-			}
-
-			const headers: Record<string, string> = {
-				'Content-Type': 'application/json',
-			}
-
-			if (this._client.token)
-				headers['Authorization'] = `Bearer ${this._client._token}`
-
-			const message = `rpc.${this._path.join('.')}(${args
-				.map(x => JSON.stringify(x))
-				.join(', ')})`
-
-			// eslint-disable-next-line no-console
-			if (this._client._options.log) console.log(`${message}...`)
-
-			const detail: string[] = []
-
-			try {
-				const response = await fetch(this._client._url, {
-					method: 'post',
-					body: JSON.stringify(body),
-					headers,
-				})
-
-				detail.push(`HTTP ${response.status}`)
-
-				// eslint-disable-next-line no-magic-numbers
-				if (response.status === 200) {
-					const data = (await response.json()) as { result: unknown }
-					// await localPromise
-					return data.result
-				}
-
-				try {
-					const json = (await response.json()) as { error?: unknown }
-					const error = json.error
-
-					// console.log('er', error)
-					if (error) detail.push(JSON.stringify(error))
-				} catch {}
-			} catch (error) {
-				const message =
-					error instanceof Error
-						? `${error.stack || error.message}`
-						: `Exotic error: ${stringFrom(error)}`
-
-				detail.push(message)
-			}
-
-			const finalMessage = [message, ...detail].join(': ')
-
-			// eslint-disable-next-line no-console
-			if (this._client.options.log) console.error(finalMessage)
-
-			// await localPromise
-			throw new Error(finalMessage)
+			const [_local, remote] = await Promise.all([localPromise, remotePromise])
+			return remote
 		}
 
-		const remotePromise = call() as Promise<unknown> & {
-			local: Promise<unknown>
-			localOrRemote: Promise<unknown>
-		}
+		// start execution (both local and remote)
+		const result = call() as Mutable<RpcResult<unknown>>
 
-		const callLocalOrRemote = async () => {
+		result.local = localPromise
+		// result.remote = remotePromise
+
+		result.localOrRemote = lazyPromise(async () => {
 			try {
 				return await localPromise
 			} catch {}
 
 			return remotePromise
-		}
+		})
 
-		remotePromise.local = localPromise
-		remotePromise.localOrRemote = callLocalOrRemote()
-
-		return remotePromise
+		return result
 	}
 }

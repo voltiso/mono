@@ -11,6 +11,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 import mockConsole from 'jest-mock-console'
 
+import type { RpcResult } from '~/_shared'
 import { createClient } from '~/client'
 import { createServer, createServerContext } from '~/server'
 
@@ -77,25 +78,9 @@ describe('client', () => {
 			`http://localhost:${port}/rpc`,
 		)
 
-		Assert<
-			IsIdentical<
-				typeof myClient.doctor.add,
-				() => Promise<void> & {
-					local: Promise<void>
-					localOrRemote: Promise<void>
-				}
-			>
-		>()
+		Assert<IsIdentical<typeof myClient.doctor.add, () => RpcResult<void>>>()
 
-		Assert<
-			IsIdentical<
-				typeof myClient.specialty.add,
-				() => Promise<void> & {
-					local: Promise<void>
-					localOrRemote: Promise<void>
-				}
-			>
-		>()
+		Assert<IsIdentical<typeof myClient.specialty.add, () => RpcResult<void>>>()
 	})
 
 	it('works', async () => {

@@ -3,13 +3,19 @@
 
 /* eslint-disable promise/prefer-await-to-then */
 
+export type LazyPromiseLike<T> = PromiseLike<T> & {
+	readonly isLazy: true
+}
+
 export function lazyPromise<T, ARGS extends unknown[]>(
 	getPromise: (...args: ARGS) => PromiseLike<T>,
 	...args: ARGS
-): PromiseLike<T> {
+): LazyPromiseLike<T> {
 	let promise: PromiseLike<T> | undefined
 
 	return {
+		isLazy: true,
+
 		// eslint-disable-next-line unicorn/no-thenable
 		then: (f, r) => {
 			if (!promise) promise = getPromise(...args)

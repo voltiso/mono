@@ -1,7 +1,3 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-export * from './_'
 export * from './Doc'
 export * from './DocBuilderPlugin'
 export * from './DocCall'
@@ -12,3 +8,4 @@ export * from './DocRelated'
 export * from './DocTI'
 export * from './IDoc'
 export * from './IndexedDoc'
+export * from './_'
