@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
+import {
+	tryAt,
 	MapOrUndefined,
 	PickOptional,
 	StaticError,
@@ -55,7 +56,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	): never {
 		if (newData.stack) {
 			// eslint-disable-next-line security/detect-object-injection
-			const alreadyHaveCustomCss = this[DATA].stack.at(-1)?.customCss
+			const alreadyHaveCustomCss = tryAt(this[DATA].stack, -1)?.customCss
 			const incomingCustomCss = newData.customCss
 
 			if (alreadyHaveCustomCss || incomingCustomCss) {

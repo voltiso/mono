@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import { getKeys } from '@voltiso/util'
+import { getKeys, tryAt } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'
@@ -100,7 +100,7 @@ export function render<$ extends StyledTypeInfo>(
 
 	const stack = data.stack
 
-	const finalCustomCss = stack.at(-1)?.customCss
+	const finalCustomCss = tryAt(stack, -1)?.customCss
 
 	// // ! BAD IDEA: prepare props - dangerous - do not pass customCss
 	// for (const k of Object.keys(p) as (keyof typeof p)[]) {

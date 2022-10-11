@@ -15,6 +15,7 @@ export interface DocRefBaseLike<TI extends DocTILike = DocTILike> {
 	readonly [IS_DOC_REF]: true
 	readonly [DTI]: TI
 	readonly Exists: any
+	readonly path: DocPath
 }
 
 export interface DocRefLike<TI extends DocTILike = DocTILike>

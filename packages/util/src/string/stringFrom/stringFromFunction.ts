@@ -13,10 +13,10 @@ import { defaultToStringOptions } from './ToStringOptions'
 export function stringFromFunction_(f: Function, parameters: ToStringOptions) {
 	let r = f
 		.toString()
-		.replaceAll(/\s+/gu, ' ')
-		.replaceAll(/\(0, [^.]*\.(?<name>[^)]*)\)/gu, '$<name>')
+		.replace(/\s+/gu, ' ')
+		.replace(/\(0, [^.]*\.(?<name>[^)]*)\)/gu, '$<name>')
 		.replace(/^\s*\((?<arg>[^),]+)\)/u, '$<arg>')
-		.replaceAll(/\{\s*\}$/gu, '{}')
+		.replace(/\{\s*\}$/gu, '{}')
 
 	if (r.length > parameters.maxLength) {
 		r = r.replace(/\s*\{.*\}\s*/u, '')

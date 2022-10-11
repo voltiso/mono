@@ -64,7 +64,12 @@ export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext>
 	//
 
 	delete(): Promise<null>
+
 	methods: GMethodPromises<TI>
+
+	//
+
+	toJSON(): _<{ id: string } & JsonFromDocData<GetData<TI>>>
 }
 
 export type Doc<

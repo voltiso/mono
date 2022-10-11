@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { VoltisoUtilError } from '~/error'
+import { mod } from '~/math'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { stringFrom } from '~/string'
 
@@ -52,13 +53,15 @@ export function isRelativeIndexable(
 }
 
 /** @throws On `undefined` return values */
-export function at<Arr, Index extends number & keyof Arr>(
-	array: Arr,
-	index: Index,
-): Exclude<At<Arr, Index>, undefined> {
+export function at<
+	Arr extends readonly unknown[],
+	Index extends number & keyof Arr,
+>(array: Arr, index: Index): Exclude<At<Arr, Index>, undefined> {
 	assertNotPolluting(index)
-	// eslint-disable-next-line security/detect-object-injection
-	const r = isRelativeIndexable(array) ? array.at(index) : array[index]
+	const r = array.length ? array[mod(index, array.length)] : undefined
+
+	// // eslint-disable-next-line security/detect-object-injection
+	// const r = isRelativeIndexable(array) ? array.at(index) : array[index]
 
 	if (typeof r === 'undefined')
 		throw new VoltisoUtilError(
@@ -66,4 +69,18 @@ export function at<Arr, Index extends number & keyof Arr>(
 		)
 
 	return r as Exclude<At<Arr, Index>, undefined>
+}
+
+/**
+ * Same as `at`, but does not throw - returns `undefined` if the element does
+ * not exist.
+ */
+export function tryAt<
+	Arr extends readonly unknown[],
+	Index extends number & keyof Arr,
+>(array: Arr, index: Index): At<Arr, Index> {
+	assertNotPolluting(index)
+	const r = array.length ? array[mod(index, array.length)] : undefined
+
+	return r as At<Arr, Index>
 }
