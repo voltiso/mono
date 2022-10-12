@@ -12,7 +12,7 @@ import type { If } from '@voltiso/util'
 import { lazyPromise, omit, protoLink } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
-import type { RefEntry } from '~/common'
+import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { Id, WithId } from '~/Data'
 import { withoutId } from '~/Data'
 import type { DocLike, IDoc } from '~/Doc'
@@ -100,6 +100,10 @@ export class DocRefBaseImpl<
 
 	_isStrong: boolean
 
+	get isStrong() {
+		return this._isStrong as never
+	}
+
 	// eslint-disable-next-line class-methods-use-this
 	get schemaWithoutId(): never {
 		throw new TransactorError('not implemented')
@@ -167,7 +171,14 @@ export class DocRefBaseImpl<
 		) as never
 	}
 
-	toJSON(): RefEntry {
+	toJSON(): DocRefJson {
+		return {
+			__target: this._ref.path,
+			__isStrong: this._isStrong,
+		}
+	}
+
+	toDatabase(): DocRefDatabase {
 		return {
 			__target: this._ref,
 			__isStrong: this._isStrong,

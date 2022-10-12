@@ -31,6 +31,8 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 	/** Type-only field */
 	readonly Exists: Exists
 
+	readonly isStrong: Exists extends true ? true : boolean
+
 	readonly id: Id<D>
 	readonly path: DocPath<D[DTI]['tag']>
 

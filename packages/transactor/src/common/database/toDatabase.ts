@@ -3,7 +3,6 @@
 
 import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import type { Json } from '@voltiso/util'
 import { getKeys, isPlainObject, undef } from '@voltiso/util'
 
 import type { NestedData } from '~/Data/Data'
@@ -13,12 +12,12 @@ import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
 import type { IntrinsicFields } from '~/schemas'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
 
-interface WithToJSON {
-	toJSON: () => Json
+interface WithToDatabase {
+	toDatabase: () => NestedData
 }
 
-function isWithToJSON(x: unknown): x is WithToJSON {
-	return typeof (x as WithToJSON | null)?.toJSON === 'function'
+function isWithToDatabase(x: unknown): x is WithToDatabase {
+	return typeof (x as WithToDatabase | null)?.toDatabase === 'function'
 }
 
 export function toDatabaseUpdate(
@@ -36,7 +35,7 @@ export function toDatabaseUpdate(
 ): FirestoreLike.UpdateData | FirestoreLike.UpdateDataNested {
 	if (updates instanceof Date) return updates
 
-	if (isWithToJSON(updates)) return updates.toJSON()
+	if (isWithToDatabase(updates)) return updates.toDatabase()
 
 	if (isIncrementIt(updates)) return ctx.module.FieldValue.increment(updates.n)
 
@@ -88,7 +87,7 @@ export function toDatabaseSet(
 	/* Date should be auto-converted to Timestamp */
 	if (obj instanceof Date) return obj // return ctx.module.Timestamp.fromDate(obj)
 
-	if (isWithToJSON(obj)) return obj.toJSON() as never
+	if (isWithToDatabase(obj)) return obj.toDatabase() as never
 	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)
 
 	if (isReplaceIt(obj)) return toDatabaseSet(ctx, obj.data as NestedData)

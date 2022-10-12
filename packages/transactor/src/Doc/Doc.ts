@@ -8,6 +8,7 @@ import type { Id, NestedData } from '~/Data'
 import type { StrongDocRefBase } from '~/DocRef'
 import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
+import type { JsonFromDocData } from '~/serialization'
 
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetUpdateDataByCtx } from './_/GData'

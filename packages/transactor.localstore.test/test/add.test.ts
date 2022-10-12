@@ -89,5 +89,7 @@ describe('add', () => {
 		]) as any
 
 		expect(a[0]).not.toBeInstanceOf(DocRefBaseImpl)
+
+		expect(a[0]).toMatchObject({ __isStrong: true })
 	})
 })

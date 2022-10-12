@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { Id } from '~/Data'
 import type { DocTI, DocTILike, DTI } from '~/Doc/DocTI'
 import type { DocLike } from '~/Doc/IDoc'
@@ -16,6 +17,7 @@ export interface DocRefBaseLike<TI extends DocTILike = DocTILike> {
 	readonly [DTI]: TI
 	readonly Exists: any
 	readonly path: DocPath
+	readonly isStrong: boolean
 }
 
 export interface DocRefLike<TI extends DocTILike = DocTILike>
@@ -27,6 +29,8 @@ export interface IDocRefBase {
 
 	readonly [DTI]: DocTI
 	readonly Exists: boolean
+
+	readonly isStrong: boolean
 
 	readonly id: Id
 	readonly path: DocPath
@@ -42,7 +46,8 @@ export interface IDocRefBase {
 	update(updates: any): PromiseLike<unknown>
 	delete(): PromiseLike<null>
 
-	toJSON(): object
+	toJSON(): DocRefJson
+	toDatabase(): DocRefDatabase
 }
 
 // export interface DocRefLike extends RefLike, PromiseLike<DocLike | null> {}

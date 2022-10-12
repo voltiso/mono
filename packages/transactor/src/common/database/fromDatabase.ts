@@ -10,7 +10,7 @@ import type { DocRefBaseContext } from '~/DocRef'
 import { isDocRef, StrongDocRef, WeakDocRef } from '~/DocRef'
 import type { IntrinsicFields } from '~/schemas'
 
-import { isRefEntry } from './RefEntry'
+import { isDocRefDatabase, isDocRefJson } from './RefEntry'
 
 export function fromDatabaseData(
 	ctx: DocRefBaseContext,
@@ -36,9 +36,12 @@ export function fromDatabaseData(
 		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', o.path)
 		return new StrongDocRef(ctx, o.path)
-	} else if (isRefEntry(o)) {
+	} else if (isDocRefJson(o)) {
 		// console.log('fromDatabase ref', o.__target, o.__isStrong)
 
+		if (o.__isStrong) return new StrongDocRef(ctx, o.__target)
+		else return new WeakDocRef(ctx, o.__target)
+	} else if (isDocRefDatabase(o)) {
 		if (o.__isStrong) return new StrongDocRef(ctx, o.__target.path)
 		else return new WeakDocRef(ctx, o.__target.path)
 	} else if (Database.isTimestamp(o)) return o.toDate()

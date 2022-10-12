@@ -43,12 +43,15 @@ describe('Ref', () => {
 			Is<StrongDocRefBase<MyMysticClient>>().not.relatedTo<
 				StrongDocRefBase<MyMysticDoctor>
 			>(),
+
 			Is<StrongDocRefBase<MyMysticClient>>().subtypeOf<IDocRefBase>(),
+
 			Is<IDocRefBase>().not.subtypeOf<StrongDocRefBase<MyMysticClient>>(),
 
 			Is<StrongDocRefBase<MyMysticClient>>().subtypeOf<
 				WeakDocRefBase<MyMysticClient>
 			>(),
+
 			Is<WeakDocRefBase<MyMysticClient>>().not.subtypeOf<
 				StrongDocRefBase<MyMysticClient>
 			>(),

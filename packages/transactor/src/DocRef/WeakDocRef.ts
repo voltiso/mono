@@ -5,7 +5,7 @@ import type { FastMerge2Reverse_ } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { InferTI, InferTIFromDoc } from '~/CollectionRef/InferTI'
-import type { DocLike, IDoc } from '~/Doc'
+import type { DocLike, IDoc, IndexedDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GAggregatePromises } from '~/Doc/_/GetAggregatePromises'
 import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
@@ -28,7 +28,7 @@ export type WeakDocRefConstructor = new <D extends DocLike>(
 	path: string,
 ) => WeakDocRef<D>
 
-export type WeakDocRef<D extends DocLike> = FastMerge2Reverse_<
+export type WeakDocRef<D extends DocLike = IndexedDoc> = FastMerge2Reverse_<
 	WeakDocRefBase<D>,
 	GDocFields<InferTIFromDoc<D>> &
 		GMethodPromises<InferTIFromDoc<D>> &
