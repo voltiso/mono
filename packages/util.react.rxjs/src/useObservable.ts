@@ -24,14 +24,14 @@ export type ObservableUnion<T> =
  *   getter (mitigate empty render)
  */
 export function useObservable<T>(
-	observable$: ObservableUnion<T> | T,
+	observable$: ObservableUnion<T>,
 	// ...piped: OperatorFunction<T, T>[]
 ): T
 
-export function useObservable(
-	observable$: undefined,
+export function useObservable<T>(
+	observable$: T,
 	// ...piped: OperatorFunction<T, T>[]
-): undefined
+): T
 
 export function useObservable<T>(
 	observable$: ObservableUnion<T> | T | undefined,

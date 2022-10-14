@@ -11,6 +11,11 @@ import type { Response } from './Response'
 import { ServerContext } from './ServerContext'
 import type { ServerOptions } from './ServerOptions'
 
+function shorten(str: string, maxLength: number) {
+	if (str.length <= maxLength) return str
+	return `${str.slice(0, Math.max(0, maxLength - 3))}...`
+}
+
 export class Server_<
 	TRequest extends Request,
 	TResponse extends Response,
@@ -18,6 +23,8 @@ export class Server_<
 > {
 	_context: ServerContext<TRequest, TResponse>
 	_handlers: THandlers
+	_log: boolean
+	_logMaxLength: number
 
 	get context() {
 		return this._context
@@ -30,6 +37,14 @@ export class Server_<
 	constructor(options: ServerOptions<TRequest, TResponse, THandlers>) {
 		this._context = options.context || new ServerContext<TRequest, TResponse>()
 		this._handlers = options.handlers
+
+		this._log = typeof options.log === 'undefined' ? true : options.log
+
+		this._logMaxLength =
+			typeof options.logMaxLength === 'undefined'
+				? Infinity
+				: options.logMaxLength
+
 		// eslint-disable-next-line no-constructor-return
 		return callableInstance(this)
 	}
@@ -44,7 +59,7 @@ export class Server_<
 				s.array(s.string).validate(path)
 
 				// eslint-disable-next-line no-console
-				console.log(logName)
+				if (this._log) console.log(shorten(logName, this._logMaxLength))
 
 				let handler: any = this._handlers
 
@@ -63,8 +78,15 @@ export class Server_<
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 				const result = await handler(...args)
 
-				// eslint-disable-next-line no-console
-				console.log(logName, '===', JSON.stringify(result))
+				if (this._log)
+					// eslint-disable-next-line no-console
+					console.log(
+						shorten(
+							`${logName} === ${JSON.stringify(result)}`,
+							this._logMaxLength,
+						),
+					)
+
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				response.json({ result })
 			} catch (error) {

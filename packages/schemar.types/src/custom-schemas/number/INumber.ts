@@ -11,7 +11,7 @@ export interface NumberLike extends SchemaLike<number> {
 	readonly [SCHEMA_NAME]: 'Number'
 }
 
-export interface INumber extends ISchema {
+export interface INumber extends ISchema<number> {
 	readonly [SCHEMA_NAME]: 'Number'
 
 	readonly [BASE_OPTIONS]: NumberOptions

@@ -8,15 +8,18 @@ import { isStrongDocRefJson, isWeakDocRefJson } from '~/common'
 import type { StrongDocRef, WeakDocRef } from '~/DocRef'
 import type { Transactor } from '~/Transactor'
 
+import type { DateJson } from '../date'
 import { dateFromJson, isDateJson } from '../date'
 
 export type DocDataFromJson<J> = J extends StrongDocRefJson
 	? StrongDocRef
 	: J extends WeakDocRefJson
 	? WeakDocRef
+	: J extends DateJson
+	? Date
 	: J extends object
 	? { [k in keyof J]: DocDataFromJson<J[k]> }
-	: never
+	: J
 
 export function docDataFromJson<J>(
 	db: Transactor,

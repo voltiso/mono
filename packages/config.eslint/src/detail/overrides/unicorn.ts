@@ -118,7 +118,7 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/prefer-native-coercion-functions': 1,
 		'unicorn/prefer-negative-index': 1,
 		'unicorn/prefer-node-protocol': 1,
-		'unicorn/prefer-number-properties': 1,
+		'unicorn/prefer-number-properties': ['warn', { checkInfinity: false }],
 		'unicorn/prefer-object-from-entries': 1,
 		'unicorn/prefer-optional-catch-binding': 1,
 		'unicorn/prefer-prototype-methods': 1,

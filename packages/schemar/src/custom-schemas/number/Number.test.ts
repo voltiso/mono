@@ -7,6 +7,7 @@ import type {
 	CustomNumber,
 	InputType,
 	INumber,
+	NumberLike,
 	NumberOptions,
 	OutputType,
 	Schema,
@@ -23,6 +24,7 @@ describe('s.number', () => {
 
 		Assert.is<CustomNumber<O>, Schema>()
 		Assert.is<CustomNumber<O>, INumber>()
+		Assert.is<INumber, NumberLike>()
 	})
 
 	it('simple', () => {

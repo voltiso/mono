@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createPatch } from '@voltiso/patcher'
+import { createPatch, isKeepIt } from '@voltiso/patcher'
 import type { DeepPartial_ } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
 import { isBehaviorSubject } from '@voltiso/util.rxjs'
@@ -26,6 +26,7 @@ export function useObservableDeltaEffect<T>(
 		observable$,
 		value => {
 			const patch = createPatch(mutable.lastValue, value)
+			if (isKeepIt(patch)) return // ignore
 			effect(patch as never)
 		},
 		deps,

@@ -45,7 +45,7 @@
     "@voltiso/util.node": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^18.8.2",
+    "@types/node": "^18.8.5",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^"
   },
