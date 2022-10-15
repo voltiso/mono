@@ -62,7 +62,7 @@
     "eslint-plugin-i18n-text": "^1.0.1",
     "eslint-plugin-i18next": "^6.0.0-4",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^27.1.1",
+    "eslint-plugin-jest": "^27.1.2",
     "eslint-plugin-jest-async": "^1.0.3",
     "eslint-plugin-jest-dom": "^4.0.2",
     "eslint-plugin-jest-formatting": "^3.1.0",

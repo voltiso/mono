@@ -4,12 +4,12 @@
 import type { IterationOptions } from '~/object'
 import { defaultIterationOptions } from '~/object'
 
-export interface ToStringOptions extends IterationOptions {
+export interface StringFromOptions extends IterationOptions {
 	maxLength: number
 }
 
-// eslint-disable-next-line no-magic-numbers
-const maxLength = 40 as const
+const maxLength = Infinity
+// const maxLength = 40 as const
 
 export const defaultToStringOptions = {
 	...defaultIterationOptions,

@@ -259,6 +259,7 @@ export async function runTransaction<R>(
 						$assert(cacheEntry.data === undef)
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
+							ctx,
 							dbCtx,
 							databaseTransaction,
 							ctx._database.doc(path),
@@ -267,6 +268,7 @@ export async function runTransaction<R>(
 					} else if (cacheEntry.data === null) {
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
+							ctx,
 							dbCtx,
 							databaseTransaction,
 							ctx._database.doc(path),
@@ -276,6 +278,7 @@ export async function runTransaction<R>(
 						$assert(cacheEntry.data)
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
+							ctx,
 							dbCtx,
 							databaseTransaction,
 							ctx._database.doc(path),

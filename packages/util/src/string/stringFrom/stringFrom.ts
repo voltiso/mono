@@ -6,8 +6,8 @@ import { isObject, merge } from '~/object'
 import { stringFromArray } from './stringFromArray'
 import { stringFromFunction_ } from './stringFromFunction'
 import { stringFromObject_ } from './stringFromObject'
-import type { ToStringOptions } from './ToStringOptions'
-import { defaultToStringOptions } from './ToStringOptions'
+import type { StringFromOptions } from './StringFromOptions'
+import { defaultToStringOptions } from './StringFromOptions'
 
 export interface WithToString {
 	toString(): string
@@ -19,7 +19,7 @@ export function isWithToString(x: unknown): x is WithToString {
 	return typeof f === 'function' && f !== Object.prototype.toString
 }
 
-export function stringFrom_(x: unknown, parameters: ToStringOptions): string {
+export function stringFrom_(x: unknown, parameters: StringFromOptions): string {
 	if (typeof x === 'string') return `'${x}'`
 
 	if (typeof x === 'bigint') return `${x}n`
@@ -47,7 +47,7 @@ export function stringFrom_(x: unknown, parameters: ToStringOptions): string {
 
 export function stringFrom(
 	x: unknown,
-	parameters?: Partial<ToStringOptions> | undefined,
+	parameters?: Partial<StringFromOptions> | undefined,
 ) {
 	const p = merge(defaultToStringOptions, parameters)
 	let r = stringFrom_(x, p)

@@ -77,5 +77,11 @@ describe('stringFrom', () => {
 		expect(stringFrom(c, { maxLength: 80, includeSymbols: true })).toBe(
 			'C { 2: 2, a: 1, [Symbol(sym)]: Symbol(sym) }',
 		)
+
+		expect(stringFrom(new Error('test'))).toStrictEqual('Error: test')
+
+		expect(
+			stringFrom({ a: { b: { c: { d: { e: { f: { g: 123 } } } } } } }),
+		).toBe('{ a: { b: { c: { d: { e: { f: { g: 123 } } } } } } }')
 	})
 })

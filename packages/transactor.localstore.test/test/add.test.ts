@@ -10,7 +10,7 @@ import {
 	Doc,
 	DocRefBaseImpl,
 	sWeakRef,
-	toDatabaseSet,
+	toDatabaseSetNested,
 } from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
 import { assert } from '@voltiso/util'
@@ -84,9 +84,10 @@ describe('add', () => {
 
 		expect(client.friends[0].id).toBe('a')
 
-		const a = toDatabaseSet((db as TransactorImpl)._databaseContext as never, [
-			clients('a').asStrongRef,
-		]) as any
+		const a = toDatabaseSetNested(
+			(db as TransactorImpl)._databaseContext as never,
+			[clients('a').asStrongRef],
+		) as any
 
 		expect(a[0]).not.toBeInstanceOf(DocRefBaseImpl)
 

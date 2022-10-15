@@ -5,8 +5,8 @@ import { undef } from '~'
 import { getEntries, merge } from '~/object'
 
 import { stringFrom } from './stringFrom'
-import type { ToStringOptions } from './ToStringOptions'
-import { defaultToStringOptions } from './ToStringOptions'
+import type { StringFromOptions } from './StringFromOptions'
+import { defaultToStringOptions } from './StringFromOptions'
 
 function stringFromProperty(property: keyof any): string {
 	if (typeof property === 'symbol') return `[${property.toString()}]`
@@ -24,13 +24,13 @@ function append(str: string, x: string): string {
 
 export function stringFromObject_(
 	obj: Record<keyof any, unknown>,
-	parameters: ToStringOptions,
+	options: StringFromOptions,
 ) {
 	let name: string | undefined = obj.constructor.name
 
 	if (name === 'Object') name = undef
 
-	const entries = getEntries(obj, parameters)
+	const entries = getEntries(obj, options)
 
 	if (entries.length === 0) return name ? `${name} {}` : '{}'
 
@@ -42,12 +42,12 @@ export function stringFromObject_(
 
 		const propertyStr = stringFromProperty(property)
 
-		const cand = append(result, `${propertyStr}: ${stringFrom(value)}`)
+		const cand = append(result, `${propertyStr}: ${stringFrom(value, options)}`)
 		const shortCand =
 			result === baseObjStr ? shortResult : append(result, '...')
 
-		if (cand.length > parameters.maxLength) {
-			if (shortCand.length > parameters.maxLength) return shortResult
+		if (cand.length > options.maxLength) {
+			if (shortCand.length > options.maxLength) return shortResult
 
 			return shortCand
 		}
@@ -60,9 +60,9 @@ export function stringFromObject_(
 }
 
 export function stringFromObject(
-	f: Record<keyof any, unknown>,
-	parameters?: Partial<ToStringOptions> | undefined,
+	object: Record<keyof any, unknown>,
+	options?: Partial<StringFromOptions> | undefined,
 ) {
-	const p = merge(defaultToStringOptions, parameters)
-	return stringFromObject_(f, p)
+	const finalOptions = merge(defaultToStringOptions, options)
+	return stringFromObject_(object, finalOptions)
 }

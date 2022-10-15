@@ -1,15 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import { getKeys, isPlainObject, undef } from '@voltiso/util'
+import { assert, getKeys, isPlainObject } from '@voltiso/util'
+import { deepEqual } from 'fast-equals'
 
+import { omitVoltisoEntry } from '~/Data'
 import type { NestedData } from '~/Data/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import { TransactorError } from '~/error'
 import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
 import type { IntrinsicFields } from '~/schemas'
+import { sVoltisoEntry } from '~/schemas'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
 
 interface WithToDatabase {
@@ -59,7 +61,7 @@ export function toDatabaseUpdate(
 				for (const childKey of getKeys(rr)) {
 					// eslint-disable-next-line security/detect-object-injection
 					const val = (rr as FirestoreLike.DocumentData)[childKey]
-					$assert(val !== undef)
+					assert(val !== undefined)
 					r[`${key}.${childKey}`] = val
 				}
 			// eslint-disable-next-line security/detect-object-injection
@@ -70,19 +72,11 @@ export function toDatabaseUpdate(
 	} else return updates
 }
 
-export function toDatabaseSet(
-	ctx: DatabaseContext,
-	obj: IntrinsicFields,
-): FirestoreLike.DocumentData
+//
 
-export function toDatabaseSet(
+export function toDatabaseSetNested(
 	ctx: DatabaseContext,
 	obj: NestedData,
-): FirestoreLike.DocumentDataNested
-
-export function toDatabaseSet(
-	ctx: DatabaseContext,
-	obj: IntrinsicFields | NestedData,
 ): FirestoreLike.DocumentData | FirestoreLike.DocumentDataNested {
 	/* Date should be auto-converted to Timestamp */
 	if (obj instanceof Date) return obj // return ctx.module.Timestamp.fromDate(obj)
@@ -90,17 +84,17 @@ export function toDatabaseSet(
 	if (isWithToDatabase(obj)) return obj.toDatabase() as never
 	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)
 
-	if (isReplaceIt(obj)) return toDatabaseSet(ctx, obj.data as NestedData)
+	if (isReplaceIt(obj)) return toDatabaseSetNested(ctx, obj.data as NestedData)
 
 	if (isIncrementIt(obj))
 		throw new TransactorError(
 			'firestoreSet: incrementField() sentinel not allowed - are you trying to update non-existing document?',
 		)
 
-	$assert(!isDeleteIt(obj))
+	assert(!isDeleteIt(obj))
 
 	if (Array.isArray(obj)) {
-		return obj.map(x => toDatabaseSet(ctx, x)) as never
+		return obj.map(x => toDatabaseSetNested(ctx, x)) as never
 	}
 
 	if (isPlainObject(obj)) {
@@ -110,11 +104,38 @@ export function toDatabaseSet(
 			if (isDeleteIt(val)) continue
 
 			// eslint-disable-next-line security/detect-object-injection
-			r[key] = toDatabaseSet(ctx, val as never)
+			r[key] = toDatabaseSetNested(ctx, val as never)
 		}
 
 		return r
 	}
 
 	return obj
+}
+
+export function toDatabaseSet(
+	ctx: DatabaseContext,
+	obj: IntrinsicFields,
+): FirestoreLike.DocumentData {
+	if (isReplaceIt(obj)) return toDatabaseSet(ctx, obj.data as IntrinsicFields)
+
+	assert(isPlainObject(obj))
+	assert(!isDeleteIt(obj))
+
+	let finalObj = obj as Partial<IntrinsicFields>
+
+	if (deepEqual(finalObj.__voltiso, sVoltisoEntry.validate(undefined))) {
+		finalObj = omitVoltisoEntry(obj)
+	}
+
+	const r: FirestoreLike.DocumentData = {}
+
+	for (const [key, val] of Object.entries(finalObj)) {
+		if (isDeleteIt(val)) continue
+
+		// eslint-disable-next-line security/detect-object-injection
+		r[key] = toDatabaseSetNested(ctx, val as never)
+	}
+
+	return r
 }

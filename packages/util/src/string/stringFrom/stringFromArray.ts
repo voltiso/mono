@@ -4,8 +4,8 @@
 import { merge } from '~/object'
 
 import { stringFrom } from './stringFrom'
-import type { ToStringOptions } from './ToStringOptions'
-import { defaultToStringOptions } from './ToStringOptions'
+import type { StringFromOptions } from './StringFromOptions'
+import { defaultToStringOptions } from './StringFromOptions'
 
 const baseResult = '[]'
 const baseShortResult = '[...]'
@@ -18,7 +18,7 @@ function append(str: string, x: string) {
 
 export function stringFromArray_(
 	array: unknown[],
-	parameters: ToStringOptions,
+	parameters: StringFromOptions,
 ) {
 	if (array.length === 0) return '[]'
 
@@ -45,7 +45,7 @@ export function stringFromArray_(
 
 export function stringFromArray(
 	array: unknown[],
-	parameters?: Partial<ToStringOptions> | undefined,
+	parameters?: Partial<StringFromOptions> | undefined,
 ) {
 	const p = merge(defaultToStringOptions, parameters)
 	return stringFromArray_(array, p as never)

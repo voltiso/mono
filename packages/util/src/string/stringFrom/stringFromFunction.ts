@@ -5,12 +5,15 @@
 
 import { merge } from '~/object'
 
-import type { ToStringOptions } from './ToStringOptions'
-import { defaultToStringOptions } from './ToStringOptions'
+import type { StringFromOptions } from './StringFromOptions'
+import { defaultToStringOptions } from './StringFromOptions'
 
 /* eslint-disable @typescript-eslint/ban-types */
 
-export function stringFromFunction_(f: Function, parameters: ToStringOptions) {
+export function stringFromFunction_(
+	f: Function,
+	parameters: StringFromOptions,
+) {
 	let r = f
 		.toString()
 		.replace(/\s+/gu, ' ')
@@ -28,7 +31,7 @@ export function stringFromFunction_(f: Function, parameters: ToStringOptions) {
 
 export function stringFromFunction(
 	f: Function,
-	parameters?: Partial<ToStringOptions> | undefined,
+	parameters?: Partial<StringFromOptions> | undefined,
 ) {
 	const p = merge(defaultToStringOptions, parameters)
 	return stringFromFunction_(f, p as never)

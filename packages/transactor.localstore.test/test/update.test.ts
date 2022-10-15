@@ -3,7 +3,7 @@
 
 import { IndexedDoc, sVoltisoEntry } from '@voltiso/transactor'
 
-import { createTransactor } from './common'
+import { createTransactor, database } from './common'
 
 const db = createTransactor({ requireSchemas: false, refCounters: false })
 
@@ -71,6 +71,14 @@ describe('update', function () {
 				asd: 1,
 				sdf: 2,
 			})
+		})
+
+		// does not write default __voltiso to the db
+		const rawAnthonyDoc = await database.doc('doctor/anthony').get()
+
+		expect(rawAnthonyDoc.data()).toStrictEqual({
+			asd: 1,
+			sdf: 2,
 		})
 	})
 })

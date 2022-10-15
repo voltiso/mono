@@ -3,4 +3,4 @@
 
 export * from './stringFrom'
 export * from './stringFromFunction'
-export * from './ToStringOptions'
+export * from './StringFromOptions'

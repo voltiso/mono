@@ -23,7 +23,7 @@ describe('docDataFromJson', () => {
 
 		type C = DocDataFromJson<WeakDocRefJson>
 		Assert<IsIdentical<C, WeakDocRef<IndexedDoc>>>()
-		
+
 		type D = DocDataFromJson<undefined>
 		Assert<IsIdentical<D, undefined>>()
 	})

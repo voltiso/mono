@@ -141,6 +141,7 @@ async function rawUpdate(
 	} else {
 		$assert(ctx.transactor._databaseContext)
 		data = await databaseUpdate(
+			ctx.transactor,
 			ctx.transactor._databaseContext,
 			ctx.transactor._database,
 			_ref,

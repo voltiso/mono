@@ -11,6 +11,7 @@ import type { IDoc } from '~/Doc'
 import { TransactorError } from '~/error'
 import { isDeleteIt, isReplaceIt } from '~/it'
 import type { IntrinsicFields } from '~/schemas'
+import type { Transactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
 
 import { toDatabaseSet, toDatabaseUpdate } from './toDatabase'
@@ -48,11 +49,15 @@ const databaseDelete = async (t: T, ref: Database.ServerDocumentReference) => {
 }
 
 const databaseSet = async (
+	transactor: Transactor,
 	ctx: DatabaseContext,
 	t: T,
 	ref: Database.ServerDocumentReference,
 	data: IntrinsicFields,
 ): Promise<WithId<IntrinsicFields, IDoc>> => {
+	if (transactor.readOnly)
+		throw new TransactorError('cannot write to readOnly db')
+
 	const firestoreData = toDatabaseSet(ctx, data)
 
 	if (isDatabase(t)) {
@@ -67,15 +72,18 @@ const databaseSet = async (
 }
 
 export async function databaseUpdate(
+	transactor: Transactor,
 	ctx: DatabaseContext,
 	t: T,
 	ref: Database.ServerDocumentReference,
 	updates: Updates,
 ) {
+	if (transactor.readOnly)
+		throw new TransactorError('cannot write to readOnly db')
 	// console.log('firestoreUpdate', ref.path, updates)
 
 	if (isReplaceIt(updates)) {
-		return databaseSet(ctx, t, ref, updates.data as never)
+		return databaseSet(transactor, ctx, t, ref, updates.data as never)
 	}
 
 	if (isDeleteIt(updates)) return databaseDelete(t, ref)

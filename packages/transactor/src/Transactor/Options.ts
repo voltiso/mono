@@ -40,12 +40,19 @@ export class Options_ {
 	partial: boolean
 
 	/**
+	 * Throw error on write attempt.
+	 *
+	 * @defaultValue `false`
+	 */
+	readOnly: boolean
+
+	/**
 	 * Create a mutable Options object, default all not provided values
 	 *
 	 * @param o - Partial options - others will be defaulted
 	 */
 	constructor(o: Partial<Options_>) {
-		const { requireSchemas, refCounters, log, partial, ...rest } = o
+		const { requireSchemas, refCounters, log, partial, readOnly, ...rest } = o
 		const unknownKeys = Object.keys(rest)
 
 		if (unknownKeys.length > 0)
@@ -70,6 +77,7 @@ export class Options_ {
 		// this.validateOptions = { presence: 'required', ...validateOptions }
 		this.log = isDefined(log) ? log : false
 		this.partial = isDefined(partial) ? partial : false
+		this.readOnly = isDefined(readOnly) ? readOnly : false
 	}
 }
 

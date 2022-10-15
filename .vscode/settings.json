@@ -288,6 +288,7 @@
 		"concat",
 		"csstype",
 		"ctsx",
+		"depcheck",
 		"depcheckrc",
 		"deps",
 		"dequal",

@@ -30,6 +30,7 @@ export interface Transactor extends Db {
 	requireSchemas: boolean
 	readonly refCounters: boolean
 	partial: boolean
+	readOnly: boolean
 
 	/**
 	 * Lazy-initialize `Transactor`
