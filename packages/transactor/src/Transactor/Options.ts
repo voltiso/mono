@@ -47,12 +47,36 @@ export class Options_ {
 	readOnly: boolean
 
 	/**
+	 * Allow raw database document data to include `id` field of any value
+	 *
+	 * @defaultValue `false`
+	 */
+	allowIdField: boolean | 'warn'
+
+	/**
+	 * Allow raw database document data to include `id` field, but the value must
+	 * match document ID
+	 *
+	 * @defaultValue `false`
+	 */
+	allowValidIdField: boolean | 'warn'
+
+	/**
 	 * Create a mutable Options object, default all not provided values
 	 *
 	 * @param o - Partial options - others will be defaulted
 	 */
 	constructor(o: Partial<Options_>) {
-		const { requireSchemas, refCounters, log, partial, readOnly, ...rest } = o
+		const {
+			requireSchemas,
+			refCounters,
+			log,
+			partial,
+			readOnly,
+			allowIdField,
+			allowValidIdField,
+			...rest
+		} = o
 		const unknownKeys = Object.keys(rest)
 
 		if (unknownKeys.length > 0)
@@ -78,6 +102,11 @@ export class Options_ {
 		this.log = isDefined(log) ? log : false
 		this.partial = isDefined(partial) ? partial : false
 		this.readOnly = isDefined(readOnly) ? readOnly : false
+
+		this.allowIdField = isDefined(allowIdField) ? allowIdField : false
+		this.allowValidIdField = isDefined(allowValidIdField)
+			? allowValidIdField
+			: false
 	}
 }
 

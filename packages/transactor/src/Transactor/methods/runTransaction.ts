@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
-import { isDefined, undef } from '@voltiso/util'
+import { assert, isDefined } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 import chalk from 'chalk'
 
@@ -73,9 +72,9 @@ export async function runTransaction<R>(
 		return zoneChild.run(async () => {
 			const cache = transaction._cache
 
-			let r
+			let transactionResult
 			try {
-				r = await body(transaction)
+				transactionResult = await body(transaction)
 
 				let cacheSnapshot = getCacheSnapshot(cache)
 
@@ -161,12 +160,12 @@ export async function runTransaction<R>(
 						const beforeCommits = getBeforeCommits(docRef)
 
 						for (const { trigger, pathMatches } of beforeCommits) {
-							let r: Awaited<ReturnType<typeof trigger>>
+							let triggerResult: Awaited<ReturnType<typeof trigger>>
 							// eslint-disable-next-line no-await-in-loop
 							await triggerGuard(ctx, async () => {
-								$assert(isDefined(cacheEntry.proxy))
+								assert(isDefined(cacheEntry.proxy))
 
-								$assert(cacheEntry.__voltiso)
+								assert(cacheEntry.__voltiso)
 
 								const params: BeforeCommitTriggerParams<Doc<DocTI, 'inside'>> =
 									{
@@ -179,22 +178,27 @@ export async function runTransaction<R>(
 										possiblyExists: cacheEntry.possiblyExists,
 									}
 
-								r = await trigger.call(
+								triggerResult = await trigger.call(
 									cacheEntry.proxy as never,
 									params as never,
 								)
 							})
 
 							// eslint-disable-next-line max-depth
-							if (isDefined(r)) {
+							if (isDefined(triggerResult)) {
 								// eslint-disable-next-line max-depth
-								if (isDeleteIt(r)) setCacheEntry(ctx, cacheEntry, null)
+								if (isDeleteIt(triggerResult))
+									setCacheEntry(ctx, cacheEntry, null)
 								else {
-									setCacheEntry(
-										ctx,
-										cacheEntry,
-										withoutId(r as never, docRef.id) as never,
-									)
+									const { allowIdField, allowValidIdField } =
+										ctx.transactor._options
+
+									const shouldStripId = !allowIdField && !allowValidIdField
+
+									const data = shouldStripId
+										? withoutId(triggerResult, docRef.id)
+										: triggerResult
+									setCacheEntry(ctx, cacheEntry, data as never)
 								}
 							}
 						}
@@ -253,10 +257,10 @@ export async function runTransaction<R>(
 			for (const [path, cacheEntry] of cache.entries()) {
 				if (cacheEntry.write) {
 					const dbCtx = ctx._databaseContext
-					$assert(dbCtx)
+					assert(dbCtx)
 
 					if (isDefined(cacheEntry.updates)) {
-						$assert(cacheEntry.data === undef)
+						assert(cacheEntry.data === undefined)
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
 							ctx,
@@ -275,7 +279,7 @@ export async function runTransaction<R>(
 							deleteIt(),
 						)
 					} else {
-						$assert(cacheEntry.data)
+						assert(cacheEntry.data)
 						// eslint-disable-next-line no-await-in-loop
 						await databaseUpdate(
 							ctx,
@@ -288,7 +292,7 @@ export async function runTransaction<R>(
 				}
 			}
 
-			return r
+			return transactionResult
 		})
 	}, options)
 }

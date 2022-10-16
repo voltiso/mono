@@ -26,5 +26,7 @@ export function withoutId(data: { id?: string } | null, expectedId: Id) {
 			`'id' field mismatch: expected ${expectedId}, got ${data.id}`,
 		)
 
+	// if ((data as any)?.id) console.log('omitting id field', new Error('here'))
+
 	return omitIfPresent(data, 'id')
 }

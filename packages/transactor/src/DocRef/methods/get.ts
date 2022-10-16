@@ -5,7 +5,7 @@ import { assert, stringFrom } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { fromDatabase } from '~/common'
-import { withoutId, withVoltisoEntry } from '~/Data'
+import { withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
 import type { DocLike, DocTI, IDoc } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
@@ -105,8 +105,9 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
-			cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
-			// console.log('schema val after', cacheEntry.data)
+
+			cacheEntry.data = validatedData
+			// cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 		}
 	}
 
@@ -136,7 +137,9 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
-			cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
+
+			cacheEntry.data = validatedData
+			// cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 
 			if (cacheEntry.data)
 				cacheEntry.data.__voltiso = sVoltisoEntry.validate(

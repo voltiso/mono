@@ -3,11 +3,13 @@
 
 import { $assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
-import { isPlainObject } from '@voltiso/util'
+import { isPlainObject, stringFrom } from '@voltiso/util'
 
+import { isWithId } from '~/Data'
 import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
-import type { DocRefBaseContext } from '~/DocRef'
+import type { DocRefBaseContext, WithDocRef } from '~/DocRef'
 import { isDocRef, StrongDocRef, WeakDocRef } from '~/DocRef'
+import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
 
 import { isDocRefDatabase, isDocRefJson } from './RefEntry'
@@ -60,15 +62,36 @@ export function fromDatabaseData(
 //
 
 export const fromDatabase = (
-	ctx: DocRefBaseContext,
+	ctx: DocRefBaseContext & Partial<WithDocRef>,
 	doc: Database.DocumentSnapshot | Database.QueryDocumentSnapshot,
 ): IntrinsicFields | null => {
 	const data = doc.data()
 
 	if (!data) return null
-	else {
-		const fixed = fromDatabaseData(ctx, data)
-		$assert(isPlainObject(fixed))
-		return fixed as IntrinsicFields
+
+	if (isWithId(data)) {
+		let message = `id: ${stringFrom(
+			data.id,
+		)} field encountered in raw database data`
+
+		if (ctx.docRef) message += ` for document ${ctx.docRef.path.toString()}`
+
+		const { allowIdField, allowValidIdField } = ctx.transactor._options
+
+		if (!allowIdField && !allowValidIdField) throw new TransactorError(message)
+		// eslint-disable-next-line no-console
+		else if (allowIdField === 'warn') console.warn(message)
+
+		const isValid = data.id === ctx.docRef?.id
+		if (!isValid) {
+			const invalidMessage = `invalid ${message}`
+			if (!allowValidIdField) throw new TransactorError(invalidMessage)
+			// eslint-disable-next-line no-console
+			else if (allowValidIdField === 'warn') console.warn(invalidMessage)
+		}
 	}
+
+	const fixed = fromDatabaseData(ctx, data)
+	$assert(isPlainObject(fixed))
+	return fixed as IntrinsicFields
 }

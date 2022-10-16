@@ -5,6 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { InferableObject, ISchema } from '@voltiso/schemar.types'
 import { assumeType } from '@voltiso/util'
 
+import { isWithId } from '~/Data'
 import type { DocRefBaseImpl, DocRefLike } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sIntrinsicFields } from '~/schemas'
@@ -106,6 +107,15 @@ export function getSchema(d: DocRefLike): DocRefBaseImpl['_schema'] {
 		...sIntrinsicFields.getShape,
 	})
 
+	const { allowIdField } = _options
+
+	if (!allowIdField && isWithId(final)) {
+		throw new TransactorError(
+			'id field provided as part of regular data schemas - use `idSchema` instead, ' +
+				'or use `allowIdField` transactor option to allow `id` fields as part of regular document data',
+		)
+	}
+
 	const partial = final.deepPartial
 
 	// $assert(final)
@@ -115,5 +125,6 @@ export function getSchema(d: DocRefLike): DocRefBaseImpl['_schema'] {
 		final: final.simple,
 		partial: partial.simple,
 	}
+
 	return d._schema
 }

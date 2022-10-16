@@ -24,11 +24,15 @@ export function collectTriggerResult(
 ): object | null {
 	const cacheEntry = getCacheEntry(ctx)
 
-	if (isDefined(triggerResult))
-		return isDeleteIt(triggerResult)
-			? null
-			: (withoutId(triggerResult as never, ctx.docRef.id) as never)
-	else {
+	if (isDefined(triggerResult)) {
+		if (isDeleteIt(triggerResult)) return null
+
+		// if we allow id fields (compat?), do not strip `id`
+		const { allowIdField, allowValidIdField } = ctx.transactor._options
+		if (allowIdField || allowValidIdField) return triggerResult as never
+
+		return withoutId(triggerResult as never, ctx.docRef.id) as never
+	} else {
 		assert(cacheEntry.data !== undefined)
 		return cacheEntry.data as never
 	}

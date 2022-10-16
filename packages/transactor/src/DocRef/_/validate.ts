@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { withoutId } from '~/Data'
 import type { DeepPartialIntrinsicFieldsSchema } from '~/schemas'
 
 import { applySchema } from './applySchema'
@@ -22,6 +21,7 @@ export function validate(
 ) {
 	if (data && schema) {
 		const validatedData = applySchema.call(ctx, { schema, data })
-		return withoutId(validatedData, ctx.docRef.id)
+		return validatedData
+		// return withoutId(validatedData, ctx.docRef.id)
 	} else return data
 }

@@ -3,6 +3,7 @@
 
 export * from './Data'
 export * from './Id'
+export * from './isWithId'
 export * from './omitVoltisoEntry'
 export * from './withId'
 export * from './withoutId'

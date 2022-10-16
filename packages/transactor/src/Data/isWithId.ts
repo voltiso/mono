@@ -1,6 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export function isDefined<X>(x: X): x is Exclude<X, undefined | void> {
-	return typeof x !== 'undefined'
+export function isWithId(data: unknown): data is { id: unknown } {
+	return !!data && 'id' in data
 }
