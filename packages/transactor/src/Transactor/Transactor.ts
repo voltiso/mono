@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import type { Throw } from '@voltiso/util'
+import type { IsUnion, Throw } from '@voltiso/util'
 
-import type { CollectionRef } from '~/CollectionRef'
 import type { FirestoreLikeModule } from '~/DatabaseContext'
 import type { Db } from '~/Db'
-import type { DTI } from '~/Doc'
+import type { DocConstructorLike, DTI } from '~/Doc'
 
+import type { DbPathFromString } from '..'
 import type { TransactionBody } from './methods'
 import type { TransactorConstructor } from './TransactorConstructor'
 import { TransactorImpl } from './TransactorImpl'
@@ -23,9 +23,11 @@ export interface Transactor extends Db {
 		cls: Cls,
 	): Throw<'db.register requires Doc tag'>
 
-	register<Cls extends abstract new (...args: any) => any>(
+	register<Cls extends DocConstructorLike>(
 		cls: Cls,
-	): CollectionRef<InstanceType<Cls>>
+	): IsUnion<Cls[DTI]['tag']> extends true
+		? never
+		: DbPathFromString<Cls[DTI]['tag'], InstanceType<Cls>> // CollectionRef<InstanceType<Cls>>
 
 	requireSchemas: boolean
 	readonly refCounters: boolean
@@ -49,3 +51,5 @@ export interface Transactor extends Db {
 //
 
 export const Transactor = TransactorImpl as unknown as TransactorConstructor
+
+// type A = Split<'asd/sdf', '/'>

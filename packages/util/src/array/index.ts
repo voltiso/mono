@@ -1,6 +1,7 @@
 export * from './At'
 export * from './AtLeast'
 export * from './Head'
+export * from './Length'
 export * from './MaybeArray'
 export * from './NonEmpty'
 export * from './Parity'

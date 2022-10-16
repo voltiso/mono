@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PathMatches } from '~/common/PathMatches'
+import type { PathMatches } from '~/common'
 import type { Id } from '~/Data'
 import type { Db } from '~/Db'
 import type { DocLike, DTI, IDoc } from '~/Doc'

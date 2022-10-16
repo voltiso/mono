@@ -6,8 +6,8 @@ import { $assert } from '@voltiso/assertor'
 import type { InferableObject, SchemaLike } from '@voltiso/schemar.types'
 import { undef } from '@voltiso/util'
 
-import { getGetPathMatches } from '~/common/PathMatches'
-import type { DocLike } from '~/Doc'
+import { getGetPathMatches } from '~/common'
+import type { DocConstructorLike, DocLike, IDocConstructor } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { Method } from '~/Method'
 import { concatPath } from '~/Path'
@@ -30,6 +30,37 @@ export class DocRefPattern {
 		this.context = context
 		this.pattern = new DocPattern(concatPath(args))
 		// this.pattern = createDocPatternWithPrefix.call(this.context, args)
+	}
+
+	/** High-level API */
+	register<Cls extends DocConstructorLike>(cls: Cls): this {
+		const { _ } = cls as unknown as IDocConstructor
+
+		if (Object.keys(_.publicOnCreation).length > 0)
+			this.publicOnCreation(_.publicOnCreation as never)
+
+		if (_.suppressMissingSchemaError || Object.keys(_.public).length > 0)
+			this.public(_.public as never)
+
+		if (Object.keys(_.private).length > 0) this.private(_.private as never)
+
+		if (Object.keys(_.aggregates).length > 0)
+			this.aggregates(_.aggregates as never)
+
+		if (_.id !== undefined) {
+			this.id(_.id as never)
+		}
+
+		for (const after of _.afters) this.after(after)
+
+		for (const beforeCommit of _.beforeCommits) this.beforeCommit(beforeCommit)
+
+		for (const onGet of _.onGets) this.onGet(onGet)
+
+		for (const [name, method] of Object.entries(_.methods))
+			this.method(name, method as never)
+
+		return this
 	}
 
 	id(schema: SchemaLike<string>) {

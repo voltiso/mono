@@ -5,6 +5,7 @@ import { $assert } from '@voltiso/assertor'
 import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
 
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
+import type { DocLike } from '~/Doc'
 import { DT } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { DocRefPattern, WeakDocRef } from '~/DocRef'
@@ -211,19 +212,30 @@ type Select2<
 	| (false extends MustBePattern ? Select<parity, DP, CP> : never)
 	| (true extends MustBePattern ? Select<parity, DPT, CPT> : never)
 
-type PathFromStringImpl<DP, CP, DPT, CPT, P extends string> = Select2<
-	DP,
-	CP,
-	DPT,
-	CPT,
+/** @internal */
+export type _PathFromString<
+	Doc,
+	Collection,
+	DocPattern,
+	CollectionPattern,
+	P extends string,
+> = Select2<
+	Doc,
+	Collection,
+	DocPattern,
+	CollectionPattern,
 	Parity<Split<P, '/'>>,
 	MustBePattern<P>
 >
 
-export type DbPathFromString<P extends string> = PathFromStringImpl<
-	WeakDocRef<IndexedDoc>,
-	CollectionRef<IndexedDoc>,
+export type DbPathFromString<
+	P extends string,
+	Doc extends DocLike = IndexedDoc,
+	// eslint-disable-next-line etc/no-internal
+> = _PathFromString<
+	WeakDocRef<Doc>,
+	CollectionRef<Doc>,
 	DocRefPattern,
-	CollectionRefPattern,
+	CollectionRefPattern<P, Doc>,
 	P
 >

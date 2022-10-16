@@ -6,13 +6,7 @@ import type * as Database from '@voltiso/firestore-like'
 
 import type { Id } from '~/Data'
 import type { WithDb } from '~/Db'
-import type {
-	Doc,
-	DocConstructorLike,
-	DocTI,
-	IDoc,
-	IDocConstructor,
-} from '~/Doc'
+import type { Doc, DocConstructorLike, DocTI, IDoc } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { GetPublicCreationInputData } from '~/Doc/_/GData'
 import type { GO } from '~/Doc/_/GDoc'
@@ -21,7 +15,7 @@ import { WeakDocRef } from '~/DocRef'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 
-import type { CollectionRef as ICollectionRef } from './CollectionRef'
+import type { CollectionRef } from './CollectionRef'
 import type { InferTI } from './InferTI'
 
 type Context = WithTransactor & WithDb
@@ -80,37 +74,11 @@ export class CollectionRefImpl<
 
 	register<Cls extends DocConstructorLike>(
 		cls: Cls,
-	): ICollectionRef<InstanceType<Cls>> {
-		// console.log('register', cls._)
+	): CollectionRef<InstanceType<Cls>> {
 		const { db } = this._context
-		const { _ } = cls as unknown as IDocConstructor
 		const docPattern = db.docPattern(this._path, '*')
 
-		if (Object.keys(_.publicOnCreation).length > 0)
-			docPattern.publicOnCreation(_.publicOnCreation as never)
-
-		if (_.suppressMissingSchemaError || Object.keys(_.public).length > 0)
-			docPattern.public(_.public as never)
-
-		if (Object.keys(_.private).length > 0)
-			docPattern.private(_.private as never)
-
-		if (Object.keys(_.aggregates).length > 0)
-			docPattern.aggregates(_.aggregates as never)
-
-		if (_.id !== undefined) {
-			docPattern.id(_.id as never)
-		}
-
-		for (const after of _.afters) docPattern.after(after)
-
-		for (const beforeCommit of _.beforeCommits)
-			docPattern.beforeCommit(beforeCommit)
-
-		for (const onGet of _.onGets) docPattern.onGet(onGet)
-
-		for (const [name, method] of Object.entries(_.methods))
-			docPattern.method(name, method as never)
+		docPattern.register(cls)
 
 		return this as never
 	}
