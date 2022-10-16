@@ -17,9 +17,10 @@ import type { DbConstructor } from './DbConstructor'
 
 export type DbCallArgs = readonly string[] | readonly [DocPath]
 
-export type DbCallResult<Args extends DbCallArgs> = Args extends readonly string[]
-	? DbPathFromString<CanonicalPath<Args>>
-	: WeakDocRef<IndexedDoc>
+export type DbCallResult<Args extends DbCallArgs> =
+	Args extends readonly string[]
+		? DbPathFromString<CanonicalPath<Args>>
+		: WeakDocRef<IndexedDoc>
 
 /** In transaction or not */
 @staticImplements<DbConstructor<Db>>()
