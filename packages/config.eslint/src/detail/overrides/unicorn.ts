@@ -22,7 +22,7 @@ export const unicorn = defineEslintConfigOverride({
 		//
 		//
 
-		'unicorn/better-regex': 1,
+		'unicorn/better-regex': 0, // optimizes to regexp rejected by regexp/strict
 		'unicorn/catch-error-name': 1,
 		'unicorn/consistent-destructuring': 1,
 		'unicorn/consistent-function-scoping': 1,

@@ -1,3 +1,6 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export type _ApplyUnknownPathTokens<
 	Acc extends string,
 	Path extends string,
@@ -33,7 +36,7 @@ export function applyUnknownPathTokens<
 	let currentPath = path as string
 
 	for (const token of tokens) {
-		currentPath = currentPath.replace(/\{([^{}]*)\}|\*{1,2}/, token)
+		currentPath = currentPath.replace(/\{([^{}]*)\}|\*{1,2}/u, token)
 	}
 
 	return currentPath as never
