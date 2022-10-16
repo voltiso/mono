@@ -51,7 +51,8 @@ describe('Schema', () => {
 
 		const b = infer(tLiteral)
 
-		Assert<IsIdentical<OutputType<typeof b>, [123, string]>>()
+		type Out = OutputType<typeof b>
+		Assert<IsIdentical<Out, [123, string]>>()
 
 		const c = schema([number(123), string] as const)
 

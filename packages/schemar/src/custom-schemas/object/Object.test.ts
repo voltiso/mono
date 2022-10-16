@@ -5,11 +5,11 @@ import type {
 	$CustomObject,
 	CustomObject,
 	InputType,
+	IObject,
 	ObjectOptions,
 	OutputType,
 	Schema,
 } from '@voltiso/schemar.types'
-import type * as t from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert, undef } from '@voltiso/util'
 
@@ -20,7 +20,7 @@ describe('object', () => {
 		expect.assertions(0)
 
 		Assert.is<CustomObject<O>, Schema>()
-		Assert.is<$CustomObject<O>, t.IObject>()
+		Assert.is<$CustomObject<O>, IObject>()
 	})
 
 	it('type', () => {
@@ -30,7 +30,7 @@ describe('object', () => {
 			a: s.number,
 		})
 
-		Assert.is<typeof obj, t.IObject>()
+		Assert.is<typeof obj, IObject>()
 	})
 
 	it('extends', () => {
@@ -359,7 +359,7 @@ describe('object', () => {
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			}),
-		).toThrow('USD')
+		).toThrow('.currency')
 
 		expect(() =>
 			s.schema(pricingAgreement).validate({

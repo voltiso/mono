@@ -49,6 +49,9 @@ export type SimplifySchema<
 					(This[OPTIONS]['isReadonly'] extends false
 						? {}
 						: { isReadonly: This[OPTIONS]['isReadonly'] }) &
+					(This[OPTIONS]['hasDefault'] extends false
+						? {}
+						: { hasDefault: This[OPTIONS]['hasDefault'] }) &
 					IsIdentical<
 						This['OutputType'],
 						unknown,

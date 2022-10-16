@@ -14,6 +14,7 @@ import type {
 
 export interface ObjectLike extends SchemaLike<object> {
 	readonly [SCHEMA_NAME]: 'Object'
+	get getShape(): any
 }
 
 export interface IObject extends ISchema<object> {

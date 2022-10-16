@@ -1,7 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IndexedDoc, StrongRef } from '@voltiso/transactor'
+import type {
+	IndexedDoc,
+	StrongDocRef,
+	StrongDocRefBase,
+} from '@voltiso/transactor'
 import { Doc, sStrongRef } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
@@ -27,20 +31,22 @@ describe('ref schema', () => {
 		const a = sStrongRef
 
 		type A = typeof a.OutputType
-		Assert<IsIdentical<A, StrongRef<IndexedDoc>>>()
+		Assert<IsIdentical<A, StrongDocRef<IndexedDoc>>>()
 	})
 
 	it('type 2', () => {
 		expect.assertions(0)
+
+		// type B = RefTestDoc['data']['myCustomStrongRef']
 
 		type A = RefTestDoc['data']
 		Assert<
 			IsIdentical<
 				Omit<A, '__voltiso'>,
 				{
-					myIndexedStrongRef: StrongRef<IndexedDoc>
-					myCustomStrongRef: StrongRef<RefTestDoc>
-					myOptionalIndexedStrongRef?: StrongRef<IndexedDoc>
+					myIndexedStrongRef: StrongDocRef<IndexedDoc>
+					myCustomStrongRef: StrongDocRefBase<RefTestDoc>
+					myOptionalIndexedStrongRef?: StrongDocRef<IndexedDoc>
 				}
 			>
 		>()

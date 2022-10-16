@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Newable } from '@voltiso/util'
+import type { IsAlmostSame, Newable } from '@voltiso/util'
 
 import type * as t from '~/custom-schemas'
 import type {
@@ -19,6 +19,8 @@ export type InferSchema_<S> = S extends Newable
 	? t.MutableTuple<S>
 	: S extends InferableReadonlyTupleLike
 	? t.ReadonlyTuple<[...S]>
+	: IsAlmostSame<S, {}> extends true
+	? t.ImplicitObject<{}>
 	: InferableObjectLike extends S
 	? t.IObject
 	: SchemaLike extends S

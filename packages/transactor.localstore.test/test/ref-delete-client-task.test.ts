@@ -130,7 +130,7 @@ describe('ref - delete client-task', () => {
 
 		const client = await clients.add({ displayName: 'vmi', slug: 'vmi' })
 
-		expect(client.__voltiso?.numRefs).toBe(2)
+		expect(client.__voltiso.numRefs).toBe(2)
 
 		await client.delete()
 

@@ -85,6 +85,9 @@ pnpm test
 
 ## Dependency version issues
 
+- `@eslint/eslintrc`
+  - `1.3.2` works, `1.3.3` breaks
+    `@rushstack/eslint-patch/modern-module-resolution`
 - `typescript`:
   - `< 4.8.0` problem linting `styler/test/native`
   - `>= 4.8.0` (no eslint support yet, `eslint-plugin-unused-imports` bugged for

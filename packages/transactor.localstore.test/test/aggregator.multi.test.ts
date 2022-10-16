@@ -70,9 +70,7 @@ class Shift extends ShiftBase.aggregateInto(Day, 'shifts', {
 	include(acc) {
 		const result = [...acc]
 		result.push(this)
-		result.sort(
-			(a: typeof this, b: typeof this) => Number(a.from) - Number(b.from),
-		)
+		result.sort((a, b) => Number(a.from) - Number(b.from))
 		return result
 	},
 
@@ -99,9 +97,9 @@ describe('aggregator', () => {
 			IsIdentical<
 				A,
 				{
-					__voltiso?: {
+					__voltiso: {
 						aggregateTarget: {
-							shifts: {
+							shifts?: {
 								value: {
 									id: string
 									from: Date

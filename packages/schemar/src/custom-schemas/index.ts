@@ -1,6 +1,3 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
 export * from './any'
 export * from './array'
 export * from './bigint'
@@ -19,6 +16,7 @@ export * from './tuple'
 export * from './undefined'
 export * from './union'
 export * from './unknown'
+export * from './unknownObject'
 export * from './unknownSchema'
 export * from './unknownSymbol'
 export * from './validation'

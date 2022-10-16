@@ -9,7 +9,7 @@ import type { WeakDocRef } from '~/DocRef'
 import type { CollectionPath } from '~/Path/Path'
 
 import { CollectionRefImpl } from './CollectionRefImpl'
-import type { InferTI } from './InferTI'
+import type { InferTIFromDoc } from './InferTI'
 
 /** Collection reference */
 export interface CollectionRef<D extends DocLike = IDoc> {
@@ -27,7 +27,7 @@ export interface CollectionRef<D extends DocLike = IDoc> {
 	// (id: Id): WeakDocRef<D>
 
 	/** Add Doc to this Collection */
-	add(data: GetPublicCreationInputData<InferTI<D>, IDoc>): PromiseLike<D>
+	add(data: GetPublicCreationInputData<InferTIFromDoc<D>, IDoc>): PromiseLike<D>
 
 	/** Register Doc class/type for this Collection */
 	register<Cls extends new (...args: any) => DocLike>(

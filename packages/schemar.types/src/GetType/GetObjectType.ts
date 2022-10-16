@@ -1,9 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, HasIndexSignature } from '@voltiso/util'
+import type { _, GetProperty_, HasIndexSignature } from '@voltiso/util'
 
-import type { SchemaOptions } from '~'
+import type {
+	ObjectLike,
+	SchemaLike,
+	SchemaOptions,
+	UnknownObjectLike,
+} from '~'
 
 import type { GetTypeOptions, Type_ } from '.'
 import type { GetOptions } from './GetOptions'
@@ -11,6 +16,7 @@ import type { GetOptions } from './GetOptions'
 /** @inline */
 export type _ObjectTypeNoSignature<
 	T,
+	Shape extends object,
 	O extends Record<keyof T, SchemaOptions>,
 	IO extends GetTypeOptions,
 	// eslint-disable-next-line etc/no-internal
@@ -28,6 +34,7 @@ export type _ObjectTypeNoSignature<
 	} & {
 		readonly [k in keyof T]?: T[k]
 	},
+	Shape,
 	IO
 >
 
@@ -44,6 +51,7 @@ export type ObjectType_<
 			{
 				[k in keyof T]: Type_<T[k], IO>
 			},
+			T,
 			{
 				[k in keyof T]: GetOptions<T[k]>
 			},
@@ -82,15 +90,39 @@ export type _ObjectTypeIsOptional<
 	: never
 
 /** @inline @internal */
+export type _ShouldForceOptional<T, Shape> = Shape extends UnknownObjectLike
+	? false
+	: Shape extends ObjectLike
+	? false
+	: Shape extends SchemaLike
+	? false
+	: object extends T
+	? true
+	: false
+
+/** @inline @internal */
 export type _ObjectTypeFinalize<
-	T,
+	T extends object,
+	Shape extends object,
 	IO extends GetTypeOptions,
 > = IO['kind'] extends 'in'
 	? _<
 			{
-				[k in keyof T as object extends T[k] ? never : k]: T[k]
+				// eslint-disable-next-line etc/no-internal
+				[k in keyof T as _ShouldForceOptional<
+					T[k],
+					GetProperty_<Shape, k>
+				> extends true
+					? never
+					: k]: T[k]
 			} & {
-				[k in keyof T as object extends T[k] ? k : never]?: T[k] | undefined
+				// eslint-disable-next-line etc/no-internal
+				[k in keyof T as _ShouldForceOptional<
+					T[k],
+					GetProperty_<Shape, k>
+				> extends true
+					? k
+					: never]?: T[k] | undefined
 			}
 	  >
 	: IO['kind'] extends 'out'

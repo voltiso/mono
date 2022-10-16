@@ -47,7 +47,7 @@ describe('ref', () => {
 						name: string
 						specialty: string
 					}
-					__voltiso?: {
+					__voltiso: {
 						aggregateTarget: {}
 						numRefs: number
 						aggregateSource: Record<string, Record<string, true>>

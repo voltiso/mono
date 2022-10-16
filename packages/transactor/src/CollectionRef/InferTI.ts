@@ -18,11 +18,11 @@ export type InferTIFromCls<Cls extends DocConstructorLike> = InferTIFromDoc<
 >
 
 export type InferTI<X extends DocConstructorLike | DocLike | DocTag> =
-	X extends DocConstructorLike
-		? InferTIFromCls<X>
-		: X extends DocLike
+	X extends DocLike
 		? InferTIFromDoc<X>
-		: X extends DocTag
+		: X extends DocConstructorLike
+		? InferTIFromCls<X>
+		: X extends string
 		? DocTypes[X] extends { readonly [DTI]: any }
 			? DocTypes[X][DTI]
 			: never

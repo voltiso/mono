@@ -15,7 +15,9 @@ describe('intrinsic fields', () => {
 			const docRef = db(...path)
 			await docRef.get()
 
-			await expect(db(...path).__voltiso).resolves.toMatchObject({
+			const docRef2 = db(...path)
+
+			await expect(docRef2.__voltiso).resolves.toMatchObject({
 				numRefs: 0,
 			})
 		})

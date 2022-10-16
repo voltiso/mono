@@ -57,7 +57,7 @@
   "pnpm": {
     "overrides": {
       "jest-worker": "29.0.3",
-      "eslint": "8.24.0"
+      "@eslint/eslintrc": "1.3.2"
     },
     "packageExtensions": {
       "fela-native": {

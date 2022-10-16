@@ -3,7 +3,7 @@
 
 import type * as Database from '@voltiso/firestore-like'
 import { isDatabase } from '@voltiso/firestore-like'
-import { undef } from '@voltiso/util'
+import { stringFrom, undef } from '@voltiso/util'
 
 import type { WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
@@ -56,7 +56,9 @@ const databaseSet = async (
 	data: IntrinsicFields,
 ): Promise<WithId<IntrinsicFields, IDoc>> => {
 	if (transactor.readOnly)
-		throw new TransactorError('cannot write to readOnly db')
+		throw new TransactorError(
+			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,
+		)
 
 	const firestoreData = toDatabaseSet(ctx, data)
 
@@ -79,7 +81,11 @@ export async function databaseUpdate(
 	updates: Updates,
 ) {
 	if (transactor.readOnly)
-		throw new TransactorError('cannot write to readOnly db')
+		throw new TransactorError(
+			`cannot write to readOnly db - databaseUpdate(updates=${stringFrom(
+				updates,
+			)})`,
+		)
 	// console.log('firestoreUpdate', ref.path, updates)
 
 	if (isReplaceIt(updates)) {

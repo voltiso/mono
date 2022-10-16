@@ -4,7 +4,9 @@
 
 import { $assert } from '@voltiso/assertor'
 import type {
+	BASE_OPTIONS,
 	CustomObject,
+	DEFAULT_OPTIONS,
 	DefaultObjectOptions,
 	GetDeepShape_,
 	ISchema,
@@ -12,25 +14,27 @@ import type {
 	ObjectOptions,
 	Schemable,
 } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { isUnknownObject } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { getDeepShape } from '@voltiso/schemar.types'
+import {
+	EXTENDS,
+	getDeepShape,
+	isUnknownObject,
+	OPTIONS,
+	SCHEMA_NAME,
+} from '@voltiso/schemar.types'
 import {
 	getEntries,
 	getValues,
 	hasProperty,
 	isObject,
 	lazyConstructor,
-	undef,
 } from '@voltiso/util'
 
-import { isSchema } from '~'
 import {
 	CustomSchemaImpl,
 	deepPartialShape,
 	deepStrictPartialShape,
+	isSchema,
 	partialShape,
 	strictPartialShape,
 	ValidationIssue,
@@ -152,17 +156,31 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			for (const [k, v] of getEntries(this.getShape, {
 				includeSymbols: true,
 			}) as [keyof any, Schemable][]) {
-				const tv = schema(v)
+				const childSchema = schema(v)
 
-				const isOptional = tv.isOptional || tv.isStrictOptional
+				const isOptional =
+					childSchema.isOptional || childSchema.isStrictOptional
 
 				if (isOptional && !hasProperty(x, k)) continue
 
 				// assumeType<ISchema>(tv)
 
+				if (!hasProperty(x, k) && !isOptional && !childSchema.hasDefault) {
+					issues.push(
+						new ValidationIssue({
+							path: [k],
+							expectedDescription: 'be present',
+							receivedDescription: 'missing object property',
+							// received: x[k as keyof typeof x],
+						}),
+					)
+
+					continue
+				}
+
 				const value = x[k as keyof typeof x]
 
-				const r = tv.exec(value)
+				const r = childSchema.exec(value)
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [k, ...issue.path]
@@ -286,21 +304,17 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				$assert(typeof x === 'object' && x)
 
-				if (!hasProperty(x, key) && isOptional && !mySchema.hasDefault) {
-					// assert(
-					// 	typeof tv.getDefault === 'undefined',
-					// 	"typeof tv.getDefault === 'undefined'"
-					// )
-					continue
-				}
+				// if (!hasProperty(x, key) && isOptional && !mySchema.hasDefault) continue
 
 				// assumeType<ISchema>(mySchema)
 
-				const result = mySchema.exec(x[key as keyof typeof x])
-				x[key as keyof typeof x] = result.value as never
+				if (hasProperty(x, key) || mySchema.hasDefault) {
+					const result = mySchema.exec(x[key as keyof typeof x])
+					x[key as keyof typeof x] = result.value as never
 
-				if (result.value === undef && mySchema.isOptional)
-					delete x[key as keyof typeof x]
+					if (result.value === undefined && isOptional)
+						delete x[key as keyof typeof x]
+				}
 			}
 
 			$assert(typeof x === 'object' && x)
