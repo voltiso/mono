@@ -6,7 +6,7 @@ export interface Timestamp {
 }
 
 export function isTimestamp(x: unknown): x is Timestamp {
-	return Boolean((x as Timestamp).toDate)
+	return Boolean((x as Timestamp | null)?.toDate)
 }
 
 export interface TypeofTimestamp {

@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
-import { isDefined, stringFrom } from '@voltiso/util'
+import { assert, isDefined, stringFrom } from '@voltiso/util'
 
 import { databaseUpdate } from '~/common'
 import { withoutId, withVoltisoEntry } from '~/Data'
@@ -114,7 +113,7 @@ async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: Updates,
 ): Promise<IndexedDoc | null | undefined> {
-	$assert(updates)
+	assert(updates)
 	check.call(ctx, updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
@@ -139,7 +138,7 @@ async function rawUpdate(
 			return doc ? (doc.dataWithId() as never) : null
 		})
 	} else {
-		$assert(ctx.transactor._databaseContext)
+		assert(ctx.transactor._databaseContext)
 		data = await databaseUpdate(
 			ctx.transactor,
 			ctx.transactor._databaseContext,
@@ -190,8 +189,17 @@ async function transactionUpdateImpl(
 		onPrivateField = 'error',
 	}: Partial<StripParams> = {},
 ): Promise<DocLike | null | undefined> {
+	if (ctx.transactor._options.log) {
+		// eslint-disable-next-line no-console
+		console.log(
+			`transactionUpdateImpl(${ctx.docRef.path.toString()}, ${stringFrom(
+				updates,
+			)})`,
+		)
+	}
+
 	// returns undefined if unknown (usually update performed on a document without a trigger or schema)
-	$assert(updates)
+	assert(updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
 	const beforeCommits = getBeforeCommits(ctx.docRef)
@@ -208,7 +216,7 @@ async function transactionUpdateImpl(
 	if (!_cache.has(path)) _cache.set(path, newCacheEntry(ctx))
 
 	const cacheEntry = _cache.get(path)
-	$assert(cacheEntry)
+	assert(cacheEntry)
 	cacheEntry.write = true
 
 	const needReadWrite = Boolean(
@@ -247,7 +255,7 @@ async function transactionUpdateImpl(
 		}
 
 		if (isReplaceIt(cacheEntry.updates) || isDeleteIt(cacheEntry.updates)) {
-			$assert(data === undefined)
+			assert(data === undefined)
 			data = dataFromUpdates(cacheEntry.updates)
 			delete cacheEntry.updates
 		}
@@ -263,7 +271,7 @@ function transactionUpdate(
 	updates: Updates,
 	options: Partial<StripParams> = {},
 ): PromiseLike<IDoc | null | undefined> {
-	$assert(updates)
+	assert(updates)
 	const { transaction, docRef } = this
 
 	if (transaction._isFinalizing)
@@ -306,7 +314,7 @@ export function update(
 	ctx: Ctx,
 	updates: Updates,
 ): PromiseLike<IDoc | null | undefined> {
-	$assert(updates)
+	assert(updates)
 
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
 	const ctxOverride = Zone.current.get('transactionContextOverride') as
@@ -326,7 +334,7 @@ export function update(
 
 		return transactionUpdate.call(ctx, updates)
 	} else {
-		$assert(isWithoutTransaction(ctx))
+		assert(isWithoutTransaction(ctx))
 		return rawUpdate(ctx, updates) as never
 	}
 }

@@ -3,10 +3,10 @@
 
 import type {
 	CustomRecord,
+	IRecord,
 	ISchema,
 	RecordOptions,
 } from '@voltiso/schemar.types'
-import type * as t from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { Assert } from '@voltiso/util'
 
@@ -17,7 +17,7 @@ describe('record', () => {
 		expect.assertions(0)
 
 		Assert.is<CustomRecord<O>, ISchema>()
-		Assert.is<CustomRecord<O>, t.IRecord>()
+		Assert.is<CustomRecord<O>, IRecord>()
 	})
 
 	it('type', () => {
@@ -27,14 +27,14 @@ describe('record', () => {
 
 		Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
 
-		Assert.is<typeof obj, t.IRecord>()
+		Assert.is<typeof obj, IRecord>()
 
 		const defaulted = s.record(s.string, s.number).default({})
 
 		Assert<
 			IsIdentical<
 				typeof defaulted,
-				t.CustomRecord<{
+				CustomRecord<{
 					Output: { [k: string]: number }
 					Input: { [k: string]: number }
 					keySchema: s.String
@@ -44,6 +44,24 @@ describe('record', () => {
 				}>
 			>
 		>()
+	})
+
+	it('record of objects', () => {
+		expect.hasAssertions()
+
+		const mySchema = s.schema({
+			record: s.record(s.string, s.unknown),
+		})
+
+		expect(
+			mySchema.validate({
+				record: {
+					someKey: {
+						a: 1,
+					},
+				},
+			}),
+		).toStrictEqual({ record: { someKey: { a: 1 } } })
 	})
 
 	it('index signature', () => {

@@ -44,6 +44,12 @@ describe('unknown', () => {
 		Assert.is<s.Unknown, Schemable>()
 	})
 
+	it('validate object', () => {
+		expect.hasAssertions()
+
+		expect(s.unknown.validate({ a: 1 })).toStrictEqual({ a: 1 })
+	})
+
 	it('works', () => {
 		expect.hasAssertions()
 
