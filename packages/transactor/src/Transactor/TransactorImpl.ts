@@ -163,6 +163,10 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 		return this._options.readOnly
 	}
 
+	set readOnly(value: boolean) {
+		this._options.readOnly = value
+	}
+
 	get refCounters() {
 		return this._options.refCounters
 	}
