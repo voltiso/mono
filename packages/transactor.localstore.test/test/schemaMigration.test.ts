@@ -11,6 +11,10 @@ const db = createTransactor()
 class Dog extends Doc.public({
 	name: s.string,
 
+	nested: {
+		heapId: s.string.optional,
+	},
+
 	oldField: sDeleteIt,
 
 	idToRef: sRef
@@ -33,7 +37,9 @@ describe('schemaMigration', function () {
 		await expect(dogs('nala')).rejects.toThrow('name')
 		await expect(dogs('nala').data).rejects.toThrow('name')
 
-		await database.doc('dog/nala').set({ name: 'nala', oldField: 123 })
+		await database
+			.doc('dog/nala')
+			.set({ name: 'nala', oldField: 123, nested: { heapId: 'test' } })
 
 		await expect(dogs('nala').data).resolves.toMatchObject({
 			name: 'nala',
@@ -47,13 +53,15 @@ describe('schemaMigration', function () {
 		// idToRef
 		await dogs('otherDog').set({ name: 'other' })
 		await database.doc('dog/nala').set({ name: 'nala', idToRef: 'otherDog' })
-		
+
 		await expect(dogs('otherDog').__voltiso).resolves.toMatchObject({
 			numRefs: 0,
 		})
 
-		await expect(dogs('nala').data.idToRef).resolves.toMatchObject({id: 'otherDog'})
-		
+		await expect(dogs('nala').data.idToRef).resolves.toMatchObject({
+			id: 'otherDog',
+		})
+
 		await expect(dogs('otherDog').__voltiso).resolves.toMatchObject({
 			numRefs: 1,
 		})

@@ -21,7 +21,7 @@ import { validate } from './validate'
 export function validateAndSetCacheEntry(
 	context: DocRefContextWithTransaction,
 	data: object | null,
-	schema: object | null | undefined,
+	schema: object | null | undefined, // DeepPartialIntrinsicFieldsSchema
 	hadUpdates = true,
 ): void {
 	const cacheEntry = getCacheEntry(context)
