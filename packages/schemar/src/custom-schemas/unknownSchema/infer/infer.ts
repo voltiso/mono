@@ -11,12 +11,8 @@ import type {
 } from '@voltiso/schemar.types'
 import { getValues, isConstructor } from '@voltiso/util'
 
-import { isSchema } from '~'
 import { instance, literal, object, tuple } from '~/custom-schemas'
-
-//
-
-//
+import { isSchema } from '~/Schema/isSchema'
 
 /**
  * Infer schema (not type!)

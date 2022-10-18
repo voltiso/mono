@@ -3,8 +3,9 @@
 
 import * as s from '@voltiso/schemar'
 import type {
-	InferableObjectLike,
+	IObject,
 	ISchema,
+	ObjectLike,
 	Schemable,
 	SchemaLike,
 } from '@voltiso/schemar.types'
@@ -35,6 +36,33 @@ import type { DocDerivedData } from './_/DocDerivedData'
 import { defaultDocDerivedData } from './_/DocDerivedData'
 import type { IDocConstructor } from './IDocConstructor'
 
+// function mergeSchemas(
+// 	a: Record<string, Schemable> | ObjectLike,
+// 	b: Record<string, Schemable> | ObjectLike,
+// ): Record<string, Schemable> | ObjectLike {
+// 	if (a === emptyDocDerivedSchema) return b
+
+// 	if (isObject(a) && isObject(b)) {
+// 		throw new TransactorError(
+// 			`merging Object schemas not implemented: ${a.toString()} and ${b.toString()}`,
+// 		)
+// 	}
+
+// 	if (!isObject(a) && !isObject(b)) {
+// 		return { ...a, ...b }
+// 	}
+
+// 	if (isObject(a)) {
+// 		assert(!isObject(b))
+// 		return a.and(b as InferableObjectLike) as never
+// 	}
+
+// 	assert(isPlainObject(a))
+// 	assert(isObject(b))
+
+// 	return b.and(a as InferableObjectLike) as never
+// }
+
 @staticImplements<OmitCall<IDocConstructor>>()
 export class DocConstructorImpl {
 	declare static [DTI]: DocTI
@@ -64,12 +92,16 @@ export class DocConstructorImpl {
 		)
 	}
 
-	static publicOnCreation<F extends Record<string, Schemable>>(schema: F): any {
+	static publicOnCreation<F extends Record<string, Schemable> | ObjectLike>(
+		schema: F,
+	): any {
 		return callableClass(
 			class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
-					publicOnCreation: { ...super._.publicOnCreation, ...schema },
+
+					publicOnCreation: super._.publicOnCreation.and(schema) as never,
+					// publicOnCreation: { ...super._.publicOnCreation, ...shape },
 				}
 			},
 			DocCall,
@@ -81,7 +113,8 @@ export class DocConstructorImpl {
 			class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
-					public: { ...super._.public, ...schema },
+					public: super._.public.and(schema) as never,
+					// public: { ...super._.public, ...schema },
 				}
 			},
 			DocCall,
@@ -93,7 +126,8 @@ export class DocConstructorImpl {
 			class extends this {
 				static override readonly _ = {
 					...super._,
-					private: { ...super._.private, ...schema },
+					private: super._.private.and(schema) as never,
+					// private: { ...super._.private, ...schema },
 				} as never
 			},
 			DocCall,
@@ -128,13 +162,17 @@ export class DocConstructorImpl {
 
 					id: 'id' in f ? f.id : (super._.id as never),
 
-					publicOnCreation: {
-						...super._.publicOnCreation,
-						...f.publicOnCreation,
-					},
+					publicOnCreation: f.publicOnCreation
+						? (super._.publicOnCreation.and(f.publicOnCreation) as never)
+						: super._.publicOnCreation,
 
-					public: { ...super._.public, ...f.public },
-					private: { ...super._.private, ...f.private },
+					public: f.public
+						? (super._.public.and(f.public) as never)
+						: super._.public,
+
+					private: f.private
+						? (super._.private.and(f.private) as never)
+						: super._.private,
 
 					aggregates: {
 						...super._.aggregates,
@@ -148,33 +186,37 @@ export class DocConstructorImpl {
 		)
 	}
 
-	static get schemableWithoutId(): InferableObjectLike {
-		return {
-			...this._.publicOnCreation,
-			...this._.public,
-			...this._.private,
-			...sIntrinsicFields.getShape,
-		} as never
-	}
+	// static get schemableWithoutId(): InferableObjectLike {
+	// 	return {
+	// 		...this._.publicOnCreation,
+	// 		...this._.public,
+	// 		...this._.private,
+	// 		...sIntrinsicFields.getShape,
+	// 	} as never
+	// }
 
-	static get schemableWithId(): InferableObjectLike {
-		return {
-			...this.schemableWithoutId,
-			id: this.idSchema,
-		} as InferableObjectLike
-	}
+	// static get schemableWithId(): InferableObjectLike {
+	// 	return {
+	// 		...this.schemableWithoutId,
+	// 		id: this.idSchema,
+	// 	} as InferableObjectLike
+	// }
 
 	static get idSchema(): SchemaLike<string> {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		return (this._.id as never) || s.string
 	}
 
-	static get schemaWithoutId() {
-		return s.schema(this.schemableWithoutId)
+	static get schemaWithoutId(): IObject {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		return this._.publicOnCreation
+			.and(this._.public)
+			.and(this._.private)
+			.and(sIntrinsicFields) as never
 	}
 
 	static get schemaWithId() {
-		return s.schema(this.schemableWithId)
+		return this.schemaWithoutId.and({ id: this.idSchema }) as never
 	}
 
 	static get aggregateSchemables() {

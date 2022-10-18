@@ -67,7 +67,7 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 
 	if (onConstField === 'error') {
 		getSchema(docRef)
-		for (const key in docRef._publicOnCreationSchema) {
+		for (const key in docRef._publicOnCreationSchema?.getShape) {
 			if (key in updates)
 				throw new TransactorError(
 					`cannot modify const field '${path}.${key}' from outside`,
@@ -77,7 +77,7 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 
 	if (onPrivateField === 'error') {
 		getSchema(docRef)
-		for (const key in docRef._privateSchema) {
+		for (const key in docRef._privateSchema?.getShape) {
 			if (key in updates) {
 				throw new TransactorError(
 					`cannot modify private field '${path}.${key}' from outside`,

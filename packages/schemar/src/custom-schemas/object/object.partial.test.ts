@@ -88,4 +88,34 @@ describe('object', () => {
 			>
 		>()
 	})
+
+	it('deepPartial - TDS', () => {
+		expect.hasAssertions()
+
+		const mySchema = s.object({
+			auth: s.object({
+				// uid: sUserId,
+
+				// email: sEmail,
+				emailVerified: s.boolean,
+
+				customClaims: s.record,
+				disabled: s.boolean,
+				displayName: s.string.or(null),
+
+				metadata: {
+					creationTime: s.string, // sDateIsoString,
+				},
+
+				passwordHash: null,
+				passwordSalt: null,
+				// phoneNumber: sPhoneNumber.or(null),
+				photoURL: s.string.or(null),
+				providerData: s.array,
+				tokensValidAfterTime: s.unknown,
+			}),
+		}).deepPartial
+
+		expect(mySchema.validate({})).toStrictEqual({})
+	})
 })

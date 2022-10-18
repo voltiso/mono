@@ -3,11 +3,16 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { $assert } from '@voltiso/assertor'
-import type { InferableObject, SchemaLike } from '@voltiso/schemar.types'
+import type {
+	InferableObject,
+	ObjectLike,
+	SchemaLike,
+} from '@voltiso/schemar.types'
 import { undef } from '@voltiso/util'
 
 import { getGetPathMatches } from '~/common'
 import type { DocConstructorLike, DocLike, IDocConstructor } from '~/Doc'
+import { emptyDocDerivedSchema } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { Method } from '~/Method'
 import { concatPath } from '~/Path'
@@ -36,13 +41,13 @@ export class DocRefPattern {
 	register<Cls extends DocConstructorLike>(cls: Cls): this {
 		const { _ } = cls as unknown as IDocConstructor
 
-		if (Object.keys(_.publicOnCreation).length > 0)
+		if (_.publicOnCreation !== emptyDocDerivedSchema)
 			this.publicOnCreation(_.publicOnCreation as never)
 
-		if (_.suppressMissingSchemaError || Object.keys(_.public).length > 0)
+		if (_.suppressMissingSchemaError || _.public !== emptyDocDerivedSchema)
 			this.public(_.public as never)
 
-		if (Object.keys(_.private).length > 0) this.private(_.private as never)
+		if (_.private !== emptyDocDerivedSchema) this.private(_.private as never)
 
 		if (Object.keys(_.aggregates).length > 0)
 			this.aggregates(_.aggregates as never)
@@ -71,7 +76,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	publicOnCreation(schema: InferableObject) {
+	publicOnCreation(schema: InferableObject | ObjectLike) {
 		this.context.transactor._allPublicOnCreationSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
@@ -79,7 +84,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	public(schema: InferableObject) {
+	public(schema: InferableObject | ObjectLike) {
 		// assertZod()
 		this.context.transactor._allPublicSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
@@ -88,7 +93,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	private(schema: InferableObject) {
+	private(schema: InferableObject | ObjectLike) {
 		// assertZod()
 		this.context.transactor._allPrivateSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),

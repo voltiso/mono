@@ -47,10 +47,17 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 	publicOnCreation<S extends Record<string, t.Schemable>>(
 		s: S,
-	): ___<TI & { publicOnCreation: S }>
+	): ___<
+		TI & { publicOnCreation: S extends t.ObjectLike ? S['OutputType'] : S }
+	>
 
-	public<S extends Record<string, t.Schemable>>(s: S): ___<TI & { public: S }>
-	private<S extends Record<string, t.Schemable>>(s: S): ___<TI & { private: S }>
+	public<S extends Record<string, t.Schemable> | t.ObjectLike>(
+		s: S,
+	): ___<TI & { public: S extends t.ObjectLike ? S['OutputType'] : S }>
+
+	private<S extends Record<string, t.Schemable>>(
+		s: S,
+	): ___<TI & { private: S extends t.ObjectLike ? S['OutputType'] : S }>
 
 	after(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI> | null>>

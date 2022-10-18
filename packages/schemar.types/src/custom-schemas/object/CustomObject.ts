@@ -9,7 +9,8 @@ import type {
 	PartialOrUndefined_,
 } from '@voltiso/util'
 
-import type { Type } from '~/GetType'
+import type { InferableObjectLike, ObjectLike } from '~'
+import type { InputType_, OutputType_, Type } from '~/GetType'
 import type { CustomSchema, SimpleSchema } from '~/Schema'
 import type { GetDeepShape_, SchemableLike } from '~/Schemable'
 import type { DefineSchema } from '~/SchemaOptions'
@@ -41,6 +42,10 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	//
 
+	and<F extends InferableObjectLike | ObjectLike>(
+		additionalFields: F,
+	): _GetAnd<this, F>
+
 	get partial(): _GetPartial_<this>
 	get strictPartial(): _GetStrictPartial_<this>
 
@@ -62,6 +67,22 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 export type _ObjectLike = {
 	[OPTIONS]: { shape: any; Output: any; Input: any }
 }
+
+//
+
+export type _GetAnd<This, Other> = This extends _ObjectLike
+	? DefineSchema<
+			This,
+			{
+				shape: _<
+					This[OPTIONS]['shape'] &
+						(Other extends ObjectLike ? Other['getShape'] : Other)
+				>
+				Output: _<This[OPTIONS]['Output'] & OutputType_<Other>>
+				Input: _<This[OPTIONS]['Input'] & InputType_<Other>>
+			}
+	  >
+	: never
 
 export type _GetIndex<
 	This,

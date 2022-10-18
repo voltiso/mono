@@ -58,6 +58,54 @@ describe('object', () => {
 		expect(() => a.validate(badNormalField)).toThrow('123')
 	})
 
+	it('index signature - tds test', () => {
+		expect.hasAssertions()
+
+		const sOldProfileKey = s.string.regex(/^oldProfile_\d+$/u)
+
+		const sUserProfile = s
+			.object({
+				displayName: s.string.minLength(1),
+
+				address1: s.string.optional, // from mobile? `users/sLkZlfDgC2TBVdTUs0lBUxbEHBm1` on DEV
+				address2: s.string.optional, // from mobile? `users/sLkZlfDgC2TBVdTUs0lBUxbEHBm1` on DEV
+
+				// email: sEmail.optional, // from mobile? `users/sLkZlfDgC2TBVdTUs0lBUxbEHBm1` on DEV
+				specialties: s.string.optional, // from mobile? `users/sLkZlfDgC2TBVdTUs0lBUxbEHBm1` on DEV
+				// currentTradeshowId: sAutoId, // from mobile? `users/sLkZlfDgC2TBVdTUs0lBUxbEHBm1` on DEV
+
+				// ...sPersonName.getShape,
+
+				// ...sZipAddress.getShape,
+
+				// mobile: sPhoneNumber,
+
+				// ...sEmployment.getShape,
+
+				// ...sConsents.getShape,
+
+				// timezone: sTimeZone,
+
+				// language: sLanguage.optional, // from mobile? `users/sLkZlfDgC2TBVdTUs0lBUxbEHBm1` on DEV
+				// languages: s.array(sLanguage),
+
+				// heapId: sHeapId,
+			})
+			.index(sOldProfileKey, s.object)
+
+		const sUser = s.object({
+			profile: sUserProfile,
+		})
+
+		expect(
+			sUser.validate({
+				profile: { displayName: 'test', oldProfile_1632924078616: {} },
+			}),
+		).toStrictEqual({
+			profile: { displayName: 'test', oldProfile_1632924078616: {} },
+		})
+	})
+
 	it('index signature - single argument', () => {
 		expect.hasAssertions()
 

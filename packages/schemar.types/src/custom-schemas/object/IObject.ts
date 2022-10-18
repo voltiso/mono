@@ -26,6 +26,8 @@ export interface IObject extends ISchema<object> {
 	get getShape(): InferableObjectLike
 	get getDeepShape(): InferableObjectLike
 
+	and(additionalFields: InferableObjectLike | ObjectLike): any
+
 	get partial(): any
 	get strictPartial(): any
 

@@ -8,9 +8,13 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc.public({
-	specialty: s.string.optional,
-}) {}
+class Doctor extends Doc.public(
+	s
+		.object({
+			specialty: s.string.optional,
+		})
+		.index(s.string.regex(/^unknown_.*$/u), s.number),
+) {}
 
 const doctors = db('doctor').register(Doctor)
 
@@ -26,5 +30,11 @@ describe('public', function () {
 		).rejects.toThrow('favoriteOrganMarket')
 
 		await expect(doctors('anthony')).resolves.toBeNull()
+
+		await expect(
+			doctors('anthony').set({ favoriteOrganMarket: 123 }),
+		).rejects.toThrow('index signature keys')
+
+		await doctors('anthony').set({ unknown_favoriteOrganMarket: 123 })
 	})
 })

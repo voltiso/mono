@@ -2,7 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { InferableObject, ISchema } from '@voltiso/schemar.types'
+import type {
+	IObject,
+	ISchema,
+	SchemableObjectLike,
+} from '@voltiso/schemar.types'
 import { assumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
@@ -44,9 +48,9 @@ export function getSchema(d: DocRefLike): DocRefBaseImpl['_schema'] {
 		_allPrivateSchemas,
 	} = d._context.transactor
 
-	const publicOnCreationSchemas: InferableObject[] = []
-	const publicSchemas: InferableObject[] = []
-	const privateSchemas: InferableObject[] = []
+	const publicOnCreationSchemas: SchemableObjectLike[] = []
+	const publicSchemas: SchemableObjectLike[] = []
+	const privateSchemas: SchemableObjectLike[] = []
 
 	const path = d.path.toString()
 
@@ -78,34 +82,31 @@ export function getSchema(d: DocRefLike): DocRefBaseImpl['_schema'] {
 				`missing schema for ${path} - add a schema, or set requireSchemas = false`,
 			)
 
-		d._publicOnCreationSchema = {}
-		d._privateSchema = {}
+		d._publicOnCreationSchema = s.object({})
+		d._privateSchema = s.object({})
 
 		return (d._schema = null)
 	}
 
-	let thisSchema: InferableObject = {}
-	d._publicOnCreationSchema = {}
-	d._privateSchema = {}
+	let thisSchema: IObject = s.object({})
+	d._publicOnCreationSchema = s.object({})
+	d._privateSchema = s.object({})
 
 	for (const schema of publicOnCreationSchemas) {
-		thisSchema = { ...thisSchema, ...schema }
-		d._publicOnCreationSchema = { ...d._publicOnCreationSchema, ...schema }
+		thisSchema = thisSchema.and(schema) as never
+		d._publicOnCreationSchema = d._publicOnCreationSchema.and(schema) as never
 	}
 
 	for (const schema of publicSchemas) {
-		thisSchema = { ...thisSchema, ...schema }
+		thisSchema = thisSchema.and(schema) as never
 	}
 
 	for (const schema of privateSchemas) {
-		thisSchema = { ...thisSchema, ...schema }
-		d._privateSchema = { ...d._privateSchema, ...schema }
+		thisSchema = thisSchema.and(schema) as never
+		d._privateSchema = d._privateSchema.and(schema) as never
 	}
 
-	const final = s.infer({
-		...thisSchema,
-		...sIntrinsicFields.getShape,
-	})
+	const final: IObject = thisSchema.and(sIntrinsicFields) as never
 
 	const { allowIdField } = _options
 
@@ -116,14 +117,14 @@ export function getSchema(d: DocRefLike): DocRefBaseImpl['_schema'] {
 		)
 	}
 
-	const partial = final.deepPartial
+	const partial: IObject = final.deepPartial as never
 
 	// $assert(final)
 	// $assert(partial)
 
 	d._schema = {
-		final: final.simple,
-		partial: partial.simple,
+		final: final.simple as never,
+		partial: partial.simple as never,
 	}
 
 	return d._schema

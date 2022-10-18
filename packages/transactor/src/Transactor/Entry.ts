@@ -1,7 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject, SchemaLike } from '@voltiso/schemar.types'
+import type {
+	InferableObject,
+	ObjectLike,
+	SchemaLike,
+} from '@voltiso/schemar.types'
 
 import type { GetPathMatches } from '~/common'
 import type { Method } from '~/Method'
@@ -13,7 +17,7 @@ export type IdSchemaEntry = {
 
 export type SchemaEntry = {
 	getPathMatches: GetPathMatches
-	schema: InferableObject
+	schema: InferableObject | ObjectLike
 }
 
 export type MethodEntry = {

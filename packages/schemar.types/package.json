@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/schemar.types",
-  "version": "16.2.2",
+  "version": "16.4.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -61,6 +61,6 @@
     "node": "16"
   },
   "typeCoverage": {
-    "is": 98.8
+    "is": 98.81
   }
 }

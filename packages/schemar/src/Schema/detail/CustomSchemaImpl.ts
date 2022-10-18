@@ -35,7 +35,7 @@ import { schema } from '~/custom-schemas/unknownSchema'
 import { ValidationError } from '~/error'
 import { SchemarError } from '~/error/SchemarError'
 
-import { defaultSchemaOptions } from '..'
+import { defaultSchemaOptions } from '../defaultSchemaOptions'
 import { processCustomChecks } from './processCustomChecks'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 

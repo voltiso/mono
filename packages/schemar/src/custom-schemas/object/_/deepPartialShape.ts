@@ -2,15 +2,20 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as t from '@voltiso/schemar.types'
-import { getEntries } from '@voltiso/util'
+import { assert, getEntries, isPlainObject, stringFrom } from '@voltiso/util'
 
-import { schema } from '~'
+import { schema } from '~/custom-schemas/unknownSchema'
 
 //
 
 export function deepPartialShape<O extends t.InferableObject>(
 	o: O,
 ): t.DeepPartialShape<O> {
+	assert(
+		isPlainObject(o),
+		`Invalid Argument: deepPartialShape(${stringFrom(o)})`,
+	)
+
 	const shape = { ...o } as t.InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {

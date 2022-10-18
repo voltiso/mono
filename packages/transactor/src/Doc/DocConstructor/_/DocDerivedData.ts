@@ -1,15 +1,28 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import * as s from '@voltiso/schemar'
+import type { IObject } from '@voltiso/schemar.types'
+
 import type { Aggregator } from '~/Aggregator'
-import type { DocTI } from '~/Doc'
 import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 	UnknownTrigger,
 } from '~/Trigger'
 
-export interface DocDerivedData extends DocTI {
+export interface DocDerivedData /* extends DocTI */ {
+	tag: any
+
+	id: unknown
+
+	readonly publicOnCreation: IObject
+	readonly public: IObject
+	readonly private: IObject
+
+	aggregates: {}
+	methods: {}
+
 	readonly afters: readonly UnknownTrigger[]
 	readonly beforeCommits: readonly BeforeCommitTrigger[]
 	readonly onGets: readonly OnGetTrigger[]
@@ -19,14 +32,17 @@ export interface DocDerivedData extends DocTI {
 	readonly suppressMissingSchemaError?: boolean
 }
 
+export const emptyDocDerivedSchema = s.object({})
+
 export const defaultDocDerivedData = {
 	tag: 'untagged',
 
 	id: undefined,
 
-	publicOnCreation: {},
-	public: {},
-	private: {},
+	publicOnCreation: emptyDocDerivedSchema,
+	public: emptyDocDerivedSchema,
+	private: emptyDocDerivedSchema,
+
 	aggregates: {},
 
 	afters: [],

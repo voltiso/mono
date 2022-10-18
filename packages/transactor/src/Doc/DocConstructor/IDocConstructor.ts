@@ -73,10 +73,10 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 
 	with(plugin: DocBuilderPlugin<any>): unknown
 
-	get schemableWithId(): object
-	get schemaWithId(): ISchema
+	// get schemableWithId(): object
+	// get schemableWithoutId(): object
 
-	get schemableWithoutId(): object
+	get schemaWithId(): ISchema
 	get schemaWithoutId(): ISchema
 
 	get idSchema(): unknown

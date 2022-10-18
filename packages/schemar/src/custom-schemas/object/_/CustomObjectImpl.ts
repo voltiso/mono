@@ -9,10 +9,12 @@ import type {
 	DEFAULT_OPTIONS,
 	DefaultObjectOptions,
 	GetDeepShape_,
+	IObject,
 	ISchema,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
 	Schemable,
+	SchemableObjectLike,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
 import {
@@ -23,6 +25,7 @@ import {
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
 import {
+	assumeType,
 	getEntries,
 	getValues,
 	hasProperty,
@@ -82,6 +85,47 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	get getIndexSignatures(): this[OPTIONS]['indexSignatures'] {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['indexSignatures'] as never
+	}
+
+	and(other: SchemableObjectLike): never {
+		if (!isSchema(other as never)) {
+			return this._cloneWithOptions({
+				shape: { ...this.getShape, ...other },
+			}) as never
+		}
+
+		assumeType<IObject>(other)
+
+		// eslint-disable-next-line security/detect-object-injection
+		const a = this[OPTIONS]
+		// eslint-disable-next-line security/detect-object-injection
+		const b = other[OPTIONS]
+
+		return this._cloneWithOptions({
+			shape: { ...this.getShape, ...other.getShape },
+
+			customChecks: [...a.customChecks, ...b.customChecks],
+
+			customFixes: [...a.customFixes, ...b.customFixes],
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			hasDefault: a.hasDefault || b.hasDefault,
+
+			default: b.hasDefault ? b.default : a.default,
+
+			getDefault: b.hasDefault ? b.getDefault : a.getDefault,
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			isOptional: a.isOptional && b.isOptional,
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			isStrictOptional: a.isStrictOptional && b.isStrictOptional,
+
+			indexSignatures: [...a.indexSignatures, ...b.indexSignatures],
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			isReadonly: a.isReadonly && b.isReadonly,
+		}) as never
 	}
 
 	get partial(): never {
