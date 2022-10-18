@@ -1,14 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept, Value } from '~'
+import type { AlsoAccept, Value_ } from '~'
 
 export type OmitByValue<
 	Obj extends object,
-	Value_ extends Value<Obj> | AlsoAccept<unknown>,
-> = Omit<
+	Value extends Value_<Obj> | AlsoAccept<unknown>,
+> = OmitByValue_<Obj, Value>
+
+export type OmitByValue_<Obj, Value> = Omit<
 	Obj,
 	{
-		[k in keyof Obj]: Value<Obj, k> extends Value_ ? k : never
+		[k in keyof Obj]: Value_<Obj, k> extends Value ? k : never
 	}[keyof Obj]
 >

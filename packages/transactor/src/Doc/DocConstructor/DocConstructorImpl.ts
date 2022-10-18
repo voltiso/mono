@@ -100,7 +100,9 @@ export class DocConstructorImpl {
 				static override readonly _: DocDerivedData = {
 					...super._,
 
-					publicOnCreation: super._.publicOnCreation.and(schema) as never,
+					publicOnCreation: (super._.publicOnCreation as IObject).and(
+						schema,
+					) as never,
 					// publicOnCreation: { ...super._.publicOnCreation, ...shape },
 				}
 			},
@@ -113,7 +115,7 @@ export class DocConstructorImpl {
 			class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
-					public: super._.public.and(schema) as never,
+					public: (super._.public as IObject).and(schema) as never,
 					// public: { ...super._.public, ...schema },
 				}
 			},
@@ -126,7 +128,7 @@ export class DocConstructorImpl {
 			class extends this {
 				static override readonly _ = {
 					...super._,
-					private: super._.private.and(schema) as never,
+					private: (super._.private as IObject).and(schema) as never,
 					// private: { ...super._.private, ...schema },
 				} as never
 			},
@@ -163,15 +165,17 @@ export class DocConstructorImpl {
 					id: 'id' in f ? f.id : (super._.id as never),
 
 					publicOnCreation: f.publicOnCreation
-						? (super._.publicOnCreation.and(f.publicOnCreation) as never)
+						? ((super._.publicOnCreation as IObject).and(
+								f.publicOnCreation,
+						  ) as never)
 						: super._.publicOnCreation,
 
 					public: f.public
-						? (super._.public.and(f.public) as never)
+						? ((super._.public as IObject).and(f.public) as never)
 						: super._.public,
 
 					private: f.private
-						? (super._.private.and(f.private) as never)
+						? ((super._.private as IObject).and(f.private) as never)
 						: super._.private,
 
 					aggregates: {
@@ -209,7 +213,7 @@ export class DocConstructorImpl {
 
 	static get schemaWithoutId(): IObject {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-		return this._.publicOnCreation
+		return (this._.publicOnCreation as IObject)
 			.and(this._.public)
 			.and(this._.private)
 			.and(sIntrinsicFields) as never

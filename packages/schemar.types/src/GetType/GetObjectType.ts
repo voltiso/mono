@@ -1,7 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, GetProperty_, HasIndexSignature } from '@voltiso/util'
+import type {
+	_,
+	GetProperty_,
+	HasIndexSignature,
+	OmitByValue_,
+} from '@voltiso/util'
 
 import type {
 	ObjectLike,
@@ -107,23 +112,30 @@ export type _ObjectTypeFinalize<
 	IO extends GetTypeOptions,
 > = IO['kind'] extends 'in'
 	? _<
-			{
-				// eslint-disable-next-line etc/no-internal
-				[k in keyof T as _ShouldForceOptional<
-					T[k],
-					GetProperty_<Shape, k>
-				> extends true
-					? never
-					: k]: T[k]
-			} & {
-				// eslint-disable-next-line etc/no-internal
-				[k in keyof T as _ShouldForceOptional<
-					T[k],
-					GetProperty_<Shape, k>
-				> extends true
-					? k
-					: never]?: T[k] | undefined
-			}
+			OmitByValue_<
+				{
+					// eslint-disable-next-line etc/no-internal
+					[k in keyof T]: _ShouldForceOptional<
+						T[k],
+						GetProperty_<Shape, k>
+					> extends false
+						? T[k]
+						: never
+				},
+				never
+			> &
+				OmitByValue_<
+					{
+						// eslint-disable-next-line etc/no-internal
+						[k in keyof T]?: _ShouldForceOptional<
+							T[k],
+							GetProperty_<Shape, k>
+						> extends true
+							? T[k] | undefined
+							: never
+					},
+					never
+				>
 	  >
 	: IO['kind'] extends 'out'
 	? _<T>

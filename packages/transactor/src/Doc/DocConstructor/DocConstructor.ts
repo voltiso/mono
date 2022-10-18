@@ -1,9 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
-import type { _, $_, Merge2, OmitSignatures, Throw } from '@voltiso/util'
+import type {
+	_,
+	$_,
+	Merge2,
+	Merge2Reverse_,
+	OmitSignatures,
+	Throw,
+} from '@voltiso/util'
 
 import type { AggregatorHandlers } from '~/Aggregator'
 import type {
@@ -30,6 +36,19 @@ type MaybeWithName<Params> = [Params] | [string, Params]
 
 type ___<X extends DocTI> = X extends any ? DocConstructor<$MergeTI<X>> : never
 
+export type MapNewField<
+	F extends Record<string, t.Schemable> | t.ObjectLike | undefined,
+> = F extends t.ObjectLike ? F['getShape'] : F extends undefined ? unknown : F
+
+export type MapNewFields<F extends NewFields> = Merge2Reverse_<
+	{
+		publicOnCreation: MapNewField<F['publicOnCreation']>
+		public: MapNewField<F['public']>
+		private: MapNewField<F['private']>
+	},
+	F
+>
+
 export interface DocConstructor<TI extends DocTI = DocTI> {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
@@ -38,26 +57,30 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 	// <Derived>(): DocConstructor<___<Merge2<TI, { doc: Derived & DocU }>>>
 	<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
+
 	<F extends NewFields>(f: F): keyof F extends keyof NewFields
-		? ___<TI & F>
+		? ___<TI & MapNewFields<F>>
 		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFields> }>
 
 	tag<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
-	fields<F extends NewFields>(f: F): ___<TI & F>
+
+	fields<F extends NewFields>(
+		f: F,
+	): keyof F extends keyof NewFields
+		? ___<TI & MapNewFields<F>>
+		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFields> }>
 
 	publicOnCreation<S extends Record<string, t.Schemable>>(
 		s: S,
-	): ___<
-		TI & { publicOnCreation: S extends t.ObjectLike ? S['OutputType'] : S }
-	>
+	): ___<TI & { publicOnCreation: S extends t.ObjectLike ? S['getShape'] : S }>
 
 	public<S extends Record<string, t.Schemable> | t.ObjectLike>(
 		s: S,
-	): ___<TI & { public: S extends t.ObjectLike ? S['OutputType'] : S }>
+	): ___<TI & { public: S extends t.ObjectLike ? S['getShape'] : S }>
 
 	private<S extends Record<string, t.Schemable>>(
 		s: S,
-	): ___<TI & { private: S extends t.ObjectLike ? S['OutputType'] : S }>
+	): ___<TI & { private: S extends t.ObjectLike ? S['getShape'] : S }>
 
 	after(
 		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI> | null>>
@@ -110,21 +133,19 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		handlers: AggregatorHandlers<TI, InstanceType<Target>, Name>,
 	): DocConstructor<TI>
 
-	get schemableWithoutId(): $_<
-		TI['publicOnCreation'] & TI['public'] & TI['private'] & {}
+	get schemaWithoutId(): t.Object<
+		TI['publicOnCreation'] & TI['public'] & TI['private'] // & {}
 	>
 
-	get schemaWithoutId(): t.Object<this['schemableWithoutId']>
-
-	get schemableWithId(): $_<
-		{
-			id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
-		} & TI['publicOnCreation'] &
-			TI['public'] &
-			TI['private']
+	get schemaWithId(): t.Object<
+		$_<
+			{
+				id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+			} & TI['publicOnCreation'] &
+				TI['public'] &
+				TI['private']
+		>
 	>
-
-	get schemaWithId(): s.Object<this['schemableWithId']>
 
 	get idSchema(): unknown extends TI['id'] ? t.String : TI['id']
 }

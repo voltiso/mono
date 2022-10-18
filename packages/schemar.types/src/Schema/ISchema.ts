@@ -16,7 +16,7 @@ import type { SchemableLike, SchemaOptions, ValidationResult } from '~'
 // export type IS_SCHEMA = typeof IS_SCHEMA
 
 export interface SchemaLike<T = unknown> {
-	readonly [SCHEMA_NAME]: string
+	readonly [SCHEMA_NAME]: any
 
 	readonly [OPTIONS]: any
 

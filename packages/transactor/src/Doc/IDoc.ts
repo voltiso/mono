@@ -5,10 +5,10 @@ import type { SchemaLike } from '@voltiso/schemar.types'
 import type { _ } from '@voltiso/util'
 
 import type { Id } from '~/Data'
+import type { DocRefLike } from '~/DocRef/IRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 
-import type { IDocRefBase } from '..'
 import type { IDocConstructorNoBuilder } from './DocConstructor'
 import type { DocContext } from './DocContext'
 import type { DocTI, DocTILike, DTI } from './DocTI'
@@ -32,30 +32,27 @@ export interface DocLike {
  *
  * - Every `Doc` is assignable to it
  */
-export interface IDoc extends DocLike {
+export interface IDoc {
 	[DTI]: DocTI
 
 	readonly constructor: IDocConstructorNoBuilder
 
 	readonly id: Id
 	readonly path: DocPath
-	readonly ref: IDocRefBase
+	readonly ref: DocRefLike
 
 	readonly data: IntrinsicFields
 	dataWithoutId(): IntrinsicFields
 	dataWithId(): _<{ id: Id } & IntrinsicFields>
 
-	update(updates: any): Promise<IDoc | null | undefined>
+	update(updates: any): Promise<DocLike | null | undefined>
 
 	delete(): Promise<null>
 
 	methods: {}
 
 	// get schemaWithoutId(): SchemaLike
-	// get schemableWithoutId(): object // Record<string, Schemable>
-
 	// get schemaWithId(): SchemaLike
-	// get schemableWithId(): object // Record<string, Schemable>
 
 	get aggregateSchemas(): Record<string, SchemaLike>
 } // & GData<IDocTI>

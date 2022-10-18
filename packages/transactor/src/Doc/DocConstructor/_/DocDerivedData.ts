@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { IObject } from '@voltiso/schemar.types'
+import type { ObjectLike } from '@voltiso/schemar.types'
 
 import type { Aggregator } from '~/Aggregator'
 import type {
@@ -16,9 +16,9 @@ export interface DocDerivedData /* extends DocTI */ {
 
 	id: unknown
 
-	readonly publicOnCreation: IObject
-	readonly public: IObject
-	readonly private: IObject
+	readonly publicOnCreation: ObjectLike
+	readonly public: ObjectLike
+	readonly private: ObjectLike
 
 	aggregates: {}
 	methods: {}

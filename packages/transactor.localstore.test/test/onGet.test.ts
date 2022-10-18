@@ -10,10 +10,10 @@ import { createTransactor, database } from './common'
 const db = createTransactor()
 
 class User extends Doc({
-	public: {
+	public: s.object({
 		displayName: s.string,
 		def: s.string.default('def'),
-	},
+	}),
 }) {
 	@onGet
 	async createUser(p: TriggerParams.OnGet<User>) {

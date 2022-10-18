@@ -29,13 +29,13 @@ describe('doc', () => {
 	it('static asserts', <TI extends DocTI>() => {
 		expect.assertions(0)
 
+		Assert.is<Doc, IDoc>()
+		Assert.is<Doc<TI>, IDoc>()
+
 		type DocId = IDoc['id']
 		Assert(Is<DocId>().identicalTo<string>())
 
 		Assert.is<DocBase<DocTILike, 'outside'>, IDoc>()
-
-		Assert.is<Doc, IDoc>()
-		Assert.is<Doc<TI>, IDoc>()
 
 		Assert.is<IndexedDoc, IDoc>()
 		Assert.is<IsSubtype<IDoc, IndexedDoc>, false>()

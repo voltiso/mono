@@ -439,6 +439,7 @@ describe('object', () => {
 		expect.hasAssertions()
 
 		const sTest = {
+			/** Hey! */
 			num: s.number.optional,
 		}
 

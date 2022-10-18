@@ -4,7 +4,8 @@
 import type { OmitCall } from '@voltiso/util'
 import { CALL, callableInstance, staticImplements } from '@voltiso/util'
 
-import { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
+import { CollectionRef } from '~/CollectionRef/CollectionRef'
+import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
 import type { IndexedDoc } from '~/Doc'
 import { DocRefPattern, WeakDocRef } from '~/DocRef'
 import type { DbPathFromString } from '~/Path'

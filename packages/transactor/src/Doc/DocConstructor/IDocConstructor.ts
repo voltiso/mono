@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '@voltiso/schemar.types'
+import type { SchemaLike } from '@voltiso/schemar.types'
 
 import type {
 	DocBuilderPlugin,
@@ -76,8 +76,8 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 	// get schemableWithId(): object
 	// get schemableWithoutId(): object
 
-	get schemaWithId(): ISchema
-	get schemaWithoutId(): ISchema
+	get schemaWithId(): SchemaLike
+	get schemaWithoutId(): SchemaLike
 
 	get idSchema(): unknown
 }
