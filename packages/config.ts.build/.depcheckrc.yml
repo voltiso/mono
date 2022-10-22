@@ -4,6 +4,5 @@
 ignores:
   - '@voltiso/config.ts'
   - '@voltiso/transform'
-  - '@voltiso/assertor.transform'
   - typescript-transform-paths
   - typescript

@@ -10,7 +10,7 @@ import {
 	stringFrom,
 } from '@voltiso/util'
 
-import type { WithId } from '~/Data'
+import type { $WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
 import type { DocRefContext, StrongDocRefBase } from '~/DocRef'
@@ -21,6 +21,7 @@ import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
 import type { Updates } from '~/updates'
 
+import type { IntrinsicFields } from '..'
 import type { GetData } from './_/GData'
 import type { Doc } from './Doc'
 import { DocConstructorImpl } from './DocConstructor'
@@ -56,7 +57,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	_ref?: StrongDocRefBase<this> = undefined
 
-	constructor(context: DocContext, raw: GetData<TI>) {
+	constructor(context: DocContext, raw: IntrinsicFields) {
 		super()
 
 		assert(raw.__voltiso)
@@ -126,10 +127,10 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	_context: DocContext
 
-	_raw!: GetData<TI>
-	_rawProxy!: GetData<TI>
+	_raw!: IntrinsicFields
+	_rawProxy!: IntrinsicFields
 
-	_setRaw(raw: GetData<TI>) {
+	_setRaw(raw: IntrinsicFields) {
 		this._raw = raw
 		this._rawProxy = this._context.transaction
 			? raw
@@ -164,7 +165,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this._raw as never
 	}
 
-	dataWithId(): WithId<GetData<TI>, IDoc> {
+	dataWithId(): $WithId<GetData<TI>, IDoc> {
 		return withId(this._raw, this.id) as never
 	}
 
@@ -194,7 +195,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this.ref.schemaWithoutId as never
 	}
 
-	get schemaWithId(): Schema<WithId<GetData<TI>>> | undefined {
+	get schemaWithId(): Schema<$WithId<GetData<TI>>> | undefined {
 		return this.ref.schemaWithId as never
 	}
 

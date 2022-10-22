@@ -5,7 +5,7 @@ import type * as Database from '@voltiso/firestore-like'
 import { isDatabase } from '@voltiso/firestore-like'
 import { stringFrom, undef } from '@voltiso/util'
 
-import type { WithId } from '~/Data'
+import type { $WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import type { IDoc } from '~/Doc'
 import { TransactorError } from '~/error'
@@ -54,7 +54,7 @@ const databaseSet = async (
 	t: T,
 	ref: Database.ServerDocumentReference,
 	data: IntrinsicFields,
-): Promise<WithId<IntrinsicFields, IDoc>> => {
+): Promise<$WithId<IntrinsicFields, IDoc>> => {
 	if (transactor.readOnly)
 		throw new TransactorError(
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,

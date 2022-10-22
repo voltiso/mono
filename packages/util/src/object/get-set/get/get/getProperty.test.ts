@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import type { GetPropertyComplex } from './getProperty'
 import { getProperty } from './getProperty'
@@ -11,7 +11,7 @@ describe('getProperty', () => {
 	it('generic', <O extends object, K extends keyof O>() => {
 		expect.assertions(0)
 
-		Assert.is<GetPropertyComplex<O, K>, O[K]>()
+		$Assert.is<GetPropertyComplex<O, K>, O[K]>()
 	})
 
 	it('works', () => {
@@ -70,31 +70,31 @@ describe('getProperty', () => {
 		// @ts-expect-error private
 		expect(c.field).toBe(123)
 
-		Assert<IsIdentical<Foo['field'], 123>>()
-		Assert<IsIdentical<Foo['unknownField'], unknown>>()
+		$Assert<IsIdentical<Foo['field'], 123>>()
+		$Assert<IsIdentical<Foo['unknownField'], unknown>>()
 
 		type A = GetPropertyComplex<Foo, 'field'>
-		Assert<IsIdentical<A, 123>>()
+		$Assert<IsIdentical<A, 123>>()
 
 		type B = GetPropertyComplex<Foo, 'unknownField'>
-		Assert<IsIdentical<B, unknown>>()
+		$Assert<IsIdentical<B, unknown>>()
 
 		type C = GetPropertyComplex<Foo, 'nonExisting'>
-		Assert<IsIdentical<C, never>>()
+		$Assert<IsIdentical<C, never>>()
 
 		type D = GetPropertyComplex<Foo, 'undef'>
-		Assert<IsIdentical<D, never>>() // WRONG! should be undefined
+		$Assert<IsIdentical<D, never>>() // WRONG! should be undefined
 
 		type E = GetPropertyComplex<Foo, 'optUndef'>
-		Assert<IsIdentical<E, never>>() // WRONG! should be undefined
+		$Assert<IsIdentical<E, never>>() // WRONG! should be undefined
 
 		type F = GetPropertyComplex<Foo, 'optNever'>
-		Assert<IsIdentical<F, never>>()
+		$Assert<IsIdentical<F, never>>()
 
 		type G = GetPropertyComplex<Foo, 'optString'>
-		Assert<IsIdentical<G, string>>()
+		$Assert<IsIdentical<G, string>>()
 
 		type H = GetPropertyComplex<Foo, 'optStringUndef'>
-		Assert<IsIdentical<H, string>>() // WRONG! should be string | undefined
+		$Assert<IsIdentical<H, string>>() // WRONG! should be string | undefined
 	})
 })

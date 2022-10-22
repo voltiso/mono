@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitByValue } from './OmitByValue'
 
@@ -11,10 +11,10 @@ describe('OmitByValue', () => {
 		expect.assertions(0)
 
 		type A = OmitByValue<{ readonly a?: 'a'; b: 'b' }, unknown>
-		Assert<IsIdentical<A, {}>>()
+		$Assert<IsIdentical<A, {}>>()
 
 		type B = OmitByValue<{ readonly a?: 'a'; b: 'b' }, 'b'>
-		Assert<IsIdentical<B, { readonly a?: 'a' }>>()
+		$Assert<IsIdentical<B, { readonly a?: 'a' }>>()
 	})
 
 	type ObjA = {
@@ -26,7 +26,7 @@ describe('OmitByValue', () => {
 		expect.assertions(0)
 
 		type A = OmitByValue<O, 'bb'>
-		Assert.is<O, A>()
+		$Assert.is<O, A>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

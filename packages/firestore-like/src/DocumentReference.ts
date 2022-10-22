@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { MaybePromise } from '@voltiso/util'
-import { assumeType } from '@voltiso/util'
 
 import type { DocumentData } from './DocumentData'
 import type { DocumentSnapshot } from './DocumentSnapshot'
@@ -29,7 +28,7 @@ export interface ServerDocumentReference extends DocumentReference {
 export function isServerDocumentReference(
 	x: unknown,
 ): x is ServerDocumentReference {
-	assumeType<Partial<ServerDocumentReference> | null>(x)
+	$AssumeType<Partial<ServerDocumentReference> | null>(x)
 	return Boolean(x?.update && x.set && x.path && x.id)
 }
 

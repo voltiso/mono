@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
-import { undef } from '@voltiso/util'
+import { assert } from '@voltiso/util'
 import chalk from 'chalk'
 
 import type { Doc, DocLike } from '~/Doc'
@@ -19,36 +18,43 @@ import type { GI } from './GDoc'
 
 function assertBefore<D extends DocLike>(
 	x: AfterTriggerParams<D>,
-): asserts x is AfterTriggerParams<D, D | null, true, boolean> {
-	$assert(x.before)
+): asserts x is AfterTriggerParams<D, true, boolean> {
+	// assumeType<AfterTriggerParams<D>>(x)
+	assert(x.before)
 }
 
 function assertNotBefore<D extends DocLike>(
 	x: AfterTriggerParams<D>,
-): asserts x is AfterTriggerParams<D, D | null, false, boolean> {
-	$assert(!x.before)
+): asserts x is AfterTriggerParams<D, false, boolean> {
+	// assumeType<AfterTriggerParams<D>>(x)
+	assert(!x.before)
 }
+
+//
 
 function assertAfter<D extends DocLike>(
 	x: AfterTriggerParams<D>,
-): asserts x is AfterTriggerParams<D, D, boolean, true> {
-	$assert(x.doc)
-	$assert(x.after)
+): asserts x is AfterTriggerParams<D, boolean, true> {
+	// assumeType<AfterTriggerParams<D>>(x)
+	assert(x.doc)
+	assert(x.after)
 }
 
 function assertNotAfter<D extends DocLike>(
 	x: AfterTriggerParams<D>,
-): asserts x is AfterTriggerParams<D, null, boolean, false> {
-	$assert(!x.doc)
-	$assert(!x.after)
+): asserts x is AfterTriggerParams<D, boolean, false> {
+	// assumeType<AfterTriggerParams<D>>(x)
+	assert(!x.doc)
+	assert(!x.after)
 }
 
-function logTrigger<TI extends DocDerivedData>(
+function logTrigger<D extends DocLike>(
 	name: string,
 	when: 'before' | 'after' | 'on',
 	event: string,
-	params: AfterTriggerParams<GI<TI>>,
-) {
+	params: AfterTriggerParams<D>,
+): void {
+	assumeType<AfterTriggerParams<D>>(params)
 	if (!params.transactor._options.log) return
 
 	// eslint-disable-next-line no-console
@@ -87,20 +93,20 @@ export function withAfter<TI extends DocDerivedData>(
 export function withAfterUpdate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	f: AfterTrigger<GI<TI>, GI<TI>, true, true>,
+	f: AfterTrigger<GI<TI>, true, true>,
 ): TI {
 	return {
 		..._,
 
 		afters: [
 			..._.afters,
-			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
+			function (this: (TI extends any ? GI<TI> : never) | null, params: AfterTriggerParams<GI<TI>>) {
 				if (params.before && this) {
 					logTrigger(name, 'after', 'UPDATE', params)
 					assertBefore(params)
 					assertAfter(params)
 					return f.call(this, params) as never
-				} else return undef
+				} else return undefined
 			},
 		],
 	}
@@ -109,7 +115,7 @@ export function withAfterUpdate<TI extends DocDerivedData>(
 export function withAfterDelete<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	f: AfterTrigger<GI<TI>, null, true, false>,
+	f: AfterTrigger<GI<TI>, true, false>,
 ): TI {
 	return {
 		..._,
@@ -122,7 +128,7 @@ export function withAfterDelete<TI extends DocDerivedData>(
 					assertBefore(p)
 					assertNotAfter(p)
 					return f.call(this, p) as never
-				} else return undef
+				} else return undefined
 			},
 		],
 	}
@@ -131,7 +137,7 @@ export function withAfterDelete<TI extends DocDerivedData>(
 export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	f: AfterTrigger<GI<TI>, GI<TI>, boolean, true>,
+	f: AfterTrigger<GI<TI>, boolean, true>,
 ): TI {
 	return {
 		..._,
@@ -143,7 +149,7 @@ export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
 					logTrigger(name, 'after', 'CREATE or UPDATE', params)
 					assertAfter(params)
 					return f.call(this, params) as never
-				} else return undef
+				} else return undefined
 			},
 		],
 	}
@@ -152,7 +158,7 @@ export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
 export function withAfterCreate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	f: AfterTrigger<GI<TI>, GI<TI>, false, true>,
+	f: AfterTrigger<GI<TI>, false, true>,
 ): TI {
 	return {
 		..._,
@@ -162,11 +168,11 @@ export function withAfterCreate<TI extends DocDerivedData>(
 			function (this: GI<TI> | null, p: AfterTriggerParams<GI<TI>>) {
 				if (!p.before && p.after) {
 					logTrigger(name, 'after', 'CREATE', p)
-					$assert(this)
+					assert(this)
 					assertNotBefore(p)
 					assertAfter(p)
 					return f.call(this, p) as never
-				} else return undef
+				} else return undefined
 			},
 		],
 	}
@@ -193,7 +199,7 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 					before: before as never, // :(
 					after: after as never, // :(
 				})
-				return f.call(this, p as never) as never
+				return f.call(this as never, p as never) as never
 			} as never,
 		] as never,
 	}

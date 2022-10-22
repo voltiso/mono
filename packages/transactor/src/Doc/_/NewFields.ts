@@ -1,14 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ObjectLike, Schemable } from '@voltiso/schemar.types'
+import type { SchemableLike, SchemableObjectLike } from '@voltiso/schemar.types'
 
-export type NewFields = {
-	id?: Schemable
+export type NewFieldsLike = {
+	id?: SchemableLike
 
-	publicOnCreation?: Record<string, Schemable> | ObjectLike
-	public?: Record<string, Schemable> | ObjectLike
-	private?: Record<string, Schemable> | ObjectLike
+	publicOnCreation?: SchemableObjectLike
+	public?: SchemableObjectLike
+	private?: SchemableObjectLike
 
-	aggregates?: Record<string, Schemable>
+	aggregates?: Record<string, SchemableLike>
 }

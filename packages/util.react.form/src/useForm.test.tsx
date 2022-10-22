@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { act, render } from '@testing-library/react'
-import { $assert } from '@voltiso/assertor'
+
 import { createNestedSubjectWithSchema } from '@voltiso/observer'
 import { ValidationIssue } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'

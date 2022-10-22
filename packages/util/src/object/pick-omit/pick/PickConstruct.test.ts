@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { PickConstructNoUnknown } from './PickConstruct'
 
@@ -20,7 +20,7 @@ describe('PickConstruct', () => {
 		type Have = PickConstructNoUnknown<Input>
 		type Expected = new (x: number) => number
 
-		Assert<IsIdentical<Have, Expected>>()
+		$Assert<IsIdentical<Have, Expected>>()
 	})
 
 	it('PickConstructNoUnknown - only abstract', () => {
@@ -35,7 +35,7 @@ describe('PickConstruct', () => {
 		type Have = PickConstructNoUnknown<Input>
 		type Expected = abstract new (x: number) => number
 
-		Assert<IsIdentical<Have, Expected>>()
+		$Assert<IsIdentical<Have, Expected>>()
 	})
 
 	it('PickConstructNoUnknown - only non-abstract', () => {
@@ -51,7 +51,7 @@ describe('PickConstruct', () => {
 		type Have = PickConstructNoUnknown<Input>
 		type Expected = new (x: number) => number
 
-		Assert<IsIdentical<Have, Expected>>()
+		$Assert<IsIdentical<Have, Expected>>()
 	})
 
 	it('PickConstructNoUnknown - no construct signature - error', () => {

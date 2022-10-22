@@ -3,7 +3,7 @@
 
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import type { IsOptionalImpl } from '~/object/IsOptional'
-import type { AlsoAccept } from '~/type'
+import type { AlsoAccept } from '~/$strip'
 
 // @ts-expect-error cannot use `K` to index `T`
 export type TryGetPropertyImpl<T, K> = (T & Record<keyof any, undefined>)[K]

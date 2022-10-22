@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import type { DeepMutable_ } from './DeepMutable'
 
@@ -13,7 +13,7 @@ describe('DeepMutable', () => {
 		type A = readonly string[]
 		type AA = DeepMutable_<A>
 
-		Assert<IsIdentical<AA, string[]>>()
+		$Assert<IsIdentical<AA, string[]>>()
 	})
 
 	it('tuple', () => {
@@ -22,7 +22,7 @@ describe('DeepMutable', () => {
 		type A = readonly [1, 2, 3]
 		type AA = DeepMutable_<A>
 
-		Assert<IsIdentical<AA, [1, 2, 3]>>()
+		$Assert<IsIdentical<AA, [1, 2, 3]>>()
 	})
 
 	it('tuple - nested', () => {
@@ -31,7 +31,7 @@ describe('DeepMutable', () => {
 		type A = readonly [1, 2, readonly [3, 4]]
 		type AA = DeepMutable_<A>
 
-		Assert<IsIdentical<AA, [1, 2, [3, 4]]>>()
+		$Assert<IsIdentical<AA, [1, 2, [3, 4]]>>()
 	})
 
 	it('tuple of objects', () => {
@@ -40,7 +40,7 @@ describe('DeepMutable', () => {
 		type A = readonly [1, 2, { readonly a: 3 }]
 		type AA = DeepMutable_<A>
 
-		Assert<IsIdentical<AA, [1, 2, { a: 3 }]>>()
+		$Assert<IsIdentical<AA, [1, 2, { a: 3 }]>>()
 	})
 
 	it('complex', () => {
@@ -57,7 +57,7 @@ describe('DeepMutable', () => {
 		}
 
 		type A = DeepMutable_<Obj>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{

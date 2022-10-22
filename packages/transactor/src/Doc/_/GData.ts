@@ -1,12 +1,25 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InputType, Type, Type_ } from '@voltiso/schemar.types'
-import type { _, $_, HasIndexSignature, Merge2Reverse_ } from '@voltiso/util'
+import type {
+	CustomObject,
+	InputType,
+	OPTIONS,
+	Type,
+} from '@voltiso/schemar.types'
+import type {
+	$_,
+	Callable,
+	DeepReadonlyN,
+	HasIndexSignature,
+	Newable,
+	Primitive,
+} from '@voltiso/util'
 
-import type { Id, WithId } from '~/Data'
-import type { DocLike, ExecutionContext, IDoc } from '~/Doc'
-import type { VoltisoEntry } from '~/schemas/sIntrinsicFields'
+import type { $WithId, Id, WithId } from '~/Data'
+import type { DocLike, DocTILike, ExecutionContext, IDoc } from '~/Doc'
+
+import type { GetIntrinsicFields } from './GetIntrinsicFields'
 
 /** @internal */
 export type _GetAggregateTargetEntry<T> = [
@@ -32,32 +45,25 @@ export type _$GetAggregateTarget<T extends object> = T extends any
 	: never
 
 /** @inline */
-export type GetData<
-	TI extends {
-		publicOnCreation?: any
-		public?: any
-		private?: any
-		aggregates?: any
-	},
-> = $_<
-	Type_<TI['publicOnCreation']> &
-		Type_<TI['public']> &
-		Type_<TI['private']> & {
-			__voltiso: Merge2Reverse_<
-				{
-					// eslint-disable-next-line etc/no-internal
-					aggregateTarget: _$GetAggregateTarget<Type_<TI['aggregates']>>
-				},
-				VoltisoEntry
-			>
-		}
->
+export type GetData<TI extends DocTILike> = TI extends any
+	? $_<
+			GetIntrinsicFields<TI> &
+				CustomObject.WithAnd<
+					CustomObject.WithAnd<TI['publicOnCreation'], TI['public']>,
+					TI['private']
+				>['OutputType']
+	  >
+	: never
+
+// type A = JsonFromDocData<GetData<DocTILike>>
+
+// Assert.is<GetData<DocTILike>, { __voltiso: any }>()
 
 /** @inline */
 export type GetDataWithId<
-	TI extends { publicOnCreation?: any; public?: any; private?: any },
+	TI extends DocTILike,
 	Doc extends DocLike = IDoc,
-> = WithId<GetData<TI>, Doc>
+> = Doc extends any ? WithId<GetData<TI>, Doc> : never
 
 //
 
@@ -82,7 +88,7 @@ export type GetInputDataWithId<
 		private?: any
 	},
 	Doc extends DocLike = IDoc,
-> = WithId<GetInputData<TI>, Doc>
+> = $WithId<GetInputData<TI>, Doc>
 
 //
 
@@ -102,11 +108,16 @@ export type GetPublicData<TI extends { public?: any }> = Type<TI['public']>
 export type GetPublicCreationInputData<
 	TI extends { public?: any; publicOnCreation?: any },
 	Doc extends DocLike = IDoc,
-> = _<
+> = DeepReadonlyN<
+	// eslint-disable-next-line no-magic-numbers
+	10,
 	{
-		id?: Id<Doc> | undefined
-	} & InputType<TI['publicOnCreation']> &
-		InputType<TI['public']>
+		readonly id?: Id<Doc> | undefined
+	} & CustomObject.WithAnd<
+		TI['publicOnCreation'],
+		TI['public']
+	>[OPTIONS]['Input'],
+	{ skip: Primitive | Callable | Newable }
 >
 
 /** @inline */

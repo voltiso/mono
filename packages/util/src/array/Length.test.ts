@@ -1,4 +1,9 @@
-import { Assert, IsIdentical } from '~/type'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
+
 import type { Length } from './Length'
 
 describe('Length', () => {
@@ -6,9 +11,9 @@ describe('Length', () => {
 		expect.assertions(0)
 
 		type A = Length<[]>
-		Assert<IsIdentical<A, 0>>()
+		$Assert<IsIdentical<A, 0>>()
 
 		type B = Length<readonly [1, 2]>
-		Assert<IsIdentical<B, 2>>()
+		$Assert<IsIdentical<B, 2>>()
 	})
 })

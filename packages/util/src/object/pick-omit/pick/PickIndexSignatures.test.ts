@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { PickIndexSignatures } from './PickIndexSignatures'
 
@@ -18,7 +18,7 @@ describe('PickIndexSignatures', () => {
 			[k: symbol]: 'asd'
 			num: number
 		}>
-		Assert<
+		$Assert<
 			IsIdentical<
 				X,
 				{

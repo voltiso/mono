@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assumeType } from '~/cast/assumeType'
+import { $AssumeType } from '~/$strip'
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { hasProperty } from '~/object/get-set/get/hasProperty/hasProperty'
 import type { UnknownProperty } from '~/object/UnknownProperty'
@@ -36,7 +36,7 @@ export function final<
 			)
 		}
 
-		assumeType<MethodKey<Base>>(m)
+		$AssumeType<MethodKey<Base>>(m)
 
 		// eslint-disable-next-line security/detect-object-injection
 		if (thisArg[m] !== Base.prototype[m]) {

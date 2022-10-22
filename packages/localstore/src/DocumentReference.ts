@@ -3,7 +3,6 @@
 
 /* eslint-disable security/detect-object-injection */
 
-import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
 import { isDefined } from '@voltiso/util'

@@ -17,7 +17,7 @@ import { aggregate } from '~/Aggregator'
 import type { DocBuilderPlugin } from '~/Doc'
 import { DocCall, DTI } from '~/Doc'
 import type { GI } from '~/Doc/_/GDoc'
-import type { NewFields } from '~/Doc/_/NewFields'
+import type { NewFieldsLike } from '~/Doc/_/NewFields'
 import {
 	withAfter,
 	withAfterCreate,
@@ -26,7 +26,7 @@ import {
 	withAfterUpdate,
 	withBeforeCommit,
 } from '~/Doc/_/triggerCreators'
-import type { DocTI } from '~/Doc/DocTI'
+import type { DocTI, DocTILike } from '~/Doc/DocTI'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
@@ -156,7 +156,7 @@ export class DocConstructorImpl {
 
 	//
 
-	static fields<F extends NewFields>(f: F): any {
+	static fields<F extends NewFieldsLike>(f: F): any {
 		return callableClass(
 			class extends this {
 				static override readonly _ = {
@@ -232,7 +232,7 @@ export class DocConstructorImpl {
 	// static after(trigger: Trigger<Doc>): void
 	// static after(name: string, trigger: Trigger<Doc>): void
 
-	static after<TI extends DocDerivedData>(
+	static after<TI extends DocDerivedData & DocTILike>(
 		...args: [AfterTrigger<GI<TI>>] | [string, AfterTrigger<GI<TI>>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
@@ -253,10 +253,10 @@ export class DocConstructorImpl {
 	// static afterUpdate(trigger: Trigger<Doc, Doc>): void
 	// static afterUpdate(name: string, trigger: Trigger<Doc, Doc>): void
 
-	static afterUpdate<TI extends DocDerivedData>(
+	static afterUpdate<TI extends DocDerivedData & DocTILike>(
 		...args:
-			| [AfterTrigger<GI<TI>, GI<TI>, true, true>]
-			| [string, AfterTrigger<GI<TI>, GI<TI>, true, true>]
+			| [AfterTrigger<GI<TI>, true, true>]
+			| [string, AfterTrigger<GI<TI>, true, true>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
@@ -275,10 +275,10 @@ export class DocConstructorImpl {
 	// static afterCreateOrUpdate(trigger: Trigger<Doc, Doc>): void
 	// static afterCreateOrUpdate(name: string, trigger: Trigger<Doc, Doc>): void
 
-	static afterCreateOrUpdate<TI extends DocDerivedData>(
+	static afterCreateOrUpdate<TI extends DocDerivedData & DocTILike>(
 		...args:
-			| [AfterTrigger<GI<TI>, GI<TI>, boolean, true>]
-			| [string, AfterTrigger<GI<TI>, GI<TI>, boolean, true>]
+			| [AfterTrigger<GI<TI>, boolean, true>]
+			| [string, AfterTrigger<GI<TI>, boolean, true>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
@@ -297,10 +297,10 @@ export class DocConstructorImpl {
 	// static afterCreate(trigger: Trigger<Doc, Doc, false, true>): void
 	// static afterCreate(name: string, trigger: Trigger<Doc, Doc, false, true>): void
 
-	static afterCreate<TI extends DocDerivedData>(
+	static afterCreate<TI extends DocDerivedData & DocTILike>(
 		...args:
-			| [AfterTrigger<GI<TI>, GI<TI>, false, true>]
-			| [string, AfterTrigger<GI<TI>, GI<TI>, false, true>]
+			| [AfterTrigger<GI<TI>, false, true>]
+			| [string, AfterTrigger<GI<TI>, false, true>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
@@ -319,10 +319,10 @@ export class DocConstructorImpl {
 	// static afterDelete(trigger: Trigger<Doc, null>): void
 	// static afterDelete(name: string, trigger: Trigger<Doc, null>): void
 
-	static afterDelete<TI extends DocDerivedData>(
+	static afterDelete<TI extends DocDerivedData & DocTILike>(
 		...args:
-			| [AfterTrigger<GI<TI>, null, true, false>]
-			| [string, AfterTrigger<GI<TI>, null, true, false>]
+			| [AfterTrigger<GI<TI>, true, false>]
+			| [string, AfterTrigger<GI<TI>, true, false>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
@@ -341,7 +341,7 @@ export class DocConstructorImpl {
 	// static beforeCommit(trigger: BeforeCommitTrigger<Doc>): void
 	// static beforeCommit(name: string, trigger: BeforeCommitTrigger<Doc>): void
 
-	static beforeCommit<TI extends DocDerivedData>(
+	static beforeCommit<TI extends DocDerivedData & DocTILike>(
 		...args:
 			| [BeforeCommitTrigger<GI<TI>>]
 			| [string, BeforeCommitTrigger<GI<TI>>]

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/$strip'
 
 import { widen } from './widenType'
 
@@ -12,7 +12,7 @@ describe('widenType', () => {
 
 		const s = 'asd' as const
 		const r = widen(s).toType<'d'>()
-		Assert<IsIdentical<typeof r, never>>()
+		$Assert<IsIdentical<typeof r, never>>()
 	})
 
 	it('works #2', () => {
@@ -20,7 +20,7 @@ describe('widenType', () => {
 
 		const s = 'asd' as const
 		const r = widen(s).toType<number>()
-		Assert<IsIdentical<typeof r, never>>()
+		$Assert<IsIdentical<typeof r, never>>()
 	})
 
 	it('works #3', () => {
@@ -28,6 +28,6 @@ describe('widenType', () => {
 
 		const s = 'asd' as const
 		const r = widen(s).toType<string>()
-		Assert<IsIdentical<typeof r, string>>()
+		$Assert<IsIdentical<typeof r, string>>()
 	})
 })

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitCall } from './OmitCall'
 
@@ -17,6 +17,6 @@ describe('OmitCall', () => {
 			num: number
 		}>
 
-		Assert<IsIdentical<X, { [k: string]: number; num: number }>>()
+		$Assert<IsIdentical<X, { [k: string]: number; num: number }>>()
 	})
 })

@@ -26,7 +26,7 @@ export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
 	readonly [BASE_OPTIONS]: TupleOptions
 	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
 
-	readonly [OPTIONS]: TupleOptions
+	readonly [OPTIONS]: TupleOptions<T>
 
 	get isReadonlyTuple(): boolean
 	get getShape(): SchemableLike[]

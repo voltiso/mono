@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import { useUpdate } from '@voltiso/util.react'
 import { useLayoutEffect } from 'react'
 

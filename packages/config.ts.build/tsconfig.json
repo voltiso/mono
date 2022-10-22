@@ -19,10 +19,14 @@
 		"declarationMap": true,
 
 		"plugins": [
-			{ "transform": "@voltiso/assertor.transform" },
+			{
+				"transform": "@voltiso/transform/strip"
+				// "tokens": ["$assert", "$Assert", "$Is", "$AssumeType"]
+				// "modules": []
+			},
 
 			{
-				"transform": "@voltiso/transform",
+				"transform": "@voltiso/transform/inline",
 				"afterDeclarations": true,
 				"onInlineError": "fail"
 			},

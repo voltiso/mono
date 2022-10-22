@@ -4,14 +4,36 @@
 import { packageInfo } from '~/_/packageInfo'
 import { lazyConstructor } from '~/lazy/lazyConstructor'
 
-import { VoltisoError } from './VoltisoError'
+import {
+	parseVoltisoErrorConstructorArguments,
+	VoltisoError,
+} from './VoltisoError'
 
 export class VoltisoUtilError extends lazyConstructor(() => VoltisoError) {
 	constructor(
 		message?: string | undefined,
-		options?: ErrorOptions | undefined,
+		options?: VoltisoError.Options | undefined,
+	)
+
+	constructor(
+		options:
+			| (VoltisoError.Options & { message?: string | undefined })
+			| undefined,
+	)
+
+	constructor(
+		arg0?:
+			| string
+			| (VoltisoError.Options & { message?: string | undefined })
+			| undefined,
+		arg1?: VoltisoError.Options | undefined,
 	) {
-		super(message, { packageInfo, ...options })
+		const { message, options } = parseVoltisoErrorConstructorArguments(
+			arg0,
+			arg1,
+		)
+
+		super(message, { package: packageInfo, ...options })
 
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoUtilError'

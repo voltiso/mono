@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert, $Is } from '~/$strip'
 import type { Newable } from '~/function'
-import type { IsIdentical } from '~/type'
-import { Assert, Is } from '~/type'
+import type { IsIdentical } from '~/$strip'
 
 import type { Entry } from './Entry'
 import { getCoercedEntries } from './getEntries'
@@ -12,17 +12,17 @@ describe('object/entries', () => {
 	it('works - static', () => {
 		expect.assertions(0)
 
-		Assert(
-			Is<Entry<{}>>() //
+		$Assert(
+			$Is<Entry<{}>>() //
 				.identicalTo<never>(),
 
-			Is<Entry<{ a: 1; b: 2 }>>() //
+			$Is<Entry<{ a: 1; b: 2 }>>() //
 				.identicalTo<['a', 1] | ['b', 2]>(),
 
-			Is<Entry<{ a: 1; b?: 2 }>>() //
+			$Is<Entry<{ a: 1; b?: 2 }>>() //
 				.identicalTo<['a', 1] | ['b', 2]>(),
 
-			Is<Entry<object>>() //
+			$Is<Entry<object>>() //
 				.identicalTo<never>(),
 		)
 	})
@@ -51,7 +51,7 @@ describe('object/entries', () => {
 		expect.assertions(0)
 
 		type A = Entry<X>
-		Assert.is<A, [keyof any, Schemable]>()
+		$Assert.is<A, [keyof any, Schemable]>()
 	})
 
 	it('works', () => {
@@ -85,7 +85,7 @@ describe('object/entries', () => {
 		])
 
 		type A = typeof a[number]
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				| ['1', 1]
@@ -104,7 +104,7 @@ describe('object/entries', () => {
 		])
 
 		type B = typeof b[number]
-		Assert<IsIdentical<B, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
+		$Assert<IsIdentical<B, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
 
 		const c = getCoercedEntries(obj, { includeNonEnumerable: true })
 
@@ -115,7 +115,7 @@ describe('object/entries', () => {
 		])
 
 		type C = typeof c[number]
-		Assert<IsIdentical<C, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
+		$Assert<IsIdentical<C, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
 
 		//
 
@@ -133,7 +133,7 @@ describe('object/entries', () => {
 		])
 
 		type D = typeof d[number]
-		Assert<
+		$Assert<
 			IsIdentical<
 				D,
 				| ['1', 1]

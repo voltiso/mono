@@ -4,8 +4,8 @@
 import { runAsync, runSync } from '~/syncer/run'
 import type { SyncerFunction } from '~/syncer/SyncerFunction'
 import type { SyncerPromise } from '~/syncer/SyncerPromise'
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 function* fib(n: number): SyncerPromise<number, number> {
 	if (n === 0) return 0
@@ -26,7 +26,7 @@ describe('fib', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert<IsIdentical<typeof fib, SyncerFunction<[number], number, number>>>()
+		$Assert<IsIdentical<typeof fib, SyncerFunction<[number], number, number>>>()
 	})
 
 	it('sync', () => {

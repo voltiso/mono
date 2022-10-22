@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { type IsIdentical, Assert } from '~/type'
+import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/$strip'
 
 import type { Split } from './Split'
 
@@ -12,21 +13,21 @@ describe('split', () => {
 		expect.assertions(0)
 
 		type A = Split<'asd/sdf/dfg', '/'>
-		Assert<IsIdentical<A, readonly ['asd', 'sdf', 'dfg']>>()
+		$Assert<IsIdentical<A, readonly ['asd', 'sdf', 'dfg']>>()
 	})
 
 	it('non-literal', () => {
 		expect.assertions(0)
 
 		type B = Split<string, '/'>
-		Assert<IsIdentical<B, readonly string[]>>()
+		$Assert<IsIdentical<B, readonly string[]>>()
 	})
 
 	it('no separator specified', () => {
 		expect.assertions(0)
 
 		type C = Split<'a/b'>
-		Assert<IsIdentical<C, readonly ['a', '/', 'b']>>()
+		$Assert<IsIdentical<C, readonly ['a', '/', 'b']>>()
 	})
 
 	// not working:

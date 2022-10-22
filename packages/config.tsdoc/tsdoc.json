@@ -9,6 +9,12 @@
 			"tagName": "@inline",
 			"syntaxKind": "modifier",
 			"allowMultiple": false
+		},
+
+		{
+			"tagName": "@strip",
+			"syntaxKind": "modifier",
+			"allowMultiple": false
 		}
 	]
 }

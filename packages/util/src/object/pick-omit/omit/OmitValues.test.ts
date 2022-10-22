@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitValues } from './OmitValues'
 
@@ -19,6 +19,6 @@ describe('OmitValues', () => {
 			undefined
 		>
 
-		Assert<IsIdentical<X, { num: number }>>()
+		$Assert<IsIdentical<X, { num: number }>>()
 	})
 })

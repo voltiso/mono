@@ -36,7 +36,10 @@ export interface ISchema<T = unknown> extends SchemaLike<T> {
 	readonly [DEFAULT_OPTIONS]: SchemaOptions
 
 	readonly [PARTIAL_OPTIONS]: {} // Partial<SchemaOptions>
-	readonly [OPTIONS]: SchemaOptions
+	readonly [OPTIONS]: SchemaOptions & {
+		Output: T
+		Input: T | undefined
+	}
 
 	/**
 	 * Type-only (no value at runtime)

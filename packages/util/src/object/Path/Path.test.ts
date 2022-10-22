@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '~/type'
+import { $Assert, $Is } from '~/$strip'
 
 import type { Path } from './Path'
 
@@ -17,6 +17,6 @@ describe('Path', () => {
 			}
 		}
 
-		Assert(Is<['a', 'a']>().not.subtypeOf<Path<Obj>>())
+		$Assert($Is<['a', 'a']>().not.subtypeOf<Path<Obj>>())
 	})
 })

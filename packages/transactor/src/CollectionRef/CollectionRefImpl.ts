@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 
 import type { Id } from '~/Data'
@@ -11,6 +10,7 @@ import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { GetPublicCreationInputData } from '~/Doc/_/GData'
 import type { GO } from '~/Doc/_/GDoc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
+import type { WeakDocRef_ } from '~/DocRef'
 import { WeakDocRef } from '~/DocRef'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
@@ -47,14 +47,12 @@ export class CollectionRefImpl<
 				this._context.db.doc(
 					this._path.toString(),
 					id,
-				) as unknown as TI extends any ? WeakDocRef<GO<TI>> : never,
+				) as unknown as TI extends any ? WeakDocRef_<GO<TI>> : never,
 			this,
 		) as never
 	}
 
 	add(data: GetPublicCreationInputData<TI, D>): PromiseLike<Doc<TI, Ctx>> {
-		// data = data || {}
-
 		const id = data.id
 		$assert(id === undefined || typeof id === 'string')
 

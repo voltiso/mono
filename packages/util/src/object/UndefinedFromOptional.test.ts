@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { UndefinedFromOptional } from './UndefinedFromOptional'
 
@@ -10,14 +10,14 @@ describe('UndefinedFromOptional', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				UndefinedFromOptional<{ x?: number }>,
 				{ x?: number | undefined }
 			>
 		>()
 
-		Assert<IsIdentical<UndefinedFromOptional<{ x: number }>, { x: number }>>()
+		$Assert<IsIdentical<UndefinedFromOptional<{ x: number }>, { x: number }>>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

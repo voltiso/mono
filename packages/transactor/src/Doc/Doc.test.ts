@@ -5,12 +5,13 @@ import * as s from '@voltiso/schemar'
 import type { IsSubtype } from '@voltiso/util'
 import { Assert, Is } from '@voltiso/util'
 
+import type { GetData } from './_/GData'
 import type { DocBase } from './Doc'
 import { Doc } from './Doc'
 import type { IDocConstructor } from './DocConstructor'
 import type { UntaggedDocTI } from './DocImpl'
 import type { DocTI, DocTILike } from './DocTI'
-import type { IDoc } from './IDoc'
+import type { DocLike, IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
 
 declare module '..' {
@@ -26,11 +27,13 @@ class AnotherTest extends Doc('anotherTest')({
 }) {}
 
 describe('doc', () => {
-	it('static asserts', <TI extends DocTI>() => {
+	it('static asserts', <TI extends DocTILike>() => {
 		expect.assertions(0)
 
 		Assert.is<Doc, IDoc>()
 		Assert.is<Doc<TI>, IDoc>()
+
+		Assert.is<Doc<TI, 'inside'>, DocLike>()
 
 		type DocId = IDoc['id']
 		Assert(Is<DocId>().identicalTo<string>())
@@ -52,6 +55,9 @@ describe('doc', () => {
 	it('has intrinsic fields', () => {
 		expect.assertions(0)
 
+		// type A = Doc<UntaggedDocTI>['__voltiso']
+
+		Assert.is<GetData<UntaggedDocTI>, { __voltiso?: { numRefs: number } }>()
 		Assert.is<Doc<UntaggedDocTI>, { __voltiso?: { numRefs: number } }>()
 	})
 

@@ -3,6 +3,5 @@
 
 ignores:
   - '~'
-  - '@voltiso/assertor.transform'
   - '@voltiso/config.ts.build.cjs'
   - import-meta-resolve

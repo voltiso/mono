@@ -4,7 +4,6 @@
 import 'zone.js'
 import 'zone.js/dist/zone-testing-node-bundle'
 
-import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'
 import { createTransactor, DocPath } from '@voltiso/transactor'

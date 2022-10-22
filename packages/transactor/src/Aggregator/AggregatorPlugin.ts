@@ -9,6 +9,8 @@ import type {
 	DocConstructor,
 	DocLike,
 	DocTI,
+	DTI,
+	GetDataWithId,
 	GetDocTI,
 	IDoc,
 	IDocConstructor,
@@ -16,6 +18,7 @@ import type {
 import type { DocRefLike } from '~/DocRef'
 import { isStrongDocRef, isWeakDocRef } from '~/DocRef'
 import type { DocTag } from '~/DocTypes'
+import type { DocTypes } from '~/DocTypes-module-augmentation'
 import { TransactorError } from '~/error'
 
 import type { IAggregatorHandlers } from './AggregatorHandlers'
@@ -69,7 +72,10 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 
 				// console.log('aggregate', before, after)
 
-				const data = before || after
+				const data: GetDataWithId<DocTypes[D][DTI]> =
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+					(before as never) || (after as never)
+
 				assert(data, 'should either have before or after')
 				assert(data.__voltiso, 'data should include __voltiso')
 

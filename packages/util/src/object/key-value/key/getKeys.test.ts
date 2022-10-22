@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import { getKeys } from './getKeys'
 
@@ -31,7 +31,7 @@ describe('getKeys', () => {
 		expect(a).toStrictEqual(['1', 'a', sym])
 
 		type A = typeof a[number]
-		Assert<
+		$Assert<
 			IsIdentical<A, '1' | 'a' | 'nonEnumerable' | typeof sym | typeof sym2>
 		>()
 
@@ -40,14 +40,14 @@ describe('getKeys', () => {
 		expect(b).toStrictEqual(['1', 'a'])
 
 		type B = typeof b[number]
-		Assert<IsIdentical<B, '1' | 'a' | 'nonEnumerable'>>()
+		$Assert<IsIdentical<B, '1' | 'a' | 'nonEnumerable'>>()
 
 		const c = getKeys(obj, { includeNonEnumerable: true })
 
 		expect(c).toStrictEqual(['1', 'a', 'nonEnumerable'])
 
 		type C = typeof c[number]
-		Assert<IsIdentical<C, '1' | 'a' | 'nonEnumerable'>>()
+		$Assert<IsIdentical<C, '1' | 'a' | 'nonEnumerable'>>()
 
 		const d = getKeys(obj, {
 			includeNonEnumerable: true,
@@ -57,7 +57,7 @@ describe('getKeys', () => {
 		expect(d).toStrictEqual(['1', 'a', 'nonEnumerable', sym, sym2])
 
 		type D = typeof d[number]
-		Assert<
+		$Assert<
 			IsIdentical<D, '1' | 'a' | 'nonEnumerable' | typeof sym | typeof sym2>
 		>()
 	})

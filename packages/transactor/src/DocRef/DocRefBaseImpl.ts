@@ -1,15 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IObject, ISchema, SchemaLike } from '@voltiso/schemar.types'
-import type { If } from '@voltiso/util'
-import { lazyPromise, omit, protoLink } from '@voltiso/util'
+import type { If } from '@voltiso/util';
+import { assert , lazyPromise, omit, protoLink } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { DocRefDatabase, DocRefJson } from '~/common'
-import type { Id, WithId } from '~/Data'
+import type { $WithId, Id } from '~/Data'
 import { withoutId } from '~/Data'
 import type { DocLike, IDoc } from '~/Doc'
 import { DTI } from '~/Doc'
@@ -67,7 +66,7 @@ export class DocRefBaseImpl<
 	}
 
 	get id(): Id<D> {
-		$assert(this._path.id)
+		assert(this._path.id)
 		return this._path.id as never
 	}
 
@@ -218,7 +217,7 @@ export class DocRefBaseImpl<
 	}
 
 	/** - TODO: Detect floating promises */
-	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists> {
+	dataWithId(): NestedPromise<$WithId<GetData<D[DTI]>, D>, Exists> {
 		return dataOrNestedPromise(
 			this as never,
 			() =>

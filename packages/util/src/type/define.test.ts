@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert } from '~/$strip'
+
 import type { IsIdentical } from './compare'
 import { define } from './define'
-import { Assert } from './static-assert'
 
 describe('define', () => {
 	it('simple', () => {
@@ -20,7 +21,7 @@ describe('define', () => {
 		const arg = { a: { b: { c: 123 } } } as const
 
 		const a = define<Theme>().value(arg)
-		Assert<IsIdentical<typeof a, { a: { b: { c: 123 } } }>>()
+		$Assert<IsIdentical<typeof a, { a: { b: { c: 123 } } }>>()
 
 		expect(a).toBe(arg)
 

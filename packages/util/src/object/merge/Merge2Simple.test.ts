@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _, $_, $PartialComplex_, IsIdentical, OmitSuperComplex } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { Merge2Complex } from './Merge2Complex'
 import type { Merge2Simple } from './Merge2Simple'
@@ -12,9 +12,9 @@ describe('Merge2Simple', () => {
 		expect.assertions(0)
 
 		type A = Merge2Simple<{ a: 1; b: 2 }, { a: 2 }>
-		Assert<IsIdentical<A, { a: 2; b: 2 }>>()
+		$Assert<IsIdentical<A, { a: 2; b: 2 }>>()
 
-		Assert<
+		$Assert<
 			IsIdentical<_<Merge2Simple<{ a: 1 }, { b: 2 }>>, { a: 1; b: 2 }>,
 			IsIdentical<_<Merge2Simple<{ a: 1 }, { a: 2 }>>, { a: 2 }>,
 			IsIdentical<
@@ -35,23 +35,23 @@ describe('Merge2Simple', () => {
 			>
 		>
 
-		Assert<IsIdentical<II, { a: 2; readonly b?: 2 }>>()
+		$Assert<IsIdentical<II, { a: 2; readonly b?: 2 }>>()
 	})
 
 	it('optional', () => {
 		expect.assertions(0)
 
 		type A = _<Merge2Simple<{ a?: 1 }, { a?: 2 }>>
-		Assert<IsIdentical<A, { a?: 2 }>>() // different than Merge2
+		$Assert<IsIdentical<A, { a?: 2 }>>() // different than Merge2
 
 		type B = _<Merge2Simple<{ a: 1 }, { a?: 2 }>>
-		Assert<IsIdentical<B, { a?: 2 }>>() // different than Merge2
+		$Assert<IsIdentical<B, { a?: 2 }>>() // different than Merge2
 
 		type C = _<Merge2Simple<{ a: 1 }, { a: 2 }>>
-		Assert<IsIdentical<C, { a: 2 }>>()
+		$Assert<IsIdentical<C, { a: 2 }>>()
 
 		type D = _<Merge2Simple<{ a?: 1 }, { a: 2 }>>
-		Assert<IsIdentical<D, { a: 2 }>>()
+		$Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests
@@ -83,7 +83,7 @@ describe('Merge2Simple', () => {
 		expect.assertions(0)
 
 		type A = Merge2Simple<SomeType, Partial<SomeType>>
-		Assert.is<A, Partial<SomeType>>()
+		$Assert.is<A, Partial<SomeType>>()
 
 		// type B = Merge2Simple<SomeType, T>
 		// Assert.is<B, T>()
@@ -92,13 +92,13 @@ describe('Merge2Simple', () => {
 		// Assert.is<C, T>()
 
 		type D = Merge2Simple<SomeType, $PartialComplex_<T>>
-		Assert.is<D, Partial<SomeType>>()
+		$Assert.is<D, Partial<SomeType>>()
 
 		// type E = Merge2Simple<SomeType, T>
 		// Assert.is<E, T>()
 
 		type G = Merge2Simple<T, SomeType>
-		Assert.is<G, SomeType>()
+		$Assert.is<G, SomeType>()
 	})
 
 	it('generics 2', <T extends SomeType>() => {
@@ -110,13 +110,13 @@ describe('Merge2Simple', () => {
 		// type B4 = Merge2Nullish<T, { c: 3 }>
 		type B5 = Merge2Simple<T, { c: 3 }>
 
-		Assert.is<B1, SomeType>()
-		Assert.is<B2, SomeType>()
-		Assert.is<B3, SomeType>()
+		$Assert.is<B1, SomeType>()
+		$Assert.is<B2, SomeType>()
+		$Assert.is<B3, SomeType>()
 		// Assert.is<B4, Partial<SomeType>>() // doesn't work?? TODO
-		Assert.is<B5, SomeType>()
+		$Assert.is<B5, SomeType>()
 
-		Assert.is<OmitSuperComplex<T, 'c'> & { c: 3 }, SomeType>()
+		$Assert.is<OmitSuperComplex<T, 'c'> & { c: 3 }, SomeType>()
 	})
 
 	//
@@ -156,7 +156,7 @@ describe('Merge2Simple', () => {
 			}
 		>
 
-		Assert.is<A, SchemaOptions>()
+		$Assert.is<A, SchemaOptions>()
 	})
 
 	it('discards index signatures', () => {
@@ -175,7 +175,7 @@ describe('Merge2Simple', () => {
 		}
 
 		type R = Merge2Simple<A, B>
-		Assert<IsIdentical<R, { a: 1; [sym]: 1 }>>()
+		$Assert<IsIdentical<R, { a: 1; [sym]: 1 }>>()
 	})
 
 	it('vscode - jump to definition (manual test...)', () => {

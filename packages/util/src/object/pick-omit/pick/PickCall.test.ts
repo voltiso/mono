@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { PickCallNoUnknown } from './PickCall'
 
@@ -16,7 +16,7 @@ describe('PickCall', () => {
 			[k: string]: number
 			num: number
 		}>
-		Assert<
+		$Assert<
 			IsIdentical<
 				X,
 				{

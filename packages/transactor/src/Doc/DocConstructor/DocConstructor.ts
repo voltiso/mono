@@ -4,10 +4,9 @@
 import type * as t from '@voltiso/schemar.types'
 import type {
 	_,
-	$_,
-	Merge2,
 	Merge2Reverse_,
 	OmitSignatures,
+	OmitValues,
 	Throw,
 } from '@voltiso/util'
 
@@ -18,92 +17,120 @@ import type {
 	DocConstructorLike,
 	DocContext,
 	DocTI,
+	DocTILike,
 	DTI,
 	Promisify,
 } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
-import type { NewFields } from '~/Doc/_/NewFields'
+import type { NewFieldsLike } from '~/Doc/_/NewFields'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
-import type { $MergeTI } from './_/MergeTI'
 
-type MaybeWithName<Params> = [Params] | [string, Params]
+/** Helpers */
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace DocConstructor {
+	export type MaybeWithName<Params> = [Params] | [string, Params]
 
-type ___<X extends DocTI> = X extends any ? DocConstructor<$MergeTI<X>> : never
+	export type WithOverrides<
+		Old extends DocTILike,
+		New extends Partial<DocTILike>,
+	> = DocConstructor<Merge2Reverse_<Required<New>, Old>>
 
-export type MapNewField<
-	F extends Record<string, t.Schemable> | t.ObjectLike | undefined,
-> = F extends t.ObjectLike ? F['getShape'] : F extends undefined ? unknown : F
+	export type MapNewFields<
+		TI extends DocTILike,
+		F extends NewFieldsLike,
+	> = OmitValues<
+		{
+			publicOnCreation: t.CustomObject.WithAnd<
+				TI['publicOnCreation'],
+				F['publicOnCreation']
+			>
 
-export type MapNewFields<F extends NewFields> = Merge2Reverse_<
-	{
-		publicOnCreation: MapNewField<F['publicOnCreation']>
-		public: MapNewField<F['public']>
-		private: MapNewField<F['private']>
-	},
-	F
->
+			public: t.CustomObject.WithAnd<TI['public'], F['public']>
 
-export interface DocConstructor<TI extends DocTI = DocTI> {
+			private: t.CustomObject.WithAnd<TI['private'], F['private']>
+
+			id: F['id'] extends undefined ? never : F['id']
+
+			aggregates: F['aggregates'] extends undefined
+				? never
+				: Merge2Reverse_<F['aggregates'], TI['aggregates']>
+		},
+		never
+	>
+}
+
+export interface DocConstructor<TI extends DocTILike = DocTI> {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
 
 	new (context: DocContext, data: GetInputData<TI>): Doc<TI, 'outside'>
 
 	// <Derived>(): DocConstructor<___<Merge2<TI, { doc: Derived & DocU }>>>
-	<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
+	<Tag extends DocTag>(tag: Tag): DocConstructor.WithOverrides<TI, { tag: Tag }>
 
-	<F extends NewFields>(f: F): keyof F extends keyof NewFields
-		? ___<TI & MapNewFields<F>>
-		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFields> }>
+	<F extends NewFieldsLike>(f: F): keyof F extends keyof NewFieldsLike
+		? DocConstructor.WithOverrides<TI, DocConstructor.MapNewFields<TI, F>>
+		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFieldsLike> }>
 
-	tag<Tag extends DocTag>(tag: Tag): ___<Merge2<TI, { tag: Tag }>>
+	tag<Tag extends DocTag>(
+		tag: Tag,
+	): DocConstructor.WithOverrides<TI, { tag: Tag }>
 
-	fields<F extends NewFields>(
+	fields<F extends NewFieldsLike>(
 		f: F,
-	): keyof F extends keyof NewFields
-		? ___<TI & MapNewFields<F>>
-		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFields> }>
+	): keyof F extends keyof NewFieldsLike
+		? DocConstructor.WithOverrides<TI, DocConstructor.MapNewFields<TI, F>>
+		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFieldsLike> }>
 
 	publicOnCreation<S extends Record<string, t.Schemable>>(
 		s: S,
-	): ___<TI & { publicOnCreation: S extends t.ObjectLike ? S['getShape'] : S }>
+	): DocConstructor.WithOverrides<
+		TI,
+		DocConstructor.MapNewFields<TI, { publicOnCreation: S }>
+	>
 
-	public<S extends Record<string, t.Schemable> | t.ObjectLike>(
+	public<S extends t.SchemableObjectLike>(
 		s: S,
-	): ___<TI & { public: S extends t.ObjectLike ? S['getShape'] : S }>
+	): DocConstructor.WithOverrides<
+		TI,
+		DocConstructor.MapNewFields<TI, { public: S }>
+	>
 
 	private<S extends Record<string, t.Schemable>>(
 		s: S,
-	): ___<TI & { private: S extends t.ObjectLike ? S['getShape'] : S }>
+	): DocConstructor.WithOverrides<
+		TI,
+		DocConstructor.MapNewFields<TI, { private: S }>
+	>
 
 	after(
-		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI> | null>>
+		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>>>
 	): DocConstructor<TI>
 
 	afterUpdate(
-		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI>, true, true>>
+		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, true, true>>
 	): DocConstructor<TI>
 
 	afterCreateOrUpdate(
-		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI>, boolean, true>>
+		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, boolean, true>>
 	): DocConstructor<TI>
 
 	afterCreate(
-		...args: MaybeWithName<AfterTrigger<GI<TI>, GI<TI>, false, true>>
+		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, false, true>>
 	): DocConstructor<TI>
 
 	afterDelete(
-		...args: MaybeWithName<AfterTrigger<GI<TI>, null, true, false>>
+		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, true, false>>
 	): DocConstructor<TI>
 
 	beforeCommit(
-		...args: MaybeWithName<BeforeCommitTrigger<GI<TI>>>
+		...args: DocConstructor.MaybeWithName<BeforeCommitTrigger<GI<TI>>>
 	): DocConstructor<TI>
 
 	/** @deprecated Use `@method` decorator instead */
@@ -133,19 +160,29 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		handlers: AggregatorHandlers<TI, InstanceType<Target>, Name>,
 	): DocConstructor<TI>
 
-	get schemaWithoutId(): t.Object<
-		TI['publicOnCreation'] & TI['public'] & TI['private'] // & {}
+	get schemaWithoutId(): t.CustomObject.WithAnd<
+		TI['publicOnCreation'],
+		t.CustomObject.WithAnd<TI['public'], TI['private']>
 	>
 
-	get schemaWithId(): t.Object<
-		$_<
-			{
-				id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
-			} & TI['publicOnCreation'] &
-				TI['public'] &
-				TI['private']
-		>
+	get schemaWithId(): t.CustomObject.WithAnd<
+		t.CustomObject.WithAnd<
+			TI['publicOnCreation'],
+			t.CustomObject.WithAnd<TI['public'], TI['private']>
+		>,
+		{ id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String }
 	>
 
-	get idSchema(): unknown extends TI['id'] ? t.String : TI['id']
+	// t.Object<
+	// 	$_<
+	// 		{
+	// 			id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+	// 		} & TI['publicOnCreation'] &
+	// 			TI['public'] &
+	// 			TI['private']
+	// 	>
+	// >
+
+	get idSchema(): TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+	// get idSchema(): unknown extends TI['id'] ? t.String : TI['id']
 }

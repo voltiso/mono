@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { PlainObject } from '.'
 
@@ -13,7 +13,7 @@ describe('PlainObject', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert.is<{ a: 1 }, PlainObject>()
+		$Assert.is<{ a: 1 }, PlainObject>()
 
 		// interface I {
 		// 	a: 1
@@ -21,6 +21,6 @@ describe('PlainObject', () => {
 		// Assert.is<I, PlainObject>() // !
 
 		type T = { a: 1 }
-		Assert.is<T, PlainObject>()
+		$Assert.is<T, PlainObject>()
 	})
 })

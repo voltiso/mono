@@ -1,10 +1,23 @@
 {
   "name": "@voltiso/transform",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    "./strip": {
+      "types": "./dist/cjs/strip/default.d.ts",
+      "import": "./dist/esm/strip/default.js",
+      "require": "./dist/cjs/strip/default.js"
+    },
+    "./inline": {
+      "types": "./dist/cjs/inline/default.d.ts",
+      "import": "./dist/esm/inline/default.js",
+      "require": "./dist/cjs/inline/default.js"
+    }
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
@@ -44,7 +57,7 @@
     "chalk": "^4.1.2"
   },
   "peerDependencies": {
-    "typescript": "4.7.4 || *"
+    "typescript": "^4.8.4"
   },
   "__________MISC": "__________",
   "engines": {

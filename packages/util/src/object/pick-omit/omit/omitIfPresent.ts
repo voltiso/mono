@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
-import type { AlsoAccept } from '~/type'
+import type { AlsoAccept } from '~/$strip'
 
 import type { OmitSimple } from './OmitSimple'
 

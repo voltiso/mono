@@ -4,20 +4,19 @@
 import * as s from '@voltiso/schemar'
 import type { Type_ } from '@voltiso/schemar.types'
 
-export const sVoltisoEntry = s
-	.object({
-		numRefs: s.number.default(0),
+export const sVoltisoEntry = s.object({
+	numRefs: s.number.default(0),
 
-		aggregateTarget: s
-			.record(s.string, {
-				value: s.any, // s.unknown.Narrow<NestedData>(),
-				numSources: s.number,
-			})
-			.default({}),
+	aggregateTarget: s
+		.record(s.string, {
+			value: s.any, // s.unknown.Narrow<NestedData>(),
+			numSources: s.number,
+		})
+		.default({}),
 
-		aggregateSource: s.record(s.string, s.record(s.string, true)).default({}),
-	})
-	.default({})
+	aggregateSource: s.record(s.string, s.record(s.string, true)).default({}),
+})
+// .default({}) // ! do not export schemas that apply defaults
 
 export type VoltisoEntry = /** @inline */ Type_<typeof sVoltisoEntry>
 

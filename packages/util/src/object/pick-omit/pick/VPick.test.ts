@@ -4,7 +4,7 @@
 // TODO does not work with generics + index signatures
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { VPick, VPick_ } from './VPick'
 
@@ -13,7 +13,7 @@ describe('VPick', () => {
 		expect.assertions(0)
 
 		type A = VPick<{ readonly a?: 1; b: 2 }, 'a'>
-		Assert<IsIdentical<A, { readonly a?: 1 }>>()
+		$Assert<IsIdentical<A, { readonly a?: 1 }>>()
 	})
 
 	type Obj = {
@@ -27,18 +27,18 @@ describe('VPick', () => {
 		expect.assertions(0)
 
 		type A0 = Pick<Obj, 'a'>
-		Assert<IsIdentical<A0, { a: 1 }>>()
+		$Assert<IsIdentical<A0, { a: 1 }>>()
 
 		type A1 = VPick<Obj, 'a'>
-		Assert<IsIdentical<A1, { a: 1 }>>()
+		$Assert<IsIdentical<A1, { a: 1 }>>()
 
 		//
 
 		type B0 = Pick<Obj, 'a' | symbol>
-		Assert<IsIdentical<B0, { [k: symbol]: 3; a: 1 }>>()
+		$Assert<IsIdentical<B0, { [k: symbol]: 3; a: 1 }>>()
 
 		type B1 = VPick<Obj, 'a' | symbol>
-		Assert<IsIdentical<B1, { [k: symbol]: 3; a: 1 }>>()
+		$Assert<IsIdentical<B1, { [k: symbol]: 3; a: 1 }>>()
 
 		//
 
@@ -46,15 +46,15 @@ describe('VPick', () => {
 		// Assert<IsIdentical<C0, { [k: string]: 1 | 2; a: 1 }>>() // bad!
 
 		type C1 = VPick_<Obj, string>
-		Assert<IsIdentical<C1, { [k: string]: 1 | 2; a: 1 }>>() // better 8)
+		$Assert<IsIdentical<C1, { [k: string]: 1 | 2; a: 1 }>>() // better 8)
 
 		//
 
 		type D0 = Pick<Obj, number>
-		Assert<IsIdentical<D0, { [k: number]: 2 }>>()
+		$Assert<IsIdentical<D0, { [k: number]: 2 }>>()
 
 		type D1 = VPick_<Obj, number>
-		Assert<IsIdentical<D1, { [k: number]: 2 }>>()
+		$Assert<IsIdentical<D1, { [k: number]: 2 }>>()
 	})
 
 	type ObjA = {
@@ -66,7 +66,7 @@ describe('VPick', () => {
 		expect.assertions(0)
 
 		type A0 = Pick<O, 'a'>
-		Assert.is<O, A0>()
+		$Assert.is<O, A0>()
 
 		// type A1 = VPick<O, 'a'>
 		// Assert.is<O, A1>()
@@ -76,7 +76,7 @@ describe('VPick', () => {
 		expect.assertions(0)
 
 		type B0 = Pick<O, 'a'>
-		Assert.is<O, B0>()
+		$Assert.is<O, B0>()
 
 		// type B1 = VPick<O, 'a'>
 		// Assert.is<O, B1>()
@@ -89,17 +89,17 @@ describe('VPick', () => {
 		type A1 = VPick<O, 'a' | symbol>
 		// TODO does not work!
 		// @ts-expect-error does not work!
-		Assert.is<O, A1>()
+		$Assert.is<O, A1>()
 
 		//
 
 		type C0 = Pick<O, number | 'a'>
-		Assert.is<O, C0>()
+		$Assert.is<O, C0>()
 
 		type C1 = VPick<O, number | 'a'>
 		// TODO does not work!
 		// @ts-expect-error does not work!
-		Assert.is<O, C1>()
+		$Assert.is<O, C1>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

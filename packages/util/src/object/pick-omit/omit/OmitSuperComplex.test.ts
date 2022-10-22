@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _, $_, IsIdentical, VPick_ } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitPrecise_ } from './OmitPrecise'
 import type { OmitSignatures } from './OmitSignatures'
@@ -20,7 +20,7 @@ describe('Omit', () => {
 			},
 			'a'
 		>
-		Assert<IsIdentical<X, { b: number }>>()
+		$Assert<IsIdentical<X, { b: number }>>()
 	})
 
 	it('works with optional properties', () => {
@@ -33,7 +33,7 @@ describe('Omit', () => {
 			},
 			'a'
 		>
-		Assert<IsIdentical<X, { b?: number }>>()
+		$Assert<IsIdentical<X, { b?: number }>>()
 	})
 
 	it('generic #1', <T extends { a?: 1; b?: 1 }>() => {
@@ -42,27 +42,27 @@ describe('Omit', () => {
 		type A = Omit<T, 'b'>
 		type B = OmitSimple<T, 'b'>
 
-		Assert.is<A, { a?: 1 | undefined }>() // does not work
-		Assert.is<B, { a?: 1 }>() // better!
+		$Assert.is<A, { a?: 1 | undefined }>() // does not work
+		$Assert.is<B, { a?: 1 }>() // better!
 	})
 
 	it('generic #2', <T extends { a?: 1; b?: 2 }>() => {
 		expect.assertions(0)
 
 		type A = $_<T>
-		Assert.is<A, { a?: 1 }>()
+		$Assert.is<A, { a?: 1 }>()
 
 		type B1 = Omit<T, 'b'>
 		type B2 = OmitSuperComplex<T, 'b'>
 
-		Assert.is<B1, { a?: 1 | undefined }>() // does not work!
-		Assert.is<B2, { a?: 1 }>() // better!
+		$Assert.is<B1, { a?: 1 | undefined }>() // does not work!
+		$Assert.is<B2, { a?: 1 }>() // better!
 
 		type C1 = $_<Omit<T, 'b'>>
 		type C2 = $_<OmitSuperComplex<T, 'b'>>
 
-		Assert.is<C1, { a?: 1 | undefined }>() // does not work!
-		Assert.is<C2, { a?: 1 }>() // better!
+		$Assert.is<C1, { a?: 1 | undefined }>() // does not work!
+		$Assert.is<C2, { a?: 1 }>() // better!
 	})
 
 	type EasyObj = { readonly a?: 1; b: 2 }
@@ -72,22 +72,22 @@ describe('Omit', () => {
 
 		type A1 = Omit<Obj, 'c'>
 		// @ts-expect-error meh
-		Assert.is<A1, { readonly a?: 1 }>() // does not work, meh
+		$Assert.is<A1, { readonly a?: 1 }>() // does not work, meh
 
 		type A2 = OmitSimple<Obj, 'c'>
-		Assert.is<A2, { readonly a?: 1 }>()
+		$Assert.is<A2, { readonly a?: 1 }>()
 
 		type A3 = OmitSuperComplex<Obj, 'c'>
-		Assert.is<A3, { readonly a?: 1 }>()
+		$Assert.is<A3, { readonly a?: 1 }>()
 
 		//
 
 		type B1 = Omit<Obj, 'b'>
 		// @ts-expect-error meh
-		Assert.is<B1, { readonly a?: 1 }>() // does not work, meh
+		$Assert.is<B1, { readonly a?: 1 }>() // does not work, meh
 
 		type B2 = OmitSuperComplex<Obj, 'b'>
-		Assert.is<B2, { readonly a?: 1 }>()
+		$Assert.is<B2, { readonly a?: 1 }>()
 	})
 
 	type Props = {
@@ -100,8 +100,8 @@ describe('Omit', () => {
 		expect.assertions(0)
 
 		type A = OmitSuperComplex<Props, 'a'>
-		Assert.is<A, Props>()
-		Assert<IsIdentical<A, Props>>()
+		$Assert.is<A, Props>()
+		$Assert<IsIdentical<A, Props>>()
 	})
 
 	it('generics + index signatures', <P extends Props, K extends keyof any>() => {
@@ -116,25 +116,25 @@ describe('Omit', () => {
 		//
 
 		type B = OmitSuperComplex<P, 'a'>
-		Assert.is<B, Props>()
+		$Assert.is<B, Props>()
 
 		type BB = $_<OmitSuperComplex<P, 'a'>>
-		Assert.is<BB, Props>()
+		$Assert.is<BB, Props>()
 
 		//
 
 		type C0 = Omit<P, keyof P & K>
-		Assert.is<P, C0>()
+		$Assert.is<P, C0>()
 
 		type C = OmitSuperComplex<P, keyof P & K>
 		// TODO
 		// @ts-expect-error oops
-		Assert.is<P, C>() // oops...
+		$Assert.is<P, C>() // oops...
 
 		type CC = _<OmitSuperComplex<P, keyof P & K>>
 		// TODO
 		// @ts-expect-error oops
-		Assert.is<P, CC>() // oops...
+		$Assert.is<P, CC>() // oops...
 	})
 
 	it('index signatures #2', () => {
@@ -146,7 +146,7 @@ describe('Omit', () => {
 			a: 1
 		}
 		type A = VPick_<OmitSignatures<AObj>, 2>
-		Assert<IsIdentical<A, { 2: 2 }>>()
+		$Assert<IsIdentical<A, { 2: 2 }>>()
 
 		type BObj = {
 			[k: string]: number
@@ -157,7 +157,7 @@ describe('Omit', () => {
 
 		type B = OmitPrecise_<BObj, never>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				B,
 				{
@@ -170,10 +170,10 @@ describe('Omit', () => {
 		>()
 
 		type BB = OmitPrecise_<BObj, string>
-		Assert<IsIdentical<BB, { 2: 2 }>>()
+		$Assert<IsIdentical<BB, { 2: 2 }>>()
 
 		type BBB = OmitPrecise_<BObj, 'a'>
-		Assert<
+		$Assert<
 			IsIdentical<
 				BBB,
 				{

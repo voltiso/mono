@@ -1,0 +1,34 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	"extends": "@voltiso/config.ts.build.esm",
+
+	"compilerOptions": {
+		"outDir": "dist/esm",
+		"rootDir": "src",
+
+		"paths": {
+			"~": ["./src"],
+			"~/*": ["./src/*"]
+		},
+
+		"plugins": [
+			{
+				"transform": "@voltiso/transform/strip",
+
+				"modules": ["node:path"],
+				"symbols": ["$Assert", "$assert", "basename"]
+			},
+
+			{
+				"transform": "@voltiso/transform/inline",
+
+				"afterDeclarations": true
+				// "onInlineError": "fail"
+			}
+		]
+	},
+
+	"include": ["src"]
+}

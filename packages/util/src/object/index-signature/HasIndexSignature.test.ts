@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type {
 	HasIndexSignature,
@@ -15,28 +15,28 @@ describe('HasIndexSignature', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert<IsIdentical<HasIndexSignature<{ a: 0 }>, false>>()
-		Assert<IsIdentical<HasIndexSignature<{ (): void; a: 0 }>, false>>()
-		Assert<IsIdentical<HasIndexSignature<{ new (): void; a: 0 }>, false>>()
-		Assert<
+		$Assert<IsIdentical<HasIndexSignature<{ a: 0 }>, false>>()
+		$Assert<IsIdentical<HasIndexSignature<{ (): void; a: 0 }>, false>>()
+		$Assert<IsIdentical<HasIndexSignature<{ new (): void; a: 0 }>, false>>()
+		$Assert<
 			IsIdentical<HasIndexSignature<{ [k: string]: unknown; a: 0 }>, true>
 		>()
-		Assert<IsIdentical<HasIndexSignature<{ a: 1 } & { b: 2 }>, false>>()
+		$Assert<IsIdentical<HasIndexSignature<{ a: 1 } & { b: 2 }>, false>>()
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				HasIndexSignature<{ a: 1 } & { [k: number]: number; b: 2 }>,
 				true
 			>
 		>()
 
-		Assert<
+		$Assert<
 			IsIdentical<HasIndexSignature<{ [k: symbol]: unknown; a: 0 }>, true>
 		>()
 
 		//
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				HasSymbolIndexSignature<{ [k: symbol]: unknown; a: 0 }>,
 				true
@@ -53,7 +53,7 @@ describe('HasIndexSignature', () => {
 
 		//
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				HasStringIndexSignature<{ [k: symbol]: unknown; a: 0 }>,
 				false
@@ -67,7 +67,7 @@ describe('HasIndexSignature', () => {
 
 		//
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				HasNumberIndexSignature<{ [k: number]: unknown; a: 0 }>,
 				true

@@ -3,7 +3,7 @@
 
 import type { IDoc } from '~/Doc'
 
-import type { WithId } from './Data'
+import type { $WithId } from './Data'
 import type { Id } from './Id'
 
 export function withId(data: null, id: Id): null
@@ -11,12 +11,12 @@ export function withId(data: null, id: Id): null
 export function withId<Data extends object, Doc extends IDoc>(
 	data: Data,
 	id: Id<Doc>,
-): WithId<Omit<Data, 'id'>, Doc>
+): $WithId<Omit<Data, 'id'>, Doc>
 
 export function withId<Data extends object | null, Doc extends IDoc>(
 	data: Data,
 	id: Id<Doc>,
-): Data extends null ? null : WithId<Omit<Data, 'id'>, Doc>
+): Data extends null ? null : $WithId<Omit<Data, 'id'>, Doc>
 
 //
 

@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { undef } from '~/nullish'
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import type { TryGet } from './tryGet'
 import { tryGet } from './tryGet'
@@ -13,73 +13,73 @@ describe('get', () => {
 		expect.assertions(0)
 
 		type A = TryGet<{ a: { b: { c: 0 } } }, []>
-		Assert<IsIdentical<A, { a: { b: { c: 0 } } }>>()
+		$Assert<IsIdentical<A, { a: { b: { c: 0 } } }>>()
 
 		type B = TryGet<{ a: { b: { c: 0 } } }, ['a']>
-		Assert<IsIdentical<B, { b: { c: 0 } }>>()
+		$Assert<IsIdentical<B, { b: { c: 0 } }>>()
 
 		type C = TryGet<{ a: { b: { c: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<C, 0>>()
+		$Assert<IsIdentical<C, 0>>()
 
 		type D = TryGet<{ a: { b: { c?: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<D, 0 | undefined>>()
+		$Assert<IsIdentical<D, 0 | undefined>>()
 
 		type DD = TryGet<{} | undefined, []>
-		Assert<IsIdentical<DD, {} | undefined>>()
+		$Assert<IsIdentical<DD, {} | undefined>>()
 
 		type DDD = TryGet<{ a: 0 } | undefined, ['a']>
-		Assert<IsIdentical<DDD, 0 | undefined>>()
+		$Assert<IsIdentical<DDD, 0 | undefined>>()
 
 		type E = TryGet<{ a: { b?: { c: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<E, 0 | undefined>>()
+		$Assert<IsIdentical<E, 0 | undefined>>()
 
 		type F = TryGet<undefined | { a: { b: { c: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<F, 0 | undefined>>()
+		$Assert<IsIdentical<F, 0 | undefined>>()
 
 		type G = TryGet<{ a?: { b: { c: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<G, 0 | undefined>>()
+		$Assert<IsIdentical<G, 0 | undefined>>()
 
 		// @ts-expect-error bad path
 		type H = TryGet<{}, ['a', 'b', 'c']>
-		Assert<IsIdentical<H, undefined>>()
+		$Assert<IsIdentical<H, undefined>>()
 
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore bad path
 		type I = TryGet<{ a: { b: { c: 0 } } }, ['a', 'a']>
-		Assert<IsIdentical<I, undefined>>()
+		$Assert<IsIdentical<I, undefined>>()
 	})
 
 	it('type - indexed', () => {
 		expect.assertions(0)
 
 		type A = TryGet<{ [k: string]: 0 }, [string]>
-		Assert<IsIdentical<A, 0 | undefined>>()
+		$Assert<IsIdentical<A, 0 | undefined>>()
 
 		type B = TryGet<{ [k: string]: 0 }, ['test']>
-		Assert<IsIdentical<B, 0 | undefined>>()
+		$Assert<IsIdentical<B, 0 | undefined>>()
 
 		// @ts-expect-error no property `test`
 		type C = TryGet<{ a: 1 }, ['test']>
-		Assert<IsIdentical<C, undefined>>()
+		$Assert<IsIdentical<C, undefined>>()
 
 		type D = TryGet<{ [k: string]: number; test: 0 }, ['test']>
-		Assert<IsIdentical<D, 0>>()
+		$Assert<IsIdentical<D, 0>>()
 
 		type E = TryGet<{ [k: string]: number; test?: 0 }, ['test']>
-		Assert<IsIdentical<E, 0 | undefined>>()
+		$Assert<IsIdentical<E, 0 | undefined>>()
 	})
 
 	it('type - unions', () => {
 		expect.assertions(0)
 
 		type A = TryGet<{ a: { b: 0 } } | { a: { b: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<A, 0 | 1>>()
+		$Assert<IsIdentical<A, 0 | 1>>()
 
 		type B = TryGet<{ a: { b: 0 } } | { a: { c: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<B, 0 | undefined>>()
+		$Assert<IsIdentical<B, 0 | undefined>>()
 
 		type C = TryGet<undefined | { a: { b: 0 } } | { a: { c: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<C, 0 | undefined>>()
+		$Assert<IsIdentical<C, 0 | undefined>>()
 	})
 
 	it('works', () => {
@@ -129,7 +129,7 @@ describe('get', () => {
 		expect(aaa).toStrictEqual({ e: 0 })
 		expect(aaa2).toStrictEqual({ e: 0 })
 
-		Assert<IsIdentical<typeof aaa, { e: 0 }>>()
-		Assert<IsIdentical<typeof aaa2, { e: 0 }>>()
+		$Assert<IsIdentical<typeof aaa, { e: 0 }>>()
+		$Assert<IsIdentical<typeof aaa2, { e: 0 }>>()
 	})
 })

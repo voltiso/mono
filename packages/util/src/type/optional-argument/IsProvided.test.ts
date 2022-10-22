@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/$strip'
 
 import type { IsProvided } from './IsProvided'
 import type { NotProvided } from './OptionalArgument'
@@ -12,46 +12,46 @@ describe('OptionalArgument', () => {
 		expect.assertions(0)
 
 		type A = IsProvided<never>
-		Assert<IsIdentical<A, true>>()
+		$Assert<IsIdentical<A, true>>()
 
 		type B = IsProvided<null>
-		Assert<IsIdentical<B, true>>()
+		$Assert<IsIdentical<B, true>>()
 
 		type C = IsProvided<unknown>
-		Assert<IsIdentical<C, true>>()
+		$Assert<IsIdentical<C, true>>()
 
 		type D = IsProvided<any>
-		Assert<IsIdentical<D, true>>()
+		$Assert<IsIdentical<D, true>>()
 
 		type E = IsProvided<void>
-		Assert<IsIdentical<E, true>>()
+		$Assert<IsIdentical<E, true>>()
 
 		type F = IsProvided<symbol>
-		Assert<IsIdentical<F, true>>()
+		$Assert<IsIdentical<F, true>>()
 
 		const sym = Symbol('sym')
 
 		type G = IsProvided<typeof sym>
-		Assert<IsIdentical<G, true>>()
+		$Assert<IsIdentical<G, true>>()
 
 		type H = IsProvided<NotProvided>
-		Assert<IsIdentical<H, false>>()
+		$Assert<IsIdentical<H, false>>()
 
 		type I = IsProvided<null | NotProvided>
-		Assert<IsIdentical<I, boolean>>()
+		$Assert<IsIdentical<I, boolean>>()
 
 		type J = IsProvided<never | NotProvided>
-		Assert<IsIdentical<J, false>>()
+		$Assert<IsIdentical<J, false>>()
 
 		type K = IsProvided<void | NotProvided>
-		Assert<IsIdentical<K, boolean>>()
+		$Assert<IsIdentical<K, boolean>>()
 	})
 
 	it('generic - true', <X extends null>() => {
 		expect.assertions(0)
 
 		type A = IsProvided<X>
-		Assert<A, true>()
+		$Assert<A, true>()
 		// Assert.is<true, A>()
 		// Assert.is<A, false>()
 		// Assert<IsIdentical<A, true>>()
@@ -61,7 +61,7 @@ describe('OptionalArgument', () => {
 		expect.assertions(0)
 
 		type A = IsProvided<X>
-		Assert.is<A, boolean>()
+		$Assert.is<A, boolean>()
 		// Assert.is<A, false>() // IsProvided<never> === true
 
 		// Assert.is<false, A>()
@@ -73,7 +73,7 @@ describe('OptionalArgument', () => {
 		expect.assertions(0)
 
 		type A = IsProvided<X>
-		Assert.is<A, boolean>()
+		$Assert.is<A, boolean>()
 		// Assert.is<A, true>()
 		// Assert.is<A, false>()
 	})

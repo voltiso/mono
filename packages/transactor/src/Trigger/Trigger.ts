@@ -3,7 +3,7 @@
 
 import type { MaybePromise } from '@voltiso/util'
 
-import type { Doc, DocLike, DocTI, DTI } from '~/Doc'
+import type { DocLike, DTI, IndexedDoc } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { DeleteIt } from '~/it'
 
@@ -20,26 +20,29 @@ export type TriggerReturn<D extends DocLike> =
 	| void
 
 export type AfterTrigger<
-	D extends DocLike = Doc<DocTI, 'inside'>,
-	This = D | null,
-	Before extends boolean = boolean,
-	After extends boolean = boolean,
+	D extends DocLike = IndexedDoc,
+	BeforeExists extends boolean = boolean,
+	AfterExists extends boolean = boolean,
 	R = TriggerReturn<D>,
-	Params = AfterTriggerParams<D, This, Before, After>,
-> = (this: This, params: Params) => MaybePromise<R>
+> = (
+	this: AfterExists extends true ? D : AfterExists extends false ? null : never,
+	params: AfterTriggerParams<D, BeforeExists, AfterExists>,
+) => MaybePromise<R>
 
 export type OnGetTrigger<
-	D extends DocLike = Doc<DocTI, 'inside'>,
-	This = D | null,
-	R = TriggerReturn<D>,
-> = (this: This, params: TriggerParams<D, This>) => MaybePromise<R>
+	D extends DocLike = IndexedDoc,
+	Exists extends boolean = boolean,
+> = (
+	this: Exists extends true ? D : Exists extends false ? null : never,
+	params: TriggerParams<D, Exists>,
+) => MaybePromise<TriggerReturn<D>>
 
 export type UnknownTrigger = <D extends DocLike>(
 	this: D | null,
 	params: TriggerParams<D>,
 ) => MaybePromise<TriggerReturn<D>>
 
-export type BeforeCommitTrigger<D extends DocLike = Doc<DocTI, 'inside'>> = (
+export type BeforeCommitTrigger<D extends DocLike = IndexedDoc> = (
 	this: D | null,
 	params: BeforeCommitTriggerParams<D>,
 ) => MaybePromise<TriggerReturn<D>>

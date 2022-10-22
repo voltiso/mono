@@ -2,16 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical, Merge2 } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 describe('Merge2', () => {
 	it('works', () => {
 		expect.assertions(0)
 
 		type A = Merge2<{ a: 1; b: 2 }, { a: 2 }>
-		Assert<IsIdentical<A, { a: 2; b: 2 }>>()
+		$Assert<IsIdentical<A, { a: 2; b: 2 }>>()
 
-		Assert<
+		$Assert<
 			IsIdentical<Merge2<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>,
 			IsIdentical<Merge2<{ a: 1 }, { a: 2 }>, { a: 2 }>,
 			IsIdentical<Merge2<{ a: { a: 1 } }, { a: { b: 2 } }>, { a: { b: 2 } }>
@@ -22,7 +22,7 @@ describe('Merge2', () => {
 		expect.assertions(0)
 
 		type D = Merge2<{ a?: 1 }, { a: 2 }>
-		Assert<IsIdentical<D, { a: 2 }>>()
+		$Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
 	type SomeType = {
@@ -34,7 +34,7 @@ describe('Merge2', () => {
 		expect.assertions(0)
 
 		type G = Merge2<T, SomeType>
-		Assert.is<G, SomeType>()
+		$Assert.is<G, SomeType>()
 	})
 
 	it('generics 2', <T extends SomeType>() => {
@@ -43,8 +43,8 @@ describe('Merge2', () => {
 		type B3 = Merge2<T, { c: 3 }>
 		type B5 = Merge2<T, { c: 3 }>
 
-		Assert.is<B3, SomeType>()
-		Assert.is<B5, SomeType>()
+		$Assert.is<B3, SomeType>()
+		$Assert.is<B5, SomeType>()
 	})
 
 	it('vscode - jump to definition (manual test...)', () => {

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Doc, DocTI } from '~/Doc'
+import type { Doc, DocTI, DocTILike } from '~/Doc'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 type GDocByTag_<TI extends DocTI> = TI['tag'] extends 'untagged'
@@ -28,11 +28,11 @@ export type GDocByTag<TI extends DocTI> = GDocByTag_<TI> extends never
  *
  * @inline
  */
-export type GI<TI extends DocTI> = Doc<TI, 'inside'>
+export type GI<TI extends DocTILike> = Doc<TI, 'inside'>
 
 /**
  * Get Doc from DocTI - outside execution context (can access public only)
  *
  * @inline
  */
-export type GO<TI extends DocTI> = Doc<TI, 'outside'>
+export type GO<TI extends DocTILike> = Doc<TI, 'outside'>

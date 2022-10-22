@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { $assert } from '@voltiso/assertor'
+
 import type {
 	InferableObject,
 	ObjectLike,
@@ -121,7 +121,7 @@ export class DocRefPattern {
 	}
 
 	afterCreateOrUpdate<D extends DocLike = IndexedDoc>(
-		trigger: AfterTrigger<D, D, boolean, true>,
+		trigger: AfterTrigger<D, boolean, true>,
 	) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
@@ -144,7 +144,7 @@ export class DocRefPattern {
 	}
 
 	afterCreate<D extends DocLike = IndexedDoc>(
-		trigger: AfterTrigger<D, D, false, true>,
+		trigger: AfterTrigger<D, false, true>,
 	) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
@@ -169,7 +169,7 @@ export class DocRefPattern {
 	}
 
 	afterDelete<D extends DocLike = IndexedDoc>(
-		trigger: AfterTrigger<D, null, true, false>,
+		trigger: AfterTrigger<D, true, false>,
 	) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),

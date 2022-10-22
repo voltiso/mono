@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '~/type'
+import { $Assert, $Is } from '~/$strip'
 
 import type { Not } from './Not'
 
@@ -9,14 +9,14 @@ describe('not', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert(
-			Is<Not<true>>() //
+		$Assert(
+			$Is<Not<true>>() //
 				.identicalTo<false>(),
 
-			Is<Not<false>>() //
+			$Is<Not<false>>() //
 				.identicalTo<true>(),
 
-			Is<Not<boolean>>() //
+			$Is<Not<boolean>>() //
 				.identicalTo<boolean>(),
 		)
 	})

@@ -44,110 +44,120 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	and<F extends InferableObjectLike | ObjectLike>(
 		additionalFields: F,
-	): _GetAnd<this, F>
+	): CustomObject.WithAnd<this, F>
 
-	get partial(): _GetPartial_<this>
-	get strictPartial(): _GetStrictPartial_<this>
+	get partial(): CustomObject.WithPartial<this>
+	get strictPartial(): CustomObject.WithStrictPartial<this>
 
-	get deepPartial(): _GetDeepPartial_<this>
-	get deepStrictPartial(): _GetDeepStrictPartial_<this>
+	get deepPartial(): CustomObject.WithDeepPartial<this>
+	get deepStrictPartial(): CustomObject.WithDeepStrictPartial<this>
 
 	index<TKeySchema extends SchemableLike, TValueSchema extends SchemableLike>(
 		keySchema: TKeySchema,
 		valueSchema: TValueSchema,
-	): _GetIndex<this, TKeySchema, TValueSchema>
+	): CustomObject.WithIndex<this, TKeySchema, TValueSchema>
 
 	index<TValueSchema extends SchemableLike>(
 		valueSchema: TValueSchema,
-	): _GetIndex<this, SimpleSchema<keyof any>, TValueSchema>
+	): CustomObject.WithIndex<this, SimpleSchema<keyof any>, TValueSchema>
 }
 
 //
 
-export type _ObjectLike = {
-	[OPTIONS]: { shape: any; Output: any; Input: any }
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace CustomObject {
+	/** @internal */
+	export type _ObjectLike = {
+		[OPTIONS]: { shape: any; Output: any; Input: any }
+	}
+
+	//
+
+	// eslint-disable-next-line etc/no-internal
+	export type WithAnd<This, Other> = This extends _ObjectLike
+		? DefineSchema<
+				This,
+				{
+					shape: _<
+						This[OPTIONS]['shape'] &
+							(Other extends ObjectLike ? Other['getShape'] : Other)
+					>
+					Output: _<This[OPTIONS]['Output'] & OutputType_<Other>>
+					Input: _<This[OPTIONS]['Input'] & InputType_<Other>>
+				}
+		  >
+		: never
+
+	export type WithIndex<
+		This,
+		TKeySchema extends SchemableLike,
+		TValueSchema extends SchemableLike,
+	// eslint-disable-next-line etc/no-internal
+	> = This extends _ObjectLike
+		? DefineSchema<
+				This,
+				{
+					Output: _<
+						This[OPTIONS]['Output'] & {
+							[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+						}
+					>
+					Input: _<
+						This[OPTIONS]['Input'] & {
+							[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+						}
+					>
+				}
+		  >
+		: never
+
+	// eslint-disable-next-line etc/no-internal
+	export type WithPartial<This> = This extends _ObjectLike
+		? DefineSchema<
+				This,
+				{
+					shape: PartialShape_<This[OPTIONS]['shape']>
+					Output: Partial<This[OPTIONS]['Output']>
+					Input: PartialOrUndefined_<This[OPTIONS]['Input']>
+				}
+		  >
+		: never
+
+	// eslint-disable-next-line etc/no-internal
+	export type WithStrictPartial<This> = This extends _ObjectLike
+		? DefineSchema<
+				This,
+				{
+					shape: StrictPartialShape_<This[OPTIONS]['shape']>
+					Output: Partial<This[OPTIONS]['Output']>
+					Input: Partial<This[OPTIONS]['Input']>
+				}
+		  >
+		: never
+
+	//
+
+	// eslint-disable-next-line etc/no-internal
+	export type WithDeepPartial<This> = This extends _ObjectLike
+		? DefineSchema<
+				This,
+				{
+					shape: DeepPartialShape_<This[OPTIONS]['shape']>
+					Output: DeepPartial_<This[OPTIONS]['Output']>
+					Input: DeepPartialOrUndefined_<This[OPTIONS]['Input']>
+				}
+		  >
+		: never
+
+	// eslint-disable-next-line etc/no-internal
+	export type WithDeepStrictPartial<This> = This extends _ObjectLike
+		? DefineSchema<
+				This,
+				{
+					shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
+					Output: DeepPartial_<This[OPTIONS]['Output']>
+					Input: DeepPartial_<This[OPTIONS]['Input']>
+				}
+		  >
+		: never
 }
-
-//
-
-export type _GetAnd<This, Other> = This extends _ObjectLike
-	? DefineSchema<
-			This,
-			{
-				shape: _<
-					This[OPTIONS]['shape'] &
-						(Other extends ObjectLike ? Other['getShape'] : Other)
-				>
-				Output: _<This[OPTIONS]['Output'] & OutputType_<Other>>
-				Input: _<This[OPTIONS]['Input'] & InputType_<Other>>
-			}
-	  >
-	: never
-
-export type _GetIndex<
-	This,
-	TKeySchema extends SchemableLike,
-	TValueSchema extends SchemableLike,
-> = This extends _ObjectLike
-	? DefineSchema<
-			This,
-			{
-				Output: _<
-					This[OPTIONS]['Output'] & {
-						[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
-					}
-				>
-				Input: _<
-					This[OPTIONS]['Input'] & {
-						[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
-					}
-				>
-			}
-	  >
-	: never
-
-export type _GetPartial_<This> = This extends _ObjectLike
-	? DefineSchema<
-			This,
-			{
-				shape: PartialShape_<This[OPTIONS]['shape']>
-				Output: Partial<This[OPTIONS]['Output']>
-				Input: PartialOrUndefined_<This[OPTIONS]['Input']>
-			}
-	  >
-	: never
-
-export type _GetStrictPartial_<This> = This extends _ObjectLike
-	? DefineSchema<
-			This,
-			{
-				shape: StrictPartialShape_<This[OPTIONS]['shape']>
-				Output: Partial<This[OPTIONS]['Output']>
-				Input: Partial<This[OPTIONS]['Input']>
-			}
-	  >
-	: never
-
-//
-
-export type _GetDeepPartial_<This> = This extends _ObjectLike
-	? DefineSchema<
-			This,
-			{
-				shape: DeepPartialShape_<This[OPTIONS]['shape']>
-				Output: DeepPartial_<This[OPTIONS]['Output']>
-				Input: DeepPartialOrUndefined_<This[OPTIONS]['Input']>
-			}
-	  >
-	: never
-
-export type _GetDeepStrictPartial_<This> = This extends _ObjectLike
-	? DefineSchema<
-			This,
-			{
-				shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
-				Output: DeepPartial_<This[OPTIONS]['Output']>
-				Input: DeepPartial_<This[OPTIONS]['Input']>
-			}
-	  >
-	: never

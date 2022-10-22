@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { $assert } from '@voltiso/assertor'
+
 import { isPlainObject } from '@voltiso/util'
 
 import type { CssProp } from '~/_/CssProps'

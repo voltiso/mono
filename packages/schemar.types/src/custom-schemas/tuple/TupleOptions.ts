@@ -5,9 +5,10 @@ import type { Merge2, Merge2_ } from '@voltiso/util'
 
 import type { DefaultSchemaOptions, SchemableLike, SchemaOptions } from '~'
 
-export interface TupleOptions extends SchemaOptions {
-	Output: readonly unknown[]
-	Input: readonly unknown[]
+export interface TupleOptions<T extends readonly unknown[] = readonly unknown[]>
+	extends SchemaOptions {
+	Output: T
+	Input: T
 
 	isReadonlyTuple: boolean
 	shape: SchemableLike[]

@@ -8,7 +8,7 @@ export class VoltisoScriptError extends VoltisoError {
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		super(message, { ...options, packageInfo: { name: '@voltiso/script.lib' } })
+		super(message, { ...options, package: { name: '@voltiso/script.lib' } })
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoScriptError'
 	}

@@ -49,7 +49,7 @@ export const checkWorkspace = [
 //! Per-package
 
 export const dev =
-	'cross-env ASSERTOR_NO_STRIP=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
+	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
 
 export const build = turbo('build:esm', 'build:cjs')
 export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitSimple, OmitSimple_ } from './OmitSimple'
 
@@ -17,7 +17,7 @@ describe('OmitSimple', () => {
 			},
 			'a'
 		>
-		Assert<IsIdentical<X, { readonly b?: number }>>()
+		$Assert<IsIdentical<X, { readonly b?: number }>>()
 	})
 
 	it('generics', <T extends { a?: 1; b?: 1 }>() => {
@@ -27,8 +27,8 @@ describe('OmitSimple', () => {
 		type B = OmitSimple<T, 'b'>
 
 		// @ts-expect-error Omit does not work, meh
-		Assert.is<A, { a?: 1 }>() // does not work - works only with `{ a?: 1 | undefined }`
-		Assert.is<B, { a?: 1 }>() // better!
+		$Assert.is<A, { a?: 1 }>() // does not work - works only with `{ a?: 1 | undefined }`
+		$Assert.is<B, { a?: 1 }>() // better!
 	})
 
 	type EasyObj = { readonly a?: 1; b: 2 }
@@ -38,19 +38,19 @@ describe('OmitSimple', () => {
 
 		type A1 = Omit<Obj, 'c'>
 		// @ts-expect-error meh
-		Assert.is<A1, EasyObj>() // does not work, meh
+		$Assert.is<A1, EasyObj>() // does not work, meh
 
 		type A2 = OmitSimple<Obj, 'c'>
-		Assert.is<A2, EasyObj>()
+		$Assert.is<A2, EasyObj>()
 
 		//
 
 		type B1 = Omit<Obj, 'b'>
 		// @ts-expect-error meh
-		Assert.is<B1, { readonly a?: 1 }>() // does not work, meh
+		$Assert.is<B1, { readonly a?: 1 }>() // does not work, meh
 
 		type B2 = OmitSimple<Obj, 'b'>
-		Assert.is<B2, { readonly a?: 1 }>()
+		$Assert.is<B2, { readonly a?: 1 }>()
 	})
 
 	it('discards index signatures', () => {
@@ -66,7 +66,7 @@ describe('OmitSimple', () => {
 			},
 			'b'
 		>
-		Assert<IsIdentical<A, { readonly a?: 33 }>>()
+		$Assert<IsIdentical<A, { readonly a?: 33 }>>()
 	})
 
 	it('vscode finds original definitions', () => {

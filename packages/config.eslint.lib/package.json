@@ -45,7 +45,7 @@
     "eslint-define-config": "^1.7.0"
   },
   "devDependencies": {
-    "@voltiso/assertor.transform": "workspace:^",
+    "@voltiso/transform": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "eslint": "^8.25.0",

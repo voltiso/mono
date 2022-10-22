@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical, OmitSignatures } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { $Pick_, Pick_ } from './Pick_'
 
@@ -11,10 +11,10 @@ describe('Pick', () => {
 		expect.assertions(0)
 
 		type B = Pick_<{ 2: 2; readonly a?: 1 }, string>
-		Assert<IsIdentical<B, { readonly a?: 1 }>>()
+		$Assert<IsIdentical<B, { readonly a?: 1 }>>()
 
 		type A = Pick_<{ readonly a?: 1; b: 2 }, 'a'>
-		Assert<IsIdentical<A, { readonly a?: 1 }>>()
+		$Assert<IsIdentical<A, { readonly a?: 1 }>>()
 	})
 
 	type Obj = {
@@ -28,18 +28,18 @@ describe('Pick', () => {
 		expect.assertions(0)
 
 		type A0 = Pick<Obj, 'a'>
-		Assert<IsIdentical<A0, { a: 1 }>>()
+		$Assert<IsIdentical<A0, { a: 1 }>>()
 
 		type A1 = Pick_<Obj, 'a'>
-		Assert<IsIdentical<A1, { a: 1 }>>()
+		$Assert<IsIdentical<A1, { a: 1 }>>()
 
 		//
 
 		type B0 = Pick<Obj, 'a' | symbol>
-		Assert<IsIdentical<B0, { [k: symbol]: 3; a: 1 }>>()
+		$Assert<IsIdentical<B0, { [k: symbol]: 3; a: 1 }>>()
 
 		type B1 = Pick_<Obj, 'a' | symbol>
-		Assert<IsIdentical<B1, { [k: symbol]: 3; a: 1 }>>()
+		$Assert<IsIdentical<B1, { [k: symbol]: 3; a: 1 }>>()
 
 		//
 
@@ -54,10 +54,10 @@ describe('Pick', () => {
 		expect.assertions(0)
 
 		type A0 = Pick<O, 'a' | symbol>
-		Assert.is<A0, Obj>()
+		$Assert.is<A0, Obj>()
 
 		type A1 = $Pick_<O, 'a' | symbol>
-		Assert.is<A1, Obj>()
+		$Assert.is<A1, Obj>()
 
 		// type C0 = Pick<O, string>
 		// Assert.is<C0, Obj>() // bad!

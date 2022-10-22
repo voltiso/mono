@@ -1,4 +1,3 @@
-/* eslint-disable regexp/prefer-d */
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
@@ -25,8 +24,8 @@ const dateIsoStringRegex =
 const sDateIsoString = s.string.regex(dateIsoStringRegex)
 
 const emailRegex =
-	// eslint-disable-next-line no-control-regex, security/detect-unsafe-regex, unicorn/no-hex-escape, unicorn/better-regex, unicorn/no-unsafe-regex, regexp/no-super-linear-move, unicorn/escape-case, regexp/order-in-character-class, regexp/sort-character-class-elements, regexp/sort-alternatives, regexp/no-useless-non-capturing-group, regexp/no-control-character, regexp/control-character-escape, regexp/prefer-t, regexp/no-dupe-characters-character-class, regexp/require-unicode-regexp
-	/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+	// eslint-disable-next-line no-control-regex, security/detect-unsafe-regex, unicorn/no-hex-escape, unicorn/no-unsafe-regex, regexp/no-super-linear-move, unicorn/escape-case, regexp/order-in-character-class, regexp/sort-character-class-elements, regexp/no-useless-non-capturing-group, regexp/no-control-character, regexp/control-character-escape, regexp/prefer-t, regexp/no-dupe-characters-character-class, regexp/require-unicode-regexp
+	/(?:[a-z\d!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z\d!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z\d](?:[a-z\d-]*[a-z\d])?\.)+[a-z\d](?:[a-z\d-]*[a-z\d])?|\[(?:(?:(2(5[0-5]|[0-4]\d)|1\d{2}|[1-9]?\d))\.){3}(?:(2(5[0-5]|[0-4]\d)|1\d{2}|[1-9]?\d)|[a-z\d-]*[a-z\d]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
 const sEmail = s.string.regex(emailRegex)
 

@@ -12,15 +12,17 @@ import type {
 	SchemaLike,
 } from '~'
 
-export interface ObjectLike extends SchemaLike<object> {
+export interface ObjectLike<T extends object = object> extends SchemaLike<T> {
 	readonly [SCHEMA_NAME]: 'Object'
 	get getShape(): any
+
+	and(additionalFields: any): any
 }
 
-export interface IObject extends ISchema<object> {
+export interface IObject<T extends object = object> extends ISchema<T> {
 	readonly [SCHEMA_NAME]: 'Object'
 
-	readonly [OPTIONS]: ObjectOptions
+	readonly [OPTIONS]: ObjectOptions<T>
 	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
 	get getShape(): InferableObjectLike

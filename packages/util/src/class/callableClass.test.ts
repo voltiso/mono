@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import { callableClass } from './callableClass'
 
@@ -69,7 +69,7 @@ describe('callableClass', () => {
 
 		expect(cls._val).toBe('test')
 
-		Assert<IsIdentical<typeof cls._val, string | number>>()
+		$Assert<IsIdentical<typeof cls._val, string | number>>()
 
 		expect(cls._staticRef).toStrictEqual([])
 

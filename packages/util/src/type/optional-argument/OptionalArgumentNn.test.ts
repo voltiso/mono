@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '~/type/static-assert'
+import { $Assert } from '~/$strip'
 
 import type {
 	NotProvidedNn,
@@ -35,11 +35,11 @@ describe('OptionalArgument', () => {
 
 		// Assert.is<Fun<Args, Result>, Fun_<Args, Result>>() // :(
 
-		Assert.is<IFunc<Result>, IFunc>()
+		$Assert.is<IFunc<Result>, IFunc>()
 
 		// Assert.is<Fun<Args, Result>, IFun<Result>>() // :(
-		Assert.is<Func<Args, Result>, IFunc>()
-		Assert.is<Func<Args, Result>, Func>()
+		$Assert.is<Func<Args, Result>, IFunc>()
+		$Assert.is<Func<Args, Result>, Func>()
 
 		type TestA<Args extends number[], Result extends string> = Func<
 			Args,
@@ -50,7 +50,7 @@ describe('OptionalArgument', () => {
 
 		type A = TestA<Args, Result>
 
-		Assert.is<A, 0 | 1>()
+		$Assert.is<A, 0 | 1>()
 		// Assert.is<A, 1>() // :(
 
 		//
@@ -63,7 +63,7 @@ describe('OptionalArgument', () => {
 			: 0
 
 		type B = TestB<Args, Result>
-		Assert.is<B, 0 | 1>()
+		$Assert.is<B, 0 | 1>()
 		// Assert.is<B, 1>() // :(
 	})
 })

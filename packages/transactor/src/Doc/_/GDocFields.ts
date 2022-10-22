@@ -10,3 +10,6 @@ import type { GetData } from './GData'
 export type GDocFields<TI extends DocTILike> = {
 	[k in keyof GetData<TI>]: DocFieldPath<GetData<TI>[k]>
 }
+
+/** @inline */
+export type GDocFields_<TI> = [TI] extends [DocTILike] ? GDocFields<TI> : never

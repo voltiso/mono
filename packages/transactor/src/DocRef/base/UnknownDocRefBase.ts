@@ -5,7 +5,7 @@ import type { Schema } from '@voltiso/schemar.types'
 import type { If } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
-import type { Id, WithId } from '~/Data'
+import type { $WithId, Id } from '~/Data'
 import type { UpdatesFromData } from '~/Doc'
 import type {
 	GetData,
@@ -22,6 +22,12 @@ import type { Null } from '../_/Null'
 import type { IDocRefBase } from '../IRef'
 import type { StrongDocRef } from '../StrongDocRef'
 import type { WeakDocRef } from '../WeakDocRef'
+
+export type UnknownDocRefBase_<D, Exists> = [D] extends [DocLike]
+	? [Exists] extends [boolean]
+		? UnknownDocRefBase<D, Exists>
+		: never
+	: never
 
 export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 	extends IDocRefBase,
@@ -40,7 +46,7 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 
 	readonly data: NestedPromise<GetData<D[DTI]>, Exists>
 	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists>
-	dataWithId(): NestedPromise<WithId<GetData<D[DTI]>, D>, Exists>
+	dataWithId(): NestedPromise<$WithId<GetData<D[DTI]>, D>, Exists>
 
 	//
 
@@ -50,7 +56,7 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 	//
 
 	get schemaWithoutId(): Schema<GetData<D[DTI]>> | undefined
-	get schemaWithId(): Schema<WithId<GetData<D[DTI]>>> | undefined
+	get schemaWithId(): Schema<$WithId<GetData<D[DTI]>>> | undefined
 	get aggregateSchemas(): D[DTI]['aggregates']
 
 	//

@@ -3,13 +3,8 @@
 
 import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
-
-type PossiblyPromise<X> = X | Promise<X>
-
-function isPromise<X>(x: X | Promise<X>): x is Promise<X> {
-	// eslint-disable-next-line promise/prefer-await-to-then
-	return Boolean(x) && typeof (x as Promise<unknown>).catch === 'function'
-}
+import type { MaybePromise } from '@voltiso/util'
+import { isPromiseLike } from '@voltiso/util'
 
 type G<
 	Self extends t.SchemableLike | null = t.SchemableLike | null,
@@ -63,7 +58,7 @@ class _Checked<T extends G> {
 		f: (
 			this: t.Type<T['self']>,
 			...args: t.TupleType_<T['params']>
-		) => PossiblyPromise<t.InputType<T['result']>>,
+		) => MaybePromise<t.InputType<T['result']>>,
 	) {
 		const thisSchema = this._self ? s.schema(this._self) : null
 		const argsSchema = s.schema(this._params)
@@ -72,12 +67,13 @@ class _Checked<T extends G> {
 		return function (
 			this: t.Type<T>,
 			...args: t.TupleType_<T['params'], { kind: 'in' }>
-		): PossiblyPromise<t.Type<T['result']>> {
+		): MaybePromise<t.Type<T['result']>> {
 			if (thisSchema) (thisSchema as t.Schema).validate(this) // throw on error
 
 			const vArgs = (argsSchema as t.Schema).validate(args) // throw on error
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			const r = (f as any).call(this, ...(vArgs as unknown[]))
+
 			function handler(r: t.InputType<T['result']>) {
 				return (
 					resultSchema ? (resultSchema as t.Schema).validate(r) : r
@@ -85,7 +81,7 @@ class _Checked<T extends G> {
 			}
 
 			// eslint-disable-next-line promise/prefer-await-to-then
-			if (isPromise(r)) return r.then(handler)
+			if (isPromiseLike(r)) return r.then(handler as never) as never
 
 			return handler(r as never)
 		}
@@ -108,10 +104,10 @@ export interface WithoutThis<T extends G> {
 	function(
 		f: (
 			...args: t.TupleType_<T['params']>
-		) => PossiblyPromise<t.InputType<T['result']>>,
+		) => MaybePromise<t.InputType<T['result']>>,
 	): (
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
-	) => PossiblyPromise<t.Type<T['result']>>
+	) => MaybePromise<t.Type<T['result']>>
 }
 
 export interface WithThis<T extends G> {
@@ -139,11 +135,11 @@ export interface WithThis<T extends G> {
 		f: (
 			this: t.Type<T['self']>,
 			...args: t.TupleType_<T['params']>
-		) => PossiblyPromise<t.InputType<T['result']>>,
+		) => MaybePromise<t.InputType<T['result']>>,
 	): (
 		this: t.Type<T['self']>,
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
-	) => PossiblyPromise<t.Type<T['result']>>
+	) => MaybePromise<t.Type<T['result']>>
 }
 
 type Checked<T extends G> = Pick<

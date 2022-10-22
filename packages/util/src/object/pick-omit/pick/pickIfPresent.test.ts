@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import { pickIfPresent } from './pickIfPresent'
 
@@ -26,7 +26,7 @@ describe('pickIfPresent', () => {
 		expect(r).toStrictEqual({ b: 2 })
 		expect(obj).toStrictEqual({ a: 1, b: 2 })
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof r,
 				{

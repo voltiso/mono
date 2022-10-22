@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { AllowedValue } from './AllowedValue'
 
@@ -15,8 +15,8 @@ describe('AllowedValue', () => {
 			b: 2
 		}
 
-		Assert<IsIdentical<AllowedValue<O, keyof O>, 1 | 2>>()
-		Assert<IsIdentical<AllowedValue<O, 'a'>, 1>>()
+		$Assert<IsIdentical<AllowedValue<O, keyof O>, 1 | 2>>()
+		$Assert<IsIdentical<AllowedValue<O, 'a'>, 1>>()
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests

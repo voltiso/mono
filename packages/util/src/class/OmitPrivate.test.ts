@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitPrivate } from './OmitPrivate'
 
@@ -17,7 +17,7 @@ describe('OmitPrivate', () => {
 
 		type A = OmitPrivate<Obj>
 
-		Assert<IsIdentical<A, { a: 1 }>>()
+		$Assert<IsIdentical<A, { a: 1 }>>()
 	})
 
 	it('works', () => {
@@ -43,7 +43,7 @@ describe('OmitPrivate', () => {
 
 		type A = OmitPrivate<Obj>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{

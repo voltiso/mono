@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type/static-assert'
+import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/$strip'
 
 import type { MergeNullish } from './merge'
 import { merge } from './merge'
@@ -26,31 +26,31 @@ describe('merge', () => {
 
 		expect(a).toStrictEqual({ a: 1 })
 
-		Assert<IsIdentical<typeof a, { a: 1 }>>()
+		$Assert<IsIdentical<typeof a, { a: 1 }>>()
 
 		const b = merge(undefined, { a: 1 as const })
 
 		expect(b).toStrictEqual({ a: 1 })
 
-		Assert<IsIdentical<typeof b, { a: 1 }>>()
+		$Assert<IsIdentical<typeof b, { a: 1 }>>()
 
 		const c = merge(null, null, null)
 
 		expect(c).toStrictEqual({})
 
-		Assert<IsIdentical<typeof c, {}>>()
+		$Assert<IsIdentical<typeof c, {}>>()
 
 		const d = merge({} as { a?: 'a' } | undefined, { a: 'aa' as const })
 
 		expect(d).toStrictEqual({ a: 'aa' })
 
-		Assert<IsIdentical<typeof d, { a: 'aa' }>>()
+		$Assert<IsIdentical<typeof d, { a: 'aa' }>>()
 
 		const e = merge({ a: 'a' as const }, {} as { a: 'aa' } | undefined)
 
 		expect(e).toStrictEqual({ a: 'a' })
 
-		Assert<IsIdentical<typeof e, { a: 'a' | 'aa' }>>()
+		$Assert<IsIdentical<typeof e, { a: 'a' | 'aa' }>>()
 	})
 
 	it('works with call signatures', () => {
@@ -62,10 +62,10 @@ describe('merge', () => {
 		}
 
 		type R = MergeNullish<X, { b: 2 }>
-		Assert.is<R, { (a: 1): 2; b: 2 }>()
+		$Assert.is<R, { (a: 1): 2; b: 2 }>()
 
 		type S = MergeNullish<{ b: 2 }, X>
-		Assert.is<S, { (a: 1): 2; b: 99 }>()
+		$Assert.is<S, { (a: 1): 2; b: 99 }>()
 	})
 
 	it('works', () => {
@@ -74,7 +74,7 @@ describe('merge', () => {
 		// @ts-expect-error either array or individual args
 		type _X = MergeNullish<[{ a: 1 }], { b: 2 }>
 
-		Assert<
+		$Assert<
 			IsIdentical<MergeNullish<[]>, {}>,
 			IsIdentical<MergeNullish<[{ a: 1 }]>, { a: 1 }>,
 			IsIdentical<MergeNullish<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>,
@@ -110,7 +110,7 @@ describe('merge', () => {
 			}
 		>
 
-		Assert<IsIdentical<II, { a: 2; readonly b?: 2 }>>()
+		$Assert<IsIdentical<II, { a: 2; readonly b?: 2 }>>()
 
 		const aa = merge(
 			{
@@ -132,7 +132,7 @@ describe('merge', () => {
 			d: { ddd: 5 },
 		})
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof aa,
 				{
@@ -149,39 +149,39 @@ describe('merge', () => {
 		expect.assertions(0)
 
 		type A = Merge2Complex<{ a: 'a' }, { b: 'b' }>
-		Assert<IsIdentical<A, { a: 'a'; b: 'b' }>>()
+		$Assert<IsIdentical<A, { a: 'a'; b: 'b' }>>()
 	})
 
 	it('Merge2 - optional (static)', () => {
 		expect.assertions(0)
 
 		type A = Merge2Complex<{ a?: 1 }, { a?: 2 }>
-		Assert<IsIdentical<A, { a?: 1 | 2 }>>()
+		$Assert<IsIdentical<A, { a?: 1 | 2 }>>()
 
 		type B = Merge2Complex<{ a: 1 }, { a?: 2 }>
-		Assert<IsIdentical<B, { a: 1 | 2 }>>()
+		$Assert<IsIdentical<B, { a: 1 | 2 }>>()
 
 		type C = Merge2Complex<{ a: 1 }, { a: 2 }>
-		Assert<IsIdentical<C, { a: 2 }>>()
+		$Assert<IsIdentical<C, { a: 2 }>>()
 
 		type D = Merge2Complex<{ a?: 1 }, { a: 2 }>
-		Assert<IsIdentical<D, { a: 2 }>>()
+		$Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
 	it('MergeN - optional (static)', () => {
 		expect.assertions(0)
 
 		type A = MergeN<[{ a?: 1 }, { a?: 2 }]>
-		Assert<IsIdentical<A, { a?: 1 | 2 }>>()
+		$Assert<IsIdentical<A, { a?: 1 | 2 }>>()
 
 		type B = MergeN<[{ a: 1 }, { a?: 2 }]>
-		Assert<IsIdentical<B, { a: 1 | 2 }>>()
+		$Assert<IsIdentical<B, { a: 1 | 2 }>>()
 
 		type C = MergeN<[{ a: 1 }, { a: 2 }]>
-		Assert<IsIdentical<C, { a: 2 }>>()
+		$Assert<IsIdentical<C, { a: 2 }>>()
 
 		type D = MergeN<[{ a?: 1 }, { a: 2 }]>
-		Assert<IsIdentical<D, { a: 2 }>>()
+		$Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
 	it('does not accept arrays', () => {
@@ -193,6 +193,6 @@ describe('merge', () => {
 
 		const func = () => merge(arr)
 		type A = ReturnType<typeof func>
-		Assert<IsIdentical<A, never>>()
+		$Assert<IsIdentical<A, never>>()
 	})
 })

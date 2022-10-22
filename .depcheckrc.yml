@@ -4,7 +4,6 @@
 ignores:
   - '@types/jest'
   - '@types/node'
-  - '@voltiso/assertor.transform'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest.esr'
   - '@voltiso/config.jest.lib'

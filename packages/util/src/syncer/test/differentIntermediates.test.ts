@@ -3,8 +3,8 @@
 
 import type { SyncerFunction, SyncerPromise } from '~/syncer'
 import { runAsync, runSync } from '~/syncer'
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 function* differentIntermediates(
 	s: string,
@@ -27,7 +27,7 @@ describe('differentIntermediates', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof differentIntermediates,
 				SyncerFunction<[string, number], number, string | number>

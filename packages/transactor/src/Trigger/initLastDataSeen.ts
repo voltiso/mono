@@ -7,6 +7,8 @@ import type { WithDocRef } from '~/DocRef'
 import { getAfterTriggers } from '~/DocRef'
 import type { CacheEntry } from '~/Transaction/Cache'
 
+import type { IntrinsicFields } from '..'
+
 export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {
 	if (cacheEntry.lastDataSeenByAfters || cacheEntry.originalData === undefined)
 		return
@@ -14,5 +16,7 @@ export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {
 	const afterTriggers = getAfterTriggers(ctx.docRef)
 
 	const data = deepCloneData(cacheEntry.originalData)
-	cacheEntry.lastDataSeenByAfters = afterTriggers.map(_ => data)
+	cacheEntry.lastDataSeenByAfters = Array.from<IntrinsicFields | null>({
+		length: afterTriggers.length,
+	}).fill(data)
 }

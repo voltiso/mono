@@ -4,7 +4,6 @@
 /* eslint-disable jest/require-hook */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import {
 	createTransactor,

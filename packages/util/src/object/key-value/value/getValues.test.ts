@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import { getValues } from './getValues'
 import type { Value } from './Value'
@@ -23,7 +23,7 @@ describe('getValues', () => {
 		} as const
 
 		type V = Value<typeof obj>
-		Assert<IsIdentical<V, 1 | 'a' | 123 | typeof sym | typeof sym2>>()
+		$Assert<IsIdentical<V, 1 | 'a' | 123 | typeof sym | typeof sym2>>()
 
 		Object.defineProperty(obj, 'nonEnumerable', { enumerable: false })
 		Object.defineProperty(obj, sym2, { enumerable: false })
@@ -35,20 +35,20 @@ describe('getValues', () => {
 		expect(a).toStrictEqual([1, 'a', sym])
 
 		type A = typeof a[number]
-		Assert<IsIdentical<A, 1 | 'a' | 123 | typeof sym | typeof sym2>>()
+		$Assert<IsIdentical<A, 1 | 'a' | 123 | typeof sym | typeof sym2>>()
 
 		const b = getValues(obj)
 
 		expect(b).toStrictEqual([1, 'a'])
 
 		type B = typeof b[number]
-		Assert<IsIdentical<B, 1 | 'a' | 123>>() // no way to type-check if enumerable
+		$Assert<IsIdentical<B, 1 | 'a' | 123>>() // no way to type-check if enumerable
 
 		const c = getValues(obj, { includeNonEnumerable: true })
 
 		expect(c).toStrictEqual([1, 'a', 123])
 
-		Assert<IsIdentical<typeof c[number], 1 | 'a' | 123>>()
+		$Assert<IsIdentical<typeof c[number], 1 | 'a' | 123>>()
 
 		const d = getValues(obj, {
 			includeNonEnumerable: true,
@@ -58,6 +58,6 @@ describe('getValues', () => {
 		expect(d).toStrictEqual([1, 'a', 123, sym, sym2])
 
 		type D = typeof d[number]
-		Assert<IsIdentical<D, 1 | 'a' | 123 | typeof sym | typeof sym2>>()
+		$Assert<IsIdentical<D, 1 | 'a' | 123 | typeof sym | typeof sym2>>()
 	})
 })

@@ -9,6 +9,10 @@ import type { InferMethods } from './InferMethods'
 
 //
 
+export type InferTIFromDoc_<D> = [D] extends [DocLike]
+	? InferTIFromDoc<D>
+	: never
+
 export type InferTIFromDoc<D extends DocLike> = D[DTI] & {
 	methods: InferMethods<D>
 } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import { nest } from './nest'
 
@@ -14,12 +14,12 @@ describe('Nest', () => {
 
 		expect(a).toBe(123)
 
-		Assert<IsIdentical<typeof a, 123>>()
+		$Assert<IsIdentical<typeof a, 123>>()
 
 		const x = nest(123, ['a', 'b', 3] as const)
 
 		expect(x).toStrictEqual({ a: { b: { 3: 123 } } })
 
-		Assert<IsIdentical<typeof x, { a: { b: { [3]: 123 } } }>>()
+		$Assert<IsIdentical<typeof x, { a: { b: { [3]: 123 } } }>>()
 	})
 })

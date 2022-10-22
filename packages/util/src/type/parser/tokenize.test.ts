@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '~/type/static-assert'
+import { $Assert } from '~'
 
 import type { Tokenize } from './tokenize'
 
@@ -9,7 +9,7 @@ describe('tokenize', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert.is<
+		$Assert.is<
 			Tokenize<'isString 1 & !isString 2'>,
 			['isString', '1', '&', '!', 'isString', '2']
 		>()

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { $Omit_ } from './DistributedOmit'
 
@@ -11,10 +11,10 @@ describe('Omit_', () => {
 		expect.assertions(0)
 
 		type B = $Omit_<{ 2: 2; readonly a?: 1 }, number>
-		Assert<IsIdentical<B, { readonly a?: 1 }>>()
+		$Assert<IsIdentical<B, { readonly a?: 1 }>>()
 
 		type A = $Omit_<{ readonly a?: 1; b: 2 }, 'b'>
-		Assert<IsIdentical<A, { readonly a?: 1 }>>()
+		$Assert<IsIdentical<A, { readonly a?: 1 }>>()
 	})
 
 	type Obj = {
@@ -28,22 +28,22 @@ describe('Omit_', () => {
 		expect.assertions(0)
 
 		type A0 = $Omit_<Obj, 'a'>
-		Assert<
+		$Assert<
 			IsIdentical<A0, { [k: string]: 1 | 2; [k: number]: 2; [k: symbol]: 3 }>
 		>()
 
 		type A1 = $Omit_<Obj, 'a'>
-		Assert<
+		$Assert<
 			IsIdentical<A1, { [k: string]: 1 | 2; [k: number]: 2; [k: symbol]: 3 }>
 		>()
 
 		//
 
 		type B0 = Omit<Obj, 'a' | symbol>
-		Assert<IsIdentical<B0, { [k: string]: 1 | 2; [k: number]: 2 }>>()
+		$Assert<IsIdentical<B0, { [k: string]: 1 | 2; [k: number]: 2 }>>()
 
 		type B1 = $Omit_<Obj, 'a' | symbol>
-		Assert<IsIdentical<B1, { [k: string]: 1 | 2; [k: number]: 2 }>>()
+		$Assert<IsIdentical<B1, { [k: string]: 1 | 2; [k: number]: 2 }>>()
 
 		//
 

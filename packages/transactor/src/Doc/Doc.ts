@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_, FastMerge2Reverse_ } from '@voltiso/util'
+import type { _, $_ } from '@voltiso/util'
 import { callableClass, lazyConstructor } from '@voltiso/util'
 
 import type { Id, NestedData } from '~/Data'
@@ -11,7 +11,7 @@ import type { DocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
 import type { ExecutionContext } from './_/ExecutionContext'
-import type { GetData, GetUpdateDataByCtx } from './_/GData'
+import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GData'
 import type { GMethodPromises } from './_/GMethodPromises'
 import type { UpdatesFromData } from './_/UpdatesFromData'
 import { DocCall } from './DocCall'
@@ -26,8 +26,7 @@ export type IdField<Doc extends DocLike> = {
 	id: Id<Doc>
 }
 
-export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext>
-	extends DocLike {
+export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext> {
 	This: this
 
 	readonly [DTI]: TI
@@ -40,7 +39,7 @@ export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext>
 
 	readonly data: GetData<TI>
 	dataWithoutId(): GetData<TI>
-	dataWithId(): $_<IdField<this> & GetData<TI>>
+	dataWithId(): GetDataWithId<TI>
 
 	//
 
@@ -70,22 +69,21 @@ export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext>
 
 	//
 
-	toJSON(): _<{ id: string } & JsonFromDocData<GetData<TI>>>
+	toJSON(): $_<{ id: string } & JsonFromDocData<GetData<TI>>>
 }
 
 export type Doc<
-	TI extends DocTI = DocTI,
+	TI extends DocTILike = DocTI,
 	Ctx extends ExecutionContext = ExecutionContext,
-> = FastMerge2Reverse_<
-	DocBase<TI, Ctx>,
-	TI extends IndexedDocTI
+> = DocBase<TI, Ctx> & {
+	__voltiso: GetData<TI>['__voltiso']
+} & (TI extends IndexedDocTI
 		? {
 				[k: string]: NestedData
 		  }
 		: GetData<TI> &
 				GMethodPromises<TI> &
-				Required<GetData<TI>['__voltiso']['aggregateTarget']>
->
+				Required<GetData<TI>['__voltiso']['aggregateTarget']>)
 
 export const Doc = callableClass(
 	lazyConstructor(() => DocImpl as never),

@@ -54,7 +54,6 @@
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
-    "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",

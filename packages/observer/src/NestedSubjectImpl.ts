@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import type { PatchFor } from '@voltiso/patcher'
 import { deleteIt, patch, patchUpdate } from '@voltiso/patcher'
 import type {
@@ -15,7 +14,7 @@ import type {
 	Type_,
 } from '@voltiso/schemar.types'
 import { getSchemableChild } from '@voltiso/schemar.types'
-import { assertNotPolluting, assumeType } from '@voltiso/util'
+import { $assert, $AssumeType, assertNotPolluting } from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
 
 import type {
@@ -169,7 +168,7 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 			// eslint-disable-next-line no-constructor-return
 			return self as never
 		} else {
-			assumeType<NestedSubjectWithSchemaRootOptions<S>>(options)
+			$AssumeType<NestedSubjectWithSchemaRootOptions<S>>(options)
 			this._diContext = options.diContext
 
 			this._schemable = options.schemable

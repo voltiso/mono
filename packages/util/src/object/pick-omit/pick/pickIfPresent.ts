@@ -5,7 +5,7 @@
 
 import type { _ } from '~/object'
 import { hasOwnProperty } from '~/object'
-import type { AlsoAccept } from '~/type'
+import type { AlsoAccept } from '~/$strip'
 
 type PickIfPresentResult<O, K extends keyof O | AlsoAccept<keyof any>> = _<
 	{

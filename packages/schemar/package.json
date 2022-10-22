@@ -50,7 +50,6 @@
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
-    "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",

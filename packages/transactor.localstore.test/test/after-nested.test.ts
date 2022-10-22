@@ -3,7 +3,6 @@
 
 /* eslint-disable jest/require-hook */
 
-import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { deleteIt, Doc, incrementIt } from '@voltiso/transactor'
 import * as gen from 'random-seed'

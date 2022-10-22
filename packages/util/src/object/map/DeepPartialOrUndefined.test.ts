@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import type { DeepPartialOrUndefined_ } from './DeepPartialOrUndefined'
 
@@ -17,7 +17,7 @@ describe('DeepPartialOrUndefined', () => {
 				a: 11
 			}
 		}>
-		Assert<
+		$Assert<
 			IsIdentical<
 				X,
 				{

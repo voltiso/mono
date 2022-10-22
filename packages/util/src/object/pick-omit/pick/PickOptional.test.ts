@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { PickOptional } from './PickOptional'
 
@@ -11,7 +11,7 @@ describe('PickOptional', () => {
 		expect.assertions(0)
 
 		type A = PickOptional<{ readonly a?: 'a'; b: 'b' }>
-		Assert<IsIdentical<A, { readonly a?: 'a' }>>()
+		$Assert<IsIdentical<A, { readonly a?: 'a' }>>()
 	})
 
 	type ObjA = {
@@ -23,7 +23,7 @@ describe('PickOptional', () => {
 		expect.assertions(0)
 
 		type A = PickOptional<O>
-		Assert.is<O, A>()
+		$Assert.is<O, A>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

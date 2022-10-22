@@ -5,13 +5,14 @@ import * as s from '@voltiso/schemar'
 import type { ObjectLike } from '@voltiso/schemar.types'
 
 import type { Aggregator } from '~/Aggregator'
+import type { DocTILike } from '~/Doc'
 import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 	UnknownTrigger,
 } from '~/Trigger'
 
-export interface DocDerivedData /* extends DocTI */ {
+export interface DocDerivedData extends DocTILike {
 	tag: any
 
 	id: unknown

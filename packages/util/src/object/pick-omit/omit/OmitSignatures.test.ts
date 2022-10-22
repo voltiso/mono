@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OmitSignatures } from './OmitSignatures'
 
@@ -23,7 +23,7 @@ describe('OmitSignatures', () => {
 			[sym]: 3
 		}
 		type X = OmitSignatures<Obj>
-		Assert<IsIdentical<X, { 2: 2; num: number; [sym]: 3 }>>()
+		$Assert<IsIdentical<X, { 2: 2; num: number; [sym]: 3 }>>()
 	})
 
 	it('vscode finds original definitions', () => {

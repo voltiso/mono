@@ -1,80 +1,80 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert } from '~/$strip'
 import type { Get } from '~/object/get-set/get/get/get'
 import { get } from '~/object/get-set/get/get/get'
 import type { IsIdentical } from '~/type/compare/IsEqual'
-import { Assert } from '~/type/static-assert/Assert'
 
 describe('get', () => {
 	it('works - static', () => {
 		expect.assertions(0)
 
 		type A = Get<{ a: { b: { c: 0 } } }, []>
-		Assert<IsIdentical<A, { a: { b: { c: 0 } } }>>()
+		$Assert<IsIdentical<A, { a: { b: { c: 0 } } }>>()
 
 		type B = Get<{ a: { b: { c: 0 } } }, ['a']>
-		Assert<IsIdentical<B, { b: { c: 0 } }>>()
+		$Assert<IsIdentical<B, { b: { c: 0 } }>>()
 
 		type C = Get<{ a: { b: { c: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<C, 0>>()
+		$Assert<IsIdentical<C, 0>>()
 
 		type D = Get<{ a: { b: { c?: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<D, 0>>()
+		$Assert<IsIdentical<D, 0>>()
 
 		type D2 = Get<{ a: { b: { c?: 0 | undefined } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<D2, 0 | undefined>>()
+		$Assert<IsIdentical<D2, 0 | undefined>>()
 
 		type DD = Get<{}, []>
-		Assert<IsIdentical<DD, {}>>()
+		$Assert<IsIdentical<DD, {}>>()
 
 		type DDD = Get<{ a: 0 }, ['a']>
-		Assert<IsIdentical<DDD, 0>>()
+		$Assert<IsIdentical<DDD, 0>>()
 
 		type E = Get<{ a: { b?: { c: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<E, 0>>()
+		$Assert<IsIdentical<E, 0>>()
 
 		type F = Get<{ a: { b: { c: 0 | undefined } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<F, 0 | undefined>>()
+		$Assert<IsIdentical<F, 0 | undefined>>()
 
 		type G = Get<{ a?: { b: { c?: 0 } } }, ['a', 'b', 'c']>
-		Assert<IsIdentical<G, 0>>()
+		$Assert<IsIdentical<G, 0>>()
 
 		// @ts-expect-error bad path
 		type H = Get<{}, ['a', 'b', 'c']>
-		Assert<IsIdentical<H, never>>()
+		$Assert<IsIdentical<H, never>>()
 
 		// @ts-expect-error bad path
 		type I = Get<{ a: { b: { c: 0 } } }, ['a', 'a']>
-		Assert<IsIdentical<I, never>>()
+		$Assert<IsIdentical<I, never>>()
 	})
 
 	it('works - static - unions', () => {
 		expect.assertions(0)
 
 		type AA = Get<{ a: 1 }, []>
-		Assert<IsIdentical<AA, { a: 1 }>>()
+		$Assert<IsIdentical<AA, { a: 1 }>>()
 
 		type BB = Get<{ a: 1 } | { b: 2 }, []>
-		Assert<IsIdentical<BB, { a: 1 } | { b: 2 }>>()
+		$Assert<IsIdentical<BB, { a: 1 } | { b: 2 }>>()
 
 		type CC = Get<{ a: 1 } | { a: 2 }, ['a']>
-		Assert<IsIdentical<CC, 1 | 2>>()
+		$Assert<IsIdentical<CC, 1 | 2>>()
 
 		type DD = Get<{ a: 1 } | {}, ['a']>
-		Assert<IsIdentical<DD, 1>>()
+		$Assert<IsIdentical<DD, 1>>()
 
 		type A = Get<{ a: { b: 0 } } | { a: { b: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<A, 0 | 1>>()
+		$Assert<IsIdentical<A, 0 | 1>>()
 
 		type B = Get<{ a: { b: 0 } } | { a: { c: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<B, 0>>()
+		$Assert<IsIdentical<B, 0>>()
 
 		type C = Get<{ a: { b?: 0 } } | { a: { c: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<C, 0>>()
+		$Assert<IsIdentical<C, 0>>()
 
 		type D = Get<{ a: { b?: 0 | undefined } } | { a: { c: 1 } }, ['a', 'b']>
-		Assert<IsIdentical<D, 0 | undefined>>()
+		$Assert<IsIdentical<D, 0 | undefined>>()
 	})
 
 	it('works', () => {
@@ -115,7 +115,7 @@ describe('get', () => {
 		expect(aaa).toStrictEqual({ e: 0 })
 		expect(aaa2).toStrictEqual({ e: 0 })
 
-		Assert<IsIdentical<typeof aaa, { e: 0 }>>()
-		Assert<IsIdentical<typeof aaa2, { e: 0 }>>()
+		$Assert<IsIdentical<typeof aaa, { e: 0 }>>()
+		$Assert<IsIdentical<typeof aaa2, { e: 0 }>>()
 	})
 })

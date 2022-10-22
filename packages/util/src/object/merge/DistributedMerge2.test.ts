@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _, IsIdentical, OmitSuperComplex } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { $Merge2 } from './DistributedMerge2'
 import type { Merge2Complex } from './Merge2Complex'
@@ -12,9 +12,9 @@ describe('Merge2Trivial', () => {
 		expect.assertions(0)
 
 		type A = $Merge2<{ a: 1; b: 2 }, { a: 2 }>
-		Assert<IsIdentical<A, { a: 2; b: 2 }>>()
+		$Assert<IsIdentical<A, { a: 2; b: 2 }>>()
 
-		Assert<
+		$Assert<
 			IsIdentical<_<$Merge2<{ a: 1 }, { b: 2 }>>, { a: 1; b: 2 }>,
 			IsIdentical<_<$Merge2<{ a: 1 }, { a: 2 }>>, { a: 2 }>,
 			IsIdentical<_<$Merge2<{ a: { a: 1 } }, { a: { b: 2 } }>>, { a: { b: 2 } }>
@@ -45,10 +45,10 @@ describe('Merge2Trivial', () => {
 		// Assert<IsIdentical<B, { a?: 2 }>>() // different than Merge2
 
 		type C = _<$Merge2<{ a: 1 }, { a: 2 }>>
-		Assert<IsIdentical<C, { a: 2 }>>()
+		$Assert<IsIdentical<C, { a: 2 }>>()
 
 		type D = _<$Merge2<{ a?: 1 }, { a: 2 }>>
-		Assert<IsIdentical<D, { a: 2 }>>()
+		$Assert<IsIdentical<D, { a: 2 }>>()
 	})
 
 	type SomeType = {
@@ -75,7 +75,7 @@ describe('Merge2Trivial', () => {
 		// Assert.is<E, T>() // different than Merge2
 
 		type G = $Merge2<T, SomeType>
-		Assert.is<G, SomeType>()
+		$Assert.is<G, SomeType>()
 	})
 
 	it('generics 2', <T extends SomeType>() => {
@@ -86,12 +86,12 @@ describe('Merge2Trivial', () => {
 		type B3 = Merge2Complex<T, { c: 3 }>
 		type B5 = $Merge2<T, { c: 3 }>
 
-		Assert.is<B1, SomeType>()
-		Assert.is<B2, SomeType>()
-		Assert.is<B3, SomeType>()
-		Assert.is<B5, SomeType>()
+		$Assert.is<B1, SomeType>()
+		$Assert.is<B2, SomeType>()
+		$Assert.is<B3, SomeType>()
+		$Assert.is<B5, SomeType>()
 
-		Assert.is<OmitSuperComplex<T, 'c'> & { c: 3 }, SomeType>()
+		$Assert.is<OmitSuperComplex<T, 'c'> & { c: 3 }, SomeType>()
 	})
 
 	it('vscode - jump to definition (manual test...)', () => {

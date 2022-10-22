@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert } from '~/$strip'
 import { undef } from '~/nullish'
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type/static-assert'
+import type { IsIdentical } from '~/$strip'
 
 import type { TryGetProperty } from './tryGetProperty'
 import { tryGetProperty } from './tryGetProperty'
@@ -13,19 +13,19 @@ describe('tryGetProperty', () => {
 		expect.assertions(0)
 
 		type A = TryGetProperty<{ [k: string]: 0 }, string>
-		Assert<IsIdentical<A, 0 | undefined>>()
+		$Assert<IsIdentical<A, 0 | undefined>>()
 
 		type B = TryGetProperty<{ [k: string]: 0 }, 'test'>
-		Assert<IsIdentical<B, 0 | undefined>>()
+		$Assert<IsIdentical<B, 0 | undefined>>()
 
 		type C = TryGetProperty<{ a: 1 }, 'test'>
-		Assert<IsIdentical<C, undefined>>()
+		$Assert<IsIdentical<C, undefined>>()
 
 		type D = TryGetProperty<{ [k: string]: number; test: 0 }, 'test'>
-		Assert<IsIdentical<D, 0>>()
+		$Assert<IsIdentical<D, 0>>()
 
 		type E = TryGetProperty<{ [k: string]: number; test?: 0 }, 'test'>
-		Assert<IsIdentical<E, 0 | undefined>>()
+		$Assert<IsIdentical<E, 0 | undefined>>()
 	})
 
 	it('works', () => {
@@ -68,16 +68,16 @@ describe('tryGetProperty', () => {
 		// @ts-expect-error private
 		expect(c.field).toBe(123)
 
-		Assert<IsIdentical<Foo['field'], 123>>()
-		Assert<IsIdentical<Foo['unknownField'], unknown>>()
+		$Assert<IsIdentical<Foo['field'], 123>>()
+		$Assert<IsIdentical<Foo['unknownField'], unknown>>()
 
 		type A = TryGetProperty<Foo, 'field'>
-		Assert<IsIdentical<A, 123>>()
+		$Assert<IsIdentical<A, 123>>()
 
 		type B = TryGetProperty<Foo, 'unknownField'>
-		Assert<IsIdentical<B, unknown>>()
+		$Assert<IsIdentical<B, unknown>>()
 
 		type C = TryGetProperty<Foo, 'nonExisting'>
-		Assert<IsIdentical<C, undefined>>()
+		$Assert<IsIdentical<C, undefined>>()
 	})
 })

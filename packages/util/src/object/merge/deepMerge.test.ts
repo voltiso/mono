@@ -3,7 +3,7 @@
 
 import type { IsIdentical } from '~'
 import { undef } from '~/nullish'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { DeepMerge, DeepMerge2 } from './deepMerge/deepMerge'
 import { deepMerge } from './deepMerge/deepMerge'
@@ -13,29 +13,31 @@ describe('deepMerge', () => {
 		expect.assertions(0)
 
 		type A = DeepMerge2<string, number>
-		Assert<IsIdentical<A, number>>()
+		$Assert<IsIdentical<A, number>>()
 
-		Assert<IsIdentical<DeepMerge2<string, void>, void>>()
-		Assert<IsIdentical<DeepMerge2<string, { a: 1 }>, { a: 1 }>>()
-		Assert<IsIdentical<DeepMerge2<{ a: 1 }, number>, number>>()
-		Assert<IsIdentical<DeepMerge2<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>>()
-		Assert<IsIdentical<DeepMerge2<{ a: 1; b: 3 }, { b: 2 }>, { a: 1; b: 2 }>>()
+		$Assert<IsIdentical<DeepMerge2<string, void>, void>>()
+		$Assert<IsIdentical<DeepMerge2<string, { a: 1 }>, { a: 1 }>>()
+		$Assert<IsIdentical<DeepMerge2<{ a: 1 }, number>, number>>()
+		$Assert<IsIdentical<DeepMerge2<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>>()
+		$Assert<IsIdentical<DeepMerge2<{ a: 1; b: 3 }, { b: 2 }>, { a: 1; b: 2 }>>()
 
 		type B = DeepMerge2<{ a: 1; b: 3 }, { b?: 2 }>
-		Assert<IsIdentical<B, { a: 1; b: 2 | 3 }>>()
+		$Assert<IsIdentical<B, { a: 1; b: 2 | 3 }>>()
 
 		type C = DeepMerge2<{ a: 1; b?: 3 }, { b?: 2 }>
-		Assert<IsIdentical<C, { a: 1; b?: 2 | 3 }>>()
+		$Assert<IsIdentical<C, { a: 1; b?: 2 | 3 }>>()
 
-		Assert<IsIdentical<DeepMerge2<{ a: 1; b?: 3 }, { b: 2 }>, { a: 1; b: 2 }>>()
+		$Assert<
+			IsIdentical<DeepMerge2<{ a: 1; b?: 3 }, { b: 2 }>, { a: 1; b: 2 }>
+		>()
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b: 2 }>,
 				{ a: 1; b: 2 }
 			>
 		>()
-		Assert<
+		$Assert<
 			IsIdentical<
 				DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b: { ba: 2 } }>,
 				{ a: 1; b: { ba: 2; bb: 2 } }
@@ -43,13 +45,13 @@ describe('deepMerge', () => {
 		>()
 
 		type D = DeepMerge2<{ a: 1; b: { ba: 1; bb: 2 } }, { b?: { ba: 2 } }>
-		Assert<IsIdentical<D, { a: 1; b: { ba: 1 | 2; bb: 2 } }>>()
+		$Assert<IsIdentical<D, { a: 1; b: { ba: 1 | 2; bb: 2 } }>>()
 	})
 
 	it('works - static', () => {
 		expect.assertions(0)
 
-		Assert<
+		$Assert<
 			IsIdentical<DeepMerge<[]>, {}>,
 			IsIdentical<DeepMerge<[{ a: 1 }]>, { a: 1 }>,
 			IsIdentical<DeepMerge<[{ a: 1 }, { b: 2 }]>, { a: 1; b: 2 }>,

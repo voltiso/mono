@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dot-access works 1`] = `
+"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+import { $Assert, $assert } from '@voltiso/util';
+//[@voltiso/transform/strip] Commented-out because of symbol \`$Assert\`
+/*$Assert<IsIdentical<true, true>>()*/ 
+//[@voltiso/transform/strip] Commented-out because of symbol \`$assert\`
+/*$assert.defined(1)*/ 
+//[@voltiso/transform/strip] Commented-out because of symbol \`$assert\`
+/*$assert(0)*/ 
+//# sourceMappingURL=dot-access.js.map"
+`;

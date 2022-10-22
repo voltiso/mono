@@ -9,8 +9,7 @@ import type {
 	IVoid,
 	VoidOptions,
 } from '@voltiso/schemar.types'
-import { isVoid } from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, isVoid, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema'

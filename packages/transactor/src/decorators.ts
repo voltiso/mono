@@ -25,7 +25,7 @@ export function method<
 }
 
 export function afterCreateOrUpdate<
-	D extends DocLike & { [k in Name]: AfterTrigger<D, D, boolean, true> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, boolean, true> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -33,7 +33,7 @@ export function afterCreateOrUpdate<
 }
 
 export function afterCreate<
-	D extends DocLike & { [k in Name]: AfterTrigger<D, D, false, true> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, false, true> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -41,7 +41,7 @@ export function afterCreate<
 }
 
 export function afterDelete<
-	D extends DocLike & { [k in Name]: AfterTrigger<D, null, true, false> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, true, false> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
@@ -49,7 +49,7 @@ export function afterDelete<
 }
 
 export function afterUpdate<
-	D extends DocLike & { [k in Name]: AfterTrigger<D, D, true, true> },
+	D extends DocLike & { [k in Name]: AfterTrigger<D, true, true> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import { narrow } from './narrowType'
 
@@ -20,6 +20,6 @@ describe('narrowType', () => {
 
 		const s = 'asd'
 		const x = narrow(s).toType<'d'>()
-		Assert<IsIdentical<typeof x, 'd'>>()
+		$Assert<IsIdentical<typeof x, 'd'>>()
 	})
 })

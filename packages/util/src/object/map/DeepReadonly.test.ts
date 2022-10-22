@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/type'
-import { Assert } from '~/type'
+import type { IsIdentical } from '~/$strip'
+import { $Assert } from '~/$strip'
 
 import type { DeepReadonly_ } from './DeepReadonly'
 
@@ -17,7 +17,7 @@ describe('DeepReadonly', () => {
 				a?: 11
 			}
 		}>
-		Assert<
+		$Assert<
 			IsIdentical<
 				X,
 				{
@@ -42,7 +42,7 @@ describe('DeepReadonly', () => {
 		}
 
 		type A = DeepReadonly_<Obj>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{

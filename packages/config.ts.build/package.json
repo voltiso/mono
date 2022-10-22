@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.ts.build",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -24,14 +24,12 @@
   },
   "__________DEPS": "__________",
   "peerDependencies": {
-    "@voltiso/assertor.transform": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "typescript": "^4.7.4 || *",
     "typescript-transform-paths": "^3.3.1 || *"
   },
   "devDependencies": {
-    "@voltiso/assertor.transform": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^"
   }

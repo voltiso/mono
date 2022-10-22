@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { Entry } from './Entry'
 
@@ -16,6 +16,6 @@ describe('Entry', () => {
 		}
 
 		type A = Entry<Obj>
-		Assert<IsIdentical<A, [string, number]>>()
+		$Assert<IsIdentical<A, [string, number]>>()
 	})
 })

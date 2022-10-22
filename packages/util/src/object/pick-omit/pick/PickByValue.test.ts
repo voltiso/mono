@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { PickByValue } from './PickByValue'
 
@@ -11,10 +11,10 @@ describe('PickByValue', () => {
 		expect.assertions(0)
 
 		type A = PickByValue<{ readonly a?: 'a'; b: 'b' }, unknown>
-		Assert<IsIdentical<A, { readonly a?: 'a'; b: 'b' }>>()
+		$Assert<IsIdentical<A, { readonly a?: 'a'; b: 'b' }>>()
 
 		type B = PickByValue<{ readonly a?: 'a'; b: 'b' }, 'a'>
-		Assert<IsIdentical<B, { readonly a?: 'a' }>>()
+		$Assert<IsIdentical<B, { readonly a?: 'a' }>>()
 	})
 
 	type ObjA = {
@@ -26,7 +26,7 @@ describe('PickByValue', () => {
 		expect.assertions(0)
 
 		type A = PickByValue<O, 'aa'>
-		Assert.is<O, A>()
+		$Assert.is<O, A>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

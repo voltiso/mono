@@ -7,7 +7,7 @@ describe('VoltisoError', () => {
 	it('works with package name', () => {
 		expect.hasAssertions()
 
-		const error = new VoltisoError('test', { packageInfo: { name: 'pName' } })
+		const error = new VoltisoError('test', { package: { name: 'pName' } })
 
 		expect(error.message).toBe('[pName] test')
 	})
@@ -16,10 +16,10 @@ describe('VoltisoError', () => {
 		expect.hasAssertions()
 
 		const error = new VoltisoError('test', {
-			packageInfo: { name: 'pName', version: '1.0.0' },
+			package: { name: 'pName', version: '1.0.0' },
 		})
 
-		expect(error.message).toBe('[pName:1.0.0] test')
+		expect(error.message).toBe('[pName@1.0.0] test')
 	})
 
 	it('works with just a message', () => {

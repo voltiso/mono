@@ -6,7 +6,7 @@ import type { ISchema } from '@voltiso/schemar.types'
 import type { DTI, GetData } from '@voltiso/transactor'
 import { Doc, sTimestamp } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, nextDay } from '@voltiso/util'
+import { $Assert, nextDay } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
@@ -42,7 +42,7 @@ class Day extends Doc('day')({
 	id: sDate,
 
 	aggregates: {
-		shifts: s.array(ShiftBase.schemableWithId).default([]).simple,
+		shifts: s.array(ShiftBase.schemaWithId).default([]).simple,
 	},
 }) {}
 
@@ -87,7 +87,7 @@ describe('aggregator', () => {
 	it('multi', async () => {
 		expect.hasAssertions()
 
-		Assert<IsIdentical<Doc[DTI]['aggregates'], {}>>()
+		$Assert<IsIdentical<Doc[DTI]['aggregates'], {}>>()
 
 		type DA = Day[DTI]['aggregates']
 		Assert.is<DA, { shifts: ISchema }>()

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { Assert } from '~/type'
+import { $Assert } from '~/$strip'
 
 import type { OptionalFromUndefined } from './OptionalFromUndefined'
 
@@ -10,7 +10,7 @@ describe('OptionalFromUndefined', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				OptionalFromUndefined<{
 					a: number
@@ -22,7 +22,7 @@ describe('OptionalFromUndefined', () => {
 			>
 		>()
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				OptionalFromUndefined<{
 					a: undefined

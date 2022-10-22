@@ -13,9 +13,10 @@ export type ObjectIndexSignatureEntry = {
 	valueSchema: SchemableLike
 }
 
-export interface ObjectOptions extends SchemaOptions {
-	Output: object
-	Input: object
+export interface ObjectOptions<T extends object = object>
+	extends SchemaOptions {
+	Output: T
+	Input: T
 
 	shape: InferableObjectLike
 

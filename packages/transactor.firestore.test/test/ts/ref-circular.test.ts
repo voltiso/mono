@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import type { DTI, Id, StrongRef} from '@voltiso/transactor';
+import type { DTI, Id, StrongRef } from '@voltiso/transactor'
 import { sStrongRef, sWeakRef } from '@voltiso/transactor'
 import { createTransactor, Doc, method } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
