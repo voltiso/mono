@@ -66,6 +66,41 @@ importers:
       typescript-transform-paths: 3.3.1_typescript@4.8.4
       zone.js: 0.11.8
 
+  packages/assertor:
+    specifiers:
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/config.tsdoc': workspace:^
+      '@voltiso/schemar': workspace:^
+      '@voltiso/schemar.types': workspace:^
+      '@voltiso/script': workspace:^
+      '@voltiso/transform': workspace:^
+      '@voltiso/util': workspace:^
+      chalk: ^4.1.2
+    dependencies:
+      '@voltiso/util': link:../util
+      chalk: 4.1.2
+    devDependencies:
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/config.tsdoc': link:../config.tsdoc
+      '@voltiso/schemar': link:../schemar
+      '@voltiso/schemar.types': link:../schemar.types
+      '@voltiso/script': link:../script
+      '@voltiso/transform': link:../transform
+
+  packages/assertor.test:
+    specifiers:
+      '@voltiso/assertor': workspace:^
+      '@voltiso/config.jest.esr': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+    devDependencies:
+      '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest.esr': link:../config.jest.esr
+      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+
   packages/caller:
     specifiers:
       '@voltiso/config.jest.esr': workspace:^
@@ -141,10 +176,12 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/transform': workspace:^
+      '@voltiso/util': workspace:^47.0.0
       eslint: ^8.25.0
       eslint-define-config: ^1.7.0
       rimraf: ^3.0.2
     dependencies:
+      '@voltiso/util': link:../util
       eslint-define-config: 1.7.0
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
@@ -263,7 +300,7 @@ importers:
       eslint-plugin-cypress: ^2.12.1
       eslint-plugin-destructuring: ^2.2.1
       eslint-plugin-editorconfig: ^4.0.2
-      eslint-plugin-es: ^4.1.0
+      eslint-plugin-es-x: ^5.3.1
       eslint-plugin-eslint-comments: ^3.2.0
       eslint-plugin-etc: ^2.0.2
       eslint-plugin-ext: ^0.1.0
@@ -336,7 +373,7 @@ importers:
       eslint-plugin-cypress: 2.12.1_eslint@8.25.0
       eslint-plugin-destructuring: 2.2.1
       eslint-plugin-editorconfig: 4.0.2
-      eslint-plugin-es: 4.1.0_eslint@8.25.0
+      eslint-plugin-es-x: 5.3.1_eslint@8.25.0
       eslint-plugin-eslint-comments: 3.2.0_eslint@8.25.0
       eslint-plugin-etc: 2.0.2_z4bbprzjrhnsfa24uvmcbu7f5q
       eslint-plugin-ext: 0.1.0
@@ -415,7 +452,7 @@ importers:
       eslint-plugin-cypress: ^2.12.1
       eslint-plugin-destructuring: ^2.2.1
       eslint-plugin-editorconfig: ^4.0.2
-      eslint-plugin-es: ^4.1.0
+      eslint-plugin-es-x: ^5.3.1
       eslint-plugin-eslint-comments: ^3.2.0
       eslint-plugin-etc: ^2.0.2
       eslint-plugin-ext: ^0.1.0
@@ -481,7 +518,7 @@ importers:
       eslint-plugin-cypress: 2.12.1_eslint@8.25.0
       eslint-plugin-destructuring: 2.2.1
       eslint-plugin-editorconfig: 4.0.2
-      eslint-plugin-es: 4.1.0_eslint@8.25.0
+      eslint-plugin-es-x: 5.3.1_eslint@8.25.0
       eslint-plugin-eslint-comments: 3.2.0_eslint@8.25.0
       eslint-plugin-etc: 2.0.2_z4bbprzjrhnsfa24uvmcbu7f5q
       eslint-plugin-ext: 0.1.0
@@ -618,7 +655,6 @@ importers:
     specifiers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/patcher': workspace:^
       '@voltiso/schemar': workspace:^
       '@voltiso/schemar.types': workspace:^
       '@voltiso/script': workspace:^
@@ -626,7 +662,6 @@ importers:
       '@voltiso/util.rxjs': workspace:^
       rxjs: ^7.5.7
     dependencies:
-      '@voltiso/patcher': link:../patcher
       '@voltiso/util': link:../util
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
@@ -650,25 +685,6 @@ importers:
       '@voltiso/schemar': link:../schemar
       '@voltiso/script': link:../script
       '@voltiso/util': link:../util
-
-  packages/patcher:
-    specifiers:
-      '@voltiso/config.jest.esr': workspace:^
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/script': workspace:^
-      '@voltiso/util': workspace:^
-      fast-equals: ^4.0.3
-      jest: ^29.2.0
-    dependencies:
-      '@voltiso/util': link:../util
-      fast-equals: 4.0.3
-    devDependencies:
-      '@voltiso/config.jest.esr': link:../config.jest.esr
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
-      jest: 29.2.0
 
   packages/rpc:
     specifiers:
@@ -853,6 +869,7 @@ importers:
   packages/transactor:
     specifiers:
       '@types/js-yaml': ^4.0.5
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
@@ -876,6 +893,7 @@ importers:
       js-yaml: 4.1.0
     devDependencies:
       '@types/js-yaml': 4.0.5
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
@@ -1139,6 +1157,7 @@ importers:
     specifiers:
       '@types/react': ^18.0.21
       '@types/react-dom': ^18.0.6
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/script': workspace:^
@@ -1149,6 +1168,7 @@ importers:
     devDependencies:
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/script': link:../script
@@ -1203,7 +1223,6 @@ importers:
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/patcher': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
@@ -1212,7 +1231,6 @@ importers:
       react-native: ^0.70.3
       rimraf: ^3.0.2
     dependencies:
-      '@voltiso/patcher': link:../patcher
       '@voltiso/util': link:../util
       '@voltiso/util.react': link:../util.react
     devDependencies:
@@ -1237,7 +1255,6 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/observer': workspace:^
-      '@voltiso/patcher': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
       '@voltiso/util.rxjs': workspace:^
@@ -1248,7 +1265,6 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/observer': link:../observer
-      '@voltiso/patcher': link:../patcher
       '@voltiso/util': link:../util
       '@voltiso/util.react': link:../util.react
       '@voltiso/util.rxjs': link:../util.rxjs
@@ -9052,6 +9068,17 @@ packages:
       klona: 2.0.5
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /eslint-plugin-es-x/5.3.1_eslint@8.25.0:
+    resolution: {integrity: sha512-/WJk23lUi36qmPdiA8GxqjOQAwj+2672WwAOYLVD7j4+O5hd9UiXHZFWBwxxem5AyXA6LKDVJnmBZJp5FJWjog==}
+    engines: {node: '>=8.10.0'}
+    peerDependencies:
+      eslint: '>=4.19.1'
+    dependencies:
+      eslint: 8.25.0
+      eslint-utils: 3.0.0_eslint@8.25.0
+      regexpp: 3.2.0
     dev: false
 
   /eslint-plugin-es/4.1.0_eslint@8.25.0:

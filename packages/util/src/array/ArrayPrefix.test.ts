@@ -1,0 +1,24 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '~'
+import { $Assert } from '~'
+
+import type { ArrayPrefix } from './ArrayPrefix'
+
+describe('ArrayPrefix', () => {
+	it('works', () => {
+		expect.assertions(0) // type-only
+
+		type A = ArrayPrefix<[]>
+		$Assert<IsIdentical<A, []>>()
+
+		type B = ArrayPrefix<[1, 2, 3]>
+		$Assert<IsIdentical<B, [] | [1] | [1, 2] | [1, 2, 3]>>()
+
+		// TODO
+
+		// type C = ArrayPrefix<[1, ...unknown[], 2]>
+		// $Assert<IsIdentical<C, [] | [1] | [1, ...unknown[]] | [1, unknown[], 2]>>()
+	})
+})

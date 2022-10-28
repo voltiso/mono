@@ -3,7 +3,7 @@
 
 import type { InferSchema } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -13,21 +13,21 @@ describe('getSchema', () => {
 	it('works - static', () => {
 		expect.assertions(0)
 
-		Assert<IsIdentical<InferSchema<true>, s.Literal<true>>>()
-		Assert<IsIdentical<InferSchema<false>, s.Literal<false>>>()
+		$Assert<IsIdentical<InferSchema<true>, s.Literal<true>>>()
+		$Assert<IsIdentical<InferSchema<false>, s.Literal<false>>>()
 		// Assert<IsIdentical<GetSchema<boolean>, never>>()
 
-		Assert<IsIdentical<InferSchema<123>, s.Literal<123>>>()
+		$Assert<IsIdentical<InferSchema<123>, s.Literal<123>>>()
 		// Assert<IsIdentical<GetSchema<number>, never>>()
 
-		Assert<IsIdentical<InferSchema<'abc'>, s.Literal<'abc'>>>()
+		$Assert<IsIdentical<InferSchema<'abc'>, s.Literal<'abc'>>>()
 		// Assert<IsIdentical<GetSchema<string>, never>>()
 
-		Assert<IsIdentical<InferSchema<12n>, s.Literal<12n>>>()
+		$Assert<IsIdentical<InferSchema<12n>, s.Literal<12n>>>()
 		// Assert<IsIdentical<GetSchema<bigint>, never>>()
 
 		const sym = Symbol('sym')
-		Assert<IsIdentical<InferSchema<typeof sym>, s.Literal<typeof sym>>>()
+		$Assert<IsIdentical<InferSchema<typeof sym>, s.Literal<typeof sym>>>()
 		// Assert<IsIdentical<GetSchema<symbol>, never>>()
 	})
 
@@ -53,13 +53,13 @@ describe('getSchema', () => {
 		expect(infer(s.null).extends(null)).toBeTruthy()
 		expect(infer(s.null).extends(s.null)).toBeTruthy()
 
-		expect(infer(undef).extends(undef)).toBeTruthy()
-		expect(infer(undef).extends(s.undefined)).toBeTruthy()
-		expect(infer(s.undefined).extends(undef)).toBeTruthy()
+		expect(infer(undefined).extends(undefined)).toBeTruthy()
+		expect(infer(undefined).extends(s.undefined)).toBeTruthy()
+		expect(infer(s.undefined).extends(undefined)).toBeTruthy()
 		expect(infer(s.undefined).extends(s.undefined)).toBeTruthy()
 
-		expect(infer(undef).extends(null)).toBeFalsy()
-		expect(infer(null).extends(undef)).toBeFalsy()
+		expect(infer(undefined).extends(null)).toBeFalsy()
+		expect(infer(null).extends(undefined)).toBeFalsy()
 	})
 
 	it('no readonly tuples', () => {

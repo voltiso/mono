@@ -3,14 +3,12 @@
 
 import type { Schema, Type } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
 describe('object', () => {
 	it('complex object - theme', () => {
-		expect.assertions(0)
-
 		const sColor = s.string.maxLength(32) as unknown as Schema<string>
 		const sTransition = s.string.maxLength(64) as unknown as Schema<string>
 
@@ -67,7 +65,7 @@ describe('object', () => {
 		type Theme = Type<typeof sTheme>
 		type PartialTheme = Type<typeof sPartialTheme>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				Theme,
 				{
@@ -110,7 +108,7 @@ describe('object', () => {
 			>
 		>()
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				PartialTheme,
 				{

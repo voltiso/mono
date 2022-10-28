@@ -8,7 +8,7 @@ import type {
 	RecordOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -16,22 +16,21 @@ describe('record', () => {
 	it('generic', <O extends Partial<RecordOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomRecord<O>, ISchema>()
-		Assert.is<CustomRecord<O>, IRecord>()
+		$Assert.is<CustomRecord<O>, ISchema>()
+		$Assert.is<CustomRecord<O>, IRecord>()
 	})
 
 	it('type', () => {
-		expect.assertions(0)
 
 		const obj = s.record(s.string, s.number)
 
-		Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
+		$Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
 
-		Assert.is<typeof obj, IRecord>()
+		$Assert.is<typeof obj, IRecord>()
 
 		const defaulted = s.record(s.string, s.number).default({})
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof defaulted,
 				CustomRecord<{
@@ -71,7 +70,7 @@ describe('record', () => {
 
 		type AOut = typeof a.OutputType
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				AOut,
 				{
@@ -106,7 +105,7 @@ describe('record', () => {
 
 		type AOut = typeof a.OutputType
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				AOut,
 				{

@@ -3,7 +3,7 @@
 
 import type { SyncerFunction, SyncerPromise } from '~/syncer'
 import { runAsync, runSync } from '~/syncer'
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 import { $Assert } from '~/$strip'
 
 function* differentIntermediates(

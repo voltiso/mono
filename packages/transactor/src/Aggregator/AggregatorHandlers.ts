@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Type_ } from '@voltiso/schemar.types'
-import type { MaybePromise } from '@voltiso/util'
+import type { Get_, MaybePromise } from '@voltiso/util'
 
-import type { DocLike, GetDataWithId } from '~/Doc'
-import type { DocTILike, DTI } from '~/Doc/DocTI'
-import type { DocRefLike } from '~/DocRef'
+import type { $$Doc, GetDataWithId, IDoc } from '~/Doc'
+import type { DocTI, $$DocTI, DTI } from '~/Doc/DocTI'
+import type { $$DocRef, DocRef_ } from '~/DocRef'
 
 export interface IAggregatorHandlers {
 	initialValue?: unknown
@@ -15,7 +15,7 @@ export interface IAggregatorHandlers {
 
 	target(
 		this: object,
-	): MaybePromise<(DocLike | DocRefLike)[]> | MaybePromise<DocLike> | DocRefLike
+	): MaybePromise<($$Doc | $$DocRef)[]> | MaybePromise<$$Doc> | $$DocRef
 
 	autoCreateTarget?: boolean | undefined
 
@@ -24,7 +24,13 @@ export interface IAggregatorHandlers {
 }
 
 export type GetAggregate<
-	Target extends DocLike,
+	Target extends $$Doc,
+	Name,
+	Kind extends 'out' | 'in',
+> = Target extends IDoc ? _GetAggregate<Target, Name, Kind> : never
+
+export type _GetAggregate<
+	Target extends IDoc,
 	Name,
 	Kind extends 'out' | 'in',
 > = Name extends keyof Target[DTI]['aggregates']
@@ -33,10 +39,20 @@ export type GetAggregate<
 
 //
 
-export interface AggregatorHandlers<
-	SourceTI extends DocTILike,
-	Target extends DocLike,
-	Name extends keyof Target[DTI]['aggregates'],
+export type AggregatorHandlers<
+	SourceTI extends $$DocTI,
+	Target extends $$Doc,
+	Name extends string & keyof Get_<Get_<Target, DTI>, 'aggregates'>,
+> = SourceTI extends DocTI
+	? Target extends IDoc
+		? AggregatorHandlers_<SourceTI, Target, Name>
+		: never
+	: never
+
+export interface AggregatorHandlers_<
+	SourceTI extends $$DocTI,
+	Target extends $$Doc,
+	Name extends string,
 > {
 	initialValue?: GetAggregate<Target, Name, 'out'> // out, not in - to mitigate bugs
 
@@ -45,9 +61,9 @@ export interface AggregatorHandlers<
 	target(
 		this: GetDataWithId<SourceTI>,
 	):
-		| MaybePromise<(Target | DocRefLike<Target[DTI]>)[]>
+		| MaybePromise<(Target | DocRef_<Get_<Target, DTI>>)[]>
 		| MaybePromise<Target>
-		| DocRefLike<Target[DTI]>
+		| DocRef_<Get_<Target, DTI>>
 
 	autoCreateTarget?: boolean | undefined
 

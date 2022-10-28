@@ -3,14 +3,14 @@
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IObject, ISchema, SchemaLike } from '@voltiso/schemar.types'
-import type { If } from '@voltiso/util';
-import { assert , lazyPromise, omit, protoLink } from '@voltiso/util'
+import type { If } from '@voltiso/util'
+import { assert, lazyPromise, omit, protoLink } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { $WithId, Id } from '~/Data'
 import { withoutId } from '~/Data'
-import type { DocLike, IDoc } from '~/Doc'
+import type { IDoc } from '~/Doc'
 import { DTI } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { GetData, GetPublicCreationInputData } from '~/Doc/_/GData'
@@ -42,7 +42,7 @@ import { WeakDocRef } from './WeakDocRef'
 
 // @staticImplements<DocRefConstructor>()
 export class DocRefBaseImpl<
-	D extends DocLike = IDoc,
+	D extends IDoc = IDoc,
 	Exists extends boolean = boolean,
 	_Ctx extends ExecutionContext = 'outside',
 > implements UnknownDocRefBase<D, Exists>
@@ -168,15 +168,17 @@ export class DocRefBaseImpl<
 
 	toJSON(): DocRefJson {
 		return {
-			__target: this._ref.path,
-			__isStrong: this._isStrong,
+			__voltiso: { type: 'Ref' },
+			path: this._ref.path,
+			isStrong: this._isStrong,
 		}
 	}
 
 	toDatabase(): DocRefDatabase {
 		return {
-			__target: this._ref,
-			__isStrong: this._isStrong,
+			__voltiso: { type: 'Ref' },
+			ref: this._ref,
+			isStrong: this._isStrong,
 		}
 	}
 

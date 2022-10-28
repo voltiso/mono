@@ -3,11 +3,11 @@
 
 import type { OPTIONS } from '_'
 
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schemable } from '~/Schemable'
 
 import type { MutableTuple, ReadonlyTuple } from '../Tuple'
 
-export type GetTuple<This, T extends SchemableLike[]> = This extends {
+export type GetTuple<This, T extends $$Schemable[]> = This extends {
 	[OPTIONS]: { isReadonlyTuple: boolean }
 }
 	? This[OPTIONS]['isReadonlyTuple'] extends true

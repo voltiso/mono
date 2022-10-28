@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { screen } from '@testing-library/react'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { ChangeEventHandler } from 'react'
 
 import type { Stylable } from '~'
@@ -16,8 +16,8 @@ describe('prop', () => {
 
 		const a = style('input').prop('type', 'checkbox')
 
-		Assert.is<typeof a, Stylable>()
-		Assert.is<typeof a, Stylable<{}>>()
+		$Assert.is<typeof a, Stylable>()
+		$Assert.is<typeof a, Stylable<{}>>()
 
 		interface CheckboxProps {
 			id?: string | undefined
@@ -26,7 +26,7 @@ describe('prop', () => {
 			onChange?: ChangeEventHandler<HTMLInputElement> | undefined
 		}
 
-		Assert.is<typeof a, Stylable<CheckboxProps>>()
+		$Assert.is<typeof a, Stylable<CheckboxProps>>()
 	})
 
 	it('makes mandatory props optional', () => {

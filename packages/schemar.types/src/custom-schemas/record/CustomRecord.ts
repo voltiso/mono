@@ -36,12 +36,12 @@ export interface CustomRecord<O extends Partial<RecordOptions>>
 
 	//
 
-	// index<TKeySchema extends SchemableLike, TValueSchema extends SchemableLike>(
+	// index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(
 	// 	keySchema: TKeySchema,
 	// 	valueSchema: TValueSchema,
 	// ): _GetIndex<this, TKeySchema, TValueSchema>
 
-	// index<TValueSchema extends SchemableLike>(
+	// index<TValueSchema extends $$Schemable>(
 	// 	valueSchema: TValueSchema,
 	// ): _GetIndex<this, SimpleSchema<keyof any>, TValueSchema>
 }

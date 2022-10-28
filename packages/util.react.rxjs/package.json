@@ -45,7 +45,6 @@
   "__________DEPS": "__________",
   "peerDependencies": {
     "@voltiso/observer": "workspace:^",
-    "@voltiso/patcher": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",
@@ -62,7 +61,6 @@
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/observer": "workspace:^",
-    "@voltiso/patcher": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",

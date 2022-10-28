@@ -1,12 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetShape_, SchemableLike, Type_ } from '@voltiso/schemar.types'
+import type { $$Schemable, GetShape_, Type_ } from '@voltiso/schemar.types'
 import type { Observable } from 'rxjs'
 
 import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 
-export type NestedObservableWithSchema<S extends SchemableLike> = {
+export type NestedObservableWithSchema<S extends $$Schemable> = {
 	get schemable(): S
 } & Observable<Type_<S>> &
 	Omit<

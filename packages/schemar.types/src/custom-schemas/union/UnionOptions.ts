@@ -1,13 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schemable } from '~/Schemable'
 import type { DefaultSchemaOptions, SchemaOptions } from '~/SchemaOptions'
 
 export interface UnionOptions extends SchemaOptions {
-	schemas: SchemableLike[]
+	schemas: $$Schemable[]
 }
 
 export interface DefaultUnionOptions extends DefaultSchemaOptions {
-	schemas: SchemableLike[]
+	schemas: $$Schemable[]
 }

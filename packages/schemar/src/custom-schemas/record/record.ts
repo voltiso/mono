@@ -7,11 +7,11 @@ import { lazyConstructor } from '@voltiso/util'
 import { RecordImpl } from './RecordImpl'
 
 type Record_<
-	TKeySchema extends {
+	TKeySchema extends t.$$Schema & {
 		OutputType: keyof any
 		InputType: keyof any | undefined
 	},
-	TValueSchema extends t.SchemableLike,
+	TValueSchema extends t.$$Schemable,
 > = t.Record<TKeySchema, TValueSchema>
 
 const Record_ = lazyConstructor(

@@ -3,7 +3,7 @@
 
 import { SchemarError } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import { CALL, callableInstance } from '@voltiso/util'
+import { CALL, BoundCallable } from '@voltiso/util'
 
 import type { Handlers } from '../_shared/Handler'
 import type { Request } from './Request'
@@ -46,7 +46,7 @@ export class Server_<
 				: options.logMaxLength
 
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this)
+		return BoundCallable(this)
 	}
 
 	[CALL](request: TRequest, response: TResponse) {

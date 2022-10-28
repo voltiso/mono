@@ -6,7 +6,7 @@ import * as t from '@voltiso/schemar.types'
 import { schema } from '~/custom-schemas'
 
 /** @internal */
-export function _booleanCollectTrueFalse(schemable: t.SchemableLike): {
+export function _booleanCollectTrueFalse(schemable: t.$$Schemable): {
 	haveTrue: boolean
 	haveFalse: boolean
 } {

@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schemable,
 	ArrayOptions,
 	BASE_OPTIONS,
 	CustomArray,
@@ -9,7 +10,6 @@ import type {
 	DefaultArrayOptions,
 	ISchema,
 	Schema,
-	Schemable,
 } from '@voltiso/schemar.types'
 import {
 	EXTENDS,
@@ -19,12 +19,7 @@ import {
 	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import {
-	CALL,
-	callableInstance,
-	isDefined,
-	lazyConstructor,
-} from '@voltiso/util'
+import { BoundCallable, CALL, isDefined, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~'
 
@@ -66,10 +61,10 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
-	[CALL]<S extends Schemable>(elementType: S): never {
+	[CALL]<S extends $$Schemable>(elementType: S): never {
 		return this._cloneWithOptions({
 			element: schema(elementType) as never,
 		}) as never
@@ -84,13 +79,11 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
 
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyArray &&
 			!other.isReadonlyTuple
 		)
@@ -98,21 +91,12 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 		// readonly arrays can extend readonly tuples
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyArray) {
 			if (isTuple(other)) {
-				const thisMinLength =
-					typeof this.getMinLength === 'undefined'
-						? Number.NEGATIVE_INFINITY
-						: this.getMinLength
-
-				const thisMaxLength =
-					typeof this.getMaxLength === 'undefined'
-						? Number.POSITIVE_INFINITY
-						: this.getMaxLength
+				const thisMinLength = this.getMinLength ?? -Infinity
+				const thisMaxLength = this.getMaxLength ?? +Infinity
 
 				if (thisMinLength > other.getLength) return false
-
 				if (thisMaxLength < other.getLength) return false
 
 				for (const t of other.getShape) {
@@ -122,25 +106,11 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 				return true
 			} else if (isUnknownTuple(other)) {
-				const thisMinLength =
-					typeof this.getMinLength === 'undefined'
-						? Number.NEGATIVE_INFINITY
-						: this.getMinLength
+				const thisMinLength = this.getMinLength ?? -Infinity
+				const thisMaxLength = this.getMaxLength ?? +Infinity
 
-				const thisMaxLength =
-					typeof this.getMaxLength === 'undefined'
-						? Number.POSITIVE_INFINITY
-						: this.getMaxLength
-
-				const otherMinLength =
-					typeof other.getMinLength === 'undefined'
-						? Number.NEGATIVE_INFINITY
-						: other.getMinLength
-
-				const otherMaxLength =
-					typeof other.getMaxLength === 'undefined'
-						? Number.NEGATIVE_INFINITY
-						: other.getMaxLength
+				const otherMinLength = other.getMinLength ?? -Infinity
+				const otherMaxLength = other.getMaxLength ?? +Infinity
 
 				return (
 					thisMinLength <= otherMinLength && otherMaxLength <= thisMaxLength
@@ -229,7 +199,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			this.getElementSchema as unknown as ISchema
 		).toString()
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`
 		else return `${elementTypeStr}[]`
 	}

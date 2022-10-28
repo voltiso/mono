@@ -1,16 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IUnion, SchemableLike } from '@voltiso/schemar.types'
+import type { $$Schemable, IUnion } from '@voltiso/schemar.types'
 import { isUnion } from '@voltiso/schemar.types'
 
 import { union } from '../Union'
 
 /** @internal */
-export function _flattenUnion(s: SchemableLike): IUnion {
-	if (!isUnion(s)) return union(s)
+export function _flattenUnion(s: $$Schemable): IUnion {
+	if (!isUnion(s)) return union(s as never) as never
 
-	let schemas = [] as SchemableLike[]
+	let schemas = [] as $$Schemable[]
 
 	for (const child of s.getSchemas) {
 		// eslint-disable-next-line etc/no-internal
@@ -20,5 +20,5 @@ export function _flattenUnion(s: SchemableLike): IUnion {
 		else schemas.push(flattenedChild)
 	}
 
-	return union(...schemas)
+	return union(...schemas) as never
 }

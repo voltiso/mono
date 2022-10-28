@@ -6,13 +6,13 @@
 
 import { assert } from '@voltiso/util'
 
-import type { DocLike, IDoc } from '~/Doc'
-import type { DocRefBaseImpl, IDocRefBase, WeakDocRef } from '~/DocRef'
+import type { $$Doc, IDoc } from '~/Doc'
+import type { DocRefBaseImpl, IDocRef, WeakDocRef } from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
 
-function forEachStrongRef(o: any, f: (r: IDocRefBase) => void) {
+function forEachStrongRef(o: any, f: (r: IDocRef) => void) {
 	if (isStrongDocRef(o)) {
 		f(o)
 	} else if (Array.isArray(o)) {
@@ -22,7 +22,7 @@ function forEachStrongRef(o: any, f: (r: IDocRefBase) => void) {
 	}
 }
 
-export function getAfterTriggers(docRef: DocRefBaseImpl<DocLike>) {
+export function getAfterTriggers(docRef: DocRefBaseImpl<$$Doc>) {
 	if (docRef._afterTriggers) return docRef._afterTriggers
 
 	docRef._afterTriggers = []

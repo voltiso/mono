@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Value } from '~/object'
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 import { $Assert } from '~/$strip'
 
 import type { $PartialComplex_ } from './PartialComplex'

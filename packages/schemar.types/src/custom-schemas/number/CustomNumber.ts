@@ -18,13 +18,6 @@ export interface CustomNumber<O extends Partial<NumberOptions>>
 	readonly [BASE_OPTIONS]: NumberOptions
 	readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
 
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	NumberOptions,
-	// 	MergeSchemaOptions<DefaultNumberOptions, O>
-	// >
-
 	get isInteger(): this[OPTIONS]['isInteger']
 	get getMin(): this[OPTIONS]['min']
 	get getMax(): this[OPTIONS]['max']

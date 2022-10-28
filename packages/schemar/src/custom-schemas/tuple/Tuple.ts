@@ -6,13 +6,13 @@ import { lazyConstructor } from '@voltiso/util'
 
 import { MutableTupleImpl, ReadonlyTupleImpl } from '~'
 
-export type MutableTuple<T extends t.SchemableLike[]> = t.MutableTuple<T>
-export type ReadonlyTuple<T extends t.SchemableLike[]> = t.ReadonlyTuple<T>
+export type MutableTuple<T extends t.$$Schemable[]> = t.MutableTuple<T>
+export type ReadonlyTuple<T extends t.$$Schemable[]> = t.ReadonlyTuple<T>
 
-export const MutableTuple = lazyConstructor(
+export const MutableTuple: t.MutableTupleConstructor = lazyConstructor(
 	() => MutableTupleImpl,
-) as unknown as t.MutableTupleConstructor
+) as never
 
-export const ReadonlyTuple = lazyConstructor(
+export const ReadonlyTuple: t.ReadonlyTupleConstructor = lazyConstructor(
 	() => ReadonlyTupleImpl,
-) as t.ReadonlyTupleConstructor
+) as never

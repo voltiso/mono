@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getKeys, tryAt } from '@voltiso/util'
+import { $assert, getKeys, tryAt } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 import { createElement } from 'react'
 import { useFela } from 'react-fela'

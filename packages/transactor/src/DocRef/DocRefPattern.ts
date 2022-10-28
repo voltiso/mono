@@ -3,15 +3,15 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+import { assert } from '@voltiso/assertor'
 import type {
 	InferableObject,
 	ObjectLike,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import { undef } from '@voltiso/util'
 
 import { getGetPathMatches } from '~/common'
-import type { DocConstructorLike, DocLike, IDocConstructor } from '~/Doc'
+import type { $$DocConstructor, $$Doc, IDocConstructor } from '~/Doc'
 import { emptyDocDerivedSchema } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { Method } from '~/Method'
@@ -38,7 +38,7 @@ export class DocRefPattern {
 	}
 
 	/** High-level API */
-	register<Cls extends DocConstructorLike>(cls: Cls): this {
+	register<Cls extends $$DocConstructor>(cls: Cls): this {
 		const { _ } = cls as unknown as IDocConstructor
 
 		if (_.publicOnCreation !== emptyDocDerivedSchema)
@@ -112,7 +112,7 @@ export class DocRefPattern {
 
 	//
 
-	after<D extends DocLike = IndexedDoc>(trigger: AfterTrigger<D>) {
+	after<D extends $$Doc = IndexedDoc>(trigger: AfterTrigger<D>) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			trigger: trigger as any,
@@ -120,81 +120,82 @@ export class DocRefPattern {
 		return this
 	}
 
-	afterCreateOrUpdate<D extends DocLike = IndexedDoc>(
+	afterCreateOrUpdate<D extends $$Doc = IndexedDoc>(
 		trigger: AfterTrigger<D, boolean, true>,
 	) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
+			// eslint-disable-next-line consistent-return
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 
 				if (this) {
-					$assert(doc)
-					$assert(after)
+					assert(doc)
+					assert(after)
 					return (trigger as unknown as AfterTrigger).call(this, {
 						doc,
 						after,
 						...rest,
 					})
-				} else return undef
+				}
 			},
 		})
 		return this
 	}
 
-	afterCreate<D extends DocLike = IndexedDoc>(
+	afterCreate<D extends $$Doc = IndexedDoc>(
 		trigger: AfterTrigger<D, false, true>,
 	) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
+			// eslint-disable-next-line consistent-return
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
 				if (!before) {
-					$assert(after)
-					$assert(this)
-					$assert(doc)
+					assert(after)
+					assert(this)
+					assert(doc)
 					return (trigger as unknown as AfterTrigger).call(this, {
 						doc,
 						before,
 						after,
 						...rest,
 					})
-				} else return undef
+				}
 			},
 		})
 		return this
 	}
 
-	afterDelete<D extends DocLike = IndexedDoc>(
+	afterDelete<D extends $$Doc = IndexedDoc>(
 		trigger: AfterTrigger<D, true, false>,
 	) {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
+			// eslint-disable-next-line consistent-return
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
 				if (!after) {
-					$assert(before)
-					$assert(this === null)
-					$assert(doc === null)
+					assert(before)
+					assert(this === null)
+					assert(doc === null)
 					return (trigger as unknown as AfterTrigger).call(this, {
 						doc,
 						before,
 						after,
 						...rest,
 					})
-				} else return undef
+				}
 			},
 		})
 	}
 
-	beforeCommit<D extends DocLike = IndexedDoc>(
-		trigger: BeforeCommitTrigger<D>,
-	) {
+	beforeCommit<D extends $$Doc = IndexedDoc>(trigger: BeforeCommitTrigger<D>) {
 		this.context.transactor._allBeforeCommits.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			trigger: trigger as unknown as BeforeCommitTrigger,
@@ -202,7 +203,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	onGet<D extends DocLike = IndexedDoc>(trigger: OnGetTrigger<D>) {
+	onGet<D extends $$Doc = IndexedDoc>(trigger: OnGetTrigger<D>) {
 		this.context.transactor._allOnGets.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			trigger: trigger as any,
@@ -210,7 +211,7 @@ export class DocRefPattern {
 	}
 
 	method<
-		D extends DocLike = IndexedDoc,
+		D extends $$Doc = IndexedDoc,
 		ARGS extends unknown[] = unknown[],
 		R = unknown,
 	>(name: string, method: Method<D, ARGS, R>) {

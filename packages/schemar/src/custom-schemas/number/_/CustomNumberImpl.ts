@@ -52,8 +52,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		const issues = super._getIssuesImpl(x)
 
 		if (typeof x === 'number') {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			if (this.isInteger && !global.Number.isInteger(x)) {
+			if (this.isInteger && !Number.isInteger(x)) {
 				issues.push(
 					new ValidationIssue({
 						expectedDescription: 'integer',

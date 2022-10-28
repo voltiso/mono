@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-//! TODO: use `@voltiso/patcher`
+//! TODO: use patcher from `@voltiso/util`
 
 import type { NestedData } from '~/Data/Data'
 import type { IntrinsicFields } from '~/schemas'

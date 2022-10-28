@@ -7,10 +7,10 @@ import type {
 	ISchema,
 	SchemableObjectLike,
 } from '@voltiso/schemar.types'
-import { assumeType } from '@voltiso/util'
+import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
-import type { DocRefBaseImpl, DocRefLike } from '~/DocRef'
+import type { DocRefBaseImpl, $$DocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sIntrinsicFields } from '~/schemas'
 
@@ -34,8 +34,8 @@ export function getIdSchemas(d: DocRefBaseImpl<any>) {
 	return d._idSchemas
 }
 
-export function getSchema(d: DocRefLike): DocRefBaseImpl['_schema'] {
-	assumeType<DocRefBaseImpl>(d)
+export function getSchema(d: $$DocRef): DocRefBaseImpl['_schema'] {
+	$AssumeType<DocRefBaseImpl>(d)
 
 	if (d._schema !== undefined) {
 		return d._schema

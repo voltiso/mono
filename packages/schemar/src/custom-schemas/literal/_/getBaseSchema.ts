@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InferableLiteral, ISchema } from '@voltiso/schemar.types'
-import { stringFrom } from '@voltiso/util'
+import { $assert, stringFrom } from '@voltiso/util'
 
 import {
 	bigint,

@@ -2,9 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schemable,
 	DefaultSchemaOptions,
 	ISchema,
-	SchemableLike,
 	SchemaOptions,
 } from '~'
 
@@ -13,7 +13,7 @@ export interface RecordOptions extends SchemaOptions {
 	Input: Record<keyof any, unknown>
 
 	keySchema: { OutputType: keyof any; InputType: keyof any | undefined }
-	valueSchema: SchemableLike
+	valueSchema: $$Schemable
 }
 
 export interface DefaultRecordOptions extends DefaultSchemaOptions {

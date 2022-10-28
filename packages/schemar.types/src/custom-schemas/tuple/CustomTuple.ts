@@ -5,18 +5,17 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 
 import type {
 	_GetArrayLength_,
+	$$Tuple,
 	CustomSchema,
 	DefaultTupleOptions,
 	DefineSchema,
 	TupleOptions,
 } from '~'
 
-export type $CustomTuple<O extends Partial<TupleOptions>> = O extends any
-	? CustomTuple<O>
-	: never
-
 export interface CustomTuple<O extends Partial<TupleOptions>>
-	extends CustomSchema<O> {
+	extends $$Tuple,
+		CustomSchema<O> {
+	//
 	readonly [SCHEMA_NAME]: 'Tuple'
 
 	readonly [BASE_OPTIONS]: TupleOptions
@@ -31,32 +30,35 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 
 	//
 
-	get readonlyTuple(): MakeReadonlyTuple<this>
-	get mutableTuple(): MakeMutableTuple<this>
+	get readonlyTuple(): CustomTuple.Readonly<this>
+	get mutableTuple(): CustomTuple.Mutable<this>
 }
 
-type MakeReadonlyTuple<S> = S extends {
-	[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }
-}
-	? DefineSchema<
-			S,
-			{
-				readonlyTuple: true
-				Output: readonly [...S[OPTIONS]['Output']]
-				Input: readonly [...S[OPTIONS]['Input']]
-			}
-	  >
-	: never
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace CustomTuple {
+	export type Readonly<S extends $$Tuple> = S extends {
+		[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }
+	}
+		? DefineSchema<
+				S,
+				{
+					readonlyTuple: true
+					Output: readonly [...S[OPTIONS]['Output']]
+					Input: readonly [...S[OPTIONS]['Input']]
+				}
+		  >
+		: never
 
-type MakeMutableTuple<S> = S extends {
-	[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }
+	export type Mutable<S extends $$Tuple> = S extends {
+		[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }
+	}
+		? DefineSchema<
+				S,
+				{
+					readonlyTuple: false
+					Output: [...S[OPTIONS]['Output']]
+					Input: [...S[OPTIONS]['Input']]
+				}
+		  >
+		: never
 }
-	? DefineSchema<
-			S,
-			{
-				readonlyTuple: false
-				Output: [...S[OPTIONS]['Output']]
-				Input: [...S[OPTIONS]['Input']]
-			}
-	  >
-	: never

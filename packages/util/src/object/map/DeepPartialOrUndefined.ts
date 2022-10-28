@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /** @inline */
-export type DeepPartialOrUndefined_<T> = [
-	{
-		[k in keyof T]?: DeepPartialOrUndefined_<T[k]> | undefined
-	},
-][0]
+export type DeepPartialOrUndefined_<T> = [T] extends [readonly unknown[]]
+	? T
+	: {
+			[k in keyof T]?: DeepPartialOrUndefined_<T[k]> | undefined
+	  }
 
 /** @inline */
 export type DeepPartialOrUndefined<T extends object> =

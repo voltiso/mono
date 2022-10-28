@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocLike, DocTILike, DTI } from '~/Doc'
+import type { $$Doc, $$DocTI, DTI } from '~/Doc'
 import type { DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
-export type FindDoc_<X> = X extends DocLike
+export type FindDoc_<X> = X extends $$Doc
 	? X
 	: X extends keyof DocTypes
 	? DocTypes[X]
@@ -16,6 +16,5 @@ export type FindDoc_<X> = X extends DocLike
 	  // ? FindDoc<X[DTI]['tag']>
 	  never
 
-export type FindDoc<
-	X extends DocLike | DocTag | { readonly [DTI]: DocTILike },
-> = FindDoc_<X>
+export type FindDoc<X extends $$Doc | DocTag | { readonly [DTI]: $$DocTI }> =
+	FindDoc_<X>

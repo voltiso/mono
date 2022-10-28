@@ -8,7 +8,7 @@ import type { ISchema } from '~'
 export interface IInstance extends ISchema {
 	readonly [SCHEMA_NAME]: 'Instance'
 
-	readonly getConstructor: abstract new (...args: any[]) => object
+	readonly getConstructor: abstract new (...args: any) => object
 }
 
 export function isInstance(x: unknown): x is IInstance {

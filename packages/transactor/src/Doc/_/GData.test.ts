@@ -4,23 +4,33 @@
 import * as s from '@voltiso/schemar'
 import type { SchemaLike } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
 import type { $WithId } from '~/Data'
-import type { DocTI, IndexedDocTI } from '~/Doc'
+import type { DocTI, $$DocTI, IndexedDocTI } from '~/Doc'
 import { Doc } from '~/Doc'
+import type { IntrinsicFields } from '~/schemas'
 
 import type { GetData, GetPublicCreationInputData } from './GData'
 
 describe('Doc util', () => {
+	it('generic', <TI extends $$DocTI>() => {
+		expect.assertions(0)
+
+		$Assert.is<GetData<TI>, IntrinsicFields>()
+	})
+
 	it('GData', () => {
 		expect.assertions(0)
+
+		$Assert.is<GetData<$$DocTI>, IntrinsicFields>()
+		$Assert.is<GetData<DocTI>, IntrinsicFields>()
 
 		type TI = DocTI & { public: SchemaLike<{ num: number }> }
 
 		type MyData = $WithId<GetData<TI>>
-		Assert.isSubtype<
+		$Assert.isSubtype<
 			MyData,
 			{
 				readonly id: string
@@ -30,7 +40,7 @@ describe('Doc util', () => {
 		>()
 
 		type MyData2 = GetPublicCreationInputData<IndexedDocTI>
-		Assert<
+		$Assert<
 			IsIdentical<
 				MyData2,
 				{
@@ -47,7 +57,7 @@ describe('Doc util', () => {
 		class MyDoc extends Doc({ public: { a: s.number } }) {}
 		type TI = InferTIFromDoc<MyDoc>
 		type D = GetPublicCreationInputData<TI>
-		Assert<
+		$Assert<
 			IsIdentical<
 				D,
 				{
@@ -62,7 +72,7 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		type X = GetData<IndexedDocTI>
-		Assert<
+		$Assert<
 			IsIdentical<
 				X,
 				{
@@ -86,7 +96,7 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		type X = GetData<DocTI>
-		Assert<
+		$Assert<
 			IsIdentical<
 				X,
 				{

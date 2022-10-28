@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	$CustomArray,
 	ArrayOptions,
+	CustomArray,
 	IArray,
 	IMutableArray,
 	InputType,
@@ -14,7 +14,7 @@ import type {
 } from '@voltiso/schemar.types'
 import { isArray, isString } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -22,61 +22,57 @@ describe('array', () => {
 	it('generic', <O extends Partial<ArrayOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<$CustomArray<O>, IArray>()
+		$Assert.is<CustomArray<O>, IArray>()
 	})
 
 	it('type', () => {
-		expect.assertions(0)
+		$Assert.is<IArray, ISchema>()
 
-		Assert.is<IArray, ISchema>()
-
-		Assert.is<IArray, Schema>()
+		$Assert.is<IArray, Schema>()
 
 		const a = s.array(s.string.or(s.number))
-		Assert.is<typeof a, Schemable>()
+		$Assert.is<typeof a, Schemable>()
 
-		Assert.is<typeof a, Schema<(string | number)[]>>()
+		$Assert.is<typeof a, Schema<(string | number)[]>>()
 
 		type A = typeof a.OutputType
-		Assert<IsIdentical<A, (string | number)[]>>()
+		$Assert<IsIdentical<A, (string | number)[]>>()
 	})
 
 	it('type 2', () => {
-		expect.assertions(0)
-
 		const a = s.array(s.number)
 		type A = typeof a.OutputType
-		Assert<IsIdentical<A, number[]>>()
+		$Assert<IsIdentical<A, number[]>>()
 
 		const b = s.array(s.never)
 		type B = typeof b.OutputType
-		Assert<IsIdentical<B, never[]>>()
+		$Assert<IsIdentical<B, never[]>>()
 	})
 
 	it('interface type', () => {
 		expect.assertions(0)
 
 		type Out = IArray['OutputType']
-		Assert<IsIdentical<Out, readonly unknown[]>>()
+		$Assert<IsIdentical<Out, readonly unknown[]>>()
 
 		type In = IArray['InputType']
-		Assert<IsIdentical<In, readonly unknown[] | undefined>>()
+		$Assert<IsIdentical<In, readonly unknown[] | undefined>>()
 	})
 
 	it('interface type - mutable', () => {
 		expect.assertions(0)
 
 		type Out = IMutableArray['OutputType']
-		Assert<IsIdentical<Out, unknown[]>>()
+		$Assert<IsIdentical<Out, unknown[]>>()
 
 		type In = IMutableArray['InputType']
-		Assert<IsIdentical<In, unknown[]>>()
+		$Assert<IsIdentical<In, unknown[]>>()
 	})
 
 	it('simple', () => {
 		expect.hasAssertions()
 
-		Assert.is<typeof s.array, Schema>()
+		$Assert.is<typeof s.array, Schema>()
 
 		expect(isArray(s.array)).toBeTruthy()
 		expect(isArray(s.readonlyArray)).toBeTruthy()
@@ -129,34 +125,36 @@ describe('array', () => {
 			s.array(s.string).extends(s.readonlyTuple(s.string, s.string)),
 		).toBeFalsy()
 
-		Assert<IsIdentical<OutputType<typeof s.array>, unknown[]>>()
-		Assert<IsIdentical<InputType<typeof s.array>, unknown[]>>()
+		$Assert<IsIdentical<OutputType<typeof s.array>, unknown[]>>()
+		$Assert<IsIdentical<InputType<typeof s.array>, unknown[]>>()
 
-		Assert<
+		$Assert<
 			IsIdentical<OutputType<typeof s.readonlyArray>, readonly unknown[]>
 		>()
 
-		Assert<IsIdentical<InputType<typeof s.readonlyArray>, readonly unknown[]>>()
+		$Assert<
+			IsIdentical<InputType<typeof s.readonlyArray>, readonly unknown[]>
+		>()
 
 		const an = s.array(s.number)
-		Assert<IsIdentical<OutputType<typeof an>, number[]>>()
-		Assert<IsIdentical<InputType<typeof an>, number[]>>()
+		$Assert<IsIdentical<OutputType<typeof an>, number[]>>()
+		$Assert<IsIdentical<InputType<typeof an>, number[]>>()
 
 		const ro = s.readonlyArray(s.string)
 
 		expect(isString(ro.getElementSchema)).toBeTruthy()
 
 		type RoS = typeof ro.getElementSchema
-		Assert<IsIdentical<RoS, s.String>>()
+		$Assert<IsIdentical<RoS, s.String>>()
 
 		type Ro = OutputType<typeof ro>
-		Assert<IsIdentical<Ro, readonly string[]>>()
-		Assert<IsIdentical<InputType<typeof ro>, readonly string[]>>()
+		$Assert<IsIdentical<Ro, readonly string[]>>()
+		$Assert<IsIdentical<InputType<typeof ro>, readonly string[]>>()
 
 		const ro2 = s.array(s.string).readonlyArray
 		type Ro2 = OutputType<typeof ro2>
-		Assert<IsIdentical<Ro2, readonly string[]>>()
-		Assert<IsIdentical<InputType<typeof ro2>, readonly string[]>>()
+		$Assert<IsIdentical<Ro2, readonly string[]>>()
+		$Assert<IsIdentical<InputType<typeof ro2>, readonly string[]>>()
 
 		// // @ts-expect-error cannot call readonlyArray twice
 		// ;() => s.array(s.string).readonlyArray.readonlyArray
@@ -175,15 +173,15 @@ describe('array', () => {
 		expect(s.array(s.number).readonlyArray.extends(s.array)).toBeFalsy()
 
 		const anl = s.array(s.number(123, 234))
-		Assert<IsIdentical<OutputType<typeof anl>, (123 | 234)[]>>()
-		Assert<IsIdentical<InputType<typeof anl>, (123 | 234)[]>>()
+		$Assert<IsIdentical<OutputType<typeof anl>, (123 | 234)[]>>()
+		$Assert<IsIdentical<InputType<typeof anl>, (123 | 234)[]>>()
 
-		Assert.is<typeof s.array, ISchema>()
-		Assert.is<typeof s.readonlyArray, ISchema>()
+		$Assert.is<typeof s.array, ISchema>()
+		$Assert.is<typeof s.readonlyArray, ISchema>()
 
-		Assert.is<typeof s.array, IArray>()
-		Assert.is<typeof an, IArray>()
-		Assert.is<typeof anl, IArray>()
+		$Assert.is<typeof s.array, IArray>()
+		$Assert.is<typeof an, IArray>()
+		$Assert.is<typeof anl, IArray>()
 
 		expect(
 			s.readonlyArray(s.number(123)).extends(s.readonlyArray(s.number)),
@@ -317,7 +315,7 @@ describe('array', () => {
 			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, '3'] }),
 		).toBeFalsy()
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: undef }),
+			s.schema({ a: s.array(s.number).optional }).isValid({ a: undefined }),
 		).toBeFalsy()
 		expect(s.schema({ a: s.array(s.number).optional }).isValid({})).toBeTruthy()
 	})
@@ -350,22 +348,20 @@ describe('array', () => {
 	})
 
 	it('AtLeast1 - type', () => {
-		expect.assertions(0)
-
 		const a = s.array(1).minLength(1)
 		type A = typeof a.OutputType
-		Assert<IsIdentical<A, [1, ...1[]]>>()
+		$Assert<IsIdentical<A, [1, ...1[]]>>()
 
 		const b = a.minLength(1)
 		type B = typeof b.OutputType
-		Assert<IsIdentical<B, [1, ...1[]]>>()
+		$Assert<IsIdentical<B, [1, ...1[]]>>()
 
 		const c = s.readonlyArray(3).minLength(1)
 		type C = typeof c.OutputType
-		Assert<IsIdentical<C, readonly [3, ...3[]]>>()
+		$Assert<IsIdentical<C, readonly [3, ...3[]]>>()
 
 		const d = s.readonlyArray(3)
 		type D = typeof d.OutputType
-		Assert<IsIdentical<D, readonly 3[]>>()
+		$Assert<IsIdentical<D, readonly 3[]>>()
 	})
 })

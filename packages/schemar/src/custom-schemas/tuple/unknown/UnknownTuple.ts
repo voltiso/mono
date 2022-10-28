@@ -26,7 +26,12 @@ export const ReadonlyUnknownTuple = lazyConstructor(
 
 //
 
-export const readonlyTuple = lazyValue(() => new ReadonlyUnknownTuple())
-export const mutableTuple = lazyValue(() => new MutableUnknownTuple())
+export const readonlyTuple: t.ReadonlyUnknownTuple = lazyValue(
+	() => new ReadonlyUnknownTuple(),
+)
 
-export const tuple = mutableTuple
+export const mutableTuple: t.MutableUnknownTuple = lazyValue(
+	() => new MutableUnknownTuple(),
+)
+
+export const tuple: t.MutableUnknownTuple = mutableTuple

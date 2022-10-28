@@ -1,10 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
+import { assert } from '@voltiso/assertor'
+import { at, Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
 
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { DocLike } from '~/Doc'
+import type { $$Doc } from '~/Doc'
 import { DT } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { DocRefPattern, WeakDocRef } from '~/DocRef'
@@ -151,11 +152,11 @@ export class DocPath<
 
 	constructor(str: S) {
 		super(str)
-		$assert(isDocPathString(str))
+		assert(isDocPathString(str))
 	}
 
 	get id() {
-		return this.pathTokens.at(-1)
+		return at(this.pathTokens, -1)
 	}
 }
 
@@ -165,7 +166,7 @@ const isCollectionPathString = (str: string): str is CollectionPathString =>
 export class CollectionPath<S extends string = string> extends Path<S> {
 	constructor(str: S) {
 		super(str)
-		$assert(isCollectionPathString(str))
+		assert(isCollectionPathString(str))
 	}
 }
 
@@ -175,7 +176,7 @@ const isDocPatternString = (str: string): str is DocPatternString =>
 export class DocPattern<S extends string = string> extends Pattern<S> {
 	constructor(str: S) {
 		super(str)
-		$assert(isDocPatternString(str))
+		assert(isDocPatternString(str))
 	}
 }
 
@@ -187,7 +188,7 @@ const isCollectionPatternString = (
 export class CollectionPattern<S extends string = string> extends Pattern<S> {
 	constructor(str: S) {
 		super(str)
-		$assert(isCollectionPatternString(str))
+		assert(isCollectionPatternString(str))
 	}
 }
 
@@ -229,7 +230,7 @@ export type _PathFromString<
 
 export type DbPathFromString<
 	P extends string,
-	Doc extends DocLike = IndexedDoc,
+	Doc extends $$Doc = IndexedDoc,
 	// eslint-disable-next-line etc/no-internal
 > = _PathFromString<
 	WeakDocRef<Doc>,

@@ -8,8 +8,8 @@ import type {
 	ReadonlyNestedSubject,
 } from '@voltiso/observer'
 import type {
+	$$Schemable,
 	GetShape,
-	SchemableLike,
 	SchemableObjectLike,
 	SchemableWithShape,
 	Type,
@@ -50,7 +50,7 @@ export namespace UseForm {
 		result$: NestedSubject<UseForm.RawResult<S>>
 	}
 
-	export type ResultFields<S extends SchemableLike> =
+	export type ResultFields<S extends $$Schemable> =
 		S extends SchemableWithShape
 			? {
 					[k in keyof GetShape<S>]: ResultFields<GetShape<S>[k]>

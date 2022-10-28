@@ -7,7 +7,7 @@ import type {
 	InstanceOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, lazyConstructor, stringFrom } from '@voltiso/util'
+import { $Assert, lazyConstructor, stringFrom } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -15,7 +15,7 @@ describe('instance', () => {
 	it('generic', <O extends Partial<InstanceOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomInstance<O>, IInstance>()
+		$Assert.is<CustomInstance<O>, IInstance>()
 	})
 
 	it('works', () => {
@@ -33,13 +33,12 @@ describe('instance', () => {
 	})
 
 	it('optional inside object', () => {
-		expect.assertions(0)
 
 		const mySchema = s.schema({
 			inst: s.instance(Date).optional,
 		})
 		type Out = typeof mySchema.OutputType
-		Assert<IsIdentical<Out, { inst?: Date }>>()
+		$Assert<IsIdentical<Out, { inst?: Date }>>()
 	})
 
 	it('proto chain', () => {

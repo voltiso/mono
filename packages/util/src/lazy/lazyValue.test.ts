@@ -356,7 +356,7 @@ describe('lazyValue', () => {
 
 	// 	class C {
 	// 		constructor() {
-	// 			return callableInstance(this)
+	// 			return BoundCallable(this)
 	// 		}
 
 	// 		_CALL() {

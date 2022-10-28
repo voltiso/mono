@@ -3,7 +3,7 @@
 
 import type { OutputType, Type_ } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -19,11 +19,11 @@ describe('number', () => {
 		expect(s.bigint(123n, 0n).extends(s.bigint(123n, 234n))).toBeFalsy()
 
 		type B = OutputType<typeof s.bigint>
-		Assert<IsIdentical<B, bigint>>()
+		$Assert<IsIdentical<B, bigint>>()
 
 		const bl = s.bigint(123n, 234n)
 		type BL = OutputType<typeof bl>
-		Assert<IsIdentical<BL, 123n | 234n>>()
+		$Assert<IsIdentical<BL, 123n | 234n>>()
 	})
 
 	it('default', () => {
@@ -36,8 +36,8 @@ describe('number', () => {
 
 		expect(n.exec(undefined).value).toBe(123n)
 
-		Assert<IsIdentical<Type_<typeof n, { kind: 'out' }>, bigint>>()
-		Assert<IsIdentical<Type_<typeof n, { kind: 'in' }>, bigint | undefined>>()
+		$Assert<IsIdentical<Type_<typeof n, { kind: 'out' }>, bigint>>()
+		$Assert<IsIdentical<Type_<typeof n, { kind: 'in' }>, bigint | undefined>>()
 	})
 
 	it('check', () => {

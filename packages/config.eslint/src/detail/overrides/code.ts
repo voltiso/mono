@@ -89,7 +89,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-explicit-any': 0,
 		'@typescript-eslint/array-type': ['warn', { default: 'array' }],
 
-		'arrow-body-style': 1,
+		'arrow-body-style': 0, // useful to sometimes use {} - to have commented-out console.log there
 		'func-style': ['warn', 'declaration', { allowArrowFunctions: true }],
 		'id-length': 0,
 
@@ -105,6 +105,7 @@ export const codeOverride = defineEslintConfigOverride({
 
 		//
 
+		'no-constructor-return': 1,
 		'prefer-destructuring': 0, // hmm, buggy for non-local variables
 		'no-console': 1,
 		'no-else-return': 0,

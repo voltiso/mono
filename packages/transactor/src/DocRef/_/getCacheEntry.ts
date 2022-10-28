@@ -1,6 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/util'
+
+import type { CacheEntry } from '~/Transaction'
+
 import type { DocRefContextWithTransaction } from './Context'
 
 /**
@@ -9,9 +13,9 @@ import type { DocRefContextWithTransaction } from './Context'
  * @param ctx - Context
  * @returns CacheEntry
  */
-export function getCacheEntry(ctx: DocRefContextWithTransaction) {
+export function getCacheEntry(ctx: DocRefContextWithTransaction): CacheEntry {
 	const path = ctx.docRef.path.pathString
 	const cacheEntry = ctx.transaction._cache.get(path)
-	$assert(cacheEntry)
+	assert(cacheEntry)
 	return cacheEntry
 }

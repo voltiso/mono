@@ -34,7 +34,6 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/patcher": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react": "workspace:^"
   },

@@ -6,7 +6,7 @@ import { lazyConstructor } from '@voltiso/util'
 
 import { ObjectImpl } from '~'
 
-export type Object<Shape extends t.InferableObjectLike> = t.Object<Shape>
+export type Object<Shape extends t.$$InferableObject> = t.Object<Shape>
 
 export const Object = lazyConstructor(
 	() => ObjectImpl,

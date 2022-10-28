@@ -14,3 +14,8 @@ export const String = lazyConstructor(
 
 // eslint-disable-next-line no-new-wrappers, @typescript-eslint/ban-types
 export const string: String = lazyValue(() => new String())
+
+export const regex = (
+	regExp: RegExp,
+	expectedDescription?: string | undefined,
+) => string.regex(regExp, expectedDescription)

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -18,7 +18,7 @@ describe('object', () => {
 
 		type AOut = typeof a.OutputType
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				AOut,
 				{
@@ -117,7 +117,7 @@ describe('object', () => {
 
 		type AOut = typeof a.OutputType
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				AOut,
 				{

@@ -5,36 +5,36 @@ import type { DEFAULT_OPTIONS } from '_'
 import { type OPTIONS, SCHEMA_NAME } from '_'
 
 import type {
+	$$InferableObject,
+	$$Schema,
 	DefaultObjectOptions,
-	InferableObjectLike,
 	ISchema,
 	ObjectOptions,
-	SchemaLike,
 } from '~'
 
-export interface ObjectLike<T extends object = object> extends SchemaLike<T> {
+export interface $$Object extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Object'
-	get getShape(): any
-
-	and(additionalFields: any): any
 }
 
-export interface IObject<T extends object = object> extends ISchema<T> {
+export interface IObject<T extends object = object>
+	extends $$Object,
+		ISchema<T> {
+	//
 	readonly [SCHEMA_NAME]: 'Object'
 
 	readonly [OPTIONS]: ObjectOptions<T>
 	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
 
-	get getShape(): InferableObjectLike
-	get getDeepShape(): InferableObjectLike
+	get getShape(): {} // InferableObjectLike
+	get getDeepShape(): {} // InferableObjectLike
 
-	and(additionalFields: InferableObjectLike | ObjectLike): any
+	and(additionalFields: $$InferableObject | $$Object): $$Object
 
-	get partial(): any
-	get strictPartial(): any
+	get partial(): $$Object
+	get strictPartial(): $$Object
 
-	get deepPartial(): any
-	get deepStrictPartial(): any
+	get deepPartial(): $$Object
+	get deepStrictPartial(): $$Object
 }
 
 export function isObject(x: unknown): x is IObject {

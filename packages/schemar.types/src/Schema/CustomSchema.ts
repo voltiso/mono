@@ -9,42 +9,31 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
-import type { AlsoAccept, Throw } from '@voltiso/util'
+import type { AlsoAccept, Override, Throw } from '@voltiso/util'
 
 import type {
+	$$Schemable,
 	DefaultSchemaOptions,
 	DefineSchema,
-	MergeSchemaOptions,
-	SchemableLike,
 	SchemaOptions,
 	Union,
 	ValidationIssue,
 	ValidationResult,
 } from '~'
-import type { ISchema, SchemaLike } from '~/Schema'
+import type { $$Schema, ISchema, ValidateOptions } from '~/Schema'
 
 import type { SimplifySchema } from './Simplify'
 
-export type $CustomSchema<O extends Partial<SchemaOptions> = {}> = O extends any
-	? CustomSchema<O>
-	: never
-
 export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
-	extends ISchema,
-		SchemaLike {
+	extends ISchema {
 	//
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
-
 	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
-
 	readonly [PARTIAL_OPTIONS]: O
 
-	readonly [OPTIONS]: MergeSchemaOptions<
-		this[DEFAULT_OPTIONS],
-		this[PARTIAL_OPTIONS]
-	>
+	readonly [OPTIONS]: Override<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
 
 	/**
 	 * Type-only (no value at runtime)
@@ -87,8 +76,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		? never
 		: this[OPTIONS]['Output']
 
-	extends(other: SchemableLike): boolean
-	[EXTENDS](other: SchemaLike): boolean
+	extends(other: $$Schemable): boolean
+	[EXTENDS](other: $$Schema): boolean
 
 	// builder
 
@@ -128,7 +117,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	default<DefaultValue extends this[OPTIONS]['Input']>(
 		value: DefaultValue,
-	): WithDefault<this, DefaultValue>
+	): CustomSchema.WithDefault<this, DefaultValue>
 
 	/**
 	 * Specify default value if the input value is `undefined`
@@ -137,7 +126,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	default<DefaultValue extends this[OPTIONS]['Input']>(
 		getValue: () => DefaultValue,
-	): WithDefault<this, DefaultValue>
+	): CustomSchema.WithDefault<this, DefaultValue>
 
 	//
 
@@ -165,18 +154,19 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	Widen<NewType>(): this['OutputType'] | this['InputType'] extends NewType
 		? DefineSchema<this, { Output: NewType; Input: NewType }>
 		: Throw<
-				'Widen: NewType is not supertype' & TypeCastErrorDetail<this, NewType>
+				'Widen: NewType is not supertype' &
+					CustomSchema.TypeCastErrorDetail<this, NewType>
 		  >
 
+	//
+
 	// eslint-disable-next-line etc/no-misused-generics
-	Cast<NewType>(): this['OutputType'] | this['InputType'] extends NewType
-		? DefineSchema<this, { Output: NewType; Input: NewType }>
-		: NewType extends this['OutputType'] & this['InputType']
-		? DefineSchema<this, { Output: NewType; Input: NewType }>
-		: Throw<
-				'Cast: NewType is not subtype or supertype' &
-					TypeCastErrorDetail<this, NewType>
-		  >
+	Cast<NewType>(): CustomSchema.CastResult<this, NewType>
+
+	// eslint-disable-next-line etc/no-misused-generics
+	$Cast<NewType>(): NewType extends any
+		? CustomSchema.CastResult<this, NewType>
+		: never
 
 	//
 
@@ -190,7 +180,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		? DefineSchema<this, { Output: NewType }>
 		: Throw<
 				'WidenOutput: NewType is not supertype' &
-					TypeCastErrorDetailOutput<this, NewType>
+					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
 		  >
 
 	// eslint-disable-next-line etc/no-misused-generics
@@ -200,7 +190,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		? DefineSchema<this, { Output: NewType }>
 		: Throw<
 				'CastOutput: NewType is not subtype or supertype' &
-					TypeCastErrorDetailOutput<this, NewType>
+					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
 		  >
 
 	//
@@ -215,7 +205,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		? DefineSchema<this, { Input: NewType }>
 		: Throw<
 				'WidenInput: NewType is not supertype' &
-					TypeCastErrorDetailInput<this, NewType>
+					CustomSchema.TypeCastErrorDetailInput<this, NewType>
 		  >
 
 	// eslint-disable-next-line etc/no-misused-generics
@@ -225,7 +215,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		? DefineSchema<this, { Input: NewType }>
 		: Throw<
 				'CastInput: NewType is not subtype or supertype' &
-					TypeCastErrorDetailInput<this, NewType>
+					CustomSchema.TypeCastErrorDetailInput<this, NewType>
 		  >
 
 	//
@@ -236,11 +226,13 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * Validate `this` schema, throw on failure
 	 *
 	 * @param x - Value to validate against `this` schema
-	 * @returns Value after applying transformations (e.g. defaults)
+	 * @returns Value after applying fixes (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	validate(
+	// eslint-disable-next-line etc/no-misused-generics
+	validate<O extends Partial<ValidateOptions>>(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: O | undefined,
 	): this[OPTIONS]['Output']
 
 	/**
@@ -293,7 +285,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	or<Other extends SchemableLike>(other: Other): Union<[this, Other]>
+	or<Other extends $$Schemable>(other: Other): Union<[this, Other]>
 
 	/**
 	 * Simplify and flatten TS type
@@ -308,41 +300,56 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	get simple(): SimplifySchema<this>
 }
 
-/** @inline */
-export type WithDefault<This, DefaultValue> = This extends {
-	readonly [OPTIONS]: { readonly Output: unknown }
-}
-	? DefineSchema<
-			This,
-			{
-				hasDefault: true
-				default: DefaultValue
-				Output: Exclude<This[OPTIONS]['Output'], undefined>
-			}
-	  >
-	: never
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace CustomSchema {
+	export type CastResult<
+		This extends $$Schema & { OutputType: unknown; InputType: unknown },
+		NewType,
+	> = This['OutputType'] | This['InputType'] extends NewType
+		? DefineSchema<This, { Output: NewType; Input: NewType }>
+		: [NewType] extends [This['OutputType'] & This['InputType']]
+		? DefineSchema<This, { Output: NewType; Input: NewType }>
+		: Throw<
+				'Cast: NewType is not subtype or supertype' &
+					TypeCastErrorDetail<This, NewType>
+		  >
 
-export type TypeCastErrorDetail<
-	This extends { OutputType: any; InputType: any },
-	NewType,
-> = {
-	NewType: NewType
-	CurrentOutputType: This['OutputType']
-	CurrentInputType: This['InputType']
-}
+	/** @inline */
+	export type WithDefault<This extends $$Schema, DefaultValue> = This extends {
+		readonly [OPTIONS]: { readonly Output: unknown }
+	}
+		? DefineSchema<
+				This,
+				{
+					hasDefault: true
+					default: DefaultValue
+					Output: Exclude<This[OPTIONS]['Output'], undefined>
+				}
+		  >
+		: never
 
-export type TypeCastErrorDetailOutput<
-	This extends { OutputType: any },
-	NewType,
-> = {
-	NewType: NewType
-	CurrentOutputType: This['OutputType']
-}
+	export type TypeCastErrorDetail<
+		This extends { OutputType: any; InputType: any },
+		NewType,
+	> = {
+		NewType: NewType
+		CurrentOutputType: This['OutputType']
+		CurrentInputType: This['InputType']
+	}
 
-export type TypeCastErrorDetailInput<
-	This extends { InputType: any },
-	NewType,
-> = {
-	NewType: NewType
-	CurrentInputType: This['InputType']
+	export type TypeCastErrorDetailOutput<
+		This extends { OutputType: any },
+		NewType,
+	> = {
+		NewType: NewType
+		CurrentOutputType: This['OutputType']
+	}
+
+	export type TypeCastErrorDetailInput<
+		This extends { InputType: any },
+		NewType,
+	> = {
+		NewType: NewType
+		CurrentInputType: This['InputType']
+	}
 }

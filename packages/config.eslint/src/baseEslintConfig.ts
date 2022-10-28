@@ -128,6 +128,8 @@ export const baseEslintConfig = defineEslintConfig({
 
 		jsxPragma: null as never, // for @typescript/eslint-parser
 
+		// ecmaVersion: 3, // oldest possible
+		// ecmaVersion: 2021, // 2022-08-11 - no `Object.ownKeys` (ES2022) in Safari
 		ecmaVersion: 'latest',
 
 		project: ['tsconfig.json', 'packages/*/tsconfig.json'], //! you may want to override this

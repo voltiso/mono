@@ -12,12 +12,7 @@ import type {
 	StringOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isString, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import {
-	CALL,
-	callableInstance,
-	isDefined,
-	lazyConstructor,
-} from '@voltiso/util'
+import { BoundCallable, CALL, isDefined, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl, literal, ValidationIssue } from '~'
 
@@ -58,7 +53,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this

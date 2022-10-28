@@ -36,6 +36,8 @@ const pluginsToPick = [
 	'unused-imports',
 	// 'json-schema-validator', // ! hangs on tsdoc.json??
 
+	'es-x', // warn on new ES features
+
 	'yml',
 
 	'testing-library',
@@ -67,7 +69,6 @@ const pluginsToPick = [
 	// 'css',
 	// 'cypress',
 	// 'editorconfig',
-	// 'es',
 	// 'format-message',
 	// 'formatjs',
 	// 'html',

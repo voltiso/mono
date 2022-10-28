@@ -6,33 +6,25 @@ import type { If } from '@voltiso/util'
 
 import type { InferMethods } from '~/CollectionRef/InferMethods'
 import type { $WithId, Id } from '~/Data'
-import type { UpdatesFromData } from '~/Doc'
+import type { GetDocTag, GetDocTI, UpdatesFromData } from '~/Doc'
 import type {
 	GetData,
 	GetPublicCreationInputData,
 	GetUpdateDataByCtx,
 } from '~/Doc/_/GData'
 import type { DTI } from '~/Doc/DocTI'
-import type { DocLike, IDoc } from '~/Doc/IDoc'
+import type { $$Doc, IDoc } from '~/Doc/IDoc'
 import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
 
 import type { NestedPromise } from '../_/NestedPromise'
-import type { Null } from '../_/Null'
 import type { IDocRefBase } from '../IRef'
 import type { StrongDocRef } from '../StrongDocRef'
 import type { WeakDocRef } from '../WeakDocRef'
 
-export type UnknownDocRefBase_<D, Exists> = [D] extends [DocLike]
-	? [Exists] extends [boolean]
-		? UnknownDocRefBase<D, Exists>
-		: never
-	: never
-
-export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
-	extends IDocRefBase,
-		PromiseLike<D | Null<Exists>> {
-	[DTI]: D[DTI]
+export interface UnknownDocRefBase<D extends $$Doc, Exists extends boolean>
+	extends IDocRefBase {
+	[DTI]: GetDocTI<D>
 
 	/** Type-only field */
 	readonly Exists: Exists
@@ -40,13 +32,13 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 	readonly isStrong: Exists extends true ? true : boolean
 
 	readonly id: Id<D>
-	readonly path: DocPath<D[DTI]['tag']>
+	readonly path: DocPath<GetDocTag<D>>
 
-	readonly methods: D[DTI]['methods'] & InferMethods<D>
+	readonly methods: GetDocTI<D>['methods'] & InferMethods<D>
 
-	readonly data: NestedPromise<GetData<D[DTI]>, Exists>
-	dataWithoutId(): NestedPromise<GetData<D[DTI]>, Exists>
-	dataWithId(): NestedPromise<$WithId<GetData<D[DTI]>, D>, Exists>
+	readonly data: NestedPromise<GetData<GetDocTI<D>>, Exists>
+	dataWithoutId(): NestedPromise<GetData<GetDocTI<D>>, Exists>
+	dataWithId(): NestedPromise<$WithId<GetData<GetDocTI<D>>, D>, Exists>
 
 	//
 
@@ -55,9 +47,9 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 
 	//
 
-	get schemaWithoutId(): Schema<GetData<D[DTI]>> | undefined
-	get schemaWithId(): Schema<$WithId<GetData<D[DTI]>>> | undefined
-	get aggregateSchemas(): D[DTI]['aggregates']
+	get schemaWithoutId(): Schema<GetData<GetDocTI<D>>> | undefined
+	get schemaWithId(): Schema<$WithId<GetData<GetDocTI<D>>>> | undefined
+	get aggregateSchemas(): GetDocTI<D>['aggregates']
 
 	//
 
@@ -67,19 +59,19 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 	// 	? PromiseLike<D>
 	// 	: Throw<'Cannot set without argument - some fields are required'> & Data<GDataPublicInput<D>>
 
-	set(data?: GetPublicCreationInputData<D[DTI], IDoc>): PromiseLike<D>
+	set(data?: GetPublicCreationInputData<GetDocTI<D>, IDoc>): PromiseLike<D>
 
 	//
 
 	update(
 		updates: UpdatesFromData.Update<
-			GetUpdateDataByCtx<D[DTI], 'outside'>,
-			GetData<D[DTI]>
+			GetUpdateDataByCtx<GetDocTI<D>, 'outside'>,
+			GetData<GetDocTI<D>>
 		>,
 	): PromiseLike<D | undefined>
 
 	update(
-		updates: ReplaceIt<GetUpdateDataByCtx<D[DTI], 'outside'>>,
+		updates: ReplaceIt<GetUpdateDataByCtx<GetDocTI<D>, 'outside'>>,
 	): PromiseLike<D>
 
 	update(updates: DeleteIt): PromiseLike<null>
@@ -88,6 +80,3 @@ export interface UnknownDocRefBase<D extends DocLike, Exists extends boolean>
 
 	delete(): PromiseLike<null>
 }
-
-// /** Either `WeakRef` or `StrongRef` */
-// export type Ref<D extends DocLike> = WeakRefBase<D> | StrongRefBase<D>

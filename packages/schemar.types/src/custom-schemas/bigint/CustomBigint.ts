@@ -3,8 +3,8 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
 
+import type { DefineSchema } from '~'
 import type { CustomSchema } from '~/Schema'
-import type { DefineSchema } from '~/SchemaOptions'
 
 import type { BigintOptions, DefaultBigintOptions } from './BigintOptions'
 

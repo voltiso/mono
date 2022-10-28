@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 function getLocationHref() {
-	return typeof window !== 'undefined' ? window.location.href : undefined
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	return typeof window !== 'undefined' ? window.location?.href : undefined
 }
 
 const initialLocationHref = getLocationHref()

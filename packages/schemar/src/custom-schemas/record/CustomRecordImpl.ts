@@ -5,8 +5,7 @@ import * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { CustomObjectImpl } from '~'
-import { object } from '~'
-import { CustomSchemaImpl } from '~'
+import { CustomSchemaImpl, object } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {

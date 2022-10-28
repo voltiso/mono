@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsEqual } from '~/$strip'
 import { $Assert } from '~/$strip'
+import type { IsEqual } from '~/type'
 
 import type { ReplaceIf } from './Replace'
 

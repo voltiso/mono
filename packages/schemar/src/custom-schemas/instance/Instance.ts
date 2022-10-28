@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as t from '@voltiso/schemar.types'
-import { lazyConstructor } from '@voltiso/util'
+import { $assert, lazyConstructor } from '@voltiso/util'
 
 import { InstanceImpl } from '~'
 
@@ -13,8 +13,8 @@ export const Instance = lazyConstructor(
 
 //
 
-export function instance<Inst extends object>(
-	Constructor: new (...args: any) => Inst,
+export function instance<TInstance extends object>(
+	Constructor: abstract new (...args: any) => TInstance,
 ) {
 	$assert(Constructor)
 	return new Instance(Constructor)

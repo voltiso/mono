@@ -5,25 +5,25 @@ import type { Newable } from '@voltiso/util'
 
 import type { Instance, Literal, MutableTuple, Object } from '~/custom-schemas'
 import type {
+	$$InferableObject,
 	InferableLiteral,
-	InferableObjectLike,
 	InferableReadonlyTuple,
 } from '~/Inferable'
-import type { SchemaLike } from '~/Schema'
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schema } from '~/Schema'
+import type { $$Schemable } from '~/Schemable'
 
 export type InferSchemaNoReadonlyTuple_<T> = T extends InferableLiteral
 	? Literal<T>
 	: T extends Newable
 	? Instance<T>
-	: T extends SchemaLike
+	: T extends $$Schema
 	? T
 	: T extends InferableReadonlyTuple
 	? MutableTuple<[...T]>
-	: T extends InferableObjectLike
+	: T extends $$InferableObject
 	? // eslint-disable-next-line @typescript-eslint/ban-types
 	  Object<{ -readonly [k in keyof T]: T[k] }>
 	: never
 
-export type InferSchemaNoReadonlyTuple<T extends SchemableLike> =
+export type InferSchemaNoReadonlyTuple<T extends $$Schemable> =
 	InferSchemaNoReadonlyTuple_<T>

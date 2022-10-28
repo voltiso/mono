@@ -2,11 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
 	DefaultNeverOptions,
 	NeverOptions,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
 import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 

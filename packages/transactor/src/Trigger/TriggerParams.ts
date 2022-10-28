@@ -4,7 +4,7 @@
 import type { PathMatches } from '~/common'
 import type { Id } from '~/Data'
 import type { Db } from '~/Db'
-import type { DocLike, DTI, IDoc } from '~/Doc'
+import type { $$Doc, GetDocTI, IDoc } from '~/Doc'
 import type { DocRefContext } from '~/DocRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
@@ -12,7 +12,7 @@ import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
 
 export interface TriggerParams<
-	D extends DocLike = IDoc,
+	D extends $$Doc = IDoc,
 	ThisExists extends boolean = boolean,
 > extends PathMatches,
 		DocRefContext {
@@ -20,7 +20,7 @@ export interface TriggerParams<
 
 	__voltiso: VoltisoEntry
 
-	path: DocPath<D[DTI]['tag']>
+	path: DocPath<GetDocTI<D>['tag']>
 	id: Id<D>
 
 	db: Db
@@ -36,10 +36,11 @@ export interface TriggerParams<
 // > = D extends any ? AfterTriggerParams<D, This, Before, After> : never
 
 export interface AfterTriggerParams<
-	D extends DocLike = IDoc,
+	D extends $$Doc = IDoc,
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
-> extends TriggerParams<D, AfterExists> { // This === After
+> extends TriggerParams<D, AfterExists> {
+	// This === After
 	// AfterTriggerParamsLike<D, This, Before, After>
 	//
 
@@ -71,7 +72,7 @@ export interface AfterTriggerParams<
 // 	}
 // }
 
-export type BeforeCommitTriggerParams<D extends DocLike> = TriggerParams<D> &
+export type BeforeCommitTriggerParams<D extends $$Doc> = TriggerParams<D> &
 	IntrinsicFields
 
 //
@@ -81,17 +82,9 @@ export type BeforeCommitTriggerParams<D extends DocLike> = TriggerParams<D> &
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace TriggerParams {
 	export type After<D extends IDoc> = AfterTriggerParams<D>
-	export type AfterCreate<D extends IDoc> = AfterTriggerParams<
-		D,
-		false,
-		true
-	>
+	export type AfterCreate<D extends IDoc> = AfterTriggerParams<D, false, true>
 
-	export type AfterDelete<D extends IDoc> = AfterTriggerParams<
-		D,
-		true,
-		false
-	>
+	export type AfterDelete<D extends IDoc> = AfterTriggerParams<D, true, false>
 
 	export type AfterCreateOrUpdate<D extends IDoc> = AfterTriggerParams<
 		D,

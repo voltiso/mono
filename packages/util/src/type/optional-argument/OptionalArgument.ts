@@ -12,8 +12,8 @@
 
 // export type OptionalArgument<X> = Provided<X> | NotProvided
 
-declare const NotProvided: unique symbol
-// export const NotProvided = Symbol('NotProvided')
+// declare const NotProvided: unique symbol
+export const NotProvided = Symbol('NotProvided')
 export type NotProvided = typeof NotProvided
 
 export type OptionalArgument<X> = X | NotProvided

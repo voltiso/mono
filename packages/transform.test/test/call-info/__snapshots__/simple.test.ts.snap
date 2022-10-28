@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`callInfo simple 1`] = `
+"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+// eslint-disable-next-line @typescript-eslint/no-namespace
+var MyNamespace;
+(function (MyNamespace) {
+    /** @callInfo */
+    function willAppend(_str, _info) {
+        //
+    }
+    MyNamespace.willAppend = willAppend;
+    function willNotAppend(_str, _info) {
+        //
+    }
+    MyNamespace.willNotAppend = willNotAppend;
+})(MyNamespace || (MyNamespace = {}));
+// eslint-disable-next-line @typescript-eslint/no-namespace
+var A;
+(function (A) {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    let B;
+    (function (B) {
+        class C {
+            /** @callInfo */
+            // eslint-disable-next-line class-methods-use-this
+            willAppend(_x, _info) {
+                //
+            }
+            // eslint-disable-next-line class-methods-use-this
+            willNotAppend(_x, _info) {
+                //
+            }
+        }
+        B.C = C;
+    })(B = A.B || (A.B = {}));
+})(A || (A = {}));
+const c = new A.B.C();
+// eslint-disable-next-line @typescript-eslint/no-namespace
+var Test;
+(function (Test) {
+    function start() {
+        MyNamespace.willAppend('a', {
+            expression: 'MyNamespace.willAppend',
+            arguments: [
+                '\\'a\\''
+            ],
+            typeArguments: [],
+            location: {
+                package: {
+                    name: '@voltiso/transform.test',
+                    version: void 0
+                },
+                packagePath: 'src/call-info/simple.ts',
+                gitPath: 'packages/transform.test/src/call-info/simple.ts',
+                position: 940,
+                line: 40,
+                column: 26,
+                astPath: [
+                    'Test',
+                    'start'
+                ]
+            }
+        });
+        MyNamespace.willNotAppend('a');
+        c.willAppend(1, {
+            expression: 'c.willAppend',
+            arguments: [
+                '1'
+            ],
+            typeArguments: [
+                'number'
+            ],
+            location: {
+                package: {
+                    name: '@voltiso/transform.test',
+                    version: void 0
+                },
+                packagePath: 'src/call-info/simple.ts',
+                gitPath: 'packages/transform.test/src/call-info/simple.ts',
+                position: 1003,
+                line: 42,
+                column: 32,
+                astPath: [
+                    'Test',
+                    'start'
+                ]
+            }
+        });
+        c.willNotAppend('a');
+    }
+    Test.start = start;
+})(Test || (Test = {}));
+Test.start();
+export {};
+//# sourceMappingURL=simple.js.map"
+`;

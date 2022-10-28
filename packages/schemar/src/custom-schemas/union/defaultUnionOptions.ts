@@ -9,5 +9,5 @@ import { defaultSchemaOptions } from '~/Schema'
 export const defaultUnionOptions = lazyValue(() => ({
 	...defaultSchemaOptions,
 
-	schemas: 0 as unknown as t.SchemableLike[],
+	schemas: 0 as unknown as t.$$Schemable[],
 }))

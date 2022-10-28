@@ -12,4 +12,6 @@ export const UnknownObject = lazyConstructor(
 	() => UnknownObjectImpl,
 ) as unknown as t.UnknownObjectConstructor
 
-export const object = lazyValue(() => new UnknownObject())
+export const object: t.UnknownObject = lazyValue(() => new UnknownObject())
+
+export const plainObject: t.UnknownPlainObject = lazyValue(() => object.plain) as never

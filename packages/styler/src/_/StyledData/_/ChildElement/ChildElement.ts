@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OmitCall } from '@voltiso/util'
+import type { OmitCall_ } from '@voltiso/util'
 import type { ElementType, ReactElement } from 'react'
 
 import type { Props } from '~/react-types'
@@ -11,6 +11,6 @@ import type { Props } from '~/react-types'
 // ) => ReactElement | null
 
 export type ChildElement<P extends Props> =
-	| OmitCall<ElementType<{}>>
+	| OmitCall_<ElementType<{}>>
 	// | ((props: P) => ElementType<{}>)
 	| ((props: P) => ReactElement | null)

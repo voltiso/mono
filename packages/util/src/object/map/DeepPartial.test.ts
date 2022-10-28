@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/$strip'
 import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
 import type { DeepPartial_ } from './DeepPartial'
 
@@ -13,6 +13,7 @@ describe('DeepPartial', () => {
 		type X = DeepPartial_<{
 			x: 0
 			a: 'test'
+			arr: 123[]
 			obj: {
 				a: 11
 			}
@@ -23,6 +24,7 @@ describe('DeepPartial', () => {
 				{
 					x?: 0
 					a?: 'test'
+					arr?: 123[]
 					obj?: {
 						a?: 11
 					}

@@ -3,21 +3,29 @@
 
 import type { OPTIONS, SCHEMA_NAME } from '_'
 
-import type { ISchema, SchemaLike } from '~'
+import type { $$Schema, ISchema, SchemaLike } from '~'
 
 import type { ArrayOptions } from '.'
 
-export interface ArrayLike<T extends readonly unknown[] = readonly unknown[]>
-	extends SchemaLike<T> {
+export interface $$Array extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Array'
 }
 
-export interface IArray extends ISchema<readonly unknown[]> {
+export interface ArrayLike<T extends readonly unknown[] = readonly unknown[]>
+	extends $$Array,
+		SchemaLike<T> {
+	//
+	readonly [SCHEMA_NAME]: 'Array'
+}
+
+//
+
+export interface IArray extends $$Array, ISchema<readonly unknown[]> {
 	readonly [SCHEMA_NAME]: 'Array'
 
 	[OPTIONS]: ArrayOptions
 
-	readonly getElementSchema: SchemaLike
+	readonly getElementSchema: $$Schema
 	readonly isReadonlyArray: boolean
 	readonly getMinLength: number | undefined
 	readonly getMaxLength: number | undefined

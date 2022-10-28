@@ -1,17 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schemable } from '~/Schemable'
 
 import type { CustomUnknownTuple } from './CustomUnknownTuple'
 import type { GetTuple } from './GetTuple'
 
 export interface MutableUnknownTuple
 	extends CustomUnknownTuple<{ isReadonlyTuple: false }> {
-	<T extends readonly SchemableLike[]>(...elementTypes: T): GetTuple<
-		this,
-		[...T]
-	>
+	<T extends readonly $$Schemable[]>(...elementTypes: T): GetTuple<this, [...T]>
 }
 
 export interface ReadonlyUnknownTuple
@@ -20,10 +17,7 @@ export interface ReadonlyUnknownTuple
 		Output: readonly unknown[]
 		Input: readonly unknown[]
 	}> {
-	<T extends readonly SchemableLike[]>(...elementTypes: T): GetTuple<
-		this,
-		[...T]
-	>
+	<T extends readonly $$Schemable[]>(...elementTypes: T): GetTuple<this, [...T]>
 }
 
 export type MutableUnknownTupleConstructor = new () => MutableUnknownTuple

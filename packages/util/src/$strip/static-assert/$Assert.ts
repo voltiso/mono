@@ -4,6 +4,8 @@
 /* eslint-disable etc/no-misused-generics */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
+import { assertDev } from '_'
+
 import type {
 	IsCompatible,
 	IsEqual,
@@ -11,8 +13,6 @@ import type {
 	IsNonStrictEqual,
 	IsRelated,
 } from '~'
-
-import { assertDev } from '../_'
 
 interface Is<A, T = true, F = false> {
 	<B>(_?: B): A extends B ? T : F
@@ -41,7 +41,6 @@ interface Is<A, T = true, F = false> {
 	true: IsIdentical<A, true, T, F>
 }
 
-/** @strip */
 const proxy: any = new Proxy(() => proxy as never, {
 	get() {
 		return proxy as never
@@ -56,10 +55,7 @@ export function $Is<T>(_?: T): Is<T> {
 
 // export const Type = Is
 
-/**
- * @internal
- * @strip
- */
+/** @internal */
 function _Assert<
 	_A extends true = true,
 	_B extends true = true,
@@ -82,7 +78,7 @@ function _Assert<
 	assertDev()
 }
 
-/** @strip */
+/** @internal */
 const _AssertInterface = {
 	/**
 	 * IsSubtype
@@ -99,8 +95,9 @@ const _AssertInterface = {
 	isSupertype<A, _B extends A>() {},
 }
 
-/** @strip */
+// eslint-disable-next-line etc/no-internal
+Object.setPrototypeOf(_Assert, _AssertInterface)
+
+/** @strip Use `@voltiso/transform/strip` to strip from production code */
 // eslint-disable-next-line etc/no-internal
 export const $Assert = _Assert as typeof _AssertInterface & typeof _Assert
-
-Object.setPrototypeOf($Assert, _AssertInterface)

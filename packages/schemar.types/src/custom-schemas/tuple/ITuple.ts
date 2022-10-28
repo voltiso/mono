@@ -2,25 +2,33 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
+import type { Override } from '@voltiso/util'
 
 import type {
-	CustomCheck,
-	CustomFix,
+	$$Schema,
+	$$Schemable,
 	DefaultTupleOptions,
 	ISchema,
-	MergeSchemaOptions,
-	SchemableLike,
 	SchemaLike,
 	TupleOptions,
 } from '~'
 
+export interface $$Tuple extends $$Schema {
+	readonly [SCHEMA_NAME]: 'Tuple'
+}
+
 export interface TupleLike<T extends readonly unknown[] = readonly unknown[]>
-	extends SchemaLike<T> {
+	extends $$Tuple,
+		SchemaLike<T> {
+	//
 	readonly [SCHEMA_NAME]: 'Tuple'
 }
 
 export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
-	extends ISchema<T> {
+	extends $$Tuple,
+		TupleLike<T>,
+		ISchema<T> {
+	//
 	readonly [SCHEMA_NAME]: 'Tuple'
 
 	readonly [BASE_OPTIONS]: TupleOptions
@@ -29,29 +37,19 @@ export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
 	readonly [OPTIONS]: TupleOptions<T>
 
 	get isReadonlyTuple(): boolean
-	get getShape(): SchemableLike[]
+	get getShape(): $$Schemable[]
 	get getLength(): number
 
-	get readonlyTuple(): ITuple
-	get mutableTuple(): ITuple
+	get readonlyTuple(): $$Tuple
+	get mutableTuple(): $$Tuple
 }
 
 export interface IReadonlyTuple extends ITuple {
-	readonly [OPTIONS]: MergeSchemaOptions<
-		TupleOptions,
-		{ isMutableTuple: false }
-	>
+	readonly [OPTIONS]: Override<TupleOptions, { isMutableTuple: false }>
 }
 
-/**
- * For inlining
- *
- * @internal
- */
-export type _unused_ITuple = CustomCheck | CustomFix
-
 export interface IMutableTuple extends ITuple {
-	readonly [OPTIONS]: MergeSchemaOptions<TupleOptions, { isMutableTuple: true }>
+	readonly [OPTIONS]: Override<TupleOptions, { isMutableTuple: true }>
 
 	get Type(): unknown[]
 	get OutputType(): unknown[]

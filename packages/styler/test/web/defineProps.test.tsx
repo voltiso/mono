@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsIdentical, StaticError } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { ComponentProps, ReactNode } from 'react'
 
 import type { IStyledComponent } from '~'
@@ -48,7 +48,7 @@ describe('defineProps', () => {
 
 		const a = () => style('button').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				StaticError &
@@ -67,7 +67,7 @@ describe('defineProps', () => {
 		}
 
 		//
-		;() => style('button').defineProps<MyProps>({ magic: undef })
+		;() => style('button').defineProps<MyProps>({ magic: undefined })
 	})
 
 	it('does not require defaults for mandatory props', () => {
@@ -83,7 +83,7 @@ describe('defineProps', () => {
 		//
 		const a = () => style('button').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
-		Assert.is<A, IStyledComponent>()
+		$Assert.is<A, IStyledComponent>()
 	})
 
 	it('does not require default for children', () => {
@@ -99,7 +99,7 @@ describe('defineProps', () => {
 		//
 		const a = () => style('div').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
-		Assert.is<A, IStyledComponent>()
+		$Assert.is<A, IStyledComponent>()
 	})
 
 	it('does not require defaults for already present props', () => {
@@ -108,7 +108,7 @@ describe('defineProps', () => {
 		const Div = style('div').newCssProp('magic', { color: 'purple' })
 
 		type B = Pick<ComponentProps<typeof Div>, 'magic'>
-		Assert<IsIdentical<B, { magic?: boolean | undefined }>>()
+		$Assert<IsIdentical<B, { magic?: boolean | undefined }>>()
 
 		type MyProps = {
 			magic?: number
@@ -118,7 +118,7 @@ describe('defineProps', () => {
 		//
 		const NewDiv = Div.defineProps<MyProps>({ newProp: 'test' })
 		type A = Pick<ComponentProps<typeof NewDiv>, 'magic' | 'newProp'>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{ magic?: number | undefined; newProp?: string | undefined }

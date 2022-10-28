@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_ } from '@voltiso/util'
-import { callableClass, lazyConstructor } from '@voltiso/util'
+import type { _, $_, Get_ } from '@voltiso/util'
+import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
-import type { Id, NestedData } from '~/Data'
+import type { Id } from '~/Data'
 import type { StrongDocRefBase } from '~/DocRef'
 import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
@@ -12,21 +12,25 @@ import type { JsonFromDocData } from '~/serialization'
 
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GData'
-import type { GMethodPromises } from './_/GMethodPromises'
+import type { GetMethodPromises_ } from './_/GMethodPromises'
 import type { UpdatesFromData } from './_/UpdatesFromData'
 import { DocCall } from './DocCall'
 import type { DocConstructor, IDocConstructorNoBuilder } from './DocConstructor'
 import type { UntaggedDocTI } from './DocImpl'
 import { DocImpl } from './DocImpl'
-import type { DocTI, DocTILike, DTI } from './DocTI'
-import type { DocLike } from './IDoc'
-import type { IndexedDocTI } from './IndexedDoc'
+import type { DocTI, $$DocTI, DTI } from './DocTI'
+import type { $$Doc } from './IDoc'
+import type { $$IndexedDocTI, IndexedDoc } from '..'
 
-export type IdField<Doc extends DocLike> = {
+export type IdField<Doc extends $$Doc> = {
 	id: Id<Doc>
 }
 
-export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext> {
+/** Everything except custom stuff at the root level: fields, methods, aggregates */
+export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
+	extends $$Doc {
+	//
+
 	This: this
 
 	readonly [DTI]: TI
@@ -34,7 +38,7 @@ export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext> {
 	readonly constructor: IDocConstructorNoBuilder
 
 	readonly id: Id<this>
-	readonly path: DocPath<TI['tag']>
+	readonly path: DocPath<Get_<TI, 'tag'>>
 	readonly ref: StrongDocRefBase<this>
 
 	readonly data: GetData<TI>
@@ -43,7 +47,7 @@ export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext> {
 
 	//
 
-	get aggregateSchemas(): TI['aggregates']
+	get aggregateSchemas(): Get_<TI, 'aggregates'>
 
 	//
 
@@ -65,27 +69,25 @@ export interface DocBase<TI extends DocTILike, Ctx extends ExecutionContext> {
 
 	delete(): Promise<null>
 
-	methods: GMethodPromises<TI>
+	methods: GetMethodPromises_<TI>
 
 	//
 
 	toJSON(): $_<{ id: string } & JsonFromDocData<GetData<TI>>>
 }
 
+/** `DocBase` + custom stuff at the root level */
 export type Doc<
-	TI extends DocTILike = DocTI,
+	TI extends $$DocTI = DocTI,
 	Ctx extends ExecutionContext = ExecutionContext,
-> = DocBase<TI, Ctx> & {
-	__voltiso: GetData<TI>['__voltiso']
-} & (TI extends IndexedDocTI
-		? {
-				[k: string]: NestedData
-		  }
-		: GetData<TI> &
-				GMethodPromises<TI> &
-				Required<GetData<TI>['__voltiso']['aggregateTarget']>)
+> = TI extends $$IndexedDocTI
+	? IndexedDoc<Ctx>
+	: DocBase<TI, Ctx> &
+			GetData<TI> &
+			GetMethodPromises_<TI> &
+			Required<GetData<TI>['__voltiso']['aggregateTarget']>
 
-export const Doc = callableClass(
-	lazyConstructor(() => DocImpl as never),
-	DocCall,
-) as unknown as DocConstructor<UntaggedDocTI>
+export const Doc = CallableConstructor({
+	constructor: lazyConstructor(() => DocImpl as never),
+	call: DocCall,
+}) as unknown as DocConstructor<UntaggedDocTI>

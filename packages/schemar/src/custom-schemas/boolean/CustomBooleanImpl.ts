@@ -11,13 +11,14 @@ import type {
 	Literal,
 } from '@voltiso/schemar.types'
 import {
+	EXTENDS,
 	isBoolean,
 	isLiteral,
 	isUnion,
 	isUnknownLiteral,
+	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema'
 
@@ -40,7 +41,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	[CALL]<L extends boolean>(...literals: L[]): Literal<L>

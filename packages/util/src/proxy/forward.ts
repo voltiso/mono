@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '~/nullish'
-
 /**
  * Try to forward as much as possible - but have to correctly handle
  * non-configurable properties of `target`
@@ -19,7 +17,7 @@ export function forwardGetOwnPropertyDescriptor(
 		return { ...original, ...override, configurable: original.configurable }
 	} else if (!original || original.configurable === true) {
 		if (override) return { ...override, configurable: true }
-		else return undef
+		else return undefined
 	} else return override
 }
 

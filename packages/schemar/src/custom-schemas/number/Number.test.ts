@@ -4,17 +4,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import type {
+	$$Number,
 	CustomNumber,
 	InputType,
 	INumber,
-	NumberLike,
 	NumberOptions,
 	OutputType,
 	Schema,
 	Type_,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -22,9 +22,9 @@ describe('s.number', () => {
 	it('generic', <O extends Partial<NumberOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomNumber<O>, Schema>()
-		Assert.is<CustomNumber<O>, INumber>()
-		Assert.is<INumber, NumberLike>()
+		$Assert.is<CustomNumber<O>, Schema>()
+		$Assert.is<CustomNumber<O>, INumber>()
+		$Assert.is<INumber, $$Number>()
 	})
 
 	it('simple', () => {
@@ -44,18 +44,18 @@ describe('s.number', () => {
 		expect(s.number(123, 0).extends(s.number(123, 234))).toBeFalsy()
 
 		type N = OutputType<typeof s.number>
-		Assert<IsIdentical<N, number>>()
+		$Assert<IsIdentical<N, number>>()
 
 		const nl = s.number(123, 234)
 		type NL = OutputType<typeof nl>
-		Assert<IsIdentical<NL, 123 | 234>>()
-		Assert<IsIdentical<InputType<typeof nl>, 123 | 234>>()
+		$Assert<IsIdentical<NL, 123 | 234>>()
+		$Assert<IsIdentical<InputType<typeof nl>, 123 | 234>>()
 
 		type No = typeof s.number.optional.Type
-		Assert<IsIdentical<No, number>>()
+		$Assert<IsIdentical<No, number>>()
 
 		type Nlo = typeof nl.optional.Type
-		Assert<IsIdentical<Nlo, 123 | 234>>()
+		$Assert<IsIdentical<Nlo, 123 | 234>>()
 	})
 
 	it('default', () => {
@@ -68,25 +68,25 @@ describe('s.number', () => {
 		// ;() => s.number.default(123).optional
 
 		// @ts-expect-error cannot fix without default value
-		;() => s.number.fix(undef)
+		;() => s.number.fix(undefined)
 
 		//
 		;() => s.number.optional.integer
 
-		expect(s.number.optional.exec(undef).value).toBeUndefined()
-		expect(s.number.optional.exec(undef).isValid).toBeFalsy()
+		expect(s.number.optional.exec(undefined).value).toBeUndefined()
+		expect(s.number.optional.exec(undefined).isValid).toBeFalsy()
 
 		const n = s.number.default(123)
 
-		expect(n.exec(undef).value).toBe(123)
+		expect(n.exec(undefined).value).toBe(123)
 
 		expect(n.isFixable(undefined)).toBeTruthy()
 		expect(n.isValid(undefined)).toBeFalsy()
 
 		type Out = Type_<typeof n, { kind: 'out' }>
 		type In = Type_<typeof n, { kind: 'in' }>
-		Assert<IsIdentical<Out, number>>()
-		Assert<IsIdentical<In, number | undefined>>()
+		$Assert<IsIdentical<Out, number>>()
+		$Assert<IsIdentical<In, number | undefined>>()
 	})
 
 	it('default - function argument', () => {
@@ -94,12 +94,12 @@ describe('s.number', () => {
 
 		const n = s.number.default(() => 123)
 
-		expect(n.exec(undef).value).toBe(123)
+		expect(n.exec(undefined).value).toBe(123)
 
 		type Out = Type_<typeof n, { kind: 'out' }>
 		type In = Type_<typeof n, { kind: 'in' }>
-		Assert<IsIdentical<Out, number>>()
-		Assert<IsIdentical<In, number | undefined>>()
+		$Assert<IsIdentical<Out, number>>()
+		$Assert<IsIdentical<In, number | undefined>>()
 	})
 
 	it('check', () => {

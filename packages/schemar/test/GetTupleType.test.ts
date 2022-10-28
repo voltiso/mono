@@ -8,7 +8,7 @@ import type {
 	TupleType_,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type * as s from '~'
 
@@ -17,35 +17,35 @@ describe('GetTupleType', () => {
 		expect.assertions(0)
 
 		type A = TupleType_<1[], { kind: 'out' }>
-		Assert<IsIdentical<A, 1[]>>()
+		$Assert<IsIdentical<A, 1[]>>()
 
 		type B = TupleType_<number[], { kind: 'out' }>
-		Assert<IsIdentical<B, number[]>>()
+		$Assert<IsIdentical<B, number[]>>()
 
 		type C = TupleType_<(number | string)[], { kind: 'out' }>
-		Assert<IsIdentical<C, (number | string)[]>>()
+		$Assert<IsIdentical<C, (number | string)[]>>()
 	})
 
 	it('type', () => {
 		expect.assertions(0)
 
 		type A = TupleType_<[s.Number, s.String], { kind: 'out' }>
-		Assert<IsIdentical<A, [number, string]>>()
+		$Assert<IsIdentical<A, [number, string]>>()
 	})
 
 	it('generic', () => {
 		expect.assertions(0)
 
 		type A = TupleType_<InferableLiteral[], { kind: 'out' }>
-		Assert<IsIdentical<A, InferableLiteral[]>>()
+		$Assert<IsIdentical<A, InferableLiteral[]>>()
 
 		type B = TupleType_<ISchema[], { kind: 'out' }>
-		Assert<IsIdentical<B, unknown[]>>()
+		$Assert<IsIdentical<B, unknown[]>>()
 
 		type C = TupleType_<Schemable[], { kind: 'out' }>
-		Assert<IsIdentical<C, unknown[]>>()
+		$Assert<IsIdentical<C, unknown[]>>()
 
 		type D = TupleType_<readonly Schemable[], { kind: 'out' }>
-		Assert<IsIdentical<D, readonly unknown[]>>()
+		$Assert<IsIdentical<D, readonly unknown[]>>()
 	})
 })

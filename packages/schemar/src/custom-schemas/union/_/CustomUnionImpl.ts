@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schemable,
 	BASE_OPTIONS,
 	CustomUnion,
 	DEFAULT_OPTIONS,
@@ -9,11 +10,9 @@ import type {
 	ISchema,
 	IUnion,
 	Schemable,
-	SchemableLike,
 	UnionOptions,
 } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { isUnion } from '@voltiso/schemar.types'
+import { EXTENDS, isUnion, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import { schema, ValidationIssue } from '~/custom-schemas'
@@ -37,7 +36,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		const otherTypes: SchemableLike[] = isUnion(other)
+		const otherTypes: $$Schemable[] = isUnion(other)
 			? other.getSchemas
 			: [other]
 

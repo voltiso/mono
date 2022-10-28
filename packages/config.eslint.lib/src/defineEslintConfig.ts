@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DeepReadonly } from '@voltiso/util'
+
 import { deepMerge } from './_from-util/deepMerge'
 import type {
 	AlsoAccept,
@@ -11,7 +13,7 @@ import type {
 import type { EslintConfig, EslintConfigOverride } from './EslintConfig'
 
 export function defineEslintConfig<
-	Config extends EslintConfig | AlsoAccept<PlainObject>,
+	Config extends DeepReadonly<EslintConfig> | AlsoAccept<PlainObject>,
 >(config: Config): DeepMutable_<Config>
 
 export function defineEslintConfig<

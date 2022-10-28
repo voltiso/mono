@@ -2,12 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	InferableLike,
+	$$Inferable,
+	$$Schema,
+	$$Schemable,
 	InferableLiteral,
 	InferSchemaNoReadonlyTuple,
 	ISchema,
-	SchemableLike,
-	SchemaLike,
 } from '@voltiso/schemar.types'
 import { getValues, isConstructor } from '@voltiso/util'
 
@@ -19,7 +19,7 @@ import { isSchema } from '~/Schema/isSchema'
  *
  * @param inferable - A value to infer schema from (object, tuple, literal, ...)
  */
-export function infer<T extends InferableLike>(
+export function infer<T extends $$Inferable>(
 	inferable: T,
 ): InferSchemaNoReadonlyTuple<T>
 
@@ -30,7 +30,7 @@ export function infer<T extends InferableLike>(
  *
  * @param schema - A value that is already a schema
  */
-export function infer<T extends SchemaLike>(schema: T): T
+export function infer<T extends $$Schema>(schema: T): T
 
 /**
  * Infer schema (not type!)
@@ -40,13 +40,13 @@ export function infer<T extends SchemaLike>(schema: T): T
  * @param inferableOrSchema - An inferable value (object, tuple, literal, ...)
  *   or already schema
  */
-export function infer<T extends SchemableLike>(
+export function infer<T extends $$Schemable>(
 	inferableOrSchema: T,
 ): InferSchemaNoReadonlyTuple<T>
 
 //
 
-export function infer<T extends SchemableLike>(
+export function infer<T extends $$Schemable>(
 	t: T,
 ): InferSchemaNoReadonlyTuple<T> {
 	if (isSchema(t)) return t as never
@@ -67,7 +67,7 @@ export function infer<T extends SchemableLike>(
 		 */
 		let allChildrenOptional = true
 		for (const value of getValues(t as object, { includeSymbols: true })) {
-			const childSchema = infer(value) as ISchema
+			const childSchema = infer(value) as unknown as ISchema
 			if (
 				!childSchema.isOptional &&
 				!childSchema.isStrictOptional &&

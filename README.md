@@ -91,7 +91,7 @@ pnpm test
 - `typescript`:
   - `< 4.8.0` problem linting `styler/test/native`
   - `>= 4.8.0` (no eslint support yet, `eslint-plugin-unused-imports` bugged for
-    decorators - see `callableInstance.test.ts`)
+    decorators - see `createBoundCallableObject.test.ts`)
 
 ### Using `Orta.vscode-jest` extension
 

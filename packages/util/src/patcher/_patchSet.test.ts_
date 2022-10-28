@@ -1,0 +1,14 @@
+describe('patchSet', () => {
+	it('works', () => {
+		expect.hasAssertions()
+
+		const obj = { a: 'aa', b: 'bb' } as { a: string; b?: string }
+
+		const patchValue = { a: 'bb' }
+
+		const a = patchSet(obj, patchValue)
+
+		expect(a).toStrictEqual(patchValue)
+		expect(a).toBe(patchValue)
+	})
+})

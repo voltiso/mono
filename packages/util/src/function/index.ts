@@ -1,13 +1,12 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
+export * from './BindableFunction'
+export * from './Bivariant'
+export * from './Parameters'
+export * from './Return'
+export * from './_symbols'
 export * from './apply'
 export * from './bind'
-export * from './Bivariant'
 export * from './call'
-export * from './Callable'
+export * from './callable'
 export * from './callableObject'
-export * from './callableProto'
 export * from './isFunction'
-export * from './Parameters'
-export * from './ReturnType'
+export * from './newable'

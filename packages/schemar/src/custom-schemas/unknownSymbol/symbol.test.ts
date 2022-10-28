@@ -8,7 +8,7 @@ import type {
 	UnknownSymbolOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { number, unknown } from '~'
 import * as s from '~/custom-schemas'
@@ -17,14 +17,14 @@ describe('symbol', () => {
 	it('generic', <O extends UnknownSymbolOptions>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomUnknownSymbol<O>, IUnknownSymbol>()
+		$Assert.is<CustomUnknownSymbol<O>, IUnknownSymbol>()
 	})
 
 	it('simple', () => {
 		expect.hasAssertions()
 
 		type A = OutputType<typeof s.symbol>
-		Assert<IsIdentical<A, symbol>>()
+		$Assert<IsIdentical<A, symbol>>()
 
 		expect(s.symbol.extends(s.symbol)).toBeTruthy()
 		expect(s.symbol.extends(null)).toBeFalsy()

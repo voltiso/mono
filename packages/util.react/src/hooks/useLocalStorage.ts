@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isDefined, undef } from '@voltiso/util'
+import { isDefined } from '@voltiso/util'
 import { useCallback, useMemo } from 'react'
 
 import { useInitial, useUpdate } from '~/hooks'
@@ -39,12 +39,12 @@ export function useLocalStorage<T>(
 	def?: T,
 ): readonly [T | undefined, (x?: T) => void] {
 	const update = useUpdate()
-	const mutable = useInitial({ data: undef as T | undefined })
+	const mutable = useInitial({ data: undefined as T | undefined })
 
 	// const current = useCurrent({ x, key, def })
 
 	const storage = useMemo(() => {
-		const storage = isDefined(key) ? new LocalStorage(key, def) : undef
+		const storage = isDefined(key) ? new LocalStorage(key, def) : undefined
 		mutable.data = storage?.data
 		return storage
 	}, [def, key, mutable])
@@ -58,7 +58,7 @@ export function useLocalStorage<T>(
 			// 	`useLocalStorage: cannot set value ${current.x} for local storage key ${current.key}`,
 			// )
 
-			if (x === undef) storage.clear()
+			if (x === undefined) storage.clear()
 			else {
 				storage.data = x
 				mutable.data = x

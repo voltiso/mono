@@ -3,7 +3,7 @@
 
 import type * as Database from '@voltiso/firestore-like'
 import { isDatabase } from '@voltiso/firestore-like'
-import { stringFrom, undef } from '@voltiso/util'
+import { stringFrom } from '@voltiso/util'
 
 import type { $WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
@@ -104,5 +104,5 @@ export async function databaseUpdate(
 		t.update(ref, firestoreUpdates)
 	}
 
-	return undef
+	return undefined
 }

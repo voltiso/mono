@@ -3,7 +3,7 @@
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { OmitCall, Tail } from '@voltiso/util'
-import { assumeType, staticImplements, undef } from '@voltiso/util'
+import { $assert, $AssumeType, staticImplements } from '@voltiso/util'
 
 import { checkEnv } from '~/checkEnv'
 import type { CollectionRef } from '~/CollectionRef'
@@ -36,7 +36,7 @@ import type { TransactorConstructor } from './TransactorConstructor'
 export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 	declare _context: TransactorContext
 
-	_databaseContext: DatabaseContext | undefined = undef
+	_databaseContext: DatabaseContext | undefined = undefined
 
 	get _database(): FirestoreLike.Database {
 		if (!this._databaseContext) {
@@ -85,16 +85,16 @@ export class TransactorImpl extends Db implements OmitCall<ITransactor> {
 	// _transactionLocalStorage: AsyncLocalStorage<ContextOverride>
 
 	constructor(...args: TransactorConstructorParameters) {
-		super({ transactor: undef as unknown as TransactorImpl }) // hack
+		super({ transactor: undefined as unknown as TransactorImpl }) // hack
 		this._context.transactor = this
 
 		let database: FirestoreLike.Database | undefined
 		let myModule: FirestoreLikeModule | undefined
 		let partialOptions: Partial<Options_> = {}
 
-		while (args.length > 0 && args.at(-1) === undef) args.pop()
+		while (args.length > 0 && args.at(-1) === undefined) args.pop()
 
-		assumeType<TransactorConstructorParametersNoUndefined, typeof args>(args)
+		$AssumeType<TransactorConstructorParametersNoUndefined, typeof args>(args)
 
 		switch (args.length) {
 			case 1:

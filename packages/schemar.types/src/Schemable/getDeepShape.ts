@@ -5,12 +5,12 @@ import type { OPTIONS } from '_'
 
 import { isObject } from '~/custom-schemas/object'
 import { isTuple } from '~/custom-schemas/tuple'
-import type { SchemaLike } from '~/Schema'
+import type { $$Schema } from '~/Schema'
 
-import type { SchemableLike } from './Schemable'
+import type { $$Schemable } from './Schemable'
 import type { SchemableWithShape } from './SchemableWithShape'
 
-export type GetShape_<S> = S extends SchemaLike
+export type GetShape_<S> = S extends $$Schema
 	? S extends { [OPTIONS]: { shape: any } }
 		? S[OPTIONS]['shape']
 		: never
@@ -26,7 +26,7 @@ export type GetDeepShape_<S> = [S] extends [{ [OPTIONS]: { shape: any } }]
 
 //
 
-export function getDeepShape<S extends SchemableLike>(
+export function getDeepShape<S extends $$Schemable>(
 	schemable: S,
 ): GetDeepShape_<S> {
 	const shape =

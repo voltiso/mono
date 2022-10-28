@@ -12,6 +12,6 @@ export declare type GetType_<L> = object extends L ? object : never;
  *
  * @inline
  */
-export declare type GetType<S extends string> = /* GetType_<S> */ object extends S ? S & object : never;
+export declare type GetType<S extends string> = GetType_<S>;
 //# sourceMappingURL=get-type.d.ts.map"
 `;

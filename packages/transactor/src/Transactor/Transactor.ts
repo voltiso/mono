@@ -5,10 +5,10 @@ import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IsUnion, Throw } from '@voltiso/util'
 
 import type { FirestoreLikeModule } from '~/DatabaseContext'
-import type { Db } from '~/Db'
-import type { DocConstructorLike, DTI } from '~/Doc'
+import type { Db } from '~/Db/Db'
+import type { $$DocConstructor, DTI, GetDoc, GetDocTI } from '~/Doc'
+import type { DbPathFromString } from '~/Path'
 
-import type { DbPathFromString } from '..'
 import type { TransactionBody } from './methods'
 import type { TransactorConstructor } from './TransactorConstructor'
 import { TransactorImpl } from './TransactorImpl'
@@ -23,11 +23,11 @@ export interface Transactor extends Db {
 		cls: Cls,
 	): Throw<'db.register requires Doc tag'>
 
-	register<Cls extends DocConstructorLike>(
+	register<Cls extends $$DocConstructor>(
 		cls: Cls,
-	): IsUnion<Cls[DTI]['tag']> extends true
+	): IsUnion<GetDocTI<Cls>['tag']> extends true
 		? never
-		: DbPathFromString<Cls[DTI]['tag'], InstanceType<Cls>> // CollectionRef<InstanceType<Cls>>
+		: DbPathFromString<GetDocTI<Cls>['tag'], GetDoc<Cls>> // CollectionRef<InstanceType<Cls>>
 
 	requireSchemas: boolean
 	readonly refCounters: boolean
@@ -51,5 +51,3 @@ export interface Transactor extends Db {
 //
 
 export const Transactor = TransactorImpl as unknown as TransactorConstructor
-
-// type A = Split<'asd/sdf', '/'>

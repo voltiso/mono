@@ -31,6 +31,10 @@
 				"onInlineError": "fail"
 			},
 
+			{ "transform": "@voltiso/transform/call-info" },
+
+			{ "transform": "@voltiso/transform/compat" },
+
 			// Transform paths in output .js files
 			{
 				"transform": "typescript-transform-paths",

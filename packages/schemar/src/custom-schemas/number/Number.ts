@@ -16,5 +16,5 @@ export const Number_ = lazyConstructor(
 
 export { Number_ as Number }
 
-export const number = lazyValue(() => new Number_())
-export const integer = lazyValue(() => number.integer)
+export const number: t.Number = lazyValue(() => new Number_()) as never
+export const integer: t.Integer = lazyValue(() => number.integer) as never

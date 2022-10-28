@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { lazyConstructor } from '~/lazy/lazyConstructor'
-import type { Get } from '~/object'
+import type { GetNested } from '~/object'
 import { getProperty, hasProperty, isPlainObject } from '~/object'
 import type { Entry, IEntry } from '~/object/key-value/entry/Entry'
 import type { IPath } from '~/object/Path/IPath'
@@ -39,7 +39,7 @@ export class SetError<
 //
 
 /** `obj[property] = value` */
-export function set<Obj extends object, K extends keyof Obj | UnknownProperty>(
+export function _set<Obj extends object, K extends keyof Obj | UnknownProperty>(
 	obj: Obj,
 	property: K,
 	value: K extends keyof Obj ? Obj[K] : unknown,
@@ -51,7 +51,7 @@ export function set<Obj extends object, K extends keyof Obj | UnknownProperty>(
  * @param obj - `object`
  * @param entry - `[property, value]`
  */
-export function set<Obj extends object, KV extends Entry<Obj>>(
+export function _set<Obj extends object, KV extends Entry<Obj>>(
 	obj: Obj,
 	entry: KV,
 ): void
@@ -70,16 +70,18 @@ export function set<Obj extends object, KV extends Entry<Obj>>(
  * expect(obj).toStrictEqual({ a: { b: { c: 123 } } })
  * ```
  */
-export function set<
+export function _set<
 	Obj extends object,
 	P extends readonly [...Path<Obj>, UnknownProperty],
 >(
 	obj: Obj,
 	path: P,
-	value: (P extends Path<Obj> ? Get<Obj, P> : unknown) | AlsoAccept<unknown>,
+	value:
+		| (P extends Path<Obj> ? GetNested<Obj, P> : unknown)
+		| AlsoAccept<unknown>,
 ): void
 
-export function set(
+export function _set(
 	...args:
 		| readonly [object, IEntry]
 		| readonly [object, UnknownProperty, unknown]

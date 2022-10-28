@@ -2,20 +2,20 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schema,
 	AnyOptions,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	DefaultAnyOptions,
 	ISchema,
-	SchemaLike,
 } from '~'
 import { SCHEMA_NAME } from '~'
 
-export interface AnyLike extends SchemaLike<any> {
+export interface $$Any extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Any'
 }
 
-export interface IAny extends ISchema {
+export interface IAny extends $$Any, ISchema {
 	readonly [SCHEMA_NAME]: 'Any'
 
 	readonly [BASE_OPTIONS]: AnyOptions

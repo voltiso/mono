@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as t from '@voltiso/schemar.types'
-import { assert, getEntries, isPlainObject, stringFrom } from '@voltiso/util'
+import { $assert, getEntries, isPlainObject, stringFrom } from '@voltiso/util'
 
 import { schema } from '~/custom-schemas/unknownSchema'
 
@@ -11,7 +11,7 @@ import { schema } from '~/custom-schemas/unknownSchema'
 export function deepPartialShape<O extends t.InferableObject>(
 	o: O,
 ): t.DeepPartialShape<O> {
-	assert(
+	$assert(
 		isPlainObject(o),
 		`Invalid Argument: deepPartialShape(${stringFrom(o)})`,
 	)

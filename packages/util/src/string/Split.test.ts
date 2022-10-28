@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '~/$strip'
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
 import type { Split } from './Split'
 

@@ -11,12 +11,12 @@ import type {
 	SchemaOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { CustomSchemaImpl } from '~'
-import { infer } from '~'
 import {
 	array,
+	infer,
 	number,
 	readonlyArray,
 	readonlyTuple,
@@ -29,14 +29,14 @@ describe('Schema', () => {
 	it('generic', <O extends SchemaOptions>() => {
 		expect.assertions(0)
 
-		Assert.is<Schema<O>, Schema>()
+		$Assert.is<Schema<O>, Schema>()
 	})
 
 	it('SchemaImpl', () => {
 		expect.assertions(0)
 
 		type A = CustomSchemaImpl<DefaultSchemaOptions>['optional']['readonly']
-		Assert.is<A[OPTIONS], { optional: true; readonly: true }>()
+		$Assert.is<A[OPTIONS], { optional: true; readonly: true }>()
 	})
 
 	it('works', () => {
@@ -50,25 +50,25 @@ describe('Schema', () => {
 		expect(a.extends({ a: number })).toBeTruthy()
 
 		type A = OutputType<typeof a>
-		Assert<IsIdentical<A, { a: 1 }>>()
+		$Assert<IsIdentical<A, { a: 1 }>>()
 
 		const tLiteral = [number(123), string] as const
-		Assert.is<typeof tLiteral, InferableReadonlyTuple>()
+		$Assert.is<typeof tLiteral, InferableReadonlyTuple>()
 
 		const b = infer(tLiteral)
 
 		expect(b.extends(array)).toBeTruthy()
 		expect(b.extends(tuple(number, string))).toBeTruthy()
 
-		Assert<IsIdentical<OutputType<typeof b>, [123, string]>>()
+		$Assert<IsIdentical<OutputType<typeof b>, [123, string]>>()
 
 		const c = schema([number(123), string] as const)
 
 		expect(c.extends(array)).toBeTruthy()
 		expect(c.extends(tuple(number, string))).toBeTruthy()
 
-		Assert<IsIdentical<OutputType<typeof c>, readonly [123, string]>>()
-		Assert<IsIdentical<InputType<typeof c>, readonly [123, string]>>()
+		$Assert<IsIdentical<OutputType<typeof c>, readonly [123, string]>>()
+		$Assert<IsIdentical<InputType<typeof c>, readonly [123, string]>>()
 
 		const dd = readonlyTuple([123, 'test'] as const)
 

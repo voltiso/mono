@@ -10,7 +10,9 @@ export const defaultObjectOptions = {
 	Output: 0 as unknown as object,
 	Input: 0 as unknown as object,
 
-	shape: {} as unknown as t.InferableObjectLike,
+	shape: {} as unknown as t.$$InferableObject,
 
 	indexSignatures: [] as [],
+
+	isPlain: false,
 }

@@ -15,6 +15,12 @@
 			"tagName": "@strip",
 			"syntaxKind": "modifier",
 			"allowMultiple": false
+		},
+
+		{
+			"tagName": "@callInfo",
+			"syntaxKind": "modifier",
+			"allowMultiple": false
 		}
 	]
 }

@@ -1,52 +1,77 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocTag } from '~/DocTypes'
+import type { Assume, Get_, NewableReturn_ } from '@voltiso/util'
+import type { DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
-import type { DocConstructor, DocConstructorLike } from './DocConstructor'
-import type { DocTILike, DTI } from './DocTI'
-import type { DocLike } from './IDoc'
+import type {
+	DocConstructor,
+	$$DocConstructor,
+	IDocConstructor,
+} from './DocConstructor'
+import type { $$DocTI, DocTI, DTI } from './DocTI'
+import type { $$Doc } from './IDoc'
 
 export type WithDocTI = {
 	readonly [DTI]: any
 }
 
-export type DocRelatedLike = WithDocTI | DocTILike | DocTag
+export type DocRelatedLike =
+	| $$DocConstructor
+	| $$Doc
+	| $$DocTI
+	| WithDocTI
+	| DocTagLike
 
-export type GetDocTI<X extends DocRelatedLike> = X extends WithDocTI
-	? X[DTI]
-	: X extends DocTILike
-	? X
-	: X extends DocTag
-	? DocTypes[X][DTI]
-	: never
+export type GetDocTI<X extends DocRelatedLike> = Assume<
+	DocTI,
+	X extends WithDocTI
+		? X[DTI]
+		: X extends $$DocTI
+		? X
+		: X extends DocTagLike
+		? Get_<DocTypes[X], DTI>
+		: never
+>
 
-export type GetDocTag<X extends DocRelatedLike> = X extends WithDocTI
-	? X[DTI]['tag']
-	: X extends DocTILike
-	? X['tag']
-	: X extends DocTag
-	? X
-	: never
+//
 
-export type GetDoc<X extends DocRelatedLike> = X extends DocLike
-	? X
-	: X extends WithDocTI
-	? DocTypes[X[DTI]['tag']]
-	: X extends DocTILike
-	? DocTypes[X['tag']]
-	: X extends DocTag
-	? DocTypes[X]
-	: never
+export type GetDocTag<X extends DocRelatedLike> = Assume<
+	DocTag,
+	X extends WithDocTI
+		? X[DTI]['tag']
+		: X extends $$DocTI
+		? Get_<X, 'tag'>
+		: X extends DocTagLike
+		? X
+		: never
+>
 
-export type GetDocConstructor<X extends DocRelatedLike> =
-	X extends DocConstructorLike
+export type GetDoc<X extends DocRelatedLike> = Assume<
+	$$Doc,
+	X extends $$DocConstructor
+		? NewableReturn_<X>
+		: X extends $$Doc
+		? X
+		: X extends WithDocTI
+		? DocTypes[X[DTI]['tag']]
+		: X extends $$DocTI
+		? Get_<DocTypes, Get_<X, 'tag'>>
+		: X extends DocTagLike
+		? DocTypes[X]
+		: never
+>
+
+export type GetDocConstructor<X extends DocRelatedLike> = Assume<
+	IDocConstructor,
+	X extends $$DocConstructor
 		? X
 		: X extends WithDocTI
 		? DocConstructor<X[DTI]>
-		: X extends DocTILike
+		: X extends $$DocTI
 		? DocConstructor<X>
-		: X extends DocTag
-		? DocConstructor<DocTypes[X][DTI]>
+		: X extends DocTagLike
+		? DocConstructor<Get_<DocTypes[X], DTI, $$DocTI>>
 		: never
+>

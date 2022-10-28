@@ -10,10 +10,9 @@ import type {
 	SchemaLike,
 	TupleOptions,
 } from '@voltiso/schemar.types'
-import type * as t from '@voltiso/schemar.types'
-import { getDeepShape } from '@voltiso/schemar.types'
 import {
 	EXTENDS,
+	getDeepShape,
 	isArray,
 	isTuple,
 	isUnknownTuple,
@@ -79,13 +78,11 @@ export class CustomTupleImpl<
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTuple(other) || isUnknownTuple(other)) &&
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 
@@ -116,7 +113,7 @@ export class CustomTupleImpl<
 		return x
 	}
 
-	override _getIssuesImpl(x: unknown): t.ValidationIssue[] {
+	override _getIssuesImpl(x: unknown): ValidationIssue[] {
 		let issues = super._getIssuesImpl(x)
 
 		if (!Array.isArray(x)) {

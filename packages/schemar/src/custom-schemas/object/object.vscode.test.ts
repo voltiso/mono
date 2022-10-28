@@ -7,7 +7,6 @@ import * as s from '~'
 
 describe('object', () => {
 	it('editor - jump to definition and JSDoc - Type - MANUAL TEST', () => {
-		expect.assertions(0)
 
 		const sTest = {
 			/** Hey! */
@@ -30,7 +29,6 @@ describe('object', () => {
 	})
 
 	it('editor - jump to definition and JSDoc - typeof *.Type - MANUAL TEST', () => {
-		expect.assertions(0)
 
 		const sTest = s.object({
 			/** Hey! */

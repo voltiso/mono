@@ -1,10 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { getNodePositionStr } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import type * as ts from 'typescript'
-
-import { getNodePositionStr } from '~/_'
 
 export const moduleIcon = '👗'
 

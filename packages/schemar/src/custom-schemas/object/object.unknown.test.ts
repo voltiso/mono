@@ -3,7 +3,7 @@
 
 import type { ObjectType_ } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -22,17 +22,17 @@ describe('object - unknown', () => {
 			autoInferObject2: s.schema({}),
 		}
 
-		type A = ObjectType_<typeof shape>
+		type A = ObjectType_<typeof shape, { kind: 'out' }>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{
 					unknownObject: object
-					emptyShapeObject: {}
-					emptyShapeObjectOrUndef: {} | undefined
-					autoInferObject: {}
-					autoInferObject2: {}
+					emptyShapeObject: object
+					emptyShapeObjectOrUndef: object | undefined
+					autoInferObject: object
+					autoInferObject2: object
 				}
 			>
 		>()
@@ -40,29 +40,29 @@ describe('object - unknown', () => {
 		const sSchema = s.schema(shape)
 
 		type In = typeof sSchema.InputType
-		Assert<
+		$Assert<
 			IsIdentical<
 				In,
 				{
 					unknownObject: object
-					emptyShapeObject: {}
-					emptyShapeObjectOrUndef: {} | undefined
-					autoInferObject?: {} | undefined
-					autoInferObject2?: {} | undefined
+					emptyShapeObject: object
+					emptyShapeObjectOrUndef: object | undefined
+					autoInferObject?: object | undefined
+					autoInferObject2?: object | undefined
 				}
 			>
 		>()
 
 		type Out = typeof sSchema.OutputType
-		Assert<
+		$Assert<
 			IsIdentical<
 				Out,
 				{
 					unknownObject: object
-					emptyShapeObject: {}
-					emptyShapeObjectOrUndef: {} | undefined
-					autoInferObject: {}
-					autoInferObject2: {}
+					emptyShapeObject: object
+					emptyShapeObjectOrUndef: object | undefined
+					autoInferObject: object
+					autoInferObject2: object
 				}
 			>
 		>()

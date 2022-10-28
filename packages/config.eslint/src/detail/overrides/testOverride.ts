@@ -71,6 +71,7 @@ export const testOverride = defineEslintConfigOverride({
 		'unicorn/no-await-expression-member': 0,
 		'n/no-unpublished-import': 0,
 		'no-void': 0,
+		'jest/expect-expect': 0, // ! finally
 		'jest/no-commented-out-tests': 1,
 		'import/no-unassigned-import': 0,
 		'no-restricted-imports': 0, // allow '../*' imports

@@ -6,11 +6,11 @@
  *
  * @inline
  */
-export type DeepPartial_<T> = [
-	{
-		[k in keyof T]?: DeepPartial_<T[k]>
-	},
-][0]
+export type DeepPartial_<T> = [T] extends [readonly unknown[]]
+	? T
+	: {
+			[k in keyof T]?: DeepPartial_<T[k]>
+	  }
 
 /**
  * Non-distributive `DeepPartial` with type constraints

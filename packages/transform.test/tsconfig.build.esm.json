@@ -26,6 +26,14 @@
 
 				"afterDeclarations": true
 				// "onInlineError": "fail"
+			},
+
+			{
+				"transform": "@voltiso/transform/call-info"
+			},
+
+			{
+				"transform": "@voltiso/transform/compat"
 			}
 		]
 	},

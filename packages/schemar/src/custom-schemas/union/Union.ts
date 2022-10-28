@@ -6,7 +6,7 @@ import { lazyConstructor } from '@voltiso/util'
 
 import { UnionImpl } from '~'
 
-export type Union<Ts extends t.SchemableLike[]> = t.Union<Ts>
+export type Union<Ts extends t.$$Schemable[]> = t.Union<Ts>
 
 export const Union = lazyConstructor(
 	() => UnionImpl,
@@ -14,8 +14,8 @@ export const Union = lazyConstructor(
 
 //
 
-export function union<Ts extends t.SchemableLike[]>(...types: Ts): Union<Ts> {
-	let ts = [] as t.SchemableLike[]
+export function union<Ts extends t.$$Schemable[]>(...types: Ts): Union<Ts> {
+	let ts = [] as t.$$Schemable[]
 
 	for (const type of types) {
 		if (t.isUnion(type)) ts = [...ts, ...type.getSchemas]

@@ -4,8 +4,8 @@
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 import type { AtLeast1 } from '@voltiso/util'
 
+import type { DefineSchema } from '~'
 import type { CustomSchema } from '~/Schema'
-import type { DefineSchema } from '~/SchemaOptions'
 
 import type { RegExpEntry } from './RegExpEntry'
 import type { DefaultStringOptions, StringOptions } from './StringOptions'

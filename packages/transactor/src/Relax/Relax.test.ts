@@ -4,7 +4,7 @@
 import { Assert } from '@voltiso/util'
 
 import type { DocTI, IDoc } from '~/Doc'
-import type { IDocRefBase } from '~/DocRef'
+import type { IDocRef } from '~/DocRef'
 
 import type { Relax } from './Relax'
 
@@ -18,6 +18,6 @@ describe('Relax', () => {
 		Assert.is<Relax<IDoc>, IDoc>()
 
 		Assert.is<Relax<DocTI>, DocTI>()
-		Assert.is<Relax<IDocRefBase>, IDocRefBase>()
+		Assert.is<Relax<IDocRef>, IDocRef>()
 	})
 })

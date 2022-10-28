@@ -9,7 +9,7 @@ import type {
 	VoidOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~/custom-schemas'
 
@@ -17,7 +17,7 @@ describe('void', () => {
 	it('generic', <O extends Partial<VoidOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomVoid<O>, IVoid>()
+		$Assert.is<CustomVoid<O>, IVoid>()
 	})
 
 	it('simple', () => {
@@ -25,19 +25,19 @@ describe('void', () => {
 
 		type A1 = OutputType<typeof s.void>
 		type A2 = InputType<typeof s.void>
-		Assert<IsIdentical<A1, void>>()
-		Assert<IsIdentical<A2, void>>()
+		$Assert<IsIdentical<A1, void>>()
+		$Assert<IsIdentical<A2, void>>()
 
 		type B = s.Void['OutputType']
-		Assert.is<B, void>()
+		$Assert.is<B, void>()
 
 		const e = s.void.optional.readonly
 
 		expect(e.isReadonly).toBeTruthy()
 		expect(e.isOptional).toBeTruthy()
 
-		Assert.is<typeof e['isOptional'], true>()
-		Assert.is<typeof e['isReadonly'], true>()
+		$Assert.is<typeof e['isOptional'], true>()
+		$Assert.is<typeof e['isReadonly'], true>()
 
 		expect(s.void.extends(s.void)).toBeTruthy()
 		expect(s.void.extends(s.never)).toBeFalsy()

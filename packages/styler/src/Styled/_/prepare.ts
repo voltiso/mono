@@ -5,7 +5,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { isPlainObject } from '@voltiso/util'
+import { $assert, isPlainObject } from '@voltiso/util'
 
 import type { CssProp } from '~/_/CssProps'
 import { isThemePath } from '~/ThemePath'

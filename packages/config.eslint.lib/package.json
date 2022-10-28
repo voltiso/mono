@@ -16,7 +16,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________DEV": "__________",
-    "dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+    "dev": "v dev",
     "__________TEST": "__________",
     "test": "echo no tests yet!",
     "__________LINT": "__________",
@@ -42,12 +42,13 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
+    "@voltiso/util": "workspace:^47.0.0",
     "eslint-define-config": "^1.7.0"
   },
   "devDependencies": {
-    "@voltiso/transform": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/transform": "workspace:^",
     "eslint": "^8.25.0",
     "rimraf": "^3.0.2"
   },

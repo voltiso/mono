@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
@@ -71,7 +72,7 @@ export async function callMethod<
 				'transactionContextOverride',
 			) as ContextOverride
 
-			$assert(ctxOverride)
+			assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
 			return (db.doc(path) as unknown as DocRefBaseImpl)._callMethod(
@@ -81,10 +82,10 @@ export async function callMethod<
 			)
 		})
 
-		$assert(cache)
+		assert(cache)
 
 		const cacheEntry = cache.get(path)
-		$assert(cacheEntry)
+		assert(cacheEntry)
 
 		const { data } = cacheEntry
 
@@ -98,7 +99,7 @@ export async function callMethod<
 		return result as never
 	}
 
-	$assert(isWithTransaction(ctx))
+	assert(isWithTransaction(ctx))
 	const doc = await transactionDocPathGet<Doc<TI, 'inside'>>(ctx)
 
 	if (!doc)
@@ -124,7 +125,7 @@ export async function callMethod<
 	)
 
 	const cacheEntry = transaction._cache.get(path)
-	$assert(cacheEntry)
+	assert(cacheEntry)
 	cacheEntry.write = true
 
 	await processTriggers(ctx)

@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocLike, IDoc } from './Doc'
+import type { $$Doc, IDoc } from './Doc'
 
 /** Strong-typed version - can't use in general contexts */
 export type Method<
-	Doc extends DocLike = IDoc,
+	Doc extends $$Doc = IDoc,
 	ARGS extends unknown[] = unknown[],
 	R = unknown,
 > = (this: Doc, ...args: ARGS) => R | PromiseLike<R>
@@ -16,7 +16,7 @@ export type MethodNoThis<ARGS extends unknown[] = unknown[], R = unknown> = (
 
 /** Weak-typed version */
 export type AnyMethod<
-	Doc extends DocLike = IDoc,
+	Doc extends $$Doc = IDoc,
 	ARGS extends unknown[] = any[],
 	R = unknown,
 > = Method<Doc, ARGS, R>

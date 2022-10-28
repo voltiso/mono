@@ -3,17 +3,26 @@
 
 /** @strip */
 function willBeStripped() {
-	// eslint-disable-next-line no-console
-	console.log('stripped')
+	//
+}
+
+/** @strip */
+const willBeStrippedArrow = () => {
+	//
 }
 
 function normalFunction() {
-	// eslint-disable-next-line no-console
-	console.log('normal')
+	//
+}
+
+const normalFunctionArrow = () => {
+	//
 }
 
 willBeStripped()
+willBeStrippedArrow()
 
 normalFunction()
+normalFunctionArrow()
 
 export {}

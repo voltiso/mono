@@ -1,11 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { stringFromSyntaxKind } from '@voltiso/transform.lib'
+import {
+	getNodePositionStr,
+	getNodeText,
+	stringFromSyntaxKind,
+} from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import * as ts from 'typescript'
-
-import { getNodePositionStr, getNodeText } from '~/_'
 
 import type { InlineTransformContext } from '../inlineTransform'
 import { collectNodesOfKind } from './collectNodesOfKind'
@@ -40,6 +42,28 @@ export function canBeInlined(
 		return false
 	}
 
+	if (ts.isTypeReferenceNode(node)) {
+		const typeParameterSymbols = new Set(
+			ctx.typeChecker
+				.getSymbolsInScope(node, ts.SymbolFlags.TypeParameter)
+				.map(symbol => symbol.name),
+		)
+
+		for (const arg of node.typeArguments || []) {
+			const symbol = ctx.typeChecker.getSymbolAtLocation(
+				getFirstChildOrSelf(arg),
+			)
+
+			if (symbol && typeParameterSymbols.has(symbol.name)) {
+				// console.warn(
+				// 	'not inlining type reference that uses type argument declared as outer type parameter',
+				// 	node.getText(),
+				// )
+				return false
+			}
+		}
+	}
+
 	const symbolsOutOfScope = collectSymbolNames(newNode)
 
 	// console.log(newSymbolNames)
@@ -65,7 +89,7 @@ export function canBeInlined(
 		// eslint-disable-next-line no-console
 		console.warn(chalk.bgRed(message))
 
-		if (ctx.pluginOptions.onInlineError === 'fail') throw new Error(message)
+		if (ctx.options.onInlineError === 'fail') throw new Error(message)
 	}
 
 	const importTypeNodes = collectNodesOfKind(newNode, ts.SyntaxKind.ImportType)
@@ -87,7 +111,7 @@ export function canBeInlined(
 				// eslint-disable-next-line no-console
 				console.warn(chalk.bgRed(message))
 
-				if (ctx.pluginOptions.onInlineError === 'fail') throw new Error(message)
+				if (ctx.options.onInlineError === 'fail') throw new Error(message)
 			}
 		}
 	}

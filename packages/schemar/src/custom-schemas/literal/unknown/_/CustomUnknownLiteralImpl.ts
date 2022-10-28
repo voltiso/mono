@@ -1,18 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
 import type {
+	BASE_OPTIONS,
 	CustomUnknownLiteral,
+	DEFAULT_OPTIONS,
 	DefaultUnknownLiteralOptions,
 	InferableLiteral,
 	ISchema,
 	UnknownLiteralOptions,
 	ValidationIssue,
 } from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { isUnknownLiteral } from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { EXTENDS, isUnknownLiteral, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import { LiteralImpl } from '~/custom-schemas/literal'
 import { CustomSchemaImpl } from '~/Schema'
@@ -32,7 +32,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {

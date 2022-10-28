@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import type { Literal } from '~/custom-schemas/literal'
 import { literal } from '~/custom-schemas/literal'
@@ -14,7 +14,7 @@ export class NumberImpl extends lazyConstructor(() => CustomNumberImpl)<{}> {
 		super(defaultNumberOptions as never)
 
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this

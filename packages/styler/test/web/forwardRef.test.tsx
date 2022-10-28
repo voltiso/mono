@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
-import { Assert, Is } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
@@ -38,7 +38,7 @@ const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 		width: p.name?.length || 0,
 	}))
 	.mapProps(({ big }) => {
-		Assert<IsEqual<typeof big, boolean>>()
+		$Assert<IsEqual<typeof big, boolean>>()
 		return {}
 	})
 // @ts-expect-error missing big
@@ -166,10 +166,10 @@ describe('forwardRef', () => {
 			/>
 		)
 
-		Assert.is<typeof RenderButton, ForwardRefRenderFunction<any>>()
+		$Assert.is<typeof RenderButton, ForwardRefRenderFunction<any>>()
 
 		const Button = style.forwardRef(RenderButton)
-		Assert.is<
+		$Assert.is<
 			ComponentPropsWithRef<typeof Button>['ref'],
 			Ref<HTMLButtonElement> | undefined
 		>()
@@ -193,7 +193,7 @@ describe('forwardRef', () => {
 		const RawButton = style('button')
 
 		type A = GetNativeElement<'button'>
-		Assert<IsIdentical<A, HTMLButtonElement>>()
+		$Assert<IsIdentical<A, HTMLButtonElement>>()
 
 		const myStyle = style.defineProps<{ content: string }>()
 
@@ -201,7 +201,7 @@ describe('forwardRef', () => {
 			'button',
 			{ onClick?: (() => void) | undefined }
 		>((props, ref, css) => {
-			Assert<IsIdentical<typeof props.children, ReactNode | undefined>>()
+			$Assert<IsIdentical<typeof props.children, ReactNode | undefined>>()
 
 			expect(Array.isArray(css)).toBeTruthy()
 
@@ -218,7 +218,7 @@ describe('forwardRef', () => {
 		})
 
 		type B = GetNativeElement<typeof Button>
-		Assert<IsIdentical<B, HTMLButtonElement>>()
+		$Assert<IsIdentical<B, HTMLButtonElement>>()
 
 		let instance: HTMLButtonElement | null = null
 
@@ -270,7 +270,7 @@ describe('forwardRef', () => {
 		})
 
 		const Another = style.forwardRef<typeof Button>((props, ref, css) => {
-			Assert(Is<'ref'>().not.subtypeOf<keyof typeof props>())
+			$Assert($Is<'ref'>().not.subtypeOf<keyof typeof props>())
 
 			return (
 				<Button

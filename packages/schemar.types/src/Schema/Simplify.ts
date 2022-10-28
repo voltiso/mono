@@ -4,16 +4,16 @@
 import type { OPTIONS } from '_'
 import type { _, IsCompatible, IsIdentical } from '@voltiso/util'
 
-import type { InferSchema_, SchemableLike } from '~'
+import type { $$Schemable, InferSchema_, SchemaOptions } from '~'
 
-import type { CustomSchema, ISchema, SchemaLike, SimpleSchema } from '.'
+import type { $$Schema, CustomSchema, ISchema, SimpleSchema } from '.'
 
 /** @inline */
 export type CanBeSimpleSchema<
-	S extends {
-		OutputType: any
-		InputType: any
-		[OPTIONS]: any
+	S extends $$Schema & {
+		OutputType: unknown
+		InputType: unknown
+		[OPTIONS]: SchemaOptions
 	},
 	True = true,
 	False = false,
@@ -26,43 +26,45 @@ export type CanBeSimpleSchema<
 	: True
 
 /** @inline */
-export type Simplify<S extends SchemableLike> = SimplifySchema<InferSchema_<S>>
+export type Simplify<S extends $$Schemable> = SimplifySchema<InferSchema_<S>>
 
 /** @inline */
-export type SimplifySchema<
-	This extends {
-		OutputType: any
-		InputType: any
-		[OPTIONS]: any
-	},
-> = SchemaLike<never> extends This
-	? This
-	: ISchema<never> extends This
-	? This
-	: CanBeSimpleSchema<This> extends true
-	? SimpleSchema<This[OPTIONS]['Output']>
-	: CustomSchema<
-			_<
-				(This[OPTIONS]['isOptional'] extends false
-					? {}
-					: { isOptional: This[OPTIONS]['isOptional'] }) &
-					(This[OPTIONS]['isReadonly'] extends false
+export type SimplifySchema<S extends $$Schema> = S extends 
+	{
+		OutputType: unknown
+		InputType: unknown
+		[OPTIONS]: SchemaOptions
+	}
+
+	? $$Schema extends S
+		? S
+		: ISchema<never> extends S
+		? S
+		: CanBeSimpleSchema<S> extends true
+		? SimpleSchema<S['OutputType']>
+		: CustomSchema<
+				_<
+					(S[OPTIONS]['isOptional'] extends false
 						? {}
-						: { isReadonly: This[OPTIONS]['isReadonly'] }) &
-					(This[OPTIONS]['hasDefault'] extends false
-						? {}
-						: { hasDefault: This[OPTIONS]['hasDefault'] }) &
-					IsIdentical<
-						This['OutputType'],
-						unknown,
-						unknown,
-						{ Output: This['OutputType'] }
-					> &
-					IsIdentical<
-						This['InputType'],
-						unknown,
-						unknown,
-						{ Input: This['InputType'] }
-					>
-			>
-	  >
+						: { isOptional: S[OPTIONS]['isOptional'] }) &
+						(S[OPTIONS]['isReadonly'] extends false
+							? {}
+							: { isReadonly: S[OPTIONS]['isReadonly'] }) &
+						(S[OPTIONS]['hasDefault'] extends false
+							? {}
+							: { hasDefault: S[OPTIONS]['hasDefault'] }) &
+						IsIdentical<
+							S['OutputType'],
+							unknown,
+							unknown,
+							{ Output: S['OutputType'] }
+						> &
+						IsIdentical<
+							S['InputType'],
+							unknown,
+							unknown,
+							{ Input: S['InputType'] }
+						>
+				>
+		  >
+	: never

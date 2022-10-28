@@ -4,7 +4,7 @@
 import { runAsync, runSync } from '~/syncer/run'
 import type { SyncerFunction } from '~/syncer/SyncerFunction'
 import type { SyncerPromise } from '~/syncer/SyncerPromise'
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 import { $Assert } from '~/$strip'
 
 function* fib(n: number): SyncerPromise<number, number> {

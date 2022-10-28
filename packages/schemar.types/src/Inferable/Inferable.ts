@@ -3,7 +3,7 @@
 
 import type { Newable } from '@voltiso/util'
 
-import type { IObject, ObjectLike, Schemable, SchemableLike } from '~'
+import type { $$Object, $$Schemable, IObject, Schemable } from '~'
 
 export type InferableLiteral =
 	| number
@@ -16,9 +16,10 @@ export type InferableLiteral =
 
 export type InferableMutableTuple = Schemable[]
 export type InferableReadonlyTuple = readonly Schemable[]
-export type InferableTuple = InferableMutableTuple | InferableReadonlyTuple
+export type InferableTuple =
+	InferableReadonlyTuple /* | InferableMutableTuple */
 
-export type InferableObject = { [k: keyof any]: Schemable }
+export type InferableObject = object & { [k: keyof any]: Schemable }
 
 export type Inferable =
 	| InferableObject
@@ -29,18 +30,19 @@ export type Inferable =
 //
 
 export type SchemableObject = InferableObject | IObject
-export type SchemableObjectLike = InferableObjectLike | ObjectLike
+export type $$SchemableObject = $$InferableObject | $$Object
 
-export type InferableObjectLike = { [k: keyof any]: SchemableLike }
+export type $$InferableObject = object & { [k: keyof any]: $$Schemable }
 
-export type InferableMutableTupleLike = SchemableLike[]
-export type InferableReadonlyTupleLike = readonly SchemableLike[]
-export type InferableTupleLike =
-	| InferableMutableTupleLike
-	| InferableReadonlyTupleLike
+export type $$InferableMutableTuple = $$Schemable[]
+export type $$InferableReadonlyTuple = readonly $$Schemable[]
 
-export type InferableLike =
-	| InferableObjectLike
-	| InferableTupleLike
+export type $$InferableTuple =
+	// | $$InferableMutableTuple
+	$$InferableReadonlyTuple
+
+export type $$Inferable =
+	| $$InferableObject
+	| $$InferableTuple
 	| InferableLiteral
 	| Newable

@@ -10,7 +10,7 @@ import type {
 	UnknownOptions,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { isSchema } from '~'
 import * as s from '~'
@@ -19,9 +19,9 @@ describe('unknown', () => {
 	it('isUnknown', () => {
 		expect.hasAssertions()
 
-		Assert.is<IUnknown, Schemable>()
-		Assert.is<IUnknown, Schema>()
-		Assert.is<typeof s.unknown, IUnknown>()
+		$Assert.is<IUnknown, Schemable>()
+		$Assert.is<IUnknown, Schema>()
+		$Assert.is<typeof s.unknown, IUnknown>()
 
 		expect(t.isUnknown(s.unknown)).toBeTruthy()
 
@@ -30,18 +30,21 @@ describe('unknown', () => {
 		expect(isSchema(s.never)).toBeTruthy()
 		expect(isSchema(s.null)).toBeTruthy()
 		expect(isSchema(s.undefined)).toBeTruthy()
+
+		expect(() => s.unknown.validate(0)).not.toThrow()
+		expect(() => s.unknown.validate(0, { fix: false })).not.toThrow()
 	})
 
 	it('generic', <O extends Partial<UnknownOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomUnknown<O>, IUnknown>()
-		Assert.is<CustomUnknown<O>, ISchema>()
-		Assert.is<CustomUnknown<O>, Schemable>()
+		$Assert.is<CustomUnknown<O>, IUnknown>()
+		$Assert.is<CustomUnknown<O>, ISchema>()
+		$Assert.is<CustomUnknown<O>, Schemable>()
 
-		Assert.is<s.Unknown, IUnknown>()
-		Assert.is<s.Unknown, ISchema>()
-		Assert.is<s.Unknown, Schemable>()
+		$Assert.is<s.Unknown, IUnknown>()
+		$Assert.is<s.Unknown, ISchema>()
+		$Assert.is<s.Unknown, Schemable>()
 	})
 
 	it('validate object', () => {
@@ -53,7 +56,7 @@ describe('unknown', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		Assert.is<s.Unknown, ISchema>()
+		$Assert.is<s.Unknown, ISchema>()
 
 		expect(s.unknown.extends(s.unknown)).toBeTruthy()
 		expect(s.unknown.extends(s.schema)).toBeTruthy()
@@ -66,8 +69,8 @@ describe('unknown', () => {
 
 		expect(s.unknown.validate(123)).toBe(123)
 
-		expect(s.unknown.default(22).validate(undef)).toBe(22)
-		expect(s.unknown.validate(undef)).toBeUndefined()
+		expect(s.unknown.default(22).validate(undefined)).toBe(22)
+		expect(s.unknown.validate(undefined)).toBeUndefined()
 
 		expect(s.unknown.toString()).toBe('unknown')
 		expect(s.unknown.default(123).readonly.toString()).toBe(

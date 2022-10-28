@@ -1,21 +1,28 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InputType, OutputType } from '~/GetType'
-import type { SchemableLike } from '~/Schemable'
+import type { Record_ } from '@voltiso/util'
+
+import type { InputType, OutputType } from '~'
+import type { $$Schema } from '~/Schema'
+import type { $$Schemable } from '~/Schemable'
 
 import type { CustomRecord } from './CustomRecord'
 import type { DefaultRecordOptions } from './RecordOptions'
 
-type Record_<
-	TKeySchema extends {
+//
+
+export type { SRecord as Record }
+
+type SRecord<
+	TKeySchema extends $$Schema & {
 		OutputType: keyof any
 		InputType: keyof any | undefined
 	},
-	TValueSchema extends SchemableLike,
+	TValueSchema extends $$Schemable,
 > = CustomRecord<{
-	Output: Record<OutputType<TKeySchema>, OutputType<TValueSchema>>
-	Input: Record<
+	Output: Record_<OutputType<TKeySchema>, OutputType<TValueSchema>>
+	Input: Record_<
 		Exclude<InputType<TKeySchema>, undefined>,
 		InputType<TValueSchema>
 	>
@@ -24,28 +31,32 @@ type Record_<
 	valueSchema: TValueSchema
 }>
 
-export type { Record_ as Record }
-
 //
 
 export type RecordConstructor = {
 	new <
-		TKeySchema extends { OutputType: keyof any; InputType: keyof any },
-		TValueSchema extends SchemableLike,
+		TKeySchema extends $$Schema & {
+			OutputType: keyof any
+			InputType: keyof any
+		},
+		TValueSchema extends $$Schemable,
 	>(
 		keySchema: TKeySchema,
 		valueSchema: TValueSchema,
-	): Record_<TKeySchema, TValueSchema>
+	): SRecord<TKeySchema, TValueSchema>
 
-	new <TValueSchema extends SchemableLike>(valueSchema: TValueSchema): Record_<
+	new <TValueSchema extends $$Schemable>(valueSchema: TValueSchema): SRecord<
 		DefaultRecordOptions['keySchema'],
 		TValueSchema
 	>
 
 	new <
-		TKeySchema extends { OutputType: keyof any; InputType: keyof any },
-		TValueSchema extends SchemableLike,
+		TKeySchema extends $$Schema & {
+			OutputType: keyof any
+			InputType: keyof any
+		},
+		TValueSchema extends $$Schemable,
 	>(
 		...args: [TKeySchema, TValueSchema] | [TValueSchema]
-	): Record_<TKeySchema, TValueSchema>
+	): SRecord<TKeySchema, TValueSchema>
 }

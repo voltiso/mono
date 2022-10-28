@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schemable,
 	$OutputType,
 	BASE_OPTIONS,
 	CustomUnknownFunction,
@@ -10,11 +11,10 @@ import type {
 	InferableReadonlyTuple,
 	ISchema,
 	OutputType,
-	Schemable,
 	UnknownFunctionOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnknownFunction, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import * as s from '~/custom-schemas/function'
 import { ValidationIssue } from '~/custom-schemas/validation'
@@ -37,7 +37,7 @@ export class CustomUnknownFunctionImpl<
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
@@ -69,7 +69,7 @@ export class CustomUnknownFunctionImpl<
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<
 		Args extends InferableReadonlyTuple | ISchema<readonly unknown[]>,
-		R extends Schemable,
+		R extends $$Schemable,
 	>(
 		argumentsSchema: Args,
 		resultSchema: R,

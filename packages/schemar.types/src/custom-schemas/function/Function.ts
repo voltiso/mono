@@ -1,11 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ArrayLike, TupleLike } from '~/custom-schemas'
+import type { Assume, Callable } from '@voltiso/util'
+
+import type { $$Array, TupleLike } from '~/custom-schemas'
 import type { $Type } from '~/GetType'
-import type { InferableReadonlyTupleLike } from '~/Inferable'
+import type { $$InferableReadonlyTuple } from '~/Inferable'
 import type { SimpleSchema } from '~/Schema'
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schemable } from '~/Schemable'
 
 import type { CustomFunction } from './CustomFunction'
 
@@ -18,10 +20,15 @@ export type Function<F extends (...args: any) => any> = CustomFunction<{
 }>
 
 export type FunctionConstructor = new <
-	Args extends InferableReadonlyTupleLike | TupleLike | ArrayLike,
-	R extends SchemableLike,
+	Args extends $$InferableReadonlyTuple | TupleLike | $$Array,
+	R extends $$Schemable,
 >(
 	argumentsSchema: Args,
 	resultSchema: R,
 	// eslint-disable-next-line @typescript-eslint/ban-types
-) => Function<(...args: $Type<Args>) => $Type<R>>
+) => Function<
+	Callable<{
+		arguments: Assume<readonly unknown[], $Type<Args>>
+		return: $Type<R>
+	}>
+>

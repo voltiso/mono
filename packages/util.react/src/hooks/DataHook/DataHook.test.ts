@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { DataHook } from './DataHook'
 import { dataHook } from './DataHookConstructor'
@@ -18,11 +18,11 @@ describe('DataHook', () => {
 		expect(r.isLoading).toBeFalsy()
 		expect(r.error).toBeUndefined()
 
-		Assert<IsIdentical<typeof r.a, number | undefined>>()
-		Assert<IsIdentical<typeof r.exists, boolean | undefined>>()
+		$Assert<IsIdentical<typeof r.a, number | undefined>>()
+		$Assert<IsIdentical<typeof r.exists, boolean | undefined>>()
 
 		if (r.exists) {
-			Assert<IsIdentical<typeof r.a, number>>()
+			$Assert<IsIdentical<typeof r.a, number>>()
 		}
 	})
 

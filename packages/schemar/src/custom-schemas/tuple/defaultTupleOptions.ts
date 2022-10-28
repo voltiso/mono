@@ -11,7 +11,7 @@ export const defaultTupleOptions = {
 	Input: 0 as unknown as readonly unknown[],
 
 	isReadonlyTuple: false as const,
-	shape: 0 as unknown as t.SchemableLike[],
+	shape: 0 as unknown as t.$$Schemable[],
 }
 
 export const defaultMutableTupleOptions = {

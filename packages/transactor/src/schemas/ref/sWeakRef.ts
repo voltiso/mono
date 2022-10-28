@@ -3,9 +3,9 @@
 
 import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
-import { callableObject, lazyValue } from '@voltiso/util'
+import { ProtoCallable, lazyValue } from '@voltiso/util'
 
-import type { DocLike, IDoc, IndexedDoc } from '~/Doc'
+import type { $$Doc, IDoc, IndexedDoc } from '~/Doc'
 import type { DocRefBaseImpl, WeakDocRefBase } from '~/DocRef'
 import { WeakDocRefImpl } from '~/DocRef'
 import type { DocTag } from '~/DocTypes'
@@ -32,18 +32,20 @@ const _fixableWeakRefSchema = lazyValue(() =>
 
 export interface WeakRefSchema extends t.ISchema<WeakDocRefBase<IndexedDoc>> {
 	// eslint-disable-next-line etc/no-misused-generics
-	<X extends DocLike | DocTag>(): t.Schema<WeakDocRefBase<FindDoc<X>>>
+	<X extends $$Doc | DocTag>(): t.Schema<WeakDocRefBase<FindDoc<X>>>
 }
+
 export const sWeakRef = lazyValue(
 	() =>
-		callableObject(
+		ProtoCallable({
 			// eslint-disable-next-line etc/no-internal
-			_fixableWeakRefSchema,
-			<
+			prototype: _fixableWeakRefSchema,
+
+			call: <
 				// eslint-disable-next-line etc/no-misused-generics
-				X extends DocLike | DocTag,
+				X extends $$Doc | DocTag,
 			>(): t.Schema<WeakDocRefBase<FindDoc<X>>> =>
 				// eslint-disable-next-line etc/no-internal
 				_fixableWeakRefSchema as never,
-		) as unknown as WeakRefSchema,
+		}) as unknown as WeakRefSchema,
 )

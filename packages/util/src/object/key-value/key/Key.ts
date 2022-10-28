@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Value } from '~/object'
-import type { AlsoAccept } from '~/$strip'
+import type { AlsoAccept } from '~/type'
 
 export type Key<
 	O extends object,

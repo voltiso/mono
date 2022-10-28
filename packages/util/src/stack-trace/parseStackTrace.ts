@@ -4,7 +4,7 @@
 import type { UndefinedFromOptional } from '~/object'
 import { define } from '~/type'
 
-import { tryParseCodeLocation } from './code-location'
+import { tryParseCodeLocation } from './parseCodeLocation'
 
 export interface StackTraceEntry
 	extends UndefinedFromOptional<{

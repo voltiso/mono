@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -17,12 +17,12 @@ describe('object', () => {
 			.and({ b: s.number.default(123) })
 
 		type In = typeof mySchema.InputType
-		Assert<
+		$Assert<
 			IsIdentical<In, { a?: string | undefined; b?: number | undefined }>
 		>()
 
 		type Out = typeof mySchema.OutputType
-		Assert<IsIdentical<Out, { a: string; b: number }>>()
+		$Assert<IsIdentical<Out, { a: string; b: number }>>()
 
 		expect(mySchema.validate({})).toStrictEqual({ a: 'test', b: 123 })
 	})
@@ -37,12 +37,12 @@ describe('object', () => {
 			.and(s.object({ b: s.number.default(123) }))
 
 		type In = typeof mySchema.InputType
-		Assert<
+		$Assert<
 			IsIdentical<In, { a?: string | undefined; b?: number | undefined }>
 		>()
 
 		type Out = typeof mySchema.OutputType
-		Assert<IsIdentical<Out, { a: string; b: number }>>()
+		$Assert<IsIdentical<Out, { a: string; b: number }>>()
 
 		expect(mySchema.validate({})).toStrictEqual({ a: 'test', b: 123 })
 	})

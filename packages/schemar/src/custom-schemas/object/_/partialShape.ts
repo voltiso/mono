@@ -8,10 +8,10 @@ import { isSchema, schema } from '~'
 
 //
 
-export function strictPartialShape<O extends t.InferableObjectLike>(
+export function strictPartialShape<O extends t.$$InferableObject>(
 	o: O,
 ): t.StrictPartialShape<O> {
-	const shape = { ...o } as t.InferableObjectLike
+	const shape = { ...o } as t.$$InferableObject
 
 	for (const [k, v] of getEntries(shape)) {
 		const vSchema = isSchema(v) ? v : schema(v)
@@ -24,10 +24,10 @@ export function strictPartialShape<O extends t.InferableObjectLike>(
 
 //
 
-export function partialShape<O extends t.InferableObjectLike>(
+export function partialShape<O extends t.$$InferableObject>(
 	o: O,
 ): t.PartialShape<O> {
-	const shape = { ...o } as t.InferableObjectLike
+	const shape = { ...o } as t.$$InferableObject
 
 	for (const [k, v] of getEntries(shape)) {
 		const vSchema = isSchema(v) ? v : schema(v)

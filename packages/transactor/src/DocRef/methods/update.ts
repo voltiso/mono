@@ -6,7 +6,7 @@ import { assert, isDefined, stringFrom } from '@voltiso/util'
 import { databaseUpdate } from '~/common'
 import { withoutId, withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { DocLike, IDoc } from '~/Doc/IDoc'
+import type { $$Doc, IDoc } from '~/Doc/IDoc'
 import { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { WithDocRef } from '~/DocRef'
 import {
@@ -134,7 +134,9 @@ async function rawUpdate(
 
 	if (needTransaction) {
 		data = await ctx.transactor.runTransaction(async () => {
-			const doc = await ctx.db.doc(path).update(updates as never)
+			const test = ctx.db.doc(path)
+
+			const doc: $$Doc = (await ctx.db.doc(path).update(updates as {})) as never
 			return doc ? (doc.dataWithId() as never) : null
 		})
 	} else {
@@ -188,7 +190,7 @@ async function transactionUpdateImpl(
 		onConstField = 'error',
 		onPrivateField = 'error',
 	}: Partial<StripParams> = {},
-): Promise<DocLike | null | undefined> {
+): Promise<$$Doc | null | undefined> {
 	if (ctx.transactor._options.log) {
 		// eslint-disable-next-line no-console
 		console.log(

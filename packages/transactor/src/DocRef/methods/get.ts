@@ -1,13 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert, stringFrom } from '@voltiso/util'
+import { assert } from '@voltiso/assertor'
+import { stringFrom } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { fromDatabase } from '~/common'
 import { withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { DocLike, DocTI, IDoc } from '~/Doc'
+import type { $$Doc, DocTI, IDoc } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
 import { sVoltisoEntry } from '~/schemas'
@@ -29,7 +30,7 @@ import {
 	getSchema,
 	validateAndSetCacheEntry,
 } from '../_'
-import type { IDocRefBase } from '../IRef'
+import type { IDocRef } from '../IRef'
 import type { WithDocRef } from '../WithDocRef'
 
 // eslint-disable-next-line etc/no-misused-generics
@@ -43,7 +44,7 @@ async function directDocPathGet<D extends IDoc>(
 	let data: object | null
 
 	if (needTransaction) {
-		assert(!ctx.transaction)
+		assert.not(ctx.transaction)
 		data = await ctx.transactor.runTransaction(async () => {
 			const doc = await ctx.db.doc(ctx.docRef.path.pathString)
 
@@ -191,7 +192,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 			__voltiso: cacheEntry.__voltiso,
 
 			...pathMatches,
-			path: (ctx.docRef as unknown as IDocRefBase).path,
+			path: (ctx.docRef as unknown as IDocRef).path,
 			id: id as never,
 			...ctx,
 			possiblyExists: cacheEntry.possiblyExists,
@@ -212,7 +213,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export function transactionDocPathGet<D extends DocLike>(
+export function transactionDocPathGet<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): PromiseLike<D | null> {
 	const { docRef, transaction } = ctx

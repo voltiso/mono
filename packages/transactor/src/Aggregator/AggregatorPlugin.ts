@@ -1,13 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import { assert, assertNotPolluting, assumeType, zip } from '@voltiso/util'
+import { $AssumeType, assertNotPolluting, zip } from '@voltiso/util'
 
 import type {
 	DocBuilderPlugin,
 	DocConstructor,
-	DocLike,
+	$$Doc,
 	DocTI,
 	DTI,
 	GetDataWithId,
@@ -15,7 +16,7 @@ import type {
 	IDoc,
 	IDocConstructor,
 } from '~/Doc'
-import type { DocRefLike } from '~/DocRef'
+import type { $$DocRef } from '~/DocRef'
 import { isStrongDocRef, isWeakDocRef } from '~/DocRef'
 import type { DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
@@ -76,8 +77,8 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					(before as never) || (after as never)
 
-				assert(data, 'should either have before or after')
-				assert(data.__voltiso, 'data should include __voltiso')
+				assert(data)
+				assert(data.__voltiso)
 
 				if (handlers.filter) {
 					const filterResult = await handlers.filter.call(data)
@@ -89,17 +90,14 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 
 				const [targets, awaitedTargets] =
 					awaitedTargetHandlerResult === null
-						? [
-								[targetHandlerResult as DocRefLike],
-								[awaitedTargetHandlerResult],
-						  ]
+						? [[targetHandlerResult as $$DocRef], [awaitedTargetHandlerResult]]
 						: Array.isArray(awaitedTargetHandlerResult)
 						? [
 								awaitedTargetHandlerResult,
 								await Promise.all(awaitedTargetHandlerResult),
 						  ]
 						: [
-								[targetHandlerResult as DocLike | DocRefLike],
+								[targetHandlerResult as $$Doc | $$DocRef],
 								[awaitedTargetHandlerResult],
 						  ]
 
@@ -145,7 +143,7 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 						}
 					}
 
-					assumeType<IDoc>(finalTarget)
+					$AssumeType<IDoc>(finalTarget)
 
 					const finalTargetPath = finalTarget.path.toString()
 
@@ -210,6 +208,6 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 					finalTarget.data.__voltiso.aggregateTarget[name] = targetInfo as never
 				}
 			},
-		) as IDocConstructor
+		) as never
 	}
 }

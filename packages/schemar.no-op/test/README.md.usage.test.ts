@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -35,7 +35,7 @@ describe('README.md - usage', () => {
 		const mySchema = s.schema(myShape)
 
 		type MySchema = typeof mySchema.OutputType
-		Assert<
+		$Assert<
 			IsIdentical<
 				MySchema,
 				{
@@ -50,7 +50,7 @@ describe('README.md - usage', () => {
 		>()
 
 		type MySchemaInput = typeof mySchema.InputType
-		Assert<
+		$Assert<
 			IsIdentical<
 				MySchemaInput,
 				{

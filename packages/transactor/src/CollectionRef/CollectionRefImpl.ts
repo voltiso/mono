@@ -1,22 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
+import * as s from '@voltiso/schemar'
 
-import type { Id } from '~/Data'
+import type { Id, WithId } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { Doc, DocConstructorLike, DocTI, IDoc } from '~/Doc'
+import type { Doc, $$DocConstructor, DocTI, IDoc, GetDoc } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { GetPublicCreationInputData } from '~/Doc/_/GData'
 import type { GO } from '~/Doc/_/GDoc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
-import type { WeakDocRef_ } from '~/DocRef'
 import { WeakDocRef } from '~/DocRef'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 
 import type { CollectionRef } from './CollectionRef'
 import type { InferTI } from './InferTI'
+import { $AssumeType } from '@voltiso/util'
 
 type Context = WithTransactor & WithDb
 
@@ -47,14 +48,15 @@ export class CollectionRefImpl<
 				this._context.db.doc(
 					this._path.toString(),
 					id,
-				) as unknown as TI extends any ? WeakDocRef_<GO<TI>> : never,
+				) as unknown as TI extends any ? WeakDocRef<GO<TI>> : never,
 			this,
 		) as never
 	}
 
-	add(data: GetPublicCreationInputData<TI, D>): PromiseLike<Doc<TI, Ctx>> {
+	add(data: WithId): PromiseLike<Doc<TI, Ctx>> {
+		$AssumeType<{ id?: string }>(data)
 		const id = data.id
-		$assert(id === undefined || typeof id === 'string')
+		assert(s.number.or(undefined), id)
 
 		const ref = this._context.transactor._database.collection(
 			this._path.toString(),
@@ -64,15 +66,10 @@ export class CollectionRefImpl<
 		const { path } = docRef
 		const docPath = new WeakDocRef<IndexedDoc>(this._context, path)
 
-		// const dataWithId: DataWithId = { ...data, id: docRef.id }
-		// const dataWithoutId: Data = omit(dataWithId, 'id')
-
-		return docPath.set(data) as never
+		return docPath.set(data as never) as never
 	}
 
-	register<Cls extends DocConstructorLike>(
-		cls: Cls,
-	): CollectionRef<InstanceType<Cls>> {
+	register<Cls extends $$DocConstructor>(cls: Cls): CollectionRef<GetDoc<Cls>> {
 		const { db } = this._context
 		const docPattern = db.docPattern(this._path, '*')
 

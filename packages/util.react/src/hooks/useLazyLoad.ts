@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 import type { IntersectionOptions } from 'react-intersection-observer'
 import { useInView } from 'react-intersection-observer'
 
-import { useCurrent } from '~/hooks'
+import { useCurrent } from './useCurrent'
 
 export function useLazyLoad(options?: IntersectionOptions | undefined) {
 	const { ref, inView } = useInView({

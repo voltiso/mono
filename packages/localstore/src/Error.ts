@@ -8,7 +8,7 @@ export class LocalstoreError extends VoltisoError {
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		super(message, { ...options, packageInfo: { name: '@voltiso/localstore' } })
+		super(message, { ...options, package: { name: '@voltiso/localstore' } })
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'LocalstoreError'
 	}

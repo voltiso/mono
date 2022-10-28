@@ -56,4 +56,4 @@ describe('public', function () {
 // const x = s.object.index(s.string,2)
 // type AA = typeof x.OutputType
 
-// type XX = t.Object<Record<string, SchemableLike>>
+// type XX = t.Object<Record<string, $$Schemable>>

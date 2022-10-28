@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compat numericSeparators 1`] = `
+"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+export const test = 1000000;
+export const otherTest = 0.000001;
+//# sourceMappingURL=numericSeparators.js.map"
+`;

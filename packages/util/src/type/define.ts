@@ -6,7 +6,7 @@ import type { DeepMutableN } from '~/object'
 import type { Primitive } from '~/primitive'
 
 import type { AlsoAccept } from './AlsoAccept'
-import type { ApplyOverrides } from './ApplyOverrides'
+import type { Override } from './ApplyOverrides'
 import type { DecrementArgument } from './number'
 import type { NotProvided } from './optional-argument'
 
@@ -40,7 +40,7 @@ export function define<T, Options extends Partial<DefineTypeOptions> = {}>(): {
 	value: <Inferred extends T>(
 		value: Inferred,
 	) => DeepMutableN<
-		ApplyOverrides<DefaultDefineTypeOptions, Options>['MakeMutableDepth'],
+		Override<DefaultDefineTypeOptions, Options>['MakeMutableDepth'],
 		Inferred,
 		{
 			skip: NotProvided

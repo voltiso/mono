@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`differentAssert works 1`] = `
+"import assert from 'assert';
+export function differentAssert() {
+    assert(1);
+}
+//# sourceMappingURL=differentAssert.js.map"
+`;

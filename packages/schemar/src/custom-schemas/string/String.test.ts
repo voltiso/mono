@@ -16,7 +16,7 @@ import type {
 	Type,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -24,28 +24,27 @@ describe('string', () => {
 	it('generic', <O extends Partial<StringOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<IString, ISchema>()
+		$Assert.is<IString, ISchema>()
 
-		Assert.is<CustomString<O>, Schema>()
-		Assert.is<$CustomString<O>, IString>()
+		$Assert.is<CustomString<O>, Schema>()
+		$Assert.is<$CustomString<O>, IString>()
 	})
 
 	it('type', () => {
-		expect.assertions(0)
 
-		Assert.is<typeof s.string, IString>()
+		$Assert.is<typeof s.string, IString>()
 
 		const a = s.string.optional
-		Assert<IsIdentical<typeof a, CustomString<{ isOptional: true }>>>()
+		$Assert<IsIdentical<typeof a, CustomString<{ isOptional: true }>>>()
 
 		const ss = s.string.optional.readonly
-		Assert.is<typeof ss, IString>()
+		$Assert.is<typeof ss, IString>()
 
 		const ss2 = s.string.readonly.optional
-		Assert.is<typeof ss2, IString>()
+		$Assert.is<typeof ss2, IString>()
 
-		Assert.is<CustomString<{ minLength: 1 }>, SchemaLike<string>>()
-		Assert.is<CustomString<{ minLength: 1 }>, SchemaLike>()
+		$Assert.is<CustomString<{ minLength: 1 }>, SchemaLike<string>>()
+		$Assert.is<CustomString<{ minLength: 1 }>, SchemaLike>()
 	})
 
 	it('simple', () => {
@@ -59,11 +58,11 @@ describe('string', () => {
 		expect(s.string('asd', '').extends(s.string('asd', 'sdf'))).toBeFalsy()
 
 		type N = OutputType<typeof s.string>
-		Assert<IsIdentical<N, string>>()
+		$Assert<IsIdentical<N, string>>()
 
 		const nl = s.string('asd', 'sdf')
 		type NL = OutputType<typeof nl>
-		Assert<IsIdentical<NL, 'asd' | 'sdf'>>()
+		$Assert<IsIdentical<NL, 'asd' | 'sdf'>>()
 	})
 
 	it('check', () => {
@@ -156,7 +155,7 @@ describe('string', () => {
 		})
 
 		type A = Type<typeof a>
-		Assert<IsIdentical<A, { str: string; strOptional?: string }>>()
+		$Assert<IsIdentical<A, { str: string; strOptional?: string }>>()
 
 		expect(a.validate({ str: '012' })).toStrictEqual({ str: '012' })
 

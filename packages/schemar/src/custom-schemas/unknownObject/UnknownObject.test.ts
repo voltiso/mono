@@ -7,18 +7,18 @@ import type {
 	UnknownObject,
 	UnknownObjectOptions,
 } from '@voltiso/schemar.types'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 describe('object', () => {
 	it('generic', <O extends Partial<UnknownObjectOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomUnknownObject<O>, IUnknownObject>()
+		$Assert.is<CustomUnknownObject<O>, IUnknownObject>()
 	})
 
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<UnknownObject, IUnknownObject>()
+		$Assert.is<UnknownObject, IUnknownObject>()
 	})
 })

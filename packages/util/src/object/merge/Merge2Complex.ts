@@ -3,7 +3,7 @@
 
 import type { _, Callable, IsOptional_, Newable, Value_ } from '~'
 
-import type { SuggestObject } from './SuggestObject'
+import type { SuggestObject } from './Suggest'
 
 /** @inline */ type Part1<A, B> = {
 	[k in keyof A]: k extends keyof B

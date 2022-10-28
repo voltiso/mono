@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert, lazyPromise, protoLink } from '@voltiso/util'
+import { assert } from '@voltiso/assertor'
+import { lazyPromise, protoLink } from '@voltiso/util'
 
 import type { NestedData } from '~/Data/Data'
 import type { IDoc } from '~/Doc'
@@ -53,14 +54,14 @@ export const DocFieldPath = class {
 					cacheEntry.__voltiso = sVoltisoEntry.validate(undefined)
 
 					if (cacheEntry.data) {
-						$assert(!cacheEntry.data.__voltiso)
+						assert(!cacheEntry.data.__voltiso)
 						cacheEntry.data.__voltiso = cacheEntry.__voltiso
 					}
 				}
 
 				// console.log('getPromise: returning', cacheEntry.__voltiso)
 
-				$assert(cacheEntry.__voltiso)
+				assert(cacheEntry.__voltiso)
 				return cacheEntry.__voltiso
 			}
 
@@ -105,7 +106,7 @@ export const DocFieldPath = class {
 					const nextData: NestedData | undefined = data[field as never]
 
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-					$assert(nextData !== undefined)
+					assert(nextData !== undefined)
 					data = nextData
 				}
 

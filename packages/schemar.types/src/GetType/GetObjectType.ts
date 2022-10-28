@@ -3,17 +3,13 @@
 
 import type {
 	_,
-	GetProperty_,
+	Get_,
 	HasIndexSignature,
+	IsAlmostSame,
 	OmitByValue_,
 } from '@voltiso/util'
 
-import type {
-	ObjectLike,
-	SchemaLike,
-	SchemaOptions,
-	UnknownObjectLike,
-} from '~'
+import type { $$Object, $$Schema, $$UnknownObject, SchemaOptions } from '~'
 
 import type { GetTypeOptions, Type_ } from '.'
 import type { GetOptions } from './GetOptions'
@@ -25,54 +21,69 @@ export type _ObjectTypeNoSignature<
 	O extends Record<keyof T, SchemaOptions>,
 	IO extends GetTypeOptions,
 	// eslint-disable-next-line etc/no-internal
-> = _ObjectTypeFinalize<
-	{
-		[k in keyof T as false extends O[k]['isReadonly']
-			? _ObjectTypeIsOptional<O[k], IO, never, k>
-			: never]: T[k]
-	} & {
-		[k in keyof T as false extends O[k]['isReadonly'] ? k : never]?: T[k]
-	} & {
-		readonly [k in keyof T as _ObjectTypeIsOptional<O[k], IO> extends false
-			? k
-			: never]: T[k]
-	} & {
-		readonly [k in keyof T]?: T[k]
-	},
-	Shape,
-	IO
+> = _IntersectWithObject<
+	// eslint-disable-next-line etc/no-internal
+	_ObjectTypeFinalize<
+		{
+			[k in keyof T as false extends O[k]['isReadonly']
+				? _ObjectTypeIsOptional<O[k], IO, never, k>
+				: never]: T[k]
+		} & {
+			[k in keyof T as false extends O[k]['isReadonly'] ? k : never]?: T[k]
+		} & {
+			readonly [k in keyof T as _ObjectTypeIsOptional<O[k], IO> extends false
+				? k
+				: never]: T[k]
+		} & {
+			readonly [k in keyof T]?: T[k]
+		},
+		Shape,
+		IO
+	>
 >
+
+/**
+ * Types should actually be e.g. `object & { a: 1 }`, but it's too verbose
+ *
+ * @internal
+ */
+// export type _IntersectWithObject<T> = IsAlmostSame<T, {}> extends true
+// 	? object
+// 	: object & T
+export type _IntersectWithObject<T> = IsAlmostSame<T, {}> extends true
+	? object
+	: T
 
 /** @inline */
 export type ObjectType_<
-	T extends object,
+	Shape extends object,
 	IO extends GetTypeOptions = { kind: 'out' },
-> = HasIndexSignature<T> extends true
-	? {
-			[k in keyof T]: Type_<T[k], IO>
+> = HasIndexSignature<Shape> extends true
+	? /* object & */ {
+			[k in keyof Shape]: Type_<Shape[k], IO>
 	  }
-	: HasIndexSignature<T> extends false
+	: HasIndexSignature<Shape> extends false
 	? _ObjectTypeNoSignature<
 			{
-				[k in keyof T]: Type_<T[k], IO>
+				[k in keyof Shape]: Type_<Shape[k], IO>
 			},
-			T,
+			Shape,
 			{
-				[k in keyof T]: GetOptions<T[k]>
+				[k in keyof Shape]: GetOptions<Shape[k]>
 			},
 			IO
 	  >
 	: never
 
 export type ImplicitObjectType_<
-	T extends object,
+	Shape extends object,
 	IO extends GetTypeOptions,
 > = IO['kind'] extends 'in'
-	? object extends ObjectType_<T, IO>
-		? ObjectType_<T, IO> | undefined
-		: ObjectType_<T, IO>
+	? object extends ObjectType_<Shape, IO>
+		? ObjectType_<Shape, IO> | undefined
+		: ObjectType_<Shape, IO>
 	: IO['kind'] extends 'out'
-	? ObjectType_<T, IO>
+	? ObjectType_<Shape, IO>
 	: never
 
 /** @inline */
@@ -95,11 +106,11 @@ export type _ObjectTypeIsOptional<
 	: never
 
 /** @inline @internal */
-export type _ShouldForceOptional<T, Shape> = Shape extends UnknownObjectLike
+export type _ShouldForceOptional<T, Shape> = Shape extends $$UnknownObject
 	? false
-	: Shape extends ObjectLike
+	: Shape extends $$Object
 	? false
-	: Shape extends SchemaLike
+	: Shape extends $$Schema
 	? false
 	: object extends T
 	? true
@@ -117,7 +128,7 @@ export type _ObjectTypeFinalize<
 					// eslint-disable-next-line etc/no-internal
 					[k in keyof T]: _ShouldForceOptional<
 						T[k],
-						GetProperty_<Shape, k>
+						Get_<Shape, k>
 					> extends false
 						? T[k]
 						: never
@@ -129,7 +140,7 @@ export type _ObjectTypeFinalize<
 						// eslint-disable-next-line etc/no-internal
 						[k in keyof T]?: _ShouldForceOptional<
 							T[k],
-							GetProperty_<Shape, k>
+							Get_<Shape, k>
 						> extends true
 							? T[k] | undefined
 							: never

@@ -95,7 +95,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 			this.methods[name] = docMethod
 		}
 
-		if (isStrongDocRef(docRef)) this._ref = docRef as never
+		if (isStrongDocRef(docRef as never)) this._ref = docRef as never
 
 		// Object.freeze(this)
 		Object.seal(this)

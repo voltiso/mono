@@ -2,6 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schema,
+	$$Schemable,
 	BASE_OPTIONS,
 	CustomUnknownRecord,
 	DEFAULT_OPTIONS,
@@ -9,11 +11,10 @@ import type {
 	ISchema,
 	Record,
 	SCHEMA_NAME,
-	SchemableLike,
 	UnknownRecordOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS } from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl, RecordImpl } from '~'
 
@@ -42,13 +43,16 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<
-		TKeySchema extends { OutputType: keyof any; InputType: keyof any },
-		TValueSchema extends SchemableLike,
+		TKeySchema extends $$Schema & {
+			OutputType: keyof any
+			InputType: keyof any
+		},
+		TValueSchema extends $$Schemable,
 	>(
 		...args: [TKeySchema, TValueSchema] | [TValueSchema]
 	): Record<TKeySchema, TValueSchema> {

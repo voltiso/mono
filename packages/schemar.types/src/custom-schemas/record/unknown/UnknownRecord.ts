@@ -5,14 +5,17 @@ import type * as s from '~'
 
 export interface UnknownRecord extends s.CustomUnknownRecord<{}> {
 	<
-		TKeySchema extends { OutputType: keyof any; InputType: keyof any },
-		TValueSchema extends s.SchemableLike,
+		TKeySchema extends s.$$Schema & {
+			OutputType: keyof any
+			InputType: keyof any
+		},
+		TValueSchema extends s.$$Schemable,
 	>(
 		keySchema: TKeySchema,
 		valueSchema: TValueSchema,
 	): s.Record<TKeySchema, TValueSchema>
 
-	<TValueSchema extends s.SchemableLike>(valueSchema: TValueSchema): s.Record<
+	<TValueSchema extends s.$$Schemable>(valueSchema: TValueSchema): s.Record<
 		s.DefaultRecordOptions['keySchema'],
 		TValueSchema
 	>

@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseStackTrace jest stack 1`] = `
+[
+  {
+    "column": 25,
+    "functionName": "Object.<anonymous>",
+    "line": 22,
+    "path": "/home/atablash/mono/packages/util/src/stack-trace/parseStackTrace.test.ts",
+  },
+  {
+    "column": 28,
+    "functionName": "Promise.then.completed",
+    "line": 289,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/utils.js",
+  },
+  {
+    "functionName": "new Promise",
+    "path": "<anonymous>",
+  },
+  {
+    "column": 10,
+    "functionName": "callAsyncCircusFn",
+    "line": 222,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/utils.js",
+  },
+  {
+    "column": 40,
+    "functionName": "_callCircusTest",
+    "line": 248,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/run.js",
+  },
+  {
+    "column": 3,
+    "functionName": "_runTest",
+    "line": 184,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/run.js",
+  },
+  {
+    "column": 9,
+    "functionName": "_runTestsForDescribeBlock",
+    "line": 86,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/run.js",
+  },
+  {
+    "column": 9,
+    "functionName": "_runTestsForDescribeBlock",
+    "line": 81,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/run.js",
+  },
+  {
+    "column": 3,
+    "functionName": "run",
+    "line": 26,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/run.js",
+  },
+  {
+    "column": 21,
+    "functionName": "runAndTransformResultsToJestFormat",
+    "line": 120,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapterInit.js",
+  },
+  {
+    "column": 19,
+    "functionName": "jestAdapter",
+    "line": 79,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-circus@29.2.0/node_modules/jest-circus/build/legacy-code-todo-rewrite/jestAdapter.js",
+  },
+  {
+    "column": 16,
+    "functionName": "runTestInternal",
+    "line": 367,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-runner@29.2.0/node_modules/jest-runner/build/runTest.js",
+  },
+  {
+    "column": 34,
+    "functionName": "runTest",
+    "line": 444,
+    "path": "/home/atablash/mono/node_modules/.pnpm/jest-runner@29.2.0/node_modules/jest-runner/build/runTest.js",
+  },
+]
+`;
+
+exports[`parseStackTrace shell stack 1`] = `
+[
+  {
+    "column": 12,
+    "functionName": "Script.runInThisContext",
+    "line": 129,
+    "path": "node:vm",
+  },
+  {
+    "column": 29,
+    "functionName": "REPLServer.defaultEval",
+    "line": 572,
+    "path": "node:repl",
+  },
+  {
+    "column": 15,
+    "functionName": "bound",
+    "line": 433,
+    "path": "node:domain",
+  },
+  {
+    "column": 12,
+    "functionName": "REPLServer.runBound",
+    "line": 444,
+    "path": "node:domain",
+  },
+  {
+    "column": 10,
+    "functionName": "REPLServer.onLine",
+    "line": 902,
+    "path": "node:repl",
+  },
+  {
+    "column": 35,
+    "functionName": "REPLServer.emit",
+    "line": 525,
+    "path": "node:events",
+  },
+  {
+    "column": 12,
+    "functionName": "REPLServer.emit",
+    "line": 489,
+    "path": "node:domain",
+  },
+  {
+    "column": 10,
+    "functionName": "REPLServer.Interface._onLine",
+    "line": 491,
+    "path": "node:readline",
+  },
+  {
+    "column": 8,
+    "functionName": "REPLServer.Interface._line",
+    "line": 868,
+    "path": "node:readline",
+  },
+]
+`;

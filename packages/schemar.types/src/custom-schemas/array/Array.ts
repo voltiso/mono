@@ -4,25 +4,25 @@
 import type * as t from '~'
 import type { Type_ } from '~/GetType'
 import type { InferSchema_ } from '~/InferSchema'
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schemable } from '~/Schemable'
 
 import type { CustomArray } from './CustomArray'
 
-export interface MutableArray<S extends SchemableLike>
+export interface MutableArray<S extends $$Schemable>
 	extends CustomArray<{
 		element: InferSchema_<S>
 		Output: Type_<S, { kind: 'out' }>[]
 		Input: Type_<S, { kind: 'in' }>[]
 	}> {
-	<S extends SchemableLike>(elementSchema: S): t.MutableArray<S>
+	<S extends $$Schemable>(elementSchema: S): t.MutableArray<S>
 }
 
-export interface ReadonlyArray<S extends SchemableLike>
+export interface ReadonlyArray<S extends $$Schemable>
 	extends CustomArray<{
 		element: InferSchema_<S>
 		Output: readonly Type_<S, { kind: 'out' }>[]
 		Input: readonly Type_<S, { kind: 'in' }>[]
 		isReadonlyArray: true
 	}> {
-	<S extends SchemableLike>(elementSchema: S): t.ReadonlyArray<S>
+	<S extends $$Schemable>(elementSchema: S): t.ReadonlyArray<S>
 }

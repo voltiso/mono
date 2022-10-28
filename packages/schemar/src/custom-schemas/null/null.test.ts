@@ -3,7 +3,7 @@
 
 import type { OutputType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -12,7 +12,7 @@ describe('null', () => {
 		expect.hasAssertions()
 
 		type A = OutputType<typeof s.null>
-		Assert<IsIdentical<A, null>>()
+		$Assert<IsIdentical<A, null>>()
 
 		expect(s.null.extends(s.null)).toBeTruthy()
 		expect(s.null.extends(null)).toBeTruthy()

@@ -11,7 +11,7 @@ import type {
 	UnknownSymbolOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isSymbol, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl, literal } from '~'
 
@@ -30,7 +30,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this

@@ -10,7 +10,7 @@ import type {
 	OutputType,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -18,38 +18,38 @@ describe('never', () => {
 	it('generic', <O extends Partial<NeverOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<$CustomNever<O>, INever>()
+		$Assert.is<$CustomNever<O>, INever>()
 	})
 
 	it('simple', () => {
 		expect.hasAssertions()
 
-		Assert.is<typeof s.never, ISchema>()
+		$Assert.is<typeof s.never, ISchema>()
 
 		type A1 = OutputType<typeof s.never>
 		type A2 = InputType<typeof s.never>
-		Assert<IsIdentical<A1, never>>()
-		Assert<IsIdentical<A2, never>>()
+		$Assert<IsIdentical<A1, never>>()
+		$Assert<IsIdentical<A2, never>>()
 
 		type B = s.Never['OutputType']
-		Assert.is<B, never>()
+		$Assert.is<B, never>()
 
 		type C = s.Never['OutputType']['optional']
-		Assert.is<C, never>()
+		$Assert.is<C, never>()
 
 		type D = s.Never['OutputType']['optional']['optional']
-		Assert.is<D, never>()
+		$Assert.is<D, never>()
 
 		type E = s.Never['OutputType']['optional']['readonly']
-		Assert.is<E, never>()
+		$Assert.is<E, never>()
 
 		const e = s.never.optional.readonly
 
 		expect(e.isReadonly).toBeTruthy()
 		expect(e.isOptional).toBeTruthy()
 
-		Assert.is<typeof e['isOptional'], true>()
-		Assert.is<typeof e['isReadonly'], true>()
+		$Assert.is<typeof e['isOptional'], true>()
+		$Assert.is<typeof e['isReadonly'], true>()
 
 		expect(s.never.extends(s.never)).toBeTruthy()
 		expect(s.never.extends(s.number)).toBeTruthy()

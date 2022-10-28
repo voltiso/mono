@@ -2,21 +2,21 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	$CustomFunction,
 	$Type_,
 	CustomFunction,
 	FunctionOptions,
+	IArray,
 	IFunction,
 	InputType,
 	ISchema,
+	ITuple,
 	OutputType,
 	Schema,
 	Schemable,
 	Type_,
 } from '@voltiso/schemar.types'
-import type * as t from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -24,28 +24,28 @@ describe('function', () => {
 	it('type - simple', () => {
 		expect.assertions(0)
 
-		Assert.is<CustomFunction<{}>, IFunction>()
-		Assert.is<CustomFunction<{}>, ISchema>()
+		$Assert.is<CustomFunction<{}>, IFunction>()
+		$Assert.is<CustomFunction<{}>, ISchema>()
 
 		type A = s.Function<(a: number) => string>
 		type AA = A['OutputType']
-		Assert<IsIdentical<AA, (a: number) => string>>()
+		$Assert<IsIdentical<AA, (a: number) => string>>()
 
 		type B = typeof s.function
 		type BB = B['OutputType']
-		Assert<IsIdentical<BB, (...args: unknown[]) => unknown>>()
+		$Assert<IsIdentical<BB, (...args: unknown[]) => unknown>>()
 
 		type C = OutputType<typeof s.function>
-		Assert<IsIdentical<C, (...args: unknown[]) => unknown>>()
+		$Assert<IsIdentical<C, (...args: unknown[]) => unknown>>()
 
-		Assert.is<s.Function<(x: number) => string>, IFunction>()
-		Assert.is<s.Function<(x: number) => string>, ISchema>()
+		$Assert.is<s.Function<(x: number) => string>, IFunction>()
+		$Assert.is<s.Function<(x: number) => string>, ISchema>()
 	})
 
 	it('generic', <O extends Partial<FunctionOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<
+		$Assert.is<
 			$Type_<O['arguments'], { kind: 'out' }>,
 			undefined | readonly any[]
 		>()
@@ -53,29 +53,25 @@ describe('function', () => {
 		// Assert.is<never[], []>()
 		// Assert.is<never[], GetType_<O['arguments'], { kind: 'out' }>>()
 
-		Assert.is<$CustomFunction<O>, IFunction>()
-		Assert.is<CustomFunction<O>, Schema>()
-		Assert.is<$CustomFunction<O>, ISchema<(...args: any) => unknown>>()
+		$Assert.is<CustomFunction<O>, IFunction>()
+		$Assert.is<CustomFunction<O>, Schema>()
+		$Assert.is<CustomFunction<O>, ISchema<(...args: any) => unknown>>()
 	})
 
 	it('type', () => {
-		expect.assertions(0)
-
-		Assert.is<
-			Type_<(t.ITuple | t.IArray) & ISchema, { kind: 'out' }>,
+		$Assert.is<
+			Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>,
 			readonly unknown[]
 		>()
 
-		Assert.is<
-			never[],
-			Type_<(t.ITuple | t.IArray) & ISchema, { kind: 'out' }>
-		>()
+		$Assert.is<never[], Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>>()
 
-		const a = s.function(s.readonlyArray(s.number(123)), s.string)
-		Assert.is<typeof a, Schemable>()
+		const args = s.readonlyArray(s.number(123))
+		const a = s.function(args, s.string)
+		$Assert.is<typeof a, Schemable>()
 
 		type A = typeof a['OutputType']
-		Assert<IsIdentical<A, (...args: readonly 123[]) => string>>()
+		$Assert<IsIdentical<A, (...args: readonly 123[]) => string>>()
 	})
 
 	it('simple', () => {
@@ -85,10 +81,10 @@ describe('function', () => {
 		;() => s.function(s.tuple(s.number), s.number)
 
 		type T = OutputType<typeof s.function>
-		Assert<IsIdentical<T, (...args: unknown[]) => unknown>>()
+		$Assert<IsIdentical<T, (...args: unknown[]) => unknown>>()
 
 		type IT = InputType<typeof s.function>
-		Assert<IsIdentical<IT, (...args: unknown[]) => unknown>>()
+		$Assert<IsIdentical<IT, (...args: unknown[]) => unknown>>()
 
 		expect(s.function.extends(s.function)).toBeTruthy()
 		expect(s.function.extends(s.unknown)).toBeTruthy()
@@ -113,26 +109,36 @@ describe('function', () => {
 		// 	s.function.extends(s.function(s.array(s.never), s.unknown)),
 		// ).toBeTruthy()
 
-		expect(
-			s.function.extends(s.function(s.array(s.never), s.string)),
-		).toBeFalsy()
+		const argsA = s.array(s.never)
 
-		expect(
-			s.function.extends(s.function(s.array(s.string), s.unknown)),
-		).toBeFalsy()
+		expect(s.function.extends(s.function(argsA, s.string))).toBeFalsy()
 
-		expect(
-			s.function(s.array(s.number), s.string).extends(s.unknown),
-		).toBeTruthy()
+		//
 
-		expect(
-			s.function(s.array(s.number), s.string).extends(s.function),
-		).toBeTruthy()
+		const argsB = s.array(s.string)
 
-		const a = s.function(s.array(s.number), s.string('asd'))
+		expect(s.function.extends(s.function(argsB, s.unknown))).toBeFalsy()
+
+		//
+
+		const argsC = s.array(s.number)
+
+		expect(s.function(argsC, s.string).extends(s.unknown)).toBeTruthy()
+
+		//
+
+		const argsD = s.array(s.number)
+
+		expect(s.function(argsD, s.string).extends(s.function)).toBeTruthy()
+
+		//
+
+		const argsE = s.array(s.number)
+		const a = s.function(argsE, s.string('asd'))
+
 		type A = OutputType<typeof a>
-		Assert<IsIdentical<A, (...args: number[]) => 'asd'>>()
-		Assert<IsIdentical<InputType<typeof a>, (...args: number[]) => 'asd'>>()
+		$Assert<IsIdentical<A, (...args: number[]) => 'asd'>>()
+		$Assert<IsIdentical<InputType<typeof a>, (...args: number[]) => 'asd'>>()
 
 		expect(() => s.function.validate(123)).toThrow('function')
 		expect(() => s.function.validate(null)).toThrow('function')
@@ -142,8 +148,11 @@ describe('function', () => {
 	it('complex 1', () => {
 		expect.hasAssertions()
 
-		const a = s.function(s.readonlyArray(s.number), s.string('asd'))
-		const b = s.function(s.readonlyArray(s.number(123)), s.string)
+		const aa = s.readonlyArray(s.number)
+		const a = s.function(aa, s.string('asd'))
+
+		const bb = s.readonlyArray(s.number(123))
+		const b = s.function(bb, s.string)
 
 		expect(a.extends(b)).toBeTruthy()
 	})
@@ -151,8 +160,11 @@ describe('function', () => {
 	it('complex 2', () => {
 		expect.hasAssertions()
 
-		const a = s.function(s.array(s.number), s.string('asd'))
-		const b = s.function(s.array(s.number(123)), s.string)
+		const argsA = s.array(s.number)
+		const a = s.function(argsA, s.string('asd'))
+
+		const argsB = s.array(s.number(123))
+		const b = s.function(argsB, s.string)
 
 		expect(a.extends(b)).toBeTruthy()
 	})
@@ -160,8 +172,11 @@ describe('function', () => {
 	it('complex 3', () => {
 		expect.hasAssertions()
 
-		const a = s.function(s.readonlyArray(s.number), 'asd')
-		const b = s.function(s.array(s.number(123)), s.string)
+		const argsA = s.readonlyArray(s.number)
+		const a = s.function(argsA, 'asd')
+
+		const argsB = s.array(s.number(123))
+		const b = s.function(argsB, s.string)
 
 		expect(a.extends(b)).toBeTruthy()
 	})
@@ -171,11 +186,14 @@ describe('function', () => {
 
 		// readonly for args should be discarded
 
-		const a = s.function(s.array(s.number), s.string('asd'))
-		const b = s.function(s.readonlyArray(123), s.string)
+		const argsA = s.array(s.number)
+		const a = s.function(argsA, s.string('asd'))
+
+		const argsB = s.readonlyArray(123)
+		const b = s.function(argsB, s.string)
 
 		type B = Parameters<typeof b.OutputType>
-		Assert<IsIdentical<B, 123[]>>()
+		$Assert<IsIdentical<B, 123[]>>()
 
 		expect(a.extends(b)).toBeTruthy()
 	})
@@ -195,7 +213,7 @@ describe('function', () => {
 		type FunA = typeof funA.OutputType
 		type FunB = typeof funB.OutputType
 
-		Assert.is<FunA, FunB>()
+		$Assert.is<FunA, FunB>()
 
 		expect(funA.extends(funB)).toBeTruthy()
 

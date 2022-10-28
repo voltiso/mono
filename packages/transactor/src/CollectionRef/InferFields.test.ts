@@ -14,7 +14,7 @@ import type {
 	IDocConstructorNoBuilder,
 } from '~/Doc'
 import { Doc } from '~/Doc'
-import type { IDocRefBase } from '~/DocRef'
+import type { IDocRef } from '~/DocRef'
 import * as ss from '~/schemas'
 
 import type { InferFields } from './InferFields'
@@ -65,7 +65,7 @@ describe('InferFields', () => {
 		// type A = Doctor[DTI]['public']['optionalFriend']
 		type F = InferFields<typeof Doctor>
 		type X = F['public']['optionalFriend']
-		Assert.is<X, t.Schema<IDocRefBase>['optional']>()
+		Assert.is<X, t.Schema<IDocRef>['optional']>()
 		// Assert<IsIdentical<X, SOptional<s.DocRef>>>()
 	})
 

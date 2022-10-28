@@ -1,16 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	DefaultSchemaOptions,
-	InferableObjectLike,
-	SchemableLike,
-	SchemaOptions,
-} from '~'
+import type { $$Schemable, DefaultSchemaOptions, SchemaOptions } from '~'
 
 export type ObjectIndexSignatureEntry = {
-	keySchema: SchemableLike
-	valueSchema: SchemableLike
+	keySchema: $$Schemable
+	valueSchema: $$Schemable
 }
 
 export interface ObjectOptions<T extends object = object>
@@ -18,15 +13,19 @@ export interface ObjectOptions<T extends object = object>
 	Output: T
 	Input: T
 
-	shape: InferableObjectLike
+	shape: {} // InferableObjectLike
 
 	indexSignatures: ObjectIndexSignatureEntry[]
+
+	isPlain: boolean
 }
 
 export interface DefaultObjectOptions extends DefaultSchemaOptions {
 	Output: object
 	Input: object
 
-	shape: InferableObjectLike
+	shape: {} // InferableObjectLike
 	indexSignatures: []
+
+	isPlain: false
 }

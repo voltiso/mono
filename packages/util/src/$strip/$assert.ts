@@ -12,10 +12,14 @@ export interface $AssertFunction {
 		x: X,
 		message?: string | undefined,
 	): asserts x is X extends undefined ? never : X
+
+	object<X>(
+		x: X,
+		message?: string | undefined,
+	): asserts x is X extends object ? X : never
 }
 
-/** @strip */
-export const $assert: $AssertFunction = (condition, message?) => {
+const _assert: $AssertFunction = (condition, message?) => {
 	if (condition) return // good
 
 	const finalMessage = message
@@ -25,8 +29,7 @@ export const $assert: $AssertFunction = (condition, message?) => {
 	throw new VoltisoUtilError(finalMessage)
 }
 
-/** @strip */
-$assert.defined = (...args) => {
+_assert.defined = (...args) => {
 	const [x, _message] = args
 	if (isDefined(x)) return // good
 
@@ -34,3 +37,23 @@ $assert.defined = (...args) => {
 		function: { name: '$assert.defined', arguments: args },
 	})
 }
+
+_assert.object = (...args) => {
+	const [x, _message] = args
+	if (typeof x === 'object' && x !== null) return // good
+
+	throw new VoltisoUtilError('Assertion failed', {
+		function: { name: '$assert.defined', arguments: args },
+	})
+}
+
+/**
+ * Simple assert implementation.
+ *
+ * 💪 For full-blown schema-assert, use `@voltiso/assertor` instead
+ *
+ * 👗 For a non-stripped version, use `assert` instead
+ *
+ * @strip Use `@voltiso/transform/strip` to strip from production code
+ */
+export const $assert: typeof _assert = _assert

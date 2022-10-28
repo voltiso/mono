@@ -3,10 +3,20 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 
-import type { CustomSchema, DefaultFunctionOptions, FunctionOptions } from '~'
+import type {
+	$$Schema,
+	CustomSchema,
+	DefaultFunctionOptions,
+	FunctionOptions,
+} from '~'
+
+export interface $$Function extends $$Schema {
+	readonly [SCHEMA_NAME]: 'Function'
+}
 
 export interface CustomFunction<O extends Partial<FunctionOptions>>
-	extends CustomSchema<O> {
+	extends $$Function,
+		CustomSchema<O> {
 	//
 	readonly [SCHEMA_NAME]: 'Function'
 
@@ -18,7 +28,3 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 	get getArgumentsSchema(): this[OPTIONS]['arguments']
 	get getResultSchema(): this[OPTIONS]['result']
 }
-
-export type $CustomFunction<O extends Partial<FunctionOptions>> = O extends any
-	? CustomFunction<O>
-	: never

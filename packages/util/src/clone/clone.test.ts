@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { CALL, callableInstance } from '~/class'
+import { BoundCallable, CALL } from '~'
 import { lazyValue } from '~/lazy/lazyValue'
-import { undef } from '~/nullish'
 
 import { clone } from './clone'
 
@@ -35,7 +34,7 @@ describe('clone', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 		expect(clone(null)).toBeNull()
-		expect(clone(undef)).toBeUndefined()
+		expect(clone(undefined)).toBeUndefined()
 		expect(clone(123)).toBe(123)
 		expect(clone('123')).toBe('123')
 		expect(clone(BigInt(123))).toBe(BigInt(123))
@@ -181,6 +180,16 @@ describe('clone', () => {
 		expect(x.cl._cloned).toBeFalsy()
 	})
 
+	it('cloneable root', () => {
+		expect.hasAssertions()
+
+		const cloneable = new MyCloneable(1232)
+		const myClone = clone(cloneable)
+
+		expect(myClone.x).toBe(1232)
+		expect(myClone._cloned).toBeTruthy()
+	})
+
 	it('clones proto', () => {
 		expect.hasAssertions()
 
@@ -231,7 +240,7 @@ describe('clone', () => {
 
 		class C_ {
 			constructor() {
-				return callableInstance(this)
+				return BoundCallable(this)
 			}
 
 			[CALL]() {
@@ -277,7 +286,7 @@ describe('clone', () => {
 
 		class C {
 			constructor() {
-				return callableInstance(this)
+				return BoundCallable(this)
 			}
 
 			[CALL]() {

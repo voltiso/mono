@@ -3,7 +3,7 @@
 
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
-import { isDefined } from '@voltiso/util'
+import { $assert, isDefined } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import type { DocumentReference } from './DocumentReference'

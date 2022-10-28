@@ -3,7 +3,7 @@
 
 import type { Merge2, Merge2_ } from '@voltiso/util'
 
-import type { DefaultSchemaOptions, SchemableLike, SchemaOptions } from '~'
+import type { $$Schemable, DefaultSchemaOptions, SchemaOptions } from '~'
 
 export interface TupleOptions<T extends readonly unknown[] = readonly unknown[]>
 	extends SchemaOptions {
@@ -11,7 +11,7 @@ export interface TupleOptions<T extends readonly unknown[] = readonly unknown[]>
 	Input: T
 
 	isReadonlyTuple: boolean
-	shape: SchemableLike[]
+	shape: $$Schemable[]
 }
 
 //
@@ -21,7 +21,7 @@ export interface DefaultTupleOptions extends DefaultSchemaOptions {
 	Input: readonly unknown[]
 
 	isReadonlyTuple: false
-	shape: SchemableLike[]
+	shape: $$Schemable[]
 }
 
 export type DefaultMutableTupleOptions = Merge2_<

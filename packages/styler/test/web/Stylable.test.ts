@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 import type { ChangeEvent, FC, RefObject } from 'react'
 
 import type { IStylable, Stylable } from '~'
@@ -11,8 +11,8 @@ describe('Stylable', () => {
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
-		Assert.is<Stylable<P>, IStylable>()
-		Assert.is<Stylable<P>, Stylable>()
+		$Assert.is<Stylable<P>, IStylable>()
+		$Assert.is<Stylable<P>, Stylable>()
 	})
 
 	it('type', () => {
@@ -20,13 +20,13 @@ describe('Stylable', () => {
 
 		// Assert(Is<FC<{ a?: 'aa' }>>().not.subtypeOf<Stylable>())
 
-		Assert.is<FC<{ className?: string }>, IStylable>()
-		Assert.is<FC<{ className?: string | undefined; a?: 'aa' }>, Stylable>()
-		Assert.is<FC<{ className: string; a?: 'aa' }>, Stylable>()
-		Assert.is<FC<{ readonly className: string; a?: 'aa' }>, Stylable>()
+		$Assert.is<FC<{ className?: string }>, IStylable>()
+		$Assert.is<FC<{ className?: string | undefined; a?: 'aa' }>, Stylable>()
+		$Assert.is<FC<{ className: string; a?: 'aa' }>, Stylable>()
+		$Assert.is<FC<{ readonly className: string; a?: 'aa' }>, Stylable>()
 
-		Assert.is<'input', Stylable>()
-		Assert.is<
+		$Assert.is<'input', Stylable>()
+		$Assert.is<
 			'input',
 			Stylable<{ value?: string | readonly string[] | number | undefined }>
 		>()
@@ -48,20 +48,20 @@ describe('Stylable', () => {
 			// validationResult?: s.ValidationResult | undefined
 		}
 
-		Assert.is<'input', Stylable<TextProps>>()
+		$Assert.is<'input', Stylable<TextProps>>()
 
 		type CustomTextProps = TextProps & {
 			magic?: boolean | undefined
 		}
 
 		// do not allow unknown DOM attributes
-		Assert(Is<'input'>().not.subtypeOf<Stylable<CustomTextProps>>())
+		$Assert($Is<'input'>().not.subtypeOf<Stylable<CustomTextProps>>())
 
 		type CustomRequiredTextProps = CustomTextProps & {
 			requiredMagic: boolean
 		}
 
-		Assert(Is<'input'>().not.subtypeOf<Stylable<CustomRequiredTextProps>>())
+		$Assert($Is<'input'>().not.subtypeOf<Stylable<CustomRequiredTextProps>>())
 
 		// type BadTextProps = CustomTextProps & {
 		// 	checked?: boolean
@@ -90,24 +90,24 @@ describe('Stylable', () => {
 
 		//
 
-		Assert.is<
+		$Assert.is<
 			(props: { className?: string | undefined }) => void,
 			WithClassName
 		>()
 
-		Assert.is<
+		$Assert.is<
 			(props: { className?: string | undefined }) => void,
 			WithMaybeClassName
 		>()
 
 		//
 
-		Assert.is<
+		$Assert.is<
 			(props: { className?: string | undefined; a?: 'a' }) => void,
 			WithClassName
 		>()
 
-		Assert.is<
+		$Assert.is<
 			(props: { className?: string | undefined; a?: 'a' }) => void,
 			WithMaybeClassName
 		>()

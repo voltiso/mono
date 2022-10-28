@@ -3,7 +3,7 @@
 
 import { $Assert, $Is } from '~/$strip'
 import type { Newable } from '~/function'
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
 import type { Entry } from './Entry'
 import { getCoercedEntries } from './getEntries'

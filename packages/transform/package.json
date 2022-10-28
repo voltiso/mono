@@ -7,6 +7,11 @@
   "sideEffects": false,
   "__________EXPORTS": "__________",
   "exports": {
+    ".": {
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
     "./strip": {
       "types": "./dist/cjs/strip/default.d.ts",
       "import": "./dist/esm/strip/default.js",
@@ -16,6 +21,32 @@
       "types": "./dist/cjs/inline/default.d.ts",
       "import": "./dist/esm/inline/default.js",
       "require": "./dist/cjs/inline/default.js"
+    },
+    "./compat": {
+      "types": "./dist/cjs/compat/default.d.ts",
+      "import": "./dist/esm/compat/default.js",
+      "require": "./dist/cjs/compat/default.js"
+    },
+    "./call-info": {
+      "types": "./dist/cjs/call-info/default.d.ts",
+      "import": "./dist/esm/call-info/default.js",
+      "require": "./dist/cjs/call-info/default.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "strip": [
+        "dist/cjs/strip"
+      ],
+      "inline": [
+        "dist/cjs/inline"
+      ],
+      "compat": [
+        "dist/cjs/compat"
+      ],
+      "call-info": [
+        "dist/cjs/call-info"
+      ]
     }
   },
   "__________EXPORTS FALLBACK": "__________",
@@ -29,7 +60,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________DEV": "__________",
-    "dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+    "dev": "v dev",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",

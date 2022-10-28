@@ -25,10 +25,12 @@ export function docDataFromJson<J>(
 	db: Transactor,
 	json: J,
 ): DocDataFromJson<J> {
-	if (isStrongDocRefJson(json))
-		return db.doc(json.__target).asStrongRef as never
+	if (isStrongDocRefJson(json)) {
+		const ref = db.doc(json.path)
+		return ref.asStrongRef as never
+	}
 
-	if (isWeakDocRefJson(json)) return db.doc(json.__target).asWeakRef as never
+	if (isWeakDocRefJson(json)) return db.doc(json.path).asWeakRef as never
 
 	if (isDateJson(json)) return dateFromJson(json) as never
 

@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PatchFor } from '@voltiso/patcher'
-import { patch, patchSet, patchUpdate, replaceIt } from '@voltiso/patcher'
+import type { PatchFor } from '@voltiso/util'
+import { patch, patchSet, patchUpdate, replaceIt } from '@voltiso/util'
 import {
+	BoundCallable,
 	CALL,
-	callableInstance,
 	forwardGetOwnPropertyDescriptor,
 	forwardOwnKeys,
 	hasOwnProperty,
@@ -63,7 +63,10 @@ type StateObject = Record<string, State>
 // type StateProxy<S extends StateObject> = S & StateProxyCall<S>
 
 class StatePatcher_<S extends StateObject> {
-	/** Here we keep a reference to the update() hook, to force-update the React component */
+	/**
+	 * Here we keep a reference to the update() hook, to force-update the React
+	 * component
+	 */
 	private readonly _forceUpdate: () => void
 
 	/**
@@ -85,7 +88,7 @@ class StatePatcher_<S extends StateObject> {
 		this._swapProto()
 
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this)
+		return BoundCallable(this)
 	}
 
 	private _swapProto() {

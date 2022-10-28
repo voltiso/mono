@@ -5,26 +5,23 @@ import type { SchemaLike } from '@voltiso/schemar.types'
 import type { _ } from '@voltiso/util'
 
 import type { Id } from '~/Data'
-import type { DocRefLike } from '~/DocRef/IRef'
+import type { $$DocRef } from '~/DocRef/IRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 
 import type { IDocConstructorNoBuilder } from './DocConstructor'
 import type { DocContext } from './DocContext'
-import type { DocTI, DocTILike, DTI } from './DocTI'
+import type { DocTI, DTI } from './DocTI'
 
-export interface DocLike {
-	[DTI]: DocTILike
-	dataWithId(): unknown
-	data: IntrinsicFields
+export const IS_DOC = Symbol('IS_DOC')
+export type IS_DOC = typeof IS_DOC
 
-	// readonly [DTI]: DocTILike
+export interface $$Doc {
+	[IS_DOC]: true
 
-	// dataWithId(): {
-	// 	__voltiso?: any
-	// }
-
-	// readonly data: any
+	// [DTI]: DocTILike
+	// dataWithId(): unknown
+	// data: IntrinsicFields
 }
 
 /**
@@ -32,20 +29,20 @@ export interface DocLike {
  *
  * - Every `Doc` is assignable to it
  */
-export interface IDoc {
+export interface IDoc extends $$Doc {
 	[DTI]: DocTI
 
 	readonly constructor: IDocConstructorNoBuilder
 
 	readonly id: Id
 	readonly path: DocPath
-	readonly ref: DocRefLike
+	readonly ref: $$DocRef
 
 	readonly data: IntrinsicFields
 	dataWithoutId(): IntrinsicFields
 	dataWithId(): _<{ id: Id } & IntrinsicFields>
 
-	update(updates: any): Promise<DocLike | null | undefined>
+	update(updates: any): Promise<$$Doc | null | undefined>
 
 	delete(): Promise<null>
 
@@ -62,7 +59,7 @@ export interface IDoc {
  *
  * - Every `DocImpl` is assignable to it
  */
-export interface IDocImpl extends DocLike {
+export interface IDocImpl extends $$Doc {
 	readonly _context: DocContext
 	_setRaw(raw: unknown): void
 	// readonly db: Db

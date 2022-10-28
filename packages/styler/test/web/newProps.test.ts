@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { ComponentProps } from 'react'
 
 import { style } from '~'
@@ -16,6 +16,6 @@ describe('newProps', () => {
 		})
 
 		type A = Pick<ComponentProps<typeof Button>, 'magic'>
-		Assert<IsIdentical<A, { magic?: boolean | undefined }>>()
+		$Assert<IsIdentical<A, { magic?: boolean | undefined }>>()
 	})
 })

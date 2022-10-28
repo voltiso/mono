@@ -3,7 +3,7 @@
 
 import { $Assert } from '~/$strip'
 import { undef } from '~/nullish'
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
 import type { TryGetProperty } from './tryGetProperty'
 import { tryGetProperty } from './tryGetProperty'

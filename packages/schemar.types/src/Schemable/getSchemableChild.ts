@@ -13,7 +13,7 @@ export function getSchemableChild<
 >(s: S, child: Child): GetShape<S>[Child] {
 	// assertNotPolluting(child)
 	if (isObject(s) || isTuple(s)) {
-		return s.getShape[child as never] as never
+		return s.getShape[child as never]
 	} else {
 		return s[child as never]
 	}

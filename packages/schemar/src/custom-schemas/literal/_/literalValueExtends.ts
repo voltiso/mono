@@ -2,8 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InferableLiteral, ISchema } from '@voltiso/schemar.types'
-import { isVoid } from '@voltiso/schemar.types'
-import { EXTENDS } from '@voltiso/schemar.types'
+import { EXTENDS, isVoid } from '@voltiso/schemar.types'
 
 import { getBaseSchema } from './getBaseSchema'
 

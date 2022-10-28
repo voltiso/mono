@@ -3,7 +3,7 @@
 
 import type { InputType, OutputType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -18,7 +18,7 @@ describe('object', () => {
 		}
 
 		type In = InputType<typeof mySchema>
-		Assert<
+		$Assert<
 			IsIdentical<
 				In,
 				| {
@@ -33,7 +33,7 @@ describe('object', () => {
 		>()
 
 		type Out = OutputType<typeof mySchema>
-		Assert<
+		$Assert<
 			IsIdentical<
 				Out,
 				{
@@ -93,7 +93,7 @@ describe('object', () => {
 		}
 
 		type In = InputType<typeof mySchema>
-		Assert<
+		$Assert<
 			IsIdentical<
 				In,
 				| {
@@ -108,7 +108,7 @@ describe('object', () => {
 		>()
 
 		type Out = OutputType<typeof mySchema>
-		Assert<
+		$Assert<
 			IsIdentical<
 				Out,
 				{

@@ -9,7 +9,7 @@ import type {
 	Schemable,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -17,28 +17,26 @@ describe('s.literal', () => {
 	it('generic', <O extends Partial<LiteralOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomLiteral<O>, ILiteral>()
+		$Assert.is<CustomLiteral<O>, ILiteral>()
 
 		type A = CustomLiteral<O>['OutputType']
-		Assert.is<A, InferableLiteral>()
+		$Assert.is<A, InferableLiteral>()
 	})
 
 	it('type', () => {
-		expect.assertions(0)
-
-		Assert.is<typeof s.literal, Schemable>()
+		$Assert.is<typeof s.literal, Schemable>()
 
 		const a = s.literal.optional
 		type A = typeof a.OutputType
-		Assert<IsIdentical<A, InferableLiteral>>()
+		$Assert<IsIdentical<A, InferableLiteral>>()
 
 		const b = s.literal(123)
 		type B = typeof b.OutputType
-		Assert<IsIdentical<B, 123>>()
+		$Assert<IsIdentical<B, 123>>()
 
 		const c = s.literal(123).optional
 		type C = typeof c.OutputType
-		Assert<IsIdentical<C, 123>>()
+		$Assert<IsIdentical<C, 123>>()
 	})
 
 	it('simple', () => {
@@ -66,10 +64,10 @@ describe('s.literal', () => {
 		expect(s.schema(true).extends(s.literal)).toBeTruthy()
 
 		expect(s.literal(null).extends(s.literal)).toBeTruthy()
-		expect(s.literal(undef).extends(s.literal)).toBeTruthy()
+		expect(s.literal(undefined).extends(s.literal)).toBeTruthy()
 
 		expect(s.schema(null).extends(s.literal)).toBeTruthy()
-		expect(s.schema(undef).extends(s.literal)).toBeTruthy()
+		expect(s.schema(undefined).extends(s.literal)).toBeTruthy()
 
 		expect(s.undefined.extends(s.literal)).toBeTruthy()
 		expect(s.null.extends(s.literal)).toBeTruthy()
@@ -77,6 +75,6 @@ describe('s.literal', () => {
 		expect(s.literal.extends(s.unknown)).toBeTruthy()
 		expect(s.literal(123).extends(s.unknown)).toBeTruthy()
 		expect(s.literal(null).extends(s.unknown)).toBeTruthy()
-		expect(s.literal(undef).extends(s.unknown)).toBeTruthy()
+		expect(s.literal(undefined).extends(s.unknown)).toBeTruthy()
 	})
 })

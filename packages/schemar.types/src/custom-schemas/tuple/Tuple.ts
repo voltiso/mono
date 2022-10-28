@@ -2,18 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _TupleTypeImpl } from '~/GetType'
-import type { SchemableLike } from '~/Schemable'
+import type { $$Schemable } from '~/Schemable'
 
 import type { CustomTuple } from './CustomTuple'
 
-export interface MutableTuple<T extends SchemableLike[]>
+export interface MutableTuple<T extends $$Schemable[]>
 	extends CustomTuple<{
 		shape: T
 		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
 		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: false }>
 	}> {}
 
-export interface ReadonlyTuple<T extends SchemableLike[]>
+export interface ReadonlyTuple<T extends $$Schemable[]>
 	extends CustomTuple<{
 		shape: T
 		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
@@ -21,10 +21,10 @@ export interface ReadonlyTuple<T extends SchemableLike[]>
 		isReadonlyTuple: true
 	}> {}
 
-export type MutableTupleConstructor = new <T extends SchemableLike[]>(
+export type MutableTupleConstructor = new <T extends $$Schemable[]>(
 	...shape: T
 ) => MutableTuple<T>
 
-export type ReadonlyTupleConstructor = new <T extends SchemableLike[]>(
+export type ReadonlyTupleConstructor = new <T extends $$Schemable[]>(
 	...shape: T
 ) => ReadonlyTuple<T>

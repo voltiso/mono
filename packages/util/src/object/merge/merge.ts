@@ -9,7 +9,7 @@ import type { Merge2Complex } from './Merge2Complex'
 import type { Merge2Nullish } from './Merge2Nullish'
 import type { MergeN } from './MergeN'
 import type { MergeNNullish, MergeNNullish_ } from './MergeNNullish'
-import type { SuggestObject } from './SuggestObject'
+import type { SuggestObject } from './Suggest'
 import type { SuggestObjectNullish } from './SuggestObjectNullish'
 
 export type Merge<

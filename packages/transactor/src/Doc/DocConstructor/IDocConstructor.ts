@@ -3,25 +3,20 @@
 
 import type { SchemaLike } from '@voltiso/schemar.types'
 
-import type {
-	DocBuilderPlugin,
-	DocContext,
-	DocLike,
-	DocTI,
-	DocTILike,
-	DTI,
-} from '~/Doc'
+import type { DocBuilderPlugin, DocContext, $$Doc, DocTI, DTI } from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
-export interface DocConstructorLike {
-	[DTI]: DocTILike
-	new (...args: any): DocLike
+export const IS_DOC_CONSTRUCTOR = Symbol('IS_DOC_CONSTRUCTOR')
+export type IS_DOC_CONSTRUCTOR = typeof IS_DOC_CONSTRUCTOR
+
+export interface $$DocConstructor {
+	[IS_DOC_CONSTRUCTOR]: true
 }
 
-export interface IDocConstructorNoBuilder extends DocConstructorLike {
+export interface IDocConstructorNoBuilder extends $$DocConstructor {
 	readonly [DTI]: DocTI
-	new (context: DocContext, data: any): DocLike
+	new (context: DocContext, data: any): $$Doc
 
 	readonly _: DocDerivedData
 

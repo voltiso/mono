@@ -15,7 +15,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________DEV": "__________",
-    "dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+    "dev": "v dev",
     "__________TEST": "__________",
     "test": "echo no tests yet!",
     "__________LINT": "__________",
@@ -50,7 +50,7 @@
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-destructuring": "^2.2.1",
     "eslint-plugin-editorconfig": "^4.0.2",
-    "eslint-plugin-es": "^4.1.0",
+    "eslint-plugin-es-x": "^5.3.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-etc": "^2.0.2",
     "eslint-plugin-ext": "^0.1.0",

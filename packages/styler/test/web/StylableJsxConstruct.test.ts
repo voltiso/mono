@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { ComponentClass, FC } from 'react'
 
 import type {
@@ -15,8 +15,8 @@ describe('StylableJsx', () => {
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
-		Assert.is<StylableJsxConstruct<P>, IStylableJsxConstruct>()
-		Assert.is<StylableJsxConstruct<P>, StylableJsxConstruct>()
+		$Assert.is<StylableJsxConstruct<P>, IStylableJsxConstruct>()
+		$Assert.is<StylableJsxConstruct<P>, StylableJsxConstruct>()
 	})
 
 	it('type', () => {
@@ -30,33 +30,33 @@ describe('StylableJsx', () => {
 		// 	Is<ComponentClass<{ a?: 'aa' }>>().not.subtypeOf<StylableJsxConstruct>(),
 		// )
 
-		Assert.is<
+		$Assert.is<
 			ComponentClass<{ className?: string | undefined }>,
 			StylableJsxConstruct
 		>()
 
-		Assert.is<
+		$Assert.is<
 			ComponentClass<{ className?: string | undefined; a?: 'aa' }>,
 			StylableJsxConstruct
 		>()
 
-		Assert.is<
+		$Assert.is<
 			ComponentClass<{ className: string; a?: 'aa' }>,
 			IStylableJsxConstruct
 		>()
 
-		Assert.is<
+		$Assert.is<
 			ComponentClass<{ readonly className: string; a?: 'aa' }>,
 			StylableJsxConstruct
 		>()
 
-		Assert.is<
+		$Assert.is<
 			ComponentClass<{ readonly className?: 'a' | 'b' | undefined; a?: 'aa' }>,
 			StylableJsxConstruct
 		>()
 
 		//
 
-		Assert.is<FC<{ className: string; a?: 'aa' }>, StylableJsxCall>()
+		$Assert.is<FC<{ className: string; a?: 'aa' }>, StylableJsxCall>()
 	})
 })

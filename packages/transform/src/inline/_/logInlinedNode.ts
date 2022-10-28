@@ -1,13 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { TransformContext } from '@voltiso/transform.lib'
+import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import type * as ts from 'typescript'
 
-import type { TransformContext } from '~/_'
-import { getNodePositionStr, getNodeText } from '~/_'
-
-const moduleIcon = '🤗'
+const moduleIcon = '👁️ '
 
 let helloPrinted = false
 

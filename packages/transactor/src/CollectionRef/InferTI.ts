@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocConstructorLike, DocLike, DocTILike, DTI } from '~/Doc'
+import type { Assume, NewableReturn_ } from '@voltiso/util'
+import type { $$DocConstructor, $$Doc, $$DocTI, DTI } from '~/Doc'
 import type { DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
@@ -9,37 +10,39 @@ import type { InferMethods } from './InferMethods'
 
 //
 
-export type InferTIFromDoc_<D> = [D] extends [DocLike]
-	? InferTIFromDoc<D>
-	: never
+export type InferTIFromDoc_<D> = D extends $$Doc ? InferTIFromDoc<D> : never
 
-export type InferTIFromDoc<D extends DocLike> = D[DTI] & {
-	methods: InferMethods<D>
-} & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
-
-export type InferTIFromCls<Cls extends DocConstructorLike> = InferTIFromDoc<
-	InstanceType<Cls>
+export type InferTIFromDoc<D extends $$Doc> = Assume<
+	$$DocTI,
+	D extends { [DTI]: { tag: string } }
+		? D[DTI] & {
+				methods: InferMethods<D>
+		  } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
+		: never
 >
 
-export type InferTI<X extends DocConstructorLike | DocLike | DocTag> =
-	X extends DocLike
+export type InferTIFromCls<Cls extends $$DocConstructor> = InferTIFromDoc<
+	NewableReturn_<Cls> & $$Doc
+>
+
+export type InferTI<X extends $$DocConstructor | $$Doc | DocTag> =
+	X extends $$Doc
 		? InferTIFromDoc<X>
-		: X extends DocConstructorLike
+		: X extends $$DocConstructor
 		? InferTIFromCls<X>
 		: X extends string
-		? DocTypes[X] extends { readonly [DTI]: any }
+		? DocTypes[X] extends { readonly [DTI]: {} }
 			? DocTypes[X][DTI]
 			: never
 		: never
 
-export type GetTI<
-	X extends DocTILike | DocTag | { readonly [DTI]: DocTILike },
-> = X extends DocTILike
-	? X
-	: X extends { readonly [DTI]: DocTILike }
-	? X[DTI]
-	: X extends DocTag
-	? DocTypes[X] extends { readonly [DTI]: any }
-		? DocTypes[X][DTI]
+export type GetTI<X extends $$DocTI | DocTag | { readonly [DTI]: $$DocTI }> =
+	X extends $$DocTI
+		? X
+		: X extends { readonly [DTI]: $$DocTI }
+		? X[DTI]
+		: X extends DocTag
+		? DocTypes[X] extends { readonly [DTI]: {} }
+			? DocTypes[X][DTI]
+			: never
 		: never
-	: never

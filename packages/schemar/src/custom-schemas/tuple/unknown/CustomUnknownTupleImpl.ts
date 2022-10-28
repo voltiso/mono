@@ -1,17 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '@voltiso/schemar.types'
 import type {
+	$$Schemable,
 	CustomUnknownTuple,
+	DEFAULT_OPTIONS,
 	DefaultUnknownTupleOptions,
-	Schemable,
+	PARTIAL_OPTIONS,
 	SchemaLike,
 	UnknownTupleOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { CALL, callableInstance, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import {
 	CustomSchemaImpl,
@@ -51,17 +52,16 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
-	[CALL]<T extends Schemable[]>(
+	[CALL]<T extends $$Schemable[]>(
 		...shape: T
 	): O['isReadonlyTuple'] extends true
 		? t.ReadonlyTuple<T>
 		: O['isReadonlyTuple'] extends false
 		? t.MutableTuple<T>
 		: never {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonlyTuple) return new ReadonlyTuple(shape) as never
 		else return new MutableTuple(shape) as never
 	}
@@ -69,13 +69,11 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (
 			t.isUnknownTuple(other) &&
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (t.isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 

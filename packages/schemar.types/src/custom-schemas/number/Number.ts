@@ -13,3 +13,7 @@ export interface Number extends CustomNumber<{}> {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NumberConstructor = new () => Number
+
+//
+
+export interface Integer extends CustomNumber<{ isInteger: true }> {}

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { GetOtherEdge } from './getOtherEdge'
 import { getOtherEdge } from './getOtherEdge'
@@ -13,6 +13,6 @@ describe('getOtherEdge', () => {
 
 		expect(getOtherEdge('top')).toBe('bottom')
 
-		Assert<IsIdentical<GetOtherEdge<'top'>, 'bottom'>>()
+		$Assert<IsIdentical<GetOtherEdge<'top'>, 'bottom'>>()
 	})
 })

@@ -1,32 +1,48 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-//
-
-//
-
-class BivariantNewableImpl<
-	Args extends unknown[] = unknown[],
-	Result = unknown,
-> {
-	// @ts-expect-error well...
-	bivarianceHack = class BivarianceHack extends (0 as unknown as abstract new (
-		...args: Args
-	) => Result) {
-		// eslint-disable-next-line no-useless-constructor
-		constructor(...args: Args) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			super(...args)
-		}
+/** @internal */
+class _NewableBivarianceHack<Args extends readonly unknown[]> {
+	constructor(...args: Args) {
+		void args
 	}
 }
+
+/** @internal */
+abstract class _NewableAbstractBivarianceHack<Args extends readonly unknown[]> {
+	constructor(...args: Args) {
+		void args
+	}
+}
+
+// type A = object extends {a?: 1} ? 1 : 0
+
+/** @internal */
+export type _BivariantNewable<
+	Args extends readonly unknown[],
+	Return,
+	// eslint-disable-next-line etc/no-internal
+> = typeof _NewableBivarianceHack<Args> &
+	(object extends Required<Return> ? unknown : new (...args: any) => Return)
+
+/** @internal */
+export type _BivariantAbstractNewable<
+	Args extends readonly unknown[],
+	Return,
+	// eslint-disable-next-line etc/no-internal
+> = typeof _NewableAbstractBivarianceHack<Args> &
+	(abstract new (...args: any) => Return)
 
 //
 
 export type BivariantNewable_<Func> = [Func] extends [
-	abstract new (...args: infer Args) => infer Result,
+	new (...args: infer Args) => infer Result,
 ]
-	? BivariantNewableImpl<Args, Result>['bivarianceHack']
+	? // eslint-disable-next-line etc/no-internal
+	  _BivariantNewable<Args, Result>
+	: [Func] extends [abstract new (...args: infer Args) => infer Result]
+	? // eslint-disable-next-line etc/no-internal
+	  _BivariantAbstractNewable<Args, Result>
 	: never
 
 export type BivariantNewable<Func extends abstract new (...args: any) => any> =
@@ -34,38 +50,9 @@ export type BivariantNewable<Func extends abstract new (...args: any) => any> =
 
 //
 
-export type $BivariantNewable_<Func> = Func extends abstract new (
-	...args: infer Args
-) => infer Result
-	? BivariantNewableImpl<Args, Result>['bivarianceHack']
+export type $BivariantNewable_<Func> = Func extends any
+	? BivariantNewable_<Func>
 	: never
 
 export type $BivariantNewable<Func extends abstract new (...args: any) => any> =
 	$BivariantNewable_<Func>
-
-// export type BivariantNewable_<Func> = [Func] extends [
-// 	abstract new (...args: infer Args) => infer Res,
-// ]
-// 	? { new (...args: Args): Res }
-// 	: never
-
-// abstract class BivarianceHack<Args extends unknown[], Res> {
-// 	// eslint-disable-next-line no-useless-constructor, @typescript-eslint/no-empty-function
-// 	constructor(...args: Args) {}
-// }
-
-// export type BivariantNewable<Args extends unknown[], Res> = typeof BivarianceHack<
-// 	Args,
-// 	Res
-// >
-
-// type CC = typeof C
-
-// export interface BivariantNewable<Args extends unknown[], Res> {
-// 	new (...args: Args): Res
-// }
-
-// export type BivariantNewable_<Args, Res> = BivariantNewable<
-// 	Args extends any[] ? Args : Args & unknown[],
-// 	Res
-// >

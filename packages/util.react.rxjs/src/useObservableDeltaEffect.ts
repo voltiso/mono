@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createPatch, isKeepIt } from '@voltiso/patcher'
+import { createPatch, isKeepIt } from '@voltiso/util'
 import type { DeepPartial_ } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
 import { isBehaviorSubject } from '@voltiso/util.rxjs'

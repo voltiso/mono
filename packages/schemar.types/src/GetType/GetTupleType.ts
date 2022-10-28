@@ -32,10 +32,10 @@ export type _TupleTypeImpl<
 export type TupleType_<
 	T,
 	O extends GetTypeOptions & { readonlyTuple?: never } = { kind: 'out' },
-> = InferableReadonlyTuple extends T
-	? readonly unknown[]
-	: InferableMutableTuple extends T
-	? unknown[]
+> = InferableMutableTuple extends T
+	? InferableReadonlyTuple extends T
+		? readonly unknown[]
+		: unknown[]
 	: T extends unknown[]
 	? _TupleTypeImpl<T, O & { readonlyTuple: false }>
 	: T extends readonly unknown[]

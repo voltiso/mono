@@ -1,0 +1,23 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { Override } from '~'
+
+export interface NewableOptions {
+	/** Constructor parameters */
+	parameters: unknown[]
+
+	/** Return type (instance type) */
+	return: unknown
+}
+
+export interface DefaultNewableOptions extends NewableOptions {
+	parameters: any
+}
+
+//
+
+export type GetNewableOptions<O extends Partial<NewableOptions>> = Override<
+	DefaultNewableOptions,
+	O
+>

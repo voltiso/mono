@@ -9,33 +9,47 @@ import type {
 	SCHEMA_NAME,
 } from '_'
 import { EXTENDS } from '_'
+import { $Assert } from '@voltiso/util'
 
-import type { SchemableLike, SchemaOptions, ValidationResult } from '~'
+import type {
+	$$Schemable,
+	CustomSchema,
+	SchemaOptions,
+	UnknownLiteralOptions,
+	ValidateOptions,
+	ValidationResult,
+} from '~'
 
 // export const IS_SCHEMA = Symbol('IS_SCHEMA')
 // export type IS_SCHEMA = typeof IS_SCHEMA
 
-export interface SchemaLike<T = unknown> {
-	readonly [SCHEMA_NAME]: any
-
-	readonly [OPTIONS]: any
-
-	get Type(): T
-	get OutputType(): T
-	get InputType(): T | undefined
-	get simple(): any
-	tryValidate(x: unknown): unknown
-	extends(x: unknown): boolean
+export interface $$Schema {
+	readonly [SCHEMA_NAME]: unknown
 }
 
+export interface SchemaLike<T = unknown> extends $$Schema {
+	get OutputType(): T
+	get InputType(): T | undefined
+}
+
+describe('UnknownLiteral', () => {
+	// eslint-disable-next-line etc/no-misused-generics
+	it('generic', <O extends Partial<UnknownLiteralOptions>>() => {
+		$Assert.is<ISchema<O>, ISchema>()
+
+		$Assert.is<CustomSchema<O>, ISchema>()
+	})
+})
+
 /** Every Schema is assignable to `ISchema` */
-export interface ISchema<T = unknown> extends SchemaLike<T> {
+export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
 	readonly [DEFAULT_OPTIONS]: SchemaOptions
 
-	readonly [PARTIAL_OPTIONS]: {} // Partial<SchemaOptions>
+	readonly [PARTIAL_OPTIONS]: {}
+
 	readonly [OPTIONS]: SchemaOptions & {
 		Output: T
 		Input: T | undefined
@@ -73,38 +87,38 @@ export interface ISchema<T = unknown> extends SchemaLike<T> {
 	get hasDefault(): boolean
 	get getDefault(): unknown
 
-	get optional(): any // ISchema
-	get strictOptional(): any // ISchema
+	get optional(): unknown // ISchema
+	get strictOptional(): unknown // ISchema
 
-	get readonly(): any // ISchema
-	default(value: T): any // ISchema
-	default(getValue: () => T): any // ISchema
+	get readonly(): unknown // ISchema
+	default(value: T): unknown // ISchema
+	default(getValue: () => T): unknown // ISchema
 
-	extends(other: SchemableLike): boolean
-	[EXTENDS](other: SchemaLike): boolean
+	extends(other: $$Schemable): boolean
+	[EXTENDS](other: $$Schema): boolean
 
 	check(
 		isValid: (x: any) => boolean,
 		expectedDescription?: string | ((x: any) => string),
-	): any // ISchema
+	): unknown // ISchema
 
-	fix(fixFunc: (x: any) => unknown): any // ISchema
-
-	//
+	fix(fixFunc: (x: any) => unknown): unknown // ISchema
 
 	//
 
-	Narrow(): any // ISchema
-	Widen(): any // ISchema | StaticError
-	Cast(): any // ISchema | StaticError
+	//
 
-	NarrowOutput(): any // ISchema
-	WidenOutput(): any // ISchema | StaticError
-	CastOutput(): any // ISchema | StaticError
+	Narrow(): unknown // ISchema
+	Widen(): unknown // ISchema | StaticError
+	Cast(): unknown // ISchema | StaticError
 
-	NarrowInput(): any // ISchema
-	WidenInput(): any // ISchema | StaticError
-	CastInput(): any // ISchema | StaticError
+	NarrowOutput(): unknown // ISchema
+	WidenOutput(): unknown // ISchema | StaticError
+	CastOutput(): unknown // ISchema | StaticError
+
+	NarrowInput(): unknown // ISchema
+	WidenInput(): unknown // ISchema | StaticError
+	CastInput(): unknown // ISchema | StaticError
 
 	//
 
@@ -117,7 +131,7 @@ export interface ISchema<T = unknown> extends SchemaLike<T> {
 	 * @returns Value after applying transformations (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	validate(x: unknown): unknown
+	validate(x: unknown, options?: Partial<ValidateOptions>): unknown
 
 	/**
 	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
@@ -144,9 +158,9 @@ export interface ISchema<T = unknown> extends SchemaLike<T> {
 	 */
 	isValid(x: unknown): boolean
 
-	or(other: any /* ISchema*/): any // ISchema //!
+	or(other: unknown /* ISchema*/): unknown // ISchema //!
 
-	get simple(): any // ISchema //!
+	get simple(): unknown // ISchema //!
 
 	toString(): string
 }

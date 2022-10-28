@@ -4,7 +4,7 @@
 // import { assertZod } from '~/assertZod'
 import type { InferableObject } from '@voltiso/schemar.types'
 import type { $Decrement, IsCompatible, Length } from '@voltiso/util'
-import { at, CALL, callableInstance } from '@voltiso/util'
+import { at, CALL, BoundCallable } from '@voltiso/util'
 
 import type { ApplyUnknownPathTokens, GetUnknownPathTokens } from '~/common'
 import {
@@ -13,7 +13,7 @@ import {
 	getUnknownPathTokens,
 } from '~/common'
 import type { WithDb } from '~/Db'
-import type { DocConstructorLike, DocLike, IndexedDoc } from '~/Doc'
+import type { $$DocConstructor, $$Doc, IndexedDoc } from '~/Doc'
 import { WeakDocRef } from '~/DocRef/WeakDocRef'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
@@ -37,7 +37,7 @@ export type _ConsumeTokens<
 
 export interface CollectionRefPattern<
 	Pattern extends string = string,
-	Doc extends DocLike = IndexedDoc,
+	Doc extends $$Doc = IndexedDoc,
 > {
 	// [CALL]
 	<Tokens extends string[]>(...tokens: Tokens): IsCompatible<
@@ -55,7 +55,7 @@ export interface CollectionRefPattern<
 
 export class CollectionRefPattern<
 	Pattern extends string = string,
-	Doc extends DocLike = IndexedDoc,
+	Doc extends $$Doc = IndexedDoc,
 > {
 	/** Type-only */
 	declare Doc: Doc
@@ -70,7 +70,7 @@ export class CollectionRefPattern<
 		this.patternUnknownTokens = getUnknownPathTokens(pattern)
 
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	[CALL]<Tokens extends string[]>(...tokens: Tokens): never {
@@ -86,7 +86,7 @@ export class CollectionRefPattern<
 	}
 
 	/** Register Doc class/type for these Collections */
-	register<Cls extends DocConstructorLike>(cls: Cls): this {
+	register<Cls extends $$DocConstructor>(cls: Cls): this {
 		const { db } = this.context
 		const docPattern = db.docPattern(this.pattern, '*')
 

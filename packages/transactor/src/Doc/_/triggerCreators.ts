@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/util'
+import { $AssumeType, assert } from '@voltiso/util'
 import chalk from 'chalk'
 
-import type { Doc, DocLike } from '~/Doc'
+import type { Doc, $$Doc } from '~/Doc'
 import type { DocDerivedData } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 import type {
@@ -16,14 +16,14 @@ import { dump } from '~/util'
 
 import type { GI } from './GDoc'
 
-function assertBefore<D extends DocLike>(
+function assertBefore<D extends $$Doc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, true, boolean> {
 	// assumeType<AfterTriggerParams<D>>(x)
 	assert(x.before)
 }
 
-function assertNotBefore<D extends DocLike>(
+function assertNotBefore<D extends $$Doc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, false, boolean> {
 	// assumeType<AfterTriggerParams<D>>(x)
@@ -32,7 +32,7 @@ function assertNotBefore<D extends DocLike>(
 
 //
 
-function assertAfter<D extends DocLike>(
+function assertAfter<D extends $$Doc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, boolean, true> {
 	// assumeType<AfterTriggerParams<D>>(x)
@@ -40,7 +40,7 @@ function assertAfter<D extends DocLike>(
 	assert(x.after)
 }
 
-function assertNotAfter<D extends DocLike>(
+function assertNotAfter<D extends $$Doc>(
 	x: AfterTriggerParams<D>,
 ): asserts x is AfterTriggerParams<D, boolean, false> {
 	// assumeType<AfterTriggerParams<D>>(x)
@@ -48,13 +48,13 @@ function assertNotAfter<D extends DocLike>(
 	assert(!x.after)
 }
 
-function logTrigger<D extends DocLike>(
+function logTrigger<D extends $$Doc>(
 	name: string,
 	when: 'before' | 'after' | 'on',
 	event: string,
 	params: AfterTriggerParams<D>,
 ): void {
-	assumeType<AfterTriggerParams<D>>(params)
+	$AssumeType<AfterTriggerParams<D>>(params)
 	if (!params.transactor._options.log) return
 
 	// eslint-disable-next-line no-console
@@ -76,6 +76,7 @@ export function withAfter<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
 	f: AfterTrigger<GI<TI>>,
+	// f: TI extends any ? GI<TI> extends any ? AfterTrigger<GI<TI>> : never : never,
 ): TI {
 	return {
 		..._,
@@ -100,7 +101,10 @@ export function withAfterUpdate<TI extends DocDerivedData>(
 
 		afters: [
 			..._.afters,
-			function (this: (TI extends any ? GI<TI> : never) | null, params: AfterTriggerParams<GI<TI>>) {
+			function (
+				this: (TI extends any ? GI<TI> : never) | null,
+				params: AfterTriggerParams<GI<TI>>,
+			) {
 				if (params.before && this) {
 					logTrigger(name, 'after', 'UPDATE', params)
 					assertBefore(params)

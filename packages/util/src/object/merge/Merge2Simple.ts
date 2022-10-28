@@ -3,7 +3,7 @@
 
 import type { _, OmitSignatures, OmitSimple_ } from '~'
 
-import type { SuggestObject } from './SuggestObject'
+import type { SuggestObject } from './Suggest'
 
 /** Discards index signatures */
 /** @inline */ export type Merge2Simple_<A, B> = Impl<

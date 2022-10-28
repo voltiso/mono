@@ -7,7 +7,7 @@ export function shouldStripModule(
 	ctx: StripTransformContext,
 	moduleToStrip: string,
 ): boolean {
-	for (const moduleName of ctx.pluginOptions.modules || [])
+	for (const moduleName of ctx.options.modules || [])
 		if (moduleToStrip.startsWith(moduleName)) return true
 
 	return false

@@ -2,19 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
+	$$Schemable,
+	CustomSchema,
 	Schema,
 	Schemable,
-	SchemableLike,
 	SchemaOptions,
 	SimpleSchema,
 	Unknown,
 	UnknownSchema,
 } from '~'
-
-import type { CustomSchema } from '.'
 
 const schema = (() => {}) as unknown as UnknownSchema
 const unknown = 0 as unknown as Unknown
@@ -23,9 +22,9 @@ describe('CustomSchema', () => {
 	it('generic', <O extends Partial<SchemaOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<CustomSchema<O>, Schema>()
-		Assert.is<CustomSchema<O>, Schemable>()
-		Assert.is<CustomSchema<O>, SchemableLike>()
+		$Assert.is<CustomSchema<O>, Schema>()
+		$Assert.is<CustomSchema<O>, Schemable>()
+		$Assert.is<CustomSchema<O>, $$Schemable>()
 	})
 
 	it('type', () => {
@@ -34,11 +33,11 @@ describe('CustomSchema', () => {
 		type MySchema = SimpleSchema<Date>
 
 		type X = MySchema['isReadonly']
-		Assert<IsIdentical<X, false>>()
+		$Assert<IsIdentical<X, false>>()
 
 		type A = MySchema['optional']
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				CustomSchema<{
@@ -50,10 +49,10 @@ describe('CustomSchema', () => {
 		>()
 
 		type AA = A['OutputType']
-		Assert<IsIdentical<AA, Date>>()
+		$Assert<IsIdentical<AA, Date>>()
 
 		type BB = A['isReadonly']
-		Assert<IsIdentical<BB, false>>()
+		$Assert<IsIdentical<BB, false>>()
 	})
 
 	it('type - inside object', () => {
@@ -66,7 +65,7 @@ describe('CustomSchema', () => {
 		})
 		type MySchema = typeof mySchema.OutputType
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				MySchema,
 				{

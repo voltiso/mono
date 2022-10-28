@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ITuple, Schemable } from '@voltiso/schemar.types'
+import { $assert } from '@voltiso/util'
 
 import { schema } from '~'
 

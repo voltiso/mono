@@ -3,15 +3,15 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
 
-import type { ISchema, SchemaLike } from '~/Schema'
+import type { $$Schema, ISchema } from '~/Schema'
 
 import type { DefaultNeverOptions, NeverOptions } from './NeverOptions'
 
-export interface NeverLike extends SchemaLike<never> {
+export interface $$Never extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Never'
 }
 
-export interface INever extends ISchema<never> {
+export interface INever extends $$Never, ISchema<never> {
 	readonly [SCHEMA_NAME]: 'Never'
 
 	readonly [BASE_OPTIONS]: NeverOptions

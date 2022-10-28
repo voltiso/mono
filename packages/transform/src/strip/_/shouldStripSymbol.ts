@@ -9,7 +9,7 @@ export function shouldStripSymbol(
 	ctx: StripTransformContext,
 	symbol: ts.Symbol,
 ): boolean {
-	for (const symbolToStrip of ctx.pluginOptions.symbols || [])
+	for (const symbolToStrip of ctx.options.symbols || [])
 		if (symbolToStrip === symbol.name) return true
 
 	const tags = symbol.getJsDocTags()

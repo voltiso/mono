@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '~'
 import { getEntries, merge } from '~/object'
 
 import { stringFrom } from './stringFrom'
@@ -28,7 +27,7 @@ export function stringFromObject_(
 ) {
 	let name: string | undefined = obj.constructor.name
 
-	if (name === 'Object') name = undef
+	if (name === 'Object') name = undefined
 
 	const entries = getEntries(obj, options)
 

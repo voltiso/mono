@@ -4,21 +4,22 @@
 /* eslint-disable class-methods-use-this */
 
 import type {
+	$$Schemable,
 	BASE_OPTIONS,
 	CustomFix,
 	CustomSchema,
 	DEFAULT_OPTIONS,
 	DefaultSchemaOptions,
-	MergeSchemaOptions,
 	PARTIAL_OPTIONS,
 	Schemable,
-	SchemableLike,
 	SchemaLike,
 	SchemaOptions,
+	ValidateOptions,
 	ValidationIssue,
 	ValidationResult,
 } from '@voltiso/schemar.types'
 import {
+	defaultValidateOptions,
 	EXTENDS,
 	isAny,
 	isUnion,
@@ -27,7 +28,7 @@ import {
 	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import type { AtLeast1, Merge2 } from '@voltiso/util'
+import type { Override, AtLeast1, Merge2 } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
 import { union } from '~/custom-schemas/union'
@@ -49,12 +50,10 @@ export interface CustomSchemaImpl<O> {
 	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
 }
 
-export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
+export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>
 {
-	[OPTIONS]: O extends any
-		? MergeSchemaOptions<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
-		: never
+	[OPTIONS]: Override<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
 
 	/** Type-only property (no value at runtime) */
 	get Type(): this[OPTIONS]['Output'] {
@@ -165,10 +164,14 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return x as never
 	}
 
-	tryValidate<X>(x: X): X | this[OPTIONS]['Output'] {
+	tryValidate<X>(
+		x: X,
+		// options?: Partial<ValidateOptions> | undefined,
+	): X | this[OPTIONS]['Output'] {
+		// const { fix } = { ...defaultValidateOptions, ...options }
+
 		let result = x
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (typeof result === 'undefined' && this.hasDefault)
 			result = this.getDefault as never
 
@@ -188,30 +191,36 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		]
 	}
 
-	exec(x: unknown): ValidationResult<this[OPTIONS]['Output']> {
-		const value = this.tryValidate(x) as never
+	exec(
+		value: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): ValidationResult<this[OPTIONS]['Output']> {
+		const { fix } = { ...defaultValidateOptions, ...options }
 
-		const issues = this.getIssues(value)
+		const finalValue = fix
+			? (this.tryValidate(value) as never)
+			: (value as never)
+
+		const issues = this.getIssues(finalValue)
 
 		if (issues.length === 0)
 			return {
 				isValid: true,
-				value,
+				value: finalValue,
 				issues: [],
 			}
 		else
 			return {
 				isValid: false,
-				value,
+				value: finalValue,
 				issues: issues as AtLeast1<ValidationIssue>,
 			}
 	}
 
-	validate(x: unknown): never {
-		const r = this.exec(x)
-
-		if (r.isValid) return r.value as never
-		else throw new ValidationError(r.issues)
+	validate(x: unknown, options?: Partial<ValidateOptions> | undefined): never {
+		const r = this.exec(x, options)
+		if (!r.isValid) throw new ValidationError(r.issues)
+		return r.value as never
 	}
 
 	isFixable(x: unknown): x is this[OPTIONS]['Input'] {
@@ -238,10 +247,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	extends(other: Schemable): boolean {
 		const otherType = schema(other)
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isOptional && !otherType.isOptional) return false
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.isReadonly && !otherType.isReadonly) return false
 
 		// eslint-disable-next-line security/detect-object-injection
@@ -254,18 +261,14 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	toString(): string {
 		const prefix =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				this.isReadonly
+				: this.isReadonly
 				? 'readonly:'
-				: // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				this.isOptional
+				: this.isOptional
 				? '?'
 				: ''
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const suffix = this.hasDefault ? `=${stringFrom(this.getDefault)}` : ''
 
 		return `${prefix}${this._toString()}${suffix}`
@@ -322,7 +325,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			}) as never
 	}
 
-	or<Other extends SchemableLike>(other: Other): never {
+	or<Other extends $$Schemable>(other: Other): never {
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
 		return union(this as never, other) as never
 	}
@@ -340,6 +343,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	Cast(): never {
+		return this as never
+	}
+
+	$Cast(): never {
 		return this as never
 	}
 

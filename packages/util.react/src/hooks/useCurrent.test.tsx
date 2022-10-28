@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jest/no-commented-out-tests */
 import { render } from '@testing-library/react'
 import type { FC } from 'react'
 
@@ -25,23 +24,4 @@ describe('useCurrent', () => {
 
 		expect(lastVal).toBe(prevVal)
 	})
-
-	// it('seals', () => {
-	// 	expect.hasAssertions()
-
-	// 	let lastVal: { a?: number } = {}
-
-	// 	const C: FC<{ a: number }> = p => {
-	// 		lastVal = useCurrent({ a: p.a })
-	// 		return null
-	// 	}
-
-	// 	const r = render(<C a={1} />)
-
-	// 	lastVal.a = 2
-
-	// 	r.rerender(<C a={3} />)
-
-	// 	expect(lastVal).toStrictEqual({ a: 3 })
-	// })
 })

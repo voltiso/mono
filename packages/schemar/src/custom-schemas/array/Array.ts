@@ -8,8 +8,8 @@ import { MutableArrayImpl, ReadonlyArrayImpl, unknown } from '~'
 
 //
 
-export type ReadonlyArray<S extends t.SchemableLike> = t.ReadonlyArray<S>
-export type MutableArray<S extends t.SchemableLike> = t.MutableArray<S>
+export type ReadonlyArray<S extends t.$$Schemable> = t.ReadonlyArray<S>
+export type MutableArray<S extends t.$$Schemable> = t.MutableArray<S>
 
 export const ReadonlyArray = lazyConstructor(
 	() => ReadonlyArrayImpl,
@@ -21,11 +21,11 @@ export const MutableArray = lazyConstructor(
 
 //
 
-export type ReadonlyArrayConstructor = new <T extends t.SchemableLike>(
+export type ReadonlyArrayConstructor = new <T extends t.$$Schemable>(
 	elementType: T,
 ) => t.ReadonlyArray<T>
 
-export type MutableArrayConstructor = new <T extends t.SchemableLike>(
+export type MutableArrayConstructor = new <T extends t.$$Schemable>(
 	elementType: T,
 ) => t.MutableArray<T>
 

@@ -6,7 +6,7 @@
 import '@testing-library/jest-dom'
 
 import { act, render, screen } from '@testing-library/react'
-import { CALL, callableInstance, undef } from '@voltiso/util'
+import { CALL, BoundCallable, undef } from '@voltiso/util'
 import type { FC } from 'react'
 
 import type { StatePatcher } from './useStatePatcher'
@@ -85,12 +85,12 @@ describe('useStatePatcher', () => {
 		expect(c).toHaveTextContent('setter')
 	})
 
-	it('callableInstance works', () => {
+	it('BoundCallable works', () => {
 		expect.hasAssertions()
 
 		class C {
 			constructor() {
-				return callableInstance(this)
+				return BoundCallable(this)
 			}
 
 			[CALL]() {
@@ -103,8 +103,8 @@ describe('useStatePatcher', () => {
 		expect({ ...c }).toStrictEqual({})
 
 		/**
-		 * Does not work if the arrow function inside `callableInstance`
-		 * implementation is transpiled into a regular `function(){}`
+		 * Does not work if the arrow function inside `BoundCallable` implementation
+		 * is transpiled into a regular `function(){}`
 		 */
 		// expect(Reflect.ownKeys(c)).toStrictEqual([])
 	})

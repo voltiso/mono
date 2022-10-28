@@ -9,10 +9,10 @@ import type {
 	PartialOrUndefined_,
 } from '@voltiso/util'
 
-import type { InferableObjectLike, ObjectLike } from '~'
+import type { $$InferableObject, $$Object } from '~'
 import type { InputType_, OutputType_, Type } from '~/GetType'
 import type { CustomSchema, SimpleSchema } from '~/Schema'
-import type { GetDeepShape_, SchemableLike } from '~/Schemable'
+import type { $$Schemable, GetDeepShape_ } from '~/Schemable'
 import type { DefineSchema } from '~/SchemaOptions'
 
 import type {
@@ -22,12 +22,9 @@ import type {
 import type { DefaultObjectOptions, ObjectOptions } from './ObjectOptions'
 import type { PartialShape_, StrictPartialShape_ } from './PartialShape'
 
-export type $CustomObject<O extends Partial<ObjectOptions>> = O extends any
-	? CustomObject<O>
-	: never
-
 export interface CustomObject<O extends Partial<ObjectOptions>>
-	extends CustomSchema<O> {
+	extends $$Object,
+		CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Object'
 
 	readonly [BASE_OPTIONS]: ObjectOptions
@@ -42,7 +39,9 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	//
 
-	and<F extends InferableObjectLike | ObjectLike>(
+	get plain(): CustomObject.WithPlain<this>
+
+	and<F extends $$InferableObject | $$Object>(
 		additionalFields: F,
 	): CustomObject.WithAnd<this, F>
 
@@ -52,12 +51,12 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 	get deepPartial(): CustomObject.WithDeepPartial<this>
 	get deepStrictPartial(): CustomObject.WithDeepStrictPartial<this>
 
-	index<TKeySchema extends SchemableLike, TValueSchema extends SchemableLike>(
+	index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(
 		keySchema: TKeySchema,
 		valueSchema: TValueSchema,
 	): CustomObject.WithIndex<this, TKeySchema, TValueSchema>
 
-	index<TValueSchema extends SchemableLike>(
+	index<TValueSchema extends $$Schemable>(
 		valueSchema: TValueSchema,
 	): CustomObject.WithIndex<this, SimpleSchema<keyof any>, TValueSchema>
 }
@@ -66,34 +65,37 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomObject {
-	/** @internal */
-	export type _ObjectLike = {
-		[OPTIONS]: { shape: any; Output: any; Input: any }
+	export type WithPlain<This extends $$Object> = This extends any
+		? DefineSchema<This, { isPlain: true }>
+		: never
+
+	export type WithAnd<This extends $$Object, Other> = This extends {
+		[OPTIONS]: ObjectOptions
 	}
-
-	//
-
-	// eslint-disable-next-line etc/no-internal
-	export type WithAnd<This, Other> = This extends _ObjectLike
-		? DefineSchema<
-				This,
-				{
-					shape: _<
-						This[OPTIONS]['shape'] &
-							(Other extends ObjectLike ? Other['getShape'] : Other)
-					>
-					Output: _<This[OPTIONS]['Output'] & OutputType_<Other>>
-					Input: _<This[OPTIONS]['Input'] & InputType_<Other>>
-				}
-		  >
+		? Other extends undefined
+			? This
+			: // : IObject extends This
+			  // ? Other
+			  DefineSchema<
+					This,
+					{
+						shape: _<
+							This[OPTIONS]['shape'] &
+								(Other extends $$Object & { getShape: {} }
+									? Other['getShape']
+									: Other)
+						>
+						Output: _<This[OPTIONS]['Output'] & OutputType_<Other>>
+						Input: _<This[OPTIONS]['Input'] & InputType_<Other>>
+					}
+			  >
 		: never
 
 	export type WithIndex<
-		This,
-		TKeySchema extends SchemableLike,
-		TValueSchema extends SchemableLike,
-	// eslint-disable-next-line etc/no-internal
-	> = This extends _ObjectLike
+		This extends $$Object,
+		TKeySchema extends $$Schemable,
+		TValueSchema extends $$Schemable,
+	> = This extends { [OPTIONS]: ObjectOptions }
 		? DefineSchema<
 				This,
 				{
@@ -111,8 +113,9 @@ export namespace CustomObject {
 		  >
 		: never
 
-	// eslint-disable-next-line etc/no-internal
-	export type WithPartial<This> = This extends _ObjectLike
+	export type WithPartial<This extends $$Object> = This extends {
+		[OPTIONS]: ObjectOptions
+	}
 		? DefineSchema<
 				This,
 				{
@@ -123,8 +126,9 @@ export namespace CustomObject {
 		  >
 		: never
 
-	// eslint-disable-next-line etc/no-internal
-	export type WithStrictPartial<This> = This extends _ObjectLike
+	export type WithStrictPartial<This extends $$Object> = This extends {
+		[OPTIONS]: ObjectOptions
+	}
 		? DefineSchema<
 				This,
 				{
@@ -137,8 +141,9 @@ export namespace CustomObject {
 
 	//
 
-	// eslint-disable-next-line etc/no-internal
-	export type WithDeepPartial<This> = This extends _ObjectLike
+	export type WithDeepPartial<This extends $$Object> = This extends {
+		[OPTIONS]: ObjectOptions
+	}
 		? DefineSchema<
 				This,
 				{
@@ -149,8 +154,9 @@ export namespace CustomObject {
 		  >
 		: never
 
-	// eslint-disable-next-line etc/no-internal
-	export type WithDeepStrictPartial<This> = This extends _ObjectLike
+	export type WithDeepStrictPartial<This extends $$Object> = This extends {
+		[OPTIONS]: ObjectOptions
+	}
 		? DefineSchema<
 				This,
 				{

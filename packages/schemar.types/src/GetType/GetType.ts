@@ -1,40 +1,76 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { $$Schema, $$Schemable, GetTypeOptions, ImplicitObjectType_, TupleType_ } from '~'
 import type {
-	InferableLike,
+	$$Inferable,
+	$$InferableObject,
+	$$InferableTuple,
 	InferableLiteral,
 	InferableObject,
-	InferableTuple,
 } from '~/Inferable'
-import type { SchemaLike } from '~/Schema'
 
-import type { ImplicitObjectType_ } from './GetObjectType'
-import type { TupleType_ } from './GetTupleType'
-import type { GetTypeOptions } from './GetTypeOptions'
+//
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Type {
+	export type SplitInferables<
+		S extends $$Schemable,
+		IO extends GetTypeOptions,
+	> = S extends $$Schema
+		? HandleSchemas<S, IO>
+		: S extends $$Inferable
+		? HandleInferables<S, IO>
+		: never
+
+	// export type SplitInferables<S, IO extends GetTypeOptions> = S extends any
+	// 	?
+	// 			| HandleSchemas<Extract<S, $$Schema>, IO>
+	// 			| HandleInferables<Exclude<S, $$Schema>, IO>
+	// 	: never
+
+	export type HandleSchemas<
+		S extends $$Schema,
+		IO extends GetTypeOptions,
+	> = S extends { readonly OutputType: unknown; readonly InputType: unknown }
+		? IO['kind'] extends 'in'
+			? S['InputType']
+			: IO['kind'] extends 'out'
+			? S['OutputType']
+			: never
+		: unknown
+
+	export type HandleInferables<
+		I extends $$Inferable,
+		IO extends GetTypeOptions,
+	> = I extends InferableLiteral
+		? I
+		: I extends $$InferableTuple
+		? TupleType_<I, IO>
+		: I extends $$InferableObject
+		? InferableObject extends I
+			? object
+			: ImplicitObjectType_<I, IO>
+		: object extends I
+		? object
+		: never
+}
+
+//
+
+//
+
+//
 
 /**
  * Infer type, or identity if already an Inferable
  *
  * @inline
  */
-export type Type_<L, IO extends GetTypeOptions = { kind: 'out' }> = L extends {
-	readonly InputType: any
-	readonly OutputType: any
-}
-	? IO['kind'] extends 'in'
-		? L['InputType']
-		: IO['kind'] extends 'out'
-		? L['OutputType']
-		: never
-	: L extends InferableLiteral
-	? L
-	: L extends InferableTuple
-	? TupleType_<L, IO>
-	: L extends InferableObject
-	? ImplicitObjectType_<L, IO>
-	: object extends L
-	? object
+export type Type_<S, IO extends GetTypeOptions = { kind: 'out' }> = [
+	S,
+] extends [$$Schemable]
+	? Type<S, IO>
 	: never
 
 /**
@@ -43,9 +79,9 @@ export type Type_<L, IO extends GetTypeOptions = { kind: 'out' }> = L extends {
  * @inline
  */
 export type Type<
-	S extends SchemaLike | InferableLike,
+	S extends $$Schemable,
 	Options extends GetTypeOptions = { kind: 'out' },
-> = Type_<S, Options>
+> = Type.SplitInferables<S, Options>
 
 /**
  * Infer type, or identity if already an Inferable
@@ -63,7 +99,7 @@ export type $Type_<
  * @inline
  */
 export type $Type<
-	S extends SchemaLike | InferableLike,
+	S extends $$Schema | $$Inferable,
 	Options extends GetTypeOptions = { kind: 'out' },
 > = S extends any ? Type_<S, Options> : never
 
@@ -72,7 +108,7 @@ export type $Type<
  *
  * @inline
  */
-export type OutputType<S extends SchemaLike | InferableLike> = Type_<
+export type OutputType<S extends $$Schema | $$Inferable> = Type_<
 	S,
 	{ kind: 'out' }
 >
@@ -89,7 +125,7 @@ export type OutputType_<S> = Type_<S, { kind: 'out' }>
  *
  * @inline
  */
-export type $OutputType<S extends SchemaLike | InferableLike> = S extends any
+export type $OutputType<S extends $$Schema | $$Inferable> = S extends any
 	? OutputType_<S>
 	: never
 
@@ -105,7 +141,7 @@ export type $OutputType_<S> = S extends any ? OutputType_<S> : never
  *
  * @inline
  */
-export type InputType<S extends SchemaLike | InferableLike> = Type_<
+export type InputType<S extends $$Schema | $$Inferable> = Type_<
 	S,
 	{ kind: 'in' }
 >
@@ -122,7 +158,7 @@ export type InputType_<S> = Type_<S, { kind: 'in' }>
  *
  * @inline
  */
-export type $InputType<S extends SchemaLike | InferableLike> = S extends any
+export type $InputType<S extends $$Schema | $$Inferable> = S extends any
 	? InputType_<S>
 	: never
 

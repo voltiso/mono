@@ -18,7 +18,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________DEV": "__________",
-    "dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+    "dev": "v dev",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",

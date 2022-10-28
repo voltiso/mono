@@ -1,3 +1,6 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type * as ts from 'typescript'
 
 export function getFirstChildOrSelf(node: ts.Node): ts.Node {

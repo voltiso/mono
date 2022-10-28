@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
 import type { ComponentProps } from 'react'
 
@@ -48,7 +48,7 @@ describe('newCssProps', () => {
 		renderApp(<Button red />)
 
 		type Red = ComponentProps<typeof Button>['red']
-		Assert<IsIdentical<Red, boolean | undefined>>()
+		$Assert<IsIdentical<Red, boolean | undefined>>()
 
 		const button = screen.getByRole('button')
 
@@ -65,7 +65,7 @@ describe('newCssProps', () => {
 		renderApp(<Button red={false} />)
 
 		type Red = ComponentProps<typeof Button>['red']
-		Assert<IsIdentical<Red, boolean | undefined>>()
+		$Assert<IsIdentical<Red, boolean | undefined>>()
 
 		const button = screen.getByRole('button')
 
@@ -132,10 +132,10 @@ describe('newCssProps', () => {
 		)
 
 		type Red = ComponentProps<typeof Button>['red']
-		Assert<IsIdentical<Red, boolean | undefined>>()
+		$Assert<IsIdentical<Red, boolean | undefined>>()
 
 		type F = ComponentProps<typeof Button>['f']
-		Assert<IsIdentical<F, boolean | undefined>>()
+		$Assert<IsIdentical<F, boolean | undefined>>()
 
 		const button = screen.getByRole('button')
 
@@ -166,10 +166,10 @@ describe('newCssProps', () => {
 		)
 
 		type Red = ComponentProps<typeof Button>['red']
-		Assert<IsIdentical<Red, boolean | undefined>>()
+		$Assert<IsIdentical<Red, boolean | undefined>>()
 
 		type F = ComponentProps<typeof Button>['f']
-		Assert<IsIdentical<F, boolean | undefined>>()
+		$Assert<IsIdentical<F, boolean | undefined>>()
 
 		const button = screen.getByRole('button')
 

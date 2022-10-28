@@ -10,7 +10,7 @@ import type {
 	SchemaLike,
 } from '@voltiso/schemar.types'
 import type { OmitCall } from '@voltiso/util'
-import { callableClass, staticImplements } from '@voltiso/util'
+import { CallableConstructor, staticImplements } from '@voltiso/util'
 
 import type { IAggregatorHandlers } from '~/Aggregator'
 import { aggregate } from '~/Aggregator'
@@ -26,7 +26,7 @@ import {
 	withAfterUpdate,
 	withBeforeCommit,
 } from '~/Doc/_/triggerCreators'
-import type { DocTI, DocTILike } from '~/Doc/DocTI'
+import type { DocTI, $$DocTI } from '~/Doc/DocTI'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
@@ -70,33 +70,35 @@ export class DocConstructorImpl {
 	static _: DocDerivedData = defaultDocDerivedData
 
 	static tag<Tag extends DocTag>(tag: Tag): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = { ...super._, tag }
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	//
 
 	static id<S extends ISchema<string>>(schema: S): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
 					id: schema,
 				}
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	static publicOnCreation<F extends Record<string, Schemable> | ObjectLike>(
 		schema: F,
 	): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
 
@@ -106,34 +108,37 @@ export class DocConstructorImpl {
 					// publicOnCreation: { ...super._.publicOnCreation, ...shape },
 				}
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	static public<F extends Record<string, Schemable>>(schema: F): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
 					public: (super._.public as IObject).and(schema) as never,
 					// public: { ...super._.public, ...schema },
 				}
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	static private<F extends Record<string, Schemable>>(schema: F): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _ = {
 					...super._,
 					private: (super._.private as IObject).and(schema) as never,
 					// private: { ...super._.private, ...schema },
 				} as never
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	static with(plugin: DocBuilderPlugin<any>) {
@@ -157,8 +162,8 @@ export class DocConstructorImpl {
 	//
 
 	static fields<F extends NewFieldsLike>(f: F): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _ = {
 					...super._,
 
@@ -186,8 +191,9 @@ export class DocConstructorImpl {
 					suppressMissingSchemaError: true,
 				} as never
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	// static get schemableWithoutId(): InferableObjectLike {
@@ -232,137 +238,143 @@ export class DocConstructorImpl {
 	// static after(trigger: Trigger<Doc>): void
 	// static after(name: string, trigger: Trigger<Doc>): void
 
-	static after<TI extends DocDerivedData & DocTILike>(
+	static after<TI extends DocDerivedData & $$DocTI>(
 		...args: [AfterTrigger<GI<TI>>] | [string, AfterTrigger<GI<TI>>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = withAfter(
 					super._ as unknown as TI,
 					name,
 					f as never,
 				)
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	// static afterUpdate(trigger: Trigger<Doc, Doc>): void
 	// static afterUpdate(name: string, trigger: Trigger<Doc, Doc>): void
 
-	static afterUpdate<TI extends DocDerivedData & DocTILike>(
+	static afterUpdate<TI extends DocDerivedData & $$DocTI>(
 		...args:
 			| [AfterTrigger<GI<TI>, true, true>]
 			| [string, AfterTrigger<GI<TI>, true, true>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = withAfterUpdate<TI>(
 					super._ as unknown as TI,
 					name,
 					f as never,
 				)
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	// static afterCreateOrUpdate(trigger: Trigger<Doc, Doc>): void
 	// static afterCreateOrUpdate(name: string, trigger: Trigger<Doc, Doc>): void
 
-	static afterCreateOrUpdate<TI extends DocDerivedData & DocTILike>(
+	static afterCreateOrUpdate<TI extends DocDerivedData & $$DocTI>(
 		...args:
 			| [AfterTrigger<GI<TI>, boolean, true>]
 			| [string, AfterTrigger<GI<TI>, boolean, true>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = withAfterCreateOrUpdate(
 					super._ as unknown as TI,
 					name,
 					f as never,
 				)
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	// static afterCreate(trigger: Trigger<Doc, Doc, false, true>): void
 	// static afterCreate(name: string, trigger: Trigger<Doc, Doc, false, true>): void
 
-	static afterCreate<TI extends DocDerivedData & DocTILike>(
+	static afterCreate<TI extends DocDerivedData & $$DocTI>(
 		...args:
 			| [AfterTrigger<GI<TI>, false, true>]
 			| [string, AfterTrigger<GI<TI>, false, true>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = withAfterCreate(
 					super._ as unknown as TI,
 					name,
 					f as never,
 				)
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	// static afterDelete(trigger: Trigger<Doc, null>): void
 	// static afterDelete(name: string, trigger: Trigger<Doc, null>): void
 
-	static afterDelete<TI extends DocDerivedData & DocTILike>(
+	static afterDelete<TI extends DocDerivedData & $$DocTI>(
 		...args:
 			| [AfterTrigger<GI<TI>, true, false>]
 			| [string, AfterTrigger<GI<TI>, true, false>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = withAfterDelete(
 					super._ as unknown as TI,
 					name,
 					f as never,
 				)
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	// static beforeCommit(trigger: BeforeCommitTrigger<Doc>): void
 	// static beforeCommit(name: string, trigger: BeforeCommitTrigger<Doc>): void
 
-	static beforeCommit<TI extends DocDerivedData & DocTILike>(
+	static beforeCommit<TI extends DocDerivedData & $$DocTI>(
 		...args:
 			| [BeforeCommitTrigger<GI<TI>>]
 			| [string, BeforeCommitTrigger<GI<TI>>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = withBeforeCommit(
 					super._ as unknown as TI,
 					name,
 					f as never,
 				)
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 
 	static method<N extends string, M extends Method>(name: N, m: M): any {
-		return callableClass(
-			class extends this {
+		return CallableConstructor({
+			constructor: class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
 
@@ -372,7 +384,8 @@ export class DocConstructorImpl {
 					},
 				}
 			},
-			DocCall,
-		)
+
+			call: DocCall,
+		})
 	}
 }

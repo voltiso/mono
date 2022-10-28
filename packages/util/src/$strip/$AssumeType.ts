@@ -23,7 +23,7 @@
  * ```
  *
  * @param _x - Variable to narrow type of
- * @strip
+ * @strip Use `@voltiso/transform/strip` to strip from production code
  */
 export function $AssumeType<T extends Supertype, Supertype = unknown>(
 	_x: Supertype,

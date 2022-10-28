@@ -3,8 +3,8 @@
 
 import type { DEFAULT_OPTIONS, OPTIONS, PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
 
-import type { CustomSchema } from '~/Schema'
-import type { DefineSchema } from '~/SchemaOptions'
+import type { DefineSchema } from '~'
+import type { $$Schema, CustomSchema } from '~/Schema'
 
 import type {
 	DefaultUnknownTupleOptions,
@@ -24,35 +24,53 @@ export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 
 	//
 
-	get readonlyTuple(): MakeReadonlyTuple<this>
+	get readonlyTuple(): CustomUnknownTuple.ReadonlyTuple<this>
 
 	//
 
-	minLength<Min extends number>(minLength: Min): MinLength<this, Min>
-	maxLength<Max extends number>(maxLength: Max): MaxLength<this, Max>
+	minLength<Min extends number>(
+		minLength: Min,
+	): CustomUnknownTuple.MinLength<this, Min>
+
+	maxLength<Max extends number>(
+		maxLength: Max,
+	): CustomUnknownTuple.MaxLength<this, Max>
 
 	lengthRange<Min extends number, Max extends number>(
 		minLength: Min,
 		maxLength: Max,
-	): LengthRange<this, Min, Max>
+	): CustomUnknownTuple.LengthRange<this, Min, Max>
 
 	length<ExactLength extends number>(
 		exactLength: ExactLength,
-	): Length<this, ExactLength>
+	): CustomUnknownTuple.Length<this, ExactLength>
 }
 
-type MakeReadonlyTuple<S> = DefineSchema<S, { isReadonlyTuple: true }>
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace CustomUnknownTuple {
+	export type ReadonlyTuple<S extends $$Schema> = DefineSchema<
+		S,
+		{ isReadonlyTuple: true }
+	>
 
-type MinLength<S, Min extends number> = DefineSchema<S, { minLength: Min }>
+	export type MinLength<S extends $$Schema, Min extends number> = DefineSchema<
+		S,
+		{ minLength: Min }
+	>
 
-type MaxLength<S, Max extends number> = DefineSchema<S, { maxLength: Max }>
+	export type MaxLength<S extends $$Schema, Max extends number> = DefineSchema<
+		S,
+		{ maxLength: Max }
+	>
 
-type LengthRange<S, Min extends number, Max extends number> = DefineSchema<
-	S,
-	{ minLength: Min; maxLength: Max }
->
+	export type LengthRange<
+		S extends $$Schema,
+		Min extends number,
+		Max extends number,
+	> = DefineSchema<S, { minLength: Min; maxLength: Max }>
 
-type Length<S, Length extends number> = DefineSchema<
-	S,
-	{ minLength: Length; maxLength: Length }
->
+	export type Length<S extends $$Schema, Length extends number> = DefineSchema<
+		S,
+		{ minLength: Length; maxLength: Length }
+	>
+}

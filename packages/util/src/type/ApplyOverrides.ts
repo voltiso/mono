@@ -5,7 +5,11 @@ import type { Merge2Reverse_ } from '~/object'
 
 import type { AlsoAccept } from './AlsoAccept'
 
-export type ApplyOverrides<
-	Base,
+export type Override<
+	Base extends object,
 	Overrides extends Partial<Base> | AlsoAccept<unknown>,
-> = Merge2Reverse_<Overrides, Base>
+> = Base extends any
+	? Overrides extends any
+		? Merge2Reverse_<Required<Overrides>, Base>
+		: never
+	: never

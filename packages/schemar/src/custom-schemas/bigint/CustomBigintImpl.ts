@@ -2,21 +2,17 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	BASE_OPTIONS,
 	BigintOptions,
 	CustomBigint,
+	DEFAULT_OPTIONS,
 	DefaultBigintOptions,
 	ISchema,
 	Literal,
 } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
 import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import {
-	CALL,
-	callableInstance,
-	isDefined,
-	lazyConstructor,
-} from '@voltiso/util'
+import { BoundCallable, CALL, isDefined, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema'
 
@@ -55,7 +51,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return callableInstance(this) as never
+		return BoundCallable(this) as never
 	}
 
 	[CALL]<L extends bigint>(...literals: L[]): Literal<L>

@@ -3,11 +3,15 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
 
-import type { ISchema, SchemaLike } from '~/Schema'
+import type { $$Schema, ISchema, SchemaLike } from '~/Schema'
 
 import type { DefaultNumberOptions, NumberOptions } from './NumberOptions'
 
-export interface NumberLike extends SchemaLike<number> {
+export interface $$Number extends $$Schema {
+	readonly [SCHEMA_NAME]: 'Number'
+}
+
+export interface NumberLike<T extends number> extends $$Number, SchemaLike<T> {
 	readonly [SCHEMA_NAME]: 'Number'
 }
 

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as Database from '@voltiso/firestore-like'
 import { isPlainObject, stringFrom } from '@voltiso/util'
 
@@ -40,11 +41,11 @@ export function fromDatabaseData(
 	} else if (isDocRefJson(o)) {
 		// console.log('fromDatabase ref', o.__target, o.__isStrong)
 
-		if (o.__isStrong) return new StrongDocRef(ctx, o.__target)
-		else return new WeakDocRef(ctx, o.__target)
+		if (o.isStrong) return new StrongDocRef(ctx, o.path)
+		else return new WeakDocRef(ctx, o.path)
 	} else if (isDocRefDatabase(o)) {
-		if (o.__isStrong) return new StrongDocRef(ctx, o.__target.path)
-		else return new WeakDocRef(ctx, o.__target.path)
+		if (o.isStrong) return new StrongDocRef(ctx, o.ref.path)
+		else return new WeakDocRef(ctx, o.ref.path)
 	} else if (Database.isTimestamp(o)) return o.toDate()
 	else if (isPlainObject(o)) {
 		const r: DataRecord = {}
@@ -91,6 +92,6 @@ export const fromDatabase = (
 	}
 
 	const fixed = fromDatabaseData(ctx, data)
-	$assert(isPlainObject(fixed))
+	assert.plainObject(isPlainObject(fixed))
 	return fixed as IntrinsicFields
 }

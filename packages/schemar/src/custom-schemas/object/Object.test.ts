@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	$CustomObject,
 	CustomObject,
 	InputType,
 	IObject,
@@ -11,26 +10,21 @@ import type {
 	Schema,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
 describe('object', () => {
 	it('generic', <O extends Partial<ObjectOptions>>() => {
-		expect.assertions(0)
-
-		Assert.is<CustomObject<O>, Schema>()
-		Assert.is<$CustomObject<O>, IObject>()
+		$Assert.is<CustomObject<O>, Schema>()
 	})
 
 	it('type', () => {
-		expect.assertions(0)
-
 		const obj = s.object({
 			a: s.number,
 		})
 
-		Assert.is<typeof obj, IObject>()
+		$Assert.is<typeof obj, IObject>()
 	})
 
 	it('extends', () => {
@@ -69,23 +63,23 @@ describe('object', () => {
 			s.object({ a: s.number, b: s.string }).extends(s.object({ c: s.number })),
 		).toBeFalsy()
 
-		Assert<IsIdentical<OutputType<typeof s.object>, object>>()
+		$Assert<IsIdentical<OutputType<typeof s.object>, object>>()
 
 		const x = s.object({ a: s.number(1), b: s.number(2) })
 		type X = OutputType<typeof x>
-		Assert<IsIdentical<X, { a: 1; b: 2 }>>()
+		$Assert<IsIdentical<X, { a: 1; b: 2 }>>()
 		type XX = InputType<typeof x>
-		Assert<IsIdentical<XX, { a: 1; b: 2 }>>()
+		$Assert<IsIdentical<XX, { a: 1; b: 2 }>>()
 
 		const y = s.object({ a: s.number(1), b: s.number(2).optional })
 		type Y = OutputType<typeof y>
-		Assert<IsIdentical<Y, { a: 1; b?: 2 }>>()
-		Assert<IsIdentical<InputType<typeof y>, { a: 1; b?: 2 | undefined }>>()
+		$Assert<IsIdentical<Y, { a: 1; b?: 2 }>>()
+		$Assert<IsIdentical<InputType<typeof y>, { a: 1; b?: 2 | undefined }>>()
 
 		const z = s.object({ a: s.number(1), b: s.number(2).strictOptional })
 		type Z = OutputType<typeof z>
-		Assert<IsIdentical<Z, { a: 1; b?: 2 }>>()
-		Assert<IsIdentical<InputType<typeof z>, { a: 1; b?: 2 }>>()
+		$Assert<IsIdentical<Z, { a: 1; b?: 2 }>>()
+		$Assert<IsIdentical<InputType<typeof z>, { a: 1; b?: 2 }>>()
 
 		// () => s.object({ a: s.string.readonly })
 
@@ -95,13 +89,17 @@ describe('object', () => {
 			s.schema({ a: 1, b: s.string }).extends({ a: s.number }),
 		).toBeTruthy()
 		expect(s.schema({ a: 1, b: s.never }).extends({ a: s.number })).toBeTruthy()
-		expect(s.schema({ a: 1, b: undef }).extends({ a: s.number })).toBeTruthy()
+		expect(
+			s.schema({ a: 1, b: undefined }).extends({ a: s.number }),
+		).toBeTruthy()
 
 		expect(
 			s.schema({ a: 1 }).extends({ a: s.number, b: s.unknown }),
 		).toBeFalsy()
 		expect(s.schema({ a: 1 }).extends({ a: s.number, b: s.never })).toBeFalsy()
-		expect(s.schema({ a: 1 }).extends({ a: s.number, b: undef })).toBeFalsy()
+		expect(
+			s.schema({ a: 1 }).extends({ a: s.number, b: undefined }),
+		).toBeFalsy()
 	})
 
 	it('extends - optional', () => {
@@ -184,7 +182,7 @@ describe('object', () => {
 		).toBeTruthy()
 
 		expect(
-			s.schema({ a: s.number.optional.readonly }).isValid({ a: undef }),
+			s.schema({ a: s.number.optional.readonly }).isValid({ a: undefined }),
 		).toBeFalsy()
 
 		expect(s.schema({ a: s.number.optional }).exec({}).issues).toStrictEqual([])
@@ -203,16 +201,14 @@ describe('object', () => {
 	})
 
 	it('Type', () => {
-		expect.assertions(0)
-
 		const x = s.object({
 			a: s.number.default(2 as const),
 		})
 
 		type Out = typeof x.OutputType
 		type In = typeof x.InputType
-		Assert<IsIdentical<Out, { a: number }>>()
-		Assert<IsIdentical<In, { a?: number | undefined }>>()
+		$Assert<IsIdentical<Out, { a: number }>>()
+		$Assert<IsIdentical<In, { a?: number | undefined }>>()
 
 		const y = s.schema({
 			rd: s.string.readonly.default('asd'),
@@ -226,7 +222,7 @@ describe('object', () => {
 		})
 		type Y = OutputType<typeof y>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				Y,
 				{
@@ -244,7 +240,7 @@ describe('object', () => {
 
 		type YY = InputType<typeof y>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				YY,
 				{
@@ -282,10 +278,10 @@ describe('object', () => {
 		})
 
 		type Out = OutputType<typeof t>
-		Assert<IsIdentical<Out, { a: { b: { c: number } } }>>()
+		$Assert<IsIdentical<Out, { a: { b: { c: number } } }>>()
 
 		type In = InputType<typeof t>
-		Assert<
+		$Assert<
 			IsIdentical<
 				In,
 				| {
@@ -324,117 +320,6 @@ describe('object', () => {
 		).toThrow('.displayName should be of length at least 1 (got 0)')
 	})
 
-	it('pricing agreement', () => {
-		expect.hasAssertions()
-
-		const currency = s.string('USD').or(s.string('PLN'))
-		Assert<IsIdentical<OutputType<typeof currency>, 'USD' | 'PLN'>>()
-
-		const pricingAgreement = {
-			currency,
-			bidLevel: s.integer.min(0),
-			hourlyRateByBidLevel: s.array(s.number.min(0)),
-			commission: s.number.min(0).max(1),
-			def: s.number.default(123),
-		}
-
-		type PricingAgreement = OutputType<typeof pricingAgreement>
-
-		Assert<
-			IsIdentical<
-				PricingAgreement,
-				{
-					currency: 'USD' | 'PLN'
-					bidLevel: number
-					hourlyRateByBidLevel: number[]
-					commission: number
-					def: number
-				}
-			>
-		>()
-
-		expect(() =>
-			s.schema(pricingAgreement).validate({
-				bidLevel: 0,
-				hourlyRateByBidLevel: [],
-				commission: 0.2,
-			}),
-		).toThrow('.currency')
-
-		expect(() =>
-			s.schema(pricingAgreement).validate({
-				currency: 'ASD',
-				bidLevel: 0,
-				hourlyRateByBidLevel: [],
-				commission: 0.2,
-			}),
-		).toThrow(
-			`[@voltiso/schemar] .currency should be one of ['USD', 'PLN'] (got 'ASD')`,
-		)
-
-		expect(
-			s.schema(pricingAgreement).isValid({
-				currency: 'USD',
-				bidLevel: 0,
-				hourlyRateByBidLevel: [],
-				commission: 0.2,
-				def: 0,
-			}),
-		).toBeTruthy()
-
-		expect(
-			s.schema(pricingAgreement).validate({
-				currency: 'USD',
-				bidLevel: 0,
-				hourlyRateByBidLevel: [],
-				commission: 0.2,
-			}),
-		).toStrictEqual({
-			currency: 'USD',
-			bidLevel: 0,
-			hourlyRateByBidLevel: [],
-			commission: 0.2,
-			def: 123,
-		})
-
-		expect(() =>
-			s.schema(pricingAgreement).validate({
-				currency: 'USD',
-				bidLevel: -1,
-				hourlyRateByBidLevel: [],
-				commission: 0.2,
-			}),
-		).toThrow('bidLevel')
-
-		expect(() =>
-			s.schema(pricingAgreement).validate({
-				currency: 'PLN',
-				bidLevel: 12,
-				hourlyRateByBidLevel: [-1],
-				commission: 0.2,
-			}),
-		).toThrow('.hourlyRateByBidLevel[0]')
-
-		expect(() =>
-			s.schema(pricingAgreement).validate({
-				currency: 'PLN',
-				bidLevel: 12,
-				hourlyRateByBidLevel: [30],
-				commission: 1.1,
-			}),
-		).toThrow('.commission')
-
-		expect(() =>
-			s.schema(pricingAgreement).validate({
-				currency: 'PLN',
-				bidLevel: 12,
-				hourlyRateByBidLevel: [30],
-				commission: 1,
-				asd: undef,
-			}),
-		).toThrow('.asd')
-	})
-
 	it('optional - accepts undefined', () => {
 		expect.hasAssertions()
 
@@ -445,8 +330,8 @@ describe('object', () => {
 
 		expect(s.schema(sTest).isValid({})).toBeTruthy()
 		expect(s.schema(sTest).isValid({ num: 123 })).toBeTruthy()
-		expect(s.schema(sTest).isFixable({ num: undef })).toBeTruthy()
-		expect(s.schema(sTest).isValid({ num: undef })).toBeFalsy()
+		expect(s.schema(sTest).isFixable({ num: undefined })).toBeTruthy()
+		expect(s.schema(sTest).isValid({ num: undefined })).toBeFalsy()
 		expect(s.schema(sTest).isValid({ num: 'str' })).toBeFalsy()
 	})
 })

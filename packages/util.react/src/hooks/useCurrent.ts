@@ -22,19 +22,3 @@ export function useCurrent<Current extends object>(
 ): Current {
 	return Object.setPrototypeOf(useRef({}).current, currentValues) as Current
 }
-
-// export function useCurrent<X extends object>(x: X): X {
-// 	const r = useRef<{ t: object; p: X }>()
-// 	if (!r.current) {
-// 		const t = {} as X
-// 		r.current = {
-// 			t,
-// 			p: new Proxy(t, {
-// 				get(_t, p) {
-// 					return Reflect.get(t, p) as unknown
-// 				},
-// 			}),
-// 		}
-// 	}
-// 	return r.current!.p
-// }

@@ -3,32 +3,37 @@
 
 import type { GetDeepShape_ } from '~'
 import type { InputType_, ObjectType_ } from '~/GetType'
-import type { InferableObjectLike } from '~/Inferable'
+import type { $$InferableObject } from '~/Inferable'
 
 import type { CustomObject } from './CustomObject'
 
-export type Object<Shape extends InferableObjectLike> = CustomObject<{
-	shape: Shape
-	deepShape: GetDeepShape_<Shape>
-	Output: ObjectType_<Shape, { kind: 'out' }>
-	Input: ObjectType_<Shape, { kind: 'in' }>
-}>
+export interface Object<Shape extends $$InferableObject>
+	extends CustomObject<{
+		shape: Shape
+		deepShape: GetDeepShape_<Shape>
+		Output: ObjectType_<Shape, { kind: 'out' }>
+		Input: ObjectType_<Shape, { kind: 'in' }>
+	}> {}
 
-export type ImplicitObject<Shape extends InferableObjectLike> =
+export type ImplicitObject<Shape extends $$InferableObject> =
 	object extends InputType_<Shape>
-		? CustomObject<{
-				shape: Shape
-				deepShape: GetDeepShape_<Shape>
-				Output: ObjectType_<Shape, { kind: 'out' }>
-				Input: ObjectType_<Shape, { kind: 'in' }>
-
-				hasDefault: true
-				default: {}
-		  }>
+		? AutoCreatedObject<Shape>
 		: // eslint-disable-next-line @typescript-eslint/ban-types
 		  Object<Shape>
 
-export type ObjectConstructor = new <Shape extends InferableObjectLike>(
+export interface AutoCreatedObject<
+	Shape extends $$InferableObject,
+> extends CustomObject<{
+		shape: Shape
+		deepShape: GetDeepShape_<Shape>
+		Output: ObjectType_<Shape, { kind: 'out' }>
+		Input: ObjectType_<Shape, { kind: 'in' }>
+
+		hasDefault: true
+		default: {}
+	}> {}
+
+export type ObjectConstructor = new <Shape extends $$InferableObject>(
 	shape: Shape,
 	// eslint-disable-next-line @typescript-eslint/ban-types
 ) => Object<Shape>

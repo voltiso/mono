@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/util'
+import { assert } from '@voltiso/assertor'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { withId } from '~/Data'
@@ -12,7 +12,7 @@ import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
 
-import type { IDocRefBase } from '..'
+import type { IDocRef } from '..'
 import { apply } from './apply'
 import { collectTriggerResult } from './collectTriggerResult'
 import type { DocRefContextWithTransaction } from './Context'
@@ -38,9 +38,9 @@ async function processAfterTrigger(
 	assert(cacheEntry.lastDataSeenByAfters)
 	// eslint-disable-next-line security/detect-object-injection
 	const prevLastSeen = cacheEntry.lastDataSeenByAfters[idx]
-	assert(prevLastSeen !== undefined)
+	assert.defined(prevLastSeen)
 
-	assert(cacheEntry.data !== undefined)
+	assert.defined(cacheEntry.data)
 
 	const before = prevLastSeen
 	const after = cacheEntry.data
@@ -52,7 +52,7 @@ async function processAfterTrigger(
 	cacheEntry.lastDataSeenByAfters[idx] = deepCloneData(after)
 
 	await triggerGuard(ctx, async () => {
-		assert(cacheEntry.proxy !== undefined)
+		assert.defined(cacheEntry.proxy)
 
 		assert(cacheEntry.__voltiso)
 
@@ -64,7 +64,7 @@ async function processAfterTrigger(
 			before: immutabilize(withId(before, id)) as never,
 			after: immutabilize(withId(after, id)) as never,
 			...pathMatches,
-			path: (ctx.docRef as unknown as IDocRefBase).path,
+			path: (ctx.docRef as unknown as IDocRef).path,
 			id: id as never,
 			...ctx,
 			possiblyExists: cacheEntry.possiblyExists,
@@ -120,14 +120,14 @@ export async function processTriggers(
 	const cacheEntry = getCacheEntry(ctx)
 
 	cacheEntry.write = true
-	$assert(cacheEntry.data !== undefined)
+	assert(cacheEntry.data !== undefined)
 
 	const schema = getSchema(ctx.docRef)
 
 	// apply updates
 	const data = apply(ctx, cacheEntry.data, params?.updates)
-	$assert(!isReplaceIt(data))
-	$assert(!isDeleteIt(data))
+	assert(!isReplaceIt(data))
+	assert(!isDeleteIt(data))
 	// console.log('apply updates', cacheEntry.data, params?.updates, data)
 	validateAndSetCacheEntry(ctx, data, schema?.partial, !!params?.updates)
 

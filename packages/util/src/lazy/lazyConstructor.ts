@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Newable } from '~/function'
-
 /**
  * Hack to mitigate problems with cyclic dependencies and ES6 class inheritance.
  *
@@ -18,9 +16,9 @@ import type { Newable } from '~/function'
  * @param getCls - Function returning a constructor
  * @returns The same constructor (proxy)
  */
-export function lazyConstructor<Class extends Newable>(
-	getCls: () => Class,
-): Class {
+export function lazyConstructor<
+	Class extends abstract new (...args: any) => object,
+>(getCls: () => Class): Class {
 	let cls: Class | undefined
 
 	const proxyProto = {}

@@ -6,7 +6,7 @@ import type {
 	DecrementArgument,
 	IsCompatible,
 	NotProvided,
-} from '~/$strip'
+} from '~/type'
 
 /** @inline */
 export type DeepReadonly_<T> = {

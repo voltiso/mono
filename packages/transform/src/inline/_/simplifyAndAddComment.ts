@@ -1,10 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { TransformContext } from '@voltiso/transform.lib'
+import { getNodeText } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
-
-import type { TransformContext } from '~/_'
-import { getNodeText } from '~/_'
 
 import { simplifyNode } from './simplifyNode'
 

@@ -1,9 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
-
-import type { TransformContext } from '~/_'
 
 import {
 	canBeInlined,
@@ -18,7 +17,7 @@ export type InlineTransformOptions = {
 }
 
 export interface InlineTransformContext extends TransformContext {
-	pluginOptions: InlineTransformOptions
+	options: InlineTransformOptions
 }
 
 export function inlineTransform(
@@ -34,7 +33,7 @@ export function inlineTransform(
 				program,
 				sourceFile,
 				typeChecker,
-				pluginOptions,
+				options: pluginOptions,
 			}
 
 			function visitor(originalNode: ts.Node): ts.Node {

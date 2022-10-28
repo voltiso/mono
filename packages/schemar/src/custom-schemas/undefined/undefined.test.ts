@@ -3,7 +3,7 @@
 
 import type { OutputType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -12,14 +12,14 @@ describe('undefined', () => {
 		expect.hasAssertions()
 
 		type A = OutputType<typeof s.undefined>
-		Assert<IsIdentical<A, undefined>>()
+		$Assert<IsIdentical<A, undefined>>()
 
 		expect(s.undefined.extends(s.unknown)).toBeTruthy()
-		expect(s.literal(undef).extends(s.unknown)).toBeTruthy()
-		expect(s.schema(undef).extends(s.unknown)).toBeTruthy()
+		expect(s.literal(undefined).extends(s.unknown)).toBeTruthy()
+		expect(s.schema(undefined).extends(s.unknown)).toBeTruthy()
 
 		expect(s.undefined.extends(s.undefined)).toBeTruthy()
-		expect(s.undefined.extends(undef)).toBeTruthy()
+		expect(s.undefined.extends(undefined)).toBeTruthy()
 
 		expect(s.undefined.extends(s.null)).toBeFalsy()
 		expect(s.null.extends(s.undefined)).toBeFalsy()
@@ -28,6 +28,6 @@ describe('undefined', () => {
 		expect(s.undefined.extends(s.never)).toBeFalsy()
 
 		expect(s.never.extends(s.undefined)).toBeTruthy()
-		expect(s.never.extends(undef)).toBeTruthy()
+		expect(s.never.extends(undefined)).toBeTruthy()
 	})
 })

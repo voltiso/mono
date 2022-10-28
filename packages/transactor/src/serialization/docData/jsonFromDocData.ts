@@ -2,16 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isDocumentReference, isTimestamp } from '@voltiso/firestore-like'
-import { isDate, isPlainObject } from '@voltiso/util'
+import { Get_, isDate, isPlainObject } from '@voltiso/util'
 
 import type { StrongDocRefJson, WeakDocRefJson } from '~/common'
-import type { DocRefBaseLike } from '~/DocRef'
+import type { $$DocRef } from '~/DocRef'
 import { isDocRef } from '~/DocRef'
 
 import type { DateJson } from '../date'
 
-export type JsonFromDocData<Data> = Data extends DocRefBaseLike
-	? Data['isStrong'] extends true
+export type JsonFromDocData<Data> = Data extends $$DocRef
+	? Get_<Data, 'isStrong'> extends true
 		? StrongDocRefJson
 		: WeakDocRefJson
 	: Data extends string

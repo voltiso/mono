@@ -3,7 +3,7 @@
 
 import type { Merge2_ } from '~'
 
-import type { SuggestObject } from './SuggestObject'
+import type { SuggestObject } from './Suggest'
 
 /**
  * Distributed `Merge2` without parameter constraints

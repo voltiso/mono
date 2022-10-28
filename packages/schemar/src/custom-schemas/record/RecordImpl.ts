@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemableLike } from '@voltiso/schemar.types'
+import type { $$Schemable } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomRecordImpl } from './CustomRecordImpl'
@@ -9,7 +9,7 @@ import { defaultRecordOptions } from './defaultRecordOptions'
 
 export class RecordImpl<
 	TKeySchema extends { OutputType: keyof any },
-	TValueSchema extends SchemableLike,
+	TValueSchema extends $$Schemable,
 > extends lazyConstructor(() => CustomRecordImpl)<never> {
 	constructor(keySchema: TKeySchema, valueSchema: TValueSchema)
 

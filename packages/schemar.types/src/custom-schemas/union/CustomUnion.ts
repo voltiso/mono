@@ -7,12 +7,16 @@ import type { CustomSchema } from '~/Schema'
 
 import type { DefaultUnionOptions, UnionOptions } from './UnionOptions'
 
-export type $CustomUnion<O extends Partial<UnionOptions>> = O extends any
-	? CustomUnion<O>
-	: never
+export type $$Union = {
+	readonly [SCHEMA_NAME]: 'Union'
+}
+
+// export type $CustomUnion<O extends Partial<UnionOptions>> = O extends any
+// 	? CustomUnion<O>
+// 	: never
 
 export interface CustomUnion<O extends Partial<UnionOptions>>
-	extends CustomSchema<O> {
+	extends $$Union, CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Union'
 
 	readonly [BASE_OPTIONS]: UnionOptions

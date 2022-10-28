@@ -3,9 +3,6 @@
 
 import type { InferableObject } from '~/Inferable'
 import type { InferSchema_ } from '~/InferSchema'
-import type { ISchema } from '~/Schema'
-
-import type { IObject } from './IObject'
 
 //
 
@@ -33,9 +30,11 @@ export type $DeepPartialShape<O extends InferableObject> = $DeepPartialShape_<O>
 
 //
 
-export type DeepStrictPartialShapeProcessStrictEntry_<S> = [S] extends [IObject]
+export type DeepStrictPartialShapeProcessStrictEntry_<S> = [S] extends [
+	{ readonly deepStrictPartial: { readonly strictOptional: unknown } },
+]
 	? S['deepStrictPartial']['strictOptional']
-	: [S] extends [ISchema]
+	: [S] extends [{ readonly strictOptional: unknown }]
 	? S['strictOptional']
 	: never
 

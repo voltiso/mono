@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util",
-  "version": "46.0.0",
+  "version": "47.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -16,7 +16,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________DEV": "__________",
-    "dev": "tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false",
+    "dev": "v dev",
     "__________TEST": "__________",
     "test": "jest",
     "__________LINT": "__________",
@@ -68,6 +68,6 @@
     "pnpm": "7"
   },
   "typeCoverage": {
-    "is": 98.71
+    "is": 98.76
   }
 }

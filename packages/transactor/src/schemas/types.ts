@@ -4,12 +4,12 @@
 import type * as t from '@voltiso/schemar.types'
 
 import type { Id } from '~/Data'
-import type { DocLike, IDoc } from '~/Doc'
+import type { $$Doc, IDoc } from '~/Doc'
 import type { WeakDocRef } from '~/DocRef'
 
-export type DocRefSchema<D extends DocLike = IDoc> = t.Schema<WeakDocRef<D>>
+export type DocRefSchema<D extends $$Doc = IDoc> = t.Schema<WeakDocRef<D>>
 
-export type OptionalDocRefSchema<D extends DocLike = IDoc> = t.Schema<
+export type OptionalDocRefSchema<D extends $$Doc = IDoc> = t.Schema<
 	WeakDocRef<D>
 >['optional']
 

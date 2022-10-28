@@ -22,5 +22,5 @@ export function aggregate<
 
 	handlers: AggregatorHandlers<GetDocTI<Source>, GetDoc<Target>, AggregateName>,
 ): DocBuilderPlugin<Source> {
-	return new AggregatePlugin<GetDocTag<Source>>(aggregateName, handlers)
+	return new AggregatePlugin<GetDocTag<Source>>(aggregateName, handlers) as never
 }

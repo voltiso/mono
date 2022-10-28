@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '@voltiso/util'
 import type {
 	ComponentPropsWithRef,
 	CSSProperties,
@@ -27,7 +26,7 @@ const LazyRender: ForwardRefRenderFunction<
 
 	const finalStorageKey = storageKey
 		? `@voltiso/util.react.Lazy(${storageKey})`
-		: undef
+		: undefined
 
 	const lazy = useLazyLoad()
 	const restoreHeight = useRestoreHeight(finalStorageKey)

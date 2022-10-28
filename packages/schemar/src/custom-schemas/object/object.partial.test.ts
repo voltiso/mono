@@ -3,7 +3,7 @@
 
 import type { OutputType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -33,7 +33,7 @@ describe('object', () => {
 
 		type Ps = OutputType<typeof ps>
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				Ps,
 				{
@@ -73,7 +73,7 @@ describe('object', () => {
 
 		type Out = typeof ps.OutputType
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				Out,
 				{

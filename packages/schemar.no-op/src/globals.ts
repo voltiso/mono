@@ -48,7 +48,7 @@ export const record = _schema as t.UnknownRecord
 const undefined_ = _schema as t.Literal<undefined>
 export { undefined_ as undefined }
 
-export const union = _schema as <Ts extends t.SchemableLike[]>(
+export const union = _schema as <Ts extends t.$$Schemable[]>(
 	...types: Ts
 ) => t.Union<Ts>
 

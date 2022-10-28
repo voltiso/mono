@@ -1,8 +1,11 @@
-/* eslint-disable max-depth */
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable max-depth */
+
 import type {
+	$$Schemable,
+	$$SchemableObject,
 	BASE_OPTIONS,
 	CustomObject,
 	DEFAULT_OPTIONS,
@@ -13,7 +16,6 @@ import type {
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
 	Schemable,
-	SchemableObjectLike,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
 import {
@@ -24,11 +26,13 @@ import {
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
 import {
-	assumeType,
+	$AssumeType,
+	clone,
 	getEntries,
 	getValues,
 	hasProperty,
 	isObject,
+	isPlainObject,
 	lazyConstructor,
 } from '@voltiso/util'
 
@@ -62,7 +66,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	constructor(partialOptions: O) {
 		super(partialOptions)
 
-		for (const value of getValues(this.getShape, { includeSymbols: true })) {
+		// console.log('CustomObject constructor', this[OPTIONS])
+
+		for (const value of getValues(this.getShape, {
+			includeSymbols: true,
+		}) as unknown[]) {
 			if (isSchema(value) && value.hasDefault) {
 				// eslint-disable-next-line security/detect-object-injection
 				this[OPTIONS].hasDefault = true as never
@@ -86,14 +94,14 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return this[OPTIONS]['indexSignatures'] as never
 	}
 
-	and(other: SchemableObjectLike): never {
+	and(other: $$SchemableObject): never {
 		if (!isSchema(other as never)) {
 			return this._cloneWithOptions({
 				shape: { ...this.getShape, ...other },
 			}) as never
 		}
 
-		assumeType<IObject>(other)
+		$AssumeType<IObject>(other)
 
 		// eslint-disable-next-line security/detect-object-injection
 		const a = this[OPTIONS]
@@ -124,6 +132,16 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			isReadonly: a.isReadonly && b.isReadonly,
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			isPlain: a.isPlain || b.isPlain,
+		}) as never
+	}
+
+	get plain(): never {
+		// console.log('CustomObjectImpl_.plain', this[OPTIONS])
+		return this._cloneWithOptions({
+			isPlain: true,
 		}) as never
 	}
 
@@ -166,14 +184,21 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (t.isObject(other)) {
-			for (const [k, v] of getEntries(other.getShape)) {
+			for (const [k, v] of getEntries(other.getShape, {
+				includeSymbols: true,
+			}) as [keyof any, unknown][]) {
 				const hasThisK = hasProperty(this.getShape, k)
-				// eslint-disable-next-line security/detect-object-injection
-				const isOtherOptional = schema(other.getShape[k]).isOptional
+
+				const isOtherOptional = schema<$$Schemable>(
+					other.getShape[k as never],
+				).isOptional
 
 				if (!hasThisK && !isOtherOptional) return false
-				// eslint-disable-next-line security/detect-object-injection
-				else if (hasThisK && !schema(this.getShape[k] as {}).extends(v))
+				else if (
+					hasThisK &&
+					// eslint-disable-next-line security/detect-object-injection
+					!schema(this.getShape[k] as {}).extends(v as never)
+				)
 					// eslint-disable-next-line sonarjs/no-duplicated-branches
 					return false
 			}
@@ -186,6 +211,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	}
 
 	override _getIssuesImpl(x: unknown): ValidationIssue[] {
+		// console.log('CustomObjectImpl._getIssuesImpl', this[OPTIONS])
 		let issues = super._getIssuesImpl(x)
 
 		if (!isObject(x)) {
@@ -196,6 +222,16 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				}),
 			)
 		} else {
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, security/detect-object-injection
+			if (this[OPTIONS].isPlain && !isPlainObject(x)) {
+				issues.push(
+					new ValidationIssue({
+						expectedDescription: 'be plain object',
+						received: x,
+					}),
+				)
+			}
+
 			for (const [k, v] of getEntries(this.getShape, {
 				includeSymbols: true,
 			}) as [keyof any, Schemable][]) {
@@ -243,8 +279,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 							new ValidationIssue({
 								path: [key],
 								expectedDescription: 'not be present',
-								// eslint-disable-next-line security/detect-object-injection
-								received: x[key],
+								received: x[key as never],
 							}),
 						)
 					else {
@@ -254,8 +289,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						// eslint-disable-next-line security/detect-object-injection
 						for (const { keySchema, valueSchema } of this[OPTIONS]
 							.indexSignatures) {
-							const sKeySchema = schema(keySchema)
-							const sValueSchema = schema(valueSchema)
+							const sKeySchema = schema(keySchema) as unknown as ISchema
+							const sValueSchema = schema(valueSchema) as unknown as ISchema
 
 							const keyResult = sKeySchema.exec(key)
 
@@ -323,9 +358,9 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return issues
 	}
 
-	override _fixImpl(x: unknown): unknown {
+	override _fixImpl(value: unknown): unknown {
 		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
+		value = super._fixImpl(value)
 
 		// let autoCreated = false
 		// if (x === undefined) {
@@ -333,9 +368,10 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		// autoCreated = true
 		// }
 
-		if (typeof x === 'object') {
-			// eslint-disable-next-line no-param-reassign
-			x = { ...x } as Record<keyof any, unknown>
+		if (typeof value === 'object' && value !== null) {
+			// x = { ...x } as Record<keyof any, unknown>
+			const fixedObject = clone(value) as Record<keyof any, unknown>
+			let isChanged = false
 
 			for (const [key, schemable] of getEntries(this.getShape) as [
 				keyof any,
@@ -345,27 +381,26 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				const isOptional = mySchema.isOptional || mySchema.isStrictOptional
 
-				$assert(typeof x === 'object' && x)
+				if (hasProperty(fixedObject, key) || mySchema.hasDefault) {
+					const result = mySchema.exec(fixedObject[key as never])
 
-				// if (!hasProperty(x, key) && isOptional && !mySchema.hasDefault) continue
-
-				// assumeType<ISchema>(mySchema)
-
-				if (hasProperty(x, key) || mySchema.hasDefault) {
-					const result = mySchema.exec(x[key as keyof typeof x])
-					x[key as keyof typeof x] = result.value as never
-
-					if (result.value === undefined && isOptional)
-						delete x[key as keyof typeof x]
+					if (result.value === undefined && isOptional) {
+						if (Object.prototype.hasOwnProperty.call(fixedObject, key)) {
+							delete fixedObject[key as never]
+							isChanged = true
+						}
+					} else if (fixedObject[key as never] !== result.value) {
+						fixedObject[key as never] = result.value as never
+						isChanged = true
+					}
 				}
 			}
 
-			$assert(typeof x === 'object' && x)
+			// $assert.object(x)
 
-			for (let [xKey, xValue] of getEntries(x, { includeSymbols: true }) as [
-				keyof any,
-				unknown,
-			][]) {
+			for (let [xKey, xValue] of getEntries(fixedObject, {
+				includeSymbols: true,
+			}) as [keyof any, unknown][]) {
 				const originalXKey = xKey
 				if (xKey in this.getShape) continue
 
@@ -385,22 +420,23 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					}
 				}
 
-				delete x[originalXKey as keyof typeof x]
-				x[xKey as keyof typeof x] = xValue as never
+				// eslint-disable-next-line security/detect-object-injection
+				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey)
+					isChanged = true
+
+				// eslint-disable-next-line security/detect-object-injection
+				delete fixedObject[originalXKey]
+				// eslint-disable-next-line security/detect-object-injection
+				fixedObject[xKey] = xValue as never
 			}
+
+			// eslint-disable-next-line no-param-reassign
+			if (isChanged) value = fixedObject
 		}
 
-		// if (
-		// 	autoCreated &&
-		// 	getKeys(x as never, { includeSymbols: true }).length === 0
-		// ) {
-		// 	// eslint-disable-next-line no-param-reassign
-		// 	x = undefined
-		// }
-
 		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
+		value = super._fixImpl(value)
 
-		return x as never
+		return value as never
 	}
 }

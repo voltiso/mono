@@ -3,9 +3,9 @@
 
 import type { Type_ } from '@voltiso/schemar.types'
 
-import type { DocTILike } from '~/Doc'
-
 /** @inline */
-export type GAggregatePromises<TI extends DocTILike> = {
-	[k in keyof TI['aggregates']]: PromiseLike<Type_<TI['aggregates'][k]>>
-}
+export type GAggregatePromises_<TI> = TI extends { aggregates: {} }
+	? {
+			[k in keyof TI['aggregates']]: PromiseLike<Type_<TI['aggregates'][k]>>
+	  }
+	: never

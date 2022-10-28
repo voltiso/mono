@@ -1,20 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PatchFor } from '@voltiso/patcher'
-import { deleteIt, patch, patchUpdate } from '@voltiso/patcher'
 import type {
+	$$Schemable,
 	GetDeepShape_,
 	GetShape_,
 	InferSchema_,
 	InputType_,
 	OutputType_,
 	Schemable,
-	SchemableLike,
 	Type_,
 } from '@voltiso/schemar.types'
 import { getSchemableChild } from '@voltiso/schemar.types'
-import { $assert, $AssumeType, assertNotPolluting } from '@voltiso/util'
+import type { PatchFor } from '@voltiso/util'
+import {
+	$assert,
+	$AssumeType,
+	assertNotPolluting,
+	deleteIt,
+	patch,
+	patchUpdate,
+} from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
 
 import type {
@@ -35,7 +41,7 @@ export function isWithGetDeepShape(x: unknown): x is { getDeepShape: unknown } {
 	return typeof (x as { getDeepShape: unknown } | null) !== 'undefined'
 }
 
-export class NestedSubjectImpl<S extends SchemableLike> {
+export class NestedSubjectImpl<S extends $$Schemable> {
 	readonly _diContext: ObserverDiContext | undefined
 	readonly _parent: NestedSubjectImpl<Schemable> | null = null
 	readonly _parentKey: keyof any | null = null
@@ -261,7 +267,7 @@ export class NestedSubjectImpl<S extends SchemableLike> {
 
 		for (const [key, child] of Object.entries(this._children) as [
 			keyof typeof this._children,
-			NestedSubjectImpl<SchemableLike>,
+			NestedSubjectImpl<$$Schemable>,
 		][]) {
 			// eslint-disable-next-line etc/no-internal
 			child._set(

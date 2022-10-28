@@ -3,7 +3,7 @@
 
 import type { Merge2Reverse_ } from '@voltiso/util'
 
-import type { DataHookConstructor } from '.'
+import type { DataHookConstructor } from './DataHookConstructor'
 
 class DataHookImpl<D extends object> {
 	/** - `undefined` === not known yet */

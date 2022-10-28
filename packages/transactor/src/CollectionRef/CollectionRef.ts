@@ -4,7 +4,7 @@
 import type { Throw } from '@voltiso/util'
 
 import type { Id } from '~/Data'
-import type { DocLike, GetPublicCreationInputData, IDoc } from '~/Doc'
+import type { $$Doc, GetPublicCreationInputData, IDoc } from '~/Doc'
 import type { WeakDocRef } from '~/DocRef'
 import type { CollectionPath } from '~/Path/Path'
 
@@ -12,13 +12,13 @@ import { CollectionRefImpl } from './CollectionRefImpl'
 import type { InferTIFromDoc } from './InferTI'
 
 /** Collection reference */
-export interface CollectionRef<D extends DocLike = IDoc> {
+export interface CollectionRef<D extends $$Doc = IDoc> {
 	readonly path: CollectionPath
 
 	/** Get Doc reference by Id */
 	(id: Id<D>): WeakDocRef<D>
 
-	<DD extends DocLike>(id: Id<DD>): DD extends any
+	<DD extends $$Doc>(id: Id<DD>): DD extends any
 		? IDoc extends DD
 			? WeakDocRef<D>
 			: Throw<'wrong Id type' & { Doc: DD }>
@@ -30,7 +30,7 @@ export interface CollectionRef<D extends DocLike = IDoc> {
 	add(data: GetPublicCreationInputData<InferTIFromDoc<D>, IDoc>): PromiseLike<D>
 
 	/** Register Doc class/type for this Collection */
-	register<Cls extends new (...args: any) => DocLike>(
+	register<Cls extends new (...args: any) => $$Doc>(
 		cls: Cls,
 	): Cls extends any ? CollectionRef<InstanceType<Cls>> : never
 }

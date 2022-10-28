@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '~/$strip'
+import type { IsIdentical } from '~/type'
 import { $Assert } from '~/$strip'
 
 import type { DeepPartialOrUndefined_ } from './DeepPartialOrUndefined'
@@ -13,6 +13,7 @@ describe('DeepPartialOrUndefined', () => {
 		type X = DeepPartialOrUndefined_<{
 			x: 0
 			a: 'test'
+			arr: 123[]
 			obj: {
 				a: 11
 			}
@@ -23,6 +24,7 @@ describe('DeepPartialOrUndefined', () => {
 				{
 					x?: 0 | undefined
 					a?: 'test' | undefined
+					arr?: 123[] | undefined
 					obj?:
 						| {
 								a?: 11 | undefined

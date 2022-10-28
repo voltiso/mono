@@ -2,24 +2,23 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { ObjectLike } from '@voltiso/schemar.types'
 
 import type { Aggregator } from '~/Aggregator'
-import type { DocTILike } from '~/Doc'
+import type { DocTI } from '~/Doc'
 import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
 	UnknownTrigger,
 } from '~/Trigger'
 
-export interface DocDerivedData extends DocTILike {
+export interface DocDerivedData extends DocTI {
 	tag: any
 
 	id: unknown
 
-	readonly publicOnCreation: ObjectLike
-	readonly public: ObjectLike
-	readonly private: ObjectLike
+	// readonly publicOnCreation: ObjectLike
+	// readonly public: ObjectLike
+	// readonly private: ObjectLike
 
 	aggregates: {}
 	methods: {}
@@ -53,5 +52,3 @@ export const defaultDocDerivedData = {
 
 	methods: {},
 } as const
-
-// export type DefaultDocDerivedData = typeof defaultDocDerivedData

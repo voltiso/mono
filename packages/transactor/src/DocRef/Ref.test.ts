@@ -7,7 +7,7 @@ import { Assert, Is } from '@voltiso/util'
 import { Doc } from '~/Doc/Doc'
 import type { IDocConstructorNoBuilder } from '~/Doc/DocConstructor'
 import type { IDoc } from '~/Doc/IDoc'
-import type { IDocRefBase } from '~/DocRef'
+import type { IDocRef } from '~/DocRef'
 
 import type { StrongDocRefBase, WeakDocRefBase } from './base'
 
@@ -44,9 +44,9 @@ describe('Ref', () => {
 				StrongDocRefBase<MyMysticDoctor>
 			>(),
 
-			Is<StrongDocRefBase<MyMysticClient>>().subtypeOf<IDocRefBase>(),
+			Is<StrongDocRefBase<MyMysticClient>>().subtypeOf<IDocRef>(),
 
-			Is<IDocRefBase>().not.subtypeOf<StrongDocRefBase<MyMysticClient>>(),
+			Is<IDocRef>().not.subtypeOf<StrongDocRefBase<MyMysticClient>>(),
 
 			Is<StrongDocRefBase<MyMysticClient>>().subtypeOf<
 				WeakDocRefBase<MyMysticClient>
@@ -65,14 +65,14 @@ describe('Ref', () => {
 		class Ut2 extends Doc({ public: { a: s.string } }) {}
 
 		Assert.is<typeof Ut1, IDocConstructorNoBuilder>()
-		Assert.is<StrongDocRefBase<Ut1>, IDocRefBase>()
+		Assert.is<StrongDocRefBase<Ut1>, IDocRef>()
 
 		Assert(
 			Is<Ut1>().subtypeOf<IDoc>(),
 			Is<Ut2>().subtypeOf<IDoc>(),
 
-			Is<StrongDocRefBase<Ut1>>().subtypeOf<IDocRefBase>(),
-			Is<StrongDocRefBase<Ut2>>().subtypeOf<IDocRefBase>(),
+			Is<StrongDocRefBase<Ut1>>().subtypeOf<IDocRef>(),
+			Is<StrongDocRefBase<Ut2>>().subtypeOf<IDocRef>(),
 
 			Is<Ut1>().not.relatedTo<Ut2>(),
 			Is<StrongDocRefBase<Ut1>>().not.relatedTo<StrongDocRefBase<Ut2>>(),

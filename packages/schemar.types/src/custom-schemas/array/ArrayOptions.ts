@@ -4,8 +4,8 @@
 import type { Merge2_ } from '@voltiso/util'
 
 import type {
+	$$Schema,
 	DefaultSchemaOptions,
-	SchemaLike,
 	SchemaOptions,
 	SimpleSchema,
 } from '~'
@@ -14,7 +14,7 @@ export interface ArrayOptions extends SchemaOptions {
 	Output: readonly unknown[]
 	Input: readonly unknown[]
 
-	element: SchemaLike
+	element: $$Schema
 
 	isReadonlyArray: boolean
 

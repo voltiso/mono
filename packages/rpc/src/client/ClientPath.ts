@@ -4,7 +4,7 @@
 import type { MaybePromise, Mutable } from '@voltiso/util'
 import {
 	CALL,
-	callableInstance,
+	BoundCallable,
 	isCallable,
 	lazyPromise,
 	stringFrom,
@@ -109,7 +109,7 @@ export class ClientPath {
 		this._client = client
 		this._path = path
 
-		const callableThis = callableInstance(this)
+		const callableThis = BoundCallable(this)
 
 		// eslint-disable-next-line no-constructor-return
 		return new Proxy(callableThis, {

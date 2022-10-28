@@ -10,8 +10,13 @@ import type {
 	ISchema,
 	LiteralOptions,
 } from '@voltiso/schemar.types'
-import { isLiteral, isUnknownLiteral } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import {
+	EXTENDS,
+	isLiteral,
+	isUnknownLiteral,
+	OPTIONS,
+	SCHEMA_NAME,
+} from '@voltiso/schemar.types'
 import { isSubset, lazyConstructor, stringFrom } from '@voltiso/util'
 
 import { ValidationIssue } from '~/custom-schemas/validation'

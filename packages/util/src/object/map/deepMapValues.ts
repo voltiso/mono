@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BivariantCallable, Parameters_, ReturnType_ } from '~/function'
+import type { BivariantCallable, Parameters_, Return_ } from '~/function'
 
 export type DeepMapValues_<TObject, TMapping> =
 	TObject extends Parameters_<TMapping>[0]
-		? ReturnType_<TMapping>
+		? Return_<TMapping>
 		: {
 				[k in keyof TObject]: DeepMapValues_<TObject[k], TMapping>
 		  }

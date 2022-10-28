@@ -5,16 +5,24 @@ exports[`jsdoc works 1`] = `
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 /** @strip */
 function willBeStripped() {
-    // eslint-disable-next-line no-console
-    console.log('stripped');
+    //
 }
+/** @strip */
+const willBeStrippedArrow = () => {
+    //
+};
 function normalFunction() {
-    // eslint-disable-next-line no-console
-    console.log('normal');
+    //
 }
-//[@voltiso/transform/strip] Commented-out because of symbol \`willBeStripped\`
+const normalFunctionArrow = () => {
+    //
+};
+// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`willBeStripped\`
 /*willBeStripped()*/ 
+// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`willBeStrippedArrow\`
+/*willBeStrippedArrow()*/ 
 normalFunction();
+normalFunctionArrow();
 export {};
 //# sourceMappingURL=jsdoc.js.map"
 `;

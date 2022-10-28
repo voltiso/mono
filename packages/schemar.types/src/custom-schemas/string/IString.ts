@@ -4,11 +4,11 @@
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '_'
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema, SchemaLike } from '~/Schema'
+import type { $$Schema, ISchema } from '~/Schema'
 
 import type { DefaultStringOptions, StringOptions } from './StringOptions'
 
-export interface StringLike extends SchemaLike<string> {
+export interface $$String extends $$Schema {
 	readonly [SCHEMA_NAME]: 'String'
 }
 

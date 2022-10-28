@@ -8,18 +8,21 @@ import type {
 	OmitSignatures,
 	OmitValues,
 	Throw,
+	Get_,
+	NewableReturn_,
 } from '@voltiso/util'
 
-import type { AggregatorHandlers } from '~/Aggregator'
+import type { AggregatorHandlers_ } from '~/Aggregator'
 import type {
 	Doc,
 	DocBuilderPluginLike,
-	DocConstructorLike,
+	$$DocConstructor,
 	DocContext,
 	DocTI,
-	DocTILike,
+	$$DocTI,
 	DTI,
 	Promisify,
+	$$Doc,
 } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
@@ -36,36 +39,52 @@ import type { DocDerivedData } from './_/DocDerivedData'
 export namespace DocConstructor {
 	export type MaybeWithName<Params> = [Params] | [string, Params]
 
-	export type WithOverrides<
-		Old extends DocTILike,
-		New extends Partial<DocTILike>,
-	> = DocConstructor<Merge2Reverse_<Required<New>, Old>>
+	export type WithOverrides<Old extends $$DocTI, New extends Partial<DocTI>> = [
+		DocConstructor<Merge2Reverse_<Required<New>, Old>>,
+	][0]
 
 	export type MapNewFields<
-		TI extends DocTILike,
+		TI extends $$DocTI,
 		F extends NewFieldsLike,
-	> = OmitValues<
-		{
-			publicOnCreation: t.CustomObject.WithAnd<
-				TI['publicOnCreation'],
-				F['publicOnCreation']
-			>
+	> = TI extends {
+		publicOnCreation: any
+		public: any
+		private: any
+		aggregates: any
+	}
+		? OmitValues<
+				{
+					publicOnCreation: 'publicOnCreation' extends keyof F
+						? t.CustomObject.WithAnd<
+								TI['publicOnCreation'],
+								F['publicOnCreation']
+						  >
+						: never
 
-			public: t.CustomObject.WithAnd<TI['public'], F['public']>
+					public: 'public' extends keyof F
+						? t.CustomObject.WithAnd<TI['public'], F['public']>
+						: never
 
-			private: t.CustomObject.WithAnd<TI['private'], F['private']>
+					private: 'private' extends keyof F
+						? t.CustomObject.WithAnd<TI['private'], F['private']>
+						: never
 
-			id: F['id'] extends undefined ? never : F['id']
+					id: 'id' extends keyof F ? F['id'] : never
 
-			aggregates: F['aggregates'] extends undefined
-				? never
-				: Merge2Reverse_<F['aggregates'], TI['aggregates']>
-		},
-		never
-	>
+					aggregates: 'aggregates' extends keyof F
+						? Merge2Reverse_<F['aggregates'], TI['aggregates']>
+						: never
+				},
+				never
+		  >
+		: never
 }
 
-export interface DocConstructor<TI extends DocTILike = DocTI> {
+export type DocConstructor<TI extends $$DocTI> = TI extends DocTI
+	? _DocConstructor<TI>
+	: never
+
+export interface _DocConstructor<TI extends DocTI = DocTI> {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
 
@@ -152,12 +171,12 @@ export interface DocConstructor<TI extends DocTILike = DocTI> {
 	 *   deprecated in favor of `with(aggregate(...))` plugin
 	 */
 	aggregateInto<
-		Target extends DocConstructorLike,
-		Name extends keyof Target[DTI]['aggregates'],
+		Target extends $$DocConstructor,
+		Name extends string & keyof Get_<Get_<Target, DTI>, 'aggregates'>,
 	>(
 		target: Target,
 		name: Name,
-		handlers: AggregatorHandlers<TI, InstanceType<Target>, Name>,
+		handlers: AggregatorHandlers_<TI, NewableReturn_<Target> & $$Doc, Name>,
 	): DocConstructor<TI>
 
 	get schemaWithoutId(): t.CustomObject.WithAnd<

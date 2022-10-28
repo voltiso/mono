@@ -5,16 +5,16 @@ import type { FastMerge2Reverse_ } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { DocLike, IDoc, IndexedDoc } from '~/Doc'
+import type { $$Doc, IDoc, IndexedDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
-import type { GAggregatePromises } from '~/Doc/_/GetAggregatePromises'
-import type { GMethodPromises } from '~/Doc/_/GMethodPromises'
+import type { GAggregatePromises_ } from '~/Doc/_/GetAggregatePromises'
+import type { GetMethodPromises_ } from '~/Doc/_/GMethodPromises'
 
 import type { DocRefParentContext } from './_/Context'
 import type { StrongDocRefBase } from './base'
 import { DocRefBaseImpl } from './DocRefBaseImpl'
 
-export class StrongDocRefImpl<D extends DocLike> extends lazyConstructor(
+export class StrongDocRefImpl<D extends IDoc = IDoc> extends lazyConstructor(
 	() => DocRefBaseImpl,
 )<D, true, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
@@ -23,22 +23,22 @@ export class StrongDocRefImpl<D extends DocLike> extends lazyConstructor(
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export type StrongDocRefConstructor = new <D extends DocLike>(
+export type StrongDocRefConstructor = new <D extends $$Doc>(
 	context: DocRefParentContext,
 	path: string,
 ) => StrongDocRef<D>
 
 //
 
-export type StrongDocRef<D extends DocLike = IndexedDoc> = FastMerge2Reverse_<
+export type StrongDocRef<D extends $$Doc = IndexedDoc> = FastMerge2Reverse_<
 	StrongDocRefBase<D>,
 	GDocFields<InferTI<D>> &
-		GMethodPromises<InferTI<D>> &
-		GAggregatePromises<InferTI<D>>
+		GetMethodPromises_<InferTI<D>> &
+		GAggregatePromises_<InferTI<D>>
 >
 
-export type $StrongDocRef_<D> = D extends DocLike ? StrongDocRef<D> : never
-export type StrongDocRef_<D> = [D] extends [DocLike] ? StrongDocRef<D> : never
+export type $StrongDocRef_<D> = D extends $$Doc ? StrongDocRef<D> : never
+export type StrongDocRef_<D> = [D] extends [$$Doc] ? StrongDocRef<D> : never
 
 export const StrongDocRef = lazyConstructor(
 	() => StrongDocRefImpl,

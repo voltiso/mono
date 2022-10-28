@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { MaybePromise } from '@voltiso/util'
+import { $AssumeType } from '@voltiso/util'
 
 import type { DocumentData } from './DocumentData'
 import type { DocumentSnapshot } from './DocumentSnapshot'

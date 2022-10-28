@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$InferableTuple,
 	$OutputType,
 	CustomUnknownFunction,
 	Function,
-	InferableTupleLike,
 	OutputType,
 	Schemable,
 	SchemaLike,
@@ -18,7 +18,7 @@ export type _MakeArrayMutable_<X> = X extends readonly unknown[]
 
 export interface UnknownFunction extends CustomUnknownFunction<{}> {
 	<
-		Args extends InferableTupleLike | SchemaLike<readonly unknown[]>,
+		Args extends $$InferableTuple | SchemaLike<readonly unknown[]>,
 		R extends Schemable,
 	>(
 		argumentsSchema: Args,

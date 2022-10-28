@@ -13,7 +13,7 @@ export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {
 	if (cacheEntry.lastDataSeenByAfters || cacheEntry.originalData === undefined)
 		return
 
-	const afterTriggers = getAfterTriggers(ctx.docRef)
+	const afterTriggers = getAfterTriggers(ctx.docRef as never)
 
 	const data = deepCloneData(cacheEntry.originalData)
 	cacheEntry.lastDataSeenByAfters = Array.from<IntrinsicFields | null>({

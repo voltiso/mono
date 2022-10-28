@@ -2,15 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	$CustomTuple,
+	CustomTuple,
 	IMutableTuple,
 	InputType,
+	ISchema,
 	ITuple,
 	OutputType,
 	TupleOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import * as s from '~'
 
@@ -18,27 +19,28 @@ describe('array', () => {
 	it('generic', <O extends Partial<TupleOptions>>() => {
 		expect.assertions(0)
 
-		Assert.is<$CustomTuple<O>, ITuple>()
+		$Assert.is<CustomTuple<O>, ISchema>()
+		$Assert.is<CustomTuple<O>, ITuple>()
 	})
 
 	it('type', () => {
 		expect.assertions(0)
 
 		type Out = ITuple['OutputType']
-		Assert<IsIdentical<Out, readonly unknown[]>>()
+		$Assert<IsIdentical<Out, readonly unknown[]>>()
 
 		type In = ITuple['InputType']
-		Assert<IsIdentical<In, readonly unknown[] | undefined>>()
+		$Assert<IsIdentical<In, readonly unknown[] | undefined>>()
 	})
 
 	it('type - mutable', () => {
 		expect.assertions(0)
 
 		type Out = IMutableTuple['OutputType']
-		Assert<IsIdentical<Out, unknown[]>>()
+		$Assert<IsIdentical<Out, unknown[]>>()
 
 		type In = IMutableTuple['InputType']
-		Assert<IsIdentical<In, unknown[]>>()
+		$Assert<IsIdentical<In, unknown[]>>()
 	})
 
 	it('length', () => {
@@ -48,13 +50,13 @@ describe('array', () => {
 
 		expect(a.getLength).toBe(0)
 
-		Assert<IsIdentical<typeof a['getLength'], 0>>()
+		$Assert<IsIdentical<typeof a['getLength'], 0>>()
 
 		const b = s.tuple(1, 2, 3)
 
 		expect(b.getLength).toBe(3)
 
-		Assert<IsIdentical<typeof b['getLength'], 3>>()
+		$Assert<IsIdentical<typeof b['getLength'], 3>>()
 
 		// @ts-expect-error unknownTuple does not have getLength
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -127,35 +129,37 @@ describe('array', () => {
 		expect(s.string.extends(s.tuple(s.string).or(s.string))).toBeTruthy()
 
 		type A = OutputType<typeof s.tuple>
-		Assert<IsIdentical<A, unknown[]>>()
-		Assert<IsIdentical<OutputType<typeof s.tuple>, unknown[]>>()
+		$Assert<IsIdentical<A, unknown[]>>()
+		$Assert<IsIdentical<OutputType<typeof s.tuple>, unknown[]>>()
 
-		Assert<
+		$Assert<
 			IsIdentical<OutputType<typeof s.readonlyTuple>, readonly unknown[]>
 		>()
-		Assert<IsIdentical<InputType<typeof s.readonlyTuple>, readonly unknown[]>>()
+		$Assert<
+			IsIdentical<InputType<typeof s.readonlyTuple>, readonly unknown[]>
+		>()
 
 		const roSimple = s.readonlyTuple()
 		type RoSimple = OutputType<typeof roSimple>
-		Assert<IsIdentical<RoSimple, readonly []>>()
-		Assert<IsIdentical<OutputType<typeof roSimple>, readonly []>>()
+		$Assert<IsIdentical<RoSimple, readonly []>>()
+		$Assert<IsIdentical<OutputType<typeof roSimple>, readonly []>>()
 
 		const t = s.tuple()
-		Assert<IsIdentical<OutputType<typeof t>, []>>()
-		Assert<IsIdentical<OutputType<typeof t>, []>>()
+		$Assert<IsIdentical<OutputType<typeof t>, []>>()
+		$Assert<IsIdentical<OutputType<typeof t>, []>>()
 
 		const ts = s.tuple(s.string)
-		Assert<IsIdentical<OutputType<typeof ts>, [string]>>()
-		Assert<IsIdentical<OutputType<typeof ts>, [string]>>()
+		$Assert<IsIdentical<OutputType<typeof ts>, [string]>>()
+		$Assert<IsIdentical<OutputType<typeof ts>, [string]>>()
 
 		const ro = ts.readonlyTuple
 		type X = OutputType<typeof ro>
-		Assert<IsIdentical<X, readonly [string]>>()
-		Assert<IsIdentical<InputType<typeof ro>, readonly [string]>>()
+		$Assert<IsIdentical<X, readonly [string]>>()
+		$Assert<IsIdentical<InputType<typeof ro>, readonly [string]>>()
 
 		const ro2 = s.readonlyTuple(s.string)
-		Assert<IsIdentical<OutputType<typeof ro2>, readonly [string]>>()
-		Assert<IsIdentical<OutputType<typeof ro2>, readonly [string]>>()
+		$Assert<IsIdentical<OutputType<typeof ro2>, readonly [string]>>()
+		$Assert<IsIdentical<OutputType<typeof ro2>, readonly [string]>>()
 
 		expect(s.tuple(s.string).extends(s.array)).toBeTruthy()
 		expect(s.tuple(s.string).extends(s.tuple(s.string))).toBeTruthy()

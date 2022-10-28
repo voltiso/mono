@@ -4,8 +4,8 @@
 /* eslint-disable security/detect-object-injection */
 
 import type * as Database from '@voltiso/firestore-like'
-import type { MaybePromise } from '@voltiso/util'
-import { isDefined } from '@voltiso/util'
+import type { MaybePromise } from '@voltiso/util';
+import { $assert , isDefined } from '@voltiso/util'
 import { deepCloneData, newAutoId } from '@voltiso/util.firestore'
 import type { Observable } from 'rxjs'
 

@@ -3,7 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
-import { callableObject, lazyValue } from '@voltiso/util'
+import { lazyValue, ProtoCallable } from '@voltiso/util'
 
 import type { IDoc, IndexedDoc } from '~/Doc'
 import type { StrongDocRef, StrongDocRefBase } from '~/DocRef'
@@ -33,8 +33,13 @@ export interface StrongRefSchema extends t.Schema<StrongDocRef<IndexedDoc>> {
 }
 
 export const sStrongRef: StrongRefSchema = lazyValue(
-	// eslint-disable-next-line etc/no-internal
-	() => callableObject(_strongRefSchema, _strongRefCall) as never,
+	() =>
+		ProtoCallable({
+			// eslint-disable-next-line etc/no-internal
+			prototype: _strongRefSchema,
+			// eslint-disable-next-line etc/no-internal
+			call: _strongRefCall,
+		}) as never,
 )
 
 export const sRef = sStrongRef

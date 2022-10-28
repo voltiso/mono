@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemableLike } from '@voltiso/schemar.types'
+import type { $$Schemable } from '@voltiso/schemar.types'
 
 import { array } from '~/custom-schemas/array'
 import { tuple } from '~/custom-schemas/tuple'
@@ -10,7 +10,7 @@ import { unknown } from '~/custom-schemas/unknown'
 
 import { validationIssue } from '../validationIssue'
 
-export function validationResult<Value extends SchemableLike>(value: Value) {
+export function validationResult<Value extends $$Schemable>(value: Value) {
 	return union(
 		{
 			isValid: true,

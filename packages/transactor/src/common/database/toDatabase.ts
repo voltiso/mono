@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import { assert, getKeys, isPlainObject } from '@voltiso/util'
+import { getKeys, isPlainObject } from '@voltiso/util'
 import { deepEqual } from 'fast-equals'
 
 import { omitVoltisoEntry } from '~/Data'
