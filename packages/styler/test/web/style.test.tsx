@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
-import { Assert, undef } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { FC } from 'react'
 
 import { style, STYLED_DATA } from '~'
@@ -27,7 +27,7 @@ const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 		width: p.name?.length || 0,
 	}))
 	.mapProps(({ big }) => {
-		Assert<IsEqual<typeof big, boolean>>()
+		$Assert<IsEqual<typeof big, boolean>>()
 		return {}
 	})
 
@@ -39,7 +39,7 @@ const OtherRedButton3 = OtherRedButton2.mapProps(props => ({
 }))
 
 const AnotherButton = OtherRedButton2.mapProp('big', (x?: boolean) => {
-	Assert<IsIdentical<typeof x, boolean | undefined>>()
+	$Assert<IsIdentical<typeof x, boolean | undefined>>()
 	return !x
 })
 
@@ -133,7 +133,7 @@ describe('style', () => {
 	it('overwrite css => css (undefined does not overwrite)', () => {
 		expect.hasAssertions()
 
-		renderApp(<OtherRedButton css={{ margin: undef }} />)
+		renderApp(<OtherRedButton css={{ margin: undefined }} />)
 
 		const button = screen.getByRole('button')
 

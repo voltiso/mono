@@ -2,18 +2,23 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import type { Brand, Includes, Or, Parity, Split } from '@voltiso/util'
+import type {
+	Brand,
+	Includes,
+	Or,
+	Parity,
+	PathBrand,
+	PathSegmentString,
+	Split,
+} from '@voltiso/util'
 import { at } from '@voltiso/util'
 
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { $$Doc, GetDocTI } from '~/Doc'
-import { DTI } from '~/Doc'
+import type { $$Doc, Doc } from '~/Doc'
+import { DOC } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { DocRefPattern, WeakDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
-
-/** Does not include `/`. */
-export type PathSegment = string & Brand<'PathSegment'>
 
 /**
  * Checks if `str` does not contain `/`
@@ -21,8 +26,11 @@ export type PathSegment = string & Brand<'PathSegment'>
  * @param str - To be checked
  * @returns `true` if `token` does not contain `/`
  */
-export const isPathToken = (str: string): str is PathSegment =>
-	!str.includes('/')
+export function isPathToken(
+	str: string,
+): str is PathSegmentString<{ separator: '/' }> {
+	return !str.includes('/')
+}
 
 /**
  * Asserts if `str` does not contain `/` and returns it.
@@ -31,7 +39,9 @@ export const isPathToken = (str: string): str is PathSegment =>
  * @returns `str as PathToken`
  * @throws `Error` if `str` contains `/`
  */
-export function createPathToken<S extends string>(str: S): PathSegment {
+export function createPathToken<S extends string>(
+	str: S,
+): PathSegmentString<{ separator: '/' }> {
 	if (!isPathToken(str))
 		throw new TransactorError(`${str} is not a valid PathToken`)
 
@@ -39,25 +49,41 @@ export function createPathToken<S extends string>(str: S): PathSegment {
 }
 
 /** `PathToken[]` joined with `/` */
-export type PathString<S extends string = string> =
+export type DbPathString<S extends string = string> =
 	| DocPathString<S>
 	| CollectionPathString<S>
 
-export type PatternString<S extends string = string> =
+export type DbPatternString<S extends string = string> =
 	| DocPatternString<S>
 	| CollectionPatternString<S>
 
-export type DocPathString<S extends string = string> = S &
-	Brand<'DocPathString'>
+declare module '@voltiso/util' {
+	interface Brands {
+		DocPath: unknown
+		DocPattern: unknown
 
-export type CollectionPathString<S extends string = string> = S &
-	Brand<'CollectionPathString'>
+		CollectionPath: unknown
+		CollectionPattern: unknown
+	}
+}
+
+export type DocPathString<S extends string = string> = S &
+	PathBrand<{ separator: '/' }> &
+	Brand<'DocPath'>
 
 export type DocPatternString<S extends string = string> = S &
-	Brand<'DocPatternString'>
+	PathBrand<{ separator: '/' }> &
+	Brand<'DocPattern'>
+
+//
+
+export type CollectionPathString<S extends string = string> = S &
+	PathBrand<{ separator: '/' }> &
+	Brand<'CollectionPath'>
 
 export type CollectionPatternString<S extends string = string> = S &
-	Brand<'CollectionPatternString'>
+	PathBrand<{ separator: '/' }> &
+	Brand<'CollectionPattern'>
 
 /**
  * Asserts if `str` does not contain `//` and returns it.
@@ -65,10 +91,10 @@ export type CollectionPatternString<S extends string = string> = S &
  * @param str - A path string to be checked
  * @returns `str as PathToken`
  */
-export const isPathString = (str: string): str is PathString =>
+export const isPathString = (str: string): str is DbPathString =>
 	!str.includes('//') &&
 	!(str.includes('*') || str.includes('{') || str.includes('}'))
-export const isPatternString = (str: string): str is PatternString =>
+export const isPatternString = (str: string): str is DbPatternString =>
 	!str.includes('//') &&
 	(str.includes('*') || str.includes('{') || str.includes('}'))
 
@@ -80,7 +106,7 @@ export const isPatternString = (str: string): str is PatternString =>
  * @returns `str` as `PathToken`
  * @throws `Error` if `str` is not a valid `PathString` - contains `//`
  */
-export function createPathString<S extends string>(str: S): PathString<S> {
+export function createPathString<S extends string>(str: S): DbPathString<S> {
 	if (!isPathString(str))
 		throw new TransactorError(`${str} is not a valid PathString`)
 
@@ -89,7 +115,7 @@ export function createPathString<S extends string>(str: S): PathString<S> {
 
 export function createPatternString<S extends string>(
 	str: S,
-): PatternString<S> {
+): DbPatternString<S> {
 	if (!isPatternString(str))
 		throw new TransactorError(`${str} is not a valid PatternString`)
 
@@ -100,13 +126,15 @@ export function createPatternString<S extends string>(
  * Encapsulates FireStore paths. Keeps both `PathString` and `PathToken[]`
  * computed.
  */
-class Path<S extends string = string> {
-	#str: PathString<S>
-	#segments: readonly PathSegment[] | undefined = undefined
+export class Path<S extends string = string> {
+	#str: DbPathString<S>
+	#segments: readonly PathSegmentString[] | undefined = undefined
 
-	get segments(): readonly PathSegment[] {
+	get segments(): readonly PathSegmentString[] {
 		if (!this.#segments)
-			this.#segments = this.#str.split('/') as unknown as readonly PathSegment[]
+			this.#segments = this.#str.split(
+				'/',
+			) as unknown as readonly PathSegmentString[]
 
 		return this.#segments
 	}
@@ -116,17 +144,17 @@ class Path<S extends string = string> {
 		Object.freeze(this)
 	}
 
-	toString(): PathString<S> {
+	toString(): DbPathString<S> {
 		return this.#str
 	}
 
-	valueOf(): PathString<S> {
+	valueOf(): DbPathString<S> {
 		return this.#str
 	}
 }
 
-class Pattern<S extends string = string> {
-	pattern: PatternString<S>
+export class Pattern<S extends string = string> {
+	pattern: DbPatternString<S>
 
 	constructor(str: S) {
 		this.pattern = createPatternString(str)
@@ -142,14 +170,15 @@ class Pattern<S extends string = string> {
 	}
 }
 
-const isDocPathString = (str: string): str is DocPathString =>
-	isPathString(str) && str.split('/').length % 2 === 0
+function isDocPathString(str: string): str is DocPathString {
+	return isPathString(str) && str.split('/').length % 2 === 0
+}
 
 export class DocPath<
 	S extends string = string,
-	TDoc extends $$Doc = $$Doc,
+	TDoc extends $$Doc = Doc,
 > extends Path<S> {
-	declare [DTI]: GetDocTI<TDoc>
+	declare [DOC]: TDoc
 
 	constructor(str: S) {
 		super(str)
@@ -225,7 +254,7 @@ export type _PathFromString<
 	Collection,
 	DocPattern,
 	CollectionPattern,
-	Parity<Split<P, '/'>>,
+	Parity<Split<P, { separator: '/' }>>,
 	MustBePattern<P>
 >
 

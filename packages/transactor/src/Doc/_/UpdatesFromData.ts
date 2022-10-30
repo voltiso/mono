@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DeleteIt, IncrementIt, ReplaceIt } from '@voltiso/util'
+
 import type { LeafData } from '~/Data'
-import type { DeleteIt, IncrementIt, ReplaceIt } from '~/it'
 
 /** @inline */
 export type UpdatesFromData<T, OutputType> =

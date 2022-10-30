@@ -11,7 +11,6 @@ import {
 	Doc,
 	sStrongRef,
 } from '@voltiso/transactor'
-import { undef } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
@@ -56,7 +55,7 @@ class Client extends Doc('refDelete_client')({
 	@afterCreate
 	async createRootTask(this: Client) {
 		//! TODO it should work with polymorphic `this`
-		$assert(this.rootTask === undef)
+		$assert(this.rootTask === undefined)
 
 		// type A = StrongRef<this>['id']
 

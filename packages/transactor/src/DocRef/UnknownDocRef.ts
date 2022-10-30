@@ -2,18 +2,20 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { $$Doc, GDocFields, GetMethodPromises_ } from '~/Doc'
+import type { $$Doc, GDocFields, GetMethodPromises_, IndexedDoc } from '~/Doc'
 
 import type { DocRefParentContext } from './_'
-import { UnknownDocRefBase } from './UnknownDocRefBase'
 import type { StrongDocRef } from './StrongDocRef'
+import { UnknownDocRefBase } from './UnknownDocRefBase'
 import type { WeakDocRef } from './WeakDocRef'
 
 export type DocRef_<D> = D extends $$Doc
 	? WeakDocRef<D> | StrongDocRef<D>
 	: never
 
-export type DocRef<D extends $$Doc> = WeakDocRef<D> | StrongDocRef<D>
+export type DocRef<D extends $$Doc = IndexedDoc> =
+	| WeakDocRef<D>
+	| StrongDocRef<D>
 
 export type DocRefBaseConstructor = new <
 	// eslint-disable-next-line etc/no-misused-generics

@@ -8,11 +8,11 @@
 
 // export type Provided<X> = X extends null | undefined ? X : MakeProvided<X>
 
-// export type NotProvided = WithProvided<false>
+// export type NoArgument = WithProvided<false>
 
-// export type OptionalArgument<X> = Provided<X> | NotProvided
+// export type OptionalArgument<X> = Provided<X> | NoArgument
 
-// declare const NotProvided: unique symbol
+// declare const NoArgument: unique symbol
 export const NoArgument = Symbol('NoArgument')
 export type NoArgument = typeof NoArgument
 

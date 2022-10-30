@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '~/$strip'
-import { undef } from '~/nullish'
 import type { IsIdentical } from '~/type'
 
 import type { TryGet } from './tryGet'
@@ -85,7 +84,7 @@ describe('get', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		expect(tryGet(undef as undefined | { a: number }, 'a')).toBeUndefined()
+		expect(tryGet(undefined as undefined | { a: number }, 'a')).toBeUndefined()
 
 		expect(
 			tryGet(

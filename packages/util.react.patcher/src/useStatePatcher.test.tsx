@@ -6,7 +6,7 @@
 import '@testing-library/jest-dom'
 
 import { act, render, screen } from '@testing-library/react'
-import { CALL, BoundCallable, undef } from '@voltiso/util'
+import { BoundCallable, CALL } from '@voltiso/util'
 import type { FC } from 'react'
 
 import type { StatePatcher } from './useStatePatcher'
@@ -112,7 +112,7 @@ describe('useStatePatcher', () => {
 	it('destructure', () => {
 		expect.hasAssertions()
 
-		let state = undef as unknown as StatePatcher<{ a: string }>
+		let state = undefined as unknown as StatePatcher<{ a: string }>
 
 		const C: FC = () => {
 			state = useStatePatcher({ a: 'aa' })

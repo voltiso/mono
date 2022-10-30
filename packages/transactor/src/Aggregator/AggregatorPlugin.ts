@@ -123,7 +123,11 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 							} catch (error) {
 								// eslint-disable-next-line no-console
 								console.error(
-									`aggregate trigger for source '${path.toString()}': unable to auto-create target: ${target.path.toString()}`,
+									`aggregate trigger for source '${
+										path.toString() as unknown as string
+									}': unable to auto-create target: ${
+										target.path.toString() as string
+									}`,
 								)
 								throw error
 							}
@@ -138,7 +142,9 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 								: `null - for more info, return DocRef instead of null Doc from your target() handler - this will also make it possible to auto-create target document if 'autoCreateTarget' is set (note: your target() function must not be async, because DocRef is derived from PromiseLike and is automatically unwrapped when awaited)${additionalInfo}`
 
 							throw new TransactorError(
-								`aggregate trigger for source '${path.toString()}': target does not exist: '${targetDescription}'${additionalInfo}`,
+								`aggregate trigger for source '${
+									path.toString() as unknown as string
+								}': target does not exist: '${targetDescription}'${additionalInfo}`,
 							)
 						}
 					}

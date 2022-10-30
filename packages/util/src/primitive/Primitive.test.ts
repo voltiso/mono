@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '~/nullish'
-
 import { isPrimitive } from './Primitive'
 
 describe('Primitive', () => {
@@ -12,7 +10,7 @@ describe('Primitive', () => {
 		expect(isPrimitive(1)).toBeTruthy()
 		expect(isPrimitive(BigInt(123))).toBeTruthy()
 		expect(isPrimitive(Symbol('dfg'))).toBeTruthy()
-		expect(isPrimitive(undef)).toBeTruthy()
+		expect(isPrimitive(undefined)).toBeTruthy()
 		expect(isPrimitive(false)).toBeTruthy()
 		expect(isPrimitive({})).toBeFalsy()
 		expect(isPrimitive(() => {})).toBeFalsy()

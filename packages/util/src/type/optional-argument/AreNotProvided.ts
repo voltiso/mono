@@ -11,7 +11,7 @@ type Rec<Ts, True, False> = Ts extends []
 		: False
 	: never
 
-export type AreNotProvided_<
+export type AreNoArgument_<
 	Ts,
 	True = true,
 	False = false,
@@ -23,8 +23,8 @@ export type AreNotProvided_<
 	  >
 	: never
 
-export type AreNotProvided<
+export type AreNoArgument<
 	Ts extends readonly unknown[],
 	True = true,
 	False = false,
-> = AreNotProvided_<Ts, True, False>
+> = AreNoArgument_<Ts, True, False>

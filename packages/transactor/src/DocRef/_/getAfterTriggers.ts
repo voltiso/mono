@@ -3,14 +3,13 @@
 
 import { isPlainObject } from '@voltiso/util'
 
-import type { $$Doc } from '~/Doc'
-import type { DocRefTriggerEntry, IDocRef, UnknownDocRefBase } from '~/DocRef'
+import type { DocRef, DocRefTriggerEntry, UnknownDocRefBase } from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 
-function forEachStrongRef(o: any, f: (r: IDocRef) => void) {
+function forEachStrongRef(o: any, f: (r: DocRef) => void) {
 	if (isStrongDocRef(o)) {
-		f(o)
+		f(o as never)
 	} else if (Array.isArray(o)) {
 		for (const child of o) forEachStrongRef(child, f)
 	} else if (isPlainObject(o)) {
@@ -19,7 +18,7 @@ function forEachStrongRef(o: any, f: (r: IDocRef) => void) {
 }
 
 export function getAfterTriggers(
-	docRef: UnknownDocRefBase<$$Doc>,
+	docRef: UnknownDocRefBase,
 ): DocRefTriggerEntry[] {
 	if (docRef._afterTriggers) return docRef._afterTriggers as never
 

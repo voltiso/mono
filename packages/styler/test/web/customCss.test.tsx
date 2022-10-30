@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
 
 import type { Css, CustomStyledHoc, StyledLike } from '~'
@@ -51,7 +51,7 @@ describe('customCss', () => {
 			.newCssProps(customProperties)
 			.newCustomCssProperties(customProperties)
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof myStyle,
 				CustomStyledHoc<{
@@ -67,7 +67,7 @@ describe('customCss', () => {
 
 		const Button = myStyle('button')
 
-		Assert.is<
+		$Assert.is<
 			typeof Button,
 			StyledLike<{
 				Component: 'button'

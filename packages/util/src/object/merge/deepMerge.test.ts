@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '~'
-import { undef } from '~/nullish'
 import { $Assert } from '~/$strip'
 
 import type { DeepMerge, DeepMerge2 } from './deepMerge/deepMerge'
@@ -105,11 +104,11 @@ describe('deepMerge', () => {
 	it('does not skip undefined', () => {
 		expect.hasAssertions()
 
-		expect(deepMerge({ a: 1 }, { a: undef })).toStrictEqual({
-			a: undef,
+		expect(deepMerge({ a: 1 }, { a: undefined })).toStrictEqual({
+			a: undefined,
 		})
-		expect(deepMerge({ a: undef }, { a: undef })).toStrictEqual({
-			a: undef,
+		expect(deepMerge({ a: undefined }, { a: undefined })).toStrictEqual({
+			a: undefined,
 		})
 	})
 

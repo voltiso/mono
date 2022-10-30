@@ -40,6 +40,7 @@ export type PathString<partialOptions extends Partial<PathOptions> = {}> =
 export type PathSegmentBrand<partialOptions extends Partial<PathOptions> = {}> =
 	PathBrand<partialOptions> & Brand<'path.segment'>
 
+/** Does not include separator */
 export type PathSegmentString<
 	partialOptions extends Partial<PathOptions> = {},
 > = string & PathSegmentBrand<partialOptions>

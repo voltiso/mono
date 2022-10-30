@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { undef } from '@voltiso/util'
-
 import { style } from '~'
 
 describe('curried', () => {
@@ -17,7 +15,7 @@ describe('curried', () => {
 		expect.assertions(0)
 
 		const myStyle = style.newProps({ red: false }).css(p => ({
-			color: p.red ? 'red' : undef,
+			color: p.red ? 'red' : undefined,
 		}))
 		const Button = myStyle('button')
 
@@ -31,7 +29,7 @@ describe('curried', () => {
 		//
 		;() =>
 			style.newProps({ red: false as boolean | undefined }).css(p => ({
-				color: p.red ? 'red' : undef,
+				color: p.red ? 'red' : undefined,
 			}))('button')
 	})
 
@@ -44,7 +42,7 @@ describe('curried', () => {
 				.css({ color: 'purple' })
 				.newProps({ red: false as boolean | undefined })
 				.css(p => ({
-					color: p.red ? 'red' : undef,
+					color: p.red ? 'red' : undefined,
 				}))('button')
 	})
 })

@@ -2,12 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
+import { isDeleteIt, isReplaceIt } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { withId } from '~/Data'
 import { TransactorError } from '~/error'
 import { immutabilize } from '~/immutabilize'
-import { isDeleteIt, isReplaceIt } from '~/it'
 import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
@@ -63,12 +63,12 @@ async function processAfterTrigger(
 			before: immutabilize(withId(before, id)) as never,
 			after: immutabilize(withId(after, id)) as never,
 			...pathMatches,
-			path: ctx.docRef.path,
+			path: ctx.docRef.path as never,
 			id: id as never,
 			...ctx,
 			possiblyExists: cacheEntry.possiblyExists,
 		})
-		const data = collectTriggerResult(ctx, r)
+		const data = collectTriggerResult(ctx, r as never)
 		validateAndSetCacheEntry(ctx, data, schema?.partial)
 	})
 

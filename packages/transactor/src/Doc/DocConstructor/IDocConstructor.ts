@@ -44,50 +44,32 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 	//
 
 	/** @deprecated Use decorators */
-	after(trigger: any): unknown
-
-	/** @deprecated Use decorators */
-	after(name: string, trigger: any): unknown
+	after(...args: any): any
 
 	//
 
 	/** @deprecated Use decorators */
-	afterUpdate(t: any): unknown
-
-	/** @deprecated Use decorators */
-	afterUpdate(name: string, t: any): unknown
+	afterUpdate(...args: any): any
 
 	//
 
 	/** @deprecated Use decorators */
-	afterCreateOrUpdate(t: any): unknown
-
-	/** @deprecated Use decorators */
-	afterCreateOrUpdate(name: string, t: any): unknown
+	afterCreateOrUpdate(...args: any): any
 
 	//
 
 	/** @deprecated Use decorators */
-	afterCreate(t: any): unknown
-
-	/** @deprecated Use decorators */
-	afterCreate(name: string, t: any): unknown
+	afterCreate(...args: any): any
 
 	//
 
 	/** @deprecated Use decorators */
-	afterDelete(t: any): unknown
-
-	/** @deprecated Use decorators */
-	afterDelete(name: string, t: any): unknown
+	afterDelete(...args: any): any
 
 	//
 
 	/** @deprecated Use decorators */
-	beforeCommit(t: any): unknown
-
-	/** @deprecated Use decorators */
-	beforeCommit(name: string, t: any): unknown
+	beforeCommit(...args: any): any
 
 	//
 

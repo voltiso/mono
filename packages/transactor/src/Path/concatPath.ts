@@ -4,10 +4,13 @@
 import type { Join } from '@voltiso/util'
 import { join } from '@voltiso/util'
 
-type R<Args extends readonly string[] | string> = Args extends string
-	? Args
-	: Join<Args, '/'>
+export type ConcatPath<Args extends readonly string[] | string> =
+	Args extends string ? Args : Join<Args, { separator: '/' }>
 
-export const concatPath = <Args extends readonly string[] | string>(
+export function concatPath<Args extends readonly string[] | string>(
 	args: Args,
-): R<Args> => (typeof args === 'string' ? args : join(args, '/')) as R<Args>
+): ConcatPath<Args> {
+	return (
+		typeof args === 'string' ? args : join(args, { separator: '/' })
+	) as ConcatPath<Args>
+}

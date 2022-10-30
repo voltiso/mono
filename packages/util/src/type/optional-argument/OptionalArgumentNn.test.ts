@@ -4,7 +4,7 @@
 import { $Assert } from '~/$strip'
 
 import type {
-	NotProvidedNn,
+	NoArgumentNn,
 	OptionalArgumentNn,
 	ProvidedNn,
 } from './OptionalArgumentNn'
@@ -17,14 +17,14 @@ type Func_<Args, Result> = Args extends readonly unknown[]
 	: never
 
 type Func<
-	Args extends OptionalArgumentNn<number[]> = NotProvidedNn,
-	Result extends OptionalArgumentNn<string> = NotProvidedNn,
+	Args extends OptionalArgumentNn<number[]> = NoArgumentNn,
+	Result extends OptionalArgumentNn<string> = NoArgumentNn,
 > = Args extends ProvidedNn
 	? Result extends ProvidedNn
 		? Func_<Args, Result>
 		: never
-	: Args extends NotProvidedNn
-	? Result extends NotProvidedNn
+	: Args extends NoArgumentNn
+	? Result extends NoArgumentNn
 		? IFunc
 		: never
 	: never

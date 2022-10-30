@@ -1,18 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert, getKeys, stringFrom } from '@voltiso/util'
-
-import type { NestedData } from '~/Data/Data'
-import { TransactorError } from '~/error'
-import type { DeleteIt, NestedIt, RootReplaceIt } from '~/it'
+import type { DeleteIt } from '@voltiso/util'
 import {
+	add,
+	assert,
 	deleteIt,
+	getKeys,
 	incrementIt,
 	isDeleteIt,
 	isIncrementIt,
 	isReplaceIt,
-} from '~/it'
+	stringFrom,
+} from '@voltiso/util'
+
+import type { NestedData } from '~/Data/Data'
+import { TransactorError } from '~/error'
+import type { NestedIt, RootReplaceIt } from '~/it'
 import type { IntrinsicFields } from '~/schemas'
 
 export interface UpdatesRecord {
@@ -35,18 +39,20 @@ function isRecord(
 function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 	if (isDeleteIt(b)) return b
 
-	if (isReplaceIt(b)) return b.data
+	if (isReplaceIt(b)) return b.__replaceIt
 
 	if (isIncrementIt(b)) {
-		if (isIncrementIt(a)) return incrementIt(a.n + b.n)
-		else if (typeof a === 'number') return a + b.n
+		if (isIncrementIt(a))
+			return incrementIt(add(a.__incrementIt, b.__incrementIt))
+		else if (typeof a === 'number' || typeof a === 'bigint')
+			return add(a, b.__incrementIt) as never
 		else if (isDeleteIt(a))
 			throw new TransactorError(
-				`cannot increment field value: undefined += ${b.n}`,
+				`cannot increment field value: undefined += ${b.__incrementIt}`,
 			)
 		else
 			throw new TransactorError(
-				`cannot increment field value: ${stringFrom(a)} += ${b.n}`,
+				`cannot increment field value: ${stringFrom(a)} += ${b.__incrementIt}`,
 			)
 	}
 
@@ -60,7 +66,7 @@ function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 
 			// eslint-disable-next-line security/detect-object-injection
 			const rField = r[field]
-			const originalData = rField === undefined ? deleteIt() : rField
+			const originalData = rField === undefined ? deleteIt : rField
 			const data = combineUpdatesRec(originalData, bVal)
 
 			// eslint-disable-next-line security/detect-object-injection
@@ -83,7 +89,7 @@ const dataFromUpdatesRec = (updates: NestedUpdates): NestedData => {
 	assert(!isDeleteIt(updates))
 	assert(!isIncrementIt(updates))
 
-	if (isReplaceIt(updates)) return updates.data
+	if (isReplaceIt(updates)) return updates.__replaceIt
 
 	if (isRecord(updates)) {
 		const r: NestedData = {}
@@ -109,7 +115,7 @@ const dataFromUpdatesRec = (updates: NestedUpdates): NestedData => {
 export const dataFromUpdates = (updates: Updates): IntrinsicFields | null => {
 	if (isDeleteIt(updates)) return null
 
-	if (isReplaceIt(updates)) return updates.data as never
+	if (isReplaceIt(updates)) return updates.__replaceIt as never
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const r = {} as any

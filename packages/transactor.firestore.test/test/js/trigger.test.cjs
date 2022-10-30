@@ -6,7 +6,6 @@
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
-const { undef } = require('@voltiso/util')
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
@@ -39,7 +38,7 @@ db('frog/{user}')
 				path: path.toString(),
 				argId: id,
 			}
-		} else return undef
+		} else return undefined
 	})
 
 	.afterCreateOrUpdate(async ({ after, pathArgs }) => ({

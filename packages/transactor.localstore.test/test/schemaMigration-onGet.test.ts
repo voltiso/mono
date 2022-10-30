@@ -4,7 +4,6 @@
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
 import { Doc, onGet, sDeleteIt, sVoltisoEntry } from '@voltiso/transactor'
-import { undef } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -32,7 +31,7 @@ class Dog extends Doc.public({
 		delete this.oldField2
 
 		// @ts-expect-error no such field (in theory)
-		$assert(this.oldField2 === undef)
+		$assert(this.oldField2 === undefined)
 
 		this.requiredField = 123
 	}

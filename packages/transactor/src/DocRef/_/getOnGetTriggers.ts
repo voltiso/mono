@@ -1,10 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Doc } from '~/Doc'
-import type { StrongDocRefBase } from '~/DocRef'
+import type { StrongDocRef } from '~/DocRef'
 
-export function getOnGetTriggers(docRef: StrongDocRefBase<$$Doc>) {
+export function getOnGetTriggers(docRef: StrongDocRef) {
 	if (docRef._onGets) return docRef._onGets
 
 	docRef._onGets = []

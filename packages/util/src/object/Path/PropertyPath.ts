@@ -9,6 +9,10 @@ import type {
 
 //
 
+export type ReadonlyPropertyPath<
+	Obj extends unknown | NoArgument = NoArgument,
+> = readonly [...PropertyPath<Obj>]
+
 export type PropertyPath<Obj extends unknown | NoArgument = NoArgument> = [
 	Obj,
 ] extends [NoArgument]

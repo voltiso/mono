@@ -3,13 +3,12 @@
 
 import type * as Database from '@voltiso/firestore-like'
 import { isDatabase } from '@voltiso/firestore-like'
-import { stringFrom } from '@voltiso/util'
+import { isDeleteIt, isReplaceIt, stringFrom } from '@voltiso/util'
 
 import type { $WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import type { IDoc } from '~/Doc'
 import { TransactorError } from '~/error'
-import { isDeleteIt, isReplaceIt } from '~/it'
 import type { IntrinsicFields } from '~/schemas'
 import type { Transactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
@@ -89,7 +88,7 @@ export async function databaseUpdate(
 	// console.log('firestoreUpdate', ref.path, updates)
 
 	if (isReplaceIt(updates)) {
-		return databaseSet(transactor, ctx, t, ref, updates.data as never)
+		return databaseSet(transactor, ctx, t, ref, updates.__replaceIt as never)
 	}
 
 	if (isDeleteIt(updates)) return databaseDelete(t, ref)

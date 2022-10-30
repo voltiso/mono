@@ -8,8 +8,15 @@ import type {
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type { If } from '@voltiso/util'
-import { assert, lazyPromise, omit, protoLink } from '@voltiso/util'
+import type { DeleteIt, If, ReplaceIt } from '@voltiso/util'
+import {
+	assert,
+	deleteIt,
+	lazyPromise,
+	omit,
+	protoLink,
+	replaceIt,
+} from '@voltiso/util'
 
 import type { InferTIFromDoc } from '~/CollectionRef'
 import type { DocRefDatabase, DocRefJson } from '~/common'
@@ -19,10 +26,10 @@ import type {
 	$$Doc,
 	Doc,
 	GDocFields_,
-	GetDocTag,
 	GetDocTI,
 	GetMethodPromises_,
 	IDoc,
+	IndexedDoc,
 	UpdatesFromData,
 } from '~/Doc'
 import { DTI } from '~/Doc'
@@ -33,8 +40,6 @@ import type {
 	GetUpdateDataByCtx,
 } from '~/Doc/_/GData'
 import { TransactorError } from '~/error/TransactorError'
-import type { DeleteIt, ReplaceIt } from '~/it'
-import { deleteIt, replaceIt } from '~/it'
 import type { Method } from '~/Method'
 import { DocPath } from '~/Path'
 import type {
@@ -64,7 +69,7 @@ import { WeakDocRef } from './WeakDocRef'
  * directly)
  */
 export class UnknownDocRefBase<
-	D extends $$Doc = Doc,
+	D extends $$Doc = IndexedDoc,
 	Exists extends boolean = boolean,
 	_Ctx extends ExecutionContext = 'outside',
 > implements PromiseLike<D | Null<Exists>>
@@ -82,9 +87,9 @@ export class UnknownDocRefBase<
 
 	_context: DocRefContext
 	_ref: FirestoreLike.ServerDocumentReference
-	_path: DocPath<GetDocTag<D>>
+	_path: DocPath<string, D>
 
-	get path(): DocPath<GetDocTag<D>> {
+	get path(): DocPath<string, D> {
 		return this._path
 	}
 
@@ -270,7 +275,7 @@ export class UnknownDocRefBase<
 		 * Don't chain anything here - we're returning a magic promise to the client
 		 * code that is aware of being awaited or not
 		 */
-		return this.update(deleteIt() as never) as never
+		return this.update(deleteIt as never) as never
 	}
 
 	/** - TODO: Detect floating promises */

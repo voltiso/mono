@@ -35,4 +35,7 @@ type CanonicalPathTokens_<
 
 type CanonicalPathTokens<tokens> = CanonicalPathTokens_<tokens, []>
 
-export type CanonicalPath<Tokens> = Join<CanonicalPathTokens<Tokens>, '/'>
+export type CanonicalPath<Tokens> = Join<
+	CanonicalPathTokens<Tokens>,
+	{ separator: '/' }
+>

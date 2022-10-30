@@ -7,8 +7,8 @@ export interface WithProvidedNn<B extends boolean> {
 }
 
 export type ProvidedNn<X extends {} = {}> = X & WithProvidedNn<true>
-export type NotProvidedNn = WithProvidedNn<false>
+export type NoArgumentNn = WithProvidedNn<false>
 
-// export type OptionalArgument<X> = Provided<X> | NotProvided
+// export type OptionalArgument<X> = Provided<X> | NoArgument
 
-export type OptionalArgumentNn<X extends {}> = ProvidedNn<X> | NotProvidedNn
+export type OptionalArgumentNn<X extends {}> = ProvidedNn<X> | NoArgumentNn

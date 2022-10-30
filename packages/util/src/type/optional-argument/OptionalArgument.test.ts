@@ -3,7 +3,7 @@
 
 import { $Assert } from '~/$strip'
 
-import type { AreNotProvided } from './AreNotProvided'
+import type { AreNoArgument } from './AreNoArgument'
 import type { NoArgument, OptionalArgument } from './OptionalArgument'
 
 type IFunc_<Result> = (...args: never[]) => Result
@@ -14,29 +14,29 @@ type Func_<Args, Result> = Args extends readonly unknown[]
 	: never
 
 // type Fun<
-// 	Args extends OptionalArgument<number[]> = NotProvided,
-// 	Result extends OptionalArgument<string> = NotProvided
+// 	Args extends OptionalArgument<number[]> = NoArgument,
+// 	Result extends OptionalArgument<string> = NoArgument
 // > = AreProvided<[Args, Result]> extends true
 // 	? Fun_<Args, Result>
-// 	: AreNotProvided<[Args, Result]> extends true
+// 	: AreNoArgument<[Args, Result]> extends true
 // 	? IFun
 // 	: never
 
 // type Fun<
-// 	Args extends OptionalArgument<number[]> = NotProvided,
-// 	Result extends OptionalArgument<string> = NotProvided
+// 	Args extends OptionalArgument<number[]> = NoArgument,
+// 	Result extends OptionalArgument<string> = NoArgument
 // > = Args extends number[]
 // 	? Result extends string
 // 		? Fun_<Args, Result>
 // 		: never
-// 	: Result extends NotProvided
-// 	? Args extends NotProvided
-// 		? [Result] extends [NotProvided]
-// 			? [Args] extends [NotProvided]
-// 				? NotProvided extends Args
-// 					? NotProvided extends Result
-// 						? AreNotProvided<[Args, Result]> extends true
-// 							? [AreNotProvided<[Args, Result]>] extends [true]
+// 	: Result extends NoArgument
+// 	? Args extends NoArgument
+// 		? [Result] extends [NoArgument]
+// 			? [Args] extends [NoArgument]
+// 				? NoArgument extends Args
+// 					? NoArgument extends Result
+// 						? AreNoArgument<[Args, Result]> extends true
+// 							? [AreNoArgument<[Args, Result]>] extends [true]
 // 								? IFun
 // 								: never
 // 							: never
@@ -50,7 +50,7 @@ type Func_<Args, Result> = Args extends readonly unknown[]
 type Func<
 	Args extends OptionalArgument<number[]> = NoArgument,
 	Result extends OptionalArgument<string> = NoArgument,
-> = AreNotProvided<[Args, Result], IFunc, Func_<Args, Result>>
+> = AreNoArgument<[Args, Result], IFunc, Func_<Args, Result>>
 
 describe('OptionalArgument', () => {
 	it('works', <Args extends number[], Result extends string>() => {

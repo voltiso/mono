@@ -3,8 +3,8 @@
 
 import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { Id } from '~/Data'
+import type { Doc } from '~/Doc'
 import type { DocTI, DTI } from '~/Doc/DocTI'
-import type { $$Doc } from '~/Doc/IDoc'
 import type { DocPath } from '~/Path'
 
 import type { DocFieldPath } from './DocFieldPath'
@@ -16,7 +16,7 @@ export interface $$DocRef {
 	readonly [IS_DOC_REF]: true
 }
 
-export interface IDocRef extends IDocRefBase, PromiseLike<$$Doc | null> {}
+export interface IDocRef extends IDocRefBase, PromiseLike<Doc | null> {}
 
 export interface IDocRefBase extends $$DocRef {
 	readonly [DTI]: DocTI
@@ -33,8 +33,8 @@ export interface IDocRefBase extends $$DocRef {
 	dataWithId(): PromiseLike<unknown>
 	dataWithoutId(): PromiseLike<unknown>
 
-	get(): PromiseLike<$$Doc | null>
-	set(data: any): PromiseLike<$$Doc>
+	get(): PromiseLike<Doc | null>
+	set(data: any): PromiseLike<Doc>
 	update(updates: any): PromiseLike<unknown>
 	delete(): PromiseLike<null>
 

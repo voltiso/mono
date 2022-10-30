@@ -3,14 +3,19 @@
 
 import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import { getKeys, isPlainObject } from '@voltiso/util'
+import {
+	getKeys,
+	isDeleteIt,
+	isIncrementIt,
+	isPlainObject,
+	isReplaceIt,
+} from '@voltiso/util'
 import { deepEqual } from 'fast-equals'
 
 import { omitVoltisoEntry } from '~/Data'
 import type { NestedData } from '~/Data/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import { TransactorError } from '~/error'
-import { isDeleteIt, isIncrementIt, isReplaceIt } from '~/it'
 import type { IntrinsicFields } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
@@ -40,7 +45,10 @@ export function toDatabaseUpdate(
 
 	if (isWithToDatabase(updates)) return updates.toDatabase()
 
-	if (isIncrementIt(updates)) return ctx.module.FieldValue.increment(updates.n)
+	if (isIncrementIt(updates)) {
+		assert(typeof updates.__incrementIt === 'number')
+		return ctx.module.FieldValue.increment(updates.__incrementIt)
+	}
 
 	if (isReplaceIt(updates))
 		throw new TransactorError('firestore does not support ReplaceField')
@@ -85,7 +93,8 @@ export function toDatabaseSetNested(
 	if (isWithToDatabase(obj)) return obj.toDatabase() as never
 	// if (isStrongDocRef(obj)) return ctx.database.doc(obj.path.pathString)
 
-	if (isReplaceIt(obj)) return toDatabaseSetNested(ctx, obj.data as NestedData)
+	if (isReplaceIt(obj))
+		return toDatabaseSetNested(ctx, obj.__replaceIt as NestedData)
 
 	if (isIncrementIt(obj))
 		throw new TransactorError(
@@ -118,7 +127,8 @@ export function toDatabaseSet(
 	ctx: DatabaseContext,
 	obj: IntrinsicFields,
 ): FirestoreLike.DocumentData {
-	if (isReplaceIt(obj)) return toDatabaseSet(ctx, obj.data as IntrinsicFields)
+	if (isReplaceIt(obj))
+		return toDatabaseSet(ctx, obj.__replaceIt as IntrinsicFields)
 
 	assert(isPlainObject(obj))
 	assert(!isDeleteIt(obj))

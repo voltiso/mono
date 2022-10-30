@@ -191,7 +191,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 			__voltiso: cacheEntry.__voltiso,
 
 			...pathMatches,
-			path: ctx.docRef.path,
+			path: ctx.docRef.path as never,
 			id: id as never,
 			...ctx,
 			possiblyExists: cacheEntry.possiblyExists,

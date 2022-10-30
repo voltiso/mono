@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '~/$strip'
-import { undef } from '~/nullish'
 import type { IsIdentical } from '~/type'
 
 import type { TryGetProperty } from './tryGetProperty'
@@ -35,7 +34,7 @@ describe('tryGetProperty', () => {
 		expect(tryGetProperty({} as { a?: number }, 'a')).toBeUndefined()
 
 		expect(
-			tryGetProperty(undef as undefined | { a?: number }, 'a'),
+			tryGetProperty(undefined as undefined | { a?: number }, 'a'),
 		).toBeUndefined()
 
 		expect(() => tryGetProperty({ a: 1 }, '__proto__')).toThrow('pollution')

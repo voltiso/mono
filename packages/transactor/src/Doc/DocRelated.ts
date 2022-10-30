@@ -6,16 +6,21 @@ import type { Assume, Get_, NewableReturn_ } from '@voltiso/util'
 import type { DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
+import type { Doc } from './Doc'
 import type {
 	$$DocConstructor,
 	DocConstructor,
 	IDocConstructor,
 } from './DocConstructor'
-import type { $$DocTI, DocTI, DTI } from './DocTI'
+import type { $$DocTI, DOC, DocTI, DTI } from './DocTI'
 import type { $$Doc } from './IDoc'
 
 export type WithDocTI = {
-	readonly [DTI]: any
+	readonly [DTI]: DocTI
+}
+
+export type WithDoc = {
+	readonly [DOC]: Doc
 }
 
 export type $$DocRelated =

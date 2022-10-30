@@ -38,6 +38,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-optional-catch-binding': 0,
 		'es-x/no-block-scoped-functions': 0,
 		'es-x/no-default-parameters': 0,
+		'es-x/no-new-target': 0,
 		'es-x/no-numeric-separators': 0, // ✅ `@voltiso/transform/compat`
 
 		'es-x/no-symbol': 0,
@@ -71,6 +72,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-array-prototype-map': 0,
 		'es-x/no-array-prototype-includes': 0,
 		'es-x/no-array-prototype-entries': 0,
+		'es-x/no-array-prototype-keys': 0,
 
 		// string prototype functions
 		'es-x/no-string-prototype-startswith': 0,

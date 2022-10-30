@@ -3,6 +3,7 @@
 
 export * from './createPatch'
 export * from './deleteIt'
+export * from './incrementIt'
 export * from './keepIt'
 export * from './patch'
 export * from './replaceIt'

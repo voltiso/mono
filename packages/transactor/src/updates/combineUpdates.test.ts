@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { deleteIt, incrementIt, isDeleteIt, replaceIt } from '@voltiso/util'
+
 import { immutabilize } from '~/immutabilize'
-import { DeleteIt, deleteIt, incrementIt, replaceIt } from '~/it'
 
 import type { Updates } from './Updates'
 import { combineUpdates } from './Updates'
@@ -45,17 +46,17 @@ describe('updates', function () {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
-		const updates = deleteIt()
+		const updates = deleteIt
 		const newData = combineUpdates(oldData, updates)
 
-		expect(newData).toBeInstanceOf(DeleteIt)
+		expect(isDeleteIt(newData)).toBeTruthy()
 	})
 
 	it('should support "deleteField" sentinel', function () {
 		expect.hasAssertions()
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
-		const updates = { b: { ba: deleteIt() } }
+		const updates = { b: { ba: deleteIt } }
 		const newData = combineUpdates(oldData, updates)
 
 		expect(newData).toStrictEqual({

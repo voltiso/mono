@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
-import { assert, isDefined } from '@voltiso/util'
+import { assert, deleteIt, isDefined, isDeleteIt, replaceIt } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 import chalk from 'chalk'
 
@@ -11,7 +11,6 @@ import { withoutId } from '~/Data'
 import type { CustomDoc, DocTI } from '~/Doc'
 import { getBeforeCommits, processTriggers, StrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
-import { deleteIt, isDeleteIt, replaceIt } from '~/it'
 import { sVoltisoEntry } from '~/schemas'
 import type { Cache, CacheEntry } from '~/Transaction/Cache'
 import { triggerGuard } from '~/Transaction/guard'
@@ -276,7 +275,7 @@ export async function runTransaction<R>(
 							dbCtx,
 							databaseTransaction,
 							ctx._database.doc(path),
-							deleteIt(),
+							deleteIt,
 						)
 					} else {
 						assert(cacheEntry.data)

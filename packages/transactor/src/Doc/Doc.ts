@@ -1,12 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_, IsIdentical, NotProvided } from '@voltiso/util'
+import type {
+	_,
+	$_,
+	DeleteIt,
+	IsIdentical,
+	NoArgument,
+	ReplaceIt,
+} from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { Id } from '~/Data'
 import type { StrongDocRefBase } from '~/DocRef'
-import type { DeleteIt, ReplaceIt } from '~/it'
 import type { DocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
@@ -97,9 +103,9 @@ export type CustomDoc<
 				keyof DocBase<TI, Ctx>
 			>
 
-export type Doc<TI extends $$DocTI | NotProvided = NotProvided> = IsIdentical<
+export type Doc<TI extends $$DocTI | NoArgument = NoArgument> = IsIdentical<
 	TI,
-	NotProvided
+	NoArgument
 > extends true
 	? IDoc
 	: TI extends $$DocTI

@@ -14,6 +14,8 @@ import type { AlsoAccept } from '~/type'
 
 import type { DeleteIt } from './deleteIt'
 import { isDeleteIt } from './deleteIt'
+import type { IncrementIt } from './incrementIt'
+import { isIncrementIt } from './incrementIt'
 import type { KeepIt } from './keepIt'
 import { isKeepIt } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
@@ -32,6 +34,7 @@ export type PatchFor<X> =
 			: never)
 	| ReplaceIt<X>
 	| (X extends undefined ? DeleteIt : never)
+	| (X extends number ? IncrementIt : never)
 	| X
 
 export type $PatchFor<X> = X extends any ? PatchFor<X> : never
@@ -61,6 +64,12 @@ export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt
 	? R
 	: P extends KeepIt
 	? X
+	: P extends IncrementIt<infer Amount>
+	? X extends bigint
+		? bigint
+		: Amount extends bigint
+		? bigint
+		: number
 	: P extends object
 	? X extends object
 		? Merge2<X, ApplyPatchSub<X, P>>
@@ -80,6 +89,14 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	if (isReplaceIt(patchValue)) {
 		if (equals(x, patchValue.__replaceIt)) return x as never
 		else return patchValue.__replaceIt as never
+	}
+
+	if (isIncrementIt(patchValue)) {
+		if (typeof x === 'number' || typeof x === 'bigint') {
+			if (typeof x === 'bigint' || typeof patchValue.__incrementIt === 'bigint')
+				return (BigInt(x) + BigInt(patchValue.__incrementIt)) as never
+			else return (x + patchValue.__incrementIt) as never
+		} else return Number.NaN as never
 	}
 
 	if (isPlainObject(patchValue)) {

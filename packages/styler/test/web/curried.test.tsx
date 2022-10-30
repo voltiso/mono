@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { screen } from '@testing-library/react'
-import { undef } from '@voltiso/util'
 
 import { style } from '~'
 
@@ -26,7 +25,7 @@ describe('curried', () => {
 		expect.hasAssertions()
 
 		const myStyle = style.newProps({ red: false }).css(p => ({
-			color: p.red ? 'red' : undef,
+			color: p.red ? 'red' : undefined,
 		}))
 		const Button = myStyle('button')
 
@@ -46,7 +45,7 @@ describe('curried', () => {
 		const Button = style
 			.newProps({ red: false as boolean | undefined })
 			.css(p => ({
-				color: p.red ? 'red' : undef,
+				color: p.red ? 'red' : undefined,
 			}))('button')
 
 		renderApp(<Button red />)
@@ -65,7 +64,7 @@ describe('curried', () => {
 			.css({ color: 'purple' })
 			.newProps({ red: false as boolean | undefined })
 			.css(p => ({
-				color: p.red ? 'red' : undef,
+				color: p.red ? 'red' : undefined,
 			}))('button')
 		renderApp(<Button />)
 

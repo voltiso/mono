@@ -2,10 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { isDefined } from '@voltiso/util'
+import { isDefined, isDeleteIt } from '@voltiso/util'
 
 import { withoutId } from '~/Data'
-import { isDeleteIt } from '~/it'
 import type { AfterTrigger } from '~/Trigger'
 
 import type { DocRefContextWithTransaction } from './Context'

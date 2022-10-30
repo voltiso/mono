@@ -1,7 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert, isDefined, stringFrom } from '@voltiso/util'
+import type { DeleteIt } from '@voltiso/util'
+import {
+	assert,
+	isDefined,
+	isDeleteIt,
+	isReplaceIt,
+	stringFrom,
+} from '@voltiso/util'
 
 import { databaseUpdate } from '~/common'
 import { withoutId, withVoltisoEntry } from '~/Data'
@@ -16,8 +23,7 @@ import {
 	processTriggers,
 } from '~/DocRef'
 import { TransactorError } from '~/error'
-import type { DeleteIt, RootReplaceIt } from '~/it'
-import { isDeleteIt, isReplaceIt, ReplaceIt } from '~/it'
+import type { RootReplaceIt } from '~/it'
 import type { WithTransaction } from '~/Transaction'
 import {
 	isWithoutTransaction,
@@ -53,8 +59,8 @@ function isRecord(updates: Updates): updates is UpdatesRecord {
 }
 
 function check(this: WithDocRef, updates: Updates, params?: StripParams) {
-	if (updates instanceof ReplaceIt) {
-		check.call(this, updates.data, params)
+	if (isReplaceIt(updates)) {
+		check.call(this, updates.__replaceIt, params)
 		return
 	}
 

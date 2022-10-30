@@ -5,7 +5,7 @@ import type { FastMerge2Reverse_ } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { $$Doc, $$DocTI, IDoc, IndexedDoc } from '~/Doc'
+import type { $$Doc, $$DocTI, IndexedDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GAggregatePromises_ } from '~/Doc/_/GetAggregatePromises'
 import type { GetMethodPromises_ } from '~/Doc/_/GMethodPromises'
@@ -39,7 +39,7 @@ export type StrongDocRef<D extends $$Doc = IndexedDoc> = FastMerge2Reverse_<
 export const StrongDocRef =
 	StrongDocRefBase as unknown as StrongDocRefConstructor
 
-export function isStrongDocRef(x: unknown): x is StrongDocRef<IDoc> {
+export function isStrongDocRef(x: unknown): x is StrongDocRef {
 	return (
 		typeof x === 'object' && (x as UnknownDocRefBase | null)?.isStrong === true
 	)

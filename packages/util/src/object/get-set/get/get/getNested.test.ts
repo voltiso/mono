@@ -2,9 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '~/$strip'
-import type { GetNested } from '~/object/get-set/get/get/get'
-import { get } from '~/object/get-set/get/get/get'
 import type { IsIdentical } from '~/type/compare/IsEqual'
+
+import type { GetNested } from './getNested'
+import { get } from './getNested'
 
 describe('getNested', () => {
 	it('works - static', () => {
