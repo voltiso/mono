@@ -4,7 +4,6 @@
 import { VoltisoUtilError } from '~/error'
 import { lazyConstructor } from '~/lazy'
 import type {
-	IPropertyPath,
 	PropertyPath,
 	UnknownProperty,
 	Value_,
@@ -28,7 +27,7 @@ export type GetNested<O, P extends PropertyPath<O>> = GetNested_<O, P>
 
 export class GetError<
 	Obj extends object,
-	P extends IPropertyPath,
+	P extends PropertyPath,
 > extends lazyConstructor(() => VoltisoUtilError) {
 	object: Obj
 	path: P
@@ -69,7 +68,7 @@ export function get<O extends object, P extends PropertyPath<O>>(
 	obj: O,
 	...x: P | [P]
 ): GetNested<O, P> {
-	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as (keyof any)[]
+	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as PropertyPath
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	let r = obj as any
 	try {

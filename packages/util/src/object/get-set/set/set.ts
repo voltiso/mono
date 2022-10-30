@@ -3,18 +3,16 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { lazyConstructor } from '~/lazy/lazyConstructor'
-import type { GetNested } from '~/object'
+import type { GetNested, PropertyPath } from '~/object'
 import { getProperty, hasProperty, isPlainObject } from '~/object'
 import type { Entry, IEntry } from '~/object/key-value/entry/Entry'
-import type { IPropertyPath } from '~/object/Path/IPath'
-import type { PropertyPath } from '~/object/Path/Path'
 import type { UnknownProperty } from '~/object/UnknownProperty'
 import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
 
 export class SetError<
 	Obj extends object,
-	P extends IPropertyPath,
+	P extends PropertyPath,
 	V,
 > extends lazyConstructor(() => VoltisoUtilError) {
 	object: Obj
@@ -85,7 +83,7 @@ export function _set(
 	...args:
 		| readonly [object, IEntry]
 		| readonly [object, UnknownProperty, unknown]
-		| readonly [object, IPropertyPath, unknown]
+		| readonly [object, PropertyPath, unknown]
 ): void {
 	if (args.length === 2) {
 		const [object, [property, value]] = args

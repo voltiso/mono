@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IPropertyPath, PropertyPath } from '~/object'
+import type { PropertyPath } from '~/object'
 
 import type { TryGetProperty } from './tryGetProperty'
 import { tryGetProperty } from './tryGetProperty'
@@ -45,8 +45,8 @@ export function tryGet<O extends object, P extends PropertyPath<O>>(
 	path: P,
 ): TryGet<O, P>
 
-export function tryGet(o: undefined, ...path: IPropertyPath): undefined
-export function tryGet(o: undefined, path: IPropertyPath): undefined
+export function tryGet(o: undefined, ...path: PropertyPath): undefined
+export function tryGet(o: undefined, path: PropertyPath): undefined
 
 export function tryGet<O extends object, P extends PropertyPath<O>>(
 	o: O | undefined,

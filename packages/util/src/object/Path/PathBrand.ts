@@ -18,6 +18,16 @@ export type DefaultPathOptions = {
 
 //
 
+declare module '~' {
+	interface Brands {
+		path: {
+			segment: unknown
+		}
+	}
+}
+
+//
+
 export type PathBrand<partialOptions extends Partial<PathOptions> = {}> =
 	DetailedBrand<'path', Override<DefaultPathOptions, partialOptions>>
 
