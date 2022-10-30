@@ -5,7 +5,7 @@ import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
 import type { IsProvided } from './IsProvided'
-import type { NotProvided } from './OptionalArgument'
+import type { NoArgument } from './OptionalArgument'
 
 describe('OptionalArgument', () => {
 	it('type', () => {
@@ -34,16 +34,16 @@ describe('OptionalArgument', () => {
 		type G = IsProvided<typeof sym>
 		$Assert<IsIdentical<G, true>>()
 
-		type H = IsProvided<NotProvided>
+		type H = IsProvided<NoArgument>
 		$Assert<IsIdentical<H, false>>()
 
-		type I = IsProvided<null | NotProvided>
+		type I = IsProvided<null | NoArgument>
 		$Assert<IsIdentical<I, boolean>>()
 
-		type J = IsProvided<never | NotProvided>
+		type J = IsProvided<never | NoArgument>
 		$Assert<IsIdentical<J, false>>()
 
-		type K = IsProvided<void | NotProvided>
+		type K = IsProvided<void | NoArgument>
 		$Assert<IsIdentical<K, boolean>>()
 	})
 
@@ -57,7 +57,7 @@ describe('OptionalArgument', () => {
 		// Assert<IsIdentical<A, true>>()
 	})
 
-	it('generic - not provided (or never)', <X extends NotProvided>() => {
+	it('generic - not provided (or never)', <X extends NoArgument>() => {
 		expect.assertions(0)
 
 		type A = IsProvided<X>
@@ -69,7 +69,7 @@ describe('OptionalArgument', () => {
 		// Assert<IsIdentical<A, boolean>>()
 	})
 
-	it('generic - provided or not (null)', <X extends null | NotProvided>() => {
+	it('generic - provided or not (null)', <X extends null | NoArgument>() => {
 		expect.assertions(0)
 
 		type A = IsProvided<X>

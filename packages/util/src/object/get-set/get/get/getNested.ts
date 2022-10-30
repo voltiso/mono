@@ -3,7 +3,12 @@
 
 import { VoltisoUtilError } from '~/error'
 import { lazyConstructor } from '~/lazy'
-import type { IPath, Path, UnknownProperty, Value_ } from '~/object'
+import type {
+	IPropertyPath,
+	PropertyPath,
+	UnknownProperty,
+	Value_,
+} from '~/object'
 import { stringFrom } from '~/string'
 
 import type { GetPropertyComplex } from './getProperty'
@@ -17,13 +22,13 @@ export type GetNested_<O, P> = P extends readonly []
 		: never
 	: never
 
-export type GetNested<O, P extends Path<O>> = GetNested_<O, P>
+export type GetNested<O, P extends PropertyPath<O>> = GetNested_<O, P>
 
 //
 
 export class GetError<
 	Obj extends object,
-	P extends IPath,
+	P extends IPropertyPath,
 > extends lazyConstructor(() => VoltisoUtilError) {
 	object: Obj
 	path: P
@@ -49,18 +54,18 @@ export function get<O extends object, K extends keyof O>(
 	k: K,
 ): GetPropertyComplex<O, K>
 
-export function get<O extends object, P extends Path<O>>(
+export function get<O extends object, P extends PropertyPath<O>>(
 	o: O,
 	...path: P
 ): GetNested<O, P>
-export function get<O extends object, P extends Path<O>>(
+export function get<O extends object, P extends PropertyPath<O>>(
 	o: O,
 	path: P,
 ): GetNested<O, P>
 
 //
 
-export function get<O extends object, P extends Path<O>>(
+export function get<O extends object, P extends PropertyPath<O>>(
 	obj: O,
 	...x: P | [P]
 ): GetNested<O, P> {

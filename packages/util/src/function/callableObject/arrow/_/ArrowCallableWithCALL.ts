@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CALL, NotProvided, WithCALL } from '~'
+import type { CALL, NoArgument, WithCALL } from '~'
 //
 
 /** @internal Use `CallableWithCall` instead */
@@ -16,8 +16,8 @@ export type _ArrowCallableWithCALL<T extends WithCALL> = T &
 //
 
 export type ArrowCallableWithCALL<
-	T extends WithCALL | NotProvided = NotProvided,
-> = T extends NotProvided
+	T extends WithCALL | NoArgument = NoArgument,
+> = T extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
 	  IArrowCallableWithCALL
 	: T extends WithCALL

@@ -11,6 +11,8 @@ import type { StrongDocRefBase } from '~/DocRef'
 
 import type { UpdatesFromData } from './UpdatesFromData'
 
+class MyDoc extends Doc.public({ num: s.number }) {}
+
 describe('Doc util', () => {
 	it('UpdatesFromData', () => {
 		expect.assertions(0)
@@ -22,9 +24,11 @@ describe('Doc util', () => {
 	it('UpdatesFromData - ref', () => {
 		expect.assertions(0)
 
-		class MyDoc extends Doc.public({ num: s.number }) {}
-		$Assert<IsIdentical<MyDoc['ref'], StrongDocRefBase<MyDoc>>>()
+		type MyDocRef = MyDoc['ref']
+		$Assert<IsIdentical<MyDocRef, StrongDocRefBase<MyDoc>>>()
+
 		$Assert.isSubtype<StrongDocRefBase<MyDoc>, LeafData>()
+
 		type X = UpdatesFromData<StrongDocRefBase<MyDoc>, StrongDocRefBase<MyDoc>>
 		$Assert.isSubtype<StrongDocRefBase<MyDoc>, X>()
 	})

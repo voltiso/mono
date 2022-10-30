@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { deleteAllProperties } from '~/object'
-import type { NotProvided } from '~/type'
+import type { NoArgument } from '~/type'
 import type { IProtoCallable, _ProtoCallable } from './_'
 
 import type { ProtoCallableOptions } from './_/ProtoCallableOptions'
@@ -13,8 +13,8 @@ export type __unused_ProtoCallable = typeof clone
 //
 
 export type ProtoCallable<
-	Options extends ProtoCallableOptions | NotProvided = NotProvided,
-> = Options extends NotProvided
+	Options extends ProtoCallableOptions | NoArgument = NoArgument,
+> = Options extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
 	  IProtoCallable
 	: Options extends ProtoCallableOptions

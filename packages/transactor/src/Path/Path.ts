@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
+import type { Brand, Includes, Or, Parity, Split } from '@voltiso/util'
 import { at } from '@voltiso/util'
 
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
@@ -12,8 +12,8 @@ import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { DocRefPattern, WeakDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 
-/** Does not contain `/` */
-export type PathSegment = Opaque<string, 'PathSegment'>
+/** Does not include `/`. */
+export type PathSegment = string & Brand<'PathSegment'>
 
 /**
  * Checks if `str` does not contain `/`
@@ -47,23 +47,17 @@ export type PatternString<S extends string = string> =
 	| DocPatternString<S>
 	| CollectionPatternString<S>
 
-export type DocPathString<S extends string = string> = Opaque<
-	S,
-	'DocPathString'
->
-export type CollectionPathString<S extends string = string> = Opaque<
-	S,
-	'CollectionPathString'
->
+export type DocPathString<S extends string = string> = S &
+	Brand<'DocPathString'>
 
-export type DocPatternString<S extends string = string> = Opaque<
-	S,
-	'DocPatternString'
->
-export type CollectionPatternString<S extends string = string> = Opaque<
-	S,
-	'CollectionPatternString'
->
+export type CollectionPathString<S extends string = string> = S &
+	Brand<'CollectionPathString'>
+
+export type DocPatternString<S extends string = string> = S &
+	Brand<'DocPatternString'>
+
+export type CollectionPatternString<S extends string = string> = S &
+	Brand<'CollectionPatternString'>
 
 /**
  * Asserts if `str` does not contain `//` and returns it.
@@ -108,7 +102,6 @@ export function createPatternString<S extends string>(
  */
 class Path<S extends string = string> {
 	#str: PathString<S>
-
 	#segments: readonly PathSegment[] | undefined = undefined
 
 	get segments(): readonly PathSegment[] {
@@ -123,11 +116,11 @@ class Path<S extends string = string> {
 		Object.freeze(this)
 	}
 
-	toString() {
+	toString(): PathString<S> {
 		return this.#str
 	}
 
-	valueOf() {
+	valueOf(): PathString<S> {
 		return this.#str
 	}
 }

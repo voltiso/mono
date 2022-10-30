@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NotProvided, OptionalArgument } from '~/type/optional-argument'
+import type { NoArgument, OptionalArgument } from '~/type/optional-argument'
 
 import type { ISyncerNested, SyncerNested } from './SyncerNested'
 import type { PartialSyncerSwitch, SyncerSwitch } from './SyncerSwitch'
@@ -24,7 +24,7 @@ type SyncerPromise_<Return, Intermediate> = Generator<
 
 export type SyncerPromise<
 	Return = unknown,
-	Intermediate extends OptionalArgument<unknown> = NotProvided,
-> = [Intermediate] extends [NotProvided]
+	Intermediate extends OptionalArgument<unknown> = NoArgument,
+> = [Intermediate] extends [NoArgument]
 	? ISyncerPromise<Return>
 	: SyncerPromise_<Return, Intermediate>

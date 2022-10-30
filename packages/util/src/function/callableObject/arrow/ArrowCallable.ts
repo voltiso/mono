@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ArrowCallableWithCALL, Callable, ProtoCallable } from '~/function'
-import type { NotProvided } from '~/type'
+import type { NoArgument } from '~/type'
 
 import type { WithCALL } from '../CALL'
 import { CALL, isWithCALL } from '../CALL'
@@ -17,8 +17,8 @@ export type ArrowCallable<
 		| ArrowCallableOptions
 		| WithCALL
 		| Callable<{ this: void }>
-		| NotProvided = NotProvided,
-> = Options extends NotProvided
+		| NoArgument = NoArgument,
+> = Options extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
 	  IArrowCallable
 	: Options extends ArrowCallableOptions
@@ -27,8 +27,8 @@ export type ArrowCallable<
 	: Options extends WithCALL
 	? ArrowCallableWithCALL<Options>
 	: Options extends Callable<{ this: void }>
-	// eslint-disable-next-line etc/no-internal
-	? _ArrowCallable<{ call: Options }>
+	? // eslint-disable-next-line etc/no-internal
+	  _ArrowCallable<{ call: Options }>
 	: never
 
 //

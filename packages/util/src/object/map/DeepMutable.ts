@@ -5,7 +5,7 @@ import type {
 	$Decrement,
 	DecrementArgument,
 	IsCompatible,
-	NotProvided,
+	NoArgument,
 } from '~/type'
 
 /** @inline */
@@ -37,7 +37,7 @@ export type $DeepMutable<T extends object | unknown[]> = $DeepMutable_<T>
 export type DeepMutableN<
 	TLength extends DecrementArgument,
 	T,
-	Options extends { skip: unknown } = { skip: NotProvided },
+	Options extends { skip: unknown } = { skip: NoArgument },
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
@@ -64,7 +64,7 @@ export type DeepMutableN<
 export type $DeepMutableN<
 	TLength extends DecrementArgument,
 	T,
-	Options extends { skip: unknown } = { skip: NotProvided },
+	Options extends { skip: unknown } = { skip: NoArgument },
 > = T extends any ? DeepMutableN<TLength, T, Options> : never
 
 /**
@@ -76,7 +76,7 @@ export type $DeepMutableN<
 export type $$DeepMutableN<
 	TLength extends DecrementArgument,
 	T,
-	Options extends { skip: unknown } = { skip: NotProvided },
+	Options extends { skip: unknown } = { skip: NoArgument },
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
@@ -99,7 +99,7 @@ export namespace DeepMutableN {
 	/** @internal */
 	export type _ShouldSkip<T, skipOption> = IsCompatible<
 		skipOption,
-		NotProvided
+		NoArgument
 	> extends true
 		? false
 		: [T] extends [skipOption]

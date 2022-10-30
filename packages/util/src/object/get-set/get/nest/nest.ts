@@ -5,20 +5,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { IPath } from '~'
+import type { AlsoAccept } from '~'
+import { at } from '~'
+import type { PropertyPath } from '~/object'
 import { setProperty } from '~/object'
 
-type Nest_<path, Accumulator> = path extends readonly []
-	? Accumulator
+export type Nest_<acc, path> = path extends readonly []
+	? acc
 	: path extends readonly [...infer T, infer H]
 	? H extends string | number | symbol
-		? Nest_<T, { [k in H]: Accumulator }>
+		? Nest_<{ [k in H]: acc }, T>
 		: never
 	: never
 
-export type Nest<X, path extends IPath> = Nest_<path, X>
+export type Nest<X, path extends PropertyPath> = Nest_<X, path>
 
-export function nest<X, P extends IPath>(x: X, path: P): Nest<X, P> {
+export function nest<X, P extends PropertyPath | AlsoAccept<readonly (keyof any)[]>>(
+	x: X,
+	path: P,
+): Nest_<X, P> {
 	if (path.length === 0) return x as never
 
 	const result = {} as any
@@ -30,6 +35,6 @@ export function nest<X, P extends IPath>(x: X, path: P): Nest<X, P> {
 		currentNested = currentNested[token]
 	}
 
-	currentNested[path.at(-1) as any] = x
+	currentNested[at(path, -1) as any] = x
 	return result
 }

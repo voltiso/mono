@@ -3,7 +3,7 @@
 
 import { $Assert } from '~'
 import type { Callable, WithCALL } from '~/function'
-import type { NotProvided } from '~/type'
+import type { NoArgument } from '~/type'
 
 import { ArrowCallable } from './ArrowCallable'
 import type { ArrowCallableOptions } from './ArrowCallableOptions'
@@ -13,7 +13,7 @@ describe('ArrowCallable', () => {
 		| ArrowCallableOptions
 		| WithCALL
 		| Callable<{ this: void }>
-		| NotProvided>() => {
+		| NoArgument>() => {
 		expect.assertions(0)
 
 		$Assert.is<ArrowCallable<O>, ArrowCallable>()

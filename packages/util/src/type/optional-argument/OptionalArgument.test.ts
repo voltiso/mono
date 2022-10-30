@@ -4,7 +4,7 @@
 import { $Assert } from '~/$strip'
 
 import type { AreNotProvided } from './AreNotProvided'
-import type { NotProvided, OptionalArgument } from './OptionalArgument'
+import type { NoArgument, OptionalArgument } from './OptionalArgument'
 
 type IFunc_<Result> = (...args: never[]) => Result
 type IFunc<Result extends string = string> = IFunc_<Result>
@@ -48,8 +48,8 @@ type Func_<Args, Result> = Args extends readonly unknown[]
 // 	: never
 
 type Func<
-	Args extends OptionalArgument<number[]> = NotProvided,
-	Result extends OptionalArgument<string> = NotProvided,
+	Args extends OptionalArgument<number[]> = NoArgument,
+	Result extends OptionalArgument<string> = NoArgument,
 > = AreNotProvided<[Args, Result], IFunc, Func_<Args, Result>>
 
 describe('OptionalArgument', () => {

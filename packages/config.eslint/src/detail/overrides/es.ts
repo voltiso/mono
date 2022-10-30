@@ -79,8 +79,9 @@ export const es = defineEslintConfigOverride({
 		// function prototype functions
 		'es-x/no-function-prototype-bind': 0,
 
-		// !!! NOT SURE YET
+		// !!! NOT SURE YET - new stuff ♥️
 		'es-x/no-nullish-coalescing-operators': 0,
+		'es-x/no-logical-assignment-operators': 0,
 	},
 
 	// settings: {

@@ -1,4 +1,5 @@
 export * from './CanBeUndefined'
+export * from './DeepKeys'
 export * from './IsOptional'
 export * from './Path'
 export * from './PlainObject'

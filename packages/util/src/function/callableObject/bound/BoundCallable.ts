@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { WithCloneFunction, NotProvided } from '~'
+import type { WithCloneFunction, NoArgument } from '~'
 import { $expect } from '~/$strip'
 import type {
 	_BoundCallable,
@@ -21,8 +21,8 @@ export type BoundCallable<
 	Options extends
 		| BoundCallableOptions
 		| WithSelfBoundCALL
-		| NotProvided = NotProvided,
-> = Options extends NotProvided
+		| NoArgument = NoArgument,
+> = Options extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
 	  IBoundCallable
 	: Options extends WithSelfBoundCALL

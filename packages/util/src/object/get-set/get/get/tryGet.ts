@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IPath, Path } from '~/object'
+import type { IPropertyPath, PropertyPath } from '~/object'
 
 import type { TryGetProperty } from './tryGetProperty'
 import { tryGetProperty } from './tryGetProperty'
@@ -18,7 +18,7 @@ type TryGet_<O, P> = P extends readonly []
 
 export type TryGet<
 	O extends object | undefined | null,
-	P extends Path<O>,
+	P extends PropertyPath<O>,
 > = TryGet_<O, P>
 
 //
@@ -36,30 +36,30 @@ export function tryGet<O extends object, K extends keyof O>(
 
 //
 
-export function tryGet<O extends object, P extends Path<O>>(
+export function tryGet<O extends object, P extends PropertyPath<O>>(
 	o: O,
 	...path: P
 ): TryGet<O, P>
-export function tryGet<O extends object, P extends Path<O>>(
+export function tryGet<O extends object, P extends PropertyPath<O>>(
 	o: O,
 	path: P,
 ): TryGet<O, P>
 
-export function tryGet(o: undefined, ...path: IPath): undefined
-export function tryGet(o: undefined, path: IPath): undefined
+export function tryGet(o: undefined, ...path: IPropertyPath): undefined
+export function tryGet(o: undefined, path: IPropertyPath): undefined
 
-export function tryGet<O extends object, P extends Path<O>>(
+export function tryGet<O extends object, P extends PropertyPath<O>>(
 	o: O | undefined,
 	...path: P
 ): TryGet<O, P> | undefined
-export function tryGet<O extends object, P extends Path<O>>(
+export function tryGet<O extends object, P extends PropertyPath<O>>(
 	o: O | undefined,
 	path: P,
 ): TryGet<O, P> | undefined
 
 //
 
-export function tryGet<O extends object, P extends Path<O>>(
+export function tryGet<O extends object, P extends PropertyPath<O>>(
 	o: O | undefined,
 	...x: P | [P]
 ): TryGet<O, P> | undefined {

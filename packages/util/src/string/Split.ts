@@ -1,25 +1,39 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-type Split_<
-	T,
-	Separator extends string,
-	accumulator extends readonly unknown[],
-> = T extends `${infer A}${Separator}${infer B}`
-	? Split_<B, Separator, readonly [...accumulator, A]>
-	: T extends ''
-	? accumulator
-	: T extends `${infer S}`
-	? readonly [...accumulator, S]
-	: string extends T
-	? readonly [...accumulator, ...string[]]
-	: string extends Separator
-	? readonly [...accumulator, ...string[]]
-	: never
-// : readonly [...acc, T]
+import type { Override } from '~'
 
-export type Split<str extends string, separator extends string = ''> = Split_<
-	str,
-	separator,
-	readonly []
->
+export type SplitOptions = {
+	separator: string
+}
+
+export type DefaultSplitOptions = {
+	separator: ''
+}
+
+export type Split<
+	str extends string,
+	partialOptions extends Partial<SplitOptions> = {},
+	// eslint-disable-next-line etc/no-internal
+> = Split._Rec<str, Override<DefaultSplitOptions, partialOptions>, readonly []>
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Split {
+	/** @internal */
+	export type _Rec<
+		T,
+		options extends SplitOptions,
+		accumulator extends readonly unknown[],
+	> = T extends `${infer A}${options['separator']}${infer B}`
+		? // eslint-disable-next-line etc/no-internal
+		  _Rec<B, options, readonly [...accumulator, A]>
+		: T extends ''
+		? accumulator
+		: T extends `${infer S}`
+		? readonly [...accumulator, S]
+		: string extends T
+		? readonly [...accumulator, ...string[]]
+		: string extends options['separator']
+		? readonly [...accumulator, ...string[]]
+		: never
+}

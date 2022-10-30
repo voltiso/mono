@@ -26,12 +26,16 @@ export interface _IncrementMap {
 // eslint-disable-next-line etc/no-internal
 export type IncrementArgument = _<keyof _IncrementMap>
 
+// eslint-disable-next-line etc/no-internal
 export type Increment_<X> = [X] extends [keyof _IncrementMap]
-	? _IncrementMap[X]
+	? // eslint-disable-next-line etc/no-internal
+	  _IncrementMap[X]
 	: number
 
+// eslint-disable-next-line etc/no-internal
 export type $Increment_<X> = X extends keyof _IncrementMap
-	? _IncrementMap[X]
+	? // eslint-disable-next-line etc/no-internal
+	  _IncrementMap[X]
 	: number
 
 export type $Increment<X extends IncrementArgument | AlsoAccept<number>> =

@@ -10,11 +10,15 @@ describe('join', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type A = Join<['asd', 'sdf'], '/'>
+		type A = Join<['asd', 'sdf'], { separator: '/' }>
 		$Assert<IsEqual<A, 'asd/sdf'>>()
 
-		$Assert<IsEqual<Join<['a', 'b', 'c', 'd'], '/'>, 'a/b/c/d'>>()
+		$Assert<
+			IsEqual<Join<['a', 'b', 'c', 'd'], { separator: '/' }>, 'a/b/c/d'>
+		>()
+
 		$Assert<IsEqual<Join<['a', 'b', 'c', 'd']>, 'abcd'>>()
-		$Assert<IsEqual<Join<['a', 'b', 'c', 'd'], ''>, 'abcd'>>()
+
+		$Assert<IsEqual<Join<['a', 'b', 'c', 'd'], { separator: '' }>, 'abcd'>>()
 	})
 })

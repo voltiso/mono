@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { IsSubtype } from '@voltiso/util'
+import type { IsIdentical, IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
 import type { DOC } from '~/Doc'
 import { Doc } from '~/Doc'
 
-import type { Id } from './Id'
+import type { DocBrand, Id } from './Id'
 
 class MyDoc extends Doc({
 	tag: 'my-tag-data-1',
@@ -57,14 +57,14 @@ describe('Data', () => {
 
 			//
 
-			// type MyId = Id<MyDoc>
 			type MyId = MyDoc['id']
+			type MyId2 = MyDoc2['id']
+
+			$Assert<IsIdentical<MyId, string & DocBrand<'my-tag-data-1'>>>()
+			$Assert<IsIdentical<MyId2, string & DocBrand<'my-tag-data-2'>>>()
 
 			$Assert.is<MyId, Id>()
 			$Assert.is<IsSubtype<Id, MyId>, false>()
-
-			// type MyId2 = Id<MyDoc2>
-			type MyId2 = MyDoc2['id']
 
 			$Assert(
 				$Is<MyId>().not.subtypeOf<MyId2>(),

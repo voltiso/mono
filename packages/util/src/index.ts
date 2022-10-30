@@ -7,6 +7,7 @@ export * from './any'
 export * from './array'
 export * from './assert'
 export * from './boolean'
+export type { Brands } from './Brands-augmentation'
 export * from './cast'
 export * from './class'
 export * from './clone'
@@ -35,3 +36,16 @@ export * from './string'
 export * from './syncer'
 export * from './tsc-options'
 export * from './type'
+export * from './TypeAliases'
+export type {
+	TypeAliases0,
+	TypeAliases1,
+	TypeAliases2,
+	TypeAliases3,
+	TypeAliases4,
+	TypeAliases5,
+	TypeAliases6,
+	TypeAliases7,
+	TypeAliases8,
+	TypeAliases9,
+} from './TypeAliases-augmentation'

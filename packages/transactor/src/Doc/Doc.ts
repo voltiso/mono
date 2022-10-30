@@ -1,13 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	_,
-	$_,
-	IsIdentical,
-	Merge2Reverse_,
-	NotProvided,
-} from '@voltiso/util'
+import type { _, $_, IsIdentical, NotProvided } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { Id } from '~/Data'
@@ -43,7 +37,7 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	extends $$Doc {
 	//
 
-	// This: this
+	This: this
 
 	readonly [DTI]: TI
 
@@ -92,19 +86,16 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 /** `DocBase` + custom stuff at the root level */
 export type CustomDoc<
 	TI extends $$DocTI,
-	Ctx extends ExecutionContext, // ! TODO
+	Ctx extends ExecutionContext, // ! TODO - make `Options` struct
 > = TI extends $$IndexedDocTI
 	? IndexedDoc<Ctx>
-	: Merge2Reverse_<
-			// ! flatten helps with "instantiation too deep" errors 🤔
-			DocBase<TI, Ctx>,
+	: DocBase<TI, Ctx> & // ! cannot flatten here - would loose `this`
 			Omit<
 				GetData<TI> &
 					GetMethodPromises_<TI> &
 					Required<GetData<TI>['__voltiso']['aggregateTarget']>,
 				keyof DocBase<TI, Ctx>
 			>
-	  >
 
 export type Doc<TI extends $$DocTI | NotProvided = NotProvided> = IsIdentical<
 	TI,

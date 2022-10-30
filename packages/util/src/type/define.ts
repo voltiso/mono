@@ -8,7 +8,7 @@ import type { Primitive } from '~/primitive'
 import type { AlsoAccept } from './AlsoAccept'
 import type { Override } from './ApplyOverrides'
 import type { DecrementArgument } from './number'
-import type { NotProvided } from './optional-argument'
+import type { NoArgument } from './optional-argument'
 
 export interface DefineTypeOptions {
 	/**
@@ -26,7 +26,7 @@ export interface DefineTypeOptions {
 	 * - Passed to `DeepMutableN`
 	 * - Type-only
 	 */
-	Skip: NotProvided | AlsoAccept<unknown>
+	Skip: NoArgument | AlsoAccept<unknown>
 }
 
 export interface DefaultDefineTypeOptions extends DefineTypeOptions {
@@ -43,7 +43,7 @@ export function define<T, Options extends Partial<DefineTypeOptions> = {}>(): {
 		Override<DefaultDefineTypeOptions, Options>['MakeMutableDepth'],
 		Inferred,
 		{
-			skip: NotProvided
+			skip: NoArgument
 		}
 	>
 } {

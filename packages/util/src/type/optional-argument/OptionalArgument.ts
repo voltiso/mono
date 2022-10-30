@@ -13,7 +13,7 @@
 // export type OptionalArgument<X> = Provided<X> | NotProvided
 
 // declare const NotProvided: unique symbol
-export const NotProvided = Symbol('NotProvided')
-export type NotProvided = typeof NotProvided
+export const NoArgument = Symbol('NoArgument')
+export type NoArgument = typeof NoArgument
 
-export type OptionalArgument<X> = X | NotProvided
+export type OptionalArgument<X> = X | NoArgument
