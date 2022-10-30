@@ -110,30 +110,15 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 		return this._cloneWithOptions({
 			shape: { ...this.getShape, ...other.getShape },
-
 			customChecks: [...a.customChecks, ...b.customChecks],
-
 			customFixes: [...a.customFixes, ...b.customFixes],
-
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			hasDefault: a.hasDefault || b.hasDefault,
-
 			default: b.hasDefault ? b.default : a.default,
-
 			getDefault: b.hasDefault ? b.getDefault : a.getDefault,
-
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			isOptional: a.isOptional && b.isOptional,
-
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			isStrictOptional: a.isStrictOptional && b.isStrictOptional,
-
 			indexSignatures: [...a.indexSignatures, ...b.indexSignatures],
-
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			isReadonly: a.isReadonly && b.isReadonly,
-
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			isPlain: a.isPlain || b.isPlain,
 		}) as never
 	}
@@ -222,7 +207,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				}),
 			)
 		} else {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, security/detect-object-injection
+			// eslint-disable-next-line security/detect-object-injection
 			if (this[OPTIONS].isPlain && !isPlainObject(x)) {
 				issues.push(
 					new ValidationIssue({
@@ -273,7 +258,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			})) {
 				if (!hasProperty(this.getShape, key)) {
 					//! util TODO: hasProperty should only type-guard for literal types
-					// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unnecessary-condition
+					// eslint-disable-next-line security/detect-object-injection
 					if (this[OPTIONS].indexSignatures.length === 0)
 						issues.push(
 							new ValidationIssue({

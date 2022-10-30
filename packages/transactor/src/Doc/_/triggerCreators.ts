@@ -4,7 +4,7 @@
 import { $AssumeType, assert } from '@voltiso/util'
 import chalk from 'chalk'
 
-import type { Doc, $$Doc } from '~/Doc'
+import type { $$Doc, CustomDoc } from '~/Doc'
 import type { DocDerivedData } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 import type {
@@ -63,7 +63,7 @@ function logTrigger<D extends $$Doc>(
 		chalk.inverse(when, event, 'trigger'),
 		chalk.blueBright(name),
 		'\n',
-		params.path.pathString,
+		params.path.toString(),
 		'\n',
 		'\n',
 		chalk.red(dump(params.before)),
@@ -86,8 +86,8 @@ export function withAfter<TI extends DocDerivedData>(
 			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
 				logTrigger(name, 'after', 'ANY', params)
 				return f.call(this, params) as never
-			},
-		],
+			} as never,
+		] as never,
 	}
 }
 
@@ -111,7 +111,7 @@ export function withAfterUpdate<TI extends DocDerivedData>(
 					assertAfter(params)
 					return f.call(this, params) as never
 				} else return undefined
-			},
+			} as never,
 		],
 	}
 }
@@ -133,7 +133,7 @@ export function withAfterDelete<TI extends DocDerivedData>(
 					assertNotAfter(p)
 					return f.call(this, p) as never
 				} else return undefined
-			},
+			} as never,
 		],
 	}
 }
@@ -154,7 +154,7 @@ export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
 					assertAfter(params)
 					return f.call(this, params) as never
 				} else return undefined
-			},
+			} as never,
 		],
 	}
 }
@@ -177,7 +177,7 @@ export function withAfterCreate<TI extends DocDerivedData>(
 					assertAfter(p)
 					return f.call(this, p) as never
 				} else return undefined
-			},
+			} as never,
 		],
 	}
 }
@@ -185,7 +185,7 @@ export function withAfterCreate<TI extends DocDerivedData>(
 export function withBeforeCommit<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	f: BeforeCommitTrigger<Doc<TI, 'inside'>>,
+	f: BeforeCommitTrigger<CustomDoc<TI, 'inside'>>,
 ): TI {
 	return {
 		..._,
@@ -193,7 +193,7 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 		beforeCommits: [
 			..._.beforeCommits,
 			function (
-				this: Doc<TI, 'inside'> | null,
+				this: CustomDoc<TI, 'inside'> | null,
 				p: BeforeCommitTriggerParams<GI<TI>>,
 			) {
 				const before = this?.dataWithId() || null
@@ -202,7 +202,7 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 					...p,
 					before: before as never, // :(
 					after: after as never, // :(
-				})
+				} as never)
 				return f.call(this as never, p as never) as never
 			} as never,
 		] as never,
@@ -226,7 +226,7 @@ export function withOnGet<TI extends DocDerivedData>(
 					...p,
 					before: before as never,
 					after: after as never,
-				})
+				} as never)
 				return f.call(this, p as never) as never
 			} as never,
 		],

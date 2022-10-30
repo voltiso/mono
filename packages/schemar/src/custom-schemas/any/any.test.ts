@@ -5,9 +5,9 @@ import type {
 	AnyOptions,
 	CustomAny,
 	IAny,
-	InputType,
+	Input,
 	ISchema,
-	OutputType,
+	Output,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -28,21 +28,21 @@ describe('any', () => {
 
 		$Assert.is<typeof s.any, ISchema>()
 
-		type A1 = OutputType<typeof s.any>
-		type A2 = InputType<typeof s.any>
+		type A1 = Output<typeof s.any>
+		type A2 = Input<typeof s.any>
 		$Assert<IsIdentical<A1, any>>()
 		$Assert<IsIdentical<A2, any>>()
 
-		type B = s.Any['OutputType']
+		type B = s.Any['Output']
 		$Assert.is<B, any>()
 
-		type C = s.Any['OutputType']['optional']
+		type C = s.Any['Output']['optional']
 		$Assert.is<C, any>()
 
-		type D = s.Any['OutputType']['optional']['optional']
+		type D = s.Any['Output']['optional']['optional']
 		$Assert.is<D, any>()
 
-		type E = s.Any['OutputType']['optional']['readonly']
+		type E = s.Any['Output']['optional']['readonly']
 		$Assert.is<E, any>()
 
 		const e = s.any.optional.readonly

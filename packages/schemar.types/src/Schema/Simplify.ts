@@ -11,8 +11,8 @@ import type { $$Schema, CustomSchema, ISchema, SimpleSchema } from '.'
 /** @inline */
 export type CanBeSimpleSchema<
 	S extends $$Schema & {
-		OutputType: unknown
-		InputType: unknown
+		Output: unknown
+		Input: unknown
 		[OPTIONS]: SchemaOptions
 	},
 	True = true,
@@ -21,7 +21,7 @@ export type CanBeSimpleSchema<
 	? False
 	: true extends S[OPTIONS]['isReadonly']
 	? False
-	: false extends IsCompatible<S['OutputType'], S['InputType']>
+	: false extends IsCompatible<S['Output'], S['Input']>
 	? False
 	: True
 
@@ -29,19 +29,17 @@ export type CanBeSimpleSchema<
 export type Simplify<S extends $$Schemable> = SimplifySchema<InferSchema_<S>>
 
 /** @inline */
-export type SimplifySchema<S extends $$Schema> = S extends 
-	{
-		OutputType: unknown
-		InputType: unknown
-		[OPTIONS]: SchemaOptions
-	}
-
+export type SimplifySchema<S extends $$Schema> = S extends {
+	Output: unknown
+	Input: unknown
+	[OPTIONS]: SchemaOptions
+}
 	? $$Schema extends S
 		? S
 		: ISchema<never> extends S
 		? S
 		: CanBeSimpleSchema<S> extends true
-		? SimpleSchema<S['OutputType']>
+		? SimpleSchema<S['Output']>
 		: CustomSchema<
 				_<
 					(S[OPTIONS]['isOptional'] extends false
@@ -54,17 +52,12 @@ export type SimplifySchema<S extends $$Schema> = S extends
 							? {}
 							: { hasDefault: S[OPTIONS]['hasDefault'] }) &
 						IsIdentical<
-							S['OutputType'],
+							S['Output'],
 							unknown,
 							unknown,
-							{ Output: S['OutputType'] }
+							{ Output: S['Output'] }
 						> &
-						IsIdentical<
-							S['InputType'],
-							unknown,
-							unknown,
-							{ Input: S['InputType'] }
-						>
+						IsIdentical<S['Input'], unknown, unknown, { Input: S['Input'] }>
 				>
 		  >
 	: never

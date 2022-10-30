@@ -5,16 +5,16 @@ import type {
 	$$Inferable,
 	$$Schema,
 	$$Schemable,
-	$OutputType,
+	$Output,
 	IArray,
 	Inferable,
 	InferableLiteral,
 	InferableObject,
-	InputType,
+	Input,
 	ISchema,
 	ITuple,
 	Number,
-	OutputType,
+	Output,
 	Schema,
 	Schemable,
 	SchemaLike,
@@ -29,48 +29,48 @@ describe('GetType', () => {
 	it('simple', () => {
 		expect.assertions(0)
 
-		type A = OutputType<Number>
+		type A = Output<Number>
 		$Assert<IsIdentical<A, number>>()
 
-		type B = OutputType<Schema>
+		type B = Output<Schema>
 		$Assert<IsIdentical<B, unknown>>()
 	})
 
 	it('variance', <S extends $$Schema & {
-		OutputType: string
-		InputType: string
+		Output: string
+		Input: string
 	}>() => {
 		expect.assertions(0)
 
-		type A = OutputType<S>
+		type A = Output<S>
 		$Assert.is<A, string>()
 
 		//
 
-		type B1 = OutputType<$$Schemable>
+		type B1 = Output<$$Schemable>
 		$Assert<IsIdentical<B1, unknown>>()
 
-		type B2 = OutputType<Schemable>
+		type B2 = Output<Schemable>
 		$Assert<IsIdentical<B2, unknown>>()
 
 		//
 
-		type C1 = OutputType<$$Schema>
+		type C1 = Output<$$Schema>
 		$Assert<IsIdentical<C1, unknown>>()
 
-		type C2 = OutputType<SchemaLike>
+		type C2 = Output<SchemaLike>
 		$Assert<IsIdentical<C2, unknown>>()
 
-		type C3 = OutputType<ISchema>
+		type C3 = Output<ISchema>
 		$Assert<IsIdentical<C3, unknown>>()
 
 		//
 
-		type D2 = OutputType<Inferable>
-		$Assert<IsIdentical<D2, object | readonly unknown[] | InferableLiteral>>()
+		type D2 = Output<Inferable>
+		$Assert<IsIdentical<D2, {} | readonly unknown[] | InferableLiteral>>()
 
-		type D1 = OutputType<$$Inferable>
-		$Assert<IsIdentical<D1, object | readonly unknown[] | InferableLiteral>>()
+		type D1 = Output<$$Inferable>
+		$Assert<IsIdentical<D1, {} | readonly unknown[] | InferableLiteral>>()
 	})
 
 	it('object', () => {
@@ -85,34 +85,34 @@ describe('GetType', () => {
 		const a = {
 			num: s.number,
 		}
-		type A = OutputType<typeof a>
+		type A = Output<typeof a>
 		$Assert<IsIdentical<A, { num: number }>>()
 
 		const d = {
 			num: s.number.optional,
 		}
-		type D = OutputType<typeof d>
+		type D = Output<typeof d>
 		$Assert<IsIdentical<D, { num?: number }>>()
 
 		const e = {
 			num: s.number.default(0),
 		}
-		type E = InputType<typeof e>
+		type E = Input<typeof e>
 		$Assert<IsIdentical<E, { num?: number | undefined } | undefined>>()
 
-		type E2 = OutputType<typeof e>
+		type E2 = Output<typeof e>
 		$Assert<IsIdentical<E2, { num: number }>>()
 	})
 
 	it('index', () => {
 		expect.assertions(0)
 
-		type A = OutputType<{
+		type A = Output<{
 			[k: string]: Number
 		}>
 		$Assert<IsIdentical<A, { [k: string]: number }>>()
 
-		type B = OutputType<{
+		type B = Output<{
 			[k in string]: Number
 		}>
 		$Assert<IsIdentical<B, { [k: string]: number }>>()
@@ -121,7 +121,7 @@ describe('GetType', () => {
 	it('generic', () => {
 		expect.assertions(0)
 
-		type C = OutputType<Schemable>
+		type C = Output<Schemable>
 		$Assert<IsIdentical<C, unknown>>()
 	})
 
@@ -142,7 +142,7 @@ describe('GetType', () => {
 			  }
 			: never
 
-		type A = OmitId<OutputType<TI['publicOnCreation']> & IntrinsicFields>
+		type A = OmitId<Output<TI['publicOnCreation']> & IntrinsicFields>
 
 		$Assert.is<A, InferableObject>()
 		$Assert.is<A, Schemable>()
@@ -157,18 +157,18 @@ describe('GetType', () => {
 			b: s.number.optional,
 		}
 
-		type A = OutputType<typeof a & typeof b>
+		type A = Output<typeof a & typeof b>
 		$Assert<IsIdentical<A, { a: number; b?: number }>>()
 	})
 
 	it('arrays - complex', <S extends (ITuple | IArray) & ISchema>() => {
 		expect.assertions(0)
 
-		$Assert.is<OutputType<(ITuple | IArray) & ISchema>, readonly unknown[]>()
+		$Assert.is<Output<(ITuple | IArray) & ISchema>, readonly unknown[]>()
 
-		$Assert.is<$OutputType<S>, readonly unknown[]>()
+		$Assert.is<$Output<S>, readonly unknown[]>()
 
-		$Assert.is<never[], OutputType<(ITuple | IArray) & ISchema>>()
+		$Assert.is<never[], Output<(ITuple | IArray) & ISchema>>()
 
 		// Assert.is<never[], [1, 2, 3]>()
 		// Assert.is<never[], GetType<S>>()

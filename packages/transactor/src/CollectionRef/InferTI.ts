@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Assume, NewableReturn_ } from '@voltiso/util'
-import type { $$DocConstructor, $$Doc, $$DocTI, DTI } from '~/Doc'
+
+import type { $$Doc, $$DocConstructor, $$DocTI, DocTI, DTI } from '~/Doc'
 import type { DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
@@ -12,14 +13,16 @@ import type { InferMethods } from './InferMethods'
 
 export type InferTIFromDoc_<D> = D extends $$Doc ? InferTIFromDoc<D> : never
 
-export type InferTIFromDoc<D extends $$Doc> = Assume<
-	$$DocTI,
-	D extends { [DTI]: { tag: string } }
-		? D[DTI] & {
-				methods: InferMethods<D>
-		  } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
-		: never
->
+export type InferTIFromDoc<D extends $$Doc> = $$Doc extends D
+	? DocTI
+	: Assume<
+			$$DocTI,
+			D extends { [DTI]: { tag: string } }
+				? D[DTI] & {
+						methods: InferMethods<D>
+				  } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
+				: never
+	  >
 
 export type InferTIFromCls<Cls extends $$DocConstructor> = InferTIFromDoc<
 	NewableReturn_<Cls> & $$Doc

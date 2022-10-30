@@ -29,7 +29,7 @@ const value = s.schema(myShape).validate({ name: 'a', version: '1.0.0' })
 ```ts
 const mySchema = s.schema(myShape)
 
-type MySchema = typeof mySchema.OutputType
+type MySchema = typeof mySchema.Output
 // --> {
 // 	 name: string
 // 	 version: string
@@ -39,7 +39,7 @@ type MySchema = typeof mySchema.OutputType
 // 	 }
 // }
 
-type MySchemaInput = typeof mySchema.InputType
+type MySchemaInput = typeof mySchema.Input
 // --> {
 //   name: string;
 //   version: string;

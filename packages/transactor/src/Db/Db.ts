@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { CALL, BoundCallable, staticImplements } from '@voltiso/util'
+import { BoundCallable, CALL, staticImplements } from '@voltiso/util'
 
 import { CollectionRef } from '~/CollectionRef/CollectionRef'
 import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
@@ -15,9 +15,9 @@ import type { DbContext, DbParentContext } from './Context'
 import type { DbConstructor } from './DbConstructor'
 
 export interface Db {
-	<Tokens extends readonly string[]>(
-		...pathTokens: Tokens
-	): DbPathFromString<CanonicalPath<Tokens>>
+	<Tokens extends readonly string[]>(...pathTokens: Tokens): DbPathFromString<
+		CanonicalPath<Tokens>
+	>
 
 	// (docPath: DocPath): WeakDocRef<IndexedDoc>
 }
@@ -25,7 +25,7 @@ export interface Db {
 /** In transaction or not */
 @staticImplements<DbConstructor<Db>>()
 export class Db {
-	private _context: DbContext
+	protected _context: DbContext
 
 	constructor(parentContext: DbParentContext) {
 		this._context = { ...parentContext, db: this as never }
@@ -37,7 +37,7 @@ export class Db {
 
 	[CALL](...args: string[] | [DocPath]) {
 		if (args[0] instanceof DocPath)
-			return new WeakDocRef(this._context, args[0] as never) as never
+			return new WeakDocRef(this._context, args[0] as never)
 
 		const path = args.join('/')
 
@@ -50,12 +50,12 @@ export class Db {
 			else return new DocRefPattern(this._context, path) as never
 		} else if (newPathTokens.length % 2 === 1)
 			return new CollectionRef(this._context, path) as never
-		else return new WeakDocRef(this._context, path) as never
+		else return new WeakDocRef(this._context, path)
 	}
 
 	doc(...pathTokens: readonly string[]): WeakDocRef<IndexedDoc> {
 		// $assert(this.context)
-		return new WeakDocRef(this._context, concatPath(pathTokens)) as never
+		return new WeakDocRef(this._context, concatPath(pathTokens))
 	}
 
 	collection(...pathTokens: readonly string[]): CollectionRef<IndexedDoc> {

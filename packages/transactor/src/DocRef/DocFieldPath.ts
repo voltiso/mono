@@ -39,7 +39,7 @@ export const DocFieldPath = class {
 
 			if (fields.length === 1 && fields[0] === '__voltiso' && ctx.transaction) {
 				const cacheEntry = ctx.transaction._cache.get(
-					ctx.docRef.path.pathString,
+					ctx.docRef.path.toString(),
 				)
 
 				// if (!cacheEntry) {
@@ -68,7 +68,7 @@ export const DocFieldPath = class {
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!doc) {
 				throw new TransactorError(
-					`${ctx.docRef.path.pathString}.${fields.join('.')} does not exist`,
+					`${ctx.docRef.path.toString()}.${fields.join('.')} does not exist`,
 				)
 			}
 

@@ -12,7 +12,7 @@ export interface RecordOptions extends SchemaOptions {
 	Output: Record<keyof any, unknown>
 	Input: Record<keyof any, unknown>
 
-	keySchema: { OutputType: keyof any; InputType: keyof any | undefined }
+	keySchema: { Output: keyof any; Input: keyof any | undefined }
 	valueSchema: $$Schemable
 }
 

@@ -1,6 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { StrongDocRefImpl } from './StrongDocRef'
+import type { StrongDocRef } from './StrongDocRef'
 
-export type WithDocRef = { docRef: StrongDocRefImpl }
+export type WithDocRef = { docRef: StrongDocRef }

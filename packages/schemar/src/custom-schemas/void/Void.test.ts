@@ -3,9 +3,9 @@
 
 import type {
 	CustomVoid,
-	InputType,
+	Input,
 	IVoid,
-	OutputType,
+	Output,
 	VoidOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
@@ -23,12 +23,12 @@ describe('void', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A1 = OutputType<typeof s.void>
-		type A2 = InputType<typeof s.void>
+		type A1 = Output<typeof s.void>
+		type A2 = Input<typeof s.void>
 		$Assert<IsIdentical<A1, void>>()
 		$Assert<IsIdentical<A2, void>>()
 
-		type B = s.Void['OutputType']
+		type B = s.Void['Output']
 		$Assert.is<B, void>()
 
 		const e = s.void.optional.readonly

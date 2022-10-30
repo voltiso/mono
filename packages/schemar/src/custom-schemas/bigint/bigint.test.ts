@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OutputType, Type_ } from '@voltiso/schemar.types'
+import type { Output, Type_ } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -18,11 +18,11 @@ describe('number', () => {
 		expect(s.bigint(123n, 234n).extends(s.bigint(123n, 234n))).toBeTruthy()
 		expect(s.bigint(123n, 0n).extends(s.bigint(123n, 234n))).toBeFalsy()
 
-		type B = OutputType<typeof s.bigint>
+		type B = Output<typeof s.bigint>
 		$Assert<IsIdentical<B, bigint>>()
 
 		const bl = s.bigint(123n, 234n)
-		type BL = OutputType<typeof bl>
+		type BL = Output<typeof bl>
 		$Assert<IsIdentical<BL, 123n | 234n>>()
 	})
 

@@ -19,7 +19,7 @@ import {
 	assertNotPolluting,
 	deleteIt,
 	patch,
-	patchUpdate,
+	shallowPatch,
 } from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
 
@@ -56,7 +56,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 	}
 
 	readonly _children: {
-		[k in keyof GetShape_<S>]?: NestedSubjectImpl<GetShape_<S>[k]>
+		[k in keyof GetShape_<S>]?: NestedSubjectImpl<GetShape_<S>[k] & $$Schemable>
 	} = {}
 
 	get schemable(): S | undefined {
@@ -125,8 +125,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 				} else {
 					assertNotPolluting(property)
 					if (property in this._children)
-						// eslint-disable-next-line security/detect-object-injection
-						return this._children[property] as never
+						return this._children[property as never]
 					else {
 						// console.log('create child', property)
 						return new NestedSubjectImpl({
@@ -201,13 +200,13 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 	}
 
 	update(updates: PatchFor<InputType_<S>>) {
-		const newValue = patchUpdate(this._subject$.value, updates as never)
+		const newValue = shallowPatch(this._subject$.value, updates as never)
 		// console.log('UPDATE', this._subject$.value, updates, newValue)
 		this.set(newValue)
 	}
 
 	updateUnchecked(updates: PatchFor<OutputType_<S>>) {
-		const newValue = patchUpdate(this._subject$.value, updates)
+		const newValue = shallowPatch(this._subject$.value, updates)
 		this.setUnchecked(newValue)
 	}
 
@@ -226,6 +225,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 	}
 
 	set(newValue: InputType_<S>): void {
+		// @ts-expect-error WTF?
 		if (newValue === this._subject$.value) return // no change
 
 		// eslint-disable-next-line etc/no-internal

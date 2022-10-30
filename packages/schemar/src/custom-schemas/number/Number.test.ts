@@ -6,10 +6,10 @@
 import type {
 	$$Number,
 	CustomNumber,
-	InputType,
+	Input,
 	INumber,
 	NumberOptions,
-	OutputType,
+	Output,
 	Schema,
 	Type_,
 } from '@voltiso/schemar.types'
@@ -43,13 +43,13 @@ describe('s.number', () => {
 		expect(s.number(123, 234).extends(s.number(123, 234))).toBeTruthy()
 		expect(s.number(123, 0).extends(s.number(123, 234))).toBeFalsy()
 
-		type N = OutputType<typeof s.number>
+		type N = Output<typeof s.number>
 		$Assert<IsIdentical<N, number>>()
 
 		const nl = s.number(123, 234)
-		type NL = OutputType<typeof nl>
+		type NL = Output<typeof nl>
 		$Assert<IsIdentical<NL, 123 | 234>>()
-		$Assert<IsIdentical<InputType<typeof nl>, 123 | 234>>()
+		$Assert<IsIdentical<Input<typeof nl>, 123 | 234>>()
 
 		type No = typeof s.number.optional.Type
 		$Assert<IsIdentical<No, number>>()

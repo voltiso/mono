@@ -5,8 +5,8 @@
 
 import { assert } from '@voltiso/assertor'
 import type {
+	$$SchemableObject,
 	InferableObject,
-	ObjectLike,
 	SchemaLike,
 } from '@voltiso/schemar.types'
 
@@ -76,7 +76,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	publicOnCreation(schema: InferableObject | ObjectLike) {
+	publicOnCreation(schema: $$SchemableObject) {
 		this.context.transactor._allPublicOnCreationSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
@@ -84,7 +84,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	public(schema: InferableObject | ObjectLike) {
+	public(schema: $$SchemableObject) {
 		// assertZod()
 		this.context.transactor._allPublicSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
@@ -93,7 +93,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	private(schema: InferableObject | ObjectLike) {
+	private(schema: $$SchemableObject) {
 		// assertZod()
 		this.context.transactor._allPrivateSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),

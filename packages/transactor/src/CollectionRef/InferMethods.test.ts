@@ -3,7 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { afterCreateOrUpdate, method } from '~/decorators'
 import { Doc } from '~/Doc'
@@ -38,7 +38,7 @@ describe('InferMethods', () => {
 		expect.assertions(0)
 
 		type M = InferMethods<Doctor>
-		Assert<
+		$Assert<
 			IsIdentical<
 				M,
 				{

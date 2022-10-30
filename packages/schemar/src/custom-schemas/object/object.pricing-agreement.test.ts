@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OutputType } from '@voltiso/schemar.types'
+import type { Output } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -13,10 +13,10 @@ describe('object', () => {
 
 		const currency = s.string('USD').or(s.string('PLN'))
 
-		type CurrencyB = typeof currency.OutputType
+		type CurrencyB = typeof currency.Output
 		$Assert<IsIdentical<CurrencyB, 'USD' | 'PLN'>>()
 
-		type CurrencyA = OutputType<typeof currency>
+		type CurrencyA = Output<typeof currency>
 		$Assert<IsIdentical<CurrencyA, 'USD' | 'PLN'>>()
 
 		const pricingAgreement = {
@@ -27,7 +27,7 @@ describe('object', () => {
 			def: s.number.default(123),
 		}
 
-		type PricingAgreement = OutputType<typeof pricingAgreement>
+		type PricingAgreement = Output<typeof pricingAgreement>
 
 		$Assert<
 			IsIdentical<

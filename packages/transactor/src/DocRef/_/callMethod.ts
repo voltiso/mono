@@ -5,9 +5,9 @@ import { assert } from '@voltiso/assertor'
 import chalk from 'chalk'
 
 import type { WithDb } from '~/Db'
-import type { Doc, DocImpl, DocTI, IDocImpl } from '~/Doc'
+import type { CustomDoc, DocImpl, DocTI, IDocImpl } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { DocRefBaseImpl, WithDocRef } from '~/DocRef'
+import type { UnknownDocRefBase, WithDocRef } from '~/DocRef'
 import { transactionDocPathGet } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { Method } from '~/Method'
@@ -29,7 +29,7 @@ export async function callMethod<
 	TI extends DocTI,
 	// eslint-disable-next-line etc/no-misused-generics
 	EC extends ExecutionContext,
-	THIS extends Doc<TI, EC>,
+	THIS extends CustomDoc<TI, EC>,
 	ARGS extends unknown[],
 	R,
 >(
@@ -75,7 +75,7 @@ export async function callMethod<
 			assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
-			return (db.doc(path) as unknown as DocRefBaseImpl)._callMethod(
+			return (db.doc(path) as unknown as UnknownDocRefBase)._callMethod(
 				method as never,
 				args,
 				options,
@@ -100,7 +100,7 @@ export async function callMethod<
 	}
 
 	assert(isWithTransaction(ctx))
-	const doc = await transactionDocPathGet<Doc<TI, 'inside'>>(ctx)
+	const doc = await transactionDocPathGet<CustomDoc<TI, 'inside'>>(ctx)
 
 	if (!doc)
 		throw new TransactorError(`${debugName()} called on non-existing document`)

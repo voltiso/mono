@@ -3,7 +3,7 @@
 
 import type { Record_ } from '@voltiso/util'
 
-import type { InputType, OutputType } from '~'
+import type { Input, Output } from '~'
 import type { $$Schema } from '~/Schema'
 import type { $$Schemable } from '~/Schemable'
 
@@ -13,19 +13,16 @@ import type { DefaultRecordOptions } from './RecordOptions'
 //
 
 export type { SRecord as Record }
-
 type SRecord<
 	TKeySchema extends $$Schema & {
-		OutputType: keyof any
-		InputType: keyof any | undefined
+		Output: keyof any
+		Input: keyof any | undefined
 	},
 	TValueSchema extends $$Schemable,
 > = CustomRecord<{
-	Output: Record_<OutputType<TKeySchema>, OutputType<TValueSchema>>
-	Input: Record_<
-		Exclude<InputType<TKeySchema>, undefined>,
-		InputType<TValueSchema>
-	>
+	Output: Record_<Output<TKeySchema>, Output<TValueSchema>>
+
+	Input: Record_<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
 
 	keySchema: TKeySchema
 	valueSchema: TValueSchema
@@ -36,8 +33,8 @@ type SRecord<
 export type RecordConstructor = {
 	new <
 		TKeySchema extends $$Schema & {
-			OutputType: keyof any
-			InputType: keyof any
+			Output: keyof any
+			Input: keyof any
 		},
 		TValueSchema extends $$Schemable,
 	>(
@@ -52,8 +49,8 @@ export type RecordConstructor = {
 
 	new <
 		TKeySchema extends $$Schema & {
-			OutputType: keyof any
-			InputType: keyof any
+			Output: keyof any
+			Input: keyof any
 		},
 		TValueSchema extends $$Schemable,
 	>(

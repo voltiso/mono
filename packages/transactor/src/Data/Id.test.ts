@@ -3,13 +3,16 @@
 
 import * as s from '@voltiso/schemar'
 import type { IsSubtype } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 
+import type { DOC } from '~/Doc'
 import { Doc } from '~/Doc'
 
 import type { Id } from './Id'
 
-class MyDoc extends Doc('my-tag-data-1')({
+class MyDoc extends Doc({
+	tag: 'my-tag-data-1',
+
 	public: {
 		x: s.number.optional,
 	},
@@ -33,16 +36,40 @@ describe('Data', () => {
 		it('assignability', () => {
 			expect.assertions(0)
 
-			Assert.is<IsSubtype<string, Id>, true>()
-			Assert.is<IsSubtype<string, MyId>, false>()
+			$Assert.is<IsSubtype<string, Id>, true>()
+			$Assert.is<IsSubtype<string, MyId>, false>()
 
+			//
+
+			type A = string & {
+				[DOC]: {
+					'my-tag-data-1': true
+				}
+			}
+
+			type B = string & {
+				[DOC]: {
+					'my-tag-data-2': true
+				}
+			}
+
+			$Assert($Is<A>().not.subtypeOf<B>(), $Is<B>().not.subtypeOf<A>())
+
+			//
+
+			// type MyId = Id<MyDoc>
 			type MyId = MyDoc['id']
-			Assert.is<MyId, Id>()
-			Assert.is<IsSubtype<Id, MyId>, false>()
 
+			$Assert.is<MyId, Id>()
+			$Assert.is<IsSubtype<Id, MyId>, false>()
+
+			// type MyId2 = Id<MyDoc2>
 			type MyId2 = MyDoc2['id']
-			Assert.is<IsSubtype<MyId, MyId2>, false>()
-			Assert.is<IsSubtype<MyId2, MyId>, false>()
+
+			$Assert(
+				$Is<MyId>().not.subtypeOf<MyId2>(),
+				$Is<MyId2>().not.subtypeOf<MyId>(),
+			)
 		})
 	})
 })

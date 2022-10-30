@@ -20,8 +20,10 @@ export interface MutableArray<S extends $$Schemable>
 export interface ReadonlyArray<S extends $$Schemable>
 	extends CustomArray<{
 		element: InferSchema_<S>
+
 		Output: readonly Type_<S, { kind: 'out' }>[]
 		Input: readonly Type_<S, { kind: 'in' }>[]
+
 		isReadonlyArray: true
 	}> {
 	<S extends $$Schemable>(elementSchema: S): t.ReadonlyArray<S>

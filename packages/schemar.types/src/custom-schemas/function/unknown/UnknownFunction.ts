@@ -3,10 +3,10 @@
 
 import type {
 	$$InferableTuple,
-	$OutputType,
+	$Output,
 	CustomUnknownFunction,
 	Function,
-	OutputType,
+	Output,
 	Schemable,
 	SchemaLike,
 } from '~'
@@ -24,5 +24,5 @@ export interface UnknownFunction extends CustomUnknownFunction<{}> {
 		argumentsSchema: Args,
 		resultSchema: R,
 		// eslint-disable-next-line @typescript-eslint/ban-types, etc/no-internal
-	): Function<(...args: _MakeArrayMutable_<$OutputType<Args>>) => OutputType<R>>
+	): Function<(...args: _MakeArrayMutable_<$Output<Args>>) => Output<R>>
 }

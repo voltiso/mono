@@ -8,13 +8,12 @@ import * as s from '~'
 
 describe('literal', () => {
 	it('type cast', () => {
-
 		const a = s.literal(1, 2)
 
 		const b = a.Narrow<1>()
 
-		$Assert<IsIdentical<typeof b.OutputType, 1>>()
-		$Assert<IsIdentical<typeof b.InputType, 1>>()
+		$Assert<IsIdentical<typeof b.Output, 1>>()
+		$Assert<IsIdentical<typeof b.Input, 1>>()
 
 		const c = a.Widen<2 | 3>()
 		$Assert.is<typeof c, StaticError>()
@@ -23,6 +22,6 @@ describe('literal', () => {
 		$Assert.is<typeof d, StaticError>()
 
 		const e = a.Widen<1 | 2 | 3>()
-		$Assert<IsIdentical<typeof e.OutputType, 1 | 2 | 3>>()
+		$Assert<IsIdentical<typeof e.Output, 1 | 2 | 3>>()
 	})
 })

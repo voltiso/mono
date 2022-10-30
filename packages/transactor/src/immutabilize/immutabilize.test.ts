@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '@voltiso/assertor'
+
 import { immutabilize } from './immutabilize'
 
 describe('immutabilize', function () {
@@ -61,12 +63,12 @@ describe('immutabilize', function () {
 	it('should support custom error message', function () {
 		expect.hasAssertions()
 
-		const arr = immutabilize({ a: { aa: 123 } }, 'asdfg')
+		const arr = immutabilize({ a: { aa: 123 } }, 'testWarn')
 
 		expect(arr.a.aa).toBe(123)
 		expect(() => {
 			arr.a.aa = 234
-		}).toThrow('asdfg')
+		}).toThrow('testWarn')
 	})
 
 	it('should stringify', function () {

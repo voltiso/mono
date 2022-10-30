@@ -16,7 +16,7 @@ describe('object', () => {
 			})
 			.index(s.string, s.number)
 
-		type AOut = typeof a.OutputType
+		type AOut = typeof a.Output
 
 		$Assert<
 			IsIdentical<
@@ -115,7 +115,7 @@ describe('object', () => {
 			})
 			.index(s.number.or(s.string))
 
-		type AOut = typeof a.OutputType
+		type AOut = typeof a.Output
 
 		$Assert<
 			IsIdentical<

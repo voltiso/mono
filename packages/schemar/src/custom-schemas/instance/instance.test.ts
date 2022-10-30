@@ -33,11 +33,10 @@ describe('instance', () => {
 	})
 
 	it('optional inside object', () => {
-
 		const mySchema = s.schema({
 			inst: s.instance(Date).optional,
 		})
-		type Out = typeof mySchema.OutputType
+		type Out = typeof mySchema.Output
 		$Assert<IsIdentical<Out, { inst?: Date }>>()
 	})
 

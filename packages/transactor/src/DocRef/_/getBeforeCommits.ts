@@ -4,13 +4,13 @@
 import { assert } from '@voltiso/util'
 
 import type { $$Doc } from '~/Doc'
-import type { DocRefBaseImpl, TriggerEntry } from '~/DocRef'
+import type { UnknownDocRefBase, DocRefTriggerEntry } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { BeforeCommitTrigger } from '~/Trigger'
 
 export function getBeforeCommits(
-	docRef: DocRefBaseImpl<$$Doc>,
-): TriggerEntry<BeforeCommitTrigger>[] {
+	docRef: UnknownDocRefBase<$$Doc>,
+): DocRefTriggerEntry<BeforeCommitTrigger>[] {
 	if (docRef._beforeCommits) return docRef._beforeCommits
 
 	docRef._beforeCommits = []

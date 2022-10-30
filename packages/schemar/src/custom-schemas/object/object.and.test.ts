@@ -16,12 +16,12 @@ describe('object', () => {
 			})
 			.and({ b: s.number.default(123) })
 
-		type In = typeof mySchema.InputType
+		type In = typeof mySchema.Input
 		$Assert<
 			IsIdentical<In, { a?: string | undefined; b?: number | undefined }>
 		>()
 
-		type Out = typeof mySchema.OutputType
+		type Out = typeof mySchema.Output
 		$Assert<IsIdentical<Out, { a: string; b: number }>>()
 
 		expect(mySchema.validate({})).toStrictEqual({ a: 'test', b: 123 })
@@ -36,12 +36,12 @@ describe('object', () => {
 			})
 			.and(s.object({ b: s.number.default(123) }))
 
-		type In = typeof mySchema.InputType
+		type In = typeof mySchema.Input
 		$Assert<
 			IsIdentical<In, { a?: string | undefined; b?: number | undefined }>
 		>()
 
-		type Out = typeof mySchema.OutputType
+		type Out = typeof mySchema.Output
 		$Assert<IsIdentical<Out, { a: string; b: number }>>()
 
 		expect(mySchema.validate({})).toStrictEqual({ a: 'test', b: 123 })

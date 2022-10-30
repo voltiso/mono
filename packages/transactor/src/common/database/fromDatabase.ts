@@ -33,7 +33,7 @@ export function fromDatabaseData(
 		// } else if (isRefLike(o)) {
 		// 	return new Ref(o.__ref) as unknown as T
 	} else if (isDocRef(o)) {
-		return o
+		return o as never
 	} else if (Database.isDocumentReference(o)) {
 		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', o.path)
@@ -82,7 +82,7 @@ export const fromDatabase = (
 		// eslint-disable-next-line no-console
 		else if (allowIdField === 'warn') console.warn(message)
 
-		const isValid = data.id === ctx.docRef?.id
+		const isValid = data.id === (ctx.docRef?.id as never)
 		if (!isValid) {
 			const invalidMessage = `invalid ${message}`
 			if (!allowValidIdField) throw new TransactorError(invalidMessage)

@@ -19,7 +19,7 @@ describe('s.literal', () => {
 
 		$Assert.is<CustomLiteral<O>, ILiteral>()
 
-		type A = CustomLiteral<O>['OutputType']
+		type A = CustomLiteral<O>['Output']
 		$Assert.is<A, InferableLiteral>()
 	})
 
@@ -27,15 +27,15 @@ describe('s.literal', () => {
 		$Assert.is<typeof s.literal, Schemable>()
 
 		const a = s.literal.optional
-		type A = typeof a.OutputType
+		type A = typeof a.Output
 		$Assert<IsIdentical<A, InferableLiteral>>()
 
 		const b = s.literal(123)
-		type B = typeof b.OutputType
+		type B = typeof b.Output
 		$Assert<IsIdentical<B, 123>>()
 
 		const c = s.literal(123).optional
-		type C = typeof c.OutputType
+		type C = typeof c.Output
 		$Assert<IsIdentical<C, 123>>()
 	})
 

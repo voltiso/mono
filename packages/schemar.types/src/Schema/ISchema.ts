@@ -28,8 +28,8 @@ export interface $$Schema {
 }
 
 export interface SchemaLike<T = unknown> extends $$Schema {
-	get OutputType(): T
-	get InputType(): T | undefined
+	get Output(): T
+	get Input(): T | undefined
 }
 
 describe('UnknownLiteral', () => {
@@ -69,7 +69,7 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * - Get the type using `typeof xxx.OutputType`
 	 * - Type-only (no value at runtime)
 	 */
-	get OutputType(): T
+	get Output(): T
 
 	/**
 	 * Inferred Input Type (the schema is able to convert these into Output Type)
@@ -77,7 +77,7 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * - Get the type using `typeof xxx.InputType`
 	 * - Type-only (no value at runtime)
 	 */
-	get InputType(): T | undefined
+	get Input(): T | undefined
 
 	get isOptional(): boolean
 	get isStrictOptional(): boolean

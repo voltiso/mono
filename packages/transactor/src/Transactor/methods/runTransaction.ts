@@ -8,17 +8,16 @@ import chalk from 'chalk'
 
 import { databaseUpdate } from '~/common/database/databaseUpdate'
 import { withoutId } from '~/Data'
-import type { Doc, DocTI } from '~/Doc'
-import { getBeforeCommits, processTriggers, StrongDocRefImpl } from '~/DocRef'
+import type { CustomDoc, DocTI } from '~/Doc'
+import { getBeforeCommits, processTriggers, StrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { deleteIt, isDeleteIt, replaceIt } from '~/it'
 import { sVoltisoEntry } from '~/schemas'
-import { TransactionImpl } from '~/Transaction'
 import type { Cache, CacheEntry } from '~/Transaction/Cache'
 import { triggerGuard } from '~/Transaction/guard'
 import { setCacheEntry } from '~/Transaction/methods/setCacheEntry'
-import type { Transaction } from '~/Transaction/Transaction'
-import type { TransactorImpl } from '~/Transactor'
+import { Transaction } from '~/Transaction/Transaction'
+import type { Transactor } from '~/Transactor'
 import type { BeforeCommitTriggerParams } from '~/Trigger/TriggerParams'
 import { dump } from '~/util/dump'
 import { isEqual } from '~/util/isEqual'
@@ -39,7 +38,7 @@ const getCacheSnapshot = (cache: Cache) => {
 }
 
 export async function runTransaction<R>(
-	ctx: TransactorImpl,
+	ctx: Transactor,
 	body: (t: Transaction) => Promise<R>,
 ): Promise<R> {
 	const zoneCurrent = Zone.current // firestore library code destroys current zone! (?!)
@@ -49,7 +48,7 @@ export async function runTransaction<R>(
 	}
 
 	return ctx._database.runTransaction(databaseTransaction => {
-		const transaction = new TransactionImpl(ctx._context, databaseTransaction)
+		const transaction = new Transaction(ctx._context, databaseTransaction)
 
 		// if (this._transactionLocalStorage.getStore() !== undefined)
 		if (zoneCurrent.get('transactionContextOverride'))
@@ -118,7 +117,7 @@ export async function runTransaction<R>(
 						if (!cacheEntry.write) continue
 
 						// console.log('should write!')
-						const docRef = new StrongDocRefImpl(transaction._context, path)
+						const docRef = new StrongDocRef(transaction._context, path)
 						const ctx = { ...transaction._context, docRef }
 
 						// process normal triggers - they may not have been called if updates were made in-place, not via `update` method
@@ -154,7 +153,7 @@ export async function runTransaction<R>(
 						if (!cacheEntry.write) continue
 
 						// console.log('should write!')
-						const docRef = new StrongDocRefImpl(transaction._context, path)
+						const docRef = new StrongDocRef(transaction._context, path)
 						const ctx = { ...transaction._context, docRef }
 
 						const beforeCommits = getBeforeCommits(docRef)
@@ -167,16 +166,17 @@ export async function runTransaction<R>(
 
 								assert(cacheEntry.__voltiso)
 
-								const params: BeforeCommitTriggerParams<Doc<DocTI, 'inside'>> =
-									{
-										doc: cacheEntry.proxy as never,
-										...pathMatches,
-										path: docRef.path as never,
-										id: docRef.id as never,
-										...docRef._context,
-										__voltiso: cacheEntry.__voltiso,
-										possiblyExists: cacheEntry.possiblyExists,
-									}
+								const params: BeforeCommitTriggerParams<
+									CustomDoc<DocTI, 'inside'>
+								> = {
+									doc: cacheEntry.proxy as never,
+									...pathMatches,
+									path: docRef.path as never,
+									id: docRef.id as never,
+									...docRef._context,
+									__voltiso: cacheEntry.__voltiso,
+									possiblyExists: cacheEntry.possiblyExists,
+								} as never
 
 								triggerResult = await trigger.call(
 									cacheEntry.proxy as never,

@@ -41,7 +41,7 @@ export interface IndexedDocTI extends $$IndexedDocTI, DocTI {
 //
 
 /**
- * Indexed doc does not type-expose stuff at the root: fields, methods,
+ * `IndexedDoc` does not type-expose stuff at the root: fields, methods,
  * aggregates, ...
  */
 export interface IndexedDoc<C extends ExecutionContext = ExecutionContext>

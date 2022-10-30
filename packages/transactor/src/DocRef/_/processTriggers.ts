@@ -12,7 +12,6 @@ import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
 
-import type { IDocRef } from '..'
 import { apply } from './apply'
 import { collectTriggerResult } from './collectTriggerResult'
 import type { DocRefContextWithTransaction } from './Context'
@@ -64,7 +63,7 @@ async function processAfterTrigger(
 			before: immutabilize(withId(before, id)) as never,
 			after: immutabilize(withId(after, id)) as never,
 			...pathMatches,
-			path: (ctx.docRef as unknown as IDocRef).path,
+			path: ctx.docRef.path,
 			id: id as never,
 			...ctx,
 			possiblyExists: cacheEntry.possiblyExists,
@@ -79,7 +78,7 @@ async function processAfterTrigger(
 
 /** Start executing triggers from the beginning if data change is detected */
 async function loop(c: DocRefContextWithTransaction) {
-	const afterTriggers = getAfterTriggers(c.docRef)
+	const afterTriggers = getAfterTriggers(c.docRef as never)
 
 	const MAX_ITERS = 1_000
 
@@ -114,7 +113,7 @@ type Params = {
 export async function processTriggers(
 	ctx: DocRefContextWithTransaction,
 	params?: Params,
-) {
+): Promise<void> {
 	// console.log('processTriggers', ctx.docRef.path.toString())
 
 	const cacheEntry = getCacheEntry(ctx)

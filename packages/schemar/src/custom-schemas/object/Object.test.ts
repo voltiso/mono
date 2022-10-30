@@ -3,10 +3,10 @@
 
 import type {
 	CustomObject,
-	InputType,
+	Input,
 	IObject,
 	ObjectOptions,
-	OutputType,
+	Output,
 	Schema,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
@@ -63,23 +63,29 @@ describe('object', () => {
 			s.object({ a: s.number, b: s.string }).extends(s.object({ c: s.number })),
 		).toBeFalsy()
 
-		$Assert<IsIdentical<OutputType<typeof s.object>, object>>()
+		/**
+		 * For cleaner editor support and no assignability issues, only `.plain`
+		 * objects are of type `object`
+		 */
+		type A = Output<typeof s.object>
+		$Assert<IsIdentical<A, {}>>()
 
 		const x = s.object({ a: s.number(1), b: s.number(2) })
-		type X = OutputType<typeof x>
+		type X = Output<typeof x>
 		$Assert<IsIdentical<X, { a: 1; b: 2 }>>()
-		type XX = InputType<typeof x>
+		type XX = Input<typeof x>
 		$Assert<IsIdentical<XX, { a: 1; b: 2 }>>()
 
 		const y = s.object({ a: s.number(1), b: s.number(2).optional })
-		type Y = OutputType<typeof y>
+		type Y = Output<typeof y>
 		$Assert<IsIdentical<Y, { a: 1; b?: 2 }>>()
-		$Assert<IsIdentical<InputType<typeof y>, { a: 1; b?: 2 | undefined }>>()
+		type YY = Input<typeof y>
+		$Assert<IsIdentical<YY, { a: 1; b?: 2 | undefined }>>()
 
 		const z = s.object({ a: s.number(1), b: s.number(2).strictOptional })
-		type Z = OutputType<typeof z>
+		type Z = Output<typeof z>
 		$Assert<IsIdentical<Z, { a: 1; b?: 2 }>>()
-		$Assert<IsIdentical<InputType<typeof z>, { a: 1; b?: 2 }>>()
+		$Assert<IsIdentical<Input<typeof z>, { a: 1; b?: 2 }>>()
 
 		// () => s.object({ a: s.string.readonly })
 
@@ -205,8 +211,8 @@ describe('object', () => {
 			a: s.number.default(2 as const),
 		})
 
-		type Out = typeof x.OutputType
-		type In = typeof x.InputType
+		type Out = typeof x.Output
+		type In = typeof x.Input
 		$Assert<IsIdentical<Out, { a: number }>>()
 		$Assert<IsIdentical<In, { a?: number | undefined }>>()
 
@@ -220,7 +226,7 @@ describe('object', () => {
 			ro: s.string.readonly.optional,
 			rso: s.string.readonly.strictOptional,
 		})
-		type Y = OutputType<typeof y>
+		type Y = Output<typeof y>
 
 		$Assert<
 			IsIdentical<
@@ -238,7 +244,7 @@ describe('object', () => {
 			>
 		>()
 
-		type YY = InputType<typeof y>
+		type YY = Input<typeof y>
 
 		$Assert<
 			IsIdentical<
@@ -277,10 +283,10 @@ describe('object', () => {
 			},
 		})
 
-		type Out = OutputType<typeof t>
+		type Out = Output<typeof t>
 		$Assert<IsIdentical<Out, { a: { b: { c: number } } }>>()
 
-		type In = InputType<typeof t>
+		type In = Input<typeof t>
 		$Assert<
 			IsIdentical<
 				In,

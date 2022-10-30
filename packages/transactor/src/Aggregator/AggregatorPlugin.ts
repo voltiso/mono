@@ -6,9 +6,9 @@ import * as s from '@voltiso/schemar'
 import { $AssumeType, assertNotPolluting, zip } from '@voltiso/util'
 
 import type {
+	$$Doc,
 	DocBuilderPlugin,
 	DocConstructor,
-	$$Doc,
 	DocTI,
 	DTI,
 	GetDataWithId,

@@ -104,7 +104,7 @@ export class CustomUnknownObjectImpl<
 					received: x,
 				}),
 			)
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, security/detect-object-injection
+			// eslint-disable-next-line security/detect-object-injection
 		} else if (this[OPTIONS].isPlain && !isPlainObject(x)) {
 			issues.push(
 				new ValidationIssue({

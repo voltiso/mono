@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocTI, $$DocTI } from '~/Doc'
+import type { DocTI } from '~/Doc'
 
 /** @inline */
 export type Promisify<F> = F extends (...args: never[]) => PromiseLike<unknown>

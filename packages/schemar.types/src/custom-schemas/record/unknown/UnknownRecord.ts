@@ -6,8 +6,8 @@ import type * as s from '~'
 export interface UnknownRecord extends s.CustomUnknownRecord<{}> {
 	<
 		TKeySchema extends s.$$Schema & {
-			OutputType: keyof any
-			InputType: keyof any
+			Output: keyof any
+			Input: keyof any
 		},
 		TValueSchema extends s.$$Schemable,
 	>(

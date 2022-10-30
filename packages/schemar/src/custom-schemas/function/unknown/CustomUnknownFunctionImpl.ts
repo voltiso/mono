@@ -3,14 +3,14 @@
 
 import type {
 	$$Schemable,
-	$OutputType,
+	$Output,
 	BASE_OPTIONS,
 	CustomUnknownFunction,
 	DEFAULT_OPTIONS,
 	DefaultUnknownFunctionOptions,
 	InferableReadonlyTuple,
 	ISchema,
-	OutputType,
+	Output,
 	UnknownFunctionOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnknownFunction, SCHEMA_NAME } from '@voltiso/schemar.types'
@@ -73,7 +73,7 @@ export class CustomUnknownFunctionImpl<
 	>(
 		argumentsSchema: Args,
 		resultSchema: R,
-	): s.Function<(...args: [...$OutputType<Args>]) => OutputType<R>> {
+	): s.Function<(...args: [...$Output<Args>]) => Output<R>> {
 		return new s.Function(argumentsSchema as never, resultSchema) as never
 	}
 }

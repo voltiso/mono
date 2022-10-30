@@ -9,8 +9,8 @@ import type {
 } from '@voltiso/observer'
 import type {
 	$$Schemable,
+	$$SchemableObject,
 	GetShape,
-	SchemableObjectLike,
 	SchemableWithShape,
 	Type,
 	Type_,
@@ -22,7 +22,7 @@ import type { UseFormValidators } from './Validators'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UseForm {
-	export type Options<S extends SchemableObjectLike> = {
+	export type Options<S extends $$SchemableObject> = {
 		schemable: S
 
 		data$?: INestedSubject | INestedSubjectWithSchema | undefined
@@ -42,7 +42,7 @@ export namespace UseForm {
 		element: HTMLElement
 	}
 
-	export type MutableState<S extends SchemableObjectLike> = {
+	export type MutableState<S extends $$SchemableObject> = {
 		inputs: UseForm.InputState[]
 
 		issuesByPath: Map<string, ValidationIssue[]>
@@ -50,26 +50,25 @@ export namespace UseForm {
 		result$: NestedSubject<UseForm.RawResult<S>>
 	}
 
-	export type ResultFields<S extends $$Schemable> =
-		S extends SchemableWithShape
-			? {
-					[k in keyof GetShape<S>]: ResultFields<GetShape<S>[k]>
-			  }
-			: {
-					props: {
-						onChange: Exclude<
-							DOMAttributes<HTMLInputElement>['onChange'],
-							undefined
-						>
+	export type ResultFields<S extends $$Schemable> = S extends SchemableWithShape
+		? {
+				[k in keyof GetShape<S>]: ResultFields<GetShape<S>[k] & $$Schemable>
+		  }
+		: {
+				props: {
+					onChange: Exclude<
+						DOMAttributes<HTMLInputElement>['onChange'],
+						undefined
+					>
 
-						value?: Type_<S> extends boolean ? never : Type_<S>
-						checked?: Type_<S> extends boolean ? Type_<S> : never
-					}
+					value?: Type_<S> extends boolean ? never : Type_<S>
+					checked?: Type_<S> extends boolean ? Type_<S> : never
+				}
 
-					issues: ValidationIssue[]
-			  }
+				issues: ValidationIssue[]
+		  }
 
-	export type RawResult<S extends SchemableObjectLike> = {
+	export type RawResult<S extends $$SchemableObject> = {
 		props: {
 			onSubmit: Exclude<DOMAttributes<HTMLFormElement>['onSubmit'], undefined>
 			ref: (instance: HTMLFormElement | null) => void
@@ -78,7 +77,7 @@ export namespace UseForm {
 		fields: ResultFields<S>
 	}
 
-	export type Result<S extends SchemableObjectLike> = ReadonlyNestedSubject<
+	export type Result<S extends $$SchemableObject> = ReadonlyNestedSubject<
 		RawResult<S>
 	>
 }

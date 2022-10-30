@@ -5,8 +5,7 @@ import type { InferTI } from '~/CollectionRef/InferTI'
 import type { $$Doc, GDocFields, GetMethodPromises_ } from '~/Doc'
 
 import type { DocRefParentContext } from './_'
-import type { UnknownDocRefBase } from './base/UnknownDocRefBase'
-import { DocRefBaseImpl } from './DocRefBaseImpl'
+import { UnknownDocRefBase } from './UnknownDocRefBase'
 import type { StrongDocRef } from './StrongDocRef'
 import type { WeakDocRef } from './WeakDocRef'
 
@@ -33,8 +32,4 @@ export type UnknownDocRef<
 	GDocFields<InferTI<D>> &
 	GetMethodPromises_<InferTI<D>>
 
-/**
- * Base class constructor for `WeakDocRef` and `StrongDocRef` (do not use
- * directly)
- */
-export const DocRefBase = DocRefBaseImpl as unknown as DocRefBaseConstructor
+export const DocRefBase = UnknownDocRefBase as unknown as DocRefBaseConstructor

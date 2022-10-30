@@ -4,6 +4,7 @@
 import { isDefined } from '@voltiso/util'
 
 import type { DataRecord } from '~/Data'
+import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 import { applyUpdates } from '~/updates'
 
@@ -21,8 +22,8 @@ export function apply(
 	ctx: DocRefContextWithTransaction,
 	data: DataRecord | null,
 	updates?: Updates,
-) {
+): IntrinsicFields | DataRecord | null {
 	return isDefined(updates)
-		? applyUpdates(data, updates, { path: ctx.docRef.path.pathString })
+		? applyUpdates(data, updates, { path: ctx.docRef.path.toString() })
 		: data
 }

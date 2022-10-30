@@ -5,10 +5,10 @@ import type { NestedSubject } from '@voltiso/observer'
 import { createNestedSubject } from '@voltiso/observer'
 import * as s from '@voltiso/schemar'
 import type {
+	$$SchemableObject,
 	InferableLiteral,
 	InferableObject,
 	SchemableObject,
-	SchemableObjectLike,
 	SchemaLike,
 	Type_,
 	ValidationIssue,
@@ -21,7 +21,7 @@ import { useMemo } from 'react'
 
 import type { UseForm } from './UseForm-types'
 
-function _register<S extends SchemableObjectLike>(
+function _register<S extends $$SchemableObject>(
 	mutableState: UseForm.MutableState<S>,
 	path: (keyof any)[],
 	element: HTMLElement,
@@ -32,7 +32,7 @@ function _register<S extends SchemableObjectLike>(
 	mutableState.inputs.push({ path, element })
 }
 
-function _initializeResult<S extends SchemableObjectLike>(
+function _initializeResult<S extends $$SchemableObject>(
 	options: UseForm.Options<S>,
 	mutable: UseForm.MutableState<S>,
 ): UseForm.RawResult<S> {
@@ -145,7 +145,7 @@ function _initializeResult<S extends SchemableObjectLike>(
 	}
 }
 
-export const useForm = <S extends SchemableObjectLike>(
+export const useForm = <S extends $$SchemableObject>(
 	options: UseForm.Options<S>,
 ): UseForm.Result<S> => {
 	const mutable = useInitial<UseForm.MutableState<S>>(() => ({

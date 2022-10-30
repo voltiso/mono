@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ObjectType_ } from '@voltiso/schemar.types'
+import type { GetObjectType } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -14,55 +14,101 @@ describe('object - unknown', () => {
 		const shape = {
 			// should be required
 			unknownObject: s.object,
+			unknownObject2: s.object.plain,
+
 			emptyShapeObject: s.object({}),
+			emptyShapeObject2: s.object({}).plain,
+
 			emptyShapeObjectOrUndef: s.object({}).or(undefined),
+			emptyShapeObjectOrUndef2: s.object({}).plain.or(undefined),
 
 			// should be auto-defaulted and optional
-			autoInferObject: {},
-			autoInferObject2: s.schema({}),
+			autoInferObject: {}, // should inherit `isPlain`
+			autoInferObject2: s.schema({}), // should NOT inherit `isPlain`
 		}
 
-		type A = ObjectType_<typeof shape, { kind: 'out' }>
+		type A = GetObjectType<typeof shape, { kind: 'out'; isPlain: false }>
 
 		$Assert<
 			IsIdentical<
 				A,
 				{
-					unknownObject: object
-					emptyShapeObject: object
-					emptyShapeObjectOrUndef: object | undefined
-					autoInferObject: object
-					autoInferObject2: object
+					unknownObject: {}
+					unknownObject2: object
+
+					emptyShapeObject: {}
+					emptyShapeObject2: object
+
+					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef2: object | undefined
+
+					autoInferObject: {}
+					autoInferObject2: {}
 				}
 			>
 		>()
 
+		type APlain = GetObjectType<typeof shape, { kind: 'out'; isPlain: true }>
+
+		$Assert<
+			IsIdentical<
+				APlain,
+				object & {
+					unknownObject: {}
+					unknownObject2: object
+
+					emptyShapeObject: {}
+					emptyShapeObject2: object
+
+					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef2: object | undefined
+
+					autoInferObject: object
+					autoInferObject2: {}
+				}
+			>
+		>()
+
+		//
+
 		const sSchema = s.schema(shape)
 
-		type In = typeof sSchema.InputType
+		type In = typeof sSchema.Input
 		$Assert<
 			IsIdentical<
 				In,
 				{
-					unknownObject: object
-					emptyShapeObject: object
-					emptyShapeObjectOrUndef: object | undefined
-					autoInferObject?: object | undefined
-					autoInferObject2?: object | undefined
+					unknownObject: {}
+					unknownObject2: object
+
+					emptyShapeObject: {}
+					emptyShapeObject2: object
+
+					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef2: object | undefined
+
+					autoInferObject?: {} | undefined
+					autoInferObject2?: {} | undefined
 				}
 			>
 		>()
 
-		type Out = typeof sSchema.OutputType
+		type Out = typeof sSchema.Output
 		$Assert<
 			IsIdentical<
 				Out,
 				{
-					unknownObject: object
-					emptyShapeObject: object
-					emptyShapeObjectOrUndef: object | undefined
-					autoInferObject: object
-					autoInferObject2: object
+					unknownObject: {}
+					unknownObject2: object
+
+					emptyShapeObject: {}
+					emptyShapeObject2: object
+
+					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef2: object | undefined
+
+					autoInferObject: {}
+					autoInferObject2: {}
 				}
 			>
 		>()
@@ -102,13 +148,24 @@ describe('object - unknown', () => {
 		expect(
 			sSchema.validate({
 				unknownObject: {},
+				unknownObject2: {},
+
 				emptyShapeObject: {},
+				emptyShapeObject2: {},
+
 				emptyShapeObjectOrUndef: {},
+				emptyShapeObjectOrUndef2: {},
 			}),
 		).toStrictEqual({
 			unknownObject: {},
+			unknownObject2: {},
+
 			emptyShapeObject: {},
+			emptyShapeObject2: {},
+
 			emptyShapeObjectOrUndef: {},
+			emptyShapeObjectOrUndef2: {},
+
 			autoInferObject: {},
 			autoInferObject2: {},
 		})

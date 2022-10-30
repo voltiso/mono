@@ -3,21 +3,20 @@
 
 import * as s from '@voltiso/schemar'
 import type {
+	$$Object,
 	IObject,
 	ISchema,
-	ObjectLike,
 	Schemable,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type { OmitCall } from '@voltiso/util'
-import { CallableConstructor, staticImplements } from '@voltiso/util'
+import { CallableConstructor } from '@voltiso/util'
 
 import type { IAggregatorHandlers } from '~/Aggregator'
 import { aggregate } from '~/Aggregator'
-import type { DocBuilderPlugin } from '~/Doc'
-import { DocCall, DTI } from '~/Doc'
+import type { $$Doc, DocBuilderPlugin } from '~/Doc'
+import { DocCall, DTI, IS_DOC } from '~/Doc'
 import type { GI } from '~/Doc/_/GDoc'
-import type { NewFieldsLike } from '~/Doc/_/NewFields'
+import type { $$PartialDocOptions } from '~/Doc/_/NewFields'
 import {
 	withAfter,
 	withAfterCreate,
@@ -26,7 +25,7 @@ import {
 	withAfterUpdate,
 	withBeforeCommit,
 } from '~/Doc/_/triggerCreators'
-import type { DocTI, $$DocTI } from '~/Doc/DocTI'
+import type { $$DocTI, DocTI } from '~/Doc/DocTI'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
@@ -34,7 +33,7 @@ import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 import { defaultDocDerivedData } from './_/DocDerivedData'
-import type { IDocConstructor } from './IDocConstructor'
+import { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
 // function mergeSchemas(
 // 	a: Record<string, Schemable> | ObjectLike,
@@ -63,9 +62,12 @@ import type { IDocConstructor } from './IDocConstructor'
 // 	return b.and(a as InferableObjectLike) as never
 // }
 
-@staticImplements<OmitCall<IDocConstructor>>()
-export class DocConstructorImpl {
+// @staticImplements<OmitCall<IDocConstructor>>()
+export class DocConstructorImpl implements $$Doc {
 	declare static [DTI]: DocTI
+
+	static readonly [IS_DOC_CONSTRUCTOR] = true as const;
+	readonly [IS_DOC] = true as const
 
 	static _: DocDerivedData = defaultDocDerivedData
 
@@ -94,7 +96,7 @@ export class DocConstructorImpl {
 		})
 	}
 
-	static publicOnCreation<F extends Record<string, Schemable> | ObjectLike>(
+	static publicOnCreation<F extends Record<string, Schemable> | $$Object>(
 		schema: F,
 	): any {
 		return CallableConstructor({
@@ -102,9 +104,7 @@ export class DocConstructorImpl {
 				static override readonly _: DocDerivedData = {
 					...super._,
 
-					publicOnCreation: (super._.publicOnCreation as IObject).and(
-						schema,
-					) as never,
+					publicOnCreation: super._.publicOnCreation.and(schema) as never,
 					// publicOnCreation: { ...super._.publicOnCreation, ...shape },
 				}
 			},
@@ -118,7 +118,7 @@ export class DocConstructorImpl {
 			constructor: class extends this {
 				static override readonly _: DocDerivedData = {
 					...super._,
-					public: (super._.public as IObject).and(schema) as never,
+					public: super._.public.and(schema) as never,
 					// public: { ...super._.public, ...schema },
 				}
 			},
@@ -132,7 +132,7 @@ export class DocConstructorImpl {
 			constructor: class extends this {
 				static override readonly _ = {
 					...super._,
-					private: (super._.private as IObject).and(schema) as never,
+					private: super._.private.and(schema) as never,
 					// private: { ...super._.private, ...schema },
 				} as never
 			},
@@ -161,7 +161,7 @@ export class DocConstructorImpl {
 
 	//
 
-	static fields<F extends NewFieldsLike>(f: F): any {
+	static fields<F extends $$PartialDocOptions>(f: F): any {
 		return CallableConstructor({
 			constructor: class extends this {
 				static override readonly _ = {
@@ -170,17 +170,15 @@ export class DocConstructorImpl {
 					id: 'id' in f ? f.id : (super._.id as never),
 
 					publicOnCreation: f.publicOnCreation
-						? ((super._.publicOnCreation as IObject).and(
-								f.publicOnCreation,
-						  ) as never)
+						? (super._.publicOnCreation.and(f.publicOnCreation) as never)
 						: super._.publicOnCreation,
 
 					public: f.public
-						? ((super._.public as IObject).and(f.public) as never)
+						? (super._.public.and(f.public) as never)
 						: super._.public,
 
 					private: f.private
-						? ((super._.private as IObject).and(f.private) as never)
+						? (super._.private.and(f.private) as never)
 						: super._.private,
 
 					aggregates: {
@@ -218,11 +216,11 @@ export class DocConstructorImpl {
 	}
 
 	static get schemaWithoutId(): IObject {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-		return (this._.publicOnCreation as IObject)
-			.and(this._.public)
-			.and(this._.private)
-			.and(sIntrinsicFields) as never
+		return (
+			(this._.publicOnCreation.and(this._.public) as IObject).and(
+				this._.private,
+			) as IObject
+		).and(sIntrinsicFields) as never
 	}
 
 	static get schemaWithId() {

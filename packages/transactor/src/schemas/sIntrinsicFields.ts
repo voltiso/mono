@@ -8,7 +8,7 @@ export const sVoltisoEntry = s.object({
 	numRefs: s.number.default(0),
 
 	aggregateTarget: s
-		.record(s.string, {
+		.object.plain.index(s.string, {
 			value: s.any, // s.unknown.Narrow<NestedData>(),
 			numSources: s.number,
 		})

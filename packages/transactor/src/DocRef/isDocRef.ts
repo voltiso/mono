@@ -3,8 +3,8 @@
 
 import type { IDoc } from '~/Doc'
 
-import type { DocRefBaseImpl } from './DocRefBaseImpl'
 import type { StrongDocRef } from './StrongDocRef'
+import type { UnknownDocRefBase } from './UnknownDocRefBase'
 import type { WeakDocRef } from './WeakDocRef'
 
 export function isDocRef(
@@ -12,6 +12,7 @@ export function isDocRef(
 ): x is StrongDocRef<IDoc> | WeakDocRef<IDoc> {
 	return (
 		typeof x === 'object' &&
-		typeof (x as DocRefBaseImpl | null)?._isStrong === 'boolean'
+		typeof (x as UnknownDocRefBase<any, any, any> | null)?._isStrong ===
+			'boolean'
 	)
 }

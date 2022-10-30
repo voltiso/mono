@@ -1,14 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable, SchemableObjectLike } from '@voltiso/schemar.types'
+import type { $$Schemable, $$SchemableObject } from '@voltiso/schemar.types'
 
-export type NewFieldsLike = {
+import type { DocTag } from '~/DocTypes'
+
+export type $$PartialDocOptions = {
+	tag?: DocTag
+
 	id?: $$Schemable
 
-	publicOnCreation?: SchemableObjectLike
-	public?: SchemableObjectLike
-	private?: SchemableObjectLike
+	publicOnCreation?: $$SchemableObject
+	public?: $$SchemableObject
+	private?: $$SchemableObject
 
 	aggregates?: Record<string, $$Schemable>
 }

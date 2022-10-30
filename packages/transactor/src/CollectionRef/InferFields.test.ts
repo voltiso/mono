@@ -4,7 +4,7 @@
 import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { afterCreateOrUpdate, method } from '~/decorators'
 import type {
@@ -61,27 +61,27 @@ describe('InferFields', () => {
 	it('overrides optional ref', () => {
 		expect.assertions(0)
 
-		Assert.is<typeof Doctor, IDocConstructorNoBuilder>()
+		$Assert.is<typeof Doctor, IDocConstructorNoBuilder>()
 		// type A = Doctor[DTI]['public']['optionalFriend']
 		type F = InferFields<typeof Doctor>
-		type X = F['public']['optionalFriend']
-		Assert.is<X, t.Schema<IDocRef>['optional']>()
+		type X = F['public']['getShape']['optionalFriend']
+		$Assert.is<X, t.Schema<IDocRef>['optional']>()
 		// Assert<IsIdentical<X, SOptional<s.DocRef>>>()
 	})
 
 	it('does nothing if nothing to do', () => {
 		expect.assertions(0)
 
-		type Orig = typeof Doctor[DTI]['private']['specialty']
+		type Orig = typeof Doctor[DTI]['private']['getShape']['specialty']
 		type F = InferFields<typeof Doctor>
-		type X = F['private']['specialty']
-		Assert<IsIdentical<X, Orig>>()
+		type X = F['private']['getShape']['specialty']
+		$Assert<IsIdentical<X, Orig>>()
 	})
 
 	it('result is assignable to IDocTI', <X extends DocConstructor>() => {
 		expect.assertions(0)
 
 		type XX = InferFields<X>
-		Assert.is<XX, Omit<DocTI, 'tag' | 'methods' | 'doc' | 'docInside'>>()
+		$Assert.is<XX, Omit<DocTI, 'tag' | 'methods' | 'doc' | 'docInside'>>()
 	})
 })

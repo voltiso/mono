@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { Id } from '~/Data'
 
@@ -13,13 +13,13 @@ describe('Db', () => {
 		expect.assertions(0)
 
 		type X = CanonicalPath<['asd', 'sdf', string, Id]>
-		Assert<IsIdentical<X, 'asd/sdf/.../...'>>()
+		$Assert<IsIdentical<X, 'asd/sdf/.../...'>>()
 	})
 
 	it('works #2', () => {
 		expect.assertions(0)
 
 		type X = CanonicalPath<['asd' | 'sdf', string]>
-		Assert<IsIdentical<X, 'asd/...' | 'sdf/...'>>()
+		$Assert<IsIdentical<X, 'asd/...' | 'sdf/...'>>()
 	})
 })

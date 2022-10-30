@@ -28,7 +28,7 @@ import {
 	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import type { Override, AtLeast1, Merge2 } from '@voltiso/util'
+import type { AtLeast1, Merge2, Override } from '@voltiso/util'
 import { clone, final, isDefined, stringFrom } from '@voltiso/util'
 
 import { union } from '~/custom-schemas/union'
@@ -61,12 +61,12 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	/** Type-only property (no value at runtime) */
-	get OutputType(): this[OPTIONS]['Output'] {
+	get Output(): this[OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
-	get InputType(): this[OPTIONS]['Input'] {
+	get Input(): this[OPTIONS]['Input'] {
 		return throwTypeOnlyFieldError()
 	}
 
@@ -93,7 +93,7 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	get getDefault(): this[OPTIONS]['hasDefault'] extends false
 		? never
 		: this[OPTIONS]['Output'] {
-		// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unnecessary-condition
+		// eslint-disable-next-line security/detect-object-injection
 		if (!this[OPTIONS].hasDefault)
 			throw new SchemarError(`getDefault() no default value specified`)
 

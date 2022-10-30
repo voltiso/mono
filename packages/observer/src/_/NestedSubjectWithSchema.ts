@@ -63,7 +63,9 @@ export interface NestedSubjectWithSchemaBase<S extends $$Schemable>
 export type _GetNested<S extends $$Schemable> = [GetShape_<S>] extends [never]
 	? { [k in keyof Type_<S>]: NestedSubject<Type_<S>[k]> }
 	: {
-			[k in keyof GetShape_<S>]: NestedSubjectWithSchema<GetShape_<S>[k]>
+			[k in keyof GetShape_<S>]: NestedSubjectWithSchema<
+				GetShape_<S>[k] & $$Schemable
+			>
 	  }
 
 //

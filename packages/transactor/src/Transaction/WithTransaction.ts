@@ -5,9 +5,9 @@ import type { AlsoAccept } from '@voltiso/util'
 
 import type { Forbidden } from '~/util'
 
-import type { TransactionImpl } from './TransactionImpl'
+import type { Transaction } from './Transaction'
 
-export type WithTransaction = { transaction: TransactionImpl }
+export type WithTransaction = { transaction: Transaction }
 
 export function isWithTransaction(
 	x: Partial<WithTransaction> | AlsoAccept<object>,

@@ -2,9 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import { $Assert, $dev } from '@voltiso/util'
 
 import type { Aggregator } from '~/Aggregator'
 import type { DocTI } from '~/Doc'
+import { IS_DOC_TYPE_INFO } from '~/Doc'
 import type {
 	BeforeCommitTrigger,
 	OnGetTrigger,
@@ -12,13 +14,7 @@ import type {
 } from '~/Trigger'
 
 export interface DocDerivedData extends DocTI {
-	tag: any
-
-	id: unknown
-
-	// readonly publicOnCreation: ObjectLike
-	// readonly public: ObjectLike
-	// readonly private: ObjectLike
+	id: DocTI['id'] | undefined
 
 	aggregates: {}
 	methods: {}
@@ -35,6 +31,8 @@ export interface DocDerivedData extends DocTI {
 export const emptyDocDerivedSchema = s.object({})
 
 export const defaultDocDerivedData = {
+	[IS_DOC_TYPE_INFO]: true,
+
 	tag: 'untagged',
 
 	id: undefined,
@@ -52,3 +50,13 @@ export const defaultDocDerivedData = {
 
 	methods: {},
 } as const
+
+//
+
+//
+
+//
+
+$dev(() => {
+	$Assert.is<typeof defaultDocDerivedData, DocDerivedData>()
+})

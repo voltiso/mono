@@ -6,15 +6,14 @@ import type * as t from '@voltiso/schemar.types'
 import { ProtoCallable, lazyValue } from '@voltiso/util'
 
 import type { $$Doc, IDoc, IndexedDoc } from '~/Doc'
-import type { DocRefBaseImpl, WeakDocRefBase } from '~/DocRef'
-import { WeakDocRefImpl } from '~/DocRef'
+import { UnknownDocRefBase, WeakDocRefBase } from '~/DocRef'
 import type { DocTag } from '~/DocTypes'
 
 import type { FindDoc } from './_'
 import { _strongRefSchema } from './sStrongRef'
 
 /** @internal */
-const _weakRefSchema = lazyValue(() => s.instance(WeakDocRefImpl<IDoc>))
+const _weakRefSchema = lazyValue(() => s.instance(WeakDocRefBase<IDoc>))
 
 /** @internal */
 const _fixableWeakRefSchema = lazyValue(() =>
@@ -22,9 +21,9 @@ const _fixableWeakRefSchema = lazyValue(() =>
 	_weakRefSchema.or(_strongRefSchema).fix(x => {
 		// eslint-disable-next-line etc/no-internal
 		if (_strongRefSchema.isValid(x))
-			return new WeakDocRefImpl<IDoc>(
-				(x as unknown as DocRefBaseImpl)._context as never,
-				x.path.pathString,
+			return new WeakDocRefBase<IDoc>(
+				(x as unknown as UnknownDocRefBase)._context as never,
+				x.path.toString(),
 			)
 		else return undefined
 	}),

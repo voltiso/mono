@@ -8,8 +8,8 @@ import { RecordImpl } from './RecordImpl'
 
 type Record_<
 	TKeySchema extends t.$$Schema & {
-		OutputType: keyof any
-		InputType: keyof any | undefined
+		Output: keyof any
+		Input: keyof any | undefined
 	},
 	TValueSchema extends t.$$Schemable,
 > = t.Record<TKeySchema, TValueSchema>

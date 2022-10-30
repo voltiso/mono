@@ -46,7 +46,7 @@ describe('CustomSchema', () => {
 			>
 		>()
 
-		type AA = A['OutputType']
+		type AA = A['Output']
 		$Assert<IsIdentical<AA, Date>>()
 
 		type BB = A['isReadonly']
@@ -59,7 +59,7 @@ describe('CustomSchema', () => {
 			optionalField: unknown as unknown as SimpleSchema<Date>['optional'],
 			readonlyField: unknown as unknown as SimpleSchema<Date>['readonly'],
 		})
-		type MySchema = typeof mySchema.OutputType
+		type MySchema = typeof mySchema.Output
 
 		$Assert<
 			IsIdentical<

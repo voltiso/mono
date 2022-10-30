@@ -124,11 +124,11 @@ export const dataFromUpdates = (updates: Updates): IntrinsicFields | null => {
 	return r as never
 }
 
-export const applyUpdates = (
+export function applyUpdates(
 	data: Updates | null,
 	updates: Updates,
 	debug?: { path: string },
-): IntrinsicFields | null => {
+): IntrinsicFields | null {
 	if (data === null && !isReplaceIt(updates) && !isDeleteIt(updates)) {
 		throw new TransactorError(
 			`NOT_FOUND: cannot update non-existing document ${debug?.path || ''}`,

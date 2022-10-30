@@ -7,10 +7,10 @@ import type {
 	FunctionOptions,
 	IArray,
 	IFunction,
-	InputType,
+	Input,
 	ISchema,
 	ITuple,
-	OutputType,
+	Output,
 	Schema,
 	Schemable,
 	Type_,
@@ -28,14 +28,14 @@ describe('function', () => {
 		$Assert.is<CustomFunction<{}>, ISchema>()
 
 		type A = s.Function<(a: number) => string>
-		type AA = A['OutputType']
+		type AA = A['Output']
 		$Assert<IsIdentical<AA, (a: number) => string>>()
 
 		type B = typeof s.function
-		type BB = B['OutputType']
+		type BB = B['Output']
 		$Assert<IsIdentical<BB, (...args: unknown[]) => unknown>>()
 
-		type C = OutputType<typeof s.function>
+		type C = Output<typeof s.function>
 		$Assert<IsIdentical<C, (...args: unknown[]) => unknown>>()
 
 		$Assert.is<s.Function<(x: number) => string>, IFunction>()
@@ -70,7 +70,7 @@ describe('function', () => {
 		const a = s.function(args, s.string)
 		$Assert.is<typeof a, Schemable>()
 
-		type A = typeof a['OutputType']
+		type A = typeof a['Output']
 		$Assert<IsIdentical<A, (...args: readonly 123[]) => string>>()
 	})
 
@@ -80,10 +80,10 @@ describe('function', () => {
 		//
 		;() => s.function(s.tuple(s.number), s.number)
 
-		type T = OutputType<typeof s.function>
+		type T = Output<typeof s.function>
 		$Assert<IsIdentical<T, (...args: unknown[]) => unknown>>()
 
-		type IT = InputType<typeof s.function>
+		type IT = Input<typeof s.function>
 		$Assert<IsIdentical<IT, (...args: unknown[]) => unknown>>()
 
 		expect(s.function.extends(s.function)).toBeTruthy()
@@ -136,9 +136,9 @@ describe('function', () => {
 		const argsE = s.array(s.number)
 		const a = s.function(argsE, s.string('asd'))
 
-		type A = OutputType<typeof a>
+		type A = Output<typeof a>
 		$Assert<IsIdentical<A, (...args: number[]) => 'asd'>>()
-		$Assert<IsIdentical<InputType<typeof a>, (...args: number[]) => 'asd'>>()
+		$Assert<IsIdentical<Input<typeof a>, (...args: number[]) => 'asd'>>()
 
 		expect(() => s.function.validate(123)).toThrow('function')
 		expect(() => s.function.validate(null)).toThrow('function')
@@ -192,7 +192,7 @@ describe('function', () => {
 		const argsB = s.readonlyArray(123)
 		const b = s.function(argsB, s.string)
 
-		type B = Parameters<typeof b.OutputType>
+		type B = Parameters<typeof b.Output>
 		$Assert<IsIdentical<B, 123[]>>()
 
 		expect(a.extends(b)).toBeTruthy()
@@ -210,8 +210,8 @@ describe('function', () => {
 		const funA = s.function(tupleA, 0)
 		const funB = s.function(tupleB, 0)
 
-		type FunA = typeof funA.OutputType
-		type FunB = typeof funB.OutputType
+		type FunA = typeof funA.Output
+		type FunB = typeof funB.Output
 
 		$Assert.is<FunA, FunB>()
 

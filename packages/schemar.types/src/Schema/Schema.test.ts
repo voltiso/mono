@@ -9,10 +9,10 @@ import type {
 	DefaultSchemaOptions,
 	InferableReadonlyTuple,
 	InferSchemaFunction,
-	InputType,
+	Input,
 	Number,
 	OPTIONS,
-	OutputType,
+	Output,
 	Schema,
 	SchemaOptions,
 	String,
@@ -43,7 +43,7 @@ describe('Schema', () => {
 
 		const a = schema({ a: number(1) })
 
-		type A = OutputType<typeof a>
+		type A = Output<typeof a>
 		$Assert<IsIdentical<A, { a: 1 }>>()
 
 		const tLiteral = [number(123), string] as const
@@ -51,12 +51,12 @@ describe('Schema', () => {
 
 		const b = infer(tLiteral)
 
-		type Out = OutputType<typeof b>
+		type Out = Output<typeof b>
 		$Assert<IsIdentical<Out, [123, string]>>()
 
 		const c = schema([number(123), string] as const)
 
-		$Assert<IsIdentical<OutputType<typeof c>, readonly [123, string]>>()
-		$Assert<IsIdentical<InputType<typeof c>, readonly [123, string]>>()
+		$Assert<IsIdentical<Output<typeof c>, readonly [123, string]>>()
+		$Assert<IsIdentical<Input<typeof c>, readonly [123, string]>>()
 	})
 })

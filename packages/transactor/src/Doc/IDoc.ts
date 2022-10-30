@@ -17,11 +17,7 @@ export const IS_DOC = Symbol('IS_DOC')
 export type IS_DOC = typeof IS_DOC
 
 export interface $$Doc {
-	[IS_DOC]: true
-
-	// [DTI]: DocTILike
-	// dataWithId(): unknown
-	// data: IntrinsicFields
+	readonly [IS_DOC]: true
 }
 
 /**
@@ -30,7 +26,7 @@ export interface $$Doc {
  * - Every `Doc` is assignable to it
  */
 export interface IDoc extends $$Doc {
-	[DTI]: DocTI
+	readonly [DTI]: DocTI
 
 	readonly constructor: IDocConstructorNoBuilder
 

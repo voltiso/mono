@@ -15,20 +15,32 @@ const packageJson = JSON.parse(
 
 //
 
+const env = {
+	FORCE_COLOR: 1 as const,
+}
+
+const envStr = Object.entries(env)
+	.map(([key, value]) => `${key}=${value}`)
+	.join(' ')
+
+const finalEnvStr = `cross-env ${envStr}`
+
+//
+
 function turbo(...scriptNames: string[]) {
-	return `pnpm -w exec turbo run --filter=${
+	return `${finalEnvStr} pnpm -w exec turbo run --filter=${
 		packageJson.name || '//'
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
 function turboDependents(...scriptNames: string[]) {
-	return `pnpm -w exec turbo run --filter=...^${
+	return `${finalEnvStr} pnpm -w exec turbo run --filter=...^${
 		packageJson.name || '//'
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
 function turboAllPackages(...scriptNames: string[]) {
-	return `pnpm -w exec turbo run ${scriptNames.join(
+	return `${finalEnvStr} pnpm -w exec turbo run ${scriptNames.join(
 		' ',
 	)} --output-logs=new-only`
 }

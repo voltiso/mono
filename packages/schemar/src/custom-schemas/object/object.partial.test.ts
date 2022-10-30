@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OutputType } from '@voltiso/schemar.types'
+import type { Output } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -31,7 +31,7 @@ describe('object', () => {
 			str: 'test',
 		})
 
-		type Ps = OutputType<typeof ps>
+		type Ps = Output<typeof ps>
 
 		$Assert<
 			IsIdentical<
@@ -71,7 +71,7 @@ describe('object', () => {
 		})
 		expect(() => ss.validate({})).toThrow('.str')
 
-		type Out = typeof ps.OutputType
+		type Out = typeof ps.Output
 
 		$Assert<
 			IsIdentical<

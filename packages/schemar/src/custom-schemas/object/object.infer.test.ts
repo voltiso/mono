@@ -14,7 +14,7 @@ describe('infer object - readonly', () => {
 			},
 		})
 
-		type A = typeof mySchema.OutputType
+		type A = typeof mySchema.Output
 
 		$Assert<IsIdentical<A, { a: { b: readonly [{ readonly c: number }] } }>>() //! hmm
 	})

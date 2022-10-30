@@ -1,9 +1,12 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export type Get_<
-	Object,
+	Obj,
 	Property,
 	Supertype = unknown,
-> = Property extends keyof Object
-	? Object[Property] extends Supertype
-		? Object[Property]
+> = Property extends keyof Obj
+	? Obj[Property] extends Supertype
+		? Obj[Property]
 		: never
 	: never

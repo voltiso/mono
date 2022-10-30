@@ -1,24 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	CustomObject,
-	InputType,
-	OPTIONS,
-	Type,
-} from '@voltiso/schemar.types'
+import type { CustomObject, Input, OPTIONS, Type } from '@voltiso/schemar.types'
 import type {
 	$_,
 	Callable,
 	DeepReadonlyN,
-	Get_,
 	HasIndexSignature,
 	Newable,
 	Primitive,
 } from '@voltiso/util'
 
 import type { $WithId, Id, WithId } from '~/Data'
-import type { $$Doc, DocTI, $$DocTI, ExecutionContext, IDoc } from '~/Doc'
+import type { $$Doc, $$DocTI, DocTI, ExecutionContext, IDoc } from '~/Doc'
 
 import type { GetIntrinsicFields } from './GetIntrinsicFields'
 
@@ -52,7 +46,7 @@ export type GetData<TI extends $$DocTI> = TI extends DocTI
 				CustomObject.WithAnd<
 					CustomObject.WithAnd<TI['publicOnCreation'], TI['public']>,
 					TI['private']
-				>['OutputType']
+				>['Output']
 	  >
 	: never
 
@@ -71,9 +65,7 @@ export type GetInputData<TI extends $$DocTI> = TI extends {
 	private: any
 }
 	? $_<
-			InputType<TI['publicOnCreation']> &
-				InputType<TI['public']> &
-				InputType<TI['private']>
+			Input<TI['publicOnCreation']> & Input<TI['public']> & Input<TI['private']>
 	  >
 	: never
 
@@ -101,26 +93,25 @@ export type GetPublicData<TI extends { public?: any }> = Type<TI['public']>
 export type GetPublicCreationInputData<
 	TI extends $$DocTI,
 	Doc extends $$Doc = IDoc,
-> = DeepReadonlyN<
-	// eslint-disable-next-line no-magic-numbers
-	10,
-	{
-		readonly id?: Id<Doc> | undefined
-	} & Get_<
-		CustomObject.WithAnd<
-			Get_<TI, 'publicOnCreation'>,
-			Get_<TI, 'public'>
-		>[OPTIONS],
-		'Input'
-	>,
-	{ skip: Primitive | Callable | Newable }
->
+> = TI extends DocTI
+	? DeepReadonlyN<
+			// eslint-disable-next-line no-magic-numbers
+			10,
+			{
+				readonly id?: Id<Doc> | undefined
+			} & CustomObject.WithAnd<
+				TI['publicOnCreation'],
+				TI['public']
+			>[OPTIONS]['Input'],
+			{ skip: Primitive | Callable | Newable }
+	  >
+	: never
 
 /** @inline */
 export type GetPublicInputData<TI extends $$DocTI> = TI extends {
 	public: any
 }
-	? InputType<TI['public']>
+	? Input<TI['public']>
 	: never
 
 //

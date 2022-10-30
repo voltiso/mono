@@ -1,12 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { If } from '@voltiso/util'
+import type { If, Override } from '@voltiso/util'
 
 import type { InferableMutableTuple, InferableReadonlyTuple } from '~'
 
 import type { Type_ } from './GetType'
-import type { GetTypeOptions } from './GetTypeOptions'
+import type { DefaultGetTypeOptions, GetTypeOptions } from './GetTypeOptions'
 
 export interface GetTupleTypeOptions extends GetTypeOptions {
 	readonlyTuple: boolean
@@ -26,23 +26,31 @@ export type _TupleTypeImplRec<
 
 export type _TupleTypeImpl<
 	T,
-	O extends GetTupleTypeOptions,
-> = _TupleTypeImplRec<T, [], O>
+	PartialOptions extends Partial<GetTupleTypeOptions>,
+> = _TupleTypeImplRec<T, [], Override<DefaultGetTypeOptions, PartialOptions>>
 
 export type TupleType_<
 	T,
-	O extends GetTypeOptions & { readonlyTuple?: never } = { kind: 'out' },
+	PartialOptions extends Partial<GetTypeOptions> & {
+		readonlyTuple?: never
+	} = {},
 > = InferableMutableTuple extends T
 	? InferableReadonlyTuple extends T
 		? readonly unknown[]
 		: unknown[]
 	: T extends unknown[]
-	? _TupleTypeImpl<T, O & { readonlyTuple: false }>
+	? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: false }>
 	: T extends readonly unknown[]
-	? _TupleTypeImpl<T, O & { readonlyTuple: true }>
+	? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: true }>
 	: never
 
 export type $TupleType_<
 	T,
-	O extends GetTypeOptions & { readonlyTuple?: never } = { kind: 'out' },
-> = T extends any ? (O extends any ? TupleType_<T, O> : never) : never
+	PartialOptions extends Partial<GetTypeOptions> & {
+		readonlyTuple?: never
+	} = {},
+> = T extends any
+	? PartialOptions extends any
+		? TupleType_<T, PartialOptions>
+		: never
+	: never

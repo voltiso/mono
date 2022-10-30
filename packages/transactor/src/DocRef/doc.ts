@@ -5,7 +5,7 @@ import type { IDoc } from '~/Doc'
 import type { DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
-import type { StrongDocRefBase } from './base'
+import type { StrongDocRefBase } from './StrongDocRef'
 import type { WeakDocRef } from './WeakDocRef'
 
 type GetDoc<X extends DocTag | IDoc> = X extends IDoc

@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IObject } from '@voltiso/schemar.types'
+import type { IObject, SchemaLike } from '@voltiso/schemar.types'
+
 import type { DocTag } from '~/DocTypes'
 
 /** Doc Type Info Tag */
@@ -13,16 +14,23 @@ export const DTI: unique symbol = 0 as never // declare is not enough for esbuil
 export type DTI = typeof DTI
 
 /** Doc Tag Tag */
-export const DT = Symbol('DT')
+export const DOC_TAG = Symbol('DOC_TAG')
 // declare const DT: unique symbol
 // export const DT: unique symbol = 0 as any // declare is not enough for esbuild
-export type DT = typeof DT
+export type DOC_TAG = typeof DOC_TAG
 
-export const IS_DOC_TYPE_INFO = Symbol('IS_DOC_TYPE_INFO')
+export const DOC = Symbol('DOC')
+export type DOC = typeof DOC
+
+//
+
+// ! 'extends' clause of exported class 'AnotherTest' has or is using private name 'IS_DOC_TYPE_INFO'
+export const IS_DOC_TYPE_INFO = `Symbol('IS_DOC_TYPE_INFO')`
+// export const IS_DOC_TYPE_INFO = Symbol('IS_DOC_TYPE_INFO')
 export type IS_DOC_TYPE_INFO = typeof IS_DOC_TYPE_INFO
 
 export interface $$DocTI {
-	[IS_DOC_TYPE_INFO]: true
+	readonly [IS_DOC_TYPE_INFO]: true
 }
 
 /**
@@ -33,11 +41,11 @@ export interface $$DocTI {
 export interface DocTI extends $$DocTI {
 	tag: DocTag
 
+	id: SchemaLike<string> | undefined
+
 	publicOnCreation: IObject
 	public: IObject
 	private: IObject
-
-	id: unknown
 
 	methods: {}
 

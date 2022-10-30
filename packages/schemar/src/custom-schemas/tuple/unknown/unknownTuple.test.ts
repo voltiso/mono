@@ -22,10 +22,10 @@ describe('array', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type A = MutableUnknownTuple['OutputType']
+		type A = MutableUnknownTuple['Output']
 		$Assert<IsIdentical<A, unknown[]>>()
 
-		type B = ReadonlyUnknownTuple['OutputType']
+		type B = ReadonlyUnknownTuple['Output']
 		$Assert<IsIdentical<B, readonly unknown[]>>()
 	})
 })

@@ -18,21 +18,21 @@ import {
 	union,
 } from '../..' //! ts-transform-paths does not work here!!!
 
-const toStringArgA = tuple({
-	skipReceived: boolean.or(undefined_).optional,
-})
+export const validationIssue = lazyValue(() => {
+	const toStringArgA = tuple({
+		skipReceived: boolean.or(undefined_).optional,
+	})
 
-const toStringArgB = tuple()
+	const toStringArgB = tuple()
 
-// combine overloads
-const toStringArg = toStringArgA.or(toStringArgB)
+	// combine overloads
+	const toStringArg = toStringArgA.or(toStringArgB)
 
-$Assert.is<typeof toStringArg, SchemaLike<readonly unknown[]>>()
+	$Assert.is<typeof toStringArg, SchemaLike<readonly unknown[]>>()
 
-const sValidationIssueToString = function_(toStringArg, string)
+	const sValidationIssueToString = function_(toStringArg, string)
 
-export const validationIssue = lazyValue(() =>
-	object({
+	return object({
 		path: array(union(string, number, symbol)),
 		name: string.optional,
 
@@ -43,5 +43,5 @@ export const validationIssue = lazyValue(() =>
 		receivedDescription: string.optional,
 
 		toString: sValidationIssueToString,
-	}),
-)
+	})
+})

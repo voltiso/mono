@@ -4,7 +4,7 @@
 import type {
 	CustomUnknownSymbol,
 	IUnknownSymbol,
-	OutputType,
+	Output,
 	UnknownSymbolOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
@@ -23,7 +23,7 @@ describe('symbol', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A = OutputType<typeof s.symbol>
+		type A = Output<typeof s.symbol>
 		$Assert<IsIdentical<A, symbol>>()
 
 		expect(s.symbol.extends(s.symbol)).toBeTruthy()

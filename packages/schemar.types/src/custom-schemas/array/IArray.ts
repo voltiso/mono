@@ -38,6 +38,6 @@ export interface IReadonlyArray extends IArray {}
 
 export interface IMutableArray extends IArray {
 	get Type(): unknown[]
-	get OutputType(): unknown[]
-	get InputType(): unknown[]
+	get Output(): unknown[]
+	get Input(): unknown[]
 }

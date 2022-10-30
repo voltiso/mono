@@ -7,10 +7,12 @@ import type { Id } from '~/Data'
 import type { $$Doc, IDoc } from '~/Doc'
 import type { WeakDocRef } from '~/DocRef'
 
+import type { DocTag } from '..'
+
 export type DocRefSchema<D extends $$Doc = IDoc> = t.Schema<WeakDocRef<D>>
 
 export type OptionalDocRefSchema<D extends $$Doc = IDoc> = t.Schema<
 	WeakDocRef<D>
 >['optional']
 
-export type IdSchema<D extends IDoc> = t.Schema<Id<D>>
+export type IdSchema<tag extends DocTag> = t.Schema<Id<tag>>

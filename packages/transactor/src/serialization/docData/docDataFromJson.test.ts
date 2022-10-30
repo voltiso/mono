@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { StrongDocRefJson, WeakDocRefJson } from '~/common'
 import type { IndexedDoc } from '~/Doc'
@@ -16,15 +16,15 @@ describe('docDataFromJson', () => {
 		expect.assertions(0)
 
 		type A = DocDataFromJson<DateJson>
-		Assert<IsIdentical<A, Date>>()
+		$Assert<IsIdentical<A, Date>>()
 
 		type B = DocDataFromJson<StrongDocRefJson>
-		Assert<IsIdentical<B, StrongDocRef<IndexedDoc>>>()
+		$Assert<IsIdentical<B, StrongDocRef<IndexedDoc>>>()
 
 		type C = DocDataFromJson<WeakDocRefJson>
-		Assert<IsIdentical<C, WeakDocRef<IndexedDoc>>>()
+		$Assert<IsIdentical<C, WeakDocRef<IndexedDoc>>>()
 
 		type D = DocDataFromJson<undefined>
-		Assert<IsIdentical<D, undefined>>()
+		$Assert<IsIdentical<D, undefined>>()
 	})
 })

@@ -4,29 +4,30 @@
 import type * as t from '@voltiso/schemar.types'
 import type {
 	_,
+	Get_,
 	Merge2Reverse_,
+	NewableReturn_,
 	OmitSignatures,
 	OmitValues,
 	Throw,
-	Get_,
-	NewableReturn_,
 } from '@voltiso/util'
 
 import type { AggregatorHandlers_ } from '~/Aggregator'
 import type {
+	$$Doc,
+	$$DocConstructor,
+	$$DocTI,
 	Doc,
 	DocBuilderPluginLike,
-	$$DocConstructor,
 	DocContext,
 	DocTI,
-	$$DocTI,
 	DTI,
+	IS_DOC_CONSTRUCTOR,
 	Promisify,
-	$$Doc,
 } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 import type { GI, GO } from '~/Doc/_/GDoc'
-import type { NewFieldsLike } from '~/Doc/_/NewFields'
+import type { $$PartialDocOptions } from '~/Doc/_/NewFields'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
@@ -34,123 +35,70 @@ import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
-/** Helpers */
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace DocConstructor {
-	export type MaybeWithName<Params> = [Params] | [string, Params]
+export interface DocConstructor<TI extends DocTI = DocTI> {
+	readonly [IS_DOC_CONSTRUCTOR]: true
 
-	export type WithOverrides<Old extends $$DocTI, New extends Partial<DocTI>> = [
-		DocConstructor<Merge2Reverse_<Required<New>, Old>>,
-	][0]
-
-	export type MapNewFields<
-		TI extends $$DocTI,
-		F extends NewFieldsLike,
-	> = TI extends {
-		publicOnCreation: any
-		public: any
-		private: any
-		aggregates: any
-	}
-		? OmitValues<
-				{
-					publicOnCreation: 'publicOnCreation' extends keyof F
-						? t.CustomObject.WithAnd<
-								TI['publicOnCreation'],
-								F['publicOnCreation']
-						  >
-						: never
-
-					public: 'public' extends keyof F
-						? t.CustomObject.WithAnd<TI['public'], F['public']>
-						: never
-
-					private: 'private' extends keyof F
-						? t.CustomObject.WithAnd<TI['private'], F['private']>
-						: never
-
-					id: 'id' extends keyof F ? F['id'] : never
-
-					aggregates: 'aggregates' extends keyof F
-						? Merge2Reverse_<F['aggregates'], TI['aggregates']>
-						: never
-				},
-				never
-		  >
-		: never
-}
-
-export type DocConstructor<TI extends $$DocTI> = TI extends DocTI
-	? _DocConstructor<TI>
-	: never
-
-export interface _DocConstructor<TI extends DocTI = DocTI> {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
 
-	new (context: DocContext, data: GetInputData<TI>): Doc<TI, 'outside'>
+	new (context: DocContext, data: GetInputData<TI>): Doc<TI>
 
-	// <Derived>(): DocConstructor<___<Merge2<TI, { doc: Derived & DocU }>>>
 	<Tag extends DocTag>(tag: Tag): DocConstructor.WithOverrides<TI, { tag: Tag }>
 
-	<F extends NewFieldsLike>(f: F): keyof F extends keyof NewFieldsLike
-		? DocConstructor.WithOverrides<TI, DocConstructor.MapNewFields<TI, F>>
-		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFieldsLike> }>
+	<O extends $$PartialDocOptions>(
+		options: O,
+	): keyof O extends keyof $$PartialDocOptions
+		? DocConstructor.WithOverrides<TI, DocConstructor.MapPartialOptions<TI, O>>
+		: Throw<
+				'unknown keys:' & { keys: Exclude<keyof O, keyof $$PartialDocOptions> }
+		  >
 
 	tag<Tag extends DocTag>(
 		tag: Tag,
 	): DocConstructor.WithOverrides<TI, { tag: Tag }>
 
-	fields<F extends NewFieldsLike>(
-		f: F,
-	): keyof F extends keyof NewFieldsLike
-		? DocConstructor.WithOverrides<TI, DocConstructor.MapNewFields<TI, F>>
-		: Throw<'unknown keys:' & { keys: Exclude<keyof F, keyof NewFieldsLike> }>
-
 	publicOnCreation<S extends Record<string, t.Schemable>>(
 		s: S,
 	): DocConstructor.WithOverrides<
 		TI,
-		DocConstructor.MapNewFields<TI, { publicOnCreation: S }>
+		DocConstructor.MapPartialOptions<TI, { publicOnCreation: S }>
 	>
 
-	public<S extends t.SchemableObjectLike>(
+	public<S extends t.$$SchemableObject>(
 		s: S,
 	): DocConstructor.WithOverrides<
 		TI,
-		DocConstructor.MapNewFields<TI, { public: S }>
+		DocConstructor.MapPartialOptions<TI, { public: S }>
 	>
 
 	private<S extends Record<string, t.Schemable>>(
 		s: S,
 	): DocConstructor.WithOverrides<
 		TI,
-		DocConstructor.MapNewFields<TI, { private: S }>
+		DocConstructor.MapPartialOptions<TI, { private: S }>
 	>
 
-	after(
-		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>>>
-	): DocConstructor<TI>
+	after(...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>>>): this
 
 	afterUpdate(
 		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, true, true>>
-	): DocConstructor<TI>
+	): this
 
 	afterCreateOrUpdate(
 		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, boolean, true>>
-	): DocConstructor<TI>
+	): this
 
 	afterCreate(
 		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, false, true>>
-	): DocConstructor<TI>
+	): this
 
 	afterDelete(
 		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, true, false>>
-	): DocConstructor<TI>
+	): this
 
 	beforeCommit(
 		...args: DocConstructor.MaybeWithName<BeforeCommitTrigger<GI<TI>>>
-	): DocConstructor<TI>
+	): this
 
 	/** @deprecated Use `@method` decorator instead */
 	method: <N extends string, M extends Method<GO<TI>, any[]>>(
@@ -163,7 +111,7 @@ export interface _DocConstructor<TI extends DocTI = DocTI> {
 		plugin: Plugin,
 	): Plugin['name'] extends keyof OmitSignatures<DocBuilderPluginResult>
 		? DocConstructor<DocBuilderPluginResult<TI>[Plugin['name']]>
-		: DocConstructor<TI>
+		: this
 
 	/**
 	 * - Use `aggregate` plugin instead if facing recursive types issues
@@ -177,7 +125,7 @@ export interface _DocConstructor<TI extends DocTI = DocTI> {
 		target: Target,
 		name: Name,
 		handlers: AggregatorHandlers_<TI, NewableReturn_<Target> & $$Doc, Name>,
-	): DocConstructor<TI>
+	): this
 
 	get schemaWithoutId(): t.CustomObject.WithAnd<
 		TI['publicOnCreation'],
@@ -192,16 +140,58 @@ export interface _DocConstructor<TI extends DocTI = DocTI> {
 		{ id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String }
 	>
 
-	// t.Object<
-	// 	$_<
-	// 		{
-	// 			id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
-	// 		} & TI['publicOnCreation'] &
-	// 			TI['public'] &
-	// 			TI['private']
-	// 	>
-	// >
-
 	get idSchema(): TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
-	// get idSchema(): unknown extends TI['id'] ? t.String : TI['id']
+}
+
+//
+
+//
+
+//
+
+/** Helpers */
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace DocConstructor {
+	export type MaybeWithName<Params> = [Params] | [string, Params]
+
+	export type WithOverrides<Old extends DocTI, New extends Partial<DocTI>> = [
+		DocConstructor<Merge2Reverse_<Required<New>, Old>>,
+	][0]
+
+	export type MapPartialOptions<
+		TI extends $$DocTI,
+		O extends $$PartialDocOptions,
+	> = TI extends {
+		publicOnCreation: t.$$Object
+		public: t.$$Object
+		private: t.$$Object
+		aggregates: {}
+	}
+		? OmitValues<
+				{
+					tag: 'tag' extends keyof O ? O['tag'] : never
+					id: 'id' extends keyof O ? O['id'] : never
+
+					publicOnCreation: 'publicOnCreation' extends keyof O
+						? t.CustomObject.WithAnd<
+								TI['publicOnCreation'],
+								O['publicOnCreation']
+						  >
+						: never
+
+					public: 'public' extends keyof O
+						? t.CustomObject.WithAnd<TI['public'], O['public']>
+						: never
+
+					private: 'private' extends keyof O
+						? t.CustomObject.WithAnd<TI['private'], O['private']>
+						: never
+
+					aggregates: 'aggregates' extends keyof O
+						? Merge2Reverse_<O['aggregates'], TI['aggregates']>
+						: never
+				},
+				never
+		  >
+		: never
 }

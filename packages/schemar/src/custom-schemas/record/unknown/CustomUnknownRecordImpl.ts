@@ -49,8 +49,8 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	// eslint-disable-next-line class-methods-use-this
 	[CALL]<
 		TKeySchema extends $$Schema & {
-			OutputType: keyof any
-			InputType: keyof any
+			Output: keyof any
+			Input: keyof any
 		},
 		TValueSchema extends $$Schemable,
 	>(

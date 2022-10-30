@@ -39,9 +39,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * Type-only (no value at runtime)
 	 *
 	 * - Get the type using `typeof xxx.Type`
-	 * - Alias to `.OutputType`
+	 * - Alias to {@link Output}
 	 */
-	get Type(): this['OutputType']
+	get Type(): this['Output']
 
 	/**
 	 * Inferred Type (output - after fixing)
@@ -49,16 +49,16 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * - Get the type using `typeof xxx.OutputType`
 	 * - Type-only (no value at runtime)
 	 */
-	get OutputType(): this[OPTIONS]['Output']
+	get Output(): this[OPTIONS]['Output']
 	// | (this[OPTIONS]['isOptional'] extends true ? undefined : never)
 
 	/**
 	 * Inferred Input Type (the schema is able to convert these into Output Type)
 	 *
-	 * - Get the type using `typeof xxx.InputType`
+	 * - Get the type using `typeof xxx.Input`
 	 * - Type-only (no value at runtime)
 	 */
-	get InputType():
+	get Input():
 		| this[OPTIONS]['Input']
 		| (this[OPTIONS]['isOptional'] extends true
 				? undefined
@@ -147,11 +147,11 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	Narrow<
 		// eslint-disable-next-line etc/no-misused-generics
-		NewType extends this['OutputType'] & this['InputType'],
+		NewType extends this['Output'] & this['Input'],
 	>(): DefineSchema<this, { Output: NewType; Input: NewType }>
 
 	// eslint-disable-next-line etc/no-misused-generics
-	Widen<NewType>(): this['OutputType'] | this['InputType'] extends NewType
+	Widen<NewType>(): this['Output'] | this['Input'] extends NewType
 		? DefineSchema<this, { Output: NewType; Input: NewType }>
 		: Throw<
 				'Widen: NewType is not supertype' &
@@ -172,11 +172,11 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	NarrowOutput<
 		// eslint-disable-next-line etc/no-misused-generics
-		NewType extends this['OutputType'],
+		NewType extends this['Output'],
 	>(): DefineSchema<this, { Output: NewType }>
 
 	// eslint-disable-next-line etc/no-misused-generics
-	WidenOutput<NewType>(): this['OutputType'] extends NewType
+	WidenOutput<NewType>(): this['Output'] extends NewType
 		? DefineSchema<this, { Output: NewType }>
 		: Throw<
 				'WidenOutput: NewType is not supertype' &
@@ -184,9 +184,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		  >
 
 	// eslint-disable-next-line etc/no-misused-generics
-	CastOutput<NewType>(): this['OutputType'] extends NewType
+	CastOutput<NewType>(): this['Output'] extends NewType
 		? DefineSchema<this, { Output: NewType }>
-		: NewType extends this['OutputType']
+		: NewType extends this['Output']
 		? DefineSchema<this, { Output: NewType }>
 		: Throw<
 				'CastOutput: NewType is not subtype or supertype' &
@@ -197,11 +197,11 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	NarrowInput<
 		// eslint-disable-next-line etc/no-misused-generics
-		NewType extends this['InputType'],
+		NewType extends this['Input'],
 	>(): DefineSchema<this, { Input: NewType }>
 
 	// eslint-disable-next-line etc/no-misused-generics
-	WidenInput<NewType>(): this['InputType'] extends NewType
+	WidenInput<NewType>(): this['Input'] extends NewType
 		? DefineSchema<this, { Input: NewType }>
 		: Throw<
 				'WidenInput: NewType is not supertype' &
@@ -209,9 +209,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		  >
 
 	// eslint-disable-next-line etc/no-misused-generics
-	CastInput<NewType>(): this['InputType'] extends NewType
+	CastInput<NewType>(): this['Input'] extends NewType
 		? DefineSchema<this, { Input: NewType }>
-		: NewType extends this['InputType']
+		: NewType extends this['Input']
 		? DefineSchema<this, { Input: NewType }>
 		: Throw<
 				'CastInput: NewType is not subtype or supertype' &
@@ -303,11 +303,11 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomSchema {
 	export type CastResult<
-		This extends $$Schema & { OutputType: unknown; InputType: unknown },
+		This extends $$Schema & { Output: unknown; Input: unknown },
 		NewType,
-	> = This['OutputType'] | This['InputType'] extends NewType
+	> = This['Output'] | This['Input'] extends NewType
 		? DefineSchema<This, { Output: NewType; Input: NewType }>
-		: [NewType] extends [This['OutputType'] & This['InputType']]
+		: [NewType] extends [This['Output'] & This['Input']]
 		? DefineSchema<This, { Output: NewType; Input: NewType }>
 		: Throw<
 				'Cast: NewType is not subtype or supertype' &
@@ -329,27 +329,27 @@ export namespace CustomSchema {
 		: never
 
 	export type TypeCastErrorDetail<
-		This extends { OutputType: any; InputType: any },
+		This extends { Output: unknown; Input: unknown },
 		NewType,
 	> = {
 		NewType: NewType
-		CurrentOutputType: This['OutputType']
-		CurrentInputType: This['InputType']
+		CurrentOutputType: This['Output']
+		CurrentInputType: This['Input']
 	}
 
 	export type TypeCastErrorDetailOutput<
-		This extends { OutputType: any },
+		This extends { Output: unknown },
 		NewType,
 	> = {
 		NewType: NewType
-		CurrentOutputType: This['OutputType']
+		CurrentOutputType: This['Output']
 	}
 
 	export type TypeCastErrorDetailInput<
-		This extends { InputType: any },
+		This extends { Input: unknown },
 		NewType,
 	> = {
 		NewType: NewType
-		CurrentInputType: This['InputType']
+		CurrentInputType: This['Input']
 	}
 }

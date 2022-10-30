@@ -2,17 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { at, Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
+import type { Includes, Opaque, Or, Parity, Split } from '@voltiso/util'
+import { at } from '@voltiso/util'
 
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { $$Doc } from '~/Doc'
-import { DT } from '~/Doc'
+import type { $$Doc, GetDocTI } from '~/Doc'
+import { DTI } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { DocRefPattern, WeakDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 
-/** Should not contain `/` */
-export type PathToken = Opaque<string, 'PathToken'>
+/** Does not contain `/` */
+export type PathSegment = Opaque<string, 'PathSegment'>
 
 /**
  * Checks if `str` does not contain `/`
@@ -20,7 +21,8 @@ export type PathToken = Opaque<string, 'PathToken'>
  * @param str - To be checked
  * @returns `true` if `token` does not contain `/`
  */
-export const isPathToken = (str: string): str is PathToken => !str.includes('/')
+export const isPathToken = (str: string): str is PathSegment =>
+	!str.includes('/')
 
 /**
  * Asserts if `str` does not contain `/` and returns it.
@@ -29,7 +31,7 @@ export const isPathToken = (str: string): str is PathToken => !str.includes('/')
  * @returns `str as PathToken`
  * @throws `Error` if `str` contains `/`
  */
-export function createPathToken<S extends string>(str: S): PathToken {
+export function createPathToken<S extends string>(str: S): PathSegment {
 	if (!isPathToken(str))
 		throw new TransactorError(`${str} is not a valid PathToken`)
 
@@ -40,6 +42,7 @@ export function createPathToken<S extends string>(str: S): PathToken {
 export type PathString<S extends string = string> =
 	| DocPathString<S>
 	| CollectionPathString<S>
+
 export type PatternString<S extends string = string> =
 	| DocPatternString<S>
 	| CollectionPatternString<S>
@@ -104,23 +107,28 @@ export function createPatternString<S extends string>(
  * computed.
  */
 class Path<S extends string = string> {
-	pathString: PathString<S>
-	pathTokens: readonly PathToken[]
+	#str: PathString<S>
+
+	#segments: readonly PathSegment[] | undefined = undefined
+
+	get segments(): readonly PathSegment[] {
+		if (!this.#segments)
+			this.#segments = this.#str.split('/') as unknown as readonly PathSegment[]
+
+		return this.#segments
+	}
 
 	constructor(str: S) {
-		this.pathString = createPathString(str)
-		this.pathTokens = this.pathString.split(
-			'/',
-		) as unknown as readonly PathToken[]
+		this.#str = createPathString(str) // assert valid path
 		Object.freeze(this)
 	}
 
 	toString() {
-		return this.pathString
+		return this.#str
 	}
 
 	valueOf() {
-		return this.pathString
+		return this.#str
 	}
 }
 
@@ -145,10 +153,10 @@ const isDocPathString = (str: string): str is DocPathString =>
 	isPathString(str) && str.split('/').length % 2 === 0
 
 export class DocPath<
-	Tag extends string = string,
 	S extends string = string,
+	TDoc extends $$Doc = $$Doc,
 > extends Path<S> {
-	declare [DT]: Tag
+	declare [DTI]: GetDocTI<TDoc>
 
 	constructor(str: S) {
 		super(str)
@@ -156,7 +164,7 @@ export class DocPath<
 	}
 
 	get id() {
-		return at(this.pathTokens, -1)
+		return at(this.segments, -1)
 	}
 }
 

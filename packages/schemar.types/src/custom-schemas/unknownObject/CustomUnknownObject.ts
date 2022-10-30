@@ -4,7 +4,7 @@
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS, SCHEMA_NAME } from '_'
 
 import type * as t from '~/custom-schemas'
-import type { ObjectType_, Type } from '~/GetType'
+import type { GetObjectType, Type } from '~/GetType'
 import type { InferableObject } from '~/Inferable'
 import type { $$Schema, CustomSchema, SimpleSchema } from '~/Schema'
 import type { $$Schemable, GetDeepShape_ } from '~/Schemable'
@@ -28,8 +28,8 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 		? t.CustomObject<{
 				shape: Shape
 				deepShape: GetDeepShape_<Shape>
-				Output: ObjectType_<Shape, { kind: 'out' }>
-				Input: ObjectType_<Shape, { kind: 'in' }>
+				Output: GetObjectType<Shape, { kind: 'out'; isPlain: true }>
+				Input: GetObjectType<Shape, { kind: 'in'; isPlain: true }>
 
 				isPlain: true
 		  }>
@@ -40,15 +40,7 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	readonly [BASE_OPTIONS]: UnknownObjectOptions
 	readonly [DEFAULT_OPTIONS]: DefaultUnknownObjectOptions
 
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	UnknownObjectOptions,
-	// 	MergeSchemaOptions<DefaultUnknownObjectOptions, O>
-	// >
-
 	get getIndexSignatures(): []
-
 	get getShape(): {}
 
 	//
@@ -72,6 +64,8 @@ export namespace CustomUnknownObject {
 				This,
 				{
 					isPlain: true
+					Output: object
+					Input: object
 				}
 		  >
 		: never

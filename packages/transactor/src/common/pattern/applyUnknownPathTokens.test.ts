@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { applyUnknownPathTokens } from './applyUnknownPathTokens'
 
@@ -19,6 +19,6 @@ describe('applyUnknownPathTokens', () => {
 
 		expect(a).toBe('test/x/y/z/w/{oops}')
 
-		Assert<IsIdentical<typeof a, 'test/x/y/z/w/{oops}'>>()
+		$Assert<IsIdentical<typeof a, 'test/x/y/z/w/{oops}'>>()
 	})
 })

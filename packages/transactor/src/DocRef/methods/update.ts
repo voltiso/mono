@@ -134,9 +134,8 @@ async function rawUpdate(
 
 	if (needTransaction) {
 		data = await ctx.transactor.runTransaction(async () => {
-			const test = ctx.db.doc(path)
+			const doc = await ctx.db.doc(path).update(updates as never)
 
-			const doc: $$Doc = (await ctx.db.doc(path).update(updates as {})) as never
 			return doc ? (doc.dataWithId() as never) : null
 		})
 	} else {
@@ -211,7 +210,7 @@ async function transactionUpdateImpl(
 	const path = ctx.docRef.path.toString()
 	const { _cache, _execContext } = ctx.transaction
 
-	if (_execContext?.pathString === ctx.docRef.path.pathString)
+	if (_execContext?.toString() === ctx.docRef.path.toString())
 		// eslint-disable-next-line no-param-reassign
 		onPrivateField = 'ignore'
 
@@ -305,8 +304,11 @@ export function update(
 	ctx: Ctx,
 	updates: UpdatesRecord,
 ): PromiseLike<IDoc | undefined>
+
 export function update(ctx: Ctx, updates: RootReplaceIt): PromiseLike<IDoc>
+
 export function update(ctx: Ctx, updates: DeleteIt): PromiseLike<null>
+
 export function update(
 	ctx: Ctx,
 	updates: Updates,

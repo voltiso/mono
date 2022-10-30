@@ -5,10 +5,13 @@ import * as s from '@voltiso/schemar'
 import type { SchemaLike } from '@voltiso/schemar.types'
 import { mapValues } from '@voltiso/util'
 
-import type { DocRefBaseImpl } from '~/DocRef'
+import type { $$Doc, GetDocTI } from '~/Doc'
+import type { UnknownDocRefBase } from '~/DocRef'
 
-export function getAggregateSchemas(d: DocRefBaseImpl<any>) {
-	if (d._aggregateSchemas !== undefined) return d._aggregateSchemas
+export function getAggregateSchemas<D extends $$Doc>(
+	d: UnknownDocRefBase<D>,
+): GetDocTI<D>['aggregates'] {
+	if (d._aggregateSchemas !== undefined) return d._aggregateSchemas as never
 
 	const { _allAggregateSchemas } = d._context.transactor
 
@@ -29,5 +32,5 @@ export function getAggregateSchemas(d: DocRefBaseImpl<any>) {
 
 	d._aggregateSchemas = aggregateSchemas
 
-	return d._aggregateSchemas
+	return d._aggregateSchemas as never
 }

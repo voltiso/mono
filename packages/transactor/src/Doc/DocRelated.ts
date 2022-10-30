@@ -2,12 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Assume, Get_, NewableReturn_ } from '@voltiso/util'
+
 import type { DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type {
-	DocConstructor,
 	$$DocConstructor,
+	DocConstructor,
 	IDocConstructor,
 } from './DocConstructor'
 import type { $$DocTI, DocTI, DTI } from './DocTI'
@@ -17,38 +18,42 @@ export type WithDocTI = {
 	readonly [DTI]: any
 }
 
-export type DocRelatedLike =
+export type $$DocRelated =
 	| $$DocConstructor
 	| $$Doc
 	| $$DocTI
 	| WithDocTI
 	| DocTagLike
 
-export type GetDocTI<X extends DocRelatedLike> = Assume<
-	DocTI,
-	X extends WithDocTI
-		? X[DTI]
-		: X extends $$DocTI
-		? X
-		: X extends DocTagLike
-		? Get_<DocTypes[X], DTI>
-		: never
->
+export type GetDocTI<X extends $$DocRelated> = $$Doc extends X
+	? DocTI
+	: Assume<
+			DocTI,
+			X extends WithDocTI
+				? X[DTI]
+				: X extends $$DocTI
+				? X
+				: X extends DocTagLike
+				? Get_<DocTypes[X], DTI>
+				: never
+	  >
 
 //
 
-export type GetDocTag<X extends DocRelatedLike> = Assume<
-	DocTag,
-	X extends WithDocTI
-		? X[DTI]['tag']
-		: X extends $$DocTI
-		? Get_<X, 'tag'>
-		: X extends DocTagLike
-		? X
-		: never
->
+export type GetDocTag<X extends $$DocRelated> = $$Doc extends X
+	? DocTag
+	: Assume<
+			DocTag,
+			X extends WithDocTI
+				? X[DTI]['tag']
+				: X extends DocTI
+				? X['tag']
+				: X extends DocTagLike
+				? X
+				: never
+	  >
 
-export type GetDoc<X extends DocRelatedLike> = Assume<
+export type GetDoc<X extends $$DocRelated> = Assume<
 	$$Doc,
 	X extends $$DocConstructor
 		? NewableReturn_<X>
@@ -63,15 +68,15 @@ export type GetDoc<X extends DocRelatedLike> = Assume<
 		: never
 >
 
-export type GetDocConstructor<X extends DocRelatedLike> = Assume<
+export type GetDocConstructor<X extends $$DocRelated> = Assume<
 	IDocConstructor,
 	X extends $$DocConstructor
 		? X
 		: X extends WithDocTI
 		? DocConstructor<X[DTI]>
-		: X extends $$DocTI
+		: X extends DocTI
 		? DocConstructor<X>
-		: X extends DocTagLike
-		? DocConstructor<Get_<DocTypes[X], DTI, $$DocTI>>
+		: X extends keyof DocTypes
+		? DocConstructor<Assume<DocTI, Get_<DocTypes[X], DTI>>>
 		: never
 >

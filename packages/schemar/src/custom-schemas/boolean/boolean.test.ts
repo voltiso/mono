@@ -8,7 +8,7 @@ import type {
 	IBoolean,
 	InferSchema,
 	ISchema,
-	OutputType,
+	Output,
 	Schema,
 } from '@voltiso/schemar.types'
 import { isBoolean } from '@voltiso/schemar.types'
@@ -42,7 +42,7 @@ describe('boolean', () => {
 		$Assert<IsIdentical<Aa, boolean>>()
 		$Assert.is<typeof aa, ISchema<boolean>>()
 
-		type X = InferSchema<123>['OutputType']
+		type X = InferSchema<123>['Output']
 		$Assert<IsIdentical<X, 123>>()
 
 		type BooleanSchema = Schema<boolean>
@@ -58,7 +58,7 @@ describe('boolean', () => {
 		// >()
 
 		type NeverSchema = Schema<never>
-		type NeverOut = NeverSchema['OutputType']
+		type NeverOut = NeverSchema['Output']
 		$Assert<IsIdentical<NeverOut, never>>()
 		// Assert.is<s.CustomSchema<{ Input: never; Output: never }>, NeverSchema>()
 		// Assert.is<NeverSchema, s.CustomSchema<{ Input: never; Output: never }>>()
@@ -94,7 +94,7 @@ describe('boolean', () => {
 		expect(s.boolean.extends(s.boolean(true))).toBeFalsy()
 
 		const a = s.boolean(false)
-		type A = OutputType<typeof a>
+		type A = Output<typeof a>
 		$Assert.is<A, false>()
 	})
 
@@ -104,7 +104,7 @@ describe('boolean', () => {
 			bOpt: s.boolean.optional,
 		}
 
-		type X = OutputType<typeof inferable>
+		type X = Output<typeof inferable>
 		$Assert<IsIdentical<X, { b: boolean; bOpt?: boolean }>>()
 	})
 })

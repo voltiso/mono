@@ -3,9 +3,9 @@
 
 import type {
 	CustomUnion,
-	InputType,
+	Input,
 	IUnion,
-	OutputType,
+	Output,
 	UnionOptions,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
@@ -24,19 +24,19 @@ describe('union', () => {
 		expect.hasAssertions()
 
 		const sn = s.union(s.string, s.number)
-		type Sn = OutputType<typeof sn>
+		type Sn = Output<typeof sn>
 		$Assert<IsIdentical<Sn, string | number>>()
-		$Assert<IsIdentical<InputType<typeof sn>, string | number>>()
+		$Assert<IsIdentical<Input<typeof sn>, string | number>>()
 
 		const sn2 = s.string.or(s.number)
-		type Sn2 = OutputType<typeof sn2>
+		type Sn2 = Output<typeof sn2>
 		$Assert<IsIdentical<Sn2, string | number>>()
-		$Assert<IsIdentical<InputType<typeof sn2>, string | number>>()
+		$Assert<IsIdentical<Input<typeof sn2>, string | number>>()
 
 		const snb = s.union(sn, s.bigint)
-		type Snb = OutputType<typeof snb>
+		type Snb = Output<typeof snb>
 		$Assert<IsIdentical<Snb, string | number | bigint>>()
-		$Assert<IsIdentical<InputType<typeof snb>, string | number | bigint>>()
+		$Assert<IsIdentical<Input<typeof snb>, string | number | bigint>>()
 
 		expect(s.string.extends(s.string.or(s.number))).toBeTruthy()
 		expect(s.string.or(s.number).extends(s.string.or(s.number))).toBeTruthy()
@@ -56,8 +56,8 @@ describe('union', () => {
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')
 
-		type In = typeof a.InputType
-		type Out = typeof a.OutputType
+		type In = typeof a.Input
+		type Out = typeof a.Output
 
 		$Assert<IsIdentical<In, string | number>>()
 		$Assert<IsIdentical<Out, string>>()
@@ -75,8 +75,8 @@ describe('union', () => {
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')
 
-		type In = typeof a.InputType
-		type Out = typeof a.OutputType
+		type In = typeof a.Input
+		type Out = typeof a.Output
 
 		$Assert<IsIdentical<In, string | number>>()
 		$Assert<IsIdentical<Out, string>>()

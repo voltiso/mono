@@ -4,7 +4,7 @@
 import type { IsAny } from '@voltiso/util'
 import { lazyPromise } from '@voltiso/util'
 
-import type { DocRefBaseImpl } from '~/DocRef'
+import type { UnknownDocRefBase } from '~/DocRef'
 import { DocFieldPath } from '~/DocRef'
 
 import type { Null } from './Null'
@@ -17,7 +17,7 @@ export type NestedPromise<data, Exists> = PromiseLike<data | Null<Exists>> &
 		  })
 
 export function dataOrNestedPromise<data, Exists extends boolean>(
-	docRef: DocRefBaseImpl,
+	docRef: UnknownDocRefBase,
 	getPromise: () => PromiseLike<data | Null<Exists>>,
 ) {
 	return new Proxy(lazyPromise(getPromise), {

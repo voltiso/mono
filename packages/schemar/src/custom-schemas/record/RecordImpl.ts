@@ -8,7 +8,7 @@ import { CustomRecordImpl } from './CustomRecordImpl'
 import { defaultRecordOptions } from './defaultRecordOptions'
 
 export class RecordImpl<
-	TKeySchema extends { OutputType: keyof any },
+	TKeySchema extends { Output: keyof any },
 	TValueSchema extends $$Schemable,
 > extends lazyConstructor(() => CustomRecordImpl)<never> {
 	constructor(keySchema: TKeySchema, valueSchema: TValueSchema)

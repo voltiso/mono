@@ -30,7 +30,6 @@ import {
 	getSchema,
 	validateAndSetCacheEntry,
 } from '../_'
-import type { IDocRef } from '../IRef'
 import type { WithDocRef } from '../WithDocRef'
 
 // eslint-disable-next-line etc/no-misused-generics
@@ -46,7 +45,7 @@ async function directDocPathGet<D extends IDoc>(
 	if (needTransaction) {
 		assert.not(ctx.transaction)
 		data = await ctx.transactor.runTransaction(async () => {
-			const doc = await ctx.db.doc(ctx.docRef.path.pathString)
+			const doc = await ctx.db.doc(ctx.docRef.path.toString())
 
 			if (doc) return doc.data
 			else return null
@@ -192,7 +191,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 			__voltiso: cacheEntry.__voltiso,
 
 			...pathMatches,
-			path: (ctx.docRef as unknown as IDocRef).path,
+			path: ctx.docRef.path,
 			id: id as never,
 			...ctx,
 			possiblyExists: cacheEntry.possiblyExists,
@@ -253,7 +252,7 @@ export function transactionDocPathGet<D extends $$Doc>(
 // eslint-disable-next-line etc/no-misused-generics
 export function get<TI extends DocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
-): PromiseLike<Doc<TI, 'outside'> | null> {
+): PromiseLike<Doc<TI> | null> {
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
 	const ctxOverride = Zone.current.get('transactionContextOverride') as
 		| object
@@ -270,7 +269,7 @@ export function get<TI extends DocTI>(
 				)}`,
 			)
 
-		return transactionDocPathGet<Doc<TI, 'outside'>>(ctx)
+		return transactionDocPathGet<Doc<TI>>(ctx)
 	} else {
 		assert(isWithoutTransaction(ctx))
 		return directDocPathGet(ctx) as never

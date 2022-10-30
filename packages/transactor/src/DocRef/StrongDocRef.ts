@@ -5,17 +5,16 @@ import type { FastMerge2Reverse_ } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { InferTI } from '~/CollectionRef/InferTI'
-import type { $$Doc, IDoc, IndexedDoc } from '~/Doc'
+import type { $$Doc, $$DocTI, IDoc, IndexedDoc } from '~/Doc'
 import type { GDocFields } from '~/Doc/_/GDocFields'
 import type { GAggregatePromises_ } from '~/Doc/_/GetAggregatePromises'
 import type { GetMethodPromises_ } from '~/Doc/_/GMethodPromises'
 
 import type { DocRefParentContext } from './_/Context'
-import type { StrongDocRefBase } from './base'
-import { DocRefBaseImpl } from './DocRefBaseImpl'
+import { UnknownDocRefBase } from './UnknownDocRefBase'
 
-export class StrongDocRefImpl<D extends IDoc = IDoc> extends lazyConstructor(
-	() => DocRefBaseImpl,
+export class StrongDocRefBase<D extends $$Doc> extends lazyConstructor(
+	() => UnknownDocRefBase,
 )<D, true, 'outside'> {
 	constructor(context: DocRefParentContext, path: string) {
 		super(context, path, true)
@@ -23,7 +22,7 @@ export class StrongDocRefImpl<D extends IDoc = IDoc> extends lazyConstructor(
 }
 
 // eslint-disable-next-line etc/no-misused-generics
-export type StrongDocRefConstructor = new <D extends $$Doc>(
+export type StrongDocRefConstructor = new <D extends $$Doc = IndexedDoc>(
 	context: DocRefParentContext,
 	path: string,
 ) => StrongDocRef<D>
@@ -32,34 +31,21 @@ export type StrongDocRefConstructor = new <D extends $$Doc>(
 
 export type StrongDocRef<D extends $$Doc = IndexedDoc> = FastMerge2Reverse_<
 	StrongDocRefBase<D>,
-	GDocFields<InferTI<D>> &
+	GDocFields<InferTI<D> & $$DocTI> &
 		GetMethodPromises_<InferTI<D>> &
 		GAggregatePromises_<InferTI<D>>
 >
 
-export type $StrongDocRef_<D> = D extends $$Doc ? StrongDocRef<D> : never
-export type StrongDocRef_<D> = [D] extends [$$Doc] ? StrongDocRef<D> : never
-
-export const StrongDocRef = lazyConstructor(
-	() => StrongDocRefImpl,
-) as unknown as StrongDocRefConstructor
+export const StrongDocRef =
+	StrongDocRefBase as unknown as StrongDocRefConstructor
 
 export function isStrongDocRef(x: unknown): x is StrongDocRef<IDoc> {
 	return (
-		typeof x === 'object' && (x as DocRefBaseImpl | null)?._isStrong === true
+		typeof x === 'object' && (x as UnknownDocRefBase | null)?.isStrong === true
 	)
 }
 
 //
 
-// export type StrongDocRef<
-// 	X extends DocLike | keyof DocTypes | { readonly [DTI]: DocTILike },
-// > = X extends DocLike
-// 	? _StrongDocRef<X>
-// 	: X extends keyof DocTypes
-// 	? DocTypes[X] extends DocLike
-// 		? _StrongDocRef<DocTypes[X]>
-// 		: never
-// 	: X extends { readonly [DTI]: DocTILike }
-// 	? StrongDocRef<X[DTI]['tag']>
-// 	: never
+export type $StrongDocRef_<D> = D extends $$Doc ? StrongDocRef<D> : never
+export type StrongDocRef_<D> = [D] extends [$$Doc] ? StrongDocRef<D> : never

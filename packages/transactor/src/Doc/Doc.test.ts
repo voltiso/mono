@@ -6,14 +6,14 @@ import type { IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
 import type { GetData } from './_/GData'
-import type { DocBase } from './Doc'
+import type { CustomDoc, DocBase } from './Doc'
 import { Doc } from './Doc'
 import type { IDocConstructor } from './DocConstructor'
+import type { DocDerivedData } from './DocConstructor/_/DocDerivedData'
 import type { UntaggedDocTI } from './DocImpl'
-import type { DocTI, $$DocTI } from './DocTI'
+import type { DocTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
-import type { DocDerivedData } from './DocConstructor/_/DocDerivedData'
 
 declare module '..' {
 	interface DocTypes {
@@ -21,25 +21,29 @@ declare module '..' {
 	}
 }
 
-class AnotherTest extends Doc('anotherTest').fields({
+class AnotherTest extends Doc({
+	tag: 'anotherTest',
+
 	public: {
 		a: s.number,
 	},
 }) {}
 
 describe('doc', () => {
-	it('generic - DocTILike', <TI extends $$DocTI>() => {
+	it('generic - DocTILike', <TI extends DocTI>() => {
 		expect.assertions(0)
 
 		$Assert.is<Doc, IDoc>()
+		$Assert.is<IDoc, Doc>()
 		$Assert.is<Doc<TI>, IDoc>()
+		$Assert.is<Doc<TI>, Doc>()
 
-		$Assert.is<Doc<TI, 'inside'>, $$Doc>()
+		$Assert.is<CustomDoc<TI, 'inside'>, $$Doc>()
 
 		type DocId = IDoc['id']
 		$Assert($Is<DocId>().identicalTo<string>())
 
-		$Assert.is<DocBase<$$DocTI, 'outside'>, IDoc>()
+		$Assert.is<DocBase<DocTI, 'outside'>, IDoc>()
 
 		$Assert.is<IndexedDoc, IDoc>()
 		$Assert.is<IsSubtype<IDoc, IndexedDoc>, false>()
@@ -56,7 +60,7 @@ describe('doc', () => {
 	it('generic - DocDerivedData', <TI extends DocDerivedData>() => {
 		expect.assertions(0)
 
-		$Assert.is<Doc<TI, 'inside'>, $$Doc>()
+		$Assert.is<CustomDoc<TI, 'inside'>, $$Doc>()
 	})
 
 	it('has intrinsic fields', () => {
@@ -73,20 +77,14 @@ describe('doc', () => {
 		const PatientBase = Doc.public({
 			profile: {
 				name: s.string,
-				// mainDoctor: s.ref<DoctorX>(),
 			},
 		})
+
 		$Assert.is<typeof PatientBase, IDocConstructor>()
 		$Assert.is<InstanceType<typeof PatientBase>, IDoc>()
 
 		class Patient extends PatientBase {}
 
 		$Assert.is<Patient, IDoc>()
-
-		// Assert.is<Ref<Doc<TI, Ctx>>, IRef>()
-
-		// type D = Patient['ref']['data']
-
-		// Assert.is<>()
 	})
 })

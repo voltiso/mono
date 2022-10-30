@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemaLike } from '@voltiso/schemar.types'
+import type { $$Schema } from '@voltiso/schemar.types'
 
-import type { DocBuilderPlugin, DocContext, $$Doc, DocTI, DTI } from '~/Doc'
+import type { $$Doc, DocBuilderPlugin, DocContext, DocTI, DTI } from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
@@ -11,7 +11,7 @@ export const IS_DOC_CONSTRUCTOR = Symbol('IS_DOC_CONSTRUCTOR')
 export type IS_DOC_CONSTRUCTOR = typeof IS_DOC_CONSTRUCTOR
 
 export interface $$DocConstructor {
-	[IS_DOC_CONSTRUCTOR]: true
+	readonly [IS_DOC_CONSTRUCTOR]: true
 }
 
 export interface IDocConstructorNoBuilder extends $$DocConstructor {
@@ -19,14 +19,6 @@ export interface IDocConstructorNoBuilder extends $$DocConstructor {
 	new (context: DocContext, data: any): $$Doc
 
 	readonly _: DocDerivedData
-
-	// get schemaWithoutId(): SchemaLike
-	// get schemableWithoutId(): object // Record<string, Schemable>
-
-	// get schemaWithId(): SchemaLike
-	// get schemableWithId(): object // Record<string, Schemable>
-
-	// get aggregateSchemas(): Record<string, SchemaLike>
 }
 
 /**
@@ -35,44 +27,74 @@ export interface IDocConstructorNoBuilder extends $$DocConstructor {
  * - Every `DocConstructor` is assignable to it
  */
 export interface IDocConstructor extends IDocConstructorNoBuilder {
-	(tag: any): unknown
-	(f: any): unknown
+	(options: any): unknown
 
+	/** @deprecated Use call signature instead */
 	tag(tag: any): unknown
-	fields(f: any): unknown
 
-	publicOnCreation(s: object): unknown
-	public(s: object): unknown
-	private(s: object): unknown
+	/** @deprecated Use call signature instead */
+	publicOnCreation(s: any): unknown
 
-	after(t: any): unknown
-	after(name: string, t: any): unknown
+	/** @deprecated Use call signature instead */
+	public(s: any): unknown
 
+	/** @deprecated Use call signature instead */
+	private(s: any): unknown
+
+	//
+
+	/** @deprecated Use decorators */
+	after(trigger: any): unknown
+
+	/** @deprecated Use decorators */
+	after(name: string, trigger: any): unknown
+
+	//
+
+	/** @deprecated Use decorators */
 	afterUpdate(t: any): unknown
+
+	/** @deprecated Use decorators */
 	afterUpdate(name: string, t: any): unknown
 
+	//
+
+	/** @deprecated Use decorators */
 	afterCreateOrUpdate(t: any): unknown
+
+	/** @deprecated Use decorators */
 	afterCreateOrUpdate(name: string, t: any): unknown
 
+	//
+
+	/** @deprecated Use decorators */
 	afterCreate(t: any): unknown
+
+	/** @deprecated Use decorators */
 	afterCreate(name: string, t: any): unknown
 
+	//
+
+	/** @deprecated Use decorators */
 	afterDelete(t: any): unknown
+
+	/** @deprecated Use decorators */
 	afterDelete(name: string, t: any): unknown
 
+	//
+
+	/** @deprecated Use decorators */
 	beforeCommit(t: any): unknown
+
+	/** @deprecated Use decorators */
 	beforeCommit(name: string, t: any): unknown
 
-	// /** @deprecated */
-	// method(name: string, m: any): unknown
+	//
 
 	with(plugin: DocBuilderPlugin<any>): unknown
 
-	// get schemableWithId(): object
-	// get schemableWithoutId(): object
-
-	get schemaWithId(): SchemaLike
-	get schemaWithoutId(): SchemaLike
+	get schemaWithId(): $$Schema
+	get schemaWithoutId(): $$Schema
 
 	get idSchema(): unknown
 }

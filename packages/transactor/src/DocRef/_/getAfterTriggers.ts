@@ -1,29 +1,27 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { isPlainObject } from '@voltiso/util'
 
-import { assert } from '@voltiso/util'
-
-import type { $$Doc, IDoc } from '~/Doc'
-import type { DocRefBaseImpl, IDocRef, WeakDocRef } from '~/DocRef'
+import type { $$Doc } from '~/Doc'
+import type { DocRefTriggerEntry, IDocRef, UnknownDocRefBase } from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
-import type { IntrinsicFields } from '~/schemas'
 
 function forEachStrongRef(o: any, f: (r: IDocRef) => void) {
 	if (isStrongDocRef(o)) {
 		f(o)
 	} else if (Array.isArray(o)) {
 		for (const child of o) forEachStrongRef(child, f)
-	} else if (o?.constructor === Object) {
+	} else if (isPlainObject(o)) {
 		for (const child of Object.values(o)) forEachStrongRef(child, f)
 	}
 }
 
-export function getAfterTriggers(docRef: DocRefBaseImpl<$$Doc>) {
-	if (docRef._afterTriggers) return docRef._afterTriggers
+export function getAfterTriggers(
+	docRef: UnknownDocRefBase<$$Doc>,
+): DocRefTriggerEntry[] {
+	if (docRef._afterTriggers) return docRef._afterTriggers as never
 
 	docRef._afterTriggers = []
 
@@ -44,13 +42,13 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<$$Doc>) {
 				const m = new Map<string, { before: number; after: number }>()
 
 				forEachStrongRef(before, r => {
-					const path = r.path.pathString
+					const path = r.path.toString()
 					const v = m.get(path) || { before: 0, after: 0 }
 					m.set(path, { ...v, before: v.before + 1 })
 				})
 
 				forEachStrongRef(after, r => {
-					const path = r.path.pathString
+					const path = r.path.toString()
 					const v = m.get(path) || { before: 0, after: 0 }
 					m.set(path, { ...v, after: v.after + 1 })
 				})
@@ -64,25 +62,23 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<$$Doc>) {
 
 					if (diff === 0) continue
 
-					const targetDocRef = db(
-						targetPath as never,
-					) as unknown as WeakDocRef<IDoc>
+					const targetDocRef = db.doc(targetPath)
 
 					// ! TODO ! no-await-in-loop
 					// eslint-disable-next-line no-await-in-loop
 					const targetDoc = await targetDocRef
-					let __voltiso: IntrinsicFields['__voltiso'] | undefined
 
-					try {
-						// ! TODO ! no-await-in-loop
-						// eslint-disable-next-line no-await-in-loop
-						__voltiso = await targetDocRef.__voltiso // returns __voltiso from transaction cache if doc is already deleted
-						assert(__voltiso)
-					} catch {
-						throw new TransactorError(
-							`ref trigger for ${path.toString()}: get StrongRef target ${targetPath} failed (database corrupt?)`,
-						)
-					}
+					// ! TODO ! no-await-in-loop
+					// eslint-disable-next-line no-await-in-loop
+					const __voltiso = await (async () => {
+						try {
+							return await targetDocRef.__voltiso // returns __voltiso from transaction cache if doc is already deleted
+						} catch {
+							throw new TransactorError(
+								`ref trigger for ${path.toString()}: get StrongRef target ${targetPath} failed (database corrupt?)`,
+							)
+						}
+					})()
 
 					// if (!__voltiso)
 					// 	throw new TransactorError(
@@ -109,5 +105,5 @@ export function getAfterTriggers(docRef: DocRefBaseImpl<$$Doc>) {
 		})
 	}
 
-	return docRef._afterTriggers
+	return docRef._afterTriggers as never
 }

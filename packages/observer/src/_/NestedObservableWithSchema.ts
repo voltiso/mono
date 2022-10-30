@@ -11,11 +11,15 @@ export type NestedObservableWithSchema<S extends $$Schemable> = {
 } & Observable<Type_<S>> &
 	Omit<
 		{
-			[k in keyof GetShape_<S>]: NestedObservableWithSchema<GetShape_<S>[k]>
+			[k in keyof GetShape_<S>]: NestedObservableWithSchema<
+				GetShape_<S>[k] & $$Schemable
+			>
 		},
 		NestedSubjectReservedField
 	> & {
 		_: {
-			[k in keyof GetShape_<S>]: NestedObservableWithSchema<GetShape_<S>[k]>
+			[k in keyof GetShape_<S>]: NestedObservableWithSchema<
+				GetShape_<S>[k] & $$Schemable
+			>
 		}
 	}

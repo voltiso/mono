@@ -2,13 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { PatchFor } from '@voltiso/util'
-import { patch, patchSet, patchUpdate, replaceIt } from '@voltiso/util'
 import {
 	BoundCallable,
 	CALL,
 	forwardGetOwnPropertyDescriptor,
 	forwardOwnKeys,
 	hasOwnProperty,
+	patch,
+	replaceIt,
+	shallowPatch,
 } from '@voltiso/util'
 import { useUpdate } from '@voltiso/util.react'
 import { useMemo } from 'react'
@@ -119,12 +121,12 @@ class StatePatcher_<S extends StateObject> {
 	 * - (like React's .update() on class components)
 	 */
 	update(updateValue: PatchFor<S>): void {
-		this._update(patchUpdate(this._rawState, updateValue))
+		this._update(shallowPatch(this._rawState, updateValue))
 	}
 
 	/** Similar to `.patch()`, but uses `replaceIt` by default */
 	set(newValue: S): void {
-		this._update(patchSet(this._rawState, newValue))
+		this._update(patch(this._rawState, replaceIt(newValue)))
 	}
 
 	/** Same as .update() */

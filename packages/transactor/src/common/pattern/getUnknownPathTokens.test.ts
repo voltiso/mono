@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { GetUnknownPathTokens } from './getUnknownPathTokens'
 import { getUnknownPathTokens } from './getUnknownPathTokens'
@@ -12,7 +12,7 @@ describe('getUnknownPathTokens', () => {
 		expect.assertions(0)
 
 		type A = GetUnknownPathTokens<'a{a} df dfg   {test}   *   **    *'>
-		Assert<IsIdentical<A, ['a', 'test', '*', '**', '*']>>()
+		$Assert<IsIdentical<A, ['a', 'test', '*', '**', '*']>>()
 	})
 
 	it('empty', () => {
@@ -22,7 +22,7 @@ describe('getUnknownPathTokens', () => {
 
 		expect(a).toStrictEqual([])
 
-		Assert<IsIdentical<typeof a, []>>()
+		$Assert<IsIdentical<typeof a, []>>()
 	})
 
 	it('named', () => {
@@ -32,7 +32,7 @@ describe('getUnknownPathTokens', () => {
 
 		expect(a).toStrictEqual(['a', 'test'])
 
-		Assert<IsIdentical<typeof a, ['a', 'test']>>()
+		$Assert<IsIdentical<typeof a, ['a', 'test']>>()
 	})
 
 	it('wildcard', () => {
@@ -42,7 +42,7 @@ describe('getUnknownPathTokens', () => {
 
 		expect(a).toStrictEqual(['*', '*'])
 
-		Assert<IsIdentical<typeof a, ['*', '*']>>()
+		$Assert<IsIdentical<typeof a, ['*', '*']>>()
 	})
 
 	it('named and wildcard', () => {
@@ -52,7 +52,7 @@ describe('getUnknownPathTokens', () => {
 
 		expect(a).toStrictEqual(['*', 'test'])
 
-		Assert<IsIdentical<typeof a, ['*', 'test']>>()
+		$Assert<IsIdentical<typeof a, ['*', 'test']>>()
 	})
 
 	it('double-wildcard', () => {
@@ -62,6 +62,6 @@ describe('getUnknownPathTokens', () => {
 
 		expect(a).toStrictEqual(['**', '*', 'test'])
 
-		Assert<IsIdentical<typeof a, ['**', '*', 'test']>>()
+		$Assert<IsIdentical<typeof a, ['**', '*', 'test']>>()
 	})
 })

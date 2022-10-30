@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocRefBaseImpl } from '~/DocRef'
+import type { UnknownDocRefBase } from '~/DocRef'
 
-export function getMethods(this: DocRefBaseImpl) {
+export function getMethods(this: UnknownDocRefBase) {
 	if (this._methods) return this._methods
 
 	this._methods = []

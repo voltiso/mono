@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	InferableObject,
-	ObjectLike,
+	$$InferableObject,
+	$$Object,
 	SchemaLike,
 } from '@voltiso/schemar.types'
 
@@ -17,7 +17,7 @@ export type IdSchemaEntry = {
 
 export type SchemaEntry = {
 	getPathMatches: GetPathMatches
-	schema: InferableObject | ObjectLike
+	schema: $$InferableObject | $$Object
 }
 
 export type MethodEntry = {

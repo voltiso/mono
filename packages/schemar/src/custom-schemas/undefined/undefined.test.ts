@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OutputType } from '@voltiso/schemar.types'
+import type { Output } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -11,7 +11,7 @@ describe('undefined', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		type A = OutputType<typeof s.undefined>
+		type A = Output<typeof s.undefined>
 		$Assert<IsIdentical<A, undefined>>()
 
 		expect(s.undefined.extends(s.unknown)).toBeTruthy()

@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import type { DocConstructorImpl, $$Doc } from './Doc'
+import type { $$Doc, DocConstructorImpl } from './Doc'
 import * as h from './Doc/_/triggerCreators'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from './Trigger'
 
@@ -29,7 +29,7 @@ export function afterCreateOrUpdate<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterCreateOrUpdate(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withAfterCreateOrUpdate(typeofDoc._ as never, name, doc[name] as never) as never
 }
 
 export function afterCreate<
@@ -37,7 +37,7 @@ export function afterCreate<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterCreate(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withAfterCreate(typeofDoc._ as never, name, doc[name] as never)
 }
 
 export function afterDelete<
@@ -45,7 +45,7 @@ export function afterDelete<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterDelete(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withAfterDelete(typeofDoc._ as never, name, doc[name] as never)
 }
 
 export function afterUpdate<
@@ -53,7 +53,7 @@ export function afterUpdate<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterUpdate(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withAfterUpdate(typeofDoc._ as never, name, doc[name] as never)
 }
 
 export function after<
@@ -61,7 +61,7 @@ export function after<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfter(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withAfter(typeofDoc._ as never, name, doc[name] as never)
 }
 
 export function beforeCommit<

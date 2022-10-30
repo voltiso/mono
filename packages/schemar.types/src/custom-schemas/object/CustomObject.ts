@@ -10,7 +10,7 @@ import type {
 } from '@voltiso/util'
 
 import type { $$InferableObject, $$Object } from '~'
-import type { InputType_, OutputType_, Type } from '~/GetType'
+import type { GetObjectType, Input_, Output_, Type } from '~/GetType'
 import type { CustomSchema, SimpleSchema } from '~/Schema'
 import type { $$Schemable, GetDeepShape_ } from '~/Schemable'
 import type { DefineSchema } from '~/SchemaOptions'
@@ -65,8 +65,20 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomObject {
-	export type WithPlain<This extends $$Object> = This extends any
-		? DefineSchema<This, { isPlain: true }>
+	export type WithPlain<This extends $$Object> = This extends {
+		Output: unknown
+		Input: unknown
+	}
+		? DefineSchema<
+				This,
+				{
+					isPlain: true
+					// eslint-disable-next-line etc/no-internal
+					Output: GetObjectType._IntersectWithObject<This['Output']>
+					// eslint-disable-next-line etc/no-internal
+					Input: GetObjectType._IntersectWithObject<This['Input']>
+				}
+		  >
 		: never
 
 	export type WithAnd<This extends $$Object, Other> = This extends {
@@ -85,8 +97,8 @@ export namespace CustomObject {
 									? Other['getShape']
 									: Other)
 						>
-						Output: _<This[OPTIONS]['Output'] & OutputType_<Other>>
-						Input: _<This[OPTIONS]['Input'] & InputType_<Other>>
+						Output: _<This[OPTIONS]['Output'] & Output_<Other>>
+						Input: _<This[OPTIONS]['Input'] & Input_<Other>>
 					}
 			  >
 		: never

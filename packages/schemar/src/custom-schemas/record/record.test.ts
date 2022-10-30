@@ -21,7 +21,6 @@ describe('record', () => {
 	})
 
 	it('type', () => {
-
 		const obj = s.record(s.string, s.number)
 
 		$Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
@@ -68,7 +67,7 @@ describe('record', () => {
 
 		const a = s.record(s.string, s.number)
 
-		type AOut = typeof a.OutputType
+		type AOut = typeof a.Output
 
 		$Assert<
 			IsIdentical<
@@ -103,7 +102,7 @@ describe('record', () => {
 
 		const a = s.record(s.number.or(s.string))
 
-		type AOut = typeof a.OutputType
+		type AOut = typeof a.Output
 
 		$Assert<
 			IsIdentical<

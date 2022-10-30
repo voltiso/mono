@@ -13,15 +13,14 @@ import {
 import type { $WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
-import type { DocRefContext, StrongDocRefBase } from '~/DocRef'
-import { isStrongDocRef, StrongDocRef, StrongDocRefImpl } from '~/DocRef'
+import { DocRefContext, StrongDocRefBase } from '~/DocRef'
+import { isStrongDocRef, StrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error/TransactorError'
 import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
 import type { Updates } from '~/updates'
 
-import type { IntrinsicFields } from '..'
 import type { GetData } from './_/GData'
 import type { Doc } from './Doc'
 import { DocConstructorImpl } from './DocConstructor'
@@ -29,6 +28,7 @@ import type { DocContext } from './DocContext'
 import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
 import type { IDoc } from './IDoc'
+import type { IntrinsicFields } from '~/schemas'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -41,8 +41,8 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		}
 
 		return r as never
-	} else if (x instanceof StrongDocRefImpl) {
-		return new StrongDocRefImpl(ctx as never, x.path.pathString) as never
+	} else if (x instanceof StrongDocRefBase) {
+		return new StrongDocRefBase(ctx as never, x.path.toString()) as never
 	}
 
 	return x
@@ -152,7 +152,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		if (!this._ref)
 			this._ref = new StrongDocRef(
 				omit(this._context, 'docRef'),
-				this.path.pathString,
+				this.path.toString(),
 			) as never
 		return this._ref as never
 	}
@@ -173,9 +173,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this._context.db
 	}
 
-	async update(
-		updates: Updates,
-	): Promise<Doc<TI, 'outside'> | null | undefined> {
+	async update(updates: Updates): Promise<Doc<TI> | null | undefined> {
 		return (await this._context.docRef.update(updates as any)) as never
 	}
 

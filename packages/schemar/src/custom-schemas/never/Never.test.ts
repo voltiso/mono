@@ -4,10 +4,10 @@
 import type {
 	$CustomNever,
 	INever,
-	InputType,
+	Input,
 	ISchema,
 	NeverOptions,
-	OutputType,
+	Output,
 } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -26,21 +26,21 @@ describe('never', () => {
 
 		$Assert.is<typeof s.never, ISchema>()
 
-		type A1 = OutputType<typeof s.never>
-		type A2 = InputType<typeof s.never>
+		type A1 = Output<typeof s.never>
+		type A2 = Input<typeof s.never>
 		$Assert<IsIdentical<A1, never>>()
 		$Assert<IsIdentical<A2, never>>()
 
-		type B = s.Never['OutputType']
+		type B = s.Never['Output']
 		$Assert.is<B, never>()
 
-		type C = s.Never['OutputType']['optional']
+		type C = s.Never['Output']['optional']
 		$Assert.is<C, never>()
 
-		type D = s.Never['OutputType']['optional']['optional']
+		type D = s.Never['Output']['optional']['optional']
 		$Assert.is<D, never>()
 
-		type E = s.Never['OutputType']['optional']['readonly']
+		type E = s.Never['Output']['optional']['readonly']
 		$Assert.is<E, never>()
 
 		const e = s.never.optional.readonly

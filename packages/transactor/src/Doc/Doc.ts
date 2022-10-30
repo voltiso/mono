@@ -1,7 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_, Get_ } from '@voltiso/util'
+import type {
+	_,
+	$_,
+	IsIdentical,
+	Merge2Reverse_,
+	NotProvided,
+} from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { Id } from '~/Data'
@@ -18,27 +24,34 @@ import { DocCall } from './DocCall'
 import type { DocConstructor, IDocConstructorNoBuilder } from './DocConstructor'
 import type { UntaggedDocTI } from './DocImpl'
 import { DocImpl } from './DocImpl'
-import type { DocTI, $$DocTI, DTI } from './DocTI'
-import type { $$Doc } from './IDoc'
-import type { $$IndexedDocTI, IndexedDoc } from '..'
+import type { GetDocTag, GetDocTI } from './DocRelated'
+import type { $$DocTI, DTI } from './DocTI'
+import type { $$Doc, IDoc } from './IDoc'
+import type { $$IndexedDocTI, IndexedDoc } from './IndexedDoc'
 
 export type IdField<Doc extends $$Doc> = {
 	id: Id<Doc>
 }
+
+// ! TODO
+// export interface DocOptions {
+// 	executionContext: ExecutionContext
+// }
 
 /** Everything except custom stuff at the root level: fields, methods, aggregates */
 export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	extends $$Doc {
 	//
 
-	This: this
+	// This: this
 
 	readonly [DTI]: TI
 
 	readonly constructor: IDocConstructorNoBuilder
 
-	readonly id: Id<this>
-	readonly path: DocPath<Get_<TI, 'tag'>>
+	readonly id: Id<TI>
+	// readonly id: Id<DocBase<TI, Ctx>>
+	readonly path: DocPath<GetDocTag<TI>>
 	readonly ref: StrongDocRefBase<this>
 
 	readonly data: GetData<TI>
@@ -47,23 +60,23 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	//
 
-	get aggregateSchemas(): Get_<TI, 'aggregates'>
+	get aggregateSchemas(): GetDocTI<TI>['aggregates']
 
 	//
 
 	update(
 		updates: UpdatesFromData.Update<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
-	): Promise<Doc<TI, Ctx> | undefined>
+	): Promise<CustomDoc<TI, Ctx> | undefined>
 
 	update(
 		updates: _<ReplaceIt<GetUpdateDataByCtx<TI, Ctx>>>,
-	): Promise<Doc<TI, Ctx>>
+	): Promise<CustomDoc<TI, Ctx>>
 
 	update(updates: DeleteIt): Promise<null>
 
 	update(
 		updates: UpdatesFromData<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
-	): Promise<Doc<TI, Ctx> | null | undefined>
+	): Promise<CustomDoc<TI, Ctx> | null | undefined>
 
 	//
 
@@ -77,15 +90,30 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 }
 
 /** `DocBase` + custom stuff at the root level */
-export type Doc<
-	TI extends $$DocTI = DocTI,
-	Ctx extends ExecutionContext = ExecutionContext,
+export type CustomDoc<
+	TI extends $$DocTI,
+	Ctx extends ExecutionContext, // ! TODO
 > = TI extends $$IndexedDocTI
 	? IndexedDoc<Ctx>
-	: DocBase<TI, Ctx> &
-			GetData<TI> &
-			GetMethodPromises_<TI> &
-			Required<GetData<TI>['__voltiso']['aggregateTarget']>
+	: Merge2Reverse_<
+			// ! flatten helps with "instantiation too deep" errors 🤔
+			DocBase<TI, Ctx>,
+			Omit<
+				GetData<TI> &
+					GetMethodPromises_<TI> &
+					Required<GetData<TI>['__voltiso']['aggregateTarget']>,
+				keyof DocBase<TI, Ctx>
+			>
+	  >
+
+export type Doc<TI extends $$DocTI | NotProvided = NotProvided> = IsIdentical<
+	TI,
+	NotProvided
+> extends true
+	? IDoc
+	: TI extends $$DocTI
+	? CustomDoc<TI, 'outside'>
+	: never
 
 export const Doc = CallableConstructor({
 	constructor: lazyConstructor(() => DocImpl as never),

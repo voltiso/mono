@@ -9,7 +9,7 @@ import type {
 	CustomString,
 	ISchema,
 	IString,
-	OutputType,
+	Output,
 	Schema,
 	SchemaLike,
 	StringOptions,
@@ -31,7 +31,6 @@ describe('string', () => {
 	})
 
 	it('type', () => {
-
 		$Assert.is<typeof s.string, IString>()
 
 		const a = s.string.optional
@@ -57,11 +56,11 @@ describe('string', () => {
 		expect(s.string('asd', 'sdf').extends(s.string('asd', 'sdf'))).toBeTruthy()
 		expect(s.string('asd', '').extends(s.string('asd', 'sdf'))).toBeFalsy()
 
-		type N = OutputType<typeof s.string>
+		type N = Output<typeof s.string>
 		$Assert<IsIdentical<N, string>>()
 
 		const nl = s.string('asd', 'sdf')
-		type NL = OutputType<typeof nl>
+		type NL = Output<typeof nl>
 		$Assert<IsIdentical<NL, 'asd' | 'sdf'>>()
 	})
 

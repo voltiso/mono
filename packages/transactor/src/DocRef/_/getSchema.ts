@@ -3,18 +3,18 @@
 
 import * as s from '@voltiso/schemar'
 import type {
+	$$SchemableObject,
 	IObject,
 	ISchema,
-	SchemableObjectLike,
 } from '@voltiso/schemar.types'
 import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
-import type { DocRefBaseImpl, $$DocRef } from '~/DocRef'
+import type { $$DocRef, UnknownDocRefBase } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sIntrinsicFields } from '~/schemas'
 
-export function getIdSchemas(d: DocRefBaseImpl<any>) {
+export function getIdSchemas(d: UnknownDocRefBase<any>) {
 	if (d._idSchemas !== undefined) return d._idSchemas
 
 	const { _allIdSchemas } = d._context.transactor
@@ -34,8 +34,8 @@ export function getIdSchemas(d: DocRefBaseImpl<any>) {
 	return d._idSchemas
 }
 
-export function getSchema(d: $$DocRef): DocRefBaseImpl['_schema'] {
-	$AssumeType<DocRefBaseImpl>(d)
+export function getSchema(d: $$DocRef): UnknownDocRefBase['_schema'] {
+	$AssumeType<UnknownDocRefBase>(d)
 
 	if (d._schema !== undefined) {
 		return d._schema
@@ -48,9 +48,9 @@ export function getSchema(d: $$DocRef): DocRefBaseImpl['_schema'] {
 		_allPrivateSchemas,
 	} = d._context.transactor
 
-	const publicOnCreationSchemas: SchemableObjectLike[] = []
-	const publicSchemas: SchemableObjectLike[] = []
-	const privateSchemas: SchemableObjectLike[] = []
+	const publicOnCreationSchemas: $$SchemableObject[] = []
+	const publicSchemas: $$SchemableObject[] = []
+	const privateSchemas: $$SchemableObject[] = []
 
 	const path = d.path.toString()
 
@@ -82,15 +82,15 @@ export function getSchema(d: $$DocRef): DocRefBaseImpl['_schema'] {
 				`missing schema for ${path} - add a schema, or set requireSchemas = false`,
 			)
 
-		d._publicOnCreationSchema = s.object({})
-		d._privateSchema = s.object({})
+		d._publicOnCreationSchema = s.object({}) as never
+		d._privateSchema = s.object({}) as never
 
 		return (d._schema = null)
 	}
 
-	let thisSchema: IObject = s.object({})
-	d._publicOnCreationSchema = s.object({})
-	d._privateSchema = s.object({})
+	let thisSchema: IObject = s.object({}) as never
+	d._publicOnCreationSchema = s.object({}) as unknown as IObject
+	d._privateSchema = s.object({}) as unknown as IObject
 
 	for (const schema of publicOnCreationSchemas) {
 		thisSchema = thisSchema.and(schema) as never

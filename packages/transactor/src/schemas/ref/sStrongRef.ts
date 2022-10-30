@@ -6,8 +6,8 @@ import type * as t from '@voltiso/schemar.types'
 import { lazyValue, ProtoCallable } from '@voltiso/util'
 
 import type { IDoc, IndexedDoc } from '~/Doc'
-import type { StrongDocRef, StrongDocRefBase } from '~/DocRef'
-import { StrongDocRefImpl } from '~/DocRef'
+import type { StrongDocRef } from '~/DocRef'
+import { StrongDocRefBase } from '~/DocRef'
 import type { DocTag } from '~/DocTypes'
 
 import type { FindDoc_ } from './_'
@@ -15,7 +15,7 @@ import type { FindDoc_ } from './_'
 /** @internal */
 export const _strongRefSchema = lazyValue(
 	() =>
-		s.instance(StrongDocRefImpl<IDoc>) as unknown as t.Instance<
+		s.instance(StrongDocRefBase<IDoc>) as unknown as t.Instance<
 			StrongDocRef<IDoc>
 		>,
 )

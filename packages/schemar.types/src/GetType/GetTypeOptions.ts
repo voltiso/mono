@@ -3,4 +3,10 @@
 
 export interface GetTypeOptions {
 	kind: 'in' | 'out'
+	isPlain: boolean
+}
+
+export type DefaultGetTypeOptions = {
+	kind: 'out'
+	isPlain: false
 }

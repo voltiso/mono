@@ -8,7 +8,7 @@ import { $Assert } from '@voltiso/util'
 
 import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
 import type { $WithId } from '~/Data'
-import type { DocTI, $$DocTI, IndexedDocTI } from '~/Doc'
+import type { $$DocTI, DocTI, IndexedDocTI } from '~/Doc'
 import { Doc } from '~/Doc'
 import type { IntrinsicFields } from '~/schemas'
 

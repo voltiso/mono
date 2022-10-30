@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { DocTI, IDoc } from '~/Doc'
 import type { IDocRef } from '~/DocRef'
@@ -13,11 +13,11 @@ describe('Relax', () => {
 		expect.assertions(0)
 
 		type A = Relax<IDoc>
-		Assert.is<A, IDoc>()
+		$Assert.is<A, IDoc>()
 
-		Assert.is<Relax<IDoc>, IDoc>()
+		$Assert.is<Relax<IDoc>, IDoc>()
 
-		Assert.is<Relax<DocTI>, DocTI>()
-		Assert.is<Relax<IDocRef>, IDocRef>()
+		$Assert.is<Relax<DocTI>, DocTI>()
+		$Assert.is<Relax<IDocRef>, IDocRef>()
 	})
 })

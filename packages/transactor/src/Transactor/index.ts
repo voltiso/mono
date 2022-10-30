@@ -4,5 +4,5 @@
 export * from './Context'
 export * from './Options'
 export * from './Transactor'
-export * from './TransactorImpl'
+export * from './Transactor'
 export * from './WithTransactor'

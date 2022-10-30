@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { GetDeepShape_ } from '~'
-import type { InputType_, ObjectType_ } from '~/GetType'
+import type { Input_, GetObjectType } from '~/GetType'
 import type { $$InferableObject } from '~/Inferable'
 
 import type { CustomObject } from './CustomObject'
@@ -11,12 +11,12 @@ export interface Object<Shape extends $$InferableObject>
 	extends CustomObject<{
 		shape: Shape
 		deepShape: GetDeepShape_<Shape>
-		Output: ObjectType_<Shape, { kind: 'out' }>
-		Input: ObjectType_<Shape, { kind: 'in' }>
+		Output: GetObjectType<Shape, { kind: 'out'; isPlain: false }>
+		Input: GetObjectType<Shape, { kind: 'in'; isPlain: false }>
 	}> {}
 
 export type ImplicitObject<Shape extends $$InferableObject> =
-	object extends InputType_<Shape>
+	object extends Input_<Shape>
 		? AutoCreatedObject<Shape>
 		: // eslint-disable-next-line @typescript-eslint/ban-types
 		  Object<Shape>
@@ -26,8 +26,8 @@ export interface AutoCreatedObject<
 > extends CustomObject<{
 		shape: Shape
 		deepShape: GetDeepShape_<Shape>
-		Output: ObjectType_<Shape, { kind: 'out' }>
-		Input: ObjectType_<Shape, { kind: 'in' }>
+		Output: GetObjectType<Shape, { kind: 'out'; isPlain: false }>
+		Input: GetObjectType<Shape, { kind: 'in'; isPlain: false }>
 
 		hasDefault: true
 		default: {}

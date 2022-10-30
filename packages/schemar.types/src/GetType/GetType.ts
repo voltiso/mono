@@ -1,7 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schema, $$Schemable, GetTypeOptions, ImplicitObjectType_, TupleType_ } from '~'
+import type { Override } from '@voltiso/util'
+
+import type {
+	$$Schema,
+	$$Schemable,
+	DefaultGetTypeOptions,
+	GetTypeOptions,
+	GetImplicitObjectType,
+	TupleType_,
+} from '~'
 import type {
 	$$Inferable,
 	$$InferableObject,
@@ -16,7 +25,7 @@ import type {
 export namespace Type {
 	export type SplitInferables<
 		S extends $$Schemable,
-		IO extends GetTypeOptions,
+		IO extends GetTypeOptions & { isPlain: boolean },
 	> = S extends $$Schema
 		? HandleSchemas<S, IO>
 		: S extends $$Inferable
@@ -32,27 +41,31 @@ export namespace Type {
 	export type HandleSchemas<
 		S extends $$Schema,
 		IO extends GetTypeOptions,
-	> = S extends { readonly OutputType: unknown; readonly InputType: unknown }
+	> = S extends { readonly Output: unknown; readonly Input: unknown }
 		? IO['kind'] extends 'in'
-			? S['InputType']
+			? S['Input']
 			: IO['kind'] extends 'out'
-			? S['OutputType']
+			? S['Output']
 			: never
 		: unknown
 
 	export type HandleInferables<
 		I extends $$Inferable,
-		IO extends GetTypeOptions,
+		IO extends GetTypeOptions & { isPlain: boolean },
 	> = I extends InferableLiteral
 		? I
 		: I extends $$InferableTuple
 		? TupleType_<I, IO>
 		: I extends $$InferableObject
 		? InferableObject extends I
-			? object
-			: ImplicitObjectType_<I, IO>
+			? IO['isPlain'] extends true
+				? object
+				: {}
+			: GetImplicitObjectType<I, IO>
 		: object extends I
-		? object
+		? IO['isPlain'] extends true
+			? object
+			: {}
 		: never
 }
 
@@ -67,10 +80,10 @@ export namespace Type {
  *
  * @inline
  */
-export type Type_<S, IO extends GetTypeOptions = { kind: 'out' }> = [
+export type Type_<S, PartialOptions extends Partial<GetTypeOptions> = {}> = [
 	S,
 ] extends [$$Schemable]
-	? Type<S, IO>
+	? Type<S, PartialOptions>
 	: never
 
 /**
@@ -80,8 +93,8 @@ export type Type_<S, IO extends GetTypeOptions = { kind: 'out' }> = [
  */
 export type Type<
 	S extends $$Schemable,
-	Options extends GetTypeOptions = { kind: 'out' },
-> = Type.SplitInferables<S, Options>
+	PartialOptions extends Partial<GetTypeOptions> = {},
+> = Type.SplitInferables<S, Override<DefaultGetTypeOptions, PartialOptions>>
 
 /**
  * Infer type, or identity if already an Inferable
@@ -90,8 +103,12 @@ export type Type<
  */
 export type $Type_<
 	S,
-	Options extends GetTypeOptions = { kind: 'out' },
-> = S extends any ? (Options extends any ? Type_<S, Options> : never) : never
+	PartialOptions extends Partial<GetTypeOptions> = {},
+> = S extends any
+	? PartialOptions extends any
+		? Type_<S, PartialOptions>
+		: never
+	: never
 
 /**
  * Infer type, or identity if already an Inferable
@@ -100,71 +117,73 @@ export type $Type_<
  */
 export type $Type<
 	S extends $$Schema | $$Inferable,
-	Options extends GetTypeOptions = { kind: 'out' },
-> = S extends any ? Type_<S, Options> : never
+	PartialOptions extends Partial<GetTypeOptions> = {},
+> = S extends any ? Type_<S, PartialOptions> : never
+
+//
+
+//
+
+//
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type OutputType<S extends $$Schema | $$Inferable> = Type_<
-	S,
-	{ kind: 'out' }
->
+export type Output_<S> = Type_<S, { kind: 'out' }>
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type OutputType_<S> = Type_<S, { kind: 'out' }>
+export type Output<S extends $$Schema | $$Inferable> = Output_<S>
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type $OutputType<S extends $$Schema | $$Inferable> = S extends any
-	? OutputType_<S>
-	: never
+export type $Output_<S> = S extends any ? Output_<S> : never
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type $OutputType_<S> = S extends any ? OutputType_<S> : never
+export type $Output<S extends $$Schema | $$Inferable> = $Output_<S>
+
+//
+
+//
+
+//
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type InputType<S extends $$Schema | $$Inferable> = Type_<
-	S,
-	{ kind: 'in' }
->
+export type Input_<S> = Type_<S, { kind: 'in' }>
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type InputType_<S> = Type_<S, { kind: 'in' }>
+export type Input<S extends $$Schema | $$Inferable> = Input_<S>
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type $InputType<S extends $$Schema | $$Inferable> = S extends any
-	? InputType_<S>
-	: never
+export type $Input_<S> = S extends any ? Input_<S> : never
 
 /**
  * Proxy to `GetType`
  *
  * @inline
  */
-export type $InputType_<S> = S extends any ? InputType_<S> : never
+export type $Input<S extends $$Schema | $$Inferable> = $Input_<S>
