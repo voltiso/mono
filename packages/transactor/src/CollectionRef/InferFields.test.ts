@@ -7,13 +7,9 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import { afterCreateOrUpdate, method } from '~/decorators'
-import type {
-	DocConstructor,
-	DocTI,
-	DTI,
-	IDocConstructorNoBuilder,
-} from '~/Doc'
+import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
+import type { DocConstructor, IDocConstructorNoBuilder } from '~/DocConstructor'
 import type { CustomDocRef } from '~/DocRef'
 import * as ss from '~/schemas'
 

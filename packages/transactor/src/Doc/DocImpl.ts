@@ -24,7 +24,7 @@ import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 
 import type { AnyDoc } from '..'
-import type { GetData } from './_/GData'
+import type { GetData } from './_/GetData'
 import type { Doc } from './Doc'
 import { DocConstructorImpl } from '../DocConstructor/index'
 import type { DocContext } from './DocContext'

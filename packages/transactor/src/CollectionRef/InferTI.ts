@@ -5,7 +5,7 @@ import type { Assume, NewableReturn_ } from '@voltiso/util'
 
 import type { $$Doc, $$DocTI, DocTI, DTI } from '~/Doc'
 import type { $$DocConstructor } from '~/DocConstructor'
-import type { DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { InferMethods } from './InferMethods'
@@ -18,10 +18,10 @@ export type InferTIFromDoc<D extends $$Doc> = $$Doc extends D
 	? DocTI
 	: Assume<
 			$$DocTI,
-			D extends { [DTI]: { tag: string } }
+			D extends { [DTI]: { tag: DocTagLike | AnyDoc } }
 				? D[DTI] & {
 						methods: InferMethods<D>
-				  } & (undefined extends D[DTI]['tag'] ? { tag: undefined } : unknown)
+				  } & (AnyDoc extends D[DTI]['tag'] ? { tag: AnyDoc } : unknown)
 				: never
 	  >
 

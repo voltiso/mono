@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '@voltiso/util'
-import { $Assert, $dev } from '@voltiso/util'
+import { $Assert, $dev, lazyConstructor } from '@voltiso/util'
 
 import type { WithTransaction } from '~/Transaction'
 
@@ -34,8 +34,11 @@ export interface DocFieldPathConstructor {
 	new <data>(ctx: DocFieldPath.Context, path: string[]): DocFieldPath<data>
 }
 
-// eslint-disable-next-line import/export, etc/no-internal
-export const DocFieldPath = _DocFieldPath as unknown as DocFieldPathConstructor
+// eslint-disable-next-line import/export
+export const DocFieldPath = lazyConstructor(
+	// eslint-disable-next-line etc/no-internal
+	() => _DocFieldPath,
+) as unknown as DocFieldPathConstructor
 
 //
 

@@ -1,13 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { AnyDoc, DocTagLike } from '~/DocTypes'
+
 import type { CustomDocRef } from './CustomDocRef'
 import type { DocRef } from './DocRef'
 
-export type CustomWeakDocRef<O extends Partial<WeakDocRef.Options>> =
-	CustomDocRef<O & { isStrong: false }>
-
-export type WeakDocRef = CustomWeakDocRef<{}>
+export type WeakDocRef<doc extends DocTagLike | AnyDoc = AnyDoc> =
+	CustomDocRef<{
+		doc: doc
+		isStrong: false
+	}>
 
 export namespace WeakDocRef {
 	export type Options = Omit<DocRef.Options, 'isStrong'>

@@ -16,16 +16,17 @@ import type { AggregatorHandlers } from '~/Aggregator'
 import type {
 	$$Doc,
 	$$DocTI,
+	$$PartialDocOptions,
 	Doc,
 	DocBuilderPlugin,
 	DocContext,
 	DocTI,
 	DTI,
+	GetInputData,
+	GI,
+	GO,
 	Promisify,
 } from '~/Doc'
-import type { GetInputData } from '~/Doc/_/GData'
-import type { GI, GO } from '~/Doc/_/GDoc'
-import type { $$PartialDocOptions } from '~/Doc/_/NewFields'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'

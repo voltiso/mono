@@ -11,15 +11,14 @@ import type * as t from '@voltiso/schemar.types'
 import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
+import type { AnyDoc } from '~/DocTypes'
 import type { Method } from '~/Method'
 
+import type { DocConstructor } from '../DocConstructor'
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { DocBase } from './Doc'
 import { Doc } from './Doc'
-import type { DocConstructor } from '../DocConstructor/index'
 import type { DocTI } from './DocTI'
-
-declare const IS_INDEXED: unique symbol
 
 export type IndexedDocTISchema = t.CustomObject<{
 	Output: {
@@ -36,7 +35,7 @@ export type IndexedDocTISchema = t.CustomObject<{
 
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
-	tag: 'indexed'
+	tag: AnyDoc
 
 	publicOnCreation: IndexedDocTISchema
 	public: IndexedDocTISchema

@@ -7,7 +7,7 @@ import type { Merge2Reverse_ } from '@voltiso/util'
 import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 import type { VoltisoEntry } from '~/schemas'
 
-import type { _$GetAggregateTarget } from './GData'
+import type { _$GetAggregateTarget } from './GetData'
 
 export type GetVoltisoEntry<R extends $$DocRelatedLike> = Merge2Reverse_<
 	{

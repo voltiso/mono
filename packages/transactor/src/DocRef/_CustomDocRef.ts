@@ -23,12 +23,14 @@ import type { DocBrand } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { $WithId, DocIdString } from '~/Data'
 import { withoutId } from '~/Data'
-import type { Doc, GetMethodPromises, UpdatesFromData } from '~/Doc'
 import type {
+	Doc,
 	GetData,
+	GetMethodPromises,
 	GetPublicCreationInputData,
 	GetUpdateDataByCtx,
-} from '~/Doc/_/GData'
+	UpdatesFromData,
+} from '~/Doc'
 import type { GetDoc, GetDocTag, GetDocTI } from '~/DocRelated'
 import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'

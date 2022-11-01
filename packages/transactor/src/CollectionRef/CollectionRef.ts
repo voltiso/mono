@@ -17,7 +17,7 @@ import type {
 } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { $$DocConstructor } from '~/DocConstructor'
-import type { CustomWeakDocRef } from '~/DocRef'
+import type { WeakDocRef } from '~/DocRef'
 import { DocRef } from '~/DocRef'
 import type { GetDocTag } from '~/DocRelated'
 import { CollectionPath, concatPath } from '~/Path'
@@ -34,11 +34,11 @@ export interface CollectionRef<
 	TI extends $$DocTI = InferTI<D>,
 > {
 	/** Get Doc reference by Id */
-	(id: DocIdString<D>): CustomWeakDocRef<{ doc: GetDocTag<D> }>
+	(id: DocIdString<D>): WeakDocRef<GetDocTag<D>>
 
 	<DD extends $$Doc>(id: DocIdString<DD>): DD extends any
 		? IDoc extends DD
-			? CustomWeakDocRef<{ doc: GetDocTag<D> }>
+			? WeakDocRef<GetDocTag<D>>
 			: Throw<'wrong Id type' & { Doc: DD }>
 		: never
 }
@@ -72,7 +72,7 @@ export class CollectionRef<
 					this._path.toString(),
 					id,
 				) as unknown as TI extends any
-					? CustomWeakDocRef<{ doc: GetDocTag<TI> }>
+					? WeakDocRef<GetDocTag<TI>>
 					: never,
 			this,
 		) as never

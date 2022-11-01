@@ -8,7 +8,7 @@ import { Doc } from '~/Doc'
 import { sStrongRef, sWeakRef } from '~/schemas'
 
 import type { StrongDocRef } from './StrongDocRef'
-import type { CustomWeakDocRef } from './WeakDocRef'
+import type { WeakDocRef } from './WeakDocRef'
 
 declare module '..' {
 	interface DocTypes {
@@ -32,7 +32,7 @@ describe('DocRef', () => {
 			const client = 0 as unknown as Client
 
 			$Assert<IsIdentical<typeof client.strong, StrongDocRef<'oops'>>>()
-			$Assert<IsIdentical<typeof client.weak, CustomWeakDocRef<'oops'>>>()
+			$Assert<IsIdentical<typeof client.weak, WeakDocRef<'oops'>>>()
 		}
 	})
 })

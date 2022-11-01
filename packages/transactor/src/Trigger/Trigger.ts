@@ -3,8 +3,7 @@
 
 import type { Bivariant, DeleteIt, MaybePromise } from '@voltiso/util'
 
-import type { $$Doc, Doc } from '~/Doc'
-import type { GetInputData } from '~/Doc/_/GData'
+import type { $$Doc, Doc, GetInputData } from '~/Doc'
 import type { $$DocRelatedLike } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 

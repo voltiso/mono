@@ -6,7 +6,7 @@ import type { $$Schemable } from '@voltiso/schemar.types'
 import type { DocFieldPath } from '~/DocFieldPath'
 import type { $$DocRelatedLike } from '~/DocRelated'
 
-import type { GetData } from './GData'
+import type { GetData } from './GetData'
 
 /** @inline */
 export type GetDocFields<R extends $$DocRelatedLike> = GetDocFields.ForData<

@@ -6,7 +6,7 @@ import type { IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
 import type { IdBrand } from '..'
-import type { GetData } from './_/GData'
+import type { GetData } from './_/GetData'
 import type { CustomDoc } from './Doc'
 import { Doc } from './Doc'
 import type { IDocConstructor } from '../DocConstructor/index'

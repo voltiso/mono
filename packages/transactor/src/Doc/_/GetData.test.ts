@@ -7,12 +7,12 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
-import type { $WithId, AnyDocIdBrand, DocIdBrand, DocIdString } from '~/Data'
+import type { $WithId, AnyDocIdBrand, DocIdString } from '~/Data'
 import type { $$DocTI, DocTI, IndexedDocTI } from '~/Doc'
 import { Doc } from '~/Doc'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
-import type { GetData, GetPublicCreationInputData } from './GData'
+import type { GetData, GetPublicCreationInputData } from './GetData'
 
 describe('Doc util', () => {
 	it('generic', <TI extends $$DocTI>() => {
@@ -61,7 +61,7 @@ describe('Doc util', () => {
 			IsIdentical<
 				D,
 				{
-					readonly id?: (string & DocIdBrand<'untagged'>) | undefined
+					readonly id?: (string & AnyDocIdBrand) | undefined
 					readonly a: number
 				}
 			>

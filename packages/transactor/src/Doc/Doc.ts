@@ -19,7 +19,7 @@ import type { CustomDocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
 import type { ExecutionContext } from './_/ExecutionContext'
-import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GData'
+import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GetData'
 import type { GetMethodPromises } from './_/GetMethodPromises'
 import type { UpdatesFromData } from './_/UpdatesFromData'
 import { DocCall } from './DocCall'
