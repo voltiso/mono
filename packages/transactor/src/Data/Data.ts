@@ -3,8 +3,9 @@
 
 import type { _, $_, NoArgument } from '@voltiso/util'
 
-import type { $$Doc, $$DocRelated, IDoc } from '~/Doc'
+import type { $$Doc, IDoc } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
+import type { $$DocRelatedLike } from '~/DocRelated'
 
 import type { DocIdString } from './Id'
 
@@ -28,7 +29,7 @@ export type WithId<Data = unknown, Doc extends $$Doc = IDoc> = _<
 /** @inline */
 export type $WithId<
 	Data = unknown,
-	R extends $$DocRelated | NoArgument = NoArgument,
+	R extends $$DocRelatedLike | NoArgument = NoArgument,
 > = Data extends any
 	? R extends any
 		? $_<{ readonly id: DocIdString<R> } & Data>

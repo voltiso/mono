@@ -8,7 +8,7 @@ import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
 import type { IndexedDoc } from '~/Doc'
 import type { GetDocRef } from '~/DocRef'
 import { DocRef, DocRefPattern } from '~/DocRef'
-import type { AnyDocTag } from '~/DocTypes'
+import type { AnyDoc } from '~/DocTypes'
 import type { DbPathFromString, DocPath } from '~/Path'
 import { concatPath, CustomDocPath } from '~/Path'
 
@@ -58,7 +58,7 @@ export class Db {
 
 	doc(
 		...pathTokens: readonly string[]
-	): GetDocRef<{ docTag: AnyDocTag; isStrong: false }> {
+	): GetDocRef<{ docTag: AnyDoc; isStrong: false }> {
 		// $assert(this.context)
 		return new DocRef(this._context, concatPath(pathTokens), {
 			isStrong: false,

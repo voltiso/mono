@@ -3,7 +3,8 @@
 
 import type { Assume, NewableReturn_ } from '@voltiso/util'
 
-import type { $$Doc, $$DocConstructor, $$DocTI, DocTI, DTI } from '~/Doc'
+import type { $$Doc, $$DocTI, DocTI, DTI } from '~/Doc'
+import type { $$DocConstructor } from '~/DocConstructor'
 import type { DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 

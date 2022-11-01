@@ -3,10 +3,10 @@
 
 import type { Type_ } from '@voltiso/schemar.types'
 
-import type { $$DocRelated, GetDocTI } from '../DocRelated'
+import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 
 /** @inline */
-export type GAggregatePromises<R extends $$DocRelated> = {
+export type GAggregatePromises<R extends $$DocRelatedLike> = {
 	[k in keyof GetDocTI<R>['aggregates']]: PromiseLike<
 		Type_<GetDocTI<R>['aggregates'][k]>
 	>

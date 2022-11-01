@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import { $Assert, $Is } from '@voltiso/util'
 
 import { Doc } from '~/Doc/Doc'
-import type { IDocConstructorNoBuilder } from '~/Doc/DocConstructor'
+import type { IDocConstructorNoBuilder } from '~/DocConstructor/index'
 
 import type { CustomDocRef } from './CustomDocRef'
 import type { CustomStrongDocRef, StrongDocRef } from './StrongDocRef'

@@ -65,7 +65,7 @@ async function processAfterTrigger(
 			...pathMatches,
 			path: ctx.docRef.path as never,
 			id: id as never,
-			...ctx,
+			...(ctx as { [k in keyof typeof ctx]: never }),
 			possiblyExists: cacheEntry.possiblyExists,
 		})
 		const data = collectTriggerResult(ctx, r as never)

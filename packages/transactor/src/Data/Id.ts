@@ -3,8 +3,8 @@
 
 import type { Brand, CustomBrand, NoArgument } from '@voltiso/util'
 
-import type { $$DocRelated, GetDocTag } from '~/Doc'
-import type { AnyDocTag, DocTag } from '~/DocTypes'
+import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
+import type { AnyDoc, DocTag } from '~/DocTypes'
 
 export interface IdBrand extends Brand<'transactor.id'> {}
 
@@ -15,19 +15,20 @@ export interface AnyDocIdBrand extends _DocIdBrand<DocTag> {}
 
 export interface DocIdBrand<tag extends DocTag> extends _DocIdBrand<tag> {}
 
-export type GetIdBrand<X extends $$DocRelated | NoArgument = NoArgument> =
+export type GetIdBrand<X extends $$DocRelatedLike | NoArgument = NoArgument> =
 	X extends NoArgument
 		? IdBrand
-		: X extends $$DocRelated
-		? AnyDocTag extends GetDocTag<X>
+		: X extends $$DocRelatedLike
+		? AnyDoc extends GetDocTag<X>
 			? AnyDocIdBrand
 			: GetDocTag<X> extends never
 			? AnyDocIdBrand
-			: DocIdBrand<GetDocTag<X>>
+			: GetDocTag<X> extends DocTag
+			? DocIdBrand<GetDocTag<X>>
+			: never
 		: never
 
 export type IdString = string & IdBrand
 
-export type DocIdString<X extends $$DocRelated | NoArgument = NoArgument> = [
-	string & GetIdBrand<X>,
-][0]
+export type DocIdString<X extends $$DocRelatedLike | NoArgument = NoArgument> =
+	[string & GetIdBrand<X>][0]

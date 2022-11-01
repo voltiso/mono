@@ -12,19 +12,19 @@ import type {
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { DocIdString } from '~/Data'
+import type { DocConstructor, IDocConstructorNoBuilder } from '~/DocConstructor'
 import type { GetDocRef } from '~/DocRef'
+import type { $$DocRelatedLike, GetDocTag, GetDocTI } from '~/DocRelated'
 import type { CustomDocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GData'
-import type { GetMethodPromises } from './_/GMethodPromises'
+import type { GetMethodPromises } from './_/GetMethodPromises'
 import type { UpdatesFromData } from './_/UpdatesFromData'
 import { DocCall } from './DocCall'
-import type { DocConstructor, IDocConstructorNoBuilder } from './DocConstructor'
 import type { UntaggedDocTI } from './DocImpl'
 import { DocImpl } from './DocImpl'
-import type { $$DocRelated, GetDocTag, GetDocTI } from './DocRelated'
 import type { $$DocTI, DTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
 
@@ -89,8 +89,8 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 }
 
 export namespace DocBase {
-	export type Ref<This extends $$DocRelated> = GetDocRef<{
-		doc: This
+	export type Ref<This extends $$DocRelatedLike> = GetDocRef<{
+		doc: GetDocTag<This>
 		isStrong: true
 	}>
 }

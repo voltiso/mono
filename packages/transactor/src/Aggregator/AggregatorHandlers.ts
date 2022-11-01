@@ -2,11 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Type_ } from '@voltiso/schemar.types'
-import type { Get_, MaybePromise } from '@voltiso/util'
+import type { MaybePromise } from '@voltiso/util'
 
-import type { $$Doc, GetDataWithId, IDoc } from '~/Doc'
-import type { $$DocTI, DocTI, DTI } from '~/Doc/DocTI'
+import type { $$Doc, GetDataWithId } from '~/Doc'
 import type { $$DocRef, GetDocRef } from '~/DocRef'
+import type {
+	$$DocRelatedLike,
+	GetDoc,
+	GetDocTag,
+	GetDocTI,
+} from '~/DocRelated'
 
 export interface IAggregatorHandlers {
 	initialValue?: unknown
@@ -24,56 +29,46 @@ export interface IAggregatorHandlers {
 }
 
 export type GetAggregate<
-	Target extends $$Doc,
+	Target extends $$DocRelatedLike,
 	Name,
 	Kind extends 'out' | 'in',
-> = Target extends IDoc ? _GetAggregate<Target, Name, Kind> : never
+> = _GetAggregate<Target, Name, Kind>
 
 export type _GetAggregate<
-	Target extends IDoc,
+	Target extends $$DocRelatedLike,
 	Name,
 	Kind extends 'out' | 'in',
-> = Name extends keyof Target[DTI]['aggregates']
-	? Type_<Target[DTI]['aggregates'][Name], { kind: Kind }>
+> = Name extends keyof GetDocTI<Target>['aggregates']
+	? Type_<GetDocTI<Target>['aggregates'][Name], { kind: Kind }>
 	: never
 
 //
 
-export type AggregatorHandlers<
-	SourceTI extends $$DocTI,
-	Target extends $$Doc,
-	Name extends string & keyof Get_<Get_<Target, DTI>, 'aggregates'>,
-> = SourceTI extends DocTI
-	? Target extends IDoc
-		? AggregatorHandlers_<SourceTI, Target, Name>
-		: never
-	: never
-
-export interface AggregatorHandlers_<
-	SourceTI extends $$DocTI,
-	Target extends $$Doc,
+export interface AggregatorHandlers<
+	Source extends $$DocRelatedLike,
+	Target extends $$DocRelatedLike,
 	Name extends string,
 > {
 	initialValue?: GetAggregate<Target, Name, 'out'> // out, not in - to mitigate bugs
 
-	filter?(this: GetDataWithId<SourceTI>): MaybePromise<boolean>
+	filter?(this: GetDataWithId<Source>): MaybePromise<boolean>
 
 	target(
-		this: GetDataWithId<SourceTI>,
+		this: GetDataWithId<Source>,
 	):
-		| MaybePromise<(Target | GetDocRef<{ doc: Target }>)[]>
-		| MaybePromise<Target>
-		| GetDocRef<{ doc: Target }>
+		| MaybePromise<(GetDoc<Target> | GetDocRef<{ doc: GetDocTag<Target> }>)[]>
+		| MaybePromise<GetDoc<Target>>
+		| GetDocRef<{ doc: GetDocTag<Target> }>
 
 	autoCreateTarget?: boolean | undefined
 
 	include(
-		this: GetDataWithId<SourceTI>,
+		this: GetDataWithId<Source>,
 		acc: GetAggregate<Target, Name, 'out'>, // | InitialValue
 	): MaybePromise<GetAggregate<Target, Name, 'out'>> // out, not in - to mitigate bugs
 
 	exclude(
-		this: GetDataWithId<SourceTI>,
+		this: GetDataWithId<Source>,
 		acc: GetAggregate<Target, Name, 'out'>,
 	): MaybePromise<GetAggregate<Target, Name, 'out'>> // out, not in - to mitigate bugs
 }

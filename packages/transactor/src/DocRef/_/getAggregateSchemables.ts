@@ -5,8 +5,8 @@ import * as s from '@voltiso/schemar'
 import type { SchemaLike } from '@voltiso/schemar.types'
 import { $AssumeType, mapValues } from '@voltiso/util'
 
-import type { GetDocTI } from '~/Doc'
 import type { $$DocRef, DocRef } from '~/DocRef'
+import type { GetDocTI } from '~/DocRelated'
 
 export function getAggregateSchemas<Ref extends $$DocRef>(
 	ref: Ref,

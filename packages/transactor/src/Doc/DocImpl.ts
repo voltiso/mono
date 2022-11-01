@@ -23,9 +23,10 @@ import type { CustomDocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 
+import type { AnyDoc } from '..'
 import type { GetData } from './_/GData'
 import type { Doc } from './Doc'
-import { DocConstructorImpl } from './DocConstructor'
+import { DocConstructorImpl } from '../DocConstructor/index'
 import type { DocContext } from './DocContext'
 import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
@@ -37,8 +38,8 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		const r = {} as any
 
 		for (const [k, v] of Object.entries(x)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
-			r[k] = patchContextInRefs(v, ctx)
+			// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+			r[k] = patchContextInRefs(v as never, ctx)
 		}
 
 		return r as never
@@ -206,5 +207,6 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 }
 
 export interface UntaggedDocTI extends DocTI {
-	tag: 'untagged'
+	tag: AnyDoc
+	// tag: 'untagged'
 }

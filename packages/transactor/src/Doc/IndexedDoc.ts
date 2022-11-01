@@ -16,7 +16,7 @@ import type { Method } from '~/Method'
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { DocBase } from './Doc'
 import { Doc } from './Doc'
-import type { DocConstructor } from './DocConstructor'
+import type { DocConstructor } from '../DocConstructor/index'
 import type { DocTI } from './DocTI'
 
 declare const IS_INDEXED: unique symbol
@@ -36,6 +36,8 @@ export type IndexedDocTISchema = t.CustomObject<{
 
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
+	tag: 'indexed'
+
 	publicOnCreation: IndexedDocTISchema
 	public: IndexedDocTISchema
 	private: IndexedDocTISchema

@@ -13,9 +13,11 @@ import {
 	getUnknownPathTokens,
 } from '~/common'
 import type { WithDb } from '~/Db'
-import type { $$Doc, $$DocConstructor, GetDocTag, IndexedDoc } from '~/Doc'
+import type { $$Doc, IndexedDoc } from '~/Doc'
+import type { $$DocConstructor } from '~/DocConstructor'
 import type { CustomDocRef } from '~/DocRef'
 import { DocRef } from '~/DocRef'
+import type { GetDocTag } from '~/DocRelated'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
 import type { MethodEntry } from '~/Transactor/Entry'

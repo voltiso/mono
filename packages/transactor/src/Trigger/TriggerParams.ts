@@ -6,15 +6,14 @@ import type { DocIdString } from '~/Data'
 import type { Db } from '~/Db'
 import type {
 	$$Doc,
-	$$DocRelated,
 	GetDataWithId,
 	GetIntrinsicFields,
 	GetVoltisoEntry,
 } from '~/Doc'
 import type { DocRefContext } from '~/DocRef'
+import type { $$DocRelatedLike } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 import type { CustomDocPath } from '~/Path'
-
-import type { AnyDocTag } from '..'
 
 export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
 
@@ -22,7 +21,7 @@ export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
 // type A = CustomDocPath<AA>
 
 export interface TriggerParams<
-	D extends $$DocRelated = AnyDocTag,
+	D extends $$DocRelatedLike = AnyDoc,
 	ThisExists extends boolean = boolean,
 > extends PathMatches,
 		DocRefContext<D> {
@@ -51,7 +50,7 @@ export interface TriggerParams<
 // > = D extends any ? AfterTriggerParams<D, This, Before, After> : never
 
 export interface AfterTriggerParams<
-	D extends $$DocRelated = AnyDocTag,
+	D extends $$DocRelatedLike = AnyDoc,
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
 > extends TriggerParams<D, AfterExists> {

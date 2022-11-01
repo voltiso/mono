@@ -5,9 +5,9 @@ import type { OmitSignatures } from '@voltiso/util'
 
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
-export type DocTagLike = string // | AnyDocTag
+export type DocTagLike = string // | AnyDoc
 
-export type DocTag = keyof OmitSignatures<DocTypes> // | AnyDocTag
+export type DocTag = keyof OmitSignatures<DocTypes> // | AnyDoc
 
-export const AnyDocTag = Symbol('AnyDocTag')
-export type AnyDocTag = typeof AnyDocTag
+export const AnyDoc = Symbol('AnyDoc')
+export type AnyDoc = typeof AnyDoc

@@ -4,27 +4,18 @@
 import type { IsUnion } from '@voltiso/util'
 
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
-import type { DocTag } from '~/DocTypes'
+import type { IDocConstructor } from '~/DocConstructor'
+import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
-import type { IDocConstructor } from '../DocConstructor'
-import type { DocTI } from '../DocTI'
-
-export interface DocBuilderPluginLike<T extends DocTag> {
-	readonly DocTag: T
-
-	readonly name?: any
-
-	// run(docConstructor: any): any
-}
-
-export interface DocBuilderPlugin<T extends DocTag = DocTag> {
+export interface DocBuilderPlugin<R extends $$DocRelatedLike = AnyDoc> {
 	/**
 	 * - Used to force using correct plugins with correct doc types
 	 * - If T is not literal - plugin will be assignable anywhere
 	 */
-	readonly DocTag: IsUnion<T, any, T>
+	readonly DocTag: IsUnion<GetDocTag<R>, any, GetDocTag<R>>
 
-	readonly name?: keyof DocBuilderPluginResult<DocTI>
+	readonly name?: keyof DocBuilderPluginResult<any>
 
 	run(docConstructor: any): IDocConstructor
 }

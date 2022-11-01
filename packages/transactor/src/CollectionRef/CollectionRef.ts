@@ -10,16 +10,16 @@ import type { DocIdString } from '~/Data'
 import type { WithDb } from '~/Db'
 import type {
 	$$Doc,
-	$$DocConstructor,
 	$$DocTI,
 	CustomDoc,
-	GetDocTag,
 	GetPublicCreationInputData,
 	IDoc,
 } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
+import type { $$DocConstructor } from '~/DocConstructor'
 import type { CustomWeakDocRef } from '~/DocRef'
 import { DocRef } from '~/DocRef'
+import type { GetDocTag } from '~/DocRelated'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 

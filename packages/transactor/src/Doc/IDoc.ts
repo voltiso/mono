@@ -9,7 +9,7 @@ import type { DocRef } from '~/DocRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 
-import type { IDocConstructorNoBuilder } from './DocConstructor'
+import type { IDocConstructorNoBuilder } from '../DocConstructor/index'
 import type { DocContext } from './DocContext'
 import type { DocTI, DTI } from './DocTI'
 

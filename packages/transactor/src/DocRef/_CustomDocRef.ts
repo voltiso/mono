@@ -19,21 +19,17 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 
+import type { DocBrand } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { $WithId, DocIdString } from '~/Data'
 import { withoutId } from '~/Data'
-import type {
-	Doc,
-	GetDoc,
-	GetDocTI,
-	GetMethodPromises,
-	UpdatesFromData,
-} from '~/Doc'
+import type { Doc, GetMethodPromises, UpdatesFromData } from '~/Doc'
 import type {
 	GetData,
 	GetPublicCreationInputData,
 	GetUpdateDataByCtx,
 } from '~/Doc/_/GData'
+import type { GetDoc, GetDocTag, GetDocTI } from '~/DocRelated'
 import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
@@ -62,8 +58,13 @@ import { get, update } from './methods'
 
 //
 
+export interface _CustomDocRef<O extends DocRef.Options>
+	extends DocBrand<GetDocTag.ByString<DocRef.Options.Get<O>['doc']>> {}
+
 /** @internal */
 export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
+	// declare readonly [DTI]: GetDocTI.ByTag<O['doc']>;
+
 	readonly [IS_DOC_REF] = true as const
 
 	_context: DocRefContext
@@ -118,7 +119,7 @@ export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
 	}
 
 	get aggregateSchemas(): GetDocTI<O['doc']>['aggregates'] {
-		return getAggregateSchemas(this)
+		return getAggregateSchemas(this) as never
 	}
 
 	get asStrongRef(): GetDocRef<Override<O, { isStrong: true }>> {
@@ -158,12 +159,14 @@ export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
 		const methods = this._getMethods()
 
 		for (const { name, method, pathMatches } of methods) {
-			const f = (...args: unknown[]) =>
-				this._callMethod(method as never, args, { name, ...pathMatches })
+			const f = (...args: unknown[]) => {
+				return this._callMethod(method as never, args, { name, ...pathMatches })
+			}
+
 			// eslint-disable-next-line security/detect-object-injection
 			;(this as unknown as Record<string, Method>)[name] = f
-			// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
-			;(this.methods as any)[name] = f
+
+			this.methods[name as never] = f as never
 		}
 
 		void Object.seal(this)
@@ -308,8 +311,7 @@ export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
 			() =>
 				// eslint-disable-next-line promise/prefer-await-to-then
 				this.get().then(((doc: Doc | null) =>
-					doc ? doc.dataWithoutId() : null
-				) as never) as never,
+					doc ? doc.dataWithoutId() : null) as never) as never,
 		) as never
 	}
 

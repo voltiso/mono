@@ -3,11 +3,11 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as s from '@voltiso/schemar'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
 
 import { database, staticContext } from './common'
 
-const db = createTransactor()
+const db = new Transactor()
 
 // eslint-disable-next-line jest/require-hook
 db.init(database, staticContext)

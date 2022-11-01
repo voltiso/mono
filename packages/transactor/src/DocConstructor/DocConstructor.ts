@@ -12,17 +12,15 @@ import type {
 	Throw,
 } from '@voltiso/util'
 
-import type { AggregatorHandlers_ } from '~/Aggregator'
+import type { AggregatorHandlers } from '~/Aggregator'
 import type {
 	$$Doc,
-	$$DocConstructor,
 	$$DocTI,
 	Doc,
-	DocBuilderPluginLike,
+	DocBuilderPlugin,
 	DocContext,
 	DocTI,
 	DTI,
-	IS_DOC_CONSTRUCTOR,
 	Promisify,
 } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
@@ -34,6 +32,7 @@ import type { Method } from '~/Method'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
+import type { $$DocConstructor, IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
 export interface DocConstructor<TI extends DocTI = DocTI> {
 	readonly [IS_DOC_CONSTRUCTOR]: true
@@ -107,7 +106,7 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
 
 	/** Apply custom plugin */
-	with<Plugin extends DocBuilderPluginLike<TI['tag']>>(
+	with<Plugin extends DocBuilderPlugin<TI['tag']>>(
 		plugin: Plugin,
 	): Plugin['name'] extends keyof OmitSignatures<DocBuilderPluginResult>
 		? DocConstructor<DocBuilderPluginResult<TI>[Plugin['name']]>
@@ -124,7 +123,7 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 	>(
 		target: Target,
 		name: Name,
-		handlers: AggregatorHandlers_<TI, NewableReturn_<Target> & $$Doc, Name>,
+		handlers: AggregatorHandlers<TI, NewableReturn_<Target> & $$Doc, Name>,
 	): this
 
 	get schemaWithoutId(): t.CustomObject.WithAnd<

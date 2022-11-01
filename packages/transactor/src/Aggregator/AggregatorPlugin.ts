@@ -5,21 +5,11 @@ import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { $AssumeType, assertNotPolluting, zip } from '@voltiso/util'
 
-import type {
-	$$Doc,
-	DocBuilderPlugin,
-	DocConstructor,
-	DocTI,
-	DTI,
-	GetDataWithId,
-	GetDocTI,
-	IDoc,
-	IDocConstructor,
-} from '~/Doc'
+import type { $$Doc, DocBuilderPlugin, DocTI, GetDataWithId, IDoc } from '~/Doc'
+import type { DocConstructor, IDocConstructor } from '~/DocConstructor'
 import type { $$DocRef } from '~/DocRef'
 import { isStrongDocRef, isWeakDocRef } from '~/DocRef'
-import type { DocTag } from '~/DocTypes'
-import type { DocTypes } from '~/DocTypes-module-augmentation'
+import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 import { TransactorError } from '~/error'
 
 import type { IAggregatorHandlers } from './AggregatorHandlers'
@@ -32,8 +22,10 @@ declare module '~/DocBuilderPluginResult-module-augmentation' {
 	}
 }
 
-export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
-	declare readonly DocTag: DocBuilderPlugin<D>['DocTag']
+export class AggregatePlugin<R extends $$DocRelatedLike>
+	implements DocBuilderPlugin<R>
+{
+	declare readonly DocTag: DocBuilderPlugin<R>['DocTag']
 
 	readonly name = aggregatePluginName
 
@@ -45,7 +37,7 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 		this._handlers = handlers
 	}
 
-	run(docConstructor: DocConstructor<GetDocTI<D>>): IDocConstructor {
+	run(docConstructor: DocConstructor<GetDocTI<R>>): IDocConstructor {
 		const name = this._aggregateName
 		const handlers = this._handlers
 
@@ -73,7 +65,7 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 
 				// console.log('aggregate', before, after)
 
-				const data: GetDataWithId<DocTypes[D][DTI]> =
+				const data: GetDataWithId<R> =
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					(before as never) || (after as never)
 

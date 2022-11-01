@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DTI, IDoc, IDocConstructorNoBuilder } from '~/Doc'
+import type { DTI, IDoc } from '~/Doc'
+import type { IDocConstructorNoBuilder } from '~/DocConstructor'
 
 type _InferFields<TI, _D> = TI
 

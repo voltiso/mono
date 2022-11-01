@@ -5,7 +5,7 @@ import { $AssumeType, assert } from '@voltiso/util'
 import chalk from 'chalk'
 
 import type { $$Doc, CustomDoc } from '~/Doc'
-import type { DocDerivedData } from '~/Doc/DocConstructor/_/DocDerivedData'
+import type { DocDerivedData } from '~/DocConstructor/_/DocDerivedData'
 import type { AfterTrigger, BeforeCommitTrigger, Trigger } from '~/Trigger'
 import type {
 	AfterTriggerParams,

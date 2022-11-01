@@ -3,24 +3,25 @@
 
 import type { Bivariant, DeleteIt, MaybePromise } from '@voltiso/util'
 
-import type { $$Doc, $$DocRelated, Doc } from '~/Doc'
+import type { $$Doc, Doc } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
+import type { $$DocRelatedLike } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
-import type { AnyDocTag } from '..'
 import type {
 	AfterTriggerParams,
 	BeforeCommitTriggerParams,
 	TriggerParams,
 } from './TriggerParams'
 
-export type TriggerReturn<D extends $$DocRelated> =
+export type TriggerReturn<D extends $$DocRelatedLike> =
 	| GetInputData<D>
 	| DeleteIt
 	| undefined
 	| void
 
 export type AfterTrigger<
-	D extends $$DocRelated = AnyDocTag,
+	D extends $$Doc = $$Doc,
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
 	Return = TriggerReturn<D>,
@@ -36,7 +37,7 @@ export type AfterTrigger<
 >
 
 export type OnGetTrigger<
-	D extends $$DocRelated = AnyDocTag,
+	D extends $$DocRelatedLike = AnyDoc,
 	Exists extends boolean = boolean,
 > = Bivariant<
 	(

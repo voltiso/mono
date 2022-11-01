@@ -16,12 +16,12 @@ import { at } from '@voltiso/util'
 
 import type { DocBrand } from '~/brand'
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { $$Doc, $$DocRelated, GetDocTag } from '~/Doc'
+import type { $$Doc } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
-import type { DocRefPattern } from '~/DocRef'
+import type { DocRefPattern, GetDocRef } from '~/DocRef'
+import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
-
-import type { AnyDocTag, GetDocRef } from '..'
 
 /**
  * Checks if `str` does not contain `/`
@@ -179,12 +179,12 @@ function isDocPathString(str: string): str is DocPathString {
 
 export interface DocPathOptions {
 	path: string
-	doc: $$DocRelated
+	doc: $$DocRelatedLike
 }
 
 export interface DefaultDocPathOptions extends DocPathOptions {
 	path: string
-	doc: AnyDocTag
+	doc: AnyDoc
 }
 
 export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
@@ -283,7 +283,7 @@ export type DbPathFromString<
 	Doc extends $$Doc = IndexedDoc,
 	// eslint-disable-next-line etc/no-internal
 > = _PathFromString<
-	GetDocRef<{ doc: GetDocTag<Doc> }>,
+	GetDocRef<{ doc: GetDocTag<Doc>; isStrong: false }>,
 	CollectionRef<Doc>,
 	DocRefPattern,
 	CollectionRefPattern<P, Doc>,

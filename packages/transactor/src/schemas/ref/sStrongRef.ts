@@ -5,9 +5,10 @@ import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
 import { lazyValue, ProtoCallable } from '@voltiso/util'
 
-import type { $$DocRelated, GetDocTag } from '~/Doc'
-import type { GetDocRef } from '~/DocRef'
+import type { GetDocRef, StrongDocRefLike } from '~/DocRef'
 import { DocRef } from '~/DocRef'
+import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
+import type { DocTag } from '~/DocTypes'
 
 /** @internal */
 export const _strongRefSchema = lazyValue(
@@ -18,7 +19,7 @@ export const _strongRefSchema = lazyValue(
 )
 
 /** @internal */
-export const _strongRefCall = <X extends $$DocRelated>(): t.Schema<
+export const _strongRefCall = <X extends $$DocRelatedLike>(): t.Schema<
 	GetDocRef<{ isStrong: true; doc: GetDocTag<X> }>
 > =>
 	// eslint-disable-next-line etc/no-internal
@@ -26,9 +27,14 @@ export const _strongRefCall = <X extends $$DocRelated>(): t.Schema<
 
 export interface StrongRefSchema
 	extends t.Schema<GetDocRef<{ isStrong: true }>> {
-	<X extends $$DocRelated>(): t.Schema<
-		GetDocRef<{ doc: GetDocTag<X>; isStrong: true }>
-	>
+	<X extends DocTag>(): t.Schema<StrongDocRefLike<X>>
+
+	// <X extends DocTag>(): t.Schema<
+	// 	GetDocRef<{
+	// 		doc: X
+	// 		isStrong: true
+	// 	}>
+	// >
 }
 
 export const sStrongRef: StrongRefSchema = lazyValue(

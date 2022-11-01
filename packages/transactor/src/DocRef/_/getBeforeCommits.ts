@@ -12,7 +12,7 @@ import type { BeforeCommitTrigger } from '~/Trigger'
 export function getBeforeCommits(
 	docRef: DocRef,
 ): DocRefTriggerEntry<BeforeCommitTrigger>[] {
-	// $AssumeType<CustomDocRef<{ docTag: AnyDocTag }>>(docRef)
+	// $AssumeType<CustomDocRef<{ docTag: AnyDoc }>>(docRef)
 	if (docRef._beforeCommits) return docRef._beforeCommits
 
 	docRef._beforeCommits = []

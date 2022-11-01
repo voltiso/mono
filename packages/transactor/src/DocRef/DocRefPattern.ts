@@ -11,9 +11,10 @@ import type {
 } from '@voltiso/schemar.types'
 
 import { getGetPathMatches } from '~/common'
-import type { $$Doc, $$DocConstructor, IDocConstructor } from '~/Doc'
-import { emptyDocDerivedSchema } from '~/Doc/DocConstructor/_/DocDerivedData'
+import type { $$Doc } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
+import type { $$DocConstructor, IDocConstructor } from '~/DocConstructor'
+import { emptyDocDerivedSchema } from '~/DocConstructor/_/DocDerivedData'
 import type { Method } from '~/Method'
 import { concatPath } from '~/Path'
 import { DocPattern } from '~/Path/Path'
@@ -155,7 +156,6 @@ export class DocRefPattern {
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (!before) {
 					assert(after)
 					assert(this)
@@ -182,7 +182,6 @@ export class DocRefPattern {
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (!after) {
 					assert(before)
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

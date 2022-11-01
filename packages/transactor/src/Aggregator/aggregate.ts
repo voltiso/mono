@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocBuilderPlugin, GetDoc, GetDocTag, GetDocTI } from '~/Doc'
+import type { DocBuilderPlugin } from '~/Doc'
+import type { GetDocTag, GetDocTI } from '~/DocRelated'
 import type { DocTag } from '~/DocTypes'
 
 import type { AggregatorHandlers } from './AggregatorHandlers'
@@ -20,7 +21,7 @@ export function aggregate<
 
 	aggregateName: AggregateName,
 
-	handlers: AggregatorHandlers<GetDocTI<Source>, GetDoc<Target>, AggregateName>,
-): DocBuilderPlugin<Source> {
-	return new AggregatePlugin<GetDocTag<Source>>(aggregateName, handlers) as never
+	handlers: AggregatorHandlers<Source, Target, AggregateName>,
+): DocBuilderPlugin<GetDocTag<Source>> {
+	return new AggregatePlugin<Source>(aggregateName, handlers) as never
 }

@@ -9,18 +9,18 @@ import { checkEnv } from '~/checkEnv'
 import type { CollectionRef } from '~/CollectionRef'
 import type { DatabaseContext, FirestoreLikeModule } from '~/DatabaseContext'
 import { Db } from '~/Db/Db'
+import type { DTI, IndexedDoc } from '~/Doc'
 import type {
 	$$DocConstructor,
-	DTI,
-	GetDoc,
-	GetDocTI,
 	IDocConstructorNoBuilder,
-	IndexedDoc,
-} from '~/Doc'
+} from '~/DocConstructor'
+import type { GetDoc, GetDocTI } from '~/DocRelated'
+import type { DocTag } from '~/DocTypes'
+import { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
+import type { DbPathFromString } from '~/Path'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
 
-import type { DbPathFromString } from '..'
 import type {
 	TransactorConstructorParameters,
 	TransactorConstructorParametersNoUndefined,
@@ -143,7 +143,7 @@ export class Transactor extends Db {
 
 	//
 
-	register<Cls extends { [DTI]: { tag: 'untagged' } }>(
+	register<Cls extends { [DTI]: { tag: AnyDoc } }>(
 		cls: Cls,
 	): Throw<'db.register requires Doc tag'>
 
@@ -151,13 +151,15 @@ export class Transactor extends Db {
 		cls: Cls,
 	): IsUnion<GetDocTI<Cls>['tag']> extends true
 		? never
-		: DbPathFromString<GetDocTI<Cls>['tag'], GetDoc<Cls>> // CollectionRef<InstanceType<Cls>>
+		: DbPathFromString<GetDocTI<Cls>['tag'] & DocTag, GetDoc<Cls>> // CollectionRef<InstanceType<Cls>>
 
 	//
 
 	register<Cls extends IDocConstructorNoBuilder>(cls: Cls): any {
-		if (cls._.tag === 'untagged')
-			throw new TransactorError('db.register(Cls) requires a class tag')
+		if (cls._.tag === AnyDoc)
+			throw new TransactorError(
+				'db.register(Cls) requires `Cls` to include DocTag',
+			)
 
 		const collection = this._context.db(
 			cls._.tag,

@@ -29,7 +29,7 @@ export const emptyDocDerivedSchema = s.object({})
 export const defaultDocDerivedData = {
 	[IS_DOC_TYPE_INFO]: true,
 
-	tag: 'untagged',
+	tag: 'indexed',
 
 	id: undefined,
 

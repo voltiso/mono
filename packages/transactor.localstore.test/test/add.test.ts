@@ -4,14 +4,13 @@
 // import { createTransactor } from './common'
 import { createLocalstore } from '@voltiso/localstore'
 import * as s from '@voltiso/schemar'
-import type { TriggerParams } from '@voltiso/transactor'
+import type { Schema } from '@voltiso/schemar.types'
+import { GetDocRef, sWeakRef, TriggerParams } from '@voltiso/transactor';
 import {
-	_UnknownDocRefBase,
 	afterCreate,
 	Doc,
-	sWeakRef,
-	toDatabaseSetNested,
-} from '@voltiso/transactor'
+sStrongRef, 
+	toDatabaseSetNested} from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
 import { assert } from '@voltiso/util'
 
@@ -24,6 +23,9 @@ declare module '@voltiso/transactor' {
 	}
 }
 
+const a = sStrongRef<'clientAddXyz'>()
+const b = sWeakRef<'clientAddXyz'>()
+
 class Client extends Doc({
 	publicOnCreation: {
 		rootTaskId: s.string,
@@ -32,7 +34,22 @@ class Client extends Doc({
 	public: {
 		displayName: s.string,
 
-		friends: s.array(sWeakRef<'clientAddXyz'>()).default([]),
+		// d: 0 as unknown as Schema<
+		// 	GetDocTI<'clientAddXyz'>
+		// 	// GetDocFields<'clientAddXyz'> & GetIntrinsicFields<'clientAddXyz'>
+		// >,
+
+		// d: 0 as unknown as Schema<
+		// 	GetDocRef<{
+		// 		onlyStaticallyKnownFields: true
+		// 		doc: 'clientAddXyz'
+		// 	}>
+		// >,
+
+		// b: sStrongRef<'clientAddXyz'>(), // ! del
+		a: sWeakRef<'clientAddXyz'>(), // ! del
+
+		// friends: s.array(sWeakRef<'clientAddXyz'>()).default([]),
 	},
 }) {
 	@afterCreate
@@ -88,7 +105,6 @@ describe('add', () => {
 			clients('a').asStrongRef,
 		]) as any
 
-		// eslint-disable-next-line etc/no-internal
 		expect(a[0]).not.toBeInstanceOf(_UnknownDocRefBase)
 
 		expect(a[0]).toMatchObject({ __isStrong: true })

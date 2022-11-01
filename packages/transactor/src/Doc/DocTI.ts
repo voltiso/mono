@@ -3,7 +3,7 @@
 
 import type { IObject, SchemaLike } from '@voltiso/schemar.types'
 
-import type { DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTag } from '~/DocTypes'
 
 /** Doc Type Info Tag */
 // export const DTI = Symbol('DTI')
@@ -42,7 +42,7 @@ export interface $$DocTI {
  * - Every Doc Type Info (`DocTI`) is assignable to it
  */
 export interface DocTI extends $$DocTI {
-	tag: DocTag
+	tag: DocTag | AnyDoc
 
 	id: SchemaLike<string> | undefined
 

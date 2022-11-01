@@ -13,14 +13,8 @@ import type {
 } from '@voltiso/util'
 
 import type { $WithId, DocIdString, WithId } from '~/Data'
-import type {
-	$$Doc,
-	$$DocRelated,
-	ExecutionContext,
-	GetDoc,
-	GetDocTI,
-	IDoc,
-} from '~/Doc'
+import type { $$Doc, ExecutionContext, IDoc } from '~/Doc'
+import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 
 import type { GetIntrinsicFields } from './GetIntrinsicFields'
 
@@ -48,7 +42,7 @@ export type _$GetAggregateTarget<T extends object> = T extends any
 	: never
 
 /** @inline */
-export type GetData<R extends $$DocRelated> = R extends any
+export type GetData<R extends $$DocRelatedLike> = R extends any
 	? $_<
 			GetIntrinsicFields<R> &
 				CustomObject.WithAnd<
@@ -62,7 +56,7 @@ export type GetData<R extends $$DocRelated> = R extends any
 	: never
 
 /** @inline */
-export type GetDataWithId<R extends $$DocRelated> = WithId<
+export type GetDataWithId<R extends $$DocRelatedLike> = WithId<
 	GetData<R>,
 	GetDoc<R>
 >
@@ -70,7 +64,7 @@ export type GetDataWithId<R extends $$DocRelated> = WithId<
 //
 
 /** @inline */
-export type GetInputData<R extends $$DocRelated> = R extends any
+export type GetInputData<R extends $$DocRelatedLike> = R extends any
 	? $_<
 			Input<GetDocTI<R>['publicOnCreation']> &
 				Input<GetDocTI<R>['public']> &
@@ -80,14 +74,16 @@ export type GetInputData<R extends $$DocRelated> = R extends any
 
 /** @inline */
 export type GetInputDataWithId<
-	TI extends $$DocRelated,
+	TI extends $$DocRelatedLike,
 	Doc extends $$Doc = IDoc,
 > = $WithId<GetInputData<TI>, Doc>
 
 //
 
 /** @inline */
-export type GetPublicData<R extends $$DocRelated> = Type<GetDocTI<R>['public']>
+export type GetPublicData<R extends $$DocRelatedLike> = Type<
+	GetDocTI<R>['public']
+>
 
 // /** @inline */
 // export type RelaxRefs<X> = X extends IRef
@@ -99,22 +95,23 @@ export type GetPublicData<R extends $$DocRelated> = Type<GetDocTI<R>['public']>
 // 	: X
 
 /** @inline */
-export type GetPublicCreationInputData<R extends $$DocRelated> = R extends any
-	? DeepReadonlyN<
-			// eslint-disable-next-line no-magic-numbers
-			10,
-			{
-				readonly id?: DocIdString<R> | undefined
-			} & CustomObject.WithAnd<
-				GetDocTI<R>['publicOnCreation'],
-				GetDocTI<R>['public']
-			>[OPTIONS]['Input'],
-			{ skip: Primitive | Callable | Newable }
-	  >
-	: never
+export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
+	R extends any
+		? DeepReadonlyN<
+				// eslint-disable-next-line no-magic-numbers
+				10,
+				{
+					readonly id?: DocIdString<R> | undefined
+				} & CustomObject.WithAnd<
+					GetDocTI<R>['publicOnCreation'],
+					GetDocTI<R>['public']
+				>[OPTIONS]['Input'],
+				{ skip: Primitive | Callable | Newable }
+		  >
+		: never
 
 /** @inline */
-export type GetPublicInputData<R extends $$DocRelated> = R extends any
+export type GetPublicInputData<R extends $$DocRelatedLike> = R extends any
 	? Input<GetDocTI<R>['public']>
 	: never
 
@@ -122,7 +119,7 @@ export type GetPublicInputData<R extends $$DocRelated> = R extends any
 
 /** @inline */
 export type GetCreationDataByCtx<
-	R extends $$DocRelated,
+	R extends $$DocRelatedLike,
 	Ctx extends ExecutionContext,
 > = Ctx extends 'inside'
 	? GetInputData<R>
@@ -132,7 +129,7 @@ export type GetCreationDataByCtx<
 
 /** @inline */
 export type GetUpdateDataByCtx<
-	R extends $$DocRelated,
+	R extends $$DocRelatedLike,
 	Ctx,
 > = Ctx extends 'inside'
 	? GetInputData<R>

@@ -4,7 +4,7 @@
 import type { DocTag } from '~/DocTypes'
 
 import type { $$PartialDocOptions } from './_/NewFields'
-import type { DocConstructorImpl } from './DocConstructor'
+import type { DocConstructorImpl } from '../DocConstructor/index'
 import type { DocTI } from './DocTI'
 
 export function DocCall<TI extends DocTI, Tag extends DocTag>(tag: Tag): never
