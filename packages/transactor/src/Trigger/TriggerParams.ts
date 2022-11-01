@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DocIdString } from '~/brand'
 import type { PathMatches } from '~/common'
-import type { DocIdString } from '~/Data'
 import type { Db } from '~/Db'
 import type {
 	$$Doc,

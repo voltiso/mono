@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IdString } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
-import type { IdString } from '~/Data'
 import type { Doc } from '~/Doc'
 import type { DocTI, DTI } from '~/Doc/DocTI'
 import type { DocPath } from '~/Path'

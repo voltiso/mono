@@ -4,8 +4,10 @@
 import { $Assert } from '@voltiso/util'
 
 import type { DocBrand } from '~/brand'
-import type { $$Doc, GetDocTag, IndexedDoc } from '~/Doc'
-import type { DocRef } from '~/DocRef'
+import type { $$Doc, IndexedDoc } from '~/Doc'
+import type { WeakDocRef } from '~/DocRef'
+import type { GetDocTag } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
 import type { CustomDocPath, DbPathFromString } from './Path'
 import { CollectionPath } from './Path'
@@ -14,7 +16,10 @@ describe('path', function () {
 	it('type', <D extends $$Doc>() => {
 		type A = GetDocTag<D>
 		type B = GetDocTag<IndexedDoc>
-		$Assert.is<B, A>()
+
+		$Assert.is<B, AnyDoc>()
+		$Assert.is<AnyDoc, B>()
+
 		$Assert.is<DocBrand<A>, DocBrand<B>>()
 
 		$Assert.is<CustomDocPath<{ doc: D }>, CustomDocPath<{ doc: IndexedDoc }>>()
@@ -35,6 +40,6 @@ describe('path', function () {
 		expect.assertions(0)
 
 		type X = DbPathFromString<'asd/...' | 'sdf/...'>
-		$Assert.is<X, DocRef>()
+		$Assert.is<X, WeakDocRef>()
 	})
 })

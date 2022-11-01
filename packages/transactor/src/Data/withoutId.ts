@@ -3,9 +3,8 @@
 
 import { omitIfPresent } from '@voltiso/util'
 
+import type { DocIdString } from '~/brand'
 import { TransactorError } from '~/error'
-
-import type { DocIdString } from './Id'
 
 export function withoutId(data: null, expectedId: DocIdString): null
 export function withoutId<D extends object>(

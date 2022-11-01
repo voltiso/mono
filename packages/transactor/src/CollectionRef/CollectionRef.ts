@@ -6,20 +6,20 @@ import type * as Database from '@voltiso/firestore-like'
 import * as s from '@voltiso/schemar'
 import type { NewableReturn_, Throw } from '@voltiso/util'
 
-import type { DocIdString } from '~/Data'
+import type { DocIdString } from '~/brand'
 import type { WithDb } from '~/Db'
 import type {
 	$$Doc,
 	$$DocTI,
 	CustomDoc,
 	GetPublicCreationInputData,
-	IDoc,
 } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { $$DocConstructor } from '~/DocConstructor'
 import type { WeakDocRef } from '~/DocRef'
-import { DocRef } from '~/DocRef'
+import { CustomDocRef } from '~/DocRef'
 import type { GetDocTag } from '~/DocRelated'
+import type { DocTag } from '~/DocTypes'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 
@@ -34,13 +34,15 @@ export interface CollectionRef<
 	TI extends $$DocTI = InferTI<D>,
 > {
 	/** Get Doc reference by Id */
-	(id: DocIdString<D>): WeakDocRef<GetDocTag<D>>
+	(id: DocIdString<D>): WeakDocRef<D>
 
-	<DD extends $$Doc>(id: DocIdString<DD>): DD extends any
-		? IDoc extends DD
-			? WeakDocRef<GetDocTag<D>>
-			: Throw<'wrong Id type' & { Doc: DD }>
-		: never
+	/** Get Doc reference by Id */
+	<tag extends DocTag>(id: DocIdString<tag>): Throw<
+		'wrong Id type' & { doc: tag }
+	>
+
+	/** Get Doc reference by Id */
+	(id: string): WeakDocRef<D>
 }
 
 /** Collection reference */
@@ -71,9 +73,7 @@ export class CollectionRef<
 				this._context.db.doc(
 					this._path.toString(),
 					id,
-				) as unknown as TI extends any
-					? WeakDocRef<GetDocTag<TI>>
-					: never,
+				) as unknown as TI extends any ? WeakDocRef<GetDocTag<TI>> : never,
 			this,
 		) as never
 	}
@@ -93,7 +93,7 @@ export class CollectionRef<
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const docRef: Database.DocumentReference = id ? ref.doc(id) : ref.doc()
 		const { path } = docRef
-		const docPath = new DocRef(this._context, path, { isStrong: false })
+		const docPath = new CustomDocRef(this._context, path, { isStrong: false })
 		return docPath.set(data as never) as never
 	}
 

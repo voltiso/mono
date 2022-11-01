@@ -1,9 +1,11 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export * from './Data'
-export * from './Id'
-export * from './RelaxRefs'
-export * from './TightenRefs'
 export * from './isWithId'
 export * from './omitVoltisoEntry'
+export * from './RelaxRefs'
+export * from './TightenRefs'
 export * from './withId'
-export * from './withVoltisoEntry'
 export * from './withoutId'
+export * from './withVoltisoEntry'

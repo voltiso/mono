@@ -5,14 +5,14 @@ import { isPlainObject } from '@voltiso/util'
 
 import type { StrongDocRefJson, WeakDocRefJson } from '~/common'
 import { isStrongDocRefJson, isWeakDocRefJson } from '~/common'
-import type { StrongDocRef, WeakDocRef } from '~/DocRef'
+import type { DocRef, WeakDocRef } from '~/DocRef'
 import type { Transactor } from '~/Transactor'
 
 import type { DateJson } from '../date'
 import { dateFromJson, isDateJson } from '../date'
 
 export type DocDataFromJson<J> = J extends StrongDocRefJson
-	? StrongDocRef
+	? DocRef
 	: J extends WeakDocRefJson
 	? WeakDocRef
 	: J extends DateJson

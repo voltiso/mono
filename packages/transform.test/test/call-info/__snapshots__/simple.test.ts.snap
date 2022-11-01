@@ -3,7 +3,6 @@
 exports[`callInfo simple 1`] = `
 "// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-// eslint-disable-next-line @typescript-eslint/no-namespace
 var MyNamespace;
 (function (MyNamespace) {
     /** @callInfo */
@@ -16,10 +15,8 @@ var MyNamespace;
     }
     MyNamespace.willNotAppend = willNotAppend;
 })(MyNamespace || (MyNamespace = {}));
-// eslint-disable-next-line @typescript-eslint/no-namespace
 var A;
 (function (A) {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
     let B;
     (function (B) {
         class C {
@@ -37,7 +34,6 @@ var A;
     })(B = A.B || (A.B = {}));
 })(A || (A = {}));
 const c = new A.B.C();
-// eslint-disable-next-line @typescript-eslint/no-namespace
 var Test;
 (function (Test) {
     function start() {
@@ -54,8 +50,8 @@ var Test;
                 },
                 packagePath: 'src/call-info/simple.ts',
                 gitPath: 'packages/transform.test/src/call-info/simple.ts',
-                position: 940,
-                line: 40,
+                position: 699,
+                line: 36,
                 column: 26,
                 astPath: [
                     'Test',
@@ -79,8 +75,8 @@ var Test;
                 },
                 packagePath: 'src/call-info/simple.ts',
                 gitPath: 'packages/transform.test/src/call-info/simple.ts',
-                position: 1003,
-                line: 42,
+                position: 762,
+                line: 38,
                 column: 32,
                 astPath: [
                     'Test',

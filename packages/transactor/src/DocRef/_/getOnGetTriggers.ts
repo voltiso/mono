@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { StrongDocRef } from '~/DocRef'
+import type { DocRef } from '~/DocRef'
 
-export function getOnGetTriggers(docRef: StrongDocRef) {
+export function getOnGetTriggers(docRef: DocRef) {
 	if (docRef._onGets) return docRef._onGets
 
 	docRef._onGets = []

@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor } from '@voltiso/util'
+import type { Override } from '@voltiso/util'
+import { define, lazyConstructor } from '@voltiso/util'
 
 import type {
 	GAggregatePromises,
@@ -12,14 +13,14 @@ import type {
 import type { DocFieldPath } from '~/DocFieldPath'
 import type { $$DocRelatedLike, GetDoc } from '~/DocRelated'
 
+import type { AnyDoc, DocRef } from '..'
 import type { DocRefContext } from './_/Context'
 import { _CustomDocRef } from './_CustomDocRef'
 import type { $$DocRef } from './$$DocRef'
-import type { DocRef } from './DocRef'
 
 //
 
-export type CustomDocRef<O extends Partial<DocRef.Options> = {}> =
+export type CustomDocRef<O extends Partial<CustomDocRef.Options> = {}> =
 	CustomDocRef.Get<O>
 
 // eslint-disable-next-line import/export
@@ -30,8 +31,8 @@ export const CustomDocRef = lazyConstructor(
 
 // eslint-disable-next-line import/export
 export namespace CustomDocRef {
-	export type Get<O extends Partial<DocRef.Options>> = Base<O> &
-		Extra<DocRef.Options.Get<O>['doc']>
+	export type Get<O extends Partial<Options>> = Base<O> &
+		Extra<Options.Get<O>['doc']>
 
 	// export type Get<O extends Partial<DocRef.Options>> = Base<
 	// 	$_<$Omit<O, 'onlyStaticallyKnownFields'>>
@@ -49,14 +50,12 @@ export namespace CustomDocRef {
 	export interface Base<O extends Partial<DocRef.Options>>
 		extends $$DocRef,
 			// eslint-disable-next-line etc/no-internal
-			_CustomDocRef<DocRef.Options.Get<O>>,
+			_CustomDocRef<Options.Get<O>>,
 			IntrinsicFields<O>,
-			PromiseLike<
-				GetDoc.ByTag<DocRef.Options.Get<O>['doc']> | DocRef.MaybeNull<O>
-			> {}
+			PromiseLike<GetDoc<Options.Get<O>['doc']> | MaybeNull<O>> {}
 
 	export interface IntrinsicFields<O extends Partial<DocRef.Options>> {
-		__voltiso: DocFieldPath<GetVoltisoEntry<DocRef.Options.Get<O>['doc']>>
+		__voltiso: DocFieldPath<GetVoltisoEntry<Options.Get<O>['doc']>>
 	}
 
 	/** 👻 The non-statically-known members */
@@ -66,10 +65,55 @@ export namespace CustomDocRef {
 	>
 
 	export interface Constructor {
-		new <O extends Partial<DocRef.Options>>(
+		new <O extends Partial<Options>>(
 			context: DocRefContext.Parent,
 			path: string,
 			partialOptions: Partial<O>,
 		): CustomDocRef<O>
 	}
+
+	//
+
+	//
+
+	export type MaybeNull<O extends Partial<Options>> =
+		Options.Get<O>['isStrong'] extends true ? never : null
+
+	export interface Options {
+		isStrong: boolean
+
+		/**
+		 * 🌿 Type-only (no value at runtime)
+		 *
+		 * (Didn't work with full $$DocRelated - recursive types)
+		 */
+		doc: $$DocRelatedLike
+		// doc: DocTagLike | AnyDoc
+
+		// /**
+		//  * Useful to make recursive types possible
+		//  *
+		//  * 🌿 Type-only (no value at runtime)
+		//  */
+		// onlyStaticallyKnownFields: boolean
+	}
+
+	export namespace Options {
+		export type Default = typeof defaultDocRefOptions
+		export type Get<O extends Partial<Options>> = Override<Default, O>
+	}
 }
+
+export const defaultDocRefOptions = define<CustomDocRef.Options>().value({
+	isStrong: false as boolean, // must be supertype
+
+	/** 🌿 Type-only (no value at runtime) */
+	doc: undefined as unknown as AnyDoc,
+
+	// /**
+	//  * Useful to make recursive types possible
+	//  *
+	//  * 🌿 Type-only (no value at runtime)
+	//  */
+	// onlyStaticallyKnownFields: undefined as unknown as false,
+})

@@ -35,7 +35,7 @@ export class _Assertor<S extends t.Schema> {
 	}
 
 	/**
-	 * ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
+	 * @callInfo ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
 	 * `__callInfo` argument when transpiling
 	 */
 	[CALL](

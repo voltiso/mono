@@ -8,7 +8,7 @@ import { isPlainObject, stringFrom } from '@voltiso/util'
 import { isWithId } from '~/Data'
 import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
 import type { DocRefContext, WithDocRef } from '~/DocRef'
-import { DocRef, isDocRef } from '~/DocRef'
+import { CustomDocRef, isDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
 
@@ -37,15 +37,15 @@ export function fromDatabaseData(
 	} else if (Database.isDocumentReference(o)) {
 		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', o.path)
-		return new DocRef(ctx, o.path, { isStrong: true })
+		return new CustomDocRef(ctx, o.path, { isStrong: true })
 	} else if (isDocRefJson(o)) {
 		// console.log('fromDatabase ref', o.__target, o.__isStrong)
 
-		if (o.isStrong) return new DocRef(ctx, o.path, { isStrong: true })
-		else return new DocRef(ctx, o.path, { isStrong: false })
+		if (o.isStrong) return new CustomDocRef(ctx, o.path, { isStrong: true })
+		else return new CustomDocRef(ctx, o.path, { isStrong: false })
 	} else if (isDocRefDatabase(o)) {
-		if (o.isStrong) return new DocRef(ctx, o.ref.path, { isStrong: true })
-		else return new DocRef(ctx, o.ref.path, { isStrong: false })
+		if (o.isStrong) return new CustomDocRef(ctx, o.ref.path, { isStrong: true })
+		else return new CustomDocRef(ctx, o.ref.path, { isStrong: false })
 	} else if (Database.isTimestamp(o)) return o.toDate()
 	else if (isPlainObject(o)) {
 		const r: DataRecord = {}

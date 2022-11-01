@@ -3,7 +3,6 @@
 
 import type { CallInfo } from '@voltiso/transform'
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace MyNamespace {
 	/** @callInfo */
 	export function willAppend(_str: string, _info?: CallInfo) {
@@ -15,9 +14,7 @@ namespace MyNamespace {
 	}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace A {
-	// eslint-disable-next-line @typescript-eslint/no-namespace
 	export namespace B {
 		export class C {
 			/** @callInfo */
@@ -36,7 +33,6 @@ namespace A {
 
 const c = new A.B.C()
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace Test {
 	export function start() {
 		MyNamespace.willAppend('a')

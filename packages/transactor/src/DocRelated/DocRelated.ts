@@ -7,13 +7,13 @@ import type { $$DocRef } from '~/DocRef'
 import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
+import type { $$DocTI, DocTI, DTI } from '../Doc/DocTI'
+import type { $$Doc } from '../Doc/IDoc'
 import type {
 	$$DocConstructor,
 	DocConstructor,
 	IDocConstructor,
-} from '../DocConstructor/index'
-import type { $$DocTI, DocTI, DTI } from '../Doc/DocTI'
-import type { $$Doc } from '../Doc/IDoc'
+} from '../DocConstructor'
 
 export type WithDocTI = {
 	readonly [DTI]: DocTI

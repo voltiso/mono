@@ -5,16 +5,18 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
-import type { DocIdBrand, DocIdString } from '~/Data'
+import type { DocIdBrand, DocIdString } from '~/brand'
 import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
+import { AnyDoc } from '~/DocTypes'
 
 import type { DocConstructor } from './DocConstructor'
 import type { IDocConstructor } from './IDocConstructor'
 
-declare module '../..' {
+declare module '../DocTypes-module-augmentation' {
 	interface DocTypes {
-		docConstructorTest: Doc
+		docConstructorTest1: Doc
+		docConstructorTest2: Doc
 	}
 }
 
@@ -37,30 +39,49 @@ describe('DocConstructor', () => {
 	it('Id', () => {
 		expect.assertions(0)
 
-		const MyDocConstructor = Doc('untagged').public({ num: s.number })
-		$Assert.isSubtype<typeof MyDocConstructor[DTI]['tag'], 'untagged'>()
+		const MyDocConstructor = Doc(AnyDoc).public({ num: s.number })
+		$Assert.is<typeof MyDocConstructor[DTI]['tag'], AnyDoc>()
 		type MyDoc = InstanceType<typeof MyDocConstructor>
-		$Assert<IsIdentical<MyDoc[DTI]['tag'], 'untagged'>>()
+		$Assert<IsIdentical<MyDoc[DTI]['tag'], AnyDoc>>()
 
 		type MyId = MyDoc['id']
-		$Assert<IsIdentical<MyId, string & DocIdBrand<'untagged'>>>()
+		$Assert<IsIdentical<MyId, string & DocIdBrand>>()
 		$Assert($Is<DocIdString>().not.subtypeOf<MyId>())
 	})
 
 	it('Id 2', () => {
 		expect.assertions(0)
 
-		const MyDocConstructor = Doc('untagged').public({ num: s.number })
-		const MyDocConstructor2 = Doc.tag('docConstructorTest').public({
+		const MyIndexedDocConstructor = Doc.public({ num: s.number })
+
+		const MyDocConstructor1 = Doc.tag('docConstructorTest1').public({
 			num2: s.number,
 		})
-		type MyDoc = InstanceType<typeof MyDocConstructor>
+
+		const MyDocConstructor2 = Doc.tag('docConstructorTest2').public({
+			num2: s.number,
+		})
+		type MyIndexedDoc = InstanceType<typeof MyIndexedDocConstructor>
+
+		type MyDoc1 = InstanceType<typeof MyDocConstructor1>
 		type MyDoc2 = InstanceType<typeof MyDocConstructor2>
-		type MyId = MyDoc['id']
+
+		type MyIndexedId = MyIndexedDoc['id']
+
+		type MyId1 = MyDoc1['id']
 		type MyId2 = MyDoc2['id']
+
+		// Untagged doc works like `any`
 		$Assert(
-			$Is<MyId>().not.subtypeOf<MyId2>(),
-			$Is<MyId2>().not.subtypeOf<MyId>(),
+			$Is<MyIndexedId>().subtypeOf<MyId2>(),
+			$Is<MyId2>().subtypeOf<MyIndexedId>(),
+			//
+		)
+
+		// Untagged doc works like `any`
+		$Assert(
+			$Is<MyId1>().not.subtypeOf<MyId2>(),
+			$Is<MyId2>().not.subtypeOf<MyId1>(),
 			//
 		)
 	})

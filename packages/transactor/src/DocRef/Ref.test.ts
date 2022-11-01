@@ -8,7 +8,7 @@ import { Doc } from '~/Doc/Doc'
 import type { IDocConstructorNoBuilder } from '~/DocConstructor'
 
 import type { CustomDocRef } from './CustomDocRef'
-import type { StrongDocRef } from './StrongDocRef'
+import type { DocRef } from './StrongDocRef'
 import type { WeakDocRef } from './WeakDocRef'
 
 declare module '..' {
@@ -24,7 +24,7 @@ class MyMysticDoctor extends Doc('myMysticDoctor')({}) {}
 ;() => Doc('doesNotExist')
 
 // @ts-expect-error does not exist in DocTypes interface
-;() => 0 as unknown as StrongDocRef<{ doc: 'doesNotExist' }>
+;() => 0 as unknown as DocRef<{ doc: 'doesNotExist' }>
 
 class MyMysticClient extends Doc('myMysticClient') {}
 
@@ -34,27 +34,20 @@ describe('Ref', () => {
 
 		$Assert.is<typeof MyMysticDoctor, IDocConstructorNoBuilder>()
 
-		$Assert.is<
-			StrongDocRef<MyMysticClient>,
-			CustomDocRef<{ doc: MyMysticClient }>
-		>()
+		$Assert.is<DocRef<MyMysticClient>, CustomDocRef<{ doc: MyMysticClient }>>()
 
 		$Assert(
-			$Is<StrongDocRef<MyMysticClient>>().not.relatedTo<
-				StrongDocRef<MyMysticDoctor>
-			>(),
+			$Is<DocRef<MyMysticClient>>().not.relatedTo<DocRef<MyMysticDoctor>>(),
 
 			// $Is<StrongDocRef<MyMysticClient>>().subtypeOf<DocRef<$$Doc>>(),
 
 			// $Is<DocRef<$$Doc>().not.subtypeOf<StrongDocRef<MyMysticClient>>(),
 
-			$Is<StrongDocRef<MyMysticClient>>().subtypeOf<
+			$Is<DocRef<MyMysticClient>>().subtypeOf<
 				CustomDocRef<{ doc: MyMysticClient }>
 			>(),
 
-			$Is<WeakDocRef<{ doc: MyMysticClient }>>().not.subtypeOf<
-				StrongDocRef<{ doc: MyMysticClient }>
-			>(),
+			$Is<WeakDocRef<MyMysticClient>>().not.subtypeOf<DocRef<MyMysticClient>>(),
 		)
 	})
 
@@ -74,9 +67,7 @@ describe('Ref', () => {
 			// $Is<StrongDocRefBase<Ut2>>().subtypeOf<DocRef>(),
 
 			$Is<Ut1>().not.relatedTo<Ut2>(),
-			$Is<StrongDocRef<Ut1>>().not.relatedTo<
-				StrongDocRef<Ut2>
-			>(),
+			$Is<DocRef<Ut1>>().not.relatedTo<DocRef<Ut2>>(),
 		)
 	})
 })

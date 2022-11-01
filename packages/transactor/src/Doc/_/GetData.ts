@@ -12,7 +12,8 @@ import type {
 	Primitive,
 } from '@voltiso/util'
 
-import type { $WithId, DocIdString, TightenRefs, WithId } from '~/Data'
+import type { DocIdString } from '~/brand'
+import type { $WithId, TightenRefs, WithId } from '~/Data'
 import type { $$Doc, ExecutionContext, IDoc } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 

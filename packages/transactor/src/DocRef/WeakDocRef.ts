@@ -1,23 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AnyDoc, DocTagLike } from '~/DocTypes'
+import type { $$DocRelatedLike } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
 import type { CustomDocRef } from './CustomDocRef'
-import type { DocRef } from './DocRef'
 
-export type WeakDocRef<doc extends DocTagLike | AnyDoc = AnyDoc> =
-	CustomDocRef<{
-		doc: doc
-		isStrong: false
-	}>
+/**
+ * ⚠️ This actually is a supertype of `DocRef`
+ *
+ * - Rarely used - no ref-counting❗
+ */
+export type WeakDocRef<R extends $$DocRelatedLike = AnyDoc> = CustomDocRef<{
+	doc: R
+}>
 
-export namespace WeakDocRef {
-	export type Options = Omit<DocRef.Options, 'isStrong'>
-}
+// export const WeakDocRef = CustomDocRef
 
 //
 
-export function isWeakDocRef(x: unknown): x is WeakDocRef {
-	return typeof x === 'object' && (x as DocRef | null)?.isStrong === false
-}
+//

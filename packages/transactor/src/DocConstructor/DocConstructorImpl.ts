@@ -26,7 +26,7 @@ import {
 	withBeforeCommit,
 } from '~/Doc/_/triggerCreators'
 import type { $$DocTI, DocTI } from '~/Doc/DocTI'
-import type { DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
@@ -71,7 +71,7 @@ export class DocConstructorImpl implements $$Doc {
 
 	static _: DocDerivedData = defaultDocDerivedData
 
-	static tag<Tag extends DocTag>(tag: Tag): any {
+	static tag<Tag extends DocTag | AnyDoc>(tag: Tag): any {
 		return CallableConstructor({
 			constructor: class extends this {
 				static override readonly _: DocDerivedData = { ...super._, tag }

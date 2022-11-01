@@ -6,7 +6,7 @@ import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import type * as ts from 'typescript'
 
-const moduleIcon = '➕'
+const moduleIcon = '🖨️ '
 
 let helloPrinted = false
 

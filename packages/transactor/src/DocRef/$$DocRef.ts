@@ -11,22 +11,24 @@ export interface $$DocRef {
 	readonly [IS_DOC_REF]: true
 }
 
-/** Minimal version used by `RelaxRefs` */
-export interface DocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
+/**
+ * Minimal version used by `RelaxRefs`
+ *
+ * This actually is "either weak or strong" (weak is supertype)
+ */
+export interface WeakDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
 	extends $$DocRef,
 		DocBrand<tag> {
 	//
-	isStrong: boolean
+	isStrong: boolean // ! supertype
 }
 
-/** Minimal version used by `RelaxRefs` */
-export interface StrongDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
-	extends DocRefLike<tag> {
+/**
+ * Minimal strong document reference version used by `RelaxRefs`
+ *
+ * ⚠️ {@link WeakDocRefLike} is supertype
+ */
+export interface DocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
+	extends WeakDocRefLike<tag> {
 	isStrong: true
-}
-
-/** Minimal version used by `RelaxRefs` */
-export interface WeakDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
-	extends DocRefLike<tag> {
-	isStrong: false
 }

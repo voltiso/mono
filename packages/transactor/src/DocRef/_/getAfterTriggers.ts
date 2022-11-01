@@ -3,12 +3,12 @@
 
 import { isPlainObject } from '@voltiso/util'
 
-import type { CustomDocRef, DocRef, DocRefTriggerEntry } from '~/DocRef'
+import type { CustomDocRef, WeakDocRef, DocRefTriggerEntry } from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { AfterTrigger } from '~/Trigger'
 
-function forEachStrongRef(o: any, f: (r: DocRef) => void) {
+function forEachStrongRef(o: any, f: (r: WeakDocRef) => void) {
 	if (isStrongDocRef(o)) {
 		f(o as never)
 	} else if (Array.isArray(o)) {

@@ -10,12 +10,12 @@ import type {
 import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
-import type { $$DocRef, DocRef } from '~/DocRef'
+import type { $$DocRef, WeakDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sIntrinsicFields } from '~/schemas'
 
 export function getIdSchemas(ref: $$DocRef) {
-	$AssumeType<DocRef>(ref)
+	$AssumeType<WeakDocRef>(ref)
 	if (ref._idSchemas !== undefined) return ref._idSchemas
 
 	const { _allIdSchemas } = ref._context.transactor
@@ -35,8 +35,8 @@ export function getIdSchemas(ref: $$DocRef) {
 	return ref._idSchemas
 }
 
-export function getSchema(d: $$DocRef): DocRef['_schema'] {
-	$AssumeType<DocRef>(d)
+export function getSchema(d: $$DocRef): WeakDocRef['_schema'] {
+	$AssumeType<WeakDocRef>(d)
 
 	if (d._schema !== undefined) {
 		return d._schema

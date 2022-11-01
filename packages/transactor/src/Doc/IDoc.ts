@@ -4,12 +4,12 @@
 import type { SchemaLike } from '@voltiso/schemar.types'
 import type { _ } from '@voltiso/util'
 
-import type { DocIdString } from '~/Data'
-import type { DocRef } from '~/DocRef'
+import type { DocIdString } from '~/brand'
+import type { WeakDocRef } from '~/DocRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 
-import type { IDocConstructorNoBuilder } from '../DocConstructor/index'
+import type { IDocConstructorNoBuilder } from '../DocConstructor'
 import type { DocContext } from './DocContext'
 import type { DocTI, DTI } from './DocTI'
 
@@ -32,7 +32,7 @@ export interface IDoc extends $$Doc {
 
 	readonly id: DocIdString
 	readonly path: DocPath
-	readonly ref: DocRef
+	readonly ref: WeakDocRef
 
 	readonly data: IntrinsicFields
 	dataWithoutId(): IntrinsicFields

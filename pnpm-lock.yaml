@@ -1020,16 +1020,20 @@ importers:
 
   packages/transform.test:
     specifiers:
+      '@voltiso/assertor': workspace:^3.0.0
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/config.tsdoc': workspace:^
+      '@voltiso/schemar': workspace:^17.0.0
       '@voltiso/script': workspace:^
       '@voltiso/transform': workspace:^
       '@voltiso/util': workspace:^
     devDependencies:
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc
+      '@voltiso/schemar': link:../schemar
       '@voltiso/script': link:../script
       '@voltiso/transform': link:../transform
       '@voltiso/util': link:../util

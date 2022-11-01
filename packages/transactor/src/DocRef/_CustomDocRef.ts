@@ -19,9 +19,9 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 
-import type { DocBrand } from '~/brand'
+import type { DocBrand, DocIdString } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
-import type { $WithId, DocIdString } from '~/Data'
+import type { $WithId } from '~/Data'
 import { withoutId } from '~/Data'
 import type {
 	Doc,
@@ -53,18 +53,18 @@ import type { NestedPromise } from './_/NestedPromise'
 import { dataOrNestedPromise } from './_/NestedPromise'
 import type { $$DocRef } from './$$DocRef'
 import { IS_DOC_REF } from './$$DocRef'
-import type { DocRef } from './DocRef'
-import { defaultDocRefOptions } from './DocRef'
+import type { CustomDocRef } from './CustomDocRef'
+import { defaultDocRefOptions } from './CustomDocRef'
 import type { GetDocRef } from './GetDocRef'
 import { get, update } from './methods'
 
 //
 
-export interface _CustomDocRef<O extends DocRef.Options>
-	extends DocBrand<GetDocTag.ByString<DocRef.Options.Get<O>['doc']>> {}
+export interface _CustomDocRef<O extends CustomDocRef.Options>
+	extends DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>> {}
 
 /** @internal */
-export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
+export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	// declare readonly [DTI]: GetDocTI.ByTag<O['doc']>;
 
 	readonly [IS_DOC_REF] = true as const
@@ -104,7 +104,7 @@ export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
 
 	readonly methods = {} as GetMethodPromises<O['doc']>;
 
-	[OPTIONS]: O
+	[OPTIONS]: CustomDocRef.Options
 
 	get isStrong(): O['isStrong'] {
 		// eslint-disable-next-line security/detect-object-injection

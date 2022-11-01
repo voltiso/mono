@@ -14,8 +14,8 @@ import {
 import type { $WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
-import type { CustomDocRef, DocRefContext } from '~/DocRef'
-import { DocRef, isStrongDocRef } from '~/DocRef'
+import type { DocRefContext, WeakDocRef } from '~/DocRef'
+import { CustomDocRef, isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error/TransactorError'
 import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
@@ -24,9 +24,9 @@ import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 
 import type { AnyDoc } from '..'
+import { DocConstructorImpl } from '../DocConstructor'
 import type { GetData } from './_/GetData'
 import type { Doc } from './Doc'
-import { DocConstructorImpl } from '../DocConstructor/index'
 import type { DocContext } from './DocContext'
 import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
@@ -43,9 +43,13 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		}
 
 		return r as never
-	} else if (x instanceof DocRef) {
-		// eslint-disable-next-line security/detect-object-injection
-		return new DocRef(ctx as never, x.path.toString(), x[OPTIONS]) as never
+	} else if (x instanceof CustomDocRef) {
+		return new CustomDocRef(
+			ctx as never,
+			x.path.toString(),
+			// eslint-disable-next-line security/detect-object-injection
+			x[OPTIONS],
+		) as never
 	}
 
 	return x
@@ -58,7 +62,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	methods: Record<string, Method> = {}
 
-	_ref?: DocRef = undefined
+	_ref?: WeakDocRef = undefined
 
 	constructor(context: DocContext, raw: IntrinsicFields) {
 		super()
@@ -153,7 +157,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	get ref(): CustomDocRef<{ docTag: TI['tag']; isStrong: true }> {
 		if (!this._ref)
-			this._ref = new DocRef(
+			this._ref = new CustomDocRef(
 				omit(this._context, 'docRef'),
 				this.path.toString(),
 				{ isStrong: true },

@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`callInfo assertor 1`] = `
+"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+import { assert } from '@voltiso/assertor';
+import * as s from '@voltiso/schemar';
+assert(true, {
+    expression: 'assert',
+    arguments: [
+        'true'
+    ],
+    typeArguments: [],
+    location: {
+        package: {
+            name: '@voltiso/transform.test',
+            version: void 0
+        },
+        packagePath: 'src/call-info/assertor.ts',
+        gitPath: 'packages/transform.test/src/call-info/assertor.ts',
+        position: 163,
+        line: 4,
+        column: 37,
+        astPath: []
+    }
+});
+assert(s.number.or(void 0), 1, {
+    expression: 'assert',
+    arguments: [
+        's.number.or(undefined)',
+        '1'
+    ],
+    typeArguments: [],
+    location: {
+        package: {
+            name: '@voltiso/transform.test',
+            version: void 0
+        },
+        packagePath: 'src/call-info/assertor.ts',
+        gitPath: 'packages/transform.test/src/call-info/assertor.ts',
+        position: 177,
+        line: 6,
+        column: 12,
+        astPath: []
+    }
+});
+//# sourceMappingURL=assertor.js.map"
+`;

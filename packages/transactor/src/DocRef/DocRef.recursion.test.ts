@@ -7,10 +7,10 @@ import { $Assert } from '@voltiso/util'
 import { Doc } from '~/Doc'
 import { sStrongRef, sWeakRef } from '~/schemas'
 
-import type { StrongDocRef } from './StrongDocRef'
+import type { DocRef } from './StrongDocRef'
 import type { WeakDocRef } from './WeakDocRef'
 
-declare module '..' {
+declare module '../DocTypes-module-augmentation' {
 	interface DocTypes {
 		oops: Client
 	}
@@ -31,7 +31,7 @@ describe('DocRef', () => {
 		;() => {
 			const client = 0 as unknown as Client
 
-			$Assert<IsIdentical<typeof client.strong, StrongDocRef<'oops'>>>()
+			$Assert<IsIdentical<typeof client.strong, DocRef<'oops'>>>()
 			$Assert<IsIdentical<typeof client.weak, WeakDocRef<'oops'>>>()
 		}
 	})

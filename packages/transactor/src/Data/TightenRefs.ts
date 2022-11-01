@@ -4,10 +4,10 @@
 import type { $$Schema, SimplifySchema } from '@voltiso/schemar.types'
 import type { BRAND, Merge2_ } from '@voltiso/util'
 
-import type { DocRefLike, GetDocRef } from '~/DocRef'
+import type { GetDocRef, WeakDocRefLike } from '~/DocRef'
 import type { DocTag } from '~/DocTypes'
 
-export type _TightenRefs<T> = T extends DocRefLike
+export type _TightenRefs<T> = T extends WeakDocRefLike
 	? GetDocRef<{
 			doc: keyof T[BRAND]['transactor']['doc'] & DocTag
 			isStrong: T['isStrong']

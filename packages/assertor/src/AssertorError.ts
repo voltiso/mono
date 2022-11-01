@@ -4,7 +4,7 @@
 import type { ValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import { stringFromPackage } from '@voltiso/transform'
-import { stringFrom, padStart } from '@voltiso/util'
+import { padStart, stringFrom } from '@voltiso/util'
 import chalk from 'chalk'
 
 export interface AssertorErrorOptions extends ErrorOptions {
@@ -13,6 +13,19 @@ export interface AssertorErrorOptions extends ErrorOptions {
 	cause: ValidationError
 
 	callInfo?: CallInfo | undefined
+}
+
+export function hackStack(stack: string): string {
+	let lines = stack.split('\n')
+
+	lines = lines.filter(line => {
+		if (!line.includes('at ')) return true
+		if (line.includes('assertor')) return false
+		if (line.includes('callableObject')) return false
+		return true
+	})
+
+	return lines.join('\n')
 }
 
 export class AssertorError extends Error {
@@ -48,6 +61,7 @@ export class AssertorError extends Error {
 				'AssertorError internal: callInfo does not match expression name',
 			)
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (callInfo?.expression && callInfo.arguments) {
 			let str: string
 
@@ -72,5 +86,9 @@ export class AssertorError extends Error {
 		super(message, otherOptions)
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'AssertorError'
+
+		if (this.stack) {
+			this.stack = hackStack(this.stack)
+		}
 	}
 }

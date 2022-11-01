@@ -3,11 +3,10 @@
 
 import type { _, $_, NoArgument } from '@voltiso/util'
 
+import type { DocIdString } from '~/brand'
 import type { $$Doc, IDoc } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
 import type { $$DocRelatedLike } from '~/DocRelated'
-
-import type { DocIdString } from './Id'
 
 export type LeafData = boolean | string | number | null | Date | $$DocRef
 

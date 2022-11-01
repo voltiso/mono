@@ -19,26 +19,17 @@ import { ProtoCallable } from '@voltiso/util'
 import { Assertor } from './Assertor'
 
 export interface AssertFunction {
-	/**
-	 * ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
-	 * `__callInfo` argument when transpiling
-	 */
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	(value: unknown, __callInfo?: CallInfo | undefined): asserts value
 
-	/**
-	 * ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
-	 * `__callInfo` argument when transpiling
-	 */
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	<S extends $$Schemable>(
 		schema: S,
 		value: Type<S> | AlsoAccept<unknown>,
 		__callInfo?: CallInfo | undefined,
 	): asserts value is Type<S>
 
-	/**
-	 * ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
-	 * `__callInfo` argument when transpiling
-	 */
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	not(value: unknown, __callInfo?: CallInfo | undefined): asserts value is Falsy
 
 	//
@@ -144,6 +135,10 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 			//
 
+			/**
+			 * @callInfo ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
+			 * `__callInfo` argument when transpiling
+			 */
 			not(value: unknown, __callInfo?: CallInfo | undefined) {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				const assertor = new Assertor(`${name}.not`, s.falsy) as any
@@ -172,6 +167,11 @@ const _getAssert: (name: string) => AssertFunction = name =>
 		},
 	})
 
+/**
+ * Assertor
+ *
+ * @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument
+ */
 export const assert: AssertFunction = _getAssert('assert')
 
 /**

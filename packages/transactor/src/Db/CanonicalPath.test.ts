@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { DocIdString } from '~/Data'
+import type { DocIdString } from '~/brand'
 
 import type { CanonicalPath } from './CanonicalPath'
 

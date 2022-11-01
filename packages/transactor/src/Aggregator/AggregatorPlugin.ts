@@ -8,7 +8,7 @@ import { $AssumeType, assertNotPolluting, zip } from '@voltiso/util'
 import type { $$Doc, DocBuilderPlugin, DocTI, GetDataWithId, IDoc } from '~/Doc'
 import type { DocConstructor, IDocConstructor } from '~/DocConstructor'
 import type { $$DocRef } from '~/DocRef'
-import { isStrongDocRef, isWeakDocRef } from '~/DocRef'
+import { isDocRef } from '~/DocRef/isDocRef'
 import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 import { TransactorError } from '~/error'
 
@@ -107,8 +107,7 @@ export class AggregatePlugin<R extends $$DocRelatedLike>
 
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					if (!finalTarget) {
-						const handlerReturnedRef =
-							isWeakDocRef(target) || isStrongDocRef(target)
+						const handlerReturnedRef = isDocRef(target)
 
 						if (handlerReturnedRef && autoCreateTarget) {
 							try {

@@ -7,10 +7,10 @@ import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { Doc } from '../Doc/Doc'
-import type { $$DocConstructor } from '../DocConstructor/index'
 import type { DocTI, DTI } from '../Doc/DocTI'
 import type { $$Doc } from '../Doc/IDoc'
 import type { IndexedDoc, IndexedDocTI } from '../Doc/IndexedDoc'
+import type { $$DocConstructor } from '../DocConstructor'
 import type { $$DocRelatedLike, WithDocTI } from './DocRelated'
 
 export type GetDoc<X extends $$DocRelatedLike> = Assume<

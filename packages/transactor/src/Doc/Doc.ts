@@ -11,7 +11,7 @@ import type {
 } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
-import type { DocIdString } from '~/Data'
+import type { DocIdString } from '~/brand'
 import type { DocConstructor, IDocConstructorNoBuilder } from '~/DocConstructor'
 import type { GetDocRef } from '~/DocRef'
 import type { $$DocRelatedLike, GetDocTag, GetDocTI } from '~/DocRelated'
@@ -90,7 +90,7 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 export namespace DocBase {
 	export type Ref<This extends $$DocRelatedLike> = GetDocRef<{
-		doc: GetDocTag<This>
+		doc: This
 		isStrong: true
 	}>
 }

@@ -5,5 +5,5 @@ import type { $$Doc } from './Doc'
 
 export interface DocTypes {
 	// [AnyDoc]: IndexedDoc
-	[k: string | symbol]: $$Doc
+	[k: string]: $$Doc
 }

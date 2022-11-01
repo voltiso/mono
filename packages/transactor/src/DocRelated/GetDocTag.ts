@@ -28,7 +28,11 @@ export namespace GetDocTag {
 	>
 
 	/** @internal */
-	export type _Finalize<tag> = IsUnion<tag> extends true ? never : tag
+	export type _Finalize<tag> = IsUnion<tag> extends true
+		? AnyDoc
+		: [tag] extends [never]
+		? AnyDoc
+		: tag
 
 	/**
 	 * Use {@link GetDocTag} instead

@@ -5,13 +5,14 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { $$Doc, GetDocTI } from '~/Doc'
+import type { $$Doc } from '~/Doc'
 import { Doc } from '~/Doc'
+import type { GetDocTI } from '~/DocRelated'
 import type { CustomDocPath } from '~/Path'
 
 import type { NestedPromise } from './_/NestedPromise'
-import type { DocRef } from './DocRef'
-import type { StrongDocRef } from './StrongDocRef'
+import type { WeakDocRef } from './WeakDocRef'
+import type { DocRef } from './StrongDocRef'
 
 describe('StrongDocRef', () => {
 	// eslint-disable-next-line jest/no-commented-out-tests
@@ -22,8 +23,8 @@ describe('StrongDocRef', () => {
 	// })
 
 	it('type', () => {
-		$Assert.is<StrongDocRef['isStrong'], true>()
-		$Assert.is<StrongDocRef, DocRef>()
+		$Assert.is<DocRef['isStrong'], true>()
+		$Assert.is<DocRef, WeakDocRef>()
 	})
 
 	it('NestedPromise works with any', <B extends boolean>() => {

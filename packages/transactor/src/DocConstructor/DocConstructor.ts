@@ -28,7 +28,7 @@ import type {
 	Promisify,
 } from '~/Doc'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
-import type { DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
 
@@ -43,7 +43,10 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 	new (context: DocContext, data: GetInputData<TI>): Doc<TI>
 
-	<Tag extends DocTag>(tag: Tag): DocConstructor.WithOverrides<TI, { tag: Tag }>
+	<Tag extends DocTag | AnyDoc>(tag: Tag): DocConstructor.WithOverrides<
+		TI,
+		{ tag: Tag }
+	>
 
 	<O extends $$PartialDocOptions>(
 		options: O,

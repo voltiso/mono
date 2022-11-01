@@ -42,8 +42,22 @@ export function callInfoTransform(program: ts.Program, pluginOptions: object) {
 
 			const visitor: ts.Visitor = node => {
 				if (ts.isCallExpression(node)) {
-					const symbol = typeChecker.getSymbolAtLocation(node.expression)
+					let symbol = typeChecker.getSymbolAtLocation(node.expression)
+
+					// eslint-disable-next-line no-bitwise
+					if (symbol && symbol.flags & ts.SymbolFlags.Alias) {
+						symbol = typeChecker.getAliasedSymbol(symbol)
+					}
+
 					const tags = symbol?.getJsDocTags()
+
+					// console.log(
+					// 	sourceFile.fileName,
+					// 	'found symbol name',
+					// 	symbol?.name,
+					// 	tags?.map(tag => tag.name),
+					// )
+
 					if (tags?.map(tag => tag.name).includes('callInfo')) {
 						logCallInfoNode(ctx, node)
 

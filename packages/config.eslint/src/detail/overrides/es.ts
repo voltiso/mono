@@ -69,6 +69,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-object-defineproperty': 0,
 
 		// array
+		'es-x/no-array-prototype-filter': 0,
 		'es-x/no-array-prototype-map': 0,
 		'es-x/no-array-prototype-includes': 0,
 		'es-x/no-array-prototype-entries': 0,

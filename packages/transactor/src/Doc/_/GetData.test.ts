@@ -6,8 +6,9 @@ import type { SchemaLike } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
+import type { DocIdBrand, DocIdString } from '~/brand'
 import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
-import type { $WithId, AnyDocIdBrand, DocIdString } from '~/Data'
+import type { $WithId } from '~/Data'
 import type { $$DocTI, DocTI, IndexedDocTI } from '~/Doc'
 import { Doc } from '~/Doc'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
@@ -44,7 +45,7 @@ describe('Doc util', () => {
 			IsIdentical<
 				MyData2,
 				{
-					readonly id?: (string & AnyDocIdBrand) | undefined
+					readonly id?: (string & DocIdBrand) | undefined
 					readonly [k: string]: unknown
 				}
 			>
@@ -61,7 +62,7 @@ describe('Doc util', () => {
 			IsIdentical<
 				D,
 				{
-					readonly id?: (string & AnyDocIdBrand) | undefined
+					readonly id?: (string & DocIdBrand) | undefined
 					readonly a: number
 				}
 			>

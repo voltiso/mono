@@ -7,7 +7,7 @@ import { CollectionRef } from '~/CollectionRef/CollectionRef'
 import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
 import type { IndexedDoc } from '~/Doc'
 import type { GetDocRef } from '~/DocRef'
-import { DocRef, DocRefPattern } from '~/DocRef'
+import { CustomDocRef, DocRefPattern } from '~/DocRef'
 import type { AnyDoc } from '~/DocTypes'
 import type { DbPathFromString, DocPath } from '~/Path'
 import { concatPath, CustomDocPath } from '~/Path'
@@ -37,7 +37,7 @@ export class Db {
 
 	[CALL](...args: string[] | [DocPath]): unknown {
 		if (args[0] instanceof CustomDocPath) {
-			return new DocRef(this._context, args[0] as never, {
+			return new CustomDocRef(this._context, args[0] as never, {
 				isStrong: false,
 			}) as never
 		}
@@ -53,14 +53,15 @@ export class Db {
 			else return new DocRefPattern(this._context, path) as never
 		} else if (newPathTokens.length % 2 === 1)
 			return new CollectionRef(this._context, path) as never
-		else return new DocRef(this._context, path, { isStrong: false }) as never
+		else
+			return new CustomDocRef(this._context, path, { isStrong: false }) as never
 	}
 
 	doc(
 		...pathTokens: readonly string[]
 	): GetDocRef<{ docTag: AnyDoc; isStrong: false }> {
 		// $assert(this.context)
-		return new DocRef(this._context, concatPath(pathTokens), {
+		return new CustomDocRef(this._context, concatPath(pathTokens), {
 			isStrong: false,
 		}) as never
 	}

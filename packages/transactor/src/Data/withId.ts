@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { DocIdString } from '~/brand'
 import type { $$Doc } from '~/Doc'
 
 import type { $WithId } from './Data'
-import type { DocIdString } from './Id'
 
 export function withId(data: null, id: DocIdString): null
 

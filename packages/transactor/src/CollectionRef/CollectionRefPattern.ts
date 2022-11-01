@@ -15,8 +15,7 @@ import {
 import type { WithDb } from '~/Db'
 import type { $$Doc, IndexedDoc } from '~/Doc'
 import type { $$DocConstructor } from '~/DocConstructor'
-import type { CustomDocRef } from '~/DocRef'
-import { DocRef } from '~/DocRef'
+import { CustomDocRef } from '~/DocRef'
 import type { GetDocTag } from '~/DocRelated'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
@@ -81,7 +80,7 @@ export class CollectionRefPattern<
 		if (tokens.length === this.patternUnknownTokens.length)
 			return new CollectionRef(this.context, newPath) as never
 		else if (tokens.length === this.patternUnknownTokens.length + 1) {
-			return new DocRef(this.context, `${newPath}/${at(tokens, -1)}`, {
+			return new CustomDocRef(this.context, `${newPath}/${at(tokens, -1)}`, {
 				isStrong: false,
 			}) as never
 		} else return new CollectionRefPattern(this.context, newPath) as never

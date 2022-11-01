@@ -6,17 +6,17 @@ import type { IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
 import type { IdBrand } from '..'
+import type { IDocConstructor } from '../DocConstructor'
+import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
 import type { GetData } from './_/GetData'
 import type { CustomDoc } from './Doc'
 import { Doc } from './Doc'
-import type { IDocConstructor } from '../DocConstructor/index'
-import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
 import type { UntaggedDocTI } from './DocImpl'
 import type { DocTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
 
-declare module '..' {
+declare module '../DocTypes-module-augmentation' {
 	interface DocTypes {
 		anotherTest: AnotherTest
 	}

@@ -34,9 +34,7 @@ declare module '@voltiso/util' {
 export interface DocBrand<tag extends DocTagLike | AnyDoc>
 	extends CustomBrand<
 		'transactor.doc',
-		tag extends AnyDoc
+		AnyDoc extends tag
 			? any // {[k in DocTag]: true}
-			: tag extends DocTag
-			? { [k in tag]: true }
-			: never
+			: { [k in tag]: true }
 	> {}

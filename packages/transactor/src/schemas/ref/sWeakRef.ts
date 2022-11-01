@@ -5,13 +5,8 @@ import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
 import { lazyValue, OPTIONS, ProtoCallable } from '@voltiso/util'
 
-import type {
-	DocRefLike,
-	GetDocRef,
-	WeakDocRef,
-	WeakDocRefLike,
-} from '~/DocRef'
-import { DocRef } from '~/DocRef'
+import type { WeakDocRefLike, WeakDocRef } from '~/DocRef'
+import { CustomDocRef } from '~/DocRef'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 
 /**
@@ -21,45 +16,23 @@ import type { AnyDoc, DocTag } from '~/DocTypes'
  */
 const _fixableWeakRefSchema = lazyValue(
 	() =>
-		s.instance(DocRef).fix(x => {
+		s.instance(CustomDocRef).fix(x => {
 			if (x.isStrong === false) return x // already weak
 
-			return new DocRef(x._context as never, x.path.toString(), {
+			return new CustomDocRef(x._context as never, x.path.toString(), {
 				// eslint-disable-next-line security/detect-object-injection
 				...x[OPTIONS],
 				isStrong: false,
 			}) as unknown as WeakDocRef
-		}) as unknown as t.CustomSchema<{
-			Input: DocRef
-			Output: GetDocRef<{ isStrong: false }>
-		}>,
+		}) as unknown as t.Schema<WeakDocRef>,
 )
 
-/** 🫠 Accept any, output weak */
-export interface FixableWeakRefSchema<
-	X extends DocTag | AnyDoc = AnyDoc,
-> extends t.CustomSchema<{
-		Input: GetDocRef<{ doc: X }>
-		Output: GetDocRef<{
-			doc: X
-			isStrong: false
-		}>
-	}> {}
-
-/**
- * 🚴‍♂️ Cycle-safe
- *
- * 🫠 Accept any, output weak
- */
-export interface FixableWeakRefSchemaRec<
-	X extends DocTag | AnyDoc = AnyDoc,
-> extends t.CustomSchema<{
-		Input: DocRefLike<X>
-		Output: WeakDocRefLike<X>
-	}> {}
+/** 🫠 Accept any, output weak - but currently weak is just supertype */
+export interface FixableWeakRefSchema<X extends DocTag | AnyDoc = AnyDoc>
+	extends t.Schema<WeakDocRefLike<X>> {}
 
 export interface WeakRefSchema extends FixableWeakRefSchema {
-	<X extends DocTag>(): FixableWeakRefSchemaRec<X>
+	<X extends DocTag>(): FixableWeakRefSchema<X>
 }
 
 export const sWeakRef: WeakRefSchema = lazyValue(() =>
