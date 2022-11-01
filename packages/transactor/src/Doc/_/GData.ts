@@ -1,18 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomObject, Input, OPTIONS, Type } from '@voltiso/schemar.types'
+import type { CustomObject, Input, Type } from '@voltiso/schemar.types'
 import type {
 	$_,
 	Callable,
 	DeepReadonlyN,
 	HasIndexSignature,
 	Newable,
+	OPTIONS,
 	Primitive,
 } from '@voltiso/util'
 
-import type { $WithId, Id, WithId } from '~/Data'
-import type { $$Doc, $$DocTI, DocTI, ExecutionContext, IDoc } from '~/Doc'
+import type { $WithId, DocIdString, WithId } from '~/Data'
+import type {
+	$$Doc,
+	$$DocRelated,
+	ExecutionContext,
+	GetDoc,
+	GetDocTI,
+	IDoc,
+} from '~/Doc'
 
 import type { GetIntrinsicFields } from './GetIntrinsicFields'
 
@@ -40,45 +48,46 @@ export type _$GetAggregateTarget<T extends object> = T extends any
 	: never
 
 /** @inline */
-export type GetData<TI extends $$DocTI> = TI extends DocTI
+export type GetData<R extends $$DocRelated> = R extends any
 	? $_<
-			GetIntrinsicFields<TI> &
+			GetIntrinsicFields<R> &
 				CustomObject.WithAnd<
-					CustomObject.WithAnd<TI['publicOnCreation'], TI['public']>,
-					TI['private']
+					CustomObject.WithAnd<
+						GetDocTI<R>['publicOnCreation'],
+						GetDocTI<R>['public']
+					>,
+					GetDocTI<R>['private']
 				>['Output']
 	  >
 	: never
 
 /** @inline */
-export type GetDataWithId<
-	TI extends $$DocTI,
-	Doc extends $$Doc = IDoc,
-> = Doc extends any ? WithId<GetData<TI>, Doc> : never
+export type GetDataWithId<R extends $$DocRelated> = WithId<
+	GetData<R>,
+	GetDoc<R>
+>
 
 //
 
 /** @inline */
-export type GetInputData<TI extends $$DocTI> = TI extends {
-	publicOnCreation: any
-	public: any
-	private: any
-}
+export type GetInputData<R extends $$DocRelated> = R extends any
 	? $_<
-			Input<TI['publicOnCreation']> & Input<TI['public']> & Input<TI['private']>
+			Input<GetDocTI<R>['publicOnCreation']> &
+				Input<GetDocTI<R>['public']> &
+				Input<GetDocTI<R>['private']>
 	  >
 	: never
 
 /** @inline */
 export type GetInputDataWithId<
-	TI extends $$DocTI,
+	TI extends $$DocRelated,
 	Doc extends $$Doc = IDoc,
 > = $WithId<GetInputData<TI>, Doc>
 
 //
 
 /** @inline */
-export type GetPublicData<TI extends { public?: any }> = Type<TI['public']>
+export type GetPublicData<R extends $$DocRelated> = Type<GetDocTI<R>['public']>
 
 // /** @inline */
 // export type RelaxRefs<X> = X extends IRef
@@ -90,46 +99,43 @@ export type GetPublicData<TI extends { public?: any }> = Type<TI['public']>
 // 	: X
 
 /** @inline */
-export type GetPublicCreationInputData<
-	TI extends $$DocTI,
-	Doc extends $$Doc = IDoc,
-> = TI extends DocTI
+export type GetPublicCreationInputData<R extends $$DocRelated> = R extends any
 	? DeepReadonlyN<
 			// eslint-disable-next-line no-magic-numbers
 			10,
 			{
-				readonly id?: Id<Doc> | undefined
+				readonly id?: DocIdString<R> | undefined
 			} & CustomObject.WithAnd<
-				TI['publicOnCreation'],
-				TI['public']
+				GetDocTI<R>['publicOnCreation'],
+				GetDocTI<R>['public']
 			>[OPTIONS]['Input'],
 			{ skip: Primitive | Callable | Newable }
 	  >
 	: never
 
 /** @inline */
-export type GetPublicInputData<TI extends $$DocTI> = TI extends {
-	public: any
-}
-	? Input<TI['public']>
+export type GetPublicInputData<R extends $$DocRelated> = R extends any
+	? Input<GetDocTI<R>['public']>
 	: never
 
 //
 
 /** @inline */
 export type GetCreationDataByCtx<
-	TI extends $$DocTI,
+	R extends $$DocRelated,
 	Ctx extends ExecutionContext,
-	Doc extends $$Doc = IDoc,
 > = Ctx extends 'inside'
-	? GetInputData<TI>
+	? GetInputData<R>
 	: Ctx extends 'outside'
-	? GetPublicCreationInputData<TI, Doc>
+	? GetPublicCreationInputData<R>
 	: never
 
 /** @inline */
-export type GetUpdateDataByCtx<TI extends $$DocTI, Ctx> = Ctx extends 'inside'
-	? GetInputData<TI>
+export type GetUpdateDataByCtx<
+	R extends $$DocRelated,
+	Ctx,
+> = Ctx extends 'inside'
+	? GetInputData<R>
 	: Ctx extends 'outside'
-	? GetPublicInputData<TI>
+	? GetPublicInputData<R>
 	: never

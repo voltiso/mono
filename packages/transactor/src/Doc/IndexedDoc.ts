@@ -1,7 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// $dev(() => {
+// 	$Assert.is<IndexedDoc, Doc>()
+// 	$Assert.is<Doc, IndexedDoc>()
+// 	$Assert.is<Doc, Omit<IndexedDoc, 'ref' | DTI | 'aggregateSchemas' | 'update'>>()
+// 	$Assert.is<Doc['ref'], IndexedDoc>()
+// })
 import type * as t from '@voltiso/schemar.types'
+import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { Method } from '~/Method'
@@ -10,7 +17,7 @@ import type { ExecutionContext } from './_/ExecutionContext'
 import type { DocBase } from './Doc'
 import { Doc } from './Doc'
 import type { DocConstructor } from './DocConstructor'
-import type { $$DocTI, DocTI } from './DocTI'
+import type { DocTI } from './DocTI'
 
 declare const IS_INDEXED: unique symbol
 
@@ -23,17 +30,17 @@ export type IndexedDocTISchema = t.CustomObject<{
 	}
 }>
 
-export interface $$IndexedDocTI extends $$DocTI {
-	readonly [IS_INDEXED]: true // ! make sure it's strict sub-type
-}
+// export interface $$IndexedDocTI extends $$DocTI {
+// 	readonly [IS_INDEXED]: true // ! make sure it's strict sub-type
+// }
 
 /** Doc Type Info with index signatures for fields and methods */
-export interface IndexedDocTI extends $$IndexedDocTI, DocTI {
+export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
 	publicOnCreation: IndexedDocTISchema
 	public: IndexedDocTISchema
 	private: IndexedDocTISchema
 	//
-	methods: Record<string, OmitThisParameter<Method>>
+	methods: Record<string, Bivariant<OmitThisParameter<Method>>>
 	//
 	aggregates: Record<string, t.Schema>
 }

@@ -16,13 +16,15 @@ export type CallableConstructor<O extends CallableConstructorOptions> =
 export function CallableConstructor<O extends CallableConstructorOptions>(
 	options: O,
 ): CallableConstructor<O> {
-	function CallableConstructor(
-		...args: ConstructorParameters<O['constructor']>
-	): InstanceType<O['constructor']>
+	// function CallableConstructor(
+	// 	...args: ConstructorParameters<O['constructor']>
+	// ): InstanceType<O['constructor']>
 
-	function CallableConstructor(
-		...args: Parameters<O['call']>
-	): ReturnType<O['call']>
+	// function CallableConstructor(
+	// 	...args: Parameters<O['call']>
+	// ): ReturnType<O['call']>
+
+	const name = `CallableConstructor(${options.constructor.name})`
 
 	function CallableConstructor(
 		...args: ConstructorParameters<O['constructor']> | Parameters<O['call']>
@@ -41,7 +43,8 @@ export function CallableConstructor<O extends CallableConstructorOptions>(
 		) as InstanceType<O['constructor']>
 	}
 
-	CallableConstructor.name = `CallableClass(${options.constructor.name})`
+	Object.defineProperty(CallableConstructor, 'name', { value: name })
+	// CallableConstructor.name = name
 
 	CallableConstructor.prototype = options.constructor.prototype
 

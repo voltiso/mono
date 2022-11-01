@@ -3,21 +3,22 @@
 
 import * as s from '@voltiso/schemar'
 import type { SchemaLike } from '@voltiso/schemar.types'
-import { mapValues } from '@voltiso/util'
+import { $AssumeType, mapValues } from '@voltiso/util'
 
-import type { $$Doc, GetDocTI } from '~/Doc'
-import type { UnknownDocRefBase } from '~/DocRef'
+import type { GetDocTI } from '~/Doc'
+import type { $$DocRef, DocRef } from '~/DocRef'
 
-export function getAggregateSchemas<D extends $$Doc>(
-	d: UnknownDocRefBase<D>,
-): GetDocTI<D>['aggregates'] {
-	if (d._aggregateSchemas !== undefined) return d._aggregateSchemas as never
+export function getAggregateSchemas<Ref extends $$DocRef>(
+	ref: Ref,
+): GetDocTI<Ref>['aggregates'] {
+	$AssumeType<DocRef>(ref)
+	if (ref._aggregateSchemas !== undefined) return ref._aggregateSchemas as never
 
-	const { _allAggregateSchemas } = d._context.transactor
+	const { _allAggregateSchemas } = ref._context.transactor
 
 	let aggregateSchemas: Record<string, SchemaLike> = {}
 
-	const path = d.path.toString()
+	const path = ref.path.toString()
 
 	for (const { getPathMatches, schema } of _allAggregateSchemas) {
 		const { pathParams, pathArgs } = getPathMatches(path) || {}
@@ -30,7 +31,7 @@ export function getAggregateSchemas<D extends $$Doc>(
 		}
 	}
 
-	d._aggregateSchemas = aggregateSchemas
+	ref._aggregateSchemas = aggregateSchemas
 
-	return d._aggregateSchemas as never
+	return ref._aggregateSchemas as never
 }

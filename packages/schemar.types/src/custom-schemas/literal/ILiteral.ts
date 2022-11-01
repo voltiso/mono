@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { SCHEMA_NAME } from '_'
 
 import type { InferableLiteral } from '~/Inferable'
 import type { $$Schema, ISchema } from '~/Schema'

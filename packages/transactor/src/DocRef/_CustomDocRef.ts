@@ -8,32 +8,27 @@ import type {
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type { DeleteIt, If, ReplaceIt } from '@voltiso/util'
+import type { DeleteIt, If, Override, ReplaceIt } from '@voltiso/util'
 import {
 	assert,
 	deleteIt,
 	lazyPromise,
 	omit,
+	OPTIONS,
 	protoLink,
 	replaceIt,
 } from '@voltiso/util'
 
-import type { InferTIFromDoc } from '~/CollectionRef'
 import type { DocRefDatabase, DocRefJson } from '~/common'
-import type { $WithId, Id } from '~/Data'
+import type { $WithId, DocIdString } from '~/Data'
 import { withoutId } from '~/Data'
 import type {
-	$$Doc,
 	Doc,
-	GDocFields_,
+	GetDoc,
 	GetDocTI,
-	GetMethodPromises_,
-	IDoc,
-	IndexedDoc,
+	GetMethodPromises,
 	UpdatesFromData,
 } from '~/Doc'
-import { DTI } from '~/Doc'
-import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type {
 	GetData,
 	GetPublicCreationInputData,
@@ -41,61 +36,47 @@ import type {
 } from '~/Doc/_/GData'
 import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'
-import { DocPath } from '~/Path'
+import type { DocPath } from '~/Path'
+import { CustomDocPath } from '~/Path'
 import type {
 	DeepPartialIntrinsicFieldsSchema,
 	IntrinsicFieldsSchema,
 } from '~/schemas/sIntrinsicFields'
 import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
 
-import type { Null } from './_'
-import { getAggregateSchemas } from './_'
+import { DocFieldPath } from '../DocFieldPath/DocFieldPath'
+import type { DocRefContext } from './_'
+import { getAggregateSchemas, getMethods } from './_'
 import type { CallMethodOptions } from './_/callMethod'
 import { callMethod } from './_/callMethod'
-import type { DocRefContext, DocRefParentContext } from './_/Context'
 import type { DocRefMethodEntry, DocRefTriggerEntry } from './_/data'
-import { getMethods } from './_/getMethods'
 import { getIdSchemas, getSchema } from './_/getSchema'
 import type { NestedPromise } from './_/NestedPromise'
 import { dataOrNestedPromise } from './_/NestedPromise'
-import { DocFieldPath } from './DocFieldPath'
-import { IS_DOC_REF } from './IRef'
+import type { $$DocRef } from './$$DocRef'
+import { IS_DOC_REF } from './$$DocRef'
+import type { DocRef } from './DocRef'
+import { defaultDocRefOptions } from './DocRef'
+import type { GetDocRef } from './GetDocRef'
 import { get, update } from './methods'
-import { StrongDocRef } from './StrongDocRef'
-import { WeakDocRef } from './WeakDocRef'
 
-/**
- * Base class constructor for `WeakDocRef` and `StrongDocRef` (do not use
- * directly)
- */
-export class UnknownDocRefBase<
-	D extends $$Doc = IndexedDoc,
-	Exists extends boolean = boolean,
-	_Ctx extends ExecutionContext = 'outside',
-> implements PromiseLike<D | Null<Exists>>
-{
-	[IS_DOC_REF] = true as const
+//
 
-	/** Type-only field */
-	declare Exists: Exists;
-
-	declare [DTI]: GetDocTI<D>
-
-	// eslint-disable-next-line unicorn/no-thenable
-	declare then: ReturnType<this['get']>['then']
-	declare readonly __voltiso: GDocFields_<InferTIFromDoc<D>>['__voltiso']
+/** @internal */
+export class _CustomDocRef<O extends DocRef.Options> implements $$DocRef {
+	readonly [IS_DOC_REF] = true as const
 
 	_context: DocRefContext
 	_ref: FirestoreLike.ServerDocumentReference
-	_path: DocPath<string, D>
+	_path: DocPath
 
-	get path(): DocPath<string, D> {
-		return this._path
+	get path(): CustomDocPath<{ doc: O['doc'] }> {
+		return this._path as never
 	}
 
-	get id(): Id<D> {
+	get id(): DocIdString<O['doc']> {
 		assert(this._path.id)
-		return this._path.id as unknown as Id<D>
+		return this._path.id as never
 	}
 
 	_methods?: DocRefMethodEntry[] = undefined
@@ -118,50 +99,61 @@ export class UnknownDocRefBase<
 	_publicOnCreationSchema?: IObject = undefined
 	_privateSchema?: IObject = undefined
 
-	readonly methods = {} as GetMethodPromises_<InferTIFromDoc<D>>
+	readonly methods = {} as GetMethodPromises<O['doc']>;
 
-	_isStrong: [Exists] extends [true] ? true : boolean
+	[OPTIONS]: O
 
-	get isStrong(): [Exists] extends [true] ? true : boolean {
-		return this._isStrong
+	get isStrong(): O['isStrong'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].isStrong
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	get schemaWithoutId(): Schema<GetData<GetDocTI<D>>> | undefined {
+	get schemaWithoutId(): Schema<GetData<O['doc']>> | undefined {
 		throw new TransactorError('not implemented')
 	}
 
-	get schemaWithId(): Schema<$WithId<GetData<GetDocTI<D>>>> | undefined {
+	get schemaWithId(): Schema<$WithId<GetData<O['doc']>>> | undefined {
 		return getSchema(this)?.final as never
 	}
 
-	get aggregateSchemas(): GetDocTI<D>['aggregates'] {
+	get aggregateSchemas(): GetDocTI<O['doc']>['aggregates'] {
 		return getAggregateSchemas(this)
 	}
 
-	get asStrongRef(): StrongDocRef<D> {
-		return new StrongDocRef<D>(
+	get asStrongRef(): GetDocRef<Override<O, { isStrong: true }>> {
+		// eslint-disable-next-line etc/no-internal
+		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
 			this._path.toString(),
-		)
+			// eslint-disable-next-line security/detect-object-injection
+			{ ...this[OPTIONS], isStrong: true },
+		) as never
 	}
 
-	get asWeakRef(): WeakDocRef<D> {
-		return new WeakDocRef<D>(
+	get asWeakRef(): GetDocRef<Override<O, { isStrong: false }>> {
+		// eslint-disable-next-line etc/no-internal
+		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
 			this._path.toString(),
+			// eslint-disable-next-line security/detect-object-injection
+			{ ...this[OPTIONS], isStrong: false },
 		) as never
 	}
 
 	constructor(
-		context: DocRefParentContext,
+		context: DocRefContext.Parent,
 		path: string,
-		isStrong: [Exists] extends [true] ? true : false,
+		partialOptions: Partial<O>,
 	) {
 		this._context = { ...context, docRef: this as never }
-		this._path = new DocPath(path)
+		this._path = new CustomDocPath(path)
 		this._ref = context.transactor._database.doc(this._path.toString())
-		this._isStrong = isStrong
+
+		const options = { ...defaultDocRefOptions, ...partialOptions }
+
+		// eslint-disable-next-line security/detect-object-injection
+		this[OPTIONS] = options as never // assume the generic type argument is correct
 
 		const methods = this._getMethods()
 
@@ -197,7 +189,8 @@ export class UnknownDocRefBase<
 		return {
 			__voltiso: { type: 'Ref' },
 			path: this._ref.path,
-			isStrong: this._isStrong,
+			// eslint-disable-next-line security/detect-object-injection
+			isStrong: this[OPTIONS].isStrong,
 		}
 	}
 
@@ -205,17 +198,20 @@ export class UnknownDocRefBase<
 		return {
 			__voltiso: { type: 'Ref' },
 			ref: this._ref,
-			isStrong: this._isStrong,
+			// eslint-disable-next-line security/detect-object-injection
+			isStrong: this[OPTIONS].isStrong,
 		}
 	}
 
 	/** @returns `PromiseLike`! (`then`-only) */
-	get(): PromiseLike<If<Exists, D, null>> {
+	get(): PromiseLike<GetDoc<O['doc']> | If<O['isStrong'], never, null>> {
 		return get(this._context) as never
 	}
 
 	/** @returns `PromiseLike`! (`then`-only) */
-	set(data?: GetPublicCreationInputData<GetDocTI<D>, D>): PromiseLike<D> {
+	set(
+		data?: GetPublicCreationInputData<O['doc']>,
+	): PromiseLike<GetDoc<O['doc']>> {
 		const dataWithoutId = withoutId(data || null, this.id) || {}
 
 		const idSchemas = getIdSchemas(this)
@@ -239,25 +235,27 @@ export class UnknownDocRefBase<
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(
 		updates: UpdatesFromData.Update<
-			GetUpdateDataByCtx<GetDocTI<D>, 'outside'>,
-			GetData<GetDocTI<D>>
+			GetUpdateDataByCtx<O['doc'], 'outside'>,
+			GetData<O['doc']>
 		>,
-	): PromiseLike<D | undefined>
+	): PromiseLike<GetDoc<O['doc']> | undefined>
 
 	update(
-		updates: ReplaceIt<GetUpdateDataByCtx<GetDocTI<D>, 'outside'>>,
-	): PromiseLike<D>
+		updates: ReplaceIt<GetUpdateDataByCtx<O['doc'], 'outside'>>,
+	): PromiseLike<GetDoc<O['doc']>>
 
 	update(
-		updates: undefined extends GetData<GetDocTI<D>> ? DeleteIt : never,
+		updates: undefined extends GetData<O['doc']> ? DeleteIt : never,
 	): PromiseLike<null>
 
 	update(
-		updates: UpdatesFromData<
-			GetUpdateDataByCtx<GetDocTI<D>, 'outside'>,
-			GetData<GetDocTI<D>>
-		>,
-	): PromiseLike<D | null | undefined> {
+		updates: any,
+		// UpdatesFromData<
+		// 	GetUpdateDataByCtx<GetDoc<O['doc']>, 'outside'>,
+		// 	GetData<O['doc']>
+		// >,
+	): any {
+		// PromiseLike<GetDoc<O['doc']> | null | undefined>
 		/**
 		 * Don't chain anything here - we're returning a magic promise to the client
 		 * code that is aware of being awaited or not
@@ -279,37 +277,45 @@ export class UnknownDocRefBase<
 	}
 
 	/** - TODO: Detect floating promises */
-	get data(): NestedPromise<GetData<GetDocTI<D>>, Exists> {
-		return this.dataWithoutId()
+	get data(): NestedPromise<
+		GetData<O['doc']>,
+		O['isStrong'] extends true ? true : boolean
+	> {
+		return this.dataWithoutId() as never
 	}
 
 	/** - TODO: Detect floating promises */
-	dataWithId(): NestedPromise<$WithId<GetData<GetDocTI<D>>, D>, Exists> {
+	dataWithId(): NestedPromise<
+		$WithId<GetData<O['doc']>, GetDoc<O['doc']>>,
+		O['isStrong'] extends true ? true : boolean
+	> {
 		return dataOrNestedPromise(
 			this as never,
 			() =>
 				// eslint-disable-next-line promise/prefer-await-to-then
-				this.get().then(doc =>
-					doc ? ((doc as Doc).dataWithId() as never) : null,
-				) as never,
+				this.get().then(((doc: Doc | null) =>
+					doc ? (doc.dataWithId() as never) : null) as never) as never,
 		) as never
 	}
 
 	/** - TODO: Detect floating promises */
-	dataWithoutId(): NestedPromise<GetData<GetDocTI<D>>, Exists> {
+	dataWithoutId(): NestedPromise<
+		GetData<O['doc']>,
+		O['isStrong'] extends true ? true : boolean
+	> {
 		return dataOrNestedPromise(
 			this as never,
 			() =>
 				// eslint-disable-next-line promise/prefer-await-to-then
-				this.get().then(doc =>
-					doc ? (doc as IDoc).dataWithoutId() : null,
-				) as never,
+				this.get().then(((doc: Doc | null) =>
+					doc ? doc.dataWithoutId() : null
+				) as never) as never,
 		) as never
 	}
 
 	/** - TODO: Detect floating promises */
 	_callMethod<ARGS extends unknown[], R>(
-		method: Method<D, ARGS, R>,
+		method: Method<GetDoc<O['doc']>, ARGS, R>,
 		args: ARGS,
 		options: CallMethodOptions,
 	): Promise<R> {
@@ -317,6 +323,6 @@ export class UnknownDocRefBase<
 	}
 
 	_getMethods(): DocRefMethodEntry[] {
-		return getMethods.call(this as never) as never
+		return getMethods(this)
 	}
 }

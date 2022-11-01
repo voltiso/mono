@@ -7,10 +7,8 @@ import type { $$PartialDocOptions } from './_/NewFields'
 import type { DocConstructorImpl } from './DocConstructor'
 import type { DocTI } from './DocTI'
 
-// eslint-disable-next-line etc/no-misused-generics
 export function DocCall<TI extends DocTI, Tag extends DocTag>(tag: Tag): never
 
-// eslint-disable-next-line etc/no-misused-generics
 export function DocCall<TI extends DocTI, F extends $$PartialDocOptions>(
 	fields: F,
 ): never

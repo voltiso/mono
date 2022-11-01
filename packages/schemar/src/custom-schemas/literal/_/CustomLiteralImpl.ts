@@ -2,9 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
 	CustomLiteral,
-	DEFAULT_OPTIONS,
 	DefaultLiteralOptions,
 	InferableLiteral,
 	ISchema,
@@ -14,10 +12,10 @@ import {
 	EXTENDS,
 	isLiteral,
 	isUnknownLiteral,
-	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import { isSubset, lazyConstructor, stringFrom } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { isSubset, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import { ValidationIssue } from '~/custom-schemas/validation'
 import { CustomSchemaImpl } from '~/Schema'

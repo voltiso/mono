@@ -1181,6 +1181,7 @@ importers:
     specifiers:
       '@testing-library/react': ^13.4.0
       '@types/react': ^18.0.21
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
@@ -1199,6 +1200,7 @@ importers:
     devDependencies:
       '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
       '@types/react': 18.0.21
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm

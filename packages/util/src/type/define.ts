@@ -35,7 +35,7 @@ export interface DefaultDefineTypeOptions extends DefineTypeOptions {
 	Skip: Primitive | Callable | Newable
 }
 
-// eslint-disable-next-line etc/no-misused-generics
+/** A nice little helper that does what `satisfies` keyword will do */
 export function define<T, Options extends Partial<DefineTypeOptions> = {}>(): {
 	value: <Inferred extends T>(
 		value: Inferred,

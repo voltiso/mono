@@ -5,8 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { StrongDocRefJson, WeakDocRefJson } from '~/common'
-import type { IndexedDoc } from '~/Doc'
-import type { StrongDocRefBase, WeakDocRefBase } from '~/DocRef'
+import type { DocRef, StrongDocRef, WeakDocRef } from '~/DocRef'
 
 import type { DateJson } from '../date'
 import type { JsonFromDocData } from './jsonFromDocData'
@@ -18,10 +17,13 @@ describe('jsonFromDocData', () => {
 		type A = JsonFromDocData<Date>
 		$Assert<IsIdentical<A, DateJson>>()
 
-		type B = JsonFromDocData<StrongDocRefBase<IndexedDoc>>
+		type B = JsonFromDocData<StrongDocRef>
 		$Assert<IsIdentical<B, StrongDocRefJson>>()
 
-		type C = JsonFromDocData<WeakDocRefBase<IndexedDoc>>
+		type C = JsonFromDocData<WeakDocRef>
 		$Assert<IsIdentical<C, WeakDocRefJson>>()
+
+		type D = JsonFromDocData<DocRef>
+		$Assert<IsIdentical<D, WeakDocRefJson>>() // weak is supertype
 	})
 })

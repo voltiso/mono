@@ -10,18 +10,19 @@ import type {
 import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
-import type { $$DocRef, UnknownDocRefBase } from '~/DocRef'
+import type { $$DocRef, DocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sIntrinsicFields } from '~/schemas'
 
-export function getIdSchemas(d: UnknownDocRefBase<any>) {
-	if (d._idSchemas !== undefined) return d._idSchemas
+export function getIdSchemas(ref: $$DocRef) {
+	$AssumeType<DocRef>(ref)
+	if (ref._idSchemas !== undefined) return ref._idSchemas
 
-	const { _allIdSchemas } = d._context.transactor
+	const { _allIdSchemas } = ref._context.transactor
 
 	const idSchemas: ISchema<string>[] = []
 
-	const path = d.path.toString()
+	const path = ref.path.toString()
 
 	for (const { getPathMatches, schema } of _allIdSchemas) {
 		const { pathParams, pathArgs } = getPathMatches(path) || {}
@@ -29,13 +30,13 @@ export function getIdSchemas(d: UnknownDocRefBase<any>) {
 		if (pathParams || pathArgs) idSchemas.push(schema as never)
 	}
 
-	d._idSchemas = idSchemas
+	ref._idSchemas = idSchemas
 
-	return d._idSchemas
+	return ref._idSchemas
 }
 
-export function getSchema(d: $$DocRef): UnknownDocRefBase['_schema'] {
-	$AssumeType<UnknownDocRefBase>(d)
+export function getSchema(d: $$DocRef): DocRef['_schema'] {
+	$AssumeType<DocRef>(d)
 
 	if (d._schema !== undefined) {
 		return d._schema

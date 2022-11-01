@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { IndexedProps, Props } from '~/react-types'
 
@@ -15,14 +15,14 @@ describe('CssProps', () => {
 	it('generic', <P extends Props, CustomCss extends object>() => {
 		expect.assertions(0)
 
-		Assert.is<CssProps<P, CustomCss>, IndexedCssProps<CustomCss>>()
+		$Assert.is<CssProps<P, CustomCss>, IndexedCssProps<CustomCss>>()
 	})
 
 	it('type', <CustomCss extends object>() => {
 		expect.assertions(0)
 
 		type A = CssProps<IndexedProps, CustomCss>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{
@@ -32,7 +32,7 @@ describe('CssProps', () => {
 		>()
 
 		type B = IndexedCssProps<CustomCss>
-		Assert<
+		$Assert<
 			IsIdentical<
 				B,
 				{
@@ -42,7 +42,7 @@ describe('CssProps', () => {
 		>()
 
 		type C = IndexedCssPropsSingle<CustomCss>
-		Assert<
+		$Assert<
 			IsIdentical<
 				C,
 				{

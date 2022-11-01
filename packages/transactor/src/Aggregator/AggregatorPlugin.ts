@@ -89,6 +89,7 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 				const awaitedTargetHandlerResult = await targetHandlerResult
 
 				const [targets, awaitedTargets] =
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					awaitedTargetHandlerResult === null
 						? [[targetHandlerResult as $$DocRef], [awaitedTargetHandlerResult]]
 						: Array.isArray(awaitedTargetHandlerResult)
@@ -112,6 +113,7 @@ export class AggregatePlugin<D extends DocTag> implements DocBuilderPlugin<D> {
 				for (const [target, awaitedTarget] of zip(targets, awaitedTargets)) {
 					let finalTarget = awaitedTarget
 
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					if (!finalTarget) {
 						const handlerReturnedRef =
 							isWeakDocRef(target) || isStrongDocRef(target)

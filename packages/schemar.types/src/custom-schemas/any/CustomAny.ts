@@ -1,11 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import type {
 	AnyOptions,
-	BASE_OPTIONS,
 	CustomSchema,
-	DEFAULT_OPTIONS,
 	DefaultAnyOptions,
 	SCHEMA_NAME,
 } from '~'

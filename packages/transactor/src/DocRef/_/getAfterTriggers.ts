@@ -3,9 +3,10 @@
 
 import { isPlainObject } from '@voltiso/util'
 
-import type { DocRef, DocRefTriggerEntry, UnknownDocRefBase } from '~/DocRef'
+import type { CustomDocRef, DocRef, DocRefTriggerEntry } from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
+import type { AfterTrigger } from '~/Trigger'
 
 function forEachStrongRef(o: any, f: (r: DocRef) => void) {
 	if (isStrongDocRef(o)) {
@@ -18,8 +19,8 @@ function forEachStrongRef(o: any, f: (r: DocRef) => void) {
 }
 
 export function getAfterTriggers(
-	docRef: UnknownDocRefBase,
-): DocRefTriggerEntry[] {
+	docRef: CustomDocRef,
+): DocRefTriggerEntry<AfterTrigger>[] {
 	if (docRef._afterTriggers) return docRef._afterTriggers as never
 
 	docRef._afterTriggers = []

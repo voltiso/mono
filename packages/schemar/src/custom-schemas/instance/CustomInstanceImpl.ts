@@ -2,21 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
 	CustomInstance,
-	DEFAULT_OPTIONS,
 	DefaultInstanceOptions,
 	InstanceOptions,
 	ISchema,
 } from '@voltiso/schemar.types'
-import {
-	EXTENDS,
-	isInstance,
-	OPTIONS,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import type { Constructor } from '@voltiso/util'
-import { lazyConstructor } from '@voltiso/util'
+import { EXTENDS, isInstance, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema'
 

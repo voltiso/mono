@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import { View } from 'react-native'
 
 import type { IsReactNative, IStylable, IStylableJsxCall } from '~'
@@ -13,7 +13,7 @@ describe('cssProps', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		Assert.is<IsReactNative, true>()
+		$Assert.is<IsReactNative, true>()
 
 		// @ts-expect-error react-native
 		const a = style('button')
@@ -22,9 +22,9 @@ describe('cssProps', () => {
 		const StyledView = style(View)
 		;() => <StyledView /> // check if optional
 
-		Assert.is<typeof StyledView, IStylable>()
+		$Assert.is<typeof StyledView, IStylable>()
 		// Assert.is<typeof StyledView, IStylableJsxConstruct>()
-		Assert.is<typeof StyledView, IStylableJsxCall>()
+		$Assert.is<typeof StyledView, IStylableJsxCall>()
 
 		const MyView = StyledView.cssProps('flex', 'backgroundColor', 'margin')
 		;() => <MyView /> // check if optional

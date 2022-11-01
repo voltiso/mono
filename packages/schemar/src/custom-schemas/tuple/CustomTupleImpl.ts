@@ -3,8 +3,6 @@
 
 import type {
 	_GetArrayLength_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
 	DefaultTupleOptions,
 	GetDeepShape_,
 	SchemaLike,
@@ -16,10 +14,10 @@ import {
 	isArray,
 	isTuple,
 	isUnknownTuple,
-	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import { lazyConstructor } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~'
 

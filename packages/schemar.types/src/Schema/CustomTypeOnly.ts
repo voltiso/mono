@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PARTIAL_OPTIONS, SCHEMA_NAME } from '_'
+import type { PARTIAL_OPTIONS } from '@voltiso/util'
+import type { SCHEMA_NAME } from '_'
 
 import type { SchemaOptions } from '~'
 import type { CustomSchema } from '~/Schema'

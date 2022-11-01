@@ -7,18 +7,20 @@ import {
 	isPlainObject,
 	lazyConstructor,
 	omit,
+	OPTIONS,
 	stringFrom,
 } from '@voltiso/util'
 
 import type { $WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
-import { DocRefContext, StrongDocRefBase } from '~/DocRef'
-import { isStrongDocRef, StrongDocRef } from '~/DocRef'
+import type { CustomDocRef, DocRefContext } from '~/DocRef'
+import { DocRef, isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error/TransactorError'
 import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
-import type { DocPath } from '~/Path'
+import type { CustomDocPath } from '~/Path'
+import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 
 import type { GetData } from './_/GData'
@@ -28,7 +30,6 @@ import type { DocContext } from './DocContext'
 import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
 import type { IDoc } from './IDoc'
-import type { IntrinsicFields } from '~/schemas'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -41,8 +42,9 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		}
 
 		return r as never
-	} else if (x instanceof StrongDocRefBase) {
-		return new StrongDocRefBase(ctx as never, x.path.toString()) as never
+	} else if (x instanceof DocRef) {
+		// eslint-disable-next-line security/detect-object-injection
+		return new DocRef(ctx as never, x.path.toString(), x[OPTIONS]) as never
 	}
 
 	return x
@@ -55,7 +57,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	methods: Record<string, Method> = {}
 
-	_ref?: StrongDocRefBase<this> = undefined
+	_ref?: DocRef = undefined
 
 	constructor(context: DocContext, raw: IntrinsicFields) {
 		super()
@@ -144,15 +146,16 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this._context.docRef.id
 	}
 
-	get path(): DocPath<TI['tag']> {
+	get path(): CustomDocPath<{ doc: TI['tag'] }> {
 		return this._context.docRef.path as never
 	}
 
-	get ref(): StrongDocRefBase<this> {
+	get ref(): CustomDocRef<{ docTag: TI['tag']; isStrong: true }> {
 		if (!this._ref)
-			this._ref = new StrongDocRef(
+			this._ref = new DocRef(
 				omit(this._context, 'docRef'),
 				this.path.toString(),
+				{ isStrong: true },
 			) as never
 		return this._ref as never
 	}
@@ -174,7 +177,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	}
 
 	async update(updates: Updates): Promise<Doc<TI> | null | undefined> {
-		return (await this._context.docRef.update(updates as any)) as never
+		return (await this._context.docRef.update(updates as never)) as never
 	}
 
 	async delete() {

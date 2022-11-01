@@ -1,15 +1,15 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
+import type { SCHEMA_NAME } from '_'
+import { EXTENDS } from '_'
+import {
+	$Assert,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
 	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import { EXTENDS } from '_'
-import { $Assert } from '@voltiso/util'
+} from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -17,6 +17,7 @@ import type {
 	SchemaOptions,
 	UnknownLiteralOptions,
 	ValidateOptions,
+	ValidationIssue,
 	ValidationResult,
 } from '~'
 
@@ -157,6 +158,8 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * @param x - Value to validate against `this` schema
 	 */
 	isValid(x: unknown): boolean
+
+	getIssues(value: unknown): ValidationIssue[]
 
 	or(other: unknown /* ISchema*/): unknown // ISchema //!
 

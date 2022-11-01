@@ -4,15 +4,15 @@
 import { $Assert, $Is } from '@voltiso/util'
 
 import type { DocTI } from '~/Doc'
-import type { DocFieldPath } from '~/DocRef'
+import type { DocFieldPath } from '~/DocFieldPath'
 
-import type { GDocFields } from './GDocFields'
+import type { GetDocFields } from './GetDocFields'
 
 describe('GDocFields', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = GDocFields<DocTI>
+		type X = GetDocFields<DocTI>
 		$Assert(
 			$Is<X>().identicalTo<{
 				__voltiso: DocFieldPath<{

@@ -4,7 +4,7 @@
 // import { assertZod } from '~/assertZod'
 import type { InferableObject } from '@voltiso/schemar.types'
 import type { $Decrement, IsCompatible, Length } from '@voltiso/util'
-import { at, CALL, BoundCallable } from '@voltiso/util'
+import { at, BoundCallable, CALL } from '@voltiso/util'
 
 import type { ApplyUnknownPathTokens, GetUnknownPathTokens } from '~/common'
 import {
@@ -13,8 +13,9 @@ import {
 	getUnknownPathTokens,
 } from '~/common'
 import type { WithDb } from '~/Db'
-import type { $$DocConstructor, $$Doc, IndexedDoc } from '~/Doc'
-import { WeakDocRef } from '~/DocRef/WeakDocRef'
+import type { $$Doc, $$DocConstructor, GetDocTag, IndexedDoc } from '~/Doc'
+import type { CustomDocRef } from '~/DocRef'
+import { DocRef } from '~/DocRef'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
 import type { MethodEntry } from '~/Transactor/Entry'
@@ -49,7 +50,7 @@ export interface CollectionRefPattern<
 				$Decrement<Length<Tokens>>,
 				Length<GetUnknownPathTokens<Pattern>>
 		  > extends true
-		? WeakDocRef<Doc>
+		? CustomDocRef<{ doc: GetDocTag<Doc> }> // WeakDocRef<Doc>
 		: CollectionRefPattern<ApplyUnknownPathTokens<Pattern, Tokens>, Doc>
 }
 
@@ -78,10 +79,9 @@ export class CollectionRefPattern<
 		if (tokens.length === this.patternUnknownTokens.length)
 			return new CollectionRef(this.context, newPath) as never
 		else if (tokens.length === this.patternUnknownTokens.length + 1) {
-			return new WeakDocRef(
-				this.context,
-				`${newPath}/${at(tokens, -1)}`,
-			) as never
+			return new DocRef(this.context, `${newPath}/${at(tokens, -1)}`, {
+				isStrong: false,
+			}) as never
 		} else return new CollectionRefPattern(this.context, newPath) as never
 	}
 

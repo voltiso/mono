@@ -69,7 +69,7 @@ const databaseSet = async (
 		t.set(ref, firestoreData)
 	}
 
-	return { ...data, id: ref.id }
+	return { ...data, id: ref.id as never }
 }
 
 export async function databaseUpdate(

@@ -53,11 +53,11 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-proxy': 0,
 		'es-x/no-promise': 0,
 
-		// number prototype functions
+		// number
 		'es-x/no-number-isnan': 0,
 		'es-x/no-number-isinteger': 0,
 
-		// object prototype functions
+		// object
 		'es-x/no-object-keys': 0,
 		'es-x/no-object-values': 0,
 		'es-x/no-object-entries': 0,
@@ -66,19 +66,24 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-object-getprototypeof': 0,
 		'es-x/no-object-freeze': 0,
 		'es-x/no-object-seal': 0,
+		'es-x/no-object-defineproperty': 0,
 
-		// array prototype functions
-		'es-x/no-array-isarray': 0,
+		// array
 		'es-x/no-array-prototype-map': 0,
 		'es-x/no-array-prototype-includes': 0,
 		'es-x/no-array-prototype-entries': 0,
 		'es-x/no-array-prototype-keys': 0,
+		'es-x/no-array-prototype-fill': 0,
+		'es-x/no-array-isarray': 0,
+		'es-x/no-array-from': 0,
 
-		// string prototype functions
+		// string
 		'es-x/no-string-prototype-startswith': 0,
+		'es-x/no-string-prototype-endswith': 0,
 		'es-x/no-string-prototype-includes': 0,
+		'es-x/no-string-prototype-matchall': 0,
 
-		// function prototype functions
+		// function
 		'es-x/no-function-prototype-bind': 0,
 
 		// !!! NOT SURE YET - new stuff ♥️

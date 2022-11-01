@@ -141,10 +141,11 @@ export const codeOverride = defineEslintConfigOverride({
 
 		'@typescript-eslint/no-redeclare': 0,
 
-		'@typescript-eslint/no-namespace': [
-			'warn',
-			{ allowDeclarations: true, allowDefinitionFiles: true },
-		],
+		'@typescript-eslint/no-namespace': 0, // nice to have type-only namespaces
+		// '@typescript-eslint/no-namespace': [
+		// 	'warn',
+		// 	{ allowDeclarations: true, allowDefinitionFiles: true },
+		// ],
 
 		'@typescript-eslint/ban-types': [
 			'error',

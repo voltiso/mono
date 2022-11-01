@@ -4,22 +4,22 @@
 import { assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import * as s from '@voltiso/schemar'
-import type { Throw } from '@voltiso/util'
+import type { NewableReturn_, Throw } from '@voltiso/util'
 
-import type { Id } from '~/Data'
+import type { DocIdString } from '~/Data'
 import type { WithDb } from '~/Db'
 import type {
 	$$Doc,
 	$$DocConstructor,
+	$$DocTI,
 	CustomDoc,
-	DocTI,
-	GetDoc,
+	GetDocTag,
 	GetPublicCreationInputData,
 	IDoc,
 } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { GO } from '~/Doc/_/GDoc'
-import { WeakDocRef } from '~/DocRef'
+import type { CustomWeakDocRef } from '~/DocRef'
+import { DocRef } from '~/DocRef'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 
@@ -31,14 +31,14 @@ type Context = WithTransactor & WithDb
 export interface CollectionRef<
 	D extends $$Doc,
 	Ctx extends ExecutionContext = 'outside',
-	TI extends DocTI = InferTI<D>,
+	TI extends $$DocTI = InferTI<D>,
 > {
 	/** Get Doc reference by Id */
-	(id: Id<D>): WeakDocRef<D>
+	(id: DocIdString<D>): CustomWeakDocRef<{ doc: GetDocTag<D> }>
 
-	<DD extends $$Doc>(id: Id<DD>): DD extends any
+	<DD extends $$Doc>(id: DocIdString<DD>): DD extends any
 		? IDoc extends DD
-			? WeakDocRef<D>
+			? CustomWeakDocRef<{ doc: GetDocTag<D> }>
 			: Throw<'wrong Id type' & { Doc: DD }>
 		: never
 }
@@ -47,7 +47,7 @@ export interface CollectionRef<
 export class CollectionRef<
 	D extends $$Doc,
 	Ctx extends ExecutionContext = 'outside',
-	TI extends DocTI = InferTI<D>,
+	TI extends $$DocTI = InferTI<D>,
 > {
 	// [DTI]: TI
 	private readonly _context: Context
@@ -67,18 +67,20 @@ export class CollectionRef<
 
 		// eslint-disable-next-line no-constructor-return
 		return Object.setPrototypeOf(
-			(id: Id<D>) =>
+			(id: DocIdString<D>) =>
 				this._context.db.doc(
 					this._path.toString(),
 					id,
-				) as unknown as TI extends any ? WeakDocRef<GO<TI>> : never,
+				) as unknown as TI extends any
+					? CustomWeakDocRef<{ doc: GetDocTag<TI> }>
+					: never,
 			this,
 		) as never
 	}
 
 	/** Add Doc to this Collection */
 	add(
-		data: GetPublicCreationInputData<InferTIFromDoc<D>, D>,
+		data: GetPublicCreationInputData<InferTIFromDoc<D>>,
 	): PromiseLike<CustomDoc<TI, Ctx>> {
 		// $AssumeType<{ id?: string }>(data)
 		const id = data.id
@@ -91,12 +93,16 @@ export class CollectionRef<
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const docRef: Database.DocumentReference = id ? ref.doc(id) : ref.doc()
 		const { path } = docRef
-		const docPath = new WeakDocRef(this._context, path)
+		const docPath = new DocRef(this._context, path, { isStrong: false })
 		return docPath.set(data as never) as never
 	}
 
 	/** Register Doc class/type for this Collection */
-	register<Cls extends $$DocConstructor>(cls: Cls): CollectionRef<GetDoc<Cls>> {
+	register<Cls extends $$DocConstructor>(
+		cls: Cls,
+	): CollectionRef<
+		NewableReturn_<Cls> extends $$Doc ? NewableReturn_<Cls> : never
+	> {
 		const { db } = this._context
 		const docPattern = db.docPattern(this._path, '*')
 

@@ -3,9 +3,9 @@
 
 import type { PathMatches } from '~/common'
 import type { Method } from '~/Method'
-import type { UnknownTrigger } from '~/Trigger'
+import type { Trigger } from '~/Trigger'
 
-export type DocRefTriggerEntry<T = UnknownTrigger> = {
+export type DocRefTriggerEntry<T = Trigger> = {
 	trigger: T
 	pathMatches: PathMatches
 }

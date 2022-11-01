@@ -5,7 +5,7 @@ import { assert } from '@voltiso/util'
 
 import type { CacheEntry } from '~/Transaction'
 
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContext } from './Context'
 
 /**
  * Assert cacheEntry exists for c.docPath, and return it
@@ -13,7 +13,9 @@ import type { DocRefContextWithTransaction } from './Context'
  * @param ctx - Context
  * @returns CacheEntry
  */
-export function getCacheEntry(ctx: DocRefContextWithTransaction): CacheEntry {
+export function getCacheEntry(
+	ctx: DocRefContext.ContextWithTransaction,
+): CacheEntry {
 	const path = ctx.docRef.path.toString()
 	const cacheEntry = ctx.transaction._cache.get(path)
 	assert(cacheEntry)

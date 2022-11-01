@@ -1,36 +1,33 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoArgument } from '@voltiso/util'
+import type { Brand, CustomBrand, NoArgument } from '@voltiso/util'
 
-import type { $$DocRelated, DOC, GetDocTag } from '~/Doc'
-import type { DocTag } from '~/DocTypes'
+import type { $$DocRelated, GetDocTag } from '~/Doc'
+import type { AnyDocTag, DocTag } from '~/DocTypes'
 
-/**
- * Anything can be branded with any subset of DocTags
- *
- * @example
- *
- * ```ts
- * type UserId = string & DocBrand<'users' | 'usersData'>
- *
- * // or, equivalent:
- * type UserId = (string & DocBrand<'users'>) | DocBrand<'usersData'>
- * ```
- */
-export interface DocBrand<Tag extends DocTag> {
-	[DOC]: { [k in Tag]: true }
-}
+export interface IdBrand extends Brand<'transactor.id'> {}
 
-export type Id<TDoc extends $$DocRelated | NoArgument = NoArgument> =
-	NoArgument extends TDoc
-		? string
-		: [TDoc] extends [$$DocRelated]
-		? DocTag extends GetDocTag<TDoc>
-			? string
-			: string & DocBrand<GetDocTag<TDoc>>
+export type _DocIdBrand<tag extends DocTag> = Brand<'transactor.id'> &
+	CustomBrand<'transactor.doc', { [k in tag]: {} }>
+
+export interface AnyDocIdBrand extends _DocIdBrand<DocTag> {}
+
+export interface DocIdBrand<tag extends DocTag> extends _DocIdBrand<tag> {}
+
+export type GetIdBrand<X extends $$DocRelated | NoArgument = NoArgument> =
+	X extends NoArgument
+		? IdBrand
+		: X extends $$DocRelated
+		? AnyDocTag extends GetDocTag<X>
+			? AnyDocIdBrand
+			: GetDocTag<X> extends never
+			? AnyDocIdBrand
+			: DocIdBrand<GetDocTag<X>>
 		: never
 
-// export interface Id<TDoc extends $$Doc | NoArgument = NoArgument> extends _Id<TDoc> {}
+export type IdString = string & IdBrand
 
-// export type Id<Tag extends DocTag = never> = string & { [k in Tag]: true }
+export type DocIdString<X extends $$DocRelated | NoArgument = NoArgument> = [
+	string & GetIdBrand<X>,
+][0]

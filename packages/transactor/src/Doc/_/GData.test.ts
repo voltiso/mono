@@ -7,10 +7,10 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
-import type { $WithId } from '~/Data'
+import type { $WithId, AnyDocIdBrand, DocIdBrand, DocIdString } from '~/Data'
 import type { $$DocTI, DocTI, IndexedDocTI } from '~/Doc'
 import { Doc } from '~/Doc'
-import type { IntrinsicFields } from '~/schemas'
+import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
 import type { GetData, GetPublicCreationInputData } from './GData'
 
@@ -30,12 +30,12 @@ describe('Doc util', () => {
 		type TI = DocTI & { public: SchemaLike<{ num: number }> }
 
 		type MyData = $WithId<GetData<TI>>
-		$Assert.isSubtype<
+		$Assert.is<
 			MyData,
 			{
-				readonly id: string
+				readonly id: DocIdString
 				num: number
-				__voltiso?: { numRefs: number }
+				__voltiso: VoltisoEntry
 			}
 		>()
 
@@ -44,7 +44,7 @@ describe('Doc util', () => {
 			IsIdentical<
 				MyData2,
 				{
-					readonly id?: string | undefined
+					readonly id?: (string & AnyDocIdBrand) | undefined
 					readonly [k: string]: unknown
 				}
 			>
@@ -61,7 +61,7 @@ describe('Doc util', () => {
 			IsIdentical<
 				D,
 				{
-					readonly id?: string | undefined
+					readonly id?: (string & DocIdBrand<'untagged'>) | undefined
 					readonly a: number
 				}
 			>

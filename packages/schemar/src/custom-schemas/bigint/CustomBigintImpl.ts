@@ -2,17 +2,22 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
 	BigintOptions,
 	CustomBigint,
-	DEFAULT_OPTIONS,
 	DefaultBigintOptions,
 	ISchema,
 	Literal,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { BoundCallable, CALL, isDefined, lazyConstructor } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import {
+	BoundCallable,
+	CALL,
+	isDefined,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema'
 

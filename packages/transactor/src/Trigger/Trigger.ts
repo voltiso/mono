@@ -1,47 +1,67 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DeleteIt, MaybePromise } from '@voltiso/util'
+import type { Bivariant, DeleteIt, MaybePromise } from '@voltiso/util'
 
-import type { $$Doc, GetDocTI, IndexedDoc } from '~/Doc'
+import type { $$Doc, $$DocRelated, Doc } from '~/Doc'
 import type { GetInputData } from '~/Doc/_/GData'
 
+import type { AnyDocTag } from '..'
 import type {
 	AfterTriggerParams,
 	BeforeCommitTriggerParams,
 	TriggerParams,
 } from './TriggerParams'
 
-export type TriggerReturn<D extends $$Doc> =
-	| GetInputData<GetDocTI<D>>
+export type TriggerReturn<D extends $$DocRelated> =
+	| GetInputData<D>
 	| DeleteIt
 	| undefined
 	| void
 
 export type AfterTrigger<
-	D extends $$Doc = IndexedDoc,
+	D extends $$DocRelated = AnyDocTag,
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
-	R = TriggerReturn<D>,
-> = (
-	this: AfterExists extends true ? D : AfterExists extends false ? null : never,
-	params: AfterTriggerParams<D, BeforeExists, AfterExists>,
-) => MaybePromise<R>
+	Return = TriggerReturn<D>,
+> = Bivariant<
+	(
+		this: AfterExists extends true
+			? D
+			: AfterExists extends false
+			? null
+			: never,
+		params: AfterTriggerParams<D, BeforeExists, AfterExists>,
+	) => MaybePromise<Return>
+>
 
 export type OnGetTrigger<
-	D extends $$Doc = IndexedDoc,
+	D extends $$DocRelated = AnyDocTag,
 	Exists extends boolean = boolean,
-> = (
-	this: Exists extends true ? D : Exists extends false ? null : never,
-	params: TriggerParams<D, Exists>,
-) => MaybePromise<TriggerReturn<D>>
+> = Bivariant<
+	(
+		this: Exists extends true ? D : Exists extends false ? null : never,
+		params: TriggerParams<D, Exists>,
+	) => MaybePromise<TriggerReturn<D>>
+>
 
-export type UnknownTrigger = <D extends $$Doc>(
-	this: D | null,
-	params: TriggerParams<D>,
-) => MaybePromise<TriggerReturn<D>>
+export type Trigger = {
+	bivarianceHack: <D extends $$Doc>(
+		this: D | null,
+		params: TriggerParams<D>,
+	) => MaybePromise<TriggerReturn<D>>
+}['bivarianceHack']
 
-export type BeforeCommitTrigger<D extends $$Doc = IndexedDoc> = (
-	this: D | null,
-	params: BeforeCommitTriggerParams<D>,
-) => MaybePromise<TriggerReturn<D>>
+// export type UnknownAfterTrigger = {
+// 	bivarianceHack: <D extends $$Doc>(
+// 		this: D | null,
+// 		params: AfterTriggerParams<D>,
+// 	) => MaybePromise<TriggerReturn<D>>
+// }['bivarianceHack']
+
+export type BeforeCommitTrigger<D extends $$Doc = Doc> = Bivariant<
+	(
+		this: D | null,
+		params: BeforeCommitTriggerParams<D>,
+	) => MaybePromise<TriggerReturn<D>>
+>

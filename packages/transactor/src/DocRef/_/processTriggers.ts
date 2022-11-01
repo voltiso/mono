@@ -14,14 +14,14 @@ import { isEqual } from '~/util'
 
 import { apply } from './apply'
 import { collectTriggerResult } from './collectTriggerResult'
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContext } from './Context'
 import { getAfterTriggers } from './getAfterTriggers'
 import { getCacheEntry } from './getCacheEntry'
 import { getSchema } from './getSchema'
 import { validateAndSetCacheEntry } from './validateAndSetCacheEntry'
 
 async function processAfterTrigger(
-	ctx: DocRefContextWithTransaction,
+	ctx: DocRefContext.ContextWithTransaction,
 	idx: number,
 ): Promise<boolean> {
 	const cacheEntry = getCacheEntry(ctx)
@@ -58,7 +58,7 @@ async function processAfterTrigger(
 		const r = await trigger.call(cacheEntry.proxy as never, {
 			doc: cacheEntry.proxy as never,
 
-			__voltiso: cacheEntry.__voltiso,
+			__voltiso: cacheEntry.__voltiso as never,
 
 			before: immutabilize(withId(before, id)) as never,
 			after: immutabilize(withId(after, id)) as never,
@@ -77,7 +77,7 @@ async function processAfterTrigger(
 }
 
 /** Start executing triggers from the beginning if data change is detected */
-async function loop(c: DocRefContextWithTransaction) {
+async function loop(c: DocRefContext.ContextWithTransaction) {
 	const afterTriggers = getAfterTriggers(c.docRef as never)
 
 	const MAX_ITERS = 1_000
@@ -111,7 +111,7 @@ type Params = {
  * @param params - Params
  */
 export async function processTriggers(
-	ctx: DocRefContextWithTransaction,
+	ctx: DocRefContext.ContextWithTransaction,
 	params?: Params,
 ): Promise<void> {
 	// console.log('processTriggers', ctx.docRef.path.toString())

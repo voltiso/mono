@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
-import type { Id } from '~/Data'
+import type { DocIdBrand, DocIdString } from '~/Data'
 import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
 
@@ -43,8 +43,8 @@ describe('DocConstructor', () => {
 		$Assert<IsIdentical<MyDoc[DTI]['tag'], 'untagged'>>()
 
 		type MyId = MyDoc['id']
-		$Assert<IsIdentical<MyId, Id<MyDoc>>>()
-		$Assert($Is<Id>().not.subtypeOf<MyId>())
+		$Assert<IsIdentical<MyId, string & DocIdBrand<'untagged'>>>()
+		$Assert($Is<DocIdString>().not.subtypeOf<MyId>())
 	})
 
 	it('Id 2', () => {

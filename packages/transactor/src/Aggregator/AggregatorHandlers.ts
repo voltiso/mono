@@ -5,8 +5,8 @@ import type { Type_ } from '@voltiso/schemar.types'
 import type { Get_, MaybePromise } from '@voltiso/util'
 
 import type { $$Doc, GetDataWithId, IDoc } from '~/Doc'
-import type { DocTI, $$DocTI, DTI } from '~/Doc/DocTI'
-import type { $$DocRef, DocRef_ } from '~/DocRef'
+import type { $$DocTI, DocTI, DTI } from '~/Doc/DocTI'
+import type { $$DocRef, GetDocRef } from '~/DocRef'
 
 export interface IAggregatorHandlers {
 	initialValue?: unknown
@@ -61,9 +61,9 @@ export interface AggregatorHandlers_<
 	target(
 		this: GetDataWithId<SourceTI>,
 	):
-		| MaybePromise<(Target | DocRef_<Get_<Target, DTI>>)[]>
+		| MaybePromise<(Target | GetDocRef<{ doc: Target }>)[]>
 		| MaybePromise<Target>
-		| DocRef_<Get_<Target, DTI>>
+		| GetDocRef<{ doc: Target }>
 
 	autoCreateTarget?: boolean | undefined
 

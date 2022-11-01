@@ -4,9 +4,7 @@
 import type {
 	$$Schemable,
 	$Output,
-	BASE_OPTIONS,
 	CustomUnknownFunction,
-	DEFAULT_OPTIONS,
 	DefaultUnknownFunctionOptions,
 	InferableReadonlyTuple,
 	ISchema,
@@ -14,6 +12,7 @@ import type {
 	UnknownFunctionOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnknownFunction, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import * as s from '~/custom-schemas/function'

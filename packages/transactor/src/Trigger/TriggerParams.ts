@@ -2,31 +2,46 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { PathMatches } from '~/common'
-import type { Id } from '~/Data'
+import type { DocIdString } from '~/Data'
 import type { Db } from '~/Db'
-import type { $$Doc, GetDocTI, IDoc } from '~/Doc'
+import type {
+	$$Doc,
+	$$DocRelated,
+	GetDataWithId,
+	GetIntrinsicFields,
+	GetVoltisoEntry,
+} from '~/Doc'
 import type { DocRefContext } from '~/DocRef'
-import type { DocPath } from '~/Path'
-import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
+import type { CustomDocPath } from '~/Path'
+
+import type { AnyDocTag } from '..'
 
 export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
 
+// type AA = GetDocTag<Doc>
+// type A = CustomDocPath<AA>
+
 export interface TriggerParams<
-	D extends $$Doc = IDoc,
+	D extends $$DocRelated = AnyDocTag,
 	ThisExists extends boolean = boolean,
 > extends PathMatches,
-		DocRefContext {
+		DocRefContext<D> {
+	//
 	doc: ThisExists extends true ? D : ThisExists extends false ? null : never
 
-	__voltiso: VoltisoEntry
+	__voltiso: GetVoltisoEntry<D>
 
-	path: DocPath<GetDocTI<D>['tag']>
-	id: Id<D>
+	path: CustomDocPath<{ doc: D }>
+	id: DocIdString<D>
 
 	db: Db
 
 	possiblyExists: boolean
 }
+
+// $dev(<D extends $$Doc>() => {
+// 	$Assert.is<TriggerParams<D>, TriggerParams>()
+// })
 
 // export type $AfterTriggerParams<
 // 	D extends DocLike = IDoc,
@@ -36,7 +51,7 @@ export interface TriggerParams<
 // > = D extends any ? AfterTriggerParams<D, This, Before, After> : never
 
 export interface AfterTriggerParams<
-	D extends $$Doc = IDoc,
+	D extends $$DocRelated = AnyDocTag,
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
 > extends TriggerParams<D, AfterExists> {
@@ -45,17 +60,21 @@ export interface AfterTriggerParams<
 	//
 
 	before: BeforeExists extends true
-		? any // GetDataWithId<D[DTI], D>
+		? GetDataWithId<D>
 		: BeforeExists extends false
 		? null
 		: never
 
 	after: AfterExists extends true
-		? any // GetDataWithId<D[DTI], D>
+		? GetDataWithId<D>
 		: AfterExists extends false
 		? null
 		: never
 }
+
+// $dev(<D extends $$Doc>() => {
+// 	$Assert.is<AfterTriggerParams<D>, AfterTriggerParams>()
+// })
 
 // export interface AfterTriggerParamsLike<
 // 	D extends DocLike = IDoc,
@@ -73,27 +92,26 @@ export interface AfterTriggerParams<
 // }
 
 export type BeforeCommitTriggerParams<D extends $$Doc> = TriggerParams<D> &
-	IntrinsicFields
+	GetIntrinsicFields<D>
 
 //
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace TriggerParams {
-	export type After<D extends IDoc> = AfterTriggerParams<D>
-	export type AfterCreate<D extends IDoc> = AfterTriggerParams<D, false, true>
+	export type After<D extends $$Doc> = AfterTriggerParams<D>
+	export type AfterCreate<D extends $$Doc> = AfterTriggerParams<D, false, true>
 
-	export type AfterDelete<D extends IDoc> = AfterTriggerParams<D, true, false>
+	export type AfterDelete<D extends $$Doc> = AfterTriggerParams<D, true, false>
 
-	export type AfterCreateOrUpdate<D extends IDoc> = AfterTriggerParams<
+	export type AfterCreateOrUpdate<D extends $$Doc> = AfterTriggerParams<
 		D,
 		boolean,
 		true
 	>
-	export type AfterUpdate<D extends IDoc> = AfterTriggerParams<D, true, true>
+	export type AfterUpdate<D extends $$Doc> = AfterTriggerParams<D, true, true>
 
-	export type OnGet<D extends IDoc> = TriggerParams<D>
+	export type OnGet<D extends $$Doc> = TriggerParams<D>
 
-	export type BeforeCommit<D extends IDoc> = TriggerParams<D>
+	export type BeforeCommit<D extends $$Doc> = TriggerParams<D>
 }

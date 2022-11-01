@@ -5,19 +5,22 @@ import { omitIfPresent } from '@voltiso/util'
 
 import { TransactorError } from '~/error'
 
-import type { Id } from './Id'
+import type { DocIdString } from './Id'
 
-export function withoutId(data: null, expectedId: Id): null
+export function withoutId(data: null, expectedId: DocIdString): null
 export function withoutId<D extends object>(
 	data: D,
-	expectedId: Id,
+	expectedId: DocIdString,
 ): Omit<D, 'id'>
 export function withoutId<D extends object | null>(
 	data: D,
-	expectedId: Id,
+	expectedId: DocIdString,
 ): D extends null ? null : Omit<D, 'id'>
 
-export function withoutId(data: { id?: string } | null, expectedId: Id) {
+export function withoutId(
+	data: { id?: string } | null,
+	expectedId: DocIdString,
+) {
 	if (data === null) return null
 
 	// expectedId is mandatory so that we don't ever forget

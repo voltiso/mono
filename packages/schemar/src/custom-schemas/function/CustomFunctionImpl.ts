@@ -2,9 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
 	CustomFunction,
-	DEFAULT_OPTIONS,
 	DefaultFunctionOptions,
 	FunctionOptions,
 	IArray,
@@ -17,11 +15,11 @@ import {
 	isArray,
 	isTuple,
 	isUnknownFunction,
-	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { lazyConstructor } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { SchemarError } from '~/error'
 import { CustomSchemaImpl } from '~/Schema'
@@ -35,13 +33,6 @@ import { _functionArgumentsExtends } from './_functionArgumentsExtends'
 export interface CustomFunctionImpl<O> {
 	readonly [BASE_OPTIONS]: FunctionOptions
 	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	FunctionOptions,
-	// 	MergeSchemaOptions<DefaultFunctionOptions, O>
-	// >
 }
 
 export class CustomFunctionImpl<O extends Partial<FunctionOptions>>

@@ -2,15 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as t from '@voltiso/schemar.types'
-import { lazyConstructor } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type { CustomObjectImpl } from '~'
 import { CustomSchemaImpl, object } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {
-	readonly [t.BASE_OPTIONS]: t.RecordOptions
-	readonly [t.DEFAULT_OPTIONS]: t.DefaultRecordOptions
+	readonly [BASE_OPTIONS]: t.RecordOptions
+	readonly [DEFAULT_OPTIONS]: t.DefaultRecordOptions
 }
 
 export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
@@ -19,12 +20,14 @@ export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 {
 	readonly [t.SCHEMA_NAME] = 'Record' as const
 
-	get getKeySchema(): this[t.OPTIONS]['keySchema'] {
-		return this[t.OPTIONS]['keySchema'] as never
+	get getKeySchema(): this[OPTIONS]['keySchema'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS]['keySchema'] as never
 	}
 
-	get getValueSchema(): this[t.OPTIONS]['valueSchema'] {
-		return this[t.OPTIONS]['valueSchema'] as never
+	get getValueSchema(): this[OPTIONS]['valueSchema'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS]['valueSchema'] as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -35,9 +38,11 @@ export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 	get getIndexSignatures(): any {
 		return [
 			{
-				keySchema: this[t.OPTIONS].keySchema,
+				// eslint-disable-next-line security/detect-object-injection
+				keySchema: this[OPTIONS].keySchema,
 
-				valueSchema: this[t.OPTIONS].valueSchema,
+				// eslint-disable-next-line security/detect-object-injection
+				valueSchema: this[OPTIONS].valueSchema,
 			},
 		]
 	}
@@ -65,11 +70,13 @@ export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 }
 
 function _getCustomObjectImpl(self: {
-	[t.OPTIONS]: t.RecordOptions
+	[OPTIONS]: t.RecordOptions
 }): CustomObjectImpl<{}> {
 	return object.index(
-		self[t.OPTIONS].keySchema,
+		// eslint-disable-next-line security/detect-object-injection
+		self[OPTIONS].keySchema,
 
-		self[t.OPTIONS].valueSchema,
+		// eslint-disable-next-line security/detect-object-injection
+		self[OPTIONS].valueSchema,
 	) as never
 }

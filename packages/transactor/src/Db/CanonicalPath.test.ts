@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { Id } from '~/Data'
+import type { DocIdString } from '~/Data'
 
 import type { CanonicalPath } from './CanonicalPath'
 
@@ -12,7 +12,7 @@ describe('Db', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = CanonicalPath<['asd', 'sdf', string, Id]>
+		type X = CanonicalPath<['asd', 'sdf', string, DocIdString]>
 		$Assert<IsIdentical<X, 'asd/sdf/.../...'>>()
 	})
 

@@ -2,12 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { LeafData } from '~/Data'
 import { Doc } from '~/Doc'
-import type { StrongDocRefBase } from '~/DocRef'
+import type { CustomStrongDocRef } from '~/DocRef'
 
 import type { UpdatesFromData } from './UpdatesFromData'
 
@@ -25,11 +24,17 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		type MyDocRef = MyDoc['ref']
-		$Assert<IsIdentical<MyDocRef, StrongDocRefBase<MyDoc>>>()
 
-		$Assert.isSubtype<StrongDocRefBase<MyDoc>, LeafData>()
+		$Assert.is<MyDocRef, CustomStrongDocRef<{ doc: MyDoc }>>()
+		$Assert.is<CustomStrongDocRef<{ doc: MyDoc }>, MyDocRef>()
 
-		type X = UpdatesFromData<StrongDocRefBase<MyDoc>, StrongDocRefBase<MyDoc>>
-		$Assert.isSubtype<StrongDocRefBase<MyDoc>, X>()
+		$Assert.isSubtype<CustomStrongDocRef<{ doc: MyDoc }>, LeafData>()
+
+		type X = UpdatesFromData<
+			CustomStrongDocRef<{ doc: MyDoc }>,
+			CustomStrongDocRef<{ doc: MyDoc }>
+		>
+
+		$Assert.isSubtype<CustomStrongDocRef<{ doc: MyDoc }>, X>()
 	})
 })

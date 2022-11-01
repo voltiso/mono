@@ -3,17 +3,16 @@
 
 import type {
 	$$Schemable,
-	BASE_OPTIONS,
 	CustomUnion,
-	DEFAULT_OPTIONS,
 	DefaultUnionOptions,
 	ISchema,
 	IUnion,
 	Schemable,
 	UnionOptions,
 } from '@voltiso/schemar.types'
-import { EXTENDS, isUnion, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { lazyConstructor } from '@voltiso/util'
+import { EXTENDS, isUnion, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { schema, ValidationIssue } from '~/custom-schemas'
 import { CustomSchemaImpl } from '~/Schema'

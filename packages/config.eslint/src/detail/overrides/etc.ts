@@ -21,7 +21,7 @@ export const etcOverride = defineEslintConfigOverride({
 		'etc/no-enum': 1,
 		'etc/no-implicit-any-catch': 1,
 		'etc/no-internal': 1,
-		'etc/no-misused-generics': 1,
+		'etc/no-misused-generics': 0, // have to disable too often
 		'etc/no-t': 0, // single-char type args
 		'etc/prefer-interface': 0, // no - sometimes we want type so that it's assignable to an interface with an index signature
 

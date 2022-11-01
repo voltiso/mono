@@ -8,7 +8,7 @@ import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 import { applyUpdates } from '~/updates'
 
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContext } from './Context'
 
 /**
  * (pure) Apply our updates to a given data - this may be called several times
@@ -19,7 +19,7 @@ import type { DocRefContextWithTransaction } from './Context'
  * @returns Updated data
  */
 export function apply(
-	ctx: DocRefContextWithTransaction,
+	ctx: DocRefContext.ContextWithTransaction,
 	data: DataRecord | null,
 	updates?: Updates,
 ): IntrinsicFields | DataRecord | null {

@@ -11,26 +11,25 @@ import type {
 } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
-import type { Id } from '~/Data'
-import type { StrongDocRefBase } from '~/DocRef'
-import type { DocPath } from '~/Path'
+import type { DocIdString } from '~/Data'
+import type { GetDocRef } from '~/DocRef'
+import type { CustomDocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GData'
-import type { GetMethodPromises_ } from './_/GMethodPromises'
+import type { GetMethodPromises } from './_/GMethodPromises'
 import type { UpdatesFromData } from './_/UpdatesFromData'
 import { DocCall } from './DocCall'
 import type { DocConstructor, IDocConstructorNoBuilder } from './DocConstructor'
 import type { UntaggedDocTI } from './DocImpl'
 import { DocImpl } from './DocImpl'
-import type { GetDocTag, GetDocTI } from './DocRelated'
+import type { $$DocRelated, GetDocTag, GetDocTI } from './DocRelated'
 import type { $$DocTI, DTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
-import type { $$IndexedDocTI, IndexedDoc } from './IndexedDoc'
 
 export type IdField<Doc extends $$Doc> = {
-	id: Id<Doc>
+	id: DocIdString<Doc>
 }
 
 // ! TODO
@@ -43,16 +42,16 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	extends $$Doc {
 	//
 
-	This: this
+	// This: this
 
 	readonly [DTI]: TI
 
 	readonly constructor: IDocConstructorNoBuilder
 
-	readonly id: Id<TI>
+	readonly id: DocIdString<TI>
 	// readonly id: Id<DocBase<TI, Ctx>>
-	readonly path: DocPath<GetDocTag<TI>>
-	readonly ref: StrongDocRefBase<this>
+	readonly path: CustomDocPath<{ doc: GetDocTag<TI> }>
+	readonly ref: DocBase.Ref<this>
 
 	readonly data: GetData<TI>
 	dataWithoutId(): GetData<TI>
@@ -82,26 +81,31 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	delete(): Promise<null>
 
-	methods: GetMethodPromises_<TI>
+	methods: GetMethodPromises<TI>
 
 	//
 
 	toJSON(): $_<{ id: string } & JsonFromDocData<GetData<TI>>>
 }
 
+export namespace DocBase {
+	export type Ref<This extends $$DocRelated> = GetDocRef<{
+		doc: This
+		isStrong: true
+	}>
+}
+
 /** `DocBase` + custom stuff at the root level */
 export type CustomDoc<
 	TI extends $$DocTI,
 	Ctx extends ExecutionContext, // ! TODO - make `Options` struct
-> = TI extends $$IndexedDocTI
-	? IndexedDoc<Ctx>
-	: DocBase<TI, Ctx> & // ! cannot flatten here - would loose `this`
-			Omit<
-				GetData<TI> &
-					GetMethodPromises_<TI> &
-					Required<GetData<TI>['__voltiso']['aggregateTarget']>,
-				keyof DocBase<TI, Ctx>
-			>
+> = DocBase<TI, Ctx> & // ! cannot flatten here - would loose `this`
+	Omit<
+		GetData<TI> &
+			GetMethodPromises<TI> &
+			Required<GetData<TI>['__voltiso']['aggregateTarget']>,
+		keyof DocBase<TI, Ctx>
+	>
 
 export type Doc<TI extends $$DocTI | NoArgument = NoArgument> = IsIdentical<
 	TI,

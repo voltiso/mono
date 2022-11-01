@@ -2,17 +2,22 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
 	CustomString,
-	DEFAULT_OPTIONS,
 	DefaultStringOptions,
 	ISchema,
 	Literal,
 	RegExpEntry,
 	StringOptions,
 } from '@voltiso/schemar.types'
-import { EXTENDS, isString, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { BoundCallable, CALL, isDefined, lazyConstructor } from '@voltiso/util'
+import { EXTENDS, isString, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import {
+	BoundCallable,
+	CALL,
+	isDefined,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import { CustomSchemaImpl, literal, ValidationIssue } from '~'
 

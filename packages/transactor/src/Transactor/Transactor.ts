@@ -143,10 +143,9 @@ export class Transactor extends Db {
 
 	//
 
-	register<
-		// eslint-disable-next-line etc/no-misused-generics
-		Cls extends { [DTI]: { tag: 'untagged' } },
-	>(cls: Cls): Throw<'db.register requires Doc tag'>
+	register<Cls extends { [DTI]: { tag: 'untagged' } }>(
+		cls: Cls,
+	): Throw<'db.register requires Doc tag'>
 
 	register<Cls extends $$DocConstructor>(
 		cls: Cls,

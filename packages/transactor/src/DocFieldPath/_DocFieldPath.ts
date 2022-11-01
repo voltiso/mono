@@ -4,25 +4,16 @@
 import { assert } from '@voltiso/assertor'
 import { lazyPromise, protoLink } from '@voltiso/util'
 
-import type { NestedData } from '~/Data/Data'
-import type { IDoc } from '~/Doc'
+import type { NestedData } from '~/Data'
 import { TransactorError } from '~/error'
 import { sVoltisoEntry } from '~/schemas'
-import type { WithTransaction } from '~/Transaction'
 
-import type { WithDocRef } from './WithDocRef'
+import { DocFieldPath } from './DocFieldPath'
 
-type Context = WithDocRef & Partial<WithTransaction>
-
-/** @throws When either Doc or path does not exist */
-export type DocFieldPath<D = unknown> = PromiseLike<D> &
-	(D extends object ? { [k in keyof D]: DocFieldPath<D[k]> } : unknown)
-
-export const DocFieldPath = class {
-	// _context: Context
-	// _fields: string[]
-
-	constructor(ctx: Context, fields: string[]) {
+/** @internal */
+// @staticImplements<DocFieldPathConstructor>()
+export class _DocFieldPath {
+	constructor(ctx: DocFieldPath.Context, fields: string[]) {
 		// this._context = ctx
 		// this._fields = fields
 
@@ -84,7 +75,7 @@ export const DocFieldPath = class {
 			]
 
 			for (const path of candidatePaths) {
-				let data: NestedData = (doc as IDoc).dataWithoutId() as never
+				let data: NestedData = doc.dataWithoutId() as never
 
 				let isBad = false
 

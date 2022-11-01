@@ -2,21 +2,20 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
 	DefaultUnknownObjectOptions,
 	InferableObject,
 	ISchema,
 	UnknownObjectOptions,
 } from '@voltiso/schemar.types'
-import { OPTIONS } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	BoundCallable,
 	CALL,
 	getKeys,
 	isPlainObject,
 	lazyConstructor,
+	OPTIONS,
 } from '@voltiso/util'
 
 import * as s from '~/custom-schemas/object'
@@ -65,7 +64,8 @@ export class CustomUnknownObjectImpl<
 	index(...args: any) {
 		const r = new s.CustomObjectImpl({
 			...s.defaultObjectOptions,
-			...this[t.OPTIONS],
+			// eslint-disable-next-line security/detect-object-injection
+			...this[OPTIONS],
 		})
 
 		return r.index(...(args as never))

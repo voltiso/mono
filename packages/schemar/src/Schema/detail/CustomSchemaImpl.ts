@@ -5,12 +5,9 @@
 
 import type {
 	$$Schemable,
-	BASE_OPTIONS,
 	CustomFix,
 	CustomSchema,
-	DEFAULT_OPTIONS,
 	DefaultSchemaOptions,
-	PARTIAL_OPTIONS,
 	Schemable,
 	SchemaLike,
 	SchemaOptions,
@@ -25,11 +22,17 @@ import {
 	isUnion,
 	isUnknown,
 	isUnknownSchema,
-	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import type { AtLeast1, Merge2, Override } from '@voltiso/util'
-import { clone, final, isDefined, stringFrom } from '@voltiso/util'
+import type {
+	AtLeast1,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	Merge2,
+	Override,
+	PARTIAL_OPTIONS,
+} from '@voltiso/util'
+import { clone, final, isDefined, OPTIONS, stringFrom } from '@voltiso/util'
 
 import { union } from '~/custom-schemas/union'
 import { schema } from '~/custom-schemas/unknownSchema'

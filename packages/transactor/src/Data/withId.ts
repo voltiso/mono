@@ -1,26 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetDocTag, IDoc } from '~/Doc'
+import type { $$Doc } from '~/Doc'
 
 import type { $WithId } from './Data'
-import type { Id } from './Id'
+import type { DocIdString } from './Id'
 
-export function withId(data: null, id: Id): null
+export function withId(data: null, id: DocIdString): null
 
-export function withId<Data extends object, TDoc extends IDoc>(
+export function withId<Data extends object, TDoc extends $$Doc>(
 	data: Data,
-	id: Id<GetDocTag<TDoc>>,
+	id: DocIdString<TDoc>,
 ): $WithId<Omit<Data, 'id'>, TDoc>
 
-export function withId<Data extends object | null, TDoc extends IDoc>(
+export function withId<Data extends object | null, TDoc extends $$Doc>(
 	data: Data,
-	id: Id<GetDocTag<TDoc>>,
+	id: DocIdString<TDoc>,
 ): Data extends null ? null : $WithId<Omit<Data, 'id'>, TDoc>
 
 //
 
-export function withId(data: object | null, id: Id) {
+export function withId(data: object | null, id: DocIdString): any {
 	if (data === null) return null
 	return { ...data, id }
 }

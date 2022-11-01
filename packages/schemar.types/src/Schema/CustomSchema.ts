@@ -1,15 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { SCHEMA_NAME } from '_'
+import { EXTENDS } from '_'
 import type {
+	AlsoAccept,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
+	Override,
 	PARTIAL_OPTIONS,
-	SCHEMA_NAME,
-} from '_'
-import { EXTENDS } from '_'
-import type { AlsoAccept, Override, Throw } from '@voltiso/util'
+	Throw,
+} from '@voltiso/util'
 
 import type {
 	$$Schemable,

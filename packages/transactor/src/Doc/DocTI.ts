@@ -14,13 +14,16 @@ export const DTI: unique symbol = 0 as never // declare is not enough for esbuil
 export type DTI = typeof DTI
 
 /** Doc Tag Tag */
-export const DOC_TAG = Symbol('DOC_TAG')
+// export const DOC_TAG = Symbol('DOC_TAG')
 // declare const DT: unique symbol
 // export const DT: unique symbol = 0 as any // declare is not enough for esbuild
-export type DOC_TAG = typeof DOC_TAG
+// export type DOC_TAG = typeof DOC_TAG
 
-export const DOC = Symbol('DOC')
-export type DOC = typeof DOC
+// export const DOC = Symbol('DOC')
+// export type DOC = typeof DOC
+
+// export const DOC_RELATED = Symbol('DOC_RELATED')
+// export type DOC_RELATED = typeof DOC_RELATED
 
 //
 

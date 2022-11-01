@@ -6,9 +6,7 @@
 import type {
 	$$Schemable,
 	$$SchemableObject,
-	BASE_OPTIONS,
 	CustomObject,
-	DEFAULT_OPTIONS,
 	DefaultObjectOptions,
 	GetDeepShape_,
 	IObject,
@@ -22,9 +20,9 @@ import {
 	EXTENDS,
 	getDeepShape,
 	isUnknownObject,
-	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	$AssumeType,
 	clone,
@@ -34,6 +32,7 @@ import {
 	isObject,
 	isPlainObject,
 	lazyConstructor,
+	OPTIONS,
 } from '@voltiso/util'
 
 import {

@@ -1,7 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Brands, Nest_, NoArgument, PropertyPathString, Split } from '~'
+import type {
+	Brands,
+	GetNested,
+	Nest_,
+	NoArgument,
+	PropertyPathString,
+	Split,
+} from '~'
 
 /** 🌿 Type-only (no value at runtime) */
 export declare const BRAND: unique symbol
@@ -15,35 +22,68 @@ export type BRAND = typeof BRAND
  * @example
  *
  * ```ts
- * type Name = string & Brand<'name'>
- * type DogName = string & Brand<'name.dog'>
+ * declare module '@voltiso/util' {
+ * 	interface Brands {
+ * 		transactor: {
+ * 			doc: { [k in DocTag]?: true }
+ * 		}
+ * 	}
+ * }
  *
- * // or, equivalent:
- * type Name = string & Brand<{ name: unknown }>
- * type DogName = string & Brand<{ name: { dog: unknown } }>
+ * export type DocBrand<Tag extends DocTag> = DocTag extends Tag
+ * 	? { [BRAND]?: unknown }
+ * 	: CustomBranded<'transactor.doc', { [k in Tag]: true }>
  * ```
  *
  * 🌿 **Type-only** (no value at runtime)
  */
-export interface DetailedBrand<path extends BrandPath, detail> {
+export interface CustomBrand<
+	path extends BrandPath,
+	detail extends Brand.GetConstraint<path>,
+> {
 	/** 🌿 Type-only (no value at runtime) */
-	readonly [BRAND]: Nest_<detail, Split<path, { separator: '.' }>>
+	// eslint-disable-next-line etc/no-internal
+	readonly [BRAND]: _CustomBrandEntry<path, detail>
 }
 
-export interface Brand<path extends BrandPath>
-	extends DetailedBrand<path, unknown> {}
+/** @internal */
+export type _CustomBrandEntry<
+	path extends BrandPath,
+	detail extends Brand.GetConstraint<path>,
+> = Nest_<detail, Split<path, { separator: '.' }>>
 
 /**
  * Helper for implementing **nominal type hierarchies**.
  *
- * 🌿 **Type-only** (no value at runtime)
+ * @example
  *
- * @deprecated Prefer using `Brand` directly.
+ * ```ts
+ * type Name = string & Brand<'name'>
+ * type DogName = string & Brand<'name.dog'>
+ * ```
+ *
+ * 🌿 **Type-only** (no value at runtime)
  */
-export type Branded<X, path extends BrandPath, detail = NoArgument> = [
-	detail,
-] extends [NoArgument]
-	? X & Brand<path>
-	: X & DetailedBrand<path, detail>
+export interface Brand<path extends BrandPath>
+	extends CustomBrand<path, Brand.GetConstraint<path>> {}
+
+// export interface Branded<path extends BrandPath>
+// 	extends CustomBranded<path, Brand.GetConstraint<path>> {}
+
+export type GetBrand<
+	path extends BrandPath,
+	detail extends Brand.GetConstraint<path> | NoArgument = NoArgument,
+> = detail extends NoArgument
+	? Brand<path>
+	: detail extends Brand.GetConstraint<path>
+	? CustomBrand<path, detail>
+	: never
 
 export type BrandPath = Exclude<PropertyPathString.ForObject<Brands>, ''>
+
+export namespace Brand {
+	export type GetConstraint<path extends BrandPath> = GetNested<
+		Brands,
+		Split<path, { separator: '.' }>
+	>
+}

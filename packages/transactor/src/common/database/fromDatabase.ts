@@ -7,25 +7,25 @@ import { isPlainObject, stringFrom } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
 import type { DataRecord, NestedData, NestedDataNoArray } from '~/Data/Data'
-import type { DocRefBaseContext, WithDocRef } from '~/DocRef'
-import { isDocRef, StrongDocRef, WeakDocRef } from '~/DocRef'
+import type { DocRefContext, WithDocRef } from '~/DocRef'
+import { DocRef, isDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
 
 import { isDocRefDatabase, isDocRefJson } from './RefEntry'
 
 export function fromDatabaseData(
-	ctx: DocRefBaseContext,
+	ctx: DocRefContext.Base,
 	o: Database.DocumentDataNestedNoArray,
 ): NestedDataNoArray
 
 export function fromDatabaseData(
-	ctx: DocRefBaseContext,
+	ctx: DocRefContext.Base,
 	o: Database.DocumentDataNested,
 ): NestedDataNoArray
 
 export function fromDatabaseData(
-	ctx: DocRefBaseContext,
+	ctx: DocRefContext.Base,
 	o: Database.DocumentDataNested,
 ): NestedData {
 	if (Array.isArray(o)) {
@@ -37,15 +37,15 @@ export function fromDatabaseData(
 	} else if (Database.isDocumentReference(o)) {
 		// eslint-disable-next-line no-console
 		console.warn('found LEGACY STRONG REF', o.path)
-		return new StrongDocRef(ctx, o.path)
+		return new DocRef(ctx, o.path, { isStrong: true })
 	} else if (isDocRefJson(o)) {
 		// console.log('fromDatabase ref', o.__target, o.__isStrong)
 
-		if (o.isStrong) return new StrongDocRef(ctx, o.path)
-		else return new WeakDocRef(ctx, o.path)
+		if (o.isStrong) return new DocRef(ctx, o.path, { isStrong: true })
+		else return new DocRef(ctx, o.path, { isStrong: false })
 	} else if (isDocRefDatabase(o)) {
-		if (o.isStrong) return new StrongDocRef(ctx, o.ref.path)
-		else return new WeakDocRef(ctx, o.ref.path)
+		if (o.isStrong) return new DocRef(ctx, o.ref.path, { isStrong: true })
+		else return new DocRef(ctx, o.ref.path, { isStrong: false })
 	} else if (Database.isTimestamp(o)) return o.toDate()
 	else if (isPlainObject(o)) {
 		const r: DataRecord = {}
@@ -62,7 +62,7 @@ export function fromDatabaseData(
 //
 
 export const fromDatabase = (
-	ctx: DocRefBaseContext & Partial<WithDocRef>,
+	ctx: DocRefContext.Base & Partial<WithDocRef>,
 	doc: Database.DocumentSnapshot | Database.QueryDocumentSnapshot,
 ): IntrinsicFields | null => {
 	const data = doc.data()

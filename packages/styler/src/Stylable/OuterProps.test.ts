@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { Props } from '~/react-types'
 
@@ -15,9 +15,9 @@ describe('OuterProps', <CustomCss extends object>() => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<OuterPropsBase<CustomCss>, Props>()
+		$Assert.is<OuterPropsBase<CustomCss>, Props>()
 
-		Assert.is<WebOuterProps<CustomCss>, Props>()
-		Assert.is<NativeOuterProps<CustomCss>, Props>()
+		$Assert.is<WebOuterProps<CustomCss>, Props>()
+		$Assert.is<NativeOuterProps<CustomCss>, Props>()
 	})
 })

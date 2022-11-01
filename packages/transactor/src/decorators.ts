@@ -27,9 +27,13 @@ export function method<
 export function afterCreateOrUpdate<
 	D extends $$Doc & { [k in Name]: AfterTrigger<D, boolean, true> },
 	Name extends keyof D & string,
->(doc: D, name: Name) {
+>(doc: D, name: Name): void {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterCreateOrUpdate(typeofDoc._ as never, name, doc[name] as never) as never
+	typeofDoc._ = h.withAfterCreateOrUpdate(
+		typeofDoc._ as never,
+		name as never,
+		doc[name] as never,
+	)
 }
 
 export function afterCreate<
@@ -37,7 +41,11 @@ export function afterCreate<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterCreate(typeofDoc._ as never, name, doc[name] as never)
+	typeofDoc._ = h.withAfterCreate(
+		typeofDoc._ as never,
+		name as never,
+		doc[name] as never,
+	)
 }
 
 export function afterDelete<
@@ -45,7 +53,11 @@ export function afterDelete<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterDelete(typeofDoc._ as never, name, doc[name] as never)
+	typeofDoc._ = h.withAfterDelete(
+		typeofDoc._ as never,
+		name,
+		doc[name] as never,
+	)
 }
 
 export function afterUpdate<
@@ -53,7 +65,11 @@ export function afterUpdate<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withAfterUpdate(typeofDoc._ as never, name, doc[name] as never)
+	typeofDoc._ = h.withAfterUpdate(
+		typeofDoc._ as never,
+		name,
+		doc[name] as never,
+	)
 }
 
 export function after<
@@ -69,7 +85,11 @@ export function beforeCommit<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withBeforeCommit(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withBeforeCommit(
+		typeofDoc._ as never,
+		name as never,
+		doc[name] as never,
+	)
 }
 
 export function onGet<
@@ -77,5 +97,9 @@ export function onGet<
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	typeofDoc._ = h.withOnGet(typeofDoc._, name, doc[name] as never)
+	typeofDoc._ = h.withOnGet(
+		typeofDoc._ as never,
+		name as never,
+		doc[name] as never,
+	)
 }

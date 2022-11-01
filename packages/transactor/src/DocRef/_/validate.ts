@@ -4,7 +4,7 @@
 import type { DeepPartialIntrinsicFieldsSchema } from '~/schemas'
 
 import { applySchema } from './applySchema'
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContext } from './Context'
 
 /**
  * (pure) Apply schema asd return new data
@@ -15,7 +15,7 @@ import type { DocRefContextWithTransaction } from './Context'
  * @returns New data after validation
  */
 export function validate(
-	ctx: DocRefContextWithTransaction,
+	ctx: DocRefContext.ContextWithTransaction,
 	data: object | null,
 	schema: DeepPartialIntrinsicFieldsSchema | null | undefined,
 ) {

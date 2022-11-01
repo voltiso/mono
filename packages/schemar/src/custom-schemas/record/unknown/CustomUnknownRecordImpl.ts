@@ -4,9 +4,7 @@
 import type {
 	$$Schema,
 	$$Schemable,
-	BASE_OPTIONS,
 	CustomUnknownRecord,
-	DEFAULT_OPTIONS,
 	DefaultUnknownRecordOptions,
 	ISchema,
 	Record,
@@ -14,6 +12,7 @@ import type {
 	UnknownRecordOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl, RecordImpl } from '~'

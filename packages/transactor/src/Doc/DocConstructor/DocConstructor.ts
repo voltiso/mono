@@ -150,7 +150,6 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 //
 
 /** Helpers */
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DocConstructor {
 	export type MaybeWithName<Params> = [Params] | [string, Params]
 

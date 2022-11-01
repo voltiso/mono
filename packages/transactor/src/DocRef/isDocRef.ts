@@ -1,18 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDoc } from '~/Doc'
+import { IS_DOC_REF } from './$$DocRef'
+import type { DocRef } from './DocRef'
 
-import type { StrongDocRef } from './StrongDocRef'
-import type { UnknownDocRefBase } from './UnknownDocRefBase'
-import type { WeakDocRef } from './WeakDocRef'
-
-export function isDocRef(
-	x: unknown,
-): x is StrongDocRef<IDoc> | WeakDocRef<IDoc> {
-	return (
-		typeof x === 'object' &&
-		typeof (x as UnknownDocRefBase<any, any, any> | null)?._isStrong ===
-			'boolean'
-	)
+export function isDocRef(x: unknown): x is DocRef {
+	// eslint-disable-next-line security/detect-object-injection
+	return !!(x as DocRef | null)?.[IS_DOC_REF]
 }

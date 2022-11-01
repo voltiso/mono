@@ -1,3 +1,14 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { PathSegmentString, PathString } from '~/object'
+
+export function basename(
+	path: PathString<{ separator: '/' }>,
+): PathSegmentString<{ separator: '/' }>
+
+export function basename(path: string): PathSegmentString<{ separator: '/' }>
+
 /**
  * Similar to `require('node:path').basename`
  *

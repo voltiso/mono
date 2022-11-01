@@ -6,6 +6,7 @@ import type {
 	Brand,
 	Includes,
 	Or,
+	Override,
 	Parity,
 	PathBrand,
 	PathSegmentString,
@@ -13,12 +14,14 @@ import type {
 } from '@voltiso/util'
 import { at } from '@voltiso/util'
 
+import type { DocBrand } from '~/brand'
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { $$Doc, Doc } from '~/Doc'
-import { DOC } from '~/Doc'
+import type { $$Doc, $$DocRelated, GetDocTag } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
-import type { DocRefPattern, WeakDocRef } from '~/DocRef'
+import type { DocRefPattern } from '~/DocRef'
 import { TransactorError } from '~/error'
+
+import type { AnyDocTag, GetDocRef } from '..'
 
 /**
  * Checks if `str` does not contain `/`
@@ -174,13 +177,30 @@ function isDocPathString(str: string): str is DocPathString {
 	return isPathString(str) && str.split('/').length % 2 === 0
 }
 
-export class DocPath<
-	S extends string = string,
-	TDoc extends $$Doc = Doc,
-> extends Path<S> {
-	declare [DOC]: TDoc
+export interface DocPathOptions {
+	path: string
+	doc: $$DocRelated
+}
 
-	constructor(str: S) {
+export interface DefaultDocPathOptions extends DocPathOptions {
+	path: string
+	doc: AnyDocTag
+}
+
+export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
+	extends DocBrand<
+		GetDocTag<Override<DefaultDocPathOptions, PartialOptions>['doc']>
+	> {
+	//
+}
+
+export interface DocPath extends CustomDocPath<{}> {}
+
+export class CustomDocPath<
+	PartialOptions extends Partial<DocPathOptions>,
+> extends Path<Override<DefaultDocPathOptions, PartialOptions>['path']> {
+	//
+	constructor(str: Override<DefaultDocPathOptions, PartialOptions>['path']) {
 		super(str)
 		assert(isDocPathString(str))
 	}
@@ -263,7 +283,7 @@ export type DbPathFromString<
 	Doc extends $$Doc = IndexedDoc,
 	// eslint-disable-next-line etc/no-internal
 > = _PathFromString<
-	WeakDocRef<Doc>,
+	GetDocRef<{ doc: GetDocTag<Doc> }>,
 	CollectionRef<Doc>,
 	DocRefPattern,
 	CollectionRefPattern<P, Doc>,

@@ -1,14 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$Schema,
-	AnyOptions,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	DefaultAnyOptions,
-	ISchema,
-} from '~'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { $$Schema, AnyOptions, DefaultAnyOptions, ISchema } from '~'
 import { SCHEMA_NAME } from '~'
 
 export interface $$Any extends $$Schema {

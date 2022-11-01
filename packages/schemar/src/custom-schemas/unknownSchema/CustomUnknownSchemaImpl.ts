@@ -3,14 +3,13 @@
 
 import type {
 	$$Schemable,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
 	DefaultUnknownSchemaOptions,
 	IUnknownSchema,
 	SchemaOptions,
 	UnknownSchemaOptions,
 } from '@voltiso/schemar.types'
 import { SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS} from '@voltiso/util';
 import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'

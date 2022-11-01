@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert, Is } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 
 import type { Css } from '~'
 
@@ -25,7 +25,7 @@ describe('Css', () => {
 			...more,
 		} as const
 
-		Assert.is<typeof a, Css>()
+		$Assert.is<typeof a, Css>()
 	})
 
 	it('allows arrays', () => {
@@ -35,7 +35,7 @@ describe('Css', () => {
 			height: ['100vh', '-webkit-fill-available'],
 		} as const
 
-		Assert.is<typeof a, Css>()
+		$Assert.is<typeof a, Css>()
 	})
 
 	it('nested', () => {
@@ -49,8 +49,8 @@ describe('Css', () => {
 			},
 		}
 
-		Assert(Is<typeof a>().not.subtypeOf<Css>())
+		$Assert($Is<typeof a>().not.subtypeOf<Css>())
 
-		Assert.is<typeof a, Css<{ marginX: number }>>()
+		$Assert.is<typeof a, Css<{ marginX: number }>>()
 	})
 })

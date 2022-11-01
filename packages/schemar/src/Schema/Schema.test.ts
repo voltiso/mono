@@ -5,12 +5,11 @@ import type {
 	DefaultSchemaOptions,
 	InferableReadonlyTuple,
 	Input,
-	OPTIONS,
 	Output,
 	Schema,
 	SchemaOptions,
 } from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, OPTIONS } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { CustomSchemaImpl } from '~'

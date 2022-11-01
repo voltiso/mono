@@ -6,7 +6,7 @@ import { assert } from '@voltiso/util'
 import { withVoltisoEntry } from '~/Data'
 import { setCacheEntry } from '~/Transaction'
 
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContext } from './Context'
 import { getCacheEntry } from './getCacheEntry'
 import { validate } from './validate'
 
@@ -19,7 +19,7 @@ import { validate } from './validate'
  * @throws An error when validation fails
  */
 export function validateAndSetCacheEntry(
-	context: DocRefContextWithTransaction,
+	context: DocRefContext.ContextWithTransaction,
 	data: object | null,
 	schema: object | null | undefined, // DeepPartialIntrinsicFieldsSchema
 	hadUpdates = true,

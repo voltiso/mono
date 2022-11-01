@@ -1,9 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schema } from '@voltiso/schemar.types'
-
-import type { $$Doc, DocBuilderPlugin, DocContext, DocTI, DTI } from '~/Doc'
+import type { $$Doc, DocContext, DocTI, DTI } from '~/Doc'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 
@@ -46,37 +44,27 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 	/** @deprecated Use decorators */
 	after(...args: any): any
 
-	//
-
 	/** @deprecated Use decorators */
 	afterUpdate(...args: any): any
-
-	//
 
 	/** @deprecated Use decorators */
 	afterCreateOrUpdate(...args: any): any
 
-	//
-
 	/** @deprecated Use decorators */
 	afterCreate(...args: any): any
 
-	//
-
 	/** @deprecated Use decorators */
 	afterDelete(...args: any): any
-
-	//
 
 	/** @deprecated Use decorators */
 	beforeCommit(...args: any): any
 
 	//
 
-	with(plugin: DocBuilderPlugin<any>): unknown
+	// with(plugin: DocBuilderPlugin<any>): unknown
 
-	get schemaWithId(): $$Schema
-	get schemaWithoutId(): $$Schema
+	get schemaWithId(): any
+	get schemaWithoutId(): any
 
 	get idSchema(): unknown
 }

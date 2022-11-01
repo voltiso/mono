@@ -4,15 +4,14 @@
 import type {
 	$$Schemable,
 	CustomUnknownTuple,
-	DEFAULT_OPTIONS,
 	DefaultUnknownTupleOptions,
-	PARTIAL_OPTIONS,
 	SchemaLike,
 	UnknownTupleOptions,
 } from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
+import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import {
 	CustomSchemaImpl,

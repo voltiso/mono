@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { MergeProps_ } from './MergeProps'
 import type { Props } from './Props'
@@ -12,7 +12,7 @@ describe('MergeProps', () => {
 		expect.assertions(0)
 
 		type A = MergeProps_<{ a: 1 }, { b: 2 }>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{
@@ -30,7 +30,7 @@ describe('MergeProps', () => {
 		expect.assertions(0)
 
 		type A = MergeProps_<P0, P1>
-		Assert.is<A, Props>()
+		$Assert.is<A, Props>()
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests

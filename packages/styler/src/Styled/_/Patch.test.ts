@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { FastMergeProps_, Props } from '~/react-types'
 
@@ -14,25 +14,25 @@ describe('Path', () => {
 		// Assert.is<A, Props>() // bad!
 
 		type B = Omit<P0, keyof P1>
-		Assert.is<B, Props>()
+		$Assert.is<B, Props>()
 
 		type C = Omit<P0, keyof P1> & P1
-		Assert.is<C, Props>()
+		$Assert.is<C, Props>()
 
 		type F = _<P0>
-		Assert.is<F, Props>()
+		$Assert.is<F, Props>()
 
 		type I = _<P0 & P1>
-		Assert.is<I, Props>()
+		$Assert.is<I, Props>()
 
 		type J = _<P0 | P1>
-		Assert.is<J, Props>()
+		$Assert.is<J, Props>()
 
 		// type G = _<Omit<P0, 'a'>>
 		// Assert.is<G, Props>() // bad!
 
 		type H = _<Omit<P0, 'a'>>
-		Assert.is<H, Props>()
+		$Assert.is<H, Props>()
 
 		// type D = _<VOmit<P0, keyof P1>>
 		// Assert.is<D, Props>()
@@ -50,6 +50,6 @@ describe('Path', () => {
 		// Assert.is<X, Props>() // :(
 
 		type R = FastMergeProps_<P0, P1>
-		Assert.is<R, Props>() // :)
+		$Assert.is<R, Props>() // :)
 	})
 })

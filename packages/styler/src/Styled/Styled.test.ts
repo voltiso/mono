@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { StaticError } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type { Props } from '~/react-types'
 import type { IStylable } from '~/Stylable'
@@ -14,6 +14,6 @@ describe('Styled', () => {
 	it('generic', <P extends Props, C extends IStylable | null>() => {
 		expect.assertions(0)
 
-		Assert.is<Styled<{ Props: P; Component: C }>, IStyled | StaticError>()
+		$Assert.is<Styled<{ Props: P; Component: C }>, IStyled | StaticError>()
 	})
 })

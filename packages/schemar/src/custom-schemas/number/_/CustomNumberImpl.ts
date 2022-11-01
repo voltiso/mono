@@ -2,16 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
 	CustomNumber,
-	DEFAULT_OPTIONS,
 	DefaultNumberOptions,
 	ISchema,
 	NumberOptions,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import { EXTENDS, OPTIONS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import { isDefined, lazyConstructor } from '@voltiso/util'
+import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { CustomSchemaImpl, ValidationIssue } from '~'
 

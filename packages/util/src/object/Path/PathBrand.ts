@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Brand, DetailedBrand, Override } from '~'
+import type { Brand, CustomBrand, Override } from '~'
 
 export type PathOptions = {
 	/**
@@ -12,15 +12,18 @@ export type PathOptions = {
 	separator: string
 }
 
-export type DefaultPathOptions = {
-	separator: '/'
+export const defaultPathOptions = {
+	separator: '/' as const,
 }
+
+export type DefaultPathOptions = typeof defaultPathOptions
 
 //
 
 declare module '~' {
 	interface Brands {
 		path: {
+			_: PathOptions
 			segment: unknown
 		}
 	}
@@ -29,7 +32,7 @@ declare module '~' {
 //
 
 export type PathBrand<partialOptions extends Partial<PathOptions> = {}> =
-	DetailedBrand<'path', Override<DefaultPathOptions, partialOptions>>
+	CustomBrand<'path._', Override<DefaultPathOptions, partialOptions>>
 
 export type PathString<partialOptions extends Partial<PathOptions> = {}> =
 	string & PathBrand<partialOptions>
@@ -44,3 +47,20 @@ export type PathSegmentBrand<partialOptions extends Partial<PathOptions> = {}> =
 export type PathSegmentString<
 	partialOptions extends Partial<PathOptions> = {},
 > = string & PathSegmentBrand<partialOptions>
+
+//
+
+export function isPath<PartialOptions extends Partial<PathOptions> = {}>(
+	str: string,
+	_options?: PartialOptions,
+): str is PathString<PartialOptions> {
+	return str.length > 0
+}
+
+export function isPathSegment<PartialOptions extends Partial<PathOptions> = {}>(
+	str: string,
+	partialOptions?: PartialOptions,
+): str is PathSegmentString<PartialOptions> {
+	const options = { ...defaultPathOptions, ...partialOptions }
+	return !str.includes(options.separator)
+}

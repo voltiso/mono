@@ -11,7 +11,7 @@ import type {
 } from '@voltiso/schemar.types'
 
 import { getGetPathMatches } from '~/common'
-import type { $$DocConstructor, $$Doc, IDocConstructor } from '~/Doc'
+import type { $$Doc, $$DocConstructor, IDocConstructor } from '~/Doc'
 import { emptyDocDerivedSchema } from '~/Doc/DocConstructor/_/DocDerivedData'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { Method } from '~/Method'
@@ -56,11 +56,11 @@ export class DocRefPattern {
 			this.id(_.id as never)
 		}
 
-		for (const after of _.afters) this.after(after)
+		for (const after of _.afters) this.after(after as never)
 
 		for (const beforeCommit of _.beforeCommits) this.beforeCommit(beforeCommit)
 
-		for (const onGet of _.onGets) this.onGet(onGet)
+		for (const onGet of _.onGets) this.onGet(onGet as never)
 
 		for (const [name, method] of Object.entries(_.methods))
 			this.method(name, method as never)
@@ -130,6 +130,7 @@ export class DocRefPattern {
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (this) {
 					assert(doc)
 					assert(after)
@@ -154,6 +155,7 @@ export class DocRefPattern {
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (!before) {
 					assert(after)
 					assert(this)
@@ -180,8 +182,10 @@ export class DocRefPattern {
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (!after) {
 					assert(before)
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					assert(this === null)
 					assert(doc === null)
 					return (trigger as unknown as AfterTrigger).call(this, {

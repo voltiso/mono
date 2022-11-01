@@ -7,7 +7,7 @@ import { isDefined, isDeleteIt } from '@voltiso/util'
 import { withoutId } from '~/Data'
 import type { AfterTrigger } from '~/Trigger'
 
-import type { DocRefContextWithTransaction } from './Context'
+import type { DocRefContext } from './Context'
 import { getCacheEntry } from './getCacheEntry'
 
 /**
@@ -19,7 +19,7 @@ import { getCacheEntry } from './getCacheEntry'
  * @returns New data
  */
 export function collectTriggerResult(
-	ctx: DocRefContextWithTransaction,
+	ctx: DocRefContext.ContextWithTransaction,
 	triggerResult: Awaited<ReturnType<AfterTrigger>>,
 ): object | null {
 	const cacheEntry = getCacheEntry(ctx)
@@ -29,9 +29,9 @@ export function collectTriggerResult(
 
 		// if we allow id fields (compat?), do not strip `id`
 		const { allowIdField, allowValidIdField } = ctx.transactor._options
-		if (allowIdField || allowValidIdField) return triggerResult as never
+		if (allowIdField || allowValidIdField) return triggerResult
 
-		return withoutId(triggerResult as never, ctx.docRef.id) as never
+		return withoutId(triggerResult, ctx.docRef.id) as never
 	} else {
 		assert.defined(cacheEntry.data)
 		return cacheEntry.data as never

@@ -32,7 +32,6 @@ import {
 } from '../_'
 import type { WithDocRef } from '../WithDocRef'
 
-// eslint-disable-next-line etc/no-misused-generics
 async function directDocPathGet<D extends IDoc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): Promise<D | null> {
@@ -62,7 +61,6 @@ async function directDocPathGet<D extends IDoc>(
 	else return null
 }
 
-// eslint-disable-next-line etc/no-misused-generics
 async function transactionDocPathGetImpl<D extends IDoc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
@@ -188,8 +186,7 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		// eslint-disable-next-line no-await-in-loop
 		const r = await trigger.call(cacheEntry.proxy as never, {
 			doc: cacheEntry.proxy as never,
-			__voltiso: cacheEntry.__voltiso,
-
+			__voltiso: cacheEntry.__voltiso as never,
 			...pathMatches,
 			path: ctx.docRef.path as never,
 			id: id as never,
@@ -211,7 +208,6 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	return cacheEntry.proxy as D | null
 }
 
-// eslint-disable-next-line etc/no-misused-generics
 export function transactionDocPathGet<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): PromiseLike<D | null> {
@@ -249,7 +245,6 @@ export function transactionDocPathGet<D extends $$Doc>(
 	}
 }
 
-// eslint-disable-next-line etc/no-misused-generics
 export function get<TI extends DocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
 ): PromiseLike<Doc<TI> | null> {

@@ -2,19 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DocRefDatabase, DocRefJson } from '~/common'
-import type { Id } from '~/Data'
+import type { IdString } from '~/Data'
 import type { Doc } from '~/Doc'
 import type { DocTI, DTI } from '~/Doc/DocTI'
 import type { DocPath } from '~/Path'
 
-import type { DocFieldPath } from './DocFieldPath'
-
-export const IS_DOC_REF = Symbol('IS_DOC_REF')
-export type IS_DOC_REF = typeof IS_DOC_REF
-
-export interface $$DocRef {
-	readonly [IS_DOC_REF]: true
-}
+import type { DocFieldPath } from '../DocFieldPath/DocFieldPath'
+import type { $$DocRef } from './$$DocRef'
 
 export interface IDocRef extends IDocRefBase, PromiseLike<Doc | null> {}
 
@@ -24,7 +18,7 @@ export interface IDocRefBase extends $$DocRef {
 
 	readonly isStrong: boolean
 
-	readonly id: Id
+	readonly id: IdString
 	readonly path: DocPath
 
 	readonly data: DocFieldPath

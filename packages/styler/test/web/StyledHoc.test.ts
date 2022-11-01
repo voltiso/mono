@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Omit, IsIdentical, StaticError } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type {
 	ChangeEvent,
 	ComponentProps,
@@ -34,9 +34,9 @@ describe('StyledHoc', () => {
 	it('generic', <P extends Props, CP extends Props>() => {
 		expect.assertions(0)
 
-		Assert.is<GetStyledHoc<{ Props: P }>, IStyledHoc>()
+		$Assert.is<GetStyledHoc<{ Props: P }>, IStyledHoc>()
 
-		Assert.is<StyledHocCall<{ Props: P; CustomCss: CP }>, IStyledHocCall>()
+		$Assert.is<StyledHocCall<{ Props: P; CustomCss: CP }>, IStyledHocCall>()
 
 		// Assert.is<Styled<P>, Styled<Props>>()
 	})
@@ -52,7 +52,7 @@ describe('StyledHoc', () => {
 		}
 
 		type StyledGoodProps = GetStyledHoc<{ Props: GoodProps }>
-		Assert.is<StyledGoodProps, IStyledHoc>()
+		$Assert.is<StyledGoodProps, IStyledHoc>()
 
 		type BadProps = {
 			a: 1
@@ -60,7 +60,7 @@ describe('StyledHoc', () => {
 		}
 
 		type StyledBadProps = GetStyledHoc<{ Props: BadProps }>
-		Assert.is<StyledBadProps, IStyledHoc>()
+		$Assert.is<StyledBadProps, IStyledHoc>()
 	})
 
 	it('style the stylable', () => {
@@ -83,27 +83,27 @@ describe('StyledHoc', () => {
 
 		const aa = () => style(0 as unknown as StylableJsxCall<TextProps>)
 		type AA = ReturnType<typeof aa>
-		Assert.is<AA, IStyledComponent>()
+		$Assert.is<AA, IStyledComponent>()
 
 		const bb = () => style(0 as unknown as StylableJsxConstruct<TextProps>)
 		type BB = ReturnType<typeof bb>
-		Assert.is<BB, IStyledComponent>()
+		$Assert.is<BB, IStyledComponent>()
 
 		type XX = React.DetailedHTMLProps<
 			React.HTMLAttributes<HTMLElement>,
 			HTMLElement
 		>['className']
-		Assert<IsIdentical<XX, string | undefined>>()
+		$Assert<IsIdentical<XX, string | undefined>>()
 
 		const cc = () => style(0 as unknown as StylableIntrinsic<TextProps>)
 		type CC = ReturnType<typeof cc>
-		Assert.is<CC, IStyledComponent>()
+		$Assert.is<CC, IStyledComponent>()
 		;() => style(0 as unknown as StylableIntrinsic<TextProps>)
 
 		//
 		const a = () => style(0 as unknown as Stylable<TextProps>)
 		type A = ReturnType<typeof a>
-		Assert.is<A, IStyledComponent>()
+		$Assert.is<A, IStyledComponent>()
 	})
 
 	it('style the stylable - generic', <S extends Stylable<{
@@ -117,27 +117,27 @@ describe('StyledHoc', () => {
 		const a = () => style(0 as unknown as S)
 		type A = ReturnType<typeof a>
 
-		Assert.is<A, IStyled>()
+		$Assert.is<A, IStyled>()
 
 		type B = ComponentProps<A>
-		Assert.is<'a', keyof B>()
-		Assert.is<'b', keyof B>()
+		$Assert.is<'a', keyof B>()
+		$Assert.is<'b', keyof B>()
 
 		type C = ComponentProps<S>
-		Assert.is<'a', keyof C>()
-		Assert.is<'b', keyof C>()
+		$Assert.is<'a', keyof C>()
+		$Assert.is<'b', keyof C>()
 
 		type D = ComponentPropsWithRef_<A>
-		Assert.is<'a', keyof D>()
-		Assert.is<'b', keyof D>()
+		$Assert.is<'a', keyof D>()
+		$Assert.is<'b', keyof D>()
 
 		type E = ComponentProps<StyledComponent<S>>
-		Assert.is<'a', keyof E>()
-		Assert.is<'b', keyof E>()
+		$Assert.is<'a', keyof E>()
+		$Assert.is<'b', keyof E>()
 
 		type F = $Omit<ComponentPropsWithRef_<S>, keyof WebOuterProps<{}>>
-		Assert.is<'a', keyof F>()
-		Assert.is<'b', keyof F>()
+		$Assert.is<'a', keyof F>()
+		$Assert.is<'b', keyof F>()
 	})
 
 	it('style the stylable - `size` prop', <S extends Stylable<{
@@ -151,16 +151,16 @@ describe('StyledHoc', () => {
 		const a = () => style(0 as unknown as S)
 		type A = ReturnType<typeof a>
 
-		Assert.is<A, IStyled>()
+		$Assert.is<A, IStyled>()
 
 		type C = $ComponentProps<S>
 
-		Assert.is<'size', keyof C>()
-		Assert.is<'b', keyof C>()
+		$Assert.is<'size', keyof C>()
+		$Assert.is<'b', keyof C>()
 
 		type D = ComponentProps<A>
-		Assert.is<'size', keyof D>()
-		Assert.is<'b', keyof D>()
+		$Assert.is<'size', keyof D>()
+		$Assert.is<'b', keyof D>()
 	})
 
 	it('call signature', () => {
@@ -170,28 +170,28 @@ describe('StyledHoc', () => {
 
 		// easy
 		const a0 = style({} as unknown as FC<{ className?: string | undefined }>)
-		Assert.is<typeof a0, FC>()
+		$Assert.is<typeof a0, FC>()
 
 		//
 
 		// // @ts-expect-error missing className prop
 		// ;() => style({} as unknown as FC)
 		const a = style({} as unknown as FC)
-		Assert.is<typeof a, StaticError>()
+		$Assert.is<typeof a, StaticError>()
 
 		// // @ts-expect-error missing className prop
 		// ;() => style({} as unknown as (props: {}) => ReactElement | null)
 		const b = style({} as unknown as (props: {}) => ReactElement | null)
-		Assert.is<typeof b, StaticError>()
+		$Assert.is<typeof b, StaticError>()
 
 		// // @ts-expect-error missing className prop
 		// ;() => style({} as unknown as FC<{ href: string }>)
 		const c = style({} as unknown as FC<{ href: string }>)
-		Assert.is<typeof c, StaticError>()
+		$Assert.is<typeof c, StaticError>()
 
 		// ...better!
 		const cc = style({} as unknown as FC<{ href: string; className?: string }>)
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof cc,
 				StyledComponent<
@@ -208,7 +208,7 @@ describe('StyledHoc', () => {
 		// // @ts-expect-error missing className prop
 		// ;() => style({} as unknown as (props: { a: 1 }) => ReactElement)
 		const dd = style({} as unknown as (props: { a: 1 }) => ReactElement)
-		Assert.is<typeof dd, StaticError>()
+		$Assert.is<typeof dd, StaticError>()
 
 		// ...better!
 		const ddd = style(
@@ -217,7 +217,7 @@ describe('StyledHoc', () => {
 				className?: string | undefined
 			}) => ReactElement,
 		)
-		Assert.is<typeof ddd, IStyled>()
+		$Assert.is<typeof ddd, IStyled>()
 
 		//
 
@@ -233,6 +233,6 @@ describe('StyledHoc', () => {
 
 		type D = ReturnType<typeof d>
 
-		Assert<IsIdentical<D, StyledComponent<DInner>>>()
+		$Assert<IsIdentical<D, StyledComponent<DInner>>>()
 	})
 })

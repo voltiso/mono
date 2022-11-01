@@ -4,11 +4,11 @@
 // import { createTransactor } from './common'
 import { createLocalstore } from '@voltiso/localstore'
 import * as s from '@voltiso/schemar'
-import type { TransactorImpl, TriggerParams } from '@voltiso/transactor'
+import type { TriggerParams } from '@voltiso/transactor'
 import {
+	_UnknownDocRefBase,
 	afterCreate,
 	Doc,
-	DocRefBaseImpl,
 	sWeakRef,
 	toDatabaseSetNested,
 } from '@voltiso/transactor'
@@ -84,12 +84,12 @@ describe('add', () => {
 
 		expect(client.friends[0].id).toBe('a')
 
-		const a = toDatabaseSetNested(
-			(db as TransactorImpl)._databaseContext as never,
-			[clients('a').asStrongRef],
-		) as any
+		const a = toDatabaseSetNested(db._databaseContext as never, [
+			clients('a').asStrongRef,
+		]) as any
 
-		expect(a[0]).not.toBeInstanceOf(DocRefBaseImpl)
+		// eslint-disable-next-line etc/no-internal
+		expect(a[0]).not.toBeInstanceOf(_UnknownDocRefBase)
 
 		expect(a[0]).toMatchObject({ __isStrong: true })
 	})

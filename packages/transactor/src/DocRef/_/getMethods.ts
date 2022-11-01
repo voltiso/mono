@@ -1,19 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { UnknownDocRefBase } from '~/DocRef'
+import { $AssumeType } from '@voltiso/util'
 
-export function getMethods(this: UnknownDocRefBase) {
-	if (this._methods) return this._methods
+import type { $$DocRef, DocRef, DocRefMethodEntry } from '~/DocRef'
 
-	this._methods = []
+export function getMethods(ref: $$DocRef): DocRefMethodEntry[] {
+	$AssumeType<DocRef>(ref)
+	if (ref._methods) return ref._methods
 
-	for (const { getPathMatches, name, method } of this._context.transactor
+	ref._methods = []
+
+	for (const { getPathMatches, name, method } of ref._context.transactor
 		._allMethods) {
-		const pathMatches = getPathMatches(this.path.toString())
+		const pathMatches = getPathMatches(ref.path.toString())
 
-		if (pathMatches) this._methods.push({ pathMatches, name, method })
+		if (pathMatches) ref._methods.push({ pathMatches, name, method })
 	}
 
-	return this._methods
+	return ref._methods
 }

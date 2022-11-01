@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical, Throw } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { style } from '~'
 
@@ -31,7 +31,7 @@ describe('cssProps', () => {
 
 		const BadSvg = Svg.cssProps('gap', 'border', 'margin')
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof BadSvg,
 				Throw<

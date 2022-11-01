@@ -4,9 +4,7 @@
 import type {
 	$$Schemable,
 	ArrayOptions,
-	BASE_OPTIONS,
 	CustomArray,
-	DEFAULT_OPTIONS,
 	DefaultArrayOptions,
 	ISchema,
 	Schema,
@@ -16,10 +14,16 @@ import {
 	isArray,
 	isTuple,
 	isUnknownTuple,
-	OPTIONS,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
-import { BoundCallable, CALL, isDefined, lazyConstructor } from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import {
+	BoundCallable,
+	CALL,
+	isDefined,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~'
 

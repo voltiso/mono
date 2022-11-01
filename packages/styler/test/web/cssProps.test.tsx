@@ -3,7 +3,7 @@
 
 import { screen } from '@testing-library/react'
 import type { IsIdentical, Throw } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { style } from '~'
 
@@ -47,7 +47,7 @@ describe('cssProps', () => {
 
 		const BadSvg = Svg.cssProps('gap', 'border', 'margin')
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof BadSvg,
 				Throw<

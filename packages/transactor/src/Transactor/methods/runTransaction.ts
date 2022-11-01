@@ -2,14 +2,24 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
-import { assert, deleteIt, isDefined, isDeleteIt, replaceIt } from '@voltiso/util'
+import {
+	assert,
+	deleteIt,
+	isDefined,
+	isDeleteIt,
+	replaceIt,
+} from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 import chalk from 'chalk'
 
 import { databaseUpdate } from '~/common/database/databaseUpdate'
 import { withoutId } from '~/Data'
 import type { CustomDoc, DocTI } from '~/Doc'
-import { getBeforeCommits, processTriggers, StrongDocRef } from '~/DocRef'
+import {
+	DocRef,
+	getBeforeCommits,
+	processTriggers,
+} from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sVoltisoEntry } from '~/schemas'
 import type { Cache, CacheEntry } from '~/Transaction/Cache'
@@ -116,12 +126,14 @@ export async function runTransaction<R>(
 						if (!cacheEntry.write) continue
 
 						// console.log('should write!')
-						const docRef = new StrongDocRef(transaction._context, path)
+						const docRef = new DocRef(transaction._context, path, {
+							isStrong: true,
+						})
 						const ctx = { ...transaction._context, docRef }
 
 						// process normal triggers - they may not have been called if updates were made in-place, not via `update` method
 						// eslint-disable-next-line no-await-in-loop
-						if (isDefined(cacheEntry.data)) await processTriggers(ctx)
+						if (isDefined(cacheEntry.data)) await processTriggers(ctx as never)
 					}
 
 					const nextCacheSnapshot = getCacheSnapshot(cache)
@@ -152,7 +164,7 @@ export async function runTransaction<R>(
 						if (!cacheEntry.write) continue
 
 						// console.log('should write!')
-						const docRef = new StrongDocRef(transaction._context, path)
+						const docRef = new DocRef(transaction._context, path, {isStrong: true})
 						const ctx = { ...transaction._context, docRef }
 
 						const beforeCommits = getBeforeCommits(docRef)

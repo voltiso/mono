@@ -4,8 +4,8 @@
 import type { SchemaLike } from '@voltiso/schemar.types'
 import type { _ } from '@voltiso/util'
 
-import type { Id } from '~/Data'
-import type { $$DocRef } from '~/DocRef/IRef'
+import type { DocIdString } from '~/Data'
+import type { DocRef } from '~/DocRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 
@@ -30,13 +30,13 @@ export interface IDoc extends $$Doc {
 
 	readonly constructor: IDocConstructorNoBuilder
 
-	readonly id: Id
+	readonly id: DocIdString
 	readonly path: DocPath
-	readonly ref: $$DocRef
+	readonly ref: DocRef
 
 	readonly data: IntrinsicFields
 	dataWithoutId(): IntrinsicFields
-	dataWithId(): _<{ id: Id } & IntrinsicFields>
+	dataWithId(): _<{ id: DocIdString } & IntrinsicFields>
 
 	update(updates: any): Promise<$$Doc | null | undefined>
 
@@ -48,6 +48,8 @@ export interface IDoc extends $$Doc {
 	// get schemaWithId(): SchemaLike
 
 	get aggregateSchemas(): Record<string, SchemaLike>
+
+	toJSON(): unknown
 } // & GData<IDocTI>
 
 /**

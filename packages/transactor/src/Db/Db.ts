@@ -1,18 +1,19 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { BoundCallable, CALL, staticImplements } from '@voltiso/util'
+import { BoundCallable, CALL } from '@voltiso/util'
 
 import { CollectionRef } from '~/CollectionRef/CollectionRef'
 import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
 import type { IndexedDoc } from '~/Doc'
-import { DocRefPattern, WeakDocRef } from '~/DocRef'
-import type { DbPathFromString } from '~/Path'
-import { concatPath, DocPath } from '~/Path'
+import type { GetDocRef } from '~/DocRef'
+import { DocRef, DocRefPattern } from '~/DocRef'
+import type { AnyDocTag } from '~/DocTypes'
+import type { DbPathFromString, DocPath } from '~/Path'
+import { concatPath, CustomDocPath } from '~/Path'
 
 import type { CanonicalPath } from './CanonicalPath'
 import type { DbContext, DbParentContext } from './Context'
-import type { DbConstructor } from './DbConstructor'
 
 export interface Db {
 	<Tokens extends readonly string[]>(...pathTokens: Tokens): DbPathFromString<
@@ -23,7 +24,6 @@ export interface Db {
 }
 
 /** In transaction or not */
-@staticImplements<DbConstructor<Db>>()
 export class Db {
 	protected _context: DbContext
 
@@ -35,9 +35,12 @@ export class Db {
 		return newThis
 	}
 
-	[CALL](...args: string[] | [DocPath]) {
-		if (args[0] instanceof DocPath)
-			return new WeakDocRef(this._context, args[0] as never)
+	[CALL](...args: string[] | [DocPath]): unknown {
+		if (args[0] instanceof CustomDocPath) {
+			return new DocRef(this._context, args[0] as never, {
+				isStrong: false,
+			}) as never
+		}
 
 		const path = args.join('/')
 
@@ -50,12 +53,16 @@ export class Db {
 			else return new DocRefPattern(this._context, path) as never
 		} else if (newPathTokens.length % 2 === 1)
 			return new CollectionRef(this._context, path) as never
-		else return new WeakDocRef(this._context, path)
+		else return new DocRef(this._context, path, { isStrong: false }) as never
 	}
 
-	doc(...pathTokens: readonly string[]): WeakDocRef<IndexedDoc> {
+	doc(
+		...pathTokens: readonly string[]
+	): GetDocRef<{ docTag: AnyDocTag; isStrong: false }> {
 		// $assert(this.context)
-		return new WeakDocRef(this._context, concatPath(pathTokens))
+		return new DocRef(this._context, concatPath(pathTokens), {
+			isStrong: false,
+		}) as never
 	}
 
 	collection(...pathTokens: readonly string[]): CollectionRef<IndexedDoc> {
@@ -72,6 +79,6 @@ export class Db {
 		return new DocRefPattern(
 			this._context,
 			...pathTokens.map(s => s.toString()),
-		)
+		) as never
 	}
 }

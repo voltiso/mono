@@ -1,15 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/util'
+import { assert } from '@voltiso/assertor'
+import { $AssumeType } from '@voltiso/util'
 
-import type { DocRefTriggerEntry, UnknownDocRefBase } from '~/DocRef'
+import type { DocRef, DocRefTriggerEntry } from '~/DocRef'
 import { TransactorError } from '~/error'
+import type { VoltisoEntry } from '~/schemas'
 import type { BeforeCommitTrigger } from '~/Trigger'
 
 export function getBeforeCommits(
-	docRef: UnknownDocRefBase,
+	docRef: DocRef,
 ): DocRefTriggerEntry<BeforeCommitTrigger>[] {
+	// $AssumeType<CustomDocRef<{ docTag: AnyDocTag }>>(docRef)
 	if (docRef._beforeCommits) return docRef._beforeCommits
 
 	docRef._beforeCommits = []
@@ -40,6 +43,8 @@ export function getBeforeCommits(
 					}
 
 					//
+
+					$AssumeType<VoltisoEntry>(__voltiso)
 
 					for (const [aggregatorName, targetInfo] of Object.entries(
 						__voltiso.aggregateTarget,

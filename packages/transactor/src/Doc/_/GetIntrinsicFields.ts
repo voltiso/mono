@@ -6,19 +6,17 @@ import type { Merge2Reverse_ } from '@voltiso/util'
 
 import type { VoltisoEntry } from '~/schemas'
 
-import type { $$DocTI, DocTI } from '../DocTI'
+import type { $$DocRelated, GetDocTI } from '../DocRelated'
 import type { _$GetAggregateTarget } from './GData'
 
-export type GetVoltisoEntry<TI extends $$DocTI> = TI extends DocTI
-	? Merge2Reverse_<
-			{
-				// eslint-disable-next-line etc/no-internal
-				aggregateTarget: _$GetAggregateTarget<Type<TI['aggregates']>>
-			},
-			VoltisoEntry
-	  >
-	: never
+export type GetVoltisoEntry<R extends $$DocRelated> = Merge2Reverse_<
+	{
+		// eslint-disable-next-line etc/no-internal
+		aggregateTarget: _$GetAggregateTarget<Type<GetDocTI<R>['aggregates']>>
+	},
+	VoltisoEntry
+>
 
-export type GetIntrinsicFields<TI extends $$DocTI> = {
-	__voltiso: [GetVoltisoEntry<TI>][0]
+export type GetIntrinsicFields<R extends $$DocRelated> = {
+	__voltiso: [GetVoltisoEntry<R>][0]
 }

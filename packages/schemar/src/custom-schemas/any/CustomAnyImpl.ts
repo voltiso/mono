@@ -3,8 +3,6 @@
 
 import type {
 	AnyOptions,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
 	DefaultAnyOptions,
 	Schema,
 } from '@voltiso/schemar.types'
@@ -15,6 +13,7 @@ import {
 	isUnknownSchema,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl, SchemarError } from '~'

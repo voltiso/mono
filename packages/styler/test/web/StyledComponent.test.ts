@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsAny, IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type { ComponentProps } from 'react'
 
 import type {
@@ -33,11 +33,11 @@ describe('StyledComponent', () => {
 
 		type A = GetStyledComponent<{ Props: OptionalProps }>
 
-		Assert.is<A, IStyledComponent>()
-		Assert.is<A, IStyled>()
+		$Assert.is<A, IStyledComponent>()
+		$Assert.is<A, IStyled>()
 
-		Assert.is<A, StyledComponentLike<StylableLike, Props>>()
-		Assert.is<A, StyledComponentLike<StylableLike, {}>>()
+		$Assert.is<A, StyledComponentLike<StylableLike, Props>>()
+		$Assert.is<A, StyledComponentLike<StylableLike, {}>>()
 	})
 
 	it('type - second argument', () => {
@@ -45,19 +45,22 @@ describe('StyledComponent', () => {
 
 		// type A = ComponentProps<StyledComponentLike<StylableLike, { a: 1 }>> //!
 
-		Assert.is<GetStyled<{ Component: 'button'; Props: {} }>, IStyledComponent>()
+		$Assert.is<
+			GetStyled<{ Component: 'button'; Props: {} }>,
+			IStyledComponent
+		>()
 
-		Assert.is<
+		$Assert.is<
 			GetStyledComponent<{ Component: 'button'; Props: {} }>,
 			StyledComponentLike<StylableLike, {}>
 		>()
 
-		Assert.is<
+		$Assert.is<
 			GetStyledComponent<{ Component: 'button'; Props: { a: 1 } }>,
 			IStyledComponent
 		>()
 
-		Assert.is<
+		$Assert.is<
 			GetStyledComponent<{ Component: 'button'; Props: { abc: 1 } }>,
 			StyledComponentLike<StylableLike, { abc: 1 }>
 		>()
@@ -73,19 +76,19 @@ describe('StyledComponent', () => {
 			style?: Css | undefined
 		}
 
-		Assert.is<
+		$Assert.is<
 			GetStyledComponent<{ Component: StylableLike; Props: RequiredProps }>,
 			IStyledComponent
 		>()
 
-		Assert.is<
+		$Assert.is<
 			GetStyledComponent<{ Component: StylableLike; Props: RequiredProps }>,
 			IStyledComponent
 		>()
 
-		Assert.is<GetStyledComponent<{ Props: RequiredProps }>, IStyledComponent>()
+		$Assert.is<GetStyledComponent<{ Props: RequiredProps }>, IStyledComponent>()
 
-		Assert.is<GetStyledComponent<{ Props: RequiredProps }>, IStyled>()
+		$Assert.is<GetStyledComponent<{ Props: RequiredProps }>, IStyled>()
 
 		// Assert.is<
 		// 	GetStyledComponent<{ props: RequiredProps }>,
@@ -101,9 +104,9 @@ describe('StyledComponent', () => {
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 
-		Assert.is<GetStyledComponent<{ Props: P }>, IStyledComponent>()
-		Assert.is<GetStyledComponent<{ Props: P }>, IStyled>()
-		Assert.is<GetStyledComponent<{ Props: P }>, IStylable>()
+		$Assert.is<GetStyledComponent<{ Props: P }>, IStyledComponent>()
+		$Assert.is<GetStyledComponent<{ Props: P }>, IStyled>()
+		$Assert.is<GetStyledComponent<{ Props: P }>, IStylable>()
 	})
 
 	it('works (static type asserts) - not working with bivariance', () => {
@@ -130,10 +133,10 @@ describe('StyledComponent', () => {
 		expect.assertions(0)
 
 		type A = ComponentPropsWithRef_<IStyledComponent>
-		Assert<IsAny<A>>()
+		$Assert<IsAny<A>>()
 
 		type B = ComponentPropsWithoutRef_<IStyledComponent>
-		Assert<
+		$Assert<
 			IsIdentical<
 				B,
 				{
@@ -146,7 +149,7 @@ describe('StyledComponent', () => {
 
 		type C = ComponentPropsWithRef_<Comp>
 
-		Assert.is<C, { cssS: Css }>() // hmm (?)
+		$Assert.is<C, { cssS: Css }>() // hmm (?)
 	})
 
 	it('always has OuterProps - easy', () => {
@@ -157,19 +160,19 @@ describe('StyledComponent', () => {
 		type SC = GetStyledComponent<{ Props: Props }>
 
 		type Easy = ComponentProps<SC>
-		Assert.is<Easy, OuterProps>()
-		Assert.is<SampleCss, Easy['css']>()
+		$Assert.is<Easy, OuterProps>()
+		$Assert.is<SampleCss, Easy['css']>()
 
 		type EasyReference = ComponentPropsWithRef_<
 			GetStyledComponent<{ Props: Props }>
 		>
-		Assert.is<EasyReference, OuterProps>()
-		Assert.is<SampleCss, EasyReference['css']>()
+		$Assert.is<EasyReference, OuterProps>()
+		$Assert.is<SampleCss, EasyReference['css']>()
 
 		type EasyNoReference = ComponentPropsWithoutRef_<
 			GetStyledComponent<{ Props: Props }>
 		>
-		Assert.is<EasyNoReference, OuterProps>()
-		Assert.is<SampleCss, EasyNoReference['css']>()
+		$Assert.is<EasyNoReference, OuterProps>()
+		$Assert.is<SampleCss, EasyNoReference['css']>()
 	})
 })

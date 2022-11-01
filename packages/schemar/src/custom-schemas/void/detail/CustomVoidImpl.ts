@@ -2,14 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
 	DefaultVoidOptions,
 	ISchema,
 	IVoid,
 	VoidOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isVoid, SCHEMA_NAME } from '@voltiso/schemar.types'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema'
