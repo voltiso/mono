@@ -5,7 +5,7 @@ import type { AnyDoc } from '~/DocTypes'
 
 import type { CustomDocRef } from './CustomDocRef'
 import type { DocRef } from './DocRef'
-import type { CustomStrongDocRef, StrongDocRef } from './StrongDocRef'
+import type { StrongDocRef, StrongDocRef } from './StrongDocRef'
 import type { CustomWeakDocRef, WeakDocRef } from './WeakDocRef'
 
 // type A = GetDocRef<{ doc: IndexedDoc; onlyStaticallyKnownFields: true }>
@@ -25,7 +25,7 @@ export namespace GetDocRef {
 			: boolean extends DocRef.Options.Get<O>['isStrong']
 			? CustomDocRef<{ doc: DocRef.Options.Get<O>['doc'] }>
 			: DocRef.Options.Get<O>['isStrong'] extends true
-			? CustomStrongDocRef<{ doc: DocRef.Options.Get<O>['doc'] }>
+			? StrongDocRef<{ doc: DocRef.Options.Get<O>['doc'] }>
 			: DocRef.Options.Get<O>['isStrong'] extends false
 			? CustomWeakDocRef<{ doc: DocRef.Options.Get<O>['doc'] }>
 			: never

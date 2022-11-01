@@ -6,7 +6,7 @@ import { $Assert } from '@voltiso/util'
 
 import type { LeafData } from '~/Data'
 import { Doc } from '~/Doc'
-import type { CustomStrongDocRef } from '~/DocRef'
+import type { StrongDocRef } from '~/DocRef'
 
 import type { UpdatesFromData } from './UpdatesFromData'
 
@@ -25,16 +25,16 @@ describe('Doc util', () => {
 
 		type MyDocRef = MyDoc['ref']
 
-		$Assert.is<MyDocRef, CustomStrongDocRef<{ doc: MyDoc }>>()
-		$Assert.is<CustomStrongDocRef<{ doc: MyDoc }>, MyDocRef>()
+		$Assert.is<MyDocRef, StrongDocRef<{ doc: MyDoc }>>()
+		$Assert.is<StrongDocRef<{ doc: MyDoc }>, MyDocRef>()
 
-		$Assert.isSubtype<CustomStrongDocRef<{ doc: MyDoc }>, LeafData>()
+		$Assert.isSubtype<StrongDocRef<{ doc: MyDoc }>, LeafData>()
 
 		type X = UpdatesFromData<
-			CustomStrongDocRef<{ doc: MyDoc }>,
-			CustomStrongDocRef<{ doc: MyDoc }>
+			StrongDocRef<{ doc: MyDoc }>,
+			StrongDocRef<{ doc: MyDoc }>
 		>
 
-		$Assert.isSubtype<CustomStrongDocRef<{ doc: MyDoc }>, X>()
+		$Assert.isSubtype<StrongDocRef<{ doc: MyDoc }>, X>()
 	})
 })

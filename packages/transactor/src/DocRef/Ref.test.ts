@@ -8,7 +8,7 @@ import { Doc } from '~/Doc/Doc'
 import type { IDocConstructorNoBuilder } from '~/DocConstructor/index'
 
 import type { CustomDocRef } from './CustomDocRef'
-import type { CustomStrongDocRef, StrongDocRef } from './StrongDocRef'
+import type { StrongDocRef, StrongDocRef } from './StrongDocRef'
 import type { CustomWeakDocRef } from './WeakDocRef'
 
 declare module '..' {
@@ -36,25 +36,25 @@ describe('Ref', () => {
 		$Assert.is<typeof MyMysticDoctor, IDocConstructorNoBuilder>()
 
 		$Assert.is<
-			CustomStrongDocRef<{ doc: MyMysticClient }>,
+			StrongDocRef<{ doc: MyMysticClient }>,
 			CustomDocRef<{ doc: MyMysticClient }>
 		>()
 
 		$Assert(
-			$Is<CustomStrongDocRef<{ doc: MyMysticClient }>>().not.relatedTo<
-				CustomStrongDocRef<{ doc: MyMysticDoctor }>
+			$Is<StrongDocRef<{ doc: MyMysticClient }>>().not.relatedTo<
+				StrongDocRef<{ doc: MyMysticDoctor }>
 			>(),
 
 			// $Is<StrongDocRef<MyMysticClient>>().subtypeOf<DocRef<$$Doc>>(),
 
 			// $Is<DocRef<$$Doc>().not.subtypeOf<StrongDocRef<MyMysticClient>>(),
 
-			$Is<CustomStrongDocRef<{ doc: MyMysticClient }>>().subtypeOf<
+			$Is<StrongDocRef<{ doc: MyMysticClient }>>().subtypeOf<
 				CustomDocRef<{ doc: MyMysticClient }>
 			>(),
 
 			$Is<CustomWeakDocRef<{ doc: MyMysticClient }>>().not.subtypeOf<
-				CustomStrongDocRef<{ doc: MyMysticClient }>
+				StrongDocRef<{ doc: MyMysticClient }>
 			>(),
 		)
 	})
@@ -75,8 +75,8 @@ describe('Ref', () => {
 			// $Is<StrongDocRefBase<Ut2>>().subtypeOf<DocRef>(),
 
 			$Is<Ut1>().not.relatedTo<Ut2>(),
-			$Is<CustomStrongDocRef<{ doc: Ut1 }>>().not.relatedTo<
-				CustomStrongDocRef<{ doc: Ut2 }>
+			$Is<StrongDocRef<{ doc: Ut1 }>>().not.relatedTo<
+				StrongDocRef<{ doc: Ut2 }>
 			>(),
 		)
 	})

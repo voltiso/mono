@@ -12,7 +12,7 @@ import type {
 	WeakDocRefLike,
 } from '~/DocRef'
 import { DocRef } from '~/DocRef'
-import type { DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTag } from '~/DocTypes'
 
 /**
  * Match any ref, make it weakRef

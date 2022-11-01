@@ -7,6 +7,9 @@ import { $Assert } from '@voltiso/util'
 import { Doc } from '~/Doc'
 import { sStrongRef, sWeakRef } from '~/schemas'
 
+import type { StrongDocRef } from './StrongDocRef'
+import type { CustomWeakDocRef } from './WeakDocRef'
+
 declare module '..' {
 	interface DocTypes {
 		oops: Client
@@ -24,11 +27,12 @@ describe('DocRef', () => {
 	it('recursion', () => {
 		expect.assertions(0)
 
+		//
 		;() => {
 			const client = 0 as unknown as Client
 
-			// $Assert<IsIdentical<typeof client.strong, StrongDocRef<'oops'>>>()
-			// $Assert<IsIdentical<typeof client.weak, WeakDocRef<'oops'>>>()
+			$Assert<IsIdentical<typeof client.strong, StrongDocRef<'oops'>>>()
+			$Assert<IsIdentical<typeof client.weak, CustomWeakDocRef<'oops'>>>()
 		}
 	})
 })

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DocBrand } from '~/brand'
-import type { AnyDoc, DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTagLike } from '~/DocTypes'
 
 export const IS_DOC_REF = Symbol('IS_DOC_REF')
 export type IS_DOC_REF = typeof IS_DOC_REF
@@ -12,7 +12,7 @@ export interface $$DocRef {
 }
 
 /** Minimal version used by `RelaxRefs` */
-export interface DocRefLike<tag extends DocTag | AnyDoc = AnyDoc>
+export interface DocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
 	extends $$DocRef,
 		DocBrand<tag> {
 	//
@@ -20,13 +20,13 @@ export interface DocRefLike<tag extends DocTag | AnyDoc = AnyDoc>
 }
 
 /** Minimal version used by `RelaxRefs` */
-export interface StrongDocRefLike<tag extends DocTag | AnyDoc = AnyDoc>
+export interface StrongDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
 	extends DocRefLike<tag> {
 	isStrong: true
 }
 
 /** Minimal version used by `RelaxRefs` */
-export interface WeakDocRefLike<tag extends DocTag | AnyDoc = AnyDoc>
+export interface WeakDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
 	extends DocRefLike<tag> {
 	isStrong: false
 }

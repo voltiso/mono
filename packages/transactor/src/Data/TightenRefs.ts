@@ -18,7 +18,7 @@ export type _TightenRefs<T> = T extends DocRefLike
 	  }
 	: T
 
-export type TightenRefs<S extends $$Schema> = S extends {
+export type TightenRefs<S> = S extends $$Schema & {
 	Output: unknown
 	Input: unknown
 }
@@ -31,4 +31,4 @@ export type TightenRefs<S extends $$Schema> = S extends {
 				}
 			>
 	  >
-	: never
+	: _TightenRefs<S>

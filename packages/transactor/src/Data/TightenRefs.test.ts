@@ -2,12 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Schema, SimpleSchema } from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
-	CustomStrongDocRef,
 	CustomWeakDocRef,
+	StrongDocRef,
 	StrongDocRefLike,
 	WeakDocRefLike,
 } from '~/DocRef'
@@ -23,14 +22,12 @@ describe('RelaxRefs', () => {
 			}>
 		>
 
-		$Assert<
-			IsIdentical<
-				X,
-				SimpleSchema<{
-					weak: CustomWeakDocRef<{ doc: 'oops' }>
-					strong: CustomStrongDocRef<{ doc: 'oops' }>
-				}>
-			>
+		$Assert.is<
+			X,
+			SimpleSchema<{
+				weak: CustomWeakDocRef<{ doc: 'oops' }>
+				strong: StrongDocRef<{ doc: 'oops' }>
+			}>
 		>()
 	})
 })

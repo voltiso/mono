@@ -3,7 +3,7 @@
 
 import type { CustomBrand } from '@voltiso/util'
 
-import type { AnyDoc, DocTag } from '~/DocTypes'
+import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
 
 //
 
@@ -31,7 +31,7 @@ declare module '@voltiso/util' {
  * type UserId = string & DocBrand<'users'> & DocBrand<'usersData'>
  * ```
  */
-export interface DocBrand<tag extends DocTag | AnyDoc>
+export interface DocBrand<tag extends DocTagLike | AnyDoc>
 	extends CustomBrand<
 		'transactor.doc',
 		tag extends AnyDoc

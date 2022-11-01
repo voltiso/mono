@@ -1,7 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schema, SimplifySchema } from '@voltiso/schemar.types'
+import type {
+	$$Schema,
+	$$Schemable,
+	SimplifySchema,
+} from '@voltiso/schemar.types'
 import type { BRAND, Merge2_ } from '@voltiso/util'
 
 import type { DocRefLike } from '~/DocRef'
@@ -15,7 +19,7 @@ export type _RelaxRefs<T> = T extends DocRefLike
 	  }
 	: T
 
-export type RelaxRefs<S extends $$Schema> = S extends {
+export type RelaxRefs<S extends $$Schemable> = S extends $$Schema & {
 	Output: unknown
 	Input: unknown
 }
@@ -28,4 +32,4 @@ export type RelaxRefs<S extends $$Schema> = S extends {
 				}
 			>
 	  >
-	: never
+	: _RelaxRefs<S>

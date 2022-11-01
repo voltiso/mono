@@ -12,7 +12,7 @@ import type {
 	Primitive,
 } from '@voltiso/util'
 
-import type { $WithId, DocIdString, WithId } from '~/Data'
+import type { $WithId, DocIdString, TightenRefs, WithId } from '~/Data'
 import type { $$Doc, ExecutionContext, IDoc } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 
@@ -45,13 +45,15 @@ export type _$GetAggregateTarget<T extends object> = T extends any
 export type GetData<R extends $$DocRelatedLike> = R extends any
 	? $_<
 			GetIntrinsicFields<R> &
-				CustomObject.WithAnd<
+				TightenRefs<
 					CustomObject.WithAnd<
-						GetDocTI<R>['publicOnCreation'],
-						GetDocTI<R>['public']
-					>,
-					GetDocTI<R>['private']
-				>['Output']
+						CustomObject.WithAnd<
+							GetDocTI<R>['publicOnCreation'],
+							GetDocTI<R>['public']
+						>,
+						GetDocTI<R>['private']
+					>['Output']
+				>
 	  >
 	: never
 
