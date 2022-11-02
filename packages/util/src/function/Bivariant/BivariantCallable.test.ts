@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IsIdentical } from '~'
 import { $Assert, $Is } from '~/$strip'
 
 import type { BivariantCallable } from './BivariantCallable'
@@ -17,5 +18,17 @@ describe('Bivariant', () => {
 				BivariantCallable<(x: 1 | 2) => 0>
 			>(),
 		)
+	})
+
+	it('works with `this`', () => {
+		type A = BivariantCallable<(this: string, a: number) => string>
+		$Assert<IsIdentical<A, (this: string, a: number) => string>>()
+
+		type B = BivariantCallable<(a: number) => string>
+		$Assert<IsIdentical<B, (a: number) => string>>()
+	})
+
+	it('misc', () => {
+		$Assert<IsIdentical<(this: unknown) => void, () => void>>()
 	})
 })

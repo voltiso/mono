@@ -3,7 +3,7 @@
 
 import { $AssumeType } from '@voltiso/util'
 
-import type { $$DocRef, WeakDocRef, DocRefMethodEntry } from '~/DocRef'
+import type { $$DocRef, DocRefMethodEntry, WeakDocRef } from '~/DocRef'
 
 export function getMethods(ref: $$DocRef): DocRefMethodEntry[] {
 	$AssumeType<WeakDocRef>(ref)

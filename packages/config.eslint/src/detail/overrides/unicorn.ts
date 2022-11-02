@@ -46,7 +46,7 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/no-array-callback-reference': 1,
 		'unicorn/no-array-for-each': 1,
 		'unicorn/no-array-method-this-argument': 1,
-		'unicorn/no-array-push-push': 1,
+		'unicorn/no-array-push-push': 0, // useful to fast-reorder
 		'unicorn/no-array-reduce': 1,
 		'unicorn/no-await-expression-member': 1,
 		'unicorn/no-console-spaces': 1,

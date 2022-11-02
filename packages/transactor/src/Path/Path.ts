@@ -16,10 +16,8 @@ import { at } from '@voltiso/util'
 
 import type { DocBrand } from '~/brand'
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { $$Doc } from '~/Doc'
-import type { IndexedDoc } from '~/Doc/IndexedDoc'
 import type { DocRefPattern, GetDocRef } from '~/DocRef'
-import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
+import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
 
@@ -94,12 +92,27 @@ export type CollectionPatternString<S extends string = string> = S &
  * @param str - A path string to be checked
  * @returns `str as PathToken`
  */
-export const isPathString = (str: string): str is DbPathString =>
-	!str.includes('//') &&
-	!(str.includes('*') || str.includes('{') || str.includes('}'))
-export const isPatternString = (str: string): str is DbPatternString =>
-	!str.includes('//') &&
-	(str.includes('*') || str.includes('{') || str.includes('}'))
+export function isPathString(str: unknown): str is DbPathString {
+	return (
+		typeof str === 'string' &&
+		str !== '' &&
+		!str.startsWith('/') &&
+		!str.endsWith('/') &&
+		!str.includes('//') &&
+		!(str.includes('*') || str.includes('{') || str.includes('}'))
+	)
+}
+
+export function isPatternString(str: unknown): str is DbPatternString {
+	return (
+		typeof str === 'string' &&
+		str !== '' &&
+		!str.startsWith('/') &&
+		!str.endsWith('/') &&
+		!str.includes('//') &&
+		(str.includes('*') || str.includes('{') || str.includes('}'))
+	)
+}
 
 /**
  * Check if `str` is valid and return `PathString` (identity function;
@@ -210,8 +223,9 @@ export class CustomDocPath<
 	}
 }
 
-const isCollectionPathString = (str: string): str is CollectionPathString =>
-	isPathString(str) && str.split('/').length % 2 === 1
+function isCollectionPathString(str: string): str is CollectionPathString {
+	return isPathString(str) && str.split('/').length % 2 === 1
+}
 
 export class CollectionPath<S extends string = string> extends Path<S> {
 	constructor(str: S) {
@@ -280,7 +294,7 @@ export type _PathFromString<
 
 export type DbPathFromString<
 	P extends string,
-	Doc extends $$Doc = IndexedDoc,
+	Doc extends $$DocRelated = AnyDoc,
 	// eslint-disable-next-line etc/no-internal
 > = _PathFromString<
 	GetDocRef<{ doc: GetDocTag<Doc>; isStrong: false }>,

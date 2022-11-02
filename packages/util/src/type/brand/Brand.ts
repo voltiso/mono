@@ -1,14 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	Brands,
-	GetNested,
-	Nest_,
-	NoArgument,
-	PropertyPathString,
-	Split,
-} from '~'
+import type { BrandReference, Brands, GetNested_, Nest_, NoArgument } from '~'
 
 /** 🌿 Type-only (no value at runtime) */
 export declare const BRAND: unique symbol
@@ -38,19 +31,21 @@ export type BRAND = typeof BRAND
  * 🌿 **Type-only** (no value at runtime)
  */
 export interface CustomBrand<
-	path extends BrandPath,
-	detail extends Brand.GetConstraint<path>,
-> {
+	B extends BrandReference,
+	detail extends Brand.GetConstraint<B>,
+> extends CustomBrand_<B, detail> {}
+
+export interface CustomBrand_<B, detail> {
 	/** 🌿 Type-only (no value at runtime) */
 	// eslint-disable-next-line etc/no-internal
-	readonly [BRAND]: _CustomBrandEntry<path, detail>
+	readonly [BRAND]: _CustomBrandEntry<B, detail>
 }
 
 /** @internal */
-export type _CustomBrandEntry<
-	path extends BrandPath,
-	detail extends Brand.GetConstraint<path>,
-> = Nest_<detail, Split<path, { separator: '.' }>>
+export type _CustomBrandEntry<B, detail> = Nest_<
+	detail,
+	BrandReference.ToPath_<B>
+>
 
 /**
  * Helper for implementing **nominal type hierarchies**.
@@ -64,26 +59,29 @@ export type _CustomBrandEntry<
  *
  * 🌿 **Type-only** (no value at runtime)
  */
-export interface Brand<path extends BrandPath>
-	extends CustomBrand<path, Brand.GetConstraint<path>> {}
+export interface Brand<B extends BrandReference>
+	extends CustomBrand<B, Brand.GetConstraint<B>> {}
 
 // export interface Branded<path extends BrandPath>
 // 	extends CustomBranded<path, Brand.GetConstraint<path>> {}
 
 export type GetBrand<
-	path extends BrandPath,
-	detail extends Brand.GetConstraint<path> | NoArgument = NoArgument,
-> = detail extends NoArgument
-	? Brand<path>
-	: detail extends Brand.GetConstraint<path>
-	? CustomBrand<path, detail>
+	B extends BrandReference,
+	detail extends Brand.GetConstraint<B> | NoArgument = NoArgument,
+> = GetBrand_<B, detail>
+
+export type GetBrand_<B, detail = NoArgument> = B extends BrandReference
+	? detail extends NoArgument
+		? Brand<B>
+		: detail extends Brand.GetConstraint<B>
+		? CustomBrand<B, detail>
+		: never
 	: never
 
-export type BrandPath = Exclude<PropertyPathString.ForObject<Brands>, ''>
+//
 
 export namespace Brand {
-	export type GetConstraint<path extends BrandPath> = GetNested<
-		Brands,
-		Split<path, { separator: '.' }>
-	>
+	export type GetConstraint<B extends BrandReference> = GetConstraint_<B>
+
+	export type GetConstraint_<B> = GetNested_<Brands, BrandReference.ToPath_<B>>
 }

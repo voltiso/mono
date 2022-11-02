@@ -3,10 +3,8 @@
 
 import type { $$Schemable, $$SchemableObject } from '@voltiso/schemar.types'
 
-import type { DocTag } from '~/DocTypes'
-
 export type $$PartialDocOptions = {
-	tag?: DocTag
+	// tag?: DocTag // ! temporarily disable to clean up lib API
 
 	id?: $$Schemable
 

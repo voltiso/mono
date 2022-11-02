@@ -89,6 +89,9 @@ describe('add', () => {
 
 		expect(a[0]).not.toBeInstanceOf(CustomDocRef)
 
-		expect(a[0]).toMatchObject({ __isStrong: true })
+		expect(a[0]).toMatchObject({
+			__voltiso: { type: 'Ref' },
+			isStrong: true,
+		})
 	})
 })

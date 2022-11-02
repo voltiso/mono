@@ -5,23 +5,19 @@ import type { Override } from '@voltiso/util'
 import { define, lazyConstructor } from '@voltiso/util'
 
 import type {
-	GAggregatePromises,
+	GetAggregatePromises,
 	GetDocFields,
 	GetMethodPromises,
 	GetVoltisoEntry,
 } from '~/Doc'
 import type { DocFieldPath } from '~/DocFieldPath'
-import type { $$DocRelatedLike, GetDoc } from '~/DocRelated'
+import type { $$DocRelatedLike } from '~/DocRelated'
 
 import type { AnyDoc, DocRef } from '..'
 import type { DocRefContext } from './_/Context'
 import { _CustomDocRef } from './_CustomDocRef'
-import type { $$DocRef } from './$$DocRef'
 
 //
-
-export type CustomDocRef<O extends Partial<CustomDocRef.Options> = {}> =
-	CustomDocRef.Get<O>
 
 // eslint-disable-next-line import/export
 export const CustomDocRef = lazyConstructor(
@@ -29,10 +25,13 @@ export const CustomDocRef = lazyConstructor(
 	() => _CustomDocRef,
 ) as unknown as CustomDocRef.Constructor
 
+export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
+	extends CustomDocRef.Get<O> {}
+
 // eslint-disable-next-line import/export
 export namespace CustomDocRef {
-	export type Get<O extends Partial<Options>> = Base<O> &
-		Extra<Options.Get<O>['doc']>
+	export type Get<O extends Partial<Options>> = Base<O>
+	// & Extra<Options.Get<O>['doc']> // ! disable this stuff...
 
 	// export type Get<O extends Partial<DocRef.Options>> = Base<
 	// 	$_<$Omit<O, 'onlyStaticallyKnownFields'>>
@@ -48,19 +47,20 @@ export namespace CustomDocRef {
 
 	/** 🟢 The statically-known members */
 	export interface Base<O extends Partial<DocRef.Options>>
-		extends $$DocRef,
-			// eslint-disable-next-line etc/no-internal
-			_CustomDocRef<Options.Get<O>>,
-			IntrinsicFields<O>,
-			PromiseLike<GetDoc<Options.Get<O>['doc']> | MaybeNull<O>> {}
+		// eslint-disable-next-line etc/no-internal
+		extends _CustomDocRef<Options.Get<O>> {}
 
 	export interface IntrinsicFields<O extends Partial<DocRef.Options>> {
 		__voltiso: DocFieldPath<GetVoltisoEntry<Options.Get<O>['doc']>>
 	}
 
-	/** 👻 The non-statically-known members */
+	/**
+	 * 👻 The non-statically-known members
+	 *
+	 * ⚠️ Troublesome - currently disabled
+	 */
 	export type Extra<R extends $$DocRelatedLike> = Omit<
-		GetDocFields<R> & GetMethodPromises<R> & GAggregatePromises<R>,
+		GetDocFields<R> & GetMethodPromises<R> & GetAggregatePromises<R>,
 		keyof Base<any>
 	>
 

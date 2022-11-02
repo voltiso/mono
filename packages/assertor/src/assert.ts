@@ -23,6 +23,9 @@ export interface AssertFunction {
 	(value: unknown, __callInfo?: CallInfo | undefined): asserts value
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
+	(value: unknown, message?: string, __callInfo?: CallInfo | undefined): asserts value
+
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	<S extends $$Schemable>(
 		schema: S,
 		value: Type<S> | AlsoAccept<unknown>,
@@ -135,10 +138,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 			//
 
-			/**
-			 * @callInfo ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
-			 * `__callInfo` argument when transpiling
-			 */
+			/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 			not(value: unknown, __callInfo?: CallInfo | undefined) {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				const assertor = new Assertor(`${name}.not`, s.falsy) as any
@@ -149,10 +149,10 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 		call: (...args: any) => {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const [schema, value, __callInfo]: [
+			const [schema, value, ...rest]: [
 				ISchema,
 				unknown,
-				CallInfo | undefined,
+				...unknown[]
 			] =
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				isSchema(args[0])
@@ -163,7 +163,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			const assertor = new Assertor(name, schema) as any
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			assertor(value, __callInfo)
+			assertor(value, ...rest)
 		},
 	})
 

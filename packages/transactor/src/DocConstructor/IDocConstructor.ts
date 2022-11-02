@@ -27,8 +27,8 @@ export interface IDocConstructorNoBuilder extends $$DocConstructor {
 export interface IDocConstructor extends IDocConstructorNoBuilder {
 	(options: any): unknown
 
-	/** @deprecated Use call signature instead */
-	tag(tag: any): unknown
+	// /** @deprecated Use call signature instead */
+	// tag(tag: any): unknown
 
 	/** @deprecated Use call signature instead */
 	publicOnCreation(s: any): unknown
@@ -61,7 +61,7 @@ export interface IDocConstructor extends IDocConstructorNoBuilder {
 
 	//
 
-	// with(plugin: DocBuilderPlugin<any>): unknown
+	withPlugin(plugin: any): unknown
 
 	get schemaWithId(): any
 	get schemaWithoutId(): any

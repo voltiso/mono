@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { CustomString } from '@voltiso/schemar.types'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -17,7 +17,7 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-class Doctor extends Doc('xyz')({
+class Doctor extends Doc('xyz').with({
 	id: s.string.maxLength(3),
 
 	public: {
@@ -59,11 +59,11 @@ describe('docSchema', () => {
 			doctor: { id: 'aaa', secret: 'asd' },
 		})
 
-		Assert<
+		$Assert<
 			IsIdentical<typeof Doctor.idSchema, CustomString<{ maxLength: 3 }>>
 		>()
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof Doctor.schemaWithId.getShape.id,
 				CustomString<{ maxLength: 3 }>

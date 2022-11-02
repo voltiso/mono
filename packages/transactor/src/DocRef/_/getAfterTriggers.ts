@@ -3,7 +3,7 @@
 
 import { isPlainObject } from '@voltiso/util'
 
-import type { CustomDocRef, WeakDocRef, DocRefTriggerEntry } from '~/DocRef'
+import type { CustomDocRef, DocRefTriggerEntry, WeakDocRef } from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { AfterTrigger } from '~/Trigger'

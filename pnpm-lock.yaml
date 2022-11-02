@@ -204,6 +204,7 @@ importers:
       jest-environment-jsdom: ^29.2.0
       react: ^18.2.0
       react-native: ^0.70.3
+      source-map-support: ^0.5.21
     dependencies:
       '@babel/core': 7.19.3
       '@babel/preset-env': 7.19.4_@babel+core@7.19.3
@@ -218,6 +219,7 @@ importers:
       '@types/react': 18.0.21
       '@types/testing-library__jest-dom': 5.14.5
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
+      source-map-support: 0.5.21
 
   packages/config.jest.lib:
     specifiers:
@@ -980,6 +982,7 @@ importers:
   packages/transactor.localstore.test:
     specifiers:
       '@types/random-seed': ^0.3.3
+      '@voltiso/assertor': workspace:^3.0.0
       '@voltiso/config.jest.esr': workspace:^
       '@voltiso/config.jest.lib': workspace:^
       '@voltiso/localstore': workspace:^
@@ -994,6 +997,7 @@ importers:
       zone.js: ^0.11.8
     devDependencies:
       '@types/random-seed': 0.3.3
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.jest.lib': link:../config.jest.lib
       '@voltiso/localstore': link:../localstore

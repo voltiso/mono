@@ -4,7 +4,7 @@
 import type { $$Doc } from './Doc'
 import * as h from './Doc/_/triggerCreators'
 import type { DocConstructorImpl } from './DocConstructor'
-import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from './Trigger'
+import type { AfterTrigger, OnGetTrigger, Trigger } from './Trigger'
 
 export function method<
 	D extends $$Doc & { [k in Name]: (...args: never[]) => Promise<unknown> },
@@ -90,7 +90,7 @@ export function after<
 }
 
 export function beforeCommit<
-	D extends $$Doc & { [k in Name]: BeforeCommitTrigger<D> },
+	D extends $$Doc & { [k in Name]: Trigger.BeforeCommit<D> },
 	Name extends keyof D & string,
 >(doc: D, name: Name) {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

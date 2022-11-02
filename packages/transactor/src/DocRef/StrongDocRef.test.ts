@@ -11,8 +11,8 @@ import type { GetDocTI } from '~/DocRelated'
 import type { CustomDocPath } from '~/Path'
 
 import type { NestedPromise } from './_/NestedPromise'
-import type { WeakDocRef } from './WeakDocRef'
 import type { DocRef } from './StrongDocRef'
+import type { WeakDocRef } from './WeakDocRef'
 
 describe('StrongDocRef', () => {
 	// eslint-disable-next-line jest/no-commented-out-tests

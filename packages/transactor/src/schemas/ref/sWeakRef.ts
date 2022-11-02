@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
 import { lazyValue, OPTIONS, ProtoCallable } from '@voltiso/util'
 
-import type { WeakDocRefLike, WeakDocRef } from '~/DocRef'
+import type { WeakDocRef, WeakDocRefLike } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 

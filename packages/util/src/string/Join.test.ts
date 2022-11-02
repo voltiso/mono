@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsEqual } from '~'
+import type { IsEqual, IsIdentical } from '~'
 import { $Assert } from '~/$strip'
 
 import type { Join } from './Join'
@@ -21,4 +21,15 @@ describe('join', () => {
 
 		$Assert<IsEqual<Join<['a', 'b', 'c', 'd'], { separator: '' }>, 'abcd'>>()
 	})
+
+	it('works with `string` supertype', () => {
+		type A = Join<['asd', string], { separator: '|' }>
+		$Assert<IsIdentical<A, `asd|${string}`>>()
+	})
+
+	// ! TODO
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('handles unknown tails', () => {
+	// 	type A = Join<['a', 'b', ...string[]], {separator: '|'}>
+	// })
 })

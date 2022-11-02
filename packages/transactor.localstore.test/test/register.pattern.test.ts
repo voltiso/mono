@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { CollectionRef, CollectionRefPattern } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -17,7 +17,7 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-class MyNestedDoc extends Doc('nestedUserA/*/dailyMeetings')({
+class MyNestedDoc extends Doc('nestedUserA/*/dailyMeetings').with({
 	public: {
 		field: s.number,
 	},
@@ -29,7 +29,7 @@ describe('register at pattern', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
-		Assert<
+		$Assert<
 			IsIdentical<
 				typeof myNestedDocs,
 				CollectionRefPattern<'nestedUserA/*/dailyMeetings', MyNestedDoc>
@@ -37,9 +37,14 @@ describe('register at pattern', () => {
 		>()
 
 		const concreteCollection = myNestedDocs('adam')
-		Assert<IsIdentical<typeof concreteCollection, CollectionRef<MyNestedDoc>>>()
+		$Assert<
+			IsIdentical<typeof concreteCollection, CollectionRef<MyNestedDoc>>
+		>()
 
-		await concreteCollection.add({ id: 'qwerty', field: 4 })
+		await concreteCollection.add({
+			id: 'qwerty' as never,
+			field: 4,
+		})
 
 		const rawDoc = await database
 			.doc('nestedUserA/adam/dailyMeetings/qwerty')

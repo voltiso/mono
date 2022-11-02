@@ -9,14 +9,10 @@ import type { CustomDocRef } from './CustomDocRef'
 /**
  * ⚠️ This actually is a supertype of `DocRef`
  *
- * - Rarely used - no ref-counting❗
+ * - 😱 no ref-counting❗
  */
-export type WeakDocRef<R extends $$DocRelatedLike = AnyDoc> = CustomDocRef<{
-	doc: R
-}>
-
-// export const WeakDocRef = CustomDocRef
-
-//
-
-//
+export interface WeakDocRef<
+	R extends $$DocRelatedLike = AnyDoc,
+> extends CustomDocRef<{
+		doc: R
+	}> {}

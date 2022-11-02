@@ -27,6 +27,8 @@ export function getIdSchemas(ref: $$DocRef) {
 	for (const { getPathMatches, schema } of _allIdSchemas) {
 		const { pathParams, pathArgs } = getPathMatches(path) || {}
 
+		// console.log('get ID schema for', ref.path.toString(), {pathParams, pathArgs})
+
 		if (pathParams || pathArgs) idSchemas.push(schema as never)
 	}
 

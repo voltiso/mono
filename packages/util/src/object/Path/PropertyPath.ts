@@ -21,7 +21,6 @@ export type PropertyPath<Obj extends unknown | NoArgument = NoArgument> = [
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace PropertyPath {
 	/** Use {@link PropertyPath} instead */
 	export type Supertype = readonly (
@@ -30,11 +29,9 @@ export namespace PropertyPath {
 	)[]
 
 	/** Use {@link PropertyPath} instead */
-	export type ForObject<O> =
-		| []
-		| (O extends object
-				? {
-						[k in keyof O]: [k, ...ForObject<O[k]>]
-				  }[keyof O]
-				: never)
+	export type ForObject<O> = O extends object
+		? {
+				[k in keyof O]-?: [k] | [k, ...ForObject<O[k]>]
+		  }[keyof O]
+		: never
 }

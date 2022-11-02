@@ -7,7 +7,7 @@ import { $Assert, $dev } from '@voltiso/util'
 import type { Aggregator } from '~/Aggregator'
 import type { DocTI } from '~/Doc'
 import { IS_DOC_TYPE_INFO } from '~/Doc'
-import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
+import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 
 export interface DocDerivedData extends DocTI {
 	id: DocTI['id'] | undefined
@@ -16,7 +16,7 @@ export interface DocDerivedData extends DocTI {
 	methods: {}
 
 	readonly afters: readonly AfterTrigger[]
-	readonly beforeCommits: readonly BeforeCommitTrigger[]
+	readonly beforeCommits: readonly Trigger.BeforeCommit[]
 	readonly onGets: readonly OnGetTrigger[]
 
 	readonly aggregators: readonly Aggregator[]

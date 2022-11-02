@@ -2,16 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type {
-	DTI,
-	Id,
-	IDoc,
-	StrongDocRef,
-	StrongDocRefBase,
-} from '@voltiso/transactor'
+import type { DocIdBrand, DTI, IDoc } from '@voltiso/transactor'
 import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert, Is } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -38,11 +32,11 @@ describe('ref', () => {
 		expect.assertions(0)
 
 		type DoctorData = ReturnType<DoctorX['dataWithId']>
-		Assert<
+		$Assert<
 			IsIdentical<
 				DoctorData,
 				{
-					id: Id<DoctorX>
+					id: string & DocIdBrand<typeof AnyDoc>
 					profile: {
 						name: string
 						specialty: string
@@ -60,14 +54,14 @@ describe('ref', () => {
 	it('checks numRefs on delete', async () => {
 		expect.hasAssertions()
 
-		Assert(Is<StrongDocRef<DoctorX>>().not.relatedTo<StrongDocRef<Patient>>())
+		$Assert($Is<DocRef<DoctorX>>().not.relatedTo<DocRef<Patient>>())
 
-		Assert(Is<StrongDocRef<DoctorX>>().not.relatedTo<typeof p.ref>())
+		$Assert($Is<DocRef<DoctorX>>().not.relatedTo<typeof p.ref>())
 
-		Assert(Is<typeof d>().not.relatedTo<typeof p>())
-		Assert(Is<typeof d.ref>().not.relatedTo<typeof p.ref>())
+		$Assert($Is<typeof d>().not.relatedTo<typeof p>())
+		$Assert($Is<typeof d.ref>().not.relatedTo<typeof p.ref>())
 
-		Assert.is<StrongDocRef<DoctorX>[DTI]['tag'], 'untagged'>()
+		$Assert.is<DocRef<DoctorX>[DTI]['tag'], 'untagged'>()
 
 		await database.doc('doctor/d').delete()
 		await database.doc('patient/p').delete()
@@ -78,7 +72,7 @@ describe('ref', () => {
 			},
 		})
 
-		Assert(Is(d.ref).identicalTo<StrongDocRefBase<DoctorX>>())
+		$Assert($Is(d.ref).identicalTo<DocRef<DoctorX>>())
 
 		const p = await patients.add({
 			profile: {
@@ -127,8 +121,8 @@ describe('ref', () => {
 			},
 		})
 
-		Assert.is<DoctorX, IDoc>()
-		Assert<IsIdentical<typeof d, DoctorX>>()
+		$Assert.is<DoctorX, IDoc>()
+		$Assert<IsIdentical<typeof d, DoctorX>>()
 
 		const p = await patients.add({
 			profile: {
@@ -137,7 +131,7 @@ describe('ref', () => {
 			},
 		})
 		const dd = await p.profile.mainDoctor
-		Assert<IsIdentical<typeof dd, DoctorX>>()
+		$Assert<IsIdentical<typeof dd, DoctorX>>()
 
 		expect(dd.profile.name).toBe('d')
 	})

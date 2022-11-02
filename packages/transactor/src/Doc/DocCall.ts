@@ -23,5 +23,5 @@ export function DocCall(
 	if (typeof arg === 'string' || arg === AnyDoc)
 		// eslint-disable-next-line no-useless-call
 		return this.tag.call(this, arg as never) as never
-	else return this.fields(arg) as never
+	else return this.with(arg) as never
 }

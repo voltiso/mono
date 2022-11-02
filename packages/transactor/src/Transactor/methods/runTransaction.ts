@@ -18,12 +18,10 @@ import type { CustomDoc, DocTI } from '~/Doc'
 import { CustomDocRef, getBeforeCommits, processTriggers } from '~/DocRef'
 import { TransactorError } from '~/error'
 import { sVoltisoEntry } from '~/schemas'
-import type { Cache, CacheEntry } from '~/Transaction/Cache'
-import { triggerGuard } from '~/Transaction/guard'
-import { setCacheEntry } from '~/Transaction/methods/setCacheEntry'
-import { Transaction } from '~/Transaction/Transaction'
+import type { Cache, CacheEntry } from '~/Transaction'
+import { setCacheEntry, Transaction, triggerGuard } from '~/Transaction'
 import type { Transactor } from '~/Transactor'
-import type { BeforeCommitTriggerParams } from '~/Trigger/TriggerParams'
+import type { TriggerParams } from '~/Trigger'
 import { dump } from '~/util/dump'
 import { isEqual } from '~/util/isEqual'
 
@@ -175,7 +173,7 @@ export async function runTransaction<R>(
 
 								assert(cacheEntry.__voltiso)
 
-								const params: BeforeCommitTriggerParams<
+								const params: TriggerParams.BeforeCommit<
 									CustomDoc<DocTI, 'inside'>
 								> = {
 									doc: cacheEntry.proxy as never,

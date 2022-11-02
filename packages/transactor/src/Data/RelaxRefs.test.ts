@@ -15,6 +15,9 @@ describe('RelaxRefs', () => {
 			Schema<{
 				strong: DocRef<'oops'>
 				weak: WeakDocRef<'oops'>
+
+				strongAny: DocRef
+				weakAny: WeakDocRef
 			}>
 		>
 
@@ -24,6 +27,9 @@ describe('RelaxRefs', () => {
 				SimpleSchema<{
 					strong: DocRefLike<'oops'>
 					weak: WeakDocRefLike<'oops'>
+
+					strongAny: DocRefLike
+					weakAny: WeakDocRefLike
 				}>
 			>
 		>()

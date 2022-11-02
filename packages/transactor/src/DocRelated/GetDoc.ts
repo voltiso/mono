@@ -39,7 +39,7 @@ export type GetDoc<X extends $$DocRelatedLike> = Assume<
 >
 
 export namespace GetDoc {
-	export type ByTag<tag extends DocTagLike | AnyDoc> = tag extends DocTagLike
+	export type ByTag<tag extends DocTagLike | AnyDoc> = tag extends DocTag
 		? DocTypes[tag]
 		: tag extends AnyDoc
 		? Doc

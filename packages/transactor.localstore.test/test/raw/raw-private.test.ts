@@ -3,7 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'
-import { DocPath } from '@voltiso/transactor'
+import { CustomDocPath } from '@voltiso/transactor'
 
 import { createTransactor, database } from '../common'
 
@@ -16,15 +16,15 @@ db('cosmos/*')
 		ofWhat: s.string.optional,
 	})
 	.method('setSpecialty', function (specialty: string) {
-		this['specialty'] = specialty
+		this.data['specialty'] = specialty
 	})
 	.afterCreateOrUpdate(function () {
-		if (this['specialty'] === 'master') this['ofWhat'] = 'universe'
+		if (this.data['specialty'] === 'master') this.data['ofWhat'] = 'universe'
 	})
 	.method('fail', async function (path: string) {
 		// const { db } = this
 
-		await db(new DocPath(path)).update({ specialty: 'fireman' })
+		await db(new CustomDocPath(path)).update({ specialty: 'fireman' })
 	})
 	.method('good', async function () {
 		const { path } = this
@@ -98,7 +98,7 @@ describe('raw-private', function () {
 
 		await db('cosmos/a').set({})
 
-		await (db('cosmos/a')['setSpecialty'] as Method<any>)('master')
+		await (db('cosmos/a').methods['setSpecialty'] as Method<any>)('master')
 		const doc = await db('cosmos/a')
 
 		expect(doc?.dataWithoutId()).toMatchObject({
@@ -113,9 +113,9 @@ describe('raw-private', function () {
 		await db('cosmos/a').set({})
 		await db('cosmos/b').set({})
 
-		await expect(
-			(db('cosmos/a')['good'] as Method<any>)(),
-		).resolves.toBeUndefined()
+		const result = await db('cosmos/a').methods['good']!()
+
+		expect(result).toBeUndefined()
 	})
 
 	it('should not allow modifying private fields from other documents', async function () {
@@ -125,7 +125,7 @@ describe('raw-private', function () {
 		await db('cosmos/b').set({})
 
 		await expect(
-			(db('cosmos/a')['fail'] as Method<any>)('cosmos/b'),
+			(db('cosmos/a').methods['fail'] as Method<any>)('cosmos/b'),
 		).rejects.toThrow('specialty')
 	})
 })

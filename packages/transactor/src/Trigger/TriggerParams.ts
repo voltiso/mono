@@ -1,6 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { If } from '@voltiso/util'
+
 import type { DocIdString } from '~/brand'
 import type { PathMatches } from '~/common'
 import type { Db } from '~/Db'
@@ -11,8 +13,6 @@ import type {
 	GetVoltisoEntry,
 } from '~/Doc'
 import type { DocRefContext } from '~/DocRef'
-import type { $$DocRelatedLike } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
 import type { CustomDocPath } from '~/Path'
 
 export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
@@ -21,12 +21,12 @@ export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
 // type A = CustomDocPath<AA>
 
 export interface TriggerParams<
-	D extends $$DocRelatedLike = AnyDoc,
+	D extends $$Doc = $$Doc,
 	ThisExists extends boolean = boolean,
 > extends PathMatches,
 		DocRefContext<D> {
 	//
-	doc: ThisExists extends true ? D : ThisExists extends false ? null : never
+	doc: If<ThisExists, D, null>
 
 	__voltiso: GetVoltisoEntry<D>
 
@@ -38,60 +38,14 @@ export interface TriggerParams<
 	possiblyExists: boolean
 }
 
-// $dev(<D extends $$Doc>() => {
-// 	$Assert.is<TriggerParams<D>, TriggerParams>()
-// })
-
-// export type $AfterTriggerParams<
-// 	D extends DocLike = IDoc,
-// 	This extends D | null = D | null,
-// 	Before extends boolean = boolean,
-// 	After extends boolean = boolean,
-// > = D extends any ? AfterTriggerParams<D, This, Before, After> : never
-
 export interface AfterTriggerParams<
-	D extends $$DocRelatedLike = AnyDoc,
+	D extends $$Doc = $$Doc,
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
 > extends TriggerParams<D, AfterExists> {
-	// This === After
-	// AfterTriggerParamsLike<D, This, Before, After>
-	//
-
-	before: BeforeExists extends true
-		? GetDataWithId<D>
-		: BeforeExists extends false
-		? null
-		: never
-
-	after: AfterExists extends true
-		? GetDataWithId<D>
-		: AfterExists extends false
-		? null
-		: never
+	before: If<BeforeExists, GetDataWithId.ForDoc<D>, null>
+	after: If<AfterExists, GetDataWithId.ForDoc<D>, null>
 }
-
-// $dev(<D extends $$Doc>() => {
-// 	$Assert.is<AfterTriggerParams<D>, AfterTriggerParams>()
-// })
-
-// export interface AfterTriggerParamsLike<
-// 	D extends DocLike = IDoc,
-// 	This = D | null,
-// 	Before extends boolean = boolean,
-// 	After extends boolean = boolean,
-// > {
-// 	/** Type-only (helps with TS typings) */
-// 	readonly [TRIGGER_PARAMS_TYPE_INFO]?: {
-// 		D: D
-// 		This: This
-// 		Before: Before
-// 		After: After
-// 	}
-// }
-
-export type BeforeCommitTriggerParams<D extends $$Doc> = TriggerParams<D> &
-	GetIntrinsicFields<D>
 
 //
 
@@ -100,7 +54,7 @@ export type BeforeCommitTriggerParams<D extends $$Doc> = TriggerParams<D> &
 export namespace TriggerParams {
 	export type After<D extends $$Doc> = AfterTriggerParams<D>
 	export type AfterCreate<D extends $$Doc> = AfterTriggerParams<D, false, true>
-
+	export type AfterUpdate<D extends $$Doc> = AfterTriggerParams<D, true, true>
 	export type AfterDelete<D extends $$Doc> = AfterTriggerParams<D, true, false>
 
 	export type AfterCreateOrUpdate<D extends $$Doc> = AfterTriggerParams<
@@ -108,9 +62,9 @@ export namespace TriggerParams {
 		boolean,
 		true
 	>
-	export type AfterUpdate<D extends $$Doc> = AfterTriggerParams<D, true, true>
-
 	export type OnGet<D extends $$Doc> = TriggerParams<D>
 
-	export type BeforeCommit<D extends $$Doc> = TriggerParams<D>
+	export interface BeforeCommit<D extends $$Doc>
+		extends TriggerParams<D>,
+			GetIntrinsicFields<D> {}
 }

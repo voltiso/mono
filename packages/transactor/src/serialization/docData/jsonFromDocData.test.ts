@@ -5,7 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { StrongDocRefJson, WeakDocRefJson } from '~/common'
-import type { WeakDocRef, DocRef, WeakDocRef } from '~/DocRef'
+import type { DocRef, WeakDocRef } from '~/DocRef'
 
 import type { DateJson } from '../date'
 import type { JsonFromDocData } from './jsonFromDocData'

@@ -4,7 +4,12 @@
 import type { Schema, SimpleSchema } from '@voltiso/schemar.types'
 import { $Assert } from '@voltiso/util'
 
-import type { DocRef, DocRefLike, WeakDocRef, WeakDocRefLike } from '~/DocRef'
+import type {
+	DocRef,
+	DocRefLike,
+	WeakDocRef,
+	WeakDocRefLike,
+} from '~/DocRef'
 
 import type { TightenRefs } from './TightenRefs'
 
@@ -14,6 +19,8 @@ describe('RelaxRefs', () => {
 			Schema<{
 				strong: DocRefLike<'oops'>
 				weak: WeakDocRefLike<'oops'>
+				strongAny: DocRefLike
+				weakAny: WeakDocRefLike
 			}>
 		>
 
@@ -22,6 +29,8 @@ describe('RelaxRefs', () => {
 			SimpleSchema<{
 				strong: DocRef<'oops'>
 				weak: WeakDocRef<'oops'>
+				strongAny: DocRef
+				weakAny: WeakDocRef
 			}>
 		>()
 	})

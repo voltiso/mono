@@ -28,11 +28,11 @@ export type GDocByTag<TI extends DocTI> = GDocByTag_<TI> extends never
  *
  * @inline
  */
-export type GI<TI extends $$DocTI> = CustomDoc<TI, 'inside'>
+export type GI<TI extends $$DocTI> = [CustomDoc<TI, 'inside'>][0]
 
 /**
  * Get Doc from DocTI - outside execution context (can access public only)
  *
  * @inline
  */
-export type GO<TI extends $$DocTI> = CustomDoc<TI, 'outside'>
+export type GO<TI extends $$DocTI> = [CustomDoc<TI, 'outside'>][0]

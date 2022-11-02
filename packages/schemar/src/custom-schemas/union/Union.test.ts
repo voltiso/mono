@@ -46,6 +46,12 @@ describe('union', () => {
 		expect(s.string.or(s.string).extends(s.string)).toBeTruthy()
 		expect(s.string.or(s.string('asd')).extends(s.string)).toBeTruthy()
 		expect(s.string('sdf').or(s.string('asd')).extends(s.string)).toBeTruthy()
+
+		expect(s.number.or(undefined).isValid(undefined)).toBeTruthy()
+
+		expect(
+			s.number.or(undefined).validate(undefined, { fix: false }),
+		).toBeUndefined()
 	})
 
 	it('fix', () => {

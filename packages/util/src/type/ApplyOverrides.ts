@@ -6,7 +6,7 @@ import type { Merge2Reverse_ } from '~/object'
 import type { AlsoAccept } from './AlsoAccept'
 
 export type Override<
-	Base extends object,
+	Base,
 	Overrides extends Partial<Base> | AlsoAccept<unknown>,
 > = Base extends any
 	? Overrides extends any

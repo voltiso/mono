@@ -18,22 +18,23 @@ import type {
 	$$DocTI,
 	$$PartialDocOptions,
 	Doc,
+	DocBase,
 	DocBuilderPlugin,
 	DocContext,
 	DocTI,
 	DTI,
 	GetInputData,
-	GI,
 	GO,
 	Promisify,
 } from '~/Doc'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
-import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger'
+import type { Trigger } from '~/Trigger'
 
+import type { $$DocRelated } from '..'
 import type { DocDerivedData } from './_/DocDerivedData'
-import type { $$DocConstructor, IS_DOC_CONSTRUCTOR } from './IDocConstructor'
+import type { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
 export interface DocConstructor<TI extends DocTI = DocTI> {
 	readonly [IS_DOC_CONSTRUCTOR]: true
@@ -43,12 +44,10 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 	new (context: DocContext, data: GetInputData<TI>): Doc<TI>
 
-	<Tag extends DocTag | AnyDoc>(tag: Tag): DocConstructor.WithOverrides<
-		TI,
-		{ tag: Tag }
-	>
+	<Tag extends DocTag | AnyDoc>(tag: Tag): DocConstructor.WithTag<TI, Tag>
+	// tag<Tag extends DocTag>(tag: Tag): DocConstructor.WithTag<TI, Tag>
 
-	<O extends $$PartialDocOptions>(
+	with<O extends $$PartialDocOptions>(
 		options: O,
 	): keyof O extends keyof $$PartialDocOptions
 		? DocConstructor.WithOverrides<TI, DocConstructor.MapPartialOptions<TI, O>>
@@ -56,10 +55,7 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 				'unknown keys:' & { keys: Exclude<keyof O, keyof $$PartialDocOptions> }
 		  >
 
-	tag<Tag extends DocTag>(
-		tag: Tag,
-	): DocConstructor.WithOverrides<TI, { tag: Tag }>
-
+	/** ⚠️ If possible, use call signature instead */
 	publicOnCreation<S extends Record<string, t.Schemable>>(
 		s: S,
 	): DocConstructor.WithOverrides<
@@ -67,6 +63,7 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		DocConstructor.MapPartialOptions<TI, { publicOnCreation: S }>
 	>
 
+	/** ⚠️ If possible, use call signature instead */
 	public<S extends t.$$SchemableObject>(
 		s: S,
 	): DocConstructor.WithOverrides<
@@ -74,6 +71,7 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		DocConstructor.MapPartialOptions<TI, { public: S }>
 	>
 
+	/** ⚠️ If possible, use call signature instead */
 	private<S extends Record<string, t.Schemable>>(
 		s: S,
 	): DocConstructor.WithOverrides<
@@ -81,36 +79,87 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		DocConstructor.MapPartialOptions<TI, { private: S }>
 	>
 
-	after(...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>>>): this
+	//
 
+	//
+
+	/** ⚠️ If possible, use `@after` decorator instead */
+	after(trigger: Trigger.After<DocBase<TI, 'inside'>>): this
+
+	/** ⚠️ If possible, use `@after` decorator instead */
+	after(name: string, trigger: Trigger.After<DocBase<TI, 'inside'>>): this
+
+	/**
+	 * ⚠️ If possible, use `@afterUpdate` decorator instead
+	 *
+	 * - Assignability issues - using DocBase instead (statically known fields only)
+	 */
+	afterUpdate(trigger: Trigger.AfterUpdate<DocBase<TI, 'inside'>>): this
+
+	/** ⚠️ If possible, use `@afterUpdate` decorator instead */
 	afterUpdate(
-		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, true, true>>
+		name: string,
+		trigger: Trigger.AfterUpdate<DocBase<TI, 'inside'>>,
 	): this
 
+	//
+
+	/** ⚠️ If possible, use `@afterCreateOrUpdate` decorator instead */
 	afterCreateOrUpdate(
-		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, boolean, true>>
+		trigger: Trigger.AfterCreateOrUpdate<DocBase<TI, 'inside'>>,
 	): this
 
+	/** ⚠️ If possible, use `@afterCreateOrUpdate` decorator instead */
+	afterCreateOrUpdate(
+		name: string,
+		trigger: Trigger.AfterCreateOrUpdate<DocBase<TI, 'inside'>>,
+	): this
+
+	//
+
+	/** ⚠️ If possible, use `@afterCreate` decorator instead */
+	afterCreate(trigger: Trigger.AfterCreate<DocBase<TI, 'inside'>>): this
+
+	/** ⚠️ If possible, use `@afterCreate` decorator instead */
 	afterCreate(
-		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, false, true>>
+		name: string,
+		trigger: Trigger.AfterCreate<DocBase<TI, 'inside'>>,
 	): this
 
+	//
+
+	/** ⚠️ If possible, use `@afterDelete` decorator instead */
+	afterDelete(trigger: Trigger.AfterDelete<DocBase<TI, 'inside'>>): this
+
+	/** ⚠️ If possible, use `@afterDelete` decorator instead */
 	afterDelete(
-		...args: DocConstructor.MaybeWithName<AfterTrigger<GI<TI>, true, false>>
+		name: string,
+		trigger: Trigger.AfterDelete<DocBase<TI, 'inside'>>,
 	): this
 
+	//
+
+	/** ⚠️ If possible, use `@beforeCommit` decorator instead */
+	beforeCommit(trigger: Trigger.BeforeCommit<DocBase<TI, 'inside'>>): this
+
+	/** ⚠️ If possible, use `@beforeCommit` decorator instead */
 	beforeCommit(
-		...args: DocConstructor.MaybeWithName<BeforeCommitTrigger<GI<TI>>>
+		name: string,
+		trigger: Trigger.BeforeCommit<DocBase<TI, 'inside'>>,
 	): this
 
-	/** @deprecated Use `@method` decorator instead */
-	method: <N extends string, M extends Method<GO<TI>, any[]>>(
+	//
+
+	//
+
+	/** ⚠️ If possible, use `@method` decorator instead */
+	method: <N extends string, M extends Method<GO<TI>>>(
 		name: N,
-		m: M,
+		method: M,
 	) => DocConstructor<_<TI & { methods: { [key in N]: Promisify<M> } }>>
 
 	/** Apply custom plugin */
-	with<Plugin extends DocBuilderPlugin<TI['tag']>>(
+	withPlugin<Plugin extends DocBuilderPlugin<TI['tag']>>(
 		plugin: Plugin,
 	): Plugin['name'] extends keyof OmitSignatures<DocBuilderPluginResult>
 		? DocConstructor<DocBuilderPluginResult<TI>[Plugin['name']]>
@@ -122,10 +171,11 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 	 *   deprecated in favor of `with(aggregate(...))` plugin
 	 */
 	aggregateInto<
-		Target extends $$DocConstructor,
+		Target extends $$DocRelated,
 		Name extends string & keyof Get_<Get_<Target, DTI>, 'aggregates'>,
 	>(
-		target: Target,
+		/** Unused - type inference only */
+		_target: Target,
 		name: Name,
 		handlers: AggregatorHandlers<TI, NewableReturn_<Target> & $$Doc, Name>,
 	): this
@@ -154,7 +204,10 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 /** Helpers */
 export namespace DocConstructor {
-	export type MaybeWithName<Params> = [Params] | [string, Params]
+	export type WithTag<
+		TI extends DocTI,
+		tag extends DocTag | AnyDoc,
+	> = WithOverrides<TI, { tag: tag }>
 
 	export type WithOverrides<Old extends DocTI, New extends Partial<DocTI>> = [
 		DocConstructor<Merge2Reverse_<Required<New>, Old>>,

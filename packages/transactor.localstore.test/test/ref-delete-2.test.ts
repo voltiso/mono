@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '@voltiso/assertor'
 import type { TriggerParams } from '@voltiso/transactor'
 import {
 	afterCreate,
@@ -14,19 +15,20 @@ import { createTransactor } from './common'
 
 const db = createTransactor()
 
-class Man extends Doc('man')({
+class Man extends Doc('man').with({
 	private: {
 		woman: sStrongRef<'woman'>().optional,
 	},
 }) {
 	@afterCreate
-	async createWoman(this: Man, p: TriggerParams.AfterCreate<Man>) {
+	async createWoman(this: Man, params: TriggerParams.AfterCreate<Man>) {
 		//! TODO it should work with polymorphic `this`
 		const woman = await women.add({
-			id: p.id,
+			id: params.id as never,
 			man: this.ref,
 		})
-		this.woman = woman.ref
+
+		this.data.woman = woman.ref
 	}
 
 	@afterDelete
@@ -36,7 +38,7 @@ class Man extends Doc('man')({
 	}
 }
 
-class Woman extends Doc('woman')({
+class Woman extends Doc('woman').with({
 	public: {
 		man: sRef<'man'>(),
 	},
@@ -57,10 +59,10 @@ describe('ref - deletion 2', () => {
 		expect.hasAssertions()
 
 		await men.add({
-			id: 'a',
+			id: 'a' as never,
 		})
 
-		await expect(women('a').man.id).resolves.toBe('a')
+		await expect(women('a').data.man.id).resolves.toBe('a')
 
 		await expect(women('a').delete()).rejects.toThrow('numRefs')
 

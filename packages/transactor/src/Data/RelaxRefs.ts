@@ -6,20 +6,10 @@ import type {
 	$$Schemable,
 	SimplifySchema,
 } from '@voltiso/schemar.types'
-import type { BRAND, Merge2_ } from '@voltiso/util'
+import type { Merge2_ } from '@voltiso/util'
 
+import type { DocTagFromBrand } from '~/brand'
 import type { DocRefLike, WeakDocRefLike } from '~/DocRef'
-import type { DocTag } from '~/DocTypes'
-
-export type _RelaxRefs<T> = T extends WeakDocRefLike
-	? [T] extends [DocRefLike]
-		? DocRefLike<keyof T[BRAND]['transactor']['doc'] & DocTag>
-		: WeakDocRefLike<keyof T[BRAND]['transactor']['doc'] & DocTag>
-	: T extends object
-	? {
-			[k in keyof T]: _RelaxRefs<T[k]>
-	  }
-	: T
 
 export type RelaxRefs<S extends $$Schemable> = S extends $$Schema & {
 	Output: unknown
@@ -29,9 +19,21 @@ export type RelaxRefs<S extends $$Schemable> = S extends $$Schema & {
 			Merge2_<
 				S,
 				{
-					Output: _RelaxRefs<S['Output']>
-					Input: _RelaxRefs<S['Input']>
+					Output: RelaxRefs.ForData<S['Output']>
+					Input: RelaxRefs.ForData<S['Input']>
 				}
 			>
 	  >
-	: _RelaxRefs<S>
+	: RelaxRefs.ForData<S>
+
+export namespace RelaxRefs {
+	export type ForData<T> = T extends WeakDocRefLike
+		? T extends DocRefLike
+			? DocRefLike<DocTagFromBrand<T>>
+			: WeakDocRefLike<DocTagFromBrand<T>>
+		: T extends object
+		? {
+				[k in keyof T]: ForData<T[k]>
+		  }
+		: T
+}

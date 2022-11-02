@@ -92,6 +92,6 @@ export const fromDatabase = (
 	}
 
 	const fixed = fromDatabaseData(ctx, data)
-	assert.plainObject(isPlainObject(fixed))
+	assert.plainObject(fixed)
 	return fixed as IntrinsicFields
 }

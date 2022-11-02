@@ -29,7 +29,7 @@ import type { $$DocTI, DocTI } from '~/Doc/DocTI'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
-import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
+import type { AfterTrigger, Trigger } from '~/Trigger/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 import { defaultDocDerivedData } from './_/DocDerivedData'
@@ -141,7 +141,7 @@ export class DocConstructorImpl implements $$Doc {
 		})
 	}
 
-	static with(plugin: DocBuilderPlugin<any>) {
+	static withPlugin(plugin: DocBuilderPlugin<any>) {
 		return plugin.run(this as never)
 	}
 
@@ -151,21 +151,20 @@ export class DocConstructorImpl implements $$Doc {
 		handlers: IAggregatorHandlers,
 	) {
 		// console.log({ aggregateName, handlers })
-		return aggregate(
-			0 as never,
-			0 as never,
-			aggregateName as never,
-			handlers as never,
-		).run(this)
+		return aggregate(0 as never)
+			.into(0 as never, aggregateName as never, handlers as never)
+			.run(this)
 	}
 
 	//
 
-	static fields<F extends $$PartialDocOptions>(f: F): any {
+	static with<F extends $$PartialDocOptions>(f: F): any {
 		return CallableConstructor({
 			constructor: class extends this {
 				static override readonly _ = {
 					...super._,
+
+					// tag: 'tag' in f ? f.tag : super._.tag, // ! temporarily disable to clean up lib api
 
 					id: 'id' in f ? f.id : (super._.id as never),
 
@@ -352,8 +351,8 @@ export class DocConstructorImpl implements $$Doc {
 
 	static beforeCommit<TI extends DocDerivedData & $$DocTI>(
 		...args:
-			| [BeforeCommitTrigger<GI<TI>>]
-			| [string, BeforeCommitTrigger<GI<TI>>]
+			| [Trigger.BeforeCommit<GI<TI>>]
+			| [string, Trigger.BeforeCommit<GI<TI>>]
 	): any {
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''

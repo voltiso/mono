@@ -1,12 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
+import type { DocIdString } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
 const db = createTransactor()
+
+// type A = _<DocIdBrand<typeof AnyDoc>>
 
 class Doctor extends Doc.public({
 	specialty: s.string.optional,
@@ -36,7 +40,7 @@ describe('afterCreate - private update', function () {
 		await expect(doctors('anthony')).resolves.toBeNull()
 
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as DocIdString,
 			specialty: 'master',
 		})
 

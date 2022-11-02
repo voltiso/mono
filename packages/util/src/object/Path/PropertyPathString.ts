@@ -21,18 +21,19 @@ export type PropertyPathString<Obj extends unknown | NoArgument = NoArgument> =
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace PropertyPathString {
 	/** Use `{@link PropertyPathString}` instead */
 	export type Supertype = PathString<PropertyPathPartialOptions>
 
 	export type ForObject<obj> = string &
-		(PropertyPath.ForObject<obj> extends readonly Printable[]
-			? Join<PropertyPath.ForObject<obj>, { separator: '.' }>
-			: never)
+		// eslint-disable-next-line etc/no-internal
+		_FilterOut<
+			Join<
+				Extract<PropertyPath.ForObject<obj>, readonly Printable[]>,
+				{ separator: '.' }
+			>
+		>
 
-	// export type ForObject<obj> = Array.Map<
-	// 	PropertyPath.ForObject<obj>,
-	// 	'JoinWithDots'
-	// >
+	/** @internal */
+	export type _FilterOut<str> = str extends `${string}.` ? never : str
 }

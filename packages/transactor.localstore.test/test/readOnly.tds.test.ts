@@ -35,7 +35,7 @@ const sId = s.string.minLength(1)
 
 const sMyUserId = s.string.minLength(1)
 
-class Meeting extends Doc('meetings')({
+class Meeting extends Doc('meetings').with({
 	public: {
 		id: sId.optional, // ! ?
 
@@ -81,8 +81,6 @@ const meetings = db.register(Meeting)
 
 describe('readOnly', () => {
 	it('works with schema - tds example', async () => {
-		expect.assertions(0)
-
 		const data = {
 			id: 'a', // troublesome! - see `allowIdField` and `allowValidIdField` Transactor options
 

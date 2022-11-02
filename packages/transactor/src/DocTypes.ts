@@ -7,7 +7,7 @@ import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 export type DocTagLike = string // | AnyDoc
 
-export type DocTag = keyof OmitSignatures<DocTypes> // | AnyDoc
+export type DocTag = Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc
 
 export const AnyDoc = Symbol('AnyDoc')
 export type AnyDoc = typeof AnyDoc

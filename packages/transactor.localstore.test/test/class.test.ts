@@ -15,7 +15,7 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc.fields({
+class Doctor extends Doc.with({
 	private: {
 		specialty: s.string.optional,
 		ofWhat: s.string.optional,
@@ -34,7 +34,6 @@ class Doctor extends Doc.fields({
 	@method
 	async good() {
 		// @ts-expect-error
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		await doctors(this.id).update({ specialty: 'fireman' })
 		return true
 	}
@@ -96,7 +95,7 @@ describe('class', () => {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		await doctors('a').setSpecialty('magician')
+		await doctors('a').methods.setSpecialty('magician')
 		const doc = await doctors('a')
 
 		expect(doc?.data).toMatchObject({
@@ -109,7 +108,7 @@ describe('class', () => {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		await doctors('a').setSpecialty('master')
+		await doctors('a').methods.setSpecialty('master')
 		const doc = await doctors('a')
 
 		expect(doc?.dataWithoutId()).toMatchObject({
@@ -123,7 +122,7 @@ describe('class', () => {
 
 		await doctors('a').set({})
 
-		await expect(doctors('a').good()).resolves.toBeTruthy()
-		await expect(doctors('a').specialty).resolves.toBe('fireman')
+		await expect(doctors('a').methods.good()).resolves.toBeTruthy()
+		await expect(doctors('a').data.specialty).resolves.toBe('fireman')
 	})
 })

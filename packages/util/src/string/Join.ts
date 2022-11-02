@@ -38,7 +38,6 @@ export type Join_<
 		: T
 	: never
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Join {
 	export type _Rec<Arr, options extends JoinOptions> = Arr extends readonly [
 		infer H,

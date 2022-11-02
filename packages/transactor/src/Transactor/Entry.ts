@@ -10,24 +10,24 @@ import type {
 import type { GetPathMatches } from '~/common'
 import type { Method } from '~/Method'
 
-export type IdSchemaEntry = {
+export type TransactorIdSchemaEntry = {
 	getPathMatches: GetPathMatches
 	schema: SchemaLike<string>
 }
 
-export type SchemaEntry = {
+export type TransactorSchemaEntry = {
 	getPathMatches: GetPathMatches
 	schema: $$InferableObject | $$Object
 }
 
-export type MethodEntry = {
+export type TransactorMethodEntry = {
 	name: string
 	getPathMatches: GetPathMatches
 	method: Method
 	// argSchema?: Schema
 }
 
-export type TriggerEntry<T> = {
+export type TransactorTriggerEntry<T> = {
 	getPathMatches: GetPathMatches
 	trigger: T
 }

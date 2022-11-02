@@ -1,16 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import { Doc, doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
+import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class MyDoctor extends Doc('MyDoctor').fields({
+class MyDoctor extends Doc('MyDoctor').with({
 	public: {
 		name: s.string,
 		friend: sStrongRef<'MyDoctor'>().optional,
@@ -40,19 +41,19 @@ describe('localstore', () => {
 				friend: a.ref,
 			})
 			// a.ref.get()
-			Assert<IsIdentical<typeof b, MyDoctor>>()
-			$assert(b.friend)
+			$Assert<IsIdentical<typeof b, MyDoctor>>()
+			assert(b.data.friend)
 
-			const f = await b.friend
-			Assert<IsIdentical<typeof f, MyDoctor>>()
+			const f = await b.data.friend
+			$Assert<IsIdentical<typeof f, MyDoctor>>()
 
-			expect(f.name).toBe('a')
+			expect(f.data.name).toBe('a')
 
-			const name = await doc(b.friend).name
+			const name = await b.data.friend.data.name
 
 			expect(name).toBe('a')
 
-			const name2 = await b.friend.data.name
+			const name2 = await b.data.friend.data.name
 
 			expect(name2).toBe('a')
 

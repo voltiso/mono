@@ -4,12 +4,12 @@
 import type { SCHEMA_NAME } from '_'
 import type {
 	_,
+	BASE_OPTIONS,
 	DeepPartial_,
 	DeepPartialOrUndefined_,
-	PartialOrUndefined_,
-	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
+	PartialOrUndefined_,
 } from '@voltiso/util'
 
 import type { $$InferableObject, $$Object } from '~'
@@ -66,7 +66,6 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomObject {
 	export type WithPlain<This extends $$Object> = This extends {
 		Output: unknown
@@ -89,9 +88,7 @@ export namespace CustomObject {
 	}
 		? Other extends undefined
 			? This
-			: // : IObject extends This
-			  // ? Other
-			  DefineSchema<
+			: DefineSchema<
 					This,
 					{
 						shape: _<

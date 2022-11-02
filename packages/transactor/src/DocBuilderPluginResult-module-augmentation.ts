@@ -9,4 +9,7 @@ import type { DocTI } from './Doc'
  */
 export interface DocBuilderPluginResult<TI extends DocTI = DocTI> {
 	[name: string]: DocTI
+
+	// ! moved from AggregatorPlugin
+	aggregate: TI // no change for now
 }

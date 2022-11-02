@@ -12,14 +12,14 @@ describe('split', () => {
 	it('simple', () => {
 		expect.assertions(0)
 
-		type A = Split<'asd/sdf/dfg', '/'>
+		type A = Split<'asd/sdf/dfg', { separator: '/' }>
 		$Assert<IsIdentical<A, readonly ['asd', 'sdf', 'dfg']>>()
 	})
 
 	it('non-literal', () => {
 		expect.assertions(0)
 
-		type B = Split<string, '/'>
+		type B = Split<string, { separator: '/' }>
 		$Assert<IsIdentical<B, readonly string[]>>()
 	})
 

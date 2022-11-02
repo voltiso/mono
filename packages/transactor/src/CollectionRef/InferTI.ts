@@ -34,7 +34,7 @@ export type InferTI<X extends $$DocConstructor | $$Doc | DocTag> =
 		? InferTIFromDoc<X>
 		: X extends $$DocConstructor
 		? InferTIFromCls<X>
-		: X extends string
+		: X extends keyof DocTypes
 		? DocTypes[X] extends { readonly [DTI]: {} }
 			? DocTypes[X][DTI]
 			: never

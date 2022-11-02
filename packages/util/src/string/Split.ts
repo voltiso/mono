@@ -17,7 +17,6 @@ export type Split<
 	// eslint-disable-next-line etc/no-internal
 > = Split._Rec<str, Override<DefaultSplitOptions, partialOptions>, readonly []>
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Split {
 	/** @internal */
 	export type _Rec<

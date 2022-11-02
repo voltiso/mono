@@ -19,12 +19,8 @@ import type { Method } from '~/Method'
 import { concatPath } from '~/Path'
 import { DocPattern } from '~/Path/Path'
 import type { WithTransactor } from '~/Transactor'
-import type { MethodEntry } from '~/Transactor/Entry'
-import type {
-	AfterTrigger,
-	BeforeCommitTrigger,
-	OnGetTrigger,
-} from '~/Trigger/Trigger'
+import type { TransactorMethodEntry } from '~/Transactor/Entry'
+import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 
 type Context = WithTransactor
 
@@ -131,7 +127,6 @@ export class DocRefPattern {
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (this) {
 					assert(doc)
 					assert(after)
@@ -184,7 +179,7 @@ export class DocRefPattern {
 
 				if (!after) {
 					assert(before)
-					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 					assert(this === null)
 					assert(doc === null)
 					return (trigger as unknown as AfterTrigger).call(this, {
@@ -198,10 +193,10 @@ export class DocRefPattern {
 		})
 	}
 
-	beforeCommit<D extends $$Doc = IndexedDoc>(trigger: BeforeCommitTrigger<D>) {
+	beforeCommit<D extends $$Doc = IndexedDoc>(trigger: Trigger.BeforeCommit<D>) {
 		this.context.transactor._allBeforeCommits.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
-			trigger: trigger as unknown as BeforeCommitTrigger,
+			trigger: trigger as unknown as Trigger.BeforeCommit,
 		})
 		return this
 	}
@@ -219,7 +214,7 @@ export class DocRefPattern {
 		R = unknown,
 	>(name: string, method: Method<D, ARGS, R>) {
 		// , argSchema?: SchemaObject
-		const methodEntry: MethodEntry = {
+		const methodEntry: TransactorMethodEntry = {
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			name,
 			method: method as unknown as Method,

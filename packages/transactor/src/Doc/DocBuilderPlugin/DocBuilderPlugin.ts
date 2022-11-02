@@ -5,10 +5,10 @@ import type { IsUnion } from '@voltiso/util'
 
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { IDocConstructor } from '~/DocConstructor'
-import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
+import type { $$DocRelated, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
-export interface DocBuilderPlugin<R extends $$DocRelatedLike = AnyDoc> {
+export interface DocBuilderPlugin<R extends $$DocRelated = AnyDoc> {
 	/**
 	 * - Used to force using correct plugins with correct doc types
 	 * - If T is not literal - plugin will be assignable anywhere

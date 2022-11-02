@@ -2,11 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /** Has index signature? */
-export type HasIndexSignature<
-	X extends object,
-	T = true,
-	F = false,
-> = string extends keyof X
+export type HasIndexSignature<X, T = true, F = false> = string extends keyof X
 	? T
 	: number extends keyof X
 	? T

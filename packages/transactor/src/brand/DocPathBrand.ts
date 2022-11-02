@@ -5,7 +5,7 @@ import type { PathBrand } from '@voltiso/util'
 
 import type { DocTag } from '~/DocTypes'
 
-import type { DocBrand } from '.'
+import type { DocBrand } from './DocBrand'
 
 export interface DocPathBrand<tag extends DocTag> extends _DocPathBrand<tag> {}
 

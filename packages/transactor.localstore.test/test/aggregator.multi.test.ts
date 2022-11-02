@@ -3,8 +3,13 @@
 
 import * as s from '@voltiso/schemar'
 import type { ISchema } from '@voltiso/schemar.types'
-import type { DTI, GetData } from '@voltiso/transactor'
-import { Doc, sTimestamp } from '@voltiso/transactor'
+import type {
+	DocBuilderPlugin,
+	DocIdString,
+	DTI,
+	GetData,
+} from '@voltiso/transactor'
+import { aggregate, Doc, sTimestamp } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert, nextDay } from '@voltiso/util'
 
@@ -29,16 +34,16 @@ declare module '@voltiso/transactor' {
 
 //
 
-class ShiftBase extends Doc('shift')({
+//
+
+class ShiftBase extends Doc('shift').with({
 	public: {
 		from: sTimestamp,
 		to: sTimestamp,
 	},
 }) {}
 
-//
-
-class Day extends Doc('day')({
+class Day extends Doc('day').with({
 	id: sDate,
 
 	aggregates: {
@@ -50,34 +55,42 @@ const days = db.register(Day)
 
 //
 
-class Shift extends ShiftBase.aggregateInto(Day, 'shifts', {
-	target() {
-		const dayIds = [] as string[]
+const aggregator: DocBuilderPlugin<'shift'> = aggregate('shift').into(
+	'day',
+	'shifts',
+	{
+		target() {
+			const dayIds = [] as DocIdString<'day'>[]
 
-		const fromDay = new Date(this.from)
-		fromDay.setUTCHours(0, 0, 0, 0)
+			const fromDay = new Date(this.data.from)
+			fromDay.setUTCHours(0, 0, 0, 0)
 
-		const toDay = new Date(this.to)
-		toDay.setUTCHours(0, 0, 0, 0)
+			const toDay = new Date(this.data.to)
+			toDay.setUTCHours(0, 0, 0, 0)
 
-		for (let day = fromDay; day <= toDay; day = nextDay(day)) {
-			dayIds.push(day.toISOString().slice(0, '2022-10-10'.length))
-		}
+			for (let day = fromDay; day <= toDay; day = nextDay(day)) {
+				dayIds.push(
+					day.toISOString().slice(0, '2022-10-10'.length) as DocIdString<'day'>,
+				)
+			}
 
-		return dayIds.map(day => days(day))
+			return dayIds.map(day => days(day))
+		},
+
+		include(acc) {
+			const result = [...acc]
+			result.push(this.dataWithId)
+			result.sort((a, b) => Number(a.from) - Number(b.from))
+			return result
+		},
+
+		exclude(acc) {
+			return acc.filter(shift => shift.id !== this.id)
+		},
 	},
+)
 
-	include(acc) {
-		const result = [...acc]
-		result.push(this)
-		result.sort((a, b) => Number(a.from) - Number(b.from))
-		return result
-	},
-
-	exclude(acc) {
-		return acc.filter(shift => shift.id !== this.id)
-	},
-}) {}
+class Shift extends ShiftBase.withPlugin(aggregator) {}
 
 const shifts = db.register(Shift)
 
@@ -90,16 +103,16 @@ describe('aggregator', () => {
 		$Assert<IsIdentical<Doc[DTI]['aggregates'], {}>>()
 
 		type DA = Day[DTI]['aggregates']
-		Assert.is<DA, { shifts: ISchema }>()
+		$Assert.is<DA, { shifts: ISchema }>()
 
 		type A = GetData<Day[DTI]>
-		Assert<
+		$Assert<
 			IsIdentical<
 				A,
 				{
 					__voltiso: {
 						aggregateTarget: {
-							shifts?: {
+							shifts: {
 								value: {
 									id: string
 									from: Date

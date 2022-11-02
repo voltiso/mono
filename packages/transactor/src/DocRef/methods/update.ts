@@ -60,7 +60,7 @@ function isRecord(updates: Updates): updates is UpdatesRecord {
 
 function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 	if (isReplaceIt(updates)) {
-		check.call(this, updates.__replaceIt, params)
+		check.call(this, updates.__replaceIt as never, params)
 		return
 	}
 

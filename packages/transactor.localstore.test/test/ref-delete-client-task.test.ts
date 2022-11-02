@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import type { TriggerParams } from '@voltiso/transactor'
+import type { DocIdString, TriggerParams } from '@voltiso/transactor'
 import {
 	after,
 	afterCreate,
@@ -16,7 +17,7 @@ import { createTransactor } from './common'
 
 const db = createTransactor()
 
-class Client extends Doc('refDelete_client')({
+class Client extends Doc('refDelete_client').with({
 	public: {
 		displayName: s.string.lengthRange(1, 255),
 		slug: s.string,
@@ -28,12 +29,12 @@ class Client extends Doc('refDelete_client')({
 }) {
 	@beforeCommit
 	async checkIfValid(p: TriggerParams.BeforeCommit<Client>) {
-		if (p.doc) $assert(p.doc.rootTask, 'rootTask should be present')
+		if (p.doc) assert(p.doc.data.rootTask, 'rootTask should be present')
 	}
 
 	@afterDelete
 	async deleteRootTask(p: TriggerParams.AfterDelete<Client>) {
-		$assert(p.before.rootTask)
+		assert(p.before.rootTask)
 		await p.before.rootTask.delete()
 	}
 
@@ -43,9 +44,9 @@ class Client extends Doc('refDelete_client')({
 			if (p.before) await clientSlugs(p.before.slug).delete()
 
 			if (p.after) {
-				$assert(p.doc)
+				assert(p.doc)
 				await clientSlugs.add({
-					id: p.after.slug,
+					id: p.after.slug as never,
 					client: p.doc.ref,
 				})
 			}
@@ -55,22 +56,22 @@ class Client extends Doc('refDelete_client')({
 	@afterCreate
 	async createRootTask(this: Client) {
 		//! TODO it should work with polymorphic `this`
-		$assert(this.rootTask === undefined)
+		assert(this.data.rootTask === undefined)
 
 		// type A = StrongRef<this>['id']
 
 		const task = await tasks.add({
-			id: this.id,
+			id: this.id as unknown as DocIdString<'refDelete_task'>,
 			client: this.ref,
 			displayName: '_ROOT',
 		})
-		this.rootTask = task.ref
+		this.data.rootTask = task.ref
 	}
 }
 
 // type IdClient = Id<Client>
 
-class ClientSlug extends Doc('refDelete_clientSlug')({
+class ClientSlug extends Doc('refDelete_clientSlug').with({
 	publicOnCreation: {
 		client: sStrongRef<'refDelete_client'>(),
 	},
@@ -79,7 +80,7 @@ class ClientSlug extends Doc('refDelete_clientSlug')({
 const clients = db.register(Client)
 const clientSlugs = db.register(ClientSlug)
 
-class Task extends Doc('refDelete_task')({
+class Task extends Doc('refDelete_task').with({
 	publicOnCreation: {
 		parentTask: sStrongRef<'refDelete_task'>().optional,
 		client: sStrongRef<'refDelete_client'>(),

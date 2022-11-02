@@ -6,7 +6,7 @@ import { BoundCallable, CALL } from '@voltiso/util'
 import { CollectionRef } from '~/CollectionRef/CollectionRef'
 import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
 import type { IndexedDoc } from '~/Doc'
-import type { GetDocRef } from '~/DocRef'
+import type { GetDocRef, WeakDocRef } from '~/DocRef'
 import { CustomDocRef, DocRefPattern } from '~/DocRef'
 import type { AnyDoc } from '~/DocTypes'
 import type { DbPathFromString, DocPath } from '~/Path'
@@ -20,7 +20,7 @@ export interface Db {
 		CanonicalPath<Tokens>
 	>
 
-	// (docPath: DocPath): WeakDocRef<IndexedDoc>
+	(docPath: DocPath): WeakDocRef<IndexedDoc>
 }
 
 /** In transaction or not */
@@ -37,7 +37,7 @@ export class Db {
 
 	[CALL](...args: string[] | [DocPath]): unknown {
 		if (args[0] instanceof CustomDocPath) {
-			return new CustomDocRef(this._context, args[0] as never, {
+			return new CustomDocRef(this._context, args[0].toString(), {
 				isStrong: false,
 			}) as never
 		}
@@ -53,8 +53,9 @@ export class Db {
 			else return new DocRefPattern(this._context, path) as never
 		} else if (newPathTokens.length % 2 === 1)
 			return new CollectionRef(this._context, path) as never
-		else
+		else {
 			return new CustomDocRef(this._context, path, { isStrong: false }) as never
+		}
 	}
 
 	doc(

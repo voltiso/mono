@@ -7,13 +7,13 @@ import { createTransactor } from './common'
 
 const db = createTransactor()
 
-class MyDoctorCircular extends Doc('MyDoctorCircular')({
+class MyDoctorCircular extends Doc('MyDoctorCircular').with({
 	public: {
 		patient: sRef<'MyPatientCircular'>(),
 	},
 }) {}
 
-class MyPatientCircular extends Doc('MyPatientCircular')({
+class MyPatientCircular extends Doc('MyPatientCircular').with({
 	public: {
 		doctor: sRef<'MyDoctorCircular'>(),
 	},
@@ -37,14 +37,13 @@ const patients = db.register(MyPatientCircular)
 describe('localstore', () => {
 	describe('ref', () => {
 		it('type', async () => {
-			expect.assertions(0)
-
 			const patient = patients('adam')
 
 			//
-			;() => doctors.add({
-				patient: patient.asStrongRef,
-			})
+			;() =>
+				doctors.add({
+					patient: patient.asStrongRef,
+				})
 		})
 	})
 })

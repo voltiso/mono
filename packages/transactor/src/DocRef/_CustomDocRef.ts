@@ -19,12 +19,13 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 
-import type { DocBrand, DocIdString } from '~/brand'
+import type { DocBrand, DocIdString_ } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { $WithId } from '~/Data'
 import { withoutId } from '~/Data'
 import type {
 	Doc,
+	GetAggregatePromises,
 	GetData,
 	GetMethodPromises,
 	GetPublicCreationInputData,
@@ -40,7 +41,7 @@ import type {
 	DeepPartialIntrinsicFieldsSchema,
 	IntrinsicFieldsSchema,
 } from '~/schemas/sIntrinsicFields'
-import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
+import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 
 import { DocFieldPath } from '../DocFieldPath/DocFieldPath'
 import type { DocRefContext } from './_'
@@ -61,7 +62,10 @@ import { get, update } from './methods'
 //
 
 export interface _CustomDocRef<O extends CustomDocRef.Options>
-	extends DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>> {}
+	extends $$DocRef,
+		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
+		CustomDocRef.IntrinsicFields<O>,
+		PromiseLike<GetDoc<O['doc']> | CustomDocRef.MaybeNull<O>> {}
 
 /** @internal */
 export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
@@ -77,7 +81,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		return this._path as never
 	}
 
-	get id(): DocIdString<O['doc']> {
+	get id(): DocIdString_<O['doc']> {
 		assert(this._path.id)
 		return this._path.id as never
 	}
@@ -85,7 +89,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	_methods?: DocRefMethodEntry[] = undefined
 
 	_afterTriggers?: DocRefTriggerEntry<AfterTrigger>[] = undefined
-	_beforeCommits?: DocRefTriggerEntry<BeforeCommitTrigger>[] = undefined
+	_beforeCommits?: DocRefTriggerEntry<Trigger.BeforeCommit>[] = undefined
 	_onGets?: DocRefTriggerEntry<OnGetTrigger>[] = undefined
 
 	_idSchemas?: ISchema<string>[] = undefined
@@ -102,7 +106,9 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	_publicOnCreationSchema?: IObject = undefined
 	_privateSchema?: IObject = undefined
 
-	readonly methods = {} as GetMethodPromises<O['doc']>;
+	readonly methods = {} as GetMethodPromises<O['doc']>
+
+	declare readonly aggregates: GetAggregatePromises<O['doc']>;
 
 	[OPTIONS]: CustomDocRef.Options
 

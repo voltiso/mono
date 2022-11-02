@@ -13,14 +13,14 @@ import {
 	getUnknownPathTokens,
 } from '~/common'
 import type { WithDb } from '~/Db'
-import type { $$Doc, IndexedDoc } from '~/Doc'
 import type { $$DocConstructor } from '~/DocConstructor'
 import { CustomDocRef } from '~/DocRef'
-import type { GetDocTag } from '~/DocRelated'
+import type { $$DocRelated, GetDocTag } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
-import type { MethodEntry } from '~/Transactor/Entry'
-import type { AfterTrigger, BeforeCommitTrigger } from '~/Trigger/Trigger'
+import type { TransactorMethodEntry } from '~/Transactor/Entry'
+import type { AfterTrigger, Trigger } from '~/Trigger'
 
 import { CollectionRef } from './CollectionRef'
 
@@ -39,7 +39,7 @@ export type _ConsumeTokens<
 
 export interface CollectionRefPattern<
 	Pattern extends string = string,
-	Doc extends $$Doc = IndexedDoc,
+	Doc extends $$DocRelated = AnyDoc,
 > {
 	// [CALL]
 	<Tokens extends string[]>(...tokens: Tokens): IsCompatible<
@@ -57,7 +57,7 @@ export interface CollectionRefPattern<
 
 export class CollectionRefPattern<
 	Pattern extends string = string,
-	Doc extends $$Doc = IndexedDoc,
+	Doc extends $$DocRelated = AnyDoc,
 > {
 	/** Type-only */
 	declare Doc: Doc
@@ -127,7 +127,7 @@ export class CollectionRefPattern<
 		})
 	}
 
-	beforeCommit(trigger: BeforeCommitTrigger) {
+	beforeCommit(trigger: Trigger.BeforeCommit) {
 		this.context.transactor._allBeforeCommits.push({
 			getPathMatches: getGetPathMatches(this.pattern),
 			trigger,
@@ -136,7 +136,7 @@ export class CollectionRefPattern<
 
 	method(name: string, method: Method) {
 		// , argSchemaObject?: object
-		const methodEntry: MethodEntry = {
+		const methodEntry: TransactorMethodEntry = {
 			getPathMatches: getGetPathMatches(this.pattern),
 			name,
 			method,

@@ -3,7 +3,7 @@
 
 import type { CustomObject, Input, Type } from '@voltiso/schemar.types'
 import type {
-	$_,
+	_,
 	Callable,
 	DeepReadonlyN,
 	HasIndexSignature,
@@ -12,10 +12,11 @@ import type {
 	Primitive,
 } from '@voltiso/util'
 
-import type { DocIdString } from '~/brand'
-import type { $WithId, TightenRefs, WithId } from '~/Data'
-import type { $$Doc, ExecutionContext, IDoc } from '~/Doc'
+import type { DocIdBrand, DocIdString_ } from '~/brand'
+import type { $WithId, DataRecord, TightenRefs, WithId } from '~/Data'
+import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext, IDoc } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
 import type { GetIntrinsicFields } from './GetIntrinsicFields'
 
@@ -28,7 +29,7 @@ export type _GetAggregateTargetEntry<T> = [
 ][0]
 
 /** @internal */
-export type _$GetAggregateTarget<T extends object> = T extends any
+export type _$GetAggregateTarget<T> = T extends any
 	? HasIndexSignature<T> extends true
 		? {
 				// eslint-disable-next-line etc/no-internal
@@ -37,26 +38,31 @@ export type _$GetAggregateTarget<T extends object> = T extends any
 		: HasIndexSignature<T> extends false
 		? {
 				// eslint-disable-next-line etc/no-internal
-				[k in keyof T]?: _GetAggregateTargetEntry<T[k]>
+				[k in keyof T]: _GetAggregateTargetEntry<T[k]> // ! Should be optional???
 		  }
 		: never
 	: never
 
 /** @inline */
 export type GetData<R extends $$DocRelatedLike> = R extends any
-	? $_<
-			GetIntrinsicFields<R> &
-				TightenRefs<
-					CustomObject.WithAnd<
-						CustomObject.WithAnd<
-							GetDocTI<R>['publicOnCreation'],
-							GetDocTI<R>['public']
-						>,
-						GetDocTI<R>['private']
-					>['Output']
-				>
-	  >
+	? GetData.ForDocTI<GetDocTI<R>>
 	: never
+
+export namespace GetData {
+	export type ForDocTI<TI extends $$DocTI> = TI extends DocTI
+		? _<
+				GetIntrinsicFields.ForDocTI<TI> &
+					TightenRefs<
+						CustomObject.WithAnd<
+							CustomObject.WithAnd<TI['publicOnCreation'], TI['public']>,
+							TI['private']
+						>['Output']
+					>
+		  >
+		: never
+
+	export type ForDoc<D extends $$Doc> = ForDocTI<GetDocTI.ByDoc<D>>
+}
 
 /** @inline */
 export type GetDataWithId<R extends $$DocRelatedLike> = WithId<
@@ -64,16 +70,34 @@ export type GetDataWithId<R extends $$DocRelatedLike> = WithId<
 	GetDoc<R>
 >
 
+export namespace GetDataWithId {
+	export type ForDoc<D extends $$Doc> = WithId<GetData.ForDoc<D>, D>
+
+	export type ForDocTI<TI extends $$DocTI> = WithId<GetData.ForDocTI<TI>, TI>
+}
+
 //
 
 /** @inline */
-export type GetInputData<R extends $$DocRelatedLike> = R extends any
-	? $_<
-			Input<GetDocTI<R>['publicOnCreation']> &
-				Input<GetDocTI<R>['public']> &
-				Input<GetDocTI<R>['private']>
-	  >
-	: never
+export type GetInputData<R extends $$DocRelatedLike> = GetInputData.ForDocTI<
+	GetDocTI<R>
+>
+
+export namespace GetInputData {
+	export type ForDocTI<TI extends $$DocTI> = [TI] extends [DocTI]
+		? _<
+				TI['publicOnCreation']['Input'] &
+					TI['public']['Input'] &
+					TI['private']['Input']
+		  >
+		: never
+
+	export type ForDoc<D extends $$Doc> = [D] extends [{ [DTI]: $$DocTI }]
+		? ForDocTI<D[DTI]>
+		: never
+}
+
+//
 
 /** @inline */
 export type GetInputDataWithId<
@@ -99,19 +123,19 @@ export type GetPublicData<R extends $$DocRelatedLike> = Type<
 
 /** @inline */
 export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
-	R extends any
-		? DeepReadonlyN<
+	R extends AnyDoc
+		? { id?: string & DocIdBrand } & DataRecord
+		: DeepReadonlyN<
 				// eslint-disable-next-line no-magic-numbers
 				10,
 				{
-					readonly id?: DocIdString<R> | undefined
+					readonly id?: DocIdString_<R> | undefined
 				} & CustomObject.WithAnd<
 					GetDocTI<R>['publicOnCreation'],
 					GetDocTI<R>['public']
 				>[OPTIONS]['Input'],
 				{ skip: Primitive | Callable | Newable }
 		  >
-		: never
 
 /** @inline */
 export type GetPublicInputData<R extends $$DocRelatedLike> = R extends any

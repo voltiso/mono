@@ -34,14 +34,18 @@ export class _Assertor<S extends t.Schema> {
 		})
 	}
 
-	/**
-	 * @callInfo ➕ Use `{@link @voltiso/transform/call-info}` to automatically add
-	 * `__callInfo` argument when transpiling
-	 */
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	[CALL](
 		value: t.Type<S> | AlsoAccept<unknown>,
-		__callInfo?: CallInfo,
+		...rest: [string, CallInfo | undefined] | [CallInfo | undefined]
 	): asserts value is t.Type<S> {
+		const [message, callInfo] =
+			rest.length >= 2
+				? rest
+				: typeof rest[0] === 'string'
+				? [rest[0], undefined]
+				: [undefined, rest[0]]
+
 		try {
 			this._schema.validate(value, { fix: false })
 		} catch (error) {
@@ -49,8 +53,9 @@ export class _Assertor<S extends t.Schema> {
 
 			throw new AssertorError({
 				name: this._name,
-				value,
-				callInfo: __callInfo,
+				message: message as string,
+				arguments: [value],
+				callInfo,
 				cause: error,
 			})
 		}
@@ -69,8 +74,19 @@ export type _AssertorMapped<S extends Partial<t.Schema>, Exclude> = {
 }
 
 export type Assertor<S extends t.$$Schema, Exclude = never> = {
+	//
+
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	<Value extends t.Type<S> | AlsoAccept<unknown>>(
 		value: Value,
+		__callInfo?: CallInfo,
+	): asserts value is Value extends Exclude ? never : Value & t.Type<S>
+
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
+	<Value extends t.Type<S> | AlsoAccept<unknown>>(
+		value: Value,
+		message: string,
+		__callInfo?: CallInfo,
 	): asserts value is Value extends Exclude ? never : Value & t.Type<S>
 
 	//

@@ -34,6 +34,8 @@ async function processAfterTrigger(
 	assert(afterTrigger)
 	const { trigger, pathMatches } = afterTrigger
 
+	// console.log({ lastDataSeen: cacheEntry.lastDataSeenByAfters })
+
 	assert(cacheEntry.lastDataSeenByAfters)
 	// eslint-disable-next-line security/detect-object-injection
 	const prevLastSeen = cacheEntry.lastDataSeenByAfters[idx]
@@ -77,10 +79,12 @@ async function processAfterTrigger(
 }
 
 /** Start executing triggers from the beginning if data change is detected */
-async function loop(c: DocRefContext.ContextWithTransaction) {
-	const afterTriggers = getAfterTriggers(c.docRef as never)
+async function loop(ctx: DocRefContext.ContextWithTransaction) {
+	const afterTriggers = getAfterTriggers(ctx.docRef as never)
 
 	const MAX_ITERS = 1_000
+
+	// console.log('processTriggers loop', afterTriggers.length, ctx.docRef.path.toString())
 
 	for (let iter = 0; ; ++iter) {
 		if (iter >= MAX_ITERS) throw new TransactorError('Trigger loop')
@@ -89,7 +93,7 @@ async function loop(c: DocRefContext.ContextWithTransaction) {
 
 		for (let idx = 0; idx < afterTriggers.length; ++idx) {
 			// eslint-disable-next-line no-await-in-loop
-			change = await processAfterTrigger(c, idx)
+			change = await processAfterTrigger(ctx, idx)
 
 			if (change) break
 		}
@@ -114,8 +118,6 @@ export async function processTriggers(
 	ctx: DocRefContext.ContextWithTransaction,
 	params?: Params,
 ): Promise<void> {
-	// console.log('processTriggers', ctx.docRef.path.toString())
-
 	const cacheEntry = getCacheEntry(ctx)
 
 	cacheEntry.write = true

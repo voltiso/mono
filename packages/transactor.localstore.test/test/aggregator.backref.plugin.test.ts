@@ -33,7 +33,7 @@ declare module '@voltiso/transactor' {
 
 //
 
-class Week extends Doc('myWeek2')({
+class Week extends Doc('myWeek2').with({
 	id: sDate,
 
 	aggregates: {
@@ -45,8 +45,7 @@ const weeks = db.register(Week)
 
 //
 
-const plugin: DocBuilderPlugin<'myDay2'> = aggregate(
-	'myDay2',
+const plugin: DocBuilderPlugin<'myDay2'> = aggregate('myDay2').into(
 	'myWeek2',
 	'days',
 	{
@@ -64,13 +63,13 @@ const plugin: DocBuilderPlugin<'myDay2'> = aggregate(
 	},
 )
 
-class Day extends Doc('myDay2')({
+class Day extends Doc('myDay2').with({
 	id: sDate,
 
 	public: {
 		numWomen: s.number.default(0),
 	},
-}).with(plugin) {}
+}).withPlugin(plugin) {}
 
 const days = db.register(Day)
 
@@ -83,21 +82,21 @@ describe('aggregator - backref - plugin', () => {
 		await expect(async () => days.add({})).rejects.toThrow('RegExp')
 
 		await days.add({
-			id: '2022-10-10',
+			id: '2022-10-10' as never,
 		})
 
 		await days.add({
-			id: '2022-10-12',
+			id: '2022-10-12' as never,
 			numWomen: 10,
 		})
 
 		await days.add({
-			id: '2022-10-14',
+			id: '2022-10-14' as never,
 			numWomen: 100,
 		})
 
 		await days.add({
-			id: '2022-10-17',
+			id: '2022-10-17' as never,
 			numWomen: 1000,
 		})
 

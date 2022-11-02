@@ -6,7 +6,7 @@ import { $assert } from '~/$strip'
 export function padStart(
 	str: string | number,
 	targetLength: number,
-	padWith: string = ' ',
+	padWith = ' ',
 ) {
 	$assert(padWith.length === 1)
 	let current = `${str}`
@@ -17,10 +17,10 @@ export function padStart(
 export function padEnd(
 	str: string | number,
 	targetLength: number,
-	padWith: string = ' ',
+	padWith = ' ',
 ) {
 	$assert(padWith.length === 1)
 	let current = `${str}`
-	while (current.length < targetLength) current = current + padWith
+	while (current.length < targetLength) current += padWith
 	return current
 }

@@ -5,13 +5,13 @@ import { $AssumeType, assert } from '@voltiso/util'
 import chalk from 'chalk'
 
 import type { $$Doc, CustomDoc } from '~/Doc'
-import type { DocDerivedData } from '~/DocConstructor/_/DocDerivedData'
-import type { AfterTrigger, BeforeCommitTrigger, Trigger } from '~/Trigger'
+import type { DocDerivedData } from '~/DocConstructor'
 import type {
+	AfterTrigger,
 	AfterTriggerParams,
-	BeforeCommitTriggerParams,
+	Trigger,
 	TriggerParams,
-} from '~/Trigger/TriggerParams'
+} from '~/Trigger'
 import { dump } from '~/util'
 
 import type { GI } from './GDoc'
@@ -86,7 +86,7 @@ export function withAfter<TI extends DocDerivedData>(
 			..._.afters,
 			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
 				logTrigger(name, 'after', 'ANY', params as never)
-				return trigger.call(this, params as never) as never
+				return trigger.call(this as never, params as never) as never
 			} as never,
 		] as never,
 	}
@@ -180,7 +180,7 @@ export function withAfterCreate<TI extends DocDerivedData>(
 					assert(this)
 					assertNotBefore(params as never)
 					assertAfter(params as never)
-					return trigger.call(this, params as never) as never
+					return trigger.call(this as never, params as never) as never
 				} else return undefined
 			} as never,
 		],
@@ -192,7 +192,7 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<BeforeCommitTrigger<CustomDoc<TI, 'inside'>>>(trigger)
+	$AssumeType<Trigger.BeforeCommit<CustomDoc<TI, 'inside'>>>(trigger)
 	return {
 		..._,
 
@@ -200,7 +200,7 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 			..._.beforeCommits,
 			function (
 				this: CustomDoc<TI, 'inside'> | null,
-				p: BeforeCommitTriggerParams<GI<TI>>,
+				p: TriggerParams.BeforeCommit<GI<TI>>,
 			) {
 				const before = this?.dataWithId() || null
 				const after = this?.dataWithId() || null
@@ -220,7 +220,7 @@ export function withOnGet<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<BeforeCommitTrigger<GI<TI>>>(trigger)
+	$AssumeType<Trigger.BeforeCommit<GI<TI>>>(trigger)
 	return {
 		..._,
 
@@ -234,7 +234,7 @@ export function withOnGet<TI extends DocDerivedData>(
 					before: before as never,
 					after: after as never,
 				} as never)
-				return trigger.call(this, p as never) as never
+				return trigger.call(this as never, p as never) as never
 			} as never,
 		],
 	}

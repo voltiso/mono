@@ -10,6 +10,38 @@ import { sVoltisoEntry } from '~/schemas'
 
 import { DocFieldPath } from './DocFieldPath'
 
+function getCandidatePaths(segments: string[]): string[][] {
+	const paths = [] as string[][]
+
+	if (segments[0] === 'aggregates') {
+		if (!segments[1]) {
+			throw new TransactorError(
+				`Unable to get single-segment path 'aggregates'`,
+			)
+		}
+
+		paths.push([
+			'__voltiso',
+			'aggregateTarget',
+			segments[1],
+			'value',
+			...segments.slice(2),
+		])
+	}
+
+	paths.push(segments)
+
+	paths.push([
+		'__voltiso',
+		'aggregateTarget',
+		segments[0] as string,
+		'value',
+		...segments.slice(1),
+	])
+
+	return paths
+}
+
 /** @internal */
 // @staticImplements<DocFieldPathConstructor>()
 export class _DocFieldPath {
@@ -63,16 +95,7 @@ export class _DocFieldPath {
 				)
 			}
 
-			const candidatePaths = [
-				fields,
-				[
-					'__voltiso',
-					'aggregateTarget',
-					fields[0] as string,
-					'value',
-					...fields.slice(1),
-				],
-			]
+			const candidatePaths = getCandidatePaths(fields)
 
 			for (const path of candidatePaths) {
 				let data: NestedData = doc.dataWithoutId() as never

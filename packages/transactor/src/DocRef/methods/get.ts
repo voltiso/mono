@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { stringFrom } from '@voltiso/util'
+import type { Schema } from '@voltiso/schemar.types'
+import { $AssumeType, assertNotPolluting, stringFrom } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { fromDatabase } from '~/common'
@@ -11,7 +12,8 @@ import type { WithDb } from '~/Db'
 import type { $$Doc, DocTI, IDoc } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
-import { sVoltisoEntry } from '~/schemas'
+import type { AggregateTargetEntry } from '~/schemas'
+import { sAggregateTargetEntry, sVoltisoEntry } from '~/schemas'
 import type { WithTransaction } from '~/Transaction'
 import {
 	isWithoutTransaction,
@@ -26,18 +28,36 @@ import type { Forbidden } from '~/util'
 import {
 	applySchema,
 	collectTriggerResult,
+	getAggregateSchemas,
 	getOnGetTriggers,
 	getSchema,
 	validateAndSetCacheEntry,
 } from '../_'
 import type { WithDocRef } from '../WithDocRef'
 
+function getIsTransactionNeededForRead(
+	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
+): boolean {
+	const onGetTriggers = getOnGetTriggers(ctx.docRef)
+	if (onGetTriggers.length > 0) return true
+
+	// ! not needed - after triggers only react to changes - initiated by updates or schema transforms (fixes)
+	// const afterTriggers = getAfterTriggers(ctx.docRef)
+	// if(afterTriggers.length > 0) return true
+
+	const schema = getSchema(ctx.docRef)
+	if (schema) return true
+
+	const aggregateSchemas = getAggregateSchemas(ctx.docRef)
+	if (Object.keys(aggregateSchemas).length > 0) return true
+
+	return false
+}
+
 async function directDocPathGet<D extends IDoc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): Promise<D | null> {
-	const onGetTriggers = getOnGetTriggers(ctx.docRef)
-	const schema = getSchema(ctx.docRef)
-	const needTransaction = onGetTriggers.length > 0 || schema
+	const needTransaction = getIsTransactionNeededForRead(ctx)
 
 	let data: object | null
 
@@ -80,6 +100,8 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 	assert(cacheEntry)
 
 	const schema = getSchema(ctx.docRef)
+	const aggregateSchemas = getAggregateSchemas(ctx.docRef)
+	const haveAggregateSchemas = Object.keys(aggregateSchemas).length > 0
 
 	const prevData = cacheEntry.data
 
@@ -90,9 +112,42 @@ async function transactionDocPathGetImpl<D extends IDoc>(
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
-		cacheEntry.originalData = deepCloneData(cacheEntry.data)
+		cacheEntry.__voltiso ||= sVoltisoEntry.validate(undefined) // ! triggers may not see mutations done here
+
+		cacheEntry.originalData = deepCloneData(cacheEntry.data) // ! ground truth for after-triggers (the first `before` value)
 
 		// console.log({cacheEntry})
+
+		// console.log({ aggregateSchemas, __voltiso: cacheEntry.__voltiso })
+
+		assert(cacheEntry.__voltiso)
+		// init aggregate defaults
+		if (haveAggregateSchemas) {
+			// read from `.__voltiso` - data may be `null`
+			for (const [name, schema] of Object.entries(aggregateSchemas)) {
+				assertNotPolluting(name)
+
+				let entry: AggregateTargetEntry | undefined =
+					// eslint-disable-next-line security/detect-object-injection
+					cacheEntry.__voltiso.aggregateTarget[name]
+
+				entry = sAggregateTargetEntry.default({}).validate(entry)
+				assert(entry)
+
+				$AssumeType<Schema>(schema)
+
+				entry.value = schema.validate(entry.value)
+
+				if (entry.value === undefined) delete entry.value
+
+				// console.log('SET INITIAL AGGREGATE', name, entry)
+
+				// eslint-disable-next-line security/detect-object-injection
+				cacheEntry.__voltiso.aggregateTarget[name] = entry
+			}
+		}
+
+		// console.log('AND...', { __voltiso: cacheEntry.__voltiso })
 
 		// schema migration
 		if (schema && cacheEntry.data) {

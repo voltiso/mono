@@ -5,7 +5,8 @@ import type { Bivariant } from '@voltiso/util'
 
 import type { $$DocTI, DocTI } from '~/Doc'
 import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
-import type { DocTagLike } from '~/DocTypes'
+import type { AnyDoc, DocTagLike } from '~/DocTypes'
+import type { MethodNoThis } from '~/Method'
 
 /** @inline */
 export type Promisify<F> = F extends (...args: any) => PromiseLike<unknown>
@@ -15,8 +16,9 @@ export type Promisify<F> = F extends (...args: any) => PromiseLike<unknown>
 	: never
 
 /** @inline */
-export type GetMethodPromises<R extends $$DocRelatedLike> =
-	GetMethodPromises.ByTI<GetDocTI<R>>
+export type GetMethodPromises<R extends $$DocRelatedLike> = R extends AnyDoc
+	? Record<string, MethodNoThis>
+	: GetMethodPromises.ByTI<GetDocTI<R>>
 
 export namespace GetMethodPromises {
 	/** Simplest way */

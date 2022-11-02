@@ -3,8 +3,10 @@
 
 /* eslint-disable jest/require-hook */
 
+import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import { deleteIt, Doc, incrementIt } from '@voltiso/transactor'
+import { Doc } from '@voltiso/transactor'
+import { deleteIt, incrementIt } from '@voltiso/util'
 import * as gen from 'random-seed'
 
 import { createTransactor, database } from './common'
@@ -25,16 +27,18 @@ class Doctor extends Doc.public({
 })
 
 	.afterUpdate('a', async function (p) {
-		const diff = p.after.num - p.before.num
-		this.a += diff
+		const beforeNum = p.before.num
+		const afterNum = p.after.num
+		const diff = afterNum - beforeNum
+		this.data.a += diff
 
 		if (rand.random() < cutoff) {
 			await this.update({ num: incrementIt(1) })
 		}
 
 		// @ts-expect-error `c` is not optional
-		;() => this.update({ c: deleteIt() })
-		;() => this.update({ opt: deleteIt() })
+		;() => this.update({ c: deleteIt })
+		;() => this.update({ opt: deleteIt })
 	})
 
 	.afterUpdate('b', async function (p) {
@@ -44,12 +48,12 @@ class Doctor extends Doc.public({
 			await this.update({ num: incrementIt(1) })
 		}
 
-		this.b += diff
+		this.data.b += diff
 	})
 
 	.afterUpdate('c', async function (p) {
 		const diff = p.after.num - p.before.num
-		this.c += diff
+		this.data.c += diff
 
 		if (rand.random() < cutoff) {
 			await this.update({ num: incrementIt(1) })
@@ -63,7 +67,7 @@ class Doctor extends Doc.public({
 			await this.update({ num: incrementIt(1) })
 		}
 
-		this.d += diff
+		this.data.d += diff
 	})
 
 	.afterUpdate('e', async function (p) {
@@ -85,7 +89,7 @@ describe('after - nested', function () {
 		cutoff = 0.2
 		await database.doc('doctor/anthony').delete()
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 		})
 		await doctors('anthony').update({ num: incrementIt(1) })
 		await db.runTransaction(async () => {

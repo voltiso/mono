@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IsUnion, Tail, Throw } from '@voltiso/util'
 import { $assert, $AssumeType, staticImplements, tryAt } from '@voltiso/util'
@@ -19,7 +20,7 @@ import type { DocTag } from '~/DocTypes'
 import { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
 import type { DbPathFromString } from '~/Path'
-import type { AfterTrigger, BeforeCommitTrigger, OnGetTrigger } from '~/Trigger'
+import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 
 import type {
 	TransactorConstructorParameters,
@@ -27,10 +28,10 @@ import type {
 } from './ConstructorParameters'
 import type { TransactorContext } from './Context'
 import type {
-	IdSchemaEntry,
-	MethodEntry,
-	SchemaEntry,
-	TriggerEntry,
+	TransactorIdSchemaEntry,
+	TransactorMethodEntry,
+	TransactorSchemaEntry,
+	TransactorTriggerEntry,
 } from './Entry'
 import type { TransactionBody } from './methods'
 import { runTransaction } from './methods'
@@ -70,9 +71,9 @@ export class Transactor extends Db {
 	 * Lazy-initialize `Transactor`
 	 *
 	 * @param database - Either Firestore, Localstore, or something compatible
-	 * @param firestoreLikeModule - Object containing helpers for the
-	 *   Firestore-compatible database (`FieldValue`, `Timestamp`), required for
-	 *   anything other than `Firestore` database
+	 * @param module - Object containing helpers for the Firestore-compatible
+	 *   database (`FieldValue`, `Timestamp`), required for anything other than
+	 *   `Firestore` database
 	 */
 	init(database: FirestoreLike.Database, module: FirestoreLikeModule): void {
 		checkEnv()
@@ -86,15 +87,15 @@ export class Transactor extends Db {
 	//
 
 	_options: Options_
-	_allMethods: MethodEntry[] = []
-	_allIdSchemas: IdSchemaEntry[] = []
-	_allPublicOnCreationSchemas: SchemaEntry[] = []
-	_allPublicSchemas: SchemaEntry[] = []
-	_allPrivateSchemas: SchemaEntry[] = []
-	_allAggregateSchemas: SchemaEntry[] = []
-	_allAfterTriggers: TriggerEntry<AfterTrigger>[] = []
-	_allBeforeCommits: TriggerEntry<BeforeCommitTrigger>[] = []
-	_allOnGets: TriggerEntry<OnGetTrigger>[] = []
+	_allMethods: TransactorMethodEntry[] = []
+	_allIdSchemas: TransactorIdSchemaEntry[] = []
+	_allPublicOnCreationSchemas: TransactorSchemaEntry[] = []
+	_allPublicSchemas: TransactorSchemaEntry[] = []
+	_allPrivateSchemas: TransactorSchemaEntry[] = []
+	_allAggregateSchemas: TransactorSchemaEntry[] = []
+	_allAfterTriggers: TransactorTriggerEntry<AfterTrigger>[] = []
+	_allBeforeCommits: TransactorTriggerEntry<Trigger.BeforeCommit>[] = []
+	_allOnGets: TransactorTriggerEntry<OnGetTrigger>[] = []
 
 	// _transactionLocalStorage: AsyncLocalStorage<ContextOverride>
 
@@ -160,6 +161,8 @@ export class Transactor extends Db {
 			throw new TransactorError(
 				'db.register(Cls) requires `Cls` to include DocTag',
 			)
+
+		assert(cls._.tag)
 
 		const collection = this._context.db(
 			cls._.tag,

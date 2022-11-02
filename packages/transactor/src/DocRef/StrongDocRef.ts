@@ -8,10 +8,12 @@ import type { CustomDocRef } from './CustomDocRef'
 import type { WeakDocRef } from './WeakDocRef'
 
 /** Strong document reference - with ref-counting ✅ */
-export type DocRef<doc extends $$DocRelatedLike = AnyDoc> = CustomDocRef<{
-	doc: doc
-	isStrong: true
-}>
+export interface DocRef<
+	doc extends $$DocRelatedLike = AnyDoc,
+> extends CustomDocRef<{
+		doc: doc
+		isStrong: true
+	}> {}
 
 export namespace DocRef {
 	export type Options = Omit<CustomDocRef.Options, 'isStrong'>

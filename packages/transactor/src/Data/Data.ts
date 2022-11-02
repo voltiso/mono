@@ -3,10 +3,10 @@
 
 import type { _, $_, NoArgument } from '@voltiso/util'
 
-import type { DocIdString } from '~/brand'
-import type { $$Doc, IDoc } from '~/Doc'
+import type { DocIdString, DocIdString_ } from '~/brand'
 import type { $$DocRef } from '~/DocRef'
-import type { $$DocRelatedLike } from '~/DocRelated'
+import type { $$DocRelated, $$DocRelatedLike } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
 export type LeafData = boolean | string | number | null | Date | $$DocRef
 
@@ -21,8 +21,8 @@ export type NestedDataNoArray = DataRecord | LeafData
 export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arrays not possible
 
 /** @inline */
-export type WithId<Data = unknown, Doc extends $$Doc = IDoc> = _<
-	{ id: DocIdString<Doc> } & Data
+export type WithId<Data = unknown, IdBrand extends $$DocRelated = AnyDoc> = _<
+	{ id: DocIdString<IdBrand> } & Data
 >
 
 /** @inline */
@@ -31,6 +31,6 @@ export type $WithId<
 	R extends $$DocRelatedLike | NoArgument = NoArgument,
 > = Data extends any
 	? R extends any
-		? $_<{ readonly id: DocIdString<R> } & Data>
+		? $_<{ readonly id: DocIdString_<R> } & Data>
 		: never
 	: never

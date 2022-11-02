@@ -4,14 +4,14 @@
 import { assert } from '@voltiso/assertor'
 import { $AssumeType } from '@voltiso/util'
 
-import type { WeakDocRef, DocRefTriggerEntry } from '~/DocRef'
+import type { DocRefTriggerEntry, WeakDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { VoltisoEntry } from '~/schemas'
-import type { BeforeCommitTrigger } from '~/Trigger'
+import type { Trigger } from '~/Trigger'
 
 export function getBeforeCommits(
 	docRef: WeakDocRef,
-): DocRefTriggerEntry<BeforeCommitTrigger>[] {
+): DocRefTriggerEntry<Trigger.BeforeCommit>[] {
 	// $AssumeType<CustomDocRef<{ docTag: AnyDoc }>>(docRef)
 	if (docRef._beforeCommits) return docRef._beforeCommits
 

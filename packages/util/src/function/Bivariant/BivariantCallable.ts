@@ -2,11 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export type BivariantCallable_<Func> = [Func] extends [
-	(...args: infer Args) => infer Res,
+	(this: infer This, ...args: infer Args) => infer Res,
 ]
-	? {
-			bivarianceHack(...args: Args): Res
-	  }['bivarianceHack']
+	? unknown extends This
+		? {
+				bivarianceHack(...args: Args): Res
+		  }['bivarianceHack']
+		: {
+				bivarianceHack(this: This, ...args: Args): Res
+		  }['bivarianceHack']
 	: never
 
 export type BivariantCallable<Func extends (...args: any) => any> =
@@ -14,12 +18,8 @@ export type BivariantCallable<Func extends (...args: any) => any> =
 
 //
 
-export type $BivariantCallable_<Func> = Func extends (
-	...args: infer Args
-) => infer Res
-	? {
-			bivarianceHack(...args: Args): Res
-	  }['bivarianceHack']
+export type $BivariantCallable_<Func> = Func extends any
+	? BivariantCallable_<Func>
 	: never
 
 export type $BivariantCallable<Func extends (...args: any) => any> =
