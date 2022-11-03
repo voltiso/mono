@@ -47,7 +47,7 @@ class Day extends Doc('day').with({
 	id: sDate,
 
 	aggregates: {
-		shifts: s.array(ShiftBase.schemaWithId).default([]).simple,
+		shifts: s.array(ShiftBase.schemaWithId).default([]),
 	},
 }) {}
 

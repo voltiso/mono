@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { DocBuilderPlugin, DocIdString } from '@voltiso/transactor'
 import { aggregate, Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { $Assert, assert } from '@voltiso/util'
+import { $Assert, $Is, assert } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
@@ -40,6 +40,7 @@ class Week extends Doc('myWeek').with({
 
 	aggregates: {
 		numWomenThisWeek: s.number.default(0),
+		// notDefaulted: s.number,
 	},
 }) {}
 
@@ -107,9 +108,9 @@ describe('aggregator', () => {
 		})
 
 		type A = WeekData['__voltiso']['aggregateTarget']['numWomenThisWeek']
-		$Assert.is<undefined, A>()
+		$Assert($Is<undefined>().not.subtypeOf<A>())
 
-		type B = Week['numWomenThisWeek']
+		type B = Week['aggregates']['numWomenThisWeek']
 		$Assert<IsIdentical<B, { value: number; numSources: number }>>()
 
 		await expect(weeks('2022-10-09').__voltiso).resolves.toMatchObject({
@@ -124,7 +125,7 @@ describe('aggregator', () => {
 		const doc = await weeks('2022-10-09')
 		assert(doc)
 
-		expect(doc.numWomenThisWeek).toBe(110)
+		expect(doc.aggregates.numWomenThisWeek.value).toBe(110)
 
 		await expect(weeks('2022-10-09').aggregates.numWomenThisWeek).resolves.toBe(
 			110,

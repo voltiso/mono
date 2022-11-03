@@ -7,8 +7,7 @@ import { lazyValue, ProtoCallable } from '@voltiso/util'
 
 import type { DocRef, DocRefLike, GetDocRef } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
-import type { $$DocRelatedLike, GetDocTag } from '~/DocRelated'
-import type { DocTag } from '~/DocTypes'
+import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
 
 /** @internal */
 export const _strongRefSchema = lazyValue(
@@ -26,7 +25,7 @@ export const _strongRefCall = <X extends $$DocRelatedLike>(): t.Schema<
 	_strongRefSchema as never
 
 export interface DocRefSchema extends t.Schema<DocRef> {
-	<X extends DocTag>(): t.Schema<DocRefLike<X>>
+	<X extends $$DocRelated>(): t.Schema<DocRefLike<X>>
 
 	// <X extends DocTag>(): t.Schema<
 	// 	GetDocRef<{
@@ -36,6 +35,7 @@ export interface DocRefSchema extends t.Schema<DocRef> {
 	// >
 }
 
+/** Strong document reference schema (same as {@link sRef}) */
 export const sStrongRef: DocRefSchema = lazyValue(
 	() =>
 		ProtoCallable({
@@ -46,4 +46,5 @@ export const sStrongRef: DocRefSchema = lazyValue(
 		}) as never,
 )
 
+/** Strong document reference schema (same as {@link sStrongRef}) */
 export const sRef = sStrongRef

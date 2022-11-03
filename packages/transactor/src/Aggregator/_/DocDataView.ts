@@ -4,7 +4,8 @@
 import type { Merge2_ } from '@voltiso/util'
 import { isPlainObject, omit } from '@voltiso/util'
 
-import type { DocTI, GetDataWithId } from '~/Doc'
+import type { DocIdString } from '~/brand'
+import type { DocTI, GetData } from '~/Doc'
 import type { AggregateTargetEntry, IntrinsicFields } from '~/schemas'
 
 export type AggregateView<T extends AggregateTargetEntry> =
@@ -31,7 +32,7 @@ export type AggregatesView<T extends IntrinsicFields> = [
 	},
 ][0]
 
-export function getAggregatesView<T extends GetDataWithId<DocTI>>(
+export function getAggregatesView<T extends DocDataViewInput>(
 	data: T,
 ): AggregatesView<T> {
 	return Object.fromEntries(
@@ -44,14 +45,13 @@ export function getAggregatesView<T extends GetDataWithId<DocTI>>(
 
 //
 
-export type DocDataView<T extends GetDataWithId<DocTI> = GetDataWithId<DocTI>> =
-	{
-		id: T['id']
-		data: Omit<T, 'id'>
-		dataWithId: T
-		aggregates: AggregatesView<T>
-		numRefs: T['__voltiso']['numRefs']
-	}
+export type DocDataView<T extends DocDataViewInput = DocDataViewInput> = {
+	id: T['id']
+	data: Omit<T, 'id'>
+	dataWithId: T
+	aggregates: AggregatesView<T>
+	numRefs: T['__voltiso']['numRefs']
+}
 
 // export type DocDataView<T extends IntrinsicFields = IntrinsicFields> = Merge2_<
 // 	T,
@@ -62,7 +62,9 @@ export type DocDataView<T extends GetDataWithId<DocTI> = GetDataWithId<DocTI>> =
 // 	}
 // >
 
-export function getDocDataView<T extends GetDataWithId<DocTI>>(
+export type DocDataViewInput = GetData<DocTI> & { id: DocIdString }
+
+export function getDocDataView<T extends DocDataViewInput>(
 	dataWithId: T,
 ): DocDataView<T> {
 	return {

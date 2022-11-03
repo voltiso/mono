@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DocBrand } from '~/brand'
-import type { AnyDoc, DocTagLike } from '~/DocTypes'
+import type { $$DocRelated, GetDocTag } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 
 export const IS_DOC_REF = Symbol('IS_DOC_REF')
 export type IS_DOC_REF = typeof IS_DOC_REF
@@ -16,9 +17,9 @@ export interface $$DocRef {
  *
  * This actually is "either weak or strong" (weak is supertype)
  */
-export interface WeakDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
+export interface WeakDocRefLike<R extends $$DocRelated | AnyDoc = AnyDoc>
 	extends $$DocRef,
-		DocBrand<tag> {
+		DocBrand<GetDocTag<R>> {
 	//
 	isStrong: boolean // ! supertype
 }
@@ -28,7 +29,7 @@ export interface WeakDocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
  *
  * ⚠️ {@link WeakDocRefLike} is supertype
  */
-export interface DocRefLike<tag extends DocTagLike | AnyDoc = AnyDoc>
+export interface DocRefLike<tag extends $$DocRelated = AnyDoc>
 	extends WeakDocRefLike<tag> {
 	isStrong: true
 }

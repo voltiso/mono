@@ -109,7 +109,8 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		// eslint-disable-next-line no-constructor-return
 		return new Proxy(this, {
 			get: (target, p, receiver: unknown) => {
-				if (p in target) return Reflect.get(target, p, receiver) as never
+				if (p === 'aggregates') return this._raw.__voltiso.aggregateTarget
+				else if (p in target) return Reflect.get(target, p, receiver) as never
 				else if (p in this._raw.__voltiso.aggregateTarget)
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, security/detect-object-injection
 					return (this._raw.__voltiso.aggregateTarget as any)[p].value as never

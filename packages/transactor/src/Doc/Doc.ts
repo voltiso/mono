@@ -92,12 +92,17 @@ export namespace DocBase {
 	}>
 }
 
-/** `DocBase` + custom stuff at the root level */
+/**
+ * `DocBase` + custom stuff at the root level
+ *
+ * ! Extra stuff is DISABLED for vscode performance and to avoid bugs and clean
+ * ! up things. accessing data via `.data` is actually better
+ */
 export type CustomDoc<
 	TI extends $$DocTI,
 	Ctx extends ExecutionContext, // ! TODO - make `Options` struct
-> = DocBase<TI, Ctx> & // ! cannot flatten here - would loose `this`
-	Omit<CustomDoc.Extra<TI>, keyof DocBase<TI, Ctx>>
+> = DocBase<TI, Ctx> // ! cannot flatten here - would loose `this`
+// & Omit<CustomDoc.Extra<TI>, keyof DocBase<TI, Ctx>>
 
 export namespace CustomDoc {
 	/** 👻 The non-statically-known fields */
