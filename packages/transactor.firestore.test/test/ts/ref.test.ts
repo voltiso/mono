@@ -2,15 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { Id } from '@voltiso/transactor'
-import { sStrongRef, sWeakRef } from '@voltiso/transactor'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import type { DocIdString } from '@voltiso/transactor'
+import { Doc, sStrongRef, sWeakRef, Transactor } from '@voltiso/transactor'
 import type { StaticError } from '@voltiso/util'
-import { Assert, Is } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 class Doctor extends Doc('doctorW').public({
 	profile: {
@@ -45,8 +44,8 @@ describe('ref', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		Assert.is<Id<Doctor>, Id>()
-		Assert(Is<Id>().not.subtypeOf<Id<Doctor>>())
+		$Assert.is<DocIdString<Doctor>, DocIdString>()
+		$Assert($Is<DocIdString>().not.subtypeOf<DocIdString<Doctor>>())
 	})
 
 	it('checks numRefs on delete', async () => {
@@ -72,7 +71,7 @@ describe('ref', () => {
 		//
 		;() => {
 			const p = patients(d.id)
-			Assert.is<typeof p, StaticError>()
+			$Assert.is<typeof p, StaticError>()
 		}
 
 		//

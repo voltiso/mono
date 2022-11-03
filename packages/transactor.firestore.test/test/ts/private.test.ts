@@ -3,21 +3,21 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as s from '@voltiso/schemar'
-import { createTransactor, Doc, IndexedDoc } from '@voltiso/transactor'
+import { Doc, IndexedDoc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 class Doctor extends Doc.private({
 	specialty: s.string.optional,
 	ofWhat: s.string.optional,
 })
 	.method('setSpecialty', function (specialty: string) {
-		this.specialty = specialty
+		this.data.specialty = specialty
 	})
 	.afterCreateOrUpdate('set ofWhat', function () {
-		if (this.specialty === 'master') this.ofWhat = 'universe'
+		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	})
 	.method('good', async function () {
 		// @ts-expect-error setting private field???
@@ -81,7 +81,7 @@ describe('private', function () {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		await doctors('a').setSpecialty('magician')
+		await doctors('a').methods.setSpecialty('magician')
 		const doc = await doctors('a')
 
 		expect(doc?.data).toMatchObject({
@@ -94,7 +94,7 @@ describe('private', function () {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		await doctors('a').setSpecialty('master')
+		await doctors('a').methods.setSpecialty('master')
 		const doc = await doctors('a')
 
 		expect(doc?.dataWithoutId()).toMatchObject({
@@ -109,6 +109,6 @@ describe('private', function () {
 		await doctors('a').set({})
 		const da = doctors('a')
 
-		await expect(da.good()).resolves.toBeUndefined()
+		await expect(da.methods.good()).resolves.toBeUndefined()
 	})
 })

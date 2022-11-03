@@ -26,7 +26,7 @@ db('frog/{user}')
 	.beforeCommit(function () {
 		if (!this) return
 
-		if ((this['age'] || 0) < 18) throw new Error('frog too young')
+		if ((this.data['age'] || 0) < 18) throw new Error('frog too young')
 	})
 
 	.after(async ({ after, path, pathParams, id }) => {

@@ -8,7 +8,7 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor({ readOnly: true, requireSchemas: false })
 
-class RandomSuper extends Doc({
+class RandomSuper extends Doc.with({
 	public: {
 		field: s.number,
 
@@ -56,7 +56,7 @@ describe('readOnly', () => {
 
 		await database.doc(path).set({ field: 123, defaulted: 33 })
 
-		await expect(randomSupers('a').defaulted).resolves.toBe(33)
+		await expect(randomSupers('a').data.defaulted).resolves.toBe(33)
 
 		await expect(randomSupers('a').update({ field: 234 })).rejects.toThrow(
 			'readOnly',

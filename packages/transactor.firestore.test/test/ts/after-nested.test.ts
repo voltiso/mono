@@ -4,18 +4,15 @@
 /* eslint-disable jest/require-hook */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import {
-	createTransactor,
-	deleteIt,
-	Doc,
-	incrementIt,
-} from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
+import { deleteIt, incrementIt } from '@voltiso/util'
 import { create } from 'random-seed'
 
 import { firestore, firestoreModule } from './common'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 const rand = create('voltiso')
 let cutoff = 0.2
@@ -32,15 +29,15 @@ class Doctor extends Doc.public({
 
 	.afterUpdate('a', async function (p) {
 		const diff = p.after.num - p.before.num
-		this.a += diff
+		this.data.a += diff
 
 		if (rand.random() < cutoff) {
 			await this.update({ num: incrementIt(1) })
 		}
 
 		// @ts-expect-error
-		;() => this.update({ c: deleteIt() })
-		;() => this.update({ opt: deleteIt() })
+		;() => this.update({ c: deleteIt })
+		;() => this.update({ opt: deleteIt })
 	})
 
 	.afterUpdate('b', async function (p) {
@@ -50,12 +47,12 @@ class Doctor extends Doc.public({
 			await this.update({ num: incrementIt(1) })
 		}
 
-		this.b += diff
+		this.data.b += diff
 	})
 
 	.afterUpdate('c', async function (p) {
 		const diff = p.after.num - p.before.num
-		this.c += diff
+		this.data.c += diff
 
 		if (rand.random() < cutoff) {
 			await this.update({ num: incrementIt(1) })
@@ -69,7 +66,7 @@ class Doctor extends Doc.public({
 			await this.update({ num: incrementIt(1) })
 		}
 
-		this.d += diff
+		this.data.d += diff
 	})
 
 	.afterUpdate('e', async function (p) {
@@ -91,22 +88,22 @@ describe('after - nested', function () {
 		cutoff = 0.2
 		await firestore.doc('doctorA/anthony').delete()
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 		})
 		await doctors('anthony').update({ num: incrementIt(1) })
 		await db.runTransaction(async () => {
 			const anthony = await doctors('anthony')
-			$assert(anthony)
-			anthony.num += 1
+			assert(anthony)
+			anthony.data.num += 1
 			cutoff = -1
 		})
 		const anthony = await doctors('anthony')
-		$assert(anthony)
+		assert(anthony)
 
-		expect(anthony.a).toBe(anthony.num)
-		expect(anthony.b).toBe(anthony.num)
-		expect(anthony.c).toBe(anthony.num)
-		expect(anthony.d).toBe(anthony.num)
-		expect(anthony.e).toBe(anthony.num)
+		expect(anthony.data.a).toBe(anthony.data.num)
+		expect(anthony.data.b).toBe(anthony.data.num)
+		expect(anthony.data.c).toBe(anthony.data.num)
+		expect(anthony.data.d).toBe(anthony.data.num)
+		expect(anthony.data.e).toBe(anthony.data.num)
 	})
 })

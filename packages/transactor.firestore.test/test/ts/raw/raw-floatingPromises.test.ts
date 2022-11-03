@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { createFirestoreTransactor, firestore } from '../common/firestore'
 
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
@@ -28,9 +27,7 @@ describe('raw-floatingPromises', () => {
 						p.push(t('hint/f').delete()) // 5
 						await db('hint/g').set({ age: 1 })
 
-						// @ts-expect-error
-
-						if ((await db('hint/h').age) === 1)
+						if ((await db('hint/h').data['age']) === 1)
 							await db('hint/i').set({ age: 1 })
 
 						p.push(db('hint').add({ age: 123 })) // 6

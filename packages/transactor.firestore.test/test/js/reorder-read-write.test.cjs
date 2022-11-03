@@ -3,7 +3,7 @@
 
 'use strict'
 
-const { incrementIt } = require('@voltiso/transactor')
+const { incrementIt } = require('@voltiso/util')
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore

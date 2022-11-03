@@ -47,13 +47,14 @@ const sHistoryStamp = { ...sPublicFields, createdAt: s.string }
 
 type HistoryStamp = Type<typeof sHistoryStamp>
 
-class OrderApiTest extends Doc('orderApiTest')({
-	private: {
-		history: s.array(sHistoryStamp).default([]),
-	},
+class OrderApiTest extends Doc('orderApiTest')
+	.with({
+		private: {
+			history: s.array(sHistoryStamp).default([]),
+		},
 
-	public: sPublicFields,
-})
+		public: sPublicFields,
+	})
 
 	.method('addHistoryStamp', function () {
 		const newHistoryStamp: Record<string, unknown> = {}
@@ -66,15 +67,15 @@ class OrderApiTest extends Doc('orderApiTest')({
 		}
 
 		newHistoryStamp['createdAt'] = new Date().toISOString()
-		this.history.push(newHistoryStamp as HistoryStamp)
+		this.data.history.push(newHistoryStamp as HistoryStamp)
 	})
 
 	.method('toFinalized', async function () {
-		if (this.status !== 'payment')
+		if (this.data.status !== 'payment')
 			throw new Error('this order status is not "payment"')
 
-		this.status = 'finalized'
-		await this.addHistoryStamp()
+		this.data.status = 'finalized'
+		await this.methods.addHistoryStamp()
 	}) {}
 
 describe('order', () => {

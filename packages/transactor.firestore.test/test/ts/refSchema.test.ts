@@ -2,45 +2,38 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import {
-	createTransactor,
-	sStrongRef,
-	StrongDocRef,
-	sWeakRef,
-	WeakDocRef,
-} from '@voltiso/transactor'
+import { CustomDocRef, sRef, sWeakRef, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 describe('ref schema', () => {
 	it('ref is converted to weakRef', () => {
 		expect.hasAssertions()
 
 		const mySchema = {
-			myRef: sStrongRef,
+			myRef: sRef,
 			myWeakRef: sWeakRef,
 		}
 
-		expect(StrongDocRef.name).toBe('lazyConstructor(StrongDocRefImpl)')
+		expect(CustomDocRef.name).toBe('lazyConstructor(StrongDocRefImpl)')
 
 		const myWeakRef = db('a/b/c/d')
-		const myRef = new StrongDocRef(
-			// @ts-expect-error `_context` is hidden
+		const myRef = new CustomDocRef(
 			myWeakRef._context as never,
-			myWeakRef.path.pathString,
+			myWeakRef.path.toString(),
 		)
 
 		const aa = s.schema(mySchema).validate({ myRef, myWeakRef })
 
-		expect(aa.myRef).toBeInstanceOf(StrongDocRef)
-		expect(aa.myWeakRef).toBeInstanceOf(WeakDocRef)
+		expect(aa.myRef).toBeInstanceOf(CustomDocRef)
+		expect(aa.myWeakRef).toBeInstanceOf(CustomDocRef)
 
 		const bb = s.schema(mySchema).validate({ myRef, myWeakRef: myRef })
 
-		expect(bb.myRef).toBeInstanceOf(StrongDocRef)
-		expect(bb.myWeakRef).toBeInstanceOf(WeakDocRef)
+		expect(bb.myRef).toBeInstanceOf(CustomDocRef)
+		expect(bb.myWeakRef).toBeInstanceOf(CustomDocRef)
 
 		expect(() =>
 			s.schema(mySchema).validate({ myRef: myWeakRef, myWeakRef }),

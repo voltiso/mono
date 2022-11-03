@@ -5,13 +5,14 @@ import type { _, $_, DeleteIt, NoArgument, ReplaceIt } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
+import type { InferTI } from '~/CollectionRef'
 import type { DocConstructor, IDocConstructorNoBuilder } from '~/DocConstructor'
 import type { GetDocRef } from '~/DocRef'
 import type { $$DocRelatedLike, GetDocTag, GetDocTI } from '~/DocRelated'
 import type { CustomDocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
-import type { GetVoltisoEntry } from '..'
+import type { GetVoltisoEntry } from './_'
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GetData'
 import type { GetMethodPromises } from './_/GetMethodPromises'
@@ -53,7 +54,8 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	__voltiso: GetVoltisoEntry<TI> // GetData.ForDocTI<TI>['__voltiso']
 
-	methods: GetMethodPromises<TI>
+	methods: GetMethodPromises.ByTI<InferTI.FromDoc<this>>
+	// methods: GetMethodPromises<InferTI.FromDoc<this>>
 	aggregates: Required<GetData<TI>['__voltiso']['aggregateTarget']>
 
 	//

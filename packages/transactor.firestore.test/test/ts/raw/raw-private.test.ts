@@ -4,13 +4,14 @@
 import 'zone.js'
 import 'zone.js/dist/zone-testing-node-bundle'
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'
-import { createTransactor, DocPath } from '@voltiso/transactor'
+import { CustomDocPath, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from '../common/firestore'
 
-const db = createTransactor(firestore, firestoreModule, {
+const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
 })
 
@@ -21,14 +22,14 @@ db('nurse/*')
 		ofWhat: s.string.optional,
 	})
 	.method('setSpecialty', function (specialty: string) {
-		this['specialty'] = specialty
+		this.data['specialty'] = specialty
 	})
 	.afterCreateOrUpdate(function () {
-		if (this['specialty'] === 'master') this['ofWhat'] = 'universe'
+		if (this.data['specialty'] === 'master') this.data['ofWhat'] = 'universe'
 	})
 	.method('fail', async function (path: string) {
 		// const { db } = this
-		await db(new DocPath(path)).update({ specialty: 'fireman' })
+		await db(new CustomDocPath(path)).update({ specialty: 'fireman' })
 	})
 	.method('good', async function () {
 		const { path } = this
@@ -92,7 +93,7 @@ describe('raw-private', function () {
 		await db('nurse/a').methods['setSpecialty']!('magician')
 		const doc = await db('nurse/a')
 
-		$assert(doc)
+		assert(doc)
 
 		expect(doc.dataWithId()).toMatchObject({
 			id: 'a',
@@ -105,7 +106,7 @@ describe('raw-private', function () {
 
 		await db('nurse/a').set({})
 
-		await (db('nurse/a')['setSpecialty'] as Method<any>)('master')
+		await (db('nurse/a').methods['setSpecialty'] as Method<any>)('master')
 		const doc = await db('nurse/a')
 
 		expect(doc?.dataWithoutId()).toMatchObject({
@@ -121,7 +122,7 @@ describe('raw-private', function () {
 		await db('nurse/b').set({})
 
 		await expect(
-			(db('nurse/a')['good'] as Method<any>)(),
+			(db('nurse/a').methods['good'] as Method<any>)(),
 		).resolves.toBeUndefined()
 	})
 
@@ -132,7 +133,7 @@ describe('raw-private', function () {
 		await db('nurse/b').set({})
 
 		await expect(
-			(db('nurse/a')['fail'] as Method<any>)('nurse/b'),
+			(db('nurse/a').methods['fail'] as Method<any>)('nurse/b'),
 		).rejects.toThrow('specialty')
 	})
 })

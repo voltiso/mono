@@ -33,7 +33,7 @@ describe('add', () => {
 		expect.hasAssertions()
 
 		const client = await clients.add({
-			id: 'fff',
+			id: 'fff' as never,
 			displayName: 'asd',
 			rootTaskId: '12345678901234567890',
 		})

@@ -95,16 +95,16 @@ describe('after - nested', function () {
 		await db.runTransaction(async () => {
 			const anthony = await doctors('anthony')
 			$assert(anthony)
-			anthony.num += 1
+			anthony.data.num += 1
 			cutoff = -1
 		})
 		const anthony = await doctors('anthony')
 		$assert(anthony)
 
-		expect(anthony.a).toBe(anthony.num)
-		expect(anthony.b).toBe(anthony.num)
-		expect(anthony.c).toBe(anthony.num)
-		expect(anthony.d).toBe(anthony.num)
-		expect(anthony.e).toBe(anthony.num)
+		expect(anthony.data.a).toBe(anthony.data.num)
+		expect(anthony.data.b).toBe(anthony.data.num)
+		expect(anthony.data.c).toBe(anthony.data.num)
+		expect(anthony.data.d).toBe(anthony.data.num)
+		expect(anthony.data.e).toBe(anthony.data.num)
 	})
 })

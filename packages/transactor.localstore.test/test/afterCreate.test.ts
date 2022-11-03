@@ -15,7 +15,7 @@ class Doctor extends Doc.public({
 		ofWhat: s.string.optional,
 	})
 	.afterCreate(function () {
-		if (this.specialty === 'master') this.ofWhat = 'universe'
+		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	}) {}
 
 const doctors = db('doctor').register(Doctor)
@@ -33,11 +33,11 @@ describe('afterCreate', () => {
 		await expect(doctors('anthony')).resolves.toBeNull()
 
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 			specialty: 'master',
 		})
 
-		await expect(doctors('anthony').ofWhat).resolves.toBe('universe')
+		await expect(doctors('anthony').data.ofWhat).resolves.toBe('universe')
 	})
 
 	it('does not trigger on update', async function () {
@@ -46,15 +46,19 @@ describe('afterCreate', () => {
 		await database.doc('doctor/anthony').delete()
 
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 		})
 
-		await expect(doctors('anthony').ofWhat).rejects.toThrow('does not exist')
+		await expect(doctors('anthony').data.ofWhat).rejects.toThrow(
+			'does not exist',
+		)
 
 		await doctors('anthony').update({
 			specialty: 'master',
 		})
 
-		await expect(doctors('anthony').ofWhat).rejects.toThrow('does not exist')
+		await expect(doctors('anthony').data.ofWhat).rejects.toThrow(
+			'does not exist',
+		)
 	})
 })

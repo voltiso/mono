@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import { Doc, method, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule, {
+const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
 })
 
@@ -16,7 +16,7 @@ class Counter extends Doc.public({
 	value: s.number.default(1),
 })
 	.method('increment', function (x: number) {
-		this.value += x
+		this.data.value += x
 	})
 	// .method(
 	// 	'incrementChecked',
@@ -29,13 +29,14 @@ class Counter extends Doc.public({
 		'incrementObj',
 		// 'incrementCheckedObj',
 		function ({ incrementBy }: { incrementBy: number }) {
-			this.value += incrementBy
+			this.data.value += incrementBy
 		},
 		// {
 		// 	incrementBy: number,
 		// }
-	)
-	.method('floatSomePromises', async function () {
+	) {
+	@method
+	async floatSomePromises() {
 		// const db = this.db
 		promises.push(db('grandma/a').set({ age: 1 })) // A
 
@@ -43,7 +44,11 @@ class Counter extends Doc.public({
 		promises.push(db('grandma/a').set({ age: 1 })) // B
 		await db('grandma/a').set({ age: 1 })
 		promises.push(db('grandma/a').set({ age: 1 })) // C
-	}) {}
+	}
+}
+
+// type B = Counter[DTI]['methods']
+// type A = InferTI.FromDoc<Counter>['methods']
 
 const counters = db('office').register(Counter)
 
@@ -56,11 +61,15 @@ describe('method', function () {
 
 		expect(id).toBeDefined()
 
-		await counter.increment(100)
-		await counters(id).incrementObj({ incrementBy: 1000 })
+		await counter.methods.increment(100)
+
+		// should infer TI
+		;() => counter.methods.floatSomePromises()
+
+		await counters(id).methods.incrementObj({ incrementBy: 1000 })
 
 		expect(counter.dataWithId()).toMatchObject({ id, value: 101 }) // this object is not updated!
-		expect((await db('office', id))!['value']).toBe(1101)
+		expect((await db('office', id))!.data['value']).toBe(1101)
 	})
 
 	it('should detect floating promises', async function () {
@@ -68,7 +77,7 @@ describe('method', function () {
 
 		await counters('asd').set({})
 		try {
-			await expect(counters('asd').floatSomePromises()).rejects.toThrow(
+			await expect(counters('asd').methods.floatSomePromises()).rejects.toThrow(
 				'numFloatingPromises: 3',
 			)
 		} catch {}

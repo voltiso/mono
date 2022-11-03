@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { Id, IDoc, IndexedDoc, WeakDocRef } from '@voltiso/transactor'
-import { createTransactor } from '@voltiso/transactor'
+import type { AnyDoc, DocIdString, IDoc, WeakDocRef } from '@voltiso/transactor'
+import { Transactor } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { firestore, firestoreModule } from '../common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 // eslint-disable-next-line jest/require-hook
 db('fairyAhj/*').public({
 	specialty: s.string.optional,
@@ -38,12 +38,12 @@ describe('raw-public', () => {
 			'i',
 			'j',
 			'k' as string,
-			'l' as Id<IDoc>,
+			'l' as DocIdString<IDoc>,
 			'm',
 			'n',
 			'o' as const,
 			'p',
 		)
-		Assert<IsIdentical<typeof x, WeakDocRef<IndexedDoc>>>()
+		$Assert<IsIdentical<typeof x, WeakDocRef<AnyDoc>>>()
 	})
 })

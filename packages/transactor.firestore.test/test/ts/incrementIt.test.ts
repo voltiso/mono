@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createTransactor, incrementIt, sVoltisoEntry } from '@voltiso/transactor'
+import { sVoltisoEntry, Transactor } from '@voltiso/transactor'
+import { incrementIt } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule, {
+const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
 	refCounters: false,
 })
@@ -17,7 +18,7 @@ describe('incrementIt', function () {
 		await firestore.doc('userB/artur').set({ age: 20 })
 		await db('userB/artur').update({ age: incrementIt(1) })
 
-		await expect(db('userB/artur')['age']).resolves.toBe(21)
+		await expect(db('userB/artur').data['age']).resolves.toBe(21)
 	})
 
 	it('works with chained updates within transaction', async function () {

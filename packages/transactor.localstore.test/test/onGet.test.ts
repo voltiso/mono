@@ -9,7 +9,7 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class User extends Doc({
+class User extends Doc.with({
 	public: s.object({
 		displayName: s.string,
 		def: s.string.default('def'),
@@ -35,7 +35,7 @@ describe('onGet', function () {
 		await database.doc('userOnGet/a').delete()
 		const user = await users('a')
 
-		expect(user?.displayName).toBe('default')
-		expect(user?.def).toBe('def')
+		expect(user?.data.displayName).toBe('default')
+		expect(user?.data.def).toBe('def')
 	})
 })

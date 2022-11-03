@@ -17,6 +17,7 @@
     "@firebase/app-types": "^0.8.0",
     "@types/jest-dev-server": "^5.0.0",
     "@types/random-seed": "^0.3.3",
+    "@voltiso/assertor": "workspace:^3.0.0",
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/schemar": "workspace:^",

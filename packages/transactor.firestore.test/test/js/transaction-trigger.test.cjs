@@ -3,7 +3,8 @@
 
 'use strict'
 
-const { incrementIt } = require('@voltiso/transactor')
+const { incrementIt } = require('@voltiso/util')
+
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -44,7 +45,7 @@ describe('transaction-trigger', () => {
 		await db.runTransaction(async db => {
 			await db('userA/artur/project/tds').set({ name: 'TDS' })
 
-			await expect(db('userA/artur')['numProjects']).resolves.toBe(1)
+			await expect(db('userA/artur').data['numProjects']).resolves.toBe(1)
 		})
 
 		const doc = await db('userA/artur')

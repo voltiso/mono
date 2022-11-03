@@ -1,15 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	createTransactor,
-	IndexedDoc,
-	sVoltisoEntry,
-} from '@voltiso/transactor'
+import { IndexedDoc, sVoltisoEntry, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule, {
+const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
 	refCounters: false,
 })

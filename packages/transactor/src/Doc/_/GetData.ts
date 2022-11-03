@@ -44,9 +44,9 @@ export type _$GetAggregateTarget<T> = T extends any
 	: never
 
 /** @inline */
-export type GetData<R extends $$DocRelatedLike> = R extends any
-	? GetData.ForDocTI<GetDocTI<R>>
-	: never
+export type GetData<R extends $$DocRelatedLike> = R extends AnyDoc
+	? { readonly id?: never; [k: string]: unknown }
+	: GetData.ForDocTI<GetDocTI<R>>
 
 export namespace GetData {
 	export type ForDocTI<TI extends $$DocTI> = TI extends DocTI
@@ -79,12 +79,12 @@ export namespace GetDataWithId {
 //
 
 /** @inline */
-export type GetInputData<R extends $$DocRelatedLike> = GetInputData.ForDocTI<
-	GetDocTI<R>
->
+export type GetInputData<R extends $$DocRelatedLike> = R extends AnyDoc
+	? { readonly id?: never; [k: string]: unknown }
+	: GetInputData.ForDocTI<GetDocTI<R>>
 
 export namespace GetInputData {
-	export type ForDocTI<TI extends $$DocTI> = [TI] extends [DocTI]
+	export type ForDocTI<TI extends $$DocTI> = TI extends DocTI
 		? _<
 				TI['publicOnCreation']['Input'] &
 					TI['public']['Input'] &
@@ -138,9 +138,9 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 		  >
 
 /** @inline */
-export type GetPublicInputData<R extends $$DocRelatedLike> = R extends any
-	? Input<GetDocTI<R>['public']>
-	: never
+export type GetPublicInputData<R extends $$DocRelatedLike> = R extends AnyDoc
+	? { readonly id?: never; [k: string]: unknown }
+	: Input<GetDocTI<R>['public']>
 
 //
 

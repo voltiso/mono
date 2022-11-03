@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createTransactor } from '@voltiso/transactor'
+import { Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule, {
+const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
 })
 
@@ -23,7 +23,7 @@ describe('transaction', function () {
 			await t('visitorK/artur').set({ age: 934 })
 
 			expect(Zone.current.name).toBe('Transaction')
-			await expect(db('visitorK/artur')['age']).resolves.toBe(934)
+			await expect(db('visitorK/artur').data['age']).resolves.toBe(934)
 		})
 
 		expect(Zone.current.name).not.toBe('Transaction')

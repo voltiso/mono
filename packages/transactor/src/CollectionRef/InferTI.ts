@@ -1,44 +1,37 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Assume, NewableReturn_ } from '@voltiso/util'
+import type { _, NewableReturn_ } from '@voltiso/util'
 
 import type { $$Doc, $$DocTI, DocTI, DTI } from '~/Doc'
 import type { $$DocConstructor } from '~/DocConstructor'
-import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
+import type { $$DocRelatedLike, GetDoc } from '~/DocRelated'
+import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { InferMethods } from './InferMethods'
 
 //
 
-export type InferTIFromDoc_<D> = D extends $$Doc ? InferTIFromDoc<D> : never
+export type InferTI<X extends $$DocRelatedLike> = InferTI.FromAnything<X>
 
-export type InferTIFromDoc<D extends $$Doc> = $$Doc extends D
-	? DocTI
-	: Assume<
-			$$DocTI,
-			D extends { [DTI]: { tag: DocTagLike | AnyDoc } }
-				? D[DTI] & {
-						methods: InferMethods<D>
-				  } & (AnyDoc extends D[DTI]['tag'] ? { tag: AnyDoc } : unknown)
-				: never
-	  >
+export namespace InferTI {
+	export type FromAnything<X extends $$DocRelatedLike> = FromDoc<GetDoc<X>>
 
-export type InferTIFromCls<Cls extends $$DocConstructor> = InferTIFromDoc<
-	NewableReturn_<Cls> & $$Doc
->
+	export type FromDoc<D extends $$Doc> = D extends {
+		[DTI]: DocTI
+	}
+		? _<
+				D[DTI] & {
+					methods: InferMethods<D>
+				} & (AnyDoc extends D[DTI]['tag'] ? { tag: AnyDoc } : unknown)
+		  >
+		: DocTI
 
-export type InferTI<X extends $$DocConstructor | $$Doc | DocTag> =
-	X extends $$Doc
-		? InferTIFromDoc<X>
-		: X extends $$DocConstructor
-		? InferTIFromCls<X>
-		: X extends keyof DocTypes
-		? DocTypes[X] extends { readonly [DTI]: {} }
-			? DocTypes[X][DTI]
-			: never
-		: never
+	export type FromCls<Cls extends $$DocConstructor> = FromDoc<
+		NewableReturn_<Cls> & $$Doc
+	>
+}
 
 export type GetTI<X extends $$DocTI | DocTag | { readonly [DTI]: $$DocTI }> =
 	X extends $$DocTI

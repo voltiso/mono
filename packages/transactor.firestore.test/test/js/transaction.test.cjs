@@ -61,7 +61,7 @@ describe('transaction', function () {
 			await t('visitorJ/artur').set({ age: 934 })
 
 			expect(Zone.current.name).toBe('Transaction')
-			await expect(db('visitorJ/artur')['age']).resolves.toBe(934)
+			await expect(db('visitorJ/artur').data['age']).resolves.toBe(934)
 		})
 	})
 
@@ -77,7 +77,7 @@ describe('transaction', function () {
 			}),
 		).rejects.toThrow('my-error-message')
 
-		await expect(db('visitor/artur')['age']).resolves.toBe(12)
+		await expect(db('visitor/artur').data['age']).resolves.toBe(12)
 	})
 
 	it('should detect access after transaction is committed', async function () {

@@ -3,11 +3,11 @@
 
 import * as s from '@voltiso/schemar'
 import type { Doc } from '@voltiso/transactor'
-import { createTransactor } from '@voltiso/transactor'
+import { Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from '../common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 interface Transfer extends Doc {
 	amount: number
 	triggerCondition: boolean

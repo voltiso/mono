@@ -23,12 +23,12 @@ class Doctor extends Doc.with({
 }) {
 	@method
 	async setSpecialty(specialty: string) {
-		this.specialty = specialty
+		this.data.specialty = specialty
 	}
 
 	@afterCreateOrUpdate
 	setOfWhat(_p: TriggerParams.AfterCreateOrUpdate<Doctor>) {
-		if (this.specialty === 'master') this.ofWhat = 'universe'
+		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	}
 
 	@method

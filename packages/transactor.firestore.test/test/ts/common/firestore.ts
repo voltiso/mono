@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Options } from '@voltiso/transactor'
-import { createTransactor } from '@voltiso/transactor'
+import { Transactor } from '@voltiso/transactor'
 import { initializeApp } from 'firebase-admin/app'
 import type { Firestore } from 'firebase-admin/firestore'
 import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore'
@@ -26,5 +26,5 @@ export function createFirestoreTransactor(
 	firestore: Firestore,
 	options?: Options | undefined,
 ) {
-	return createTransactor(firestore, firestoreModule, options)
+	return new Transactor(firestore, firestoreModule, options)
 }

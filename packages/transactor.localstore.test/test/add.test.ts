@@ -24,7 +24,7 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-class Client extends Doc({
+class Client extends Doc.with({
 	publicOnCreation: {
 		rootTaskId: s.string,
 	},
@@ -38,7 +38,7 @@ class Client extends Doc({
 	async _create(params: TriggerParams.AfterCreate<Client>) {
 		const client = await clients(params.id)
 		assert(client)
-		client.friends = [clients('a'), clients('b').asStrongRef]
+		client.data.friends = [clients('a'), clients('b').asStrongRef]
 	}
 }
 
@@ -79,9 +79,9 @@ describe('add', () => {
 			friends: [clients('a'), clients('b').asStrongRef],
 		})
 
-		assert(client.friends[0])
+		assert(client.data.friends[0])
 
-		expect(client.friends[0].id).toBe('a')
+		expect(client.data.friends[0].id).toBe('a')
 
 		const a = toDatabaseSetNested(db._databaseContext as never, [
 			clients('a').asStrongRef,

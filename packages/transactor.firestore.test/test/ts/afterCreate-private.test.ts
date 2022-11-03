@@ -1,12 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 class Doctor extends Doc.public({
 	specialty: s.string.optional,
@@ -15,9 +16,9 @@ class Doctor extends Doc.public({
 		ofWhat: s.string.optional,
 	})
 	.afterCreate(async function () {
-		if (this.specialty === 'master') {
+		if (this.data.specialty === 'master') {
 			await this.update({ ofWhat: 'universe' })
-			$assert(this.ofWhat === 'universe')
+			assert(this.data.ofWhat === 'universe')
 		}
 	}) {}
 
@@ -36,11 +37,11 @@ describe('afterCreate - private update', function () {
 		await expect(doctors('anthony')).resolves.toBeNull()
 
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 			specialty: 'master',
 		})
 
-		await expect(doctors('anthony').ofWhat).resolves.toBe('universe')
+		await expect(doctors('anthony').data.ofWhat).resolves.toBe('universe')
 	})
 
 	it('does not trigger on update', async function () {
@@ -49,15 +50,19 @@ describe('afterCreate - private update', function () {
 		await firestore.doc('doctorB/anthony').delete()
 
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 		})
 
-		await expect(doctors('anthony').ofWhat).rejects.toThrow('does not exist')
+		await expect(doctors('anthony').data.ofWhat).rejects.toThrow(
+			'does not exist',
+		)
 
 		await doctors('anthony').update({
 			specialty: 'master',
 		})
 
-		await expect(doctors('anthony').ofWhat).rejects.toThrow('does not exist')
+		await expect(doctors('anthony').data.ofWhat).rejects.toThrow(
+			'does not exist',
+		)
 	})
 })

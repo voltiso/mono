@@ -2,12 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { TransactionImpl } from '@voltiso/transactor'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 class Doctor extends Doc.private({
 	specialty: s.string,
@@ -47,7 +46,7 @@ describe('public', () => {
 		const promise = db.runTransaction(async t => {
 			await expect(doctors('anthonyAbc').set({})).rejects.toThrow('specialty')
 
-			expect((t as TransactionImpl)._error).not.toBeNull()
+			expect(t._error).not.toBeNull()
 
 			await expect(async () => {
 				await doctors('anthonyAbc')

@@ -26,9 +26,9 @@ class Transfer extends Doc.publicOnCreation({
 	})
 	.private({ privateField: s.string })
 	.afterCreateOrUpdate('set amount', function () {
-		this.privateField = 'sdf'
+		this.data.privateField = 'sdf'
 
-		if (this.triggerCondition) this.amount = 1919
+		if (this.data.triggerCondition) this.data.amount = 1919
 	})
 
 	.method('test', function (x: number) {
@@ -36,7 +36,7 @@ class Transfer extends Doc.publicOnCreation({
 	})
 
 	.method('debugChangeAmount', function (x: number) {
-		this.amount = x
+		this.data.amount = x
 	}) {}
 
 const transfers = db('transfer').register(Transfer)
@@ -65,7 +65,8 @@ describe('publicOnCreation', () => {
 
 		await database.doc('transfer/mono').delete()
 		await transfers('mono').set({ amount: 10 })
-		await transfers('mono').debugChangeAmount(987)
+		await transfers('mono').methods.debugChangeAmount(987)
+		// await transfers('mono').debugChangeAmount(987)
 
 		expect((await transfers('mono'))!.dataWithoutId()).toMatchObject({
 			amount: 987,
@@ -88,7 +89,7 @@ describe('publicOnCreation', () => {
 			privateField: 'sdf',
 			a: { b: { c: 44 } },
 		})
-		await expect(transfers('ali').a.b.c).resolves.toBe(44)
+		// await expect(transfers('ali').a.b.c).resolves.toBe(44)
 		await expect(transfers('ali').data.a.b.c).resolves.toBe(44)
 	})
 })

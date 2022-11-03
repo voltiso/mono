@@ -3,7 +3,9 @@
 
 'use strict'
 
-const { incrementIt, sVoltisoEntry } = require('@voltiso/transactor')
+import { incrementIt } from '@voltiso/util'
+
+const { sVoltisoEntry } = require('@voltiso/transactor')
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -20,7 +22,7 @@ describe('incrementIt', function () {
 		await firestore.doc('friend/artur').set({ age: 20 })
 		await db('friend/artur').update({ age: incrementIt(1) })
 
-		await expect(db('friend/artur')['age']).resolves.toBe(21)
+		await expect(db('friend/artur').data['age']).resolves.toBe(21)
 	})
 
 	it('works with chained updates within transaction', async function () {

@@ -7,7 +7,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { DocIdBrand, DocIdString } from '~/brand'
-import type { InferTIFromDoc } from '~/CollectionRef/InferTI'
+import type { InferTI } from '~/CollectionRef'
 import type { $WithId } from '~/Data'
 import type { $$DocTI, DocTI, IndexedDocTI } from '~/Doc'
 import { Doc } from '~/Doc'
@@ -56,7 +56,7 @@ describe('Doc util', () => {
 		expect.assertions(0)
 
 		class MyDoc extends Doc.with({ public: { a: s.number } }) {}
-		type TI = InferTIFromDoc<MyDoc>
+		type TI = InferTI.FromDoc<MyDoc>
 		type D = GetPublicCreationInputData<TI>
 		$Assert<
 			IsIdentical<

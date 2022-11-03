@@ -68,7 +68,7 @@ export namespace CustomDocRef {
 		new <O extends Partial<Options>>(
 			context: DocRefContext.Parent,
 			path: string,
-			partialOptions: Partial<O>,
+			partialOptions?: Partial<O>,
 		): CustomDocRef<O>
 	}
 

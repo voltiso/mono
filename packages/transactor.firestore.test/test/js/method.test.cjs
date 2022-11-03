@@ -15,7 +15,7 @@ const promises = []
 // eslint-disable-next-line jest/require-hook
 db('counterAbc/*')
 	.afterCreateOrUpdate(function () {
-		this.data['value'] = this['value'] || 0
+		this.data['value'] = this.data['value'] || 0
 	})
 	.method('increment', function (x) {
 		// @ts-expect-error ...

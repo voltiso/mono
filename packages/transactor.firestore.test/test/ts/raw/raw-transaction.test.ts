@@ -3,6 +3,7 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import { assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
@@ -17,7 +18,7 @@ describe('raw-transaction', () => {
 		await db.runTransaction(async t => {
 			await t('userG/artur').set({ age: 934 })
 
-			await expect(db('userG/artur')['age']).resolves.toBe(934)
+			await expect(db('userG/artur').data['age']).resolves.toBe(934)
 		})
 	})
 
@@ -32,7 +33,7 @@ describe('raw-transaction', () => {
 				throw new Error('very bad')
 			}),
 		).rejects.toThrow('very bad')
-		await expect(db('userG/artur')['age']).resolves.toBe(12)
+		await expect(db('userG/artur').data['age']).resolves.toBe(12)
 	})
 
 	it('should detect access after transaction is committed', async function () {
@@ -52,20 +53,20 @@ describe('raw-transaction', () => {
 
 		await db.runTransaction(async db => {
 			const adam = await db('userG/adam').set({ age: 123, x: 2 })
-			adam['age'] = 234
-			delete adam['x']
+			adam.data['age'] = 234
+			delete adam.data['x']
 
-			expect(adam['age']).toBe(234)
-			expect(adam['x']).toBeUndefined()
+			expect(adam.data['age']).toBe(234)
+			expect(adam.data['x']).toBeUndefined()
 		})
 		const adam = await db('userG/adam')
 
 		// @ts-ignore
 		expect(adam.age).toBe(234)
 
-		$assert(adam)
+		assert(adam)
 
-		expect(adam['x']).toBeUndefined()
+		expect(adam.data['x']).toBeUndefined()
 	})
 
 	it('should commit local object changes recursively', async function () {

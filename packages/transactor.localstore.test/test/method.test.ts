@@ -13,11 +13,11 @@ class Counter extends Doc.public({
 })
 
 	.method('increment', function (x: number) {
-		this.value += x
+		this.data.value += x
 	})
 
 	.method('incrementObj', function ({ incrementBy }: { incrementBy: number }) {
-		this.value += incrementBy
+		this.data.value += incrementBy
 	})
 
 	.method('floatSomePromises', async function () {
@@ -37,15 +37,19 @@ describe('method', function () {
 		expect.hasAssertions()
 
 		const counter = await counters.add({})
-		const { id } = counter
+
+		const id = counter.id
 
 		expect(id).toBeDefined()
 
-		await counter.increment(100)
-		await counters(id).incrementObj({ incrementBy: 1000 })
+		await counter.methods.increment(100)
+		await counters(id).methods.incrementObj({ incrementBy: 1000 })
 
 		expect(counter.dataWithId()).toMatchObject({ id, value: 101 }) // this object is not updated!
-		expect((await db('counter', id))!['value']).toBe(1101)
+
+		const doc = await db('counter', id)
+
+		expect(doc!.data['value']).toBe(1101)
 	})
 
 	it('should detect floating promises', async function () {
@@ -53,7 +57,7 @@ describe('method', function () {
 
 		await counters('asd').set({})
 
-		await expect(counters('asd').floatSomePromises()).rejects.toThrow(
+		await expect(counters('asd').methods.floatSomePromises()).rejects.toThrow(
 			'numFloatingPromises: 3',
 		)
 	})
@@ -64,7 +68,7 @@ describe('method', function () {
 		await counters('asd').set({})
 
 		await db.runTransaction(async () => {
-			await counters('asd').increment(2)
+			await counters('asd').methods.increment(2)
 
 			await expect(counters('asd').data.value).resolves.toBe(3)
 		})
@@ -78,7 +82,7 @@ describe('method', function () {
 		await counters('asd').set({})
 
 		const promise = db.runTransaction(async () => {
-			await counters('asd').increment(2)
+			await counters('asd').methods.increment(2)
 
 			await expect(counters('asd').data.value).resolves.toBe(3)
 

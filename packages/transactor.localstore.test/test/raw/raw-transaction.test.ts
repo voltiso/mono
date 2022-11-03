@@ -15,7 +15,9 @@ describe('raw-transaction', function () {
 		await db.runTransaction(async t => {
 			await t('user/artur').set({ age: 934 })
 
-			await expect(db('user/artur')['age']).resolves.toBe(934)
+			const ref = db('user/artur')
+
+			await expect(ref.data['age']).resolves.toBe(934)
 		})
 	})
 
@@ -30,7 +32,7 @@ describe('raw-transaction', function () {
 				throw new Error('veryBadError')
 			}),
 		).rejects.toThrow('veryBadError')
-		await expect(db('user/artur')['age']).resolves.toBe(12)
+		await expect(db('user/artur').data['age']).resolves.toBe(12)
 	})
 
 	it('should detect access after transaction is committed', async function () {
@@ -74,20 +76,20 @@ describe('raw-transaction', function () {
 
 		await db.runTransaction(async db => {
 			const adam = await db('user/adam').set({ age: 123, x: 2 })
-			adam['age'] = 234
-			delete adam['x']
+			adam.data['age'] = 234
+			delete adam.data['x']
 
-			expect(adam['age']).toBe(234)
-			expect(adam['x']).toBeUndefined()
+			expect(adam.data['age']).toBe(234)
+			expect(adam.data['x']).toBeUndefined()
 		})
 		const adam = await db('user/adam')
 
 		// @ts-expect-error ...
-		expect(adam.age).toBe(234)
+		expect(adam.data.age).toBe(234)
 
 		$assert(adam)
 
-		expect(adam['x']).toBeUndefined()
+		expect(adam.data['x']).toBeUndefined()
 	})
 
 	it('should commit local object changes recursively', async function () {

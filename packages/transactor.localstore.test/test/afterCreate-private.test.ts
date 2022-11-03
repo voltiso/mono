@@ -3,7 +3,6 @@
 
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import type { DocIdString } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
@@ -19,9 +18,9 @@ class Doctor extends Doc.public({
 		ofWhat: s.string.optional,
 	})
 	.afterCreate(async function () {
-		if (this.specialty === 'master') {
+		if (this.data.specialty === 'master') {
 			await this.update({ ofWhat: 'universe' })
-			$assert(this.ofWhat === 'universe', 'test')
+			$assert(this.data.ofWhat === 'universe', 'test')
 		}
 	}) {}
 
@@ -40,11 +39,11 @@ describe('afterCreate - private update', function () {
 		await expect(doctors('anthony')).resolves.toBeNull()
 
 		await doctors.add({
-			id: 'anthony' as DocIdString,
+			id: 'anthony' as never,
 			specialty: 'master',
 		})
 
-		await expect(doctors('anthony').ofWhat).resolves.toBe('universe')
+		await expect(doctors('anthony').data.ofWhat).resolves.toBe('universe')
 	})
 
 	it('does not trigger on update', async function () {
@@ -53,15 +52,19 @@ describe('afterCreate - private update', function () {
 		await database.doc('doctor/anthony').delete()
 
 		await doctors.add({
-			id: 'anthony',
+			id: 'anthony' as never,
 		})
 
-		await expect(doctors('anthony').ofWhat).rejects.toThrow('does not exist')
+		await expect(doctors('anthony').data.ofWhat).rejects.toThrow(
+			'does not exist',
+		)
 
 		await doctors('anthony').update({
 			specialty: 'master',
 		})
 
-		await expect(doctors('anthony').ofWhat).rejects.toThrow('does not exist')
+		await expect(doctors('anthony').data.ofWhat).rejects.toThrow(
+			'does not exist',
+		)
 	})
 })

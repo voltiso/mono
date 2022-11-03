@@ -3,11 +3,11 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as s from '@voltiso/schemar'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 class Transfer extends Doc.publicOnCreation({
 	amount: s.number.min(0),
@@ -23,15 +23,15 @@ class Transfer extends Doc.publicOnCreation({
 	})
 	.private({ privateField: s.string })
 	.afterCreateOrUpdate('set amount', function () {
-		this.privateField = 'sdf'
+		this.data.privateField = 'sdf'
 
-		if (this.triggerCondition) this.amount = 1919
+		if (this.data.triggerCondition) this.data.amount = 1919
 	})
 	.method('test', function (x: number) {
 		return x * 2
 	})
 	.method('debugChangeAmount', function (x: number) {
-		this.amount = x
+		this.data.amount = x
 	}) {}
 
 const transfers = db('transfer').register(Transfer)
@@ -60,7 +60,7 @@ describe('publicOnCreation', () => {
 
 		await firestore.doc('transfer/secret').delete()
 		await transfers('secret').set({ amount: 10 })
-		await transfers('secret').debugChangeAmount(987)
+		await transfers('secret').methods.debugChangeAmount(987)
 
 		expect((await transfers('secret'))!.dataWithoutId()).toMatchObject({
 			amount: 987,
@@ -83,7 +83,7 @@ describe('publicOnCreation', () => {
 			privateField: 'sdf',
 			a: { b: { c: 44 } },
 		})
-		await expect(transfers('secret2').a.b.c).resolves.toBe(44)
+		// await expect(transfers('secret2').a.b.c).resolves.toBe(44)
 		await expect(transfers('secret2').data.a.b.c).resolves.toBe(44)
 	})
 })

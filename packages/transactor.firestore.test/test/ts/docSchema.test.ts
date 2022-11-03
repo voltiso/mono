@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import { createTransactor, Doc } from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
 class Doctor extends Doc.public({
 	specialty: s.string.optional,

@@ -33,6 +33,7 @@ import type {
 	UpdatesFromData,
 } from '~/Doc'
 import type { GetDoc, GetDocTag, GetDocTI } from '~/DocRelated'
+import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
@@ -153,7 +154,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	constructor(
 		context: DocRefContext.Parent,
 		path: string,
-		partialOptions: Partial<O>,
+		partialOptions: Partial<O> = {},
 	) {
 		this._context = { ...context, docRef: this as never }
 		this._path = new CustomDocPath(path)
@@ -245,10 +246,12 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(
-		updates: UpdatesFromData.Update<
-			GetUpdateDataByCtx<O['doc'], 'outside'>,
-			GetData<O['doc']>
-		>,
+		updates: O['doc'] extends AnyDoc
+			? { readonly id?: never; [k: string]: unknown }
+			: UpdatesFromData.Update<
+					GetUpdateDataByCtx<O['doc'], 'outside'>,
+					GetData<O['doc']>
+			  >,
 	): PromiseLike<GetDoc<O['doc']> | undefined>
 
 	update(

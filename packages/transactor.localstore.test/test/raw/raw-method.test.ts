@@ -15,7 +15,7 @@ db('counter/*')
 		this.value += x
 	})
 	.method('incrementObj', function (params: any) {
-		this['value'] += params.incrementBy
+		this.data['value'] += params.incrementBy
 	})
 	.method('floatSomePromises', async function () {
 		// console.log('floatSomePromises')
@@ -41,7 +41,7 @@ describe('raw-method', function () {
 		})
 
 		expect(counter.dataWithId()).toMatchObject({ id: counter.id, value: 100 }) // this object is not updated!
-		expect((await db('counter', counter.id))!['value']).toBe(1100)
+		expect((await db('counter', counter.id))!.data['value']).toBe(1100)
 	})
 
 	it('should detect floating promises', async function () {

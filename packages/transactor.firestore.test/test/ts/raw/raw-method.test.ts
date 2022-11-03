@@ -18,7 +18,7 @@ db('president/*')
 		this.value += x
 	})
 	.method('incrementObj', function (params: { incrementBy: number }) {
-		;(this['value'] as number) += params.incrementBy
+		;(this.data['value'] as number) += params.incrementBy
 	})
 	.method('floatSomePromises', async function () {
 		// console.log('floatSomePromises')
@@ -44,7 +44,7 @@ describe('raw-method', function () {
 		await db('president', id).methods['incrementObj']!({ incrementBy: 1000 })
 
 		expect(counter.dataWithId()).toMatchObject({ id, value: 100 }) // this object is not updated!
-		expect((await db('president', id))!['value']).toBe(1100)
+		expect((await db('president', id))!.data['value']).toBe(1100)
 	})
 
 	it('should detect floating promises', async function () {

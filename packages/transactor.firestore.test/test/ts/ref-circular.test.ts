@@ -1,18 +1,24 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
-import type { DTI, Id, StrongRef } from '@voltiso/transactor'
-import { sStrongRef, sWeakRef } from '@voltiso/transactor'
-import { createTransactor, Doc, method } from '@voltiso/transactor'
+import type { DocIdString, DocRef } from '@voltiso/transactor'
+import {
+	Doc,
+	method,
+	sStrongRef,
+	sWeakRef,
+	Transactor,
+} from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = createTransactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule)
 
-class DoctorLorcan extends Doc('doctorLorcan').fields({
+class DoctorLorcan extends Doc('doctorLorcan').with({
 	public: {
 		name: s.string,
 		friend: sStrongRef<'doctorLorcan'>().optional,
@@ -20,14 +26,14 @@ class DoctorLorcan extends Doc('doctorLorcan').fields({
 	},
 }) {
 	@method
-	async setFriend(friend?: StrongRef<DoctorLorcan>) {
-		type X = StrongRef<DoctorLorcan>[DTI]['tag']
-		Assert<IsIdentical<X, 'doctorLorcan'>>()
+	async setFriend(friend?: DocRef<DoctorLorcan>) {
+		// type X = GetDocTag<DocRef<DoctorLorcan>>
+		// $Assert<IsIdentical<X, 'doctorLorcan'>>()
 
-		this.name = 'Mr Friendly'
+		this.data.name = 'Mr Friendly'
 
-		if (friend) this.friend = friend
-		else delete this.friend
+		if (friend) this.data.friend = friend
+		else delete this.data.friend
 	}
 }
 const doctors = db.register(DoctorLorcan)
@@ -49,7 +55,7 @@ describe('emu-ts', () => {
 			expect.hasAssertions()
 
 			type ClientId = ClientXyz['id']
-			Assert<IsIdentical<ClientId, Id<ClientXyz>>>()
+			$Assert<IsIdentical<ClientId, DocIdString<ClientXyz>>>()
 
 			await firestore.doc('doctor/d').delete()
 			await firestore.doc('patient/p').delete()
@@ -63,7 +69,7 @@ describe('emu-ts', () => {
 				friend: a.ref,
 			})
 
-			Assert<IsIdentical<typeof b, DoctorLorcan>>()
+			$Assert<IsIdentical<typeof b, DoctorLorcan>>()
 
 			const c = 0 as unknown as ClientXyz
 			;() =>
@@ -72,15 +78,15 @@ describe('emu-ts', () => {
 					// @ts-expect-error ref type mismatch
 					friend: c.ref,
 				})
-			$assert(b.friend)
-			Assert<IsIdentical<typeof b.friend, StrongRef<DoctorLorcan>>>()
+			assert(b.data.friend)
+			$Assert<IsIdentical<typeof b.data.friend, DocRef<DoctorLorcan>>>()
 
-			const name = await b.friend.data.name
+			const name = await b.data.friend.data.name
 
 			expect(name).toBe('a')
 
-			await b.friend.methods.setFriend(b.ref)
-			await b.friend.methods.setFriend()
+			await b.data.friend.methods.setFriend(b.ref)
+			await b.data.friend.methods.setFriend()
 
 			// await expect(doctors(b.id).data).resolves.toStrictEqual({
 			// 	numRefs: 1,
@@ -99,21 +105,23 @@ describe('emu-ts', () => {
 			expect.hasAssertions()
 
 			await expect(
-				doctors('adam' as Id<DoctorLorcan>).setFriend(
+				doctors('adam' as DocIdString<DoctorLorcan>).methods.setFriend(
 					// @ts-expect-error Assigning WeakRef to StrongRef
-					doctors('artur' as Id<'doctorLorcan'>),
+					doctors('artur' as DocIdString<'doctorLorcan'>),
 				),
 			).rejects.toThrow('exist')
 
 			await expect(
-				doctors('adam').setFriend(doctors('artur') as StrongRef<DoctorLorcan>),
+				doctors('adam').methods.setFriend(
+					doctors('artur') as DocRef<DoctorLorcan>,
+				),
 			).rejects.toThrow('exist')
 
 			await expect(
 				// @ts-expect-error DocType mismatch
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-				doctors('adam' as Id<ClientXyz>).setFriend(
-					doctors('artur') as StrongRef<DoctorLorcan>,
+				doctors('adam' as DocIdString<ClientXyz>).setFriend(
+					doctors('artur') as DocRef<DoctorLorcan>,
 				),
 			).rejects.toThrow('exist')
 		})
