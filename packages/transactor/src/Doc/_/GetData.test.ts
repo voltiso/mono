@@ -55,7 +55,7 @@ describe('Doc util', () => {
 	it('GDataPublicInput', () => {
 		expect.assertions(0)
 
-		class MyDoc extends Doc({ public: { a: s.number } }) {}
+		class MyDoc extends Doc.with({ public: { a: s.number } }) {}
 		type TI = InferTIFromDoc<MyDoc>
 		type D = GetPublicCreationInputData<TI>
 		$Assert<

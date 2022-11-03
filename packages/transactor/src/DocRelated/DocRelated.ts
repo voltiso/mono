@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Assume, Get_ } from '@voltiso/util'
+import type { Assume } from '@voltiso/util'
 
 import type { $$DocRef } from '~/DocRef'
 import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
@@ -46,6 +46,8 @@ export type GetDocConstructor<X extends $$DocRelatedLike> = Assume<
 		: X extends DocTI
 		? DocConstructor<X>
 		: X extends keyof DocTypes
-		? DocConstructor<Assume<DocTI, Get_<DocTypes[X], DTI>>>
+		? DocTypes[X] extends { [DTI]: DocTI }
+			? DocConstructor<DocTypes[X][DTI]>
+			: never
 		: never
 >

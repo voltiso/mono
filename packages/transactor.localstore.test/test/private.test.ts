@@ -15,10 +15,10 @@ class Doctor extends Doc.private({
 })
 
 	.method('setSpecialty', function (specialty: string) {
-		this.specialty = specialty
+		this.data.specialty = specialty
 	})
 	.afterCreateOrUpdate('set ofWhat', function () {
-		if (this.specialty === 'master') this.ofWhat = 'universe'
+		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	})
 
 	.method('good', async function () {
@@ -83,7 +83,7 @@ describe('private', function () {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		await doctors('a').setSpecialty('magician')
+		await doctors('a').methods.setSpecialty('magician')
 		const doc = await doctors('a')
 
 		expect(doc?.data).toMatchObject({
@@ -96,7 +96,7 @@ describe('private', function () {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		await doctors('a').setSpecialty('master')
+		await doctors('a').methods.setSpecialty('master')
 		const doc = await doctors('a')
 
 		expect(doc?.dataWithoutId()).toMatchObject({
@@ -110,6 +110,6 @@ describe('private', function () {
 
 		await doctors('a').set({})
 
-		await expect(doctors('a').good()).resolves.toBeUndefined()
+		await expect(doctors('a').methods.good()).resolves.toBeUndefined()
 	})
 })

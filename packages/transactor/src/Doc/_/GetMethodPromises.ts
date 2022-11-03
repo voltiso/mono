@@ -24,7 +24,7 @@ export namespace GetMethodPromises {
 	/** Simplest way */
 	export type ByMethods<methods> = methods extends any
 		? {
-				[k in keyof methods]: Promisify<methods[k]>
+				[k in keyof methods]: Promisify<OmitThisParameter<methods[k]>>
 		  }
 		: never
 

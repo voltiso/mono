@@ -15,7 +15,7 @@ import * as ss from '~/schemas'
 
 import type { InferFields } from './InferFields'
 
-class Doctor extends Doc({
+class Doctor extends Doc.with({
 	public: {
 		friend: ss.sStrongRef,
 		optionalFriend: ss.sStrongRef.optional,
@@ -31,12 +31,12 @@ class Doctor extends Doc({
 
 	@method
 	async setSpecialty(specialty: string) {
-		this.specialty = specialty
+		this.data.specialty = specialty
 	}
 
 	@afterCreateOrUpdate
 	setOfWhat() {
-		if (this.specialty === 'master') this.ofWhat = 'universe'
+		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	}
 
 	@method

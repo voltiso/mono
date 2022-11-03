@@ -7,7 +7,7 @@ import { Doc } from '~/Doc'
 
 describe('Method', () => {
 	it('type', () => {
-		class OrderApiTest extends Doc({
+		class OrderApiTest extends Doc.with({
 			private: {
 				history: s.array(s.string).default([]),
 			},
@@ -17,16 +17,16 @@ describe('Method', () => {
 			},
 		})
 			.method('addHistoryStamp', function () {
-				this.history.push('test')
+				this.data.history.push('test')
 			})
 
 			.method('toFinalized', async function () {
-				if (this.status !== 'payment')
+				if (this.data.status !== 'payment')
 					throw new Error('this order status is not "payment"')
 
-				this.status = 'finalized'
+				this.data.status = 'finalized'
 
-				await this.addHistoryStamp()
+				await this.methods.addHistoryStamp()
 			}) {}
 
 		void OrderApiTest

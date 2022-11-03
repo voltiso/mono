@@ -10,7 +10,7 @@ import { Doc } from '~/Doc'
 
 import type { InferMethods } from './InferMethods'
 
-class Doctor extends Doc({
+class Doctor extends Doc.with({
 	private: {
 		specialty: s.string.optional,
 		ofWhat: s.string.optional,
@@ -18,12 +18,12 @@ class Doctor extends Doc({
 }) {
 	@method
 	async setSpecialty(specialty: string) {
-		this.specialty = specialty
+		this.data.specialty = specialty
 	}
 
 	@afterCreateOrUpdate
 	setOfWhat() {
-		if (this.specialty === 'master') this.ofWhat = 'universe'
+		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	}
 
 	@method

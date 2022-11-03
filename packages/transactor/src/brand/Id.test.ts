@@ -9,15 +9,13 @@ import { Doc } from '~/Doc'
 
 import type { DocIdBrand, DocIdString } from './Id'
 
-class MyDoc extends Doc({
-	tag: 'my-tag-data-1',
-
+class MyDoc extends Doc('my-tag-data-1').with({
 	public: {
 		x: s.number.optional,
 	},
 }) {}
 
-class MyDoc2 extends Doc('my-tag-data-2')({
+class MyDoc2 extends Doc('my-tag-data-2').with({
 	public: {
 		y: s.number.optional,
 	},

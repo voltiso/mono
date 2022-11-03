@@ -18,7 +18,7 @@ declare module '..' {
 	}
 }
 
-class MyMysticDoctor extends Doc('myMysticDoctor')({}) {}
+class MyMysticDoctor extends Doc('myMysticDoctor').with({}) {}
 
 // @ts-expect-error does not exist in DocTypes interface
 ;() => Doc('doesNotExist')
@@ -54,8 +54,8 @@ describe('Ref', () => {
 	it('works (untagged)', () => {
 		expect.assertions(0)
 
-		class Ut1 extends Doc({ public: { a: s.number } }) {}
-		class Ut2 extends Doc({ public: { a: s.string } }) {}
+		class Ut1 extends Doc.with({ public: { a: s.number } }) {}
+		class Ut2 extends Doc.with({ public: { a: s.string } }) {}
 
 		$Assert.is<typeof Ut1, IDocConstructorNoBuilder>()
 

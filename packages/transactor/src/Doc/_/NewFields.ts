@@ -23,7 +23,7 @@ export type $$PartialDocOptions = {
 	 *   - `articleSlug` collection keyed by slug value, and referencing `article`
 	 *       using {@link sRef}
 	 *
-	 * @defaultValue {@link sAutoId}
+	 * @defaultValue Auto ID schema {@link sAutoId}
 	 */
 	id?: $$Schemable
 

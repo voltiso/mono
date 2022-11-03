@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 
 import { Doc } from '~/Doc'
 
-class MyDoc extends Doc({
+class MyDoc extends Doc.with({
 	public: {
 		test: s.number,
 	},

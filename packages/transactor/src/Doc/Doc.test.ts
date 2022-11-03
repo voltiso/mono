@@ -22,9 +22,7 @@ declare module '../DocTypes-module-augmentation' {
 	}
 }
 
-class AnotherTest extends Doc({
-	tag: 'anotherTest',
-
+class AnotherTest extends Doc('anotherTest').with({
 	public: {
 		a: s.number,
 	},

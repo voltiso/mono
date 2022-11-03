@@ -16,7 +16,7 @@ declare module '../DocTypes-module-augmentation' {
 	}
 }
 
-class Client extends Doc({
+class Client extends Doc.with({
 	public: {
 		strong: sStrongRef<'oops'>(),
 		weak: sWeakRef<'oops'>(),
@@ -31,8 +31,8 @@ describe('DocRef', () => {
 		;() => {
 			const client = 0 as unknown as Client
 
-			$Assert<IsIdentical<typeof client.strong, DocRef<'oops'>>>()
-			$Assert<IsIdentical<typeof client.weak, WeakDocRef<'oops'>>>()
+			$Assert<IsIdentical<typeof client.data.strong, DocRef<'oops'>>>()
+			$Assert<IsIdentical<typeof client.data.weak, WeakDocRef<'oops'>>>()
 		}
 	})
 })

@@ -54,13 +54,14 @@ describe('DocConstructor', () => {
 
 		const MyIndexedDocConstructor = Doc.public({ num: s.number })
 
-		const MyDocConstructor1 = Doc.tag('docConstructorTest1').public({
+		const MyDocConstructor1 = Doc('docConstructorTest1').public({
 			num2: s.number,
 		})
 
-		const MyDocConstructor2 = Doc.tag('docConstructorTest2').public({
+		const MyDocConstructor2 = Doc('docConstructorTest2').public({
 			num2: s.number,
 		})
+		
 		type MyIndexedDoc = InstanceType<typeof MyIndexedDocConstructor>
 
 		type MyDoc1 = InstanceType<typeof MyDocConstructor1>
