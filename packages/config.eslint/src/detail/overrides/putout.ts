@@ -18,7 +18,7 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/add-newlines-between-specifiers': 0, // conflicts with imports sort
 		'putout/add-newlines-between-types-in-union': 0, // conflicts with prettier
 		'putout/add-newline-before-return': 0, // broken?
-		'putout/align-spaces': 1,
+		'putout/align-spaces': 0, // not sure? conflicts with prettier probably
 		'putout/array-element-newline': 0,
 		'putout/function-declaration-paren-newline': 0,
 		'putout/keyword-spacing': 0, // conflicts with prettier

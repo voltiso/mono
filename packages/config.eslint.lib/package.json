@@ -43,13 +43,13 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^47.0.0",
-    "eslint-define-config": "^1.7.0"
+    "eslint-define-config": "^1.11.0"
   },
   "devDependencies": {
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "eslint": "^8.25.0",
+    "eslint": "^8.26.0",
     "rimraf": "^3.0.2"
   },
   "__________ENGINES": "__________",
