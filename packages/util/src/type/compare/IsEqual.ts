@@ -3,8 +3,6 @@
 
 import type { OptionalFromUndefined, SmartFlatten } from '~/object'
 
-/* eslint-disable etc/no-misused-generics */
-
 /** Is either a subtype of another one? */
 export type IsRelated<A, B, T = true, F = false> = A extends B
 	? T

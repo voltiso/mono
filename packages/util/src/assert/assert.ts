@@ -3,7 +3,11 @@
 
 import { $assert } from '~/$strip'
 
-/** Light-weight runtime assert */
+/**
+ * Light-weight runtime assert
+ *
+ * @throws `Error` on assertion failure
+ */
 export function assert(
 	condition: unknown,
 	message?: string | undefined,

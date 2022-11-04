@@ -18,7 +18,6 @@ export function blackbox<Obj extends Record<string, unknown>>(
 	attributes: Omit<Partial<PropertyDescriptor>, 'get' | 'set' | 'value'> &
 		ThisType<any> = {},
 ): Obj {
-	// eslint-disable-next-line es-x/no-object-create
 	const result = Object.create(null) as Obj
 
 	for (const [key, value] of Object.entries(object)) {

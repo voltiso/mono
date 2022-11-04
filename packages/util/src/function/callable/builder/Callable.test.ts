@@ -11,24 +11,25 @@ describe('Callable', () => {
 		expect.assertions(0)
 
 		$Assert.is<Callable<O>, Callable>()
-	}),
-		it('works', () => {
-			expect.assertions(0)
+	})
 
-			$Assert.is<(x: number) => number, Callable>()
+	it('works', () => {
+		expect.assertions(0)
 
-			$Assert(
-				$Is<Callable>() //
-					.identicalTo<(...args: any) => unknown>(),
+		$Assert.is<(x: number) => number, Callable>()
 
-				$Is<Callable<{ return: unknown; arguments: [number, string] }>>() //
-					.identicalTo<(a: number, b: string) => unknown>(),
+		$Assert(
+			$Is<Callable>() //
+				.identicalTo<(...args: any) => unknown>(),
 
-				$Is<Callable<{ return: number; arguments: [] }>>() //
-					.identicalTo<() => number>(),
+			$Is<Callable<{ return: unknown; arguments: [number, string] }>>() //
+				.identicalTo<(a: number, b: string) => unknown>(),
 
-				$Is<Callable<{ return: string; arguments: [number]; this: bigint }>>() //
-					.identicalTo<(this: bigint, a: number) => string>(),
-			)
-		})
+			$Is<Callable<{ return: number; arguments: [] }>>() //
+				.identicalTo<() => number>(),
+
+			$Is<Callable<{ return: string; arguments: [number]; this: bigint }>>() //
+				.identicalTo<(this: bigint, a: number) => string>(),
+		)
+	})
 })

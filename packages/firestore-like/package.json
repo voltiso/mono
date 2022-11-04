@@ -51,13 +51,13 @@
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
-    "@firebase/app-types": "^0.8.0",
+    "@firebase/app-types": "^0.8.1",
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "firebase": "^9.12.1",
-    "firebase-admin": "^11.1.0",
+    "firebase": "^9.13.0",
+    "firebase-admin": "^11.2.0",
     "rimraf": "^3.0.2"
   },
   "__________MISC": "__________",

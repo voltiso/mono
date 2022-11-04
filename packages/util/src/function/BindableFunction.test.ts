@@ -49,8 +49,8 @@ describe('BindableFunction', () => {
 		// bind args prefix
 		const boundThisAndA = bindableFunc.bind({ add: 10000 }, 2000)
 
-		// @ts-expect-error
-		;() => boundThisAndA(1, 2)
+		// // @ts-expect-error
+		// ;() => boundThisAndA(1, 2) // ! crashes `@typescript-eslint/no-misused-promises`
 
 		expect(boundThisAndA(2)).toBe(12004)
 		expect(boundThisAndA.call({ add: 10 }, 2)).toBe(12004)
@@ -61,9 +61,13 @@ describe('BindableFunction', () => {
 
 		expect(boundThisAndA.name).toBe('BindableFunction(func)')
 
+		// eslint-disable-next-line jest/prefer-to-have-length
 		expect(func.length).toBe(2)
+		// eslint-disable-next-line jest/prefer-to-have-length
 		expect(bindableFunc.length).toBe(2)
+		// eslint-disable-next-line jest/prefer-to-have-length
 		expect(boundThis.length).toBe(2)
+		// eslint-disable-next-line jest/prefer-to-have-length
 		expect(boundThisAndA.length).toBe(1)
 
 		expect(boundThisAndA.toString()).toMatch('BindableFunction')

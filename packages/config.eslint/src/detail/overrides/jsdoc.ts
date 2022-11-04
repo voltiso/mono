@@ -28,7 +28,7 @@ export const jsdocOverride = defineEslintConfigOverride({
 
 		'jsdoc/check-tag-names': [
 			'warn',
-			{ definedTags: ['defaultValue', 'inline'] },
+			{ definedTags: ['defaultValue', 'inline', 'strip', 'callInfo'] },
 		],
 
 		// 'jsdoc/check-tag-names': ['warn', { definedTags: ['type'] }],

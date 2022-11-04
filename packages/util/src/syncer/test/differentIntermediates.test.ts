@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert } from '~/$strip'
 import type { SyncerFunction, SyncerPromise } from '~/syncer'
 import { runAsync, runSync } from '~/syncer'
 import type { IsIdentical } from '~/type'
-import { $Assert } from '~/$strip'
 
 function* differentIntermediates(
 	s: string,

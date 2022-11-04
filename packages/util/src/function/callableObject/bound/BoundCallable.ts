@@ -58,7 +58,7 @@ export function BoundCallable<
 	const innerClone = typeof shape.clone === 'function' ? shape.clone : undefined
 
 	// own
-	// eslint-disable-next-line es-x/no-object-getownpropertydescriptor
+
 	const ownCloneDescriptor = Object.getOwnPropertyDescriptor(callable, 'clone')
 
 	function clone(this: BoundCallable<Options>) {
@@ -84,14 +84,14 @@ export function BoundCallable<
 
 		// build descriptors for an object passed as an argument to `BoundCallable`
 		// (restore original inner `clone`)
-		// eslint-disable-next-line es-x/no-object-getownpropertydescriptors
+
 		const descriptors = Object.getOwnPropertyDescriptors(this)
 		if (ownCloneDescriptor) descriptors.clone = ownCloneDescriptor as never
 		else delete (descriptors as Partial<typeof descriptors>).clone
 
 		const newInstance = {} as BoundCallable<Options>
 		Object.setPrototypeOf(newInstance, Object.getPrototypeOf(this) as never)
-		// eslint-disable-next-line es-x/no-object-defineproperties
+
 		Object.defineProperties(newInstance, descriptors)
 
 		return BoundCallable({

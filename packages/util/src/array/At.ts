@@ -6,8 +6,6 @@ import { mod } from '~/math'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { stringFrom } from '~/string'
 
-/* eslint-disable no-magic-numbers */
-
 type _At<Arr> = Arr extends (infer T)[]
 	? T | undefined
 	: Arr extends RelativeIndexable<infer T>
@@ -58,7 +56,7 @@ export function at<
 	Index extends number & keyof Arr,
 >(array: Arr, index: Index): Exclude<At<Arr, Index>, undefined> {
 	assertNotPolluting(index)
-	const r = array.length ? array[mod(index, array.length)] : undefined
+	const r = array.length > 0 ? array[mod(index, array.length)] : undefined
 
 	// // eslint-disable-next-line security/detect-object-injection
 	// const r = isRelativeIndexable(array) ? array.at(index) : array[index]
@@ -80,7 +78,7 @@ export function tryAt<
 	Index extends number & keyof Arr,
 >(array: Arr, index: Index): At<Arr, Index> {
 	assertNotPolluting(index)
-	const r = array.length ? array[mod(index, array.length)] : undefined
+	const r = array.length > 0 ? array[mod(index, array.length)] : undefined
 
 	return r as At<Arr, Index>
 }

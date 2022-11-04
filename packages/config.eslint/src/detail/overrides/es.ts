@@ -25,7 +25,6 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-destructuring': 0,
 		'es-x/no-template-literals': 0,
 		'es-x/no-trailing-function-commas': 0,
-		'es-x/no-regexp-u-flag': 0,
 		'es-x/no-arrow-functions': 0,
 		'es-x/no-class-fields': 0,
 		'es-x/no-accessor-properties': 0,
@@ -42,6 +41,9 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-dynamic-import': 0,
 		'es-x/no-generators': 0,
 		'es-x/no-numeric-separators': 0, // ✅ `@voltiso/transform/compat`
+
+		'es-x/no-regexp-u-flag': 0,
+		'es-x/no-regexp-named-capture-groups': 0,
 
 		'es-x/no-symbol': 0,
 		'es-x/no-bigint': 0,

@@ -4,7 +4,6 @@
 // eslint-disable-next-line etc/no-internal
 export type Flat<arrays> = Flat._Rec<arrays, []>
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Flat {
 	/** @internal */
 	export type _Rec<
@@ -13,8 +12,10 @@ export namespace Flat {
 	> = arrays extends readonly []
 		? acc
 		: arrays extends readonly [readonly [infer a, ...infer as], ...infer tail]
-		? _Rec<[a, ...as, ...tail], acc>
+		? // eslint-disable-next-line etc/no-internal
+		  _Rec<[a, ...as, ...tail], acc>
 		: arrays extends [infer head, ...infer tail]
-		? _Rec<tail, [...acc, head]>
+		? // eslint-disable-next-line etc/no-internal
+		  _Rec<tail, [...acc, head]>
 		: never
 }

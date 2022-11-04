@@ -1,6 +1,9 @@
-export * from './OmitPrivate'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export * from './final'
 export * from './isInstanceOf'
+export * from './OmitPrivate'
 export * from './options'
 export * from './protoLink'
 export * from './staticImplements'

@@ -39,7 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
-    "@typescript-eslint/parser": "^5.40.0",
+    "@typescript-eslint/parser": "^5.42.0",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
@@ -101,7 +101,7 @@
     "eslint-plugin-unicorn": "^44.0.2",
     "eslint-plugin-unused-imports": "^2.0.0",
     "eslint-plugin-yml": "^1.2.0",
-    "putout": "^27.13.0"
+    "putout": "^28.0.1"
   },
   "peerDependencies": {
     "eslint": "*",

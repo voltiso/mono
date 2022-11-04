@@ -13,7 +13,7 @@ export const putoutOverride = defineEslintConfigOverride({
 	// extends: ['plugin:putout/recommended'], // disables some eslint rules that we want
 
 	rules: {
-		'putout/add-newline-after-function-call': 1,
+		'putout/add-newline-after-function-call': 0, // why?
 		'putout/add-newline-before-function-call': 1,
 		'putout/add-newlines-between-specifiers': 0, // conflicts with imports sort
 		'putout/add-newlines-between-types-in-union': 0, // conflicts with prettier

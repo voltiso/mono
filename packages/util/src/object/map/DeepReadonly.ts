@@ -96,7 +96,6 @@ export type $$DeepReadonlyN<
 
 // export type $DeepReadonlyN<TLength extends DecrementArgument, T, Options extends >
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DeepReadonlyN {
 	/** @internal */
 	export type _ShouldSkip<T, skipOption> = IsCompatible<

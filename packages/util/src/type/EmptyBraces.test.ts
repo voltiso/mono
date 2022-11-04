@@ -1,5 +1,9 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import { $Assert } from '~/$strip'
-import type { ExtractEmptyBraces, IsIdentical, ExcludeEmptyBraces } from '.'
+
+import type { ExcludeEmptyBraces, ExtractEmptyBraces, IsIdentical } from '.'
 
 describe('EmptyBraces', () => {
 	it('type', () => {

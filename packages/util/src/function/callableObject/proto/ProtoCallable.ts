@@ -1,12 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { clone } from '~/clone'
 import { deleteAllProperties } from '~/object'
 import type { NoArgument } from '~/type'
-import type { IProtoCallable, _ProtoCallable } from './_'
 
+import type { _ProtoCallable, IProtoCallable } from './_'
 import type { ProtoCallableOptions } from './_/ProtoCallableOptions'
-import type { clone } from '~/clone'
 
 export type __unused_ProtoCallable = typeof clone
 

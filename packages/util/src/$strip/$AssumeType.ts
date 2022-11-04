@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable etc/no-misused-generics */
 
 /**
  * Manually force-narrow type of `x`

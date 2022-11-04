@@ -25,7 +25,10 @@ export function stringFromObject_(
 	obj: Record<keyof any, unknown>,
 	options: StringFromOptions,
 ) {
-	let name: string | undefined = obj.constructor.name
+	let name: string | undefined =
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		obj.constructor?.name ||
+		(Object.getPrototypeOf(obj) === null ? '[null-proto]' : '[unknown-proto]')
 
 	if (name === 'Object') name = undefined
 

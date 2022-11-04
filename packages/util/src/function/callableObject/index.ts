@@ -4,5 +4,5 @@
 export * from './arrow'
 export * from './bound'
 export * from './CALL'
-export * from './constructor/index'
+export * from './constructor'
 export * from './proto'

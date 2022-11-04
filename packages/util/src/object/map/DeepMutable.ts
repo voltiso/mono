@@ -94,7 +94,6 @@ export type $$DeepMutableN<
 		: T
 	: never
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DeepMutableN {
 	/** @internal */
 	export type _ShouldSkip<T, skipOption> = IsCompatible<
