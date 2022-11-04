@@ -9,7 +9,6 @@ import { LocalStorage } from '~/LocalStorage'
 
 type UseRestoreHeight = {
 	height: number | undefined
-	// eslint-disable-next-line etc/no-misused-generics
 	ref: <Element extends HTMLElement>(instance: Element | null) => void
 }
 
