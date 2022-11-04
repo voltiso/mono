@@ -12,7 +12,9 @@ import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
 /** @internal */
 export const _strongRefSchema = lazyValue(
 	() =>
-		s.instance(CustomDocRef).check(x => x.isStrong) as unknown as t.Schema<
+		s
+			.instance(CustomDocRef)
+			.check(x => x.isStrong, 'be strong ref') as unknown as t.Schema<
 			GetDocRef<{ isStrong: true }>
 		>,
 )

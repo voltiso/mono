@@ -5,14 +5,12 @@ import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { assertNotPolluting } from '~/object'
 import { stringFrom } from '~/string'
 
-export function hasOwnProperty<O extends object, K extends keyof any>(
-	o: O,
-	k: K,
-): k is K & keyof O {
-	// if (!isObject(o)) return false // bad!
-
-	assertNotPolluting(o, k)
-	return Object.prototype.hasOwnProperty.call(o, k)
+export function hasOwnProperty<Obj extends object, Key extends keyof any>(
+	obj: Obj,
+	key: Key,
+): key is Key & keyof Obj {
+	assertNotPolluting(obj, key)
+	return Object.prototype.hasOwnProperty.call(obj, key)
 }
 
 export function assertHasOwnProperty<O extends object, K extends keyof any>(

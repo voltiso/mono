@@ -8,7 +8,7 @@ import type { Server } from 'node:http'
 import { checked } from '@voltiso/caller'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import mockConsole from 'jest-mock-console'
 
 import type { RpcResult } from '~/_shared'
@@ -72,15 +72,13 @@ beforeAll(async () => {
 
 describe('client', () => {
 	it('type', () => {
-		expect.assertions(0)
-
 		const myClient = createClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
-		Assert<IsIdentical<typeof myClient.doctor.add, () => RpcResult<void>>>()
+		$Assert<IsIdentical<typeof myClient.doctor.add, () => RpcResult<void>>>()
 
-		Assert<IsIdentical<typeof myClient.specialty.add, () => RpcResult<void>>>()
+		$Assert<IsIdentical<typeof myClient.specialty.add, () => RpcResult<void>>>()
 	})
 
 	it('works', async () => {

@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical, PropertyPath } from '~'
-import { $Assert } from '~'
+import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
+import type { PropertyPath } from './PropertyPath'
 import type { PropertyPathString } from './PropertyPathString'
 
 describe('DeepKeys', () => {

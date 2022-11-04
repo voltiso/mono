@@ -3,11 +3,11 @@
 
 'use strict'
 
-/** @type {typeof import('jest-mock-console').default} */
-// @ts-expect-error bad typings
-const mockConsole = require('jest-mock-console')
+// /** @type {typeof import('jest-mock-console').default} */
+// // @ts-expect-error bad typings
+// const mockConsole = require('jest-mock-console')
 
-mockConsole()
+// mockConsole()
 // require('zone.js')
 
 const src = require('@voltiso/transactor')

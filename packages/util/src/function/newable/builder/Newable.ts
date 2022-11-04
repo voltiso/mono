@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetNewableOptions, NewableOptions } from '~'
+import type { GetNewableOptions, NewableOptions } from './NewableOptions'
 
 /**
  * - Parameters default to `any` (so that bivariance hack is not required)

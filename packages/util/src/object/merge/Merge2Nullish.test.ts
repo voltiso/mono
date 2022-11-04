@@ -1,9 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $PartialComplex_, IsIdentical, PartialIfNullish } from '~'
 import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
+import type { $PartialComplex_, PartialIfNullish } from '../map'
 import type { Merge2Nullish } from './Merge2Nullish'
 
 describe('Merge2Nullish', () => {

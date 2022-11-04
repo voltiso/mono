@@ -5,6 +5,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type * as Database from '@voltiso/firestore-like'
+import { at } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { DeleteIt, IncrementIt } from '~/FieldValue'
@@ -25,7 +26,7 @@ export function applyUpdatesInPlace(
 			o = o[token]
 		}
 
-		const f = pathTokens.at(-1) as string
+		const f = at(pathTokens, -1)
 
 		// eslint-disable-next-line security/detect-object-injection
 		if (v instanceof DeleteIt) delete o[f]

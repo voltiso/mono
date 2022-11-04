@@ -18,7 +18,7 @@ type TryGet_<O, P> = P extends readonly []
 
 export type TryGet<
 	O extends object | undefined | null,
-	P extends ReadonlyPropertyPath<O>,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
 > = TryGet_<O, P>
 
 //
@@ -36,33 +36,40 @@ export function tryGet<O extends object, K extends keyof O>(
 
 //
 
-export function tryGet<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O,
-	...path: P
-): TryGet<O, P>
-export function tryGet<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O,
-	path: P,
-): TryGet<O, P>
+export function tryGet<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O, ...path: P): TryGet<O, P>
+export function tryGet<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O, path: P): TryGet<O, P>
 
-export function tryGet(o: undefined, ...path: ReadonlyPropertyPath): undefined
-export function tryGet(o: undefined, path: ReadonlyPropertyPath): undefined
+export function tryGet(
+	o: undefined,
+	...path: readonly [] | ReadonlyPropertyPath
+): undefined
 
-export function tryGet<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O | undefined,
-	...path: P
-): TryGet<O, P> | undefined
-export function tryGet<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O | undefined,
-	path: P,
-): TryGet<O, P> | undefined
+export function tryGet(
+	o: undefined,
+	path: readonly [] | ReadonlyPropertyPath,
+): undefined
+
+export function tryGet<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O | undefined, ...path: P): TryGet<O, P> | undefined
+export function tryGet<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O | undefined, path: P): TryGet<O, P> | undefined
 
 //
 
-export function tryGet<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O | undefined,
-	...x: P | [P]
-): TryGet<O, P> | undefined {
+export function tryGet<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O | undefined, ...x: P | [P]): TryGet<O, P> | undefined {
 	const path = (Array.isArray(x[0]) ? x[0] : x) as P
 	let r = o
 

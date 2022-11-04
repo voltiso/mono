@@ -1,12 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BRAND, Brand, GetBrand, IsIdentical } from '~'
-import { $Assert, $Is } from '~'
+import { $Assert, $Is } from '~/$strip'
+
+import type { IsIdentical } from '../compare'
+import type { BRAND, Brand, GetBrand } from './Brand'
 
 const sym = Symbol('sym')
 
-declare module '~' {
+declare module '~/Brands-augmentation' {
 	interface Brands {
 		myPath: {}
 
@@ -50,7 +52,7 @@ describe('Brand', () => {
 		$Assert<IsIdentical<Y0, Y1>>()
 	})
 
-	it.todo('string - broken when lib used as dependency?', () => {
+	it('string - broken when lib used as dependency?', () => {
 		type A0 = GetBrand<'transactorTest.doc.a'>[BRAND]
 		type A1 = GetBrand<['transactorTest', 'doc', 'a']>[BRAND]
 		$Assert<IsIdentical<A0, A1>>()

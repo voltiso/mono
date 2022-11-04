@@ -17,7 +17,10 @@ export type GetNested_<O, P> = P extends readonly []
 		: never
 	: never
 
-export type GetNested<O, P extends ReadonlyPropertyPath<O>> = GetNested_<O, P>
+export type GetNested<
+	O,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+> = GetNested_<O, P>
 
 //
 
@@ -49,24 +52,24 @@ export function get<O extends object, K extends keyof O>(
 	k: K,
 ): GetPropertyComplex<O, K>
 
-export function get<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O,
-	...path: P
-): GetNested<O, P>
-export function get<O extends object, P extends ReadonlyPropertyPath<O>>(
-	o: O,
-	path: P,
-): GetNested<O, P>
+export function get<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O, ...path: P): GetNested<O, P>
+export function get<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(o: O, path: P): GetNested<O, P>
 
 //
 
-export function get<O extends object, P extends ReadonlyPropertyPath<O>>(
-	obj: O,
-	...x: P | [P]
-): GetNested<O, P> {
-	const path = (Array.isArray(x[0])
-		? x[0]
-		: x) as unknown as ReadonlyPropertyPath
+export function get<
+	O extends object,
+	P extends readonly [] | ReadonlyPropertyPath<O>,
+>(obj: O, ...x: P | [P]): GetNested<O, P> {
+	const path = (Array.isArray(x[0]) ? x[0] : x) as unknown as
+		| readonly []
+		| ReadonlyPropertyPath
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	let r = obj as any
 	try {

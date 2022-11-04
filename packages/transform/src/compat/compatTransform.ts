@@ -45,7 +45,7 @@ export function compatTransform(
 				) {
 					const nodeText = node.getText()
 					if (nodeText.includes('_')) {
-						const newNodeStr = nodeText.replaceAll('_', '')
+						const newNodeStr = nodeText.replace(/_/gu, '')
 
 						logCompatTransformNode(ctx, node, newNodeStr, {
 							feature: 'numericSeparators',

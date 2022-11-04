@@ -93,5 +93,8 @@
   "__________MISC": "__________",
   "engines": {
     "node": "16"
+  },
+  "devDependencies": {
+    "@voltiso/config.tsdoc": "workspace:^3.0.0"
   }
 }

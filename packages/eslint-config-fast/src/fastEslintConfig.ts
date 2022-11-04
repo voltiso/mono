@@ -26,7 +26,10 @@ const pluginsToPick = [
 	'unicorn',
 	'destructuring',
 	'notice',
+
 	'tsdoc',
+	'jsdoc',
+
 	'markdown',
 	'promise',
 	'etc',
@@ -77,7 +80,6 @@ const pluginsToPick = [
 	// 'i18next',
 	// 'jest-async',
 	// 'jest-dom',
-	// 'jsdoc',
 	// 'json',
 	// 'jsonc',
 	// 'jsx',

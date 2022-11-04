@@ -34,7 +34,7 @@ describe('README.md - usage', () => {
 
 		const mySchema = s.schema(myShape)
 
-		type MySchema = typeof mySchema.OutputType
+		type MySchema = typeof mySchema.Output
 		$Assert<
 			IsIdentical<
 				MySchema,
@@ -49,7 +49,7 @@ describe('README.md - usage', () => {
 			>
 		>()
 
-		type MySchemaInput = typeof mySchema.InputType
+		type MySchemaInput = typeof mySchema.Input
 		$Assert<
 			IsIdentical<
 				MySchemaInput,

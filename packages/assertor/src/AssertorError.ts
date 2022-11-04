@@ -85,7 +85,7 @@ export class AssertorError extends Error {
 					([str, value]) =>
 						`${chalk.green(str)} 🟰  ${chalk.red(stringFrom(value))}`,
 				)
-				.join(' ｜ ')
+				.join(', ')
 
 			if (callInfo.typeArguments.length > 0) {
 				str = `${chalk.yellow(
@@ -97,13 +97,13 @@ export class AssertorError extends Error {
 
 			messageParts.push(chalk.blue(str))
 		} else {
-			if (providedMessage) messageParts.push(providedMessage)
-
 			const argumentsStr = args
 				.map(arg => `${chalk.red(stringFrom(arg))}`)
-				.join(' ｜ ')
+				.join(', ')
 
-			messageParts.push(argumentsStr)
+			messageParts.push(`${name}(${argumentsStr})`)
+
+			if (providedMessage) messageParts.push(providedMessage)
 		}
 
 		// LOCATION

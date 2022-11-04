@@ -1,25 +1,26 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '@voltiso/assertor'
 import type {
 	$$Schemable,
 	GetDeepShape_,
 	GetShape_,
 	InferSchema_,
-	InputType_,
-	OutputType_,
+	Input,
+	Output,
 	Schemable,
 	Type_,
 } from '@voltiso/schemar.types'
 import { getSchemableChild } from '@voltiso/schemar.types'
-import type { PatchFor } from '@voltiso/util'
+import type { Assume, PatchFor, PatchOptions } from '@voltiso/util'
 import {
-	$assert,
 	$AssumeType,
 	assertNotPolluting,
+	defaultPatchOptions,
 	deleteIt,
+	hasOwnProperty,
 	patch,
-	shallowPatch,
 } from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
 
@@ -56,7 +57,9 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 	}
 
 	readonly _children: {
-		[k in keyof GetShape_<S>]?: NestedSubjectImpl<GetShape_<S>[k] & $$Schemable>
+		[k in keyof GetShape_<S>]?: NestedSubjectImpl<
+			Assume<$$Schemable, GetShape_<S>[k]>
+		>
 	} = {}
 
 	get schemable(): S | undefined {
@@ -87,17 +90,21 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 		return schema.getDeepShape as never
 	}
 
-	get _() {
-		return new Proxy(
-			{},
-			{
-				get: (_target, property, _receiver) => {
-					$assert(typeof property === 'string')
-					return new NestedSubjectImpl({ parent: this, key: property }) as never
-				},
+	/** Access entries with names shadowed by `NestedSubject` members */
+	_ = new Proxy(
+		{},
+		{
+			get: (_target, key, _receiver) => {
+				$assert.string(key)
+				assertNotPolluting(key)
+				if (hasOwnProperty(this._children, key))
+					return this._children[key as never]
+				else {
+					return new NestedSubjectImpl({ parent: this, key }) as never
+				}
 			},
-		)
-	}
+		},
+	)
 
 	constructor(options: NestedSubjectWithSchemaRootOptions<S>)
 	constructor(options: NestedSubjectRootOptions)
@@ -110,34 +117,20 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 			| NestedSubjectChildOptions,
 	) {
 		const proxyHandlers = {
-			get: (_target: object, property: keyof any, receiver: unknown) => {
-				if (property in this)
-					return Reflect.get(this, property, receiver) as never
-				else if (property in this._subject$ || typeof property !== 'string') {
-					const result = Reflect.get(
-						this._subject$,
-						property,
-						receiver,
-					) as unknown
+			get: (_target: object, key: keyof any, receiver: unknown) => {
+				if (key in this) return Reflect.get(this, key, receiver) as never
+				else if (key in this._subject$ || typeof key !== 'string') {
+					const result = Reflect.get(this._subject$, key, receiver) as unknown
 					if (typeof result === 'function')
 						return result.bind(this._subject$) as never
 					else return result
-				} else {
-					assertNotPolluting(property)
-					if (property in this._children)
-						return this._children[property as never]
-					else {
-						// console.log('create child', property)
-						return new NestedSubjectImpl({
-							parent: this,
-							key: property,
-						}) as never
-					}
-				}
+				} else return Reflect.get(this._, key, receiver) as never
 			},
 		}
 
 		if (isNestedSubjectChildOptions(options)) {
+			// console.log('NestedSubject constructor child', options.key)
+
 			assertNotPolluting(options.key)
 			this._diContext = options.parent._diContext
 			this._parent = options.parent
@@ -168,12 +161,13 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 
 			const self = new Proxy(this, proxyHandlers)
 
-			$assert(!(options.key in options.parent._children))
-			this._parent._children[options.key as never] = self as never
+			$assert(!hasOwnProperty(options.parent._children, options.key))
+			this._parent._children[options.key] = self as never
 			// eslint-disable-next-line no-constructor-return
 			return self as never
 		} else {
 			$AssumeType<NestedSubjectWithSchemaRootOptions<S>>(options)
+			// console.log('NestedSubject constructor root', options.initialValue)
 			this._diContext = options.diContext
 
 			this._schemable = options.schemable
@@ -199,33 +193,37 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 		}
 	}
 
-	update(updates: PatchFor<InputType_<S>>) {
-		const newValue = shallowPatch(this._subject$.value, updates as never)
-		// console.log('UPDATE', this._subject$.value, updates, newValue)
+	// update(updates: PatchFor<Input<S>>) {
+	// 	const newValue = patch(this._subject$.value, updates as never, { depth: 1 })
+	// 	this.set(newValue)
+	// }
+
+	// updateUnchecked(updates: PatchFor<Output<S>>) {
+	// 	const newValue = patch(this._subject$.value, updates, { depth: 1 })
+	// 	this.setUnchecked(newValue)
+	// }
+
+	patch(
+		patchValue: PatchFor<Input<S>>,
+		options: PatchOptions = defaultPatchOptions,
+	) {
+		const newValue = patch(this._subject$.value, patchValue as never, options)
 		this.set(newValue)
 	}
 
-	updateUnchecked(updates: PatchFor<OutputType_<S>>) {
-		const newValue = shallowPatch(this._subject$.value, updates)
+	patchUnchecked(
+		patchValue: PatchFor<Output<S>>,
+		options: PatchOptions = defaultPatchOptions,
+	) {
+		const newValue = patch(this._subject$.value, patchValue, options)
 		this.setUnchecked(newValue)
 	}
 
-	patch(patchValue: PatchFor<InputType_<S>>) {
-		const newValue = patch(this._subject$.value, patchValue as never)
+	next(newValue: Input<S>): void {
 		this.set(newValue)
 	}
 
-	patchUnchecked(patchValue: PatchFor<OutputType_<S>>) {
-		const newValue = patch(this._subject$.value, patchValue)
-		this.setUnchecked(newValue)
-	}
-
-	next(newValue: InputType_<S>): void {
-		this.set(newValue)
-	}
-
-	set(newValue: InputType_<S>): void {
-		// @ts-expect-error WTF?
+	set(newValue: Input<S>): void {
 		if (newValue === this._subject$.value) return // no change
 
 		// eslint-disable-next-line etc/no-internal
@@ -233,12 +231,12 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 			diContext: this._diContext,
 			schemable: this._schemable,
 			value: newValue,
-		}) as OutputType_<S>
+		}) as Output<S>
 
 		this.setUnchecked(validNewValue)
 	}
 
-	setUnchecked(newValue: OutputType_<S>): void {
+	setUnchecked(newValue: Output<S>): void {
 		// this._exists = true
 		if (newValue === this._subject$.value) return // no change
 
@@ -254,13 +252,13 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 
 		$assert(this._parent)
 		$assert(this._parentKey)
-		this._parent.update({
+		this._parent.patch({
 			[this._parentKey]: deleteIt,
 		})
 	}
 
 	/** @internal */
-	_set(newValue: OutputType_<S>, exists: boolean): void {
+	_set(newValue: Output<S>, exists: boolean): void {
 		if (newValue === this._subject$.value && this._exists === exists) return // no change (prune)
 
 		this._exists = exists

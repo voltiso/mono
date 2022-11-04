@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $PartialComplex_, PartialIfNullish } from '~'
 import { $Assert } from '~/$strip'
 
+import type { $PartialComplex_, PartialIfNullish } from '../map'
 import type { Merge2Complex } from './Merge2Complex'
 
 describe('Merge2', () => {

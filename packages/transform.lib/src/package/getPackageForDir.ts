@@ -21,7 +21,10 @@ export type _GetPackageForDirResult = {
 // eslint-disable-next-line etc/no-internal
 const packageJsonsByDir = new Map<string, _GetPackageForDirResult>()
 
-/** @internal */
+/**
+ * @throws When not found
+ * @internal
+ */
 export function _getPackageForDirUncached(
 	dir: string,
 	// eslint-disable-next-line etc/no-internal

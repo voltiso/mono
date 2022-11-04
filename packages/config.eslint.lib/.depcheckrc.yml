@@ -4,3 +4,4 @@
 ignores:
   - '@voltiso/config.ts.build.esm'
   - '@voltiso/config.ts.build.cjs'
+  - '@voltiso/transform'

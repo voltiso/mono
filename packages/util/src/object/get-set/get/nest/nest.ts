@@ -5,10 +5,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import type { AlsoAccept } from '~'
-import { at } from '~'
+import { at } from '~/array'
 import type { PropertyPath } from '~/object'
 import { setProperty } from '~/object'
+import type { AlsoAccept } from '~/type'
 
 export type Nest_<acc, path> = path extends readonly []
 	? acc
@@ -20,10 +20,10 @@ export type Nest_<acc, path> = path extends readonly []
 
 export type Nest<X, path extends PropertyPath> = Nest_<X, path>
 
-export function nest<X, P extends PropertyPath | AlsoAccept<readonly (keyof any)[]>>(
-	x: X,
-	path: P,
-): Nest_<X, P> {
+export function nest<
+	X,
+	P extends PropertyPath | AlsoAccept<readonly (keyof any)[]>,
+>(x: X, path: P): Nest_<X, P> {
 	if (path.length === 0) return x as never
 
 	const result = {} as any

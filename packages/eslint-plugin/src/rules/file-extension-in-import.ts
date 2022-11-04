@@ -100,7 +100,7 @@ export const fileExtensionInImport = createRule<
 
 		function verify({ filePath, name, node }: ImportTarget) {
 			// eslint-disable-next-line no-param-reassign
-			filePath = filePath || name
+			filePath ||= name
 
 			// Ignore if it's not resolved to a file or it's a bare module.
 			if (

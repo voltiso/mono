@@ -1,12 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	Callable,
-	CallableParameters_,
-	Newable,
-	NewableParameters_,
-} from '~'
+import type { Callable } from '../callable'
+import type { Newable } from '../newable'
+import type { CallableParameters_ } from './CallableParameters'
+import type { NewableParameters_ } from './NewableParameters'
 
 export type Parameters_<T> = [T] extends [Callable]
 	? CallableParameters_<T>

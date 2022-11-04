@@ -12,9 +12,10 @@ describe('assert', () => {
 		expect.hasAssertions()
 
 		expect(() => assert(1)).not.toThrow()
-		expect(() => assert(0)).toThrow('⛔ assert(0)')
+		// eslint-disable-next-line regexp/no-super-linear-backtracking
+		expect(() => assert(0)).toThrow(/assert.*\(.*0.*\)/u)
 
-		expect(() => assert(undefined)).toThrow('⛔ assert(undefined)')
+		expect(() => assert(undefined)).toThrow(/assert.*undefined/u)
 
 		const str = 'test' as string | Falsy
 		assert(str)
@@ -24,7 +25,9 @@ describe('assert', () => {
 		assert.defined(falsy)
 		$Assert<IsIdentical<typeof falsy, Exclude<Falsy, undefined | void>>>()
 
-		expect(() => assert.defined(undefined)).toThrow('⛔ assert(undefined)')
+		expect(() => assert.defined(undefined)).toThrow(
+			/assert\.defined.*undefined/u,
+		)
 
 		$assert(s.number.or(null), falsy)
 

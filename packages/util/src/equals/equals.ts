@@ -10,7 +10,7 @@ import { isRegex } from '~/regex'
 import { arrayEquals } from './arrayEquals'
 import { dateEquals } from './dateEquals'
 import { mapEquals } from './mapEquals'
-import { objectEquals } from './objectEquals'
+import { ownPropertiesEqual } from './objectEquals'
 import { regexEquals } from './regexEquals'
 import { setEquals } from './setEquals'
 
@@ -41,9 +41,10 @@ export function isWithEqualsFunction(x: unknown): x is WithEqualsFunction {
 //
 
 /**
- * Currently not configurable
+ * Strict `equals`
  *
  * - ✅ Symbol keys included
+ * - ⚠️ Requires exactly same prototypes
  * - ❌ Non-enumerable keys NOT included (as usually desired)
  * - ❌ Non-own (prototype-chain) keys NOT included
  */
@@ -80,7 +81,7 @@ export function equals<A, B extends Suggest<A>>(
 	// $assert(isPlainObject(b))
 
 	/** Good for plain objects - but check instances of other stuff too */
-	if (!objectEquals(a, b)) return false
+	if (!ownPropertiesEqual(a, b)) return false
 
 	// return true
 	// }

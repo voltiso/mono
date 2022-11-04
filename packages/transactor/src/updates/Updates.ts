@@ -5,11 +5,13 @@ import type { DeleteIt } from '@voltiso/util'
 import {
 	add,
 	assert,
+	assertNotPolluting,
 	deleteIt,
 	getKeys,
 	incrementIt,
 	isDeleteIt,
 	isIncrementIt,
+	isPlainObject,
 	isReplaceIt,
 	stringFrom,
 } from '@voltiso/util'
@@ -33,7 +35,8 @@ export type Updates = UpdatesRecord | RootReplaceIt | DeleteIt
 function isRecord(
 	updates: NestedUpdates,
 ): updates is UpdatesRecord | NestedUpdatesRecord {
-	return updates?.constructor === Object
+	return isPlainObject(updates)
+	// return updates?.constructor === Object
 }
 
 function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
@@ -59,7 +62,8 @@ function combineUpdatesRec(a: NestedUpdates, b: NestedUpdates): NestedUpdates {
 	if (isRecord(a) && isRecord(b)) {
 		const r = { ...a }
 
-		for (const field of getKeys(b)) {
+		for (const field of Object.keys(b)) {
+			assertNotPolluting(field)
 			// eslint-disable-next-line security/detect-object-injection
 			const bVal = b[field]
 			assert(bVal !== undefined)
@@ -142,6 +146,7 @@ export function applyUpdates(
 	}
 
 	const combined = data ? combineUpdates(data, updates) : updates
+
 	// if (data && final) $assert(data.id === final.id)
 	// if (final) final.id = id
 	// $assert(final?.id)

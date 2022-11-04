@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type * as FirestoreClient from 'firebase/firestore'
 
 import type {
@@ -13,7 +13,7 @@ describe('DocumentReference', () => {
 	it('is compatible with Firestore', () => {
 		expect.assertions(0)
 
-		Assert.is<FirebaseFirestore.DocumentReference, ServerDocumentReference>()
-		Assert.is<FirestoreClient.DocumentReference, ClientDocumentReference>()
+		$Assert.is<FirebaseFirestore.DocumentReference, ServerDocumentReference>()
+		$Assert.is<FirestoreClient.DocumentReference, ClientDocumentReference>()
 	})
 })

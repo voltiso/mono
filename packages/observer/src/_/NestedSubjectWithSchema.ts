@@ -6,12 +6,12 @@ import type {
 	GetDeepShape_,
 	GetShape_,
 	InferSchema_,
-	InputType_,
+	Input,
 	ISchema,
-	OutputType_,
+	Output,
 	Type_,
 } from '@voltiso/schemar.types'
-import type { PatchFor } from '@voltiso/util'
+import type { PatchFor, PatchOptions } from '@voltiso/util'
 import type { IBehaviorSubject } from '@voltiso/util.rxjs'
 import type { BehaviorSubject } from 'rxjs'
 
@@ -27,11 +27,11 @@ export type INestedSubjectWithSchemaBase = {
 	set(x: unknown): void
 	setUnchecked(x: unknown): void
 
-	patch(x: unknown): void
-	patchUnchecked(x: unknown): void
+	patch(x: unknown, options?: any): void
+	patchUnchecked(x: unknown, options?: any): void
 
-	update(x: unknown): void
-	updateUnchecked(x: unknown): void
+	// update(x: unknown): void
+	// updateUnchecked(x: unknown): void
 
 	delete(): void
 
@@ -45,14 +45,14 @@ export interface NestedSubjectWithSchemaBase<S extends $$Schemable>
 	get shape(): GetShape_<S>
 	get deepShape(): GetDeepShape_<S>
 
-	set(x: InputType_<S>): void
-	setUnchecked(x: OutputType_<S>): void
+	set(x: Input<S>): void
+	setUnchecked(x: Output<S>): void
 
-	patch(x: PatchFor<InputType_<S>>): void
-	patchUnchecked(x: PatchFor<OutputType_<S>>): void
+	patch(x: PatchFor<Input<S>>, options?: PatchOptions): void
+	patchUnchecked(x: PatchFor<Output<S>>, options?: PatchOptions): void
 
-	update(x: PatchFor<InputType_<S>>): void
-	updateUnchecked(x: PatchFor<OutputType_<S>>): void
+	// update(x: PatchFor<Input<S>>): void
+	// updateUnchecked(x: PatchFor<Output<S>>): void
 
 	delete(): void
 }
@@ -60,11 +60,11 @@ export interface NestedSubjectWithSchemaBase<S extends $$Schemable>
 //
 
 /** @internal */
-export type _GetNested<S extends $$Schemable> = [GetShape_<S>] extends [never]
+export type _GetNested<S extends $$Schemable> = GetShape_<S> extends never
 	? { [k in keyof Type_<S>]: NestedSubject<Type_<S>[k]> }
 	: {
 			[k in keyof GetShape_<S>]: NestedSubjectWithSchema<
-				GetShape_<S>[k] & $$Schemable
+				GetShape_<S>[k] extends $$Schemable ? GetShape_<S>[k] : never
 			>
 	  }
 

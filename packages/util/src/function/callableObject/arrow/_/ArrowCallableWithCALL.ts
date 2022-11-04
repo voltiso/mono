@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CALL, NoArgument, WithCALL } from '~'
-//
+import type { CALL, WithCALL } from '~/function'
+import type { NoArgument } from '~/type'
 
 /** @internal Use `CallableWithCall` instead */
 // eslint-disable-next-line etc/underscore-internal

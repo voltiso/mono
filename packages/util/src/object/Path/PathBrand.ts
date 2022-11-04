@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Brand, CustomBrand, Override } from '~'
+import type { Brand, CustomBrand, Override } from '~/type'
 
 export type PathOptions = {
 	/**
@@ -20,7 +20,7 @@ export type DefaultPathOptions = typeof defaultPathOptions
 
 //
 
-declare module '~' {
+declare module '~/Brands-augmentation' {
 	interface Brands {
 		path: {
 			_: PathOptions

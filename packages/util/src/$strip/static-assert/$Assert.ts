@@ -1,7 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable etc/no-misused-generics */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 import { assertDev } from '_'
@@ -12,7 +11,7 @@ import type {
 	IsIdentical,
 	IsNonStrictEqual,
 	IsRelated,
-} from '~'
+} from '~/type'
 
 interface Is<A, T = true, F = false> {
 	<B>(_?: B): A extends B ? T : F

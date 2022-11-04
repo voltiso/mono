@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish, strictNullChecks } from '~'
+import type { Nullish } from '~/nullish'
+import type { strictNullChecks } from '~/tsc-options'
 
 import type { $PartialComplex_ } from './PartialComplex'
 

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { WithCloneFunction } from '~'
+import type { WithCloneFunction } from '~/clone'
 import type { _BoundCallable, CALL } from '~/function'
 
 export interface BoundCallableOptions {

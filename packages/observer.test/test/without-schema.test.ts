@@ -3,7 +3,7 @@
 
 import { createNestedSubject } from '@voltiso/observer'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 describe('NestedSubject', () => {
 	it('works', () => {
@@ -27,7 +27,7 @@ describe('NestedSubject', () => {
 		})
 
 		data$.a.b.c.subscribe(c => {
-			Assert<IsIdentical<typeof c, number | undefined>>()
+			$Assert<IsIdentical<typeof c, number | undefined>>()
 			observedC = c
 			called.push('c')
 		})

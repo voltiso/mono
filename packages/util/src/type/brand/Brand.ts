@@ -1,7 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BrandReference, Brands, GetNested_, Nest_, NoArgument } from '~'
+import type { Brands } from '~/Brands-augmentation'
+import type { GetNested_, Nest_ } from '~/object'
+
+import type { NoArgument } from '../optional-argument'
+import type { BrandReference } from './BrandReference'
 
 /** 🌿 Type-only (no value at runtime) */
 export declare const BRAND: unique symbol

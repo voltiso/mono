@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { readGitignoreFiles } from 'eslint-gitignore'
 import path from 'node:path'
+
+import { readGitignoreFiles } from 'eslint-gitignore'
 
 // eslint-disable-next-line no-console
 console.log(

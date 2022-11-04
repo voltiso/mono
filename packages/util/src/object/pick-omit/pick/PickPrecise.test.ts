@@ -3,8 +3,8 @@
 
 // TODO: does not work with generics!!
 
-import type { IsIdentical } from '~'
 import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
 import type { PickPrecise } from './PickPrecise'
 

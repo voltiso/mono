@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, OmitSignatures, OmitSimple_ } from '~'
-
+import type { _ } from '../flatten'
+import type { OmitSignatures, OmitSimple_ } from '../pick-omit'
 import type { SuggestObject } from './Suggest'
 
 /** Discards index signatures */

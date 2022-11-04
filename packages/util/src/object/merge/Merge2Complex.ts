@@ -1,8 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, Callable, IsOptional_, Newable, Value_ } from '~'
+import type { Callable, Newable } from '~/function'
 
+import type { _ } from '../flatten'
+import type { IsOptional_ } from '../IsOptional'
+import type { Value_ } from '../key-value'
 import type { SuggestObject } from './Suggest'
 
 /** @inline */ type Part1<A, B> = {

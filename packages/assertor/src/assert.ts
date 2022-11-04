@@ -23,7 +23,11 @@ export interface AssertFunction {
 	(value: unknown, __callInfo?: CallInfo | undefined): asserts value
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-	(value: unknown, message?: string, __callInfo?: CallInfo | undefined): asserts value
+	(
+		value: unknown,
+		message?: string,
+		__callInfo?: CallInfo | undefined,
+	): asserts value
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	<S extends $$Schemable>(
@@ -66,9 +70,13 @@ const _getAssert: (name: string) => AssertFunction = name =>
 		prototype: {
 			get defined() {
 				return new Assertor(
-					name,
+					`${name}.defined`,
 					s.unknown.check(x => typeof x !== 'undefined'),
 				) as never
+			},
+
+			get propertyKey() {
+				return new Assertor(`${name}.safeKey`, s.propertyKey)
 			},
 
 			//
@@ -149,11 +157,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 		call: (...args: any) => {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const [schema, value, ...rest]: [
-				ISchema,
-				unknown,
-				...unknown[]
-			] =
+			const [schema, value, ...rest]: [ISchema, unknown, ...unknown[]] =
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				isSchema(args[0])
 					? args

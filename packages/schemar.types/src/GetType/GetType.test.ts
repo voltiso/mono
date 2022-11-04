@@ -17,9 +17,16 @@ describe('Type', () => {
 		$Assert<IsIdentical<B, unknown>>()
 
 		type C = Type<Inferable>
-		$Assert<IsIdentical<C, object | InferableLiteral | readonly unknown[]>>()
+		$Assert<IsIdentical<C, {} | InferableLiteral | readonly unknown[]>>()
 
 		type D = Type<{}>
-		$Assert<IsIdentical<D, object>>() //! Inferable object - should not infer to {}
+
+		/**
+		 * ! Inferable object - infers to `{}` to avoid assignability issues
+		 *
+		 * - Use `.plain` to mark plain object and intersect resulting type with
+		 *   `object`
+		 */
+		$Assert<IsIdentical<D, {}>>()
 	})
 })

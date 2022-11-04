@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert } from '~/$strip'
 import type { Force } from '~/cast'
 import { equals } from '~/equals'
 import type { Merge2, ValueImpl } from '~/object'
@@ -78,15 +79,42 @@ export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt
 
 //
 
+export type PatchOptions = {
+	/**
+	 * Recursion max depth
+	 *
+	 * - Depth `0` is like assignment
+	 * - Depth `1` is like React's state `.update()` for class components
+	 *
+	 * @defaultValue `Infinity`
+	 */
+	depth: number
+}
+
+export const defaultPatchOptions = {
+	depth: Infinity,
+}
+
+$Assert.is<typeof defaultPatchOptions, PatchOptions>()
+
+//
+
 export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	x: X,
 	patchValue: PatchValue,
+	options: PatchOptions = defaultPatchOptions,
 ): ApplyPatch<X, PatchValue> {
 	if (isDeleteIt(patchValue)) return undefined as never
 
 	if (isKeepIt(patchValue)) return x as never
 
 	if (isReplaceIt(patchValue)) {
+		// console.log(
+		// 	'!!!!!!!!equals',
+		// 	x,
+		// 	patchValue.__replaceIt,
+		// 	equals(x, patchValue.__replaceIt),
+		// )
 		if (equals(x, patchValue.__replaceIt)) return x as never
 		else return patchValue.__replaceIt as never
 	}
@@ -99,7 +127,12 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		} else return Number.NaN as never
 	}
 
-	if (isPlainObject(patchValue)) {
+	if (isPlainObject(x) && isPlainObject(patchValue)) {
+		if (options.depth <= 0) {
+			if (equals(x, patchValue)) return x as never
+			else return patchValue as never
+		}
+
 		const res: any = {
 			...x,
 		}
@@ -109,7 +142,9 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		for (const [key, value] of Object.entries(patchValue)) {
 			assertNotPolluting(key)
 			const oldValue = tryGetProperty(res, key) as unknown
-			const newValue = forcePatch(oldValue, value) as unknown
+			const newValue = forcePatch(oldValue, value, {
+				depth: options.depth - 1,
+			}) as unknown
 
 			if (newValue !== oldValue) {
 				setProperty(res, key, newValue as never)
@@ -135,6 +170,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 export function patch<X, PatchValue extends PatchFor<X>>(
 	x: X,
 	patchValue: PatchValue,
+	options: PatchOptions = defaultPatchOptions,
 ): Force<X, ApplyPatch<X, PatchValue>> {
-	return forcePatch(x, patchValue) as never
+	return forcePatch(x, patchValue, options) as never
 }

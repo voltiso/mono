@@ -1,9 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_, $PartialComplex_, IsIdentical, OmitSuperComplex } from '~'
 import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
+import type { _, $_ } from '../flatten'
+import type { $PartialComplex_ } from '../map'
+import type { OmitSuperComplex } from '../pick-omit'
 import type { Merge2Complex } from './Merge2Complex'
 import type { Merge2Simple } from './Merge2Simple'
 

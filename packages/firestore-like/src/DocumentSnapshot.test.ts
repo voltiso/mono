@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 import type * as FirebaseFirestore from 'firebase-admin/firestore'
 
 import type {
@@ -13,7 +13,7 @@ describe('DocumentSnapshot', () => {
 	it('is compatible with Firestore', () => {
 		expect.assertions(0)
 
-		Assert.is<FirebaseFirestore.DocumentSnapshot, DocumentSnapshot>()
-		Assert.is<FirebaseFirestore.QueryDocumentSnapshot, QueryDocumentSnapshot>()
+		$Assert.is<FirebaseFirestore.DocumentSnapshot, DocumentSnapshot>()
+		$Assert.is<FirebaseFirestore.QueryDocumentSnapshot, QueryDocumentSnapshot>()
 	})
 })

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish } from '~'
+import type { Nullish } from '~/nullish'
 
 import type { Merge2Nullish_ } from './Merge2Nullish'
 

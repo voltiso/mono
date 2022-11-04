@@ -34,8 +34,8 @@ import type {
 } from '@voltiso/util'
 import { clone, final, isDefined, OPTIONS, stringFrom } from '@voltiso/util'
 
-import { union } from '~/custom-schemas/union'
-import { schema } from '~/custom-schemas/unknownSchema'
+import { union } from '~/base-schemas/union'
+import { schema } from '~/core-schemas'
 import { ValidationError } from '~/error'
 import { SchemarError } from '~/error/SchemarError'
 

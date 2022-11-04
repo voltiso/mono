@@ -5,7 +5,7 @@ import { staticImplements } from '~/class'
 import { clone } from '~/clone'
 
 import { CALL } from '../CALL'
-import { BoundCallable, BoundCallable } from './BoundCallable'
+import { BoundCallable } from './BoundCallable'
 
 const sym = Symbol('sym')
 

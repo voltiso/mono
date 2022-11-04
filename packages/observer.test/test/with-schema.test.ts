@@ -45,7 +45,7 @@ describe('NestedSubjectWithSchema', () => {
 
 		expect(data.a.b.c.value).toBe(123)
 
-		data.update({ x: 1 })
+		data.patch({ x: 1 }, { depth: 1 })
 
 		expect(data.value).toStrictEqual({
 			a: { b: { c: 123 } },

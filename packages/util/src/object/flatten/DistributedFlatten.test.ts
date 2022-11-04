@@ -1,8 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $_, $__, IsIdentical } from '~'
 import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
+
+import type { $_, $__ } from './DistributedFlatten'
 
 describe('$_ (DistributedFlatten)', () => {
 	it('works', () => {

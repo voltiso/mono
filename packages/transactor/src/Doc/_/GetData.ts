@@ -12,7 +12,7 @@ import type {
 	Primitive,
 } from '@voltiso/util'
 
-import type { DocIdBrand, DocIdString_ } from '~/brand'
+import type { DocIdBrand, DocIdString, DocIdString_ } from '~/brand'
 import type { $WithId, DataRecord, TightenRefs, WithId } from '~/Data'
 import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext, IDoc } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
@@ -65,10 +65,9 @@ export namespace GetData {
 }
 
 /** @inline */
-export type GetDataWithId<R extends $$DocRelatedLike> = WithId<
-	GetData<R>,
-	GetDoc<R>
->
+export type GetDataWithId<R extends $$DocRelatedLike> = R extends AnyDoc
+	? { readonly id: DocIdString<R>; [k: string]: unknown }
+	: WithId<GetData<R>, GetDoc<R>>
 
 export namespace GetDataWithId {
 	export type ForDoc<D extends $$Doc> = WithId<GetData.ForDoc<D>, D>

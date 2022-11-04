@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Override, Newable, NewableOptions } from '~'
+import type { Override } from '~/type'
+
+import type { Newable, NewableOptions } from './builder'
 
 //
 

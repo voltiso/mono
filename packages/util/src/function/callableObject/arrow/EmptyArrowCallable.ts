@@ -1,9 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ArrowCallable, Callable, clone, ProtoCallable } from '~'
 import { $assert, $expect } from '~/$strip'
+import type { clone } from '~/clone'
+import type { ArrowCallable, Callable } from '~/function'
 import { deleteAllProperties } from '~/object'
+
+import type { ProtoCallable } from '../proto'
 
 export type __unused_EmptyArrowCallable = ProtoCallable | typeof clone
 

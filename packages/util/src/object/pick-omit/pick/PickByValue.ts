@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept, Value } from '~'
+import type { Value } from '~/object'
+import type { AlsoAccept } from '~/type'
 
 export type PickByValue<
 	Obj extends object,

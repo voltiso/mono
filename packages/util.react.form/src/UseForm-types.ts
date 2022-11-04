@@ -20,7 +20,6 @@ import type { DOMAttributes } from 'react'
 
 import type { UseFormValidators } from './Validators'
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace UseForm {
 	export type Options<S extends $$SchemableObject> = {
 		schemable: S
@@ -52,7 +51,9 @@ export namespace UseForm {
 
 	export type ResultFields<S extends $$Schemable> = S extends SchemableWithShape
 		? {
-				[k in keyof GetShape<S>]: ResultFields<GetShape<S>[k] & $$Schemable>
+				[k in keyof GetShape<S>]: ResultFields<
+					GetShape<S>[k] extends $$Schemable ? GetShape<S>[k] : never
+				>
 		  }
 		: {
 				props: {

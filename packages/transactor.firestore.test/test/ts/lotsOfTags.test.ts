@@ -94,8 +94,6 @@ declare module '@voltiso/transactor' {
 
 describe('lotsOfTags', () => {
 	it('works', () => {
-		expect.assertions(0)
-
 		const r = db('a', 'b', 'c', 'd')
 		$Assert.is<typeof r, WeakDocRef<typeof AnyDoc>>()
 	})

@@ -127,7 +127,15 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/prefer-regexp-test': 1,
 		'unicorn/prefer-set-has': 1,
 		'unicorn/prefer-spread': 1,
-		'unicorn/prefer-string-replace-all': 1,
+
+		/**
+		 * ⚠️
+		 *
+		 * ! we actually should use `.replaceAll()` - after browser support is !
+		 * better
+		 */
+		'unicorn/prefer-string-replace-all': 0,
+
 		'unicorn/prefer-string-slice': 1,
 		'unicorn/prefer-string-starts-ends-with': 1,
 		'unicorn/prefer-string-trim-start-end': 1,

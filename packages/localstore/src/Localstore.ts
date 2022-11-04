@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
+import { at } from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
 
 import { CollectionReference } from './CollectionReference'
@@ -42,7 +43,7 @@ export class Localstore implements Database.Database {
 	doc(path: string): DocumentReference {
 		const pathTokens = path.split('/')
 		const collectionPath = pathTokens.slice(0, -1).join('/')
-		const id = pathTokens.at(-1) as string
+		const id = at(pathTokens, -1)
 		return new DocumentReference(this.collection(collectionPath), id)
 	}
 

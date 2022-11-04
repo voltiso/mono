@@ -11,9 +11,9 @@ const { createFirestoreTransactor } = srcFirestore
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
 let counter = 0
-// @ts-expect-error ...
+
 db('mother/{user}').afterCreateOrUpdate(function () {
-	this['age'] = 9393
+	this.data['age'] = 9393
 	++counter
 })
 

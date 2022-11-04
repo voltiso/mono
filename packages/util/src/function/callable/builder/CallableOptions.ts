@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Override, NoThis } from '~'
+import type { NoThis } from '~/function'
+import type { Override } from '~/type'
 
 export interface CallableNoThisOptions {
 	arguments: readonly unknown[]

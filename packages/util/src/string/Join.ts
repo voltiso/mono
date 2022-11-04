@@ -50,7 +50,7 @@ export namespace Join {
 		: ''
 }
 
-declare module '~' {
+declare module '~/TypeAliases-augmentation' {
 	interface TypeAliases2<_1, _2> {
 		Join: Join_<_1, _2>
 	}

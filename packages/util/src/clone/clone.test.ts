@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { BoundCallable, CALL } from '~'
+import { BoundCallable, CALL } from '~/function'
 import { lazyValue } from '~/lazy/lazyValue'
 
 import { clone } from './clone'

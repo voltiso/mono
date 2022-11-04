@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '~'
+import { $assert } from '~/$strip'
 
 export function add<A extends number | bigint, B extends number | bigint>(
 	a: A,

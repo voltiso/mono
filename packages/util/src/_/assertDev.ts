@@ -1,9 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '~'
-import type { StackTraceEntry } from '~/stack-trace/parseStackTrace'
-import { parseStackTrace } from '~/stack-trace/parseStackTrace'
+import { VoltisoUtilError } from '~/error'
+import type { StackTraceEntry } from '~/stack-trace'
+import { parseStackTrace } from '~/stack-trace'
 
 /** @internal */
 export function _findFirstDollarEntry(

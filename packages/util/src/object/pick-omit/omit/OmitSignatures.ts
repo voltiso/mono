@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Pick_, Value } from '~'
+import type { Pick_, Value } from '~/object'
 
 // https://stackoverflow.com/a/51956054/1123898
 /** Omit call, construct and index signatures */

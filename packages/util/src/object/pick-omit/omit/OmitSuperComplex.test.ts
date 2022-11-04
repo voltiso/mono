@@ -1,8 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_, IsIdentical, VPick_ } from '~'
 import { $Assert } from '~/$strip'
+import type { _, $_, VPick_ } from '~/object'
+import type { IsIdentical } from '~/type'
 
 import type { OmitPrecise_ } from './OmitPrecise'
 import type { OmitSignatures } from './OmitSignatures'

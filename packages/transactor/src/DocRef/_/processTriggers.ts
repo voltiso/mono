@@ -127,6 +127,9 @@ export async function processTriggers(
 
 	// apply updates
 	const data = apply(ctx, cacheEntry.data, params?.updates)
+
+	// console.log('apply result', cacheEntry.data, params?.updates, data)
+
 	assert(!isReplaceIt(data))
 	assert(!isDeleteIt(data))
 	// console.log('apply updates', cacheEntry.data, params?.updates, data)

@@ -59,6 +59,7 @@ describe('update', function () {
 		await db('a/a').set({ x: 1 })
 		await db('a/a').update({ y: { yy: 2 } })
 
+
 		await expect(db('a/a').dataWithId()).resolves.toMatchObject({
 			id: 'a',
 			x: 1,

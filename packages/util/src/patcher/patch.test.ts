@@ -12,8 +12,7 @@ import type { ApplyPatch } from './patch'
 import { forcePatch, patch } from './patch'
 import type { ReplaceIt } from './replaceIt'
 import { replaceIt } from './replaceIt'
-import { shallowPatch } from './shallowPatch'
-
+   
 describe('patch', () => {
 	it('generic', <X>() => {
 		expect.assertions(0)
@@ -90,6 +89,10 @@ describe('patch', () => {
 		const b = patch(a, { a: 0 })
 
 		expect(b).toBe(a)
+
+		const c = patch(a, replaceIt({ a: 0, b: 'bb' }))
+
+		expect(c).toBe(a)
 	})
 
 	it('does not modify if not needed (replaceIt)', () => {
@@ -108,6 +111,10 @@ describe('patch', () => {
 		const b = patch(a, replaceIt({ a: 0, b: 'bb' }))
 
 		expect(b).toBe(a)
+
+		const c = patch(a, { a: 0, b: 'bb' }, { depth: 0 })
+
+		expect(c).toBe(a)
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests
@@ -126,7 +133,7 @@ describe('patch', () => {
 
 		const obj: any = { b: 9, a: { aa: { aaa: 'a' } } }
 
-		const a = shallowPatch(obj, { a: { bb: 99 } })
+		const a = patch(obj, { a: { bb: 99 } }, { depth: 1 })
 
 		expect(a).toStrictEqual({ b: 9, a: { bb: 99 } })
 
@@ -134,18 +141,22 @@ describe('patch', () => {
 
 		expect(b).toStrictEqual({ b: 9, a: { aa: { aaa: 'a' }, bb: 99 } })
 
-		const c = shallowPatch(123, 234 as const)
+		const c = patch(123, 234 as const, { depth: 1 })
 
 		expect(c).toBe(234)
 
 		// @ts-expect-error `a` is required
-		;() => shallowPatch({ a: 1 }, { a: deleteIt })
+		;() => patch({ a: 1 }, { a: deleteIt }, { depth: 1 })
 
-		const d = shallowPatch({ a: 1, b: 2 } as { a?: number }, { a: deleteIt })
+		const d = patch(
+			{ a: 1, b: 2 } as { a?: number },
+			{ a: deleteIt },
+			{ depth: 1 },
+		)
 
 		expect(d).toStrictEqual({ b: 2 })
 
-		const e = shallowPatch({ a: 1, b: 2 }, { a: keepIt })
+		const e = patch({ a: 1, b: 2 }, { a: keepIt }, { depth: 1 })
 
 		expect(e).toStrictEqual({ a: 1, b: 2 })
 
@@ -156,7 +167,7 @@ describe('patch', () => {
 		expect.hasAssertions()
 
 		const obj: any = { a: true }
-		const b = shallowPatch(obj, { a: false })
+		const b = patch(obj, { a: false }, { depth: 1 })
 
 		expect(b).toStrictEqual({ a: false })
 	})

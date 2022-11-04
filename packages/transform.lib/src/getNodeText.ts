@@ -10,7 +10,7 @@ export function getNodeText(
 	node: ts.Node,
 ): string | undefined {
 	try {
-		return node.getText(ctx.sourceFile).replaceAll(/\s+/gu, ' ')
+		return node.getText(ctx.sourceFile).replace(/\s+/gu, ' ')
 	} catch {
 		return undefined
 	}

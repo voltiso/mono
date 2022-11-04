@@ -3,20 +3,18 @@
 
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { checked } from './checked'
 
 describe('checked', () => {
 	it('type', () => {
-		expect.assertions(0)
-
 		const a = checked
 			.param(s.string)
 			.result(s.number)
 			.function(str => str.length)
 
-		Assert<IsIdentical<typeof a, (arg: string) => number>>()
+		$Assert<IsIdentical<typeof a, (arg: string) => number>>()
 
 		const b = checked
 			.this({ x: s.number })
@@ -26,7 +24,7 @@ describe('checked', () => {
 				return str.length + this.x
 			})
 
-		Assert<
+		$Assert<
 			IsIdentical<typeof b, (this: { x: number }, arg: string) => number>
 		>()
 	})
@@ -144,23 +142,19 @@ describe('checked', () => {
 	})
 
 	it('void result - implicit', () => {
-		expect.assertions(0)
-
 		const a = checked.function(() => {})
 		const b = checked.function(async () => {})
 
-		Assert<IsIdentical<typeof a, () => void>>()
-		Assert<IsIdentical<typeof b, () => Promise<void>>>()
+		$Assert<IsIdentical<typeof a, () => void>>()
+		$Assert<IsIdentical<typeof b, () => Promise<void>>>()
 	})
 
 	it('void result - explicit', () => {
-		expect.assertions(0)
-
 		const a = checked.result(s.void).function(() => {})
 		const b = checked.result(s.void).function(async () => {})
 
-		Assert<IsIdentical<typeof a, () => void>>()
-		Assert<IsIdentical<typeof b, () => Promise<void>>>()
+		$Assert<IsIdentical<typeof a, () => void>>()
+		$Assert<IsIdentical<typeof b, () => Promise<void>>>()
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests

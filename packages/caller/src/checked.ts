@@ -58,7 +58,7 @@ class _Checked<T extends G> {
 		f: (
 			this: t.Type<T['self']>,
 			...args: t.TupleType_<T['params']>
-		) => MaybePromise<t.InputType<T['result']>>,
+		) => MaybePromise<t.Input<T['result']>>,
 	) {
 		const thisSchema: t.Schema | null = this._self
 			? (s.schema(this._self) as never)
@@ -81,7 +81,7 @@ class _Checked<T extends G> {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 			const r = (f as any).call(this, ...(vArgs as unknown[]))
 
-			function handler(r: t.InputType<T['result']>) {
+			function handler(r: t.Input<T['result']>) {
 				return (resultSchema ? resultSchema.validate(r) : r) as never
 			}
 
@@ -97,19 +97,19 @@ export interface WithoutThis<T extends G> {
 	function(
 		f: (
 			...args: t.TupleType_<T['params']>
-		) => Promise<t.InputType<T['result']>>,
+		) => Promise<t.Input<T['result']>>,
 	): (
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
 	) => Promise<t.Type<T['result']>>
 
 	function(
-		f: (...args: t.TupleType_<T['params']>) => t.InputType<T['result']>,
+		f: (...args: t.TupleType_<T['params']>) => t.Input<T['result']>,
 	): (...args: t.TupleType_<T['params'], { kind: 'in' }>) => t.Type<T['result']>
 
 	function(
 		f: (
 			...args: t.TupleType_<T['params']>
-		) => MaybePromise<t.InputType<T['result']>>,
+		) => MaybePromise<t.Input<T['result']>>,
 	): (
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
 	) => MaybePromise<t.Type<T['result']>>
@@ -120,7 +120,7 @@ export interface WithThis<T extends G> {
 		f: (
 			this: t.Type<T['self']>,
 			...args: t.TupleType_<T['params']>
-		) => t.InputType<T['result']>,
+		) => t.Input<T['result']>,
 	): (
 		this: t.Type<T['self']>,
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
@@ -130,7 +130,7 @@ export interface WithThis<T extends G> {
 		f: (
 			this: t.Type<T['self']>,
 			...args: t.TupleType_<T['params']>
-		) => Promise<t.InputType<T['result']>>,
+		) => Promise<t.Input<T['result']>>,
 	): (
 		this: t.Type<T['self']>,
 		...args: t.TupleType_<T['params'], { kind: 'in' }>
@@ -140,7 +140,7 @@ export interface WithThis<T extends G> {
 		f: (
 			this: t.Type<T['self']>,
 			...args: t.TupleType_<T['params']>
-		) => MaybePromise<t.InputType<T['result']>>,
+		) => MaybePromise<t.Input<T['result']>>,
 	): (
 		this: t.Type<T['self']>,
 		...args: t.TupleType_<T['params'], { kind: 'in' }>

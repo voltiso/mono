@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, SuggestObject } from '~'
+import type { _ } from '../flatten'
+import type { SuggestObject } from './Suggest'
 
 /** @inline */ export type FastMerge2_<A, B> = Omit<A, keyof B> & B
 

@@ -3,12 +3,12 @@
 
 import type {
 	_,
-	AlsoAccept,
 	HasNumberIndexSignature,
 	HasStringIndexSignature,
 	HasSymbolIndexSignature,
 	Pick_,
-} from '~'
+} from '~/object'
+import type { AlsoAccept } from '~/type'
 
 import type { OmitSignatures } from './OmitSignatures'
 

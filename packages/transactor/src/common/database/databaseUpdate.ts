@@ -93,14 +93,14 @@ export async function databaseUpdate(
 
 	if (isDeleteIt(updates)) return databaseDelete(t, ref)
 
-	const firestoreUpdates = toDatabaseUpdate(ctx, updates)
+	const databaseUpdates = toDatabaseUpdate(ctx, updates)
 
 	if (isDatabase(t)) {
 		assertNotInTransaction()
-		await ref.update(firestoreUpdates)
+		await ref.update(databaseUpdates)
 	} else {
 		assertInTransaction()
-		t.update(ref, firestoreUpdates)
+		t.update(ref, databaseUpdates)
 	}
 
 	return undefined

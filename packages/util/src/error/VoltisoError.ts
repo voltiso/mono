@@ -1,10 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { stringFrom } from '~'
 import type { UndefinedFromOptional } from '~/object'
+import { stringFrom } from '~/string'
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace VoltisoError {
 	export type Package = UndefinedFromOptional<{
 		name: string

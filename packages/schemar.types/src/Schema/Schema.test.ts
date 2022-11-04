@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, OPTIONS } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
@@ -11,7 +11,6 @@ import type {
 	InferSchemaFunction,
 	Input,
 	Number,
-	OPTIONS,
 	Output,
 	Schema,
 	SchemaOptions,

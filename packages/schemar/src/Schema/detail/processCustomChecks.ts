@@ -3,7 +3,7 @@
 
 import type { CustomCheck } from '@voltiso/schemar.types'
 
-import { ValidationIssue } from '~'
+import { ValidationIssue } from '~/meta-schemas'
 
 export function processCustomChecks(
 	checks: readonly CustomCheck[],

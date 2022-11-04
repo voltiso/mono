@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, __, Callable, Newable } from '~'
+import type { Callable, Newable } from '~/function'
+
+import type { _, __ } from './Flatten'
 
 /**
  * DistributedFlattenAnything

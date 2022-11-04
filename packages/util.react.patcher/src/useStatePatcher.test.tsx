@@ -56,7 +56,7 @@ describe('useStatePatcher', () => {
 		// eslint-disable-next-line testing-library/render-result-naming-convention
 		let prevRenderId = renderId
 		act(() => {
-			state({ a: 'bb' })
+			state.update({ a: 'bb' })
 		})
 
 		expect(state.raw).toBe(prevRaw) // value did not change

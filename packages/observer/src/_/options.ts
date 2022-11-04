@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InputType_ } from '@voltiso/schemar.types'
+import type { Input_ } from '@voltiso/schemar.types'
 import type { AlsoAccept } from '@voltiso/util'
 
 import type { NestedSubjectImpl } from '~/NestedSubjectImpl'
@@ -21,7 +21,7 @@ export type NestedSubjectWithSchemaRootOptions<S> = {
 	 *
 	 * @defaultValue `{}`
 	 */
-	initialValue?: InputType_<S> | AlsoAccept<unknown>
+	initialValue?: Input_<S> | AlsoAccept<unknown>
 }
 
 export type NestedSubjectChildOptions = {

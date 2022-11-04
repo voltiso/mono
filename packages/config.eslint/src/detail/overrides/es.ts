@@ -39,6 +39,8 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-block-scoped-functions': 0,
 		'es-x/no-default-parameters': 0,
 		'es-x/no-new-target': 0,
+		'es-x/no-dynamic-import': 0,
+		'es-x/no-generators': 0,
 		'es-x/no-numeric-separators': 0, // ✅ `@voltiso/transform/compat`
 
 		'es-x/no-symbol': 0,
@@ -58,6 +60,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-number-isinteger': 0,
 
 		// object
+		'es-x/no-object-create': 0,
 		'es-x/no-object-keys': 0,
 		'es-x/no-object-values': 0,
 		'es-x/no-object-entries': 0,
@@ -67,6 +70,11 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-object-freeze': 0,
 		'es-x/no-object-seal': 0,
 		'es-x/no-object-defineproperty': 0,
+		'es-x/no-object-getownpropertynames': 0,
+		'es-x/no-object-getownpropertysymbols': 0,
+		'es-x/no-object-getownpropertydescriptor': 0,
+		'es-x/no-object-getownpropertydescriptors': 0,
+		'es-x/no-object-defineproperties': 0,
 
 		// array
 		'es-x/no-array-prototype-filter': 0,
@@ -77,6 +85,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-array-prototype-fill': 0,
 		'es-x/no-array-isarray': 0,
 		'es-x/no-array-from': 0,
+		'es-x/no-array-prototype-reduce': 0,
 
 		// string
 		'es-x/no-string-prototype-startswith': 0,

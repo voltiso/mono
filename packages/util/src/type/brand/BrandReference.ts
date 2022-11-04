@@ -1,7 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Brands, PropertyPath, PropertyPathString, Split } from '~'
+import type { Brands } from '~/Brands-augmentation'
+import type { PropertyPath, PropertyPathString } from '~/object'
+import type { Split } from '~/string'
 
 export type BrandFirstSegment = keyof Brands
 export type BrandPath = Exclude<PropertyPath.ForObject<Brands>, readonly []>

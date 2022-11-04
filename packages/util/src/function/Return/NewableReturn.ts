@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Newable } from '~'
+import type { Newable } from '../newable'
 
 export type NewableReturn_<T> = [T] extends [
 	abstract new (...args: any) => infer Return,

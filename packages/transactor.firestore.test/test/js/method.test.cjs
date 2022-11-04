@@ -15,7 +15,7 @@ const promises = []
 // eslint-disable-next-line jest/require-hook
 db('counterAbc/*')
 	.afterCreateOrUpdate(function () {
-		this.data['value'] = this.data['value'] || 0
+		this.data['value'] ||= 0
 	})
 	.method('increment', function (x) {
 		// @ts-expect-error ...
@@ -40,9 +40,9 @@ describe('method', function () {
 		expect(id).toBeDefined()
 
 		// @ts-expect-error ...
-		await counter.increment(100)
+		await counter.methods.increment(100)
 		// @ts-expect-error ...
-		await counter.increment(1000)
+		await counter.methods.increment(1000)
 
 		// @ts-expect-error ...
 		expect(counter.value).toBe(1100)
@@ -59,10 +59,10 @@ describe('method', function () {
 
 			await db('counterAbc/asd').set({})
 			try {
-				// @ts-expect-error ...
-				await expect(db('counterAbc/asd').floatSomePromises()).rejects.toThrow(
-					'numFloatingPromises: 3',
-				)
+				await expect(
+					// @ts-expect-error ...
+					db('counterAbc/asd').methods.floatSomePromises(),
+				).rejects.toThrow('numFloatingPromises: 3')
 			} catch {}
 
 			// console.log('await Promise.all')

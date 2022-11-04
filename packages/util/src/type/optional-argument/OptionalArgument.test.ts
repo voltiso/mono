@@ -3,7 +3,7 @@
 
 import { $Assert } from '~/$strip'
 
-import type { AreNoArgument } from './AreNoArgument'
+import type { AreNoArgument } from './AreNotProvided'
 import type { NoArgument, OptionalArgument } from './OptionalArgument'
 
 type IFunc_<Result> = (...args: never[]) => Result

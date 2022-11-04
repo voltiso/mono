@@ -1,8 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from '~'
-
+import type { Merge2_ } from './Merge2'
 import type { SuggestObject } from './Suggest'
 
 /**

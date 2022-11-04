@@ -13,7 +13,7 @@ import type {
 	Type_,
 	ValidationIssue,
 } from '@voltiso/schemar.types'
-import type { Path } from '@voltiso/util'
+import type { PropertyPath } from '@voltiso/util'
 import { deepMapValues, get, tryGet } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
 import type { ChangeEvent, FormEvent } from 'react'
@@ -69,7 +69,7 @@ function _initializeResult<S extends $$SchemableObject>(
 
 				props: {
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
-					value: tryGet(data$.value, ...(path as any)) || '',
+					value: tryGet(data$.value as never, ...(path as any)) || '',
 
 					onChange: (event: ChangeEvent<HTMLInputElement>) => {
 						const value = event.target.value
@@ -80,7 +80,7 @@ function _initializeResult<S extends $$SchemableObject>(
 							'props',
 							'_',
 							'value',
-						] as unknown as Path<typeof mutable.result$.fields>
+						] as unknown as PropertyPath<typeof mutable.result$.fields>
 
 						const valueProp$ = get(
 							mutable.result$.fields,
@@ -91,7 +91,7 @@ function _initializeResult<S extends $$SchemableObject>(
 
 						const validationResult = validate(value)
 
-						const issuesPath = [...path, 'issues'] as unknown as Path<
+						const issuesPath = [...path, 'issues'] as unknown as PropertyPath<
 							typeof mutable.result$.fields
 						>
 						const issues$ = get(

@@ -1,16 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PatchFor } from '@voltiso/util'
+import type { PatchFor, PatchOptions } from '@voltiso/util'
 import {
-	BoundCallable,
-	CALL,
+	defaultPatchOptions,
 	forwardGetOwnPropertyDescriptor,
 	forwardOwnKeys,
 	hasOwnProperty,
 	patch,
 	replaceIt,
-	shallowPatch,
 } from '@voltiso/util'
 import { useUpdate } from '@voltiso/util.react'
 import { useMemo } from 'react'
@@ -64,6 +62,20 @@ type StateObject = Record<string, State>
 
 // type StateProxy<S extends StateObject> = S & StateProxyCall<S>
 
+function changePrototypeGuard<R>(
+	obj: object,
+	proto: object | null,
+	run: () => R,
+): R {
+	const oldPrototype = Object.getPrototypeOf(obj) as object | null
+	try {
+		Object.setPrototypeOf(obj, proto)
+		return run()
+	} finally {
+		Object.setPrototypeOf(obj, oldPrototype)
+	}
+}
+
 class StatePatcher_<S extends StateObject> {
 	/**
 	 * Here we keep a reference to the update() hook, to force-update the React
@@ -89,8 +101,8 @@ class StatePatcher_<S extends StateObject> {
 
 		this._swapProto()
 
-		// eslint-disable-next-line no-constructor-return
-		return BoundCallable(this)
+		// // eslint-disable-next-line no-constructor-return
+		// return BoundCallable(this)
 	}
 
 	private _swapProto() {
@@ -99,6 +111,7 @@ class StatePatcher_<S extends StateObject> {
 	}
 
 	private _update(newValue: S): void {
+		// $assert.plainObject(newValue)
 		if (newValue !== this._rawState) {
 			this._rawState = newValue
 			this._swapProto()
@@ -111,34 +124,43 @@ class StatePatcher_<S extends StateObject> {
 	 *
 	 * - Can use `replaceIt`, `deleteIt` sentinels
 	 */
-	patch(patchValue: PatchFor<S>): void {
-		this._update(patch(this._rawState, patchValue))
+	patch(
+		patchValue: PatchFor<S>,
+		options: PatchOptions = defaultPatchOptions,
+	): void {
+		const newValue = changePrototypeGuard(
+			this._rawState,
+			Object.prototype,
+			() => patch(this._rawState, patchValue, options),
+		)
+
+		this._update(newValue)
 	}
 
 	/**
-	 * Similar to `.patch()`, but uses shallow merge by default
+	 * Same as `.patch()` with `depth === 1`
 	 *
 	 * - (like React's .update() on class components)
 	 */
 	update(updateValue: PatchFor<S>): void {
-		this._update(shallowPatch(this._rawState, updateValue))
+		return this.patch(updateValue, { depth: 1 })
 	}
 
-	/** Similar to `.patch()`, but uses `replaceIt` by default */
+	/** Same as `.patch()` with `depth === 0` */
 	set(newValue: S): void {
-		this._update(patch(this._rawState, replaceIt(newValue)))
+		return this.patch(newValue, { depth: 0 })
 	}
 
-	/** Same as .update() */
-	[CALL](updateValue: PatchFor<S>): void {
-		return this.update(updateValue)
-	}
+	// /** Same as .update() */
+	// [CALL](updateValue: PatchFor<S>): void {
+	// 	return this.update(updateValue)
+	// }
 }
 
 //
 
 export type StatePatcher<S extends StateObject> = StatePatcher_<S> &
-	StatePatcher_<S>[CALL] &
+	// StatePatcher_<S>[CALL] &
 	S
 // & {
 // 	[key in keyof S]: DeepReadonly<S[key]>

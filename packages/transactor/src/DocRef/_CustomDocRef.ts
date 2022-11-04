@@ -27,6 +27,7 @@ import type {
 	Doc,
 	GetAggregatePromises,
 	GetData,
+	GetDataWithId,
 	GetMethodPromises,
 	GetPublicCreationInputData,
 	GetUpdateDataByCtx,
@@ -271,7 +272,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	): any {
 		// PromiseLike<GetDoc<O['doc']> | null | undefined>
 		/**
-		 * Don't chain anything here - we're returning a magic promise to the client
+		 * ☠️ Don't chain anything here - we're returning a magic promise to the client
 		 * code that is aware of being awaited or not
 		 */
 		return update(this._context, updates as never) as never
@@ -284,8 +285,8 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	/** @returns `PromiseLike`! (`then`-only) */
 	delete(): PromiseLike<null> {
 		/**
-		 * Don't chain anything here - we're returning a magic promise to the client
-		 * code that is aware of being awaited or not
+		 * ☠️ Don't chain anything here - we're returning a magic promise to the
+		 * client code that is aware of being awaited or not
 		 */
 		return this.update(deleteIt as never) as never
 	}
@@ -300,7 +301,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 
 	/** - TODO: Detect floating promises */
 	dataWithId(): NestedPromise<
-		$WithId<GetData<O['doc']>, GetDoc<O['doc']>>,
+		GetDataWithId<O['doc']>,
 		O['isStrong'] extends true ? true : boolean
 	> {
 		return dataOrNestedPromise(

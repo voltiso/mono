@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { WithCloneFunction, NoArgument } from '~'
 import { $expect } from '~/$strip'
+import type { WithCloneFunction } from '~/clone'
 import type {
 	_BoundCallable,
 	_BoundCallableWithCALL,
@@ -10,6 +10,7 @@ import type {
 	IBoundCallable,
 } from '~/function'
 import { _BoundCallableNoClone, isWithCALL } from '~/function'
+import type { NoArgument } from '~/type'
 
 import type { WithSelfBoundCALL } from '../CALL'
 import { CALL } from '../CALL'
@@ -57,6 +58,7 @@ export function BoundCallable<
 	const innerClone = typeof shape.clone === 'function' ? shape.clone : undefined
 
 	// own
+	// eslint-disable-next-line es-x/no-object-getownpropertydescriptor
 	const ownCloneDescriptor = Object.getOwnPropertyDescriptor(callable, 'clone')
 
 	function clone(this: BoundCallable<Options>) {
@@ -82,12 +84,14 @@ export function BoundCallable<
 
 		// build descriptors for an object passed as an argument to `BoundCallable`
 		// (restore original inner `clone`)
+		// eslint-disable-next-line es-x/no-object-getownpropertydescriptors
 		const descriptors = Object.getOwnPropertyDescriptors(this)
 		if (ownCloneDescriptor) descriptors.clone = ownCloneDescriptor as never
 		else delete (descriptors as Partial<typeof descriptors>).clone
 
 		const newInstance = {} as BoundCallable<Options>
 		Object.setPrototypeOf(newInstance, Object.getPrototypeOf(this) as never)
+		// eslint-disable-next-line es-x/no-object-defineproperties
 		Object.defineProperties(newInstance, descriptors)
 
 		return BoundCallable({

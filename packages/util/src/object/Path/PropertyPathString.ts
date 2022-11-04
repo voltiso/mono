@@ -1,9 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Join, NoArgument, Override, Printable, PropertyPath } from '~'
+import type { Join, Printable } from '~/string'
+import type { NoArgument, Override } from '~/type'
 
 import type { PathOptions, PathString } from './PathBrand'
+import type { PropertyPath } from './PropertyPath'
 
 //
 

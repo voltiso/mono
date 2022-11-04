@@ -3,8 +3,9 @@
 
 /* eslint-disable no-console */
 
-import * as jestDevServer from 'jest-dev-server'
 import * as fs from 'node:fs/promises'
+
+import * as jestDevServer from 'jest-dev-server'
 
 import { getFirebaseJsonPath } from './_/getFirebaseJsonPath'
 

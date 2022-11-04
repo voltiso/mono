@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '~'
+import { $Assert } from '~/$strip'
 import type { Callable, WithCALL } from '~/function'
 import type { NoArgument } from '~/type'
 

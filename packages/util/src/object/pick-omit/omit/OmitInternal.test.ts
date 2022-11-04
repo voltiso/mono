@@ -1,4 +1,9 @@
-import { $Assert, $Is, IsIdentical, _ } from '~'
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { $Assert, $Is } from '~/$strip'
+import type { IsIdentical } from '~/type'
+
 import type { OmitInternal } from './OmitInternal'
 
 describe('OmitInternal', () => {
@@ -18,7 +23,7 @@ describe('OmitInternal', () => {
 			_a = 1 as const
 
 			protected p = 0 as const
-			private x = 2 as const
+			private readonly x = 2 as const
 
 			#es = 3 as const
 

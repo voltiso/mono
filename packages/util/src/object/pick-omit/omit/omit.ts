@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { hasOwnProperty } from '~'
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { hasOwnProperty } from '~/object'
 import { stringFrom } from '~/string'
 
 import { omitIfPresent } from './omitIfPresent'

@@ -1,9 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, IsIdentical, OmitSuperComplex } from '~'
 import { $Assert } from '~/$strip'
+import type { IsIdentical } from '~/type'
 
+import type { _ } from '../flatten'
+import type { OmitSuperComplex } from '../pick-omit'
 import type { $Merge2 } from './DistributedMerge2'
 import type { Merge2Complex } from './Merge2Complex'
 
