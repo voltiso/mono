@@ -61,7 +61,6 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomArray {
 	export type MakeReadonly<This extends $$CustomArray> = This extends {
 		[OPTIONS]: { Input: readonly unknown[]; Output: readonly unknown[] }

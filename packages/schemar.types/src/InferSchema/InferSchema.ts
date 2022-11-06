@@ -34,7 +34,6 @@ export type $InferSchema<S extends $$Schemable> = S extends any
 
 export type A = InferSchema<{}>['simple']
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace InferSchema {
 	/** Do we have full `ISchema` super-type? */
 	export type Step1<S> = ISchema extends ExcludeEmptyBraces<S>

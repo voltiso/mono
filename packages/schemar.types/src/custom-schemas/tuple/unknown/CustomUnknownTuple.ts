@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DEFAULT_OPTIONS, OPTIONS, PARTIAL_OPTIONS } from '@voltiso/util'
 import type { SCHEMA_NAME } from '_'
+import type { DEFAULT_OPTIONS, OPTIONS, PARTIAL_OPTIONS } from '@voltiso/util'
 
 import type { DefineSchema } from '~'
 import type { $$Schema, CustomSchema } from '~/Schema'
@@ -47,7 +47,6 @@ export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	): CustomUnknownTuple.Length<this, ExactLength>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomUnknownTuple {
 	export type ReadonlyTuple<S extends $$Schema> = DefineSchema<
 		S,

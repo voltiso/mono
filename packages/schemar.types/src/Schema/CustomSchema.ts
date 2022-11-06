@@ -147,12 +147,11 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	//
 
-	Narrow<
-		// eslint-disable-next-line etc/no-misused-generics
-		NewType extends this['Output'] & this['Input'],
-	>(): DefineSchema<this, { Output: NewType; Input: NewType }>
+	Narrow<NewType extends this['Output'] & this['Input']>(): DefineSchema<
+		this,
+		{ Output: NewType; Input: NewType }
+	>
 
-	// eslint-disable-next-line etc/no-misused-generics
 	Widen<NewType>(): this['Output'] | this['Input'] extends NewType
 		? DefineSchema<this, { Output: NewType; Input: NewType }>
 		: Throw<
@@ -162,22 +161,19 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	//
 
-	// eslint-disable-next-line etc/no-misused-generics
 	Cast<NewType>(): CustomSchema.CastResult<this, NewType>
 
-	// eslint-disable-next-line etc/no-misused-generics
 	$Cast<NewType>(): NewType extends any
 		? CustomSchema.CastResult<this, NewType>
 		: never
 
 	//
 
-	NarrowOutput<
-		// eslint-disable-next-line etc/no-misused-generics
-		NewType extends this['Output'],
-	>(): DefineSchema<this, { Output: NewType }>
+	NarrowOutput<NewType extends this['Output']>(): DefineSchema<
+		this,
+		{ Output: NewType }
+	>
 
-	// eslint-disable-next-line etc/no-misused-generics
 	WidenOutput<NewType>(): this['Output'] extends NewType
 		? DefineSchema<this, { Output: NewType }>
 		: Throw<
@@ -185,7 +181,6 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
 		  >
 
-	// eslint-disable-next-line etc/no-misused-generics
 	CastOutput<NewType>(): this['Output'] extends NewType
 		? DefineSchema<this, { Output: NewType }>
 		: NewType extends this['Output']
@@ -197,12 +192,11 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	//
 
-	NarrowInput<
-		// eslint-disable-next-line etc/no-misused-generics
-		NewType extends this['Input'],
-	>(): DefineSchema<this, { Input: NewType }>
+	NarrowInput<NewType extends this['Input']>(): DefineSchema<
+		this,
+		{ Input: NewType }
+	>
 
-	// eslint-disable-next-line etc/no-misused-generics
 	WidenInput<NewType>(): this['Input'] extends NewType
 		? DefineSchema<this, { Input: NewType }>
 		: Throw<
@@ -210,7 +204,6 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 					CustomSchema.TypeCastErrorDetailInput<this, NewType>
 		  >
 
-	// eslint-disable-next-line etc/no-misused-generics
 	CastInput<NewType>(): this['Input'] extends NewType
 		? DefineSchema<this, { Input: NewType }>
 		: NewType extends this['Input']
@@ -231,7 +224,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @returns Value after applying fixes (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	// eslint-disable-next-line etc/no-misused-generics
+
 	validate<O extends Partial<ValidateOptions>>(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: O | undefined,
@@ -302,7 +295,6 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	get simple(): SimplifySchema<this>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomSchema {
 	export type CastResult<
 		This extends $$Schema & { Output: unknown; Input: unknown },

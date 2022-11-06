@@ -16,17 +16,10 @@ export type GetPathMatches = (path: string) => PathMatches | null
 export const getGetPathMatches = (pattern: string): GetPathMatches => {
 	let currentPattern = pattern
 
-	// eslint-disable-next-line unicorn/prefer-string-replace-all
 	currentPattern = currentPattern.replace(/\*\*/gu, '⚡')
-
-	// eslint-disable-next-line unicorn/prefer-string-replace-all
 	currentPattern = currentPattern.replace(/\*/gu, '🚀')
 
-	//
-
-	// eslint-disable-next-line unicorn/prefer-string-replace-all
 	currentPattern = currentPattern.replace(/⚡/gu, '(.*)')
-	// eslint-disable-next-line unicorn/prefer-string-replace-all
 	currentPattern = currentPattern.replace(/🚀/gu, '([^/]*)')
 
 	const params = getUnknownPathTokens(pattern)
@@ -38,16 +31,16 @@ export const getGetPathMatches = (pattern: string): GetPathMatches => {
 	}
 
 	// eslint-disable-next-line security/detect-non-literal-regexp
-	const re = new RegExp(`^${currentPattern}$`)
+	const regex = new RegExp(`^${currentPattern}$`)
 
 	return (path: string): PathMatches | null => {
 		// eslint-disable-next-line regexp/prefer-regexp-exec
-		const r = path.match(re)
+		const matches = path.match(regex)
 
-		if (r)
+		if (matches)
 			return {
-				pathParams: { ...r.groups },
-				pathArgs: r.slice(1),
+				pathParams: { ...matches.groups },
+				pathArgs: matches.slice(1),
 			}
 		else return null
 	}

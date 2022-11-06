@@ -1,15 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { SCHEMA_NAME } from '_/symbols'
 import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
 	Override,
 } from '@voltiso/util'
-import type { SCHEMA_NAME } from '_/symbols'
+
 import type { $$Schema, ISchema, SchemaLike } from '~/Schema'
 import type { $$Schemable } from '~/Schemable'
+
 import type { DefaultTupleOptions, TupleOptions } from './TupleOptions'
 
 export interface $$Tuple extends $$Schema {

@@ -43,7 +43,7 @@ export function define<T, Options extends Partial<DefineTypeOptions> = {}>(): {
 		Override<DefaultDefineTypeOptions, Options>['MakeMutableDepth'],
 		Inferred,
 		{
-			skip: NoArgument
+			skip: Override<DefaultDefineTypeOptions, Options>['Skip']
 		}
 	>
 } {

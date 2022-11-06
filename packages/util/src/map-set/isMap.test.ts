@@ -14,5 +14,7 @@ describe('isMap', () => {
 		expect(isMap({})).toBeFalsy()
 		expect(isMap(null)).toBeFalsy()
 		expect(isMap(undefined)).toBeFalsy()
+
+		expect(isMap(Object.setPrototypeOf({}, null))).toBeFalsy()
 	})
 })

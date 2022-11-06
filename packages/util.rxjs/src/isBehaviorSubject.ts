@@ -3,7 +3,6 @@
 
 import type { BehaviorSubject } from 'rxjs'
 
-// eslint-disable-next-line etc/no-misused-generics
 export function isBehaviorSubject<T = unknown>(
 	x: unknown,
 ): x is BehaviorSubject<T> {

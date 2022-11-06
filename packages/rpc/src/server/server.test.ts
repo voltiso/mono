@@ -5,13 +5,14 @@ import { $Assert } from '@voltiso/util'
 
 import type { Handlers } from '~/_shared'
 
-import type { Request, Response } from '.'
-import type { Server } from './server'
+import type { RpcRequest } from './RpcRequest'
+import type { RpcResponse } from './RpcResponse'
+import type { RpcServer } from './RpcServer'
 
 describe('rpc-server', () => {
-	it('generic', <Req extends Request, Res extends Response, H extends Handlers>() => {
+	it('generic', <Req extends RpcRequest, Res extends RpcResponse, H extends Handlers>() => {
 		expect.assertions(0)
 
-		$Assert.is<Server<Req, Res, H>, Server>()
+		$Assert.is<RpcServer<H, Req, Res>, RpcServer>()
 	})
 })

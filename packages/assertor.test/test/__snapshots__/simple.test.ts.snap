@@ -6,11 +6,31 @@ exports[`simple works 1`] = `
 import { assert } from '@voltiso/assertor';
 export function simple() {
     const value = 0;
-    assert(value === 1, "value === 1");
+    assert(value === 1, {
+        expression: 'assert',
+        arguments: [
+            'value === 1'
+        ],
+        typeArguments: [],
+        location: {
+            package: {
+                name: '@voltiso/assertor.test',
+                version: void 0
+            },
+            packagePath: 'src/simple.ts',
+            gitPath: 'packages/assertor.test/src/simple.ts',
+            position: 180,
+            line: 6,
+            column: 26,
+            astPath: [
+                'simple'
+            ]
+        }
+    });
 }
 export function propertyAccess() {
-    const myValue = undefined;
-    assert.defined(myValue, "myValue");
+    const myValue = void 0;
+    assert.defined(myValue);
 }
 //# sourceMappingURL=simple.js.map"
 `;

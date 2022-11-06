@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Handlers } from '../_shared/Handler'
-import type { Request } from './Request'
-import type { Response } from './Response'
+import type { RpcRequest } from './RpcRequest'
+import type { RpcResponse } from './RpcResponse'
 
-export interface ServerTI {
-	req: Request
-	res: Response
+export interface RpcServerTI {
+	req: RpcRequest
+	res: RpcResponse
 	handlers: Handlers
 }

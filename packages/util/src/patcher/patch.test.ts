@@ -12,7 +12,7 @@ import type { ApplyPatch } from './patch'
 import { forcePatch, patch } from './patch'
 import type { ReplaceIt } from './replaceIt'
 import { replaceIt } from './replaceIt'
-   
+
 describe('patch', () => {
 	it('generic', <X>() => {
 		expect.assertions(0)

@@ -4,5 +4,6 @@
 export function isMap(x: unknown): x is Map<unknown, unknown> {
 	if (x instanceof Map) return true
 
-	return (x as object | null)?.constructor.name === 'Map'
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	return (x as object | null)?.constructor?.name === 'Map'
 }

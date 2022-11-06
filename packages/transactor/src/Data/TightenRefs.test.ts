@@ -4,12 +4,7 @@
 import type { Schema, SimpleSchema } from '@voltiso/schemar.types'
 import { $Assert } from '@voltiso/util'
 
-import type {
-	DocRef,
-	DocRefLike,
-	WeakDocRef,
-	WeakDocRefLike,
-} from '~/DocRef'
+import type { DocRef, DocRefLike, WeakDocRef, WeakDocRefLike } from '~/DocRef'
 
 import type { TightenRefs } from './TightenRefs'
 

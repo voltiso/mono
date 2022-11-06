@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$Schemable } from '@voltiso/schemar.types'
-import { Assert } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	INestedSubjectWithSchema,
@@ -13,6 +13,6 @@ describe('NestedSubjectWithSchema', () => {
 	it('generic', <S extends $$Schemable>() => {
 		expect.assertions(0)
 
-		Assert.is<NestedSubjectWithSchema<S>, INestedSubjectWithSchema>()
+		$Assert.is<NestedSubjectWithSchema<S>, INestedSubjectWithSchema>()
 	})
 })

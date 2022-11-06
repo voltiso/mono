@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { GetDeepShape_ } from '~'
-import type { Input_, GetObjectType } from '~/GetType'
+import type { GetObjectType, Input_ } from '~/GetType'
 import type { $$InferableObject } from '~/Inferable'
 
 import type { CustomObject } from './CustomObject'

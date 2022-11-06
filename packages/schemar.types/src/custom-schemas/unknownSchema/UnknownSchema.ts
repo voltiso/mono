@@ -21,7 +21,6 @@ export interface UnknownSchema
 	extends CustomUnknownSchema<{}>,
 		InferAndSimplifyFunction {}
 
-// eslint-disable-next-line etc/no-misused-generics
 export function test<S extends readonly $$Schemable[]>() {
 	type A = SimplifySchema<InferSchema_<S>>
 

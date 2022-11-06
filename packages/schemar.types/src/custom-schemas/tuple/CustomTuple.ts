@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 import type { SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type {
 	_GetArrayLength_,
@@ -35,7 +35,6 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 	get mutableTuple(): CustomTuple.Mutable<this>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomTuple {
 	export type Readonly<S extends $$Tuple> = S extends {
 		[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }

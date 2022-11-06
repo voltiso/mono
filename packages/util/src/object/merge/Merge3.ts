@@ -5,7 +5,6 @@ import type { _ } from '../flatten'
 import type { FastMerge2Reverse_ } from './Merge2'
 import type { SuggestObject } from './Suggest'
 
-
 /** @inline */ export type Merge3_<A, B, C> = _<
 	Omit<A, keyof B | keyof C> & Omit<B, keyof C> & C
 >

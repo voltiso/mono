@@ -14,5 +14,7 @@ describe('isSet', () => {
 		expect(isSet({})).toBeFalsy()
 		expect(isSet(null)).toBeFalsy()
 		expect(isSet(undefined)).toBeFalsy()
+
+		expect(isSet(Object.setPrototypeOf({}, null))).toBeFalsy()
 	})
 })

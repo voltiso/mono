@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert, $dev, OPTIONS } from '@voltiso/util'
+import type { OPTIONS } from '@voltiso/util'
+import { $Assert, $dev } from '@voltiso/util'
 
 import type {
 	DefaultSchemaOptions,
@@ -20,7 +21,6 @@ export type GetOptions<L> = L extends
 	? L[OPTIONS]
 	: never
 
-// eslint-disable-next-line etc/no-misused-generics
 $dev(<L>() => {
 	$Assert.is<GetOptions<L>, SchemaOptions>()
 })

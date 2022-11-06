@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 import type { SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type * as t from '~/custom-schemas'
 import type { GetObjectType, Type } from '~/GetType'
@@ -58,7 +58,6 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	): CustomUnknownObject.Index<this, SimpleSchema<keyof any>, TValueSchema>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace CustomUnknownObject {
 	export type Plain<This extends $$Schema> = This extends any
 		? DefineSchema<

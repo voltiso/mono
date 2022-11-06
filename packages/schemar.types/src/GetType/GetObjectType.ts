@@ -60,7 +60,6 @@ export type GetImplicitObjectType<
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace GetObjectType {
 	/** @inline @inline */
 	export type _GetNoSignature<

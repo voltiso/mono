@@ -3,10 +3,16 @@
 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-export class ServerContext<Request = unknown, Response = unknown> {
-	_storage = new AsyncLocalStorage<{request: Request; response: Response}>()
+import type { RpcRequest } from './RpcRequest'
+import type { RpcResponse } from './RpcResponse'
 
-	get request(): Request {
+export class RpcServerContext<
+	TRequest extends RpcRequest = RpcRequest,
+	TResponse extends RpcResponse = RpcResponse,
+> {
+	_storage = new AsyncLocalStorage<{ request: TRequest; response: TResponse }>()
+
+	get request(): TRequest {
 		const store = this._storage.getStore()
 
 		if (!store)
@@ -15,7 +21,7 @@ export class ServerContext<Request = unknown, Response = unknown> {
 		return store.request
 	}
 
-	get response(): Response {
+	get response(): TResponse {
 		const store = this._storage.getStore()
 
 		if (!store)

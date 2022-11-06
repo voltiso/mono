@@ -33,7 +33,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@babel/core": "^7.19.6",
+    "@babel/core": "^7.20.2",
     "@types/babel__core": "^7.1.19",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",

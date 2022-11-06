@@ -34,7 +34,10 @@ export class _Assertor<S extends t.Schema> {
 		})
 	}
 
-	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
+	/**
+	 * @throws On assertion failure
+	 * @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument
+	 */
 	[CALL](
 		value: t.Type<S> | AlsoAccept<unknown>,
 		...rest: [string, CallInfo | undefined] | [CallInfo | undefined]

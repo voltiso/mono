@@ -3,13 +3,13 @@
 
 import type { SCHEMA_NAME } from '_'
 import { EXTENDS } from '_'
-import {
-	$Assert,
+import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
 	PARTIAL_OPTIONS,
 } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -34,7 +34,6 @@ export interface SchemaLike<T = unknown> extends $$Schema {
 }
 
 describe('UnknownLiteral', () => {
-	// eslint-disable-next-line etc/no-misused-generics
 	it('generic', <O extends Partial<UnknownLiteralOptions>>() => {
 		$Assert.is<ISchema<O>, ISchema>()
 

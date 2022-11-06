@@ -47,6 +47,7 @@
     "@voltiso/schemar.types": "workspace:^"
   },
   "devDependencies": {
+    "@voltiso/config.jest.esr": "workspace:^1.0.0",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/util": "workspace:^"

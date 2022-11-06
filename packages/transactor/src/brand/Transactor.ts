@@ -41,11 +41,13 @@ export interface TransactorBrand<
 	> {}
 
 export namespace TransactorBrand {
-	export type ForPath<path extends PropertyPath.ForObject<Brands[TRANSACTOR]>, detail> =
-		CustomBrand_<
-			[TRANSACTOR, ...path],
-			detail extends NoArgument
-				? Brand.GetConstraint_<[TRANSACTOR, ...path]>
-				: detail
-		>
+	export type ForPath<
+		path extends PropertyPath.ForObject<Brands[TRANSACTOR]>,
+		detail,
+	> = CustomBrand_<
+		[TRANSACTOR, ...path],
+		detail extends NoArgument
+			? Brand.GetConstraint_<[TRANSACTOR, ...path]>
+			: detail
+	>
 }

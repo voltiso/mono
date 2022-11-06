@@ -7,8 +7,8 @@ import type { Increment_ } from '~/type/number'
 export type _LengthRec<Arr, Acc> = Arr extends readonly []
 	? Acc
 	: Arr extends readonly [unknown, ...infer Tail]
-	// eslint-disable-next-line etc/no-internal
-	? _LengthRec<Tail, Increment_<Acc>>
+	? // eslint-disable-next-line etc/no-internal
+	  _LengthRec<Tail, Increment_<Acc>>
 	: never
 
 // eslint-disable-next-line etc/no-internal

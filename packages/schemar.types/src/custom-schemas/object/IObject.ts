@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 import { SCHEMA_NAME } from '_'
+import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type {
 	$$InferableObject,

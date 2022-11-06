@@ -7,8 +7,8 @@ import type {
 	$$Schema,
 	$$Schemable,
 	DefaultGetTypeOptions,
-	GetTypeOptions,
 	GetImplicitObjectType,
+	GetTypeOptions,
 	TupleType_,
 } from '~'
 import type {
@@ -21,7 +21,6 @@ import type {
 
 //
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Type {
 	export type SplitInferables<
 		S extends $$Schemable,

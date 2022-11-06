@@ -36,11 +36,13 @@ const aggregator: DocBuilderPlugin<'zebra'> = aggregate('zebra').into(
 	},
 )
 
-class Zebra extends Doc('zebra').with({
-	aggregates: {
-		testAgg: s.number,
-	},
-}).withPlugin(aggregator) {}
+class Zebra extends Doc('zebra')
+	.with({
+		aggregates: {
+			testAgg: s.number,
+		},
+	})
+	.withPlugin(aggregator) {}
 
 //
 

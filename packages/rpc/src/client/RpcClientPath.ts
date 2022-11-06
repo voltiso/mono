@@ -3,8 +3,8 @@
 
 import type { MaybePromise, Mutable } from '@voltiso/util'
 import {
-	CALL,
 	BoundCallable,
+	CALL,
 	isCallable,
 	lazyPromise,
 	stringFrom,
@@ -13,11 +13,12 @@ import {
 import fetch from 'cross-fetch'
 
 import type { RpcResult } from '~/_shared'
+import { shorten } from '~/_shared'
 
-import type { Client } from './Client'
+import type { RpcClient } from './RpcClient'
 
 function callLocal(
-	clientPath: ClientPath,
+	clientPath: RpcClientPath,
 	args: unknown[],
 ): MaybePromise<unknown> | void {
 	const options = clientPath._client._options
@@ -38,10 +39,16 @@ function callLocal(
 	return localHandler(...args) as never
 }
 
-async function callRemote(clientPath: ClientPath, args: unknown[]) {
+async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
+	const serializer = clientPath._client.options.serializer
+
+	const serializedArgs = serializer
+		? args.map(arg => serializer.serialize(arg))
+		: args
+
 	const body = {
 		path: clientPath._path,
-		args,
+		args: serializedArgs,
 	}
 
 	const headers: Record<string, string> = {
@@ -56,7 +63,7 @@ async function callRemote(clientPath: ClientPath, args: unknown[]) {
 		.join(', ')})`
 
 	// eslint-disable-next-line no-console
-	if (clientPath._client._options.log) console.log(`${message}...`)
+	if (clientPath._client._options.log) console.log(`${message}...`) // should not be too long
 
 	const detail: string[] = []
 
@@ -71,16 +78,27 @@ async function callRemote(clientPath: ClientPath, args: unknown[]) {
 
 		// eslint-disable-next-line no-magic-numbers
 		if (response.status === 200) {
-			const data = (await response.json()) as { result: unknown }
+			// eslint-disable-next-line destructuring/no-rename
+			const { result: serializedResult } = (await response.json()) as {
+				result: unknown
+			}
+
+			const result = serializer
+				? serializer.deserialize(serializedResult)
+				: serializedResult
+
 			// await localPromise
-			return data.result
+			return result
 		}
 
 		try {
 			const json = (await response.json()) as { error?: unknown }
-			const error = json.error
+			const serializedError = json.error
 
-			// console.log('er', error)
+			const error = serializer
+				? serializer.deserialize(serializedError)
+				: serializedError
+
 			if (error) detail.push(JSON.stringify(error))
 		} catch {}
 	} catch (error) {
@@ -94,18 +112,21 @@ async function callRemote(clientPath: ClientPath, args: unknown[]) {
 
 	const finalMessage = [message, ...detail].join(': ')
 
-	// eslint-disable-next-line no-console
-	if (clientPath._client.options.log) console.error(finalMessage)
+	if (clientPath._client.options.log)
+		// eslint-disable-next-line no-console
+		console.error(
+			shorten(finalMessage, clientPath._client.options.logMaxLength),
+		)
 
 	// await localPromise
 	throw new Error(finalMessage)
 }
 
-export class ClientPath {
-	_client: Client
+export class RpcClientPath {
+	_client: RpcClient
 	_path: readonly string[]
 
-	constructor(client: Client, path: readonly string[]) {
+	constructor(client: RpcClient, path: readonly string[]) {
 		this._client = client
 		this._path = path
 
@@ -116,7 +137,7 @@ export class ClientPath {
 			get(target, p, receiver) {
 				if (typeof p !== 'string' || p in target)
 					return Reflect.get(target, p, receiver) as never
-				else return new ClientPath(client, [...path, p])
+				else return new RpcClientPath(client, [...path, p])
 			},
 		})
 	}

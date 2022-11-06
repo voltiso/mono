@@ -9,18 +9,15 @@ import { checked } from '@voltiso/caller'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
-import mockConsole from 'jest-mock-console'
+import type * as Express from 'express'
 
 import type { RpcResult } from '~/_shared'
-import { createClient } from '~/client'
-import { createServer, createServerContext } from '~/server'
-
-// eslint-disable-next-line jest/require-hook
-mockConsole()
+import { RpcClient } from '~/client'
+import { RpcServer, RpcServerContext } from '~/server'
 
 // SERVER
 
-const context = createServerContext()
+const context = new RpcServerContext<Express.Request, Express.Response>()
 
 const handlers = {
 	myGroup: {
@@ -51,7 +48,7 @@ const handlers = {
 	},
 }
 
-const myServer = createServer({ context, handlers })
+const myServer = new RpcServer({ context, handlers })
 
 // eslint-disable-next-line jest/require-hook
 let port = 0
@@ -72,7 +69,7 @@ beforeAll(async () => {
 
 describe('client', () => {
 	it('type', () => {
-		const myClient = createClient<typeof myServer.handlers>(
+		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
@@ -84,7 +81,7 @@ describe('client', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer.handlers>(
+		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
@@ -92,10 +89,28 @@ describe('client', () => {
 		await expect(myClient.myGroup.helloWorld(22)).resolves.toBe(44)
 	})
 
+	it('custom serializer', async () => {
+		expect.hasAssertions()
+
+		const myClient = new RpcClient<typeof myServer.handlers>(
+			`http://localhost:${port}/rpc`,
+			{
+				serializer: {
+					serialize: (x: number) => x + 100,
+					deserialize: (x: number) => x + 1000,
+				},
+			},
+		)
+
+		const value = await myClient.myGroup.helloWorld(11)
+
+		expect(value).toBe(1222)
+	})
+
 	it('works with async', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer.handlers>(
+		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
@@ -105,7 +120,7 @@ describe('client', () => {
 	it('works with token', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer.handlers>(
+		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 		myClient.setToken('test')
@@ -116,7 +131,7 @@ describe('client', () => {
 	it('network error', async function () {
 		expect.hasAssertions()
 
-		const myClient = createClient<typeof myServer.handlers>(
+		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:7444/rpc`,
 		)
 		myClient.setToken('test')

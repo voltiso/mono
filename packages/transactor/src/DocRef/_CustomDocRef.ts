@@ -272,8 +272,8 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	): any {
 		// PromiseLike<GetDoc<O['doc']> | null | undefined>
 		/**
-		 * ☠️ Don't chain anything here - we're returning a magic promise to the client
-		 * code that is aware of being awaited or not
+		 * ☠️ Don't chain anything here - we're returning a magic promise to the
+		 * client code that is aware of being awaited or not
 		 */
 		return update(this._context, updates as never) as never
 	}

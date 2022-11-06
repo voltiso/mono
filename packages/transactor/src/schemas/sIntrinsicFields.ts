@@ -9,7 +9,8 @@ export const sAggregateTargetEntry = s.object({
 	numSources: s.number.default(0),
 })
 
-export type AggregateTargetEntry = /** @inline */ typeof sAggregateTargetEntry.Output
+export type AggregateTargetEntry =
+	/** @inline */ typeof sAggregateTargetEntry.Output
 
 export const sVoltisoEntry = s.object({
 	numRefs: s.number.default(0),

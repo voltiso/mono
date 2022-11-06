@@ -3,5 +3,6 @@
 
 export function isSet(x: unknown): x is Set<unknown> {
 	if (x instanceof Set) return true
-	return (x as object | null)?.constructor.name === 'Set'
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	return (x as object | null)?.constructor?.name === 'Set'
 }
