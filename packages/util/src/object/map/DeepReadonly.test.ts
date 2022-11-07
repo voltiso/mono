@@ -4,23 +4,26 @@
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
-import type { DeepReadonly_ } from './DeepReadonly'
+import type { DeepReadonly_, DeepReadonlyN } from './DeepReadonly'
 
 describe('DeepReadonly', () => {
 	it('works', () => {
 		expect.assertions(0)
 
 		type X = DeepReadonly_<{
+			u: unknown
 			x: 0
 			a?: 1
 			obj: {
 				a?: 11
 			}
 		}>
+
 		$Assert<
 			IsIdentical<
 				X,
 				{
+					readonly u: unknown
 					readonly x: 0
 					readonly a?: 1
 					readonly obj: {
@@ -58,11 +61,31 @@ describe('DeepReadonly', () => {
 		>()
 	})
 
-	// eslint-disable-next-line jest/no-commented-out-tests
-	// it('intersect', () => {
-	// 	expect.assertions(0)
+	it('DeepReadonlyN', () => {
+		type X = DeepReadonlyN<
+			10,
+			{
+				u: unknown
+				x: 0
+				a?: 1
+				obj: {
+					a?: 11
+				}
+			}
+		>
 
-	// 	type A = ([1] | { a: 2 }) & ([number] | { a: number })
-	// 	type AA = DeepReadonly<A>
-	// })
+		$Assert<
+			IsIdentical<
+				X,
+				{
+					readonly u: unknown
+					readonly x: 0
+					readonly a?: 1
+					readonly obj: {
+						readonly a?: 11
+					}
+				}
+			>
+		>()
+	})
 })

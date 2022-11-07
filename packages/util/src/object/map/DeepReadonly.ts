@@ -9,9 +9,11 @@ import type {
 } from '~/type'
 
 /** @inline */
-export type DeepReadonly_<T> = {
-	readonly [k in keyof T]: DeepReadonly_<T[k]>
-}
+export type DeepReadonly_<T> = T extends object
+	? {
+			readonly [k in keyof T]: DeepReadonly_<T[k]>
+	  }
+	: T
 
 /** @inline */
 export type DeepReadonly<T extends object> = DeepReadonly_<T>
@@ -41,19 +43,19 @@ export type DeepReadonlyN<
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
-	? [T] extends [object]
-		? // eslint-disable-next-line etc/no-internal
-		  DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
-			? T
-			: {
-					readonly [k in keyof T]: DeepReadonlyN<
-						$Decrement<TLength>,
-						T[k],
-						Options
-					>
-			  }
+	? // eslint-disable-next-line etc/no-internal
+	  DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
+		? T
+		: T extends object
+		? {
+				readonly [k in keyof T]: DeepReadonlyN<
+					$Decrement<TLength>,
+					T[k],
+					Options
+				>
+		  }
 		: T
-	: never
+	: T
 
 /**
  * Deep-readonly with depth-limit
@@ -80,19 +82,17 @@ export type $$DeepReadonlyN<
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
-	? T extends object
-		? // eslint-disable-next-line etc/no-internal
-		  DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
-			? T
-			: {
-					readonly [k in keyof T]: $$DeepReadonlyN<
-						$Decrement<TLength>,
-						T[k],
-						Options
-					>
-			  }
-		: T
-	: never
+	? // eslint-disable-next-line etc/no-internal
+	  DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
+		? T
+		: {
+				readonly [k in keyof T]: $$DeepReadonlyN<
+					$Decrement<TLength>,
+					T[k],
+					Options
+				>
+		  }
+	: T
 
 // export type $DeepReadonlyN<TLength extends DecrementArgument, T, Options extends >
 

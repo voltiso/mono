@@ -9,5 +9,13 @@
 			"~": ["./src"],
 			"~/*": ["./src/*"]
 		}
-	}
+	},
+
+	"exclude": [
+		"dist/",
+		"node_modules/",
+		".tsc-out/",
+		//
+		"test/tsc-options/"
+	]
 }

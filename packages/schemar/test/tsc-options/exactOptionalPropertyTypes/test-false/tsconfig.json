@@ -5,17 +5,19 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
+		"strictNullChecks": true,
+		"exactOptionalPropertyTypes": false,
+
+		"outDir": ".tsc-out",
+
+		"baseUrl": "../../../..",
 		"paths": {
-			// "~": ["./src"],
+			"~": ["./src"],
 			"~/*": ["./src/*"]
 		}
 	},
-	
-	"exclude": [
-		"dist/",
-		"node_modules/",
-		".tsc-out/",
-		//
-		"test/tsc-options/"
-	]
+
+	"include": ["."]
+
+	// "references": [{ "path": "../../../../tsconfig.lint.json" }]
 }

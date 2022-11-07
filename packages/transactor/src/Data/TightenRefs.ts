@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$Schema, SimplifySchema } from '@voltiso/schemar.types'
-import type { Merge2_ } from '@voltiso/util'
+import type { Callable, Merge2_, Newable, Primitive } from '@voltiso/util'
 
 import type { DocTagFromBrand } from '~/brand'
 import type { GetDocRef, WeakDocRefLike } from '~/DocRef'
@@ -12,7 +12,7 @@ export type _TightenRefs<T> = T extends WeakDocRefLike
 			doc: DocTagFromBrand<T>
 			isStrong: T['isStrong']
 	  }>
-	: T extends Date
+	: T extends Date | Primitive | Callable | Newable
 	? T
 	: T extends object
 	? {

@@ -9,9 +9,11 @@ import type {
 } from '~/type'
 
 /** @inline */
-export type DeepMutable_<T> = {
-	-readonly [k in keyof T]: DeepMutable_<T[k]>
-}
+export type DeepMutable_<T> = T extends object
+	? {
+			-readonly [k in keyof T]: DeepMutable_<T[k]>
+	  }
+	: T
 
 /** @inline */
 export type DeepMutable<T extends object | unknown[]> = DeepMutable_<T>
@@ -41,7 +43,7 @@ export type DeepMutableN<
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
-	? [T] extends [object]
+	? T extends object
 		? // eslint-disable-next-line etc/no-internal
 		  DeepMutableN._ShouldSkip<T, Options['skip']> extends true
 			? T

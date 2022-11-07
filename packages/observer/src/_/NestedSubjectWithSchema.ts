@@ -2,12 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schema,
 	$$Schemable,
 	GetDeepShape_,
 	GetShape_,
 	InferSchema_,
 	Input,
-	ISchema,
 	Output,
 	Type_,
 } from '@voltiso/schemar.types'
@@ -20,7 +20,7 @@ import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 
 export type INestedSubjectWithSchemaBase = {
 	get schemable(): $$Schemable
-	get schema(): ISchema
+	get schema(): $$Schema
 	get shape(): unknown
 	get deepShape(): unknown
 

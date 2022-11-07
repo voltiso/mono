@@ -4,7 +4,7 @@
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
-import type { DeepMutable_ } from './DeepMutable'
+import type { DeepMutable_, DeepMutableN } from './DeepMutable'
 
 describe('DeepMutable', () => {
 	it('array', () => {
@@ -47,6 +47,7 @@ describe('DeepMutable', () => {
 		expect.assertions(0)
 
 		type Obj = {
+			readonly u: unknown
 			readonly a: number
 			readonly b: readonly string[]
 			readonly c: readonly {
@@ -61,6 +62,34 @@ describe('DeepMutable', () => {
 			IsIdentical<
 				A,
 				{
+					u: unknown
+					a: number
+					b: string[]
+					c: { a: number; b: string[] }[]
+					d: { a: number; b: string[] }
+				}
+			>
+		>()
+	})
+
+	it('DeepMutableN', () => {
+		type Obj = {
+			readonly u: unknown
+			readonly a: number
+			readonly b: readonly string[]
+			readonly c: readonly {
+				readonly a: number
+				readonly b: readonly string[]
+			}[]
+			readonly d: { readonly a: number; readonly b: readonly string[] }
+		}
+
+		type A = DeepMutableN<10, Obj>
+		$Assert<
+			IsIdentical<
+				A,
+				{
+					u: unknown
 					a: number
 					b: string[]
 					c: { a: number; b: string[] }[]

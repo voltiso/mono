@@ -3,9 +3,16 @@
 
 import type { ValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
-import { stringFromPackage } from '@voltiso/transform'
 import { padStart, parseStackTrace, stringFrom, zip } from '@voltiso/util'
 import chalk from 'chalk'
+
+export function stringFromPackage(packageJson: {
+	name: string
+	version?: string | undefined
+}): string {
+	if (!packageJson.version) return packageJson.name
+	else return `${packageJson.name}@${packageJson.version}`
+}
 
 export interface AssertorErrorOptions extends ErrorOptions {
 	name: string

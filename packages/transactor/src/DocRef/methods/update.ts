@@ -49,9 +49,13 @@ type CtxWithoutTransaction = WithTransactor &
 	Forbidden<WithTransaction> &
 	WithDb
 
-type StripParams = {
+export interface StripParams {
 	onConstField: 'error' | 'ignore'
 	onPrivateField: 'error' | 'ignore'
+}
+
+export interface UpdateOptions extends StripParams {
+	create: boolean
 }
 
 function isRecord(updates: Updates): updates is UpdatesRecord {
@@ -96,21 +100,25 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: UpdatesRecord,
+	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc | undefined>
 
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: RootReplaceIt,
+	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc>
 
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: DeleteIt,
+	options: Partial<UpdateOptions>,
 ): Promise<null>
 
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: Updates,
+	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc | null | undefined>
 
 //
@@ -118,6 +126,7 @@ async function rawUpdate(
 async function rawUpdate(
 	ctx: CtxWithoutTransaction,
 	updates: Updates,
+	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc | null | undefined> {
 	assert(updates)
 	check.call(ctx, updates)
@@ -127,12 +136,12 @@ async function rawUpdate(
 	const schema = getSchema(ctx.docRef)
 
 	const { _ref } = ctx.docRef
-	const path = ctx.docRef.path.toString()
 
 	let data: object | null | undefined // undefined -> unknown; null -> deleted
 
 	const needTransaction = Boolean(
-		schema ||
+		options.create ||
+			schema ||
 			afterTriggers.length > 0 ||
 			beforeCommits.length > 0 ||
 			ctx.transactor.refCounters,
@@ -140,8 +149,7 @@ async function rawUpdate(
 
 	if (needTransaction) {
 		data = await ctx.transactor.runTransaction(async () => {
-			const doc = await ctx.db.doc(path).update(updates as never)
-
+			const doc = await update(ctx, updates, options)
 			return doc ? (doc.dataWithId() as never) : null
 		})
 	} else {
@@ -191,11 +199,14 @@ async function transactionUpdateImpl(
 async function transactionUpdateImpl(
 	ctx: CtxWithTransaction,
 	updates: Updates,
-	{
-		onConstField = 'error',
-		onPrivateField = 'error',
-	}: Partial<StripParams> = {},
+	partialOptions: Partial<UpdateOptions>,
 ): Promise<$$Doc | null | undefined> {
+	const defaultOptions = {
+		onConstField: 'error' as const,
+		onPrivateField: 'error' as const,
+	}
+	const options = { ...defaultOptions, ...partialOptions }
+
 	if (ctx.transactor._options.log) {
 		// eslint-disable-next-line no-console
 		console.log(
@@ -217,8 +228,7 @@ async function transactionUpdateImpl(
 	const { _cache, _execContext } = ctx.transaction
 
 	if (_execContext?.toString() === ctx.docRef.path.toString())
-		// eslint-disable-next-line no-param-reassign
-		onPrivateField = 'ignore'
+		options.onPrivateField = 'ignore'
 
 	if (!_cache.has(path)) _cache.set(path, newCacheEntry(ctx))
 
@@ -227,7 +237,8 @@ async function transactionUpdateImpl(
 	cacheEntry.write = true
 
 	const needReadWrite = Boolean(
-		beforeCommits.length > 0 ||
+		options.create ||
+			beforeCommits.length > 0 ||
 			afterTriggers.length > 0 ||
 			schema ||
 			ctx.transactor.refCounters,
@@ -236,15 +247,14 @@ async function transactionUpdateImpl(
 	if (needReadWrite) {
 		await transactionDocPathGet(ctx)
 
-		if (cacheEntry.data)
-			check.call(ctx, updates, {
-				onConstField,
-				onPrivateField,
-			})
+		if (options.create && cacheEntry.data)
+			throw new TransactorError(`${ctx.docRef.path.toString()} already exists`)
+
+		if (cacheEntry.data) check.call(ctx, updates, options)
 		else
 			check.call(ctx, updates, {
+				...options,
 				onConstField: 'ignore',
-				onPrivateField,
 			})
 
 		await processTriggers(ctx, { updates })
@@ -276,7 +286,7 @@ async function transactionUpdateImpl(
 function transactionUpdate(
 	this: WithTransactor & WithDocRef & WithTransaction & WithDb,
 	updates: Updates,
-	options: Partial<StripParams> = {},
+	options: Partial<UpdateOptions>,
 ): PromiseLike<IDoc | null | undefined> {
 	assert(updates)
 	const { transaction, docRef } = this
@@ -309,20 +319,31 @@ function transactionUpdate(
 export function update(
 	ctx: Ctx,
 	updates: UpdatesRecord,
+	options?: Partial<UpdateOptions>,
 ): PromiseLike<IDoc | undefined>
 
-export function update(ctx: Ctx, updates: RootReplaceIt): PromiseLike<IDoc>
+export function update(
+	ctx: Ctx,
+	updates: RootReplaceIt,
+	options?: Partial<UpdateOptions>,
+): PromiseLike<IDoc>
 
-export function update(ctx: Ctx, updates: DeleteIt): PromiseLike<null>
+export function update(
+	ctx: Ctx,
+	updates: DeleteIt,
+	options?: Partial<UpdateOptions>,
+): PromiseLike<null>
 
 export function update(
 	ctx: Ctx,
 	updates: Updates,
+	options?: Partial<UpdateOptions>,
 ): PromiseLike<IDoc | null | undefined>
 
 export function update(
 	ctx: Ctx,
 	updates: Updates,
+	options: Partial<UpdateOptions> = {},
 ): PromiseLike<IDoc | null | undefined> {
 	assert(updates)
 
@@ -342,9 +363,9 @@ export function update(
 				)}`,
 			)
 
-		return transactionUpdate.call(ctx, updates)
+		return transactionUpdate.call(ctx, updates, options)
 	} else {
 		assert(isWithoutTransaction(ctx))
-		return rawUpdate(ctx, updates) as never
+		return rawUpdate(ctx, updates, options) as never
 	}
 }

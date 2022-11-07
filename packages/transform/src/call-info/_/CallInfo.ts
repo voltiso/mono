@@ -29,21 +29,3 @@ export function isCallInfo(x: unknown): x is CallInfo {
 	const callInfo = x as CallInfo | null
 	return !!callInfo && !!callInfo.expression && !!callInfo.location
 }
-
-//
-
-export function stringFromPackage(packageJson: {
-	name: string
-	version?: string | undefined
-}): string {
-	if (!packageJson.version) return packageJson.name
-	else return `${packageJson.name}@${packageJson.version}`
-}
-
-// export function getPhysicalPath(callInfo: CallInfo): string {
-// 	return `${stringFromPackage(callInfo.location.package)}${callInfo.location.packagePath}:${}`
-// }
-
-// export function getLogicalPath(callInfo: CallInfo): string {
-// 	return `${stringFromPackage(callInfo.location.package)}`
-// }

@@ -79,6 +79,8 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-unsafe-call': 1,
 		'@typescript-eslint/restrict-template-expressions': 1,
 		'@typescript-eslint/no-unsafe-argument': 1,
+		'@typescript-eslint/no-non-null-assertion': 1,
+		'@typescript-eslint/no-non-null-asserted-optional-chain': 1,
 		'@typescript-eslint/space-before-function-paren': 0, // prettier
 
 		// '@typescript-eslint/no-explicit-any': [

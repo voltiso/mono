@@ -5,6 +5,7 @@ import type { Schema, SimpleSchema } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
+import type { DocIdString } from '~/brand'
 import type { DocRef, DocRefLike, WeakDocRef, WeakDocRefLike } from '~/DocRef'
 
 import type { RelaxRefs } from './RelaxRefs'
@@ -31,6 +32,21 @@ describe('RelaxRefs', () => {
 					strongAny: DocRefLike
 					weakAny: WeakDocRefLike
 				}>
+			>
+		>()
+	})
+
+	it('does not break id', () => {
+		type A = RelaxRefs<{
+			id: DocIdString<'oops'>
+		}>
+
+		$Assert<
+			IsIdentical<
+				A,
+				{
+					id: DocIdString<'oops'>
+				}
 			>
 		>()
 	})

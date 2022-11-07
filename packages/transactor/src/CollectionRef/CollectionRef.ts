@@ -84,7 +84,7 @@ export class CollectionRef<
 		const docRef: Database.DocumentReference = id ? ref.doc(id) : ref.doc()
 		const { path } = docRef
 		const docPath = new CustomDocRef(this._context, path, { isStrong: false })
-		return docPath.set(data as never) as never
+		return docPath.create(data as never) as never
 	}
 
 	/** Register Doc class/type for this Collection */

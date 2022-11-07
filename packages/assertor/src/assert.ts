@@ -183,3 +183,20 @@ export const assert: AssertFunction = _getAssert('assert')
  * @strip 👗 Use `@voltiso/transform/strip` to strip from production code
  */
 export const $assert: AssertFunction = _getAssert('$assert')
+
+//
+
+function _getProxy(): never {
+	return new Proxy(_getProxy, {
+		get() {
+			return _getProxy()
+		},
+	}) as never
+}
+
+/**
+ * Does not actually do any assertions, but still acts as a type-guard
+ *
+ * @strip 👗 Use `@voltiso/transform/strip` to strip from production code
+ */
+export const $Assume: AssertFunction = _getProxy()

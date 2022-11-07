@@ -6,7 +6,7 @@ import type {
 	$$Schemable,
 	SimplifySchema,
 } from '@voltiso/schemar.types'
-import type { Merge2_ } from '@voltiso/util'
+import type { Callable, Merge2_, Newable, Primitive } from '@voltiso/util'
 
 import type { DocTagFromBrand } from '~/brand'
 import type { DocRefLike, WeakDocRefLike } from '~/DocRef'
@@ -31,6 +31,8 @@ export namespace RelaxRefs {
 		? T extends DocRefLike
 			? DocRefLike<DocTagFromBrand<T>>
 			: WeakDocRefLike<DocTagFromBrand<T>>
+		: T extends Primitive | Callable | Newable
+		? T
 		: T extends object
 		? {
 				[k in keyof T]: ForData<T[k]>

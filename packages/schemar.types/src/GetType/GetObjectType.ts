@@ -3,6 +3,7 @@
 
 import type {
 	_,
+	exactOptionalPropertyTypes,
 	Get_,
 	HasIndexSignature,
 	IsAlmostSame,
@@ -149,7 +150,7 @@ export namespace GetObjectType {
 								? T[k] | undefined
 								: never
 						},
-						never
+						exactOptionalPropertyTypes extends true ? never : undefined
 					>
 		  >
 		: IO['kind'] extends 'out'

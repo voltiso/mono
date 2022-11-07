@@ -136,6 +136,8 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 				{ skip: Primitive | Callable | Newable }
 		  >
 
+// type A = _<GetPublicCreationInputData<'oops'>>
+
 /** @inline */
 export type GetPublicInputData<R extends $$DocRelatedLike> = R extends AnyDoc
 	? { readonly id?: never; [k: string]: unknown }

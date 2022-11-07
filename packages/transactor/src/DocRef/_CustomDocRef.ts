@@ -8,7 +8,7 @@ import type {
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type { DeleteIt, If, Override, ReplaceIt } from '@voltiso/util'
+import type { _, DeleteIt, If, Override, ReplaceIt } from '@voltiso/util'
 import {
 	assert,
 	deleteIt,
@@ -241,6 +241,28 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 			this._context,
 			replaceIt(dataWithoutId as never) as never,
 		) as never
+	}
+
+	//
+
+	create(
+		data?: _<GetPublicCreationInputData<O['doc']>>,
+	): PromiseLike<GetDoc<O['doc']>> {
+		const dataWithoutId = withoutId(data || null, this.id) || {}
+
+		const idSchemas = getIdSchemas(this)
+
+		for (const idSchema of idSchemas) {
+			idSchema.validate(this.id)
+		}
+
+		/**
+		 * Don't chain anything here - we're returning a magic promise to the client
+		 * code that is aware of being awaited or not
+		 */
+		return update(this._context, replaceIt(dataWithoutId as never) as never, {
+			create: true,
+		}) as never
 	}
 
 	//

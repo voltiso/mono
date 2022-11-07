@@ -26,7 +26,7 @@ declare module '@voltiso/transactor' {
 
 class Client extends Doc.with({
 	publicOnCreation: {
-		rootTaskId: s.string,
+		rootTaskId: s.string.default('def'),
 	},
 
 	public: {
@@ -67,6 +67,26 @@ describe('add', () => {
 
 		expect(client.data.displayName).toBe('asd')
 		expect(client.id).toBe('fff')
+	})
+
+	it('does not allow if exists', async () => {
+		expect.hasAssertions()
+
+		await clients.add({
+			id: 'xyz' as never,
+			displayName: 'xyz',
+		})
+
+		await expect(() =>
+			clients.add({
+				id: 'xyz' as never,
+				displayName: 'xyz',
+			}),
+		).rejects.toThrow('already exists')
+
+		await expect(() =>
+			clients('xyz').create({ displayName: 'xyz' }),
+		).rejects.toThrow('already exists')
 	})
 
 	it('works with arrays of refs', async () => {

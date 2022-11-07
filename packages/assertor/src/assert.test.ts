@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { Falsy, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import { $assert, assert } from './assert'
+import { $assert, $Assume, assert } from './assert'
 
 describe('assert', () => {
 	it('works', () => {
@@ -32,5 +32,9 @@ describe('assert', () => {
 		$assert(s.number.or(null), falsy)
 
 		$Assert<IsIdentical<typeof falsy, 0 | null>>()
+
+		// @ts-expect-error should allow any nested calls
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		$Assume.a.b.c.d.e.f()
 	})
 })
