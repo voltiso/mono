@@ -28,11 +28,12 @@ import type {
 	Promisify,
 } from '~/Doc'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
+import type { $$DocRelated } from '~/DocRelated'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
+import type { AutoIdSchema } from '~/schemas'
 import type { Trigger } from '~/Trigger'
 
-import type { $$DocRelated } from '..'
 import type { DocDerivedData } from './_/DocDerivedData'
 import type { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
@@ -193,7 +194,9 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 		{ id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String }
 	>
 
-	get idSchema(): TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+	get idSchema(): TI['id'] extends t.SchemaLike<string>
+		? TI['id']
+		: AutoIdSchema<this['_']['tag']>
 }
 
 //

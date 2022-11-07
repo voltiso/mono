@@ -17,8 +17,8 @@ export declare namespace UpdatesFromData {
 		? T
 		: _<
 				{ readonly id?: never } & UpdateNested<
-					Omit<T, 'id'>,
-					Omit<OutputType, 'id'>
+					T, // Omit<T, 'id'>,
+					OutputType // Omit<OutputType, 'id'>
 				>
 		  >
 

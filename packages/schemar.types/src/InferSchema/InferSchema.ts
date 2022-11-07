@@ -1,7 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ExcludeEmptyBraces, IsAlmostSame, Newable } from '@voltiso/util'
+import type {
+	ExcludeEmptyBraces,
+	IsAlmostSame,
+	IsCompatible,
+	Newable,
+} from '@voltiso/util'
 
 import type * as t from '~/custom-schemas'
 import type {
@@ -57,7 +62,13 @@ export namespace InferSchema {
 		: Step4<S>
 
 	/** Other */
-	export type Step4<S> = S extends Newable
+	export type Step4<S> = IsCompatible<$$Schema, S> extends true
+		? ISchema
+		: S extends $$Schema
+		? S
+		: S extends $$InferableObject
+		? t.ImplicitObject<S>
+		: S extends Newable
 		? t.Instance<S>
 		: S extends $$InferableMutableTuple
 		? t.MutableTuple<S>
@@ -65,11 +76,5 @@ export namespace InferSchema {
 		? t.ReadonlyTuple<[...S]>
 		: IsAlmostSame<S, {}> extends true
 		? t.ImplicitObject<{}>
-		: $$Schema extends S
-		? ISchema
-		: S extends $$InferableObject
-		? t.ImplicitObject<S>
-		: S extends $$Schema
-		? S
 		: never
 }

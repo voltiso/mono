@@ -4,6 +4,7 @@
 import type { SCHEMA_NAME } from '_'
 import type {
 	_,
+	AlsoAccept,
 	BASE_OPTIONS,
 	DeepPartial_,
 	DeepPartialOrUndefined_,
@@ -114,11 +115,17 @@ export namespace CustomObject {
 					Output: _<
 						This[OPTIONS]['Output'] & {
 							[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+							// | This[OPTIONS]['Output'][Type<TKeySchema> &
+							// 		keyof This[OPTIONS]['Output']]
 						}
 					>
 					Input: _<
 						This[OPTIONS]['Input'] & {
-							[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+							[k in Type<TKeySchema> & keyof any]:
+								| Type<TValueSchema>
+								| AlsoAccept<unknown> // ! dirty - but need to make sure index matched all explicit fields without too long types
+							// | This[OPTIONS]['Input'][Type<TKeySchema> &
+							// 		keyof This[OPTIONS]['Input']]
 						}
 					>
 				}

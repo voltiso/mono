@@ -1,7 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ___, AlsoAccept, NoArgument } from '@voltiso/util'
+import type {
+	___,
+	AlsoAccept,
+	IntersectionFromUnion,
+	NoArgument,
+} from '@voltiso/util'
 
 import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
 import type { AnyDoc, DocTag } from '~/DocTypes'
@@ -35,8 +40,10 @@ export type GetDocIdBrand<
 export type IdString = string & IdBrand
 
 export type DocIdString<X extends $$DocRelated | NoArgument = NoArgument> = [
-	string & GetDocIdBrand<X>,
-][0]
+	X,
+] extends [never]
+	? string & DocIdBrand
+	: string & IntersectionFromUnion<GetDocIdBrand<X>>
 
 export type DocIdString_<
 	X extends DocTag | AlsoAccept<$$DocRelatedLike> | NoArgument = NoArgument,

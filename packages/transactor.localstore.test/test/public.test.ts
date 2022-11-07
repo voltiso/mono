@@ -25,7 +25,8 @@ describe('public', function () {
 		await database.doc('doctor/anthony').delete()
 
 		await expect(
-			// @ts-expect-error `favoriteOrganMarket` does not exist on `Doctor`
+			// ! no longer supported - type-check passes here now
+			// // @ts-expect-error `favoriteOrganMarket` does not exist on `Doctor`
 			doctors('anthony').set({ favoriteOrganMarket: 'WHM' }),
 		).rejects.toThrow('favoriteOrganMarket')
 
@@ -38,22 +39,3 @@ describe('public', function () {
 		await doctors('anthony').set({ unknown_favoriteOrganMarket: 123 })
 	})
 })
-
-// const a = s
-// 	.object({
-// 		specialty: s.string.optional,
-// 	})
-// 	.index(s.string.regex(/^unknown_.*$/u), s.number)
-
-// type Out = typeof a.OutputType
-
-// type B = Doctor[DTI]['public']
-// type BF = IndexedDocTI['public']
-
-// type A = GetPublicCreationInputData<Doctor[DTI], Doctor>
-// type bB = GetPublicCreationInputData<IndexedDocTI, Doctor>
-
-// const x = s.object.index(s.string,2)
-// type AA = typeof x.OutputType
-
-// type XX = t.Object<Record<string, $$Schemable>>

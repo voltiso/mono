@@ -10,7 +10,8 @@ export type IProtoCallable = ProtoCallableOptions['call'] &
 	Record<keyof CallableFunction, unknown>
 
 /** @internal Use `ProtoCallable` instead */
-export type _ProtoCallable<Options extends ProtoCallableOptions> =
+export type _ProtoCallable<Options extends ProtoCallableOptions> = [
 	Options['call'] &
 		Options['prototype'] &
-		Record<Exclude<keyof CallableFunction, keyof Options['prototype']>, never>
+		Record<Exclude<keyof CallableFunction, keyof Options['prototype']>, never>,
+][0]

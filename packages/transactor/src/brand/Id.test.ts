@@ -51,6 +51,14 @@ describe('Data', () => {
 				$Is<MyId>().not.subtypeOf<MyId2>(),
 				$Is<MyId2>().not.subtypeOf<MyId>(),
 			)
+
+			type A = DocIdString<'my-tag-data-1' | 'my-tag-data-2'>
+			$Assert<
+				IsIdentical<
+					A,
+					string & DocIdBrand<'my-tag-data-1'> & DocIdBrand<'my-tag-data-2'>
+				>
+			>()
 		})
 	})
 })

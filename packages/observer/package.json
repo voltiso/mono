@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/observer",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -46,7 +46,7 @@
     "rxjs": "^7.5.6"
   },
   "devDependencies": {
-    "@voltiso/assertor": "workspace:^3.0.0",
+    "@voltiso/assertor": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/schemar": "workspace:^",
@@ -60,6 +60,6 @@
     "node": "16"
   },
   "typeCoverage": {
-    "is": 99.03
+    "is": 98.79
   }
 }
