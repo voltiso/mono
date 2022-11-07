@@ -30,7 +30,7 @@ export function assertDev(): void {
 			: { name: 'assertDev', arguments: [] as string[] }
 
 		const message = entry
-			? `assertDev() failed - function ${entry.functionName} not pruned in production code - check '@voltiso/transform/comment-out' configuration`
+			? `assertDev() failed - function ${entry.functionName} not pruned in production code - check '@voltiso/transform/strip' configuration`
 			: 'Assertion failed - not in DEV mode - no `jest` environment present'
 
 		throw new VoltisoUtilError(message, {

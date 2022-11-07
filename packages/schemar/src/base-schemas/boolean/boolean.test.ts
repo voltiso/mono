@@ -26,8 +26,6 @@ describe('boolean', () => {
 	})
 
 	it('type', () => {
-		expect.hasAssertions()
-
 		const opt = s.boolean.optional
 		$Assert<IsIdentical<typeof opt, CustomBoolean<{ isOptional: true }>>>()
 	})
