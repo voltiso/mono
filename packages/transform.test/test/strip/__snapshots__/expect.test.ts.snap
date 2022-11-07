@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`expect works 1`] = `
+"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+import { $expect } from '@voltiso/util';
+// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$expect\`
+/*$expect(Object.getOwnPropertyDescriptors({})).toStrictEqual({})*/ 
+//# sourceMappingURL=expect.js.map"
+`;

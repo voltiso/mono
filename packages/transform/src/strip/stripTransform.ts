@@ -55,6 +55,7 @@ export function stripTransform(
 						shouldStripSymbol(ctx, symbol) &&
 						ctx.candidateNodeToStrip
 					) {
+						// console.log('will strip because of', symbol.name)
 						ctx.shouldStripBecauseOfSymbol = symbol
 						return node
 					}
@@ -89,6 +90,7 @@ export function stripTransform(
 				let result: ts.Node
 				try {
 					ctx.candidateNodeToStrip = node
+					// console.log(sourceFile.fileName, 'candidate node to strip', ctx.candidateNodeToStrip.getText())
 					result = ts.visitEachChild(node, visitor, transformationContext)
 				} finally {
 					delete ctx.candidateNodeToStrip
@@ -103,6 +105,7 @@ export function stripTransform(
 						.map(node => node.name.getText())
 						.includes((ctx.shouldStripBecauseOfSymbol as ts.Symbol).name)
 				) {
+					// console.log(sourceFile.fileName, 'cancel', node.getText())
 					ctx.shouldStripBecauseOfSymbol = undefined
 				}
 

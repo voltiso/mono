@@ -107,6 +107,7 @@ export const codeOverride = defineEslintConfigOverride({
 
 		//
 
+		'no-bitwise': 1,
 		'no-constructor-return': 1,
 		'prefer-destructuring': 0, // hmm, buggy for non-local variables
 		'no-console': 1,
