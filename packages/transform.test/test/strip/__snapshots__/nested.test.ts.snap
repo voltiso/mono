@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nested works 1`] = `
+"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+import { $expect } from '@voltiso/util';
+void (() => {
+    // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$expect\`
+    /*$expect(0).toBeTruthy()*/ 
+});
+//# sourceMappingURL=nested.js.map"
+`;

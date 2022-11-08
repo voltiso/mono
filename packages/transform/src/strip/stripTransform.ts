@@ -16,8 +16,6 @@ export interface StripTransformOptions
 
 export interface StripTransformContext extends TransformContext {
 	options: StripTransformOptions
-
-	candidateNodeToStrip?: ts.Node | undefined
 	shouldStripBecauseOfSymbol?: ts.Symbol | undefined
 }
 
@@ -45,17 +43,17 @@ export function stripTransform(
 			}
 
 			const visitor: ts.Visitor = node => {
-				if (!isEnabled || ctx.shouldStripBecauseOfSymbol) return node
+				if (!isEnabled) return node
 
 				/** Comment-out tokens including the whole instruction */
 				if (ts.isIdentifier(node)) {
 					const symbol = typeChecker.getSymbolAtLocation(node)
-					if (
-						symbol &&
-						shouldStripSymbol(ctx, symbol) &&
-						ctx.candidateNodeToStrip
-					) {
-						// console.log('will strip because of', symbol.name)
+					if (symbol && shouldStripSymbol(ctx, symbol)) {
+						// console.log(
+						// 	sourceFile.fileName,
+						// 	'will strip because of',
+						// 	symbol.name,
+						// )
 						ctx.shouldStripBecauseOfSymbol = symbol
 						return node
 					}
@@ -80,61 +78,63 @@ export function stripTransform(
 					return commentedOut
 				}
 
-				if (
-					ctx.candidateNodeToStrip ||
-					(!ts.isExpressionStatement(node) && !ts.isVariableStatement(node))
-					// && !ts.isImportSpecifier(node)
-				)
-					return ts.visitEachChild(node, visitor, transformationContext)
+				// if (
+				// 	ctx.candidateNodeToStrip ||
+				// 	(!ts.isExpressionStatement(node) && !ts.isVariableStatement(node))
+				// 	// && !ts.isImportSpecifier(node)
+				// )
+				// 	return ts.visitEachChild(node, visitor, transformationContext)
 
-				let result: ts.Node
-				try {
-					ctx.candidateNodeToStrip = node
-					// console.log(sourceFile.fileName, 'candidate node to strip', ctx.candidateNodeToStrip.getText())
-					result = ts.visitEachChild(node, visitor, transformationContext)
-				} finally {
-					delete ctx.candidateNodeToStrip
+				const oldShouldStrip = ctx.shouldStripBecauseOfSymbol
+
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+				ctx.shouldStripBecauseOfSymbol = undefined as any
+
+				const result = ts.visitEachChild(node, visitor, transformationContext)
+
+				const isCandidate =
+					ts.isExpressionStatement(node) || ts.isVariableStatement(node)
+
+				// if (isCandidate)
+				// 	console.log(sourceFile.fileName, 'got candidate', node.getText())
+
+				if (isCandidate && ctx.shouldStripBecauseOfSymbol) {
+					// console.log(sourceFile.fileName, 'almost strip', node.getText())
+
+					// for variable statements: do not strip if the symbol to strip is actually defined here
+					if (
+						ts.isVariableStatement(node) &&
+						node.declarationList.declarations
+							.map(node => node.name.getText())
+							.includes(ctx.shouldStripBecauseOfSymbol.name)
+					) {
+						// console.log(sourceFile.fileName, 'cancel', node.getText())
+						ctx.shouldStripBecauseOfSymbol = undefined
+					}
+
+					if (ctx.shouldStripBecauseOfSymbol) {
+						logStrippedNode(node)
+
+						let result = ts.factory.createNotEmittedStatement(node)
+
+						result = ts.addSyntheticLeadingComment(
+							result,
+							ts.SyntaxKind.SingleLineCommentTrivia,
+							` ${moduleIcon} [@voltiso/transform/strip] Commented-out because of symbol \`${ctx.shouldStripBecauseOfSymbol.name}\``,
+						)
+
+						result = ts.addSyntheticLeadingComment(
+							result,
+							ts.SyntaxKind.MultiLineCommentTrivia,
+							node.getText(),
+						)
+
+						ctx.shouldStripBecauseOfSymbol = oldShouldStrip
+						return result
+					}
 				}
 
-				// for variable statements: do not strip if the symbol to strip is actually defined here
-				if (
-					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-					ctx.shouldStripBecauseOfSymbol &&
-					ts.isVariableStatement(node) &&
-					node.declarationList.declarations
-						.map(node => node.name.getText())
-						.includes((ctx.shouldStripBecauseOfSymbol as ts.Symbol).name)
-				) {
-					// console.log(sourceFile.fileName, 'cancel', node.getText())
-					ctx.shouldStripBecauseOfSymbol = undefined
-				}
-
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				if (ctx.shouldStripBecauseOfSymbol) {
-					logStrippedNode(node)
-
-					// if (ts.isImportSpecifier(node)) return []
-
-					let result = ts.factory.createNotEmittedStatement(node)
-
-					result = ts.addSyntheticLeadingComment(
-						result,
-						ts.SyntaxKind.SingleLineCommentTrivia,
-						` ${moduleIcon} [@voltiso/transform/strip] Commented-out because of symbol \`${
-							(ctx.shouldStripBecauseOfSymbol as ts.Symbol).name
-						}\``,
-					)
-
-					result = ts.addSyntheticLeadingComment(
-						result,
-						ts.SyntaxKind.MultiLineCommentTrivia,
-						node.getText(),
-					)
-
-					ctx.shouldStripBecauseOfSymbol = undefined
-					return result
-				}
-
+				ctx.shouldStripBecauseOfSymbol ||= oldShouldStrip
 				return result
 			}
 

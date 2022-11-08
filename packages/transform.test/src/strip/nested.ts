@@ -3,4 +3,6 @@
 
 import { $expect } from '@voltiso/util'
 
-$expect(Object.getOwnPropertyDescriptors({})).toStrictEqual({})
+void (() => {
+	$expect(0).toBeTruthy()
+})
