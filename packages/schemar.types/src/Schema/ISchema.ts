@@ -9,13 +9,10 @@ import type {
 	OPTIONS,
 	PARTIAL_OPTIONS,
 } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
 
 import type {
 	$$Schemable,
-	CustomSchema,
 	SchemaOptions,
-	UnknownLiteralOptions,
 	ValidateOptions,
 	ValidationIssue,
 	ValidationResult,
@@ -32,14 +29,6 @@ export interface SchemaLike<T = unknown> extends $$Schema {
 	get Output(): T
 	get Input(): T | undefined
 }
-
-describe('UnknownLiteral', () => {
-	it('generic', <O extends Partial<UnknownLiteralOptions>>() => {
-		$Assert.is<ISchema<O>, ISchema>()
-
-		$Assert.is<CustomSchema<O>, ISchema>()
-	})
-})
 
 /** Every Schema is assignable to `ISchema` */
 export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
