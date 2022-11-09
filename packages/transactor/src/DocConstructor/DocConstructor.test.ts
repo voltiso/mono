@@ -5,13 +5,13 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
-import type { DocIdBrand, DocIdString } from '~/brand'
+import type { DocIdBrand } from '~/brand'
 import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
 import { AnyDoc } from '~/DocTypes'
 
 import type { DocConstructor } from './DocConstructor'
-import type { IDocConstructor } from './IDocConstructor'
+import type { $$DocConstructor } from './IDocConstructor'
 
 declare module '../DocTypes-module-augmentation' {
 	interface DocTypes {
@@ -24,42 +24,53 @@ describe('DocConstructor', () => {
 	it('DocConstructor < DocConstructorU', () => {
 		expect.assertions(0)
 
-		$Assert.is<DocConstructor, IDocConstructor>()
+		// $Assert.is<DocConstructor, IDocConstructor>()
+		$Assert.is<DocConstructor, $$DocConstructor>()
 
-		$Assert($Is<DocConstructor>().strictSubtypeOf<IDocConstructor>())
+		$Assert($Is<DocConstructor>().strictSubtypeOf<$$DocConstructor>())
 	})
 
 	it('assignability #2', <TI extends DocTI>() => {
 		expect.assertions(0)
 
-		$Assert.is<DocConstructor<TI>, IDocConstructor>()
-		$Assert($Is<IDocConstructor>().not.subtypeOf<DocConstructor<TI>>())
+		// $Assert.is<DocConstructor<TI>, IDocConstructor>()
+		$Assert.is<DocConstructor<TI>, $$DocConstructor>()
+
+		// $Assert($Is<IDocConstructor>().not.subtypeOf<DocConstructor<TI>>())
+		$Assert($Is<$$DocConstructor>().not.subtypeOf<DocConstructor<TI>>())
 	})
 
 	it('Id', () => {
 		expect.assertions(0)
 
-		const MyDocConstructor = Doc(AnyDoc).public({ num: s.number })
+		const MyDocConstructor = Doc(AnyDoc).with({ public: { num: s.number } })
+
 		$Assert.is<typeof MyDocConstructor[DTI]['tag'], AnyDoc>()
+
 		type MyDoc = InstanceType<typeof MyDocConstructor>
 		$Assert<IsIdentical<MyDoc[DTI]['tag'], AnyDoc>>()
 
 		type MyId = MyDoc['id']
 		$Assert<IsIdentical<MyId, string & DocIdBrand>>()
-		$Assert($Is<DocIdString>().not.subtypeOf<MyId>())
+
+		// $Assert($Is<DocIdString>().not.subtypeOf<MyId>())
 	})
 
 	it('Id 2', () => {
 		expect.assertions(0)
 
-		const MyIndexedDocConstructor = Doc.public({ num: s.number })
+		const MyIndexedDocConstructor = Doc.with({ public: { num: s.number } })
 
-		const MyDocConstructor1 = Doc('docConstructorTest1').public({
-			num2: s.number,
+		const MyDocConstructor1 = Doc('docConstructorTest1').with({
+			public: {
+				num2: s.number,
+			},
 		})
 
-		const MyDocConstructor2 = Doc('docConstructorTest2').public({
-			num2: s.number,
+		const MyDocConstructor2 = Doc('docConstructorTest2').with({
+			public: {
+				num2: s.number,
+			},
 		})
 
 		type MyIndexedDoc = InstanceType<typeof MyIndexedDocConstructor>

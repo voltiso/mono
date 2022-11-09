@@ -35,11 +35,10 @@ import type { AutoIdSchema } from '~/schemas'
 import type { Trigger } from '~/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
-import type { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
+import type { $$DocConstructor } from './IDocConstructor'
 
-export interface DocConstructor<TI extends DocTI = DocTI> {
-	readonly [IS_DOC_CONSTRUCTOR]: true
-
+export interface DocConstructor<TI extends DocTI = DocTI>
+	extends $$DocConstructor {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
 
@@ -56,29 +55,29 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 				'unknown keys:' & { keys: Exclude<keyof O, keyof $$PartialDocOptions> }
 		  >
 
-	/** ⚠️ If possible, use call signature instead */
-	publicOnCreation<S extends Record<string, t.Schemable>>(
-		s: S,
-	): DocConstructor.WithOverrides<
-		TI,
-		DocConstructor.MapPartialOptions<TI, { publicOnCreation: S }>
-	>
+	// /** ⚠️ If possible, use call signature instead */
+	// publicOnCreation<S extends Record<string, t.Schemable>>(
+	// 	s: S,
+	// ): DocConstructor.WithOverrides<
+	// 	TI,
+	// 	DocConstructor.MapPartialOptions<TI, { publicOnCreation: S }>
+	// >
 
-	/** ⚠️ If possible, use call signature instead */
-	public<S extends t.$$SchemableObject>(
-		s: S,
-	): DocConstructor.WithOverrides<
-		TI,
-		DocConstructor.MapPartialOptions<TI, { public: S }>
-	>
+	// /** ⚠️ If possible, use call signature instead */
+	// public<S extends t.$$SchemableObject>(
+	// 	s: S,
+	// ): DocConstructor.WithOverrides<
+	// 	TI,
+	// 	DocConstructor.MapPartialOptions<TI, { public: S }>
+	// >
 
-	/** ⚠️ If possible, use call signature instead */
-	private<S extends Record<string, t.Schemable>>(
-		s: S,
-	): DocConstructor.WithOverrides<
-		TI,
-		DocConstructor.MapPartialOptions<TI, { private: S }>
-	>
+	// /** ⚠️ If possible, use call signature instead */
+	// private<S extends Record<string, t.Schemable>>(
+	// 	s: S,
+	// ): DocConstructor.WithOverrides<
+	// 	TI,
+	// 	DocConstructor.MapPartialOptions<TI, { private: S }>
+	// >
 
 	//
 
@@ -201,6 +200,10 @@ export interface DocConstructor<TI extends DocTI = DocTI> {
 
 //
 
+// $dev(<TI extends $$DocTI>() => {
+// 	$Assert.is<DocConstructor<TI>, DocConstructor>()
+// })
+
 //
 
 //
@@ -249,7 +252,7 @@ export namespace DocConstructor {
 						? Merge2Reverse_<O['aggregates'], TI['aggregates']>
 						: never
 				},
-				never
+				undefined
 		  >
 		: never
 }

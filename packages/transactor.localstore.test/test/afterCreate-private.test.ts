@@ -11,18 +11,22 @@ const db = createTransactor()
 
 // type A = _<DocIdBrand<typeof AnyDoc>>
 
-class Doctor extends Doc.public({
-	specialty: s.string.optional,
-})
-	.private({
+class Doctor extends Doc.with({
+	id: s.string,
+
+	public: {
+		specialty: s.string.optional,
+	},
+
+	private: {
 		ofWhat: s.string.optional,
-	})
-	.afterCreate(async function () {
-		if (this.data.specialty === 'master') {
-			await this.update({ ofWhat: 'universe' })
-			$assert(this.data.ofWhat === 'universe', 'test')
-		}
-	}) {}
+	},
+}).afterCreate(async function () {
+	if (this.data.specialty === 'master') {
+		await this.update({ ofWhat: 'universe' })
+		$assert(this.data.ofWhat === 'universe', 'test')
+	}
+}) {}
 
 const doctors = db('doctor').register(Doctor)
 

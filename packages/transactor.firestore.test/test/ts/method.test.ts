@@ -12,8 +12,12 @@ const db = new Transactor(firestore, firestoreModule, {
 
 const promises: PromiseLike<unknown>[] = []
 
-class Counter extends Doc.public({
-	value: s.number.default(1),
+class Counter extends Doc.with({
+	id: s.string,
+
+	public: {
+		value: s.number.default(1),
+	},
 })
 	.method('increment', function (x: number) {
 		this.data.value += x

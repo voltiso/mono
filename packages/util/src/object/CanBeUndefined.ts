@@ -1,31 +1,32 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { exactOptionalPropertyTypes } from '..'
+
+/** Distributes over `$obj` */
 export type CanBeUndefined<
-	Obj extends object,
-	Key extends keyof Obj,
+	$obj,
+	key extends keyof $obj,
 	True = true,
 	False = false,
-> = CanBeUndefinedImpl<Obj, Key, True, False>
-
-export type CanBeUndefined_<
-	Obj,
-	Key,
-	True = false,
-	False = false,
-> = Key extends keyof Obj ? CanBeUndefinedImpl<Obj, Key, True, False> : never
-
-export type CanBeUndefinedImpl<
-	Obj,
-	Key extends keyof Obj,
-	True = true,
-	False = false,
-> = Obj extends unknown
-	? {
-			[k in Key]: undefined
-	  } extends {
-			[k in Key]: Obj[k]
-	  }
-		? True
-		: False
+> = exactOptionalPropertyTypes extends false
+	? boolean // ! cannot determine without this tsc option
+	: $obj extends any
+	? key extends any
+		? {
+				[k in key]: undefined
+		  } extends {
+				[k in key]: $obj[k]
+		  }
+			? True
+			: False
+		: never
 	: never
+
+// /** ⚠️ Prefer {@link CanBeUndefined} - should be faster */
+// export type CanBeUndefined_<
+// 	$obj,
+// 	key,
+// 	True = false,
+// 	False = false,
+// > = CanBeUndefined<$obj, key & keyof $obj, True, False>

@@ -6,6 +6,7 @@ import type { CustomCheck } from '@voltiso/schemar.types'
 import { ValidationIssue } from '~/meta-schemas'
 
 export function processCustomChecks(
+	name: string | undefined,
 	checks: readonly CustomCheck[],
 	x: unknown,
 ): ValidationIssue[] {
@@ -15,6 +16,8 @@ export function processCustomChecks(
 		if (!c.checkIfValid(x)) {
 			issues.push(
 				new ValidationIssue({
+					name,
+
 					expectedDescription:
 						typeof c.expectedDescription === 'function'
 							? c.expectedDescription(x as never)

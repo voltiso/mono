@@ -1,10 +1,9 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { OmitValues } from '~'
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
-
-import type { OmitValues } from './OmitValues'
 
 describe('OmitValues', () => {
 	it('works', () => {
@@ -54,9 +53,9 @@ describe('OmitValues', () => {
 				{
 					good: number | string
 					bb: number | undefined
-					b?: number | undefined
+					// b?: number | undefined // ! `exactOptionalPropertyTypes`
 					readonly dd: number | undefined
-					readonly d?: number | undefined
+					// readonly d?: number | undefined // ! `exactOptionalPropertyTypes`
 				}
 			>
 		>()
@@ -86,9 +85,9 @@ describe('OmitValues', () => {
 				{
 					good: never | string
 					bb: undefined
-					b?: undefined
+					// b?: undefined // ! `exactOptionalPropertyTypes`
 					readonly dd: never | undefined
-					readonly d?: never | undefined
+					// readonly d?: never | undefined // ! `exactOptionalPropertyTypes`
 				}
 			>
 		>()

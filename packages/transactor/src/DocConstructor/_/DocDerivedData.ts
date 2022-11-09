@@ -7,10 +7,11 @@ import { $Assert, $dev } from '@voltiso/util'
 import type { Aggregator } from '~/Aggregator'
 import type { DocTI } from '~/Doc'
 import { IS_DOC_TYPE_INFO } from '~/Doc'
+import { sAutoId } from '~/schemas'
 import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 
 export interface DocDerivedData extends DocTI {
-	id: DocTI['id'] | undefined
+	id: DocTI['id']
 
 	aggregates: {}
 	methods: {}
@@ -31,7 +32,7 @@ export const defaultDocDerivedData = {
 
 	tag: undefined as unknown as never,
 
-	id: undefined,
+	id: sAutoId,
 
 	publicOnCreation: emptyDocDerivedSchema,
 	public: emptyDocDerivedSchema,

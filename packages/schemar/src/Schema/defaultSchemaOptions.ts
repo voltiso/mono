@@ -5,6 +5,8 @@ export const defaultSchemaOptions = {
 	Output: 0 as unknown,
 	Input: 0 as unknown,
 
+	// name: undefined,
+
 	customChecks: [] as const,
 	customFixes: [] as const,
 

@@ -1,6 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $dev } from '_/$'
+
+import type { IsIdentical } from '~/type'
+
+import { $Assert } from './static-assert'
+
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 /**
@@ -10,15 +16,15 @@
  * @example
  *
  * ```ts
- * const x = ...
- * assumeType<string>(x) // now `x` is `string`!
+ * const x = ... as 'test' | number
+ * $AssumeType<string>(x) // now `x` is 'test'
  * ```
  *
  * @example
  *
  * ```ts
- * const x = ...
- * assumeType<string, typeof x>(x) // narrow-only
+ * const x = ... as string | number
+ * $AssumeType<'test', string>(x) // error!
  * ```
  *
  * @param _x - Variable to narrow type of
@@ -26,4 +32,38 @@
  */
 export function $AssumeType<T extends Supertype, Supertype = unknown>(
 	_x: Supertype,
-): asserts _x is T {}
+): asserts _x is T & typeof _x {}
+
+//
+
+$dev(() => {
+	const x = 0 as unknown as 'test' | number
+	$AssumeType<string>(x) // now `x` is 'test'
+
+	$Assert<IsIdentical<typeof x, 'test'>>()
+})
+
+//
+
+// /**
+//  * @example
+//  *
+//  * ```ts
+//  * const x = ... // string | number
+//  * $AssumeTypeIf<'test', string>()(x) // now `x` is 'test' | number
+//  * ```
+//  */
+// export const $AssumeTypeIf = <T extends Supertype, Supertype = unknown>() => ({
+// 	value: <_Inferred>(
+// 		_x: _Inferred,
+// 	): asserts _x is _Inferred extends Supertype
+// 		? _Inferred & T
+// 		: _Inferred => {},
+// })
+
+// //
+
+// $dev(() => {
+// 	const x = 0 as unknown as string | number
+// 	$AssumeTypeIf<'test', string>().value(x) // now `x` is 'test' | number
+// })

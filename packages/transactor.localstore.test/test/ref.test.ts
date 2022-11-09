@@ -18,18 +18,26 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-class DoctorX extends Doc('DoctorXNala').public({
-	profile: {
-		name: s.string,
-		specialty: s.string,
+class DoctorX extends Doc('DoctorXNala').with({
+	id: s.string,
+
+	public: {
+		profile: {
+			name: s.string,
+			specialty: s.string,
+		},
 	},
 }) {}
 const doctors = db.register(DoctorX)
 
-class Patient extends Doc('PatientNala').public({
-	profile: {
-		name: s.string,
-		mainDoctor: sStrongRef<DoctorX>(),
+class Patient extends Doc('PatientNala').with({
+	id: s.string,
+
+	public: {
+		profile: {
+			name: s.string,
+			mainDoctor: sStrongRef<DoctorX>(),
+		},
 	},
 }) {}
 const patients = db.register(Patient)

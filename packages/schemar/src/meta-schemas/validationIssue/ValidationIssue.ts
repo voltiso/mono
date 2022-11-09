@@ -9,13 +9,13 @@ import { pathToString } from './_/pathToString'
 
 export class ValidationIssueImpl implements t.ValidationIssue {
 	path: (keyof any)[]
-	name?: string
+	name?: string | undefined
 
-	expectedOneOf?: unknown[]
-	expectedDescription?: string
+	expectedOneOf?: unknown[] | undefined
+	expectedDescription?: string | undefined
 
 	received?: unknown
-	receivedDescription?: string
+	receivedDescription?: string | undefined
 
 	constructor(p: t.ValidationIssueParams) {
 		this.path = p.path || []

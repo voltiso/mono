@@ -3,15 +3,19 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as s from '@voltiso/schemar'
-import { Doc, IndexedDoc, Transactor } from '@voltiso/transactor'
+import { Doc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
 const db = new Transactor(firestore, firestoreModule)
 
-class Doctor extends Doc.private({
-	specialty: s.string.optional,
-	ofWhat: s.string.optional,
+class Doctor extends Doc.with({
+	id: s.string,
+
+	private: {
+		specialty: s.string.optional,
+		ofWhat: s.string.optional,
+	},
 })
 	.method('setSpecialty', function (specialty: string) {
 		this.data.specialty = specialty
@@ -25,7 +29,7 @@ class Doctor extends Doc.private({
 	}) {}
 
 const doctors = db('human').register(Doctor)
-const cats = db('cat').register(IndexedDoc)
+const cats = db('cat')
 
 describe('private', function () {
 	it('should not allow setting private fields', async function () {

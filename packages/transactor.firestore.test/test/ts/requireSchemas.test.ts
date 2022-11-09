@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { IndexedDoc, Transactor } from '@voltiso/transactor'
+import { Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
@@ -12,8 +12,8 @@ const dbWithSchema = new Transactor(firestore, firestoreModule, {
 	requireSchemas: true,
 })
 
-const tigers = db('foo').register(IndexedDoc)
-const tigersWithSchema = dbWithSchema('foo').register(IndexedDoc)
+const tigers = db('foo')
+const tigersWithSchema = dbWithSchema('foo')
 
 describe('requireSchemas', function () {
 	it('should respect constructor argument (false)', async function () {

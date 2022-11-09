@@ -5,7 +5,7 @@ import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { $AssumeType, stringFrom, zip } from '@voltiso/util'
 
-import type { $$Doc, GetDataWithId, IDoc } from '~/Doc'
+import type { $$Doc, Doc, GetDataWithId } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
 import { isDocRef } from '~/DocRef/isDocRef'
 import { TransactorError } from '~/error'
@@ -121,7 +121,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 				}
 			}
 
-			$AssumeType<IDoc>(finalTarget)
+			$AssumeType<Doc>(finalTarget)
 
 			const finalTargetPath = finalTarget.path.toString()
 

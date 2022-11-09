@@ -14,7 +14,7 @@ import type {
 
 import type { DocIdBrand, DocIdString, DocIdString_ } from '~/brand'
 import type { $WithId, DataRecord, TightenRefs, WithId } from '~/Data'
-import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext, IDoc } from '~/Doc'
+import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
@@ -101,7 +101,7 @@ export namespace GetInputData {
 /** @inline */
 export type GetInputDataWithId<
 	TI extends $$DocRelatedLike,
-	Doc extends $$Doc = IDoc,
+	Doc extends $$DocRelatedLike = AnyDoc,
 > = $WithId<GetInputData<TI>, Doc>
 
 //

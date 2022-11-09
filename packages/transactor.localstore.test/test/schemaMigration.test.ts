@@ -8,21 +8,27 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Dog extends Doc.public({
-	name: s.string,
+class Dog extends Doc.with({
+	id: s.string,
 
-	nested: {
-		heapId: s.string.optional,
-	},
+	public: {
+		name: s.string,
 
-	oldField: sDeleteIt,
+		nested: {
+			heapId: s.string.optional,
+		},
 
-	idToRef: sRef
-		.or(s.string)
-		.optional.fix(x => (typeof x === 'string' ? db('dog', x).asStrongRef : x)),
+		oldField: sDeleteIt,
 
-	detail: {
-		healthy: s.boolean.default(true),
+		idToRef: sRef
+			.or(s.string)
+			.optional.fix(x =>
+				typeof x === 'string' ? db('dog', x).asStrongRef : x,
+			),
+
+		detail: {
+			healthy: s.boolean.default(true),
+		},
 	},
 }) {}
 

@@ -8,8 +8,12 @@ import { createTransactor } from './common'
 
 const db = createTransactor({ requireSchemas: false })
 
-class Counter extends Doc.public({
-	value: s.number.default(1),
+class Counter extends Doc.with({
+	id: s.string,
+
+	public: {
+		value: s.number.default(1),
+	},
 })
 
 	.method('increment', function (x: number) {

@@ -100,6 +100,8 @@ export class CustomUnknownObjectImpl<
 		if (typeof x !== 'object' || x === null) {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be object',
 					received: x,
 				}),
@@ -108,6 +110,8 @@ export class CustomUnknownObjectImpl<
 		} else if (this[OPTIONS].isPlain && !isPlainObject(x)) {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be plain object',
 					received: x,
 				}),

@@ -69,6 +69,8 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 		if (!(this.getValues as Set<InferableLiteral>).has(x as InferableLiteral)) {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedOneOf: this.getValues,
 					received: x,
 				}),

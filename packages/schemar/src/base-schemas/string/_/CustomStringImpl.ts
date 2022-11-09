@@ -81,6 +81,8 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `be of length at least ${this.getMinLength}`,
 						received: x.length,
@@ -91,6 +93,8 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			if (isDefined(this.getMaxLength) && x.length > this.getMaxLength) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `be of length at most ${this.getMaxLength}`,
 						received: x.length,
@@ -102,6 +106,9 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 				if (!re.regExp.test(x)) {
 					issues.push(
 						new ValidationIssue({
+							// eslint-disable-next-line security/detect-object-injection
+							name: this[OPTIONS].name,
+
 							expectedDescription:
 								re.expectedDescription ||
 								`pass RegExp(${re.regExp.toString()})`,
@@ -114,6 +121,8 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be string',
 					received: x,
 				}),

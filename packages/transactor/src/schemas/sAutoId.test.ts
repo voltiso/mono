@@ -6,5 +6,7 @@ import * as s from '@voltiso/schemar'
 import { sAutoId } from './sAutoId'
 
 describe('sAutoId', () => {
-	void s.schema(sAutoId)
+	it('does type-check', () => {
+		void s.schema(sAutoId)
+	})
 })

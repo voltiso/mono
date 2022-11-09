@@ -5,31 +5,39 @@ import * as s from '@voltiso/schemar'
 import type { DocIdString } from '@voltiso/transactor'
 import { Doc, sStrongRef, sWeakRef, Transactor } from '@voltiso/transactor'
 import type { StaticError } from '@voltiso/util'
-import { $Assert, $Is } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
 const db = new Transactor(firestore, firestoreModule)
 
-class Doctor extends Doc('doctorW').public({
-	profile: {
-		name: s.string,
-		specialty: s.string.optional,
-	},
+class Doctor extends Doc('doctorW').with({
+	id: s.string,
 
-	xx: s.number.optional,
+	public: {
+		profile: {
+			name: s.string,
+			specialty: s.string.optional,
+		},
+
+		xx: s.number.optional,
+	},
 }) {}
 const doctors = db('doctor').register(Doctor)
 
-class Patient extends Doc('patientW').public({
-	profile: {
-		name: s.string,
-		mainDoctor: sStrongRef<'doctorW'>(),
-		maybeDoctor: sWeakRef<'doctorW'>(),
+class Patient extends Doc('patientW').with({
+	id: s.string,
+
+	public: {
+		profile: {
+			name: s.string,
+			mainDoctor: sStrongRef<'doctorW'>(),
+			maybeDoctor: sWeakRef<'doctorW'>(),
+			x: s.number.optional,
+		},
+
 		x: s.number.optional,
 	},
-
-	x: s.number.optional,
 }) {}
 const patients = db('patient').register(Patient)
 
@@ -44,8 +52,10 @@ describe('ref', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		$Assert.is<DocIdString<Doctor>, DocIdString>()
-		$Assert($Is<DocIdString>().not.subtypeOf<DocIdString<Doctor>>())
+		type A = DocIdString<Doctor>
+		type B = DocIdString
+
+		$Assert.is<A, B>()
 	})
 
 	it('checks numRefs on delete', async () => {

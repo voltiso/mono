@@ -9,10 +9,16 @@ import { firestore } from './common'
 
 const db = createFirestoreTransactor(firestore)
 
-class Client extends Doc.publicOnCreation({
-	rootTaskId: s.string,
-}).public({
-	displayName: s.string,
+class Client extends Doc.with({
+	id: s.string,
+
+	publicOnCreation: {
+		rootTaskId: s.string,
+	},
+
+	public: {
+		displayName: s.string,
+	},
 }) {}
 
 const clients = db('client').register(Client)

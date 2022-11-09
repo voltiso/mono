@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { IndexedDoc, sVoltisoEntry, Transactor } from '@voltiso/transactor'
+import { sVoltisoEntry, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
@@ -10,8 +10,7 @@ const db = new Transactor(firestore, firestoreModule, {
 	refCounters: false,
 })
 
-class Doctor extends IndexedDoc {}
-const doctors = db('doctor').register(Doctor)
+const doctors = db('doctor')
 
 describe('update', function () {
 	it('updates without returning data when no triggers or schemas', async function () {

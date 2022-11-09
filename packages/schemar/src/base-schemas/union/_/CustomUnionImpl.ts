@@ -72,6 +72,9 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		if (!valid) {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
+
 					expectedOneOf: (this.getSchemas as unknown as Schemable[]).map(t =>
 						schema(t),
 					),

@@ -80,6 +80,8 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		if (typeof x !== 'bigint')
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'bigint',
 					received: x,
 				}),
@@ -88,6 +90,8 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 			if (isDefined(this.getMin) && ((x < this.getMin) as unknown as number)) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `at least ${this.getMin}`,
 						received: x,
@@ -98,6 +102,8 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 			if (isDefined(this.getMax) && ((x > this.getMax) as unknown as number)) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `at most ${this.getMax}`,
 						received: x,

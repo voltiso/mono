@@ -2,8 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '~/$strip'
+import type { exactOptionalPropertyTypes } from '~/tsc-options'
 
 import type { CanBeUndefined } from './CanBeUndefined'
+
+// eslint-disable-next-line jest/require-hook
+$Assert.is<exactOptionalPropertyTypes, true>()
 
 describe('canBeUndefined', () => {
 	it('works', () => {

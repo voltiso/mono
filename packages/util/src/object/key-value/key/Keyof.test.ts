@@ -4,10 +4,10 @@
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
-import type { Keyof } from './Keyof'
+import type { $ExpandKeyof, $Keyof, ExpandKeyof } from './Keyof'
 
 describe('Keyof', () => {
-	it('generic', () => {
+	it('type', () => {
 		expect.assertions(0)
 
 		type Obj = {
@@ -16,19 +16,31 @@ describe('Keyof', () => {
 			[k: symbol]: number
 		}
 
-		type A = Keyof<Obj>
+		type A = ExpandKeyof<Obj>
 		$Assert<IsIdentical<A, string | symbol>>()
 
 		type Obj2 = {
 			[k: number]: 0
 		}
-		type B = Keyof<Obj2>
+		type B = ExpandKeyof<Obj2>
 		$Assert<IsIdentical<B, number>>()
 
 		type Obj3 = {
 			[k: string]: unknown
 		}
-		type C = Keyof<Obj3>
+		type C = ExpandKeyof<Obj3>
 		$Assert<IsIdentical<C, string>>()
+	})
+
+	it('distributive', () => {
+		type Obj = { a: 1 } | { a: 1; b: 2 }
+		type Result = $Keyof<Obj> // "a" | "b" ✅
+		$Assert<IsIdentical<Result, 'a' | 'b'>>()
+
+		type Result2 = ExpandKeyof<Obj>
+		$Assert<IsIdentical<Result2, 'a'>>()
+
+		type Result3 = $ExpandKeyof<Obj>
+		$Assert<IsIdentical<Result3, 'a' | 'b'>>()
 	})
 })

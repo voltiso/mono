@@ -7,7 +7,7 @@ import { isDeleteIt, isReplaceIt, stringFrom } from '@voltiso/util'
 
 import type { $WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
-import type { IDoc } from '~/Doc'
+import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
 import type { Transactor } from '~/Transactor'
@@ -53,7 +53,7 @@ const databaseSet = async (
 	t: T,
 	ref: Database.ServerDocumentReference,
 	data: IntrinsicFields,
-): Promise<$WithId<IntrinsicFields, IDoc>> => {
+): Promise<$WithId<IntrinsicFields, AnyDoc>> => {
 	if (transactor.readOnly)
 		throw new TransactorError(
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,

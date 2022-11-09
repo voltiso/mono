@@ -45,7 +45,7 @@ describe('Data', () => {
 			$Assert<IsIdentical<MyId2, string & DocIdBrand<'my-tag-data-2'>>>()
 
 			$Assert.is<MyId, DocIdString>()
-			$Assert.is<IsSubtype<DocIdString, MyId>, false>()
+			// $Assert.is<IsSubtype<DocIdString, MyId>, false>()
 
 			$Assert(
 				$Is<MyId>().not.subtypeOf<MyId2>(),

@@ -8,13 +8,15 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc.public(
-	s
+class Doctor extends Doc.with({
+	id: s.string,
+
+	public: s
 		.object({
 			specialty: s.string.optional,
 		})
 		.index(s.string.regex(/^unknown_.*$/u), s.number),
-) {}
+}) {}
 
 const doctors = db('doctor').register(Doctor)
 

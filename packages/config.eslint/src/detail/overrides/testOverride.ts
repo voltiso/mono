@@ -88,6 +88,7 @@ export const testOverride = defineEslintConfigOverride({
 		// change 'error' to 'warn'
 		'jest-formatting/padding-around-all': 1,
 		'jest/prefer-to-be': 1,
+		'jest/require-hook': 1,
 
 		/** Hmm... quite verbose! and often we have type-only tests */
 		'jest/prefer-expect-assertions': 0,

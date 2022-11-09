@@ -11,10 +11,7 @@ import type { CollectionRef } from '~/CollectionRef'
 import type { DatabaseContext, FirestoreLikeModule } from '~/DatabaseContext'
 import { Db } from '~/Db/Db'
 import type { DTI, IndexedDoc } from '~/Doc'
-import type {
-	$$DocConstructor,
-	IDocConstructorNoBuilder,
-} from '~/DocConstructor'
+import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import type { GetDoc, GetDocTI } from '~/DocRelated'
 import type { DocTag } from '~/DocTypes'
 import { AnyDoc } from '~/DocTypes'
@@ -156,7 +153,9 @@ export class Transactor extends Db {
 
 	//
 
-	register<Cls extends IDocConstructorNoBuilder>(cls: Cls): any {
+	register<Cls extends $$DocConstructor>(cls: Cls): any {
+		$AssumeType<DocConstructor>(cls)
+
 		if (cls._.tag === AnyDoc)
 			throw new TransactorError(
 				'db.register(Cls) requires `Cls` to include DocTag',

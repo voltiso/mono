@@ -10,16 +10,20 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Dog extends Doc.public({
-	name: s.string,
+class Dog extends Doc.with({
+	id: s.string,
 
-	oldField: sDeleteIt,
+	public: {
+		name: s.string,
 
-	detail: {
-		healthy: s.boolean.default(true),
+		oldField: sDeleteIt,
+
+		detail: {
+			healthy: s.boolean.default(true),
+		},
+
+		requiredField: s.number,
 	},
-
-	requiredField: s.number,
 }) {
 	@onGet
 	migrate(p: TriggerParams.OnGet<Dog>) {

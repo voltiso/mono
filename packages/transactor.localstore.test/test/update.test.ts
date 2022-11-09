@@ -1,15 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { IndexedDoc, sVoltisoEntry } from '@voltiso/transactor'
+import { sVoltisoEntry } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
 const db = createTransactor({ requireSchemas: false, refCounters: false })
 
-class Doctor extends IndexedDoc {}
-
-const doctors = db('doctor').register(Doctor)
+const doctors = db('doctor')
 
 describe('update', function () {
 	it('updates without returning data when no triggers or schemas', async function () {

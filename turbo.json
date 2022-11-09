@@ -16,6 +16,10 @@
 			"outputs": ["dist/cjs/**"]
 		},
 
+		"compatDirs": {
+			"cache": false
+		},
+
 		"test": {
 			"dependsOn": ["^build:cjs"],
 			"inputs": ["**", ":!dist/"],

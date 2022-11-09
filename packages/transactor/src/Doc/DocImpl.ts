@@ -30,7 +30,6 @@ import type { Doc } from './Doc'
 import type { DocContext } from './DocContext'
 import type { DocTI } from './DocTI'
 import { DTI } from './DocTI'
-import type { IDoc } from './IDoc'
 
 function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 	if (isPlainObject(x)) {
@@ -174,7 +173,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this._raw as never
 	}
 
-	dataWithId(): $WithId<GetData<TI>, IDoc> {
+	dataWithId(): $WithId<GetData<TI>, TI> {
 		return withId(this._raw, this.id) as never
 	}
 
@@ -189,14 +188,6 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	async delete() {
 		return (await this._context.docRef.delete()) as never
 	}
-
-	// get schemableWithId(): object {
-	// 	return (this.constructor as IDocConstructor).schemableWithId
-	// }
-
-	// get schemableWithoutId(): object {
-	// 	return (this.constructor as IDocConstructor).schemableWithoutId
-	// }
 
 	get schemaWithoutId(): Schema<GetData<TI>> | undefined {
 		return this.ref.schemaWithoutId as never
@@ -213,5 +204,4 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 export interface UntaggedDocTI extends DocTI {
 	tag: AnyDoc
-	// tag: 'untagged'
 }

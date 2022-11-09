@@ -18,6 +18,8 @@ declare module '@voltiso/transactor' {
 }
 
 class MyNestedDoc extends Doc('nestedUserA/*/dailyMeetings').with({
+	id: s.string,
+
 	public: {
 		field: s.number,
 	},

@@ -13,7 +13,7 @@ import type {
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnknownFunction, SCHEMA_NAME } from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import * as s from '~/base-schemas/function'
 import { ValidationIssue } from '~/meta-schemas'
@@ -51,6 +51,8 @@ export class CustomUnknownFunctionImpl<
 		if (typeof x !== 'function') {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be function',
 					received: x,
 				}),

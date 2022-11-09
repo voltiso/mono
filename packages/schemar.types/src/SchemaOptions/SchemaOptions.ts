@@ -10,6 +10,9 @@ export type SchemaOptions = {
 	/** Type-only (no value at runtime) */
 	Input: unknown
 
+	/** Name for nicer messages */
+	name?: string | undefined
+
 	customChecks: readonly CustomCheck[]
 	customFixes: readonly CustomFix[]
 

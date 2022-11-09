@@ -9,18 +9,22 @@ import { firestore, firestoreModule } from './common'
 
 const db = new Transactor(firestore, firestoreModule)
 
-class Doctor extends Doc.public({
-	specialty: s.string.optional,
-})
-	.private({
+class Doctor extends Doc.with({
+	id: s.string,
+
+	public: {
+		specialty: s.string.optional,
+	},
+
+	private: {
 		ofWhat: s.string.optional,
-	})
-	.afterCreate(async function () {
-		if (this.data.specialty === 'master') {
-			await this.update({ ofWhat: 'universe' })
-			assert(this.data.ofWhat === 'universe')
-		}
-	}) {}
+	},
+}).afterCreate(async function () {
+	if (this.data.specialty === 'master') {
+		await this.update({ ofWhat: 'universe' })
+		assert(this.data.ofWhat === 'universe')
+	}
+}) {}
 
 const doctors = db('doctorB').register(Doctor)
 

@@ -8,15 +8,19 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc.public({
-	specialty: s.string.optional,
-})
-	.private({
+class Doctor extends Doc.with({
+	id: s.string,
+
+	public: {
+		specialty: s.string.optional,
+	},
+
+	private: {
 		ofWhat: s.string.optional,
-	})
-	.afterCreate(function () {
-		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
-	}) {}
+	},
+}).afterCreate(function () {
+	if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
+}) {}
 
 const doctors = db('doctor').register(Doctor)
 

@@ -9,10 +9,14 @@ import { firestore, firestoreModule } from './common/firestore'
 
 const db = new Transactor(firestore, firestoreModule)
 
-class Transfer extends Doc.publicOnCreation({
-	amount: s.number.min(0),
-})
-	.public({
+class Transfer extends Doc.with({
+	id: s.string,
+
+	publicOnCreation: {
+		amount: s.number.min(0),
+	},
+
+	public: {
 		triggerCondition: s.boolean.optional,
 
 		a: {
@@ -20,8 +24,12 @@ class Transfer extends Doc.publicOnCreation({
 				c: s.number.default(44),
 			},
 		},
-	})
-	.private({ privateField: s.string })
+	},
+
+	private: {
+		privateField: s.string,
+	},
+})
 	.afterCreateOrUpdate('set amount', function () {
 		this.data.privateField = 'sdf'
 

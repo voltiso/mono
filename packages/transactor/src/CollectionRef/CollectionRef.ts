@@ -6,7 +6,7 @@ import type * as Database from '@voltiso/firestore-like'
 import * as s from '@voltiso/schemar'
 import type { NewableReturn_, Throw } from '@voltiso/util'
 
-import type { DocIdString } from '~/brand'
+import type { DocIdString, DocTagFromBrand } from '~/brand'
 import type { WithDb } from '~/Db'
 import type { $$Doc, GetPublicCreationInputData } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
@@ -14,7 +14,6 @@ import type { $$DocConstructor } from '~/DocConstructor'
 import type { WeakDocRef } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
 import type { $$DocRelated, GetDoc, GetDocTag } from '~/DocRelated'
-import type { DocTag } from '~/DocTypes'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 
@@ -29,8 +28,8 @@ export interface CollectionRef<
 	(id: DocIdString<R>): WeakDocRef<R>
 
 	/** Get Doc reference by Id */
-	<tag extends DocTag>(id: DocIdString<tag>): Throw<
-		'wrong Id type' & { doc: tag }
+	<T extends DocIdString>(id: T): Throw<
+		'wrong Id type' & { docTag: DocTagFromBrand<T> }
 	>
 
 	/** Get Doc reference by Id */

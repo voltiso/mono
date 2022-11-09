@@ -1,15 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { IndexedDoc } from '@voltiso/transactor'
-
 import { createTransactor } from './common'
 
 const db = createTransactor({ requireSchemas: false })
 const dbWithSchema = createTransactor({ requireSchemas: true })
 
-const items = db('foo').register(IndexedDoc)
-const itemsWithSchema = dbWithSchema('foo').register(IndexedDoc)
+const items = db('foo')
+const itemsWithSchema = dbWithSchema('foo')
 
 describe('requireSchemas', function () {
 	it('should respect constructor argument (false)', async function () {

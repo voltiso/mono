@@ -1,31 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CanBeUndefinedImpl, IsOptionalImpl } from '~/object'
+import type { $Keyof, CanBeUndefined, IsOptional } from '~/object'
+import type { exactOptionalPropertyTypes } from '~/tsc-options'
 import type { AlsoAccept } from '~/type'
 
+/** Distributes over `$obj` and `$key` */
 export type Value<
-	Obj extends object,
-	Key extends keyof Obj | AlsoAccept<keyof any> = keyof Obj,
-> = ValueImpl<Obj, Key>
-
-export type Value_<Obj, Key = keyof Obj> = Obj extends object
-	? Key extends keyof Obj
-		? ValueImpl<Obj, Key>
-		: never
-	: never
-
-//
-
-export type ValueImpl<
-	Obj,
-	Key extends keyof any = keyof Obj,
-> = Obj extends object
-	? Key extends keyof Obj
-		? IsOptionalImpl<Obj, Key> extends true
-			? CanBeUndefinedImpl<Obj, Key> extends true
-				? Obj[Key]
-				: Exclude<Obj[Key], undefined>
-			: Obj[Key]
+	$obj,
+	$key extends $Keyof<$obj> | AlsoAccept<unknown> = $Keyof<$obj>,
+> = $obj extends any
+	? $key extends $Keyof<$obj>
+		? IsOptional<$obj, $key> extends true
+			? exactOptionalPropertyTypes extends false
+				? Exclude<$obj[$key], undefined> // ! design choice... unable to determine, so return cleaner result without `undefined`
+				: CanBeUndefined<$obj, $key> extends true
+				? $obj[$key]
+				: Exclude<$obj[$key], undefined>
+			: $obj[$key]
 		: never
 	: never

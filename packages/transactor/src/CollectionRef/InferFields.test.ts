@@ -9,7 +9,7 @@ import { $Assert } from '@voltiso/util'
 import { afterCreateOrUpdate, method } from '~/decorators'
 import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
-import type { DocConstructor, IDocConstructorNoBuilder } from '~/DocConstructor'
+import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import type { CustomDocRef } from '~/DocRef'
 import * as ss from '~/schemas'
 
@@ -57,7 +57,9 @@ describe('InferFields', () => {
 	it('overrides optional ref', () => {
 		expect.assertions(0)
 
-		$Assert.is<typeof Doctor, IDocConstructorNoBuilder>()
+		// $Assert.is<typeof Doctor, IDocConstructorNoBuilder>()
+		$Assert.is<typeof Doctor, $$DocConstructor>()
+
 		// type A = Doctor[DTI]['public']['optionalFriend']
 		type F = InferFields<typeof Doctor>
 		type X = F['public']['getShape']['optionalFriend']

@@ -25,8 +25,8 @@ export interface AutoIdSchema<
 $Assert.is<ConfigurableAutoIdSchema, $$Schema>()
 
 /** @internal */
-export const _sAutoId = s.string
-	.regex(/^[\dA-Za-z]{20}$/u, 'autoId must be 20 alphanumeric characters')
+export const _sAutoId = s.string.withName('autoId')
+	.regex(/^[\dA-Za-z]{20}$/u, 'be 20 alphanumeric characters')
 	.Cast<DocIdString>()
 
 export interface ConfigurableAutoIdSchema extends AutoIdSchema {

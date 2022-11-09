@@ -26,7 +26,7 @@ export interface DocIdBrand<tag extends DocTag | AnyDoc = AnyDoc>
 export type GetDocIdBrand<
 	X extends $$DocRelatedLike | NoArgument = NoArgument,
 > = X extends NoArgument
-	? IdBrand
+	? DocIdBrand
 	: X extends $$DocRelatedLike
 	? AnyDoc extends GetDocTag<X>
 		? DocIdBrand

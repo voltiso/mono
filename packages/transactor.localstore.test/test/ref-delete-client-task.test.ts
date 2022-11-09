@@ -18,6 +18,8 @@ import { createTransactor } from './common'
 const db = createTransactor()
 
 class Client extends Doc('refDelete_client').with({
+	id: s.string,
+
 	public: {
 		displayName: s.string.lengthRange(1, 255),
 		slug: s.string,
@@ -72,6 +74,8 @@ class Client extends Doc('refDelete_client').with({
 // type IdClient = Id<Client>
 
 class ClientSlug extends Doc('refDelete_clientSlug').with({
+	id: s.string,
+
 	publicOnCreation: {
 		client: sStrongRef<'refDelete_client'>(),
 	},

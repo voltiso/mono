@@ -9,9 +9,13 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
-class Doctor extends Doc.private({
-	specialty: s.string.optional,
-	ofWhat: s.string.optional,
+class Doctor extends Doc.with({
+	id: s.string,
+
+	private: {
+		specialty: s.string.optional,
+		ofWhat: s.string.optional,
+	},
 })
 
 	.method('setSpecialty', function (specialty: string) {
@@ -68,15 +72,13 @@ describe('private', function () {
 		})
 	})
 
-	it('should not allow any data for tables without schemas if requireSchemas === true', async function () {
+	it('registered IndexedDoc is considered good even if requireSchemas === true', async function () {
 		expect.hasAssertions()
 
 		db.requireSchemas = true
 
-		await expect(things.add({ thingA: 123 })).rejects.toThrow('missing schema')
-		await expect(things('ggggg').set({ thingB: 234 })).rejects.toThrow(
-			'missing schema',
-		)
+		await expect(things.add({ thingA: 123 })).resolves.toBeTruthy()
+		await expect(things('ggggg').set({ thingB: 234 })).resolves.toBeTruthy()
 	})
 
 	it('should allow private fields access via method', async function () {

@@ -5,8 +5,8 @@ import * as s from '@voltiso/schemar'
 import { $Assert, $Is } from '@voltiso/util'
 
 import { Doc } from '~/Doc/Doc'
-import type { IDocConstructorNoBuilder } from '~/DocConstructor'
 
+import type { $$DocConstructor } from '..'
 import type { CustomDocRef } from './CustomDocRef'
 import type { DocRef } from './StrongDocRef'
 import type { WeakDocRef } from './WeakDocRef'
@@ -32,7 +32,8 @@ describe('Ref', () => {
 	it('works (tagged)', () => {
 		expect.assertions(0)
 
-		$Assert.is<typeof MyMysticDoctor, IDocConstructorNoBuilder>()
+		// $Assert.is<typeof MyMysticDoctor, IDocConstructorNoBuilder>()
+		$Assert.is<typeof MyMysticDoctor, $$DocConstructor>()
 
 		$Assert.is<DocRef<MyMysticClient>, CustomDocRef<{ doc: MyMysticClient }>>()
 
@@ -57,7 +58,8 @@ describe('Ref', () => {
 		class Ut1 extends Doc.with({ public: { a: s.number } }) {}
 		class Ut2 extends Doc.with({ public: { a: s.string } }) {}
 
-		$Assert.is<typeof Ut1, IDocConstructorNoBuilder>()
+		// $Assert.is<typeof Ut1, IDocConstructorNoBuilder>()
+		$Assert.is<typeof Ut1, $$DocConstructor>()
 
 		// $Assert.is<Ut1, Doc>()
 		// $Assert.is<Ut2, Doc>()

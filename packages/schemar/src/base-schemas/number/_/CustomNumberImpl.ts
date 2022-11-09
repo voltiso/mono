@@ -55,6 +55,8 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (this.isInteger && !Number.isInteger(x)) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						expectedDescription: 'integer',
 						received: x,
 					}),
@@ -64,6 +66,8 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (isDefined(this.getMin) && x < this.getMin) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `at least ${this.getMin}`,
 						received: x,
@@ -74,6 +78,8 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (isDefined(this.getMax) && x > this.getMax) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expectedDescription: `at most ${this.getMax}`,
 						received: x,
@@ -83,6 +89,8 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be number',
 					received: x,
 				}),

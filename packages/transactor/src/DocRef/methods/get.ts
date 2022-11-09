@@ -9,7 +9,7 @@ import { deepCloneData } from '@voltiso/util.firestore'
 import { fromDatabase } from '~/common'
 import { withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { $$Doc, DocTI, IDoc } from '~/Doc'
+import type { $$Doc, DocTI } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
 import type { AggregateTargetEntry } from '~/schemas'
@@ -54,7 +54,7 @@ function getIsTransactionNeededForRead(
 	return false
 }
 
-async function directDocPathGet<D extends IDoc>(
+async function directDocPathGet<D extends $$Doc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): Promise<D | null> {
 	const needTransaction = getIsTransactionNeededForRead(ctx)
@@ -81,7 +81,7 @@ async function directDocPathGet<D extends IDoc>(
 	else return null
 }
 
-async function transactionDocPathGetImpl<D extends IDoc>(
+async function transactionDocPathGetImpl<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
 	// console.log('transactionDocPathGetImpl', ctx.docRef.path.toString())

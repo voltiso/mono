@@ -106,6 +106,7 @@ export const prepublishOnly = [
 		'lint:eslint',
 		'lint:tsc',
 		'depcheck',
+		'compatDirs',
 	),
 
 	turboDependents('test'),

@@ -107,6 +107,8 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		if (typeof x !== 'function') {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be function',
 					received: x,
 				}),

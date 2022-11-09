@@ -194,6 +194,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		if (!isObject(x)) {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be object',
 					received: x,
 				}),
@@ -203,6 +205,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			if (this[OPTIONS].isPlain && !isPlainObject(x)) {
 				issues.push(
 					new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 						expectedDescription: 'be plain object',
 						received: x,
 					}),
@@ -224,6 +228,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (!hasProperty(x, k) && !isOptional && !childSchema.hasDefault) {
 					issues.push(
 						new ValidationIssue({
+							// eslint-disable-next-line security/detect-object-injection
+							name: this[OPTIONS].name,
 							path: [k],
 							expectedDescription: 'be present',
 							receivedDescription: 'missing object property',
@@ -254,6 +260,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					if (this[OPTIONS].indexSignatures.length === 0)
 						issues.push(
 							new ValidationIssue({
+								// eslint-disable-next-line security/detect-object-injection
+								name: this[OPTIONS].name,
 								path: [key],
 								expectedDescription: 'not be present',
 								received: x[key as never],
@@ -274,6 +282,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 							if (!keyResult.isValid) {
 								keyIssues.push(
 									new ValidationIssue({
+										// eslint-disable-next-line security/detect-object-injection
+										name: this[OPTIONS].name,
 										path: [key],
 										expectedDescription: `match index signature key: ${sKeySchema.toString()}`,
 										received: key,
@@ -293,6 +303,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 							if (!valueResult.isValid) {
 								valueIssues.push(
 									new ValidationIssue({
+										// eslint-disable-next-line security/detect-object-injection
+										name: this[OPTIONS].name,
 										path: [key],
 										expectedDescription: `match index signature value: ${sValueSchema.toString()}`,
 										received: value,
@@ -312,6 +324,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						} else if (keyIssues.length > 0) {
 							issues.push(
 								new ValidationIssue({
+									// eslint-disable-next-line security/detect-object-injection
+									name: this[OPTIONS].name,
 									path: [key],
 									expectedDescription: `match one of index signature keys`,
 

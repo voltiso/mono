@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
+import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
 import {
 	afterCreate,
@@ -16,6 +17,8 @@ import { createTransactor } from './common'
 const db = createTransactor()
 
 class Man extends Doc('man').with({
+	id: s.string,
+
 	private: {
 		woman: sStrongRef<'woman'>().optional,
 	},
@@ -39,6 +42,8 @@ class Man extends Doc('man').with({
 }
 
 class Woman extends Doc('woman').with({
+	id: s.string,
+
 	public: {
 		man: sRef<'man'>(),
 	},

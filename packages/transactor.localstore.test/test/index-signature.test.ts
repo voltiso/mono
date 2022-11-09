@@ -11,6 +11,8 @@ import { createTransactor, database } from './common'
 const db = createTransactor()
 
 class User extends Doc.with({
+	id: s.string,
+
 	public: s
 		.object({
 			displayName: s.string,

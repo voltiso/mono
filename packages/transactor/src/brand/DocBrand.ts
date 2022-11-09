@@ -22,7 +22,7 @@ import type { TRANSACTOR, TransactorBrand } from './Transactor'
  * ```
  */
 export interface DocBrand<
-	tag extends DocTagLike | AnyDoc,
+	tag extends DocTagLike | AnyDoc = AnyDoc,
 > extends TransactorBrand<
 		'doc',
 		AnyDoc extends tag
@@ -30,7 +30,7 @@ export interface DocBrand<
 			: { [k in tag]: true }
 	> {}
 
-export type DocTagFromBrand<brand extends DocBrand<any>> = IsAny<
+export type DocTagFromBrand<brand extends DocBrand> = IsAny<
 	brand[BRAND][TRANSACTOR]['doc']
 > extends true
 	? AnyDoc

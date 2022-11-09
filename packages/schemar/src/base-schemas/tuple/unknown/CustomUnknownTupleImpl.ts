@@ -86,7 +86,9 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		if (!Array.isArray(x))
 			issues.push(
 				new ValidationIssue({
-					expectedDescription: 'be [...]',
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
+					expectedDescription: 'be array',
 					received: x,
 				}),
 			)

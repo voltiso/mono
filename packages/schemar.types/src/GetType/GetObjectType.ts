@@ -3,6 +3,7 @@
 
 import type {
 	_,
+	Assume,
 	exactOptionalPropertyTypes,
 	Get_,
 	HasIndexSignature,
@@ -11,17 +12,30 @@ import type {
 	Override,
 } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	DefaultGetTypeOptions,
-	GetTypeOptions,
-	SchemaOptions,
-	Type_,
-} from '~'
-
-import type { GetOptions } from './GetOptions'
+import type { $$Schema, DefaultGetTypeOptions, GetTypeOptions, Type_ } from '~'
 
 //
+
+export interface _GetObjectTypeRequiredOptions {
+	readonly isReadonly: boolean
+	readonly isOptional: boolean
+	readonly isStrictOptional: boolean
+	readonly hasDefault: boolean
+}
+
+/** @internal */
+export type _GetOptions<X> = Assume<
+	_GetObjectTypeRequiredOptions,
+	Override<
+		{
+			isReadonly: false
+			isOptional: false
+			isStrictOptional: false
+			hasDefault: false
+		},
+		X
+	>
+>
 
 /** @inline */
 export type GetObjectType<
@@ -38,7 +52,8 @@ export type GetObjectType<
 			},
 			Shape,
 			{
-				[k in keyof Shape]: GetOptions<Shape[k]>
+				// eslint-disable-next-line etc/no-internal
+				[k in keyof Shape]: _GetOptions<Shape[k]>
 			},
 			Override<DefaultGetTypeOptions, PartialOptions>
 	  >
@@ -66,7 +81,7 @@ export namespace GetObjectType {
 	export type _GetNoSignature<
 		T,
 		Shape extends object,
-		O extends Record<keyof T, SchemaOptions>,
+		O extends Record<keyof T, _GetObjectTypeRequiredOptions>,
 		Options extends GetTypeOptions,
 		// eslint-disable-next-line etc/no-internal
 	> = _MaybeIntersectWithObject<
@@ -97,7 +112,7 @@ export namespace GetObjectType {
 
 	/** @internal @inline */
 	export type _IsOptional<
-		O extends SchemaOptions,
+		O extends _GetObjectTypeRequiredOptions,
 		IO extends GetTypeOptions,
 		T = true,
 		F = false,
@@ -106,8 +121,7 @@ export namespace GetObjectType {
 		: O['isStrictOptional'] extends true
 		? T
 		: O['hasDefault'] extends false
-		? // : [O['default']] extends [undefined]
-		  F
+		? F
 		: IO['kind'] extends 'in'
 		? T
 		: IO['kind'] extends 'out'

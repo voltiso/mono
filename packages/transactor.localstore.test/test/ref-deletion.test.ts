@@ -23,6 +23,8 @@ const slug = s.string
 	)
 
 class Banana extends Doc('banana').with({
+	id: s.string,
+
 	public: {
 		name: s.string,
 		slug,
@@ -46,8 +48,12 @@ class Banana extends Doc('banana').with({
 	}
 }
 
-class BananaSlug extends Doc('bananaSlug').public({
-	banana: sStrongRef<'banana'>(),
+class BananaSlug extends Doc('bananaSlug').with({
+	id: s.string,
+
+	public: {
+		banana: sStrongRef<'banana'>(),
+	},
 }) {}
 
 declare module '@voltiso/transactor' {

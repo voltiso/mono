@@ -37,7 +37,7 @@ describe('StrongDocRef', () => {
 	it('assignable to DocRef<AnyDocTI>', () => {
 		expect.assertions(0)
 
-		class MyDoc extends Doc.public({ a: s.number }) {}
+		class MyDoc extends Doc.with({ public: { a: s.number } }) {}
 		// type X = WeakDocRef<MyDoc>
 		// $Assert.is<X, DocRef>()
 

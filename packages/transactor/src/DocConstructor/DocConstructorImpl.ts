@@ -2,14 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type {
-	$$Object,
-	IObject,
-	ISchema,
-	Schemable,
-	SchemaLike,
-} from '@voltiso/schemar.types'
-import { CallableConstructor } from '@voltiso/util'
+import type { IObject, SchemaLike } from '@voltiso/schemar.types'
+import { CallableConstructor, staticImplements } from '@voltiso/util'
 
 import type { IAggregatorHandlers } from '~/Aggregator'
 import { aggregate } from '~/Aggregator'
@@ -33,6 +27,7 @@ import type { AfterTrigger, Trigger } from '~/Trigger/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 import { defaultDocDerivedData } from './_/DocDerivedData'
+import type { $$DocConstructor } from './IDocConstructor'
 import { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
 // function mergeSchemas(
@@ -62,7 +57,7 @@ import { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 // 	return b.and(a as InferableObjectLike) as never
 // }
 
-// @staticImplements<OmitCall<IDocConstructor>>()
+@staticImplements<$$DocConstructor>()
 export class DocConstructorImpl implements $$Doc {
 	declare static [DTI]: DocTI
 
@@ -83,63 +78,63 @@ export class DocConstructorImpl implements $$Doc {
 
 	//
 
-	static id<S extends ISchema<string>>(schema: S): any {
-		return CallableConstructor({
-			constructor: class extends this {
-				static override readonly _: DocDerivedData = {
-					...super._,
-					id: schema,
-				}
-			},
+	// static id<S extends ISchema<string>>(schema: S): any {
+	// 	return CallableConstructor({
+	// 		constructor: class extends this {
+	// 			static override readonly _: DocDerivedData = {
+	// 				...super._,
+	// 				id: schema,
+	// 			}
+	// 		},
 
-			call: DocCall,
-		})
-	}
+	// 		call: DocCall,
+	// 	})
+	// }
 
-	static publicOnCreation<F extends Record<string, Schemable> | $$Object>(
-		schema: F,
-	): any {
-		return CallableConstructor({
-			constructor: class extends this {
-				static override readonly _: DocDerivedData = {
-					...super._,
+	// static publicOnCreation<F extends Record<string, Schemable> | $$Object>(
+	// 	schema: F,
+	// ): any {
+	// 	return CallableConstructor({
+	// 		constructor: class extends this {
+	// 			static override readonly _: DocDerivedData = {
+	// 				...super._,
 
-					publicOnCreation: super._.publicOnCreation.and(schema) as never,
-					// publicOnCreation: { ...super._.publicOnCreation, ...shape },
-				}
-			},
+	// 				publicOnCreation: super._.publicOnCreation.and(schema) as never,
+	// 				// publicOnCreation: { ...super._.publicOnCreation, ...shape },
+	// 			}
+	// 		},
 
-			call: DocCall,
-		})
-	}
+	// 		call: DocCall,
+	// 	})
+	// }
 
-	static public<F extends Record<string, Schemable>>(schema: F): any {
-		return CallableConstructor({
-			constructor: class extends this {
-				static override readonly _: DocDerivedData = {
-					...super._,
-					public: super._.public.and(schema) as never,
-					// public: { ...super._.public, ...schema },
-				}
-			},
+	// static public<F extends Record<string, Schemable>>(schema: F): any {
+	// 	return CallableConstructor({
+	// 		constructor: class extends this {
+	// 			static override readonly _: DocDerivedData = {
+	// 				...super._,
+	// 				public: super._.public.and(schema) as never,
+	// 				// public: { ...super._.public, ...schema },
+	// 			}
+	// 		},
 
-			call: DocCall,
-		})
-	}
+	// 		call: DocCall,
+	// 	})
+	// }
 
-	static private<F extends Record<string, Schemable>>(schema: F): any {
-		return CallableConstructor({
-			constructor: class extends this {
-				static override readonly _ = {
-					...super._,
-					private: super._.private.and(schema) as never,
-					// private: { ...super._.private, ...schema },
-				} as never
-			},
+	// static private<F extends Record<string, Schemable>>(schema: F): any {
+	// 	return CallableConstructor({
+	// 		constructor: class extends this {
+	// 			static override readonly _ = {
+	// 				...super._,
+	// 				private: super._.private.and(schema) as never,
+	// 				// private: { ...super._.private, ...schema },
+	// 			} as never
+	// 		},
 
-			call: DocCall,
-		})
-	}
+	// 		call: DocCall,
+	// 	})
+	// }
 
 	static withPlugin(plugin: DocBuilderPlugin<any>) {
 		return plugin.run(this as never)

@@ -5,24 +5,6 @@
 
 /** Check if `T[k]` is optional */
 export type IsOptional<
-	T extends object,
-	K extends keyof T,
-	True = true,
-	False = false,
-> = IsOptionalImpl<T, K, True, False>
-
-/** Check if `T[k]` is optional */
-export type IsOptional_<T, K, True = true, False = false> = IsOptionalImpl<
-	T,
-	// @ts-expect-error 😈😈😈
-	K,
-	True,
-	False
->
-
-//
-
-export type IsOptionalImpl<
 	T,
 	K extends keyof T,
 	True = true,
@@ -32,3 +14,15 @@ export type IsOptionalImpl<
 }
 	? False
 	: True
+
+/**
+ * Check if `T[k]` is optional
+ *
+ * - ⚠️ Prefer {@link IsOptional} - should be faster
+ */
+export type IsOptional_<T, K, True = true, False = false> = IsOptional<
+	T,
+	K & keyof T,
+	True,
+	False
+>

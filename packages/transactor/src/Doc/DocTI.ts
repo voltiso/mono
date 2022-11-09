@@ -44,7 +44,11 @@ export interface $$DocTI {
 export interface DocTI extends $$DocTI {
 	tag: DocTag | AnyDoc
 
-	id: SchemaLike<string> | undefined
+	id: SchemaLike<string> & {
+		isOptional: false
+		isStrictOptional: false
+		isReadonly: false
+	}
 
 	publicOnCreation: IObject
 	public: IObject

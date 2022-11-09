@@ -3,6 +3,7 @@
 
 import type { DeleteIt } from '@voltiso/util'
 import {
+	$AssumeType,
 	assert,
 	isDefined,
 	isDeleteIt,
@@ -13,8 +14,8 @@ import {
 import { databaseUpdate } from '~/common'
 import { withoutId, withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
-import type { $$Doc, IDoc } from '~/Doc/IDoc'
-import { IndexedDoc } from '~/Doc/IndexedDoc'
+import type { $$Doc, Doc } from '~/Doc'
+import { IndexedDoc } from '~/Doc'
 import type { WithDocRef } from '~/DocRef'
 import {
 	getAfterTriggers,
@@ -150,6 +151,7 @@ async function rawUpdate(
 	if (needTransaction) {
 		data = await ctx.transactor.runTransaction(async () => {
 			const doc = await update(ctx, updates, options)
+			$AssumeType<Doc | null | undefined, $$Doc | null | undefined>(doc)
 			return doc ? (doc.dataWithId() as never) : null
 		})
 	} else {
@@ -287,7 +289,7 @@ function transactionUpdate(
 	this: WithTransactor & WithDocRef & WithTransaction & WithDb,
 	updates: Updates,
 	options: Partial<UpdateOptions>,
-): PromiseLike<IDoc | null | undefined> {
+): PromiseLike<$$Doc | null | undefined> {
 	assert(updates)
 	const { transaction, docRef } = this
 
@@ -320,13 +322,13 @@ export function update(
 	ctx: Ctx,
 	updates: UpdatesRecord,
 	options?: Partial<UpdateOptions>,
-): PromiseLike<IDoc | undefined>
+): PromiseLike<$$Doc | undefined>
 
 export function update(
 	ctx: Ctx,
 	updates: RootReplaceIt,
 	options?: Partial<UpdateOptions>,
-): PromiseLike<IDoc>
+): PromiseLike<$$Doc>
 
 export function update(
 	ctx: Ctx,
@@ -338,13 +340,13 @@ export function update(
 	ctx: Ctx,
 	updates: Updates,
 	options?: Partial<UpdateOptions>,
-): PromiseLike<IDoc | null | undefined>
+): PromiseLike<$$Doc | null | undefined>
 
 export function update(
 	ctx: Ctx,
 	updates: Updates,
 	options: Partial<UpdateOptions> = {},
-): PromiseLike<IDoc | null | undefined> {
+): PromiseLike<$$Doc | null | undefined> {
 	assert(updates)
 
 	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()

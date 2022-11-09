@@ -56,7 +56,12 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 		if (!(x instanceof this.getConstructor)) {
 			issues.push(
 				new ValidationIssue({
-					name: 'instanceof',
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name
+						? // eslint-disable-next-line security/detect-object-injection
+						  `instanceof ${this[OPTIONS].name}`
+						: 'instanceof',
+
 					expected: (this.getConstructor as unknown as Constructor).name,
 					// eslint-disable-next-line etc/no-internal
 					received: _getInstanceConstructorName(x),

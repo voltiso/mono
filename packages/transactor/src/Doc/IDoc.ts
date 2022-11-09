@@ -9,7 +9,7 @@ import type { WeakDocRef } from '~/DocRef'
 import type { DocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 
-import type { IDocConstructorNoBuilder } from '../DocConstructor'
+import type { $$DocConstructor } from '..'
 import type { DocContext } from './DocContext'
 import type { DocTI, DTI } from './DocTI'
 
@@ -28,7 +28,7 @@ export interface $$Doc {
 export interface IDoc extends $$Doc {
 	readonly [DTI]: DocTI
 
-	readonly constructor: IDocConstructorNoBuilder
+	readonly constructor: $$DocConstructor
 
 	readonly id: DocIdString
 	readonly path: DocPath
@@ -44,8 +44,9 @@ export interface IDoc extends $$Doc {
 
 	methods: {}
 
-	// get schemaWithoutId(): SchemaLike
-	// get schemaWithId(): SchemaLike
+	get aggregates(): any
+
+	readonly __voltiso: any
 
 	get aggregateSchemas(): Record<string, SchemaLike>
 

@@ -154,6 +154,8 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		if (!Array.isArray(x)) {
 			issues.push(
 				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
 					expectedDescription: 'be array',
 					received: x,
 				}),
@@ -162,6 +164,9 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
+
 						expectedDescription: `be of length at least ${
 							this.getMinLength as number
 						}`,
@@ -174,6 +179,9 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			if (isDefined(this.getMaxLength) && x.length > this.getMaxLength) {
 				issues.push(
 					new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
+
 						expectedDescription: `be of length at most ${
 							this.getMaxLength as number
 						}`,

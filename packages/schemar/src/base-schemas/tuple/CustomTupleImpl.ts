@@ -118,7 +118,12 @@ export class CustomTupleImpl<
 		if (!Array.isArray(x)) {
 			issues.push(
 				new ValidationIssue({
-					name: 'Array.isArray',
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name
+						? // eslint-disable-next-line security/detect-object-injection
+						  `Array.isArray(${this[OPTIONS].name})`
+						: 'Array.isArray',
+
 					expected: true,
 					received: false,
 				}),
@@ -127,7 +132,12 @@ export class CustomTupleImpl<
 			if (this.getShape.length !== x.length)
 				issues.push(
 					new ValidationIssue({
-						name: 'tuple size',
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name
+							? // eslint-disable-next-line security/detect-object-injection
+							  `${this[OPTIONS].name} tuple size`
+							: 'tuple size',
+
 						expected: this.getShape.length,
 						received: x.length,
 					}),

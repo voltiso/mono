@@ -45,8 +45,12 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-class ClientXyz extends Doc('clientXyz').public({
-	asd: s.string,
+class ClientXyz extends Doc('clientXyz').with({
+	id: s.string,
+
+	public: {
+		asd: s.string,
+	},
 }) {}
 
 describe('emu-ts', () => {

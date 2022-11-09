@@ -1,11 +1,11 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IDoc } from '~/Doc'
+import type { Doc } from '~/Doc'
 
 export type InferMethods<Inst> = Inst extends unknown
 	? {
-			[k in Exclude<keyof Inst, keyof IDoc> as Inst[k] extends (
+			[k in Exclude<keyof Inst, keyof Doc> as Inst[k] extends (
 				...args: never[]
 			) => Promise<unknown>
 				? k

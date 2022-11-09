@@ -12,15 +12,15 @@ export type ValidationIssueExpectedValue =
 	  }
 
 export type ValidationIssueParams = {
-	path?: (keyof any)[]
-	name?: string
+	path?: (keyof any)[] | undefined
+	name?: string | undefined
 } & (
 	| {
 			received: unknown
-			receivedDescription?: string
+			receivedDescription?: string | undefined
 	  }
 	| {
-			received?: unknown
+			received?: unknown | undefined
 			receivedDescription: string
 	  }
 ) &
@@ -31,13 +31,13 @@ export type ValidationIssueParams = {
 
 export interface ValidationIssue {
 	path: (keyof any)[]
-	name?: string
+	name?: string | undefined
 
-	expectedOneOf?: unknown[]
-	expectedDescription?: string
+	expectedOneOf?: unknown[] | undefined
+	expectedDescription?: string | undefined
 
-	received?: unknown
-	receivedDescription?: string
+	received?: unknown | undefined
+	receivedDescription?: string | undefined
 
 	toString(options?: { skipReceived?: boolean | undefined } | undefined): string
 }

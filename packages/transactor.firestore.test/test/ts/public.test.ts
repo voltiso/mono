@@ -8,8 +8,12 @@ import { firestore, firestoreModule } from './common'
 
 const db = new Transactor(firestore, firestoreModule)
 
-class Doctor extends Doc.private({
-	specialty: s.string,
+class Doctor extends Doc.with({
+	id: s.string,
+
+	private: {
+		specialty: s.string,
+	},
 }) {}
 
 const doctors = db('tractorXyz').register(Doctor)

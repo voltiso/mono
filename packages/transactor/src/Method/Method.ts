@@ -3,10 +3,10 @@
 
 import type { Bivariant } from '@voltiso/util'
 
-import type { $$Doc, IDoc } from '../Doc'
+import type { $$Doc } from '../Doc'
 
 export type Method<
-	Doc extends $$Doc = IDoc,
+	Doc extends $$Doc = $$Doc,
 	ARGS extends unknown[] = any,
 	R = unknown,
 > = (this: Doc, ...args: ARGS) => R | PromiseLike<R>

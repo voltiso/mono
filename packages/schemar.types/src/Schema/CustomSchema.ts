@@ -68,6 +68,10 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 				? undefined
 				: never)
 
+	// GET
+
+	get getName(): string | undefined
+
 	get isOptional(): this[OPTIONS]['isOptional']
 	get isStrictOptional(): this[OPTIONS]['isStrictOptional']
 
@@ -82,6 +86,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	[EXTENDS](other: $$Schema): boolean
 
 	// builder
+
+	/** Specify name for nicer messages */
+	withName(name: string): this
 
 	/**
 	 * Define object property to be optional or undefined

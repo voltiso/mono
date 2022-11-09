@@ -25,6 +25,8 @@ declare module '@voltiso/transactor' {
 }
 
 class Client extends Doc.with({
+	id: s.string,
+
 	publicOnCreation: {
 		rootTaskId: s.string.default('def'),
 	},

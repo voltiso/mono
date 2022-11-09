@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/rpc",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -39,7 +39,9 @@
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist"
+    "dist",
+    "client/",
+    "server/"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
@@ -55,6 +57,7 @@
     "build:cjs": "v buildCjs",
     "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
+    "compatDirs": "v compatDirs write",
     "prepublishOnly": "v prepublishOnly",
     "__________MISC": "__________",
     "clean": "rimraf dist"

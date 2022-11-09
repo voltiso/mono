@@ -5,8 +5,9 @@ import * as s from '@voltiso/schemar'
 import type { IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
-import type { IdBrand } from '..'
-import type { IDocConstructor } from '../DocConstructor'
+import type { DocIdBrand } from '~/brand'
+import type { $$DocConstructor } from '~/DocConstructor'
+
 import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
 import type { GetData } from './_/GetData'
 import type { CustomDoc } from './Doc'
@@ -32,6 +33,9 @@ describe('doc', () => {
 	it('generic - DocTILike', <TI extends DocTI>() => {
 		expect.assertions(0)
 
+		$Assert.is<keyof IDoc, keyof CustomDoc<any, any>>()
+		$Assert.is<keyof CustomDoc<any, any>, keyof IDoc>()
+
 		$Assert.is<Doc, IDoc>()
 		$Assert.is<IDoc, Doc>()
 		// $Assert.is<Doc<TI>, IDoc>()
@@ -40,7 +44,7 @@ describe('doc', () => {
 		$Assert.is<CustomDoc<TI, 'inside'>, $$Doc>()
 
 		type DocId = IDoc['id']
-		$Assert($Is<DocId>().identicalTo<string & IdBrand>())
+		$Assert($Is<DocId>().identicalTo<string & DocIdBrand>())
 
 		// $Assert.is<DocBase<DocTI, 'outside'>, IDoc>()
 
@@ -73,13 +77,17 @@ describe('doc', () => {
 	it('infers ref data', () => {
 		expect.assertions(0)
 
-		const PatientBase = Doc.public({
-			profile: {
-				name: s.string,
+		const PatientBase = Doc.with({
+			public: {
+				profile: {
+					name: s.string,
+				},
 			},
 		})
 
-		$Assert.is<typeof PatientBase, IDocConstructor>()
+		// $Assert.is<typeof PatientBase, IDocConstructor>()
+		$Assert.is<typeof PatientBase, $$DocConstructor>()
+
 		// $Assert.is<InstanceType<typeof PatientBase>, IDoc>()
 
 		// class Patient extends PatientBase {}

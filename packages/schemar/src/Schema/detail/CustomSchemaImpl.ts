@@ -73,6 +73,13 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return throwTypeOnlyFieldError()
 	}
 
+	// GET
+
+	get getName(): string | undefined {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].name
+	}
+
 	get isOptional(): this[OPTIONS]['isOptional'] {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isOptional as never
@@ -190,7 +197,7 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	getIssues(value: unknown): ValidationIssue[] {
 		return [
 			...this._getIssues(value),
-			...processCustomChecks(this.getCustomChecks, value),
+			...processCustomChecks(this.getName, this.getCustomChecks, value),
 		]
 	}
 
@@ -300,6 +307,12 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this._cloneWithOptions({
 			customFixes: [...this.getCustomFixes, { fix: fixFunc }],
 		}) as never
+	}
+
+	// BUILDER
+
+	withName(name: string): this {
+		return this._cloneWithOptions({ name }) as never
 	}
 
 	get optional(): never {

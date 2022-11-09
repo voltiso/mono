@@ -29,8 +29,12 @@ class Doctor extends Doc('xyz').with({
 	},
 }) {}
 
-class Patient extends Doc.public({
-	doctor: Doctor.schemaWithId.optional,
+class Patient extends Doc.with({
+	id: s.string,
+
+	public: {
+		doctor: Doctor.schemaWithId.optional,
+	},
 }) {}
 
 const patients = db('patient').register(Patient)

@@ -13,8 +13,7 @@ import type {
 import { getGetPathMatches } from '~/common'
 import type { $$Doc } from '~/Doc'
 import type { IndexedDoc } from '~/Doc/IndexedDoc'
-import type { $$DocConstructor, IDocConstructor } from '~/DocConstructor'
-import { emptyDocDerivedSchema } from '~/DocConstructor/_/DocDerivedData'
+import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import type { Method } from '~/Method'
 import { concatPath } from '~/Path'
 import { DocPattern } from '~/Path/Path'
@@ -36,22 +35,22 @@ export class DocRefPattern {
 
 	/** High-level API */
 	register<Cls extends $$DocConstructor>(cls: Cls): this {
-		const { _ } = cls as unknown as IDocConstructor
+		const { _ } = cls as unknown as DocConstructor
 
-		if (_.publicOnCreation !== emptyDocDerivedSchema)
-			this.publicOnCreation(_.publicOnCreation as never)
+		// if (_.publicOnCreation !== emptyDocDerivedSchema)
+		this.publicOnCreation(_.publicOnCreation as never)
 
-		if (_.suppressMissingSchemaError || _.public !== emptyDocDerivedSchema)
-			this.public(_.public as never)
+		// if (_.suppressMissingSchemaError || _.public !== emptyDocDerivedSchema)
+		this.public(_.public as never)
 
-		if (_.private !== emptyDocDerivedSchema) this.private(_.private as never)
+		// if (_.private !== emptyDocDerivedSchema)
+		this.private(_.private as never)
 
 		if (Object.keys(_.aggregates).length > 0)
 			this.aggregates(_.aggregates as never)
 
-		if (_.id !== undefined) {
-			this.id(_.id as never)
-		}
+		// if (_.id !== undefined)
+		this.id(_.id as never)
 
 		for (const after of _.afters) this.after(after as never)
 

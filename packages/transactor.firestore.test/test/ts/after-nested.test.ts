@@ -17,14 +17,18 @@ const db = new Transactor(firestore, firestoreModule)
 const rand = create('voltiso')
 let cutoff = 0.2
 
-class Doctor extends Doc.public({
-	num: s.number.default(0),
-	a: s.number.default(0),
-	b: s.number.default(0),
-	c: s.number.default(0),
-	d: s.number.default(0),
-	e: s.number.default(0),
-	opt: s.number.optional,
+class Doctor extends Doc.with({
+	id: s.string,
+
+	public: {
+		num: s.number.default(0),
+		a: s.number.default(0),
+		b: s.number.default(0),
+		c: s.number.default(0),
+		d: s.number.default(0),
+		e: s.number.default(0),
+		opt: s.number.optional,
+	},
 })
 
 	.afterUpdate('a', async function (p) {

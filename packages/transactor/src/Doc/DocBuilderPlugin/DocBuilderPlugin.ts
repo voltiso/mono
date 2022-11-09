@@ -4,7 +4,7 @@
 import type { IsUnion } from '@voltiso/util'
 
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
-import type { IDocConstructor } from '~/DocConstructor'
+import type { $$DocConstructor } from '~/DocConstructor'
 import type { $$DocRelated, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
@@ -17,5 +17,5 @@ export interface DocBuilderPlugin<R extends $$DocRelated = AnyDoc> {
 
 	readonly name?: keyof DocBuilderPluginResult<any>
 
-	run(docConstructor: any): IDocConstructor
+	run(docConstructor: any): $$DocConstructor
 }

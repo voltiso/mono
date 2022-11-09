@@ -10,9 +10,13 @@ import { firestore, firestoreModule } from './common/firestore'
 
 const db = new Transactor(firestore, firestoreModule)
 
-class A extends Doc('a').public({
-	a: 1,
-	b: sStrongRef<'b'>(),
+class A extends Doc('a').with({
+	id: s.string,
+
+	public: {
+		a: 1,
+		b: sStrongRef<'b'>(),
+	},
 }) {
 	@method
 	async setFriend(b: DocRef<B>) {
@@ -20,9 +24,13 @@ class A extends Doc('a').public({
 	}
 }
 
-class B extends Doc('b').public({
-	b: 2,
-	c: sStrongRef<'c'>(),
+class B extends Doc('b').with({
+	id: s.string,
+
+	public: {
+		b: 2,
+		c: sStrongRef<'c'>(),
+	},
 }) {
 	@method
 	async setFriend(c: DocRef<C>) {
@@ -30,9 +38,13 @@ class B extends Doc('b').public({
 	}
 }
 
-class C extends Doc('c').public({
-	c: 3,
-	d: sStrongRef<'d'>(),
+class C extends Doc('c').with({
+	id: s.string,
+
+	public: {
+		c: 3,
+		d: sStrongRef<'d'>(),
+	},
 }) {
 	@method
 	async setFriend(d: DocRef<D>) {
@@ -40,9 +52,13 @@ class C extends Doc('c').public({
 	}
 }
 
-class D extends Doc('d').public({
-	d: 4,
-	e: sStrongRef<'e'>(),
+class D extends Doc('d').with({
+	id: s.string,
+
+	public: {
+		d: 4,
+		e: sStrongRef<'e'>(),
+	},
 }) {
 	@method
 	async setFriend(e: DocRef<E>) {
@@ -50,9 +66,13 @@ class D extends Doc('d').public({
 	}
 }
 
-class E extends Doc('e').public({
-	d: s.number,
-	f: sStrongRef<'f'>(),
+class E extends Doc('e').with({
+	id: s.string,
+
+	public: {
+		d: s.number,
+		f: sStrongRef<'f'>(),
+	},
 }) {
 	@method
 	async setFriend(f: DocRef<F>) {
@@ -60,9 +80,13 @@ class E extends Doc('e').public({
 	}
 }
 
-class F extends Doc('f').public({
-	d: s.number,
-	g: sStrongRef<'g'>(),
+class F extends Doc('f').with({
+	id: s.string,
+
+	public: {
+		d: s.number,
+		g: sStrongRef<'g'>(),
+	},
 }) {
 	@method
 	async setFriend(g: DocRef<G>) {
@@ -70,9 +94,13 @@ class F extends Doc('f').public({
 	}
 }
 
-class G extends Doc('g').public({
-	d: s.number,
-	a: sStrongRef<'a'>(),
+class G extends Doc('g').with({
+	id: s.string,
+
+	public: {
+		d: s.number,
+		a: sStrongRef<'a'>(),
+	},
 }) {
 	@method
 	async setFriend(a: DocRef<A>) {

@@ -6,7 +6,7 @@ import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
 import type { InferTI } from '~/CollectionRef'
-import type { DocConstructor, IDocConstructorNoBuilder } from '~/DocConstructor'
+import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import type { GetDocRef } from '~/DocRef'
 import type { $$DocRelatedLike, GetDocTag, GetDocTI } from '~/DocRelated'
 import type { CustomDocPath } from '~/Path'
@@ -41,7 +41,7 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	readonly [DTI]: TI
 
-	readonly constructor: IDocConstructorNoBuilder
+	readonly constructor: $$DocConstructor
 
 	readonly id: DocIdString<TI>
 	// readonly id: Id<DocBase<TI, Ctx>>

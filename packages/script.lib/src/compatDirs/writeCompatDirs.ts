@@ -24,7 +24,7 @@ export async function writeCompatDirs() {
 		} catch {}
 
 		const data = {
-			types: `../dist/esm/${name}/index.d.ts`,
+			types: `../dist/cjs/${name}/index.d.ts`,
 			module: `../dist/esm/${name}/index.js`,
 			main: `../dist/cjs/${name}/index.js`,
 			sideEffects: false,

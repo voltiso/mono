@@ -10,7 +10,7 @@ import type { DocRef } from '~/DocRef'
 
 import type { UpdatesFromData } from './UpdatesFromData'
 
-class MyDoc extends Doc.public({ num: s.number }) {}
+class MyDoc extends Doc.with({ public: { num: s.number } }) {}
 
 describe('Doc util', () => {
 	it('UpdatesFromData', () => {
