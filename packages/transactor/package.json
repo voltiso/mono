@@ -62,7 +62,7 @@
     "@voltiso/schemar": "workspace:^",
     "@voltiso/schemar.types": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "zone.js": "^0.11.8"
+    "zone.js": "^0.12.0"
   },
   "__________MISC": "__________",
   "engines": {

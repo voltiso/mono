@@ -36,7 +36,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "esbuild-register": "^3.3.3"
+    "esbuild-register": "^3.4.1"
   },
   "peerDependencies": {
     "esbuild": ">= 0.14.49"

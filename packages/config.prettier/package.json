@@ -47,7 +47,7 @@
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "jest": "^29.2.2",
+    "jest": "^29.3.1",
     "prettier": "^2.7.1"
   }
 }

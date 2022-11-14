@@ -35,7 +35,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@typescript-eslint/utils": "^5.42.0",
+    "@typescript-eslint/utils": "^5.43.0",
     "builtins": "^5.0.1",
     "eslint-module-utils": "^2.7.4",
     "is-core-module": "^2.11.0",

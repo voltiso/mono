@@ -48,8 +48,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@voltiso/config.jest.lib": "workspace:^",
     "esbuild": "^0.15.13",
-    "flow-remove-types": "^2.192.0",
-    "jest-environment-jsdom": "^29.2.2",
+    "flow-remove-types": "^2.193.0",
+    "jest-environment-jsdom": "^29.3.1",
     "react": "^18.2.0",
     "react-native": "^0.70.5"
   },

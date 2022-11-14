@@ -52,7 +52,7 @@
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transactor": "workspace:^",
-    "firebase-admin": "^11.2.0"
+    "firebase-admin": "^11.2.1"
   },
   "__________MISC": "__________",
   "engines": {
