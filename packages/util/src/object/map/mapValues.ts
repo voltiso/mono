@@ -11,7 +11,7 @@ export function mapValues<Obj extends object, B>(
 	const result = {} as Record<keyof Obj, B>
 
 	for (const [key, value] of getEntries(obj)) {
-		setProperty(result, key, mapping(value) as never)
+		setProperty(result, key, mapping(value as never) as never)
 	}
 
 	return result

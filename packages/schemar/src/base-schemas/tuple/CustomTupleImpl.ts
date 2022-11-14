@@ -7,6 +7,7 @@ import type {
 	GetDeepShape_,
 	SchemaLike,
 	TupleOptions,
+	ValidateOptions,
 } from '@voltiso/schemar.types'
 import {
 	EXTENDS,
@@ -94,26 +95,26 @@ export class CustomTupleImpl<
 		else return super[EXTENDS](other)
 	}
 
-	protected override _fixImpl(x: unknown): unknown {
-		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
-
+	protected override _fix(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): unknown {
 		if (Array.isArray(x) && x.length === this.getShape.length) {
 			// eslint-disable-next-line no-param-reassign
 			x = x.map((element, idx) =>
 				// eslint-disable-next-line security/detect-object-injection
-				schema(this.getShape[idx]).tryValidate(element),
+				schema(this.getShape[idx]).tryValidate(element, options),
 			)
 		}
-
-		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
 
 		return x
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		let issues = super._getIssuesImpl(x)
+	override _getIssues(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): ValidationIssue[] {
+		let issues = []
 
 		if (!Array.isArray(x)) {
 			issues.push(
@@ -147,7 +148,7 @@ export class CustomTupleImpl<
 				// eslint-disable-next-line security/detect-object-injection
 				const t = this.getShape[idx] as SchemaLike
 				// eslint-disable-next-line security/detect-object-injection
-				const r = schema(t).exec(x[idx])
+				const r = schema(t).exec(x[idx], options)
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [idx, ...issue.path]

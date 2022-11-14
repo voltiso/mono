@@ -80,8 +80,8 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	override _getIssuesImpl(x: unknown): t.ValidationIssue[] {
-		const issues = super._getIssuesImpl(x)
+	override _getIssues(x: unknown): t.ValidationIssue[] {
+		const issues: ValidationIssue[] = []
 
 		if (!Array.isArray(x))
 			issues.push(

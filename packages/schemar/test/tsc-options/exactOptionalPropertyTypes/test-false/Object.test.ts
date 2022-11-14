@@ -9,7 +9,7 @@ import type {
 	Output,
 	Schema,
 } from '@voltiso/schemar.types'
-import type { IsIdentical, _ } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import * as s from '~'

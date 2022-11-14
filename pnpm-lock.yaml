@@ -176,7 +176,7 @@ importers:
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/transform': workspace:^
-      '@voltiso/util': workspace:^47.0.0
+      '@voltiso/util': workspace:^
       eslint: ^8.27.0
       eslint-define-config: ^1.11.0
       rimraf: ^3.0.2
@@ -653,7 +653,7 @@ importers:
 
   packages/observer:
     specifiers:
-      '@voltiso/assertor': workspace:^3.0.0
+      '@voltiso/assertor': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/schemar': workspace:^
@@ -704,9 +704,7 @@ importers:
       express: ^4.18.2
       get-port: ^6.1.2
       jest: ^29.2.2
-      jest-mock-console: ^2.0.0
       rimraf: ^3.0.2
-      superjson: ^1.11.0
     dependencies:
       '@voltiso/util': link:../util
       cross-fetch: 3.1.5
@@ -723,9 +721,7 @@ importers:
       express: 4.18.2
       get-port: 6.1.2
       jest: 29.2.2_@types+node@18.11.9
-      jest-mock-console: 2.0.0_jest@29.2.2
       rimraf: 3.0.2
-      superjson: 1.11.0
 
   packages/schemar:
     specifiers:
@@ -7909,13 +7905,6 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /copy-anything/3.0.2:
-    resolution: {integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==}
-    engines: {node: '>=12.13'}
-    dependencies:
-      is-what: 4.1.7
-    dev: true
-
   /copy-descriptor/0.1.1:
     resolution: {integrity: sha512-XgZ0pFcakEUlbwQEVNg3+QAis1FyTL3Qel9FYy8pSkQqoG3PNoT0bOCQtOXcOkur21r2Eq2kI+IE+gsmAEVlYw==}
     engines: {node: '>=0.10.0'}
@@ -12177,11 +12166,6 @@ packages:
     dependencies:
       call-bind: 1.0.2
 
-  /is-what/4.1.7:
-    resolution: {integrity: sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==}
-    engines: {node: '>=12.13'}
-    dev: true
-
   /is-windows/0.2.0:
     resolution: {integrity: sha512-n67eJYmXbniZB7RF4I/FTjK1s6RPOCTxhYrVYLRaCt3lF0mpWZPKr3T2LSZAqyjQsxR2qMmGYXXzK0YWwcPM1Q==}
     engines: {node: '>=0.10.0'}
@@ -12711,14 +12695,6 @@ packages:
       pretty-format: 29.2.1
       slash: 3.0.0
       stack-utils: 2.0.5
-
-  /jest-mock-console/2.0.0_jest@29.2.2:
-    resolution: {integrity: sha512-7zrKtXVut+6doalosFxw/2O9spLepQJ9VukODtyLIub2fFkWKe1TyQrxr/GyQogTQcdkHfhvFJdx1OEzLqf/mw==}
-    peerDependencies:
-      jest: '>= 22.4.2'
-    dependencies:
-      jest: 29.2.2_@types+node@18.11.9
-    dev: true
 
   /jest-mock/29.2.2:
     resolution: {integrity: sha512-1leySQxNAnivvbcx0sCB37itu8f4OX2S/+gxLAV4Z62shT4r4dTG9tACDywUAEZoLSr36aYUTsVp3WKwWt4PMQ==}
@@ -17704,13 +17680,6 @@ packages:
 
   /sudo-prompt/9.2.1:
     resolution: {integrity: sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==}
-
-  /superjson/1.11.0:
-    resolution: {integrity: sha512-6PfAg1FKhqkwWvPb2uXhH4MkMttdc17eJ91+Aoz4s1XUEDZFmLfFx/xVA3wgkPxAGy5dpozgGdK6V/n20Wj9yg==}
-    engines: {node: '>=10'}
-    dependencies:
-      copy-anything: 3.0.2
-    dev: true
 
   /superstatic/8.0.0:
     resolution: {integrity: sha512-PqlA2xuEwOlRZsknl58A/rZEmgCUcfWIFec0bn10wYE5/tbMhEbMXGHCYDppiXLXcuhGHyOp1IimM2hLqkLLuw==}

@@ -8,6 +8,7 @@ import type {
 	CustomFix,
 	CustomSchema,
 	DefaultSchemaOptions,
+	GetIssuesOptions,
 	Schemable,
 	SchemaLike,
 	SchemaOptions,
@@ -25,14 +26,20 @@ import {
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
 import type {
-	AtLeast1,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	Merge2,
 	Override,
 	PARTIAL_OPTIONS,
 } from '@voltiso/util'
-import { clone, final, isDefined, OPTIONS, stringFrom } from '@voltiso/util'
+import {
+	clone,
+	final,
+	isDefined,
+	OPTIONS,
+	overrideIfDefined,
+	stringFrom,
+} from '@voltiso/util'
 
 import { union } from '~/base-schemas/union'
 import { schema } from '~/core-schemas'
@@ -53,7 +60,7 @@ export interface CustomSchemaImpl<O> {
 	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
 }
 
-export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
+export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>
 {
 	[OPTIONS]: Override<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
@@ -161,25 +168,24 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return r as never
 	}
 
-	protected _getIssuesImpl(_x: unknown): ValidationIssue[] {
+	protected _getIssues(
+		_x: unknown,
+		_options?: Partial<GetIssuesOptions> | undefined,
+	): ValidationIssue[] {
 		return []
 	}
 
-	protected _getIssues(x: unknown): ValidationIssue[] {
-		// if (typeof x === 'undefined' && this.hasDefault) return []
-		return this._getIssuesImpl(x)
-	}
-
-	protected _fixImpl(x: unknown): unknown {
-		return x as never
+	protected _fix(
+		x: unknown,
+		_options?: Partial<GetIssuesOptions> | undefined,
+	): unknown {
+		return x
 	}
 
 	tryValidate<X>(
 		x: X,
-		// options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<GetIssuesOptions> | undefined,
 	): X | this[OPTIONS]['Output'] {
-		// const { fix } = { ...defaultValidateOptions, ...options }
-
 		let result = x
 
 		if (typeof result === 'undefined' && this.hasDefault)
@@ -191,12 +197,15 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			if (isDefined(nextValue)) result = nextValue as never
 		}
 
-		return this._fixImpl(result as never) as never
+		return this._fix(result as never, options) as never
 	}
 
-	getIssues(value: unknown): ValidationIssue[] {
+	getIssues(
+		value: unknown,
+		options?: Partial<GetIssuesOptions> | undefined,
+	): ValidationIssue[] {
 		return [
-			...this._getIssues(value),
+			...this._getIssues(value, options),
 			...processCustomChecks(this.getName, this.getCustomChecks, value),
 		]
 	}
@@ -205,26 +214,25 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		value: unknown,
 		options?: Partial<ValidateOptions> | undefined,
 	): ValidationResult<this[OPTIONS]['Output']> {
-		const { fix } = { ...defaultValidateOptions, ...options }
+		const { fix } = overrideIfDefined(defaultValidateOptions, options)
+
+		// const finalValue = this.tryValidate(value, options)
 
 		const finalValue = fix
 			? (this.tryValidate(value) as never)
 			: (value as never)
 
-		const issues = this.getIssues(finalValue)
+		const issues = this.getIssues(finalValue, options)
 
-		if (issues.length === 0)
-			return {
-				isValid: true,
-				value: finalValue,
-				issues: [],
-			}
-		else
-			return {
-				isValid: false,
-				value: finalValue,
-				issues: issues as AtLeast1<ValidationIssue>,
-			}
+		let isValid = true
+
+		for (const issue of issues) if (issue.severity === 'error') isValid = false
+
+		return {
+			isValid,
+			value: finalValue,
+			issues: issues as never,
+		}
 	}
 
 	validate(x: unknown, options?: Partial<ValidateOptions> | undefined): never {
@@ -233,12 +241,18 @@ export class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return r.value as never
 	}
 
-	isFixable(x: unknown): x is this[OPTIONS]['Input'] {
-		return this.exec(x).isValid
+	isFixable(
+		x: unknown,
+		options?: Partial<GetIssuesOptions> | undefined,
+	): x is this[OPTIONS]['Input'] {
+		return this.exec(x, options).isValid
 	}
 
-	isValid(x: unknown): x is this[OPTIONS]['Output'] {
-		return this.getIssues(x).length === 0
+	isValid(
+		x: unknown,
+		options?: Partial<GetIssuesOptions> | undefined,
+	): x is this[OPTIONS]['Output'] {
+		return this.getIssues(x, options).length === 0
 	}
 
 	[EXTENDS](other: SchemaLike): boolean {

@@ -49,9 +49,7 @@ describe('union', () => {
 
 		expect(s.number.or(undefined).isValid(undefined)).toBeTruthy()
 
-		expect(
-			s.number.or(undefined).validate(undefined, { fix: false }),
-		).toBeUndefined()
+		expect(s.number.or(undefined).isValid(undefined)).toBeTruthy()
 	})
 
 	it('fix', () => {

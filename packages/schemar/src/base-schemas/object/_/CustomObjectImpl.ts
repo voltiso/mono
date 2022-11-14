@@ -14,14 +14,16 @@ import type {
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
 	Schemable,
+	ValidateOptions,
 } from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
 import {
+	defaultValidateOptions,
 	EXTENDS,
 	getDeepShape,
 	isUnknownObject,
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
+import * as t from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	$AssumeType,
@@ -187,9 +189,14 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		} else return super[EXTENDS](other)
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
+	override _getIssues(
+		x: unknown,
+		partialOptions?: Partial<ValidateOptions> | undefined,
+	): ValidationIssue[] {
+		const options = { ...defaultValidateOptions, ...partialOptions }
+
 		// console.log('CustomObjectImpl._getIssuesImpl', this[OPTIONS])
-		let issues = super._getIssuesImpl(x)
+		let issues: ValidationIssue[] = []
 
 		if (!isObject(x)) {
 			issues.push(
@@ -205,8 +212,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			if (this[OPTIONS].isPlain && !isPlainObject(x)) {
 				issues.push(
 					new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
-					name: this[OPTIONS].name,
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
 						expectedDescription: 'be plain object',
 						received: x,
 					}),
@@ -242,7 +249,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				const value = x[k as keyof typeof x]
 
-				const r = childSchema.exec(value)
+				const r = childSchema.exec(value, options)
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [k, ...issue.path]
@@ -254,93 +261,101 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			for (const [key, value] of getEntries(x as Record<keyof any, unknown>, {
 				includeSymbols: true,
 			})) {
-				if (!hasProperty(this.getShape, key)) {
-					//! util TODO: hasProperty should only type-guard for literal types
+				// TODO: `util` - hasProperty should only type-guard for literal types
+				if (hasProperty(this.getShape, key)) continue
+
+				// eslint-disable-next-line security/detect-object-injection
+				if (this[OPTIONS].indexSignatures.length === 0) {
+					const issue = new ValidationIssue({
+						// eslint-disable-next-line security/detect-object-injection
+						name: this[OPTIONS].name,
+						path: [key],
+						expectedDescription: 'not be present',
+						received: x[key as never],
+					})
+
+					if (
+						options.onUnknownProperty === 'error' ||
+						options.onUnknownProperty === 'warning'
+					) {
+						issue.severity = options.onUnknownProperty
+						issues.push(issue)
+					} else if (typeof options.onUnknownProperty === 'function') {
+						options.onUnknownProperty(issue)
+					}
+				} else {
+					let keyIssues: ValidationIssue[] = []
+					let valueIssues: ValidationIssue[] = []
+
 					// eslint-disable-next-line security/detect-object-injection
-					if (this[OPTIONS].indexSignatures.length === 0)
+					for (const { keySchema, valueSchema } of this[OPTIONS]
+						.indexSignatures) {
+						const sKeySchema = schema(keySchema) as unknown as ISchema
+						const sValueSchema = schema(valueSchema) as unknown as ISchema
+
+						const keyResult = sKeySchema.exec(key, options)
+
+						if (!keyResult.isValid) {
+							keyIssues.push(
+								new ValidationIssue({
+									// eslint-disable-next-line security/detect-object-injection
+									name: this[OPTIONS].name,
+									path: [key],
+									expectedDescription: `match index signature key: ${sKeySchema.toString()}`,
+									received: key,
+								}),
+							)
+
+							for (const childIssue of keyResult.issues) {
+								childIssue.path = [key, ...childIssue.path]
+							}
+
+							keyIssues = [...keyIssues, ...keyResult.issues]
+							continue
+						}
+
+						const valueResult = sValueSchema.exec(value, options)
+
+						if (!valueResult.isValid) {
+							valueIssues.push(
+								new ValidationIssue({
+									// eslint-disable-next-line security/detect-object-injection
+									name: this[OPTIONS].name,
+									path: [key],
+									expectedDescription: `match index signature value: ${sValueSchema.toString()}`,
+									received: value,
+								}),
+							)
+
+							for (const childIssue of valueResult.issues) {
+								childIssue.path = [key, ...childIssue.path]
+							}
+
+							valueIssues = [...valueIssues, ...valueResult.issues]
+						}
+					}
+
+					if (valueIssues.length > 0) {
+						issues = [...issues, ...valueIssues]
+					} else if (keyIssues.length > 0) {
 						issues.push(
 							new ValidationIssue({
 								// eslint-disable-next-line security/detect-object-injection
 								name: this[OPTIONS].name,
 								path: [key],
-								expectedDescription: 'not be present',
-								received: x[key as never],
+								expectedDescription: `match one of index signature keys`,
+
+								expectedOneOf:
+									// eslint-disable-next-line security/detect-object-injection
+									(this[OPTIONS] as ObjectOptions).indexSignatures.map(
+										signature => schema(signature.keySchema),
+									),
+
+								received: key,
 							}),
 						)
-					else {
-						let keyIssues: ValidationIssue[] = []
-						let valueIssues: ValidationIssue[] = []
 
-						// eslint-disable-next-line security/detect-object-injection
-						for (const { keySchema, valueSchema } of this[OPTIONS]
-							.indexSignatures) {
-							const sKeySchema = schema(keySchema) as unknown as ISchema
-							const sValueSchema = schema(valueSchema) as unknown as ISchema
-
-							const keyResult = sKeySchema.exec(key)
-
-							if (!keyResult.isValid) {
-								keyIssues.push(
-									new ValidationIssue({
-										// eslint-disable-next-line security/detect-object-injection
-										name: this[OPTIONS].name,
-										path: [key],
-										expectedDescription: `match index signature key: ${sKeySchema.toString()}`,
-										received: key,
-									}),
-								)
-
-								for (const childIssue of keyResult.issues) {
-									childIssue.path = [key, ...childIssue.path]
-								}
-
-								keyIssues = [...keyIssues, ...keyResult.issues]
-								continue
-							}
-
-							const valueResult = sValueSchema.exec(value)
-
-							if (!valueResult.isValid) {
-								valueIssues.push(
-									new ValidationIssue({
-										// eslint-disable-next-line security/detect-object-injection
-										name: this[OPTIONS].name,
-										path: [key],
-										expectedDescription: `match index signature value: ${sValueSchema.toString()}`,
-										received: value,
-									}),
-								)
-
-								for (const childIssue of valueResult.issues) {
-									childIssue.path = [key, ...childIssue.path]
-								}
-
-								valueIssues = [...valueIssues, ...valueResult.issues]
-							}
-						}
-
-						if (valueIssues.length > 0) {
-							issues = [...issues, ...valueIssues]
-						} else if (keyIssues.length > 0) {
-							issues.push(
-								new ValidationIssue({
-									// eslint-disable-next-line security/detect-object-injection
-									name: this[OPTIONS].name,
-									path: [key],
-									expectedDescription: `match one of index signature keys`,
-
-									expectedOneOf:
-										// eslint-disable-next-line security/detect-object-injection
-										(this[OPTIONS] as ObjectOptions).indexSignatures.map(
-											signature => schema(signature.keySchema),
-										),
-
-									received: key,
-								}),
-							)
-
-							issues = [...issues, ...keyIssues]
-						}
+						issues = [...issues, ...keyIssues]
 					}
 				}
 			}
@@ -349,16 +364,10 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return issues
 	}
 
-	override _fixImpl(value: unknown): unknown {
-		// eslint-disable-next-line no-param-reassign
-		value = super._fixImpl(value)
-
-		// let autoCreated = false
-		// if (x === undefined) {
-		// x = {}
-		// autoCreated = true
-		// }
-
+	override _fix(
+		value: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): unknown {
 		if (typeof value === 'object' && value !== null) {
 			// x = { ...x } as Record<keyof any, unknown>
 			const fixedObject = clone(value) as Record<keyof any, unknown>
@@ -373,7 +382,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				const isOptional = mySchema.isOptional || mySchema.isStrictOptional
 
 				if (hasProperty(fixedObject, key) || mySchema.hasDefault) {
-					const result = mySchema.exec(fixedObject[key as never])
+					const result = mySchema.exec(fixedObject[key as never], options)
 
 					if (result.value === undefined && isOptional) {
 						if (Object.prototype.hasOwnProperty.call(fixedObject, key)) {
@@ -399,10 +408,12 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					.getIndexSignatures as ObjectIndexSignatureEntry[]) {
 					const keyValidationResult = schema(indexSignature.keySchema).exec(
 						xKey,
+						options,
 					)
 
 					const valueValidationResult = schema(indexSignature.valueSchema).exec(
 						xValue,
+						options,
 					)
 
 					if (keyValidationResult.isValid && valueValidationResult.isValid) {
@@ -424,9 +435,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			// eslint-disable-next-line no-param-reassign
 			if (isChanged) value = fixedObject
 		}
-
-		// eslint-disable-next-line no-param-reassign
-		value = super._fixImpl(value)
 
 		return value as never
 	}

@@ -5,16 +5,20 @@ import type * as Database from '@voltiso/firestore-like'
 
 import type { FirestoreLikeModule } from '~/DatabaseContext'
 
-import type { Options_ } from './Options'
+import type { TransactorOptions } from './TransactorOptions'
 
 export type TransactorConstructorParameters =
 	| []
-	| [Partial<Options_> | undefined]
+	| [Partial<TransactorOptions> | undefined]
 	| [Database.Database, FirestoreLikeModule]
-	| [Database.Database, FirestoreLikeModule, Partial<Options_> | undefined]
+	| [
+			Database.Database,
+			FirestoreLikeModule,
+			Partial<TransactorOptions> | undefined,
+	  ]
 
 export type TransactorConstructorParametersNoUndefined =
 	| []
-	| [Partial<Options_>]
+	| [Partial<TransactorOptions>]
 	| [Database.Database, FirestoreLikeModule]
-	| [Database.Database, FirestoreLikeModule, Partial<Options_>]
+	| [Database.Database, FirestoreLikeModule, Partial<TransactorOptions>]

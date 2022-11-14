@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util",
-  "version": "47.1.5",
+  "version": "48.1.2",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -68,6 +68,6 @@
     "pnpm": "7"
   },
   "typeCoverage": {
-    "is": 98.99
+    "is": 99
   }
 }

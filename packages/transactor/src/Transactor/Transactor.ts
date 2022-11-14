@@ -32,8 +32,9 @@ import type {
 } from './Entry'
 import type { TransactionBody } from './methods'
 import { runTransaction } from './methods'
-import { Options_ } from './Options'
 import type { TransactorConstructor } from './TransactorConstructor'
+import type { TransactorOptions } from './TransactorOptions'
+import { defaultTransactorOptions } from './TransactorOptions'
 
 // import { AsyncLocalStorage } from 'async_hooks'
 
@@ -83,7 +84,7 @@ export class Transactor extends Db {
 
 	//
 
-	_options: Options_
+	_options: TransactorOptions
 	_allMethods: TransactorMethodEntry[] = []
 	_allIdSchemas: TransactorIdSchemaEntry[] = []
 	_allPublicOnCreationSchemas: TransactorSchemaEntry[] = []
@@ -102,7 +103,7 @@ export class Transactor extends Db {
 
 		let database: FirestoreLike.Database | undefined
 		let myModule: FirestoreLikeModule | undefined
-		let partialOptions: Partial<Options_> = {}
+		let partialOptions: Partial<TransactorOptions> = {}
 
 		while (args.length > 0 && tryAt(args, -1) === undefined) args.pop()
 
@@ -127,7 +128,10 @@ export class Transactor extends Db {
 					throw new TransactorError('expected 0, 1 or 2 arguments')
 		}
 
-		this._options = new Options_(partialOptions)
+		this._options = {
+			...defaultTransactorOptions,
+			...partialOptions,
+		}
 
 		if (database) {
 			$assert(myModule)

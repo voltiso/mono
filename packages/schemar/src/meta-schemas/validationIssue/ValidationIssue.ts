@@ -8,6 +8,8 @@ import { expectedOneOfStr } from './_/expectedOneOfStr'
 import { pathToString } from './_/pathToString'
 
 export class ValidationIssueImpl implements t.ValidationIssue {
+	severity: 'error' | 'warning'
+
 	path: (keyof any)[]
 	name?: string | undefined
 
@@ -18,6 +20,7 @@ export class ValidationIssueImpl implements t.ValidationIssue {
 	receivedDescription?: string | undefined
 
 	constructor(p: t.ValidationIssueParams) {
+		this.severity = p.severity || 'error'
 		this.path = p.path || []
 
 		if (p.name) this.name = p.name

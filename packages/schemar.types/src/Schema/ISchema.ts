@@ -68,6 +68,12 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 */
 	get Input(): T | undefined
 
+	//
+
+	// GET
+
+	get getName(): string | undefined
+
 	get isOptional(): boolean
 	get isStrictOptional(): boolean
 
@@ -76,12 +82,22 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	get hasDefault(): boolean
 	get getDefault(): unknown
 
+	//
+
+	//
+
+	get withName(): unknown
+
 	get optional(): unknown // ISchema
 	get strictOptional(): unknown // ISchema
 
 	get readonly(): unknown // ISchema
 	default(value: T): unknown // ISchema
 	default(getValue: () => T): unknown // ISchema
+
+	//
+
+	//
 
 	extends(other: $$Schemable): boolean
 	[EXTENDS](other: $$Schema): boolean
@@ -100,6 +116,7 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	Narrow(): unknown // ISchema
 	Widen(): unknown // ISchema | StaticError
 	Cast(): unknown // ISchema | StaticError
+	$Cast(): unknown // ISchema | StaticError
 
 	NarrowOutput(): unknown // ISchema
 	WidenOutput(): unknown // ISchema | StaticError
@@ -120,7 +137,7 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * @returns Value after applying transformations (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	validate(x: unknown, options?: Partial<ValidateOptions>): unknown
+	validate(x: unknown, options?: Partial<ValidateOptions> | undefined): unknown
 
 	/**
 	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
@@ -129,7 +146,10 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * @param x - Value to validate against `this` schema
 	 * @returns Value after applying transformations (e.g. defaults)
 	 */
-	tryValidate(x: unknown): unknown
+	tryValidate(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): unknown
 
 	/**
 	 * Validate `this` schema, do not throw on failure
@@ -137,7 +157,18 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * @param x - Value to validate against `this` schema
 	 * @returns `ValidationResult` - either success or error with issue list
 	 */
-	exec(x: unknown): ValidationResult
+	exec(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): ValidationResult
+
+	/**
+	 * Do not return transformed value - just check if the value is valid
+	 * according to the schema (after applying fixes)
+	 *
+	 * @param x - Value to validate against `this` schema
+	 */
+	isFixable(x: unknown, options?: Partial<ValidateOptions> | undefined): boolean
 
 	/**
 	 * Do not return transformed value - just check if the value is valid
@@ -145,9 +176,16 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 *
 	 * @param x - Value to validate against `this` schema
 	 */
-	isValid(x: unknown): boolean
+	isValid(x: unknown, options?: Partial<ValidateOptions> | undefined): boolean
 
-	getIssues(value: unknown): ValidationIssue[]
+	getIssues(
+		value: unknown,
+		options?: Partial<ValidateOptions>,
+	): ValidationIssue[]
+
+	//
+
+	//
 
 	or(other: unknown /* ISchema*/): unknown // ISchema //!
 

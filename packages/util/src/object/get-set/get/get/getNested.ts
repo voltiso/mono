@@ -3,7 +3,7 @@
 
 import { VoltisoUtilError } from '~/error'
 import { lazyConstructor } from '~/lazy'
-import type { ReadonlyPropertyPath, UnknownProperty, Value_ } from '~/object'
+import type { ReadonlyPropertyPath, UnknownProperty, Value } from '~/object'
 import { stringFrom } from '~/string'
 
 import type { GetPropertyComplex } from './getProperty'
@@ -13,7 +13,7 @@ export type GetNested_<O, P> = P extends readonly []
 	? O
 	: P extends readonly [infer H, ...infer T]
 	? H extends keyof O | UnknownProperty
-		? GetNested_<Value_<O, H>, T>
+		? GetNested_<Value<O, H>, T>
 		: never
 	: never
 

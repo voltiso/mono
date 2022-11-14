@@ -12,6 +12,13 @@ export type ValidationIssueExpectedValue =
 	  }
 
 export type ValidationIssueParams = {
+	/**
+	 * If just a `'warning'`, schema validation is considered successful anyway
+	 *
+	 * @defaultValue `'error'`
+	 */
+	severity?: 'error' | 'warning' | undefined
+
 	path?: (keyof any)[] | undefined
 	name?: string | undefined
 } & (
@@ -30,6 +37,8 @@ export type ValidationIssueParams = {
 	)
 
 export interface ValidationIssue {
+	severity: 'error' | 'warning'
+
 	path: (keyof any)[]
 	name?: string | undefined
 

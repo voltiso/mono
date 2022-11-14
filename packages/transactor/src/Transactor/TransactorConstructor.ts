@@ -6,7 +6,7 @@ import type { OmitCall } from '@voltiso/util'
 
 import type { FirestoreLikeModule } from '~/DatabaseContext'
 
-import type { Options_ } from './Options'
+import type { TransactorOptions } from './TransactorOptions'
 import type { Transactor } from './Transactor'
 
 export interface TransactorConstructor<
@@ -14,7 +14,7 @@ export interface TransactorConstructor<
 > {
 	new (): Derived
 
-	new (options: Partial<Options_>): Derived
+	new (options: Partial<TransactorOptions>): Derived
 
 	new (
 		database: Database.Database,
@@ -24,14 +24,14 @@ export interface TransactorConstructor<
 	new (
 		database: Database.Database,
 		firestoreLikeModule: FirestoreLikeModule,
-		options: Partial<Options_>,
+		options: Partial<TransactorOptions>,
 	): Derived
 
 	new (
 		...args:
 			| []
-			| [Partial<Options_>]
+			| [Partial<TransactorOptions>]
 			| [Database.Database, FirestoreLikeModule]
-			| [Database.Database, FirestoreLikeModule, Partial<Options_>]
+			| [Database.Database, FirestoreLikeModule, Partial<TransactorOptions>]
 	): Derived
 }

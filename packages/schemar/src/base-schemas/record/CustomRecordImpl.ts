@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { ValidateOptions } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { lazyConstructor, OPTIONS } from '@voltiso/util'
@@ -54,19 +55,21 @@ export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 		throw new Error('not implemented')
 	}
 
-	override _getIssuesImpl(x: unknown): t.ValidationIssue[] {
+	override _getIssues(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): t.ValidationIssue[] {
 		const proxy = _getCustomObjectImpl(this)
-		return proxy._getIssuesImpl(x)
+		return proxy._getIssues(x, options)
 	}
 
-	override _fixImpl(x: unknown): unknown {
-		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
+	override _fix(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): unknown {
 		const proxy = _getCustomObjectImpl(this)
 		// eslint-disable-next-line no-param-reassign
-		x = proxy._fixImpl(x)
-		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
+		x = proxy._fix(x, options)
 		return x
 	}
 }

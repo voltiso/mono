@@ -23,10 +23,10 @@ export type CanBeUndefined<
 		: never
 	: never
 
-// /** ⚠️ Prefer {@link CanBeUndefined} - should be faster */
-// export type CanBeUndefined_<
-// 	$obj,
-// 	key,
-// 	True = false,
-// 	False = false,
-// > = CanBeUndefined<$obj, key & keyof $obj, True, False>
+/** ⚠️ Prefer {@link CanBeUndefined} - should be faster */
+export type CanBeUndefined_<
+	$obj,
+	key,
+	True = false,
+	False = false,
+> = CanBeUndefined<$obj, key & keyof $obj, True, False>

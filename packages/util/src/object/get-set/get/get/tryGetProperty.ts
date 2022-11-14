@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
-import type { IsOptionalImpl } from '~/object/IsOptional'
+import type { IsOptional } from '~/object/IsOptional'
 import type { AlsoAccept } from '~/type'
 
 // @ts-expect-error cannot use `K` to index `T`
 export type TryGetPropertyImpl<T, K> = (T & Record<keyof any, undefined>)[K]
 
 export type TryGetProperty<T, K> = K extends keyof T
-	? IsOptionalImpl<T, K> extends true
+	? IsOptional<T, K> extends true
 		? T[K] | undefined
 		: string extends K
 		? T[K] | undefined

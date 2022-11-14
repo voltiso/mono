@@ -33,6 +33,8 @@ export const validationIssue = lazyValue(() => {
 	const sValidationIssueToString = function_(toStringArg, string)
 
 	return object({
+		severity: union('error', 'warning'),
+
 		path: array(union(string, number, symbol)),
 		name: string.optional,
 

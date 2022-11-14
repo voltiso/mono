@@ -13,7 +13,7 @@ import {
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor()
+const db = createTransactor({ onUnknownField: 'error' })
 
 class Doctor extends Doc.with({
 	id: s.string,
@@ -63,6 +63,7 @@ describe('class', () => {
 		await expect(doctors('anthony').set({ illegalField: 123 })).rejects.toThrow(
 			'illegalField',
 		)
+
 		await expect(doctors('anthony')).resolves.toBeNull()
 	})
 

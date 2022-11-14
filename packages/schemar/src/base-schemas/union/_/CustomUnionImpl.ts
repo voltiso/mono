@@ -9,6 +9,7 @@ import type {
 	IUnion,
 	Schemable,
 	UnionOptions,
+	ValidateOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnion, SCHEMA_NAME } from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
@@ -56,14 +57,17 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		return true
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		let issues = super._getIssuesImpl(x)
+	override _getIssues(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): ValidationIssue[] {
+		let issues: ValidationIssue[] = []
 
 		let valid = false
 		let moreIssues = [] as ValidationIssue[]
 
 		for (const t of this.getSchemas as Schemable[]) {
-			const r = schema(t).exec(x)
+			const r = schema(t).exec(x, options)
 
 			if (r.isValid) valid = true
 			else moreIssues = [...moreIssues, ...r.issues]

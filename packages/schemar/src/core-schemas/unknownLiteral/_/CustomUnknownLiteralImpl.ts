@@ -7,7 +7,6 @@ import type {
 	InferableLiteral,
 	ISchema,
 	UnknownLiteralOptions,
-	ValidationIssue,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnknownLiteral, SCHEMA_NAME } from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
@@ -38,10 +37,6 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 		if (isUnknownLiteral(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
-	}
-
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		return super._getIssuesImpl(x)
 	}
 
 	// eslint-disable-next-line class-methods-use-this

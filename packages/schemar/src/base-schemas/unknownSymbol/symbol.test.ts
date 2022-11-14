@@ -35,5 +35,8 @@ describe('symbol', () => {
 		expect(s.symbol(sym).extends(s.symbol)).toBeTruthy()
 		expect(s.symbol(sym).extends(s.symbol(sym))).toBeTruthy()
 		expect(s.symbol.extends(s.symbol(sym))).toBeFalsy()
+
+		expect(s.symbol.isValid(123)).toBeFalsy()
+		expect(s.symbol.isValid(Symbol('test'))).toBeTruthy()
 	})
 })

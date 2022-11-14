@@ -7,7 +7,7 @@ import { CustomDocPath } from '@voltiso/transactor'
 
 import { createTransactor, database } from '../common'
 
-const db = createTransactor({ requireSchemas: false })
+const db = createTransactor({ requireSchemas: false, onUnknownField: 'error' })
 
 // eslint-disable-next-line jest/require-hook
 db('cosmos/*')

@@ -4,24 +4,24 @@
 import type { Callable, Newable } from '~/function'
 
 import type { _ } from '../flatten'
-import type { IsOptional_ } from '../IsOptional'
-import type { Value_ } from '../key-value'
+import type { IsOptional } from '../IsOptional'
+import type { Value } from '../key-value'
 import type { SuggestObject } from './Suggest'
 
 /** @inline */ type Part1<A, B> = {
 	[k in keyof A]: k extends keyof B
 		?
-				| Value_<B, k>
-				| (k extends keyof A ? IsOptional_<B, k, Value_<A, k>, never> : never)
-		: Value_<A, k>
+				| Value<B, k>
+				| (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
+		: Value<A, k>
 }
 
 /** @inline */ type Part2<A, B> = {
 	[k in keyof B]: k extends keyof A
 		?
-				| Value_<B, k>
-				| (k extends keyof A ? IsOptional_<B, k, Value_<A, k>, never> : never)
-		: Value_<B, k>
+				| Value<B, k>
+				| (k extends keyof A ? IsOptional<B, k, Value<A, k>, never> : never)
+		: Value<B, k>
 }
 
 /** @inline */ export type Merge2Complex_<A, B> = (A extends Callable | Newable

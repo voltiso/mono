@@ -7,6 +7,7 @@ import { $Assert } from '@voltiso/util'
 import type {
 	$$Schemable,
 	CustomSchema,
+	ISchema,
 	Schema,
 	Schemable,
 	SchemaOptions,
@@ -21,6 +22,9 @@ const unknown = 0 as unknown as Unknown
 describe('CustomSchema', () => {
 	it('generic', <O extends Partial<SchemaOptions>>() => {
 		expect.assertions(0)
+
+		$Assert.is<keyof CustomSchema<O>, keyof ISchema>()
+		$Assert.is<keyof ISchema, keyof CustomSchema<O>>()
 
 		$Assert.is<CustomSchema<O>, Schema>()
 		$Assert.is<CustomSchema<O>, Schemable>()

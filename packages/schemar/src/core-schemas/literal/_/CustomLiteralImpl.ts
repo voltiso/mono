@@ -63,8 +63,8 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 		return good
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		const issues = super._getIssuesImpl(x)
+	override _getIssues(x: unknown): ValidationIssue[] {
+		const issues = []
 
 		if (!(this.getValues as Set<InferableLiteral>).has(x as InferableLiteral)) {
 			issues.push(

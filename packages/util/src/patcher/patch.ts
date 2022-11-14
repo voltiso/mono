@@ -4,7 +4,7 @@
 import { $Assert } from '~/$strip'
 import type { Force } from '~/cast'
 import { equals } from '~/equals'
-import type { Merge2, ValueImpl } from '~/object'
+import type { Merge2, Value } from '~/object'
 import {
 	assertNotPolluting,
 	isPlainObject,
@@ -56,7 +56,7 @@ export type ForcePatchFor<X> =
 //
 
 type ApplyPatchSub<X, P> = {
-	[key in keyof P]: ApplyPatch<ValueImpl<X, key>, P[key]>
+	[key in keyof P]: ApplyPatch<Value<X, key>, P[key]>
 }
 
 export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt

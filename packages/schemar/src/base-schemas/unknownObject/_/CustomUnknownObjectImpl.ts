@@ -94,8 +94,8 @@ export class CustomUnknownObjectImpl<
 		else return super[t.EXTENDS](other)
 	}
 
-	protected override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		const issues = super._getIssuesImpl(x)
+	protected override _getIssues(x: unknown): ValidationIssue[] {
+		const issues: ValidationIssue[] = []
 
 		if (typeof x !== 'object' || x === null) {
 			issues.push(

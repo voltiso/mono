@@ -10,7 +10,6 @@ import type { IsIdentical } from '~/type'
 $Assert.is<exactOptionalPropertyTypes, false>() // !
 
 describe('canBeUndefined', () => {
-
 	it('generics', <T extends { a?: 1 }>() => {
 		expect.assertions(0)
 

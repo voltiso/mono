@@ -74,8 +74,8 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		const issues = super._getIssuesImpl(x)
+	override _getIssues(x: unknown): ValidationIssue[] {
+		const issues: ValidationIssue[] = []
 
 		if (typeof x !== 'bigint')
 			issues.push(

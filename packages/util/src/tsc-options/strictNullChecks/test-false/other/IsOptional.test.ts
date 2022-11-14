@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsOptional, IsOptional_ } from '~'
+import type { IsOptional } from '~'
 import { $Assert } from '~/$strip'
 
 describe('isOptional', () => {
@@ -12,11 +12,6 @@ describe('isOptional', () => {
 		$Assert.is<IsOptional<{ a: 1; b: 2 }, 'a'>, false>()
 		$Assert.is<IsOptional<{ a?: 1 | undefined; b: 2 }, 'a'>, true>()
 		$Assert.is<IsOptional<{ a: 1 | undefined; b: 2 }, 'a'>, false>()
-
-		$Assert.is<IsOptional_<{ a?: 1; b: 2 }, 'a'>, true>()
-		$Assert.is<IsOptional_<{ a: 1; b: 2 }, 'a'>, false>()
-		$Assert.is<IsOptional_<{ a?: 1 | undefined; b: 2 }, 'a'>, true>()
-		$Assert.is<IsOptional_<{ a: 1 | undefined; b: 2 }, 'a'>, false>()
 	})
 
 	it('generics', <T extends { a?: 1 }>() => {
@@ -25,7 +20,7 @@ describe('isOptional', () => {
 		type A0 = IsOptional<{ a?: 1 }, 'a'>
 		$Assert.is<A0, true>()
 
-		type A1 = IsOptional_<{ a?: 1 }, 'a'>
+		type A1 = IsOptional<{ a?: 1 }, 'a'>
 		$Assert.is<A1, true>()
 
 		//
@@ -33,7 +28,7 @@ describe('isOptional', () => {
 		type B0 = IsOptional<T, 'a'>
 		$Assert.is<B0, true>()
 
-		type B1 = IsOptional_<T, 'a'>
+		type B1 = IsOptional<T, 'a'>
 		$Assert<B1, true>()
 	})
 })

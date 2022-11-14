@@ -48,8 +48,8 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	protected override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		const issues = super._getIssuesImpl(x)
+	protected override _getIssues(x: unknown): ValidationIssue[] {
+		const issues = []
 
 		if (typeof x === 'number') {
 			if (this.isInteger && !Number.isInteger(x)) {

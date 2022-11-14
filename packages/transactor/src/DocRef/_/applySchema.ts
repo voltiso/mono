@@ -40,7 +40,9 @@ export function applySchema(
 ): IntrinsicFields | null {
 	const { data, schema, bestEffort } = params
 
-	const r = schema.exec(data)
+	const r = schema.exec(data, {
+		onUnknownProperty: this.transactor._options.onUnknownField,
+	})
 
 	if (!r.isValid && !bestEffort) {
 		const error = new ValidationError(r.issues)
@@ -49,6 +51,12 @@ export function applySchema(
 			this.transaction._error = error
 
 		throw error
+	}
+
+	if (r.issues.length > 0) {
+		// have warnings
+		// eslint-disable-next-line no-console
+		console.warn(r.issues)
 	}
 
 	return processSentinels(r.value)

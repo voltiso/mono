@@ -3,10 +3,10 @@
 
 import { VoltisoUtilError } from '~/error/VoltisoUtilError'
 import { lazyConstructor } from '~/lazy/lazyConstructor'
+import type { Value } from '~/object'
 import type { TryGetPropertyImpl } from '~/object/get-set/get/get/tryGetProperty'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { isObject } from '~/object/isObject'
-import type { Value_ } from '~/object/key-value/value/Value'
 import type { UnknownProperty } from '~/object/UnknownProperty'
 import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
@@ -37,7 +37,7 @@ export class GetPropertyError<
 }
 
 export type GetPropertyComplex_<T, K> = K extends keyof T
-	? Value_<T, K>
+	? Value<T, K>
 	: Exclude<TryGetPropertyImpl<T, K>, undefined>
 
 export type GetPropertyComplex<

@@ -32,7 +32,7 @@ describe('unknown', () => {
 		expect(isSchema(s.undefined)).toBeTruthy()
 
 		expect(() => s.unknown.validate(0)).not.toThrow()
-		expect(() => s.unknown.validate(0, { fix: false })).not.toThrow()
+		expect(() => s.unknown.isValid(0)).toBeTruthy()
 	})
 
 	it('generic', <O extends Partial<UnknownOptions>>() => {

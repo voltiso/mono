@@ -1,13 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CanBeUndefinedImpl } from '../CanBeUndefined'
-import type { IsOptional_ } from '../IsOptional'
+import type { CanBeUndefined } from '../CanBeUndefined'
+import type { IsOptional } from '../IsOptional'
 
-/** @inline */ type DeepFlattenValue<T, k extends keyof T> = IsOptional_<
+/** @inline */ type DeepFlattenValue<T, k extends keyof T> = IsOptional<
 	T,
 	k,
-	CanBeUndefinedImpl<
+	CanBeUndefined<
 		T,
 		k,
 		DeepFlatten<T[k]>,

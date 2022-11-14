@@ -7,12 +7,14 @@ import type {
 	ISchema,
 	Literal,
 	UnknownSymbolOptions,
+	ValidateOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isSymbol, SCHEMA_NAME } from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { literal } from '~/core-schemas'
+import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
@@ -43,5 +45,27 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		if (isSymbol(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
+	}
+
+	//
+
+	protected override _getIssues(
+		x: unknown,
+		_options?: Partial<ValidateOptions> | undefined,
+	): ValidationIssue[] {
+		const issues = []
+
+		if (typeof x !== 'symbol') {
+			issues.push(
+				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
+					expectedDescription: 'be symbol',
+					received: x,
+				}),
+			)
+		}
+
+		return issues
 	}
 }

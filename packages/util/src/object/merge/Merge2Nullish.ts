@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Nullish } from '~/nullish'
-import type { CanBeUndefined_, IsOptional_, PartialIfNullish_ } from '~/object'
+import type { CanBeUndefined_, IsOptional, PartialIfNullish_ } from '~/object'
 import type { exactOptionalPropertyTypes } from '~/tsc-options'
 
 import type { Merge2Complex_ } from './Merge2Complex'
@@ -43,7 +43,7 @@ type Merge2NullishBasic_<A, B> = Merge2Complex_<
 >
 
 type Finalize<A, B, Result> = {
-	[k in keyof Result]: IsOptional_<Result, k> extends true
+	[k in keyof Result]: IsOptional<Result, k> extends true
 		? Result[k]
 		: CanBeUndefined_<A, k> extends false
 		? CanBeUndefined_<B, k> extends false

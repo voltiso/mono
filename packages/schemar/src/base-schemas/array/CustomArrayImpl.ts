@@ -8,6 +8,7 @@ import type {
 	DefaultArrayOptions,
 	ISchema,
 	Schema,
+	ValidateOptions,
 } from '@voltiso/schemar.types'
 import {
 	EXTENDS,
@@ -129,27 +130,28 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	protected override _fixImpl(x: unknown): unknown {
-		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
-
+	protected override _fix(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): unknown {
 		if (Array.isArray(x)) {
 			// eslint-disable-next-line no-param-reassign
 			x = x.map(element =>
 				(schema(this.getElementSchema) as unknown as Schema).tryValidate(
 					element,
+					options,
 				),
 			)
 		}
 
-		// eslint-disable-next-line no-param-reassign
-		x = super._fixImpl(x)
-
 		return x
 	}
 
-	override _getIssuesImpl(x: unknown): ValidationIssue[] {
-		let issues = super._getIssuesImpl(x)
+	override _getIssues(
+		x: unknown,
+		options?: Partial<ValidateOptions> | undefined,
+	): ValidationIssue[] {
+		let issues = []
 
 		if (!Array.isArray(x)) {
 			issues.push(
@@ -192,7 +194,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			}
 
 			for (const [idx, e] of x.entries()) {
-				const c = (this.getElementSchema as unknown as ISchema).exec(e)
+				const c = (this.getElementSchema as unknown as ISchema).exec(e, options)
 
 				if (!c.isValid) {
 					for (const issue of c.issues) issue.path = [idx, ...issue.path]

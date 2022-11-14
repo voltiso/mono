@@ -1,13 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CanBeUndefinedImpl } from '../CanBeUndefined'
-import type { IsOptional_ } from '../IsOptional'
+import type { CanBeUndefined } from '../CanBeUndefined'
+import type { IsOptional } from '../IsOptional'
 
-export type SmartFlattenValue<T, k extends keyof T, Encountered> = IsOptional_<
+export type SmartFlattenValue<T, k extends keyof T, Encountered> = IsOptional<
 	T,
 	k,
-	CanBeUndefinedImpl<
+	CanBeUndefined<
 		T,
 		k,
 		SmartFlattenImpl<T[k], Encountered>,

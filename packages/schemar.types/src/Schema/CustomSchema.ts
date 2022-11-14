@@ -22,7 +22,12 @@ import type {
 	ValidationIssue,
 	ValidationResult,
 } from '~'
-import type { $$Schema, ISchema, ValidateOptions } from '~/Schema'
+import type {
+	$$Schema,
+	GetIssuesOptions,
+	ISchema,
+	ValidateOptions,
+} from '~/Schema'
 
 import type { SimplifySchema } from './Simplify'
 
@@ -232,9 +237,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @throws ValidationError
 	 */
 
-	validate<O extends Partial<ValidateOptions>>(
+	validate(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: O | undefined,
+		options?: Partial<ValidateOptions> | undefined,
 	): this[OPTIONS]['Output']
 
 	/**
@@ -244,7 +249,10 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @param x - Value to validate against `this` schema
 	 * @returns Value after applying transformations (e.g. defaults)
 	 */
-	tryValidate<X>(x: X): X | this[OPTIONS]['Output']
+	tryValidate<X>(
+		x: X,
+		options?: Partial<GetIssuesOptions> | undefined,
+	): X | this[OPTIONS]['Output']
 
 	/**
 	 * Validate `this` schema, do not throw on failure
@@ -252,14 +260,20 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @param x - Value to validate against `this` schema
 	 * @returns `ValidationResult` - either success or error with issue list
 	 */
-	exec(x: this[OPTIONS]['Input'] | AlsoAccept<unknown>): ValidationResult
+	exec(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: Partial<ValidateOptions> | undefined,
+	): ValidationResult
 
 	/**
 	 * Check if `x` is already valid (without applying fixes)
 	 *
 	 * @param x - Value to validate against `this` schema, without applying fixes
 	 */
-	getIssues(x: this[OPTIONS]['Input'] | AlsoAccept<unknown>): ValidationIssue[]
+	getIssues(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: Partial<GetIssuesOptions> | undefined,
+	): ValidationIssue[]
 
 	/**
 	 * Do not return transformed value - just check if the value is valid
@@ -269,6 +283,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	isFixable(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: Partial<GetIssuesOptions> | undefined,
 	): x is this[OPTIONS]['Input']
 
 	/**
@@ -278,7 +293,12 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	isValid(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: Partial<GetIssuesOptions> | undefined,
 	): x is this[OPTIONS]['Output']
+
+	//
+
+	//
 
 	/**
 	 * Create union of this schema an one other schema

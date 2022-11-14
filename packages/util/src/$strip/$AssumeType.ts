@@ -1,12 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $dev } from '_/$'
-
-import type { IsIdentical } from '~/type'
-
-import { $Assert } from './static-assert'
-
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 /**
@@ -32,16 +26,7 @@ import { $Assert } from './static-assert'
  */
 export function $AssumeType<T extends Supertype, Supertype = unknown>(
 	_x: Supertype,
-): asserts _x is T & typeof _x {}
-
-//
-
-$dev(() => {
-	const x = 0 as unknown as 'test' | number
-	$AssumeType<string>(x) // now `x` is 'test'
-
-	$Assert<IsIdentical<typeof x, 'test'>>()
-})
+): asserts _x is T {}
 
 //
 

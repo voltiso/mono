@@ -1,5 +1,5 @@
 export * from './AlsoAccept'
-export * from './ApplyOverrides'
+export * from './Override'
 export * from './EmptyBraces'
 export * from './If'
 export * from './IntersectionFromUnion'
