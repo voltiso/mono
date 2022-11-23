@@ -128,6 +128,10 @@ export class Transactor extends Db {
 					throw new TransactorError('expected 0, 1 or 2 arguments')
 		}
 
+		for (const option in partialOptions)
+			if (!(option in defaultTransactorOptions))
+				throw new TransactorError(`Unknown option: ${option}`)
+
 		this._options = {
 			...defaultTransactorOptions,
 			...partialOptions,

@@ -42,12 +42,10 @@ export const StyleProvider = <Theme extends object>(props: Props<Theme>) => {
 // 	}
 // }
 
-// eslint-disable-next-line etc/no-misused-generics
 export function useStyle<Theme extends object>() {
 	return useFela<Theme>() as Props<Theme>
 }
 
-// eslint-disable-next-line etc/no-misused-generics
 export function useTheme<Theme extends object>() {
 	return useStyle<Theme>().theme
 }

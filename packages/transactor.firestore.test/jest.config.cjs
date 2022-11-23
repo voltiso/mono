@@ -26,6 +26,6 @@ module.exports = defineJestConfig({
 		'./jest/setupAfterEnv.ts',
 	],
 
-	// forceExit: true, //! :(
+	forceExit: true, //! (have to, because jest-dev-server's `teardown` function causes always exit code 0 even on failed tests)
 	detectOpenHandles: true,
 })

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable testing-library/no-node-access */
-
 import { screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'

@@ -22,8 +22,8 @@ export type Props = object
  * - Do not try to extend this - problematic
  * - Use as non-generic function argument types
  */
-export type IndexedProps = object & {
+export type IndexedProps = {
 	[k: string]: unknown
-	[k: number]: never
-	[k: symbol]: never
+	// [k: number]: never
+	// [k: symbol]: never
 }

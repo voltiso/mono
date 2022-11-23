@@ -9,7 +9,10 @@ import { $Assert } from '@voltiso/util'
 
 import { firestore, firestoreModule } from '../common/firestore'
 
-const db = new Transactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule, {
+	onUnknownField: 'error',
+})
+
 // eslint-disable-next-line jest/require-hook
 db('fairyAhj/*').public({
 	specialty: s.string.optional,
@@ -24,6 +27,7 @@ describe('raw-public', () => {
 		await expect(
 			db('fairyAhj', 'anthony').set({ favoriteOrganMarket: 'WHM' }),
 		).rejects.toThrow('favoriteOrganMarket')
+
 		await expect(db('fairyAhj/anthony')).resolves.toBeNull()
 
 		const x = db(

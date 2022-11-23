@@ -7,7 +7,9 @@ import { Doc, Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = new Transactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule, {
+	onUnknownField: 'error',
+})
 
 class Doctor extends Doc.with({
 	id: s.string,

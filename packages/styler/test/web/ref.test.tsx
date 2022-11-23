@@ -15,7 +15,6 @@ describe('ref', () => {
 
 		const ref: RefObject<HTMLButtonElement> = { current: null }
 
-		// eslint-disable-next-line arrow-body-style
 		const Component: FC = () => {
 			//
 			return <Button ref={ref} />

@@ -1,13 +1,14 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	tryAt,
+import type {
 	MapOrUndefined,
 	PickOptional,
 	StaticError,
 	Throw,
-	UndefinedFromOptional,
+	UndefinedFromOptional} from '@voltiso/util';
+import {
+	tryAt
 } from '@voltiso/util'
 import type { ComponentType, ForwardedRef, ReactNode } from 'react'
 
@@ -322,7 +323,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	newCssProp<
 		PropName extends string,
-		// eslint-disable-next-line etc/no-misused-generics
 		PV,
 		StyleFromProp extends (propValue?: PV) => C<$>,
 	>(
@@ -429,7 +429,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		getStyle: (propertyValue: PV) => C<$>,
 	): Patch<this, { CustomCss: { [k in CssName]?: PV | undefined } }>
 
-	// eslint-disable-next-line etc/no-misused-generics
 	newCustomCssProperty<CssName extends string, PV>(
 		customCssPropertyName: CssName,
 		style: C<$> | ((cssValue: unknown) => C<$>),
@@ -970,7 +969,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 *
 	 * @returns Builder for further chaining
 	 */
-	// eslint-disable-next-line etc/no-misused-generics
 	defineProps<DefinedProps extends Props>(): keyof PickOptional<
 		Omit<DefinedProps, 'children' | keyof $['Props']>
 	> extends never

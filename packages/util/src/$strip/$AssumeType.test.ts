@@ -1,4 +1,8 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { IsIdentical } from '~/type'
+
 import { $AssumeType } from './$AssumeType'
 import { $Assert } from './static-assert'
 

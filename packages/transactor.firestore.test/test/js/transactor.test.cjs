@@ -12,7 +12,7 @@ describe('transactor', function () {
 		expect.hasAssertions()
 		// @ts-expect-error ...
 		expect(() => createFirestoreTransactor(firestore, { asd: 123 })).toThrow(
-			'unknown option',
+			'Unknown option',
 		)
 	})
 })

@@ -90,6 +90,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-array-prototype-reduce': 0,
 
 		// string
+		'es-x/no-string-prototype-trim': 0, // es 5
 		'es-x/no-string-prototype-startswith': 0,
 		'es-x/no-string-prototype-endswith': 0,
 		'es-x/no-string-prototype-includes': 0,

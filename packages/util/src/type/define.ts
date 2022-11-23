@@ -6,9 +6,9 @@ import type { DeepMutableN } from '~/object'
 import type { Primitive } from '~/primitive'
 
 import type { AlsoAccept } from './AlsoAccept'
-import type { Override } from './Override'
 import type { DecrementArgument } from './number'
 import type { NoArgument } from './optional-argument'
+import type { Override } from './Override'
 
 export interface DefineTypeOptions {
 	/**

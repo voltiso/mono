@@ -57,7 +57,7 @@
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/script": "workspace:^",
     "firebase": "^9.14.0",
-    "firebase-admin": "^11.2.1",
+    "firebase-admin": "^11.3.0",
     "rimraf": "^3.0.2"
   },
   "__________MISC": "__________",

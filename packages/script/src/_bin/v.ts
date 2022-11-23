@@ -129,7 +129,14 @@ async function runScript(commandName: string, ...commandArgs: string[]) {
 
 				childProcess.on('error', reject)
 				childProcess.on('close', code => {
-					if (code) reject(new Error(`Non-zero exit code: ${code}`))
+					if (code)
+						reject(
+							new Error(
+								`[@voltiso/script] ${commandName} ${commandArgs.join(
+									' ',
+								)} Non-zero exit code: ${code}`,
+							),
+						)
 					else resolve()
 				})
 			})

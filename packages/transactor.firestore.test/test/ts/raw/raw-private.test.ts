@@ -13,6 +13,7 @@ import { firestore, firestoreModule } from '../common/firestore'
 
 const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
+	onUnknownField: 'error',
 })
 
 // eslint-disable-next-line jest/require-hook

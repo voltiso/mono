@@ -6,8 +6,8 @@ import type { OmitCall } from '@voltiso/util'
 
 import type { FirestoreLikeModule } from '~/DatabaseContext'
 
-import type { TransactorOptions } from './TransactorOptions'
 import type { Transactor } from './Transactor'
+import type { TransactorOptions } from './TransactorOptions'
 
 export interface TransactorConstructor<
 	Derived extends OmitCall<Transactor> = Transactor,

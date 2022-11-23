@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Options } from '@voltiso/transactor'
+import type { TransactorOptions } from '@voltiso/transactor'
 import { Transactor } from '@voltiso/transactor'
 import { initializeApp } from 'firebase-admin/app'
 import type { Firestore } from 'firebase-admin/firestore'
@@ -21,7 +21,7 @@ export const firestoreModule = {
 
 export function createFirestoreTransactor(
 	firestore: Firestore,
-	options?: Options | undefined,
+	options?: Partial<TransactorOptions> | undefined,
 ) {
 	return new Transactor(firestore, firestoreModule, options)
 }

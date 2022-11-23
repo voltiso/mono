@@ -37,7 +37,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^",
-    "react-intersection-observer": "^9.4.0"
+    "react-intersection-observer": "^9.4.1"
   },
   "peerDependencies": {
     "@types/react": "18 || 17",
@@ -56,7 +56,7 @@
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.70.5"
+    "react-native": "^0.70.6"
   },
   "__________MISC": "__________",
   "engines": {

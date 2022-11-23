@@ -33,7 +33,6 @@ export function isThemePath(x: unknown): x is ThemePath {
 	)
 }
 
-// eslint-disable-next-line etc/no-misused-generics
 export function createTheme<T>() {
 	return new ThemePath() as unknown as T
 }

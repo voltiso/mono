@@ -21,8 +21,6 @@
     "test": "jest",
     "__________LINT": "__________",
     "lint": "v lint",
-    "lint:fast": "run-p lint:depcheck fix:prettier",
-    "lint:slow": "run-p lint:eslint lint:tsc",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "run-p lint:tsc:root lint:tsc:tscOptions",
     "lint:tsc:root": "tsc -b",
