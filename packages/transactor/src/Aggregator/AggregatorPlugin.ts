@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assertNotPolluting } from '@voltiso/util'
+import { assertNotPolluting, isDefined } from '@voltiso/util'
 
 import type { DocBuilderPlugin } from '~/Doc'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
@@ -33,10 +33,9 @@ export class AggregatePlugin<R extends $$DocRelated>
 
 		assertNotPolluting(name)
 
-		const autoCreateTarget =
-			typeof handlers.autoCreateTarget !== 'undefined'
-				? handlers.autoCreateTarget
-				: true
+		const autoCreateTarget = isDefined(handlers.autoCreateTarget)
+			? handlers.autoCreateTarget
+			: true
 
 		const trigger = getAggregatorTrigger({ name, handlers, autoCreateTarget })
 

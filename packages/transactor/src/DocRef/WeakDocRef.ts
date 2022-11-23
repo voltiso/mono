@@ -11,8 +11,7 @@ import type { CustomDocRef } from './CustomDocRef'
  *
  * - 😱 no ref-counting❗
  */
-export interface WeakDocRef<
-	R extends $$DocRelatedLike = AnyDoc,
-> extends CustomDocRef<{
+export interface WeakDocRef<R extends $$DocRelatedLike = AnyDoc>
+	extends CustomDocRef<{
 		doc: R
 	}> {}

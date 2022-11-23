@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/transactor",
-  "version": "17.1.1",
+  "version": "17.2.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -50,7 +50,7 @@
   "peerDependencies": {
     "@voltiso/schemar": "workspace:^",
     "@voltiso/schemar.types": "workspace:^",
-    "zone.js": "^0.11.8"
+    "zone.js": "^0.12.0"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",

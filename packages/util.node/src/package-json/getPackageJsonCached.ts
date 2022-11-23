@@ -20,11 +20,12 @@ export function* getPackageJsonCachedSyncer(
 	const promise = promises.get(dir)
 
 	if (promise) {
-		result = yield {
+		result = (yield {
 			async: () => promise,
-		}
+		}) as never // ! TODO - this cast wasn't needed before TS update?
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (result) return result
 
 	/**
@@ -32,15 +33,15 @@ export function* getPackageJsonCachedSyncer(
 	 * call, we will load `package.json` anyway for the second time
 	 */
 
-	result = yield {
+	result = (yield {
 		syncerIterator: findAndReadPackageJsonSyncer(dir),
 
 		onAsyncStart: (promise: PromiseLike<PackageJson>) => {
 			promises.set(dir, promise)
 		},
-	}
+	}) as never // ! TODO - this cast wasn't needed before TS update?
 
-	// assert(result)
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!result) throw new Error('[@voltiso/util] getPackageJson() failed')
 
 	promises.delete(dir)

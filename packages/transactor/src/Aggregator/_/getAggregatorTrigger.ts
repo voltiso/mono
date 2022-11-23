@@ -25,7 +25,9 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 	handlers,
 	autoCreateTarget,
 }) =>
-	async function ({ __voltiso, before, after, path }) {
+	async function ({ __voltiso, before, after, path, pathArgs, pathParams }) {
+		const ctx = { path: path.toString(), pathArgs, pathParams }
+
 		// ignore self-change
 		if (
 			before &&
@@ -53,7 +55,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 		// 	if (!filterResult) return
 		// }
 
-		const targetHandlerResult = handlers.target.call(getDocDataView(data))
+		const targetHandlerResult = handlers.target.call(getDocDataView(data, ctx))
 		const awaitedTargetHandlerResult = await targetHandlerResult
 
 		const [targets, awaitedTargets] =
@@ -144,7 +146,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 			if (before && wasAlreadyProcessed) {
 				// eslint-disable-next-line no-await-in-loop
 				targetInfo.value = await handlers.exclude.call(
-					getDocDataView(before),
+					getDocDataView(before, ctx),
 					targetInfo.value as never,
 				)
 				targetInfo.numSources -= 1
@@ -159,7 +161,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 				// console.log('!!!!!!!!!!', { after })
 				// eslint-disable-next-line no-await-in-loop
 				targetInfo.value = await handlers.include.call(
-					getDocDataView(after),
+					getDocDataView(after, ctx),
 					targetInfo.value as never,
 				)
 				targetInfo.numSources += 1

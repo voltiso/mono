@@ -14,9 +14,8 @@ import type { DocIdString } from '~/brand'
 import type { $$DocRelated } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
-export interface AutoIdSchema<
-	D extends $$DocRelated = AnyDoc,
-> extends CustomString<{
+export interface AutoIdSchema<D extends $$DocRelated = AnyDoc>
+	extends CustomString<{
 		Input: DocIdString<D>
 		Output: DocIdString<D>
 		regExps: AtLeast1<RegExpEntry>

@@ -127,6 +127,7 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/prefer-regexp-test': 1,
 		'unicorn/prefer-set-has': 1,
 		'unicorn/prefer-spread': 1,
+		'unicorn/no-negated-condition': 1,
 
 		/**
 		 * ⚠️

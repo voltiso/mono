@@ -5,6 +5,7 @@ import type { Merge2_ } from '@voltiso/util'
 import { isPlainObject, omit } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
+import type { PathMatches } from '~/common'
 import type { DocTI, GetData } from '~/Doc'
 import type { AggregateTargetEntry, IntrinsicFields } from '~/schemas'
 
@@ -45,13 +46,16 @@ export function getAggregatesView<T extends DocDataViewInput>(
 
 //
 
-export type DocDataView<T extends DocDataViewInput = DocDataViewInput> = {
-	id: T['id']
-	data: Omit<T, 'id'>
-	dataWithId: T
-	aggregates: AggregatesView<T>
-	numRefs: T['__voltiso']['numRefs']
-}
+export type DocDataView<T extends DocDataViewInput = DocDataViewInput> =
+	PathMatches & {
+		id: T['id']
+		path: string
+
+		data: Omit<T, 'id'>
+		dataWithId: T
+		aggregates: AggregatesView<T>
+		numRefs: T['__voltiso']['numRefs']
+	}
 
 // export type DocDataView<T extends IntrinsicFields = IntrinsicFields> = Merge2_<
 // 	T,
@@ -66,10 +70,12 @@ export type DocDataViewInput = GetData<DocTI> & { id: DocIdString }
 
 export function getDocDataView<T extends DocDataViewInput>(
 	dataWithId: T,
+	ctx: PathMatches & { path: string },
 ): DocDataView<T> {
 	return {
 		// ...data, // ! this causes bugs... you get object with many fields, were you might expect only data fields
 		id: dataWithId.id,
+		...ctx,
 		data: omit(dataWithId, 'id') as Omit<T, 'id'>,
 		dataWithId,
 		aggregates: getAggregatesView(dataWithId),

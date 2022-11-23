@@ -166,12 +166,11 @@ async function rawUpdate(
 	}
 
 	if (!data) return data
-	else {
-		// eslint-disable-next-line unicorn/consistent-destructuring
-		const dataWithoutId = withoutId(data, ctx.docRef.id)
-		const finalData = withVoltisoEntry(dataWithoutId)
-		return new IndexedDoc(ctx, finalData) as never
-	}
+
+	// eslint-disable-next-line unicorn/consistent-destructuring
+	const dataWithoutId = withoutId(data, ctx.docRef.id)
+	const finalData = withVoltisoEntry(dataWithoutId)
+	return new IndexedDoc(ctx, finalData) as never
 }
 
 async function transactionUpdateImpl(

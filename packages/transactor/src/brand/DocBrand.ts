@@ -21,9 +21,8 @@ import type { TRANSACTOR, TransactorBrand } from './Transactor'
  * type UserId = string & DocBrand<'users'> & DocBrand<'usersData'>
  * ```
  */
-export interface DocBrand<
-	tag extends DocTagLike | AnyDoc = AnyDoc,
-> extends TransactorBrand<
+export interface DocBrand<tag extends DocTagLike | AnyDoc = AnyDoc>
+	extends TransactorBrand<
 		'doc',
 		AnyDoc extends tag
 			? any // {[k in DocTag]: true}
