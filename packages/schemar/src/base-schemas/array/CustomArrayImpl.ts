@@ -24,6 +24,7 @@ import {
 	isDefined,
 	lazyConstructor,
 	OPTIONS,
+	zip,
 } from '@voltiso/util'
 
 import { schema } from '~/core-schemas'
@@ -135,13 +136,18 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		options?: Partial<ValidateOptions> | undefined,
 	): unknown {
 		if (Array.isArray(x)) {
-			// eslint-disable-next-line no-param-reassign
-			x = x.map(element =>
+			const result = x.map(element =>
 				(schema(this.getElementSchema) as unknown as Schema).tryValidate(
 					element,
 					options,
 				),
 			)
+
+			let haveChange = false
+			for (const [a, b] of zip(x, result)) if (a !== b) haveChange = true
+
+			// eslint-disable-next-line no-param-reassign
+			if (haveChange) x = result
 		}
 
 		return x
@@ -153,16 +159,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	): ValidationIssue[] {
 		let issues = []
 
-		if (!Array.isArray(x)) {
-			issues.push(
-				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
-					name: this[OPTIONS].name,
-					expectedDescription: 'be array',
-					received: x,
-				}),
-			)
-		} else {
+		if (Array.isArray(x)) {
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
@@ -202,6 +199,15 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 					issues = [...issues, ...c.issues]
 				}
 			}
+		} else {
+			issues.push(
+				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
+					expectedDescription: 'be array',
+					received: x,
+				}),
+			)
 		}
 
 		return issues

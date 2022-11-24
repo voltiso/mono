@@ -198,6 +198,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		// console.log('CustomObjectImpl._getIssuesImpl', this[OPTIONS])
 		let issues: ValidationIssue[] = []
 
+		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!isObject(x)) {
 			issues.push(
 				new ValidationIssue({
