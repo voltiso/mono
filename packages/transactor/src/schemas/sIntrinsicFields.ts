@@ -4,6 +4,8 @@
 import * as s from '@voltiso/schemar'
 import type { Output_ } from '@voltiso/schemar.types'
 
+import { sTimestamp } from './sTimestamp'
+
 export const sAggregateTargetEntry = s.object({
 	value: s.any.optional, // s.unknown.Narrow<NestedData>(),
 	numSources: s.number.default(0),
@@ -20,6 +22,12 @@ export const sVoltisoEntry = s.object({
 		.default({}),
 
 	aggregateSource: s.record(s.string, s.record(s.string, true)).default({}),
+
+	migrations: s
+		.record(s.string, {
+			migratedAt: sTimestamp,
+		})
+		.default({}),
 }).simple
 // .default({}) // ! do not export schemas that apply defaults
 

@@ -2,26 +2,26 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Type_ } from '@voltiso/schemar.types'
-import type { MaybePromise } from '@voltiso/util'
+import type { MaybeArray, MaybePromise } from '@voltiso/util'
 
+import type { DocIdString } from '~/brand'
 import type { TightenRefs } from '~/Data'
 import type { $$Doc, $$DocTI, GetDataWithId } from '~/Doc'
-import type { $$DocRef, GetDocRef } from '~/DocRef'
-import type {
-	$$DocRelatedLike,
-	GetDoc,
-	GetDocTag,
-	GetDocTI,
-} from '~/DocRelated'
+import type { $$DocRef } from '~/DocRef'
+import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 
 import type { DocDataView } from './DocDataView'
 
 export interface IAggregatorHandlers {
+	/** @deprecated Use `.default()` on a schema instead */
 	initialValue?: unknown
 
-	// ! just use `.target()` instead
-	// filter?(this: object): boolean | PromiseLike<boolean>
-
+	/**
+	 * Should return a Doc, a DocRef, or an array of these
+	 *
+	 * ⚠️ Do not return a `Promise<DocRef>` to a non-existing document (but
+	 * returning it as a single element array is ok)
+	 */
 	target(
 		this: object,
 	):
@@ -50,20 +50,18 @@ export interface AggregatorHandlers<
 	Target extends $$Doc,
 	Name extends string,
 > {
+	/** @deprecated Use `.default()` on a schema instead */
 	initialValue?: GetAggregate<Target, Name, 'out'> // out, not in - to mitigate bugs
 
-	// ! just use `.target()` instead
-	// filter?(this: GetDoc<SourceTI>): MaybePromise<boolean>
-
+	/**
+	 * Should return a Doc, a DocRef, or an array of these
+	 *
+	 * ⚠️ Do not return a `Promise<DocRef>` to a non-existing document (but
+	 * returning it as a single element array is ok)
+	 */
 	target(
 		this: DocDataView<GetDataWithId<SourceTI>>,
-	):
-		| MaybePromise<
-				(GetDoc<Target> | GetDocRef<{ doc: GetDocTag<Target> }> | undefined)[]
-		  >
-		| MaybePromise<GetDoc<Target>>
-		| GetDocRef<{ doc: GetDocTag<Target> }>
-		| undefined
+	): MaybePromise<MaybeArray<{ id: DocIdString<Target> } | undefined>>
 
 	autoCreateTarget?: boolean | undefined
 

@@ -132,6 +132,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 				value: s
 					// eslint-disable-next-line security/detect-object-injection
 					.schema(finalTarget.aggregateSchemas[name])
+					// eslint-disable-next-line etc/no-deprecated
 					.validate(handlers.initialValue),
 
 				numSources: 0,

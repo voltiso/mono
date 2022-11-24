@@ -140,7 +140,7 @@ describe('raw-transaction', function () {
 		expect((await db('user', 'adam').a).b.c).toStrictEqual({ d: 99 })
 	})
 
-	it('should not allow transactions inside transactions', async function () {
+	it('should ignore transactions inside transactions', async function () {
 		expect.hasAssertions()
 		await expect(
 			db.runTransaction(async () => {
@@ -148,7 +148,7 @@ describe('raw-transaction', function () {
 					//
 				})
 			}),
-		).rejects.toThrow('transaction')
+		).resolves.toBeUndefined() // .rejects.toThrow('transaction')
 	})
 
 	it('should rollback doc creation', async () => {

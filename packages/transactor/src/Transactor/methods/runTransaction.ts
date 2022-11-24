@@ -44,6 +44,15 @@ export async function runTransaction<R>(
 	ctx: Transactor,
 	body: (t: Transaction) => Promise<R>,
 ): Promise<R> {
+	if (Zone.current.get('transactionContextOverride')) {
+		// already in transaction
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		const transaction = Zone.current.get('transactionContextOverride')
+			.transaction as Transaction | undefined
+		assert(transaction)
+		return body(transaction)
+	}
+
 	const zoneCurrent = Zone.current // firestore library code destroys current zone! (?!)
 
 	const options: Database.TransactionOptions = {
@@ -53,9 +62,8 @@ export async function runTransaction<R>(
 	return ctx._database.runTransaction(databaseTransaction => {
 		const transaction = new Transaction(ctx._context, databaseTransaction)
 
-		// if (this._transactionLocalStorage.getStore() !== undefined)
-		if (zoneCurrent.get('transactionContextOverride'))
-			throw new TransactorError('cannot run transactions inside transactions')
+		// if (zoneCurrent.get('transactionContextOverride'))
+		// 	throw new TransactorError('cannot run transactions inside transactions')
 
 		const transactionContextOverride = {
 			transaction,

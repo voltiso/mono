@@ -87,6 +87,7 @@ describe('Doc util', () => {
 						}
 						numRefs: number
 						aggregateSource: Record<string, Record<string, true>>
+						migrations: Record<string, { migratedAt: Date }>
 					}
 				}
 			>
@@ -105,6 +106,7 @@ describe('Doc util', () => {
 						aggregateTarget: {}
 						numRefs: number
 						aggregateSource: Record<string, Record<string, true>>
+						migrations: Record<string, { migratedAt: Date }>
 					}
 				}
 			>
