@@ -13,7 +13,11 @@ import type { $$Doc, DocTI } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
 import type { AggregateTargetEntry } from '~/schemas'
-import { sAggregateTargetEntry, sVoltisoEntry } from '~/schemas'
+import {
+	getDefaultVoltisoEntry,
+	sAggregateTargetEntry,
+	sVoltisoEntry,
+} from '~/schemas'
 import type { WithTransaction } from '~/Transaction'
 import {
 	isWithoutTransaction,
@@ -87,7 +91,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 	// console.log('transactionDocPathGetImpl', ctx.docRef.path.toString())
 
 	const { _ref, id } = ctx.docRef
-	const { _cache, _databaseTransaction } = ctx.transaction
+	const { _cache, _databaseTransaction, _date } = ctx.transaction
 
 	const path = ctx.docRef.path.toString()
 
@@ -112,7 +116,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
-		cacheEntry.__voltiso ||= sVoltisoEntry.validate(undefined) // ! triggers may not see mutations done here
+		cacheEntry.__voltiso ||= getDefaultVoltisoEntry(_date) // ! triggers may not see mutations done here
 
 		cacheEntry.originalData = deepCloneData(cacheEntry.data) // ! ground truth for after-triggers (the first `before` value)
 
@@ -225,13 +229,13 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		cacheEntry.data = cacheEntry.proxy._raw
 
 		// $assert(cacheEntry.data.__voltiso)
-		cacheEntry.data.__voltiso ||= sVoltisoEntry.validate(undefined)
+		cacheEntry.data.__voltiso ||= getDefaultVoltisoEntry(_date)
 
 		// if (cacheEntry.data.__voltiso)
 		cacheEntry.__voltiso = cacheEntry.data.__voltiso
 	}
 
-	cacheEntry.__voltiso ||= sVoltisoEntry.validate(undefined)
+	cacheEntry.__voltiso ||= getDefaultVoltisoEntry(_date)
 
 	const onGetTriggers = getOnGetTriggers(ctx.docRef)
 

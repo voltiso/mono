@@ -17,7 +17,7 @@ import { withoutId } from '~/Data'
 import type { CustomDoc, DocTI } from '~/Doc'
 import { CustomDocRef, getBeforeCommits, processTriggers } from '~/DocRef'
 import { TransactorError } from '~/error'
-import { sVoltisoEntry } from '~/schemas'
+import { getDefaultVoltisoEntry } from '~/schemas'
 import type { Cache, CacheEntry } from '~/Transaction'
 import { setCacheEntry, Transaction, triggerGuard } from '~/Transaction'
 import type { Transactor } from '~/Transactor'
@@ -108,7 +108,7 @@ export async function runTransaction<R>(
 								(!cacheEntry.data &&
 									!isEqual(
 										cacheEntry.__voltiso,
-										sVoltisoEntry.validate(undefined),
+										getDefaultVoltisoEntry(transaction._date),
 									)))
 						) {
 							// console.log(

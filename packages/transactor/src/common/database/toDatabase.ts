@@ -10,14 +10,11 @@ import {
 	isPlainObject,
 	isReplaceIt,
 } from '@voltiso/util'
-import { deepEqual } from 'fast-equals'
 
-import { omitVoltisoEntry } from '~/Data'
 import type { NestedData } from '~/Data/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
-import { sVoltisoEntry } from '~/schemas'
 import type { NestedUpdates, Updates, UpdatesRecord } from '~/updates/Updates'
 
 interface WithToDatabase {
@@ -133,11 +130,11 @@ export function toDatabaseSet(
 	assert(isPlainObject(obj))
 	assert(!isDeleteIt(obj))
 
-	let finalObj = obj as Partial<IntrinsicFields>
+	const finalObj = obj as Partial<IntrinsicFields>
 
-	if (deepEqual(finalObj.__voltiso, sVoltisoEntry.validate(undefined))) {
-		finalObj = omitVoltisoEntry(obj)
-	}
+	// if (deepEqual(finalObj.__voltiso, sVoltisoEntry.validate(undefined))) {
+	// 	finalObj = omitVoltisoEntry(obj)
+	// }
 
 	const r: FirestoreLike.DocumentData = {}
 

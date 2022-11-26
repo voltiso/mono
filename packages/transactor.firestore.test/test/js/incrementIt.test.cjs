@@ -3,7 +3,7 @@
 
 'use strict'
 
-import { incrementIt } from '@voltiso/util'
+import { incrementIt, omit } from '@voltiso/util'
 
 const { sVoltisoEntry } = require('@voltiso/transactor')
 const { firestore, srcFirestore } = require('./common/index.cjs')
@@ -51,8 +51,13 @@ describe('incrementIt', function () {
 
 		await expect(
 			db('friend/artur/project/tds').dataWithId(),
-		).resolves.toStrictEqual({
-			__voltiso: sVoltisoEntry.validate(undefined),
+		).resolves.toMatchObject({
+			__voltiso: omit(
+				sVoltisoEntry.validate(undefined),
+				'createdAt',
+				'updatedAt',
+			),
+
 			id: 'tds',
 			numProjects: 1,
 		})
@@ -69,8 +74,13 @@ describe('incrementIt', function () {
 			})
 		})
 
-		await expect(db('friend/artur/project/tds').data).resolves.toStrictEqual({
-			__voltiso: sVoltisoEntry.validate(undefined),
+		await expect(db('friend/artur/project/tds').data).resolves.toMatchObject({
+			__voltiso: omit(
+				sVoltisoEntry.validate(undefined),
+				'createdAt',
+				'updatedAt',
+			),
+
 			numProjects: 1,
 		})
 	})

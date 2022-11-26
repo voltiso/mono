@@ -88,6 +88,10 @@ describe('Doc util', () => {
 						numRefs: number
 						aggregateSource: Record<string, Record<string, true>>
 						migrations: Record<string, { migratedAt: Date }>
+						numMigrations: number
+						migratedAt: Date
+						createdAt: Date
+						updatedAt: Date
 					}
 				}
 			>
@@ -107,6 +111,10 @@ describe('Doc util', () => {
 						numRefs: number
 						aggregateSource: Record<string, Record<string, true>>
 						migrations: Record<string, { migratedAt: Date }>
+						numMigrations: number
+						migratedAt: Date
+						createdAt: Date
+						updatedAt: Date
 					}
 				}
 			>

@@ -2,10 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { $$Doc, DocIdBrand, DocRef } from '@voltiso/transactor'
+import type {
+	$$Doc,
+	DocIdBrand,
+	DocRef,
+	GetVoltisoEntry,
+} from '@voltiso/transactor'
 import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { $Assert, $Is } from '@voltiso/util'
+import { $Assert, $Is, omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -56,11 +61,7 @@ describe('ref', () => {
 						name: string
 						specialty: string
 					}
-					__voltiso: {
-						aggregateTarget: {}
-						numRefs: number
-						aggregateSource: Record<string, Record<string, true>>
-					}
+					__voltiso: GetVoltisoEntry<DoctorX>
 				}
 			>
 		>()
@@ -103,16 +104,20 @@ describe('ref', () => {
 				},
 			})
 
-		await expect(patients(p.id).data.__voltiso).resolves.toStrictEqual(
-			sVoltisoEntry.validate({
-				numRefs: 0,
-			}),
+		await expect(patients(p.id).data.__voltiso).resolves.toMatchObject(
+			omit(
+				sVoltisoEntry.validate({
+					numRefs: 0,
+				}),
+				'createdAt',
+				'updatedAt',
+			),
 		)
 
-		await expect(doctors(d.id).data.__voltiso).resolves.toStrictEqual(
-			sVoltisoEntry.validate({
+		await expect(doctors(d.id).data.__voltiso).resolves.toMatchObject(
+			omit(sVoltisoEntry.validate({
 				numRefs: 1,
-			}),
+			}), 'createdAt', 'updatedAt'),
 		)
 
 		await expect(doctors(d.id).delete()).rejects.toThrow('numRefs')

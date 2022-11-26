@@ -12,7 +12,7 @@ export function patchRequireForEsbuild() {
 		try {
 			return originalRequire.call(this, id) as never
 		} catch (error) {
-			if (id.endsWith('.js')) {
+			if (typeof id === 'string' && id.endsWith('.js')) {
 				return originalRequire.call(
 					this,
 					id.slice(0, Math.max(0, id.length - 3)),

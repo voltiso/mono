@@ -152,7 +152,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	/** @inline */
 	fix<Out extends this[OPTIONS]['Output']>(
-		fixFunc: (x: this[OPTIONS]['Input']) => Out | void,
+		fixFunc: (x: this[OPTIONS]['Output']) => Out | void,
 	): DefineSchema<this, { Output: Out }>
 
 	//

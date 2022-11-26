@@ -30,6 +30,7 @@ export class Transaction extends lazyConstructor(() => Db) {
 	_isFinalizing = false
 	_error: Error | null = null
 	_execContext: DocPath | null = null
+	_date = new Date()
 
 	constructor(
 		parentContext: ParentContext,

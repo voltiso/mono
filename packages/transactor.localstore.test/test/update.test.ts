@@ -1,7 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { sVoltisoEntry } from '@voltiso/transactor'
+import { getDefaultVoltisoEntry } from '@voltiso/transactor'
+import { omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -24,8 +25,13 @@ describe('update', function () {
 
 		expect(r).toBeUndefined()
 
-		await expect(doctors('anthony').dataWithoutId()).resolves.toStrictEqual({
-			__voltiso: sVoltisoEntry.validate(undefined),
+		await expect(doctors('anthony').dataWithoutId()).resolves.toMatchObject({
+			__voltiso: omit(
+				getDefaultVoltisoEntry(new Date()),
+				'createdAt',
+				'updatedAt',
+			),
+
 			asd: 1,
 			sdf: 2,
 		})
@@ -64,17 +70,22 @@ describe('update', function () {
 
 			const anthonyData = await doctors('anthony').dataWithoutId()
 
-			expect(anthonyData).toStrictEqual({
-				__voltiso: sVoltisoEntry.validate(undefined),
+			expect(anthonyData).toMatchObject({
+				__voltiso: omit(
+					getDefaultVoltisoEntry(new Date()),
+					'createdAt',
+					'updatedAt',
+				),
+
 				asd: 1,
 				sdf: 2,
 			})
 		})
 
-		// does not write default __voltiso to the db
+		// // does not write default __voltiso to the db
 		const rawAnthonyDoc = await database.doc('doctor/anthony').get()
 
-		expect(rawAnthonyDoc.data()).toStrictEqual({
+		expect(rawAnthonyDoc.data()).toMatchObject({
 			asd: 1,
 			sdf: 2,
 		})

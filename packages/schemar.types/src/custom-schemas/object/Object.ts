@@ -21,9 +21,8 @@ export type ImplicitObject<Shape extends $$InferableObject> =
 		: // eslint-disable-next-line @typescript-eslint/ban-types
 		  Object<Shape>
 
-export interface AutoCreatedObject<
-	Shape extends $$InferableObject,
-> extends CustomObject<{
+export interface AutoCreatedObject<Shape extends $$InferableObject>
+	extends CustomObject<{
 		shape: Shape
 		deepShape: GetDeepShape_<Shape>
 		Output: GetObjectType<Shape, { kind: 'out'; isPlain: false }>

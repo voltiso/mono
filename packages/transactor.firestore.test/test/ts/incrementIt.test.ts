@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { sVoltisoEntry, Transactor } from '@voltiso/transactor'
-import { incrementIt } from '@voltiso/util'
+import { incrementIt, omit } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
@@ -47,8 +47,13 @@ describe('incrementIt', function () {
 
 		await expect(
 			db('userB/artur/project/tds').dataWithId(),
-		).resolves.toStrictEqual({
-			__voltiso: sVoltisoEntry.validate(undefined),
+		).resolves.toMatchObject({
+			__voltiso: omit(
+				sVoltisoEntry.validate(undefined),
+				'createdAt',
+				'updatedAt',
+			),
+
 			id: 'tds',
 			numProjects: 1,
 		})
@@ -65,8 +70,13 @@ describe('incrementIt', function () {
 			})
 		})
 
-		await expect(db('userB/artur/project/tds').data).resolves.toStrictEqual({
-			__voltiso: sVoltisoEntry.validate(undefined),
+		await expect(db('userB/artur/project/tds').data).resolves.toMatchObject({
+			__voltiso: omit(
+				sVoltisoEntry.validate(undefined),
+				'createdAt',
+				'updatedAt',
+			),
+
 			numProjects: 1,
 		})
 	})

@@ -188,8 +188,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	): X | this[OPTIONS]['Output'] {
 		let result = x
 
-		if (typeof result === 'undefined' && this.hasDefault)
+		if (result === undefined && this.hasDefault)
 			result = this.getDefault as never
+
+		result = this._fix(result, options) as never
 
 		for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
 			const nextValue = customFix.fix(result as never)
@@ -197,7 +199,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			if (isDefined(nextValue)) result = nextValue as never
 		}
 
-		return this._fix(result as never, options) as never
+		return result
 	}
 
 	getIssues(
@@ -303,7 +305,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
 	): never {
 		const entry =
-			typeof expectedDescription === 'undefined'
+			expectedDescription === undefined
 				? {
 						checkIfValid,
 				  }

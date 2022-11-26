@@ -10,6 +10,8 @@ import type { DatabaseContext } from '~/DatabaseContext'
 import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
+import { sVoltisoEntry } from '~/schemas'
+import type { WithTransaction } from '~/Transaction'
 import type { Transactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
 
@@ -59,6 +61,27 @@ const databaseSet = async (
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,
 		)
 
+	// assert(data.__voltiso)
+
+	const ctxOverride = Zone.current.get('transactionContextOverride') as
+		| WithTransaction
+		| undefined
+
+	const now = ctxOverride?.transaction
+		? ctxOverride.transaction._date
+		: new Date()
+
+	// eslint-disable-next-line no-param-reassign
+	data = {
+		...data,
+
+		__voltiso: sVoltisoEntry.validate({
+			...data.__voltiso,
+			createdAt: now,
+			updatedAt: now,
+		}),
+	}
+
 	const firestoreData = toDatabaseSet(ctx, data)
 
 	if (isDatabase(t)) {
@@ -92,6 +115,25 @@ export async function databaseUpdate(
 	}
 
 	if (isDeleteIt(updates)) return databaseDelete(t, ref)
+
+	const ctxOverride = Zone.current.get('transactionContextOverride') as
+		| WithTransaction
+		| undefined
+
+	const now = ctxOverride?.transaction
+		? ctxOverride.transaction._date
+		: new Date()
+
+	// eslint-disable-next-line no-param-reassign
+	updates = {
+		...updates,
+
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		__voltiso: {
+			...(updates['__voltiso'] as any),
+			updatedAt: now,
+		},
+	}
 
 	const databaseUpdates = toDatabaseUpdate(ctx, updates)
 

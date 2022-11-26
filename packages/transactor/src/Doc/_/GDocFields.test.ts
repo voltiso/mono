@@ -20,6 +20,10 @@ describe('GDocFields', () => {
 					numRefs: number
 					aggregateSource: Record<string, Record<string, true>>
 					migrations: Record<string, { migratedAt: Date }>
+					numMigrations: number
+					createdAt: Date
+					updatedAt: Date
+					migratedAt: Date
 				}>
 			}>(),
 		)

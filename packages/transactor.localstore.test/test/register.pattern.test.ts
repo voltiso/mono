@@ -52,6 +52,6 @@ describe('register at pattern', () => {
 			.doc('nestedUserA/adam/dailyMeetings/qwerty')
 			.get()
 
-		expect(rawDoc.data()).toStrictEqual({ field: 4 })
+		expect(rawDoc.data()).toMatchObject({ field: 4 })
 	})
 })

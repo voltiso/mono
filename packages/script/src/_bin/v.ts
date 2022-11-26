@@ -54,8 +54,10 @@ function getScripts(): Record<string, string | string[]> {
 					throw error
 			}
 
-			if (currentCwd === '/') break
-			currentCwd = path.dirname(currentCwd)
+			const nextCwd = path.dirname(currentCwd)
+
+			if (nextCwd === currentCwd) break
+			currentCwd = nextCwd
 		}
 
 		gScripts = scripts

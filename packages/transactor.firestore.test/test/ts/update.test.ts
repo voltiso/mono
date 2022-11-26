@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { sVoltisoEntry, Transactor } from '@voltiso/transactor'
+import { omit } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
@@ -27,8 +28,13 @@ describe('update', function () {
 
 		expect(r).toBeUndefined()
 
-		await expect(doctors('anthony').dataWithoutId()).resolves.toStrictEqual({
-			__voltiso: sVoltisoEntry.validate(undefined),
+		await expect(doctors('anthony').dataWithoutId()).resolves.toMatchObject({
+			__voltiso: omit(
+				sVoltisoEntry.validate(undefined),
+				'createdAt',
+				'updatedAt',
+			),
+
 			asd: 1,
 			sdf: 2,
 		})
@@ -65,8 +71,13 @@ describe('update', function () {
 
 			expect(r).toBeUndefined()
 
-			await expect(doctors('anthony').dataWithoutId()).resolves.toStrictEqual({
-				__voltiso: sVoltisoEntry.validate(undefined),
+			await expect(doctors('anthony').dataWithoutId()).resolves.toMatchObject({
+				__voltiso: omit(
+					sVoltisoEntry.validate(undefined),
+					'createdAt',
+					'updatedAt',
+				),
+
 				asd: 1,
 				sdf: 2,
 			})

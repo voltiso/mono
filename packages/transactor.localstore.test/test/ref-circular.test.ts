@@ -5,7 +5,7 @@ import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
+import { $Assert, omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -57,10 +57,14 @@ describe('localstore', () => {
 
 			expect(name2).toBe('a')
 
-			await expect(doctors(a.id).data.__voltiso).resolves.toStrictEqual(
-				sVoltisoEntry.validate({
-					numRefs: 1,
-				}),
+			await expect(doctors(a.id).data.__voltiso).resolves.toMatchObject(
+				omit(
+					sVoltisoEntry.validate({
+						numRefs: 1,
+					}),
+					'createdAt',
+					'updatedAt',
+				),
 			)
 			await expect(doctors(a.id).delete()).rejects.toThrow('numRefs')
 
