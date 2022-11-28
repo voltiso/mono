@@ -8,7 +8,7 @@ import type * as Database from '@voltiso/firestore-like'
 import { at } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
-import { DeleteIt, IncrementIt } from '~/FieldValue'
+import { ArrayRemove, ArrayUnion, DeleteIt, IncrementIt } from '~/FieldValue'
 
 export function applyUpdatesInPlace(
 	data: Database.DocumentData,
@@ -35,6 +35,12 @@ export function applyUpdatesInPlace(
 			o[f] ||= 0
 			// eslint-disable-next-line security/detect-object-injection
 			o[f] += v._n
+		} else if (v instanceof ArrayUnion) {
+			o[f] = [...new Set([...(o[f] || []), ...v._items])]
+		} else if (v instanceof ArrayRemove) {
+			const result = new Set(o[f] || [])
+			for (const item of v._items) result.delete(item)
+			o[f] = result
 		} else {
 			// eslint-disable-next-line security/detect-object-injection
 			o[f] = deepCloneData(v)

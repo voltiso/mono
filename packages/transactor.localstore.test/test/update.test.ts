@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { getDefaultVoltisoEntry } from '@voltiso/transactor'
-import { omit } from '@voltiso/util'
+import { arrayAddToIt, omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -20,8 +20,11 @@ describe('update', function () {
 			'NOT_FOUND',
 		)
 
-		await doctors('anthony').set({ asd: 1 })
-		const r = await doctors('anthony').update({ sdf: 2 })
+		await doctors('anthony').set({ asd: 1, arr: ['a', 1] })
+		const r = await doctors('anthony').update({
+			sdf: 2,
+			arr: arrayAddToIt<number | string>(1, 'b'),
+		})
 
 		expect(r).toBeUndefined()
 
@@ -34,6 +37,7 @@ describe('update', function () {
 
 			asd: 1,
 			sdf: 2,
+			arr: ['a', 1, 'b'],
 		})
 	})
 

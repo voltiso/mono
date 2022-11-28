@@ -3,10 +3,12 @@
 
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
+import { arrayRemoveFromIt } from '.'
+import { arrayAddToIt } from './arrayAddToIt'
 
-import { incrementIt } from '.'
 import type { DeleteIt } from './deleteIt'
 import { deleteIt } from './deleteIt'
+import { incrementIt } from './incrementIt'
 import { keepIt } from './keepIt'
 import type { ApplyPatch } from './patch'
 import { forcePatch, patch } from './patch'
@@ -66,6 +68,26 @@ describe('patch', () => {
 
 		type C = typeof c
 		$Assert<IsIdentical<C, { a: 1 }>>()
+	})
+
+	it('array add', () => {
+		expect.hasAssertions()
+
+		const a = { arr: ['a', 'b', 1] }
+
+		const b = patch(a, { arr: arrayAddToIt<string | number>('b', 2) })
+
+		expect(b).toStrictEqual({ arr: ['a', 'b', 1, 2] })
+	})
+
+	it('array remove', () => {
+		expect.hasAssertions()
+
+		const a = { arr: ['a', 'b', 1] }
+
+		const b = patch(a, { arr: arrayRemoveFromIt<string | number>('b', 2) })
+
+		expect(b).toStrictEqual({ arr: ['a', 1] })
 	})
 
 	it('does not change original data (simple)', () => {

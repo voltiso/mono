@@ -12,6 +12,8 @@ import {
 	tryGetProperty,
 } from '~/object'
 import type { AlsoAccept } from '~/type'
+import { ArrayAddToIt, isArrayAddToIt } from './arrayAddToIt'
+import { ArrayRemoveFromIt, isArrayRemoveFromIt } from './arrayRemoveFromIt'
 
 import type { DeleteIt } from './deleteIt'
 import { isDeleteIt } from './deleteIt'
@@ -34,6 +36,9 @@ export type PatchFor<X> =
 			  }
 			: never)
 	| ReplaceIt<X>
+	| (X extends readonly (infer E)[]
+			? ArrayAddToIt<E> | ArrayRemoveFromIt<E>
+			: never)
 	| (X extends undefined ? DeleteIt : never)
 	| (X extends number ? IncrementIt : never)
 	| X
@@ -49,6 +54,8 @@ export type ForcePatchFor<X> =
 			  }
 			: never)
 	| ReplaceIt<X | AlsoAccept<unknown>>
+	| ArrayAddToIt
+	| ArrayRemoveFromIt
 	| DeleteIt
 	| X
 	| AlsoAccept<unknown>
@@ -117,6 +124,18 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		// )
 		if (equals(x, patchValue.__replaceIt)) return x as never
 		else return patchValue.__replaceIt as never
+	}
+
+	if (isArrayAddToIt(patchValue)) {
+		if (!Array.isArray(x)) return patchValue.__arrayAddToIt as never
+		return [...new Set([...x, ...patchValue.__arrayAddToIt])] as never
+	}
+
+	if (isArrayRemoveFromIt(patchValue)) {
+		if (!Array.isArray(x)) return [] as never
+		const result = new Set(x)
+		for (const item of patchValue.__arrayRemoveFromIt) result.delete(item)
+		return [...result] as never
 	}
 
 	if (isIncrementIt(patchValue)) {

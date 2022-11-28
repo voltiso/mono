@@ -15,6 +15,14 @@ export class FieldValue implements Database.FieldValue {
 	static increment(n: number) {
 		return new IncrementIt(n)
 	}
+
+	static arrayUnion(...items: unknown[]) {
+		return new ArrayUnion(...items)
+	}
+
+	static arrayRemove(...items: unknown[]) {
+		return new ArrayRemove(...items)
+	}
 }
 
 export class IncrementIt extends FieldValue {
@@ -26,3 +34,23 @@ export class IncrementIt extends FieldValue {
 }
 
 export class DeleteIt extends FieldValue {}
+
+//
+
+export class ArrayUnion extends FieldValue {
+	_items: unknown[]
+
+	constructor(...items: unknown[]) {
+		super()
+		this._items = items
+	}
+}
+
+export class ArrayRemove extends FieldValue {
+	_items: unknown[]
+
+	constructor(...items: unknown[]) {
+		super()
+		this._items = items
+	}
+}

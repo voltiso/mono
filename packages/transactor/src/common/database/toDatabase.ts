@@ -5,6 +5,8 @@ import { assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import {
 	getKeys,
+	isArrayAddToIt,
+	isArrayRemoveFromIt,
 	isDeleteIt,
 	isIncrementIt,
 	isPlainObject,
@@ -45,6 +47,14 @@ export function toDatabaseUpdate(
 	if (isIncrementIt(updates)) {
 		assert(typeof updates.__incrementIt === 'number')
 		return ctx.module.FieldValue.increment(updates.__incrementIt)
+	}
+
+	if (isArrayAddToIt(updates)) {
+		return ctx.module.FieldValue.arrayUnion(...updates.__arrayAddToIt)
+	}
+
+	if (isArrayRemoveFromIt(updates)) {
+		return ctx.module.FieldValue.arrayRemove(...updates.__arrayRemoveFromIt)
 	}
 
 	if (isReplaceIt(updates))
@@ -99,6 +109,8 @@ export function toDatabaseSetNested(
 		)
 
 	assert(!isDeleteIt(obj))
+	assert(!isArrayAddToIt(obj))
+	assert(!isArrayRemoveFromIt(obj))
 
 	if (Array.isArray(obj)) {
 		return obj.map(x => toDatabaseSetNested(ctx, x)) as never
@@ -128,7 +140,10 @@ export function toDatabaseSet(
 		return toDatabaseSet(ctx, obj.__replaceIt as IntrinsicFields)
 
 	assert(isPlainObject(obj))
+
 	assert(!isDeleteIt(obj))
+	assert(!isArrayAddToIt(obj))
+	assert(!isArrayRemoveFromIt(obj))
 
 	const finalObj = obj as Partial<IntrinsicFields>
 
