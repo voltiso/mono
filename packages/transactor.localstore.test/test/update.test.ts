@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { getDefaultVoltisoEntry } from '@voltiso/transactor'
-import { arrayAddToIt, omit } from '@voltiso/util'
+import { arraySetAddToIt, omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -23,7 +23,7 @@ describe('update', function () {
 		await doctors('anthony').set({ asd: 1, arr: ['a', 1] })
 		const r = await doctors('anthony').update({
 			sdf: 2,
-			arr: arrayAddToIt<number | string>(1, 'b'),
+			arr: arraySetAddToIt<number | string>(1, 'b'),
 		})
 
 		expect(r).toBeUndefined()

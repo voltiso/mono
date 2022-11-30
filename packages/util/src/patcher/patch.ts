@@ -12,38 +12,18 @@ import {
 	tryGetProperty,
 } from '~/object'
 import type { AlsoAccept } from '~/type'
-import { ArrayAddToIt, isArrayAddToIt } from './arrayAddToIt'
-import { ArrayRemoveFromIt, isArrayRemoveFromIt } from './arrayRemoveFromIt'
 
+import type { ArraySetUpdateIt } from './arraySetUpdateIt'
+import { isArraySetUpdateIt } from './arraySetUpdateIt'
 import type { DeleteIt } from './deleteIt'
 import { isDeleteIt } from './deleteIt'
 import type { IncrementIt } from './incrementIt'
 import { isIncrementIt } from './incrementIt'
 import type { KeepIt } from './keepIt'
 import { isKeepIt } from './keepIt'
+import type { PatchFor } from './PatchFor'
 import type { ReplaceIt } from './replaceIt'
 import { isReplaceIt } from './replaceIt'
-
-export type Patch = unknown
-
-//
-
-export type PatchFor<X> =
-	| KeepIt
-	| (X extends object
-			? {
-					[key in keyof X]?: PatchFor<X[key]>
-			  }
-			: never)
-	| ReplaceIt<X>
-	| (X extends readonly (infer E)[]
-			? ArrayAddToIt<E> | ArrayRemoveFromIt<E>
-			: never)
-	| (X extends undefined ? DeleteIt : never)
-	| (X extends number ? IncrementIt : never)
-	| X
-
-export type $PatchFor<X> = X extends any ? PatchFor<X> : never
 
 //
 
@@ -54,8 +34,7 @@ export type ForcePatchFor<X> =
 			  }
 			: never)
 	| ReplaceIt<X | AlsoAccept<unknown>>
-	| ArrayAddToIt
-	| ArrayRemoveFromIt
+	| ArraySetUpdateIt
 	| DeleteIt
 	| X
 	| AlsoAccept<unknown>
@@ -126,15 +105,17 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		else return patchValue.__replaceIt as never
 	}
 
-	if (isArrayAddToIt(patchValue)) {
-		if (!Array.isArray(x)) return patchValue.__arrayAddToIt as never
-		return [...new Set([...x, ...patchValue.__arrayAddToIt])] as never
-	}
+	if (isArraySetUpdateIt(patchValue)) {
+		const result = new Set(Array.isArray(x) ? x : [])
 
-	if (isArrayRemoveFromIt(patchValue)) {
-		if (!Array.isArray(x)) return [] as never
-		const result = new Set(x)
-		for (const item of patchValue.__arrayRemoveFromIt) result.delete(item)
+		for (const item of patchValue.__arraySetUpdateIt.add || []) {
+			result.add(item)
+		}
+
+		for (const item of patchValue.__arraySetUpdateIt.remove || []) {
+			result.delete(item)
+		}
+
 		return [...result] as never
 	}
 

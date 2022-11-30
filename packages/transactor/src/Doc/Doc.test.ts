@@ -12,7 +12,7 @@ import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
 import type { GetData } from './_/GetData'
 import type { CustomDoc } from './Doc'
 import { Doc } from './Doc'
-import type { UntaggedDocTI } from './DocImpl'
+import type { DefaultDocTI } from './DocImpl'
 import type { DocTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
 import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
@@ -69,9 +69,9 @@ describe('doc', () => {
 	it('has intrinsic fields', () => {
 		expect.assertions(0)
 
-		type A = GetData<UntaggedDocTI>
+		type A = GetData<DefaultDocTI>
 		$Assert.is<A, { __voltiso?: { numRefs: number } }>()
-		$Assert.is<Doc<UntaggedDocTI>, { __voltiso?: { numRefs: number } }>()
+		$Assert.is<Doc<DefaultDocTI>, { __voltiso?: { numRefs: number } }>()
 	})
 
 	it('infers ref data', () => {

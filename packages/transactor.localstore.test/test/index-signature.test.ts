@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type { GetVoltisoEntry } from '@voltiso/transactor'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -52,11 +53,7 @@ describe('index-signature', function () {
 				{
 					[x: string]: string
 					// @ts-expect-error does not match signature
-					__voltiso: {
-						aggregateTarget: {}
-						numRefs: number
-						aggregateSource: Record<string, Record<string, true>>
-					}
+					__voltiso: GetVoltisoEntry<{}>
 					displayName: string
 					def: string
 				}

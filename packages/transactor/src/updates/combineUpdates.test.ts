@@ -1,12 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { deleteIt, incrementIt, isDeleteIt, replaceIt } from '@voltiso/util'
+import {
+	combinePatches,
+	deleteIt,
+	incrementIt,
+	isDeleteIt,
+	replaceIt,
+} from '@voltiso/util'
 
 import { immutabilize } from '~/immutabilize'
 
 import type { Updates } from './Updates'
-import { combineUpdates } from './Updates'
 
 describe('updates', function () {
 	it('should replace field', function () {
@@ -14,7 +19,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1 }
 		const updates = { a: 2 }
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches(oldData, updates)
 
 		expect(newData).toStrictEqual({ a: 2 })
 	})
@@ -24,7 +29,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1, b: 11 }
 		const updates = { a: 2 }
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches(oldData, updates)
 
 		expect(newData).toStrictEqual({ a: 2, b: 11 })
 	})
@@ -34,7 +39,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
 		const updates = { b: { ba: 999 } }
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches(oldData, updates)
 
 		expect(newData).toStrictEqual({
 			a: 1,
@@ -47,7 +52,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
 		const updates = deleteIt
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches<unknown>(oldData, updates)
 
 		expect(isDeleteIt(newData)).toBeTruthy()
 	})
@@ -57,7 +62,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
 		const updates = { b: { ba: deleteIt } }
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches<unknown>(oldData, updates)
 
 		expect(newData).toStrictEqual({
 			a: 1,
@@ -70,7 +75,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 221, bbb: 222 } } }
 		const updates = { b: { bb: replaceIt({ bba: 999 }) } }
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches<unknown>(oldData, updates)
 
 		expect(newData).toStrictEqual({
 			a: 1,
@@ -83,7 +88,7 @@ describe('updates', function () {
 
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 999 } } }
 		const updates = { b: { ba: incrementIt(1000) } }
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches(oldData, updates)
 
 		expect(newData).toStrictEqual({
 			a: 1,
@@ -97,7 +102,7 @@ describe('updates', function () {
 		const oldData = { a: 1, b: { ba: 21, bb: { bba: 999 } } }
 		const updates = { b: { bc: incrementIt(1000) } }
 
-		expect(() => combineUpdates(oldData, updates)).toThrow('undefined')
+		expect(() => combinePatches<unknown>(oldData, updates)).toThrow('undefined')
 	})
 
 	it('should work with immutabilize', function () {
@@ -108,7 +113,7 @@ describe('updates', function () {
 			b: { ba: 21, bb: { bba: 999 } },
 		}) as Updates
 		const updates = immutabilize({ a: incrementIt(100) }) as Updates
-		const newData = combineUpdates(oldData, updates)
+		const newData = combinePatches<unknown>(oldData, updates)
 
 		expect(newData).toStrictEqual({
 			a: incrementIt(110),

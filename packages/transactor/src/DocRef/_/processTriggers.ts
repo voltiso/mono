@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { isDeleteIt, isReplaceIt } from '@voltiso/util'
+import { isDefined, isDeleteIt, isReplaceIt, patch } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { withId } from '~/Data'
@@ -12,7 +12,6 @@ import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
 
-import { apply } from './apply'
 import { collectTriggerResult } from './collectTriggerResult'
 import type { DocRefContext } from './Context'
 import { getAfterTriggers } from './getAfterTriggers'
@@ -126,7 +125,9 @@ export async function processTriggers(
 	const schema = getSchema(ctx.docRef)
 
 	// apply updates
-	const data = apply(ctx, cacheEntry.data, params?.updates)
+	const data = isDefined(params?.updates)
+		? patch(cacheEntry.data, params?.updates as never)
+		: cacheEntry.data
 
 	// console.log('apply result', cacheEntry.data, params?.updates, data)
 

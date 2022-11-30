@@ -62,8 +62,7 @@ class OrderApiTest extends Doc('orderApiTest')
 		for (const field of Object.keys(sPublicFields)) {
 			newHistoryStamp[field] = this.data[field as never]
 
-			if (typeof newHistoryStamp[field] === 'undefined')
-				delete newHistoryStamp[field]
+			if (newHistoryStamp[field] === undefined) delete newHistoryStamp[field]
 		}
 
 		newHistoryStamp['createdAt'] = new Date().toISOString()

@@ -1,19 +1,12 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+export function add(a: number, b: number): number
+export function add(a: bigint, b: bigint): bigint
+export function add(a: number, b: bigint): bigint
+export function add(a: bigint, b: number): bigint
+export function add(a: number | bigint, b: number | bigint): number | bigint
 
-import { $assert } from '~/$strip'
+export function add(a: number | bigint, b: number | bigint): number | bigint {
+	if (typeof a === 'bigint' || typeof b === 'bigint')
+		return BigInt(a) + BigInt(b)
 
-export function add<A extends number | bigint, B extends number | bigint>(
-	a: A,
-	b: B,
-): A extends bigint ? bigint : B extends bigint ? bigint : number {
-	if (typeof a === 'bigint' || typeof b === 'bigint') {
-		const aa = typeof a === 'bigint' ? a : BigInt(a)
-		const bb = typeof b === 'bigint' ? b : BigInt(b)
-		return (aa + bb) as never
-	} else {
-		$assert(typeof a === 'number')
-		$assert(typeof b === 'number')
-		return (a + b) as never
-	}
+	return a + b
 }

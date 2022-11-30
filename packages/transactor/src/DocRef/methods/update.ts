@@ -5,9 +5,11 @@ import type { DeleteIt } from '@voltiso/util'
 import {
 	$AssumeType,
 	assert,
+	combinePatches,
 	isDefined,
 	isDeleteIt,
 	isReplaceIt,
+	patch,
 	stringFrom,
 } from '@voltiso/util'
 
@@ -18,6 +20,7 @@ import type { $$Doc, Doc } from '~/Doc'
 import { IndexedDoc } from '~/Doc'
 import type { WithDocRef } from '~/DocRef'
 import {
+	applyUpdates,
 	getAfterTriggers,
 	getBeforeCommits,
 	getSchema,
@@ -34,11 +37,6 @@ import {
 } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 import type { Updates, UpdatesRecord } from '~/updates/Updates'
-import {
-	applyUpdates,
-	combineUpdates,
-	dataFromUpdates,
-} from '~/updates/Updates'
 import type { Forbidden } from '~/util'
 
 import { transactionDocPathGet } from './get'
@@ -252,11 +250,12 @@ async function transactionUpdateImpl(
 			throw new TransactorError(`${ctx.docRef.path.toString()} already exists`)
 
 		if (cacheEntry.data) check.call(ctx, updates, options)
-		else
+		else {
 			check.call(ctx, updates, {
 				...options,
 				onConstField: 'ignore',
 			})
+		}
 
 		await processTriggers(ctx, { updates })
 	} else {
@@ -265,16 +264,19 @@ async function transactionUpdateImpl(
 		let { data } = cacheEntry
 
 		if (isDefined(data)) {
-			data = applyUpdates(data, updates)
+			data = applyUpdates(data, updates as never) as typeof data
 		} else if (isDefined(cacheEntry.updates)) {
-			cacheEntry.updates = combineUpdates(cacheEntry.updates, updates)
+			cacheEntry.updates = combinePatches<unknown>(
+				cacheEntry.updates as never,
+				updates as never,
+			) as never
 		} else {
 			cacheEntry.updates = updates
 		}
 
 		if (isReplaceIt(cacheEntry.updates) || isDeleteIt(cacheEntry.updates)) {
 			assert(data === undefined)
-			data = dataFromUpdates(cacheEntry.updates)
+			data = patch(undefined, cacheEntry.updates as never) as typeof data
 			delete cacheEntry.updates
 		}
 

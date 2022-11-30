@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Schema } from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar.types'
 import {
 	assert,
 	isPlainObject,
@@ -189,11 +189,11 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return (await this._context.docRef.delete()) as never
 	}
 
-	get schemaWithoutId(): Schema<GetData<TI>> | undefined {
+	get schemaWithoutId(): t.Schema<GetData<TI>> | undefined {
 		return this.ref.schemaWithoutId as never
 	}
 
-	get schemaWithId(): Schema<$WithId<GetData<TI>>> | undefined {
+	get schemaWithId(): t.Schema<$WithId<GetData<TI>>> | undefined {
 		return this.ref.schemaWithId as never
 	}
 
@@ -202,6 +202,23 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	}
 }
 
-export interface UntaggedDocTI extends DocTI {
+//
+
+// export const DOC_SHAPE_NON_EMPTY_HACK = Symbol('DOC_SHAPE_NON_EMPTY_HACK')
+// export type DOC_SHAPE_NON_EMPTY_HACK = typeof DOC_SHAPE_NON_EMPTY_HACK
+
+export interface DefaultDocTI extends DocTI {
 	tag: AnyDoc
+
+	// publicOnCreation: t.Object<{
+	// 	[DOC_SHAPE_NON_EMPTY_HACK]?: never
+	// }>
+
+	// public: t.Object<{
+	// 	[DOC_SHAPE_NON_EMPTY_HACK]?: never
+	// }>
+
+	// private: t.Object<{
+	// 	[DOC_SHAPE_NON_EMPTY_HACK]?: never
+	// }>
 }

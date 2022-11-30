@@ -1,17 +1,18 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '~/$strip'
+import { $Assert, $Is } from '~/$strip'
 import type { IsIdentical } from '~/type'
-import { arrayRemoveFromIt } from '.'
-import { arrayAddToIt } from './arrayAddToIt'
 
+import { arraySetAddToIt, arraySetRemoveFromIt } from './arraySetUpdateIt'
 import type { DeleteIt } from './deleteIt'
 import { deleteIt } from './deleteIt'
 import { incrementIt } from './incrementIt'
+import type { KeepIt } from './keepIt'
 import { keepIt } from './keepIt'
 import type { ApplyPatch } from './patch'
 import { forcePatch, patch } from './patch'
+import type { PatchFor } from './PatchFor'
 import type { ReplaceIt } from './replaceIt'
 import { replaceIt } from './replaceIt'
 
@@ -27,6 +28,23 @@ describe('patch', () => {
 
 		type C = ApplyPatch<X, DeleteIt>
 		$Assert.is<C, undefined>()
+
+		type D = PatchFor<{}>
+		$Assert<IsIdentical<D, KeepIt | ReplaceIt<{}>>>()
+
+		type DD = PatchFor<unknown>
+		$Assert<IsIdentical<DD, unknown>>()
+
+		type E = PatchFor<{ a?: number }>
+		$Assert.is<{ a: DeleteIt }, E>()
+
+		// $Assert($Is<DeleteIt>().not.subtypeOf<PatchFor<unknown>>())
+
+		type F = PatchFor<{ a: number }>
+		$Assert($Is<{ a: DeleteIt }>().not.subtypeOf<F>())
+
+		type G = PatchFor<{ [x: string]: unknown; isEditor: boolean }>
+		$Assert.is<{ idEditor: true }, G>()
 	})
 
 	it('works', () => {
@@ -75,7 +93,7 @@ describe('patch', () => {
 
 		const a = { arr: ['a', 'b', 1] }
 
-		const b = patch(a, { arr: arrayAddToIt<string | number>('b', 2) })
+		const b = patch(a, { arr: arraySetAddToIt<string | number>('b', 2) })
 
 		expect(b).toStrictEqual({ arr: ['a', 'b', 1, 2] })
 	})
@@ -85,7 +103,7 @@ describe('patch', () => {
 
 		const a = { arr: ['a', 'b', 1] }
 
-		const b = patch(a, { arr: arrayRemoveFromIt<string | number>('b', 2) })
+		const b = patch(a, { arr: arraySetRemoveFromIt<string | number>('b', 2) })
 
 		expect(b).toStrictEqual({ arr: ['a', 1] })
 	})

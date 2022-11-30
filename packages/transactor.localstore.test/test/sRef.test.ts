@@ -22,8 +22,6 @@ declare module '@voltiso/transactor' {
 
 describe('ref schema', () => {
 	it('type', () => {
-		expect.assertions(0)
-
 		const a = sRef
 
 		type A = typeof a.Output

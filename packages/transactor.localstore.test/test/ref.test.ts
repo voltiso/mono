@@ -49,8 +49,6 @@ const patients = db.register(Patient)
 
 describe('ref', () => {
 	it('type', () => {
-		expect.assertions(0)
-
 		type DoctorData = ReturnType<DoctorX['dataWithId']>
 		$Assert<
 			IsIdentical<

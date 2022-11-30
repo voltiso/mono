@@ -3,7 +3,12 @@
 
 import { assert } from '@voltiso/assertor'
 import type { Schema } from '@voltiso/schemar.types'
-import { $AssumeType, assertNotPolluting, stringFrom } from '@voltiso/util'
+import {
+	$AssumeType,
+	assertNotPolluting,
+	patch,
+	stringFrom,
+} from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { fromDatabase } from '~/common'
@@ -26,7 +31,6 @@ import {
 } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
-import { applyUpdates } from '~/updates'
 import type { Forbidden } from '~/util'
 
 import {
@@ -173,7 +177,10 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 	initLastDataSeen(ctx, cacheEntry)
 
 	if (cacheEntry.updates) {
-		cacheEntry.data = applyUpdates(cacheEntry.data, cacheEntry.updates)
+		cacheEntry.data = patch(
+			cacheEntry.data,
+			cacheEntry.updates as never,
+		) as typeof cacheEntry.data
 
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso

@@ -37,11 +37,6 @@ class DbUser extends Doc('usersTdsTest1').with({
 
 const users = db.register(DbUser)
 
-// type Data = GetData<DbUser>
-// type UpdateData = GetUpdateDataByCtx<DbUser[DTI], 'outside'>
-
-// type Updates = UpdatesFromData.Update<UpdateData, Data>
-
 describe('tds-user', () => {
 	it('works', async () => {
 		const user = await users('a')

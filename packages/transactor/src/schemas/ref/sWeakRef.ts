@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
 import { lazyValue, OPTIONS, ProtoCallable } from '@voltiso/util'
 
-import type { WeakDocRef, WeakDocRefLike } from '~/DocRef'
+import type { WeakDocRefLike } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 
@@ -23,8 +23,8 @@ const _fixableWeakRefSchema = lazyValue(
 				// eslint-disable-next-line security/detect-object-injection
 				...x[OPTIONS],
 				isStrong: false,
-			}) as unknown as WeakDocRef
-		}) as unknown as t.Schema<WeakDocRef>,
+			}) as never
+		}) as never,
 )
 
 /** 🫠 Accept any, output weak - but currently weak is just supertype */
@@ -44,4 +44,4 @@ export const sWeakRef: WeakRefSchema = lazyValue(() =>
 			// eslint-disable-next-line etc/no-internal
 			_fixableWeakRefSchema,
 	}),
-) as never
+)

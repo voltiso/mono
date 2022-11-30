@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, $_, DeleteIt, NoArgument, ReplaceIt } from '@voltiso/util'
+import type { _, $_, DeleteIt, NoArgument, PatchFor } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
@@ -16,9 +16,8 @@ import type { GetVoltisoEntry } from './_'
 import type { ExecutionContext } from './_/ExecutionContext'
 import type { GetData, GetDataWithId, GetUpdateDataByCtx } from './_/GetData'
 import type { GetMethodPromises } from './_/GetMethodPromises'
-import type { UpdatesFromData } from './_/UpdatesFromData'
 import { DocCall } from './DocCall'
-import type { UntaggedDocTI } from './DocImpl'
+import type { DefaultDocTI } from './DocImpl'
 import { DocImpl } from './DocImpl'
 import type { $$DocTI, DTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
@@ -65,17 +64,13 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	//
 
 	update(
-		updates: UpdatesFromData.Update<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
-	): Promise<CustomDoc<TI, Ctx> | undefined>
-
-	update(
-		updates: _<ReplaceIt<GetUpdateDataByCtx<TI, Ctx>>>,
+		updates: PatchFor<GetUpdateDataByCtx<TI, Ctx>>,
 	): Promise<CustomDoc<TI, Ctx>>
 
 	update(updates: DeleteIt): Promise<null>
 
 	update(
-		updates: UpdatesFromData<GetUpdateDataByCtx<TI, Ctx>, GetData<TI>>,
+		updates: PatchFor<GetUpdateDataByCtx<TI, Ctx>> | DeleteIt,
 	): Promise<CustomDoc<TI, Ctx> | null | undefined>
 
 	//
@@ -125,4 +120,4 @@ export type Doc<TI extends $$DocTI | NoArgument = NoArgument> =
 export const Doc = CallableConstructor({
 	constructor: lazyConstructor(() => DocImpl as never),
 	call: DocCall,
-}) as unknown as DocConstructor<UntaggedDocTI>
+}) as unknown as DocConstructor<DefaultDocTI>

@@ -13,7 +13,7 @@ import {
 	toDatabaseSetNested,
 } from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
-import { assert } from '@voltiso/util'
+import { assert, deleteIt } from '@voltiso/util'
 
 const database = createLocalstore()
 const db = createLocalstoreTransactor(database)
@@ -47,6 +47,11 @@ class Client extends Doc.with({
 const clients = db('clientAddXyz').register(Client)
 
 describe('add', () => {
+	it('type', () => {
+		// @ts-expect-error field is not optional - cannot be deleted (type-check)
+		;() => clients('a').update({ displayName: deleteIt })
+	})
+
 	it('works with autoId', async () => {
 		expect.hasAssertions()
 

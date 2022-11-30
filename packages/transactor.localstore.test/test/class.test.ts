@@ -10,6 +10,7 @@ import {
 	IndexedDoc,
 	method,
 } from '@voltiso/transactor'
+import { arraySetAddToIt, deleteIt } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -17,6 +18,10 @@ const db = createTransactor({ onUnknownField: 'error' })
 
 class Doctor extends Doc.with({
 	id: s.string,
+
+	public: {
+		languages: s.array(s.string).optional,
+	},
 
 	private: {
 		specialty: s.string.optional,
@@ -126,5 +131,19 @@ describe('class', () => {
 
 		await expect(doctors('a').methods.good()).resolves.toBeTruthy()
 		await expect(doctors('a').data.specialty).resolves.toBe('fireman')
+	})
+
+	it('should support sentinels', async () => {
+		expect.hasAssertions()
+
+		await doctors('a').set({})
+
+		await doctors('a').update({ languages: deleteIt })
+		await doctors('a').update({ languages: arraySetAddToIt('a', 'b') })
+		await doctors('a').update({ languages: arraySetAddToIt('b', 'c') })
+
+		await expect(doctors('a').data).resolves.toMatchObject({
+			languages: ['a', 'b', 'c'],
+		})
 	})
 })

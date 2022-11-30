@@ -40,8 +40,8 @@ class Doctor extends Doc.with({
 			await this.update({ num: incrementIt(1) })
 		}
 
-		// @ts-expect-error `c` is not optional
-		;() => this.update({ c: deleteIt })
+		// // @ts-expect-error `c` is not optional
+		// ;() => this.update({ c: deleteIt })
 		;() => this.update({ opt: deleteIt })
 	})
 

@@ -36,10 +36,13 @@ export function applyUpdatesInPlace(
 			// eslint-disable-next-line security/detect-object-injection
 			o[f] += v._n
 		} else if (v instanceof ArrayUnion) {
+			// eslint-disable-next-line security/detect-object-injection
 			o[f] = [...new Set([...(o[f] || []), ...v._items])]
 		} else if (v instanceof ArrayRemove) {
-			const result = new Set(o[f] || [])
+			// eslint-disable-next-line security/detect-object-injection
+			const result = new Set((o[f] || []) as never)
 			for (const item of v._items) result.delete(item)
+			// eslint-disable-next-line security/detect-object-injection
 			o[f] = result
 		} else {
 			// eslint-disable-next-line security/detect-object-injection

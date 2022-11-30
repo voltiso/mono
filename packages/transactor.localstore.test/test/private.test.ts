@@ -26,7 +26,7 @@ class Doctor extends Doc.with({
 	})
 
 	.method('good', async function () {
-		// @ts-expect-error
+		// @ts-expect-error no such field
 		await doctors(this.id).update({ specialty: 'fireman' })
 	}) {}
 

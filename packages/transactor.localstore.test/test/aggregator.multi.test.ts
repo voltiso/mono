@@ -108,9 +108,8 @@ describe('aggregator', () => {
 		type A = GetData<Day[DTI]>
 		$Assert<
 			IsIdentical<
-				A,
+				Pick<A['__voltiso'], 'aggregateTarget' | 'aggregateSource' | 'numRefs'>,
 				{
-					__voltiso: {
 						aggregateTarget: {
 							shifts: {
 								value: {
@@ -123,7 +122,6 @@ describe('aggregator', () => {
 						}
 						numRefs: number
 						aggregateSource: Record<string, Record<string, true>>
-					}
 				}
 			>
 		>()

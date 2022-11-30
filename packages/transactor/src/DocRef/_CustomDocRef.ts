@@ -8,7 +8,7 @@ import type {
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar.types'
-import type { _, DeleteIt, If, Override, ReplaceIt } from '@voltiso/util'
+import type { _, DeleteIt, If, Override, PatchFor } from '@voltiso/util'
 import {
 	assert,
 	deleteIt,
@@ -31,10 +31,8 @@ import type {
 	GetMethodPromises,
 	GetPublicCreationInputData,
 	GetUpdateDataByCtx,
-	UpdatesFromData,
 } from '~/Doc'
 import type { GetDoc, GetDocTag, GetDocTI } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
@@ -269,29 +267,19 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(
-		updates: O['doc'] extends AnyDoc
-			? { readonly id?: never; [k: string]: unknown }
-			: UpdatesFromData.Update<
-					GetUpdateDataByCtx<O['doc'], 'outside'>,
-					GetData<O['doc']>
-			  >,
-	): PromiseLike<GetDoc<O['doc']> | undefined>
-
-	update(
-		updates: ReplaceIt<GetUpdateDataByCtx<O['doc'], 'outside'>>,
+		updates: PatchFor<GetUpdateDataByCtx<O['doc'], 'outside'>>,
 	): PromiseLike<GetDoc<O['doc']>>
 
-	update(
-		updates: undefined extends GetData<O['doc']> ? DeleteIt : never,
-	): PromiseLike<null>
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(updates: DeleteIt): PromiseLike<null>
 
+	/** @returns `PromiseLike`! (`then`-only) */
 	update(
-		updates: any,
-		// UpdatesFromData<
-		// 	GetUpdateDataByCtx<GetDoc<O['doc']>, 'outside'>,
-		// 	GetData<O['doc']>
-		// >,
-	): any {
+		updates: PatchFor<GetUpdateDataByCtx<O['doc'], 'outside'>> | DeleteIt,
+	): PromiseLike<GetDoc<O['doc']> | null>
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(updates: any): any {
 		// PromiseLike<GetDoc<O['doc']> | null | undefined>
 		/**
 		 * ☠️ Don't chain anything here - we're returning a magic promise to the
