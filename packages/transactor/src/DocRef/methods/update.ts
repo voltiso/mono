@@ -5,7 +5,6 @@ import type { DeleteIt } from '@voltiso/util'
 import {
 	$AssumeType,
 	assert,
-	combinePatches,
 	isDefined,
 	isDeleteIt,
 	isReplaceIt,
@@ -21,6 +20,7 @@ import { IndexedDoc } from '~/Doc'
 import type { WithDocRef } from '~/DocRef'
 import {
 	applyUpdates,
+	combineUpdates,
 	getAfterTriggers,
 	getBeforeCommits,
 	getSchema,
@@ -266,7 +266,7 @@ async function transactionUpdateImpl(
 		if (isDefined(data)) {
 			data = applyUpdates(data, updates as never) as typeof data
 		} else if (isDefined(cacheEntry.updates)) {
-			cacheEntry.updates = combinePatches<unknown>(
+			cacheEntry.updates = combineUpdates(
 				cacheEntry.updates as never,
 				updates as never,
 			) as never

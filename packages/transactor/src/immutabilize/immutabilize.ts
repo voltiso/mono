@@ -1,15 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { stringFrom } from '@voltiso/util'
+import { isPlainObject, stringFrom } from '@voltiso/util'
 
 import { TransactorError } from '~/error'
 
-const isObject = (obj: unknown): obj is object =>
-	Boolean(obj) && typeof obj === 'object'
-
 export const immutabilize = <T>(obj: T, message = 'object is immutable'): T => {
-	if (!isObject(obj)) return obj
+	if (!isPlainObject(obj) && !Array.isArray(obj)) return obj
 
 	const proxy = new Proxy(obj, {
 		get: (target, field, receiver): unknown => {

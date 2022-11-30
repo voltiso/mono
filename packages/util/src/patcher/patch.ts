@@ -4,6 +4,7 @@
 import { $Assert } from '~/$strip'
 import type { Force } from '~/cast'
 import { equals } from '~/equals'
+import { add } from '~/number'
 import type { Merge2, Value } from '~/object'
 import {
 	assertNotPolluting,
@@ -121,10 +122,12 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 
 	if (isIncrementIt(patchValue)) {
 		if (typeof x === 'number' || typeof x === 'bigint') {
-			if (typeof x === 'bigint' || typeof patchValue.__incrementIt === 'bigint')
-				return (BigInt(x) + BigInt(patchValue.__incrementIt)) as never
-			else return (x + patchValue.__incrementIt) as never
-		} else return Number.NaN as never
+			return add(x, patchValue.__incrementIt) as never
+		} else {
+			throw new TypeError(
+				`forcePatch: cannot increment non-number: ${typeof x}`,
+			)
+		}
 	}
 
 	if (isPlainObject(x) && isPlainObject(patchValue)) {

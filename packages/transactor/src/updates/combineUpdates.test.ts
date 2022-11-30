@@ -66,7 +66,7 @@ describe('updates', function () {
 
 		expect(newData).toStrictEqual({
 			a: 1,
-			b: { bb: { bba: 221, bbb: 222 } },
+			b: { ba: deleteIt, bb: { bba: 221, bbb: 222 } },
 		})
 	})
 
@@ -107,6 +107,8 @@ describe('updates', function () {
 
 	it('should work with immutabilize', function () {
 		expect.hasAssertions()
+
+		expect(isDeleteIt(immutabilize(deleteIt))).toBeTruthy()
 
 		const oldData = immutabilize({
 			a: incrementIt(10),

@@ -4,6 +4,7 @@
 import { add } from '~/number'
 import { isPlainObject } from '~/object'
 
+import { isDeleteIt } from '.'
 import { arraySetUpdateIt, isArraySetUpdateIt } from './arraySetUpdateIt'
 import { incrementIt, isIncrementIt } from './incrementIt'
 import { isKeepIt } from './keepIt'
@@ -11,15 +12,7 @@ import { patch } from './patch'
 import type { PatchFor } from './PatchFor'
 
 export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
-	if (isPlainObject(a) && isPlainObject(b)) {
-		const result = { ...a }
-		for (const [key, value] of Object.entries(b)) {
-			result[key as never] = combinePatches(
-				result[key as never],
-				value,
-			) as never
-		}
-	}
+	if (isDeleteIt(b)) return b
 
 	if (isIncrementIt(a) && isIncrementIt(b)) {
 		return incrementIt(add(a.__incrementIt, b.__incrementIt)) as never
@@ -55,6 +48,19 @@ export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
 			add: [...valuesToAdd],
 			remove: [...valuesToRemove],
 		}) as never
+	}
+
+	if (isPlainObject(a) && isPlainObject(b)) {
+		const result = { ...a }
+
+		for (const [key, value] of Object.entries(b)) {
+			result[key as never] = combinePatches(
+				result[key as never],
+				value,
+			) as never
+		}
+
+		return result
 	}
 
 	return patch(a, b as never)
