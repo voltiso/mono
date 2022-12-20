@@ -8,7 +8,6 @@ import {
 	isDefined,
 	isDeleteIt,
 	isReplaceIt,
-	patch,
 	stringFrom,
 } from '@voltiso/util'
 
@@ -276,7 +275,10 @@ async function transactionUpdateImpl(
 
 		if (isReplaceIt(cacheEntry.updates) || isDeleteIt(cacheEntry.updates)) {
 			assert(data === undefined)
-			data = patch(undefined, cacheEntry.updates as never) as typeof data
+			data = applyUpdates(
+				undefined,
+				cacheEntry.updates as never,
+			) as unknown as typeof data
 			delete cacheEntry.updates
 		}
 

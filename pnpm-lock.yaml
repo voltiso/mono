@@ -782,6 +782,7 @@ importers:
       '@voltiso/script.lib': workspace:^
       '@voltiso/util.esbuild': workspace:^
       '@voltiso/util.node': workspace:^
+      chalk: '4'
     dependencies:
       '@voltiso/script.lib': link:../script.lib
       '@voltiso/util.esbuild': link:../util.esbuild
@@ -790,6 +791,7 @@ importers:
       '@types/node': 18.11.9
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      chalk: 4.1.2
 
   packages/script.lib:
     specifiers:

@@ -27,7 +27,7 @@ function callLocal(
 		clientPath._path as never,
 	) as unknown
 
-	if (typeof localHandler === 'undefined') return undefined
+	if (localHandler === undefined) return undefined
 
 	if (!isCallable(localHandler))
 		throw new Error(
@@ -40,6 +40,7 @@ function callLocal(
 }
 
 async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
+	// console.log('callRemote', clientPath, ...args)
 	const serializer = clientPath._client.options.serializer
 
 	const serializedArgs = serializer
@@ -102,9 +103,12 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 			if (error) detail.push(JSON.stringify(error))
 		} catch {}
 	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.error(error)
+
 		const message =
 			error instanceof Error
-				? `${error.stack || error.message}`
+				? `${error.message}`
 				: `Exotic error: ${stringFrom(error)}`
 
 		detail.push(message)

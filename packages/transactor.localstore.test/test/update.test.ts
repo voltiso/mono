@@ -41,12 +41,26 @@ describe('update', function () {
 		})
 	})
 
-	it('does not allow updates of deleted document', async function () {
+	it('does not allow updates of deleted document #1a', async function () {
 		expect.hasAssertions()
+
 		await expect(
 			db.runTransaction(async () => {
 				await doctors('anthony').delete()
 				await doctors('anthony').update({ asd: 1 })
+			}),
+		).rejects.toThrow('NOT_FOUND')
+	})
+
+	it('does not allow updates of deleted document #1b', async function () {
+		expect.hasAssertions()
+
+		await doctors('anthony2').set({ asd: 1 })
+
+		await expect(
+			db.runTransaction(async () => {
+				await doctors('anthony2').delete()
+				await doctors('anthony2').update({ asd: 1 })
 			}),
 		).rejects.toThrow('NOT_FOUND')
 	})

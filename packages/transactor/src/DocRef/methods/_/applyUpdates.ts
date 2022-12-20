@@ -1,14 +1,22 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isDeleteIt, patch } from '@voltiso/util'
+import type { ApplyPatch, PatchFor } from '@voltiso/util'
+import { isDeleteIt, isReplaceIt, patch } from '@voltiso/util'
 
 import { TransactorError } from '~/error'
 
-export function applyUpdates(data: unknown, updates: unknown): unknown {
-	if (isDeleteIt(updates)) return null
+export function applyUpdates<X, Updates extends PatchFor<X>>(
+	data: X,
+	updates: Updates,
+): ApplyPatch<X, Updates> | null {
+	// console.log('applyUpdates', { data, updates })
 
-	if (data === null) throw new TransactorError('NOT_FOUND')
+	if (isDeleteIt(updates) || (isReplaceIt(updates) && !updates.__replaceIt))
+		return null
+
+	if (data === null && !isReplaceIt(updates))
+		throw new TransactorError('NOT_FOUND')
 
 	return patch(data, updates as never)
 }

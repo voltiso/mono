@@ -3,7 +3,7 @@
 
 import type { PatchFor } from '@voltiso/util'
 import type { IBehaviorSubject } from '@voltiso/util.rxjs'
-import type { BehaviorSubject } from 'rxjs'
+import type { Subject } from 'rxjs'
 
 import type { NestedSubjectReservedField } from './NestedSubjectReservedFields'
 
@@ -35,11 +35,12 @@ export type _NestedSubjectRec<T, Additional> = Omit<
 	},
 	NestedSubjectReservedField
 > & {
+	value: T
 	_: {
 		[k in keyof T]-?: NestedSubject<T[k] | Additional>
 	}
 }
 
 export type NestedSubject<T> = NestedSubjectBase<T> &
-	BehaviorSubject<T> &
+	Subject<T> &
 	_NestedSubjectRec<Exclude<T, undefined>, Extract<T, undefined>>

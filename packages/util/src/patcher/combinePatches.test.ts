@@ -16,7 +16,9 @@ describe('combinePatches', () => {
 			a: 123,
 		})
 
-		expect(combinePatches({ a: 123 }, { a: deleteIt })).toStrictEqual({})
+		expect(combinePatches({ a: 123 }, { a: deleteIt })).toStrictEqual({
+			a: deleteIt,
+		})
 
 		expect(
 			combinePatches<unknown>([1, 2], arraySetAddToIt<unknown>(2, 'a')),

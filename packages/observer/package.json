@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/observer",
-  "version": "1.2.6",
+  "version": "2.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -30,7 +30,7 @@
     "build:cjs": "v buildCjs",
     "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnly",
+    "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
     "clean": "v clean",
     "typecov": "v typecov"
@@ -60,6 +60,6 @@
     "node": "16"
   },
   "typeCoverage": {
-    "is": 98.79
+    "is": 98.81
   }
 }

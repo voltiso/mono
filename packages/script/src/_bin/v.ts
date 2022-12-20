@@ -8,8 +8,10 @@ import { spawn } from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
+import type { Script } from '@voltiso/script.lib'
 import { VoltisoScriptError } from '@voltiso/script.lib'
 import { registerEsbuild } from '@voltiso/util.esbuild'
+import chalk from 'chalk'
 
 import { compatDirs } from './_/compatDirs'
 
@@ -68,7 +70,7 @@ function getScripts(): Record<string, string | string[]> {
 	return gScripts
 }
 
-let gPackageScripts: Record<string, string> | undefined
+let gPackageScripts: Record<string, Script> | undefined
 
 async function getPackageScripts() {
 	// console.log('getPackageScripts')
@@ -96,59 +98,85 @@ async function getPackageScripts() {
 	return gPackageScripts
 }
 
-async function runScript(commandName: string, ...commandArgs: string[]) {
-	// console.log('runScript', commandName, ...commandArgs)
+const icon = '🐚'
+
+// eslint-disable-next-line no-console
+console.log(icon, chalk.gray('@voltiso/script'))
+
+async function runScript(script: Script | Promise<Script>, ...args: string[]) {
+	// eslint-disable-next-line require-atomic-updates, no-param-reassign
+	script = await script
+
+	if (Array.isArray(script)) {
+		const subScripts = await Promise.all(script)
+
+		for (const s of subScripts) {
+			// eslint-disable-next-line no-await-in-loop
+			await runScript(s, ...args)
+		}
+		return
+	}
+
+	if (typeof script === 'function') {
+		const result = await script(...args)
+		if (result) await runScript(result)
+		return
+	}
+
+	let tokens = [script, ...args].join(' ').split(' ')
+	if (tokens[0] === 'v')
+		tokens = tokens.slice(1)
+
+		// eslint-disable-next-line no-param-reassign
+	;[script, ...args] = tokens as [string, ...string[]]
+
+	// eslint-disable-next-line no-console
+	console.log(icon, chalk.redBright(script), chalk.gray(args.join(' ')))
 
 	const packageScripts = await getPackageScripts()
 	const scripts = getScripts()
 
 	// eslint-disable-next-line security/detect-object-injection
-	let script: string | string[] | undefined = packageScripts[commandName]
-	// eslint-disable-next-line security/detect-object-injection
-	if (!script || script === commandName) script = scripts[commandName] || ''
+	const packageScript = packageScripts[script]
 
-	const commands = Array.isArray(script) ? script : [script]
-
-	for (let command of commands) {
-		// console.log({ command })
-
-		if (command.startsWith('v ')) command = command.slice(2)
-
-		const newArgs = command.split(' ')
-
-		const [newCommandName, ...newCommandArgs] = newArgs as [string, ...string[]]
-
-		if (newCommandName) {
-			// eslint-disable-next-line no-await-in-loop
-			await runScript(newCommandName, ...newCommandArgs)
-		} else {
-			// eslint-disable-next-line no-console
-			console.log('[@voltiso/script]', commandName, ...commandArgs)
-
-			// eslint-disable-next-line promise/avoid-new, no-await-in-loop
-			await new Promise<void>((resolve, reject) => {
-				const childProcess = spawn([commandName, ...commandArgs].join(' '), {
-					shell: true,
-					stdio: 'inherit',
-				})
-
-				childProcess.on('error', reject)
-				childProcess.on('close', code => {
-					if (code)
-						reject(
-							new Error(
-								`[@voltiso/script] ${commandName} ${commandArgs.join(
-									' ',
-								)} Non-zero exit code: ${code}`,
-							),
-						)
-					else resolve()
-				})
-			})
-
-			// console.log('exec done')
-		}
+	if (packageScript && packageScript !== script) {
+		await runScript(packageScript, ...args)
+		return
 	}
+
+	// eslint-disable-next-line security/detect-object-injection
+	const codeScript = scripts[script]
+
+	if (codeScript) {
+		await runScript(codeScript, ...args)
+		return
+	}
+
+	const stringScript = script
+
+	// eslint-disable-next-line promise/avoid-new
+	await new Promise<void>((resolve, reject) => {
+		// console.log('spawn', script, ...args)
+		const childProcess = spawn([script, ...args].join(' '), {
+			shell: true,
+			stdio: 'inherit',
+		})
+
+		childProcess.on('error', reject)
+		childProcess.on('close', code => {
+			if (code)
+				reject(
+					new Error(
+						`[@voltiso/script] ${stringScript} ${args.join(
+							' ',
+						)} Non-zero exit code: ${code}`,
+					),
+				)
+			else resolve()
+		})
+	})
+
+	// console.log('exec done')
 }
 
 async function main(): Promise<void> {

@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/rpc",
-  "version": "5.1.0",
+  "version": "5.1.0a",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -45,6 +45,7 @@
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
+    "dev": "v dev",
     "__________TEST": "__________",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",

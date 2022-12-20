@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/script",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -47,7 +47,8 @@
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^"
+    "@voltiso/config.ts.build.esm": "workspace:^",
+    "chalk": "4"
   },
   "__________ENGINES": "__________",
   "engines": {

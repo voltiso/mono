@@ -20,9 +20,10 @@ import {
 	defaultPatchOptions,
 	deleteIt,
 	hasOwnProperty,
+	isPolluting,
 	patch,
 } from '@voltiso/util'
-import { BehaviorSubject } from 'rxjs'
+import { Subject } from 'rxjs'
 
 import type {
 	NestedSubjectChildOptions,
@@ -35,11 +36,11 @@ import { _nestedSubjectUpdateToRoot } from './_/_nestedSubjectUpdateToRoot'
 import { _validate } from './_/_validate'
 
 export function isWithGetShape(x: unknown): x is { getShape: unknown } {
-	return typeof (x as { getShape: unknown } | null)?.getShape !== 'undefined'
+	return (x as { getShape: unknown } | undefined)?.getShape !== undefined
 }
 
 export function isWithGetDeepShape(x: unknown): x is { getDeepShape: unknown } {
-	return typeof (x as { getDeepShape: unknown } | null) !== 'undefined'
+	return (x as { getDeepShape: unknown } | undefined) !== undefined
 }
 
 export class NestedSubjectImpl<S extends $$Schemable> {
@@ -49,8 +50,13 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 
 	readonly _schemable: S | undefined
 	// eslint-disable-next-line rxjs/no-exposed-subjects
-	readonly _subject$: BehaviorSubject<Type_<S>>
+	readonly _subject$: Subject<Type_<S>>
+	_value: Type_<S>
 	_exists: boolean
+
+	get value(): Type_<S> {
+		return this._value
+	}
 
 	get exists() {
 		return this._exists
@@ -95,6 +101,9 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 		{},
 		{
 			get: (_target, key, _receiver) => {
+				// if (isPolluting(key) || typeof key !== 'string') {
+				// 	return Reflect.get(_target, key, _receiver) as never
+				// }
 				$assert.string(key)
 				assertNotPolluting(key)
 				if (hasOwnProperty(this._children, key))
@@ -118,7 +127,8 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 	) {
 		const proxyHandlers = {
 			get: (_target: object, key: keyof any, receiver: unknown) => {
-				if (key in this) return Reflect.get(this, key, receiver) as never
+				if (key in this || isPolluting(key))
+					return Reflect.get(this, key, receiver) as never
 				else if (key in this._subject$ || typeof key !== 'string') {
 					const result = Reflect.get(this._subject$, key, receiver) as unknown
 					if (typeof result === 'function')
@@ -147,17 +157,14 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 				? (getSchemableChild(options.parent.schemable, options.key) as never)
 				: undefined
 
-			this._subject$ = new BehaviorSubject(
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				options.parent._subject$.value?.[options.key],
-			) as never
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			this._value = options.parent._value?.[options.key] as never
+
+			this._subject$ = new Subject()
 
 			this._exists =
-				typeof options.parent._subject$.value === 'object' &&
-				Object.prototype.hasOwnProperty.call(
-					options.parent._subject$.value,
-					options.key,
-				)
+				typeof options.parent._value === 'object' &&
+				Object.prototype.hasOwnProperty.call(options.parent._value, options.key)
 
 			const self = new Proxy(this, proxyHandlers)
 
@@ -172,18 +179,15 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 
 			this._schemable = options.schemable
 
-			this._subject$ = new BehaviorSubject(
-				// eslint-disable-next-line etc/no-internal
-				_validate({
-					diContext: this._diContext,
-					schemable: this._schemable,
+			// eslint-disable-next-line etc/no-internal
+			this._value = _validate({
+				diContext: this._diContext,
+				schemable: this._schemable,
 
-					value:
-						typeof options.initialValue !== 'undefined'
-							? options.initialValue
-							: {},
-				}),
-			) as never
+				value: options.initialValue === undefined ? {} : options.initialValue,
+			}) as never
+
+			this._subject$ = new Subject() as never
 
 			this._exists = true
 
@@ -207,7 +211,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 		patchValue: PatchFor<Input<S>>,
 		options: PatchOptions = defaultPatchOptions,
 	) {
-		const newValue = patch(this._subject$.value, patchValue as never, options)
+		const newValue = patch(this._value, patchValue as never, options)
 		this.set(newValue)
 	}
 
@@ -215,7 +219,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 		patchValue: PatchFor<Output<S>>,
 		options: PatchOptions = defaultPatchOptions,
 	) {
-		const newValue = patch(this._subject$.value, patchValue, options)
+		const newValue = patch(this._value, patchValue as never, options)
 		this.setUnchecked(newValue)
 	}
 
@@ -224,7 +228,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 	}
 
 	set(newValue: Input<S>): void {
-		if (newValue === this._subject$.value) return // no change
+		if (newValue === this._value) return // no change
 
 		// eslint-disable-next-line etc/no-internal
 		const validNewValue = _validate({
@@ -238,7 +242,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 
 	setUnchecked(newValue: Output<S>): void {
 		// this._exists = true
-		if (newValue === this._subject$.value) return // no change
+		if (newValue === this._value) return // no change
 
 		// eslint-disable-next-line etc/no-internal
 		this._set(newValue, true)
@@ -259,7 +263,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 
 	/** @internal */
 	_set(newValue: Output<S>, exists: boolean): void {
-		if (newValue === this._subject$.value && this._exists === exists) return // no change (prune)
+		if (newValue === this._value && this._exists === exists) return // no change (prune)
 
 		this._exists = exists
 
@@ -275,6 +279,7 @@ export class NestedSubjectImpl<S extends $$Schemable> {
 			)
 		}
 
-		this._subject$.next(newValue)
+		this._value = newValue as never
+		this._subject$.next(this._value)
 	}
 }

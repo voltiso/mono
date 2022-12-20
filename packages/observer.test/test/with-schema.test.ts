@@ -72,9 +72,11 @@ describe('NestedSubjectWithSchema', () => {
 			called.push('c2')
 		})
 
-		expect(observerC).toBe(123)
+		expect(observerC).toBe(0) // no first update
+		// expect(observerC).toBe(123)
 
-		expect(called).toStrictEqual(['a', 'c', 'c2'])
+		expect(called).toStrictEqual([]) // no first update
+		// expect(called).toStrictEqual(['a', 'c', 'c2'])
 
 		called = []
 
