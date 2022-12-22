@@ -3,12 +3,14 @@
 
 import type { MaybePromise } from '@voltiso/util'
 
-export type ScriptWithParameters = (
-	...args: string[]
-) => MaybePromise<Script | void>
+export type Script = MaybePromise<
+	ScriptLiteral | ScriptSequence | ScriptWithParameters | NoScript
+>
 
 export type ScriptLiteral = string
 
-export type ScriptSequence = (Script | Promise<Script>)[]
+export type ScriptWithParameters = (...args: string[]) => Script
 
-export type Script = ScriptLiteral | ScriptSequence | ScriptWithParameters
+export type NoScript = null | undefined | '' | void
+
+export type ScriptSequence = Script[]
