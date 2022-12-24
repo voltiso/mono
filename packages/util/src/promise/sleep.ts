@@ -1,8 +1,16 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { AbortError } from '~/error'
+
 export interface SleepController {
+	/** Access the underlying Timeout object/number */
 	timeout: NodeJS.Timeout
+
+	/** Resolve the Promise early */
+	cancel: () => void
+
+	/** Reject the Promise early with {@link AbortError} */
 	abort: () => void
 }
 
@@ -14,11 +22,18 @@ export function sleep(
 
 	// eslint-disable-next-line promise/avoid-new
 	const result: Promise<void> & Partial<SleepController> = new Promise<void>(
-		resolve => {
+		(resolve, reject) => {
 			const handler = () => resolve()
 			controller.timeout = setTimeout(handler, milliseconds)
+
+			controller.cancel = () => {
+				clearTimeout(controller.timeout)
+				resolve()
+			}
+
 			controller.abort = () => {
 				clearTimeout(controller.timeout)
+				reject(new AbortError())
 			}
 
 			if (options?.signal)

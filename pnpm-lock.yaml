@@ -49,7 +49,7 @@ importers:
       '@voltiso/config.ts': link:packages/config.ts
       '@voltiso/eslint-config': link:packages/eslint-config
       '@voltiso/eslint-config-fast': link:packages/eslint-config-fast
-      '@voltiso/script': link:packages/script
+      '@voltiso/script': link:apps/script
       '@voltiso/transform': link:packages/transform
       cross-env: 7.0.3
       depcheck: 1.4.3
@@ -66,6 +66,25 @@ importers:
       typescript: 4.8.4
       typescript-transform-paths: 3.4.4_typescript@4.8.4
       zone.js: 0.12.0
+
+  apps/script:
+    specifiers:
+      '@types/node': ^18.11.9
+      '@voltiso/config.ts.build.cjs': workspace:^
+      '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/script.lib': workspace:^
+      '@voltiso/util.esbuild': workspace:^
+      '@voltiso/util.node': workspace:^
+      chalk: '4'
+    dependencies:
+      '@voltiso/script.lib': link:../../packages/script.lib
+      '@voltiso/util.esbuild': link:../../packages/util.esbuild
+      '@voltiso/util.node': link:../../packages/util.node
+    devDependencies:
+      '@types/node': 18.11.9
+      '@voltiso/config.ts.build.cjs': link:../../packages/config.ts.build.cjs
+      '@voltiso/config.ts.build.esm': link:../../packages/config.ts.build.esm
+      chalk: 4.1.2
 
   packages/assertor:
     specifiers:
@@ -89,7 +108,7 @@ importers:
       '@voltiso/config.tsdoc': link:../config.tsdoc
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/transform': link:../transform
 
   packages/assertor.test:
@@ -118,7 +137,7 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
       rimraf: 3.0.2
 
@@ -134,7 +153,7 @@ importers:
       '@types/babel__core': 7.1.20
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
 
   packages/config.babel.zone:
     specifiers:
@@ -149,7 +168,7 @@ importers:
       '@babel/core': 7.20.2
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
 
   packages/config.eslint:
     specifiers:
@@ -169,7 +188,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/eslint-plugin': link:../eslint-plugin
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       eslint: 8.28.0
 
   packages/config.eslint.lib:
@@ -251,7 +270,7 @@ importers:
       '@types/node': 18.11.9
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       jest: 29.3.1_@types+node@18.11.9
       prettier: 2.8.0
 
@@ -432,7 +451,7 @@ importers:
       yaml-eslint-parser: 1.1.0
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       eslint: 8.28.0
       typescript: 4.8.4
 
@@ -573,7 +592,7 @@ importers:
       putout: 28.0.1
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       eslint: 8.28.0
       typescript: 4.8.4
 
@@ -605,7 +624,7 @@ importers:
       '@types/is-core-module': 2.2.0
       '@types/resolve': 1.20.2
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       eslint: 8.28.0
       import-meta-resolve: 2.1.0
       typescript: 4.8.4
@@ -628,7 +647,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       firebase: 9.14.0
       firebase-admin: 11.3.0_@firebase+app-types@0.8.1
       rimraf: 3.0.2
@@ -649,7 +668,7 @@ importers:
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       rxjs: 7.5.7
 
   packages/observer:
@@ -671,7 +690,7 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util.rxjs': link:../util.rxjs
       rxjs: 7.5.7
 
@@ -686,7 +705,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/observer': link:../observer
       '@voltiso/schemar': link:../schemar
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
 
   packages/rpc:
@@ -717,7 +736,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/schemar': link:../schemar
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       cross-env: 7.0.3
       express: 4.18.2
       get-port: 6.1.2
@@ -741,7 +760,7 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
 
   packages/schemar.no-op:
     specifiers:
@@ -771,27 +790,8 @@ importers:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
-
-  packages/script:
-    specifiers:
-      '@types/node': ^18.11.9
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/script.lib': workspace:^
-      '@voltiso/util.esbuild': workspace:^
-      '@voltiso/util.node': workspace:^
-      chalk: '4'
-    dependencies:
-      '@voltiso/script.lib': link:../script.lib
-      '@voltiso/util.esbuild': link:../util.esbuild
-      '@voltiso/util.node': link:../util.node
-    devDependencies:
-      '@types/node': 18.11.9
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      chalk: 4.1.2
 
   packages/script.lib:
     specifiers:
@@ -858,7 +858,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       csstype: 3.1.1
       fela: 12.2.1
       fela-native: 12.2.1_react-native@0.70.6
@@ -905,7 +905,7 @@ importers:
       '@voltiso/config.tsdoc': link:../config.tsdoc
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       zone.js: 0.12.0
 
   packages/transactor.firestore:
@@ -920,7 +920,7 @@ importers:
       '@firebase/app-types': 0.8.1
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/transactor': link:../transactor
       firebase-admin: 11.3.0_@firebase+app-types@0.8.1
 
@@ -953,7 +953,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.jest.lib': link:../config.jest.lib
       '@voltiso/schemar': link:../schemar
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/transactor': link:../transactor
       '@voltiso/transactor.firestore': link:../transactor.firestore
       '@voltiso/util': link:../util
@@ -979,7 +979,7 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/firestore-like': link:../firestore-like
       '@voltiso/localstore': link:../localstore
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/transactor': link:../transactor
 
   packages/transactor.localstore.test:
@@ -1006,7 +1006,7 @@ importers:
       '@voltiso/localstore': link:../localstore
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/transactor': link:../transactor
       '@voltiso/transactor.localstore': link:../transactor.localstore
       '@voltiso/util': link:../util
@@ -1044,7 +1044,7 @@ importers:
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/config.tsdoc': link:../config.tsdoc
       '@voltiso/schemar': link:../schemar
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/transform': link:../transform
       '@voltiso/util': link:../util
 
@@ -1102,7 +1102,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
 
   packages/util.node:
     specifiers:
@@ -1164,7 +1164,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.70.6_mwi2s3xpffl6gjt2em2e2wbt34
@@ -1187,7 +1187,7 @@ importers:
       '@voltiso/assertor': link:../assertor
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util.react': link:../util.react
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -1221,7 +1221,7 @@ importers:
       '@voltiso/observer': link:../observer
       '@voltiso/schemar': link:../schemar
       '@voltiso/schemar.types': link:../schemar.types
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
       '@voltiso/util.react.rxjs': link:../util.react.rxjs
       react: 18.2.0
@@ -1261,7 +1261,7 @@ importers:
       '@voltiso/config.jest.esr': link:../config.jest.esr
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-native: 0.70.6_mwi2s3xpffl6gjt2em2e2wbt34
@@ -1299,7 +1299,7 @@ importers:
     devDependencies:
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/script': link:../script
+      '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
       rxjs: 7.5.7
 
@@ -5960,10 +5960,6 @@ packages:
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
 
-  /@types/node/18.8.1:
-    resolution: {integrity: sha512-vuYaNuEIbOYLTLUAJh50ezEbvxrD43iby+lpUA2aa148Nh5kX/AVO/9m1Ahmbux2iU5uxJTNF9g2Y+31uml7RQ==}
-    dev: true
-
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
     dev: false
@@ -5994,7 +5990,7 @@ packages:
   /@types/randombytes/2.0.0:
     resolution: {integrity: sha512-bz8PhAVlwN72vqefzxa14DKNT8jK/mV66CSjwdVQM/k3Th3EPKfUtdMniwZgMedQTFuywAsfjnZsg+pEnltaMA==}
     dependencies:
-      '@types/node': 18.8.1
+      '@types/node': 18.11.9
     dev: true
 
   /@types/range-parser/1.2.4:
