@@ -13,8 +13,8 @@ import type {
 	PartialOrUndefined_,
 } from '@voltiso/util'
 
-import type { $$InferableObject, $$Object } from '~'
-import type { GetObjectType, Input_, Output_, Type } from '~/GetType'
+import type { $$Object } from '~'
+import type { GetObjectType, Type } from '~/GetType'
 import type { CustomSchema, SimpleSchema } from '~/Schema'
 import type { $$Schemable, GetDeepShape_ } from '~/Schemable'
 import type { DefineSchema } from '~/SchemaOptions'
@@ -44,10 +44,6 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 	//
 
 	get plain(): CustomObject.WithPlain<this>
-
-	and<F extends $$InferableObject | $$Object>(
-		additionalFields: F,
-	): CustomObject.WithAnd<this, F>
 
 	get partial(): CustomObject.WithPartial<this>
 	get strictPartial(): CustomObject.WithStrictPartial<this>
@@ -82,26 +78,6 @@ export namespace CustomObject {
 					Input: GetObjectType._IntersectWithObject<This['Input']>
 				}
 		  >
-		: never
-
-	export type WithAnd<This extends $$Object, Other> = This extends {
-		[OPTIONS]: ObjectOptions
-	}
-		? Other extends undefined
-			? This
-			: DefineSchema<
-					This,
-					{
-						shape: _<
-							This[OPTIONS]['shape'] &
-								(Other extends $$Object & { getShape: {} }
-									? Other['getShape']
-									: Other)
-						>
-						Output: _<This[OPTIONS]['Output'] & Output_<Other>>
-						Input: _<This[OPTIONS]['Input'] & Input_<Other>>
-					}
-			  >
 		: never
 
 	export type WithIndex<

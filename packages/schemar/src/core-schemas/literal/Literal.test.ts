@@ -15,8 +15,6 @@ import * as s from '~'
 
 describe('s.literal', () => {
 	it('generic', <O extends Partial<LiteralOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<CustomLiteral<O>, ILiteral>()
 
 		type A = CustomLiteral<O>['Output']

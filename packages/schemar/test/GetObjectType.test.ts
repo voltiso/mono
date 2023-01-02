@@ -9,8 +9,6 @@ import * as s from '~'
 
 describe('GetObjectType', () => {
 	it('literal', () => {
-		expect.assertions(0)
-
 		$Assert.is<GetObjectType<{}, { kind: 'out' }>, {}>()
 
 		type X = GetObjectType<{ a: 1; b: number; c: s.String }, { kind: 'out' }>

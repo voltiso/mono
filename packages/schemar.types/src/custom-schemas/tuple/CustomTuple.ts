@@ -25,7 +25,11 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 	//
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
+
 	get getShape(): this[OPTIONS]['shape']
+	get hasRest(): this[OPTIONS]['hasRest']
+	get getRestSchema(): this[OPTIONS]['rest']
+
 	// eslint-disable-next-line etc/no-internal
 	get getLength(): _GetArrayLength_<this[OPTIONS]['shape']>
 

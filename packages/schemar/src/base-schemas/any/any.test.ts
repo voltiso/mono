@@ -16,16 +16,12 @@ import * as s from '~'
 
 describe('any', () => {
 	it('generic', <O extends Partial<AnyOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<IAny, ISchema>()
 		$Assert.is<CustomAny<O>, ISchema>()
 		$Assert.is<CustomAny<O>, IAny>()
 	})
 
 	it('simple', () => {
-		expect.hasAssertions()
-
 		$Assert.is<typeof s.any, ISchema>()
 
 		type A1 = Output<typeof s.any>

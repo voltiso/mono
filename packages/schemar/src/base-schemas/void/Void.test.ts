@@ -15,8 +15,6 @@ import * as s from '~'
 
 describe('void', () => {
 	it('generic', <O extends Partial<VoidOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<CustomVoid<O>, IVoid>()
 	})
 

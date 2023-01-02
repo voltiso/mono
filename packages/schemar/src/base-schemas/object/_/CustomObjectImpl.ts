@@ -5,11 +5,9 @@
 
 import type {
 	$$Schemable,
-	$$SchemableObject,
 	CustomObject,
 	DefaultObjectOptions,
 	GetDeepShape_,
-	IObject,
 	ISchema,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
@@ -26,7 +24,6 @@ import {
 import * as t from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
-	$AssumeType,
 	clone,
 	getEntries,
 	getValues,
@@ -37,7 +34,7 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import { number, string, symbol, union } from '~/base-schemas'
+import { number, or, string, symbol } from '~/base-schemas'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl, isSchema } from '~/Schema'
@@ -88,22 +85,20 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		return this[OPTIONS]['indexSignatures'] as never
 	}
 
-	and(other: $$SchemableObject): never {
-		if (!isSchema(other as never)) {
-			return this._cloneWithOptions({
-				shape: { ...this.getShape, ...other },
-			}) as never
-		}
+	override and(other: $$Schemable): never {
+		const otherSchema = schema(other)
 
-		$AssumeType<IObject>(other)
+		if (!t.isObject(otherSchema)) {
+			return super.and(otherSchema)
+		}
 
 		// eslint-disable-next-line security/detect-object-injection
 		const a = this[OPTIONS]
 		// eslint-disable-next-line security/detect-object-injection
-		const b = other[OPTIONS]
+		const b = otherSchema[OPTIONS]
 
 		return this._cloneWithOptions({
-			shape: { ...this.getShape, ...other.getShape },
+			shape: { ...this.getShape, ...otherSchema.getShape },
 			customChecks: [...a.customChecks, ...b.customChecks],
 			customFixes: [...a.customFixes, ...b.customFixes],
 			hasDefault: a.hasDefault || b.hasDefault,
@@ -150,7 +145,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 	index(...args: [Schemable] | [Schemable, Schemable]): never {
 		const [keySchema, valueSchema] =
-			args.length === 2 ? args : [union(string, number, symbol), args[0]]
+			args.length === 2 ? args : [or(string, number, symbol), args[0]]
 
 		return this._cloneWithOptions({
 			indexSignatures: [

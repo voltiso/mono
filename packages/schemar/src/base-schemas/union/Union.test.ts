@@ -23,7 +23,7 @@ describe('union', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		const sn = s.union(s.string, s.number)
+		const sn = s.or(s.string, s.number)
 		type Sn = Output<typeof sn>
 		$Assert<IsIdentical<Sn, string | number>>()
 		$Assert<IsIdentical<Input<typeof sn>, string | number>>()
@@ -33,7 +33,7 @@ describe('union', () => {
 		$Assert<IsIdentical<Sn2, string | number>>()
 		$Assert<IsIdentical<Input<typeof sn2>, string | number>>()
 
-		const snb = s.union(sn, s.bigint)
+		const snb = s.or(sn, s.bigint)
 		type Snb = Output<typeof snb>
 		$Assert<IsIdentical<Snb, string | number | bigint>>()
 		$Assert<IsIdentical<Input<typeof snb>, string | number | bigint>>()

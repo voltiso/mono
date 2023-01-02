@@ -13,7 +13,8 @@ import * as t from '@voltiso/schemar.types'
 import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import { unknown } from '~/base-schemas'
+import { isRest, unknown } from '~/base-schemas'
+import { SchemarError } from '~/error'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema'
 
@@ -53,14 +54,27 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	}
 
 	[CALL]<T extends $$Schemable[]>(
-		...shape: T
+		...shapeWithRest: T
 	): O['isReadonlyTuple'] extends true
 		? t.ReadonlyTuple<T>
 		: O['isReadonlyTuple'] extends false
 		? t.MutableTuple<T>
 		: never {
-		if (this.isReadonlyTuple) return new ReadonlyTuple(shape) as never
-		else return new MutableTuple(shape) as never
+		// eslint-disable-next-line es-x/no-array-string-prototype-at
+		const lastElement = shapeWithRest.at(-1)
+
+		const shape = isRest(lastElement)
+			? shapeWithRest.slice(0, -1)
+			: shapeWithRest
+
+		for (const element of shape) {
+			if (isRest(element))
+				throw new SchemarError('Only last element can be rest')
+		}
+
+		if (this.isReadonlyTuple)
+			return new ReadonlyTuple(...shapeWithRest) as never
+		else return new MutableTuple(...shapeWithRest) as never
 	}
 
 	override [EXTENDS](other: SchemaLike): boolean {

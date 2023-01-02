@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { And, IsFalsy, Or, Xor } from '~/boolean'
+import type { And, Not, Or, Xor } from '~/boolean'
 import type { IsNumber, IsSuperNumber } from '~/number'
 
 import type { IsSubtype, IsSupertype } from '../compare'
@@ -22,8 +22,11 @@ export interface Operation<
 	_H = Unset,
 	_I = Unset,
 > {
-	'!': IsFalsy<A, Default<B, true>, Default<C, false>>
-	'&': And<A, B, Default<C, true>, Default<D, false>>
+	'!': Not<A>
+
+	'&': And<A, B>
+	// '&': And<A, B, Default<C, true>, Default<D, false>>
+
 	'^': Xor<A, B, Default<C, true>, Default<D, false>>
 	isNumber: IsNumber<A, Default<B, true>, Default<C, false>>
 
@@ -34,7 +37,9 @@ export interface Operation<
 	isSuperString: IsSuperString<A, Default<B, true>, Default<C, false>>
 
 	isSupertype: IsSupertype<A, B, Default<C, true>, Default<D, false>>
-	'|': Or<A, B, Default<C, true>, Default<D, false>>
+
+	'|': Or<A, B>
+	// '|': Or<A, B, Default<C, true>, Default<D, false>>
 }
 
 export type IsString<A, T = true, F = false> = A extends string ? T : F

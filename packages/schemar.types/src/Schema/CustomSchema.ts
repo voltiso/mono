@@ -17,8 +17,10 @@ import type {
 	$$Schemable,
 	DefaultSchemaOptions,
 	DefineSchema,
+	InferSchema,
 	SchemaOptions,
-	Union,
+	SchemarAnd,
+	SchemarOr,
 	ValidationIssue,
 	ValidationResult,
 } from '~'
@@ -93,7 +95,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	// builder
 
 	/** Specify name for nicer messages */
-	withName(name: string): this
+	name(name: string): this
 
 	/**
 	 * Define object property to be optional or undefined
@@ -303,11 +305,24 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	/**
 	 * Create union of this schema an one other schema
 	 *
-	 * - Alternatively, we can use global `union` function
+	 * - Alternatively, we can use global `or` function
 	 *
 	 * @inline
 	 */
-	or<Other extends $$Schemable>(other: Other): Union<[this, Other]>
+	or<Other extends $$Schemable>(
+		other: Other,
+	): SchemarOr<this, InferSchema<Other>>
+
+	/**
+	 * Create intersection of this schema an one other schema
+	 *
+	 * - Alternatively, we can use global `and` function
+	 *
+	 * @inline
+	 */
+	and<Other extends $$Schemable>(
+		other: Other,
+	): SchemarAnd<this, InferSchema<Other>>
 
 	/**
 	 * Simplify and flatten TS type

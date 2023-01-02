@@ -14,7 +14,7 @@ export const Union = lazyConstructor(
 
 //
 
-export function union<Ts extends t.$$Schemable[]>(...types: Ts): Union<Ts> {
+export function or<Ts extends t.$$Schemable[]>(...types: Ts): Union<Ts> {
 	let ts = [] as t.$$Schemable[]
 
 	for (const type of types) {

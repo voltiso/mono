@@ -41,7 +41,8 @@ import {
 	stringFrom,
 } from '@voltiso/util'
 
-import { union } from '~/base-schemas/union'
+import { and } from '~/base-schemas/intersection'
+import { or } from '~/base-schemas/union'
 import { schema } from '~/core-schemas'
 import { ValidationError } from '~/error'
 import { SchemarError } from '~/error/SchemarError'
@@ -327,7 +328,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	// BUILDER
 
-	withName(name: string): this {
+	name(name: string): this {
 		return this._cloneWithOptions({ name }) as never
 	}
 
@@ -359,7 +360,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	or<Other extends $$Schemable>(other: Other): never {
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
-		return union(this as never, other) as never
+		return or(this as never, other) as never
+	}
+
+	and<Other extends $$Schemable>(other: Other): never {
+		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
+		return and(this as never, other) as never
 	}
 
 	get simple(): never {

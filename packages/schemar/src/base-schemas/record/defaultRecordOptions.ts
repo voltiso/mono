@@ -3,7 +3,7 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import { number, string, symbol, union, unknown } from '~/base-schemas'
+import { number, string, symbol, or, unknown } from '~/base-schemas'
 import { defaultSchemaOptions } from '~/Schema'
 
 export const defaultRecordOptions = {
@@ -11,6 +11,6 @@ export const defaultRecordOptions = {
 	Output: 0 as unknown as Record<keyof any, unknown>,
 	Input: 0 as unknown as Record<keyof any, unknown>,
 
-	keySchema: lazyValue(() => union(string, number, symbol)),
+	keySchema: lazyValue(() => or(string, number, symbol)),
 	valueSchema: unknown,
 }

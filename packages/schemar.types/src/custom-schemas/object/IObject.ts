@@ -28,7 +28,9 @@ export interface IObject<T extends object = object>
 	get getShape(): {} // InferableObjectLike
 	get getDeepShape(): {} // InferableObjectLike
 
-	and(additionalFields: $$InferableObject | $$Object): $$Object
+	and<S extends $$Schema>(
+		other: S,
+	): S extends $$InferableObject | $$Object ? $$Object : $$Schema
 
 	get partial(): $$Object
 	get strictPartial(): $$Object

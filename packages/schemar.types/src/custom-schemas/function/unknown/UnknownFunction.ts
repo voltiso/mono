@@ -2,13 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	$$InferableTuple,
-	$Output,
+	$$Array,
+	$$Schemable,
+	$$SchemableTuple,
+	CustomFunction,
 	CustomUnknownFunction,
-	Function,
-	Output,
-	Schemable,
-	SchemaLike,
+	FunctionOptions,
 } from '~'
 
 /** @internal */
@@ -17,12 +16,36 @@ export type _MakeArrayMutable_<X> = X extends readonly unknown[]
 	: never
 
 export interface UnknownFunction extends CustomUnknownFunction<{}> {
+	/** No `this` */
+	<Parameters extends $$SchemableTuple | $$Array, Return extends $$Schemable>(
+		parametersSchema: Parameters,
+		returnSchema: Return,
+	): CustomFunction.FixInferredType<
+		CustomFunction<{
+			parameters: Parameters
+			return: Return
+		}>
+	>
+
+	/** With `this` */
 	<
-		Args extends $$InferableTuple | SchemaLike<readonly unknown[]>,
-		R extends Schemable,
+		This extends $$Schemable,
+		Parameters extends $$SchemableTuple | $$Array,
+		Return extends $$Schemable,
 	>(
-		argumentsSchema: Args,
-		resultSchema: R,
-		// eslint-disable-next-line @typescript-eslint/ban-types, etc/no-internal
-	): Function<(...args: _MakeArrayMutable_<$Output<Args>>) => Output<R>>
+		this: This,
+		parametersSchema: Parameters,
+		returnSchema: Return,
+	): CustomFunction.FixInferredType<
+		CustomFunction<{
+			this: This
+			parameters: Parameters
+			return: Return
+		}>
+	>
+
+	/** Custom */
+	<Options extends Partial<FunctionOptions>>(
+		options: Options,
+	): CustomFunction.FixInferredType<CustomFunction<Options>>
 }

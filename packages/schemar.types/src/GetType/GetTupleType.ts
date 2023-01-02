@@ -3,7 +3,7 @@
 
 import type { If, Override } from '@voltiso/util'
 
-import type { InferableMutableTuple, InferableReadonlyTuple } from '~'
+import type { InferableMutableTuple, InferableReadonlyTuple, Rest } from '~'
 
 import type { Type_ } from './GetType'
 import type { DefaultGetTypeOptions, GetTypeOptions } from './GetTypeOptions'
@@ -18,6 +18,8 @@ export type _TupleTypeImplRec<
 	O extends GetTupleTypeOptions,
 > = T extends readonly []
 	? If<O['readonlyTuple'], readonly [...acc], acc>
+	: T extends readonly [...Rest<infer R>[]]
+	? _TupleTypeImplRec<[], [...acc, ...Type_<R, O>[]], O>
 	: T extends readonly [infer h, ...infer t]
 	? _TupleTypeImplRec<t, [...acc, Type_<h, O>], O>
 	: T extends readonly (infer E)[]

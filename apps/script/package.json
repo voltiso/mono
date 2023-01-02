@@ -12,8 +12,7 @@
   },
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist/esm",
-    "dist/cjs"
+    "dist"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {

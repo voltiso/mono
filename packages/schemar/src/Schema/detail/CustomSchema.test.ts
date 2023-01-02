@@ -17,8 +17,6 @@ import { schema, unknown } from '~'
 
 describe('CustomSchema', () => {
 	it('generic', <O extends Partial<SchemaOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<CustomSchema<O>, $$Schemable>()
 		$Assert.is<CustomSchema<O>, $$Schema>()
 		$Assert.is<CustomSchema<O>, ISchema>() // ! too deep

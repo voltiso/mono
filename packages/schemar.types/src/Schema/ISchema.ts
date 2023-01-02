@@ -86,14 +86,14 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 
 	//
 
-	get withName(): unknown
+	name(name: string): $$Schema
 
-	get optional(): unknown // ISchema
-	get strictOptional(): unknown // ISchema
+	get optional(): $$Schema
+	get strictOptional(): $$Schema
 
-	get readonly(): unknown // ISchema
-	default(value: T): unknown // ISchema
-	default(getValue: () => T): unknown // ISchema
+	get readonly(): $$Schema
+	default(value: T): $$Schema
+	default(getValue: () => T): $$Schema
 
 	//
 
@@ -187,9 +187,10 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 
 	//
 
-	or(other: unknown /* ISchema*/): unknown // ISchema //!
+	or(other: $$Schema): $$Schema
+	and(other: $$Schema): $$Schema
 
-	get simple(): unknown // ISchema //!
+	get simple(): $$Schema
 
 	toString(): string
 }

@@ -1,0 +1,209 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import * as s from '@voltiso/schemar'
+import type { IsIdentical, MaybePromise } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
+
+import type { ComplexHandlerDetail } from './_ComplexHandler'
+import { ComplexHandler } from './_ComplexHandler'
+
+describe('Handler', () => {
+	it('type', () => {
+		const handler = new Handler({
+			this: { x: s.number },
+
+			parameters: [s.string, s.string.optional, ...s.rest(s.number)] as const,
+
+			return: s.number,
+		})
+
+		const f = handler.implement(function (str, ..._rest) {
+			$Assert<IsIdentical<typeof str, string>>()
+			$Assert<IsIdentical<typeof _rest, (string | number)[]>>()
+
+			return str.length + this.x
+		})
+
+		$Assert<IsIdentical<typeof handler, typeof f>>()
+	})
+
+	it('type - overload - complex', () => {
+		const a = new Handler({
+			this: { x: s.number },
+
+			parameters: [s.string, s.string.optional, ...s.rest(s.number)] as const,
+
+			return: s.number,
+		})
+
+		const b = a.overload({
+			parameters: [123] as const,
+		})
+
+		function want(
+			this: { x: number },
+			str: string,
+			str2?: string | undefined,
+			...rest: number[]
+		): number
+
+		// function want(this: { x: number }, str: string): number
+
+		function want(x: 123): void
+
+		function want(..._args: any): any {
+			//
+		}
+
+		type Got = Exclude<typeof b.implementation, undefined>
+
+		// $Assert.is<Got, typeof want>()
+		$Assert.is<typeof want, Got>()
+
+		// const _c = b.implement((...args) => {
+		// 	$Assert<IsIdentical<typeof args, (string | 123)[]>>() // ! inference not ideal
+		// 	return 0 as never
+		// })
+	})
+
+	it('arg - sync', () => {
+		expect.hasAssertions()
+
+		const f = new Handler({
+			parameters: [s.number.min(27)],
+			return: s.number.min(123),
+		}).implement(x => 2 * x)
+
+		expect(f(100)).toBe(200)
+		expect(() => f(50)).toThrow('123')
+		expect(() => f(10)).toThrow('27')
+	})
+
+	it('args - sync', () => {
+		expect.hasAssertions()
+
+		const f = new Handler({
+			parameters: [{ a: s.number }, { b: s.number.max(1000) }] as const,
+			return: s.number.min(123),
+		}).implement((a, b) => a.a + b.b)
+
+		expect(f({ a: 111 }, { b: 222 })).toBe(333)
+		expect(() => f({ a: 1 }, { b: 2 })).toThrow('should at least 123 (got 3)')
+		expect(() => f({ a: 1 }, { b: 1001 })).toThrow(
+			'[1].b should at most 1000 (got 1001)',
+		)
+	})
+
+	it('arg - async', async () => {
+		expect.hasAssertions()
+
+		const f = new Handler({
+			parameters: [s.number.min(27)] as const,
+			return: s.number.min(123),
+		}).implement(async x => {
+			await new Promise(resolve => setTimeout(resolve, 50))
+			return 2 * x
+		})
+
+		await expect(f(100)).resolves.toBe(200)
+		await expect(() => f(50)).rejects.toThrow('123')
+		expect(() => f(10)).toThrow('27')
+	})
+
+	it('works with `this`', () => {
+		expect.hasAssertions()
+
+		const f = new Handler({
+			this: { asd: s.number.min(123) },
+			parameters: [s.number],
+			return: s.number,
+		}).implement(function (x) {
+			return this.asd + x
+		})
+
+		expect(() => f.call({ asd: 1 }, 123)).toThrow(
+			'.asd should at least 123 (got 1)',
+		)
+
+		expect(f.call({ asd: 123 }, 5)).toBe(128)
+	})
+
+	it('type-checks result', () => {
+		expect.assertions(0)
+
+		new Handler({
+			parameters: [s.string],
+			return: s.number,
+			// @ts-expect-error 'test' should be number
+		}).implement((_x: string) => 'test')
+	})
+
+	it('exact return type (no additional properties)', () => {
+		expect.hasAssertions()
+
+		const f = new Handler({
+			parameters: [s.number],
+			return: { a: s.number },
+		}).implement(x => ({ a: x, qwerty: 123 }))
+
+		expect(() => f(50)).toThrow('.qwerty should not be present (got 123)')
+	})
+
+	it('void result - implicit', () => {
+		// $Assert.is<() => void, () => Promise<void>>()
+		$Assert.is<() => Promise<void>, () => void>()
+
+		const a = new Handler({}).implement(() => {}) // checked.function(() => {})
+		const b = new Handler({}).implement(async () => {}) // checked.function(async () => {})
+
+		const aaa = a.signatures.length
+		$Assert<IsIdentical<typeof aaa, 1>>()
+
+		type A = ComplexHandlerDetail.Implementation<{ IsAsync: true }>
+		$Assert<IsIdentical<A, () => MaybePromise<void>>>()
+
+		type B = ComplexHandlerDetail.Implementation<{}>
+		$Assert<IsIdentical<B, () => void>>()
+
+		const aa = a.signature
+		const bb = b.signature
+
+		$Assert<IsIdentical<typeof aa.Type, () => void>>()
+		$Assert<IsIdentical<typeof bb.Type, () => void>>()
+
+		$Assert<IsIdentical<typeof a.IsAsync, false>>()
+		$Assert<IsIdentical<typeof b.IsAsync, true>>()
+	})
+
+	it('void result - explicit', () => {
+		const a = new Handler({ return: s.void }).implement(() => {}) // checked.result(s.void).function(() => {})
+		const b = new Handler({ return: s.void }).implement(async () => {}) // checked.result(s.void).function(async () => {})
+
+		$Assert<IsIdentical<typeof a.signature.Type, () => void>>()
+		$Assert<IsIdentical<typeof b.signature.Type, () => void>>() // !
+
+		$Assert<IsIdentical<typeof a.IsAsync, false>>()
+		$Assert<IsIdentical<typeof b.IsAsync, true>>()
+	})
+
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('does not allow returning without result schema', () => {
+	// 	expect.hasAssertions()
+
+	// 	// @ts-expect-error result schema required
+	// 	const f = checked.param(s.number).function(x => x + 1)
+
+	// 	expect(f(50)).toBe(51)
+	// })
+
+	it('does not require schema for Promise<void> result', async () => {
+		expect.hasAssertions()
+
+		const f = new Handler({ parameters: [s.number] }).implement(async x => {
+			void x
+		})
+
+		await expect(f(50)).resolves.toBeUndefined()
+	})
+})

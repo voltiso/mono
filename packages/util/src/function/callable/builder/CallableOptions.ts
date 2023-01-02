@@ -5,7 +5,7 @@ import type { NoThis } from '~/function'
 import type { Override } from '~/type'
 
 export interface CallableNoThisOptions {
-	arguments: readonly unknown[]
+	parameters: readonly unknown[]
 	return: unknown
 }
 
@@ -15,8 +15,12 @@ export interface CallableOptions extends CallableNoThisOptions {
 
 export interface DefaultCallableOptions extends CallableOptions {
 	this: NoThis
-	arguments: any // ! good enough without bivariance hack
+	parameters: any // ! good enough without bivariance hack
+	return: void
 }
+
+// $Assert.is<void, unknown>()
+// $Assert.is<unknown, void>()
 
 //
 

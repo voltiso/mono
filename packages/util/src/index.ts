@@ -49,3 +49,4 @@ export type {
 	TypeAliases8,
 	TypeAliases9,
 } from './TypeAliases-augmentation'
+export type { Generics } from './Generics-augmentation'

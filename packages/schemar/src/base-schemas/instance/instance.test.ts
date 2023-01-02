@@ -13,7 +13,6 @@ import * as s from '~'
 
 describe('instance', () => {
 	it('generic', <O extends Partial<InstanceOptions>>() => {
-		expect.assertions(0)
 
 		$Assert.is<CustomInstance<O>, IInstance>()
 	})

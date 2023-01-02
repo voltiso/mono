@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as t from '@voltiso/schemar.types'
-import { lazyValue } from '@voltiso/util'
+import { lazyValue, noThis } from '@voltiso/util'
 
 import { defaultSchemaOptions } from '~/Schema'
 
@@ -15,6 +15,7 @@ export const defaultFunctionOptions = lazyValue(() => ({
 	Output: 0 as unknown as (...args: any) => unknown,
 	Input: 0 as unknown as (...args: any) => unknown,
 
-	arguments: array(any) as unknown as t.SchemaLike<any[]>,
-	result: unknown as unknown as t.SchemaLike<unknown>,
+	this: noThis,
+	parameters: array(any) as unknown as t.SchemaLike<any[]>,
+	return: unknown as unknown as t.SchemaLike<void>,
 }))

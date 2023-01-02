@@ -16,8 +16,6 @@ import * as s from '~'
 
 describe('never', () => {
 	it('generic', <O extends Partial<NeverOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<$CustomNever<O>, INever>()
 	})
 

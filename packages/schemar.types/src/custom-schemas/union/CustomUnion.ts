@@ -12,10 +12,6 @@ export type $$Union = {
 	readonly [SCHEMA_NAME]: 'Union'
 }
 
-// export type $CustomUnion<O extends Partial<UnionOptions>> = O extends any
-// 	? CustomUnion<O>
-// 	: never
-
 export interface CustomUnion<O extends Partial<UnionOptions>>
 	extends $$Union,
 		CustomSchema<O> {

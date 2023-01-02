@@ -15,8 +15,8 @@ const project = [
 	'packages/styler/test/web/tsconfig.json',
 	'packages/styler/test/web/tsc-options/*/tsconfig.json',
 	//
-	'packages/caller/test/tsc-options/*/test-true/tsconfig.json',
-	'packages/caller/test/tsc-options/*/test-false/tsconfig.json',
+	'packages/handler/test/tsc-options/*/test-true/tsconfig.json',
+	'packages/handler/test/tsc-options/*/test-false/tsconfig.json',
 	//
 	'packages/schemar/test/tsc-options/*/test-true/tsconfig.json',
 	'packages/schemar/test/tsc-options/*/test-false/tsconfig.json',

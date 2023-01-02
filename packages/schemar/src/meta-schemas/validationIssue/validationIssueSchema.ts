@@ -8,34 +8,32 @@ import {
 	array,
 	boolean,
 	function as function_,
+	infer,
 	number,
 	object,
 	optional,
+	or,
 	string,
 	symbol,
 	tuple,
 	undefined as undefined_,
-	union,
 } from '../..' //! ts-transform-paths does not work here!!!
 
 export const validationIssue = lazyValue(() => {
-	const toStringArgA = tuple({
+	const toStringParameter = infer({
 		skipReceived: boolean.or(undefined_).optional,
 	})
 
-	const toStringArgB = tuple()
+	const toStringParameters = tuple(toStringParameter.optional)
 
-	// combine overloads
-	const toStringArg = toStringArgA.or(toStringArgB)
+	$Assert.is<typeof toStringParameters, SchemaLike<readonly unknown[]>>()
 
-	$Assert.is<typeof toStringArg, SchemaLike<readonly unknown[]>>()
-
-	const sValidationIssueToString = function_(toStringArg, string)
+	const sValidationIssueToString = function_(toStringParameters, string)
 
 	return object({
-		severity: union('error', 'warning'),
+		severity: or('error', 'warning'),
 
-		path: array(union(string, number, symbol)),
+		path: array(or(string, number, symbol)),
 		name: string.optional,
 
 		expectedOneOf: array.optional,

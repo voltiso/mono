@@ -22,7 +22,6 @@ import * as s from '~'
 
 describe('string', () => {
 	it('generic', <O extends Partial<StringOptions>>() => {
-		expect.assertions(0)
 
 		$Assert.is<IString, ISchema>()
 

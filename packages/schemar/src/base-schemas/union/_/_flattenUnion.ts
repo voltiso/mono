@@ -4,11 +4,11 @@
 import type { $$Schemable, IUnion } from '@voltiso/schemar.types'
 import { isUnion } from '@voltiso/schemar.types'
 
-import { union } from '../Union'
+import { or } from '../Union'
 
 /** @internal */
 export function _flattenUnion(s: $$Schemable): IUnion {
-	if (!isUnion(s)) return union(s as never) as never
+	if (!isUnion(s)) return or(s as never) as never
 
 	let schemas = [] as $$Schemable[]
 
@@ -20,5 +20,5 @@ export function _flattenUnion(s: $$Schemable): IUnion {
 		else schemas.push(flattenedChild)
 	}
 
-	return union(...schemas) as never
+	return or(...schemas) as never
 }

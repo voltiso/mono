@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	$Type_,
 	CustomFunction,
 	FunctionOptions,
 	IArray,
@@ -22,8 +21,6 @@ import * as s from '~'
 
 describe('function', () => {
 	it('type - simple', () => {
-		expect.assertions(0)
-
 		$Assert.is<CustomFunction<{}>, IFunction>()
 		$Assert.is<CustomFunction<{}>, ISchema>()
 
@@ -45,13 +42,8 @@ describe('function', () => {
 	it('generic', <O extends Partial<FunctionOptions>>() => {
 		expect.assertions(0)
 
-		$Assert.is<
-			$Type_<O['arguments'], { kind: 'out' }>,
-			undefined | readonly any[]
-		>()
-
-		// Assert.is<never[], []>()
-		// Assert.is<never[], GetType_<O['arguments'], { kind: 'out' }>>()
+		// type A = Type_<O['parameters'], { kind: 'out' }>
+		// $Assert.is<A, undefined | readonly any[]>()
 
 		$Assert.is<CustomFunction<O>, IFunction>()
 		$Assert.is<CustomFunction<O>, Schema>()
@@ -67,11 +59,13 @@ describe('function', () => {
 		$Assert.is<never[], Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>>()
 
 		const args = s.readonlyArray(s.number(123))
+		// type B = typeof args.Type
+		// type C = $Input_<typeof args>
 		const a = s.function(args, s.string)
 		$Assert.is<typeof a, Schemable>()
 
 		type A = typeof a['Output']
-		$Assert<IsIdentical<A, (...args: readonly 123[]) => string>>()
+		$Assert<IsIdentical<A, (...args: 123[]) => string>>()
 	})
 
 	it('simple', () => {
@@ -145,6 +139,73 @@ describe('function', () => {
 		expect(s.function.isValid(() => 0)).toBeTruthy()
 	})
 
+	it('custom', () => {
+		const parameters = [
+			s.string,
+			s.string.optional,
+			...s.rest(s.number),
+		] as const
+
+		const a = s.function({
+			this: { x: s.number },
+			parameters,
+			return: s.number,
+		})
+
+		type A = typeof a.Type
+		$Assert<
+			IsIdentical<
+				A,
+				(
+					this: { x: number },
+					...args: [string] | [string, string, ...number[]]
+				) => number
+			>
+		>()
+	})
+
+	it('rest', () => {
+		const a = s.function([s.string] as const, s.number)
+		$Assert<IsIdentical<typeof a.Type, (str: string) => number>>()
+
+		const aa = a.this({ a: 123 as const })
+		$Assert<
+			IsIdentical<typeof aa.Type, (this: { a: 123 }, str: string) => number>
+		>()
+
+		const b = s.function([s.string, ...s.rest(123)] as const, s.number)
+		$Assert<
+			IsIdentical<typeof b.Type, (str: string, ...rest: 123[]) => number>
+		>()
+
+		const bb = b.this({ a: 123 as const })
+		$Assert<
+			IsIdentical<
+				typeof bb.Type,
+				(this: { a: 123 }, str: string, ...rest: 123[]) => number
+			>
+		>()
+	})
+
+	it('inner - outer', () => {
+		const param = s.string.or(s.number).fix(String)
+		const result = s.string.or(s.number).fix(Number)
+		const a = s.function([param] as const, result)
+
+		//
+
+		$Assert<IsIdentical<typeof a.Output, (x: string) => number>>()
+
+		$Assert<
+			IsIdentical<typeof a.Input, (x: string | number) => number | string>
+		>()
+
+		//
+
+		$Assert<IsIdentical<typeof a.Outer, (x: string | number) => number>>()
+		$Assert<IsIdentical<typeof a.Inner, (x: string) => number | string>>()
+	})
+
 	it('complex 1', () => {
 		expect.hasAssertions()
 
@@ -192,13 +253,19 @@ describe('function', () => {
 		const argsB = s.readonlyArray(123)
 		const b = s.function(argsB, s.string)
 
+		type X = Parameters<(...args: readonly 123[]) => string>
+		$Assert<IsIdentical<X, never>>() // !
+
+		type Y = Parameters<(...args: 123[]) => string>
+		$Assert<IsIdentical<Y, 123[]>>()
+
 		type B = Parameters<typeof b.Output>
 		$Assert<IsIdentical<B, 123[]>>()
 
 		expect(a.extends(b)).toBeTruthy()
 	})
 
-	it('extends - arguments can be longer', () => {
+	it('extends - parameters can be longer', () => {
 		expect.hasAssertions()
 
 		const tupleA = s.tuple(1, 2, 3)

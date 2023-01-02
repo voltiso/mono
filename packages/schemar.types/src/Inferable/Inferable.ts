@@ -3,7 +3,15 @@
 
 import type { Newable } from '@voltiso/util'
 
-import type { $$Object, $$Schemable, IObject, Schemable } from '~'
+import type {
+	$$Object,
+	$$Schemable,
+	$$Tuple,
+	IObject,
+	ITuple,
+	Rest,
+	Schemable,
+} from '~'
 
 export type InferableLiteral =
 	| number
@@ -32,10 +40,18 @@ export type Inferable =
 export type SchemableObject = InferableObject | IObject
 export type $$SchemableObject = $$InferableObject | $$Object
 
+export type SchemableTuple = InferableTuple | ITuple
+export type $$SchemableTuple = $$InferableTuple | $$Tuple
+
 export type $$InferableObject = object & { [k: keyof any]: $$Schemable }
 
-export type $$InferableMutableTuple = $$Schemable[]
-export type $$InferableReadonlyTuple = readonly $$Schemable[]
+export type $$InferableMutableTuple = $$Schemable[] | ($$Schemable | Rest)[]
+
+export type $$InferableReadonlyTuple =
+	| readonly $$Schemable[]
+	| readonly ($$Schemable | Rest)[]
+
+//
 
 export type $$InferableTuple =
 	// | $$InferableMutableTuple

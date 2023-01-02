@@ -71,9 +71,9 @@ export namespace InferSchema {
 		: S extends Newable
 		? t.Instance<S>
 		: S extends $$InferableMutableTuple
-		? t.MutableTuple<S>
+		? t.MutableTuple<t.FixTupleShape<S>>
 		: S extends $$InferableReadonlyTuple
-		? t.ReadonlyTuple<[...S]>
+		? t.ReadonlyTuple<t.FixTupleShape<[...S]>>
 		: IsAlmostSame<S, {}> extends true
 		? t.ImplicitObject<{}>
 		: never

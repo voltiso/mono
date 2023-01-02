@@ -56,7 +56,17 @@ export class CustomTupleImpl<
 
 	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS].shape as never
+		return this[OPTIONS].shape
+	}
+
+	get hasRest(): this[OPTIONS]['hasRest'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].hasRest
+	}
+
+	get restSchema(): this[OPTIONS]['rest'] {
+		// eslint-disable-next-line security/detect-object-injection
+		return this[OPTIONS].rest
 	}
 
 	get getDeepShape(): GetDeepShape_<this> {
@@ -116,6 +126,7 @@ export class CustomTupleImpl<
 	): ValidationIssue[] {
 		let issues = []
 
+		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!Array.isArray(x)) {
 			issues.push(
 				new ValidationIssue({
@@ -130,7 +141,22 @@ export class CustomTupleImpl<
 				}),
 			)
 		} else {
-			if (this.getShape.length !== x.length)
+			if (this.hasRest) {
+				if (x.length < this.getShape.length) {
+					issues.push(
+						new ValidationIssue({
+							// eslint-disable-next-line security/detect-object-injection
+							name: this[OPTIONS].name
+								? // eslint-disable-next-line security/detect-object-injection
+								  `${this[OPTIONS].name} tuple size`
+								: 'tuple size',
+
+							expectedDescription: `at least ${this.getShape.length}`,
+							received: x.length,
+						}),
+					)
+				}
+			} else if (this.getShape.length !== x.length)
 				issues.push(
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
@@ -154,6 +180,21 @@ export class CustomTupleImpl<
 					for (const issue of r.issues) issue.path = [idx, ...issue.path]
 
 					issues = [...issues, ...r.issues]
+				}
+			}
+
+			if (this.hasRest) {
+				const restSchema = schema(this.restSchema)
+
+				for (let idx = this.getShape.length; idx < x.length; ++idx) {
+					// eslint-disable-next-line security/detect-object-injection
+					const r = restSchema.exec(x[idx], options)
+
+					if (!r.isValid) {
+						for (const issue of r.issues) issue.path = [idx, ...issue.path]
+
+						issues = [...issues, ...r.issues]
+					}
 				}
 			}
 		}

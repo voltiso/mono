@@ -8,7 +8,6 @@ import { validationResult } from '~'
 
 describe('s.validationResult', () => {
 	it('generic', <X>() => {
-		expect.assertions(0)
 
 		$Assert.is<ValidationResult<X>, ValidationResult>()
 	})

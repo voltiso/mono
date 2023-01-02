@@ -2,20 +2,21 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Array,
 	$$Schemable,
-	$Output,
+	$$SchemableTuple,
+	CustomFunction,
 	CustomUnknownFunction,
 	DefaultUnknownFunctionOptions,
-	InferableReadonlyTuple,
+	FunctionOptions,
 	ISchema,
-	Output,
 	UnknownFunctionOptions,
 } from '@voltiso/schemar.types'
 import { EXTENDS, isUnknownFunction, SCHEMA_NAME } from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import * as s from '~/base-schemas/function'
+import { FunctionImpl } from '~/base-schemas/function'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema'
 
@@ -67,14 +68,50 @@ export class CustomUnknownFunctionImpl<
 		return 'function'
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	/** Without `this` */
 	[CALL]<
-		Args extends InferableReadonlyTuple | ISchema<readonly unknown[]>,
-		R extends $$Schemable,
+		Parameters extends $$SchemableTuple | $$Array,
+		Return extends $$Schemable,
 	>(
-		argumentsSchema: Args,
-		resultSchema: R,
-	): s.Function<(...args: [...$Output<Args>]) => Output<R>> {
-		return new s.Function(argumentsSchema as never, resultSchema) as never
+		parameters: Parameters,
+		return_: Return,
+	): CustomFunction<{ parameters: Parameters; return: Return }>
+
+	/** With `this` */
+	[CALL]<
+		This extends $$Schemable,
+		Parameters extends $$SchemableTuple | $$Array,
+		Return extends $$Schemable,
+	>(
+		thisArg: This,
+		parameters: Parameters,
+		return_: Return,
+	): CustomFunction<{ parameters: Parameters; return: Return }>
+
+	/** Custom */
+	[CALL]<Options extends FunctionOptions>(
+		options: Partial<Options>,
+	): CustomFunction<Options>
+
+	//
+
+	// eslint-disable-next-line class-methods-use-this
+	[CALL](...args: unknown[]): never {
+		let options: Partial<FunctionOptions> = {}
+
+		// eslint-disable-next-line unicorn/prefer-switch
+		if (args.length === 1) {
+			options = args[0] as Partial<FunctionOptions>
+		} else if (args.length === 2) {
+			options = { parameters: args[0] as never, return: args[1] as never }
+		} else if (args.length === 3) {
+			options = {
+				this: args[0] as never,
+				parameters: args[1] as never,
+				return: args[2] as never,
+			}
+		}
+
+		return new FunctionImpl(options) as never
 	}
 }

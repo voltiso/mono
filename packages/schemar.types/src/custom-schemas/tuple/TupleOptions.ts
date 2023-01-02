@@ -11,7 +11,10 @@ export interface TupleOptions<T extends readonly unknown[] = readonly unknown[]>
 	Input: T
 
 	isReadonlyTuple: boolean
+
 	shape: $$Schemable[]
+	hasRest: boolean
+	rest: $$Schemable | undefined
 }
 
 //

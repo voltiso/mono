@@ -19,8 +19,6 @@ import * as s from '~'
 
 describe('boolean', () => {
 	it('generic', <O extends Partial<BooleanOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<$CustomBoolean<O>, IBoolean>()
 		$Assert.is<CustomBoolean<O>, ISchema>()
 	})
@@ -78,10 +76,10 @@ describe('boolean', () => {
 		expect(s.boolean.extends(s.boolean(false))).toBeFalsy()
 
 		expect(s.boolean.extends(s.literal(true, false))).toBeTruthy()
-		expect(s.boolean.extends(s.union(s.literal(true), false))).toBeTruthy()
-		expect(s.boolean.extends(s.union(true, false))).toBeTruthy()
-		expect(s.boolean.extends(s.union(true, true))).toBeFalsy()
-		expect(s.boolean.extends(s.union(false, false))).toBeFalsy()
+		expect(s.boolean.extends(s.or(s.literal(true), false))).toBeTruthy()
+		expect(s.boolean.extends(s.or(true, false))).toBeTruthy()
+		expect(s.boolean.extends(s.or(true, true))).toBeFalsy()
+		expect(s.boolean.extends(s.or(false, false))).toBeFalsy()
 
 		expect(s.boolean(true).extends(s.boolean)).toBeTruthy()
 		expect(s.boolean(true).extends(s.boolean(true, false))).toBeTruthy()

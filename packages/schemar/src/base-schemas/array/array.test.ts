@@ -20,8 +20,6 @@ import * as s from '~'
 
 describe('array', () => {
 	it('generic', <O extends Partial<ArrayOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<CustomArray<O>, IArray>()
 	})
 

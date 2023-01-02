@@ -6,7 +6,10 @@ import type { Override, PARTIAL_OPTIONS } from '@voltiso/util'
 
 import type { $$Schema, GetSchemaByName } from '~'
 
-export type DefineSchema<S extends $$Schema, O> = S extends {
+export type DefineSchema<S extends $$Schema, O> = DefineSchema_<S, O>
+
+export type DefineSchema_<S, O> = S extends {
+	[SCHEMA_NAME]: unknown
 	[PARTIAL_OPTIONS]: unknown
 }
 	? GetSchemaByName<S[SCHEMA_NAME], Override<S[PARTIAL_OPTIONS], O>>

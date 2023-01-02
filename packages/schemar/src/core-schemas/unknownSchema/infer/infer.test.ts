@@ -11,7 +11,6 @@ import { infer } from './infer'
 
 describe('getSchema', () => {
 	it('works - static', () => {
-		expect.assertions(0)
 
 		$Assert<IsIdentical<InferSchema<true>, s.Literal<true>>>()
 		$Assert<IsIdentical<InferSchema<false>, s.Literal<false>>>()

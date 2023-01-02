@@ -3,7 +3,7 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { IFunction } from '~'
+import type { IFunction } from './IFunction'
 
 export function isFunction(x: unknown): x is IFunction {
 	// eslint-disable-next-line security/detect-object-injection

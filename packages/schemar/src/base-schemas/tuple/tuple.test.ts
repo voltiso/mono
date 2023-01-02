@@ -17,8 +17,6 @@ import * as s from '~'
 
 describe('array', () => {
 	it('generic', <O extends Partial<TupleOptions>>() => {
-		expect.assertions(0)
-
 		$Assert.is<CustomTuple<O>, ISchema>()
 		$Assert.is<CustomTuple<O>, ITuple>()
 	})
@@ -179,6 +177,15 @@ describe('array', () => {
 		expect(s.tuple(s.number, s.string).or(s.number).isValid(2)).toBeTruthy()
 		expect(s.tuple(s.number, s.string).or(s.number).isValid('2')).toBeFalsy()
 		expect(s.tuple(s.number, s.string).isValid('2')).toBeFalsy()
+
+		const t0 = s.tuple(1, 2, s.number, s.rest(s.string))
+		$Assert<IsIdentical<typeof t0.Type, [1, 2, number, ...string[]]>>()
+
+		const t1 = s.tuple(1, 2, s.number, ...s.rest(s.string))
+		$Assert<IsIdentical<typeof t1.Type, [1, 2, number, ...string[]]>>()
+
+		expect(t0.isValid([1, 2, 33, 'x', '5'])).toBeTruthy()
+		expect(t0.isValid([1, 2, 33, 'x', 66])).toBeFalsy()
 	})
 
 	it('validate', () => {

@@ -3,7 +3,9 @@
 
 export * from './_'
 export * from './CustomTupleImpl'
+export * from './defaultTupleOptions'
 export * from './MutableTupleImpl'
 export * from './ReadonlyTupleImpl'
+export * from './Rest'
 export * from './Tuple'
 export * from './unknown'

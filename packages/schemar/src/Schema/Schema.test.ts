@@ -26,8 +26,6 @@ import {
 
 describe('Schema', () => {
 	it('generic', <O extends SchemaOptions>() => {
-		expect.assertions(0)
-
 		$Assert.is<Schema<O>, Schema>()
 	})
 

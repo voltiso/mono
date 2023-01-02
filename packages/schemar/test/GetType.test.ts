@@ -27,8 +27,6 @@ import * as s from '~'
 
 describe('GetType', () => {
 	it('simple', () => {
-		expect.assertions(0)
-
 		type A = Output<Number>
 		$Assert<IsIdentical<A, number>>()
 

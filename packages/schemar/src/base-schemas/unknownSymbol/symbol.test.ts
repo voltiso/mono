@@ -14,8 +14,6 @@ import * as s from '~'
 
 describe('symbol', () => {
 	it('generic', <O extends UnknownSymbolOptions>() => {
-		expect.assertions(0)
-
 		$Assert.is<CustomUnknownSymbol<O>, IUnknownSymbol>()
 	})
 
