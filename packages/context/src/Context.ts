@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { haveAsyncHooks } from './node/asyncHooks'
 import { NodeContext } from './node/NodeContext'
 import { ZoneContext } from './zone/ZoneContext'
 
@@ -9,9 +10,12 @@ export interface Context<T> {
 	get value(): T
 }
 
-function isNode() {
-	return typeof window === 'undefined'
+export interface ContextConstructor {
+	new <T>(): Context<T>
 }
 
-// eslint-disable-next-line etc/no-internal
-export const Context = isNode() ? NodeContext : ZoneContext
+export const Context: ContextConstructor = haveAsyncHooks()
+	? // eslint-disable-next-line etc/no-internal
+	  NodeContext
+	: // eslint-disable-next-line etc/no-internal
+	  ZoneContext

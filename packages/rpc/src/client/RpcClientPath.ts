@@ -75,6 +75,8 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 			headers,
 		})
 
+		// console.log('response status', response.status)
+
 		detail.push(`HTTP ${response.status}`)
 
 		// eslint-disable-next-line no-magic-numbers
@@ -100,7 +102,10 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 				? serializer.deserialize(serializedError)
 				: serializedError
 
-			if (error) detail.push(JSON.stringify(error))
+			if (error) {
+				const part = typeof error === 'string' ? error : JSON.stringify(error)
+				detail.push(part)
+			}
 		} catch {}
 	} catch (error) {
 		// eslint-disable-next-line no-console

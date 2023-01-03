@@ -25,6 +25,13 @@ import { defaultHandlerOptions, HandlerImpl } from '../Handler'
 
 export namespace SingleOverloadHandlerDetail {
 	export interface Options extends Handler.Options {
+		/**
+		 * Should apply MaybePromise<T> to the return type?
+		 *
+		 * Type-only
+		 */
+		IsAsync: boolean
+
 		this: t.$$Schemable | NoThis
 		parameters: t.$$Schemable[]
 		return: t.$$Schemable
@@ -36,6 +43,8 @@ export namespace SingleOverloadHandlerDetail {
 			extends Handler.Options.Default,
 				Omit<Options, keyof Handler.Options.Default> {
 			//
+			IsAsync: true
+
 			this: NoThis
 			parameters: []
 			return: t.Void
@@ -44,13 +53,13 @@ export namespace SingleOverloadHandlerDetail {
 		export interface Hidden<O extends Options>
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			extends Handler.Options.Hidden<O> {
-			implementation?: Inner<O> | undefined
+			implementation?: GetImplementation<O> | undefined
 		}
 	}
 
 	//
 
-	export type Outer<O extends SingleOverloadHandlerDetail.Options> = [
+	export type GetSignature<O extends SingleOverloadHandlerDetail.Options> = [
 		O['this'],
 	] extends [NoThis]
 		? (
@@ -71,20 +80,19 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type Inner<O extends SingleOverloadHandlerDetail.Options> = [
-		O['this'],
-	] extends [NoThis]
-		? (
-				...args: Assume<readonly unknown[], t.Output<O['parameters']>>
-		  ) => O['IsAsync'] extends true
-				? MaybePromise<t.Input<O['return']>>
-				: O['IsAsync'] extends false
-				? t.Input<O['return']>
-				: never
-		: (
-				this: t.Output<O['this']>,
-				...args: Assume<readonly unknown[], t.Output<O['parameters']>>
-		  ) => MaybePromise<t.Input<O['return']>>
+	export type GetImplementation<O extends SingleOverloadHandlerDetail.Options> =
+		[O['this']] extends [NoThis]
+			? (
+					...args: Assume<readonly unknown[], t.Output<O['parameters']>>
+			  ) => O['IsAsync'] extends true
+					? MaybePromise<t.Input<O['return']>>
+					: O['IsAsync'] extends false
+					? t.Input<O['return']>
+					: never
+			: (
+					this: t.Output<O['this']>,
+					...args: Assume<readonly unknown[], t.Output<O['parameters']>>
+			  ) => MaybePromise<t.Input<O['return']>>
 
 	//
 
@@ -96,7 +104,11 @@ export namespace SingleOverloadHandlerDetail {
 		Override<
 			PartialOptions,
 			{
-				Signature: Outer<Override<This[OPTIONS], PartialOptions>>
+				Signature: GetSignature<Override<This[OPTIONS], PartialOptions>>
+
+				Implementation: GetImplementation<
+					Override<This[OPTIONS], PartialOptions>
+				>
 			}
 		>
 	>
@@ -158,10 +170,11 @@ export namespace SingleOverloadHandlerDetail {
 export const defaultSingleOverloadHandlerOptions: SingleOverloadHandlerDetail.Options.Default =
 	{
 		...defaultHandlerOptions,
+
 		this: noThis,
 		parameters: [],
 		return: s.void,
-	}
+	} as never
 
 //
 
@@ -292,7 +305,9 @@ export class SingleOverloadHandlerImpl<
 export type SingleOverloadHandler<
 	O extends Partial<SingleOverloadHandlerDetail.Options>,
 > = SingleOverloadHandlerImpl<O> &
-	SingleOverloadHandlerDetail.Outer<SingleOverloadHandlerImpl<O>[OPTIONS]>
+	SingleOverloadHandlerDetail.GetSignature<
+		SingleOverloadHandlerImpl<O>[OPTIONS]
+	>
 
 export const SingleOverloadHandler =
 	SingleOverloadHandlerImpl as unknown as SingleOverloadHandlerConstructor

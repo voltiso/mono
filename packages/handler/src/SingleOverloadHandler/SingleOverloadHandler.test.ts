@@ -2,17 +2,20 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { MaybePromiseLike } from '@voltiso/util'
+import type { MaybePromise, MaybePromiseLike } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import { checked } from './SingleOverloadHandler'
 
 describe('checked', () => {
 	it('empty', () => {
-		const handler = checked.implement(() => 123)
-		$Assert.is<typeof handler, () => void>()
+		// @ts-expect-error expected `void | Promise<void>` return
+		;() => checked.implement(() => 123)
 
-		expect(handler()).toBe(123)
+		const handler = checked.implement(() => {})
+		$Assert.is<typeof handler, () => MaybePromise<void>>()
+
+		expect(handler()).toBeUndefined()
 	})
 
 	it('return', () => {
@@ -41,5 +44,18 @@ describe('checked', () => {
 		const c = b.implement(x => 2 * x)
 
 		expect(c(22)).toBe(44)
+	})
+
+	it('parameters input', () => {
+		const a = checked.parameter({ field: s.number.default(11) })
+		$Assert.is<typeof a, (arg: { field: number }) => void>()
+
+		expect(() => a({ field: 1 })).toThrow('implementation')
+
+		const b = a.return(s.number)
+
+		const c = b.implement(({ field }) => 2 * field)
+
+		expect(c({})).toBe(22)
 	})
 })

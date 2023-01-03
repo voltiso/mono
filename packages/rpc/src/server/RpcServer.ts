@@ -51,7 +51,11 @@ export class _RpcServer<
 	}
 
 	[CALL](request: TRequest, response: TResponse): void {
-		void this.options.context._storage.run({ request, response }, async () => {
+		// console.log('RPC server call')
+
+		void this.options.context._context.run({ request, response }, async () => {
+			// console.log('RPC server call - in context')
+
 			// eslint-disable-next-line destructuring/no-rename
 			const { path, args: serializedArgs } = request.body as {
 				path: string[]
@@ -67,6 +71,7 @@ export class _RpcServer<
 			const logName = `rpc.${path.join('.')}(${args
 				.map(a => JSON.stringify(a))
 				.join(', ')})`
+
 			try {
 				s.array(s.string).validate(path)
 
@@ -119,7 +124,16 @@ export class _RpcServer<
 					response.status(400).json({ error })
 				} else if (error instanceof Error) {
 					// eslint-disable-next-line no-magic-numbers
-					response.status(400).json({ error: error.message })
+					response.status(400).json({ error: error.toString() })
+					// response.status(400).json({
+					// 	error: omitUndefinedAndNull({
+					// 		...error,
+					// 		name: error.name,
+					// 		message: error.message,
+					// 		cause: error.cause,
+					// 		// stack: error.stack,
+					// 	}),
+					// })
 					// eslint-disable-next-line no-magic-numbers
 				} else response.status(500).end()
 			}

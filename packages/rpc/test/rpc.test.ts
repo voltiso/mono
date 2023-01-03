@@ -19,6 +19,14 @@ import { RpcServer, RpcServerContext } from '~/server'
 
 const context = new RpcServerContext<Express.Request, Express.Response>()
 
+class MyError extends Error {
+	constructor(message: string) {
+		super(message)
+		this.name = 'MyError'
+		Error.captureStackTrace(this, MyError)
+	}
+}
+
 const handlers = {
 	myGroup: {
 		helloWorld: checked
@@ -30,6 +38,14 @@ const handlers = {
 			.parameter(s.number)
 			.return(s.number)
 			.implement(async x => 2 * x),
+
+		throwSomething: checked.implement(async () => {
+			throw new MyError('my-message')
+		}),
+
+		throwSomethingSync: checked.implement(() => {
+			throw new MyError('my-message')
+		}),
 	},
 
 	doctor: {
@@ -73,19 +89,18 @@ describe('client', () => {
 		)
 
 		$Assert<IsIdentical<typeof myClient.doctor.add, () => RpcResult<void>>>()
-
 		$Assert<IsIdentical<typeof myClient.specialty.add, () => RpcResult<void>>>()
 	})
 
-	it('works', async () => {
+	it('simple', async () => {
 		expect.hasAssertions()
 
 		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${port}/rpc`,
 		)
 
-		await expect(myClient.myGroup.helloWorld(222)).rejects.toThrow('123')
 		await expect(myClient.myGroup.helloWorld(22)).resolves.toBe(44)
+		await expect(myClient.myGroup.helloWorld(222)).rejects.toThrow('123')
 	})
 
 	it('custom serializer', async () => {
@@ -106,7 +121,7 @@ describe('client', () => {
 		expect(value).toBe(1222)
 	})
 
-	it('works with async', async function () {
+	it('works with async', async () => {
 		expect.hasAssertions()
 
 		const myClient = new RpcClient<typeof myServer.handlers>(
@@ -116,7 +131,7 @@ describe('client', () => {
 		await expect(myClient.myGroup.hello2(22)).resolves.toBe(44)
 	})
 
-	it('works with token', async function () {
+	it('works with token', async () => {
 		expect.hasAssertions()
 
 		const myClient = new RpcClient<typeof myServer.handlers>(
@@ -127,15 +142,42 @@ describe('client', () => {
 		await expect(myClient.auth.echoToken()).resolves.toBe('Bearer test')
 	})
 
-	it('network error', async function () {
+	it('network error', async () => {
 		expect.hasAssertions()
 
+		const invalidPort = 7444
 		const myClient = new RpcClient<typeof myServer.handlers>(
-			`http://localhost:7444/rpc`,
+			`http://localhost:${invalidPort}/rpc`,
 		)
+
 		myClient.setToken('test')
 
-		await expect(myClient.auth.echoToken()).rejects.toThrow('echoToken')
+		await expect(myClient.auth.echoToken()).rejects.toThrow(
+			'rpc.auth.echoToken(): request to http://localhost:7444/rpc failed, reason: connect ECONNREFUSED',
+		)
+	})
+
+	//
+
+	it('forwards exceptions - async', async () => {
+		const myClient = new RpcClient<typeof myServer.handlers>(
+			`http://localhost:${port}/rpc`,
+		)
+
+		await expect(myClient.myGroup.throwSomething()).rejects.toThrow(
+			'MyError: my-message',
+		)
+	})
+
+	it('forwards exceptions - sync', async () => {
+		const myClient = new RpcClient<typeof myServer.handlers>(
+			`http://localhost:${port}/rpc`,
+		)
+
+		// eslint-disable-next-line n/no-sync
+		await expect(myClient.myGroup.throwSomethingSync()).rejects.toThrow(
+			'MyError: my-message',
+		)
 	})
 
 	// eslint-disable-next-line jest/no-hooks

@@ -4,6 +4,7 @@
 import type {
 	AlsoAccept,
 	GENERIC_ID,
+	MaybePromise,
 	OPTIONS,
 	Override,
 	PARTIAL_OPTIONS,
@@ -25,19 +26,21 @@ export namespace Handler {
 	export interface Options {
 		/** Type-only */
 		Signature: (...args: any) => any
-		IsAsync: boolean
+
+		/** Type-only */
+		Implementation: (...args: any) => any
 	}
 
 	export namespace Options {
 		export interface Default extends Options {
-			Signature: () => void
-			IsAsync: false
+			Signature: () => MaybePromise<void>
+			Implementation: () => MaybePromise<void>
 		}
 
 		/** Value-only */
 		export interface Hidden<O extends Options> {
 			name?: string | undefined
-			implementation?: O['Signature'] | undefined
+			implementation?: O['Implementation'] | undefined
 		}
 	}
 
@@ -97,7 +100,7 @@ export class HandlerImpl<
 		return this.rebind({ name }) as never
 	}
 
-	implement(implementation: this[OPTIONS]['Signature']): this {
+	implement(implementation: this[OPTIONS]['Implementation']): this {
 		return this.rebind({ implementation }) as never
 	}
 

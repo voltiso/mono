@@ -6,26 +6,7 @@ import { assert, isPromiseLike } from '@voltiso/util'
 import { NoContextError } from '~/NoContextError'
 
 import type { Context } from '../Context'
-
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-export type AsyncHooksModule = typeof import('async_hooks')
-
-let _asyncHooks: AsyncHooksModule | undefined
-
-function requireAsyncHooks(): AsyncHooksModule {
-	if (!_asyncHooks) {
-		try {
-			// eslint-disable-next-line n/global-require, unicorn/prefer-module
-			_asyncHooks = require('node:async_hooks') as AsyncHooksModule
-		} catch {
-			throw new Error(
-				`@voltiso/context: NodeContext requires 'node:async_hooks' module, which is not available in this NodeJS version. Please use 'ZoneContext' instead.`,
-			)
-		}
-	}
-
-	return _asyncHooks
-}
+import { requireAsyncHooks } from './asyncHooks'
 
 /**
  * `Context` implementation for NodeJS
