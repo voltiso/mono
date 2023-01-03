@@ -131,7 +131,7 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 	;[script, ...args] = tokens as [string, ...string[]]
 
 	// eslint-disable-next-line no-console
-	console.log(icon, chalk.redBright(script), chalk.gray(args.join(' ')))
+	console.log(icon, chalk.blueBright(script), chalk.gray(args.join(' ')))
 
 	const packageScripts = await getPackageScripts()
 	const scripts = getScripts()

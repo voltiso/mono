@@ -50,8 +50,16 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 	readonly InputThis: Input_<this[OPTIONS]['this']>
 	readonly This: this['OutputThis']
 
-	readonly OutputParameters: Output_<this[OPTIONS]['parameters']>
-	readonly InputParameters: Input_<this[OPTIONS]['parameters']>
+	readonly OutputParameters: Assume<
+		unknown[],
+		Output_<this[OPTIONS]['parameters']>
+	>
+
+	readonly InputParameters: Assume<
+		unknown[],
+		Input_<this[OPTIONS]['parameters']>
+	>
+
 	readonly Parameters: this['OutputParameters']
 
 	readonly OutputReturn: Output_<this[OPTIONS]['return']>

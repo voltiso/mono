@@ -1,10 +1,10 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/assertor'
+import { $assert } from '@voltiso/assertor'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IsUnion, Tail, Throw } from '@voltiso/util'
-import { $assert, $AssumeType, staticImplements, tryAt } from '@voltiso/util'
+import { $AssumeType, staticImplements, tryAt } from '@voltiso/util'
 
 import { checkEnv } from '~/checkEnv'
 import type { CollectionRef } from '~/CollectionRef'
@@ -169,7 +169,7 @@ export class Transactor extends Db {
 				'db.register(Cls) requires `Cls` to include DocTag',
 			)
 
-		assert(cls._.tag)
+		$assert(cls._.tag)
 
 		const collection = this._context.db(
 			cls._.tag,

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomObject, Input, Type } from '@voltiso/schemar.types'
+import type { Input, SchemarAnd, Type } from '@voltiso/schemar.types'
 import type {
 	_,
 	Callable,
@@ -53,8 +53,8 @@ export namespace GetData {
 		? _<
 				GetIntrinsicFields.ForDocTI<TI> &
 					TightenRefs<
-						CustomObject.WithAnd<
-							CustomObject.WithAnd<TI['publicOnCreation'], TI['public']>,
+						SchemarAnd<
+							SchemarAnd<TI['publicOnCreation'], TI['public']>,
 							TI['private']
 						>['Output']
 					>
@@ -129,7 +129,7 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 				10,
 				{
 					readonly id?: DocIdString_<R> | undefined
-				} & CustomObject.WithAnd<
+				} & SchemarAnd<
 					GetDocTI<R>['publicOnCreation'],
 					GetDocTI<R>['public']
 				>[OPTIONS]['Input'],

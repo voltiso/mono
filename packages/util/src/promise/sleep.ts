@@ -36,10 +36,11 @@ export function sleep(
 				reject(new AbortError())
 			}
 
-			if (options?.signal)
+			if (options?.signal) {
 				options.signal.addEventListener('abort', controller.abort, {
 					once: true,
 				})
+			}
 		},
 	)
 

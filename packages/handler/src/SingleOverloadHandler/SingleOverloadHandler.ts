@@ -3,7 +3,14 @@
 
 import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar.types'
-import type { Assume, NoThis, OPTIONS, Override, Rebind } from '@voltiso/util'
+import type {
+	Assume,
+	MaybePromise,
+	NoThis,
+	OPTIONS,
+	Override,
+	Rebind,
+} from '@voltiso/util'
 import {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
@@ -48,11 +55,19 @@ export namespace SingleOverloadHandlerDetail {
 	] extends [NoThis]
 		? (
 				...args: Assume<readonly unknown[], t.Input<O['parameters']>>
-		  ) => t.Output<O['return']>
+		  ) => O['IsAsync'] extends true
+				? MaybePromise<t.Output<O['return']>>
+				: O['IsAsync'] extends false
+				? t.Output<O['return']>
+				: never
 		: (
 				this: t.Input<O['this']>,
 				...args: Assume<readonly unknown[], t.Input<O['parameters']>>
-		  ) => t.Output<O['return']>
+		  ) => O['IsAsync'] extends true
+				? MaybePromise<t.Output<O['return']>>
+				: O['IsAsync'] extends false
+				? t.Output<O['return']>
+				: never
 
 	//
 
@@ -61,11 +76,15 @@ export namespace SingleOverloadHandlerDetail {
 	] extends [NoThis]
 		? (
 				...args: Assume<readonly unknown[], t.Output<O['parameters']>>
-		  ) => t.Input<O['return']>
+		  ) => O['IsAsync'] extends true
+				? MaybePromise<t.Input<O['return']>>
+				: O['IsAsync'] extends false
+				? t.Input<O['return']>
+				: never
 		: (
 				this: t.Output<O['this']>,
 				...args: Assume<readonly unknown[], t.Output<O['parameters']>>
-		  ) => t.Input<O['return']>
+		  ) => MaybePromise<t.Input<O['return']>>
 
 	//
 
@@ -102,6 +121,12 @@ export namespace SingleOverloadHandlerDetail {
 		}
 	>
 
+	// type A = void extends PromiseLike<any> ? true : false
+	// type B = Promise<number> extends PromiseLike<any> ? true : false
+	// type C = PromiseLike<number> extends PromiseLike<any> ? true : false
+	// type D = object extends PromiseLike<any> ? true : false
+	// type E = {} extends PromiseLike<any> ? true : false
+
 	export type WithReturn<
 		This extends SingleOverloadHandlerImpl<any>,
 		Return extends t.$$Schemable,
@@ -109,6 +134,23 @@ export namespace SingleOverloadHandlerDetail {
 		This,
 		{
 			return: Return
+			IsAsync: true
+			// IsAsync: t.Output<Return> extends never
+			// 	? false
+			// 	: t.Output<Return> extends PromiseLike<any>
+			// 	? true
+			// 	: false
+		}
+	>
+
+	export type WithReturnSync<
+		This extends SingleOverloadHandlerImpl<any>,
+		Return extends t.$$Schemable,
+	> = RebindAndUpdateSignature<
+		This,
+		{
+			return: Return
+			IsAsync: false
 		}
 	>
 }
@@ -163,7 +205,7 @@ export class SingleOverloadHandlerImpl<
 	//
 
 	protected override _call(thisArg: unknown, ...args: unknown[]): unknown {
-		if (!this.implementation) {
+		if (!this.getImplementation) {
 			throw new Error('Checked: no implementation provided')
 		}
 
@@ -178,7 +220,7 @@ export class SingleOverloadHandlerImpl<
 		const validParameters = parametersSchema.validate(args) as unknown[]
 
 		// eslint-disable-next-line @typescript-eslint/ban-types
-		const result = (this.implementation as Function).call(
+		const result = (this.getImplementation as Function).call(
 			validThis as never,
 			...validParameters,
 		) as unknown
@@ -230,6 +272,15 @@ export class SingleOverloadHandlerImpl<
 	return<ReturnSchema extends t.$$Schemable>(
 		returnSchema: ReturnSchema,
 	): SingleOverloadHandlerDetail.WithReturn<this, ReturnSchema> {
+		return this.rebind({
+			return: returnSchema,
+		}) as never
+	}
+
+	// eslint-disable-next-line sonarjs/no-identical-functions
+	returnSync<ReturnSchema extends t.$$Schemable>(
+		returnSchema: ReturnSchema,
+	): SingleOverloadHandlerDetail.WithReturnSync<this, ReturnSchema> {
 		return this.rebind({
 			return: returnSchema,
 		}) as never

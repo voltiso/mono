@@ -20,7 +20,12 @@ import {
 	SCHEMA_NAME,
 } from '@voltiso/schemar.types'
 import * as t from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, NoThis } from '@voltiso/util'
+import type {
+	Assume,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	NoThis,
+} from '@voltiso/util'
 import { lazyConstructor, noThis, OPTIONS } from '@voltiso/util'
 
 import { infer, schema } from '~/core-schemas'
@@ -43,8 +48,14 @@ export interface CustomFunctionImpl<O> {
 	readonly InputThis: Input_<this[OPTIONS]['this']>
 	readonly This: this['OutputThis']
 
-	readonly OutputParameters: Output_<this[OPTIONS]['parameters']>
-	readonly InputParameters: Input_<this[OPTIONS]['parameters']>
+	readonly OutputParameters: Assume<
+		unknown[],
+		Output_<this[OPTIONS]['parameters']>
+	>
+	readonly InputParameters: Assume<
+		unknown[],
+		Input_<this[OPTIONS]['parameters']>
+	>
 	readonly Parameters: this['OutputParameters']
 
 	readonly OutputReturn: Output_<this[OPTIONS]['return']>
@@ -63,17 +74,17 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		return (this[OPTIONS].this !== noThis) as never
 	}
 
-	get getThisSchema(): this[OPTIONS]['this'] {
+	get getThisSchema(): t.InferSchema<this[OPTIONS]['this']> {
 		// eslint-disable-next-line security/detect-object-injection
 		return infer(this[OPTIONS].this) as never // ! infer in constructor instead?
 	}
 
-	get getParametersSchema(): this[OPTIONS]['parameters'] {
+	get getParametersSchema(): t.InferSchema<this[OPTIONS]['parameters']> {
 		// eslint-disable-next-line security/detect-object-injection
 		return infer(this[OPTIONS].parameters) as never // ! infer in constructor instead?
 	}
 
-	get getReturnSchema(): this[OPTIONS]['return'] {
+	get getReturnSchema(): t.InferSchema<this[OPTIONS]['return']> {
 		// eslint-disable-next-line security/detect-object-injection
 		return infer(this[OPTIONS].return) as never // ! infer in constructor instead?
 	}

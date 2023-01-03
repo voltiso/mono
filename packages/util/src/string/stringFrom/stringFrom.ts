@@ -36,6 +36,7 @@ export function stringFrom_(x: unknown, parameters: StringFromOptions): string {
 
 	if (x === null) return 'null'
 
+	// eslint-disable-next-line unicorn/no-typeof-undefined
 	if (typeof x === 'undefined') return 'undefined'
 
 	if (x === true) return 'true'

@@ -13,6 +13,7 @@ import {
 	BoundCallable,
 	CALL,
 	DEFAULT_OPTIONS,
+	define,
 	HIDDEN_OPTIONS,
 	noThis,
 	PolymorphicGeneric,
@@ -24,11 +25,13 @@ export namespace Handler {
 	export interface Options {
 		/** Type-only */
 		Signature: (...args: any) => any
+		IsAsync: boolean
 	}
 
 	export namespace Options {
 		export interface Default extends Options {
 			Signature: () => void
+			IsAsync: false
 		}
 
 		/** Value-only */
@@ -57,10 +60,11 @@ export namespace Handler {
 }
 
 export const defaultHandlerOptions: Handler.Options.Default &
-	Handler.Options.Hidden<Handler.Options.Default> = {
-	Signature: undefined as unknown as () => void,
+	Handler.Options.Hidden<Handler.Options.Default> = define<
+	Handler.Options.Hidden<Handler.Options.Default>
+>().value({
 	name: undefined,
-}
+}) as never
 
 //
 
@@ -137,4 +141,3 @@ export class HandlerImpl<
 		return this._call(thisArg as never, ...(args as any))
 	}
 }
-

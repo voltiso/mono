@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schema } from '~/Schema/ISchema'
+import type { $$Schema } from '~'
 
 import type { SchemarAnd } from './ops/SchemarAnd'
 import type { SchemarOr } from './ops/SchemarOr'

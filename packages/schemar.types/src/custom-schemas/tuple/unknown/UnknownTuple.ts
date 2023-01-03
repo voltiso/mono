@@ -22,7 +22,7 @@ export interface MutableUnknownTuple
 		this,
 		T
 	>
-	
+
 	/**
 	 * Helper overload for type inference
 	 *

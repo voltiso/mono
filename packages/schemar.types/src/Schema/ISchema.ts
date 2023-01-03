@@ -187,8 +187,8 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 
 	//
 
-	or(other: $$Schema): $$Schema
-	and(other: $$Schema): $$Schema
+	or(other: $$Schemable): $$Schemable
+	and(other: $$Schemable): $$Schemable
 
 	get simple(): $$Schema
 

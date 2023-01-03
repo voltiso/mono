@@ -16,6 +16,7 @@ export * from './equals'
 export * from './error'
 export * from './function'
 export * from './functional'
+export type { Generics } from './Generics-augmentation'
 export * from './json'
 export * from './lazy'
 export * from './literal'
@@ -49,4 +50,3 @@ export type {
 	TypeAliases8,
 	TypeAliases9,
 } from './TypeAliases-augmentation'
-export type { Generics } from './Generics-augmentation'

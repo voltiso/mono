@@ -61,7 +61,7 @@ export function at<
 	// // eslint-disable-next-line security/detect-object-injection
 	// const r = isRelativeIndexable(array) ? array.at(index) : array[index]
 
-	if (typeof r === 'undefined')
+	if (r === undefined)
 		throw new VoltisoUtilError(
 			`at(${stringFrom(array)}, ${stringFrom(index)}) returned 'undefined'`,
 		)

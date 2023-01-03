@@ -1,3 +1,6 @@
+// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export function add(a: number, b: number): number
 export function add(a: bigint, b: bigint): bigint
 export function add(a: number, b: bigint): bigint

@@ -14,7 +14,6 @@ import * as s from '~'
 
 describe('record', () => {
 	it('generic', <O extends Partial<RecordOptions>>() => {
-
 		$Assert.is<CustomRecord<O>, ISchema>()
 		$Assert.is<CustomRecord<O>, IRecord>()
 	})

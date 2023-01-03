@@ -5,7 +5,7 @@
 import express = require('express')
 import type { Server } from 'node:http'
 
-import { checked } from '@voltiso/caller'
+import { checked } from '@voltiso/handler'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -22,29 +22,28 @@ const context = new RpcServerContext<Express.Request, Express.Response>()
 const handlers = {
 	myGroup: {
 		helloWorld: checked
-			.param(s.number.max(123))
-			.result(s.number)
-			.function(x => 2 * x),
+			.parameter(s.number.max(123))
+			.return(s.number)
+			.implement(x => 2 * x),
 
 		hello2: checked
-			.param(s.number)
-			.result(s.number)
-
-			.function(async x => 2 * x),
+			.parameter(s.number)
+			.return(s.number)
+			.implement(async x => 2 * x),
 	},
 
 	doctor: {
-		add: checked.function(async () => {}),
+		add: checked.implement(async () => {}),
 	},
 
 	specialty: {
-		add: checked.function(() => {}),
+		add: checked.implement(() => {}),
 	},
 
 	auth: {
 		echoToken: checked
-			.result(s.string)
-			.function(() => context.request.headers.authorization!),
+			.return(s.string)
+			.implement(() => context.request.headers.authorization!),
 	},
 }
 

@@ -6,18 +6,32 @@ import type { _, OPTIONS } from '@voltiso/util'
 import type { $$Object, DefineSchema, Input_, ObjectOptions, Output_ } from '~'
 import type { $$Schema, ISchema } from '~/Schema/ISchema'
 
-export type SchemarAnd<A extends $$Schema, B extends $$Schema> = [
-	A,
-	B,
-] extends [$$Object, $$Object]
-	? A extends $$Object
-		? B extends $$Object
-			? SchemarAnd.Object<A, B>
-			: never
-		: never
-	: SchemarAnd.Custom<A, B>
+export type SchemarAnd<
+	A extends $$Schema,
+	B extends $$Schema,
+> = SchemarAnd.Impl<A, B>
+
+// export type SchemarAnd<
+// 	A extends $$Schemable,
+// 	B extends $$Schemable,
+// > = A extends any
+// 	? B extends any
+// 		? SchemarAnd.Impl<InferSchema<A>, InferSchema<B>>
+// 		: never
+// 	: never
 
 export namespace SchemarAnd {
+	export type Impl<A extends $$Schema, B extends $$Schema> = [A, B] extends [
+		$$Object,
+		$$Object,
+	]
+		? A extends $$Object
+			? B extends $$Object
+				? SchemarAnd.Object<A, B>
+				: never
+			: never
+		: SchemarAnd.Custom<A, B>
+
 	export type Object<A extends $$Object, B extends $$Object> = A extends {
 		[OPTIONS]: ObjectOptions
 	}

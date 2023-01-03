@@ -180,17 +180,19 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 		handlers: AggregatorHandlers<TI, NewableReturn_<Target> & $$Doc, Name>,
 	): this
 
-	get schemaWithoutId(): t.CustomObject.WithAnd<
+	get schemaWithoutId(): t.SchemarAnd<
 		TI['publicOnCreation'],
-		t.CustomObject.WithAnd<TI['public'], TI['private']>
+		t.SchemarAnd<TI['public'], TI['private']>
 	>
 
-	get schemaWithId(): t.CustomObject.WithAnd<
-		t.CustomObject.WithAnd<
+	get schemaWithId(): t.SchemarAnd<
+		t.SchemarAnd<
 			TI['publicOnCreation'],
-			t.CustomObject.WithAnd<TI['public'], TI['private']>
+			t.SchemarAnd<TI['public'], TI['private']>
 		>,
-		{ id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String }
+		t.Object<{
+			id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+		}>
 	>
 
 	get idSchema(): TI['id'] extends t.SchemaLike<string>
@@ -234,18 +236,18 @@ export namespace DocConstructor {
 					id: 'id' extends keyof O ? O['id'] : never
 
 					publicOnCreation: 'publicOnCreation' extends keyof O
-						? t.CustomObject.WithAnd<
+						? t.SchemarAnd<
 								TI['publicOnCreation'],
-								O['publicOnCreation']
+								t.InferSchema<O['publicOnCreation']>
 						  >
 						: never
 
 					public: 'public' extends keyof O
-						? t.CustomObject.WithAnd<TI['public'], O['public']>
+						? t.SchemarAnd<TI['public'], t.InferSchema<O['public']>>
 						: never
 
 					private: 'private' extends keyof O
-						? t.CustomObject.WithAnd<TI['private'], O['private']>
+						? t.SchemarAnd<TI['private'], t.InferSchema<O['private']>>
 						: never
 
 					aggregates: 'aggregates' extends keyof O

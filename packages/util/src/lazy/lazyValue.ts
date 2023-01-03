@@ -21,6 +21,7 @@ export function lazyValue<T extends object>(getValue: () => T): T {
 	// Object.defineProperty(obj, 'prototype', { configurable: true })
 
 	function load() {
+		// eslint-disable-next-line unicorn/no-typeof-undefined
 		if (typeof value === 'undefined') {
 			value = getValue()
 			// assign(obj, value)

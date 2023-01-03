@@ -4,13 +4,7 @@
 import { SCHEMA_NAME } from '_'
 import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
-import type {
-	$$InferableObject,
-	$$Schema,
-	DefaultObjectOptions,
-	ISchema,
-	ObjectOptions,
-} from '~'
+import type { $$Schema, DefaultObjectOptions, ISchema, ObjectOptions } from '~'
 
 export interface $$Object extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Object'
@@ -28,9 +22,9 @@ export interface IObject<T extends object = object>
 	get getShape(): {} // InferableObjectLike
 	get getDeepShape(): {} // InferableObjectLike
 
-	and<S extends $$Schema>(
-		other: S,
-	): S extends $$InferableObject | $$Object ? $$Object : $$Schema
+	// and<S extends $$Schemable>(
+	// 	other: S,
+	// ): S extends $$InferableObject | $$Object ? $$Object : $$Schema
 
 	get partial(): $$Object
 	get strictPartial(): $$Object

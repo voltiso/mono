@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
+import type { MaybePromiseLike } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import { checked } from './SingleOverloadHandler'
@@ -16,6 +17,14 @@ describe('checked', () => {
 
 	it('return', () => {
 		const handler = checked.return(s.number.min(222)).implement(() => 123)
+		$Assert.is<typeof handler, () => MaybePromiseLike<number>>()
+
+		expect(() => handler()).toThrow('222')
+	})
+
+	it('return sync', () => {
+		// eslint-disable-next-line n/no-sync
+		const handler = checked.returnSync(s.number.min(222)).implement(() => 123)
 		$Assert.is<typeof handler, () => number>()
 
 		expect(() => handler()).toThrow('222')

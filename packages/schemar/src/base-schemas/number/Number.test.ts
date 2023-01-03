@@ -20,7 +20,6 @@ import * as s from '~'
 
 describe('s.number', () => {
 	it('generic', <O extends Partial<NumberOptions>>() => {
-
 		$Assert.is<CustomNumber<O>, Schema>()
 		$Assert.is<CustomNumber<O>, INumber>()
 		$Assert.is<INumber, $$Number>()
