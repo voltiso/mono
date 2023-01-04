@@ -1,11 +1,12 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Output } from '@voltiso/schemar.types'
 import type { _, $_, NoArgument } from '@voltiso/util'
 
 import type { DocIdString, DocIdString_ } from '~/brand'
 import type { $$DocRef } from '~/DocRef'
-import type { $$DocRelated, $$DocRelatedLike } from '~/DocRelated'
+import type { $$DocRelated, $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
 export type LeafData = boolean | string | number | null | Date | $$DocRef
@@ -21,8 +22,10 @@ export type NestedDataNoArray = DataRecord | LeafData
 export type NestedData = NestedDataNoArray | NestedDataNoArray[] // array of arrays not possible
 
 /** @inline */
-export type WithId<Data = unknown, IdBrand extends $$DocRelated = AnyDoc> = _<
-	{ id: DocIdString<IdBrand> } & Data
+export type WithId<Data = unknown, R extends $$DocRelated = AnyDoc> = _<
+	{
+		readonly id: DocIdString<R> & Output<GetDocTI<R>['id']>
+	} & Data
 >
 
 /** @inline */
@@ -31,6 +34,13 @@ export type $WithId<
 	R extends $$DocRelatedLike | NoArgument = NoArgument,
 > = Data extends any
 	? R extends any
-		? $_<{ readonly id: DocIdString_<R> } & Data>
+		? $_<
+				{
+					readonly id: DocIdString_<R> &
+						(R extends $$DocRelatedLike
+							? Output<GetDocTI<R & $$DocRelatedLike>['id']>
+							: unknown)
+				} & Data
+		  >
 		: never
 	: never

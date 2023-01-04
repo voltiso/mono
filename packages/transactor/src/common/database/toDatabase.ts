@@ -86,7 +86,7 @@ export function toDatabaseUpdate(
 			if (isPlainObject(rr))
 				for (const childKey of getKeys(rr)) {
 					// eslint-disable-next-line security/detect-object-injection
-					const val = (rr as FirestoreLike.DocumentData)[childKey]
+					const val = (rr as FirestoreLike.DocumentData)[childKey] as unknown
 					assert(val !== undefined)
 					r[`${key}.${childKey}`] = val
 				}
@@ -138,7 +138,7 @@ export function toDatabaseSetNested(
 		return r
 	}
 
-	return obj
+	return obj as never
 }
 
 export function toDatabaseSet(

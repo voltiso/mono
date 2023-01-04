@@ -1,6 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { Output } from '@voltiso/schemar.types'
 import type { _, $_, DeleteIt, NoArgument, PatchFor } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
@@ -42,8 +43,7 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	readonly constructor: $$DocConstructor
 
-	readonly id: DocIdString<TI>
-	// readonly id: Id<DocBase<TI, Ctx>>
+	readonly id: DocIdString<TI> & Output<GetDocTI<TI>['id']>
 	readonly path: CustomDocPath<{ doc: GetDocTag<TI> }>
 	readonly ref: DocBase.Ref<this>
 

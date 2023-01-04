@@ -76,7 +76,7 @@ export const jsonc = defineEslintConfigOverride({
 
 /** `json` without comments */
 export const json = defineEslintConfigOverride({
-	files: ['package.json', 'package.*.json', 'turbo.json'],
+	files: ['package.json', 'package.*.json', 'turbo.json', 'firebase.json'],
 
 	rules: {
 		'notice/notice': 0,

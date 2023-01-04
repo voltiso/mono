@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { IsSubtype } from '@voltiso/util'
+import type { IsIdentical, IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
 import type { DocIdBrand } from '~/brand'
 import type { $$DocConstructor } from '~/DocConstructor'
 
 import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
-import type { GetData } from './_/GetData'
+import type { GetData, GetDataWithId } from './_/GetData'
 import type { CustomDoc } from './Doc'
 import { Doc } from './Doc'
 import type { DefaultDocTI } from './DocImpl'
@@ -20,6 +20,7 @@ import type { IndexedDoc, IndexedDocTI } from './IndexedDoc'
 declare module '../DocTypes-module-augmentation' {
 	interface DocTypes {
 		anotherTest: AnotherTest
+		anotherTest2: AnotherTest2
 	}
 }
 
@@ -27,6 +28,10 @@ class AnotherTest extends Doc('anotherTest').with({
 	public: {
 		a: s.number,
 	},
+}) {}
+
+class AnotherTest2 extends Doc('anotherTest2').with({
+	id: s.string.Cast<string & { myThing: true }>(),
 }) {}
 
 describe('doc', () => {
@@ -64,6 +69,20 @@ describe('doc', () => {
 		expect.assertions(0)
 
 		$Assert.is<CustomDoc<TI, 'inside'>, $$Doc>()
+	})
+
+	it('generic - inherit branding', () => {
+		type A = GetDataWithId<AnotherTest2>
+		type MyId = A['id']
+		$Assert<
+			IsIdentical<
+				MyId,
+				string &
+					DocIdBrand<'anotherTest2'> & {
+						myThing: true
+					}
+			>
+		>()
 	})
 
 	it('has intrinsic fields', () => {

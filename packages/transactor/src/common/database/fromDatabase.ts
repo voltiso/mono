@@ -56,7 +56,7 @@ export function fromDatabaseData(
 		}
 
 		return r
-	} else return o
+	} else return o as never
 }
 
 //
