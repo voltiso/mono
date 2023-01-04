@@ -19,20 +19,25 @@ export function isWithToString(x: unknown): x is WithToString {
 	return typeof f === 'function' && f !== Object.prototype.toString
 }
 
-export function stringFrom_(x: unknown, parameters: StringFromOptions): string {
+export function stringFrom_(x: unknown, options: StringFromOptions): string {
+	for (const [idx, ancestor] of options.context.path.entries()) {
+		if (x === ancestor)
+			return `[Circular ^${options.context.path.length - idx}]`
+	}
+
 	if (typeof x === 'string') return `'${x}'`
 
 	if (typeof x === 'bigint') return `${x}n`
 
-	if (typeof x === 'function') return stringFromFunction_(x, parameters)
+	if (typeof x === 'function') return stringFromFunction_(x, options)
 
-	if (Array.isArray(x)) return stringFromArray(x, parameters)
+	if (Array.isArray(x)) return stringFromArray(x, options)
 
 	if (x instanceof Date) return x.toISOString()
 
 	if (isWithToString(x)) return x.toString()
 
-	if (isObject(x)) return stringFromObject_(x as never, parameters)
+	if (isObject(x)) return stringFromObject_(x as never, options)
 
 	if (x === null) return 'null'
 

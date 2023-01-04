@@ -6,6 +6,11 @@ import { defaultIterationOptions } from '~/object'
 
 export interface StringFromOptions extends IterationOptions {
 	maxLength: number
+
+	context: {
+		/** Used to detect circular references */
+		path: unknown[]
+	}
 }
 
 const maxLength = Infinity
@@ -14,4 +19,8 @@ const maxLength = Infinity
 export const defaultToStringOptions = {
 	...defaultIterationOptions,
 	maxLength,
+
+	context: {
+		path: [] as unknown[],
+	},
 }

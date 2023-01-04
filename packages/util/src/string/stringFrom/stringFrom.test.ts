@@ -84,4 +84,28 @@ describe('stringFrom', () => {
 			stringFrom({ a: { b: { c: { d: { e: { f: { g: 123 } } } } } } }),
 		).toBe('{ a: { b: { c: { d: { e: { f: { g: 123 } } } } } } }')
 	})
+
+	it('recursive - object', () => {
+		type Obj = { a: number; b: Obj }
+		const obj: Obj = { a: 1, b: null! }
+		obj.b = obj
+
+		expect(stringFrom(obj)).toBe('{ a: 1, b: [Circular ^1] }')
+	})
+
+	it('recursive - array', () => {
+		type Arr = [number, Arr]
+		const arr: Arr = [1, null!]
+		arr[1] = arr
+
+		expect(stringFrom(arr)).toBe('[1, [Circular ^1]]')
+	})
+
+	it('recursive - object and array', () => {
+		type Obj = { a: number; b: [number, Obj] }
+		const obj: Obj = { a: 1, b: [2, null!] }
+		obj.b[1] = obj
+
+		expect(stringFrom(obj)).toBe('{ a: 1, b: [2, [Circular ^2]] }')
+	})
 })

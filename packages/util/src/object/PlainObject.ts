@@ -1,9 +1,23 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type PlainObject<S extends {} = {}> = object & S
+import type { Brand } from '~/type/brand'
 
-export function isPlainObject(x: unknown): x is PlainObject {
-	const ctor = (x as object | null)?.constructor
-	return ctor?.name === 'Object'
+declare module '~/Brands-augmentation' {
+	interface Brands {
+		plain: {}
+	}
+}
+
+//
+
+export type PlainObject<S extends {} = {}> = S & object & Brand<'plain'>
+
+//
+
+export function isPlainObject<CastToType extends {} = {}>(
+	x: unknown,
+): x is PlainObject<CastToType> {
+	const constructor = (x as object | null)?.constructor
+	return constructor?.name === 'Object'
 }

@@ -60,7 +60,7 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 		headers['Authorization'] = `Bearer ${clientPath._client._token}`
 
 	const message = `rpc.${clientPath._path.join('.')}(${args
-		.map(x => JSON.stringify(x))
+		.map(x => stringFrom(x))
 		.join(', ')})`
 
 	// eslint-disable-next-line no-console
@@ -103,7 +103,7 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 				: serializedError
 
 			if (error) {
-				const part = typeof error === 'string' ? error : JSON.stringify(error)
+				const part = typeof error === 'string' ? error : stringFrom(error)
 				detail.push(part)
 			}
 		} catch {}
@@ -113,7 +113,7 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 
 		const message =
 			error instanceof Error
-				? `${error.message}`
+				? `${error.toString()}`
 				: `Exotic error: ${stringFrom(error)}`
 
 		detail.push(message)

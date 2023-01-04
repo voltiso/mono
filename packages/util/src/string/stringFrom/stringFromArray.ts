@@ -16,22 +16,26 @@ function append(str: string, x: string) {
 	return `${str.slice(0, -1)}, ${x}]`
 }
 
-export function stringFromArray_(
-	array: unknown[],
-	parameters: StringFromOptions,
-) {
+export function stringFromArray_(array: unknown[], options: StringFromOptions) {
 	if (array.length === 0) return '[]'
 
 	let result = baseResult
 	let shortResult = baseShortResult
 
 	for (const v of array) {
-		const cand = append(result, stringFrom(v))
+		const cand = append(
+			result,
+			stringFrom(v, {
+				...options,
+				context: { path: [...options.context.path, array] },
+			}),
+		)
+
 		const shortCand =
 			result === baseResult ? shortResult : append(result, '... ')
 
-		if (cand.length > parameters.maxLength) {
-			if (shortCand.length > parameters.maxLength) return shortResult
+		if (cand.length > options.maxLength) {
+			if (shortCand.length > options.maxLength) return shortResult
 
 			return shortCand
 		}
@@ -45,8 +49,8 @@ export function stringFromArray_(
 
 export function stringFromArray(
 	array: unknown[],
-	parameters?: Partial<StringFromOptions> | undefined,
+	options?: Partial<StringFromOptions> | undefined,
 ) {
-	const p = merge(defaultToStringOptions, parameters)
+	const p = merge(defaultToStringOptions, options)
 	return stringFromArray_(array, p as never)
 }

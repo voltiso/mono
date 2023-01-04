@@ -9,7 +9,7 @@ import type {
 } from '@voltiso/schemar.types'
 import { EXTENDS, isInstance, SCHEMA_NAME } from '@voltiso/schemar.types'
 import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema'
@@ -54,6 +54,11 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 		const issues: ValidationIssue[] = []
 
 		if (!(x instanceof this.getConstructor)) {
+			const received = `${
+				// eslint-disable-next-line etc/no-internal
+				_getInstanceConstructorName(x) || '[unknown-constructor]'
+			}(${stringFrom(x)})`
+
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
@@ -63,8 +68,7 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 						: 'instanceof',
 
 					expected: (this.getConstructor as unknown as Constructor).name,
-					// eslint-disable-next-line etc/no-internal
-					received: _getInstanceConstructorName(x),
+					received,
 				}),
 			)
 		}

@@ -153,7 +153,7 @@ describe('client', () => {
 		myClient.setToken('test')
 
 		await expect(myClient.auth.echoToken()).rejects.toThrow(
-			'rpc.auth.echoToken(): request to http://localhost:7444/rpc failed, reason: connect ECONNREFUSED',
+			'rpc.auth.echoToken(): FetchError: request to http://localhost:7444/rpc failed, reason: connect ECONNREFUSED 127.0.0.1:7444',
 		)
 	})
 

@@ -3,8 +3,8 @@
 
 import type { BehaviorSubject } from 'rxjs'
 
-export function isBehaviorSubject<T = unknown>(
+export function isBehaviorSubject<CastToType = unknown>(
 	x: unknown,
-): x is BehaviorSubject<T> {
-	return typeof (x as BehaviorSubject<T> | null)?.getValue === 'function'
+): x is BehaviorSubject<CastToType> {
+	return typeof (x as BehaviorSubject<CastToType> | null)?.getValue === 'function'
 }

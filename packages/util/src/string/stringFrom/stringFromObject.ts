@@ -44,7 +44,14 @@ export function stringFromObject_(
 
 		const propertyStr = stringFromProperty(property)
 
-		const cand = append(result, `${propertyStr}: ${stringFrom(value, options)}`)
+		const cand = append(
+			result,
+			`${propertyStr}: ${stringFrom(value, {
+				...options,
+				context: { path: [...options.context.path, obj] },
+			})}`,
+		)
+
 		const shortCand =
 			result === baseObjStr ? shortResult : append(result, '...')
 
