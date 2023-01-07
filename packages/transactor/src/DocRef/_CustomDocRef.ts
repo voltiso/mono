@@ -5,6 +5,7 @@ import type * as FirestoreLike from '@voltiso/firestore-like'
 import type {
 	IObject,
 	ISchema,
+	Output,
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar.types'
@@ -19,7 +20,7 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 
-import type { DocBrand, DocIdString_ } from '~/brand'
+import type { DocBrand, DocIdString } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
 import type { $WithId } from '~/Data'
 import { withoutId } from '~/Data'
@@ -81,7 +82,8 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		return this._path as never
 	}
 
-	get id(): DocIdString_<O['doc']> {
+	get id(): DocIdString<GetDocTI<O['doc']>> & Output<GetDocTI<O['doc']>['id']> {
+		// DocIdString_<O['doc']>
 		assert(this._path.id)
 		return this._path.id as never
 	}
@@ -223,7 +225,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	set(
 		data?: GetPublicCreationInputData<O['doc']>,
 	): PromiseLike<GetDoc<O['doc']>> {
-		const dataWithoutId = withoutId(data || null, this.id) || {}
+		const dataWithoutId = withoutId(data || null, this.id as never) || {}
 
 		const idSchemas = getIdSchemas(this)
 
@@ -246,7 +248,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	create(
 		data?: _<GetPublicCreationInputData<O['doc']>>,
 	): PromiseLike<GetDoc<O['doc']>> {
-		const dataWithoutId = withoutId(data || null, this.id) || {}
+		const dataWithoutId = withoutId(data || null, this.id as never) || {}
 
 		const idSchemas = getIdSchemas(this)
 

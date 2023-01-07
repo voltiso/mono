@@ -94,26 +94,26 @@ export class CustomUnknownObjectImpl<
 		else return super[t.EXTENDS](other)
 	}
 
-	protected override _getIssues(x: unknown): ValidationIssue[] {
+	protected override _getIssues(value: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
 
-		if (typeof x !== 'object' || x === null) {
+		if (typeof value !== 'object' || value === null) {
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be object',
-					received: x,
+					expected: { description: 'be object' },
+					received: { value },
 				}),
 			)
 			// eslint-disable-next-line security/detect-object-injection
-		} else if (this[OPTIONS].isPlain && !isPlainObject(x)) {
+		} else if (this[OPTIONS].isPlain && !isPlainObject(value)) {
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be plain object',
-					received: x,
+					expected: { description: 'be plain object' },
+					received: { value },
 				}),
 			)
 		}

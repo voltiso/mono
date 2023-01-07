@@ -2,35 +2,71 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { Output_ } from '@voltiso/schemar.types'
+import type { Input_, Output_ } from '@voltiso/schemar.types'
 
 import { isEqual } from '~/util'
 
 import { sTimestamp } from './sTimestamp'
 
-export const sAggregateTargetEntry = s.object({
+//
+
+//
+
+export const _sVoltisoEntryAggregateTargetEntry = s.object({
 	value: s.any.optional, // s.unknown.Narrow<NestedData>(),
 	numSources: s.number.default(0),
 })
 
-export type AggregateTargetEntry =
-	/** @inline */ typeof sAggregateTargetEntry.Output
+export const sVoltisoEntryAggregateTargetEntry =
+	_sVoltisoEntryAggregateTargetEntry
+		.CastOutput<VoltisoEntry.AggregateTarget.Entry>()
+		.CastInput<VoltisoEntry.AggregateTarget.Entry.Input>()
 
-export const sVoltisoEntry = s
+//
+
+export const _sVoltisoEntryAggregateTarget = s.object.plain.index(
+	s.string,
+	sVoltisoEntryAggregateTargetEntry,
+)
+
+export const sVoltisoEntryAggregateTarget = _sVoltisoEntryAggregateTarget
+	.CastOutput<VoltisoEntry.AggregateTarget>()
+	.CastInput<VoltisoEntry.AggregateTarget.Input>()
+
+//
+
+export const _sVoltisoEntryMigration = s.object({
+	migratedAt: sTimestamp,
+})
+
+export const sVoltisoEntryMigration = _sVoltisoEntryMigration
+	.CastOutput<VoltisoEntry.Migration>()
+	.CastInput<VoltisoEntry.Migration.Input>()
+
+//
+
+export const _sVoltisoEntryMigrations = s.record(
+	s.string,
+	sVoltisoEntryMigration,
+)
+
+export const sVoltisoEntryMigrations = _sVoltisoEntryMigrations
+	.CastOutput<VoltisoEntry.Migrations>()
+	.CastInput<VoltisoEntry.Migrations.Input>()
+
+//
+
+//
+
+export const _sVoltisoEntry = s
 	.object({
 		numRefs: s.number.default(0),
 
-		aggregateTarget: s.object.plain
-			.index(s.string, sAggregateTargetEntry)
-			.default({}),
+		aggregateTarget: sVoltisoEntryAggregateTarget.default({}),
 
 		aggregateSource: s.record(s.string, s.record(s.string, true)).default({}),
 
-		migrations: s
-			.record(s.string, {
-				migratedAt: sTimestamp,
-			})
-			.default({}),
+		migrations: sVoltisoEntryMigrations.default({}),
 
 		numMigrations: s.number.default(0), // overrode by `fix` below
 		migratedAt: sTimestamp.default(new Date(0)),
@@ -55,7 +91,68 @@ export const sVoltisoEntry = s
 	}).simple
 // .default({}) // ! do not export schemas that apply defaults
 
-export type VoltisoEntry = /** @inline */ Output_<typeof sVoltisoEntry>
+export const sVoltisoEntry = _sVoltisoEntry
+	.CastOutput<VoltisoEntry>()
+	.CastInput<VoltisoEntry.Input>()
+
+//
+
+//
+
+export interface VoltisoEntry
+	extends /** @inline */ Output_<typeof _sVoltisoEntry> {}
+
+export namespace VoltisoEntry {
+	export interface Input extends /** @inline */ Input_<typeof _sVoltisoEntry> {}
+
+	//
+
+	//
+
+	export interface Migration
+		extends /** @inline */ Output_<typeof _sVoltisoEntryMigration> {}
+
+	export namespace Migration {
+		export interface Input
+			extends /** @inline */ Input_<typeof _sVoltisoEntryMigration> {}
+	}
+
+	//
+
+	export interface Migrations
+		extends /** @inline */ Output_<typeof _sVoltisoEntryMigrations> {}
+
+	export namespace Migrations {
+		export interface Input
+			extends /** @inline */ Input_<typeof _sVoltisoEntryMigrations> {}
+	}
+
+	//
+
+	//
+
+	export interface AggregateTarget
+		extends /** @inline */ Output_<typeof _sVoltisoEntryAggregateTarget> {}
+
+	export namespace AggregateTarget {
+		export interface Input
+			extends /** @inline */ Input_<typeof _sVoltisoEntryAggregateTarget> {}
+
+		//
+
+		export interface Entry
+			extends /** @inline */ Output_<
+				typeof _sVoltisoEntryAggregateTargetEntry
+			> {}
+
+		export namespace Entry {
+			export interface Input
+				extends /** @inline */ Input_<
+					typeof _sVoltisoEntryAggregateTargetEntry
+				> {}
+		}
+	}
+}
 
 export function getDefaultVoltisoEntry(date: Date) {
 	return sVoltisoEntry.validate({

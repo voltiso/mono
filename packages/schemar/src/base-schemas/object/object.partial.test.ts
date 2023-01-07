@@ -1,7 +1,7 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Output } from '@voltiso/schemar.types'
+import type { Input, Output } from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -14,28 +14,30 @@ describe('object', () => {
 		const ss = s.infer({
 			num: s.number.optional,
 			str: s.string,
-			bigint: s.bigint.optional,
+			bigint: s.bigint.strictOptional,
 
 			nested: {
 				a: 1 as const,
 			},
 		})
 
-		const ps = s.infer(ss).strictPartial
+		//
 
-		expect(ps.validate({})).toStrictEqual({})
+		const sps = s.infer(ss).strictPartial
+
+		expect(sps.validate({})).toStrictEqual({})
 		expect(() => ss.validate({})).toThrow('.str')
-		expect(() => ps.validate({ nested: {} })).toThrow('.nested.a')
+		expect(() => sps.validate({ nested: {} })).toThrow('.nested.a')
 
-		expect(ps.validate({ str: 'test', num: undefined })).toStrictEqual({
+		expect(sps.validate({ str: 'test', num: undefined })).toStrictEqual({
 			str: 'test',
 		})
 
-		type Ps = Output<typeof ps>
+		type SpsOut = Output<typeof sps>
 
 		$Assert<
 			IsIdentical<
-				Ps,
+				SpsOut,
 				{
 					num?: number
 					str?: string
@@ -46,6 +48,53 @@ describe('object', () => {
 				}
 			>
 		>()
+
+		type SpsIn = Input<typeof sps>
+
+		$Assert<
+			IsIdentical<
+				SpsIn,
+				{
+					num?: number | undefined // was non-strict `.optional` already
+					str?: string
+					bigint?: bigint
+					nested?: {
+						a: 1
+					}
+				}
+			>
+		>()
+
+		//
+
+		const ps = s.infer(ss).partial
+
+		type PsOut = Output<typeof ps>
+
+		$Assert<IsIdentical<PsOut, SpsOut>>()
+
+		type PsIn = Input<typeof ps>
+
+		$Assert<
+			IsIdentical<
+				PsIn,
+				{
+					num?: number | undefined
+					str?: string | undefined
+					bigint?: bigint | undefined
+
+					nested?:
+						| {
+								a: 1
+						  }
+						| undefined
+				}
+			>
+		>()
+
+		expect(() => ps.validate(undefined)).toThrow(
+			'should be object (got undefined)',
+		)
 	})
 
 	it('deepPartial', () => {
@@ -55,7 +104,7 @@ describe('object', () => {
 			numDef: s.number.default(() => 1 as const),
 			num: s.number.optional,
 			str: s.string.readonly.simple,
-			bigint: s.bigint.optional,
+			bigint: s.bigint.strictOptional,
 
 			nested: {
 				a: 1 as const,
@@ -64,11 +113,12 @@ describe('object', () => {
 
 		const ps = s.infer(ss).deepPartial
 
-		expect(ps.validate({})).toStrictEqual({ numDef: 1 })
+		expect(ps.validate({})).toStrictEqual({}) // removes defaults
+
 		expect(ps.validate({ nested: {} })).toStrictEqual({
-			numDef: 1,
 			nested: {},
 		})
+
 		expect(() => ss.validate({})).toThrow('.str')
 
 		type Out = typeof ps.Output
@@ -87,6 +137,59 @@ describe('object', () => {
 				}
 			>
 		>()
+
+		type In = typeof ps.Input
+
+		$Assert<
+			IsIdentical<
+				In,
+				{
+					num?: number | undefined
+					numDef?: number | undefined
+					readonly str?: string | undefined
+					bigint?: bigint | undefined
+					nested?:
+						| {
+								a?: 1 | undefined
+						  }
+						| undefined
+				}
+			>
+		>()
+
+		expect(() => ps.validate(undefined)).toThrow(
+			'should be object (got undefined)',
+		)
+
+		//
+
+		const sps = s.infer(ss).deepStrictPartial
+
+		type SpsOut = typeof sps.Output
+
+		$Assert<IsIdentical<SpsOut, typeof ps.Output>>()
+
+		type SpsIn = typeof sps.Input
+
+		$Assert<
+			IsIdentical<
+				SpsIn,
+				{
+					numDef?: number | undefined // !
+					num?: number | undefined
+					readonly str?: string
+					bigint?: bigint
+
+					nested?: {
+						a?: 1
+					}
+				}
+			>
+		>()
+
+		expect(() => ps.validate(undefined)).toThrow(
+			'should be object (got undefined)',
+		)
 	})
 
 	it('deepPartial - TDS', () => {

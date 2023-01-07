@@ -17,6 +17,7 @@ import type {
 	$$Schemable,
 	DefaultSchemaOptions,
 	DefineSchema,
+	GetSchemaByName_,
 	InferSchema,
 	SchemaOptions,
 	SchemarAnd,
@@ -105,17 +106,33 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	get optional(): DefineSchema<this, { isOptional: true }>
+	get optional(): GetSchemaByName_<
+		this[SCHEMA_NAME],
+		Override<
+			Omit<
+				this[PARTIAL_OPTIONS],
+				'isStrictOptional' | 'default' | 'hasDefault'
+			>,
+			{ isOptional: true }
+		>
+	> // DefineSchema<this, { isOptional: true }>
 
 	/**
 	 * Same as `optional`, but does not auto-remove `undefined` properties
 	 *
 	 * - `undefined` in the input value is considered invalid (similar to
 	 *   `exactOptionalPropertyTypes`)
+	 * - Use if you differentiate between `undefined` and non-present properties
 	 *
 	 * @inline
 	 */
-	get strictOptional(): DefineSchema<this, { isStrictOptional: true }>
+	get strictOptional(): GetSchemaByName_<
+		this[SCHEMA_NAME],
+		Override<
+			Omit<this[PARTIAL_OPTIONS], 'isOptional' | 'default' | 'hasDefault'>,
+			{ isStrictOptional: true }
+		>
+	> // DefineSchema<this, { isStrictOptional: true }>
 
 	/**
 	 * Define object property to be `readonly`
@@ -152,10 +169,18 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
 	): this
 
-	/** @inline */
-	fix<Out extends this[OPTIONS]['Output']>(
-		fixFunc: (x: this[OPTIONS]['Output']) => Out | void,
-	): DefineSchema<this, { Output: Out }>
+	/**
+	 * Applied after all other transformations are done (e.g. defaults already
+	 * applied)
+	 *
+	 * - ⚠️ Do not modify the input value
+	 * - I.e. it narrows the Output type into its (sub)type
+	 *
+	 * @inline
+	 */
+	fix<NarrowToType extends this[OPTIONS]['Output']>(
+		fixFunc: (value: this[OPTIONS]['Output']) => NarrowToType | void,
+	): DefineSchema<this, { Output: NarrowToType }>
 
 	//
 
@@ -247,6 +272,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	/**
 	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
 	 * list
+	 *
+	 * - Can still throw if a custom fix throws
 	 *
 	 * @param x - Value to validate against `this` schema
 	 * @returns Value after applying transformations (e.g. defaults)
@@ -353,16 +380,28 @@ export namespace CustomSchema {
 	/** @inline */
 	export type WithDefault<This extends $$Schema, DefaultValue> = This extends {
 		readonly [OPTIONS]: { readonly Output: unknown }
+		readonly [PARTIAL_OPTIONS]: unknown
 	}
-		? DefineSchema<
-				This,
-				{
-					hasDefault: true
-					default: DefaultValue
-					Output: Exclude<This[OPTIONS]['Output'], undefined>
-				}
+		? GetSchemaByName_<
+				This[SCHEMA_NAME],
+				Override<
+					Omit<This[PARTIAL_OPTIONS], 'isOptional' | 'isStrictOptional'>,
+					{
+						hasDefault: true
+						default: DefaultValue
+						Output: Exclude<This[OPTIONS]['Output'], undefined>
+					}
+				>
 		  >
-		: never
+		: // DefineSchema<
+		  // 		This,
+		  // 		{
+		  // 			hasDefault: true
+		  // 			default: DefaultValue
+		  // 			Output: Exclude<This[OPTIONS]['Output'], undefined>
+		  // 		}
+		  //   >
+		  never
 
 	export type TypeCastErrorDetail<
 		This extends { Output: unknown; Input: unknown },

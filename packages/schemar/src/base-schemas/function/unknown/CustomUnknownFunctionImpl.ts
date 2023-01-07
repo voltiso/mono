@@ -46,16 +46,16 @@ export class CustomUnknownFunctionImpl<
 		else return super[EXTENDS](other)
 	}
 
-	override _getIssues(x: unknown): ValidationIssue[] {
+	override _getIssues(value: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
 
-		if (typeof x !== 'function') {
+		if (typeof value !== 'function') {
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be function',
-					received: x,
+					expected: { description: 'be function' },
+					received: { value },
 				}),
 			)
 		}

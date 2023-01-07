@@ -64,16 +64,16 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		} else return super[EXTENDS](other)
 	}
 
-	override _getIssues(x: unknown): ValidationIssue[] {
+	override _getIssues(value: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
 
-		if (typeof x !== 'boolean')
+		if (typeof value !== 'boolean')
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'boolean',
-					received: x,
+					expected: { description: 'boolean' },
+					received: { value },
 				}),
 			)
 

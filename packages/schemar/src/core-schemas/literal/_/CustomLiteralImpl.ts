@@ -71,8 +71,8 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedOneOf: this.getValues,
-					received: x,
+					expected: { oneOfValues: [...this.getValues] },
+					received: { value: x },
 				}),
 			)
 		}

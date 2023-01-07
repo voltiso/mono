@@ -3,7 +3,9 @@
 
 import { stringFrom } from '@voltiso/util'
 
-export function expectedOneOfStr(x: unknown[]) {
-	if (x.length === 1) return stringFrom(x[0])
-	else return `one of [${x.map(x => stringFrom(x)).join(', ')}]`
+export function expectedOneOfStr(oneOf: unknown[]) {
+	// const oneOfArray = Array.isArray(oneOf) ? oneOf : [...oneOf]
+
+	if (oneOf.length === 1) return stringFrom(oneOf[0])
+	else return `one of [${oneOf.map(x => stringFrom(x)).join(', ')}]`
 }

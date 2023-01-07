@@ -4,7 +4,7 @@
 import type { $$Schemable, IUnion } from '@voltiso/schemar.types'
 import { isUnion } from '@voltiso/schemar.types'
 
-import { or } from '../Union'
+import { or } from '../or'
 
 /** @internal */
 export function _flattenUnion(s: $$Schemable): IUnion {

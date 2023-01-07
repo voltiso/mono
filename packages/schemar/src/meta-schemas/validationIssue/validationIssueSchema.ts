@@ -1,8 +1,8 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemaLike } from '@voltiso/schemar.types'
-import { $Assert, lazyValue } from '@voltiso/util'
+import type * as t from '@voltiso/schemar.types'
+import { lazyValue } from '@voltiso/util'
 
 import {
 	array,
@@ -15,33 +15,40 @@ import {
 	or,
 	string,
 	symbol,
-	tuple,
 	undefined as undefined_,
 } from '../..' //! ts-transform-paths does not work here!!!
+import { schemarSeverity } from '../sSchemarSeverity'
 
-export const validationIssue = lazyValue(() => {
+export const _validationIssue = lazyValue(() => {
 	const toStringParameter = infer({
 		skipReceived: boolean.or(undefined_).optional,
 	})
 
-	const toStringParameters = tuple(toStringParameter.optional)
-
-	$Assert.is<typeof toStringParameters, SchemaLike<readonly unknown[]>>()
-
-	const sValidationIssueToString = function_(toStringParameters, string)
+	const sValidationIssueToString = function_(
+		[toStringParameter.optional],
+		string,
+	)
 
 	return object({
-		severity: or('error', 'warning'),
+		severity: schemarSeverity,
 
 		path: array(or(string, number, symbol)),
 		name: string.optional,
 
-		expectedOneOf: array.optional,
-		expectedDescription: string.optional,
+		expected: {
+			oneOfValues: array.optional,
+			description: string.optional,
+		},
 
-		received: optional,
-		receivedDescription: string.optional,
+		received: {
+			value: optional,
+			description: string.optional,
+		},
 
 		toString: sValidationIssueToString,
 	})
 })
+
+export const validationIssue = lazyValue(() =>
+	_validationIssue.CastOutput<t.ValidationIssue>(),
+)

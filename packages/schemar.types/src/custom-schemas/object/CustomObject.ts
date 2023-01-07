@@ -45,10 +45,28 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	get plain(): CustomObject.WithPlain<this>
 
+	/**
+	 * Apply `.optional` to all properties
+	 *
+	 * - Similar to TypeScript's `Partial`
+	 */
 	get partial(): CustomObject.WithPartial<this>
+
+	/** Apply `.strictPartial` to all properties */
 	get strictPartial(): CustomObject.WithStrictPartial<this>
 
+	/**
+	 * Similar to `.partial`, but applied recursively
+	 *
+	 * - Note: removes any nested defaults
+	 */
 	get deepPartial(): CustomObject.WithDeepPartial<this>
+
+	/**
+	 * Similar to `.deepPartial`, but applied recursively
+	 *
+	 * - Note: removes any nested defaults
+	 */
 	get deepStrictPartial(): CustomObject.WithDeepStrictPartial<this>
 
 	index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(

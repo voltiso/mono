@@ -67,8 +67,11 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 						  `instanceof ${this[OPTIONS].name}`
 						: 'instanceof',
 
-					expected: (this.getConstructor as unknown as Constructor).name,
-					received,
+					expected: {
+						oneOfValues: [(this.getConstructor as unknown as Constructor).name],
+					},
+
+					received: { value: received },
 				}),
 			)
 		}

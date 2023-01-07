@@ -79,11 +79,13 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 
-					expectedOneOf: (this.getSchemas as unknown as Schemable[]).map(t =>
-						schema(t),
-					),
+					expected: {
+						oneOfValues: (this.getSchemas as unknown as Schemable[]).map(t =>
+							schema(t),
+						),
+					},
 
-					received: x,
+					received: { value: x },
 				}),
 			)
 			issues = [...issues, ...moreIssues]

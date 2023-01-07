@@ -26,7 +26,6 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	clone,
 	getEntries,
-	getValues,
 	hasProperty,
 	isObject,
 	isPlainObject,
@@ -37,7 +36,7 @@ import {
 import { number, or, string, symbol } from '~/base-schemas'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl, isSchema } from '~/Schema'
+import { CustomSchemaImpl } from '~/Schema'
 
 import { deepPartialShape, deepStrictPartialShape } from './deepPartialShape'
 import { partialShape, strictPartialShape } from './partialShape'
@@ -54,22 +53,36 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 {
 	readonly [SCHEMA_NAME] = 'Object' as const
 
-	constructor(partialOptions: O) {
-		super(partialOptions)
+	// /**
+	//  * Note: auto-defaulting is enabled only if using `infer` function (disabled
+	//  * for explicit `s.object({ ... })` calls)
+	//  */
+	// constructor(partialOptions: O) {
+	// 	super(partialOptions)
 
-		// console.log('CustomObject constructor', this[OPTIONS])
+	// 	// console.log('CustomObject constructor', this[OPTIONS])
 
-		for (const value of getValues(this.getShape, {
-			includeSymbols: true,
-		}) as unknown[]) {
-			if (isSchema(value) && value.hasDefault) {
-				// eslint-disable-next-line security/detect-object-injection
-				this[OPTIONS].hasDefault = true as never
-				// eslint-disable-next-line security/detect-object-injection
-				this[OPTIONS].default = {} as never
-			}
-		}
-	}
+	// 	let canBeAutoDefaulted = true
+
+	// 	for (const value of getValues(this.getShape, {
+	// 		includeSymbols: true,
+	// 	}) as unknown[]) {
+	// 		if (
+	// 			!isSchema(value) ||
+	// 			(!value.hasDefault && !value.isOptional && !value.isStrictOptional)
+	// 		) {
+	// 			canBeAutoDefaulted = false
+	// 			break
+	// 		}
+	// 	}
+
+	// 	if (canBeAutoDefaulted) {
+	// 		// eslint-disable-next-line security/detect-object-injection
+	// 		this[OPTIONS].hasDefault = true as never
+	// 		// eslint-disable-next-line security/detect-object-injection
+	// 		this[OPTIONS].default = {} as never
+	// 	}
+	// }
 
 	get getShape(): this[OPTIONS]['shape'] {
 		// eslint-disable-next-line security/detect-object-injection
@@ -199,8 +212,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be object',
-					received: x,
+					expected: { description: 'be object' },
+					received: { value: x },
 				}),
 			)
 		} else {
@@ -210,7 +223,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
-						expectedDescription: 'be plain object',
+						expected: { description: 'be plain object' },
 						received: x,
 					}),
 				)
@@ -234,8 +247,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 							// eslint-disable-next-line security/detect-object-injection
 							name: this[OPTIONS].name,
 							path: [k],
-							expectedDescription: 'be present',
-							receivedDescription: 'missing object property',
+							expected: { description: 'be present' },
+							// receivedDescription: 'missing object property',
 							// received: x[k as keyof typeof x],
 						}),
 					)
@@ -266,8 +279,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						path: [key],
-						expectedDescription: 'not be present',
-						received: x[key as never],
+						expected: { description: 'not be present' },
+						received: { value: x[key as never] },
 					})
 
 					if (
@@ -297,8 +310,12 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									// eslint-disable-next-line security/detect-object-injection
 									name: this[OPTIONS].name,
 									path: [key],
-									expectedDescription: `match index signature key: ${sKeySchema.toString()}`,
-									received: key,
+
+									expected: {
+										description: `match index signature key: ${sKeySchema.toString()}`,
+									},
+
+									received: { value: key },
 								}),
 							)
 
@@ -318,8 +335,12 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									// eslint-disable-next-line security/detect-object-injection
 									name: this[OPTIONS].name,
 									path: [key],
-									expectedDescription: `match index signature value: ${sValueSchema.toString()}`,
-									received: value,
+
+									expected: {
+										description: `match index signature value: ${sValueSchema.toString()}`,
+									},
+
+									received: { value },
 								}),
 							)
 
@@ -339,15 +360,18 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 								// eslint-disable-next-line security/detect-object-injection
 								name: this[OPTIONS].name,
 								path: [key],
-								expectedDescription: `match one of index signature keys`,
 
-								expectedOneOf:
-									// eslint-disable-next-line security/detect-object-injection
-									(this[OPTIONS] as ObjectOptions).indexSignatures.map(
-										signature => schema(signature.keySchema),
-									),
+								expected: {
+									description: `match one of index signature keys`,
 
-								received: key,
+									oneOfValues:
+										// eslint-disable-next-line security/detect-object-injection
+										(this[OPTIONS] as ObjectOptions).indexSignatures.map(
+											signature => schema(signature.keySchema),
+										),
+								},
+
+								received: { value: key },
 							}),
 						)
 
@@ -369,11 +393,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			const fixedObject = clone(value) as Record<keyof any, unknown>
 			let isChanged = false
 
-			for (const [key, schemable] of getEntries(this.getShape) as [
+			for (const [key, nested] of getEntries(this.getShape) as [
 				keyof any,
 				Schemable,
 			][]) {
-				const mySchema = schema(schemable)
+				const mySchema = schema(nested)
 
 				const isOptional = mySchema.isOptional || mySchema.isStrictOptional
 

@@ -83,9 +83,13 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
+
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expectedDescription: `be of length at least ${this.getMinLength}`,
-						received: x.length,
+						expected: {
+							description: `be of length at least ${this.getMinLength}`,
+						},
+
+						received: { value: x.length },
 					}),
 				)
 			}
@@ -95,9 +99,13 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
+
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expectedDescription: `be of length at most ${this.getMaxLength}`,
-						received: x.length,
+						expected: {
+							description: `be of length at most ${this.getMaxLength}`,
+						},
+
+						received: { value: x.length },
 					}),
 				)
 			}
@@ -109,11 +117,13 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 							// eslint-disable-next-line security/detect-object-injection
 							name: this[OPTIONS].name,
 
-							expectedDescription:
-								re.expectedDescription ||
-								`pass RegExp(${re.regExp.toString()})`,
+							expected: {
+								description:
+									re.expectedDescription ||
+									`pass RegExp(${re.regExp.toString()})`,
+							},
 
-							received: x,
+							received: { value: x },
 						}),
 					)
 				}
@@ -123,8 +133,8 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be string',
-					received: x,
+					expected: { description: 'be string' },
+					received: { value: x },
 				}),
 			)
 		}
@@ -156,7 +166,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		minLength: Min,
 		maxLength?: Max,
 	): never {
-		if (typeof maxLength === 'undefined') {
+		if (maxLength === undefined) {
 			// eslint-disable-next-line no-param-reassign
 			maxLength = minLength as unknown as Max
 		}

@@ -3,6 +3,7 @@
 
 import type {
 	CustomObject,
+	CustomString,
 	Input,
 	IObject,
 	ObjectOptions,
@@ -204,6 +205,145 @@ describe('object', () => {
 		})
 
 		expect(x.exec({}).value).toStrictEqual({ a: 123 })
+	})
+
+	it('default vs optional', () => {
+		const sNested = s.object({
+			b: s.string,
+			c: s.number.default(123),
+		})
+
+		expect(sNested.hasDefault).toBeFalsy()
+		expect(sNested.isOptional).toBeFalsy()
+		expect(sNested.isStrictOptional).toBeFalsy()
+
+		const mySchema = s.schema({
+			a: sNested.optional,
+		})
+
+		const a = mySchema.validate({})
+
+		expect(a).toStrictEqual({})
+
+		//
+
+		const sNotAutoDefaulted = s.object({
+			a: s.string.default('asd'),
+		})
+
+		expect(sNotAutoDefaulted.hasDefault).toBeFalsy()
+		expect(sNotAutoDefaulted.isOptional).toBeFalsy()
+		expect(sNotAutoDefaulted.isStrictOptional).toBeFalsy()
+
+		//
+
+		const sAutoDefaulted = s.schema({
+			a: s.string.default('asd'),
+		})
+
+		expect(sAutoDefaulted.hasDefault).toBeTruthy()
+		expect(sAutoDefaulted.isOptional).toBeFalsy()
+		expect(sAutoDefaulted.isStrictOptional).toBeFalsy()
+
+		//
+
+		const so = s.string.strictOptional
+
+		expect(so.isStrictOptional).toBeTruthy()
+		expect(so.isOptional).toBeTruthy()
+		expect(so.hasDefault).toBeFalsy()
+
+		const so2 = s.string.optional.strictOptional
+
+		$Assert<
+			IsIdentical<
+				typeof so2,
+				CustomString<{
+					isStrictOptional: true
+				}>
+			>
+		>()
+
+		expect(so2.isStrictOptional).toBeTruthy()
+		expect(so2.isOptional).toBeTruthy()
+		expect(so2.hasDefault).toBeFalsy()
+
+		const so3 = s.string.default('test').optional.strictOptional
+
+		expect(so3.isStrictOptional).toBeTruthy()
+		expect(so3.isOptional).toBeTruthy()
+		expect(so3.hasDefault).toBeFalsy()
+
+		$Assert<
+			IsIdentical<
+				typeof so3,
+				CustomString<{
+					isStrictOptional: true
+					Output: string
+				}>
+			>
+		>()
+
+		//
+
+		const o = s.string.optional
+
+		expect(o.isStrictOptional).toBeFalsy()
+		expect(o.isOptional).toBeTruthy()
+		expect(o.hasDefault).toBeFalsy()
+
+		const o2 = s.string.strictOptional.optional
+
+		expect(o2.isStrictOptional).toBeFalsy()
+		expect(o2.isOptional).toBeTruthy()
+		expect(o2.hasDefault).toBeFalsy()
+
+		const o3 = s.string.default('test').strictOptional.optional
+
+		expect(o3.isStrictOptional).toBeFalsy()
+		expect(o3.isOptional).toBeTruthy()
+		expect(o3.hasDefault).toBeFalsy()
+
+		$Assert<
+			IsIdentical<
+				typeof o3,
+				CustomString<{
+					isOptional: true
+					Output: string
+				}>
+			>
+		>()
+
+		//
+
+		const d = s.string.default('test')
+
+		expect(d.hasDefault).toBeTruthy()
+		expect(d.isOptional).toBeFalsy()
+		expect(d.isStrictOptional).toBeFalsy()
+
+		const d2 = s.string.optional.default('test')
+
+		expect(d2.hasDefault).toBeTruthy()
+		expect(d2.isOptional).toBeFalsy()
+		expect(d2.isStrictOptional).toBeFalsy()
+
+		const d3 = s.string.strictOptional.optional.default('test')
+
+		expect(d3.hasDefault).toBeTruthy()
+		expect(d3.isOptional).toBeFalsy()
+		expect(d3.isStrictOptional).toBeFalsy()
+
+		$Assert<
+			IsIdentical<
+				typeof d3,
+				CustomString<{
+					default: 'test'
+					hasDefault: true
+					Output: string
+				}>
+			>
+		>()
 	})
 
 	it('Type', () => {

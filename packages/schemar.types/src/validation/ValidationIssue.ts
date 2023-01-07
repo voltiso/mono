@@ -1,56 +1,66 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type ValidationIssueExpectedValue =
-	| {
-			expected: unknown
-			expectedOneOf?: never
-	  }
-	| {
-			expected?: never
-			expectedOneOf: unknown[] | Set<unknown>
-	  }
+import type { PartialOrUndefined } from '@voltiso/util'
 
-export type ValidationIssueParams = {
+import type { SchemarSeverity } from './SchemarSeverity'
+
+export interface SchemarExpected {
+	oneOfValues?: unknown[] | undefined // TODO: Iterable<unknown> and support iterables in schemar
+	description?: string | undefined
+}
+
+export interface SchemarReceived {
+	/** `undefined` is a valid value - use `exactOptionalPropertyTypes` */
+	value?: unknown
+	description?: string | undefined
+}
+
+export interface ValidationIssueInput {
 	/**
 	 * If just a `'warning'`, schema validation is considered successful anyway
 	 *
 	 * @defaultValue `'error'`
 	 */
-	severity?: 'error' | 'warning' | undefined
+	severity?: SchemarSeverity | undefined
 
+	/**
+	 * For nested structures
+	 *
+	 * @defaultValue `[]`
+	 */
 	path?: (keyof any)[] | undefined
 	name?: string | undefined
-} & (
-	| {
-			received: unknown
-			receivedDescription?: string | undefined
-	  }
-	| {
-			received?: unknown | undefined
-			receivedDescription: string
-	  }
-) &
-	(
-		| (ValidationIssueExpectedValue & { expectedDescription?: string })
-		| (Partial<ValidationIssueExpectedValue> & { expectedDescription: string })
-	)
+
+	expected: SchemarExpected
+	received?: SchemarReceived | undefined
+}
 
 export interface ValidationIssue {
-	severity: 'error' | 'warning'
+	severity: SchemarSeverity
 
 	path: (keyof any)[]
 	name?: string | undefined
 
-	expectedOneOf?: unknown[] | undefined
-	expectedDescription?: string | undefined
+	expected: SchemarExpected
+	received?: SchemarReceived | undefined
 
-	received?: unknown | undefined
-	receivedDescription?: string | undefined
+	toString(
+		options?: PartialOrUndefined<ValidationIssue.ToStringOptions> | undefined,
+	): string
+}
 
-	toString(options?: { skipReceived?: boolean | undefined } | undefined): string
+export namespace ValidationIssue {
+	export interface ToStringOptions {
+		/**
+		 * Do not print the `.received` part
+		 *
+		 * @defaultValue `false`
+		 */
+		skipReceived: boolean
+	}
 }
 
 export interface ValidationIssueConstructor {
-	new (p: ValidationIssueParams): ValidationIssue
+	new (p: ValidationIssueInput): ValidationIssue
 }

@@ -74,17 +74,17 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		return (this[OPTIONS].this !== noThis) as never
 	}
 
-	get getThisSchema(): t.InferSchema<this[OPTIONS]['this']> {
+	get getThisSchema(): never {
 		// eslint-disable-next-line security/detect-object-injection
 		return infer(this[OPTIONS].this) as never // ! infer in constructor instead?
 	}
 
-	get getParametersSchema(): t.InferSchema<this[OPTIONS]['parameters']> {
+	get getParametersSchema(): never {
 		// eslint-disable-next-line security/detect-object-injection
 		return infer(this[OPTIONS].parameters) as never // ! infer in constructor instead?
 	}
 
-	get getReturnSchema(): t.InferSchema<this[OPTIONS]['return']> {
+	get getReturnSchema(): never {
 		// eslint-disable-next-line security/detect-object-injection
 		return infer(this[OPTIONS].return) as never // ! infer in constructor instead?
 	}
@@ -163,16 +163,16 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		} else return super[EXTENDS](other)
 	}
 
-	override _getIssues(x: unknown): ValidationIssue[] {
+	override _getIssues(value: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
 
-		if (typeof x !== 'function') {
+		if (typeof value !== 'function') {
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be function',
-					received: x,
+					expected: { description: 'be function' },
+					received: { value },
 				}),
 			)
 		}

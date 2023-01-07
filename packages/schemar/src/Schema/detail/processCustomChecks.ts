@@ -18,13 +18,15 @@ export function processCustomChecks(
 				new ValidationIssue({
 					name,
 
-					expectedDescription:
-						typeof c.expectedDescription === 'function'
-							? c.expectedDescription(x as never)
-							: c.expectedDescription ||
-							  `pass custom check (${c.checkIfValid.toString()})`,
+					expected: {
+						description:
+							typeof c.expectedDescription === 'function'
+								? c.expectedDescription(x as never)
+								: c.expectedDescription ||
+								  `pass custom check (${c.checkIfValid.toString()})`,
+					},
 
-					received: x,
+					received: { value: x },
 				}),
 			)
 		}

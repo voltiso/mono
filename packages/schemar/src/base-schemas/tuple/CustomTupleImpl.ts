@@ -136,8 +136,8 @@ export class CustomTupleImpl<
 						  `Array.isArray(${this[OPTIONS].name})`
 						: 'Array.isArray',
 
-					expected: true,
-					received: false,
+					expected: { oneOfValues: [true] },
+					received: { value: false },
 				}),
 			)
 		} else {
@@ -151,8 +151,8 @@ export class CustomTupleImpl<
 								  `${this[OPTIONS].name} tuple size`
 								: 'tuple size',
 
-							expectedDescription: `at least ${this.getShape.length}`,
-							received: x.length,
+							expected: { description: `at least ${this.getShape.length}` },
+							received: { value: x.length },
 						}),
 					)
 				}
@@ -165,8 +165,8 @@ export class CustomTupleImpl<
 							  `${this[OPTIONS].name} tuple size`
 							: 'tuple size',
 
-						expected: this.getShape.length,
-						received: x.length,
+						expected: { oneOfValues: [this.getShape.length] },
+						received: { value: x.length },
 					}),
 				)
 

@@ -74,39 +74,45 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	override _getIssues(x: unknown): ValidationIssue[] {
+	override _getIssues(value: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
 
-		if (typeof x !== 'bigint')
+		if (typeof value !== 'bigint')
 			issues.push(
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'bigint',
-					received: x,
+					expected: { description: 'bigint' },
+					received: { value },
 				}),
 			)
 		else {
-			if (isDefined(this.getMin) && ((x < this.getMin) as unknown as number)) {
+			if (
+				isDefined(this.getMin) &&
+				((value < this.getMin) as unknown as number)
+			) {
 				issues.push(
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expectedDescription: `at least ${this.getMin}`,
-						received: x,
+						expected: { description: `at least ${this.getMin}` },
+						received: { value },
 					}),
 				)
 			}
 
-			if (isDefined(this.getMax) && ((x > this.getMax) as unknown as number)) {
+			if (
+				isDefined(this.getMax) &&
+				((value > this.getMax) as unknown as number)
+			) {
 				issues.push(
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expectedDescription: `at most ${this.getMax}`,
-						received: x,
+						expected: { description: `at most ${this.getMax}` },
+						received: { value },
 					}),
 				)
 			}

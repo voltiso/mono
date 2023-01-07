@@ -20,7 +20,7 @@ import { TransactorError } from '~/error'
 import type { AggregateTargetEntry } from '~/schemas'
 import {
 	getDefaultVoltisoEntry,
-	sAggregateTargetEntry,
+	sVoltisoEntryAggregateTargetEntry,
 	sVoltisoEntry,
 } from '~/schemas'
 import type { WithTransaction } from '~/Transaction'
@@ -139,7 +139,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 					// eslint-disable-next-line security/detect-object-injection
 					cacheEntry.__voltiso.aggregateTarget[name]
 
-				entry = sAggregateTargetEntry.default({}).validate(entry)
+				entry = sVoltisoEntryAggregateTargetEntry.default({}).validate(entry)
 				assert(entry)
 
 				$AssumeType<Schema>(schema)

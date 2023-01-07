@@ -102,8 +102,8 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be array',
-					received: x,
+					expected: { description: 'be array' },
+					received: { value: x },
 				}),
 			)
 

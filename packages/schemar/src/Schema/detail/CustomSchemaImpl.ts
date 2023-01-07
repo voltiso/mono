@@ -45,6 +45,7 @@ import { and } from '~/base-schemas/intersection'
 import { or } from '~/base-schemas/union'
 import { schema } from '~/core-schemas'
 import { ValidationError } from '~/error'
+import { InvalidFixError } from '~/error/InvalidFixError'
 import { SchemarError } from '~/error/SchemarError'
 
 import { defaultSchemaOptions } from '../defaultSchemaOptions'
@@ -187,20 +188,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		x: X,
 		options?: Partial<GetIssuesOptions> | undefined,
 	): X | this[OPTIONS]['Output'] {
-		let result = x
+		const result = this.exec(x, options)
 
-		if (result === undefined && this.hasDefault)
-			result = this.getDefault as never
-
-		result = this._fix(result, options) as never
-
-		for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
-			const nextValue = customFix.fix(result as never)
-
-			if (isDefined(nextValue)) result = nextValue as never
-		}
-
-		return result
+		if (result.isValid) return result.value
+		else return x // identity on error
 	}
 
 	getIssues(
@@ -221,15 +212,48 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 		// const finalValue = this.tryValidate(value, options)
 
-		const finalValue = fix
-			? (this.tryValidate(value) as never)
-			: (value as never)
+		let finalValue = value
 
-		const issues = this.getIssues(finalValue, options)
+		if (fix) {
+			if (finalValue === undefined && this.hasDefault) {
+				finalValue = this.getDefault as never
+			}
 
-		let isValid = true
+			finalValue = this._fix(finalValue, options) as never
+		}
 
-		for (const issue of issues) if (issue.severity === 'error') isValid = false
+		let issues = this.getIssues(finalValue, options)
+		const isValid = !issues.some(issue => issue.severity === 'error')
+
+		/** If value is valid, also apply custom fixes */
+		if (isValid && fix) {
+			const customFixes = this.getCustomFixes as unknown as CustomFix[]
+			if (customFixes.length > 0) {
+				for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
+					try {
+						const nextValue = customFix.fix(finalValue as never)
+						if (isDefined(nextValue)) finalValue = nextValue as never
+					} catch (cause) {
+						throw new SchemarError(
+							`Custom fix failed: ${stringFrom(customFix)}`,
+							{
+								cause,
+							},
+						)
+					}
+				}
+
+				// check if custom fixes have not introduced any issues
+				const newIssues = this.getIssues(finalValue, options)
+				const isStillValid = !newIssues.some(
+					issue => issue.severity === 'error',
+				)
+
+				if (!isStillValid) {
+					throw new InvalidFixError(newIssues)
+				}
+			}
+		}
 
 		return {
 			isValid,
@@ -333,15 +357,31 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	get optional(): never {
-		return this._cloneWithOptions({ isOptional: true as const }) as never
+		return this._cloneWithOptions({
+			isOptional: true as const,
+			isStrictOptional: false as const,
+
+			default: undefined,
+			hasDefault: false,
+			getDefault: undefined,
+		}) as never
 	}
 
 	get strictOptional(): never {
-		return this._cloneWithOptions({ isStrictOptional: true as const }) as never
+		return this._cloneWithOptions({
+			isOptional: true as const,
+			isStrictOptional: true as const,
+
+			default: undefined,
+			hasDefault: false,
+			getDefault: undefined,
+		}) as never
 	}
 
 	get readonly(): never {
-		return this._cloneWithOptions({ isReadonly: true as const }) as never
+		return this._cloneWithOptions({
+			isReadonly: true as const,
+		}) as never
 	}
 
 	default<D>(arg: D | (() => D)): never {
@@ -350,11 +390,17 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			return this._cloneWithOptions({
 				hasDefault: true as const,
 				getDefault: arg,
+
+				isOptional: false,
+				isStrictOptional: false,
 			}) as never
 		else
 			return this._cloneWithOptions({
 				hasDefault: true as const,
 				default: arg,
+
+				isOptional: false,
+				isStrictOptional: false,
 			}) as never
 	}
 

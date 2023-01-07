@@ -67,11 +67,11 @@ describe('instance', () => {
 		const date = new Date('2022')
 
 		expect(() => s.instance(A).validate(123)).toThrow(
-			"instanceof should be 'A' (got 'Number')",
+			"instanceof should be 'A' (got 'Number(123)')",
 		)
 
 		expect(() => s.instance(A).validate(date)).toThrow(
-			"instanceof should be 'A' (got 'Date')",
+			"instanceof should be 'A' (got 'Date",
 		)
 
 		expect(() => s.instance(A).or(s.instance(B)).validate(date)).toThrow(

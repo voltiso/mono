@@ -48,41 +48,41 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	protected override _getIssues(x: unknown): ValidationIssue[] {
+	protected override _getIssues(value: unknown): ValidationIssue[] {
 		const issues = []
 
-		if (typeof x === 'number') {
-			if (this.isInteger && !Number.isInteger(x)) {
+		if (typeof value === 'number') {
+			if (this.isInteger && !Number.isInteger(value)) {
 				issues.push(
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
-						expectedDescription: 'integer',
-						received: x,
+						expected: { description: 'integer' },
+						received: { value },
 					}),
 				)
 			}
 
-			if (isDefined(this.getMin) && x < this.getMin) {
+			if (isDefined(this.getMin) && value < this.getMin) {
 				issues.push(
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expectedDescription: `at least ${this.getMin}`,
-						received: x,
+						expected: { description: `at least ${this.getMin}` },
+						received: { value },
 					}),
 				)
 			}
 
-			if (isDefined(this.getMax) && x > this.getMax) {
+			if (isDefined(this.getMax) && value > this.getMax) {
 				issues.push(
 					new ValidationIssue({
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expectedDescription: `at most ${this.getMax}`,
-						received: x,
+						expected: { description: `at most ${this.getMax}` },
+						received: { value },
 					}),
 				)
 			}
@@ -91,8 +91,8 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be number',
-					received: x,
+					expected: { description: 'be number' },
+					received: { value },
 				}),
 			)
 		}

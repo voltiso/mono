@@ -7,6 +7,7 @@ import { $Assert, $Is } from '@voltiso/util'
 
 import { Doc } from '~/Doc'
 
+import type { WeakDocRef } from '..'
 import type { DocIdBrand, DocIdString } from './Id'
 
 class MyDoc extends Doc('my-tag-data-1').with({
@@ -59,6 +60,9 @@ describe('Data', () => {
 					string & DocIdBrand<'my-tag-data-1'> & DocIdBrand<'my-tag-data-2'>
 				>
 			>()
+
+			$Assert<IsIdentical<MyDoc['id'], WeakDocRef<MyDoc>['id']>>()
+			$Assert<IsIdentical<MyDoc2['id'], WeakDocRef<MyDoc2>['id']>>()
 		})
 	})
 })

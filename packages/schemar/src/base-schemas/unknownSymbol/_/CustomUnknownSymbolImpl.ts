@@ -60,8 +60,8 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be symbol',
-					received: x,
+					expected: { description: 'be symbol' },
+					received: { value: x },
 				}),
 			)
 		}

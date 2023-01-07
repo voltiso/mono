@@ -166,11 +166,13 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
-						expectedDescription: `be of length at least ${
-							this.getMinLength as number
-						}`,
+						expected: {
+							description: `be of length at least ${
+								this.getMinLength as number
+							}`,
+						},
 
-						received: x.length,
+						received: { value: x.length },
 					}),
 				)
 			}
@@ -181,11 +183,13 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
-						expectedDescription: `be of length at most ${
-							this.getMaxLength as number
-						}`,
+						expected: {
+							description: `be of length at most ${
+								this.getMaxLength as number
+							}`,
+						},
 
-						received: x.length,
+						received: { value: x.length },
 					}),
 				)
 			}
@@ -204,8 +208,8 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				new ValidationIssue({
 					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
-					expectedDescription: 'be array',
-					received: x,
+					expected: { description: 'be array' },
+					received: { value: x },
 				}),
 			)
 		}
