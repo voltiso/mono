@@ -189,9 +189,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		options?: Partial<GetIssuesOptions> | undefined,
 	): X | this[OPTIONS]['Output'] {
 		const result = this.exec(x, options)
+		return result.value
 
-		if (result.isValid) return result.value
-		else return x // identity on error
+		// if (result.isValid) return result.value
+		// else return x // identity on error
 	}
 
 	getIssues(

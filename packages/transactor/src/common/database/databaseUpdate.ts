@@ -11,61 +11,46 @@ import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
-import type { WithTransaction } from '~/Transaction'
-import type { Transactor } from '~/Transactor'
+import type { Transactor, WithTransactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
 
+import {
+	assertInTransaction,
+	assertNotInTransaction,
+} from './assertInTransaction'
 import { toDatabaseSet, toDatabaseUpdate } from './toDatabase'
 
 type T = Database.Transaction | Database.Database
 
-function assertInTransaction() {
-	const ctxOverride = Zone.current.get('transactionContextOverride') as unknown
-
-	if (!ctxOverride)
-		throw new TransactorError(
-			'Illegal Database operation: expected to be in transaction',
-		)
-}
-
-function assertNotInTransaction() {
-	const ctxOverride = Zone.current.get('transactionContextOverride') as unknown
-
-	if (ctxOverride)
-		throw new TransactorError(
-			'Illegal Database operation: expected to NOT be in transaction',
-		)
-}
-
-const databaseDelete = async (t: T, ref: Database.ServerDocumentReference) => {
+async function databaseDelete(
+	ctx: WithTransactor,
+	t: T,
+	ref: Database.ServerDocumentReference,
+) {
 	if (isDatabase(t)) {
-		assertNotInTransaction()
+		assertNotInTransaction(ctx)
 		await ref.delete()
 	} else {
-		assertInTransaction()
+		assertInTransaction(ctx)
 		t.delete(ref)
 	}
 
 	return null
 }
 
-const databaseSet = async (
+async function databaseSet(
 	transactor: Transactor,
 	ctx: DatabaseContext,
 	t: T,
 	ref: Database.ServerDocumentReference,
 	data: IntrinsicFields,
-): Promise<$WithId<IntrinsicFields, AnyDoc>> => {
+): Promise<$WithId<IntrinsicFields, AnyDoc>> {
 	if (transactor.readOnly)
 		throw new TransactorError(
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,
 		)
 
-	// assert(data.__voltiso)
-
-	const ctxOverride = Zone.current.get('transactionContextOverride') as
-		| WithTransaction
-		| undefined
+	const ctxOverride = transactor._transactionContext.tryGetValue
 
 	const now = ctxOverride?.transaction
 		? ctxOverride.transaction._date
@@ -85,10 +70,10 @@ const databaseSet = async (
 	const firestoreData = toDatabaseSet(ctx, data)
 
 	if (isDatabase(t)) {
-		assertNotInTransaction()
+		assertNotInTransaction({ transactor })
 		await ref.set(firestoreData)
 	} else {
-		assertInTransaction()
+		assertInTransaction({ transactor })
 		t.set(ref, firestoreData)
 	}
 
@@ -108,17 +93,16 @@ export async function databaseUpdate(
 				updates,
 			)})`,
 		)
+
 	// console.log('firestoreUpdate', ref.path, updates)
 
 	if (isReplaceIt(updates)) {
 		return databaseSet(transactor, ctx, t, ref, updates.__replaceIt as never)
 	}
 
-	if (isDeleteIt(updates)) return databaseDelete(t, ref)
+	if (isDeleteIt(updates)) return databaseDelete({ transactor }, t, ref)
 
-	const ctxOverride = Zone.current.get('transactionContextOverride') as
-		| WithTransaction
-		| undefined
+	const ctxOverride = transactor._transactionContext.tryGetValue
 
 	const now = ctxOverride?.transaction
 		? ctxOverride.transaction._date
@@ -138,10 +122,10 @@ export async function databaseUpdate(
 	const databaseUpdates = toDatabaseUpdate(ctx, updates)
 
 	if (isDatabase(t)) {
-		assertNotInTransaction()
+		assertNotInTransaction({ transactor })
 		await ref.update(databaseUpdates)
 	} else {
-		assertInTransaction()
+		assertInTransaction({ transactor })
 		t.update(ref, databaseUpdates)
 	}
 

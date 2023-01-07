@@ -13,7 +13,7 @@ import { TransactorError } from '~/error'
 import type { Method } from '~/Method'
 import type { Cache, WithTransaction } from '~/Transaction'
 import { isWithTransaction, methodGuard } from '~/Transaction'
-import type { ContextOverride, WithTransactor } from '~/Transactor'
+import type { WithTransactor } from '~/Transactor'
 import { dump } from '~/util'
 
 import { processTriggers } from './processTriggers'
@@ -36,9 +36,7 @@ export async function callMethod<
 	args: ARGS,
 	options: CallMethodOptions,
 ): Promise<R> {
-	const ctxOverride = Zone.current.get('transactionContextOverride') as
-		| object
-		| undefined
+	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
@@ -65,10 +63,8 @@ export async function callMethod<
 		let cache: Cache | undefined
 
 		const result = await transactor.runTransaction(() => {
-			// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
-			const ctxOverride = Zone.current.get(
-				'transactionContextOverride',
-			) as ContextOverride
+			// eslint-disable-next-line unicorn/consistent-destructuring
+			const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
 			assert(ctxOverride)
 			const { transaction, db } = ctxOverride

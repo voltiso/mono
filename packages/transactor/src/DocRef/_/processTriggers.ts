@@ -71,7 +71,7 @@ async function processAfterTrigger(
 			possiblyExists: cacheEntry.possiblyExists,
 		})
 		const data = collectTriggerResult(ctx, r as never)
-		validateAndSetCacheEntry(ctx, data, schema?.partial)
+		validateAndSetCacheEntry(ctx, { data, schema, bestEffort: true })
 	})
 
 	// eslint-disable-next-line security/detect-object-injection
@@ -133,7 +133,12 @@ export async function processTriggers(
 	assert(!isReplaceIt(data))
 	assert(!isDeleteIt(data))
 	// console.log('apply updates', cacheEntry.data, params?.updates, data)
-	validateAndSetCacheEntry(ctx, data, schema?.partial, !!params?.updates)
+	validateAndSetCacheEntry(ctx, {
+		data,
+		schema,
+		bestEffort: true,
+		hadUpdates: !!params?.updates,
+	})
 
 	if (cacheEntry.isProcessingTriggers) return
 
@@ -144,10 +149,9 @@ export async function processTriggers(
 		cacheEntry.isProcessingTriggers = false
 	}
 
-	validateAndSetCacheEntry(
-		ctx,
-		cacheEntry.data,
-		schema?.final,
-		!!params?.updates,
-	)
+	validateAndSetCacheEntry(ctx, {
+		data: cacheEntry.data,
+		schema,
+		hadUpdates: !!params?.updates,
+	})
 }

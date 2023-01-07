@@ -38,10 +38,7 @@ import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'
 import type { DocPath } from '~/Path'
 import { CustomDocPath } from '~/Path'
-import type {
-	DeepPartialIntrinsicFieldsSchema,
-	IntrinsicFieldsSchema,
-} from '~/schemas/sIntrinsicFields'
+import type { IntrinsicFieldsSchema } from '~/schemas/sIntrinsicFields'
 import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 
 import { DocFieldPath } from '../DocFieldPath/DocFieldPath'
@@ -98,10 +95,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	_aggregateSchemas?: Record<string, SchemaLike> = undefined
 
 	_schema:
-		| {
-				final: IntrinsicFieldsSchema
-				partial: DeepPartialIntrinsicFieldsSchema
-		  }
+		| IntrinsicFieldsSchema
 		| null // null -> no schema
 		| undefined = undefined // undefined -> unknown yet
 
@@ -125,7 +119,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	}
 
 	get schemaWithId(): Schema<$WithId<GetData<O['doc']>>> | undefined {
-		return getSchema(this)?.final as never
+		return getSchema(this) as never
 	}
 
 	get aggregateSchemas(): GetDocTI<O['doc']>['aggregates'] {

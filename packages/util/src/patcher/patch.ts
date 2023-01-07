@@ -96,12 +96,6 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	if (isKeepIt(patchValue)) return x as never
 
 	if (isReplaceIt(patchValue)) {
-		// console.log(
-		// 	'!!!!!!!!equals',
-		// 	x,
-		// 	patchValue.__replaceIt,
-		// 	equals(x, patchValue.__replaceIt),
-		// )
 		if (equals(x, patchValue.__replaceIt)) return x as never
 		else return patchValue.__replaceIt as never
 	}

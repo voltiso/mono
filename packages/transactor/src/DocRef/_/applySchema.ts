@@ -2,23 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { ValidationError } from '@voltiso/schemar'
+import type { ISchema } from '@voltiso/schemar.types'
 import { isPlainObject } from '@voltiso/util'
 
-import type {
-	DeepPartialIntrinsicFieldsSchema,
-	IntrinsicFields,
-} from '~/schemas'
+import type { IntrinsicFields, IntrinsicFieldsSchema } from '~/schemas'
 import { isWithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 
 import type { WithDocRef } from '../WithDocRef'
 import { schemaDeleteIt } from './_symbols'
-
-type Params = {
-	schema: DeepPartialIntrinsicFieldsSchema
-	data: object
-	bestEffort?: boolean
-}
 
 function processSentinels(x: unknown): IntrinsicFields | null {
 	if (isPlainObject(x)) {
@@ -34,30 +26,38 @@ function processSentinels(x: unknown): IntrinsicFields | null {
 	} else return x as never
 }
 
-export function applySchema(
-	this: WithTransactor & WithDocRef,
-	params: Params,
-): IntrinsicFields | null {
-	const { data, schema, bestEffort } = params
+//
 
-	const r = schema.exec(data, {
-		onUnknownProperty: this.transactor._options.onUnknownField,
+export function applySchema(
+	ctx: WithTransactor & WithDocRef,
+	options: {
+		schema: IntrinsicFieldsSchema | null
+		data: object | null | undefined
+		bestEffort?: boolean | undefined
+	},
+): IntrinsicFields | null | undefined {
+	const { data, schema, bestEffort } = options
+
+	if (!data || !schema) return data as never // identity
+
+	const r = (schema as ISchema).exec(data, {
+		onUnknownProperty: ctx.transactor._options.onUnknownField,
 	})
 
 	if (!r.isValid && !bestEffort) {
 		const error = new ValidationError(r.issues)
 
-		if (isWithTransaction(this) && this.transaction._error === null)
-			this.transaction._error = error
+		if (isWithTransaction(ctx) && ctx.transaction._error === null)
+			ctx.transaction._error = error
 
 		throw error
 	}
 
-	if (r.issues.length > 0) {
-		// have warnings
-		// eslint-disable-next-line no-console
-		console.warn(r.issues)
-	}
+	// if (r.issues.length > 0) {
+	// 	// have warnings
+	// 	// eslint-disable-next-line no-console
+	// 	console.warn(r.issues)
+	// }
 
 	return processSentinels(r.value)
 }

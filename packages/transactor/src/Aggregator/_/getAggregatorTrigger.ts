@@ -159,7 +159,6 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 			// assert(targetInfo.value.length === targetInfo.numSources, 'A')
 
 			if (after) {
-				// console.log('!!!!!!!!!!', { after })
 				// eslint-disable-next-line no-await-in-loop
 				targetInfo.value = await handlers.include.call(
 					getDocDataView(after, ctx),

@@ -7,12 +7,12 @@ import { isPlainObject, omit } from '@voltiso/util'
 import type { DocIdString } from '~/brand'
 import type { PathMatches } from '~/common'
 import type { DocTI, GetData } from '~/Doc'
-import type { AggregateTargetEntry, IntrinsicFields } from '~/schemas'
+import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
-export type AggregateView<T extends AggregateTargetEntry> =
+export type AggregateView<T extends VoltisoEntry.AggregateTarget.Entry> =
 	T['value'] extends object ? Merge2_<T['value'], T> : T
 
-export function getAggregateView<T extends AggregateTargetEntry>(
+export function getAggregateView<T extends VoltisoEntry.AggregateTarget.Entry>(
 	data: T,
 ): AggregateView<T> {
 	if (isPlainObject(data.value))

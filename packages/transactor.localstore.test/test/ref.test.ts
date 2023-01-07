@@ -50,19 +50,20 @@ const patients = db.register(Patient)
 describe('ref', () => {
 	it('type', () => {
 		type DoctorData = ReturnType<DoctorX['dataWithId']>
-		$Assert<
-			IsIdentical<
-				DoctorData,
-				{
-					id: string & DocIdBrand<'DoctorXNala'>
-					profile: {
-						name: string
-						specialty: string
-					}
-					__voltiso: GetVoltisoEntry<DoctorX>
-				}
-			>
-		>()
+
+		type Want = {
+			readonly id: string & DocIdBrand<'DoctorXNala'>
+			profile: {
+				name: string
+				specialty: string
+			}
+			__voltiso: GetVoltisoEntry<DoctorX>
+		}
+
+		$Assert.is<DoctorData, Want>()
+		$Assert.is<Want, DoctorData>()
+
+		$Assert<IsIdentical<DoctorData, Want>>()
 	})
 
 	it('checks numRefs on delete', async () => {
@@ -113,9 +114,13 @@ describe('ref', () => {
 		)
 
 		await expect(doctors(d.id).data.__voltiso).resolves.toMatchObject(
-			omit(sVoltisoEntry.validate({
-				numRefs: 1,
-			}), 'createdAt', 'updatedAt'),
+			omit(
+				sVoltisoEntry.validate({
+					numRefs: 1,
+				}),
+				'createdAt',
+				'updatedAt',
+			),
 		)
 
 		await expect(doctors(d.id).delete()).rejects.toThrow('numRefs')

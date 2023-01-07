@@ -50,10 +50,7 @@ export class _DocFieldPath {
 		// this._fields = fields
 
 		const getPromise = async () => {
-			// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
-			const ctxOverride = Zone.current.get('transactionContextOverride') as
-				| object
-				| undefined
+			const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
 			// eslint-disable-next-line no-param-reassign
 			if (ctxOverride) ctx = { ...ctx, ...ctxOverride }

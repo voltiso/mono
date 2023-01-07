@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
+import { Context } from '@voltiso/context'
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IsUnion, Tail, Throw } from '@voltiso/util'
 import { $AssumeType, staticImplements, tryAt } from '@voltiso/util'
@@ -23,7 +24,7 @@ import type {
 	TransactorConstructorParameters,
 	TransactorConstructorParametersNoUndefined,
 } from './ConstructorParameters'
-import type { TransactorContext } from './Context'
+import type { ContextOverride, TransactorContext } from './Context'
 import type {
 	TransactorIdSchemaEntry,
 	TransactorMethodEntry,
@@ -95,7 +96,7 @@ export class Transactor extends Db {
 	_allBeforeCommits: TransactorTriggerEntry<Trigger.BeforeCommit>[] = []
 	_allOnGets: TransactorTriggerEntry<OnGetTrigger>[] = []
 
-	// _transactionLocalStorage: AsyncLocalStorage<ContextOverride>
+	_transactionContext: Context<ContextOverride> = new Context<ContextOverride>()
 
 	constructor(...args: TransactorConstructorParameters) {
 		super({ transactor: undefined as unknown as Transactor }) // hack

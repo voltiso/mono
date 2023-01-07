@@ -59,7 +59,7 @@ export const sVoltisoEntryMigrations = _sVoltisoEntryMigrations
 //
 
 export const _sVoltisoEntry = s
-	.object({
+	.infer({
 		numRefs: s.number.default(0),
 
 		aggregateTarget: sVoltisoEntryAggregateTarget.default({}),
@@ -88,8 +88,8 @@ export const _sVoltisoEntry = s
 		}
 		if (!isEqual(migratedAt, entry.migratedAt)) return { ...entry, migratedAt }
 		return entry
-	}).simple
-// .default({}) // ! do not export schemas that apply defaults
+	})
+// .simple.default({})
 
 export const sVoltisoEntry = _sVoltisoEntry
 	.CastOutput<VoltisoEntry>()
@@ -99,32 +99,28 @@ export const sVoltisoEntry = _sVoltisoEntry
 
 //
 
-export interface VoltisoEntry
-	extends /** @inline */ Output_<typeof _sVoltisoEntry> {}
+export interface VoltisoEntry extends Output_<typeof _sVoltisoEntry> {}
 
 export namespace VoltisoEntry {
-	export interface Input extends /** @inline */ Input_<typeof _sVoltisoEntry> {}
+	export interface Input extends Input_<typeof _sVoltisoEntry> {}
 
 	//
 
 	//
 
-	export interface Migration
-		extends /** @inline */ Output_<typeof _sVoltisoEntryMigration> {}
+	export interface Migration extends Output_<typeof _sVoltisoEntryMigration> {}
 
 	export namespace Migration {
-		export interface Input
-			extends /** @inline */ Input_<typeof _sVoltisoEntryMigration> {}
+		export interface Input extends Input_<typeof _sVoltisoEntryMigration> {}
 	}
 
 	//
 
 	export interface Migrations
-		extends /** @inline */ Output_<typeof _sVoltisoEntryMigrations> {}
+		extends Output_<typeof _sVoltisoEntryMigrations> {}
 
 	export namespace Migrations {
-		export interface Input
-			extends /** @inline */ Input_<typeof _sVoltisoEntryMigrations> {}
+		export interface Input extends Input_<typeof _sVoltisoEntryMigrations> {}
 	}
 
 	//
@@ -132,24 +128,20 @@ export namespace VoltisoEntry {
 	//
 
 	export interface AggregateTarget
-		extends /** @inline */ Output_<typeof _sVoltisoEntryAggregateTarget> {}
+		extends Output_<typeof _sVoltisoEntryAggregateTarget> {}
 
 	export namespace AggregateTarget {
 		export interface Input
-			extends /** @inline */ Input_<typeof _sVoltisoEntryAggregateTarget> {}
+			extends Input_<typeof _sVoltisoEntryAggregateTarget> {}
 
 		//
 
 		export interface Entry
-			extends /** @inline */ Output_<
-				typeof _sVoltisoEntryAggregateTargetEntry
-			> {}
+			extends Output_<typeof _sVoltisoEntryAggregateTargetEntry> {}
 
 		export namespace Entry {
 			export interface Input
-				extends /** @inline */ Input_<
-					typeof _sVoltisoEntryAggregateTargetEntry
-				> {}
+				extends Input_<typeof _sVoltisoEntryAggregateTargetEntry> {}
 		}
 	}
 }

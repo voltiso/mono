@@ -5,6 +5,7 @@ import type { _ } from '@voltiso/util'
 import { $Assert, $dev, lazyConstructor } from '@voltiso/util'
 
 import type { WithTransaction } from '~/Transaction'
+import type { WithTransactor } from '~/Transactor/WithTransactor'
 
 import type { WithDocRef } from '../DocRef/WithDocRef'
 import { _DocFieldPath } from './_DocFieldPath'
@@ -46,5 +47,5 @@ export const DocFieldPath = lazyConstructor(
 
 // eslint-disable-next-line import/export
 export namespace DocFieldPath {
-	export type Context = WithDocRef & Partial<WithTransaction>
+	export type Context = WithTransactor & WithDocRef & Partial<WithTransaction>
 }

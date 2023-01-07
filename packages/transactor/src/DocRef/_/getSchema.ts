@@ -12,6 +12,7 @@ import { $AssumeType } from '@voltiso/util'
 import { isWithId } from '~/Data'
 import type { $$DocRef, WeakDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
+import type { IntrinsicFieldsSchema } from '~/schemas'
 import { sIntrinsicFields } from '~/schemas'
 
 export function getIdSchemas(ref: $$DocRef) {
@@ -37,7 +38,7 @@ export function getIdSchemas(ref: $$DocRef) {
 	return ref._idSchemas
 }
 
-export function getSchema(d: $$DocRef): WeakDocRef['_schema'] {
+export function getSchema(d: $$DocRef): IntrinsicFieldsSchema | null {
 	$AssumeType<WeakDocRef>(d)
 
 	if (d._schema !== undefined) {
@@ -109,7 +110,7 @@ export function getSchema(d: $$DocRef): WeakDocRef['_schema'] {
 		d._privateSchema = d._privateSchema.and(schema) as never
 	}
 
-	const final: IObject = thisSchema.and(sIntrinsicFields) as never
+	const final: IntrinsicFieldsSchema = thisSchema.and(sIntrinsicFields) as never
 
 	const { allowIdField } = _options
 
@@ -120,15 +121,7 @@ export function getSchema(d: $$DocRef): WeakDocRef['_schema'] {
 		)
 	}
 
-	const partial: IObject = final.deepPartial as never
-
-	// $assert(final)
-	// $assert(partial)
-
-	d._schema = {
-		final: final.simple as never,
-		partial: partial.simple as never,
-	}
+	d._schema = final
 
 	return d._schema
 }

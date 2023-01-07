@@ -120,11 +120,11 @@ describe('raw-transaction', () => {
 	it('should not allow transactions inside transactions', async function () {
 		expect.hasAssertions()
 
-		const root = Zone.current
+		expect(db._transactionContext.hasValue).toBeFalsy()
 
 		await expect(
 			db.runTransaction(async () => {
-				expect(Zone.current).not.toBe(root)
+				expect(db._transactionContext.hasValue).toBeTruthy()
 
 				await db.runTransaction(async () => {
 					//

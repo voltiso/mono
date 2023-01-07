@@ -9,11 +9,13 @@ import { createTransactor, database } from './common'
 
 const db = createTransactor()
 
+const sUserPublic = s.object({
+	displayName: s.string,
+	def: s.string.default('def'),
+})
+
 class User extends Doc.with({
-	public: s.object({
-		displayName: s.string,
-		def: s.string.default('def'),
-	}),
+	public: sUserPublic,
 }) {
 	@onGet
 	async createUser(p: TriggerParams.OnGet<User>) {

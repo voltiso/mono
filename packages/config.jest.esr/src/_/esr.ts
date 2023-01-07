@@ -1,13 +1,13 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable unicorn/prefer-module */
+
 import {
 	codeFilesExtensions,
 	defineJestConfig,
 	moduleNameMapper,
 } from '@voltiso/config.jest.lib'
-
-/* eslint-disable unicorn/prefer-module */
 
 //
 
@@ -25,6 +25,7 @@ const librariesToTransform = [
 	'react-native',
 	'@react-native',
 	//
+	// '@voltiso/localstore'
 ]
 
 export const jestEsrConfig = defineJestConfig({
@@ -33,8 +34,8 @@ export const jestEsrConfig = defineJestConfig({
 		'**/?(*.)+(spec|test).?([cm])[tj]s?(x)',
 	],
 
-	testEnvironment: require.resolve('jest-environment-jsdom'), // 'jsdom',
-	// testEnvironment: 'node',
+	// testEnvironment: require.resolve('jest-environment-jsdom'), // 'jsdom',
+	testEnvironment: 'node',
 
 	modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
 
@@ -47,7 +48,7 @@ export const jestEsrConfig = defineJestConfig({
 
 	setupFilesAfterEnv: [
 		require.resolve('../setup-after-env.js'),
-		require.resolve('react-native/jest/setup'),
+		// require.resolve('react-native/jest/setup'), // replaces global `Promise` - not compatible with `AsyncLocalStorage`
 	],
 
 	/** For react-native */
@@ -55,8 +56,4 @@ export const jestEsrConfig = defineJestConfig({
 		defaultPlatform: 'ios',
 		platforms: ['android', 'ios', 'native'],
 	},
-
-	// globals: {
-	// 	__DEV__: true, // for `react-native`
-	// },
 } as const)

@@ -77,8 +77,6 @@ describe('add', () => {
 	})
 
 	it('does not allow if exists', async () => {
-		expect.hasAssertions()
-
 		await clients.add({
 			id: 'xyz' as never,
 			displayName: 'xyz',

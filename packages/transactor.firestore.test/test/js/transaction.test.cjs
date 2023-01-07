@@ -3,7 +3,6 @@
 
 'use strict'
 
-/* eslint-disable no-undef */
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -51,16 +50,18 @@ describe('transaction', function () {
 	it('should use async storage (get)', async () => {
 		expect.hasAssertions()
 
+		expect(db._transactionContext.hasValue).toBeFalsy()
+
 		await db.runTransaction(async t => {
-			expect(Zone.current.name).toBe('Transaction')
+			expect(db._transactionContext.hasValue).toBeTruthy()
 
 			await t('visitorJ/artur')
 
-			expect(Zone.current.name).toBe('Transaction')
+			expect(db._transactionContext.hasValue).toBeTruthy()
 
 			await t('visitorJ/artur').set({ age: 934 })
 
-			expect(Zone.current.name).toBe('Transaction')
+			expect(db._transactionContext.hasValue).toBeTruthy()
 			await expect(db('visitorJ/artur').data['age']).resolves.toBe(934)
 		})
 	})

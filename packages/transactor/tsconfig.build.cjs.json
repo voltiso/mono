@@ -8,7 +8,7 @@
 		"outDir": "dist/cjs",
 		"rootDir": "src",
 
-		"target": "ES2016", // For zone.js
+		// "target": "ES2016", // For zone.js
 
 		"paths": {
 			"_": ["./src/_"],

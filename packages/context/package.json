@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/context",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -57,6 +57,7 @@
   "devDependencies": {
     "@types/uuid": "^9.0.0",
     "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^1.0.0",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/script": "workspace:^",

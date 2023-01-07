@@ -20,7 +20,7 @@ export class NodeContext<T> implements Context<T> {
 	run<Return>(value: T, run: () => Return): Return {
 		assert(value !== undefined)
 
-		const oldValue = this._asyncLocalStorage.getStore()
+		// const oldValue = this._asyncLocalStorage.getStore()
 
 		let result = this._asyncLocalStorage.run(value, run)
 
@@ -31,12 +31,14 @@ export class NodeContext<T> implements Context<T> {
 			// eslint-disable-next-line promise/prefer-await-to-then
 			result = result.then(
 				value => {
-					this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined
+					// console.log('got', value, 'exit', oldValue)
+					// this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined
 					return value
 				},
 				// eslint-disable-next-line promise/prefer-await-to-callbacks
 				error => {
-					this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined
+					// console.log('err', error, 'exit', oldValue)
+					// this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined
 					throw error
 				},
 			) as Return
@@ -49,5 +51,13 @@ export class NodeContext<T> implements Context<T> {
 		const value = this._asyncLocalStorage.getStore()
 		if (value === undefined) throw new NoContextError()
 		return value
+	}
+
+	get hasValue(): boolean {
+		return this._asyncLocalStorage.getStore() !== undefined
+	}
+
+	get tryGetValue(): T | undefined {
+		return this._asyncLocalStorage.getStore()
 	}
 }

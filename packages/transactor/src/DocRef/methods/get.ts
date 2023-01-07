@@ -17,11 +17,11 @@ import type { WithDb } from '~/Db'
 import type { $$Doc, DocTI } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
-import type { AggregateTargetEntry } from '~/schemas'
+import type { VoltisoEntry } from '~/schemas'
 import {
 	getDefaultVoltisoEntry,
-	sVoltisoEntryAggregateTargetEntry,
 	sVoltisoEntry,
+	sVoltisoEntryAggregateTargetEntry,
 } from '~/schemas'
 import type { WithTransaction } from '~/Transaction'
 import {
@@ -92,8 +92,6 @@ async function directDocPathGet<D extends $$Doc>(
 async function transactionDocPathGetImpl<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
-	// console.log('transactionDocPathGetImpl', ctx.docRef.path.toString())
-
 	const { _ref, id } = ctx.docRef
 	const { _cache, _databaseTransaction, _date } = ctx.transaction
 
@@ -114,7 +112,9 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 	const prevData = cacheEntry.data
 
 	if (cacheEntry.data === undefined) {
-		cacheEntry.data = fromDatabase(ctx, await _databaseTransaction.get(_ref))
+		const snapshot = await _databaseTransaction.get(_ref)
+
+		cacheEntry.data = fromDatabase(ctx, snapshot)
 		if (cacheEntry.data) cacheEntry.data = withVoltisoEntry(cacheEntry.data)
 
 		if (cacheEntry.data?.__voltiso)
@@ -135,7 +135,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 			for (const [name, schema] of Object.entries(aggregateSchemas)) {
 				assertNotPolluting(name)
 
-				let entry: AggregateTargetEntry | undefined =
+				let entry: VoltisoEntry.AggregateTarget.Entry | undefined =
 					// eslint-disable-next-line security/detect-object-injection
 					cacheEntry.__voltiso.aggregateTarget[name]
 
@@ -161,8 +161,8 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		if (schema && cacheEntry.data) {
 			// console.log('schema val', cacheEntry.data)
 
-			const validatedData = applySchema.call(ctx, {
-				schema: schema.partial,
+			const validatedData = applySchema(ctx, {
+				schema,
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
@@ -196,8 +196,8 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		try {
 			// console.log('applySchema partial', cacheEntry.data)
 
-			const validatedData = applySchema.call(ctx, {
-				schema: schema.partial,
+			const validatedData = applySchema(ctx, {
+				schema,
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
@@ -261,14 +261,22 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		})
 
 		const data = collectTriggerResult(ctx, r)
-		validateAndSetCacheEntry(ctx, data, schema?.partial)
+		validateAndSetCacheEntry(ctx, {
+			data,
+			schema,
+			bestEffort: true,
+		})
 	}
 
 	// do not enforce strict constraints yet? (custom triggers may enforce constraints)
 
 	// final schema check
 	if (schema && cacheEntry.data) {
-		validateAndSetCacheEntry(ctx, cacheEntry.data, schema.partial)
+		validateAndSetCacheEntry(ctx, {
+			data: cacheEntry.data,
+			schema,
+			bestEffort: false,
+		})
 	}
 
 	return cacheEntry.proxy as D | null
@@ -294,17 +302,6 @@ export function transactionDocPathGet<D extends $$Doc>(
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			// const currentZone = Zone?.current
-
-			// // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			// if (currentZone) {
-			// 	// eslint-disable-next-line no-param-reassign
-			// 	if (f) f = currentZone.wrap(f, '@voltiso/util')
-			// 	// eslint-disable-next-line no-param-reassign
-			// 	if (r) r = currentZone.wrap(r, '@voltiso/util')
-			// }
-
 			// eslint-disable-next-line promise/prefer-await-to-then
 			return promise.then(f as never, r)
 		},
@@ -314,10 +311,7 @@ export function transactionDocPathGet<D extends $$Doc>(
 export function get<TI extends DocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
 ): PromiseLike<Doc<TI> | null> {
-	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
-	const ctxOverride = Zone.current.get('transactionContextOverride') as
-		| object
-		| undefined
+	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }

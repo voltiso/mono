@@ -4,31 +4,35 @@
 import { assert } from '@voltiso/util'
 
 import { withVoltisoEntry } from '~/Data'
+import type { IntrinsicFieldsSchema } from '~/schemas'
 import { setCacheEntry } from '~/Transaction'
 
+import { applySchema } from './applySchema'
 import type { DocRefContext } from './Context'
 import { getCacheEntry } from './getCacheEntry'
-import { validate } from './validate'
 
 /**
  * Validate and update cache entry
  *
- * @param context - Context
- * @param data - Data to validate
- * @param schema - Either full or partial schema
  * @throws An error when validation fails
  */
 export function validateAndSetCacheEntry(
 	context: DocRefContext.ContextWithTransaction,
-	data: object | null,
-	schema: object | null | undefined, // DeepPartialIntrinsicFieldsSchema
-	hadUpdates = true,
+	options: {
+		data: object | null
+		schema: IntrinsicFieldsSchema | null // DeepPartialIntrinsicFieldsSchema
+		hadUpdates?: boolean | undefined
+		bestEffort?: boolean | undefined
+	},
 ): void {
+	let { data } = options
+	const { schema } = options
+	const bestEffort = options.bestEffort ?? false
+	const hadUpdates = options.hadUpdates ?? true
 	const cacheEntry = getCacheEntry(context)
 
 	try {
-		// eslint-disable-next-line no-param-reassign
-		data = validate(context, data, schema as never)
+		data = applySchema(context, { data, schema, bestEffort }) as never
 	} catch (error) {
 		assert(
 			error instanceof Error,
@@ -40,7 +44,8 @@ export function validateAndSetCacheEntry(
 		throw error // re-throw
 	}
 
-	// eslint-disable-next-line no-param-reassign
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (data) data = withVoltisoEntry(data)
-	setCacheEntry(context, cacheEntry, data as never, hadUpdates)
+
+	setCacheEntry(context, cacheEntry, data, hadUpdates)
 }

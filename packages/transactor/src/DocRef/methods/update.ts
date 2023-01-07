@@ -167,7 +167,7 @@ async function rawUpdate(
 	// eslint-disable-next-line unicorn/consistent-destructuring
 	const dataWithoutId = withoutId(data, ctx.docRef.id)
 	const finalData = withVoltisoEntry(dataWithoutId)
-	return new IndexedDoc(ctx, finalData) as never
+	return new IndexedDoc(ctx, finalData as never) as never
 }
 
 async function transactionUpdateImpl(
@@ -289,21 +289,19 @@ async function transactionUpdateImpl(
 }
 
 function transactionUpdate(
-	this: WithTransactor & WithDocRef & WithTransaction & WithDb,
+	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 	updates: Updates,
 	options: Partial<UpdateOptions>,
 ): PromiseLike<$$Doc | null | undefined> {
 	assert(updates)
-	const { transaction, docRef } = this
+	const { transaction, docRef } = ctx
 
 	if (transaction._isFinalizing)
 		throw new TransactorError(
 			`db('${docRef.path.toString()}').update() called after transaction body (missing await?)`,
 		)
 
-	const promise = transactionUpdateImpl(this, updates, options)
-
-	// const currentZone = Zone.current
+	const promise = transactionUpdateImpl(ctx, updates, options)
 
 	// check if there's `await` outside this function
 	transaction._numFloatingPromises += 1
@@ -311,9 +309,6 @@ function transactionUpdate(
 		// eslint-disable-next-line unicorn/no-thenable
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
-
-			// if (onfulfilled) onfulfilled = currentZone.wrap(onfulfilled, 'transactionUpdate')
-			// if (onrejected) onrejected = currentZone.wrap(onrejected, 'transactionUpdate')
 
 			// eslint-disable-next-line promise/prefer-await-to-then
 			return promise.then(f as never, r)
@@ -352,10 +347,7 @@ export function update(
 ): PromiseLike<$$Doc | null | undefined> {
 	assert(updates)
 
-	// const ctxOverride = ctx.transactor._transactionLocalStorage.getStore()
-	const ctxOverride = Zone.current.get('transactionContextOverride') as
-		| object
-		| null
+	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
@@ -368,7 +360,7 @@ export function update(
 				)}`,
 			)
 
-		return transactionUpdate.call(ctx, updates, options)
+		return transactionUpdate(ctx, updates, options)
 	} else {
 		assert(isWithoutTransaction(ctx))
 		return rawUpdate(ctx, updates, options) as never

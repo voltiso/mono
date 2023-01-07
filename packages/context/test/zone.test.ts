@@ -1,10 +1,17 @@
 // ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable promise/always-return */
+/* eslint-disable promise/prefer-await-to-then */
+
 import 'zone.js'
+
+import { sleep } from '@voltiso/util'
 
 import { NoContextError } from '~/NoContextError'
 import { ZoneContext } from '~/zone/ZoneContext'
+
+const mySleep = () => sleep(100)
 
 describe('node', () => {
 	it('simple sync', async () => {
@@ -67,5 +74,40 @@ describe('node', () => {
 		})
 
 		expect(() => context.value).toThrow(NoContextError)
+	})
+
+	/** Fails when global `Promise` not patched correctly */
+	it('parallel', async () => {
+		// eslint-disable-next-line etc/no-internal
+		const context = new ZoneContext<number>()
+
+		const promise = mySleep()
+
+		const promises = [] as Promise<any>[]
+		promises.push(promise)
+
+		context.run(1, () => {
+			promises.push(
+				promise.then(() => {
+					expect(context.tryGetValue).toBe(1)
+				}),
+			)
+		})
+
+		context.run(2, () => {
+			promises.push(
+				promise.then(() => {
+					expect(context.tryGetValue).toBe(2)
+				}),
+			)
+		})
+
+		void promises.push(
+			promise.then(() => {
+				expect(context.tryGetValue).toBeUndefined()
+			}),
+		)
+
+		await Promise.all(promises)
 	})
 })

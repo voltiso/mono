@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/transactor",
-  "version": "17.6.4",
+  "version": "18.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -40,6 +40,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
+    "@voltiso/context": "workspace:^",
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.firestore": "workspace:^",
@@ -49,8 +50,7 @@
   },
   "peerDependencies": {
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^",
-    "zone.js": "^0.12.0"
+    "@voltiso/schemar.types": "workspace:^"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",

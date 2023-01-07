@@ -44,8 +44,7 @@
     "turbo": "^1.6.3",
     "type-coverage": "^2.24.1",
     "typescript": "^4.9.3",
-    "typescript-transform-paths": "^3.4.4",
-    "zone.js": "^0.12.0"
+    "typescript-transform-paths": "^3.4.4"
   },
   "__________ENGINES": "__________",
   "engines": {

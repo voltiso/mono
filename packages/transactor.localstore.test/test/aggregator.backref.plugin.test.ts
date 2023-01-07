@@ -118,8 +118,6 @@ describe('aggregator - backref - plugin', () => {
 			},
 		})
 
-		// console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! weeks('2022-10-16').delete()")
-
 		await expect(weeks('2022-10-16').delete()).rejects.toThrow('aggregation')
 
 		// console.log("await days('2022-10-17').delete()")
