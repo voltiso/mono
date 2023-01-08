@@ -46,7 +46,7 @@
     "chalk": "^4.1.2"
   },
   "peerDependencies": {
-    "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar": "workspace:^"
   },
   "devDependencies": {
     "@voltiso/config.jest": "workspace:^",
