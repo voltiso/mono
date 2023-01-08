@@ -148,7 +148,7 @@ class StatePatcher_<S extends StateObject> {
 
 	/** Same as `.patch()` with `depth === 0` */
 	set(newValue: S): void {
-		return this.patch(newValue, { depth: 0 })
+		return this.patch(newValue as never, { depth: 0 })
 	}
 
 	// /** Same as .update() */

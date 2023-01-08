@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
-    "@types/react": "^18.0.25",
+    "@types/react": "^18.0.26",
     "@voltiso/config.jest.esr": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
@@ -65,9 +65,9 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react.rxjs": "workspace:^",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rxjs": "^7.5.7"
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "rxjs": "^7.8.0"
   },
   "__________MISC": "__________",
   "engines": {

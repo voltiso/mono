@@ -92,7 +92,7 @@ export function _set(
 		const [obj, path, value] = args
 		let c = obj
 
-		for (const token of path.slice(0, -1)) {
+		for (const token of path.slice(0, -1) as string[]) {
 			if (!isPlainObject(c) || !hasProperty(c, token))
 				throw new SetError(obj, path, value)
 

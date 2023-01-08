@@ -36,7 +36,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "esbuild-register": "^3.4.1"
+    "esbuild-register": "^3.4.2"
   },
   "peerDependencies": {
     "esbuild": ">= 0.14.49"
@@ -45,7 +45,7 @@
     "@types/node": "^18.11.18",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
-    "esbuild": "^0.15.15",
+    "esbuild": "^0.16.15",
     "rimraf": "^3.0.2"
   }
 }
