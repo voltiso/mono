@@ -1,5 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomUnknown,
@@ -8,11 +10,7 @@ import type {
 	Schema,
 	Schemable,
 	UnknownOptions,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
-import { $Assert } from '@voltiso/util'
-
-import { isSchema } from '~'
+} from '~'
 import * as s from '~'
 
 describe('unknown', () => {
@@ -23,13 +21,13 @@ describe('unknown', () => {
 		$Assert.is<IUnknown, Schema>()
 		$Assert.is<typeof s.unknown, IUnknown>()
 
-		expect(t.isUnknown(s.unknown)).toBeTruthy()
+		expect(s.isUnknownSchema(s.unknown)).toBeTruthy()
 
-		expect(isSchema(s.number)).toBeTruthy()
-		expect(isSchema(s.unknown)).toBeTruthy()
-		expect(isSchema(s.never)).toBeTruthy()
-		expect(isSchema(s.null)).toBeTruthy()
-		expect(isSchema(s.undefined)).toBeTruthy()
+		expect(s.isSchema(s.number)).toBeTruthy()
+		expect(s.isSchema(s.unknown)).toBeTruthy()
+		expect(s.isSchema(s.never)).toBeTruthy()
+		expect(s.isSchema(s.null)).toBeTruthy()
+		expect(s.isSchema(s.undefined)).toBeTruthy()
 
 		expect(() => s.unknown.validate(0)).not.toThrow()
 		expect(() => s.unknown.isValid(0)).toBeTruthy()
@@ -96,10 +94,6 @@ describe('unknown', () => {
 
 		// @ts-expect-error `_extends` does not exist
 		;() => void s.unknown.optional._extends
-
-		//
-		// eslint-disable-next-line @typescript-eslint/unbound-method, jest/unbound-method
-		;() => s.unknown.or
 
 		//
 		;() => s.unknown.optional

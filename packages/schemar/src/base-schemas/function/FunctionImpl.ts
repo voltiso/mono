@@ -1,10 +1,11 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { FunctionOptions } from '@voltiso/schemar.types'
 import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
-import { CustomUnknownFunctionImpl } from '.'
+import type { FunctionOptions } from '~'
+import { CustomUnknownFunctionImpl } from '~'
+
 import { CustomFunctionImpl } from './CustomFunctionImpl'
 import { defaultFunctionOptions } from './defaultFunctionOptions'
 

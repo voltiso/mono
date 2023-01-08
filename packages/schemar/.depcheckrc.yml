@@ -1,3 +1,6 @@
+# ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+# ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 # ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
@@ -7,4 +10,4 @@ ignores:
   - '@voltiso/config.ts.build.esm'
   - '@voltiso/config.ts.build.cjs'
   - '@voltiso/config.tsdoc'
-  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest'

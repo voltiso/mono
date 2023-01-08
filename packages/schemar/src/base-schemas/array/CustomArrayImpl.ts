@@ -1,22 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$Schemable,
-	ArrayOptions,
-	CustomArray,
-	DefaultArrayOptions,
-	ISchema,
-	Schema,
-	ValidateOptions,
-} from '@voltiso/schemar.types'
-import {
-	EXTENDS,
-	isArray,
-	isTuple,
-	isUnknownTuple,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	BoundCallable,
@@ -27,9 +12,23 @@ import {
 	zip,
 } from '@voltiso/util'
 
+import type {
+	$$Schemable,
+	ArrayOptions,
+	CustomArray,
+	DefaultArrayOptions,
+	ISchema,
+	Schema,
+	ValidateOptions,
+} from '~'
+import {
+	CustomSchemaImpl,
+	isArraySchema,
+	isTupleSchema,
+	isUnknownTupleSchema,
+} from '~'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomArrayImpl<O> {
@@ -84,11 +83,11 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isArray(other) && this.isReadonlyArray && !other.isReadonlyArray)
+		if (isArraySchema(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
 
 		if (
-			(isTuple(other) || isUnknownTuple(other)) &&
+			(isTupleSchema(other) || isUnknownTupleSchema(other)) &&
 			this.isReadonlyArray &&
 			!other.isReadonlyTuple
 		)
@@ -97,7 +96,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		// readonly arrays can extend readonly tuples
 
 		if (this.isReadonlyArray) {
-			if (isTuple(other)) {
+			if (isTupleSchema(other)) {
 				const thisMinLength = this.getMinLength ?? -Infinity
 				const thisMaxLength = this.getMaxLength ?? +Infinity
 
@@ -110,7 +109,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				}
 
 				return true
-			} else if (isUnknownTuple(other)) {
+			} else if (isUnknownTupleSchema(other)) {
 				const thisMinLength = this.getMinLength ?? -Infinity
 				const thisMaxLength = this.getMaxLength ?? +Infinity
 
@@ -123,7 +122,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			}
 		}
 
-		if (isArray(other))
+		if (isArraySchema(other))
 			return (this.getElementSchema as unknown as ISchema).extends(
 				other.getElementSchema,
 			)

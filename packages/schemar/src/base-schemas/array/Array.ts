@@ -1,8 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
+
+import type { $$Schemable, CustomArray, InferSchema_, Type_, Unknown } from '~'
 
 import { unknown } from '../unknown'
 import { MutableArrayImpl } from './MutableArrayImpl'
@@ -10,34 +11,60 @@ import { ReadonlyArrayImpl } from './ReadonlyArrayImpl'
 
 //
 
-export type ReadonlyArray<S extends t.$$Schemable> = t.ReadonlyArray<S>
-export type MutableArray<S extends t.$$Schemable> = t.MutableArray<S>
+interface MutableArray_<S extends $$Schemable>
+	extends CustomArray<{
+		element: InferSchema_<S>
+		Output: Type_<S, { kind: 'out' }>[]
+		Input: Type_<S, { kind: 'in' }>[]
+	}> {
+	<S extends $$Schemable>(elementSchema: S): MutableArray_<S>
+}
 
-export const ReadonlyArray = lazyConstructor(
+export { MutableArray_ as MutableArray }
+
+//
+
+interface ReadonlyArray_<S extends $$Schemable>
+	extends CustomArray<{
+		element: InferSchema_<S>
+
+		Output: readonly Type_<S, { kind: 'out' }>[]
+		Input: readonly Type_<S, { kind: 'in' }>[]
+
+		isReadonlyArray: true
+	}> {
+	<S extends $$Schemable>(elementSchema: S): ReadonlyArray_<S>
+}
+
+export { ReadonlyArray_ as ReadonlyArray }
+
+//
+
+const ReadonlyArray_ = lazyConstructor(
 	() => ReadonlyArrayImpl,
 ) as unknown as ReadonlyArrayConstructor
 
-export const MutableArray = lazyConstructor(
+const MutableArray_ = lazyConstructor(
 	() => MutableArrayImpl,
 ) as unknown as MutableArrayConstructor
 
 //
 
-export type ReadonlyArrayConstructor = new <T extends t.$$Schemable>(
+export type ReadonlyArrayConstructor = new <T extends $$Schemable>(
 	elementType: T,
-) => t.ReadonlyArray<T>
+) => ReadonlyArray_<T>
 
-export type MutableArrayConstructor = new <T extends t.$$Schemable>(
+export type MutableArrayConstructor = new <T extends $$Schemable>(
 	elementType: T,
-) => t.MutableArray<T>
+) => MutableArray_<T>
 
 //
 
-export const readonlyArray: t.ReadonlyArray<t.Unknown> = lazyValue(
-	() => new ReadonlyArray(unknown) as never,
+export const readonlyArray: ReadonlyArray_<Unknown> = lazyValue(
+	() => new ReadonlyArray_(unknown) as never,
 )
-export const mutableArray: t.MutableArray<t.Unknown> = lazyValue(
-	() => new MutableArray(unknown) as never,
+export const mutableArray: MutableArray_<Unknown> = lazyValue(
+	() => new MutableArray_(unknown) as never,
 )
 
-export const array: t.MutableArray<t.Unknown> = lazyValue(() => mutableArray)
+export const array: MutableArray_<Unknown> = lazyValue(() => mutableArray)

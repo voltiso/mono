@@ -25,7 +25,7 @@
   "devDependencies": {
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",

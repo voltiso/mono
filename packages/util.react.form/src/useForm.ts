@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { NestedSubject } from '@voltiso/observer'
@@ -12,7 +12,7 @@ import type {
 	SchemaLike,
 	Type_,
 	ValidationIssue,
-} from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 import type { PropertyPath } from '@voltiso/util'
 import { deepMapValues, get, tryGet } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
@@ -112,6 +112,8 @@ function _initializeResult<S extends $$SchemableObject>(
 		},
 	) as unknown as UseForm.ResultFields<S>
 
+	console.log('!!', { fields })
+
 	return {
 		props: {
 			onSubmit: (event: FormEvent<HTMLFormElement>) => {
@@ -155,7 +157,20 @@ export const useForm = <S extends $$SchemableObject>(
 	}))
 
 	mutable.result$ = useMemo(
-		() => createNestedSubject(_initializeResult<S>(options, mutable)),
+		() => {
+			const initialValue = _initializeResult<S>(options, mutable)
+			console.log('??', { initialValue })
+			const nestedSubject = createNestedSubject(initialValue)
+
+			const subs = nestedSubject.fields.subscribe(value => {
+				console.log('!! INITIAL', value)
+			})
+			subs.unsubscribe()
+
+			console.log('?? return')
+
+			return nestedSubject
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	)

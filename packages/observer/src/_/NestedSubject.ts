@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { PatchFor } from '@voltiso/util'
@@ -29,18 +29,30 @@ export interface INestedSubject extends INestedSubjectBase, IBehaviorSubject {
 	_: {}
 }
 
-export type _NestedSubjectRec<T, Additional> = Omit<
-	{
-		[k in keyof T]-?: NestedSubject<T[k] | Additional>
-	},
-	NestedSubjectReservedField
-> & {
-	value: T
-	_: {
-		[k in keyof T]-?: NestedSubject<T[k] | Additional>
+export type NestedSubject<T> = NestedSubjectBase<T> &
+	Subject<T> &
+	NestedSubject.Rec<Exclude<T, undefined>, Extract<T, undefined>>
+
+export namespace NestedSubject {
+	export type Rec<T, Additional> = Omit<
+		{
+			[k in keyof T]-?: NestedSubject<T[k] | Additional>
+		},
+		NestedSubjectReservedField
+	> & {
+		value: T
+		_: {
+			[k in keyof T]-?: NestedSubject<T[k] | Additional>
+		}
 	}
 }
 
-export type NestedSubject<T> = NestedSubjectBase<T> &
-	Subject<T> &
-	_NestedSubjectRec<Exclude<T, undefined>, Extract<T, undefined>>
+//
+
+export interface NestedSubjectConstructor {
+	new <T>(): NestedSubject<T>
+
+	new <T>(options: {
+		initialValue?: T | (() => T) | undefined
+	}): NestedSubject<T>
+}

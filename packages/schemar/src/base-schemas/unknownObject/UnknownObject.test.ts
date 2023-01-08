@@ -1,13 +1,14 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomUnknownObject,
 	IUnknownObject,
 	UnknownObject,
 	UnknownObjectOptions,
-} from '@voltiso/schemar.types'
-import { $Assert } from '@voltiso/util'
+} from '~'
 
 describe('object', () => {
 	it('generic', <O extends Partial<UnknownObjectOptions>>() => {

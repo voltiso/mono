@@ -1,5 +1,16 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import {
+	$assert,
+	BoundCallable,
+	CALL,
+	isDefined,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type {
 	CustomString,
@@ -8,20 +19,13 @@ import type {
 	Literal,
 	RegExpEntry,
 	StringOptions,
-} from '@voltiso/schemar.types'
-import { EXTENDS, isString, SCHEMA_NAME } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import {
-	BoundCallable,
-	CALL,
-	isDefined,
-	lazyConstructor,
-	OPTIONS,
-} from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, isStringSchema } from '~'
 import { literal } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
+
+$assert(EXTENDS)
+$assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomStringImpl<O> {
@@ -69,7 +73,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isString(other)) return true
+		if (isStringSchema(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
@@ -84,8 +88,8 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: {
+							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 							description: `be of length at least ${this.getMinLength}`,
 						},
 
@@ -100,8 +104,8 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
-						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: {
+							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 							description: `be of length at most ${this.getMaxLength}`,
 						},
 

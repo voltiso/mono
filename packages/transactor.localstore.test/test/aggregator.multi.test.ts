@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { ISchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import type { ISchema } from '@voltiso/schemar.types'
 import type {
 	DocBuilderPlugin,
 	DocIdString,
@@ -110,18 +110,18 @@ describe('aggregator', () => {
 			IsIdentical<
 				Pick<A['__voltiso'], 'aggregateTarget' | 'aggregateSource' | 'numRefs'>,
 				{
-						aggregateTarget: {
-							shifts: {
-								value: {
-									id: string
-									from: Date
-									to: Date
-								}[]
-								numSources: number
-							}
+					aggregateTarget: {
+						shifts: {
+							value: {
+								id: string
+								from: Date
+								to: Date
+							}[]
+							numSources: number
 						}
-						numRefs: number
-						aggregateSource: Record<string, Record<string, true>>
+					}
+					numRefs: number
+					aggregateSource: Record<string, Record<string, true>>
 				}
 			>
 		>()

@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert, $Is } from '@voltiso/util'
 
 import type {
 	$CustomBoolean,
@@ -10,11 +13,8 @@ import type {
 	ISchema,
 	Output,
 	Schema,
-} from '@voltiso/schemar.types'
-import { isBoolean } from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert, $Is } from '@voltiso/util'
-
+} from '~'
+import { isBooleanSchema } from '~'
 import * as s from '~'
 
 describe('boolean', () => {
@@ -64,7 +64,7 @@ describe('boolean', () => {
 
 		$Assert.is<typeof aa, ISchema<boolean | string>>()
 
-		expect(isBoolean(s.boolean)).toBeTruthy()
+		expect(isBooleanSchema(s.boolean)).toBeTruthy()
 
 		expect(s.boolean.extends(s.boolean)).toBeTruthy()
 		expect(s.boolean.extends(s.unknown)).toBeTruthy()

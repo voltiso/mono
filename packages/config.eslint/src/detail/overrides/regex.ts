@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
@@ -46,7 +46,10 @@ const regexRules = defineEslintConfigOverrideRules({
 	// ],
 } as const)
 
-/** `eslint-plugin-regex` - custom eslint rules - can use instead of notice/notice, etc. */
+/**
+ * `eslint-plugin-regex` - custom eslint rules - can use instead of
+ * notice/notice, etc.
+ */
 export const regexOverride = defineEslintConfigOverride({
 	files: '*',
 

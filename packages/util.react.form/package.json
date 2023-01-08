@@ -43,7 +43,6 @@
     "@types/react": "^18.0.21",
     "@voltiso/observer": "workspace:^",
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/util": "workspace:^",
     "react": "^18.1.0 || ^17",
     "rxjs": "^7.5.6"
@@ -56,12 +55,11 @@
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.26",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/observer": "workspace:^",
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react.rxjs": "workspace:^",

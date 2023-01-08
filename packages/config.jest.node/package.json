@@ -1,0 +1,44 @@
+{
+  "name": "@voltiso/config.jest.node",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs:clean": "rimraf dist/cjs",
+    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast",
+    "__________MISC": "__________",
+    "clean": "v clean"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
+    "jest-environment-node": "^29.3.1"
+  },
+  "devDependencies": {
+    "@voltiso/config.ts.build.cjs": "workspace:^"
+  }
+}

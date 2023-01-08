@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { assertZod } from '~/assertZod'
-import type { InferableObject } from '@voltiso/schemar.types'
+import type { InferableObject } from '@voltiso/schemar'
 import type { $Decrement, IsCompatible, Length } from '@voltiso/util'
 import { at, BoundCallable, CALL } from '@voltiso/util'
 

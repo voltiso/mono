@@ -1,9 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Direction } from './Direction'
 
-export type GetOtherDirection<D extends Direction> = typeof map[D]
+export type GetOtherDirection<D extends Direction> = (typeof map)[D]
 
 const map = {
 	left: 'right',

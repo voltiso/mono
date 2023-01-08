@@ -5,7 +5,7 @@ ignores:
   - '@types/jest'
   - '@types/node'
   - '@voltiso/config.eslint.lib'
-  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest'
   - '@voltiso/config.jest.lib'
   - '@voltiso/config.prettier'
   - '@voltiso/config.ts'

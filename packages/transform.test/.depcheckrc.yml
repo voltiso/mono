@@ -3,7 +3,7 @@
 
 ignores:
   - '~'
-  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest'
   - '@voltiso/config.tsdoc'
   - '@voltiso/transform'
   - '@voltiso/config.ts.build.esm'

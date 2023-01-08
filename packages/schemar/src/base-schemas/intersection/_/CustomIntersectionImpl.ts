@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	CustomIntersection,
@@ -9,14 +12,10 @@ import type {
 	ISchema,
 	Schemable,
 	ValidateOptions,
-} from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS } from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, EXTENDS, SCHEMA_NAME } from '~'
 import { schema } from '~/core-schemas'
 import type { ValidationIssue } from '~/meta-schemas/validationIssue'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomIntersectionImpl<O> {

@@ -49,18 +49,16 @@
     "js-yaml": "^4.1.0"
   },
   "peerDependencies": {
-    "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^"
+    "@voltiso/schemar": "workspace:^"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
     "@voltiso/assertor": "workspace:^",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/script": "workspace:^",
     "zone.js": "^0.12.0"
   },

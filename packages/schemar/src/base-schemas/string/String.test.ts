@@ -1,8 +1,11 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable unicorn/no-unsafe-regex */
 /* eslint-disable security/detect-unsafe-regex */
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	$CustomString,
@@ -14,10 +17,7 @@ import type {
 	SchemaLike,
 	StringOptions,
 	Type,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
+} from '~'
 import * as s from '~'
 
 describe('string', () => {

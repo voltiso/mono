@@ -1,13 +1,13 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NestedSubjectImpl } from '~/NestedSubjectImpl'
+import type { NestedSubjectImpl } from '~/impl/NestedSubjectImpl'
 
 /** @internal */
 export function _nestedSubjectUpdateToRoot(node: NestedSubjectImpl<any>) {
 	while (node._parent) {
 		// console.log('set exists', node._subject$.value)
-		node._exists = true
+		node._hasValue = true
 		let parentValue = node._parent._value as object
 
 		if (Array.isArray(parentValue)) {

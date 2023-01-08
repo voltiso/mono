@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
@@ -8,7 +8,10 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 export const prettierOverride = defineEslintConfigOverride({
 	files: ['*'],
 
-	/** Do not use prettier for JS/TS, because it does not allow for `putout/align-spaces` */
+	/**
+	 * Do not use prettier for JS/TS, because it does not allow for
+	 * `putout/align-spaces`
+	 */
 	// excludedFiles: codeFiles,
 
 	// plugins: ['prettier'],

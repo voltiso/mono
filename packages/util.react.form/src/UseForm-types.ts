@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -15,7 +15,7 @@ import type {
 	Type,
 	Type_,
 	ValidationIssue,
-} from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 import type { DOMAttributes } from 'react'
 
 import type { UseFormValidators } from './Validators'

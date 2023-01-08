@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/script": "workspace:^",
     "jest": "^29.3.1",

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { VoltisoUtilError } from '~/error'
@@ -6,6 +6,15 @@ import { isDefined } from '~/nullish'
 import { stringFrom } from '~/string'
 
 export interface $AssertFunction {
+	/**
+	 * Simple assert implementation.
+	 *
+	 * 💪 For full-blown schema-assert, use `@voltiso/assertor` instead
+	 *
+	 * 👗 For a non-stripped version, use `assert` instead
+	 *
+	 * @strip Use `@voltiso/transform/strip` to strip from production code
+	 */
 	(condition: unknown, message?: string | undefined): asserts condition
 
 	defined<X>(

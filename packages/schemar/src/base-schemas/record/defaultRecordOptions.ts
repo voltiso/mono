@@ -1,10 +1,10 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyValue } from '@voltiso/util'
 
-import { number, string, symbol, or, unknown } from '~/base-schemas'
-import { defaultSchemaOptions } from '~/Schema'
+import { defaultSchemaOptions } from '~'
+import { number, or, string, symbol, unknown } from '~/base-schemas'
 
 export const defaultRecordOptions = {
 	...defaultSchemaOptions,

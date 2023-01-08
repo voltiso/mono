@@ -1,18 +1,25 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { BoundCallable, CALL } from '@voltiso/util'
 
+import type { $$Schemable } from '~'
+
+import type { Unknown } from '../unknown/Unknown'
 import { unknown } from '../unknown/Unknown'
 
-export interface Rest<S extends t.$$Schemable> {
-	<S extends t.$$Schemable>(element: S): Rest<S>
+export interface UnknownRest extends Rest<Unknown> {
+	readonly element: Unknown
+	<S extends $$Schemable>(element: S): Rest<S>
 }
 
 export const IS_REST = Symbol('IS_REST')
 
-export class Rest<S extends t.$$Schemable> {
+export interface Rest<S extends $$Schemable> {
+	<S extends $$Schemable>(element: S): Rest<S>
+}
+
+export class Rest<S extends $$Schemable = $$Schemable> {
 	readonly [IS_REST] = true
 
 	readonly element: S
@@ -24,21 +31,16 @@ export class Rest<S extends t.$$Schemable> {
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	[CALL]<S extends t.$$Schemable>(element: S) {
+	[CALL]<S extends $$Schemable>(element: S) {
 		return new Rest(element)
 	}
 
 	[Symbol.iterator]() {
 		return [this][Symbol.iterator]()
 	}
-
-	// // eslint-disable-next-line class-methods-use-this
-	// get length() {
-	// 	return 1
-	// }
 }
 
-export function isRest<CastToType extends t.$$Schemable>(
+export function isRest<CastToType extends $$Schemable>(
 	x: unknown,
 ): x is Rest<CastToType> {
 	// eslint-disable-next-line security/detect-object-injection

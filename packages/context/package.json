@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.0",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^1.0.0",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",

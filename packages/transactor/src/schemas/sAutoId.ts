@@ -1,12 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type {
-	$$Schema,
-	CustomString,
-	RegExpEntry,
-} from '@voltiso/schemar.types'
+import type { $$Schema, CustomString, RegExpEntry } from '@voltiso/schemar'
 import type { AtLeast1 } from '@voltiso/util'
 import { $Assert, ProtoCallable } from '@voltiso/util'
 

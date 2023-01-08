@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { NestedSubject, ReadonlyNestedSubject } from '@voltiso/observer'
@@ -49,6 +49,8 @@ export function useObservable<T>(
 
 		// eslint-disable-next-line rxjs/no-ignored-error
 		const subscription = observable$.subscribe(value => setValue(value))
+
+		if ('value' in observable$) setValue(observable$.value)
 
 		// const subscription = (
 		// 	observable$.pipe as (...piped: OperatorFunction<T, T>[]) => Observable<T>

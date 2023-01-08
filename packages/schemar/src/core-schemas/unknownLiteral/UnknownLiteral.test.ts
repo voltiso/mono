@@ -1,5 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomUnknownLiteral,
@@ -8,8 +10,7 @@ import type {
 	Schema,
 	SchemaLike,
 	UnknownLiteralOptions,
-} from '@voltiso/schemar.types'
-import { $Assert } from '@voltiso/util'
+} from '~'
 
 describe('UnknownLiteral', () => {
 	it('generic', <O extends Partial<UnknownLiteralOptions>>() => {

@@ -1,30 +1,10 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable max-depth */
 /* eslint-disable class-methods-use-this */
 
-import type {
-	$$Schemable,
-	CustomFix,
-	CustomSchema,
-	DefaultSchemaOptions,
-	GetIssuesOptions,
-	Schemable,
-	SchemaLike,
-	SchemaOptions,
-	ValidateOptions,
-	ValidationIssue,
-	ValidationResult,
-} from '@voltiso/schemar.types'
-import {
-	defaultValidateOptions,
-	EXTENDS,
-	isAny,
-	isUnion,
-	isUnknown,
-	isUnknownSchema,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
@@ -41,6 +21,23 @@ import {
 	stringFrom,
 } from '@voltiso/util'
 
+import type {
+	$$Schemable,
+	CustomSchema,
+	GetIssuesOptions,
+	Schemable,
+	SchemaLike,
+	ValidateOptions,
+	ValidationIssue,
+	ValidationResult,
+} from '~'
+import {
+	defaultValidateOptions,
+	isAnySchema,
+	isSchemaInferrer,
+	isUnionSchema,
+	isUnknownSchema,
+} from '~'
 import { and } from '~/base-schemas/intersection'
 import { or } from '~/base-schemas/union'
 import { schema } from '~/core-schemas'
@@ -48,7 +45,9 @@ import { ValidationError } from '~/error'
 import { InvalidFixError } from '~/error/InvalidFixError'
 import { SchemarError } from '~/error/SchemarError'
 
-import { defaultSchemaOptions } from '../defaultSchemaOptions'
+import type { CustomFix, SchemaOptions } from '../options'
+import type { DefaultSchemaOptions } from '../options/DefaultSchemaOptions'
+import { defaultSchemaOptions } from '../options/DefaultSchemaOptions'
 import { processCustomChecks } from './processCustomChecks'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 
@@ -223,7 +222,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			finalValue = this._fix(finalValue, options) as never
 		}
 
-		let issues = this.getIssues(finalValue, options)
+		const issues = this.getIssues(finalValue, options)
 		const isValid = !issues.some(issue => issue.severity === 'error')
 
 		/** If value is valid, also apply custom fixes */
@@ -234,11 +233,11 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 					try {
 						const nextValue = customFix.fix(finalValue as never)
 						if (isDefined(nextValue)) finalValue = nextValue as never
-					} catch (cause) {
+					} catch (error) {
 						throw new SchemarError(
 							`Custom fix failed: ${stringFrom(customFix)}`,
 							{
-								cause,
+								cause: error,
 							},
 						)
 					}
@@ -284,15 +283,15 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	[EXTENDS](other: SchemaLike): boolean {
-		if (isUnion(other)) {
+		if (isUnionSchema(other)) {
 			for (const b of other.getSchemas) {
 				if (this.extends(b as never)) return true
 			}
 
 			return false
-		} else if (isUnknownSchema(other)) return true
-		else if (isUnknown(other)) return true
-		else if (isAny(other)) return true
+		} else if (isSchemaInferrer(other)) return true
+		else if (isUnknownSchema(other)) return true
+		else if (isAnySchema(other)) return true
 		else return false
 	}
 

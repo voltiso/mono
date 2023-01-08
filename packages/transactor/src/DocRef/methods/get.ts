@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import type { Schema } from '@voltiso/schemar.types'
+import type { Schema } from '@voltiso/schemar'
 import {
 	$AssumeType,
 	assertNotPolluting,

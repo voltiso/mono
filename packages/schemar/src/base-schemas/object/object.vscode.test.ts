@@ -1,8 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Input, Output } from '@voltiso/schemar.types'
-
+import type { Input, Output } from '~'
 import * as s from '~'
 
 describe('object', () => {
@@ -22,9 +21,9 @@ describe('object', () => {
 		o.num // ✅
 		;() => o.nested.a // ✅
 
-		type In = Input<typeof sTest>
+		type In = Exclude<Input<typeof sTest>, undefined>
 		const i = {} as unknown as In
-		i?.num // ✅
+		i.num // ✅
 	})
 
 	it('editor - jump to definition and JSDoc - typeof *.Type - MANUAL TEST', () => {

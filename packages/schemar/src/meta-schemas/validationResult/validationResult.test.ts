@@ -1,9 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Input, Output, ValidationResult } from '@voltiso/schemar.types'
 import { $Assert } from '@voltiso/util'
 
+import type { Input, Output, ValidationResult } from '~'
 import { validationResult } from '~'
 
 describe('s.validationResult', () => {

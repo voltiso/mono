@@ -1,7 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Type_ } from '@voltiso/schemar.types'
+import type { Type_ } from '@voltiso/schemar'
 import type { Merge2Reverse_ } from '@voltiso/util'
 
 import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'

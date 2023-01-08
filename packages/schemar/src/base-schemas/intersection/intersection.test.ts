@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomIntersection,
@@ -7,10 +10,7 @@ import type {
 	Input,
 	IntersectionOptions,
 	Output,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
+} from '~'
 import * as s from '~'
 
 describe('intersection', () => {

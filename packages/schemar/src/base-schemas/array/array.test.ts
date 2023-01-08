@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	ArrayOptions,
@@ -11,12 +14,9 @@ import type {
 	Output,
 	Schema,
 	Schemable,
-} from '@voltiso/schemar.types'
-import { isArray, isString } from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
-import * as s from '~'
+} from '~'
+import { isArraySchema, isStringSchema, schema } from '~'
+import * as s from '~/base-schemas'
 
 describe('array', () => {
 	it('generic', <O extends Partial<ArrayOptions>>() => {
@@ -72,10 +72,10 @@ describe('array', () => {
 
 		$Assert.is<typeof s.array, Schema>()
 
-		expect(isArray(s.array)).toBeTruthy()
-		expect(isArray(s.readonlyArray)).toBeTruthy()
-		expect(isArray(s.array(s.number))).toBeTruthy()
-		expect(isArray(s.readonlyArray(s.string))).toBeTruthy()
+		expect(isArraySchema(s.array)).toBeTruthy()
+		expect(isArraySchema(s.readonlyArray)).toBeTruthy()
+		expect(isArraySchema(s.array(s.number))).toBeTruthy()
+		expect(isArraySchema(s.readonlyArray(s.string))).toBeTruthy()
 
 		expect(s.array.extends(s.array)).toBeTruthy()
 		expect(s.array.extends(s.unknown)).toBeTruthy()
@@ -136,7 +136,7 @@ describe('array', () => {
 
 		const ro = s.readonlyArray(s.string)
 
-		expect(isString(ro.getElementSchema)).toBeTruthy()
+		expect(isStringSchema(ro.getElementSchema)).toBeTruthy()
 
 		type RoS = typeof ro.getElementSchema
 		$Assert<IsIdentical<RoS, s.String>>()
@@ -297,21 +297,26 @@ describe('array', () => {
 		expect.hasAssertions()
 
 		expect(s.array.isOptional).toBeFalsy()
-		expect(
-			s.schema({ a: s.array.optional }).isValid({ a: [1, 2, '3', 'asd'] }),
-		).toBeTruthy()
-		expect(s.schema({ a: s.array.optional }).isValid({})).toBeTruthy()
 
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, 3] }),
+			schema({ a: s.array.optional }).isValid({ a: [1, 2, '3', 'asd'] }),
 		).toBeTruthy()
+
+		expect(schema({ a: s.array.optional }).isValid({})).toBeTruthy()
+
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, '3'] }),
-		).toBeFalsy()
+			schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, 3] }),
+		).toBeTruthy()
+
 		expect(
-			s.schema({ a: s.array(s.number).optional }).isValid({ a: undefined }),
+			schema({ a: s.array(s.number).optional }).isValid({ a: [1, 2, '3'] }),
 		).toBeFalsy()
-		expect(s.schema({ a: s.array(s.number).optional }).isValid({})).toBeTruthy()
+
+		expect(
+			schema({ a: s.array(s.number).optional }).isValid({ a: undefined }),
+		).toBeFalsy()
+
+		expect(schema({ a: s.array(s.number).optional }).isValid({})).toBeTruthy()
 	})
 
 	it('toString', () => {

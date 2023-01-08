@@ -1,9 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableLiteral, ISchema } from '@voltiso/schemar.types'
 import { $assert, stringFrom } from '@voltiso/util'
 
+import type { InferableLiteral, ISchema } from '~'
 import {
 	bigint,
 	boolean,

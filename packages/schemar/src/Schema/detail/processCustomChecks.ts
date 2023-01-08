@@ -1,8 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomCheck } from '@voltiso/schemar.types'
-
+import type { CustomCheck } from '~'
 import { ValidationIssue } from '~/meta-schemas'
 
 export function processCustomChecks(

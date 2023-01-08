@@ -1,21 +1,21 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	CustomUnknownSymbol,
 	DefaultUnknownSymbolOptions,
 	ISchema,
-	Literal,
 	UnknownSymbolOptions,
 	ValidateOptions,
-} from '@voltiso/schemar.types'
-import { EXTENDS, isSymbol, SCHEMA_NAME } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, isUnknownSymbolSchema } from '~'
+import type { Literal } from '~/core-schemas'
 import { literal } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownSymbolImpl<O> {
@@ -42,9 +42,14 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isSymbol(other)) return true
+		if (isUnknownSymbolSchema(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	override _toString(): string {
+		return 'symbol'
 	}
 
 	//

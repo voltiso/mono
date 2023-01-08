@@ -1,22 +1,29 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
+import type { PartialOrUndefined } from '@voltiso/util'
 import { stringFrom } from '@voltiso/util'
+
+import type {
+	SchemarExpected,
+	SchemarReceived,
+	SchemarSeverity,
+	ValidationIssueInput,
+} from '~'
 
 import { expectedOneOfStr } from './_/expectedOneOfStr'
 import { pathToString } from './_/pathToString'
 
-export class ValidationIssueImpl implements t.ValidationIssue {
+export class ValidationIssueImpl implements ValidationIssue {
 	severity: 'error' | 'warning'
 
 	path: (keyof any)[]
 	name?: string
 
-	expected: t.SchemarExpected
-	received?: t.SchemarReceived
+	expected: SchemarExpected
+	received?: SchemarReceived
 
-	constructor(p: t.ValidationIssueInput) {
+	constructor(p: ValidationIssueInput) {
 		this.severity = p.severity || 'error'
 		this.path = p.path || []
 
@@ -65,7 +72,36 @@ export class ValidationIssueImpl implements t.ValidationIssue {
 	}
 }
 
-export type ValidationIssue = t.ValidationIssue
+export interface ValidationIssue {
+	severity: SchemarSeverity
+
+	path: (keyof any)[]
+	name?: string | undefined
+
+	expected: SchemarExpected
+	received?: SchemarReceived | undefined
+
+	toString(
+		options?:
+			| PartialOrUndefined<ValidationIssueDetail.ToStringOptions>
+			| undefined,
+	): string
+}
+
+export namespace ValidationIssueDetail {
+	export interface ToStringOptions {
+		/**
+		 * Do not print the `.received` part
+		 *
+		 * @defaultValue `false`
+		 */
+		skipReceived: boolean
+	}
+}
+
+export interface ValidationIssueConstructor {
+	new (p: ValidationIssueInput): ValidationIssue
+}
 
 export const ValidationIssue =
-	ValidationIssueImpl as unknown as t.ValidationIssueConstructor
+	ValidationIssueImpl as unknown as ValidationIssueConstructor

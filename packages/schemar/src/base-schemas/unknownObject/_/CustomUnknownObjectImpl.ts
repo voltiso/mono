@@ -1,13 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	DefaultUnknownObjectOptions,
-	InferableObject,
-	ISchema,
-	UnknownObjectOptions,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	BoundCallable,
@@ -18,14 +12,20 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import * as s from '~/base-schemas/object'
-import { defaultObjectOptions } from '~/base-schemas/object'
+import type {
+	DefaultUnknownObjectOptions,
+	InferableObject,
+	ISchema,
+	Object as ObjectSchema,
+	UnknownObjectOptions,
+} from '~'
+import { CustomSchemaImpl, isObjectSchema, isUnknownObjectSchema } from '~'
+import { CustomObjectImpl, defaultObjectOptions } from '~/base-schemas/object'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownObjectImpl<O> {
-	readonly [t.SCHEMA_NAME]: 'UnknownObject'
+	readonly [SCHEMA_NAME]: 'UnknownObject'
 
 	readonly [DEFAULT_OPTIONS]: DefaultUnknownObjectOptions
 	readonly [BASE_OPTIONS]: UnknownObjectOptions
@@ -34,7 +34,7 @@ export interface CustomUnknownObjectImpl<O> {
 export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	readonly [t.SCHEMA_NAME] = 'UnknownObject' as const
+	readonly [SCHEMA_NAME] = 'UnknownObject' as const
 
 	// declare readonly [PARTIAL_OPTIONS]: O;
 
@@ -62,8 +62,8 @@ export class CustomUnknownObjectImpl<
 	}
 
 	index(...args: any) {
-		const r = new s.CustomObjectImpl({
-			...s.defaultObjectOptions,
+		const r = new CustomObjectImpl({
+			...defaultObjectOptions,
 			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],
 		})
@@ -77,9 +77,9 @@ export class CustomUnknownObjectImpl<
 		return BoundCallable(this) as never
 	}
 
-	[CALL]<S extends InferableObject>(shape: S): t.Object<S> {
+	[CALL]<S extends InferableObject>(shape: S): ObjectSchema<S> {
 		// console.log('CustomUnknownObjectImpl[CALL]', this)
-		return new s.CustomObjectImpl({
+		return new CustomObjectImpl({
 			...defaultObjectOptions,
 			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],
@@ -87,11 +87,12 @@ export class CustomUnknownObjectImpl<
 		}) as never
 	}
 
-	override [t.EXTENDS](other: ISchema): boolean {
-		if (t.isObject(other)) {
+	override [EXTENDS](other: ISchema): boolean {
+		if (isObjectSchema(other)) {
 			return getKeys(other.getShape).length === 0
-		} else if (t.isUnknownObject(other)) return true
-		else return super[t.EXTENDS](other)
+		} else if (isUnknownObjectSchema(other)) return true
+		// eslint-disable-next-line security/detect-object-injection
+		else return super[EXTENDS](other)
 	}
 
 	protected override _getIssues(value: unknown): ValidationIssue[] {

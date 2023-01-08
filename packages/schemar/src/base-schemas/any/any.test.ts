@@ -1,17 +1,10 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	AnyOptions,
-	CustomAny,
-	IAny,
-	Input,
-	ISchema,
-	Output,
-} from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
+import type { AnyOptions, CustomAny, IAny, Input, ISchema, Output } from '~'
 import * as s from '~'
 
 describe('any', () => {
@@ -46,8 +39,8 @@ describe('any', () => {
 		expect(e.isReadonly).toBeTruthy()
 		expect(e.isOptional).toBeTruthy()
 
-		$Assert.is<typeof e['isOptional'], true>()
-		$Assert.is<typeof e['isReadonly'], true>()
+		$Assert.is<(typeof e)['isOptional'], true>()
+		$Assert.is<(typeof e)['isReadonly'], true>()
 
 		// type XX = any extends any ? true : false // true
 		expect(s.any.extends(s.any)).toBeTruthy()

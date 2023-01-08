@@ -1,19 +1,31 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
+
+import type { CustomUnknownObject } from '~'
 
 import { UnknownObjectImpl } from './_/UnknownObjectImpl'
 
-export type UnknownObject = t.UnknownObject
+export interface UnknownObject extends CustomUnknownObject<{}> {}
+
+export type UnknownObjectConstructor = new () => UnknownObject
+
+//
+
+export interface UnknownPlainObject
+	extends CustomUnknownObject<{
+		isPlain: true
+	}> {}
+
+//
 
 export const UnknownObject = lazyConstructor(
 	() => UnknownObjectImpl,
-) as unknown as t.UnknownObjectConstructor
+) as unknown as UnknownObjectConstructor
 
-export const object: t.UnknownObject = lazyValue(() => new UnknownObject())
+export const object: UnknownObject = lazyValue(() => new UnknownObject())
 
-export const plainObject: t.UnknownPlainObject = lazyValue(
+export const plainObject: UnknownPlainObject = lazyValue(
 	() => object.plain,
 ) as never

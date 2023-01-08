@@ -31,7 +31,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/observer": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",

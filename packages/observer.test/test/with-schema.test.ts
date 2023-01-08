@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { injectCreateNestedSubjectWithSchema } from '@voltiso/observer'
@@ -34,9 +34,9 @@ describe('NestedSubjectWithSchema', () => {
 
 			schemable: {
 				a: {
-					b: s.object({
+					b: {
 						c: s.number.min(0).default(123),
-					}),
+					},
 				},
 
 				x: s.number,

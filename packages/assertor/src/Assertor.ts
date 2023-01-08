@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isValidationError } from '@voltiso/schemar'
-import type * as t from '@voltiso/schemar.types'
+import type * as s from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept } from '@voltiso/util'
 import { BoundCallable, CALL } from '@voltiso/util'
@@ -10,7 +10,7 @@ import { BoundCallable, CALL } from '@voltiso/util'
 import { AssertorError } from './AssertorError'
 
 /** @internal */
-export class _Assertor<S extends t.Schema> {
+export class _Assertor<S extends s.Schema> {
 	private readonly _name: string
 	private readonly _schema: S
 
@@ -39,9 +39,9 @@ export class _Assertor<S extends t.Schema> {
 	 * @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument
 	 */
 	[CALL](
-		value: t.Type<S> | AlsoAccept<unknown>,
+		value: s.Type<S> | AlsoAccept<unknown>,
 		...rest: [string, CallInfo | undefined] | [CallInfo | undefined]
-	): asserts value is t.Type<S> {
+	): asserts value is s.Type<S> {
 		const [message, callInfo] =
 			rest.length >= 2
 				? rest
@@ -66,31 +66,31 @@ export class _Assertor<S extends t.Schema> {
 }
 
 /** @internal */
-export type _AssertorMapped<S extends Partial<t.Schema>, Exclude> = {
+export type _AssertorMapped<S extends Partial<s.Schema>, Exclude> = {
 	[k in keyof S]: S[k] extends (...args: infer Args) => infer R
-		? R extends t.$$Schema
+		? R extends s.$$Schema
 			? (...args: Args) => Assertor<R, Exclude>
 			: never
-		: S[k] extends t.$$Schema
+		: S[k] extends s.$$Schema
 		? Assertor<S[k], Exclude>
 		: never
 }
 
-export type Assertor<S extends t.$$Schema, Exclude = never> = {
+export type Assertor<S extends s.$$Schema, Exclude = never> = {
 	//
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-	<Value extends t.Type<S> | AlsoAccept<unknown>>(
+	<Value extends s.Type<S> | AlsoAccept<unknown>>(
 		value: Value,
 		__callInfo?: CallInfo,
-	): asserts value is Value extends Exclude ? never : Value & t.Type<S>
+	): asserts value is Value extends Exclude ? never : Value & s.Type<S>
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-	<Value extends t.Type<S> | AlsoAccept<unknown>>(
+	<Value extends s.Type<S> | AlsoAccept<unknown>>(
 		value: Value,
 		message: string,
 		__callInfo?: CallInfo,
-	): asserts value is Value extends Exclude ? never : Value & t.Type<S>
+	): asserts value is Value extends Exclude ? never : Value & s.Type<S>
 
 	//
 
@@ -104,7 +104,7 @@ export type Assertor<S extends t.$$Schema, Exclude = never> = {
 		| 'isOptional'
 		| 'readonly'
 		| 'isReadonly'
-		| t.SCHEMA_NAME /* | 'or' */
+		| s.SCHEMA_NAME /* | 'or' */
 	>,
 	Exclude
 >
@@ -112,7 +112,7 @@ export type Assertor<S extends t.$$Schema, Exclude = never> = {
 // eslint-disable-next-line etc/no-internal
 export const Assertor = _Assertor as unknown as AssertorConstructor
 
-export type AssertorConstructor = new <S extends t.Schema>(
+export type AssertorConstructor = new <S extends s.Schema>(
 	name: string,
 	schema: S,
 ) => Assertor<S>

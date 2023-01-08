@@ -1,16 +1,25 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
+
+import type { CustomUnknownSymbol, Literal } from '~'
 
 import { SymbolImpl } from './_'
 
-export type UnknownSymbol = t.UnknownSymbol
+export interface UnknownSymbol extends CustomUnknownSymbol<{}> {
+	<L extends symbol>(...literals: L[]): Literal<L>
+	<L extends symbol>(literals: Set<L>): Literal<L>
+	<L extends symbol>(...args: L[] | [Set<L>]): Literal<L>
+}
+
+export type UnknownSymbolConstructor = new () => UnknownSymbol
+
+//
 
 export const UnknownSymbol = lazyConstructor(
 	() => SymbolImpl,
-) as unknown as t.UnknownSymbolConstructor
+) as unknown as UnknownSymbolConstructor
 
 //
 

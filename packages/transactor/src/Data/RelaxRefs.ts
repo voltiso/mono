@@ -1,11 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$Schema,
-	$$Schemable,
-	SimplifySchema,
-} from '@voltiso/schemar.types'
+import type { $$Schema, $$Schemable, SimplifySchema } from '@voltiso/schemar'
 import type { Callable, Merge2_, Newable, Primitive } from '@voltiso/util'
 
 import type { DocTagFromBrand } from '~/brand'

@@ -1,23 +1,21 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	AnyOptions,
-	DefaultAnyOptions,
-	Schema,
-} from '@voltiso/schemar.types'
-import {
-	EXTENDS,
-	isAny,
-	isUnknown,
-	isUnknownSchema,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor } from '@voltiso/util'
+import { $assert, lazyConstructor } from '@voltiso/util'
 
+import type { AnyOptions, DefaultAnyOptions, Schema } from '~'
+import {
+	CustomSchemaImpl,
+	isAnySchema,
+	isSchemaInferrer,
+	isUnknownSchema,
+} from '~'
 import { SchemarError } from '~/error'
-import { CustomSchemaImpl } from '~/Schema'
+
+$assert(EXTENDS)
+$assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomAnyImpl<O> {
@@ -32,7 +30,8 @@ export class CustomAnyImpl<
 
 	// eslint-disable-next-line class-methods-use-this
 	override [EXTENDS](other: Schema): boolean {
-		if (isAny(other) || isUnknown(other) || isUnknownSchema(other)) return true
+		if (isAnySchema(other) || isSchemaInferrer(other) || isUnknownSchema(other))
+			return true
 		else
 			throw new SchemarError(
 				'`any extends *` is `boolean` - unable to return `true` or `false`',

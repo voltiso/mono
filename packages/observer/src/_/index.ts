@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_nestedSubjectUpdateToRoot'
@@ -8,7 +8,6 @@ export * from './NestedObservableWithSchema'
 export * from './NestedSubject'
 export * from './NestedSubjectReservedFields'
 export * from './NestedSubjectWithSchema'
-export * from './ObserverDiContext'
 export * from './options'
 export * from './ReadonlyNestedSubject'
 export * from './ReadonlyNestedSubjectWithSchema'

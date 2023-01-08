@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { ValidationIssue } from '@voltiso/schemar.types'
+import type { ValidationIssue } from '@voltiso/schemar'
 import { Doc, sVoltisoEntry } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'

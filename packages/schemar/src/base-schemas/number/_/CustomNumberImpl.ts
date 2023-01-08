@@ -1,25 +1,27 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { $assert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	CustomNumber,
 	DefaultNumberOptions,
 	ISchema,
 	NumberOptions,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, isNumberSchema } from '~'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNumberImpl<O> {
 	readonly [BASE_OPTIONS]: NumberOptions
 	readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
 }
+
+$assert(EXTENDS)
+$assert(SCHEMA_NAME)
 
 export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
@@ -43,7 +45,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (t.isNumber(other)) return true
+		if (isNumberSchema(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}

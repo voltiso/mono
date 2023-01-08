@@ -1,8 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IArray, ITuple, Schemable } from '@voltiso/schemar.types'
-
+import type { IArray, ITuple, Schemable } from '~'
 import { schema } from '~/core-schemas'
 
 /** @internal */

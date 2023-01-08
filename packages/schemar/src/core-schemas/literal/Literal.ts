@@ -1,13 +1,24 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
-import { LiteralImpl } from './_'
+import type { CustomLiteral, InferableLiteral } from '~'
 
-export type Literal<T extends t.InferableLiteral> = t.Literal<T>
+import { LiteralImpl } from '.'
+
+export interface Literal<T extends InferableLiteral>
+	extends CustomLiteral<{
+		Output: T
+		Input: T
+	}> {}
+
+export interface LiteralConstructor {
+	new <L extends InferableLiteral>(...literals: L[]): Literal<L>
+	new <L extends InferableLiteral>(literals: Set<L>): Literal<L>
+	new <L extends InferableLiteral>(...args: L[] | [Set<L>]): Literal<L>
+}
 
 export const Literal = lazyConstructor(
 	() => LiteralImpl,
-) as unknown as t.LiteralConstructor
+) as unknown as LiteralConstructor

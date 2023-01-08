@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
@@ -173,6 +173,9 @@
 		"source.fixAll.eslint": true
 	},
 
+	"eslint.codeActionsOnSave.mode": "all", // slower
+	// "eslint.codeActionsOnSave.mode": "problems", // faster
+
 	"eslint.workingDirectories": [{ "pattern": "./packages/*/" }, "."],
 
 	"eslint.probe": [
@@ -214,9 +217,6 @@
 	// "eslint.lintTask.enable": true,
 
 	"eslint.execArgv": ["--max_old_space_size=16384"],
-
-	"eslint.codeActionsOnSave.mode": "all", // slower
-	// "eslint.codeActionsOnSave.mode": "problems", // faster
 
 	// // Only turn on what's frequently used - better editor responsiveness
 	// "eslint.codeActionsOnSave.rules": [

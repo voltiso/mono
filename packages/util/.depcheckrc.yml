@@ -8,4 +8,4 @@ ignores:
   - '@voltiso/config.ts.build.esm'
   - '@voltiso/config.tsdoc'
   - '@voltiso/config.eslint.lib'
-  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest'

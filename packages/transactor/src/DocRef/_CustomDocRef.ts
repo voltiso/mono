@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
@@ -8,7 +8,7 @@ import type {
 	Output,
 	Schema,
 	SchemaLike,
-} from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 import type { _, DeleteIt, If, Override, PatchFor } from '@voltiso/util'
 import {
 	assert,

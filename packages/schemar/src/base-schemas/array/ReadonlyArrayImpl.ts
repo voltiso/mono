@@ -1,9 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable } from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
 
+import type { $$Schemable } from '~'
 import { schema } from '~/core-schemas'
 
 import { CustomArrayImpl } from './CustomArrayImpl'

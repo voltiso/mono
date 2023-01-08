@@ -1,9 +1,9 @@
 'use strict'
 
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-const baseJestConfig = require('@voltiso/config.jest.esr')
+const baseJestConfig = require('@voltiso/config.jest')
 const { defineJestConfig } = require('@voltiso/config.jest.lib')
 
 //! need to create a new unique object!

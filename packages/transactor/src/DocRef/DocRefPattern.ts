@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -8,7 +8,7 @@ import type {
 	$$SchemableObject,
 	InferableObject,
 	SchemaLike,
-} from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 
 import { getGetPathMatches } from '~/common'
 import type { $$Doc } from '~/Doc'

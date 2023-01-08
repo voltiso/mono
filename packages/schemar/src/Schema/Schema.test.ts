@@ -1,18 +1,18 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IsIdentical, OPTIONS } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
+
 import type {
+	CustomSchemaImpl,
 	DefaultSchemaOptions,
 	InferableReadonlyTuple,
 	Input,
 	Output,
 	Schema,
 	SchemaOptions,
-} from '@voltiso/schemar.types'
-import type { IsIdentical, OPTIONS } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
-import type { CustomSchemaImpl } from '~'
+} from '~'
 import {
 	array,
 	infer,

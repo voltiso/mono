@@ -4,7 +4,7 @@
 ignores:
   - '~'
   - '@voltiso/config.jest.lib'
-  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest'
   - '@voltiso/util.esbuild'
   - '@firebase/app-types'
   - firebase-tools

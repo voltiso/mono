@@ -1,20 +1,23 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
+import { $assert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import type {
 	CustomInstance,
 	DefaultInstanceOptions,
 	InstanceOptions,
 	ISchema,
-} from '@voltiso/schemar.types'
-import { EXTENDS, isInstance, SCHEMA_NAME } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, isInstanceSchema } from '~'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 import { _getInstanceConstructorName } from './_/getConstructorName'
+
+$assert(EXTENDS)
+$assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomInstanceImpl<O> {
@@ -45,7 +48,8 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	// }
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isInstance(other)) return this.getConstructor === other.getConstructor
+		if (isInstanceSchema(other))
+			return this.getConstructor === other.getConstructor
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}

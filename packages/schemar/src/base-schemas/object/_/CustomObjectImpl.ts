@@ -1,7 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-depth */
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import * as v from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -13,33 +15,27 @@ import type {
 	ObjectOptions,
 	Schemable,
 	ValidateOptions,
-} from '@voltiso/schemar.types'
+} from '~'
 import {
+	CustomSchemaImpl,
 	defaultValidateOptions,
-	EXTENDS,
 	getDeepShape,
-	isUnknownObject,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import {
-	clone,
-	getEntries,
-	hasProperty,
-	isObject,
-	isPlainObject,
-	lazyConstructor,
-	OPTIONS,
-} from '@voltiso/util'
-
-import { number, or, string, symbol } from '~/base-schemas'
+	isObjectSchema,
+	isUnknownObjectSchema,
+	number,
+	string,
+	symbol,
+} from '~'
+import { or } from '~/base-schemas/union/or'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 import { deepPartialShape, deepStrictPartialShape } from './deepPartialShape'
 import { partialShape, strictPartialShape } from './partialShape'
+/* eslint-disable max-depth */
+
+v.$assert(EXTENDS)
+v.$assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomObjectImpl<O> {
@@ -48,7 +44,7 @@ export interface CustomObjectImpl<O> {
 }
 
 export class CustomObjectImpl<O extends Partial<ObjectOptions>>
-	extends lazyConstructor(() => CustomSchemaImpl)<O>
+	extends v.lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomObject<O>
 {
 	readonly [SCHEMA_NAME] = 'Object' as const
@@ -84,31 +80,28 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	// 	}
 	// }
 
-	get getShape(): this[OPTIONS]['shape'] {
-		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS]['shape'] as never
+	get getShape(): this[v.OPTIONS]['shape'] {
+		return this[v.OPTIONS]['shape'] as never
 	}
 
 	get getDeepShape(): GetDeepShape_<this> {
 		return getDeepShape(this)
 	}
 
-	get getIndexSignatures(): this[OPTIONS]['indexSignatures'] {
-		// eslint-disable-next-line security/detect-object-injection
-		return this[OPTIONS]['indexSignatures'] as never
+	get getIndexSignatures(): this[v.OPTIONS]['indexSignatures'] {
+		return this[v.OPTIONS]['indexSignatures'] as never
 	}
 
 	override and(other: $$Schemable): never {
 		const otherSchema = schema(other)
 
-		if (!t.isObject(otherSchema)) {
+		if (!isObjectSchema(otherSchema)) {
 			return super.and(otherSchema)
 		}
 
-		// eslint-disable-next-line security/detect-object-injection
-		const a = this[OPTIONS]
-		// eslint-disable-next-line security/detect-object-injection
-		const b = otherSchema[OPTIONS]
+		const a = this[v.OPTIONS]
+
+		const b = otherSchema[v.OPTIONS]
 
 		return this._cloneWithOptions({
 			shape: { ...this.getShape, ...otherSchema.getShape },
@@ -162,36 +155,35 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 		return this._cloneWithOptions({
 			indexSignatures: [
-				// eslint-disable-next-line security/detect-object-injection
-				...this[OPTIONS].indexSignatures,
+				...this[v.OPTIONS].indexSignatures,
 				{ keySchema, valueSchema },
 			],
 		}) as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (t.isObject(other)) {
-			for (const [k, v] of getEntries(other.getShape, {
+		if (isObjectSchema(other)) {
+			for (const [key, value] of v.getEntries(other.getShape, {
 				includeSymbols: true,
 			}) as [keyof any, unknown][]) {
-				const hasThisK = hasProperty(this.getShape, k)
+				const hasThisK = v.hasProperty(this.getShape, key)
 
 				const isOtherOptional = schema<$$Schemable>(
-					other.getShape[k as never],
+					other.getShape[key as never],
 				).isOptional
 
 				if (!hasThisK && !isOtherOptional) return false
 				else if (
 					hasThisK &&
 					// eslint-disable-next-line security/detect-object-injection
-					!schema(this.getShape[k] as {}).extends(v as never)
+					!schema(this.getShape[key] as {}).extends(value as never)
 				)
 					// eslint-disable-next-line sonarjs/no-duplicated-branches
 					return false
 			}
 
 			return true
-		} else if (isUnknownObject(other)) {
+		} else if (isUnknownObjectSchema(other)) {
 			return true
 			// eslint-disable-next-line security/detect-object-injection
 		} else return super[EXTENDS](other)
@@ -207,46 +199,42 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		let issues: ValidationIssue[] = []
 
 		// eslint-disable-next-line unicorn/no-negated-condition
-		if (!isObject(x)) {
+		if (!v.isObject(x)) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
-					name: this[OPTIONS].name,
+					name: this[v.OPTIONS].name,
 					expected: { description: 'be object' },
 					received: { value: x },
 				}),
 			)
 		} else {
-			// eslint-disable-next-line security/detect-object-injection
-			if (this[OPTIONS].isPlain && !isPlainObject(x)) {
+			if (this[v.OPTIONS].isPlain && !v.isPlainObject(x)) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
-						name: this[OPTIONS].name,
+						name: this[v.OPTIONS].name,
 						expected: { description: 'be plain object' },
-						received: x,
+						received: { value: x },
 					}),
 				)
 			}
 
-			for (const [k, v] of getEntries(this.getShape, {
+			for (const [key, value] of v.getEntries(this.getShape, {
 				includeSymbols: true,
 			}) as [keyof any, Schemable][]) {
-				const childSchema = schema(v)
+				const childSchema = schema(value)
 
 				const isOptional =
 					childSchema.isOptional || childSchema.isStrictOptional
 
-				if (isOptional && !hasProperty(x, k)) continue
+				if (isOptional && !v.hasProperty(x, key)) continue
 
 				// assumeType<ISchema>(tv)
 
-				if (!hasProperty(x, k) && !isOptional && !childSchema.hasDefault) {
+				if (!v.hasProperty(x, key) && !isOptional && !childSchema.hasDefault) {
 					issues.push(
 						new ValidationIssue({
-							// eslint-disable-next-line security/detect-object-injection
-							name: this[OPTIONS].name,
-							path: [k],
+							name: this[v.OPTIONS].name,
+							path: [key],
 							expected: { description: 'be present' },
 							// receivedDescription: 'missing object property',
 							// received: x[k as keyof typeof x],
@@ -256,28 +244,29 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					continue
 				}
 
-				const value = x[k as keyof typeof x]
+				const val = x[key as keyof typeof x]
 
-				const r = childSchema.exec(value, options)
+				const r = childSchema.exec(val, options)
 
 				if (!r.isValid) {
-					for (const issue of r.issues) issue.path = [k, ...issue.path]
+					for (const issue of r.issues) issue.path = [key, ...issue.path]
 
 					issues = [...issues, ...r.issues]
 				}
 			}
 
-			for (const [key, value] of getEntries(x as Record<keyof any, unknown>, {
-				includeSymbols: true,
-			})) {
+			for (const [key, value] of v.getEntries(
+				x as unknown as Record<keyof any, unknown>,
+				{
+					includeSymbols: true,
+				},
+			)) {
 				// TODO: `util` - hasProperty should only type-guard for literal types
-				if (hasProperty(this.getShape, key)) continue
+				if (v.hasProperty(this.getShape, key)) continue
 
-				// eslint-disable-next-line security/detect-object-injection
-				if (this[OPTIONS].indexSignatures.length === 0) {
+				if (this[v.OPTIONS].indexSignatures.length === 0) {
 					const issue = new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
-						name: this[OPTIONS].name,
+						name: this[v.OPTIONS].name,
 						path: [key],
 						expected: { description: 'not be present' },
 						received: { value: x[key as never] },
@@ -296,8 +285,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					let keyIssues: ValidationIssue[] = []
 					let valueIssues: ValidationIssue[] = []
 
-					// eslint-disable-next-line security/detect-object-injection
-					for (const { keySchema, valueSchema } of this[OPTIONS]
+					for (const { keySchema, valueSchema } of this[v.OPTIONS]
 						.indexSignatures) {
 						const sKeySchema = schema(keySchema) as unknown as ISchema
 						const sValueSchema = schema(valueSchema) as unknown as ISchema
@@ -307,8 +295,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						if (!keyResult.isValid) {
 							keyIssues.push(
 								new ValidationIssue({
-									// eslint-disable-next-line security/detect-object-injection
-									name: this[OPTIONS].name,
+									name: this[v.OPTIONS].name,
 									path: [key],
 
 									expected: {
@@ -332,8 +319,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						if (!valueResult.isValid) {
 							valueIssues.push(
 								new ValidationIssue({
-									// eslint-disable-next-line security/detect-object-injection
-									name: this[OPTIONS].name,
+									name: this[v.OPTIONS].name,
 									path: [key],
 
 									expected: {
@@ -357,18 +343,17 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					} else if (keyIssues.length > 0) {
 						issues.push(
 							new ValidationIssue({
-								// eslint-disable-next-line security/detect-object-injection
-								name: this[OPTIONS].name,
+								name: this[v.OPTIONS].name,
 								path: [key],
 
 								expected: {
 									description: `match one of index signature keys`,
 
-									oneOfValues:
-										// eslint-disable-next-line security/detect-object-injection
-										(this[OPTIONS] as ObjectOptions).indexSignatures.map(
-											signature => schema(signature.keySchema),
-										),
+									oneOfValues: (
+										this[v.OPTIONS] as ObjectOptions
+									).indexSignatures.map(signature =>
+										schema(signature.keySchema),
+									),
 								},
 
 								received: { value: key },
@@ -390,10 +375,10 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	): unknown {
 		if (typeof value === 'object' && value !== null) {
 			// x = { ...x } as Record<keyof any, unknown>
-			const fixedObject = clone(value) as Record<keyof any, unknown>
+			const fixedObject = v.clone(value) as Record<keyof any, unknown>
 			let isChanged = false
 
-			for (const [key, nested] of getEntries(this.getShape) as [
+			for (const [key, nested] of v.getEntries(this.getShape) as [
 				keyof any,
 				Schemable,
 			][]) {
@@ -401,7 +386,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 				const isOptional = mySchema.isOptional || mySchema.isStrictOptional
 
-				if (hasProperty(fixedObject, key) || mySchema.hasDefault) {
+				if (v.hasProperty(fixedObject, key) || mySchema.hasDefault) {
 					const result = mySchema.exec(fixedObject[key as never], options)
 
 					if (result.value === undefined && isOptional) {
@@ -418,7 +403,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 			// $assert.object(x)
 
-			for (let [xKey, xValue] of getEntries(fixedObject, {
+			for (let [xKey, xValue] of v.getEntries(fixedObject, {
 				includeSymbols: true,
 			}) as [keyof any, unknown][]) {
 				const originalXKey = xKey

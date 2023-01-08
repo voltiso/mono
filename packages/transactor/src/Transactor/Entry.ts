@@ -1,11 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$InferableObject,
-	$$Object,
-	SchemaLike,
-} from '@voltiso/schemar.types'
+import type { $$InferableObject, $$Object, SchemaLike } from '@voltiso/schemar'
 
 import type { GetPathMatches } from '~/common'
 import type { Method } from '~/Method'

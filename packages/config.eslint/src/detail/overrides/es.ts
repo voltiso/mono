@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
@@ -79,6 +79,7 @@ export const es = defineEslintConfigOverride({
 		'es-x/no-object-defineproperties': 0,
 
 		// array
+		'es-x/no-array-prototype-some': 0,
 		'es-x/no-array-prototype-filter': 0,
 		'es-x/no-array-prototype-map': 0,
 		'es-x/no-array-prototype-includes': 0,

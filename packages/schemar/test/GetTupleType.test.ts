@@ -1,16 +1,17 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	InferableLiteral,
 	ISchema,
+	Number as NumberSchema,
 	Schemable,
+	String as StringSchema,
 	TupleType_,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
-import type * as s from '~'
+} from '~'
 
 describe('GetTupleType', () => {
 	it('literal', () => {
@@ -29,7 +30,7 @@ describe('GetTupleType', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type A = TupleType_<[s.Number, s.String], { kind: 'out' }>
+		type A = TupleType_<[NumberSchema, StringSchema], { kind: 'out' }>
 		$Assert<IsIdentical<A, [number, string]>>()
 	})
 

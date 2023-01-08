@@ -7,5 +7,5 @@ ignores:
   - '@prettier/plugin-*'
   - '@toml-tools/lexer'
   - '@types/node'
-  - '@voltiso/config.jest.esr'
+  - '@voltiso/config.jest'
   - '@voltiso/config.ts.build.cjs'

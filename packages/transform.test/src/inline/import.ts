@@ -1,9 +1,6 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	ExternalInterface,
-	IncludesExternal,
-} from './_/external-stuff'
+import type { ExternalInterface, IncludesExternal } from './_/external-stuff'
 
 export type A = IncludesExternal & ExternalInterface

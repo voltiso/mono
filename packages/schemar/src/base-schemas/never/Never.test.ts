@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	$CustomNever,
@@ -8,10 +11,7 @@ import type {
 	ISchema,
 	NeverOptions,
 	Output,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
+} from '~'
 import * as s from '~'
 
 describe('never', () => {
@@ -46,8 +46,8 @@ describe('never', () => {
 		expect(e.isReadonly).toBeTruthy()
 		expect(e.isOptional).toBeTruthy()
 
-		$Assert.is<typeof e['isOptional'], true>()
-		$Assert.is<typeof e['isReadonly'], true>()
+		$Assert.is<(typeof e)['isOptional'], true>()
+		$Assert.is<(typeof e)['isReadonly'], true>()
 
 		expect(s.never.extends(s.never)).toBeTruthy()
 		expect(s.never.extends(s.number)).toBeTruthy()

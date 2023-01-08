@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // $dev(() => {
@@ -8,7 +8,7 @@
 // 	$Assert.is<Doc['ref'], IndexedDoc>()
 // })
 import * as s from '@voltiso/schemar'
-import type * as t from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar'
 import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 

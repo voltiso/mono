@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
@@ -45,7 +45,7 @@ describe('DocConstructor', () => {
 
 		const MyDocConstructor = Doc(AnyDoc).with({ public: { num: s.number } })
 
-		$Assert.is<typeof MyDocConstructor[DTI]['tag'], AnyDoc>()
+		$Assert.is<(typeof MyDocConstructor)[DTI]['tag'], AnyDoc>()
 
 		type MyDoc = InstanceType<typeof MyDocConstructor>
 		$Assert<IsIdentical<MyDoc[DTI]['tag'], AnyDoc>>()

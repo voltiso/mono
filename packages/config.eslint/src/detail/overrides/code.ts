@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
@@ -151,7 +151,7 @@ export const codeOverride = defineEslintConfigOverride({
 		// ],
 
 		'@typescript-eslint/ban-types': [
-			'error',
+			'warn',
 			{
 				types: {
 					'{}': false,

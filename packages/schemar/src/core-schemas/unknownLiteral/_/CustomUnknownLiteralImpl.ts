@@ -1,5 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import type {
 	CustomUnknownLiteral,
@@ -7,13 +11,9 @@ import type {
 	InferableLiteral,
 	ISchema,
 	UnknownLiteralOptions,
-} from '@voltiso/schemar.types'
-import { EXTENDS, isUnknownLiteral, SCHEMA_NAME } from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, isUnknownLiteralSchema } from '~'
 import { LiteralImpl } from '~/core-schemas/literal'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownLiteralImpl<O> {
@@ -34,7 +34,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isUnknownLiteral(other)) return true
+		if (isUnknownLiteralSchema(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}

@@ -1,8 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Input, Output, ValidationIssue } from '@voltiso/schemar.types'
 import { $Assert } from '@voltiso/util'
+
+import type { Input, Output, ValidationIssue } from '~'
 
 import type { _validationIssue } from './validationIssueSchema'
 

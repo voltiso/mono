@@ -1,5 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { isSubset, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import type {
 	CustomLiteral,
@@ -7,18 +11,9 @@ import type {
 	InferableLiteral,
 	ISchema,
 	LiteralOptions,
-} from '@voltiso/schemar.types'
-import {
-	EXTENDS,
-	isLiteral,
-	isUnknownLiteral,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { isSubset, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
-
+} from '~'
+import { CustomSchemaImpl, isLiteralSchema, isUnknownLiteralSchema } from '~'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 import { literalValueExtends } from './literalValueExtends'
 
@@ -39,14 +34,10 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 		return this[OPTIONS].values as never
 	}
 
-	// constructor(o: O) {
-	// 	super(o)
-	// }
-
 	override [EXTENDS](other: ISchema): boolean {
-		if (isLiteral(other))
+		if (isLiteralSchema(other))
 			return isSubset(this.getValues, other.getValues as never)
-		else if (isUnknownLiteral(other)) return true
+		else if (isUnknownLiteralSchema(other)) return true
 
 		let good = true
 

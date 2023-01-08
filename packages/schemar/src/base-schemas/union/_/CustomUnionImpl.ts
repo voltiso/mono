@@ -1,23 +1,28 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$Schemable,
-	CustomUnion,
-	DefaultUnionOptions,
-	ISchema,
-	IUnion,
-	Schemable,
-	UnionOptions,
-	ValidateOptions,
-} from '@voltiso/schemar.types'
-import { EXTENDS, isUnion, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS } from '@voltiso/util'
+import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
+import {
+	type $$Schemable,
+	type CustomUnion,
+	type DefaultUnionOptions,
+	type ISchema,
+	type IUnion,
+	type Schemable,
+	type UnionOptions,
+	type ValidateOptions,
+	CustomSchemaImpl,
+	isUnionSchema,
+} from '~'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
+
+$assert(OPTIONS)
+$assert(EXTENDS)
+$assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnionImpl<O> {
@@ -37,7 +42,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		const otherTypes: $$Schemable[] = isUnion(other)
+		const otherTypes: $$Schemable[] = isUnionSchema(other)
 			? other.getSchemas
 			: [other]
 

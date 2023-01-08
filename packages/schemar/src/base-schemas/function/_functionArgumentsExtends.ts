@@ -1,9 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema, ITuple, Schemable } from '@voltiso/schemar.types'
-import { isTuple } from '@voltiso/schemar.types'
-
+import type { ISchema, ITuple, Schemable } from '~'
+import { isTupleSchema } from '~'
 import { schema } from '~/core-schemas'
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
@@ -24,8 +23,8 @@ function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 
 /** TODO: make it work with arrays with bounded lengths */
 export function _functionArgumentsExtends(a: ISchema, b: ISchema): boolean {
-	const aOk = isTuple(a)
-	const bOk = isTuple(b)
+	const aOk = isTupleSchema(a)
+	const bOk = isTupleSchema(b)
 
 	if (aOk && bOk) return _functionArgumentsExtends_(a, b)
 	else return a.extends(b)

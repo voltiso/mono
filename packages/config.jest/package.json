@@ -1,0 +1,55 @@
+{
+  "name": "@voltiso/config.jest",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js"
+    },
+    "./transform": {
+      "require": "./dist/cjs/transform.js"
+    }
+  },
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs:clean": "rimraf dist/cjs",
+    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast",
+    "__________MISC": "__________",
+    "clean": "v clean"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@voltiso/config.jest.lib": "workspace:^",
+    "esbuild": "^0.16.15",
+    "flow-remove-types": "^2.196.3"
+  },
+  "devDependencies": {
+    "@types/testing-library__jest-dom": "^5.14.5",
+    "@voltiso/config.ts.build.cjs": "workspace:^"
+  }
+}

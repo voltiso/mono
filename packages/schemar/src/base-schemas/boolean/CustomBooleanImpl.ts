@@ -1,5 +1,15 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import {
+	$assert,
+	BoundCallable,
+	CALL,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type {
 	BooleanOptions,
@@ -7,23 +17,21 @@ import type {
 	DefaultBooleanOptions,
 	ISchema,
 	Literal,
-} from '@voltiso/schemar.types'
+} from '~'
 import {
-	EXTENDS,
-	isBoolean,
-	isLiteral,
-	isUnion,
-	isUnknownLiteral,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
-
+	CustomSchemaImpl,
+	isBooleanSchema,
+	isLiteralSchema,
+	isUnionSchema,
+	isUnknownLiteralSchema,
+} from '~'
 import { literal } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 import { _booleanCollectTrueFalse } from './_booleanCollectTrueFalse'
+
+$assert(EXTENDS)
+$assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBooleanImpl<O> {
@@ -54,9 +62,9 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (isBoolean(other)) return true
-		else if (isUnknownLiteral(other)) return true
-		else if (isLiteral(other) || isUnion(other)) {
+		if (isBooleanSchema(other)) return true
+		else if (isUnknownLiteralSchema(other)) return true
+		else if (isLiteralSchema(other) || isUnionSchema(other)) {
 			// eslint-disable-next-line etc/no-internal
 			const { haveTrue, haveFalse } = _booleanCollectTrueFalse(other)
 			return haveTrue && haveFalse

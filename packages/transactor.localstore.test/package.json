@@ -18,11 +18,10 @@
   "devDependencies": {
     "@types/random-seed": "^0.3.3",
     "@voltiso/assertor": "workspace:^3.0.0",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/localstore": "workspace:^",
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transactor": "workspace:^",
     "@voltiso/transactor.localstore": "workspace:^",

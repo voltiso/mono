@@ -1,13 +1,19 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
+
+import type { CustomAny } from '~'
 
 import { AnyImpl } from './AnyImpl'
 
-export type Any = t.Any
+//
 
-export const Any = lazyConstructor(() => AnyImpl) as unknown as t.AnyConstructor
+export type Any = CustomAny<{}>
+export const Any = lazyConstructor(() => AnyImpl) as unknown as AnyConstructor
+
+export type AnyConstructor = new () => Any
+
+//
 
 export const any: Any = lazyValue(() => new Any())

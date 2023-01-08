@@ -1,25 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	CustomFunction,
-	DefaultFunctionOptions,
-	FunctionOptions,
-	IArray,
-	Input_,
-	ITuple,
-	Output_,
-	Schema,
-	SchemaLike,
-} from '@voltiso/schemar.types'
-import {
-	EXTENDS,
-	isArray,
-	isTuple,
-	isUnknownFunction,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type {
 	Assume,
 	BASE_OPTIONS,
@@ -28,10 +10,30 @@ import type {
 } from '@voltiso/util'
 import { lazyConstructor, noThis, OPTIONS } from '@voltiso/util'
 
+import type {
+	$$Schemable,
+	$$SchemableTuple,
+	CustomFunction,
+	DefaultFunctionOptions,
+	DefineSchema,
+	FunctionOptions,
+	IArray,
+	Input_,
+	ITuple,
+	Output_,
+	Schema,
+	SchemaLike,
+} from '~'
+import {
+	CustomSchemaImpl,
+	isArraySchema,
+	isFunctionSchema,
+	isTupleSchema,
+	isUnknownFunctionSchema,
+} from '~'
 import { infer, schema } from '~/core-schemas'
 import { SchemarError } from '~/error'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 import { _flattenUnion, or } from '../union'
 import { _functionArgumentsExtends } from './_functionArgumentsExtends'
@@ -101,9 +103,9 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		let parametersUnionSchemas = _flattenUnion(parametersSchema).getSchemas
 
 		parametersUnionSchemas = parametersUnionSchemas.map(s => {
-			if (isArray(s)) {
+			if (isArraySchema(s)) {
 				return s.mutableArray as never
-			} else if (isTuple(s)) {
+			} else if (isTupleSchema(s)) {
 				return s.mutableTuple as never
 			} else {
 				throw new SchemarError(
@@ -122,23 +124,23 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		// ! TODO - typings for parameters are incorrect
 	}
 
-	this<NewThis extends t.$$Schemable>(
+	this<NewThis extends $$Schemable>(
 		newThis: NewThis,
-	): t.CustomFunction.WithThis<this, NewThis> {
+	): CustomFunction.WithThis<this, NewThis> {
 		// eslint-disable-next-line security/detect-object-injection
 		return new CustomFunctionImpl({ ...this[OPTIONS], this: newThis }) as never
 	}
 
-	parameters<NewParameters extends t.$$SchemableTuple>(
+	parameters<NewParameters extends $$SchemableTuple>(
 		parameters: NewParameters,
-	): t.DefineSchema<this, { parameters: NewParameters }> {
+	): DefineSchema<this, { parameters: NewParameters }> {
 		// eslint-disable-next-line security/detect-object-injection
 		return new CustomFunctionImpl({ ...this[OPTIONS], parameters }) as never
 	}
 
 	return<NewReturn extends SchemaLike<any>>(
 		newReturn: NewReturn,
-	): t.DefineSchema<this, { return: NewReturn }> {
+	): DefineSchema<this, { return: NewReturn }> {
 		return new CustomFunctionImpl({
 			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],
@@ -147,11 +149,11 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	}
 
 	override [EXTENDS](other: SchemaLike): boolean {
-		if (isUnknownFunction(other)) return true
-		else if (t.isFunction(other)) {
+		if (isUnknownFunctionSchema(other)) return true
+		else if (isFunctionSchema(other)) {
 			const argsOk: boolean = _functionArgumentsExtends(
 				other.getParametersSchema as never,
-				this.getParametersSchema as never,
+				this.getParametersSchema,
 			)
 
 			const rOk = (this.getReturnSchema as unknown as Schema).extends(

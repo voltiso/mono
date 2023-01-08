@@ -1,16 +1,10 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	CustomUnion,
-	Input,
-	IUnion,
-	Output,
-	UnionOptions,
-} from '@voltiso/schemar.types'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
+import type { CustomUnion, Input, IUnion, Output, UnionOptions } from '~'
 import * as s from '~'
 
 describe('union', () => {

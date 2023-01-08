@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -10,7 +10,7 @@ import type {
 	Input,
 	Output,
 	Type_,
-} from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 import type { PatchFor, PatchOptions } from '@voltiso/util'
 import type { IBehaviorSubject } from '@voltiso/util.rxjs'
 import type { BehaviorSubject } from 'rxjs'

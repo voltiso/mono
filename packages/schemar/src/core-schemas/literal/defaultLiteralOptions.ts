@@ -1,10 +1,10 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyValue } from '@voltiso/util'
 
-import { defaultSchemaOptions } from '~/Schema'
+import type * as t from '~'
+import { defaultSchemaOptions } from '~'
 
 export const defaultLiteralOptions = lazyValue(() => ({
 	...defaultSchemaOptions,

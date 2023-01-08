@@ -1,15 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	BigintOptions,
-	CustomBigint,
-	DefaultBigintOptions,
-	ISchema,
-	Literal,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
-import { EXTENDS, SCHEMA_NAME } from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	BoundCallable,
@@ -19,9 +11,16 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
+import type {
+	BigintOptions,
+	CustomBigint,
+	DefaultBigintOptions,
+	ISchema,
+	Literal,
+} from '~'
+import { CustomSchemaImpl, isBigintSchema } from '~'
 import { literal } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBigintImpl<O> {
@@ -69,7 +68,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
-		if (t.isBigint(other)) return true
+		if (isBigintSchema(other)) return true
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
@@ -77,16 +76,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	override _getIssues(value: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
 
-		if (typeof value !== 'bigint')
-			issues.push(
-				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
-					name: this[OPTIONS].name,
-					expected: { description: 'bigint' },
-					received: { value },
-				}),
-			)
-		else {
+		if (typeof value === 'bigint') {
 			if (
 				isDefined(this.getMin) &&
 				((value < this.getMin) as unknown as number)
@@ -116,6 +106,15 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 					}),
 				)
 			}
+		} else {
+			issues.push(
+				new ValidationIssue({
+					// eslint-disable-next-line security/detect-object-injection
+					name: this[OPTIONS].name,
+					expected: { description: 'bigint' },
+					received: { value },
+				}),
+			)
 		}
 
 		return issues

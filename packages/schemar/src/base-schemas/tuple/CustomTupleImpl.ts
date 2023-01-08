@@ -1,5 +1,9 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { EXTENDS, SCHEMA_NAME } from '_'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	_GetArrayLength_,
@@ -8,21 +12,16 @@ import type {
 	SchemaLike,
 	TupleOptions,
 	ValidateOptions,
-} from '@voltiso/schemar.types'
+} from '~'
 import {
-	EXTENDS,
+	CustomSchemaImpl,
 	getDeepShape,
-	isArray,
-	isTuple,
-	isUnknownTuple,
-	SCHEMA_NAME,
-} from '@voltiso/schemar.types'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS } from '@voltiso/util'
-
+	isArraySchema,
+	isTupleSchema,
+	isUnknownTupleSchema,
+} from '~'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
-import { CustomSchemaImpl } from '~/Schema'
 
 import { _tupleExtends, _tupleExtendsArray } from './_'
 
@@ -87,20 +86,20 @@ export class CustomTupleImpl<
 
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (
-			(isTuple(other) || isUnknownTuple(other)) &&
+			(isTupleSchema(other) || isUnknownTupleSchema(other)) &&
 			this.isReadonlyTuple &&
 			!other.isReadonlyTuple
 		)
 			return false
 
-		if (isArray(other) && this.isReadonlyTuple && !other.isReadonlyArray)
+		if (isArraySchema(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 
 		// eslint-disable-next-line etc/no-internal
-		if (isTuple(other)) return _tupleExtends(this, other)
-		else if (isUnknownTuple(other)) return true
+		if (isTupleSchema(other)) return _tupleExtends(this, other)
+		else if (isUnknownTupleSchema(other)) return true
 		// eslint-disable-next-line etc/no-internal
-		else if (isArray(other)) return _tupleExtendsArray(this, other)
+		else if (isArraySchema(other)) return _tupleExtendsArray(this, other)
 		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}

@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type * as t from '@voltiso/schemar.types'
+import type * as t from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -71,7 +71,7 @@ describe('InferFields', () => {
 	it('does nothing if nothing to do', () => {
 		expect.assertions(0)
 
-		type Orig = typeof Doctor[DTI]['private']['getShape']['specialty']
+		type Orig = (typeof Doctor)[DTI]['private']['getShape']['specialty']
 		type F = InferFields<typeof Doctor>
 		type X = F['private']['getShape']['specialty']
 		$Assert<IsIdentical<X, Orig>>()

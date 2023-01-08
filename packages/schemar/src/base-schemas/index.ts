@@ -1,3 +1,6 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 export * from './any'
 export * from './array'
 export * from './bigint'
@@ -17,6 +20,9 @@ export * from './tuple'
 export * from './undefined'
 export * from './union'
 export * from './unknown'
+export * from './unknownFunction'
 export * from './unknownObject'
+export * from './unknownRecord'
 export * from './unknownSymbol'
+export * from './unknownTuple'
 export * from './void'

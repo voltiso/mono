@@ -1,0 +1,59 @@
+{
+  "name": "@voltiso/config.jest.react",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "sideEffects": false,
+  "__________EXPORTS FALLBACK": "__________",
+  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "__________PUBLISH WHITELIST": "__________",
+  "files": [
+    "dist"
+  ],
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "v fix",
+    "__________BUILD": "__________",
+    "build": "v build",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs:clean": "rimraf dist/cjs",
+    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "__________PREPARE": "__________",
+    "prepublishOnly": "v prepublishOnlyFast",
+    "__________MISC": "__________",
+    "clean": "v clean"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
+    "jest-environment-jsdom": "^29.3.1"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "@types/react": "^18.0.26",
+    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "react": "^18.1.0",
+    "react-native": "^0.70.6"
+  }
+}

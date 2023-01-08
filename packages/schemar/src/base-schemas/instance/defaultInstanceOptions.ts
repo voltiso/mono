@@ -1,7 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defaultSchemaOptions } from '~/Schema'
+import { defaultSchemaOptions } from '~'
 
 export const defaultInstanceOptions = {
 	...defaultSchemaOptions,

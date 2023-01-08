@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
@@ -11,7 +11,7 @@ import type {
 	Literal,
 	RegExpEntry,
 	Type,
-} from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept, AtLeast1, Constructor, Falsy } from '@voltiso/util'
 import { ProtoCallable } from '@voltiso/util'

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
@@ -17,9 +17,8 @@ import type { CssProperties } from './CssProperties'
  *
  * - To add custom CSS properties, use TS declaration merging
  */
-export interface CssReactNative<
-	CustomCss extends object,
-> extends CssOverridesReactNative<CustomCss>,
+export interface CssReactNative<CustomCss extends object>
+	extends CssOverridesReactNative<CustomCss>,
 		// eslint-disable-next-line etc/no-internal
 		_Css_WithExtensionReactNative<CustomCss>,
 		// eslint-disable-next-line etc/no-internal

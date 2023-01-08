@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert, $Is } from '~/$strip'
@@ -84,7 +84,7 @@ describe('object/entries', () => {
 			[sym, sym],
 		])
 
-		type A = typeof a[number]
+		type A = (typeof a)[number]
 		$Assert<
 			IsIdentical<
 				A,
@@ -103,7 +103,7 @@ describe('object/entries', () => {
 			['a', 'a'],
 		])
 
-		type B = typeof b[number]
+		type B = (typeof b)[number]
 		$Assert<IsIdentical<B, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
 
 		const c = getCoercedEntries(obj, { includeNonEnumerable: true })
@@ -114,7 +114,7 @@ describe('object/entries', () => {
 			['nonEnumerable', 123],
 		])
 
-		type C = typeof c[number]
+		type C = (typeof c)[number]
 		$Assert<IsIdentical<C, ['1', 1] | ['a', 'a'] | ['nonEnumerable', 123]>>()
 
 		//
@@ -132,7 +132,7 @@ describe('object/entries', () => {
 			[sym2, sym2],
 		])
 
-		type D = typeof d[number]
+		type D = (typeof d)[number]
 		$Assert<
 			IsIdentical<
 				D,

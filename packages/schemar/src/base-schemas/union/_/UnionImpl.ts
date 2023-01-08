@@ -1,9 +1,10 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Schemable, Type_ } from '@voltiso/schemar.types'
 import type { AtLeast2 } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
+
+import type { Schemable, Type_ } from '~'
 
 import { defaultUnionOptions } from '../defaultUnionOptions'
 import { CustomUnionImpl } from './CustomUnionImpl'

@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/schemar.no-op",
-  "version": "16.0.0",
+  "version": "20.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -44,10 +44,10 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/schemar.types": "workspace:^"
+    "@voltiso/schemar": "workspace:^"
   },
   "devDependencies": {
-    "@voltiso/config.jest.esr": "workspace:^1.0.0",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/util": "workspace:^"

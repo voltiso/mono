@@ -1,27 +1,33 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as t from '@voltiso/schemar.types'
 import { $assert, getEntries, isPlainObject, stringFrom } from '@voltiso/util'
 
+import type {
+	DeepPartialShape,
+	DeepStrictPartialShape,
+	InferableObject,
+	ISchema,
+} from '~'
+import { isObjectSchema } from '~'
 import { schema } from '~/core-schemas'
 
 //
 
-export function deepPartialShape<O extends t.InferableObject>(
+export function deepPartialShape<O extends InferableObject>(
 	o: O,
-): t.DeepPartialShape<O> {
+): DeepPartialShape<O> {
 	$assert(
 		isPlainObject(o),
 		`Invalid Argument: deepPartialShape(${stringFrom(o)})`,
 	)
 
-	const shape = { ...o } as t.InferableObject
+	const shape = { ...o } as InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {
-		let mySchema = schema(schemable) as unknown as t.ISchema
+		let mySchema = schema(schemable) as unknown as ISchema
 
-		if (t.isObject(mySchema)) mySchema = mySchema.deepPartial as never
+		if (isObjectSchema(mySchema)) mySchema = mySchema.deepPartial as never
 
 		// eslint-disable-next-line security/detect-object-injection
 		shape[key] = mySchema.optional as never
@@ -32,15 +38,15 @@ export function deepPartialShape<O extends t.InferableObject>(
 
 //
 
-export function deepStrictPartialShape<O extends t.InferableObject>(
+export function deepStrictPartialShape<O extends InferableObject>(
 	o: O,
-): t.DeepStrictPartialShape<O> {
-	const shape = { ...o } as t.InferableObject
+): DeepStrictPartialShape<O> {
+	const shape = { ...o } as InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {
-		let mySchema = schema(schemable) as unknown as t.ISchema
+		let mySchema = schema(schemable) as unknown as ISchema
 
-		if (t.isObject(mySchema)) mySchema = mySchema.deepStrictPartial as never
+		if (isObjectSchema(mySchema)) mySchema = mySchema.deepStrictPartial as never
 
 		// eslint-disable-next-line security/detect-object-injection
 		shape[key] = mySchema.strictOptional as never

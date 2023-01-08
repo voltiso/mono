@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineConfig } from './defineConfig'
@@ -118,13 +118,16 @@ export const basePrettierConfig = defineConfig({
 			},
 		},
 
-		/** `json-stringify` makes arrays multi-line - consistent with `pnpm` output 😎 */
+		/**
+		 * `json-stringify` makes arrays multi-line - consistent with `pnpm` output
+		 * 😎
+		 */
 		{
 			files: ['package.json'],
 
 			options: {
 				parser: 'json-stringify',
-				useTabs: false
+				useTabs: false,
 			},
 		},
 	],

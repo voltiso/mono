@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
@@ -38,8 +38,6 @@ describe('ref schema', () => {
 
 		expect(() =>
 			s.schema(mySchema).validate({ myRef: myWeakRef, myWeakRef }),
-		).toThrow(
-			".myRef should be strong ref",
-		)
+		).toThrow('.myRef should be strong ref')
 	})
 })

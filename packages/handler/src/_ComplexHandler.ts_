@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { ValidationError } from '@voltiso/schemar'
@@ -9,8 +9,7 @@ import type {
 	DefineSchema_,
 	ISchema,
 	SchemaLike,
-} from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
+} from '@voltiso/schemar'
 import type {
 	Assume,
 	GetProperty_,

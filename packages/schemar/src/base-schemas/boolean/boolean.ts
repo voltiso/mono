@@ -1,17 +1,30 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
+
+import type { CustomBoolean, Literal } from '~'
 
 import { BooleanImpl } from './BooleanImpl'
 
-type Boolean_ = t.Boolean
+//
+
+interface Boolean_ extends CustomBoolean<{}> {
+	<L extends boolean>(...literals: L[]): Literal<L>
+	<L extends boolean>(literals: Set<L>): Literal<L>
+	<L extends boolean>(...args: L[] | [Set<L>]): Literal<L>
+}
 
 const Boolean_ = lazyConstructor(
 	() => BooleanImpl,
-) as unknown as t.BooleanConstructor
+) as unknown as BooleanConstructor
 
 export { Boolean_ as Boolean }
+
+//
+
+export type BooleanConstructor = new () => Boolean_
+
+//
 
 export const boolean: Boolean_ = lazyValue(() => new Boolean_())

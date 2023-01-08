@@ -1,15 +1,33 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { $assert, lazyConstructor } from '@voltiso/util'
+
+import type { CustomInstance } from '~'
 
 import { InstanceImpl } from './InstanceImpl'
 
-export type Instance<Inst extends object> = t.Instance<Inst>
+export type Instance<Inst extends object> = CustomInstance<{
+	constructor: abstract new (...args: any) => Inst
+	Output: Inst
+	Input: Inst
+}>
+
 export const Instance = lazyConstructor(
 	() => InstanceImpl,
-) as unknown as t.InstanceConstructor
+) as unknown as InstanceConstructor
+
+//
+
+export type UnknownInstance = <Inst extends object>(
+	constructor: abstract new (...args: any) => Inst,
+) => Instance<Inst>
+
+//
+
+export type InstanceConstructor = new <Inst extends object>(
+	Constructor: abstract new (...args: any[]) => Inst,
+) => Instance<Inst>
 
 //
 

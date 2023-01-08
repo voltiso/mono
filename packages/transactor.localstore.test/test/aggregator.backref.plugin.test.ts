@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
@@ -63,13 +63,15 @@ const plugin: DocBuilderPlugin<'myDay2'> = aggregate('myDay2').into(
 	},
 )
 
-class Day extends Doc('myDay2').with({
-	id: sDate,
+class Day extends Doc('myDay2')
+	.with({
+		id: sDate,
 
-	public: {
-		numWomen: s.number.default(0),
-	},
-}).withPlugin(plugin) {}
+		public: {
+			numWomen: s.number.default(0),
+		},
+	})
+	.withPlugin(plugin) {}
 
 const days = db.register(Day)
 

@@ -23,7 +23,7 @@
     "@types/node": "^18.11.18",
     "@typescript/analyze-trace": "^0.9.1",
     "@voltiso/config.eslint.lib": "workspace:^",
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.prettier": "workspace:^",
     "@voltiso/config.ts": "workspace:^",

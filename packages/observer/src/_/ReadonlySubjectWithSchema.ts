@@ -1,7 +1,12 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { GetDeepShape_, GetShape_, InferSchema_, Type_ } from '@voltiso/schemar.types'
+import type {
+	GetDeepShape_,
+	GetShape_,
+	InferSchema_,
+	Type_,
+} from '@voltiso/schemar'
 import type { Observable } from 'rxjs'
 
 export type ReadonlySubjectWithSchema<S> = Observable<Type_<S>> & {

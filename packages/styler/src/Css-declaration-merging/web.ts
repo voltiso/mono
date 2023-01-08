@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as csstype from 'csstype'
@@ -18,9 +18,8 @@ import type { CssProperties } from './CssProperties'
  *
  * - To add custom CSS properties, use TS declaration merging
  */
-export interface CssWeb<
-	CustomCss extends object,
-> extends CssOverridesWeb<CustomCss>,
+export interface CssWeb<CustomCss extends object>
+	extends CssOverridesWeb<CustomCss>,
 		// eslint-disable-next-line etc/no-internal
 		_Css_WithExtensionWeb<CustomCss>,
 		// eslint-disable-next-line etc/no-internal

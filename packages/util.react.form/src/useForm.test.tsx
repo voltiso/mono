@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { act, render } from '@testing-library/react'
@@ -61,8 +61,11 @@ describe('useForm', () => {
 							if (value.toLowerCase() !== value)
 								subject.next(
 									new ValidationIssue({
-										received: value,
-										expectedDescription: 'be lowercase',
+										received: { value },
+
+										expected: {
+											description: 'be lowercase',
+										},
 									}),
 								)
 
@@ -71,8 +74,11 @@ describe('useForm', () => {
 							if (value === 'bad')
 								subject.next(
 									new ValidationIssue({
-										received: value,
-										expectedDescription: 'not `bad`',
+										received: { value },
+
+										expected: {
+											description: 'not `bad`',
+										},
 									}),
 								)
 
@@ -93,6 +99,8 @@ describe('useForm', () => {
 
 			const formProps = useObservable(form$.props)
 			const fields = useObservable(form$.fields)
+
+			console.log(fields)
 
 			return (
 				<>

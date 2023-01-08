@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
@@ -57,9 +57,11 @@ describe('README.md - usage', () => {
 					name: string
 					version: string
 					license?: string | undefined
-					dependencies?: {
-						'@voltiso/schemar'?: string | undefined
-					} | undefined
+					dependencies?:
+						| {
+								'@voltiso/schemar'?: string | undefined
+						  }
+						| undefined
 				}
 			>
 		>()

@@ -1,8 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { SchemaLike } from '@voltiso/schemar.types'
+import type { SchemaLike } from '@voltiso/schemar'
 import { $AssumeType, mapValues } from '@voltiso/util'
 
 import type { $$DocRef, WeakDocRef } from '~/DocRef'

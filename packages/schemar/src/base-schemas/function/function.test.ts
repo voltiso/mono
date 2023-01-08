@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomFunction,
@@ -13,10 +16,7 @@ import type {
 	Schema,
 	Schemable,
 	Type_,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
+} from '~'
 import * as s from '~'
 
 describe('function', () => {
@@ -64,7 +64,7 @@ describe('function', () => {
 		const a = s.function(args, s.string)
 		$Assert.is<typeof a, Schemable>()
 
-		type A = typeof a['Output']
+		type A = (typeof a)['Output']
 		$Assert<IsIdentical<A, (...args: 123[]) => string>>()
 	})
 

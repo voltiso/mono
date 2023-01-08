@@ -1,19 +1,42 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor } from '@voltiso/util'
+
+import type { _TupleTypeImpl, $$Schemable, CustomTuple } from '~'
 
 import { MutableTupleImpl } from './MutableTupleImpl'
 import { ReadonlyTupleImpl } from './ReadonlyTupleImpl'
 
-export type MutableTuple<T extends t.$$Schemable[]> = t.MutableTuple<T>
-export type ReadonlyTuple<T extends t.$$Schemable[]> = t.ReadonlyTuple<T>
+export interface MutableTuple<T extends $$Schemable[]>
+	extends CustomTuple<{
+		shape: T
+		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
+		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: false }>
+	}> {}
 
-export const MutableTuple: t.MutableTupleConstructor = lazyConstructor(
+export interface ReadonlyTuple<T extends $$Schemable[]>
+	extends CustomTuple<{
+		shape: T
+		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
+		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
+		isReadonlyTuple: true
+	}> {}
+
+export type MutableTupleConstructor = new <T extends $$Schemable[]>(
+	...shape: T
+) => MutableTuple<T>
+
+export type ReadonlyTupleConstructor = new <T extends $$Schemable[]>(
+	...shape: T
+) => ReadonlyTuple<T>
+
+//
+
+export const MutableTuple: MutableTupleConstructor = lazyConstructor(
 	() => MutableTupleImpl,
 ) as never
 
-export const ReadonlyTuple: t.ReadonlyTupleConstructor = lazyConstructor(
+export const ReadonlyTuple: ReadonlyTupleConstructor = lazyConstructor(
 	() => ReadonlyTupleImpl,
 ) as never

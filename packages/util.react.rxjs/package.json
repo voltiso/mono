@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.react.rxjs",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
+    "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/observer": "workspace:^",

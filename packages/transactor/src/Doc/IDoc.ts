@@ -1,7 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemaLike } from '@voltiso/schemar.types'
+import type { SchemaLike } from '@voltiso/schemar'
 import type { _ } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'

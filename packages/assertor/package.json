@@ -47,15 +47,13 @@
   },
   "peerDependencies": {
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^"
   },
   "devDependencies": {
-    "@voltiso/config.jest.esr": "workspace:^",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/schemar.types": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^"
   }

@@ -1,14 +1,13 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyValue } from '@voltiso/util'
 
+import { infer } from '~'
 import {
 	array,
 	boolean,
 	function as function_,
-	infer,
 	number,
 	object,
 	optional,
@@ -16,8 +15,10 @@ import {
 	string,
 	symbol,
 	undefined as undefined_,
-} from '../..' //! ts-transform-paths does not work here!!!
+} from '~/base-schemas' //! ts-transform-paths does not work here!!! ???
+
 import { schemarSeverity } from '../sSchemarSeverity'
+import type { ValidationIssue } from './ValidationIssue'
 
 export const _validationIssue = lazyValue(() => {
 	const toStringParameter = infer({
@@ -50,5 +51,5 @@ export const _validationIssue = lazyValue(() => {
 })
 
 export const validationIssue = lazyValue(() =>
-	_validationIssue.CastOutput<t.ValidationIssue>(),
+	_validationIssue.CastOutput<ValidationIssue>(),
 )

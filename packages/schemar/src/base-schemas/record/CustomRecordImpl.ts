@@ -1,27 +1,34 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ValidateOptions } from '@voltiso/schemar.types'
-import * as t from '@voltiso/schemar.types'
+import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import { CustomSchemaImpl } from '~/Schema'
+import type {
+	CustomRecord,
+	DefaultRecordOptions,
+	ISchema,
+	RecordOptions,
+	ValidateOptions,
+	ValidationIssue,
+} from '~'
+import { CustomSchemaImpl } from '~'
 
 import type { CustomObjectImpl } from '../object'
 import { object } from '../unknownObject'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {
-	readonly [BASE_OPTIONS]: t.RecordOptions
-	readonly [DEFAULT_OPTIONS]: t.DefaultRecordOptions
+	readonly [BASE_OPTIONS]: RecordOptions
+	readonly [DEFAULT_OPTIONS]: DefaultRecordOptions
 }
 
-export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
+export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
-	implements t.CustomRecord<O>
+	implements CustomRecord<O>
 {
-	readonly [t.SCHEMA_NAME] = 'Record' as const
+	readonly [SCHEMA_NAME] = 'Record' as const
 
 	get getKeySchema(): this[OPTIONS]['keySchema'] {
 		// eslint-disable-next-line security/detect-object-injection
@@ -51,14 +58,14 @@ export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	override [t.EXTENDS](_other: t.ISchema): boolean {
+	override [EXTENDS](_other: ISchema): boolean {
 		throw new Error('not implemented')
 	}
 
 	override _getIssues(
 		x: unknown,
 		options?: Partial<ValidateOptions> | undefined,
-	): t.ValidationIssue[] {
+	): ValidationIssue[] {
 		const proxy = _getCustomObjectImpl(this)
 		return proxy._getIssues(x, options)
 	}
@@ -75,7 +82,7 @@ export class CustomRecordImpl<O extends Partial<t.RecordOptions>>
 }
 
 function _getCustomObjectImpl(self: {
-	[OPTIONS]: t.RecordOptions
+	[OPTIONS]: RecordOptions
 }): CustomObjectImpl<{}> {
 	return object.index(
 		// eslint-disable-next-line security/detect-object-injection

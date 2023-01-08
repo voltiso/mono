@@ -1,5 +1,8 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomTuple,
@@ -9,10 +12,7 @@ import type {
 	ITuple,
 	Output,
 	TupleOptions,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
+} from '~'
 import * as s from '~'
 
 describe('array', () => {
@@ -48,13 +48,13 @@ describe('array', () => {
 
 		expect(a.getLength).toBe(0)
 
-		$Assert<IsIdentical<typeof a['getLength'], 0>>()
+		$Assert<IsIdentical<(typeof a)['getLength'], 0>>()
 
 		const b = s.tuple(1, 2, 3)
 
 		expect(b.getLength).toBe(3)
 
-		$Assert<IsIdentical<typeof b['getLength'], 3>>()
+		$Assert<IsIdentical<(typeof b)['getLength'], 3>>()
 
 		// @ts-expect-error unknownTuple does not have getLength
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return

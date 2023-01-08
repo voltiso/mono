@@ -1,18 +1,18 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as t from '@voltiso/schemar.types'
-
+import type { $$Schemable} from '~';
+import { isBooleanSchema, isLiteralSchema, isUnionSchema } from '~'
 import { schema } from '~/core-schemas'
 
 /** @internal */
-export function _booleanCollectTrueFalse(schemable: t.$$Schemable): {
+export function _booleanCollectTrueFalse(schemable: $$Schemable): {
 	haveTrue: boolean
 	haveFalse: boolean
 } {
 	const o = schema(schemable)
 
-	if (t.isLiteral(o)) {
+	if (isLiteralSchema(o)) {
 		let haveTrue = false
 		let haveFalse = false
 
@@ -22,9 +22,9 @@ export function _booleanCollectTrueFalse(schemable: t.$$Schemable): {
 		}
 
 		return { haveTrue, haveFalse }
-	} else if (t.isBoolean(o)) {
+	} else if (isBooleanSchema(o)) {
 		return { haveTrue: true, haveFalse: true }
-	} else if (t.isUnion(o)) {
+	} else if (isUnionSchema(o)) {
 		let haveTrue = false
 		let haveFalse = false
 

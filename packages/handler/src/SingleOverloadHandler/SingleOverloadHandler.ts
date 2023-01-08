@@ -1,8 +1,7 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type * as t from '@voltiso/schemar.types'
 import type {
 	Assume,
 	MaybePromise,
@@ -32,9 +31,9 @@ export namespace SingleOverloadHandlerDetail {
 		 */
 		IsAsync: boolean
 
-		this: t.$$Schemable | NoThis
-		parameters: t.$$Schemable[]
-		return: t.$$Schemable
+		this: s.$$Schemable | NoThis
+		parameters: s.$$Schemable[]
+		return: s.$$Schemable
 	}
 
 	export namespace Options {
@@ -47,7 +46,7 @@ export namespace SingleOverloadHandlerDetail {
 
 			this: NoThis
 			parameters: []
-			return: t.Void
+			return: s.Void
 		}
 
 		export interface Hidden<O extends Options>
@@ -63,19 +62,19 @@ export namespace SingleOverloadHandlerDetail {
 		O['this'],
 	] extends [NoThis]
 		? (
-				...args: Assume<readonly unknown[], t.Input<O['parameters']>>
+				...args: Assume<readonly unknown[], s.Input<O['parameters']>>
 		  ) => O['IsAsync'] extends true
-				? MaybePromise<t.Output<O['return']>>
+				? MaybePromise<s.Output<O['return']>>
 				: O['IsAsync'] extends false
-				? t.Output<O['return']>
+				? s.Output<O['return']>
 				: never
 		: (
-				this: t.Input<O['this']>,
-				...args: Assume<readonly unknown[], t.Input<O['parameters']>>
+				this: s.Input<O['this']>,
+				...args: Assume<readonly unknown[], s.Input<O['parameters']>>
 		  ) => O['IsAsync'] extends true
-				? MaybePromise<t.Output<O['return']>>
+				? MaybePromise<s.Output<O['return']>>
 				: O['IsAsync'] extends false
-				? t.Output<O['return']>
+				? s.Output<O['return']>
 				: never
 
 	//
@@ -83,16 +82,16 @@ export namespace SingleOverloadHandlerDetail {
 	export type GetImplementation<O extends SingleOverloadHandlerDetail.Options> =
 		[O['this']] extends [NoThis]
 			? (
-					...args: Assume<readonly unknown[], t.Output<O['parameters']>>
+					...args: Assume<readonly unknown[], s.Output<O['parameters']>>
 			  ) => O['IsAsync'] extends true
-					? MaybePromise<t.Input<O['return']>>
+					? MaybePromise<s.Input<O['return']>>
 					: O['IsAsync'] extends false
-					? t.Input<O['return']>
+					? s.Input<O['return']>
 					: never
 			: (
-					this: t.Output<O['this']>,
-					...args: Assume<readonly unknown[], t.Output<O['parameters']>>
-			  ) => MaybePromise<t.Input<O['return']>>
+					this: s.Output<O['this']>,
+					...args: Assume<readonly unknown[], s.Output<O['parameters']>>
+			  ) => MaybePromise<s.Input<O['return']>>
 
 	//
 
@@ -115,7 +114,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	export type WithThis<
 		This extends SingleOverloadHandlerImpl<any>,
-		NewThis extends t.$$Schemable,
+		NewThis extends s.$$Schemable,
 	> = RebindAndUpdateSignature<
 		This,
 		{
@@ -125,7 +124,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	export type WithParameter<
 		This extends SingleOverloadHandlerImpl<any>,
-		Parameter extends t.$$Schemable,
+		Parameter extends s.$$Schemable,
 	> = RebindAndUpdateSignature<
 		This,
 		{
@@ -141,7 +140,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	export type WithReturn<
 		This extends SingleOverloadHandlerImpl<any>,
-		Return extends t.$$Schemable,
+		Return extends s.$$Schemable,
 	> = RebindAndUpdateSignature<
 		This,
 		{
@@ -157,7 +156,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	export type WithReturnSync<
 		This extends SingleOverloadHandlerImpl<any>,
-		Return extends t.$$Schemable,
+		Return extends s.$$Schemable,
 	> = RebindAndUpdateSignature<
 		This,
 		{
@@ -223,13 +222,13 @@ export class SingleOverloadHandlerImpl<
 		}
 
 		const thisSchema =
-			this.options.this === noThis ? s.void : (this.options.this as t.ISchema)
+			this.options.this === noThis ? s.void : (this.options.this as s.ISchema)
 
 		const validThis = thisSchema.validate(thisArg)
 
 		const parametersSchema = s.infer(
 			this.options.parameters,
-		) as unknown as t.ISchema
+		) as unknown as s.ISchema
 		const validParameters = parametersSchema.validate(args) as unknown[]
 
 		// eslint-disable-next-line @typescript-eslint/ban-types
@@ -238,7 +237,7 @@ export class SingleOverloadHandlerImpl<
 			...validParameters,
 		) as unknown
 
-		const returnSchema = this.options.return as t.ISchema
+		const returnSchema = this.options.return as s.ISchema
 
 		function finalize(result: unknown) {
 			const validResult = returnSchema.validate(result)
@@ -266,7 +265,7 @@ export class SingleOverloadHandlerImpl<
 
 	//
 
-	this<ThisSchema extends t.$$Schemable>(
+	this<ThisSchema extends s.$$Schemable>(
 		thisSchema: ThisSchema,
 	): SingleOverloadHandlerDetail.WithThis<this, ThisSchema> {
 		return this.rebind({
@@ -274,7 +273,7 @@ export class SingleOverloadHandlerImpl<
 		}) as never
 	}
 
-	parameter<ParameterSchema extends t.$$Schemable>(
+	parameter<ParameterSchema extends s.$$Schemable>(
 		parameterSchema: ParameterSchema,
 	): SingleOverloadHandlerDetail.WithParameter<this, ParameterSchema> {
 		return this.rebind({
@@ -282,7 +281,7 @@ export class SingleOverloadHandlerImpl<
 		}) as never
 	}
 
-	return<ReturnSchema extends t.$$Schemable>(
+	return<ReturnSchema extends s.$$Schemable>(
 		returnSchema: ReturnSchema,
 	): SingleOverloadHandlerDetail.WithReturn<this, ReturnSchema> {
 		return this.rebind({
@@ -291,7 +290,7 @@ export class SingleOverloadHandlerImpl<
 	}
 
 	// eslint-disable-next-line sonarjs/no-identical-functions
-	returnSync<ReturnSchema extends t.$$Schemable>(
+	returnSync<ReturnSchema extends s.$$Schemable>(
 		returnSchema: ReturnSchema,
 	): SingleOverloadHandlerDetail.WithReturnSync<this, ReturnSchema> {
 		return this.rebind({

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 'use strict'
@@ -11,7 +11,7 @@ registerEsbuild({
 
 const { defineJestConfig } = require('@voltiso/config.jest.lib')
 
-const jestEsrConfig = require('@voltiso/config.jest.esr')
+const jestEsrConfig = require('@voltiso/config.jest')
 
 //! need to create a new unique object!
 module.exports = defineJestConfig({
@@ -26,6 +26,6 @@ module.exports = defineJestConfig({
 		'./jest/setupAfterEnv.ts',
 	],
 
-	forceExit: true, //! (have to, because jest-dev-server's `teardown` function causes always exit code 0 even on failed tests)
+	// forceExit: true, //! (have to, because jest-dev-server's `teardown` function causes always exit code 0 even on failed tests)
 	detectOpenHandles: true,
 })

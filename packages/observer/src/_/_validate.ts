@@ -1,13 +1,13 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable } from '@voltiso/schemar.types'
+import type { $$Schemable } from '@voltiso/schemar'
 
-import type { ObserverDiContext } from '~'
+import type { NestedSubjectDependencies } from '~'
 
 /** @internal */
 export function _validate(options: {
-	diContext?: ObserverDiContext | undefined
+	diContext?: NestedSubjectDependencies | undefined
 	schemable?: $$Schemable
 	value: unknown
 }) {

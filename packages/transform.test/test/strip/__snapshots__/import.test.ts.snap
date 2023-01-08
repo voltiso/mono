@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`import works 1`] = `
-"// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+"// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 /*import * as path from 'node:path'*/ 
 // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`basename\`

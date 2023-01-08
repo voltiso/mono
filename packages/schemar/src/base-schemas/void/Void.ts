@@ -1,15 +1,19 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar.types'
 import { lazyConstructor, lazyValue } from '@voltiso/util'
+
+import type { CustomVoid } from '~'
 
 import { VoidImpl } from './detail'
 
-export type Void = t.Void
+export type VoidConstructor = new () => Void
+
+export type Void = CustomVoid<{}>
+
 export const Void = lazyConstructor(
 	() => VoidImpl,
-) as unknown as t.VoidConstructor
+) as unknown as VoidConstructor
 
 const void_ = lazyValue(() => new Void())
 

@@ -1,8 +1,11 @@
-// ⠀ⓥ 2022     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
+
 import type {
 	$$Number,
 	CustomNumber,
@@ -12,10 +15,7 @@ import type {
 	Output,
 	Schema,
 	Type_,
-} from '@voltiso/schemar.types'
-import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-
+} from '~'
 import * as s from '~'
 
 describe('s.number', () => {
