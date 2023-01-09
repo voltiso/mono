@@ -22,7 +22,7 @@ import type {
 export namespace Type {
 	export type SplitInferables<
 		S extends $$Schemable,
-		IO extends GetTypeOptions & { isPlain: boolean },
+		IO extends GetTypeOptions, // & { isPlain: boolean },
 	> = S extends $$Schema
 		? HandleSchemas<S, IO>
 		: S extends $$Inferable
@@ -48,22 +48,24 @@ export namespace Type {
 
 	export type HandleInferables<
 		I extends $$Inferable,
-		IO extends GetTypeOptions & { isPlain: boolean },
+		IO extends GetTypeOptions, // & { isPlain: boolean },
 	> = I extends InferableLiteral
 		? I
 		: I extends $$InferableTuple
 		? TupleType_<I, IO>
 		: I extends $$InferableObject
 		? InferableObject extends I
-			? IO['isPlain'] extends true
-				? object
-				: {}
-			: GetImplicitObjectType<I, IO>
+			? {}
+			: // ? IO['isPlain'] extends true
+			  // 	? object
+			  // 	: {}
+			  GetImplicitObjectType<I, IO>
 		: object extends I
-		? IO['isPlain'] extends true
-			? object
-			: {}
-		: never
+		? {}
+		: // IO['isPlain'] extends true
+		  // 	? object
+		  // 	: {}
+		  never
 }
 
 //

@@ -41,7 +41,7 @@
   },
   "peerDependencies": {
     "@types/react": "^18.0.21",
-    "@voltiso/observer": "workspace:^",
+    "@voltiso/util.rxjs": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/util": "workspace:^",
     "react": "^18.1.0 || ^17",
@@ -58,7 +58,7 @@
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
-    "@voltiso/observer": "workspace:^",
+    "@voltiso/util.rxjs": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '@voltiso/schemar'
-import { isSchema } from '@voltiso/schemar'
 import type {
 	$$Schemable,
 	CustomString,
@@ -12,6 +10,8 @@ import type {
 	RegExpEntry,
 	Type,
 } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
+import { isSchema } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept, AtLeast1, Constructor, Falsy } from '@voltiso/util'
 import { ProtoCallable } from '@voltiso/util'
@@ -71,7 +71,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			get defined() {
 				return new Assertor(
 					`${name}.defined`,
-					s.unknown.check(x => typeof x !== 'undefined'),
+					s.unknown.check(x => x !== undefined),
 				) as never
 			},
 

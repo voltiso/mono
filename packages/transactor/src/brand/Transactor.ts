@@ -4,6 +4,7 @@
 import type { Brands, CustomBrand_, PropertyPath } from '@voltiso/util'
 
 import type { DocTag } from '~/DocTypes'
+import type { TransactorConfig } from '~/TransactorConfig-augmentation'
 
 export const TRANSACTOR = Symbol('TRANSACTOR')
 export type TRANSACTOR = typeof TRANSACTOR
@@ -39,5 +40,7 @@ export namespace TransactorBrand {
 	export type ForPath<
 		path extends PropertyPath.ForObject<Brands[TRANSACTOR]> | [],
 		detail = {},
-	> = CustomBrand_<[TRANSACTOR, ...path], detail>
+	> = TransactorConfig extends { disableBranding: true }
+		? {}
+		: CustomBrand_<[TRANSACTOR, ...path], detail>
 }

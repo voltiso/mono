@@ -5,6 +5,7 @@ import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
 import type { OmitByValue } from './OmitByValue'
+import { omitUndefined } from './OmitByValue'
 
 describe('OmitByValue', () => {
 	it('type', () => {
@@ -26,7 +27,41 @@ describe('OmitByValue', () => {
 		expect.assertions(0)
 
 		type A = OmitByValue<O, 'bb'>
-		$Assert.is<O, A>()
+		$Assert.is<{ [k in keyof O]: Exclude<O[k], 'bb'> }, A>()
+	})
+
+	it('omitUndefined', () => {
+		const obj = {
+			defined: 123,
+			maybeDefined: 123 as number | undefined,
+			maybeUndefined: undefined as number | undefined,
+			alwaysUndefined: undefined,
+		}
+
+		$Assert<
+			IsIdentical<
+				typeof obj,
+				{
+					defined: number
+					maybeDefined: number | undefined
+					maybeUndefined: number | undefined
+					alwaysUndefined: undefined
+				}
+			>
+		>()
+
+		const a = omitUndefined(obj)
+
+		$Assert<
+			IsIdentical<
+				typeof a,
+				{
+					defined: number
+					maybeDefined: number
+					maybeUndefined: number
+				}
+			>
+		>()
 	})
 
 	it('vscode jump to definition (manual test...)', () => {

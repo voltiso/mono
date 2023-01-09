@@ -3,6 +3,8 @@
 
 import { EXTENDS } from '_'
 import type {
+	$_,
+	$Omit,
 	AlsoAccept,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
@@ -18,7 +20,7 @@ import type {
 	DefaultSchemaOptions,
 	DefineSchema,
 	GetIssuesOptions,
-	GetSchemaByName_,
+	GetSchemaByName,
 	InferSchema,
 	ISchema,
 	SCHEMA_NAME,
@@ -104,16 +106,16 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	get optional(): GetSchemaByName_<
+	get optional(): GetSchemaByName<
 		this[SCHEMA_NAME],
-		Override<
-			Omit<
-				this[PARTIAL_OPTIONS],
+		$_<
+			$Omit<
+				Override<this[PARTIAL_OPTIONS], { isOptional: true }>,
 				'isStrictOptional' | 'default' | 'hasDefault'
-			>,
-			{ isOptional: true }
+			>
 		>
-	> // DefineSchema<this, { isOptional: true }>
+	>
+	// DefineSchema<this, { isOptional: true }>
 
 	/**
 	 * Same as `optional`, but does not auto-remove `undefined` properties
@@ -124,11 +126,13 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	get strictOptional(): GetSchemaByName_<
+	get strictOptional(): GetSchemaByName<
 		this[SCHEMA_NAME],
-		Override<
-			Omit<this[PARTIAL_OPTIONS], 'isOptional' | 'default' | 'hasDefault'>,
-			{ isStrictOptional: true }
+		$_<
+			$Omit<
+				Override<this[PARTIAL_OPTIONS], { isStrictOptional: true }>,
+				'isOptional' | 'default' | 'hasDefault'
+			>
 		>
 	> // DefineSchema<this, { isStrictOptional: true }>
 
@@ -380,7 +384,7 @@ export namespace CustomSchema {
 		readonly [OPTIONS]: { readonly Output: unknown }
 		readonly [PARTIAL_OPTIONS]: unknown
 	}
-		? GetSchemaByName_<
+		? GetSchemaByName<
 				This[SCHEMA_NAME],
 				Override<
 					Omit<This[PARTIAL_OPTIONS], 'isOptional' | 'isStrictOptional'>,

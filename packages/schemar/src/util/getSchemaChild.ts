@@ -4,7 +4,7 @@
 import { SCHEMA_NAME } from '_'
 import { assertNotPolluting, isPlainObject } from '@voltiso/util'
 
-import type { ISchema, Output_, Schema, Schemable, SchemableWithShape } from '~'
+import type { ISchema, Output_, Schema, Schemable } from '~'
 import {
 	infer,
 	isObjectSchema,
@@ -74,7 +74,7 @@ export function getSchemaChild<S extends Schema, Key extends keyof Output_<S>>(
 }
 
 export function getSchemableChild<
-	S extends SchemableWithShape,
+	S extends Schemable,
 	Key extends keyof Output_<S>,
 >(schemable: S, child: Key): Schemable<Output_<S>[Key]> {
 	if (isSchema(schemable))

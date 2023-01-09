@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getValues, isConstructor } from '@voltiso/util'
+import { getValues, isConstructor, isPlainObject } from '@voltiso/util'
 
 import type {
 	$$Inferable,
@@ -11,7 +11,7 @@ import type {
 	InferSchemaNoReadonlyTuple,
 	ISchema,
 } from '~'
-import { instance, object, tuple } from '~/base-schemas'
+import { instance, nonNullish, object, tuple } from '~/base-schemas'
 import { literal } from '~/core-schemas'
 import { isSchema } from '~/Schema/isSchema'
 
@@ -62,7 +62,9 @@ export function infer<T extends $$Schemable>(
 	} else if (isConstructor(x)) {
 		return instance(x) as never
 	} else if (Array.isArray(x)) return tuple(...x) as never
-	else {
+	else if (isPlainObject(x) && Object.keys(x).length === 0) {
+		return nonNullish as never
+	} else {
 		/**
 		 * If possible, default to `{}` so that it accepts `undefined` (only
 		 * possible if no input properties are required)

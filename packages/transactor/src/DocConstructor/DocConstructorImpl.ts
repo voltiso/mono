@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '@voltiso/schemar'
 import type { IObject, SchemaLike } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import { CallableConstructor, staticImplements } from '@voltiso/util'
 
 import type { IAggregatorHandlers } from '~/Aggregator'

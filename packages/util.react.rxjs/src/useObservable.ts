@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NestedSubject, ReadonlyNestedSubject } from '@voltiso/observer'
+import type { NestedSubject } from '@voltiso/util.rxjs'
 import { isBehaviorSubject } from '@voltiso/util.rxjs'
 import { useEffect, useState } from 'react'
 import type { BehaviorSubject, Observable } from 'rxjs'
@@ -12,10 +12,10 @@ import { isObservable } from 'rxjs'
  * all contexts (TS limitation?)
  */
 export type ObservableUnion<T> =
-	| BehaviorSubject<T>
 	| Observable<T>
+	| BehaviorSubject<T>
 	| NestedSubject<T>
-	| ReadonlyNestedSubject<T>
+// | ReadonlyNestedSubject<T>
 
 /**
  * Subscribe to `observable$` and get its value

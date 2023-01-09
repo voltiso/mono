@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isSet } from '~/map-set'
-import type { Value } from '~/object'
+import type { _, Value } from '~/object'
 import type { AlsoAccept } from '~/type'
 
 export type OmitByValue<
@@ -11,7 +11,9 @@ export type OmitByValue<
 > = OmitByValue_<Obj, val>
 
 export type OmitByValue_<Obj, val> = Omit<
-	Obj,
+	{
+		[k in keyof Obj]: Exclude<Obj[k], val>
+	},
 	{
 		[k in keyof Obj]: Value<Obj, k> extends val ? k : never
 	}[keyof Obj]
@@ -43,7 +45,7 @@ export function omitByValue<Obj extends object, Val>(
 
 export function omitUndefined<Obj extends object>(
 	obj: Obj,
-): OmitByValue<Obj, undefined> {
+): _<OmitByValue<Obj, undefined>> {
 	return omitByValue(obj, [undefined])
 }
 

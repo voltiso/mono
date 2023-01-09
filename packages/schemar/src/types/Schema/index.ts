@@ -3,6 +3,7 @@
 
 export * from './CustomSchema'
 export * from './CustomTypeOnly'
+export * from './DefineSchema'
 export * from './ISchema'
 export * from './Schema'
 export * from './Simplify'

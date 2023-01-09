@@ -17,6 +17,7 @@ export interface ObjectOptions<T extends object = object>
 
 	indexSignatures: ObjectIndexSignatureEntry[]
 
+	/** Constructor must be `Object` */
 	isPlain: boolean
 }
 

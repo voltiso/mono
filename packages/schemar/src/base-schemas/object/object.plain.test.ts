@@ -19,12 +19,16 @@ const nonPlain = new C()
 describe('object', () => {
 	it('type', () => {
 		const a = s.object
-		$Assert<IsIdentical<typeof a.Output, {}>>()
-		$Assert<IsIdentical<typeof a.Input, {}>>()
+		$Assert<IsIdentical<typeof a.Output, object>>()
+		$Assert<IsIdentical<typeof a.Input, object>>()
 
 		const b = s.object.plain
 		$Assert<IsIdentical<typeof b.Output, object>>()
 		$Assert<IsIdentical<typeof b.Input, object>>()
+
+		const c = s.plainObject
+		$Assert<IsIdentical<typeof c.Output, object>>()
+		$Assert<IsIdentical<typeof c.Input, object>>()
 	})
 
 	it('plain', () => {
@@ -59,3 +63,8 @@ const a = { a: 1 }
 
 // eslint-disable-next-line jest/require-hook
 $Assert.is<typeof a, object>()
+
+/* eslint-disable jest/require-hook */
+
+$Assert.is<{ a: 1 }, object>()
+$Assert.is<Omit<number, 'toString'>, object>()

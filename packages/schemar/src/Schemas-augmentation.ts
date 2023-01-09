@@ -12,6 +12,7 @@ import type {
 	CustomInstance,
 	CustomLiteral,
 	CustomNever,
+	CustomNonNullish,
 	CustomNumber,
 	CustomObject,
 	CustomRecord,
@@ -42,6 +43,8 @@ export interface Schemas<
 	Void: CustomVoid<O>
 	Any: CustomAny<O>
 	Unknown: CustomUnknown<O>
+
+	NonNullish: CustomNonNullish<O>
 
 	String: CustomString<O>
 	Number: CustomNumber<O>

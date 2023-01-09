@@ -1,10 +1,11 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar'
+import type * as s from '@voltiso/schemar'
 import type {
 	_,
 	Get_,
+	IsIdentical,
 	Merge2Reverse_,
 	NewableReturn_,
 	OmitSignatures,
@@ -180,22 +181,22 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 		handlers: AggregatorHandlers<TI, NewableReturn_<Target> & $$Doc, Name>,
 	): this
 
-	get schemaWithoutId(): t.SchemarAnd<
+	get schemaWithoutId(): s.SchemarAnd<
 		TI['publicOnCreation'],
-		t.SchemarAnd<TI['public'], TI['private']>
+		s.SchemarAnd<TI['public'], TI['private']>
 	>
 
-	get schemaWithId(): t.SchemarAnd<
-		t.SchemarAnd<
+	get schemaWithId(): s.SchemarAnd<
+		s.SchemarAnd<
 			TI['publicOnCreation'],
-			t.SchemarAnd<TI['public'], TI['private']>
+			s.SchemarAnd<TI['public'], TI['private']>
 		>,
-		t.Object<{
-			id: TI['id'] extends t.SchemaLike<string> ? TI['id'] : t.String
+		s.Object<{
+			id: TI['id'] extends s.SchemaLike<string> ? TI['id'] : s.String
 		}>
 	>
 
-	get idSchema(): TI['id'] extends t.SchemaLike<string>
+	get idSchema(): TI['id'] extends s.SchemaLike<string>
 		? TI['id']
 		: AutoIdSchema<this['_']['tag']>
 }
@@ -225,9 +226,9 @@ export namespace DocConstructor {
 		TI extends $$DocTI,
 		O extends $$PartialDocOptions,
 	> = TI extends {
-		publicOnCreation: t.$$Object
-		public: t.$$Object
-		private: t.$$Object
+		publicOnCreation: s.$$Object
+		public: s.$$Object
+		private: s.$$Object
 		aggregates: {}
 	}
 		? OmitValues<
@@ -236,18 +237,18 @@ export namespace DocConstructor {
 					id: 'id' extends keyof O ? O['id'] : never
 
 					publicOnCreation: 'publicOnCreation' extends keyof O
-						? t.SchemarAnd<
+						? s.SchemarAnd<
 								TI['publicOnCreation'],
-								t.InferSchema<O['publicOnCreation']>
+								InferSchema<O['publicOnCreation']>
 						  >
 						: never
 
 					public: 'public' extends keyof O
-						? t.SchemarAnd<TI['public'], t.InferSchema<O['public']>>
+						? s.SchemarAnd<TI['public'], InferSchema<O['public']>>
 						: never
 
 					private: 'private' extends keyof O
-						? t.SchemarAnd<TI['private'], t.InferSchema<O['private']>>
+						? s.SchemarAnd<TI['private'], InferSchema<O['private']>>
 						: never
 
 					aggregates: 'aggregates' extends keyof O
@@ -257,4 +258,15 @@ export namespace DocConstructor {
 				undefined
 		  >
 		: never
+
+	/**
+	 * Generally forward this task to `@voltiso/schemar`, but treat `{}` as object
+	 * schemas
+	 */
+	export type InferSchema<S extends s.$$Schemable> = IsIdentical<
+		S,
+		{}
+	> extends true
+		? s.Object<{}>
+		: s.InferSchema<S>
 }

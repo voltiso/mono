@@ -23,8 +23,11 @@ describe('object - unknown', () => {
 			emptyShapeObjectOrUndef2: s.object({}).plain.or(undefined),
 
 			// should be auto-defaulted and optional
-			autoInferObject: {}, // should inherit `isPlain`
-			autoInferObject2: s.schema({}), // should NOT inherit `isPlain`
+			autoInferObject: { a: s.number.optional }, // should inherit `isPlain`
+			autoInferObject2: s.schema({ a: s.number.optional }), // should NOT inherit `isPlain`
+
+			nonNullish: {},
+			nonNullish2: s.infer({}),
 		}
 
 		type A = GetObjectType<typeof shape, { kind: 'out'; isPlain: false }>
@@ -33,17 +36,20 @@ describe('object - unknown', () => {
 			IsIdentical<
 				A,
 				{
-					unknownObject: {}
+					unknownObject: object // {}
 					unknownObject2: object
 
-					emptyShapeObject: {}
+					emptyShapeObject: object // {}
 					emptyShapeObject2: object
 
-					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef: object | undefined // {} | undefined
 					emptyShapeObjectOrUndef2: object | undefined
 
-					autoInferObject: {}
-					autoInferObject2: {}
+					autoInferObject: { a?: number }
+					autoInferObject2: { a?: number }
+
+					nonNullish: {}
+					nonNullish2: {}
 				}
 			>
 		>()
@@ -53,18 +59,21 @@ describe('object - unknown', () => {
 		$Assert<
 			IsIdentical<
 				APlain,
-				object & {
-					unknownObject: {}
+				{
+					unknownObject: object // {}
 					unknownObject2: object
 
-					emptyShapeObject: {}
+					emptyShapeObject: object // {}
 					emptyShapeObject2: object
 
-					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef: object | undefined // {} | undefined
 					emptyShapeObjectOrUndef2: object | undefined
 
-					autoInferObject: object
-					autoInferObject2: {}
+					autoInferObject: { a?: number }
+					autoInferObject2: { a?: number }
+
+					nonNullish: {}
+					nonNullish2: {}
 				}
 			>
 		>()
@@ -78,17 +87,20 @@ describe('object - unknown', () => {
 			IsIdentical<
 				In,
 				{
-					unknownObject: {}
+					unknownObject: object // {}
 					unknownObject2: object
 
-					emptyShapeObject: {}
+					emptyShapeObject: object // {}
 					emptyShapeObject2: object
 
-					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef: object | undefined // {} | undefined
 					emptyShapeObjectOrUndef2: object | undefined
 
-					autoInferObject?: {} | undefined
-					autoInferObject2?: {} | undefined
+					autoInferObject?: { a?: number | undefined } | undefined
+					autoInferObject2?: { a?: number | undefined } | undefined
+
+					nonNullish: {}
+					nonNullish2: {}
 				}
 			>
 		>()
@@ -98,17 +110,20 @@ describe('object - unknown', () => {
 			IsIdentical<
 				Out,
 				{
-					unknownObject: {}
+					unknownObject: object // {}
 					unknownObject2: object
 
-					emptyShapeObject: {}
+					emptyShapeObject: object // {}
 					emptyShapeObject2: object
 
-					emptyShapeObjectOrUndef: {} | undefined
+					emptyShapeObjectOrUndef: object | undefined // {} | undefined
 					emptyShapeObjectOrUndef2: object | undefined
 
-					autoInferObject: {}
-					autoInferObject2: {}
+					autoInferObject: { a?: number }
+					autoInferObject2: { a?: number }
+
+					nonNullish: {}
+					nonNullish2: {}
 				}
 			>
 		>()
@@ -145,6 +160,36 @@ describe('object - unknown', () => {
 			}),
 		).toThrow('emptyShapeObjectOrUndef')
 
+		expect(() =>
+			sSchema.validate({
+				unknownObject: {},
+				unknownObject2: {},
+
+				emptyShapeObject: {},
+				emptyShapeObject2: {},
+
+				emptyShapeObjectOrUndef: {},
+				emptyShapeObjectOrUndef2: {},
+
+				nonNullish: {},
+			}),
+		).toThrow('.nonNullish2 should be present')
+
+		expect(() =>
+			sSchema.validate({
+				unknownObject: {},
+				unknownObject2: {},
+
+				emptyShapeObject: {},
+				emptyShapeObject2: {},
+
+				emptyShapeObjectOrUndef: {},
+				emptyShapeObjectOrUndef2: {},
+
+				nonNullish2: {},
+			}),
+		).toThrow('.nonNullish should be present')
+
 		expect(
 			sSchema.validate({
 				unknownObject: {},
@@ -155,6 +200,9 @@ describe('object - unknown', () => {
 
 				emptyShapeObjectOrUndef: {},
 				emptyShapeObjectOrUndef2: {},
+
+				nonNullish: 123,
+				nonNullish2: 'test',
 			}),
 		).toStrictEqual({
 			unknownObject: {},
@@ -168,6 +216,9 @@ describe('object - unknown', () => {
 
 			autoInferObject: {},
 			autoInferObject2: {},
+
+			nonNullish: 123,
+			nonNullish2: 'test',
 		})
 	})
 })

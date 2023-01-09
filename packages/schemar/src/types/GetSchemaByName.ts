@@ -15,7 +15,3 @@ export type GetSchemaByName<
 		? Schemas<O>[schemaName]
 		: never
 	: never
-
-export type GetSchemaByName_<schemaName, O> = O extends Partial<SchemaOptions>
-	? GetSchemaByName<schemaName, O>
-	: never

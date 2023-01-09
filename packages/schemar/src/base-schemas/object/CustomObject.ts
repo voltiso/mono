@@ -18,7 +18,6 @@ import type {
 	CustomSchema,
 	DefineSchema,
 	GetDeepShape_,
-	GetObjectType,
 	SCHEMA_NAME,
 	SimpleSchema,
 	Type,
@@ -96,11 +95,11 @@ export namespace CustomObject {
 				{
 					isPlain: true
 
-					// eslint-disable-next-line etc/no-internal
-					Output: GetObjectType._IntersectWithObject<This['Output']>
+					// // eslint-disable-next-line etc/no-internal
+					// Output: GetObjectType._IntersectWithObject<This['Output']>
 
-					// eslint-disable-next-line etc/no-internal
-					Input: GetObjectType._IntersectWithObject<This['Input']>
+					// // eslint-disable-next-line etc/no-internal
+					// Input: GetObjectType._IntersectWithObject<This['Input']>
 				}
 		  >
 		: never

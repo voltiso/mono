@@ -1,9 +1,6 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NestedSubject } from '@voltiso/observer'
-import { createNestedSubject } from '@voltiso/observer'
-import * as s from '@voltiso/schemar'
 import type {
 	$$SchemableObject,
 	InferableLiteral,
@@ -13,9 +10,11 @@ import type {
 	Type_,
 	ValidationIssue,
 } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import type { PropertyPath } from '@voltiso/util'
 import { deepMapValues, get, tryGet } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
+import { NestedSubject } from '@voltiso/util.rxjs'
 import type { ChangeEvent, FormEvent } from 'react'
 import { useMemo } from 'react'
 
@@ -38,8 +37,8 @@ function _initializeResult<S extends $$SchemableObject>(
 ): UseForm.RawResult<S> {
 	const deepShape = s.infer(options.schemable as SchemableObject).getDeepShape
 
-	const data$ = (options.data$ ||
-		createNestedSubject<Type_<S>>()) as NestedSubject<Type_<S>>
+	const data$: NestedSubject<Type_<S>> =
+		(options.data$ as never) || new NestedSubject<Type_<S>>({} as never)
 
 	const fields = deepMapValues(
 		deepShape,
@@ -112,8 +111,6 @@ function _initializeResult<S extends $$SchemableObject>(
 		},
 	) as unknown as UseForm.ResultFields<S>
 
-	console.log('!!', { fields })
-
 	return {
 		props: {
 			onSubmit: (event: FormEvent<HTMLFormElement>) => {
@@ -159,12 +156,16 @@ export const useForm = <S extends $$SchemableObject>(
 	mutable.result$ = useMemo(
 		() => {
 			const initialValue = _initializeResult<S>(options, mutable)
-			console.log('??', { initialValue })
-			const nestedSubject = createNestedSubject(initialValue)
+			const nestedSubject = new NestedSubject<UseForm.RawResult<S>>(
+				initialValue,
+			)
 
-			const subs = nestedSubject.fields.subscribe(value => {
-				console.log('!! INITIAL', value)
-			})
+			const subs = (nestedSubject.fields as NestedSubject<unknown>).subscribe(
+				value => {
+					console.log('!! INITIAL', value)
+				},
+			)
+
 			subs.unsubscribe()
 
 			console.log('?? return')

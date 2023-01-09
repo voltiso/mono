@@ -25,6 +25,7 @@ import type {
 	ISchema,
 	Literal,
 	MutableTuple,
+	NonNullish,
 	ReadonlyTuple,
 } from '~'
 
@@ -73,6 +74,8 @@ export namespace InferSchema {
 		? ISchema
 		: S extends $$Schema
 		? S
+		: IsAlmostSame<S, {}> extends true
+		? NonNullish
 		: S extends $$InferableObject
 		? ImplicitObject<S>
 		: S extends Newable
@@ -81,7 +84,5 @@ export namespace InferSchema {
 		? MutableTuple<FixTupleShape<S>>
 		: S extends $$InferableReadonlyTuple
 		? ReadonlyTuple<FixTupleShape<[...S]>>
-		: IsAlmostSame<S, {}> extends true
-		? ImplicitObject<{}>
 		: never
 }

@@ -8,12 +8,12 @@ import type {
 	$$Object,
 	$$Schema,
 	$$SchemableObject,
-	AutoCreatedObject,
 	InferableObject,
 	InferSchema,
 	IObject,
 	ISchema,
 	Literal,
+	NonNullish,
 	Object,
 	SchemableObject,
 } from '~'
@@ -41,6 +41,6 @@ describe('InferSchema', () => {
 		$Assert<IsIdentical<F, ISchema>>()
 
 		type G = InferSchema<1 | 2 | 'a' | {}>
-		$Assert<IsIdentical<G, Literal<1 | 2 | 'a'> | AutoCreatedObject<{}>>>
+		$Assert<IsIdentical<G, Literal<1 | 2 | 'a'> | NonNullish>>()
 	})
 })

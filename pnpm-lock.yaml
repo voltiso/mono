@@ -716,41 +716,6 @@ importers:
       '@voltiso/script': link:../../apps/script
       rxjs: 7.8.0
 
-  packages/observer:
-    specifiers:
-      '@voltiso/assertor': workspace:^
-      '@voltiso/config.ts.build.cjs': workspace:^
-      '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/schemar': workspace:^
-      '@voltiso/script': workspace:^
-      '@voltiso/util': workspace:^
-      '@voltiso/util.rxjs': workspace:^
-      rxjs: ^7.8.0
-    dependencies:
-      '@voltiso/util': link:../util
-    devDependencies:
-      '@voltiso/assertor': link:../assertor
-      '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
-      '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/schemar': link:../schemar
-      '@voltiso/script': link:../../apps/script
-      '@voltiso/util.rxjs': link:../util.rxjs
-      rxjs: 7.8.0
-
-  packages/observer.test:
-    specifiers:
-      '@voltiso/config.jest': workspace:^
-      '@voltiso/observer': workspace:^
-      '@voltiso/schemar': workspace:^
-      '@voltiso/script': workspace:^
-      '@voltiso/util': workspace:^
-    devDependencies:
-      '@voltiso/config.jest': link:../config.jest
-      '@voltiso/observer': link:../observer
-      '@voltiso/schemar': link:../schemar
-      '@voltiso/script': link:../../apps/script
-      '@voltiso/util': link:../util
-
   packages/rpc:
     specifiers:
       '@types/express': ^4.17.15
@@ -1235,12 +1200,12 @@ importers:
       '@voltiso/config.jest.react': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/observer': workspace:^
       '@voltiso/schemar': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
       '@voltiso/util.react.rxjs': workspace:^
+      '@voltiso/util.rxjs': workspace:^
       react: 18.1.0 || react-native-not-updated-to-peer-newer
       react-dom: 18.1.0 || react-native-not-updated-to-peer-newer
       rxjs: ^7.8.0
@@ -1252,11 +1217,11 @@ importers:
       '@voltiso/config.jest.react': link:../config.jest.react
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/observer': link:../observer
       '@voltiso/schemar': link:../schemar
       '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
       '@voltiso/util.react.rxjs': link:../util.react.rxjs
+      '@voltiso/util.rxjs': link:../util.rxjs
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
       rxjs: 7.8.0
@@ -1308,7 +1273,6 @@ importers:
       '@voltiso/config.jest.react': workspace:^
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
-      '@voltiso/observer': workspace:^
       '@voltiso/util': workspace:^
       '@voltiso/util.react': workspace:^
       '@voltiso/util.rxjs': workspace:^
@@ -1319,7 +1283,6 @@ importers:
       '@voltiso/config.jest.react': link:../config.jest.react
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
-      '@voltiso/observer': link:../observer
       '@voltiso/util': link:../util
       '@voltiso/util.react': link:../util.react
       '@voltiso/util.rxjs': link:../util.rxjs
@@ -1328,14 +1291,18 @@ importers:
 
   packages/util.rxjs:
     specifiers:
+      '@voltiso/assertor': workspace:^3.1.2
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
+      '@voltiso/schemar': workspace:^
       '@voltiso/script': workspace:^
       '@voltiso/util': workspace:^
       rxjs: ^7.8.0
     devDependencies:
+      '@voltiso/assertor': link:../assertor
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
+      '@voltiso/schemar': link:../schemar
       '@voltiso/script': link:../../apps/script
       '@voltiso/util': link:../util
       rxjs: 7.8.0

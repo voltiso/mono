@@ -2,12 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
-	INestedSubject,
-	INestedSubjectWithSchema,
-	NestedSubject,
-	ReadonlyNestedSubject,
-} from '@voltiso/observer'
-import type {
 	$$Schemable,
 	$$SchemableObject,
 	GetShape,
@@ -16,6 +10,7 @@ import type {
 	Type_,
 	ValidationIssue,
 } from '@voltiso/schemar'
+import type { INestedSubject, NestedSubject } from '@voltiso/util.rxjs'
 import type { DOMAttributes } from 'react'
 
 import type { UseFormValidators } from './Validators'
@@ -24,7 +19,7 @@ export namespace UseForm {
 	export type Options<S extends $$SchemableObject> = {
 		schemable: S
 
-		data$?: INestedSubject | INestedSubjectWithSchema | undefined
+		data$?: INestedSubject | undefined
 		// | NestedSubject<Type_<S>>
 		// | NestedSubjectWithSchema<S>
 		// | AlsoAccept<INestedSubject | INestedSubjectWithSchema>
@@ -78,7 +73,9 @@ export namespace UseForm {
 		fields: ResultFields<S>
 	}
 
-	export type Result<S extends $$SchemableObject> = ReadonlyNestedSubject<
-		RawResult<S>
-	>
+	export type Result<S extends $$SchemableObject> = NestedSubject<RawResult<S>>
+
+	// export type Result<S extends $$SchemableObject> = ReadonlyNestedSubject<
+	// 	RawResult<S>
+	// >
 }

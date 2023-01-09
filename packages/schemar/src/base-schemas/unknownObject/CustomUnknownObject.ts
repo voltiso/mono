@@ -54,6 +54,7 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 
 	//
 
+	/** Constructor must be `Object` */
 	get plain(): CustomUnknownObject.Plain<this>
 
 	index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(

@@ -104,8 +104,8 @@ export namespace GetObjectType {
 			},
 			Shape,
 			Options
-		>,
-		Options
+		>
+		// Options
 	>
 
 	//
@@ -130,6 +130,8 @@ export namespace GetObjectType {
 
 	/** @inline @internal */
 	export type _ShouldForceOptional<T, Shape> = Shape extends $$Schema
+		? false
+		: IsAlmostSame<Shape, {}> extends true
 		? false
 		: object extends T
 		? true
@@ -174,18 +176,18 @@ export namespace GetObjectType {
 	/**
 	 * Types should actually be e.g. `object & { a: 1 }`, but it's too verbose
 	 *
-	 * - We elect to mark object typed with `object` explicitly if `isPlain` is set
+	 * - We use `object` for empty shape objects
+	 * - Previously, we used `object` only if `.isPlain`
 	 *
 	 * @internal @inline
 	 */
 	export type _MaybeIntersectWithObject<
 		T,
-		Options extends GetTypeOptions,
-		// eslint-disable-next-line etc/no-internal
-	> = Options['isPlain'] extends true ? _IntersectWithObject<T> : T
+		// Options extends GetTypeOptions,
+	> = IsAlmostSame<T, {}> extends true ? object : T // Options['isPlain'] extends true ? _IntersectWithObject<T> : T
 
-	/** @internal @inline */
-	export type _IntersectWithObject<T> = IsAlmostSame<T, {}> extends true
-		? object
-		: object & T
+	// /** @internal @inline */
+	// export type _IntersectWithObject<T> = IsAlmostSame<T, {}> extends true
+	// 	? object
+	// 	: object & T
 }

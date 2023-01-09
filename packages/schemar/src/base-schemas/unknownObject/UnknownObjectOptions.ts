@@ -11,17 +11,8 @@ export interface UnknownObjectOptions extends SchemaOptions {
 }
 
 export interface DefaultUnknownObjectOptions extends DefaultSchemaOptions {
-	/**
-	 * For cleaner editor support, we use `object` only for explicit `.plain`
-	 * objects
-	 */
-	Output: {}
-
-	/**
-	 * For cleaner editor support, we use `object` only for explicit `.plain`
-	 * objects
-	 */
-	Input: {}
+	Output: object
+	Input: object
 
 	isPlain: false
 }

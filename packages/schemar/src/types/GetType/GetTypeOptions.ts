@@ -3,10 +3,10 @@
 
 export interface GetTypeOptions {
 	kind: 'in' | 'out'
-	isPlain: boolean
+	// isPlain: boolean
 }
 
 export type DefaultGetTypeOptions = {
 	kind: 'out'
-	isPlain: false
+	// isPlain: false
 }

@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.rxjs",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -32,22 +32,33 @@
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
-    "clean": "v clean"
+    "clean": "v clean",
+    "trace": "v trace",
+    "trace:run": "v traceRun"
   },
   "__________DEPS": "__________",
   "peerDependencies": {
+    "@voltiso/schemar": "workspace:^",
     "@voltiso/util": "workspace:^",
     "rxjs": "^7.5.6"
   },
+  "peerDependenciesMeta": {
+    "@voltiso/schemar": {
+      "optional": true
+    }
+  },
   "devDependencies": {
+    "@voltiso/assertor": "workspace:^3.1.2",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",
     "rxjs": "^7.8.0"
   },
   "__________MISC": "__________",
   "engines": {
-    "node": "16"
+    "node": "16",
+    "pnpm": "7"
   }
 }

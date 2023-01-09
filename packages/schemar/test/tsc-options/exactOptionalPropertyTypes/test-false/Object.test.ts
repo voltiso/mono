@@ -63,12 +63,8 @@ describe('object', () => {
 			s.object({ a: s.number, b: s.string }).extends(s.object({ c: s.number })),
 		).toBeFalsy()
 
-		/**
-		 * For cleaner editor support and no assignability issues, only `.plain`
-		 * objects are of type `object`
-		 */
 		type A = Output<typeof s.object>
-		$Assert<IsIdentical<A, {}>>()
+		$Assert<IsIdentical<A, object>>()
 
 		const x = s.object({ a: s.number(1), b: s.number(2) })
 		type X = Output<typeof x>
@@ -300,8 +296,14 @@ describe('object', () => {
 
 		expect(s.object({}).hasDefault).toBe(false)
 
-		expect(s.schema({}).hasDefault).toBe(true)
-		expect(s.infer({}).hasDefault).toBe(true)
+		expect(s.schema({ a: s.string.optional }).hasDefault).toBe(true)
+		expect(s.schema({ a: s.string.default('test') }).hasDefault).toBe(true)
+
+		expect(s.infer({ a: s.string.optional }).hasDefault).toBe(true)
+		expect(s.infer({ a: s.string.default('test') }).hasDefault).toBe(true)
+
+		expect(s.schema({}).hasDefault).toBe(false) // NonNullish
+		expect(s.infer({}).hasDefault).toBe(false) // NonNullish
 	})
 
 	it('nested', () => {
