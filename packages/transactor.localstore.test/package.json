@@ -27,11 +27,11 @@
     "@voltiso/transactor.localstore": "workspace:^",
     "@voltiso/util": "workspace:^",
     "jest": "^29.3.1",
-    "random-seed": "^0.3.0",
-    "zone.js": "^0.12.0"
+    "random-seed": "^0.3.0"
   },
   "__________MISC": "__________",
   "engines": {
-    "node": "16"
+    "node": "16",
+    "pnpm": "7"
   }
 }
