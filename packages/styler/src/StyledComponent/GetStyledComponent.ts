@@ -49,10 +49,14 @@ export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
 			}
 	  >
 
+/**
+ * If user code does not include `DOM` lib, `HTMLElement` may be an empty
+ * interface - intersect with `object` so that `string` is not assignable to it
+ */
 export type NativeElement = IsReactNative extends true
-	? NativeMethods
+	? object & NativeMethods
 	: IsReactNative extends false
-	? HTMLElement
+	? object & HTMLElement
 	: never
 
 export type IsStylable_<C> = keyof InnerProps extends keyof $ComponentProps<C>

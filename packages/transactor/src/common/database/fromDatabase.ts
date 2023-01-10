@@ -16,56 +16,58 @@ import { isDocRefDatabase, isDocRefJson } from './RefEntry'
 
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
-	o: Database.DocumentDataNestedNoArray,
+	nestedData: Database.DocumentDataNestedNoArray,
 ): NestedDataNoArray
 
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
-	o: Database.DocumentDataNested,
+	nestedData: Database.DocumentDataNested,
 ): NestedDataNoArray
 
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
-	o: Database.DocumentDataNested,
+	nestedData: Database.DocumentDataNested,
 ): NestedData {
-	if (Array.isArray(o)) {
-		return o.map(x => fromDatabaseData(ctx, x))
+	if (Array.isArray(nestedData)) {
+		return nestedData.map(x => fromDatabaseData(ctx, x))
 		// } else if (isRefLike(o)) {
 		// 	return new Ref(o.__ref) as unknown as T
-	} else if (isDocRef(o)) {
-		return o as never
-	} else if (Database.isDocumentReference(o)) {
+	} else if (isDocRef(nestedData)) {
+		return nestedData as never
+	} else if (Database.isDocumentReference(nestedData)) {
 		// eslint-disable-next-line no-console
-		console.warn('found LEGACY STRONG REF', o.path)
-		return new CustomDocRef(ctx, o.path, { isStrong: true })
-	} else if (isDocRefJson(o)) {
+		console.warn('found LEGACY STRONG REF', nestedData.path)
+		return new CustomDocRef(ctx, nestedData.path, { isStrong: true })
+	} else if (isDocRefJson(nestedData)) {
 		// console.log('fromDatabase ref', o.__target, o.__isStrong)
 
-		if (o.isStrong) return new CustomDocRef(ctx, o.path, { isStrong: true })
-		else return new CustomDocRef(ctx, o.path, { isStrong: false })
-	} else if (isDocRefDatabase(o)) {
-		if (o.isStrong) return new CustomDocRef(ctx, o.ref.path, { isStrong: true })
-		else return new CustomDocRef(ctx, o.ref.path, { isStrong: false })
-	} else if (Database.isTimestamp(o)) return o.toDate()
-	else if (isPlainObject(o)) {
+		if (nestedData.isStrong)
+			return new CustomDocRef(ctx, nestedData.path, { isStrong: true })
+		else return new CustomDocRef(ctx, nestedData.path, { isStrong: false })
+	} else if (isDocRefDatabase(nestedData)) {
+		if (nestedData.isStrong)
+			return new CustomDocRef(ctx, nestedData.ref.path, { isStrong: true })
+		else return new CustomDocRef(ctx, nestedData.ref.path, { isStrong: false })
+	} else if (Database.isTimestamp(nestedData)) return nestedData.toDate()
+	else if (isPlainObject(nestedData)) {
 		const r: DataRecord = {}
 
-		for (const [key, val] of Object.entries(o)) {
+		for (const [key, val] of Object.entries(nestedData)) {
 			// eslint-disable-next-line security/detect-object-injection
 			r[key] = fromDatabaseData(ctx, val as never)
 		}
 
 		return r
-	} else return o as never
+	} else return nestedData as never
 }
 
 //
 
-export const fromDatabase = (
+export function fromDatabase(
 	ctx: DocRefContext.Base & Partial<WithDocRef>,
-	doc: Database.DocumentSnapshot | Database.QueryDocumentSnapshot,
-): IntrinsicFields | null => {
-	const data = doc.data()
+	snapshot: Database.DocumentSnapshot | Database.QueryDocumentSnapshot,
+): IntrinsicFields | null {
+	const data = snapshot.data()
 
 	if (!data) return null
 

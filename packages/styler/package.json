@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/styler",
-  "version": "13.4.6",
+  "version": "13.4.7",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -56,10 +56,10 @@
     "@voltiso/util": "workspace:^"
   },
   "peerDependencies": {
-    "@types/react": "^18.0.0 || ^17.0.0",
+    "@types/react": "^18.0.0",
     "csstype": "^3.1.0",
     "fela": "^12.1.2",
-    "react": "^18.0.0 || ^17.0.0",
+    "react": "^18.0.0",
     "react-fela": "^12.1.2"
   },
   "devDependencies": {
@@ -86,7 +86,6 @@
     "fela-plugin-typescript": "^12.2.1",
     "fela-preset-web": "^12.2.1",
     "jest": "^29.3.1",
-    "jest-environment-jsdom": "^29.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-fela": "^12.2.1",
@@ -95,9 +94,10 @@
   },
   "__________MISC": "__________",
   "engines": {
-    "node": "16"
+    "node": "16",
+    "pnpm": "7"
   },
   "typeCoverage": {
-    "is": 99.29
+    "is": 99.28
   }
 }

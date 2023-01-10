@@ -10,6 +10,7 @@ ignores:
   - '@voltiso/config.ts.build.esm'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest.react'
+  - '@voltiso/config.jest.lib'
   - '@jest/types'
   - '@types/react-test-renderer'
   - '@types/testing-library__jest-dom' # extend-expect

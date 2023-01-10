@@ -102,6 +102,7 @@ export function prepare<X>(
 	}
 
 	if (typeof x === 'string') {
+		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!x.includes('${')) return x
 		// if (!x.includes('$__STYLER__{')) return x
 		else {

@@ -40,7 +40,7 @@ export function defineFunctionComponent<
 		})
 
 		// restore original `writable` state
-		if (typeof oldDescriptor?.writable !== 'undefined')
+		if (oldDescriptor?.writable !== undefined)
 			Object.defineProperty(component, propertyName, {
 				writable: oldDescriptor.writable,
 			})
