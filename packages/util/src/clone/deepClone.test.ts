@@ -1,3 +1,6 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import { deepClone } from './deepClone'
@@ -40,6 +43,54 @@ describe('deepClone', () => {
 		expect(y.cl.x).toBe(11)
 		expect(y.cl._cloned).toBeTruthy()
 		expect(x.cl._cloned).toBeFalsy()
+	})
+
+	it('array', () => {
+		const array = [1, 2, 3]
+		const clonedArray = deepClone(array)
+
+		expect(Object.getOwnPropertyNames(clonedArray)).toStrictEqual(
+			Object.getOwnPropertyNames(array),
+		)
+
+		expect(Object.getOwnPropertySymbols(clonedArray)).toStrictEqual(
+			Object.getOwnPropertySymbols(array),
+		)
+
+		expect(Object.getOwnPropertyDescriptors(clonedArray)).toStrictEqual(
+			Object.getOwnPropertyDescriptors(array),
+		)
+
+		expect(Object.getPrototypeOf(clonedArray)).toBe(
+			Object.getPrototypeOf(array),
+		)
+
+		expect(clonedArray.constructor).toBe(array.constructor)
+
+		expect(Array.isArray(clonedArray)).toBeTruthy()
+	})
+
+	it('ref', () => {
+		const nested = {}
+
+		const a = {
+			nested,
+			sameNested: nested,
+		}
+
+		const b = deepClone(a)
+
+		expect(b).toStrictEqual(a)
+		expect(b.nested).not.toBe(a.nested)
+		expect(b.sameNested).toBe(b.nested)
+	})
+
+	it('recursive', () => {
+		const obj: any = { a: { b: { c: {} } } }
+		obj.a.b.c.d = obj
+		const clonedObj = deepClone(obj)
+
+		expect(clonedObj).toStrictEqual(obj)
 	})
 
 	it('date with properties', () => {

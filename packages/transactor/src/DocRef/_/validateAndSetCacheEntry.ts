@@ -1,8 +1,6 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/util'
-
 import { withVoltisoEntry } from '~/Data'
 import type { IntrinsicFieldsSchema } from '~/schemas'
 import { setCacheEntry } from '~/Transaction'
@@ -34,14 +32,11 @@ export function validateAndSetCacheEntry(
 	try {
 		data = applySchema(context, { data, schema, bestEffort }) as never
 	} catch (error) {
-		assert(
-			error instanceof Error,
-			'validateAndSetCacheEntry: exotic error caught',
+		const wrappedError = new Error(
+			`validateAndSetCacheEntry(${context.docRef.path.toString()}): schema validation failed - see .cause for details`,
 		)
-		error.message = `validateAndSetCacheEntry(${context.docRef.path.toString()}): ${
-			error.message
-		}`
-		throw error // re-throw
+		wrappedError.cause = error
+		throw error
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

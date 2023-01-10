@@ -37,4 +37,11 @@ describe('intersection', () => {
 		expect(s.number.and(123).isValid(2)).toBeFalsy()
 		expect(s.number.and(undefined).isValid(123)).toBeFalsy()
 	})
+
+	it('object + nonNullish', () => {
+		expect(s.object.and(s.nonNullish).isValid({})).toBeTruthy()
+		expect(
+			s.object({ str: s.string.optional }).and(s.nonNullish).isValid({}),
+		).toBeTruthy()
+	})
 })

@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '@voltiso/schemar'
 import type { $$SchemableObject, IObject, ISchema } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'

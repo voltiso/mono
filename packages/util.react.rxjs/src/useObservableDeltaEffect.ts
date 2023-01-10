@@ -1,22 +1,22 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createPatch, isKeepIt } from '@voltiso/util'
 import type { DeepPartial_ } from '@voltiso/util'
+import { createPatch, isKeepIt } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
-import { isBehaviorSubject } from '@voltiso/util.rxjs'
+import { isObservableLike } from '@voltiso/util.rxjs'
 import type { DependencyList } from 'react'
-import type { BehaviorSubject, Observable } from 'rxjs'
+import type { Observable } from 'rxjs'
 
 import { useObservableEffect } from './useObservableEffect'
 
 export function useObservableDeltaEffect<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | undefined,
+	observable$: (Observable<T> & { value?: T }) | undefined,
 	effect: (deltaValue: DeepPartial_<T>) => void,
 	deps?: DependencyList,
 ): void {
 	const mutable = useInitial(() => {
-		const lastValue = isBehaviorSubject(observable$)
+		const lastValue = isObservableLike(observable$)
 			? observable$.value
 			: undefined
 		return { lastValue }

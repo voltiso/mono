@@ -1,19 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IObservable } from './IObservable'
+import { $Assert, $dev } from '@voltiso/util'
+import type { Subject } from 'rxjs'
 
-export interface ISubject {
-	closed: boolean
-	next(value: unknown): void
-	error(error: unknown): void
-	complete(): void
-	unsubscribe(): void
-	get observed(): boolean
-	asObservable(): IObservable
+import type { IObserver } from './IObserver'
+
+export interface ISubject extends Omit<Subject<unknown>, 'observers'> {
+	observers: IObserver[]
 }
 
-export interface IBehaviorSubject extends ISubject {
-	get value(): unknown
-	getValue(): unknown
-}
+$dev(<T>() => {
+	$Assert.is<Subject<T>, ISubject>()
+})

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PatchFor } from '@voltiso/util'
+import type { _, PatchFor } from '@voltiso/util'
 
 import type {
 	INestedSubjectBase,
@@ -47,12 +47,13 @@ export interface CustomOptionalNestedSubjectBase<
 	get maybeValue(): TO['Output'] | undefined
 }
 
-export type CustomNestedSubjectBase<TO extends NestedSubjectTypeOptions> =
+export type CustomNestedSubjectBase<TO extends NestedSubjectTypeOptions> = _<
 	TO['IsOptional'] extends true
 		? CustomOptionalNestedSubjectBase<TO>
 		: TO['IsOptional'] extends false
 		? CustomRequiredNestedSubjectBase<TO>
 		: never
+>
 
 // export interface OptionalNestedSubjectBase<T>
 // 	extends CustomOptionalNestedSubjectBase<{ Output: T; Input: T }> {}

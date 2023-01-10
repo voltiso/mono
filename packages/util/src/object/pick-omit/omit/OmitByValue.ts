@@ -22,7 +22,7 @@ export type OmitByValue_<Obj, val> = Omit<
 export function omitByValue<Obj extends object, Val>(
 	obj: Obj,
 	valuesToOmit: Iterable<Val>,
-): OmitByValue<Obj, Val> {
+): _<OmitByValue<Obj, Val>> {
 	const valuesSet = isSet(valuesToOmit) ? valuesToOmit : new Set(valuesToOmit)
 
 	const result: any = {}
@@ -46,15 +46,17 @@ export function omitByValue<Obj extends object, Val>(
 export function omitUndefined<Obj extends object>(
 	obj: Obj,
 ): _<OmitByValue<Obj, undefined>> {
-	return omitByValue(obj, [undefined])
+	return omitByValue(obj, [undefined]) as never
 }
 
-export function omitNull<Obj extends object>(obj: Obj): OmitByValue<Obj, null> {
-	return omitByValue(obj, [null])
+export function omitNull<Obj extends object>(
+	obj: Obj,
+): _<OmitByValue<Obj, null>> {
+	return omitByValue(obj, [null]) as never
 }
 
 export function omitUndefinedAndNull<Obj extends object>(
 	obj: Obj,
-): OmitByValue<Obj, undefined | null> {
-	return omitByValue(obj, [undefined, null])
+): _<OmitByValue<Obj, undefined | null>> {
+	return omitByValue(obj, [undefined, null]) as never
 }

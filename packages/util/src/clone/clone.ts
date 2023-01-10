@@ -5,8 +5,10 @@ import { $AssumeType } from '~/$strip'
 import type { Newable } from '~/function'
 import { assign } from '~/object'
 
+import type { CloneOptions } from './deepClone'
+
 export interface WithCloneFunction {
-	clone(): this
+	clone(options?: CloneOptions | undefined): this
 }
 
 /**
@@ -18,9 +20,12 @@ export function isWithCloneFunction(x: unknown): x is WithCloneFunction {
 	return typeof (x as WithCloneFunction | null)?.clone === 'function'
 }
 
-export function clone<X>(x: X): X {
+export function clone<X>(x: X, options?: CloneOptions | undefined): X {
+	if (typeof x === 'object' && x !== null && options?.cache.has(x))
+		return options.cache.get(x) as X
+
 	if (isWithCloneFunction(x)) {
-		return x.clone()
+		return x.clone(options)
 	}
 
 	if (typeof x === 'object') {

@@ -3,10 +3,10 @@
 
 import type { DependencyList } from 'react'
 import { useEffect } from 'react'
-import type { BehaviorSubject, Observable } from 'rxjs'
+import type { Observable } from 'rxjs'
 
 export function useObservableEffect<T>(
-	observable$: BehaviorSubject<T> | Observable<T> | undefined,
+	observable$: (Observable<T> & { value?: T }) | undefined,
 	effect: (value: T) => void,
 	deps?: DependencyList,
 ) {

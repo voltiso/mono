@@ -1,8 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export interface IObserver {
+import { $Assert, $dev } from '@voltiso/util'
+import type { Observer } from 'rxjs'
+
+export interface IObserver extends Observer<unknown> {
 	next(value: unknown): void
-	error(err: unknown): void
-	complete(): void
+	// error(err: unknown): void
+	// complete(): void
 }
+
+$dev(<T>() => {
+	$Assert.is<Observer<T>, IObserver>()
+})

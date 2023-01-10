@@ -11,20 +11,18 @@ import type {
 	Override,
 	Value,
 } from '@voltiso/util'
-import { lazyConstructor } from '@voltiso/util'
+import { $Assert, $dev, lazyConstructor } from '@voltiso/util'
 import type { Subject } from 'rxjs'
 
 import type {
 	CustomNestedSubjectBase,
+	IRequiredOrOptionalNestedSubjectBase,
 	NestedSubjectOptions,
 	NestedSubjectTypeOptions,
 	NestedSubjectTypeOptionsFromOptions,
 } from '~'
 import { _CustomNestedSubject, NestedSubjectConstructor } from '~'
-
-//
-
-//
+import type { ISubject } from '~/ISubject'
 
 //
 
@@ -52,6 +50,14 @@ export type CustomNestedSubject_<TO extends NestedSubjectTypeOptions> =
 					: never)
 		> &
 		_NestedSubjectRec<TO>
+
+export interface INestedSubject
+	extends IRequiredOrOptionalNestedSubjectBase,
+		ISubject {}
+
+$dev(<TO extends Partial<NestedSubjectTypeOptions>>() => {
+	$Assert.is<CustomNestedSubject<TO>, INestedSubject>()
+})
 
 export type NestedSubject<T = unknown> = CustomNestedSubject<{
 	Output: T

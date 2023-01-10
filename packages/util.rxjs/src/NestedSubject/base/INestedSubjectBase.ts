@@ -15,7 +15,7 @@ export interface IRequiredOrOptionalNestedSubjectBase {
 	get value(): unknown
 	get maybeValue(): unknown | undefined
 
-	_: {}
+	_: object
 }
 
 export interface INestedSubjectBase

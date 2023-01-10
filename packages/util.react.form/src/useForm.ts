@@ -37,8 +37,8 @@ function _initializeResult<S extends $$SchemableObject>(
 ): UseForm.RawResult<S> {
 	const deepShape = s.infer(options.schemable as SchemableObject).getDeepShape
 
-	const data$: NestedSubject<Type_<S>> =
-		(options.data$ as never) || new NestedSubject<Type_<S>>({} as never)
+	const data$: NestedSubject<Type_<S>> = (options.data$ ||
+		new NestedSubject<Type_<S>>({} as never)) as never
 
 	const fields = deepMapValues(
 		deepShape,
@@ -156,21 +156,20 @@ export const useForm = <S extends $$SchemableObject>(
 	mutable.result$ = useMemo(
 		() => {
 			const initialValue = _initializeResult<S>(options, mutable)
-			const nestedSubject = new NestedSubject<UseForm.RawResult<S>>(
+
+			const nestedSubject$ = new NestedSubject<UseForm.RawResult<S>>(
 				initialValue,
 			)
 
-			const subs = (nestedSubject.fields as NestedSubject<unknown>).subscribe(
-				value => {
-					console.log('!! INITIAL', value)
-				},
-			)
+			// const subs = (nestedSubject.fields as NestedSubject<unknown>).subscribe(
+			// 	value => {
+			// 		console.log('!! INITIAL', value)
+			// 	},
+			// )
 
-			subs.unsubscribe()
+			// subs.unsubscribe()
 
-			console.log('?? return')
-
-			return nestedSubject
+			return nestedSubject$
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],

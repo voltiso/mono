@@ -100,8 +100,6 @@ describe('useForm', () => {
 			const formProps = useObservable(form$.props)
 			const fields = useObservable(form$.fields)
 
-			console.log(fields)
-
 			return (
 				<>
 					<form {...formProps}>
@@ -117,7 +115,7 @@ describe('useForm', () => {
 
 		$assert(form$)
 
-		expect(form$.fields.name.props._.value?.value).toBe('test')
+		expect(form$.fields.name.props._.value.value).toBe('test')
 
 		act(() => {
 			$assert(form$)
@@ -128,6 +126,6 @@ describe('useForm', () => {
 		})
 
 		expect(appState$.formData.name.value).toBe('test2')
-		expect(form$.fields.name.props._.value?.value).toBe('test2')
+		expect(form$.fields.name.props._.value.value).toBe('test2')
 	})
 })

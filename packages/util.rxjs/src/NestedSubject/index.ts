@@ -3,8 +3,8 @@
 
 export * from './_'
 export * from './_CustomNestedSubject'
+export * from './_NestedSubject'
 export * from './base'
-export * from './INestedSubject'
 export * from './NestedSubject'
 export * from './NestedSubjectConstructor'
 export * from './NestedSubjectOptions'

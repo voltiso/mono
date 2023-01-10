@@ -62,6 +62,7 @@ describe('clone', () => {
 		expect(array.test).toBe('asd')
 		expect(c).toStrictEqual(array)
 		expect(c[0]).toBe(array[0])
+		expect(Array.isArray(c)).toBeTruthy()
 	})
 
 	it('array with properties and proto', () => {
