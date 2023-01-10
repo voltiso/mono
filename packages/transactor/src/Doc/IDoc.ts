@@ -13,8 +13,8 @@ import type { $$DocConstructor } from '..'
 import type { DocContext } from './DocContext'
 import type { DocTI, DTI } from './DocTI'
 
-export const IS_DOC = Symbol('IS_DOC')
-export type IS_DOC = typeof IS_DOC
+export type IS_DOC = { readonly symbol: unique symbol }['symbol']
+export const IS_DOC: IS_DOC = Symbol('IS_DOC') as never
 
 export interface $$Doc {
 	readonly [IS_DOC]: true

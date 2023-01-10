@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type * as t from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -64,7 +63,7 @@ describe('InferFields', () => {
 		type F = InferFields<typeof Doctor>
 		type X = F['public']['getShape']['optionalFriend']
 
-		$Assert.is<X, t.Schema<CustomDocRef>['optional']>()
+		$Assert.is<X, s.Schema<CustomDocRef>['optional']>()
 		// Assert<IsIdentical<X, SOptional<s.DocRef>>>()
 	})
 

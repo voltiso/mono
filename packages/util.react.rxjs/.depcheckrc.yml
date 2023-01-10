@@ -1,0 +1,7 @@
+# ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+# ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+ignores:
+  - '@voltiso/config.jest.react'
+  - '@voltiso/config.ts.build.cjs'
+  - '@voltiso/config.ts.build.esm'

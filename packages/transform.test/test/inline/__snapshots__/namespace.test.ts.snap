@@ -15,7 +15,7 @@ declare const obj: {
 declare type A = Test.A;
 declare type B = Test.B;
 export declare type _unused_namespace = A | B;
-export declare type Inlined = /* InlineFlatten<typeof obj> */ { a: A; b: B; };
+export declare type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; };
 export {};
 //# sourceMappingURL=namespace.d.ts.map"
 `;

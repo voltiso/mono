@@ -20,4 +20,11 @@ export type SneakyExternal = SneakyPrivateThing | { c: 0 }
 export declare namespace Test {
 	export type A = { a: 1 }
 	export type B = { b: 1 }
+
+	export namespace Nested {
+		export type C<T = B> = { c: A | T; fun: <T = B>(x: T | A) => A }
+	}
 }
+
+const AnyDoc = Symbol('AnyDoc')
+export type AnyDoc = typeof AnyDoc

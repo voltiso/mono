@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '@voltiso/schemar'
 import type { Input_, Output_ } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 
 import { sVoltisoEntry } from './sVoltisoEntry'
 

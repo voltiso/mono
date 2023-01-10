@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Override } from '@voltiso/util'
-import { define, lazyConstructor } from '@voltiso/util'
+import { $Assert, lazyConstructor } from '@voltiso/util'
 
 import type {
 	GetAggregatePromises,
@@ -104,7 +104,7 @@ export namespace CustomDocRef {
 	}
 }
 
-export const defaultDocRefOptions = define<CustomDocRef.Options>().value({
+export const defaultDocRefOptions = {
 	isStrong: false as boolean, // must be supertype
 
 	/** 🌿 Type-only (no value at runtime) */
@@ -116,4 +116,8 @@ export const defaultDocRefOptions = define<CustomDocRef.Options>().value({
 	//  * 🌿 Type-only (no value at runtime)
 	//  */
 	// onlyStaticallyKnownFields: undefined as unknown as false,
-})
+}
+
+//
+
+$Assert.is<typeof defaultDocRefOptions, CustomDocRef.Options.Default>()

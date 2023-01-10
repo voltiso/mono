@@ -13,6 +13,9 @@ Config:
   (usually symbols out of scope) - this applies only to the _JSDoc_ inlining
   method (`1.`)
 
+⚠️ Currently only checks if type names are in scope - but does not check if the
+types are equal!
+
 # `@voltiso/transform/strip`
 
 Strip symbols such as asserts from production code.

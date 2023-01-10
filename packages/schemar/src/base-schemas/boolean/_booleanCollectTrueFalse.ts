@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable} from '~';
+import type { $$Schemable } from '~'
 import { isBooleanSchema, isLiteralSchema, isUnionSchema } from '~'
 import { schema } from '~/core-schemas'
 

@@ -5,6 +5,7 @@ import type { TransformContext } from '@voltiso/transform.lib'
 import { getNodeText } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
+import { fixNamespaces } from './fixNamespaces'
 import { simplifyNode } from './simplifyNode'
 
 export function simplifyAndAddComment(
@@ -16,11 +17,15 @@ export function simplifyAndAddComment(
 
 	const comment = getNodeText(ctx, ts.getOriginalNode(originalNode))
 
-	if (comment)
+	if (comment) {
 		node = ts.addSyntheticLeadingComment(
 			node,
 			ts.SyntaxKind.MultiLineCommentTrivia,
 			` ${comment} `,
 		)
+	}
+
+	node = fixNamespaces(ctx, node)
+
 	return node
 }

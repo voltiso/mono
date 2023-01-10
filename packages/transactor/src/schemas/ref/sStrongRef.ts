@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import { lazyValue, ProtoCallable } from '@voltiso/util'
 
 import type { DocRef, DocRefLike, GetDocRef } from '~/DocRef'

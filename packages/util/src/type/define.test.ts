@@ -28,4 +28,6 @@ describe('define', () => {
 		// @ts-expect-error wrong type
 		define<Theme>().value({ a: { b: { c: 'test' } } })
 	})
+
+	// TODO: `skip` works incorrectly with branded strings or symbols or anything
 })

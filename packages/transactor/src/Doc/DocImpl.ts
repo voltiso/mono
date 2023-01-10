@@ -16,6 +16,7 @@ import { withId } from '~/Data'
 import type { Db } from '~/Db'
 import type { DocRefContext, WeakDocRef } from '~/DocRef'
 import { CustomDocRef, isStrongDocRef } from '~/DocRef'
+import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error/TransactorError'
 import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
@@ -23,7 +24,6 @@ import type { CustomDocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
 import type { Updates } from '~/updates'
 
-import type { AnyDoc } from '..'
 import { DocConstructorImpl } from '../DocConstructor'
 import type { GetData } from './_/GetData'
 import type { Doc } from './Doc'
@@ -203,9 +203,6 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 }
 
 //
-
-// export const DOC_SHAPE_NON_EMPTY_HACK = Symbol('DOC_SHAPE_NON_EMPTY_HACK')
-// export type DOC_SHAPE_NON_EMPTY_HACK = typeof DOC_SHAPE_NON_EMPTY_HACK
 
 export interface DefaultDocTI extends DocTI {
 	tag: AnyDoc

@@ -66,6 +66,8 @@ export function canBeInlined(
 
 	const symbolsOutOfScope = collectSymbolNames(newNode)
 
+	// console.log('collected symbol names', symbolsOutOfScope)
+
 	// console.log(newSymbolNames)
 
 	const symbolNames = collectSymbolNames(node)
@@ -92,6 +94,8 @@ export function canBeInlined(
 		if (ctx.options.onInlineError === 'fail') throw new Error(message)
 	}
 
+	//
+
 	const importTypeNodes = collectNodesOfKind(newNode, ts.SyntaxKind.ImportType)
 
 	let containsImportAbsolutePath = false
@@ -116,7 +120,29 @@ export function canBeInlined(
 		}
 	}
 
-	const canBeInlined = !hasSymbolsOutOfScope && !containsImportAbsolutePath
+	//
+
+	const typeQueryNodes = collectNodesOfKind(newNode, ts.SyntaxKind.TypeQuery)
+
+	const containsTypeQueryNodes = typeQueryNodes.length > 0
+
+	if (options?.warn && containsTypeQueryNodes) {
+		const message = `\n[@voltiso/transform] unable to inline ${
+			getNodeText(ctx, node) || stringFromSyntaxKind(node.kind)
+		} - resulting node text would include type query node (typeof) \n  @ ${getNodePositionStr(
+			node,
+		)}`
+
+		// eslint-disable-next-line no-console
+		console.warn(chalk.bgRed(message))
+
+		if (ctx.options.onInlineError === 'fail') throw new Error(message)
+	}
+
+	const canBeInlined =
+		!hasSymbolsOutOfScope &&
+		!containsImportAbsolutePath &&
+		!containsTypeQueryNodes
 
 	return canBeInlined
 }

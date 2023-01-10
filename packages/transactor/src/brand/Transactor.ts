@@ -9,6 +9,9 @@ import type { TransactorConfig } from '~/TransactorConfig-augmentation'
 export const TRANSACTOR = Symbol('TRANSACTOR')
 export type TRANSACTOR = typeof TRANSACTOR
 
+// export type TRANSACTOR = { readonly symbol: unique symbol }['symbol']
+// export const TRANSACTOR: TRANSACTOR = Symbol('TRANSACTOR') as never
+
 declare module '@voltiso/util' {
 	interface Brands {
 		[TRANSACTOR]: {

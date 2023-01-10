@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isValidationError } from '@voltiso/schemar'
 import type * as s from '@voltiso/schemar'
+import { isValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept } from '@voltiso/util'
 import { BoundCallable, CALL } from '@voltiso/util'

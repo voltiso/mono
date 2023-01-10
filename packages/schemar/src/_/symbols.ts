@@ -1,8 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export const SCHEMA_NAME = Symbol('SCHEMA_NAME')
-export type SCHEMA_NAME = typeof SCHEMA_NAME
+export type SCHEMA_NAME = { readonly symbol: unique symbol }['symbol']
+export const SCHEMA_NAME: SCHEMA_NAME = Symbol('SCHEMA_NAME') as never
 
-export const EXTENDS = Symbol('EXTENDS')
-export type EXTENDS = typeof EXTENDS
+//
+
+export type EXTENDS = { readonly symbol: unique symbol }['symbol']
+export const EXTENDS: EXTENDS = Symbol('EXTENDS') as never

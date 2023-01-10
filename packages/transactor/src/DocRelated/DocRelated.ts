@@ -23,7 +23,7 @@ export type $$DocRelatedLike =
 	| AnyDoc
 
 /** Strict DocTags */
-export type $$DocRelated = Exclude<$$DocRelatedLike, string> | DocTag
+export type $$DocRelated = Exclude<$$DocRelatedLike, string> | AnyDoc | DocTag
 
 //
 

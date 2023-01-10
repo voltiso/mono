@@ -7,8 +7,8 @@
 // 	$Assert.is<Doc, Omit<IndexedDoc, 'ref' | DTI | 'aggregateSchemas' | 'update'>>()
 // 	$Assert.is<Doc['ref'], IndexedDoc>()
 // })
-import * as s from '@voltiso/schemar'
 import type * as t from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 

@@ -177,7 +177,14 @@ export const defaultSingleOverloadHandlerOptions: SingleOverloadHandlerDetail.Op
 
 //
 
-export const singleOverloadHandlerGenericId = Symbol('SingleOverloadHandler')
+export type SingleOverloadHandlerGenericId = {
+	readonly symbol: unique symbol
+}['symbol']
+
+export const singleOverloadHandlerGenericId: SingleOverloadHandlerGenericId =
+	Symbol('SingleOverloadHandler') as never
+
+//
 
 declare module '@voltiso/util' {
 	interface Generics<PartialOptions extends {}> {

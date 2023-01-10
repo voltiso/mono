@@ -1,6 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// ! randomly fails with (because of zone.js - but probably & hopefully only under jest):
+// Unknown worker message type message
+// @voltiso/transactor:test:     This is caused by either a bug in Node.js or incorrect usage of Node.js internals.
+// @voltiso/transactor:test:     Please open an issue with this stack trace at https://github.com/nodejs/node/issues
+// !
+
 import 'zone.js'
 import 'zone.js/fesm2015/zone-testing-node-bundle'
 
@@ -55,6 +61,7 @@ describe('zone', () => {
 					await sleep(50)
 				}
 			}),
+
 			root.run<Promise<void>>(async () => {
 				for (let i = 0; i < 10; ++i) {
 					// console.log(Zone.current.name)

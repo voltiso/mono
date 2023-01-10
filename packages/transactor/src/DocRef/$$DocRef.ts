@@ -5,8 +5,8 @@ import type { DocBrand } from '~/brand'
 import type { $$DocRelated, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
-export const IS_DOC_REF = Symbol('IS_DOC_REF')
-export type IS_DOC_REF = typeof IS_DOC_REF
+export type IS_DOC_REF = { readonly symbol: unique symbol }['symbol']
+export const IS_DOC_REF: IS_DOC_REF = Symbol('IS_DOC_REF') as never
 
 export interface $$DocRef {
 	readonly [IS_DOC_REF]: true

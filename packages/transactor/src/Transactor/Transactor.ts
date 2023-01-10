@@ -170,7 +170,7 @@ export class Transactor extends Db {
 				'db.register(Cls) requires `Cls` to include DocTag',
 			)
 
-		$assert(cls._.tag)
+		$assert.string(cls._.tag)
 
 		const collection = this._context.db(
 			cls._.tag,

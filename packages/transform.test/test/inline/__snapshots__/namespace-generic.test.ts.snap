@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`namespace-generic works 1`] = `
+"import type { Test } from './_/external-stuff';
+export declare type Flatten<T> = [{
+    [k in keyof T]: T[k];
+}][0];
+/** @inline */ export declare type InlineFlatten<T> = [{
+    [k in keyof T]: T[k];
+}][0];
+declare const obj: {
+    a: Test.A;
+    b: Test.B;
+    c: Test.Nested.C<Test.B>;
+    d: <T = Test.Nested.C<Test.B>>() => Test.Nested.C<T>;
+};
+export declare type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; c: Test.Nested.C<Test.B>; d: <T = Test.Nested.C<Test.B>>() => Test.Nested.C<T>; };
+declare type Local = 1;
+export declare type InlinedG = /* InlineFlatten< { fun: <A = { x: Test.Nested.C<Test.A> }>(arg: A) => A & typeof obj } & { x: Test.A | Test.Nested.C<Test.B> fun2: <Local = 2>() => Local loc: Local } > */ { fun: <A = { x: Test.Nested.C<Test.A>; }>(arg: A) => A & { a: Test.A; b: Test.B; c: Test.Nested.C<Test.B>; d: <T = Test.Nested.C<Test.B>>() => Test.Nested.C<T>; }; x: Test.A | Test.Nested.C<Test.B>; fun2: <Local = 2>() => Local; loc: 1; };
+export {};
+//# sourceMappingURL=namespace-generic.d.ts.map"
+`;

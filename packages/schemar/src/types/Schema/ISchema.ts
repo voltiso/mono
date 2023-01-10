@@ -18,9 +18,6 @@ import type {
 } from '~'
 import { EXTENDS } from '~'
 
-// export const IS_SCHEMA = Symbol('IS_SCHEMA')
-// export type IS_SCHEMA = typeof IS_SCHEMA
-
 export interface $$Schema {
 	readonly [SCHEMA_NAME]: unknown
 }

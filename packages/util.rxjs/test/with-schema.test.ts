@@ -34,7 +34,7 @@ describe('NestedSubject with schema', () => {
 
 	it('raw api', () => {
 		const unknownData = new CustomNestedSubject({})
-		$Assert<IsIdentical<(typeof unknownData)['_'], {}>>()
+		$Assert<IsIdentical<typeof unknownData, NestedSubject<unknown>>>()
 
 		//
 		;() => {

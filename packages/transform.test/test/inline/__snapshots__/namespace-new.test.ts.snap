@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`namespace-bad works 1`] = `
+exports[`namespace-new works 1`] = `
 "import type { Test } from './_/external-stuff';
 export declare type Flatten<T> = [{
     [k in keyof T]: T[k];
@@ -12,7 +12,7 @@ declare const obj: {
     a: Test.A;
     b: Test.B;
 };
-export declare type CannotBeInlined = InlineFlatten<typeof obj>;
+export declare type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; };
 export {};
-//# sourceMappingURL=namespace-bad.d.ts.map"
+//# sourceMappingURL=namespace-new.d.ts.map"
 `;

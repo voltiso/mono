@@ -11,7 +11,7 @@ import type {
 	UnknownTupleOptions,
 } from '~'
 
-import type { ReadonlyUnknownTuple } from "."
+import type { ReadonlyUnknownTuple } from '.'
 
 describe('array', () => {
 	it('generic', <O extends UnknownTupleOptions>() => {

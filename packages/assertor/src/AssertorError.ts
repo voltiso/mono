@@ -10,8 +10,11 @@ export function stringFromPackage(packageJson: {
 	name: string
 	version?: string | undefined
 }): string {
-	if (!packageJson.version) return packageJson.name
-	else return `${packageJson.name}@${packageJson.version}`
+	if (packageJson.version) {
+		return `${packageJson.name}@${packageJson.version}`
+	} else {
+		return packageJson.name
+	}
 }
 
 export interface AssertorErrorOptions extends ErrorOptions {
