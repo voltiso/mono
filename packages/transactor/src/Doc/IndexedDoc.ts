@@ -30,13 +30,9 @@ export type IndexedDocTISchema = t.CustomObject<{
 	}
 }>
 
-// export interface $$IndexedDocTI extends $$DocTI {
-// 	readonly [IS_INDEXED]: true // ! make sure it's strict sub-type
-// }
-
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
-	tag: AnyDoc
+	tag: any // AnyDoc
 
 	publicOnCreation: IndexedDocTISchema
 	public: IndexedDocTISchema

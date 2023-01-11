@@ -37,8 +37,6 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	extends $$Doc {
 	//
 
-	// This: this
-
 	readonly [DTI]: TI
 
 	readonly constructor: $$DocConstructor

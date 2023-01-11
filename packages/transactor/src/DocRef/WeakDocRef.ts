@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$DocRelatedLike } from '~/DocRelated'
+import type { $$DocRelated } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
 import type { CustomDocRef } from './CustomDocRef'
@@ -11,7 +11,7 @@ import type { CustomDocRef } from './CustomDocRef'
  *
  * - 😱 no ref-counting❗
  */
-export interface WeakDocRef<R extends $$DocRelatedLike = AnyDoc>
+export interface WeakDocRef<R extends $$DocRelated = AnyDoc>
 	extends CustomDocRef<{
 		doc: R
 	}> {}

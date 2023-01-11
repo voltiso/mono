@@ -6,6 +6,7 @@ import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type {
 	$$Schema,
+	$$Schemable,
 	DefaultObjectOptions,
 	ISchema,
 	ObjectIndexSignatureEntry,
@@ -35,6 +36,11 @@ export interface IObject<T extends object = object>
 
 	get deepPartial(): $$Object
 	get deepStrictPartial(): $$Object
+
+	get plain(): $$Object
+
+	// index(key: $$Schemable, value: $$Schemable): $$Object
+	// index(value: $$Schemable): $$Object
 }
 
 export function isObjectSchema(x: unknown): x is IObject {

@@ -135,27 +135,21 @@ export namespace CustomObject {
 	export type WithPartial<This extends $$Object> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? DefineSchema<
-				This,
-				{
-					shape: PartialShape_<This[OPTIONS]['shape']>
-					Output: Partial<This[OPTIONS]['Output']>
-					Input: PartialOrUndefined_<This[OPTIONS]['Input']>
-				}
-		  >
+		? CustomObject<{
+				shape: PartialShape_<This[OPTIONS]['shape']>
+				Output: Partial<This[OPTIONS]['Output']>
+				Input: PartialOrUndefined_<This[OPTIONS]['Input']>
+		  }>
 		: never
 
 	export type WithStrictPartial<This extends $$Object> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? DefineSchema<
-				This,
-				{
-					shape: StrictPartialShape_<This[OPTIONS]['shape']>
-					Output: Partial<This[OPTIONS]['Output']>
-					Input: Partial<This[OPTIONS]['Input']>
-				}
-		  >
+		? CustomObject<{
+				shape: StrictPartialShape_<This[OPTIONS]['shape']>
+				Output: Partial<This[OPTIONS]['Output']>
+				Input: Partial<This[OPTIONS]['Input']>
+		  }>
 		: never
 
 	//
@@ -163,26 +157,20 @@ export namespace CustomObject {
 	export type WithDeepPartial<This extends $$Object> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? DefineSchema<
-				This,
-				{
-					shape: DeepPartialShape_<This[OPTIONS]['shape']>
-					Output: DeepPartial_<This[OPTIONS]['Output']>
-					Input: DeepPartialOrUndefined_<This[OPTIONS]['Input']>
-				}
-		  >
+		? CustomObject<{
+				shape: DeepPartialShape_<This[OPTIONS]['shape']>
+				Output: DeepPartial_<This[OPTIONS]['Output']>
+				Input: DeepPartialOrUndefined_<This[OPTIONS]['Input']>
+		  }>
 		: never
 
 	export type WithDeepStrictPartial<This extends $$Object> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? DefineSchema<
-				This,
-				{
-					shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
-					Output: DeepPartial_<This[OPTIONS]['Output']>
-					Input: DeepPartial_<This[OPTIONS]['Input']>
-				}
-		  >
+		? CustomObject<{
+				shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
+				Output: DeepPartial_<This[OPTIONS]['Output']>
+				Input: DeepPartial_<This[OPTIONS]['Input']>
+		  }>
 		: never
 }

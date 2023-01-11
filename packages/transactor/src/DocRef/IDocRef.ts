@@ -3,18 +3,17 @@
 
 import type { IdString } from '~/brand'
 import type { DocRefDatabase, DocRefJson } from '~/common'
-import type { Doc } from '~/Doc'
-import type { DocTI, DTI } from '~/Doc/DocTI'
+import type { IDoc } from '~/Doc'
 import type { DocPath } from '~/Path'
 
 import type { DocFieldPath } from '../DocFieldPath/DocFieldPath'
 import type { $$DocRef } from './$$DocRef'
 
-export interface IDocRef extends IDocRefBase, PromiseLike<Doc | null> {}
+export interface IDocRef extends IDocRefBase, PromiseLike<IDoc | null> {}
 
 export interface IDocRefBase extends $$DocRef {
-	readonly [DTI]: DocTI
-	readonly Exists: boolean
+	// readonly [DTI]: DocTI
+	// readonly Exists: boolean
 
 	readonly isStrong: boolean
 
@@ -27,8 +26,8 @@ export interface IDocRefBase extends $$DocRef {
 	dataWithId(): PromiseLike<unknown>
 	dataWithoutId(): PromiseLike<unknown>
 
-	get(): PromiseLike<Doc | null>
-	set(data: any): PromiseLike<Doc>
+	get(): PromiseLike<IDoc | null>
+	set(data: any): PromiseLike<IDoc>
 	update(updates: any): PromiseLike<unknown>
 	delete(): PromiseLike<null>
 

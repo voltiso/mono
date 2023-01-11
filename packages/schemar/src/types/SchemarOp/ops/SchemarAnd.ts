@@ -6,7 +6,7 @@ import type { _, OPTIONS } from '@voltiso/util'
 import type {
 	$$Object,
 	$$Schema,
-	DefineSchema,
+	CustomObject,
 	Input_,
 	ISchema,
 	ObjectOptions,
@@ -28,31 +28,23 @@ export type SchemarAnd<
 // 	: never
 
 export namespace SchemarAnd {
-	export type Impl<A extends $$Schema, B extends $$Schema> = [A, B] extends [
-		$$Object,
-		$$Object,
-	]
-		? A extends $$Object
-			? B extends $$Object
-				? SchemarAnd.Object<A, B>
-				: never
-			: never
+	export type Impl<A extends $$Schema, B extends $$Schema> = A extends $$Object
+		? B extends $$Object
+			? SchemarAnd.Object<A, B>
+			: SchemarAnd.Custom<A, B>
 		: SchemarAnd.Custom<A, B>
 
 	export type Object<A extends $$Object, B extends $$Object> = A extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? DefineSchema<
-				A,
-				{
-					shape: _<
-						A[OPTIONS]['shape'] &
-							(B extends $$Object & { getShape: {} } ? B['getShape'] : B)
-					>
-					Output: _<A[OPTIONS]['Output'] & Output_<B>>
-					Input: _<A[OPTIONS]['Input'] & Input_<B>>
-				}
-		  >
+		? CustomObject<{
+				shape: _<
+					A[OPTIONS]['shape'] &
+						(B extends $$Object & { getShape: {} } ? B['getShape'] : B)
+				>
+				Output: _<A[OPTIONS]['Output'] & Output_<B>>
+				Input: _<A[OPTIONS]['Input'] & Input_<B>>
+		  }>
 		: never
 
 	export type Custom<A extends $$Schema, B extends $$Schema> = A extends {

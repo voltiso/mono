@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { _, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
@@ -57,6 +57,29 @@ describe('CustomSchema', () => {
 
 		type BB = A['isReadonly']
 		$Assert<IsIdentical<BB, false>>()
+	})
+
+	it('type - index signatures', () => {
+		type A = SimpleSchema<{ a: 1 }>
+		type AA = CustomSchema<{ Output: { a: 1 }; Input: { a: 1 } }>
+
+		type B = SimpleSchema<{ [k: string]: unknown }>
+		type BB = CustomSchema<{
+			Output: { [k: string]: unknown }
+			Input: { [k: string]: unknown }
+		}>
+
+		$Assert.is<A, B>()
+		$Assert.is<AA, BB>()
+		$Assert.is<A, BB>()
+		$Assert.is<AA, B>()
+
+		$Assert.is<A['Output'], B['Output']>()
+		$Assert.is<_<A>, B>()
+		$Assert.is<A['name'], B['name']>()
+		// $Assert.is<A, _<B>>() // ! oops
+
+		$Assert.is<AA, B>()
 	})
 
 	it('type - inside object', () => {

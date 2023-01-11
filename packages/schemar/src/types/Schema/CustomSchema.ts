@@ -3,6 +3,7 @@
 
 import { EXTENDS } from '_'
 import type {
+	_,
 	$_,
 	$Omit,
 	AlsoAccept,
@@ -231,7 +232,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
 		  >
 
-	//
+	// //
 
 	NarrowInput<NewType extends this['Input']>(): DefineSchema<
 		this,
@@ -370,7 +371,8 @@ export namespace CustomSchema {
 	export type CastResult<
 		This extends $$Schema & { Output: unknown; Input: unknown },
 		NewType,
-	> = This['Output'] | This['Input'] extends NewType
+		/** Added `_` for `SimpleSchema` assignability */
+	> = _<This['Output']> | _<This['Input']> extends NewType
 		? DefineSchema<This, { Output: NewType; Input: NewType }>
 		: [NewType] extends [This['Output'] & This['Input']]
 		? DefineSchema<This, { Output: NewType; Input: NewType }>

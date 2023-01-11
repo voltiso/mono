@@ -17,6 +17,7 @@ import type { $WithId, DataRecord, TightenRefs, WithId } from '~/Data'
 import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
+import type { VoltisoEntry } from '~/schemas'
 
 import type { GetIntrinsicFields } from './GetIntrinsicFields'
 
@@ -45,7 +46,7 @@ export type _$GetAggregateTarget<T> = T extends any
 
 /** @inline */
 export type GetData<R extends $$DocRelatedLike> = R extends AnyDoc
-	? { readonly id?: never; [k: string]: unknown }
+	? { readonly id?: never; __voltiso: VoltisoEntry; [k: string]: unknown }
 	: GetData.ForDocTI<GetDocTI<R>>
 
 export namespace GetData {

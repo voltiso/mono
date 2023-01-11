@@ -76,8 +76,9 @@ export namespace CustomDocRef {
 
 	//
 
-	export type MaybeNull<O extends Partial<Options>> =
-		Options.Get<O>['isStrong'] extends true ? never : null
+	export type MaybeNull<O extends Options> = O['isStrong'] extends true
+		? never
+		: null
 
 	export interface Options {
 		isStrong: boolean
