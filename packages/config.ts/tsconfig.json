@@ -52,7 +52,12 @@
 		"module": "ESNext", // Unused - tsup?
 		"target": "ESNext",
 
-		/** `Node16` or `NodeNext` required for `exports` field in `package.json` */
+		/**
+		 * Hard to choose:
+		 *
+		 * - `Node16` or `NodeNext` required for `exports` field in `package.json`
+		 * - `Node` required for dynamic imports without extensions
+		 */
 		"moduleResolution": "NodeNext",
 
 		//

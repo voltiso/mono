@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/context",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -37,9 +37,9 @@
     "build:cjs": "v buildCjs",
     "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnly",
+    "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
-    "clean": "rimraf dist"
+    "clean": "v clean"
   },
   "__________DEPS": "__________",
   "dependencies": {
@@ -57,10 +57,14 @@
   "devDependencies": {
     "@types/uuid": "^9.0.0",
     "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^1.0.0",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts.build.cjs": "workspace:^",
     "@voltiso/config.ts.build.esm": "workspace:^",
     "@voltiso/script": "workspace:^",
     "zone.js": "^0.12.0"
+  },
+  "__________MISC": "__________",
+  "browser": {
+    "async_hooks": false
   }
 }
