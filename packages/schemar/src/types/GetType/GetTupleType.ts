@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { If, Override } from '@voltiso/util'
+import type { $Override_, If } from '@voltiso/util'
 
 import type { InferableMutableTuple, InferableReadonlyTuple, Rest } from '~'
 
@@ -29,7 +29,7 @@ export type _TupleTypeImplRec<
 export type _TupleTypeImpl<
 	T,
 	PartialOptions extends Partial<GetTupleTypeOptions>,
-> = _TupleTypeImplRec<T, [], Override<DefaultGetTypeOptions, PartialOptions>>
+> = _TupleTypeImplRec<T, [], $Override_<DefaultGetTypeOptions, PartialOptions>>
 
 export type TupleType_<
 	T,

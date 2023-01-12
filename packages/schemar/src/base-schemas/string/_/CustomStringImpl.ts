@@ -2,11 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	$assert,
+	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
+	DEFAULT_OPTIONS,
 	isDefined,
 	lazyConstructor,
 	OPTIONS,
@@ -14,7 +15,6 @@ import {
 
 import type {
 	CustomString,
-	DefaultStringOptions,
 	ISchema,
 	Literal,
 	RegExpEntry,
@@ -27,24 +27,14 @@ import { ValidationIssue } from '~/meta-schemas'
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
-export interface CustomStringImpl<O> {
-	// declare readonly [PARTIAL_OPTIONS]: O;
-
-	// declare readonly [OPTIONS]: Assume<
-	// 	StringOptions,
-	// 	MergeSchemaOptions<DefaultStringOptions, O>
-	// >
-
-	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: DefaultStringOptions
-}
-
 export class CustomStringImpl<O extends Partial<StringOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomString<O>
 {
-	readonly [SCHEMA_NAME] = 'String' as const
+	readonly [SCHEMA_NAME] = 'String' as const;
+
+	declare readonly [BASE_OPTIONS]: StringOptions;
+	declare readonly [DEFAULT_OPTIONS]: StringOptions.Default
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
 		// eslint-disable-next-line security/detect-object-injection

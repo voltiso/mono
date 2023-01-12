@@ -5,19 +5,15 @@
 /* eslint-disable class-methods-use-this */
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	Merge2,
-	Override,
-	PARTIAL_OPTIONS,
-} from '@voltiso/util'
+import type { $Merge, $Override_, Mutable } from '@voltiso/util'
 import {
+	BASE_OPTIONS,
 	clone,
+	DEFAULT_OPTIONS,
 	final,
 	isDefined,
 	OPTIONS,
-	overrideIfDefined,
+	overrideDefined,
 	stringFrom,
 } from '@voltiso/util'
 
@@ -46,25 +42,19 @@ import { InvalidFixError } from '~/error/InvalidFixError'
 import { SchemarError } from '~/error/SchemarError'
 
 import type { CustomFix, SchemaOptions } from '../options'
-import type { DefaultSchemaOptions } from '../options/DefaultSchemaOptions'
-import { defaultSchemaOptions } from '../options/DefaultSchemaOptions'
+import { defaultSchemaOptions } from '../options'
 import { processCustomChecks } from './processCustomChecks'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
-
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
-export interface CustomSchemaImpl<O> {
-	readonly [SCHEMA_NAME]: string // SchemaName
-
-	readonly [PARTIAL_OPTIONS]: O
-
-	readonly [BASE_OPTIONS]: SchemaOptions
-	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
-}
 
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>
 {
-	[OPTIONS]: Override<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
+	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>;
+
+	declare readonly [SCHEMA_NAME]: string; // SchemaName
+
+	declare readonly [BASE_OPTIONS]: SchemaOptions;
+	declare readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
 
 	/** Type-only property (no value at runtime) */
 	get Type(): this[OPTIONS]['Output'] {
@@ -161,12 +151,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	protected _cloneWithOptions<
-		OO extends { readonly [k in keyof this[OPTIONS]]?: unknown },
-	>(o: OO): CustomSchema<Merge2<O, OO> & SchemaOptions> {
-		const r = clone(this)
+		OO extends { [k in keyof this[BASE_OPTIONS]]?: unknown },
+	>(o: OO): CustomSchema<$Merge<O, OO> & Partial<SchemaOptions>> {
+		const result = clone(this)
 		// eslint-disable-next-line security/detect-object-injection
-		r[OPTIONS] = { ...r[OPTIONS], ...o }
-		return r as never
+		;(result as Mutable<typeof result>)[OPTIONS] = { ...result[OPTIONS], ...o }
+		return result as never
 	}
 
 	protected _getIssues(
@@ -188,7 +178,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		options?: Partial<GetIssuesOptions> | undefined,
 	): X | this[OPTIONS]['Output'] {
 		const result = this.exec(x, options)
-		return result.value
+		return result.value as never
 
 		// if (result.isValid) return result.value
 		// else return x // identity on error
@@ -208,7 +198,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		value: unknown,
 		options?: Partial<ValidateOptions> | undefined,
 	): ValidationResult<this[OPTIONS]['Output']> {
-		const { fix } = overrideIfDefined(defaultValidateOptions, options)
+		const { fix } = overrideDefined(defaultValidateOptions, options)
 
 		// const finalValue = this.tryValidate(value, options)
 
@@ -259,7 +249,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			isValid,
 			value: finalValue,
 			issues: issues as never,
-		}
+		} as never
 	}
 
 	validate(x: unknown, options?: Partial<ValidateOptions> | undefined): never {
@@ -344,7 +334,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		}) as never
 	}
 
-	fix(fixFunc: (x: this[OPTIONS]['Input']) => never): never {
+	fix(fixFunc: (x: any) => never): never {
 		return this._cloneWithOptions({
 			customFixes: [...this.getCustomFixes, { fix: fixFunc }],
 		}) as never
@@ -389,7 +379,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		if (typeof arg === 'function' && this[SCHEMA_NAME] !== 'Function')
 			return this._cloneWithOptions({
 				hasDefault: true as const,
-				getDefault: arg,
+				getDefault: arg as never,
 
 				isOptional: false,
 				isStrictOptional: false,

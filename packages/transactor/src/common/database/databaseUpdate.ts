@@ -13,6 +13,7 @@ import type { IntrinsicFields } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
 import type { Transactor, WithTransactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
+import { guardedValidate } from '~/util'
 
 import {
 	assertInTransaction,
@@ -60,7 +61,7 @@ async function databaseSet(
 	data = {
 		...data,
 
-		__voltiso: sVoltisoEntry.validate({
+		__voltiso: guardedValidate({ transactor }, sVoltisoEntry, {
 			...data.__voltiso,
 			createdAt: now,
 			updatedAt: now,

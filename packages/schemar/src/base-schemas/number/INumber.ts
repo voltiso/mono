@@ -5,7 +5,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type { $$Schema, ISchema, SCHEMA_NAME, SchemaLike } from '~'
 
-import type { DefaultNumberOptions, NumberOptions } from './NumberOptions'
+import type { NumberOptions } from './NumberOptions'
 
 export interface $$Number extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Number'
@@ -19,7 +19,7 @@ export interface INumber extends ISchema<number> {
 	readonly [SCHEMA_NAME]: 'Number'
 
 	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
+	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
 
 	get isInteger(): boolean
 	get getMin(): number | undefined

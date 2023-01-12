@@ -2,11 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { DEFAULT_OPTIONS, PARTIAL_OPTIONS } from '@voltiso/util'
 import {
 	$assert,
+	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
+	DEFAULT_OPTIONS,
 	lazyConstructor,
 	OPTIONS,
 } from '@voltiso/util'
@@ -14,7 +15,6 @@ import {
 import type {
 	$$Schemable,
 	CustomUnknownTuple,
-	DefaultUnknownTupleOptions,
 	SchemaLike,
 	UnknownTupleOptions,
 } from '~'
@@ -28,17 +28,14 @@ import { MutableTuple, ReadonlyTuple } from '../tuple/Tuple'
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
-export interface CustomUnknownTupleImpl<O> {
-	readonly [PARTIAL_OPTIONS]: O
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownTupleOptions
-}
-
 export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownTuple<O>
 {
-	readonly [SCHEMA_NAME] = 'UnknownTuple' as const
+	readonly [SCHEMA_NAME] = 'UnknownTuple' as const;
+
+	declare readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default;
+	declare readonly [BASE_OPTIONS]: UnknownTupleOptions
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple'] {
 		// eslint-disable-next-line security/detect-object-injection

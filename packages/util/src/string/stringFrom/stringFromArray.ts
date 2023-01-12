@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { merge } from '~/object'
+import type { NonStrictPartial } from '~/object/map/NonStrictPartial'
+import { overrideDefined } from '~/object/Override'
 
 import { stringFrom } from './stringFrom'
 import type { StringFromOptions } from './StringFromOptions'
@@ -49,8 +50,8 @@ export function stringFromArray_(array: unknown[], options: StringFromOptions) {
 
 export function stringFromArray(
 	array: unknown[],
-	options?: Partial<StringFromOptions> | undefined,
+	options?: NonStrictPartial<StringFromOptions> | undefined,
 ) {
-	const p = merge(defaultToStringOptions, options)
-	return stringFromArray_(array, p as never)
+	const finalOptions = overrideDefined(defaultToStringOptions, options || {})
+	return stringFromArray_(array, finalOptions as never)
 }

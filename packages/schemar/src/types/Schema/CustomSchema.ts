@@ -4,26 +4,22 @@
 import { EXTENDS } from '_'
 import type {
 	_,
-	$_,
-	$Omit,
+	$Override_,
 	AlsoAccept,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
-	Override,
-	PARTIAL_OPTIONS,
 	Throw,
 } from '@voltiso/util'
 
 import type {
 	$$Schema,
 	$$Schemable,
-	DefaultSchemaOptions,
-	DefineSchema,
 	GetIssuesOptions,
-	GetSchemaByName,
 	InferSchema,
 	ISchema,
+	OverrideSchema,
+	OverrideSchemaWithOmit,
 	SCHEMA_NAME,
 	SchemaOptions,
 	SchemarAnd,
@@ -41,10 +37,12 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
-	readonly [DEFAULT_OPTIONS]: DefaultSchemaOptions
-	readonly [PARTIAL_OPTIONS]: O
+	readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
 
-	readonly [OPTIONS]: Override<this[DEFAULT_OPTIONS], this[PARTIAL_OPTIONS]>
+	/** Do not store - breaks assignability */
+	// readonly [PARTIAL_OPTIONS]: O
+
+	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
 	/**
 	 * Type-only (no value at runtime)
@@ -107,16 +105,12 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	get optional(): GetSchemaByName<
-		this[SCHEMA_NAME],
-		$_<
-			$Omit<
-				Override<this[PARTIAL_OPTIONS], { isOptional: true }>,
-				'isStrictOptional' | 'default' | 'hasDefault'
-			>
-		>
+	get optional(): OverrideSchemaWithOmit<
+		this,
+		O,
+		{ isOptional: true },
+		'isStrictOptional' | 'default' | 'hasDefault'
 	>
-	// DefineSchema<this, { isOptional: true }>
 
 	/**
 	 * Same as `optional`, but does not auto-remove `undefined` properties
@@ -127,22 +121,19 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 *
 	 * @inline
 	 */
-	get strictOptional(): GetSchemaByName<
-		this[SCHEMA_NAME],
-		$_<
-			$Omit<
-				Override<this[PARTIAL_OPTIONS], { isStrictOptional: true }>,
-				'isOptional' | 'default' | 'hasDefault'
-			>
-		>
-	> // DefineSchema<this, { isStrictOptional: true }>
+	get strictOptional(): OverrideSchemaWithOmit<
+		this,
+		O,
+		{ isStrictOptional: true },
+		'isOptional' | 'default' | 'hasDefault'
+	>
 
 	/**
 	 * Define object property to be `readonly`
 	 *
 	 * @inline
 	 */
-	get readonly(): DefineSchema<this, { isReadonly: true }>
+	get readonly(): OverrideSchema<this, O, { isReadonly: true }>
 
 	//
 
@@ -153,7 +144,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	default<DefaultValue extends this[OPTIONS]['Input']>(
 		value: DefaultValue,
-	): CustomSchema.WithDefault<this, DefaultValue>
+	): CustomSchema.WithDefault<this, O, DefaultValue>
 
 	/**
 	 * Specify default value if the input value is `undefined`
@@ -162,7 +153,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	default<DefaultValue extends this[OPTIONS]['Input']>(
 		getValue: () => DefaultValue,
-	): CustomSchema.WithDefault<this, DefaultValue>
+	): CustomSchema.WithDefault<this, O, DefaultValue>
 
 	//
 
@@ -183,19 +174,20 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	fix<NarrowToType extends this[OPTIONS]['Output']>(
 		fixFunc: (value: this[OPTIONS]['Output']) => NarrowToType | void,
-	): DefineSchema<this, { Output: NarrowToType }>
+	): OverrideSchema<this, O, { Output: NarrowToType }>
 
 	//
 
 	//
 
-	Narrow<NewType extends this['Output'] & this['Input']>(): DefineSchema<
+	Narrow<NewType extends this['Output'] & this['Input']>(): OverrideSchema<
 		this,
+		O,
 		{ Output: NewType; Input: NewType }
 	>
 
 	Widen<NewType>(): this['Output'] | this['Input'] extends NewType
-		? DefineSchema<this, { Output: NewType; Input: NewType }>
+		? OverrideSchema<this, O, { Output: NewType; Input: NewType }>
 		: Throw<
 				'Widen: NewType is not supertype' &
 					CustomSchema.TypeCastErrorDetail<this, NewType>
@@ -203,30 +195,31 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	//
 
-	Cast<NewType>(): CustomSchema.CastResult<this, NewType>
+	Cast<NewType>(): CustomSchema.CastResult<this, O, NewType>
 
 	$Cast<NewType>(): NewType extends any
-		? CustomSchema.CastResult<this, NewType>
+		? CustomSchema.CastResult<this, O, NewType>
 		: never
 
 	//
 
-	NarrowOutput<NewType extends this['Output']>(): DefineSchema<
+	NarrowOutput<NewType extends this['Output']>(): OverrideSchema<
 		this,
+		O,
 		{ Output: NewType }
 	>
 
 	WidenOutput<NewType>(): this['Output'] extends NewType
-		? DefineSchema<this, { Output: NewType }>
+		? OverrideSchema<this, O, { Output: NewType }>
 		: Throw<
 				'WidenOutput: NewType is not supertype' &
 					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
 		  >
 
 	CastOutput<NewType>(): this['Output'] extends NewType
-		? DefineSchema<this, { Output: NewType }>
+		? OverrideSchema<this, O, { Output: NewType }>
 		: NewType extends this['Output']
-		? DefineSchema<this, { Output: NewType }>
+		? OverrideSchema<this, O, { Output: NewType }>
 		: Throw<
 				'CastOutput: NewType is not subtype or supertype' &
 					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
@@ -234,22 +227,23 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	// //
 
-	NarrowInput<NewType extends this['Input']>(): DefineSchema<
+	NarrowInput<NewType extends this['Input']>(): OverrideSchema<
 		this,
+		O,
 		{ Input: NewType }
 	>
 
 	WidenInput<NewType>(): this['Input'] extends NewType
-		? DefineSchema<this, { Input: NewType }>
+		? OverrideSchema<this, O, { Input: NewType }>
 		: Throw<
 				'WidenInput: NewType is not supertype' &
 					CustomSchema.TypeCastErrorDetailInput<this, NewType>
 		  >
 
 	CastInput<NewType>(): this['Input'] extends NewType
-		? DefineSchema<this, { Input: NewType }>
+		? OverrideSchema<this, O, { Input: NewType }>
 		: NewType extends this['Input']
-		? DefineSchema<this, { Input: NewType }>
+		? OverrideSchema<this, O, { Input: NewType }>
 		: Throw<
 				'CastInput: NewType is not subtype or supertype' &
 					CustomSchema.TypeCastErrorDetailInput<this, NewType>
@@ -370,42 +364,37 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 export namespace CustomSchema {
 	export type CastResult<
 		This extends $$Schema & { Output: unknown; Input: unknown },
+		O,
 		NewType,
 		/** Added `_` for `SimpleSchema` assignability */
 	> = _<This['Output']> | _<This['Input']> extends NewType
-		? DefineSchema<This, { Output: NewType; Input: NewType }>
+		? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
 		: [NewType] extends [This['Output'] & This['Input']]
-		? DefineSchema<This, { Output: NewType; Input: NewType }>
+		? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
 		: Throw<
 				'Cast: NewType is not subtype or supertype' &
 					TypeCastErrorDetail<This, NewType>
 		  >
 
 	/** @inline */
-	export type WithDefault<This extends $$Schema, DefaultValue> = This extends {
-		readonly [OPTIONS]: { readonly Output: unknown }
-		readonly [PARTIAL_OPTIONS]: unknown
+	export type WithDefault<
+		This extends $$Schema,
+		O extends object,
+		DefaultValue,
+	> = This extends {
+		readonly Output: unknown
 	}
-		? GetSchemaByName<
-				This[SCHEMA_NAME],
-				Override<
-					Omit<This[PARTIAL_OPTIONS], 'isOptional' | 'isStrictOptional'>,
-					{
-						hasDefault: true
-						default: DefaultValue
-						Output: Exclude<This[OPTIONS]['Output'], undefined>
-					}
-				>
+		? OverrideSchemaWithOmit<
+				This,
+				O,
+				{
+					hasDefault: true
+					default: DefaultValue
+					Output: Exclude<This['Output'], undefined>
+				},
+				'isOptional' | 'isStrictOptional'
 		  >
-		: // DefineSchema<
-		  // 		This,
-		  // 		{
-		  // 			hasDefault: true
-		  // 			default: DefaultValue
-		  // 			Output: Exclude<This[OPTIONS]['Output'], undefined>
-		  // 		}
-		  //   >
-		  never
+		: never
 
 	export type TypeCastErrorDetail<
 		This extends { Output: unknown; Input: unknown },

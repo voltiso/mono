@@ -2,13 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isSet } from '~/map-set'
+import type { nullish } from '~/nullish'
 import type { _, Value } from '~/object'
 import type { AlsoAccept } from '~/type'
 
-export type OmitByValue<
-	Obj extends object,
-	val extends Value<Obj> | AlsoAccept<unknown>,
-> = OmitByValue_<Obj, val>
 
 export type OmitByValue_<Obj, val> = Omit<
 	{
@@ -19,10 +16,31 @@ export type OmitByValue_<Obj, val> = Omit<
 	}[keyof Obj]
 >
 
-export function omitByValue<Obj extends object, Val>(
-	obj: Obj,
-	valuesToOmit: Iterable<Val>,
-): _<OmitByValue<Obj, Val>> {
+export type OmitByValue<
+	Obj extends object,
+	val extends Value<Obj> | AlsoAccept<unknown>,
+> = OmitByValue_<Obj, val>
+
+//
+
+export function omitByValue<O extends object, ValueToOmit>(
+	obj: O,
+	valuesToOmit: Iterable<ValueToOmit>,
+): _<OmitByValue<O, ValueToOmit>>
+
+export function omitByValue<T extends object | nullish, ValueToOmit>(
+	obj: T,
+	valuesToOmit: Iterable<ValueToOmit>,
+): T extends object ? _<OmitByValue<T, ValueToOmit>> : T
+
+//
+
+export function omitByValue(
+	obj: object | nullish,
+	valuesToOmit: Iterable<unknown> | nullish,
+): object | nullish {
+	if (!obj) return obj
+
 	const valuesSet = isSet(valuesToOmit) ? valuesToOmit : new Set(valuesToOmit)
 
 	const result: any = {}
@@ -43,20 +61,61 @@ export function omitByValue<Obj extends object, Val>(
 	return haveChange ? result : obj
 }
 
-export function omitUndefined<Obj extends object>(
-	obj: Obj,
-): _<OmitByValue<Obj, undefined>> {
+//
+
+//
+
+export function omitUndefined<O extends object>(
+	obj: O,
+): _<OmitByValue<O, undefined>>
+
+export function omitUndefined<T extends object | nullish>(
+	obj: T,
+): T extends nullish
+	? T
+	: T extends object
+	? _<OmitByValue<T, undefined>>
+	: never
+
+//
+
+export function omitUndefined<O extends object>(
+	obj: O | nullish,
+): _<OmitByValue<O, undefined>> | nullish {
 	return omitByValue(obj, [undefined]) as never
 }
 
-export function omitNull<Obj extends object>(
-	obj: Obj,
-): _<OmitByValue<Obj, null>> {
+//
+
+//
+
+export function omitNull<O extends object>(obj: O): _<OmitByValue<O, null>>
+
+export function omitNull<T extends object | nullish>(
+	obj: T,
+): T extends nullish ? T : T extends object ? _<OmitByValue<T, null>> : never
+
+//
+
+export function omitNull<O extends object>(
+	obj: O | nullish,
+): _<OmitByValue<O, null>> | nullish {
 	return omitByValue(obj, [null]) as never
 }
 
-export function omitUndefinedAndNull<Obj extends object>(
-	obj: Obj,
-): _<OmitByValue<Obj, undefined | null>> {
+//
+
+export function omitNullish<O extends object>(
+	obj: O,
+): _<OmitByValue<O, nullish>>
+
+export function omitNullish<T extends object | nullish>(
+	obj: T,
+): T extends nullish ? T : T extends object ? _<OmitByValue<T, nullish>> : never
+
+// null + undefined
+export function omitNullish<O extends object>(
+	obj: O | nullish,
+): _<OmitByValue<O, nullish>> | nullish {
 	return omitByValue(obj, [undefined, null]) as never
 }

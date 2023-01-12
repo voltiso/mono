@@ -38,10 +38,10 @@ export namespace SchemarAnd {
 		[OPTIONS]: ObjectOptions
 	}
 		? CustomObject<{
-				shape: _<
-					A[OPTIONS]['shape'] &
-						(B extends $$Object & { getShape: {} } ? B['getShape'] : B)
-				>
+				// shape: _<
+				// 	A[OPTIONS]['shape'] &
+				// 		(B extends $$Object & { getShape: {} } ? B['getShape'] : B)
+				// >
 				Output: _<A[OPTIONS]['Output'] & Output_<B>>
 				Input: _<A[OPTIONS]['Input'] & Input_<B>>
 		  }>

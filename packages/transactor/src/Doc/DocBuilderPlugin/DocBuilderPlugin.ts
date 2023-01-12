@@ -7,6 +7,7 @@ import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-aug
 import type { $$DocConstructor } from '~/DocConstructor'
 import type { $$DocRelated, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
+import type { WithTransactor } from '~/Transactor'
 
 export interface DocBuilderPlugin<R extends $$DocRelated = AnyDoc> {
 	/**
@@ -17,5 +18,5 @@ export interface DocBuilderPlugin<R extends $$DocRelated = AnyDoc> {
 
 	readonly name?: keyof DocBuilderPluginResult<any>
 
-	run(docConstructor: any): $$DocConstructor
+	run(context: WithTransactor, docConstructor: any): $$DocConstructor
 }

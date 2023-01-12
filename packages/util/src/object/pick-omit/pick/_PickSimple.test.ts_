@@ -4,7 +4,7 @@
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
-import type { PickSimple } from './PickSimple'
+import type { PickSimple } from './_PickSimple.ts_'
 
 describe('PickSimple', () => {
 	it('type', () => {

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, InferableLiteral, SchemaOptions } from '~'
+import type { InferableLiteral, SchemaOptions } from '~'
 
 export interface LiteralOptions extends SchemaOptions {
 	Output: InferableLiteral
@@ -10,9 +10,11 @@ export interface LiteralOptions extends SchemaOptions {
 	values: Set<InferableLiteral>
 }
 
-export interface DefaultLiteralOptions extends DefaultSchemaOptions {
-	Output: InferableLiteral
-	Input: InferableLiteral
+export namespace LiteralOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: InferableLiteral
+		Input: InferableLiteral
 
-	values: Set<never>
+		values: Set<never>
+	}
 }

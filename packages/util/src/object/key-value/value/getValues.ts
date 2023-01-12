@@ -10,9 +10,9 @@ import type {
 } from '~/object/key-value/IterationOptions'
 import { defaultIterationOptions } from '~/object/key-value/IterationOptions'
 import type { Value } from '~/object/key-value/value/Value'
-import { merge } from '~/object/merge/merge'
-import type { Merge2Complex } from '~/object/merge/Merge2Complex'
 import { stringFrom } from '~/string'
+import type { Override } from '~/type'
+import { overrideDefined } from '~/type'
 
 type GetValues<
 	Obj extends object,
@@ -78,10 +78,7 @@ export function getValues<Obj extends object>(
 export function getValues<
 	Obj extends object,
 	O extends Partial<IterationOptions>,
->(
-	obj: Obj,
-	options: O,
-): GetValues<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions>
+>(obj: Obj, options: O): GetValues<Obj, Override<DefaultIterationOptions, O>>
 
 export function getValues<
 	Obj extends object,
@@ -89,10 +86,7 @@ export function getValues<
 >(
 	obj: Obj,
 	options?: O | undefined,
-): GetValues<
-	Obj,
-	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
-> {
-	const myOptions = merge(defaultIterationOptions, options)
+): GetValues<Obj, Override<DefaultIterationOptions, O>> {
+	const myOptions = overrideDefined(defaultIterationOptions, options || {})
 	return getValues_(obj, myOptions as never) as never
 }

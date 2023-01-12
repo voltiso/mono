@@ -1,8 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
-export type UnknownOptions = SchemaOptions
+export interface UnknownOptions extends SchemaOptions {}
 
-export interface DefaultUnknownOptions extends DefaultSchemaOptions {}
+export namespace UnknownOptions {
+	export interface Default extends SchemaOptions.Default {}
+}

@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '~/$strip'
+import type { _ } from '~/object'
 import type { IsIdentical } from '~/type'
 
 import type { PickRequired } from './PickRequired'
@@ -33,8 +34,19 @@ describe('PickRequired', () => {
 			readonly a: 'aa'
 			b?: 'bb'
 		}
-		const obj = {} as unknown as PickRequired<Obj>
+		const obj = {} as unknown as _<PickRequired<Obj>>
 		// hit F12 here:
 		void obj.a
+	})
+
+	it('undefined', () => {
+		type A = PickRequired<{
+			a: 123 | undefined
+			b?: 123 | undefined
+			c: 123
+			d?: 123 | undefined
+		}>
+
+		$Assert<IsIdentical<A, { a: 123 | undefined; c: 123 }>>()
 	})
 })

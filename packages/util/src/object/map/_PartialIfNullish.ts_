@@ -1,12 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish } from '~/nullish'
+import type { nullish } from '~/nullish'
 import type { strictNullChecks } from '~/tsc-options'
 
-import type { $PartialComplex_ } from './PartialComplex'
+import type { $PartialComplex_ } from './_PartialComplex.ts_'
 
-type ExcludedPartial<T> = $PartialComplex_<Exclude<T, Nullish>>
+type ExcludedPartial<T> = $PartialComplex_<Exclude<T, nullish>>
 
 type NonNeverPartial<T> = ExcludedPartial<T> extends never
 	? {}
@@ -22,4 +22,4 @@ export type PartialIfNullish_<O> = strictNullChecks extends true
 	: O
 
 /** Requires `strictNullChecks` */
-export type PartialIfNullish<O extends object | Nullish> = PartialIfNullish_<O>
+export type PartialIfNullish<O extends object | nullish> = PartialIfNullish_<O>

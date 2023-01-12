@@ -29,11 +29,40 @@ export type InferableTuple =
 
 export type InferableObject = object & { [k: keyof any]: Schemable }
 
-export type Inferable =
+export type IInferable =
 	| InferableObject
 	| InferableTuple
 	| InferableLiteral
 	| Newable
+
+/** Note: If subtype of `InferableLiteral`, returns `never` for non-literals */
+export type Inferable<T = unknown> = unknown extends T
+	? IInferable
+	: T extends InferableLiteral
+	? string extends T
+		? never
+		: number extends T
+		? never
+		: bigint extends T
+		? never
+		: boolean extends T
+		? never
+		: symbol extends T
+		? never
+		: null extends T
+		? never
+		: undefined extends T
+		? never
+		: T
+	: T extends Newable
+	? T
+	: T extends InferableObject
+	? T
+	: T extends InferableTuple
+	? T
+	: object extends T
+	? T
+	: never
 
 //
 

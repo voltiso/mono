@@ -3,13 +3,10 @@
 
 import { VoltisoUtilError } from '~/error'
 import { isMap, isSet } from '~/map-set'
-import {
-	type DefaultIterationOptions,
-	type IterationOptions,
-	type Merge2Complex,
-	defaultIterationOptions,
-	merge,
-} from '~/object'
+import type { DefaultIterationOptions, IterationOptions } from '~/object'
+import { defaultIterationOptions } from '~/object'
+import type { Override } from '~/object/Override'
+import { overrideDefined } from '~/object/Override'
 import { stringFrom } from '~/string'
 
 import type { StringKeyof } from './StringKeyof'
@@ -76,10 +73,7 @@ export function getKeys<Obj extends object>(
 export function getKeys<
 	Obj extends object,
 	O extends Partial<IterationOptions>,
->(
-	object: Obj,
-	options: O,
-): GetKeys<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions>
+>(object: Obj, options: O): GetKeys<Obj, Override<DefaultIterationOptions, O>>
 
 export function getKeys<
 	Obj extends object,
@@ -87,7 +81,7 @@ export function getKeys<
 >(
 	object: Obj,
 	options?: O | undefined,
-): GetKeys<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions> {
-	const myOptions = merge(defaultIterationOptions, options)
-	return getKeys_(object, myOptions as never) as never
+): GetKeys<Obj, Override<DefaultIterationOptions, O>> {
+	const myOptions = overrideDefined(defaultIterationOptions, options)
+	return getKeys_(object, myOptions)
 }

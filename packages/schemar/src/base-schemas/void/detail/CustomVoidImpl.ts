@@ -8,7 +8,7 @@ import { $assert, lazyConstructor } from '@voltiso/util'
 import type { ISchema } from '~'
 import { CustomSchemaImpl } from '~'
 
-import type { DefaultVoidOptions, VoidOptions } from '../options/VoidOptions'
+import type { VoidOptions } from '../options/VoidOptions'
 import { isVoidSchema } from './isVoid'
 import type { IVoid } from './IVoid'
 
@@ -18,7 +18,7 @@ $assert(SCHEMA_NAME)
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomVoidImpl<O> {
 	readonly [BASE_OPTIONS]: VoidOptions
-	readonly [DEFAULT_OPTIONS]: DefaultVoidOptions
+	readonly [DEFAULT_OPTIONS]: VoidOptions.Default
 }
 
 export class CustomVoidImpl<O extends Partial<VoidOptions>>

@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isObject, merge } from '~/object'
+import { isObject } from '~/object'
+import { overrideDefined } from '~/object/Override'
 
 import { stringFromArray } from './stringFromArray'
 import { stringFromFunction_ } from './stringFromFunction'
@@ -53,9 +54,9 @@ export function stringFrom_(x: unknown, options: StringFromOptions): string {
 
 export function stringFrom(
 	x: unknown,
-	parameters?: Partial<StringFromOptions> | undefined,
+	options?: Partial<StringFromOptions> | undefined,
 ) {
-	const p = merge(defaultToStringOptions, parameters)
+	const p = overrideDefined(defaultToStringOptions, options || {})
 	let r = stringFrom_(x, p)
 
 	if (r.length > p.maxLength) {

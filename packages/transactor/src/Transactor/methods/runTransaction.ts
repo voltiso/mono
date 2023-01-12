@@ -103,7 +103,7 @@ export async function runTransaction<R>(
 									(!cacheEntry.data &&
 										!isEqual(
 											cacheEntry.__voltiso,
-											getDefaultVoltisoEntry(transaction._date),
+											getDefaultVoltisoEntry({ transactor }, transaction._date),
 										)))
 							) {
 								// console.log(

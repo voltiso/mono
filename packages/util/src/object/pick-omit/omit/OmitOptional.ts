@@ -1,11 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsOptional } from '~/object'
+import type { OptionalKeys_ } from '~/object'
 
-export type OmitOptional<Obj extends object> = Omit<
-	Obj,
-	{
-		[key in keyof Obj]: IsOptional<Obj, key> extends true ? key : never
-	}[keyof Obj]
->
+//
+
+export type OmitOptional_<O> = Omit<O, OptionalKeys_<O>>
+
+export type OmitOptional<O extends object> = OmitOptional_<O>
+
+export type $OmitOptional_<O> = O extends any ? OmitOptional_<O> : never
+
+export type $OmitOptional<O extends object> = $OmitOptional_<O>

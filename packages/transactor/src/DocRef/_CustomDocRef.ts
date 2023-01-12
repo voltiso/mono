@@ -56,6 +56,7 @@ import type { CustomDocRef } from './CustomDocRef'
 import { defaultDocRefOptions } from './CustomDocRef'
 import type { GetDocRef } from './GetDocRef'
 import { get, update } from './methods'
+import { guardedValidate } from '~/util'
 
 //
 
@@ -224,7 +225,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		const idSchemas = getIdSchemas(this)
 
 		for (const idSchema of idSchemas) {
-			idSchema.validate(this.id)
+			void guardedValidate(this._context, idSchema, this.id) // ! TODO: not read-only?
 		}
 
 		/**
@@ -247,7 +248,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		const idSchemas = getIdSchemas(this)
 
 		for (const idSchema of idSchemas) {
-			idSchema.validate(this.id)
+			void guardedValidate(this._context, idSchema, this.id) // ! TODO: not read-only?
 		}
 
 		/**

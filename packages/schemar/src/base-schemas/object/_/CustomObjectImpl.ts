@@ -8,8 +8,6 @@ import * as v from '@voltiso/util'
 import type {
 	$$Schemable,
 	CustomObject,
-	DefaultObjectOptions,
-	GetDeepShape_,
 	ISchema,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
@@ -40,7 +38,7 @@ v.$assert(SCHEMA_NAME)
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomObjectImpl<O> {
 	readonly [BASE_OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
+	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
 }
 
 export class CustomObjectImpl<O extends Partial<ObjectOptions>>
@@ -80,11 +78,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	// 	}
 	// }
 
-	get getShape(): this[v.OPTIONS]['shape'] {
-		return this[v.OPTIONS]['shape'] as never
+	get getShape(): any {
+		return this[v.OPTIONS]['shape']
 	}
 
-	get getDeepShape(): GetDeepShape_<this> {
+	get getDeepShape(): any {
 		return getDeepShape(this)
 	}
 
@@ -104,6 +102,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		const b = otherSchema[v.OPTIONS]
 
 		return this._cloneWithOptions({
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			shape: { ...this.getShape, ...otherSchema.getShape },
 			customChecks: [...a.customChecks, ...b.customChecks],
 			customFixes: [...a.customFixes, ...b.customFixes],
@@ -175,7 +174,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (!hasThisK && !isOtherOptional) return false
 				else if (
 					hasThisK &&
-					// eslint-disable-next-line security/detect-object-injection
+					// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
 					!schema(this.getShape[key] as {}).extends(value as never)
 				)
 					// eslint-disable-next-line sonarjs/no-duplicated-branches
@@ -269,17 +268,21 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						name: this[v.OPTIONS].name,
 						path: [key],
 						expected: { description: 'not be present' },
-						received: { value: x[key as never] },
+						// eslint-disable-next-line security/detect-object-injection
+						received: { value: x[key] },
 					})
 
+					const onUnknownPropertyResult =
+						typeof options.onUnknownProperty === 'function'
+							? options.onUnknownProperty(issue)
+							: options.onUnknownProperty
+
 					if (
-						options.onUnknownProperty === 'error' ||
-						options.onUnknownProperty === 'warning'
+						onUnknownPropertyResult === 'error' ||
+						onUnknownPropertyResult === 'warning'
 					) {
-						issue.severity = options.onUnknownProperty
+						issue.severity = onUnknownPropertyResult
 						issues.push(issue)
-					} else if (typeof options.onUnknownProperty === 'function') {
-						options.onUnknownProperty(issue)
 					}
 				} else {
 					let keyIssues: ValidationIssue[] = []

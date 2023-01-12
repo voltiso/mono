@@ -3,7 +3,7 @@
 
 /* eslint-disable regexp/no-super-linear-move */
 
-import { merge } from '~/object'
+import { overrideDefined } from '~/object/Override'
 
 import type { StringFromOptions } from './StringFromOptions'
 import { defaultToStringOptions } from './StringFromOptions'
@@ -31,8 +31,8 @@ export function stringFromFunction_(
 
 export function stringFromFunction(
 	f: Function,
-	parameters?: Partial<StringFromOptions> | undefined,
-) {
-	const p = merge(defaultToStringOptions, parameters)
-	return stringFromFunction_(f, p as never)
+	options?: Partial<StringFromOptions> | undefined,
+): string {
+	const finalOptions = overrideDefined(defaultToStringOptions, options)
+	return stringFromFunction_(f, finalOptions)
 }

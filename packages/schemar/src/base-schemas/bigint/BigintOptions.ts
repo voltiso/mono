@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface BigintOptions extends SchemaOptions {
 	Output: bigint
@@ -11,10 +11,12 @@ export interface BigintOptions extends SchemaOptions {
 	max: bigint | undefined
 }
 
-export interface DefaultBigintOptions extends DefaultSchemaOptions {
-	Output: bigint
-	Input: bigint
+export namespace BigintOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: bigint
+		Input: bigint
 
-	min: undefined
-	max: undefined
+		min: undefined
+		max: undefined
+	}
 }

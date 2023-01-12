@@ -28,7 +28,11 @@ export interface UnknownFunction extends CustomUnknownFunction<{}> {
 		CustomFunction<{
 			parameters: Parameters
 			return: Return
-		}>
+		}>,
+		{
+			parameters: Parameters
+			return: Return
+		}
 	>
 
 	/** With `this` */
@@ -45,13 +49,18 @@ export interface UnknownFunction extends CustomUnknownFunction<{}> {
 			this: This
 			parameters: Parameters
 			return: Return
-		}>
+		}>,
+		{
+			this: This
+			parameters: Parameters
+			return: Return
+		}
 	>
 
 	/** Custom */
 	<Options extends Partial<FunctionOptions>>(
 		options: Options,
-	): CustomFunction.FixInferredType<CustomFunction<Options>>
+	): CustomFunction.FixInferredType<CustomFunction<Options>, Options>
 }
 
 //

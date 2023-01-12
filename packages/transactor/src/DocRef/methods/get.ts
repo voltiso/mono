@@ -32,6 +32,7 @@ import {
 import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
 import type { Forbidden } from '~/util'
+import { guardedValidate } from '~/util'
 
 import {
 	applySchema,
@@ -80,7 +81,7 @@ async function directDocPathGet<D extends $$Doc>(
 	} else {
 		const { _ref } = ctx.docRef
 		data = fromDatabase(ctx, await _ref.get())
-		if (data) data = withVoltisoEntry(data)
+		if (data) data = withVoltisoEntry(ctx, data)
 	}
 
 	assert(!ctx.transaction)
@@ -115,12 +116,13 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		const snapshot = await _databaseTransaction.get(_ref)
 
 		cacheEntry.data = fromDatabase(ctx, snapshot)
-		if (cacheEntry.data) cacheEntry.data = withVoltisoEntry(cacheEntry.data)
+		if (cacheEntry.data)
+			cacheEntry.data = withVoltisoEntry(ctx, cacheEntry.data)
 
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
-		cacheEntry.__voltiso ||= getDefaultVoltisoEntry(_date) // ! triggers may not see mutations done here
+		cacheEntry.__voltiso ||= getDefaultVoltisoEntry(ctx, _date) // ! triggers may not see mutations done here
 
 		cacheEntry.originalData = deepCloneData(cacheEntry.data) // ! ground truth for after-triggers (the first `before` value)
 
@@ -139,12 +141,17 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 					// eslint-disable-next-line security/detect-object-injection
 					cacheEntry.__voltiso.aggregateTarget[name]
 
-				entry = sVoltisoEntryAggregateTargetEntry.default({}).validate(entry)
+				entry = guardedValidate(
+					ctx,
+					sVoltisoEntryAggregateTargetEntry.default({}),
+					entry,
+				)
+
 				assert(entry)
 
 				$AssumeType<Schema>(schema)
 
-				entry.value = schema.validate(entry.value)
+				entry.value = guardedValidate(ctx, schema, entry.value)
 
 				if (entry.value === undefined) delete entry.value
 
@@ -236,13 +243,13 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		cacheEntry.data = cacheEntry.proxy._raw
 
 		// $assert(cacheEntry.data.__voltiso)
-		cacheEntry.data.__voltiso ||= getDefaultVoltisoEntry(_date)
+		cacheEntry.data.__voltiso ||= getDefaultVoltisoEntry(ctx, _date)
 
 		// if (cacheEntry.data.__voltiso)
 		cacheEntry.__voltiso = cacheEntry.data.__voltiso
 	}
 
-	cacheEntry.__voltiso ||= getDefaultVoltisoEntry(_date)
+	cacheEntry.__voltiso ||= getDefaultVoltisoEntry(ctx, _date)
 
 	const onGetTriggers = getOnGetTriggers(ctx.docRef)
 

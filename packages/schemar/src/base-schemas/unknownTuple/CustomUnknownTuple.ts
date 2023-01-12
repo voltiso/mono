@@ -1,21 +1,24 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DEFAULT_OPTIONS, OPTIONS, PARTIAL_OPTIONS } from '@voltiso/util'
-
-import type { $$Schema, CustomSchema, DefineSchema, SCHEMA_NAME } from '~'
-
+import type { SCHEMA_NAME } from '_'
 import type {
-	DefaultUnknownTupleOptions,
-	UnknownTupleOptions,
-} from './UnknownTupleOptions'
+	$Override_,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	OPTIONS,
+} from '@voltiso/util'
+
+import type { CustomSchema } from '~'
+
+import type { UnknownTupleOptions } from './UnknownTupleOptions'
 
 export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'UnknownTuple'
 
-	readonly [PARTIAL_OPTIONS]: O
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownTupleOptions
+	readonly [BASE_OPTIONS]: UnknownTupleOptions
+	readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
 	get getMinLength(): this[OPTIONS]['minLength']
@@ -23,52 +26,32 @@ export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 
 	//
 
-	get readonlyTuple(): CustomUnknownTuple.ReadonlyTuple<this>
+	get readonlyTuple(): CustomUnknownTuple.ReadonlyTuple<O>
 
 	//
 
 	minLength<Min extends number>(
 		minLength: Min,
-	): CustomUnknownTuple.MinLength<this, Min>
+	): CustomUnknownTuple<$Override_<O, { minLength: Min }>>
 
 	maxLength<Max extends number>(
 		maxLength: Max,
-	): CustomUnknownTuple.MaxLength<this, Max>
+	): CustomUnknownTuple<$Override_<O, { maxLength: Max }>>
 
 	lengthRange<Min extends number, Max extends number>(
 		minLength: Min,
 		maxLength: Max,
-	): CustomUnknownTuple.LengthRange<this, Min, Max>
+	): CustomUnknownTuple<$Override_<O, { minLength: Min; maxLength: Max }>>
 
 	length<ExactLength extends number>(
 		exactLength: ExactLength,
-	): CustomUnknownTuple.Length<this, ExactLength>
+	): CustomUnknownTuple<
+		$Override_<O, { minLength: ExactLength; maxLength: ExactLength }>
+	>
 }
 
 export namespace CustomUnknownTuple {
-	export type ReadonlyTuple<S extends $$Schema> = DefineSchema<
-		S,
-		{ isReadonlyTuple: true }
-	>
-
-	export type MinLength<S extends $$Schema, Min extends number> = DefineSchema<
-		S,
-		{ minLength: Min }
-	>
-
-	export type MaxLength<S extends $$Schema, Max extends number> = DefineSchema<
-		S,
-		{ maxLength: Max }
-	>
-
-	export type LengthRange<
-		S extends $$Schema,
-		Min extends number,
-		Max extends number,
-	> = DefineSchema<S, { minLength: Min; maxLength: Max }>
-
-	export type Length<S extends $$Schema, Length extends number> = DefineSchema<
-		S,
-		{ minLength: Length; maxLength: Length }
+	export type ReadonlyTuple<O> = CustomUnknownTuple<
+		$Override_<O, { isReadonlyTuple: true }>
 	>
 }

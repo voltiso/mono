@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ValidationIssue } from '@voltiso/schemar'
+import type { ValidationError, ValidationIssue } from '@voltiso/schemar'
 import { define } from '@voltiso/util'
 
 export interface TransactorOptions {
@@ -63,12 +63,28 @@ export interface TransactorOptions {
 	 * Maps to Schemar's `onUnknownProperty`
 	 *
 	 * - Naming: Db document has fields, Js object has properties
+	 *
+	 * @defaultValue `'warning'`
 	 */
 	onUnknownField:
 		| 'error'
 		| 'warning'
 		| 'ignore'
-		| ((issue: ValidationIssue) => void)
+		| ((
+				issue: ValidationIssue,
+		  ) => 'error' | 'warning' | 'ignore' | undefined | void)
+
+	/**
+	 * ⚠️ Can ignore validation errors - do not use!
+	 *
+	 * - Currently does not have an effect on aggregators' state data
+	 *
+	 * @defaultValue `'error'`
+	 */
+	onValidationError:
+		| 'error'
+		| 'ignore'
+		| ((error: ValidationError) => 'error' | 'ignore' | undefined | void)
 
 	/**
 	 * General-purpose warning handler (errors are simply thrown, warnings are
@@ -92,6 +108,7 @@ export const defaultTransactorOptions = define<TransactorOptions>().value({
 	allowValidIdField: false,
 
 	onUnknownField: 'warning',
+	onValidationError: 'error',
 
 	// eslint-disable-next-line no-console
 	onWarning: console.warn,

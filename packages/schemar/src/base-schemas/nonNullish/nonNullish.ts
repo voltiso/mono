@@ -10,7 +10,7 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { DefaultSchemaOptions, ISchema, SchemaOptions } from '~'
+import type { ISchema, SchemaOptions } from '~'
 import { CustomSchemaImpl, defaultSchemaOptions, ValidationIssue } from '~'
 
 export interface NonNullishOptions extends SchemaOptions {
@@ -18,7 +18,7 @@ export interface NonNullishOptions extends SchemaOptions {
 	Input: {}
 }
 
-export interface DefaultNonNullishOptions extends DefaultSchemaOptions {
+export interface DefaultNonNullishOptions extends SchemaOptions.Default {
 	Output: {}
 	Input: {}
 }

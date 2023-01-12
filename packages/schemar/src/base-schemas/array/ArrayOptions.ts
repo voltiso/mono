@@ -1,19 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	DefaultSchemaOptions,
-	SchemaOptions,
-	SimpleSchema,
-} from '~'
+import type { $$Schema, SchemaOptions } from '~'
 
 export interface ArrayOptions extends SchemaOptions {
 	Output: readonly unknown[]
 	Input: readonly unknown[]
 
+	/** Currently not type-exposed */
 	element: $$Schema
 
 	isReadonlyArray: boolean
@@ -24,23 +20,30 @@ export interface ArrayOptions extends SchemaOptions {
 
 //
 
-export interface DefaultArrayOptions extends DefaultSchemaOptions {
-	Output: readonly unknown[]
-	Input: readonly unknown[]
+export declare namespace ArrayOptions {
+	export interface Default extends SchemaOptions.Default {
+		//
+		Output: readonly unknown[]
+		Input: readonly unknown[]
 
-	isReadonlyArray: false
+		/** Currently not type-exposed */
+		element: $$Schema
 
-	element: SimpleSchema<unknown>
-	minLength: undefined
-	maxLength: undefined
+		isReadonlyArray: false
+
+		minLength: undefined
+		maxLength: undefined
+	}
+
+	export type DefaultMutable = $Override_<
+		Default,
+		{
+			isReadonlyArray: false
+
+			Output: unknown[]
+			Input: unknown[]
+		}
+	>
+
+	export type DefaultReadonly = $Override_<Default, { isReadonlyArray: true }>
 }
-
-export type DefaultMutableArrayOptions = Merge2_<
-	DefaultArrayOptions,
-	{ isReadonlyArray: false }
->
-
-export type DefaultReadonlyArrayOptions = Merge2_<
-	DefaultArrayOptions,
-	{ isReadonlyArray: true }
->

@@ -5,12 +5,12 @@ import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor } from '@voltiso/util'
 
-import type { CustomUnknown, DefaultUnknownOptions, UnknownOptions } from '~'
+import type { CustomUnknown, UnknownOptions } from '~'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 
 export interface CustomUnknownImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownOptions
+	readonly [DEFAULT_OPTIONS]: UnknownOptions.Default
 }
 
 $assert(SCHEMA_NAME)

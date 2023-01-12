@@ -5,12 +5,12 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { DefaultNeverOptions, NeverOptions, SchemaLike } from '~'
+import type { NeverOptions, SchemaLike } from '~'
 import { CustomSchemaImpl } from '~'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNeverImpl<O> {
-	readonly [DEFAULT_OPTIONS]: DefaultNeverOptions
+	readonly [DEFAULT_OPTIONS]: NeverOptions.Default
 	readonly [BASE_OPTIONS]: NeverOptions
 }
 

@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getEntries, merge } from '~/object'
+import { getEntries } from '~/object'
+import { overrideDefined } from '~/object/Override'
 
 import { stringFrom } from './stringFrom'
 import type { StringFromOptions } from './StringFromOptions'
@@ -72,6 +73,6 @@ export function stringFromObject(
 	object: Record<keyof any, unknown>,
 	options?: Partial<StringFromOptions> | undefined,
 ) {
-	const finalOptions = merge(defaultToStringOptions, options)
+	const finalOptions = overrideDefined(defaultToStringOptions, options)
 	return stringFromObject_(object, finalOptions)
 }

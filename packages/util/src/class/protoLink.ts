@@ -8,9 +8,6 @@ import { stringFrom } from '~/string'
 
 /* eslint-disable security/detect-object-injection */
 
-// type Intersect_acc<R, args extends unknown[]> = args extends [infer a, ...infer rest] ? Intersect_acc<R & a, rest> : R
-// type Intersect<args extends unknown[]> = Intersect_acc<{}, args>
-
 export function protoLink<Args extends object[]>(
 	...args: Args
 ): MergeN<Reverse<Args>> {

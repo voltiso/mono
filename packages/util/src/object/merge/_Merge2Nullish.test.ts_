@@ -5,7 +5,7 @@ import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
 import type { $PartialComplex_, PartialIfNullish } from '../map'
-import type { Merge2Nullish } from './Merge2Nullish'
+import type { Merge2Nullish } from './_Merge2Nullish.ts_'
 
 describe('Merge2Nullish', () => {
 	type SomeType = {

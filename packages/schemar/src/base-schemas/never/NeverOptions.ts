@@ -1,14 +1,16 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface NeverOptions extends SchemaOptions {
 	Output: never
 	Input: never
 }
 
-export interface DefaultNeverOptions extends DefaultSchemaOptions {
-	Output: never
-	Input: never
+export namespace NeverOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: never
+		Input: never
+	}
 }

@@ -50,7 +50,7 @@ describe('stringFrom', () => {
 		).toBe('x => stringFrom(x || `(${x})`) || stringFrom(x)')
 
 		expect(stringFrom(stringFrom, { maxLength: 40 })).toBe(
-			'function stringFrom(x, parameters)',
+			'function stringFrom(x, options)',
 		)
 
 		expect(stringFrom(12_345, { maxLength: 5 })).toBe('12345')

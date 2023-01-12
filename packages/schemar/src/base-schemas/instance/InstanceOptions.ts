@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface InstanceOptions extends SchemaOptions {
 	Constructor: abstract new (...args: any[]) => object
@@ -9,7 +9,7 @@ export interface InstanceOptions extends SchemaOptions {
 	Input: object
 }
 
-export interface DefaultInstanceOptions extends DefaultSchemaOptions {
+export interface DefaultInstanceOptions extends SchemaOptions.Default {
 	Constructor: abstract new (...args: any[]) => object
 
 	Output: object

@@ -5,7 +5,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type { CustomSchema, SCHEMA_NAME } from '~'
 
-import type { DefaultUnknownOptions, UnknownOptions } from './UnknownOptions'
+import type { UnknownOptions } from './UnknownOptions'
 
 export interface CustomUnknown<O extends Partial<UnknownOptions>>
 	extends CustomSchema<O> {
@@ -13,5 +13,5 @@ export interface CustomUnknown<O extends Partial<UnknownOptions>>
 	readonly [SCHEMA_NAME]: 'Unknown'
 
 	readonly [BASE_OPTIONS]: UnknownOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownOptions
+	readonly [DEFAULT_OPTIONS]: UnknownOptions.Default
 }

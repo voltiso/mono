@@ -10,7 +10,43 @@ describe('IObject', () => {
 		$Assert.is<s.Object<{}>, s.IObject>()
 		$Assert.is<s.Object<{ a: 1 }>, s.IObject>()
 
-		// $Assert.is<s.IObject, s.Object<{}>>()
+		$Assert.is<
+			s.CustomObject<{ Output: { a: 1 }; Input: { a: 1 } }>,
+			s.CustomObject<{}>
+		>()
+
+		$Assert.is<
+			s.CustomObject<{ Output: { a: 1 }; Input?: { a: 1 } }>,
+			s.CustomObject<{}>
+		>()
+
+		// /** This is still fast */
+		// type GetObject<Shape extends $$InferableObject> = CustomObject<{
+		// 	Output: GetObjectOutput<Shape>
+		// 	Input: GetObjectInput<Shape>
+		// }>
+
+		// /** This is slow */
+		// interface MyObject<Shape extends $$InferableObject>
+		// 	extends GetObject<Shape> {}
+
+		// $Assert.is<GetObject<{ a: 1 }>, s.CustomObject<{}>>()
+		// $Assert.is<MyObject<{ a: 1 }>, s.CustomObject<{}>>()
+
+		// $Assert.is<
+		// 	s.CustomObject<{ Output: { a: 1 } }>,
+		// 	s.CustomObject<{ Output: { [k: string]: number } }>
+		// >()
+
+		// $Assert.is<
+		// 	s.Object<{ a: 1 }>,
+		// 	s.CustomObject<{ Output: { [k: string]: number } }>
+		// >()
+
+		// $Assert.is<
+		// 	s.CustomObject<{ Output: { a: 1 } }>,
+		// 	s.Object<{ [k: string]: number }>
+		// >()
 	})
 
 	it('generic', <Shape extends s.$$InferableObject>() => {

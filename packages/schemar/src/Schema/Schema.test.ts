@@ -6,7 +6,6 @@ import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomSchemaImpl,
-	DefaultSchemaOptions,
 	InferableReadonlyTuple,
 	Input,
 	Output,
@@ -32,7 +31,7 @@ describe('Schema', () => {
 	it('SchemaImpl', () => {
 		expect.assertions(0)
 
-		type A = CustomSchemaImpl<DefaultSchemaOptions>['optional']['readonly']
+		type A = CustomSchemaImpl<SchemaOptions.Default>['optional']['readonly']
 		$Assert.is<A[OPTIONS], { optional: true; readonly: true }>()
 	})
 

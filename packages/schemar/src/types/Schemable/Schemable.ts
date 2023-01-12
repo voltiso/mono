@@ -1,15 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoArgument } from '@voltiso/util'
-
 import type { $$Inferable, $$Schema, Inferable, ISchema, Schema } from '~'
 
 //
 
-export type Schemable<T = NoArgument> = T extends NoArgument
+export type Schemable<T = unknown> = unknown extends T
 	? ISchema | Inferable
-	: Schema<T> | (T & Inferable)
+	: Schema<T> | Inferable<T>
 
 //
 

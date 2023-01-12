@@ -3,7 +3,7 @@
 
 import type { Nullish } from '~/nullish'
 
-import type { Merge2Nullish_ } from './Merge2Nullish'
+import type { Merge2Nullish_ } from './_Merge2Nullish.ts_'
 
 export type MergeNNullish_<objs, accumulator> = objs extends readonly []
 	? accumulator

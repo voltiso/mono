@@ -3,11 +3,10 @@
 
 import { $Assert } from '@voltiso/util'
 
-import type { DefaultSchemaOptions } from './DefaultSchemaOptions'
 import type { SchemaOptions } from './SchemaOptions'
 
-describe('DefaultSchemaOptions', () => {
+describe('SchemaOptions.Default', () => {
 	it('type', () => {
-		$Assert.is<DefaultSchemaOptions, SchemaOptions>()
+		$Assert.is<SchemaOptions.Default, SchemaOptions>()
 	})
 })

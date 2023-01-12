@@ -1,15 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
-
 import type {
-	CustomSchema,
-	DefaultNumberOptions,
-	DefineSchema,
-	NumberOptions,
-	SCHEMA_NAME,
-} from '~'
+	$Override_,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	OPTIONS,
+} from '@voltiso/util'
+
+import type { CustomSchema, NumberOptions, SCHEMA_NAME } from '~'
 
 export interface CustomNumber<O extends Partial<NumberOptions>>
 	extends CustomSchema<O> {
@@ -17,7 +16,7 @@ export interface CustomNumber<O extends Partial<NumberOptions>>
 	readonly [SCHEMA_NAME]: 'Number'
 
 	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
+	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
 
 	get isInteger(): this[OPTIONS]['isInteger']
 	get getMin(): this[OPTIONS]['min']
@@ -25,18 +24,18 @@ export interface CustomNumber<O extends Partial<NumberOptions>>
 
 	//
 
-	get integer(): DefineSchema<this, { isInteger: true }>
+	get integer(): CustomNumber<$Override_<O, { isInteger: true }>>
 
 	min<MinValue extends number>(
 		minValue: MinValue,
-	): DefineSchema<this, { min: MinValue }>
+	): CustomNumber<$Override_<O, { min: MinValue }>>
 
 	max<MaxValue extends number>(
 		maxValue: MaxValue,
-	): DefineSchema<this, { max: MaxValue }>
+	): CustomNumber<$Override_<O, { max: MaxValue }>>
 
 	range<MinValue extends number, MaxValue extends number>(
 		minValue: MinValue,
 		maxValue: MaxValue,
-	): DefineSchema<this, { min: MinValue; max: MaxValue }>
+	): CustomNumber<$Override_<O, { min: MinValue; max: MaxValue }>>
 }

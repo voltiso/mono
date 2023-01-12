@@ -3,14 +3,14 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { DefaultUnknownOptions } from '~'
+import type { UnknownOptions } from '~'
 
 import { CustomUnknownImpl } from './CustomUnknownImpl'
 import { defaultUnknownOptions } from './defaultUnknownOptions'
 
 export class UnknownImpl extends lazyConstructor(
 	() => CustomUnknownImpl,
-)<DefaultUnknownOptions> {
+)<UnknownOptions.Default> {
 	constructor() {
 		super(defaultUnknownOptions)
 	}

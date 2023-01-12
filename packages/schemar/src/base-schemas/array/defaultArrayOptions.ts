@@ -1,11 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { ArrayOptions } from '~'
 import { defaultSchemaOptions } from '~'
 
 import { unknown } from '../unknown'
 
-export const defaultArrayOptions = {
+export const defaultArrayOptions: ArrayOptions.Default = {
 	...defaultSchemaOptions,
 	Output: 0 as unknown as readonly unknown[],
 	Input: 0 as unknown as readonly unknown[],

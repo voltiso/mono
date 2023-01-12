@@ -155,10 +155,6 @@ export function toDatabaseSet(
 
 	const finalObj = obj as Partial<IntrinsicFields>
 
-	// if (deepEqual(finalObj.__voltiso, sVoltisoEntry.validate(undefined))) {
-	// 	finalObj = omitVoltisoEntry(obj)
-	// }
-
 	const r: FirestoreLike.DocumentData = {}
 
 	for (const [key, val] of Object.entries(finalObj)) {

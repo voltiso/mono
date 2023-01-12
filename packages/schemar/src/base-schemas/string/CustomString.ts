@@ -2,16 +2,17 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$Override_,
 	AtLeast1,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { CustomSchema, DefineSchema, SCHEMA_NAME } from '~'
+import type { CustomSchema, SCHEMA_NAME } from '~'
 
 import type { RegExpEntry } from './RegExpEntry'
-import type { DefaultStringOptions, StringOptions } from './StringOptions'
+import type { StringOptions } from './StringOptions'
 
 export type $CustomString<O extends Partial<StringOptions>> = O extends any
 	? CustomString<O>
@@ -23,7 +24,7 @@ export interface CustomString<O extends Partial<StringOptions>>
 	readonly [SCHEMA_NAME]: 'String'
 
 	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: DefaultStringOptions
+	readonly [DEFAULT_OPTIONS]: StringOptions.Default
 
 	//
 
@@ -34,23 +35,25 @@ export interface CustomString<O extends Partial<StringOptions>>
 
 	minLength<Min extends number>(
 		minLength: Min,
-	): DefineSchema<this, { minLength: Min }>
+	): CustomString<$Override_<O, { minLength: Min }>>
 
 	maxLength<Max extends number>(
 		maxLength: Max,
-	): DefineSchema<this, { maxLength: Max }>
+	): CustomString<$Override_<O, { maxLength: Max }>>
 
 	length<ExactLength extends number>(
 		exactLength: ExactLength,
-	): DefineSchema<this, { minLength: ExactLength; maxLength: ExactLength }>
+	): CustomString<
+		$Override_<O, { minLength: ExactLength; maxLength: ExactLength }>
+	>
 
 	lengthRange<Min extends number, Max extends number>(
 		minLength: Min,
 		maxLength: Max,
-	): DefineSchema<this, { minLength: Min; maxLength: Max }>
+	): CustomString<$Override_<O, { minLength: Min; maxLength: Max }>>
 
 	regex(
 		regExp: RegExp,
 		expectedDescription?: string,
-	): DefineSchema<this, { regExps: AtLeast1<RegExpEntry> }>
+	): CustomString<$Override_<O, { regExps: AtLeast1<RegExpEntry> }>>
 }

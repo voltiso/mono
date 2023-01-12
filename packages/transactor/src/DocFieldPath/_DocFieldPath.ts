@@ -71,7 +71,7 @@ export class _DocFieldPath {
 
 				if (!cacheEntry.__voltiso) {
 					// console.log('getPromise: create __voltiso entry')
-					cacheEntry.__voltiso = getDefaultVoltisoEntry(ctx.transaction._date)
+					cacheEntry.__voltiso = getDefaultVoltisoEntry(ctx, ctx.transaction._date)
 
 					if (cacheEntry.data) {
 						assert(!cacheEntry.data.__voltiso)

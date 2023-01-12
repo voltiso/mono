@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 import type { RegExpEntry } from './RegExpEntry'
 
@@ -13,10 +13,12 @@ export interface StringOptions extends SchemaOptions {
 	regExps: RegExpEntry[]
 }
 
-export interface DefaultStringOptions extends DefaultSchemaOptions {
-	Output: string
-	Input: string
-	minLength: undefined
-	maxLength: undefined
-	regExps: []
+export namespace StringOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: string
+		Input: string
+		minLength: undefined
+		maxLength: undefined
+		regExps: []
+	}
 }

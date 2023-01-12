@@ -6,7 +6,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type { CustomSchema } from '~'
 
-import type { DefaultNeverOptions, NeverOptions } from './NeverOptions'
+import type { NeverOptions } from './NeverOptions'
 
 export interface CustomNever<O extends Partial<NeverOptions>>
 	extends CustomSchema<O> {
@@ -14,7 +14,7 @@ export interface CustomNever<O extends Partial<NeverOptions>>
 	readonly [SCHEMA_NAME]: 'Never'
 
 	readonly [BASE_OPTIONS]: NeverOptions
-	readonly [DEFAULT_OPTIONS]: DefaultNeverOptions
+	readonly [DEFAULT_OPTIONS]: NeverOptions.Default
 }
 
 export type $CustomNever<O extends Partial<NeverOptions>> = O extends any

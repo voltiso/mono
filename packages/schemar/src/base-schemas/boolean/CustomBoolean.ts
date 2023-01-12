@@ -5,7 +5,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type { CustomSchema, SCHEMA_NAME } from '~'
 
-import type { BooleanOptions, DefaultBooleanOptions } from './BooleanOptions'
+import type { BooleanOptions } from './BooleanOptions'
 
 export interface CustomBoolean<O extends Partial<BooleanOptions>>
 	extends CustomSchema<O> {
@@ -13,7 +13,7 @@ export interface CustomBoolean<O extends Partial<BooleanOptions>>
 	readonly [SCHEMA_NAME]: 'Boolean'
 
 	readonly [BASE_OPTIONS]: BooleanOptions
-	readonly [DEFAULT_OPTIONS]: DefaultBooleanOptions
+	readonly [DEFAULT_OPTIONS]: BooleanOptions.Default
 }
 
 export type $CustomBoolean<O extends Partial<BooleanOptions>> = O extends any

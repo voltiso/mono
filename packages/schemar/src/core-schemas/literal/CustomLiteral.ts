@@ -5,7 +5,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type { CustomSchema, SCHEMA_NAME } from '~'
 
-import type { DefaultLiteralOptions, LiteralOptions } from './LiteralOptions'
+import type { LiteralOptions } from './LiteralOptions'
 
 export type $CustomLiteral<O extends Partial<LiteralOptions>> = O extends any
 	? CustomLiteral<O>
@@ -17,7 +17,7 @@ export interface CustomLiteral<O extends Partial<LiteralOptions>>
 	readonly [SCHEMA_NAME]: 'Literal'
 
 	readonly [BASE_OPTIONS]: LiteralOptions
-	readonly [DEFAULT_OPTIONS]: DefaultLiteralOptions
+	readonly [DEFAULT_OPTIONS]: LiteralOptions.Default
 
 	getValues: Set<this[OPTIONS]['Output']>
 }

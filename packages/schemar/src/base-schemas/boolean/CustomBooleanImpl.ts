@@ -14,7 +14,6 @@ import {
 import type {
 	BooleanOptions,
 	CustomBoolean,
-	DefaultBooleanOptions,
 	ISchema,
 	Literal,
 } from '~'
@@ -36,7 +35,7 @@ $assert(SCHEMA_NAME)
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBooleanImpl<O> {
 	readonly [BASE_OPTIONS]: BooleanOptions
-	readonly [DEFAULT_OPTIONS]: DefaultBooleanOptions
+	readonly [DEFAULT_OPTIONS]: BooleanOptions.Default
 }
 
 export class CustomBooleanImpl<O extends Partial<BooleanOptions>>

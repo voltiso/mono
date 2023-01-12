@@ -6,7 +6,7 @@
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
-import type { VPick, VPick_ } from './VPick'
+import type { VPick, VPick_ } from './_VPick.ts_'
 
 describe('VPick', () => {
 	it('type', () => {

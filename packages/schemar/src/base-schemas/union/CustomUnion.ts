@@ -5,7 +5,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type { CustomSchema, SCHEMA_NAME } from '~'
 
-import type { DefaultUnionOptions, UnionOptions } from './UnionOptions'
+import type { UnionOptions } from './UnionOptions'
 
 export type $$Union = {
 	readonly [SCHEMA_NAME]: 'Union'
@@ -17,7 +17,7 @@ export interface CustomUnion<O extends Partial<UnionOptions>>
 	readonly [SCHEMA_NAME]: 'Union'
 
 	readonly [BASE_OPTIONS]: UnionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnionOptions
+	readonly [DEFAULT_OPTIONS]: UnionOptions.Default
 
 	//
 

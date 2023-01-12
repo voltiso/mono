@@ -2,25 +2,28 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import * as s from '@voltiso/schemar'
 import { $AssumeType, stringFrom, zip } from '@voltiso/util'
 
 import type { $$Doc, Doc, GetDataWithId } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
 import { isDocRef } from '~/DocRef/isDocRef'
 import { TransactorError } from '~/error'
+import type { WithTransactor } from '~/Transactor'
 import type { Trigger } from '~/Trigger'
+import { guardedValidate } from '~/util'
 
 import type { IAggregatorHandlers } from './AggregatorHandlers'
 import { getDocDataView } from './DocDataView'
 
-type GetTriggerFunction = (params: {
+export type GetTriggerFunction = (params: {
+	context: WithTransactor
 	name: string
 	handlers: IAggregatorHandlers
 	autoCreateTarget: boolean
 }) => Trigger.After
 
 export const getAggregatorTrigger: GetTriggerFunction = ({
+	context,
 	name,
 	handlers,
 	autoCreateTarget,
@@ -129,11 +132,11 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 			// eslint-disable-next-line security/detect-object-injection
 			const targetInfo = finalTarget.data.__voltiso.aggregateTarget[name] || {
-				value: s
-					// eslint-disable-next-line security/detect-object-injection
-					.schema(finalTarget.aggregateSchemas[name])
-					// eslint-disable-next-line etc/no-deprecated
-					.validate(handlers.initialValue),
+				value: guardedValidate(
+					context,
+					finalTarget.aggregateSchemas[name],
+					handlers.initialValue,
+				),
 
 				numSources: 0,
 			}

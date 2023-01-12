@@ -1,24 +1,11 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-//
-
-export interface DefaultSchemaOptions {
-	Output: unknown
-	Input: unknown
-	customChecks: readonly []
-	customFixes: readonly []
-	isOptional: false
-	isStrictOptional: false
-	isReadonly: false
-	hasDefault: false
-	default: never
-	getDefault: never
-}
+import type { SchemaOptions } from './SchemaOptions'
 
 //
 
-export const defaultSchemaOptions = {
+export const defaultSchemaOptions: SchemaOptions.Default = {
 	Output: 0 as unknown,
 	Input: 0 as unknown,
 

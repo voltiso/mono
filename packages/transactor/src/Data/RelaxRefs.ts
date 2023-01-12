@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$Schema, $$Schemable, SimplifySchema } from '@voltiso/schemar'
-import type { Callable, Merge2_, Newable, Primitive } from '@voltiso/util'
+import type { $Merge_, Callable, Newable, Primitive } from '@voltiso/util'
 
 import type { DocTagFromBrand } from '~/brand'
 import type { DocRefLike, WeakDocRefLike } from '~/DocRef'
@@ -12,7 +12,7 @@ export type RelaxRefs<S extends $$Schemable> = S extends $$Schema & {
 	Input: unknown
 }
 	? SimplifySchema<
-			Merge2_<
+			$Merge_<
 				S,
 				{
 					Output: RelaxRefs.ForData<S['Output']>

@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$Override_,
 	Assume,
 	BASE_OPTIONS,
 	Callable_,
@@ -17,8 +18,6 @@ import type {
 	$Input_,
 	$Output_,
 	CustomSchema,
-	DefaultFunctionOptions,
-	DefineSchema,
 	FunctionOptions,
 	InferSchema,
 	Input_,
@@ -39,7 +38,7 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 	readonly [SCHEMA_NAME]: 'Function'
 
 	readonly [BASE_OPTIONS]: FunctionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
+	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
 
 	//
 
@@ -70,15 +69,15 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 
 	this<NewThis extends $$Schemable>(
 		newThis: NewThis,
-	): CustomFunction.WithThis<this, NewThis>
+	): CustomFunction.WithThis<O, NewThis>
 
 	parameters<NewParameters extends $$SchemableTuple>(
 		newParameters: NewParameters,
-	): DefineSchema<this, { parameters: NewParameters }>
+	): CustomFunction<$Override_<O, { parameters: NewParameters }>>
 
 	return<NewReturn extends SchemaLike<any>>(
 		newReturn: NewReturn,
-	): DefineSchema<this, { return: NewReturn }>
+	): CustomFunction<$Override_<O, { return: NewReturn }>>
 
 	//
 
@@ -89,12 +88,14 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 }
 
 export namespace CustomFunction {
-	export type WithThis<
-		This extends $$Schema,
-		NewThis extends $$Schemable,
-	> = FixInferredType<DefineSchema<This, { this: NewThis; hasThis: true }>>
+	export type With<O, OO> = CustomFunction<$Override_<O, OO>>
 
-	export type FixInferredType<This extends $$Schema> = This extends {
+	export type WithThis<O, NewThis extends $$Schemable> = FixInferredType<
+		CustomFunction<$Override_<O, { this: NewThis; hasThis: true }>>,
+		O
+	>
+
+	export type FixInferredType<This extends $$Schema, O> = This extends {
 		[OPTIONS]: {
 			// hasThis: unknown
 			this: unknown
@@ -102,8 +103,8 @@ export namespace CustomFunction {
 			return: unknown
 		}
 	}
-		? DefineSchema<
-				This,
+		? With<
+				O,
 				{
 					Input: Callable_<{
 						this: Input_<This[OPTIONS]['this']>
@@ -157,9 +158,7 @@ export namespace CustomFunction {
 				}
 		  >
 		: never
-}
 
-export namespace CustomFunction {
 	export type FixParameters<Ts> = Ts extends readonly unknown[]
 		? [...Ts] | FixParameters.Rec<never, [], [...Ts]>
 		: Ts
@@ -174,13 +173,3 @@ export namespace CustomFunction {
 			: final
 	}
 }
-
-// type P = readonly [
-// 	t.String,
-// 	t.CustomString<{
-// 		isOptional: true
-// 	}>,
-// 	...t.Rest<t.Number>[],
-// ]
-
-// type A = CustomFunction.FixParameters<P>

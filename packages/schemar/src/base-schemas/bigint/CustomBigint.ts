@@ -2,29 +2,29 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { $Override, BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { CustomSchema, DefineSchema } from '~'
+import type { CustomSchema } from '~'
 
-import type { BigintOptions, DefaultBigintOptions } from './BigintOptions'
+import type { BigintOptions } from './BigintOptions'
 
 export interface CustomBigint<O extends Partial<BigintOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Bigint'
 
 	readonly [BASE_OPTIONS]: BigintOptions
-	readonly [DEFAULT_OPTIONS]: DefaultBigintOptions
+	readonly [DEFAULT_OPTIONS]: BigintOptions.Default
 
 	min<MinValue extends bigint>(
 		minValue: MinValue,
-	): DefineSchema<this, { min: MinValue }>
+	): CustomBigint<$Override<O, { min: MinValue }>>
 
 	max<MaxValue extends bigint>(
 		maxValue: MaxValue,
-	): DefineSchema<this, { max: MaxValue }>
+	): CustomBigint<$Override<O, { max: MaxValue }>>
 
 	range<MinValue extends bigint, MaxValue extends bigint>(
 		minValue: MinValue,
 		maxValue: MaxValue,
-	): DefineSchema<this, { min: MinValue; max: MaxValue }>
+	): CustomBigint<$Override<O, { min: MinValue; max: MaxValue }>>
 }

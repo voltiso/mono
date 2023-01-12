@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface NumberOptions extends SchemaOptions {
 	Output: number
@@ -12,11 +12,13 @@ export interface NumberOptions extends SchemaOptions {
 	max: number | undefined
 }
 
-export interface DefaultNumberOptions extends DefaultSchemaOptions {
-	Output: number
-	Input: number
+export namespace NumberOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: number
+		Input: number
 
-	isInteger: false
-	min: undefined
-	max: undefined
+		isInteger: false
+		min: undefined
+		max: undefined
+	}
 }

@@ -7,7 +7,6 @@ import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 import type {
 	$$Schema,
 	$$Schemable,
-	DefaultObjectOptions,
 	ISchema,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
@@ -24,7 +23,7 @@ export interface IObject<T extends object = object>
 	readonly [SCHEMA_NAME]: 'Object'
 
 	readonly [OPTIONS]: ObjectOptions<T>
-	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
+	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	get getShape(): {} // InferableObjectLike
 	get getDeepShape(): {} // InferableObjectLike
@@ -39,8 +38,8 @@ export interface IObject<T extends object = object>
 
 	get plain(): $$Object
 
-	// index(key: $$Schemable, value: $$Schemable): $$Object
-	// index(value: $$Schemable): $$Object
+	index(key: $$Schemable, value: $$Schemable): $$Object
+	index(value: $$Schemable): $$Object
 }
 
 export function isObjectSchema(x: unknown): x is IObject {

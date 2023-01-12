@@ -5,7 +5,7 @@ import { $Assert } from '~/$strip'
 import type { Force } from '~/cast'
 import { equals } from '~/equals'
 import { add } from '~/number'
-import type { Merge2, Value } from '~/object'
+import type { Merge, Value } from '~/object'
 import {
 	assertNotPolluting,
 	isPlainObject,
@@ -60,7 +60,7 @@ export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt
 		: number
 	: P extends object
 	? X extends object
-		? Merge2<X, ApplyPatchSub<X, P>>
+		? Merge<X, ApplyPatchSub<X, P>>
 		: ApplyPatchSub<X, P>
 	: P
 

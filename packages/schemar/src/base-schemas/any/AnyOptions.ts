@@ -1,14 +1,16 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface AnyOptions extends SchemaOptions {
 	Output: any
 	Input: any
 }
 
-export interface DefaultAnyOptions extends DefaultSchemaOptions {
-	Output: any
-	Input: any
+export namespace AnyOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: any
+		Input: any
+	}
 }

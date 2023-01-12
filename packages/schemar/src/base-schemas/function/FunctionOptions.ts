@@ -8,7 +8,6 @@ import type {
 	$$Schemable,
 	$$SchemableTuple,
 	BivariantUnknownFunction,
-	DefaultSchemaOptions,
 	SchemaOptions,
 	Void,
 } from '~'
@@ -27,16 +26,18 @@ export interface FunctionOptions extends SchemaOptions {
 	return: $$Schemable
 }
 
-export interface DefaultFunctionOptions extends DefaultSchemaOptions {
-	Output: BivariantUnknownFunction
-	Input: BivariantUnknownFunction
+export namespace FunctionOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: BivariantUnknownFunction
+		Input: BivariantUnknownFunction
 
-	Outer: BivariantUnknownFunction
-	Inner: BivariantUnknownFunction
+		Outer: BivariantUnknownFunction
+		Inner: BivariantUnknownFunction
 
-	// hasThis: false
-	this: NoThis
+		// hasThis: false
+		this: NoThis
 
-	parameters: []
-	return: Void
+		parameters: []
+		return: Void
+	}
 }

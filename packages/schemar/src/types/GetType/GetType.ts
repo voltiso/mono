@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Override } from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
 import type {
 	$$Inferable,
@@ -93,7 +93,7 @@ export type Type_<S, PartialOptions extends Partial<GetTypeOptions> = {}> = [
 export type Type<
 	S extends $$Schemable,
 	PartialOptions extends Partial<GetTypeOptions> = {},
-> = Type.SplitInferables<S, Override<DefaultGetTypeOptions, PartialOptions>>
+> = Type.SplitInferables<S, $Override_<DefaultGetTypeOptions, PartialOptions>>
 
 /**
  * Infer type, or identity if already an Inferable

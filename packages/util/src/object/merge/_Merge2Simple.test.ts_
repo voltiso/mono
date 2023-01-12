@@ -7,7 +7,7 @@ import type { IsIdentical } from '~/type'
 import type { _, $_ } from '../flatten'
 import type { $PartialComplex_ } from '../map'
 import type { OmitSuperComplex } from '../pick-omit'
-import type { Merge2Complex } from './Merge2Complex'
+import type { Merge2Complex } from './_Merge2Complex.ts_'
 import type { Merge2Simple } from './Merge2Simple'
 
 describe('Merge2Simple', () => {

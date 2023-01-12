@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$Schema, SimplifySchema } from '@voltiso/schemar'
-import type { Callable, Merge2_, Newable, Primitive } from '@voltiso/util'
+import type { $Merge_, Callable, Newable, Primitive } from '@voltiso/util'
 
 import type { DocTagFromBrand } from '~/brand'
 import type { GetDocRef, WeakDocRefLike } from '~/DocRef'
@@ -25,7 +25,7 @@ export type TightenRefs<S> = S extends $$Schema & {
 	Input: unknown
 }
 	? SimplifySchema<
-			Merge2_<
+			$Merge_<
 				S,
 				{
 					Output: _TightenRefs<S['Output']>

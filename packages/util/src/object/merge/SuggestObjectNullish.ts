@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Nullish } from '~/nullish'
+import type { nullish } from '~/nullish'
 import type { AlsoAccept } from '~/type'
 
 export type SuggestObjectNullish__<T> = {
@@ -10,7 +10,7 @@ export type SuggestObjectNullish__<T> = {
 
 export type SuggestObjectNullish_<T> =
 	| SuggestObjectNullish__<Extract<T, object>>
-	| AlsoAccept<object | Nullish>
+	| AlsoAccept<object | nullish>
 
-export type SuggestObjectNullish<T extends object | Nullish> =
+export type SuggestObjectNullish<T extends object | nullish> =
 	SuggestObjectNullish_<T>

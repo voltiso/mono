@@ -17,7 +17,7 @@ import {
 	undefined as undefined_,
 } from '~/base-schemas' //! ts-transform-paths does not work here!!! ???
 
-import { schemarSeverity } from '../sSchemarSeverity'
+import { validationIssueSeverity } from './sValidationIssueSeverity'
 import type { ValidationIssue } from './ValidationIssue'
 
 export const _validationIssue = lazyValue(() => {
@@ -26,12 +26,12 @@ export const _validationIssue = lazyValue(() => {
 	})
 
 	const sValidationIssueToString = function_(
-		[toStringParameter.optional],
+		[toStringParameter.optional] as const,
 		string,
 	)
 
 	return object({
-		severity: schemarSeverity,
+		severity: validationIssueSeverity,
 
 		path: array(or(string, number, symbol)),
 		name: string.optional,

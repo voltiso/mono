@@ -3,9 +3,11 @@
 
 import { define } from '@voltiso/util'
 
-import type { ValidationIssue } from '~'
+import type { ValidationIssue, ValidationIssueSeverity } from '~'
 
 //
+
+export type SchemarSeverity = ValidationIssueSeverity | 'ignore'
 
 export interface GetIssuesOptions {
 	/**
@@ -16,10 +18,8 @@ export interface GetIssuesOptions {
 	 * @defaultValue `'error'`
 	 */
 	onUnknownProperty:
-		| 'error'
-		| 'warning'
-		| 'ignore'
-		| ((issue: ValidationIssue) => void)
+		| SchemarSeverity
+		| ((issue: ValidationIssue) => void | undefined | SchemarSeverity)
 }
 
 export const defaultGetIssuesOptions = define<GetIssuesOptions>().value({

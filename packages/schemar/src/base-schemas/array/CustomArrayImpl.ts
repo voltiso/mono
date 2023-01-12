@@ -2,10 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
+	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
+	DEFAULT_OPTIONS,
 	isDefined,
 	lazyConstructor,
 	OPTIONS,
@@ -16,7 +17,6 @@ import type {
 	$$Schemable,
 	ArrayOptions,
 	CustomArray,
-	DefaultArrayOptions,
 	ISchema,
 	Schema,
 	ValidateOptions,
@@ -30,17 +30,14 @@ import {
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
-export interface CustomArrayImpl<O> {
-	readonly [BASE_OPTIONS]: ArrayOptions
-	readonly [DEFAULT_OPTIONS]: DefaultArrayOptions
-}
-
 export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomArray<O>
 {
-	readonly [SCHEMA_NAME] = 'Array' as const
+	readonly [SCHEMA_NAME] = 'Array' as const;
+
+	declare readonly [BASE_OPTIONS]: ArrayOptions;
+	declare readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
 		// eslint-disable-next-line security/detect-object-injection
@@ -57,7 +54,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		return this[OPTIONS].isReadonlyArray as never
 	}
 
-	get getElementSchema(): this[OPTIONS]['element'] {
+	get getElementSchema(): CustomArray.GetElementSchema<this> {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].element as never
 	}

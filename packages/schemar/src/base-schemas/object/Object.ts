@@ -6,7 +6,8 @@ import { lazyConstructor } from '@voltiso/util'
 import type {
 	$$InferableObject,
 	CustomObject,
-	GetDeepShape_,
+	GetObjectInput,
+	GetObjectOutput,
 	GetObjectType,
 	Input_,
 } from '~'
@@ -15,10 +16,8 @@ import { ObjectImpl } from './_'
 
 export interface Object<Shape extends $$InferableObject>
 	extends CustomObject<{
-		shape: Shape
-		deepShape: GetDeepShape_<Shape>
-		Output: GetObjectType<Shape, { kind: 'out'; isPlain: false }>
-		Input: GetObjectType<Shape, { kind: 'in'; isPlain: false }>
+		Output: GetObjectOutput<Shape>
+		Input: GetObjectInput<Shape>
 	}> {}
 
 export type ImplicitObject<Shape extends $$InferableObject> =
@@ -29,8 +28,8 @@ export type ImplicitObject<Shape extends $$InferableObject> =
 
 export interface AutoCreatedObject<Shape extends $$InferableObject>
 	extends CustomObject<{
-		shape: Shape
-		deepShape: GetDeepShape_<Shape>
+		// shape: Shape
+		// deepShape: GetDeepShape_<Shape>
 		Output: GetObjectType<Shape, { kind: 'out'; isPlain: false }>
 		Input: GetObjectType<Shape, { kind: 'in'; isPlain: false }>
 

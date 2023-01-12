@@ -25,3 +25,20 @@ export type SchemaOptions = {
 	default: unknown
 	getDefault: (() => unknown) | undefined
 }
+
+//
+
+export declare namespace SchemaOptions {
+	export interface Default extends SchemaOptions {
+		Output: unknown
+		Input: unknown
+		customChecks: readonly []
+		customFixes: readonly []
+		isOptional: false
+		isStrictOptional: false
+		isReadonly: false
+		hasDefault: false
+		default: never
+		getDefault: never
+	}
+}

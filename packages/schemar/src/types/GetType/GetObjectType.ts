@@ -3,16 +3,24 @@
 
 import type {
 	_,
+	$OmitNever_,
+	$Override_,
 	Assume,
 	exactOptionalPropertyTypes,
 	Get_,
 	HasIndexSignature,
 	IsAlmostSame,
 	OmitByValue_,
-	Override,
 } from '@voltiso/util'
 
-import type { $$Schema, DefaultGetTypeOptions, GetTypeOptions, Type_ } from '~'
+import type {
+	$$Schema,
+	DefaultGetTypeOptions,
+	GetTypeOptions,
+	Input_,
+	Output_,
+	Type_,
+} from '~'
 
 //
 
@@ -26,7 +34,7 @@ export interface _GetObjectTypeRequiredOptions {
 /** @internal */
 export type _GetOptions<X> = Assume<
 	_GetObjectTypeRequiredOptions,
-	Override<
+	$Override_<
 		{
 			isReadonly: false
 			isOptional: false
@@ -38,11 +46,57 @@ export type _GetOptions<X> = Assume<
 >
 
 /** @inline */
+export type GetObjectOutput<Shape extends object> = Shape extends any
+	? HasIndexSignature<Shape> extends true
+		? {
+				[k in keyof Shape]: Output_<Shape[k]>
+		  }
+		: HasIndexSignature<Shape> extends false
+		? GetObjectType._GetNoSignature<
+				{
+					[k in keyof Shape]: Output_<Shape[k]>
+				},
+				Shape,
+				{
+					// eslint-disable-next-line etc/no-internal
+					[k in keyof Shape]: _GetOptions<Shape[k]>
+				},
+				{ kind: 'out' }
+		  >
+		: never
+	: never
+
+/** @inline */
+export type GetObjectInput<Shape extends object> = Shape extends any
+	? HasIndexSignature<Shape> extends true
+		? {
+				[k in keyof Shape]: Input_<Shape[k]>
+		  }
+		: HasIndexSignature<Shape> extends false
+		? GetObjectType._GetNoSignature<
+				{
+					[k in keyof Shape]: Input_<Shape[k]>
+				},
+				Shape,
+				{
+					// eslint-disable-next-line etc/no-internal
+					[k in keyof Shape]: _GetOptions<Shape[k]>
+				},
+				{ kind: 'in' }
+		  >
+		: never
+	: never
+
+//
+
+//
+
+/** @inline */
 export type GetObjectType<
 	Shape extends object,
 	PartialOptions extends Partial<GetTypeOptions> = {},
 > = HasIndexSignature<Shape> extends true
-	? /* object & */ {
+	? {
 			[k in keyof Shape]: Type_<Shape[k], PartialOptions>
 	  }
 	: HasIndexSignature<Shape> extends false
@@ -55,7 +109,7 @@ export type GetObjectType<
 				// eslint-disable-next-line etc/no-internal
 				[k in keyof Shape]: _GetOptions<Shape[k]>
 			},
-			Override<DefaultGetTypeOptions, PartialOptions>
+			$Override_<DefaultGetTypeOptions, PartialOptions>
 	  >
 	: never
 
@@ -144,18 +198,15 @@ export namespace GetObjectType {
 		IO extends GetTypeOptions,
 	> = IO['kind'] extends 'in'
 		? _<
-				OmitByValue_<
-					{
-						// eslint-disable-next-line etc/no-internal
-						[k in keyof T]: GetObjectType._ShouldForceOptional<
-							T[k],
-							Get_<Shape, k>
-						> extends false
-							? T[k]
-							: never
-					},
-					never
-				> &
+				$OmitNever_<{
+					// eslint-disable-next-line etc/no-internal
+					[k in keyof T]: GetObjectType._ShouldForceOptional<
+						T[k],
+						Get_<Shape, k>
+					> extends false
+						? T[k]
+						: never
+				}> &
 					OmitByValue_<
 						{
 							// eslint-disable-next-line etc/no-internal

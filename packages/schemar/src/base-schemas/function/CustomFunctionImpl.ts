@@ -14,8 +14,6 @@ import type {
 	$$Schemable,
 	$$SchemableTuple,
 	CustomFunction,
-	DefaultFunctionOptions,
-	DefineSchema,
 	FunctionOptions,
 	IArray,
 	Input_,
@@ -41,7 +39,7 @@ import { _functionArgumentsExtends } from './_functionArgumentsExtends'
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomFunctionImpl<O> {
 	readonly [BASE_OPTIONS]: FunctionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
+	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
 
 	readonly Outer: this[OPTIONS]['Outer']
 	readonly Inner: this[OPTIONS]['Inner']
@@ -124,23 +122,19 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		// ! TODO - typings for parameters are incorrect
 	}
 
-	this<NewThis extends $$Schemable>(
-		newThis: NewThis,
-	): CustomFunction.WithThis<this, NewThis> {
+	this<NewThis extends $$Schemable>(newThis: NewThis): any {
 		// eslint-disable-next-line security/detect-object-injection
 		return new CustomFunctionImpl({ ...this[OPTIONS], this: newThis }) as never
 	}
 
 	parameters<NewParameters extends $$SchemableTuple>(
 		parameters: NewParameters,
-	): DefineSchema<this, { parameters: NewParameters }> {
+	): any {
 		// eslint-disable-next-line security/detect-object-injection
 		return new CustomFunctionImpl({ ...this[OPTIONS], parameters }) as never
 	}
 
-	return<NewReturn extends SchemaLike<any>>(
-		newReturn: NewReturn,
-	): DefineSchema<this, { return: NewReturn }> {
+	return<NewReturn extends SchemaLike>(newReturn: NewReturn): any {
 		return new CustomFunctionImpl({
 			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],

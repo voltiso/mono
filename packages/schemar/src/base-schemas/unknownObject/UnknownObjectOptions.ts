@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface UnknownObjectOptions extends SchemaOptions {
 	Output: object
@@ -10,7 +10,7 @@ export interface UnknownObjectOptions extends SchemaOptions {
 	isPlain: boolean
 }
 
-export interface DefaultUnknownObjectOptions extends DefaultSchemaOptions {
+export interface DefaultUnknownObjectOptions extends SchemaOptions.Default {
 	Output: object
 	Input: object
 

@@ -3,32 +3,32 @@
 
 import type {
 	_,
+	$Override,
+	$Override_,
 	AlsoAccept,
 	BASE_OPTIONS,
+	DeepNonStrictPartial_,
 	DeepPartial_,
-	DeepPartialOrUndefined_,
 	DEFAULT_OPTIONS,
+	IsCompatible,
+	NonStrictPartial_,
 	OPTIONS,
-	PartialOrUndefined_,
 } from '@voltiso/util'
 
 import type {
 	$$Object,
 	$$Schemable,
 	CustomSchema,
-	DefineSchema,
-	GetDeepShape_,
+	Inferable,
+	InferableObject,
+	InferableTuple,
+	Schema,
 	SCHEMA_NAME,
 	SimpleSchema,
 	Type,
 } from '~'
 
-import type {
-	DeepPartialShape_,
-	DeepStrictPartialShape_,
-} from './DeepPartialShape'
-import type { DefaultObjectOptions, ObjectOptions } from './ObjectOptions'
-import type { PartialShape_, StrictPartialShape_ } from './PartialShape'
+import type { ObjectIndexSignatureEntry, ObjectOptions } from './ObjectOptions'
 
 export interface CustomObject<O extends Partial<ObjectOptions>>
 	extends $$Object,
@@ -36,81 +36,83 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 	readonly [SCHEMA_NAME]: 'Object'
 
 	readonly [BASE_OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: DefaultObjectOptions
+	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	//
 
-	get getIndexSignatures(): this[OPTIONS]['indexSignatures']
-
-	get getShape(): this[OPTIONS]['shape']
-	get getDeepShape(): GetDeepShape_<this>
+	/** Currently not type-exposed */
+	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[OPTIONS]['indexSignatures']
 
 	//
 
-	get plain(): CustomObject.WithPlain<this>
+	get getShape(): _<CustomObject.GetShape<this>>
+
+	get getDeepShape(): _<
+		CustomObject.GetDeepShape<this['Output'], this['Input']>
+	>
+
+	//
+
+	get plain(): CustomObject<$Override<O, { isPlain: true }>>
 
 	/**
 	 * Apply `.optional` to all properties
 	 *
 	 * - Similar to TypeScript's `Partial`
 	 */
-	get partial(): CustomObject.WithPartial<this>
+	get partial(): CustomObject.WithPartial<this, O>
 
 	/** Apply `.strictPartial` to all properties */
-	get strictPartial(): CustomObject.WithStrictPartial<this>
+	get strictPartial(): CustomObject.WithStrictPartial<this, O>
 
 	/**
 	 * Similar to `.partial`, but applied recursively
 	 *
 	 * - Note: removes any nested defaults
 	 */
-	get deepPartial(): CustomObject.WithDeepPartial<this>
+	get deepPartial(): CustomObject.WithDeepPartial<this, O>
 
 	/**
 	 * Similar to `.deepPartial`, but applied recursively
 	 *
 	 * - Note: removes any nested defaults
 	 */
-	get deepStrictPartial(): CustomObject.WithDeepStrictPartial<this>
+	get deepStrictPartial(): CustomObject.WithDeepStrictPartial<this, O>
 
 	index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(
 		keySchema: TKeySchema,
 		valueSchema: TValueSchema,
-	): CustomObject.WithIndex<this, TKeySchema, TValueSchema>
+	): CustomObject.WithIndex<this, O, TKeySchema, TValueSchema>
 
 	index<TValueSchema extends $$Schemable>(
 		valueSchema: TValueSchema,
-	): CustomObject.WithIndex<this, SimpleSchema<keyof any>, TValueSchema>
+	): CustomObject.WithIndex<this, O, SimpleSchema<keyof any>, TValueSchema>
 }
 
 //
 
+// export type GetOptionsDiff<Base, Override> = Pick<
+// 	Override,
+// 	{
+// 		[k in keyof Override]: k extends keyof Base
+// 			? IsCompatible<Override[k], Base[k]> extends true
+// 				? never
+// 				: k
+// 			: never
+// 	}[keyof Override]
+// >
+
 export namespace CustomObject {
-	export type WithPlain<This extends $$Object> = This extends {
-		Output: unknown
-		Input: unknown
-	}
-		? DefineSchema<
-				This,
-				{
-					isPlain: true
-
-					// // eslint-disable-next-line etc/no-internal
-					// Output: GetObjectType._IntersectWithObject<This['Output']>
-
-					// // eslint-disable-next-line etc/no-internal
-					// Input: GetObjectType._IntersectWithObject<This['Input']>
-				}
-		  >
-		: never
+	export type Define<O, OO> = CustomObject<$Override_<O, OO>>
 
 	export type WithIndex<
 		This extends $$Object,
+		O,
 		TKeySchema extends $$Schemable,
 		TValueSchema extends $$Schemable,
 	> = This extends { [OPTIONS]: ObjectOptions }
-		? DefineSchema<
-				This,
+		? Define<
+				O,
 				{
 					Output: _<
 						This[OPTIONS]['Output'] & {
@@ -132,45 +134,90 @@ export namespace CustomObject {
 		  >
 		: never
 
-	export type WithPartial<This extends $$Object> = This extends {
+	export type WithPartial<This extends $$Object, O> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? CustomObject<{
-				shape: PartialShape_<This[OPTIONS]['shape']>
-				Output: Partial<This[OPTIONS]['Output']>
-				Input: PartialOrUndefined_<This[OPTIONS]['Input']>
-		  }>
+		? Define<
+				O,
+				{
+					// shape: PartialShape_<This[OPTIONS]['shape']>
+					Output: Partial<This[OPTIONS]['Output']>
+					Input: NonStrictPartial_<This[OPTIONS]['Input']>
+				}
+		  >
 		: never
 
-	export type WithStrictPartial<This extends $$Object> = This extends {
+	export type WithStrictPartial<This extends $$Object, O> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? CustomObject<{
-				shape: StrictPartialShape_<This[OPTIONS]['shape']>
-				Output: Partial<This[OPTIONS]['Output']>
-				Input: Partial<This[OPTIONS]['Input']>
-		  }>
+		? Define<
+				O,
+				{
+					// shape: StrictPartialShape_<This[OPTIONS]['shape']>
+					Output: Partial<This[OPTIONS]['Output']>
+					Input: Partial<This[OPTIONS]['Input']>
+				}
+		  >
 		: never
 
 	//
 
-	export type WithDeepPartial<This extends $$Object> = This extends {
+	export type WithDeepPartial<This extends $$Object, O> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? CustomObject<{
-				shape: DeepPartialShape_<This[OPTIONS]['shape']>
-				Output: DeepPartial_<This[OPTIONS]['Output']>
-				Input: DeepPartialOrUndefined_<This[OPTIONS]['Input']>
-		  }>
+		? Define<
+				O,
+				{
+					// shape: DeepPartialShape_<This[OPTIONS]['shape']>
+					Output: DeepPartial_<This[OPTIONS]['Output']>
+					Input: DeepNonStrictPartial_<This[OPTIONS]['Input']>
+				}
+		  >
 		: never
 
-	export type WithDeepStrictPartial<This extends $$Object> = This extends {
+	export type WithDeepStrictPartial<This extends $$Object, O> = This extends {
 		[OPTIONS]: ObjectOptions
 	}
-		? CustomObject<{
-				shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
-				Output: DeepPartial_<This[OPTIONS]['Output']>
-				Input: DeepPartial_<This[OPTIONS]['Input']>
-		  }>
+		? Define<
+				O,
+				{
+					// shape: DeepStrictPartialShape_<This[OPTIONS]['shape']>
+					Output: DeepPartial_<This[OPTIONS]['Output']>
+					Input: DeepPartial_<This[OPTIONS]['Input']>
+				}
+		  >
 		: never
+
+	//
+
+	export type GetShape<This extends { Output: unknown; Input: unknown }> = {
+		[k in keyof This['Output']]: IsCompatible<
+			This['Output'][k],
+			This['Input'][k]
+		> extends true
+			? Schema<This['Output'][k]> | Inferable<This['Output'][k]>
+			: CustomSchema<{ Output: This['Output'][k]; Input: This['Input'][k] }>
+	}
+
+	export type GetDeepShape<
+		Output extends object,
+		Input extends object | undefined,
+	> = {
+		[k in keyof Output]: GetDeepShape.Rec<
+			Output[k],
+			k extends keyof Input ? Input[k] : never
+		>
+	}
+
+	export namespace GetDeepShape {
+		export type Rec<Output, Input> = IsCompatible<Output, Input> extends false
+			? CustomSchema<{ Output: Output; Input: Input }>
+			: Output extends InferableObject | InferableTuple
+			? {
+					[k in keyof Output]: Rec<Output[k], Output[k]>
+			  }
+			: Schema<Output> | Inferable<Output>
+	}
+
+	// export type GetShape<This extends >
 }

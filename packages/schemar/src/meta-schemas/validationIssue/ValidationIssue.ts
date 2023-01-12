@@ -1,18 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { PartialOrUndefined } from '@voltiso/util'
+import type { NonStrictPartial } from '@voltiso/util'
 import { stringFrom } from '@voltiso/util'
-
-import type {
-	SchemarExpected,
-	SchemarReceived,
-	SchemarSeverity,
-	ValidationIssueInput,
-} from '~'
 
 import { expectedOneOfStr } from './_/expectedOneOfStr'
 import { pathToString } from './_/pathToString'
+import type { ValidationIssueSeverity } from './sValidationIssueSeverity'
 
 export class ValidationIssueImpl implements ValidationIssue {
 	severity: 'error' | 'warning'
@@ -73,7 +67,7 @@ export class ValidationIssueImpl implements ValidationIssue {
 }
 
 export interface ValidationIssue {
-	severity: SchemarSeverity
+	severity: ValidationIssueSeverity
 
 	path: (keyof any)[]
 	name?: string | undefined
@@ -83,12 +77,12 @@ export interface ValidationIssue {
 
 	toString(
 		options?:
-			| PartialOrUndefined<ValidationIssueDetail.ToStringOptions>
+			| NonStrictPartial<ValidationIssueTypes.ToStringOptions>
 			| undefined,
 	): string
 }
 
-export namespace ValidationIssueDetail {
+export declare namespace ValidationIssueTypes {
 	export interface ToStringOptions {
 		/**
 		 * Do not print the `.received` part
@@ -105,3 +99,38 @@ export interface ValidationIssueConstructor {
 
 export const ValidationIssue =
 	ValidationIssueImpl as unknown as ValidationIssueConstructor
+
+//
+
+//
+
+export interface SchemarExpected {
+	oneOfValues?: unknown[] | undefined // TODO: Iterable<unknown> and support iterables in schemar
+	description?: string | undefined
+}
+
+export interface SchemarReceived {
+	/** `undefined` is a valid value - use `exactOptionalPropertyTypes` */
+	value?: unknown
+	description?: string | undefined
+}
+
+export interface ValidationIssueInput {
+	/**
+	 * If just a `'warning'`, schema validation is considered successful anyway
+	 *
+	 * @defaultValue `'error'`
+	 */
+	severity?: ValidationIssueSeverity | undefined
+
+	/**
+	 * For nested structures
+	 *
+	 * @defaultValue `[]`
+	 */
+	path?: (keyof any)[] | undefined
+	name?: string | undefined
+
+	expected: SchemarExpected
+	received?: SchemarReceived | undefined
+}

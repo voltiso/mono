@@ -5,19 +5,14 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type {
-	CustomNumber,
-	DefaultNumberOptions,
-	ISchema,
-	NumberOptions,
-} from '~'
+import type { CustomNumber, ISchema, NumberOptions } from '~'
 import { CustomSchemaImpl, isNumberSchema } from '~'
 import { ValidationIssue } from '~/meta-schemas'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNumberImpl<O> {
 	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: DefaultNumberOptions
+	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
 }
 
 $assert(EXTENDS)

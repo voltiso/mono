@@ -4,6 +4,7 @@
 import type { $$Schemable } from '~'
 import { array, or, tuple, unknown } from '~/base-schemas'
 
+import type { ValidationIssue } from '../validationIssue'
 import { validationIssue } from '../validationIssue'
 
 export function validationResult<Value extends $$Schemable>(value: Value) {
@@ -21,3 +22,15 @@ export function validationResult<Value extends $$Schemable>(value: Value) {
 		},
 	)
 }
+
+export type ValidationResult<V = unknown> =
+	| {
+			readonly isValid: true
+			readonly value: V
+			readonly issues: []
+	  }
+	| {
+			readonly isValid: false
+			readonly value: unknown
+			readonly issues: ValidationIssue[] // AtLeast1<ValidationIssue>
+	  }

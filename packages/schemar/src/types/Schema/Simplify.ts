@@ -1,37 +1,47 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, IsCompatible, IsIdentical, OPTIONS } from '@voltiso/util'
+import type { _, IsIdentical, OPTIONS } from '@voltiso/util'
 
-import type { $$Schemable, InferSchema_, SchemaOptions } from '~'
-
-import type { $$Schema, CustomSchema, ISchema, SimpleSchema } from '.'
+import type {
+	$$Schema,
+	$$Schemable,
+	CustomSchema,
+	InferSchema_,
+	ISchema,
+	SimpleSchema,
+} from '~'
 
 /** @inline */
-export type CanBeSimpleSchema<
-	S extends $$Schema & {
-		Output: unknown
-		Input: unknown
-		[OPTIONS]: SchemaOptions
-	},
-	True = true,
-	False = false,
-> = true extends S[OPTIONS]['isOptional']
-	? False
-	: true extends S[OPTIONS]['isReadonly']
-	? False
-	: false extends IsCompatible<S['Output'], S['Input']>
-	? False
-	: True
+export type CanBeSimpleSchema<S> = S extends {
+	readonly Output: unknown
+	readonly Input: unknown
+
+	readonly isOptional: unknown
+	readonly isReadonly: unknown
+}
+	? true extends S['isOptional']
+		? false
+		: true extends S['isReadonly']
+		? false
+		: /** `IsCompatible` returns `true` here for some reason */
+		false extends IsIdentical<S['Output'], S['Input']>
+		? false
+		: true
+	: never
 
 /** @inline */
 export type Simplify<S extends $$Schemable> = SimplifySchema<InferSchema_<S>>
 
 /** @inline */
 export type SimplifySchema<S extends $$Schema> = S extends {
-	Output: unknown
-	Input: unknown
-	[OPTIONS]: SchemaOptions
+	readonly Output: unknown
+	readonly Input: unknown
+
+	[OPTIONS]: unknown
+	readonly isOptional: boolean
+	readonly isReadonly: boolean
+	readonly hasDefault: boolean
 }
 	? $$Schema extends S
 		? S
@@ -41,15 +51,15 @@ export type SimplifySchema<S extends $$Schema> = S extends {
 		? SimpleSchema<S['Output']>
 		: CustomSchema<
 				_<
-					(S[OPTIONS]['isOptional'] extends false
+					(S['isOptional'] extends false
 						? {}
-						: { isOptional: S[OPTIONS]['isOptional'] }) &
-						(S[OPTIONS]['isReadonly'] extends false
+						: { isOptional: S['isOptional'] }) &
+						(S['isReadonly'] extends false
 							? {}
-							: { isReadonly: S[OPTIONS]['isReadonly'] }) &
-						(S[OPTIONS]['hasDefault'] extends false
+							: { isReadonly: S['isReadonly'] }) &
+						(S['hasDefault'] extends false
 							? {}
-							: { hasDefault: S[OPTIONS]['hasDefault'] }) &
+							: { hasDefault: S['hasDefault'] }) &
 						IsIdentical<
 							S['Output'],
 							unknown,

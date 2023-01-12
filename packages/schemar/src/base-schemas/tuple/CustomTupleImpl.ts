@@ -1,13 +1,20 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS } from '@voltiso/util'
+import {
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type {
-	_GetArrayLength_,
-	DefaultTupleOptions,
 	GetDeepShape_,
 	SchemaLike,
 	TupleOptions,
@@ -25,45 +32,35 @@ import { ValidationIssue } from '~/meta-schemas'
 
 import { _tupleExtends, _tupleExtendsArray } from './_'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
-export interface CustomTupleImpl<O> {
-	readonly [BASE_OPTIONS]: TupleOptions
-	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
-
-	// readonly [PARTIAL_OPTIONS]: O
-
-	// readonly [OPTIONS]: Assume<
-	// 	TupleOptions,
-	// 	MergeSchemaOptions<DefaultTupleOptions, O>
-	// >
-}
-
 export class CustomTupleImpl<
 	O extends Partial<TupleOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	readonly [SCHEMA_NAME] = 'Tuple' as const
+	readonly [SCHEMA_NAME] = 'Tuple' as const;
 
-	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple'] {
+	declare readonly [BASE_OPTIONS]: TupleOptions;
+	declare readonly [DEFAULT_OPTIONS]: TupleOptions.Default
+
+	get isReadonlyTuple(): any {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isReadonlyTuple as never
 	}
 
-	// eslint-disable-next-line etc/no-internal
-	get getLength(): _GetArrayLength_<this[OPTIONS]['shape']> {
-		return this.getShape.length as never
+	get getLength(): any {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		return this.getShape.length
 	}
 
-	get getShape(): this[OPTIONS]['shape'] {
+	get getShape(): any {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].shape
 	}
 
-	get hasRest(): this[OPTIONS]['hasRest'] {
+	get hasRest(): any {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].hasRest
 	}
 
-	get restSchema(): this[OPTIONS]['rest'] {
+	get restSchema(): any {
 		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].rest
 	}

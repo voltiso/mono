@@ -1,9 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export interface UnknownTupleOptions extends SchemaOptions {
 	Output: readonly unknown[]
@@ -17,22 +17,17 @@ export interface UnknownTupleOptions extends SchemaOptions {
 
 //
 
-export interface DefaultUnknownTupleOptions extends DefaultSchemaOptions {
-	Output: unknown[]
-	Input: unknown[]
+export namespace UnknownTupleOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: unknown[]
+		Input: unknown[]
 
-	minLength: undefined
-	maxLength: undefined
+		minLength: undefined
+		maxLength: undefined
 
-	isReadonlyTuple: false
+		isReadonlyTuple: false
+	}
+
+	export type DefaultMutable = $Override_<Default, { isReadonlyTuple: false }>
+	export type DefaultReadonly = $Override_<Default, { isReadonlyTuple: true }>
 }
-
-export type DefaultMutableUnknownTupleOptions = Merge2_<
-	DefaultUnknownTupleOptions,
-	{ isReadonlyTuple: false }
->
-
-export type DefaultReadonlyUnknownTupleOptions = Merge2_<
-	DefaultUnknownTupleOptions,
-	{ isReadonlyTuple: true }
->

@@ -3,13 +3,7 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	DefaultFunctionOptions,
-	FunctionOptions,
-	ISchema,
-	SCHEMA_NAME,
-} from '~'
+import type { $$Schema, FunctionOptions, ISchema, SCHEMA_NAME } from '~'
 
 export interface IFunction<
 	T extends (...args: any) => any = (...args: any) => any,
@@ -18,7 +12,7 @@ export interface IFunction<
 	readonly [SCHEMA_NAME]: 'Function'
 
 	readonly [BASE_OPTIONS]: FunctionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultFunctionOptions
+	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
 
 	//
 

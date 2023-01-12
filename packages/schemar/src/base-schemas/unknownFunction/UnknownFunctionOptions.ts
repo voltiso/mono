@@ -3,7 +3,7 @@
 
 import type { BivariantCallable } from '@voltiso/util'
 
-import type { DefaultSchemaOptions, SchemaOptions } from '~'
+import type { SchemaOptions } from '~'
 
 export type BivariantUnknownFunction = [
 	BivariantCallable<(...args: unknown[]) => unknown>,
@@ -14,7 +14,7 @@ export interface UnknownFunctionOptions extends SchemaOptions {
 	Input: BivariantUnknownFunction
 }
 
-export interface DefaultUnknownFunctionOptions extends DefaultSchemaOptions {
+export interface DefaultUnknownFunctionOptions extends SchemaOptions.Default {
 	Output: BivariantUnknownFunction
 	Input: BivariantUnknownFunction
 }

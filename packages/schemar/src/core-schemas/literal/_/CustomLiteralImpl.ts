@@ -7,7 +7,6 @@ import { isSubset, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import type {
 	CustomLiteral,
-	DefaultLiteralOptions,
 	InferableLiteral,
 	ISchema,
 	LiteralOptions,
@@ -20,7 +19,7 @@ import { literalValueExtends } from './literalValueExtends'
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomLiteralImpl<O> {
 	readonly [BASE_OPTIONS]: LiteralOptions
-	readonly [DEFAULT_OPTIONS]: DefaultLiteralOptions
+	readonly [DEFAULT_OPTIONS]: LiteralOptions.Default
 }
 
 export class CustomLiteralImpl<O extends Partial<LiteralOptions>>

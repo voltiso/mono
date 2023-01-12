@@ -54,11 +54,6 @@ export async function callMethod<
 			`${debugName()} called after transaction body (missing await?)`,
 		)
 
-	// if (argSchema) {
-	// 	if (args.length !== 1) throw new TransactorError('argSchema requires the function to be called with 1 argument')
-	// 	await argSchema.validateAsync(args[0], transactor.options.validateOptions)
-	// }
-
 	if (!transaction) {
 		let cache: Cache | undefined
 

@@ -84,11 +84,16 @@ export const typecov = [
 export const traceRun = [
 	'rimraf traceDir',
 	'tsc --generateTrace traceDir | gnomon',
-	'analyze-trace traceDir',
 	'simplify-trace-types traceDir/types.json traceDir/types-simplified.json',
+]
+
+export const traceAnalyze = [
+	'reset',
+	'analyze-trace traceDir',
 	'code traceDir/types-simplified.json',
 ]
-export const trace = turbo('trace:run')
+
+export const trace = [turbo('trace:run'), traceAnalyze]
 
 export const clean = 'rimraf node_modules dist'
 

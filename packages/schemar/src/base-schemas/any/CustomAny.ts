@@ -3,12 +3,7 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type {
-	AnyOptions,
-	CustomSchema,
-	DefaultAnyOptions,
-	SCHEMA_NAME,
-} from '~'
+import type { AnyOptions, CustomSchema, SCHEMA_NAME } from '~'
 
 export interface CustomAny<O extends Partial<AnyOptions>>
 	extends CustomSchema<O> {
@@ -16,5 +11,5 @@ export interface CustomAny<O extends Partial<AnyOptions>>
 	readonly [SCHEMA_NAME]: 'Any'
 
 	readonly [BASE_OPTIONS]: AnyOptions
-	readonly [DEFAULT_OPTIONS]: DefaultAnyOptions
+	readonly [DEFAULT_OPTIONS]: AnyOptions.Default
 }

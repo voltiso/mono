@@ -4,13 +4,13 @@
 import { $Assert } from '~/$strip'
 import type { IsIdentical } from '~/type'
 
-import type { DeepPartialOrUndefined_ } from './DeepPartialOrUndefined'
+import type { DeepNonStrictPartial_ } from './DeepNonStrictPartial'
 
-describe('DeepPartialOrUndefined', () => {
+describe('DeepNonStrictPartial', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = DeepPartialOrUndefined_<{
+		type X = DeepNonStrictPartial_<{
 			x: 0
 			a: 'test'
 			arr: 123[]

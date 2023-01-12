@@ -3,14 +3,15 @@
 
 import type { IntrinsicFields } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
+import type { WithTransactor } from '~/Transactor'
+import { guardedValidate } from '~/util'
 
 export function withVoltisoEntry<O extends { __voltiso?: unknown }>(
+	ctx: WithTransactor,
 	data: O,
 ): O & IntrinsicFields {
-	// if (sVoltisoEntry.isValid(data.__voltiso)) return data as never
-
-	const __voltiso = sVoltisoEntry.validate(data.__voltiso)
-	// console.log('????????', __voltiso)
-
-	return { ...data, __voltiso }
+	return {
+		...data,
+		__voltiso: guardedValidate(ctx, sVoltisoEntry, data.__voltiso),
+	}
 }

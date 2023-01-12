@@ -5,7 +5,7 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor } from '@voltiso/util'
 
-import type { AnyOptions, DefaultAnyOptions, Schema } from '~'
+import type { AnyOptions, Schema } from '~'
 import {
 	CustomSchemaImpl,
 	isAnySchema,
@@ -19,7 +19,7 @@ $assert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomAnyImpl<O> {
-	readonly [DEFAULT_OPTIONS]: DefaultAnyOptions
+	readonly [DEFAULT_OPTIONS]: AnyOptions.Default
 	readonly [BASE_OPTIONS]: AnyOptions
 }
 

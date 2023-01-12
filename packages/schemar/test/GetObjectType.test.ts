@@ -41,7 +41,7 @@ describe('GetObjectType', () => {
 		type COut = GetObjectType<typeof b.getShape, { kind: 'out' }>
 		type CIn = GetObjectType<typeof b.getShape, { kind: 'in' }>
 		$Assert<IsIdentical<COut, { opt: number }>>()
-		$Assert<IsIdentical<CIn, { opt?: number | undefined }>>()
+		$Assert<IsIdentical<CIn, { opt: number | undefined }>>()
 	})
 
 	it('index', () => {

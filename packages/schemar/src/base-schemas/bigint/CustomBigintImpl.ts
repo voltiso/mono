@@ -11,13 +11,7 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	BigintOptions,
-	CustomBigint,
-	DefaultBigintOptions,
-	ISchema,
-	Literal,
-} from '~'
+import type { BigintOptions, CustomBigint, ISchema, Literal } from '~'
 import { CustomSchemaImpl, isBigintSchema } from '~'
 import { literal } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
@@ -25,7 +19,7 @@ import { ValidationIssue } from '~/meta-schemas'
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBigintImpl<O> {
 	readonly [BASE_OPTIONS]: BigintOptions
-	readonly [DEFAULT_OPTIONS]: DefaultBigintOptions
+	readonly [DEFAULT_OPTIONS]: BigintOptions.Default
 
 	// readonly [PARTIAL_OPTIONS]: O
 

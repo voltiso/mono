@@ -1,14 +1,17 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
+import type {
+	$Override_,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type {
 	_GetArrayLength_,
 	$$Tuple,
 	CustomSchema,
-	DefaultTupleOptions,
-	DefineSchema,
 	SCHEMA_NAME,
 	TupleOptions,
 } from '~'
@@ -20,7 +23,7 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 	readonly [SCHEMA_NAME]: 'Tuple'
 
 	readonly [BASE_OPTIONS]: TupleOptions
-	readonly [DEFAULT_OPTIONS]: DefaultTupleOptions
+	readonly [DEFAULT_OPTIONS]: TupleOptions.Default
 
 	//
 
@@ -35,34 +38,38 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 
 	//
 
-	get readonlyTuple(): CustomTuple.Readonly<this>
-	get mutableTuple(): CustomTuple.Mutable<this>
+	get readonlyTuple(): CustomTuple.Readonly<this, O>
+	get mutableTuple(): CustomTuple.Mutable<this, O>
 }
 
 export namespace CustomTuple {
-	export type Readonly<S extends $$Tuple> = S extends {
+	export type Readonly<This extends $$Tuple, O> = This extends {
 		[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }
 	}
-		? DefineSchema<
-				S,
-				{
-					readonlyTuple: true
-					Output: readonly [...S[OPTIONS]['Output']]
-					Input: readonly [...S[OPTIONS]['Input']]
-				}
+		? CustomTuple<
+				$Override_<
+					O,
+					{
+						readonlyTuple: true
+						Output: readonly [...This[OPTIONS]['Output']]
+						Input: readonly [...This[OPTIONS]['Input']]
+					}
+				>
 		  >
 		: never
 
-	export type Mutable<S extends $$Tuple> = S extends {
+	export type Mutable<This extends $$Tuple, O> = This extends {
 		[OPTIONS]: { Output: readonly unknown[]; Input: readonly unknown[] }
 	}
-		? DefineSchema<
-				S,
-				{
-					readonlyTuple: false
-					Output: [...S[OPTIONS]['Output']]
-					Input: [...S[OPTIONS]['Input']]
-				}
+		? CustomTuple<
+				$Override_<
+					O,
+					{
+						readonlyTuple: false
+						Output: [...This[OPTIONS]['Output']]
+						Input: [...This[OPTIONS]['Input']]
+					}
+				>
 		  >
 		: never
 }

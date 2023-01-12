@@ -1,12 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$Schemable,
-	DefaultSchemaOptions,
-	ISchema,
-	SchemaOptions,
-} from '~'
+import type { $$Schemable, ISchema, SchemaOptions } from '~'
 
 export interface RecordOptions extends SchemaOptions {
 	Output: Record<keyof any, unknown>
@@ -16,7 +11,7 @@ export interface RecordOptions extends SchemaOptions {
 	valueSchema: $$Schemable
 }
 
-export interface DefaultRecordOptions extends DefaultSchemaOptions {
+export interface DefaultRecordOptions extends SchemaOptions.Default {
 	Output: Record<keyof any, unknown>
 	Input: Record<keyof any, unknown>
 

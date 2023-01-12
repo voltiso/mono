@@ -1,14 +1,17 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
+import type {
+	$Override_,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type {
-	$$Schema,
 	$$Schemable,
 	CustomObject,
 	CustomSchema,
-	DefineSchema,
 	GetDeepShape_,
 	GetObjectType,
 	InferableObject,
@@ -55,46 +58,46 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	//
 
 	/** Constructor must be `Object` */
-	get plain(): CustomUnknownObject.Plain<this>
+	get plain(): CustomUnknownObject.Plain<O>
 
 	index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(
 		keySchema: TKeySchema,
 		valueSchema: TValueSchema,
-	): CustomUnknownObject.Index<this, TKeySchema, TValueSchema>
+	): CustomUnknownObject.Index<O, TKeySchema, TValueSchema>
 
 	index<TValueSchema extends $$Schemable>(
 		valueSchema: TValueSchema,
-	): CustomUnknownObject.Index<this, SimpleSchema<keyof any>, TValueSchema>
+	): CustomUnknownObject.Index<O, SimpleSchema<keyof any>, TValueSchema>
 }
 
 export namespace CustomUnknownObject {
-	export type Plain<This extends $$Schema> = This extends any
-		? DefineSchema<
-				This,
-				{
-					isPlain: true
-					Output: object
-					Input: object
-				}
-		  >
-		: never
+	export type Plain<O> = CustomUnknownObject<
+		$Override_<
+			O,
+			{
+				isPlain: true
+				Output: object
+				Input: object
+			}
+		>
+	>
 
 	export type Index<
-		This extends $$Schema,
+		O,
 		TKeySchema extends $$Schemable,
 		TValueSchema extends $$Schemable,
-	> = This extends any
-		? DefineSchema<
-				This,
-				{
-					Output: {
-						[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
-					}
-
-					Input: {
-						[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
-					}
+	> = CustomUnknownObject<
+		$Override_<
+			O,
+			{
+				Output: {
+					[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
 				}
-		  >
-		: never
+
+				Input: {
+					[k in Type<TKeySchema> & keyof any]: Type<TValueSchema>
+				}
+			}
+		>
+	>
 }

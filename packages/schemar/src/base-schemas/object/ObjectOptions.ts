@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable, DefaultSchemaOptions, SchemaOptions } from '~'
+import type { $$Schemable, SchemaOptions } from '~'
 
 export type ObjectIndexSignatureEntry = {
 	keySchema: $$Schemable
@@ -13,20 +13,27 @@ export interface ObjectOptions<T extends object = object>
 	Output: T
 	Input: T
 
-	shape: {} // InferableObjectLike
+	/** Not type-exposed currently */
+	shape: object // InferableObjectLike
 
+	/** Currently not type-exposed */
 	indexSignatures: ObjectIndexSignatureEntry[]
 
 	/** Constructor must be `Object` */
 	isPlain: boolean
 }
 
-export interface DefaultObjectOptions extends DefaultSchemaOptions {
-	Output: object
-	Input: object
+export namespace ObjectOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: object
+		Input: object
 
-	shape: {} // InferableObjectLike
-	indexSignatures: []
+		/** Not type-exposed currently */
+		shape: object // InferableObjectLike
 
-	isPlain: false
+		/** Currently not type-exposed */
+		indexSignatures: ObjectIndexSignatureEntry[] // []
+
+		isPlain: false
+	}
 }

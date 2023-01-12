@@ -36,14 +36,10 @@
 
 import { VoltisoUtilError } from '~/error'
 import { isMap, isSet } from '~/map-set'
-import {
-	type DefaultIterationOptions,
-	type IterationOptions,
-	type Merge2Complex,
-	defaultIterationOptions,
-	getProperty,
-	merge,
-} from '~/object'
+import type { DefaultIterationOptions, IterationOptions } from '~/object'
+import { defaultIterationOptions, getProperty } from '~/object'
+import type { Override } from '~/object/Override'
+import { overrideDefined } from '~/object/Override'
 import { stringFrom } from '~/string'
 
 import type { CoercedEntry, Entry } from './Entry'
@@ -107,6 +103,8 @@ export function getEntries_<Obj extends object, O extends IterationOptions>(
 	return r
 }
 
+//
+
 export function getEntries<Obj extends object>(
 	obj: Obj,
 ): GetEntries<Obj, DefaultIterationOptions>
@@ -114,24 +112,19 @@ export function getEntries<Obj extends object>(
 export function getEntries<
 	Obj extends object,
 	O extends Partial<IterationOptions>,
->(
-	obj: Obj,
-	options: O,
-): GetEntries<Obj, Merge2Complex<DefaultIterationOptions, O> & IterationOptions>
+>(obj: Obj, options: O): GetEntries<Obj, Override<DefaultIterationOptions, O>>
 
-export function getEntries<
-	Obj extends object,
-	O extends Partial<IterationOptions>,
->(
-	obj: Obj,
-	options?: O | undefined,
-): GetEntries<
-	Obj,
-	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
-> {
-	const myOptions = merge(defaultIterationOptions, options)
-	return getEntries_(obj, myOptions as never) as never
+//
+
+export function getEntries(
+	obj: object,
+	options?: Partial<IterationOptions> | undefined,
+): [keyof any, unknown][] {
+	const myOptions = overrideDefined(defaultIterationOptions, options)
+	return getEntries_(obj, myOptions) as never
 }
+
+//
 
 //
 
@@ -145,10 +138,7 @@ export function getCoercedEntries<
 >(
 	obj: Obj,
 	options: O,
-): GetCoercedEntries<
-	Obj,
-	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
->
+): GetCoercedEntries<Obj, Override<DefaultIterationOptions, O>>
 
 export function getCoercedEntries<
 	Obj extends object,
@@ -156,10 +146,7 @@ export function getCoercedEntries<
 >(
 	obj: Obj,
 	options?: O | undefined,
-): GetCoercedEntries<
-	Obj,
-	Merge2Complex<DefaultIterationOptions, O> & IterationOptions
-> {
-	const myOptions = merge(defaultIterationOptions, options)
+): GetCoercedEntries<Obj, Override<DefaultIterationOptions, O>> {
+	const myOptions = overrideDefined(defaultIterationOptions, options)
 	return getEntries_(obj, myOptions as never) as never
 }

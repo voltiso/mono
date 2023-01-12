@@ -1,12 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-	PARTIAL_OPTIONS,
-} from '@voltiso/util'
+import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -27,14 +22,14 @@ export interface SchemaLike<T = unknown> extends $$Schema {
 	get Input(): T | undefined
 }
 
+// export interface FinalSchema<T> {}
+
 /** Every Schema is assignable to `ISchema` */
 export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
-	readonly [DEFAULT_OPTIONS]: SchemaOptions
-
-	readonly [PARTIAL_OPTIONS]: {}
+	readonly [DEFAULT_OPTIONS]: SchemaOptions // not necessarily the global defaults
 
 	readonly [OPTIONS]: SchemaOptions & {
 		Output: T

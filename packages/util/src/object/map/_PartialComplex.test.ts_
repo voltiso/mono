@@ -5,7 +5,7 @@ import { $Assert } from '~/$strip'
 import type { Value } from '~/object'
 import type { IsIdentical } from '~/type'
 
-import type { $PartialComplex_ } from './PartialComplex'
+import type { $PartialComplex_ } from './_PartialComplex.ts_'
 
 describe('PartialComplex', () => {
 	it('works', () => {

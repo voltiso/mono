@@ -6,7 +6,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type { $$Schema, ISchema } from '~'
 
-import type { DefaultStringOptions, StringOptions } from './StringOptions'
+import type { StringOptions } from './StringOptions'
 
 export interface $$String extends $$Schema {
 	readonly [SCHEMA_NAME]: 'String'
@@ -17,7 +17,7 @@ export interface IString extends ISchema<string> {
 	readonly [SCHEMA_NAME]: 'String'
 
 	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: DefaultStringOptions
+	readonly [DEFAULT_OPTIONS]: StringOptions.Default
 
 	get getMinLength(): number | undefined
 	get getMaxLength(): number | undefined

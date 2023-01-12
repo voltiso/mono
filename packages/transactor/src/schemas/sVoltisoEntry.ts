@@ -3,8 +3,9 @@
 
 import type { Input_, Output_ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
+import type { WithTransactor } from '~/Transactor'
 
-import { isEqual } from '~/util'
+import { guardedValidate, isEqual } from '~/util'
 
 import { sTimestamp } from './sTimestamp'
 
@@ -146,8 +147,8 @@ export namespace VoltisoEntry {
 	}
 }
 
-export function getDefaultVoltisoEntry(date: Date) {
-	return sVoltisoEntry.validate({
+export function getDefaultVoltisoEntry(context: WithTransactor, date: Date) {
+	return guardedValidate(context, sVoltisoEntry, {
 		createdAt: date,
 		updatedAt: date,
 	})
