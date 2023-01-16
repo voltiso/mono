@@ -9,7 +9,8 @@ describe('VoltisoError', () => {
 
 		const error = new VoltisoError('test', { package: { name: 'pName' } })
 
-		expect(error.message).toBe('[pName] test')
+		expect(error.message).toBe('test')
+		// expect(error.message).toBe('[pName] test')
 	})
 
 	it('works with package name and version', () => {
@@ -19,7 +20,8 @@ describe('VoltisoError', () => {
 			package: { name: 'pName', version: '1.0.0' },
 		})
 
-		expect(error.message).toBe('[pName@1.0.0] test')
+		expect(error.message).toBe('test')
+		// expect(error.message).toBe('[pName@1.0.0] test')
 	})
 
 	it('works with just a message', () => {

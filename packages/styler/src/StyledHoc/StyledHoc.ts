@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, Merge2_ } from '@voltiso/util'
+import type { _, $Override_ } from '@voltiso/util'
 
 import type { Props } from '~/react-types'
 import type { Styled } from '~/Styled'
@@ -34,9 +34,7 @@ export interface StyledHocWithProps<P extends Props>
  */
 export interface CustomStyledHoc<
 	$ extends Partial<Pick<StyledTypeInfo, 'Props' | 'CustomCss'>>,
-> extends CustomStyledHocImpl<
-		Merge2_<{ Props: {}; CustomCss: {} }, Required<$>>
-	> {}
+> extends CustomStyledHocImpl<$Override_<{ Props: {}; CustomCss: {} }, $>> {}
 
 /**
  * Curried: `Element => StyledComponent`

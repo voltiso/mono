@@ -1,12 +1,11 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { VoltisoUtilError } from '_/error'
+
 import type { Reverse } from '~/array'
-import { VoltisoUtilError } from '_/error/index'
 import type { MergeN } from '~/object'
 import { stringFrom } from '~/string'
-
-/* eslint-disable security/detect-object-injection */
 
 export function protoLink<Args extends object[]>(
 	...args: Args

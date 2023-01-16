@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { VoltisoUtilError } from '_'
+
 import { lazyConstructor } from '~/lazy/lazyConstructor'
 import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
@@ -102,7 +103,6 @@ export function isPolluting(
 	} else {
 		const [obj, key] = args
 		return (
-			// eslint-disable-next-line security/detect-object-injection
 			(key === 'constructor' && typeof obj[key] === 'function') ||
 			key === '__proto__'
 		)

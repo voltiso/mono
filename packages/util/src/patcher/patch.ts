@@ -151,7 +151,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 			}
 
 			if (Object.prototype.hasOwnProperty.call(x, key) && isDeleteIt(value)) {
-				// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				delete res[key]
 				haveChange = true
 			}

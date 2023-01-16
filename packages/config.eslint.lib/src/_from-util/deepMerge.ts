@@ -10,14 +10,10 @@ function _deepMerge(objectA: Rso, objectB: Rso) {
 
 	for (const k of Object.keys(objectB)) {
 		if (
-			// eslint-disable-next-line security/detect-object-injection
 			Object === result[k]?.constructor &&
-			// eslint-disable-next-line security/detect-object-injection
 			Object === objectB[k]?.constructor
 		) {
-			// eslint-disable-next-line security/detect-object-injection
 			result[k] = _deepMerge(result[k] as Rso, objectB[k] as Rso)
-			// eslint-disable-next-line security/detect-object-injection
 		} else (result[k] as unknown) = objectB[k]
 	}
 

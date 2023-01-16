@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Input, SchemarAnd, Type } from '@voltiso/schemar'
+import type { Input_, Output_, SchemarAnd_ } from '@voltiso/schemar'
 import type {
 	_,
 	Callable,
@@ -14,6 +14,7 @@ import type {
 import type { DocIdBrand, DocIdString, DocIdString_ } from '~/brand'
 import type { $WithId, DataRecord, WithId } from '~/Data'
 import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext } from '~/Doc'
+import type { $$DocRef } from '~/DocRef'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 import type { VoltisoEntry } from '~/schemas'
@@ -52,8 +53,8 @@ export namespace GetData {
 	export type ForDocTI<TI extends $$DocTI> = TI extends DocTI
 		? _<
 				// TightenRefs<
-				SchemarAnd<
-					SchemarAnd<TI['publicOnCreation'], TI['public']>,
+				SchemarAnd_<
+					SchemarAnd_<TI['publicOnCreation'], TI['public']>,
 					TI['private']
 				>['Output'] &
 					// >
@@ -107,7 +108,7 @@ export type GetInputDataWithId<
 //
 
 /** @inline */
-export type GetPublicData<R extends $$DocRelatedLike> = Type<
+export type GetPublicData<R extends $$DocRelatedLike> = Output_<
 	GetDocTI<R>['public']
 >
 
@@ -129,11 +130,11 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 				10,
 				{
 					readonly id?: DocIdString_<R> | undefined
-				} & SchemarAnd<
+				} & SchemarAnd_<
 					GetDocTI<R>['publicOnCreation'],
 					GetDocTI<R>['public']
 				>['Input'],
-				{ skip: Primitive | Callable | Newable }
+				{ skip: Primitive | Callable | Newable | Date | $$DocRef }
 		  >
 
 // type A = _<GetPublicCreationInputData<'oops'>>
@@ -141,7 +142,7 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 /** @inline */
 export type GetPublicInputData<R extends $$DocRelatedLike> = R extends AnyDoc
 	? { readonly id?: never; [k: string]: unknown }
-	: Input<GetDocTI<R>['public']>
+	: Input_<GetDocTI<R>['public']>
 
 //
 

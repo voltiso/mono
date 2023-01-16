@@ -1,8 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { exactOptionalPropertyTypes } from '~'
 import { $Assert } from '_'
+
+import type { exactOptionalPropertyTypes } from '~'
 
 describe('exactOptionalPropertyTypes - true', () => {
 	it('works', () => {

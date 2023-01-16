@@ -3,6 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 import type {
+	$Override_,
 	Assume,
 	MaybePromise,
 	NoThis,
@@ -52,7 +53,7 @@ export namespace SingleOverloadHandlerDetail {
 		export interface Hidden<O extends Options>
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			extends Handler.Options.Hidden<O> {
-			implementation?: GetImplementation<O> | undefined
+			// implementation?: GetImplementation<O> | undefined
 		}
 	}
 
@@ -100,13 +101,13 @@ export namespace SingleOverloadHandlerDetail {
 		PartialOptions extends Partial<Options>,
 	> = Rebind<
 		This,
-		Override<
+		$Override_<
 			PartialOptions,
 			{
 				Signature: GetSignature<Override<This[OPTIONS], PartialOptions>>
 
 				Implementation: GetImplementation<
-					Override<This[OPTIONS], PartialOptions>
+					$Override_<This[OPTIONS], PartialOptions>
 				>
 			}
 		>
@@ -206,7 +207,7 @@ export class SingleOverloadHandlerImpl<
 	declare readonly [DEFAULT_OPTIONS]: SingleOverloadHandlerDetail.Options.Default;
 
 	declare readonly [HIDDEN_OPTIONS]: SingleOverloadHandlerDetail.Options.Hidden<
-		Override<this[BASE_OPTIONS], O>
+		this[OPTIONS]
 	>
 
 	constructor(

@@ -19,7 +19,7 @@ class A extends Doc('a').with({
 	},
 }) {
 	@method
-	async setFriend(b: DocRef<B>) {
+	async setFriend(b: DocRef<'b'>) {
 		this.data.b = b
 	}
 }
@@ -33,7 +33,7 @@ class B extends Doc('b').with({
 	},
 }) {
 	@method
-	async setFriend(c: DocRef<C>) {
+	async setFriend(c: DocRef<'c'>) {
 		this.data.c = c
 	}
 }
@@ -47,7 +47,7 @@ class C extends Doc('c').with({
 	},
 }) {
 	@method
-	async setFriend(d: DocRef<D>) {
+	async setFriend(d: DocRef<'d'>) {
 		this.data.d = d
 	}
 }
@@ -61,7 +61,7 @@ class D extends Doc('d').with({
 	},
 }) {
 	@method
-	async setFriend(e: DocRef<E>) {
+	async setFriend(e: DocRef<'e'>) {
 		this.data.e = e
 	}
 }
@@ -75,7 +75,7 @@ class E extends Doc('e').with({
 	},
 }) {
 	@method
-	async setFriend(f: DocRef<F>) {
+	async setFriend(f: DocRef<'f'>) {
 		this.data.f = f
 	}
 }
@@ -89,7 +89,7 @@ class F extends Doc('f').with({
 	},
 }) {
 	@method
-	async setFriend(g: DocRef<G>) {
+	async setFriend(g: DocRef<'g'>) {
 		this.data.g = g
 	}
 }
@@ -103,7 +103,7 @@ class G extends Doc('g').with({
 	},
 }) {
 	@method
-	async setFriend(a: DocRef<A>) {
+	async setFriend(a: DocRef<'a'>) {
 		this.data.a = a
 	}
 }

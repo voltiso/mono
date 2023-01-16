@@ -9,7 +9,7 @@ import type {
 	$$Schema,
 	$$SchemableObject,
 	InferableObject,
-	InferSchema$,
+	ImplicitInferSchema$,
 	IObject$,
 	ISchema$,
 	Literal$,
@@ -21,26 +21,26 @@ describe('InferSchema', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type A = InferSchema$<InferableObject>
+		type A = ImplicitInferSchema$<InferableObject>
 		$Assert<IsIdentical<A, IObject$>>()
 
-		type B = InferSchema$<$$Object>
+		type B = ImplicitInferSchema$<$$Object>
 		$Assert<IsIdentical<B, IObject$>>()
 
 		// ! too deep - TODO
 		// type C = InferSchema$<Object<InferableObject>>
 		// $Assert<IsIdentical<C, Object<InferableObject>>>()
 
-		type D = InferSchema$<SchemableObject>
+		type D = ImplicitInferSchema$<SchemableObject>
 		$Assert<IsIdentical<D, IObject$>>()
 
-		type E = InferSchema$<$$SchemableObject>
+		type E = ImplicitInferSchema$<$$SchemableObject>
 		$Assert<IsIdentical<E, IObject$>>()
 
-		type F = InferSchema$<$$Schema>
+		type F = ImplicitInferSchema$<$$Schema>
 		$Assert<IsIdentical<F, ISchema$>>()
 
-		type G = InferSchema$<1 | 2 | 'a' | {}>
+		type G = ImplicitInferSchema$<1 | 2 | 'a' | {}>
 		$Assert<IsIdentical<G, Literal$<1 | 2 | 'a'> | NonNullish$>>()
 	})
 })

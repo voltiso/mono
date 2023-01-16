@@ -14,7 +14,7 @@ export type { Boolean_ as Boolean }
 
 //
 
-interface Boolean$ extends CustomBoolean$<{}> {
+export interface Boolean$ extends CustomBoolean$<{}> {
 	<L extends boolean>(...literals: L[]): Literal<L>
 	<L extends boolean>(literals: Set<L>): Literal<L>
 	<L extends boolean>(...args: L[] | [Set<L>]): Literal<L>
@@ -22,7 +22,7 @@ interface Boolean$ extends CustomBoolean$<{}> {
 
 //
 
-const Boolean$ = lazyConstructor(
+export const Boolean$ = lazyConstructor(
 	() => BooleanImpl,
 ) as unknown as Boolean$Constructor
 

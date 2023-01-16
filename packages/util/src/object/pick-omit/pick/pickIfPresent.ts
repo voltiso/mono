@@ -1,8 +1,6 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable security/detect-object-injection */
-
 import type { _ } from '~/object'
 import { hasOwnProperty } from '~/object'
 import type { AlsoAccept } from '~/type'

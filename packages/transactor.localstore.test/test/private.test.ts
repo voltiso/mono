@@ -26,7 +26,8 @@ class Doctor extends Doc.with({
 	})
 
 	.method('good', async function () {
-		// @ts-expect-error no such field
+		// ! typings do not work currently - because of no public fields
+		// // @ts-expect-error no such field
 		await doctors(this.id).update({ specialty: 'fireman' })
 	}) {}
 

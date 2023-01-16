@@ -6,6 +6,7 @@ import type {
 	$$Doc,
 	DocIdBrand,
 	DocRef,
+	DocRef$,
 	GetVoltisoEntry,
 } from '@voltiso/transactor'
 import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
@@ -85,7 +86,7 @@ describe('ref', () => {
 			},
 		})
 
-		$Assert($Is(d.ref).identicalTo<DocRef<DoctorX>>())
+		$Assert($Is(d.ref).identicalTo<DocRef$<'DoctorXNala'>>())
 
 		const p = await patients.add({
 			profile: {

@@ -82,6 +82,7 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-non-null-assertion': 1,
 		'@typescript-eslint/no-non-null-asserted-optional-chain': 1,
 		'@typescript-eslint/space-before-function-paren': 0, // prettier
+		'@typescript-eslint/unbound-method': 1,
 
 		// '@typescript-eslint/no-explicit-any': [
 		// 	'error',

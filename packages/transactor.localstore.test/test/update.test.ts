@@ -28,9 +28,9 @@ describe('update', function () {
 
 		expect(r).toBeUndefined()
 
-		await expect(doctors('anthony').dataWithoutId()).resolves.toMatchObject({
+		await expect(doctors('anthony').data).resolves.toMatchObject({
 			__voltiso: omit(
-				getDefaultVoltisoEntry(new Date()),
+				getDefaultVoltisoEntry({ transactor: db }, new Date()),
 				'createdAt',
 				'updatedAt',
 			),
@@ -86,11 +86,11 @@ describe('update', function () {
 
 			expect(r).toBeUndefined()
 
-			const anthonyData = await doctors('anthony').dataWithoutId()
+			const anthonyData = await doctors('anthony').data
 
 			expect(anthonyData).toMatchObject({
 				__voltiso: omit(
-					getDefaultVoltisoEntry(new Date()),
+					getDefaultVoltisoEntry({ transactor: db }, new Date()),
 					'createdAt',
 					'updatedAt',
 				),

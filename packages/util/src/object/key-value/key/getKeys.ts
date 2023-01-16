@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '_/error/index'
+import { VoltisoUtilError } from '_/error'
+
 import { isMap, isSet } from '~/map-set'
 import type { DefaultIterationOptions, IterationOptions } from '~/object'
 import { defaultIterationOptions } from '~/object'

@@ -93,6 +93,5 @@ export function CustomArrowCallable<Options extends ArrowCallableOptions>(
  *   also, `shape[CALL]` property will be used as the call function
  */
 export function ArrowCallable<O extends WithCALL>(shape: O): ArrowCallable<O> {
-	// eslint-disable-next-line security/detect-object-injection
 	return CustomArrowCallable({ shape, call: shape[CALL] }) as never
 }

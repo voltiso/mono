@@ -1,8 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsOptional } from '~'
 import { $Assert } from '_'
+
+import type { IsOptional } from '~'
 
 describe('isOptional', () => {
 	it('works', () => {

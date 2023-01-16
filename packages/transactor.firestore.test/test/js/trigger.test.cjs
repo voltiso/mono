@@ -53,7 +53,7 @@ describe('trigger', function () {
 		await db('frog', 'artur').delete()
 		await db('frog', 'artur').set({ age: 20 })
 
-		await expect(db('frog', 'artur').dataWithoutId()).resolves.toMatchObject({
+		await expect(db('frog', 'artur').data).resolves.toMatchObject({
 			argId: 'artur',
 			isAdmin: false,
 			pathParams: { user: 'artur' },

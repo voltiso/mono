@@ -1,12 +1,8 @@
-import {
-	$Assert,
-	$Is,
-	ApplyPatch,
-	DeleteIt,
-	IsIdentical,
-	KeepIt,
-	ReplaceIt,
-} from '..'
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { ApplyPatch, DeleteIt, IsIdentical, KeepIt, ReplaceIt } from '..'
+import { $Assert, $Is } from '..'
 import type { $PatchFor, PatchFor } from './PatchFor'
 
 describe('PatchFor', () => {
@@ -31,7 +27,7 @@ describe('PatchFor', () => {
 		$Assert<IsIdentical<B, any>>()
 	})
 
-	it('object', () => {})
+	it.todo('object')
 
 	it('misc', () => {
 		type A = PatchFor<unknown>
@@ -87,6 +83,11 @@ describe('PatchFor', () => {
 				  }>
 			>
 		>()
+	})
+
+	it('atomics', () => {
+		type A = PatchFor<Date, Date>
+		$Assert<IsIdentical<A, Date | KeepIt | ReplaceIt<Date>>>()
 	})
 
 	it('index signatures', () => {

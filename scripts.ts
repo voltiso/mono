@@ -51,10 +51,14 @@ function turboAllPackages(...scriptNames: string[]) {
 export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=new-only`
 
 export const checkWorkspace = [
-	'prepareWorkspace',
+	'pnpm install',
 	// turboAllPackages('fix:prettier'),
 	turboAllPackages('build:cjs'),
-	turboAllPackages('depcheck', 'test', 'build:esm', 'lint:eslint', 'lint:tsc'),
+	turboAllPackages('build:esm'),
+	turboAllPackages('depcheck'),
+	turboAllPackages('test'),
+	turboAllPackages('lint:tsc'),
+	turboAllPackages('lint:eslint'),
 ]
 
 //!
@@ -63,15 +67,15 @@ export const checkWorkspace = [
 export const dev =
 	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
 
-export const build = turbo('build:esm', 'build:cjs')
+export const build = ['pnpm install', turbo('build:esm', 'build:cjs')]
 export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
 export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']
 
-export const lint = turbo('lint:tsc', 'lint:eslint')
+export const lint = ['pnpm install', turbo('lint:tsc', 'lint:eslint')]
 export const lintEslint = 'cross-env FULL=1 eslint --max-warnings=0 .'
 export const lintTsc = 'tsc -b'
 
-export const fix = turbo('fix:eslint', 'fix:prettier')
+export const fix = ['pnpm install', turbo('fix:eslint', 'fix:prettier')]
 export const fixPrettier = 'prettier --write --loglevel error .'
 export const fixEslint = 'eslint --fix --max-warnings=0 .'
 
@@ -96,8 +100,6 @@ export const traceAnalyze = [
 export const trace = ['reset', turbo('trace:run'), traceAnalyze]
 
 export const clean = 'rimraf node_modules dist'
-
-// export const testDependents = turbo('...^test')
 
 export const prepublishOnly = [
 	'prepareWorkspace',
@@ -135,22 +137,3 @@ export const prepublishOnlyFast = [
 		packageJson.name || '//'
 	}.test test --output-logs=new-only`,
 ]
-
-// /** Lint */
-// export const lint = parallel('depcheck', 'prettier', 'tsclint', 'eslint')
-// // export const depcheck = 'depcheck'
-// export const prettier = 'prettier --check .'
-// export const eslint = 'eslint .'
-// export const tsclint = 'tsc -b'
-
-// /** `type-coverage` */
-// export const typecov = [
-// 	'type-coverage --project config/tsconfig.build.esm --update',
-// 	'prettier ./package.json --write', // fix indent
-// ]
-
-// /** Publish */
-// export const prepublish = [
-// 	'clean',
-// 	parallel('build', 'test', 'lint', 'typecov'),
-// ]

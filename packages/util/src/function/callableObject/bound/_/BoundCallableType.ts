@@ -1,17 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CALL, WithSelfBoundCALL } from '~/function'
-
-import type { BoundCallableOptions } from '../BoundCallableOptions'
+import type { WithSelfBoundCALL } from '~/function'
+import { CALL } from '~/function'
 
 /** @internal Use `BoundCallable` instead */
 // eslint-disable-next-line etc/underscore-internal
-export type IBoundCallable = BoundCallableOptions['shape'] &
-	BoundCallableOptions['call'] &
-	Record<keyof CallableFunction, unknown> & {
-		clone(): object
-	}
+export interface IBoundCallable extends Function {
+	clone(): unknown
+	[CALL]?(...args: unknown[]): unknown
+}
 
 /** @internal Use `BoundCallable` instead */
 export type _BoundCallable<

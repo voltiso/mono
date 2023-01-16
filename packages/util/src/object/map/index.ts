@@ -3,8 +3,8 @@
 
 export * from './deepMapValues'
 export * from './DeepMutable'
-export * from './DeepPartial'
 export * from './DeepNonStrictPartial'
+export * from './DeepPartial'
 export * from './DeepReadonly'
 export * from './MapOr'
 export * from './mapValues'

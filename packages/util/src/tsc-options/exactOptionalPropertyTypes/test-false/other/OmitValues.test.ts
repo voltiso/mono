@@ -1,15 +1,16 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OmitValues } from '~'
 import { $Assert } from '_'
+
+import type { OmitByValue } from '~'
 import type { IsIdentical } from '~/type'
 
 describe('OmitValues', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		type X = OmitValues<
+		type X = OmitByValue<
 			{
 				fff: never
 				ggg?: never
@@ -32,7 +33,7 @@ describe('OmitValues', () => {
 	it('works with optionals', () => {
 		expect.assertions(0)
 
-		type X = OmitValues<
+		type X = OmitByValue<
 			{
 				good: number | string
 				aa: number
@@ -51,11 +52,11 @@ describe('OmitValues', () => {
 			IsIdentical<
 				X,
 				{
-					good: number | string
-					bb: number | undefined
-					// b?: number | undefined // ! `exactOptionalPropertyTypes`
-					readonly dd: number | undefined
-					// readonly d?: number | undefined // ! `exactOptionalPropertyTypes`
+					good: string
+					bb: undefined
+					// b?: undefined // ! `exactOptionalPropertyTypes`
+					readonly dd: undefined
+					// readonly d?: undefined // ! `exactOptionalPropertyTypes`
 				}
 			>
 		>()
@@ -64,7 +65,7 @@ describe('OmitValues', () => {
 	it('works with never', () => {
 		expect.assertions(0)
 
-		type X = OmitValues<
+		type X = OmitByValue<
 			{
 				good: never | string
 				aa: never

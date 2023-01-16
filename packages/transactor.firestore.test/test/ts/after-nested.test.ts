@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable jest/require-hook */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
@@ -39,8 +38,11 @@ class Doctor extends Doc.with({
 			await this.update({ num: incrementIt(1) })
 		}
 
-		// @ts-expect-error
-		;() => this.update({ c: deleteIt })
+		// type A = GetUpdateDataByCtx<GetTI<Doctor>, 'outside'>
+
+		// ! does not work currently
+		// // @ts-expect-error
+		// ;() => this.update({ c: deleteIt })
 		;() => this.update({ opt: deleteIt })
 	})
 

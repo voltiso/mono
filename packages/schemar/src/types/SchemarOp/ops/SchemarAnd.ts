@@ -11,7 +11,7 @@ import type {
 	$$UnknownObject,
 	$$UnknownRecord,
 	CustomObject$,
-	InferSchema$_,
+	ImplicitInferSchema$_,
 	ISchema$,
 	Object$,
 	UnknownRecord$,
@@ -99,9 +99,12 @@ export declare namespace SchemarAndN {
 		...infer Rest,
 	]
 		? SchemarAndN.Impl<
-				[SchemarAnd_<InferSchema$_<A>, InferSchema$_<B>>, ...Rest]
+				[
+					SchemarAnd_<ImplicitInferSchema$_<A>, ImplicitInferSchema$_<B>>,
+					...Rest,
+				]
 		  >
 		: Ts extends [infer A]
-		? InferSchema$_<A>
+		? ImplicitInferSchema$_<A>
 		: never
 }

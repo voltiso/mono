@@ -14,7 +14,7 @@ import type {
 import type {
 	$$Schema,
 	$$Schemable,
-	InferSchema$,
+	ImplicitInferSchema$,
 	Input_,
 	ISchema,
 	Output_,
@@ -570,7 +570,7 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 	 */
 	or<Other extends $$Schemable>(
 		other: Other,
-	): SchemarOr<this, InferSchema$<Other>>
+	): SchemarOr<this, ImplicitInferSchema$<Other>>
 
 	/**
 	 * Create intersection of this schema an one other schema
@@ -581,7 +581,7 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 	 */
 	and<Other extends $$Schemable>(
 		other: Other,
-	): SchemarAnd<this, InferSchema$<Other>>
+	): SchemarAnd<this, ImplicitInferSchema$<Other>>
 
 	toString(): string
 }

@@ -7,9 +7,9 @@ class Base {
 	a = 0
 
 	constructor(fail = false) {
-		final(this, Base, 'f', 'g', 'h')
+		final(this, Base, ['f', 'g', 'h'])
 
-		if (fail) final(this, Base, 'a')
+		if (fail) final(this, Base, ['a'])
 	}
 
 	f() {

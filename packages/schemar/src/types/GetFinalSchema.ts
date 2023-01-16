@@ -6,7 +6,7 @@ import type {
 	$$InferableTuple,
 	$$Schema,
 	$$Schemable,
-	InferSchema$_,
+	ImplicitInferSchema$_,
 	Rest,
 } from '~'
 
@@ -14,7 +14,7 @@ export type GetFinalSchema_<S> = S extends $$Schema & {
 	get Final(): infer F
 }
 	? F
-	: InferSchema$_<S> extends { get Final(): infer F }
+	: ImplicitInferSchema$_<S> extends { get Final(): infer F }
 	? F
 	: never
 

@@ -8,9 +8,11 @@ import type {
 	_BoundCallable,
 	_BoundCallableWithCALL,
 	BoundCallableInputWithCALL,
+	IBoundCallable,
 } from '~/function'
 import { _CustomBoundCallableNoClone } from '~/function'
 import type { NonStrictPartial } from '~/object'
+import type { NoArgument } from '~/type/optional-argument/OptionalArgument'
 
 import type { WithSelfBoundCALL } from '../CALL'
 import { CALL } from '../CALL'
@@ -18,8 +20,14 @@ import type { BoundCallableOptions } from './BoundCallableOptions'
 
 //
 
-export type BoundCallable<This extends WithSelfBoundCALL> =
-	_BoundCallableWithCALL<This>
+export type BoundCallable<
+	This extends WithSelfBoundCALL | NoArgument = NoArgument,
+> = This extends NoArgument
+	? // eslint-disable-next-line etc/no-internal
+	  IBoundCallable
+	: This extends WithSelfBoundCALL
+	? _BoundCallableWithCALL<This>
+	: never
 
 export type CustomBoundCallable<Options extends BoundCallableOptions> =
 	// eslint-disable-next-line etc/no-internal
@@ -38,6 +46,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 	// eslint-disable-next-line etc/no-internal
 	const callable = _CustomBoundCallableNoClone(options)
 
+	// eslint-disable-next-line @typescript-eslint/unbound-method
 	const { call, shape } = options
 
 	// have to implement clone - need to rebind the callable to new `this`

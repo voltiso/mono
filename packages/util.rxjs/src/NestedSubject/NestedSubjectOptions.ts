@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable, InferAndSimplifyFunction } from '@voltiso/schemar'
+import type { $$Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { define } from '@voltiso/util'
 
@@ -24,7 +24,7 @@ export namespace NestedSubjectOptions {
 	}
 
 	export interface Dependencies {
-		inferSchema: InferAndSimplifyFunction
+		inferSchema: s.ImplicitSchemaInferrer$
 	}
 }
 
@@ -32,7 +32,7 @@ export namespace NestedSubjectOptions {
 
 export const defaultNestedSubjectOptions: NestedSubjectOptions.Default =
 	define<NestedSubjectOptions>().value({
-		dependencies: { inferSchema: s.infer },
+		dependencies: { inferSchema: s.schema },
 	})
 
 //

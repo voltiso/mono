@@ -21,6 +21,7 @@ import type {
 	DocPath,
 	DocRefDatabase,
 	DocRefJson,
+	GetAggregatePromises,
 	GetData,
 	GetDataWithId,
 	GetDoc,
@@ -108,6 +109,8 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 		GetDataWithId<this[OPTIONS]['doc']>,
 		O['isStrong'] extends true ? true : boolean
 	>
+
+	readonly aggregates: GetAggregatePromises<this[OPTIONS]['doc']>
 
 	readonly methods: GetMethodPromises<this[OPTIONS]['doc']>
 

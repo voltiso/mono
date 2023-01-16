@@ -26,7 +26,8 @@ class Doctor extends Doc.with({
 		if (this.data.specialty === 'master') this.data.ofWhat = 'universe'
 	})
 	.method('good', async function () {
-		// @ts-expect-error setting private field???
+		// ! type-check fails here because of no public fields
+		// // @ts-expect-error setting private field???
 		await doctors(this.id as string).update({ specialty: 'fireman' })
 	}) {}
 

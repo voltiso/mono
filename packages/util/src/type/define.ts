@@ -5,10 +5,10 @@ import type { Callable, Newable } from '~/function'
 import type { DeepMutableN } from '~/object'
 import type { Primitive } from '~/primitive'
 
+import type { Override } from '../object/Override'
 import type { AlsoAccept } from './AlsoAccept'
 import type { DecrementArgument } from './number'
 import type { NoArgument } from './optional-argument'
-import type { Override } from '../object/Override'
 
 export interface DefineTypeOptions {
 	/**

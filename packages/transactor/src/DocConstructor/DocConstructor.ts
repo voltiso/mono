@@ -268,5 +268,5 @@ export namespace DocConstructor {
 		{}
 	> extends true
 		? s.Object$<{}>
-		: s.InferSchema$<S>
+		: s.ImplicitInferSchema$<S>
 }

@@ -61,7 +61,6 @@ export class _BindableFunction<
 
 		const name = this.name
 
-		// eslint-disable-next-line security/detect-object-injection
 		const bindableFunctionCall = {
 			[name](this: BoundThis, ...args: BoundArguments) {
 				// eslint-disable-next-line unicorn/no-negated-condition

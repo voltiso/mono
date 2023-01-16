@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge } from '@voltiso/util'
+import type { $Merge } from '@voltiso/util'
 
 import type { DataHookConstructor } from './DataHookConstructor'
 
@@ -42,7 +42,7 @@ class DataHookImpl<D extends object> {
 	}
 }
 
-export type DataHookLoading<D extends object> = Merge<
+export type DataHookLoading<D extends object> = $Merge<
 	{
 		readonly data?: undefined
 		readonly isLoading: true
@@ -52,7 +52,7 @@ export type DataHookLoading<D extends object> = Merge<
 	{ [k in keyof D]?: undefined }
 >
 
-export type DataHookError<D extends object> = Merge<
+export type DataHookError<D extends object> = $Merge<
 	{
 		readonly data?: undefined
 		readonly isLoading: false
@@ -62,7 +62,7 @@ export type DataHookError<D extends object> = Merge<
 	{ [k in keyof D]?: undefined }
 >
 
-export type DataHookExists<D extends object> = Merge<
+export type DataHookExists<D extends object> = $Merge<
 	{
 		readonly data: D
 		readonly isLoading: false
@@ -72,7 +72,7 @@ export type DataHookExists<D extends object> = Merge<
 	D
 >
 
-export type DataHookNotExists<D extends object> = Merge<
+export type DataHookNotExists<D extends object> = $Merge<
 	{
 		readonly data: null
 		readonly isLoading: false

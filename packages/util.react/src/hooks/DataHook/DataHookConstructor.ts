@@ -15,30 +15,36 @@ export interface DataHookConstructor {
 	new <D extends object>(p: { error: Error }): DataHook<D>
 }
 
-export function dataHook<D extends object>(p: {
+//
+
+export function dataHook<D extends object>(input: {
 	isLoading: true
 }): DataHookLoading<D>
 
-export function dataHook<D extends object>(p: { data: D }): DataHookExists<D>
+export function dataHook<D extends object>(input: {
+	data: D
+}): DataHookExists<D>
 
-export function dataHook<D extends object>(p: {
+export function dataHook<D extends object>(input: {
 	data: null
 }): DataHookNotExists<D>
 
-export function dataHook<D extends object>(p: {
+export function dataHook<D extends object>(input: {
 	data: D | null
 }): DataHookExists<D> | DataHookNotExists<D>
 
-export function dataHook<D extends object>(p: {
+export function dataHook<D extends object>(input: {
 	error: Error | string
 }): DataHookError<D>
 
-export function dataHook<D extends object>(p: {
+export function dataHook<D extends object>(input: {
 	data?: D | null | undefined
 	isLoading?: boolean | undefined
 	error?: Error | string | undefined
 }): DataHook<D>
 
-export function dataHook(p: unknown) {
-	return new DataHook(p as never)
+//
+
+export function dataHook<D extends object>(input: unknown): DataHook<D> {
+	return new DataHook(input as never)
 }

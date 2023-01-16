@@ -39,7 +39,7 @@ describe('update', function () {
 			},
 		}
 
-		await expect(db('person', 'artur').dataWithoutId()).resolves.toMatchObject(
+		await expect(db('person', 'artur').data).resolves.toMatchObject(
 			expected,
 		)
 		await expect(db('person', 'artur').dataWithId()).resolves.toMatchObject({

@@ -26,7 +26,7 @@ class DoctorLorcan extends Doc('doctorLorcan').with({
 	},
 }) {
 	@method
-	async setFriend(friend?: DocRef<DoctorLorcan>) {
+	async setFriend(friend?: DocRef<'doctorLorcan'>) {
 		// type X = GetDocTag<DocRef<DoctorLorcan>>
 		// $Assert<IsIdentical<X, 'doctorLorcan'>>()
 
@@ -83,7 +83,7 @@ describe('emu-ts', () => {
 					friend: c.ref,
 				})
 			assert(b.data.friend)
-			$Assert<IsIdentical<typeof b.data.friend, DocRef<DoctorLorcan>>>()
+			$Assert<IsIdentical<typeof b.data.friend, DocRef<'doctorLorcan'>>>()
 
 			const name = await b.data.friend.data.name
 
@@ -117,7 +117,7 @@ describe('emu-ts', () => {
 
 			await expect(
 				doctors('adam').methods.setFriend(
-					doctors('artur') as DocRef<DoctorLorcan>,
+					doctors('artur') as DocRef<'doctorLorcan'>,
 				),
 			).rejects.toThrow('exist')
 
@@ -125,7 +125,7 @@ describe('emu-ts', () => {
 				// @ts-expect-error DocType mismatch
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 				doctors('adam' as DocIdString<ClientXyz>).setFriend(
-					doctors('artur') as DocRef<DoctorLorcan>,
+					doctors('artur') as DocRef<'doctorLorcan'>,
 				),
 			).rejects.toThrow('exist')
 		})

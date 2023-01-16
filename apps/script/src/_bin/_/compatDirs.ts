@@ -55,7 +55,6 @@ export const compatDirs: Command = ({ commandArgs }) => {
 		throw new VoltisoScriptError(message)
 	}
 
-	// eslint-disable-next-line security/detect-object-injection
 	const command = subCommands[commandName]
 
 	return command()

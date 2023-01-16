@@ -10,7 +10,10 @@ import type { IncrementIt } from './incrementIt'
 import type { KeepIt } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
 
-export type PatchFor<X> = IsAny<X> extends true
+export type PatchFor<
+	X,
+	atomics = PatchFor.DefaultAtomics,
+> = IsAny<X> extends true
 	? any
 	: unknown extends X
 	? unknown // IsIdentical<X, object> extends true ? object :
@@ -21,12 +24,14 @@ export type PatchFor<X> = IsAny<X> extends true
 			| X
 			| KeepIt
 			| ReplaceIt<X>
-			| PatchFor.Nested<X>
+			| PatchFor.Nested<X, atomics>
 			| (X extends number | bigint ? IncrementIt : never)
 			| (X extends readonly (infer E)[] ? ArraySetUpdateIt<E, E> : never)
 
 export namespace PatchFor {
-	export type Nested<X> = X extends object
+	export type Nested<X, atomics> = X extends atomics
+		? never
+		: X extends object
 		? keyof X extends never
 			? never
 			: {
@@ -35,6 +40,9 @@ export namespace PatchFor {
 						| IsOptional<X, key, DeleteIt, never>
 			  }
 		: never
+
+	export type DefaultAtomics = Date
+	// export type DefaultAtomics = Date | Set<any> | Map<any, any> | Buffer
 }
 
 export type $PatchFor<X> = X extends any ? PatchFor<X> : never

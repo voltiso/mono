@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $Merge2_, Merge2_, Throw } from '@voltiso/util'
+import type { $Override_, Throw } from '@voltiso/util'
 
 import type { STYLED_TYPE_INFO as TI } from '~/_/symbols'
 import type { ComponentPropsWithoutRef_, MergeProps_ } from '~/react-types'
@@ -25,10 +25,7 @@ export type Patch<
 	$ extends Partial<StyledTypeInfo>,
 > = PatchImpl<
 	This,
-	$Merge2_<
-		{ Component: This[TI]['Component']; Props: {}; CustomCss: {} },
-		Required<$>
-	>
+	$Override_<{ Component: This[TI]['Component']; Props: {}; CustomCss: {} }, $>
 >
 
 export type GetDuplicateCustomCss<
@@ -64,10 +61,7 @@ export type ForcePatch<
 	$ extends Partial<StyledTypeInfo>,
 > = ForcePatchImpl<
 	This,
-	Merge2_<
-		{ Component: This[TI]['Component']; Props: {}; CustomCss: {} },
-		Required<$>
-	>
+	$Override_<{ Component: This[TI]['Component']; Props: {}; CustomCss: {} }, $>
 >
 
 export type ForcePatchImpl<

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2, Throw } from '@voltiso/util'
+import type { $Override_, Throw } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 import type { NativeMethods } from 'react-native'
 
@@ -41,7 +41,7 @@ export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
 	keyof StyledTypeInfo
 > extends never
 	? GetStyledComponentImpl<
-			Merge2<{ Component: IStylable; Props: {}; CustomCss: {} }, Required<$>>
+			$Override_<{ Component: IStylable; Props: {}; CustomCss: {} }, $>
 	  >
 	: Throw<
 			'unknown type parameters' & {
@@ -114,7 +114,7 @@ export type GetStyledComponentImpl<
 export type GetStyledHoc<
 	$ extends Partial<Pick<StyledTypeInfo, 'Props' | 'CustomCss'>>,
 > = Exclude<keyof $, keyof StyledTypeInfo> extends never
-	? GetStyledHocImpl<Merge2<{ Props: {}; CustomCss: {} }, Required<$>>>
+	? GetStyledHocImpl<$Override_<{ Props: {}; CustomCss: {} }, $>>
 	: Throw<
 			'unknown type parameters' & {
 				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
@@ -137,9 +137,7 @@ export type GetStyled<$ extends Partial<StyledTypeInfo>> = Exclude<
 	keyof $,
 	keyof StyledTypeInfo
 > extends never
-	? GetStyledImpl<
-			Merge2<{ Component: null; Props: {}; CustomCss: {} }, Required<$>>
-	  >
+	? GetStyledImpl<$Override_<{ Component: null; Props: {}; CustomCss: {} }, $>>
 	: Throw<
 			'unknown type parameters' & {
 				Parameters: Exclude<keyof $, keyof StyledTypeInfo>

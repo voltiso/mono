@@ -6,7 +6,6 @@ import type { nullish } from '~/nullish'
 import type { _, Value } from '~/object'
 import type { AlsoAccept } from '~/type'
 
-
 export type OmitByValue_<Obj, val> = Omit<
 	{
 		[k in keyof Obj]: Exclude<Obj[k], val>
@@ -53,7 +52,7 @@ export function omitByValue(
 			continue
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 		result[key] = value
 	}
 

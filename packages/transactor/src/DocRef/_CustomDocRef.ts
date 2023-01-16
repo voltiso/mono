@@ -109,12 +109,11 @@ export class _CustomDocRef<
 
 	readonly methods = {} as GetMethodPromises<O['doc']>
 
-	declare readonly aggregates: GetAggregatePromises<O['doc']>;
+	declare readonly aggregates: GetAggregatePromises<O['doc']>
 
 	[OPTIONS]: CustomDocRef.Options
 
 	get isStrong(): O['isStrong'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isStrong
 	}
 
@@ -136,7 +135,7 @@ export class _CustomDocRef<
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
 			this._path.toString(),
-			// eslint-disable-next-line security/detect-object-injection
+
 			{ ...this[OPTIONS], isStrong: true },
 		) as never
 	}
@@ -146,7 +145,7 @@ export class _CustomDocRef<
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
 			this._path.toString(),
-			// eslint-disable-next-line security/detect-object-injection
+
 			{ ...this[OPTIONS], isStrong: false },
 		) as never
 	}
@@ -162,7 +161,6 @@ export class _CustomDocRef<
 
 		const options = { ...defaultDocRefOptions, ...partialOptions }
 
-		// eslint-disable-next-line security/detect-object-injection
 		this[OPTIONS] = options as never // assume the generic type argument is correct
 
 		const methods = this._getMethods()
@@ -172,7 +170,6 @@ export class _CustomDocRef<
 				return this._callMethod(method as never, args, { name, ...pathMatches })
 			}
 
-			// eslint-disable-next-line security/detect-object-injection
 			;(this as unknown as Record<string, Method>)[name] = f
 
 			this.methods[name as never] = f as never
@@ -201,7 +198,7 @@ export class _CustomDocRef<
 		return {
 			__voltiso: { type: 'Ref' },
 			path: this._ref.path,
-			// eslint-disable-next-line security/detect-object-injection
+
 			isStrong: this[OPTIONS].isStrong,
 		}
 	}
@@ -210,7 +207,7 @@ export class _CustomDocRef<
 		return {
 			__voltiso: { type: 'Ref' },
 			ref: this._ref,
-			// eslint-disable-next-line security/detect-object-injection
+
 			isStrong: this[OPTIONS].isStrong,
 		}
 	}

@@ -3,7 +3,7 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { InferSchema$_ } from '~/types/InferSchema/InferSchema'
+import type { ImplicitInferSchema$_ } from '~/types/InferSchema/InferSchema'
 import type { ISchema$ } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
@@ -17,12 +17,12 @@ import { SchemaInferrerImpl } from './SchemaInferrerImpl'
  * On the other hand, the explicit `s.infer` function will never auto-default
  * objects - it will behave as `s.object` if object inferable is provided
  */
-export interface ImplicitInfer {
-	<S extends $$Schemable>(schemable: S): InferSchema$_<S>
+export interface ImplicitInferSchema$Function {
+	<S extends $$Schemable>(schemable: S): ImplicitInferSchema$_<S>
 }
 
 // Non-generic version for faster type-check
-export interface ImplicitInfer_ {
+export interface ImplicitInferSchema$Function_ {
 	(schemable: $$Schemable): ISchema$
 }
 
@@ -51,23 +51,23 @@ export interface ImplicitInfer_ {
 // 	O extends any ? CustomObject$<O> : never
 // }
 
-export type ImplicitSchemaInferrer$Constructor =
+export type ImplicitSchema$InferrerConstructor =
 	new () => ImplicitSchemaInferrer$
 
 export interface ImplicitSchemaInferrer$
 	extends CustomSchemaInferrer$<{}>,
-		ImplicitInfer {}
+		ImplicitInferSchema$Function {}
 
 /** Non-generic version for faster type-check */
 export interface ImplicitSchemaInferrer$_
 	extends CustomSchemaInferrer$<{}>,
-		ImplicitInfer_ {}
+		ImplicitInferSchema$Function_ {}
 
 //
 
 export const ImplicitSchemaInferrer$ = lazyConstructor(
 	() => SchemaInferrerImpl,
-) as unknown as ImplicitSchemaInferrer$Constructor
+) as unknown as ImplicitSchema$InferrerConstructor
 
 /** Implicit schema infer (will auto-default object shapes if possible) */
 export const schema = lazyValue(() => new ImplicitSchemaInferrer$())

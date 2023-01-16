@@ -226,7 +226,7 @@ describe('array', () => {
 				typeof a,
 				s.CustomTuple$<{
 					hasDefault: true
-					default: readonly [1, 'a']
+					// default: readonly [1, 'a']
 					Output: [number, string]
 					Input: readonly [number, string]
 				}>

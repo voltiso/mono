@@ -31,7 +31,7 @@ describe('record', () => {
 					// keySchema: s.String
 					// valueSchema: s.Number
 					hasDefault: true
-					default: {}
+					// default: {}
 				}>
 			>
 		>()

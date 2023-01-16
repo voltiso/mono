@@ -103,13 +103,13 @@ describe('class', () => {
 		expect.hasAssertions()
 
 		await doctors('a').set({})
-		// await doctors('a').methods.setSpecialty('magician')
-		// const doc = await doctors('a')
+		await doctors('a').methods.setSpecialty('magician')
+		const doc = await doctors('a')
 
-		// expect(doc?.data).toMatchObject({
-		// 	// id: 'a',
-		// 	specialty: 'magician',
-		// })
+		expect(doc?.data).toMatchObject({
+			// id: 'a',
+			specialty: 'magician',
+		})
 	})
 
 	it('should allow private fields access via triggers', async function () {

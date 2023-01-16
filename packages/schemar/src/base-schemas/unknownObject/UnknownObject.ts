@@ -17,6 +17,11 @@ export interface UnknownPlainObject
 		isPlain: true
 	}> {}
 
+export interface UnknownPlainObject$
+	extends CustomUnknownObject$<{
+		isPlain: true
+	}> {}
+
 //
 
 export const UnknownObject$ = lazyConstructor(
@@ -27,6 +32,6 @@ export type UnknownObject$Constructor = new () => UnknownObject$
 
 export const object: UnknownObject$ = lazyValue(() => new UnknownObject$())
 
-export const plainObject: UnknownPlainObject = lazyValue(
+export const plainObject: UnknownPlainObject$ = lazyValue(
 	() => object.plain,
 ) as never

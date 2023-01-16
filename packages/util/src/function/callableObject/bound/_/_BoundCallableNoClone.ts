@@ -13,6 +13,7 @@ import { CALL, CustomArrowCallable } from '~/function'
 export function _CustomBoundCallableNoClone<
 	Options extends BoundCallableOptions,
 >(options: Options): CustomBoundCallable<Options> {
+	// eslint-disable-next-line @typescript-eslint/unbound-method
 	const { call, shape } = options
 
 	const callable: CustomBoundCallable<Options> = CustomArrowCallable({
@@ -28,7 +29,6 @@ export function _BoundCallableNoClone<This extends WithSelfBoundCALL>(
 ): BoundCallable<This> {
 	// eslint-disable-next-line etc/no-internal
 	return _CustomBoundCallableNoClone<any>({
-		// eslint-disable-next-line security/detect-object-injection
 		call: self[CALL],
 		shape: self,
 	}) as never

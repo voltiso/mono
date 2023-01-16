@@ -28,7 +28,7 @@ describe('update', function () {
 
 		expect(r).toBeUndefined()
 
-		await expect(doctors('anthony').dataWithoutId()).resolves.toMatchObject({
+		await expect(doctors('anthony').data).resolves.toMatchObject({
 			__voltiso: omit(
 				sVoltisoEntry.validate(undefined),
 				'createdAt',
@@ -71,7 +71,7 @@ describe('update', function () {
 
 			expect(r).toBeUndefined()
 
-			await expect(doctors('anthony').dataWithoutId()).resolves.toMatchObject({
+			await expect(doctors('anthony').data).resolves.toMatchObject({
 				__voltiso: omit(
 					sVoltisoEntry.validate(undefined),
 					'createdAt',

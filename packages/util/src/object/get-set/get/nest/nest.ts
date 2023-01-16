@@ -31,7 +31,7 @@ export function nest<
 
 	for (const token of path.slice(0, -1)) {
 		setProperty(currentNested, token, {})
-		// eslint-disable-next-line security/detect-object-injection
+
 		currentNested = currentNested[token]
 	}
 

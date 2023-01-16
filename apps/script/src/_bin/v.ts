@@ -136,7 +136,6 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 	const packageScripts = await getPackageScripts()
 	const scripts = getScripts()
 
-	// eslint-disable-next-line security/detect-object-injection
 	const packageScript = packageScripts[script]
 
 	if (packageScript && packageScript !== script) {
@@ -144,7 +143,6 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 		return
 	}
 
-	// eslint-disable-next-line security/detect-object-injection
 	const codeScript = scripts[script]
 
 	if (codeScript) {
@@ -198,7 +196,6 @@ async function main(): Promise<void> {
 	const [commandName, ...commandArgs] = args as [string, ...string[]]
 
 	if (isCommandName(commandName)) {
-		// eslint-disable-next-line security/detect-object-injection
 		const command = commands[commandName]
 		await command({ commandArgs })
 		return

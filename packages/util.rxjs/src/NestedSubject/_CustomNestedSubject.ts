@@ -15,12 +15,17 @@ import {
 } from '@voltiso/util'
 import { Subject } from 'rxjs'
 
+import { _updateToRoot } from './_/_updateToRoot'
+import { _validate } from './_/_validate'
 import type {
 	_NestedSubjectChildOptions,
 	NestedSubjectOptions,
-	NestedSubjectTypeOptions,
-} from '~'
-import { _updateToRoot, _validate, isNestedSubjectChildOptions } from '~'
+} from './NestedSubjectOptions'
+import {
+	defaultNestedSubjectOptions,
+	isNestedSubjectChildOptions,
+} from './NestedSubjectOptions'
+import type { NestedSubjectTypeOptions } from './options/type-options'
 
 //
 
@@ -90,9 +95,7 @@ export class _CustomNestedSubject<
 			return self as never
 		} else {
 			// eslint-disable-next-line no-param-reassign
-			options = { ...options }
-
-			if (!options.dependencies) options.dependencies = { inferSchema: s.infer }
+			options = { ...defaultNestedSubjectOptions, ...options }
 
 			// console.log('NestedSubject constructor root', options.initialValue)
 			this._dependencies = options.dependencies
@@ -285,7 +288,6 @@ export class _CustomNestedSubject<
 		][]) {
 			// eslint-disable-next-line etc/no-internal
 			child._set(
-				// eslint-disable-next-line security/detect-object-injection
 				newValue?.[key] as never,
 				exists && Object.prototype.hasOwnProperty.call(newValue || {}, key),
 			)

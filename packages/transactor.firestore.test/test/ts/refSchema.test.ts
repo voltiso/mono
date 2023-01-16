@@ -21,7 +21,7 @@ describe('ref schema', () => {
 
 		const myWeakRef = db('a/b/c/d')
 		const myRef = new CustomDocRef(
-			myWeakRef._context as never,
+			(myWeakRef as any)._context as never,
 			myWeakRef.path.toString(),
 			{ isStrong: true },
 		)

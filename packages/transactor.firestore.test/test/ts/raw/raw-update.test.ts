@@ -26,7 +26,7 @@ describe('raw-update', function () {
 
 		expect(r).toBeUndefined()
 
-		await expect(db('nurseX/anthony').dataWithoutId()).resolves.toMatchObject({
+		await expect(db('nurseX/anthony').data).resolves.toMatchObject({
 			__voltiso: omit(
 				sVoltisoEntry.validate(undefined),
 				'createdAt',
@@ -69,18 +69,16 @@ describe('raw-update', function () {
 
 			expect(r).toBeUndefined()
 
-			await expect(db('nurseX/anthony').dataWithoutId()).resolves.toMatchObject(
-				{
-					__voltiso: omit(
-						sVoltisoEntry.validate(undefined),
-						'createdAt',
-						'updatedAt',
-					),
+			await expect(db('nurseX/anthony').data).resolves.toMatchObject({
+				__voltiso: omit(
+					sVoltisoEntry.validate(undefined),
+					'createdAt',
+					'updatedAt',
+				),
 
-					asd: 1,
-					sdf: 2,
-				},
-			)
+				asd: 1,
+				sdf: 2,
+			})
 		})
 	})
 })

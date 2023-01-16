@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { InferSchema$, NonNullish$ } from '~'
+import type { ImplicitInferSchema$, NonNullish$ } from '~'
 import * as s from '~'
 
 describe('nonNullish', () => {
@@ -27,7 +27,7 @@ describe('nonNullish', () => {
 
 		$Assert<IsIdentical<typeof s.nonNullish, NonNullish$>>()
 
-		type A = InferSchema$<{}>
+		type A = ImplicitInferSchema$<{}>
 		$Assert<IsIdentical<A, NonNullish$>>()
 	})
 })

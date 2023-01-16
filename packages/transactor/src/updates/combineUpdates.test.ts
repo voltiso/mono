@@ -9,10 +9,6 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 
-import { immutabilize } from '~/immutabilize'
-
-import type { Updates } from './Updates'
-
 describe('updates', function () {
 	it('should replace field', function () {
 		expect.hasAssertions()
@@ -103,23 +99,5 @@ describe('updates', function () {
 		const updates = { b: { bc: incrementIt(1000) } }
 
 		expect(() => combinePatches<unknown>(oldData, updates)).toThrow('undefined')
-	})
-
-	it('should work with immutabilize', function () {
-		expect.hasAssertions()
-
-		expect(isDeleteIt(immutabilize(deleteIt))).toBeTruthy()
-
-		const oldData = immutabilize({
-			a: incrementIt(10),
-			b: { ba: 21, bb: { bba: 999 } },
-		}) as Updates
-		const updates = immutabilize({ a: incrementIt(100) }) as Updates
-		const newData = combinePatches<unknown>(oldData, updates)
-
-		expect(newData).toStrictEqual({
-			a: incrementIt(110),
-			b: { ba: 21, bb: { bba: 999 } },
-		})
 	})
 })

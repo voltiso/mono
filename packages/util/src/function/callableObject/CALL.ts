@@ -25,6 +25,5 @@ export interface WithBoundCALL<BoundThis> {
 //
 
 export function isWithCALL(x: unknown): x is WithCALL {
-	// eslint-disable-next-line security/detect-object-injection
 	return typeof (x as WithCALL | null)?.[CALL] === 'function'
 }

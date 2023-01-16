@@ -23,3 +23,5 @@ export const or = lazyValue(
 			return new Union$(ts as never) as never
 		},
 )
+
+export const union = or

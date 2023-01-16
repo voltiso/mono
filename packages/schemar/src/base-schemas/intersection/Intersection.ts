@@ -183,3 +183,5 @@ export function andObjects<
 
 	return new CustomObjectImpl(o) as never
 }
+
+export const intersection = and

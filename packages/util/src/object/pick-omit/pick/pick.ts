@@ -33,7 +33,6 @@ export function pick<O extends object, K extends keyof O>(
 		// 	)
 		// }
 
-		// eslint-disable-next-line security/detect-object-injection
 		r[key] = value
 	}
 

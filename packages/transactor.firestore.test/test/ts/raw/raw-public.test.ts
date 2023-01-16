@@ -2,7 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
-import type { AnyDoc, DocIdString, IDoc, WeakDocRef } from '@voltiso/transactor'
+import type {
+	AnyDoc,
+	DocIdString,
+	IDoc,
+	WeakDocRef$,
+} from '@voltiso/transactor'
 import { Transactor } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -48,6 +53,6 @@ describe('raw-public', () => {
 			'o' as const,
 			'p',
 		)
-		$Assert<IsIdentical<typeof x, WeakDocRef<AnyDoc>>>()
+		$Assert<IsIdentical<typeof x, WeakDocRef$<AnyDoc>>>()
 	})
 })

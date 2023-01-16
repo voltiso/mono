@@ -3,7 +3,7 @@
 
 /* eslint-disable no-magic-numbers */
 
-import type { Throw } from './_/error/index'
+import type { Throw } from './_/error'
 import type { IsCompatible, NoArgument } from './type'
 import type {
 	TypeAliases0,

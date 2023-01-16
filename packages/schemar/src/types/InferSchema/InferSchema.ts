@@ -35,17 +35,20 @@ import type {
 } from '~'
 
 /** Groups literals */
-export type InferSchema$_<S> = InferSchema$.Step1<S>
+export type ImplicitInferSchema$_<S> = ImplicitInferSchema$.Step1<S>
 
 /** Groups literals */
-export type InferSchema$<S extends $$Schemable> = InferSchema$_<S>
+export type ImplicitInferSchema$<S extends $$Schemable> =
+	ImplicitInferSchema$_<S>
 
 /** Does not group literals */
-export type $InferSchema$_<S> = S extends any ? InferSchema$_<S> : never
+export type $ImplicitInferSchema$_<S> = S extends any
+	? ImplicitInferSchema$_<S>
+	: never
 
 /** Does not group literals */
-export type $InferSchema$<S extends $$Schemable> = S extends any
-	? InferSchema$_<S>
+export type $ImplicitInferSchema$<S extends $$Schemable> = S extends any
+	? ImplicitInferSchema$_<S>
 	: never
 
 //
@@ -76,7 +79,7 @@ export declare namespace GetObject$ {
 		: CustomObject$<{ Output: Output; Input: Input }>
 }
 
-export declare namespace InferSchema$ {
+export declare namespace ImplicitInferSchema$ {
 	/** Do we have full `ISchema` super-type? */
 	export type Step1<S> = $$Schemable extends S
 		? ISchema$

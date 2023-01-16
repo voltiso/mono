@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { VoltisoError } from '_/error/VoltisoError'
+
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { isObject } from '~/object/isObject'
 import { stringFrom } from '~/string'

@@ -5,57 +5,50 @@ import type * as s from '@voltiso/schemar'
 
 import { _schema } from './_'
 
-export const schema = _schema as s.SchemaInferrer
-export const unknown = _schema as s.Unknown
+export const schema = _schema as typeof s.schema
+export const unknown = _schema as typeof s.unknown
 
-export const tuple = _schema as s.MutableUnknownTuple
-export const readonlyTuple = _schema as s.ReadonlyUnknownTuple
+export const tuple = _schema as typeof s.tuple
+export const readonlyTuple = _schema as typeof s.readonlyTuple
 
-export const array = _schema as s.MutableArray<s.Unknown>
-export const readonlyArray = _schema as s.ReadonlyArray<s.Unknown>
+export const array = _schema as typeof s.array
+export const readonlyArray = _schema as typeof s.readonlyArray
 
-const function_ = _schema as s.UnknownFunction
+const function_ = _schema as typeof s.function
 export { function_ as function }
 
-const void_ = _schema as s.Void
+const void_ = _schema as typeof s.void
 export { void_ as void }
 
-export const any = _schema as s.Any
-export const symbol = _schema as s.UnknownSymbol
-export const string = _schema as s.String
+export const any = _schema as typeof s.any
+export const symbol = _schema as typeof s.symbol
+export const string = _schema as typeof s.string
 
-export const number = _schema as s.Number
-export const integer = _schema as s.CustomNumber<{
-	isInteger: true
-}>
+export const number = _schema as typeof s.number
+export const integer = _schema as typeof s.integer
 
-export const bigint = _schema as s.Bigint
-export const boolean = _schema as s.Boolean
+export const bigint = _schema as typeof s.bigint
+export const boolean = _schema as typeof s.boolean
 
-export const instance = _schema as <Inst extends object>(
-	Constructor: new (...args: any[]) => Inst,
-) => s.Instance<Inst>
+export const instance = _schema as typeof s.instance
 
-export const literal = _schema as s.UnknownLiteral
-export const never = _schema as s.Never
+export const literal = _schema as typeof s.literal
+export const never = _schema as typeof s.never
 
-const null_ = _schema as s.Literal<null>
+const null_ = _schema as typeof s.null
 export { null_ as null }
 
-export const object = _schema as s.UnknownObject
-export const record = _schema as s.UnknownRecord
+export const object = _schema as typeof s.object
+export const record = _schema as typeof s.record
 
-const undefined_ = _schema as s.Literal<undefined>
+const undefined_ = _schema as typeof s.undefined
 export { undefined_ as undefined }
 
-export const union = _schema as <Ts extends s.$$Schemable[]>(
-	...types: Ts
-) => s.Union<Ts>
+export const or = _schema as typeof s.or
+export const union = _schema as typeof s.union
 
-export const optional = _schema as s.CustomUnknown<{
-	isOptional: true
-}>
+export const and = _schema as typeof s.and
+export const intersection = _schema as typeof s.intersection
 
-export const readonly = _schema as s.CustomUnknown<{
-	isReadonly: true
-}>
+export const optional = _schema as typeof s.optional
+export const readonly = _schema as typeof s.readonly

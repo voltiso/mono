@@ -5,7 +5,7 @@ import srcSimple from '~/strip/simple'
 
 describe('simple', () => {
 	it('src', () => {
-		expect(() => srcSimple(1)).toThrow('[@voltiso/util] $assert(0) failed')
+		expect(() => srcSimple(1)).toThrow('$assert(0) failed')
 	})
 
 	it('dist', async () => {

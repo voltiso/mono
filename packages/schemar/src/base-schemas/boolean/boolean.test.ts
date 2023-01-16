@@ -8,7 +8,7 @@ import type {
 	BooleanOptions,
 	CustomBoolean,
 	CustomBoolean$,
-	InferSchema$,
+	ImplicitInferSchema$,
 	ISchema,
 	Output,
 	Schema,
@@ -36,7 +36,7 @@ describe('boolean', () => {
 		$Assert<IsIdentical<Aa, boolean>>()
 		$Assert.is<typeof aa, ISchema<boolean>>()
 
-		type X = InferSchema$<123>['Output']
+		type X = ImplicitInferSchema$<123>['Output']
 		$Assert<IsIdentical<X, 123>>()
 
 		type BooleanSchema = Schema<boolean>

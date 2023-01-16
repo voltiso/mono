@@ -10,7 +10,7 @@ import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
 import type { GetDocRef$ } from '~/DocRef/GetDocRef'
 import type { DocRef } from '~/DocRef/StrongDocRef'
 import type { $$DocRelated, $$DocRelatedLike } from '~/DocRelated/DocRelated'
-import type { GetDocTag } from '~/DocRelated/GetDocTag'
+import type { GetDocRepresentative, GetDocTag } from '~/DocRelated/GetDocTag'
 import type { AnyDoc } from '~/DocTypes'
 
 /** @internal */
@@ -47,7 +47,7 @@ export interface StrongDocRefSchema$<X extends $$DocRelated = AnyDoc>
 export interface UnknownStrongDocRefSchema extends s.Schema<DocRef> {}
 
 export interface UnknownStrongDocRefSchema$ extends s.Schema$<DocRef> {
-	<X extends $$DocRelated>(): StrongDocRefSchema$<X>
+	<X extends $$DocRelated>(): StrongDocRefSchema$<GetDocRepresentative<X>>
 
 	get Final(): UnknownStrongDocRefSchema
 }

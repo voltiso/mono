@@ -21,7 +21,7 @@ import type {
 	CustomSchema$,
 	FunctionOptions,
 	GetFinalSchema_,
-	InferSchema$,
+	ImplicitInferSchema$,
 	Input_,
 	Output_,
 	Rest,
@@ -73,10 +73,12 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 
 	get getThisSchema(): [this[OPTIONS]['this']] extends [NoThis]
 		? never
-		: GetFinalSchema_<InferSchema$.Simple<this[OPTIONS]['this']>>
+		: GetFinalSchema_<ImplicitInferSchema$.Simple<this[OPTIONS]['this']>>
 
-	get getParametersSchema(): InferSchema$.Simple<this[OPTIONS]['parameters']>
-	get getReturnSchema(): InferSchema$.Simple<this[OPTIONS]['return']>
+	get getParametersSchema(): ImplicitInferSchema$.Simple<
+		this[OPTIONS]['parameters']
+	>
+	get getReturnSchema(): ImplicitInferSchema$.Simple<this[OPTIONS]['return']>
 }
 
 //
@@ -118,9 +120,9 @@ export interface CustomFunction$<O extends Partial<FunctionOptions>>
 	//
 
 	get hasThis(): this[OPTIONS]['this'] extends NoThis ? false : true
-	get getThisSchema(): InferSchema$<this[OPTIONS]['this']>
-	get getParametersSchema(): InferSchema$<this[OPTIONS]['parameters']>
-	get getReturnSchema(): InferSchema$<this[OPTIONS]['return']>
+	get getThisSchema(): ImplicitInferSchema$<this[OPTIONS]['this']>
+	get getParametersSchema(): ImplicitInferSchema$<this[OPTIONS]['parameters']>
+	get getReturnSchema(): ImplicitInferSchema$<this[OPTIONS]['return']>
 
 	//
 

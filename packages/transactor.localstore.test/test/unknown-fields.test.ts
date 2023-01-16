@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import * as s from '@voltiso/schemar'
 import type { ValidationIssue } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import { Doc, sVoltisoEntry } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
@@ -57,7 +57,9 @@ describe('unknown-fields', () => {
 			.doc('usersUnknownFields/a')
 			.set({ known: 'test', unknown: 'test2' })
 
-		const db = createTransactor({ onUnknownField: issue => issues.push(issue) })
+		const db = createTransactor({
+			onUnknownField: issue => void issues.push(issue),
+		})
 		db.register(User)
 
 		const user = await db('usersUnknownFields/a')

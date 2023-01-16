@@ -39,7 +39,7 @@ describe('ref schema', () => {
 				Omit<A, '__voltiso'>,
 				{
 					myIndexedStrongRef: DocRef<AnyDoc>
-					myCustomStrongRef: DocRef<RefTestDoc>
+					myCustomStrongRef: DocRef<'refTestDoc'>
 					myOptionalIndexedStrongRef?: DocRef<AnyDoc>
 				}
 			>

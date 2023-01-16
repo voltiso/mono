@@ -18,7 +18,7 @@ describe('proxy', function () {
 		expect(() => {
 			// @ts-expect-error ...
 			user.age = 234
-		}).toThrow('immutable')
+		}).toThrow(`trap returned falsish for property 'age'`)
 	})
 
 	it('should throw on immutable result change (nested)', async function () {
@@ -29,6 +29,6 @@ describe('proxy', function () {
 		expect(() => {
 			// @ts-expect-error ...
 			adam.address.street = 'b'
-		}).toThrow('immutable')
+		}).toThrow(`assign to read only property 'street'`)
 	})
 })

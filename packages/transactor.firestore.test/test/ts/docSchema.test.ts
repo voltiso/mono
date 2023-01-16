@@ -52,7 +52,7 @@ describe('docSchema', function () {
 
 		await patients('a').set({ doctor: { id: 'aaa', secret: 'asd' } })
 
-		await expect(patients('a').dataWithoutId()).resolves.toMatchObject({
+		await expect(patients('a').data).resolves.toMatchObject({
 			doctor: { id: 'aaa', secret: 'asd' },
 		})
 	})
