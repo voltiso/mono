@@ -17,24 +17,24 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-const aggregator: DocBuilderPlugin<'dolphin'> = aggregate<'dolphin'>(
-	'dolphin',
-).into('dolphin', 'num', {
-	autoCreateTarget: true,
+const aggregator: DocBuilderPlugin<'dolphin'> = aggregate<'dolphin'>('dolphin')
+	.into('dolphin', 'num')
+	.with({
+		autoCreateTarget: true,
 
-	target() {
-		if (this.id.length > 1) return dolphins(this.id.slice(0, -1))
-		else return undefined
-	},
+		target() {
+			if (this.id.length > 1) return dolphins(this.id.slice(0, -1))
+			else return undefined
+		},
 
-	include(acc) {
-		return acc + this.aggregates.num.value
-	},
+		include(acc) {
+			return acc + this.aggregates.num.value
+		},
 
-	exclude(acc) {
-		return acc - this.aggregates.num.value
-	},
-})
+		exclude(acc) {
+			return acc - this.aggregates.num.value
+		},
+	})
 
 class Dolphin extends Doc('dolphin')
 	.with({

@@ -24,23 +24,3 @@ export type $$DocRelatedLike =
 
 /** Strict DocTags */
 export type $$DocRelated = Exclude<$$DocRelatedLike, string> | AnyDoc | DocTag
-
-//
-
-// export type GetDocConstructor<X extends $$DocRelatedLike> = Assume<
-// 	IDocConstructor,
-// 	// X extends WithDocRelated
-// 	// 	? GetDocConstructor<X[DOC_RELATED]>
-// 	// 	:
-// 	X extends $$DocConstructor
-// 		? X
-// 		: X extends WithDocTI
-// 		? DocConstructor<X[DTI]>
-// 		: X extends DocTI
-// 		? DocConstructor<X>
-// 		: X extends keyof DocTypes
-// 		? DocTypes[X] extends { [DTI]: DocTI }
-// 			? DocConstructor<DocTypes[X][DTI]>
-// 			: never
-// 		: never
-// >

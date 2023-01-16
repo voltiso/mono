@@ -6,7 +6,7 @@ import { BoundCallable, CALL } from '@voltiso/util'
 import { CollectionRef } from '~/CollectionRef/CollectionRef'
 import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
 import type { IndexedDoc } from '~/Doc'
-import type { GetDocRef$, WeakDocRef } from '~/DocRef'
+import type { GetDocRef, WeakDocRef } from '~/DocRef'
 import { CustomDocRef, DocRefPattern } from '~/DocRef'
 import type { AnyDoc } from '~/DocTypes'
 import type { DbPathFromString, DocPath } from '~/Path'
@@ -60,7 +60,7 @@ export class Db {
 
 	doc(
 		...pathTokens: readonly string[]
-	): GetDocRef$<{ docTag: AnyDoc; isStrong: false }> {
+	): GetDocRef<{ docTag: AnyDoc; isStrong: false }> {
 		// $assert(this.context)
 		return new CustomDocRef(this._context, concatPath(pathTokens), {
 			isStrong: false,

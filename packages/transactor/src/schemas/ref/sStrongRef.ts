@@ -7,7 +7,7 @@ import * as s from '@voltiso/schemar'
 import { $assert, lazyValue, ProtoCallable } from '@voltiso/util'
 
 import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
-import type { GetDocRef$ } from '~/DocRef/GetDocRef'
+import type { GetDocRef } from '~/DocRef/GetDocRef'
 import type { DocRef } from '~/DocRef/StrongDocRef'
 import type { $$DocRelated, $$DocRelatedLike } from '~/DocRelated/DocRelated'
 import type { GetDocRepresentative, GetDocTag } from '~/DocRelated/GetDocTag'
@@ -20,13 +20,13 @@ export const _strongRefSchema = lazyValue(() => {
 	return s
 		.instance(_CustomDocRef)
 		.check(x => x.isStrong, 'be strong ref') as unknown as s.Schema<
-		GetDocRef$<{ isStrong: true }>
+		GetDocRef<{ isStrong: true }>
 	>
 })
 
 /** @internal */
 export const _strongRefCall = <X extends $$DocRelatedLike>(): s.Schema<
-	GetDocRef$<{ isStrong: true; doc: GetDocTag<X> }>
+	GetDocRef<{ isStrong: true; doc: GetDocTag<X> }>
 > => _strongRefSchema as never
 
 //

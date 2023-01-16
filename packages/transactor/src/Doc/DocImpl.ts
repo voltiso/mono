@@ -15,7 +15,7 @@ import {
 import type { $WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
-import type { CustomDocRef$, DocRefContext, WeakDocRef } from '~/DocRef'
+import type { DocRefContext, WeakDocRef } from '~/DocRef'
 import { CustomDocRef, isStrongDocRef } from '~/DocRef'
 import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error/TransactorError'
@@ -37,7 +37,7 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		const r = {} as any
 
 		for (const [k, v] of Object.entries(x)) {
-			// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			r[k] = patchContextInRefs(v as never, ctx)
 		}
 
@@ -46,7 +46,6 @@ function patchContextInRefs<X>(x: X, ctx: DocRefContext): X {
 		return new CustomDocRef(
 			ctx as never,
 			x.path.toString(),
-			// eslint-disable-next-line security/detect-object-injection
 			x[OPTIONS],
 		) as never
 	}
@@ -93,11 +92,9 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 			// Reflect.set(this, name, docMethod, null) // null receiver - hack - see createClassInterface implementation
 
 			if (!(name in this)) {
-				// eslint-disable-next-line security/detect-object-injection
 				;(this as unknown as Record<string, Method>)[name] = docMethod
 			}
 
-			// eslint-disable-next-line security/detect-object-injection
 			this.methods[name] = docMethod
 		}
 
@@ -111,7 +108,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 				if (p === 'aggregates') return this._raw.__voltiso.aggregateTarget
 				else if (p in target) return Reflect.get(target, p, receiver) as never
 				else if (p in this._raw.__voltiso.aggregateTarget)
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, security/detect-object-injection
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					return (this._raw.__voltiso.aggregateTarget as any)[p].value as never
 				else return Reflect.get(this._rawProxy, p) as never
 			},
@@ -139,13 +136,11 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	_setRaw(raw: IntrinsicFields) {
 		this._raw = raw
-		this._rawProxy = this._context.transaction
-			? raw
-			: deepFrozen(raw)
-			// immutabilize(
-			// 		raw,
-			// 		'non-transaction document object is immutable (would not commit changes - possible bug)',
-			//   )
+		this._rawProxy = this._context.transaction ? raw : deepFrozen(raw)
+		// immutabilize(
+		// 		raw,
+		// 		'non-transaction document object is immutable (would not commit changes - possible bug)',
+		//   )
 	}
 
 	get id() {
@@ -156,7 +151,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this._context.docRef.path as never
 	}
 
-	get ref(): CustomDocRef$<{ docTag: TI['tag']; isStrong: true }> {
+	get ref(): CustomDocRef<{ docTag: TI['tag']; isStrong: true }> {
 		if (!this._ref)
 			this._ref = new CustomDocRef(
 				omit(this._context, 'docRef'),

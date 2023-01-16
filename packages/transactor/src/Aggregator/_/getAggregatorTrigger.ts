@@ -40,9 +40,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 		if (
 			before &&
 			after &&
-			// eslint-disable-next-line security/detect-object-injection
 			before.__voltiso.aggregateSource[name] !==
-				// eslint-disable-next-line security/detect-object-injection
 				after.__voltiso.aggregateSource[name]
 		) {
 			return
@@ -80,10 +78,8 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 						[awaitedTargetHandlerResult],
 				  ]
 
-		// eslint-disable-next-line security/detect-object-injection
 		__voltiso.aggregateSource[name] ||= {} //! !!
 
-		// eslint-disable-next-line security/detect-object-injection
 		const sourceInfo = __voltiso.aggregateSource[name]
 
 		// console.log('?????????????? process array', targets)
@@ -135,11 +131,10 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 			const finalTargetPath = finalTarget.path.toString()
 
-			// eslint-disable-next-line security/detect-object-injection
 			const targetInfo = finalTarget.data.__voltiso.aggregateTarget[name] || {
 				value: guardedValidate_(
 					{ transactor },
-					// eslint-disable-next-line security/detect-object-injection
+
 					finalTarget.aggregateSchemas[name],
 					// eslint-disable-next-line etc/no-deprecated
 					handlers.initialValue,
@@ -149,7 +144,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 			}
 
 			assert(sourceInfo)
-			// eslint-disable-next-line security/detect-object-injection
+
 			const wasAlreadyProcessed = !!sourceInfo[finalTargetPath]
 
 			// console.log('old target info', targetInfo, { wasAlreadyProcessed })
@@ -162,7 +157,6 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 				)
 				targetInfo.numSources -= 1
 
-				// eslint-disable-next-line security/detect-object-injection
 				delete sourceInfo[finalTargetPath]
 			}
 
@@ -178,7 +172,6 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 				// update source
 
-				// eslint-disable-next-line security/detect-object-injection
 				sourceInfo[finalTargetPath] = true
 			}
 
@@ -193,7 +186,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 			// update target
 			assert(finalTarget.data.__voltiso)
-			// eslint-disable-next-line security/detect-object-injection
+
 			finalTarget.data.__voltiso.aggregateTarget[name] = targetInfo as never
 		}
 	}

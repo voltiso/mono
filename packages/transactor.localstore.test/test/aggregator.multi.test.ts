@@ -53,10 +53,9 @@ class Day extends Doc('day').with({
 
 const days = db.register(Day)
 
-const aggregator: DocBuilderPlugin<'shift'> = aggregate('shift').into(
-	'day',
-	'shifts',
-	{
+const aggregator: DocBuilderPlugin<'shift'> = aggregate('shift')
+	.into('day', 'shifts')
+	.with({
 		target() {
 			const dayIds = [] as DocIdString<'day'>[]
 
@@ -85,8 +84,7 @@ const aggregator: DocBuilderPlugin<'shift'> = aggregate('shift').into(
 		exclude(acc) {
 			return acc.filter(shift => shift.id !== this.id)
 		},
-	},
-)
+	})
 
 class Shift extends ShiftBase.withPlugin(aggregator) {}
 

@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import { Doc } from '~/Doc'
+import { Doc$ } from '~/Doc'
 import { sStrongRef, sWeakRef } from '~/schemas'
 
 import type { DocRef } from './StrongDocRef'

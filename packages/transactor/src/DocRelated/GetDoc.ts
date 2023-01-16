@@ -36,10 +36,13 @@ export type GetDoc<X extends $$DocRelatedLike> = X extends AnyDoc
 		? DocTypes[X['tag']]
 		: never
 	: X extends DocTagLike | AnyDoc
-	? GetDoc.ByTag<X>
+	? GetDoc$.ByTag<X>
 	: never
 
-export namespace GetDoc {
+// export type GetDoc<X extends $$DocRelatedLike> =
+// 	'Final' extends keyof GetDoc$<X> ? GetDoc$<X>['Final'] : never
+
+export namespace GetDoc$ {
 	export type ByTag<tag extends DocTagLike | AnyDoc> = tag extends DocTag
 		? DocTypes[tag]
 		: tag extends AnyDoc

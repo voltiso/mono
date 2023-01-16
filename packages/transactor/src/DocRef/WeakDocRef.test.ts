@@ -3,7 +3,7 @@
 
 import { $Assert } from '@voltiso/util'
 
-import type { $$DocRef, Doc, DocRef, GetDocTI, IDoc, WeakDocRef } from '~'
+import type { $$DocRef, Doc$, DocRef, GetDocTI, IDoc, WeakDocRef } from '~'
 
 describe('WeakDocRef', () => {
 	it('generic', () => {
@@ -22,8 +22,8 @@ describe('WeakDocRef', () => {
 
 		type ZebraTI = GetDocTI<'zebra'>
 
-		$Assert.is<Doc<ZebraTI>, IDoc>()
-		$Assert.is<Doc<ZebraTI>, Doc>()
+		$Assert.is<Doc$<ZebraTI>, IDoc>()
+		$Assert.is<Doc$<ZebraTI>, Doc$>()
 
 		// type Opts = CustomDocRef.Options.Get<{}>
 

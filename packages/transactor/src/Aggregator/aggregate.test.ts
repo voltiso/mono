@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import { Doc } from '~/Doc'
+import { Doc$ } from '~/Doc'
 
 import type { DocBuilderPlugin } from '..'
 import { aggregate } from './aggregate'

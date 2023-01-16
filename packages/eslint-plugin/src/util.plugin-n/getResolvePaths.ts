@@ -41,7 +41,7 @@ export function getResolvePaths(
 	optionIndex = 0,
 ): readonly string[] {
 	return (
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, security/detect-object-injection, @typescript-eslint/no-unnecessary-condition
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
 		get(context.options && context.options[optionIndex]) ||
 		get(
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition

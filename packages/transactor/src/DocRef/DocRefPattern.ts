@@ -194,7 +194,7 @@ export class DocRefPattern {
 	beforeCommit<D extends $$Doc = IndexedDoc>(trigger: Trigger.BeforeCommit<D>) {
 		this.context.transactor._allBeforeCommits.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
-			trigger: trigger as unknown as Trigger.BeforeCommit,
+			trigger,
 		})
 		return this
 	}

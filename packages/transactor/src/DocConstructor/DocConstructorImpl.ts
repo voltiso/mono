@@ -147,7 +147,8 @@ export class DocConstructorImpl implements $$Doc {
 	) {
 		// console.log({ aggregateName, handlers })
 		return aggregate(0 as never)
-			.into(0 as never, aggregateName as never, handlers as never)
+			.into(0 as never, aggregateName as never)
+			.with(handlers as never)
 			.run(this)
 	}
 
@@ -166,16 +167,16 @@ export class DocConstructorImpl implements $$Doc {
 					publicOnCreation: f.publicOnCreation
 						? (s.and(
 								super._.publicOnCreation,
-								s.object(f.publicOnCreation),
+								s.object(f.publicOnCreation as never),
 						  ) as never)
 						: super._.publicOnCreation,
 
 					public: f.public
-						? (s.and(super._.public, s.object(f.public)) as never)
+						? (s.and(super._.public, s.object(f.public as never)) as never)
 						: super._.public,
 
 					private: f.private
-						? (s.and(super._.private, s.object(f.private)) as never)
+						? (s.and(super._.private, s.object(f.private as never)) as never)
 						: super._.private,
 
 					aggregates: {

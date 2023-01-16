@@ -6,7 +6,6 @@ import type {
 	_,
 	Get_,
 	IsIdentical,
-	NewableReturn_,
 	OmitByValue,
 	OmitSignatures,
 	Override,
@@ -15,11 +14,10 @@ import type {
 
 import type { AggregatorHandlers } from '~/Aggregator'
 import type {
-	$$Doc,
 	$$DocTI,
 	$$PartialDocOptions,
+	CustomDoc,
 	Doc,
-	DocBase,
 	DocBuilderPlugin,
 	DocContext,
 	DocTI,
@@ -29,7 +27,7 @@ import type {
 	Promisify,
 } from '~/Doc'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
-import type { $$DocRelated } from '~/DocRelated'
+import type { GetDocTag } from '~/DocRelated/GetDocTag'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { AutoIdSchema } from '~/schemas'
@@ -85,68 +83,68 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 	//
 
 	/** ⚠️ If possible, use `@after` decorator instead */
-	after(trigger: Trigger.After<DocBase<TI, 'inside'>>): this
+	after(trigger: Trigger.After<CustomDoc<TI, 'inside'>>): this
 
 	/** ⚠️ If possible, use `@after` decorator instead */
-	after(name: string, trigger: Trigger.After<DocBase<TI, 'inside'>>): this
+	after(name: string, trigger: Trigger.After<CustomDoc<TI, 'inside'>>): this
 
 	/**
 	 * ⚠️ If possible, use `@afterUpdate` decorator instead
 	 *
 	 * - Assignability issues - using DocBase instead (statically known fields only)
 	 */
-	afterUpdate(trigger: Trigger.AfterUpdate<DocBase<TI, 'inside'>>): this
+	afterUpdate(trigger: Trigger.AfterUpdate<CustomDoc<TI, 'inside'>>): this
 
 	/** ⚠️ If possible, use `@afterUpdate` decorator instead */
 	afterUpdate(
 		name: string,
-		trigger: Trigger.AfterUpdate<DocBase<TI, 'inside'>>,
+		trigger: Trigger.AfterUpdate<CustomDoc<TI, 'inside'>>,
 	): this
 
 	//
 
 	/** ⚠️ If possible, use `@afterCreateOrUpdate` decorator instead */
 	afterCreateOrUpdate(
-		trigger: Trigger.AfterCreateOrUpdate<DocBase<TI, 'inside'>>,
+		trigger: Trigger.AfterCreateOrUpdate<CustomDoc<TI, 'inside'>>,
 	): this
 
 	/** ⚠️ If possible, use `@afterCreateOrUpdate` decorator instead */
 	afterCreateOrUpdate(
 		name: string,
-		trigger: Trigger.AfterCreateOrUpdate<DocBase<TI, 'inside'>>,
+		trigger: Trigger.AfterCreateOrUpdate<CustomDoc<TI, 'inside'>>,
 	): this
 
 	//
 
 	/** ⚠️ If possible, use `@afterCreate` decorator instead */
-	afterCreate(trigger: Trigger.AfterCreate<DocBase<TI, 'inside'>>): this
+	afterCreate(trigger: Trigger.AfterCreate<CustomDoc<TI, 'inside'>>): this
 
 	/** ⚠️ If possible, use `@afterCreate` decorator instead */
 	afterCreate(
 		name: string,
-		trigger: Trigger.AfterCreate<DocBase<TI, 'inside'>>,
+		trigger: Trigger.AfterCreate<CustomDoc<TI, 'inside'>>,
 	): this
 
 	//
 
 	/** ⚠️ If possible, use `@afterDelete` decorator instead */
-	afterDelete(trigger: Trigger.AfterDelete<DocBase<TI, 'inside'>>): this
+	afterDelete(trigger: Trigger.AfterDelete<CustomDoc<TI, 'inside'>>): this
 
 	/** ⚠️ If possible, use `@afterDelete` decorator instead */
 	afterDelete(
 		name: string,
-		trigger: Trigger.AfterDelete<DocBase<TI, 'inside'>>,
+		trigger: Trigger.AfterDelete<CustomDoc<TI, 'inside'>>,
 	): this
 
 	//
 
 	/** ⚠️ If possible, use `@beforeCommit` decorator instead */
-	beforeCommit(trigger: Trigger.BeforeCommit<DocBase<TI, 'inside'>>): this
+	beforeCommit(trigger: Trigger.BeforeCommit<CustomDoc<TI, 'inside'>>): this
 
 	/** ⚠️ If possible, use `@beforeCommit` decorator instead */
 	beforeCommit(
 		name: string,
-		trigger: Trigger.BeforeCommit<DocBase<TI, 'inside'>>,
+		trigger: Trigger.BeforeCommit<CustomDoc<TI, 'inside'>>,
 	): this
 
 	//
@@ -172,13 +170,13 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 	 *   deprecated in favor of `with(aggregate(...))` plugin
 	 */
 	aggregateInto<
-		Target extends $$DocRelated,
+		Target extends DocTag,
 		Name extends string & keyof Get_<Get_<Target, DTI>, 'aggregates'>,
 	>(
 		/** Unused - type inference only */
 		_target: Target,
 		name: Name,
-		handlers: AggregatorHandlers<TI, NewableReturn_<Target> & $$Doc, Name>,
+		handlers: AggregatorHandlers<GetDocTag<TI>, Target, Name>,
 	): this
 
 	get schemaWithoutId(): s.SchemarAnd<

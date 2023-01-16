@@ -138,7 +138,6 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 				assertNotPolluting(name)
 
 				let entry: VoltisoEntry.AggregateTarget.Entry | undefined =
-					// eslint-disable-next-line security/detect-object-injection
 					cacheEntry.__voltiso.aggregateTarget[name]
 
 				entry = guardedValidate_(
@@ -157,7 +156,6 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 
 				// console.log('SET INITIAL AGGREGATE', name, entry)
 
-				// eslint-disable-next-line security/detect-object-injection
 				cacheEntry.__voltiso.aggregateTarget[name] = entry
 			}
 		}

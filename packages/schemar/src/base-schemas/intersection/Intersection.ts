@@ -4,7 +4,7 @@
 import type { _ } from '@voltiso/util'
 import { $assert, $AssumeType, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import { schema_ } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
 import type { Get$ } from '~/types/Get$'
 import type { Input_, Output_ } from '~/types/GetType/GetType'
@@ -99,7 +99,7 @@ export function and<Ts extends $$Schemable[]>(
 	for (const inputSchema of inputSchemas) {
 		if (isIntersectionSchema(inputSchema))
 			schemas = [...schemas, ...(inputSchema.getSchemas as Schema[])]
-		else schemas.push(schema(inputSchema))
+		else schemas.push(schema_(inputSchema))
 	}
 
 	schemas = schemas.filter(s => !is$$UnknownRecordSchema(s))

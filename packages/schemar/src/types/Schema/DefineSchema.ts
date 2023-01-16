@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $Omit, $Override_ } from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
 import type { GetSchema$ByName, SCHEMA_NAME, SchemaOptions } from '~'
 
@@ -21,7 +21,9 @@ export type OverrideSchema$WithOmit<
 	PartialOptions extends object,
 	NewPartialOptions,
 	FieldsToOmit extends string,
-> = DefineSchema$<
-	This,
-	$Override_<$Omit<PartialOptions, FieldsToOmit>, NewPartialOptions>
->
+> = PartialOptions extends any
+	? DefineSchema$<
+			This,
+			$Override_<Omit<PartialOptions, FieldsToOmit>, NewPartialOptions>
+	  >
+	: never

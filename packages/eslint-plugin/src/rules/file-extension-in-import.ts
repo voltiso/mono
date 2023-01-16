@@ -115,7 +115,7 @@ export const fileExtensionInImport = createRule<
 			const originalExt = path.extname(name)
 			const existingExts = getExistingExtensions(filePath)
 			const ext = path.extname(filePath) || existingExts.join(' or ')
-			// eslint-disable-next-line security/detect-object-injection
+
 			const style = overrideStyle[ext] || defaultStyle
 
 			// Verify.

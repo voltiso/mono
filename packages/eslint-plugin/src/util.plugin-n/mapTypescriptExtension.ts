@@ -59,11 +59,9 @@ export function mapTypescriptExtension(
 
 	if (reverse) {
 		if (isTypescript(context) && isReverseMappingKey(ext)) {
-			// eslint-disable-next-line security/detect-object-injection
 			return reverseMapping[ext]
 		}
 	} else if (isTypescript(context) && isMappingKey(ext)) {
-		// eslint-disable-next-line security/detect-object-injection
 		return mapping[ext]
 	}
 

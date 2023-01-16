@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output } from '@voltiso/schemar'
-import type { _, $_, DeleteIt, NoArgument, PatchFor } from '@voltiso/util'
+import type { $_, DeleteIt, NoArgument, PatchFor } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
 import type { InferTI } from '~/CollectionRef'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
-import type { GetDocRef$ } from '~/DocRef'
+import type { GetDocRef } from '~/DocRef'
 import type {
 	$$DocRelatedLike,
 	GetDocRepresentative,
@@ -27,17 +27,8 @@ import { DocImpl } from './DocImpl'
 import type { $$DocTI, DTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
 
-export type IdField<Doc extends $$Doc> = {
-	id: DocIdString<Doc>
-}
-
-// ! TODO
-// export interface DocOptions {
-// 	executionContext: ExecutionContext
-// }
-
 /** Everything except custom stuff at the root level: fields, methods, aggregates */
-export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
+export interface _DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	extends $$Doc {
 	//
 
@@ -47,7 +38,6 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	readonly id: DocIdString<TI> & Output<GetDocTI<TI>['id']>
 	readonly path: DocPath<TI> // CustomDocPath<{ doc: GetDocTag<TI> }>
-	readonly ref: DocBase.Ref<GetDocRepresentative<this>>
 
 	readonly data: GetData.ForDocTI<TI>
 	dataWithoutId(): GetData.ForDocTI<TI>
@@ -56,7 +46,6 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	__voltiso: GetVoltisoEntry<TI> // GetData.ForDocTI<TI>['__voltiso']
 
 	methods: GetMethodPromises.ByTI<InferTI.FromDoc<this>>
-	// methods: GetMethodPromises<InferTI.FromDoc<this>>
 	aggregates: Required<GetData<TI>['__voltiso']['aggregateTarget']>
 
 	//
@@ -65,15 +54,13 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 
 	//
 
-	update(
-		updates: PatchFor<GetUpdateDataByCtx<TI, Ctx>>,
-	): Promise<CustomDoc<TI, Ctx>>
+	update(updates: PatchFor<GetUpdateDataByCtx<TI, Ctx>>): Promise<this>
 
 	update(updates: DeleteIt): Promise<null>
 
 	update(
 		updates: PatchFor<GetUpdateDataByCtx<TI, Ctx>> | DeleteIt,
-	): Promise<CustomDoc<TI, Ctx> | null | undefined>
+	): Promise<this | null | undefined>
 
 	//
 
@@ -84,32 +71,32 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	toJSON(): $_<{ id: string } & JsonFromDocData<GetData<TI>>>
 }
 
+//
+
+/** Everything except custom stuff at the root level: fields, methods, aggregates */
+export interface CustomDoc<TI extends $$DocTI, Ctx extends ExecutionContext>
+	extends _DocBase<TI, Ctx> {
+	//
+
+	readonly ref: DocBase.Ref<GetDocRepresentative<TI>>
+
+	//
+
+	get Final(): this
+}
+
+//
+
 export namespace DocBase {
-	export type Ref<This extends $$DocRelatedLike> = GetDocRef$<{
+	export type Ref<This extends $$DocRelatedLike> = GetDocRef<{
 		doc: This
 		isStrong: true
 	}>
-}
 
-/**
- * `DocBase` + custom stuff at the root level
- *
- * ! Extra stuff is DISABLED for vscode performance and to avoid bugs and clean
- * ! up things. accessing data via `.data` is actually better
- */
-export type CustomDoc<
-	TI extends $$DocTI,
-	Ctx extends ExecutionContext, // ! TODO - make `Options` struct
-> = DocBase<TI, Ctx> // ! cannot flatten here - would loose `this`
-// & Omit<CustomDoc.Extra<TI>, keyof DocBase<TI, Ctx>>
-
-export namespace CustomDoc {
-	/** 👻 The non-statically-known fields */
-	export type Extra<TI extends $$DocTI> = _<
-		GetData.ForDocTI<TI> &
-			GetMethodPromises<TI> &
-			Required<GetData<TI>['__voltiso']['aggregateTarget']>
-	>
+	export type Ref$<This extends $$DocRelatedLike> = GetDocRef<{
+		doc: This
+		isStrong: true
+	}>
 }
 
 export type Doc<TI extends $$DocTI | NoArgument = NoArgument> =

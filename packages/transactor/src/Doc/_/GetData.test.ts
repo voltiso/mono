@@ -9,7 +9,7 @@ import type { DocIdBrand, DocIdString } from '~/brand'
 import type { InferTI } from '~/CollectionRef'
 import type { $WithId } from '~/Data'
 import type { $$DocTI, DocTI, IndexedDocTI } from '~/Doc'
-import { Doc } from '~/Doc'
+import { Doc$ } from '~/Doc'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
 import type { GetData, GetPublicCreationInputData } from './GetData'

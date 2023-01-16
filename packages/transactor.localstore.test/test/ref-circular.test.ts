@@ -14,6 +14,7 @@ const db = createTransactor()
 class MyDoctor extends Doc('MyDoctor').with({
 	public: {
 		name: s.string,
+
 		friend: sStrongRef<'MyDoctor'>().optional,
 	},
 }) {}
@@ -36,10 +37,12 @@ describe('localstore', () => {
 			const a = await doctors.add({
 				name: 'a',
 			})
+
 			const b = await doctors.add({
 				name: 'b',
 				friend: a.ref,
 			})
+
 			// a.ref.get()
 			$Assert<IsIdentical<typeof b, MyDoctor>>()
 			assert(b.data.friend)

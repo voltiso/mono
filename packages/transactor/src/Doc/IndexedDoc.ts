@@ -1,13 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// $dev(() => {
-// 	$Assert.is<IndexedDoc, Doc>()
-// 	$Assert.is<Doc, IndexedDoc>()
-// 	$Assert.is<Doc, Omit<IndexedDoc, 'ref' | DTI | 'aggregateSchemas' | 'update'>>()
-// 	$Assert.is<Doc['ref'], IndexedDoc>()
-// })
-import type * as t from '@voltiso/schemar'
+import type { CustomObject, Schema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
@@ -17,11 +11,11 @@ import type { Method } from '~/Method'
 
 import type { DocConstructor, DocDerivedData } from '../DocConstructor'
 import type { ExecutionContext } from './_/ExecutionContext'
-import type { DocBase } from './Doc'
+import type { CustomDoc } from './Doc'
 import { Doc } from './Doc'
 import type { DocTI } from './DocTI'
 
-export type IndexedDocTISchema = t.CustomObject<{
+export type IndexedDocTISchema = CustomObject<{
 	Output: {
 		[x: string]: unknown
 	}
@@ -40,14 +34,14 @@ export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
 	//
 	methods: Record<string, Bivariant<OmitThisParameter<Method>>>
 	//
-	aggregates: Record<string, t.Schema>
+	aggregates: Record<string, Schema>
 }
 
 //
 
 /** Does not validate doc schema, or `id` schema. */
 export interface IndexedDoc<C extends ExecutionContext = ExecutionContext>
-	extends DocBase<IndexedDocTI, C> {}
+	extends CustomDoc<IndexedDocTI, C> {}
 
 export const IndexedDoc = lazyConstructor(
 	() =>

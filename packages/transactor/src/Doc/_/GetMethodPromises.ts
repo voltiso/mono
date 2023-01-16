@@ -36,8 +36,8 @@ export namespace GetMethodPromises {
 		: never
 
 	export type ByTag<tag extends DocTagLike> = {
-		[k in keyof GetDocTI.ByTag<tag>['methods']]: Promisify<
-			GetDocTI.ByTag<tag>['methods'][k]
+		[k in keyof GetDocTI.FromTag<tag>['methods']]: Promisify<
+			GetDocTI.FromTag<tag>['methods'][k]
 		>
 	}
 }

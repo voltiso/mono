@@ -58,10 +58,9 @@ class DayBase extends Doc('myDay').with({
 	},
 }) {}
 
-const plugin: DocBuilderPlugin<'myDay'> = aggregate('myDay').into(
-	'myWeek',
-	'numWomenThisWeek',
-	{
+const plugin: DocBuilderPlugin<'myDay'> = aggregate('myDay')
+	.into('myWeek', 'numWomenThisWeek')
+	.with({
 		target() {
 			return weeks(getLastSunday(this.id))
 		},
@@ -73,8 +72,7 @@ const plugin: DocBuilderPlugin<'myDay'> = aggregate('myDay').into(
 		exclude(acc) {
 			return acc - this.data.numWomen
 		},
-	},
-)
+	})
 
 class Day extends DayBase.withPlugin(plugin) {}
 

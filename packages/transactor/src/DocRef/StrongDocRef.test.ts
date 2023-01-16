@@ -6,7 +6,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { $$Doc } from '~/Doc'
-import { Doc } from '~/Doc'
+import { Doc$ } from '~/Doc'
 import type { GetDocTI } from '~/DocRelated'
 import type { CustomDocPath } from '~/Path'
 
@@ -50,6 +50,6 @@ describe('StrongDocRef', () => {
 		// $Assert.is<MyDoc, Doc>()
 		$Assert.is<CustomDocPath<{ doc: MyDoc }>, CustomDocPath<{ doc: $$Doc }>>()
 
-		$Assert.is<GetDocTI<MyDoc>, GetDocTI<Doc>>()
+		$Assert.is<GetDocTI<MyDoc>, GetDocTI<Doc$>>()
 	})
 })

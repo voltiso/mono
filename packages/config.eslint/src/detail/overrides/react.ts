@@ -90,7 +90,7 @@ export const react = defineEslintConfigOverride({
 
 		'react/jsx-props-no-spreading': 0, // spreading is useful
 
-		'react/jsx-sort-default-props': 1,
+		'react/sort-default-props': 1,
 
 		'react/jsx-sort-props': 0,
 

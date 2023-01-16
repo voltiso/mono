@@ -54,7 +54,7 @@ import type { $$DocRef } from './$$DocRef'
 import { IS_DOC_REF } from './$$DocRef'
 import type { CustomDocRef } from './CustomDocRef'
 import { defaultDocRefOptions } from './CustomDocRef'
-import type { GetDocRef$ } from './GetDocRef'
+import type { GetDocRef } from './GetDocRef'
 import { get, update } from './methods'
 
 //
@@ -109,7 +109,7 @@ export class _CustomDocRef<
 
 	readonly methods = {} as GetMethodPromises<O['doc']>
 
-	declare readonly aggregates: GetAggregatePromises<O['doc']>
+	declare readonly aggregates: GetAggregatePromises<O['doc']>;
 
 	[OPTIONS]: CustomDocRef.Options
 
@@ -130,7 +130,7 @@ export class _CustomDocRef<
 		return getAggregateSchemas(this) as never
 	}
 
-	get asStrongRef(): GetDocRef$<Override<O, { isStrong: true }>> {
+	get asStrongRef(): GetDocRef<Override<O, { isStrong: true }>> {
 		// eslint-disable-next-line etc/no-internal
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
@@ -140,7 +140,7 @@ export class _CustomDocRef<
 		) as never
 	}
 
-	get asWeakRef(): GetDocRef$<Override<O, { isStrong: false }>> {
+	get asWeakRef(): GetDocRef<Override<O, { isStrong: false }>> {
 		// eslint-disable-next-line etc/no-internal
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
@@ -333,5 +333,9 @@ export class _CustomDocRef<
 
 	_getMethods(): DocRefMethodEntry[] {
 		return getMethods(this)
+	}
+
+	get Final() {
+		return this
 	}
 }

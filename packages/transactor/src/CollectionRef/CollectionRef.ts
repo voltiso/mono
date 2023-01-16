@@ -11,7 +11,7 @@ import type { WithDb } from '~/Db'
 import type { $$Doc, GetPublicCreationInputData } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { $$DocConstructor } from '~/DocConstructor'
-import type { WeakDocRef, WeakDocRef$ } from '~/DocRef'
+import type { WeakDocRef } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
 import type {
 	$$DocRelated,
@@ -30,7 +30,7 @@ export interface CollectionRef<
 	_Ctx extends ExecutionContext = 'outside',
 > {
 	/** Get Doc reference by Id */
-	(id: DocIdString<R>): WeakDocRef$<R>
+	(id: DocIdString<R>): WeakDocRef<R>
 
 	/** Get Doc reference by Id */
 	<T extends DocIdString>(id: T): Throw<
@@ -38,7 +38,7 @@ export interface CollectionRef<
 	>
 
 	/** Get Doc reference by Id */
-	(id: string): WeakDocRef$<GetDocRepresentative<R>>
+	(id: string): WeakDocRef<GetDocRepresentative<R>>
 }
 
 /** Collection reference */

@@ -1,27 +1,25 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	_CustomDocRef,
-	$$DocRelatedLike,
-	AnyDoc,
-	CustomDocRef,
-	CustomDocRef$,
-} from '~'
+import type { _CustomDocRef, $$DocRelatedLike, AnyDoc, CustomDocRef } from '~'
 
 /** Strong document reference - with ref-counting ✅ */
 export interface DocRef<doc extends $$DocRelatedLike = AnyDoc>
 	extends CustomDocRef<{
 		doc: doc
 		isStrong: true
-	}> {}
+	}> {
+	// get Final(): this
+}
 
-/** Strong document reference - with ref-counting ✅ */
-export interface DocRef$<doc extends $$DocRelatedLike = AnyDoc>
-	extends CustomDocRef$<{
-		doc: doc
-		isStrong: true
-	}> {}
+// /** Strong document reference - with ref-counting ✅ */
+// export interface DocRef$<doc extends $$DocRelatedLike = AnyDoc>
+// 	extends CustomDocRef$<{
+// 		doc: doc
+// 		isStrong: true
+// 	}> {
+// 	get Final(): DocRef<doc>
+// }
 
 export namespace DocRef {
 	export type Options = Omit<CustomDocRef.Options, 'isStrong'>

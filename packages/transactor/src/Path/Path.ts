@@ -16,7 +16,7 @@ import { at } from '@voltiso/util'
 
 import type { DocBrand } from '~/brand'
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
-import type { DocRefPattern, GetDocRef$ } from '~/DocRef'
+import type { DocRefPattern, GetDocRef } from '~/DocRef'
 import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
@@ -298,7 +298,7 @@ export type DbPathFromString<
 	Doc extends $$DocRelated = AnyDoc,
 	// eslint-disable-next-line etc/no-internal
 > = _PathFromString<
-	GetDocRef$<{ doc: GetDocTag<Doc>; isStrong: false }>,
+	GetDocRef<{ doc: GetDocTag<Doc>; isStrong: false }>,
 	CollectionRef<Doc>,
 	DocRefPattern,
 	CollectionRefPattern<P, Doc>,

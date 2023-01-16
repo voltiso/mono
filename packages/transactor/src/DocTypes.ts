@@ -1,14 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $, OmitSignatures } from '@voltiso/util'
+import type { $ } from '@voltiso/util'
 import { BrandedSymbol } from '@voltiso/util'
 
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
-export type DocTagLike = string // | AnyDoc
+export type DocTagLike = string // | typeof __never_keyof_bug_workaround // | AnyDoc
 
-export type DocTag = Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc
+export type DocTag = keyof DocTypes // Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc
 
 /**
  * Real unique symbols conflicted with `@voltiso/transform/inline` - resulted in

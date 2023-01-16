@@ -25,7 +25,7 @@ import type {
 	GetData,
 	GetDataWithId,
 	GetDoc,
-	GetDocRef$,
+	GetDocRef,
 	GetDocTag,
 	GetDocTI,
 	GetMethodPromises,
@@ -48,16 +48,10 @@ export const CustomDocRef = lazyConstructor(
 	() => _CustomDocRef,
 ) as unknown as CustomDocRef.Constructor
 
-export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
+export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
 	extends $$DocRef,
 		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
-		CustomDocRef.IntrinsicFields<O>,
-		PromiseLike<
-			| GetDoc<CustomDocRef.Options.Get<O>['doc']>
-			| CustomDocRef.MaybeNull<CustomDocRef.Options.Get<O>>
-		> {
-	//
-
+		CustomDocRef.IntrinsicFields<O> {
 	readonly [OPTIONS]: CustomDocRef.Options.Get<O>
 
 	//
@@ -68,28 +62,6 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 		Output_<GetDocTI<this[OPTIONS]['doc']>['id']>
 
 	get path(): DocPath<this[OPTIONS]['doc']>
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	get(): PromiseLike<
-		GetDoc<this[OPTIONS]['doc']> | If<O['isStrong'], never, null>
-	>
-
-	//
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	update(
-		updates: PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>,
-	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	update(updates: DeleteIt): PromiseLike<null>
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	update(
-		updates:
-			| PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>
-			| DeleteIt,
-	): PromiseLike<GetDoc<this[OPTIONS]['doc']> | null>
 
 	//
 
@@ -116,6 +88,46 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 
 	//
 
+	get schema(): Schema<GetData<this[OPTIONS]['doc']>> | undefined
+	get schemaWithId(): Schema<$WithId<GetData<this[OPTIONS]['doc']>>> | undefined
+	get aggregateSchemas(): GetDocTI<this[OPTIONS]['doc']>['aggregates']
+
+	//
+
+	toDatabase(): DocRefDatabase
+	toJSON(): DocRefJson
+}
+
+export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
+	extends CustomDocRefBase<O>,
+		PromiseLike<
+			| GetDoc<CustomDocRef.Options.Get<O>['doc']>
+			| CustomDocRef.MaybeNull<CustomDocRef.Options.Get<O>>
+		> {
+	/** @returns `PromiseLike`! (`then`-only) */
+	get(): PromiseLike<
+		GetDoc<this[OPTIONS]['doc']> | If<O['isStrong'], never, null>
+	>
+
+	//
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(
+		updates: PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>,
+	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(updates: DeleteIt): PromiseLike<null>
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(
+		updates:
+			| PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>
+			| DeleteIt,
+	): PromiseLike<GetDoc<this[OPTIONS]['doc']> | null>
+
+	//
+
 	/** @returns `PromiseLike`! (`then`-only) */
 	set(
 		data?: GetPublicCreationInputData<this[OPTIONS]['doc']>,
@@ -127,22 +139,11 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 
 	//
 
-	get schema(): Schema<GetData<this[OPTIONS]['doc']>> | undefined
-	get schemaWithId(): Schema<$WithId<GetData<this[OPTIONS]['doc']>>> | undefined
-	get aggregateSchemas(): GetDocTI<this[OPTIONS]['doc']>['aggregates']
+	get asStrongRef(): GetDocRef<$Override_<O, { isStrong: true }>>
+	get asWeakRef(): GetDocRef<$Override_<O, { isStrong: false }>>
 
-	//
-
-	toDatabase(): DocRefDatabase
-	toJSON(): DocRefJson
-}
-
-export interface CustomDocRef$<O extends Partial<CustomDocRef.Options> = {}>
-	extends CustomDocRef<O> {
-	//
-	get asStrongRef(): GetDocRef$<$Override_<O, { isStrong: true }>>
-	get asWeakRef(): GetDocRef$<$Override_<O, { isStrong: false }>>
-	//
+	// /** Remove the builder typings - for vscode performance */
+	// get Final(): this
 }
 
 // eslint-disable-next-line import/export
@@ -186,7 +187,7 @@ export namespace CustomDocRef {
 			context: DocRefContext.Parent,
 			path: string,
 			partialOptions?: Partial<O>,
-		): GetDocRef$<O>
+		): GetDocRef<O>
 	}
 
 	//

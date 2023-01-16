@@ -45,10 +45,9 @@ const weeks = db.register(Week)
 
 //
 
-const plugin: DocBuilderPlugin<'myDay2'> = aggregate('myDay2').into(
-	'myWeek2',
-	'days',
-	{
+const plugin: DocBuilderPlugin<'myDay2'> = aggregate('myDay2')
+	.into('myWeek2', 'days')
+	.with({
 		target() {
 			return weeks(getLastSunday(this.id))
 		},
@@ -60,8 +59,7 @@ const plugin: DocBuilderPlugin<'myDay2'> = aggregate('myDay2').into(
 		exclude(acc) {
 			return acc.filter(ref => ref.id !== this.id)
 		},
-	},
-)
+	})
 
 class Day extends Doc('myDay2')
 	.with({

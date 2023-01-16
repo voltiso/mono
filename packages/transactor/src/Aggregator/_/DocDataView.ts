@@ -4,9 +4,8 @@
 import type { Merge } from '@voltiso/util'
 import { isPlainObject, omit } from '@voltiso/util'
 
-import type { DocIdString } from '~/brand'
+import type { $$DocRelatedLike, GetData, GetDataWithId, GetId } from '~'
 import type { PathMatches } from '~/common'
-import type { DocTI, GetData } from '~/Doc'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
 export type AggregateView<T extends VoltisoEntry.AggregateTarget.Entry> =
@@ -33,52 +32,41 @@ export type AggregatesView<T extends IntrinsicFields> = [
 	},
 ][0]
 
-export function getAggregatesView<T extends DocDataViewInput>(
-	data: T,
-): AggregatesView<T> {
+export function getAggregatesView<R extends $$DocRelatedLike>(
+	data: GetDataWithId<R>,
+): AggregatesView<GetData<R>> {
 	return Object.fromEntries(
-		Object.entries(data.__voltiso.aggregateTarget).map(([key, value]) => [
-			key,
-			getAggregateView(value as never),
-		]),
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+		Object.entries((data as any).__voltiso.aggregateTarget).map(
+			([key, value]) => [key, getAggregateView(value as never)],
+		),
 	) as never
 }
 
 //
 
-export type DocDataView<T extends DocDataViewInput = DocDataViewInput> =
-	PathMatches & {
-		id: T['id']
-		path: string
+export interface AggregatorHandlerThis<R extends $$DocRelatedLike>
+	extends PathMatches {
+	id: GetId<R>
+	path: string
+	data: GetData<R>
+	dataWithId: GetDataWithId<R>
+	aggregates: AggregatesView<this['data']>
+	numRefs: this['data']['__voltiso']['numRefs']
+}
 
-		data: Omit<T, 'id'>
-		dataWithId: T
-		aggregates: AggregatesView<T>
-		numRefs: T['__voltiso']['numRefs']
-	}
-
-// export type DocDataView<T extends IntrinsicFields = IntrinsicFields> = Merge2_<
-// 	T,
-// 	{
-// 		data: T
-// 		aggregates: AggregatesView<T>
-// 		numRefs: T['__voltiso']['numRefs']
-// 	}
-// >
-
-export type DocDataViewInput = GetData<DocTI> & { id: DocIdString }
-
-export function getDocDataView<T extends DocDataViewInput>(
-	dataWithId: T,
+export function getDocDataView<R extends $$DocRelatedLike>(
+	dataWithId: GetDataWithId<R>,
 	ctx: PathMatches & { path: string },
-): DocDataView<T> {
+): AggregatorHandlerThis<R> {
 	return {
 		// ...data, // ! this causes bugs... you get object with many fields, were you might expect only data fields
-		id: dataWithId.id,
+		id: dataWithId.id as never,
 		...ctx,
-		data: omit(dataWithId, 'id') as Omit<T, 'id'>,
+		data: omit(dataWithId, 'id') as never,
 		dataWithId,
-		aggregates: getAggregatesView(dataWithId),
-		numRefs: dataWithId.__voltiso.numRefs,
-	}
+		aggregates: getAggregatesView(dataWithId) as never,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		numRefs: (dataWithId as any).__voltiso.numRefs as never,
+	} as never
 }

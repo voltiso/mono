@@ -4,10 +4,10 @@
 import type { Callable, Newable, Primitive } from '@voltiso/util'
 
 import type { DocTagFromBrand } from '~/brand'
-import type { GetDocRef$, WeakDocRefLike } from '~/DocRef'
+import type { GetDocRef, WeakDocRefLike } from '~/DocRef'
 
 export type TightenRefs<T> = T extends WeakDocRefLike
-	? GetDocRef$<{
+	? GetDocRef<{
 			doc: DocTagFromBrand<T>
 			isStrong: T['isStrong']
 	  }>

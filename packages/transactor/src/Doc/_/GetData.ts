@@ -15,7 +15,7 @@ import type { DocIdBrand, DocIdString, DocIdString_ } from '~/brand'
 import type { $WithId, DataRecord, WithId } from '~/Data'
 import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
-import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
+import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 import type { VoltisoEntry } from '~/schemas'
 
@@ -62,17 +62,16 @@ export namespace GetData {
 		  >
 		: never
 
-	export type ForDoc<D extends $$Doc> = ForDocTI<GetDocTI.ByDoc<D>>
+	export type ForDoc<D extends $$Doc> = ForDocTI<GetDocTI.FromDoc<D>>
 }
 
 /** @inline */
 export type GetDataWithId<R extends $$DocRelatedLike> = R extends AnyDoc
 	? { readonly id: DocIdString<R>; [k: string]: unknown }
-	: WithId<GetData<R>, GetDoc<R>>
+	: WithId<GetData<R>, R>
 
 export namespace GetDataWithId {
 	export type ForDoc<D extends $$Doc> = WithId<GetData.ForDoc<D>, D>
-
 	export type ForDocTI<TI extends $$DocTI> = WithId<GetData.ForDocTI<TI>, TI>
 }
 

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DeleteIt, If, MaybePromise } from '@voltiso/util'
+import type { Bivariant, DeleteIt, If, MaybePromise } from '@voltiso/util'
 
 import type { $$Doc, GetInputData } from '~/Doc'
 
@@ -21,10 +21,12 @@ export type AfterTrigger<
 	BeforeExists extends boolean = boolean,
 	AfterExists extends boolean = boolean,
 	Return = TriggerReturn<D>,
-> = (
-	this: If<AfterExists, D, null>,
-	params: AfterTriggerParams<D, BeforeExists, AfterExists>,
-) => MaybePromise<Return>
+> = Bivariant<
+	(
+		this: If<AfterExists, D, null>,
+		params: AfterTriggerParams<D, BeforeExists, AfterExists>,
+	) => MaybePromise<Return>
+>
 
 //
 
@@ -68,7 +70,7 @@ export namespace Trigger {
 		false
 	>
 
-	export type BeforeCommit<D extends $$Doc = $$Doc> = {
+	export type BeforeCommit<D extends $$Doc = any> = {
 		bivarianceHack(
 			this: D | null,
 			params: TriggerParams.BeforeCommit<D>,

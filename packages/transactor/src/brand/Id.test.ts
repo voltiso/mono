@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical, IsSubtype } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
-import { Doc } from '~/Doc'
+import { Doc$ } from '~/Doc'
 
 import type { WeakDocRef } from '..'
 import type { DocIdBrand, DocIdString } from './Id'

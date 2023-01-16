@@ -4,12 +4,11 @@
 import type { Type_ } from '@voltiso/schemar'
 import type { MaybeArray, MaybePromise } from '@voltiso/util'
 
-import type { DocIdString } from '~/brand'
-import type { $$Doc, $$DocTI, GetDataWithId } from '~/Doc'
+import type { $$DocRelatedLike, GetDocTI, GetId } from '~'
+import type { $$Doc } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
-import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
 
-import type { DocDataView } from './DocDataView'
+import type { AggregatorHandlerThis } from './DocDataView'
 
 export interface IAggregatorHandlers {
 	/** @deprecated Use `.default()` on a schema instead */
@@ -45,12 +44,12 @@ export type GetAggregate<
 //
 
 export interface AggregatorHandlers<
-	SourceTI extends $$DocTI,
-	Target extends $$Doc,
+	Source extends $$DocRelatedLike,
+	Target extends $$DocRelatedLike,
 	Name extends string,
 > {
-	/** @deprecated Use `.default()` on a schema instead */
-	initialValue?: GetAggregate<Target, Name, 'out'> // out, not in - to mitigate bugs
+	// /** @deprecated Use `.default()` on a schema instead */
+	// initialValue?: GetAggregate<Target, Name, 'out'> // out, not in - to mitigate bugs
 
 	/**
 	 * Should return a Doc, a DocRef, or an array of these
@@ -59,18 +58,18 @@ export interface AggregatorHandlers<
 	 * returning it as a single element array is ok)
 	 */
 	target(
-		this: DocDataView<GetDataWithId<SourceTI>>,
-	): MaybePromise<MaybeArray<{ id: DocIdString<Target> } | undefined>>
+		this: AggregatorHandlerThis<Source>,
+	): MaybePromise<MaybeArray<{ id: GetId<Target> } | undefined>>
 
 	autoCreateTarget?: boolean | undefined
 
 	include(
-		this: DocDataView<GetDataWithId<SourceTI>>,
+		this: AggregatorHandlerThis<Source>,
 		acc: GetAggregate<Target, Name, 'out'>, // | InitialValue
 	): MaybePromise<GetAggregate<Target, Name, 'out'>> // out, not in - to mitigate bugs
 
 	exclude(
-		this: DocDataView<GetDataWithId<SourceTI>>,
+		this: AggregatorHandlerThis<Source>,
 		acc: GetAggregate<Target, Name, 'out'>,
 	): MaybePromise<GetAggregate<Target, Name, 'out'>> // out, not in - to mitigate bugs
 }

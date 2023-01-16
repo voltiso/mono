@@ -11,7 +11,7 @@ import type { $$DocConstructor } from '~/DocConstructor'
 import type { DocDerivedData } from '../DocConstructor/_/DocDerivedData'
 import type { GetData, GetDataWithId } from './_/GetData'
 import type { CustomDoc } from './Doc'
-import { Doc } from './Doc'
+import { Doc$ } from './Doc'
 import type { DefaultDocTI } from './DocImpl'
 import type { DocTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
@@ -41,8 +41,8 @@ describe('doc', () => {
 		$Assert.is<keyof IDoc, keyof CustomDoc<any, any>>()
 		$Assert.is<keyof CustomDoc<any, any>, keyof IDoc>()
 
-		$Assert.is<Doc, IDoc>()
-		$Assert.is<IDoc, Doc>()
+		$Assert.is<Doc$, IDoc>()
+		$Assert.is<IDoc, Doc$>()
 		// $Assert.is<Doc<TI>, IDoc>()
 		// $Assert.is<Doc<TI>, Doc>()
 
@@ -90,7 +90,7 @@ describe('doc', () => {
 
 		type A = GetData<DefaultDocTI>
 		$Assert.is<A, { __voltiso?: { numRefs: number } }>()
-		$Assert.is<Doc<DefaultDocTI>, { __voltiso?: { numRefs: number } }>()
+		$Assert.is<Doc$<DefaultDocTI>, { __voltiso?: { numRefs: number } }>()
 	})
 
 	it('infers ref data', () => {
