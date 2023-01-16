@@ -1,16 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomDocRef } from './CustomDocRef'
-import type { DocRef } from './StrongDocRef'
-import type { WeakDocRef } from './WeakDocRef'
+import type { CustomDocRef, DocRef$, WeakDocRef$ } from '~'
 
-export type GetDocRef<O extends Partial<CustomDocRef.Options>> =
-	GetDocRef.Get<O>
+export type GetDocRef$<O extends Partial<CustomDocRef.Options>> =
+	GetDocRef$.Get<CustomDocRef.Options.Get<O>>
 
-export namespace GetDocRef {
-	export type Get<O extends Partial<DocRef.Options>> =
-		CustomDocRef.Options.Get<O>['isStrong'] extends true
-			? DocRef<CustomDocRef.Options.Get<O>['doc']>
-			: WeakDocRef<CustomDocRef.Options.Get<O>['doc']>
+export namespace GetDocRef$ {
+	export type Get<O extends CustomDocRef.Options> = O['isStrong'] extends true
+		? DocRef$<O['doc']>
+		: WeakDocRef$<O['doc']>
 }

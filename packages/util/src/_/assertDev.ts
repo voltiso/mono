@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '~/error'
+import { VoltisoUtilError } from '_/error/index'
 import type { StackTraceEntry } from '~/stack-trace'
 import { parseStackTrace } from '~/stack-trace'
 

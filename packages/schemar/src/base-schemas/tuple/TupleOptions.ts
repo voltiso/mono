@@ -20,7 +20,7 @@ export interface TupleOptions<T extends readonly unknown[] = readonly unknown[]>
 
 //
 
-export namespace TupleOptions {
+export declare namespace TupleOptions {
 	export interface Default extends SchemaOptions.Default {
 		//
 		Output: readonly unknown[]

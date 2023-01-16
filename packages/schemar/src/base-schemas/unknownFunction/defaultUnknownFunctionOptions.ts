@@ -1,13 +1,17 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue } from '@voltiso/util'
+import { $assert } from '@voltiso/util'
 
-import type * as t from '~'
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
 
-export const defaultUnknownFunctionOptions = lazyValue(() => ({
+import type { BivariantUnknownFunction } from './UnknownFunctionOptions'
+
+$assert(defaultSchemaOptions)
+
+export const defaultUnknownFunctionOptions = Object.freeze({
 	...defaultSchemaOptions,
-	Output: 0 as unknown as t.BivariantUnknownFunction,
-	Input: 0 as unknown as t.BivariantUnknownFunction,
-}))
+
+	Output: 0 as unknown as BivariantUnknownFunction,
+	Input: 0 as unknown as BivariantUnknownFunction,
+})

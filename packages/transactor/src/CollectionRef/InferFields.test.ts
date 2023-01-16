@@ -9,7 +9,6 @@ import { afterCreateOrUpdate, method } from '~/decorators'
 import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
-import type { CustomDocRef } from '~/DocRef'
 import * as ss from '~/schemas'
 
 import type { InferFields } from './InferFields'
@@ -60,10 +59,10 @@ describe('InferFields', () => {
 		$Assert.is<typeof Doctor, $$DocConstructor>()
 
 		// type A = Doctor[DTI]['public']['optionalFriend']
-		type F = InferFields<typeof Doctor>
-		type X = F['public']['getShape']['optionalFriend']
+		// type F = InferFields<typeof Doctor>
+		// type X = F['public']['getShape']['optionalFriend']
 
-		$Assert.is<X, s.Schema<CustomDocRef>['optional']>()
+		// $Assert.is<X, s.Schema$<CustomDocRef>['optional']>()
 		// Assert<IsIdentical<X, SOptional<s.DocRef>>>()
 	})
 

@@ -1,9 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SchemaLike } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import type { IsIdentical } from '@voltiso/util'
+import type { _, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { DocIdBrand, DocIdString } from '~/brand'
@@ -28,9 +27,11 @@ describe('Doc util', () => {
 		$Assert.is<GetData<$$DocTI>, IntrinsicFields>()
 		$Assert.is<GetData<DocTI>, IntrinsicFields>()
 
-		type TI = DocTI & { public: SchemaLike<{ num: number }> }
+		type TI = _<DocTI & { public: _<s.Object<{ num: number }>> }> // ! `_` needed...
 
-		type MyData = $WithId<GetData<TI>>
+		type MyDataNoId = GetData<TI>
+
+		type MyData = $WithId<MyDataNoId>
 		$Assert.is<
 			MyData,
 			{

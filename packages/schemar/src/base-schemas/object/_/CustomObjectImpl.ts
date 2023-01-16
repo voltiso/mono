@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import * as v from '@voltiso/util'
 
 import type {
@@ -12,11 +12,11 @@ import type {
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
 	Schemable,
-	ValidateOptions,
+	ValidationOptions,
 } from '~'
 import {
 	CustomSchemaImpl,
-	defaultValidateOptions,
+	defaultValidationOptions,
 	getDeepShape,
 	isObjectSchema,
 	isUnknownObjectSchema,
@@ -34,49 +34,26 @@ import { partialShape, strictPartialShape } from './partialShape'
 
 v.$assert(EXTENDS)
 v.$assert(SCHEMA_NAME)
-
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
-export interface CustomObjectImpl<O> {
-	readonly [BASE_OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
-}
+v.$assert(BASE_OPTIONS)
 
 export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	extends v.lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomObject<O>
 {
-	readonly [SCHEMA_NAME] = 'Object' as const
+	readonly [SCHEMA_NAME] = 'Object' as const;
 
-	// /**
-	//  * Note: auto-defaulting is enabled only if using `infer` function (disabled
-	//  * for explicit `s.object({ ... })` calls)
-	//  */
-	// constructor(partialOptions: O) {
-	// 	super(partialOptions)
+	declare readonly [BASE_OPTIONS]: ObjectOptions;
+	declare readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
 
-	// 	// console.log('CustomObject constructor', this[OPTIONS])
+	constructor(partialOptions: O) {
+		// super(partialOptions.shape ? {...partialOptions, shape: updateShapeNames() } : partialOptions)
+		super(partialOptions)
+		Object.freeze(this)
+	}
 
-	// 	let canBeAutoDefaulted = true
-
-	// 	for (const value of getValues(this.getShape, {
-	// 		includeSymbols: true,
-	// 	}) as unknown[]) {
-	// 		if (
-	// 			!isSchema(value) ||
-	// 			(!value.hasDefault && !value.isOptional && !value.isStrictOptional)
-	// 		) {
-	// 			canBeAutoDefaulted = false
-	// 			break
-	// 		}
-	// 	}
-
-	// 	if (canBeAutoDefaulted) {
-	// 		// eslint-disable-next-line security/detect-object-injection
-	// 		this[OPTIONS].hasDefault = true as never
-	// 		// eslint-disable-next-line security/detect-object-injection
-	// 		this[OPTIONS].default = {} as never
-	// 	}
-	// }
+	get isPlain(): any {
+		return this[v.OPTIONS].isPlain
+	}
 
 	get getShape(): any {
 		return this[v.OPTIONS]['shape']
@@ -88,33 +65,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 	get getIndexSignatures(): this[v.OPTIONS]['indexSignatures'] {
 		return this[v.OPTIONS]['indexSignatures'] as never
-	}
-
-	override and(other: $$Schemable): never {
-		const otherSchema = schema(other)
-
-		if (!isObjectSchema(otherSchema)) {
-			return super.and(otherSchema)
-		}
-
-		const a = this[v.OPTIONS]
-
-		const b = otherSchema[v.OPTIONS]
-
-		return this._cloneWithOptions({
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			shape: { ...this.getShape, ...otherSchema.getShape },
-			customChecks: [...a.customChecks, ...b.customChecks],
-			customFixes: [...a.customFixes, ...b.customFixes],
-			hasDefault: a.hasDefault || b.hasDefault,
-			default: b.hasDefault ? b.default : a.default,
-			getDefault: b.hasDefault ? b.getDefault : a.getDefault,
-			isOptional: a.isOptional && b.isOptional,
-			isStrictOptional: a.isStrictOptional && b.isStrictOptional,
-			indexSignatures: [...a.indexSignatures, ...b.indexSignatures],
-			isReadonly: a.isReadonly && b.isReadonly,
-			isPlain: a.isPlain || b.isPlain,
-		}) as never
 	}
 
 	get plain(): never {
@@ -174,7 +124,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (!hasThisK && !isOtherOptional) return false
 				else if (
 					hasThisK &&
-					// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					!schema(this.getShape[key] as {}).extends(value as never)
 				)
 					// eslint-disable-next-line sonarjs/no-duplicated-branches
@@ -184,15 +134,15 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			return true
 		} else if (isUnknownObjectSchema(other)) {
 			return true
-			// eslint-disable-next-line security/detect-object-injection
+			 
 		} else return super[EXTENDS](other)
 	}
 
 	override _getIssues(
 		x: unknown,
-		partialOptions?: Partial<ValidateOptions> | undefined,
+		partialOptions?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
-		const options = { ...defaultValidateOptions, ...partialOptions }
+		const options = { ...defaultValidationOptions, ...partialOptions }
 
 		// console.log('CustomObjectImpl._getIssuesImpl', this[OPTIONS])
 		let issues: ValidationIssue[] = []
@@ -268,7 +218,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						name: this[v.OPTIONS].name,
 						path: [key],
 						expected: { description: 'not be present' },
-						// eslint-disable-next-line security/detect-object-injection
+						 
 						received: { value: x[key] },
 					})
 
@@ -374,7 +324,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 	override _fix(
 		value: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): unknown {
 		if (typeof value === 'object' && value !== null) {
 			// x = { ...x } as Record<keyof any, unknown>
@@ -430,13 +380,13 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					}
 				}
 
-				// eslint-disable-next-line security/detect-object-injection
+				 
 				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey)
 					isChanged = true
 
-				// eslint-disable-next-line security/detect-object-injection
+				 
 				delete fixedObject[originalXKey]
-				// eslint-disable-next-line security/detect-object-injection
+				 
 				fixedObject[xKey] = xValue as never
 			}
 

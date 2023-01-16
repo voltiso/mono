@@ -24,7 +24,7 @@ declare module '@voltiso/transactor' {
 	}
 }
 
-class Client extends Doc.with({
+class Client extends Doc('clientAddXyz').with({
 	id: s.string,
 
 	publicOnCreation: {

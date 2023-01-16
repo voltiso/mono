@@ -20,11 +20,7 @@ class Dog extends Doc.with({
 
 		oldField: sDeleteIt,
 
-		idToRef: sRef
-			.or(s.string)
-			.optional.fix(x =>
-				typeof x === 'string' ? db('dog', x).asStrongRef : x,
-			),
+		idToRef: sRef.optional.fix(s.string, x => db('dog', x).asStrongRef),
 
 		detail: {
 			healthy: s.boolean.default(true),

@@ -3,10 +3,10 @@
 
 import type { GetProperty_ } from '@voltiso/util'
 
-import type { $$InferableObject, InferSchemaNoReadonlyTuple_ } from '~'
+import type { $$InferableObject, InferSchema$NoReadonlyTuple_ } from '~'
 
 export type PartialShape_<O> = {
-	[k in keyof O]: GetProperty_<InferSchemaNoReadonlyTuple_<O[k]>, 'optional'>
+	[k in keyof O]: GetProperty_<InferSchema$NoReadonlyTuple_<O[k]>, 'optional'>
 }
 
 export type PartialShape<O extends $$InferableObject> = PartialShape_<O>
@@ -15,7 +15,7 @@ export type PartialShape<O extends $$InferableObject> = PartialShape_<O>
 
 export type StrictPartialShape_<O> = {
 	[k in keyof O]: GetProperty_<
-		InferSchemaNoReadonlyTuple_<O[k]>,
+		InferSchema$NoReadonlyTuple_<O[k]>,
 		'strictOptional'
 	>
 }

@@ -7,10 +7,11 @@
 
 import { deepEqual } from 'fast-equals'
 
-import { CustomDocRef } from '~/DocRef'
+import { _CustomDocRef } from '~/DocRef'
 
 function filter(x: any): unknown {
-	if (x instanceof CustomDocRef) return x.toJSON()
+	// eslint-disable-next-line etc/no-internal
+	if (x instanceof _CustomDocRef) return x.toJSON()
 	else if (x?.constructor === Object) {
 		const r = {} as any
 

@@ -23,7 +23,7 @@ export type GetDeepShape_<S> = S extends { readonly getShape: {} }
 	? GetDeepShape.Rec<S['getShape']>
 	: S
 
-export namespace GetDeepShape {
+export declare namespace GetDeepShape {
 	export type Rec<S> = {
 		[k in keyof S]: GetDeepShape_<S[k]>
 	}

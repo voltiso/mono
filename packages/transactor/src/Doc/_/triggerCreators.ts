@@ -1,30 +1,23 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $AssumeType, assert } from '@voltiso/util'
+import { assert } from '@voltiso/util'
 import chalk from 'chalk'
 
-import type { $$Doc, CustomDoc } from '~/Doc'
+import type { Doc } from '~/Doc'
 import type { DocDerivedData } from '~/DocConstructor'
-import type {
-	AfterTrigger,
-	AfterTriggerParams,
-	Trigger,
-	TriggerParams,
-} from '~/Trigger'
+import type { AfterTriggerParams, Trigger, TriggerParams } from '~/Trigger'
 import { dump } from '~/util'
 
-import type { GI } from './GDoc'
-
-function assertBefore<D extends $$Doc>(
-	x: AfterTriggerParams<D>,
+function assertBefore(
+	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, true, boolean> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
 	assert(x.before)
 }
 
-function assertNotBefore<D extends $$Doc>(
-	x: AfterTriggerParams<D>,
+function assertNotBefore(
+	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, false, boolean> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
 	assert(!x.before)
@@ -32,29 +25,29 @@ function assertNotBefore<D extends $$Doc>(
 
 //
 
-function assertAfter<D extends $$Doc>(
-	x: AfterTriggerParams<D>,
+function assertAfter(
+	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, boolean, true> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
 	assert(x.doc)
 	assert(x.after)
 }
 
-function assertNotAfter<D extends $$Doc>(
-	x: AfterTriggerParams<D>,
+function assertNotAfter(
+	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, boolean, false> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
 	assert(!x.doc)
 	assert(!x.after)
 }
 
-function logTrigger<D extends $$Doc>(
+function logTrigger(
 	name: string,
 	when: 'before' | 'after' | 'on',
 	event: string,
-	params: AfterTriggerParams<D>,
+	params: AfterTriggerParams,
 ): void {
-	$AssumeType<AfterTriggerParams<D>>(params)
+	// $AssumeType<AfterTriggerParams<D>>(params)
 	if (!params.transactor._options.log) return
 
 	// eslint-disable-next-line no-console
@@ -78,17 +71,17 @@ export function withAfter<TI extends DocDerivedData>(
 	trigger: Trigger,
 	// f: TI extends any ? GI<TI> extends any ? AfterTrigger<GI<TI>> : never : never,
 ): TI {
-	$AssumeType<AfterTrigger<GI<TI>>>(trigger)
+	// $AssumeType<AfterTrigger<GI<TI>>>(trigger)
 	return {
 		..._,
 
 		afters: [
 			..._.afters,
-			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
-				logTrigger(name, 'after', 'ANY', params as never)
-				return trigger.call(this as never, params as never) as never
-			} as never,
-		] as never,
+			function (this: Doc | null, params: AfterTriggerParams) {
+				logTrigger(name, 'after', 'ANY', params)
+				return Function.prototype.call.call(trigger, this, params) as never
+			},
+		],
 	}
 }
 
@@ -97,23 +90,20 @@ export function withAfterUpdate<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<AfterTrigger<GI<TI>, true, true>>(trigger)
+	// $AssumeType<AfterTrigger<GI<TI>, true, true>>(trigger)
 	return {
 		..._,
 
 		afters: [
 			..._.afters,
-			function (
-				this: (TI extends any ? GI<TI> : never) | null,
-				params: AfterTriggerParams<GI<TI>>,
-			) {
+			function (this: Doc | null, params: AfterTriggerParams) {
 				if (params.before && this) {
-					logTrigger(name, 'after', 'UPDATE', params as never)
-					assertBefore(params as never)
-					assertAfter(params as never)
-					return trigger.call(this as never, params as never) as never
+					logTrigger(name, 'after', 'UPDATE', params)
+					assertBefore(params)
+					assertAfter(params)
+					return Function.prototype.call.call(trigger, this, params) as never
 				} else return undefined
-			} as never,
+			},
 		],
 	}
 }
@@ -123,21 +113,21 @@ export function withAfterDelete<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<AfterTrigger<GI<TI>, true, false>>(trigger)
+	// $AssumeType<AfterTrigger<GI<TI>, true, false>>(trigger)
 	return {
 		..._,
 
 		afters: [
 			..._.afters,
-			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
+			function (this: Doc | null, params: AfterTriggerParams) {
 				// eslint-disable-next-line unicorn/no-negated-condition
 				if (!this) {
-					logTrigger(name, 'after', 'DELETE', params as never)
-					assertBefore(params as never)
-					assertNotAfter(params as never)
-					return trigger.call(this, params as never) as never
+					logTrigger(name, 'after', 'DELETE', params)
+					assertBefore(params)
+					assertNotAfter(params)
+					return Function.prototype.call.call(trigger, this, params) as never
 				} else return undefined
-			} as never,
+			},
 		],
 	}
 }
@@ -145,21 +135,21 @@ export function withAfterDelete<TI extends DocDerivedData>(
 export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
 	_: TI,
 	name: string,
-	trigger: unknown,
+	trigger: Trigger,
 ): TI {
-	$AssumeType<AfterTrigger<GI<TI>, boolean, true>>(trigger)
+	// $AssumeType<AfterTrigger<GI<TI>, boolean, true>>(trigger)
 	return {
 		..._,
 
 		afters: [
 			..._.afters,
-			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
+			function (this: Doc | null, params: AfterTriggerParams) {
 				if (this) {
-					logTrigger(name, 'after', 'CREATE or UPDATE', params as never)
-					assertAfter(params as never)
-					return trigger.call(this, params as never) as never
+					logTrigger(name, 'after', 'CREATE or UPDATE', params)
+					assertAfter(params)
+					return Function.prototype.call.call(trigger, this, params) as never
 				} else return undefined
-			} as never,
+			},
 		],
 	}
 }
@@ -169,21 +159,21 @@ export function withAfterCreate<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<AfterTrigger<GI<TI>, false, true>>(trigger)
+	// $AssumeType<AfterTrigger<GI<TI>, false, true>>(trigger)
 	return {
 		..._,
 
 		afters: [
 			..._.afters,
-			function (this: GI<TI> | null, params: AfterTriggerParams<GI<TI>>) {
+			function (this: Doc | null, params: AfterTriggerParams) {
 				if (!params.before && params.after) {
-					logTrigger(name, 'after', 'CREATE', params as never)
+					logTrigger(name, 'after', 'CREATE', params)
 					assert(this)
-					assertNotBefore(params as never)
-					assertAfter(params as never)
-					return trigger.call(this as never, params as never) as never
+					assertNotBefore(params)
+					assertAfter(params)
+					return Function.prototype.call.call(trigger, this, params) as never
 				} else return undefined
-			} as never,
+			},
 		],
 	}
 }
@@ -193,26 +183,23 @@ export function withBeforeCommit<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<Trigger.BeforeCommit<CustomDoc<TI, 'inside'>>>(trigger)
+	// $AssumeType<Trigger.BeforeCommit<CustomDoc<TI, 'inside'>>>(trigger)
 	return {
 		..._,
 
 		beforeCommits: [
 			..._.beforeCommits,
-			function (
-				this: CustomDoc<TI, 'inside'> | null,
-				p: TriggerParams.BeforeCommit<GI<TI>>,
-			) {
+			function (this: Doc | null, p: TriggerParams.BeforeCommit) {
 				const before = this?.dataWithId() || null
 				const after = this?.dataWithId() || null
 				logTrigger(name, 'before', 'COMMIT', {
 					...p,
-					before: before as never, // :(
-					after: after as never, // :(
-				} as never)
-				return trigger.call(this as never, p as never) as never
-			} as never,
-		] as never,
+					before,
+					after,
+				})
+				return Function.prototype.call.call(trigger, this, p) as never
+			},
+		],
 	}
 }
 
@@ -221,22 +208,22 @@ export function withOnGet<TI extends DocDerivedData>(
 	name: string,
 	trigger: Trigger,
 ): TI {
-	$AssumeType<Trigger.BeforeCommit<GI<TI>>>(trigger)
+	// $AssumeType<Trigger.BeforeCommit<GI<TI>>>(trigger)
 	return {
 		..._,
 
 		onGets: [
 			..._.onGets,
-			function (this: GI<TI> | null, p: TriggerParams<GI<TI>>) {
+			function (this: Doc | null, p: TriggerParams) {
 				const before = this?.dataWithId() || null
 				const after = this?.dataWithId() || null
 				logTrigger(name, 'on', 'GET', {
 					...p,
-					before: before as never,
-					after: after as never,
-				} as never)
-				return trigger.call(this as never, p as never) as never
-			} as never,
+					before,
+					after,
+				})
+				return Function.prototype.call.call(trigger, this, p) as never
+			},
 		],
 	}
 }

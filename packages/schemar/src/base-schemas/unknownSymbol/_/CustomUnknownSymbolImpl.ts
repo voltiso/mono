@@ -7,10 +7,9 @@ import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	CustomUnknownSymbol,
-	DefaultUnknownSymbolOptions,
 	ISchema,
 	UnknownSymbolOptions,
-	ValidateOptions,
+	ValidationOptions,
 } from '~'
 import { CustomSchemaImpl, isUnknownSymbolSchema } from '~'
 import type { Literal } from '~/core-schemas'
@@ -20,7 +19,7 @@ import { ValidationIssue } from '~/meta-schemas'
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownSymbolImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownSymbolOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownSymbolOptions
+	readonly [DEFAULT_OPTIONS]: UnknownSymbolOptions.Default
 }
 
 export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
@@ -56,7 +55,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 
 	protected override _getIssues(
 		x: unknown,
-		_options?: Partial<ValidateOptions> | undefined,
+		_options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
 		const issues = []
 

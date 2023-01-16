@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Reverse } from '~/array'
-import { VoltisoUtilError } from '~/error'
+import { VoltisoUtilError } from '_/error/index'
 import type { MergeN } from '~/object'
 import { stringFrom } from '~/string'
 

@@ -5,13 +5,16 @@ import type { SchemaLike } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { $AssumeType, mapValues } from '@voltiso/util'
 
-import type { $$DocRef, WeakDocRef } from '~/DocRef'
+import type { _CustomDocRef, $$DocRef } from '~/DocRef'
 import type { GetDocTI } from '~/DocRelated'
+
+//
 
 export function getAggregateSchemas<Ref extends $$DocRef>(
 	ref: Ref,
 ): GetDocTI<Ref>['aggregates'] {
-	$AssumeType<WeakDocRef>(ref)
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(ref)
 	if (ref._aggregateSchemas !== undefined) return ref._aggregateSchemas as never
 
 	const { _allAggregateSchemas } = ref._context.transactor
@@ -26,7 +29,7 @@ export function getAggregateSchemas<Ref extends $$DocRef>(
 		if (pathParams || pathArgs) {
 			aggregateSchemas = {
 				...aggregateSchemas,
-				...mapValues(schema, schemable => s.schema(schemable) as SchemaLike),
+				...mapValues(schema, schemable => s.schema_(schemable)),
 			}
 		}
 	}

@@ -8,6 +8,7 @@ import type {
 	$$Schema,
 	$$Schemable,
 	ISchema,
+	ISchema$,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
 } from '~'
@@ -16,19 +17,38 @@ export interface $$Object extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Object'
 }
 
-export interface IObject<T extends object = object>
-	extends $$Object,
-		ISchema<T> {
+export interface IObject extends $$Object, ISchema {
 	//
 	readonly [SCHEMA_NAME]: 'Object'
 
-	readonly [OPTIONS]: ObjectOptions<T>
+	readonly [OPTIONS]: ObjectOptions
 	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+
+	get isPlain(): boolean
 
 	get getShape(): {} // InferableObjectLike
 	get getDeepShape(): {} // InferableObjectLike
 
 	get getIndexSignatures(): ObjectIndexSignatureEntry[]
+}
+
+export interface IObject$ extends $$Object, ISchema$ {
+	//
+	readonly [SCHEMA_NAME]: 'Object'
+
+	readonly [OPTIONS]: ObjectOptions
+	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+
+	get isPlain(): boolean
+
+	get getShape(): {} // InferableObjectLike
+	get getDeepShape(): {} // InferableObjectLike
+
+	get getIndexSignatures(): ObjectIndexSignatureEntry[]
+
+	//
+
+	get Final(): IObject
 
 	get partial(): $$Object
 	get strictPartial(): $$Object
@@ -42,7 +62,11 @@ export interface IObject<T extends object = object>
 	index(value: $$Schemable): $$Object
 }
 
-export function isObjectSchema(x: unknown): x is IObject {
+export function isObjectSchema(x: unknown): x is IObject$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as IObject | null)?.[SCHEMA_NAME] === 'Object'
+}
+
+export function is$$ObjectSchema(x: unknown): x is $$Object {
+	return isObjectSchema(x)
 }

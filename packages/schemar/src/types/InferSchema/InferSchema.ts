@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	Assume,
 	ExcludeEmptyBraces,
 	IsAlmostSame,
 	IsCompatible,
@@ -15,74 +16,104 @@ import type {
 	$$Schema,
 	$$Schemable,
 	$$SchemableObject,
-	FixTupleShape,
-	ImplicitObject,
+	CustomObject$,
 	Inferable,
 	InferableLiteral,
 	InferableObject,
-	Instance,
-	IObject,
+	Input_,
+	Instance$,
+	IObject$,
 	ISchema,
-	Literal,
-	MutableTuple,
-	NonNullish,
-	ReadonlyTuple,
+	ISchema$,
+	Literal$,
+	MutableTuple$,
+	NonNullish$,
+	Object$,
+	Output_,
+	ReadonlyTuple$,
+	RelaxInferableTuple_,
 } from '~'
 
 /** Groups literals */
-export type InferSchema_<S> = InferSchema.Step1<S>
+export type InferSchema$_<S> = InferSchema$.Step1<S>
 
 /** Groups literals */
-export type InferSchema<S extends $$Schemable> = InferSchema_<S>
+export type InferSchema$<S extends $$Schemable> = InferSchema$_<S>
 
 /** Does not group literals */
-export type $InferSchema_<S> = S extends any ? InferSchema_<S> : never
+export type $InferSchema$_<S> = S extends any ? InferSchema$_<S> : never
 
 /** Does not group literals */
-export type $InferSchema<S extends $$Schemable> = S extends any
-	? InferSchema_<S>
+export type $InferSchema$<S extends $$Schemable> = S extends any
+	? InferSchema$_<S>
 	: never
 
 //
 
-export type A = InferSchema<{}>['simple']
+export type GetObject$<Shape extends $$InferableObject> = GetObject$.Get<
+	Assume<object, Output_<Shape>>,
+	Extract<Input_<Shape>, object>
+>
 
-export namespace InferSchema {
+// type A = GetObject$<{ a: CustomSchema<{isOptional: true}> }>
+// type B = GetImplicitObject$<{ a: CustomSchema<{ isOptional: true }> }>
+
+/** Auto-default to empty object if possible */
+export type GetImplicitObject$<Shape extends $$InferableObject> =
+	GetObject$.Get<
+		Assume<object, Output_<Shape>>,
+		Assume<object | undefined, Input_<Shape>>
+	>
+
+export declare namespace GetObject$ {
+	export type Get<
+		Output extends object,
+		Input extends object | undefined,
+	> = undefined extends Input
+		? CustomObject$<{ Output: Output; Input: Input; hasDefault: true }>
+		: IsCompatible<Output, Input> extends true
+		? Object$<Output>
+		: CustomObject$<{ Output: Output; Input: Input }>
+}
+
+export declare namespace InferSchema$ {
 	/** Do we have full `ISchema` super-type? */
-	export type Step1<S> = ISchema extends ExcludeEmptyBraces<S>
-		? ISchema
+	export type Step1<S> = $$Schemable extends S
+		? ISchema$
+		: ISchema extends ExcludeEmptyBraces<S>
+		? ISchema$
 		: Inferable extends S
-		? ISchema
+		? ISchema$
 		: Step2<S>
 
 	/** Group literals */
 	export type Step2<S> = Extract<S, InferableLiteral> extends never
 		? Step3<S>
 		:
-				| Literal<Extract<S, InferableLiteral>>
+				| Literal$<Extract<S, InferableLiteral>>
 				| Step3<Exclude<S, InferableLiteral>>
 
 	/** IObject super-type */
 	export type Step3<S> = InferableObject extends ExcludeEmptyBraces<S>
-		? IObject | Step4<Exclude<S, $$SchemableObject>>
-		: IObject extends ExcludeEmptyBraces<S>
-		? IObject | Step4<Exclude<S, $$SchemableObject>>
-		: Step4<S>
+		? IObject$ | Simple<Exclude<S, $$SchemableObject>>
+		: IObject$ extends ExcludeEmptyBraces<S>
+		? IObject$ | Simple<Exclude<S, $$SchemableObject>>
+		: Simple<S>
 
 	/** Other */
-	export type Step4<S> = IsCompatible<$$Schema, S> extends true
-		? ISchema
+	export type Simple<S> = IsCompatible<$$Schema, S> extends true
+		? ISchema$
 		: S extends $$Schema
 		? S
 		: IsAlmostSame<S, {}> extends true
-		? NonNullish
+		? NonNullish$
 		: S extends $$InferableObject
-		? ImplicitObject<S>
+		? GetImplicitObject$<S>
 		: S extends Newable
-		? Instance<S>
+		? Instance$<S>
 		: S extends $$InferableMutableTuple
-		? MutableTuple<FixTupleShape<S>>
+		? MutableTuple$<RelaxInferableTuple_<S>>
 		: S extends $$InferableReadonlyTuple
-		? ReadonlyTuple<FixTupleShape<[...S]>>
+		? ReadonlyTuple$<RelaxInferableTuple_<S>>
 		: never
 }

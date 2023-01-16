@@ -7,7 +7,7 @@ import chalk from 'chalk'
 import type { WithDb } from '~/Db'
 import type { CustomDoc, DocImpl, DocTI, IDocImpl } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
-import type { CustomDocRef, WithDocRef } from '~/DocRef'
+import type { _CustomDocRef, WithDocRef } from '~/DocRef'
 import { transactionDocPathGet } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { Method } from '~/Method'
@@ -64,7 +64,8 @@ export async function callMethod<
 			assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
-			return (db.doc(path) as unknown as CustomDocRef)._callMethod(
+			// eslint-disable-next-line etc/no-internal
+			return (db.doc(path) as unknown as _CustomDocRef)._callMethod(
 				method as never,
 				args,
 				options,

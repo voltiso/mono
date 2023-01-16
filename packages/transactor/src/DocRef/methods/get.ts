@@ -32,7 +32,7 @@ import {
 import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
 import type { Forbidden } from '~/util'
-import { guardedValidate } from '~/util'
+import { guardedValidate_ } from '~/util'
 
 import {
 	applySchema,
@@ -141,17 +141,17 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 					// eslint-disable-next-line security/detect-object-injection
 					cacheEntry.__voltiso.aggregateTarget[name]
 
-				entry = guardedValidate(
+				entry = guardedValidate_(
 					ctx,
 					sVoltisoEntryAggregateTargetEntry.default({}),
 					entry,
-				)
+				) as typeof entry
 
 				assert(entry)
 
 				$AssumeType<Schema>(schema)
 
-				entry.value = guardedValidate(ctx, schema, entry.value)
+				entry.value = guardedValidate_(ctx, schema, entry.value) as never
 
 				if (entry.value === undefined) delete entry.value
 

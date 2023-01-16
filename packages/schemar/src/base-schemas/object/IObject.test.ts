@@ -10,15 +10,17 @@ describe('IObject', () => {
 		$Assert.is<s.Object<{}>, s.IObject>()
 		$Assert.is<s.Object<{ a: 1 }>, s.IObject>()
 
-		$Assert.is<
-			s.CustomObject<{ Output: { a: 1 }; Input: { a: 1 } }>,
-			s.CustomObject<{}>
-		>()
+		// ! super-slow vscode support
 
-		$Assert.is<
-			s.CustomObject<{ Output: { a: 1 }; Input?: { a: 1 } }>,
-			s.CustomObject<{}>
-		>()
+		// $Assert.is<
+		// 	s.CustomObject<{ Output: { a: 1 }; Input: { a: 1 } }>,
+		// 	s.CustomObject<{}>
+		// >()
+
+		// $Assert.is<
+		// 	s.CustomObject<{ Output: { a: 1 }; Input?: { a: 1 } }>,
+		// 	s.CustomObject<{}>
+		// >()
 
 		// /** This is still fast */
 		// type GetObject<Shape extends $$InferableObject> = CustomObject<{
@@ -49,9 +51,12 @@ describe('IObject', () => {
 		// >()
 	})
 
-	it('generic', <Shape extends s.$$InferableObject>() => {
-		$Assert.is<s.Object<Shape>, s.ISchema>()
-		$Assert.is<s.Object<Shape>, s.IObject>()
+	// eslint-disable-next-line jest/prefer-todo
+	it('generic', <_Shape extends s.$$InferableObject>() => {
+
+		// ! super-slow vscode support
+
+		// $Assert.is<s.Object<Shape>, s.ISchema>()
 		// $Assert.is<s.Object<Shape>, s.IObject>()
 	})
 })

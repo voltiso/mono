@@ -6,7 +6,7 @@ import { assertNotPolluting, isPlainObject } from '@voltiso/util'
 
 import type { ISchema, Output_, Schema, Schemable } from '~'
 import {
-	infer,
+	infer_,
 	isObjectSchema,
 	isSchema,
 	isTupleSchema,
@@ -52,7 +52,7 @@ export function getSchemaChild<S extends Schema, Key extends keyof Output_<S>>(
 
 		for (const indexSignature of schema.getIndexSignatures) {
 			if (
-				(infer(indexSignature.keySchema) as unknown as ISchema).isValid(child)
+				(infer_(indexSignature.keySchema) as unknown as ISchema).isValid(child)
 			) {
 				return indexSignature.valueSchema as never
 			}

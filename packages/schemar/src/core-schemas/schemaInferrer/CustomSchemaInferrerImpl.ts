@@ -3,24 +3,21 @@
 
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
+import { $assert, BoundCallable_, CALL, lazyConstructor } from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	DefaultUnknownSchemaOptions,
-	ISchemaInferrer,
-	SchemaOptions,
-	UnknownSchemaOptions,
-} from '~'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import { infer } from './infer'
+import type { ISchemaInferrer } from './ISchemaInferrer'
+import type { UnknownSchemaOptions } from './UnknownSchemaOptions'
 
 $assert(SCHEMA_NAME)
 
 export interface CustomSchemaInferrerImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownSchemaOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownSchemaOptions
+	readonly [DEFAULT_OPTIONS]: UnknownSchemaOptions.Default
 }
 
 export class CustomSchemaInferrerImpl<O extends SchemaOptions>
@@ -32,7 +29,7 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	constructor(o: O) {
 		super(o)
 		// eslint-disable-next-line no-constructor-return
-		return BoundCallable(this) as never
+		return BoundCallable_(this) as never
 	}
 
 	// eslint-disable-next-line class-methods-use-this

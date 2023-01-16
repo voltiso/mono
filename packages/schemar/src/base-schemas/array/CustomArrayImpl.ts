@@ -19,7 +19,7 @@ import type {
 	CustomArray,
 	ISchema,
 	Schema,
-	ValidateOptions,
+	ValidationOptions,
 } from '~'
 import {
 	CustomSchemaImpl,
@@ -40,22 +40,18 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	declare readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].minLength as never
 	}
 
 	get getMaxLength(): this[OPTIONS]['maxLength'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].maxLength as never
 	}
 
 	get isReadonlyArray(): this[OPTIONS]['isReadonlyArray'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isReadonlyArray as never
 	}
 
 	get getElementSchema(): CustomArray.GetElementSchema<this> {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].element as never
 	}
 
@@ -123,13 +119,12 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			return (this.getElementSchema as unknown as ISchema).extends(
 				other.getElementSchema,
 			)
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
 	protected override _fix(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): unknown {
 		if (Array.isArray(x)) {
 			const result = x.map(element =>
@@ -151,7 +146,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 	override _getIssues(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
 		let issues = []
 
@@ -159,7 +154,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
 						expected: {
@@ -176,7 +170,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			if (isDefined(this.getMaxLength) && x.length > this.getMaxLength) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
 						expected: {
@@ -202,7 +195,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be array' },
 					received: { value: x },

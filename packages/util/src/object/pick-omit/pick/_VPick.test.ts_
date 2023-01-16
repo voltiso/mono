@@ -3,7 +3,7 @@
 
 // TODO does not work with generics + index signatures
 
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
 import type { IsIdentical } from '~/type'
 
 import type { VPick, VPick_ } from './_VPick.ts_'

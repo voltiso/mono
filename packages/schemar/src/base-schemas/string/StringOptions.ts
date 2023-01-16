@@ -6,14 +6,14 @@ import type { SchemaOptions } from '~'
 import type { RegExpEntry } from './RegExpEntry'
 
 export interface StringOptions extends SchemaOptions {
-	Output: string
-	Input: string
+	// Output: string
+	// Input: string
 	minLength: number | undefined
 	maxLength: number | undefined
 	regExps: RegExpEntry[]
 }
 
-export namespace StringOptions {
+export declare namespace StringOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: string
 		Input: string

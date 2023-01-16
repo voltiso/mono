@@ -1,49 +1,40 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IsIdentical } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
-import type {
-	$$InferableObject,
-	CustomObject,
-	GetObjectInput,
-	GetObjectOutput,
-	GetObjectType,
-	Input_,
-} from '~'
+import type { $$InferableObject, CustomObject, CustomObject$ } from '~'
 
 import { ObjectImpl } from './_'
 
-export interface Object<Shape extends $$InferableObject>
+//
+
+interface _Object<T>
 	extends CustomObject<{
-		Output: GetObjectOutput<Shape>
-		Input: GetObjectInput<Shape>
+		Output: IsIdentical<T, {}> extends true ? object : T
+		Input: IsIdentical<T, {}> extends true ? object : T
 	}> {}
 
-export type ImplicitObject<Shape extends $$InferableObject> =
-	object extends Input_<Shape>
-		? AutoCreatedObject<Shape>
-		: // eslint-disable-next-line @typescript-eslint/ban-types
-		  Object<Shape>
+export type { _Object as Object }
 
-export interface AutoCreatedObject<Shape extends $$InferableObject>
-	extends CustomObject<{
-		// shape: Shape
-		// deepShape: GetDeepShape_<Shape>
-		Output: GetObjectType<Shape, { kind: 'out'; isPlain: false }>
-		Input: GetObjectType<Shape, { kind: 'in'; isPlain: false }>
-
-		hasDefault: true
-		default: {}
-	}> {}
-
-export type ObjectConstructor = new <Shape extends $$InferableObject>(
-	shape: Shape,
-	// eslint-disable-next-line @typescript-eslint/ban-types
-) => Object<Shape>
+export interface Object$<T>
+	extends CustomObject$<{
+		Output: IsIdentical<T, {}> extends true ? object : T
+		Input: IsIdentical<T, {}> extends true ? object : T
+	}> {
+	//
+	get Final(): _Object<T>
+}
 
 //
 
-export const Object = lazyConstructor(
+export type Object$Constructor = new <Shape extends $$InferableObject>(
+	shape: Shape,
+) => Object$<Shape>
+
+//
+
+export const Object$ = lazyConstructor(
 	() => ObjectImpl,
-) as unknown as ObjectConstructor
+) as unknown as Object$Constructor

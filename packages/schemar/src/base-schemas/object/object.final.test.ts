@@ -4,11 +4,10 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { CustomSchema, SimpleSchema } from '~'
 import * as s from '~'
 
 describe('object', () => {
-	it('make simple - same Input/Output', () => {
+	it('make final - same Input/Output', () => {
 		const mySchema = s.schema({
 			numDef: s.number,
 			num: s.number,
@@ -20,12 +19,12 @@ describe('object', () => {
 			},
 		})
 
-		const simpleSchema = mySchema.simple
+		const finalSchema = mySchema.Final
 
 		$Assert<
 			IsIdentical<
-				typeof simpleSchema,
-				SimpleSchema<{
+				typeof finalSchema,
+				s.Object<{
 					numDef: number
 					num: number
 					str: string
@@ -38,7 +37,7 @@ describe('object', () => {
 		>()
 	})
 
-	it('make simple - different Input/Output types', () => {
+	it('make final - different Input/Output types', () => {
 		const mySchema = s.schema({
 			numDef: s.number.default(1),
 			num: s.number.optional,
@@ -50,12 +49,12 @@ describe('object', () => {
 			},
 		})
 
-		const simpleSchema = mySchema.simple
+		const finalSchema = mySchema.Final
 
 		$Assert<
 			IsIdentical<
-				typeof simpleSchema,
-				CustomSchema<{
+				typeof finalSchema,
+				s.CustomObject<{
 					Output: {
 						numDef: number
 						str: string

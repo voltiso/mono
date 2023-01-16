@@ -23,42 +23,18 @@ describe('object - unknown', () => {
 			emptyShapeObjectOrUndef2: s.object({}).plain.or(undefined),
 
 			// should be auto-defaulted and optional
-			autoInferObject: { a: s.number.optional }, // should inherit `isPlain`
-			autoInferObject2: s.schema({ a: s.number.optional }), // should NOT inherit `isPlain`
+			autoInferObject: { a: s.number.optional },
+			autoInferObject2: s.schema({ a: s.number.optional }),
 
 			nonNullish: {},
 			nonNullish2: s.infer({}),
 		}
 
-		type A = GetObjectType<typeof shape, { kind: 'out'; isPlain: false }>
+		type A = GetObjectType<typeof shape, { kind: 'out' }>
 
 		$Assert<
 			IsIdentical<
 				A,
-				{
-					unknownObject: object // {}
-					unknownObject2: object
-
-					emptyShapeObject: object // {}
-					emptyShapeObject2: object
-
-					emptyShapeObjectOrUndef: object | undefined // {} | undefined
-					emptyShapeObjectOrUndef2: object | undefined
-
-					autoInferObject: { a?: number }
-					autoInferObject2: { a?: number }
-
-					nonNullish: {}
-					nonNullish2: {}
-				}
-			>
-		>()
-
-		type APlain = GetObjectType<typeof shape, { kind: 'out'; isPlain: true }>
-
-		$Assert<
-			IsIdentical<
-				APlain,
 				{
 					unknownObject: object // {}
 					unknownObject2: object

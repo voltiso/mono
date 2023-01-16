@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, $expect } from '~/$strip'
+import { $assert, $expect } from '_'
+
 import type { clone } from '~/clone'
 import type { ArrowCallable, Callable } from '~/function'
 import { deleteAllProperties } from '~/object'
@@ -21,7 +22,7 @@ export type __unused_EmptyArrowCallable = ProtoCallable | typeof clone
  * @example
  *
  * ```ts
- * const a = EmptyUnboundCallable((n: number) => 2 * n)
+ * const a = EmptyArrowCallable((n: number) => 2 * n)
  *
  * expect(a(2)).toBe(4)
  * ```
@@ -31,8 +32,6 @@ export type __unused_EmptyArrowCallable = ProtoCallable | typeof clone
 export function EmptyArrowCallable<
 	Func extends Callable<{ this: void }> = Callable<{ this: void }>,
 >(func: Func): EmptyArrowCallable<Func> {
-	//! do not transpile to `function(){}` - don't want to include non-configurable `prototype` property
-	//! (work-around: use .bind(...) to get rid of prototype - works even with arrow function transpilation 💪)
 	const callableObject = func.bind(null as never)
 
 	// clean up own properties of the function object (name, length, caller, callee, arguments, prototype, ...)

@@ -13,7 +13,7 @@ import type { IntrinsicFields } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
 import type { Transactor, WithTransactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
-import { guardedValidate } from '~/util'
+import { guardedValidate_ } from '~/util'
 
 import {
 	assertInTransaction,
@@ -61,11 +61,11 @@ async function databaseSet(
 	data = {
 		...data,
 
-		__voltiso: guardedValidate({ transactor }, sVoltisoEntry, {
+		__voltiso: guardedValidate_({ transactor }, sVoltisoEntry, {
 			...data.__voltiso,
 			createdAt: now,
 			updatedAt: now,
-		}),
+		}) as never,
 	}
 
 	const firestoreData = toDatabaseSet(ctx, data)

@@ -13,8 +13,8 @@ import type {
 } from '~'
 
 export interface FunctionOptions extends SchemaOptions {
-	Output: (...args: any) => any
-	Input: (...args: any) => any
+	// Output: (...args: any) => any
+	// Input: (...args: any) => any
 
 	Outer: (...args: any) => any
 	Inner: (...args: any) => any
@@ -26,7 +26,7 @@ export interface FunctionOptions extends SchemaOptions {
 	return: $$Schemable
 }
 
-export namespace FunctionOptions {
+export declare namespace FunctionOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: BivariantUnknownFunction
 		Input: BivariantUnknownFunction

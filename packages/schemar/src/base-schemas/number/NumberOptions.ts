@@ -4,15 +4,15 @@
 import type { SchemaOptions } from '~'
 
 export interface NumberOptions extends SchemaOptions {
-	Output: number
-	Input: number
+	// Output: number
+	// Input: number
 
 	isInteger: boolean
 	min: number | undefined
 	max: number | undefined
 }
 
-export namespace NumberOptions {
+export declare namespace NumberOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: number
 		Input: number

@@ -3,9 +3,9 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { IArray } from './IArray'
+import type { IArray, IArray$ } from './IArray'
 
-export function isArraySchema(x: unknown): x is IArray {
+export function isArraySchema(x: unknown): x is IArray$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as IArray | null)?.[SCHEMA_NAME] === 'Array'
 }

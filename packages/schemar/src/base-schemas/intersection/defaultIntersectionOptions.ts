@@ -1,13 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue } from '@voltiso/util'
+import { $assert } from '@voltiso/util'
 
-import type { $$Schemable } from '~'
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
-export const defaultIntersectionOptions = lazyValue(() => ({
+$assert(defaultSchemaOptions)
+
+export const defaultIntersectionOptions = Object.freeze({
 	...defaultSchemaOptions,
 
 	schemas: 0 as unknown as $$Schemable[],
-}))
+})

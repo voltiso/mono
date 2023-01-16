@@ -6,12 +6,12 @@ import { lazyValue } from '@voltiso/util'
 import type { $$Schemable } from '~'
 import { isUnionSchema } from '~'
 
-import { Union } from './Union'
+import { Union$ } from './Union'
 
 export const or = lazyValue(
 	() =>
 		// eslint-disable-next-line unicorn/consistent-function-scoping
-		function <Ts extends $$Schemable[]>(...types: Ts): Union<Ts> {
+		function <Ts extends $$Schemable[]>(...types: Ts): Union$<Ts> {
 			let ts = [] as $$Schemable[]
 
 			for (const type of types) {
@@ -20,6 +20,6 @@ export const or = lazyValue(
 			}
 
 			// $assert(ts.length >= 2)
-			return new Union(ts as never) as never
+			return new Union$(ts as never) as never
 		},
 )

@@ -1,9 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable, CustomUnknownObject, SimpleSchema } from '~'
-
-import { UnknownObject } from '../unknownObject'
+import type {
+	$$Schemable,
+	CustomUnknownObject,
+	SimpleSchema,
+	UnknownObject,
+} from '~'
+import { object } from '~'
 
 export function recordCall<
 	TKeySchema extends $$Schemable,
@@ -22,5 +26,5 @@ export function recordCall<TValueSchema extends $$Schemable>(
 >
 
 export function recordCall(...args: any): any {
-	return new UnknownObject().index(...(args as [any]))
+	return object.index(...(args as [any]))
 }

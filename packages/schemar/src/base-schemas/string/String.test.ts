@@ -8,8 +8,8 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
-	$CustomString,
 	CustomString,
+	CustomString$,
 	ISchema,
 	IString,
 	Output,
@@ -25,14 +25,14 @@ describe('string', () => {
 		$Assert.is<IString, ISchema>()
 
 		$Assert.is<CustomString<O>, Schema>()
-		$Assert.is<$CustomString<O>, IString>()
+		$Assert.is<CustomString$<O>, Schema>()
 	})
 
 	it('type', () => {
 		$Assert.is<typeof s.string, IString>()
 
 		const a = s.string.optional
-		$Assert<IsIdentical<typeof a, CustomString<{ isOptional: true }>>>()
+		$Assert<IsIdentical<typeof a, CustomString$<{ isOptional: true }>>>()
 
 		const ss = s.string.optional.readonly
 		$Assert.is<typeof ss, IString>()
@@ -42,6 +42,13 @@ describe('string', () => {
 
 		$Assert.is<CustomString<{ minLength: 1 }>, SchemaLike<string>>()
 		$Assert.is<CustomString<{ minLength: 1 }>, SchemaLike>()
+
+		$Assert<
+			IsIdentical<
+				typeof s.string.optional.Final,
+				CustomString<{ isOptional: true }>
+			>
+		>()
 	})
 
 	it('simple', () => {
@@ -98,7 +105,7 @@ describe('string', () => {
 
 		expect(s.string.minLength(3).validate('abc')).toBeTruthy()
 		expect(() => s.string.minLength(3).validate('ab')).toThrow(
-			'[@voltiso/schemar] should be of length at least 3 (got 2)',
+			'should be of length at least 3 (got 2)',
 		)
 
 		expect(s.string.maxLength(3).exec('abc').isValid).toBeTruthy()
@@ -159,14 +166,42 @@ describe('string', () => {
 		expect(() => a.validate('012')).toThrow('012')
 	})
 
+	it('cast', () => {
+		const a = s.string.Cast<'a' | 'b'>()
+		$Assert<
+			IsIdentical<
+				typeof a,
+				CustomString$<{ Output: 'a' | 'b'; Input: 'a' | 'b' }>
+			>
+		>()
+
+		const b = s.string.$Cast<'a' | 'b'>()
+		$Assert<
+			IsIdentical<
+				typeof b,
+				| CustomString$<{ Output: 'a'; Input: 'a' }>
+				| CustomString$<{ Output: 'b'; Input: 'b' }>
+			>
+		>()
+	})
+
 	it('fix', () => {
 		expect.hasAssertions()
 
-		const a = s.string.fix((str: string) =>
-			str.length > 3 ? str.slice(0, 3) : undefined,
-		)
+		const a = s.string.narrow(str => (str.length > 3 ? str.slice(0, 3) : str))
 
 		expect(a.validate('test')).toBe('tes')
 		expect(a.validate('ok')).toBe('ok')
+
+		expect(a.isValid('abc')).toBeTruthy()
+		expect(a.isValid('abcd')).toBeFalsy()
+
+		const b = s.string.narrow(str => str.slice(0, 3))
+
+		expect(b.validate('test')).toBe('tes')
+		expect(b.validate('ok')).toBe('ok')
+
+		expect(b.isValid('abc')).toBeTruthy()
+		expect(b.isValid('abcd')).toBeFalsy()
 	})
 })

@@ -7,12 +7,11 @@ import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	CustomIntersection,
-	DefaultIntersectionOptions,
 	IIntersection,
 	IntersectionOptions,
 	ISchema,
 	Schemable,
-	ValidateOptions,
+	ValidationOptions,
 } from '~'
 import { CustomSchemaImpl } from '~'
 import { schema } from '~/core-schemas'
@@ -24,7 +23,7 @@ $assert(EXTENDS)
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomIntersectionImpl<O> {
 	readonly [BASE_OPTIONS]: IntersectionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultIntersectionOptions
+	readonly [DEFAULT_OPTIONS]: IntersectionOptions.Default
 }
 
 export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
@@ -45,7 +44,7 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 
 	override _getIssues(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
 		let issues: ValidationIssue[] = []
 

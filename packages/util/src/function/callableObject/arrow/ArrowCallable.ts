@@ -5,7 +5,7 @@ import type { ArrowCallableWithCALL, Callable, ProtoCallable } from '~/function'
 import type { NoArgument } from '~/type'
 
 import type { WithCALL } from '../CALL'
-import { CALL, isWithCALL } from '../CALL'
+import { CALL } from '../CALL'
 import type { _ArrowCallable, IArrowCallable } from './_/ArrowCallableType'
 import type { ArrowCallableOptions } from './ArrowCallableOptions'
 import { EmptyArrowCallable } from './EmptyArrowCallable'
@@ -45,16 +45,33 @@ export type __unused_ArrowCallable = ProtoCallable
  * @example
  *
  * ```ts
- * const a = ArrowCallable({ a: 1, [CALL]: (n: number) => 2 * n })
+ * const a = CustomArrowCallable({call: (n: number) => 2 * n, { a: 1 }})
  *
  * expect(a.a).toBe(1)
  * expect(a(2)).toBe(4)
  * ```
  *
- * @param shape - An object to shallow-copy properties and `__proto__` from;
- *   also, `shape[CALL]` property will be used as the call function
+ * @param options - @see `ArrowCallableOptions`
  */
-export function ArrowCallable<O extends WithCALL>(shape: O): ArrowCallable<O>
+export function CustomArrowCallable<Options extends ArrowCallableOptions>(
+	options: Options,
+): ArrowCallable<Options> {
+	const callableObject = EmptyArrowCallable(options.call)
+
+	if (options.shape) {
+		Object.defineProperties(
+			callableObject,
+			Object.getOwnPropertyDescriptors(options.shape),
+		)
+
+		Object.setPrototypeOf(
+			callableObject,
+			Object.getPrototypeOf(options.shape) as never,
+		)
+	}
+
+	return callableObject as never
+}
 
 /**
  * Create a function with no own properties
@@ -66,43 +83,16 @@ export function ArrowCallable<O extends WithCALL>(shape: O): ArrowCallable<O>
  * @example
  *
  * ```ts
- * const a = ArrowCallable((n: number) => 2 * n, { a: 1 })
+ * const a = ArrowCallable({ a: 1, [CALL]: (n: number) => 2 * n })
  *
  * expect(a.a).toBe(1)
  * expect(a(2)).toBe(4)
  * ```
  *
- * @param options - @see `ArrowCallableOptions`
+ * @param shape - An object to shallow-copy properties and `__proto__` from;
+ *   also, `shape[CALL]` property will be used as the call function
  */
-export function ArrowCallable<Options extends ArrowCallableOptions>(
-	options: Options,
-): ArrowCallable<Options>
-
-/** Aggregate overload - check previous overloads for documentation */
-export function ArrowCallable<Options extends ArrowCallableOptions | WithCALL>(
-	options: Options,
-): ArrowCallable<Options>
-
-//
-
-export function ArrowCallable<Options extends ArrowCallableOptions | WithCALL>(
-	options: Options,
-): ArrowCallable<Options> {
+export function ArrowCallable<O extends WithCALL>(shape: O): ArrowCallable<O> {
 	// eslint-disable-next-line security/detect-object-injection
-	const call = isWithCALL(options) ? options[CALL] : options.call
-
-	const callableObject = EmptyArrowCallable(call)
-
-	const shape = isWithCALL(options) ? options : options.shape
-
-	if (shape) {
-		Object.defineProperties(
-			callableObject,
-			Object.getOwnPropertyDescriptors(shape),
-		)
-
-		Object.setPrototypeOf(callableObject, Object.getPrototypeOf(shape) as never)
-	}
-
-	return callableObject as never
+	return CustomArrowCallable({ shape, call: shape[CALL] }) as never
 }

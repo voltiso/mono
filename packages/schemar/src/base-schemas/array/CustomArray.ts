@@ -9,17 +9,41 @@ import type {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { CustomSchema, SCHEMA_NAME, SimpleSchema } from '~'
+import type {
+	$$Array,
+	CustomSchema,
+	CustomSchema$,
+	SCHEMA_NAME,
+	SimpleSchema,
+} from '~'
 
 import type { ArrayOptions } from './ArrayOptions'
 
-export interface $$CustomArray {
-	readonly [SCHEMA_NAME]: 'Array'
-}
+//
 
 export interface CustomArray<O extends Partial<ArrayOptions>>
-	extends $$CustomArray,
+	extends $$Array,
 		CustomSchema<O> {
+	//
+	readonly [SCHEMA_NAME]: 'Array'
+
+	readonly [BASE_OPTIONS]: ArrayOptions
+	readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
+
+	//
+
+	get getElementSchema(): CustomArray.GetElementSchema<this>
+
+	get isReadonlyArray(): this[OPTIONS]['isReadonlyArray']
+	get getMinLength(): this[OPTIONS]['minLength']
+	get getMaxLength(): this[OPTIONS]['maxLength']
+}
+
+//
+
+export interface CustomArray$<O extends Partial<ArrayOptions>>
+	extends $$Array,
+		CustomSchema$<O> {
 	//
 	readonly [SCHEMA_NAME]: 'Array'
 
@@ -38,6 +62,12 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 
 	get readonlyArray(): CustomArray.MakeReadonly<this, O>
 	get mutableArray(): CustomArray.MakeMutable<this, O>
+
+	//
+
+	get Final(): CustomArray<O>
+
+	//
 
 	minLength<Min extends number>(
 		minLength: Min,
@@ -59,38 +89,40 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 
 //
 
-export namespace CustomArray {
+export declare namespace CustomArray {
 	export type With<O, OO> = CustomArray<$Override_<O, OO>>
 
-	export type GetElementSchema<
-		This extends { Output: readonly unknown[]; Input: unknown },
-	> = IsCompatible<
-		This['Output'][number],
-		Extract<This['Input'], readonly unknown[]>[number]
-	> extends true
-		? SimpleSchema<This['Output'][number]>
-		: CustomSchema<{
-				Output: This['Output'][number]
-				Input: Extract<This['Input'], readonly unknown[]>[number]
-		  }> // this[OPTIONS]['element']
+	export type GetElementSchema<This> = This extends {
+		Output: readonly unknown[]
+		Input: unknown
+	}
+		? IsCompatible<
+				This['Output'][number],
+				Extract<This['Input'], readonly unknown[]>[number]
+		  > extends true
+			? SimpleSchema<This['Output'][number]>
+			: CustomSchema<{
+					Output: This['Output'][number]
+					Input: Extract<This['Input'], readonly unknown[]>[number]
+			  }>
+		: never
 
-	export type MakeReadonly<
-		This extends $$CustomArray & {
-			Output: readonly unknown[]
-			Input: unknown
-		},
-		O,
-	> = With<
-		O,
-		{
-			readonlyArray: true
-			Output: readonly [...This['Output']]
-			Input: readonly [...Extract<This['Input'], readonly unknown[]>]
-		}
-	>
+	export type MakeReadonly<This, O> = This extends {
+		Output: readonly unknown[]
+		Input: unknown
+	}
+		? With<
+				O,
+				{
+					readonlyArray: true
+					Output: readonly [...This['Output']]
+					Input: readonly [...Extract<This['Input'], readonly unknown[]>]
+				}
+		  >
+		: never
 
 	export type MakeMutable<
-		This extends $$CustomArray & {
+		This extends $$Array & {
 			[OPTIONS]: { Input: readonly unknown[]; Output: readonly unknown[] }
 		},
 		O,

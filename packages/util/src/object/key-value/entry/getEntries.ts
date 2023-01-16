@@ -34,7 +34,7 @@
 // 	return r as never
 // }
 
-import { VoltisoUtilError } from '~/error'
+import { VoltisoUtilError } from '_/error/index'
 import { isMap, isSet } from '~/map-set'
 import type { DefaultIterationOptions, IterationOptions } from '~/object'
 import { defaultIterationOptions, getProperty } from '~/object'

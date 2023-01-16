@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomString } from '@voltiso/schemar'
+import { CustomString$, SCHEMA_NAME, SimpleSchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
@@ -43,6 +43,8 @@ describe('docSchema', () => {
 	it('should validate schema', async () => {
 		expect.hasAssertions()
 
+		expect(Doctor.schemaWithId[SCHEMA_NAME]).toBe('Object')
+
 		await database.doc('patient/a').delete()
 
 		await expect(
@@ -59,19 +61,16 @@ describe('docSchema', () => {
 
 		await patients('a').set({ doctor: { id: 'aaa', secret: 'asd' } })
 
-		await expect(patients('a').dataWithoutId()).resolves.toMatchObject({
+		await expect(patients('a').data).resolves.toMatchObject({
 			doctor: { id: 'aaa', secret: 'asd' },
 		})
 
 		$Assert<
-			IsIdentical<typeof Doctor.idSchema, CustomString<{ maxLength: 3 }>>
+			IsIdentical<typeof Doctor.idSchema, CustomString$<{ maxLength: 3 }>>
 		>()
 
 		$Assert<
-			IsIdentical<
-				typeof Doctor.schemaWithId.getShape.id,
-				CustomString<{ maxLength: 3 }>
-			>
+			IsIdentical<typeof Doctor.schemaWithId.getShape.id, SimpleSchema<string>>
 		>()
 
 		expect(() => Doctor.schemaWithId.getShape.id.validate('12345')).toThrow(

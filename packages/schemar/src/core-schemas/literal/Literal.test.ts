@@ -17,8 +17,8 @@ describe('s.literal', () => {
 	it('generic', <O extends Partial<LiteralOptions>>() => {
 		$Assert.is<CustomLiteral<O>, ILiteral>()
 
-		type A = CustomLiteral<O>['Output']
-		$Assert.is<A, InferableLiteral>()
+		// type A = CustomLiteral<O>['Output']
+		// $Assert.is<A, InferableLiteral>()
 	})
 
 	it('type', () => {

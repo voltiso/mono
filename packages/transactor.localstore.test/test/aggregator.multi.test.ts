@@ -47,13 +47,11 @@ class Day extends Doc('day').with({
 	id: sDate,
 
 	aggregates: {
-		shifts: s.array(ShiftBase.schemaWithId).default([]),
+		shifts: s.array(ShiftBase.schemaWithId).default([] as const),
 	},
 }) {}
 
 const days = db.register(Day)
-
-//
 
 const aggregator: DocBuilderPlugin<'shift'> = aggregate('shift').into(
 	'day',

@@ -7,21 +7,20 @@ import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type {
 	CustomRecord,
-	DefaultRecordOptions,
 	ISchema,
 	RecordOptions,
-	ValidateOptions,
 	ValidationIssue,
+	ValidationOptions,
 } from '~'
 import { CustomSchemaImpl } from '~'
 
-import type { CustomObjectImpl } from '../object'
+import type { CustomUnknownObjectImpl } from '../unknownObject'
 import { object } from '../unknownObject'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {
 	readonly [BASE_OPTIONS]: RecordOptions
-	readonly [DEFAULT_OPTIONS]: DefaultRecordOptions
+	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
 }
 
 export class CustomRecordImpl<O extends Partial<RecordOptions>>
@@ -30,13 +29,24 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 {
 	readonly [SCHEMA_NAME] = 'Record' as const
 
+	readonly _object: CustomUnknownObjectImpl<any>
+
+	constructor(options: O) {
+		super(options)
+
+		this._object = object.index(
+			this[OPTIONS].keySchema,
+			this[OPTIONS].valueSchema,
+		) as never
+
+		Object.freeze(this)
+	}
+
 	get getKeySchema(): this[OPTIONS]['keySchema'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['keySchema'] as never
 	}
 
 	get getValueSchema(): this[OPTIONS]['valueSchema'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['valueSchema'] as never
 	}
 
@@ -48,10 +58,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	get getIndexSignatures(): any {
 		return [
 			{
-				// eslint-disable-next-line security/detect-object-injection
 				keySchema: this[OPTIONS].keySchema,
-
-				// eslint-disable-next-line security/detect-object-injection
 				valueSchema: this[OPTIONS].valueSchema,
 			},
 		]
@@ -64,31 +71,18 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 
 	override _getIssues(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
-		const proxy = _getCustomObjectImpl(this)
-		return proxy._getIssues(x, options)
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		return (this._object as any)._getIssues(x, options) as never
 	}
 
 	override _fix(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): unknown {
-		const proxy = _getCustomObjectImpl(this)
-		// eslint-disable-next-line no-param-reassign
-		x = proxy._fix(x, options)
+		// eslint-disable-next-line no-param-reassign, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		x = (this._object as any)._fix(x, options) as never
 		return x
 	}
-}
-
-function _getCustomObjectImpl(self: {
-	[OPTIONS]: RecordOptions
-}): CustomObjectImpl<{}> {
-	return object.index(
-		// eslint-disable-next-line security/detect-object-injection
-		self[OPTIONS].keySchema,
-
-		// eslint-disable-next-line security/detect-object-injection
-		self[OPTIONS].valueSchema,
-	) as never
 }

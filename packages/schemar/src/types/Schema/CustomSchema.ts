@@ -1,13 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS } from '_'
 import type {
-	_,
 	$Override_,
 	AlsoAccept,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
+	NoArgument,
 	OPTIONS,
 	Throw,
 } from '@voltiso/util'
@@ -15,21 +14,22 @@ import type {
 import type {
 	$$Schema,
 	$$Schemable,
-	GetIssuesOptions,
-	InferSchema,
+	InferSchema$,
+	Input_,
 	ISchema,
-	OverrideSchema,
-	OverrideSchemaWithOmit,
+	Output_,
+	OverrideSchema$,
+	OverrideSchema$WithOmit,
 	SCHEMA_NAME,
 	SchemaOptions,
 	SchemarAnd,
 	SchemarOr,
-	ValidateOptions,
 	ValidationIssue,
+	ValidationOptions,
 	ValidationResult,
 } from '~'
 
-import type { SimplifySchema } from './Simplify'
+//
 
 export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	extends ISchema {
@@ -38,9 +38,6 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	readonly [BASE_OPTIONS]: SchemaOptions
 	readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
-
-	/** Do not store - breaks assignability */
-	// readonly [PARTIAL_OPTIONS]: O
 
 	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
@@ -75,9 +72,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 				? undefined
 				: never)
 
-	// GET
-
-	get getName(): string | undefined
+	//
 
 	get isOptional(): this[OPTIONS]['isOptional']
 	get isStrictOptional(): this[OPTIONS]['isStrictOptional']
@@ -88,166 +83,6 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	get getDefault(): this[OPTIONS]['hasDefault'] extends false
 		? never
 		: this[OPTIONS]['Output']
-
-	extends(other: $$Schemable): boolean
-	[EXTENDS](other: $$Schema): boolean
-
-	// builder
-
-	/** Specify name for nicer messages */
-	name(name: string): this
-
-	/**
-	 * Define object property to be optional or undefined
-	 *
-	 * - Validation will remove `undefined` properties if `this` schema does not
-	 *   accept `undefined` by itself
-	 *
-	 * @inline
-	 */
-	get optional(): OverrideSchemaWithOmit<
-		this,
-		O,
-		{ isOptional: true },
-		'isStrictOptional' | 'default' | 'hasDefault'
-	>
-
-	/**
-	 * Same as `optional`, but does not auto-remove `undefined` properties
-	 *
-	 * - `undefined` in the input value is considered invalid (similar to
-	 *   `exactOptionalPropertyTypes`)
-	 * - Use if you differentiate between `undefined` and non-present properties
-	 *
-	 * @inline
-	 */
-	get strictOptional(): OverrideSchemaWithOmit<
-		this,
-		O,
-		{ isStrictOptional: true },
-		'isOptional' | 'default' | 'hasDefault'
-	>
-
-	/**
-	 * Define object property to be `readonly`
-	 *
-	 * @inline
-	 */
-	get readonly(): OverrideSchema<this, O, { isReadonly: true }>
-
-	//
-
-	/**
-	 * Specify default value if the input value is `undefined`
-	 *
-	 * @inline
-	 */
-	default<DefaultValue extends this[OPTIONS]['Input']>(
-		value: DefaultValue,
-	): CustomSchema.WithDefault<this, O, DefaultValue>
-
-	/**
-	 * Specify default value if the input value is `undefined`
-	 *
-	 * @inline
-	 */
-	default<DefaultValue extends this[OPTIONS]['Input']>(
-		getValue: () => DefaultValue,
-	): CustomSchema.WithDefault<this, O, DefaultValue>
-
-	//
-
-	/** @inline */
-	check(
-		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
-		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
-	): this
-
-	/**
-	 * Applied after all other transformations are done (e.g. defaults already
-	 * applied)
-	 *
-	 * - ⚠️ Do not modify the input value
-	 * - I.e. it narrows the Output type into its (sub)type
-	 *
-	 * @inline
-	 */
-	fix<NarrowToType extends this[OPTIONS]['Output']>(
-		fixFunc: (value: this[OPTIONS]['Output']) => NarrowToType | void,
-	): OverrideSchema<this, O, { Output: NarrowToType }>
-
-	//
-
-	//
-
-	Narrow<NewType extends this['Output'] & this['Input']>(): OverrideSchema<
-		this,
-		O,
-		{ Output: NewType; Input: NewType }
-	>
-
-	Widen<NewType>(): this['Output'] | this['Input'] extends NewType
-		? OverrideSchema<this, O, { Output: NewType; Input: NewType }>
-		: Throw<
-				'Widen: NewType is not supertype' &
-					CustomSchema.TypeCastErrorDetail<this, NewType>
-		  >
-
-	//
-
-	Cast<NewType>(): CustomSchema.CastResult<this, O, NewType>
-
-	$Cast<NewType>(): NewType extends any
-		? CustomSchema.CastResult<this, O, NewType>
-		: never
-
-	//
-
-	NarrowOutput<NewType extends this['Output']>(): OverrideSchema<
-		this,
-		O,
-		{ Output: NewType }
-	>
-
-	WidenOutput<NewType>(): this['Output'] extends NewType
-		? OverrideSchema<this, O, { Output: NewType }>
-		: Throw<
-				'WidenOutput: NewType is not supertype' &
-					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
-		  >
-
-	CastOutput<NewType>(): this['Output'] extends NewType
-		? OverrideSchema<this, O, { Output: NewType }>
-		: NewType extends this['Output']
-		? OverrideSchema<this, O, { Output: NewType }>
-		: Throw<
-				'CastOutput: NewType is not subtype or supertype' &
-					CustomSchema.TypeCastErrorDetailOutput<this, NewType>
-		  >
-
-	// //
-
-	NarrowInput<NewType extends this['Input']>(): OverrideSchema<
-		this,
-		O,
-		{ Input: NewType }
-	>
-
-	WidenInput<NewType>(): this['Input'] extends NewType
-		? OverrideSchema<this, O, { Input: NewType }>
-		: Throw<
-				'WidenInput: NewType is not supertype' &
-					CustomSchema.TypeCastErrorDetailInput<this, NewType>
-		  >
-
-	CastInput<NewType>(): this['Input'] extends NewType
-		? OverrideSchema<this, O, { Input: NewType }>
-		: NewType extends this['Input']
-		? OverrideSchema<this, O, { Input: NewType }>
-		: Throw<
-				'CastInput: NewType is not subtype or supertype' &
-					CustomSchema.TypeCastErrorDetailInput<this, NewType>
-		  >
 
 	//
 
@@ -263,7 +98,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	validate(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidateOptions> | undefined,
+		// options?: Partial<ValidateOptions> | undefined,
 	): this[OPTIONS]['Output']
 
 	/**
@@ -277,7 +112,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	tryValidate<X>(
 		x: X,
-		options?: Partial<GetIssuesOptions> | undefined,
+		// options?: Partial<GetIssuesOptions> | undefined,
 	): X | this[OPTIONS]['Output']
 
 	/**
@@ -288,7 +123,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	exec(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationResult
 
 	/**
@@ -298,7 +133,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	getIssues(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<GetIssuesOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[]
 
 	/**
@@ -309,8 +144,19 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	isFixable(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<GetIssuesOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): x is this[OPTIONS]['Input']
+
+	/**
+	 * Do not return transformed value - just check if the value is valid
+	 * according to the schema (after applying fixes)
+	 *
+	 * @param x - Value to validate against `this` schema
+	 */
+	assertFixable(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: Partial<ValidationOptions> | undefined,
+	): asserts x is this[OPTIONS]['Input']
 
 	/**
 	 * Check if `x` is already valid (without applying fixes)
@@ -319,8 +165,397 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	isValid(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<GetIssuesOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): x is this[OPTIONS]['Output']
+
+	/**
+	 * Check if `x` is already valid (without applying fixes)
+	 *
+	 * @param x - Value to validate against `this` schema, without applying fixes
+	 * @throws ValidationError
+	 */
+	assertValid(
+		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		options?: Partial<ValidationOptions> | undefined,
+	): asserts x is this[OPTIONS]['Output']
+}
+
+//
+
+//
+
+export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
+	extends CustomSchema<O> {
+	//
+
+	/**
+	 * Get the non-builder version of `this` schema (builder version does not play
+	 * well with type-checking assignability)
+	 *
+	 * - 🌿 Identity at runtime
+	 * - Use `GetSchema$` for the reverse operation
+	 *
+	 * ! Please override
+	 */
+	get Final(): CustomSchema<O>
+
+	//
+
+	/**
+	 * Define object property to be optional or undefined
+	 *
+	 * - Validation will remove `undefined` properties if `this` schema does not
+	 *   accept `undefined` by itself
+	 *
+	 * @inline
+	 */
+	get optional(): OverrideSchema$WithOmit<
+		this,
+		O,
+		{ isOptional: true },
+		'isStrictOptional' | 'default' | 'hasDefault'
+	>
+
+	/**
+	 * Same as `optional`, but does not auto-remove `undefined` properties
+	 *
+	 * - `undefined` in the input value is considered invalid (similar to
+	 *   `exactOptionalPropertyTypes`)
+	 * - Use if you differentiate between `undefined` and non-present properties
+	 *
+	 * @inline
+	 */
+	get strictOptional(): OverrideSchema$WithOmit<
+		this,
+		O,
+		{ isStrictOptional: true },
+		'isOptional' | 'default' | 'hasDefault'
+	>
+
+	/**
+	 * Define object property to be `readonly`
+	 *
+	 * @inline
+	 */
+	get readonly(): OverrideSchema$<this, O, { isReadonly: true }>
+
+	//
+
+	/**
+	 * Specify default value if the input value is `undefined`
+	 *
+	 * @inline
+	 */
+	default<
+		DefaultValue extends
+			| this[OPTIONS]['Input']
+			| AlsoAccept<Readonly<this[OPTIONS]['Input']>>,
+	>(
+		value: DefaultValue,
+	): CustomSchema.WithDefault<this, O, DefaultValue>
+
+	/**
+	 * Specify default value if the input value is `undefined`
+	 *
+	 * @inline
+	 */
+	default<
+		DefaultValue extends
+			| this[OPTIONS]['Input']
+			| AlsoAccept<Readonly<this[OPTIONS]['Input']>>,
+	>(
+		getValue: () => DefaultValue,
+	): CustomSchema.WithDefault<this, O, DefaultValue>
+
+	//
+
+	/** Specify name for nicer messages */
+	name(name: string): this
+
+	//
+
+	/**
+	 * Add a custom check between transformations
+	 *
+	 * @inline
+	 */
+	check(
+		checkIfValid: (value: this[OPTIONS]['Output']) => boolean,
+		expectedDescription?: string | ((value: this[OPTIONS]['Output']) => string),
+	): this
+
+	/**
+	 * Same as `map`, but with narrow-only typings
+	 *
+	 * - Return `undefined` only if the value is already correct
+	 * - ⚠️ Return exactly the same value if the value is already correct -
+	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
+	 *   `Object.is` to check if value was already valid
+	 * - ⚠️ Do not modify the input value
+	 *
+	 * @inline
+	 */
+	narrow<NarrowOutput extends this[OPTIONS]['Output']>(
+		map: (value: this[OPTIONS]['Output']) => NarrowOutput, // | void,
+	): OverrideSchema$<this, O, { Output: NarrowOutput }>
+
+	narrowIf(
+		condition: (value: this[OPTIONS]['Output']) => boolean,
+		map: (value: this[OPTIONS]['Output']) => this[OPTIONS]['Output'], // | void | undefined,
+	): this
+
+	/**
+	 * Push transformation applied after anything else
+	 *
+	 * - ⚠️ Return exactly the same value if the value is already correct -
+	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
+	 *   `Object.is` to check if value was already valid
+	 * - ⚠️ Prefer {@link fix} - avoid transforms
+	 * - ⚠️ Prefer {@link narrow} for type-safety
+	 * - ⚠️ Do not modify the input value
+	 *
+	 * @inline
+	 */
+	map<NewOutput>(
+		map: (value: this[OPTIONS]['Output']) =>
+			| NewOutput
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): OverrideSchema$<this, O, { Output: NewOutput }>
+
+	map<ConditionSchema extends $$Schemable, NewOutput>(
+		conditionSchema: ConditionSchema,
+		map: (value: Output_<ConditionSchema>) =>
+			| NewOutput
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): OverrideSchema$<this, O, { Output: NewOutput }>
+
+	/**
+	 * Narrow-only overload
+	 *
+	 * Prefer {@link narrowIf} directly for type-check performance
+	 */
+	mapIf(
+		condition: (value: this[OPTIONS]['Output']) => boolean,
+		map: (value: this[OPTIONS]['Output']) =>
+			| this[OPTIONS]['Output']
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): this
+
+	mapIf<NewOutput>(
+		condition: (value: this[OPTIONS]['Output']) => boolean,
+		map: (value: this[OPTIONS]['Output']) =>
+			| NewOutput
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): CustomSchema.WithMapIf<this, O, NewOutput>
+
+	//
+
+	//
+
+	/**
+	 * Function-based condition are separated from schema-based conditions for
+	 * faster type-checking
+	 */
+	fixIf<AdditionalInput>(
+		conditionTypeGuard: (
+			value: AdditionalInput | AlsoAccept<unknown>,
+		) => value is AdditionalInput,
+		fix: (value: AdditionalInput) =>
+			| this[OPTIONS]['Input']
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): CustomSchema.WithFix<this, O, AdditionalInput>
+
+	fixIf<AdditionalInput = NoArgument>(
+		conditionPredicate: (
+			value: unknown, // AdditionalInput | AlsoAccept<unknown>,
+		) => boolean,
+		fix: (value: AdditionalInput) =>
+			| this[OPTIONS]['Input']
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): [AdditionalInput] extends [NoArgument]
+		? Throw<'Missing explicit AdditionalInput type argument'>
+		: CustomSchema.WithFix<this, O, AdditionalInput>
+
+	/**
+	 * Executed only if `wrongValueSchema` passes validation
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const timestamp = s.date.fix(s.string, value => new Date(value))
+	 * ```
+	 *
+	 * - 💀 Return `undefined` to delete the value (if `isOptional`) - will throw if
+	 *   not validated via parent object
+	 * - ⚠️ Return exactly the same value if the value is already correct -
+	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
+	 *   `Object.is` to check if value was already valid
+	 * - ⚠️ Schema's input type will be extended with the whole input type of
+	 *   `wrongValueSchema`
+	 * - ⚠️ Do not modify the input value
+	 *
+	 *
+	 * @inline
+	 */
+	fix<AdditionalInput>(
+		conditionSchema: $$Schema & {
+			Output: AdditionalInput
+			Input: AdditionalInput
+		},
+		fix: (value: AdditionalInput) =>
+			| this[OPTIONS]['Input']
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): CustomSchema.WithFix<this, O, AdditionalInput>
+
+	fix<ConditionSchema extends $$Schemable>(
+		conditionSchema: ConditionSchema,
+		fix: (value: Output_<ConditionSchema>) =>
+			| this[OPTIONS]['Input']
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): CustomSchema.WithFix<this, O, Input_<ConditionSchema>>
+
+	/**
+	 * Manually decide if the fix should be applied
+	 *
+	 * ⚠️ Please provide `AdditionalInput` type argument
+	 */
+	fix<AdditionalInput = NoArgument>(
+		fix: <Value extends AdditionalInput | AlsoAccept<unknown>>(
+			value: Value,
+		) =>
+			| this[OPTIONS]['Input'] // | void | undefined
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never), // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
+	): [AdditionalInput] extends [NoArgument]
+		? Throw<'Missing explicit AdditionalInput type argument'>
+		: CustomSchema.WithFix<this, O, AdditionalInput>
+
+	//
+
+	//
+
+	/**
+	 * Cast both Output and Input - either use types from a provided other schema,
+	 * or set both Input and Output to `T`
+	 */
+	Cast<T extends $$Schema | AlsoAccept<unknown>>(): CustomSchema.WithCast<
+		this,
+		O,
+		T
+	>
+
+	/** Distributive version of {@link Cast} - if you need it */
+	$Cast<T extends $$Schema | AlsoAccept<unknown>>(): T extends any
+		? CustomSchema.WithCast<this, O, T>
+		: never
+
+	//
+
+	Narrow<T extends this['Input'] & this['Output']>(): OverrideSchema$<
+		this,
+		O,
+		{ Output: T; Input: T }
+	>
+
+	$Narrow<T extends this['Input'] & this['Output']>(): T extends any
+		? OverrideSchema$<this, O, { Output: T; Input: T }>
+		: never
+
+	//
+
+	Widen<T>(): CustomSchema.WithWiden<this, O, T>
+	$Widen<T>(): T extends any ? CustomSchema.WithWiden<this, O, T> : never
+
+	//
+
+	NarrowOutput<NewType extends this['Output']>(): OverrideSchema$<
+		this,
+		O,
+		{ Output: NewType }
+	>
+
+	/** Distributive version of {@link NarrowOutput} - if you need it */
+	$NarrowOutput<NewType extends this['Output']>(): NewType extends any
+		? OverrideSchema$<this, O, { Output: NewType }>
+		: never
+
+	//
+
+	WidenOutput<NewType>(): CustomSchema.WithWidenOutput<this, O, NewType>
+
+	/** Distributive version of {@link WidenOutput} - if you need it */
+	$WidenOutput<NewType>(): NewType extends any
+		? CustomSchema.WithWidenOutput<this, O, NewType>
+		: never
+
+	CastOutput<NewType>(): OverrideSchema$<this, O, { Output: NewType }>
+
+	/** Distributive version of {@link CastOutput} - if you need it */
+	$CastOutput<NewType>(): NewType extends any
+		? OverrideSchema$<this, O, { Output: NewType }>
+		: never
+
+	//
+
+	NarrowInput<NewType extends this['Input']>(): OverrideSchema$<
+		this,
+		O,
+		{ Input: NewType }
+	>
+
+	/** Distributive version of {@link NarrowInput} - if you need it */
+	$NarrowInput<NewType extends this['Input']>(): NewType extends any
+		? OverrideSchema$<this, O, { Input: NewType }>
+		: never
+
+	WidenInput<NewType>(): CustomSchema.WithWidenInput<this, O, NewType>
+
+	/** Distributive version of {@link WidenInput} - if you need it */
+	$WidenInput<NewType>(): NewType extends any
+		? CustomSchema.WithWidenInput<this, O, NewType>
+		: never
+
+	CastInput<NewType>(): OverrideSchema$<this, O, { Input: NewType }>
+
+	/** Distributive version of {@link CastInput} - if you need it */
+	$CastInput<NewType>(): NewType extends any
+		? OverrideSchema$<this, O, { Input: NewType }>
+		: never
 
 	//
 
@@ -335,7 +570,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	or<Other extends $$Schemable>(
 		other: Other,
-	): SchemarOr<this, InferSchema<Other>>
+	): SchemarOr<this, InferSchema$<Other>>
 
 	/**
 	 * Create intersection of this schema an one other schema
@@ -346,34 +581,86 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	and<Other extends $$Schemable>(
 		other: Other,
-	): SchemarAnd<this, InferSchema<Other>>
+	): SchemarAnd<this, InferSchema$<Other>>
 
-	/**
-	 * Simplify and flatten TS type
-	 *
-	 * - No-op at runtime (identity function)
-	 * - Use `@voltiso/transform` to output simplified types in `*.d.ts` files
-	 * - Useful when exporting from module - faster editor experience for lib
-	 *   consumers
-	 *
-	 * @inline
-	 */
-	get simple(): SimplifySchema<this>
+	toString(): string
 }
 
-export namespace CustomSchema {
-	export type CastResult<
-		This extends $$Schema & { Output: unknown; Input: unknown },
+export declare namespace CustomSchema {
+	export type WithFix<
+		This extends $$Schema,
+		O,
+		AdditionalInput,
+	> = This extends { readonly Input: unknown }
+		? OverrideSchema$<This, O, { Input: This['Input'] | AdditionalInput }>
+		: never
+
+	export type WithMapIf<
+		This extends $$Schema,
+		O,
+		AdditionalOutput,
+	> = This extends { readonly Output: unknown }
+		? AdditionalOutput extends This['Output']
+			? This
+			: OverrideSchema$<This, O, { Output: This['Output'] | AdditionalOutput }>
+		: never
+
+	// export type CastResult<
+	// 	This extends $$Schema & { Output: unknown; Input: unknown },
+	// 	O,
+	// 	NewType,
+	// 	/** Added `_` for `SimpleSchema` assignability */
+	// > = _<This['Output']> | _<This['Input']> extends NewType
+	// 	? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
+	// 	: [NewType] extends [This['Output'] & This['Input']]
+	// 	? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
+	// 	: Throw<
+	// 			'Cast: NewType is not subtype or supertype' &
+	// 				TypeCastErrorDetail<This, NewType>
+	// 	  >
+
+	export type WithCast<This extends $$Schema, O, T> = [T] extends [
+		$$Schema & {
+			readonly Output: unknown
+			readonly Input: unknown
+		},
+	]
+		? OverrideSchema$<This, O, { Output: T['Output']; Input: T['Input'] }>
+		: OverrideSchema$<This, O, { Output: T; Input: T }>
+
+	export type WithWiden<
+		This extends $$Schema & {
+			readonly Input: unknown
+			readonly Output: unknown
+		},
+		O,
+		T,
+	> = This['Input'] extends T
+		? This['Output'] extends T
+			? OverrideSchema$<This, O, { Output: T; Input: T }>
+			: Throw<'T not a supertype of Output' & { T: T }>
+		: Throw<'T not a supertype of Input' & { T: T }>
+
+	export type WithWidenOutput<
+		This extends $$Schema & { readonly Output: unknown },
 		O,
 		NewType,
-		/** Added `_` for `SimpleSchema` assignability */
-	> = _<This['Output']> | _<This['Input']> extends NewType
-		? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
-		: [NewType] extends [This['Output'] & This['Input']]
-		? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
+	> = This['Output'] extends NewType
+		? OverrideSchema$<This, O, { Output: NewType }>
 		: Throw<
-				'Cast: NewType is not subtype or supertype' &
-					TypeCastErrorDetail<This, NewType>
+				'WidenOutput: NewType is not supertype' &
+					CustomSchema.TypeCastErrorDetailOutput<This, NewType>
+		  >
+
+	export type WithWidenInput<
+		This extends $$Schema & { readonly Input: unknown },
+		O,
+		NewType,
+	> = This['Input'] extends NewType
+		? OverrideSchema$<This, O, { Input: NewType }>
+		: Throw<
+				'WidenInput: NewType is not supertype' &
+					CustomSchema.TypeCastErrorDetailInput<This, NewType>
 		  >
 
 	/** @inline */
@@ -383,13 +670,25 @@ export namespace CustomSchema {
 		DefaultValue,
 	> = This extends {
 		readonly Output: unknown
+		// readonly isReadonlyArray?: unknown
+		// readonly isReadonlyTuple?: unknown
 	}
-		? OverrideSchemaWithOmit<
+		? OverrideSchema$WithOmit<
 				This,
 				O,
 				{
 					hasDefault: true
-					default: DefaultValue
+
+					// default: This extends
+					// 	| { readonly isReadonlyArray: true }
+					// 	| { readonly isReadonlyTuple: true }
+					// 	? Readonly<DefaultValue>
+					// 	: This extends
+					// 			| { readonly isReadonlyArray: true }
+					// 			| { readonly isReadonlyTuple: true }
+					// 	? Mutable_<DefaultValue>
+					// 	: DefaultValue
+
 					Output: Exclude<This['Output'], undefined>
 				},
 				'isOptional' | 'isStrictOptional'

@@ -10,30 +10,70 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { ISchema, SchemaOptions } from '~'
+import type {
+	$$Schema,
+	CustomSchema,
+	CustomSchema$,
+	ISchema,
+	SchemaOptions,
+} from '~'
 import { CustomSchemaImpl, defaultSchemaOptions, ValidationIssue } from '~'
 
+export interface $$NonNullish extends $$Schema {
+	readonly [SCHEMA_NAME]: 'NonNullish'
+}
+
+export function isNonNullishSchema(x: unknown): x is NonNullish$ {
+	return (x as NonNullish$ | null)?.[SCHEMA_NAME] === 'NonNullish'
+}
+
 export interface NonNullishOptions extends SchemaOptions {
-	Output: {}
-	Input: {}
+	// Output: {}
+	// Input: {}
 }
 
-export interface DefaultNonNullishOptions extends SchemaOptions.Default {
-	Output: {}
-	Input: {}
+export declare namespace NonNullishOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: {}
+		Input: {}
+	}
 }
 
-export const defaultNonNullishOptions: DefaultNonNullishOptions =
+export const defaultNonNullishOptions: NonNullishOptions.Default =
 	defaultSchemaOptions as never
 
-export class CustomNonNullish<
+//
+
+export interface CustomNonNullish<O extends Partial<NonNullishOptions>>
+	extends CustomSchema<O> {
+	//
+	readonly [SCHEMA_NAME]: 'NonNullish'
+
+	readonly [BASE_OPTIONS]: NonNullishOptions
+	readonly [DEFAULT_OPTIONS]: NonNullishOptions.Default
+}
+
+export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
+	extends CustomSchema$<O> {
+	//
+	readonly [SCHEMA_NAME]: 'NonNullish'
+
+	readonly [BASE_OPTIONS]: NonNullishOptions
+	readonly [DEFAULT_OPTIONS]: NonNullishOptions.Default
+
+	get Final(): CustomNonNullish<O>
+}
+
+//
+
+export class CustomNonNullishImpl<
 	O extends Partial<NonNullishOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	//
 	readonly [SCHEMA_NAME] = 'NonNullish' as const;
 
 	declare readonly [BASE_OPTIONS]: NonNullishOptions;
-	declare readonly [DEFAULT_OPTIONS]: DefaultNonNullishOptions
+	declare readonly [DEFAULT_OPTIONS]: NonNullishOptions.Default
 
 	override _getIssues(x: unknown): ValidationIssue[] {
 		const issues: ValidationIssue[] = []
@@ -41,7 +81,6 @@ export class CustomNonNullish<
 		if (x === null || x === undefined) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be non-nullish' },
 					received: { value: x },
@@ -63,12 +102,26 @@ export class CustomNonNullish<
 	}
 }
 
-export class NonNullish extends lazyConstructor(
-	() => CustomNonNullish,
-)<DefaultNonNullishOptions> {
+export class NonNullishImpl extends lazyConstructor(
+	() => CustomNonNullishImpl,
+)<NonNullishOptions.Default> {
 	constructor() {
 		super(defaultNonNullishOptions)
 	}
 }
 
-export const nonNullish = lazyValue(() => new NonNullish())
+export interface NonNullish
+	extends CustomNonNullish<NonNullishOptions.Default> {}
+
+export interface NonNullish$
+	extends CustomNonNullish$<NonNullishOptions.Default> {}
+
+//
+
+export const nonNullish: NonNullish$ = lazyValue(
+	() => new NonNullishImpl(),
+) as unknown as NonNullish$
+
+export interface NonNullish$Constructor {
+	new (): NonNullish$
+}

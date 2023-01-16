@@ -22,7 +22,4 @@ export namespace IntrinsicFields {
 
 //
 
-export type IntrinsicFieldsSchema = typeof sIntrinsicFields.simple
-
-// export type DeepPartialIntrinsicFieldsSchema =
-// 	typeof sIntrinsicFields.deepPartial.simple
+export type IntrinsicFieldsSchema = typeof sIntrinsicFields

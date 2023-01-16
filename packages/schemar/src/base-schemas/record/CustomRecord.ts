@@ -4,28 +4,18 @@
 import type { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
-import type { CustomSchema } from '~'
+import type { CustomSchema, CustomSchema$ } from '~'
 
-import type { DefaultRecordOptions, RecordOptions } from './RecordOptions'
+import type { RecordOptions } from './RecordOptions'
 
 export interface CustomRecord<O extends Partial<RecordOptions>>
 	extends CustomSchema<O> {
 	readonly [SCHEMA_NAME]: 'Record'
 
 	readonly [BASE_OPTIONS]: RecordOptions
-	readonly [DEFAULT_OPTIONS]: DefaultRecordOptions
+	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
 
 	//
-
-	// get OutputType(): Record<
-	// 	OutputType<this[OPTIONS]['keySchema']>,
-	// 	OutputType<this[OPTIONS]['valueSchema']>
-	// >
-
-	// get InputType(): Record<
-	// 	InputType<this[OPTIONS]['keySchema']>,
-	// 	InputType<this[OPTIONS]['valueSchema']>
-	// >
 
 	get getKeySchema(): this[OPTIONS]['keySchema']
 	get getValueSchema(): this[OPTIONS]['valueSchema']
@@ -34,18 +24,29 @@ export interface CustomRecord<O extends Partial<RecordOptions>>
 
 	get getIndexSignatures(): _RecordIndexSignatures<this>
 	get getShape(): {}
+}
+
+//
+
+export interface CustomRecord$<O extends Partial<RecordOptions>>
+	extends CustomSchema$<O> {
+	readonly [SCHEMA_NAME]: 'Record'
+
+	readonly [BASE_OPTIONS]: RecordOptions
+	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
 
 	//
 
-	// index<TKeySchema extends $$Schemable, TValueSchema extends $$Schemable>(
-	// 	keySchema: TKeySchema,
-	// 	valueSchema: TValueSchema,
-	// ): _GetIndex<this, TKeySchema, TValueSchema>
+	get getKeySchema(): this[OPTIONS]['keySchema']
+	get getValueSchema(): this[OPTIONS]['valueSchema']
 
-	// index<TValueSchema extends $$Schemable>(
-	// 	valueSchema: TValueSchema,
-	// ): _GetIndex<this, SimpleSchema<keyof any>, TValueSchema>
+	//
+
+	get getIndexSignatures(): _RecordIndexSignatures<this>
+	get getShape(): {}
 }
+
+//
 
 export type _RecordIndexSignatures<
 	This extends { [OPTIONS]: { keySchema: any; valueSchema: any } },

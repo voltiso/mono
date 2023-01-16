@@ -20,14 +20,14 @@ import { Assertor } from './Assertor'
 
 export interface AssertFunction {
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-	(value: unknown, __callInfo?: CallInfo | undefined): asserts value
-
-	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	(
 		value: unknown,
 		message?: string,
 		__callInfo?: CallInfo | undefined,
 	): asserts value
+
+	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
+	(value: unknown, __callInfo?: CallInfo | undefined): asserts value
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	<S extends $$Schemable>(

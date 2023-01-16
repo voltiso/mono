@@ -3,10 +3,12 @@
 
 import { $AssumeType } from '@voltiso/util'
 
-import type { $$DocRef, DocRefMethodEntry, WeakDocRef } from '~/DocRef'
+import type { _CustomDocRef, $$DocRef, DocRefMethodEntry } from '~/DocRef'
 
 export function getMethods(ref: $$DocRef): DocRefMethodEntry[] {
-	$AssumeType<WeakDocRef>(ref)
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(ref)
+
 	if (ref._methods) return ref._methods
 
 	ref._methods = []

@@ -81,7 +81,6 @@ export class DocRefPattern {
 	}
 
 	public(schema: $$SchemableObject) {
-		// assertZod()
 		this.context.transactor._allPublicSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,

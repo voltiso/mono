@@ -37,24 +37,23 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 	declare readonly [DEFAULT_OPTIONS]: StringOptions.Default
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].minLength as never
 	}
 
 	get getMaxLength(): this[OPTIONS]['maxLength'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].maxLength as never
 	}
 
 	get getRegExps(): this[OPTIONS]['regExps'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].regExps as never
 	}
 
 	constructor(o: O) {
 		super(o)
+		const newThis = BoundCallable(this)
+		Object.freeze(newThis)
 		// eslint-disable-next-line no-constructor-return
-		return BoundCallable(this) as never
+		return newThis
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -64,7 +63,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isStringSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -75,7 +73,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
 						expected: {
@@ -91,7 +88,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			if (isDefined(this.getMaxLength) && x.length > this.getMaxLength) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 
 						expected: {
@@ -108,7 +104,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 				if (!re.regExp.test(x)) {
 					issues.push(
 						new ValidationIssue({
-							// eslint-disable-next-line security/detect-object-injection
 							name: this[OPTIONS].name,
 
 							expected: {
@@ -125,7 +120,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be string' },
 					received: { value: x },

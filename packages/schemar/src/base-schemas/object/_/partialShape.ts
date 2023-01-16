@@ -3,21 +3,19 @@
 
 import { getEntries } from '@voltiso/util'
 
-import type * as t from '~'
-import { isSchema } from '~'
+import type { $$InferableObject, PartialShape, StrictPartialShape } from '~'
 import { schema } from '~/core-schemas'
 
 //
 
-export function strictPartialShape<O extends t.$$InferableObject>(
+export function strictPartialShape<O extends $$InferableObject>(
 	o: O,
-): t.StrictPartialShape<O> {
-	const shape = { ...o } as t.$$InferableObject
+): StrictPartialShape<O> {
+	const shape = { ...o } as $$InferableObject
 
 	for (const [k, v] of getEntries(shape)) {
-		const vSchema = isSchema(v) ? v : schema(v)
 		// eslint-disable-next-line security/detect-object-injection
-		shape[k] = vSchema.strictOptional as never
+		shape[k] = schema(v).strictOptional as never
 	}
 
 	return shape as never
@@ -25,15 +23,14 @@ export function strictPartialShape<O extends t.$$InferableObject>(
 
 //
 
-export function partialShape<O extends t.$$InferableObject>(
+export function partialShape<O extends $$InferableObject>(
 	o: O,
-): t.PartialShape<O> {
-	const shape = { ...o } as t.$$InferableObject
+): PartialShape<O> {
+	const shape = { ...o } as $$InferableObject
 
 	for (const [k, v] of getEntries(shape)) {
-		const vSchema = isSchema(v) ? v : schema(v)
 		// eslint-disable-next-line security/detect-object-injection
-		shape[k] = vSchema.optional as never
+		shape[k] = schema(v).optional as never
 	}
 
 	return shape as never

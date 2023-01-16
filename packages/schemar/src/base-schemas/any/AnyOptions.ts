@@ -4,11 +4,11 @@
 import type { SchemaOptions } from '~'
 
 export interface AnyOptions extends SchemaOptions {
-	Output: any
-	Input: any
+	// Output: any
+	// Input: any
 }
 
-export namespace AnyOptions {
+export declare namespace AnyOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: any
 		Input: any

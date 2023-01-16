@@ -1,9 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defaultSchemaOptions } from '~'
+import { $assert } from '@voltiso/util'
 
-export const defaultUnknownTupleOptions = {
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+
+$assert(defaultSchemaOptions)
+
+export const defaultUnknownTupleOptions = Object.freeze({
 	...defaultSchemaOptions,
 	Output: 0 as unknown as unknown[],
 	Input: 0 as unknown as unknown[],
@@ -12,14 +16,14 @@ export const defaultUnknownTupleOptions = {
 	maxLength: undefined,
 
 	isReadonlyTuple: false as const,
-}
+})
 
-export const defaultMutableUnknownTupleOptions = {
+export const defaultMutableUnknownTupleOptions = Object.freeze({
 	...defaultUnknownTupleOptions,
 	isReadonlyTuple: false as const,
-}
+})
 
-export const defaultReadonlyUnknownTupleOptions = {
+export const defaultReadonlyUnknownTupleOptions = Object.freeze({
 	...defaultUnknownTupleOptions,
 	isReadonlyTuple: true as const,
-}
+})

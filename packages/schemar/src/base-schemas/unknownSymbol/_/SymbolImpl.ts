@@ -3,14 +3,14 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { DefaultUnknownSymbolOptions } from '~'
+import type { UnknownSymbolOptions } from '~'
 
 import { defaultUnknownSymbolOptions } from '../defaultUnknownSymbolOptions'
 import { CustomUnknownSymbolImpl } from './CustomUnknownSymbolImpl'
 
 export class SymbolImpl extends lazyConstructor(
 	() => CustomUnknownSymbolImpl,
-)<DefaultUnknownSymbolOptions> {
+)<UnknownSymbolOptions.Default> {
 	constructor() {
 		super(defaultUnknownSymbolOptions as never)
 	}

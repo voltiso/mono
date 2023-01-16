@@ -19,7 +19,7 @@ import { getCacheEntry } from './getCacheEntry'
  * @returns New data
  */
 export function collectTriggerResult(
-	ctx: DocRefContext.ContextWithTransaction,
+	ctx: DocRefContext.AlsoWithTransaction,
 	triggerResult: Awaited<ReturnType<AfterTrigger>>,
 ): object | null {
 	const cacheEntry = getCacheEntry(ctx)

@@ -3,8 +3,8 @@
 
 import type { Input_, Output_ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import type { WithTransactor } from '~/Transactor'
 
+import type { WithTransactor } from '~/Transactor'
 import { guardedValidate, isEqual } from '~/util'
 
 import { sTimestamp } from './sTimestamp'
@@ -13,49 +13,60 @@ import { sTimestamp } from './sTimestamp'
 
 //
 
-export const _sVoltisoEntryAggregateTargetEntry = s.object({
+const _sVoltisoEntryAggregateTargetEntry = s.object({
 	value: s.any.optional, // s.unknown.Narrow<NestedData>(),
 	numSources: s.number.default(0),
 })
 
 export const sVoltisoEntryAggregateTargetEntry =
 	_sVoltisoEntryAggregateTargetEntry
+		.name('VoltisoEntry.AggregateTarget.Entry')
 		.CastOutput<VoltisoEntry.AggregateTarget.Entry>()
 		.CastInput<VoltisoEntry.AggregateTarget.Entry.Input>()
 
 //
 
-export const _sVoltisoEntryAggregateTarget = s.object.plain.index(
+const _sVoltisoEntryAggregateTarget = s.object.plain.index(
 	s.string,
 	sVoltisoEntryAggregateTargetEntry,
 )
 
 export const sVoltisoEntryAggregateTarget = _sVoltisoEntryAggregateTarget
+	.name('VoltisoEntry.AggregateTarget')
 	.CastOutput<VoltisoEntry.AggregateTarget>()
 	.CastInput<VoltisoEntry.AggregateTarget.Input>()
 
 //
 
-export const _sVoltisoEntryMigration = s.object({
+const _sVoltisoEntryMigration = s.object({
 	migratedAt: sTimestamp,
 })
 
 export const sVoltisoEntryMigration = _sVoltisoEntryMigration
+	.name('VoltisoEntry.Migration')
 	.CastOutput<VoltisoEntry.Migration>()
 	.CastInput<VoltisoEntry.Migration.Input>()
 
 //
 
-export const _sVoltisoEntryMigrations = s.record(
-	s.string,
-	sVoltisoEntryMigration,
-)
+const _sVoltisoEntryMigrations = s.record(s.string, sVoltisoEntryMigration)
 
 export const sVoltisoEntryMigrations = _sVoltisoEntryMigrations
+	.name('VoltisoEntry.Migrations')
 	.CastOutput<VoltisoEntry.Migrations>()
 	.CastInput<VoltisoEntry.Migrations.Input>()
 
 //
+
+const _sVoltisoEntryAggregateSource = s.record(
+	s.string,
+	s.record(s.string, true),
+)
+
+export const sVoltisoEntryAggregateSource = _sVoltisoEntryAggregateSource
+	.name('VoltisoEntry.AggregateSource')
+	.CastOutput<VoltisoEntry.AggregateSource>()
+	.CastInput<VoltisoEntry.AggregateSource.Input>()
 
 //
 
@@ -64,8 +75,7 @@ export const _sVoltisoEntry = s
 		numRefs: s.number.default(0),
 
 		aggregateTarget: sVoltisoEntryAggregateTarget.default({}),
-
-		aggregateSource: s.record(s.string, s.record(s.string, true)).default({}),
+		aggregateSource: sVoltisoEntryAggregateSource.default({}),
 
 		migrations: sVoltisoEntryMigrations.default({}),
 
@@ -75,13 +85,13 @@ export const _sVoltisoEntry = s
 		createdAt: sTimestamp.default(new Date(0)), // default only for existing non-transactor documents
 		updatedAt: sTimestamp.default(new Date(0)), // default only for existing non-transactor documents
 	})
-	.fix(entry => {
+	.map(entry => {
 		// update `numMigrations`
 		const numMigrations = Object.keys(entry.migrations).length
 		if (entry.numMigrations === numMigrations) return entry
 		return { ...entry, numMigrations }
 	})
-	.fix(entry => {
+	.map(entry => {
 		// update `migratedAt`
 		let migratedAt = new Date(0)
 		for (const migration of Object.values(entry.migrations)) {
@@ -90,9 +100,9 @@ export const _sVoltisoEntry = s
 		if (!isEqual(migratedAt, entry.migratedAt)) return { ...entry, migratedAt }
 		return entry
 	})
-// .simple.default({})
 
 export const sVoltisoEntry = _sVoltisoEntry
+	.name('VoltisoEntry')
 	.CastOutput<VoltisoEntry>()
 	.CastInput<VoltisoEntry.Input>()
 
@@ -125,6 +135,14 @@ export namespace VoltisoEntry {
 	}
 
 	//
+
+	export interface AggregateSource
+		extends Output_<typeof _sVoltisoEntryAggregateSource> {}
+
+	export namespace AggregateSource {
+		export interface Input
+			extends Input_<typeof _sVoltisoEntryAggregateSource> {}
+	}
 
 	//
 

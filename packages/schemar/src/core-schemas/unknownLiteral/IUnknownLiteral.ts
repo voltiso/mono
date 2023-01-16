@@ -3,12 +3,9 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, ISchema, SCHEMA_NAME } from '~'
+import type { $$Schema, ISchema, ISchema$, SCHEMA_NAME } from '~'
 
-import type {
-	DefaultUnknownLiteralOptions,
-	UnknownLiteralOptions,
-} from './UnknownLiteralOptions'
+import type { UnknownLiteralOptions } from './UnknownLiteralOptions'
 
 export interface $$UnknownLiteral extends $$Schema {
 	readonly [SCHEMA_NAME]: 'UnknownLiteral'
@@ -18,5 +15,12 @@ export interface IUnknownLiteral extends $$UnknownLiteral, ISchema {
 	readonly [SCHEMA_NAME]: 'UnknownLiteral'
 
 	readonly [BASE_OPTIONS]: UnknownLiteralOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownLiteralOptions
+	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
+}
+
+export interface IUnknownLiteral$ extends $$UnknownLiteral, ISchema$ {
+	readonly [SCHEMA_NAME]: 'UnknownLiteral'
+
+	readonly [BASE_OPTIONS]: UnknownLiteralOptions
+	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
 }

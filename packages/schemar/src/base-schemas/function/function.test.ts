@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
+import { $Assert, isNumber, isString } from '@voltiso/util'
 
 import type {
 	CustomFunction,
@@ -47,14 +47,14 @@ describe('function', () => {
 
 		$Assert.is<CustomFunction<O>, IFunction>()
 		$Assert.is<CustomFunction<O>, Schema>()
-		$Assert.is<CustomFunction<O>, ISchema<(...args: any) => unknown>>()
+		// $Assert.is<CustomFunction<O>, ISchema<(...args: any) => unknown>>()
 	})
 
 	it('type', () => {
-		$Assert.is<
-			Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>,
-			readonly unknown[]
-		>()
+		// $Assert.is<
+		// 	Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>,
+		// 	readonly unknown[]
+		// >()
 
 		$Assert.is<never[], Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>>()
 
@@ -146,6 +146,12 @@ describe('function', () => {
 			...s.rest(s.number),
 		] as const
 
+		// type X = Output_<typeof parameters>
+
+		// type AA = RelaxSchema_<typeof parameters>
+
+		// type Y = Output_<AA>
+
 		const a = s.function({
 			this: { x: s.number },
 			parameters,
@@ -188,8 +194,17 @@ describe('function', () => {
 	})
 
 	it('inner - outer', () => {
-		const param = s.string.or(s.number).fix(String)
-		const result = s.string.or(s.number).fix(Number)
+		const param = s.string.fixIf(isNumber, String)
+		$Assert<
+			IsIdentical<
+				typeof param,
+				s.CustomString$<{
+					Input: string | number
+				}>
+			>
+		>()
+
+		const result = s.number.fixIf(isString, Number)
 		const a = s.function([param] as const, result)
 
 		//

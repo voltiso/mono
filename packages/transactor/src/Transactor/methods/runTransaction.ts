@@ -16,7 +16,12 @@ import chalk from 'chalk'
 import { databaseUpdate } from '~/common/database/databaseUpdate'
 import { withoutId } from '~/Data'
 import type { CustomDoc, DocTI } from '~/Doc'
-import { CustomDocRef, getBeforeCommits, processTriggers } from '~/DocRef'
+import {
+	_CustomDocRef,
+	CustomDocRef,
+	getBeforeCommits,
+	processTriggers,
+} from '~/DocRef'
 import { TransactorError } from '~/error'
 import { getDefaultVoltisoEntry } from '~/schemas'
 import type { Cache, CacheEntry } from '~/Transaction'
@@ -163,9 +168,11 @@ export async function runTransaction<R>(
 							if (!cacheEntry.write) continue
 
 							// console.log('should write!')
-							const docRef = new CustomDocRef(transaction._context, path, {
+							// eslint-disable-next-line etc/no-internal
+							const docRef = new _CustomDocRef(transaction._context, path, {
 								isStrong: true,
 							})
+
 							const ctx = { ...transaction._context, docRef }
 
 							const beforeCommits = getBeforeCommits(docRef)

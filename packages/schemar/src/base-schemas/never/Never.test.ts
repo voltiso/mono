@@ -5,7 +5,7 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
-	$CustomNever,
+	CustomNever,
 	INever,
 	Input,
 	ISchema,
@@ -16,7 +16,7 @@ import * as s from '~'
 
 describe('never', () => {
 	it('generic', <O extends Partial<NeverOptions>>() => {
-		$Assert.is<$CustomNever<O>, INever>()
+		$Assert.is<CustomNever<O>, INever>()
 	})
 
 	it('simple', () => {

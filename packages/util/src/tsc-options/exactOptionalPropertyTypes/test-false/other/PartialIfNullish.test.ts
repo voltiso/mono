@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical, PartialIfNullish } from '~'
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
 
 describe('PartialIfNullish', () => {
 	it('works', () => {

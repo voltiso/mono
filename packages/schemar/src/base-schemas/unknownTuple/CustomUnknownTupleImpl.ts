@@ -19,11 +19,10 @@ import type {
 	UnknownTupleOptions,
 } from '~'
 import { CustomSchemaImpl, isArraySchema, isUnknownTupleSchema } from '~'
-import { isRest, unknown } from '~/base-schemas'
+import type { MutableTuple, ReadonlyTuple } from '~/base-schemas'
+import { isRest, MutableTuple$, ReadonlyTuple$, unknown } from '~/base-schemas'
 import { SchemarError } from '~/error'
 import { ValidationIssue } from '~/meta-schemas'
-
-import { MutableTuple, ReadonlyTuple } from '../tuple/Tuple'
 
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)
@@ -38,24 +37,23 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	declare readonly [BASE_OPTIONS]: UnknownTupleOptions
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isReadonlyTuple as never
 	}
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].minLength as never
 	}
 
 	get getMaxLength(): this[OPTIONS]['maxLength'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].maxLength as never
 	}
 
 	constructor(o: O) {
 		super(o)
+		const newThis = BoundCallable(this)
+		Object.freeze(newThis)
 		// eslint-disable-next-line no-constructor-return
-		return BoundCallable(this) as never
+		return newThis
 	}
 
 	[CALL]<T extends $$Schemable[]>(
@@ -78,8 +76,8 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		}
 
 		if (this.isReadonlyTuple)
-			return new ReadonlyTuple(...shapeWithRest) as never
-		else return new MutableTuple(...shapeWithRest) as never
+			return new ReadonlyTuple$(...shapeWithRest) as never
+		else return new MutableTuple$(...shapeWithRest) as never
 	}
 
 	override [EXTENDS](other: SchemaLike): boolean {
@@ -96,7 +94,6 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		if (isUnknownTupleSchema(other)) return true
 		else if (isArraySchema(other))
 			return unknown.extends(other.getElementSchema)
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -106,7 +103,6 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		if (!Array.isArray(x))
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be array' },
 					received: { value: x },

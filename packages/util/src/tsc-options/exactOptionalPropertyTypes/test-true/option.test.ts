@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { exactOptionalPropertyTypes } from '~'
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
 
 describe('exactOptionalPropertyTypes - true', () => {
 	it('works', () => {

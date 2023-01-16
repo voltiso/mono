@@ -4,15 +4,17 @@
 import { assert } from '@voltiso/assertor'
 import { $AssumeType } from '@voltiso/util'
 
-import type { DocRefTriggerEntry, WeakDocRef } from '~/DocRef'
+import type { _CustomDocRef, $$DocRef, DocRefTriggerEntry } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { VoltisoEntry } from '~/schemas'
 import type { Trigger } from '~/Trigger'
 
 export function getBeforeCommits(
-	docRef: WeakDocRef,
+	docRef: $$DocRef,
 ): DocRefTriggerEntry<Trigger.BeforeCommit>[] {
-	// $AssumeType<CustomDocRef<{ docTag: AnyDoc }>>(docRef)
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(docRef)
+
 	if (docRef._beforeCommits) return docRef._beforeCommits
 
 	docRef._beforeCommits = []

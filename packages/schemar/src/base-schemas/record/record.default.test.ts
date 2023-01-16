@@ -10,11 +10,12 @@ const sOrderProduct = s.schema({
 	productId: s.string,
 })
 
-const sPrefixedString = s.string.fix(x =>
-	typeof x === 'string' && !x.startsWith('_') ? `_${x}` : x,
+const sPrefixedString = s.string.fix(
+	s.string.check(str => !str.startsWith('_')),
+	str => `_${str}`,
 )
 
-const sOrderProducts = s.record(sPrefixedString, sOrderProduct).simple
+const sOrderProducts = s.record(sPrefixedString, sOrderProduct)
 
 describe('record', () => {
 	it('default inside record', () => {

@@ -3,8 +3,8 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { $$Schemable } from '~'
-import { schema } from '~/core-schemas'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import { CustomArrayImpl } from './CustomArrayImpl'
 import { defaultMutableArrayOptions } from './defaultArrayOptions'

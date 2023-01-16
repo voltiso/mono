@@ -3,6 +3,4 @@
 
 import * as s from '@voltiso/schemar'
 
-import { schemaDeleteIt } from '~/DocRef'
-
-export const sDeleteIt = s.unknown.fix(() => schemaDeleteIt).optional
+export const sDeleteIt = s.unknown.optional.map(() => undefined)

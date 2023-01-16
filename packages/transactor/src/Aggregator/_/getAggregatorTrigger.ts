@@ -8,27 +8,32 @@ import type { $$Doc, Doc, GetDataWithId } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
 import { isDocRef } from '~/DocRef/isDocRef'
 import { TransactorError } from '~/error'
-import type { WithTransactor } from '~/Transactor'
 import type { Trigger } from '~/Trigger'
-import { guardedValidate } from '~/util'
+import { guardedValidate_ } from '~/util'
 
 import type { IAggregatorHandlers } from './AggregatorHandlers'
 import { getDocDataView } from './DocDataView'
 
 export type GetTriggerFunction = (params: {
-	context: WithTransactor
 	name: string
 	handlers: IAggregatorHandlers
 	autoCreateTarget: boolean
 }) => Trigger.After
 
 export const getAggregatorTrigger: GetTriggerFunction = ({
-	context,
 	name,
 	handlers,
 	autoCreateTarget,
 }) =>
-	async function ({ __voltiso, before, after, path, pathArgs, pathParams }) {
+	async function ({
+		transactor,
+		__voltiso,
+		before,
+		after,
+		path,
+		pathArgs,
+		pathParams,
+	}) {
 		const ctx = { path: path.toString(), pathArgs, pathParams }
 
 		// ignore self-change
@@ -132,9 +137,11 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 			// eslint-disable-next-line security/detect-object-injection
 			const targetInfo = finalTarget.data.__voltiso.aggregateTarget[name] || {
-				value: guardedValidate(
-					context,
+				value: guardedValidate_(
+					{ transactor },
+					// eslint-disable-next-line security/detect-object-injection
 					finalTarget.aggregateSchemas[name],
+					// eslint-disable-next-line etc/no-deprecated
 					handlers.initialValue,
 				),
 

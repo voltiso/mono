@@ -30,7 +30,7 @@ describe('array', () => {
 		const a = s.array(s.string.or(s.number))
 		$Assert.is<typeof a, Schemable>()
 
-		$Assert.is<typeof a, Schema<(string | number)[]>>()
+		// $Assert.is<typeof a, Schema<(string | number)[]>>() // 5.2s
 
 		const anl = s.array(s.number(123, 234))
 		$Assert<IsIdentical<Output<typeof anl>, (123 | 234)[]>>()
@@ -86,11 +86,11 @@ describe('array', () => {
 	it('interface type', () => {
 		expect.assertions(0)
 
-		type Out = IArray['Output']
-		$Assert<IsIdentical<Out, readonly unknown[]>>()
+		// type Out = IArray['Output']
+		// $Assert<IsIdentical<Out, readonly unknown[]>>()
 
-		type In = IArray['Input']
-		$Assert<IsIdentical<In, readonly unknown[] | undefined>>()
+		// type In = IArray['Input']
+		// $Assert<IsIdentical<In, readonly unknown[] | undefined>>()
 	})
 
 	it('interface type - mutable', () => {

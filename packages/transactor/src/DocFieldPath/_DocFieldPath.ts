@@ -71,7 +71,10 @@ export class _DocFieldPath {
 
 				if (!cacheEntry.__voltiso) {
 					// console.log('getPromise: create __voltiso entry')
-					cacheEntry.__voltiso = getDefaultVoltisoEntry(ctx, ctx.transaction._date)
+					cacheEntry.__voltiso = getDefaultVoltisoEntry(
+						ctx,
+						ctx.transaction._date,
+					)
 
 					if (cacheEntry.data) {
 						assert(!cacheEntry.data.__voltiso)
@@ -85,7 +88,6 @@ export class _DocFieldPath {
 				return cacheEntry.__voltiso
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!doc) {
 				throw new TransactorError(
 					`${ctx.docRef.path.toString()}.${fields.join('.')} does not exist`,

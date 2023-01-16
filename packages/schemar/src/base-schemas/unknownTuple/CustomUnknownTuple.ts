@@ -9,9 +9,11 @@ import type {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { CustomSchema } from '~'
+import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { UnknownTupleOptions } from './UnknownTupleOptions'
+
+//
 
 export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	extends CustomSchema<O> {
@@ -23,6 +25,22 @@ export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
 	get getMinLength(): this[OPTIONS]['minLength']
 	get getMaxLength(): this[OPTIONS]['maxLength']
+}
+
+export interface CustomUnknownTuple$<O extends Partial<UnknownTupleOptions>>
+	extends CustomSchema$<O> {
+	readonly [SCHEMA_NAME]: 'UnknownTuple'
+
+	readonly [BASE_OPTIONS]: UnknownTupleOptions
+	readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default
+
+	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
+	get getMinLength(): number // this[OPTIONS]['minLength']
+	get getMaxLength(): number // this[OPTIONS]['maxLength']
+
+	//
+
+	get Final(): CustomUnknownTuple<O>
 
 	//
 
@@ -50,8 +68,10 @@ export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	>
 }
 
-export namespace CustomUnknownTuple {
-	export type ReadonlyTuple<O> = CustomUnknownTuple<
+//
+
+export declare namespace CustomUnknownTuple {
+	export type ReadonlyTuple<O> = CustomUnknownTuple$<
 		$Override_<O, { isReadonlyTuple: true }>
 	>
 }

@@ -4,9 +4,9 @@
 import { SCHEMA_NAME } from '_'
 import { lazyValue } from '@voltiso/util'
 
-import type { IVoid } from './IVoid'
+import type { IVoid, IVoid$ } from './IVoid'
 
-function _isVoidSchema(x: unknown): x is IVoid {
+function _isVoidSchema(x: unknown): x is IVoid$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as IVoid | null)?.[SCHEMA_NAME] === 'Void'
 }

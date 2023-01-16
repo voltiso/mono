@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './$strip'
 export * from './any'
 export * from './array'
 export * from './assert'
@@ -13,7 +12,6 @@ export * from './class'
 export * from './clone'
 export * from './date'
 export * from './equals'
-export * from './error'
 export * from './function'
 export * from './functional'
 export type { Generics } from './Generics-augmentation'

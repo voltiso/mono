@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomObject, SchemaLike } from '@voltiso/schemar'
+import type * as s from '@voltiso/schemar'
 
 import type { DocTag } from '~/DocTypes'
 
@@ -20,7 +20,7 @@ export interface $$DocTI {
 	readonly [IS_DOC_TYPE_INFO]: true
 }
 
-export type DocTISchema = CustomObject<{}>
+export type DocTISchema = s.$$Object & { Output: object; Input: object }
 
 /**
  * Unknown Doc Type Info
@@ -30,7 +30,10 @@ export type DocTISchema = CustomObject<{}>
 export interface DocTI extends $$DocTI {
 	tag: DocTag | any // | AnyDoc
 
-	id: SchemaLike<string> & {
+	id: s.$$String & {
+		Input: string
+		Output: string
+
 		isOptional: false
 		isStrictOptional: false
 		isReadonly: false

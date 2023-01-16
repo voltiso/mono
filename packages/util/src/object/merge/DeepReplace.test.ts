@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
+
 import type { IsEqual, IsIdentical, IsNonStrictEqual } from '~/type'
 
 import type { DeepReplace2 } from './DeepReplace'

@@ -20,22 +20,21 @@
  * @param source - Object to copy properties from
  * @throws If `source` has getters or setters
  */
-export function assign<T extends object>(destination: T, source: T) {
+export function assign<T extends object>(
+	destination: T,
+	source: T,
+	options?: { omit?: Iterable<keyof any> | undefined } | undefined,
+): void {
 	const descriptors = Object.getOwnPropertyDescriptors(source)
+
+	for (const key of options?.omit ?? []) {
+		delete descriptors[key as never]
+	}
 
 	for (const v of Object.values(descriptors)) {
 		if (v.get || v.set)
 			throw new Error('cannot clone/assign object with getters or setters')
 	}
-
-	// console.log('DESC', descriptors)
-
-	// if (typeof source === 'function') {
-	// 	// @ts-expect-error hmmm
-	// 	delete descriptors.arguments
-	// 	// @ts-expect-error hmmm
-	// 	delete descriptors.caller
-	// }
 
 	delete descriptors['prototype']
 

@@ -1,12 +1,18 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type OmitNever_<O> = Pick<
-	O,
-	{
-		[k in keyof O]: O extends { readonly [kk in k]?: never } ? never : k
-	}[keyof O]
->
+import type { Pick_ } from '~/object'
+
+export type OmitNever_<O> = [
+	[
+		Pick_<
+			O,
+			{
+				[k in keyof O]: O extends { readonly [kk in k]?: never } ? never : k
+			}[keyof O]
+		>,
+	][0],
+][0]
 
 export type OmitNever<O extends object> = OmitNever_<O>
 

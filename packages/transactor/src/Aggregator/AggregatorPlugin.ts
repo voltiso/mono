@@ -6,7 +6,6 @@ import { assertNotPolluting, isDefined } from '@voltiso/util'
 import type { DocBuilderPlugin } from '~/Doc'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import type { $$DocRelated, GetDocTI } from '~/DocRelated'
-import type { WithTransactor } from '~/Transactor'
 
 import type { IAggregatorHandlers } from './_/AggregatorHandlers'
 import { getAggregatorTrigger } from './_/getAggregatorTrigger'
@@ -28,10 +27,7 @@ export class AggregatePlugin<R extends $$DocRelated>
 		this._handlers = handlers
 	}
 
-	run(
-		context: WithTransactor,
-		docConstructor: DocConstructor<GetDocTI<R>>,
-	): $$DocConstructor {
+	run(docConstructor: DocConstructor<GetDocTI<R>>): $$DocConstructor {
 		const name = this._aggregateName
 		const handlers = this._handlers
 
@@ -42,7 +38,6 @@ export class AggregatePlugin<R extends $$DocRelated>
 			: true
 
 		const trigger = getAggregatorTrigger({
-			context,
 			name,
 			handlers,
 			autoCreateTarget,

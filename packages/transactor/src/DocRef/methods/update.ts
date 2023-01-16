@@ -166,7 +166,7 @@ async function rawUpdate(
 
 	// eslint-disable-next-line unicorn/consistent-destructuring
 	const dataWithoutId = withoutId(data, ctx.docRef.id)
-	const finalData = withVoltisoEntry(dataWithoutId)
+	const finalData = withVoltisoEntry(ctx, dataWithoutId)
 	return new IndexedDoc(ctx, finalData as never) as never
 }
 

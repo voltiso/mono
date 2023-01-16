@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { VoltisoUtilError } from '_/error/VoltisoUtilError'
+
 import { lazyConstructor } from '~/lazy/lazyConstructor'
 import type { Value } from '~/object'
 import type { TryGetPropertyImpl } from '~/object/get-set/get/get/tryGetProperty'

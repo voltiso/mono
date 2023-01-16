@@ -12,60 +12,31 @@ import type {
 	DefaultGetTypeOptions,
 	GetImplicitObjectType,
 	GetTypeOptions,
-	InferableLiteral,
 	InferableObject,
 	TupleType_,
 } from '~'
 
 //
 
-export namespace Type {
-	export type SplitInferables<
-		S extends $$Schemable,
-		IO extends GetTypeOptions, // & { isPlain: boolean },
-	> = S extends $$Schema
-		? HandleSchemas<S, IO>
-		: S extends $$Inferable
-		? HandleInferables<S, IO>
-		: never
-
-	// export type SplitInferables<S, IO extends GetTypeOptions> = S extends any
-	// 	?
-	// 			| HandleSchemas<Extract<S, $$Schema>, IO>
-	// 			| HandleInferables<Exclude<S, $$Schema>, IO>
-	// 	: never
-
-	export type HandleSchemas<
-		S extends $$Schema,
+export declare namespace Type {
+	export type Get<
+		S, // extends $$Schemable,
 		IO extends GetTypeOptions,
-	> = S extends { readonly Output: unknown; readonly Input: unknown }
-		? IO['kind'] extends 'in'
-			? S['Input']
-			: IO['kind'] extends 'out'
-			? S['Output']
-			: never
-		: unknown
-
-	export type HandleInferables<
-		I extends $$Inferable,
-		IO extends GetTypeOptions, // & { isPlain: boolean },
-	> = I extends InferableLiteral
-		? I
-		: I extends $$InferableTuple
-		? TupleType_<I, IO>
-		: I extends $$InferableObject
-		? InferableObject extends I
+	> = S extends $$Schema
+		? S extends { readonly Output: unknown; readonly Input: unknown }
+			? IO['kind'] extends 'in'
+				? S['Input']
+				: IO['kind'] extends 'out'
+				? S['Output']
+				: never
+			: unknown
+		: S extends $$InferableTuple
+		? TupleType_<S, IO>
+		: S extends $$InferableObject
+		? InferableObject extends S
 			? {}
-			: // ? IO['isPlain'] extends true
-			  // 	? object
-			  // 	: {}
-			  GetImplicitObjectType<I, IO>
-		: object extends I
-		? {}
-		: // IO['isPlain'] extends true
-		  // 	? object
-		  // 	: {}
-		  never
+			: GetImplicitObjectType<S, IO>
+		: S
 }
 
 //
@@ -93,7 +64,9 @@ export type Type_<S, PartialOptions extends Partial<GetTypeOptions> = {}> = [
 export type Type<
 	S extends $$Schemable,
 	PartialOptions extends Partial<GetTypeOptions> = {},
-> = Type.SplitInferables<S, $Override_<DefaultGetTypeOptions, PartialOptions>>
+> = S extends any
+	? Type.Get<S, $Override_<DefaultGetTypeOptions, PartialOptions>>
+	: never
 
 /**
  * Infer type, or identity if already an Inferable

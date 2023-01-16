@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { OmitValues } from '~'
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
 import type { IsIdentical } from '~/type'
 
 describe('OmitValues', () => {

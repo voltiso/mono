@@ -1,18 +1,21 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$SchemableObject, IObject, ISchema } from '@voltiso/schemar'
+import { $assert } from '@voltiso/assertor'
+import type { $$SchemableObject, IObject$, ISchema } from '@voltiso/schemar'
+import { isObjectSchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { $AssumeType } from '@voltiso/util'
 
 import { isWithId } from '~/Data'
-import type { $$DocRef, WeakDocRef } from '~/DocRef'
+import type { _CustomDocRef, $$DocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { IntrinsicFieldsSchema } from '~/schemas'
 import { sIntrinsicFields } from '~/schemas'
 
 export function getIdSchemas(ref: $$DocRef) {
-	$AssumeType<WeakDocRef>(ref)
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(ref)
 	if (ref._idSchemas !== undefined) return ref._idSchemas
 
 	const { _allIdSchemas } = ref._context.transactor
@@ -34,11 +37,12 @@ export function getIdSchemas(ref: $$DocRef) {
 	return ref._idSchemas
 }
 
-export function getSchema(d: $$DocRef): IntrinsicFieldsSchema | null {
-	$AssumeType<WeakDocRef>(d)
+export function getSchema(ref: $$DocRef): IntrinsicFieldsSchema | null {
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(ref)
 
-	if (d._schema !== undefined) {
-		return d._schema
+	if (ref._schema !== undefined) {
+		return ref._schema
 	}
 
 	const {
@@ -46,13 +50,13 @@ export function getSchema(d: $$DocRef): IntrinsicFieldsSchema | null {
 		_allPublicOnCreationSchemas,
 		_allPublicSchemas,
 		_allPrivateSchemas,
-	} = d._context.transactor
+	} = ref._context.transactor
 
 	const publicOnCreationSchemas: $$SchemableObject[] = []
 	const publicSchemas: $$SchemableObject[] = []
 	const privateSchemas: $$SchemableObject[] = []
 
-	const path = d.path.toString()
+	const path = ref.path.toString()
 
 	for (const { getPathMatches, schema } of _allPublicOnCreationSchemas) {
 		const { pathParams, pathArgs } = getPathMatches(path) || {}
@@ -68,7 +72,6 @@ export function getSchema(d: $$DocRef): IntrinsicFieldsSchema | null {
 
 	for (const { getPathMatches, schema } of _allPrivateSchemas) {
 		const { pathParams, pathArgs } = getPathMatches(path) || {}
-
 		if (pathParams || pathArgs) privateSchemas.push(schema)
 	}
 
@@ -82,28 +85,36 @@ export function getSchema(d: $$DocRef): IntrinsicFieldsSchema | null {
 				`missing schema for ${path} - add a schema, or set requireSchemas = false`,
 			)
 
-		d._publicOnCreationSchema = s.object({}) as never
-		d._privateSchema = s.object({}) as never
+		ref._publicOnCreationSchema = s.object({}) as never
+		ref._privateSchema = s.object({}) as never
 
-		return (d._schema = null)
+		return (ref._schema = null)
 	}
 
-	let thisSchema: IObject = s.object({}) as never
-	d._publicOnCreationSchema = s.object({}) as unknown as IObject
-	d._privateSchema = s.object({}) as unknown as IObject
+	let thisSchema: IObject$ = s.object({}) as never
+	ref._publicOnCreationSchema = s.object({}) as unknown as IObject$
+	ref._privateSchema = s.object({}) as unknown as IObject$
 
 	for (const schema of publicOnCreationSchemas) {
 		thisSchema = thisSchema.and(schema) as never
-		d._publicOnCreationSchema = d._publicOnCreationSchema.and(schema) as never
+		$assert(isObjectSchema(thisSchema))
+
+		ref._publicOnCreationSchema = ref._publicOnCreationSchema.and(
+			schema,
+		) as never
 	}
 
 	for (const schema of publicSchemas) {
+		// console.log('and with', schema)
 		thisSchema = thisSchema.and(schema) as never
+		$assert(isObjectSchema(thisSchema))
 	}
 
 	for (const schema of privateSchemas) {
 		thisSchema = thisSchema.and(schema) as never
-		d._privateSchema = d._privateSchema.and(schema) as never
+		console.log({schema})
+		$assert(isObjectSchema(thisSchema), `after and'ing with ${schema}`)
+		ref._privateSchema = ref._privateSchema.and(schema) as never
 	}
 
 	const final: IntrinsicFieldsSchema = thisSchema.and(sIntrinsicFields) as never
@@ -117,7 +128,7 @@ export function getSchema(d: $$DocRef): IntrinsicFieldsSchema | null {
 		)
 	}
 
-	d._schema = final
+	ref._schema = final
 
-	return d._schema
+	return ref._schema
 }

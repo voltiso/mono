@@ -1,61 +1,107 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, OPTIONS } from '@voltiso/util'
+import type { _, IsIdentical } from '@voltiso/util'
 
 import type {
 	$$Object,
+	$$Record,
 	$$Schema,
-	CustomObject,
-	Input_,
-	ISchema,
-	ObjectOptions,
-	Output_,
+	$$Schemable,
+	$$UnknownObject,
+	$$UnknownRecord,
+	CustomObject$,
+	InferSchema$_,
+	ISchema$,
+	Object$,
+	UnknownRecord$,
 } from '~'
 
-export type SchemarAnd<
-	A extends $$Schema,
-	B extends $$Schema,
-> = SchemarAnd.Impl<A, B>
+//
 
-// export type SchemarAnd<
-// 	A extends $$Schemable,
-// 	B extends $$Schemable,
-// > = A extends any
-// 	? B extends any
-// 		? SchemarAnd.Impl<InferSchema<A>, InferSchema<B>>
-// 		: never
-// 	: never
+export type SchemarAnd<A extends $$Schema, B extends $$Schema> = SchemarAnd_<
+	A,
+	B
+>
 
-export namespace SchemarAnd {
-	export type Impl<A extends $$Schema, B extends $$Schema> = A extends $$Object
-		? B extends $$Object
-			? SchemarAnd.Object<A, B>
-			: SchemarAnd.Custom<A, B>
-		: SchemarAnd.Custom<A, B>
+export type SchemarAnd_<A, B> = SchemarAnd.Step1<A, B>
 
-	export type Object<A extends $$Object, B extends $$Object> = A extends {
-		[OPTIONS]: ObjectOptions
-	}
-		? CustomObject<{
-				// shape: _<
-				// 	A[OPTIONS]['shape'] &
-				// 		(B extends $$Object & { getShape: {} } ? B['getShape'] : B)
-				// >
-				Output: _<A[OPTIONS]['Output'] & Output_<B>>
-				Input: _<A[OPTIONS]['Input'] & Input_<B>>
-		  }>
+//
+
+export declare namespace SchemarAnd {
+	/** Unknown record result? */
+	export type Step1<A, B> = A extends $$UnknownRecord
+		? B extends $$UnknownRecord
+			? UnknownRecord$ // no type-params
+			: Step2<A, B>
+		: Step2<A, B>
+
+	/** Object result? */
+	export type Step2<A, B> = A extends
+		| $$Object
+		| $$Record
+		| $$UnknownObject
+		| $$UnknownRecord
+		? B extends $$Object | $$Record | $$UnknownObject | $$UnknownRecord
+			? GetObject<A, B>
+			: GetUnknown<A, B>
+		: GetUnknown<A, B>
+
+	export type GetObject<
+		A extends $$Object | $$Record | $$UnknownObject | $$UnknownRecord,
+		B extends $$Object | $$Record | $$UnknownObject | $$UnknownRecord,
+	> = A extends $$UnknownRecord // skip wildcard index signatures of unknown record
+		? GetObject<$$Object & { Output: unknown; Input: unknown }, B>
+		: B extends $$UnknownRecord
+		? GetObject<A, $$Object & { Output: unknown; Input: unknown }>
+		: A extends {
+				Output: unknown
+				Input: unknown
+		  }
+		? B extends {
+				Output: unknown
+				Input: unknown
+		  }
+			? Object.Get<_<A['Output'] & B['Output']>, _<A['Input'] & B['Input']>>
+			: never
 		: never
 
-	export type Custom<A extends $$Schema, B extends $$Schema> = A extends {
+	//
+
+	export namespace Object {
+		export type Get<Output, Input> = IsIdentical<Output, Input> extends true
+			? Object$<Output>
+			: CustomObject$<{ Output: Output; Input: Input }>
+	}
+
+	export type GetUnknown<A, B> = A extends {
 		Output: unknown
 		Input: unknown
 	}
 		? B extends { Output: unknown; Input: unknown }
-			? ISchema & {
+			? ISchema$ & {
 					Output: A['Output'] & B['Output']
 					Input: A['Input'] & B['Input']
 			  }
 			: never
+		: never
+}
+
+//
+
+export type SchemarAndN<Ts extends readonly $$Schemable[]> =
+	SchemarAndN.Impl<Ts>
+
+export declare namespace SchemarAndN {
+	export type Impl<Ts extends readonly unknown[]> = Ts extends [
+		infer A,
+		infer B,
+		...infer Rest,
+	]
+		? SchemarAndN.Impl<
+				[SchemarAnd_<InferSchema$_<A>, InferSchema$_<B>>, ...Rest]
+		  >
+		: Ts extends [infer A]
+		? InferSchema$_<A>
 		: never
 }

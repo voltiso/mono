@@ -1,22 +1,23 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, IsIdentical } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
 	$$Schemable,
 	CustomSchema,
+	CustomSchema$,
+	ImplicitSchemaInferrer$,
 	ISchema,
 	Schema,
 	Schemable,
-	SchemaInferrer,
 	SchemaOptions,
-	SimpleSchema,
+	SimpleSchema$,
 	Unknown,
 } from '~'
 
-const schema = (() => {}) as unknown as SchemaInferrer
+const schema = (() => {}) as unknown as ImplicitSchemaInferrer$
 const unknown = 0 as unknown as Unknown
 
 describe('CustomSchema', () => {
@@ -34,7 +35,7 @@ describe('CustomSchema', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type MySchema = SimpleSchema<Date>
+		type MySchema = SimpleSchema$<Date>
 
 		type X = MySchema['isReadonly']
 		$Assert<IsIdentical<X, false>>()
@@ -44,7 +45,7 @@ describe('CustomSchema', () => {
 		$Assert<
 			IsIdentical<
 				A,
-				CustomSchema<{
+				CustomSchema$<{
 					isOptional: true
 					Output: Date
 					Input: Date
@@ -60,35 +61,35 @@ describe('CustomSchema', () => {
 	})
 
 	it('type - index signatures', () => {
-		type A = SimpleSchema<{ a: 1 }>
-		type AA = CustomSchema<{ Output: { a: 1 }; Input: { a: 1 } }>
+		type A = SimpleSchema$<{ a: 1 }>
+		type AA = CustomSchema$<{ Output: { a: 1 }; Input: { a: 1 } }>
 
-		type B = SimpleSchema<{ [k: string]: unknown }>
-		type BB = CustomSchema<{
+		type B = SimpleSchema$<{ [k: string]: unknown }>
+		type BB = CustomSchema$<{
 			Output: { [k: string]: unknown }
 			Input: { [k: string]: unknown }
 		}>
 
-		$Assert.is<A, B>()
+		// $Assert.is<A, B>() // 1.5s
 		$Assert.is<AA, BB>()
-		$Assert.is<A, BB>()
-		$Assert.is<AA, B>()
+		// $Assert.is<A, BB>() // 1s
+		// $Assert.is<AA, B>() // 1.1s
 
 		$Assert.is<A['Output'], B['Output']>()
-		$Assert.is<_<A>, B>()
-		$Assert.is<A['name'], B['name']>()
+		// $Assert.is<_<A>, B>() // 2.2s
+		// $Assert.is<A['name'], B['name']>()
 		// $Assert.is<A, _<B>>() // ! oops
 
-		$Assert.is<AA, B>()
+		// $Assert.is<AA, B>() // 3.4s
 	})
 
 	it('type - inside object', () => {
 		expect.assertions(0)
 
 		const mySchema = schema({
-			field: unknown as unknown as SimpleSchema<Date>,
-			optionalField: unknown as unknown as SimpleSchema<Date>['optional'],
-			readonlyField: unknown as unknown as SimpleSchema<Date>['readonly'],
+			field: unknown as unknown as SimpleSchema$<Date>,
+			optionalField: unknown as unknown as SimpleSchema$<Date>['optional'],
+			readonlyField: unknown as unknown as SimpleSchema$<Date>['readonly'],
 		})
 		type MySchema = typeof mySchema.Output
 

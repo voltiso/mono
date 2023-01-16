@@ -8,7 +8,7 @@ class Base {
 
 	constructor() {
 		this.a = 123
-		freeze(this, 'a')
+		freeze(this, ['a'])
 	}
 }
 

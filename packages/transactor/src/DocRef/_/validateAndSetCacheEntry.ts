@@ -15,7 +15,7 @@ import { getCacheEntry } from './getCacheEntry'
  * @throws An error when validation fails
  */
 export function validateAndSetCacheEntry(
-	context: DocRefContext.ContextWithTransaction,
+	context: DocRefContext.AlsoWithTransaction,
 	options: {
 		data: object | null
 		schema: IntrinsicFieldsSchema | null // DeepPartialIntrinsicFieldsSchema
@@ -40,7 +40,7 @@ export function validateAndSetCacheEntry(
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (data) data = withVoltisoEntry(data)
+	if (data) data = withVoltisoEntry(context, data)
 
 	setCacheEntry(context, cacheEntry, data, hadUpdates)
 }

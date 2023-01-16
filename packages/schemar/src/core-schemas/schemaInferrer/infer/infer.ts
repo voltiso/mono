@@ -4,52 +4,41 @@
 import { getValues, isConstructor, isPlainObject } from '@voltiso/util'
 
 import type {
-	$$Inferable,
 	$$Schema,
 	$$Schemable,
 	InferableLiteral,
-	InferSchemaNoReadonlyTuple,
-	ISchema,
+	InferSchema$NoReadonlyTuple,
+	ISchema$,
 } from '~'
 import { instance, nonNullish, object, tuple } from '~/base-schemas'
 import { literal } from '~/core-schemas'
 import { isSchema } from '~/Schema/isSchema'
 
-/**
- * Infer schema (not type!)
- *
- * @param inferable - A value to infer schema from (object, tuple, literal, ...)
- */
-export function infer<T extends $$Inferable>(
-	inferable: T,
-): InferSchemaNoReadonlyTuple<T>
+/** Hackish overload for type-checking performance when argument is cast to never */
+export function infer(_never: never): never
 
 /**
  * Infer schema (not type!)
- *
- * - This overload is no-op (already a Schema!)
- *
- * @param schema - A value that is already a schema
- */
-export function infer<T extends $$Schema>(schema: T): T
-
-/**
- * Infer schema (not type!)
- *
- * - This overload is a catch-all for previous overloads
  *
  * @param inferableOrSchema - An inferable value (object, tuple, literal, ...)
  *   or already schema
  */
 export function infer<T extends $$Schemable>(
 	inferableOrSchema: T,
-): InferSchemaNoReadonlyTuple<T>
+): InferSchema$NoReadonlyTuple<T>
+
+export function infer(x: $$Schemable): $$Schema {
+	return infer_(x)
+}
 
 //
 
-export function infer<T extends $$Schemable>(
-	x: T,
-): InferSchemaNoReadonlyTuple<T> {
+/**
+ * Use this non-generic version for faster type-check
+ *
+ * - Especially in generic contexts
+ */
+export function infer_(x: $$Schemable): $$Schema {
 	if (isSchema(x)) {
 		return x as never
 	} else if (
@@ -61,6 +50,7 @@ export function infer<T extends $$Schemable>(
 		return literal(x as InferableLiteral) as never
 	} else if (isConstructor(x)) {
 		return instance(x) as never
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	} else if (Array.isArray(x)) return tuple(...x) as never
 	else if (isPlainObject(x) && Object.keys(x).length === 0) {
 		return nonNullish as never
@@ -72,7 +62,8 @@ export function infer<T extends $$Schemable>(
 		let allChildrenOptional = true
 
 		for (const value of getValues(x as object, { includeSymbols: true })) {
-			const childSchema = infer(value) as unknown as ISchema
+			const childSchema: ISchema$ = infer(value)
+
 			if (
 				!childSchema.isOptional &&
 				!childSchema.isStrictOptional &&
@@ -88,3 +79,8 @@ export function infer<T extends $$Schemable>(
 		else return object(x as never) as never
 	}
 }
+
+// /** Will this avoid variance check during type-check? (editor performance) */
+// export const infer = _infer as unknown as {
+// 	bivarianceHack: typeof _infer
+// }['bivarianceHack']

@@ -3,14 +3,13 @@
 
 import type { ISchema } from '@voltiso/schemar'
 import { ValidationError } from '@voltiso/schemar'
-import { isPlainObject } from '@voltiso/util'
+import { isDeleteIt, isPlainObject } from '@voltiso/util'
 
 import type { IntrinsicFields, IntrinsicFieldsSchema } from '~/schemas'
 import { isWithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 
 import type { WithDocRef } from '../WithDocRef'
-import { schemaDeleteIt } from './_symbols'
 
 function processSentinels(x: unknown): IntrinsicFields | null {
 	if (isPlainObject(x)) {
@@ -19,7 +18,7 @@ function processSentinels(x: unknown): IntrinsicFields | null {
 
 		for (const [k, v] of Object.entries(x)) {
 			// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
-			if (v !== schemaDeleteIt) r[k] = processSentinels(v)
+			if (!isDeleteIt(v)) r[k] = processSentinels(v)
 		}
 
 		return r as never
@@ -52,12 +51,6 @@ export function applySchema(
 
 		throw error
 	}
-
-	// if (r.issues.length > 0) {
-	// 	// have warnings
-	// 	// eslint-disable-next-line no-console
-	// 	console.warn(r.issues)
-	// }
 
 	return processSentinels(r.value)
 }

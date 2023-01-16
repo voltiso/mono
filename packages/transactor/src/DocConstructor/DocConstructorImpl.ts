@@ -164,15 +164,18 @@ export class DocConstructorImpl implements $$Doc {
 					id: 'id' in f ? f.id : (super._.id as never),
 
 					publicOnCreation: f.publicOnCreation
-						? (super._.publicOnCreation.and(f.publicOnCreation) as never)
+						? (s.and(
+								super._.publicOnCreation,
+								s.object(f.publicOnCreation),
+						  ) as never)
 						: super._.publicOnCreation,
 
 					public: f.public
-						? (super._.public.and(f.public) as never)
+						? (s.and(super._.public, s.object(f.public)) as never)
 						: super._.public,
 
 					private: f.private
-						? (super._.private.and(f.private) as never)
+						? (s.and(super._.private, s.object(f.private)) as never)
 						: super._.private,
 
 					aggregates: {
@@ -209,16 +212,17 @@ export class DocConstructorImpl implements $$Doc {
 		return (this._.id as never) || s.string
 	}
 
-	static get schemaWithoutId(): IObject {
-		return (
-			(this._.publicOnCreation.and(this._.public) as IObject).and(
-				this._.private,
-			) as IObject
-		).and(sIntrinsicFields) as never
+	static get schema(): IObject {
+		return s.and(
+			this._.publicOnCreation,
+			this._.public,
+			this._.private,
+			sIntrinsicFields,
+		) as never
 	}
 
 	static get schemaWithId() {
-		return this.schemaWithoutId.and({ id: this.idSchema }) as never
+		return s.and({ id: this.idSchema }, this.schema) as never
 	}
 
 	static get aggregateSchemables() {

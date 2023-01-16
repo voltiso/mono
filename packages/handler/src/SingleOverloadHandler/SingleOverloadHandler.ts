@@ -167,13 +167,13 @@ export namespace SingleOverloadHandlerDetail {
 }
 
 export const defaultSingleOverloadHandlerOptions: SingleOverloadHandlerDetail.Options.Default =
-	{
+	Object.freeze({
 		...defaultHandlerOptions,
 
 		this: noThis,
 		parameters: [],
 		return: s.void,
-	} as never
+	}) as never
 
 //
 

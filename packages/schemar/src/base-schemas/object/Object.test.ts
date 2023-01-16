@@ -6,7 +6,7 @@ import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomObject,
-	CustomString,
+	CustomString$,
 	Input,
 	IObject,
 	ObjectOptions,
@@ -255,7 +255,7 @@ describe('object', () => {
 		$Assert<
 			IsIdentical<
 				typeof so2,
-				CustomString<{
+				CustomString$<{
 					isStrictOptional: true
 				}>
 			>
@@ -274,7 +274,7 @@ describe('object', () => {
 		$Assert<
 			IsIdentical<
 				typeof so3,
-				CustomString<{
+				CustomString$<{
 					isStrictOptional: true
 					Output: string
 				}>
@@ -304,7 +304,7 @@ describe('object', () => {
 		$Assert<
 			IsIdentical<
 				typeof o3,
-				CustomString<{
+				CustomString$<{
 					isOptional: true
 					Output: string
 				}>
@@ -334,8 +334,8 @@ describe('object', () => {
 		$Assert<
 			IsIdentical<
 				typeof d3,
-				CustomString<{
-					default: 'test'
+				CustomString$<{
+					// default: 'test'
 					hasDefault: true
 					Output: string
 				}>
@@ -450,6 +450,7 @@ describe('object', () => {
 		>()
 
 		expect(t.exec({}).value).toStrictEqual({ a: { b: { c: 11 } } })
+		expect(t.exec(undefined).value).toStrictEqual({ a: { b: { c: 11 } } })
 	})
 
 	it('validate', () => {

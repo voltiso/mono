@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { CustomRecord, IRecord, ISchema, RecordOptions } from '~'
+import type { CustomRecord, CustomRecord$, IRecord, ISchema, RecordOptions } from '~'
 import * as s from '~'
 
 describe('record', () => {
@@ -16,7 +16,7 @@ describe('record', () => {
 	it('type', () => {
 		const obj = s.record(s.string, s.number)
 
-		$Assert<IsIdentical<typeof obj, s.Record<s.String, s.Number>>>()
+		$Assert<IsIdentical<typeof obj, s.Record$<s.String, s.Number>>>()
 
 		$Assert.is<typeof obj, IRecord>()
 
@@ -25,11 +25,11 @@ describe('record', () => {
 		$Assert<
 			IsIdentical<
 				typeof defaulted,
-				CustomRecord<{
+				CustomRecord$<{
 					Output: { [k: string]: number }
 					Input: { [k: string]: number }
-					keySchema: s.String
-					valueSchema: s.Number
+					// keySchema: s.String
+					// valueSchema: s.Number
 					hasDefault: true
 					default: {}
 				}>

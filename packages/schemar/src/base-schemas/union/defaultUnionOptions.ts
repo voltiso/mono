@@ -3,11 +3,13 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import type * as t from '~'
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
-export const defaultUnionOptions = lazyValue(() => ({
-	...defaultSchemaOptions,
+export const defaultUnionOptions = lazyValue(() =>
+	Object.freeze({
+		...defaultSchemaOptions,
 
-	schemas: 0 as unknown as t.$$Schemable[],
-}))
+		schemas: 0 as unknown as $$Schemable[],
+	}),
+)

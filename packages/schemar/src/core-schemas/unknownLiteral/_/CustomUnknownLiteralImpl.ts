@@ -7,7 +7,6 @@ import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import type {
 	CustomUnknownLiteral,
-	DefaultUnknownLiteralOptions,
 	InferableLiteral,
 	ISchema,
 	UnknownLiteralOptions,
@@ -18,7 +17,7 @@ import { LiteralImpl } from '~/core-schemas/literal'
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownLiteralImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownLiteralOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownLiteralOptions
+	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
 }
 
 export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>

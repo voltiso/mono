@@ -141,7 +141,7 @@ describe('clone', () => {
 		f.magic = 1_234
 		Object.setPrototypeOf(f, base)
 
-		const ff = clone(f)
+		const ff = clone(f, { omit: ['doesNotExist'] as const })
 
 		// @ts-expect-error does not exist
 		expect(f.x).toBe(3)
@@ -258,7 +258,7 @@ describe('clone', () => {
 
 		expect(c()).toBe(123)
 
-		const cc = clone(c)
+		const cc = clone(c, { omit: ['doesNotExist'] as const })
 
 		expect(cc()).toBe(123)
 
@@ -300,7 +300,7 @@ describe('clone', () => {
 		}
 
 		const c = lazyValue(() => new C())
-		const d = clone(c)
+		const d = clone(c, { omit: ['doesNotExist'] as const })
 
 		c.field = 4
 		C.staticField = 44
@@ -310,5 +310,16 @@ describe('clone', () => {
 
 		expect(d.field).toBe(3)
 		expect((d.constructor as any).staticField).toBe(44)
+	})
+
+	it('omit', () => {
+		const obj = {
+			a: 1,
+			b: 2,
+		}
+
+		const clonedObj = clone(obj, { omit: ['a'] })
+
+		expect(clonedObj).toStrictEqual({ b: 2 })
 	})
 })

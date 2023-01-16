@@ -3,19 +3,23 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomNever } from '~'
+import type { CustomNever, CustomNever$ } from '~'
 import { CustomNeverImpl } from '~'
 
-export type Never = CustomNever<{}>
+export interface Never extends CustomNever<{}> {}
 
-export const Never = lazyConstructor(
+export interface Never$ extends CustomNever$<{}> {
+	get Final(): Never
+}
+
+export const Never$ = lazyConstructor(
 	() => CustomNeverImpl,
-) as unknown as NeverConstructor
+) as unknown as Never$Constructor
 
 //
 
-export type NeverConstructor = new () => Never
+export type Never$Constructor = new () => Never$
 
 //
 
-export const never = lazyValue(() => new Never())
+export const never = lazyValue(() => new Never$())

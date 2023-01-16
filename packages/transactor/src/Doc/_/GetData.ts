@@ -8,12 +8,11 @@ import type {
 	DeepReadonlyN,
 	HasIndexSignature,
 	Newable,
-	OPTIONS,
 	Primitive,
 } from '@voltiso/util'
 
 import type { DocIdBrand, DocIdString, DocIdString_ } from '~/brand'
-import type { $WithId, DataRecord, TightenRefs, WithId } from '~/Data'
+import type { $WithId, DataRecord, WithId } from '~/Data'
 import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext } from '~/Doc'
 import type { $$DocRelatedLike, GetDoc, GetDocTI } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
@@ -52,13 +51,13 @@ export type GetData<R extends $$DocRelatedLike> = R extends AnyDoc
 export namespace GetData {
 	export type ForDocTI<TI extends $$DocTI> = TI extends DocTI
 		? _<
-				GetIntrinsicFields.ForDocTI<TI> &
-					TightenRefs<
-						SchemarAnd<
-							SchemarAnd<TI['publicOnCreation'], TI['public']>,
-							TI['private']
-						>['Output']
-					>
+				// TightenRefs<
+				SchemarAnd<
+					SchemarAnd<TI['publicOnCreation'], TI['public']>,
+					TI['private']
+				>['Output'] &
+					// >
+					GetIntrinsicFields.ForDocTI<TI>
 		  >
 		: never
 
@@ -133,7 +132,7 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 				} & SchemarAnd<
 					GetDocTI<R>['publicOnCreation'],
 					GetDocTI<R>['public']
-				>[OPTIONS]['Input'],
+				>['Input'],
 				{ skip: Primitive | Callable | Newable }
 		  >
 

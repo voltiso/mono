@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '_'
+
 /**
  * Hack to mitigate problems with cyclic dependencies and ES6 class inheritance.
  *
@@ -13,12 +15,12 @@
  * ... }
  * ```
  *
- * @param getCls - Function returning a constructor
+ * @param getClass - Function returning a constructor
  * @returns The same constructor (proxy)
  */
 export function lazyConstructor<
 	Class extends abstract new (...args: any) => object,
->(getCls: () => Class): Class {
+>(getClass: () => Class): Class {
 	let cls: Class | undefined
 
 	const proxyProto = {}
@@ -30,7 +32,8 @@ export function lazyConstructor<
 
 	function load(c: Class | undefined): asserts c is Class {
 		if (!c) {
-			cls = getCls()
+			cls = getClass()
+			$assert(cls, 'lazyConstructor - got nullish constructor provided')
 			Object.setPrototypeOf(proxyProto, cls.prototype as never)
 			Object.setPrototypeOf(Ctor, cls)
 		}

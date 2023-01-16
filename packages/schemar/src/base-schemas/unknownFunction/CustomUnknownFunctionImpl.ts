@@ -11,7 +11,6 @@ import type {
 	$$SchemableTuple,
 	CustomFunction,
 	CustomUnknownFunction,
-	DefaultUnknownFunctionOptions,
 	FunctionOptions,
 	ISchema,
 	UnknownFunctionOptions,
@@ -23,7 +22,7 @@ import { ValidationIssue } from '~/meta-schemas'
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownFunctionImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownFunctionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownFunctionOptions
+	readonly [DEFAULT_OPTIONS]: UnknownFunctionOptions.Default
 }
 
 export class CustomUnknownFunctionImpl<

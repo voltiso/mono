@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, Printable } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { CustomUnion, Input, IUnion, Output, UnionOptions } from '~'
@@ -49,7 +49,7 @@ describe('union', () => {
 	it('fix', () => {
 		expect.hasAssertions()
 
-		const a = s.string.or(s.number).fix(x => x.toString())
+		const a = s.string.fix(s.number, x => x.toString())
 
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')
@@ -61,14 +61,24 @@ describe('union', () => {
 		$Assert<IsIdentical<Out, string>>()
 	})
 
-	it('fix (maybe undefined)', () => {
+	it('fix without schema', () => {
+		const a = s.string.fix<Printable>(String)
+		$Assert<
+			IsIdentical<
+				typeof a,
+				s.CustomString$<{
+					Input: Printable
+				}>
+			>
+		>()
+	})
+
+	it('map (maybe undefined)', () => {
 		expect.hasAssertions()
 
 		const a = s.string
 			.or(s.number)
-			.fix((x): string | void =>
-				typeof x === 'number' ? x.toString() : undefined,
-			)
+			.map(x => (typeof x === 'number' ? x.toString() : x))
 
 		expect(a.validate(123)).toBe('123')
 		expect(a.validate('123')).toBe('123')

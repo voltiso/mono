@@ -6,8 +6,8 @@ import type { $Override_ } from '@voltiso/util'
 import type { $$Schema, SchemaOptions } from '~'
 
 export interface ArrayOptions extends SchemaOptions {
-	Output: readonly unknown[]
-	Input: readonly unknown[]
+	// Output: readonly unknown[]
+	// Input: readonly unknown[]
 
 	/** Currently not type-exposed */
 	element: $$Schema

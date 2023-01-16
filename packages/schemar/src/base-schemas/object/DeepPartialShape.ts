@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { InferableObject, InferSchema_ } from '~'
+import type { InferableObject, InferSchema$_ } from '~'
 
 //
 
@@ -16,7 +16,7 @@ export type DeepPartialShapeProcessEntry_<S> = S extends /* IObject*/ {
 //
 
 export type DeepPartialShape_<O> = {
-	[k in keyof O]: DeepPartialShapeProcessEntry_<InferSchema_<O[k]>>
+	[k in keyof O]: DeepPartialShapeProcessEntry_<InferSchema$_<O[k]>>
 }
 
 export type DeepPartialShape<O extends InferableObject> = DeepPartialShape_<O>
@@ -40,7 +40,7 @@ export type DeepStrictPartialShapeProcessStrictEntry_<S> = [S] extends [
 //
 
 export type DeepStrictPartialShape_<O> = {
-	[k in keyof O]: DeepStrictPartialShapeProcessStrictEntry_<InferSchema_<O[k]>>
+	[k in keyof O]: DeepStrictPartialShapeProcessStrictEntry_<InferSchema$_<O[k]>>
 }
 
 export type DeepStrictPartialShape<O extends InferableObject> =

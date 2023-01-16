@@ -1,17 +1,27 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$DocRelated } from '~/DocRelated'
+import type { $$DocRelatedLike, GetDocRepresentative } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
-import type { CustomDocRef } from './CustomDocRef'
+import type { CustomDocRef, CustomDocRef$ } from './CustomDocRef'
 
 /**
  * ⚠️ This actually is a supertype of `DocRef`
  *
  * - 😱 no ref-counting❗
  */
-export interface WeakDocRef<R extends $$DocRelated = AnyDoc>
+export interface WeakDocRef<R extends $$DocRelatedLike = AnyDoc>
 	extends CustomDocRef<{
-		doc: R
+		doc: GetDocRepresentative<R>
+	}> {}
+
+/**
+ * ⚠️ This actually is a supertype of `DocRef`
+ *
+ * - 😱 no ref-counting❗
+ */
+export interface WeakDocRef$<R extends $$DocRelatedLike = AnyDoc>
+	extends CustomDocRef$<{
+		doc: GetDocRepresentative<R>
 	}> {}

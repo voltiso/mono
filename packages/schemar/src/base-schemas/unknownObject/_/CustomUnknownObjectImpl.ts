@@ -12,11 +12,11 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	DefaultUnknownObjectOptions,
+import {
+	$$Schema,
 	InferableObject,
 	ISchema,
-	Object as ObjectSchema,
+	isSchema,
 	UnknownObjectOptions,
 } from '~'
 import { CustomSchemaImpl, isObjectSchema, isUnknownObjectSchema } from '~'
@@ -27,21 +27,14 @@ import { ValidationIssue } from '~/meta-schemas'
 export interface CustomUnknownObjectImpl<O> {
 	readonly [SCHEMA_NAME]: 'UnknownObject'
 
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownObjectOptions
 	readonly [BASE_OPTIONS]: UnknownObjectOptions
+	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 }
 
 export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	readonly [SCHEMA_NAME] = 'UnknownObject' as const
-
-	// declare readonly [PARTIAL_OPTIONS]: O;
-
-	// declare readonly [OPTIONS]: Assume<
-	// 	UnknownObjectOptions,
-	// 	MergeSchemaOptions<DefaultUnknownObjectOptions, O>
-	// >
 
 	// eslint-disable-next-line class-methods-use-this
 	get getIndexSignatures() {
@@ -64,7 +57,6 @@ export class CustomUnknownObjectImpl<
 	index(...args: any) {
 		const r = new CustomObjectImpl({
 			...defaultObjectOptions,
-			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],
 		})
 
@@ -73,17 +65,21 @@ export class CustomUnknownObjectImpl<
 
 	constructor(o: O) {
 		super(o)
+		const newThis = BoundCallable(this)
+		Object.freeze(newThis)
 		// eslint-disable-next-line no-constructor-return
-		return BoundCallable(this) as never
+		return newThis
 	}
 
-	[CALL]<S extends InferableObject>(shape: S): ObjectSchema<S> {
+	[CALL]<S extends InferableObject | $$Schema>(shape: S): any {
+		if (isSchema(shape)) return shape
+
 		// console.log('CustomUnknownObjectImpl[CALL]', this)
 		return new CustomObjectImpl({
 			...defaultObjectOptions,
-			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],
 			shape,
+			indexSignatures: [],
 		}) as never
 	}
 
@@ -91,7 +87,6 @@ export class CustomUnknownObjectImpl<
 		if (isObjectSchema(other)) {
 			return getKeys(other.getShape).length === 0
 		} else if (isUnknownObjectSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -101,17 +96,14 @@ export class CustomUnknownObjectImpl<
 		if (typeof value !== 'object' || value === null) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be object' },
 					received: { value },
 				}),
 			)
-			// eslint-disable-next-line security/detect-object-injection
 		} else if (this[OPTIONS].isPlain && !isPlainObject(value)) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be plain object' },
 					received: { value },

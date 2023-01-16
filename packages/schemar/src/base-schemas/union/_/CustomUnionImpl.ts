@@ -12,7 +12,7 @@ import type {
 	IUnion,
 	Schemable,
 	UnionOptions,
-	ValidateOptions,
+	ValidationOptions,
 } from '~'
 import { CustomSchemaImpl, isUnionSchema } from '~'
 import { schema } from '~/core-schemas'
@@ -62,7 +62,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 
 	override _getIssues(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
 		let issues: ValidationIssue[] = []
 

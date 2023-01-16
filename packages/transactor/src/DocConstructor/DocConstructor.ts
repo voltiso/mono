@@ -6,10 +6,10 @@ import type {
 	_,
 	Get_,
 	IsIdentical,
-	Merge2Reverse_,
 	NewableReturn_,
+	OmitByValue,
 	OmitSignatures,
-	OmitValues,
+	Override,
 	Throw,
 } from '@voltiso/util'
 
@@ -186,14 +186,14 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 		s.SchemarAnd<TI['public'], TI['private']>
 	>
 
-	get schemaWithId(): s.SchemarAnd<
-		s.SchemarAnd<
+	get schemaWithId(): s.SchemarAnd.GetObject<
+		s.GetObject$<{
+			id: TI['id'] extends s.$$Schema ? TI['id'] : s.String
+		}>,
+		s.SchemarAnd.GetObject<
 			TI['publicOnCreation'],
 			s.SchemarAnd<TI['public'], TI['private']>
-		>,
-		s.Object<{
-			id: TI['id'] extends s.SchemaLike<string> ? TI['id'] : s.String
-		}>
+		>
 	>
 
 	get idSchema(): TI['id'] extends s.SchemaLike<string>
@@ -219,7 +219,7 @@ export namespace DocConstructor {
 	> = WithOverrides<TI, { tag: tag }>
 
 	export type WithOverrides<Old extends DocTI, New extends Partial<DocTI>> = [
-		DocConstructor<Merge2Reverse_<Required<New>, Old>>,
+		DocConstructor<Override<Old, New>>,
 	][0]
 
 	export type MapPartialOptions<
@@ -231,7 +231,7 @@ export namespace DocConstructor {
 		private: s.$$Object
 		aggregates: {}
 	}
-		? OmitValues<
+		? OmitByValue<
 				{
 					tag: 'tag' extends keyof O ? O['tag'] : never
 					id: 'id' extends keyof O ? O['id'] : never
@@ -239,20 +239,20 @@ export namespace DocConstructor {
 					publicOnCreation: 'publicOnCreation' extends keyof O
 						? s.SchemarAnd<
 								TI['publicOnCreation'],
-								InferSchema<O['publicOnCreation']>
+								InferSchema$<O['publicOnCreation']>
 						  >
 						: never
 
 					public: 'public' extends keyof O
-						? s.SchemarAnd<TI['public'], InferSchema<O['public']>>
+						? s.SchemarAnd<TI['public'], InferSchema$<O['public']>>
 						: never
 
 					private: 'private' extends keyof O
-						? s.SchemarAnd<TI['private'], InferSchema<O['private']>>
+						? s.SchemarAnd<TI['private'], InferSchema$<O['private']>>
 						: never
 
 					aggregates: 'aggregates' extends keyof O
-						? Merge2Reverse_<O['aggregates'], TI['aggregates']>
+						? Override<TI['aggregates'], O['aggregates']>
 						: never
 				},
 				undefined
@@ -263,10 +263,10 @@ export namespace DocConstructor {
 	 * Generally forward this task to `@voltiso/schemar`, but treat `{}` as object
 	 * schemas
 	 */
-	export type InferSchema<S extends s.$$Schemable> = IsIdentical<
+	export type InferSchema$<S extends s.$$Schemable> = IsIdentical<
 		S,
 		{}
 	> extends true
-		? s.Object<{}>
-		: s.InferSchema<S>
+		? s.Object$<{}>
+		: s.InferSchema$<S>
 }

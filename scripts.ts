@@ -88,12 +88,12 @@ export const traceRun = [
 ]
 
 export const traceAnalyze = [
-	'reset',
+	// 'reset',
 	'analyze-trace traceDir',
 	'code traceDir/types-simplified.json',
 ]
 
-export const trace = [turbo('trace:run'), traceAnalyze]
+export const trace = ['reset', turbo('trace:run'), traceAnalyze]
 
 export const clean = 'rimraf node_modules dist'
 

@@ -64,8 +64,8 @@
 		/** Newest TS version in VSCode - but please still use per-project TS installation */
 		"ms-vscode.vscode-typescript-next",
 
-		/** ? Screen-sharing VSCode?? */
-		"ms-vsliveshare.vsliveshare-pack",
+		// /** ? Screen-sharing VSCode?? */
+		// "ms-vsliveshare.vsliveshare-pack",
 
 		//
 

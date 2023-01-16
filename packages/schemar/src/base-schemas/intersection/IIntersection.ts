@@ -7,16 +7,13 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import type { $$Schemable, ISchema } from '~'
 
 import type { $$Intersection } from './CustomIntersection'
-import type {
-	DefaultIntersectionOptions,
-	IntersectionOptions,
-} from './IntersectionOptions'
+import type { IntersectionOptions } from './IntersectionOptions'
 
 export interface IIntersection extends $$Intersection, ISchema {
 	readonly [SCHEMA_NAME]: 'Intersection'
 
 	readonly [BASE_OPTIONS]: IntersectionOptions
-	readonly [DEFAULT_OPTIONS]: DefaultIntersectionOptions
+	readonly [DEFAULT_OPTIONS]: IntersectionOptions.Default
 
 	get getSchemas(): $$Schemable[]
 }

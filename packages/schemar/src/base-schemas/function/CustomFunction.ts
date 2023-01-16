@@ -18,8 +18,10 @@ import type {
 	$Input_,
 	$Output_,
 	CustomSchema,
+	CustomSchema$,
 	FunctionOptions,
-	InferSchema,
+	GetFinalSchema_,
+	InferSchema$,
 	Input_,
 	Output_,
 	Rest,
@@ -67,31 +69,85 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 
 	//
 
+	get hasThis(): [this[OPTIONS]['this']] extends [NoThis] ? false : true
+
+	get getThisSchema(): [this[OPTIONS]['this']] extends [NoThis]
+		? never
+		: GetFinalSchema_<InferSchema$.Simple<this[OPTIONS]['this']>>
+
+	get getParametersSchema(): InferSchema$.Simple<this[OPTIONS]['parameters']>
+	get getReturnSchema(): InferSchema$.Simple<this[OPTIONS]['return']>
+}
+
+//
+
+export interface CustomFunction$<O extends Partial<FunctionOptions>>
+	extends $$Function,
+		CustomSchema$<O> {
+	//
+	readonly [SCHEMA_NAME]: 'Function'
+
+	readonly [BASE_OPTIONS]: FunctionOptions
+	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
+
+	//
+
+	readonly Outer: this[OPTIONS]['Outer']
+	readonly Inner: this[OPTIONS]['Inner']
+
+	readonly OutputThis: Output_<this[OPTIONS]['this']>
+	readonly InputThis: Input_<this[OPTIONS]['this']>
+	readonly This: this['OutputThis']
+
+	readonly OutputParameters: Assume<
+		unknown[],
+		Output_<this[OPTIONS]['parameters']>
+	>
+
+	readonly InputParameters: Assume<
+		unknown[],
+		Input_<this[OPTIONS]['parameters']>
+	>
+
+	readonly Parameters: this['OutputParameters']
+
+	readonly OutputReturn: Output_<this[OPTIONS]['return']>
+	readonly InputReturn: Input_<this[OPTIONS]['return']>
+	readonly Return: this['OutputReturn']
+
+	//
+
+	get hasThis(): this[OPTIONS]['this'] extends NoThis ? false : true
+	get getThisSchema(): InferSchema$<this[OPTIONS]['this']>
+	get getParametersSchema(): InferSchema$<this[OPTIONS]['parameters']>
+	get getReturnSchema(): InferSchema$<this[OPTIONS]['return']>
+
+	//
+
+	get Final(): CustomFunction<O>
+
+	//
+
 	this<NewThis extends $$Schemable>(
 		newThis: NewThis,
 	): CustomFunction.WithThis<O, NewThis>
 
 	parameters<NewParameters extends $$SchemableTuple>(
 		newParameters: NewParameters,
-	): CustomFunction<$Override_<O, { parameters: NewParameters }>>
+	): CustomFunction$<$Override_<O, { parameters: NewParameters }>>
 
 	return<NewReturn extends SchemaLike<any>>(
 		newReturn: NewReturn,
-	): CustomFunction<$Override_<O, { return: NewReturn }>>
-
-	//
-
-	get hasThis(): this[OPTIONS]['this'] extends NoThis ? false : true
-	get getThisSchema(): InferSchema<this[OPTIONS]['this']>
-	get getParametersSchema(): InferSchema<this[OPTIONS]['parameters']>
-	get getReturnSchema(): InferSchema<this[OPTIONS]['return']>
+	): CustomFunction$<$Override_<O, { return: NewReturn }>>
 }
 
-export namespace CustomFunction {
-	export type With<O, OO> = CustomFunction<$Override_<O, OO>>
+//
+
+export declare namespace CustomFunction {
+	export type With<O, OO> = CustomFunction$<$Override_<O, OO>>
 
 	export type WithThis<O, NewThis extends $$Schemable> = FixInferredType<
-		CustomFunction<$Override_<O, { this: NewThis; hasThis: true }>>,
+		CustomFunction$<$Override_<O, { this: NewThis; hasThis: true }>>,
 		O
 	>
 

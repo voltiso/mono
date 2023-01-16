@@ -1,59 +1,78 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$Override_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-} from '@voltiso/util'
+import type { $Override_, BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type {
+	$$InferableObject,
+	$$Object,
 	$$Schemable,
-	CustomObject,
+	$$UnknownObject,
 	CustomSchema,
-	GetDeepShape_,
-	GetObjectType,
-	InferableObject,
-	Object,
+	CustomSchema$,
+	GetObject$,
 	SCHEMA_NAME,
 	SimpleSchema,
 	Type,
 } from '~'
 
-import type {
-	DefaultUnknownObjectOptions,
-	UnknownObjectOptions,
-} from './UnknownObjectOptions'
+import type { UnknownObjectOptions } from './UnknownObjectOptions'
 
-export type $CustomUnknownObject<O extends Partial<UnknownObjectOptions>> =
-	O extends any ? CustomUnknownObject<O> : never
+//
 
 export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	extends CustomSchema<O> {
-	//
-
-	<Shape extends InferableObject>(
-		shape: Shape,
-	): this[OPTIONS]['isPlain'] extends true
-		? CustomObject<{
-				shape: Shape
-				deepShape: GetDeepShape_<Shape>
-				Output: GetObjectType<Shape, { kind: 'out'; isPlain: true }>
-				Input: GetObjectType<Shape, { kind: 'in'; isPlain: true }>
-
-				isPlain: true
-		  }>
-		: // eslint-disable-next-line @typescript-eslint/ban-types
-		  Object<Shape>
-
 	readonly [SCHEMA_NAME]: 'UnknownObject'
 
 	readonly [BASE_OPTIONS]: UnknownObjectOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownObjectOptions
+	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 
 	get getIndexSignatures(): []
 	get getShape(): {}
+}
+
+//
+
+export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
+	extends CustomSchema$<O> {
+	//
+	readonly [SCHEMA_NAME]: 'UnknownObject'
+
+	readonly [BASE_OPTIONS]: UnknownObjectOptions
+	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
+
+	get getIndexSignatures(): []
+	get getShape(): {}
+
+	//
+
+	get Final(): CustomUnknownObject<O>
+
+	//
+
+	<Shape extends $$InferableObject>(shape: Shape): GetObject$<Shape>
+	<AlreadySchema extends $$Object | $$UnknownObject>(
+		schema: AlreadySchema,
+	): AlreadySchema
+
+	<X extends $$InferableObject | $$Object | $$UnknownObject>(x: X): X extends
+		| $$Object
+		| $$UnknownObject
+		? X
+		: X extends $$InferableObject
+		? GetObject$<X>
+		: never
+
+	// this[OPTIONS]['isPlain'] extends true
+	// 	? CustomObject<{
+	// 			shape: Shape
+	// 			deepShape: GetDeepShape_<Shape>
+	// 			Output: GetObjectType<Shape, { kind: 'out'; isPlain: true }>
+	// 			Input: GetObjectType<Shape, { kind: 'in'; isPlain: true }>
+
+	// 			isPlain: true
+	// 	  }>
+	// 	: Object$<Shape>
 
 	//
 
@@ -70,8 +89,10 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	): CustomUnknownObject.Index<O, SimpleSchema<keyof any>, TValueSchema>
 }
 
-export namespace CustomUnknownObject {
-	export type Plain<O> = CustomUnknownObject<
+//
+
+export declare namespace CustomUnknownObject {
+	export type Plain<O> = CustomUnknownObject$<
 		$Override_<
 			O,
 			{
@@ -86,7 +107,7 @@ export namespace CustomUnknownObject {
 		O,
 		TKeySchema extends $$Schemable,
 		TValueSchema extends $$Schemable,
-	> = CustomUnknownObject<
+	> = CustomUnknownObject$<
 		$Override_<
 			O,
 			{

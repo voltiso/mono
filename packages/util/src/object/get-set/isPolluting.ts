@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { VoltisoUtilError } from '_'
 import { lazyConstructor } from '~/lazy/lazyConstructor'
 import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'

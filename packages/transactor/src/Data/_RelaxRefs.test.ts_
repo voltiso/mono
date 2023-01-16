@@ -8,7 +8,7 @@ import { $Assert } from '@voltiso/util'
 import type { DocIdString } from '~/brand'
 import type { DocRef, DocRefLike, WeakDocRef, WeakDocRefLike } from '~/DocRef'
 
-import type { RelaxRefs } from './RelaxRefs'
+import type { RelaxRefs } from './_RelaxRefs.ts_'
 
 describe('RelaxRefs', () => {
 	it('simple', () => {

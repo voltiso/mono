@@ -4,9 +4,9 @@
 import type {
 	$$Literal,
 	$$Schema,
-	CustomSchema,
+	CustomSchema$,
 	InferableLiteral,
-	Literal,
+	Literal$,
 } from '~'
 
 export type SchemarOr<A extends $$Schema, B extends $$Schema> = SchemarOr.Impl<
@@ -23,7 +23,7 @@ export type SchemarOr<A extends $$Schema, B extends $$Schema> = SchemarOr.Impl<
 // 		: never
 // 	: never
 
-export namespace SchemarOr {
+export declare namespace SchemarOr {
 	export type Impl<A extends $$Schema, B extends $$Schema> = [A, B] extends [
 		$$Literal,
 		$$Literal,
@@ -43,7 +43,7 @@ export namespace SchemarOr {
 				Output: unknown
 				Input: unknown
 		  }
-			? CustomSchema<{
+			? CustomSchema$<{
 					Output: A['Output'] | B['Output']
 					Input: A['Input'] | B['Input']
 			  }>
@@ -55,7 +55,7 @@ export namespace SchemarOr {
 	}
 		? B extends { getValues: Set<infer BB> }
 			? AA | BB extends InferableLiteral
-				? Literal<AA | BB>
+				? Literal$<AA | BB>
 				: never
 			: never
 		: never

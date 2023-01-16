@@ -27,7 +27,7 @@ export interface DocDerivedData extends DocTI {
 
 export const emptyDocDerivedSchema = s.object({})
 
-export const defaultDocDerivedData = {
+export const defaultDocDerivedData: DocDerivedData = {
 	[IS_DOC_TYPE_INFO]: true,
 
 	tag: undefined as unknown as never,
@@ -46,7 +46,7 @@ export const defaultDocDerivedData = {
 	aggregators: [],
 
 	methods: {},
-} as const
+}
 
 //
 

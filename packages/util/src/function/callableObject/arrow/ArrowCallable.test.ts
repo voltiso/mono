@@ -1,11 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
+
 import type { Callable, WithCALL } from '~/function'
 import type { NoArgument } from '~/type'
 
-import { ArrowCallable } from './ArrowCallable'
+import type { ArrowCallable } from './ArrowCallable'
+import { CustomArrowCallable } from './ArrowCallable'
 import type { ArrowCallableOptions } from './ArrowCallableOptions'
 
 describe('ArrowCallable', () => {
@@ -22,7 +24,7 @@ describe('ArrowCallable', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		const a = ArrowCallable({
+		const a = CustomArrowCallable({
 			call: (n: number) => 2 * n,
 			shape: { a: 1 },
 		})
@@ -34,7 +36,7 @@ describe('ArrowCallable', () => {
 	it('proxy', () => {
 		expect.hasAssertions()
 
-		const a = ArrowCallable({
+		const a = CustomArrowCallable({
 			call: (x: number) => 2 * x,
 
 			shape: new Proxy(

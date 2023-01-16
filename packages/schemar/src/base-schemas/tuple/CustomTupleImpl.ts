@@ -12,13 +12,14 @@ import {
 	DEFAULT_OPTIONS,
 	lazyConstructor,
 	OPTIONS,
+	zip,
 } from '@voltiso/util'
 
 import type {
 	GetDeepShape_,
 	SchemaLike,
 	TupleOptions,
-	ValidateOptions,
+	ValidationOptions,
 } from '~'
 import {
 	CustomSchemaImpl,
@@ -41,7 +42,6 @@ export class CustomTupleImpl<
 	declare readonly [DEFAULT_OPTIONS]: TupleOptions.Default
 
 	get isReadonlyTuple(): any {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isReadonlyTuple as never
 	}
 
@@ -51,17 +51,14 @@ export class CustomTupleImpl<
 	}
 
 	get getShape(): any {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].shape
 	}
 
 	get hasRest(): any {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].hasRest
 	}
 
 	get restSchema(): any {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].rest
 	}
 
@@ -69,9 +66,10 @@ export class CustomTupleImpl<
 		return getDeepShape(this)
 	}
 
-	// constructor(o: O) {
-	// 	super(o)
-	// }
+	constructor(o: O) {
+		super(o)
+		Object.freeze(this)
+	}
 
 	get readonlyTuple(): never {
 		return this._cloneWithOptions({ isReadonlyTuple: true }) as never
@@ -97,39 +95,40 @@ export class CustomTupleImpl<
 		else if (isUnknownTupleSchema(other)) return true
 		// eslint-disable-next-line etc/no-internal
 		else if (isArraySchema(other)) return _tupleExtendsArray(this, other)
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
 	protected override _fix(
-		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		inputValue: unknown,
+		options?: Partial<ValidationOptions> | undefined,
 	): unknown {
-		if (Array.isArray(x) && x.length === this.getShape.length) {
-			// eslint-disable-next-line no-param-reassign
-			x = x.map((element, idx) =>
-				// eslint-disable-next-line security/detect-object-injection
+		let value = inputValue
+
+		if (Array.isArray(value) && value.length === this.getShape.length) {
+			const fixedArray = value.map((element, idx) =>
 				schema(this.getShape[idx]).tryValidate(element, options),
 			)
+
+			// eslint-disable-next-line es-x/no-object-is
+			if ([...zip(value, fixedArray)].some(([a, b]) => !Object.is(a, b)))
+				value = fixedArray
 		}
 
-		return x
+		return value
 	}
 
 	override _getIssues(
-		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		value: unknown,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
 		let issues = []
 
 		// eslint-disable-next-line unicorn/no-negated-condition
-		if (!Array.isArray(x)) {
+		if (!Array.isArray(value)) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name
-						? // eslint-disable-next-line security/detect-object-injection
-						  `Array.isArray(${this[OPTIONS].name})`
+						? `Array.isArray(${this[OPTIONS].name})`
 						: 'Array.isArray',
 
 					expected: { oneOfValues: [true] },
@@ -138,39 +137,38 @@ export class CustomTupleImpl<
 			)
 		} else {
 			if (this.hasRest) {
-				if (x.length < this.getShape.length) {
+				if (value.length < this.getShape.length) {
 					issues.push(
 						new ValidationIssue({
-							// eslint-disable-next-line security/detect-object-injection
 							name: this[OPTIONS].name
-								? // eslint-disable-next-line security/detect-object-injection
-								  `${this[OPTIONS].name} tuple size`
+								? `${this[OPTIONS].name} tuple size`
 								: 'tuple size',
 
 							expected: { description: `at least ${this.getShape.length}` },
-							received: { value: x.length },
+							received: { value: value.length },
 						}),
 					)
 				}
-			} else if (this.getShape.length !== x.length)
+			} else if (this.getShape.length !== value.length)
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name
-							? // eslint-disable-next-line security/detect-object-injection
-							  `${this[OPTIONS].name} tuple size`
+							? `${this[OPTIONS].name} tuple size`
 							: 'tuple size',
 
 						expected: { oneOfValues: [this.getShape.length] },
-						received: { value: x.length },
+						received: { value: value.length },
 					}),
 				)
 
-			for (let idx = 0; idx < Math.min(this.getShape.length, x.length); ++idx) {
-				// eslint-disable-next-line security/detect-object-injection
+			for (
+				let idx = 0;
+				idx < Math.min(this.getShape.length, value.length);
+				++idx
+			) {
 				const t = this.getShape[idx] as SchemaLike
-				// eslint-disable-next-line security/detect-object-injection
-				const r = schema(t).exec(x[idx], options)
+
+				const r = schema(t).exec(value[idx], options)
 
 				if (!r.isValid) {
 					for (const issue of r.issues) issue.path = [idx, ...issue.path]
@@ -182,9 +180,8 @@ export class CustomTupleImpl<
 			if (this.hasRest) {
 				const restSchema = schema(this.restSchema)
 
-				for (let idx = this.getShape.length; idx < x.length; ++idx) {
-					// eslint-disable-next-line security/detect-object-injection
-					const r = restSchema.exec(x[idx], options)
+				for (let idx = this.getShape.length; idx < value.length; ++idx) {
+					const r = restSchema.exec(value[idx], options)
 
 					if (!r.isValid) {
 						for (const issue of r.issues) issue.path = [idx, ...issue.path]

@@ -5,13 +5,15 @@ import type { SchemaOptions } from '~'
 
 export interface InstanceOptions extends SchemaOptions {
 	Constructor: abstract new (...args: any[]) => object
-	Output: object
-	Input: object
+	// Output: object
+	// Input: object
 }
 
-export interface DefaultInstanceOptions extends SchemaOptions.Default {
-	Constructor: abstract new (...args: any[]) => object
+export declare namespace InstanceOptions {
+	export interface Default extends SchemaOptions.Default {
+		Constructor: abstract new (...args: any[]) => object
 
-	Output: object
-	Input: object
+		Output: object
+		Input: object
+	}
 }

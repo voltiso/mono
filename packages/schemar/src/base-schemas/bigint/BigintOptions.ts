@@ -4,14 +4,14 @@
 import type { SchemaOptions } from '~'
 
 export interface BigintOptions extends SchemaOptions {
-	Output: bigint
-	Input: bigint
+	// Output: bigint
+	// Input: bigint
 
 	min: bigint | undefined
 	max: bigint | undefined
 }
 
-export namespace BigintOptions {
+export declare namespace BigintOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: bigint
 		Input: bigint

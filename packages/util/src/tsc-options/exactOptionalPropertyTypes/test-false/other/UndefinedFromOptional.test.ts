@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical, UndefinedFromOptional } from '~'
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
 
 describe('UndefinedFromOptional', () => {
 	it('works', () => {

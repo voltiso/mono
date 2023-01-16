@@ -1,21 +1,25 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue, noThis } from '@voltiso/util'
+import { $assert, lazyValue, noThis } from '@voltiso/util'
 
-import type * as t from '~'
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+import type { SchemaLike } from '~/types/Schema/ISchema'
 
-import { any } from '../any'
-import { array } from '../array'
-import { unknown } from '../unknown'
+import { any } from '../any/any'
+import { array } from '../array/Array'
+import { unknown } from '../unknown/Unknown'
 
-export const defaultFunctionOptions = lazyValue(() => ({
-	...defaultSchemaOptions,
-	Output: 0 as unknown as (...args: any) => unknown,
-	Input: 0 as unknown as (...args: any) => unknown,
+$assert(defaultSchemaOptions)
 
-	this: noThis,
-	parameters: array(any) as unknown as t.SchemaLike<any[]>,
-	return: unknown as unknown as t.SchemaLike<void>,
-}))
+export const defaultFunctionOptions = lazyValue(() =>
+	Object.freeze({
+		...defaultSchemaOptions,
+		Output: 0 as unknown as (...args: any) => unknown,
+		Input: 0 as unknown as (...args: any) => unknown,
+
+		this: noThis,
+		parameters: array(any) as unknown as SchemaLike<any[]>,
+		return: unknown as unknown as SchemaLike<void>,
+	}),
+)

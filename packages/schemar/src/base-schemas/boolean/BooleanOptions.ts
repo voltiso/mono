@@ -4,11 +4,11 @@
 import type { SchemaOptions } from '~'
 
 export interface BooleanOptions extends SchemaOptions {
-	Output: boolean
-	Input: boolean
+	// Output: boolean
+	// Input: boolean
 }
 
-export namespace BooleanOptions {
+export declare namespace BooleanOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: boolean
 		Input: boolean

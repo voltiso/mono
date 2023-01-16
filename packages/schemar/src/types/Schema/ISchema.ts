@@ -1,17 +1,28 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
+import { EXTENDS } from '_'
+import type {
+	AlsoAccept,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+	NoArgument,
+	OPTIONS,
+	StaticError,
+} from '@voltiso/util'
 
 import type {
 	$$Schemable,
+	CustomFix,
+	CustomOperation,
+	Output_,
+	Schema,
 	SCHEMA_NAME,
 	SchemaOptions,
-	ValidateOptions,
 	ValidationIssue,
+	ValidationOptions,
 	ValidationResult,
 } from '~'
-import { EXTENDS } from '~'
 
 export interface $$Schema {
 	readonly [SCHEMA_NAME]: unknown
@@ -22,9 +33,13 @@ export interface SchemaLike<T = unknown> extends $$Schema {
 	get Input(): T | undefined
 }
 
-// export interface FinalSchema<T> {}
+export type __tsdoc_types_ISchema = Schema
 
-/** Every Schema is assignable to `ISchema` */
+/**
+ * Every {@link Schema} is assignable to {@link ISchema}
+ *
+ * - Also @see {@link ISchema$ } for a version with builder interface
+ */
 export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
@@ -72,55 +87,15 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	get isReadonly(): boolean
 
 	get hasDefault(): boolean
-	get getDefault(): unknown
+	get getDefault(): unknown // or throw
 
-	//
-
-	//
-
-	name(name: string): $$Schema
-
-	get optional(): $$Schema
-	get strictOptional(): $$Schema
-
-	get readonly(): $$Schema
-	default(value: T): $$Schema
-	default(getValue: () => T): $$Schema
-
-	//
+	get getCustomFixes(): readonly CustomFix[]
+	get getCustomOperations(): readonly CustomOperation[]
 
 	//
 
 	extends(other: $$Schemable): boolean
 	[EXTENDS](other: $$Schema): boolean
-
-	check(
-		isValid: (x: any) => boolean,
-		expectedDescription?: string | ((x: any) => string),
-	): unknown // ISchema
-
-	fix(fixFunc: (x: any) => unknown): unknown // ISchema
-
-	//
-
-	//
-
-	Narrow(): unknown // ISchema
-	Widen(): unknown // ISchema | StaticError
-	Cast(): unknown // ISchema | StaticError
-	$Cast(): unknown // ISchema | StaticError
-
-	NarrowOutput(): unknown // ISchema
-	WidenOutput(): unknown // ISchema | StaticError
-	CastOutput(): unknown // ISchema | StaticError
-
-	NarrowInput(): unknown // ISchema
-	WidenInput(): unknown // ISchema | StaticError
-	CastInput(): unknown // ISchema | StaticError
-
-	//
-
-	//
 
 	/**
 	 * Validate `this` schema, throw on failure
@@ -129,7 +104,10 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * @returns Value after applying transformations (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	validate(x: unknown, options?: Partial<ValidateOptions> | undefined): unknown
+	validate(
+		x: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): unknown
 
 	/**
 	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
@@ -140,7 +118,7 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 */
 	tryValidate(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): unknown
 
 	/**
@@ -151,7 +129,7 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 */
 	exec(
 		x: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationResult
 
 	/**
@@ -160,7 +138,15 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 *
 	 * @param x - Value to validate against `this` schema
 	 */
-	isFixable(x: unknown, options?: Partial<ValidateOptions> | undefined): boolean
+	isFixable(
+		x: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): boolean
+
+	assertFixable(
+		x: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): void
 
 	/**
 	 * Do not return transformed value - just check if the value is valid
@@ -168,21 +154,187 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 *
 	 * @param x - Value to validate against `this` schema
 	 */
-	isValid(x: unknown, options?: Partial<ValidateOptions> | undefined): boolean
+	isValid(x: unknown, options?: Partial<ValidationOptions> | undefined): boolean
+
+	assertValid(
+		x: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): void
 
 	getIssues(
 		value: unknown,
-		options?: Partial<ValidateOptions>,
+		options?: Partial<ValidationOptions>,
 	): ValidationIssue[]
+}
+
+/**
+ * Every Schema$ is assignable to `ISchema$`
+ *
+ * - ⚠️ Prefer `ISchema` for a super-type without the builder methods
+ * - Never try to trigger assignability testing of these recursive types (super
+ *   slow)
+ */
+export interface ISchema$<T = unknown> extends ISchema<T> {
+	/** Specify name for nicer messages */
+	name(name: string): this
+
+	get optional(): ISchema$<T>
+	get strictOptional(): ISchema$<T>
+
+	get readonly(): ISchema$<T>
+	default(value: T): $$Schema
+	default(getValue: () => T): $$Schema
 
 	//
 
+	/**
+	 * Add a custom check between transformations
+	 *
+	 * @inline
+	 */
+	check(
+		checkIfValid: (value: this[OPTIONS]['Output']) => boolean,
+		expectedDescription?: string | ((value: this[OPTIONS]['Output']) => string),
+	): this
+
+	/**
+	 * Same as `map`, but with narrow-only typings
+	 *
+	 * - Return `undefined` only if the value is already correct
+	 * - ⚠️ Return exactly the same value if the value is already correct -
+	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
+	 *   `Object.is` to check if value was already valid
+	 * - ⚠️ Do not modify the input value
+	 *
+	 * @inline
+	 */
+	narrow<NarrowOutput extends this['Output']>(
+		map: (value: this['Output']) => NarrowOutput | void,
+	): $$Schema
+
+	/** Does not type-narrow */
+	narrowIf(
+		condition: (value: this['Output']) => boolean,
+		map: (value: this['Output']) => this['Output'] | void | undefined,
+	): $$Schema
+
+	/**
+	 * Push transformation applied after anything else
+	 *
+	 * - Return `undefined` only if the value is already correct
+	 * - ⚠️ Return exactly the same value if the value is already correct -
+	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
+	 *   `Object.is` to check if value was already valid
+	 * - ⚠️ Prefer {@link fix} - avoid transforms
+	 * - ⚠️ Prefer {@link narrow} for type-safety
+	 * - ⚠️ Do not modify the input value
+	 *
+	 * @inline
+	 */
+	map<NewOutput>(
+		map: (value: this[OPTIONS]['Output']) => NewOutput | void | undefined,
+	): $$Schema
+
+	mapIf<AdditionalOutput>(
+		condition: (value: this[OPTIONS]['Output']) => boolean,
+		map: (
+			value: this[OPTIONS]['Output'],
+		) => AdditionalOutput | void | undefined,
+	): $$Schema
+
+	/**
+	 * Function-based condition are separated from schema-based conditions for
+	 * faster type-checking
+	 */
+	fixIf<AdditionalInput>(
+		conditionTypeGuard: (
+			value: AdditionalInput | AlsoAccept<unknown>,
+		) => value is AdditionalInput,
+		fix: (value: AdditionalInput) => this[OPTIONS]['Input'],
+	): $$Schema
+
+	fixIf<AdditionalInput = NoArgument>(
+		conditionPredicate: (
+			value: AdditionalInput | AlsoAccept<unknown>,
+		) => boolean,
+		fix: (value: AdditionalInput) => unknown, // this[OPTIONS]['Input'],
+	): $$Schema | StaticError
+
+	/**
+	 * Executed only if `wrongValueSchema` passes validation
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const timestamp = s.date.fix(s.string, value => new Date(value))
+	 * ```
+	 *
+	 * - ⚠️ Return exactly the same value if the value is already correct -
+	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
+	 *   `Object.is` to check if value was already valid
+	 * - ⚠️ Schema's input type will be extended with the whole input type of
+	 *   `wrongValueSchema`
+	 * - ⚠️ Do not modify the input value
+	 *
+	 *
+	 * @inline
+	 */
+	fix<AdditionalInput>(
+		conditionSchema: $$Schema & {
+			Output: AdditionalInput
+			Input: AdditionalInput
+		},
+		fix: (value: AdditionalInput) => this[OPTIONS]['Input'],
+	): $$Schema
+
+	fix<ConditionSchema extends $$Schemable>(
+		conditionSchema: ConditionSchema,
+		fix: (value: Output_<ConditionSchema>) => this[OPTIONS]['Input'],
+	): $$Schema
+
+	/** ⚠️ Please provide `AdditionalInput` type argument */
+	fix<AdditionalInput = NoArgument>(
+		fix: <Value extends AdditionalInput | AlsoAccept<unknown>>(
+			value: Value,
+		) => this[OPTIONS]['Input'] | void | undefined, // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
+	): $$Schema | StaticError
+
 	//
 
-	or(other: $$Schemable): $$Schemable
-	and(other: $$Schemable): $$Schemable
+	Narrow(): ISchema$
+	$Narrow(): ISchema$
 
-	get simple(): $$Schema
+	Widen(): ISchema$
+	$Widen(): ISchema$
+
+	Cast(): ISchema$
+	$Cast(): ISchema$
+
+	NarrowOutput(): ISchema$
+	$NarrowOutput(): ISchema$
+
+	WidenOutput(): ISchema$
+	$WidenOutput(): ISchema$
+
+	CastOutput(): ISchema$
+	$CastOutput(): ISchema$
+
+	NarrowInput(): ISchema$
+	$NarrowInput(): ISchema$
+
+	WidenInput(): ISchema$
+	$WidenInput(): ISchema$
+
+	CastInput(): ISchema$
+	$CastInput(): ISchema$
+
+	//
+
+	or(other: $$Schemable): ISchema$
+	and(other: $$Schemable): ISchema$
+
+	/** Type-cast to the non-builder version */
+	get Final(): ISchema<T>
 
 	toString(): string
 }

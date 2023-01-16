@@ -1,12 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar'
+/* eslint-disable etc/no-internal */
+
 import * as s from '@voltiso/schemar'
 import { lazyValue, OPTIONS, ProtoCallable } from '@voltiso/util'
 
-import type { WeakDocRefLike } from '~/DocRef'
-import { CustomDocRef } from '~/DocRef'
+import type { $$DocRelated, WeakDocRef } from '~'
+import { _CustomDocRef } from '~'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 
 /**
@@ -14,34 +15,49 @@ import type { AnyDoc, DocTag } from '~/DocTypes'
  *
  * @internal
  */
-const _fixableWeakRefSchema = lazyValue(
-	() =>
-		s.instance(CustomDocRef).fix(x => {
-			if (x.isStrong === false) return x // already weak
-
-			return new CustomDocRef(x._context as never, x.path.toString(), {
+const _fixableWeakRefSchema = lazyValue(() =>
+	s.instance(_CustomDocRef).narrowIf(
+		x => x.isStrong,
+		x =>
+			new _CustomDocRef(x._context as never, x.path.toString(), {
 				// eslint-disable-next-line security/detect-object-injection
 				...x[OPTIONS],
 				isStrong: false,
-			}) as never
-		}) as never,
+			}) as never,
+	),
 )
+
+//
 
 /** 🫠 Accept any, output weak - but currently weak is just supertype */
-export interface FixableWeakRefSchema<X extends DocTag | AnyDoc = AnyDoc>
-	extends t.Schema<WeakDocRefLike<X>> {}
+export interface FixableWeakDocRefSchema<X extends $$DocRelated = AnyDoc>
+	extends s.Schema<WeakDocRef<X>> {}
 
-export interface WeakRefSchema extends FixableWeakRefSchema {
-	<X extends DocTag>(): FixableWeakRefSchema<X>
+/** 🫠 Accept any, output weak - but currently weak is just supertype */
+export interface FixableWeakDocRefSchema$<X extends $$DocRelated = AnyDoc>
+	extends s.Schema$<WeakDocRef<X>> {
+	//
+	get Final(): FixableWeakDocRefSchema<X>
 }
 
-export const sWeakRef: WeakRefSchema = lazyValue(() =>
+//
+
+export interface UnknownFixableWeakDocRefSchema
+	extends FixableWeakDocRefSchema {}
+
+export interface UnknownFixableWeakDocRefSchema$
+	extends FixableWeakDocRefSchema$ {
+	<X extends DocTag>(): FixableWeakDocRefSchema$<X>
+
+	get Final(): UnknownFixableWeakDocRefSchema
+}
+
+//
+
+export const sWeakRef: UnknownFixableWeakDocRefSchema$ = lazyValue(() =>
 	ProtoCallable({
-		// eslint-disable-next-line etc/no-internal
 		prototype: _fixableWeakRefSchema,
 
-		call: () =>
-			// eslint-disable-next-line etc/no-internal
-			_fixableWeakRefSchema,
+		call: () => _fixableWeakRefSchema,
 	}),
-)
+) as never

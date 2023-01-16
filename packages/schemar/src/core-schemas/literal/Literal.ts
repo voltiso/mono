@@ -3,9 +3,8 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomLiteral, InferableLiteral } from '~'
-
-import { LiteralImpl } from '.'
+import type { CustomLiteral, CustomLiteral$, InferableLiteral } from '~'
+import { LiteralImpl } from '~'
 
 export interface Literal<T extends InferableLiteral>
 	extends CustomLiteral<{
@@ -13,12 +12,20 @@ export interface Literal<T extends InferableLiteral>
 		Input: T
 	}> {}
 
-export interface LiteralConstructor {
-	new <L extends InferableLiteral>(...literals: L[]): Literal<L>
-	new <L extends InferableLiteral>(literals: Set<L>): Literal<L>
-	new <L extends InferableLiteral>(...args: L[] | [Set<L>]): Literal<L>
+export interface Literal$<T extends InferableLiteral>
+	extends CustomLiteral$<{
+		Output: T
+		Input: T
+	}> {}
+
+//
+
+export interface Literal$Constructor {
+	new <L extends InferableLiteral>(...literals: L[]): Literal$<L>
+	new <L extends InferableLiteral>(literals: Set<L>): Literal$<L>
+	new <L extends InferableLiteral>(...args: L[] | [Set<L>]): Literal$<L>
 }
 
-export const Literal = lazyConstructor(
+export const Literal$ = lazyConstructor(
 	() => LiteralImpl,
-) as unknown as LiteralConstructor
+) as unknown as Literal$Constructor

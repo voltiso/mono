@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
+
 import type { Force } from '~/cast'
 import { equals } from '~/equals'
 import { add } from '~/number'
@@ -81,6 +82,7 @@ export type PatchOptions = {
 export const defaultPatchOptions = {
 	depth: Infinity,
 }
+Object.freeze(defaultPatchOptions)
 
 $Assert.is<typeof defaultPatchOptions, PatchOptions>()
 

@@ -1,10 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomCheck } from './_/CustomCheck'
+import type { CustomOperation } from './_/CustomCheck'
 import type { CustomFix } from './_/CustomFix'
 
-export type SchemaOptions = {
+export interface SchemaOptions {
 	/** Type-only (no value at runtime) */
 	Output: unknown
 
@@ -14,15 +14,18 @@ export type SchemaOptions = {
 	/** Name for nicer messages */
 	name?: string | undefined
 
-	customChecks: readonly CustomCheck[]
 	customFixes: readonly CustomFix[]
+	customOperations: readonly CustomOperation[]
 
 	isOptional: boolean
 	isStrictOptional: boolean
 	isReadonly: boolean
 
 	hasDefault: boolean
+
+	/** Currently not type-exposed */
 	default: unknown
+
 	getDefault: (() => unknown) | undefined
 }
 
@@ -32,13 +35,18 @@ export declare namespace SchemaOptions {
 	export interface Default extends SchemaOptions {
 		Output: unknown
 		Input: unknown
-		customChecks: readonly []
+
 		customFixes: readonly []
+		customOperations: readonly []
+
 		isOptional: false
 		isStrictOptional: false
 		isReadonly: false
 		hasDefault: false
+
+		/** Currently not type-exposed */
 		default: never
+
 		getDefault: never
 	}
 }

@@ -5,7 +5,7 @@ import type { IsAny } from '@voltiso/util'
 import { lazyPromise } from '@voltiso/util'
 
 import { DocFieldPath } from '~/DocFieldPath'
-import type { WeakDocRef } from '~/DocRef'
+import type { _CustomDocRef } from '~/DocRef'
 
 export type NestedPromise<data, Exists> = PromiseLike<
 	data | (Exists extends false ? null : never)
@@ -17,7 +17,8 @@ export type NestedPromise<data, Exists> = PromiseLike<
 		  })
 
 export function dataOrNestedPromise<data, Exists extends boolean>(
-	docRef: WeakDocRef,
+	// eslint-disable-next-line etc/no-internal
+	docRef: _CustomDocRef,
 	getPromise: () => PromiseLike<data | (Exists extends false ? null : never)>,
 ) {
 	return new Proxy(lazyPromise(getPromise), {

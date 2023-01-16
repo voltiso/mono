@@ -29,7 +29,7 @@ import {
 	isTupleSchema,
 	isUnknownFunctionSchema,
 } from '~'
-import { infer, schema } from '~/core-schemas'
+import { infer_, schema } from '~/core-schemas'
 import { SchemarError } from '~/error'
 import { ValidationIssue } from '~/meta-schemas'
 
@@ -69,31 +69,28 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 {
 	readonly [SCHEMA_NAME] = 'Function' as const
 
-	get hasThis(): this[OPTIONS]['this'] extends NoThis ? false : true {
-		// eslint-disable-next-line security/detect-object-injection
+	get hasThis(): [this[OPTIONS]['this']] extends [NoThis] ? false : true {
 		return (this[OPTIONS].this !== noThis) as never
 	}
 
 	get getThisSchema(): never {
-		// eslint-disable-next-line security/detect-object-injection
-		return infer(this[OPTIONS].this) as never // ! infer in constructor instead?
+		if (this[OPTIONS].this === noThis) throw new Error('no this schema')
+
+		return infer_(this[OPTIONS].this) as never // ! infer in constructor instead?
 	}
 
 	get getParametersSchema(): never {
-		// eslint-disable-next-line security/detect-object-injection
-		return infer(this[OPTIONS].parameters) as never // ! infer in constructor instead?
+		return infer_(this[OPTIONS].parameters) as never // ! infer in constructor instead?
 	}
 
 	get getReturnSchema(): never {
-		// eslint-disable-next-line security/detect-object-injection
-		return infer(this[OPTIONS].return) as never // ! infer in constructor instead?
+		return infer_(this[OPTIONS].return) as never // ! infer in constructor instead?
 	}
 
 	constructor(o: FunctionOptions & O) {
-		super(o)
+		super(o, { freeze: false })
 
 		const parametersSchema = schema(
-			// eslint-disable-next-line security/detect-object-injection
 			this[OPTIONS].parameters as never,
 		) as unknown as IArray | ITuple
 
@@ -117,26 +114,26 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 				? parametersUnionSchemas[0]
 				: or(...parametersUnionSchemas)
 
-		// eslint-disable-next-line security/detect-object-injection
 		this[OPTIONS].parameters = finalArgumentsSchema as never
 		// ! TODO - typings for parameters are incorrect
+
+		Object.freeze(this[OPTIONS])
+
+		Object.freeze(this)
 	}
 
 	this<NewThis extends $$Schemable>(newThis: NewThis): any {
-		// eslint-disable-next-line security/detect-object-injection
 		return new CustomFunctionImpl({ ...this[OPTIONS], this: newThis }) as never
 	}
 
 	parameters<NewParameters extends $$SchemableTuple>(
 		parameters: NewParameters,
 	): any {
-		// eslint-disable-next-line security/detect-object-injection
 		return new CustomFunctionImpl({ ...this[OPTIONS], parameters }) as never
 	}
 
 	return<NewReturn extends SchemaLike>(newReturn: NewReturn): any {
 		return new CustomFunctionImpl({
-			// eslint-disable-next-line security/detect-object-injection
 			...this[OPTIONS],
 			return: newReturn,
 		}) as never
@@ -155,7 +152,6 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 			)
 
 			return argsOk && rOk
-			// eslint-disable-next-line security/detect-object-injection
 		} else return super[EXTENDS](other)
 	}
 
@@ -165,7 +161,6 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		if (typeof value !== 'function') {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be function' },
 					received: { value },

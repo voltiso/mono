@@ -1,39 +1,53 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, lazyConstructor } from '@voltiso/util'
+import { $assert, lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomInstance } from '~'
+import type { CustomInstance, CustomInstance$ } from '~'
 
 import { InstanceImpl } from './InstanceImpl'
 
-export type Instance<Inst extends object> = CustomInstance<{
-	constructor: abstract new (...args: any) => Inst
-	Output: Inst
-	Input: Inst
+export type Instance<TInstance extends object> = CustomInstance<{
+	// constructor: abstract new (...args: any) => TInstance
+	Output: TInstance
+	Input: TInstance
 }>
 
-export const Instance = lazyConstructor(
+export type Instance$<TInstance extends object> = CustomInstance$<{
+	// constructor: abstract new (...args: any) => TInstance
+	Output: TInstance
+	Input: TInstance
+}>
+
+//
+
+export const Instance$ = lazyConstructor(
 	() => InstanceImpl,
-) as unknown as InstanceConstructor
+) as unknown as Instance$Constructor
 
 //
 
-export type UnknownInstance = <Inst extends object>(
-	constructor: abstract new (...args: any) => Inst,
-) => Instance<Inst>
+export type UnknownInstance = <TInstance extends object>(
+	constructor: abstract new (...args: any) => TInstance,
+) => Instance<TInstance>
+
+export type UnknownInstance$ = <TInstance extends object>(
+	constructor: abstract new (...args: any) => TInstance,
+) => Instance$<TInstance>
 
 //
 
-export type InstanceConstructor = new <Inst extends object>(
+export type Instance$Constructor = new <Inst extends object>(
 	Constructor: abstract new (...args: any[]) => Inst,
-) => Instance<Inst>
+) => Instance$<Inst>
 
 //
 
-export function instance<TInstance extends object>(
-	Constructor: abstract new (...args: any) => TInstance,
-) {
+export function instance<T extends object>(
+	Constructor: abstract new (...args: any) => T,
+): Instance$<T> {
 	$assert(Constructor)
-	return new Instance(Constructor)
+	return new Instance$(Constructor)
 }
+
+export const date = lazyValue(() => instance(Date))

@@ -3,17 +3,19 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomAny } from '~'
+import type { CustomAny, CustomAny$ } from '~'
 
 import { AnyImpl } from './AnyImpl'
 
 //
 
-export type Any = CustomAny<{}>
-export const Any = lazyConstructor(() => AnyImpl) as unknown as AnyConstructor
+export interface Any extends CustomAny<{}> {}
+export interface Any$ extends CustomAny$<{}> {}
 
-export type AnyConstructor = new () => Any
+export const Any$ = lazyConstructor(() => AnyImpl) as unknown as Any$Constructor
+
+export type Any$Constructor = new () => Any$
 
 //
 
-export const any: Any = lazyValue(() => new Any())
+export const any: Any$ = lazyValue(() => new Any$())

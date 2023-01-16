@@ -5,4 +5,6 @@ import type { SchemaOptions } from '~'
 
 export type UnknownSchemaOptions = SchemaOptions
 
-export interface DefaultUnknownSchemaOptions extends SchemaOptions.Default {}
+export declare namespace UnknownSchemaOptions {
+	export interface Default extends SchemaOptions.Default {}
+}

@@ -3,9 +3,9 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ITuple } from '~'
+import type { ITuple, ITuple$ } from '~'
 
-export function isTupleSchema(x: unknown): x is ITuple {
+export function isTupleSchema(x: unknown): x is ITuple$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as ITuple | null)?.[SCHEMA_NAME] === 'Tuple'
 }

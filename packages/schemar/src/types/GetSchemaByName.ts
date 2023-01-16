@@ -1,15 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomSchema, SchemaOptions, Schemas } from '~'
+import type { CustomSchema$, SchemaOptions, Schemas } from '~'
 
 //
 
-export type GetSchemaByName<
+export type GetSchema$ByName<
 	schemaName,
 	O extends Partial<SchemaOptions>,
 > = string extends schemaName
-	? CustomSchema<O>
+	? CustomSchema$<O>
 	: [schemaName] extends [keyof Schemas<O>]
 	? schemaName extends keyof Schemas<O>
 		? Schemas<O>[schemaName]

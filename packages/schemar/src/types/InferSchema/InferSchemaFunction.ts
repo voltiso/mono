@@ -5,11 +5,11 @@ import type {
 	$$Inferable,
 	$$Schema,
 	$$Schemable,
-	InferSchemaNoReadonlyTuple,
+	InferSchema$NoReadonlyTuple,
 } from '~'
 
 export interface InferSchemaFunction {
-	<T extends $$Inferable>(inferable: T): InferSchemaNoReadonlyTuple<T>
+	<T extends $$Inferable>(inferable: T): InferSchema$NoReadonlyTuple<T>
 	<T extends $$Schema>(schema: T): T
-	<T extends $$Schemable>(inferableOrSchema: T): InferSchemaNoReadonlyTuple<T>
+	<T extends $$Schemable>(inferableOrSchema: T): InferSchema$NoReadonlyTuple<T>
 }

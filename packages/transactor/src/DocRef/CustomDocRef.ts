@@ -1,19 +1,41 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Override } from '@voltiso/util'
+import type { Output_, Schema } from '@voltiso/schemar'
+import type {
+	_,
+	$Override_,
+	DeleteIt,
+	If,
+	OPTIONS,
+	PatchFor,
+} from '@voltiso/util'
 import { $Assert, lazyConstructor } from '@voltiso/util'
 
 import type {
-	GetAggregatePromises,
-	GetDocFields,
+	$$DocRef,
+	$WithId,
+	AnyDoc,
+	DocBrand,
+	DocIdString,
+	DocPath,
+	DocRefDatabase,
+	DocRefJson,
+	GetData,
+	GetDataWithId,
+	GetDoc,
+	GetDocRef$,
+	GetDocTag,
+	GetDocTI,
 	GetMethodPromises,
-	GetVoltisoEntry,
-} from '~/Doc'
+	GetPublicCreationInputData,
+	GetUpdateDataByCtx,
+	NestedPromise,
+} from '~'
+import type { GetVoltisoEntry } from '~/Doc'
 import type { DocFieldPath } from '~/DocFieldPath'
 import type { $$DocRelatedLike } from '~/DocRelated'
 
-import type { AnyDoc, DocRef } from '..'
 import type { DocRefContext } from './_/Context'
 import { _CustomDocRef } from './_CustomDocRef'
 
@@ -26,11 +48,103 @@ export const CustomDocRef = lazyConstructor(
 ) as unknown as CustomDocRef.Constructor
 
 export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
-	extends CustomDocRef.Get<O> {}
+	extends $$DocRef,
+		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
+		CustomDocRef.IntrinsicFields<O>,
+		PromiseLike<
+			| GetDoc<CustomDocRef.Options.Get<O>['doc']>
+			| CustomDocRef.MaybeNull<CustomDocRef.Options.Get<O>>
+		> {
+	//
+
+	readonly [OPTIONS]: CustomDocRef.Options.Get<O>
+
+	//
+
+	get isStrong(): O['isStrong']
+
+	get id(): DocIdString<GetDocTI<this[OPTIONS]['doc']>> &
+		Output_<GetDocTI<this[OPTIONS]['doc']>['id']>
+
+	get path(): DocPath<this[OPTIONS]['doc']>
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	get(): PromiseLike<
+		GetDoc<this[OPTIONS]['doc']> | If<O['isStrong'], never, null>
+	>
+
+	//
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(
+		updates: PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>,
+	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(updates: DeleteIt): PromiseLike<null>
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	update(
+		updates:
+			| PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>
+			| DeleteIt,
+	): PromiseLike<GetDoc<this[OPTIONS]['doc']> | null>
+
+	//
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	delete(): PromiseLike<null>
+
+	//
+
+	//
+
+	get data(): NestedPromise<
+		GetData<this[OPTIONS]['doc']>,
+		O['isStrong'] extends true ? true : boolean
+	>
+
+	dataWithId(): NestedPromise<
+		GetDataWithId<this[OPTIONS]['doc']>,
+		O['isStrong'] extends true ? true : boolean
+	>
+
+	readonly methods: GetMethodPromises<this[OPTIONS]['doc']>
+
+	//
+
+	/** @returns `PromiseLike`! (`then`-only) */
+	set(
+		data?: GetPublicCreationInputData<this[OPTIONS]['doc']>,
+	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+
+	create(
+		data?: _<GetPublicCreationInputData<this[OPTIONS]['doc']>>,
+	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+
+	//
+
+	get schema(): Schema<GetData<this[OPTIONS]['doc']>> | undefined
+	get schemaWithId(): Schema<$WithId<GetData<this[OPTIONS]['doc']>>> | undefined
+	get aggregateSchemas(): GetDocTI<this[OPTIONS]['doc']>['aggregates']
+
+	//
+
+	toDatabase(): DocRefDatabase
+	toJSON(): DocRefJson
+}
+
+export interface CustomDocRef$<O extends Partial<CustomDocRef.Options> = {}>
+	extends CustomDocRef<O> {
+	//
+	get asStrongRef(): GetDocRef$<$Override_<O, { isStrong: true }>>
+	get asWeakRef(): GetDocRef$<$Override_<O, { isStrong: false }>>
+	//
+}
 
 // eslint-disable-next-line import/export
 export namespace CustomDocRef {
-	export type Get<O extends Partial<Options>> = Base<O>
+	// export type Get<O extends Partial<Options>> = Base<O>
 	// & Extra<Options.Get<O>['doc']> // ! disable this stuff...
 
 	// export type Get<O extends Partial<DocRef.Options>> = Base<
@@ -45,31 +159,31 @@ export namespace CustomDocRef {
 	// 		IntrinsicFields<O>,
 	// 		DocBrand<GetDocTag<DocRef.Options.Get<O>['doc']>> {}
 
-	/** 🟢 The statically-known members */
-	export interface Base<O extends Partial<DocRef.Options>>
-		// eslint-disable-next-line etc/no-internal
-		extends _CustomDocRef<Options.Get<O>> {}
+	// /** 🟢 The statically-known members */
+	// export interface Base<O extends Partial<DocRef.Options>>
+	// 	// eslint-disable-next-line etc/no-internal
+	// 	extends _CustomDocRef<Options.Get<O>> {}
 
-	export interface IntrinsicFields<O extends Partial<DocRef.Options>> {
+	export interface IntrinsicFields<O extends Partial<Options>> {
 		__voltiso: DocFieldPath<GetVoltisoEntry<Options.Get<O>['doc']>>
 	}
 
-	/**
-	 * 👻 The non-statically-known members
-	 *
-	 * ⚠️ Troublesome - currently disabled
-	 */
-	export type Extra<R extends $$DocRelatedLike> = Omit<
-		GetDocFields<R> & GetMethodPromises<R> & GetAggregatePromises<R>,
-		keyof Base<any>
-	>
+	// /**
+	//  * 👻 The non-statically-known members
+	//  *
+	//  * ⚠️ Troublesome - currently disabled
+	//  */
+	// export type Extra<R extends $$DocRelatedLike> = Omit<
+	// 	GetDocFields<R> & GetMethodPromises<R> & GetAggregatePromises<R>,
+	// 	keyof Base<any>
+	// >
 
 	export interface Constructor {
 		new <O extends Partial<Options>>(
 			context: DocRefContext.Parent,
 			path: string,
 			partialOptions?: Partial<O>,
-		): CustomDocRef<O>
+		): GetDocRef$<O>
 	}
 
 	//
@@ -101,7 +215,18 @@ export namespace CustomDocRef {
 
 	export namespace Options {
 		export type Default = typeof defaultDocRefOptions
-		export type Get<O extends Partial<Options>> = Override<Default, O>
+
+		/**
+		 * Get full options
+		 *
+		 * - Use doc tag if possible
+		 */
+		export type Get<O extends Partial<Options>> = $Override_<Default, O>
+		//  O extends {
+		// 	readonly doc: $$Doc
+		// }
+		// 	? $Override_<Default, $Override_<O, { doc: GetDocTag.Simple<O['doc']> }>>
+		// 	: $Override_<Default, O>
 	}
 }
 
@@ -110,13 +235,6 @@ export const defaultDocRefOptions = {
 
 	/** 🌿 Type-only (no value at runtime) */
 	doc: undefined as unknown as AnyDoc,
-
-	// /**
-	//  * Useful to make recursive types possible
-	//  *
-	//  * 🌿 Type-only (no value at runtime)
-	//  */
-	// onlyStaticallyKnownFields: undefined as unknown as false,
 }
 
 //

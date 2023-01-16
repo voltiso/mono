@@ -4,11 +4,13 @@
 import type { SchemaOptions } from '~'
 
 export interface UnknownSymbolOptions extends SchemaOptions {
-	Output: symbol
-	Input: symbol
+	// Output: symbol
+	// Input: symbol
 }
 
-export interface DefaultUnknownSymbolOptions extends SchemaOptions.Default {
-	Output: symbol
-	Input: symbol
+export declare namespace UnknownSymbolOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: symbol
+		Input: symbol
+	}
 }

@@ -5,14 +5,13 @@ import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert } from '@voltiso/util'
 
-import type { $$UnknownLiteral, CustomSchema } from '~'
+import type { $$UnknownLiteral, CustomSchema, CustomSchema$ } from '~'
 
-import type {
-	DefaultUnknownLiteralOptions,
-	UnknownLiteralOptions,
-} from './UnknownLiteralOptions'
+import type { UnknownLiteralOptions } from './UnknownLiteralOptions'
 
 $assert(SCHEMA_NAME)
+
+//
 
 export interface CustomUnknownLiteral<O extends Partial<UnknownLiteralOptions>>
 	extends $$UnknownLiteral,
@@ -21,5 +20,17 @@ export interface CustomUnknownLiteral<O extends Partial<UnknownLiteralOptions>>
 	[SCHEMA_NAME]: 'UnknownLiteral'
 
 	readonly [BASE_OPTIONS]: UnknownLiteralOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownLiteralOptions
+	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
+}
+
+//
+
+export interface CustomUnknownLiteral$<O extends Partial<UnknownLiteralOptions>>
+	extends $$UnknownLiteral,
+		CustomSchema$<O> {
+	//
+	[SCHEMA_NAME]: 'UnknownLiteral'
+
+	readonly [BASE_OPTIONS]: UnknownLiteralOptions
+	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
 }

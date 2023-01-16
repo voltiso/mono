@@ -6,8 +6,8 @@ import type { $Override_ } from '@voltiso/util'
 import type { SchemaOptions } from '~'
 
 export interface UnknownTupleOptions extends SchemaOptions {
-	Output: readonly unknown[]
-	Input: readonly unknown[]
+	// Output: readonly unknown[]
+	// Input: readonly unknown[]
 
 	isReadonlyTuple: boolean
 
@@ -17,7 +17,7 @@ export interface UnknownTupleOptions extends SchemaOptions {
 
 //
 
-export namespace UnknownTupleOptions {
+export declare namespace UnknownTupleOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: unknown[]
 		Input: unknown[]

@@ -1,12 +1,11 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DefaultUnknownSchemaOptions } from '~'
-
 import { CustomSchemaInferrerImpl } from './CustomSchemaInferrerImpl'
 import { defaultSchemaInferrerOptions } from './defaultSchemaInferrerOptions'
+import type { UnknownSchemaOptions } from './UnknownSchemaOptions'
 
-export class SchemaInferrerImpl extends CustomSchemaInferrerImpl<DefaultUnknownSchemaOptions> {
+export class SchemaInferrerImpl extends CustomSchemaInferrerImpl<UnknownSchemaOptions.Default> {
 	constructor() {
 		super(defaultSchemaInferrerOptions)
 	}

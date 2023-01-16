@@ -3,7 +3,8 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
+
 import type { IsIdentical } from '~/type'
 
 import { CallableConstructor } from './CallableConstructor'

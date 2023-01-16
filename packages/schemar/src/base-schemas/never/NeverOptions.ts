@@ -4,11 +4,11 @@
 import type { SchemaOptions } from '~'
 
 export interface NeverOptions extends SchemaOptions {
-	Output: never
-	Input: never
+	// Output: never
+	// Input: never
 }
 
-export namespace NeverOptions {
+export declare namespace NeverOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: never
 		Input: never

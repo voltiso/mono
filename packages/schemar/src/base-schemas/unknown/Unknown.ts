@@ -3,18 +3,19 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomUnknown } from '~'
+import type { CustomUnknown, CustomUnknown$ } from '~'
 
 import { UnknownImpl } from './UnknownImpl'
 
 export interface Unknown extends CustomUnknown<{}> {}
+export interface Unknown$ extends CustomUnknown$<{}> {}
 
-export type UnknownConstructor = new () => Unknown
+export type Unknown$Constructor = new () => Unknown$
 
 //
 
-export const Unknown = lazyConstructor(
+export const Unknown$ = lazyConstructor(
 	() => UnknownImpl,
-) as unknown as UnknownConstructor
+) as unknown as Unknown$Constructor
 
-export const unknown = lazyValue(() => new Unknown())
+export const unknown = lazyValue(() => new Unknown$())

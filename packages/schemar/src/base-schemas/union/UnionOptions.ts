@@ -8,7 +8,7 @@ export interface UnionOptions extends SchemaOptions {
 	schemas: $$Schemable[]
 }
 
-export namespace UnionOptions {
+export declare namespace UnionOptions {
 	export interface Default extends SchemaOptions.Default {
 		schemas: $$Schemable[]
 	}

@@ -4,10 +4,16 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { Output, Type_ } from '~'
+import type { CustomBigint$, Output, Type_ } from '~'
 import * as s from '~'
 
-describe('number', () => {
+describe('bigint', () => {
+	it('type', () => {
+		$Assert<
+			IsIdentical<typeof s.bigint.optional, CustomBigint$<{ isOptional: true }>>
+		>()
+	})
+
 	it('simple', () => {
 		expect.hasAssertions()
 

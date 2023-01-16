@@ -1,32 +1,36 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $AssumeType } from '~/$strip'
+import { $AssumeType } from '_'
 
+import type { _, NonStrictPartial } from '..'
 import { isWithCloneFunction } from './clone'
 
 function deepAssign(
 	r: unknown,
 	x: unknown,
-	options?: CloneOptions | undefined,
+	options?: NonStrictPartial<CloneOptions> | undefined,
 ) {
-	const d = Object.getOwnPropertyDescriptors(x)
+	const descriptors = Object.getOwnPropertyDescriptors(x)
 
-	for (const v of Object.values(d)) {
+	for (const key of options?.omit ?? []) {
+		delete descriptors[key as never]
+	}
+
+	for (const v of Object.values(descriptors)) {
 		if ('value' in v) v.value = deepClone(v.value, options) as never
 
 		if (v.get || v.set)
 			throw new Error('cannot clone object with getters or setters')
 	}
 
-	Object.defineProperties(r, d)
+	Object.defineProperties(r, descriptors)
 	Object.setPrototypeOf(r, Object.getPrototypeOf(x) as never)
 }
 
-// let cnt = 0
-
 export interface CloneOptions {
-	/** Mutable */
+	omit: readonly (keyof any)[]
+
 	// eslint-disable-next-line es-x/no-weak-map
 	cache: WeakMap<object, object>
 }
@@ -39,20 +43,29 @@ export interface CloneOptions {
  * - ⚠️ Uses `WeakMap`
  * - ⛔ Throws if getters or setters are encountered
  */
-export function deepClone<T>(value: T, options?: CloneOptions | undefined): T {
-	// eslint-disable-next-line es-x/no-weak-map
-	const cache = options?.cache ?? new WeakMap()
+export function deepClone<T>(
+	value: T,
+	inputOptions?: NonStrictPartial<CloneOptions> | undefined,
+): T {
+	const options: _<
+		// eslint-disable-next-line es-x/no-weak-map
+		NonStrictPartial<CloneOptions> & { cache: WeakMap<object, object> }
+	> = inputOptions?.cache
+		? // eslint-disable-next-line es-x/no-weak-map
+		  (inputOptions as typeof inputOptions & { cache: WeakMap<object, object> })
+		: // eslint-disable-next-line es-x/no-weak-map
+		  { ...inputOptions, cache: new WeakMap() }
 
-	if (typeof value === 'object' && value !== null && cache.has(value))
-		return cache.get(value) as never
+	if (typeof value === 'object' && value !== null && options.cache.has(value))
+		return options.cache.get(value) as never
 
 	// if(++cnt >= 20) throw new Error('bad')
 
 	// $AssumeType<{ clone?: unknown } | null | undefined>(x)
 
 	if (isWithCloneFunction(value)) {
-		const result = value.clone({ cache }) as object
-		cache.set(value, result)
+		const result = value.clone(options) as object
+		options.cache.set(value, result)
 		return result as never
 	}
 
@@ -62,8 +75,8 @@ export function deepClone<T>(value: T, options?: CloneOptions | undefined): T {
 	 */
 	if (Array.isArray(value)) {
 		const result = [] as unknown[]
-		cache.set(value, result)
-		deepAssign(result, value, { cache })
+		options.cache.set(value, result)
+		deepAssign(result, value, options)
 		return result as never
 	}
 
@@ -74,14 +87,14 @@ export function deepClone<T>(value: T, options?: CloneOptions | undefined): T {
 			$AssumeType<{ constructor: new (x: unknown) => void }>(value)
 
 			const result = new value.constructor(value) as unknown as object
-			cache.set(value, result)
-			deepAssign(result, value, { cache })
+			options.cache.set(value, result)
+			deepAssign(result, value, options)
 			return result as never
 		}
 
 		const result = {} as object
-		cache.set(value, result)
-		deepAssign(result, value, { cache })
+		options.cache.set(value, result)
+		deepAssign(result, value, options)
 		return result as never
 	}
 
@@ -94,11 +107,10 @@ export function deepClone<T>(value: T, options?: CloneOptions | undefined): T {
 			},
 		}
 
-		// eslint-disable-next-line security/detect-object-injection
 		const result = obj[name] as object
 
-		cache.set(value, result)
-		deepAssign(result, value, { cache })
+		options.cache.set(value, result)
+		deepAssign(result, value, options)
 		return result as never
 	}
 

@@ -4,15 +4,17 @@
 import type { SchemaOptions } from '~'
 
 export interface UnknownObjectOptions extends SchemaOptions {
-	Output: object
-	Input: object
+	// Output: object
+	// Input: object
 
 	isPlain: boolean
 }
 
-export interface DefaultUnknownObjectOptions extends SchemaOptions.Default {
-	Output: object
-	Input: object
+export declare namespace UnknownObjectOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: object
+		Input: object
 
-	isPlain: false
+		isPlain: false
+	}
 }

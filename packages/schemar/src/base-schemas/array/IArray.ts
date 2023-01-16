@@ -3,7 +3,7 @@
 
 import type { OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, ISchema, SCHEMA_NAME, SchemaLike } from '~'
+import type { $$Schema, ISchema, ISchema$, SCHEMA_NAME, SchemaLike } from '~'
 
 import type { ArrayOptions } from '.'
 
@@ -20,7 +20,18 @@ export interface ArrayLike<T extends readonly unknown[] = readonly unknown[]>
 
 //
 
-export interface IArray extends $$Array, ISchema<readonly unknown[]> {
+export interface IArray extends $$Array, ISchema {
+	readonly [SCHEMA_NAME]: 'Array'
+
+	[OPTIONS]: ArrayOptions
+
+	readonly getElementSchema: $$Schema
+	readonly isReadonlyArray: boolean
+	readonly getMinLength: number | undefined
+	readonly getMaxLength: number | undefined
+}
+
+export interface IArray$ extends $$Array, ISchema$ {
 	readonly [SCHEMA_NAME]: 'Array'
 
 	[OPTIONS]: ArrayOptions
@@ -30,9 +41,11 @@ export interface IArray extends $$Array, ISchema<readonly unknown[]> {
 	readonly getMinLength: number | undefined
 	readonly getMaxLength: number | undefined
 
-	readonly readonlyArray: any
-	readonly mutableArray: any
+	readonly readonlyArray: IArray$
+	readonly mutableArray: IArray$
 }
+
+//
 
 export interface IReadonlyArray extends IArray {}
 

@@ -3,31 +3,36 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomNumber, Literal } from '~'
-
-import { NumberImpl } from './_'
+import type { CustomNumber, CustomNumber$, Literal$ } from '~'
+import { NumberImpl } from '~'
 
 //
 
-export interface Number_ extends CustomNumber<{}> {
-	<L extends number>(...literals: L[]): Literal<L>
-	<L extends number>(literals: Set<L>): Literal<L>
-	<L extends number>(...args: L[] | [Set<L>]): Literal<L>
+interface Number_ extends CustomNumber<{}> {}
+export type { Number_ as Number }
+
+export interface Number$ extends CustomNumber$<{}> {
+	<L extends number>(...literals: L[]): Literal$<L>
+	<L extends number>(literals: Set<L>): Literal$<L>
+	<L extends number>(...args: L[] | [Set<L>]): Literal$<L>
+
+	//
+
+	get Final(): Number_
 }
 
-export { Number_ as Number }
+const Number$ = lazyConstructor(
+	() => NumberImpl,
+) as unknown as Number$Constructor
 
-export type NumberConstructor = new () => Number_
+export type Number$Constructor = new () => Number$
 
 //
 
 export interface Integer extends CustomNumber<{ isInteger: true }> {}
+export interface Integer$ extends CustomNumber$<{ isInteger: true }> {}
 
 //
 
-export const Number_ = lazyConstructor(
-	() => NumberImpl,
-) as unknown as NumberConstructor
-
-export const number: Number_ = lazyValue(() => new Number_()) as never
-export const integer: Integer = lazyValue(() => number.integer) as never
+export const number: Number$ = lazyValue(() => new Number$()) as never
+export const integer: Integer$ = lazyValue(() => number.integer) as never

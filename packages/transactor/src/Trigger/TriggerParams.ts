@@ -24,7 +24,7 @@ export interface TriggerParams<
 	D extends $$Doc = $$Doc,
 	ThisExists extends boolean = boolean,
 > extends PathMatches,
-		DocRefContext<D> {
+		DocRefContext {
 	//
 	doc: If<ThisExists, D, null>
 
@@ -64,7 +64,7 @@ export namespace TriggerParams {
 	>
 	export type OnGet<D extends $$Doc> = TriggerParams<D>
 
-	export interface BeforeCommit<D extends $$Doc>
+	export interface BeforeCommit<D extends $$Doc = $$Doc>
 		extends TriggerParams<D>,
 			GetIntrinsicFields<D> {}
 }

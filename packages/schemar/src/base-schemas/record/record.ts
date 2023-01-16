@@ -7,27 +7,46 @@ import type {
 	$$Schema,
 	$$Schemable,
 	CustomRecord,
-	DefaultRecordOptions,
+	CustomRecord$,
 	Input,
 	Output,
+	RecordOptions,
 } from '~'
 
 import { RecordImpl } from './RecordImpl'
 
-type Record_<
+interface Record_<
 	TKeySchema extends $$Schema & {
 		Output: keyof any
 		Input: keyof any | undefined
 	},
 	TValueSchema extends $$Schemable,
-> = CustomRecord<{
-	Output: Record<Output<TKeySchema>, Output<TValueSchema>>
+> extends CustomRecord<{
+		Output: Record<Output<TKeySchema>, Output<TValueSchema>>
 
-	Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
+		Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
 
-	keySchema: TKeySchema
-	valueSchema: TValueSchema
-}>
+		// keySchema: TKeySchema
+		// valueSchema: TValueSchema
+	}> {}
+
+export { Record_ as Record }
+
+export interface Record$<
+	TKeySchema extends $$Schema & {
+		Output: keyof any
+		Input: keyof any | undefined
+	},
+	TValueSchema extends $$Schemable,
+> extends CustomRecord$<{
+		Output: Record<Output<TKeySchema>, Output<TValueSchema>>
+
+		Input: Record<Exclude<Input<TKeySchema>, undefined>, Input<TValueSchema>>
+
+		/** Hide for editor performance */
+		// keySchema: TKeySchema
+		// valueSchema: TValueSchema
+	}> {}
 
 //
 
@@ -44,7 +63,7 @@ export type RecordConstructor = {
 	): Record_<TKeySchema, TValueSchema>
 
 	new <TValueSchema extends $$Schemable>(valueSchema: TValueSchema): Record_<
-		DefaultRecordOptions['keySchema'],
+		RecordOptions.Default['keySchema'],
 		TValueSchema
 	>
 
@@ -64,5 +83,3 @@ export type RecordConstructor = {
 const Record_ = lazyConstructor(
 	() => RecordImpl,
 ) as unknown as RecordConstructor
-
-export { Record_ as Record }

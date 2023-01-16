@@ -19,7 +19,7 @@ export const security = defineEslintConfigOverride({
 		'security/detect-non-literal-fs-filename': 1,
 		'security/detect-non-literal-regexp': 1,
 		'security/detect-non-literal-require': 0, // bugged when `require` called without argument
-		'security/detect-object-injection': 1,
+		'security/detect-object-injection': 0, // have to disable everywhere... too many false positives
 		'security/detect-possible-timing-attacks': 1,
 		'security/detect-pseudoRandomBytes': 1,
 		'security/detect-new-buffer': 1,

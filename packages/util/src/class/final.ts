@@ -1,8 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $AssumeType } from '~/$strip'
-import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { $AssumeType } from '_'
+import { VoltisoUtilError } from '_/error'
+
 import { hasProperty } from '~/object/get-set/get/hasProperty/hasProperty'
 import type { UnknownProperty } from '~/object/UnknownProperty'
 import { stringFrom } from '~/string'
@@ -14,6 +15,11 @@ type MethodKey<O> = string &
 			: never
 	}[keyof O]
 
+/**
+ * Runtime check if final methods have not been overridden
+ *
+ * @throws `VoltisoUtilError` if a method has been overridden
+ */
 export function final<
 	Base extends object,
 	Keys extends (keyof Base | UnknownProperty)[],
@@ -23,12 +29,11 @@ export function final<
 		name: string
 		prototype: Base
 	},
-	...keys: Keys
+	keys: Keys,
 ): void {
 	for (const m of keys) {
 		if (
 			!hasProperty(Base.prototype, m) ||
-			// eslint-disable-next-line security/detect-object-injection
 			typeof Base.prototype[m] !== 'function'
 		) {
 			throw new VoltisoUtilError(
@@ -38,11 +43,30 @@ export function final<
 
 		$AssumeType<MethodKey<Base>>(m)
 
-		// eslint-disable-next-line security/detect-object-injection
 		if (thisArg[m] !== Base.prototype[m]) {
 			throw new VoltisoUtilError(
 				`method ${stringFrom(m)} is final (cannot override)`,
 			)
 		}
 	}
+}
+
+/**
+ * Runtime check if final methods have not been overridden
+ *
+ * @throws `VoltisoUtilError` if a method has been overridden
+ * @strip 👗 Use `@voltiso/transform/strip` to strip from production code
+ */
+export function $final<
+	Base extends object,
+	Keys extends (keyof Base | UnknownProperty)[],
+>(
+	thisArg: Record<MethodKey<Base>, unknown>,
+	Base: {
+		name: string
+		prototype: Base
+	},
+	keys: Keys,
+): void {
+	return final(thisArg, Base, keys)
 }

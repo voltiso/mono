@@ -4,5 +4,5 @@
 import type { WithSelfBoundCALL } from '~/function'
 
 export interface BoundCallableInputWithCALL extends WithSelfBoundCALL {
-	clone?(): this
+	clone?(): this // ! type-check slow with `this`
 }

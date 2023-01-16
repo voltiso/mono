@@ -3,27 +3,36 @@
 
 import { lazyConstructor, lazyValue } from '@voltiso/util'
 
-import type { CustomString, Literal } from '~'
+import type { CustomString, CustomString$, Literal$ } from '~'
 
 import { StringImpl } from './_'
 
-interface String_ extends CustomString<{}> {
-	<L extends string>(...literals: L[]): Literal<L>
-	<L extends string>(literals: Set<L>): Literal<L>
-	<L extends string>(...args: L[] | [Set<L>]): Literal<L>
-}
-
-export type StringConstructor = new () => String_
+interface String_ extends CustomString<{}> {}
+export type { String_ as String }
 
 //
 
-const String_ = lazyConstructor(
+export interface String$ extends CustomString$<{}> {
+	<L extends string>(...literals: L[]): Literal$<L>
+	<L extends string>(literals: Set<L>): Literal$<L>
+	<L extends string>(...args: L[] | [Set<L>]): Literal$<L>
+
+	//
+
+	get Final(): String_
+}
+
+//
+
+const String$ = lazyConstructor(
 	() => StringImpl,
-) as unknown as StringConstructor
+) as unknown as String$Constructor
 
-export const string: String_ = lazyValue(() => new String_())
+export type String$Constructor = new () => String$
 
-export { String_ as String }
+//
+
+export const string: String$ = lazyValue(() => new String$())
 
 export const regex = (
 	regExp: RegExp,

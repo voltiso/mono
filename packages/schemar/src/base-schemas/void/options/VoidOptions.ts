@@ -4,11 +4,11 @@
 import type { SchemaOptions } from '~/Schema/options'
 
 export interface VoidOptions extends SchemaOptions {
-	Output: void
-	Input: void
+	// Output: void
+	// Input: void
 }
 
-export namespace VoidOptions {
+export declare namespace VoidOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: void
 		Input: void

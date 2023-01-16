@@ -1,6 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type CustomFix<InputType = unknown, OutputType = unknown> = {
-	fix(x: InputType): OutputType | void
+import type { CustomSchema } from '~'
+
+export interface CustomFix<Input = unknown, Output = unknown> {
+	inputSchema: CustomSchema<{ Input: Input }>
+	fix(x: this['inputSchema']['Output']): Output | void
 }

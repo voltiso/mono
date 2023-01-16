@@ -14,7 +14,7 @@ import type { DocRefContext } from './Context'
  * @returns CacheEntry
  */
 export function getCacheEntry(
-	ctx: DocRefContext.ContextWithTransaction,
+	ctx: DocRefContext.AlsoWithTransaction,
 ): CacheEntry {
 	const path = ctx.docRef.path.toString()
 	const cacheEntry = ctx.transaction._cache.get(path)

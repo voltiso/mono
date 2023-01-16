@@ -3,7 +3,7 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema } from '~'
+import type { ISchema, ISchema$ } from '~'
 
 import type { BivariantUnknownFunction } from './UnknownFunctionOptions'
 
@@ -11,12 +11,15 @@ export interface IUnknownFunction<
 	T extends BivariantUnknownFunction = BivariantUnknownFunction,
 > extends ISchema<T> {
 	readonly [SCHEMA_NAME]: 'UnknownFunction'
-
-	// readonly [BASE_OPTIONS]: UnknownFunctionOptions
-	// readonly [DEFAULT_OPTIONS]: DefaultUnknownFunctionOptions
 }
 
-export function isUnknownFunctionSchema(x: unknown): x is IUnknownFunction {
+export interface IUnknownFunction$<
+	T extends BivariantUnknownFunction = BivariantUnknownFunction,
+> extends ISchema$<T> {
+	readonly [SCHEMA_NAME]: 'UnknownFunction'
+}
+
+export function isUnknownFunctionSchema(x: unknown): x is IUnknownFunction$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownFunction | null)?.[SCHEMA_NAME] === 'UnknownFunction'
 }

@@ -25,6 +25,15 @@ describe('s.number', () => {
 		$Assert.is<INumber, $$Number>()
 	})
 
+	it('type', () => {
+		$Assert<
+			IsIdentical<
+				typeof s.number.optional.Final,
+				CustomNumber<{ isOptional: true }>
+			>
+		>()
+	})
+
 	it('simple', () => {
 		expect.hasAssertions()
 

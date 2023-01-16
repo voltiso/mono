@@ -3,7 +3,7 @@
 
 import { lazyValue } from '@voltiso/util'
 
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
 
 export const defaultSchemaInferrerOptions = lazyValue(
 	() => defaultSchemaOptions,

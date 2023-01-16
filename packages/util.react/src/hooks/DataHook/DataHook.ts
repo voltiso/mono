@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2Reverse_ } from '@voltiso/util'
+import type { Merge } from '@voltiso/util'
 
 import type { DataHookConstructor } from './DataHookConstructor'
 
@@ -14,7 +14,7 @@ class DataHookImpl<D extends object> {
 	readonly error?: Error
 
 	get exists(): boolean | undefined {
-		if (typeof this.data === 'undefined') return undefined
+		if (this.data === undefined) return undefined
 		else return this.data !== null
 	}
 
@@ -25,7 +25,7 @@ class DataHookImpl<D extends object> {
 	}) {
 		this.isLoading = p.isLoading || false
 
-		if (typeof p.data !== 'undefined') this.data = p.data
+		if (p.data !== undefined) this.data = p.data
 
 		if (p.error)
 			this.error = typeof p.error === 'string' ? new Error(p.error) : p.error
@@ -42,7 +42,7 @@ class DataHookImpl<D extends object> {
 	}
 }
 
-export type DataHookLoading<D extends object> = Merge2Reverse_<
+export type DataHookLoading<D extends object> = Merge<
 	{
 		readonly data?: undefined
 		readonly isLoading: true
@@ -52,7 +52,7 @@ export type DataHookLoading<D extends object> = Merge2Reverse_<
 	{ [k in keyof D]?: undefined }
 >
 
-export type DataHookError<D extends object> = Merge2Reverse_<
+export type DataHookError<D extends object> = Merge<
 	{
 		readonly data?: undefined
 		readonly isLoading: false
@@ -62,7 +62,7 @@ export type DataHookError<D extends object> = Merge2Reverse_<
 	{ [k in keyof D]?: undefined }
 >
 
-export type DataHookExists<D extends object> = Merge2Reverse_<
+export type DataHookExists<D extends object> = Merge<
 	{
 		readonly data: D
 		readonly isLoading: false
@@ -72,7 +72,7 @@ export type DataHookExists<D extends object> = Merge2Reverse_<
 	D
 >
 
-export type DataHookNotExists<D extends object> = Merge2Reverse_<
+export type DataHookNotExists<D extends object> = Merge<
 	{
 		readonly data: null
 		readonly isLoading: false

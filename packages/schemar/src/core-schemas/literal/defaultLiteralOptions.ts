@@ -1,15 +1,18 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue } from '@voltiso/util'
+import { $assert } from '@voltiso/util'
 
-import type * as t from '~'
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+import type { InferableLiteral } from '~/types/Inferable/Inferable'
 
-export const defaultLiteralOptions = lazyValue(() => ({
+$assert(defaultSchemaOptions)
+
+export const defaultLiteralOptions = Object.freeze({
 	...defaultSchemaOptions,
-	Output: 0 as unknown as t.InferableLiteral,
-	Input: 0 as unknown as t.InferableLiteral,
+
+	Output: 0 as unknown as InferableLiteral,
+	Input: 0 as unknown as InferableLiteral,
 
 	values: 0 as unknown as Set<never>,
-}))
+})

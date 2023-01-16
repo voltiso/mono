@@ -6,31 +6,38 @@ import type { IsAlmostSame, Newable } from '@voltiso/util'
 import type {
 	$$InferableObject,
 	$$Schemable,
+	GetObject$,
 	InferableLiteral,
 	InferableReadonlyTuple,
-	Instance,
-	Literal,
-	MutableTuple,
+	Instance$,
+	Literal$,
+	MutableTuple$,
 	NonNullish,
-	Object,
 } from '~'
 
-import type { $$Schema } from '../Schema'
+import type { $$Schema, ISchema$ } from '../Schema'
 
-export type InferSchemaNoReadonlyTuple_<T> = T extends InferableLiteral
-	? Literal<T>
+//
+
+/** Explicit infer */
+export type InferSchema$NoReadonlyTuple_<T> = [T] extends [never]
+	? never
+	: $$Schemable extends T
+	? ISchema$
+	: T extends InferableLiteral
+	? Literal$<T>
 	: T extends Newable
-	? Instance<T>
+	? Instance$<T>
 	: T extends $$Schema
 	? T
 	: T extends InferableReadonlyTuple
-	? MutableTuple<[...T]>
+	? MutableTuple$<[...T]>
 	: IsAlmostSame<T, {}> extends true
 	? NonNullish
 	: T extends $$InferableObject
-	? // eslint-disable-next-line @typescript-eslint/ban-types
-	  Object<{ -readonly [k in keyof T]: T[k] }>
+	? GetObject$<T>
 	: never
 
-export type InferSchemaNoReadonlyTuple<T extends $$Schemable> =
-	InferSchemaNoReadonlyTuple_<T>
+/** Explicit infer */
+export type InferSchema$NoReadonlyTuple<T extends $$Schemable> =
+	InferSchema$NoReadonlyTuple_<T>

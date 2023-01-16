@@ -21,11 +21,12 @@ export namespace InferTI {
 	export type FromDoc<D extends $$Doc> = D extends {
 		[DTI]: DocTI
 	}
-		? _<
-				D[DTI] & {
-					methods: InferMethods<D>
-				} & (AnyDoc extends D[DTI]['tag'] ? { tag: AnyDoc } : unknown)
-		  >
+		? $$DocTI &
+				_<
+					D[DTI] & {
+						methods: InferMethods<D>
+					} & (AnyDoc extends D[DTI]['tag'] ? { tag: AnyDoc } : unknown)
+				>
 		: DocTI
 
 	export type FromCls<Cls extends $$DocConstructor> = FromDoc<

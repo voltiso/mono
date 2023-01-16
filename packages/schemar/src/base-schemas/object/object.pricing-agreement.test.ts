@@ -58,7 +58,7 @@ describe('object', () => {
 				commission: 0.2,
 			}),
 		).toThrow(
-			`[@voltiso/schemar] .currency should be one of ['USD', 'PLN'] (got 'ASD')`,
+			`.currency should be one of ['USD', 'PLN'] (got 'ASD')`,
 		)
 
 		expect(

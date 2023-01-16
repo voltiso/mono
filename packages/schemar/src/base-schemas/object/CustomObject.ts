@@ -3,7 +3,6 @@
 
 import type {
 	_,
-	$Override,
 	$Override_,
 	AlsoAccept,
 	BASE_OPTIONS,
@@ -19,6 +18,7 @@ import type {
 	$$Object,
 	$$Schemable,
 	CustomSchema,
+	CustomSchema$,
 	Inferable,
 	InferableObject,
 	InferableTuple,
@@ -30,6 +30,8 @@ import type {
 
 import type { ObjectIndexSignatureEntry, ObjectOptions } from './ObjectOptions'
 
+//
+
 export interface CustomObject<O extends Partial<ObjectOptions>>
 	extends $$Object,
 		CustomSchema<O> {
@@ -39,6 +41,35 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	//
+
+	get isPlain(): this[OPTIONS]['isPlain']
+
+	/** Currently not type-exposed */
+	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[OPTIONS]['indexSignatures']
+
+	//
+
+	get getShape(): _<CustomObject.GetShape<this>>
+
+	get getDeepShape(): _<
+		CustomObject.GetDeepShape<this['Output'], this['Input']>
+	>
+}
+
+//
+
+export interface CustomObject$<O extends Partial<ObjectOptions>>
+	extends $$Object,
+		CustomSchema$<O> {
+	//
+	readonly [SCHEMA_NAME]: 'Object'
+
+	readonly [BASE_OPTIONS]: ObjectOptions
+	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+
+	//
+
+	get isPlain(): this[OPTIONS]['isPlain']
 
 	/** Currently not type-exposed */
 	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[OPTIONS]['indexSignatures']
@@ -53,7 +84,11 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 
 	//
 
-	get plain(): CustomObject<$Override<O, { isPlain: true }>>
+	get Final(): CustomObject<O>
+
+	//
+
+	get plain(): this // CustomObject$<$Override<O, { isPlain: true }>>
 
 	/**
 	 * Apply `.optional` to all properties
@@ -102,8 +137,8 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 // 	}[keyof Override]
 // >
 
-export namespace CustomObject {
-	export type Define<O, OO> = CustomObject<$Override_<O, OO>>
+export declare namespace CustomObject {
+	export type Define<O, OO> = CustomObject$<$Override_<O, OO>>
 
 	export type WithIndex<
 		This extends $$Object,
@@ -199,10 +234,7 @@ export namespace CustomObject {
 			: CustomSchema<{ Output: This['Output'][k]; Input: This['Input'][k] }>
 	}
 
-	export type GetDeepShape<
-		Output extends object,
-		Input extends object | undefined,
-	> = {
+	export type GetDeepShape<Output, Input> = {
 		[k in keyof Output]: GetDeepShape.Rec<
 			Output[k],
 			k extends keyof Input ? Input[k] : never

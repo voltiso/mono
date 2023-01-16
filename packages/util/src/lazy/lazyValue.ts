@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $assert } from '_'
+
 import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '~/proxy'
 
 /* eslint-disable unicorn/consistent-function-scoping */
@@ -21,9 +23,11 @@ export function lazyValue<T extends object>(getValue: () => T): T {
 	// Object.defineProperty(obj, 'prototype', { configurable: true })
 
 	function load() {
-		// eslint-disable-next-line unicorn/no-typeof-undefined
-		if (typeof value === 'undefined') {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (value === undefined) {
 			value = getValue()
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			$assert(value !== undefined, 'lazyValue: got undefined')
 			// assign(obj, value)
 		}
 	}

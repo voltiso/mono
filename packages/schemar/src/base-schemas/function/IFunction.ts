@@ -3,11 +3,48 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, FunctionOptions, ISchema, SCHEMA_NAME } from '~'
+import type {
+	$$Schema,
+	FunctionOptions,
+	ISchema,
+	ISchema$,
+	SCHEMA_NAME,
+} from '~'
 
-export interface IFunction<
-	T extends (...args: any) => any = (...args: any) => any,
-> extends ISchema<T> {
+export interface IFunction extends ISchema {
+	//
+	readonly [SCHEMA_NAME]: 'Function'
+
+	readonly [BASE_OPTIONS]: FunctionOptions
+	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
+
+	//
+
+	get Inner(): (...args: any) => unknown
+	get Outer(): (...args: any) => unknown
+
+	readonly OutputThis: unknown
+	readonly InputThis: unknown
+	readonly This: unknown
+
+	readonly OutputParameters: unknown[]
+	readonly InputParameters: unknown[]
+	readonly Parameters: unknown[]
+
+	readonly OutputReturn: unknown
+	readonly InputReturn: unknown
+	readonly Return: unknown
+
+	//
+
+	get getThisSchema(): $$Schema
+	get hasThis(): boolean
+
+	get getParametersSchema(): $$Schema
+	get getReturnSchema(): $$Schema
+}
+
+export interface IFunction$ extends ISchema$ {
 	//
 	readonly [SCHEMA_NAME]: 'Function'
 

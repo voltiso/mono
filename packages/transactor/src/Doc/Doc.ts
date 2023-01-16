@@ -8,9 +8,13 @@ import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 import type { DocIdString } from '~/brand'
 import type { InferTI } from '~/CollectionRef'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
-import type { GetDocRef } from '~/DocRef'
-import type { $$DocRelatedLike, GetDocTag, GetDocTI } from '~/DocRelated'
-import type { CustomDocPath } from '~/Path'
+import type { GetDocRef$ } from '~/DocRef'
+import type {
+	$$DocRelatedLike,
+	GetDocRepresentative,
+	GetDocTI,
+} from '~/DocRelated'
+import type { DocPath } from '~/Path'
 import type { JsonFromDocData } from '~/serialization'
 
 import type { GetVoltisoEntry } from './_'
@@ -42,8 +46,8 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 	readonly constructor: $$DocConstructor
 
 	readonly id: DocIdString<TI> & Output<GetDocTI<TI>['id']>
-	readonly path: CustomDocPath<{ doc: GetDocTag<TI> }>
-	readonly ref: DocBase.Ref<this>
+	readonly path: DocPath<TI> // CustomDocPath<{ doc: GetDocTag<TI> }>
+	readonly ref: DocBase.Ref<GetDocRepresentative<this>>
 
 	readonly data: GetData.ForDocTI<TI>
 	dataWithoutId(): GetData.ForDocTI<TI>
@@ -81,7 +85,7 @@ export interface DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 }
 
 export namespace DocBase {
-	export type Ref<This extends $$DocRelatedLike> = GetDocRef<{
+	export type Ref<This extends $$DocRelatedLike> = GetDocRef$<{
 		doc: This
 		isStrong: true
 	}>

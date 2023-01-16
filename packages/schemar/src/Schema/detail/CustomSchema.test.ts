@@ -8,10 +8,12 @@ import type {
 	$$Schema,
 	$$Schemable,
 	CustomSchema,
+	CustomSchema$,
 	ISchema,
 	Schemable,
 	SchemaOptions,
 	SimpleSchema,
+	SimpleSchema$,
 } from '~'
 import { schema, unknown } from '~'
 
@@ -26,7 +28,7 @@ describe('CustomSchema', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type MySchema = SimpleSchema<Date>
+		type MySchema = SimpleSchema$<Date>
 
 		type X = MySchema['isReadonly']
 		$Assert<IsIdentical<X, false>>()
@@ -36,7 +38,7 @@ describe('CustomSchema', () => {
 		$Assert<
 			IsIdentical<
 				A,
-				CustomSchema<{
+				CustomSchema$<{
 					isOptional: true
 					Output: Date
 					Input: Date
@@ -54,8 +56,8 @@ describe('CustomSchema', () => {
 	it('type - inside object', () => {
 		const mySchema = schema({
 			field: unknown as unknown as SimpleSchema<Date>,
-			optionalField: unknown as unknown as SimpleSchema<Date>['optional'],
-			readonlyField: unknown as unknown as SimpleSchema<Date>['readonly'],
+			optionalField: unknown as unknown as SimpleSchema$<Date>['optional'],
+			readonlyField: unknown as unknown as SimpleSchema$<Date>['readonly'],
 		})
 		type MySchema = typeof mySchema.Output
 

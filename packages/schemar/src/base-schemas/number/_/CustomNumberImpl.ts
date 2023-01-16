@@ -25,24 +25,25 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	readonly [SCHEMA_NAME] = 'Number' as const
 
 	get isInteger(): this[OPTIONS]['isInteger'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isInteger as never
 	}
 
 	get getMin(): this[OPTIONS]['min'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].min as never
 	}
 
 	get getMax(): this[OPTIONS]['max'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].max as never
 	}
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isNumberSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
+	}
+
+	constructor(options: O) {
+		super(options)
+		Object.freeze(this)
 	}
 
 	protected override _getIssues(value: unknown): ValidationIssue[] {
@@ -52,7 +53,6 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (this.isInteger && !Number.isInteger(value)) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						expected: { description: 'integer' },
 						received: { value },
@@ -63,7 +63,6 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (isDefined(this.getMin) && value < this.getMin) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `at least ${this.getMin}` },
@@ -75,7 +74,6 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (isDefined(this.getMax) && value > this.getMax) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `at most ${this.getMax}` },
@@ -86,7 +84,6 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be number' },
 					received: { value },

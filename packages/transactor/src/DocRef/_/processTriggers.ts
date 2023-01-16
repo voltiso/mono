@@ -2,12 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import { isDefined, isDeleteIt, isReplaceIt } from '@voltiso/util'
+import { deepFrozen, isDefined, isDeleteIt, isReplaceIt } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import { withId } from '~/Data'
 import { TransactorError } from '~/error'
-import { immutabilize } from '~/immutabilize'
 import { triggerGuard } from '~/Transaction'
 import type { Updates } from '~/updates'
 import { isEqual } from '~/util'
@@ -21,7 +20,7 @@ import { getSchema } from './getSchema'
 import { validateAndSetCacheEntry } from './validateAndSetCacheEntry'
 
 async function processAfterTrigger(
-	ctx: DocRefContext.ContextWithTransaction,
+	ctx: DocRefContext.AlsoWithTransaction,
 	idx: number,
 ): Promise<boolean> {
 	const cacheEntry = getCacheEntry(ctx)
@@ -62,8 +61,8 @@ async function processAfterTrigger(
 
 			__voltiso: cacheEntry.__voltiso as never,
 
-			before: immutabilize(withId(before, id)) as never,
-			after: immutabilize(withId(after, id)) as never,
+			before: deepFrozen(withId(before, id)), // immutabilize(withId(before, id)) as never,
+			after: deepFrozen(withId(after, id)), // immutabilize(withId(after, id)) as never,
 			...pathMatches,
 			path: ctx.docRef.path as never,
 			id: id as never,
@@ -79,7 +78,7 @@ async function processAfterTrigger(
 }
 
 /** Start executing triggers from the beginning if data change is detected */
-async function loop(ctx: DocRefContext.ContextWithTransaction) {
+async function loop(ctx: DocRefContext.AlsoWithTransaction) {
 	const afterTriggers = getAfterTriggers(ctx.docRef as never)
 
 	const MAX_ITERS = 1_000
@@ -115,7 +114,7 @@ type Params = {
  * @param params - Params
  */
 export async function processTriggers(
-	ctx: DocRefContext.ContextWithTransaction,
+	ctx: DocRefContext.AlsoWithTransaction,
 	params?: Params,
 ): Promise<void> {
 	const cacheEntry = getCacheEntry(ctx)

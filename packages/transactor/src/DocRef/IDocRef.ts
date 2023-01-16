@@ -20,11 +20,10 @@ export interface IDocRefBase extends $$DocRef {
 	readonly id: IdString
 	readonly path: DocPath
 
-	readonly data: DocFieldPath
 	readonly methods: {}
-
+	
+	readonly data: DocFieldPath
 	dataWithId(): PromiseLike<unknown>
-	dataWithoutId(): PromiseLike<unknown>
 
 	get(): PromiseLike<IDoc | null>
 	set(data: any): PromiseLike<IDoc>

@@ -5,7 +5,6 @@ import type { Type_ } from '@voltiso/schemar'
 import type { MaybeArray, MaybePromise } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
-import type { TightenRefs } from '~/Data'
 import type { $$Doc, $$DocTI, GetDataWithId } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
 import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
@@ -40,7 +39,7 @@ export type GetAggregate<
 	Name,
 	Kind extends 'out' | 'in',
 > = Name extends keyof GetDocTI<Target>['aggregates']
-	? TightenRefs<Type_<GetDocTI<Target>['aggregates'][Name], { kind: Kind }>>
+	? Type_<GetDocTI<Target>['aggregates'][Name], { kind: Kind }>
 	: never
 
 //

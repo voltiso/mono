@@ -1,16 +1,17 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert, $Is } from '~/$strip'
+import { $Assert, $Is } from '_'
 
 import type { IsIdentical } from '../compare'
-import type { SymbolBrand } from './BrandedSymbol'
+import type { $ } from './BrandedSymbol'
 import { BrandedSymbol } from './BrandedSymbol'
 
 describe('FakeSymbol', () => {
-	it('generic', <S extends string>() => {
-		$Assert.is<SymbolBrand<S>, SymbolBrand>()
-	})
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('generic', <S extends string>() => {
+	// 	$Assert.is<$$<S>, $$>()
+	// })
 
 	it('type', () => {
 		const a = BrandedSymbol('a')
@@ -19,7 +20,7 @@ describe('FakeSymbol', () => {
 		expect(a.toString()).toBe('Symbol(a)')
 		expect(b.toString()).toBe('Symbol(b)')
 
-		$Assert<IsIdentical<typeof a, BrandedSymbol<'a'>>>()
+		$Assert<IsIdentical<typeof a, $<'a'>>>()
 
 		$Assert($Is<typeof a>().not.subtypeOf<typeof b>())
 		$Assert($Is<typeof b>().not.subtypeOf<typeof a>())

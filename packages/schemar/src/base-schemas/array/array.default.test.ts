@@ -10,7 +10,7 @@ const sOrderProduct = s.schema({
 	productId: s.string,
 })
 
-const sOrderProducts = s.array(sOrderProduct).simple
+const sOrderProducts = s.array(sOrderProduct)
 
 const orderPublicFields = {
 	products: sOrderProducts,

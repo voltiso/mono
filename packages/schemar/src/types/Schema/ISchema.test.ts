@@ -3,7 +3,9 @@
 
 import { $Assert } from '@voltiso/util'
 
-import type { $$Schema, ISchema, SchemaLike } from './ISchema'
+import type { CustomSchema, CustomSchema$ } from '~'
+
+import type { $$Schema, ISchema, ISchema$, SchemaLike } from './ISchema'
 import type { SimpleSchema } from './Schema'
 
 describe('ISchema', () => {
@@ -20,5 +22,13 @@ describe('ISchema', () => {
 		$Assert.is<ISchema<T>, $$Schema>()
 		$Assert.is<ISchema<T>, SchemaLike<T>>()
 		$Assert.is<ISchema<T>, SchemaLike>()
+
+		//
+
+		$Assert.is<keyof CustomSchema$, keyof ISchema$>()
+		$Assert.is<keyof ISchema$, keyof CustomSchema$>()
+
+		$Assert.is<keyof CustomSchema, keyof ISchema>()
+		$Assert.is<keyof ISchema, keyof CustomSchema>()
 	})
 })

@@ -1,49 +1,65 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type * as t from '@voltiso/schemar'
+/* eslint-disable etc/no-internal */
+
 import * as s from '@voltiso/schemar'
-import { lazyValue, ProtoCallable } from '@voltiso/util'
+import { $assert, lazyValue, ProtoCallable } from '@voltiso/util'
 
-import type { DocRef, DocRefLike, GetDocRef } from '~/DocRef'
-import { CustomDocRef } from '~/DocRef'
-import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
-
-/** @internal */
-export const _strongRefSchema = lazyValue(
-	() =>
-		s
-			.instance(CustomDocRef)
-			.check(x => x.isStrong, 'be strong ref') as unknown as t.Schema<
-			GetDocRef<{ isStrong: true }>
-		>,
-)
+import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
+import type { GetDocRef$ } from '~/DocRef/GetDocRef'
+import type { DocRef } from '~/DocRef/StrongDocRef'
+import type { $$DocRelated, $$DocRelatedLike } from '~/DocRelated/DocRelated'
+import type { GetDocTag } from '~/DocRelated/GetDocTag'
+import type { AnyDoc } from '~/DocTypes'
 
 /** @internal */
-export const _strongRefCall = <X extends $$DocRelatedLike>(): t.Schema<
-	GetDocRef<{ isStrong: true; doc: GetDocTag<X> }>
-> =>
-	// eslint-disable-next-line etc/no-internal
-	_strongRefSchema as never
+export const _strongRefSchema = lazyValue(() => {
+	$assert(_CustomDocRef)
 
-export interface DocRefSchema extends t.Schema<DocRef> {
-	<X extends $$DocRelated>(): t.Schema<DocRefLike<X>>
+	return s
+		.instance(_CustomDocRef)
+		.check(x => x.isStrong, 'be strong ref') as unknown as s.Schema<
+		GetDocRef$<{ isStrong: true }>
+	>
+})
 
-	// <X extends DocTag>(): t.Schema<
-	// 	GetDocRef<{
-	// 		doc: X
-	// 		isStrong: true
-	// 	}>
-	// >
+/** @internal */
+export const _strongRefCall = <X extends $$DocRelatedLike>(): s.Schema<
+	GetDocRef$<{ isStrong: true; doc: GetDocTag<X> }>
+> => _strongRefSchema as never
+
+//
+
+//
+
+export interface StrongDocRefSchema<X extends $$DocRelated = AnyDoc>
+	extends s.Schema<DocRef<X>> {}
+
+export interface StrongDocRefSchema$<X extends $$DocRelated = AnyDoc>
+	extends s.Schema$<DocRef<X>> {
+	//
+	get Final(): StrongDocRefSchema<X>
 }
 
+//
+
+export interface UnknownStrongDocRefSchema extends s.Schema<DocRef> {}
+
+export interface UnknownStrongDocRefSchema$ extends s.Schema$<DocRef> {
+	<X extends $$DocRelated>(): StrongDocRefSchema$<X>
+
+	get Final(): UnknownStrongDocRefSchema
+}
+
+//
+
 /** Strong document reference schema (same as {@link sRef}) */
-export const sStrongRef: DocRefSchema = lazyValue(
+export const sStrongRef: UnknownStrongDocRefSchema$ = lazyValue(
 	() =>
 		ProtoCallable({
-			// eslint-disable-next-line etc/no-internal
 			prototype: _strongRefSchema,
-			// eslint-disable-next-line etc/no-internal
+
 			call: _strongRefCall,
 		}) as never,
 )

@@ -4,9 +4,9 @@
 import { SCHEMA_NAME } from '_'
 import { $assert } from '@voltiso/util'
 
-import type { ISchema, Schema } from '~'
+import type { ISchema$, Schema } from '~'
 
-export function isSchema(x: unknown): x is ISchema {
+export function isSchema(x: unknown): x is ISchema$ {
 	$assert(SCHEMA_NAME)
 	// eslint-disable-next-line security/detect-object-injection
 	return !!(x as Schema | null)?.[SCHEMA_NAME]

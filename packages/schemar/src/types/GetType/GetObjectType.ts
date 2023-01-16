@@ -130,7 +130,7 @@ export type GetImplicitObjectType<
 
 //
 
-export namespace GetObjectType {
+export declare namespace GetObjectType {
 	/** @inline @inline */
 	export type _GetNoSignature<
 		T,

@@ -3,9 +3,9 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { IUnknownLiteral } from './IUnknownLiteral'
+import type { IUnknownLiteral, IUnknownLiteral$ } from './IUnknownLiteral'
 
-export function isUnknownLiteralSchema(x: unknown): x is IUnknownLiteral {
+export function isUnknownLiteralSchema(x: unknown): x is IUnknownLiteral$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownLiteral | null)?.[SCHEMA_NAME] === 'UnknownLiteral'
 }

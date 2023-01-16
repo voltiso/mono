@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Merge2_ } from '@voltiso/util'
+import type { Merge } from '@voltiso/util'
 import { isPlainObject, omit } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
@@ -10,7 +10,7 @@ import type { DocTI, GetData } from '~/Doc'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 
 export type AggregateView<T extends VoltisoEntry.AggregateTarget.Entry> =
-	T['value'] extends object ? Merge2_<T['value'], T> : T
+	T['value'] extends object ? Merge<T['value'], T> : T
 
 export function getAggregateView<T extends VoltisoEntry.AggregateTarget.Entry>(
 	data: T,

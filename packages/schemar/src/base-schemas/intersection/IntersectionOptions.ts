@@ -7,6 +7,8 @@ export interface IntersectionOptions extends SchemaOptions {
 	schemas: $$Schemable[]
 }
 
-export interface DefaultIntersectionOptions extends SchemaOptions.Default {
-	schemas: $$Schemable[]
+export declare namespace IntersectionOptions {
+	export interface Default extends SchemaOptions.Default {
+		schemas: $$Schemable[]
+	}
 }

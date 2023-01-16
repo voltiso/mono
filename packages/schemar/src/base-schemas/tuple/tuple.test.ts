@@ -48,13 +48,13 @@ describe('array', () => {
 
 		expect(a.getLength).toBe(0)
 
-		$Assert<IsIdentical<(typeof a)['getLength'], 0>>()
+		$Assert<IsIdentical<(typeof a)['getLength'], number>>()
 
 		const b = s.tuple(1, 2, 3)
 
 		expect(b.getLength).toBe(3)
 
-		$Assert<IsIdentical<(typeof b)['getLength'], 3>>()
+		$Assert<IsIdentical<(typeof b)['getLength'], number>>()
 
 		// @ts-expect-error unknownTuple does not have getLength
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -143,6 +143,7 @@ describe('array', () => {
 		$Assert<IsIdentical<Output<typeof t>, []>>()
 
 		const ts = s.tuple(s.string)
+		$Assert<IsIdentical<typeof ts, s.MutableTuple$<[s.String]>>>() // relaxed string schema
 		$Assert<IsIdentical<Output<typeof ts>, [string]>>()
 		$Assert<IsIdentical<Output<typeof ts>, [string]>>()
 
@@ -163,10 +164,16 @@ describe('array', () => {
 
 	it('check', () => {
 		expect.hasAssertions()
+
+		expect(s.tuple(s.number, s.string).validate([1, 'a'])).toStrictEqual([
+			1,
+			'a',
+		])
+
 		expect(s.tuple(s.number).isValid([1, 2, 3])).toBeFalsy()
 		expect(s.tuple(s.number).isValid([])).toBeFalsy()
 		expect(s.tuple(s.number, s.string).isValid([1, 2])).toBeFalsy()
-		expect(s.tuple(s.number, s.string).isValid([1, '2'])).toBeTruthy()
+		expect(s.tuple(s.number, s.string).isValid([1, 'a'])).toBeTruthy()
 		expect(s.tuple(s.number, s.string).isValid(123)).toBeFalsy()
 		expect(s.tuple(s.number, s.string).isValid(['1', '2'])).toBeFalsy()
 
@@ -178,10 +185,22 @@ describe('array', () => {
 		expect(s.tuple(s.number, s.string).or(s.number).isValid('2')).toBeFalsy()
 		expect(s.tuple(s.number, s.string).isValid('2')).toBeFalsy()
 
+		//
+
 		const t0 = s.tuple(1, 2, s.number, s.rest(s.string))
+
+		$Assert<
+			IsIdentical<typeof t0, s.MutableTuple$<[1, 2, s.Number, ...s.String[]]>>
+		>()
+
 		$Assert<IsIdentical<typeof t0.Type, [1, 2, number, ...string[]]>>()
 
 		const t1 = s.tuple(1, 2, s.number, ...s.rest(s.string))
+
+		$Assert<
+			IsIdentical<typeof t1, s.MutableTuple$<[1, 2, s.Number, ...s.String[]]>>
+		>()
+
 		$Assert<IsIdentical<typeof t1.Type, [1, 2, number, ...string[]]>>()
 
 		expect(t0.isValid([1, 2, 33, 'x', '5'])).toBeTruthy()
@@ -198,5 +217,20 @@ describe('array', () => {
 		expect(() => s.tuple({ a: s.number.min(1) }).validate([{ a: 0 }])).toThrow(
 			'[0].a should at least 1',
 		)
+	})
+
+	it('type - default - readonly', () => {
+		const a = s.tuple(s.number, s.string).default([1, 'a'] as const)
+		$Assert<
+			IsIdentical<
+				typeof a,
+				s.CustomTuple$<{
+					hasDefault: true
+					default: readonly [1, 'a']
+					Output: [number, string]
+					Input: readonly [number, string]
+				}>
+			>
+		>()
 	})
 })

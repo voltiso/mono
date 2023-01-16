@@ -9,7 +9,6 @@ import type {
 	$$Schema,
 	$$Schemable,
 	CustomUnknownRecord,
-	DefaultUnknownRecordOptions,
 	ISchema,
 	Record as RecordSchema,
 	UnknownRecordOptions,
@@ -21,8 +20,8 @@ $assert(EXTENDS)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownRecordImpl<O> {
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownRecordOptions
 	readonly [BASE_OPTIONS]: UnknownRecordOptions
+	readonly [DEFAULT_OPTIONS]: UnknownRecordOptions.Default
 }
 
 export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
@@ -43,8 +42,10 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 
 	constructor(o: O) {
 		super(o)
+		const newThis = BoundCallable(this)
+		Object.freeze(newThis)
 		// eslint-disable-next-line no-constructor-return
-		return BoundCallable(this) as never
+		return newThis
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -69,27 +70,4 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 		// // eslint-disable-next-line security/detect-object-injection
 		// else return super[EXTENDS](other)
 	}
-}
-
-//
-
-export interface $$UnknownRecord extends $$Schema {
-	readonly [SCHEMA_NAME]: 'UnknownRecord'
-}
-
-/** Every IString<O> is assignable to IString */
-export interface IUnknownRecord extends ISchema<Record<keyof any, unknown>> {
-	readonly [SCHEMA_NAME]: 'UnknownRecord'
-
-	readonly [BASE_OPTIONS]: UnknownRecordOptions
-	readonly [DEFAULT_OPTIONS]: DefaultUnknownRecordOptions
-
-	get getIndexSignatures(): unknown[]
-
-	get getShape(): {}
-}
-
-export function isUnknownRecordSchema(x: unknown): x is IUnknownRecord {
-	// eslint-disable-next-line security/detect-object-injection
-	return (x as IUnknownRecord | null)?.[SCHEMA_NAME] === 'UnknownRecord'
 }

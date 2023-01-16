@@ -3,13 +3,13 @@
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type {
-	IObject,
+	IObject$,
 	ISchema,
-	Output,
+	Output_,
 	Schema,
 	SchemaLike,
 } from '@voltiso/schemar'
-import type { _, DeleteIt, If, Override, PatchFor } from '@voltiso/util'
+import type { _, If, Override } from '@voltiso/util'
 import {
 	assert,
 	deleteIt,
@@ -31,7 +31,6 @@ import type {
 	GetDataWithId,
 	GetMethodPromises,
 	GetPublicCreationInputData,
-	GetUpdateDataByCtx,
 } from '~/Doc'
 import type { GetDoc, GetDocTag, GetDocTI } from '~/DocRelated'
 import { TransactorError } from '~/error/TransactorError'
@@ -40,6 +39,7 @@ import type { DocPath } from '~/Path'
 import { CustomDocPath } from '~/Path'
 import type { IntrinsicFieldsSchema } from '~/schemas/sIntrinsicFields'
 import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
+import { guardedValidate } from '~/util'
 
 import { DocFieldPath } from '../DocFieldPath/DocFieldPath'
 import type { DocRefContext } from './_'
@@ -54,20 +54,23 @@ import type { $$DocRef } from './$$DocRef'
 import { IS_DOC_REF } from './$$DocRef'
 import type { CustomDocRef } from './CustomDocRef'
 import { defaultDocRefOptions } from './CustomDocRef'
-import type { GetDocRef } from './GetDocRef'
+import type { GetDocRef$ } from './GetDocRef'
 import { get, update } from './methods'
-import { guardedValidate } from '~/util'
 
 //
 
-export interface _CustomDocRef<O extends CustomDocRef.Options>
-	extends $$DocRef,
+export interface _CustomDocRef<
+	O extends CustomDocRef.Options = CustomDocRef.Options.Default,
+> extends $$DocRef,
 		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
 		CustomDocRef.IntrinsicFields<O>,
 		PromiseLike<GetDoc<O['doc']> | CustomDocRef.MaybeNull<O>> {}
 
 /** @internal */
-export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
+export class _CustomDocRef<
+	O extends CustomDocRef.Options = CustomDocRef.Options.Default,
+> implements $$DocRef
+{
 	// declare readonly [DTI]: GetDocTI.ByTag<O['doc']>;
 
 	readonly [IS_DOC_REF] = true as const
@@ -80,7 +83,8 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		return this._path as never
 	}
 
-	get id(): DocIdString<GetDocTI<O['doc']>> & Output<GetDocTI<O['doc']>['id']> {
+	get id(): DocIdString<GetDocTI<O['doc']>> &
+		Output_<GetDocTI<O['doc']>['id']> {
 		// DocIdString_<O['doc']>
 		assert(this._path.id)
 		return this._path.id as never
@@ -100,8 +104,8 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		| null // null -> no schema
 		| undefined = undefined // undefined -> unknown yet
 
-	_publicOnCreationSchema?: IObject = undefined
-	_privateSchema?: IObject = undefined
+	_publicOnCreationSchema?: IObject$ = undefined
+	_privateSchema?: IObject$ = undefined
 
 	readonly methods = {} as GetMethodPromises<O['doc']>
 
@@ -115,7 +119,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	get schemaWithoutId(): Schema<GetData<O['doc']>> | undefined {
+	get schema(): Schema<GetData<O['doc']>> | undefined {
 		throw new TransactorError('not implemented')
 	}
 
@@ -127,7 +131,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		return getAggregateSchemas(this) as never
 	}
 
-	get asStrongRef(): GetDocRef<Override<O, { isStrong: true }>> {
+	get asStrongRef(): GetDocRef$<Override<O, { isStrong: true }>> {
 		// eslint-disable-next-line etc/no-internal
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
@@ -137,7 +141,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 		) as never
 	}
 
-	get asWeakRef(): GetDocRef<Override<O, { isStrong: false }>> {
+	get asWeakRef(): GetDocRef$<Override<O, { isStrong: false }>> {
 		// eslint-disable-next-line etc/no-internal
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
@@ -150,7 +154,7 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	constructor(
 		context: DocRefContext.Parent,
 		path: string,
-		partialOptions: Partial<O> = {},
+		partialOptions: Partial<CustomDocRef.Options> = {},
 	) {
 		this._context = { ...context, docRef: this as never }
 		this._path = new CustomDocPath(path)
@@ -261,19 +265,6 @@ export class _CustomDocRef<O extends CustomDocRef.Options> implements $$DocRef {
 	}
 
 	//
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	update(
-		updates: PatchFor<GetUpdateDataByCtx<O['doc'], 'outside'>>,
-	): PromiseLike<GetDoc<O['doc']>>
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	update(updates: DeleteIt): PromiseLike<null>
-
-	/** @returns `PromiseLike`! (`then`-only) */
-	update(
-		updates: PatchFor<GetUpdateDataByCtx<O['doc'], 'outside'>> | DeleteIt,
-	): PromiseLike<GetDoc<O['doc']> | null>
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(updates: any): any {

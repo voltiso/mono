@@ -5,11 +5,10 @@ import type { IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 
 import type {
-	$CustomBoolean,
 	BooleanOptions,
 	CustomBoolean,
-	IBoolean,
-	InferSchema,
+	CustomBoolean$,
+	InferSchema$,
 	ISchema,
 	Output,
 	Schema,
@@ -19,13 +18,12 @@ import * as s from '~'
 
 describe('boolean', () => {
 	it('generic', <O extends Partial<BooleanOptions>>() => {
-		$Assert.is<$CustomBoolean<O>, IBoolean>()
 		$Assert.is<CustomBoolean<O>, ISchema>()
 	})
 
 	it('type', () => {
 		const opt = s.boolean.optional
-		$Assert<IsIdentical<typeof opt, CustomBoolean<{ isOptional: true }>>>()
+		$Assert<IsIdentical<typeof opt, CustomBoolean$<{ isOptional: true }>>>()
 	})
 
 	it('simple', () => {
@@ -38,7 +36,7 @@ describe('boolean', () => {
 		$Assert<IsIdentical<Aa, boolean>>()
 		$Assert.is<typeof aa, ISchema<boolean>>()
 
-		type X = InferSchema<123>['Output']
+		type X = InferSchema$<123>['Output']
 		$Assert<IsIdentical<X, 123>>()
 
 		type BooleanSchema = Schema<boolean>

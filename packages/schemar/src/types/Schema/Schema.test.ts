@@ -5,21 +5,21 @@ import type { IsIdentical, OPTIONS } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type {
-	CustomSchema,
+	CustomSchema$,
+	ImplicitSchemaInferrer$,
 	InferableReadonlyTuple,
 	InferSchemaFunction,
 	Input,
-	Number,
+	Number$,
 	Output,
 	Schema,
-	SchemaInferrer,
 	SchemaOptions,
-	String,
+	String$,
 } from '~'
 
-const schema = (() => 0) as unknown as SchemaInferrer
-const number = (() => 0) as unknown as Number
-const string = (() => 0) as unknown as String
+const schema = (() => 0) as unknown as ImplicitSchemaInferrer$
+const number = (() => 0) as unknown as Number$
+const string = (() => 0) as unknown as String$
 const infer = (() => 0) as unknown as InferSchemaFunction
 
 describe('Schema', () => {
@@ -32,7 +32,7 @@ describe('Schema', () => {
 	it('SchemaImpl', () => {
 		expect.assertions(0)
 
-		type A = CustomSchema<SchemaOptions.Default>['optional']['readonly']
+		type A = CustomSchema$<SchemaOptions.Default>['optional']['readonly']
 		$Assert.is<A[OPTIONS], { isOptional: true; isReadonly: true }>()
 	})
 

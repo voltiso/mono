@@ -43,7 +43,7 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/import-style': 1,
 		'unicorn/new-for-builtins': 1,
 		'unicorn/no-abusive-eslint-disable': 1,
-		'unicorn/no-array-callback-reference': 1,
+		'unicorn/no-array-callback-reference': 0, // problematic with type-guard callbacks
 		'unicorn/no-array-for-each': 1,
 		'unicorn/no-array-method-this-argument': 1,
 		'unicorn/no-array-push-push': 0, // useful to fast-reorder

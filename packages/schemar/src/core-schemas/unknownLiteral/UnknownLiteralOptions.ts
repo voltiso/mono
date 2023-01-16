@@ -4,11 +4,13 @@
 import type { InferableLiteral, SchemaOptions } from '~'
 
 export interface UnknownLiteralOptions extends SchemaOptions {
-	Output: InferableLiteral
-	Input: InferableLiteral
+	// Output: InferableLiteral
+	// Input: InferableLiteral
 }
 
-export interface DefaultUnknownLiteralOptions extends SchemaOptions.Default {
-	Output: InferableLiteral
-	Input: InferableLiteral
+export declare namespace UnknownLiteralOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: InferableLiteral
+		Input: InferableLiteral
+	}
 }

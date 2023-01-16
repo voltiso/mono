@@ -50,7 +50,7 @@ export class _Assertor<S extends s.Schema> {
 				: [undefined, rest[0]]
 
 		try {
-			this._schema.validate(value, { fix: false })
+			this._schema.assertValid(value)
 		} catch (error) {
 			if (!isValidationError(error)) throw error
 

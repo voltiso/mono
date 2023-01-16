@@ -20,4 +20,9 @@ export class CustomUnknownImpl<O extends UnknownOptions>
 	implements CustomUnknown<O>
 {
 	readonly [SCHEMA_NAME] = 'Unknown' as const
+
+	constructor(options: O) {
+		super(options)
+		Object.freeze(this)
+	}
 }

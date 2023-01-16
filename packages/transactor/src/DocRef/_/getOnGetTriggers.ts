@@ -1,9 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { DocRef } from '~/DocRef'
+import { $AssumeType } from '@voltiso/util'
 
-export function getOnGetTriggers(docRef: DocRef) {
+import type { _CustomDocRef, $$DocRef } from '~/DocRef'
+
+export function getOnGetTriggers(docRef: $$DocRef) {
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(docRef)
 	if (docRef._onGets) return docRef._onGets
 
 	docRef._onGets = []

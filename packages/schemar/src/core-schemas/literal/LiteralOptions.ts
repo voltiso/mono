@@ -4,13 +4,13 @@
 import type { InferableLiteral, SchemaOptions } from '~'
 
 export interface LiteralOptions extends SchemaOptions {
-	Output: InferableLiteral
-	Input: InferableLiteral
+	// Output: InferableLiteral
+	// Input: InferableLiteral
 
 	values: Set<InferableLiteral>
 }
 
-export namespace LiteralOptions {
+export declare namespace LiteralOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: InferableLiteral
 		Input: InferableLiteral

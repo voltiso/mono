@@ -1,15 +1,37 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type {
-	Schema,
-} from '~'
+import type { Output_, Schema } from '~'
 import { isArraySchema, schema } from '~'
 import * as s from '~'
 
 describe('array', () => {
+	it('type', () => {
+		const a = s.array(s.string).default([] as const)
+		const b = s.array(s.string)
+
+		$Assert<
+			IsIdentical<
+				typeof a,
+				s.CustomArray<{
+					hasDefault: true
+					Output: string[]
+					Input: string[]
+				}>
+			>
+		>()
+
+		$Assert<IsIdentical<typeof b, s.MutableArray$<s.String>>>()
+
+		type AA = Output_<typeof a>
+		$Assert<IsIdentical<AA, string[]>>()
+		type BB = Output_<typeof b>
+		$Assert<IsIdentical<BB, string[]>>()
+	})
+
 	it('simple', () => {
 		expect.hasAssertions()
 

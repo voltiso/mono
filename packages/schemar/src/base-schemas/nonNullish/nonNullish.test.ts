@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { InferSchema, NonNullish } from '~'
+import type { InferSchema$, NonNullish$ } from '~'
 import * as s from '~'
 
 describe('nonNullish', () => {
@@ -25,9 +25,9 @@ describe('nonNullish', () => {
 
 		expect(s.infer({}).toString()).toBe('{}')
 
-		$Assert<IsIdentical<typeof s.nonNullish, NonNullish>>()
+		$Assert<IsIdentical<typeof s.nonNullish, NonNullish$>>()
 
-		type A = InferSchema<{}>
-		$Assert<IsIdentical<A, NonNullish>>()
+		type A = InferSchema$<{}>
+		$Assert<IsIdentical<A, NonNullish$>>()
 	})
 })

@@ -1,49 +1,41 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable max-depth */
 /* eslint-disable class-methods-use-this */
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { $Merge, $Override_, Mutable } from '@voltiso/util'
+import type { $Merge, $Override_ } from '@voltiso/util'
 import {
+	$assert,
+	$final,
 	BASE_OPTIONS,
 	clone,
 	DEFAULT_OPTIONS,
-	final,
-	isDefined,
+	frozen,
+	omitUndefined,
 	OPTIONS,
-	overrideDefined,
 	stringFrom,
 } from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	CustomSchema,
-	GetIssuesOptions,
-	Schemable,
-	SchemaLike,
-	ValidateOptions,
-	ValidationIssue,
-	ValidationResult,
-} from '~'
-import {
-	defaultValidateOptions,
-	isAnySchema,
-	isSchemaInferrer,
-	isUnionSchema,
-	isUnknownSchema,
-} from '~'
+import { isAnySchema } from '~/base-schemas/any/IAny'
 import { and } from '~/base-schemas/intersection'
-import { or } from '~/base-schemas/union'
-import { schema } from '~/core-schemas'
+import { isUnionSchema, or } from '~/base-schemas/union'
+import { isUnknownSchema } from '~/base-schemas/unknown/IUnknown'
+import { unknown } from '~/base-schemas/unknown/Unknown'
+import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { ValidationError } from '~/error'
-import { InvalidFixError } from '~/error/InvalidFixError'
 import { SchemarError } from '~/error/SchemarError'
+import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import type { ValidationResult } from '~/meta-schemas/validationResult/validationResult'
+import type { CustomSchema } from '~/types/Schema/CustomSchema'
+import type { SchemaLike } from '~/types/Schema/ISchema'
+import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
+import type { $$Schemable, Schemable } from '~/types/Schemable/Schemable'
 
-import type { CustomFix, SchemaOptions } from '../options'
+import type { CustomFix, CustomOperation, SchemaOptions } from '../options'
 import { defaultSchemaOptions } from '../options'
-import { processCustomChecks } from './processCustomChecks'
+import { _process } from './processCustomOperations'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
@@ -74,72 +66,52 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	// GET
 
 	get getName(): string | undefined {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].name
 	}
 
 	get isOptional(): this[OPTIONS]['isOptional'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isOptional as never
 	}
 
 	get isStrictOptional(): this[OPTIONS]['isStrictOptional'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isStrictOptional as never
 	}
 
 	get isReadonly(): this[OPTIONS]['isReadonly'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].isReadonly as never
 	}
 
 	get hasDefault(): this[OPTIONS]['hasDefault'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].hasDefault as never
 	}
 
 	get getDefault(): this[OPTIONS]['hasDefault'] extends false
 		? never
 		: this[OPTIONS]['Output'] {
-		// eslint-disable-next-line security/detect-object-injection
 		if (!this[OPTIONS].hasDefault)
 			throw new SchemarError(`getDefault() no default value specified`)
 
-		// eslint-disable-next-line security/detect-object-injection
 		const getDefault = (this[OPTIONS] as SchemaOptions).getDefault
 		if (getDefault) return getDefault() as never
-		// eslint-disable-next-line security/detect-object-injection
 		else return this[OPTIONS].default as never
 	}
 
-	get getCustomChecks(): this[OPTIONS]['customChecks'] {
-		// eslint-disable-next-line security/detect-object-injection
-		const result = this[OPTIONS].customChecks
-
-		// if (!result)
-		// 	throw new SchemarError(`getCustomChecks() returned ${stringFrom(result)}`)
-
-		return result as never
+	get getCustomOperations(): readonly CustomOperation[] {
+		return this[OPTIONS].customOperations
 	}
 
-	get getCustomFixes(): this[OPTIONS]['customFixes'] {
-		// eslint-disable-next-line security/detect-object-injection
-		const result = this[OPTIONS].customFixes
-
-		// if (!result)
-		// 	throw new SchemarError(`getCustomFixes() returned ${stringFrom(result)}`)
-
-		return result as never
+	get getCustomFixes(): readonly CustomFix[] {
+		return this[OPTIONS].customFixes
 	}
 
-	constructor(partialOptions: O) {
+	constructor(partialOptions: O, opts?: { freeze?: boolean }) {
 		const options = { ...defaultSchemaOptions, ...partialOptions }
-		// eslint-disable-next-line security/detect-object-injection
+
+		if (opts?.freeze ?? true) Object.freeze(options)
+
 		this[OPTIONS] = options as never
 
-		final(
-			this,
-			CustomSchemaImpl,
+		$final(this, CustomSchemaImpl, [
 			'extends',
 			'validate',
 			'tryValidate',
@@ -147,112 +119,113 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			'fix',
 			'check',
 			'toString',
-		)
+		])
 	}
 
 	protected _cloneWithOptions<
 		OO extends { [k in keyof this[BASE_OPTIONS]]?: unknown },
 	>(o: OO): CustomSchema<$Merge<O, OO> & Partial<SchemaOptions>> {
-		const result = clone(this)
-		// eslint-disable-next-line security/detect-object-injection
-		;(result as Mutable<typeof result>)[OPTIONS] = { ...result[OPTIONS], ...o }
+		$assert(OPTIONS)
+
+		const result = clone(this, { omit: [OPTIONS] }) as this
+
+		const newOptions = frozen({ ...this[OPTIONS], ...o })
+
+		Object.defineProperty(result, OPTIONS, {
+			value: newOptions,
+			// configurable: true,
+			// writable: true,
+		})
+
+		// ;(result as Mutable<typeof this>)[OPTIONS] = newOptions as never
+
+		$assert(result[OPTIONS] === newOptions)
+
 		return result as never
 	}
 
 	protected _getIssues(
-		_x: unknown,
-		_options?: Partial<GetIssuesOptions> | undefined,
+		_value: unknown,
+		_options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
 		return []
 	}
 
 	protected _fix(
 		x: unknown,
-		_options?: Partial<GetIssuesOptions> | undefined,
+		_options?: Partial<ValidationOptions> | undefined,
 	): unknown {
 		return x
 	}
 
 	tryValidate<X>(
 		x: X,
-		options?: Partial<GetIssuesOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): X | this[OPTIONS]['Output'] {
 		const result = this.exec(x, options)
 		return result.value as never
-
-		// if (result.isValid) return result.value
-		// else return x // identity on error
 	}
 
 	getIssues(
 		value: unknown,
-		options?: Partial<GetIssuesOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
-		return [
-			...this._getIssues(value, options),
-			...processCustomChecks(this.getName, this.getCustomChecks, value),
-		]
+		// eslint-disable-next-line etc/no-internal
+		return _process({ schema: this, value, options }).issues
 	}
 
 	exec(
-		value: unknown,
-		options?: Partial<ValidateOptions> | undefined,
+		inputValue: unknown,
+		options?: Partial<ValidationOptions> | undefined,
 	): ValidationResult<this[OPTIONS]['Output']> {
-		const { fix } = overrideDefined(defaultValidateOptions, options)
+		// console.log('! exec', this.getName, inputValue, options)
 
-		// const finalValue = this.tryValidate(value, options)
+		let value = inputValue
 
-		let finalValue = value
-
-		if (fix) {
-			if (finalValue === undefined && this.hasDefault) {
-				finalValue = this.getDefault as never
-			}
-
-			finalValue = this._fix(finalValue, options) as never
+		if (value === undefined && this.hasDefault) {
+			value = this.getDefault as never
 		}
 
-		const issues = this.getIssues(finalValue, options)
-		const isValid = !issues.some(issue => issue.severity === 'error')
+		value = this._fix(value, options) as never
 
-		/** If value is valid, also apply custom fixes */
-		if (isValid && fix) {
-			const customFixes = this.getCustomFixes as unknown as CustomFix[]
-			if (customFixes.length > 0) {
-				for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
-					try {
-						const nextValue = customFix.fix(finalValue as never)
-						if (isDefined(nextValue)) finalValue = nextValue as never
-					} catch (error) {
-						throw new SchemarError(
-							`Custom fix failed: ${stringFrom(customFix)}`,
-							{
-								cause: error,
-							},
-						)
-					}
-				}
+		// console.log('!! exec', this.getName, value)
 
-				// check if custom fixes have not introduced any issues
-				const newIssues = this.getIssues(finalValue, options)
-				const isStillValid = !newIssues.some(
-					issue => issue.severity === 'error',
-				)
+		/** Apply custom fixes */
+		for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
+			const result = customFix.inputSchema.exec(value)
+			if (!result.isValid) continue
 
-				if (!isStillValid) {
-					throw new InvalidFixError(newIssues)
-				}
+			try {
+				value = customFix.fix(result.value) // undefined to delete
+			} catch (error) {
+				throw new SchemarError(`Custom fix failed: ${stringFrom(customFix)}`, {
+					cause: error,
+				})
 			}
 		}
+
+		// console.log('!!! exec', this.getName, value)
+
+		/** Also calls customOperations */
+		// eslint-disable-next-line etc/no-internal
+		const result = _process({ schema: this, value, options })
+
+		// eslint-disable-next-line es-x/no-array-prototype-every
+		const isValid = result.issues.every(issue => issue.severity !== 'error')
+
+		// console.log('!!!! EXEC', this.getName, result.value)
 
 		return {
 			isValid,
-			value: finalValue,
-			issues: issues as never,
+			value: result.value,
+			issues: result.issues,
 		} as never
 	}
 
-	validate(x: unknown, options?: Partial<ValidateOptions> | undefined): never {
+	validate(
+		x: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): never {
 		const r = this.exec(x, options)
 		if (!r.isValid) throw new ValidationError(r.issues)
 		return r.value as never
@@ -260,17 +233,50 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	isFixable(
 		x: unknown,
-		options?: Partial<GetIssuesOptions> | undefined,
+		options?: Partial<ValidationOptions> | undefined,
 	): x is this[OPTIONS]['Input'] {
 		return this.exec(x, options).isValid
 	}
 
-	isValid(
+	assertFixable(
 		x: unknown,
-		options?: Partial<GetIssuesOptions> | undefined,
-	): x is this[OPTIONS]['Output'] {
-		return this.getIssues(x, options).length === 0
+		options?: Partial<ValidationOptions> | undefined,
+	): asserts x is this[OPTIONS]['Input'] {
+		const result = this.exec(x, options)
+		if (!result.isValid) throw new ValidationError(result.issues)
 	}
+
+	/** Check if `value` is already valid, without the need to apply fixes */
+	isValid(
+		value: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): value is this[OPTIONS]['Output'] {
+		const result = this.exec(value, options)
+		// eslint-disable-next-line es-x/no-object-is
+		return result.isValid && Object.is(result.value, value)
+	}
+
+	/**
+	 * Asserts `value` is already valid, without the need to apply fixes
+	 *
+	 * @throws `ValidationError`
+	 */
+	assertValid(
+		value: unknown,
+		options?: Partial<ValidationOptions> | undefined,
+	): asserts value is this[OPTIONS]['Output'] {
+		const result = this.exec(value, options)
+		// eslint-disable-next-line es-x/no-object-is
+		const wasAlreadyValid = result.isValid && Object.is(result.value, value)
+
+		if (!wasAlreadyValid) {
+			throw new ValidationError(this.getIssues(value, options))
+		}
+	}
+
+	//
+
+	//
 
 	[EXTENDS](other: SchemaLike): boolean {
 		if (isUnionSchema(other)) {
@@ -289,10 +295,8 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		const otherType = schema(other)
 
 		if (this.isOptional && !otherType.isOptional) return false
-
 		if (this.isReadonly && !otherType.isReadonly) return false
 
-		// eslint-disable-next-line security/detect-object-injection
 		return this[EXTENDS](otherType as never)
 	}
 
@@ -315,32 +319,83 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return `${prefix}${this._toString()}${suffix}`
 	}
 
+	// BUILDER
+
 	check(
 		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
 		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
 	): never {
-		const entry =
-			expectedDescription === undefined
-				? {
-						checkIfValid,
-				  }
-				: {
-						checkIfValid,
-						expectedDescription,
-				  }
+		const entry = omitUndefined({
+			type: 'check',
+			checkIfValid,
+			expectedDescription,
+		})
 
 		return this._cloneWithOptions({
-			customChecks: [...this.getCustomChecks, entry],
+			customOperations: [...this.getCustomOperations, entry],
 		}) as never
 	}
 
-	fix(fixFunc: (x: any) => never): never {
+	map(...args: [unknown] | [unknown, unknown]): any {
+		const [condition, transform] =
+			args.length === 2 ? args : [undefined, args[0]]
+
 		return this._cloneWithOptions({
-			customFixes: [...this.getCustomFixes, { fix: fixFunc }],
+			customOperations: [
+				...this.getCustomOperations,
+				args.length === 2
+					? { type: 'transform', condition, transform }
+					: { type: 'transform', transform },
+			],
 		}) as never
 	}
 
-	// BUILDER
+	mapIf(
+		condition: (value: this[OPTIONS]['Output']) => boolean,
+		transform: (value: this[OPTIONS]['Output']) => this[OPTIONS]['Output'],
+	) {
+		return this._cloneWithOptions({
+			customOperations: [
+				...this.getCustomOperations,
+				{
+					type: 'transform',
+
+					transform: (value: this[OPTIONS]['Output']) => {
+						if (condition(value)) return transform(value)
+						else return value // or undefined?
+					},
+				},
+			],
+		}) as never
+	}
+
+	narrowIf(...args: any): any {
+		return (this.mapIf as any)(...args)
+	}
+
+	narrow(...args: any): any {
+		return this.map(...args)
+	}
+
+	//
+
+	fix(schemable: $$Schemable, fix: (x: any) => never): never {
+		return this._cloneWithOptions({
+			customFixes: [
+				...this.getCustomFixes,
+				{ inputSchema: schema(schemable), fix },
+			],
+		}) as never
+	}
+
+	fixIf(predicate: (value: unknown) => boolean, fix: (x: any) => never): never {
+		return this._cloneWithOptions({
+			customFixes: [
+				...this.getCustomFixes,
+				{ inputSchema: unknown.check(predicate), fix },
+			],
+		}) as never
+	}
 
 	name(name: string): this {
 		return this._cloneWithOptions({ name }) as never
@@ -375,7 +430,6 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	default<D>(arg: D | (() => D)): never {
-		// eslint-disable-next-line security/detect-object-injection
 		if (typeof arg === 'function' && this[SCHEMA_NAME] !== 'Function')
 			return this._cloneWithOptions({
 				hasDefault: true as const,
@@ -401,7 +455,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	and<Other extends $$Schemable>(other: Other): never {
 		// assert(isSchema(this), 'cannot make union of optional/readonly types (can only be used as object properties)')
-		return and(this as never, other) as never
+		return and(this as never, other)
 	}
 
 	get simple(): never {

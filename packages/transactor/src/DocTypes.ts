@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { OmitSignatures } from '@voltiso/util'
+import type { $, OmitSignatures } from '@voltiso/util'
 import { BrandedSymbol } from '@voltiso/util'
 
 import type { DocTypes } from '~/DocTypes-module-augmentation'
@@ -15,7 +15,7 @@ export type DocTag = Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc
  * hard-to-handle type queries (`typeof`)
  */
 export const AnyDoc = BrandedSymbol('AnyDoc') // Symbol('AnyDoc')
-export type AnyDoc = typeof AnyDoc
+export type AnyDoc = $<'AnyDoc'>
 
 /**
  * This does not work correctly with exports - private names are not exported

@@ -8,10 +8,9 @@ export type ObjectIndexSignatureEntry = {
 	valueSchema: $$Schemable
 }
 
-export interface ObjectOptions<T extends object = object>
-	extends SchemaOptions {
-	Output: T
-	Input: T
+export interface ObjectOptions extends SchemaOptions {
+	// Output: T
+	// Input: T | undefined // ?
 
 	/** Not type-exposed currently */
 	shape: object // InferableObjectLike
@@ -19,11 +18,15 @@ export interface ObjectOptions<T extends object = object>
 	/** Currently not type-exposed */
 	indexSignatures: ObjectIndexSignatureEntry[]
 
-	/** Constructor must be `Object` */
+	/**
+	 * Constructor must be `Object`
+	 *
+	 * ⚠️ Currently not type-exposed
+	 */
 	isPlain: boolean
 }
 
-export namespace ObjectOptions {
+export declare namespace ObjectOptions {
 	export interface Default extends SchemaOptions.Default {
 		Output: object
 		Input: object
@@ -34,6 +37,19 @@ export namespace ObjectOptions {
 		/** Currently not type-exposed */
 		indexSignatures: ObjectIndexSignatureEntry[] // []
 
-		isPlain: false
+		/** Currently not type-exposed */
+		isPlain: boolean // false
 	}
+
+	// export type Simplify<O> = [
+	// 	OmitNever_<{
+	// 		[k in keyof O]: k extends keyof Default
+	// 			? IsIdentical<O[k], Default[k]> extends true
+	// 				? never
+	// 				: O[k]
+	// 			: never
+	// 	}>,
+	// ][0]
+
+	// type A = Simplify<{ isReadonly: true }>
 }

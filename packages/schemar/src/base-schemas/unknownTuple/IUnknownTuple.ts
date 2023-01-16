@@ -3,7 +3,7 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema } from '~'
+import type { ISchema, ISchema$ } from '~'
 
 export interface IUnknownTuple extends ISchema {
 	readonly [SCHEMA_NAME]: 'UnknownTuple'
@@ -13,7 +13,15 @@ export interface IUnknownTuple extends ISchema {
 	get getMaxLength(): number | undefined
 }
 
-export function isUnknownTupleSchema(x: unknown): x is IUnknownTuple {
+export interface IUnknownTuple$ extends ISchema$ {
+	readonly [SCHEMA_NAME]: 'UnknownTuple'
+
+	get isReadonlyTuple(): boolean
+	get getMinLength(): number | undefined
+	get getMaxLength(): number | undefined
+}
+
+export function isUnknownTupleSchema(x: unknown): x is IUnknownTuple$ {
 	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownTuple | null)?.[SCHEMA_NAME] === 'UnknownTuple'
 }

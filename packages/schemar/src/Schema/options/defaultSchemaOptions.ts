@@ -5,14 +5,14 @@ import type { SchemaOptions } from './SchemaOptions'
 
 //
 
-export const defaultSchemaOptions: SchemaOptions.Default = {
+export const defaultSchemaOptions: SchemaOptions.Default = Object.freeze({
 	Output: 0 as unknown,
 	Input: 0 as unknown,
 
 	// name: undefined,
 
-	customChecks: [] as const,
 	customFixes: [] as const,
+	customOperations: [] as const,
 
 	isOptional: false as const,
 	isStrictOptional: false as const,
@@ -22,4 +22,4 @@ export const defaultSchemaOptions: SchemaOptions.Default = {
 
 	default: undefined as never,
 	getDefault: undefined as never,
-}
+})

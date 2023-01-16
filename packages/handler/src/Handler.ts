@@ -65,9 +65,11 @@ export namespace Handler {
 export const defaultHandlerOptions: Handler.Options.Default &
 	Handler.Options.Hidden<Handler.Options.Default> = define<
 	Handler.Options.Hidden<Handler.Options.Default>
->().value({
-	name: undefined,
-}) as never
+>().value(
+	Object.freeze({
+		name: undefined,
+	}),
+) as never
 
 //
 
@@ -85,7 +87,7 @@ export class HandlerImpl<
 	}
 
 	get getImplementation(): this[OPTIONS]['Signature'] | undefined {
-		return this.options.implementation
+		return this.options.implementation as never
 	}
 
 	constructor(partialOptions: O & HandlerImpl<O>[HIDDEN_OPTIONS]) {
@@ -114,7 +116,11 @@ export class HandlerImpl<
 	protected _call(thisArg: unknown, ...args: unknown[]): unknown {
 		if (!this.getImplementation)
 			throw new Error(`Handler '${this.getName}' has no implementation`)
-		return this.getImplementation.call(thisArg, ...args) as never
+		return Function.prototype.call.call(
+			this.getImplementation,
+			thisArg,
+			...args,
+		) as never
 	}
 
 	//

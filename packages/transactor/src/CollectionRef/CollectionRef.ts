@@ -11,9 +11,14 @@ import type { WithDb } from '~/Db'
 import type { $$Doc, GetPublicCreationInputData } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { $$DocConstructor } from '~/DocConstructor'
-import type { WeakDocRef } from '~/DocRef'
+import type { WeakDocRef, WeakDocRef$ } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
-import type { $$DocRelated, GetDoc, GetDocTag } from '~/DocRelated'
+import type {
+	$$DocRelated,
+	GetDoc,
+	GetDocRepresentative,
+	GetDocTag,
+} from '~/DocRelated'
 import { CollectionPath, concatPath } from '~/Path'
 import type { WithTransactor } from '~/Transactor'
 
@@ -25,7 +30,7 @@ export interface CollectionRef<
 	_Ctx extends ExecutionContext = 'outside',
 > {
 	/** Get Doc reference by Id */
-	(id: DocIdString<R>): WeakDocRef<R>
+	(id: DocIdString<R>): WeakDocRef$<R>
 
 	/** Get Doc reference by Id */
 	<T extends DocIdString>(id: T): Throw<
@@ -33,7 +38,7 @@ export interface CollectionRef<
 	>
 
 	/** Get Doc reference by Id */
-	(id: string): WeakDocRef<R>
+	(id: string): WeakDocRef$<GetDocRepresentative<R>>
 }
 
 /** Collection reference */
@@ -90,7 +95,9 @@ export class CollectionRef<
 	register<Cls extends $$DocConstructor>(
 		cls: Cls,
 	): CollectionRef<
-		NewableReturn_<Cls> extends $$Doc ? NewableReturn_<Cls> : never
+		NewableReturn_<Cls> extends $$Doc
+			? GetDocRepresentative<NewableReturn_<Cls>>
+			: never
 	> {
 		const { db } = this._context
 		const docPattern = db.docPattern(this._path, '*')

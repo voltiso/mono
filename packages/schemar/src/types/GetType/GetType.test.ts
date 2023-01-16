@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, Newable } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
 import type { $$Schema, $$Schemable, Inferable, InferableLiteral } from '~'
@@ -17,7 +17,9 @@ describe('Type', () => {
 		$Assert<IsIdentical<B, unknown>>()
 
 		type C = Type<Inferable>
-		$Assert<IsIdentical<C, {} | InferableLiteral | readonly unknown[]>>()
+		$Assert<
+			IsIdentical<C, {} | InferableLiteral | readonly unknown[] | Newable>
+		>()
 
 		type D = Type<{}>
 

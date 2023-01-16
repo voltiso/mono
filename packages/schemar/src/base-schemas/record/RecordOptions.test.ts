@@ -3,12 +3,12 @@
 
 import { $Assert } from '@voltiso/util'
 
-import type { DefaultRecordOptions, RecordOptions } from './RecordOptions'
+import type { RecordOptions } from './RecordOptions'
 
 describe('RecordOptions', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		$Assert.is<DefaultRecordOptions, RecordOptions>()
+		$Assert.is<RecordOptions.Default, RecordOptions>()
 	})
 })

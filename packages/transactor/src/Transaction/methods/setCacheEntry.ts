@@ -12,7 +12,7 @@ import { sVoltisoEntry } from '~/schemas'
 import type { CacheEntry, WithTransaction } from '~/Transaction'
 import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
-import { guardedValidate } from '~/util'
+import { guardedValidate_ } from '~/util'
 
 export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
@@ -41,11 +41,11 @@ export function setCacheEntry(
 
 	entry.data = entry.proxy ? entry.proxy._raw : entry.proxy
 
-	entry.__voltiso = guardedValidate(
+	entry.__voltiso = guardedValidate_(
 		ctx,
 		sVoltisoEntry,
 		data?.__voltiso || entry.__voltiso,
-	)
+	) as never
 
 	if (entry.data) entry.data.__voltiso = entry.__voltiso
 

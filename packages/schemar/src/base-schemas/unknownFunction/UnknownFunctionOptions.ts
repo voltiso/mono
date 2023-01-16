@@ -10,11 +10,13 @@ export type BivariantUnknownFunction = [
 ][0]
 
 export interface UnknownFunctionOptions extends SchemaOptions {
-	Output: BivariantUnknownFunction
-	Input: BivariantUnknownFunction
+	// Output: BivariantUnknownFunction
+	// Input: BivariantUnknownFunction
 }
 
-export interface DefaultUnknownFunctionOptions extends SchemaOptions.Default {
-	Output: BivariantUnknownFunction
-	Input: BivariantUnknownFunction
+export declare namespace UnknownFunctionOptions {
+	export interface Default extends SchemaOptions.Default {
+		Output: BivariantUnknownFunction
+		Input: BivariantUnknownFunction
+	}
 }

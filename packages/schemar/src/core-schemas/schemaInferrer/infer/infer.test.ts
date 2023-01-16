@@ -4,29 +4,48 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { InferSchema } from '~'
+import type { InferSchema$, NonNullish$, Object$, String$ } from '~'
 import * as s from '~'
 
 import { infer } from './infer'
 
 describe('getSchema', () => {
-	it('works - static', () => {
-		$Assert<IsIdentical<InferSchema<true>, s.Literal<true>>>()
-		$Assert<IsIdentical<InferSchema<false>, s.Literal<false>>>()
+	it('type', () => {
+		type A = InferSchema$<true>
+		$Assert<IsIdentical<A, s.Literal$<true>>>()
+
+		$Assert<IsIdentical<InferSchema$<false>, s.Literal$<false>>>()
 		// Assert<IsIdentical<GetSchema<boolean>, never>>()
 
-		$Assert<IsIdentical<InferSchema<123>, s.Literal<123>>>()
+		$Assert<IsIdentical<InferSchema$<123>, s.Literal$<123>>>()
 		// Assert<IsIdentical<GetSchema<number>, never>>()
 
-		$Assert<IsIdentical<InferSchema<'abc'>, s.Literal<'abc'>>>()
+		$Assert<IsIdentical<InferSchema$<'abc'>, s.Literal$<'abc'>>>()
 		// Assert<IsIdentical<GetSchema<string>, never>>()
 
-		$Assert<IsIdentical<InferSchema<12n>, s.Literal<12n>>>()
+		$Assert<IsIdentical<InferSchema$<12n>, s.Literal$<12n>>>()
 		// Assert<IsIdentical<GetSchema<bigint>, never>>()
 
 		const sym = Symbol('sym')
-		$Assert<IsIdentical<InferSchema<typeof sym>, s.Literal<typeof sym>>>()
+		$Assert<IsIdentical<InferSchema$<typeof sym>, s.Literal$<typeof sym>>>()
 		// Assert<IsIdentical<GetSchema<symbol>, never>>()
+	})
+
+	it('type - object', () => {
+		type A = InferSchema$<{}>
+		$Assert<IsIdentical<A, NonNullish$>>()
+
+		type B = InferSchema$<{ a: 1 }>
+		$Assert<IsIdentical<B, Object$<{ a: 1 }>>>()
+
+		// type C = InferSchema$<s.String>
+		// $Assert<IsIdentical<C, String$>>() // TODO
+
+		type D = InferSchema$<String$>
+		$Assert<IsIdentical<D, String$>>()
+
+		type E = InferSchema$<{ a: String$ }>
+		$Assert<IsIdentical<E, Object$<{ a: string }>>>()
 	})
 
 	it('works', () => {

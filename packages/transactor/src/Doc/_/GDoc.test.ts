@@ -35,10 +35,10 @@ describe('Doc util', () => {
 	it('GDoc custom', () => {
 		expect.assertions(0)
 
-		type TI = Override<DocTI, { public: s.Object<{ asd: s.Number }> }>
-		$Assert.isSubtype<
-			Doc<TI>['dataWithId'],
-			() => { asd: number; __voltiso?: { numRefs: number } }
-		>()
+		type TI = Override<DocTI, { public: s.Object<{ asd: number }> }>
+
+		type A = Doc<TI>['dataWithId']
+
+		$Assert.is<A, () => { asd: number; __voltiso?: { numRefs: number } }>()
 	})
 })

@@ -4,6 +4,7 @@
 import type * as t from '@voltiso/schemar'
 import {
 	assert,
+	deepFrozen,
 	isPlainObject,
 	lazyConstructor,
 	omit,
@@ -14,11 +15,10 @@ import {
 import type { $WithId } from '~/Data'
 import { withId } from '~/Data'
 import type { Db } from '~/Db'
-import type { DocRefContext, WeakDocRef } from '~/DocRef'
+import type { CustomDocRef$, DocRefContext, WeakDocRef } from '~/DocRef'
 import { CustomDocRef, isStrongDocRef } from '~/DocRef'
 import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error/TransactorError'
-import { immutabilize } from '~/immutabilize'
 import type { Method } from '~/Method'
 import type { CustomDocPath } from '~/Path'
 import type { IntrinsicFields } from '~/schemas'
@@ -141,21 +141,22 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		this._raw = raw
 		this._rawProxy = this._context.transaction
 			? raw
-			: immutabilize(
-					raw,
-					'non-transaction document object is immutable (would not commit changes - possible bug)',
-			  )
+			: deepFrozen(raw)
+			// immutabilize(
+			// 		raw,
+			// 		'non-transaction document object is immutable (would not commit changes - possible bug)',
+			//   )
 	}
 
 	get id() {
-		return this._context.docRef.id
+		return this._context.docRef.id as never
 	}
 
 	get path(): CustomDocPath<{ doc: TI['tag'] }> {
 		return this._context.docRef.path as never
 	}
 
-	get ref(): CustomDocRef<{ docTag: TI['tag']; isStrong: true }> {
+	get ref(): CustomDocRef$<{ docTag: TI['tag']; isStrong: true }> {
 		if (!this._ref)
 			this._ref = new CustomDocRef(
 				omit(this._context, 'docRef'),
@@ -189,8 +190,8 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return (await this._context.docRef.delete()) as never
 	}
 
-	get schemaWithoutId(): t.Schema<GetData<TI>> | undefined {
-		return this.ref.schemaWithoutId as never
+	get schema(): t.Schema<GetData<TI>> | undefined {
+		return this.ref.schema as never
 	}
 
 	get schemaWithId(): t.Schema<$WithId<GetData<TI>>> | undefined {

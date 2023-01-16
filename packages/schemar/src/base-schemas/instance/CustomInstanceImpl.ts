@@ -5,12 +5,7 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
-import type {
-	CustomInstance,
-	DefaultInstanceOptions,
-	InstanceOptions,
-	ISchema,
-} from '~'
+import type { CustomInstance, InstanceOptions, ISchema } from '~'
 import { CustomSchemaImpl, isInstanceSchema } from '~'
 import { ValidationIssue } from '~/meta-schemas'
 
@@ -22,7 +17,7 @@ $assert(SCHEMA_NAME)
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomInstanceImpl<O> {
 	readonly [BASE_OPTIONS]: InstanceOptions
-	readonly [DEFAULT_OPTIONS]: DefaultInstanceOptions
+	readonly [DEFAULT_OPTIONS]: InstanceOptions.Default
 }
 
 export class CustomInstanceImpl<O extends Partial<InstanceOptions>>

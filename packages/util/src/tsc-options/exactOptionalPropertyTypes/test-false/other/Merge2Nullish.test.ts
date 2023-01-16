@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsIdentical, Merge2Nullish } from '~'
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
 
 describe('Merge2Nullish', () => {
 	type SomeType = {

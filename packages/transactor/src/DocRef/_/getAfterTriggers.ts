@@ -1,9 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isPlainObject } from '@voltiso/util'
+import { $AssumeType, isPlainObject } from '@voltiso/util'
 
-import type { CustomDocRef, DocRefTriggerEntry, WeakDocRef } from '~/DocRef'
+import type {
+	_CustomDocRef,
+	$$DocRef,
+	DocRefTriggerEntry,
+	WeakDocRef,
+} from '~/DocRef'
 import { isStrongDocRef } from '~/DocRef'
 import { TransactorError } from '~/error'
 import type { AfterTrigger } from '~/Trigger'
@@ -19,8 +24,10 @@ function forEachStrongRef(o: any, f: (r: WeakDocRef) => void) {
 }
 
 export function getAfterTriggers(
-	docRef: CustomDocRef,
+	docRef: $$DocRef,
 ): DocRefTriggerEntry<AfterTrigger>[] {
+	// eslint-disable-next-line etc/no-internal
+	$AssumeType<_CustomDocRef>(docRef)
 	if (docRef._afterTriggers) return docRef._afterTriggers as never
 
 	docRef._afterTriggers = []

@@ -5,26 +5,22 @@ import type { Assume, IsUnion } from '@voltiso/util'
 
 import type { AnyDoc, DocTag } from '~/DocTypes'
 
-import type { DocTI, DTI } from '../Doc/DocTI'
+import type { $$DocTI, DTI } from '../Doc/DocTI'
 import type { $$DocRelatedLike, WithDocTI } from './DocRelated'
 
-// type A = GetDocTag<IndexedDoc>
-// type B = GetDocTag<Doc>
-// type C = GetDocTag<$$Doc>
-
-export type GetDocTag<X extends $$DocRelatedLike> = GetDocTag.ByDocRelated<X>
+export type GetDocTag<X extends $$DocRelatedLike> = GetDocTag.FromDocRelated<X>
 
 export namespace GetDocTag {
-	export type ByString<str extends string | AnyDoc> = str extends
+	export type FromString<str extends string | AnyDoc> = str extends
 		| DocTag
 		| AnyDoc
 		? str
 		: never
 
-	export type ByDocRelated<X extends $$DocRelatedLike> = Assume<
+	export type FromDocRelated<X extends $$DocRelatedLike> = Assume<
 		DocTag | AnyDoc,
 		// eslint-disable-next-line etc/no-internal
-		_Finalize<_GetDocTag<X>>
+		_Finalize<Simple<X>>
 	>
 
 	/** @internal */
@@ -34,16 +30,20 @@ export namespace GetDocTag {
 		? AnyDoc
 		: tag
 
-	/**
-	 * Use {@link GetDocTag} instead
-	 *
-	 * @internal
-	 */
-	export type _GetDocTag<X extends $$DocRelatedLike> = X extends WithDocTI
+	export type Simple<X extends $$DocRelatedLike> = X extends WithDocTI
 		? X[DTI]['tag']
-		: X extends DocTI
+		: X extends $$DocTI & { tag: unknown }
 		? X['tag']
-		: X extends DocTag | AnyDoc
-		? X
-		: never
+		: X
 }
+
+export type GetDocRepresentative<X extends $$DocRelatedLike> =
+	X extends WithDocTI
+		? AnyDoc extends X[DTI]['tag']
+			? X
+			: X[DTI]['tag']
+		: X extends $$DocTI & { tag: unknown }
+		? AnyDoc extends X['tag']
+			? X
+			: X['tag']
+		: X

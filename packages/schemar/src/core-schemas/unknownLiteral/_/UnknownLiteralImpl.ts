@@ -3,14 +3,14 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { DefaultUnknownLiteralOptions } from '~'
+import type { UnknownLiteralOptions } from '~'
 
 import { defaultUnknownLiteralOptions } from '../defaultUnknownLiteralOptions'
 import { CustomUnknownLiteralImpl } from './CustomUnknownLiteralImpl'
 
 export class UnknownLiteralImpl extends lazyConstructor(
 	() => CustomUnknownLiteralImpl,
-)<DefaultUnknownLiteralOptions> {
+)<UnknownLiteralOptions> {
 	constructor() {
 		super(defaultUnknownLiteralOptions)
 	}

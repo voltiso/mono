@@ -103,7 +103,7 @@ describe('object', () => {
 		const ss = s.infer({
 			numDef: s.number.default(() => 1 as const),
 			num: s.number.optional,
-			str: s.string.readonly.simple,
+			str: s.string.readonly,
 			bigint: s.bigint.strictOptional,
 
 			nested: {
@@ -202,7 +202,7 @@ describe('object', () => {
 				// email: sEmail,
 				emailVerified: s.boolean,
 
-				customClaims: s.record,
+				customClaims: s.record(s.string, s.unknown),
 				disabled: s.boolean,
 				displayName: s.string.or(null),
 

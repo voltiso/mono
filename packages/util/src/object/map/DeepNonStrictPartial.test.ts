@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '~/$strip'
+import { $Assert } from '_'
+
 import type { IsIdentical } from '~/type'
 
 import type { DeepNonStrictPartial_ } from './DeepNonStrictPartial'

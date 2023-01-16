@@ -36,7 +36,7 @@ export type BRAND = typeof BRAND
  */
 export interface CustomBrand<
 	B extends BrandReference,
-	detail extends Brand.GetConstraint<B>,
+	detail extends Brand.GetConstraint<B> = Brand.GetConstraint<B>,
 > extends CustomBrand_<B, detail> {}
 
 export interface CustomBrand_<B, detail> {

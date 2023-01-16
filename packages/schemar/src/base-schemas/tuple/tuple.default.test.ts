@@ -10,7 +10,7 @@ const sOrderProduct = s.schema({
 	productId: s.string,
 })
 
-const sOrderProducts = s.tuple(sOrderProduct).simple
+const sOrderProducts = s.tuple(sOrderProduct)
 
 const orderPublicFields = {
 	products: sOrderProducts,

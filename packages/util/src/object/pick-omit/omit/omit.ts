@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoUtilError } from '~/error/VoltisoUtilError'
+import { VoltisoUtilError } from '_/error/VoltisoUtilError'
+
 import { hasOwnProperty } from '~/object'
 import { stringFrom } from '~/string'
 

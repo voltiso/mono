@@ -7,7 +7,7 @@ import type {
 	DeepPartialShape,
 	DeepStrictPartialShape,
 	InferableObject,
-	ISchema,
+	ISchema$,
 } from '~'
 import { isObjectSchema } from '~'
 import { schema } from '~/core-schemas'
@@ -25,7 +25,7 @@ export function deepPartialShape<O extends InferableObject>(
 	const shape = { ...o } as InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {
-		let mySchema = schema(schemable) as unknown as ISchema
+		let mySchema = schema(schemable) as unknown as ISchema$
 
 		if (isObjectSchema(mySchema)) mySchema = mySchema.deepPartial as never
 
@@ -44,7 +44,7 @@ export function deepStrictPartialShape<O extends InferableObject>(
 	const shape = { ...o } as InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {
-		let mySchema = schema(schemable) as unknown as ISchema
+		let mySchema = schema(schemable) as unknown as ISchema$
 
 		if (isObjectSchema(mySchema)) mySchema = mySchema.deepStrictPartial as never
 
