@@ -15,6 +15,5 @@ export interface ISchemaInferrer$ extends ISchema$ {
 }
 
 export function isSchemaInferrer(x: unknown): x is ISchemaInferrer$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as ISchemaInferrer | null)?.[SCHEMA_NAME] === 'SchemaInferrer'
 }

@@ -53,7 +53,6 @@ export function fromDatabaseData(
 		const r: DataRecord = {}
 
 		for (const [key, val] of Object.entries(nestedData)) {
-			// eslint-disable-next-line security/detect-object-injection
 			r[key] = fromDatabaseData(ctx, val as never)
 		}
 

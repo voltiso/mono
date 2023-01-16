@@ -17,7 +17,7 @@ export function method<
 
 		methods: {
 			...ctor._.methods,
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 			[name]: (doc as any)[name],
 		},
 	}
@@ -32,7 +32,6 @@ export function afterCreateOrUpdate<
 	typeofDoc._ = h.withAfterCreateOrUpdate(
 		typeofDoc._ as never,
 		name as never,
-		// eslint-disable-next-line security/detect-object-injection
 		doc[name] as never,
 	)
 }
@@ -46,7 +45,6 @@ export function afterCreate<
 	typeofDoc._ = h.withAfterCreate(
 		typeofDoc._ as never,
 		name as never,
-		// eslint-disable-next-line security/detect-object-injection
 		doc[name] as never,
 	)
 }
@@ -60,7 +58,6 @@ export function afterDelete<
 	typeofDoc._ = h.withAfterDelete(
 		typeofDoc._ as never,
 		name,
-		// eslint-disable-next-line security/detect-object-injection
 		doc[name] as never,
 	)
 }
@@ -74,7 +71,6 @@ export function afterUpdate<
 	typeofDoc._ = h.withAfterUpdate(
 		typeofDoc._ as never,
 		name,
-		// eslint-disable-next-line security/detect-object-injection
 		doc[name] as never,
 	)
 }
@@ -85,7 +81,7 @@ export function after<
 >(doc: D, name: Name) {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	const typeofDoc = (doc as any).constructor as typeof DocConstructorImpl
-	// eslint-disable-next-line security/detect-object-injection
+
 	typeofDoc._ = h.withAfter(typeofDoc._ as never, name, doc[name] as never)
 }
 
@@ -98,7 +94,6 @@ export function beforeCommit<
 	typeofDoc._ = h.withBeforeCommit(
 		typeofDoc._ as never,
 		name as never,
-		// eslint-disable-next-line security/detect-object-injection
 		doc[name] as never,
 	)
 }
@@ -112,7 +107,6 @@ export function onGet<
 	typeofDoc._ = h.withOnGet(
 		typeofDoc._ as never,
 		name as never,
-		// eslint-disable-next-line security/detect-object-injection
 		doc[name] as never,
 	)
 }

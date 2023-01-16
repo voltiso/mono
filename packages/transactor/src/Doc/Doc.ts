@@ -77,12 +77,7 @@ export interface _DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 export interface CustomDoc<TI extends $$DocTI, Ctx extends ExecutionContext>
 	extends _DocBase<TI, Ctx> {
 	//
-
 	readonly ref: DocBase.Ref<GetDocRepresentative<TI>>
-
-	//
-
-	get Final(): this
 }
 
 //

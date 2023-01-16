@@ -370,10 +370,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	narrowIf(...args: any): any {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		return (this.mapIf as any)(...args)
 	}
 
 	narrow(...args: any): any {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		return this.map(...args)
 	}
 

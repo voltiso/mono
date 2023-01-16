@@ -5,13 +5,13 @@ import type * as s from '@voltiso/schemar'
 import type { Override } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { Doc$, DocTI } from '~/Doc'
+import type { Doc, DocTI } from '~/Doc'
 
 describe('Doc util', () => {
 	it('GDoc basic', () => {
 		expect.assertions(0)
 
-		type X = ReturnType<Doc$<DocTI>['dataWithId']>
+		type X = ReturnType<Doc<DocTI>['dataWithId']>
 		$Assert.isSubtype<
 			X,
 			{ readonly id: string; __voltiso?: { numRefs: number } }
@@ -23,7 +23,7 @@ describe('Doc util', () => {
 
 		// const docO = 0 as unknown as GO<TI>
 		// const x = docO.dataWithId()
-		type X = TI extends any ? ReturnType<Doc$<TI>['dataWithId']> : never
+		type X = TI extends any ? ReturnType<Doc<TI>['dataWithId']> : never
 
 		$Assert.isSubtype<
 			X,
@@ -37,7 +37,7 @@ describe('Doc util', () => {
 
 		type TI = Override<DocTI, { public: s.Object<{ asd: number }> }>
 
-		type A = Doc$<TI>['dataWithId']
+		type A = Doc<TI>['dataWithId']
 
 		$Assert.is<A, () => { asd: number; __voltiso?: { numRefs: number } }>()
 	})

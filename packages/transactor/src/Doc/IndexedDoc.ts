@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomObject, Schema } from '@voltiso/schemar'
+import type { Schema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
@@ -15,14 +15,23 @@ import type { CustomDoc } from './Doc'
 import { Doc } from './Doc'
 import type { DocTI } from './DocTI'
 
-export type IndexedDocTISchema = CustomObject<{
-	Output: {
+// export type IndexedDocTISchema = CustomObject<{
+// 	Output: {
+// 		[x: string]: unknown
+// 	}
+// 	Input: {
+// 		[x: string]: unknown
+// 	}
+// }>
+
+export type IndexedDocTISchema = s.$$Object & {
+	Output: object & {
 		[x: string]: unknown
 	}
-	Input: {
+	Input: object & {
 		[x: string]: unknown
 	}
-}>
+}
 
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {

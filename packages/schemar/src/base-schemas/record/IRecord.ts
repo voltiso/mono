@@ -21,7 +21,6 @@ export interface IRecord$ extends ISchema$ {
 }
 
 export function isRecordSchema(x: unknown): x is IRecord$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IRecord | null)?.[SCHEMA_NAME] === 'Record'
 }
 

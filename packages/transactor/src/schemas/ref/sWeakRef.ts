@@ -20,7 +20,6 @@ const _fixableWeakRefSchema = lazyValue(() =>
 		x => x.isStrong,
 		x =>
 			new _CustomDocRef(x._context as never, x.path.toString(), {
-				// eslint-disable-next-line security/detect-object-injection
 				...x[OPTIONS],
 				isStrong: false,
 			}) as never,

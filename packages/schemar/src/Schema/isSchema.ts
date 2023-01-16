@@ -8,6 +8,6 @@ import type { ISchema$, Schema } from '~'
 
 export function isSchema(x: unknown): x is ISchema$ {
 	$assert(SCHEMA_NAME)
-	// eslint-disable-next-line security/detect-object-injection
+	 
 	return !!(x as Schema | null)?.[SCHEMA_NAME]
 }

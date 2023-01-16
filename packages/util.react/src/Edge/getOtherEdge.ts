@@ -13,6 +13,5 @@ const map = {
 } as const
 
 export function getOtherEdge<E extends Edge>(edge: E): GetOtherEdge<E> {
-	// eslint-disable-next-line security/detect-object-injection
 	return map[edge] as never
 }

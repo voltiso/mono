@@ -27,7 +27,7 @@ function isWith0(x: unknown): x is { [0]: unknown } {
 function readPath(obj: object, path: string[]): unknown {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	let result = obj as any
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 	for (const key of path) result = result[key]
 	return isWith0(result) ? result[0] : result
 }

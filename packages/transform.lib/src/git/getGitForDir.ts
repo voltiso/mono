@@ -14,6 +14,7 @@ export function getGitForDirUncached(dir: string): string | undefined {
 		const gitDirPath = join(current, '.git')
 
 		try {
+			// eslint-disable-next-line security/detect-non-literal-fs-filename
 			const stats = statSync(gitDirPath)
 
 			if (stats.isDirectory()) {

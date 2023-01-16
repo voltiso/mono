@@ -32,6 +32,5 @@ export interface IUnion$ extends $$Union, ISchema$ {
 //
 
 export function isUnionSchema(x: unknown): x is IUnion$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnion | null)?.[SCHEMA_NAME] === 'Union'
 }

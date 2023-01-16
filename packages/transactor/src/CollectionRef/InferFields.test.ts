@@ -7,7 +7,7 @@ import { $Assert } from '@voltiso/util'
 
 import { afterCreateOrUpdate, method } from '~/decorators'
 import type { DocTI, DTI } from '~/Doc'
-import { Doc$ } from '~/Doc'
+import { Doc } from '~/Doc'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import * as ss from '~/schemas'
 

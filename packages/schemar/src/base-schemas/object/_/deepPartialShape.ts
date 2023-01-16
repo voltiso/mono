@@ -29,7 +29,6 @@ export function deepPartialShape<O extends InferableObject>(
 
 		if (isObjectSchema(mySchema)) mySchema = mySchema.deepPartial as never
 
-		// eslint-disable-next-line security/detect-object-injection
 		shape[key] = mySchema.optional as never
 	}
 
@@ -48,7 +47,6 @@ export function deepStrictPartialShape<O extends InferableObject>(
 
 		if (isObjectSchema(mySchema)) mySchema = mySchema.deepStrictPartial as never
 
-		// eslint-disable-next-line security/detect-object-injection
 		shape[key] = mySchema.strictOptional as never
 	}
 

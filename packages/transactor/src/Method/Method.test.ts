@@ -3,7 +3,7 @@
 
 import * as s from '@voltiso/schemar'
 
-import { Doc$ } from '~/Doc'
+import { Doc } from '~/Doc'
 
 describe('Method', () => {
 	it('type', () => {

@@ -28,7 +28,6 @@ async function processAfterTrigger(
 	const schema = getSchema(ctx.docRef)
 	const id = ctx.docRef.id
 
-	// eslint-disable-next-line security/detect-object-injection
 	const afterTrigger = afterTriggers[idx]
 	assert(afterTrigger)
 	const { trigger, pathMatches } = afterTrigger
@@ -36,7 +35,7 @@ async function processAfterTrigger(
 	// console.log({ lastDataSeen: cacheEntry.lastDataSeenByAfters })
 
 	assert(cacheEntry.lastDataSeenByAfters)
-	// eslint-disable-next-line security/detect-object-injection
+
 	const prevLastSeen = cacheEntry.lastDataSeenByAfters[idx]
 	assert.defined(prevLastSeen)
 
@@ -48,7 +47,6 @@ async function processAfterTrigger(
 	// console.log('process after trigger', before, after)
 	if (isEqual(before, after)) return false
 
-	// eslint-disable-next-line security/detect-object-injection
 	cacheEntry.lastDataSeenByAfters[idx] = deepCloneData(after)
 
 	await triggerGuard(ctx, async () => {
@@ -73,7 +71,6 @@ async function processAfterTrigger(
 		validateAndSetCacheEntry(ctx, { data, schema, bestEffort: true })
 	})
 
-	// eslint-disable-next-line security/detect-object-injection
 	return !isEqual(cacheEntry.data, cacheEntry.lastDataSeenByAfters[idx])
 }
 

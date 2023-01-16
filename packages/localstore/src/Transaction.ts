@@ -44,7 +44,6 @@ function getData(lock: Lock, ref: DocumentReference) {
 }
 
 function getLock(store: Localstore, transaction: Transaction, path: DocPath) {
-	// eslint-disable-next-line security/detect-object-injection
 	let lock = store._locks[path]
 
 	const lockedByOther = lock && lock.transaction !== transaction
@@ -52,7 +51,7 @@ function getLock(store: Localstore, transaction: Transaction, path: DocPath) {
 	if (lockedByOther) fail(store)
 
 	if (lock) $assert(lock.transaction === transaction)
-	// eslint-disable-next-line no-multi-assign, security/detect-object-injection
+	// eslint-disable-next-line no-multi-assign
 	else lock = store._locks[path] = new Lock(transaction, undefined)
 
 	return lock
@@ -124,14 +123,12 @@ export class Transaction implements Database.Transaction {
 			if (lock.data === null) docRef._delete()
 			else if (lock.data) docRef._set(lock.data)
 
-			// eslint-disable-next-line security/detect-object-injection
 			delete this._store._locks[path]
 		}
 	}
 
 	_cleanup() {
 		for (const [path, lock] of Object.entries(this._store._locks)) {
-			// eslint-disable-next-line security/detect-object-injection
 			if (lock.transaction === this) delete this._store._locks[path]
 		}
 	}

@@ -11,12 +11,7 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	BooleanOptions,
-	CustomBoolean,
-	ISchema,
-	Literal,
-} from '~'
+import type { BooleanOptions, CustomBoolean, ISchema, Literal } from '~'
 import {
 	CustomSchemaImpl,
 	isBooleanSchema,
@@ -67,7 +62,6 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 			// eslint-disable-next-line etc/no-internal
 			const { haveTrue, haveFalse } = _booleanCollectTrueFalse(other)
 			return haveTrue && haveFalse
-			// eslint-disable-next-line security/detect-object-injection
 		} else return super[EXTENDS](other)
 	}
 
@@ -77,7 +71,6 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		if (typeof value !== 'boolean')
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'boolean' },
 					received: { value },

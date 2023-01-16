@@ -85,12 +85,10 @@ export function toDatabaseUpdate(
 			// if (Database.isTimestamp(rr)) r[key] = rr
 			if (isPlainObject(rr))
 				for (const childKey of getKeys(rr)) {
-					// eslint-disable-next-line security/detect-object-injection
 					const val = (rr as FirestoreLike.DocumentData)[childKey] as unknown
 					assert(val !== undefined)
 					r[`${key}.${childKey}`] = val
 				}
-			// eslint-disable-next-line security/detect-object-injection
 			else r[key] = rr
 		}
 
@@ -131,7 +129,6 @@ export function toDatabaseSetNested(
 		for (const [key, val] of Object.entries(obj)) {
 			if (isDeleteIt(val)) continue
 
-			// eslint-disable-next-line security/detect-object-injection
 			r[key] = toDatabaseSetNested(ctx, val as never)
 		}
 
@@ -160,7 +157,6 @@ export function toDatabaseSet(
 	for (const [key, val] of Object.entries(finalObj)) {
 		if (isDeleteIt(val)) continue
 
-		// eslint-disable-next-line security/detect-object-injection
 		r[key] = toDatabaseSetNested(ctx, val as never)
 	}
 

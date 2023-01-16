@@ -29,7 +29,6 @@ export class CustomVoidImpl<O extends Partial<VoidOptions>>
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isVoidSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 }

@@ -16,7 +16,6 @@ function filter(x: any): unknown {
 		const r = {} as any
 
 		for (const [k, v] of Object.entries(x)) {
-			// eslint-disable-next-line security/detect-object-injection
 			r[k] = filter(v)
 		}
 

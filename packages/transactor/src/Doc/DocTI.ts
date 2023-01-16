@@ -20,7 +20,7 @@ export interface $$DocTI {
 	readonly [IS_DOC_TYPE_INFO]: true
 }
 
-export type DocTISchema = s.$$Object & { Output: object; Input: object }
+export type DocTISchema = s.$$Object & { Output: {}; Input: {} } // not `object` for assignability to IndexedDocTI
 
 /**
  * Unknown Doc Type Info

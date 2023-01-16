@@ -39,7 +39,6 @@ function _prepareProps(
 ) {
 	const result = {} as Record<string, unknown>
 	for (const [prop, value] of Object.entries(props)) {
-		// eslint-disable-next-line security/detect-object-injection
 		result[prop] = prepare(value, { ...params, isPreparingProps: true })
 	}
 	return result
@@ -136,7 +135,6 @@ export function render<$ extends StyledTypeInfo>(
 	consume(p, finalCustomCss)
 
 	for (let i = stack.length - 1; i >= 0; --i) {
-		// eslint-disable-next-line security/detect-object-injection
 		const node = stack[i]
 
 		if (isRemovePropsNode(node)) {

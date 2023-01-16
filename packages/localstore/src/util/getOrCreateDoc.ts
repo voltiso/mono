@@ -13,6 +13,5 @@ export function getOrCreateDoc(
 	id: string,
 ): Doc {
 	const collection = getOrCreateCollection(store, collectionPath)
-	// eslint-disable-next-line security/detect-object-injection
 	return (collection._docs[id] ||= new Doc(null))
 }

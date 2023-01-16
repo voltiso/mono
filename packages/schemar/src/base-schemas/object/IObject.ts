@@ -63,7 +63,6 @@ export interface IObject$ extends $$Object, ISchema$ {
 }
 
 export function isObjectSchema(x: unknown): x is IObject$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IObject | null)?.[SCHEMA_NAME] === 'Object'
 }
 

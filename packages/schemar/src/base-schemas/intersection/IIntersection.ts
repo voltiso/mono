@@ -19,6 +19,5 @@ export interface IIntersection extends $$Intersection, ISchema {
 }
 
 export function isIntersectionSchema(x: unknown): x is IIntersection {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IIntersection | null)?.[SCHEMA_NAME] === 'Intersection'
 }

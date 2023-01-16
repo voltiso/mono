@@ -22,6 +22,5 @@ export interface IUnknownTuple$ extends ISchema$ {
 }
 
 export function isUnknownTupleSchema(x: unknown): x is IUnknownTuple$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownTuple | null)?.[SCHEMA_NAME] === 'UnknownTuple'
 }

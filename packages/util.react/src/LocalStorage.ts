@@ -15,6 +15,7 @@ export class LocalStorage<T> {
 
 	get data(): T {
 		const stringData =
+			// eslint-disable-next-line unicorn/no-negated-condition
 			typeof window !== 'undefined'
 				? window.localStorage.getItem(this.key)
 				: null

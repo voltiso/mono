@@ -41,7 +41,6 @@ export function getSchemaChild<S extends Schema, Key extends keyof Output_<S>>(
 			throw new RangeError(`Tuple index out of bounds: ${child as string}`)
 		}
 
-		// eslint-disable-next-line security/detect-object-injection
 		return schema.getShape[index] as never
 	}
 
@@ -67,7 +66,6 @@ export function getSchemaChild<S extends Schema, Key extends keyof Output_<S>>(
 
 	// if (isSchema(schema)) {
 	throw new Error(
-		// eslint-disable-next-line security/detect-object-injection
 		`${schema[SCHEMA_NAME]} schema does not have children or index signatures defined`,
 	)
 	// }

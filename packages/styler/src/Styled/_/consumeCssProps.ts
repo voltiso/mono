@@ -17,7 +17,6 @@ export function consumeCssProps<CustomCss extends object>(params: {
 	// console.log('consumeCssProps', params.customCss)
 	for (const [prop, value] of Object.entries(params.props)) {
 		// assertNotPolluting(prop)
-		// eslint-disable-next-line security/detect-object-injection
 		const list = params.cssProps[prop] || []
 
 		// const value = prepare(rawValue, params.theme, params.customCss)

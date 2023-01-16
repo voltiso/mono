@@ -156,10 +156,12 @@ importers:
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/eslint-plugin': workspace:^
       '@voltiso/script': workspace:^
+      chalk: '4'
       eslint: ^8.32.0
       eslint-gitignore: ^0.1.0
     dependencies:
       '@voltiso/config.eslint.lib': link:../config.eslint.lib
+      chalk: 4.1.2
       eslint-gitignore: 0.1.0_eslint@8.32.0
     devDependencies:
       '@types/node': 18.11.18
@@ -1286,6 +1288,7 @@ importers:
   packages/util.rxjs:
     specifiers:
       '@voltiso/assertor': workspace:^3.1.2
+      '@voltiso/config.jest': workspace:^1.0.0
       '@voltiso/config.ts.build.cjs': workspace:^
       '@voltiso/config.ts.build.esm': workspace:^
       '@voltiso/schemar': workspace:^
@@ -1294,6 +1297,7 @@ importers:
       rxjs: ^7.8.0
     devDependencies:
       '@voltiso/assertor': link:../assertor
+      '@voltiso/config.jest': link:../config.jest
       '@voltiso/config.ts.build.cjs': link:../config.ts.build.cjs
       '@voltiso/config.ts.build.esm': link:../config.ts.build.esm
       '@voltiso/schemar': link:../schemar

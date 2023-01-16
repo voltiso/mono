@@ -42,7 +42,6 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isUnknownSymbolSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -62,7 +61,6 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		if (typeof x !== 'symbol') {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be symbol' },
 					received: { value: x },

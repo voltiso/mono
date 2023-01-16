@@ -405,6 +405,5 @@ enum SyntaxKindStr {
 }
 
 export function stringFromSyntaxKind(syntaxKind: SyntaxKind): string {
-	// eslint-disable-next-line security/detect-object-injection
 	return SyntaxKindStr[syntaxKind] as string
 }

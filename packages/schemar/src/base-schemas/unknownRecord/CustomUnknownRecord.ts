@@ -15,7 +15,6 @@ export interface $$UnknownRecord {
 }
 
 export function isUnknownRecordSchema(x: unknown): x is IUnknownRecord$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownRecord$ | null)?.[SCHEMA_NAME] === 'UnknownRecord'
 }
 

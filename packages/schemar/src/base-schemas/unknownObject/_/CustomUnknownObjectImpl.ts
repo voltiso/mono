@@ -12,14 +12,18 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import {
+import type {
 	$$Schema,
 	InferableObject,
 	ISchema,
-	isSchema,
 	UnknownObjectOptions,
 } from '~'
-import { CustomSchemaImpl, isObjectSchema, isUnknownObjectSchema } from '~'
+import {
+	CustomSchemaImpl,
+	isObjectSchema,
+	isSchema,
+	isUnknownObjectSchema,
+} from '~'
 import { CustomObjectImpl, defaultObjectOptions } from '~/base-schemas/object'
 import { ValidationIssue } from '~/meta-schemas'
 

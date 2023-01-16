@@ -17,7 +17,7 @@ function processSentinels(x: unknown): IntrinsicFields | null {
 		const r = {} as any
 
 		for (const [k, v] of Object.entries(x)) {
-			// eslint-disable-next-line security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			if (!isDeleteIt(v)) r[k] = processSentinels(v)
 		}
 

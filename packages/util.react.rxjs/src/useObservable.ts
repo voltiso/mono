@@ -32,6 +32,7 @@ export function useObservable<T>(
 	useEffect(() => {
 		if (!isObservableLike(observable$)) return undefined
 
+		// eslint-disable-next-line rxjs/no-ignored-error
 		const subscription = observable$.subscribe(value => setValue(value))
 
 		return () => {

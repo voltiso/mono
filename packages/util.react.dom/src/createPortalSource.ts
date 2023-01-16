@@ -21,6 +21,7 @@ export function createPortalSource(ctx: PortalContext): PortalSource {
 		// 	ctx.Element = props.Element || 'div'
 		// }
 
+		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!ctx.areChildrenConsumed) {
 			// console.log(
 			// 	'Source: firstRenderChildren not consumed yet - do not create portal',

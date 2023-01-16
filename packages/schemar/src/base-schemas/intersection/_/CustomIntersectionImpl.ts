@@ -33,7 +33,6 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	readonly [SCHEMA_NAME] = 'Intersection' as const
 
 	get getSchemas(): this[OPTIONS]['schemas'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].schemas as never
 	}
 

@@ -14,7 +14,6 @@ export function _tupleExtends(thisTuple: ITuple, otherTuple: ITuple): boolean {
 	if (a.length !== b.length) return false
 
 	for (const [i, aa] of a.entries()) {
-		// eslint-disable-next-line security/detect-object-injection
 		const bb = b[i]
 		$assert(aa)
 		$assert(bb)

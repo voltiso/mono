@@ -18,6 +18,6 @@ export interface IAny extends $$Any, ISchema {
 }
 
 export function isAnySchema(x: unknown): x is IAny {
-	// eslint-disable-next-line security/detect-object-injection
+	 
 	return (x as IAny | null)?.[SCHEMA_NAME] === 'Any'
 }

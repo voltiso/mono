@@ -4,7 +4,7 @@
 import type { MutableRefObject, RefCallback, RefObject } from 'react'
 
 export function isRefObject(x: unknown): x is MutableRefObject<unknown> {
-	return typeof (x as RefObject<unknown> | null)?.current !== 'undefined'
+	return (x as RefObject<unknown> | null)?.current !== undefined
 }
 
 export type MutableRef<T> = MutableRefObject<T> | RefCallback<T> | null

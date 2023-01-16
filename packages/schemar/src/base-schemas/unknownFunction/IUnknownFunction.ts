@@ -20,6 +20,5 @@ export interface IUnknownFunction$<
 }
 
 export function isUnknownFunctionSchema(x: unknown): x is IUnknownFunction$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownFunction | null)?.[SCHEMA_NAME] === 'UnknownFunction'
 }

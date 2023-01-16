@@ -25,7 +25,7 @@ export function guardedValidate_(
 	schemable: $$Schemable,
 	data: unknown,
 ): unknown {
-	console.log('guardedValidate', schemable, data)
+	// console.log('guardedValidate', schemable, data)
 
 	const mySchema: Schema = s.schema(schemable) as never // TODO fix schemar
 

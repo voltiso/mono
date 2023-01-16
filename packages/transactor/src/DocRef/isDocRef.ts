@@ -7,7 +7,6 @@ import type { WeakDocRef } from './WeakDocRef'
 
 /** ⚠️ A strong ref is also a weak ref */
 export function isDocRef(x: unknown): x is DocRef | WeakDocRef {
-	// eslint-disable-next-line security/detect-object-injection
 	return !!(x as WeakDocRef | null)?.[IS_DOC_REF]
 }
 

@@ -29,7 +29,6 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	readonly [SCHEMA_NAME] = 'Literal' as const
 
 	get getValues(): Set<never> {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].values as never
 	}
 
@@ -59,7 +58,6 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 		if (!(this.getValues as Set<InferableLiteral>).has(x as InferableLiteral)) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { oneOfValues: [...this.getValues] },
 					received: { value: x },

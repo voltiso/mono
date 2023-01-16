@@ -41,7 +41,6 @@ export class CustomUnknownFunctionImpl<
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isUnknownFunctionSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -51,7 +50,6 @@ export class CustomUnknownFunctionImpl<
 		if (typeof value !== 'function') {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'be function' },
 					received: { value },

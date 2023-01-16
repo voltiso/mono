@@ -36,12 +36,10 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	readonly [SCHEMA_NAME] = 'Bigint' as const
 
 	get getMin(): this[OPTIONS]['min'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['min'] as never
 	}
 
 	get getMax(): this[OPTIONS]['max'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS]['max'] as never
 	}
 
@@ -63,7 +61,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isBigintSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -77,7 +74,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 			) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `at least ${this.getMin}` },
@@ -92,7 +88,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 			) {
 				issues.push(
 					new ValidationIssue({
-						// eslint-disable-next-line security/detect-object-injection
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `at most ${this.getMax}` },
@@ -103,7 +98,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 					expected: { description: 'bigint' },
 					received: { value },

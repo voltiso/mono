@@ -44,6 +44,5 @@ export interface IString$ extends ISchema$<string> {
 }
 
 export function isStringSchema(x: unknown): x is IString$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IString | null)?.[SCHEMA_NAME] === 'String'
 }

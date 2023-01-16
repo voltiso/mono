@@ -35,7 +35,6 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	readonly [SCHEMA_NAME] = 'Union' as const
 
 	get getSchemas(): this[OPTIONS]['schemas'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].schemas as never
 	}
 
@@ -79,7 +78,6 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		if (!valid) {
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name,
 
 					expected: {

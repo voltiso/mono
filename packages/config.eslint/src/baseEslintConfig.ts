@@ -5,6 +5,7 @@ import { defineEslintConfig } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
 
+import { checkHeapSize } from './detail/checkHeapSize'
 import { ignorePatterns } from './detail/ignorePatterns'
 import {
 	additionalMarkdownOverrides,
@@ -100,6 +101,8 @@ import {
 // 	'curly': 0,
 // 	'dot-location': 0,
 // }
+
+checkHeapSize()
 
 export const baseEslintConfig = defineEslintConfig({
 	// root: true, // ! override this explicitly

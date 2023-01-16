@@ -3,7 +3,7 @@
 
 function getLocationHref() {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	return typeof window !== 'undefined' ? window.location?.href : undefined
+	return typeof window === 'undefined' ? undefined : window.location?.href
 }
 
 const initialLocationHref = getLocationHref()
@@ -14,6 +14,7 @@ export function isNavigationBackForward() {
 
 	const locationHref = getLocationHref()
 
+	// eslint-disable-next-line unicorn/no-negated-condition
 	if (locationHref !== initialLocationHref) {
 		historyChanged = true
 		return true

@@ -12,6 +12,6 @@ export interface IInstance extends ISchema {
 }
 
 export function isInstanceSchema(x: unknown): x is IInstance {
-	// eslint-disable-next-line security/detect-object-injection
+	 
 	return (x as IInstance | null)?.[SCHEMA_NAME] === 'Instance'
 }

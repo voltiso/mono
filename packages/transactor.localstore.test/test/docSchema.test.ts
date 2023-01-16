@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { CustomString$, SCHEMA_NAME, SimpleSchema } from '@voltiso/schemar'
+import type { CustomString$, SimpleSchema } from '@voltiso/schemar'
+import { SCHEMA_NAME } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'

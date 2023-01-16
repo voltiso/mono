@@ -15,6 +15,5 @@ const map = {
 export function getEdgeFromDirection<D extends Direction>(
 	direction: D,
 ): GetEdgeFromDirection<D> {
-	// eslint-disable-next-line security/detect-object-injection
 	return map[direction]
 }

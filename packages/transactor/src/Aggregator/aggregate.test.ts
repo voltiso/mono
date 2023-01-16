@@ -5,9 +5,9 @@ import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import { Doc$ } from '~/Doc'
+import type { DocBuilderPlugin } from '~/Doc'
+import { Doc } from '~/Doc'
 
-import type { DocBuilderPlugin } from '..'
 import { aggregate } from './aggregate'
 
 declare module '~/DocTypes-module-augmentation' {
@@ -17,10 +17,9 @@ declare module '~/DocTypes-module-augmentation' {
 }
 
 // ! have to explicitly annotate - unfortunately
-const aggregator: DocBuilderPlugin<'zebra'> = aggregate('zebra').into(
-	'zebra',
-	'testAgg',
-	{
+const aggregator: DocBuilderPlugin<'zebra'> = aggregate('zebra')
+	.into('zebra', 'testAgg')
+	.with({
 		target() {
 			// if (this.id.length > 1) return dolphins(this.id.slice(0, -1))
 			return undefined
@@ -33,8 +32,7 @@ const aggregator: DocBuilderPlugin<'zebra'> = aggregate('zebra').into(
 		exclude(acc) {
 			return acc - 1
 		},
-	},
-)
+	})
 
 class Zebra extends Doc('zebra')
 	.with({

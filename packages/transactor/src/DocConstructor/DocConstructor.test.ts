@@ -7,7 +7,7 @@ import { $Assert, $Is } from '@voltiso/util'
 
 import type { DocIdBrand } from '~/brand'
 import type { DocTI, DTI } from '~/Doc'
-import { Doc$ } from '~/Doc'
+import { Doc } from '~/Doc'
 import { AnyDoc } from '~/DocTypes'
 
 import type { DocConstructor } from './DocConstructor'
@@ -15,8 +15,8 @@ import type { $$DocConstructor } from './IDocConstructor'
 
 declare module '../DocTypes-module-augmentation' {
 	interface DocTypes {
-		docConstructorTest1: Doc$
-		docConstructorTest2: Doc$
+		docConstructorTest1: Doc
+		docConstructorTest2: Doc
 	}
 }
 

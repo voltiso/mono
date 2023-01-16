@@ -103,11 +103,13 @@ export interface ProcessResult {
 
 /** @internal */
 export function _process(input: ProcessInput): ProcessResult {
-	// @ts-expect-error access protected field
-	const issues = (input.schema as unknown as CustomSchemaImpl<any>)._getIssues(
+	// ! access protected member
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+	const issues: ValidationIssue[] = (input.schema as any)._getIssues(
 		input.value,
 		input.options,
-	)
+	) as never
+
 	if (issues.length > 0) return { value: input.value, issues }
 
 	// custom operations are processed only until first issue

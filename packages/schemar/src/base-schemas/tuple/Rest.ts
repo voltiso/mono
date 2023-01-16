@@ -43,7 +43,6 @@ export class Rest<S extends $$Schemable = $$Schemable> {
 export function isRest<CastToType extends $$Schemable>(
 	x: unknown,
 ): x is Rest<CastToType> {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as Rest<CastToType> | null)?.[IS_REST] ?? false
 }
 

@@ -34,7 +34,6 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	// >
 
 	get getConstructor(): this[OPTIONS]['Constructor'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[OPTIONS].Constructor as never
 	}
 
@@ -45,7 +44,6 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	override [EXTENDS](other: ISchema): boolean {
 		if (isInstanceSchema(other))
 			return this.getConstructor === other.getConstructor
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 
@@ -60,10 +58,8 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 
 			issues.push(
 				new ValidationIssue({
-					// eslint-disable-next-line security/detect-object-injection
 					name: this[OPTIONS].name
-						? // eslint-disable-next-line security/detect-object-injection
-						  `instanceof ${this[OPTIONS].name}`
+						? `instanceof ${this[OPTIONS].name}`
 						: 'instanceof',
 
 					expected: {
@@ -79,7 +75,6 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	}
 
 	override _toString(): string {
-		// eslint-disable-next-line security/detect-object-injection
 		return `instanceof ${this[OPTIONS].Constructor.name}`
 	}
 }

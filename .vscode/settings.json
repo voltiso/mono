@@ -216,7 +216,7 @@
 	// "eslint.format.enable": true,
 	// "eslint.lintTask.enable": true,
 
-	"eslint.execArgv": ["--max_old_space_size=16384"],
+	"eslint.execArgv": ["--max_old_space_size=24000"],
 
 	// // Only turn on what's frequently used - better editor responsiveness
 	// "eslint.codeActionsOnSave.rules": [

@@ -1,7 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable jest/no-export */
+
 import { equals } from '@voltiso/util'
+
 import type { Input_, Output_ } from '~'
 import * as s from '~'
 
@@ -107,9 +110,9 @@ const sVoltisoEntry = _sVoltisoEntry
 
 //
 
-export interface VoltisoEntry extends Output_<typeof _sVoltisoEntry> {}
+interface VoltisoEntry extends Output_<typeof _sVoltisoEntry> {}
 
-export namespace VoltisoEntry {
+namespace VoltisoEntry {
 	export interface Input extends Input_<typeof _sVoltisoEntry> {}
 
 	//
@@ -166,6 +169,7 @@ describe('object', () => {
 	describe('transactor', () => {
 		it('works', () => {
 			const a = sVoltisoEntry.default({}).validate(undefined)
+
 			expect(a).toMatchObject({ numRefs: 0 })
 		})
 

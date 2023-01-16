@@ -6,6 +6,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 
 import * as fs from 'node:fs'
+import * as os from 'node:os'
 import * as path from 'node:path'
 
 const packageJson = JSON.parse(
@@ -39,10 +40,26 @@ function turboDependents(...scriptNames: string[]) {
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
-function turboAllPackages(...scriptNames: string[]) {
-	return `${finalEnvStr} pnpm -w exec turbo run ${scriptNames.join(
-		' ',
-	)} --output-logs=new-only`
+//
+
+const numCpuThreads = os.cpus().length
+void numCpuThreads // unused
+
+function turboAllPackages(
+	scriptName: string,
+	options?: { concurrency?: number },
+) {
+	const turboOptions = {} as Record<string, string | number>
+
+	if (options?.concurrency !== undefined) {
+		turboOptions['concurrency'] = Math.round(options.concurrency)
+	}
+
+	const turboOptionsStr = Object.entries(turboOptions)
+		.map(([key, value]) => `--${key} ${value}`)
+		.join(' ')
+
+	return `${finalEnvStr} pnpm -w exec turbo run ${turboOptionsStr} ${scriptName} --output-logs=new-only`
 }
 
 //!
@@ -50,15 +67,36 @@ function turboAllPackages(...scriptNames: string[]) {
 
 export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=new-only`
 
+export const devWorkspace = turboAllPackages('dev', { concurrency: 1_000 })
+
+export const lintTscWorkspace = turboAllPackages('lint:tsc')
+
+export const lintEslintWorkspace = turboAllPackages('lint:eslint', {
+	concurrency: 4, // ! high memory usage - eslint can crash
+	// concurrency: numCpuThreads * 0.5,
+})
+
+export const lintWorkspace = [lintTscWorkspace, lintEslintWorkspace]
+
+export const depcheckWorkspace = turboAllPackages('depcheck')
+
+export const testWorkspace = turboAllPackages('test')
+
+export const buildCjsWorkspace = turboAllPackages('build:cjs')
+export const buildEsmWorkspace = turboAllPackages('build:esm')
+
+export const buildWorkspace = [buildCjsWorkspace, buildEsmWorkspace]
+
+/** No point using it directly */
+export const installWorkspace = 'pnpm install'
+
 export const checkWorkspace = [
-	'pnpm install',
+	installWorkspace,
 	// turboAllPackages('fix:prettier'),
-	turboAllPackages('build:cjs'),
-	turboAllPackages('build:esm'),
-	turboAllPackages('depcheck'),
-	turboAllPackages('test'),
-	turboAllPackages('lint:tsc'),
-	turboAllPackages('lint:eslint'),
+	buildWorkspace,
+	depcheckWorkspace,
+	testWorkspace,
+	lintWorkspace,
 ]
 
 //!
@@ -67,15 +105,15 @@ export const checkWorkspace = [
 export const dev =
 	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
 
-export const build = ['pnpm install', turbo('build:esm', 'build:cjs')]
+export const build = [installWorkspace, turbo('build:esm', 'build:cjs')]
 export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
 export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']
 
-export const lint = ['pnpm install', turbo('lint:tsc', 'lint:eslint')]
+export const lint = [installWorkspace, turbo('lint:tsc', 'lint:eslint')]
 export const lintEslint = 'cross-env FULL=1 eslint --max-warnings=0 .'
 export const lintTsc = 'tsc -b'
 
-export const fix = ['pnpm install', turbo('fix:eslint', 'fix:prettier')]
+export const fix = [installWorkspace, turbo('fix:eslint', 'fix:prettier')]
 export const fixPrettier = 'prettier --write --loglevel error .'
 export const fixEslint = 'eslint --fix --max-warnings=0 .'
 

@@ -37,7 +37,6 @@ function getCacheSnapshot(cache: Cache) {
 	const r = {} as Record<string, Partial<CacheEntry>>
 
 	for (const [k, v] of cache.entries()) {
-		// eslint-disable-next-line security/detect-object-injection
 		const entry = (r[k] = {}) as Partial<CacheEntry>
 
 		if ('data' in v) entry.data = deepCloneData(v.data)

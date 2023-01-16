@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.eslint",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "sideEffects": false,
@@ -39,6 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/config.eslint.lib": "workspace:^",
+    "chalk": "4",
     "eslint-gitignore": "^0.1.0"
   },
   "devDependencies": {

@@ -12,7 +12,6 @@ function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 	if (aa.length < bb.length) return false
 
 	for (const [i, element] of bb.entries()) {
-		// eslint-disable-next-line security/detect-object-injection
 		const ok = schema(aa[i] as Schemable).extends(element)
 
 		if (!ok) return false

@@ -12,6 +12,5 @@ export interface IStyled {
 }
 
 export function isStyled(x: unknown): x is IStyled {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IStyled | null)?.[STYLED_DATA] !== undefined
 }

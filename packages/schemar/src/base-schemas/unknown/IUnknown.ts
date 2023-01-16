@@ -17,6 +17,5 @@ export interface IUnknown$ extends ISchema$ {
 
 export function isUnknownSchema(x: unknown): x is IUnknown {
 	$assert(SCHEMA_NAME)
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknown | null)?.[SCHEMA_NAME] === 'Unknown'
 }

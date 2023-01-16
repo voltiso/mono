@@ -34,7 +34,6 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 
 	override [EXTENDS](other: ISchema): boolean {
 		if (isUnknownLiteralSchema(other)) return true
-		// eslint-disable-next-line security/detect-object-injection
 		else return super[EXTENDS](other)
 	}
 

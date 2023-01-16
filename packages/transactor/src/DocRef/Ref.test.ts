@@ -4,7 +4,7 @@
 import * as s from '@voltiso/schemar'
 import { $Assert, $Is } from '@voltiso/util'
 
-import { Doc$ } from '~/Doc/Doc'
+import { Doc } from '~/Doc/Doc'
 
 import type { $$DocConstructor } from '..'
 import type { CustomDocRef } from './CustomDocRef'

@@ -47,7 +47,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	readonly [DATA]: StyledData<G<$>, C<$>>
 
 	get component(): G<$>['Component'] {
-		// eslint-disable-next-line security/detect-object-injection
 		return this[DATA].component as never
 	}
 
@@ -55,7 +54,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		newData: NewData,
 	): never {
 		if (newData.stack) {
-			// eslint-disable-next-line security/detect-object-injection
 			const alreadyHaveCustomCss = tryAt(this[DATA].stack, -1)?.customCss
 			const incomingCustomCss = newData.customCss
 
@@ -70,38 +68,25 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		}
 
 		return new Styled({
-			// eslint-disable-next-line security/detect-object-injection
 			component: (newData.component || this[DATA].component) as never,
 
 			stack: newData.stack
-				? // eslint-disable-next-line security/detect-object-injection
-				  [...this[DATA].stack, ...newData.stack]
-				: // eslint-disable-next-line security/detect-object-injection
-				  this[DATA].stack,
+				? [...this[DATA].stack, ...newData.stack]
+				: this[DATA].stack,
 
 			defaults: mergeDefaults(
-				// eslint-disable-next-line security/detect-object-injection
 				this[DATA].defaults,
 				newData.defaults,
 				newData.domDefaults,
 			),
 
-			domDefaults: mergeDefaults(
-				// eslint-disable-next-line security/detect-object-injection
-				this[DATA].domDefaults,
-				newData.domDefaults,
-			),
+			domDefaults: mergeDefaults(this[DATA].domDefaults, newData.domDefaults),
 
-			cssProps: mergeCssProps(
-				// eslint-disable-next-line security/detect-object-injection
-				this[DATA].cssProps,
-				newData.cssProps,
-			) as never,
+			cssProps: mergeCssProps(this[DATA].cssProps, newData.cssProps) as never,
 		}) as never
 	}
 
 	constructor(data: StyledData<G<$>, C<$>>) {
-		// eslint-disable-next-line security/detect-object-injection
 		this[DATA] = data
 
 		const r =
@@ -266,9 +251,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		for (const propName of propNames as string[]) {
 			// assertNotPolluting(propName)
 
-			// eslint-disable-next-line security/detect-object-injection
 			cssProps[propName] = [
-				// eslint-disable-next-line security/detect-object-injection
 				...(cssProps[propName] || []),
 				(value: unknown) => ({ [propName]: value }),
 			]
@@ -622,7 +605,6 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 				{
 					mapProps: (p: P<$>) =>
 						({
-							// eslint-disable-next-line security/detect-object-injection
 							[propName]: mapProp(p[propName] as never),
 						} as never),
 				},

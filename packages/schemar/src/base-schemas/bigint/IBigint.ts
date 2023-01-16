@@ -13,6 +13,5 @@ export interface IBigint extends ISchema {
 }
 
 export function isBigintSchema(x: unknown): x is IBigint {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IBigint | null)?.[SCHEMA_NAME] === 'Bigint'
 }

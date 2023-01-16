@@ -16,6 +16,5 @@ export interface IUnknownSymbol$ extends ISchema$ {
 //
 
 export function isUnknownSymbolSchema(x: unknown): x is IUnknownSymbol$ {
-	// eslint-disable-next-line security/detect-object-injection
 	return (x as IUnknownSymbol | null)?.[SCHEMA_NAME] === 'UnknownSymbol'
 }

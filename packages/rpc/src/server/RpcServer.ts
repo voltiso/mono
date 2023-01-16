@@ -86,7 +86,7 @@ export class _RpcServer<
 					if (!Object.keys(handler).includes(p))
 						throw new Error(`method ${path.join('.')} does not exist`)
 
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection, @typescript-eslint/no-unsafe-member-access
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 					handler = handler[p]
 				}
 
