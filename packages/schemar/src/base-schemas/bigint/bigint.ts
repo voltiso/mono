@@ -9,8 +9,7 @@ import { BigintImpl } from './BigintImpl'
 
 //
 
-export interface Bigint extends CustomBigint<{}> {
-}
+export interface Bigint extends CustomBigint<{}> {}
 
 export interface Bigint$ extends CustomBigint$<{}> {
 	<L extends bigint>(...literals: L[]): Literal<L>

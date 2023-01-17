@@ -100,8 +100,8 @@ async function getPackageScripts() {
 
 const icon = '🐚'
 
-// eslint-disable-next-line no-console
-console.log(icon, chalk.gray('@voltiso/script'))
+// // eslint-disable-next-line no-console
+// console.log(icon, chalk.gray('@voltiso/script'))
 
 async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 	// eslint-disable-next-line require-atomic-updates, no-param-reassign

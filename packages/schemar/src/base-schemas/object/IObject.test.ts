@@ -53,9 +53,7 @@ describe('IObject', () => {
 
 	// eslint-disable-next-line jest/prefer-todo
 	it('generic', <_Shape extends s.$$InferableObject>() => {
-
 		// ! super-slow vscode support
-
 		// $Assert.is<s.Object<Shape>, s.ISchema>()
 		// $Assert.is<s.Object<Shape>, s.IObject>()
 	})

@@ -4,7 +4,13 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { CustomRecord, CustomRecord$, IRecord, ISchema, RecordOptions } from '~'
+import type {
+	CustomRecord,
+	CustomRecord$,
+	IRecord,
+	ISchema,
+	RecordOptions,
+} from '~'
 import * as s from '~'
 
 describe('record', () => {

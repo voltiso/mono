@@ -18,6 +18,5 @@ export interface IAny extends $$Any, ISchema {
 }
 
 export function isAnySchema(x: unknown): x is IAny {
-	 
 	return (x as IAny | null)?.[SCHEMA_NAME] === 'Any'
 }

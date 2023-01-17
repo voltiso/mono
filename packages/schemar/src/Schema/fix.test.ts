@@ -63,4 +63,10 @@ describe('fix', () => {
 			>
 		>()
 	})
+
+	it('invalid result', () => {
+		const a = s.string.fix(s.string, value => value.length as never)
+
+		expect(() => a.validate('test')).toThrow('should be string (got 4)')
+	})
 })

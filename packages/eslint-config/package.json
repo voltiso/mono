@@ -40,8 +40,8 @@
   "dependencies": {
     "@next/eslint-plugin-next": "^13.1.2",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.48.1",
-    "@typescript-eslint/parser": "^5.48.1",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "any-eslint-parser": "^1.0.1",

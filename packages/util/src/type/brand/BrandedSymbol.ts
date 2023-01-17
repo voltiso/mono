@@ -29,6 +29,19 @@ export interface $$<S extends string = string>
 export type $<S extends string> = symbol & $$<S>
 
 /**
+ * `BrandedSymbol`
+ *
+ * It's a real `Symbol` at runtime.
+ *
+ * - Replaces TypeScript's `unique symbol` type with a `symbol` type + nominal
+ *   type branding
+ * - Safe to type-inline using `@voltiso/transform/inline`, as it has no unique
+ *   symbol dependencies
+ * - It's not as type safe as `unique symbol` - be careful to pick unique names
+ */
+export type BrandedSymbol<S extends string> = $<S>
+
+/**
  * It's a real `Symbol` at runtime.
  *
  * - Replaces TypeScript's `unique symbol` type with a `symbol` type + nominal

@@ -57,9 +57,7 @@ describe('object', () => {
 				hourlyRateByBidLevel: [],
 				commission: 0.2,
 			}),
-		).toThrow(
-			`.currency should be one of ['USD', 'PLN'] (got 'ASD')`,
-		)
+		).toThrow(`.currency should be one of ['USD', 'PLN'] (got 'ASD')`)
 
 		expect(
 			s.schema(pricingAgreement).isValid({

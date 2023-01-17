@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/firestore-like",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -42,9 +42,7 @@
     "prepublishOnly:rest": "run-p build test lint",
     "__________MISC": "__________",
     "clean": "rimraf dist",
-    "//typecov": "run-s typecov:run typecov:fix",
-    "//typecov:run": "type-coverage --project tsconfig.build.esm --update",
-    "//typecov:fix": "prettier ./package.json --write"
+    "typecov": "v typecov"
   },
   "__________DEPS": "__________",
   "dependencies": {

@@ -17,6 +17,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.18",
     "@typescript/analyze-trace": "^0.9.1",
@@ -49,7 +50,7 @@
     "node": "16",
     "pnpm": "7"
   },
-  "packageManager": "pnpm@7.22.0",
+  "packageManager": "pnpm@7.25.0",
   "pnpm": {
     "overrides": {
       "typescript": "4.8.4 || 4.9.4-is-broken",

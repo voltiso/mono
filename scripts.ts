@@ -72,7 +72,7 @@ export const devWorkspace = turboAllPackages('dev', { concurrency: 1_000 })
 export const lintTscWorkspace = turboAllPackages('lint:tsc')
 
 export const lintEslintWorkspace = turboAllPackages('lint:eslint', {
-	concurrency: 4, // ! high memory usage - eslint can crash
+	concurrency: 3, // ! high memory usage - eslint can crash
 	// concurrency: numCpuThreads * 0.5,
 })
 
@@ -110,7 +110,10 @@ export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
 export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']
 
 export const lint = [installWorkspace, turbo('lint:tsc', 'lint:eslint')]
-export const lintEslint = 'cross-env FULL=1 eslint --max-warnings=0 .'
+
+export const lintEslint =
+	'cross-env FULL=1 NODE_OPTIONS=--max_old_space_size=24000 eslint --max-warnings=0 .'
+
 export const lintTsc = 'tsc -b'
 
 export const fix = [installWorkspace, turbo('fix:eslint', 'fix:prettier')]

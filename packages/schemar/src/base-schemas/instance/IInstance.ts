@@ -12,6 +12,5 @@ export interface IInstance extends ISchema {
 }
 
 export function isInstanceSchema(x: unknown): x is IInstance {
-	 
 	return (x as IInstance | null)?.[SCHEMA_NAME] === 'Instance'
 }

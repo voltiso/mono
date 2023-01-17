@@ -39,7 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
-    "@typescript-eslint/parser": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.2",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",

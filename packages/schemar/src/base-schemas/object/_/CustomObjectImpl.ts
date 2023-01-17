@@ -134,7 +134,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			return true
 		} else if (isUnknownObjectSchema(other)) {
 			return true
-			 
 		} else return super[EXTENDS](other)
 	}
 
@@ -218,7 +217,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 						name: this[v.OPTIONS].name,
 						path: [key],
 						expected: { description: 'not be present' },
-						 
+
 						received: { value: x[key] },
 					})
 
@@ -380,13 +379,11 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					}
 				}
 
-				 
 				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey)
 					isChanged = true
 
-				 
 				delete fixedObject[originalXKey]
-				 
+
 				fixedObject[xKey] = xValue as never
 			}
 

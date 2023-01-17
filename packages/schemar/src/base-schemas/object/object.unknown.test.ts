@@ -4,7 +4,7 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { GetObjectType } from '~'
+import type { $$SchemableObject, GetObjectType } from '~'
 import * as s from '~'
 
 describe('object - unknown', () => {
@@ -29,6 +29,8 @@ describe('object - unknown', () => {
 			nonNullish: {},
 			nonNullish2: s.infer({}),
 		}
+
+		$Assert.is<typeof shape, $$SchemableObject>()
 
 		type A = GetObjectType<typeof shape, { kind: 'out' }>
 
