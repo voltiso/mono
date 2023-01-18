@@ -25,5 +25,6 @@ export const sonar = defineEslintConfigOverride({
 		'sonarjs/no-inverted-boolean-check': 1,
 		'sonarjs/no-all-duplicated-branches': 1,
 		'sonarjs/no-duplicate-string': 1,
+		'sonarjs/no-unused-collection': 1,
 	},
 } as const)

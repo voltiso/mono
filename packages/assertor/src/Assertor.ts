@@ -5,18 +5,24 @@ import type * as s from '@voltiso/schemar'
 import { isValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept } from '@voltiso/util'
-import { BoundCallable, CALL } from '@voltiso/util'
+import { assert, BoundCallable, CALL } from '@voltiso/util'
 
 import { AssertorError } from './AssertorError'
 
-/** @internal */
-export class _Assertor<S extends s.Schema> {
-	private readonly _name: string
-	private readonly _schema: S
+export interface AssertorOptions {
+	argumentsPrefix?: unknown[]
+}
 
-	constructor(name: string, schema: S) {
+/** @internal */
+export class _Assertor {
+	private readonly _name: string
+	private readonly _schema: s.ISchema
+	private readonly _options: AssertorOptions | undefined
+
+	constructor(name: string, schema: s.ISchema, options?: AssertorOptions) {
 		this._name = name
 		this._schema = schema
+		this._options = options
 
 		// eslint-disable-next-line no-constructor-return
 		return new Proxy(BoundCallable(this), {
@@ -24,10 +30,11 @@ export class _Assertor<S extends s.Schema> {
 				if (property in target)
 					return Reflect.get(target, property, receiver) as never
 				else {
+					assert(this._schema)
 					// eslint-disable-next-line etc/no-internal
 					return new _Assertor(
-						`${name}.${property.toString()}`,
-						schema[property as never],
+						`${this._name}.${property.toString()}`,
+						this._schema[property as never],
 					) as never
 				}
 			},
@@ -39,9 +46,9 @@ export class _Assertor<S extends s.Schema> {
 	 * @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument
 	 */
 	[CALL](
-		value: s.Type<S> | AlsoAccept<unknown>,
+		value: unknown,
 		...rest: [string, CallInfo | undefined] | [CallInfo | undefined]
-	): asserts value is s.Type<S> {
+	): any {
 		const [message, callInfo] =
 			rest.length >= 2
 				? rest
@@ -57,7 +64,7 @@ export class _Assertor<S extends s.Schema> {
 			throw new AssertorError({
 				name: this._name,
 				message: message as string,
-				arguments: [value],
+				arguments: [...(this._options?.argumentsPrefix || []), value],
 				callInfo,
 				cause: error,
 			})
@@ -115,4 +122,5 @@ export const Assertor = _Assertor as unknown as AssertorConstructor
 export type AssertorConstructor = new <S extends s.Schema>(
 	name: string,
 	schema: S,
+	options?: AssertorOptions | undefined,
 ) => Assertor<S>

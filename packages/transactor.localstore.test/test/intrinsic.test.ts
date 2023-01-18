@@ -22,4 +22,20 @@ describe('intrinsic fields', () => {
 			})
 		})
 	})
+
+	it('does not allow `set` with __voltiso', async () => {
+		await db('tvBody', 'a').set({
+			test: 1,
+
+			__voltiso: {
+				numRefs: 100,
+			},
+		})
+
+		await expect(db('tvBody', 'a').data).resolves.toMatchObject({
+			__voltiso: {
+				numRefs: 0,
+			},
+		})
+	})
 })

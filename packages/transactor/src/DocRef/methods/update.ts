@@ -8,6 +8,8 @@ import {
 	isDefined,
 	isDeleteIt,
 	isReplaceIt,
+	omit,
+	replaceIt,
 	stringFrom,
 } from '@voltiso/util'
 
@@ -60,15 +62,26 @@ function isRecord(updates: Updates): updates is UpdatesRecord {
 	return updates.constructor === Object
 }
 
-function check(this: WithDocRef, updates: Updates, params?: StripParams) {
+function check<T extends Updates>(
+	ctx: WithDocRef,
+	updates: T,
+	params?: StripParams,
+): T {
 	if (isReplaceIt(updates)) {
-		check.call(this, updates.__replaceIt as never, params)
-		return
+		// eslint-disable-next-line no-param-reassign
+		updates = check(ctx, updates.__replaceIt as never, params)
+		return replaceIt(updates) as never
 	}
 
-	if (!isRecord(updates)) return
+	if (!isRecord(updates)) return updates
 
-	const { docRef } = this
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	if ((updates as any)?.__voltiso) {
+		// eslint-disable-next-line no-param-reassign
+		updates = omit(updates as never, '__voltiso')
+	}
+
+	const { docRef } = ctx
 	const path = docRef.path.toString()
 
 	const { onConstField, onPrivateField } = params || {}
@@ -93,6 +106,8 @@ function check(this: WithDocRef, updates: Updates, params?: StripParams) {
 			}
 		}
 	}
+
+	return updates
 }
 
 async function rawUpdate(
@@ -127,7 +142,8 @@ async function rawUpdate(
 	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc | null | undefined> {
 	assert(updates)
-	check.call(ctx, updates)
+	// eslint-disable-next-line no-param-reassign
+	updates = check(ctx, updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
 	const beforeCommits = getBeforeCommits(ctx.docRef)
@@ -248,9 +264,11 @@ async function transactionUpdateImpl(
 		if (options.create && cacheEntry.data)
 			throw new TransactorError(`${ctx.docRef.path.toString()} already exists`)
 
-		if (cacheEntry.data) check.call(ctx, updates, options)
+		// eslint-disable-next-line no-param-reassign
+		if (cacheEntry.data) updates = check(ctx, updates, options)
 		else {
-			check.call(ctx, updates, {
+			// eslint-disable-next-line no-param-reassign
+			updates = check(ctx, updates, {
 				...options,
 				onConstField: 'ignore',
 			})
@@ -258,7 +276,8 @@ async function transactionUpdateImpl(
 
 		await processTriggers(ctx, { updates })
 	} else {
-		check.call(ctx, updates)
+		// eslint-disable-next-line no-param-reassign
+		updates = check(ctx, updates)
 
 		let { data } = cacheEntry
 

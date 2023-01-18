@@ -1,16 +1,29 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _CustomDocRef, $$DocRelatedLike, AnyDoc, CustomDocRef } from '~'
+import type {
+	_CustomDocRef,
+	$$DocRelated,
+	$$DocRelatedLike,
+	AnyDoc,
+	CustomDocRef,
+} from '~'
 
 /** Strong document reference - with ref-counting ✅ */
-export interface DocRef<doc extends $$DocRelatedLike = AnyDoc>
+export interface DocRef<doc extends $$DocRelated = AnyDoc>
 	extends CustomDocRef<{
 		doc: doc
 		isStrong: true
 	}> {
 	// get Final(): this
 }
+
+export type DocRef_<R> = R extends $$DocRelatedLike
+	? CustomDocRef<{
+			doc: R
+			isStrong: true
+	  }>
+	: never
 
 // /** Strong document reference - with ref-counting ✅ */
 // export interface DocRef$<doc extends $$DocRelatedLike = AnyDoc>

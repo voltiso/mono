@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
+	$$Schema,
 	$$Schemable,
 	CustomString,
 	Instance,
@@ -10,8 +11,8 @@ import type {
 	RegExpEntry,
 	Type,
 } from '@voltiso/schemar'
-import * as s from '@voltiso/schemar'
 import { isSchema } from '@voltiso/schemar'
+import * as s from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept, AtLeast1, Constructor, Falsy } from '@voltiso/util'
 import { ProtoCallable } from '@voltiso/util'
@@ -19,6 +20,17 @@ import { ProtoCallable } from '@voltiso/util'
 import { Assertor } from './Assertor'
 
 export interface AssertFunction {
+	/**
+	 * First overload - check if first argument is $$Schema
+	 *
+	 * @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument
+	 */
+	<S extends $$Schema>(
+		schema: S,
+		value: Type<S> | AlsoAccept<unknown>,
+		__callInfo?: CallInfo | undefined,
+	): asserts value is Type<S>
+
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	(
 		value: unknown,
@@ -29,8 +41,10 @@ export interface AssertFunction {
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 	(value: unknown, __callInfo?: CallInfo | undefined): asserts value
 
+	//
+
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
-	<S extends $$Schemable>(
+	schema<S extends $$Schemable>(
 		schema: S,
 		value: Type<S> | AlsoAccept<unknown>,
 		__callInfo?: CallInfo | undefined,
@@ -62,17 +76,34 @@ export interface AssertFunction {
 
 	readonly symbol: Assertor<typeof s.symbol>
 
+	readonly array: Assertor<typeof s.array>
+
 	instance<C extends Constructor>(constructor: C): Assertor<Instance<C>>
 }
 
 const _getAssert: (name: string) => AssertFunction = name =>
 	ProtoCallable({
 		prototype: {
+			schema(schema: $$Schemable, value: unknown, ...rest: any) {
+				return new Assertor(`${name}.schema`, s.schema(schema), {
+					argumentsPrefix: [schema],
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+				})(value, ...rest)
+			},
+
 			get defined() {
 				return new Assertor(
 					`${name}.defined`,
 					s.unknown.check(x => x !== undefined),
 				) as never
+			},
+
+			get undefined() {
+				return new Assertor(`${name}.undefined`, s.undefined) as never
+			},
+
+			get null() {
+				return new Assertor(`${name}.undefined`, s.null) as never
 			},
 
 			get propertyKey() {
@@ -93,6 +124,10 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 			get number() {
 				return new Assertor(`${name}.number`, s.number)
+			},
+
+			get array() {
+				return new Assertor(`${name}.array`, s.array)
 			},
 
 			get integer() {
@@ -117,6 +152,20 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 			get false() {
 				return new Assertor(`${name}.false`, s.literal(false))
+			},
+
+			get truthy() {
+				return new Assertor(
+					`${name}.true`,
+					s.unknown.check(x => !!x),
+				)
+			},
+
+			get falsy() {
+				return new Assertor(
+					`${name}.false`,
+					s.unknown.check(x => !x),
+				)
 			},
 
 			//
@@ -165,7 +214,10 @@ const _getAssert: (name: string) => AssertFunction = name =>
 					  ([s.truthy, ...args] as never[])
 
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const assertor = new Assertor(name, schema) as any
+			const assertor = new Assertor(name, schema, {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+				argumentsPrefix: isSchema(args[0]) ? [args[0]] : [],
+			}) as any
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 			assertor(value, ...rest)
 		},

@@ -7,6 +7,7 @@ import type {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	NoArgument,
+	NonStrictPartial,
 	OPTIONS,
 	Throw,
 } from '@voltiso/util'
@@ -98,7 +99,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 	validate(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		// options?: Partial<ValidateOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): this[OPTIONS]['Output']
 
 	/**
@@ -112,7 +113,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	tryValidate<X>(
 		x: X,
-		// options?: Partial<GetIssuesOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): X | this[OPTIONS]['Output']
 
 	/**
@@ -123,7 +124,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	exec(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidationOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): ValidationResult
 
 	/**
@@ -133,7 +134,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	getIssues(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidationOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): ValidationIssue[]
 
 	/**
@@ -144,7 +145,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	isFixable(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidationOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): x is this[OPTIONS]['Input']
 
 	/**
@@ -155,7 +156,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	assertFixable(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidationOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): asserts x is this[OPTIONS]['Input']
 
 	/**
@@ -165,7 +166,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	isValid(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidationOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): x is this[OPTIONS]['Output']
 
 	/**
@@ -176,7 +177,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 	assertValid(
 		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
-		options?: Partial<ValidationOptions> | undefined,
+		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): asserts x is this[OPTIONS]['Output']
 }
 

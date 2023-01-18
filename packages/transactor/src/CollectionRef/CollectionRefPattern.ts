@@ -14,8 +14,9 @@ import {
 } from '~/common'
 import type { WithDb } from '~/Db'
 import type { $$DocConstructor } from '~/DocConstructor'
+import type { WeakDocRef } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
-import type { $$DocRelated, GetDocTag } from '~/DocRelated'
+import type { $$DocRelated, GetDocRepresentative } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
@@ -46,21 +47,24 @@ export interface CollectionRefPattern<
 		Length<Tokens>,
 		Length<GetUnknownPathTokens<Pattern>>
 	> extends true
-		? CollectionRef<Doc>
+		? CollectionRef<GetDocRepresentative<Doc>>
 		: IsCompatible<
 				$Decrement<Length<Tokens>>,
 				Length<GetUnknownPathTokens<Pattern>>
 		  > extends true
-		? CustomDocRef<{ doc: GetDocTag<Doc> }> // WeakDocRef<Doc>
-		: CollectionRefPattern<ApplyUnknownPathTokens<Pattern, Tokens>, Doc>
+		? WeakDocRef<GetDocRepresentative<Doc>>
+		: CollectionRefPattern<
+				ApplyUnknownPathTokens<Pattern, Tokens>,
+				GetDocRepresentative<Doc>
+		  >
 }
 
 export class CollectionRefPattern<
 	Pattern extends string = string,
 	Doc extends $$DocRelated = AnyDoc,
 > {
-	/** Type-only */
-	declare Doc: Doc
+	// /** Type-only */
+	// declare Doc: GetDocRepresentative<Doc>
 
 	readonly context: Context
 	readonly pattern: string

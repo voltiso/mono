@@ -6,4 +6,4 @@ import * as s from '@voltiso/schemar'
 
 assert(true)
 
-assert(s.number.or(undefined), 1)
+assert.schema(s.number.or(undefined), 1)

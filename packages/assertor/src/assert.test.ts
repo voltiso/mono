@@ -29,7 +29,13 @@ describe('assert', () => {
 			/assert\.defined.*undefined/u,
 		)
 
-		$assert(s.number.or(null), falsy)
+		expect(() => assert(s.string, 123)).toThrow(/assert.*string.*123/u)
+		expect(() => assert(s.string, '123')).not.toThrow()
+
+		expect(() => assert.schema(s.string, 123)).toThrow(/assert.schema.*string.*123/u)
+		expect(() => assert.schema(s.string, '123')).not.toThrow()
+
+		$assert.schema(s.number.or(null), falsy)
 
 		$Assert<IsIdentical<typeof falsy, 0 | null>>()
 

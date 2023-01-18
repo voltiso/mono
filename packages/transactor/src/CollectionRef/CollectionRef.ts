@@ -30,7 +30,7 @@ export interface CollectionRef<
 	_Ctx extends ExecutionContext = 'outside',
 > {
 	/** Get Doc reference by Id */
-	(id: DocIdString<R>): WeakDocRef<R>
+	(id: DocIdString<R>): WeakDocRef<GetDocRepresentative<R>>
 
 	/** Get Doc reference by Id */
 	<T extends DocIdString>(id: T): Throw<

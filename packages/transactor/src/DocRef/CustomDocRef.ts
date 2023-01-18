@@ -98,6 +98,10 @@ export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
 	toJSON(): DocRefJson
 }
 
+// export type CustomDocRef_<O> = O extends Partial<CustomDocRef.Options>
+// 	? CustomDocRef<O>
+// 	: never
+
 export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 	extends CustomDocRefBase<O>,
 		PromiseLike<
