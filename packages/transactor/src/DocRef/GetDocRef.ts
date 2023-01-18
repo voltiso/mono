@@ -10,9 +10,12 @@ export type GetDocRef<O extends Partial<CustomDocRef.Options>> = GetDocRef.Get<
 >
 
 export namespace GetDocRef {
-	export type Get<O extends CustomDocRef.Options> = O['doc'] extends $$DocRelated ? O['isStrong'] extends true
-		? DocRef<O['doc']>
-		: WeakDocRef<O['doc']> : never
+	export type Get<O extends CustomDocRef.Options> =
+		O['doc'] extends $$DocRelated
+			? O['isStrong'] extends true
+				? DocRef<O['doc']>
+				: WeakDocRef<O['doc']>
+			: never
 }
 
 //

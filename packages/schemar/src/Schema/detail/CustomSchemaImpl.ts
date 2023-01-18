@@ -178,21 +178,13 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		inputValue: unknown,
 		options?: Partial<ValidationOptions> | undefined,
 	): ValidationResult<this[OPTIONS]['Output']> {
-		// console.log('! exec', this.getName, inputValue, options)
-
 		let value = inputValue
-
-		if (value === undefined && this.hasDefault) {
-			value = this.getDefault as never
-		}
-
-		value = this._fix(value, options) as never
-
-		// console.log('!! exec', this.getName, value)
 
 		/** Apply custom fixes */
 		for (const customFix of this.getCustomFixes as unknown as CustomFix[]) {
-			const result = customFix.inputSchema.exec(value)
+			const result = customFix.inputSchema.exec(value, {
+				onUnknownProperty: 'ignore',
+			})
 			if (!result.isValid) continue
 
 			try {
@@ -204,7 +196,9 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			}
 		}
 
-		// console.log('!!! exec', this.getName, value)
+		/** Apply builtin fixes */
+		if (value === undefined && this.hasDefault) value = this.getDefault as never
+		value = this._fix(value, options) as never
 
 		/** Also calls customOperations */
 		// eslint-disable-next-line etc/no-internal
@@ -212,8 +206,6 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 		// eslint-disable-next-line es-x/no-array-prototype-every
 		const isValid = result.issues.every(issue => issue.severity !== 'error')
-
-		// console.log('!!!! EXEC', this.getName, result.value)
 
 		return {
 			isValid,
@@ -390,6 +382,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		}) as never
 	}
 
+	/** Same as `.fix` - different typings */
+	implicitFix(...args: any): any {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		return (this.fix as any)(...args)
+	}
+
 	fixIf(predicate: (value: unknown) => boolean, fix: (x: any) => never): never {
 		return this._cloneWithOptions({
 			customFixes: [
@@ -398,6 +396,15 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			],
 		}) as never
 	}
+
+	//
+
+	get deleted(): any {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		return this.map(() => undefined).optional as never
+	}
+
+	//
 
 	name(name: string): this {
 		return this._cloneWithOptions({ name }) as never

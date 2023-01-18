@@ -5,6 +5,7 @@ import type {
 	$Override_,
 	AlsoAccept,
 	BASE_OPTIONS,
+	DeepPartial_,
 	DEFAULT_OPTIONS,
 	NoArgument,
 	NonStrictPartial,
@@ -288,6 +289,9 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 	/**
 	 * Same as `map`, but with narrow-only typings
 	 *
+	 * - ✅ conditionSchema is validated according to TS subtype rules, not
+	 *   assignability - meaning schema is validated with onUnknownProperty:
+	 *   'ignore'
 	 * - Return `undefined` only if the value is already correct
 	 * - ⚠️ Return exactly the same value if the value is already correct -
 	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
@@ -308,6 +312,9 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 	/**
 	 * Push transformation applied after anything else
 	 *
+	 * - ✅ conditionSchema is validated according to TS subtype rules, not
+	 *   assignability - meaning schema is validated with onUnknownProperty:
+	 *   'ignore'
 	 * - ⚠️ Return exactly the same value if the value is already correct -
 	 *   otherwise `.isValid` will incorrectly return `false`, as it uses
 	 *   `Object.is` to check if value was already valid
@@ -329,7 +336,7 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 
 	map<ConditionSchema extends $$Schemable, NewOutput>(
 		conditionSchema: ConditionSchema,
-		map: (value: Output_<ConditionSchema>) =>
+		map: (value: Output_<ConditionSchema> & this[OPTIONS]['Output']) =>
 			| NewOutput
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
@@ -402,7 +409,7 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 		: CustomSchema.WithFix<this, O, AdditionalInput>
 
 	/**
-	 * Executed only if `wrongValueSchema` passes validation
+	 * Executed only if `wrongValueSchema` passes subtype-validation
 	 *
 	 * @example
 	 *
@@ -410,6 +417,9 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 	 * const timestamp = s.date.fix(s.string, value => new Date(value))
 	 * ```
 	 *
+	 * - ✅ conditionSchema is validated according to TS subtype rules, not
+	 *   assignability - meaning schema is validated with onUnknownProperty:
+	 *   'ignore'
 	 * - 💀 Return `undefined` to delete the value (if `isOptional`) - will throw if
 	 *   not validated via parent object
 	 * - ⚠️ Return exactly the same value if the value is already correct -
@@ -428,13 +438,15 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			Input: AdditionalInput
 		},
 		fix: (value: AdditionalInput) =>
-			| this[OPTIONS]['Input']
+			| DeepPartial_<this[OPTIONS]['Input']>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
 					? undefined // typeof deleteIt
 					: never),
-	): CustomSchema.WithFix<this, O, AdditionalInput>
+	): AdditionalInput extends Partial<this[OPTIONS]['Input']>
+		? this
+		: CustomSchema.WithFix<this, O, AdditionalInput>
 
 	fix<ConditionSchema extends $$Schemable>(
 		conditionSchema: ConditionSchema,
@@ -466,7 +478,35 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 		? Throw<'Missing explicit AdditionalInput type argument'>
 		: CustomSchema.WithFix<this, O, AdditionalInput>
 
+	/** Same as `.fix`, but does not extend the `Input` type */
+	implicitFix<AdditionalInput>(
+		conditionSchema: $$Schema & {
+			Output: AdditionalInput
+			Input: AdditionalInput
+		},
+		fix: (value: AdditionalInput) =>
+			| DeepPartial_<this[OPTIONS]['Input']>
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): this
+
 	//
+
+	/**
+	 * Same as `.map(() => undefined).optional`
+	 *
+	 * - Output value will always be deleted (or `undefined`) - use `.fix` to access
+	 *   the value before the deletion and do something with it
+	 */
+	get deleted(): OverrideSchema$WithOmit<
+		this,
+		O,
+		{ Output: undefined; isOptional: true },
+		'isStrictOptional' | 'default' | 'hasDefault'
+	>
 
 	//
 
@@ -605,20 +645,6 @@ export declare namespace CustomSchema {
 			? This
 			: OverrideSchema$<This, O, { Output: This['Output'] | AdditionalOutput }>
 		: never
-
-	// export type CastResult<
-	// 	This extends $$Schema & { Output: unknown; Input: unknown },
-	// 	O,
-	// 	NewType,
-	// 	/** Added `_` for `SimpleSchema` assignability */
-	// > = _<This['Output']> | _<This['Input']> extends NewType
-	// 	? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
-	// 	: [NewType] extends [This['Output'] & This['Input']]
-	// 	? OverrideSchema<This, O, { Output: NewType; Input: NewType }>
-	// 	: Throw<
-	// 			'Cast: NewType is not subtype or supertype' &
-	// 				TypeCastErrorDetail<This, NewType>
-	// 	  >
 
 	export type WithCast<This extends $$Schema, O, T> = [T] extends [
 		$$Schema & {

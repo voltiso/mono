@@ -68,7 +68,9 @@ export function _processCustomOperations(
 			let nextValue = value
 
 			if ('condition' in operation) {
-				const result = schema(operation.condition).exec(nextValue)
+				const result = schema(operation.condition).exec(nextValue, {
+					onUnknownProperty: 'ignore',
+				})
 				if (result.isValid) {
 					nextValue = result.value
 				} else continue // skip this operation

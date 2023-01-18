@@ -185,6 +185,8 @@ export interface ISchema$<T = unknown> extends ISchema<T> {
 	default(value: T): $$Schema
 	default(getValue: () => T): $$Schema
 
+	get deleted(): ISchema$
+
 	//
 
 	/**
@@ -298,6 +300,10 @@ export interface ISchema$<T = unknown> extends ISchema<T> {
 			value: Value,
 		) => this[OPTIONS]['Input'] | void | undefined, // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
 	): $$Schema | StaticError
+
+	//
+	implicitFix(conditionSchema: $$Schema, fix: (value: any) => any): ISchema$
+	implicitFix(fix: (value: any) => any): ISchema$
 
 	//
 
