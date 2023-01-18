@@ -4,4 +4,3 @@
 ignores:
   - '@babel/core'
   - '@babel/preset-env'
-  - '@voltiso/config.ts.build.cjs'

@@ -3,5 +3,4 @@
 
 ignores:
   - '~'
-  - '@voltiso/config.ts.build.cjs'
   - import-meta-resolve

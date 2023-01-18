@@ -2,15 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts.build",
+	"$schema": "https://json.schemastore.org/tsconfig",
+
+	"extends": "../build",
 
 	"compilerOptions": {
-		"module": "CommonJS"
-		// "declaration": false,
+		"module": "ESNext"
+		// "declaration": true,
+		// "declarationMap": true,
 
 		// !
 		// ! OVERWRITE WHEN EXTENDING !
 		// !
-		// "outDir": "dist/cjs"
+		// "outDir": "dist/esm"
 	}
 }

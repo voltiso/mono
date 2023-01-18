@@ -2,6 +2,5 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@voltiso/config.ts.build.cjs'
   - '@babel/core'
   - '@babel/preset-env'

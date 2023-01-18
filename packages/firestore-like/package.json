@@ -51,8 +51,7 @@
   "devDependencies": {
     "@firebase/app-types": "^0.9.0",
     "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "firebase": "^9.15.0",
     "firebase-admin": "^11.4.1",

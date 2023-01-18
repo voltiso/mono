@@ -47,8 +47,7 @@
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^"
   },
   "__________MISC": "__________",

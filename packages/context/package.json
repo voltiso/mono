@@ -58,8 +58,7 @@
     "@types/uuid": "^9.0.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "zone.js": "^0.12.0"
   },

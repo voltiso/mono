@@ -2,7 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts",
+	"$schema": "https://json.schemastore.org/tsconfig",
+
+	"extends": "./base",
 
 	"exclude": [
 		"/**/*.test.*"

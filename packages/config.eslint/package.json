@@ -44,8 +44,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "@voltiso/script": "workspace:^",
     "eslint": "^8.32.0"

@@ -36,8 +36,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "jest": "^29.3.1"
   }
 }

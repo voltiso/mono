@@ -48,8 +48,7 @@
     "@voltiso/transactor": ">= 8.0.0"
   },
   "devDependencies": {
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/localstore": "workspace:^",
     "@voltiso/script": "workspace:^",

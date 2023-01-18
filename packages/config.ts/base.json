@@ -2,6 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
+	"$schema": "https://json.schemastore.org/tsconfig",
+
 	// "files": [],
 	"include": [
 		"/**/*",
@@ -58,7 +60,7 @@
 		 * - `Node16` or `NodeNext` required for `exports` field in `package.json`
 		 * - `Node` required for dynamic imports without extensions
 		 */
-		"moduleResolution": "NodeNext",
+		"moduleResolution": "Node",
 
 		//
 		// ____________________ Node 16 recommended ____________________

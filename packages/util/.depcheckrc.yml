@@ -4,8 +4,6 @@
 ignores:
   - _
   - '~'
-  - '@voltiso/config.ts.build.cjs'
-  - '@voltiso/config.ts.build.esm'
   - '@voltiso/config.tsdoc'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest'

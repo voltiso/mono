@@ -6,4 +6,3 @@ ignores:
   - '@voltiso/config.jest'
   - '@voltiso/config.tsdoc'
   - '@voltiso/transform'
-  - '@voltiso/config.ts.build.esm'

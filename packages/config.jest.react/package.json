@@ -52,7 +52,7 @@
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
     "@types/react": "^18.0.26",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "react": "^18.1.0",
     "react-native": "^0.70.6"
   }

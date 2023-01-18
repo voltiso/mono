@@ -53,8 +53,7 @@
   "devDependencies": {
     "@types/react": "^18.0.26",
     "@voltiso/config.jest.react": "workspace:^",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",

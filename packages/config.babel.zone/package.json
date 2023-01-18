@@ -41,8 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@voltiso/config.ts.build.cjs": "workspace:^",
-    "@voltiso/config.ts.build.esm": "workspace:^",
+    "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^"
   }
 }
