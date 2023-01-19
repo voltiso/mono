@@ -75,18 +75,29 @@ export const defaultHandlerOptions: Handler.Options.Default &
 
 //
 
-export class HandlerImpl<
-	O extends Partial<Handler.Options>,
-> extends PolymorphicGeneric<O> {
+export class HandlerImpl<O extends Partial<Handler.Options>>
+	extends PolymorphicGeneric<O>
+	implements Omit<IHandler, 'bind' | 'call' | 'apply'>
+{
 	declare readonly [BASE_OPTIONS]: Handler.Options;
 	declare readonly [DEFAULT_OPTIONS]: Handler.Options.Default;
 	declare readonly [HIDDEN_OPTIONS]: Handler.Options.Hidden<this[OPTIONS]>
+
+	//
+
+	/** 🌿 Type-only! (no value at runtime) */
+	declare readonly Signature: this[OPTIONS]['Signature']
+
+	/** 🌿 Type-only! (no value at runtime) */
+	declare readonly Implementation: this[OPTIONS]['Implementation']
+
+	//
 
 	get getName(): string {
 		return this.options.name ?? 'unknown'
 	}
 
-	get getImplementation(): this[OPTIONS]['Signature'] | undefined {
+	get getImplementation(): this[OPTIONS]['Implementation'] | undefined {
 		return this.options.implementation as never
 	}
 
@@ -150,3 +161,21 @@ export class HandlerImpl<
 		return this._call(thisArg as never, ...(args as any))
 	}
 }
+
+//
+
+export interface IHandler {
+	(...args: any): unknown
+
+	/** Type-only */
+	readonly Signature: (...args: any) => any
+
+	/** Type-only */
+	readonly Implementation: (...args: any) => any
+}
+
+export type Handler<O extends Partial<Handler.Options> = never> = [O] extends [
+	never,
+]
+	? IHandler
+	: HandlerImpl<O> & HandlerImpl<O>[OPTIONS]['Signature']

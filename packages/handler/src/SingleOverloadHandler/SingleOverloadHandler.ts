@@ -1,6 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { RelaxSchema_ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type {
 	$Override_,
@@ -32,8 +33,13 @@ export namespace SingleOverloadHandlerDetail {
 		 */
 		IsAsync: boolean
 
+		/** Currently not type-exposed */
 		this: s.$$Schemable | NoThis
+
+		/** Currently not type-exposed */
 		parameters: s.$$Schemable[]
+
+		/** Currently not type-exposed */
 		return: s.$$Schemable
 	}
 
@@ -119,7 +125,7 @@ export namespace SingleOverloadHandlerDetail {
 	> = RebindAndUpdateSignature<
 		This,
 		{
-			this: NewThis
+			this: RelaxSchema_<NewThis>
 		}
 	>
 
@@ -129,7 +135,7 @@ export namespace SingleOverloadHandlerDetail {
 	> = RebindAndUpdateSignature<
 		This,
 		{
-			parameters: [...This[OPTIONS]['parameters'], Parameter]
+			parameters: [...This[OPTIONS]['parameters'], RelaxSchema_<Parameter>]
 		}
 	>
 
@@ -145,7 +151,7 @@ export namespace SingleOverloadHandlerDetail {
 	> = RebindAndUpdateSignature<
 		This,
 		{
-			return: Return
+			return: RelaxSchema_<Return>
 			IsAsync: true
 			// IsAsync: t.Output<Return> extends never
 			// 	? false
@@ -161,7 +167,7 @@ export namespace SingleOverloadHandlerDetail {
 	> = RebindAndUpdateSignature<
 		This,
 		{
-			return: Return
+			return: RelaxSchema_<Return>
 			IsAsync: false
 		}
 	>

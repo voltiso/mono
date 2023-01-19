@@ -1,15 +1,17 @@
 {
   "name": "@voltiso/config.ts",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "sideEffects": false,
   "_________EXPORTS FALLBACK": "__________",
-  "main": "base.json",
+  "main": "tsconfig.json",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "tsconfig.json"
+    "tsconfig.json",
+    "build.json",
+    "build"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
