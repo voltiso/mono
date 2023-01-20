@@ -448,6 +448,21 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 		? this
 		: CustomSchema.WithFix<this, O, AdditionalInput>
 
+	fix<S extends $$Schemable>(
+		conditionSchema: S,
+		fix: (value: Output_<S>) =>
+			| DeepPartial_<this[OPTIONS]['Input']>
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): Input_<S> extends Partial<this[OPTIONS]['Input']>
+		? this
+		: CustomSchema.WithFix<this, O, Input_<S>>
+
+	//
+
 	fix<ConditionSchema extends $$Schemable>(
 		conditionSchema: ConditionSchema,
 		fix: (value: Output_<ConditionSchema>) =>
@@ -485,6 +500,18 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			Input: AdditionalInput
 		},
 		fix: (value: AdditionalInput) =>
+			| DeepPartial_<this[OPTIONS]['Input']>
+			| (this[OPTIONS]['isOptional'] extends true
+					? undefined // typeof deleteIt
+					: this[OPTIONS]['isStrictOptional'] extends true
+					? undefined // typeof deleteIt
+					: never),
+	): this
+
+	/** Same as `.fix`, but does not extend the `Input` type */
+	implicitFix<S extends $$Schemable>(
+		conditionSchema: S,
+		fix: (value: Output_<S>) =>
 			| DeepPartial_<this[OPTIONS]['Input']>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt

@@ -121,7 +121,8 @@ describe('BoundCallable', () => {
 		const c = new C()
 
 		expect({ ...c }).toStrictEqual({})
-		expect(Reflect.ownKeys(c)).toStrictEqual(['clone'])
+		// expect(Reflect.ownKeys(c)).toStrictEqual(['clone']) // can't make it work - need own bind/call/apply for react-native
+		expect(Reflect.ownKeys(c)).toStrictEqual(['clone', 'bind', 'call', 'apply'])
 	})
 
 	it('clone', () => {

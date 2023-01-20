@@ -3,9 +3,11 @@
 
 import { $Assert } from '_'
 
-import type { IBoundCallable, WithSelfBoundCALL } from '..'
-import { CALL } from '..'
-import type { BoundCallable, CustomBoundCallable } from './BoundCallable'
+import type { WithSelfBoundCALL } from '../CALL'
+import { CALL } from '../CALL'
+import type { IBoundCallable } from './_/BoundCallableType'
+import type { CustomBoundCallable } from './BoundCallable'
+import { BoundCallable } from './BoundCallable'
 import type { BoundCallableOptions } from './BoundCallableOptions'
 
 describe('BoundCallable', () => {
@@ -42,5 +44,22 @@ describe('BoundCallable', () => {
 		// eslint-disable-next-line etc/no-internal
 		$Assert.is<BoundCallable<X>, IBoundCallable>()
 		$Assert.is<BoundCallable<X>, BoundCallable>()
+	})
+
+	it('bind-call-apply - for compatibility with react-native', () => {
+		const obj = {
+			a: 10,
+
+			[CALL](str: string): number {
+				return str.length + this.a
+			},
+		}
+
+		const callable = BoundCallable(obj)
+
+		expect(callable('hello')).toBe(15)
+
+		// eslint-disable-next-line no-useless-call
+		expect(callable.call(null, 'hello')).toBe(15) // bound anyway
 	})
 })

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable etc/no-internal */
+
 import type { WithSelfBoundCALL } from '~/function'
 import { CALL } from '~/function'
 
@@ -9,22 +11,23 @@ import { CALL } from '~/function'
 export interface IBoundCallable extends Function {
 	clone(): unknown
 	[CALL]?(...args: unknown[]): unknown
+	(...args: unknown[]): unknown
 }
 
 /** @internal Use `BoundCallable` instead */
 export type _BoundCallable<
 	Options extends {
 		// have to explicitly declare the recursive type
-		// eslint-disable-next-line etc/no-internal
 		call(this: _BoundCallable<Options>, ...args: unknown[]): unknown
 		shape: object
 	},
 > = Options['shape'] &
 	Options['call'] &
-	Record<Exclude<keyof CallableFunction, keyof Options['shape']>, never> & {
+	// eslint-disable-next-line @typescript-eslint/ban-types
+	Function & {
+		// Record<Exclude<keyof CallableFunction, keyof Options['shape']>, never> & // ! need bind-call-apply for react-native
 		clone(): object // _BoundCallable<Options>
 	}
 
 export type _BoundCallableWithCALL<T extends WithSelfBoundCALL> =
-	// eslint-disable-next-line etc/no-internal
 	_BoundCallable<{ call: T[CALL]; shape: T }>

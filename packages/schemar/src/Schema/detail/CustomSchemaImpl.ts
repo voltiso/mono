@@ -22,6 +22,7 @@ import { and } from '~/base-schemas/intersection'
 import { isUnionSchema, or } from '~/base-schemas/union'
 import { isUnknownSchema } from '~/base-schemas/unknown/IUnknown'
 import { unknown } from '~/base-schemas/unknown/Unknown'
+import { infer_ } from '~/core-schemas'
 import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { ValidationError } from '~/error'
@@ -377,7 +378,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this._cloneWithOptions({
 			customFixes: [
 				...this.getCustomFixes,
-				{ inputSchema: schema(schemable), fix },
+				{ inputSchema: infer_(schemable), fix },
 			],
 		}) as never
 	}

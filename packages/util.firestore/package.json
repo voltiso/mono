@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.firestore",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@types/randombytes": "^2.0.0",
-    "@voltiso/config.jest": "workspace:^1.0.0",
+    "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^"
   },

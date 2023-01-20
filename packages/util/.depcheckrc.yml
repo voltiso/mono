@@ -4,6 +4,7 @@
 ignores:
   - _
   - '~'
+  - '@voltiso/config.ts'
   - '@voltiso/config.tsdoc'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/config.jest'

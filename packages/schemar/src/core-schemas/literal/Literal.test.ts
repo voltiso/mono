@@ -75,4 +75,8 @@ describe('s.literal', () => {
 		expect(s.literal(null).extends(s.unknown)).toBeTruthy()
 		expect(s.literal(undefined).extends(s.unknown)).toBeTruthy()
 	})
+
+	it('react-native', () => {
+		expect(s.literal.call(1)).toBeTruthy()
+	})
 })

@@ -114,6 +114,44 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 		enumerable: false,
 	})
 
+	// bind-call-apply for react-native
+
+	if (!Object.prototype.hasOwnProperty.call(callable, 'bind'))
+		Object.defineProperty(callable, 'bind', {
+			value(thisArg: unknown, ...args: unknown[]) {
+				return Function.prototype.bind.call(callable, thisArg, ...args) as never
+			},
+
+			writable: false,
+			enumerable: false,
+		})
+
+	if (!Object.prototype.hasOwnProperty.call(callable, 'call'))
+		Object.defineProperty(callable, 'call', {
+			value(thisArg: unknown, ...args: unknown[]) {
+				return Function.prototype.call.call(callable, thisArg, ...args) as never
+			},
+
+			writable: false,
+			enumerable: false,
+		})
+
+	if (!Object.prototype.hasOwnProperty.call(callable, 'apply'))
+		Object.defineProperty(callable, 'apply', {
+			value(thisArg: unknown, ...args: unknown[]) {
+				return Function.prototype.apply.call(
+					callable,
+					thisArg,
+					...args,
+				) as never
+			},
+
+			writable: false,
+			enumerable: false,
+		})
+
+	//
+
 	return callable as never
 }
 
