@@ -8,11 +8,12 @@ import { spawn } from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
-import type { Script } from '@voltiso/script.lib'
-import { VoltisoScriptError } from '@voltiso/script.lib'
 import { registerEsbuild } from '@voltiso/util.esbuild'
 import chalk from 'chalk'
 
+import { isParallelScript } from '../parallel'
+import type { Script } from '../Script'
+import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
 
 registerEsbuild()
@@ -115,6 +116,10 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 			await runScript(s, ...args)
 		}
 		return
+	}
+
+	if (isParallelScript(script)) {
+		await Promise.all(script.parallel.map(s => runScript(s, ...args))) // ! pass args?
 	}
 
 	if (typeof script === 'function') {

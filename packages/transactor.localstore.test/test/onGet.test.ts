@@ -18,7 +18,7 @@ class User extends Doc.with({
 	public: sUserPublic,
 }) {
 	@onGet
-	async createUser(p: TriggerParams.OnGet<User>) {
+	async createUser(this: User | null, p: TriggerParams.OnGet<User>) {
 		if (p.doc) return
 
 		// eslint-disable-next-line consistent-return

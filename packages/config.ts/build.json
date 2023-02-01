@@ -12,6 +12,8 @@
 	],
 
 	"compilerOptions": {
+		"target": "ES2019", // cypress won't work with 2020
+
 		// "composite": true,
 		"composite": false,
 
@@ -22,30 +24,30 @@
 
 		"plugins": [
 			{
-				"transform": "@voltiso/transform/strip"
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/strip/default"
 				// "tokens": ["$assert", "$Assert", "$Is", "$AssumeType"]
 				// "modules": []
 			},
 
 			{
-				"transform": "@voltiso/transform/inline",
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/inline/default",
 				"afterDeclarations": true,
 				"onInlineError": "fail"
 			},
 
-			{ "transform": "@voltiso/transform/call-info" },
+			{ "transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/call-info/default" },
 
-			{ "transform": "@voltiso/transform/compat" },
+			{ "transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/compat/default" },
 
 			// Transform paths in output .js files
 			{
-				"transform": "typescript-transform-paths",
+				"transform": "@voltiso/config.ts/node_modules/typescript-transform-paths",
 				"exclude": ["**/dist/**"]
 			},
 
 			// Transform paths in output .d.ts files (Include this line if you output declarations files)
 			{
-				"transform": "typescript-transform-paths",
+				"transform": "@voltiso/config.ts/node_modules/typescript-transform-paths",
 				"exclude": ["**/dist/**"],
 				"afterDeclarations": true
 			}

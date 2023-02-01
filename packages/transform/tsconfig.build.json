@@ -1,10 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ! Copied over from `@voltiso/config.ts.build` to avoid cyclic deps
+// ! Not extending `@voltiso/config.ts` to avoid cyclic deps
 
 {
-	"extends": "@voltiso/config.ts",
+	"extends": "./tsconfig",
+
+	"include": ["src"],
 
 	"exclude": [
 		"/**/*.test.*"
@@ -12,6 +14,8 @@
 	],
 
 	"compilerOptions": {
+		"rootDir": "src",
+
 		// "composite": true,
 		"composite": false,
 
@@ -34,29 +38,6 @@
 				"exclude": ["**/dist/**"],
 				"afterDeclarations": true
 			}
-		],
-
-		"paths": {
-			// "~": ["./src"],
-			"~/*": ["./src/*"]
-		}
-
-		// !
-		// ! OVERWRITE WHEN EXTENDING !
-		// !
-		// "rootDir": "src",
-		// "baseUrl": ".",
-		// "paths": {
-		// 	"*": ["node_modules/*/"]
-		// }
+		]
 	}
-
-	// !
-	// ! OVERWRITE WHEN EXTENDING !
-	// !
-	// "include": ["src"],
-	// "exclude": [
-	// 	"**/*.test.ts",
-	// 	"**/*.test.tsx"
-	// ]
 }

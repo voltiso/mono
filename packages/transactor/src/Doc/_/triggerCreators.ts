@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/util'
+import { assert, createPatch } from '@voltiso/util'
 import chalk from 'chalk'
 
 import type { Doc } from '~/Doc'
@@ -52,18 +52,16 @@ function logTrigger(
 
 	// eslint-disable-next-line no-console
 	console.log(
-		'\n',
-		chalk.inverse(when, event, 'trigger'),
+		chalk.gray(params.path.toString()),
+		chalk.inverse(when, event),
 		chalk.blueBright(name),
 		'\n',
-		params.path.toString(),
+		chalk.green(dump(createPatch(params.before, params.after))),
 		'\n',
-		'\n',
-		chalk.red(dump(params.before)),
-		'\n',
-		chalk.green(dump(params.after)),
 	)
 }
+
+//
 
 export function withAfter<TI extends DocDerivedData>(
 	_: TI,
@@ -84,6 +82,8 @@ export function withAfter<TI extends DocDerivedData>(
 		],
 	}
 }
+
+//
 
 export function withAfterUpdate<TI extends DocDerivedData>(
 	_: TI,

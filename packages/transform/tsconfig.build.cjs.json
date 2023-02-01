@@ -1,17 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ! Can't extend `@voltiso/config.ts.build.*` to avoid cyclic deps
+// ! Can't extend `@voltiso/config.ts` to avoid cyclic deps
 
 {
 	"extends": "./tsconfig.build",
 
 	"compilerOptions": {
 		"module": "CommonJS",
-
 		"outDir": "dist/cjs",
-		"rootDir": "src"
-	},
-
-	"include": ["src"]
+	}
 }

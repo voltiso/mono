@@ -48,8 +48,8 @@
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "eslint": "^8.32.0",
-    "rimraf": "^3.0.2"
+    "eslint": "^8.33.0",
+    "rimraf": "^4.1.2"
   },
   "__________ENGINES": "__________",
   "engines": {

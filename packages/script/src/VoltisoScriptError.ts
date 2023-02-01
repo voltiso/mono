@@ -1,14 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { VoltisoError } from '@voltiso/util'
-
-export class VoltisoScriptError extends VoltisoError {
+export class VoltisoScriptError extends Error {
 	constructor(
 		message?: string | undefined,
 		options?: ErrorOptions | undefined,
 	) {
-		super(message, { ...options, package: { name: '@voltiso/script.lib' } })
+		super(message, options)
 		Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoScriptError'
 	}

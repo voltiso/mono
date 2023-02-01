@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.react",
-  "version": "8.0.4",
+  "version": "8.0.5",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -45,18 +45,18 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@babel/plugin-proposal-decorators": "^7.20.7",
-    "@babel/plugin-transform-react-jsx": "^7.20.7",
+    "@babel/plugin-proposal-decorators": "^7.20.13",
+    "@babel/plugin-transform-react-jsx": "^7.20.13",
     "@babel/preset-env": "^7.20.2",
     "@testing-library/react": "^13.4.0",
-    "@types/react": "^18.0.26",
+    "@types/react": "^18.0.27",
     "@voltiso/config.jest.lib": "workspace:^1.0.0",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-native": "^0.70.6"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "^0.71.1"
   },
   "__________MISC": "__________",
   "engines": {

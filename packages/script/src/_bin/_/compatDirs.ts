@@ -6,9 +6,9 @@ import * as path from 'node:path'
 import {
 	cleanCompatDirs,
 	getCompatDirNames,
-	VoltisoScriptError,
 	writeCompatDirs,
-} from '@voltiso/script.lib'
+} from '~/compatDirs'
+import { VoltisoScriptError } from '~/VoltisoScriptError'
 
 import type { Command } from './Command'
 

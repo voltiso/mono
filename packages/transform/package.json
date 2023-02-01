@@ -85,16 +85,18 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/transform.lib": "workspace:^",
-    "chalk": "^4.1.2"
+    "chalk": "^4"
   },
   "peerDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "devDependencies": {
+    "@voltiso/config.tsdoc": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "typescript": "^4.8.4"
   },
   "__________MISC": "__________",
   "engines": {
     "node": "16"
-  },
-  "devDependencies": {
-    "@voltiso/config.tsdoc": "workspace:^3.0.0"
   }
 }

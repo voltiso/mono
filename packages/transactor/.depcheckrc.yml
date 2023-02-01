@@ -6,5 +6,6 @@ ignorePatterns:
 
 ignores:
   - '~'
+  - '@voltiso/config.ts'
   - '@voltiso/config.tsdoc'
   - '@voltiso/config.jest'

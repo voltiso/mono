@@ -2,7 +2,5 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '~'
-  - '@voltiso/config.ts'
-  - '@voltiso/config.jest'
-  - '@voltiso/config.tsdoc'
+  - '@voltiso/transform'
+  - typescript-transform-paths

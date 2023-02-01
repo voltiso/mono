@@ -1,21 +1,27 @@
 {
-  "name": "@voltiso/script.lib",
-  "version": "1.2.1",
+  "name": "@voltiso/script",
+  "version": "2.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "sideEffects": false,
+  "__________EXECUTABLES": "__________",
+  "bin": {
+    "voltiso-script": "dist/cjs/_bin/v.js",
+    "v": "dist/cjs/_bin/v.js"
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist/esm",
-    "dist/cjs"
+    "dist"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
+    "__________DEV": "__________",
+    "dev": "v dev",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
@@ -37,12 +43,17 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/util": "workspace:^",
-    "@voltiso/util.node": "workspace:^",
-    "@voltiso/util.package-json": "workspace:^"
+    "@voltiso/util.esbuild": "workspace:^",
+    "@voltiso/util.node": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
-    "@voltiso/config.ts": "workspace:^"
+    "@voltiso/config.ts": "workspace:^",
+    "@voltiso/util.package-json": "workspace:^",
+    "chalk": "^5.2.0"
+  },
+  "__________ENGINES": "__________",
+  "engines": {
+    "node": "16"
   }
 }

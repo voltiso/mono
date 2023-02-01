@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.ts",
-  "version": "2.0.2",
+  "version": "3.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -22,5 +22,13 @@
     "lint:eslint": "v lintEslint",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast"
+  },
+  "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6"
+  },
+  "peerDependencies": {
+    "typescript": "^4.8.4"
   }
 }

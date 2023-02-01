@@ -1,12 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-{
-	"extends": "@voltiso/config.ts",
+// ! Not extending `@voltiso/config.ts` to avoid cyclic deps
 
+{
 	"compilerOptions": {
+		"target": "ESNext",
+		"moduleResolution": "node",
+
 		"paths": {
-			// "~": ["./src"],
+			"~": ["./src"],
 			"~/*": ["./src/*"]
 		}
 	}

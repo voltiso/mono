@@ -39,7 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/config.eslint.lib": "workspace:^",
-    "chalk": "4",
+    "chalk": "^5.2.0",
     "eslint-gitignore": "^0.1.0"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "eslint": "^8.32.0"
+    "eslint": "^8.33.0"
   },
   "peerDependencies": {
     "@next/eslint-plugin-next": ">= 12.1.6",

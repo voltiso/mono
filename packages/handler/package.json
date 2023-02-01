@@ -49,6 +49,6 @@
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "rimraf": "^3.0.2"
+    "rimraf": "^4.1.2"
   }
 }

@@ -8,5 +8,6 @@ ignores:
   - '@babel/preset-env'
   - '@babel/plugin-proposal-decorators'
   - '@babel/plugin-transform-react-jsx'
+  - '@voltiso/config.ts'
   - '@voltiso/config.jest.react'
   - '@voltiso/config.jest.lib'

@@ -8,10 +8,7 @@
 
 	"compilerOptions": {
 		"module": "ESNext",
-
 		"outDir": "dist/esm",
-		"rootDir": "src"
 	},
 
-	"include": ["src"]
 }

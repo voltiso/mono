@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@voltiso/config.ts": "workspace:^",
-    "esbuild": "^0.16.17",
-    "rimraf": "^3.0.2"
+    "esbuild": "^0.17.5",
+    "rimraf": "^4.1.2"
   }
 }

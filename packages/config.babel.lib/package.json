@@ -34,7 +34,7 @@
   "__________DEPS": "__________",
   "devDependencies": {
     "@babel/core": "^7.20.12",
-    "@types/babel__core": "^7.1.20",
+    "@types/babel__core": "^7.20.0",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^"
   }
