@@ -50,7 +50,7 @@
     "@types/node": "^18.11.18",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/util.package-json": "workspace:^",
-    "chalk": "^5.2.0"
+    "chalk": "^4"
   },
   "__________ENGINES": "__________",
   "engines": {

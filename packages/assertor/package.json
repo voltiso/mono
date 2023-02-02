@@ -43,7 +43,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^",
-    "chalk": "^5.2.0"
+    "chalk": "^4"
   },
   "peerDependencies": {
     "@voltiso/schemar": "workspace:^"

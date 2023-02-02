@@ -4,3 +4,4 @@
 ignores:
   - '@voltiso/transform'
   - typescript-transform-paths
+  - typescript

@@ -9,20 +9,20 @@
  * - `blackbox` word is a **verb**
  *
  * @param object - An object to copy and prepare as a black box
- * @param attributes - A `PropertyDescriptor` to apply to all properties -
+ * @param propertyDescriptor - A `PropertyDescriptor` to apply to all properties -
  *   defaults to `{}` - but `value` will be overridden - meaning that **by
  *   default everything is non-configurable, non-enumerable**
  */
 export function blackbox<Obj extends Record<string, unknown>>(
 	object: Obj,
-	attributes: Omit<Partial<PropertyDescriptor>, 'get' | 'set' | 'value'> &
+	propertyDescriptor: Omit<Partial<PropertyDescriptor>, 'get' | 'set' | 'value'> &
 		ThisType<any> = {},
 ): Obj {
 	const result = Object.create(null) as Obj
 
 	for (const [key, value] of Object.entries(object)) {
 		Object.defineProperty(result, key, {
-			...attributes,
+			...propertyDescriptor,
 			value,
 		})
 	}

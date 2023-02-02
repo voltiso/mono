@@ -379,12 +379,13 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 					}
 				}
 
-				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey)
+				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey) {
 					isChanged = true
 
-				delete fixedObject[originalXKey]
+					if (xKey !== originalXKey) delete fixedObject[originalXKey]
 
-				fixedObject[xKey] = xValue as never
+					if (xValue !== fixedObject[xKey]) fixedObject[xKey] = xValue as never
+				}
 			}
 
 			// eslint-disable-next-line no-param-reassign

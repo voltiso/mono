@@ -24,8 +24,8 @@ assert(true, {
         astPath: []
     }
 });
-assert(s.number.or(void 0), 1, {
-    expression: 'assert',
+assert.schema(s.number.or(void 0), 1, {
+    expression: 'assert.schema',
     arguments: [
         's.number.or(undefined)',
         '1'

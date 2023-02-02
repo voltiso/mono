@@ -3,5 +3,4 @@
 
 ignores:
   - '@voltiso/config.ts'
-  - '@babel/core'
-  - '@babel/preset-env'
+  - '@voltiso/config.jest'

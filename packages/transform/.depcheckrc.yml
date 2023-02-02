@@ -5,3 +5,4 @@ ignores:
   - '~'
   - '@voltiso/config.jest'
   - '@voltiso/config.tsdoc'
+  - typescript-transform-paths

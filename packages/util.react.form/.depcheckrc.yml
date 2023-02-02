@@ -6,4 +6,5 @@ ignores:
   - react-native
   - '@babel/core'
   - '@babel/preset-env'
+  - '@voltiso/config.ts'
   - '@voltiso/config.jest.react'

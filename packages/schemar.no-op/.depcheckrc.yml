@@ -3,4 +3,5 @@
 
 ignores:
   - '~'
+  - '@voltiso/config.ts'
   - '@voltiso/config.jest'

@@ -39,7 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/config.eslint.lib": "workspace:^",
-    "chalk": "^5.2.0",
+    "chalk": "^4",
     "eslint-gitignore": "^0.1.0"
   },
   "devDependencies": {

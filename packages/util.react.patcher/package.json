@@ -30,9 +30,7 @@
     "build:cjs": "v buildCjs",
     "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnly",
-    "__________MISC": "__________",
-    "clean": "rimraf dist"
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "dependencies": {
@@ -56,8 +54,7 @@
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.71.1",
-    "rimraf": "^4.1.2"
+    "react-native": "^0.71.1"
   },
   "__________MISC": "__________",
   "engines": {

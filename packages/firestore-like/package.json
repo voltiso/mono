@@ -41,7 +41,6 @@
     "prepublishOnly": "v prepublishOnlyFast",
     "prepublishOnly:rest": "run-p build test lint",
     "__________MISC": "__________",
-    "clean": "rimraf dist",
     "typecov": "v typecov"
   },
   "__________DEPS": "__________",
@@ -54,8 +53,7 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "firebase": "^9.16.0",
-    "firebase-admin": "^11.5.0",
-    "rimraf": "^4.1.2"
+    "firebase-admin": "^11.5.0"
   },
   "__________MISC": "__________",
   "engines": {

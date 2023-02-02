@@ -35,9 +35,7 @@
     "build:cjs": "v buildCjs",
     "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
-    "prepublishOnly": "v prepublishOnly",
-    "__________MISC": "__________",
-    "clean": "rimraf dist"
+    "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
   "peerDependencies": {
@@ -48,7 +46,6 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "@voltiso/util": "workspace:^",
-    "rimraf": "^4.1.2"
+    "@voltiso/util": "workspace:^"
   }
 }

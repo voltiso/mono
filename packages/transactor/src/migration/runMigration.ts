@@ -13,6 +13,8 @@ export async function runMigration<D extends $$Doc>(
 	doc: D,
 	migration: Migration<D>,
 ) {
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	if (!doc) return
 	$AssumeType<Doc>(doc)
 
 	if (doc.data.__voltiso.migrations[migration.migrationName]) return // already done
@@ -32,6 +34,9 @@ export async function runMigrations<D extends $$Doc>(
 	doc: D,
 	migrations: Migration<D>[],
 ) {
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	if (!doc) return
+
 	for (const migration of migrations) {
 		assert(migration.migrationName)
 

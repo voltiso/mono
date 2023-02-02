@@ -63,11 +63,11 @@ export function getAfterTriggers(
 				for (const [targetPath, ba] of m.entries()) {
 					const diff = ba.after - ba.before
 
+					if (diff === 0) continue
+
 					// console.log(
 					// 	`NUM REFS += ${diff} (${path.toString()} -> ${targetPath})`,
 					// )
-
-					if (diff === 0) continue
 
 					const targetDocRef = db.doc(targetPath)
 

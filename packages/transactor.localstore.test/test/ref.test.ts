@@ -160,4 +160,35 @@ describe('ref', () => {
 
 		expect(dd.data.profile.name).toBe('d')
 	})
+
+	it('set does not clear numRefs', async () => {
+		await database.doc('doctor/d').delete()
+		await database.doc('patient/p').delete()
+
+		const d = await doctors.add({
+			profile: {
+				name: 'd',
+				specialty: 'xyz',
+			},
+		})
+
+		const p = await patients.add({
+			profile: {
+				name: 'p',
+				mainDoctor: d.ref,
+			},
+		})
+
+		await doctors(d.id).set({
+			profile: {
+				name: 'x',
+				specialty: 'z',
+			},
+		})
+
+		await expect(doctors(d.id).delete()).rejects.toThrow('numRefs')
+
+		await p.delete()
+		await doctors(d.id).delete()
+	})
 })

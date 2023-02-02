@@ -3,4 +3,5 @@
 
 ignores:
   - '@firebase/app-types'
+  - '@voltiso/config.ts'
   - '@voltiso/config.jest'
