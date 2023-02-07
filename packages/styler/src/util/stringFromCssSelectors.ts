@@ -9,12 +9,12 @@ import type { CssSelectors } from '~/Css/defineCss'
 export function stringFromCss(css: Css): string {
 	return Object.entries(css)
 		.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
-		.map(([k, v]) => `${CSS.escape(k)}:${CSS.escape(v)};`)
+		.map(([k, v]) => `${k}:${v};`)
 		.join('')
 }
 
 export function stringFromCssSelectors(cssSelectors: CssSelectors) {
 	return Object.entries(cssSelectors)
-		.map(([k, v]) => `${CSS.escape(k)}{${stringFromCss(v as never)}}`)
+		.map(([k, v]) => `${k}{${stringFromCss(v as never)}}`)
 		.join('')
 }
