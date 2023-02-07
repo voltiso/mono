@@ -5,6 +5,8 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
+		"module": "CommonJS",
+
 		"paths": {
 			"~": ["./src"],
 			"~/*": ["./src/*"]

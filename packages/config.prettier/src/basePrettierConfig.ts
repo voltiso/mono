@@ -60,7 +60,7 @@ export const basePrettierConfig = defineConfig({
 	proseWrap: 'always',
 
 	htmlWhitespaceSensitivity: 'ignore',
-	singleAttributePerLine: true,
+	singleAttributePerLine: false, // good for lots of short attributes
 
 	vueIndentScriptAndStyle: true,
 

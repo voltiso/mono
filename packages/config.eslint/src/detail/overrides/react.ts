@@ -64,7 +64,7 @@ export const react = defineEslintConfigOverride({
 
 		'react/jsx-max-depth': 0,
 
-		'react/jsx-max-props-per-line': 1,
+		'react/jsx-max-props-per-line': 0,
 		'react/jsx-newline': 0, // sometimes conflicts with prettier
 
 		'react/jsx-no-bind': ['warn', { allowArrowFunctions: true }],
