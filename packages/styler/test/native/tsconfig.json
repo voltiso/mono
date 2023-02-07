@@ -5,6 +5,10 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
+		"lib": ["DOM"],
+
+		"types": ["react/next"],
+
 		"paths": {
 			"~": ["../../src"],
 			"~/*": ["../../src/*"]

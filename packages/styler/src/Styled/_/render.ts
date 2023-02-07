@@ -1,22 +1,31 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable import/no-named-as-default-member */
+
 import { $assert, getKeys, tryAt } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
-import { createElement } from 'react'
-import { useFela } from 'react-fela'
+// ! has to be default-imported - otherwise Next.js will complain
+import React from 'react'
 
 import type { IForwardRefRenderFunction, StyledData } from '~/_/StyledData'
+import { useRenderer, useTheme } from '~/client'
 import type { Css } from '~/Css/Css'
 import type {
 	IForwardedRef,
 	IForwardRefAndCssRenderFunction,
 	Props,
 } from '~/react-types'
+import type { WebRenderer } from '~/renderer'
+import { isWebRenderer } from '~/renderer'
+import type { NativeRenderer } from '~/renderer/NativeRenderer'
+import { rscRenderer } from '~/server'
 import type { NativeInnerProps, OuterProps, WebInnerProps } from '~/Stylable'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
+import { isServerComponent } from '~/util/isServerComponent'
 
 import { consumeCssProps } from './consumeCssProps'
+import { maybeFlushRscStyle } from './maybeFlushRscStyle'
 import { prepare } from './prepare'
 import {
 	isGetStyleNode,
@@ -35,7 +44,7 @@ function _getCssArray(css: Css | readonly Css[] | undefined): Css[] {
 /** @internal */
 function _prepareProps(
 	props: object,
-	params: { theme: object; customCss?: object | undefined },
+	params: { theme: object | null; customCss?: object | undefined },
 ) {
 	const result = {} as Record<string, unknown>
 	for (const [prop, value] of Object.entries(props)) {
@@ -67,28 +76,33 @@ function _getFinalNativeProps(css: Css, props: NativeInnerProps) {
 	return { ...props, style }
 }
 
-/** @internal */
-function _getFinalProps(
-	felaValue: string | Css,
-	props: WebInnerProps | NativeInnerProps,
-) {
-	const isReactNative = typeof felaValue !== 'string'
-
-	return isReactNative
-		? // eslint-disable-next-line etc/no-internal
-		  _getFinalNativeProps(felaValue, props as NativeInnerProps)
-		: // eslint-disable-next-line etc/no-internal
-		  _getFinalWebProps(felaValue, props as WebInnerProps)
-}
-
 export function render<$ extends StyledTypeInfo>(
 	props: $['Props'] & OuterProps,
 	ref: ForwardedRef<unknown>,
 	data: StyledData<$>,
 ) {
+	const renderer: WebRenderer | NativeRenderer | null = isServerComponent
+		? rscRenderer
+		: // eslint-disable-next-line react-hooks/rules-of-hooks
+		  useRenderer()
+
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	if (React.useInsertionEffect && isWebRenderer(renderer)) {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		React.useInsertionEffect(() => {
+			const ssrStyle = renderer.flushStyle()
+			if (!ssrStyle) return
+
+			const node = document.createElement('style')
+			// eslint-disable-next-line unicorn/prefer-dom-node-dataset
+			node.setAttribute('data-voltiso', '')
+			node.textContent = ssrStyle
+			document.head.append(node)
+		})
+	}
+
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const fela = useFela()
-	const theme = fela.theme
+	const theme = isServerComponent ? {} : useTheme()
 
 	const { css, ...otherProps } = props
 	// const css = props.css
@@ -173,7 +187,7 @@ export function render<$ extends StyledTypeInfo>(
 						...p,
 					}
 
-				return createElement(element as never, props)
+				return React.createElement(element as never, props)
 			})
 
 			p = { ...p, children }
@@ -205,22 +219,40 @@ export function render<$ extends StyledTypeInfo>(
 		$assert(!('css' in p))
 		// $assert('ref' in p)
 		const { ref, ...finalProps } = p as { ref?: IForwardedRef }
-		return (data.component as IForwardRefAndCssRenderFunction)(
-			finalProps,
-			ref,
-			styles,
+		return maybeFlushRscStyle(
+			// { renderer },
+			(data.component as IForwardRefAndCssRenderFunction)(
+				finalProps,
+				ref,
+				styles,
+			),
 		)
 	}
 
-	const felaValue = fela.css(styles as never)
-
-	// eslint-disable-next-line etc/no-internal
-	const renderedProps = _getFinalProps(felaValue, p)
+	const renderedProps = isWebRenderer(renderer)
+		? // eslint-disable-next-line etc/no-internal
+		  _getFinalWebProps(
+				(renderer as unknown as WebRenderer | null)?.classNameFor(...styles) ||
+					'',
+				p,
+		  )
+		: // eslint-disable-next-line etc/no-internal
+		  _getFinalNativeProps(
+				(renderer as unknown as NativeRenderer | null)?.styleFor(...styles) ||
+					{},
+				p,
+		  )
 
 	if (typeof data.component === 'function' && data.component.length >= 2) {
 		const { ref, ...finalProps } = renderedProps as { ref: IForwardedRef }
-		return (data.component as IForwardRefRenderFunction)(finalProps, ref)
+		return maybeFlushRscStyle(
+			// { renderer },
+			(data.component as IForwardRefRenderFunction)(finalProps, ref),
+		)
 	}
 
-	return createElement(data.component as never, renderedProps as never)
+	return maybeFlushRscStyle(
+		// { renderer },
+		React.createElement(data.component as never, renderedProps as never),
+	)
 }

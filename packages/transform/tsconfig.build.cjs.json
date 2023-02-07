@@ -8,6 +8,6 @@
 
 	"compilerOptions": {
 		"module": "CommonJS",
-		"outDir": "dist/cjs",
+		"outDir": "dist/cjs"
 	}
 }

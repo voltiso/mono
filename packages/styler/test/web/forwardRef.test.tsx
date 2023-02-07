@@ -4,7 +4,6 @@
 import { screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
-import type { IStyle } from 'fela'
 import type {
 	ComponentProps,
 	ComponentPropsWithRef,
@@ -16,7 +15,7 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 
-import type { ComponentPropsWithRef_, GetNativeElement } from '~'
+import type { ComponentPropsWithRef_, Css, GetNativeElement } from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -41,6 +40,7 @@ const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 		$Assert<IsEqual<typeof big, boolean>>()
 		return {}
 	})
+
 // @ts-expect-error missing big
 ;<OtherRedButton2 />
 
@@ -296,7 +296,7 @@ describe('forwardRef', () => {
 			{
 				href?: string
 				children?: ReactNode
-				css?: IStyle
+				css?: Css
 				className?: string | undefined
 			} & DOMAttributes<HTMLAnchorElement>
 		> = (_props, _ref) => null

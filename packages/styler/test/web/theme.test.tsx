@@ -5,9 +5,7 @@ import { render, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
 
-import { createTheme, style, StyleProvider } from '~'
-
-import { getRenderer } from './common'
+import { createTheme, NextStylerRegistry, style, ThemeContext } from '~'
 
 type Theme = {
 	primaryColor: Property.Color
@@ -26,27 +24,28 @@ const t = createTheme<Theme>()
 
 const renderApp = (children: ReactNode) =>
 	render(
-		<StyleProvider
-			renderer={getRenderer()}
-			theme={
-				{
-					primaryColor: 'mystic',
+		<NextStylerRegistry>
+			<ThemeContext.Provider
+				value={
+					{
+						primaryColor: 'mystic',
 
-					a: {
-						boxShadow: `dashed ${t.a.b.c[11]}px`,
+						a: {
+							boxShadow: `dashed ${t.a.b.c[11]}px`,
 
-						b: {
-							c: {
-								0: 666,
-								11: 222,
+							b: {
+								c: {
+									0: 666,
+									11: 222,
+								},
 							},
 						},
-					},
-				} as Theme
-			}
-		>
-			{children}
-		</StyleProvider>,
+					} as Theme
+				}
+			>
+				{children}
+			</ThemeContext.Provider>
+		</NextStylerRegistry>,
 	)
 
 describe('theme', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/script",
-  "version": "2.0.1",
+  "version": "2.0.6",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -44,13 +44,13 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util.esbuild": "workspace:^",
-    "@voltiso/util.node": "workspace:^"
+    "@voltiso/util.node": "workspace:^",
+    "chalk": "^4"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.11.19",
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/util.package-json": "workspace:^",
-    "chalk": "^4"
+    "@voltiso/util.package-json": "workspace:^"
   },
   "__________ENGINES": "__________",
   "engines": {

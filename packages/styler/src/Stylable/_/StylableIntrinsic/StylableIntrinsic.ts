@@ -1,8 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsReactNative } from '~/IsReactNative'
 import type { Props } from '~/react-types'
+import type { IsReactNative } from '~/util'
 
 //! slow - not needed with all JSX properties being optional
 // type StylableIntrinsic<P extends Props> = IsReactNative extends false

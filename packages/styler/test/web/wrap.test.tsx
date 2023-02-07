@@ -101,7 +101,7 @@ describe('wrap', () => {
 
 		const myDiv = screen.getByTestId('test')
 
-		expect(myDiv).toHaveClass('a xxxxx', { exact: true })
+		expect(myDiv).toHaveClass('_0 xxxxx', { exact: true })
 		expect(myDiv).toHaveStyle('flex: 1;')
 		expect(myDiv).not.toHaveAttribute('css')
 		expect(myDiv).not.toHaveAttribute('content')

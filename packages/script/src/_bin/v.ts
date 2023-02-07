@@ -11,7 +11,8 @@ import * as path from 'node:path'
 import { registerEsbuild } from '@voltiso/util.esbuild'
 import chalk from 'chalk'
 
-import { isParallelScript } from '../parallel'
+// import type { EventListener } from 'node'
+import { isParallelScript, isRaceScript } from '../parallel'
 import type { Script } from '../Script'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
@@ -79,7 +80,6 @@ async function getPackageScripts() {
 	if (!gPackageScripts) {
 		const packageJsonPath = path.join(process.cwd(), 'package.json')
 
-		// eslint-disable-next-line security/detect-non-literal-fs-filename
 		const buffer = await fs.readFile(packageJsonPath)
 		const packageStr = buffer.toString()
 		const packageJson = JSON.parse(packageStr) as {
@@ -104,7 +104,13 @@ const icon = '🐚'
 // // eslint-disable-next-line no-console
 // console.log(icon, chalk.gray('@voltiso/script'))
 
-async function runScript(script: Script | Promise<Script>, ...args: string[]) {
+// const cpPromises = [] as Promise<void>[]
+
+async function runScript(
+	script: Script | Promise<Script>,
+	args: string[],
+	{ signal }: { signal?: AbortSignal | undefined } = {},
+) {
 	// eslint-disable-next-line require-atomic-updates, no-param-reassign
 	script = await script
 
@@ -113,18 +119,60 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 
 		for (const s of subScripts) {
 			// eslint-disable-next-line no-await-in-loop
-			await runScript(s, ...args)
+			await runScript(s, args, { signal })
 		}
 		return
 	}
 
 	if (isParallelScript(script)) {
-		await Promise.all(script.parallel.map(s => runScript(s, ...args))) // ! pass args?
+		// TODO: use child signal with a separate controller?
+		const promises = script.parallel.map(s => runScript(s, args, { signal })) // ! pass args?
+
+		try {
+			await Promise.all(promises)
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.error(
+				icon,
+				'parallel(...) script failed - aborting other scripts...',
+			)
+
+			signal?.dispatchEvent(new Event('abort'))
+
+			// process.exit(1)
+			// process.kill(process.pid, 'SIGTERM')
+
+			// eslint-disable-next-line es-x/no-promise-all-settled
+			await Promise.allSettled(promises)
+
+			throw error
+		}
+
+		return
+	}
+
+	if (isRaceScript(script)) {
+		// TODO: use child signal with a separate controller?
+		const promises = script.race.map(s => runScript(s, args, { signal })) // ! pass args?
+		try {
+			await Promise.race(promises)
+		} finally {
+			// eslint-disable-next-line no-console
+			console.log(icon, 'race(...) script finished - aborting other scripts...')
+
+			signal?.dispatchEvent(new Event('abort'))
+
+			// process.kill(process.pid, 'SIGTERM')
+			// eslint-disable-next-line es-x/no-promise-all-settled
+			await Promise.allSettled(promises)
+		}
+
+		return
 	}
 
 	if (typeof script === 'function') {
 		const result = await script(...args)
-		if (result) await runScript(result)
+		if (result) await runScript(result, [], { signal })
 		return
 	}
 
@@ -144,33 +192,41 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 	const packageScript = packageScripts[script]
 
 	if (packageScript && packageScript !== script) {
-		await runScript(packageScript, ...args)
+		await runScript(packageScript, args, { signal })
 		return
 	}
 
 	const codeScript = scripts[script]
 
 	if (codeScript) {
-		await runScript(codeScript, ...args)
+		await runScript(codeScript, args, { signal })
 		return
 	}
 
 	const stringScript = script
 
 	// eslint-disable-next-line promise/avoid-new
-	await new Promise<void>((resolve, reject) => {
+	const cpPromise = new Promise<void>((resolve, reject) => {
 		// console.log('spawn', script, ...args)
 		const childProcess = spawn([script, ...args].join(' '), {
 			shell: true,
 			stdio: 'inherit',
 		})
 
+		const listener = (_event: Event) => {
+			childProcess.kill('SIGTERM')
+		}
+
+		signal?.addEventListener('abort', listener, { once: true })
+
 		childProcess.on('error', reject)
+
 		childProcess.on('close', code => {
+			signal?.removeEventListener('abort', listener)
 			if (code)
 				reject(
 					new Error(
-						`[@voltiso/script] ${stringScript} ${args.join(
+						`${icon} ${stringScript} ${args.join(
 							' ',
 						)} Non-zero exit code: ${code}`,
 					),
@@ -178,6 +234,10 @@ async function runScript(script: Script | Promise<Script>, ...args: string[]) {
 			else resolve()
 		})
 	})
+
+	// cpPromises.push(cpPromise)
+
+	await cpPromise
 
 	// console.log('exec done')
 }
@@ -206,7 +266,14 @@ async function main(): Promise<void> {
 		return
 	}
 
-	await runScript(commandName, ...commandArgs)
+	const controller = new AbortController()
+	const signal = controller.signal
+
+	process.on('exit', () => {
+		controller.abort()
+	})
+
+	await runScript(commandName, commandArgs, { signal })
 
 	// let messages = ['Supported commands:', commandNamesStr]
 

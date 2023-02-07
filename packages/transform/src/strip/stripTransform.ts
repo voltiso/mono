@@ -19,6 +19,34 @@ export interface StripTransformContext extends TransformContext {
 	shouldStripBecauseOfSymbol?: ts.Symbol | undefined
 }
 
+export function areAllStripAnnotated(
+	ctx: StripTransformContext,
+	node: ts.ImportClause,
+) {
+	// console.log('areAllSymbolsStripAnnotated', node.getText(ctx.sourceFile))
+	if (node.namedBindings && ts.isNamespaceImport(node.namedBindings))
+		return false
+
+	const childNodes = [
+		node.name,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+		...(node.namedBindings?.elements || []).map(node => node.name),
+	]
+
+	// eslint-disable-next-line es-x/no-array-prototype-every
+	const result = childNodes.every(childNode => {
+		if (!childNode) return true
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+		const symbol = ctx.typeChecker.getSymbolAtLocation(childNode)
+		// console.log('arr symbol', !!symbol)
+		return symbol && shouldStripSymbol(ctx, symbol)
+	})
+
+	// console.log('areAllSymbolsStripAnnotated result', result)
+
+	return result
+}
+
 export function stripTransform(
 	program: ts.Program,
 	pluginOptions: StripTransformOptions,
@@ -62,8 +90,9 @@ export function stripTransform(
 				/** Comment-out import declarations */
 				if (
 					ts.isImportDeclaration(node) &&
-					ts.isStringLiteral(node.moduleSpecifier) &&
-					shouldStripModule(ctx, node.moduleSpecifier.text)
+					((ts.isStringLiteral(node.moduleSpecifier) &&
+						shouldStripModule(ctx, node.moduleSpecifier.text)) ||
+						(node.importClause && areAllStripAnnotated(ctx, node.importClause)))
 				) {
 					logStrippedNode(node)
 

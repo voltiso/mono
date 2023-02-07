@@ -6,7 +6,7 @@ import type { IsAny, Not } from '@voltiso/util'
 // @ts-ignore this will fail under react-native (no `dom` lib)
 import type { View } from 'react-native'
 
-import type { StylerConfig } from './StylerConfig-declaration-merging'
+import type { StylerConfig } from '../StylerConfig-declaration-merging'
 
 /**
  * Determine environment - assumes `react-native` if there's no global

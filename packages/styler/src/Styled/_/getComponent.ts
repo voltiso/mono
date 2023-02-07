@@ -33,7 +33,7 @@ export function getComponent<
 	const renderFunction: IForwardRefRenderFunction = defineFunctionComponent(
 		renderFunctionName,
 		(props: $['Props'] & OuterProps, ref: ForwardedRef<unknown>) =>
-			render<$>(props, ref, data),
+			render<$>(props, ref, data) as never,
 	)
 
 	renderFunction.displayName = renderFunctionName

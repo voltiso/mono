@@ -70,12 +70,16 @@ describe('style', () => {
 	it('overwrite newCssProp => css', () => {
 		expect.hasAssertions()
 
+		const name = 'Adam'
+
 		const Button = style('button').newCssProp('red', { color: 'red' })
 		renderApp(
 			<Button
 				red
 				css={{ color: 'green' }}
-			/>,
+			>
+				Hello {name}
+			</Button>,
 		)
 
 		const button = screen.getByRole('button')
@@ -93,7 +97,7 @@ describe('style', () => {
 				css={{
 					color: 'green',
 
-					nested: { '&[data-state=asd]': { color: 'purple' } },
+					_: { '&[data-state=asd]': { color: 'purple' } },
 				}}
 			/>,
 		)
@@ -112,8 +116,8 @@ describe('style', () => {
 		renderApp(
 			<OtherRedButton
 				css={{
-					nested: {
-						nested: {
+					_: {
+						_: {
 							margin: 88,
 						},
 					},
@@ -429,8 +433,8 @@ describe('style', () => {
 		expect.hasAssertions()
 
 		const A = style('button')
-			.css({ nested: { nested: { color: 'red' } } })
-			.css({ nested: { backgroundColor: 'purple' } })
+			.css({ _: { _: { color: 'red' } } })
+			.css({ _: { backgroundColor: 'purple' } })
 			.css({ color: 'green' })
 
 		renderApp(<A />)

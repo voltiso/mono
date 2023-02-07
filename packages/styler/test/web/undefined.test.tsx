@@ -16,8 +16,6 @@ describe('undefined', () => {
 				}}
 			/>
 		)
-
-		// adding animationName messes Fela typings?
 		;() => (
 			<Div
 				css={{

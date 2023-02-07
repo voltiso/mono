@@ -1,37 +1,32 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// eslint-disable-next-line import/no-unassigned-import
+import '@testing-library/jest-dom'
+
 import type { RenderResult } from '@testing-library/react'
 import { render } from '@testing-library/react'
-import type { IRenderer } from 'fela'
-import { createRenderer } from 'fela'
-import typescript from 'fela-plugin-typescript'
-import webPreset from 'fela-preset-web'
 import type { ReactNode } from 'react'
 
-import { StyleProvider } from '~'
+import { NextStylerRegistry } from '~'
 
-let renderer: IRenderer | undefined
+// let renderer: WebRenderer | undefined
 
-export function getRenderer() {
-	if (!renderer) {
-		renderer = createRenderer({
-			plugins: [typescript(), ...webPreset],
-		})
+// export function getRenderer() {
+// 	if (!renderer) {
+// 		renderer = new WebRenderer()
 
-		renderer.renderStatic(
-			{
-				margin: 0,
-			},
-			'body',
-		)
-	}
+// 		// renderer.renderStatic(
+// 		// 	{
+// 		// 		margin: 0,
+// 		// 	},
+// 		// 	'body',
+// 		// )
+// 	}
 
-	return renderer
-}
+// 	return renderer
+// }
 
 export function renderApp(children: ReactNode): RenderResult {
-	return render(
-		<StyleProvider renderer={getRenderer()}>{children}</StyleProvider>,
-	)
+	return render(<NextStylerRegistry>{children}</NextStylerRegistry>)
 }

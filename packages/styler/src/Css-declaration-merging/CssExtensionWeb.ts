@@ -16,7 +16,7 @@ export interface CssExtensionWeb<CustomCss extends object>
 	':nth-child(odd)'?: CssWeb<CustomCss> | undefined
 	':nth-child(even)'?: CssWeb<CustomCss> | undefined
 
-	/** Typings for `fela-plugin-embedded` */
+	/** Embed `animation-name` */
 	animationName?:
 		| {
 				from?: CssWeb<CustomCss> | undefined
@@ -32,7 +32,7 @@ export interface CssExtensionWeb<CustomCss extends object>
 		  }
 		| undefined
 
-	/** Typings for `fela-plugin-embedded` */
+	/** Embed `font-face` */
 	fontFace?:
 		| {
 				fontFamily?: 'Arial' | AlsoAccept<string> | undefined

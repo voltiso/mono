@@ -26,3 +26,29 @@ export const keepIt: KeepIt = blackbox({
 export function isKeepIt(x: any): x is KeepIt {
 	return Object.prototype.hasOwnProperty.call(x || {}, '__keepIt')
 }
+
+//
+
+/**
+ * ⚠️ Sets null property to not be seen as a plain object
+ *
+ * - This way the library can detect its objects even if multiple instances of the
+ *   library are in memory
+ */
+export interface KeepItIfPresent {
+	__keepItIfPresent: true
+}
+
+/**
+ * ⚠️ Sets null property to not be seen as a plain object
+ *
+ * - This way the library can detect its objects even if multiple instances of the
+ *   library are in memory
+ */
+export const keepItIfPresent: KeepItIfPresent = blackbox({
+	__keepItIfPresent: true as const,
+})
+
+export function isKeepItIfPresent(x: any): x is KeepIt {
+	return Object.prototype.hasOwnProperty.call(x || {}, '__keepItIfPresent')
+}

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { AlsoAccept } from '@voltiso/util'
+
 import type { Css } from './Css'
 
 export function defineCss<TCss extends Css>(
@@ -11,7 +13,9 @@ export function defineCss<TCss extends Css>(
 
 //
 
-export type CssSelectors = Partial<Record<keyof JSX.IntrinsicElements, Css>>
+export type CssSelectors = Partial<
+	Record<keyof JSX.IntrinsicElements | AlsoAccept<string>, Css>
+>
 
 export function defineCssSelectors<T extends CssSelectors>(
 	selectors: T,

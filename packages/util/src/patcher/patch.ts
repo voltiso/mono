@@ -7,18 +7,14 @@ import type { Force } from '~/cast'
 import { equals } from '~/equals'
 import { add } from '~/number'
 import type { Merge, Value } from '~/object'
-import {
-	assertNotPolluting,
-	isPlainObject,
-	setProperty,
-	tryGetProperty,
-} from '~/object'
+import { assertNotPolluting, isPlainObject, setProperty } from '~/object'
 import type { AlsoAccept } from '~/type'
 
 import type { ArraySetUpdateIt } from './arraySetUpdateIt'
 import { isArraySetUpdateIt } from './arraySetUpdateIt'
+import { assertNoSentinels } from './assertNoSentinels'
 import type { DeleteIt } from './deleteIt'
-import { isDeleteIt } from './deleteIt'
+import { isDeleteIt, isDeleteItIfPresent } from './deleteIt'
 import type { IncrementIt } from './incrementIt'
 import { isIncrementIt } from './incrementIt'
 import type { KeepIt } from './keepIt'
@@ -26,6 +22,7 @@ import { isKeepIt } from './keepIt'
 import type { PatchFor } from './PatchFor'
 import type { ReplaceIt } from './replaceIt'
 import { isReplaceIt } from './replaceIt'
+import { stripSentinels } from './stripSentinels'
 
 //
 
@@ -94,6 +91,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	options: PatchOptions = defaultPatchOptions,
 ): ApplyPatch<X, PatchValue> {
 	if (isDeleteIt(patchValue)) return undefined as never
+	if (isDeleteItIfPresent(patchValue)) return undefined as never
 
 	if (isKeepIt(patchValue)) return x as never
 
@@ -128,8 +126,12 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 
 	if (isPlainObject(x) && isPlainObject(patchValue)) {
 		if (options.depth <= 0) {
-			if (equals(x, patchValue)) return x as never
-			else return patchValue as never
+			if (equals(x, patchValue)) {
+				assertNoSentinels(x)
+				return x as never
+			}
+
+			return stripSentinels(patchValue) as never
 		}
 
 		const res: any = {
@@ -140,19 +142,30 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 
 		for (const [key, value] of Object.entries(patchValue)) {
 			assertNotPolluting(key)
-			const oldValue = tryGetProperty(res, key) as unknown
+
+			const haveOldValue = Object.prototype.hasOwnProperty.call(x, key)
+
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			const oldValue = res[key] as unknown
+
+			if (!haveOldValue && isDeleteIt(value))
+				throw new TypeError(`forcePatch: cannot delete non-existing key ${key}`)
+
+			if (isDeleteIt(value) || isDeleteItIfPresent(value)) {
+				if (haveOldValue) {
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+					delete res[key]
+					haveChange = true
+				}
+				continue
+			}
+
 			const newValue = forcePatch(oldValue, value, {
 				depth: options.depth - 1,
 			}) as unknown
 
-			if (newValue !== oldValue) {
+			if (newValue !== oldValue || !haveOldValue) {
 				setProperty(res, key, newValue as never)
-				haveChange = true
-			}
-
-			if (Object.prototype.hasOwnProperty.call(x, key) && isDeleteIt(value)) {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				delete res[key]
 				haveChange = true
 			}
 		}
@@ -161,7 +174,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 		else return x as never
 	}
 
-	return patchValue as never
+	return stripSentinels(patchValue) as never
 }
 
 //

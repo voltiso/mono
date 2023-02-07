@@ -3,14 +3,12 @@
 
 import type { RenderAPI } from '@testing-library/react-native'
 import { render } from '@testing-library/react-native'
-import type { IRenderer } from 'fela'
-// @ts-expect-error no typings
-import { createRenderer } from 'fela-native'
 import type { ReactNode } from 'react'
 
-import { StyleProvider } from '~'
+import { NativeRenderer } from '~'
+import { RendererContext } from '~/client'
 
-let renderer: IRenderer | undefined
+let renderer: NativeRenderer | undefined
 
 export function getRenderer() {
 	if (!renderer) {
@@ -18,8 +16,7 @@ export function getRenderer() {
 		// 	plugins: [typescript(), ...webPreset],
 		// })
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-		renderer = createRenderer() as IRenderer
+		renderer = new NativeRenderer()
 
 		// renderer.renderStatic(
 		// 	{
@@ -34,6 +31,8 @@ export function getRenderer() {
 
 export function renderApp(children: ReactNode): RenderAPI {
 	return render(
-		<StyleProvider renderer={getRenderer()}>{children}</StyleProvider>,
+		<RendererContext.Provider value={getRenderer()}>
+			{children}
+		</RendererContext.Provider>,
 	)
 }

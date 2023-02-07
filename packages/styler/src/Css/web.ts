@@ -29,7 +29,6 @@ export type _Css_OriginalWeb<CustomCss extends object> = Omit<
 
 //
 
-/** Changes from `fela`: added `| undefined` */
 export type CssPseudosWeb<CustomCss extends object> = {
 	[K in CSS.Pseudos]?: CssWeb<CustomCss> | undefined
 }

@@ -7,6 +7,8 @@
 	"compilerOptions": {
 		"lib": ["DOM"],
 
+		"types": ["react/next"],
+
 		"strictNullChecks": false,
 		"exactOptionalPropertyTypes": false,
 		"strictPropertyInitialization": false,

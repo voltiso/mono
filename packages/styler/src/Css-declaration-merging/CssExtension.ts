@@ -3,11 +3,13 @@
 
 import type { AlsoAccept } from '@voltiso/util'
 
-import type { Css } from '../Css/Css'
+import type { Css, CustomCss } from '~/Css/Css'
 
-export interface CssExtension<CustomCss extends object = {}> {
+export interface CssExtension<AdditionalCss extends object = {}> {
 	//
-
-	/** Typing for `fela-plugin-typescript` */
-	nested?: Css | AlsoAccept<Record<string, Css & CustomCss>> | undefined
+	// /** Typing for `fela-plugin-typescript` */
+	_?:
+		| Css<AdditionalCss>
+		| AlsoAccept<Record<string, Css<AdditionalCss> & CustomCss & AdditionalCss>>
+		| undefined
 }

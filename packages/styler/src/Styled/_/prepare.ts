@@ -10,10 +10,10 @@ import { $assert, isPlainObject } from '@voltiso/util'
 import type { CssProp } from '~/_/CssProps'
 import { isThemePath } from '~/ThemePath'
 
-export type WithNested = { nested: object }
+export type WithNested = { _: object }
 
 export function isWithNested(x: unknown): x is WithNested {
-	return isPlainObject((x as WithNested | null)?.nested)
+	return isPlainObject((x as WithNested | null)?._)
 }
 
 function isWith0(x: unknown): x is { [0]: unknown } {
@@ -24,7 +24,7 @@ function isWith0(x: unknown): x is { [0]: unknown } {
 	)
 }
 
-function readPath(obj: object, path: string[]): unknown {
+function readPath(obj: object | null, path: string[]): unknown {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	let result = obj as any
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -32,17 +32,16 @@ function readPath(obj: object, path: string[]): unknown {
 	return isWith0(result) ? result[0] : result
 }
 
-/** `fela` mutates objects - make sure to return a deep fresh object here */
 export function prepare<X>(
 	x: X,
 	params: {
-		theme: object
+		theme: object | null
 
 		customCss?: object | undefined
 
 		/**
 		 * When preparing props, only do relatively safe operations - do not remove
-		 * `undefined` entries, or flatten `nested`
+		 * `undefined` entries, or flatten `_` (nested)
 		 *
 		 * @defaultValue `false`
 		 */
@@ -54,11 +53,11 @@ export function prepare<X>(
 		let r: object = {}
 
 		if (!params.isPreparingProps && isWithNested(x))
-			r = { ...prepare(x.nested, params) }
+			r = { ...prepare(x._, params) }
 
 		for (const [k, v] of Object.entries(x)) {
 			/** Unsafe - do not do when preparing props */
-			if (!params.isPreparingProps && k === 'nested') continue
+			if (!params.isPreparingProps && k === '_') continue
 
 			/** Unsafe - do not do when preparing props */
 			if (!params.isPreparingProps && v === undefined) {

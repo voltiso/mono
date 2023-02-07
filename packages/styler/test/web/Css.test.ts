@@ -26,6 +26,15 @@ describe('Css', () => {
 		} as const
 
 		$Assert.is<typeof a, Css>()
+
+		// const b = {
+		// 	// ...a,
+		// 	customPropertyA: 1,
+		// }
+
+		// $Assert($Is<typeof b>().not.subtypeOf<Css>())
+
+		// $Assert.is<typeof b, Css<{ customPropertyA: number }>>()
 	})
 
 	it('allows arrays', () => {
@@ -42,12 +51,12 @@ describe('Css', () => {
 		expect.assertions(0)
 
 		const a = {
-			nested: {
+			_: {
 				'@media(...)': {
 					marginX: 1,
 				},
 			},
-		}
+		} as const
 
 		$Assert($Is<typeof a>().not.subtypeOf<Css>())
 

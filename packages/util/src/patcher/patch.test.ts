@@ -6,7 +6,7 @@ import { $Assert } from '_'
 import type { IsIdentical } from '~/type'
 
 import { arraySetAddToIt, arraySetRemoveFromIt } from './arraySetUpdateIt'
-import { deleteIt } from './deleteIt'
+import { deleteIt, deleteItIfPresent } from './deleteIt'
 import { incrementIt } from './incrementIt'
 import { keepIt } from './keepIt'
 import { forcePatch, patch } from './patch'
@@ -169,6 +169,20 @@ describe('patch', () => {
 		$Assert<IsIdentical<typeof c, 234>>()
 	})
 
+	it('deleteIt - missing', () => {
+		expect(() => forcePatch({ a: 1 }, { b: deleteIt })).toThrow(
+			'forcePatch: cannot delete non-existing key b',
+		)
+
+		expect(forcePatch({ a: 1 }, { b: deleteItIfPresent })).toStrictEqual({
+			a: 1,
+		})
+
+		expect(
+			forcePatch({ a: 1 }, { b: { bb: deleteItIfPresent } }),
+		).toStrictEqual({ a: 1, b: {} })
+	})
+
 	it('patchUpdate boolean', () => {
 		expect.hasAssertions()
 
@@ -179,10 +193,39 @@ describe('patch', () => {
 	})
 
 	it('increment', () => {
+		// number
 		const obj = { a: { b: 123 } }
 
 		expect(patch(obj, { a: { b: incrementIt(10) } })).toStrictEqual({
 			a: { b: 133 },
 		})
+	})
+
+	it('increment - bigint', () => {
+		const obj2 = { a: { b: 123n } }
+
+		expect(patch(obj2, { a: { b: incrementIt(10) } })).toStrictEqual({
+			a: { b: 133n },
+		})
+	})
+
+	it('increment - wrong type', () => {
+		const obj = { a: 'test' }
+
+		expect(() => patch(obj, { a: incrementIt(10) as never })).toThrow(
+			'cannot increment non-number',
+		)
+	})
+
+	it('increment - missing', () => {
+		expect(() => patch({}, { a: incrementIt(10) as never })).toThrow(
+			'cannot increment non-number', // TODO: better error message
+		)
+	})
+
+	it('increment - missing - nested', () => {
+		expect(() => patch({}, { a: { b: incrementIt(10) as never } })).toThrow(
+			'found non-safe-to-strip sentinel incrementIt(10)',
+		)
 	})
 })

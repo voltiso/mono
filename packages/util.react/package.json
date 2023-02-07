@@ -56,7 +56,7 @@
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.71.1"
+    "react-native": "^0.71.2"
   },
   "__________MISC": "__________",
   "engines": {

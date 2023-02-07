@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { Component } from 'react'
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { Component } from 'react'
 
 import type { ComponentLike, Props } from '~/react-types'
 import type { InnerProps } from '~/Stylable/InnerProps'

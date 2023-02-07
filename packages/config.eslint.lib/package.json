@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.eslint.lib",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -43,7 +43,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^",
-    "eslint-define-config": "^1.14.0"
+    "eslint-define-config": "^1.15.0"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",

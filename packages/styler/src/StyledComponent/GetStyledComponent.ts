@@ -5,7 +5,6 @@ import type { $Override_, Throw } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 import type { NativeMethods } from 'react-native'
 
-import type { IsReactNative } from '~/IsReactNative'
 import type {
 	$ComponentProps,
 	ForwardRefAndCssRenderFunction,
@@ -18,6 +17,7 @@ import type {
 	StyledHocWithProps,
 } from '~/StyledHoc'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
+import type { IsReactNative } from '~/util'
 
 import type { CustomStyledComponent } from './CustomStyledComponent'
 import type { StyledComponent } from './StyledComponent'

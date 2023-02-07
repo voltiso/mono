@@ -18,6 +18,10 @@ export namespace Script {
 		parallel: Script[]
 	}
 
+	export interface Race {
+		race: Script[]
+	}
+
 	export type Sequence = Script[]
 
 	export type Literal = string

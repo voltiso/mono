@@ -3,7 +3,8 @@
 exports[`nested works 1`] = `
 "// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-import { $expect } from '@voltiso/util';
+import { $expect, lazyValue } from '@voltiso/util';
+void lazyValue;
 void (() => {
     // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$expect\`
     /*$expect(0).toBeTruthy()*/ 

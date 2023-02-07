@@ -5,10 +5,13 @@
 
 {
 	"compilerOptions": {
+		"noEmit": true,
+
 		"target": "ESNext",
 		"moduleResolution": "node",
 
 		"esModuleInterop": true,
+		"strictNullChecks": true,
 
 		"paths": {
 			"~": ["./src"],

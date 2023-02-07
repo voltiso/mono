@@ -4,8 +4,8 @@
 import type { StyleProp } from 'react-native'
 
 import type { Css, CustomCss } from '~/Css'
-import type { IsReactNative } from '~/IsReactNative'
 import type { Props } from '~/react-types'
+import type { IsReactNative } from '~/util'
 
 export interface OuterPropsBase<AdditionalCss extends object> extends Props {
 	css?:

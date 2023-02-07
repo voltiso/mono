@@ -75,13 +75,17 @@ describe('raw-transaction', function () {
 		expect.hasAssertions()
 
 		await db.runTransaction(async db => {
-			const adam = await db('user/adam').set({ age: 123, x: 2 })
+			const adam = await db('user/adam').set({ age: 123, x: 2, arr: [1, 2, 3] })
 			adam.data['age'] = 234
 			delete adam.data['x']
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+			;(adam.data['arr'] as any).push(4)
 
 			expect(adam.data['age']).toBe(234)
 			expect(adam.data['x']).toBeUndefined()
+			expect(adam.data['arr']).toStrictEqual([1, 2, 3, 4])
 		})
+
 		const adam = await db('user/adam')
 
 		// @ts-expect-error ...
@@ -90,6 +94,7 @@ describe('raw-transaction', function () {
 		$assert(adam)
 
 		expect(adam.data['x']).toBeUndefined()
+		expect(adam.data['arr']).toStrictEqual([1, 2, 3, 4])
 	})
 
 	it('should commit local object changes recursively', async function () {

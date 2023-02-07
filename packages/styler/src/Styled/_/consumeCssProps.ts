@@ -11,7 +11,7 @@ export function consumeCssProps<CustomCss extends object>(params: {
 	props: Props
 	cssProps: IndexedCssProps<CustomCss>
 	styles: Css[]
-	theme: object
+	theme: object | null
 	customCss: object | undefined
 }) {
 	// console.log('consumeCssProps', params.customCss)

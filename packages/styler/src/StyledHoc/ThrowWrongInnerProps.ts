@@ -3,7 +3,7 @@
 
 import type { Throw } from '@voltiso/util'
 
-import type { IsReactNative } from '~/IsReactNative'
+import type { IsReactNative } from '~/util'
 
 export type ThrowWrongInnerProps = IsReactNative extends true
 	? Throw<'Error: `style` prop is missing'>
