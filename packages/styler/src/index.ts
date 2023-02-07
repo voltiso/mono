@@ -19,7 +19,7 @@ export type {
 	CssReactNative,
 	CssWeb,
 } from './Css-declaration-merging'
-export * from './next'
+export * from './nextJs'
 export * from './react-types'
 export * from './renderer'
 export * from './server'

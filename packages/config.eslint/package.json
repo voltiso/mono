@@ -39,7 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/config.eslint.lib": "workspace:^",
-    "chalk": "^4",
+    "chalk": "^4.1.2",
     "eslint-gitignore": "^0.1.0"
   },
   "devDependencies": {
@@ -119,7 +119,7 @@
     "jsonc-eslint-parser": ">= 2.1.0",
     "putout": "*",
     "toml-eslint-parser": "*",
-    "typescript": "^4.8.2",
+    "typescript": "^4.8.4",
     "yaml-eslint-parser": "*"
   },
   "peerDependenciesMeta": {

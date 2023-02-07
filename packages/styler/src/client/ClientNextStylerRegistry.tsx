@@ -21,7 +21,14 @@ export const ClientNextStylerRegistry = (props: {
 		const ssrStyle = renderer.flushStyle()
 		if (!ssrStyle) return null
 
-		return <style data-voltiso-ssr=''>{ssrStyle}</style>
+		return (
+			<style
+				data-voltiso-ssr=''
+				key={renderer.numFlushes}
+			>
+				{ssrStyle}
+			</style>
+		)
 	})
 
 	return (

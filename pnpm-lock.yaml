@@ -733,11 +733,11 @@ importers:
     dependencies:
       '@voltiso/util.esbuild': link:../util.esbuild
       '@voltiso/util.node': link:../util.node
+      chalk: 4.1.2
     devDependencies:
       '@types/node': 18.11.19
       '@voltiso/config.ts': link:../config.ts
       '@voltiso/util.package-json': link:../util.package-json
-      chalk: 4.1.2
 
   packages/styler:
     specifiers:

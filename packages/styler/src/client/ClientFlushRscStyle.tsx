@@ -7,7 +7,7 @@ import { useServerInsertedHTML } from 'next/navigation'
 import type { FC } from 'react'
 import { useContext, useInsertionEffect } from 'react'
 
-import { RscStyleContext } from '../next/FlushRscStyle/serverContext'
+import { RscStyleContext } from '../nextJs/FlushRscStyle/serverContext'
 
 export const ClientFlushRscStyle: FC = () => {
 	const rscStyle = useContext(RscStyleContext)
@@ -37,7 +37,7 @@ export const ClientFlushRscStyle: FC = () => {
 			const node = document.createElement('style')
 			// eslint-disable-next-line unicorn/prefer-dom-node-dataset
 			node.setAttribute('data-voltiso-rsc-dev', '')
-			node.textContent = rscStyle
+			node.textContent = rscStyle.v
 			document.head.append(node)
 		})
 	}
@@ -46,7 +46,14 @@ export const ClientFlushRscStyle: FC = () => {
 		if (!rscStyle) return null
 
 		// console.log('voltiso-rsc', rscStyle)
-		return <style data-voltiso-rsc=''>{rscStyle}</style>
+		return (
+			<style
+				data-voltiso-rsc=''
+				key={rscStyle.k}
+			>
+				{rscStyle.v}
+			</style>
+		)
 	})
 
 	return null

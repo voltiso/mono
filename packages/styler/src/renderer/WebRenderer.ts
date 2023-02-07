@@ -65,6 +65,7 @@ export class WebRenderer {
 	_cache = new Map<string, string>()
 
 	_styleToFlush = ''
+	numFlushes = 0
 
 	classNameFor(...stylerStyles: Css[]) {
 		const atomicStyles = getAtomicStyles(...stylerStyles)
@@ -98,8 +99,10 @@ export class WebRenderer {
 	}
 
 	flushStyle() {
+		if (!this._styleToFlush) return ''
 		const style = this._styleToFlush
 		this._styleToFlush = ''
+		this.numFlushes += 1
 		return style
 	}
 
@@ -107,6 +110,8 @@ export class WebRenderer {
 		this._styleToFlush = [...this._cache.entries()]
 			.map(([k, v]) => getClassCss(v, k))
 			.join('')
+
+		this.numFlushes = 0
 	}
 
 	isFlushed() {

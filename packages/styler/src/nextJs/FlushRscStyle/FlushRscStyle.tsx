@@ -5,6 +5,7 @@
 // import 'server-only'
 
 import type { FC } from 'react'
+import { useMemo } from 'react'
 
 import { ClientFlushRscStyle } from '~/client/ClientFlushRscStyle'
 import { rscRenderer } from '~/server/rscRenderer'
@@ -23,7 +24,15 @@ export const FlushRscStyle: FC = () => {
 	// const rscRenderer = rscRenderers.get(rscId)
 	// assert(rscRenderer)
 
-	const rscStyle = rscRenderer.flushStyle()
+	const rscStyleValue = rscRenderer.flushStyle()
+
+	const rscStyle = useMemo(
+		() => ({
+			k: rscRenderer.numFlushes,
+			v: rscStyleValue,
+		}),
+		[rscStyleValue],
+	)
 
 	// console.log('FlushRscStyle', rscStyle)
 

@@ -4,7 +4,7 @@
 // import { assert } from '@voltiso/util'
 // import { useContext } from 'react'
 
-import { FlushRscStyle } from '~/next/FlushRscStyle/FlushRscStyle'
+import { FlushRscStyle } from '~/nextJs/FlushRscStyle/FlushRscStyle'
 import { isServerComponent } from '~/util'
 // import { RscIdContext } from '~/server/RscIdContext'
 // import { rscRenderers } from '~/server/rscRenderers'
@@ -24,5 +24,6 @@ export function maybeFlushRscStyle(
 
 	if (!isServerComponent) return reactNode
 
-	return [reactNode, <FlushRscStyle key='_' />]
+	// eslint-disable-next-line react/jsx-key
+	return [reactNode, <FlushRscStyle />]
 }
