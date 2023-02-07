@@ -52,12 +52,7 @@ describe('forwardRef', () => {
 
 		const Component = style(
 			forwardRef<HTMLButtonElement, ComponentProps<typeof AnotherButton>>(
-				(props, ref) => (
-					<AnotherButton
-						ref={ref}
-						{...props}
-					/>
-				),
+				(props, ref) => <AnotherButton ref={ref} {...props} />,
 			),
 		)
 
@@ -86,10 +81,7 @@ describe('forwardRef', () => {
 
 		const Component = style(
 			forwardRef((props, ref) => (
-				<AnotherButton
-					ref={ref}
-					{...props}
-				/>
+				<AnotherButton ref={ref} {...props} />
 			)) as ForwardRefExoticComponent<any>,
 		)
 
@@ -125,12 +117,7 @@ describe('forwardRef', () => {
 		const render: ForwardRefRenderFunction<HTMLAnchorElement, {}> = (
 			props,
 			ref,
-		) => (
-			<a
-				ref={ref}
-				{...props}
-			/>
-		)
+		) => <a ref={ref} {...props} />
 
 		const Button = forwardRef<HTMLAnchorElement, ComponentPropsWithRef_<'a'>>(
 			render,
@@ -138,12 +125,7 @@ describe('forwardRef', () => {
 
 		const StyledButton = myStyle(Button)
 
-		renderApp(
-			<StyledButton
-				small
-				data-testid='test'
-			/>,
-		)
+		renderApp(<StyledButton small data-testid='test' />)
 		const button = screen.getByTestId('test')
 
 		expect(button).toHaveStyle({
@@ -159,12 +141,7 @@ describe('forwardRef', () => {
 		const RenderButton: ForwardRefRenderFunction<
 			HTMLButtonElement,
 			ComponentProps<'button'>
-		> = (props, ref) => (
-			<button
-				ref={ref}
-				{...props}
-			/>
-		)
+		> = (props, ref) => <button ref={ref} {...props} />
 
 		$Assert.is<typeof RenderButton, ForwardRefRenderFunction<any>>()
 
@@ -272,13 +249,7 @@ describe('forwardRef', () => {
 		const Another = style.forwardRef<typeof Button>((props, ref, css) => {
 			$Assert($Is<'ref'>().not.subtypeOf<keyof typeof props>())
 
-			return (
-				<Button
-					ref={ref}
-					css={css}
-					{...props}
-				/>
-			)
+			return <Button ref={ref} css={css} {...props} />
 		})
 
 		renderApp(<Another magic />)

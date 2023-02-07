@@ -48,19 +48,10 @@ describe('hoc', () => {
 		//
 		;() => (
 			// @ts-expect-error `other` is required
-			<AfterGood
-				magic
-				css={{ borderRadius: 4 }}
-			/>
+			<AfterGood magic css={{ borderRadius: 4 }} />
 		)
 
-		renderApp(
-			<AfterGood
-				magic
-				css={{ borderRadius: 4 }}
-				other
-			/>,
-		)
+		renderApp(<AfterGood magic css={{ borderRadius: 4 }} other />)
 		const after = screen.getByRole('button')
 
 		expect(after).toHaveStyle({

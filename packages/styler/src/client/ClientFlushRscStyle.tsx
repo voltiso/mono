@@ -32,7 +32,7 @@ export const ClientFlushRscStyle: FC = () => {
 	if (process.env['NODE_ENV'] === 'development') {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useInsertionEffect(() => {
-			if (!rscStyle) return
+			if (!rscStyle?.v) return
 			// console.log('voltiso-rsc-dev', rscStyle)
 			const node = document.createElement('style')
 			// eslint-disable-next-line unicorn/prefer-dom-node-dataset
@@ -43,14 +43,11 @@ export const ClientFlushRscStyle: FC = () => {
 	}
 
 	useServerInsertedHTML(() => {
-		if (!rscStyle) return null
+		if (!rscStyle?.v) return null
 
 		// console.log('voltiso-rsc', rscStyle)
 		return (
-			<style
-				data-voltiso-rsc=''
-				key={rscStyle.k}
-			>
+			<style data-voltiso-rsc='' key={rscStyle.k}>
 				{rscStyle.v}
 			</style>
 		)

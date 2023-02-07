@@ -29,11 +29,7 @@ describe('cssProps', () => {
 		const MyView = StyledView.cssProps('flex', 'backgroundColor', 'margin')
 		;() => <MyView /> // check if optional
 		const { getByTestId } = renderApp(
-			<MyView
-				testID='a'
-				flex={1}
-				backgroundColor='red'
-			/>,
+			<MyView testID='a' flex={1} backgroundColor='red' />,
 		)
 
 		// eslint-disable-next-line testing-library/prefer-screen-queries

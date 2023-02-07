@@ -123,13 +123,7 @@ describe('newCssProps', () => {
 			}),
 		})
 		;<Button /> // check if optional
-		renderApp(
-			<Button
-				red
-				mx={123}
-				f
-			/>,
-		)
+		renderApp(<Button red mx={123} f />)
 
 		type Red = ComponentProps<typeof Button>['red']
 		$Assert<IsIdentical<Red, boolean | undefined>>()
@@ -158,12 +152,7 @@ describe('newCssProps', () => {
 			}),
 		})
 
-		renderApp(
-			<Button
-				red={false}
-				f={false}
-			/>,
-		)
+		renderApp(<Button red={false} f={false} />)
 
 		type Red = ComponentProps<typeof Button>['red']
 		$Assert<IsIdentical<Red, boolean | undefined>>()
@@ -208,12 +197,7 @@ describe('newCssProps', () => {
 		// check if optional
 		;<Button />
 
-		renderApp(
-			<Button
-				red
-				css={{ color: 'blue' }}
-			/>,
-		)
+		renderApp(<Button red css={{ color: 'blue' }} />)
 
 		const button = screen.getByRole('button')
 
@@ -233,12 +217,7 @@ describe('newCssProps', () => {
 		// check if optional
 		;<Button />
 
-		renderApp(
-			<Button
-				red
-				css={{ color: 'blue' }}
-			/>,
-		)
+		renderApp(<Button red css={{ color: 'blue' }} />)
 
 		const button = screen.getByRole('button')
 

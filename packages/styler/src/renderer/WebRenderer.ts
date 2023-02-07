@@ -2,15 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
-	assignStyle,
 	cssifyDeclaration,
 	isUnitlessProperty,
 	resolveArrayValue,
 } from 'css-in-js-utils'
-import type { StyleObject } from 'css-in-js-utils/es/cssifyObject'
 
 import type { Css } from '../Css'
 import { isServerComponent } from '../util/isServerComponent'
+import { mergeCss } from './_/mergeCss'
 
 // let headStyleElement: HTMLStyleElement | null
 
@@ -32,14 +31,63 @@ import { isServerComponent } from '../util/isServerComponent'
 
 //
 
-function getAtomicStyles(...stylerStyles: Css[]) {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-	const stylerStyle: StyleObject | null = (assignStyle as any)(...stylerStyles)
+//
 
-	const result = [] as string[]
+export interface AtomicStyle {
+	style: string
 
-	for (const [k, v] of Object.entries(stylerStyle || {})) {
-		const singleValue = Array.isArray(v) ? resolveArrayValue(k, v as never) : v
+	/** Must not include `*` */
+	suffix: string
+
+	/** Must include `*` */
+	selectors: string[]
+}
+
+function stringFromAtomicStyle(
+	atomicStyle: AtomicStyle,
+	// className?: string | undefined,
+): string {
+	let selectors = atomicStyle.selectors
+
+	if (selectors.length === 0) selectors = ['*']
+
+	// if (className)
+	// 	selectors = selectors.map(selector =>
+	// 		selector.replace('*', `.${className}`),
+	// 	)
+
+	if (atomicStyle.suffix)
+		selectors = selectors.map(selector => `${selector}${atomicStyle.suffix}`)
+
+	const finalSelector = selectors.join(',')
+
+	return `${finalSelector}{${atomicStyle.style}}`
+}
+
+export function getAtomicStyles(...stylerStyles: Css[]): AtomicStyle[] {
+	const stylerStyle = mergeCss(...stylerStyles)
+
+	const result = [] as AtomicStyle[]
+
+	for (const [k, v] of Object.entries(stylerStyle)) {
+		const suffix = k.startsWith(':') || k.startsWith('[') ? k : ''
+		const selectors = k.includes('*') ? k.split(',') : []
+
+		if (typeof v === 'object') {
+			const moreStyles = getAtomicStyles(v as never)
+			result.push(
+				...moreStyles.map(atomicStyle => ({
+					style: atomicStyle.style,
+					suffix: `${suffix}${atomicStyle.suffix}`,
+					selectors: [...selectors, ...atomicStyle.selectors],
+				})),
+			)
+			continue
+		}
+
+		const singleValue: unknown = Array.isArray(v)
+			? resolveArrayValue(k, v as never)
+			: v
 
 		const finalValue =
 			typeof singleValue === 'number' &&
@@ -48,18 +96,18 @@ function getAtomicStyles(...stylerStyles: Css[]) {
 				? `${singleValue}px`
 				: singleValue
 
-		const content = cssifyDeclaration(k, finalValue as never)
-		result.push(content)
+		const style = cssifyDeclaration(k, finalValue as never)
+		result.push({
+			style,
+			suffix,
+			selectors,
+		})
 	}
 
 	return result
 }
 
 //
-
-export function getClassCss(className: string, content: string) {
-	return `.${className}{${content}}`
-}
 
 export class WebRenderer {
 	_cache = new Map<string, string>()
@@ -71,8 +119,9 @@ export class WebRenderer {
 		const atomicStyles = getAtomicStyles(...stylerStyles)
 
 		// ! .map with side effects
-		const classNames = atomicStyles.map(content => {
-			let className = this._cache.get(content)
+		const classNames = atomicStyles.map(atomicStyle => {
+			const atomicStyleStr = stringFromAtomicStyle(atomicStyle)
+			let className = this._cache.get(atomicStyleStr)
 
 			if (!className) {
 				// eslint-disable-next-line no-magic-numbers
@@ -80,7 +129,7 @@ export class WebRenderer {
 
 				if (isServerComponent) className = `S${className}` // server component
 				if (!Number.isNaN(Number(className[0]))) className = `_${className}`
-				this._cache.set(content, className)
+				this._cache.set(atomicStyleStr, className)
 
 				// if (typeof document !== 'undefined') {
 				// 	const headStyleElement = getHeadStyleElement()
@@ -89,7 +138,7 @@ export class WebRenderer {
 				// 	headStyleElement.append(cssText)
 				// }
 
-				this._styleToFlush += getClassCss(className, content)
+				this._styleToFlush += atomicStyleStr.replace('*', `.${className}`)
 			}
 
 			return className
@@ -103,12 +152,13 @@ export class WebRenderer {
 		const style = this._styleToFlush
 		this._styleToFlush = ''
 		this.numFlushes += 1
+		// console.log('flushStyle', style)
 		return style
 	}
 
 	unflushStyle() {
 		this._styleToFlush = [...this._cache.entries()]
-			.map(([k, v]) => getClassCss(v, k))
+			.map(([k, v]) => k.replace('*', `.${v}`))
 			.join('')
 
 		this.numFlushes = 0

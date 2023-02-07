@@ -78,10 +78,7 @@ describe('wrap', () => {
 			.wrap(
 				MyFooter1, // should not pass props
 				props => (
-					<MyFooter
-						footerColor={props.footerColor}
-						data-testid='MyFooter2'
-					/>
+					<MyFooter footerColor={props.footerColor} data-testid='MyFooter2' />
 				),
 			)
 

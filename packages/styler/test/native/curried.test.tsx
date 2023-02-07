@@ -48,13 +48,7 @@ describe('curried', () => {
 		// @ts-expect-error `bgRed` missing
 		;<MyView2 red />
 
-		const { getByTestId } = renderApp(
-			<MyView2
-				testID='a'
-				red
-				bgRed
-			/>,
-		)
+		const { getByTestId } = renderApp(<MyView2 testID='a' red bgRed />)
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -73,12 +67,7 @@ describe('curried', () => {
 			}))
 
 		const MyTouchableOpacity = myStyle(TouchableOpacity)
-		const { getByTestId } = renderApp(
-			<MyTouchableOpacity
-				testID='a'
-				red
-			/>,
-		)
+		const { getByTestId } = renderApp(<MyTouchableOpacity testID='a' red />)
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({

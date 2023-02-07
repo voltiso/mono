@@ -54,12 +54,7 @@ describe('props', () => {
 			.props({ type: 'checkbox' })
 			.props({ type: 'button' })
 
-		renderApp(
-			<Button
-				data-testid='a'
-				type='radio'
-			/>,
-		)
+		renderApp(<Button data-testid='a' type='radio' />)
 
 		expect(screen.getByTestId('a')).toHaveAttribute('type', 'radio')
 	})

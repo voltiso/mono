@@ -24,10 +24,7 @@ describe('children', () => {
 		const Button = style('button')
 
 		const Inner = forwardRef<HTMLButtonElement, {}>((props, ref) => (
-			<Button
-				ref={ref}
-				{...props}
-			/>
+			<Button ref={ref} {...props} />
 		))
 
 		// @ts-expect-error no `children` prop

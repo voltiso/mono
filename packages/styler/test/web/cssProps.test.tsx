@@ -15,12 +15,7 @@ describe('cssProps', () => {
 
 		const Button = style('button').cssProps('flex', 'backgroundColor')
 		;<Button /> // check if optional
-		renderApp(
-			<Button
-				flex={1}
-				backgroundColor='red'
-			/>,
-		)
+		renderApp(<Button flex={1} backgroundColor='red' />)
 
 		const button = screen.getByRole('button')
 
@@ -71,12 +66,7 @@ describe('cssProps', () => {
 
 		const GoodSvg = StrippedSvg.cssProps('margin')
 
-		renderApp(
-			<GoodSvg
-				data-testid='a'
-				margin={8}
-			/>,
-		)
+		renderApp(<GoodSvg data-testid='a' margin={8} />)
 		const svg = screen.getByTestId('a')
 
 		expect(svg).toHaveStyle({

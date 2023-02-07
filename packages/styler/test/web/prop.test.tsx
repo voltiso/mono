@@ -60,12 +60,7 @@ describe('prop', () => {
 		expect.hasAssertions()
 
 		const C = style('input').prop('type', 'checkbox').prop('checked')
-		renderApp(
-			<C
-				title='a'
-				readOnly
-			/>,
-		)
+		renderApp(<C title='a' readOnly />)
 
 		expect(screen.getByTitle('a')).toBeChecked()
 	})

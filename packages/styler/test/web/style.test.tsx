@@ -74,10 +74,7 @@ describe('style', () => {
 
 		const Button = style('button').newCssProp('red', { color: 'red' })
 		renderApp(
-			<Button
-				red
-				css={{ color: 'green' }}
-			>
+			<Button red css={{ color: 'green' }}>
 				Hello {name}
 			</Button>,
 		)
@@ -97,7 +94,7 @@ describe('style', () => {
 				css={{
 					color: 'green',
 
-					_: { '&[data-state=asd]': { color: 'purple' } },
+					_: { '[data-state=asd]': { color: 'purple' } },
 				}}
 			/>,
 		)

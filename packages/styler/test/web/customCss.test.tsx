@@ -87,12 +87,7 @@ describe('customCss', () => {
 
 		expect(button).toHaveStyle({ height: '666px' })
 
-		renderApp(
-			<Button
-				data-testid='test-2'
-				css={{ big: true }}
-			/>,
-		)
+		renderApp(<Button data-testid='test-2' css={{ big: true }} />)
 		button = screen.getByTestId('test-2')
 
 		expect(button).toHaveStyle({ height: '666px' })
