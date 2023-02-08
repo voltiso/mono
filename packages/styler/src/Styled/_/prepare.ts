@@ -75,13 +75,15 @@ export function prepare<X>(
 					k as keyof typeof params.customCss
 				] as CssProp<unknown, object>
 
-				const cssValues =
-					typeof customCssEntry === 'function'
-						? (customCssEntry(v) as object)
-						: customCssEntry
-
 				if (typeof customCssEntry === 'function' || Boolean(v)) {
+					let cssValues =
+						typeof customCssEntry === 'function'
+							? (customCssEntry(v) as object)
+							: customCssEntry
+
+					cssValues = { ...cssValues }
 					$assert(typeof cssValues === 'object')
+					delete (cssValues as any)[k]
 
 					const preparedCustomCss = prepare(cssValues, params)
 
