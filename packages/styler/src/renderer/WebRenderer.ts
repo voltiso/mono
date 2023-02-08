@@ -1,111 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	cssifyDeclaration,
-	isUnitlessProperty,
-	resolveArrayValue,
-} from 'css-in-js-utils'
-
 import type { Css } from '../Css'
 import { isServerComponent } from '../util/isServerComponent'
-import { mergeCss } from './_/mergeCss'
-
-// let headStyleElement: HTMLStyleElement | null
-
-// function getHeadStyleElement() {
-// 	if (!headStyleElement) {
-// 		const ssrDataName = `voltiso-ssr`
-// 		headStyleElement = document.head.querySelector(`style[data-${ssrDataName}]`)
-
-// 		if (!headStyleElement) {
-// 			headStyleElement = document.createElement('style')
-// 			headStyleElement.setAttribute(`data-${ssrDataName}`, '')
-// 			// headStyleElement.setAttribute('type', 'text/css')
-// 			document.head.append(headStyleElement)
-// 		}
-// 	}
-
-// 	return headStyleElement
-// }
-
-//
-
-//
-
-export interface AtomicStyle {
-	style: string
-
-	/** Must not include `*` */
-	suffix: string
-
-	/** Must include `*` */
-	selectors: string[]
-}
-
-function stringFromAtomicStyle(
-	atomicStyle: AtomicStyle,
-	// className?: string | undefined,
-): string {
-	let selectors = atomicStyle.selectors
-
-	if (selectors.length === 0) selectors = ['*']
-
-	// if (className)
-	// 	selectors = selectors.map(selector =>
-	// 		selector.replace('*', `.${className}`),
-	// 	)
-
-	if (atomicStyle.suffix)
-		selectors = selectors.map(selector => `${selector}${atomicStyle.suffix}`)
-
-	const finalSelector = selectors.join(',')
-
-	return `${finalSelector}{${atomicStyle.style}}`
-}
-
-export function getAtomicStyles(...stylerStyles: Css[]): AtomicStyle[] {
-	const stylerStyle = mergeCss(...stylerStyles)
-
-	const result = [] as AtomicStyle[]
-
-	for (const [k, v] of Object.entries(stylerStyle)) {
-		const suffix = k.startsWith(':') || k.startsWith('[') ? k : ''
-		const selectors = k.includes('*') ? k.split(',') : []
-
-		if (typeof v === 'object') {
-			const moreStyles = getAtomicStyles(v as never)
-			result.push(
-				...moreStyles.map(atomicStyle => ({
-					style: atomicStyle.style,
-					suffix: `${suffix}${atomicStyle.suffix}`,
-					selectors: [...selectors, ...atomicStyle.selectors],
-				})),
-			)
-			continue
-		}
-
-		const singleValue: unknown = Array.isArray(v)
-			? resolveArrayValue(k, v as never)
-			: v
-
-		const finalValue =
-			typeof singleValue === 'number' &&
-			singleValue !== 0 &&
-			!isUnitlessProperty(k)
-				? `${singleValue}px`
-				: singleValue
-
-		const style = cssifyDeclaration(k, finalValue as never)
-		result.push({
-			style,
-			suffix,
-			selectors,
-		})
-	}
-
-	return result
-}
+import { getAtomicStyles } from './_/getAtomicStyles'
+import { stringFromAtomicStyle } from './_/stringFromAtomicStyle'
 
 //
 
@@ -138,7 +37,7 @@ export class WebRenderer {
 				// 	headStyleElement.append(cssText)
 				// }
 
-				this._styleToFlush += atomicStyleStr.replace('*', `.${className}`)
+				this._styleToFlush += atomicStyleStr.replace('&', `.${className}`)
 			}
 
 			return className
@@ -158,7 +57,7 @@ export class WebRenderer {
 
 	unflushStyle() {
 		this._styleToFlush = [...this._cache.entries()]
-			.map(([k, v]) => k.replace('*', `.${v}`))
+			.map(([k, v]) => k.replace('&', `.${v}`))
 			.join('')
 
 		this.numFlushes = 0

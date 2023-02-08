@@ -1,9 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { hyphenateProperty } from 'css-in-js-utils'
-import type { Css } from '~/Css/Css'
+import { hyphenateProperty, isUnitlessProperty } from 'css-in-js-utils'
 
+import type { Css } from '~/Css/Css'
 import type { CssSelectors } from '~/Css/defineCss'
 
 function escapeValue(str: string) {
@@ -11,9 +11,9 @@ function escapeValue(str: string) {
 		return str
 
 	const testStr = str
-		.replace(/\\\\/g, '')
-		.replace(/\\'/g, '')
-		.replace(/\\"/g, '')
+		.replace(/\\\\/gu, '')
+		.replace(/\\'/gu, '')
+		.replace(/\\"/gu, '')
 
 	let current = ''
 	for (const c of testStr) {
@@ -27,10 +27,23 @@ function escapeValue(str: string) {
 }
 
 export function stringFromCss(css: Css): string {
-	return Object.entries(css)
-		.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
-		.map(([k, v]) => `${k}:${escapeValue(v)};`)
-		.join('')
+	return (
+		Object.entries(css)
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+			.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
+			.map(([k, v]) =>
+				typeof v === 'string'
+					? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+					  `${k}:${escapeValue(v)};`
+					: // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+					isUnitlessProperty(k)
+					? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+					  `${k}:${v};`
+					: // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+					  `${k}:${v}px;`,
+			)
+			.join('')
+	)
 }
 
 export function stringFromCssSelectors(cssSelectors: CssSelectors) {

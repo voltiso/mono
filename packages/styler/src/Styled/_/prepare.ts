@@ -83,6 +83,7 @@ export function prepare<X>(
 
 					cssValues = { ...cssValues }
 					$assert(typeof cssValues === 'object')
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					delete (cssValues as any)[k]
 
 					const preparedCustomCss = prepare(cssValues, params)

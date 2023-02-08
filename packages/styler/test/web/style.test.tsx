@@ -443,4 +443,22 @@ describe('style', () => {
 			backgroundColor: 'purple',
 		})
 	})
+
+	it('relaxedCss typing', () => {
+		;() =>
+			// @ts-expect-error `colorA`
+			style('button').cssSelectors({
+				'* li': {
+					colorA: 'red',
+				},
+			})
+
+		// good
+		;() =>
+			style('button').cssSelectors({
+				'* li': {
+					color: 'red',
+				},
+			})
+	})
 })

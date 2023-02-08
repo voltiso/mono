@@ -11,9 +11,7 @@ export function mergeTwoFlatCss(a: FlatCss, b: FlatCss): FlatCss {
 		if (typeof v === 'object') {
 			if (result[k]) result[k] = mergeTwoFlatCss(result[k] as never, v as never)
 			else result[k] = v
-		}
-		// eslint-disable-next-line es-x/no-array-prototype-flat
-		else result[k] = v // result[k] === undefined ? v : [result[k], v].flat()
+		} else result[k] = v // result[k] === undefined ? v : [result[k], v].flat()
 	}
 	return result
 }

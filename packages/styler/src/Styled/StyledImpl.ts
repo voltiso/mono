@@ -33,10 +33,11 @@ import { mergeDefaults } from './_/mergeDefaults'
 import type { ForcePatch, Patch, PatchRemoveProps } from './_/Patch'
 import type { PropValue } from './_/PropValue'
 import type { MapProps } from './_/Stack'
-import type { StyleFromProps } from './_/StyleFromProps'
+import type { RelaxedStyleFromProps, StyleFromProps } from './_/StyleFromProps'
 import type { PropsFromCssProps } from './_detail/PropsFromCssProps'
 import type {
 	GetStyledCss as C,
+	GetStyledRelaxedCss as RelaxedC,
 	GetStyledTypeInfo as G,
 } from './GetStyledTypeInfo'
 import type { IStyled } from './IStyled'
@@ -223,6 +224,50 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 			typeof style === 'function' ? { getStyle: style } : { style }
 
 		return this._clone({ stack: [stackNode] } as never)
+	}
+
+	/**
+	 * Override CSS style - relaxed typings to allow for any CSS selector
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const Button = style('button').cssSelectors({ '* li': { backgroundColor: 'red' } })
+	 *
+	 * <Button />
+	 * ```
+	 *
+	 * @example Same as:
+	 *
+	 * ```ts
+	 * const Button = style('button').css({ _: { '* li': { backgroundColor: 'red' } } })
+	 *
+	 * <Button />
+	 * ```
+	 *
+	 * @param style - CSS style to merge
+	 * @returns Builder for further chaining
+	 */
+	cssSelectors(style: RelaxedC<$>): this
+
+	/**
+	 * Override CSS style, based on props
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const Button = style('button').newProps({big: false}).css(props => ({height: props.big ? '40px' : '20px'})
+	 *
+	 * <Button big />
+	 * ```
+	 *
+	 * @param styleFromProps - Function returning CSS style to merge, given props
+	 * @returns Builder for further chaining
+	 */
+	cssSelectors(styleFromProps: RelaxedStyleFromProps<P<$>>): this
+
+	cssSelectors(style: RelaxedC<$> | RelaxedStyleFromProps<P<$>>): this {
+		return this.css(style as never)
 	}
 
 	/**
