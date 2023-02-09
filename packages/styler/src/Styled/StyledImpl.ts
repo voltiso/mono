@@ -111,7 +111,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	forwardRef<T extends IntrinsicElement | ComponentType<any>>(
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
-			$['CustomCss'],
+			C<$>,
 			Omit<$ComponentProps<T> & $['Props'], 'ref' | 'css'>
 		>,
 	): ForcePatch<this, { Component: T }>
@@ -120,7 +120,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	forwardRef<T extends IntrinsicElement | ComponentType<any>, P extends Props>(
 		renderFunction: ForwardRefAndCssRenderFunction<
 			T,
-			$['CustomCss'],
+			C<$>,
 			FastMergeProps_<$ComponentProps<T> & $['Props'], P>
 		>,
 	): ForcePatch<this, { Component: T; Props: P }>
@@ -158,11 +158,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 
 	/** Forward ref and css */
 	forwardRef<T extends NativeElement, P extends Props = {}>(
-		renderFunction: ForwardRefAndCssRenderFunction<
-			T,
-			$['CustomCss'],
-			P & $['Props']
-		>,
+		renderFunction: ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
 	): ForcePatch<
 		this,
 		{
@@ -180,7 +176,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	forwardRef<T extends NativeElement, P extends Props>(
 		renderFunction:
 			| ForwardRefRenderFunction<T, P & $['Props']>
-			| ForwardRefAndCssRenderFunction<T, $['CustomCss'], P & $['Props']>,
+			| ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
 	): IStyled | StaticError {
 		return this._clone({
 			component: renderFunction as never,
