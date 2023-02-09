@@ -6,7 +6,7 @@ import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { FC } from 'react'
 
-import { style, STYLED_DATA } from '~'
+import { style } from '~'
 
 import { renderApp } from './common'
 
@@ -364,23 +364,26 @@ describe('style', () => {
 		})
 	})
 
-	it(`doesn't apply double style`, () => {
-		expect.hasAssertions()
+	// TODO - do we need such optimization?
 
-		const Component = style(AnotherButton)
-		renderApp(<Component big={false} />)
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it(`doesn't apply double style`, () => {
+	// 	expect.hasAssertions()
 
-		const button = screen.getByRole('button')
+	// 	const Component = style(AnotherButton)
+	// 	renderApp(<Component big={false} />)
 
-		expect(button).toHaveStyle({
-			height: '100px',
-			color: 'red',
-		})
+	// 	const button = screen.getByRole('button')
 
-		expect(AnotherButton[STYLED_DATA].stack).toHaveLength(6)
+	// 	expect(button).toHaveStyle({
+	// 		height: '100px',
+	// 		color: 'red',
+	// 	})
 
-		expect(Component[STYLED_DATA].stack).toHaveLength(6)
-	})
+	// 	expect(AnotherButton[STYLED_DATA].stack).toHaveLength(6)
+
+	// 	expect(Component[STYLED_DATA].stack).toHaveLength(6)
+	// })
 
 	it('inner ref is called', () => {
 		expect.hasAssertions()

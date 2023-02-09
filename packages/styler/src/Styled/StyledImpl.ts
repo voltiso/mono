@@ -41,7 +41,6 @@ import type {
 	GetStyledTypeInfo as G,
 } from './GetStyledTypeInfo'
 import type { IStyled } from './IStyled'
-import { isStyled } from './IStyled'
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
 	declare readonly [$]: G<$>;
@@ -88,13 +87,16 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	}
 
 	constructor(data: StyledData<G<$>, C<$>>) {
+		// console.log('Styled constructor', data)
 		this[DATA] = data
 
 		const r =
 			data.component === null
 				? (component: Stylable) => {
-						if (isStyled(component)) return component as never
 						return this._clone({ component })
+						// TODO: do we need to optimize this?
+						// if (isStyled(component)) return this._clone({component})
+						// return this._clone({ component })
 				  }
 				: getComponent(data as never)
 

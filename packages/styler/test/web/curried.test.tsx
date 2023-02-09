@@ -74,4 +74,60 @@ describe('curried', () => {
 			color: 'purple',
 		})
 	})
+
+	it('css -> component -> css', () => {
+		expect.hasAssertions()
+
+		const Button = style.css({ color: 'red' })('button').css({ color: 'blue' })
+		renderApp(<Button />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'blue',
+		})
+	})
+
+	it('css -> component -> css -> inline', () => {
+		expect.hasAssertions()
+
+		const Button = style.css({ color: 'red' })('button').css({ color: 'blue' })
+		renderApp(<Button css={{ color: 'green' }} />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'green',
+		})
+	})
+
+	it('css props -> component -> inline custom prop', () => {
+		expect.hasAssertions()
+
+		const Button = style.cssProps('color')('button')
+		renderApp(<Button color='green' />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'green',
+		})
+	})
+
+	it('css -> already styled', () => {
+		expect.hasAssertions()
+
+		const myStyle = style.css({ color: 'red' })
+
+		const alreadyStyled = style('button')
+
+		const Button = myStyle(alreadyStyled)
+		renderApp(<Button />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'red',
+		})
+	})
 })
