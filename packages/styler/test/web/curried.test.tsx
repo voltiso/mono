@@ -130,4 +130,38 @@ describe('curried', () => {
 			color: 'red',
 		})
 	})
+
+	it('css props -> already styled -> css', () => {
+		expect.hasAssertions()
+
+		const myStyle = style.cssProps('color')
+
+		const alreadyStyled = style('button')
+
+		const Button = myStyle(alreadyStyled).css({ color: 'blue' })
+		renderApp(<Button color='red' />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'red',
+		})
+	})
+
+	it('custom css props -> already styled -> inline prop', () => {
+		expect.hasAssertions()
+
+		const myStyle = style.newCssProps({ red: { color: 'red' } })
+
+		const AlreadyStyled = myStyle('button')
+
+		const Button = myStyle(AlreadyStyled)
+		renderApp(<Button red />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			color: 'red',
+		})
+	})
 })

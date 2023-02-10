@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import { hyphenateProperty, isUnitlessProperty } from 'css-in-js-utils'
 
@@ -33,14 +36,12 @@ export function stringFromCss(css: Css): string {
 			.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
 			.map(([k, v]) =>
 				typeof v === 'string'
-					? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-					  `${k}:${escapeValue(v)};`
-					: // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					isUnitlessProperty(k)
-					? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-					  `${k}:${v};`
-					: // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-					  `${k}:${v}px;`,
+					? `${k}:${escapeValue(v)};`
+					: typeof v === 'object'
+					? `${k}{${stringFromCss(v)}}`
+					: isUnitlessProperty(k)
+					? `${k}:${v};`
+					: `${k}:${v}px;`,
 			)
 			.join('')
 	)
