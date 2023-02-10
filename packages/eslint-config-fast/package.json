@@ -39,7 +39,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/parser": "^5.51.0",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
@@ -94,13 +94,13 @@
     "eslint-plugin-sonarjs": "^0.18.0",
     "eslint-plugin-storybook": "^0.6.10",
     "eslint-plugin-switch-case": "^1.1.2",
-    "eslint-plugin-testing-library": "^5.10.0",
+    "eslint-plugin-testing-library": "^5.10.1",
     "eslint-plugin-toml": "^0.3.1",
     "eslint-plugin-tsdoc": "^0.2.17",
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
     "eslint-plugin-unicorn": "^45.0.2",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "eslint-plugin-yml": "^1.4.0",
+    "eslint-plugin-yml": "^1.5.0",
     "putout": "^28.16.0"
   },
   "peerDependencies": {
