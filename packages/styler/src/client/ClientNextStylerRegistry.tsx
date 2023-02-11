@@ -22,9 +22,13 @@ export const ClientNextStylerRegistry = (props: {
 		if (!ssrStyle) return null
 
 		return (
-			<style data-voltiso-ssr='' key={renderer.numFlushes}>
-				{ssrStyle}
-			</style>
+			<style
+				data-voltiso-ssr=''
+				key={renderer.numFlushes}
+				/** Cannot use children - it would escape e.g. `>` characters */
+				// eslint-disable-next-line react/no-danger
+				dangerouslySetInnerHTML={{ __html: ssrStyle }}
+			/>
 		)
 	})
 

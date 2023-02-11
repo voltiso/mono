@@ -58,9 +58,14 @@ export const ClientFlushRscStyle: FC = () => {
 		if (!rscStyle?.v) return null
 
 		return (
-			<style data-voltiso-rsc-ssr='' id={rscStyle.k} key={rscStyle.k}>
-				{rscStyle.v}
-			</style>
+			<style
+				data-voltiso-rsc-ssr=''
+				id={rscStyle.k}
+				key={rscStyle.k}
+				/** Cannot use children - it would escape e.g. `>` characters */
+				// eslint-disable-next-line react/no-danger
+				dangerouslySetInnerHTML={{ __html: rscStyle.v }}
+			/>
 		)
 	})
 
