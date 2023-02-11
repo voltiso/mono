@@ -90,13 +90,13 @@ export function render<$ extends StyledTypeInfo>(
 	if (React.useInsertionEffect && isWebRenderer(renderer)) {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		React.useInsertionEffect(() => {
-			const ssrStyle = renderer.flushStyle()
-			if (!ssrStyle) return
+			const style = renderer.flushStyle()
+			if (!style) return
 
 			const node = document.createElement('style')
 			// eslint-disable-next-line unicorn/prefer-dom-node-dataset
 			node.setAttribute('data-voltiso', '')
-			node.textContent = ssrStyle
+			node.textContent = style
 			document.head.append(node)
 		})
 	}

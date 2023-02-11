@@ -28,26 +28,37 @@ export const ClientFlushRscStyle: FC = () => {
 	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	// }, [])
 
-	// eslint-disable-next-line n/no-process-env
-	if (process.env['NODE_ENV'] === 'development') {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		useInsertionEffect(() => {
-			if (!rscStyle?.v) return
-			// console.log('voltiso-rsc-dev', rscStyle)
-			const node = document.createElement('style')
-			// eslint-disable-next-line unicorn/prefer-dom-node-dataset
-			node.setAttribute('data-voltiso-rsc-dev', '')
-			node.textContent = rscStyle.v
-			document.head.append(node)
-		})
-	}
+	// if (process.env['NODE_ENV'] === 'development') {
+
+	/** Need this for client-side routing - in production too */
+
+	useInsertionEffect(() => {
+		if (!rscStyle?.v) return
+
+		/**
+		 * `.getElementById()` is the most performant - better than
+		 * `.querySelector()`
+		 */
+		// eslint-disable-next-line unicorn/prefer-query-selector
+		if (document.getElementById(rscStyle.k)) return
+
+		// console.log('voltiso-rsc', rscStyle)
+		const node = document.createElement('style')
+
+		// eslint-disable-next-line unicorn/prefer-dom-node-dataset
+		node.setAttribute('data-voltiso-rsc', '')
+		node.id = rscStyle.k
+		node.textContent = rscStyle.v
+
+		document.head.append(node)
+	})
+	// }
 
 	useServerInsertedHTML(() => {
 		if (!rscStyle?.v) return null
 
-		// console.log('voltiso-rsc', rscStyle)
 		return (
-			<style data-voltiso-rsc='' key={rscStyle.k}>
+			<style data-voltiso-rsc-ssr='' id={rscStyle.k} key={rscStyle.k}>
 				{rscStyle.v}
 			</style>
 		)

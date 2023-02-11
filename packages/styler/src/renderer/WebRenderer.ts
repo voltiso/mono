@@ -4,6 +4,7 @@
 import type { Css } from '../Css'
 import { isServerComponent } from '../util/isServerComponent'
 import { getAtomicStyles } from './_/getAtomicStyles'
+import { getHash } from './_/getHash'
 import { stringFromAtomicStyle } from './_/stringFromAtomicStyle'
 
 //
@@ -23,10 +24,11 @@ export class WebRenderer {
 			let className = this._cache.get(atomicStyleStr)
 
 			if (!className) {
-				// eslint-disable-next-line no-magic-numbers
-				className = this._cache.size.toString(36)
+				className = isServerComponent
+					? getHash(atomicStyleStr)
+					: // eslint-disable-next-line no-magic-numbers
+					  this._cache.size.toString(36)
 
-				if (isServerComponent) className = `S${className}` // server component
 				if (!Number.isNaN(Number(className[0]))) className = `_${className}`
 				this._cache.set(atomicStyleStr, className)
 

@@ -5,7 +5,7 @@ import { createServerContext } from 'react'
 
 export type RscStyle = {
 	/** `id` */
-	k: number
+	k: string
 
 	/** `string` content */
 	v: string

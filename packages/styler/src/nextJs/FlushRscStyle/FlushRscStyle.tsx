@@ -8,6 +8,7 @@ import type { FC } from 'react'
 import { useMemo } from 'react'
 
 import { ClientFlushRscStyle } from '~/client/ClientFlushRscStyle'
+import { getHash } from '~/renderer/_/getHash'
 import { rscRenderer } from '~/server/rscRenderer'
 
 // import { RscIdContext } from '~/server/RscIdContext'
@@ -26,13 +27,15 @@ export const FlushRscStyle: FC = () => {
 
 	const rscStyleValue = rscRenderer.flushStyle()
 
-	const rscStyle = useMemo(
-		() => ({
-			k: rscRenderer.numFlushes,
+	const rscStyle = useMemo(() => {
+		const hash = getHash(rscStyleValue)
+
+		return {
+			k: hash,
+			// k: rscRenderer.numFlushes,
 			v: rscStyleValue,
-		}),
-		[rscStyleValue],
-	)
+		}
+	}, [rscStyleValue])
 
 	// console.log('FlushRscStyle', rscStyle)
 
