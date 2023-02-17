@@ -1,11 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	cssifyDeclaration,
-	isUnitlessProperty,
-	resolveArrayValue,
-} from 'css-in-js-utils'
+/* eslint-disable max-depth */
 
 import type { RelaxedCss } from '~/Css'
 
@@ -13,7 +9,10 @@ import type { AtomicStyle } from './AtomicStyle'
 import { mergeCss } from './mergeCss'
 import { parseSelectors } from './parseSelectors'
 
-export function combineNestedSelectors(outer: string[], inner: string[]) {
+export function combineNestedSelectors(
+	outer: string[],
+	inner: string[],
+): string[] {
 	const result = [] as string[]
 
 	for (const a of outer) {
@@ -44,43 +43,59 @@ export function getAtomicStyles(...stylerStyles: RelaxedCss[]): AtomicStyle[] {
 
 	const result = [] as AtomicStyle[]
 
-	for (const [k, v] of Object.entries(stylerStyle)) {
+	for (const [k, v] of Object.entries(stylerStyle) as [string, unknown][]) {
 		if (typeof v === 'object') {
 			const outer = parseSelectors(k)
 			const inners = getAtomicStyles(v as never)
 
-			const newResult = [] as AtomicStyle[]
-
-			// n^2 results
-			for (const inner of inners) {
-				newResult.push({
-					style: inner.style,
-					selectors: combineNestedSelectors(outer.selectors, inner.selectors),
-					mediaQueries: [...outer.mediaQueries, ...inner.mediaQueries],
-				})
+			if (outer.mediaQueries.length > 0) {
+				for (const inner of inners) {
+					for (const override of inner.overrides) {
+						override.mediaQueries = [
+							...outer.mediaQueries,
+							...override.mediaQueries,
+						]
+					}
+				}
 			}
 
-			result.push(...newResult)
+			if (outer.selectors.length > 1 || outer.selectors[0] !== '&') {
+				for (const inner of inners) {
+					inner.selectors = combineNestedSelectors(
+						outer.selectors,
+						inner.selectors,
+					)
+				}
+			}
+
+			result.push(...inners)
 		} else {
-			const singleValue: unknown = Array.isArray(v)
-				? resolveArrayValue(k, v as never)
-				: v
+			// const singleValue: unknown = Array.isArray(v)
+			// 	? resolveArrayValue(k, v as never)
+			// 	: v
 
-			const finalValue =
-				typeof singleValue === 'number' &&
-				singleValue !== 0 &&
-				!isUnitlessProperty(k)
-					? `${singleValue}px`
-					: singleValue
+			// const finalValue =
+			// 	typeof singleValue === 'number' &&
+			// 	singleValue !== 0 &&
+			// 	!isUnitlessProperty(k)
+			// 		? `${singleValue}px`
+			// 		: singleValue
 
-			const style = cssifyDeclaration(k, finalValue as never)
+			// const style = cssifyDeclaration(k, finalValue as never)
 
 			// console.log('!!', style)
 
 			result.push({
-				style,
+				property: k,
 				selectors: ['&'],
-				mediaQueries: [],
+
+				overrides: [
+					{
+						mediaQueries: [],
+						// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+						values: Array.isArray(v) ? v : [v],
+					},
+				],
 			})
 		}
 	}

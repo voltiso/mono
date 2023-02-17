@@ -5,6 +5,7 @@ import type { Css } from '../Css'
 import { isServerComponent } from '../util/isServerComponent'
 import { getAtomicStyles } from './_/getAtomicStyles'
 import { getHash } from './_/getHash'
+import { groupAtomicStyles } from './_/groupAtomicStyles'
 import { stringFromAtomicStyle } from './_/stringFromAtomicStyle'
 
 //
@@ -16,7 +17,7 @@ export class WebRenderer {
 	numFlushes = 0
 
 	classNameFor(...stylerStyles: Css[]) {
-		const atomicStyles = getAtomicStyles(...stylerStyles)
+		const atomicStyles = groupAtomicStyles(getAtomicStyles(...stylerStyles))
 
 		// ! .map with side effects
 		const classNames = atomicStyles.map(atomicStyle => {

@@ -15,14 +15,26 @@ describe('getAtomicStyles', () => {
 			}),
 		).toStrictEqual([
 			{
-				style: 'background-color:blue',
+				property: 'backgroundColor',
 				selectors: ['&'],
-				mediaQueries: [],
+
+				overrides: [
+					{
+						values: ['blue'],
+						mediaQueries: [],
+					},
+				],
 			},
 			{
-				style: 'color:red',
+				property: 'color',
 				selectors: ['&'],
-				mediaQueries: [],
+
+				overrides: [
+					{
+						values: ['red'],
+						mediaQueries: [],
+					},
+				],
 			},
 		])
 	})
@@ -36,9 +48,15 @@ describe('getAtomicStyles', () => {
 			}),
 		).toStrictEqual([
 			{
-				style: 'background-color:blue',
+				property: 'backgroundColor',
 				selectors: ['&:hover'],
-				mediaQueries: [],
+
+				overrides: [
+					{
+						values: ['blue'],
+						mediaQueries: [],
+					},
+				],
 			},
 		])
 	})
@@ -58,14 +76,27 @@ describe('getAtomicStyles', () => {
 			} as never),
 		).toStrictEqual([
 			{
-				mediaQueries: [],
+				property: 'color',
 				selectors: ['div > &:hover:active > span'],
-				style: 'color:green',
+
+				overrides: [
+					{
+						values: ['green'],
+						mediaQueries: [],
+					},
+				],
 			},
+
 			{
-				mediaQueries: [],
+				property: 'backgroundColor',
 				selectors: ['div > &:hover:active > span:x'],
-				style: 'background-color:blue',
+
+				overrides: [
+					{
+						values: ['blue'],
+						mediaQueries: [],
+					},
+				],
 			},
 		])
 	})
@@ -81,13 +112,81 @@ describe('getAtomicStyles', () => {
 			}),
 		).toStrictEqual([
 			{
-				mediaQueries: [
-					'@media (min-width: 100px)',
-					'@media (min-width: 200px)',
-				],
-
+				property: 'backgroundColor',
 				selectors: ['&'],
-				style: 'background-color:blue',
+
+				overrides: [
+					{
+						values: ['blue'],
+
+						mediaQueries: [
+							'@media (min-width: 100px)',
+							'@media (min-width: 200px)',
+						],
+					},
+				],
+			},
+		])
+	})
+
+	it('nested media queries with selectors', () => {
+		expect(
+			getAtomicStyles({
+				'@media (min-width: 100px)': {
+					'@media (min-width: 200px)': {
+						'&:hover': {
+							backgroundColor: 'blue',
+						},
+					},
+				} as never,
+			}),
+		).toStrictEqual([
+			{
+				property: 'backgroundColor',
+				selectors: ['&:hover'],
+
+				overrides: [
+					{
+						values: ['blue'],
+
+						mediaQueries: [
+							'@media (min-width: 100px)',
+							'@media (min-width: 200px)',
+						],
+					},
+				],
+			},
+		])
+	})
+
+	it('nested media queries with selectors and nested selectors', () => {
+		expect(
+			getAtomicStyles({
+				'@media (min-width: 100px)': {
+					'@media (min-width: 200px)': {
+						'&:hover': {
+							'&:active': {
+								backgroundColor: 'blue',
+							},
+						},
+					},
+				} as never,
+			}),
+		).toStrictEqual([
+			{
+				property: 'backgroundColor',
+				selectors: ['&:hover:active'],
+
+				overrides: [
+					{
+						values: ['blue'],
+
+						mediaQueries: [
+							'@media (min-width: 100px)',
+							'@media (min-width: 200px)',
+						],
+					},
+				],
 			},
 		])
 	})
