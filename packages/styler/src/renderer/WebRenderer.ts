@@ -90,6 +90,10 @@ export class WebRenderer {
 			.map(([k, v]) => k.replace('&', `.${v}`))
 			.join('')
 
+		this._styleToFlush += [...this._keyframes.entries()]
+			.map(([k, v]) => `@keyframes ${v}{${k}}`)
+			.join('')
+
 		this.numFlushes = 0
 	}
 

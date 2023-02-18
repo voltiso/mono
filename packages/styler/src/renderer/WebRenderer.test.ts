@@ -39,5 +39,11 @@ describe('WebRenderer', () => {
 		expect(renderer.flushStyle()).toBe(
 			`@keyframes _0{0%{background-color:red}100%{background-color:blue}}._0{animation-name:_0}`,
 		)
+
+		renderer.unflushStyle()
+
+		expect(renderer.flushStyle()).toBe(
+			`._0{animation-name:_0}@keyframes _0{0%{background-color:red}100%{background-color:blue}}`,
+		)
 	})
 })
