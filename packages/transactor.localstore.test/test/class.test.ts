@@ -10,7 +10,7 @@ import {
 	IndexedDoc,
 	method,
 } from '@voltiso/transactor'
-import { arraySetAddToIt, deleteIt } from '@voltiso/util'
+import { arraySetAddToIt, deleteItIfPresent } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
@@ -139,7 +139,7 @@ describe('class', () => {
 
 		await doctors('a').set({})
 
-		await doctors('a').update({ languages: deleteIt })
+		await doctors('a').update({ languages: deleteItIfPresent })
 		await doctors('a').update({ languages: arraySetAddToIt('a', 'b') })
 		await doctors('a').update({ languages: arraySetAddToIt('b', 'c') })
 

@@ -37,7 +37,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
-    "jest-environment-jsdom": "^29.4.2"
+    "jest-environment-jsdom": "^29.4.3"
   },
   "peerDependencies": {
     "react": "*",
@@ -51,9 +51,9 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
-    "@types/react": "^18.0.27",
+    "@types/react": "^18.0.28",
     "@voltiso/config.ts": "workspace:^",
     "react": "^18.2.0",
-    "react-native": "^0.71.2"
+    "react-native": "^0.71.3"
   }
 }

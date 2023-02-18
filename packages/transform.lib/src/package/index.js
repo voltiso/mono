@@ -1,10 +1,4 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-{
-	"extends": "@voltiso/config.ts",
-
-	"compilerOptions": {
-		"module": "CommonJS"
-	}
-}
+export * from './getPackageForDir';
+export * from './getPackageForFile';

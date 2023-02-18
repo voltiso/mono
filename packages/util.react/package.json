@@ -48,15 +48,15 @@
     "@babel/plugin-proposal-decorators": "^7.20.13",
     "@babel/plugin-transform-react-jsx": "^7.20.13",
     "@babel/preset-env": "^7.20.2",
-    "@testing-library/react": "^13.4.0",
-    "@types/react": "^18.0.27",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.0.28",
     "@voltiso/config.jest.lib": "workspace:^1.0.0",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.71.2"
+    "react-native": "^0.71.3"
   },
   "__________MISC": "__________",
   "engines": {

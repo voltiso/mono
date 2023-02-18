@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept } from '@voltiso/util'
+import type { Keyframes } from '~/Css/Keyframes'
 
 import type { CssExtension } from './CssExtension'
 import type { CssWeb } from './web'
@@ -17,20 +18,7 @@ export interface CssExtensionWeb<CustomCss extends object>
 	':nth-child(even)'?: CssWeb<CustomCss> | undefined
 
 	/** Embed `animation-name` */
-	animationName?:
-		| {
-				from?: CssWeb<CustomCss> | undefined
-				to?: CssWeb<CustomCss> | undefined
-				'0%'?: CssWeb<CustomCss> | undefined
-				'25%'?: CssWeb<CustomCss> | undefined
-				'33%'?: CssWeb<CustomCss> | undefined
-				'50%'?: CssWeb<CustomCss> | undefined
-				'67%'?: CssWeb<CustomCss> | undefined
-				'75%'?: CssWeb<CustomCss> | undefined
-				'100%'?: CssWeb<CustomCss> | undefined
-				[k: string]: CssWeb<CustomCss> | undefined
-		  }
-		| undefined
+	animationName?: string | Keyframes | undefined
 
 	/** Embed `font-face` */
 	fontFace?:

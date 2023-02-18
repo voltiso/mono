@@ -6,6 +6,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 
 import * as fs from 'node:fs'
+import * as fsPromises from 'node:fs/promises'
 import * as os from 'node:os'
 import * as path from 'node:path'
 
@@ -174,7 +175,16 @@ export const prepublishOnlyFast = [
 		'depcheck',
 	),
 
-	`pnpm -w exec turbo run --filter=${
-		packageJson.name || '//'
-	}.test test --output-logs=new-only`,
+	async () => {
+		try {
+			await fsPromises.stat(`../${packageJson.name}.test`)
+		} catch {
+			return
+			// return `echo no ${packageJson.name}.test package`
+		}
+
+		return `pnpm -w exec turbo run --filter=${
+			packageJson.name || '//'
+		}.test test --output-logs=new-only`
+	},
 ]

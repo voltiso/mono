@@ -5,7 +5,7 @@ import type { IsAny } from '~/any'
 import type { IsOptional } from '~/object'
 
 import type { ArraySetUpdateIt } from './arraySetUpdateIt'
-import type { DeleteIt } from './deleteIt'
+import type { DeleteIt, DeleteItIfPresent } from './deleteIt'
 import type { IncrementIt } from './incrementIt'
 import type { KeepIt } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
@@ -37,7 +37,7 @@ export namespace PatchFor {
 			: {
 					[key in keyof X]?:
 						| PatchFor<X[key]>
-						| IsOptional<X, key, DeleteIt, never>
+						| IsOptional<X, key, DeleteIt | DeleteItIfPresent, never>
 			  }
 		: never
 

@@ -1,12 +1,13 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { WebRenderer } from '../WebRenderer'
 import { getAtomicStyles } from './getAtomicStyles'
 
 describe('getAtomicStyles', () => {
 	it('simple', () => {
 		expect(
-			getAtomicStyles({
+			getAtomicStyles(new WebRenderer(), {
 				_: {
 					color: 'red',
 				},
@@ -41,7 +42,7 @@ describe('getAtomicStyles', () => {
 
 	it('selector', () => {
 		expect(
-			getAtomicStyles({
+			getAtomicStyles(new WebRenderer(), {
 				'&:hover': {
 					backgroundColor: 'blue',
 				},
@@ -63,7 +64,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested selector', () => {
 		expect(
-			getAtomicStyles({
+			getAtomicStyles(new WebRenderer(), {
 				'div > &:hover': {
 					'&:active > span': {
 						color: 'green',
@@ -103,7 +104,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested media queries', () => {
 		expect(
-			getAtomicStyles({
+			getAtomicStyles(new WebRenderer(), {
 				'@media (min-width: 100px)': {
 					'@media (min-width: 200px)': {
 						backgroundColor: 'blue',
@@ -131,7 +132,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested media queries with selectors', () => {
 		expect(
-			getAtomicStyles({
+			getAtomicStyles(new WebRenderer(), {
 				'@media (min-width: 100px)': {
 					'@media (min-width: 200px)': {
 						'&:hover': {
@@ -161,7 +162,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested media queries with selectors and nested selectors', () => {
 		expect(
-			getAtomicStyles({
+			getAtomicStyles(new WebRenderer(), {
 				'@media (min-width: 100px)': {
 					'@media (min-width: 200px)': {
 						'&:hover': {
@@ -185,6 +186,26 @@ describe('getAtomicStyles', () => {
 							'@media (min-width: 100px)',
 							'@media (min-width: 200px)',
 						],
+					},
+				],
+			},
+		])
+	})
+
+	it('animationName', () => {
+		expect(
+			getAtomicStyles(new WebRenderer(), {
+				animationName: 'fade-in' as never,
+			}),
+		).toStrictEqual([
+			{
+				property: 'animationName',
+				selectors: ['&'],
+
+				overrides: [
+					{
+						values: ['fade-in'],
+						mediaQueries: [],
 					},
 				],
 			},

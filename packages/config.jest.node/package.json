@@ -36,7 +36,7 @@
   "dependencies": {
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
-    "jest-environment-node": "^29.4.2"
+    "jest-environment-node": "^29.4.3"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^"
