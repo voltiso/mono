@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -96,11 +96,11 @@ export interface UnknownReadonlyArray$
 	<S extends $$Schemable>(elementSchema: S): ReadonlyArray$<S>
 }
 
-export const readonlyArray: UnknownReadonlyArray$ = lazyValue(
+export const readonlyArray: UnknownReadonlyArray$ = lazyFunction(
 	() => new ReadonlyArray$(unknown) as never,
 )
-export const mutableArray: UnknownMutableArray$ = lazyValue(
+export const mutableArray: UnknownMutableArray$ = lazyFunction(
 	() => new MutableArray$(unknown) as never,
 )
 
-export const array = lazyValue(() => mutableArray)
+export const array = lazyFunction(() => mutableArray)

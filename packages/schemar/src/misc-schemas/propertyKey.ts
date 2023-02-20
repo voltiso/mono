@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { isPolluting, lazyValue } from '@voltiso/util'
+import { isPolluting, lazyObject } from '@voltiso/util'
 
 import { number } from '../base-schemas/number'
 import { string } from '../base-schemas/string'
@@ -13,7 +13,7 @@ import { symbol } from '../base-schemas/unknownSymbol'
  *
  * - ✅ Checks for prototype pollution
  */
-export const propertyKey = lazyValue(() =>
+export const propertyKey = lazyObject(() =>
 	or(string, number, symbol)
 		.Cast<PropertyKey>()
 		.check(key => !isPolluting(key)),

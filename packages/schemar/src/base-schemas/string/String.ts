@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type { CustomString, CustomString$, Literal$ } from '~'
 
@@ -32,7 +32,7 @@ export type String$Constructor = new () => String$
 
 //
 
-export const string: String$ = lazyValue(() => new String$())
+export const string: String$ = lazyFunction(() => new String$())
 
 export const regex = (
 	regExp: RegExp,

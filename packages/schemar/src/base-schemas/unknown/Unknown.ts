@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomUnknown, CustomUnknown$ } from '~'
 
@@ -18,4 +18,4 @@ export const Unknown$ = lazyConstructor(
 	() => UnknownImpl,
 ) as unknown as Unknown$Constructor
 
-export const unknown = lazyValue(() => new Unknown$())
+export const unknown = lazyObject(() => new Unknown$())

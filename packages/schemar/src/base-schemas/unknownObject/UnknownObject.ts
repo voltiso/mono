@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type { CustomUnknownObject, CustomUnknownObject$ } from '~'
 
@@ -30,8 +30,8 @@ export const UnknownObject$ = lazyConstructor(
 
 export type UnknownObject$Constructor = new () => UnknownObject$
 
-export const object: UnknownObject$ = lazyValue(() => new UnknownObject$())
+export const object: UnknownObject$ = lazyFunction(() => new UnknownObject$())
 
-export const plainObject: UnknownPlainObject$ = lazyValue(
+export const plainObject: UnknownPlainObject$ = lazyFunction(
 	() => object.plain,
 ) as never

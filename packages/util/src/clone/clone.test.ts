@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { BoundCallable, CALL } from '~/function'
-import { lazyValue } from '~/lazy/lazyValue'
+import { lazyFunction } from '~/lazy'
 
 import { clone } from './clone'
 
@@ -285,6 +285,10 @@ describe('clone', () => {
 	it('clones lazy callable instances', () => {
 		expect.hasAssertions()
 
+		interface C {
+			(...args: any): any
+		}
+
 		class C {
 			constructor() {
 				return BoundCallable(this)
@@ -299,7 +303,7 @@ describe('clone', () => {
 			static staticField = 33
 		}
 
-		const c = lazyValue(() => new C())
+		const c = lazyFunction(() => new C())
 		const d = clone(c, { omit: ['doesNotExist'] as const })
 
 		c.field = 4

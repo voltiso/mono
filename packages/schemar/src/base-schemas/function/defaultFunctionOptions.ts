@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, lazyValue, noThis } from '@voltiso/util'
+import { $assert, lazyObject, noThis } from '@voltiso/util'
 
 import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
 import type { SchemaLike } from '~/types/Schema/ISchema'
@@ -12,7 +12,7 @@ import { unknown } from '../unknown/Unknown'
 
 $assert(defaultSchemaOptions)
 
-export const defaultFunctionOptions = lazyValue(() =>
+export const defaultFunctionOptions = lazyObject(() =>
 	Object.freeze({
 		...defaultSchemaOptions,
 		Output: 0 as unknown as (...args: any) => unknown,

@@ -25,7 +25,7 @@ export function lazyConstructor<
 
 	const proxyProto = {}
 
-	// const proxyProto = lazyValue(() => {
+	// const proxyProto = lazyFunction(() => {
 	// 	load(cls)
 	// 	return cls.prototype as object
 	// })

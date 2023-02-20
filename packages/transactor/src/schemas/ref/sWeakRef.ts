@@ -4,7 +4,7 @@
 /* eslint-disable etc/no-internal */
 
 import * as s from '@voltiso/schemar'
-import { lazyValue, OPTIONS, ProtoCallable } from '@voltiso/util'
+import { lazyFunction, lazyObject, OPTIONS, ProtoCallable } from '@voltiso/util'
 
 import type { $$DocRelated, WeakDocRef } from '~'
 import { _CustomDocRef } from '~'
@@ -15,7 +15,7 @@ import type { AnyDoc, DocTag } from '~/DocTypes'
  *
  * @internal
  */
-const _fixableWeakRefSchema = lazyValue(() =>
+const _fixableWeakRefSchema = lazyObject(() =>
 	s.instance(_CustomDocRef).narrowIf(
 		x => x.isStrong,
 		x =>
@@ -53,7 +53,7 @@ export interface UnknownFixableWeakDocRefSchema$
 
 //
 
-export const sWeakRef: UnknownFixableWeakDocRefSchema$ = lazyValue(() =>
+export const sWeakRef: UnknownFixableWeakDocRefSchema$ = lazyFunction(() =>
 	ProtoCallable({
 		prototype: _fixableWeakRefSchema,
 

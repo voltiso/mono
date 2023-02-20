@@ -10,8 +10,9 @@
  *
  * @param object - An object to copy and prepare as a black box
  * @param propertyDescriptor - A `PropertyDescriptor` to apply to all properties
- *   - defaults to `{}` - but `value` will be overridden - meaning that **by
- *   default everything is non-configurable, non-enumerable**
+ *
+ *   - Defaults to `{}` - but `value` will be overridden - meaning that **by default
+ *       everything is non-configurable, non-enumerable**
  */
 export function blackbox<Obj extends Record<string, unknown>>(
 	object: Obj,

@@ -4,8 +4,8 @@
 /* eslint-disable max-depth */
 
 import type { RelaxedCss } from '~/Css'
-import type { WebRenderer } from '../WebRenderer'
 
+import type { WebRenderer } from '../WebRenderer'
 import type { AtomicStyle } from './AtomicStyle'
 import { mergeCss } from './mergeCss'
 import { parseSelectors } from './parseSelectors'
@@ -61,7 +61,7 @@ export function getAtomicStyles(
 					},
 				],
 			})
-		} else if (typeof v === 'object') {
+		} else if (typeof v === 'object' && !Array.isArray(v)) {
 			const outer = parseSelectors(k)
 			const inners = getAtomicStyles(renderer, v as never)
 

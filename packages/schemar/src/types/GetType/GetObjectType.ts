@@ -149,8 +149,8 @@ export declare namespace GetObjectType {
 			} & {
 				[k in keyof T as false extends O[k]['isReadonly'] ? k : never]?: T[k]
 			} & {
-				readonly // eslint-disable-next-line etc/no-internal
-				[k in keyof T as _IsOptional<O[k], Options> extends false
+				// eslint-disable-next-line etc/no-internal
+				readonly [k in keyof T as _IsOptional<O[k], Options> extends false
 					? k
 					: never]: T[k]
 			} & {

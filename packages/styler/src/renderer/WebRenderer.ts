@@ -2,8 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Keyframes } from '~/Css/Keyframes'
+import { isServerComponent } from '~/util/isServerComponent'
+
 import type { Css } from '../Css'
-import { isServerComponent } from '../util/isServerComponent'
 import { getAtomicStyles } from './_/getAtomicStyles'
 import { getHash } from './_/getHash'
 import { groupAtomicStyles } from './_/groupAtomicStyles'
@@ -30,11 +31,12 @@ export class WebRenderer {
 			let className = this._classNames.get(atomicStyleStr)
 
 			if (!className) {
-				className =
-					isServerComponent || process.env['NODE_ENV'] === 'development'
-						? getHash(atomicStyleStr)
-						: // eslint-disable-next-line no-magic-numbers
-						  this._classNames.size.toString(36)
+				// className = getHash(atomicStyleStr)
+				className = isServerComponent
+					? // isServerComponent || process.env['NODE_ENV'] === 'development'
+					  getHash(atomicStyleStr)
+					: // eslint-disable-next-line no-magic-numbers
+					  this._classNames.size.toString(36)
 
 				if (!Number.isNaN(Number(className[0]))) className = `_${className}`
 				this._classNames.set(atomicStyleStr, className)
@@ -62,11 +64,12 @@ export class WebRenderer {
 		let animationName = this._keyframes.get(keyframesStr)
 
 		if (!animationName) {
-			animationName =
-				isServerComponent || process.env['NODE_ENV'] === 'development'
-					? getHash(keyframesStr)
-					: // eslint-disable-next-line no-magic-numbers
-					  this._keyframes.size.toString(36)
+			// animationName = getHash(keyframesStr)
+			animationName = isServerComponent
+				? // isServerComponent || process.env['NODE_ENV'] === 'development'
+				  getHash(keyframesStr)
+				: // eslint-disable-next-line no-magic-numbers
+				  this._keyframes.size.toString(36)
 
 			if (!Number.isNaN(Number(animationName[0])))
 				animationName = `_${animationName}`

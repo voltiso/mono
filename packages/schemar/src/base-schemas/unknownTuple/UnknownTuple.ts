@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Mutable } from '@voltiso/util'
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -79,11 +79,11 @@ export const ReadonlyUnknownTuple$ = lazyConstructor(
 
 //
 
-export const readonlyTuple: ReadonlyUnknownTuple$ = lazyValue(
+export const readonlyTuple: ReadonlyUnknownTuple$ = lazyFunction(
 	() => new ReadonlyUnknownTuple$(),
 )
 
-export const mutableTuple: MutableUnknownTuple$ = lazyValue(
+export const mutableTuple: MutableUnknownTuple$ = lazyFunction(
 	() => new MutableUnknownTuple$(),
 )
 

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '@voltiso/util'
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type {
 	$$Array,
@@ -115,6 +115,6 @@ export type UnknownFunction$Constructor = new () => UnknownFunction$
 
 //
 
-const function_: UnknownFunction$ = lazyValue(() => new UnknownFunction$())
+const function_: UnknownFunction$ = lazyFunction(() => new UnknownFunction$())
 
 export { function_ as function }

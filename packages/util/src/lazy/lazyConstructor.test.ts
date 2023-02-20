@@ -2,7 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor } from './lazyConstructor'
-import { lazyValue } from './lazyValue'
+import {} from './lazyFunction'
+import { lazyObject } from './lazyObject'
 
 class BaseX {
 	static staticField = 3
@@ -99,11 +100,11 @@ describe('lazyConstructor', () => {
 		).toBe(BaseX.prototype)
 	})
 
-	it('works with `lazyValue`', () => {
+	it('works with `lazyObject`', () => {
 		expect.hasAssertions()
 
-		const d = lazyValue(() => new Derived(66))
-		const ld = lazyValue(() => new LazyDerived(66))
+		const d = lazyObject(() => new Derived(66))
+		const ld = lazyObject(() => new LazyDerived(66))
 
 		expect(d.baseField).toBe(66)
 		expect(ld.baseField).toBe(66)

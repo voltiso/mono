@@ -1,14 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue } from '@voltiso/util'
+import { lazyFunction } from '@voltiso/util'
 
 import type { $$Schemable } from '~'
 import { isUnionSchema } from '~'
 
 import { Union$ } from './Union'
 
-export const or = lazyValue(
+export const or = lazyFunction(
 	() =>
 		// eslint-disable-next-line unicorn/consistent-function-scoping
 		function <Ts extends $$Schemable[]>(...types: Ts): Union$<Ts> {

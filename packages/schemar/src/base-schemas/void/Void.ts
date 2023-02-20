@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomVoid, CustomVoid$ } from '~'
 
@@ -19,6 +19,6 @@ export const Void$ = lazyConstructor(
 export type Void$Constructor = new () => Void$
 
 //
-const void_ = lazyValue(() => new Void$())
+const void_ = lazyObject(() => new Void$())
 
 export { void_ as void }

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Assume } from '@voltiso/util'
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type {
 	$$Schema,
@@ -51,4 +51,4 @@ export const UnknownRecord$ = lazyConstructor(
 
 export type UnknownRecord$Constructor = new () => UnknownRecord$
 
-export const record = lazyValue(() => new UnknownRecord$())
+export const record = lazyFunction(() => new UnknownRecord$())

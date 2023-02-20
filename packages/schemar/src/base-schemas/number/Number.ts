@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction, lazyObject } from '@voltiso/util'
 
 import type { CustomNumber, CustomNumber$, Literal$ } from '~'
 import { NumberImpl } from '~'
@@ -34,5 +34,7 @@ export interface Integer$ extends CustomNumber$<{ isInteger: true }> {}
 
 //
 
-export const number: Number$ = lazyValue(() => new Number$()) as never
-export const integer: Integer$ = lazyValue(() => number.integer) as never
+export const number: Number$ = lazyFunction(() => new Number$()) as never
+
+// todo: possibly add UnknownInteger with call signature?
+export const integer: Integer$ = lazyObject(() => number.integer) as never

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type {
 	CustomUnknownLiteral,
@@ -30,4 +30,6 @@ export const UnknownLiteral$ = lazyConstructor(
 
 //
 
-export const literal: UnknownLiteral$ = lazyValue(() => new UnknownLiteral$())
+export const literal: UnknownLiteral$ = lazyFunction(
+	() => new UnknownLiteral$(),
+)

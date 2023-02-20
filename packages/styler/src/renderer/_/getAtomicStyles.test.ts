@@ -40,6 +40,26 @@ describe('getAtomicStyles', () => {
 		])
 	})
 
+	it('array value', () => {
+		expect(
+			getAtomicStyles(new WebRenderer(), {
+				backgroundColor: ['blue', 'red'] as never,
+			}),
+		).toStrictEqual([
+			{
+				property: 'backgroundColor',
+				selectors: ['&'],
+
+				overrides: [
+					{
+						values: ['blue', 'red'],
+						mediaQueries: [],
+					},
+				],
+			},
+		])
+	})
+
 	it('selector', () => {
 		expect(
 			getAtomicStyles(new WebRenderer(), {

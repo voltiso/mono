@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type { ImplicitInferSchema$_ } from '~/types/InferSchema/InferSchema'
 import type { ISchema$ } from '~/types/Schema/ISchema'
@@ -70,9 +70,9 @@ export const ImplicitSchemaInferrer$ = lazyConstructor(
 ) as unknown as ImplicitSchema$InferrerConstructor
 
 /** Implicit schema infer (will auto-default object shapes if possible) */
-export const schema = lazyValue(() => new ImplicitSchemaInferrer$())
+export const schema = lazyFunction(() => new ImplicitSchemaInferrer$())
 
 /** Non-generic version for faster type-check */
-export const schema_ = lazyValue(
+export const schema_ = lazyFunction(
 	() => new ImplicitSchemaInferrer$() as ImplicitSchemaInferrer$_,
 )

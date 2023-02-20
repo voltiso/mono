@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomNever, CustomNever$ } from '~'
 import { CustomNeverImpl } from '~'
@@ -22,4 +22,4 @@ export type Never$Constructor = new () => Never$
 
 //
 
-export const never = lazyValue(() => new Never$())
+export const never = lazyObject(() => new Never$())

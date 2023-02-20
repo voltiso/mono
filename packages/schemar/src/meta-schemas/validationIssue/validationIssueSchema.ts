@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue } from '@voltiso/util'
+import { lazyObject } from '@voltiso/util'
 
 import { infer } from '~'
 import {
@@ -20,7 +20,7 @@ import {
 import { validationIssueSeverity } from './sValidationIssueSeverity'
 import type { ValidationIssue } from './ValidationIssue'
 
-export const _validationIssue = lazyValue(() => {
+export const _validationIssue = lazyObject(() => {
 	const toStringParameter = infer({
 		skipReceived: boolean.or(undefined_).optional,
 	})
@@ -50,6 +50,6 @@ export const _validationIssue = lazyValue(() => {
 	})
 })
 
-export const validationIssue = lazyValue(() =>
+export const validationIssue = lazyObject(() =>
 	_validationIssue.CastOutput<ValidationIssue>(),
 )

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type { CustomBigint, CustomBigint$, Literal } from '~'
 
@@ -29,4 +29,4 @@ export type Bigint$Constructor = new () => Bigint$
 
 //
 
-export const bigint = lazyValue(() => new Bigint$())
+export const bigint = lazyFunction(() => new Bigint$())

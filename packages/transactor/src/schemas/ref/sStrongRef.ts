@@ -4,7 +4,7 @@
 /* eslint-disable etc/no-internal */
 
 import * as s from '@voltiso/schemar'
-import { $assert, lazyValue, ProtoCallable } from '@voltiso/util'
+import { $assert, lazyFunction, lazyObject, ProtoCallable } from '@voltiso/util'
 
 import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
 import type { GetDocRef } from '~/DocRef/GetDocRef'
@@ -14,7 +14,7 @@ import type { GetDocRepresentative, GetDocTag } from '~/DocRelated/GetDocTag'
 import type { AnyDoc } from '~/DocTypes'
 
 /** @internal */
-export const _strongRefSchema = lazyValue(() => {
+export const _strongRefSchema = lazyObject(() => {
 	$assert(_CustomDocRef)
 
 	return s
@@ -55,7 +55,7 @@ export interface UnknownStrongDocRefSchema$ extends s.Schema$<DocRef> {
 //
 
 /** Strong document reference schema (same as {@link sRef}) */
-export const sStrongRef: UnknownStrongDocRefSchema$ = lazyValue(
+export const sStrongRef: UnknownStrongDocRefSchema$ = lazyFunction(
 	() =>
 		ProtoCallable({
 			prototype: _strongRefSchema,

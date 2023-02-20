@@ -6,7 +6,7 @@ import * as s from '~'
 import { isSchema } from './isSchema'
 
 describe('isSchema', () => {
-	it('works with lazyValue', () => {
+	it('works with lazyObject', () => {
 		expect.hasAssertions()
 
 		expect(isSchema(s.object)).toBeTruthy()

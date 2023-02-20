@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyValue } from '@voltiso/util'
+import { lazyObject } from '@voltiso/util'
 
 import { or } from '~/base-schemas/union/or'
 
@@ -10,7 +10,7 @@ import { or } from '~/base-schemas/union/or'
  *
  * @defaultValue `error`
  */
-export const validationIssueSeverity = lazyValue(() => or('error', 'warning'))
+export const validationIssueSeverity = lazyObject(() => or('error', 'warning'))
 
 /**
  * If just a `'warning'`, schema validation is considered successful anyway

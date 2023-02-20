@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { lazyConstructor, lazyValue } from '@voltiso/util'
+import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type { CustomBoolean, CustomBoolean$, Literal } from '~'
 
@@ -32,4 +32,4 @@ export type Boolean$Constructor = new () => Boolean$
 
 //
 
-export const boolean: Boolean$ = lazyValue(() => new Boolean$())
+export const boolean: Boolean$ = lazyFunction(() => new Boolean$())

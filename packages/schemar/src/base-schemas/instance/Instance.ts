@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, lazyConstructor, lazyValue } from '@voltiso/util'
+import { $assert, lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomInstance, CustomInstance$ } from '~'
 
@@ -50,4 +50,4 @@ export function instance<T extends object>(
 	return new Instance$(Constructor)
 }
 
-export const date = lazyValue(() => instance(Date))
+export const date = lazyObject(() => instance(Date))

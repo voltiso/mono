@@ -6,7 +6,7 @@ import {
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	lazyConstructor,
-	lazyValue,
+	lazyObject,
 	OPTIONS,
 } from '@voltiso/util'
 
@@ -118,7 +118,7 @@ export interface NonNullish$
 
 //
 
-export const nonNullish: NonNullish$ = lazyValue(
+export const nonNullish: NonNullish$ = lazyObject(
 	() => new NonNullishImpl(),
 ) as unknown as NonNullish$
 
