@@ -15,12 +15,12 @@ describe('WebRenderer', () => {
 
 				backgroundColor: 'blue',
 			}),
-		).toBe(`_0 _1`)
-		// ).toBe(`o2uo_w E0_t8Q`)
+		).toBe(`o2uo_w E0_t8Q`)
+		// ).toBe(`_0 _1`)
 
 		expect(renderer.flushStyle()).toBe(
-			`._0{background-color:blue}._1{color:red}`,
-			// `.o2uo_w{background-color:blue}.E0_t8Q{color:red}`,
+			// `._0{background-color:blue}._1{color:red}`,
+			`.o2uo_w{background-color:blue}.E0_t8Q{color:red}`,
 		)
 	})
 
@@ -39,21 +39,21 @@ describe('WebRenderer', () => {
 					},
 				},
 			} as never),
-		).toBe(`_0`)
-		// ).toBe(`QC-aKA`)
+		).toBe(`QC-aKA`)
+		// ).toBe(`_0`)
 
 		expect(renderer.flushStyle()).toBe(
-			`@keyframes _0{0%{background-color:red}100%{background-color:blue}}._0{animation-name:_0}`,
+			// `@keyframes _0{0%{background-color:red}100%{background-color:blue}}._0{animation-name:_0}`,
 			/* cspell:disable-next-line */
-			// `@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}.QC-aKA{animation-name:KhzrqQ}`,
+			`@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}.QC-aKA{animation-name:KhzrqQ}`,
 		)
 
 		renderer.unflushStyle()
 
 		expect(renderer.flushStyle()).toBe(
-			`._0{animation-name:_0}@keyframes _0{0%{background-color:red}100%{background-color:blue}}`,
+			// `._0{animation-name:_0}@keyframes _0{0%{background-color:red}100%{background-color:blue}}`,
 			/* cspell:disable-next-line */
-			// `.QC-aKA{animation-name:KhzrqQ}@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}`,
+			`.QC-aKA{animation-name:KhzrqQ}@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}`,
 		)
 	})
 })

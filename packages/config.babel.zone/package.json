@@ -40,7 +40,7 @@
     "@babel/preset-typescript": "*"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.12",
+    "@babel/core": "^7.21.0",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^"
   }

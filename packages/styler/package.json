@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/styler",
-  "version": "15.2.3",
+  "version": "15.2.4",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -81,8 +81,8 @@
     "react": "^18.0.0 || ^17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.12",
-    "@babel/plugin-transform-react-jsx": "^7.20.13",
+    "@babel/core": "^7.21.0",
+    "@babel/plugin-transform-react-jsx": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@jest/types": "^29.4.3",
     "@radix-ui/react-checkbox": "^1.0.1",

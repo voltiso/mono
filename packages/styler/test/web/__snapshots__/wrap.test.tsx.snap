@@ -2,7 +2,7 @@
 
 exports[`wrap complex 1`] = `
 <div
-  class="_0 xxxxx"
+  class="T4VqWA xxxxx"
   data-testid="test"
   style="flex: 1;"
 >
@@ -16,7 +16,7 @@ exports[`wrap complex 1`] = `
     data-testid="MyFooter1"
   />
   <footer
-    class="_1"
+    class="E0_t8Q"
     data-testid="MyFooter2"
   />
   <span />
