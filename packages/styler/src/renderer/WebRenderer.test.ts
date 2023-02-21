@@ -24,6 +24,28 @@ describe('WebRenderer', () => {
 		)
 	})
 
+	it('media query', () => {
+		const renderer = new WebRenderer()
+
+		expect(
+			renderer.classNameFor({
+				_: {
+					color: 'red',
+
+					'@media (min-width: 100px)': {
+						color: 'blue',
+					},
+				},
+			}),
+		).toBe(`xaKNiQ`)
+		// ).toBe(`_0`)
+
+		expect(renderer.flushStyle()).toBe(
+			// `@media (min-width: 100px){._0{color:blue}}._0{color:red}`,
+			`.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}`,
+		)
+	})
+
 	it('animationName', () => {
 		const renderer = new WebRenderer()
 

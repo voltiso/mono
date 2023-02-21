@@ -47,7 +47,7 @@ export class WebRenderer {
 				// 	headStyleElement.append(cssText)
 				// }
 
-				this._styleToFlush += atomicStyleStr.replace('&', `.${className}`)
+				this._styleToFlush += atomicStyleStr.replace(/&/gu, `.${className}`)
 			}
 
 			return className
