@@ -44,6 +44,13 @@ describe('WebRenderer', () => {
 			// `@media (min-width: 100px){._0{color:blue}}._0{color:red}`,
 			`.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}`,
 		)
+
+		renderer.unflushStyle()
+
+		expect(renderer.flushStyle()).toBe(
+			// `@media (min-width: 100px){._0{color:blue}}._0{color:red}`,
+			`.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}`,
+		)
 	})
 
 	it('animationName', () => {

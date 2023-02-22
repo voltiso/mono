@@ -91,7 +91,7 @@ export class WebRenderer {
 
 	unflushStyle() {
 		this._styleToFlush = [...this._classNames.entries()]
-			.map(([k, v]) => k.replace('&', `.${v}`))
+			.map(([k, v]) => k.replace(/&/gu, `.${v}`))
 			.join('')
 
 		this._styleToFlush += [...this._keyframes.entries()]
