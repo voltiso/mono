@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.eslint.lib",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -51,9 +51,8 @@
     "eslint": "^8.34.0",
     "rimraf": "^4.1.2"
   },
-  "__________ENGINES": "__________",
+  "__________MISC": "__________",
   "engines": {
-    "node": "18",
-    "pnpm": "7"
+    "node": ">=12"
   }
 }

@@ -61,10 +61,5 @@
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "zone.js": "^0.12.0"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
   }
 }

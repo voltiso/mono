@@ -54,10 +54,5 @@
     "@voltiso/script": "workspace:^",
     "firebase": "^9.17.1",
     "firebase-admin": "^11.5.0"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
   }
 }

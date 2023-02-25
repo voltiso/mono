@@ -55,7 +55,7 @@
     }
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.0",
+    "@types/uuid": "^9.0.1",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",

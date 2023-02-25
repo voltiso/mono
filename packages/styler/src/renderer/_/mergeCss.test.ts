@@ -47,4 +47,34 @@ describe('mergeCss', () => {
 			backgroundColor: 'blue',
 		})
 	})
+
+	it('flatten - preserves order', () => {
+		expect(
+			Object.keys(
+				flattenCss({
+					color: 'green',
+
+					_: {
+						'&[data-state=asd]': {
+							color: 'purple',
+						},
+					},
+				}),
+			),
+		).toStrictEqual(['color', '&[data-state=asd]'])
+
+		expect(
+			Object.keys(
+				flattenCss({
+					_: {
+						'&[data-state=asd]': {
+							color: 'purple',
+						},
+					},
+
+					color: 'green',
+				}),
+			),
+		).toStrictEqual(['&[data-state=asd]', 'color'])
+	})
 })

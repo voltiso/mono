@@ -15,12 +15,12 @@ describe('WebRenderer', () => {
 
 				backgroundColor: 'blue',
 			}),
-		).toBe(`o2uo_w E0_t8Q`)
+		).toBe(`E0_t8Q o2uo_w`)
 		// ).toBe(`_0 _1`)
 
 		expect(renderer.flushStyle()).toBe(
 			// `._0{background-color:blue}._1{color:red}`,
-			`.o2uo_w{background-color:blue}.E0_t8Q{color:red}`,
+			`.E0_t8Q{color:red}.o2uo_w{background-color:blue}`,
 		)
 	})
 
@@ -83,6 +83,32 @@ describe('WebRenderer', () => {
 			// `._0{animation-name:_0}@keyframes _0{0%{background-color:red}100%{background-color:blue}}`,
 			/* cspell:disable-next-line */
 			`.QC-aKA{animation-name:KhzrqQ}@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}`,
+		)
+	})
+
+	it('flatten media query - preserves order', () => {
+		const renderer = new WebRenderer()
+
+		expect(
+			renderer.classNameFor({
+				color: 'red',
+
+				_: {
+					'@media (min-width: 100px)': {
+						color: 'blue',
+					},
+				},
+			}),
+		).toBe(`xaKNiQ`)
+
+		expect(renderer.flushStyle()).toBe(
+			'.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}',
+		)
+
+		renderer.unflushStyle()
+
+		expect(renderer.flushStyle()).toBe(
+			'.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}',
 		)
 	})
 })

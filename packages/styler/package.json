@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/styler",
-  "version": "15.2.6",
+  "version": "15.2.10",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -80,6 +80,11 @@
     "next": "^13.1.6",
     "react": "^18.0.0 || ^17.0.0"
   },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@babel/plugin-transform-react-jsx": "^7.21.0",
@@ -88,7 +93,7 @@
     "@radix-ui/react-checkbox": "^1.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
-    "@testing-library/react-native": "^11.5.2",
+    "@testing-library/react-native": "12.0.0-rc.0",
     "@types/hyphenate-style-name": "^1.0.0",
     "@types/react": "^18.0.28",
     "@types/react-native": "^0.71.3",
@@ -108,11 +113,7 @@
     "react-test-renderer": "^18.2.0"
   },
   "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
-  },
   "typeCoverage": {
-    "is": 99.14
+    "is": 99.12
   }
 }

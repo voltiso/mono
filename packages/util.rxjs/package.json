@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.rxjs",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -55,10 +55,5 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",
     "rxjs": "^7.8.0"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
   }
 }

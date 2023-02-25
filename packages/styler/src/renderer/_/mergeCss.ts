@@ -16,21 +16,31 @@ export function mergeTwoFlatCss(a: FlatCss, b: FlatCss): FlatCss {
 	return result
 }
 
+function flattenNestedInPlace(css: Record<string, unknown>): void {
+	for (const [k, v] of Object.entries(css))
+		if (typeof v === 'object') css[k] = flattenCss(v as never)
+}
+
 export function flattenCss(css: Css): FlatCss {
 	if (!css._) return css as never
 
-	const outer: Record<string, unknown> = { ...css }
-	delete outer['_']
+	const outerA: Record<string, unknown> = {}
+	const outerB: Record<string, unknown> = {}
+
+	let foundInner = false
+	for (const [k, v] of Object.entries(css)) {
+		if (k === '_') foundInner = true
+		else if (foundInner) outerB[k] = v
+		else outerA[k] = v
+	}
 
 	const inner: Record<string, unknown> = flattenCss(css._ as never) as never
 
-	for (const [k, v] of Object.entries(outer))
-		if (typeof v === 'object') outer[k] = flattenCss(v as never)
+	flattenNestedInPlace(outerA)
+	flattenNestedInPlace(inner)
+	flattenNestedInPlace(outerB)
 
-	for (const [k, v] of Object.entries(inner))
-		if (typeof v === 'object') inner[k] = flattenCss(v as never)
-
-	return mergeTwoFlatCss(outer, inner)
+	return mergeTwoFlatCss(mergeTwoFlatCss(outerA, inner), outerB)
 }
 
 export function mergeCss(...styles: Css[]): Css {

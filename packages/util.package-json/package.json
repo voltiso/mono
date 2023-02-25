@@ -47,14 +47,9 @@
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^"
   },
   "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
-  },
   "typeCoverage": {
     "is": 100
   }

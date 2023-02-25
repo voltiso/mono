@@ -45,7 +45,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@voltiso/config.jest.lib": "workspace:^",
-    "esbuild": "^0.17.9",
+    "esbuild": "^0.17.10",
     "flow-remove-types": "^2.200.0"
   },
   "devDependencies": {

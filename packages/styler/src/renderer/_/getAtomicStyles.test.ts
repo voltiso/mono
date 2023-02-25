@@ -16,23 +16,23 @@ describe('getAtomicStyles', () => {
 			}),
 		).toStrictEqual([
 			{
-				property: 'backgroundColor',
-				selectors: ['&'],
-
-				overrides: [
-					{
-						values: ['blue'],
-						mediaQueries: [],
-					},
-				],
-			},
-			{
 				property: 'color',
 				selectors: ['&'],
 
 				overrides: [
 					{
 						values: ['red'],
+						mediaQueries: [],
+					},
+				],
+			},
+			{
+				property: 'backgroundColor',
+				selectors: ['&'],
+
+				overrides: [
+					{
+						values: ['blue'],
 						mediaQueries: [],
 					},
 				],
@@ -208,6 +208,74 @@ describe('getAtomicStyles', () => {
 						],
 					},
 				],
+			},
+		])
+	})
+
+	it('flatten media query - preserves order', () => {
+		expect(
+			getAtomicStyles(new WebRenderer(), {
+				display: 'flex',
+
+				flexDirection: 'column',
+
+				// _: {
+				'@media (min-width: 100px)': {
+					flexDirection: 'row',
+				},
+				// },
+			}),
+		).toStrictEqual([
+			{
+				overrides: [{ mediaQueries: [], values: ['flex'] }],
+				property: 'display',
+				selectors: ['&'],
+			},
+			{
+				overrides: [{ mediaQueries: [], values: ['column'] }],
+				property: 'flexDirection',
+				selectors: ['&'],
+			},
+			{
+				overrides: [
+					{ mediaQueries: ['@media (min-width: 100px)'], values: ['row'] },
+				],
+
+				property: 'flexDirection',
+				selectors: ['&'],
+			},
+		])
+
+		expect(
+			getAtomicStyles(new WebRenderer(), {
+				display: 'flex',
+
+				flexDirection: 'column',
+
+				_: {
+					'@media (min-width: 100px)': {
+						flexDirection: 'row',
+					},
+				},
+			}),
+		).toStrictEqual([
+			{
+				overrides: [{ mediaQueries: [], values: ['flex'] }],
+				property: 'display',
+				selectors: ['&'],
+			},
+			{
+				overrides: [{ mediaQueries: [], values: ['column'] }],
+				property: 'flexDirection',
+				selectors: ['&'],
+			},
+			{
+				overrides: [
+					{ mediaQueries: ['@media (min-width: 100px)'], values: ['row'] },
+				],
+
+				property: 'flexDirection',
+				selectors: ['&'],
 			},
 		])
 	})

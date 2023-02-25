@@ -324,10 +324,5 @@
     "yaml-eslint-parser": {
       "optional": true
     }
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
   }
 }

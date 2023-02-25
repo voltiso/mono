@@ -53,9 +53,5 @@
     "@voltiso/localstore": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transactor": "workspace:^"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18"
   }
 }

@@ -52,12 +52,15 @@ export function prepare<X>(
 	if (isPlainObject(x)) {
 		let r: object = {}
 
-		if (!params.isPreparingProps && isWithNested(x))
-			r = { ...prepare(x._, params) }
+		// let foundNested = false
 
 		for (const [k, v] of Object.entries(x)) {
 			/** Unsafe - do not do when preparing props */
-			if (!params.isPreparingProps && k === '_') continue
+			if (!params.isPreparingProps && k === '_') {
+				// foundNested = true
+				r = { ...r, ...prepare(v, params) } as never
+				continue
+			}
 
 			/** Unsafe - do not do when preparing props */
 			if (!params.isPreparingProps && v === undefined) {

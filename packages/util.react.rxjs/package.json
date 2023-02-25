@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.react.rxjs",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -59,9 +59,5 @@
     "@voltiso/util.rxjs": "workspace:^",
     "react": "^18.2.0",
     "rxjs": "^7.8.0"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18"
   }
 }

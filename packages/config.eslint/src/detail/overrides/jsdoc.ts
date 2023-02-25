@@ -21,7 +21,7 @@ export const jsdocOverride = defineEslintConfigOverride({
 		'jsdoc/check-alignment': 1,
 		'jsdoc/check-examples': 0, // TODO: Enable when it supports ESLint 8
 		'jsdoc/check-indentation': 0, // does not work properly with wrapped lines
-		'jsdoc/check-line-alignment': 1,
+		'jsdoc/check-line-alignment': 0, // conflicts with prettier
 		'jsdoc/check-param-names': 1,
 		'jsdoc/check-property-names': 1,
 		'jsdoc/check-syntax': 1,

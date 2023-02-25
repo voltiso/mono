@@ -44,9 +44,5 @@
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18"
   }
 }

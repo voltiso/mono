@@ -31,9 +31,5 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util": "workspace:^"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18"
   }
 }

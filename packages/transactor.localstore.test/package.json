@@ -28,10 +28,5 @@
     "@voltiso/util": "workspace:^",
     "jest": "^29.4.3",
     "random-seed": "^0.3.0"
-  },
-  "__________MISC": "__________",
-  "engines": {
-    "node": "18",
-    "pnpm": "7"
   }
 }
