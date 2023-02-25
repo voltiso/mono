@@ -5,7 +5,7 @@ import { lazyConstructor } from '@voltiso/util'
 
 import type { $$Schemable, CustomUnion, CustomUnion$, Type } from '~'
 
-import { UnionImpl } from './_'
+import { UnionImpl } from './_/UnionImpl'
 
 //
 

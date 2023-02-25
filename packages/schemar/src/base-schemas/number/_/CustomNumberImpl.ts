@@ -5,9 +5,13 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type { CustomNumber, ISchema, NumberOptions } from '~'
-import { CustomSchemaImpl, isNumberSchema } from '~'
-import { ValidationIssue } from '~/meta-schemas'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+
+import type { CustomNumber } from '../CustomNumber'
+import { isNumberSchema } from '../isNumber'
+import type { NumberOptions } from '../NumberOptions'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNumberImpl<O> {

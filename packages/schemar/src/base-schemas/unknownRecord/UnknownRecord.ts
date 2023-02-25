@@ -4,17 +4,17 @@
 import type { Assume } from '@voltiso/util'
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
+import type { GetFinalSchema } from '~/types/GetFinalSchema'
+import type { $$Schema } from '~/types/Schema/ISchema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import type { Record as RecordSchema, Record$ } from '../record/record'
+import type { RecordOptions } from '../record/RecordOptions'
 import type {
-	$$Schema,
-	$$Schemable,
 	CustomUnknownRecord,
 	CustomUnknownRecord$,
-	GetFinalSchema,
-	Record,
-	Record$,
-	RecordOptions,
-} from '~'
-import { UnknownRecordImpl } from '~'
+} from './CustomUnknownRecord'
+import { UnknownRecordImpl } from './UnknownRecordImpl'
 
 export interface UnknownRecord extends CustomUnknownRecord<{}> {}
 
@@ -39,7 +39,7 @@ export interface UnknownRecord$ extends CustomUnknownRecord$<{}> {
 		GetFinalSchema<TValueSchema>
 	>
 
-	<TValueSchema extends $$Schemable>(valueSchema: TValueSchema): Record<
+	<TValueSchema extends $$Schemable>(valueSchema: TValueSchema): RecordSchema<
 		RecordOptions.Default['keySchema'],
 		TValueSchema
 	>

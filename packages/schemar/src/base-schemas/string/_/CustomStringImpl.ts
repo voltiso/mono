@@ -13,16 +13,16 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	CustomString,
-	ISchema,
-	Literal,
-	RegExpEntry,
-	StringOptions,
-} from '~'
-import { CustomSchemaImpl, isStringSchema } from '~'
-import { literal } from '~/core-schemas'
-import { ValidationIssue } from '~/meta-schemas'
+import type { Literal } from '~/core-schemas/literal/Literal'
+import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+
+import type { CustomString } from '../CustomString'
+import { isStringSchema } from '../IString'
+import type { RegExpEntry } from '../RegExpEntry'
+import type { StringOptions } from '../StringOptions'
 
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)

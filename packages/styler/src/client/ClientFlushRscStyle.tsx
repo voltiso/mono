@@ -3,9 +3,10 @@
 
 'use client'
 
-import { useServerInsertedHTML } from 'next/navigation'
 import type { FC } from 'react'
 import { useContext, useInsertionEffect } from 'react'
+
+import { useServerInsertedHTML } from '~/nextJs/_next'
 
 import { RscStyleContext } from '../nextJs/FlushRscStyle/serverContext'
 

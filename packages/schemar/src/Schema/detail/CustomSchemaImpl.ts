@@ -18,11 +18,11 @@ import {
 } from '@voltiso/util'
 
 import { isAnySchema } from '~/base-schemas/any/IAny'
-import { and } from '~/base-schemas/intersection'
+import { and } from '~/base-schemas/intersection/Intersection'
 import { isUnionSchema, or } from '~/base-schemas/union'
 import { isUnknownSchema } from '~/base-schemas/unknown/IUnknown'
 import { unknown } from '~/base-schemas/unknown/Unknown'
-import { infer_ } from '~/core-schemas'
+import { infer_ } from '~/infer/infer'
 import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { ValidationError } from '~/error'

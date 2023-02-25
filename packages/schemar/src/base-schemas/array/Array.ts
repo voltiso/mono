@@ -3,15 +3,12 @@
 
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	CustomArray,
-	CustomArray$,
-	RelaxSchema_,
-	Type_,
-} from '~'
+import type { RelaxSchema_ } from '~/types/GetFinalSchema'
+import type { Type_ } from '~/types/GetType/GetType'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
-import { unknown } from '../unknown'
+import { unknown } from '../unknown/Unknown'
+import type { CustomArray, CustomArray$ } from './CustomArray'
 import { MutableArrayImpl } from './MutableArrayImpl'
 import { ReadonlyArrayImpl } from './ReadonlyArrayImpl'
 

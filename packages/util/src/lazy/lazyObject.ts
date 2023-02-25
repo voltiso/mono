@@ -7,7 +7,13 @@ import { $assert } from '_/$strip/$assert'
 
 import { getProxyHandlers } from './_/getProxyHandlers'
 
-/** Consider using `lazyFunction` instead if the object is callable */
+/**
+ * - Consider using `lazyFunction` instead if the object is callable
+ * - ⚠️ Does not work with react components - returns `undefined` for `.$$typeof`
+ *
+ *   - Work-around for `react-native` - metro bundler calls `.$$typeof` immediately
+ *       to register for react hot reload
+ */
 export function lazyObject<T extends object>(getValue: () => T): T {
 	const state = {
 		value: undefined as unknown as object,

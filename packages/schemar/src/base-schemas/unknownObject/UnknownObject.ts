@@ -3,9 +3,11 @@
 
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
-import type { CustomUnknownObject, CustomUnknownObject$ } from '~'
-
 import { UnknownObjectImpl } from './_/UnknownObjectImpl'
+import type {
+	CustomUnknownObject,
+	CustomUnknownObject$,
+} from './CustomUnknownObject'
 
 export interface UnknownObject extends CustomUnknownObject<{}> {}
 export interface UnknownObject$ extends CustomUnknownObject$<{}> {}

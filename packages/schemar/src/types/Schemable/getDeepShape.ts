@@ -3,9 +3,10 @@
 
 import * as util from '@voltiso/util'
 
-import type { $$Schema } from '~'
-import { isObjectSchema, isTupleSchema } from '~'
+import { isObjectSchema } from '~/base-schemas/object/IObject'
+import { isTupleSchema } from '~/base-schemas/tuple/isTuple'
 
+import type { $$Schema } from '../Schema/ISchema'
 import type { $$Schemable } from './Schemable'
 import type { SchemableWithShape } from './SchemableWithShape'
 

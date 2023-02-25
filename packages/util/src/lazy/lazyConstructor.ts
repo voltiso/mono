@@ -48,6 +48,9 @@ export function lazyConstructor<
 
 	return new Proxy(Ctor, {
 		get(target, p, receiver) {
+			// ! required for `react-native` - metro bundler calls `.$$typeof` immediately to register for react hot reload
+			if (cls === undefined && p === '$$typeof') return undefined
+
 			// if (typeof cls === 'undefined' && p === 'prototype')
 			if (p === 'prototype') return Reflect.get(target, p, receiver) as never
 

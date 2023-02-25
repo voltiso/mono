@@ -5,11 +5,14 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
-import type { CustomInstance, InstanceOptions, ISchema } from '~'
-import { CustomSchemaImpl, isInstanceSchema } from '~'
-import { ValidationIssue } from '~/meta-schemas'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
 
 import { _getInstanceConstructorName } from './_/getConstructorName'
+import type { CustomInstance } from './CustomInstance'
+import { isInstanceSchema } from './IInstance'
+import type { InstanceOptions } from './InstanceOptions'
 
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)

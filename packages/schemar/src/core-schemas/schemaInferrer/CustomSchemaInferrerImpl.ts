@@ -5,11 +5,11 @@ import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, BoundCallable_, CALL, lazyConstructor } from '@voltiso/util'
 
+import { infer } from '~/infer/infer'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
-import { infer } from './infer'
 import type { ISchemaInferrer } from './ISchemaInferrer'
 import type { UnknownSchemaOptions } from './UnknownSchemaOptions'
 

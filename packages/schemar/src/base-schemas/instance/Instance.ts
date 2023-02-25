@@ -3,8 +3,7 @@
 
 import { $assert, lazyConstructor, lazyObject } from '@voltiso/util'
 
-import type { CustomInstance, CustomInstance$ } from '~'
-
+import type { CustomInstance, CustomInstance$ } from './CustomInstance'
 import { InstanceImpl } from './InstanceImpl'
 
 export type Instance<TInstance extends object> = CustomInstance<{

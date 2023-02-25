@@ -4,14 +4,14 @@
 import type { $Mutable } from '@voltiso/util'
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import type { Rest } from '../tuple/Rest'
 import type {
-	$$Schemable,
 	CustomUnknownTuple,
 	CustomUnknownTuple$,
-	GetTuple$_,
-	Rest,
-} from '~'
-
+} from './CustomUnknownTuple'
+import type { GetTuple$_ } from './GetTuple'
 import { MutableUnknownTupleImpl } from './MutableUnknownTupleImpl'
 import { ReadonlyUnknownTupleImpl } from './ReadonlyUnknownTupleImpl'
 

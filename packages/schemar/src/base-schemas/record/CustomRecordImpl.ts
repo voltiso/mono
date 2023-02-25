@@ -5,17 +5,15 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type {
-	CustomRecord,
-	ISchema,
-	RecordOptions,
-	ValidationIssue,
-	ValidationOptions,
-} from '~'
-import { CustomSchemaImpl } from '~'
+import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
 
 import type { CustomUnknownObjectImpl } from '../unknownObject'
 import { object } from '../unknownObject'
+import type { CustomRecord } from './CustomRecord'
+import type { RecordOptions } from './RecordOptions'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {

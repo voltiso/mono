@@ -1,7 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { type IsIdentical, $Assert } from '@voltiso/util'
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
 
 import type {
 	ArrayOptions,

@@ -5,14 +5,14 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor } from '@voltiso/util'
 
-import type { AnyOptions, Schema } from '~'
-import {
-	CustomSchemaImpl,
-	isAnySchema,
-	isSchemaInferrer,
-	isUnknownSchema,
-} from '~'
+import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
 import { SchemarError } from '~/error'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { Schema } from '~/types/Schema/Schema'
+
+import { isUnknownSchema } from '../unknown/IUnknown'
+import type { AnyOptions } from './AnyOptions'
+import { isAnySchema } from './IAny'
 
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)

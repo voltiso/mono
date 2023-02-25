@@ -1,9 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable } from '~'
-import { isBooleanSchema, isLiteralSchema, isUnionSchema } from '~'
-import { schema } from '~/core-schemas'
+import { isLiteralSchema } from '~/core-schemas/literal/isLiteral'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import { isUnionSchema } from '../union/IUnion'
+import { isBooleanSchema } from './isBoolean'
 
 /** @internal */
 export function _booleanCollectTrueFalse(schemable: $$Schemable): {

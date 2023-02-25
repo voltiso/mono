@@ -3,16 +3,16 @@
 
 import { getValues, isConstructor, isPlainObject } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	$$Schemable,
-	InferableLiteral,
-	InferSchema$NoReadonlyTuple,
-	ISchema$,
-} from '~'
-import { instance, nonNullish, object, tuple } from '~/base-schemas'
-import { literal } from '~/core-schemas'
+import { instance } from '~/base-schemas/instance/Instance'
+import { nonNullish } from '~/base-schemas/nonNullish/nonNullish'
+import { object } from '~/base-schemas/unknownObject/UnknownObject'
+import { tuple } from '~/base-schemas/unknownTuple/UnknownTuple'
+import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
 import { isSchema } from '~/Schema/isSchema'
+import type { InferableLiteral } from '~/types/Inferable/Inferable'
+import type { InferSchema$NoReadonlyTuple } from '~/types/InferSchema/InferSchemaNoReadonlyTuple'
+import type { $$Schema, ISchema$ } from '~/types/Schema/ISchema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 /** Hackish overload for type-checking performance when argument is cast to never */
 export function infer(_never: never): never

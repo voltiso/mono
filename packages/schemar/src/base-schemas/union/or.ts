@@ -3,9 +3,9 @@
 
 import { lazyFunction } from '@voltiso/util'
 
-import type { $$Schemable } from '~'
-import { isUnionSchema } from '~'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
+import { isUnionSchema } from './IUnion'
 import { Union$ } from './Union'
 
 export const or = lazyFunction(

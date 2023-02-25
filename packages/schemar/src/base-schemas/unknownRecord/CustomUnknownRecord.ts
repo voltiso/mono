@@ -3,8 +3,9 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { CustomSchema, CustomSchema$, ISchema, ISchema$ } from '~'
-import { SCHEMA_NAME } from '~'
+import { SCHEMA_NAME } from '~/_/symbols'
+import type { CustomSchema, CustomSchema$ } from '~/types/Schema/CustomSchema'
+import type { ISchema, ISchema$ } from '~/types/Schema/ISchema'
 
 import type { UnknownRecordOptions } from './UnknownRecordOptions'
 

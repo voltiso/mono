@@ -12,17 +12,20 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	CustomUnknownTuple,
-	SchemaLike,
-	UnknownTupleOptions,
-} from '~'
-import { CustomSchemaImpl, isArraySchema, isUnknownTupleSchema } from '~'
-import type { MutableTuple, ReadonlyTuple } from '~/base-schemas'
-import { isRest, MutableTuple$, ReadonlyTuple$, unknown } from '~/base-schemas'
-import { SchemarError } from '~/error'
-import { ValidationIssue } from '~/meta-schemas'
+import { SchemarError } from '~/error/SchemarError'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { SchemaLike } from '~/types/Schema/ISchema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import { isArraySchema } from '../array/isArray'
+import { isRest } from '../tuple/Rest'
+import type { MutableTuple, ReadonlyTuple } from '../tuple/Tuple'
+import { MutableTuple$, ReadonlyTuple$ } from '../tuple/Tuple'
+import { unknown } from '../unknown/Unknown'
+import type { CustomUnknownTuple } from './CustomUnknownTuple'
+import { isUnknownTupleSchema } from './IUnknownTuple'
+import type { UnknownTupleOptions } from './UnknownTupleOptions'
 
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)

@@ -3,19 +3,17 @@
 
 import { lazyObject } from '@voltiso/util'
 
-import { infer } from '~'
-import {
-	array,
-	boolean,
-	function as function_,
-	number,
-	object,
-	optional,
-	or,
-	string,
-	symbol,
-	undefined as undefined_,
-} from '~/base-schemas' //! ts-transform-paths does not work here!!! ???
+import { array } from '~/base-schemas/array/Array'
+import { boolean } from '~/base-schemas/boolean/boolean'
+import { optional } from '~/base-schemas/misc'
+import { number } from '~/base-schemas/number/Number'
+import { string } from '~/base-schemas/string/String'
+import { undefined as undefined_ } from '~/base-schemas/undefined/undefined'
+import { or } from '~/base-schemas/union/or'
+import { function as function_ } from '~/base-schemas/unknownFunction/unknownFunction'
+import { object } from '~/base-schemas/unknownObject/UnknownObject'
+import { symbol } from '~/base-schemas/unknownSymbol/symbol'
+import { infer } from '~/infer/infer'
 
 import { validationIssueSeverity } from './sValidationIssueSeverity'
 import type { ValidationIssue } from './ValidationIssue'

@@ -1,11 +1,11 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schemable } from '~'
 import { array, or, tuple, unknown } from '~/base-schemas'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import type { ValidationIssue } from '../validationIssue'
-import { validationIssue } from '../validationIssue'
+import { validationIssue } from '../validationIssue/validationIssueSchema'
 
 export function validationResult<Value extends $$Schemable>(value: Value) {
 	return or(

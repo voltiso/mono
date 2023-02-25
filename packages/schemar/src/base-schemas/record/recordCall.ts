@@ -1,13 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$$Schemable,
-	CustomUnknownObject,
-	SimpleSchema,
-	UnknownObject,
-} from '~'
-import { object } from '~'
+import type { SimpleSchema } from '~/types/Schema/Schema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import type { CustomUnknownObject } from '../unknownObject/CustomUnknownObject'
+import type { UnknownObject } from '../unknownObject/UnknownObject'
+import { object } from '../unknownObject/UnknownObject'
 
 export function recordCall<
 	TKeySchema extends $$Schemable,

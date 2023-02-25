@@ -3,8 +3,10 @@
 
 import { getEntries } from '@voltiso/util'
 
-import type { $$InferableObject, PartialShape, StrictPartialShape } from '~'
-import { schema } from '~/core-schemas'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import type { $$InferableObject } from '~/types/Inferable/Inferable'
+
+import type { PartialShape, StrictPartialShape } from '../PartialShape'
 
 //
 

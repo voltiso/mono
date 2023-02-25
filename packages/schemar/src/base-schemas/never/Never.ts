@@ -3,8 +3,8 @@
 
 import { lazyConstructor, lazyObject } from '@voltiso/util'
 
-import type { CustomNever, CustomNever$ } from '~'
-import { CustomNeverImpl } from '~'
+import type { CustomNever, CustomNever$ } from './CustomNever'
+import { CustomNeverImpl } from './detail/CustomNeverImpl'
 
 export interface Never extends CustomNever<{}> {}
 

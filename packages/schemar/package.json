@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/schemar",
-  "version": "22.1.5",
+  "version": "22.1.12",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -55,6 +55,9 @@
     "@voltiso/script": "workspace:^"
   },
   "__________MISC": "__________",
+  "engines": {
+    "node": ">=12"
+  },
   "typeCoverage": {
     "is": 99.5
   }

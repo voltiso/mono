@@ -5,15 +5,14 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	$$Schemable,
-	CustomUnknownRecord,
-	ISchema,
-	Record as RecordSchema,
-	UnknownRecordOptions,
-} from '~'
-import { CustomSchemaImpl, RecordImpl } from '~'
+import type { Record as RecordSchema } from '~/base-schemas/record/record'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { $$Schema, ISchema } from '~/types/Schema/ISchema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import { RecordImpl } from '../record/RecordImpl'
+import type { CustomUnknownRecord } from './CustomUnknownRecord'
+import type { UnknownRecordOptions } from './UnknownRecordOptions'
 
 $assert(SCHEMA_NAME)
 $assert(EXTENDS)

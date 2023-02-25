@@ -3,11 +3,10 @@
 
 import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
-import type { FunctionOptions } from '~'
-import { CustomUnknownFunctionImpl } from '~'
-
+import { CustomUnknownFunctionImpl } from '../unknownFunction/CustomUnknownFunctionImpl'
 import { CustomFunctionImpl } from './CustomFunctionImpl'
 import { defaultFunctionOptions } from './defaultFunctionOptions'
+import type { FunctionOptions } from './FunctionOptions'
 
 export class FunctionImpl<
 	Options extends Partial<FunctionOptions>,

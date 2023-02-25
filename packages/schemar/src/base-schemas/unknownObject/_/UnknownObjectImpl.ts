@@ -3,7 +3,7 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import { defaultSchemaOptions } from '~'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
 
 import { CustomUnknownObjectImpl } from './CustomUnknownObjectImpl'
 

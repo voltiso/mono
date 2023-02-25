@@ -5,19 +5,18 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type {
-	$$Array,
-	$$Schemable,
-	$$SchemableTuple,
-	CustomFunction,
-	CustomUnknownFunction,
-	FunctionOptions,
-	ISchema,
-	UnknownFunctionOptions,
-} from '~'
-import { CustomSchemaImpl, isUnknownFunctionSchema } from '~'
+import type { CustomFunction, FunctionOptions } from '~/base-schemas/function'
 import { FunctionImpl } from '~/base-schemas/function'
 import { ValidationIssue } from '~/meta-schemas'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { $$SchemableTuple } from '~/types/Inferable/Inferable'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
+
+import type { $$Array } from '../array/IArray'
+import type { CustomUnknownFunction } from './CustomUnknownFunction'
+import { isUnknownFunctionSchema } from './IUnknownFunction'
+import type { UnknownFunctionOptions } from './UnknownFunctionOptions'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownFunctionImpl<O> {

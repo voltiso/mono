@@ -5,8 +5,8 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor } from '@voltiso/util'
 
-import type { ISchema } from '~'
-import { CustomSchemaImpl } from '~'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
 
 import type { VoidOptions } from '../options/VoidOptions'
 import { isVoidSchema } from './isVoid'

@@ -1,9 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema, ITuple, Schemable } from '~'
-import { isTupleSchema } from '~'
-import { schema } from '~/core-schemas'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schemable } from '~/types/Schemable/Schemable'
+
+import { isTupleSchema } from '../tuple/isTuple'
+import type { ITuple } from '../tuple/ITuple'
 
 function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 	const aa = a.getShape

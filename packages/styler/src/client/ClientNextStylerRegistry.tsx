@@ -3,10 +3,10 @@
 
 'use client'
 
-import { useServerInsertedHTML } from 'next/navigation'
 import type React from 'react'
 import { useState } from 'react'
 
+import { useServerInsertedHTML } from '~/nextJs/_next'
 import { WebRenderer } from '~/renderer'
 
 import { RendererContext } from './context'

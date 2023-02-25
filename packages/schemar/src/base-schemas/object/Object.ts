@@ -4,9 +4,10 @@
 import type { IsIdentical } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
-import type { $$InferableObject, CustomObject, CustomObject$ } from '~'
+import type { $$InferableObject } from '~/types/Inferable/Inferable'
 
-import { ObjectImpl } from './_'
+import { ObjectImpl } from './_/ObjectImpl'
+import type { CustomObject, CustomObject$ } from './CustomObject'
 
 //
 

@@ -10,31 +10,27 @@ import type {
 } from '@voltiso/util'
 import { lazyConstructor, noThis, OPTIONS } from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	$$SchemableTuple,
-	CustomFunction,
-	FunctionOptions,
-	IArray,
-	Input_,
-	ITuple,
-	Output_,
-	Schema,
-	SchemaLike,
-} from '~'
-import {
-	CustomSchemaImpl,
-	isArraySchema,
-	isFunctionSchema,
-	isTupleSchema,
-	isUnknownFunctionSchema,
-} from '~'
-import { infer_, schema } from '~/core-schemas'
+import { infer_ } from '~/infer/infer'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { SchemarError } from '~/error'
 import { ValidationIssue } from '~/meta-schemas'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { Input_, Output_ } from '~/types/GetType/GetType'
+import type { $$SchemableTuple } from '~/types/Inferable/Inferable'
+import type { SchemaLike } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/Schema'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
+import type { IArray } from '../array/IArray'
+import { isArraySchema } from '../array/isArray'
+import { isTupleSchema } from '../tuple/isTuple'
+import type { ITuple } from '../tuple/ITuple'
 import { _flattenUnion, or } from '../union'
+import { isUnknownFunctionSchema } from '../unknownFunction/IUnknownFunction'
 import { _functionArgumentsExtends } from './_functionArgumentsExtends'
+import type { CustomFunction } from './CustomFunction'
+import type { FunctionOptions } from './FunctionOptions'
+import { isFunctionSchema } from './isFunction'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomFunctionImpl<O> {

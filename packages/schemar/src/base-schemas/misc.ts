@@ -3,9 +3,9 @@
 
 import { lazyObject } from '@voltiso/util'
 
-import { literal } from '~'
+import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
 
-import { unknown } from './unknown'
+import { unknown } from './unknown/Unknown'
 
 export const optional = lazyObject(() => unknown.optional)
 export const readonly = lazyObject(() => unknown.readonly)

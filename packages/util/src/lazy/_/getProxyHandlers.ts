@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 import { forwardGetOwnPropertyDescriptor, forwardOwnKeys } from '~/proxy'
 
 export function getProxyHandlers({
@@ -14,6 +16,8 @@ export function getProxyHandlers({
 }): ProxyHandler<any> {
 	return {
 		get(_t, p) {
+			// ! required for `react-native` - metro bundler calls `.$$typeof` immediately to register for react hot reload
+			if (state.value === undefined && p === '$$typeof') return undefined
 			load()
 			return Reflect.get(state.value, p, state.value) as unknown
 		},

@@ -11,10 +11,15 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { BigintOptions, CustomBigint, ISchema, Literal } from '~'
-import { CustomSchemaImpl, isBigintSchema } from '~'
-import { literal } from '~/core-schemas'
-import { ValidationIssue } from '~/meta-schemas'
+import type { Literal } from '~/core-schemas/literal/Literal'
+import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+
+import type { BigintOptions } from './BigintOptions'
+import type { CustomBigint } from './CustomBigint'
+import { isBigintSchema } from './IBigint'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBigintImpl<O> {

@@ -4,7 +4,6 @@
 export * from './CustomSchemaInferrer'
 export * from './CustomSchemaInferrerImpl'
 export * from './defaultSchemaInferrerOptions'
-export * from './infer'
 export * from './ISchemaInferrer'
 export * from './SchemaInferrer'
 export * from './SchemaInferrerImpl'

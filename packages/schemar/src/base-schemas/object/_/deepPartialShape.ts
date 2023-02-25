@@ -3,14 +3,15 @@
 
 import { $assert, getEntries, isPlainObject, stringFrom } from '@voltiso/util'
 
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import type { InferableObject } from '~/types/Inferable/Inferable'
+import type { ISchema$ } from '~/types/Schema/ISchema'
+
 import type {
 	DeepPartialShape,
 	DeepStrictPartialShape,
-	InferableObject,
-	ISchema$,
-} from '~'
-import { isObjectSchema } from '~'
-import { schema } from '~/core-schemas'
+} from '../DeepPartialShape'
+import { isObjectSchema } from '../IObject'
 
 //
 

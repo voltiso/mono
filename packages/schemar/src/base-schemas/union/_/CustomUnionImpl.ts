@@ -5,18 +5,17 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	CustomUnion,
-	ISchema,
-	IUnion,
-	Schemable,
-	UnionOptions,
-	ValidationOptions,
-} from '~'
-import { CustomSchemaImpl, isUnionSchema } from '~'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
+import type { $$Schemable, Schemable } from '~/types/Schemable/Schemable'
+
+import type { CustomUnion } from '../CustomUnion'
+import type { IUnion } from '../IUnion'
+import { isUnionSchema } from '../IUnion'
+import type { UnionOptions } from '../UnionOptions'
 
 $assert(OPTIONS)
 $assert(EXTENDS)

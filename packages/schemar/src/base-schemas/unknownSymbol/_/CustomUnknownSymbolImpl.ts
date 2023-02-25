@@ -5,16 +5,16 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type {
-	CustomUnknownSymbol,
-	ISchema,
-	UnknownSymbolOptions,
-	ValidationOptions,
-} from '~'
-import { CustomSchemaImpl, isUnknownSymbolSchema } from '~'
-import type { Literal } from '~/core-schemas'
-import { literal } from '~/core-schemas'
-import { ValidationIssue } from '~/meta-schemas'
+import type { Literal } from '~/core-schemas/literal/Literal'
+import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
+
+import type { CustomUnknownSymbol } from '../CustomUnknownSymbol'
+import { isUnknownSymbolSchema } from '../IUnknownSymbol'
+import type { UnknownSymbolOptions } from '../UnknownSymbolOptions'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownSymbolImpl<O> {

@@ -3,8 +3,10 @@
 
 import { lazyConstructor, lazyFunction, lazyObject } from '@voltiso/util'
 
-import type { CustomNumber, CustomNumber$, Literal$ } from '~'
-import { NumberImpl } from '~'
+import type { Literal$ } from '~/core-schemas/literal/Literal'
+
+import { NumberImpl } from './_/NumberImpl'
+import type { CustomNumber, CustomNumber$ } from './CustomNumber'
 
 //
 

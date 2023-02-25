@@ -5,17 +5,16 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
-import type {
-	CustomIntersection,
-	IIntersection,
-	IntersectionOptions,
-	ISchema,
-	Schemable,
-	ValidationOptions,
-} from '~'
-import { CustomSchemaImpl } from '~'
-import { schema } from '~/core-schemas'
-import type { ValidationIssue } from '~/meta-schemas/validationIssue'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
+import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
+import type { Schemable } from '~/types/Schemable/Schemable'
+
+import type { CustomIntersection } from '../CustomIntersection'
+import type { IIntersection } from '../IIntersection'
+import type { IntersectionOptions } from '../IntersectionOptions'
 
 $assert(SCHEMA_NAME)
 $assert(EXTENDS)

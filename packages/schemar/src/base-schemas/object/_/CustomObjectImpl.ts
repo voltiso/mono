@@ -5,29 +5,23 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import * as v from '@voltiso/util'
 
-import type {
-	$$Schemable,
-	CustomObject,
-	ISchema,
-	ObjectIndexSignatureEntry,
-	ObjectOptions,
-	Schemable,
-	ValidationOptions,
-} from '~'
-import {
-	CustomSchemaImpl,
-	defaultValidationOptions,
-	getDeepShape,
-	isObjectSchema,
-	isUnknownObjectSchema,
-	number,
-	string,
-	symbol,
-} from '~'
+import { number } from '~/base-schemas/number/Number'
+import { string } from '~/base-schemas/string/String'
 import { or } from '~/base-schemas/union/or'
-import { schema } from '~/core-schemas'
+import { isUnknownObjectSchema } from '~/base-schemas/unknownObject/IUnknownObject'
+import { symbol } from '~/base-schemas/unknownSymbol/symbol'
+import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { ValidationIssue } from '~/meta-schemas'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { ISchema } from '~/types/Schema/ISchema'
+import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
+import { defaultValidationOptions } from '~/types/Schema/ValidationOptions'
+import { getDeepShape } from '~/types/Schemable/getDeepShape'
+import type { $$Schemable, Schemable } from '~/types/Schemable/Schemable'
 
+import type { CustomObject } from '../CustomObject'
+import { isObjectSchema } from '../IObject'
+import type { ObjectIndexSignatureEntry, ObjectOptions } from '../ObjectOptions'
 import { deepPartialShape, deepStrictPartialShape } from './deepPartialShape'
 import { partialShape, strictPartialShape } from './partialShape'
 /* eslint-disable max-depth */

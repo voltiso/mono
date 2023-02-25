@@ -5,15 +5,15 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { isSubset, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
-import type {
-	CustomLiteral,
-	InferableLiteral,
-	ISchema,
-	LiteralOptions,
-} from '~'
-import { CustomSchemaImpl, isLiteralSchema, isUnknownLiteralSchema } from '~'
-import { ValidationIssue } from '~/meta-schemas'
+import { isUnknownLiteralSchema } from '~/core-schemas/unknownLiteral/isUnknownLiteral'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { InferableLiteral } from '~/types/Inferable/Inferable'
+import type { ISchema } from '~/types/Schema/ISchema'
 
+import type { CustomLiteral } from '../CustomLiteral'
+import { isLiteralSchema } from '../isLiteral'
+import type { LiteralOptions } from '../LiteralOptions'
 import { literalValueExtends } from './literalValueExtends'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead

@@ -5,14 +5,14 @@ import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
-import type {
-	CustomUnknownLiteral,
-	InferableLiteral,
-	ISchema,
-	UnknownLiteralOptions,
-} from '~'
-import { CustomSchemaImpl, isUnknownLiteralSchema } from '~'
-import { LiteralImpl } from '~/core-schemas/literal'
+import { LiteralImpl } from '~/core-schemas/literal/_/LiteralImpl'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import type { InferableLiteral } from '~/types/Inferable/Inferable'
+import type { ISchema } from '~/types/Schema/ISchema'
+
+import type { CustomUnknownLiteral } from '../CustomUnknownLiteral'
+import { isUnknownLiteralSchema } from '../isUnknownLiteral'
+import type { UnknownLiteralOptions } from '../UnknownLiteralOptions'
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownLiteralImpl<O> {

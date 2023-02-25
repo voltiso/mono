@@ -9,7 +9,13 @@ import { $assert } from '_'
 
 import { getProxyHandlers } from './_/getProxyHandlers'
 
-/** Consider using `lazyObject` instead if the lazy value is not callable */
+/**
+ * - Consider using `lazyObject` instead if the lazy value is not callable
+ * - ⚠️ Does not work with react components - returns `undefined` for `.$$typeof`
+ *
+ *   - Work-around for `react-native` - metro bundler calls `.$$typeof` immediately
+ *       to register for react hot reload
+ */
 export function lazyFunction<T extends (...args: any) => any>(
 	getValue: () => T,
 ): T {

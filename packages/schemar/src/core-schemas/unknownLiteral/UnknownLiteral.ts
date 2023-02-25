@@ -3,14 +3,14 @@
 
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
+import type { InferableLiteral } from '~/types/Inferable/Inferable'
+
+import type { Literal$ } from '../literal/Literal'
+import { UnknownLiteralImpl } from './_/UnknownLiteralImpl'
 import type {
 	CustomUnknownLiteral,
 	CustomUnknownLiteral$,
-	InferableLiteral,
-	Literal$,
-} from '~'
-
-import { UnknownLiteralImpl } from './_'
+} from './CustomUnknownLiteral'
 
 export interface UnknownLiteral extends CustomUnknownLiteral<{}> {}
 

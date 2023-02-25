@@ -3,8 +3,10 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { CustomLiteral, CustomLiteral$, InferableLiteral } from '~'
-import { LiteralImpl } from '~'
+import type { InferableLiteral } from '~/types/Inferable/Inferable'
+
+import { LiteralImpl } from './_/LiteralImpl'
+import type { CustomLiteral, CustomLiteral$ } from './CustomLiteral'
 
 export interface Literal<T extends InferableLiteral>
 	extends CustomLiteral<{

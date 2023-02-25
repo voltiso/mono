@@ -10,14 +10,12 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	CustomSchema,
-	CustomSchema$,
-	ISchema,
-	SchemaOptions,
-} from '~'
-import { CustomSchemaImpl, defaultSchemaOptions, ValidationIssue } from '~'
+import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
+import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
+import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
+import type { CustomSchema, CustomSchema$ } from '~/types/Schema/CustomSchema'
+import type { $$Schema, ISchema } from '~/types/Schema/ISchema'
 
 export interface $$NonNullish extends $$Schema {
 	readonly [SCHEMA_NAME]: 'NonNullish'
