@@ -29,7 +29,7 @@ describe('getAtomicStyles', () => {
 
 		const button = screen.getByRole('button')
 
-		expect(button).toHaveClass('jw0JJg') // single class only
+		expect(button).toHaveClass('e2U-Jg') // single class only
 		// expect(button).toHaveClass('_0') // single class only
 	})
 })

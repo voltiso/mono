@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/styler",
-  "version": "15.2.12",
+  "version": "15.3.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -72,7 +72,8 @@
   "dependencies": {
     "@voltiso/util": "workspace:^",
     "css-in-js-utils": "^3.1.0",
-    "hyphenate-style-name": "^1.0.4"
+    "hyphenate-style-name": "^1.0.4",
+    "stylis": "^4.1.3"
   },
   "peerDependencies": {
     "@types/react": "^18.0.0 || ^17.0.0",
@@ -98,6 +99,7 @@
     "@types/react": "^18.0.28",
     "@types/react-native": "^0.71.3",
     "@types/react-test-renderer": "^18.0.0",
+    "@types/stylis": "^4.0.2",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
@@ -114,6 +116,6 @@
   },
   "__________MISC": "__________",
   "typeCoverage": {
-    "is": 99.12
+    "is": 99.13
   }
 }

@@ -7,20 +7,20 @@ describe('WebRenderer', () => {
 	it('simple', () => {
 		const renderer = new WebRenderer()
 
-		expect(
-			renderer.classNameFor({
-				_: {
-					color: 'red',
-				},
+		const className = renderer.classNameFor({
+			_: {
+				color: 'red',
+			},
 
-				backgroundColor: 'blue',
-			}),
-		).toBe(`E0_t8Q o2uo_w`)
+			backgroundColor: 'blue',
+		})
+
+		expect(className).toBe(`rQJi6g Gb-r5A`)
 		// ).toBe(`_0 _1`)
 
 		expect(renderer.flushStyle()).toBe(
 			// `._0{background-color:blue}._1{color:red}`,
-			`.E0_t8Q{color:red}.o2uo_w{background-color:blue}`,
+			`.rQJi6g{color:red;}.Gb-r5A{background-color:blue;}`,
 		)
 	})
 
@@ -37,19 +37,19 @@ describe('WebRenderer', () => {
 					},
 				},
 			}),
-		).toBe(`xaKNiQ`)
+		).toBe(`qYy06Q`)
 		// ).toBe(`_0`)
 
 		expect(renderer.flushStyle()).toBe(
 			// `@media (min-width: 100px){._0{color:blue}}._0{color:red}`,
-			`.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}`,
+			`.qYy06Q{color:red;}@media (min-width: 100px){.qYy06Q{color:blue;}}`,
 		)
 
 		renderer.unflushStyle()
 
 		expect(renderer.flushStyle()).toBe(
 			// `@media (min-width: 100px){._0{color:blue}}._0{color:red}`,
-			`.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}`,
+			`.qYy06Q{color:red;}@media (min-width: 100px){.qYy06Q{color:blue;}}`,
 		)
 	})
 
@@ -68,13 +68,14 @@ describe('WebRenderer', () => {
 					},
 				},
 			} as never),
-		).toBe(`QC-aKA`)
+			/* cspell:disable-next-line */
+		).toBe(`meviQw`)
 		// ).toBe(`_0`)
 
 		expect(renderer.flushStyle()).toBe(
 			// `@keyframes _0{0%{background-color:red}100%{background-color:blue}}._0{animation-name:_0}`,
 			/* cspell:disable-next-line */
-			`@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}.QC-aKA{animation-name:KhzrqQ}`,
+			`@keyframes GzQ-KQ{0%{background-color:red;}100%{background-color:blue;}}.meviQw{-webkit-animation-name:GzQ-KQ;animation-name:GzQ-KQ;}`,
 		)
 
 		renderer.unflushStyle()
@@ -82,7 +83,7 @@ describe('WebRenderer', () => {
 		expect(renderer.flushStyle()).toBe(
 			// `._0{animation-name:_0}@keyframes _0{0%{background-color:red}100%{background-color:blue}}`,
 			/* cspell:disable-next-line */
-			`.QC-aKA{animation-name:KhzrqQ}@keyframes KhzrqQ{0%{background-color:red}100%{background-color:blue}}`,
+			`.meviQw{-webkit-animation-name:GzQ-KQ;animation-name:GzQ-KQ;}@keyframes GzQ-KQ{0%{background-color:red;}100%{background-color:blue;}}`,
 		)
 	})
 
@@ -99,16 +100,75 @@ describe('WebRenderer', () => {
 					},
 				},
 			}),
-		).toBe(`xaKNiQ`)
+		).toBe(`qYy06Q`)
 
 		expect(renderer.flushStyle()).toBe(
-			'.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}',
+			'.qYy06Q{color:red;}@media (min-width: 100px){.qYy06Q{color:blue;}}',
 		)
 
 		renderer.unflushStyle()
 
 		expect(renderer.flushStyle()).toBe(
-			'.xaKNiQ{color:red}@media (min-width: 100px){.xaKNiQ{color:blue}}',
+			'.qYy06Q{color:red;}@media (min-width: 100px){.qYy06Q{color:blue;}}',
+		)
+	})
+
+	it('vendor prefix', () => {
+		const renderer = new WebRenderer()
+
+		expect(
+			renderer.classNameFor({
+				_: {
+					backdropFilter: 'blur(10px)',
+				},
+			}),
+			/* cspell:disable-next-line */
+		).toBe(`IDEKYw`)
+
+		expect(renderer.flushStyle()).toBe(
+			/* cspell:disable-next-line */
+			`.IDEKYw{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}`,
+		)
+
+		renderer.unflushStyle()
+
+		expect(renderer.flushStyle()).toBe(
+			/* cspell:disable-next-line */
+			`.IDEKYw{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}`,
+		)
+	})
+
+	it('animationName with vendor prefix', () => {
+		const renderer = new WebRenderer()
+
+		expect(
+			renderer.classNameFor({
+				animationName: {
+					'0%': {
+						/* cspell:disable-next-line */
+						backdropFilter: 'blur(10px)',
+					},
+
+					'100%': {
+						/* cspell:disable-next-line */
+						backdropFilter: 'blur(0px)',
+					},
+				},
+			} as never),
+			/* cspell:disable-next-line */
+		).toBe(`Anwm4w`)
+		// ).toBe(`_0`)
+
+		expect(renderer.flushStyle()).toBe(
+			/* cspell:disable-next-line */
+			`@keyframes _-ZQDZA{0%{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}100%{-webkit-backdrop-filter:blur(0px);backdrop-filter:blur(0px);}}.Anwm4w{-webkit-animation-name:_-ZQDZA;animation-name:_-ZQDZA;}`,
+		)
+
+		renderer.unflushStyle()
+
+		expect(renderer.flushStyle()).toBe(
+			/* cspell:disable-next-line */
+			`.Anwm4w{-webkit-animation-name:_-ZQDZA;animation-name:_-ZQDZA;}@keyframes _-ZQDZA{0%{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}100%{-webkit-backdrop-filter:blur(0px);backdrop-filter:blur(0px);}}`,
 		)
 	})
 })

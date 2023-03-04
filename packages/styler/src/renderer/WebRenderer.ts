@@ -29,6 +29,8 @@ export class WebRenderer {
 			const atomicStyleStr = stringFromAtomicStyle(atomicStyle)
 			let className = this._classNames.get(atomicStyleStr)
 
+			// console.log({ atomicStyleStr })
+
 			if (!className) {
 				className = getHash(atomicStyleStr)
 				// className = isServerComponent

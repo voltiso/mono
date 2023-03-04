@@ -17,7 +17,7 @@ describe('stringFromAtomicStyle', () => {
 					},
 				],
 			}),
-		).toBe('& button,div &{color:red}')
+		).toBe('& button,div &{color:red;}')
 	})
 
 	it('media query', () => {
@@ -38,7 +38,7 @@ describe('stringFromAtomicStyle', () => {
 				],
 			}),
 		).toBe(
-			'@media (min-width: 200px){@media (min-width: 100px){& button,div &{color:red}}}',
+			'@media (min-width: 200px){@media (min-width: 100px){& button,div &{color:red;}}}',
 		)
 	})
 
@@ -55,7 +55,7 @@ describe('stringFromAtomicStyle', () => {
 					},
 				],
 			}),
-		).toBe('&{width:100px}')
+		).toBe('&{width:100px;}')
 	})
 
 	it('camel case', () => {
@@ -71,6 +71,8 @@ describe('stringFromAtomicStyle', () => {
 					},
 				],
 			}),
-		).toBe('&{flex-direction:row}')
+		).toBe(
+			'&{-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;}',
+		)
 	})
 })
