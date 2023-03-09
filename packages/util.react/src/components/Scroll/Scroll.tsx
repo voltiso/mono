@@ -1,6 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+'use client'
+
+import { $AssumeType } from '@voltiso/util'
 import type { ComponentProps, ForwardRefRenderFunction } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 
@@ -109,9 +112,11 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	//
 
+	$AssumeType<'div'>(props.as)
+
 	// render
 	return (
-		<div
+		<props.as
 			{...otherProps}
 			ref={refs(ref, instance => {
 				mutable.element = instance
@@ -122,7 +127,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 			}}
 		>
 			{children}
-		</div>
+		</props.as>
 	)
 }
 

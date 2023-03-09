@@ -4,6 +4,8 @@
 import type { ReactNode } from 'react'
 
 export type ScrollProps = {
+	as: keyof JSX.IntrinsicElements
+
 	scrollRestorationKey?: string | undefined
 
 	/**
@@ -37,10 +39,11 @@ export type ScrollProps = {
 }
 
 export const defaultScrollProps = {
+	as: 'div',
 	scrollRestorationDelay: 0,
 	saveScrollInterval: 1_000,
 	setSmoothAfterDelay: 1_000,
-}
+} as const
 
 //
 
