@@ -3,9 +3,16 @@
 
 'use client'
 
-import { $AssumeType } from '@voltiso/util'
+/* eslint-disable react/forbid-component-props */
+
 import type { ComponentProps, ForwardRefRenderFunction } from 'react'
-import { forwardRef, useEffect, useState } from 'react'
+import {
+	forwardRef,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useState,
+} from 'react'
 
 import { useCurrent, useInitial, useLocalStorage } from '~/hooks'
 import { refs } from '~/refs'
@@ -19,6 +26,9 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	ScrollProps & ComponentProps<'div'>
 > = (props, ref) => {
 	const {
+		as,
+		scrollTarget,
+		pathname,
 		children,
 		scrollRestorationKey,
 		scrollRestorationDelay,
@@ -46,56 +56,79 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	if (typeof window !== 'undefined') {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		useEffect(() => {
-			if (!isNavigationBackForward()) return undefined
+		const scrollTargetElement = useMemo(
+			() => (scrollTarget ? document.querySelector(scrollTarget) : null),
+			[scrollTarget],
+		)
+
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		useLayoutEffect(() => {
+			if (!isNavigationBackForward({ pathname })) return undefined
 
 			const top = current.scrollRestoration?.scrollTop
-
 			if (!top) return undefined
 
-			const timeout = setTimeout(() => {
-				mutable.element?.scroll({ top })
-			}, scrollRestorationDelay)
+			const run = () => {
+				const element = scrollTargetElement || mutable.element
+				element?.scroll({ top })
+			}
+
+			if (scrollRestorationDelay) {
+				const timeout = setTimeout(run, scrollRestorationDelay)
+
+				return () => {
+					clearTimeout(timeout)
+				}
+			} else {
+				run()
+				return undefined
+			}
+		}, [
+			current,
+			mutable,
+			pathname,
+			scrollRestorationDelay,
+			scrollRestorationKey,
+			scrollTargetElement,
+		])
+
+		//
+
+		/** Save scroll position periodically */
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		useEffect(() => {
+			if (scrollRestorationKey === undefined) return undefined
+
+			const interval = setInterval(() => {
+				const element = scrollTargetElement || mutable.element
+
+				if (
+					element &&
+					scrollRestoration &&
+					scrollRestoration.scrollTop !== element.scrollTop
+				) {
+					if (current.onSaveScroll) current.onSaveScroll(element.scrollTop)
+
+					setScrollRestoration({
+						lastSeenAt: new Date().toISOString(),
+						scrollTop: element.scrollTop,
+					})
+				}
+			}, saveScrollInterval)
 
 			return () => {
-				clearTimeout(timeout)
+				clearInterval(interval)
 			}
-		}, [current, mutable, scrollRestorationDelay, scrollRestorationKey])
+		}, [
+			current,
+			mutable,
+			saveScrollInterval,
+			scrollRestoration,
+			scrollRestorationKey,
+			scrollTargetElement,
+			setScrollRestoration,
+		])
 	}
-
-	//
-
-	// save scroll position periodically
-	useEffect(() => {
-		if (scrollRestorationKey === undefined) return undefined
-
-		const interval = setInterval(() => {
-			if (
-				mutable.element &&
-				scrollRestoration &&
-				scrollRestoration.scrollTop !== mutable.element.scrollTop
-			) {
-				if (current.onSaveScroll)
-					current.onSaveScroll(mutable.element.scrollTop)
-
-				setScrollRestoration({
-					lastSeenAt: new Date().toISOString(),
-					scrollTop: mutable.element.scrollTop,
-				})
-			}
-		}, saveScrollInterval)
-
-		return () => {
-			clearInterval(interval)
-		}
-	}, [
-		current,
-		mutable,
-		saveScrollInterval,
-		scrollRestoration,
-		scrollRestorationKey,
-		setScrollRestoration,
-	])
 
 	//
 
@@ -112,11 +145,12 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	//
 
-	$AssumeType<'div'>(props.as)
+	// $AssumeType<'div'>(as)
+	const Component = as as 'div'
 
 	// render
 	return (
-		<props.as
+		<Component
 			{...otherProps}
 			ref={refs(ref, instance => {
 				mutable.element = instance
@@ -127,7 +161,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 			}}
 		>
 			{children}
-		</props.as>
+		</Component>
 	)
 }
 

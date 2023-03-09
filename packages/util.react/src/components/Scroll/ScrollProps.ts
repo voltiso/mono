@@ -4,7 +4,11 @@
 import type { ReactNode } from 'react'
 
 export type ScrollProps = {
-	as: keyof JSX.IntrinsicElements
+	as?: keyof JSX.IntrinsicElements | undefined
+	scrollTarget?: keyof JSX.IntrinsicElements | undefined
+
+	/** Override window.location.pathname - which may be stale */
+	pathname?: string | undefined
 
 	scrollRestorationKey?: string | undefined
 

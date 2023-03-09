@@ -9,10 +9,12 @@ function getLocationHref() {
 const initialLocationHref = getLocationHref()
 let historyChanged = false
 
-export function isNavigationBackForward() {
+export function isNavigationBackForward(params?: {
+	pathname?: string | undefined
+}) {
 	if (historyChanged) return true
 
-	const locationHref = getLocationHref()
+	const locationHref = params?.pathname || getLocationHref()
 
 	// eslint-disable-next-line unicorn/no-negated-condition
 	if (locationHref !== initialLocationHref) {
