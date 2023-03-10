@@ -48,9 +48,12 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		`@voltiso/util.react.Scroll(${scrollRestorationKey})`
 
 	const [scrollRestoration, setScrollRestoration] = useLocalStorage<{
-		lastSeenAt: string | undefined
-		scrollTop: number | undefined
-	}>(localStorageKey, { lastSeenAt: undefined, scrollTop: undefined })
+		// lastSeenAt: number
+		scrollTop: number
+	}>(localStorageKey, {
+		// lastSeenAt: 0,
+		scrollTop: 0,
+	})
 
 	const current = useCurrent({ scrollRestoration, onSaveScroll })
 
@@ -64,9 +67,9 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useLayoutEffect(() => {
 			if (!isNavigationBackForward({ pathname })) return undefined
+			if (!current.scrollRestoration) return undefined
 
-			const top = current.scrollRestoration?.scrollTop
-			if (!top) return undefined
+			const top = current.scrollRestoration.scrollTop
 
 			const run = () => {
 				const element = scrollTargetElement || mutable.element
@@ -110,7 +113,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 					if (current.onSaveScroll) current.onSaveScroll(element.scrollTop)
 
 					setScrollRestoration({
-						lastSeenAt: new Date().toISOString(),
+						// lastSeenAt: Date.now(),
 						scrollTop: element.scrollTop,
 					})
 				}
