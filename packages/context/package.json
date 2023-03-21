@@ -60,7 +60,7 @@
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "zone.js": "^0.12.0"
+    "zone.js": "^0.13.0"
   },
   "__________MISC": "__________",
   "browser": {

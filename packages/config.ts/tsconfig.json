@@ -51,7 +51,8 @@
 		"lib": ["ESNext"], // allow everything, but `eslint-plugin-es-x` will complain
 		// "lib": ["ES2021", "ES2022.Error", "ES2022.Array"], // 2022-08-11 - no `Object.ownKeys` (ES2022) in Safari
 		// "lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"module": "ESNext", // Unused - tsup?
+		"module": "CommonJS", // default - for jest config files, etc.
+		// "module": "ESNext", // Unused - tsup?
 		"target": "ESNext",
 
 		/**
@@ -111,7 +112,11 @@
 		"allowUnusedLabels": false, // Undefined = warning
 		"allowUnreachableCode": false, // Undefined = warning
 		//
-		"importsNotUsedAsValues": "error",
+		
+		"importsNotUsedAsValues": "error", // deprecated in TS 5
+		// "verbatimModuleSyntax": false, // ? good? // since TS 5 - not supported by ts-patch yet
+		// "ignoreDeprecations": "5.0", // since TS 5
+
 		"preserveValueImports": false
 		// ______________________ STRICT options _______________________
 		//

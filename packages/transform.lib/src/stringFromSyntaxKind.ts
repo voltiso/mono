@@ -405,5 +405,5 @@ enum SyntaxKindStr {
 }
 
 export function stringFromSyntaxKind(syntaxKind: SyntaxKind): string {
-	return SyntaxKindStr[syntaxKind] as string
+	return SyntaxKindStr[syntaxKind]
 }

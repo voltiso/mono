@@ -4,7 +4,7 @@
 import type { TransformContext } from '@voltiso/transform.lib'
 import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import chalk from 'chalk'
-import ts from 'typescript'
+import type ts from 'typescript'
 
 const moduleIcon = '🖨️ '
 

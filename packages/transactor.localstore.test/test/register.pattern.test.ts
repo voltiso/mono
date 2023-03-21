@@ -40,7 +40,10 @@ describe('register at pattern', () => {
 
 		const concreteCollection = myNestedDocs('adam')
 		$Assert<
-			IsIdentical<typeof concreteCollection, CollectionRef<MyNestedDoc>>
+			IsIdentical<
+				typeof concreteCollection,
+				CollectionRef<'nestedUserA/*/dailyMeetings'>
+			>
 		>()
 
 		await concreteCollection.add({

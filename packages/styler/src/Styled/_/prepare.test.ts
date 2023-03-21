@@ -1,3 +1,6 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import { prepare } from './prepare'
 
 describe('prepare', () => {
@@ -7,6 +10,7 @@ describe('prepare', () => {
 				prepare(
 					{
 						a: 0,
+
 						_: {
 							b: 1,
 						},
@@ -26,6 +30,7 @@ describe('prepare', () => {
 						_: {
 							b: 1,
 						},
+
 						a: 0,
 					} as never,
 					{ theme: {} },

@@ -3,10 +3,11 @@
 
 'use client'
 
+import type { nullish } from '@voltiso/util'
 /* eslint-disable react/forbid-component-props */
-
 import type { ComponentProps, ForwardRefRenderFunction } from 'react'
 import {
+	createContext,
 	forwardRef,
 	useEffect,
 	useLayoutEffect,
@@ -20,6 +21,12 @@ import { refs } from '~/refs'
 import { isNavigationBackForward } from './isNavigationBackForward'
 import type { ScrollProps } from './ScrollProps'
 import { defaultScrollProps } from './ScrollProps'
+
+export type ScrollContextValue = {
+	onScrollRestore?: ((scrollTop: number) => void) | nullish
+}
+
+export const ScrollContext = createContext<ScrollContextValue>(null as never)
 
 const ScrollRenderFunction: ForwardRefRenderFunction<
 	HTMLDivElement,
@@ -57,6 +64,8 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	const current = useCurrent({ scrollRestoration, onSaveScroll })
 
+	const scrollContextValue = useMemo<ScrollContextValue>(() => ({}), [])
+
 	if (typeof window !== 'undefined') {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const scrollTargetElement = useMemo(
@@ -74,6 +83,9 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 			const run = () => {
 				const element = scrollTargetElement || mutable.element
 				element?.scroll({ top })
+
+				if (scrollContextValue.onScrollRestore)
+					scrollContextValue.onScrollRestore(top)
 			}
 
 			if (scrollRestorationDelay) {
@@ -90,6 +102,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 			current,
 			mutable,
 			pathname,
+			scrollContextValue,
 			scrollRestorationDelay,
 			scrollRestorationKey,
 			scrollTargetElement,
@@ -153,18 +166,20 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 
 	// render
 	return (
-		<Component
-			{...otherProps}
-			ref={refs(ref, instance => {
-				mutable.element = instance
-			})}
-			style={{
-				scrollBehavior,
-				...style,
-			}}
-		>
-			{children}
-		</Component>
+		<ScrollContext.Provider value={scrollContextValue}>
+			<Component
+				{...otherProps}
+				ref={refs(ref, instance => {
+					mutable.element = instance
+				})}
+				style={{
+					scrollBehavior,
+					...style,
+				}}
+			>
+				{children}
+			</Component>
+		</ScrollContext.Provider>
 	)
 }
 

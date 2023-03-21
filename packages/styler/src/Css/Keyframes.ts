@@ -1,4 +1,8 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import type { CssWeb } from '~/Css-declaration-merging'
+
 import type { CustomCss } from './Css'
 
 export interface Keyframes {

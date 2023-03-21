@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept } from '@voltiso/util'
+
 import type { Keyframes } from '~/Css/Keyframes'
 
 import type { CssExtension } from './CssExtension'

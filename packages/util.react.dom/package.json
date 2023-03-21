@@ -47,6 +47,6 @@
     "@voltiso/util.react": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rimraf": "^4.1.2"
+    "rimraf": "^4.4.0"
   }
 }

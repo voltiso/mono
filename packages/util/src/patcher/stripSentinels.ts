@@ -1,5 +1,9 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 import { zip } from '~/functional'
 import { isPlainObject } from '~/object'
+
 import {
 	isPatchSentinel,
 	isSafeToStripPatchSentinel,
@@ -28,6 +32,7 @@ export function stripSentinels(value: unknown): unknown {
 			}
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return haveChange ? result : value // do not return a new array if nothing changed
 	}
 

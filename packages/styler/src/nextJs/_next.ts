@@ -1,3 +1,6 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 // ! `react-native` will complain about `next` package missing
 // import { useServerInsertedHTML } from 'next/navigation'
 const { useServerInsertedHTML } = (() => {

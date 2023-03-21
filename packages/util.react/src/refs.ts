@@ -27,16 +27,16 @@ export type RefsResult<Refs extends readonly unknown[]> = RefCallback<
 //
 
 export function refs<T>(
-	...refs: readonly MutableRef<T | null>[]
+	...refs: readonly (MutableRef<T | null> | undefined)[]
 ): RefCallback<T>
 
-export function refs<Refs extends readonly MutableRef<unknown | null>[]>(
+export function refs<Refs extends readonly (MutableRef<unknown | null> | undefined)[]>(
 	...refs: Refs
 ): RefsResult<Refs>
 
 //
 
-export function refs<Refs extends readonly MutableRef<unknown | null>[]>(
+export function refs<Refs extends readonly (MutableRef<unknown | null> | undefined)[]>(
 	...refs: Refs
 ): RefsResult<Refs> {
 	return (instance: GetRefsType<Refs>) => {

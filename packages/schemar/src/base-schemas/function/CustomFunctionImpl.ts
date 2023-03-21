@@ -10,9 +10,9 @@ import type {
 } from '@voltiso/util'
 import { lazyConstructor, noThis, OPTIONS } from '@voltiso/util'
 
-import { infer_ } from '~/infer/infer'
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { SchemarError } from '~/error'
+import { infer_ } from '~/infer/infer'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import type { Input_, Output_ } from '~/types/GetType/GetType'

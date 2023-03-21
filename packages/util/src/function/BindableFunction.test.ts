@@ -12,7 +12,6 @@ describe('BindableFunction', () => {
 		function func(this: { add: number } | void, a: number, b: number): number
 
 		function func(this: { add: number } | void, a: number, b: number): number {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			const thisVal = typeof this?.add === 'number' ? this.add : 0
 			return thisVal + a + b * 2
 		}

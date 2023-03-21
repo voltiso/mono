@@ -43,11 +43,11 @@
     "eslint-gitignore": "^0.1.0"
   },
   "devDependencies": {
-    "@types/node": "^18.14.0",
+    "@types/node": "^18.15.0",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "eslint": "^8.34.0"
+    "eslint": "^8.36.0"
   },
   "peerDependencies": {
     "@next/eslint-plugin-next": ">= 12.1.6",
@@ -324,5 +324,9 @@
     "yaml-eslint-parser": {
       "optional": true
     }
+  },
+  "__________MISC": "__________",
+  "engines": {
+    "node": ">=12"
   }
 }

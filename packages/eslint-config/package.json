@@ -38,10 +38,10 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@next/eslint-plugin-next": "^13.1.6",
+    "@next/eslint-plugin-next": "^13.2.4",
     "@rushstack/eslint-patch": "^1.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.53.0",
-    "@typescript-eslint/parser": "^5.53.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "any-eslint-parser": "^1.0.1",
@@ -58,7 +58,7 @@
     "eslint-plugin-etc": "^2.0.2",
     "eslint-plugin-ext": "^0.1.0",
     "eslint-plugin-format-message": "^6.2.4",
-    "eslint-plugin-formatjs": "^4.7.2",
+    "eslint-plugin-formatjs": "^4.9.0",
     "eslint-plugin-github": "^4.6.1",
     "eslint-plugin-html": "^7.1.0",
     "eslint-plugin-i18n": "^2.1.0",
@@ -69,7 +69,7 @@
     "eslint-plugin-jest-async": "^1.0.3",
     "eslint-plugin-jest-dom": "^4.0.3",
     "eslint-plugin-jest-formatting": "^3.1.0",
-    "eslint-plugin-jsdoc": "^40.0.0",
+    "eslint-plugin-jsdoc": "^40.0.1",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-jsonc": "^2.6.0",
     "eslint-plugin-jsx": "^0.1.0",
@@ -84,7 +84,7 @@
     "eslint-plugin-node-dependencies": "^0.10.0",
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-putout": "^16.4.0",
+    "eslint-plugin-putout": "^16.10.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-native": "^4.0.0",
@@ -98,17 +98,17 @@
     "eslint-plugin-storybook": "^0.6.11",
     "eslint-plugin-switch-case": "^1.1.2",
     "eslint-plugin-testing-library": "^5.10.2",
-    "eslint-plugin-toml": "^0.3.1",
+    "eslint-plugin-toml": "^0.4.0",
     "eslint-plugin-tsdoc": "^0.2.17",
-    "eslint-plugin-turbo": "^0.0.8",
+    "eslint-plugin-turbo": "^0.0.9",
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
-    "eslint-plugin-unicorn": "^45.0.2",
+    "eslint-plugin-unicorn": "^46.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "eslint-plugin-yml": "^1.5.0",
-    "jsonc-eslint-parser": "^2.1.0",
-    "putout": "^28.16.0",
-    "toml-eslint-parser": "^0.4.0",
-    "yaml-eslint-parser": "^1.1.0"
+    "jsonc-eslint-parser": "^2.2.0",
+    "putout": "^29.1.1",
+    "toml-eslint-parser": "^0.5.0",
+    "yaml-eslint-parser": "^1.2.0"
   },
   "peerDependencies": {
     "eslint": "*",
@@ -117,7 +117,7 @@
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "eslint": "^8.34.0",
-    "typescript": "^4.8.4"
+    "eslint": "^8.36.0",
+    "typescript": "^5.0.2"
   }
 }

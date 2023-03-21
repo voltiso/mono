@@ -2,13 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { stringFrom } from '~/string'
-import { ArraySetUpdateIt, isArraySetUpdateIt } from './arraySetUpdateIt'
+
+import type { ArraySetUpdateIt } from './arraySetUpdateIt'
+import { isArraySetUpdateIt } from './arraySetUpdateIt'
 import type { DeleteIt, DeleteItIfPresent } from './deleteIt'
 import { isDeleteIt, isDeleteItIfPresent } from './deleteIt'
 import type { IncrementIt } from './incrementIt'
 import { isIncrementIt } from './incrementIt'
-import { isKeepItIfPresent, KeepIt, KeepItIfPresent } from './keepIt'
-import { isKeepIt } from './keepIt'
+import type { KeepIt, KeepItIfPresent } from './keepIt'
+import { isKeepIt, isKeepItIfPresent } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
 import { isReplaceIt } from './replaceIt'
 
@@ -51,6 +53,11 @@ export function stringFromPatchSentinel(x: PatchSentinel): string {
 	if (isKeepIt(x)) return 'keepIt'
 	if (isKeepItIfPresent(x)) return 'keepItIfPresent'
 	if (isIncrementIt(x)) return `incrementIt(${x.__incrementIt})`
-	if (isArraySetUpdateIt(x)) return `arraySetUpdateIt(${x.__arraySetUpdateIt})`
-	throw new TypeError(`stringFromPatchSentinel: invalid sentinel ${x}`)
+
+	if (isArraySetUpdateIt(x))
+		return `arraySetUpdateIt(${stringFrom(x.__arraySetUpdateIt)})`
+
+	throw new TypeError(
+		`stringFromPatchSentinel: invalid sentinel ${stringFrom(x)}`,
+	)
 }

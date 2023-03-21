@@ -8,6 +8,13 @@
 		"target": "ESNext",
 		"moduleResolution": "node",
 
+		// Just in case - avoid polluting any dirs ()
+		//  - Otherwise, pollution happens e.g. when moving files between packages in a monorepo
+		"outDir": "_outDir_PLEASE_OVERRIDE",
+		"noEmit": true,
+
+		"strictNullChecks": true,
+
 		"paths": {
 			"~": ["./src"],
 			"~/*": ["./src/*"]
