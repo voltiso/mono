@@ -11,7 +11,8 @@ export const i18next = defineEslintConfigOverride({
 	extends: ['plugin:i18next/recommended'],
 
 	rules: {
-		'i18next/no-literal-string': 2,
+		'i18next/no-literal-string': 0,
+		// 'i18next/no-literal-string': 2,
 
 		// 'i18next/no-literal-string': [
 		// 	'error',

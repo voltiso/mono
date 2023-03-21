@@ -78,6 +78,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 						[awaitedTargetHandlerResult],
 				  ]
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		__voltiso.aggregateSource[name] ||= {} //! !!
 
 		const sourceInfo = __voltiso.aggregateSource[name]

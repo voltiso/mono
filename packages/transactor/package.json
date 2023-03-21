@@ -44,7 +44,7 @@
     "@voltiso/util": "workspace:^",
     "@voltiso/util.firestore": "workspace:^",
     "chalk": "^4.1.2",
-    "fast-equals": "^5.0.0",
+    "fast-equals": "^5.0.1",
     "js-yaml": "^4.1.0"
   },
   "peerDependencies": {

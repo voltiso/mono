@@ -122,6 +122,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		cacheEntry.__voltiso ||= getDefaultVoltisoEntry(ctx, _date) // ! triggers may not see mutations done here
 
 		cacheEntry.originalData = deepCloneData(cacheEntry.data) // ! ground truth for after-triggers (the first `before` value)
@@ -241,12 +242,14 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		cacheEntry.data = cacheEntry.proxy._raw
 
 		// $assert(cacheEntry.data.__voltiso)
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		cacheEntry.data.__voltiso ||= getDefaultVoltisoEntry(ctx, _date)
 
 		// if (cacheEntry.data.__voltiso)
 		cacheEntry.__voltiso = cacheEntry.data.__voltiso
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	cacheEntry.__voltiso ||= getDefaultVoltisoEntry(ctx, _date)
 
 	const onGetTriggers = getOnGetTriggers(ctx.docRef)

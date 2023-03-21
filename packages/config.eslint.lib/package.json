@@ -43,7 +43,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^",
-    "eslint-define-config": "^1.16.0"
+    "eslint-define-config": "^1.17.0"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
