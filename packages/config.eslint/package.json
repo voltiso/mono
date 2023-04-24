@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.eslint",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "sideEffects": false,

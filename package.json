@@ -47,9 +47,8 @@
   "__________MISC": "__________",
   "engines": {
     "node": "18",
-    "pnpm": "7"
+    "pnpm": ">=7"
   },
-  "packageManager": "pnpm@7.25.0",
   "pnpm": {
     "overrides": {
       "chalk": "4 || 5-is-esm-only",

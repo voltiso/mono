@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/rpc",
-  "version": "5.1.6",
+  "version": "5.1.8",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -61,8 +61,9 @@
     "compatDirs": "v compatDirs write",
     "prepublishOnly": "v prepublishOnly"
   },
+  "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/context": "workspace:^1.0.0",
+    "@voltiso/context": "workspace:^",
     "@voltiso/util": "workspace:^",
     "cross-fetch": "^3.1.5"
   },
@@ -82,7 +83,7 @@
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/node": "^18.15.5",
-    "@voltiso/config.eslint.lib": "workspace:^1.2.0",
+    "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/handler": "workspace:^",
