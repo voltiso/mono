@@ -37,7 +37,7 @@ export const jsdocOverride = defineEslintConfigOverride({
 		'jsdoc/implements-on-classes': 1,
 		'jsdoc/match-description': 0,
 		'jsdoc/multiline-blocks': 1,
-		'jsdoc/newline-after-description': 1,
+		// 'jsdoc/newline-after-description': 1,
 
 		'jsdoc/no-bad-blocks': [
 			'warn',
@@ -84,8 +84,7 @@ export const jsdocOverride = defineEslintConfigOverride({
 			'warn',
 			'never',
 			{
-				noEndLines: true,
-				dropEndLines: true,
+				endLines: 1,
 				tags: { example: { lines: 'always' } },
 			},
 		],

@@ -49,11 +49,11 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
-    "@types/react": "^18.0.28",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@types/react": "^18.0.38",
     "@voltiso/config.ts": "workspace:^",
     "react": "^18.2.0",
-    "react-native": "^0.71.4"
+    "react-native": "^0.71.7"
   }
 }

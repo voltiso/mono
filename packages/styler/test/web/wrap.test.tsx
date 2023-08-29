@@ -59,7 +59,7 @@ describe('wrap', () => {
 		const MyDiv = style('div')
 			.newDomProp('data-testid', 'unset')
 			.newProps({
-				content: null as ReactNode,
+				contentX: null as ReactNode,
 				footerColor: 'red' as Property.Color,
 			})
 			.wrap(
@@ -67,7 +67,7 @@ describe('wrap', () => {
 					<>
 						<H1>Hello!</H1>
 
-						<p>{props.content}</p>
+						<p>{props.contentX}</p>
 
 						{props.children}
 					</>
@@ -90,7 +90,7 @@ describe('wrap', () => {
 				// eslint-disable-next-line react/forbid-component-props
 				style={{ flex: 1 }}
 				css={{ margin: 1 }}
-				content='contentValue'
+				contentX='contentValue'
 			>
 				<div id='child' />
 			</MyDiv>,
