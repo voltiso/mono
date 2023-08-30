@@ -5,7 +5,7 @@ import { $assert, $expect } from '_'
 
 import type { clone } from '~/clone'
 import type { ArrowCallable, Callable } from '~/function'
-import { deleteAllProperties } from '~/object'
+import { tryDeleteAllProperties } from '~/object'
 
 import type { ProtoCallable } from '../proto'
 
@@ -35,8 +35,9 @@ export function EmptyArrowCallable<
 	const callableObject = func.bind(null as never)
 
 	// clean up own properties of the function object (name, length, caller, callee, arguments, prototype, ...)
-	//! deleting symbols should generally not be needed... just for forward-compatibility, just in case
-	deleteAllProperties(callableObject)
+	//! * deleting symbols should generally not be needed... just for forward-compatibility, just in case
+	//! * NOTE: this silently fails under react-native, after Expo upgrade (new Hermes engine version?)
+	tryDeleteAllProperties(callableObject)
 
 	$expect(Object.getOwnPropertyDescriptors(callableObject)).toStrictEqual({})
 

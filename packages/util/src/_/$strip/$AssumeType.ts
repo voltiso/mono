@@ -24,7 +24,7 @@
  */
 export function $AssumeType<T extends Supertype, Supertype = unknown>(
 	_x: Supertype,
-// eslint-disable-next-line no-empty-function
+	// eslint-disable-next-line no-empty-function
 ): asserts _x is T {}
 
 //
