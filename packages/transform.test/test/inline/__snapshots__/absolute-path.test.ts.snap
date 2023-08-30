@@ -2,6 +2,6 @@
 
 exports[`alias works 1`] = `
 "import type * as handlers from './_/external-stuff';
-export declare type Handlers = typeof handlers;
+export type Handlers = typeof handlers;
 //# sourceMappingURL=absolute-path.d.ts.map"
 `;

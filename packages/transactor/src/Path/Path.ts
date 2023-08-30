@@ -210,6 +210,7 @@ export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
 export interface DocPath<TDoc extends $$DocRelatedLike = AnyDoc>
 	extends CustomDocPath<{ doc: TDoc }> {}
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomDocPath<
 	PartialOptions extends Partial<DocPathOptions>,
 > extends Path<Override<DefaultDocPathOptions, PartialOptions>['path']> {

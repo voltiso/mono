@@ -28,7 +28,17 @@ describe('NestedSubject with schema', () => {
 
 		const subject = new MyNestedSubject({ str: 'hello' })
 
+		// type AA = [typeof subject] extends [NestedSubject<{ str: string }>] ? 1 : 0
+		// type BB = [NestedSubject<{ str: string }>] extends [typeof subject] ? 1 : 0
+
+		// type Check<A,B> = [A] extends [B] ? [B] extends [A] ? true : false : false
+
+		// type B = Check<typeof subject, NestedSubject<{ str: string }>>
+		// $Assert<B>()
+
 		/** Simplified typings if `Input === Output` */
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new TS bug?
 		$Assert<IsIdentical<typeof subject, NestedSubject<{ str: string }>>>()
 	})
 

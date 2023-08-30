@@ -1,10 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ForwardedRef, ReactElement } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 
 export interface IForwardRefRenderFunction {
-	(props: any, ref: ForwardedRef<any>): ReactElement | null
+	(props: any, ref: ForwardedRef<any>): ReactNode
 	displayName?: string | undefined
 
 	defaultProps?: never | undefined

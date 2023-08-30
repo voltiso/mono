@@ -1,12 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ReactElement, WeakValidationMap } from 'react'
+import type { ReactNode, WeakValidationMap } from 'react'
 
 import type { Props } from '../Props'
 
 export interface IExoticComponent {
-	(props: any): ReactElement | null
+	(props: any): ReactNode
 	readonly $$typeof: symbol
 }
 

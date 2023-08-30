@@ -83,6 +83,7 @@ export interface PolymorphicGeneric<O extends {}> {
 //
 
 /** Utility for building polymorphic builder-like interfaces */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class PolymorphicGeneric<O extends {}> {
 	readonly options: this[OPTIONS] & this[HIDDEN_OPTIONS]
 

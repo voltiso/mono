@@ -20,6 +20,7 @@ export interface CustomSchemaInferrerImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnknownSchemaOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements ISchemaInferrer

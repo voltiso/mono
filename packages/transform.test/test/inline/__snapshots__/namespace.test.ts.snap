@@ -2,20 +2,20 @@
 
 exports[`namespace works 1`] = `
 "import type { Test } from './_/external-stuff';
-export declare type Flatten<T> = [{
+export type Flatten<T> = [{
     [k in keyof T]: T[k];
 }][0];
-/** @inline */ export declare type InlineFlatten<T> = [{
+/** @inline */ export type InlineFlatten<T> = [{
     [k in keyof T]: T[k];
 }][0];
 declare const obj: {
     a: Test.A;
     b: Test.B;
 };
-declare type A = Test.A;
-declare type B = Test.B;
-export declare type _unused_namespace = A | B;
-export declare type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; };
+type A = Test.A;
+type B = Test.B;
+export type _unused_namespace = A | B;
+export type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; };
 export {};
 //# sourceMappingURL=namespace.d.ts.map"
 `;

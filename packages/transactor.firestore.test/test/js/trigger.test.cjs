@@ -26,6 +26,7 @@ db('frog/{user}')
 	.beforeCommit(function () {
 		if (!this) return
 
+		// @ts-expect-error ...
 		if ((this.data['age'] || 0) < 18) throw new Error('frog too young')
 	})
 

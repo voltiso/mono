@@ -81,6 +81,7 @@ describe('bigint', () => {
 		expect.hasAssertions()
 
 		expect(s.bigint.toString()).toBe('bigint')
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.bigint(1n, 2n, 3n).toString()).toBe('1n | 2n | 3n')
 	})
 })

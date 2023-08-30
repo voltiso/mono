@@ -19,6 +19,7 @@ export interface Rest<S extends $$Schemable> {
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Rest<S extends $$Schemable = $$Schemable> {
 	readonly [IS_REST] = true
 

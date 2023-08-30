@@ -3,7 +3,6 @@
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable unicorn/consistent-function-scoping */
-/* eslint-disable @typescript-eslint/no-empty-function */
 
 import { $assert } from '_'
 
@@ -24,6 +23,7 @@ export function lazyFunction<T extends (...args: any) => any>(
 	}
 
 	// Has to be an arrow function, since it doesn't define prototype
+	// eslint-disable-next-line no-empty-function
 	const target = () => {}
 
 	function load() {

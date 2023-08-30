@@ -34,6 +34,7 @@ export interface CustomBigintImpl<O> {
 	// >
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBigint<O>

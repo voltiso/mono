@@ -2,19 +2,19 @@
 
 exports[`mapped-type works 1`] = `
 "/** @inline */
-export declare type DeepPartial_<T> = [
+export type DeepPartial_<T> = [
     {
         [k in keyof T]?: DeepPartial_<T[k]>;
     }
 ][0];
-export declare type _ObjectLike = {
+export type _ObjectLike = {
     OPTIONS: {
         shape: any;
         Output: any;
         Input: any;
     };
 };
-export declare type _GetDeepPartial_<This> = This extends _ObjectLike ? {
+export type _GetDeepPartial_<This> = This extends _ObjectLike ? {
     Output: DeepPartial_<This['OPTIONS']['Output']>;
 } : never;
 //# sourceMappingURL=mapped-type.d.ts.map"

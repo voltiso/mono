@@ -4,6 +4,8 @@
 /* eslint-disable no-console */
 /* eslint-disable n/no-sync */
 
+// import * as fs from 'node:fs'
+
 import * as path from 'node:path'
 
 import * as esbuild from 'esbuild'
@@ -78,6 +80,7 @@ export = {
 
 				supported: {
 					'async-await': false, // to make `zone.js` work (can also use the general `target: 'ES2016'` setting)
+					decorators: false,
 				},
 			})
 
@@ -86,6 +89,11 @@ export = {
 			}
 
 			// console.log('MAP', result.map)
+
+			// console.error('CODE', result.code)
+			// fs.writeFileSync('/home/atablash/dupa.js', result.code)
+
+			// result.code = 'notGood'
 
 			return result
 		} catch (error) {

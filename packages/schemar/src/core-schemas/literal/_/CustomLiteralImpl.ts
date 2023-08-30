@@ -22,6 +22,7 @@ export interface CustomLiteralImpl<O> {
 	readonly [DEFAULT_OPTIONS]: LiteralOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomLiteral<O>

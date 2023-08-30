@@ -59,6 +59,7 @@ export interface CollectionRefPattern<
 		  >
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CollectionRefPattern<
 	Pattern extends string = string,
 	Doc extends $$DocRelated = AnyDoc,

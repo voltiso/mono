@@ -54,7 +54,11 @@ export type $ImplicitInferSchema$<S extends $$Schemable> = S extends any
 //
 
 export type GetObject$<Shape extends $$InferableObject> = GetObject$.Get<
-	Assume<object, Output_<Shape>>,
+	Assume<
+		object,
+		Output_<Shape>
+		// IsIdentical<Output_<Shape>, {}> extends true ? object : Output_<Shape>
+	>,
 	Extract<Input_<Shape>, object>
 >
 

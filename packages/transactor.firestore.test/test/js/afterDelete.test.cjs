@@ -12,6 +12,8 @@ const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 // eslint-disable-next-line jest/require-hook
 let numCalls = 0
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 // eslint-disable-next-line jest/require-hook
 db('account/*').afterDelete(function ({ before }) {
 	numCalls++

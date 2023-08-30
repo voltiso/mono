@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsAlmostSame } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
 import type { $$InferableObject } from '~/types/Inferable/Inferable'
@@ -11,21 +11,21 @@ import type { CustomObject, CustomObject$ } from './CustomObject'
 
 //
 
-interface _Object<T>
+interface Object_<T>
 	extends CustomObject<{
-		Output: IsIdentical<T, {}> extends true ? object : T
-		Input: IsIdentical<T, {}> extends true ? object : T
+		Output: IsAlmostSame<T, {}> extends true ? object : T
+		Input: IsAlmostSame<T, {}> extends true ? object : T
 	}> {}
 
-export type { _Object as Object }
+export type { Object_ as Object }
 
 export interface Object$<T>
 	extends CustomObject$<{
-		Output: IsIdentical<T, {}> extends true ? object : T
-		Input: IsIdentical<T, {}> extends true ? object : T
+		Output: IsAlmostSame<T, {}> extends true ? object : T
+		Input: IsAlmostSame<T, {}> extends true ? object : T
 	}> {
 	//
-	get Final(): _Object<T>
+	get Final(): Object_<T>
 }
 
 //

@@ -65,7 +65,7 @@
   "dependencies": {
     "@voltiso/context": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "cross-fetch": "^3.1.5"
+    "cross-fetch": "^4.0.0"
   },
   "peerDependencies": {
     "@types/express": "^4.17.13",
@@ -82,7 +82,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
-    "@types/node": "^18.16.0",
+    "@types/node": "^20.5.7",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
@@ -91,7 +91,7 @@
     "@voltiso/script": "workspace:^",
     "cross-env": "^7.0.3",
     "express": "^4.18.2",
-    "get-port": "^6.1.2",
-    "jest": "^29.5.0"
+    "get-port": "^7.0.0",
+    "jest": "^29.6.4"
   }
 }

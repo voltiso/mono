@@ -51,7 +51,7 @@ export const fileExtensionInImport = createRule<
 			description:
 				'enforce the style of file extensions in `import` declarations',
 
-			recommended: 'warn',
+			recommended: 'recommended',
 		},
 
 		fixable: 'code',
@@ -63,6 +63,7 @@ export const fileExtensionInImport = createRule<
 
 		schema: [
 			{
+				type: 'string',
 				enum: ['always', 'never'],
 			},
 			{
@@ -70,6 +71,7 @@ export const fileExtensionInImport = createRule<
 				properties: {},
 
 				additionalProperties: {
+					type: 'string',
 					enum: ['always', 'never'],
 				},
 			},

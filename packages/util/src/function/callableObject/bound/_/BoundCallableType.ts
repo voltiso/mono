@@ -7,7 +7,7 @@ import type { WithSelfBoundCALL } from '~/function'
 import { CALL } from '~/function'
 
 /** @internal Use `BoundCallable` instead */
-// eslint-disable-next-line etc/underscore-internal
+// eslint-disable-next-line etc/underscore-internal, @typescript-eslint/ban-types
 export interface IBoundCallable extends Function {
 	clone(): unknown
 	[CALL]?(...args: unknown[]): unknown

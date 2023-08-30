@@ -57,7 +57,7 @@ export const jsdocOverride = defineEslintConfigOverride({
 		'jsdoc/no-multi-asterisks': 0,
 		'jsdoc/no-restricted-syntax': 0,
 		'jsdoc/no-types': 1,
-		'jsdoc/no-undefined-types': 1,
+		'jsdoc/no-undefined-types': 0, // does not always work (see ISchema.ts)
 		'jsdoc/require-asterisk-prefix': 1,
 		'jsdoc/require-description': 0,
 		'jsdoc/require-description-complete-sentence': 0,
@@ -80,14 +80,17 @@ export const jsdocOverride = defineEslintConfigOverride({
 		'jsdoc/require-yields': 1,
 		'jsdoc/require-yields-check': 1,
 
-		'jsdoc/tag-lines': [
-			'warn',
-			'never',
-			{
-				endLines: 1,
-				tags: { example: { lines: 'always' } },
-			},
-		],
+		'jsdoc/tag-lines': 0,
+
+		// ! problematic
+		// 'jsdoc/tag-lines': [
+		// 	'warn',
+		// 	'never',
+		// 	{
+		// 		startLines: 1,
+		// 		tags: { example: { lines: 'always' } },
+		// 	},
+		// ],
 
 		'jsdoc/empty-tags': 0,
 		'jsdoc/valid-types': 0,

@@ -13,6 +13,7 @@ const typescriptExtensions = new Set(['.ts', '.cts', '.mts'])
  * @param context - A context
  */
 export function isTypescript(context: Rule.RuleContext): boolean {
+	// eslint-disable-next-line etc/no-deprecated
 	const sourceFileExt = path.extname(context.getPhysicalFilename())
 	return typescriptExtensions.has(sourceFileExt)
 }

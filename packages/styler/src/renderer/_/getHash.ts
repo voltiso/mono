@@ -23,7 +23,6 @@ export function getHash32(str: string): number {
 }
 
 export function base64UrlFromUInt32Be(num: number): string {
-	// eslint-disable-next-line etc/no-deprecated
 	return btoa(
 		String.fromCharCode(
 			(num >> 24) & 0xff,

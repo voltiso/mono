@@ -38,6 +38,7 @@ export const testOverride = defineEslintConfigOverride({
 		'etc/prefer-interface': 0,
 		'etc/no-misused-generics': 0,
 		// 'id-length': 0,
+		'no-empty-function': 0,
 		'@typescript-eslint/no-empty-function': 0,
 		'@typescript-eslint/ban-types': 0,
 		'max-classes-per-file': 0,

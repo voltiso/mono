@@ -9,7 +9,8 @@ export interface IRequiredOrOptionalNestedSubjectBase {
 	 * Only enabled in optional `NestedSubject` (`.isAncestorOptional` is not
 	 * enough)
 	 */
-	delete?(): void
+	delete?: (() => void) | undefined
+	// delete?(): void
 
 	get exists(): boolean
 	get value(): unknown

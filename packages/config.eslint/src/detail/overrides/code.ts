@@ -66,6 +66,8 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-unnecessary-condition': 1, // sometimes buggy with generics?
 		'@typescript-eslint/consistent-type-imports': 1,
 		'@typescript-eslint/no-extra-parens': 0, // conflicts with prettier
+
+		'no-extra-semi': 0, // conflicts with prettier
 		'@typescript-eslint/no-extra-semi': 0, // conflicts with prettier
 
 		'no-invalid-this': 0,
@@ -83,6 +85,9 @@ export const codeOverride = defineEslintConfigOverride({
 		'@typescript-eslint/no-non-null-asserted-optional-chain': 1,
 		'@typescript-eslint/space-before-function-paren': 0, // prettier
 		'@typescript-eslint/unbound-method': 1,
+
+		'@typescript-eslint/no-redundant-type-constituents': 0, // conflicts with AlsoAccept
+		'@typescript-eslint/no-unsafe-declaration-merging': 1,
 
 		// '@typescript-eslint/no-explicit-any': [
 		// 	'error',

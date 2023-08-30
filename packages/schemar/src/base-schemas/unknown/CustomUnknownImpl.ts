@@ -15,6 +15,7 @@ export interface CustomUnknownImpl<O> {
 
 $assert(SCHEMA_NAME)
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownImpl<O extends UnknownOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknown<O>

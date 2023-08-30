@@ -23,6 +23,7 @@ export interface CustomAnyImpl<O> {
 	readonly [BASE_OPTIONS]: AnyOptions
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomAnyImpl<
 	O extends Partial<AnyOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {

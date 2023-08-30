@@ -5,6 +5,10 @@
 	"extends": "@voltiso/config.ts/build/esm",
 
 	"compilerOptions": {
+		// error TS2459: Module '"eslint-define-config"' declares 'ESLintConfig' locally, but it is not exported.
+		"module": "esnext",
+		"moduleResolution": "Node",
+
 		"outDir": "dist/esm",
 		"rootDir": "src"
 	},

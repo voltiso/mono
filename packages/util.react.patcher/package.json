@@ -41,12 +41,11 @@
     "react": "^18.0.0 || ^17.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
-    "@testing-library/jest-dom": "^5.16.5",
+    "@babel/core": "^7.22.11",
+    "@babel/preset-env": "^7.22.10",
+    "@testing-library/jest-dom": "^6.1.2",
     "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.0.38",
-    "@types/testing-library__jest-dom": "^5.14.5",
+    "@types/react": "^18.2.21",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",
@@ -54,6 +53,6 @@
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.71.7"
+    "react-native": "^0.72.4"
   }
 }

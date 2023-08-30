@@ -51,6 +51,6 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transactor": "workspace:^",
-    "firebase-admin": "^11.7.0"
+    "firebase-admin": "^11.10.1"
   }
 }

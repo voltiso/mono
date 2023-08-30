@@ -16,10 +16,10 @@ import { refs } from '~/refs'
 const LazyRender: ForwardRefRenderFunction<
 	HTMLDivElement,
 	ComponentPropsWithRef<'div'> & {
-		storageKey?: string | undefined
+		readonly storageKey?: string | undefined
 
-		children: ReactNode
-		style?: CSSProperties | undefined
+		readonly children: ReactNode
+		readonly style?: CSSProperties | undefined
 	}
 > = (props, ref) => {
 	const { children, storageKey, style, ...otherProps } = props

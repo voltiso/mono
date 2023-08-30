@@ -5,6 +5,7 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"module": "CommonJS"
+		"module": "CommonJS",
+		"moduleResolution": "node"
 	}
 }

@@ -22,6 +22,7 @@ export interface CustomNumberImpl<O> {
 $assert(EXTENDS)
 $assert(SCHEMA_NAME)
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomNumber<O>

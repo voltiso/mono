@@ -13,7 +13,6 @@ export class ThemePath {
 		return new Proxy(this, {
 			get: (target, key, receiver) => {
 				if (typeof key === 'symbol' || key in target)
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 					return Reflect.get(target, key, receiver)
 
 				return new ThemePath([...this.path, key])

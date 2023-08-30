@@ -19,6 +19,7 @@ db('counterAbc/*')
 	})
 	.method('increment', function (x) {
 		// @ts-expect-error ...
+		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		this['value'] += x
 	})
 	.method('floatSomePromises', async function () {

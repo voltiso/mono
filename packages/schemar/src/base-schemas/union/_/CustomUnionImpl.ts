@@ -27,6 +27,7 @@ export interface CustomUnionImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnionOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnion<O>, IUnion

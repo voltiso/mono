@@ -12,4 +12,3 @@ ignores:
   - '@voltiso/config.jest.lib'
   - '@jest/types'
   - '@types/react-test-renderer'
-  - '@types/testing-library__jest-dom' # extend-expect

@@ -54,5 +54,5 @@ module.exports = defineEslintConfig({
 				tsconfigRootDir: __dirname,
 			},
 		},
-	},
+	}
 })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`omit-precise works 1`] = `
-"export declare type OmitPrecise_<O> = symbol extends keyof O ? O[symbol] : never;
+"export type OmitPrecise_<O> = symbol extends keyof O ? O[symbol] : never;
 //# sourceMappingURL=omit-precise.d.ts.map"
 `;

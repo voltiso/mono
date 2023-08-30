@@ -6,7 +6,7 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 import { codeFiles } from '../files'
 
 export const unicorn = defineEslintConfigOverride({
-	extends: ['plugin:unicorn/all'],
+	// extends: ['plugin:unicorn/all'],
 
 	files: codeFiles,
 

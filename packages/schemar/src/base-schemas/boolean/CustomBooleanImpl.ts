@@ -33,6 +33,7 @@ export interface CustomBooleanImpl<O> {
 	readonly [DEFAULT_OPTIONS]: BooleanOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBoolean<O>

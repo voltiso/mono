@@ -21,6 +21,7 @@ export interface CustomRecordImpl<O> {
 	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomRecord<O>

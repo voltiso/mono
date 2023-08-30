@@ -147,7 +147,7 @@ describe('patch', () => {
 
 		expect(b).toStrictEqual({ b: 9, a: { aa: { aaa: 'a' }, bb: 99 } })
 
-		const c = patch(123, 234 as const, { depth: 1 })
+		const c = patch(123 as number, 234 as const, { depth: 1 })
 
 		expect(c).toBe(234)
 

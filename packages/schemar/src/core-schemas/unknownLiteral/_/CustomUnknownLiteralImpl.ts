@@ -20,6 +20,7 @@ export interface CustomUnknownLiteralImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownLiteral<O>

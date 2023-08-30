@@ -207,6 +207,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 	override _toString(): string {
 		const elementTypeStr = (
+			// eslint-disable-next-line @typescript-eslint/no-base-to-string
 			this.getElementSchema as unknown as ISchema
 		).toString()
 

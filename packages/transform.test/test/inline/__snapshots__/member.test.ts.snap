@@ -8,10 +8,10 @@ export interface Schema {
     get Inlined(): /* _<{ a: 1 } & { b: 2 }> */ { a: 1; b: 2; };
 }
 declare const a: Schema;
-export declare type NonInlined = typeof a.NonInlined;
-export declare type Inlined = /* typeof a.Inlined */ { a: 1; b: 2; };
-export declare type NonInlined2 = Schema['NonInlined'];
-export declare type Inlined2 = /* Schema['Inlined'] */ { a: 1; b: 2; };
+export type NonInlined = typeof a.NonInlined;
+export type Inlined = /* typeof a.Inlined */ { a: 1; b: 2; };
+export type NonInlined2 = Schema['NonInlined'];
+export type Inlined2 = /* Schema['Inlined'] */ { a: 1; b: 2; };
 export {};
 //# sourceMappingURL=member.d.ts.map"
 `;

@@ -40,20 +40,21 @@ export function compatTransform(
 				/** `numericSeparators` */
 				if (
 					!options.supported.numericSeparators &&
-					ts.isNumericLiteral(node) &&
-					node.getText(sourceFile)
+					ts.isNumericLiteral(node)
 				) {
-					const nodeText = node.getText()
-					if (nodeText.includes('_')) {
-						const newNodeStr = nodeText.replace(/_/gu, '')
+					try {
+						const nodeText = node.getText(sourceFile)
+						if (nodeText && nodeText.includes('_')) {
+							const newNodeStr = nodeText.replace(/_/gu, '')
 
-						logCompatTransformNode(ctx, node, newNodeStr, {
-							feature: 'numericSeparators',
-						})
+							logCompatTransformNode(ctx, node, newNodeStr, {
+								feature: 'numericSeparators',
+							})
 
-						return ts.factory.createNumericLiteral(newNodeStr)
-						// return ts.factory.createNumericLiteral(node.text)
-					}
+							return ts.factory.createNumericLiteral(newNodeStr)
+							// return ts.factory.createNumericLiteral(node.text)
+						}
+					} catch {}
 				}
 
 				/** `undefined` to `void 0` */

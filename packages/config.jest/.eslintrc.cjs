@@ -1,8 +1,10 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-{
-	"extends": "@voltiso/config.ts",
+'use strict'
 
-	"declaration": false
+module.exports = {
+	rules: {
+		'node-dependencies/prefer-caret-range-version': 0 // esbuild version lock
+	}
 }

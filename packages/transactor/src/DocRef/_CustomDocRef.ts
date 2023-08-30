@@ -67,6 +67,7 @@ export interface _CustomDocRef<
 		PromiseLike<GetDoc<O['doc']> | CustomDocRef.MaybeNull<O>> {}
 
 /** @internal */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class _CustomDocRef<
 	O extends CustomDocRef.Options = CustomDocRef.Options.Default,
 > implements $$DocRef

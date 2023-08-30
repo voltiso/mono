@@ -36,7 +36,7 @@ export class NodeContext<T> implements Context<T> {
 					return value
 				},
 				// eslint-disable-next-line promise/prefer-await-to-callbacks
-				error => {
+				(error: unknown) => {
 					// console.log('err', error, 'exit', oldValue)
 					// this._asyncLocalStorage.enterWith(oldValue as never) // T | undefined
 					throw error

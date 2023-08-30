@@ -649,7 +649,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 					mapProps: (p: P<$>) =>
 						({
 							[propName]: mapProp(p[propName] as never),
-						} as never),
+						}) as never,
 				},
 			] as never,
 		})

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { AlsoAccept, BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import type {
 	$$Schema,
@@ -27,9 +27,9 @@ export interface IFunction extends ISchema {
 	readonly InputThis: unknown
 	readonly This: unknown
 
-	readonly OutputParameters: unknown[]
-	readonly InputParameters: unknown[]
-	readonly Parameters: unknown[]
+	readonly OutputParameters: unknown[] // | AlsoAccept<unknown> // CustomFunction assignability - new TS bug?
+	readonly InputParameters: unknown[] | AlsoAccept<unknown> // CustomFunction assignability - new TS bug?
+	readonly Parameters: unknown[] | AlsoAccept<unknown> // CustomFunction assignability - new TS bug?
 
 	readonly OutputReturn: unknown
 	readonly InputReturn: unknown

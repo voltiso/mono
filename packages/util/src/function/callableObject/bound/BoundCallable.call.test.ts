@@ -128,10 +128,12 @@ describe('BoundCallable', () => {
 	it('clone', () => {
 		expect.hasAssertions()
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 		interface C {
 			(): unknown
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 		class C {
 			constructor() {
 				return BoundCallable(this)

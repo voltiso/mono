@@ -1,7 +1,6 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable unicorn/no-unsafe-regex */
 /* eslint-disable security/detect-unsafe-regex */
 
 import type { IsIdentical } from '@voltiso/util'

@@ -8,11 +8,11 @@ import type {
 	RefAttributes,
 } from 'react'
 
-import type { ComponentLike, ReactElementLike } from '../ElementType'
+import type { ComponentLike, ReactNodeLike } from '../ElementType'
 import type { ForwardRefAndCssRenderFunction } from '../ForwardRefRenderFunction'
 
 export type JSXElementConstructorLike<P> =
-	| ((props: P) => ReactElementLike | null)
+	| ((props: P) => ReactNodeLike) // ReactElementLike | null
 	| (new (props: P) => ComponentLike)
 
 export type $ComponentProps<T> = T extends JSXElementConstructorLike<infer P>

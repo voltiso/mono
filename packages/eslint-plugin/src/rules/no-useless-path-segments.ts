@@ -57,7 +57,7 @@ export const noUselessPathSegments = createRule<
 
 		docs: {
 			description: 'removes useless path segments',
-			recommended: 'warn',
+			recommended: 'recommended',
 		},
 
 		fixable: 'code',

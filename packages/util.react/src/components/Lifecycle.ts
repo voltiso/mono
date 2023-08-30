@@ -7,8 +7,8 @@ import { useEffect, useLayoutEffect } from 'react'
 import { useInitial } from '~/hooks'
 
 export const Lifecycle: FC<{
-	onLayoutFirstRender?: (() => void) | undefined
-	onFirstRender?: (() => void) | undefined
+	readonly onLayoutFirstRender?: (() => void) | undefined
+	readonly onFirstRender?: (() => void) | undefined
 }> = ({ onLayoutFirstRender, onFirstRender }) => {
 	const mutable = useInitial({
 		layoutFirstRenderCalled: false,

@@ -9,7 +9,7 @@
 	"compilerOptions": {
 		"lib": ["DOM"],
 
-		"types": ["react/next"],
+		"types": ["react/canary"],
 
 		"paths": {
 			"~": ["../../src"],

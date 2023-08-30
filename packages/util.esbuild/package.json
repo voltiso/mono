@@ -42,9 +42,9 @@
     "esbuild": ">= 0.14.49"
   },
   "devDependencies": {
-    "@types/node": "^18.16.0",
+    "@types/node": "^20.5.7",
     "@voltiso/config.ts": "workspace:^",
-    "esbuild": "^0.17.18",
-    "rimraf": "^5.0.0"
+    "esbuild": "^0.19.2",
+    "rimraf": "^5.0.1"
   }
 }

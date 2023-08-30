@@ -12,7 +12,7 @@ import { WebRenderer } from '~/renderer'
 import { RendererContext } from './context'
 
 export const ClientNextStylerRegistry = (props: {
-	children: React.ReactNode
+	readonly children: React.ReactNode
 }) => {
 	// eslint-disable-next-line react/hook-use-state
 	const [renderer] = useState(() => new WebRenderer())

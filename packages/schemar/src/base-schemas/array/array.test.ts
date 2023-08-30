@@ -246,6 +246,7 @@ describe('array', () => {
 	it('toString', () => {
 		expect.hasAssertions()
 
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.array.getElementSchema.toString()).toBe('unknown')
 
 		expect(s.array.toString()).toBe('unknown[]')

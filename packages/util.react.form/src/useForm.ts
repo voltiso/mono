@@ -96,7 +96,7 @@ function _initializeResult<S extends $$SchemableObject>(
 						const issues$ = get(
 							mutable.result$.fields,
 							...issuesPath,
-						) as NestedSubject<ValidationIssue[]>
+						) as unknown as NestedSubject<ValidationIssue[]>
 
 						issues$.set(validationResult.issues)
 					},

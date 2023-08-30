@@ -69,8 +69,8 @@
 
 		//
 
-		// `react-native` - Exp - app.json validation, code completion
-		"byCedric.vscode-expo",
+		// `react-native` - Expo - app.json validation, code completion
+		"expo.vscode-expo-tools",
 
 		//
 

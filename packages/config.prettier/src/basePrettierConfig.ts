@@ -38,8 +38,10 @@ const pluginNames = Object.keys(getDependencies()).filter(
 	dep => dep.startsWith('@prettier/plugin') || dep.includes('prettier-plugin'),
 )
 
-// eslint-disable-next-line import/no-dynamic-require, n/global-require, @typescript-eslint/no-unsafe-return, unicorn/prefer-module
-const plugins = pluginNames.map(name => require(name))
+
+// // eslint-disable-next-line import/no-dynamic-require, n/global-require, @typescript-eslint/no-unsafe-return, unicorn/prefer-module
+// const plugins = pluginNames.map(name => require(name))
+const plugins = pluginNames
 
 // console.log('prettier plugins', plugins)
 

@@ -6,12 +6,12 @@ exports[`import get-type 1`] = `
  *
  * @inline
  */
-export declare type GetType_<L> = object extends L ? object : never;
+export type GetType_<L> = object extends L ? object : never;
 /**
  * Infer type, or identity if already an Inferable
  *
  * @inline
  */
-export declare type GetType<S extends string> = GetType_<S>;
+export type GetType<S extends string> = GetType_<S>;
 //# sourceMappingURL=get-type.d.ts.map"
 `;

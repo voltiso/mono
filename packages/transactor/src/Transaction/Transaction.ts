@@ -12,6 +12,7 @@ import type { Cache } from './Cache'
 import type { ParentContext, TransactionContext } from './Context'
 import type { TransactionConstructor } from './TransactionConstructor'
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Transaction {
 	<Tokens extends readonly string[]>(...pathTokens: Tokens): DbPathFromString<
 		CanonicalPath<Tokens>
@@ -19,6 +20,7 @@ export interface Transaction {
 }
 
 @staticImplements<TransactionConstructor<Transaction>>()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Transaction extends lazyConstructor(() => Db) {
 	declare _context: TransactionContext
 	_databaseTransaction: Database.Transaction

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-empty-function */
-
 /**
  * Manually force-narrow type of `x`
  * https://github.com/microsoft/TypeScript/issues/10421#issuecomment-518806979
@@ -26,6 +24,7 @@
  */
 export function $AssumeType<T extends Supertype, Supertype = unknown>(
 	_x: Supertype,
+// eslint-disable-next-line no-empty-function
 ): asserts _x is T {}
 
 //

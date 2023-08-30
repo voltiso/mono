@@ -34,10 +34,10 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/jest-dom": "^6.1.2",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
-    "jest-environment-jsdom": "^29.5.0"
+    "jest-environment-jsdom": "^29.6.4"
   },
   "peerDependencies": {
     "react": "*",
@@ -49,11 +49,11 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
-    "@types/react": "^18.0.38",
+    "@babel/core": "^7.22.11",
+    "@babel/preset-env": "^7.22.10",
+    "@types/react": "^18.2.21",
     "@voltiso/config.ts": "workspace:^",
     "react": "^18.2.0",
-    "react-native": "^0.71.7"
+    "react-native": "^0.72.4"
   }
 }

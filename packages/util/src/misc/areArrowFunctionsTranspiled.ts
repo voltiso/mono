@@ -3,5 +3,5 @@
 
 import { isDefined } from '~/nullish/isDefined'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+// eslint-disable-next-line no-empty-function
 export const areArrowFunctionsTranspiled = isDefined((() => {}).prototype)

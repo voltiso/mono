@@ -42,6 +42,7 @@ export interface CollectionRef<
 }
 
 /** Collection reference */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CollectionRef<
 	R extends $$DocRelated,
 	_Ctx extends ExecutionContext = 'outside',

@@ -52,6 +52,7 @@ export function visitImport(
 	const { includeCore = false, optionIndex = 0 } = visitImportOptions || {}
 
 	const targets: ImportTarget[] = []
+	// eslint-disable-next-line etc/no-deprecated
 	const basedir = path.dirname(path.resolve(context.getFilename()))
 	const paths = getResolvePaths(context, optionIndex)
 	const extensions = getTryExtensions(context, optionIndex)

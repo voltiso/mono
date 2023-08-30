@@ -113,7 +113,7 @@ export function getSchema(ref: $$DocRef): IntrinsicFieldsSchema | null {
 	for (const schema of privateSchemas) {
 		thisSchema = thisSchema.and(schema) as never
 		// console.log({ schema })
-		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string
 		$assert(isObjectSchema(thisSchema), `after and'ing with ${schema}`)
 		ref._privateSchema = ref._privateSchema.and(schema) as never
 	}

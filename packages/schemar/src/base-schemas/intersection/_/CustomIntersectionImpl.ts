@@ -25,6 +25,7 @@ export interface CustomIntersectionImpl<O> {
 	readonly [DEFAULT_OPTIONS]: IntersectionOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomIntersection<O>, IIntersection

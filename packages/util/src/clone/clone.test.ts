@@ -285,10 +285,12 @@ describe('clone', () => {
 	it('clones lazy callable instances', () => {
 		expect.hasAssertions()
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 		interface C {
 			(...args: any): any
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 		class C {
 			constructor() {
 				return BoundCallable(this)

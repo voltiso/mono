@@ -35,6 +35,7 @@ export interface CustomUnknownObjectImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {

@@ -15,6 +15,7 @@ import { concatPath, CustomDocPath } from '~/Path'
 import type { CanonicalPath } from './CanonicalPath'
 import type { DbContext, DbParentContext } from './Context'
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Db {
 	<Tokens extends readonly string[]>(...pathTokens: Tokens): DbPathFromString<
 		CanonicalPath<Tokens>
@@ -24,6 +25,7 @@ export interface Db {
 }
 
 /** In transaction or not */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Db {
 	protected _context: DbContext
 

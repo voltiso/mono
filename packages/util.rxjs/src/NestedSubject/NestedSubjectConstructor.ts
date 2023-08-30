@@ -65,6 +65,7 @@ export interface NestedSubjectConstructor<
 	>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class NestedSubjectConstructor<
 	TO extends Partial<NestedSubjectTypeOptions>,
 > {

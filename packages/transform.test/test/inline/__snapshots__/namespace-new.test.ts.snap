@@ -2,17 +2,17 @@
 
 exports[`namespace-new works 1`] = `
 "import type { Test } from './_/external-stuff';
-export declare type Flatten<T> = [{
+export type Flatten<T> = [{
     [k in keyof T]: T[k];
 }][0];
-/** @inline */ export declare type InlineFlatten<T> = [{
+/** @inline */ export type InlineFlatten<T> = [{
     [k in keyof T]: T[k];
 }][0];
 declare const obj: {
     a: Test.A;
     b: Test.B;
 };
-export declare type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; };
+export type Inlined = /* InlineFlatten<typeof obj> */ { a: Test.A; b: Test.B; };
 export {};
 //# sourceMappingURL=namespace-new.d.ts.map"
 `;

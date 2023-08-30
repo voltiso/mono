@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.0.38",
+    "@types/react": "^18.2.21",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/schemar": "workspace:^",
@@ -64,7 +64,7 @@
     "@voltiso/util.rxjs": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.1"
   },
   "__________MISC": "__________",
   "typeCoverage": {

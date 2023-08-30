@@ -59,6 +59,7 @@ export interface CustomFunctionImpl<O> {
 	readonly Return: this['OutputReturn']
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomFunction<O>

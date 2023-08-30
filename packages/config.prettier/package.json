@@ -34,20 +34,21 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@prettier/plugin-xml": "^2.2.0",
-    "@voltiso/prettier-plugin-toml": "^0.3.3",
-    "prettier-plugin-jsdoc": "^0.4.2",
-    "prettier-plugin-sh": "^0.12.8"
+    "@prettier/plugin-xml": "^3.2.0",
+    "prettier-plugin-jsdoc": "^1.0.1",
+    "prettier-plugin-sh": "^0.13.1",
+    "prettier-plugin-toml": "^1.0.0"
   },
   "peerDependencies": {
     "prettier": "*"
   },
   "devDependencies": {
-    "@types/node": "^18.16.0",
+    "@types/node": "^20.5.7",
+    "@types/prettier": "^3.0.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "jest": "^29.5.0",
-    "prettier": "^2.8.8"
+    "jest": "^29.6.4",
+    "prettier": "^3.0.3"
   }
 }

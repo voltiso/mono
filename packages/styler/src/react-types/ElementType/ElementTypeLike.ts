@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { ReactNode, ReactPortal } from 'react'
+
 import type { IntrinsicElementLike } from '~/Stylable'
 
 export type ReactElementLike<P = any> = {
@@ -10,8 +12,19 @@ export type ReactElementLike<P = any> = {
 }
 
 export type FunctionComponentLike<P = any> = {
-	(props: any): ReactElementLike<P> | null
+	(props: any): ReactNodeLike<P> // ReactElementLike<P> | null
 }
+
+export type ReactNodeLike<P = any> =
+	| ReactElementLike<P>
+	| string
+	| number
+	| Iterable<ReactNode>
+	| ReactPortal
+	| boolean
+	| null
+	| undefined
+// | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES];
 
 export type ComponentLike<P = any> = {
 	render(): any

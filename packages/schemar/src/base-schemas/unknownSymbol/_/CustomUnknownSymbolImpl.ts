@@ -22,6 +22,7 @@ export interface CustomUnknownSymbolImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnknownSymbolOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownSymbol<O>

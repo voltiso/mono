@@ -76,7 +76,6 @@ export function getProperty<
 
 	// ! it may be proxy object 🤔
 	if (
-		// eslint-disable-next-line unicorn/no-typeof-undefined
 		typeof result === 'undefined' &&
 		!((property as keyof any) in object) &&
 		!Object.prototype.hasOwnProperty.call(object, property)

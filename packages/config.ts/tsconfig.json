@@ -61,7 +61,8 @@
 		 * - `Node16` or `NodeNext` required for `exports` field in `package.json`
 		 * - `Node` required for dynamic imports without extensions
 		 */
-		"moduleResolution": "Node",
+		"moduleResolution": "Node", // default - for commonjs by default
+		// "moduleResolution": "node16",
 
 		//
 		// ____________________ Node 16 recommended ____________________
@@ -112,9 +113,9 @@
 		"allowUnusedLabels": false, // Undefined = warning
 		"allowUnreachableCode": false, // Undefined = warning
 		//
-		
-		"importsNotUsedAsValues": "error", // deprecated in TS 5
-		// "verbatimModuleSyntax": false, // ? good? // since TS 5 - not supported by ts-patch yet
+
+		// "importsNotUsedAsValues": "error", // deprecated in TS 5
+		"verbatimModuleSyntax": false, // ? good? // since TS 5 - not supported by ts-patch yet
 		// "ignoreDeprecations": "5.0", // since TS 5
 
 		"preserveValueImports": false

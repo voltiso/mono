@@ -14,6 +14,7 @@ export const es = defineEslintConfigOverride({
 	// extends: ['plugin:es/restrict-to-es2016'], // 4th oldest
 
 	rules: {
+		'es-x/no-hashbang': 0,
 		'es-x/no-modules': 0,
 		'es-x/no-optional-chaining': 0,
 		'es-x/no-rest-spread-properties': 0,

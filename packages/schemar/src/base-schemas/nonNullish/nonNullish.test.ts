@@ -23,6 +23,7 @@ describe('nonNullish', () => {
 
 		expect(s.nonNullish.toString()).toBe('{}')
 
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.infer({}).toString()).toBe('{}')
 
 		$Assert<IsIdentical<typeof s.nonNullish, NonNullish$>>()

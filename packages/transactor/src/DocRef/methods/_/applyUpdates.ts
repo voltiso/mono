@@ -6,7 +6,7 @@ import { isDeleteIt, isReplaceIt, patch } from '@voltiso/util'
 
 import { TransactorError } from '~/error'
 
-export function applyUpdates<X, Updates extends PatchFor<X>>(
+export function applyUpdates<X extends object | null | undefined, Updates extends PatchFor<X>>(
 	data: X,
 	updates: Updates,
 ): ApplyPatch<X, Updates> | null {

@@ -88,7 +88,7 @@ describe('theme', () => {
 		expect.hasAssertions()
 
 		const Button = style('button').css({
-			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string
 			boxShadow: `${t.a.b.c}px solid red`,
 		})
 		renderApp(<Button />)

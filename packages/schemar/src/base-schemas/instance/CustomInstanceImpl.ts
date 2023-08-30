@@ -23,6 +23,7 @@ export interface CustomInstanceImpl<O> {
 	readonly [DEFAULT_OPTIONS]: InstanceOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomInstance<O>

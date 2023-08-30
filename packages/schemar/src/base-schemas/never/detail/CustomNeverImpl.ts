@@ -16,6 +16,7 @@ export interface CustomNeverImpl<O> {
 	readonly [BASE_OPTIONS]: NeverOptions
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomNeverImpl<
 	O extends Partial<NeverOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {

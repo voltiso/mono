@@ -245,6 +245,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key],
 
 									expected: {
+										// eslint-disable-next-line @typescript-eslint/no-base-to-string
 										description: `match index signature key: ${sKeySchema.toString()}`,
 									},
 
@@ -269,6 +270,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key],
 
 									expected: {
+										// eslint-disable-next-line @typescript-eslint/no-base-to-string
 										description: `match index signature value: ${sValueSchema.toString()}`,
 									},
 

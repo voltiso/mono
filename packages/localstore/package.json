@@ -56,7 +56,7 @@
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.1"
   },
   "__________MISC": "__________",
   "engines": {

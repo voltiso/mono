@@ -5,11 +5,16 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"module": "CommonJS",
+		"module": "commonjs",
+		"moduleResolution": "node",
+
+		"declaration": false,
+		"declarationMap": false,
 
 		"paths": {
 			// "~": ["./src"],
-			"~/*": ["./src/*"]
+			"~/*": ["./src/*"],
+			"@typescript-eslint/utils": ["./node_modules/@typescript-eslint/utils/dist/index.d.ts"]
 		}
 	}
 }

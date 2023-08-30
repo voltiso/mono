@@ -5,7 +5,9 @@ import { ClientNextStylerRegistry } from '~/client/ClientNextStylerRegistry'
 
 import { rscRenderer } from './rscRenderer'
 
-export const NextStylerRegistry = (props: { children: React.ReactNode }) => {
+export const NextStylerRegistry = (props: {
+	readonly children: React.ReactNode
+}) => {
 	// `next dev`
 	// console.log('NextStylerRegistry: unflushStyle')
 	rscRenderer.unflushStyle()

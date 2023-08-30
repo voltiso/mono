@@ -51,13 +51,13 @@
     "rxjs": "^7.5.6"
   },
   "devDependencies": {
-    "@types/react": "^18.0.38",
+    "@types/react": "^18.2.21",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",
     "react": "^18.2.0",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.1"
   }
 }

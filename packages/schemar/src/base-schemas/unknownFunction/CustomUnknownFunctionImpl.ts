@@ -24,6 +24,7 @@ export interface CustomUnknownFunctionImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnknownFunctionOptions.Default
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownFunctionImpl<
 		O extends Partial<UnknownFunctionOptions>,
 	>

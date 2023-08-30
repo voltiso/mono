@@ -54,6 +54,6 @@
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "rxjs": "^7.8.0"
+    "rxjs": "^7.8.1"
   }
 }

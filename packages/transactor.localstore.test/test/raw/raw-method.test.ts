@@ -15,6 +15,7 @@ db('counter/*')
 		this.value += x
 	})
 	.method('incrementObj', function (params: any) {
+		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		this.data['value'] += params.incrementBy
 	})
 	.method('floatSomePromises', async function () {
