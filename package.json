@@ -40,7 +40,7 @@
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "ts-patch": "^3.0.2",
-    "turbo": "^1.10.13",
+     "turbo": "1.10.3 || 1.10.4-1.10.13-broken-for-test-command",
     "type-coverage": "^2.26.1",
     "typescript": "^5.2.2"
   },
@@ -51,7 +51,7 @@
   },
   "pnpm": {
     "overrides": {
-      "chalk": "4 || 5-is-esm-only",
+      "chalk": "^4.1.2 || 5_is_esm_only",
       "@eslint/eslintrc": "1.3.2",
       "esbuild": "0.17.19 || 0.18.x_to_0.19.2_decorators_not_working",
       "turbo": "1.10.3 || 1.10.4-1.10.13-broken-for-test-command"

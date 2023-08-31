@@ -38,10 +38,7 @@ export function compatTransform(
 
 			const visitor: ts.Visitor = node => {
 				/** `numericSeparators` */
-				if (
-					!options.supported.numericSeparators &&
-					ts.isNumericLiteral(node)
-				) {
+				if (!options.supported.numericSeparators && ts.isNumericLiteral(node)) {
 					try {
 						const nodeText = node.getText(sourceFile)
 						if (nodeText && nodeText.includes('_')) {

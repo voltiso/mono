@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  chalk: 4 || 5-is-esm-only
+  chalk: ^4.1.2 || 5_is_esm_only
   '@eslint/eslintrc': 1.3.2
   esbuild: 0.17.19 || 0.18.x_to_0.19.2_decorators_not_working
   turbo: 1.10.3 || 1.10.4-1.10.13-broken-for-test-command
@@ -98,7 +98,7 @@ importers:
         specifier: workspace:^
         version: link:../util
       chalk:
-        specifier: 4 || 5-is-esm-only
+        specifier: ^4.1.2 || 5_is_esm_only
         version: 4.1.2
     devDependencies:
       '@voltiso/config.jest':
@@ -169,7 +169,7 @@ importers:
         specifier: workspace:^
         version: link:../config.eslint.lib
       chalk:
-        specifier: 4 || 5-is-esm-only
+        specifier: ^4.1.2 || 5_is_esm_only
         version: 4.1.2
       eslint-gitignore:
         specifier: ^0.1.0
@@ -1012,7 +1012,7 @@ importers:
         specifier: workspace:^
         version: link:../util.node
       chalk:
-        specifier: 4 || 5-is-esm-only
+        specifier: ^4.1.2 || 5_is_esm_only
         version: 4.1.2
     devDependencies:
       '@types/node':
@@ -1128,7 +1128,7 @@ importers:
         specifier: workspace:^
         version: link:../util.firestore
       chalk:
-        specifier: 4 || 5-is-esm-only
+        specifier: ^4.1.2 || 5_is_esm_only
         version: 4.1.2
       fast-equals:
         specifier: ^5.0.1
@@ -1306,7 +1306,7 @@ importers:
         specifier: workspace:^
         version: link:../transform.lib
       chalk:
-        specifier: 4 || 5-is-esm-only
+        specifier: ^4.1.2 || 5_is_esm_only
         version: 4.1.2
     devDependencies:
       '@voltiso/config.tsdoc':

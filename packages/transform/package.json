@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/transform",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -85,7 +85,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/transform.lib": "workspace:^",
-    "chalk": "^5.3.0"
+    "chalk": "^4.1.2 || 5_is_esm_only"
   },
   "peerDependencies": {
     "typescript": "^4.8.4"
