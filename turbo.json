@@ -22,19 +22,19 @@
 
 		"test": {
 			"dependsOn": ["^build:cjs"],
-			"inputs": ["**", ":!dist/"],
+			"inputs": ["**", "!dist/**"],
 			"outputs": []
 		},
 
 		"lint:eslint": {
 			"dependsOn": ["^build:cjs", "build:cjs"],
-			"inputs": ["**", ":!dist/"],
+			"inputs": ["**", "!dist/**"],
 			"outputs": []
 		},
 
 		"lint:tsc": {
 			"dependsOn": ["^build:cjs"],
-			"inputs": ["**", ":!dist/"],
+			"inputs": ["**", "!dist/**"],
 			"outputs": []
 		},
 
