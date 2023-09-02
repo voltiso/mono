@@ -9,7 +9,7 @@ import {
 const possibleErrors = defineEslintConfigOverrideRules({
 	'node-dependencies/compat-engines': 0, // bugged
 	'node-dependencies/no-dupe-deps': 2,
-	'node-dependencies/valid-semver': 2,
+	'node-dependencies/valid-semver': 0, // does not pass: "chalk": "^4.1.2 || 5_is_esm_only"
 })
 
 const bestPractices = defineEslintConfigOverrideRules({

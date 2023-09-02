@@ -24,23 +24,23 @@
 
 		"plugins": [
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/strip/default"
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/strip/default.js"
 				// "tokens": ["$assert", "$Assert", "$Is", "$AssumeType"]
 				// "modules": []
 			},
 
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/inline/default",
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/inline/default.js",
 				"afterDeclarations": true,
 				"onInlineError": "fail"
 			},
 
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/call-info/default"
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/call-info/default.js"
 			},
 
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/compat/default"
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/compat/default.js"
 			},
 
 			// Transform paths in output .js files
