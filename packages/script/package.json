@@ -50,6 +50,8 @@
   "devDependencies": {
     "@types/node": "^20.5.8",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/util.package-json": "workspace:^"
   },
   "__________MISC": "__________",

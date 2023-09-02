@@ -49,6 +49,8 @@
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/localstore": "workspace:^",
     "@voltiso/script": "workspace:^",

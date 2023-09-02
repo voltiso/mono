@@ -50,6 +50,8 @@
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/script": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

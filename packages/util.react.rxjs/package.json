@@ -54,6 +54,8 @@
     "@types/react": "^18.2.21",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",

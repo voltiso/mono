@@ -51,9 +51,10 @@
   "devDependencies": {
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/schemar": "workspace:^",
-    "@voltiso/script": "workspace:^",
-    "@voltiso/transform": "workspace:^"
+    "@voltiso/script": "workspace:^"
   }
 }

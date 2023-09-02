@@ -47,6 +47,8 @@
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/config.tsdoc": "workspace:^"
   },
   "__________MISC": "__________",

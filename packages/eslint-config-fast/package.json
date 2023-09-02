@@ -109,6 +109,8 @@
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/script": "workspace:^",
     "eslint": "^8.48.0",
     "typescript": "^5.2.2"

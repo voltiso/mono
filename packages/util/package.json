@@ -54,6 +54,8 @@
     "@types/clone": "^2.1.1",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/config.tsdoc": "workspace:^",
     "clone": "^2.1.2",
     "jest": "^29.6.4",

@@ -24,34 +24,34 @@
 
 		"plugins": [
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/strip/default.js"
+				"transform": "@voltiso/transform/strip"
 				// "tokens": ["$assert", "$Assert", "$Is", "$AssumeType"]
 				// "modules": []
 			},
 
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/inline/default.js",
+				"transform": "@voltiso/transform/inline",
 				"afterDeclarations": true,
 				"onInlineError": "fail"
 			},
 
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/call-info/default.js"
+				"transform": "@voltiso/transform/call-info"
 			},
 
 			{
-				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/compat/default.js"
+				"transform": "@voltiso/transform/compat"
 			},
 
 			// Transform paths in output .js files
 			{
-				"transform": "@voltiso/config.ts/node_modules/typescript-transform-paths",
+				"transform": "typescript-transform-paths",
 				"exclude": ["**/dist/**"]
 			},
 
 			// Transform paths in output .d.ts files (Include this line if you output declarations files)
 			{
-				"transform": "@voltiso/config.ts/node_modules/typescript-transform-paths",
+				"transform": "typescript-transform-paths",
 				"exclude": ["**/dist/**"],
 				"afterDeclarations": true
 			}

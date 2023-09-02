@@ -43,6 +43,8 @@
     "@types/randombytes": "^2.0.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/script": "workspace:^"
   }
 }

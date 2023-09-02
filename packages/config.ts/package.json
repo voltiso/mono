@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.ts",
-  "version": "3.0.2",
+  "version": "3.0.4",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -24,14 +24,14 @@
     "prepublishOnly": "v prepublishOnlyFast"
   },
   "__________DEPS": "__________",
-  "dependencies": {
+  "peerDependencies": {
+    "typescript": ">= 4.8.4",
     "@voltiso/transform": "workspace:^",
     "typescript-transform-paths": "^3.4.6"
   },
-  "peerDependencies": {
-    "typescript": ">= 4.8.4"
-  },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6"
   }
 }

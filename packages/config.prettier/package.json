@@ -47,6 +47,8 @@
     "@types/prettier": "^3.0.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/script": "workspace:^",
     "jest": "^29.6.4",
     "prettier": "^3.0.3"

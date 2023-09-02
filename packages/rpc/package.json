@@ -86,6 +86,8 @@
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
     "@voltiso/handler": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
