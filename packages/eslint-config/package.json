@@ -106,7 +106,7 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "eslint-plugin-yml": "^1.8.0",
     "jsonc-eslint-parser": "^2.3.0",
-    "putout": "^31.8.0",
+    "putout": "^31.8.1",
     "toml-eslint-parser": "^0.6.0",
     "yaml-eslint-parser": "^1.2.2"
   },

@@ -52,7 +52,7 @@
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "firebase": "^10.3.0",
+    "firebase": "^10.3.1",
     "firebase-admin": "^11.10.1"
   }
 }

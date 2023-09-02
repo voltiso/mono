@@ -20,7 +20,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@types/jest": "^29.5.4",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.5.8",
     "@typescript/analyze-trace": "^0.10.1",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
@@ -41,7 +41,7 @@
     "ts-node": "^10.9.1",
     "ts-patch": "^3.0.2",
     "turbo": "^1.10.13",
-    "type-coverage": "^2.26.1",
+    "type-coverage": "^2.26.2",
     "typescript": "^5.2.2"
   },
   "__________MISC": "__________",
