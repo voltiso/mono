@@ -35,9 +35,13 @@
 				"onInlineError": "fail"
 			},
 
-			{ "transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/call-info/default" },
+			{
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/call-info/default"
+			},
 
-			{ "transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/compat/default" },
+			{
+				"transform": "@voltiso/config.ts/node_modules/@voltiso/transform/dist/cjs/compat/default"
+			},
 
 			// Transform paths in output .js files
 			{
