@@ -10,7 +10,8 @@ import type { IStyledData } from './IStyledData'
 import type { StyledData } from './StyledData'
 
 describe('StyledData', () => {
-	it('generic', <P extends Props, C extends IStylable | null, CC extends {}>() => {
+	it('generic', <P extends Props, C extends IStylable | null, CC extends
+		{}>() => {
 		expect.assertions(0)
 
 		$Assert.is<

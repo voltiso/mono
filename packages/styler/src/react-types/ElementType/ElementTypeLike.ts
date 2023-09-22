@@ -1,6 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { $Assert } from '@voltiso/util'
 import type { ReactNode, ReactPortal } from 'react'
 
 import type { IntrinsicElementLike } from '~/Stylable'
@@ -16,6 +17,7 @@ export type FunctionComponentLike<P = any> = {
 }
 
 export type ReactNodeLike<P = any> =
+	| PromiseLike<ReactNodeLike> // react/experimental
 	| ReactElementLike<P>
 	| string
 	| number
@@ -25,6 +27,8 @@ export type ReactNodeLike<P = any> =
 	| null
 	| undefined
 // | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES];
+
+$Assert.is<ReactNode, ReactNodeLike>()
 
 export type ComponentLike<P = any> = {
 	render(): any
@@ -39,3 +43,4 @@ export type ElementTypeLike =
 	| IntrinsicElementLike
 	| ComponentClassLike
 	| FunctionComponentLike
+

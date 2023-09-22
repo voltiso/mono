@@ -35,11 +35,11 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@typescript-eslint/utils": "^6.5.0",
+    "@typescript-eslint/utils": "^6.7.2",
     "builtins": "^5.0.1",
     "eslint-module-utils": "^2.8.0",
     "is-core-module": "^2.13.0",
-    "resolve": "^1.22.4"
+    "resolve": "^1.22.6"
   },
   "peerDependencies": {
     "typescript": ">= 4.8.4"
@@ -50,11 +50,11 @@
     "@types/is-core-module": "^2.2.0",
     "@types/resolve": "^1.20.2",
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
     "@voltiso/script": "workspace:^",
-    "eslint": "^8.48.0",
+    "@voltiso/transform": "workspace:^",
+    "eslint": "^8.50.0",
     "import-meta-resolve": "^3.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "typescript-transform-paths": "^3.4.6"
   }
 }

@@ -36,17 +36,17 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "esbuild-register": "^3.4.2"
+    "esbuild-register": "^3.5.0"
   },
   "peerDependencies": {
     "esbuild": ">= 0.14.49"
   },
   "devDependencies": {
-    "@types/node": "^20.5.8",
+    "@types/node": "^20.6.3",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
-    "esbuild": "0.17.19 || 0.18.x_to_0.19.2_decorators_not_working",
-    "rimraf": "^5.0.1"
+    "esbuild": "=0.17.19 || 0.18.x-to-0.19.2-not-transforming-decorators",
+    "rimraf": "^5.0.1",
+    "typescript-transform-paths": "^3.4.6"
   }
 }

@@ -40,10 +40,10 @@
     "@babel/preset-typescript": "*"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.11",
+    "@babel/core": "^7.22.20",
     "@voltiso/config.ts": "workspace:^",
+    "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
-    "@voltiso/script": "workspace:^"
+    "typescript-transform-paths": "^3.4.6"
   }
 }

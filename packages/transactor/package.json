@@ -52,17 +52,17 @@
     "@voltiso/schemar": "workspace:^"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.5",
+    "@types/js-yaml": "^4.0.6",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
-    "zone.js": "^0.13.1"
+    "@voltiso/transform": "workspace:^",
+    "typescript-transform-paths": "^3.4.6",
+    "zone.js": "^0.14.0"
   },
   "__________MISC": "__________",
   "engines": {

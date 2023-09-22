@@ -38,7 +38,7 @@
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
-    "jest": "^29.6.4"
+    "jest": "^29.7.0",
+    "typescript-transform-paths": "^3.4.6"
   }
 }

@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import 'zone.js'
-import 'zone.js/dist/zone-testing-node-bundle'
 
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'

@@ -48,11 +48,11 @@
     "chalk": "^4.1.2 || 5_is_esm_only"
   },
   "devDependencies": {
-    "@types/node": "^20.5.8",
+    "@types/node": "^20.6.3",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
-    "@voltiso/util.package-json": "workspace:^"
+    "@voltiso/util.package-json": "workspace:^",
+    "typescript-transform-paths": "^3.4.6"
   },
   "__________MISC": "__________",
   "engines": {

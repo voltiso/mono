@@ -44,20 +44,20 @@
     "react": "18 || 17"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.11",
-    "@babel/plugin-proposal-decorators": "^7.22.10",
-    "@babel/plugin-transform-react-jsx": "^7.22.5",
-    "@babel/preset-env": "^7.22.10",
+    "@babel/core": "^7.22.20",
+    "@babel/plugin-proposal-decorators": "^7.22.15",
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "@babel/preset-env": "^7.22.20",
     "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.2.21",
+    "@types/react": "^18.2.22",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
     "@voltiso/script": "workspace:^",
+    "@voltiso/transform": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.72.4"
+    "react-native": "^0.72.4",
+    "typescript-transform-paths": "^3.4.6"
   }
 }

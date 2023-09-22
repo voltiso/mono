@@ -28,7 +28,8 @@ describe('StylableIntrinsic', () => {
 		$Assert.is<All, WithClassName>()
 	})
 
-	it('every JSX intrinsic property is optional?', <K extends keyof JSX.IntrinsicElements>() => {
+	it('every JSX intrinsic property is optional?', <K extends
+		keyof JSX.IntrinsicElements>() => {
 		expect.assertions(0)
 
 		$Assert.is<JSX.IntrinsicElements[K], {}>()

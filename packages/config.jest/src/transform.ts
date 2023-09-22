@@ -24,7 +24,7 @@ function isFileFlow(path: string) {
 
 //
 
-const librariesUsingJsx = ['react-native']
+const librariesUsingJsx = ['react-native', '@react-native/virtualized-lists']
 
 function isFileJsx(path: string) {
 	for (const libraryName of librariesUsingJsx)

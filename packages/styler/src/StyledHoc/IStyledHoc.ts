@@ -19,7 +19,7 @@ export interface IStyledHoc extends IStyled, IStyledHocCall {}
 //
 
 export interface IStyledHocCall {
-	<E extends StylableLike>(Element: E): E extends StyledHocLike
-		? E
-		: IStyledComponent | ThrowWrongInnerProps
+	<E extends StylableLike>(
+		Element: E,
+	): E extends StyledHocLike ? E : IStyledComponent | ThrowWrongInnerProps
 }

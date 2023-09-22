@@ -43,10 +43,10 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.1.2",
+    "@testing-library/jest-dom": "^6.1.3",
     "@voltiso/config.jest.lib": "workspace:^",
-    "esbuild": "0.17.19 || 0.18.x-to-0.19.2-not-transforming-decorators",
-    "flow-remove-types": "^2.215.1"
+    "esbuild": "=0.17.19 || 0.18.x-to-0.19.2-not-transforming-decorators",
+    "flow-remove-types": "^2.217.0"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^"

@@ -82,18 +82,18 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
-    "@types/node": "^20.5.8",
+    "@types/node": "^20.6.3",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
-    "@voltiso/transform": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
     "@voltiso/handler": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
+    "@voltiso/transform": "workspace:^",
     "cross-env": "^7.0.3",
     "express": "^4.18.2",
     "get-port": "^7.0.0",
-    "jest": "^29.6.4"
+    "jest": "^29.7.0",
+    "typescript-transform-paths": "^3.4.6"
   }
 }
