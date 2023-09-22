@@ -40,4 +40,18 @@ describe('cssProps', () => {
 			backgroundColor: 'red',
 		})
 	})
+
+	it('newCssProp', () => {
+		expect.hasAssertions()
+
+		const Button = style(View).newCssProp('red', { color: 'red' })
+		;<Button /> // check if optional
+		const { getByTestId } = renderApp(<Button red testID='a' />)
+
+		const button = getByTestId('a')
+
+		expect(button.props.style).toMatchObject({
+			color: 'red',
+		})
+	})
 })
