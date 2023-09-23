@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable testing-library/prefer-screen-queries */
+
 import { $Assert } from '@voltiso/util'
 import { View } from 'react-native'
 
@@ -32,7 +34,6 @@ describe('cssProps', () => {
 			<MyView testID='a' flex={1} backgroundColor='red' />,
 		)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({

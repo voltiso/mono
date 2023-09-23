@@ -8,7 +8,7 @@ overrides:
   '@eslint/eslintrc': 1.3.2
   esbuild: '=0.17.19 || 0.18.x-to-0.19.2-not-transforming-decorators'
 
-packageExtensionsChecksum: 6604a6142168fab8b89b70783cb53d52
+packageExtensionsChecksum: c74c518c32c5746cf634f49eaa228c86
 
 importers:
 
@@ -102,7 +102,7 @@ importers:
         specifier: workspace:^
         version: link:../util
       chalk:
-        specifier: ^4.1.2 || 5_is_esm_only
+        specifier: ^4.1.2
         version: 4.1.2
     devDependencies:
       '@voltiso/config.jest':
@@ -1120,7 +1120,7 @@ importers:
         specifier: workspace:^
         version: link:../util.node
       chalk:
-        specifier: ^4.1.2 || 5_is_esm_only
+        specifier: ^4.1.2
         version: 4.1.2
     devDependencies:
       '@types/node':
@@ -1248,7 +1248,7 @@ importers:
         specifier: workspace:^
         version: link:../util.firestore
       chalk:
-        specifier: ^4.1.2 || 5_is_esm_only
+        specifier: ^4.1.2
         version: 4.1.2
       fast-equals:
         specifier: ^5.0.1
@@ -1450,7 +1450,7 @@ importers:
         specifier: workspace:^
         version: link:../transform.lib
       chalk:
-        specifier: ^4.1.2 || 5_is_esm_only
+        specifier: ^4.1.2
         version: 4.1.2
     devDependencies:
       '@voltiso/config.tsdoc':
@@ -10353,7 +10353,7 @@ packages:
   /esbuild-register@3.5.0(esbuild@0.17.19):
     resolution: {integrity: sha512-+4G/XmakeBAsvJuDugJvtyF1x+XJT4FMocynNpxrvEBViirpfUn2PgNpCHedfWhF4WokNsO/OvMKrmJOIJsI5A==}
     peerDependencies:
-      esbuild: '>=0.12 <1'
+      esbuild: '=0.17.19 || 0.18.x-to-0.19.2-not-transforming-decorators'
     dependencies:
       debug: 4.3.4
       esbuild: 0.17.19
@@ -12442,6 +12442,7 @@ packages:
     resolution: {integrity: sha512-bYUpUD7XDEHI4Q2O5a7PXGvyw4deKR70kHiDxzQbe925wbZknhOzUt2xBgTkYL6RBcVeXYuD9iNYeqoWbBZQnA==}
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
+    requiresBuild: true
     dependencies:
       foreground-child: 3.1.1
       jackspeak: 2.3.3
@@ -13669,6 +13670,7 @@ packages:
   /jackspeak@2.3.3:
     resolution: {integrity: sha512-R2bUw+kVZFS/h1AZqBKrSgDmdmjApzgY0AlCPumopFiAlbUxE2gf+SCuBzQ0cP5hHmUmFYF5yw55T97Th5Kstg==}
     engines: {node: '>=14'}
+    requiresBuild: true
     dependencies:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
@@ -16196,6 +16198,7 @@ packages:
 
   /nan@2.18.0:
     resolution: {integrity: sha512-W7tfG7vMOGtD30sHoZSSc/JVYiyDPEyQVso/Zz+/uQd0B0L46gtC+pHha5FFMRpil6fm/AoEcRWyOVi4+E/f8w==}
+    requiresBuild: true
     dev: true
     optional: true
 

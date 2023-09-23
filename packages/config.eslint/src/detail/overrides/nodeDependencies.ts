@@ -19,7 +19,7 @@ const bestPractices = defineEslintConfigOverrideRules({
 })
 
 const stylisticIssues = defineEslintConfigOverrideRules({
-	'node-dependencies/prefer-caret-range-version': 1,
+	'node-dependencies/prefer-caret-range-version': 0,
 	'node-dependencies/prefer-tilde-range-version': 0,
 })
 
