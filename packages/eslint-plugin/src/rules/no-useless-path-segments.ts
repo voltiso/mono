@@ -81,9 +81,12 @@ export const noUselessPathSegments = createRule<
 
 	create(context) {
 		const currentDir = path.dirname(
+			// eslint-disable-next-line etc/no-deprecated
 			context.getPhysicalFilename
-				? context.getPhysicalFilename()
-				: context.getFilename(),
+				? // eslint-disable-next-line etc/no-deprecated
+				  context.getPhysicalFilename()
+				: // eslint-disable-next-line etc/no-deprecated
+				  context.getFilename(),
 		)
 		const options = context.options[0]
 

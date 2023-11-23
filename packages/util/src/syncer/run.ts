@@ -1,7 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable n/no-sync */
 /* eslint-disable no-await-in-loop */
+
 import { isIterable } from '~/array/isIterable'
 import { lazyPromise } from '~/lazy/lazyPromise'
 

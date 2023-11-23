@@ -1,6 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// eslint-disable-next-line n/no-sync
 import { statSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 
@@ -14,7 +15,7 @@ export function getGitForDirUncached(dir: string): string | undefined {
 		const gitDirPath = join(current, '.git')
 
 		try {
-			// eslint-disable-next-line security/detect-non-literal-fs-filename
+			// eslint-disable-next-line security/detect-non-literal-fs-filename, n/no-sync
 			const stats = statSync(gitDirPath)
 
 			if (stats.isDirectory()) {

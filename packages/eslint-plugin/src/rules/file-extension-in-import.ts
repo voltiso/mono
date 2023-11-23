@@ -91,6 +91,7 @@ export const fileExtensionInImport = createRule<
 	],
 
 	create(context) {
+		// eslint-disable-next-line etc/no-deprecated
 		if (context.getFilename().startsWith('<')) {
 			return {}
 		}

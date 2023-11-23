@@ -1,6 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable n/no-sync */
 /* eslint-disable require-yield */
 /* eslint-disable jest/require-hook */
 

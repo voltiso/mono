@@ -15,6 +15,7 @@ export const regexpOverride = defineEslintConfigOverride({
 
 		'require-unicode-regexp': 0,
 		'regexp/require-unicode-regexp': 1,
+		'regexp/require-unicode-sets-regexp': 0, // not yet, node@18.18.0 does not support `v` flag
 		'regexp/prefer-named-capture-group': 0, // hmmm, not sure, might be useful
 	},
 } as const)

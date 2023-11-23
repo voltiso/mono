@@ -32,7 +32,6 @@ export function stripSentinels(value: unknown): unknown {
 			}
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return haveChange ? result : value // do not return a new array if nothing changed
 	}
 

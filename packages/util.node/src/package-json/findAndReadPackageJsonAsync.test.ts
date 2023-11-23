@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable n/no-sync */
+
 import { runAsync, runSync } from '@voltiso/util'
 
 import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson'

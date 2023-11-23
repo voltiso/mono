@@ -1,7 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable n/no-sync */
 /* eslint-disable jest/prefer-hooks-on-top */
+
 import express = require('express')
 import type { Server } from 'node:http'
 
@@ -174,7 +176,6 @@ describe('client', () => {
 			`http://localhost:${port}/rpc`,
 		)
 
-		// eslint-disable-next-line n/no-sync
 		await expect(myClient.myGroup.throwSomethingSync()).rejects.toThrow(
 			'MyError: my-message',
 		)

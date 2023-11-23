@@ -1,6 +1,8 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable n/no-sync */
+
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -17,7 +19,6 @@ function isEnoentError(error: unknown): error is EnoentError {
 
 function _access(filePath: string, mode: number): SyncerSwitch<void> {
 	return {
-		// eslint-disable-next-line n/no-sync
 		sync: () => fs.accessSync(filePath, mode),
 		async: () => fs.promises.access(filePath, mode),
 	}
