@@ -55,14 +55,15 @@
     }
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.4",
+    "@types/uuid": "^9.0.7",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
+    "typescript": "^5.3.2",
     "typescript-transform-paths": "^3.4.6",
-    "zone.js": "^0.14.0"
+    "zone.js": "^0.14.2"
   },
   "__________MISC": "__________",
   "browser": {

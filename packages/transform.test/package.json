@@ -25,12 +25,13 @@
   "devDependencies": {
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
-    "typescript-transform-paths": "^3.4.6",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "@voltiso/util": "workspace:^"
+    "@voltiso/util": "workspace:^",
+    "typescript": "^5.3.2",
+    "typescript-transform-paths": "^3.4.6"
   }
 }

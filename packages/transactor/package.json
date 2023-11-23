@@ -52,7 +52,7 @@
     "@voltiso/schemar": "workspace:^"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.6",
+    "@types/js-yaml": "^4.0.9",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
@@ -61,8 +61,9 @@
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
+    "typescript": "^5.3.2",
     "typescript-transform-paths": "^3.4.6",
-    "zone.js": "^0.14.0"
+    "zone.js": "^0.14.2"
   },
   "__________MISC": "__________",
   "engines": {

@@ -39,6 +39,7 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "jest": "^29.7.0",
+    "typescript": "^5.3.2",
     "typescript-transform-paths": "^3.4.6"
   }
 }

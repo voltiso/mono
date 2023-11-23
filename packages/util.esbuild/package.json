@@ -42,11 +42,12 @@
     "esbuild": ">= 0.14.49"
   },
   "devDependencies": {
-    "@types/node": "^20.6.3",
+    "@types/node": "^20.9.4",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "esbuild": "=0.17.19 || 0.18.x-to-0.19.2-not-transforming-decorators",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.2",
     "typescript-transform-paths": "^3.4.6"
   }
 }
