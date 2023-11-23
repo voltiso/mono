@@ -54,7 +54,7 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "firebase": "^10.6.0",
-    "firebase-admin": "^11.11.0",
+    "firebase-admin": "^11.11.1",
     "typescript": "^5.3.2",
     "typescript-transform-paths": "^3.4.6"
   }
