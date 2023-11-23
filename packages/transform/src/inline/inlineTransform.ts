@@ -4,6 +4,8 @@
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
+import { getJsDocTagNames } from '~/_'
+
 import {
 	canBeInlined,
 	getFirstChildOrSelf,
@@ -55,21 +57,19 @@ export function inlineTransform(
 					const symbolNode = ts.isTypeReferenceNode(node)
 						? node.typeName
 						: ts.isIndexedAccessTypeNode(node)
-						? getFirstChildOrSelf(node.indexType)
-						: ts.isTypeQueryNode(node)
-						? node.exprName
-						: node
+						  ? getFirstChildOrSelf(node.indexType)
+						  : ts.isTypeQueryNode(node)
+						    ? node.exprName
+						    : node
 
-					let symbol = typeChecker.getSymbolAtLocation(symbolNode)
+					const symbol = typeChecker.getSymbolAtLocation(symbolNode)
 
 					if (symbol) {
-						// eslint-disable-next-line no-bitwise
-						if (symbol.flags & ts.SymbolFlags.Alias) {
-							symbol = typeChecker.getAliasedSymbol(symbol)
-						}
+						// console.log('...\n\n')
+						const tags = getJsDocTagNames(ctx, symbol)
+						const hasInlineTag = tags.includes('inline')
 
-						const tags = symbol.getJsDocTags()
-						const hasInlineTag = tags.map(tag => tag.name).includes('inline')
+						// console.log('hasInlineTag?', symbol, hasInlineTag, '\n\n\n')
 
 						if (hasInlineTag && canBeInlined(ctx, node)) {
 							logInlinedNode(ctx, originalNode, { type: 'alias' })

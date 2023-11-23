@@ -73,9 +73,12 @@ export function stripTransform(
 			const visitor: ts.Visitor = node => {
 				if (!isEnabled) return node
 
+				const nodeText = node.getText()
+
 				/** Comment-out tokens including the whole instruction */
 				if (ts.isIdentifier(node)) {
 					const symbol = typeChecker.getSymbolAtLocation(node)
+
 					if (symbol && shouldStripSymbol(ctx, symbol)) {
 						// console.log(
 						// 	sourceFile.fileName,
@@ -101,7 +104,7 @@ export function stripTransform(
 					const commentedOut = ts.addSyntheticLeadingComment(
 						notEmittedNode,
 						ts.SyntaxKind.MultiLineCommentTrivia,
-						node.getText(),
+						nodeText,
 					)
 
 					return commentedOut
@@ -124,12 +127,7 @@ export function stripTransform(
 				const isCandidate =
 					ts.isExpressionStatement(node) || ts.isVariableStatement(node)
 
-				// if (isCandidate)
-				// 	console.log(sourceFile.fileName, 'got candidate', node.getText())
-
 				if (isCandidate && ctx.shouldStripBecauseOfSymbol) {
-					// console.log(sourceFile.fileName, 'almost strip', node.getText())
-
 					// for variable statements: do not strip if the symbol to strip is actually defined here
 					if (
 						ts.isVariableStatement(node) &&
@@ -137,7 +135,6 @@ export function stripTransform(
 							.map(node => node.name.getText())
 							.includes(ctx.shouldStripBecauseOfSymbol.name)
 					) {
-						// console.log(sourceFile.fileName, 'cancel', node.getText())
 						ctx.shouldStripBecauseOfSymbol = undefined
 					}
 
@@ -155,7 +152,7 @@ export function stripTransform(
 						result = ts.addSyntheticLeadingComment(
 							result,
 							ts.SyntaxKind.MultiLineCommentTrivia,
-							node.getText(),
+							nodeText,
 						)
 
 						ctx.shouldStripBecauseOfSymbol = oldShouldStrip

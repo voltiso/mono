@@ -43,7 +43,7 @@
     "ts-patch": "^3.0.2",
     "turbo": "^1.10.14",
     "type-coverage": "^2.26.3",
-    "typescript": "^5.2.2",
+    "typescript": "5.3.2",
     "typescript-transform-paths": "^3.4.6"
   },
   "__________MISC": "__________",

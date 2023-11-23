@@ -123,7 +123,8 @@ export async function processTriggers(
 
 	// apply updates
 	const data = isDefined(params?.updates)
-		? applyUpdates(cacheEntry.data, params?.updates as never)
+		? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		  applyUpdates(cacheEntry.data, params?.updates as never)
 		: cacheEntry.data
 
 	assert(!isReplaceIt(data))
