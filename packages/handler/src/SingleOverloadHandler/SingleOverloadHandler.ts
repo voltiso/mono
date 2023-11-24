@@ -238,13 +238,13 @@ export class SingleOverloadHandlerImpl<
 		}
 
 		const thisSchema =
-			this.options.this === noThis ? s.void : (this.options.this as s.ISchema)
+			this.options.this === noThis ? s.void : (this.options.this as s.Schema)
 
 		const validThis = thisSchema.validate(thisArg)
 
 		const parametersSchema = s.infer(
 			this.options.parameters,
-		) as unknown as s.ISchema
+		) as unknown as s.Schema
 		const validParameters = parametersSchema.validate(args) as unknown[]
 
 		// eslint-disable-next-line @typescript-eslint/ban-types
@@ -253,7 +253,7 @@ export class SingleOverloadHandlerImpl<
 			...validParameters,
 		) as unknown
 
-		const returnSchema = this.options.return as s.ISchema
+		const returnSchema = this.options.return as s.Schema
 
 		function finalize(result: unknown) {
 			const validResult = returnSchema.validate(result)
