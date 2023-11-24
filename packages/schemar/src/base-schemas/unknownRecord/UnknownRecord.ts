@@ -39,10 +39,9 @@ export interface UnknownRecord$ extends CustomUnknownRecord$<{}> {
 		GetFinalSchema<TValueSchema>
 	>
 
-	<TValueSchema extends $$Schemable>(valueSchema: TValueSchema): RecordSchema<
-		RecordOptions.Default['keySchema'],
-		TValueSchema
-	>
+	<TValueSchema extends $$Schemable>(
+		valueSchema: TValueSchema,
+	): RecordSchema<RecordOptions.Default['keySchema'], TValueSchema>
 }
 
 export const UnknownRecord$ = lazyConstructor(

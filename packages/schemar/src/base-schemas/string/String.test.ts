@@ -9,7 +9,6 @@ import { $Assert } from '@voltiso/util'
 import type {
 	CustomString,
 	CustomString$,
-	ISchema,
 	IString,
 	Output,
 	Schema,
@@ -21,7 +20,7 @@ import * as s from '~'
 
 describe('string', () => {
 	it('generic', <O extends Partial<StringOptions>>() => {
-		$Assert.is<IString, ISchema>()
+		$Assert.is<IString, Schema>()
 
 		$Assert.is<CustomString<O>, Schema>()
 		$Assert.is<CustomString$<O>, Schema>()

@@ -10,7 +10,6 @@ import type {
 	IArray,
 	IMutableArray,
 	Input,
-	ISchema,
 	Output,
 	Schema,
 	Schemable,
@@ -24,7 +23,7 @@ describe('array', () => {
 	})
 
 	it('type', () => {
-		$Assert.is<IArray, ISchema>()
+		$Assert.is<IArray, Schema>()
 
 		$Assert.is<IArray, Schema>()
 
@@ -55,7 +54,7 @@ describe('array', () => {
 		expect(isStringSchema(ro.getElementSchema)).toBeTruthy()
 
 		type RoS = typeof ro.getElementSchema
-		$Assert<IsIdentical<RoS, s.SimpleSchema<string>>>()
+		$Assert<IsIdentical<RoS, s.Schema<string>>>()
 
 		type Ro = Output<typeof ro>
 		$Assert<IsIdentical<Ro, readonly string[]>>()
@@ -66,8 +65,8 @@ describe('array', () => {
 		$Assert<IsIdentical<Ro2, readonly string[]>>()
 		$Assert<IsIdentical<Input<typeof ro2>, readonly string[]>>()
 
-		$Assert.is<typeof s.array, ISchema>()
-		$Assert.is<typeof s.readonlyArray, ISchema>()
+		$Assert.is<typeof s.array, Schema>()
+		$Assert.is<typeof s.readonlyArray, Schema>()
 
 		$Assert.is<typeof s.array, IArray>()
 		$Assert.is<typeof an, IArray>()

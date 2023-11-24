@@ -11,7 +11,7 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type { BooleanOptions, CustomBoolean, ISchema, Literal } from '~'
+import type { BooleanOptions, CustomBoolean, Literal, Schema } from '~'
 import {
 	CustomSchemaImpl,
 	isBooleanSchema,
@@ -56,7 +56,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		return literal(literals) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isBooleanSchema(other)) return true
 		else if (isUnknownLiteralSchema(other)) return true
 		else if (isLiteralSchema(other) || isUnionSchema(other)) {

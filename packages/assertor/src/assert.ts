@@ -6,9 +6,9 @@ import type {
 	$$Schemable,
 	CustomString,
 	Instance,
-	ISchema,
 	Literal,
 	RegExpEntry,
+	Schema,
 	Type,
 } from '@voltiso/schemar'
 import { isSchema } from '@voltiso/schemar'
@@ -206,7 +206,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 		call: (...args: any) => {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const [schema, value, ...rest]: [ISchema, unknown, ...unknown[]] =
+			const [schema, value, ...rest]: [Schema, unknown, ...unknown[]] =
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				isSchema(args[0])
 					? args

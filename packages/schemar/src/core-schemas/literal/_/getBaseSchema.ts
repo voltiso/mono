@@ -3,7 +3,7 @@
 
 import { $assert, stringFrom } from '@voltiso/util'
 
-import type { InferableLiteral, ISchema } from '~'
+import type { InferableLiteral, Schema } from '~'
 import {
 	bigint,
 	boolean,
@@ -14,7 +14,7 @@ import {
 } from '~/base-schemas'
 import { literal } from '~/core-schemas'
 
-export function getBaseSchema(inferableLiteral: InferableLiteral): ISchema {
+export function getBaseSchema(inferableLiteral: InferableLiteral): Schema {
 	switch (typeof inferableLiteral) {
 		case 'bigint':
 			return bigint as never

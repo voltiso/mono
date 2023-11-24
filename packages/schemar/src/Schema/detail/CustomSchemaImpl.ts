@@ -302,10 +302,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
 				: this.isReadonly
-				? 'readonly:'
-				: this.isOptional
-				? '?'
-				: ''
+				  ? 'readonly:'
+				  : this.isOptional
+				    ? '?'
+				    : ''
 
 		const suffix = this.hasDefault ? `=${stringFrom(this.getDefault)}` : ''
 

@@ -9,11 +9,9 @@ import type {
 	$$Schemable,
 	CustomSchema,
 	CustomSchema$,
-	ISchema,
+	Schema,
 	Schemable,
 	SchemaOptions,
-	SimpleSchema,
-	SimpleSchema$,
 } from '~'
 import { schema, unknown } from '~'
 
@@ -21,14 +19,14 @@ describe('CustomSchema', () => {
 	it('generic', <O extends Partial<SchemaOptions>>() => {
 		$Assert.is<CustomSchema<O>, $$Schemable>()
 		$Assert.is<CustomSchema<O>, $$Schema>()
-		$Assert.is<CustomSchema<O>, ISchema>() // ! too deep
+		$Assert.is<CustomSchema<O>, Schema>() // ! too deep
 		$Assert.is<CustomSchema<O>, Schemable>() // ! too deep
 	})
 
 	it('type', () => {
 		expect.assertions(0)
 
-		type MySchema = SimpleSchema$<Date>
+		type MySchema = CustomSchema$<{ Output: Date; Input: Date }>
 
 		type X = MySchema['isReadonly']
 		$Assert<IsIdentical<X, false>>()
@@ -55,9 +53,17 @@ describe('CustomSchema', () => {
 
 	it('type - inside object', () => {
 		const mySchema = schema({
-			field: unknown as unknown as SimpleSchema<Date>,
-			optionalField: unknown as unknown as SimpleSchema$<Date>['optional'],
-			readonlyField: unknown as unknown as SimpleSchema$<Date>['readonly'],
+			field: unknown as unknown as CustomSchema<{ Output: Date; Input: Date }>,
+
+			optionalField: unknown as unknown as CustomSchema$<{
+				Output: Date
+				Input: Date
+			}>['optional'],
+
+			readonlyField: unknown as unknown as CustomSchema$<{
+				Output: Date
+				Input: Date
+			}>['readonly'],
 		})
 		type MySchema = typeof mySchema.Output
 

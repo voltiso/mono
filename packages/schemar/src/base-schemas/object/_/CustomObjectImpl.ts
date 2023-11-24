@@ -13,7 +13,7 @@ import { symbol } from '~/base-schemas/unknownSymbol/symbol'
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
 import { defaultValidationOptions } from '~/types/Schema/ValidationOptions'
 import { getDeepShape } from '~/types/Schemable/getDeepShape'
@@ -104,7 +104,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		}) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isObjectSchema(other)) {
 			for (const [key, value] of v.getEntries(other.getShape, {
 				includeSymbols: true,
@@ -233,8 +233,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 					for (const { keySchema, valueSchema } of this[v.OPTIONS]
 						.indexSignatures) {
-						const sKeySchema = schema(keySchema) as unknown as ISchema
-						const sValueSchema = schema(valueSchema) as unknown as ISchema
+						const sKeySchema = schema(keySchema) as unknown as Schema
+						const sValueSchema = schema(valueSchema) as unknown as Schema
 
 						const keyResult = sKeySchema.exec(key, options)
 

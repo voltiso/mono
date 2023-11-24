@@ -18,10 +18,10 @@ import type {
 	$$Schemable,
 	ImplicitInferSchema$,
 	Input_,
-	ISchema,
 	Output_,
 	OverrideSchema$,
 	OverrideSchema$WithOmit,
+	Schema,
 	SCHEMA_NAME,
 	SchemaOptions,
 	SchemarAnd,
@@ -34,7 +34,7 @@ import type {
 //
 
 export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
-	extends ISchema {
+	extends Schema {
 	//
 	readonly [SCHEMA_NAME]: string // SchemaName
 
@@ -71,8 +71,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 		| (this[OPTIONS]['isOptional'] extends true
 				? undefined
 				: this[OPTIONS]['hasDefault'] extends true
-				? undefined
-				: never)
+				  ? undefined
+				  : never)
 
 	//
 
@@ -330,8 +330,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): OverrideSchema$<this, O, { Output: NewOutput }>
 
 	map<ConditionSchema extends $$Schemable, NewOutput>(
@@ -341,8 +341,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): OverrideSchema$<this, O, { Output: NewOutput }>
 
 	/**
@@ -357,8 +357,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): this
 
 	mapIf<NewOutput>(
@@ -368,8 +368,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): CustomSchema.WithMapIf<this, O, NewOutput>
 
 	//
@@ -389,8 +389,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): CustomSchema.WithFix<this, O, AdditionalInput>
 
 	fixIf<AdditionalInput = NoArgument>(
@@ -402,8 +402,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): [AdditionalInput] extends [NoArgument]
 		? Throw<'Missing explicit AdditionalInput type argument'>
 		: CustomSchema.WithFix<this, O, AdditionalInput>
@@ -442,8 +442,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): AdditionalInput extends Partial<this[OPTIONS]['Input']>
 		? this
 		: CustomSchema.WithFix<this, O, AdditionalInput>
@@ -455,8 +455,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): Input_<S> extends Partial<this[OPTIONS]['Input']>
 		? this
 		: CustomSchema.WithFix<this, O, Input_<S>>
@@ -470,8 +470,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): CustomSchema.WithFix<this, O, Input_<ConditionSchema>>
 
 	/**
@@ -487,8 +487,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never), // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
+					  ? undefined // typeof deleteIt
+					  : never), // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
 	): [AdditionalInput] extends [NoArgument]
 		? Throw<'Missing explicit AdditionalInput type argument'>
 		: CustomSchema.WithFix<this, O, AdditionalInput>
@@ -504,8 +504,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): this
 
 	/** Same as `.fix`, but does not extend the `Input` type */
@@ -516,8 +516,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
 			| (this[OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
 					: this[OPTIONS]['isStrictOptional'] extends true
-					? undefined // typeof deleteIt
-					: never),
+					  ? undefined // typeof deleteIt
+					  : never),
 	): this
 
 	//

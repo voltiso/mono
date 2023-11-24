@@ -4,12 +4,12 @@
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schemable, ISchema } from '~'
+import type { $$Schemable, Schema } from '~'
 
 import type { $$Intersection } from './CustomIntersection'
 import type { IntersectionOptions } from './IntersectionOptions'
 
-export interface IIntersection extends $$Intersection, ISchema {
+export interface IIntersection extends $$Intersection, Schema {
 	readonly [SCHEMA_NAME]: 'Intersection'
 
 	readonly [BASE_OPTIONS]: IntersectionOptions

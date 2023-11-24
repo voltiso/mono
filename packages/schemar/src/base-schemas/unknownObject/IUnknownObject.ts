@@ -3,17 +3,17 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { $$Schema, ISchema, ISchema$ } from '~'
+import type { $$Schema, Schema, Schema$ } from '~'
 
 export interface $$UnknownObject extends $$Schema {
 	readonly [SCHEMA_NAME]: 'UnknownObject'
 }
 
-export interface IUnknownObject extends $$UnknownObject, ISchema {
+export interface IUnknownObject extends $$UnknownObject, Schema {
 	readonly [SCHEMA_NAME]: 'UnknownObject'
 }
 
-export interface IUnknownObject$ extends $$UnknownObject, ISchema$ {
+export interface IUnknownObject$ extends $$UnknownObject, Schema$ {
 	readonly [SCHEMA_NAME]: 'UnknownObject'
 }
 

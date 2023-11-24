@@ -11,7 +11,7 @@ import type {
 	$Type,
 	CustomFunction,
 	MutableTuple,
-	SimpleSchema,
+	Schema,
 	TupleLike,
 } from '~'
 
@@ -22,16 +22,16 @@ export type Function<F extends (...args: any) => any> = F extends (
 	...rest: any[]
 ) => any
 	? CustomFunction<{
-			this: SimpleSchema<This>
+			this: Schema<This>
 			parameters: MutableTuple<Parameters<F>>
-			return: SimpleSchema<ReturnType<F>>
+			return: Schema<ReturnType<F>>
 
 			Output: F
 			Input: F
 	  }>
 	: CustomFunction<{
 			parameters: MutableTuple<Parameters<F>>
-			return: SimpleSchema<ReturnType<F>>
+			return: Schema<ReturnType<F>>
 
 			Output: F
 			Input: F

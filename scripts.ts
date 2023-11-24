@@ -11,7 +11,7 @@ import * as os from 'node:os'
 import * as path from 'node:path'
 
 const packageJson = JSON.parse(
-	// eslint-disable-next-line security/detect-non-literal-fs-filename, n/no-sync
+	// eslint-disable-next-line n/no-sync
 	fs.readFileSync(path.join(process.cwd(), 'package.json')).toString(),
 ) as { name?: string }
 
@@ -177,12 +177,14 @@ export const prepublishOnlyFast = [
 
 	async () => {
 		try {
+			// eslint-disable-next-line security/detect-non-literal-fs-filename
 			await fsPromises.stat(`../${packageJson.name}.test`)
 		} catch {
 			return
 			// return `echo no ${packageJson.name}.test package`
 		}
 
+		// eslint-disable-next-line consistent-return
 		return `pnpm -w exec turbo run --filter=${
 			packageJson.name || '//'
 		}.test test --output-logs=new-only`

@@ -11,9 +11,9 @@ import type {
 import type {
 	$$Schema,
 	$$Schemable,
-	ISchema,
-	ISchema$,
+	Schema,
 	SCHEMA_NAME,
+	Schema$,
 	SchemaLike,
 } from '~'
 
@@ -35,7 +35,7 @@ export interface TupleLike<T extends readonly unknown[] = readonly unknown[]>
 export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
 	extends $$Tuple,
 		TupleLike<T>,
-		ISchema<T> {
+		Schema<T> {
 	//
 	readonly [SCHEMA_NAME]: 'Tuple'
 
@@ -52,7 +52,7 @@ export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
 export interface ITuple$<T extends readonly unknown[] = readonly unknown[]>
 	extends $$Tuple,
 		TupleLike<T>,
-		ISchema$<T> {
+		Schema$<T> {
 	//
 	readonly [SCHEMA_NAME]: 'Tuple'
 

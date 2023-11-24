@@ -11,8 +11,8 @@ import type {
 	CustomSchema,
 	CustomSchema$,
 	GetObject$,
+	Schema,
 	SCHEMA_NAME,
-	SimpleSchema,
 	Type,
 } from '~'
 
@@ -55,13 +55,13 @@ export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
 		schema: AlreadySchema,
 	): AlreadySchema
 
-	<X extends $$InferableObject | $$Object | $$UnknownObject>(x: X): X extends
-		| $$Object
-		| $$UnknownObject
+	<X extends $$InferableObject | $$Object | $$UnknownObject>(
+		x: X,
+	): X extends $$Object | $$UnknownObject
 		? X
 		: X extends $$InferableObject
-		? GetObject$<X>
-		: never
+		  ? GetObject$<X>
+		  : never
 
 	// this[OPTIONS]['isPlain'] extends true
 	// 	? CustomObject<{
@@ -86,7 +86,7 @@ export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
 
 	index<TValueSchema extends $$Schemable>(
 		valueSchema: TValueSchema,
-	): CustomUnknownObject.Index<O, SimpleSchema<keyof any>, TValueSchema>
+	): CustomUnknownObject.Index<O, Schema<keyof any>, TValueSchema>
 }
 
 //

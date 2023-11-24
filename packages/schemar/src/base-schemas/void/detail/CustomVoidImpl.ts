@@ -6,7 +6,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $assert, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import type { VoidOptions } from '../options/VoidOptions'
 import { isVoidSchema } from './isVoid'
@@ -28,7 +28,7 @@ export class CustomVoidImpl<O extends Partial<VoidOptions>>
 {
 	readonly [SCHEMA_NAME] = 'Void' as const;
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isVoidSchema(other)) return true
 		else return super[EXTENDS](other)
 	}

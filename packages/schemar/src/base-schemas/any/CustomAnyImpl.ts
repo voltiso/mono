@@ -8,7 +8,7 @@ import { $assert, lazyConstructor } from '@voltiso/util'
 import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
 import { SchemarError } from '~/error'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { Schema } from '~/types/Schema/Schema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import { isUnknownSchema } from '../unknown/IUnknown'
 import type { AnyOptions } from './AnyOptions'

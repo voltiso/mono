@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
-import type { $$SchemableObject, IObject$, ISchema } from '@voltiso/schemar'
+import type { $$SchemableObject, IObject$, Schema } from '@voltiso/schemar'
 import { isObjectSchema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { $AssumeType } from '@voltiso/util'
@@ -20,7 +20,7 @@ export function getIdSchemas(ref: $$DocRef) {
 
 	const { _allIdSchemas } = ref._context.transactor
 
-	const idSchemas: ISchema<string>[] = []
+	const idSchemas: Schema<string>[] = []
 
 	const path = ref.path.toString()
 

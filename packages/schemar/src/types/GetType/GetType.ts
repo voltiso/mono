@@ -27,16 +27,16 @@ export declare namespace Type {
 			? IO['kind'] extends 'in'
 				? S['Input']
 				: IO['kind'] extends 'out'
-				? S['Output']
-				: never
+				  ? S['Output']
+				  : never
 			: unknown
 		: S extends $$InferableTuple
-		? TupleType_<S, IO>
-		: S extends $$InferableObject
-		? InferableObject extends S
-			? {}
-			: GetImplicitObjectType<S, IO>
-		: S
+		  ? TupleType_<S, IO>
+		  : S extends $$InferableObject
+		    ? InferableObject extends S
+					? {}
+					: GetImplicitObjectType<S, IO>
+		    : S
 }
 
 //

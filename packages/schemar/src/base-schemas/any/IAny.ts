@@ -4,13 +4,13 @@
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, AnyOptions, ISchema } from '~'
+import type { $$Schema, AnyOptions, Schema } from '~'
 
 export interface $$Any extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Any'
 }
 
-export interface IAny extends $$Any, ISchema {
+export interface IAny extends $$Any, Schema {
 	readonly [SCHEMA_NAME]: 'Any'
 
 	readonly [BASE_OPTIONS]: AnyOptions

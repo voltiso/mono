@@ -3,14 +3,14 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
-export interface ISchemaInferrer extends ISchema {
+export interface ISchemaInferrer extends Schema {
 	readonly [SCHEMA_NAME]: 'SchemaInferrer'
 }
 
 /** Typeof s.schema */
-export interface ISchemaInferrer$ extends ISchema$ {
+export interface ISchemaInferrer$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'SchemaInferrer'
 }
 

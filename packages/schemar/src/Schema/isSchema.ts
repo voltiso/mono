@@ -4,10 +4,9 @@
 import { SCHEMA_NAME } from '_'
 import { $assert } from '@voltiso/util'
 
-import type { ISchema$ } from '~/types/Schema/ISchema'
-import type { Schema } from '~/types/Schema/Schema'
+import type { Schema, Schema$ } from '~/types/Schema/ISchema'
 
-export function isSchema(x: unknown): x is ISchema$ {
+export function isSchema(x: unknown): x is Schema$ {
 	$assert(SCHEMA_NAME)
 
 	return !!(x as Schema | null)?.[SCHEMA_NAME]

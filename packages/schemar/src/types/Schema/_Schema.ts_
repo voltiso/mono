@@ -1,0 +1,36 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { ISchema, ISchema$ } from '~'
+
+//
+
+export interface Schema<T = unknown> extends ISchema<T> {}
+export interface Schema$<T = unknown> extends ISchema$<T> {}
+
+// export type Schema<T extends unknown | NoArgument = NoArgument> = [T] extends [
+// 	never,
+// ]
+// 	? SimpleSchema<never>
+// 	: [T] extends [NoArgument]
+// 	  ? ISchema
+// 	  : SimpleSchema<T>
+
+// export type Schema$<T extends unknown | NoArgument = NoArgument> = [T] extends [
+// 	never,
+// ]
+// 	? SimpleSchema$<never>
+// 	: [T] extends [NoArgument]
+// 	  ? ISchema
+// 	  : SimpleSchema$<T>
+
+//
+
+export interface SimpleSchema<T = unknown> extends ISchema<T> {}
+export interface SimpleSchema$<T = unknown> extends ISchema$<T> {}
+
+// export interface SimpleSchema<T>
+// 	extends CustomSchema<{ Output: T; Input: T }> {}
+
+// export interface SimpleSchema$<T>
+// 	extends CustomSchema$<{ Output: T; Input: T }> {}

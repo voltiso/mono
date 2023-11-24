@@ -4,7 +4,7 @@
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
 
 import type { ImplicitInferSchema$_ } from '~/types/InferSchema/InferSchema'
-import type { ISchema$ } from '~/types/Schema/ISchema'
+import type { Schema$ } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import type { CustomSchemaInferrer$ } from './CustomSchemaInferrer'
@@ -23,7 +23,7 @@ export interface ImplicitInferSchema$Function {
 
 // Non-generic version for faster type-check
 export interface ImplicitInferSchema$Function_ {
-	(schemable: $$Schemable): ISchema$
+	(schemable: $$Schemable): Schema$
 }
 
 // export declare namespace ImplicitInfer {

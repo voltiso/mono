@@ -8,7 +8,7 @@ import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 import { LiteralImpl } from '~/core-schemas/literal/_/LiteralImpl'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import type { InferableLiteral } from '~/types/Inferable/Inferable'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import type { CustomUnknownLiteral } from '../CustomUnknownLiteral'
 import { isUnknownLiteralSchema } from '../isUnknownLiteral'
@@ -33,7 +33,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 		return BoundCallable(this) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isUnknownLiteralSchema(other)) return true
 		else return super[EXTENDS](other)
 	}

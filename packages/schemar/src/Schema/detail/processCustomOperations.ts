@@ -4,7 +4,7 @@
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { SchemarError } from '~/error/SchemarError'
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
-import type { Schema } from '~/types/Schema/Schema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
 
 import type { CustomTransform } from '../options/_/CustomCheck'

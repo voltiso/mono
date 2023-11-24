@@ -15,7 +15,7 @@ import type {
 	NonNullish,
 } from '~'
 
-import type { $$Schema, ISchema$ } from '../Schema'
+import type { $$Schema, Schema$ } from '../Schema'
 
 //
 
@@ -23,20 +23,20 @@ import type { $$Schema, ISchema$ } from '../Schema'
 export type InferSchema$NoReadonlyTuple_<T> = [T] extends [never]
 	? never
 	: $$Schemable extends T
-	? ISchema$
-	: T extends InferableLiteral
-	? Literal$<T>
-	: T extends Newable
-	? Instance$<T>
-	: T extends $$Schema
-	? T
-	: T extends InferableReadonlyTuple
-	? MutableTuple$<[...T]>
-	: IsAlmostSame<T, {}> extends true
-	? NonNullish
-	: T extends $$InferableObject
-	? GetObject$<T>
-	: never
+	  ? Schema$
+	  : T extends InferableLiteral
+	    ? Literal$<T>
+	    : T extends Newable
+	      ? Instance$<T>
+	      : T extends $$Schema
+	        ? T
+	        : T extends InferableReadonlyTuple
+	          ? MutableTuple$<[...T]>
+	          : IsAlmostSame<T, {}> extends true
+	            ? NonNullish
+	            : T extends $$InferableObject
+	              ? GetObject$<T>
+	              : never
 
 /** Explicit infer */
 export type InferSchema$NoReadonlyTuple<T extends $$Schemable> =

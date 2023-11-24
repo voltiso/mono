@@ -4,18 +4,18 @@
 import { SCHEMA_NAME } from '_'
 import type { OPTIONS } from '@voltiso/util'
 
-import type { ISchema, ISchema$, RecordOptions } from '~'
+import type { RecordOptions, Schema, Schema$ } from '~'
 
 export interface $$Record {
 	readonly [SCHEMA_NAME]: 'Record'
 }
 
-export interface IRecord extends ISchema {
+export interface IRecord extends Schema {
 	readonly [SCHEMA_NAME]: 'Record'
 	[OPTIONS]: RecordOptions
 }
 
-export interface IRecord$ extends ISchema$ {
+export interface IRecord$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'Record'
 	[OPTIONS]: RecordOptions
 }

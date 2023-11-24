@@ -4,7 +4,7 @@
 import type { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, ISchema, ISchema$ } from '~'
+import type { $$Schema, Schema, Schema$ } from '~'
 
 import type { LiteralOptions } from './LiteralOptions'
 
@@ -12,7 +12,7 @@ export interface $$Literal extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Literal'
 }
 
-export interface ILiteral extends $$Literal, ISchema {
+export interface ILiteral extends $$Literal, Schema {
 	readonly [SCHEMA_NAME]: 'Literal'
 
 	readonly [BASE_OPTIONS]: LiteralOptions
@@ -21,7 +21,7 @@ export interface ILiteral extends $$Literal, ISchema {
 	get getValues(): Set<unknown>
 }
 
-export interface ILiteral$ extends $$Literal, ISchema$ {
+export interface ILiteral$ extends $$Literal, Schema$ {
 	readonly [SCHEMA_NAME]: 'Literal'
 
 	readonly [BASE_OPTIONS]: LiteralOptions

@@ -4,14 +4,14 @@
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schemable, ISchema, ISchema$ } from '~'
+import type { $$Schemable, Schema, Schema$ } from '~'
 
 import type { $$Union } from './CustomUnion'
 import type { UnionOptions } from './UnionOptions'
 
 //
 
-export interface IUnion extends $$Union, ISchema {
+export interface IUnion extends $$Union, Schema {
 	readonly [SCHEMA_NAME]: 'Union'
 
 	readonly [BASE_OPTIONS]: UnionOptions
@@ -20,7 +20,7 @@ export interface IUnion extends $$Union, ISchema {
 	get getSchemas(): $$Schemable[]
 }
 
-export interface IUnion$ extends $$Union, ISchema$ {
+export interface IUnion$ extends $$Union, Schema$ {
 	readonly [SCHEMA_NAME]: 'Union'
 
 	readonly [BASE_OPTIONS]: UnionOptions

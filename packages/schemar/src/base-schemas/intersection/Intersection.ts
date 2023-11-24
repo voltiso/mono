@@ -8,8 +8,7 @@ import { schema_ } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
 import type { Get$ } from '~/types/Get$'
 import type { Input_, Output_ } from '~/types/GetType/GetType'
-import type { ISchema } from '~/types/Schema/ISchema'
-import type { Schema } from '~/types/Schema/Schema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 import type { SchemarAndN } from '~/types/SchemarOp/ops/SchemarAnd'
 
@@ -86,7 +85,7 @@ export const Intersection$ = lazyConstructor(
 //
 
 function _check(
-	s: ISchema,
+	s: Schema,
 ): s is typeof s & ($$Object | $$UnknownObject | $$Record) {
 	return isObjectSchema(s) || isUnknownObjectSchema(s) || isRecordSchema(s)
 }

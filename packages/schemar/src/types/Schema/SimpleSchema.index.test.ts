@@ -3,7 +3,7 @@
 
 import { $Assert } from '@voltiso/util'
 
-import type { SimpleSchema } from '~'
+import type { Schema } from '~'
 
 describe('SimpleSchema', () => {
 	it('index signatures', () => {
@@ -11,10 +11,10 @@ describe('SimpleSchema', () => {
 		type B = { [k: string]: number }
 
 		/** This likes to break with interfaces */
-		$Assert.is<SimpleSchema<A>, SimpleSchema<B>>()
+		$Assert.is<Schema<A>, Schema<B>>()
 
 		/** Vscode should hover with just `SimpleSchema` - as with type aliases */
-		type C = SimpleSchema<A>
+		type C = Schema<A>
 
 		/** Unused `C` */
 		void 0 as unknown as C

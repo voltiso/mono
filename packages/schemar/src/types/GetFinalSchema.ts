@@ -15,8 +15,8 @@ export type GetFinalSchema_<S> = S extends $$Schema & {
 }
 	? F
 	: ImplicitInferSchema$_<S> extends { get Final(): infer F }
-	? F
-	: never
+	  ? F
+	  : never
 
 export type GetFinalSchema<S extends $$Schemable> = GetFinalSchema_<S>
 
@@ -27,10 +27,10 @@ export type RelaxSchema_<S> = S extends $$Schema & {
 }
 	? F
 	: S extends $$InferableObject
-	? { [k in keyof S]: RelaxSchema_<S[k]> }
-	: S extends $$InferableTuple
-	? RelaxInferableTuple_<S>
-	: S
+	  ? { [k in keyof S]: RelaxSchema_<S[k]> }
+	  : S extends $$InferableTuple
+	    ? RelaxInferableTuple_<S>
+	    : S
 
 export type RelaxSchema<S extends $$Schemable> = RelaxSchema_<S>
 
@@ -47,10 +47,10 @@ export declare namespace RelaxInferableTuple {
 			? Rec<[...acc, ...RelaxSchema_<E>[]], tail>
 			: Rec<[...acc, RelaxSchema_<head>], tail>
 		: rest extends readonly []
-		? acc
-		: rest extends readonly Rest<infer E>[]
-		? [...acc, ...RelaxSchema_<E>[]]
-		: acc
+		  ? acc
+		  : rest extends readonly Rest<infer E>[]
+		    ? [...acc, ...RelaxSchema_<E>[]]
+		    : acc
 }
 
 export type RelaxInferableTuple<S extends $$Schemable[]> =

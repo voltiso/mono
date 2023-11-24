@@ -62,10 +62,9 @@ export type RecordConstructor = {
 		valueSchema: TValueSchema,
 	): Record_<TKeySchema, TValueSchema>
 
-	new <TValueSchema extends $$Schemable>(valueSchema: TValueSchema): Record_<
-		RecordOptions.Default['keySchema'],
-		TValueSchema
-	>
+	new <TValueSchema extends $$Schemable>(
+		valueSchema: TValueSchema,
+	): Record_<RecordOptions.Default['keySchema'], TValueSchema>
 
 	new <
 		TKeySchema extends $$Schema & {

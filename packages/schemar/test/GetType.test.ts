@@ -12,7 +12,6 @@ import type {
 	InferableLiteral,
 	InferableObject,
 	Input,
-	ISchema,
 	Number,
 	Output,
 	Schema,
@@ -55,7 +54,7 @@ describe('GetType', () => {
 		type C2 = Output<SchemaLike>
 		$Assert<IsIdentical<C2, unknown>>()
 
-		type C3 = Output<ISchema>
+		type C3 = Output<Schema>
 		$Assert<IsIdentical<C3, unknown>>()
 
 		//

@@ -7,7 +7,7 @@ import { $assert, BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
 
 import type { Record as RecordSchema } from '~/base-schemas/record/record'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { $$Schema, ISchema } from '~/types/Schema/ISchema'
+import type { $$Schema, Schema } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import { RecordImpl } from '../record/RecordImpl'
@@ -62,7 +62,7 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	override [EXTENDS](_other: ISchema): boolean {
+	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 		// if (isObject(other)) {
 		// 	return getKeys(other.getShape).length === 0

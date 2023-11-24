@@ -5,7 +5,7 @@ import { $assert, getEntries, isPlainObject, stringFrom } from '@voltiso/util'
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { InferableObject } from '~/types/Inferable/Inferable'
-import type { ISchema$ } from '~/types/Schema/ISchema'
+import type { Schema$ } from '~/types/Schema/ISchema'
 
 import type {
 	DeepPartialShape,
@@ -26,7 +26,7 @@ export function deepPartialShape<O extends InferableObject>(
 	const shape = { ...o } as InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {
-		let mySchema = schema(schemable) as unknown as ISchema$
+		let mySchema = schema(schemable) as unknown as Schema$
 
 		if (isObjectSchema(mySchema)) mySchema = mySchema.deepPartial as never
 
@@ -44,7 +44,7 @@ export function deepStrictPartialShape<O extends InferableObject>(
 	const shape = { ...o } as InferableObject
 
 	for (const [key, schemable] of getEntries(shape)) {
-		let mySchema = schema(schemable) as unknown as ISchema$
+		let mySchema = schema(schemable) as unknown as Schema$
 
 		if (isObjectSchema(mySchema)) mySchema = mySchema.deepStrictPartial as never
 

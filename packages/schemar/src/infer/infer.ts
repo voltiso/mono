@@ -11,7 +11,7 @@ import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
 import { isSchema } from '~/Schema/isSchema'
 import type { InferableLiteral } from '~/types/Inferable/Inferable'
 import type { InferSchema$NoReadonlyTuple } from '~/types/InferSchema/InferSchemaNoReadonlyTuple'
-import type { $$Schema, ISchema$ } from '~/types/Schema/ISchema'
+import type { $$Schema, Schema$ } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 /** Hackish overload for type-checking performance when argument is cast to never */
@@ -62,7 +62,7 @@ export function infer_(x: $$Schemable): $$Schema {
 		let allChildrenOptional = true
 
 		for (const value of getValues(x as object, { includeSymbols: true })) {
-			const childSchema: ISchema$ = infer(value)
+			const childSchema: Schema$ = infer(value)
 
 			if (
 				!childSchema.isOptional &&

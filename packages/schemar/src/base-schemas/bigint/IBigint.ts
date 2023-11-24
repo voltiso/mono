@@ -3,9 +3,9 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema } from '~'
+import type { Schema } from '~'
 
-export interface IBigint extends ISchema {
+export interface IBigint extends Schema {
 	readonly [SCHEMA_NAME]: 'Bigint'
 
 	get getMin(): bigint | undefined

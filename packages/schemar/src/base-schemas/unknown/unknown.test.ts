@@ -5,7 +5,6 @@ import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomUnknown,
-	ISchema,
 	IUnknown,
 	Schema,
 	Schemable,
@@ -37,11 +36,11 @@ describe('unknown', () => {
 		expect.assertions(0)
 
 		$Assert.is<CustomUnknown<O>, IUnknown>()
-		$Assert.is<CustomUnknown<O>, ISchema>()
+		$Assert.is<CustomUnknown<O>, Schema>()
 		$Assert.is<CustomUnknown<O>, Schemable>()
 
 		$Assert.is<s.Unknown, IUnknown>()
-		$Assert.is<s.Unknown, ISchema>()
+		$Assert.is<s.Unknown, Schema>()
 		$Assert.is<s.Unknown, Schemable>()
 	})
 
@@ -54,7 +53,7 @@ describe('unknown', () => {
 	it('works', () => {
 		expect.hasAssertions()
 
-		$Assert.is<s.Unknown, ISchema>()
+		$Assert.is<s.Unknown, Schema>()
 
 		expect(s.unknown.extends(s.unknown)).toBeTruthy()
 		expect(s.unknown.extends(s.schema)).toBeTruthy()

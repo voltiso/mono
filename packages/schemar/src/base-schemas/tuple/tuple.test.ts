@@ -8,16 +8,16 @@ import type {
 	CustomTuple,
 	IMutableTuple,
 	Input,
-	ISchema,
 	ITuple,
 	Output,
+	Schema,
 	TupleOptions,
 } from '~'
 import * as s from '~'
 
 describe('array', () => {
 	it('generic', <O extends Partial<TupleOptions>>() => {
-		$Assert.is<CustomTuple<O>, ISchema>()
+		$Assert.is<CustomTuple<O>, Schema>()
 		$Assert.is<CustomTuple<O>, ITuple>()
 	})
 

@@ -23,8 +23,6 @@ import type {
 	Input_,
 	Instance$,
 	IObject$,
-	ISchema,
-	ISchema$,
 	Literal$,
 	MutableTuple$,
 	NonNullish$,
@@ -32,6 +30,8 @@ import type {
 	Output_,
 	ReadonlyTuple$,
 	RelaxInferableTuple_,
+	Schema,
+	Schema$,
 } from '~'
 
 /** Groups literals */
@@ -79,19 +79,19 @@ export declare namespace GetObject$ {
 	> = undefined extends Input
 		? CustomObject$<{ Output: Output; Input: Input; hasDefault: true }>
 		: IsCompatible<Output, Input> extends true
-		? Object$<Output>
-		: CustomObject$<{ Output: Output; Input: Input }>
+		  ? Object$<Output>
+		  : CustomObject$<{ Output: Output; Input: Input }>
 }
 
 export declare namespace ImplicitInferSchema$ {
 	/** Do we have full `ISchema` super-type? */
 	export type Step1<S> = $$Schemable extends S
-		? ISchema$
-		: ISchema extends ExcludeEmptyBraces<S>
-		? ISchema$
-		: Inferable extends S
-		? ISchema$
-		: Step2<S>
+		? Schema$
+		: Schema extends ExcludeEmptyBraces<S>
+		  ? Schema$
+		  : Inferable extends S
+		    ? Schema$
+		    : Step2<S>
 
 	/** Group literals */
 	export type Step2<S> = Extract<S, InferableLiteral> extends never
@@ -104,23 +104,23 @@ export declare namespace ImplicitInferSchema$ {
 	export type Step3<S> = InferableObject extends ExcludeEmptyBraces<S>
 		? IObject$ | Simple<Exclude<S, $$SchemableObject>>
 		: IObject$ extends ExcludeEmptyBraces<S>
-		? IObject$ | Simple<Exclude<S, $$SchemableObject>>
-		: Simple<S>
+		  ? IObject$ | Simple<Exclude<S, $$SchemableObject>>
+		  : Simple<S>
 
 	/** Other */
 	export type Simple<S> = IsCompatible<$$Schema, S> extends true
-		? ISchema$
+		? Schema$
 		: S extends $$Schema
-		? S
-		: IsAlmostSame<S, {}> extends true
-		? NonNullish$
-		: S extends $$InferableObject
-		? GetImplicitObject$<S>
-		: S extends Newable
-		? Instance$<S>
-		: S extends $$InferableMutableTuple
-		? MutableTuple$<RelaxInferableTuple_<S>>
-		: S extends $$InferableReadonlyTuple
-		? ReadonlyTuple$<RelaxInferableTuple_<S>>
-		: never
+		  ? S
+		  : IsAlmostSame<S, {}> extends true
+		    ? NonNullish$
+		    : S extends $$InferableObject
+		      ? GetImplicitObject$<S>
+		      : S extends Newable
+		        ? Instance$<S>
+		        : S extends $$InferableMutableTuple
+		          ? MutableTuple$<RelaxInferableTuple_<S>>
+		          : S extends $$InferableReadonlyTuple
+		            ? ReadonlyTuple$<RelaxInferableTuple_<S>>
+		            : never
 }

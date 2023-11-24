@@ -7,17 +7,17 @@ import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 import type {
 	$$Schema,
 	$$Schemable,
-	ISchema,
-	ISchema$,
 	ObjectIndexSignatureEntry,
 	ObjectOptions,
+	Schema,
+	Schema$,
 } from '~'
 
 export interface $$Object extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Object'
 }
 
-export interface IObject extends $$Object, ISchema {
+export interface IObject extends $$Object, Schema {
 	//
 	readonly [SCHEMA_NAME]: 'Object'
 
@@ -32,7 +32,7 @@ export interface IObject extends $$Object, ISchema {
 	get getIndexSignatures(): ObjectIndexSignatureEntry[]
 }
 
-export interface IObject$ extends $$Object, ISchema$ {
+export interface IObject$ extends $$Object, Schema$ {
 	//
 	readonly [SCHEMA_NAME]: 'Object'
 

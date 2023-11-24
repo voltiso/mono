@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $$Schema, $$Schemable, ISchema, SchemaOptions } from '~'
+import type { $$Schema, $$Schemable, Schema, SchemaOptions } from '~'
 
 export interface RecordOptions extends SchemaOptions {
 	// Output: Record<keyof any, unknown>
@@ -16,7 +16,7 @@ export declare namespace RecordOptions {
 		Output: Record<keyof any, unknown>
 		Input: Record<keyof any, unknown>
 
-		keySchema: ISchema<keyof any>
-		valueSchema: ISchema<unknown>
+		keySchema: Schema<keyof any>
+		valueSchema: Schema<unknown>
 	}
 }

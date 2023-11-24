@@ -3,9 +3,9 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema } from '~'
+import type { Schema } from '~'
 
-export interface IInstance extends ISchema {
+export interface IInstance extends Schema {
 	readonly [SCHEMA_NAME]: 'Instance'
 
 	readonly getConstructor: abstract new (...args: any) => object

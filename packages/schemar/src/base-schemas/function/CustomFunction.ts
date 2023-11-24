@@ -218,9 +218,9 @@ export declare namespace CustomFunction {
 		export type Rec<final, acc extends unknown[], Ts> = Ts extends Rest[]
 			? final
 			: Ts extends [infer T, ...infer Tss]
-			? T extends $$Schema & { isOptional: true }
-				? Rec<final | acc, [...acc, T], Tss>
-				: Rec<final, [...acc, T], Tss>
-			: final
+			  ? T extends $$Schema & { isOptional: true }
+					? Rec<final | acc, [...acc, T], Tss>
+					: Rec<final, [...acc, T], Tss>
+			  : final
 	}
 }

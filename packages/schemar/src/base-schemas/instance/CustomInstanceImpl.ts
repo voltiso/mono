@@ -7,7 +7,7 @@ import { $assert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import { _getInstanceConstructorName } from './_/getConstructorName'
 import type { CustomInstance } from './CustomInstance'
@@ -45,7 +45,7 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	// 	super(o)
 	// }
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isInstanceSchema(other))
 			return this.getConstructor === other.getConstructor
 		else return super[EXTENDS](other)

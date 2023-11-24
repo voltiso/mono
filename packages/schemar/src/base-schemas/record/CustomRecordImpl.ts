@@ -7,7 +7,7 @@ import { lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
 
 import type { CustomUnknownObjectImpl } from '../unknownObject'
@@ -64,7 +64,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	override [EXTENDS](_other: ISchema): boolean {
+	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 	}
 

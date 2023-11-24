@@ -9,11 +9,10 @@ import type {
 	CustomSchema,
 	CustomSchema$,
 	ImplicitSchemaInferrer$,
-	ISchema,
 	Schema,
+	Schema$,
 	Schemable,
 	SchemaOptions,
-	SimpleSchema$,
 	Unknown,
 } from '~'
 
@@ -24,8 +23,8 @@ describe('CustomSchema', () => {
 	it('generic', <O extends Partial<SchemaOptions>>() => {
 		expect.assertions(0)
 
-		$Assert.is<keyof CustomSchema<O>, keyof ISchema>()
-		$Assert.is<keyof ISchema, keyof CustomSchema<O>>()
+		$Assert.is<keyof CustomSchema<O>, keyof Schema>()
+		$Assert.is<keyof Schema, keyof CustomSchema<O>>()
 
 		$Assert.is<CustomSchema<O>, Schema>()
 		$Assert.is<CustomSchema<O>, Schemable>()
@@ -35,7 +34,7 @@ describe('CustomSchema', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type MySchema = SimpleSchema$<Date>
+		type MySchema = CustomSchema$<{ Output: Date; Input: Date }>
 
 		type X = MySchema['isReadonly']
 		$Assert<IsIdentical<X, false>>()
@@ -61,10 +60,10 @@ describe('CustomSchema', () => {
 	})
 
 	it('type - index signatures', () => {
-		type A = SimpleSchema$<{ a: 1 }>
+		type A = Schema$<{ a: 1 }>
 		type AA = CustomSchema$<{ Output: { a: 1 }; Input: { a: 1 } }>
 
-		type B = SimpleSchema$<{ [k: string]: unknown }>
+		type B = Schema$<{ [k: string]: unknown }>
 		type BB = CustomSchema$<{
 			Output: { [k: string]: unknown }
 			Input: { [k: string]: unknown }
@@ -87,9 +86,17 @@ describe('CustomSchema', () => {
 		expect.assertions(0)
 
 		const mySchema = schema({
-			field: unknown as unknown as SimpleSchema$<Date>,
-			optionalField: unknown as unknown as SimpleSchema$<Date>['optional'],
-			readonlyField: unknown as unknown as SimpleSchema$<Date>['readonly'],
+			field: unknown as unknown as CustomSchema$<{ Output: Date; Input: Date }>,
+
+			optionalField: unknown as unknown as CustomSchema$<{
+				Output: Date
+				Input: Date
+			}>['optional'],
+
+			readonlyField: unknown as unknown as CustomSchema$<{
+				Output: Date
+				Input: Date
+			}>['readonly'],
 		})
 		type MySchema = typeof mySchema.Output
 

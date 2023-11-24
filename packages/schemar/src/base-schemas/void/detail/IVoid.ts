@@ -3,12 +3,12 @@
 
 import type { SCHEMA_NAME } from '_'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
-export interface IVoid extends ISchema {
+export interface IVoid extends Schema {
 	readonly [SCHEMA_NAME]: 'Void'
 }
 
-export interface IVoid$ extends ISchema$ {
+export interface IVoid$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'Void'
 }

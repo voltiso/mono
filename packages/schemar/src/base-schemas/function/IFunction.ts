@@ -3,15 +3,9 @@
 
 import type { AlsoAccept, BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	FunctionOptions,
-	ISchema,
-	ISchema$,
-	SCHEMA_NAME,
-} from '~'
+import type { $$Schema, FunctionOptions, Schema, SCHEMA_NAME, Schema$ } from '~'
 
-export interface IFunction extends ISchema {
+export interface IFunction extends Schema {
 	//
 	readonly [SCHEMA_NAME]: 'Function'
 
@@ -44,7 +38,7 @@ export interface IFunction extends ISchema {
 	get getReturnSchema(): $$Schema
 }
 
-export interface IFunction$ extends ISchema$ {
+export interface IFunction$ extends Schema$ {
 	//
 	readonly [SCHEMA_NAME]: 'Function'
 

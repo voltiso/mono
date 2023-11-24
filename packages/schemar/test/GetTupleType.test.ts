@@ -6,8 +6,8 @@ import { $Assert } from '@voltiso/util'
 
 import type {
 	InferableLiteral,
-	ISchema,
 	Number as NumberSchema,
+	Schema,
 	Schemable,
 	String as StringSchema,
 	TupleType_,
@@ -40,7 +40,7 @@ describe('GetTupleType', () => {
 		type A = TupleType_<InferableLiteral[], { kind: 'out' }>
 		$Assert<IsIdentical<A, InferableLiteral[]>>()
 
-		type B = TupleType_<ISchema[], { kind: 'out' }>
+		type B = TupleType_<Schema[], { kind: 'out' }>
 		$Assert<IsIdentical<B, unknown[]>>()
 
 		type C = TupleType_<Schemable[], { kind: 'out' }>

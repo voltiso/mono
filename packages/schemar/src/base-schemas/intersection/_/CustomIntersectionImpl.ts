@@ -8,7 +8,7 @@ import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
 import type { Schemable } from '~/types/Schemable/Schemable'
 
@@ -37,7 +37,7 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	override [EXTENDS](_other: ISchema): boolean {
+	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.') // TODO
 	}
 

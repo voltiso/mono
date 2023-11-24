@@ -4,7 +4,7 @@
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, ISchema, ISchema$ } from '~'
+import type { $$Schema, Schema, Schema$ } from '~'
 
 import type { StringOptions } from './StringOptions'
 
@@ -13,7 +13,7 @@ export interface $$String extends $$Schema {
 }
 
 /** Every String<O> is assignable to IString */
-export interface IString extends ISchema<string> {
+export interface IString extends Schema<string> {
 	readonly [SCHEMA_NAME]: 'String'
 
 	readonly [BASE_OPTIONS]: StringOptions
@@ -24,7 +24,7 @@ export interface IString extends ISchema<string> {
 }
 
 /** Every String$<O> is assignable to IString$ */
-export interface IString$ extends ISchema$<string> {
+export interface IString$ extends Schema$<string> {
 	readonly [SCHEMA_NAME]: 'String'
 
 	readonly [BASE_OPTIONS]: StringOptions

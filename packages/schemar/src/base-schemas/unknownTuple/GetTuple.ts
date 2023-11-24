@@ -43,8 +43,8 @@ export type GetTuple$_<This, T> = This extends {
 		? This[OPTIONS]['isReadonlyTuple'] extends true
 			? ReadonlyTuple$<Assume<$$Schemable[], RelaxInferableTuple_<T>>>
 			: This[OPTIONS]['isReadonlyTuple'] extends false
-			? MutableTuple$<Assume<$$Schemable[], RelaxInferableTuple_<T>>>
-			: never
+			  ? MutableTuple$<Assume<$$Schemable[], RelaxInferableTuple_<T>>>
+			  : never
 		: never
 	: never
 

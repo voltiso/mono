@@ -9,7 +9,6 @@ import type {
 	CustomBoolean,
 	CustomBoolean$,
 	ImplicitInferSchema$,
-	ISchema,
 	Output,
 	Schema,
 } from '~'
@@ -18,7 +17,7 @@ import * as s from '~'
 
 describe('boolean', () => {
 	it('generic', <O extends Partial<BooleanOptions>>() => {
-		$Assert.is<CustomBoolean<O>, ISchema>()
+		$Assert.is<CustomBoolean<O>, Schema>()
 	})
 
 	it('type', () => {
@@ -29,18 +28,18 @@ describe('boolean', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		$Assert.is<s.Boolean, ISchema>()
+		$Assert.is<s.Boolean, Schema>()
 
 		const aa = s.boolean
 		type Aa = typeof aa.Type
 		$Assert<IsIdentical<Aa, boolean>>()
-		$Assert.is<typeof aa, ISchema<boolean>>()
+		$Assert.is<typeof aa, Schema<boolean>>()
 
 		type X = ImplicitInferSchema$<123>['Output']
 		$Assert<IsIdentical<X, 123>>()
 
 		type BooleanSchema = Schema<boolean>
-		$Assert.is<BooleanSchema, ISchema<boolean>>()
+		$Assert.is<BooleanSchema, Schema<boolean>>()
 
 		// Assert.is<
 		// 	s.CustomSchema<{ Input: boolean; Output: boolean }>,
@@ -60,7 +59,7 @@ describe('boolean', () => {
 		// Assert.is<typeof aa, s.Schema<never>>()
 		$Assert($Is<typeof aa>().not.subtypeOf<Schema<never>>())
 
-		$Assert.is<typeof aa, ISchema<boolean | string>>()
+		$Assert.is<typeof aa, Schema<boolean | string>>()
 
 		expect(isBooleanSchema(s.boolean)).toBeTruthy()
 

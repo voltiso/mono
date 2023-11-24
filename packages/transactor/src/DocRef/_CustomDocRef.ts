@@ -2,13 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import type {
-	IObject$,
-	ISchema,
-	Output_,
-	Schema,
-	SchemaLike,
-} from '@voltiso/schemar'
+import type { IObject$, Output_, Schema, SchemaLike } from '@voltiso/schemar'
 import type { _, If, Override } from '@voltiso/util'
 import {
 	assert,
@@ -97,7 +91,7 @@ export class _CustomDocRef<
 	_beforeCommits?: DocRefTriggerEntry<Trigger.BeforeCommit>[] = undefined
 	_onGets?: DocRefTriggerEntry<OnGetTrigger>[] = undefined
 
-	_idSchemas?: ISchema<string>[] = undefined
+	_idSchemas?: Schema<string>[] = undefined
 	_aggregateSchemas?: Record<string, SchemaLike> = undefined
 
 	_schema:

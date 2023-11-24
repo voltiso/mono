@@ -17,7 +17,6 @@ import type {
 	$$Schemable,
 	ArrayOptions,
 	CustomArray,
-	ISchema,
 	Schema,
 	ValidationOptions,
 } from '~'
@@ -75,7 +74,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		return this._cloneWithOptions({ isReadonlyArray: false }) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isArraySchema(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
 
@@ -97,7 +96,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				if (thisMaxLength < other.getLength) return false
 
 				for (const t of other.getShape) {
-					if (!(this.getElementSchema as unknown as ISchema).extends(t))
+					if (!(this.getElementSchema as unknown as Schema).extends(t))
 						return false
 				}
 
@@ -116,7 +115,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		}
 
 		if (isArraySchema(other))
-			return (this.getElementSchema as unknown as ISchema).extends(
+			return (this.getElementSchema as unknown as Schema).extends(
 				other.getElementSchema,
 			)
 		else return super[EXTENDS](other)
@@ -184,7 +183,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			}
 
 			for (const [idx, e] of x.entries()) {
-				const c = (this.getElementSchema as unknown as ISchema).exec(e, options)
+				const c = (this.getElementSchema as unknown as Schema).exec(e, options)
 
 				if (!c.isValid) {
 					for (const issue of c.issues) issue.path = [idx, ...issue.path]
@@ -206,10 +205,9 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	override _toString(): string {
-		const elementTypeStr = (
+		const elementTypeStr =
 			// eslint-disable-next-line @typescript-eslint/no-base-to-string
-			this.getElementSchema as unknown as ISchema
-		).toString()
+			(this.getElementSchema as unknown as Schema).toString()
 
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`
 		else return `${elementTypeStr}[]`

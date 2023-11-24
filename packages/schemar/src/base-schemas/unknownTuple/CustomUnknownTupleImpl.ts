@@ -64,8 +64,8 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	): O['isReadonlyTuple'] extends true
 		? ReadonlyTuple<T>
 		: O['isReadonlyTuple'] extends false
-		? MutableTuple<T>
-		: never {
+		  ? MutableTuple<T>
+		  : never {
 		// eslint-disable-next-line es-x/no-array-string-prototype-at
 		const lastElement = shapeWithRest.at(-1)
 

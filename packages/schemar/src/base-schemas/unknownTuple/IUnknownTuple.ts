@@ -3,9 +3,9 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
-export interface IUnknownTuple extends ISchema {
+export interface IUnknownTuple extends Schema {
 	readonly [SCHEMA_NAME]: 'UnknownTuple'
 
 	get isReadonlyTuple(): boolean
@@ -13,7 +13,7 @@ export interface IUnknownTuple extends ISchema {
 	get getMaxLength(): number | undefined
 }
 
-export interface IUnknownTuple$ extends ISchema$ {
+export interface IUnknownTuple$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'UnknownTuple'
 
 	get isReadonlyTuple(): boolean

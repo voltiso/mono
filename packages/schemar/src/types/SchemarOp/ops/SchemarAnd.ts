@@ -12,8 +12,8 @@ import type {
 	$$UnknownRecord,
 	CustomObject$,
 	ImplicitInferSchema$_,
-	ISchema$,
 	Object$,
+	Schema$,
 	UnknownRecord$,
 } from '~'
 
@@ -53,18 +53,18 @@ export declare namespace SchemarAnd {
 	> = A extends $$UnknownRecord // skip wildcard index signatures of unknown record
 		? GetObject<$$Object & { Output: unknown; Input: unknown }, B>
 		: B extends $$UnknownRecord
-		? GetObject<A, $$Object & { Output: unknown; Input: unknown }>
-		: A extends {
-				Output: unknown
-				Input: unknown
-		  }
-		? B extends {
-				Output: unknown
-				Input: unknown
-		  }
-			? Object.Get<_<A['Output'] & B['Output']>, _<A['Input'] & B['Input']>>
-			: never
-		: never
+		  ? GetObject<A, $$Object & { Output: unknown; Input: unknown }>
+		  : A extends {
+						Output: unknown
+						Input: unknown
+		      }
+		    ? B extends {
+						Output: unknown
+						Input: unknown
+		      }
+					? Object.Get<_<A['Output'] & B['Output']>, _<A['Input'] & B['Input']>>
+					: never
+		    : never
 
 	//
 
@@ -79,7 +79,7 @@ export declare namespace SchemarAnd {
 		Input: unknown
 	}
 		? B extends { Output: unknown; Input: unknown }
-			? ISchema$ & {
+			? Schema$ & {
 					Output: A['Output'] & B['Output']
 					Input: A['Input'] & B['Input']
 			  }
@@ -105,6 +105,6 @@ export declare namespace SchemarAndN {
 				]
 		  >
 		: Ts extends [infer A]
-		? ImplicitInferSchema$_<A>
-		: never
+		  ? ImplicitInferSchema$_<A>
+		  : never
 }

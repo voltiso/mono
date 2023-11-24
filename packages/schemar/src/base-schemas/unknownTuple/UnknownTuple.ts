@@ -22,10 +22,9 @@ export interface MutableUnknownTuple
 
 export interface MutableUnknownTuple$
 	extends CustomUnknownTuple$<{ isReadonlyTuple: false }> {
-	<T extends readonly $$Schemable[]>(...elementTypes: T): GetTuple$_<
-		this,
-		$Mutable<T>
-	>
+	<T extends readonly $$Schemable[]>(
+		...elementTypes: T
+	): GetTuple$_<this, $Mutable<T>>
 
 	<T extends [...$$Schemable[], Rest]>(
 		...elementTypes: Readonly<T>
@@ -56,10 +55,9 @@ export interface ReadonlyUnknownTuple$
 		Output: readonly unknown[]
 		Input: readonly unknown[]
 	}> {
-	<T extends readonly $$Schemable[]>(...elementTypes: T): GetTuple$_<
-		this,
-		[...T]
-	>
+	<T extends readonly $$Schemable[]>(
+		...elementTypes: T
+	): GetTuple$_<this, [...T]>
 }
 
 export type MutableUnknownTuple$Constructor = new () => MutableUnknownTuple$

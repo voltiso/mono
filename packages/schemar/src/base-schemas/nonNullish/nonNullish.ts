@@ -15,7 +15,7 @@ import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
 import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
 import type { CustomSchema, CustomSchema$ } from '~/types/Schema/CustomSchema'
-import type { $$Schema, ISchema } from '~/types/Schema/ISchema'
+import type { $$Schema, Schema } from '~/types/Schema/ISchema'
 
 export interface $$NonNullish extends $$Schema {
 	readonly [SCHEMA_NAME]: 'NonNullish'
@@ -95,7 +95,7 @@ export class CustomNonNullishImpl<
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	override [EXTENDS](_other: ISchema): boolean {
+	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.')
 	}
 }

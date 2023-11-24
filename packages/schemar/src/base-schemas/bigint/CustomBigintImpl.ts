@@ -15,7 +15,7 @@ import type { Literal } from '~/core-schemas/literal/Literal'
 import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import type { BigintOptions } from './BigintOptions'
 import type { CustomBigint } from './CustomBigint'
@@ -65,7 +65,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		return literal<L>(literals as never) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isBigintSchema(other)) return true
 		else return super[EXTENDS](other)
 	}

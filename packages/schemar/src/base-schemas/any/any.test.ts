@@ -4,18 +4,18 @@
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { AnyOptions, CustomAny, IAny, Input, ISchema, Output } from '~'
+import type { AnyOptions, CustomAny, IAny, Input, Output, Schema } from '~'
 import * as s from '~'
 
 describe('any', () => {
 	it('generic', <O extends Partial<AnyOptions>>() => {
-		$Assert.is<IAny, ISchema>()
-		$Assert.is<CustomAny<O>, ISchema>()
+		$Assert.is<IAny, Schema>()
+		$Assert.is<CustomAny<O>, Schema>()
 		$Assert.is<CustomAny<O>, IAny>()
 	})
 
 	it('simple', () => {
-		$Assert.is<typeof s.any, ISchema>()
+		$Assert.is<typeof s.any, Schema>()
 
 		type A1 = Output<typeof s.any>
 		type A2 = Input<typeof s.any>

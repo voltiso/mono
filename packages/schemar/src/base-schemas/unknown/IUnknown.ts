@@ -4,14 +4,14 @@
 import { SCHEMA_NAME } from '_'
 import { $assert } from '@voltiso/util'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
-export interface IUnknown extends ISchema {
+export interface IUnknown extends Schema {
 	readonly [SCHEMA_NAME]: 'Unknown'
 }
 
 /** Typeof s.unknown */
-export interface IUnknown$ extends ISchema$ {
+export interface IUnknown$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'Unknown'
 }
 

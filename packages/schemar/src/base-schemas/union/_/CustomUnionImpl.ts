@@ -8,7 +8,7 @@ import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { ValidationOptions } from '~/types/Schema/ValidationOptions'
 import type { $$Schemable, Schemable } from '~/types/Schemable/Schemable'
 
@@ -38,7 +38,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		return this[OPTIONS].schemas as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		const otherTypes: $$Schemable[] = isUnionSchema(other)
 			? other.getSchemas
 			: [other]

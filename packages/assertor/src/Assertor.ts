@@ -16,10 +16,10 @@ export interface AssertorOptions {
 /** @internal */
 export class _Assertor {
 	private readonly _name: string
-	private readonly _schema: s.ISchema
+	private readonly _schema: s.Schema
 	private readonly _options: AssertorOptions | undefined
 
-	constructor(name: string, schema: s.ISchema, options?: AssertorOptions) {
+	constructor(name: string, schema: s.Schema, options?: AssertorOptions) {
 		this._name = name
 		this._schema = schema
 		this._options = options

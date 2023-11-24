@@ -5,7 +5,6 @@ import { $Assert } from '@voltiso/util'
 
 import type {
 	CustomUnknownLiteral,
-	ISchema,
 	IUnknownLiteral,
 	Schema,
 	SchemaLike,
@@ -17,7 +16,7 @@ describe('UnknownLiteral', () => {
 		expect.assertions(0)
 
 		$Assert.is<CustomUnknownLiteral<O>, SchemaLike>()
-		$Assert.is<CustomUnknownLiteral<O>, ISchema>()
+		$Assert.is<CustomUnknownLiteral<O>, Schema>()
 		$Assert.is<CustomUnknownLiteral<O>, Schema>()
 		$Assert.is<CustomUnknownLiteral<O>, IUnknownLiteral>()
 	})

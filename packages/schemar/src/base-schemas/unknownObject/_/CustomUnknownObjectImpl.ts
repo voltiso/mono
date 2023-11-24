@@ -12,12 +12,7 @@ import {
 	OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	InferableObject,
-	ISchema,
-	UnknownObjectOptions,
-} from '~'
+import type { $$Schema, InferableObject, Schema, UnknownObjectOptions } from '~'
 import {
 	CustomSchemaImpl,
 	isObjectSchema,
@@ -88,7 +83,7 @@ export class CustomUnknownObjectImpl<
 		}) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isObjectSchema(other)) {
 			return getKeys(other.getShape).length === 0
 		} else if (isUnknownObjectSchema(other)) return true

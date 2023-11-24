@@ -5,7 +5,7 @@ import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
 import { SCHEMA_NAME } from '~/_/symbols'
 import type { CustomSchema, CustomSchema$ } from '~/types/Schema/CustomSchema'
-import type { ISchema, ISchema$ } from '~/types/Schema/ISchema'
+import type { Schema, Schema$ } from '~/types/Schema/ISchema'
 
 import type { UnknownRecordOptions } from './UnknownRecordOptions'
 
@@ -25,7 +25,7 @@ export function is$$UnknownRecordSchema(x: unknown): x is IUnknownRecord$ {
 
 //
 
-export interface IUnknownRecord extends ISchema {
+export interface IUnknownRecord extends Schema {
 	readonly [SCHEMA_NAME]: 'UnknownRecord'
 
 	readonly [BASE_OPTIONS]: UnknownRecordOptions
@@ -35,7 +35,7 @@ export interface IUnknownRecord extends ISchema {
 	get getShape(): object
 }
 
-export interface IUnknownRecord$ extends ISchema$ {
+export interface IUnknownRecord$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'UnknownRecord'
 
 	readonly [BASE_OPTIONS]: UnknownRecordOptions

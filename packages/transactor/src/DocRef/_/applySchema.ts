@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '@voltiso/schemar'
+import type { Schema } from '@voltiso/schemar'
 import { ValidationError } from '@voltiso/schemar'
 import { isDeleteIt, isPlainObject } from '@voltiso/util'
 
@@ -39,7 +39,7 @@ export function applySchema(
 
 	if (!data || !schema) return data as never // identity
 
-	const r = (schema as ISchema).exec(data, {
+	const r = (schema as Schema).exec(data, {
 		onUnknownProperty: ctx.transactor._options.onUnknownField,
 	})
 

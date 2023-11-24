@@ -41,6 +41,7 @@ export const unicorn = defineEslintConfigOverride({
 		'unicorn/filename-case': 0, // does not allow `someName_.ts`
 
 		'unicorn/import-style': 1,
+		// 'unicorn/import-style': ['warn', { styles: { chalk: { default: false } } }],
 		'unicorn/new-for-builtins': 1,
 		'unicorn/no-abusive-eslint-disable': 1,
 		'unicorn/no-array-callback-reference': 0, // problematic with type-guard callbacks

@@ -24,14 +24,14 @@ describe('object', () => {
 				IsIdentical<
 					typeof aShape,
 					{
-						num: s.SimpleSchema<number>
-						numLit: 123 | 234 | s.SimpleSchema<123> | s.SimpleSchema<234>
+						num: s.Schema<number>
+						numLit: 123 | 234 | s.Schema<123 | 234>
 						nested:
 							| {
 									str: string
 									strLit: 'a' | 'b'
 							  }
-							| s.SimpleSchema<{
+							| s.Schema<{
 									str: string
 									strLit: 'a' | 'b'
 							  }>
@@ -45,11 +45,11 @@ describe('object', () => {
 				IsIdentical<
 					typeof aDeepShape,
 					{
-						num: s.SimpleSchema<number>
-						numLit: 123 | 234 | s.SimpleSchema<123> | s.SimpleSchema<234>
+						num: s.Schema<number>
+						numLit: 123 | 234 | s.Schema<123> | s.Schema<234>
 						nested: {
-							str: s.SimpleSchema<string>
-							strLit: 'a' | 'b' | s.SimpleSchema<'a'> | s.SimpleSchema<'b'>
+							str: s.Schema<string>
+							strLit: 'a' | 'b' | s.Schema<'a'> | s.Schema<'b'>
 						}
 					}
 				>

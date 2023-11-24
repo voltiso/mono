@@ -10,7 +10,6 @@ import type {
 	IArray,
 	IFunction,
 	Input,
-	ISchema,
 	ITuple,
 	Output,
 	Schema,
@@ -22,7 +21,7 @@ import * as s from '~'
 describe('function', () => {
 	it('type - simple', () => {
 		$Assert.is<CustomFunction<{}>, IFunction>()
-		$Assert.is<CustomFunction<{}>, ISchema>()
+		$Assert.is<CustomFunction<{}>, Schema>()
 
 		type A = s.Function<(a: number) => string>
 		type AA = A['Output']
@@ -36,7 +35,7 @@ describe('function', () => {
 		$Assert<IsIdentical<C, (...args: unknown[]) => unknown>>()
 
 		$Assert.is<s.Function<(x: number) => string>, IFunction>()
-		$Assert.is<s.Function<(x: number) => string>, ISchema>()
+		$Assert.is<s.Function<(x: number) => string>, Schema>()
 	})
 
 	it('generic', <O extends Partial<FunctionOptions>>() => {
@@ -56,7 +55,7 @@ describe('function', () => {
 		// 	readonly unknown[]
 		// >()
 
-		$Assert.is<never[], Type_<(ITuple | IArray) & ISchema, { kind: 'out' }>>()
+		$Assert.is<never[], Type_<(ITuple | IArray) & Schema, { kind: 'out' }>>()
 
 		const args = s.readonlyArray(s.number(123))
 		// type B = typeof args.Type

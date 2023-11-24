@@ -10,7 +10,7 @@ import { FunctionImpl } from '~/base-schemas/function'
 import { ValidationIssue } from '~/meta-schemas'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import type { $$SchemableTuple } from '~/types/Inferable/Inferable'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import type { $$Array } from '../array/IArray'
@@ -39,7 +39,7 @@ export class CustomUnknownFunctionImpl<
 		return BoundCallable(this) as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isUnknownFunctionSchema(other)) return true
 		else return super[EXTENDS](other)
 	}

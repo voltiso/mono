@@ -16,7 +16,6 @@ import type {
 	CustomFix,
 	CustomOperation,
 	Output_,
-	Schema,
 	SCHEMA_NAME,
 	SchemaOptions,
 	ValidationIssue,
@@ -33,14 +32,12 @@ export interface SchemaLike<T = unknown> extends $$Schema {
 	get Input(): T | undefined
 }
 
-export type __tsdoc_types_ISchema = Schema
-
 /**
- * Every {@link Schema} is assignable to {@link ISchema}
+ * Every schema is assignable to {@link Schema}
  *
- * - Also @see {@link ISchema$ } for a version with builder interface
+ * - Also @see {@link Schema$ } for a version with builder interface
  */
-export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
+export interface Schema<T = unknown> extends $$Schema, SchemaLike<T> {
 	readonly [SCHEMA_NAME]: string // SchemaName
 
 	readonly [BASE_OPTIONS]: SchemaOptions
@@ -168,24 +165,24 @@ export interface ISchema<T = unknown> extends $$Schema, SchemaLike<T> {
 }
 
 /**
- * Every Schema$ is assignable to `ISchema$`
+ * Every schema$ is assignable to `Schema$`
  *
- * - ⚠️ Prefer `ISchema` for a super-type without the builder methods
+ * - ⚠️ Prefer {@link Schema} for a super-type without the builder methods
  * - Never try to trigger assignability testing of these recursive types (super
  *   slow)
  */
-export interface ISchema$<T = unknown> extends ISchema<T> {
+export interface Schema$<T = unknown> extends Schema<T> {
 	/** Specify name for nicer messages */
 	name(name: string): this
 
-	get optional(): ISchema$<T>
-	get strictOptional(): ISchema$<T>
+	get optional(): Schema$<T>
+	get strictOptional(): Schema$<T>
 
-	get readonly(): ISchema$<T>
+	get readonly(): Schema$<T>
 	default(value: T): $$Schema
 	default(getValue: () => T): $$Schema
 
-	get deleted(): ISchema$
+	get deleted(): Schema$
 
 	//
 
@@ -302,45 +299,45 @@ export interface ISchema$<T = unknown> extends ISchema<T> {
 	): $$Schema | StaticError
 
 	//
-	implicitFix(conditionSchema: $$Schema, fix: (value: any) => any): ISchema$
-	implicitFix(fix: (value: any) => any): ISchema$
+	implicitFix(conditionSchema: $$Schema, fix: (value: any) => any): Schema$
+	implicitFix(fix: (value: any) => any): Schema$
 
 	//
 
-	Narrow(): ISchema$
-	$Narrow(): ISchema$
+	Narrow(): Schema$
+	$Narrow(): Schema$
 
-	Widen(): ISchema$
-	$Widen(): ISchema$
+	Widen(): Schema$
+	$Widen(): Schema$
 
-	Cast(): ISchema$
-	$Cast(): ISchema$
+	Cast(): Schema$
+	$Cast(): Schema$
 
-	NarrowOutput(): ISchema$
-	$NarrowOutput(): ISchema$
+	NarrowOutput(): Schema$
+	$NarrowOutput(): Schema$
 
-	WidenOutput(): ISchema$
-	$WidenOutput(): ISchema$
+	WidenOutput(): Schema$
+	$WidenOutput(): Schema$
 
-	CastOutput(): ISchema$
-	$CastOutput(): ISchema$
+	CastOutput(): Schema$
+	$CastOutput(): Schema$
 
-	NarrowInput(): ISchema$
-	$NarrowInput(): ISchema$
+	NarrowInput(): Schema$
+	$NarrowInput(): Schema$
 
-	WidenInput(): ISchema$
-	$WidenInput(): ISchema$
+	WidenInput(): Schema$
+	$WidenInput(): Schema$
 
-	CastInput(): ISchema$
-	$CastInput(): ISchema$
+	CastInput(): Schema$
+	$CastInput(): Schema$
 
 	//
 
-	or(other: $$Schemable): ISchema$
-	and(other: $$Schemable): ISchema$
+	or(other: $$Schemable): Schema$
+	and(other: $$Schemable): Schema$
 
 	/** Type-cast to the non-builder version */
-	get Final(): ISchema<T>
+	get Final(): Schema<T>
 
 	toString(): string
 }

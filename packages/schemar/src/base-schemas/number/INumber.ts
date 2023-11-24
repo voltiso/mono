@@ -3,7 +3,7 @@
 
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, ISchema, ISchema$, SCHEMA_NAME, SchemaLike } from '~'
+import type { $$Schema, Schema, SCHEMA_NAME, Schema$, SchemaLike } from '~'
 
 import type { NumberOptions } from './NumberOptions'
 
@@ -15,7 +15,7 @@ export interface NumberLike<T extends number> extends $$Number, SchemaLike<T> {
 	readonly [SCHEMA_NAME]: 'Number'
 }
 
-export interface INumber extends ISchema {
+export interface INumber extends Schema {
 	readonly [SCHEMA_NAME]: 'Number'
 
 	readonly [BASE_OPTIONS]: NumberOptions
@@ -28,7 +28,7 @@ export interface INumber extends ISchema {
 
 //
 
-export interface INumber$ extends ISchema$ {
+export interface INumber$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'Number'
 
 	readonly [BASE_OPTIONS]: NumberOptions

@@ -7,7 +7,7 @@ import { $assert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import type { CustomNumber } from '../CustomNumber'
 import { isNumberSchema } from '../isNumber'
@@ -41,7 +41,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		return this[OPTIONS].max as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isNumberSchema(other)) return true
 		else return super[EXTENDS](other)
 	}

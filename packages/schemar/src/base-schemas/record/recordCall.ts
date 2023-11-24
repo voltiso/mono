@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SimpleSchema } from '~/types/Schema/Schema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import type { CustomUnknownObject } from '../unknownObject/CustomUnknownObject'
@@ -20,7 +20,7 @@ export function recordCall<TValueSchema extends $$Schemable>(
 	valueSchema: TValueSchema,
 ): CustomUnknownObject.Index<
 	UnknownObject,
-	SimpleSchema<keyof any>,
+	Schema<keyof any>,
 	TValueSchema
 >
 

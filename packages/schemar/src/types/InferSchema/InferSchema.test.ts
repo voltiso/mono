@@ -11,9 +11,9 @@ import type {
 	ImplicitInferSchema$,
 	InferableObject,
 	IObject$,
-	ISchema$,
 	Literal$,
 	NonNullish$,
+	Schema$,
 	SchemableObject,
 } from '~'
 
@@ -38,7 +38,7 @@ describe('InferSchema', () => {
 		$Assert<IsIdentical<E, IObject$>>()
 
 		type F = ImplicitInferSchema$<$$Schema>
-		$Assert<IsIdentical<F, ISchema$>>()
+		$Assert<IsIdentical<F, Schema$>>()
 
 		type G = ImplicitInferSchema$<1 | 2 | 'a' | {}>
 		$Assert<IsIdentical<G, Literal$<1 | 2 | 'a'> | NonNullish$>>()

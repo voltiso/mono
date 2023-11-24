@@ -10,8 +10,8 @@ export type DeepPartialShapeProcessEntry_<S> = S extends /* IObject*/ {
 }
 	? S['deepPartial']['optional']
 	: S extends /* ISchema*/ { optional: any }
-	? S['optional']
-	: never
+	  ? S['optional']
+	  : never
 
 //
 
@@ -34,8 +34,8 @@ export type DeepStrictPartialShapeProcessStrictEntry_<S> = [S] extends [
 ]
 	? S['deepStrictPartial']['strictOptional']
 	: [S] extends [{ readonly strictOptional: unknown }]
-	? S['strictOptional']
-	: never
+	  ? S['strictOptional']
+	  : never
 
 //
 

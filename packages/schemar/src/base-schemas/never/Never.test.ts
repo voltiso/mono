@@ -8,9 +8,9 @@ import type {
 	CustomNever,
 	INever,
 	Input,
-	ISchema,
 	NeverOptions,
 	Output,
+	Schema,
 } from '~'
 import * as s from '~'
 
@@ -22,7 +22,7 @@ describe('never', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 
-		$Assert.is<typeof s.never, ISchema>()
+		$Assert.is<typeof s.never, Schema>()
 
 		type A1 = Output<typeof s.never>
 		type A2 = Input<typeof s.never>

@@ -24,7 +24,6 @@ import type {
 	InferableTuple,
 	Schema,
 	SCHEMA_NAME,
-	SimpleSchema,
 	Type,
 } from '~'
 
@@ -121,7 +120,7 @@ export interface CustomObject$<O extends Partial<ObjectOptions>>
 
 	index<TValueSchema extends $$Schemable>(
 		valueSchema: TValueSchema,
-	): CustomObject.WithIndex<this, O, SimpleSchema<keyof any>, TValueSchema>
+	): CustomObject.WithIndex<this, O, Schema<keyof any>, TValueSchema>
 }
 
 //
@@ -245,10 +244,10 @@ export declare namespace CustomObject {
 		export type Rec<Output, Input> = IsCompatible<Output, Input> extends false
 			? CustomSchema<{ Output: Output; Input: Input }>
 			: Output extends InferableObject | InferableTuple
-			? {
-					[k in keyof Output]: Rec<Output[k], Output[k]>
-			  }
-			: Schema<Output> | Inferable<Output>
+			  ? {
+						[k in keyof Output]: Rec<Output[k], Output[k]>
+			    }
+			  : Schema<Output> | Inferable<Output>
 	}
 
 	// export type GetShape<This extends >

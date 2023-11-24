@@ -52,18 +52,18 @@ export type GetObjectOutput<Shape extends object> = Shape extends any
 				[k in keyof Shape]: Output_<Shape[k]>
 		  }
 		: HasIndexSignature<Shape> extends false
-		? GetObjectType._GetNoSignature<
-				{
-					[k in keyof Shape]: Output_<Shape[k]>
-				},
-				Shape,
-				{
-					// eslint-disable-next-line etc/no-internal
-					[k in keyof Shape]: _GetOptions<Shape[k]>
-				},
-				{ kind: 'out' }
-		  >
-		: never
+		  ? GetObjectType._GetNoSignature<
+					{
+						[k in keyof Shape]: Output_<Shape[k]>
+					},
+					Shape,
+					{
+						// eslint-disable-next-line etc/no-internal
+						[k in keyof Shape]: _GetOptions<Shape[k]>
+					},
+					{ kind: 'out' }
+		    >
+		  : never
 	: never
 
 /** @inline */
@@ -73,18 +73,18 @@ export type GetObjectInput<Shape extends object> = Shape extends any
 				[k in keyof Shape]: Input_<Shape[k]>
 		  }
 		: HasIndexSignature<Shape> extends false
-		? GetObjectType._GetNoSignature<
-				{
-					[k in keyof Shape]: Input_<Shape[k]>
-				},
-				Shape,
-				{
-					// eslint-disable-next-line etc/no-internal
-					[k in keyof Shape]: _GetOptions<Shape[k]>
-				},
-				{ kind: 'in' }
-		  >
-		: never
+		  ? GetObjectType._GetNoSignature<
+					{
+						[k in keyof Shape]: Input_<Shape[k]>
+					},
+					Shape,
+					{
+						// eslint-disable-next-line etc/no-internal
+						[k in keyof Shape]: _GetOptions<Shape[k]>
+					},
+					{ kind: 'in' }
+		    >
+		  : never
 	: never
 
 //
@@ -100,18 +100,18 @@ export type GetObjectType<
 			[k in keyof Shape]: Type_<Shape[k], PartialOptions>
 	  }
 	: HasIndexSignature<Shape> extends false
-	? GetObjectType._GetNoSignature<
-			{
-				[k in keyof Shape]: Type_<Shape[k], PartialOptions>
-			},
-			Shape,
-			{
-				// eslint-disable-next-line etc/no-internal
-				[k in keyof Shape]: _GetOptions<Shape[k]>
-			},
-			$Override_<DefaultGetTypeOptions, PartialOptions>
-	  >
-	: never
+	  ? GetObjectType._GetNoSignature<
+				{
+					[k in keyof Shape]: Type_<Shape[k], PartialOptions>
+				},
+				Shape,
+				{
+					// eslint-disable-next-line etc/no-internal
+					[k in keyof Shape]: _GetOptions<Shape[k]>
+				},
+				$Override_<DefaultGetTypeOptions, PartialOptions>
+	    >
+	  : never
 
 export type GetImplicitObjectType<
 	Shape extends object,
@@ -121,8 +121,8 @@ export type GetImplicitObjectType<
 		? GetObjectType<Shape, IO> | undefined
 		: GetObjectType<Shape, IO>
 	: IO['kind'] extends 'out'
-	? GetObjectType<Shape, IO>
-	: never
+	  ? GetObjectType<Shape, IO>
+	  : never
 
 //
 
@@ -173,23 +173,23 @@ export declare namespace GetObjectType {
 	> = O['isOptional'] extends true
 		? T
 		: O['isStrictOptional'] extends true
-		? T
-		: O['hasDefault'] extends false
-		? F
-		: IO['kind'] extends 'in'
-		? T
-		: IO['kind'] extends 'out'
-		? F
-		: never
+		  ? T
+		  : O['hasDefault'] extends false
+		    ? F
+		    : IO['kind'] extends 'in'
+		      ? T
+		      : IO['kind'] extends 'out'
+		        ? F
+		        : never
 
 	/** @inline @internal */
 	export type _ShouldForceOptional<T, Shape> = Shape extends $$Schema
 		? false
 		: IsAlmostSame<Shape, {}> extends true
-		? false
-		: object extends T
-		? true
-		: false
+		  ? false
+		  : object extends T
+		    ? true
+		    : false
 
 	/** @inline @internal */
 	export type _Finalize<
@@ -221,8 +221,8 @@ export declare namespace GetObjectType {
 					>
 		  >
 		: IO['kind'] extends 'out'
-		? _<T>
-		: never
+		  ? _<T>
+		  : never
 
 	/**
 	 * Types should actually be e.g. `object & { a: 1 }`, but it's too verbose

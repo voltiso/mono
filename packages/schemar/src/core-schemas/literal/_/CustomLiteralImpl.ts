@@ -9,7 +9,7 @@ import { isUnknownLiteralSchema } from '~/core-schemas/unknownLiteral/isUnknownL
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import type { InferableLiteral } from '~/types/Inferable/Inferable'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 
 import type { CustomLiteral } from '../CustomLiteral'
 import { isLiteralSchema } from '../isLiteral'
@@ -33,7 +33,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 		return this[OPTIONS].values as never
 	}
 
-	override [EXTENDS](other: ISchema): boolean {
+	override [EXTENDS](other: Schema): boolean {
 		if (isLiteralSchema(other))
 			return isSubset(this.getValues, other.getValues as never)
 		else if (isUnknownLiteralSchema(other)) return true

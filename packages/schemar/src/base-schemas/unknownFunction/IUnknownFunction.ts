@@ -3,19 +3,19 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
 import type { BivariantUnknownFunction } from './UnknownFunctionOptions'
 
 export interface IUnknownFunction<
 	T extends BivariantUnknownFunction = BivariantUnknownFunction,
-> extends ISchema<T> {
+> extends Schema<T> {
 	readonly [SCHEMA_NAME]: 'UnknownFunction'
 }
 
 export interface IUnknownFunction$<
 	T extends BivariantUnknownFunction = BivariantUnknownFunction,
-> extends ISchema$<T> {
+> extends Schema$<T> {
 	readonly [SCHEMA_NAME]: 'UnknownFunction'
 }
 

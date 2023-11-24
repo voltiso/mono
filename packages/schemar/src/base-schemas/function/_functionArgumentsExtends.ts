@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
-import type { ISchema } from '~/types/Schema/ISchema'
+import type { Schema } from '~/types/Schema/ISchema'
 import type { Schemable } from '~/types/Schemable/Schemable'
 
 import { isTupleSchema } from '../tuple/isTuple'
@@ -24,7 +24,7 @@ function _functionArgumentsExtends_(a: ITuple, b: ITuple): boolean {
 }
 
 /** TODO: make it work with arrays with bounded lengths */
-export function _functionArgumentsExtends(a: ISchema, b: ISchema): boolean {
+export function _functionArgumentsExtends(a: Schema, b: Schema): boolean {
 	const aOk = isTupleSchema(a)
 	const bOk = isTupleSchema(b)
 

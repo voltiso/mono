@@ -3,13 +3,13 @@
 
 import { SCHEMA_NAME } from '_'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
-export interface IUnknownSymbol extends ISchema {
+export interface IUnknownSymbol extends Schema {
 	readonly [SCHEMA_NAME]: 'UnknownSymbol'
 }
 
-export interface IUnknownSymbol$ extends ISchema$ {
+export interface IUnknownSymbol$ extends Schema$ {
 	readonly [SCHEMA_NAME]: 'UnknownSymbol'
 }
 

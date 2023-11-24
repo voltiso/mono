@@ -3,12 +3,12 @@
 
 import type { SCHEMA_NAME } from '_'
 
-import type { ISchema, ISchema$ } from '~'
+import type { Schema, Schema$ } from '~'
 
-export interface IBoolean extends ISchema<boolean> {
+export interface IBoolean extends Schema<boolean> {
 	readonly [SCHEMA_NAME]: 'Boolean'
 }
 
-export interface IBoolean$ extends ISchema$<boolean> {
+export interface IBoolean$ extends Schema$<boolean> {
 	readonly [SCHEMA_NAME]: 'Boolean'
 }

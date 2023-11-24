@@ -13,8 +13,8 @@ import type {
 	$$Array,
 	CustomSchema,
 	CustomSchema$,
+	Schema,
 	SCHEMA_NAME,
-	SimpleSchema,
 } from '~'
 
 import type { ArrayOptions } from './ArrayOptions'
@@ -100,7 +100,7 @@ export declare namespace CustomArray {
 				This['Output'][number],
 				Extract<This['Input'], readonly unknown[]>[number]
 		  > extends true
-			? SimpleSchema<This['Output'][number]>
+			? Schema<This['Output'][number]>
 			: CustomSchema<{
 					Output: This['Output'][number]
 					Input: Extract<This['Input'], readonly unknown[]>[number]

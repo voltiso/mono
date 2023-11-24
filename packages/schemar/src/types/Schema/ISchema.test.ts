@@ -5,30 +5,29 @@ import { $Assert } from '@voltiso/util'
 
 import type { CustomSchema, CustomSchema$ } from '~'
 
-import type { $$Schema, ISchema, ISchema$, SchemaLike } from './ISchema'
-import type { SimpleSchema } from './Schema'
+import type { $$Schema, Schema, Schema$, SchemaLike } from './ISchema'
 
 describe('ISchema', () => {
 	it('generic', <T>() => {
 		expect.assertions(0)
 
-		$Assert.is<SimpleSchema<T>, ISchema<T>>()
-		$Assert.is<SimpleSchema<T>, ISchema>()
+		// $Assert.is<SimpleSchema<T>, Schema<T>>()
+		$Assert.is<Schema<T>, Schema>()
 
-		$Assert.is<SimpleSchema<T>, $$Schema>()
-		$Assert.is<SimpleSchema<T>, SchemaLike<T>>()
-		$Assert.is<SimpleSchema<T>, SchemaLike>()
+		$Assert.is<Schema<T>, $$Schema>()
+		$Assert.is<Schema<T>, SchemaLike<T>>()
+		$Assert.is<Schema<T>, SchemaLike>()
 
-		$Assert.is<ISchema<T>, $$Schema>()
-		$Assert.is<ISchema<T>, SchemaLike<T>>()
-		$Assert.is<ISchema<T>, SchemaLike>()
+		$Assert.is<Schema<T>, $$Schema>()
+		$Assert.is<Schema<T>, SchemaLike<T>>()
+		$Assert.is<Schema<T>, SchemaLike>()
 
 		//
 
-		$Assert.is<keyof CustomSchema$, keyof ISchema$>()
-		$Assert.is<keyof ISchema$, keyof CustomSchema$>()
+		$Assert.is<keyof CustomSchema$, keyof Schema$>()
+		$Assert.is<keyof Schema$, keyof CustomSchema$>()
 
-		$Assert.is<keyof CustomSchema, keyof ISchema>()
-		$Assert.is<keyof ISchema, keyof CustomSchema>()
+		$Assert.is<keyof CustomSchema, keyof Schema>()
+		$Assert.is<keyof Schema, keyof CustomSchema>()
 	})
 })
