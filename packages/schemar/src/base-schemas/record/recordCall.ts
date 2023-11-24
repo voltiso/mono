@@ -18,11 +18,7 @@ export function recordCall<
 
 export function recordCall<TValueSchema extends $$Schemable>(
 	valueSchema: TValueSchema,
-): CustomUnknownObject.Index<
-	UnknownObject,
-	Schema<keyof any>,
-	TValueSchema
->
+): CustomUnknownObject.Index<UnknownObject, Schema<keyof any>, TValueSchema>
 
 export function recordCall(...args: any): any {
 	return object.index(...(args as [any]))
