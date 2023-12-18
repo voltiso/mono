@@ -61,6 +61,11 @@
       }
     },
     "packageExtensions": {
+      "eslint-plugin-jsonc": {
+        "peerDependencies": {
+          "espree": "*"
+        }
+      },
       "react-native": {
         "peerDependencies": {
           "@types/react": "*"

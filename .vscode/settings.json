@@ -169,8 +169,8 @@
 	// "prettier.enableDebugLogs": true,
 
 	"editor.codeActionsOnSave": {
-		"source.fixAll": true,
-		"source.fixAll.eslint": true
+		"source.fixAll": "explicit",
+		"source.fixAll.eslint": "explicit"
 	},
 
 	"eslint.codeActionsOnSave.mode": "all", // slower
@@ -300,6 +300,7 @@
 		"endswith",
 		"eopt",
 		"esbuild",
+		"espree",
 		"estree",
 		"execa",
 		"extglob",

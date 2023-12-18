@@ -101,10 +101,7 @@ export interface Schema<T = unknown> extends $$Schema, SchemaLike<T> {
 	 * @returns Value after applying transformations (e.g. defaults)
 	 * @throws ValidationError
 	 */
-	validate(
-		x: unknown,
-		options?: Partial<ValidationOptions> | undefined,
-	): unknown
+	validate(x: unknown, options?: Partial<ValidationOptions> | undefined): T
 
 	/**
 	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
