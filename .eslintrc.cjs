@@ -25,7 +25,7 @@ const project = [
 	'packages/util/src/tsc-options/*/test-false/tsconfig.json',
 ]
 
-// eslint-disable-next-line n/no-process-env
+// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 const isFastMode = !process.env['FULL']
 
 // eslint-disable-next-line no-console

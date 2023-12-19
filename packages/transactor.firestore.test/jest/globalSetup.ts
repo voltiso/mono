@@ -34,9 +34,9 @@ export = async () => {
 
 	console.log('firebase emulator started!')
 
-	// eslint-disable-next-line n/no-process-env
+	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	process.env['FIRESTORE_EMULATOR_HOST'] = `localhost:${port}`
 
-	// eslint-disable-next-line n/no-process-env
+	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	process.env['PORT'] = `${port}`
 }

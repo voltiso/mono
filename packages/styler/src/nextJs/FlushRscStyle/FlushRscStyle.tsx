@@ -13,6 +13,7 @@ import { rscRenderer } from '~/server/rscRenderer'
 
 // import { RscIdContext } from '~/server/RscIdContext'
 // import { rscRenderers } from '~/server/rscRenderers'
+import type { RscStyle} from './serverContext';
 import { RscStyleContext } from './serverContext'
 
 export const FlushRscStyle: FC = () => {
@@ -27,7 +28,7 @@ export const FlushRscStyle: FC = () => {
 
 	const rscStyleValue = rscRenderer.flushStyle()
 
-	const rscStyle = useMemo(() => {
+	const rscStyle = useMemo<RscStyle>(() => {
 		const hash = getHash(rscStyleValue)
 
 		return {

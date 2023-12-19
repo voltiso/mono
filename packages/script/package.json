@@ -48,7 +48,7 @@
     "chalk": "^4.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4",
+    "@types/node": "^20.10.5",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util.package-json": "workspace:^",

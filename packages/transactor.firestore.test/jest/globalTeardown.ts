@@ -12,7 +12,7 @@ export = async () => {
 	// const exitCode = process.exitCode
 	// console.log('EXIT CODE', exitCode)
 
-	// eslint-disable-next-line n/no-process-env
+	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	const port = Number(process.env['PORT'] as string)
 
 	console.log('shutting down firestore emulator...')

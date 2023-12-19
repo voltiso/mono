@@ -4,7 +4,7 @@
 import type { StripTransformOptions } from '../stripTransform'
 
 export function printInitInfo(pluginOptions: StripTransformOptions) {
-	// eslint-disable-next-line n/no-process-env
+	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	const isEnabled = !process.env['VOLTISO_STRIP_DISABLE']
 
 	if (isEnabled) {

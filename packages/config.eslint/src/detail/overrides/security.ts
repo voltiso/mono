@@ -7,7 +7,7 @@ export const security = defineEslintConfigOverride({
 	files: ['*'],
 
 	plugins: ['security'],
-	extends: ['plugin:security/recommended'],
+	// extends: ['plugin:security/recommended'], // bugged - does not pass eslint schema validation
 
 	rules: {
 		'security/detect-unsafe-regex': 1,
@@ -23,5 +23,6 @@ export const security = defineEslintConfigOverride({
 		'security/detect-possible-timing-attacks': 1,
 		'security/detect-pseudoRandomBytes': 1,
 		'security/detect-new-buffer': 1,
+    'security/detect-bidi-characters': 1,
 	},
 } as const)

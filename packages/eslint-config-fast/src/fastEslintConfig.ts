@@ -56,6 +56,8 @@ const pluginsToPick = [
 	'github',
 	'jsx-a11y',
 
+	'turbo',
+
 	'eslint-comments', // !
 
 	// ! framework-specific

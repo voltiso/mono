@@ -28,7 +28,7 @@ export interface ContextConstructor {
 function log(...messages: unknown[]) {
 	if (typeof window !== 'undefined') return
 
-	// eslint-disable-next-line n/no-process-env
+	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	const nodeEnv = process.env['NODE_ENV'] as
 		| 'production'
 		| 'development'

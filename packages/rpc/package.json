@@ -82,7 +82,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/node": "^20.9.4",
+    "@types/node": "^20.10.5",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
