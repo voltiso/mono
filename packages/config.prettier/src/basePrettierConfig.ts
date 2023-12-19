@@ -38,7 +38,6 @@ const pluginNames = Object.keys(getDependencies()).filter(
 	dep => dep.startsWith('@prettier/plugin') || dep.includes('prettier-plugin'),
 )
 
-
 // // eslint-disable-next-line import/no-dynamic-require, n/global-require, @typescript-eslint/no-unsafe-return, unicorn/prefer-module
 // const plugins = pluginNames.map(name => require(name))
 const plugins = pluginNames
@@ -132,6 +131,12 @@ export const basePrettierConfig = defineConfig({
 				useTabs: false,
 			},
 		},
+
+		/**
+		 * Note that `.frag` files are recognized as JavaScript files by default.
+		 * Add the following to your Prettier configuration to format them as GLSL.
+		 */
+		{ files: ['*.frag'], options: { parser: 'glsl-parser' } },
 	],
 })
 
