@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ISchema } from '@voltiso/schemar'
+import type { Schema } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type {
 	DocBuilderPlugin,
@@ -99,7 +99,7 @@ describe('aggregator', () => {
 		$Assert<IsIdentical<Doc[DTI]['aggregates'], {}>>()
 
 		type DA = Day[DTI]['aggregates']
-		$Assert.is<DA, { shifts: ISchema }>()
+		$Assert.is<DA, { shifts: Schema }>()
 
 		type A = GetData<Day[DTI]>
 		$Assert<

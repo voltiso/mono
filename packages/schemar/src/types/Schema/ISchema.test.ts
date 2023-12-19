@@ -4,8 +4,9 @@
 import { $Assert } from '@voltiso/util'
 
 import type { CustomSchema, CustomSchema$ } from '~'
+import type * as s from '~/base-schemas'
 
-import type { $$Schema, Schema, Schema$, SchemaLike } from './ISchema'
+import type { $$Schema, Schema, SchemaLike } from './ISchema'
 
 describe('ISchema', () => {
 	it('generic', <T>() => {
@@ -24,10 +25,26 @@ describe('ISchema', () => {
 
 		//
 
-		$Assert.is<keyof CustomSchema$, keyof Schema$>()
-		$Assert.is<keyof Schema$, keyof CustomSchema$>()
+		// $Assert.is<keyof CustomSchema$<{}>, keyof Schema$>()
+		// $Assert.is<keyof Schema$, keyof CustomSchema$<{}>>()
 
 		$Assert.is<keyof CustomSchema, keyof Schema>()
 		$Assert.is<keyof Schema, keyof CustomSchema>()
+
+		//
+
+		// type A = s.String$['optional']['optional']['implicitFix']
+		// type B = Schema$['optional']['optional']['implicitFix']
+
+		$Assert.is<s.String, Schema>()
+		$Assert.is<s.String$, Schema>()
+		// $Assert.is<s.String$, Schema$>()
+		// $Assert.is<typeof s.string.optional, Schema$>()
+
+		$Assert.is<s.String, CustomSchema>()
+		$Assert.is<s.String$, CustomSchema>()
+		$Assert.is<s.String$, CustomSchema$<{}>>()
+		$Assert.is<typeof s.string.optional, CustomSchema<{ isOptional: true }>>()
+		$Assert.is<typeof s.string.optional, CustomSchema$<{ isOptional: true }>>()
 	})
 })

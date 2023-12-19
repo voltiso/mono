@@ -186,8 +186,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 //
 
-export interface CustomSchema$<O extends Partial<SchemaOptions> = {}>
-	extends CustomSchema<O> {
+export interface CustomSchema$<O extends Partial<SchemaOptions>>
+	extends CustomSchema<O> /* , Schema$ */ {
 	//
 
 	/**

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { CustomString$, SimpleSchema } from '@voltiso/schemar'
+import type { CustomString$, Schema } from '@voltiso/schemar'
 import { SCHEMA_NAME } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
@@ -71,7 +71,7 @@ describe('docSchema', () => {
 		>()
 
 		$Assert<
-			IsIdentical<typeof Doctor.schemaWithId.getShape.id, SimpleSchema<string>>
+			IsIdentical<typeof Doctor.schemaWithId.getShape.id, Schema<string>>
 		>()
 
 		expect(() => Doctor.schemaWithId.getShape.id.validate('12345')).toThrow(

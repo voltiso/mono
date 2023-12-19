@@ -15,6 +15,7 @@ import type {
 	$$Schemable,
 	CustomFix,
 	CustomOperation,
+	CustomSchema$,
 	Output_,
 	SCHEMA_NAME,
 	SchemaOptions,
@@ -162,7 +163,8 @@ export interface Schema<T = unknown> extends $$Schema, SchemaLike<T> {
 }
 
 /**
- * Every schema$ is assignable to `Schema$`
+ * Every schema$ is assignable to `Schema$` (never test this assignability -
+ * SLOW ⚠️)
  *
  * - ⚠️ Prefer {@link Schema} for a super-type without the builder methods
  * - Never try to trigger assignability testing of these recursive types (super
@@ -172,10 +174,15 @@ export interface Schema$<T = unknown> extends Schema<T> {
 	/** Specify name for nicer messages */
 	name(name: string): this
 
-	get optional(): Schema$<T>
-	get strictOptional(): Schema$<T>
+	get optional(): CustomSchema$<{ Output: T; Input: T; isOptional: true }>
+	get strictOptional(): CustomSchema$<{
+		Output: T
+		Input: T
+		isStrictOptional: true
+	}>
 
-	get readonly(): Schema$<T>
+	get readonly(): CustomSchema$<{ Output: T; Input: T; isReadonly: true }>
+
 	default(value: T): $$Schema
 	default(getValue: () => T): $$Schema
 
@@ -331,6 +338,7 @@ export interface Schema$<T = unknown> extends Schema<T> {
 	//
 
 	or(other: $$Schemable): Schema$
+
 	and(other: $$Schemable): Schema$
 
 	/** Type-cast to the non-builder version */

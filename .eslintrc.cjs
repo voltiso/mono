@@ -1,7 +1,7 @@
-'use strict'
-
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+'use strict'
 
 // const baseEslintConfig = require('@voltiso/config.eslint')
 const { defineEslintConfig } = require('@voltiso/config.eslint.lib')
