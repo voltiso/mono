@@ -15,7 +15,6 @@ export function forwardGetOwnPropertyDescriptor(
 
 	if (original?.configurable === false) {
 		return { ...original, ...override, configurable: original.configurable }
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	} else if (!original || original.configurable === true) {
 		if (override) return { ...override, configurable: true }
 		else return undefined

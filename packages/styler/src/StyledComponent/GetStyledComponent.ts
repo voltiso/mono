@@ -42,12 +42,12 @@ export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
 > extends never
 	? GetStyledComponentImpl<
 			$Override_<{ Component: IStylable; Props: {}; CustomCss: {} }, $>
-	  >
+		>
 	: Throw<
 			'unknown type parameters' & {
 				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
 			}
-	  >
+		>
 
 /**
  * If user code does not include `DOM` lib, `HTMLElement` may be an empty
@@ -56,8 +56,8 @@ export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
 export type NativeElement = IsReactNative extends true
 	? object & NativeMethods
 	: IsReactNative extends false
-	? object & HTMLElement
-	: never
+		? object & HTMLElement
+		: never
 
 export type IsStylable_<C> = keyof InnerProps extends keyof $ComponentProps<C>
 	? true
@@ -85,12 +85,12 @@ export type $IsStylableComponentOrForwardRefOrNativeElement_<X> =
 	X extends NativeElement
 		? true
 		: $IsStylableForwardRef_<X> extends true
-		? true
-		: $IsStylableForwardRefAndCss_<X> extends true
-		? true
-		: IsStylable_<X> extends true
-		? true
-		: false
+			? true
+			: $IsStylableForwardRefAndCss_<X> extends true
+				? true
+				: IsStylable_<X> extends true
+					? true
+					: false
 
 /** With Element already provided */
 export type GetStyledComponentImpl<
@@ -103,10 +103,10 @@ export type GetStyledComponentImpl<
 			: CustomStyledComponent<
 					$['Component'],
 					{ Props: $['Props']; CustomCss: $['CustomCss'] }
-			  >
+				>
 		: $IsStylableComponentOrForwardRefOrNativeElement_<Component> extends false
-		? ThrowMissingRequiredInnerProps<$ComponentProps<$['Component']>>
-		: never
+			? ThrowMissingRequiredInnerProps<$ComponentProps<$['Component']>>
+			: never
 	: never
 
 //
@@ -119,7 +119,7 @@ export type GetStyledHoc<
 			'unknown type parameters' & {
 				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
 			}
-	  >
+		>
 
 export type GetStyledHocImpl<
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
@@ -128,8 +128,8 @@ export type GetStyledHocImpl<
 		? StyledHoc
 		: StyledHocWithProps<$['Props']>
 	: keyof $['Props'] extends never
-	? CustomStyledHoc<{ CustomCss: $['CustomCss'] }>
-	: CustomStyledHoc<{ Props: $['Props']; CustomCss: $['CustomCss'] }>
+		? CustomStyledHoc<{ CustomCss: $['CustomCss'] }>
+		: CustomStyledHoc<{ Props: $['Props']; CustomCss: $['CustomCss'] }>
 
 //
 
@@ -142,15 +142,15 @@ export type GetStyled<$ extends Partial<StyledTypeInfo>> = Exclude<
 			'unknown type parameters' & {
 				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
 			}
-	  >
+		>
 
 export type GetStyledImpl<$ extends StyledTypeInfo> = $ extends {
 	Component: null
 }
 	? GetStyledHocImpl<$>
 	: $ extends { Component: StylableLike | NativeElement }
-	? GetStyledComponentImpl<$>
-	: never
+		? GetStyledComponentImpl<$>
+		: never
 
 export type GetStyledImplN<
 	C extends StylableLike | NativeElement | null,

@@ -22,8 +22,8 @@ export function parseSelectors(str: string): ParseSelectorResult {
 					s.includes('&')
 						? s
 						: s.startsWith(':') || s.startsWith('[')
-						? `&${s}`
-						: `& ${s}`,
+							? `&${s}`
+							: `& ${s}`,
 				),
 
 			mediaQueries: [],

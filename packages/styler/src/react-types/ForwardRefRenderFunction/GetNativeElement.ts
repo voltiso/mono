@@ -12,9 +12,9 @@ export type GetNativeElement<
 > = T extends NativeElement
 	? T
 	: T extends IntrinsicElement | ComponentType<any>
-	? 'ref' extends keyof ComponentProps<T>
-		? ComponentProps<T>['ref'] extends LegacyRef<infer R> | undefined
-			? R
+		? 'ref' extends keyof ComponentProps<T>
+			? ComponentProps<T>['ref'] extends LegacyRef<infer R> | undefined
+				? R
+				: never
 			: never
 		: never
-	: never

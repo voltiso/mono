@@ -30,5 +30,5 @@ export type OuterProps<AdditionalCss extends object = {}> =
 	IsReactNative extends true
 		? NativeOuterProps<AdditionalCss>
 		: IsReactNative extends false
-		? WebOuterProps<AdditionalCss>
-		: never
+			? WebOuterProps<AdditionalCss>
+			: never

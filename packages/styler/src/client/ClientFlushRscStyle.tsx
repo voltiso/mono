@@ -4,14 +4,16 @@
 'use client'
 
 import type { FC } from 'react'
-import { useContext, useInsertionEffect } from 'react'
+import { useInsertionEffect } from 'react'
 
 import { useServerInsertedHTML } from '~/nextJs/_next'
 
-import { RscStyleContext } from '../nextJs/FlushRscStyle/serverContext'
+import type { RscStyle } from '../nextJs/FlushRscStyle/RscStyle'
 
-export const ClientFlushRscStyle: FC = () => {
-	const rscStyle = useContext(RscStyleContext)
+export const ClientFlushRscStyle: FC<{ readonly rscStyle: RscStyle }> = ({
+	rscStyle,
+}) => {
+	// const rscStyle = useContext(RscStyleContext)
 
 	// // const update = useUpdate()
 	// const [x, setX] = useState(0)
@@ -34,7 +36,7 @@ export const ClientFlushRscStyle: FC = () => {
 	/** Need this for client-side routing - in production too */
 
 	useInsertionEffect(() => {
-		if (!rscStyle?.v) return
+		if (!rscStyle.v) return
 
 		/**
 		 * `.getElementById()` is the most performant - better than
@@ -56,7 +58,7 @@ export const ClientFlushRscStyle: FC = () => {
 	// }
 
 	useServerInsertedHTML(() => {
-		if (!rscStyle?.v) return null
+		if (!rscStyle.v) return null
 
 		return (
 			<style

@@ -23,5 +23,5 @@ export type $GetStyledLikeProps<$ extends Partial<StyledTypeInfo>> =
 export type $GetStyledPropsImpl<C, P> = C extends null
 	? P
 	: C extends ElementTypeLike
-	? MergeProps_<ComponentPropsWithRef_<C>, P>
-	: never
+		? MergeProps_<ComponentPropsWithRef_<C>, P>
+		: never

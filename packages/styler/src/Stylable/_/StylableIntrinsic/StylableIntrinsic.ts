@@ -25,7 +25,7 @@ export type StylableIntrinsicElement_<P extends Props> = P extends any
 							? k
 							: never
 						: never
-			  }[keyof JSX.IntrinsicElements]
+				}[keyof JSX.IntrinsicElements]
 			: never
 		: never
 	: never

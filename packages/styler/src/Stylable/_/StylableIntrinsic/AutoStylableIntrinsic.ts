@@ -15,5 +15,5 @@ export type StylableIntrinsic<
 > = P extends NoArgument
 	? IStylableIntrinsicElement
 	: P extends Props
-	? StylableIntrinsicElement_<P>
-	: never
+		? StylableIntrinsicElement_<P>
+		: never

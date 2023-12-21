@@ -13,8 +13,8 @@ export const RendererContext =
 		IsReactNative extends true
 			? NativeRenderer | null
 			: IsReactNative extends false
-			? WebRenderer | null
-			: never
+				? WebRenderer | null
+				: never
 	>(null)
 
 export const ThemeContext = createContext<object | null>(null)

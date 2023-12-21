@@ -15,5 +15,5 @@ export type StylableJsxConstruct<
 > = P extends NoArgument
 	? IStylableJsxConstruct
 	: P extends Props
-	? StylableJsxConstruct_<P>
-	: never
+		? StylableJsxConstruct_<P>
+		: never

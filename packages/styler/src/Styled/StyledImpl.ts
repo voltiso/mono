@@ -97,7 +97,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 						if (isStyled(component))
 							return this._clone(component[DATA] as never)
 						return this._clone({ component })
-				  }
+					}
 				: getComponent(data as never)
 
 		Object.setPrototypeOf(r, this)
@@ -1001,7 +1001,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 				'defineProps requires providing default values for optional props' & {
 					missingDefaults: keyof PickOptional<DefinedProps> & string // need to filter out `undefined` - TS bug??
 				}
-		  >
+			>
 
 	/**
 	 * Define props by providing `DefinedProps` type, defaulting to

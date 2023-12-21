@@ -18,8 +18,8 @@ export type FastMergeProps_<A, B> = B & $Omit_<A, keyof B>
 export type MergeProps_<A, B> = B extends undefined
 	? A
 	: keyof B extends never
-	? A
-	: _<B & Omit<A, keyof B>>
+		? A
+		: _<B & Omit<A, keyof B>>
 
 // export type MergeProps_<A, B> = keyof A & keyof B extends never
 // 	? B & A

@@ -84,7 +84,7 @@ export function render<$ extends StyledTypeInfo>(
 	const renderer: WebRenderer | NativeRenderer | null = isServerComponent
 		? rscRenderer
 		: // eslint-disable-next-line react-hooks/rules-of-hooks
-		  useRenderer()
+			useRenderer()
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (React.useInsertionEffect && isWebRenderer(renderer)) {
@@ -231,17 +231,17 @@ export function render<$ extends StyledTypeInfo>(
 
 	const renderedProps = isWebRenderer(renderer)
 		? // eslint-disable-next-line etc/no-internal
-		  _getFinalWebProps(
+			_getFinalWebProps(
 				(renderer as unknown as WebRenderer | null)?.classNameFor(...styles) ||
 					'',
 				p,
-		  )
+			)
 		: // eslint-disable-next-line etc/no-internal
-		  _getFinalNativeProps(
+			_getFinalNativeProps(
 				(renderer as unknown as NativeRenderer | null)?.styleFor(...styles) ||
 					{},
 				p,
-		  )
+			)
 
 	if (typeof data.component === 'function' && data.component.length >= 2) {
 		const { ref, ...finalProps } = renderedProps as { ref: IForwardedRef }

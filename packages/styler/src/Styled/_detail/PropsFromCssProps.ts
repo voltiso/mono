@@ -17,6 +17,6 @@ export type PropsFromCssProps<
 		| (CP[k] extends ICssProp<CustomCss>
 				? PropValueFromCssProp<CP[k], CustomCss>
 				: CP[k] extends ICssProp<CustomCss>[]
-				? PropValueFromCssProp<CP[k][number], CustomCss>
-				: never)
+					? PropValueFromCssProp<CP[k][number], CustomCss>
+					: never)
 }

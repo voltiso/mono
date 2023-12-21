@@ -12,5 +12,5 @@ export type StylableJsxCall<
 > = P extends NoArgument
 	? IStylableJsxCall
 	: P extends Props
-	? StylableJsxCall_<P>
-	: never
+		? StylableJsxCall_<P>
+		: never

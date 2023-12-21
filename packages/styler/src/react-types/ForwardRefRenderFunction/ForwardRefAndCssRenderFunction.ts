@@ -26,10 +26,10 @@ export interface ForwardRefAndCssRenderFunction<
 	P = T extends NativeElement
 		? {}
 		: T extends IntrinsicElement
-		? Omit<JSX.IntrinsicElements[T], 'ref' | 'css'>
-		: T extends ComponentType<any>
-		? Omit<$ComponentProps<T>, 'ref' | 'css'>
-		: never,
+			? Omit<JSX.IntrinsicElements[T], 'ref' | 'css'>
+			: T extends ComponentType<any>
+				? Omit<$ComponentProps<T>, 'ref' | 'css'>
+				: never,
 > {
 	(
 		props: P,

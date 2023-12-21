@@ -13,5 +13,5 @@ export type Stylable<P extends OptionalArgument<Props> = NoArgument> =
 	P extends NoArgument
 		? IStylable
 		: P extends Props
-		? StylableWithProps<P>
-		: never
+			? StylableWithProps<P>
+			: never

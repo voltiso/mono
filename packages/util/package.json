@@ -59,7 +59,7 @@
     "clone": "^2.1.2",
     "jest": "^29.7.0",
     "superjson": "^1.13.3",
-    "typescript": "^5.3.2",
+    "typescript": "^5.3.3",
     "typescript-transform-paths": "^3.4.6",
     "zone.js": "^0.14.2"
   },

@@ -9,5 +9,5 @@ export type PropValueFromCssProp<
 > = C extends () => unknown
 	? boolean
 	: C extends (propValue: infer PV) => unknown
-	? PV
-	: boolean
+		? PV
+		: boolean

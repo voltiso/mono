@@ -37,10 +37,10 @@ export function stringFromCss(css: Css): string {
 				typeof v === 'string'
 					? `${k}:${escapeValue(v)};`
 					: typeof v === 'object'
-					? `${k}{${stringFromCss(v)}}`
-					: isUnitlessProperty(k)
-					? `${k}:${v};`
-					: `${k}:${v}px;`,
+						? `${k}{${stringFromCss(v)}}`
+						: isUnitlessProperty(k)
+							? `${k}:${v};`
+							: `${k}:${v}px;`,
 			)
 			.join('')
 	)

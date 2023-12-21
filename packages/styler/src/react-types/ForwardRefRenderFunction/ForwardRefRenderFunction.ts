@@ -13,6 +13,6 @@ export type ForwardRefRenderFunction<
 	P = T extends NativeElement
 		? {}
 		: T extends IntrinsicElement
-		? JSX.IntrinsicElements[T]
-		: never,
+			? JSX.IntrinsicElements[T]
+			: never,
 > = React.ForwardRefRenderFunction<GetNativeElement<T>, Omit<P, 'ref'>>

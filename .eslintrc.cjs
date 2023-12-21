@@ -27,6 +27,7 @@ const project = [
 
 // eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 const isFastMode = !process.env['FULL']
+// const isFastMode = false
 
 // eslint-disable-next-line no-console
 console.log(

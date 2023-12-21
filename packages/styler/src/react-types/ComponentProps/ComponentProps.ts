@@ -18,12 +18,12 @@ export type JSXElementConstructorLike<P> =
 export type $ComponentProps<T> = T extends JSXElementConstructorLike<infer P>
 	? P
 	: T extends ForwardRefRenderFunction<any, infer P>
-	? P
-	: T extends ForwardRefAndCssRenderFunction<any, any, infer P>
-	? P
-	: T extends keyof JSX.IntrinsicElements
-	? JSX.IntrinsicElements[T]
-	: {}
+		? P
+		: T extends ForwardRefAndCssRenderFunction<any, any, infer P>
+			? P
+			: T extends keyof JSX.IntrinsicElements
+				? JSX.IntrinsicElements[T]
+				: {}
 
 export type ComponentPropsWithRef_<T> = T extends new (
 	props: infer P,

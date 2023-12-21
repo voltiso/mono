@@ -15,8 +15,8 @@ import type { OmitProps_ } from './OmitProps'
 export type GetComponentProps_<C> = C extends null
 	? {}
 	: C extends StylableLike
-	? ComponentPropsWithoutRef_<C>
-	: {}
+		? ComponentPropsWithoutRef_<C>
+		: {}
 
 //
 
@@ -47,12 +47,12 @@ export type PatchImpl<
 		? ForcePatchImpl<This, $>
 		: Throw<
 				'Props already exist' & { duplicateProps: GetDuplicateProps<This, $> }
-		  >
+			>
 	: Throw<
 			'CustomCss already exists' & {
 				duplicateCustomCss: GetDuplicateCustomCss<This, $>
 			}
-	  >
+		>
 
 //
 

@@ -17,8 +17,8 @@ export interface StyledComponent<C extends StylableLike | NativeElement>
 				ref?: C extends NativeElement
 					? Ref<C> | undefined
 					: C extends JSXElementConstructor<any> | keyof JSX.IntrinsicElements
-					? ComponentProps<C>['ref']
-					: never
+						? ComponentProps<C>['ref']
+						: never
 			}
 			CustomCss: {}
 		}

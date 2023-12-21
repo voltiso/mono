@@ -13,8 +13,8 @@ import { rscRenderer } from '~/server/rscRenderer'
 
 // import { RscIdContext } from '~/server/RscIdContext'
 // import { rscRenderers } from '~/server/rscRenderers'
-import type { RscStyle} from './serverContext';
-import { RscStyleContext } from './serverContext'
+import type { RscStyle } from './RscStyle'
+// import { RscStyleContext } from './RscStyle'
 
 export const FlushRscStyle: FC = () => {
 	// // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -41,8 +41,8 @@ export const FlushRscStyle: FC = () => {
 	// console.log('FlushRscStyle', rscStyle)
 
 	return (
-		<RscStyleContext.Provider value={rscStyle}>
-			<ClientFlushRscStyle />
-		</RscStyleContext.Provider>
+		// <RscStyleContext.Provider value={rscStyle}>
+		<ClientFlushRscStyle rscStyle={rscStyle} />
+		// </RscStyleContext.Provider>
 	)
 }

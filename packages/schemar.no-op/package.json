@@ -51,7 +51,7 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "typescript": "^5.3.2",
+    "typescript": "^5.3.3",
     "typescript-transform-paths": "^3.4.6"
   },
   "__________MISC": "__________",

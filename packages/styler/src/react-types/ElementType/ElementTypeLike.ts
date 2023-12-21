@@ -43,4 +43,3 @@ export type ElementTypeLike =
 	| IntrinsicElementLike
 	| ComponentClassLike
 	| FunctionComponentLike
-

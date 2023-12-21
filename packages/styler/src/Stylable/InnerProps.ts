@@ -17,7 +17,7 @@ export interface NativeInnerProps extends Props {
 export type InnerProps = IsReactNative extends true
 	? NativeInnerProps
 	: IsReactNative extends false
-	? WebInnerProps
-	: never
+		? WebInnerProps
+		: never
 
 export type InnerPropsSubtype = { -readonly [k in keyof InnerProps]-?: never }
