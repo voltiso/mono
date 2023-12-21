@@ -51,8 +51,8 @@ export type GetCoercedEntries<
 > = O['includeSymbols'] extends true
 	? CoercedEntry<Obj>[]
 	: O['includeSymbols'] extends false
-	? Extract<CoercedEntry<Obj>, [string | number, unknown]>[]
-	: CoercedEntry<Obj>[] // generic use - include all
+		? Extract<CoercedEntry<Obj>, [string | number, unknown]>[]
+		: CoercedEntry<Obj>[] // generic use - include all
 
 type GetEntries<Obj extends object, _O extends IterationOptions> = Entry<Obj>[]
 

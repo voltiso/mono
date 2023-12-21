@@ -19,10 +19,10 @@ export type Ast =
 type Finalize<nodes> = nodes extends [...unknown[], unknown, unknown]
 	? Rec_StepOut<nodes, ['!!']>
 	: nodes extends [['', [infer arg]]]
-	? arg
-	: nodes extends [infer node]
-	? node
-	: never
+		? arg
+		: nodes extends [infer node]
+			? node
+			: never
 
 type Rec_Op1<nodes extends unknown[], t, ts> = nodes extends [
 	...infer ns,
@@ -43,7 +43,7 @@ type Rec_FixPrecedence<nodes extends unknown[], ts> = nodes extends [
 				: Rec_FixPrecedence<
 						[...ns, [op2, [[op1, [...args1, a2]], ...args2]]],
 						ts
-				  >
+					>
 			: Rec<nodes, ts>
 		: Rec<nodes, ts>
 	: Rec<nodes, ts>
@@ -55,13 +55,13 @@ type Rec_Op2<nodes, t extends string, ts> = nodes extends [
 	? [op, args] extends ['', [infer a]]
 		? Rec<[...ns, [t, [a]]], ts>
 		: [op, args] extends ['', [] | [unknown, unknown, ...unknown[]]]
-		? never
-		: // already have op
-		args extends [...infer as, infer b]
-		? op extends string
-			? Rec_FixPrecedence<[...ns, [op, as], [t, [b]]], ts>
-			: never
-		: never
+			? never
+			: // already have op
+				args extends [...infer as, infer b]
+				? op extends string
+					? Rec_FixPrecedence<[...ns, [op, as], [t, [b]]], ts>
+					: never
+				: never
 	: never
 
 type Rec_Lit<nodes, t, ts> = nodes extends [
@@ -91,16 +91,16 @@ type Rec<nodes extends unknown[], tokens> = tokens extends [
 	? t extends '!!'
 		? Finalize<nodes>
 		: t extends '('
-		? Rec_StepIn<nodes, ts>
-		: t extends ')'
-		? Rec_StepOut<nodes, ts>
-		: t extends string
-		? '&|^' extends `${string}${t}${string}`
-			? Rec_Op2<nodes, t, ts>
-			: '123456789' extends `${string}${t}${string}`
-			? Rec_Lit<nodes, t, ts>
-			: Rec_Op1<nodes, t, ts>
-		: never
+			? Rec_StepIn<nodes, ts>
+			: t extends ')'
+				? Rec_StepOut<nodes, ts>
+				: t extends string
+					? '&|^' extends `${string}${t}${string}`
+						? Rec_Op2<nodes, t, ts>
+						: '123456789' extends `${string}${t}${string}`
+							? Rec_Lit<nodes, t, ts>
+							: Rec_Op1<nodes, t, ts>
+					: never
 	: never
 
 export type AstFromTokens<tokens extends string[]> = Rec<

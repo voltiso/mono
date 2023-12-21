@@ -73,8 +73,8 @@ export function omitUndefined<T extends object | nullish>(
 ): T extends nullish
 	? T
 	: T extends object
-	? _<OmitByValue<T, undefined>>
-	: never
+		? _<OmitByValue<T, undefined>>
+		: never
 
 //
 

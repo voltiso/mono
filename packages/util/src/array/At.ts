@@ -10,40 +10,46 @@ import { stringFrom } from '~/string'
 type _At<Arr> = Arr extends (infer T)[]
 	? T | undefined
 	: Arr extends RelativeIndexable<infer T>
-	? T | undefined
-	: never
+		? T | undefined
+		: never
 
 export type At<Arr, Index extends number> = Arr extends readonly []
 	? undefined
 	: Index extends 0
-	? Arr extends readonly [infer a, ...unknown[]]
-		? a
-		: _At<Arr>
-	: Index extends 1
-	? Arr extends readonly [unknown, infer b, ...unknown[]]
-		? b
-		: _At<Arr>
-	: Index extends -1
-	? Arr extends readonly [...unknown[], infer z]
-		? z
-		: _At<Arr>
-	: Index extends 2
-	? Arr extends readonly [unknown, unknown, infer c, ...unknown[]]
-		? c
-		: _At<Arr>
-	: Index extends -2
-	? Arr extends readonly [...unknown[], infer y, unknown]
-		? y
-		: _At<Arr>
-	: Index extends 3
-	? Arr extends readonly [unknown, unknown, unknown, infer d, ...unknown[]]
-		? d
-		: _At<Arr>
-	: Index extends -3
-	? Arr extends readonly [...unknown[], infer x, unknown, unknown]
-		? x
-		: _At<Arr>
-	: _At<Arr>
+		? Arr extends readonly [infer a, ...unknown[]]
+			? a
+			: _At<Arr>
+		: Index extends 1
+			? Arr extends readonly [unknown, infer b, ...unknown[]]
+				? b
+				: _At<Arr>
+			: Index extends -1
+				? Arr extends readonly [...unknown[], infer z]
+					? z
+					: _At<Arr>
+				: Index extends 2
+					? Arr extends readonly [unknown, unknown, infer c, ...unknown[]]
+						? c
+						: _At<Arr>
+					: Index extends -2
+						? Arr extends readonly [...unknown[], infer y, unknown]
+							? y
+							: _At<Arr>
+						: Index extends 3
+							? Arr extends readonly [
+									unknown,
+									unknown,
+									unknown,
+									infer d,
+									...unknown[],
+								]
+								? d
+								: _At<Arr>
+							: Index extends -3
+								? Arr extends readonly [...unknown[], infer x, unknown, unknown]
+									? x
+									: _At<Arr>
+								: _At<Arr>
 
 export function isRelativeIndexable(
 	array: unknown,

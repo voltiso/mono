@@ -9,5 +9,5 @@ export type OmitPrivate<Obj extends object> = {
 	(Obj extends new (...args: infer Args) => infer Result
 		? new (...args: Args) => Result
 		: Obj extends abstract new (...args: infer Args) => infer Result
-		? abstract new (...args: Args) => Result
-		: unknown)
+			? abstract new (...args: Args) => Result
+			: unknown)

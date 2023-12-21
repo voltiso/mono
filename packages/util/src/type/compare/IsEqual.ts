@@ -7,8 +7,8 @@ import type { OptionalFromUndefined, SmartFlatten } from '~/object'
 export type IsRelated<A, B, T = true, F = false> = A extends B
 	? T
 	: B extends A
-	? T
-	: F
+		? T
+		: F
 
 /** Extends 2-way */
 export type IsCompatible<A, B, T = true, F = false> = [A, B] extends [B, A]

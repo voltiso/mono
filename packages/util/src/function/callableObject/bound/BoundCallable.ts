@@ -24,10 +24,10 @@ export type BoundCallable<
 	This extends WithSelfBoundCALL | NoArgument = NoArgument,
 > = This extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
-	  IBoundCallable
+		IBoundCallable
 	: This extends WithSelfBoundCALL
-	? _BoundCallableWithCALL<This>
-	: never
+		? _BoundCallableWithCALL<This>
+		: never
 
 export type CustomBoundCallable<Options extends BoundCallableOptions> =
 	// eslint-disable-next-line etc/no-internal

@@ -20,23 +20,23 @@ export type OmitPrecise_<O, K> = O extends object
 						? unknown
 						: {
 								[k: symbol]: symbol extends keyof O ? O[symbol] : never
-						  }
+							}
 					: unknown) &
 				(HasStringIndexSignature<O> extends true
 					? string extends K
 						? unknown
 						: {
 								[k: string]: string extends keyof O ? O[string] : never
-						  }
+							}
 					: unknown) &
 				(HasNumberIndexSignature<O> extends true
 					? number extends K
 						? unknown
 						: {
 								[k: number]: number extends keyof O ? O[number] : never
-						  }
+							}
 					: unknown)
-	  >
+		>
 	: never
 
 export type OmitPrecise<

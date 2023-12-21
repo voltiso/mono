@@ -17,8 +17,8 @@ type GetKeys<T> = Value<{
 	[k in keyof T as string extends k
 		? never
 		: number extends k
-		? never
-		: symbol extends k
-		? never
-		: k]: k
+			? never
+			: symbol extends k
+				? never
+				: k]: k
 }>

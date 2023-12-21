@@ -28,10 +28,10 @@ export function clone<X, Options extends NonStrictPartial<CloneOptions>>(
 ): X extends (...args: any) => any
 	? X
 	: HasIndexSignature<X> extends true
-	? X
-	: Options extends { omit: Iterable<infer V> }
-	? Omit_<X, V>
-	: X {
+		? X
+		: Options extends { omit: Iterable<infer V> }
+			? Omit_<X, V>
+			: X {
 	if (typeof x === 'object' && x !== null && options?.cache?.has(x))
 		return options.cache.get(x) as never
 

@@ -16,11 +16,11 @@ export type ProtoCallable<
 	Options extends ProtoCallableOptions | NoArgument = NoArgument,
 > = Options extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
-	  IProtoCallable
+		IProtoCallable
 	: Options extends ProtoCallableOptions
-	? // eslint-disable-next-line etc/no-internal
-	  _ProtoCallable<Options>
-	: never
+		? // eslint-disable-next-line etc/no-internal
+			_ProtoCallable<Options>
+		: never
 
 //
 

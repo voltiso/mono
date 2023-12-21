@@ -30,7 +30,7 @@ export type ForcePatchFor<X> =
 	| (X extends object
 			? {
 					[key in keyof X]?: ForcePatchFor<X[key]>
-			  }
+				}
 			: never)
 	| ReplaceIt<X | AlsoAccept<unknown>>
 	| ArraySetUpdateIt
@@ -47,20 +47,20 @@ type ApplyPatchSub<X, P> = {
 export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt
 	? undefined
 	: P extends ReplaceIt<infer R>
-	? R
-	: P extends KeepIt
-	? X
-	: P extends IncrementIt<infer Amount>
-	? X extends bigint
-		? bigint
-		: Amount extends bigint
-		? bigint
-		: number
-	: P extends object
-	? X extends object
-		? Merge<X, ApplyPatchSub<X, P>>
-		: ApplyPatchSub<X, P>
-	: P
+		? R
+		: P extends KeepIt
+			? X
+			: P extends IncrementIt<infer Amount>
+				? X extends bigint
+					? bigint
+					: Amount extends bigint
+						? bigint
+						: number
+				: P extends object
+					? X extends object
+						? Merge<X, ApplyPatchSub<X, P>>
+						: ApplyPatchSub<X, P>
+					: P
 
 //
 

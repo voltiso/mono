@@ -8,7 +8,7 @@ export type DeepMapValues_<TObject, TMapping> =
 		? Return_<TMapping>
 		: {
 				[k in keyof TObject]: DeepMapValues_<TObject[k], TMapping>
-		  }
+			}
 
 export function deepMapValues<
 	TObject,

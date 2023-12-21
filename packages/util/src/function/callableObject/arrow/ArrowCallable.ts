@@ -20,16 +20,16 @@ export type ArrowCallable<
 		| NoArgument = NoArgument,
 > = Options extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
-	  IArrowCallable
+		IArrowCallable
 	: Options extends ArrowCallableOptions
-	? // eslint-disable-next-line etc/no-internal
-	  _ArrowCallable<Options>
-	: Options extends WithCALL
-	? ArrowCallableWithCALL<Options>
-	: Options extends Callable<{ this: void }>
-	? // eslint-disable-next-line etc/no-internal
-	  _ArrowCallable<{ call: Options }>
-	: never
+		? // eslint-disable-next-line etc/no-internal
+			_ArrowCallable<Options>
+		: Options extends WithCALL
+			? ArrowCallableWithCALL<Options>
+			: Options extends Callable<{ this: void }>
+				? // eslint-disable-next-line etc/no-internal
+					_ArrowCallable<{ call: Options }>
+				: never
 
 //
 

@@ -181,7 +181,7 @@ export type BoundFunctionCall<
 	? Func
 	: (
 			...args: BoundFunctionParameters<Func, BoundArguments>
-	  ) => CallableReturn_<Func>
+		) => CallableReturn_<Func>
 
 export type _BoundFunctionParametersRec<
 	AllArguments extends readonly unknown[],
@@ -189,10 +189,10 @@ export type _BoundFunctionParametersRec<
 > = BoundArguments extends []
 	? AllArguments
 	: BoundArguments extends [unknown, ...infer Bs]
-	? AllArguments extends [unknown, ...infer As]
-		? _BoundFunctionParametersRec<As, Bs>
+		? AllArguments extends [unknown, ...infer As]
+			? _BoundFunctionParametersRec<As, Bs>
+			: never
 		: never
-	: never
 
 export type BoundFunctionParameters<
 	Func,

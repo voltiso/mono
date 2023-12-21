@@ -13,10 +13,10 @@ import type { AlsoAccept } from '~/type'
 export type Nest_<acc, path> = path extends readonly []
 	? acc
 	: path extends readonly [...infer T, infer H]
-	? H extends string | number | symbol
-		? Nest_<{ [k in H]: acc }, T>
+		? H extends string | number | symbol
+			? Nest_<{ [k in H]: acc }, T>
+			: never
 		: never
-	: never
 
 export type Nest<X, path extends PropertyPath> = Nest_<X, path>
 

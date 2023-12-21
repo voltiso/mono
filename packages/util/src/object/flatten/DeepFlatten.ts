@@ -18,5 +18,5 @@ import type { IsOptional } from '../IsOptional'
 /** @inline */ export type DeepFlatten<T> = T extends (...args: any) => any
 	? T
 	: T extends abstract new (...args: any) => any
-	? T
-	: [{ [k in keyof T]: DeepFlattenValue<T, k> }][0]
+		? T
+		: [{ [k in keyof T]: DeepFlattenValue<T, k> }][0]

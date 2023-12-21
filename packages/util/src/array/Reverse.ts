@@ -8,12 +8,12 @@ type _Reverse<
 > = Arr extends []
 	? [...AccumulatorL, ...AccumulatorR]
 	: Arr extends [infer h, ...infer t]
-	? _Reverse<t, AccumulatorL, [h, ...AccumulatorR]>
-	: Arr extends [...infer t, infer h]
-	? _Reverse<t, [...AccumulatorL, h], AccumulatorR>
-	: Arr extends (infer t)[]
-	? [...AccumulatorL, ...t[], ...AccumulatorR]
-	: never
+		? _Reverse<t, AccumulatorL, [h, ...AccumulatorR]>
+		: Arr extends [...infer t, infer h]
+			? _Reverse<t, [...AccumulatorL, h], AccumulatorR>
+			: Arr extends (infer t)[]
+				? [...AccumulatorL, ...t[], ...AccumulatorR]
+				: never
 
 export type Reverse<Arr extends readonly unknown[]> = Arr extends unknown[]
 	? _Reverse<Arr, [], []>

@@ -7,11 +7,11 @@ export type _ArrayPrefixRec<T extends unknown[], acc extends unknown[]> = [
 	| (T extends []
 			? never
 			: T extends [infer H, ...infer Ts]
-			? // eslint-disable-next-line etc/no-internal
-			  _ArrayPrefixRec<Ts, [...acc, H]>
-			: // : T extends MultiHead<infer H, infer Ts>
-			  // ? { inferred: [H, Ts] } // _ArrayPrefixRec<Ts, [...acc, ...H[]]>
-			  never),
+				? // eslint-disable-next-line etc/no-internal
+					_ArrayPrefixRec<Ts, [...acc, H]>
+				: // : T extends MultiHead<infer H, infer Ts>
+					// ? { inferred: [H, Ts] } // _ArrayPrefixRec<Ts, [...acc, ...H[]]>
+					never),
 ][0]
 
 // eslint-disable-next-line etc/no-internal

@@ -17,8 +17,8 @@ export namespace MergeN {
 	export type Rec<objs, acc> = objs extends readonly []
 		? acc
 		: objs extends readonly [infer h, ...infer t]
-		? [h] extends [object]
-			? Rec<t, Merge_<acc, h>>
-			: acc
-		: never
+			? [h] extends [object]
+				? Rec<t, Merge_<acc, h>>
+				: acc
+			: never
 }

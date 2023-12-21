@@ -15,8 +15,8 @@ type ReplaceIf_<Arr, New, Expr, accumulator extends unknown[]> = Arr extends [
 ]
 	? ReplaceIf_<T, New, Expr, [...accumulator, Replace<H, New, Expr>]>
 	: Arr extends []
-	? accumulator
-	: never
+		? accumulator
+		: never
 
 export type ReplaceIf<Arr, New, E extends Expr> = ReplaceIf_<
 	Arr,

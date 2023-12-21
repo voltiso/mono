@@ -25,14 +25,14 @@ export namespace Split {
 		accumulator extends readonly unknown[],
 	> = T extends `${infer A}${options['separator']}${infer B}`
 		? // eslint-disable-next-line etc/no-internal
-		  _Rec<B, options, readonly [...accumulator, A]>
+			_Rec<B, options, readonly [...accumulator, A]>
 		: T extends ''
-		? accumulator
-		: T extends `${infer S}`
-		? readonly [...accumulator, S]
-		: string extends T
-		? readonly [...accumulator, ...string[]]
-		: string extends options['separator']
-		? readonly [...accumulator, ...string[]]
-		: never
+			? accumulator
+			: T extends `${infer S}`
+				? readonly [...accumulator, S]
+				: string extends T
+					? readonly [...accumulator, ...string[]]
+					: string extends options['separator']
+						? readonly [...accumulator, ...string[]]
+						: never
 }

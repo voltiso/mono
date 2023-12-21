@@ -12,9 +12,9 @@ export type DeepReplace2<A, B> = A extends object
 						? DeepReplace2<A[k], B[k]>
 						: A[k]
 					: k extends keyof B
-					? B[k]
-					: never
-		  }
+						? B[k]
+						: never
+			}
 		: B
 	: B
 

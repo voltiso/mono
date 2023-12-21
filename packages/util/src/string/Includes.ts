@@ -9,7 +9,7 @@ export type Includes<
 > = string extends Str
 	? boolean
 	: string extends Substr
-	? boolean
-	: Str extends `${string}${Substr}${string}`
-	? T
-	: F
+		? boolean
+		: Str extends `${string}${Substr}${string}`
+			? T
+			: F

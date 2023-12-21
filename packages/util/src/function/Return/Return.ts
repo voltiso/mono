@@ -8,8 +8,8 @@ import type { AbstractNewable, Newable } from '../newable'
 export type Return_<T> = [T] extends [(...args: any) => infer R]
 	? R
 	: [T] extends [abstract new (...args: any) => infer R]
-	? R
-	: never
+		? R
+		: never
 
 /** Similar to the standard `ReturnType` and `InstanceType` */
 export type Return<T extends Callable | Newable | AbstractNewable> = Return_<T>

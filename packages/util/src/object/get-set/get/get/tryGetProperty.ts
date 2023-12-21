@@ -12,12 +12,12 @@ export type TryGetProperty<T, K> = K extends keyof T
 	? IsOptional<T, K> extends true
 		? T[K] | undefined
 		: string extends K
-		? T[K] | undefined
-		: number extends K
-		? T[K] | undefined
-		: symbol extends K
-		? T[K] | undefined
-		: T[K]
+			? T[K] | undefined
+			: number extends K
+				? T[K] | undefined
+				: symbol extends K
+					? T[K] | undefined
+					: T[K]
 	: TryGetPropertyImpl<T, K>
 
 //

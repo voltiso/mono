@@ -5,10 +5,10 @@
 export type HasIndexSignature<X, T = true, F = false> = string extends keyof X
 	? T
 	: number extends keyof X
-	? T
-	: symbol extends keyof X
-	? T
-	: F
+		? T
+		: symbol extends keyof X
+			? T
+			: F
 
 export type HasSymbolIndexSignature<
 	O,

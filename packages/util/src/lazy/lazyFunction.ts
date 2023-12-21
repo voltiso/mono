@@ -14,6 +14,8 @@ import { getProxyHandlers } from './_/getProxyHandlers'
  *
  *   - Work-around for `react-native` - metro bundler calls `.$$typeof` immediately
  *       to register for react hot reload
+ *   - Work-around for `react`: `.prototype` returns Object.prototype even though
+ *       it's not a class constructor (for this use lazyConstructor)
  */
 export function lazyFunction<T extends (...args: any) => any>(
 	getValue: () => T,

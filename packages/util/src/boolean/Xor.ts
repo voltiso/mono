@@ -16,5 +16,5 @@ export type Xor<A, B, True = true, False = false> = A extends Falsy
 		? False
 		: True
 	: B extends Falsy
-	? True
-	: False
+		? True
+		: False

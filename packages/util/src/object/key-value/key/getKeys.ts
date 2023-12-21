@@ -15,8 +15,8 @@ import type { StringKeyof } from './StringKeyof'
 type GetKeys<Obj, O extends IterationOptions> = O['includeSymbols'] extends true
 	? StringKeyof<Obj>[]
 	: O['includeSymbols'] extends false
-	? Extract<StringKeyof<Obj>, string>[]
-	: never
+		? Extract<StringKeyof<Obj>, string>[]
+		: never
 
 export function getKeys_<Obj extends object, O extends IterationOptions>(
 	object: Obj,

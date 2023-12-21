@@ -10,7 +10,7 @@ export type DeepPartial_<T> = [T] extends [readonly unknown[]]
 	? T
 	: {
 			[k in keyof T]?: DeepPartial_<T[k]>
-	  }
+		}
 
 /**
  * Non-distributive `DeepPartial` with type constraints
@@ -29,7 +29,7 @@ export type DeepPartial<T extends object> = DeepPartial_<T>
 export type $DeepPartial_<T> = T extends any
 	? {
 			[k in keyof T]?: DeepPartial_<T[k]>
-	  }
+		}
 	: never
 
 /**

@@ -122,8 +122,8 @@ export function assertNotPolluting<Key extends keyof any>(
 ): asserts key is Key extends 'constructor'
 	? never
 	: Key extends '__proto__'
-	? never
-	: Key
+		? never
+		: Key
 
 /**
  * Throw if `obj[key]` would cause Prototype Pollution
@@ -141,8 +141,8 @@ export function assertNotPolluting<
 ): asserts key is Key extends 'constructor'
 	? never
 	: Key extends '__proto__'
-	? never
-	: Key
+		? never
+		: Key
 
 export function assertNotPolluting(...args: [keyof any] | [object, keyof any]) {
 	if (isPolluting(...args)) throw new PrototypePollutionError(...args)

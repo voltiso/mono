@@ -17,8 +17,8 @@ export namespace BrandReference {
 	export type ToPath_<B> = B extends BrandFirstSegment
 		? [B]
 		: B extends readonly unknown[]
-		? B
-		: B extends string
-		? Split<B, { separator: '.' }>
-		: never
+			? B
+			: B extends string
+				? Split<B, { separator: '.' }>
+				: never
 }

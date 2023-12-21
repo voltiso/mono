@@ -248,37 +248,37 @@ export type Call<
 		? Call9<name, _1, _2, _3, _4, _5, _6, _7, _8, _9>
 		: Throw<'TypeAlias not found' & { name: name; numArgs: 9 }>
 	: IsCompatible<_8, NoArgument> extends false
-	? name extends TypeAlias8
-		? Call8<name, _1, _2, _3, _4, _5, _6, _7, _8>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 8 }>
-	: IsCompatible<_7, NoArgument> extends false
-	? name extends TypeAlias7
-		? Call7<name, _1, _2, _3, _4, _5, _6, _7>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 7 }>
-	: IsCompatible<_6, NoArgument> extends false
-	? name extends TypeAlias6
-		? Call6<name, _1, _2, _3, _4, _5, _6>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 6 }>
-	: IsCompatible<_5, NoArgument> extends false
-	? name extends TypeAlias5
-		? Call5<name, _1, _2, _3, _4, _5>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 5 }>
-	: IsCompatible<_4, NoArgument> extends false
-	? name extends TypeAlias4
-		? Call4<name, _1, _2, _3, _4>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 4 }>
-	: IsCompatible<_3, NoArgument> extends false
-	? name extends TypeAlias3
-		? Call3<name, _1, _2, _3>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 3 }>
-	: IsCompatible<_2, NoArgument> extends false
-	? name extends TypeAlias2
-		? Call2<name, _1, _2>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 2 }>
-	: IsCompatible<_1, NoArgument> extends false
-	? name extends TypeAlias1
-		? Call1<name, _1>
-		: Throw<'TypeAlias not found' & { name: name; numArgs: 1 }>
-	: name extends TypeAlias0
-	? Call0<name>
-	: Throw<'TypeAlias not found' & { name: name; numArgs: 0 }>
+		? name extends TypeAlias8
+			? Call8<name, _1, _2, _3, _4, _5, _6, _7, _8>
+			: Throw<'TypeAlias not found' & { name: name; numArgs: 8 }>
+		: IsCompatible<_7, NoArgument> extends false
+			? name extends TypeAlias7
+				? Call7<name, _1, _2, _3, _4, _5, _6, _7>
+				: Throw<'TypeAlias not found' & { name: name; numArgs: 7 }>
+			: IsCompatible<_6, NoArgument> extends false
+				? name extends TypeAlias6
+					? Call6<name, _1, _2, _3, _4, _5, _6>
+					: Throw<'TypeAlias not found' & { name: name; numArgs: 6 }>
+				: IsCompatible<_5, NoArgument> extends false
+					? name extends TypeAlias5
+						? Call5<name, _1, _2, _3, _4, _5>
+						: Throw<'TypeAlias not found' & { name: name; numArgs: 5 }>
+					: IsCompatible<_4, NoArgument> extends false
+						? name extends TypeAlias4
+							? Call4<name, _1, _2, _3, _4>
+							: Throw<'TypeAlias not found' & { name: name; numArgs: 4 }>
+						: IsCompatible<_3, NoArgument> extends false
+							? name extends TypeAlias3
+								? Call3<name, _1, _2, _3>
+								: Throw<'TypeAlias not found' & { name: name; numArgs: 3 }>
+							: IsCompatible<_2, NoArgument> extends false
+								? name extends TypeAlias2
+									? Call2<name, _1, _2>
+									: Throw<'TypeAlias not found' & { name: name; numArgs: 2 }>
+								: IsCompatible<_1, NoArgument> extends false
+									? name extends TypeAlias1
+										? Call1<name, _1>
+										: Throw<'TypeAlias not found' & { name: name; numArgs: 1 }>
+									: name extends TypeAlias0
+										? Call0<name>
+										: Throw<'TypeAlias not found' & { name: name; numArgs: 0 }>

@@ -36,8 +36,8 @@ type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 							? DeepMerge2<Value<A, k>, Value<B, k>, true, true>
 							: Value<A, k>
 						: k extends keyof B
-						? Value<B, k>
-						: never
+							? Value<B, k>
+							: never
 				} & {
 					[k in keyof A | keyof B as IsOptional<
 						A & B,
@@ -51,30 +51,30 @@ type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 									Value<B, k>,
 									IsOptional<A, k>,
 									IsOptional<B, k>
-							  >
+								>
 							: Value<A, k>
 						: k extends keyof B
-						? Value<B, k>
-						: never
+							? Value<B, k>
+							: never
 				}
-		  >
+			>
 		: BOptional extends true
+			? A | B
+			: B
+	: BOptional extends true
 		? A | B
 		: B
-	: BOptional extends true
-	? A | B
-	: B
 
 type DeepMerge_<objs, accumulator> = objs extends readonly []
 	? accumulator
 	: objs extends readonly [infer h, ...infer t]
-	? [h] extends [object]
-		? DeepMerge_<t, DeepMerge2<accumulator, h>>
-		: // ? DeepMerge_<t, DeepMerge_skipUndefined<acc, h>>
-		[h] extends [never]
-		? DeepMerge_<t, accumulator>
+		? [h] extends [object]
+			? DeepMerge_<t, DeepMerge2<accumulator, h>>
+			: // ? DeepMerge_<t, DeepMerge_skipUndefined<acc, h>>
+				[h] extends [never]
+				? DeepMerge_<t, accumulator>
+				: accumulator
 		: accumulator
-	: accumulator
 
 export type DeepMerge<
 	A extends readonly object[] | object,

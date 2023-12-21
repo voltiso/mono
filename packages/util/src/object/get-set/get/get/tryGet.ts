@@ -9,12 +9,12 @@ import { tryGetProperty } from './tryGetProperty'
 type TryGet_<O, P> = P extends readonly []
 	? O
 	: O extends undefined | null
-	? undefined
-	: O extends object
-	? P extends readonly [infer H, ...infer T]
-		? TryGet_<TryGetProperty<O, H>, T>
-		: never
-	: never
+		? undefined
+		: O extends object
+			? P extends readonly [infer H, ...infer T]
+				? TryGet_<TryGetProperty<O, H>, T>
+				: never
+			: never
 
 export type TryGet<
 	O extends object | undefined | null,

@@ -9,8 +9,8 @@ export type Bivariant_<Func> = [Func] extends [
 ]
 	? BivariantNewable_<Func>
 	: [Func] extends [(...args: any) => any]
-	? BivariantCallable_<Func>
-	: never
+		? BivariantCallable_<Func>
+		: never
 
 export type Bivariant<
 	Func extends ((...args: any) => any) | (abstract new (...args: any) => any),

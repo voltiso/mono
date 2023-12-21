@@ -10,11 +10,11 @@ export type Callable<O extends Partial<CallableOptions> = {}> =
 	GetCallableOptions<O>['this'] extends NoThis
 		? (
 				...args: Callable.FixParameters<GetCallableOptions<O>['parameters']>
-		  ) => GetCallableOptions<O>['return']
+			) => GetCallableOptions<O>['return']
 		: (
 				this: GetCallableOptions<O>['this'],
 				...args: Callable.FixParameters<GetCallableOptions<O>['parameters']>
-		  ) => GetCallableOptions<O>['return']
+			) => GetCallableOptions<O>['return']
 
 export type Callable_<O> = O extends Partial<CallableOptions>
 	? Callable<O>

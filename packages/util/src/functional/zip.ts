@@ -7,8 +7,8 @@ export type GetZipTypeImpl<
 > = TArrays extends readonly []
 	? Acc
 	: TArrays extends [readonly (infer HH)[], ...infer T]
-	? GetZipTypeImpl<T, [...Acc, HH]>
-	: never
+		? GetZipTypeImpl<T, [...Acc, HH]>
+		: never
 
 export type GetZipType<TArrays extends readonly (readonly unknown[])[]> =
 	GetZipTypeImpl<TArrays, []>

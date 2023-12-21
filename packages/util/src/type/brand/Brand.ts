@@ -78,8 +78,8 @@ export type GetBrand_<B, detail = NoArgument> = B extends BrandReference
 	? detail extends NoArgument
 		? Brand<B>
 		: detail extends Brand.GetConstraint<B>
-		? CustomBrand<B, detail>
-		: never
+			? CustomBrand<B, detail>
+			: never
 	: never
 
 //

@@ -24,10 +24,10 @@ type Func<
 		? Func_<Args, Result>
 		: never
 	: Args extends NoArgumentNn
-	? Result extends NoArgumentNn
-		? IFunc
+		? Result extends NoArgumentNn
+			? IFunc
+			: never
 		: never
-	: never
 
 describe('OptionalArgument', () => {
 	it('works', <Args extends number[], Result extends string>() => {

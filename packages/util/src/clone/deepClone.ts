@@ -52,9 +52,9 @@ export function deepClone<T>(
 		NonStrictPartial<CloneOptions> & { cache: WeakMap<object, object> }
 	> = inputOptions?.cache
 		? // eslint-disable-next-line es-x/no-weak-map
-		  (inputOptions as typeof inputOptions & { cache: WeakMap<object, object> })
+			(inputOptions as typeof inputOptions & { cache: WeakMap<object, object> })
 		: // eslint-disable-next-line es-x/no-weak-map
-		  { ...inputOptions, cache: new WeakMap() }
+			{ ...inputOptions, cache: new WeakMap() }
 
 	if (typeof value === 'object' && value !== null && options.cache.has(value))
 		return options.cache.get(value) as never

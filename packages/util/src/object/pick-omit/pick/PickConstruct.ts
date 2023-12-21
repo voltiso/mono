@@ -32,28 +32,28 @@ export type PickConstructNoUnknown<
 type _PickConstruct0<T> = T extends new () => infer R
 	? new () => R
 	: T extends abstract new () => infer R
-	? abstract new () => R
-	: never
+		? abstract new () => R
+		: never
 
 type _PickConstruct1<T> = T extends new (a: infer A) => infer R
 	? unknown extends A
 		? never
 		: new (a: A) => R
 	: T extends abstract new (a: infer A) => infer R
-	? unknown extends A
-		? never
-		: abstract new (a: A) => R
-	: never
+		? unknown extends A
+			? never
+			: abstract new (a: A) => R
+		: never
 
 type _PickConstruct2<T> = T extends new (a: infer A, b: infer B) => infer R
 	? unknown extends B
 		? never
 		: new (...args: [A]) => R
 	: T extends abstract new (a: infer A, b: infer B) => infer R
-	? unknown extends B
-		? never
-		: abstract new (...args: [A]) => R
-	: never
+		? unknown extends B
+			? never
+			: abstract new (...args: [A]) => R
+		: never
 
 type _PickConstruct3<T> = T extends new (
 	a: infer A,
@@ -64,10 +64,10 @@ type _PickConstruct3<T> = T extends new (
 		? never
 		: new (...args: [A, B]) => R
 	: T extends abstract new (a: infer A, b: infer B, c: infer C) => infer R
-	? unknown extends C
-		? never
-		: abstract new (...args: [A, B]) => R
-	: never
+		? unknown extends C
+			? never
+			: abstract new (...args: [A, B]) => R
+		: never
 
 type _PickConstruct4<T> = T extends new (
 	a: infer A,
@@ -79,15 +79,15 @@ type _PickConstruct4<T> = T extends new (
 		? never
 		: new (...args: [A, B, C, D]) => R
 	: T extends abstract new (
-			a: infer A,
-			b: infer B,
-			c: infer C,
-			d: infer D,
-	  ) => infer R
-	? unknown extends D
-		? never
-		: abstract new (...args: [A, B, C, D]) => R
-	: never
+				a: infer A,
+				b: infer B,
+				c: infer C,
+				d: infer D,
+		  ) => infer R
+		? unknown extends D
+			? never
+			: abstract new (...args: [A, B, C, D]) => R
+		: never
 
 // import { Assert } from './assert'
 // // eslint-disable-next-line jest/require-hook

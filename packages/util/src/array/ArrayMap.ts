@@ -17,7 +17,7 @@ export namespace Array {
 		> = arr extends readonly []
 			? acc
 			: arr extends readonly [infer head, ...infer tail]
-			? _Rec<tail, operation, [...acc, Call1<operation, head>]>
-			: never
+				? _Rec<tail, operation, [...acc, Call1<operation, head>]>
+				: never
 	}
 }

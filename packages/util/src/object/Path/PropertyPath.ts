@@ -31,6 +31,6 @@ export namespace PropertyPath {
 	export type ForObject<O> = O extends object
 		? {
 				[k in keyof O]-?: [k] | [k, ...ForObject<O[k]>]
-		  }[keyof O]
+			}[keyof O]
 		: never
 }

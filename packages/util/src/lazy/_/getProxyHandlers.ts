@@ -18,6 +18,11 @@ export function getProxyHandlers({
 		get(_t, p) {
 			// ! required for `react-native` - metro bundler calls `.$$typeof` immediately to register for react hot reload
 			if (state.value === undefined && p === '$$typeof') return undefined
+
+			// ! required for `react` - in dev, it calls `.prototype` immediately to detect react components and register for react hot reload
+			if (state.value === undefined && p === 'prototype')
+				return Object.prototype
+
 			load()
 			return Reflect.get(state.value, p, state.value) as unknown
 		},

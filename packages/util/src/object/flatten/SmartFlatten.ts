@@ -19,9 +19,9 @@ export type SmartFlattenValue<T, k extends keyof T, Encountered> = IsOptional<
 export type SmartFlattenImpl<T, Encountered> = T extends (...args: any) => any
 	? T
 	: T extends abstract new (...args: any) => any
-	? T
-	: T extends Encountered
-	? T
-	: [{ [k in keyof T]: SmartFlattenValue<T, k, Encountered | T> }][0]
+		? T
+		: T extends Encountered
+			? T
+			: [{ [k in keyof T]: SmartFlattenValue<T, k, Encountered | T> }][0]
 
 export type SmartFlatten<T> = SmartFlattenImpl<T, never>

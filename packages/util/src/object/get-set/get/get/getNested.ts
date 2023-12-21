@@ -13,10 +13,10 @@ import { getProperty, GetPropertyError } from './getProperty'
 export type GetNested_<O, P> = P extends readonly []
 	? O
 	: P extends readonly [infer H, ...infer T]
-	? H extends keyof O | UnknownProperty
-		? GetNested_<Value<O, H>, T>
+		? H extends keyof O | UnknownProperty
+			? GetNested_<Value<O, H>, T>
+			: never
 		: never
-	: never
 
 export type GetNested<
 	O,

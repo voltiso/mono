@@ -19,8 +19,8 @@ export type ArrowCallableWithCALL<
 	T extends WithCALL | NoArgument = NoArgument,
 > = T extends NoArgument
 	? // eslint-disable-next-line etc/no-internal
-	  IArrowCallableWithCALL
+		IArrowCallableWithCALL
 	: T extends WithCALL
-	? // eslint-disable-next-line etc/no-internal
-	  _ArrowCallableWithCALL<T>
-	: never
+		? // eslint-disable-next-line etc/no-internal
+			_ArrowCallableWithCALL<T>
+		: never

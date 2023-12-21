@@ -39,11 +39,11 @@ export type BivariantNewable_<Func> = [Func] extends [
 	new (...args: infer Args) => infer Result,
 ]
 	? // eslint-disable-next-line etc/no-internal
-	  _BivariantNewable<Args, Result>
+		_BivariantNewable<Args, Result>
 	: [Func] extends [abstract new (...args: infer Args) => infer Result]
-	? // eslint-disable-next-line etc/no-internal
-	  _BivariantAbstractNewable<Args, Result>
-	: never
+		? // eslint-disable-next-line etc/no-internal
+			_BivariantAbstractNewable<Args, Result>
+		: never
 
 export type BivariantNewable<Func extends abstract new (...args: any) => any> =
 	BivariantNewable_<Func>

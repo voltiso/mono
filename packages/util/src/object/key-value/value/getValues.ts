@@ -21,8 +21,8 @@ type GetValues<
 > = O['includeSymbols'] extends true
 	? Value<Obj, keyof Obj>[]
 	: O['includeSymbols'] extends false
-	? Value<Obj, Extract<keyof Obj, string | number>>[]
-	: never
+		? Value<Obj, Extract<keyof Obj, string | number>>[]
+		: never
 
 export function getValues_<Obj extends object, O extends IterationOptions>(
 	obj: Obj,

@@ -6,10 +6,10 @@ import type { IsProvided } from './IsProvided'
 type Rec<Ts, True, False> = Ts extends []
 	? True
 	: Ts extends [infer Head, ...infer Tail]
-	? IsProvided<Head> extends true
-		? Rec<Tail, True, False>
-		: False
-	: never
+		? IsProvided<Head> extends true
+			? Rec<Tail, True, False>
+			: False
+		: never
 
 export type AreProvided_<
 	Ts,
@@ -20,7 +20,7 @@ export type AreProvided_<
 			[...Ts], // get rid of readonly
 			True,
 			False
-	  >
+		>
 	: never
 
 export type AreProvided<

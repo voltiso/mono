@@ -7,10 +7,10 @@ type Parity_<L, _0, _1, accumulator extends _0 | _1> = L extends readonly [
 ]
 	? Parity_<T, _0, _1, accumulator extends _0 ? _1 : _0>
 	: L extends readonly []
-	? accumulator
-	: L extends readonly unknown[]
-	? _0 | _1
-	: never
+		? accumulator
+		: L extends readonly unknown[]
+			? _0 | _1
+			: never
 
 export type Parity<L extends readonly unknown[], _0 = 0, _1 = 1> = Parity_<
 	L,

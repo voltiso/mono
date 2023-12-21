@@ -7,10 +7,10 @@ export type BivariantCallable_<Func> = [Func] extends [
 	? unknown extends This
 		? {
 				bivarianceHack(...args: Args): Res
-		  }['bivarianceHack']
+			}['bivarianceHack']
 		: {
 				bivarianceHack(this: This, ...args: Args): Res
-		  }['bivarianceHack']
+			}['bivarianceHack']
 	: never
 
 export type BivariantCallable<Func extends (...args: any) => any> =

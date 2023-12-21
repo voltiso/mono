@@ -30,5 +30,5 @@ export type $Decrement<X extends DecrementArgument | AlsoAccept<number>> =
 	// eslint-disable-next-line etc/no-internal
 	X extends keyof _DecrementMap
 		? // eslint-disable-next-line etc/no-internal
-		  _DecrementMap[X]
+			_DecrementMap[X]
 		: number

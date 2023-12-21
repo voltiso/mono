@@ -15,8 +15,8 @@ export type Value<
 			? exactOptionalPropertyTypes extends false
 				? Exclude<$obj[$key], undefined> // ! design choice... unable to determine, so return cleaner result without `undefined`
 				: CanBeUndefined<$obj, $key> extends true
-				? $obj[$key]
-				: Exclude<$obj[$key], undefined>
+					? $obj[$key]
+					: Exclude<$obj[$key], undefined>
 			: $obj[$key]
 		: never
 	: never

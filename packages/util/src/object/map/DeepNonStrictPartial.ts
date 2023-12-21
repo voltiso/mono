@@ -6,7 +6,7 @@ export type DeepNonStrictPartial_<T> = [T] extends [readonly unknown[]]
 	? T
 	: {
 			[k in keyof T]?: DeepNonStrictPartial_<T[k]> | undefined
-	  }
+		}
 
 /** @inline */
 export type DeepNonStrictPartial<T extends object> = DeepNonStrictPartial_<T>

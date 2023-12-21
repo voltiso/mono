@@ -12,10 +12,10 @@ export namespace Flat {
 	> = arrays extends readonly []
 		? acc
 		: arrays extends readonly [readonly [infer a, ...infer as], ...infer tail]
-		? // eslint-disable-next-line etc/no-internal
-		  _Rec<[a, ...as, ...tail], acc>
-		: arrays extends [infer head, ...infer tail]
-		? // eslint-disable-next-line etc/no-internal
-		  _Rec<tail, [...acc, head]>
-		: never
+			? // eslint-disable-next-line etc/no-internal
+				_Rec<[a, ...as, ...tail], acc>
+			: arrays extends [infer head, ...infer tail]
+				? // eslint-disable-next-line etc/no-internal
+					_Rec<tail, [...acc, head]>
+				: never
 }

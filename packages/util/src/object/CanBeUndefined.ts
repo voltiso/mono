@@ -12,16 +12,16 @@ export type CanBeUndefined<
 > = exactOptionalPropertyTypes extends false
 	? boolean // ! cannot determine without this tsc option
 	: $obj extends any
-	? key extends any
-		? {
-				[k in key]: undefined
-		  } extends {
-				[k in key]: $obj[k]
-		  }
-			? True
-			: False
+		? key extends any
+			? {
+					[k in key]: undefined
+				} extends {
+					[k in key]: $obj[k]
+				}
+				? True
+				: False
+			: never
 		: never
-	: never
 
 /** ⚠️ Prefer {@link CanBeUndefined} - should be faster */
 export type CanBeUndefined_<

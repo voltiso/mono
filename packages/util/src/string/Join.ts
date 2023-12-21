@@ -46,8 +46,8 @@ export namespace Join {
 	]
 		? `${Print<H>}${options['separator']}${_Rec<readonly [HH, ...T], options>}` // ! TODO: tail recursion
 		: Arr extends readonly [infer H]
-		? Print<H>
-		: ''
+			? Print<H>
+			: ''
 }
 
 declare module '~/TypeAliases-augmentation' {

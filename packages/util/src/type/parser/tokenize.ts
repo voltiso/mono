@@ -13,8 +13,8 @@ type Tokenize_<
 	? ' \t\n\r\v\f' extends `${string}${H}${string}`
 		? Tokenize_<Result, Last, T>
 		: '123456789!&|^()' extends `${string}${H}${string}`
-		? Tokenize_<[...ApplyLast<Result, Last>, H], '', T>
-		: Tokenize_<Result, `${Last}${H}`, T>
+			? Tokenize_<[...ApplyLast<Result, Last>, H], '', T>
+			: Tokenize_<Result, `${Last}${H}`, T>
 	: ApplyLast<Result, Last>
 
 export type Tokenize<S> = Tokenize_<[], '', S>

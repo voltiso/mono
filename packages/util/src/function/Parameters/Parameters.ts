@@ -9,8 +9,8 @@ import type { NewableParameters_ } from './NewableParameters'
 export type Parameters_<T> = [T] extends [Callable]
 	? CallableParameters_<T>
 	: [T] extends [Newable]
-	? NewableParameters_<T>
-	: never
+		? NewableParameters_<T>
+		: never
 
 export type Parameters<T extends Callable | Newable> = Parameters_<T>
 
