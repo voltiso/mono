@@ -189,7 +189,9 @@ export class _CustomSubjectTree<
 
 				const key = property.endsWith('$') ? property.slice(0, -1) : property
 
-				assertNotPolluting(key)
+				// assertNotPolluting(key)
+				if (isPolluting(key))
+					return Reflect.get(_target, key, _receiver) as never
 
 				if (!hasOwnProperty(this._children, key)) {
 					new _CustomSubjectTree({
@@ -201,10 +203,9 @@ export class _CustomSubjectTree<
 				const child: _CustomSubjectTree = this._children[key as never]
 				$assert(child)
 
-				if(property.endsWith('$')) {
+				if (property.endsWith('$')) {
 					return child
-				}
-				else {
+				} else {
 					return child.maybeValue
 				}
 			},
