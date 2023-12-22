@@ -150,7 +150,8 @@ export class AssertorError extends Error {
 		super(message, otherOptions)
 
 		this.name = 'AssertorError'
-		Error.captureStackTrace(this, this.constructor)
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		if (this.stack) this.stack = hackStack(this.stack)
 
 		//

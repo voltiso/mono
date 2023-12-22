@@ -18,7 +18,8 @@ export class InvalidFixError extends lazyConstructor(() => SchemarError) {
 		super(
 			'Custom fix function returned data not passing validation. See `.cause` for the ValidationError and issues list.',
 		)
-		Error.captureStackTrace(this, this.constructor)
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		this.name = name
 
 		this.cause = new ValidationError(issues)

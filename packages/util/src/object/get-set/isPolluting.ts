@@ -43,7 +43,10 @@ export class PrototypePollutionError<
 		if (obj) message = `${message} in object ${stringFrom(obj)}`
 
 		super(message, options)
-		Error.captureStackTrace(this, this.constructor)
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
+		
 		this.name = 'PrototypePollutionError'
 
 		this.obj = obj

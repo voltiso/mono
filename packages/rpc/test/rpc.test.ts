@@ -25,7 +25,8 @@ class MyError extends Error {
 	constructor(message: string) {
 		super(message)
 		this.name = 'MyError'
-		Error.captureStackTrace(this, MyError)
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (Error.captureStackTrace) Error.captureStackTrace(this, MyError)
 	}
 }
 

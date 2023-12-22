@@ -5,7 +5,8 @@
 export class AbortError extends Error {
 	constructor() {
 		super()
-		Error.captureStackTrace(this, this.constructor)
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		this.name = 'AbortError'
 	}
 }

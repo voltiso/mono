@@ -28,7 +28,9 @@ export class GetPropertyError<
 			object,
 		)}, ${stringFrom(property)})`
 		super(message, options)
-		Error.captureStackTrace(this, this.constructor)
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 
 		this.object = object
 		this.property = property
