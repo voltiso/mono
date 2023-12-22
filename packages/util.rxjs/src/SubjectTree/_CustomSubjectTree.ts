@@ -181,17 +181,15 @@ export class _CustomSubjectTree<
 	_ = new Proxy(
 		{},
 		{
-			get: (_target, property, _receiver) => {
-				// if (isPolluting(key) || typeof key !== 'string') {
-				// 	return Reflect.get(_target, key, _receiver) as never
-				// }
-				$assert.string(property)
+			get: (target, property, receiver) => {
+				if (isPolluting(property) || typeof property !== 'string') {
+					return Reflect.get(target, property, receiver) as never
+				}
+				// $assert.string(property)
 
 				const key = property.endsWith('$') ? property.slice(0, -1) : property
 
-				// assertNotPolluting(key)
-				if (isPolluting(key))
-					return Reflect.get(_target, key, _receiver) as never
+				assertNotPolluting(key)
 
 				if (!hasOwnProperty(this._children, key)) {
 					new _CustomSubjectTree({
