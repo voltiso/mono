@@ -5,21 +5,21 @@ import type { $$Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { define } from '@voltiso/util'
 
-import type { _CustomNestedSubject } from '~'
+import type { _CustomSubjectTree } from '~'
 
 //
-export interface NestedSubjectOptions {
+export interface SubjectTreeOptions {
 	/** The initial value of the subject */
 	initialValue?: unknown
 
 	schema?: $$Schemable
 
 	/** Dependency injection */
-	dependencies: NestedSubjectOptions.Dependencies
+	dependencies: SubjectTreeOptions.Dependencies
 }
 
-export namespace NestedSubjectOptions {
-	export interface Default extends NestedSubjectOptions {
+export namespace SubjectTreeOptions {
+	export interface Default extends SubjectTreeOptions {
 		//
 	}
 
@@ -30,23 +30,23 @@ export namespace NestedSubjectOptions {
 
 //
 
-export const defaultNestedSubjectOptions: NestedSubjectOptions.Default =
-	define<NestedSubjectOptions>().value({
+export const defaultSubjectTreeOptions: SubjectTreeOptions.Default =
+	define<SubjectTreeOptions>().value({
 		dependencies: { inferSchema: s.schema },
 	})
 
 //
 
 // function finalize<T extends object>(
-// 	options: Partial<NestedSubjectOptions<T>>,
-// ): NestedSubjectOptions<T> {
-// 	return { ...defaultNestedSubjectOptions, ...options }
+// 	options: Partial<SubjectTreeOptions<T>>,
+// ): SubjectTreeOptions<T> {
+// 	return { ...defaultSubjectTreeOptions, ...options }
 // }
 
 // const allowedKeys = new Set(['initialValue', 'schema', 'dependencies'] as const)
 // type AllowedKey = typeof allowedKeys extends Set<infer T> ? T : never
 
-// function isExactlyPartialOptions<T extends Partial<NestedSubjectOptions>>(
+// function isExactlyPartialOptions<T extends Partial<SubjectTreeOptions>>(
 // 	x: T | AlsoAccept<unknown>,
 // ): x is Pick<T, AllowedKey> {
 // 	if (!isObject(x)) return false
@@ -57,9 +57,9 @@ export const defaultNestedSubjectOptions: NestedSubjectOptions.Default =
 // 	return true
 // }
 
-// export function parseNestedSubjectOptions<T extends object>(
-// 	options: NestedSubjectOptionsInput<T>,
-// ): NestedSubjectOptions<T> {
+// export function parseSubjectTreeOptions<T extends object>(
+// 	options: SubjectTreeOptionsInput<T>,
+// ): SubjectTreeOptions<T> {
 // 	const isOptions = isExactlyPartialOptions(options)
 
 // 	if (isOptions) return finalize(options as never)
@@ -70,17 +70,17 @@ export const defaultNestedSubjectOptions: NestedSubjectOptions.Default =
 //
 
 /** @internal */
-export interface _NestedSubjectChildOptions {
-	parent: _CustomNestedSubject
+export interface _SubjectTreeChildOptions {
+	parent: _CustomSubjectTree
 	key: string
 }
 
 /** @internal */
 // eslint-disable-next-line etc/underscore-internal
-export function isNestedSubjectChildOptions(
+export function isSubjectTreeChildOptions(
 	x: unknown,
 	// eslint-disable-next-line etc/no-internal
-): x is _NestedSubjectChildOptions {
+): x is _SubjectTreeChildOptions {
 	// eslint-disable-next-line etc/no-internal
-	return Boolean((x as _NestedSubjectChildOptions | null)?.parent)
+	return Boolean((x as _SubjectTreeChildOptions | null)?.parent)
 }

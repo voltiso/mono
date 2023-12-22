@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.rxjs",
-  "version": "5.0.1",
+  "version": "7.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -18,7 +18,7 @@
     "__________DEV": "__________",
     "dev": "v dev",
     "__________TEST": "__________",
-    "test": "echo no tests yet!",
+    "test": "jest",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",

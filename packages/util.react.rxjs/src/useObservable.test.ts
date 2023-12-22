@@ -3,21 +3,23 @@
 
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
-import type { NestedSubject } from '@voltiso/util.rxjs'
+import type { RequiredSubjectTree } from '@voltiso/util.rxjs'
 import type { BehaviorSubject } from 'rxjs'
 
-import { useObservable } from '.'
+import { useObservable } from './useObservable'
 
 describe('useObservable', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		const a$ = {} as unknown as NestedSubject<true> | NestedSubject<false>
+		const a$ = {} as unknown as
+			| RequiredSubjectTree<true>
+			| RequiredSubjectTree<false>
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const a = () => useObservable(a$)
 		$Assert<IsIdentical<ReturnType<typeof a>, boolean>>()
 
-		const b$ = {} as unknown as NestedSubject<boolean>
+		const b$ = {} as unknown as RequiredSubjectTree<boolean>
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const b = () => useObservable(b$)
 		$Assert<IsIdentical<ReturnType<typeof b>, boolean>>()

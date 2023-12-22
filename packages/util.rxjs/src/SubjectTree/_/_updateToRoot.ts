@@ -4,10 +4,10 @@
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 
-import type { _CustomNestedSubject } from '~'
+import type { _CustomSubjectTree } from '~'
 
 /** @internal */
-export function _updateToRoot(node: _CustomNestedSubject<any>) {
+export function _updateToRoot(node: _CustomSubjectTree<any>) {
 	while (node._parent) {
 		// console.log('set exists', node._subject$.value)
 		node._exists = true

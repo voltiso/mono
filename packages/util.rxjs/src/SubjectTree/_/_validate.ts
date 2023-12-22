@@ -3,11 +3,11 @@
 
 import type { $$Schemable } from '@voltiso/schemar'
 
-import type { NestedSubjectOptions } from '~'
+import type { SubjectTreeOptions } from '~'
 
 /** @internal */
 export function _validate(options: {
-	dependencies?: NestedSubjectOptions.Dependencies | undefined
+	dependencies?: SubjectTreeOptions.Dependencies | undefined
 	schemable?: $$Schemable
 	value: unknown
 }) {

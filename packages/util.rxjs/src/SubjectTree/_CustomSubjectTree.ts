@@ -17,26 +17,26 @@ import { Subject } from 'rxjs'
 
 import { _updateToRoot } from './_/_updateToRoot'
 import { _validate } from './_/_validate'
+import type { SubjectTreeTypeOptions } from './options/type-options'
 import type {
-	_NestedSubjectChildOptions,
-	NestedSubjectOptions,
-} from './NestedSubjectOptions'
+	_SubjectTreeChildOptions,
+	SubjectTreeOptions,
+} from './SubjectTreeOptions'
 import {
-	defaultNestedSubjectOptions,
-	isNestedSubjectChildOptions,
-} from './NestedSubjectOptions'
-import type { NestedSubjectTypeOptions } from './options/type-options'
+	defaultSubjectTreeOptions,
+	isSubjectTreeChildOptions,
+} from './SubjectTreeOptions'
 
 //
 
 //
 
-export class _CustomNestedSubject<
-	TO extends NestedSubjectTypeOptions = NestedSubjectTypeOptions,
+export class _CustomSubjectTree<
+	TO extends SubjectTreeTypeOptions = SubjectTreeTypeOptions,
 > {
 	constructor(
 		options: // eslint-disable-next-line etc/no-internal
-		Partial<NestedSubjectOptions> | _NestedSubjectChildOptions,
+		Partial<SubjectTreeOptions> | _SubjectTreeChildOptions,
 	) {
 		const proxyHandlers = {
 			get: (_target: object, key: keyof any, receiver: unknown) => {
@@ -47,14 +47,12 @@ export class _CustomNestedSubject<
 					if (typeof result === 'function')
 						return result.bind(this._subject$) as never
 					else return result
-				} else return Reflect.get(this._, key, receiver) as never
+				} else return Reflect.get(this._, key, receiver) as never // ! currently internal!
 			},
 		}
 
 		// eslint-disable-next-line etc/no-internal
-		if (isNestedSubjectChildOptions(options)) {
-			// console.log('NestedSubject constructor child', options.key)
-
+		if (isSubjectTreeChildOptions(options)) {
 			assertNotPolluting(options.key)
 			this._dependencies = options.parent._dependencies
 			this._parent = options.parent
@@ -95,9 +93,8 @@ export class _CustomNestedSubject<
 			return self as never
 		} else {
 			// eslint-disable-next-line no-param-reassign
-			options = { ...defaultNestedSubjectOptions, ...options }
+			options = { ...defaultSubjectTreeOptions, ...options }
 
-			// console.log('NestedSubject constructor root', options.initialValue)
 			this._dependencies = options.dependencies
 
 			// console.log('options.schema', options.schema)
@@ -122,9 +119,9 @@ export class _CustomNestedSubject<
 		}
 	}
 
-	readonly _dependencies: NestedSubjectOptions.Dependencies | undefined
+	readonly _dependencies: SubjectTreeOptions.Dependencies | undefined
 
-	readonly _parent: _CustomNestedSubject | null = null
+	readonly _parent: _CustomSubjectTree | null = null
 	readonly _parentKey: keyof any | null = null
 
 	readonly _schema:
@@ -139,7 +136,7 @@ export class _CustomNestedSubject<
 
 	get value(): TO['Output'] {
 		if (!this._exists)
-			throw new Error('.value called on NestedSubject without value')
+			throw new Error('.value called on SubjectTree without value')
 
 		return this._value as TO['Output']
 	}
@@ -153,7 +150,7 @@ export class _CustomNestedSubject<
 	}
 
 	readonly _children: {
-		[k in keyof TO['Output']]?: _CustomNestedSubject<{
+		[k in keyof TO['Output']]?: _CustomSubjectTree<{
 			Output: TO['Output'][k]
 			Input: TO['Input'][k]
 
@@ -161,8 +158,8 @@ export class _CustomNestedSubject<
 			IsAncestorOptional: TO['IsAncestorOptional'] extends true
 				? true
 				: TO['IsOptional'] extends true
-				? true
-				: false
+					? true
+					: false
 		}>
 	} = {}
 
@@ -179,23 +176,36 @@ export class _CustomNestedSubject<
 		return !!this._schema
 	}
 
-	/** Access entries with names shadowed by `NestedSubject` members */
+	// ! currently internal!
+	/** Access entries with names shadowed by `SubjectTree` members */
 	_ = new Proxy(
 		{},
 		{
-			get: (_target, key, _receiver) => {
+			get: (_target, property, _receiver) => {
 				// if (isPolluting(key) || typeof key !== 'string') {
 				// 	return Reflect.get(_target, key, _receiver) as never
 				// }
-				$assert.string(key)
+				$assert.string(property)
+
+				const key = property.endsWith('$') ? property.slice(0, -1) : property
+
 				assertNotPolluting(key)
-				if (hasOwnProperty(this._children, key))
-					return this._children[key as never]
-				else {
-					return new _CustomNestedSubject({
+
+				if (!hasOwnProperty(this._children, key)) {
+					new _CustomSubjectTree({
 						parent: this as never,
 						key,
 					}) as never
+				}
+
+				const child: _CustomSubjectTree = this._children[key as never]
+				$assert(child)
+
+				if(property.endsWith('$')) {
+					return child
+				}
+				else {
+					return child.maybeValue
 				}
 			},
 		},
@@ -284,7 +294,7 @@ export class _CustomNestedSubject<
 
 		for (const [key, child] of Object.entries(this._children) as [
 			keyof typeof this._children,
-			_CustomNestedSubject,
+			_CustomSubjectTree,
 		][]) {
 			// eslint-disable-next-line etc/no-internal
 			child._set(

@@ -3,12 +3,12 @@
 
 import { lazyConstructor } from '@voltiso/util'
 
-import type { NestedSubjectTypeOptions } from '~'
-import { _CustomNestedSubject } from '~'
+import type { SubjectTreeTypeOptions } from '~'
+import { _CustomSubjectTree } from '~'
 
-export class _NestedSubject<
-	TO extends NestedSubjectTypeOptions,
-> extends lazyConstructor(() => _CustomNestedSubject)<TO> {
+export class _SubjectTree<
+	TO extends SubjectTreeTypeOptions,
+> extends lazyConstructor(() => _CustomSubjectTree)<TO> {
 	constructor(initialValue: TO['Input']) {
 		super({ initialValue })
 	}

@@ -17,6 +17,17 @@ describe('value', () => {
 		$Assert<
 			IsIdentical<Value<{ a: number | undefined }, 'a'>, number | undefined>
 		>()
+
+		$Assert<
+			IsIdentical<Value<{ a?: number | undefined }, 'a'>, number | undefined>
+		>()
+
+		//
+
+		$Assert<
+			IsIdentical<Value<{ a: number | undefined }, 'a'>, number | undefined>
+		>()
+
 		$Assert<
 			IsIdentical<Value<{ a?: number | undefined }, 'a'>, number | undefined>
 		>()

@@ -123,6 +123,24 @@ describe('patch', () => {
 		expect(c).toBe(a)
 	})
 
+	it('replaces null', () => {
+		expect.hasAssertions()
+
+		const a = null as null | { b: 1 }
+		const b = patch(a, { b: 1 })
+
+		expect(b).toStrictEqual({ b: 1 })
+	})
+
+	it('strips nested replaceIt', () => {
+		expect.hasAssertions()
+
+		const a = null as null | { b: 1 }
+		const b = patch(a, { b: replaceIt(1 as const) })
+
+		expect(b).toStrictEqual({ b: 1 })
+	})
+
 	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('does not modify if not needed (patchSet) - proto', () => {
 	// 	expect.hasAssertions()

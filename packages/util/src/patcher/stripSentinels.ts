@@ -4,6 +4,7 @@
 import { zip } from '~/functional'
 import { isPlainObject } from '~/object'
 
+import { isReplaceIt } from './replaceIt'
 import {
 	isPatchSentinel,
 	isSafeToStripPatchSentinel,
@@ -13,7 +14,9 @@ import {
 export function stripSentinels(value: unknown): unknown {
 	if (isPatchSentinel(value)) {
 		if (isSafeToStripPatchSentinel(value)) return undefined
-		else
+		else if (isReplaceIt(value)) {
+			return value.__replaceIt
+		} else
 			throw new TypeError(
 				`patch: stripSentinels: found non-safe-to-strip sentinel ${stringFromPatchSentinel(
 					value,
@@ -40,20 +43,24 @@ export function stripSentinels(value: unknown): unknown {
 
 		let haveChange = false
 		for (const [key, item] of Object.entries(value)) {
+			let newItem
+
 			if (isPatchSentinel(item)) {
 				if (isSafeToStripPatchSentinel(item)) {
 					haveChange = true
 					continue // skip (do not add to result)
 				}
 
-				throw new TypeError(
-					`patch: stripSentinels: found non-safe-to-strip sentinel ${stringFromPatchSentinel(
-						item,
-					)}`,
-				)
-			}
+				if (isReplaceIt(item)) {
+					newItem = item.__replaceIt
+				} else
+					throw new TypeError(
+						`patch: stripSentinels: found non-safe-to-strip sentinel ${stringFromPatchSentinel(
+							item,
+						)}`,
+					)
+			} else newItem = stripSentinels(item)
 
-			const newItem = stripSentinels(item)
 			result[key] = newItem
 
 			if (newItem !== item) haveChange = true

@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './_CustomNestedSubject'
-export * from './_NestedSubject'
+export * from './_CustomSubjectTree'
+export * from './_SubjectTree'
 export * from './base'
-export * from './NestedSubject'
-export * from './NestedSubjectConstructor'
-export * from './NestedSubjectOptions'
+export * from './SubjectTree'
+export * from './SubjectTreeConstructor'
+export * from './SubjectTreeOptions'
 export * from './options'
 export * from './reserved-fields'

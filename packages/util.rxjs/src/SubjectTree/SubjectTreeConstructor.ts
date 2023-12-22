@@ -11,11 +11,11 @@ import type {
 } from '@voltiso/util'
 
 import type {
-	GetNestedSubject,
-	NestedSubjectOptions,
-	NestedSubjectTypeOptions,
+	GetSubjectTree,
+	SubjectTreeOptions,
+	SubjectTreeTypeOptions,
 } from '~'
-import { _CustomNestedSubject } from '~'
+import { _CustomSubjectTree } from '~'
 
 //
 
@@ -23,33 +23,33 @@ import { _CustomNestedSubject } from '~'
  * Convert runtime options type to generic argument type (hide some, expose
  * some)
  */
-export type NestedSubjectTypeOptionsFromOptions<
-	O extends Partial<NestedSubjectOptions>,
+export type SubjectTreeTypeOptionsFromOptions<
+	O extends Partial<SubjectTreeOptions>,
 > = O extends { schema: Schemable }
 	? {
 			Output: Output_<O['schema']>
 			Input: Input_<O['schema']>
-	  }
+		}
 	: O extends { initialValue: infer T }
-	? {
-			Output: T
-			Input: T
-	  }
-	: {}
+		? {
+				Output: T
+				Input: T
+			}
+		: {}
 
-export interface NestedSubjectConstructor<
-	TO extends Partial<NestedSubjectTypeOptions>,
+export interface SubjectTreeConstructor<
+	TO extends Partial<SubjectTreeTypeOptions>,
 > {
 	readonly [PARTIAL_OPTIONS]: TO
 	readonly [OPTIONS]: Override<this[DEFAULT_OPTIONS], TO>
 
-	readonly [DEFAULT_OPTIONS]: NestedSubjectTypeOptions.Default
+	readonly [DEFAULT_OPTIONS]: SubjectTreeTypeOptions.Default
 
 	// ! disable no-argument constructor?
 	// new <
 	// 	Type extends this[OPTIONS]['Output'] | NoArgument = NoArgument,
 	// >(): undefined extends this[OPTIONS]['Input']
-	// 	? GetNestedSubject<
+	// 	? GetSubjectTree<
 	// 			[Type] extends [NoArgument]
 	// 				? this[OPTIONS]
 	// 				: Override<this[OPTIONS], { Output: Type; Input: Type }>
@@ -58,7 +58,7 @@ export interface NestedSubjectConstructor<
 
 	new <InitialValue extends this[OPTIONS]['Input']>(
 		initialValue: InitialValue,
-	): GetNestedSubject<
+	): GetSubjectTree<
 		IsCompatible<InitialValue, this[OPTIONS]['Input']> extends true // ! ?
 			? this[OPTIONS]
 			: Override<this[OPTIONS], { Output: InitialValue; Input: InitialValue }>
@@ -66,47 +66,47 @@ export interface NestedSubjectConstructor<
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export class NestedSubjectConstructor<
-	TO extends Partial<NestedSubjectTypeOptions>,
+export class SubjectTreeConstructor<
+	TO extends Partial<SubjectTreeTypeOptions>,
 > {
-	readonly optionsOverride: Partial<NestedSubjectOptions> = {} as never
+	readonly optionsOverride: Partial<SubjectTreeOptions> = {} as never
 
-	constructor(optionsOverride: Partial<NestedSubjectOptions>) {
+	constructor(optionsOverride: Partial<SubjectTreeOptions>) {
 		this.optionsOverride = optionsOverride
 
-		function NestedSubject(...args: [] | [unknown]) {
+		function SubjectTree(...args: [] | [unknown]) {
 			const options =
 				args.length === 0
 					? optionsOverride
 					: { ...optionsOverride, initialValue: args[0] }
 
 			return Reflect.construct(
-				_CustomNestedSubject,
+				_CustomSubjectTree,
 				[options],
 				// new.target,
 			) as never
 		}
 
-		Object.setPrototypeOf(NestedSubject, this)
+		Object.setPrototypeOf(SubjectTree, this)
 
 		// eslint-disable-next-line no-constructor-return
-		return NestedSubject as never
+		return SubjectTree as never
 	}
 
 	//
 
-	private with<O extends Partial<NestedSubjectOptions>>(
+	private with<O extends Partial<SubjectTreeOptions>>(
 		optionsOverride: O,
-	): NestedSubjectConstructor<
-		Override<TO, NestedSubjectTypeOptionsFromOptions<O>>
+	): SubjectTreeConstructor<
+		Override<TO, SubjectTreeTypeOptionsFromOptions<O>>
 	> {
-		return new NestedSubjectConstructor({
+		return new SubjectTreeConstructor({
 			...this.optionsOverride,
 			...optionsOverride,
 		}) as never
 	}
 
-	schema<S extends $$Schemable>(schema: S) {
+	withSchema<S extends $$Schemable>(schema: S) {
 		return this.with({ schema })
 	}
 }
@@ -115,8 +115,8 @@ export class NestedSubjectConstructor<
 
 //
 
-// const MyDerived = NestedSubject.with({ schema: { a: s.string } })
+// const MyDerived = SubjectTree.with({ schema: { a: s.string } })
 // const a = new MyDerived()
 
-// const MyDerived2 = NestedSubject.schema({ a: s.string })
+// const MyDerived2 = SubjectTree.schema({ a: s.string })
 // const b = new MyDerived2()

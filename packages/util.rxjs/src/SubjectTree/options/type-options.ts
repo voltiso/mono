@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export interface NestedSubjectTypeOptions {
+export interface SubjectTreeTypeOptions {
 	Output: unknown
 	Input: unknown
 
@@ -15,9 +15,10 @@ export interface NestedSubjectTypeOptions {
 	IsAncestorOptional: boolean
 }
 
-export namespace NestedSubjectTypeOptions {
-	export interface Default extends NestedSubjectTypeOptions {
+export namespace SubjectTreeTypeOptions {
+	export interface Default extends SubjectTreeTypeOptions {
 		IsOptional: false
-		IsAncestorOptional: false
+		IsAncestorOptional: boolean
+		// IsAncestorOptional: false
 	}
 }

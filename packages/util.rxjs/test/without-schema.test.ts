@@ -1,18 +1,54 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsIdentical } from '@voltiso/util'
+import type { IsIdentical, Value } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
-import type { CustomNestedSubject } from '~'
-import { NestedSubject } from '~'
+import type { CustomSubjectTree, RequiredSubjectTree } from '~'
+import { SubjectTree } from '~'
 
-describe('NestedSubject', () => {
+describe('SubjectTree', () => {
+	it('type', () => {
+		type A = RequiredSubjectTree<{
+			a0: number
+			a1?: number
+			b?: { b0: number; b1?: string }
+			c: { c0: number; c1?: string }
+
+			d: Record<string, { d0: number }>
+		}>
+
+		$Assert<IsIdentical<A['a0$']['exists'], true>>()
+		$Assert<IsIdentical<A['a1$']['exists'], boolean>>()
+
+		$Assert<IsIdentical<A['b$']['exists'], boolean>>()
+		$Assert<IsIdentical<A['b$']['b0$']['exists'], boolean>>()
+		$Assert<IsIdentical<A['b$']['b1$']['exists'], boolean>>()
+
+		$Assert<IsIdentical<A['c$']['exists'], true>>()
+		$Assert<IsIdentical<A['c$']['c0$']['exists'], true>>()
+		$Assert<IsIdentical<A['c$']['c1$']['exists'], boolean>>()
+
+		type B = A['d$']['test$']
+		$Assert<IsIdentical<B['d0$']['exists'], boolean>>()
+
+		//
+
+		$Assert.is<
+			CustomSubjectTree<{
+				Input: { a: 1 }
+				Output: { a: 1 }
+				IsAncestorOptional: true
+			}>,
+			SubjectTree<{ a: 1 }>
+		>()
+	})
+
 	it('delete root', () => {
 		expect.hasAssertions()
 
-		const data$ = new NestedSubject(undefined as unknown)
-		$Assert<IsIdentical<typeof data$, NestedSubject<unknown>>>()
+		const data$ = new SubjectTree(undefined as unknown)
+		$Assert<IsIdentical<typeof data$, RequiredSubjectTree<unknown>>>()
 
 		expect(data$.value).toBeUndefined()
 
@@ -26,33 +62,51 @@ describe('NestedSubject', () => {
 		expect(data$.maybeValue).toBeUndefined()
 
 		expect(() => data$.value).toThrow(
-			'.value called on NestedSubject without value',
+			'.value called on SubjectTree without value',
 		)
 	})
 
 	it('infer type from initial value', () => {
-		const data$ = new NestedSubject({ a: 123 })
-		$Assert<IsIdentical<typeof data$, NestedSubject<{ a: number }>>>()
+		const data$ = new SubjectTree({ a: 123 })
+		$Assert<IsIdentical<typeof data$, RequiredSubjectTree<{ a: number }>>>()
+
+		void data$
 	})
 
 	it('works', () => {
 		expect.hasAssertions()
 
-		const data$ = new NestedSubject<{ a?: { b?: { c: number } } }>({ a: {} })
+		const data$ = new SubjectTree<{
+			/** A */
+			a?: { b?: { c: number } }
+
+			/** C */
+			c: string
+
+			/** D */
+			d?: symbol
+		}>({
+			a: {},
+			c: 'test',
+		})
+
+		$Assert<IsIdentical<(typeof data$)['c'], string>>()
+		$Assert<IsIdentical<Value<typeof data$, 'd'>, symbol>>()
 
 		$Assert<IsIdentical<typeof data$.delete, (() => void) | undefined>>()
-		$Assert<IsIdentical<typeof data$.a.delete, () => void>>()
+		$Assert<IsIdentical<typeof data$.a$.delete, () => void>>()
 
 		expect(data$.exists).toBeTruthy()
-		expect(data$.a.exists).toBeTruthy()
-		expect(data$.a.b.exists).toBeFalsy()
-		expect(data$.a.b.c.exists).toBeFalsy()
+		expect(data$.a$.exists).toBeTruthy()
+		expect(data$.a$.b$.exists).toBeFalsy()
+		expect(data$.a$.b$.c$.exists).toBeFalsy()
 
 		/** Auto-remove options identical to defaults (cleaner editor support) */
 		$Assert<
 			IsIdentical<
-				typeof data$.a.b.c,
-				CustomNestedSubject<{
+				typeof data$.a$.b$.c$,
+				// SubjectTree<number>
+				CustomSubjectTree<{
 					Output: number
 					Input: number
 					IsAncestorOptional: true
@@ -65,12 +119,12 @@ describe('NestedSubject', () => {
 
 		let called = [] as string[]
 
-		data$.a.b.subscribe(b => {
+		data$.a$.b$.subscribe(b => {
 			observedB = b
 			called.push('b')
 		})
 
-		data$.a.b.c.subscribe(c => {
+		data$.a$.b$.c$.subscribe(c => {
 			$Assert<IsIdentical<typeof c, number | undefined>>()
 			observedC = c
 			called.push('c')
@@ -78,16 +132,20 @@ describe('NestedSubject', () => {
 
 		called = []
 
-		data$.a.b.c.set(1)
+		data$.a$.b$.c$.set(1)
 
-		expect(data$.a.b.c.value).toBe(1)
-		expect(data$.value).toStrictEqual({ a: { b: { c: 1 } } })
-		expect(data$.a.b.value).toStrictEqual({ c: 1 })
+		expect(data$.a$.b$.c$.value).toBe(1)
+		expect(data$.a$.b$.c).toBe(1)
+
+		expect(data$.value).toStrictEqual({ a: { b: { c: 1 } }, c: 'test' })
+
+		expect(data$.a$.b$.value).toStrictEqual({ c: 1 })
+		expect(data$.a$.b).toStrictEqual({ c: 1 })
 
 		expect(data$.exists).toBeTruthy()
-		expect(data$.a.exists).toBeTruthy()
-		expect(data$.a.b.exists).toBeTruthy()
-		expect(data$.a.b.c.exists).toBeTruthy()
+		expect(data$.a$.exists).toBeTruthy()
+		expect(data$.a$.b$.exists).toBeTruthy()
+		expect(data$.a$.b$.c$.exists).toBeTruthy()
 
 		expect(observedB).toStrictEqual({ c: 1 })
 		expect(observedC).toBe(1)
@@ -95,16 +153,16 @@ describe('NestedSubject', () => {
 
 		called = []
 
-		data$.a.delete()
+		data$.a$.delete()
 
 		expect(observedB).toBeUndefined()
 		expect(observedC).toBeUndefined()
 		expect(called).toStrictEqual(['c', 'b'])
 
 		expect(data$.exists).toBeTruthy()
-		expect(data$.a.exists).toBeFalsy()
-		expect(data$.a.b.exists).toBeFalsy()
-		expect(data$.a.b.c.exists).toBeFalsy()
+		expect(data$.a$.exists).toBeFalsy()
+		expect(data$.a$.b$.exists).toBeFalsy()
+		expect(data$.a$.b$.c$.exists).toBeFalsy()
 	})
 
 	// eslint-disable-next-line jest/no-commented-out-tests
@@ -113,7 +171,7 @@ describe('NestedSubject', () => {
 
 	// 	type MyType = { a?: true } | { a?: false }
 
-	// 	const data$ = createNestedSubject<MyType>({})
+	// 	const data$ = createSubjectTree<MyType>({})
 
 	// 	data$.a
 	// })
