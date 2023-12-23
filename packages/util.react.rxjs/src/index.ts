@@ -4,3 +4,4 @@
 export * from './useObservable'
 export * from './useObservableDeltaEffect'
 export * from './useObservableEffect'
+export * from './useSubjectEffect'

@@ -85,7 +85,7 @@ export const unicorn = defineEslintConfigOverride({
 		// 'unicorn/no-useless-undefined': [1, { checkArguments: false }],
 
 		'unicorn/no-zero-fractions': 1,
-		'unicorn/number-literal-case': 1,
+		'unicorn/number-literal-case': 'off', // conflicts with prettier (unfortunately)
 
 		'unicorn/numeric-separators-style': [
 			'warn',
