@@ -52,7 +52,7 @@ export function _processCustomOperations(
 								typeof operation.expectedDescription === 'function'
 									? operation.expectedDescription(value as never)
 									: operation.expectedDescription ||
-									  `pass custom check (${operation.checkIfValid.toString()})`,
+										`pass custom check (${operation.checkIfValid.toString()})`,
 						},
 
 						received: { value },

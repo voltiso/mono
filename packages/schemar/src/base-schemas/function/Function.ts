@@ -28,14 +28,14 @@ export type Function<F extends (...args: any) => any> = F extends (
 
 			Output: F
 			Input: F
-	  }>
+		}>
 	: CustomFunction<{
 			parameters: MutableTuple<Parameters<F>>
 			return: Schema<ReturnType<F>>
 
 			Output: F
 			Input: F
-	  }>
+		}>
 
 export type FunctionConstructor = new <
 	Args extends $$InferableReadonlyTuple | TupleLike | $$Array,

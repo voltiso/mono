@@ -55,6 +55,10 @@ export interface AssertFunction {
 
 	//
 
+	readonly undefined: Assertor<typeof s.undefined>
+	readonly null: Assertor<typeof s.null>
+	readonly nullish: Assertor<typeof s.nullish>
+
 	readonly defined: Assertor<typeof s.unknown, undefined | void>
 
 	readonly string: Assertor<typeof s.string>
@@ -91,19 +95,23 @@ const _getAssert: (name: string) => AssertFunction = name =>
 				})(value, ...rest)
 			},
 
-			get defined() {
-				return new Assertor(
-					`${name}.defined`,
-					s.unknown.check(x => x !== undefined),
-				) as never
-			},
-
 			get undefined() {
 				return new Assertor(`${name}.undefined`, s.undefined) as never
 			},
 
 			get null() {
-				return new Assertor(`${name}.undefined`, s.null) as never
+				return new Assertor(`${name}.null`, s.null) as never
+			},
+
+			get nullish() {
+				return new Assertor(`${name}.nullish`, s.nullish) as never
+			},
+
+			get defined() {
+				return new Assertor(
+					`${name}.defined`,
+					s.unknown.check(x => x !== undefined),
+				) as never
 			},
 
 			get propertyKey() {
@@ -211,7 +219,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 				isSchema(args[0])
 					? args
 					: // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-					  ([s.truthy, ...args] as never[])
+						([s.truthy, ...args] as never[])
 
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			const assertor = new Assertor(name, schema, {

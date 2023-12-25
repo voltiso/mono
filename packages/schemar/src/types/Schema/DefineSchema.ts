@@ -25,5 +25,5 @@ export type OverrideSchema$WithOmit<
 	? DefineSchema$<
 			This,
 			$Override_<Omit<PartialOptions, FieldsToOmit>, NewPartialOptions>
-	  >
+		>
 	: never

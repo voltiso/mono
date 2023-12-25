@@ -99,12 +99,12 @@ export declare namespace CustomArray {
 		? IsCompatible<
 				This['Output'][number],
 				Extract<This['Input'], readonly unknown[]>[number]
-		  > extends true
+			> extends true
 			? Schema<This['Output'][number]>
 			: CustomSchema<{
 					Output: This['Output'][number]
 					Input: Extract<This['Input'], readonly unknown[]>[number]
-			  }>
+				}>
 		: never
 
 	export type MakeReadonly<This, O> = This extends {
@@ -118,7 +118,7 @@ export declare namespace CustomArray {
 					Output: readonly [...This['Output']]
 					Input: readonly [...Extract<This['Input'], readonly unknown[]>]
 				}
-		  >
+			>
 		: never
 
 	export type MakeMutable<

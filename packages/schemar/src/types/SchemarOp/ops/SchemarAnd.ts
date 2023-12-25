@@ -53,18 +53,18 @@ export declare namespace SchemarAnd {
 	> = A extends $$UnknownRecord // skip wildcard index signatures of unknown record
 		? GetObject<$$Object & { Output: unknown; Input: unknown }, B>
 		: B extends $$UnknownRecord
-		  ? GetObject<A, $$Object & { Output: unknown; Input: unknown }>
-		  : A extends {
+			? GetObject<A, $$Object & { Output: unknown; Input: unknown }>
+			: A extends {
 						Output: unknown
 						Input: unknown
-		      }
-		    ? B extends {
+				  }
+				? B extends {
 						Output: unknown
 						Input: unknown
-		      }
+					}
 					? Object.Get<_<A['Output'] & B['Output']>, _<A['Input'] & B['Input']>>
 					: never
-		    : never
+				: never
 
 	//
 
@@ -82,7 +82,7 @@ export declare namespace SchemarAnd {
 			? Schema$ & {
 					Output: A['Output'] & B['Output']
 					Input: A['Input'] & B['Input']
-			  }
+				}
 			: never
 		: never
 }
@@ -103,8 +103,8 @@ export declare namespace SchemarAndN {
 					SchemarAnd_<ImplicitInferSchema$_<A>, ImplicitInferSchema$_<B>>,
 					...Rest,
 				]
-		  >
+			>
 		: Ts extends [infer A]
-		  ? ImplicitInferSchema$_<A>
-		  : never
+			? ImplicitInferSchema$_<A>
+			: never
 }

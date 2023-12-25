@@ -19,12 +19,12 @@ export type _TupleTypeImplRec<
 > = T extends readonly []
 	? If<O['readonlyTuple'], readonly [...acc], acc>
 	: T extends readonly [...Rest<infer R>[]]
-	  ? _TupleTypeImplRec<[], [...acc, ...Type_<R, O>[]], O>
-	  : T extends readonly [infer h, ...infer t]
-	    ? _TupleTypeImplRec<t, [...acc, Type_<h, O>], O>
-	    : T extends readonly (infer E)[]
-	      ? _TupleTypeImplRec<[], [...acc, ...Type_<E, O>[]], O>
-	      : never
+		? _TupleTypeImplRec<[], [...acc, ...Type_<R, O>[]], O>
+		: T extends readonly [infer h, ...infer t]
+			? _TupleTypeImplRec<t, [...acc, Type_<h, O>], O>
+			: T extends readonly (infer E)[]
+				? _TupleTypeImplRec<[], [...acc, ...Type_<E, O>[]], O>
+				: never
 
 export type _TupleTypeImpl<
 	T,
@@ -41,10 +41,10 @@ export type TupleType_<
 		? readonly unknown[]
 		: unknown[]
 	: T extends unknown[]
-	  ? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: false }>
-	  : T extends readonly unknown[]
-	    ? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: true }>
-	    : never
+		? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: false }>
+		: T extends readonly unknown[]
+			? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: true }>
+			: never
 
 export type $TupleType_<
 	T,

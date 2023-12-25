@@ -79,8 +79,8 @@ export declare namespace GetObject$ {
 	> = undefined extends Input
 		? CustomObject$<{ Output: Output; Input: Input; hasDefault: true }>
 		: IsCompatible<Output, Input> extends true
-		  ? Object$<Output>
-		  : CustomObject$<{ Output: Output; Input: Input }>
+			? Object$<Output>
+			: CustomObject$<{ Output: Output; Input: Input }>
 }
 
 export declare namespace ImplicitInferSchema$ {
@@ -88,10 +88,10 @@ export declare namespace ImplicitInferSchema$ {
 	export type Step1<S> = $$Schemable extends S
 		? Schema$
 		: Schema extends ExcludeEmptyBraces<S>
-		  ? Schema$
-		  : Inferable extends S
-		    ? Schema$
-		    : Step2<S>
+			? Schema$
+			: Inferable extends S
+				? Schema$
+				: Step2<S>
 
 	/** Group literals */
 	export type Step2<S> = Extract<S, InferableLiteral> extends never
@@ -104,23 +104,23 @@ export declare namespace ImplicitInferSchema$ {
 	export type Step3<S> = InferableObject extends ExcludeEmptyBraces<S>
 		? IObject$ | Simple<Exclude<S, $$SchemableObject>>
 		: IObject$ extends ExcludeEmptyBraces<S>
-		  ? IObject$ | Simple<Exclude<S, $$SchemableObject>>
-		  : Simple<S>
+			? IObject$ | Simple<Exclude<S, $$SchemableObject>>
+			: Simple<S>
 
 	/** Other */
 	export type Simple<S> = IsCompatible<$$Schema, S> extends true
 		? Schema$
 		: S extends $$Schema
-		  ? S
-		  : IsAlmostSame<S, {}> extends true
-		    ? NonNullish$
-		    : S extends $$InferableObject
-		      ? GetImplicitObject$<S>
-		      : S extends Newable
-		        ? Instance$<S>
-		        : S extends $$InferableMutableTuple
-		          ? MutableTuple$<RelaxInferableTuple_<S>>
-		          : S extends $$InferableReadonlyTuple
-		            ? ReadonlyTuple$<RelaxInferableTuple_<S>>
-		            : never
+			? S
+			: IsAlmostSame<S, {}> extends true
+				? NonNullish$
+				: S extends $$InferableObject
+					? GetImplicitObject$<S>
+					: S extends Newable
+						? Instance$<S>
+						: S extends $$InferableMutableTuple
+							? MutableTuple$<RelaxInferableTuple_<S>>
+							: S extends $$InferableReadonlyTuple
+								? ReadonlyTuple$<RelaxInferableTuple_<S>>
+								: never
 }

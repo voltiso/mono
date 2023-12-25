@@ -84,24 +84,24 @@ export declare namespace UnknownFunction {
 				}
 					? {
 							this: RelaxSchema_<This>
-					  }
+						}
 					: unknown) &
 					(O extends {
 						readonly parameters: infer Parameters
 					}
 						? {
 								parameters: RelaxSchema_<Parameters>
-						  }
+							}
 						: unknown) &
 					(O extends {
 						readonly return: infer Return
 					}
 						? {
 								return: RelaxSchema_<Return>
-						  }
+							}
 						: unknown) &
 					Omit<O, 'this' | 'parameters' | 'return'>
-		  >
+			>
 		: never
 }
 

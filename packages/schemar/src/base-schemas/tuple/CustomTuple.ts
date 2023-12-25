@@ -84,7 +84,7 @@ export declare namespace CustomTuple {
 						Input: readonly [...This[OPTIONS]['Input']]
 					}
 				>
-		  >
+			>
 		: never
 
 	export type Mutable<This extends $$Tuple, O> = This extends {
@@ -99,6 +99,6 @@ export declare namespace CustomTuple {
 						Input: [...This[OPTIONS]['Input']]
 					}
 				>
-		  >
+			>
 		: never
 }

@@ -60,8 +60,8 @@ export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
 	): X extends $$Object | $$UnknownObject
 		? X
 		: X extends $$InferableObject
-		  ? GetObject$<X>
-		  : never
+			? GetObject$<X>
+			: never
 
 	// this[OPTIONS]['isPlain'] extends true
 	// 	? CustomObject<{

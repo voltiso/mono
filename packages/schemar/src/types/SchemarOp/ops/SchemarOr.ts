@@ -42,11 +42,11 @@ export declare namespace SchemarOr {
 		? B extends {
 				Output: unknown
 				Input: unknown
-		  }
+			}
 			? CustomSchema$<{
 					Output: A['Output'] | B['Output']
 					Input: A['Input'] | B['Input']
-			  }>
+				}>
 			: never
 		: never
 

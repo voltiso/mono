@@ -137,7 +137,7 @@ describe('GetType', () => {
 		type OmitId<T> = T extends unknown
 			? {
 					[k in keyof T]: T[k]
-			  }
+				}
 			: never
 
 		type A = OmitId<Output<TI['publicOnCreation']> & IntrinsicFields>

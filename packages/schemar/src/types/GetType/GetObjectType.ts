@@ -50,9 +50,9 @@ export type GetObjectOutput<Shape extends object> = Shape extends any
 	? HasIndexSignature<Shape> extends true
 		? {
 				[k in keyof Shape]: Output_<Shape[k]>
-		  }
+			}
 		: HasIndexSignature<Shape> extends false
-		  ? GetObjectType._GetNoSignature<
+			? GetObjectType._GetNoSignature<
 					{
 						[k in keyof Shape]: Output_<Shape[k]>
 					},
@@ -62,8 +62,8 @@ export type GetObjectOutput<Shape extends object> = Shape extends any
 						[k in keyof Shape]: _GetOptions<Shape[k]>
 					},
 					{ kind: 'out' }
-		    >
-		  : never
+				>
+			: never
 	: never
 
 /** @inline */
@@ -71,9 +71,9 @@ export type GetObjectInput<Shape extends object> = Shape extends any
 	? HasIndexSignature<Shape> extends true
 		? {
 				[k in keyof Shape]: Input_<Shape[k]>
-		  }
+			}
 		: HasIndexSignature<Shape> extends false
-		  ? GetObjectType._GetNoSignature<
+			? GetObjectType._GetNoSignature<
 					{
 						[k in keyof Shape]: Input_<Shape[k]>
 					},
@@ -83,8 +83,8 @@ export type GetObjectInput<Shape extends object> = Shape extends any
 						[k in keyof Shape]: _GetOptions<Shape[k]>
 					},
 					{ kind: 'in' }
-		    >
-		  : never
+				>
+			: never
 	: never
 
 //
@@ -98,9 +98,9 @@ export type GetObjectType<
 > = HasIndexSignature<Shape> extends true
 	? {
 			[k in keyof Shape]: Type_<Shape[k], PartialOptions>
-	  }
+		}
 	: HasIndexSignature<Shape> extends false
-	  ? GetObjectType._GetNoSignature<
+		? GetObjectType._GetNoSignature<
 				{
 					[k in keyof Shape]: Type_<Shape[k], PartialOptions>
 				},
@@ -110,8 +110,8 @@ export type GetObjectType<
 					[k in keyof Shape]: _GetOptions<Shape[k]>
 				},
 				$Override_<DefaultGetTypeOptions, PartialOptions>
-	    >
-	  : never
+			>
+		: never
 
 export type GetImplicitObjectType<
 	Shape extends object,
@@ -121,8 +121,8 @@ export type GetImplicitObjectType<
 		? GetObjectType<Shape, IO> | undefined
 		: GetObjectType<Shape, IO>
 	: IO['kind'] extends 'out'
-	  ? GetObjectType<Shape, IO>
-	  : never
+		? GetObjectType<Shape, IO>
+		: never
 
 //
 
@@ -144,7 +144,7 @@ export declare namespace GetObjectType {
 			{
 				[k in keyof T as false extends O[k]['isReadonly']
 					? // eslint-disable-next-line etc/no-internal
-					  _IsOptional<O[k], Options, never, k>
+						_IsOptional<O[k], Options, never, k>
 					: never]: T[k]
 			} & {
 				[k in keyof T as false extends O[k]['isReadonly'] ? k : never]?: T[k]
@@ -173,23 +173,23 @@ export declare namespace GetObjectType {
 	> = O['isOptional'] extends true
 		? T
 		: O['isStrictOptional'] extends true
-		  ? T
-		  : O['hasDefault'] extends false
-		    ? F
-		    : IO['kind'] extends 'in'
-		      ? T
-		      : IO['kind'] extends 'out'
-		        ? F
-		        : never
+			? T
+			: O['hasDefault'] extends false
+				? F
+				: IO['kind'] extends 'in'
+					? T
+					: IO['kind'] extends 'out'
+						? F
+						: never
 
 	/** @inline @internal */
 	export type _ShouldForceOptional<T, Shape> = Shape extends $$Schema
 		? false
 		: IsAlmostSame<Shape, {}> extends true
-		  ? false
-		  : object extends T
-		    ? true
-		    : false
+			? false
+			: object extends T
+				? true
+				: false
 
 	/** @inline @internal */
 	export type _Finalize<
@@ -219,10 +219,10 @@ export declare namespace GetObjectType {
 						},
 						exactOptionalPropertyTypes extends true ? never : undefined
 					>
-		  >
+			>
 		: IO['kind'] extends 'out'
-		  ? _<T>
-		  : never
+			? _<T>
+			: never
 
 	/**
 	 * Types should actually be e.g. `object & { a: 1 }`, but it's too verbose

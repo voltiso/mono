@@ -11,7 +11,7 @@ export type GetSchema$ByName<
 > = string extends schemaName
 	? CustomSchema$<O>
 	: [schemaName] extends [keyof Schemas<O>]
-	  ? schemaName extends keyof Schemas<O>
+		? schemaName extends keyof Schemas<O>
 			? Schemas<O>[schemaName]
 			: never
-	  : never
+		: never

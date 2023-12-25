@@ -167,7 +167,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			? {
 					regExp,
 					expectedDescription,
-			  }
+				}
 			: { regExp }
 
 		const regExps = [...this.getRegExps, entry]

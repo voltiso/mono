@@ -165,7 +165,7 @@ export declare namespace CustomObject {
 						}
 					>
 				}
-		  >
+			>
 		: never
 
 	export type WithPartial<This extends $$Object, O> = This extends {
@@ -178,7 +178,7 @@ export declare namespace CustomObject {
 					Output: Partial<This[OPTIONS]['Output']>
 					Input: NonStrictPartial_<This[OPTIONS]['Input']>
 				}
-		  >
+			>
 		: never
 
 	export type WithStrictPartial<This extends $$Object, O> = This extends {
@@ -191,7 +191,7 @@ export declare namespace CustomObject {
 					Output: Partial<This[OPTIONS]['Output']>
 					Input: Partial<This[OPTIONS]['Input']>
 				}
-		  >
+			>
 		: never
 
 	//
@@ -206,7 +206,7 @@ export declare namespace CustomObject {
 					Output: DeepPartial_<This[OPTIONS]['Output']>
 					Input: DeepNonStrictPartial_<This[OPTIONS]['Input']>
 				}
-		  >
+			>
 		: never
 
 	export type WithDeepStrictPartial<This extends $$Object, O> = This extends {
@@ -219,7 +219,7 @@ export declare namespace CustomObject {
 					Output: DeepPartial_<This[OPTIONS]['Output']>
 					Input: DeepPartial_<This[OPTIONS]['Input']>
 				}
-		  >
+			>
 		: never
 
 	//
@@ -244,10 +244,10 @@ export declare namespace CustomObject {
 		export type Rec<Output, Input> = IsCompatible<Output, Input> extends false
 			? CustomSchema<{ Output: Output; Input: Input }>
 			: Output extends InferableObject | InferableTuple
-			  ? {
+				? {
 						[k in keyof Output]: Rec<Output[k], Output[k]>
-			    }
-			  : Schema<Output> | Inferable<Output>
+					}
+				: Schema<Output> | Inferable<Output>
 	}
 
 	// export type GetShape<This extends >
