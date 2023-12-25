@@ -34,7 +34,14 @@ export function useSubjectEffect<T>(
 		mutable.isEffectRunning = true
 
 		try {
-			if (mutable.destructor) mutable.destructor()
+			if (mutable.destructor) {
+				try {
+					mutable.destructor()
+				} finally {
+					mutable.destructor = undefined
+				}
+			}
+
 			mutable.destructor = effect()
 		} finally {
 			mutable.isEffectRunning = false
