@@ -14,6 +14,13 @@ export const reactHooks = defineEslintConfigOverride({
 
 	rules: {
 		'react-hooks/rules-of-hooks': 1,
-		'react-hooks/exhaustive-deps': 1,
+
+		'react-hooks/exhaustive-deps': [
+			'warn',
+			{
+				/** Regex */
+				additionalHooks: 'useSubjectEffect',
+			},
+		],
 	},
 } as const)
