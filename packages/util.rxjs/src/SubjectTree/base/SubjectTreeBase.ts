@@ -26,7 +26,10 @@ export interface CustomRequiredSubjectTreeBase<
 
 	get exists(): TO['IsAncestorOptional'] extends false ? true : boolean
 
+	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
 	get value(): TO['Output']
+
+	/** Returns `undefined` if value is not present */
 	get maybeValue(): TO['Output'] // | undefined
 }
 
@@ -40,7 +43,11 @@ export interface CustomOptionalSubjectTreeBase<
 	delete(): void
 
 	get exists(): boolean
+
+	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
 	get value(): TO['Output']
+
+	/** Returns `undefined` if value is not present */
 	get maybeValue(): TO['Output'] | undefined
 }
 
