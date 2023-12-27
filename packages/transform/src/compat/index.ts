@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './callInfoTransform'
+export * from './compatTransform'
 
 // eslint-disable-next-line import/no-default-export
-export { callInfoTransform as default } from './callInfoTransform'
+export { compatTransform as default } from './compatTransform'

@@ -24,7 +24,7 @@ export interface InlineTransformContext extends TransformContext {
 
 export function inlineTransform(
 	program: ts.Program,
-	pluginOptions: InlineTransformOptions,
+	pluginOptions?: InlineTransformOptions,
 ) {
 	const typeChecker = program.getTypeChecker()
 
@@ -35,7 +35,7 @@ export function inlineTransform(
 				program,
 				sourceFile,
 				typeChecker,
-				options: pluginOptions,
+				options: pluginOptions || {},
 			}
 
 			function visitor(originalNode: ts.Node): ts.Node {
@@ -57,10 +57,10 @@ export function inlineTransform(
 					const symbolNode = ts.isTypeReferenceNode(node)
 						? node.typeName
 						: ts.isIndexedAccessTypeNode(node)
-						  ? getFirstChildOrSelf(node.indexType)
-						  : ts.isTypeQueryNode(node)
-						    ? node.exprName
-						    : node
+							? getFirstChildOrSelf(node.indexType)
+							: ts.isTypeQueryNode(node)
+								? node.exprName
+								: node
 
 					const symbol = typeChecker.getSymbolAtLocation(symbolNode)
 

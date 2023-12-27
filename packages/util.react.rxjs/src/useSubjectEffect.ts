@@ -6,7 +6,7 @@ import { useCurrent } from '@voltiso/util.react'
 import { isObservableLike } from '@voltiso/util.rxjs'
 import type { DependencyList } from 'react'
 import { useEffect, useMemo } from 'react'
-import type { Observable, Subscription } from 'rxjs'
+import { type Observable, skip, type Subscription } from 'rxjs'
 
 /**
  * Similar to `useEffect`, but also subscribes to subjects in the `deps` array.
@@ -60,8 +60,10 @@ export function useSubjectEffect<T>(
 
 			$AssumeType<Observable<T>>(dep)
 
-			// eslint-disable-next-line rxjs/no-ignored-error
-			const subscription = dep.subscribe(() => current.effectWrapper())
+			const subscription = dep
+				.pipe(skip(1))
+				// eslint-disable-next-line rxjs/no-ignored-error
+				.subscribe(() => current.effectWrapper())
 			subscriptions.push(subscription)
 		}
 

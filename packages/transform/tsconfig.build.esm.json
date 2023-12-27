@@ -8,6 +8,9 @@
 
 	"compilerOptions": {
 		"module": "ESNext",
-		"outDir": "dist/esm"
+		"outDir": "dist/esm",
+
+		"declaration": false,
+		"declarationMap": false
 	}
 }

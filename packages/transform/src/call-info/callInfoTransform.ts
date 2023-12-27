@@ -27,7 +27,7 @@ import { getAstPath, logCallInfoNode } from './_'
 // 	shouldStripBecauseOfSymbol?: ts.Symbol | undefined
 // }
 
-export function callInfoTransform(program: ts.Program, pluginOptions: object) {
+export function callInfoTransform(program: ts.Program, pluginOptions?: object) {
 	// printInitInfo(pluginOptions)
 
 	const typeChecker = program.getTypeChecker()
@@ -36,7 +36,7 @@ export function callInfoTransform(program: ts.Program, pluginOptions: object) {
 		(sourceFile: ts.SourceFile) => {
 			const ctx: TransformContext = {
 				program,
-				options: pluginOptions,
+				options: pluginOptions || {},
 				transformationContext,
 				sourceFile,
 				typeChecker,

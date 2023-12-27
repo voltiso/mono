@@ -49,7 +49,7 @@ export function areAllStripAnnotated(
 
 export function stripTransform(
 	program: ts.Program,
-	pluginOptions: StripTransformOptions,
+	pluginOptions?: StripTransformOptions,
 ) {
 	// printInitInfo(pluginOptions)
 
@@ -64,7 +64,7 @@ export function stripTransform(
 
 			const ctx: StripTransformContext = {
 				program,
-				options: pluginOptions,
+				options: pluginOptions || {},
 				transformationContext,
 				sourceFile,
 				typeChecker,
