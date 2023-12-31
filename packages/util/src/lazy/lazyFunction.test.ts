@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '_'
+import { $fastAssert } from '_'
 
 import { areArrowFunctionsTranspiled } from '~/misc'
 
@@ -145,7 +145,7 @@ describe('lazyFunction', () => {
 		)
 
 		const expected = Object.getOwnPropertyDescriptor(a, 'arguments')
-		$assert(expected)
+		$fastAssert(expected)
 		delete expected.configurable
 
 		expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toMatchObject(

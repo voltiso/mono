@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
-import { $assert } from '_/$strip/$assert'
+import { $fastAssert } from '_/$strip/$assert'
 
 import { getProxyHandlers } from './_/getProxyHandlers'
 
@@ -26,7 +26,7 @@ export function lazyObject<T extends object>(getValue: () => T): T {
 	function load() {
 		if (state.value === undefined) {
 			state.value = getValue()
-			$assert(state.value !== undefined, 'lazyObject: got undefined')
+			$fastAssert(state.value !== undefined, 'lazyObject: got undefined')
 			// assign(obj, value)
 		}
 	}

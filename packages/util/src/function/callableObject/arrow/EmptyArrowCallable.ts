@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, $expect } from '_'
+import { $fastAssert, $expect } from '_'
 
 import type { clone } from '~/clone'
 import type { ArrowCallable, Callable } from '~/function'
@@ -41,7 +41,7 @@ export function EmptyArrowCallable<
 
 	$expect(Object.getOwnPropertyDescriptors(callableObject)).toStrictEqual({})
 
-	$assert(
+	$fastAssert(
 		Object.getOwnPropertyDescriptor(callableObject, 'prototype')
 			?.configurable !== false,
 		"do not transpile to `function(){}` - don't want to include non-configurable `prototype` property",

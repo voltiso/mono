@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '_'
+import { $fastAssert } from '_'
 
 /**
  * Hack to mitigate problems with cyclic dependencies and ES6 class inheritance.
@@ -33,7 +33,7 @@ export function lazyConstructor<
 	function load(c: Class | undefined): asserts c is Class {
 		if (!c) {
 			cls = getClass()
-			$assert(cls, 'lazyConstructor - got nullish constructor provided')
+			$fastAssert(cls, 'lazyConstructor - got nullish constructor provided')
 			Object.setPrototypeOf(proxyProto, cls.prototype as never)
 			Object.setPrototypeOf(Ctor, cls)
 		}

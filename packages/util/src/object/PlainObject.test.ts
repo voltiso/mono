@@ -3,7 +3,7 @@
 
 import { $Assert } from '_'
 
-import { assert } from '~/assert'
+import { fastAssert } from '~/assert'
 
 import type { PlainObject } from './PlainObject'
 import { isPlainObject } from './PlainObject'
@@ -18,7 +18,7 @@ describe('PlainObject', () => {
 
 		const obj = { a: 1 }
 
-		assert(isPlainObject(obj))
+		fastAssert(isPlainObject(obj))
 
 		$Assert.is<typeof obj, PlainObject>()
 	})

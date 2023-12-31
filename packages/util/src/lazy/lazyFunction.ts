@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable unicorn/consistent-function-scoping */
 
-import { $assert } from '_'
+import { $fastAssert } from '_'
 
 import { getProxyHandlers } from './_/getProxyHandlers'
 
@@ -31,7 +31,7 @@ export function lazyFunction<T extends (...args: any) => any>(
 	function load() {
 		if (state.value === undefined) {
 			state.value = getValue()
-			$assert(state.value !== undefined, 'lazyFunction: got undefined')
+			$fastAssert(state.value !== undefined, 'lazyFunction: got undefined')
 			// assign(obj, value)
 		}
 	}

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '_'
+import { $fastAssert } from '_'
 
 import { basename } from '~/path'
 
@@ -32,8 +32,8 @@ export function tryParseCodeLocationWithLineAndColumn(
 	const { path, line, column } = regex.exec(locationStr)?.groups || {}
 	if (!path) return undefined
 
-	$assert.defined(line)
-	$assert.defined(column)
+	$fastAssert.defined(line)
+	$fastAssert.defined(column)
 
 	return {
 		path,
@@ -49,7 +49,7 @@ export function tryParseCodeLocationWithLine(
 	const { path, line } = regex.exec(locationStr)?.groups || {}
 	if (!path) return undefined
 
-	$assert.defined(line)
+	$fastAssert.defined(line)
 
 	return {
 		path,

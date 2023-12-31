@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, $expect } from '_'
+import { $fastAssert, $expect } from '_'
 
 import type { ArrayPrefix } from '~/array/ArrayPrefix'
 import type { AlsoAccept } from '~/type'
@@ -74,7 +74,7 @@ export class _BindableFunction<
 			length: { value: func.length - boundArguments.length },
 		})
 
-		$assert(bindableFunctionCall?.name === name)
+		$fastAssert(bindableFunctionCall?.name === name)
 
 		Object.setPrototypeOf(bindableFunctionCall, this)
 
