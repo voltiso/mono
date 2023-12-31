@@ -11,7 +11,7 @@ export function useReactiveImperativeHandle<T, R extends T>(
 	init: () => R,
 	deps?: DependencyList,
 ): void {
-	const targetDeps = useObservables(deps ?? []) // force re-render with subscriptions
+	const targetDeps = useObservables(...(deps || [])) // force re-render with subscriptions
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	return useImperativeHandle<T, R>(ref, init, deps ? targetDeps : undefined)
 }

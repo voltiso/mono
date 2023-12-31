@@ -11,6 +11,6 @@ export function useReactiveMemo<T>(
 	factory: (addDestructor?: (destructor: Destructor) => void) => T,
 	deps: DependencyList,
 ): T {
-	const targetDeps = useObservables(deps) // force re-render with subscriptions
+	const targetDeps = useObservables(...deps) // force re-render with subscriptions
 	return useMemoCleanup(factory, targetDeps)
 }

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { nullish, StaticError, Throw } from '@voltiso/util'
 import { useCurrent, useImmediateEffect } from '@voltiso/util.react'
 import { isObservableLike } from '@voltiso/util.rxjs'
 import { useState } from 'react'
@@ -22,9 +23,20 @@ export type GetObservedValues<Ts extends readonly unknown[]> =
 
 // type A = GetObservedValues<[Observable<string>, Observable<number>, 123]>
 
+/** Please spread your array! */
+export function useObservables(
+	_doNotCallWithArray: readonly unknown[] | nullish,
+): Throw<'useObservables(): Please spread your array!'>
+
 export function useObservables<Observables extends readonly unknown[]>(
 	...observables$: Observables
-): GetObservedValues<Observables> {
+): GetObservedValues<Observables>
+
+//
+
+export function useObservables<Observables extends readonly unknown[]>(
+	...observables$: Observables
+): GetObservedValues<Observables> | StaticError {
 	const [values, setValues] = useState<GetObservedValues<Observables>>(
 		[] as never,
 	)
