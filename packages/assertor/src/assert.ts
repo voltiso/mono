@@ -222,7 +222,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
 			not(value: unknown, __callInfo?: CallInfo | undefined) {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-				const assertor = new Assertor(`${name}.not`, s.falsy) as any
+				const assertor = _getAssertor(`${name}.not`, s.falsy) as any
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 				assertor(value, __callInfo)
 			},
