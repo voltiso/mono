@@ -228,18 +228,18 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			},
 		},
 
-		call: (...args: any) => {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const [schema, value, ...rest]: [Schema, unknown, ...unknown[]] =
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				isSchema(args[0])
-					? args
-					: // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-						([s.truthy, ...args] as never[])
+		call: (...args: readonly unknown[]) => {
+			if (args.length === 1 && !isSchema(args[0])) {
+				const assertor = _getAssertor(name, s.truthy)
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+				;(assertor as any)(args[0])
+			}
+
+			const [schema, value, ...rest]: readonly [Schema, unknown, ...unknown[]] =
+				isSchema(args[0]) ? (args as never) : ([s.truthy, ...args] as never)
 
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			const assertor = new Assertor(name, schema, {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				argumentsPrefix: isSchema(args[0]) ? [args[0]] : [],
 			}) as any
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
