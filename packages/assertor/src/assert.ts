@@ -17,6 +17,7 @@ import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept, AtLeast1, Constructor, Falsy } from '@voltiso/util'
 import { ProtoCallable } from '@voltiso/util'
 
+import type { AssertorOptions } from './Assertor'
 import { Assertor } from './Assertor'
 
 export interface AssertFunction {
@@ -85,6 +86,21 @@ export interface AssertFunction {
 	instance<C extends Constructor>(constructor: C): Assertor<Instance<C>>
 }
 
+const cache = new Map<string, Assertor<$$Schema>>()
+
+/** Cache by name */
+function _getAssertor<TSchema extends Schema, Options extends AssertorOptions>(
+	name: string,
+	schema: TSchema,
+	options?: Options,
+) {
+	if (!cache.has(name)) {
+		cache.set(name, new Assertor(name, schema, options))
+	}
+
+	return cache.get(name) as Assertor<TSchema>
+}
+
 const _getAssert: (name: string) => AssertFunction = name =>
 	ProtoCallable({
 		prototype: {
@@ -96,81 +112,81 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			},
 
 			get undefined() {
-				return new Assertor(`${name}.undefined`, s.undefined) as never
+				return _getAssertor(`${name}.undefined`, s.undefined) as never
 			},
 
 			get null() {
-				return new Assertor(`${name}.null`, s.null) as never
+				return _getAssertor(`${name}.null`, s.null) as never
 			},
 
 			get nullish() {
-				return new Assertor(`${name}.nullish`, s.nullish) as never
+				return _getAssertor(`${name}.nullish`, s.nullish) as never
 			},
 
 			get defined() {
-				return new Assertor(
+				return _getAssertor(
 					`${name}.defined`,
 					s.unknown.check(x => x !== undefined),
 				) as never
 			},
 
 			get propertyKey() {
-				return new Assertor(`${name}.safeKey`, s.propertyKey)
+				return _getAssertor(`${name}.propertyKey`, s.propertyKey)
 			},
 
 			//
 
 			get string() {
-				return new Assertor(`${name}.string`, s.string)
+				return _getAssertor(`${name}.string`, s.string)
 			},
 
 			regex(regExp: RegExp) {
-				return new Assertor(`${name}.regex`, s.regex(regExp)) as never
+				return _getAssertor(`${name}.regex`, s.regex(regExp)) as never
 			},
 
 			//
 
 			get number() {
-				return new Assertor(`${name}.number`, s.number)
+				return _getAssertor(`${name}.number`, s.number)
 			},
 
 			get array() {
-				return new Assertor(`${name}.array`, s.array)
+				return _getAssertor(`${name}.array`, s.array)
 			},
 
 			get integer() {
-				return new Assertor(`${name}.integer`, s.integer)
+				return _getAssertor(`${name}.integer`, s.integer)
 			},
 
 			//
 
 			get bigint() {
-				return new Assertor(`${name}.bigint`, s.bigint)
+				return _getAssertor(`${name}.bigint`, s.bigint)
 			},
 
 			//
 
 			get boolean() {
-				return new Assertor(`${name}.boolean`, s.boolean)
+				return _getAssertor(`${name}.boolean`, s.boolean)
 			},
 
 			get true() {
-				return new Assertor(`${name}.true`, s.literal(true))
+				return _getAssertor(`${name}.true`, s.literal(true))
 			},
 
 			get false() {
-				return new Assertor(`${name}.false`, s.literal(false))
+				return _getAssertor(`${name}.false`, s.literal(false))
 			},
 
 			get truthy() {
-				return new Assertor(
+				return _getAssertor(
 					`${name}.true`,
 					s.unknown.check(x => !!x),
 				)
 			},
 
 			get falsy() {
-				return new Assertor(
+				return _getAssertor(
 					`${name}.false`,
 					s.unknown.check(x => !x),
 				)
@@ -179,17 +195,17 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			//
 
 			get object() {
-				return new Assertor(`${name}.object`, s.object)
+				return _getAssertor(`${name}.object`, s.object)
 			},
 
 			get plainObject() {
-				return new Assertor(`${name}.plainObject`, s.plainObject)
+				return _getAssertor(`${name}.plainObject`, s.plainObject)
 			},
 
 			//
 
 			get symbol() {
-				return new Assertor(`${name}.symbol`, s.symbol)
+				return _getAssertor(`${name}.symbol`, s.symbol)
 			},
 
 			//

@@ -18,24 +18,36 @@ export class _Assertor {
 	private readonly _name: string
 	private readonly _schema: s.Schema
 	private readonly _options: AssertorOptions | undefined
+	private readonly _cache = new Map<string, unknown>()
 
 	constructor(name: string, schema: s.Schema, options?: AssertorOptions) {
 		this._name = name
 		this._schema = schema
 		this._options = options
 
+		const target = BoundCallable(this)
+
 		// eslint-disable-next-line no-constructor-return
-		return new Proxy(BoundCallable(this), {
+		return new Proxy(target, {
 			get: (target, property, receiver) => {
 				if (property in target)
 					return Reflect.get(target, property, receiver) as never
 				else {
 					assert(this._schema)
-					// eslint-disable-next-line etc/no-internal
-					return new _Assertor(
-						`${this._name}.${property.toString()}`,
-						this._schema[property as never],
-					) as never
+
+					const propertyName = property.toString()
+
+					if (!this._cache.get(propertyName)) {
+						const childName = `${this._name}.${propertyName}`
+						const childSchema = this._schema[property as never]
+
+						// eslint-disable-next-line etc/no-internal
+						const child = new _Assertor(childName, childSchema)
+
+						this._cache.set(propertyName, child)
+					}
+
+					return this._cache.get(propertyName)
 				}
 			},
 		})
@@ -53,8 +65,8 @@ export class _Assertor {
 			rest.length >= 2
 				? rest
 				: typeof rest[0] === 'string'
-				? [rest[0], undefined]
-				: [undefined, rest[0]]
+					? [rest[0], undefined]
+					: [undefined, rest[0]]
 
 		try {
 			this._schema.assertValid(value)
@@ -79,8 +91,8 @@ export type _AssertorMapped<S extends Partial<s.Schema>, Exclude> = {
 			? (...args: Args) => Assertor<R, Exclude>
 			: never
 		: S[k] extends s.$$Schema
-		? Assertor<S[k], Exclude>
-		: never
+			? Assertor<S[k], Exclude>
+			: never
 }
 
 export type Assertor<S extends s.$$Schema, Exclude = never> = {
