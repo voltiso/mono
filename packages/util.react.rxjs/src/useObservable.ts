@@ -1,8 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { useImmediateEffect } from '@voltiso/util.react'
 import { isObservableLike } from '@voltiso/util.rxjs'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { Observable } from 'rxjs'
 
 import { getObservableValue } from './_/getObservableValue'
@@ -36,7 +37,7 @@ export function useObservable<T>(
 		? getObservableValue(observable$, value)
 		: observable$
 
-	useEffect(() => {
+	useImmediateEffect(() => {
 		if (!isObservableLike(observable$)) return undefined
 
 		// eslint-disable-next-line rxjs/no-ignored-error

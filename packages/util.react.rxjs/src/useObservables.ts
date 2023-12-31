@@ -1,9 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { useCurrent } from '@voltiso/util.react'
+import { useCurrent, useImmediateEffect } from '@voltiso/util.react'
 import { isObservableLike } from '@voltiso/util.rxjs'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { Observable, Subscription } from 'rxjs'
 
 import { getObservableValue } from './_/getObservableValue'
@@ -34,7 +34,7 @@ export function useObservables<Observables extends readonly unknown[]>(
 		isObservableLike(x) ? getObservableValue(x, values[index]) : x,
 	) as GetObservedValues<Observables>
 
-	useEffect(() => {
+	useImmediateEffect(() => {
 		const subscriptions: Subscription[] = observables$
 			.map((observable$, index) => {
 				if (!isObservableLike(observable$)) return null
@@ -55,14 +55,11 @@ export function useObservables<Observables extends readonly unknown[]>(
 			})
 			.filter((x): x is Subscription => !!x)
 
-		// value might have changed in the meantime ???
-
 		return () => {
 			for (const subscription of subscriptions) {
 				subscription.unsubscribe()
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, observables$)
 
 	return results
