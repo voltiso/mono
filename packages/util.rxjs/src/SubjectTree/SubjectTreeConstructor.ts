@@ -10,12 +10,10 @@ import type {
 	PARTIAL_OPTIONS,
 } from '@voltiso/util'
 
-import type {
-	GetSubjectTree,
-	SubjectTreeOptions,
-	SubjectTreeTypeOptions,
-} from '~'
-import { _CustomSubjectTree } from '~'
+import { _CustomSubjectTree } from './_CustomSubjectTree'
+import type { SubjectTreeTypeOptions } from './options/type-options'
+import type { GetSubjectTree, RequiredSubjectTree } from './SubjectTree'
+import type { SubjectTreeOptions } from './SubjectTreeOptions'
 
 //
 
@@ -58,12 +56,28 @@ export interface SubjectTreeConstructor<
 
 	new <InitialValue extends this[OPTIONS]['Input']>(
 		initialValue: InitialValue,
-	): GetSubjectTree<
-		IsCompatible<InitialValue, this[OPTIONS]['Input']> extends true // ! ?
-			? this[OPTIONS]
-			: Override<this[OPTIONS], { Output: InitialValue; Input: InitialValue }>
-	>
+	): unknown extends this[OPTIONS]['Input'] // TODO: hacky...
+		? RequiredSubjectTree<InitialValue>
+		: GetSubjectTree<
+				IsCompatible<InitialValue, this[OPTIONS]['Input']> extends true // ! ?
+					? this[OPTIONS]
+					: Override<
+							this[OPTIONS],
+							{ Output: InitialValue; Input: InitialValue }
+						>
+			>
+
+	// RequiredSubjectTree<InitialValue>
+
+	// GetSubjectTree<
+	// 	Override<this[OPTIONS], { Output: InitialValue; Input: InitialValue }>
+	// >
 }
+
+// function test<T>(initialValue: T): RequiredSubjectTree<T> {
+// 	const a = new SubjectTree(initialValue)
+// 	return a
+// }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class SubjectTreeConstructor<

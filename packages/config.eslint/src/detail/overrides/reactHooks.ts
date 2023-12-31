@@ -5,6 +5,12 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
 
+const additional2ArgumentHooksWithDeps = [
+	'useReactiveEffect',
+	'useReactiveMemo',
+	'useReactiveMemo$',
+] as const
+
 export const reactHooks = defineEslintConfigOverride({
 	files: codeFiles,
 
@@ -19,7 +25,7 @@ export const reactHooks = defineEslintConfigOverride({
 			'warn',
 			{
 				/** Regex */
-				additionalHooks: 'useSubjectEffect',
+				additionalHooks: `(${additional2ArgumentHooksWithDeps.join('|')})`,
 			},
 		],
 	},

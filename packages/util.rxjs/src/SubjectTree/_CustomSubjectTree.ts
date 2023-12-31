@@ -245,7 +245,8 @@ export class _CustomSubjectTree<
 	}
 
 	set(newValue: TO['Input']): void {
-		if (newValue === this._value) return // no change
+		// eslint-disable-next-line es-x/no-object-is
+		if (Object.is(newValue, this._value)) return // no change
 
 		// console.log('this._schema', this._schema)
 
@@ -261,7 +262,8 @@ export class _CustomSubjectTree<
 
 	setUnchecked(newValue: TO['Output']): void {
 		// this._exists = true
-		if (newValue === this._value) return // no change
+		// eslint-disable-next-line es-x/no-object-is
+		if (Object.is(newValue, this._value)) return // no change
 
 		// eslint-disable-next-line etc/no-internal
 		this._set(newValue, true)
@@ -287,7 +289,8 @@ export class _CustomSubjectTree<
 
 	/** @internal */
 	_set(newValue: TO['Output'], exists: boolean): void {
-		if (newValue === this._value && this._exists === exists) return // no change (prune)
+		// eslint-disable-next-line es-x/no-object-is
+		if (Object.is(newValue, this._value) && this._exists === exists) return // no change (prune)
 
 		this._exists = exists
 

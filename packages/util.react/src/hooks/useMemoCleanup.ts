@@ -1,7 +1,9 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
+
+import { useOnUnmount } from './useOnUnmount'
 
 export type Destructor = () => void
 
@@ -29,21 +31,46 @@ export function useMemoCleanup<T>(
 ): T {
 	const destructors = useMemo(() => [] as Destructor[], [])
 
+	const cleanup = () => {
+		let firstError: unknown
+		let haveError = false
+
+		destructors.reverse()
+
+		for (const destructor of destructors) {
+			try {
+				destructor()
+			} catch (error) {
+				if (haveError) {
+					// eslint-disable-next-line no-console
+					console.error(
+						'useMemoCleanup(): Multiple errors in destructors. Next error ignored:',
+						error,
+					)
+				} else {
+					firstError = error
+					haveError = true
+				}
+			}
+		}
+
+		destructors.length = 0
+
+		if (haveError) {
+			throw firstError
+		}
+	}
+
 	const value = useMemo(() => {
+		cleanup()
+
 		return factory((destructor: Destructor) => {
 			destructors.push(destructor)
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, deps)
 
-	useEffect(() => {
-		return () => {
-			for (const destructor of destructors) {
-				destructor()
-			}
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	useOnUnmount(cleanup)
 
 	return value
 }
