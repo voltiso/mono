@@ -10,7 +10,11 @@ import type {
 	Type_,
 	ValidationIssue,
 } from '@voltiso/schemar'
-import type { INestedSubject, NestedSubject } from '@voltiso/util.rxjs'
+import type {
+	ISubjectTree,
+	RequiredSubjectTree,
+	SubjectTree,
+} from '@voltiso/util.rxjs'
 import type { DOMAttributes } from 'react'
 
 import type { UseFormValidators } from './Validators'
@@ -19,7 +23,7 @@ export namespace UseForm {
 	export type Options<S extends $$SchemableObject> = {
 		schemable: S
 
-		data$?: INestedSubject | undefined
+		data$?: ISubjectTree | undefined
 		// | NestedSubject<Type_<S>>
 		// | NestedSubjectWithSchema<S>
 		// | AlsoAccept<INestedSubject | INestedSubjectWithSchema>
@@ -41,7 +45,7 @@ export namespace UseForm {
 
 		issuesByPath: Map<string, ValidationIssue[]>
 
-		result$: NestedSubject<UseForm.RawResult<S>>
+		result$: RequiredSubjectTree<UseForm.RawResult<S>>
 	}
 
 	export type ResultFields<S extends $$Schemable> = S extends SchemableWithShape
@@ -49,7 +53,7 @@ export namespace UseForm {
 				[k in keyof GetShape<S>]: ResultFields<
 					GetShape<S>[k] extends $$Schemable ? GetShape<S>[k] : never
 				>
-		  }
+			}
 		: {
 				props: {
 					onChange: Exclude<
@@ -62,7 +66,7 @@ export namespace UseForm {
 				}
 
 				issues: ValidationIssue[]
-		  }
+			}
 
 	export type RawResult<S extends $$SchemableObject> = {
 		props: {
@@ -73,7 +77,7 @@ export namespace UseForm {
 		fields: ResultFields<S>
 	}
 
-	export type Result<S extends $$SchemableObject> = NestedSubject<RawResult<S>>
+	export type Result<S extends $$SchemableObject> = SubjectTree<RawResult<S>>
 
 	// export type Result<S extends $$SchemableObject> = ReadonlyNestedSubject<
 	// 	RawResult<S>

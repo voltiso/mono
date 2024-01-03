@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isCallable } from '@voltiso/util'
-import { useRef } from 'react'
+import { useMemo } from 'react'
 
 /**
  * - Equivalent to `useRef(() => initialValue).current`
@@ -39,7 +39,21 @@ export function useInitial<X>(initialValue: X): X
  */
 export function useInitial<X>(x: X | (() => X)): X
 
+//
+
 export function useInitial<X>(x: X | (() => X)): X {
-	const initialValue = isCallable(x) ? x() : x
-	return useRef(initialValue).current
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	return useMemo(() => (isCallable(x) ? x() : x), [])
+
+	// if (isCallable(x)) {
+	// 	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// 	return useMemo<X>(x, [])
+	// }
+	// // eslint-disable-next-line react-hooks/rules-of-hooks
+	// return useRef(x).current
+
+	//
+
+	// const initialValue = isCallable(x) ? x() : x
+	// return useRef(initialValue).current
 }

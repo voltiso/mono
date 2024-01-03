@@ -9,7 +9,7 @@ import type { Subject } from 'rxjs'
 
 import type {
 	CustomSubjectTreeBase,
-	IRequiredOrOptionalSubjectTreeBase,
+	ISubjectTreeBase,
 	SubjectTreeOptions,
 	SubjectTreeTypeOptions,
 	SubjectTreeTypeOptionsFromOptions,
@@ -44,9 +44,22 @@ export type CustomSubjectTree_<TO extends SubjectTreeTypeOptions> =
 		> &
 		_SubjectTreeRec<TO>
 
-export interface ISubjectTree
-	extends IRequiredOrOptionalSubjectTreeBase,
-		ISubject {}
+// export type CustomSubjectTree$<TO extends Partial<SubjectTreeTypeOptions>> =
+// 	CustomSubjectTree$_<Override<SubjectTreeTypeOptions.Default, TO>>
+
+// export type CustomSubjectTree$_<TO extends SubjectTreeTypeOptions> =
+// 	CustomSubjectTreeBase$<TO> &
+// 		Subject<
+// 			| TO['Output']
+// 			| (true extends TO['IsAncestorOptional']
+// 					? undefined
+// 					: true extends TO['IsOptional']
+// 						? undefined
+// 						: never)
+// 		> &
+// 		_SubjectTreeRec<TO>
+
+export interface ISubjectTree extends ISubjectTreeBase, ISubject {}
 
 $dev(<TO extends Partial<SubjectTreeTypeOptions>>() => {
 	$Assert.is<CustomSubjectTree<TO>, ISubjectTree>()
@@ -67,9 +80,9 @@ export type RequiredSubjectTree<T = unknown> = CustomSubjectTree<{
 /** @internal */
 export type _SubjectTreeRec<TO extends SubjectTreeTypeOptions> =
 	_SubjectTreeFields<TO>
-	// & {
-	// 	_: _SubjectTreeFields<TO>
-	// }
+// & {
+// 	_: _SubjectTreeFields<TO>
+// }
 
 /** @internal */
 export type _SubjectTreeFields<TO extends SubjectTreeTypeOptions> = {

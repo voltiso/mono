@@ -23,7 +23,7 @@ import { useReactiveOnlyEffect } from './useReactiveEffect'
  *   updated in `useEffect()`
  */
 export function useReactiveMemo$<T>(
-	factory: (addDestructor?: (destructor: Destructor) => void) => T,
+	factory: (addDestructor: (destructor: Destructor) => void) => T,
 	deps: DependencyList,
 ): RequiredSubjectTree<T> {
 	const mutable = useMemo(

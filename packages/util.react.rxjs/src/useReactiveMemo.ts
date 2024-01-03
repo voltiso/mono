@@ -8,7 +8,7 @@ import { useObservables } from './useObservables'
 
 /** Re-render whenever deps change (observes Observables from the deps list too) */
 export function useReactiveMemo<T>(
-	factory: (addDestructor?: (destructor: Destructor) => void) => T,
+	factory: (addDestructor: (destructor: Destructor) => void) => T,
 	deps: DependencyList,
 ): T {
 	const targetDeps = useObservables(...deps) // force re-render with subscriptions

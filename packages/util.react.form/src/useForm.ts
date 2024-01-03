@@ -14,7 +14,7 @@ import * as s from '@voltiso/schemar'
 import type { PropertyPath } from '@voltiso/util'
 import { deepMapValues, get, tryGet } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
-import { NestedSubject } from '@voltiso/util.rxjs'
+import { SubjectTree } from '@voltiso/util.rxjs'
 import type { ChangeEvent, FormEvent } from 'react'
 import { useMemo } from 'react'
 
@@ -37,8 +37,8 @@ function _initializeResult<S extends $$SchemableObject>(
 ): UseForm.RawResult<S> {
 	const deepShape = s.infer(options.schemable as SchemableObject).getDeepShape
 
-	const data$: NestedSubject<Type_<S>> = (options.data$ ||
-		new NestedSubject<Type_<S>>({} as never)) as never
+	const data$: SubjectTree<Type_<S>> = (options.data$ ||
+		new SubjectTree<Type_<S>>({} as never)) as never
 
 	const fields = deepMapValues(
 		deepShape,
@@ -47,7 +47,7 @@ function _initializeResult<S extends $$SchemableObject>(
 				data$,
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 				...(path as any),
-			) as unknown as NestedSubject<string>
+			) as unknown as SubjectTree<string>
 
 			const deepShapeEntry = s.schema(
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -84,7 +84,7 @@ function _initializeResult<S extends $$SchemableObject>(
 						const valueProp$ = get(
 							mutable.result$.fields,
 							...valuePropPath,
-						) as NestedSubject<unknown>
+						) as SubjectTree<unknown>
 
 						valueProp$.set(value)
 
@@ -96,7 +96,7 @@ function _initializeResult<S extends $$SchemableObject>(
 						const issues$ = get(
 							mutable.result$.fields,
 							...issuesPath,
-						) as unknown as NestedSubject<ValidationIssue[]>
+						) as unknown as SubjectTree<ValidationIssue[]>
 
 						issues$.set(validationResult.issues)
 					},
@@ -157,11 +157,11 @@ export const useForm = <S extends $$SchemableObject>(
 		() => {
 			const initialValue = _initializeResult<S>(options, mutable)
 
-			const nestedSubject$ = new NestedSubject<UseForm.RawResult<S>>(
+			const nestedSubject$ = new SubjectTree<UseForm.RawResult<S>>(
 				initialValue,
 			)
 
-			// const subs = (nestedSubject.fields as NestedSubject<unknown>).subscribe(
+			// const subs = (nestedSubject.fields as SubjectTree<unknown>).subscribe(
 			// 	value => {
 			// 		console.log('!! INITIAL', value)
 			// 	},

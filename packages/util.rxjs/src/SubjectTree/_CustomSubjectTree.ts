@@ -308,4 +308,12 @@ export class _CustomSubjectTree<
 		this._value = newValue as never
 		this._subject$.next(this._value)
 	}
+
+	get asRequired() {
+		return this
+	}
+
+	get Final() {
+		return this
+	}
 }

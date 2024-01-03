@@ -42,6 +42,13 @@ describe('SubjectTree', () => {
 			}>,
 			SubjectTree<{ a: 1 }>
 		>()
+
+		// $Assert<
+		// 	IsIdentical<
+		// 		SubjectTree<{ a: 1 }>['asRequired$'],
+		// 		RequiredSubjectTree<{ a: 1 }>
+		// 	>
+		// >()
 	})
 
 	it('delete root', () => {

@@ -5,7 +5,7 @@ import type * as s from '@voltiso/schemar'
 import { isValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import type { AlsoAccept } from '@voltiso/util'
-import { assert, BoundCallable, CALL } from '@voltiso/util'
+import { BoundCallable, CALL, fastAssert } from '@voltiso/util'
 
 import { AssertorError } from './AssertorError'
 
@@ -33,7 +33,7 @@ export class _Assertor {
 				if (property in target)
 					return Reflect.get(target, property, receiver) as never
 				else {
-					assert(this._schema)
+					fastAssert(this._schema)
 
 					const propertyName = property.toString()
 
