@@ -1,34 +1,32 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { _, PatchFor } from '@voltiso/util'
+import type { PatchFor } from '@voltiso/util'
 
-import type {
-	IOptionalSubjectTreeBase,
-	IRequiredSubjectTreeBase,
-	SubjectTreeTypeOptions,
-} from '~'
+import type { ISubjectTreeBase, SubjectTreeTypeOptions } from '~'
 
 //
 
-export interface CustomRequiredSubjectTreeBase<
-	TO extends Omit<SubjectTreeTypeOptions, 'IsOptional'>,
-> extends IRequiredSubjectTreeBase {
-	/** Replace current value */
-	set(x: TO['Input']): void
+// export interface CustomRequiredSubjectTreeBase<
+// 	TO extends Omit<SubjectTreeTypeOptions, 'IsOptional'>,
+// > extends IRequiredSubjectTreeBase {
+// 	/** Replace current value */
+// 	set(x: TO['Input']): void
 
-	/** Patch current value (using `@voltiso/patcher`) */
-	patch(x: PatchFor<TO['Input']>): void
-	// delete(): void // ! only enabled in optional `SubjectTree`
+// 	/** Patch current value (using `@voltiso/patcher`) */
+// 	patch(x: PatchFor<TO['Input']>): void
 
-	get exists(): TO['IsAncestorOptional'] extends false ? true : boolean
+// 	delete?: never // ! only enabled in optional `SubjectTree`
+// 	// delete(): void // ! only enabled in optional `SubjectTree`
 
-	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
-	get value(): TO['Output']
+// 	get exists(): TO['IsAncestorOptional'] extends false ? true : boolean
 
-	/** Returns `undefined` if value is not present */
-	get maybeValue(): TO['Output'] // | undefined
-}
+// 	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
+// 	get value(): TO['Output']
+
+// 	/** Returns `undefined` if value is not present */
+// 	get maybeValue(): TO['Output'] // | undefined
+// }
 
 // export interface CustomRequiredSubjectTreeBase$<
 // 	TO extends Omit<SubjectTreeTypeOptions, 'IsOptional'>,
@@ -38,21 +36,25 @@ export interface CustomRequiredSubjectTreeBase<
 
 //
 
-export interface CustomOptionalSubjectTreeBase<
-	TO extends Omit<SubjectTreeTypeOptions, 'IsOptional'>,
-> extends IOptionalSubjectTreeBase {
-	set(x: TO['Input']): void
-	patch(x: PatchFor<TO['Input']>): void
-	delete(): void
+// export interface CustomOptionalSubjectTreeBase<
+// 	TO extends Omit<SubjectTreeTypeOptions, 'IsOptional'>,
+// > extends IOptionalSubjectTreeBase {
+// 	/** Replace current value */
+// 	set(x: TO['Input']): void
 
-	get exists(): boolean
+// 	/** Patch current value (using `@voltiso/patcher`) */
+// 	patch(x: PatchFor<TO['Input']>): void
 
-	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
-	get value(): TO['Output']
+// 	delete(): void
 
-	/** Returns `undefined` if value is not present */
-	get maybeValue(): TO['Output'] | undefined
-}
+// 	get exists(): boolean
+
+// 	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
+// 	get value(): TO['Output']
+
+// 	/** Returns `undefined` if value is not present */
+// 	get maybeValue(): TO['Output'] | undefined
+// }
 
 // export interface CustomOptionalSubjectTreeBase$<
 // 	TO extends Omit<SubjectTreeTypeOptions, 'IsOptional'>,
@@ -63,20 +65,64 @@ export interface CustomOptionalSubjectTreeBase<
 
 //
 
-// type A = CustomSubjectTreeBase<{
+// type TO = {
 // 	Output: number
 // 	Input: number
 // 	IsAncestorOptional: boolean
 // 	IsOptional: boolean
-// }>
-// type B = A['maybeValue']
+// }
 
-export type CustomSubjectTreeBase<TO extends SubjectTreeTypeOptions> = _<
-	true extends TO['IsOptional']
-		? CustomOptionalSubjectTreeBase<TO>
-		: CustomRequiredSubjectTreeBase<TO>
-			
->
+// type A = CustomSubjectTreeBase<TO>
+// type B = A['delete']
+
+// type C = SubjectTree<number>['maybeValue']
+
+// type X = CustomOptionalSubjectTreeBase<TO>['delete']
+// type Y = CustomRequiredSubjectTreeBase<TO>['delete']
+
+export interface CustomSubjectTreeBase<TO extends SubjectTreeTypeOptions>
+	extends ISubjectTreeBase {
+	/** Replace current value */
+	set(x: TO['Input']): void
+
+	/** Patch current value (using `@voltiso/patcher`) */
+	patch(x: PatchFor<TO['Input']>): void
+
+	delete:
+		| (true extends TO['IsOptional'] ? () => void : never)
+		| (false extends TO['IsOptional'] ? undefined : never) // ! only enabled in optional `SubjectTree`
+	// delete?: never // ! only enabled in optional `SubjectTree`
+	// delete(): void // ! only enabled in optional `SubjectTree`
+
+	get exists(): true extends TO['IsOptional']
+		? boolean
+		: true extends TO['IsAncestorOptional']
+			? boolean
+			: true
+
+	/** ⚠️ Throws if value is not present (also see {@link maybeValue}) */
+	get value(): TO['Output']
+
+	/** Returns `undefined` if value is not present */
+	get maybeValue():
+		| TO['Output']
+		| (true extends TO['IsOptional']
+				? undefined
+				: true extends TO['IsAncestorOptional']
+					? undefined
+					: never)
+}
+
+// export type CustomSubjectTreeBase<TO extends SubjectTreeTypeOptions> =
+// 	true extends TO['IsOptional']
+// 		? CustomOptionalSubjectTreeBase<TO>
+// 		: false extends TO['IsOptional']
+// 			? CustomRequiredSubjectTreeBase<TO>
+// 			: never
+
+// true extends TO['IsOptional']
+// 	? CustomOptionalSubjectTreeBase<TO>
+// 	: CustomRequiredSubjectTreeBase<TO>
 
 // export type CustomSubjectTreeBase$<TO extends SubjectTreeTypeOptions> = _<
 // 	TO['IsOptional'] extends true

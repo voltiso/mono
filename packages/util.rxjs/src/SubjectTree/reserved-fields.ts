@@ -4,8 +4,8 @@
 import type { _ } from '@voltiso/util'
 import type { Subject } from 'rxjs'
 
-import type { IRequiredSubjectTreeBase } from '~'
+import type { ISubjectTreeBase } from '~'
 
 export type SubjectTreeReservedField = _<
-	keyof IRequiredSubjectTreeBase | keyof Subject<any>
+	keyof ISubjectTreeBase | keyof Subject<any>
 >

@@ -47,6 +47,8 @@ describe('SubjectTree', () => {
 			IsIdentical<SubjectTree<number>['maybeValue'], number | undefined>
 		>()
 
+		$Assert<IsIdentical<SubjectTree<number>['exists'], boolean>>()
+
 		// $Assert<
 		// 	IsIdentical<
 		// 		SubjectTree<{ a: 1 }>['asRequired$'],
@@ -104,7 +106,7 @@ describe('SubjectTree', () => {
 		$Assert<IsIdentical<(typeof data$)['c'], string>>()
 		$Assert<IsIdentical<Value<typeof data$, 'd'>, symbol>>()
 
-		$Assert<IsIdentical<typeof data$.delete, (() => void) | undefined>>()
+		$Assert<IsIdentical<typeof data$.delete, undefined>>()
 		$Assert<IsIdentical<typeof data$.a$.delete, () => void>>()
 
 		expect(data$.exists).toBeTruthy()

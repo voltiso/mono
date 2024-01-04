@@ -25,27 +25,27 @@ export interface ISubjectTreeBase {
 // 	get asRequired$(): IRequiredSubjectTreeBase$
 // }
 
-export interface IRequiredSubjectTreeBase extends ISubjectTreeBase {
-	/**
-	 * This SubjectTree is required, but value can still not exists if one of
-	 * ancestors is optional
-	 */
-	get exists(): boolean
+// export interface IRequiredSubjectTreeBase extends ISubjectTreeBase {
+// 	/**
+// 	 * This SubjectTree is required, but value can still not exists if one of
+// 	 * ancestors is optional
+// 	 */
+// 	get exists(): boolean
 
-	/**
-	 * This SubjectTree is required, but value can still not exists if one of
-	 * ancestors is optional
-	 */
-	get maybeValue(): unknown | undefined
+// 	/**
+// 	 * This SubjectTree is required, but value can still not exists if one of
+// 	 * ancestors is optional
+// 	 */
+// 	get maybeValue(): unknown | undefined
 
-	// /** This SubjectTree is required - if typings are correct, calling `.delete()` here is invalid */
-	// delete(): never
-}
+// 	// /** This SubjectTree is required - if typings are correct, calling `.delete()` here is invalid */
+// 	// delete(): never
+// }
 
-export interface IOptionalSubjectTreeBase extends ISubjectTreeBase {
-	/**
-	 * This SubjectTree is optional - if typings are correct, calling `.delete()`
-	 * here is valid
-	 */
-	delete(): void
-}
+// export interface IOptionalSubjectTreeBase extends ISubjectTreeBase {
+// 	/**
+// 	 * This SubjectTree is optional - if typings are correct, calling `.delete()`
+// 	 * here is valid
+// 	 */
+// 	delete(): void
+// }
