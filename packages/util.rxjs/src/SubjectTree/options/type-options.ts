@@ -17,8 +17,8 @@ export interface SubjectTreeTypeOptions {
 
 export namespace SubjectTreeTypeOptions {
 	export interface Default extends SubjectTreeTypeOptions {
-		IsOptional: false
-		IsAncestorOptional: boolean
+		// IsOptional: false
+		// IsAncestorOptional: boolean
 		// IsAncestorOptional: false
 	}
 }

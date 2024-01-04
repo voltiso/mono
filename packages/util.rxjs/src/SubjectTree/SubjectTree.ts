@@ -171,5 +171,9 @@ export type GetSubjectTree_<
 // 			: SubjectTree<Options['Output']>
 
 export const SubjectTree = lazyConstructor(
-	() => new SubjectTreeConstructor<{ IsAncestorOptional: false }>({}),
+	() =>
+		new SubjectTreeConstructor<{
+			IsOptional: false
+			IsAncestorOptional: false
+		}>({}),
 )

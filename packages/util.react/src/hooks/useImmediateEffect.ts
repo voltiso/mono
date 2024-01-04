@@ -4,8 +4,8 @@
 import type { DependencyList } from 'react'
 import { useMemo } from 'react'
 
+import type { Destructor } from './_/Destructor'
 import { useInitial } from './useInitial'
-import type { Destructor } from './useMemoCleanup'
 import { useOnUnmount } from './useOnUnmount'
 
 /** Run the effect callback synchronously if the deps changed */

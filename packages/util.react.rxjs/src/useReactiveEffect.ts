@@ -28,6 +28,10 @@ export function useReactiveEffect(
 /**
  * Triggered only when observables change (not even triggered initially with
  * first values)
+ *
+ * - Useful in combination with non-reactive hooks like `useImmediateEffect` or
+ *   `useMemo`, because first value can then be computed in the first render
+ *   phase
  */
 export function useReactiveOnlyEffect(
 	effect: Parameters<typeof useEffect>[0],
@@ -37,6 +41,16 @@ export function useReactiveOnlyEffect(
 ): void {
 	// eslint-disable-next-line etc/no-internal, react-hooks/exhaustive-deps
 	_useReactiveEffect(effect, deps, { isReactiveOnly: true })
+}
+
+export function useReactiveImmediateEffect(
+	effect: Parameters<typeof useEffect>[0],
+
+	/** Required - without it, the effect would never trigger. */
+	deps: DependencyList,
+): void {
+	// eslint-disable-next-line etc/no-internal, react-hooks/exhaustive-deps
+	_useReactiveEffect(effect, deps, { isImmediate: true })
 }
 
 //
@@ -53,6 +67,9 @@ function _useReactiveEffect(
 	options?: {
 		/** @defaultValue false */
 		isReactiveOnly?: boolean
+
+		/** @defaultValue false */
+		isImmediate?: boolean
 
 		// 	/**
 		// 	 * Do not run the effect as a result of initial values from the first render
@@ -124,10 +141,14 @@ function _useReactiveEffect(
 	 * Reactive-only effect must be subscribed immediately on first render,
 	 * because we don't want to miss updates between now and first effect phase
 	 */
-	if (options?.isReactiveOnly) {
+	if (options?.isImmediate || options?.isReactiveOnly) {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useImmediateEffect(() => {
 			subscribe()
+
+			if (!options.isReactiveOnly) {
+				wrappedEffect()
+			}
 
 			return () => {
 				unsubscribe()

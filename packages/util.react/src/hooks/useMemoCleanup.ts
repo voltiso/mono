@@ -1,15 +1,22 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { equals } from '@voltiso/util'
 import { useMemo } from 'react'
 
+import { callHookDestructors } from './_'
+import type { Destructor } from './_/Destructor'
+import { useImmediateEffect } from './useImmediateEffect'
+import { useInitial } from './useInitial'
 import { useOnUnmount } from './useOnUnmount'
-
-export type Destructor = () => void
 
 /**
  * Similar to `useMemo()`, but allows specifying a cleanup function, similar to
  * how `useEffect()` works
+ *
+ * - Compares the result with previous using `equals` from `@voltiso/util`, to
+ *   decide if it should return the exact same value (useful to avoid triggering
+ *   re-renders)
  *
  * @example
  *
@@ -32,45 +39,32 @@ export function useMemoCleanup<T>(
 	const destructors = useMemo(() => [] as Destructor[], [])
 
 	const cleanup = () => {
-		let firstError: unknown
-		let haveError = false
-
-		destructors.reverse()
-
-		for (const destructor of destructors) {
-			try {
-				destructor()
-			} catch (error) {
-				if (haveError) {
-					// eslint-disable-next-line no-console
-					console.error(
-						'useMemoCleanup(): Multiple errors in destructors. Next error ignored:',
-						error,
-					)
-				} else {
-					firstError = error
-					haveError = true
-				}
-			}
-		}
-
-		destructors.length = 0
-
-		if (haveError) {
-			throw firstError
-		}
+		callHookDestructors(destructors, 'useMemoCleanup')
 	}
 
-	const value = useMemo(() => {
+	const mutable = useInitial(() => ({ value: Symbol('unset') as T }))
+
+	useImmediateEffect(() => {
 		cleanup()
 
-		return factory((destructor: Destructor) => {
-			destructors.push(destructor)
+		const newDestructors = [] as Destructor[]
+
+		const newValue = factory((destructor: Destructor) => {
+			newDestructors.push(destructor)
 		})
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+
+		if (equals(mutable.value, newValue)) {
+			for (const destructor of newDestructors) {
+				destructor()
+			}
+			return
+		}
+
+		destructors.push(...newDestructors)
+		mutable.value = newValue
 	}, deps)
 
 	useOnUnmount(cleanup)
 
-	return value
+	return mutable.value
 }

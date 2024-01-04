@@ -43,6 +43,10 @@ describe('SubjectTree', () => {
 			SubjectTree<{ a: 1 }>
 		>()
 
+		$Assert<
+			IsIdentical<SubjectTree<number>['maybeValue'], number | undefined>
+		>()
+
 		// $Assert<
 		// 	IsIdentical<
 		// 		SubjectTree<{ a: 1 }>['asRequired$'],
@@ -116,6 +120,7 @@ describe('SubjectTree', () => {
 				CustomSubjectTree<{
 					Output: number
 					Input: number
+					IsOptional: false
 					IsAncestorOptional: true
 				}>
 			>

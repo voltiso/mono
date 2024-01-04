@@ -63,12 +63,19 @@ export interface CustomOptionalSubjectTreeBase<
 
 //
 
+// type A = CustomSubjectTreeBase<{
+// 	Output: number
+// 	Input: number
+// 	IsAncestorOptional: boolean
+// 	IsOptional: boolean
+// }>
+// type B = A['maybeValue']
+
 export type CustomSubjectTreeBase<TO extends SubjectTreeTypeOptions> = _<
-	TO['IsOptional'] extends true
+	true extends TO['IsOptional']
 		? CustomOptionalSubjectTreeBase<TO>
-		: TO['IsOptional'] extends false
-			? CustomRequiredSubjectTreeBase<TO>
-			: never
+		: CustomRequiredSubjectTreeBase<TO>
+			
 >
 
 // export type CustomSubjectTreeBase$<TO extends SubjectTreeTypeOptions> = _<
