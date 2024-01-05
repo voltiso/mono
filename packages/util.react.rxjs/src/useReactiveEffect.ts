@@ -8,6 +8,44 @@ import type { DependencyList } from 'react'
 import { useEffect, useMemo } from 'react'
 import type { Observable, Subscription } from 'rxjs'
 
+export interface ReactiveEffectOptions {
+	/**
+	 * Ignore triggering on render, only trigger when observables change
+	 *
+	 * @defaultValue false
+	 */
+	isReactiveOnly?: boolean
+
+	/**
+	 * Run the effect synchronously on render
+	 *
+	 * @defaultValue false
+	 */
+	isImmediate?: boolean
+
+	/**
+	 * `false` means run synchronously when Subject emits.
+	 *
+	 * `true` means use `requestAnimationFrame` to run the effect
+	 * asynchronously. This also means that the effect may not run on every
+	 * observable change, but rather group updates for better performance.
+	 *
+	 * - (`setTimeout` is very slow, `requestAnimationFrame` is much better -
+	 *   tested in Firefox)
+	 *
+	 * @defaultValue `false` if `isImmediate`, `true` otherwise
+	 */
+	isLazy?: boolean
+
+	// 	/**
+	// 	 * Do not run the effect as a result of initial values from the first render
+	// 	 *
+	// 	 * - Note: this is different from ignoring the first effect body call, as the
+	// 	 *   reactive update may happen before the first react effect phase
+	// 	 */
+	// 	ignoreFirstRender?: boolean | undefined
+}
+
 /**
  * Similar to `useEffect`, but also subscribes to subjects in the `deps` array.
  * Usable with BehaviorSubjects that have `.value` field, or with
@@ -21,8 +59,7 @@ export function useReactiveEffect(
 	/** Required - without it, it's just `useEffect`, so use `useEffect` instead. */
 	deps: DependencyList,
 ): void {
-	// eslint-disable-next-line etc/no-internal, react-hooks/exhaustive-deps
-	_useReactiveEffect(effect, deps)
+	useCustomReactiveEffect({}, effect, deps)
 }
 
 /**
@@ -39,8 +76,7 @@ export function useReactiveOnlyEffect(
 	/** Required - without it, the effect would never trigger. */
 	deps: DependencyList,
 ): void {
-	// eslint-disable-next-line etc/no-internal, react-hooks/exhaustive-deps
-	_useReactiveEffect(effect, deps, { isReactiveOnly: true })
+	useCustomReactiveEffect({ isReactiveOnly: true }, effect, deps)
 }
 
 export function useReactiveImmediateEffect(
@@ -49,48 +85,21 @@ export function useReactiveImmediateEffect(
 	/** Required - without it, the effect would never trigger. */
 	deps: DependencyList,
 ): void {
-	// eslint-disable-next-line etc/no-internal, react-hooks/exhaustive-deps
-	_useReactiveEffect(effect, deps, { isImmediate: true })
+	useCustomReactiveEffect({ isImmediate: true }, effect, deps)
 }
 
 //
 
 //
 
-/** @internal */
-function _useReactiveEffect(
+export function useCustomReactiveEffect(
+	options: ReactiveEffectOptions,
 	effect: Parameters<typeof useEffect>[0],
 
 	/** Required - without it, it's just `useEffect`, so use `useEffect` instead. */
 	deps: DependencyList,
-
-	options?: {
-		/** @defaultValue false */
-		isReactiveOnly?: boolean
-
-		/** @defaultValue false */
-		isImmediate?: boolean
-
-		/**
-		 * False means run synchronously when Subject emits.
-		 *
-		 * Number means run asynchronously using `setTimeout`, possibly only once
-		 * for multiple Subjects emissions.
-		 *
-		 * @defaultValue `0`
-		 */
-		reactiveTimeout?: false | number
-
-		// 	/**
-		// 	 * Do not run the effect as a result of initial values from the first render
-		// 	 *
-		// 	 * - Note: this is different from ignoring the first effect body call, as the
-		// 	 *   reactive update may happen before the first react effect phase
-		// 	 */
-		// 	ignoreFirstRender?: boolean | undefined
-	},
 ): void {
-	const reactiveTimeout = options?.reactiveTimeout ?? 0
+	const isLazy = options.isLazy ?? !options.isImmediate
 
 	const mutable = useMemo(
 		() => ({
@@ -148,7 +157,7 @@ function _useReactiveEffect(
 				.subscribe(() => {
 					if (mutable.isEffectRunning) return
 
-					if (reactiveTimeout === false) {
+					if (!isLazy) {
 						wrappedEffect()
 						return
 					}
@@ -156,9 +165,10 @@ function _useReactiveEffect(
 					if (mutable.isPending) return
 
 					mutable.isPending = true
-					setTimeout(() => {
-						wrappedEffect()
-					}, reactiveTimeout)
+					requestAnimationFrame(wrappedEffect)
+					// setTimeout(() => {
+					// 	wrappedEffect()
+					// }, reactiveTimeout)
 				})
 
 			mutable.subscriptions.push(subscription)
@@ -169,7 +179,7 @@ function _useReactiveEffect(
 	 * Reactive-only effect must be subscribed immediately on first render,
 	 * because we don't want to miss updates between now and first effect phase
 	 */
-	if (options?.isImmediate || options?.isReactiveOnly) {
+	if (options.isImmediate || options.isReactiveOnly) {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useImmediateEffect(() => {
 			subscribe()
