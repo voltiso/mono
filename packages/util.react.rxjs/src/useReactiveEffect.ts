@@ -71,6 +71,16 @@ function _useReactiveEffect(
 		/** @defaultValue false */
 		isImmediate?: boolean
 
+		/**
+		 * False means run synchronously when Subject emits.
+		 *
+		 * Number means run asynchronously using `setTimeout`, possibly only once
+		 * for multiple Subjects emissions.
+		 *
+		 * @defaultValue `0`
+		 */
+		reactiveTimeout?: false | number
+
 		// 	/**
 		// 	 * Do not run the effect as a result of initial values from the first render
 		// 	 *
@@ -80,10 +90,13 @@ function _useReactiveEffect(
 		// 	ignoreFirstRender?: boolean | undefined
 	},
 ): void {
+	const reactiveTimeout = options?.reactiveTimeout ?? 0
+
 	const mutable = useMemo(
 		() => ({
 			destructor: undefined as ReturnType<typeof effect>,
 			isEffectRunning: false,
+			isPending: false,
 			subscriptions: [] as Subscription[],
 		}),
 		[],
@@ -100,6 +113,7 @@ function _useReactiveEffect(
 	}
 
 	const wrappedEffect = () => {
+		mutable.isPending = false
 		if (mutable.isEffectRunning) return
 
 		mutable.isEffectRunning = true
@@ -131,7 +145,21 @@ function _useReactiveEffect(
 			const subscription = dep
 				// .pipe(skip(1))
 				// eslint-disable-next-line rxjs/no-ignored-error
-				.subscribe(() => wrappedEffect())
+				.subscribe(() => {
+					if (mutable.isEffectRunning) return
+
+					if (reactiveTimeout === false) {
+						wrappedEffect()
+						return
+					}
+
+					if (mutable.isPending) return
+
+					mutable.isPending = true
+					setTimeout(() => {
+						wrappedEffect()
+					}, reactiveTimeout)
+				})
 
 			mutable.subscriptions.push(subscription)
 		}
