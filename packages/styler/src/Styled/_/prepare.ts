@@ -5,7 +5,7 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-import { $assert, isPlainObject } from '@voltiso/util'
+import { $fastAssert, isPlainObject } from '@voltiso/util'
 
 import type { CssProp } from '~/_/CssProps'
 import { isThemePath } from '~/ThemePath'
@@ -85,7 +85,7 @@ export function prepare<X>(
 							: customCssEntry
 
 					cssValues = { ...cssValues }
-					$assert(typeof cssValues === 'object')
+					$fastAssert(typeof cssValues === 'object')
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					delete (cssValues as any)[k]
 

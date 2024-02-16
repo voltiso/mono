@@ -3,7 +3,7 @@
 
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
-import { $assert, isDefined } from '@voltiso/util'
+import { $fastAssert, isDefined } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
 import type { DocumentReference } from './DocumentReference'
@@ -50,7 +50,7 @@ function getLock(store: Localstore, transaction: Transaction, path: DocPath) {
 
 	if (lockedByOther) fail(store)
 
-	if (lock) $assert(lock.transaction === transaction)
+	if (lock) $fastAssert(lock.transaction === transaction)
 	// eslint-disable-next-line no-multi-assign
 	else lock = store._locks[path] = new Lock(transaction, undefined)
 

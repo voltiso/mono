@@ -7,7 +7,7 @@ import * as fsSync from 'node:fs'
 import * as fs from 'node:fs/promises'
 
 import type { SyncerPromise } from '@voltiso/util'
-import { $assert, runAsync, runSync } from '@voltiso/util'
+import { $fastAssert, runAsync, runSync } from '@voltiso/util'
 import type { PackageJson } from '@voltiso/util.package-json'
 
 import { findPackageJsonSyncer } from './findPackageJson'
@@ -16,7 +16,7 @@ export function* findAndReadPackageJsonSyncer(
 	dir?: string | undefined,
 ): SyncerPromise<PackageJson> {
 	const packageJsonPath = (yield findPackageJsonSyncer(dir)) as string | null
-	$assert(packageJsonPath)
+	$fastAssert(packageJsonPath)
 
 	const packageJsonBuffer = (yield {
 		// eslint-disable-next-line security/detect-non-literal-fs-filename

@@ -4,7 +4,7 @@
 import type { DeleteIt } from '@voltiso/util'
 import {
 	$AssumeType,
-	assert,
+	fastAssert,
 	isDefined,
 	isDeleteIt,
 	isReplaceIt,
@@ -141,7 +141,7 @@ async function rawUpdate(
 	updates: Updates,
 	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc | null | undefined> {
-	assert(updates)
+	fastAssert(updates)
 	// eslint-disable-next-line no-param-reassign
 	updates = check(ctx, updates)
 
@@ -168,7 +168,7 @@ async function rawUpdate(
 			return doc ? (doc.dataWithId() as never) : null
 		})
 	} else {
-		assert(ctx.transactor._databaseContext)
+		fastAssert(ctx.transactor._databaseContext)
 		data = await databaseUpdate(
 			ctx.transactor,
 			ctx.transactor._databaseContext,
@@ -231,7 +231,7 @@ async function transactionUpdateImpl(
 	}
 
 	// returns undefined if unknown (usually update performed on a document without a trigger or schema)
-	assert(updates)
+	fastAssert(updates)
 
 	const afterTriggers = getAfterTriggers(ctx.docRef)
 	const beforeCommits = getBeforeCommits(ctx.docRef)
@@ -247,7 +247,7 @@ async function transactionUpdateImpl(
 	if (!_cache.has(path)) _cache.set(path, newCacheEntry(ctx))
 
 	const cacheEntry = _cache.get(path)
-	assert(cacheEntry)
+	fastAssert(cacheEntry)
 	cacheEntry.write = true
 
 	const needReadWrite = Boolean(
@@ -293,7 +293,7 @@ async function transactionUpdateImpl(
 		}
 
 		if (isReplaceIt(cacheEntry.updates) || isDeleteIt(cacheEntry.updates)) {
-			assert(data === undefined)
+			fastAssert(data === undefined)
 			data = applyUpdates(
 				undefined,
 				cacheEntry.updates as never,
@@ -312,7 +312,7 @@ function transactionUpdate(
 	updates: Updates,
 	options: Partial<UpdateOptions>,
 ): PromiseLike<$$Doc | null | undefined> {
-	assert(updates)
+	fastAssert(updates)
 	const { transaction, docRef } = ctx
 
 	if (transaction._isFinalizing)
@@ -364,7 +364,7 @@ export function update(
 	updates: Updates,
 	options: Partial<UpdateOptions> = {},
 ): PromiseLike<$$Doc | null | undefined> {
-	assert(updates)
+	fastAssert(updates)
 
 	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
@@ -381,7 +381,7 @@ export function update(
 
 		return transactionUpdate(ctx, updates, options)
 	} else {
-		assert(isWithoutTransaction(ctx))
+		fastAssert(isWithoutTransaction(ctx))
 		return rawUpdate(ctx, updates, options) as never
 	}
 }

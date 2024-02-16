@@ -5,8 +5,8 @@ import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IObject$, Output_, Schema, SchemaLike } from '@voltiso/schemar'
 import type { _, If, Override } from '@voltiso/util'
 import {
-	assert,
 	deleteIt,
+	fastAssert,
 	lazyPromise,
 	omit,
 	OPTIONS,
@@ -81,7 +81,7 @@ export class _CustomDocRef<
 	get id(): DocIdString<GetDocTI<O['doc']>> &
 		Output_<GetDocTI<O['doc']>['id']> {
 		// DocIdString_<O['doc']>
-		assert(this._path.id)
+		fastAssert(this._path.id)
 		return this._path.id as never
 	}
 

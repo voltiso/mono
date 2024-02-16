@@ -32,17 +32,20 @@ describe('assert', () => {
 		expect(() => assert(s.string, 123)).toThrow(/assert.*string.*123/u)
 		expect(() => assert(s.string, '123')).not.toThrow()
 
-		
 		expect(() => assert(s.undefined, null)).toThrow(/assert.*undefined.*null/u)
 		expect(() => assert(s.undefined, undefined)).not.toThrow()
-		
+
 		expect(() => assert(s.null, undefined)).toThrow(/assert.*null.*undefined/u)
 		expect(() => assert(s.null, null)).not.toThrow()
 
-		expect(() => assert(s.nullish, 123)).toThrow(/assert.*null | undefined.*123/u)
+		expect(() => assert(s.nullish, 123)).toThrow(
+			/assert.*null | undefined.*123/u,
+		)
 		expect(() => assert(s.nullish, null)).not.toThrow()
 
-		expect(() => assert.schema(s.string, 123)).toThrow(/assert.schema.*string.*123/u)
+		expect(() => assert.schema(s.string, 123)).toThrow(
+			/assert.schema.*string.*123/u,
+		)
 		expect(() => assert.schema(s.string, '123')).not.toThrow()
 
 		$assert.schema(s.number.or(null), falsy)

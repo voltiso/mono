@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert, lazyConstructor, lazyObject } from '@voltiso/util'
+import { $fastAssert, lazyConstructor, lazyObject } from '@voltiso/util'
 
 import type { CustomInstance, CustomInstance$ } from './CustomInstance'
 import { InstanceImpl } from './InstanceImpl'
@@ -45,7 +45,7 @@ export type Instance$Constructor = new <Inst extends object>(
 export function instance<T extends object>(
 	Constructor: abstract new (...args: any) => T,
 ): Instance$<T> {
-	$assert(Constructor)
+	$fastAssert(Constructor)
 	return new Instance$(Constructor)
 }
 

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert, createPatch } from '@voltiso/util'
+import { createPatch, fastAssert } from '@voltiso/util'
 import chalk from 'chalk'
 
 import type { Doc } from '~/Doc'
@@ -13,14 +13,14 @@ function assertBefore(
 	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, true, boolean> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
-	assert(x.before)
+	fastAssert(x.before)
 }
 
 function assertNotBefore(
 	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, false, boolean> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
-	assert(!x.before)
+	fastAssert(!x.before)
 }
 
 //
@@ -29,16 +29,16 @@ function assertAfter(
 	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, boolean, true> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
-	assert(x.doc)
-	assert(x.after)
+	fastAssert(x.doc)
+	fastAssert(x.after)
 }
 
 function assertNotAfter(
 	x: AfterTriggerParams,
 ) /* : asserts x is AfterTriggerParams<D, boolean, false> */ {
 	// assumeType<AfterTriggerParams<D>>(x)
-	assert(!x.doc)
-	assert(!x.after)
+	fastAssert(!x.doc)
+	fastAssert(!x.after)
 }
 
 function logTrigger(
@@ -168,7 +168,7 @@ export function withAfterCreate<TI extends DocDerivedData>(
 			function (this: Doc | null, params: AfterTriggerParams) {
 				if (!params.before && params.after) {
 					logTrigger(name, 'after', 'CREATE', params)
-					assert(this)
+					fastAssert(this)
 					assertNotBefore(params)
 					assertAfter(params)
 					return Function.prototype.call.call(trigger, this, params) as never

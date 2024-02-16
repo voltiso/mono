@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
+import { $fastAssert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -14,8 +14,8 @@ import type { CustomInstance } from './CustomInstance'
 import { isInstanceSchema } from './IInstance'
 import type { InstanceOptions } from './InstanceOptions'
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomInstanceImpl<O> {

@@ -4,9 +4,9 @@
 import { act, render } from '@testing-library/react'
 import { ValidationIssue } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import { $assert, sleep } from '@voltiso/util'
+import { $fastAssert, sleep } from '@voltiso/util'
 import { useObservable } from '@voltiso/util.react.rxjs'
-import { CustomNestedSubject } from '@voltiso/util.rxjs'
+import { CustomSubjectTree } from '@voltiso/util.rxjs'
 import { ReplaySubject } from 'rxjs'
 
 import { useForm } from './useForm'
@@ -23,7 +23,7 @@ describe('useForm', () => {
 			isCustomer: s.boolean,
 		}
 
-		const appState$ = new CustomNestedSubject({
+		const appState$ = new CustomSubjectTree({
 			schema: {
 				formData: {
 					name: s.string.optional,
@@ -51,7 +51,7 @@ describe('useForm', () => {
 			form$ = useForm({
 				schemable: sFormData,
 
-				data$: appState$.formData,
+				data$: appState$.formData$,
 
 				validators: {
 					name: async (value: string) => {
@@ -115,19 +115,19 @@ describe('useForm', () => {
 
 		render(<Component />)
 
-		$assert(form$)
+		$fastAssert(form$)
 
-		expect(form$.fields.name.props._.value.value).toBe('test')
+		expect(form$.fields.name.props.value).toBe('test')
 
 		act(() => {
-			$assert(form$)
+			$fastAssert(form$)
 
-			form$.fields.name.props.onChange.value({
+			form$.fields.name.props.onChange({
 				target: { value: 'test2' } as never,
 			} as never)
 		})
 
-		expect(appState$.formData.name.value).toBe('test2')
-		expect(form$.fields.name.props._.value.value).toBe('test2')
+		expect(appState$.formData.name).toBe('test2')
+		expect(form$.fields.name.props.value).toBe('test')
 	})
 })

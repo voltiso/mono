@@ -3,7 +3,7 @@
 
 /* eslint-disable import/no-named-as-default-member */
 
-import { $assert, getKeys, tryAt } from '@voltiso/util'
+import { $fastAssert, getKeys, tryAt } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 // ! has to be default-imported - otherwise Next.js will complain
 import React from 'react'
@@ -216,7 +216,7 @@ export function render<$ extends StyledTypeInfo>(
 		typeof data.component === 'function' && data.component.length === 3
 
 	if (shouldForwardCss) {
-		$assert(!('css' in p))
+		$fastAssert(!('css' in p))
 		// $assert('ref' in p)
 		const { ref, ...finalProps } = p as { ref?: IForwardedRef }
 		return maybeFlushRscStyle(

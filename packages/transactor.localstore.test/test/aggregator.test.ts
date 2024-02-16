@@ -5,7 +5,7 @@ import * as s from '@voltiso/schemar'
 import type { DocBuilderPlugin, DocIdString } from '@voltiso/transactor'
 import { aggregate, Doc } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
-import { $Assert, $Is, assert } from '@voltiso/util'
+import { $Assert, $Is, fastAssert } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
@@ -121,7 +121,7 @@ describe('aggregator', () => {
 		})
 
 		const doc = await weeks('2022-10-09')
-		assert(doc)
+		fastAssert(doc)
 
 		expect(doc.aggregates.numWomenThisWeek.value).toBe(110)
 

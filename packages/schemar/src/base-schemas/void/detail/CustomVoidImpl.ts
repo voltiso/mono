@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, lazyConstructor } from '@voltiso/util'
+import { $fastAssert, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
 import type { Schema } from '~/types/Schema/ISchema'
@@ -12,8 +12,8 @@ import type { VoidOptions } from '../options/VoidOptions'
 import { isVoidSchema } from './isVoid'
 import type { IVoid } from './IVoid'
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomVoidImpl<O> {

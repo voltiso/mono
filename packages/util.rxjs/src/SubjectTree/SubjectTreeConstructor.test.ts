@@ -1,5 +1,11 @@
-import { $Assert, IsIdentical } from '@voltiso/util'
-import { RequiredSubjectTree, SubjectTree } from './SubjectTree'
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { IsIdentical } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
+
+import type { RequiredSubjectTree } from './SubjectTree'
+import { SubjectTree } from './SubjectTree'
 
 describe('SubjectTreeConstructor', () => {
 	it('type', () => {

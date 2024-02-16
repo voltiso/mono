@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, lazyConstructor } from '@voltiso/util'
+import { $fastAssert, lazyConstructor } from '@voltiso/util'
 
 import { isSchemaInferrer } from '~/core-schemas/schemaInferrer/ISchemaInferrer'
 import { SchemarError } from '~/error'
@@ -14,8 +14,8 @@ import { isUnknownSchema } from '../unknown/IUnknown'
 import type { AnyOptions } from './AnyOptions'
 import { isAnySchema } from './IAny'
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomAnyImpl<O> {

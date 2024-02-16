@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import {
-	$assert,
+	$fastAssert,
 	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
@@ -24,8 +24,8 @@ import { isStringSchema } from '../IString'
 import type { RegExpEntry } from '../RegExpEntry'
 import type { StringOptions } from '../StringOptions'
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 export class CustomStringImpl<O extends Partial<StringOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>

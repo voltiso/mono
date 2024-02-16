@@ -4,8 +4,8 @@
 import { $assert } from '@voltiso/assertor'
 import type * as Database from '@voltiso/firestore-like'
 import {
-	assert,
 	deleteIt,
+	fastAssert,
 	isDefined,
 	isDeleteIt,
 	replaceIt,
@@ -53,7 +53,7 @@ export async function runTransaction<R>(
 
 	if (ctxOverride) {
 		// already in transaction
-		assert(ctxOverride.transaction)
+		fastAssert(ctxOverride.transaction)
 		return body(ctxOverride.transaction)
 	}
 
@@ -180,9 +180,9 @@ export async function runTransaction<R>(
 								let triggerResult: Awaited<ReturnType<typeof trigger>>
 								// eslint-disable-next-line no-await-in-loop
 								await triggerGuard(ctx, async () => {
-									assert(isDefined(cacheEntry.proxy))
+									fastAssert(isDefined(cacheEntry.proxy))
 
-									assert(cacheEntry.__voltiso)
+									fastAssert(cacheEntry.__voltiso)
 
 									const params: TriggerParams.BeforeCommit<
 										CustomDoc<DocTI, 'inside'>
@@ -275,10 +275,10 @@ export async function runTransaction<R>(
 				for (const [path, cacheEntry] of cache.entries()) {
 					if (cacheEntry.write) {
 						const dbCtx = transactor._databaseContext
-						assert(dbCtx)
+						fastAssert(dbCtx)
 
 						if (isDefined(cacheEntry.updates)) {
-							assert(cacheEntry.data === undefined)
+							fastAssert(cacheEntry.data === undefined)
 							// eslint-disable-next-line no-await-in-loop
 							await databaseUpdate(
 								transactor,
@@ -297,7 +297,7 @@ export async function runTransaction<R>(
 								deleteIt,
 							)
 						} else {
-							assert(cacheEntry.data)
+							fastAssert(cacheEntry.data)
 							// eslint-disable-next-line no-await-in-loop
 							await databaseUpdate(
 								transactor,

@@ -3,13 +3,13 @@
 exports[`dot-access works 1`] = `
 "// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-/*import { $Assert, $assert } from '@voltiso/util'*/ 
+/*import { $Assert, $fastAssert } from '@voltiso/util'*/ 
 // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$Assert\`
 /*$Assert<IsIdentical<true, true>>()*/ 
-// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$assert\`
-/*$assert.defined(1)*/ 
-// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$assert\`
-/*$assert(0)*/ 
+// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$fastAssert\`
+/*$fastAssert.defined(1)*/ 
+// 👗 [@voltiso/transform/strip] Commented-out because of symbol \`$fastAssert\`
+/*$fastAssert(0)*/ 
 export {};
 //# sourceMappingURL=dot-access.js.map"
 `;

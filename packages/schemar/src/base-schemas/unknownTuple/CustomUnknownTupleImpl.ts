@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import {
-	$assert,
+	$fastAssert,
 	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
@@ -27,8 +27,8 @@ import type { CustomUnknownTuple } from './CustomUnknownTuple'
 import { isUnknownTupleSchema } from './IUnknownTuple'
 import type { UnknownTupleOptions } from './UnknownTupleOptions'
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>

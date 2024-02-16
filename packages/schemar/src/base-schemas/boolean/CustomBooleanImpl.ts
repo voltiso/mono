@@ -4,7 +4,7 @@
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
-	$assert,
+	$fastAssert,
 	BoundCallable,
 	CALL,
 	lazyConstructor,
@@ -24,8 +24,8 @@ import { ValidationIssue } from '~/meta-schemas'
 
 import { _booleanCollectTrueFalse } from './_booleanCollectTrueFalse'
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBooleanImpl<O> {

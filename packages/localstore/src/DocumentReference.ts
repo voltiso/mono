@@ -3,7 +3,7 @@
 
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
-import { $assert, isDefined } from '@voltiso/util'
+import { $fastAssert, isDefined } from '@voltiso/util'
 import { deepCloneData, newAutoId } from '@voltiso/util.firestore'
 import type { Observable } from 'rxjs'
 
@@ -65,7 +65,7 @@ export class DocumentReference implements Database.DocumentReference {
 		doc.data$.next(data)
 
 		const collection = this._store._collections[this._collectionRef._path]
-		$assert(collection)
+		$fastAssert(collection)
 		updateCollectionSubject(collection)
 
 		failTransactionFor(this._store, this.path)
@@ -86,7 +86,7 @@ export class DocumentReference implements Database.DocumentReference {
 			)
 
 		const collection = collections[collectionPath]
-		$assert(collection)
+		$fastAssert(collection)
 
 		const doc = collection._docs[id]
 

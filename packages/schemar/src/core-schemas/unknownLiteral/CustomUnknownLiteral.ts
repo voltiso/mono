@@ -3,13 +3,13 @@
 
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert } from '@voltiso/util'
+import { $fastAssert } from '@voltiso/util'
 
 import type { $$UnknownLiteral, CustomSchema, CustomSchema$ } from '~'
 
 import type { UnknownLiteralOptions } from './UnknownLiteralOptions'
 
-$assert(SCHEMA_NAME)
+$fastAssert(SCHEMA_NAME)
 
 //
 

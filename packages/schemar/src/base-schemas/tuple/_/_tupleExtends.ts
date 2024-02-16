@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/util'
+import { $fastAssert } from '@voltiso/util'
 
 import type { ITuple, Schemable } from '~'
 import { schema } from '~/core-schemas'
@@ -15,8 +15,8 @@ export function _tupleExtends(thisTuple: ITuple, otherTuple: ITuple): boolean {
 
 	for (const [i, aa] of a.entries()) {
 		const bb = b[i]
-		$assert(aa)
-		$assert(bb)
+		$fastAssert(aa)
+		$fastAssert(bb)
 
 		if (!schema(aa as Schemable).extends(bb)) return false
 	}

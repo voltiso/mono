@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert, isPromiseLike } from '@voltiso/util'
+import { fastAssert, isPromiseLike } from '@voltiso/util'
 
 import { NoContextError } from '~/NoContextError'
 
@@ -18,7 +18,7 @@ export class NodeContext<T> implements Context<T> {
 	readonly _asyncLocalStorage = new (requireAsyncHooks().AsyncLocalStorage)<T>()
 
 	run<Return>(value: T, run: () => Return): Return {
-		assert(value !== undefined)
+		fastAssert(value !== undefined)
 
 		// const oldValue = this._asyncLocalStorage.getStore()
 

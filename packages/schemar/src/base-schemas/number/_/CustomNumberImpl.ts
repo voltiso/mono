@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
+import { $fastAssert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -19,8 +19,8 @@ export interface CustomNumberImpl<O> {
 	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
 }
 
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomNumberImpl<O extends Partial<NumberOptions>>

@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
+import { $fastAssert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
@@ -17,9 +17,9 @@ import type { IUnion } from '../IUnion'
 import { isUnionSchema } from '../IUnion'
 import type { UnionOptions } from '../UnionOptions'
 
-$assert(OPTIONS)
-$assert(EXTENDS)
-$assert(SCHEMA_NAME)
+$fastAssert(OPTIONS)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnionImpl<O> {

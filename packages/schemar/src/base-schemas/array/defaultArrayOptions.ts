@@ -1,14 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $assert } from '@voltiso/util'
+import { $fastAssert } from '@voltiso/util'
 
 import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
 
 import { unknown } from '../unknown/Unknown'
 import type { ArrayOptions } from './ArrayOptions'
 
-$assert(defaultSchemaOptions)
+$fastAssert(defaultSchemaOptions)
 
 export const defaultArrayOptions: ArrayOptions.Default = Object.freeze({
 	...defaultSchemaOptions,

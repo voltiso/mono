@@ -13,7 +13,7 @@ import {
 	toDatabaseSetNested,
 } from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
-import { assert, deleteIt } from '@voltiso/util'
+import { deleteIt, fastAssert } from '@voltiso/util'
 
 const database = createLocalstore()
 const db = createLocalstoreTransactor(database)
@@ -39,7 +39,7 @@ class Client extends Doc('clientAddXyz').with({
 	@afterCreate
 	async _create(params: TriggerParams.AfterCreate<Client>) {
 		const client = await clients(params.id)
-		assert(client)
+		fastAssert(client)
 		client.data.friends = [clients('a'), clients('b').asStrongRef]
 	}
 }
@@ -104,7 +104,7 @@ describe('add', () => {
 			friends: [clients('a'), clients('b').asStrongRef],
 		})
 
-		assert(client.data.friends[0])
+		fastAssert(client.data.friends[0])
 
 		expect(client.data.friends[0].id).toBe('a')
 

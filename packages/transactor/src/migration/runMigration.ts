@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $AssumeType, assert } from '@voltiso/util'
+import { $AssumeType, fastAssert } from '@voltiso/util'
 
 import type { $$Doc, Doc } from '~/Doc'
 import type { WithTransactor } from '~/Transactor'
@@ -38,7 +38,7 @@ export async function runMigrations<D extends $$Doc>(
 	if (!doc) return
 
 	for (const migration of migrations) {
-		assert(migration.migrationName)
+		fastAssert(migration.migrationName)
 
 		// eslint-disable-next-line no-await-in-loop
 		await runMigration(ctx, doc, migration)

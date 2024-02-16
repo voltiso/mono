@@ -3,7 +3,7 @@
 
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, lazyConstructor } from '@voltiso/util'
+import { $fastAssert, lazyConstructor } from '@voltiso/util'
 
 import type { CustomUnknown, UnknownOptions } from '~'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -13,7 +13,7 @@ export interface CustomUnknownImpl<O> {
 	readonly [DEFAULT_OPTIONS]: UnknownOptions.Default
 }
 
-$assert(SCHEMA_NAME)
+$fastAssert(SCHEMA_NAME)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownImpl<O extends UnknownOptions>

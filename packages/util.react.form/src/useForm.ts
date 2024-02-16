@@ -11,7 +11,6 @@ import type {
 	ValidationIssue,
 } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
-import type { PropertyPath } from '@voltiso/util'
 import { deepMapValues, get, tryGet } from '@voltiso/util'
 import { useInitial } from '@voltiso/util.react'
 import { SubjectTree } from '@voltiso/util.rxjs'
@@ -46,7 +45,7 @@ function _initializeResult<S extends $$SchemableObject>(
 			const dataValue$ = get(
 				data$,
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-				...(path as any),
+				...(path.map(name => `${String(name)}$`) as any),
 			) as unknown as SubjectTree<string>
 
 			const deepShapeEntry = s.schema(
@@ -79,23 +78,27 @@ function _initializeResult<S extends $$SchemableObject>(
 							'props',
 							'_',
 							'value',
-						] as unknown as PropertyPath<typeof mutable.result$.fields>
+						] as unknown as string[] // PropertyPath<typeof mutable.result$.fields>
 
 						const valueProp$ = get(
-							mutable.result$.fields,
-							...valuePropPath,
+							mutable.result$.fields$,
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+							...(valuePropPath.map(name => `${name}$`) as any),
 						) as SubjectTree<unknown>
 
 						valueProp$.set(value)
 
 						const validationResult = validate(value)
 
-						const issuesPath = [...path, 'issues'] as unknown as PropertyPath<
-							typeof mutable.result$.fields
-						>
+						const issuesPath = [...path, 'issues'] as unknown as string[]
+						// PropertyPath<
+						// 	typeof mutable.result$.fields
+						// >
+
 						const issues$ = get(
-							mutable.result$.fields,
-							...issuesPath,
+							mutable.result$.fields$,
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+							...(issuesPath.map(name => `${name}$`) as any),
 						) as unknown as SubjectTree<ValidationIssue[]>
 
 						issues$.set(validationResult.issues)
@@ -157,9 +160,7 @@ export const useForm = <S extends $$SchemableObject>(
 		() => {
 			const initialValue = _initializeResult<S>(options, mutable)
 
-			const nestedSubject$ = new SubjectTree<UseForm.RawResult<S>>(
-				initialValue,
-			)
+			const nestedSubject$ = new SubjectTree<UseForm.RawResult<S>>(initialValue)
 
 			// const subs = (nestedSubject.fields as SubjectTree<unknown>).subscribe(
 			// 	value => {

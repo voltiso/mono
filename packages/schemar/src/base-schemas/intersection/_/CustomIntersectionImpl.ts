@@ -3,7 +3,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, lazyConstructor, OPTIONS } from '@voltiso/util'
+import { $fastAssert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
@@ -16,8 +16,8 @@ import type { CustomIntersection } from '../CustomIntersection'
 import type { IIntersection } from '../IIntersection'
 import type { IntersectionOptions } from '../IntersectionOptions'
 
-$assert(SCHEMA_NAME)
-$assert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomIntersectionImpl<O> {

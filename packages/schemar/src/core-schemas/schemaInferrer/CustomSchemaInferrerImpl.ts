@@ -3,7 +3,12 @@
 
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, BoundCallable_, CALL, lazyConstructor } from '@voltiso/util'
+import {
+	$fastAssert,
+	BoundCallable_,
+	CALL,
+	lazyConstructor,
+} from '@voltiso/util'
 
 import { infer } from '~/infer/infer'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -13,7 +18,7 @@ import type { $$Schemable } from '~/types/Schemable/Schemable'
 import type { ISchemaInferrer } from './ISchemaInferrer'
 import type { UnknownSchemaOptions } from './UnknownSchemaOptions'
 
-$assert(SCHEMA_NAME)
+$fastAssert(SCHEMA_NAME)
 
 export interface CustomSchemaInferrerImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownSchemaOptions

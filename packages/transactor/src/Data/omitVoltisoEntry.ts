@@ -1,7 +1,7 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { assert } from '@voltiso/util'
+import { fastAssert } from '@voltiso/util'
 
 export function isWithVoltisoEntry(
 	data: unknown,
@@ -12,7 +12,7 @@ export function isWithVoltisoEntry(
 export function omitVoltisoEntry<D extends object>(
 	data: D,
 ): Omit<D, '__voltiso'> {
-	assert(isWithVoltisoEntry(data))
+	fastAssert(isWithVoltisoEntry(data))
 
 	const result = { ...data }
 	delete result.__voltiso

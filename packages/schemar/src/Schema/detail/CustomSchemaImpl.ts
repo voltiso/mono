@@ -6,7 +6,7 @@
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { $Merge, $Override_ } from '@voltiso/util'
 import {
-	$assert,
+	$fastAssert,
 	$final,
 	BASE_OPTIONS,
 	clone,
@@ -126,7 +126,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	protected _cloneWithOptions<
 		OO extends { [k in keyof this[BASE_OPTIONS]]?: unknown },
 	>(o: OO): CustomSchema<$Merge<O, OO> & Partial<SchemaOptions>> {
-		$assert(OPTIONS)
+		$fastAssert(OPTIONS)
 
 		const result = clone(this, { omit: [OPTIONS] }) as this
 
@@ -140,7 +140,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 		// ;(result as Mutable<typeof this>)[OPTIONS] = newOptions as never
 
-		$assert(result[OPTIONS] === newOptions)
+		$fastAssert(result[OPTIONS] === newOptions)
 
 		return result as never
 	}

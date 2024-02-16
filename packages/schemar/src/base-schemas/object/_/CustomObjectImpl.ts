@@ -26,9 +26,9 @@ import { deepPartialShape, deepStrictPartialShape } from './deepPartialShape'
 import { partialShape, strictPartialShape } from './partialShape'
 /* eslint-disable max-depth */
 
-v.$assert(EXTENDS)
-v.$assert(SCHEMA_NAME)
-v.$assert(BASE_OPTIONS)
+v.$fastAssert(EXTENDS)
+v.$fastAssert(SCHEMA_NAME)
+v.$fastAssert(BASE_OPTIONS)
 
 export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	extends v.lazyConstructor(() => CustomSchemaImpl)<O>

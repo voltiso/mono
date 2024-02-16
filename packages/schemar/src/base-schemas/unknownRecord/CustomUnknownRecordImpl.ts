@@ -3,7 +3,12 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $assert, BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
+import {
+	$fastAssert,
+	BoundCallable,
+	CALL,
+	lazyConstructor,
+} from '@voltiso/util'
 
 import type { Record as RecordSchema } from '~/base-schemas/record/record'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -14,8 +19,8 @@ import { RecordImpl } from '../record/RecordImpl'
 import type { CustomUnknownRecord } from './CustomUnknownRecord'
 import type { UnknownRecordOptions } from './UnknownRecordOptions'
 
-$assert(SCHEMA_NAME)
-$assert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
 
 //! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownRecordImpl<O> {

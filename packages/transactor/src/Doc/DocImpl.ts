@@ -3,8 +3,8 @@
 
 import type * as t from '@voltiso/schemar'
 import {
-	assert,
 	deepFrozen,
+	fastAssert,
 	isPlainObject,
 	lazyConstructor,
 	omit,
@@ -65,7 +65,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	constructor(context: DocContext, raw: IntrinsicFields) {
 		super()
 
-		assert(raw.__voltiso)
+		fastAssert(raw.__voltiso)
 
 		// eslint-disable-next-line no-param-reassign
 		raw = patchContextInRefs(raw, context)
@@ -74,8 +74,8 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		this._setRaw(raw)
 
 		// assert the ! members
-		assert(this._raw)
-		assert(this._rawProxy)
+		fastAssert(this._raw)
+		fastAssert(this._rawProxy)
 
 		// add methods
 		const { docRef } = this._context

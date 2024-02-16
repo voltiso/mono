@@ -2,7 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '@voltiso/util'
-import { $assert, $AssumeType, lazyConstructor, OPTIONS } from '@voltiso/util'
+import {
+	$AssumeType,
+	$fastAssert,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import { schema_ } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import type { SchemaOptions } from '~/Schema/options/SchemaOptions'
@@ -122,7 +127,7 @@ export function and<Ts extends $$Schemable[]>(
 export function andObjects<
 	Ts extends ($$Object | $$UnknownObject | $$Record)[],
 >(...objectSchemas: Ts): SchemarAndN<Ts> {
-	$assert(defaultObjectOptions)
+	$fastAssert(defaultObjectOptions)
 	const o: ObjectOptions = { ...defaultObjectOptions }
 
 	// todo - add generic (polymorphic?) function to handle options merging

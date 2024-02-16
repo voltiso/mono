@@ -4,7 +4,12 @@
 /* eslint-disable etc/no-internal */
 
 import * as s from '@voltiso/schemar'
-import { $assert, lazyFunction, lazyObject, ProtoCallable } from '@voltiso/util'
+import {
+	$fastAssert,
+	lazyFunction,
+	lazyObject,
+	ProtoCallable,
+} from '@voltiso/util'
 
 import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
 import type { GetDocRef } from '~/DocRef/GetDocRef'
@@ -15,7 +20,7 @@ import type { AnyDoc } from '~/DocTypes'
 
 /** @internal */
 export const _strongRefSchema = lazyObject(() => {
-	$assert(_CustomDocRef)
+	$fastAssert(_CustomDocRef)
 
 	return s
 		.instance(_CustomDocRef)
