@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
@@ -6,7 +6,7 @@ import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // import { codeFiles } from '~/_/files'
 
 export const prettierOverride = defineEslintFlatConfig({
-	files: ['*'],
+	// files: ['*'],
 
 	/**
 	 * Do not use prettier for JS/TS, because it does not allow for

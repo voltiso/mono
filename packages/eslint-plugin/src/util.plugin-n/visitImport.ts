@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // eslint-disable-next-line tsdoc/syntax
@@ -18,7 +18,7 @@ import {
 
 import { stripImportPathParams } from './stripImportPathParams'
 
-export type VisitImportOptions = {
+export interface VisitImportOptions {
 	/** The flag to include core modules. */
 	includeCore: boolean
 
@@ -60,6 +60,7 @@ export function visitImport(
 
 	return {
 		// @ts-expect-error well...
+		// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 		[[
 			'ExportAllDeclaration',
 			'ExportNamedDeclaration',
@@ -86,6 +87,7 @@ export function visitImport(
 		},
 
 		// @ts-expect-error well...
+		// eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/explicit-function-return-type
 		'Program:exit'() {
 			// eslint-disable-next-line promise/prefer-await-to-callbacks
 			callback(targets)

@@ -1,14 +1,14 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-magic-numbers */
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 
 import os from 'node:os'
 import v8 from 'node:v8'
 
 import chalk from 'chalk'
 
-export function checkHeapSize() {
+export function checkHeapSize(): void {
 	const stats = v8.getHeapStatistics()
 
 	// eslint-disable-next-line no-console

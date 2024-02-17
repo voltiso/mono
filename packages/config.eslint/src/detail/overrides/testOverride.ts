@@ -1,39 +1,51 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import type { EslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+// @ts-expect-error no typings
+import jest from 'eslint-plugin-jest'
+// @ts-expect-error no typings
+import jestAsync from 'eslint-plugin-jest-async'
+// @ts-expect-error no typings
+import jestDom from 'eslint-plugin-jest-dom'
+// @ts-expect-error no typings
+import jestFormatting from 'eslint-plugin-jest-formatting'
+import globals from 'globals'
 
 import { testFiles } from '~/detail/files'
 
-// @ts-expect-error no typings
-import jest from 'eslint-plugin-jest'
-
-// @ts-expect-error no typings
-import jestAsync from 'eslint-plugin-jest-async'
-
-// @ts-expect-error no typings
-import jestDom from 'eslint-plugin-jest-dom'
-
-// @ts-expect-error no typings
-import jestFormatting from 'eslint-plugin-jest-formatting'
-
-import globals from 'globals'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-
 // console.log('asd', jest.configs.all)
 
-const jestConfigAll = {...jest.configs.all}
-delete jestConfigAll.env
-jestConfigAll.languageOptions ||= {}
-jestConfigAll.languageOptions.globals  = {
-	...jestConfigAll.languageOptions.globals || {},
-	...jest.environments.globals.globals
-}
+// const jestConfigAll = { ...jest.configs.all }
+// delete jestConfigAll.env
+// jestConfigAll.languageOptions ||= {}
+// jestConfigAll.languageOptions.globals = {
+// 	...jestConfigAll.languageOptions.globals,
+// 	...jest.environments.globals.globals,
+// }
 
-export const testOverride = defineEslintFlatConfig(
-	...eslintFlatConfigFromConfig(jestConfigAll, {jest}),
-	...eslintFlatConfigFromConfig(jestDom.configs.recommended, {'jest-dom': jestDom}),
- ...eslintFlatConfigFromConfig(jestFormatting.configs.strict, {'jest-formatting': jestFormatting}),
+// const common = {
+// 	files: testFiles,
+// }
+
+// const baseConfigs = [
+// 	...eslintFlatConfigFromConfig(jestConfigAll, { jest }),
+
+// 	...eslintFlatConfigFromConfig(jestDom.configs.recommended, {
+// 		'jest-dom': jestDom,
+// 	}),
+
+// 	...eslintFlatConfigFromConfig(jestFormatting.configs.strict, {
+// 		'jest-formatting': jestFormatting,
+// 	}),
+// ].map(config => ({
+// 	...config,
+// 	...common,
+// }))
+
+export const testOverride: EslintFlatConfig[] = defineEslintFlatConfig(
+	// ...baseConfigs,
 	{
 		files: testFiles,
 
@@ -56,15 +68,20 @@ export const testOverride = defineEslintFlatConfig(
 		// 	'plugin:jest-formatting/strict',
 		// ],
 
-		// plugins: ['jest', 'jest-async', 'jest-dom', 'jest-formatting'],
-		// plugins: {
-		// 	jest,
-		// 	'jest-async': jestAsync,
-		// 	'jest-dom': jestDom,
-		// 	'jest-formatting': jestFormatting,
-		// },
+		plugins: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			jest,
+			'jest-async': jestAsync as never,
+			'jest-dom': jestDom as never,
+			'jest-formatting': jestFormatting as never,
+		},
 
 		rules: {
+			...getAllRules(jest as never, 'jest', 'warn'),
+			...getAllRules(jestDom as never, 'jest-dom', 'warn'),
+			...getAllRules(jestFormatting as never, 'jest-formatting', 'warn'),
+			...getAllRules(jestAsync as never, 'jest-async', 'warn'),
+
 			'jest-async/expect-return': 2,
 
 			'etc/no-deprecated': 0,
@@ -158,4 +175,4 @@ export const testOverride = defineEslintFlatConfig(
 			// 'jsdoc/require-returns': 0,
 		},
 	} as const,
-)
+) as never

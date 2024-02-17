@@ -1,29 +1,35 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
+// @ts-expect-error no typings
+import markdownPlugin from 'eslint-plugin-markdown'
 
 import { filesInsideMd } from '../files'
 
-// @ts-expect-error no typings
-import markdownPlugin from 'eslint-plugin-markdown'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-
-export const markdownOverride = defineEslintFlatConfig(
- ...eslintFlatConfigFromConfig(markdownPlugin.configs.recommended, {'markdown': markdownPlugin}),
+export const markdownConfig: Linter.FlatConfig[] = [
+	//  ...eslintFlatConfigFromConfig(markdownPlugin.configs.recommended, {'markdown': markdownPlugin}),
 	{
-		files: ['*.md'],
+		// files: ['LICENSE.md'],
 
-		// plugins: ['markdown'],
-		// extends: ['plugin:markdown/recommended'],
+		files: ['**/*.md'],
 
-		// processor: 'markdown/markdown',
+		// plugins: {
+		// 	markdown: markdownPlugin,
+		// },
+
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		processor: markdownPlugin.processors.markdown as never,
 
 		// rules: {
-		// 	'notice/notice': 0,
+		// 	...getAllRules(markdownPlugin, 'markdown', 'warn'),
+		// 	// 'notice/notice': 0,
 		// },
-	} as const,
-)
+	},
+]
 
 export const additionalMarkdownOverrides = [
 	{

@@ -1,19 +1,16 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
 	defineEslintConfigOverrideRules,
-	defineEslintFlatConfig,
+	getAllRules,
 } from '@voltiso/config.eslint.lib'
-
-import { codeFiles } from '~/detail/files'
-
 import voltisoPlugin from '@voltiso/eslint-plugin'
-
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import nPlugin from 'eslint-plugin-n'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-import { EslintFlatConfig } from '@voltiso/config.eslint.lib'
+
+import { codeFiles } from '~/detail/files'
 
 const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/handle-callback-err': 1,
@@ -30,6 +27,8 @@ const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 
 	'n/no-unpublished-import': 0, // buggy?
 	'n/no-unpublished-require': 0,
+
+	'n/no-unsupported-features': 0,
 
 	'n/no-unsupported-features/es-builtins': 1,
 	'n/no-unsupported-features/es-syntax': 0, //! disabled
@@ -49,12 +48,13 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'n/callback-return': 1,
 	'n/exports-style': 1,
 
-	// 'n/file-extension-in-import': 1,
+	'n/file-extension-in-import': 0,
 
 	// 'n/file-extension-in-import': [
 	'@voltiso/file-extension-in-import': [
 		'warn',
 		'always',
+		// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 		Object.fromEntries(codeFiles.map(ext => [ext.slice(1), 'never'])),
 	],
 
@@ -93,15 +93,24 @@ const nRules = defineEslintConfigOverrideRules({
 
 // console.log(nPlugin.configs.recommended.env)
 
-export const nOverride: EslintFlatConfig[] = defineEslintFlatConfig(...eslintFlatConfigFromConfig(nPlugin.configs.recommended, {n: nPlugin}), {
-	// extends: ['plugin:n/recommended'],
+export const nConfig: Linter.FlatConfig[] = [
+	// ...eslintFlatConfigFromConfig(nPlugin.configs.recommended, {n: nPlugin}),
+	{
+		// extends: ['plugin:n/recommended'],
 
-	// files: ['*'],
+		// files: ['*'],
 
-	// plugins: ['n'],
-	plugins: {
-		'@voltiso': voltisoPlugin
+		// plugins: ['n'],
+		plugins: {
+			'@voltiso': voltisoPlugin as never,
+			n: nPlugin as never,
+		},
+
+		rules: {
+			...getAllRules(nPlugin as never, 'n', 'warn'),
+			...getAllRules(voltisoPlugin, '@voltiso', 'warn'),
+
+			...nRules,
+		},
 	},
-
-	rules: nRules,
-} as const) as never
+]

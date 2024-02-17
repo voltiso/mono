@@ -1,25 +1,26 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
+// @ts-expect-error no typings
+import etc from 'eslint-plugin-etc'
 
 import { codeFilesNoMd } from '../files'
 
-// @ts-expect-error no typings
-import etcPlugin from 'eslint-plugin-etc'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-
-export const etcOverride = defineEslintFlatConfig(
-  ...eslintFlatConfigFromConfig(etcPlugin.configs.recommended, {'etc': etcPlugin}),
+export const etcConfig: Linter.FlatConfig[] = [
 	{
 		// extends: ['plugin:etc/recommended'],
 
 		// files: codeFiles,
 		...codeFilesNoMd,
 
-		// plugins: ['etc'],
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		plugins: { etc },
 
 		rules: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			...etc.configs.recommended.rules as {},
+
 			'etc/no-assign-mutated-array': 1,
 			'etc/no-commented-out-code': 0,
 			'etc/no-const-enum': 1,
@@ -38,5 +39,5 @@ export const etcOverride = defineEslintFlatConfig(
 			'etc/throw-error': 1,
 			'etc/underscore-internal': 1,
 		},
-	} as const,
-)
+	},
+]

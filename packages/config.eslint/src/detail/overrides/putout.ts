@@ -1,22 +1,28 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
-
-import { codeFiles } from '~/detail/files'
-
+import {
+	defineEslintConfigOverride,
+	getAllRules,
+} from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import putout from 'eslint-plugin-putout'
+
+import { codeFiles } from '~/detail/files'
 
 export const putoutOverride = defineEslintConfigOverride({
 	files: codeFiles,
 
-	// plugins: ['putout'],
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	plugins: { putout },
 
 	// extends: ['plugin:putout/recommended'], // disables some eslint rules that we want
 
 	rules: {
+		...getAllRules(putout as never, 'putout', 'warn'),
+
+		'putout/no-unresolved': 0,
+
 		'putout/add-newline-after-function-call': 0, // why?
 		'putout/add-newline-before-function-call': 1,
 		'putout/add-newlines-between-specifiers': 0, // conflicts with imports sort

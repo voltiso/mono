@@ -1,20 +1,25 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import securityPlugin from 'eslint-plugin-security'
 
-export const security = defineEslintFlatConfig(
-	securityPlugin.configs.recommended,
+export const securityConfig: Linter.FlatConfig[] = [
+	// securityPlugin.configs.recommended,
 	{
 		// files: ['*'],
 
-		// plugins: ['security'],
+		plugins: {
+			security: securityPlugin as never,
+		},
+
 		// extends: ['plugin:security/recommended'], // bugged - does not pass eslint schema validation
 
 		rules: {
+			...getAllRules(securityPlugin as never, 'security', 'warn'),
+
 			'security/detect-unsafe-regex': 1,
 			'security/detect-buffer-noassert': 1,
 			'security/detect-child-process': 1,
@@ -30,5 +35,5 @@ export const security = defineEslintFlatConfig(
 			'security/detect-new-buffer': 1,
 			'security/detect-bidi-characters': 1,
 		},
-	} as const,
-)
+	},
+]

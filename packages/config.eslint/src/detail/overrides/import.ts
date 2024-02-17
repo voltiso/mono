@@ -1,16 +1,15 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
 	defineEslintConfigOverrideRules,
-	defineEslintFlatConfig,
+	getAllRules,
 } from '@voltiso/config.eslint.lib'
-
-import { codeFiles } from '~/detail/files'
-
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import importPlugin from 'eslint-plugin-import'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+
+import { codeFiles } from '~/detail/files'
 
 const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'import/no-unresolved': 0, // handled by TS
@@ -34,7 +33,7 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'import/no-webpack-loader-syntax': 0,
 	'import/no-cycle': 0, //! hmm... might be useful !
 
-	// 'import/no-relative-parent-imports': 1, // use 'no-restricted-imports' instead
+	'import/no-relative-parent-imports': 0, // use 'no-restricted-imports' instead
 })
 
 const helpfulWarningsRules = defineEslintConfigOverrideRules({
@@ -96,11 +95,19 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/group-exports': 0,
 })
 
-export const importOverride = defineEslintFlatConfig(
-	...eslintFlatConfigFromConfig(importPlugin.configs.recommended as never, {import: importPlugin}),
-	...eslintFlatConfigFromConfig(importPlugin.configs.warnings as never, {import: importPlugin}),
-	...eslintFlatConfigFromConfig(importPlugin.configs.errors as never, {import: importPlugin}),
-	...eslintFlatConfigFromConfig(importPlugin.configs.typescript as never),
+// console.log('111', importPlugin.configs.recommended)
+
+export const importConfig: Linter.FlatConfig[] = [
+	// ...eslintFlatConfigFromConfig(importPlugin.configs.recommended as never, {
+	// 	import: importPlugin,
+	// }),
+	// ...eslintFlatConfigFromConfig(importPlugin.configs.warnings as never, {
+	// 	import: importPlugin,
+	// }),
+	// ...eslintFlatConfigFromConfig(importPlugin.configs.errors as never, {
+	// 	import: importPlugin,
+	// }),
+	// ...eslintFlatConfigFromConfig(importPlugin.configs.typescript as never),
 	{
 		// extends: [
 		// 	'plugin:import/recommended',
@@ -111,14 +118,57 @@ export const importOverride = defineEslintFlatConfig(
 
 		files: codeFiles,
 
-		// plugins: ['import'],
-		// plugins: { import: importPlugin },
+		plugins: { import: importPlugin as never },
+
+		settings: {
+			'import/parsers': {
+				espree: ['.js', '.cjs', '.mjs', '.jsx'],
+				// '@typescript-eslint/parser': codeFiles.map(s => s.slice(1)),
+			},
+
+			'import/ignore': ['node_modules/react-native/index\\.js$'],
+
+			// eslint-disable-next-line @typescript-eslint/no-magic-numbers
+			'import/extensions': codeFiles.map(s => s.slice(1)),
+
+			'import/resolver': {
+				// node: {
+				// 	extensions: [
+				// 		'.ts',
+				// 		'.tsx',
+				// 		'.mts',
+				// 		'.mtsx',
+				// 		'.cts',
+				// 		'.ctsx',
+				// 		//
+				// 		'.js',
+				// 		'.jsx',
+				// 		'.mjs',
+				// 		'.mjsx',
+				// 		'.cjs',
+				// 		'.cjsx',
+				// 	],
+				// },
+
+				typescript: {
+					/**
+					 * Always try to resolve types under `<root>@types` directory even it
+					 * doesn't contain any source code, like `@types/unist`
+					 */
+					alwaysTryTypes: true,
+
+					// project: 'packages/*/tsconfig.json',
+				},
+			},
+		},
 
 		rules: {
+			...getAllRules(importPlugin as never, 'import', 'warn'),
+
 			...staticAnalysisRules,
 			...helpfulWarningsRules,
 			...moduleSystemsRules,
 			...styleGuideRules,
 		},
-	} as const,
-)
+	},
+]

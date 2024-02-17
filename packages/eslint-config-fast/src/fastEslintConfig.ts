@@ -8,11 +8,8 @@ import baseEslintConfig from '@voltiso/config.eslint'
 import {
 	EslintFlatConfig,
 	defineEslintFlatConfig,
-	eslintFlatConfigFromConfig,
 	reduceEslintFlatConfig,
 } from '@voltiso/config.eslint.lib'
-
-import prettierPlugin from 'eslint-plugin-prettier'
 
 // @ts-expect-error no typings
 import prettierConfig from 'eslint-config-prettier'
@@ -128,7 +125,7 @@ const reducedEslintConfig = reduceEslintFlatConfig(baseEslintConfig, {
 
 export const fastEslintConfig: EslintFlatConfig[] = defineEslintFlatConfig(
 	...(reducedEslintConfig as never),
-	...eslintFlatConfigFromConfig(prettierPlugin.configs?.['recommended'] as never, {prettier: prettierPlugin}, {}, {prettier: prettierConfig}),
+	// ...eslintFlatConfigFromConfig(prettierPlugin.configs?.['recommended'] as never, {prettier: prettierPlugin}, {}, {prettier: prettierConfig}),
 
 	// {
 	// extends: [

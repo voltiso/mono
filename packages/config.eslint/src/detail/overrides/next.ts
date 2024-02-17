@@ -1,20 +1,22 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 // @ts-expect-error no typings
 import nextPlugin from '@next/eslint-plugin-next'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 
 // console.log('!!!', nextPlugin.configs['core-web-vitals'])
 
-const coreWebVitalsConfig = {...nextPlugin.configs['core-web-vitals']}
-delete coreWebVitalsConfig.extends
+// const coreWebVitalsConfig = { ...nextPlugin.configs['core-web-vitals'] }
+// delete coreWebVitalsConfig.extends
 
 export const next = defineEslintFlatConfig(
-	...eslintFlatConfigFromConfig(nextPlugin.configs.recommended, {'@next/next': nextPlugin}),
-	...eslintFlatConfigFromConfig(coreWebVitalsConfig, {'@next/next': nextPlugin}),
+	// ...eslintFlatConfigFromConfig(nextPlugin.configs.recommended, {
+	// 	'@next/next': nextPlugin,
+	// }),
+	// ...eslintFlatConfigFromConfig(coreWebVitalsConfig, {
+	// 	'@next/next': nextPlugin,
+	// }),
 	{
 		// files: ['*'],
 
@@ -26,9 +28,12 @@ export const next = defineEslintFlatConfig(
 		// 	//
 		// ],
 
-		// plugins: ['@next/eslint-plugin-next'],
 		plugins: {
-			next: nextPlugin,
+			next: nextPlugin as never,
+		},
+
+		rules: {
+			...getAllRules(nextPlugin as never, 'next', 'warn'),
 		},
 	} as const,
 )

@@ -1,12 +1,12 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
-import { codeFiles } from '~/detail/files'
-
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
+
+import { codeFiles } from '~/detail/files'
 
 const additional2ArgumentHooksWithDeps = [
 	'useReactiveEffect',
@@ -14,35 +14,39 @@ const additional2ArgumentHooksWithDeps = [
 	'useReactiveMemo$',
 ] as const
 
-const baseConfig = reactHooksPlugin.configs.recommended
+// const baseConfig = reactHooksPlugin.configs.recommended
 
 // fix plugins array -> object (convert to eslint flat config)
-const baseFlatConfig = {
-	...baseConfig,
-	plugins: {
-		'react-hooks': reactHooksPlugin,
+// const baseFlatConfig = {
+// 	...baseConfig,
+
+// 	plugins: {
+// 		'react-hooks': reactHooksPlugin,
+// 	},
+// }
+
+export const reactHooksConfig: Linter.FlatConfig[] = [
+	{
+		files: codeFiles,
+
+		plugins: {
+			'react-hooks': reactHooksPlugin as never,
+		},
+
+		// extends: ['plugin:react-hooks/recommended'],
+
+		rules: {
+			...getAllRules(reactHooksPlugin as never, 'react-hooks', 'warn'),
+
+			'react-hooks/rules-of-hooks': 1,
+
+			'react-hooks/exhaustive-deps': [
+				'warn',
+				{
+					/** Regex */
+					additionalHooks: `(${additional2ArgumentHooksWithDeps.join('|')})`,
+				},
+			],
+		},
 	},
-}
-
-export const reactHooks = defineEslintFlatConfig(baseFlatConfig, {
-	files: codeFiles,
-
-	// plugins: ['react-hooks'],
-	// plugins: {
-	// 	'react-hooks': reactHooksPlugin,
-	// },
-
-	// extends: ['plugin:react-hooks/recommended'],
-
-	rules: {
-		'react-hooks/rules-of-hooks': 1,
-
-		'react-hooks/exhaustive-deps': [
-			'warn',
-			{
-				/** Regex */
-				additionalHooks: `(${additional2ArgumentHooksWithDeps.join('|')})`,
-			},
-		],
-	},
-} as const)
+]

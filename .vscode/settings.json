@@ -172,8 +172,8 @@
 		"source.fixAll": "explicit",
 		"source.fixAll.eslint": "explicit"
 	},
-	
-  "eslint.experimental.useFlatConfig": true,
+
+	"eslint.experimental.useFlatConfig": true,
 
 	"eslint.codeActionsOnSave.mode": "all", // slower
 	// "eslint.codeActionsOnSave.mode": "problems", // faster
@@ -253,7 +253,8 @@
 	// "jest.jestCommandLine": "node_modules/.bin/jest",
 	// "jest.jestCommandLine": "pnpm test",
 
-	"jest.autoRun": "off",
+	// "jest.autoRun": "off",
+	"jest.runMode": "on-demand",
 	// "jest.autoRun": { "watch": true },
 	// "jest.autoRun": {
 	// 	"watch": false,

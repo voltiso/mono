@@ -1,3 +1,6 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
@@ -5,11 +8,10 @@ import {
 	defineEslintConfigOverride,
 	defineEslintFlatConfig,
 } from '@voltiso/config.eslint.lib'
-
-import { filesInsideMd } from '~/detail/files'
-
 // @ts-expect-error no typings
 import noticePlugin from 'eslint-plugin-notice'
+
+import { codeFiles, filesInsideMd } from '~/detail/files'
 
 const year = 2_024
 
@@ -22,11 +24,10 @@ const commentLines = lines.map(line => `// ${line}`)
 const hashCommentLines = lines.map(line => `# ${line}`)
 
 export const notice = defineEslintFlatConfig({
-	// files: '*',
+	files: codeFiles,
 	ignores: filesInsideMd,
 
-	// plugins: ['notice'],
-	plugins: { notice: noticePlugin },
+	plugins: { notice: noticePlugin as never },
 
 	rules: {
 		'notice/notice': [
@@ -41,13 +42,14 @@ export const notice = defineEslintFlatConfig({
 
 export const noticeHash = defineEslintConfigOverride({
 	files: [
-		'*.yml',
-		'*.yaml',
-		'.editorconfig',
-		'.npmrc',
-		'.gitignore',
-		'.prettierignore',
+		'**/*.yml',
+		'**/*.yaml',
+		'**/.editorconfig',
+		'**/.npmrc',
+		'**/.*ignore',
 	],
+
+	plugins: { notice: noticePlugin as never },
 
 	rules: {
 		'notice/notice': [

@@ -1,15 +1,18 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
 // @ts-expect-error no typings
 import htmlPlugin from 'eslint-plugin-html'
 
 export const html = defineEslintFlatConfig({
-	// files: ['*'],
+	// files: ['*.html', '*.htm'],
 
 	// plugins: ['html'],
+
+	// languageOptions: {
+	// 	parser: anyParser
+	// },
 
 	plugins: {
 		html: htmlPlugin as never,

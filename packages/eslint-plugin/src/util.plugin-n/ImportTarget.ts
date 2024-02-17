@@ -1,7 +1,13 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable tsdoc/syntax */
+/* eslint-disable jsdoc/require-returns-type */
+/* eslint-disable jsdoc/informative-docs */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
+/* eslint-disable @typescript-eslint/max-params */
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 
 /** @author Toru Nagashima See LICENSE file in root directory for full license. */
 
@@ -13,7 +19,7 @@ import * as resolve from 'resolve'
 
 import { defaultResolve as importResolve } from '~/converted-esm/import-meta-resolve'
 
-export type GetFilePathOptions = {
+export interface GetFilePathOptions {
 	paths?: readonly string[] | undefined
 	basedir: string
 }
@@ -60,10 +66,7 @@ function getFilePath(
 			return null
 		}
 
-		return path.resolve(
-			(options.paths && options.paths[0]) || options.basedir,
-			id,
-		)
+		return path.resolve(options.paths?.[0] || options.basedir, id)
 	} else {
 		try {
 			return resolve.sync(id, options)
@@ -99,7 +102,7 @@ function getFilePath(
 function getModuleName(nameOrPath: string): string {
 	let end = nameOrPath.indexOf('/')
 
-	if (end !== -1 && nameOrPath[0] === '@') {
+	if (end !== -1 && nameOrPath.startsWith('@')) {
 		end = nameOrPath.indexOf('/', 1 + end)
 	}
 

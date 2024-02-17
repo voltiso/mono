@@ -1,33 +1,33 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export const jsFiles = [
-	'*.js',
-	'*.jsx',
-	'*.cjs',
-	'*.cjsx',
-	'*.mjs',
-	'*.mjsx',
-] as const
+	'**/*.js',
+	'**/*.jsx',
+	'**/*.cjs',
+	'**/*.cjsx',
+	'**/*.mjs',
+	'**/*.mjsx',
+]
 
 export const tsFiles = [
-	'*.ts',
-	'*.tsx',
-	'*.cts',
-	'*.ctsx',
-	'*.mts',
-	'*.mtsx',
-] as const
+	'**/*.ts',
+	'**/*.tsx',
+	'**/*.cts',
+	'**/*.ctsx',
+	'**/*.mts',
+	'**/*.mtsx',
+]
 
-export const codeFiles = [...jsFiles, ...tsFiles] as const
+export const codeFiles = [...jsFiles, ...tsFiles]
 
-export const filesInsideMd = ['**/*.md/*.*'] as const
+export const filesInsideMd = ['**/*.md/*.*']
 
 export const codeFilesNoMd = {
 	files: codeFiles,
 	ignores: filesInsideMd,
-} as const
+}
 
-export const jsonFiles = ['*.json', '*.jsonc', '*.json5'] as const
+export const jsonFiles = ['**/*.json', '**/*.jsonc', '**/*.json5']
 
-export const testFiles = ['*.test.*', '*.spec.*'] as const
+export const testFiles = ['**/*.test.*', '**/*.spec.*']

@@ -1,8 +1,7 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
 // @ts-expect-error no typings
 import noSecretsPlugin from 'eslint-plugin-no-secrets'
 
@@ -11,7 +10,7 @@ export const noSecrets = defineEslintFlatConfig({
 
 	// plugins: ['no-secrets'],
 	plugins: {
-		'no-secrets': noSecretsPlugin,
+		'no-secrets': noSecretsPlugin as never,
 	},
 
 	rules: {

@@ -1,10 +1,10 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { EslintConfig, EslintConfigOverride } from './EslintConfig'
 
 export declare namespace ReduceEslintConfig {
-	export type Options = {
+	export interface Options {
 		/**
 		 * Pick only config that mentions `pluginsToPick`
 		 *
@@ -37,7 +37,7 @@ export function reduceRules<Rules extends EslintConfig['rules']>(
 				!options.pluginsToPick || options.pluginsToPick.includes(ruleNamePrefix)
 
 			return (
-				shouldPick && !(options.pluginsToOmit || []).includes(ruleNamePrefix)
+				shouldPick && !(options.pluginsToOmit ?? []).includes(ruleNamePrefix)
 			)
 		}),
 	) as never
@@ -52,7 +52,7 @@ export function reducePlugins<
 		const shouldPick =
 			!options.pluginsToPick || options.pluginsToPick.includes(name)
 
-		return shouldPick && !(options.pluginsToOmit || []).includes(name)
+		return shouldPick && !(options.pluginsToOmit ?? []).includes(name)
 	}) as never
 }
 
@@ -70,11 +70,11 @@ export function reduceExtends<
 		const shouldPick =
 			!options.pluginsToPick || options.pluginsToPick.includes(pluginName)
 
-		return shouldPick && !(options.pluginsToOmit || []).includes(pluginName)
+		return shouldPick && !(options.pluginsToOmit ?? []).includes(pluginName)
 	}) as never
 }
 
-export function isEslintConfigOverrideEmpty(config: EslintConfigOverride) {
+export function isEslintConfigOverrideEmpty(config: EslintConfigOverride): boolean {
 	if (config.plugins && config.plugins.length > 0) return false
 
 	if (config.extends && config.extends.length > 0) return false
@@ -113,7 +113,7 @@ export function reduceEslintConfig<Cfg extends EslintConfig>(
 ): Partial<Cfg> {
 	const result = { ...config }
 
-	if (result.overrides && (options.pluginsToPick || options.pluginsToOmit)) {
+	if (result.overrides && (options.pluginsToPick ?? options.pluginsToOmit)) {
 		result.overrides = result.overrides
 			.map(override =>
 				reduceEslintConfigOverride(override as EslintConfigOverride, options),

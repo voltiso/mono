@@ -1,9 +1,9 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { EslintFlatConfig } from './EslintFlatConfig'
-import type { ReduceEslintConfig } from './reduceEslintConfig'
-import { reduceRules } from './reduceEslintConfig'
+import type { EslintFlatConfig } from './EslintFlatConfig.js'
+import type { ReduceEslintConfig } from './reduceEslintConfig.js'
+import { reduceRules } from './reduceEslintConfig.js'
 
 export function reduceFlatPlugins<
 	Plugins extends Exclude<EslintFlatConfig['plugins'], undefined>,
@@ -15,12 +15,12 @@ export function reduceFlatPlugins<
 			const shouldPick =
 				!options.pluginsToPick || options.pluginsToPick.includes(name)
 
-			return shouldPick && !(options.pluginsToOmit || []).includes(name)
+			return shouldPick && !(options.pluginsToOmit ?? []).includes(name)
 		}),
 	) as never
 }
 
-export function isEslintFlatConfigEmpty(config: EslintFlatConfig) {
+export function isEslintFlatConfigEmpty(config: EslintFlatConfig): boolean {
 	if (config.plugins && Object.keys(config.plugins).length > 0) return false
 	if (config.rules && Object.keys(config.rules).length > 0) return false
 	return true

@@ -1,5 +1,9 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable jsdoc/require-returns-type */
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 
 import type { Rule } from 'eslint'
 

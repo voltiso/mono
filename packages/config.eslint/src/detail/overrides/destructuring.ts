@@ -1,22 +1,23 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
-
-import { codeFiles } from '../files'
-
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import destructuringPlugin from 'eslint-plugin-destructuring'
 
-export const destructuring = defineEslintConfigOverride({
-	files: codeFiles,
+import { codeFiles } from '../files'
 
-	// plugins: ['destructuring'],
-	plugins: { destructuring: destructuringPlugin },
+export const destructuringConfig: Linter.FlatConfig[] = [
+	{
+		files: codeFiles,
 
-	rules: {
-		'destructuring/no-rename': 1,
-		'destructuring/in-params': ['warn', { 'max-params': 1 }],
-		'destructuring/in-methods-params': 1,
+		// plugins: ['destructuring'],
+		plugins: { destructuring: destructuringPlugin as never },
+
+		rules: {
+			'destructuring/no-rename': 1,
+			'destructuring/in-params': ['warn', { 'max-params': 1 }],
+			'destructuring/in-methods-params': 1,
+		},
 	},
-} as const)
+]

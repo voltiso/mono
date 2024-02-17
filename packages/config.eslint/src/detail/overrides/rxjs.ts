@@ -1,24 +1,23 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
+// @ts-expect-error no typings
+import rxjs from 'eslint-plugin-rxjs'
 
 import { codeFilesNoMd } from '~/detail/files'
 
-// @ts-expect-error no typings
-import rxjsPlugin from 'eslint-plugin-rxjs'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-
-export const rxjs = defineEslintFlatConfig(
- ...eslintFlatConfigFromConfig(rxjsPlugin.configs.recommended as never, { rxjs: rxjsPlugin }),
+export const rxjsConfig: Linter.FlatConfig[] = [
 	{
-		// extends: ['plugin:rxjs/recommended'],
-
 		...codeFilesNoMd,
 
-		// plugins: ['rxjs'],
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		plugins: { rxjs },
 
 		rules: {
+			...getAllRules(rxjs as never, 'rxjs', 'warn'),
+
 			'rxjs/ban-observables': 1,
 			'rxjs/ban-operators': 1,
 			'rxjs/finnish': 1,
@@ -59,5 +58,5 @@ export const rxjs = defineEslintFlatConfig(
 			'rxjs/suffix-subjects': 0,
 			'rxjs/throw-error': 1,
 		},
-	} as const,
-)
+	},
+]

@@ -51,8 +51,8 @@
 		"lib": ["ESNext"], // allow everything, but `eslint-plugin-es-x` will complain
 		// "lib": ["ES2021", "ES2022.Error", "ES2022.Array"], // 2022-08-11 - no `Object.ownKeys` (ES2022) in Safari
 		// "lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"module": "CommonJS", // default - for jest config files, etc.
-		// "module": "ESNext", // Unused - tsup?
+		// "module": "CommonJS", // default - for jest config files, etc.
+		"module": "ESNext", // Unused - tsup?
 		"target": "ESNext",
 
 		/**

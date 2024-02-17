@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as path from 'node:path'
@@ -49,6 +49,7 @@ function isReverseMappingKey(x: unknown): x is keyof typeof reverseMapping {
  * @param reverse - Execute a reverse path mapping
  * @returns The file extension to append to the import statement.
  */
+// eslint-disable-next-line @typescript-eslint/max-params
 export function mapTypescriptExtension(
 	context: Readonly<Rule.RuleContext>,
 	filePath: string,

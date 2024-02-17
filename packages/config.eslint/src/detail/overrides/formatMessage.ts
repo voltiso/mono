@@ -1,22 +1,23 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import formatMessagePlugin from 'eslint-plugin-format-message'
 
-export const formatMessage = defineEslintFlatConfig(
-	formatMessagePlugin.configs.recommended,
+export const formatMessage: Linter.FlatConfig[] = [
+	// formatMessagePlugin.configs.recommended,
 	{
 		// files: ['*'],
 
-		// plugins: ['format-message'],
 		plugins: {
 			'format-message': formatMessagePlugin as never,
 		},
 
 		rules: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			...(formatMessagePlugin.configs.recommended.rules as {}),
+
 			'format-message/literal-pattern': 1,
 			'format-message/literal-locale': 1,
 			'format-message/no-identical-translation': 1,
@@ -34,5 +35,5 @@ export const formatMessage = defineEslintFlatConfig(
 				// translations: './locales',
 			},
 		},
-	} as const,
-)
+	},
+]

@@ -1,13 +1,11 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
+import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import editorConfigPlugin from 'eslint-plugin-editorconfig'
 
-export const editorconfig = defineEslintFlatConfig(
-	editorConfigPlugin.configs.all,
+export const editorconfig: Linter.FlatConfig[] = [
 	{
 		// files: ['*'],
 
@@ -15,7 +13,13 @@ export const editorconfig = defineEslintFlatConfig(
 
 		// plugins: ['editorconfig'],
 		plugins: {
-			editorconfig: editorConfigPlugin,
+			editorconfig: editorConfigPlugin as never,
 		},
-	} as const,
-)
+
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		rules: {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			...editorConfigPlugin.configs.all.rules,
+		},
+	},
+]

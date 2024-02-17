@@ -1,21 +1,25 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
-import regexPlugin from 'eslint-plugin-regex'
+import regex from 'eslint-plugin-regex'
 
 /**
  * `eslint-plugin-regex` - custom eslint rules - can use instead of
  * notice/notice, etc.
  */
-export const regexOverride = defineEslintFlatConfig({
+export const regexConfig = defineEslintFlatConfig({
 	// files: '*',
 
-	// plugins: ['regex'],
+	plugins: {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		regex,
+	},
 
 	rules: {
+		...getAllRules(regex as never, 'regex', 'warn'),
+
 		'regex/required': 0,
 		'regex/use': 0,
 		'regex/required-warn': 0,

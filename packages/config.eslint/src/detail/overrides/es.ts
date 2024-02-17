@@ -1,20 +1,27 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
+import {
+	defineEslintFlatConfig,
+	eslintFlatConfigFromConfig,
+} from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import esPlugin from 'eslint-plugin-es-x'
 
 // console.log('!!!', Object.keys(esPlugin.configs))
 
-const baseConfig = eslintFlatConfigFromConfig(esPlugin.configs['restrict-to-es3'], {'es-x': esPlugin}, {}, esPlugin.configs)
+const baseConfig = eslintFlatConfigFromConfig(
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	esPlugin.configs['restrict-to-es3'] as {},
+	{ 'es-x': esPlugin as never },
+	{},
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+	esPlugin.configs,
+)
 
 // console.log('!!!', baseConfig)
 
-export const es = defineEslintFlatConfig(
-	...baseConfig, {
+export const es = defineEslintFlatConfig(...baseConfig, {
 	// files: ['*'],
 
 	// plugins: ['es-x'],
@@ -28,6 +35,7 @@ export const es = defineEslintFlatConfig(
 	// extends: ['plugin:es/restrict-to-es2016'], // 4th oldest
 
 	rules: {
+		'es-x/no-array-prototype-find': 0,
 		'es-x/no-hashbang': 0,
 		'es-x/no-modules': 0,
 		'es-x/no-optional-chaining': 0,

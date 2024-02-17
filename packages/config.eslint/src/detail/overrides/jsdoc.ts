@@ -1,17 +1,25 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
 import jsdocPlugin from 'eslint-plugin-jsdoc'
 
-export const jsdocOverride = defineEslintFlatConfig(
-  // jsdocPlugin.configs.recommended as never,
-  ...eslintFlatConfigFromConfig(jsdocPlugin.configs.recommended as never, {jsdoc: jsdocPlugin}),
-	{
-		// files: ['*'],
+import { codeFiles, tsFiles } from '../files'
 
-		// plugins: ['jsdoc'],
+const allRules = getAllRules(jsdocPlugin as never, 'jsdoc', 'warn')
+delete allRules['jsdoc/text-escaping']
+delete allRules['jsdoc/match-name']
+
+export const jsdocConfig: Linter.FlatConfig[] = [
+	// jsdocPlugin.configs.recommended as never,
+	// ...eslintFlatConfigFromConfig(jsdocPlugin.configs.recommended as never, {
+	// 	jsdoc: jsdocPlugin,
+	// }),
+	{
+		files: codeFiles,
+
+		plugins: { jsdoc: jsdocPlugin as never },
 
 		// extends: ['plugin:jsdoc/recommended'],
 
@@ -22,6 +30,13 @@ export const jsdocOverride = defineEslintFlatConfig(
 		},
 
 		rules: {
+			...allRules,
+
+			'jsdoc/text-escaping': 0,
+			'jsdoc/match-name': 0,
+
+			'jsdoc/require-file-overview': 0,
+
 			'jsdoc/check-access': 1,
 			'jsdoc/check-alignment': 1,
 			'jsdoc/check-examples': 0, // TODO: Enable when it supports ESLint 8
@@ -100,5 +115,14 @@ export const jsdocOverride = defineEslintFlatConfig(
 			'jsdoc/empty-tags': 0,
 			'jsdoc/valid-types': 0,
 		},
-	} as const,
-)
+	},
+
+	{
+		files: tsFiles,
+
+		rules: {
+			'jsdoc/require-param-type': 'off',
+			'jsdoc/require-returns-type': 'off',
+		},
+	},
+]

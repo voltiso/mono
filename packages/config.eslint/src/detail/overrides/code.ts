@@ -1,18 +1,15 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintConfigOverrideRules,
-	defineEslintFlatConfig,
-} from '@voltiso/config.eslint.lib'
-
-import { codeFilesNoMd } from '../files'
-
+import js from '@eslint/js'
 import typescriptPlugin from '@typescript-eslint/eslint-plugin'
-
 // @ts-expect-error no typings
 import typescriptParser from '@typescript-eslint/parser'
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import type { EslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintConfigOverrideRules } from '@voltiso/config.eslint.lib'
+import globals from 'globals'
+
+import { codeFilesNoMd } from '../files'
 
 const alreadyHandledByPrettier = defineEslintConfigOverrideRules({
 	'@typescript-eslint/comma-dangle': 0,
@@ -51,35 +48,96 @@ const functionalRecommendedRules = defineEslintConfigOverrideRules({
 // console.log('??', typescriptPlugin.configs['recommended'])
 
 /** All TS/JS files */
-export const codeOverride = defineEslintFlatConfig(
- 	...eslintFlatConfigFromConfig(typescriptPlugin.configs['recommended'], {
-		'@typescript-eslint': typescriptPlugin,
-	}, {
-		'@typescript-eslint/parser': typescriptParser,
-	}, typescriptPlugin.configs),
-	// typescriptPlugin.configs['recommended-type-checked'],
+export const codeOverride: EslintFlatConfig[] = [
 	{
-		// extends: [
-		// 	'plugin:@typescript-eslint/recommended',
-		// 	'plugin:@typescript-eslint/recommended-requiring-type-checking',
-		// ],
-
 		// files: codeFiles,
 		...codeFilesNoMd,
 
-		// parser: '@typescript-eslint/parser',
-
-		languageOptions: {
-			parser: typescriptParser,
+		plugins: {
+			'@typescript-eslint': typescriptPlugin,
 		},
 
-		// plugins: ['@typescript-eslint'],
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				// ...globals.es2021,
+				...globals.node,
+			},
 
+			sourceType: 'module',
+
+			parser: typescriptParser as never,
+
+			parserOptions: {
+				// ecmaVersion: 3, // oldest possible
+				// ecmaVersion: 2021, // 2022-08-11 - no `Object.ownKeys` (ES2022) in Safari
+				ecmaVersion: 'latest',
+
+				ecmaFeatures: {
+					jsx: true,
+				},
+
+				jsxPragma: null as never, // for @typescript/eslint-parser
+
+				project: [
+					'tsconfig.json',
+					'packages/*/tsconfig.json',
+					'apps/*/tsconfig.json',
+				], //! you may want to override this
+				// project: tsconfigPath, //! you may want to override this
+				// tsconfigRootDir: __dirname, //! you may want to override this
+			},
+		},
+
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		rules: {
+			...js.configs.all.rules,
+
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			...typescriptPlugin.configs['all'].rules,
+
 			...alreadyHandledByPrettier,
 			...alreadyHandledByTsc,
 			...alreadyHandledByUnicorn,
 			...functionalRecommendedRules,
+
+			'@typescript-eslint/naming-convention': [
+				'warn',
+				{
+					selector: 'default',
+					format: ['camelCase'],
+					leadingUnderscore: 'allow',
+					trailingUnderscore: 'allow',
+				},
+
+				{
+					selector: 'import',
+					format: ['camelCase', 'PascalCase'],
+				},
+
+				{
+					selector: 'variable',
+					format: ['camelCase', 'UPPER_CASE'],
+					leadingUnderscore: 'allow',
+					trailingUnderscore: 'allow',
+				},
+
+				{
+					selector: 'typeLike',
+					format: ['PascalCase'],
+				},
+
+				{
+					selector: 'objectLiteralProperty',
+					format: null,
+				},
+			],
+
+			'@typescript-eslint/explicit-module-boundary-types': 1,
+			'@typescript-eslint/explicit-function-return-type': 1,
+			'@typescript-eslint/max-params': 1,
+
+			'@typescript-eslint/strict-boolean-expressions': 0,
 
 			'@typescript-eslint/no-floating-promises': 2,
 			'@typescript-eslint/no-unnecessary-condition': 1, // sometimes buggy with generics?
@@ -93,9 +151,11 @@ export const codeOverride = defineEslintFlatConfig(
 			'@typescript-eslint/no-invalid-this': 1,
 
 			'@typescript-eslint/no-empty-interface': [
+				// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 				1,
 				{ allowSingleExtends: true },
 			],
+
 			'@typescript-eslint/padding-line-between-statements': 1,
 			'@typescript-eslint/no-unsafe-assignment': 1,
 			'@typescript-eslint/no-unsafe-member-access': 1,
@@ -135,12 +195,25 @@ export const codeOverride = defineEslintFlatConfig(
 
 			//
 
+			'no-warning-comments': 0, // `TODO` comments, etc.
+			'no-inline-comments': 0, // we like to comment inline
+			'line-comment-position': 0, // we like to comment inline
+
+			'multiline-comment-style': 0,
+			'capitalized-comments': 0,
 			'no-bitwise': 1,
 			'no-constructor-return': 1,
 			'prefer-destructuring': 0, // hmm, buggy for non-local variables
 			'no-console': 1,
 			'no-else-return': 0,
-			'no-magic-numbers': ['warn', { ignore: [-3, -2, -1, 0, 1, 2, 3] }],
+
+			'no-magic-numbers': 0,
+
+			'@typescript-eslint/no-magic-numbers': [
+				'warn',
+				{ ignore: [-3, -2, -1, 0, 1, 2, 3, 1_024] },
+			],
+
 			'no-plusplus': ['warn', { allowForLoopAfterthoughts: true }],
 			'no-shadow': 0, // we like to shadow
 			'no-ternary': 0, // ternary... hmm, ok.
@@ -259,5 +332,5 @@ export const codeOverride = defineEslintFlatConfig(
 				},
 			],
 		},
-	} as const,
-)
+	},
+]

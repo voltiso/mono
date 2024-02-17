@@ -1,4 +1,11 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import * as path from 'node:path'
+
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import baseConfig from '@voltiso/eslint-config'
+// import baseConfigFast from '@voltiso/eslint-config-fast'
 
 const project = [
 	'tsconfig.json',
@@ -20,46 +27,53 @@ const project = [
 ]
 
 // eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
-const isFastMode = !process.env['FULL']
+// const isFastMode = !process.env['FULL']
 // const isFastMode = false
 
-// eslint-disable-next-line no-console
-console.log(
-	new Date().toISOString(),
-	'eslint config:',
-	isFastMode ? 'FAST' : 'FULL',
-)
-
-import config from '@voltiso/config.eslint'
-
-// import baseConfig from '@voltiso/eslint-config'
-// import baseConfigFast from '@voltiso/eslint-config-fast'
-
-console.log('test')
-
-export default defineEslintFlatConfig({
-	rules: {
-		'no-console': 1
-	}
-})
-
-// export default defineEslintFlatConfig(
-// 	...(isFastMode ? baseConfigFast : baseConfig),
-// 	{
-// 		languageOptions: {
-// 			parserOptions: {
-// 				project,
-// 				// tsconfigRootDir: __dirname,
-// 			},
-// 		},
-
-// 		settings: {
-// 			'import/resolver': {
-// 				typescript: {
-// 					project,
-// 					// tsconfigRootDir: __dirname,
-// 				},
-// 			},
-// 		},
-// 	},
+// // eslint-disable-next-line no-console
+// console.log(
+// 	new Date().toISOString(),
+// 	'eslint config:',
+// 	isFastMode ? 'FAST' : 'FULL',
 // )
+
+// import config from '@voltiso/config.eslint'
+
+// console.log('process.cwd', process.cwd())
+// console.log('import.meta.url', import.meta.url)
+// console.log('__dirname', __dirname)
+
+// export default defineEslintFlatConfig({
+// 	rules: {
+// 		'no-console': 1
+// 	}
+// })
+
+// eslint-disable-next-line es-x/no-import-meta
+const dirname = path.dirname(new URL(import.meta.url).pathname)
+// console.log('dirname', __dirname)
+
+// eslint-disable-next-line import/no-default-export
+export default defineEslintFlatConfig(
+	...baseConfig,
+	// ...(isFastMode ? baseConfigFast : baseConfig),
+	{
+		// files: ['*.ts', '*.tsx'],
+
+		languageOptions: {
+			parserOptions: {
+				project,
+				tsconfigRootDir: dirname,
+			},
+		},
+
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project,
+					tsconfigRootDir: dirname,
+				},
+			},
+		},
+	},
+)

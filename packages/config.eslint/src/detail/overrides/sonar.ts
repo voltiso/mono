@@ -1,13 +1,16 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-
+import {
+	defineEslintFlatConfig,
+	eslintFlatConfigFromConfig,
+} from '@voltiso/config.eslint.lib'
 import sonarJsPlugin from 'eslint-plugin-sonarjs'
 
 export const sonar = defineEslintFlatConfig(
-  ...eslintFlatConfigFromConfig(	sonarJsPlugin.configs.recommended as never, {sonarjs: sonarJsPlugin}),
+	...eslintFlatConfigFromConfig(sonarJsPlugin.configs.recommended as never, {
+		sonarjs: sonarJsPlugin,
+	}),
 	{
 		// files: ['*'],
 

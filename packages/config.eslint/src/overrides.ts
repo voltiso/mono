@@ -1,80 +1,74 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { EslintFlatConfig } from '@voltiso/config.eslint.lib'
+
+import { anyOverride } from './detail/overrides/any.js'
+import { arrayFunc } from './detail/overrides/arrayFunc.js'
+import { chaiFriendly } from './detail/overrides/chaiFriendly.js'
+import { codeOverride } from './detail/overrides/code.js'
+import { cypress } from './detail/overrides/cypress.js'
+import { destructuringConfig } from './detail/overrides/destructuring.js'
+import { editorconfig } from './detail/overrides/editorconfig.js'
+import { es } from './detail/overrides/es.js'
+import { eslintComments } from './detail/overrides/eslintComments.js'
+import { etcConfig } from './detail/overrides/etc.js'
+import { extOverride } from './detail/overrides/ext.js'
+import { formatJs } from './detail/overrides/formatJs.js'
+import { formatMessage } from './detail/overrides/formatMessage.js'
+import { githubOverride } from './detail/overrides/github.js'
+import { i18nConfig } from './detail/overrides/i18n.js'
+import { i18nextConfig } from './detail/overrides/i18next.js'
+import { i18nText } from './detail/overrides/i18nText.js'
+import { importConfig } from './detail/overrides/import.js'
+import { jsdocConfig } from './detail/overrides/jsdoc.js'
+import { jsoncConfig, jsonConfig } from './detail/overrides/json.js'
+import { jsx } from './detail/overrides/jsx.js'
+import { jsxAllyConfig } from './detail/overrides/jsxAlly.js'
 import {
 	additionalMarkdownOverrides,
-	anyOverride,
-	arrayFunc,
-	chaiFriendly,
-	codeOverride,
-	cypress,
-	destructuring,
-	// disableAutofix, // angular dep?! :(
-	editorconfig,
-	es,
-	eslintComments,
-	etcOverride,
-	extOverride,
-	// filenames,
-	formatJs,
-	formatMessage,
-	// fpOverride,
-	// functional,
-	githubOverride,
-	html,
-	i18n,
-	i18next,
-	i18nText,
-	importOverride,
-	// i18nJson,
-	// indentEmptyLines,
-	jsdocOverride,
-	json,
-	jsonc,
-	jsx,
-	jsxAlly,
-	markdownOverride,
-	next,
-	noConstructorBind,
-	nodeDependencies,
-	noExplicitTypeExports,
-	noOnlyTests,
-	noSecrets,
-	notice,
-	noticeHash,
-	noUnsanitized,
-	noUseExtendNative,
-	nOverride,
-	// optimizeRegex,
-	// preferArrow,
-	prettierOverride,
-	promise,
-	putoutOverride,
-	react,
-	reactHooks,
-	reactNative,
-	reactNativeGlobals,
-	regexOverride,
-	regexpOverride,
-	rxjs,
-	security,
-	simpleImportSort,
-	sonar,
-	// sortClassMembers,
-	// sortKeysFix,
-	storybook,
-	switchCase,
-	testingLibrary,
-	testOverride,
-	toml,
-	tsdoc,
-	turbo,
-	typescriptSortKeys,
-	unicorn,
-	unusedImports,
-	voltisoOverride,
-	// wokeOverride,
-	yaml,
-} from './detail/overrides/index.js'
+	markdownConfig,
+} from './detail/overrides/markdown.js'
+import { nConfig } from './detail/overrides/n.js'
+import { next } from './detail/overrides/next.js'
+import { noConstructorBind } from './detail/overrides/noConstructorBind.js'
+import { nodeDependencies } from './detail/overrides/nodeDependencies.js'
+import { noExplicitTypeExports } from './detail/overrides/noExplicitTypeExports.js'
+import { noOnlyTests } from './detail/overrides/noOnlyTests.js'
+import { noSecrets } from './detail/overrides/noSecrets.js'
+import { notice, noticeHash } from './detail/overrides/notice.js'
+import { noUnsanitized } from './detail/overrides/noUnsanitized.js'
+import { noUseExtendNative } from './detail/overrides/noUseExtendsNative.js'
+import { prettierOverride } from './detail/overrides/prettier.js'
+import { promise } from './detail/overrides/promise.js'
+import { putoutOverride } from './detail/overrides/putout.js'
+import { react } from './detail/overrides/react.js'
+import { reactHooksConfig } from './detail/overrides/reactHooks.js'
+import { reactNative } from './detail/overrides/reactNative.js'
+import { reactNativeGlobals } from './detail/overrides/reactNativeGlobals.js'
+import { regexConfig } from './detail/overrides/regex.js'
+import { regexpOverride } from './detail/overrides/regexp.js'
+import { rxjsConfig } from './detail/overrides/rxjs.js'
+import { securityConfig } from './detail/overrides/security.js'
+import { simpleImportSort } from './detail/overrides/simpleImportSort.js'
+import { sonar } from './detail/overrides/sonar.js'
+import { switchCase } from './detail/overrides/switchCase.js'
+import { testingLibrary } from './detail/overrides/testingLibrary.js'
+import { testOverride } from './detail/overrides/testOverride.js'
+import { toml } from './detail/overrides/toml.js'
+import { tsdoc } from './detail/overrides/tsdoc.js'
+import { turbo } from './detail/overrides/turbo.js'
+import { typescriptSortKeys } from './detail/overrides/typescriptSortKeys.js'
+import { unicorn } from './detail/overrides/unicorn.js'
+import { unusedImports } from './detail/overrides/unusedImports.js'
+import { voltisoOverride } from './detail/overrides/voltiso.js'
+import { yamlConfig } from './detail/overrides/yaml.js'
 
-export const overrides = [
+// eslint-disable-next-line es-x/no-array-prototype-flat
+export const overrides: EslintFlatConfig[] = [
+	/** Null parser - parses anything */
+	anyOverride,
+
 	// fpOverride, // crap
 	// functional, // crap
 	// wokeOverride, // learned all the words already and enriched my vocabulary
@@ -82,77 +76,74 @@ export const overrides = [
 	// indentEmptyLines,
 	// i18nJson,
 	// disableAutofix, // angular dep?! :(
+	// filenames,
+	// optimizeRegex,
+	// preferArrow,
+	// sortKeysFix,
 
 	// Configs / plugins
 	githubOverride,
 	react,
-	reactHooks,
+	reactHooksConfig,
 	reactNative,
 	reactNativeGlobals,
 
 	// Plugins
 	arrayFunc,
-	etcOverride,
+	etcConfig,
 	extOverride,
-	jsdocOverride,
+	jsdocConfig,
 	putoutOverride,
 	notice, // has to be before `json`
 	noticeHash, // has to be after `notice`
-	// filenames,
-	nOverride,
-	destructuring,
-	importOverride,
+	nConfig,
+	destructuringConfig,
+	importConfig,
 	unicorn,
-	// optimizeRegex,
-	// preferArrow,
 	promise,
-	regexOverride,
+	regexConfig,
 	regexpOverride,
-	rxjs,
+	rxjsConfig,
 	eslintComments,
 	nodeDependencies,
 	noUseExtendNative,
-	jsxAlly,
+	jsxAllyConfig,
 	sonar,
 	noConstructorBind,
 	noExplicitTypeExports,
 	noSecrets,
 	noUnsanitized,
-	security,
-	// sortKeysFix,
+	securityConfig,
 	switchCase,
 	tsdoc,
 	typescriptSortKeys,
 	unusedImports,
 	cypress,
-	html,
+	// html, // ! breaks everything - not sure why
 	testingLibrary,
 	next,
 	simpleImportSort,
-	storybook,
+	// storybook,
 	jsx,
 	editorconfig,
-	i18n,
-	i18next,
+	i18nConfig,
+	i18nextConfig,
 	formatMessage,
 	formatJs,
 	i18nText,
 	es,
-
-	/** Null parser - parses anything */
-	anyOverride,
 
 	codeOverride,
 	chaiFriendly,
 	testOverride, // has to be after `fp`
 	noOnlyTests,
 
-	markdownOverride,
+	markdownConfig,
 
-	jsonc,
-	json, // has to be after `jsonc`
+	jsoncConfig,
+	jsonConfig, // has to be after `jsonc`
 	toml,
-	yaml,
+	yamlConfig,
 
 	turbo,
 
@@ -190,8 +181,10 @@ export const overrides = [
 			'next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
 		],
 
-		parserOptions: {
-			sourceType: 'script',
+		languageOptions: {
+			parserOptions: {
+				sourceType: 'script',
+			},
 		},
 
 		rules: {
@@ -224,4 +217,5 @@ export const overrides = [
 	},
 
 	...additionalMarkdownOverrides,
-].flat() // .slice(0,1345)
+].flat() as never
+// .slice(0,1345)
