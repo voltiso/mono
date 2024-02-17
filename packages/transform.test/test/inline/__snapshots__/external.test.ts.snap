@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`external works 1`] = `
-"import type { ExternalButGood, SneakyExternal } from './_/external-stuff';
+"import type { ExternalButGood, SneakyExternal } from './_/external-stuff.js';
 export type A = ExternalButGood;
 export type A_ = /* ExternalButGood */ { a: 1; } & { b: 2; };
 export type B = SneakyExternal;

@@ -1,12 +1,18 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const extOverride = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import ext from 'eslint-plugin-ext'
 
-	plugins: ['ext'],
+export const extOverride = defineEslintFlatConfig({
+	// files: ['*'],
+
+	// plugins: ['ext'],
+	plugins: {
+		ext,
+	},
 
 	rules: {
 		'ext/lines-between-object-properties': [

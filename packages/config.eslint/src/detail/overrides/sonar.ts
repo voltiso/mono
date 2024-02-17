@@ -1,30 +1,36 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const sonar = defineEslintConfigOverride({
-	files: ['*'],
+import sonarJsPlugin from 'eslint-plugin-sonarjs'
 
-	extends: ['plugin:sonarjs/recommended'],
-	plugins: ['sonarjs'],
+export const sonar = defineEslintFlatConfig(
+  ...eslintFlatConfigFromConfig(	sonarJsPlugin.configs.recommended as never, {sonarjs: sonarJsPlugin}),
+	{
+		// files: ['*'],
 
-	rules: {
-		'sonarjs/cognitive-complexity': 0, // hmm, may be useful
-		'sonarjs/elseif-without-else': 0,
-		'sonarjs/prefer-single-boolean-return': 0,
-		'sonarjs/no-collapsible-if': 0, // unicorn has auto-fix for this!!
+		// extends: ['plugin:sonarjs/recommended'],
+		// plugins: ['sonarjs'],
 
-		/**
-		 * Nope - variable name can serve as comment, and it's easier to add
-		 * console.log for debugging
-		 */
-		'sonarjs/prefer-immediate-return': 0,
+		rules: {
+			'sonarjs/cognitive-complexity': 0, // hmm, may be useful
+			'sonarjs/elseif-without-else': 0,
+			'sonarjs/prefer-single-boolean-return': 0,
+			'sonarjs/no-collapsible-if': 0, // unicorn has auto-fix for this!!
 
-		'sonarjs/no-identical-expressions': 1,
-		'sonarjs/no-inverted-boolean-check': 1,
-		'sonarjs/no-all-duplicated-branches': 1,
-		'sonarjs/no-duplicate-string': 1,
-		'sonarjs/no-unused-collection': 1,
-	},
-} as const)
+			/**
+			 * Nope - variable name can serve as comment, and it's easier to add
+			 * console.log for debugging
+			 */
+			'sonarjs/prefer-immediate-return': 0,
+
+			'sonarjs/no-identical-expressions': 1,
+			'sonarjs/no-inverted-boolean-check': 1,
+			'sonarjs/no-all-duplicated-branches': 1,
+			'sonarjs/no-duplicate-string': 1,
+			'sonarjs/no-unused-collection': 1,
+		},
+	} as const,
+)

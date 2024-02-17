@@ -3,4 +3,5 @@
 
 import { fastEslintConfig } from './fastEslintConfig'
 
-export = fastEslintConfig
+// export = fastEslintConfig
+export default fastEslintConfig

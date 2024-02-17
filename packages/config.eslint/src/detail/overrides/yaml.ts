@@ -1,16 +1,23 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import ymlPlugin from 'eslint-plugin-yml'
+import yamlEslintParser from 'yaml-eslint-parser'
 
-export const yaml = defineEslintConfigOverride({
+export const yaml = defineEslintFlatConfig(
+	
+ ...eslintFlatConfigFromConfig(	ymlPlugin.configs.standard as never, {yml: ymlPlugin}, {'yaml-eslint-parser': yamlEslintParser}, ymlPlugin.configs), {
 	files: ['*.yaml', '*.yml'],
 
-	parser: 'yaml-eslint-parser',
+	// parser: 'yaml-eslint-parser',
 
-	plugins: ['yml'],
+	languageOptions: {
+		parser: yamlEslintParser
+	},
 
-	extends: ['plugin:yml/standard'],
+	// plugins: ['yml'],
+
+	// extends: ['plugin:yml/standard'],
 
 	rules: {
 		'yml/quotes': 0, // conflicts with prettier

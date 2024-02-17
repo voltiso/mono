@@ -11,7 +11,7 @@ console.log(
 	path.resolve(),
 )
 
-export const ignorePatterns = [
+export const ignores = [
 	'!.*', // Lint hidden stuff (un-ignore)
 	'**/dist/',
 	'**/node_modules/',

@@ -8,10 +8,11 @@
 
 	"compilerOptions": {
 		"module": "ESNext",
-		"moduleResolution": "node"
+		// "moduleResolution": "NodeNext"
+		"moduleResolution": "Node" // does not require file extensions
 
-		// "declaration": true,
-		// "declarationMap": true,
+		// "declaration": false, // by default, we output types for CJS only
+		// "declarationMap": false // by default, we output types for CJS only
 
 		// !
 		// ! OVERWRITE WHEN EXTENDING !

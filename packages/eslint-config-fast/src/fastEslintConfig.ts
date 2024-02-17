@@ -2,13 +2,20 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // eslint-disable-next-line import/no-unassigned-import
-import '@rushstack/eslint-patch/modern-module-resolution'
+// import '@rushstack/eslint-patch/modern-module-resolution'
 
 import baseEslintConfig from '@voltiso/config.eslint'
 import {
-	defineEslintConfig,
-	reduceEslintConfig,
+	EslintFlatConfig,
+	defineEslintFlatConfig,
+	eslintFlatConfigFromConfig,
+	reduceEslintFlatConfig,
 } from '@voltiso/config.eslint.lib'
+
+import prettierPlugin from 'eslint-plugin-prettier'
+
+// @ts-expect-error no typings
+import prettierConfig from 'eslint-config-prettier'
 
 const pluginsToPick = [
 	'import', // ! slow
@@ -109,36 +116,43 @@ const pluginsToPick = [
 	// 'prefer-arrow',
 ]
 
-const reducedEslintConfig = reduceEslintConfig(baseEslintConfig, {
+const reducedEslintConfig = reduceEslintFlatConfig(baseEslintConfig, {
 	pluginsToPick,
 })
 
+// console.log({reducedEslintConfig})
+
 // export const fastEslintConfig = reducedEslintConfig
 
-export const fastEslintConfig = defineEslintConfig({
-	...reducedEslintConfig,
+// console.log({prettierConfig})
 
-	extends: [
-		...(reducedEslintConfig.extends as string[]),
+export const fastEslintConfig: EslintFlatConfig[] = defineEslintFlatConfig(
+	...(reducedEslintConfig as never),
+	...eslintFlatConfigFromConfig(prettierPlugin.configs?.['recommended'] as never, {prettier: prettierPlugin}, {}, {prettier: prettierConfig}),
 
-		/**
-		 * Turn off rules that conflict with prettier (even if not using
-		 * `eslint-plugin-prettier`)
-		 */
-		'prettier',
-	],
+	// {
+	// extends: [
+	// 	...(reducedEslintConfig.extends as string[]),
 
-	rules: {
-		...reducedEslintConfig.rules,
+	// 	/**
+	// 	 * Turn off rules that conflict with prettier (even if not using
+	// 	 * `eslint-plugin-prettier`)
+	// 	 */
+	// 	'prettier',
+	// ],
 
-		// ...fastTypescriptRules,
+	// rules: {
+	// 	...reducedEslintConfig.rules,
 
-		// ...fastImportRules,
+	// 	// ...fastTypescriptRules,
 
-		// // prettier off
-		// 'prettier/prettier': 0,
-	},
-})
+	// 	// ...fastImportRules,
+
+	// 	// // prettier off
+	// 	// 'prettier/prettier': 0,
+	// },
+	// }
+)
 
 // // eslint-disable-next-line no-console
 // console.log('fastEslintConfig', JSON.stringify(fastEslintConfig, null, 2))

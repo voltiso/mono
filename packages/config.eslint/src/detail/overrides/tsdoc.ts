@@ -1,14 +1,19 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { tsFiles } from '~/detail/files'
 
-export const tsdoc = defineEslintConfigOverride({
+import tsdocPlugin from 'eslint-plugin-tsdoc'
+
+export const tsdoc = defineEslintFlatConfig({
 	files: tsFiles,
 
-	plugins: ['tsdoc'],
+	// plugins: ['tsdoc'],
+	plugins: {
+		tsdoc: tsdocPlugin as never,
+	},
 
 	rules: {
 		'tsdoc/syntax': 1,

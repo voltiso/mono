@@ -1,12 +1,21 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const editorconfig = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import editorConfigPlugin from 'eslint-plugin-editorconfig'
 
-	extends: ['plugin:editorconfig/all'],
+export const editorconfig = defineEslintFlatConfig(
+	editorConfigPlugin.configs.all,
+	{
+		// files: ['*'],
 
-	plugins: ['editorconfig'],
-} as const)
+		// extends: ['plugin:editorconfig/all'],
+
+		// plugins: ['editorconfig'],
+		plugins: {
+			editorconfig: editorConfigPlugin,
+		},
+	} as const,
+)

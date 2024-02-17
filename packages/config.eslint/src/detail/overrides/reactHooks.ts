@@ -1,9 +1,12 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
+
+// @ts-expect-error no typings
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
 
 const additional2ArgumentHooksWithDeps = [
 	'useReactiveEffect',
@@ -11,12 +14,25 @@ const additional2ArgumentHooksWithDeps = [
 	'useReactiveMemo$',
 ] as const
 
-export const reactHooks = defineEslintConfigOverride({
+const baseConfig = reactHooksPlugin.configs.recommended
+
+// fix plugins array -> object (convert to eslint flat config)
+const baseFlatConfig = {
+	...baseConfig,
+	plugins: {
+		'react-hooks': reactHooksPlugin,
+	},
+}
+
+export const reactHooks = defineEslintFlatConfig(baseFlatConfig, {
 	files: codeFiles,
 
-	plugins: ['react-hooks'],
+	// plugins: ['react-hooks'],
+	// plugins: {
+	// 	'react-hooks': reactHooksPlugin,
+	// },
 
-	extends: ['plugin:react-hooks/recommended'],
+	// extends: ['plugin:react-hooks/recommended'],
 
 	rules: {
 		'react-hooks/rules-of-hooks': 1,

@@ -1,34 +1,56 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { filesInsideMd, jsonFiles } from '~/detail/files'
 
+import jsoncPlugin from 'eslint-plugin-jsonc'
+import jsoncEslintParser from 'jsonc-eslint-parser'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+
+// console.log('!!!', jsoncPlugin.configs.base)
+
+const jsoncConfigBase = {...jsoncPlugin.configs.base}
+for(const override of jsoncConfigBase.overrides) {
+	if(override.parser.includes('jsonc-eslint-parser')) {
+		override.parser = jsoncEslintParser as never
+	}
+}
+
+const jsoncConfigAll = {...jsoncPlugin.configs.all}
+delete (jsoncConfigAll as any).extends
+
 /** `json` with comments */
-export const jsonc = defineEslintConfigOverride({
+export const jsonc = defineEslintFlatConfig(
+	...eslintFlatConfigFromConfig(jsoncPlugin.configs.base as never, {jsonc: jsoncPlugin}),
+	jsoncConfigAll, {
 	files: jsonFiles,
-	excludedFiles: filesInsideMd,
+	ignores: filesInsideMd,
 
-	extends: [
-		// 'plugin:json/recommended', // ! breaks `prettier/prettier`
-		// 'plugin:json/recommended-with-comments', // ! breaks `prettier/prettier`
+	// extends: [
+	// 	// 'plugin:json/recommended', // ! breaks `prettier/prettier`
+	// 	// 'plugin:json/recommended-with-comments', // ! breaks `prettier/prettier`
 
-		// 'plugin:jsonc/recommended-with-jsonc',
-		'plugin:jsonc/all',
+	// 	// 'plugin:jsonc/recommended-with-jsonc',
+	// 	'plugin:jsonc/all',
 
-		// 'plugin:json-schema-validator/recommended', // ! hangs!
-	],
+	// 	// 'plugin:json-schema-validator/recommended', // ! hangs!
+	// ],
 
-	// parser: 'jsonc-eslint-parser',
-	plugins: [
-		// 'json', // ! breaks `prettier/prettier`
-		'jsonc',
+	// // parser: 'jsonc-eslint-parser',
+	// plugins: [
+	// 	// 'json', // ! breaks `prettier/prettier`
+	// 	'jsonc',
 
-		// 'json-schema-validator', // ! hangs!
+	// 	// 'json-schema-validator', // ! hangs!
 
-		// 'json-files', // ! breaks `prettier/prettier` // does not work with `jsonc-eslint-parser`
-	],
+	// 	// 'json-files', // ! breaks `prettier/prettier` // does not work with `jsonc-eslint-parser`
+	// ],
+
+	plugins: {
+		jsonc: jsoncPlugin,
+	},
 
 	// parserOptions: {
 	// 	jsonSyntax: 'JSON5',
@@ -75,7 +97,7 @@ export const jsonc = defineEslintConfigOverride({
 } as const)
 
 /** `json` without comments */
-export const json = defineEslintConfigOverride({
+export const json = defineEslintFlatConfig({
 	files: [
 		'package.json',
 		'package.*.json',

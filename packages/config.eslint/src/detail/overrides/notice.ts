@@ -1,11 +1,17 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import {
+	defineEslintConfigOverride,
+	defineEslintFlatConfig,
+} from '@voltiso/config.eslint.lib'
 
 import { filesInsideMd } from '~/detail/files'
 
-const year = 2_023
+// @ts-expect-error no typings
+import noticePlugin from 'eslint-plugin-notice'
+
+const year = 2_024
 
 const lines = [
 	`⠀ⓥ ${year}     🌩    🌩     ⠀   ⠀`,
@@ -15,11 +21,12 @@ const lines = [
 const commentLines = lines.map(line => `// ${line}`)
 const hashCommentLines = lines.map(line => `# ${line}`)
 
-export const notice = defineEslintConfigOverride({
-	files: '*',
-	excludedFiles: filesInsideMd,
+export const notice = defineEslintFlatConfig({
+	// files: '*',
+	ignores: filesInsideMd,
 
-	plugins: ['notice'],
+	// plugins: ['notice'],
+	plugins: { notice: noticePlugin },
 
 	rules: {
 		'notice/notice': [

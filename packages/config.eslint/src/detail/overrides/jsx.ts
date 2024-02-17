@@ -1,14 +1,26 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const jsx = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import jsxPlugin from 'eslint-plugin-jsx'
 
-	plugins: ['jsx'],
+// @ts-expect-error no typings
+import reactPlugin from 'eslint-plugin-react'
 
-	extends: ['plugin:react/jsx-runtime'],
+export const jsx = defineEslintFlatConfig(
+ ...eslintFlatConfigFromConfig(reactPlugin.configs['jsx-runtime'], {react: reactPlugin}),
+	 {
+	// files: ['*'],
+
+	// plugins: ['jsx'],
+	plugins: {
+		jsx: jsxPlugin,
+	},
+
+	// extends: ['plugin:react/jsx-runtime'],
 
 	rules: {
 		// 'jsx/uses-factory': [1, { pragma: 'JSX' }],

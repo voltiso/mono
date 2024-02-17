@@ -1,12 +1,20 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const i18n = defineEslintConfigOverride({
-	files: '*',
+// @ts-expect-error no typings
+import i18nPlugin from 'eslint-plugin-i18n'
 
-	plugins: ['i18n'],
+export const i18n = defineEslintFlatConfig(
+	...eslintFlatConfigFromConfig(i18nPlugin.configs.recommended, {'i18n': i18nPlugin}), {
+	// files: '*',
+
+	// plugins: ['i18n'],
+	// plugins: {
+	// 	i18n: i18nPlugin,
+	// },
 
 	rules: {
 		'i18n/no-chinese-character': 1,

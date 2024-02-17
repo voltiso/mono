@@ -2,11 +2,18 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
-	defineEslintConfigOverride,
 	defineEslintConfigOverrideRules,
+	defineEslintFlatConfig,
 } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
+
+import voltisoPlugin from '@voltiso/eslint-plugin'
+
+// @ts-expect-error no typings
+import nPlugin from 'eslint-plugin-n'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { EslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/handle-callback-err': 1,
@@ -84,12 +91,17 @@ const nRules = defineEslintConfigOverrideRules({
 	...nRulesStylisticIssues,
 } as const)
 
-export const nOverride = defineEslintConfigOverride({
-	extends: ['plugin:n/recommended'],
+// console.log(nPlugin.configs.recommended.env)
 
-	files: ['*'],
+export const nOverride: EslintFlatConfig[] = defineEslintFlatConfig(...eslintFlatConfigFromConfig(nPlugin.configs.recommended, {n: nPlugin}), {
+	// extends: ['plugin:n/recommended'],
 
-	plugins: ['n'],
+	// files: ['*'],
+
+	// plugins: ['n'],
+	plugins: {
+		'@voltiso': voltisoPlugin
+	},
 
 	rules: nRules,
-} as const)
+} as const) as never

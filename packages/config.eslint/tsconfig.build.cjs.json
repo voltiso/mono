@@ -5,7 +5,7 @@
 	"extends": "@voltiso/config.ts/build/cjs",
 
 	"compilerOptions": {
-		"noUnusedLocals": false, // allow build (lint returns error instead)
+		// "noUnusedLocals": false, // allow build (lint returns error instead)
 
 		"outDir": "dist/cjs",
 		"rootDir": "src",

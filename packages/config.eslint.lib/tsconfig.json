@@ -3,4 +3,8 @@
 
 {
 	"extends": "@voltiso/config.ts"
+
+	// "compilerOptions": {
+	// 	"moduleResolution": "NodeNext"
+	// }
 }

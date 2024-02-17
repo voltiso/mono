@@ -1,11 +1,14 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 // import { codeFiles } from '~/_/files'
 
-export const githubOverride = defineEslintConfigOverride({
+// @ts-expect-error no typings
+import github from 'eslint-plugin-github'
+
+export const githubOverride = defineEslintFlatConfig({
 	// extends: [
 	// 	'plugin:github/recommended',
 	// 	'plugin:github/internal',
@@ -13,10 +16,11 @@ export const githubOverride = defineEslintConfigOverride({
 	// 	'plugin:github/typescript',
 	// ],
 
-	files: '*',
+	// files: '*',
 	// files: codeFiles,
 
-	plugins: ['github'],
+	// plugins: ['github'],
+	plugins: { github },
 
 	rules: {
 		'github/a11y-no-generic-link-text': 1,

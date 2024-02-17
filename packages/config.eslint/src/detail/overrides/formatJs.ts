@@ -3,10 +3,15 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const formatJs = defineEslintConfigOverride({
-	files: '*',
+import formatJsPlugin from 'eslint-plugin-formatjs'
 
-	plugins: ['formatjs'],
+export const formatJs = defineEslintConfigOverride({
+	// files: '*',
+
+	// plugins: ['formatjs'],
+	plugins: {
+		formatjs: formatJsPlugin as never,
+	},
 
 	rules: {
 		'formatjs/blocklist-elements': 2,

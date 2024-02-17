@@ -1,19 +1,26 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '../files'
 
-export const typescriptSortKeys = defineEslintConfigOverride({
-	files: codeFiles,
+// @ts-expect-error no typings
+import typescriptSortKeysPlugin from 'eslint-plugin-typescript-sort-keys'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
 
-	plugins: ['typescript-sort-keys'],
+export const typescriptSortKeys = defineEslintFlatConfig(
+  ...eslintFlatConfigFromConfig(typescriptSortKeysPlugin.configs.recommended as never, {'typescript-sort-keys': typescriptSortKeysPlugin}),
+	{
+		files: codeFiles,
 
-	extends: ['plugin:typescript-sort-keys/recommended'],
+		// plugins: ['typescript-sort-keys'],
 
-	rules: {
-		'typescript-sort-keys/interface': 0, // no!
-		'typescript-sort-keys/string-enum': 1,
-	},
-} as const)
+		// extends: ['plugin:typescript-sort-keys/recommended'],
+
+		rules: {
+			'typescript-sort-keys/interface': 0, // no!
+			'typescript-sort-keys/string-enum': 1,
+		},
+	} as const,
+)

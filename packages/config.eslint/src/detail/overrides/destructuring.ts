@@ -5,10 +5,14 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '../files'
 
+// @ts-expect-error no typings
+import destructuringPlugin from 'eslint-plugin-destructuring'
+
 export const destructuring = defineEslintConfigOverride({
 	files: codeFiles,
 
-	plugins: ['destructuring'],
+	// plugins: ['destructuring'],
+	plugins: { destructuring: destructuringPlugin },
 
 	rules: {
 		'destructuring/no-rename': 1,

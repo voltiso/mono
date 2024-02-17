@@ -1,14 +1,23 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const toml = defineEslintConfigOverride({
-	files: ['*.toml'],
+// import tomlParser from 'toml-eslint-parser'
+import tomlPlugin from 'eslint-plugin-toml'
 
-	parser: 'toml-eslint-parser',
+import tomlEslintParser from 'toml-eslint-parser'
 
-	plugins: ['toml'],
+export const toml = defineEslintFlatConfig(
+  ...eslintFlatConfigFromConfig(tomlPlugin.configs.standard as never, {toml: tomlPlugin}, {'toml-eslint-parser': tomlEslintParser}, tomlPlugin.configs),
+	// 	{
+	// 	files: ['*.toml'],
 
-	extends: ['plugin:toml/standard'],
-} as const)
+	// 	// parser: 'toml-eslint-parser',
+
+	// 	// plugins: ['toml'],
+
+	// 	// extends: ['plugin:toml/standard'],
+	// } as const
+)

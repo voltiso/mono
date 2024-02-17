@@ -3,10 +3,17 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const turbo = defineEslintConfigOverride({
-	files: '*',
+// @ts-expect-error no typings
+import turboPlugin from 'eslint-plugin-turbo'
 
-	plugins: ['turbo'],
+export const turbo = defineEslintConfigOverride({
+	// files: '*',
+
+	// plugins: ['turbo'],
+
+	plugins: {
+		turbo: turboPlugin,
+	},
 
 	// extends: ['turbo'],
 

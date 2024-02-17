@@ -1,14 +1,20 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
 
-export const react = defineEslintConfigOverride({
+// @ts-expect-error no typings
+import reactPlugin from 'eslint-plugin-react'
+
+export const react = defineEslintFlatConfig({
 	files: codeFiles,
 
-	plugins: ['react'],
+	// plugins: ['react'],
+	plugins: {
+		react: reactPlugin,
+	},
 
 	rules: {
 		'react/boolean-prop-naming': 1,

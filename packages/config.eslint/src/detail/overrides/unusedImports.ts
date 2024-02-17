@@ -3,10 +3,16 @@
 
 import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
-export const unusedImports = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 
-	plugins: ['unused-imports'],
+export const unusedImports = defineEslintConfigOverride({
+	// files: ['*'],
+
+	// plugins: ['unused-imports'],
+	plugins: {
+		'unused-imports': unusedImportsPlugin,
+	},
 
 	rules: {
 		'unused-imports/no-unused-imports': 1,

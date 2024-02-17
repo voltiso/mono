@@ -1,17 +1,32 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import {
+	defineEslintFlatConfig,
+} from '@voltiso/config.eslint.lib'
 
-export const switchCase = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import switchCasePlugin from 'eslint-plugin-switch-case'
 
-	plugins: ['switch-case'],
+// console.log('!!!', switchCasePlugin.configs.recommended)
 
-	extends: ['plugin:switch-case/recommended'],
-
-	rules: {
-		'switch-case/newline-between-switch-case': 0, // crashes eslint!
-		'switch-case/no-case-curly': 1,
+export const switchCase = defineEslintFlatConfig(
+	{
+		...switchCasePlugin.configs.recommended,
+		plugins: {
+			'switch-case': switchCasePlugin as never,
+		}
 	},
-} as const)
+	{
+		// files: ['*'],
+
+		// plugins: ['switch-case'],
+
+		// extends: ['plugin:switch-case/recommended'],
+
+		rules: {
+			'switch-case/newline-between-switch-case': 0, // crashes eslint!
+			'switch-case/no-case-curly': 1,
+		},
+	} as const,
+)

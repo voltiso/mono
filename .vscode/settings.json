@@ -172,6 +172,8 @@
 		"source.fixAll": "explicit",
 		"source.fixAll.eslint": "explicit"
 	},
+	
+  "eslint.experimental.useFlatConfig": true,
 
 	"eslint.codeActionsOnSave.mode": "all", // slower
 	// "eslint.codeActionsOnSave.mode": "problems", // faster

@@ -8,8 +8,8 @@
 		"outDir": "dist/cjs",
 		"rootDir": "src",
 
-		"declaration": false,
-		"declarationMap": false,
+		// "declaration": false,
+		// "declarationMap": false,
 
 		"paths": {
 			// "~": ["./src"],

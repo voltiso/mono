@@ -1,0 +1,21 @@
+// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	"extends": "@voltiso/config.ts/build/esm",
+
+	"compilerOptions": {
+		// "module": "Node16",
+		// "moduleResolution": "Node16",
+
+		"outDir": "dist/esm",
+		"rootDir": "src",
+
+		"paths": {
+			"~": ["./src"],
+			"~/*": ["./src/*"]
+		}
+	},
+
+	"include": ["src"]
+}

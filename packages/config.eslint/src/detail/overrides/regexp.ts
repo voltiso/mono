@@ -1,14 +1,19 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const regexpOverride = defineEslintConfigOverride({
-	files: '*',
+// @ts-expect-error no typings
+import regexpPlugin from 'eslint-plugin-regexp'
 
-	plugins: ['regexp'],
+export const regexpOverride = defineEslintFlatConfig(
+ ...eslintFlatConfigFromConfig(regexpPlugin.configs.all, {regexp: regexpPlugin}), {
+	// files: '*',
 
-	extends: ['plugin:regexp/all'],
+	// plugins: ['regexp'],
+
+	// extends: ['plugin:regexp/all'],
 
 	rules: {
 		'regexp/no-unused-capturing-group': 0, // false-positives in `str.replace(/.../gu, match => ...)`

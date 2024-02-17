@@ -1,56 +1,63 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { codeFilesNoMd } from '~/detail/files'
 
-export const rxjs = defineEslintConfigOverride({
-	extends: ['plugin:rxjs/recommended'],
+// @ts-expect-error no typings
+import rxjsPlugin from 'eslint-plugin-rxjs'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
 
-	...codeFilesNoMd,
+export const rxjs = defineEslintFlatConfig(
+ ...eslintFlatConfigFromConfig(rxjsPlugin.configs.recommended as never, { rxjs: rxjsPlugin }),
+	{
+		// extends: ['plugin:rxjs/recommended'],
 
-	plugins: ['rxjs'],
+		...codeFilesNoMd,
 
-	rules: {
-		'rxjs/ban-observables': 1,
-		'rxjs/ban-operators': 1,
-		'rxjs/finnish': 1,
-		'rxjs/just': 1,
-		'rxjs/no-async-subscribe': 1,
-		'rxjs/no-compat': 1,
-		'rxjs/no-connectable': 1,
-		'rxjs/no-create': 1,
-		'rxjs/no-cyclic-action': 1,
-		'rxjs/no-explicit-generics': 1,
-		'rxjs/no-exposed-subjects': 1,
-		'rxjs/no-finnish': 0,
-		'rxjs/no-ignored-error': 1,
-		'rxjs/no-ignored-notifier': 1,
-		'rxjs/no-ignored-observable': 1,
-		'rxjs/no-ignored-replay-buffer': 1,
-		'rxjs/no-ignored-subscribe': 1,
-		'rxjs/no-ignored-subscription': 1,
-		'rxjs/no-ignored-takewhile-value': 1,
-		'rxjs/no-implicit-any-catch': 1,
-		'rxjs/no-index': 1,
-		'rxjs/no-internal': 1,
-		'rxjs/no-nested-subscribe': 1,
-		'rxjs/no-redundant-notify': 1,
-		'rxjs/no-sharereplay': 1,
-		'rxjs/no-subclass': 1,
-		'rxjs/no-subject-unsubscribe': 1,
-		'rxjs/no-subject-value': 0,
-		'rxjs/no-subscribe-handlers': 0,
-		'rxjs/no-topromise': 1,
-		'rxjs/no-unbound-methods': 1,
-		'rxjs/no-unsafe-catch': 1,
-		'rxjs/no-unsafe-first': 1,
-		'rxjs/no-unsafe-subject-next': 1,
-		'rxjs/no-unsafe-switchmap': 1,
-		'rxjs/no-unsafe-takeuntil': 1,
-		'rxjs/prefer-observer': 1,
-		'rxjs/suffix-subjects': 0,
-		'rxjs/throw-error': 1,
-	},
-} as const)
+		// plugins: ['rxjs'],
+
+		rules: {
+			'rxjs/ban-observables': 1,
+			'rxjs/ban-operators': 1,
+			'rxjs/finnish': 1,
+			'rxjs/just': 1,
+			'rxjs/no-async-subscribe': 1,
+			'rxjs/no-compat': 1,
+			'rxjs/no-connectable': 1,
+			'rxjs/no-create': 1,
+			'rxjs/no-cyclic-action': 1,
+			'rxjs/no-explicit-generics': 1,
+			'rxjs/no-exposed-subjects': 1,
+			'rxjs/no-finnish': 0,
+			'rxjs/no-ignored-error': 1,
+			'rxjs/no-ignored-notifier': 1,
+			'rxjs/no-ignored-observable': 1,
+			'rxjs/no-ignored-replay-buffer': 1,
+			'rxjs/no-ignored-subscribe': 1,
+			'rxjs/no-ignored-subscription': 1,
+			'rxjs/no-ignored-takewhile-value': 1,
+			'rxjs/no-implicit-any-catch': 1,
+			'rxjs/no-index': 1,
+			'rxjs/no-internal': 1,
+			'rxjs/no-nested-subscribe': 1,
+			'rxjs/no-redundant-notify': 1,
+			'rxjs/no-sharereplay': 1,
+			'rxjs/no-subclass': 1,
+			'rxjs/no-subject-unsubscribe': 1,
+			'rxjs/no-subject-value': 0,
+			'rxjs/no-subscribe-handlers': 0,
+			'rxjs/no-topromise': 1,
+			'rxjs/no-unbound-methods': 1,
+			'rxjs/no-unsafe-catch': 1,
+			'rxjs/no-unsafe-first': 1,
+			'rxjs/no-unsafe-subject-next': 1,
+			'rxjs/no-unsafe-switchmap': 1,
+			'rxjs/no-unsafe-takeuntil': 1,
+			'rxjs/prefer-observer': 1,
+			'rxjs/suffix-subjects': 0,
+			'rxjs/throw-error': 1,
+		},
+	} as const,
+)

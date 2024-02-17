@@ -4,12 +4,12 @@
 import { add } from '~/number'
 import { isPlainObject } from '~/object'
 
-import { isDeleteIt } from '.'
 import { arraySetUpdateIt, isArraySetUpdateIt } from './arraySetUpdateIt'
 import { incrementIt, isIncrementIt } from './incrementIt'
 import { isKeepIt } from './keepIt'
 import { patch } from './patch'
 import type { PatchFor } from './PatchFor'
+import { isDeleteIt } from './deleteIt'
 
 export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
 	if (isDeleteIt(b)) return b

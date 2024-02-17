@@ -8,6 +8,7 @@
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
   "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
     "dist"
@@ -35,7 +36,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@typescript-eslint/utils": "^6.15.0",
+    "@typescript-eslint/utils": "^7.0.1",
     "builtins": "^5.0.1",
     "eslint-module-utils": "^2.8.0",
     "is-core-module": "^2.13.1",

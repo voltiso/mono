@@ -1,14 +1,28 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const es = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import esPlugin from 'eslint-plugin-es-x'
 
-	plugins: ['es-x'],
+// console.log('!!!', Object.keys(esPlugin.configs))
 
-	extends: ['plugin:es-x/restrict-to-es3'], // oldest possible (override-disable rules manually?)
+const baseConfig = eslintFlatConfigFromConfig(esPlugin.configs['restrict-to-es3'], {'es-x': esPlugin}, {}, esPlugin.configs)
+
+// console.log('!!!', baseConfig)
+
+export const es = defineEslintFlatConfig(
+	...baseConfig, {
+	// files: ['*'],
+
+	// plugins: ['es-x'],
+	// plugins: {
+	// 	'es-x': esPlugin,
+	// },
+
+	// extends: ['plugin:es-x/restrict-to-es3'], // oldest possible (override-disable rules manually?)
 	// extends: ['plugin:es/restrict-to-es5'], // 2nd oldest
 	// extends: ['plugin:es/restrict-to-es2015'], // 3rd oldest
 	// extends: ['plugin:es/restrict-to-es2016'], // 4th oldest

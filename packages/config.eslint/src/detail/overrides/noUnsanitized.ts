@@ -1,17 +1,24 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const noUnsanitized = defineEslintConfigOverride({
-	extends: ['plugin:no-unsanitized/DOM'],
+// @ts-expect-error no typings
+import noUnsanitizedPlugin from 'eslint-plugin-no-unsanitized'
 
-	files: ['*'],
+export const noUnsanitized = defineEslintFlatConfig(
+  ...eslintFlatConfigFromConfig(noUnsanitizedPlugin.configs.DOM, {'no-unsanitized': noUnsanitizedPlugin}),
+	{
+		// extends: ['plugin:no-unsanitized/DOM'],
 
-	plugins: ['no-unsanitized'],
+		// files: ['*'],
 
-	rules: {
-		'no-unsanitized/method': 'error',
-		'no-unsanitized/property': 'error',
-	},
-} as const)
+		// plugins: ['no-unsanitized'],
+
+		rules: {
+			'no-unsanitized/method': 'error',
+			'no-unsanitized/property': 'error',
+		},
+	} as const,
+)

@@ -1,14 +1,24 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { testFiles } from '~/detail/files'
 
-export const testingLibrary = defineEslintConfigOverride({
-	files: testFiles,
+// @ts-expect-error no typings
+import testingLibraryPlugin from 'eslint-plugin-testing-library'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
 
-	plugins: ['testing-library'],
+export const testingLibrary = defineEslintFlatConfig(
+  ...eslintFlatConfigFromConfig(testingLibraryPlugin.configs.react, {'testing-library': testingLibraryPlugin}),
+	{
+		files: testFiles,
 
-	extends: ['plugin:testing-library/react'],
-} as const)
+		// plugins: ['testing-library'],
+		plugins: {
+			'testing-library': testingLibraryPlugin as never,
+		},
+
+		// extends: ['plugin:testing-library/react'],
+	} as const,
+)

@@ -1,19 +1,25 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-import { codeFiles } from '~/detail/files'
+import { codeFiles } from '../files'
 
-export const cssOverride = defineEslintConfigOverride({
+// @ts-expect-error no typings
+import cssPlugin from 'eslint-plugin-css'
+
+export const cssOverride = defineEslintFlatConfig(cssPlugin.configs.all, {
 	files: [...codeFiles, '*.css'],
 
-	plugins: ['css'],
+	// plugins: ['css'],
+	// plugins: {
+	// 	css: cssPlugin
+	// },
 
-	extends: [
-		// 'plugin:css/recommended',
-		'plugin:css/all',
-	],
+	// extends: [
+	// 	// 'plugin:css/recommended',
+	// 	'plugin:css/all',
+	// ],
 
 	settings: {
 		css: {

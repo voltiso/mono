@@ -1,10 +1,15 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
 import {
-	defineEslintConfigOverride,
 	defineEslintConfigOverrideRules,
+	defineEslintFlatConfig,
 } from '@voltiso/config.eslint.lib'
+
+// @ts-expect-error no typings
+import nodeDependenciesPlugin from 'eslint-plugin-node-dependencies'
+import jsoncEslintParser from 'jsonc-eslint-parser'
 
 const possibleErrors = defineEslintConfigOverrideRules({
 	'node-dependencies/compat-engines': 0, // bugged
@@ -23,16 +28,28 @@ const stylisticIssues = defineEslintConfigOverrideRules({
 	'node-dependencies/prefer-tilde-range-version': 0,
 })
 
-export const nodeDependencies = defineEslintConfigOverride({
-	extends: ['plugin:node-dependencies/recommended'],
+// console.log('???', nodeDependenciesPlugin.configs.recommended)
 
-	files: ['*'],
+const nodeDependenciesConfigRecommended = nodeDependenciesPlugin.configs.recommended
+for(const override of nodeDependenciesConfigRecommended.overrides) {
+	if(override.parser.includes('jsonc-eslint-parser')) {
+		override.parser = jsoncEslintParser
+	}
+}
 
-	plugins: ['node-dependencies'],
+export const nodeDependencies = defineEslintFlatConfig(
+ ...eslintFlatConfigFromConfig(nodeDependenciesConfigRecommended as never, {'node-dependencies': nodeDependenciesPlugin}),
+	{
+		// extends: ['plugin:node-dependencies/recommended'],
 
-	rules: {
-		...possibleErrors,
-		...bestPractices,
-		...stylisticIssues,
-	},
-} as const)
+		// files: ['*'],
+
+		// plugins: ['node-dependencies'],
+
+		rules: {
+			...possibleErrors,
+			...bestPractices,
+			...stylisticIssues,
+		},
+	} as const,
+)

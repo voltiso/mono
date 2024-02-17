@@ -1,10 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-'use strict'
-
-// const baseEslintConfig = require('@voltiso/config.eslint')
-const { defineEslintConfig } = require('@voltiso/config.eslint.lib')
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 const project = [
 	'tsconfig.json',
@@ -36,24 +30,36 @@ console.log(
 	isFastMode ? 'FAST' : 'FULL',
 )
 
-module.exports = defineEslintConfig({
-	extends: [
-		isFastMode ? '@voltiso/eslint-config-fast' : '@voltiso/eslint-config',
-	],
+import config from '@voltiso/config.eslint'
 
-	root: true,
+// import baseConfig from '@voltiso/eslint-config'
+// import baseConfigFast from '@voltiso/eslint-config-fast'
 
-	parserOptions: {
-		project,
-		tsconfigRootDir: __dirname,
-	},
+console.log('test')
 
-	settings: {
-		'import/resolver': {
-			typescript: {
-				project,
-				tsconfigRootDir: __dirname,
-			},
-		},
+export default defineEslintFlatConfig({
+	rules: {
+		'no-console': 1
 	}
 })
+
+// export default defineEslintFlatConfig(
+// 	...(isFastMode ? baseConfigFast : baseConfig),
+// 	{
+// 		languageOptions: {
+// 			parserOptions: {
+// 				project,
+// 				// tsconfigRootDir: __dirname,
+// 			},
+// 		},
+
+// 		settings: {
+// 			'import/resolver': {
+// 				typescript: {
+// 					project,
+// 					// tsconfigRootDir: __dirname,
+// 				},
+// 			},
+// 		},
+// 	},
+// )

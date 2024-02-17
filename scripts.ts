@@ -103,12 +103,29 @@ export const checkWorkspace = [
 //!
 //! Per-package
 
-export const dev =
+export const devCjs =
 	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
 
+export const devEsm =
+	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.esm.json --watch --noUnusedLocals false --noUnusedParameters false'
+
+export const dev = devCjs
+
+//
+
 export const build = [installWorkspace, turbo('build:esm', 'build:cjs')]
-export const buildEsm = ['rimraf dist/esm', 'tsc -b tsconfig.build.esm.json']
-export const buildCjs = ['rimraf dist/cjs', 'tsc -b tsconfig.build.cjs.json']
+
+export const buildEsm = [
+	'rimraf dist/esm',
+	'tsc -b tsconfig.build.esm.json',
+	`echo '{"type":"module"}' > dist/esm/package.json`,
+]
+
+export const buildCjs = [
+	'rimraf dist/cjs',
+	'tsc -b tsconfig.build.cjs.json',
+	`echo '{"type":"commonjs"}' > dist/cjs/package.json`,
+]
 
 export const lint = [installWorkspace, turbo('lint:tsc', 'lint:eslint')]
 

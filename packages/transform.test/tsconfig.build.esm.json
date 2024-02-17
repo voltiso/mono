@@ -9,6 +9,8 @@
 		"rootDir": "src",
 
 		"paths": {
+			"_": ["./src/_"],
+			"_/*": ["./src/_/*"],
 			"~": ["./src"],
 			"~/*": ["./src/*"]
 		},
@@ -16,14 +18,14 @@
 		"plugins": [
 			{
 				"transform": "@voltiso/transform/strip",
-
+				// "tokens": ["$assert", "$Assert", "$Is", "$AssumeType"]
+				// "modules": []
 				"modules": ["node:path"],
 				"symbols": ["$Assert", "$assert", "basename"]
 			},
 
 			{
 				"transform": "@voltiso/transform/inline",
-
 				"afterDeclarations": true
 				// "onInlineError": "fail"
 			},
@@ -33,9 +35,62 @@
 			},
 
 			{
-				"transform": "@voltiso/transform/compat"
+				"transform": "@voltiso/transform/compat",
+				"afterDeclarationsHack": false,
+				"afterDeclarations": false
+			},
+
+			{
+				"transform": "@voltiso/transform/compat",
+				"afterDeclarationsHack": true,
+				"afterDeclarations": true
+			},
+
+			// Transform paths in output .js files
+			{
+				"transform": "typescript-transform-paths",
+				"exclude": ["**/dist/**"]
+			},
+
+			// Transform paths in output .d.ts files (Include this line if you output declarations files)
+			{
+				"transform": "typescript-transform-paths",
+				"exclude": ["**/dist/**"],
+				"afterDeclarations": true
 			}
 		]
+
+		// "plugins": [
+		// 	{
+		// 		"transform": "@voltiso/transform/strip",
+
+		// 		"modules": ["node:path"],
+		// 		"symbols": ["$Assert", "$assert", "basename"]
+		// 	},
+
+		// 	{
+		// 		"transform": "@voltiso/transform/inline",
+
+		// 		"afterDeclarations": true
+		// 		// "onInlineError": "fail"
+		// 	},
+
+		// 	{
+		// 		"transform": "@voltiso/transform/call-info"
+		// 	},
+
+		// 	{
+		// 		"transform": "@voltiso/transform/compat",
+		// 		"afterDeclarationsHack": false,
+		// 		"afterDeclarations": false
+		// 	},
+
+		// 	{
+		// 		"transform": "@voltiso/transform/compat",
+		// 		"afterDeclarationsHack": true,
+		// 		"afterDeclarations": true
+		// 	}
+		// ]
 	},
 
 	"include": ["src"]

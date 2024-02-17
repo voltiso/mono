@@ -5,10 +5,14 @@ import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
 
+// @ts-expect-error no typings
+import putout from 'eslint-plugin-putout'
+
 export const putoutOverride = defineEslintConfigOverride({
 	files: codeFiles,
 
-	plugins: ['putout'],
+	// plugins: ['putout'],
+	plugins: { putout },
 
 	// extends: ['plugin:putout/recommended'], // disables some eslint rules that we want
 

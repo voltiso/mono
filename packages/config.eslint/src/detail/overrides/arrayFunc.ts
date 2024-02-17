@@ -1,16 +1,19 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '../files'
 
-export const arrayFunc = defineEslintConfigOverride({
-	extends: ['plugin:array-func/all'],
+// @ts-expect-error no typings
+import arrayFuncPlugin from 'eslint-plugin-array-func'
+
+export const arrayFunc = defineEslintFlatConfig(arrayFuncPlugin.configs.all, {
+	// extends: ['plugin:array-func/all'],
 
 	files: codeFiles,
 
-	plugins: ['array-func'],
+	// plugins: ['array-func'],
 
 	rules: {
 		'array-func/from-map': 1,

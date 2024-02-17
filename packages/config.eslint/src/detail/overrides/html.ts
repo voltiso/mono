@@ -1,12 +1,19 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const html = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import htmlPlugin from 'eslint-plugin-html'
 
-	plugins: ['html'],
+export const html = defineEslintFlatConfig({
+	// files: ['*'],
+
+	// plugins: ['html'],
+
+	plugins: {
+		html: htmlPlugin as never,
+	},
 
 	settings: {
 		'html/indent': 'tab', // indentation is one tab at the beginning of the line.

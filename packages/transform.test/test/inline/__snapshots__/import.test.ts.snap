@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`import works 1`] = `
-"import type { ExternalInterface, IncludesExternal } from './_/external-stuff';
+"import type { ExternalInterface, IncludesExternal } from './_/external-stuff.js';
 export type A = /* IncludesExternal */ { ex: ExternalInterface | { a: 1; }; } & ExternalInterface;
 //# sourceMappingURL=import.d.ts.map"
 `;

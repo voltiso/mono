@@ -1,22 +1,29 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { filesInsideMd } from '../files'
 
-export const markdownOverride = defineEslintConfigOverride({
-	files: ['*.md'],
+// @ts-expect-error no typings
+import markdownPlugin from 'eslint-plugin-markdown'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
 
-	plugins: ['markdown'],
-	extends: ['plugin:markdown/recommended'],
+export const markdownOverride = defineEslintFlatConfig(
+ ...eslintFlatConfigFromConfig(markdownPlugin.configs.recommended, {'markdown': markdownPlugin}),
+	{
+		files: ['*.md'],
 
-	// processor: 'markdown/markdown',
+		// plugins: ['markdown'],
+		// extends: ['plugin:markdown/recommended'],
 
-	// rules: {
-	// 	'notice/notice': 0,
-	// },
-} as const)
+		// processor: 'markdown/markdown',
+
+		// rules: {
+		// 	'notice/notice': 0,
+		// },
+	} as const,
+)
 
 export const additionalMarkdownOverrides = [
 	{

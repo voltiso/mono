@@ -1,6 +1,9 @@
 {
   "private": true,
   "repository": "git://github.com/voltiso/mono.git",
+  "________": "__________",
+  "type": "module",
+  "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TURBO - GLOBAL": "__________",
@@ -22,6 +25,7 @@
     "@types/jest": "^29.5.11",
     "@types/node": "^20.10.5",
     "@typescript/analyze-trace": "^0.10.1",
+    "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",

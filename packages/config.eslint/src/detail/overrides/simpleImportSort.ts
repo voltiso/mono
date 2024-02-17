@@ -1,12 +1,18 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const simpleImportSort = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort'
 
-	plugins: ['simple-import-sort'],
+export const simpleImportSort = defineEslintFlatConfig({
+	// files: ['*'],
+
+	// plugins: ['simple-import-sort'],
+	plugins: {
+		'simple-import-sort': simpleImportSortPlugin as never,
+	},
 
 	rules: {
 		'simple-import-sort/imports': 'warn',

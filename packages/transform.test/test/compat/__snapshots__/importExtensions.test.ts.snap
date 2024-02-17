@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compat importExtensions 1`] = `
+"// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+import * as test from './numericSeparators.js';
+void test;
+import * as test2 from './numericSeparators.js';
+void test2;
+export * from './numericSeparators.js';
+export * as default from './numericSeparators.js';
+export * as x from './test/index.js';
+export { a } from './test/index.js';
+import {} from './test/index.js';
+export {};
+export { a as a3 } from '../compat/test/index.js';
+export { a as a2 } from './test/index.js';
+export { abc } from '../_/index.js';
+//# sourceMappingURL=importExtensions.js.map"
+`;

@@ -1,12 +1,18 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const noConstructorBind = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import noConstructorBindPlugin from 'eslint-plugin-no-constructor-bind'
 
-	plugins: ['no-constructor-bind'],
+export const noConstructorBind = defineEslintFlatConfig({
+	// files: ['*'],
+
+	// plugins: ['no-constructor-bind'],
+	plugins: {
+		'no-constructor-bind': noConstructorBindPlugin,
+	},
 
 	rules: {
 		'no-constructor-bind/no-constructor-bind': 'error',

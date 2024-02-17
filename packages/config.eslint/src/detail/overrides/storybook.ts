@@ -1,11 +1,17 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const storybook = defineEslintConfigOverride({
-	files: ['*'],
-	// files: ['*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
+// @ts-expect-error no typings
+import storybookPlugin from 'eslint-plugin-storybook'
 
-	extends: ['plugin:storybook/recommended'],
-} as const)
+export const storybook = defineEslintFlatConfig(
+ ...eslintFlatConfigFromConfig(	storybookPlugin.configs.recommended, {'storybook': storybookPlugin}),
+	{
+		// files: ['*'],
+		// files: ['*.stories.@(ts|tsx|js|jsx|mjs|cjs)'],
+		// extends: ['plugin:storybook/recommended'],
+	} as const,
+)

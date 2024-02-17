@@ -3,4 +3,5 @@
 
 import { baseEslintConfig } from './baseEslintConfig'
 
-export = baseEslintConfig
+// export = baseEslintConfig
+export default baseEslintConfig

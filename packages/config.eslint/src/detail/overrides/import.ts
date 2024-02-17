@@ -2,11 +2,15 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
-	defineEslintConfigOverride,
 	defineEslintConfigOverrideRules,
+	defineEslintFlatConfig,
 } from '@voltiso/config.eslint.lib'
 
 import { codeFiles } from '~/detail/files'
+
+// @ts-expect-error no typings
+import importPlugin from 'eslint-plugin-import'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
 
 const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'import/no-unresolved': 0, // handled by TS
@@ -92,22 +96,29 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/group-exports': 0,
 })
 
-export const importOverride = defineEslintConfigOverride({
-	extends: [
-		'plugin:import/recommended',
-		'plugin:import/warnings',
-		'plugin:import/errors',
-		'plugin:import/typescript',
-	],
+export const importOverride = defineEslintFlatConfig(
+	...eslintFlatConfigFromConfig(importPlugin.configs.recommended as never, {import: importPlugin}),
+	...eslintFlatConfigFromConfig(importPlugin.configs.warnings as never, {import: importPlugin}),
+	...eslintFlatConfigFromConfig(importPlugin.configs.errors as never, {import: importPlugin}),
+	...eslintFlatConfigFromConfig(importPlugin.configs.typescript as never),
+	{
+		// extends: [
+		// 	'plugin:import/recommended',
+		// 	'plugin:import/warnings',
+		// 	'plugin:import/errors',
+		// 	'plugin:import/typescript',
+		// ],
 
-	files: codeFiles,
+		files: codeFiles,
 
-	plugins: ['import'],
+		// plugins: ['import'],
+		// plugins: { import: importPlugin },
 
-	rules: {
-		...staticAnalysisRules,
-		...helpfulWarningsRules,
-		...moduleSystemsRules,
-		...styleGuideRules,
-	},
-} as const)
+		rules: {
+			...staticAnalysisRules,
+			...helpfulWarningsRules,
+			...moduleSystemsRules,
+			...styleGuideRules,
+		},
+	} as const,
+)

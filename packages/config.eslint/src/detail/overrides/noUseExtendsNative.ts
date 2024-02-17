@@ -1,16 +1,23 @@
 // ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { eslintFlatConfigFromConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-export const noUseExtendNative = defineEslintConfigOverride({
-	files: ['*'],
+// @ts-expect-error no typings
+import noUseExtendNativePlugin from 'eslint-plugin-no-use-extend-native'
 
-	plugins: ['no-use-extend-native'],
+export const noUseExtendNative = defineEslintFlatConfig(
+  ...eslintFlatConfigFromConfig(	noUseExtendNativePlugin.configs.recommended, {'no-use-extend-native': noUseExtendNativePlugin}),
+	{
+		// files: ['*'],
 
-	extends: ['plugin:no-use-extend-native/recommended'],
+		// plugins: ['no-use-extend-native'],
 
-	rules: {
-		'no-use-extend-native/no-use-extend-native': 1,
-	},
-} as const)
+		// extends: ['plugin:no-use-extend-native/recommended'],
+
+		rules: {
+			'no-use-extend-native/no-use-extend-native': 1,
+		},
+	} as const,
+)

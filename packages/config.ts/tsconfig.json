@@ -62,7 +62,7 @@
 		 * - `Node` required for dynamic imports without extensions
 		 */
 		"moduleResolution": "Node", // default - for commonjs by default
-		// "moduleResolution": "node16",
+		// "moduleResolution": "NodeNext",
 
 		//
 		// ____________________ Node 16 recommended ____________________
