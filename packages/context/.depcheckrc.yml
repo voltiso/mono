@@ -6,3 +6,4 @@ ignores:
   - '@voltiso/config.ts'
   - '@voltiso/config.jest'
   - '@voltiso/config.jest.lib'
+  - '@voltiso/script'

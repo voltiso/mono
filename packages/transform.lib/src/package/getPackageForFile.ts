@@ -4,7 +4,7 @@
 import { strict as assert } from 'node:assert'
 import { dirname, resolve } from 'node:path'
 
-import { _getPackageForDir } from './getPackageForDir'
+import { _getPackageForDir } from './getPackageForDir.js'
 
 /** @internal */
 export interface _PackagePath {

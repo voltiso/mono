@@ -5,3 +5,4 @@ ignores:
   - '~'
   - import-meta-resolve
   - '@voltiso/config.ts'
+  - '@voltiso/script'

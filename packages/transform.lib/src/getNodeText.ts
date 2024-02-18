@@ -3,7 +3,7 @@
 
 import type * as ts from 'typescript'
 
-import type { TransformContext } from './TransformContext'
+import type { TransformContext } from './TransformContext.js'
 
 export function getNodeText(
 	ctx: TransformContext,

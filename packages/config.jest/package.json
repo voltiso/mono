@@ -54,7 +54,6 @@
     "flow-remove-types": "^2.225.0"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.13.10",
     "@voltiso/config.ts": "workspace:^"
   },
   "comment-esbuild": "0.18.x-to-0.19.7-not-transforming-decorators"

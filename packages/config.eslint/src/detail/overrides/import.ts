@@ -77,7 +77,7 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/no-unassigned-import': 1,
 	'import/no-named-default': 1,
 	'import/no-default-export': 1, // named exports are better!
-	'import/no-anonymous-default-export': 1,
+	'import/no-anonymous-default-export': 0,
 	'import/dynamic-import-chunkname': 1,
 
 	// 'import/extensions': [

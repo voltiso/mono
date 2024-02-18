@@ -4,3 +4,15 @@
 ignores:
   - '@voltiso/config.ts'
   - espree
+  - '@next/eslint-plugin-next'
+  - '@typescript-eslint/eslint-plugin'
+  - '@typescript-eslint/parser'
+  - 'eslint-plugin-*'
+  - any-eslint-parser
+  - confusing-browser-globals
+  - eslint-import-resolver-typescript
+  - '*-eslint-parser'
+  - putout
+  - '@voltiso/script'
+  - eslint
+  - '@voltiso/eslint-plugin'

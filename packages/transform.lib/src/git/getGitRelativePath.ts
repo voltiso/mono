@@ -4,7 +4,7 @@
 import { strict as assert } from 'node:assert'
 import { dirname, resolve } from 'node:path'
 
-import { getGitForDir } from './getGitForDir'
+import { getGitForDir } from './getGitForDir.js'
 
 export function getGitRelativePath(file: string): string | undefined {
 	// eslint-disable-next-line no-param-reassign

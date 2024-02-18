@@ -4,6 +4,7 @@
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
+  "type": "module",
   "sideEffects": false,
   "_________EXPORTS FALLBACK": "__________",
   "main": "tsdoc.json",

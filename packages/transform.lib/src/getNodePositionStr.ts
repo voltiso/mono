@@ -3,7 +3,7 @@
 
 import * as ts from 'typescript'
 
-import { getGitRelativePath } from './git'
+import { getGitRelativePath } from './git/index.js'
 
 export function getNodePositionStr(
 	node: ts.Node,

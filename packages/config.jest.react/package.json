@@ -4,6 +4,7 @@
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
+  "type": "module",
   "sideEffects": false,
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
@@ -56,7 +57,7 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "react": "^18.2.0",
-    "react-native": "^0.72.7",
+    "react-native": "^0.73.4",
     "typescript": "^5.3.3",
     "typescript-transform-paths": "^3.4.6"
   }

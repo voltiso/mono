@@ -6,5 +6,6 @@ ignores:
   - '@voltiso/config.jest.lib'
   - '@voltiso/config.jest'
   - '@voltiso/util.esbuild'
+  - '@voltiso/script'
   - '@firebase/app-types'
   - firebase-tools

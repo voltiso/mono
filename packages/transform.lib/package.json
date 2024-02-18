@@ -4,7 +4,19 @@
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
+  "type": "module",
   "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
@@ -28,9 +40,10 @@
     "fix:eslint": "v fixEslint",
     "__________BUILD": "__________",
     "build": "v build",
-    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
     "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "build:esm": "run-s build:esm:clean build:esm:tsc",
     "build:esm:clean": "rimraf dist/esm",
     "build:esm:tsc": "tsc -b tsconfig.build.esm.json",

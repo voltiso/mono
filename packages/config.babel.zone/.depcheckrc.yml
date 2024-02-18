@@ -2,7 +2,5 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
-  - '@firebase/app-types'
-  - '@voltiso/config.ts'
-  - '@voltiso/config.jest'
+  - '@babel/core'
   - '@voltiso/script'

@@ -8,3 +8,4 @@ ignores:
   - '@babel/preset-env'
   - '@voltiso/config.ts'
   - '@voltiso/config.jest.react'
+  - '@voltiso/script'

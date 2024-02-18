@@ -11,3 +11,4 @@ ignores:
   - '@voltiso/config.eslint'
   - '@voltiso/config.jest.react'
   - '@voltiso/config.jest.lib'
+  - '@voltiso/script'

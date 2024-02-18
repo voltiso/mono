@@ -65,7 +65,6 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.13.10",
     "@types/clone": "^2.1.4",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
