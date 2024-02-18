@@ -22,4 +22,4 @@ export const extOverride = defineEslintFlatConfig({
 			{ exceptBetweenSingleLines: true },
 		],
 	},
-} as const)
+})

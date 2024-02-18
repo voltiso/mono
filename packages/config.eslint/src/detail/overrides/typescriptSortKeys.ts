@@ -33,5 +33,5 @@ export const typescriptSortKeys = defineEslintFlatConfig(
 			'typescript-sort-keys/interface': 0, // no!
 			'typescript-sort-keys/string-enum': 1,
 		},
-	} as const,
+	},
 )

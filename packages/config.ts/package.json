@@ -18,6 +18,7 @@
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "fix:prettier": "v fixPrettier",
     "lint:eslint": "v lintEslint",
     "__________PREPARE": "__________",

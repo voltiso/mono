@@ -3,10 +3,10 @@
 
 import {
 	defineEslintConfigOverrideRules,
+	defineEslintFlatConfig,
 	getAllRules,
 } from '@voltiso/config.eslint.lib'
 import voltisoPlugin from '@voltiso/eslint-plugin'
-import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import nPlugin from 'eslint-plugin-n'
 
@@ -93,7 +93,7 @@ const nRules = defineEslintConfigOverrideRules({
 
 // console.log(nPlugin.configs.recommended.env)
 
-export const nConfig: Linter.FlatConfig[] = [
+export const nConfig = defineEslintFlatConfig(
 	// ...eslintFlatConfigFromConfig(nPlugin.configs.recommended, {n: nPlugin}),
 	{
 		// extends: ['plugin:n/recommended'],
@@ -113,4 +113,4 @@ export const nConfig: Linter.FlatConfig[] = [
 			...nRules,
 		},
 	},
-]
+)

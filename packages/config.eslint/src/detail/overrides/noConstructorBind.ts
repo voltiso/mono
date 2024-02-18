@@ -17,4 +17,4 @@ export const noConstructorBind = defineEslintFlatConfig({
 		'no-constructor-bind/no-constructor-bind': 'error',
 		'no-constructor-bind/no-constructor-state': 'error',
 	},
-} as const)
+})

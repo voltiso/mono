@@ -1,9 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import type { _ } from '~/object'
 
-import type { AlsoAccept } from '..'
+import type { AlsoAccept } from '../AlsoAccept'
 
 /* eslint-disable no-magic-numbers */
 
@@ -26,7 +29,7 @@ export interface _DecrementMap {
 // eslint-disable-next-line etc/no-internal
 export type DecrementArgument = _<keyof _DecrementMap>
 
-export type $Decrement<X extends DecrementArgument | AlsoAccept<number>> =
+export type $Decrement<X extends AlsoAccept<number> | DecrementArgument> =
 	// eslint-disable-next-line etc/no-internal
 	X extends keyof _DecrementMap
 		? // eslint-disable-next-line etc/no-internal

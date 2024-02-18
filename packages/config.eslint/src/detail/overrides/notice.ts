@@ -1,13 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-import {
-	defineEslintConfigOverride,
-	defineEslintFlatConfig,
-} from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import noticePlugin from 'eslint-plugin-notice'
 
@@ -38,9 +32,9 @@ export const notice = defineEslintFlatConfig({
 			},
 		],
 	},
-} as const)
+})
 
-export const noticeHash = defineEslintConfigOverride({
+export const noticeHash = defineEslintFlatConfig({
 	files: [
 		'**/*.yml',
 		'**/*.yaml',
@@ -60,4 +54,4 @@ export const noticeHash = defineEslintConfigOverride({
 			},
 		],
 	},
-} as const)
+})

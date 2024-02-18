@@ -1,16 +1,13 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import markdownPlugin from 'eslint-plugin-markdown'
 
 import { filesInsideMd } from '../files'
 
-export const markdownConfig: Linter.FlatConfig[] = [
+export const markdownConfig = defineEslintFlatConfig(
 	//  ...eslintFlatConfigFromConfig(markdownPlugin.configs.recommended, {'markdown': markdownPlugin}),
 	{
 		// files: ['LICENSE.md'],
@@ -29,14 +26,12 @@ export const markdownConfig: Linter.FlatConfig[] = [
 		// 	// 'notice/notice': 0,
 		// },
 	},
-]
+)
 
-export const additionalMarkdownOverrides = [
-	{
-		files: filesInsideMd,
+export const additionalMarkdownOverrides = defineEslintFlatConfig({
+	files: filesInsideMd,
 
-		rules: {
-			'import/unambiguous': 0,
-		},
+	rules: {
+		'import/unambiguous': 0,
 	},
-] as const
+})

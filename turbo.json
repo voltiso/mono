@@ -42,6 +42,11 @@
 			"outputs": []
 		},
 
+		"areTheTypesWrong": {
+			"dependsOn": ["build:cjs", "build:esm"],
+			"outputs": []
+		},
+
 		"typecov": {
 			"dependsOn": ["^build:cjs"],
 			"inputs": ["src/**", "package.json"],

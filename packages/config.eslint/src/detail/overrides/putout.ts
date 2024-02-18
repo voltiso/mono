@@ -1,16 +1,13 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintConfigOverride,
-	getAllRules,
-} from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import putout from 'eslint-plugin-putout'
 
 import { codeFiles } from '~/detail/files'
 
-export const putoutOverride = defineEslintConfigOverride({
+export const putoutOverride = defineEslintFlatConfig({
 	files: codeFiles,
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -71,4 +68,4 @@ export const putoutOverride = defineEslintConfigOverride({
 		'putout/tape-remove-newline-before-t-end': 1,
 		'putout/nonblock-statement-body-newline': 0,
 	},
-} as const)
+})

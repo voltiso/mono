@@ -17,6 +17,7 @@
     "lint": "v lint",
     "lint:eslint": "v lintEslint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "fix": "v fix",
     "fix:prettier": "v fixPrettier",
     "fix:eslint": "v fixEslint",

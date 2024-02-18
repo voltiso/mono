@@ -51,5 +51,5 @@ export const reactNative = defineEslintFlatConfig(
 			'react-native/no-raw-text': 0, //! enable if using react-native?
 			'react-native/no-single-element-style-arrays': 1,
 		},
-	} as const,
+	},
 )

@@ -35,5 +35,5 @@ export const next = defineEslintFlatConfig(
 		rules: {
 			...getAllRules(nextPlugin as never, 'next', 'warn'),
 		},
-	} as const,
+	},
 )

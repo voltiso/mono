@@ -28,4 +28,4 @@ export const githubOverride = defineEslintFlatConfig({
 
 		'github/no-then': 0, // handled by `promise`
 	},
-} as const)
+})

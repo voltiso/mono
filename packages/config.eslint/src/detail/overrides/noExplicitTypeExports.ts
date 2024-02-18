@@ -40,5 +40,5 @@ export const noExplicitTypeExports = defineEslintFlatConfig(
 
 			'no-explicit-type-exports/no-explicit-type-exports': 2,
 		},
-	} as const,
+	},
 )

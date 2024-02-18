@@ -9,6 +9,10 @@
   "__________EXPORTS": "__________",
   "exports": {
     ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
@@ -30,6 +34,7 @@
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "v lintTsc",
     "fix": "v fix",

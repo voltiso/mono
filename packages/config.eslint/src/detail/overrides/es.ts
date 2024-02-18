@@ -131,4 +131,4 @@ export const es = defineEslintFlatConfig(...baseConfig, {
 	// settings: {
 	// 	'es-x': { aggressive: true },
 	// },
-} as const)
+})

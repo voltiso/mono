@@ -1,8 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getAllRules } from '@voltiso/config.eslint.lib'
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 
@@ -25,28 +24,26 @@ const additional2ArgumentHooksWithDeps = [
 // 	},
 // }
 
-export const reactHooksConfig: Linter.FlatConfig[] = [
-	{
-		files: codeFiles,
+export const reactHooksConfig = defineEslintFlatConfig({
+	files: codeFiles,
 
-		plugins: {
-			'react-hooks': reactHooksPlugin as never,
-		},
-
-		// extends: ['plugin:react-hooks/recommended'],
-
-		rules: {
-			...getAllRules(reactHooksPlugin as never, 'react-hooks', 'warn'),
-
-			'react-hooks/rules-of-hooks': 1,
-
-			'react-hooks/exhaustive-deps': [
-				'warn',
-				{
-					/** Regex */
-					additionalHooks: `(${additional2ArgumentHooksWithDeps.join('|')})`,
-				},
-			],
-		},
+	plugins: {
+		'react-hooks': reactHooksPlugin as never,
 	},
-]
+
+	// extends: ['plugin:react-hooks/recommended'],
+
+	rules: {
+		...getAllRules(reactHooksPlugin as never, 'react-hooks', 'warn'),
+
+		'react-hooks/rules-of-hooks': 1,
+
+		'react-hooks/exhaustive-deps': [
+			'warn',
+			{
+				/** Regex */
+				additionalHooks: `(${additional2ArgumentHooksWithDeps.join('|')})`,
+			},
+		],
+	},
+})

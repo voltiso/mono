@@ -1,10 +1,14 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 import ymlPlugin from 'eslint-plugin-yml'
 import yamlEslintParser from 'yaml-eslint-parser'
 
-export const yamlConfig = [
+const allRules = getAllRules(ymlPlugin as never, 'yml', 'warn')
+delete allRules['yml/sort-sequence-values']
+
+export const yamlConfig = defineEslintFlatConfig(
 	//  ...eslintFlatConfigFromConfig(	ymlPlugin.configs.standard as never, {yml: ymlPlugin}, {'yaml-eslint-parser': yamlEslintParser}, ymlPlugin.configs),
 	{
 		files: ['*.yaml', '*.yml'],
@@ -12,7 +16,7 @@ export const yamlConfig = [
 		// parser: 'yaml-eslint-parser',
 
 		languageOptions: {
-			parser: yamlEslintParser,
+			parser: yamlEslintParser as never,
 		},
 
 		// plugins: ['yml'],
@@ -23,10 +27,14 @@ export const yamlConfig = [
 		// extends: ['plugin:yml/standard'],
 
 		rules: {
-			...ymlPlugin.configs.standard.rules,
+			...allRules,
+
+			// 'yml/sort-sequence-values': 0,
+
+			'yml/file-extension': 0,
 
 			'yml/quotes': 0, // conflicts with prettier
 			'yml/plain-scalar': 1,
 		},
 	},
-]
+)

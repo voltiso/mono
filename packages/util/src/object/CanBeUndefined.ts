@@ -1,22 +1,22 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { exactOptionalPropertyTypes } from '..'
+import type { exactOptionalPropertyTypes } from '~/tsc-options'
 
 /** Distributes over `$obj` */
 export type CanBeUndefined<
 	$obj,
-	key extends keyof $obj,
+	Key extends keyof $obj,
 	True = true,
 	False = false,
 > = exactOptionalPropertyTypes extends false
 	? boolean // ! cannot determine without this tsc option
 	: $obj extends any
-		? key extends any
+		? Key extends any
 			? {
-					[k in key]: undefined
+					[k in Key]: undefined
 				} extends {
-					[k in key]: $obj[k]
+					[k in Key]: $obj[k]
 				}
 				? True
 				: False
@@ -26,7 +26,7 @@ export type CanBeUndefined<
 /** ⚠️ Prefer {@link CanBeUndefined} - should be faster */
 export type CanBeUndefined_<
 	$obj,
-	key,
+	Key,
 	True = false,
 	False = false,
-> = CanBeUndefined<$obj, key & keyof $obj, True, False>
+> = CanBeUndefined<$obj, Key & keyof $obj, True, False>

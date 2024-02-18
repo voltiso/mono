@@ -1,12 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getAllRules } from '@voltiso/config.eslint.lib'
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import securityPlugin from 'eslint-plugin-security'
 
-export const securityConfig: Linter.FlatConfig[] = [
+export const securityConfig = defineEslintFlatConfig(
 	// securityPlugin.configs.recommended,
 	{
 		// files: ['*'],
@@ -36,4 +35,4 @@ export const securityConfig: Linter.FlatConfig[] = [
 			'security/detect-bidi-characters': 1,
 		},
 	},
-]
+)

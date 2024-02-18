@@ -1,14 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintConfigOverride,
-	getAllRules,
-} from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 
-export const unusedImports = defineEslintConfigOverride({
+export const unusedImports = defineEslintFlatConfig({
 	// files: ['*'],
 
 	// plugins: ['unused-imports'],
@@ -23,4 +20,4 @@ export const unusedImports = defineEslintConfigOverride({
 		'unused-imports/no-unused-imports': 1,
 		'unused-imports/no-unused-vars': 1,
 	},
-} as const)
+})

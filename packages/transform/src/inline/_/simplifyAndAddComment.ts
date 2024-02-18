@@ -5,8 +5,8 @@ import type { TransformContext } from '@voltiso/transform.lib'
 import { getNodeText } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
-import { fixNamespaces } from './fixNamespaces'
-import { simplifyNode } from './simplifyNode'
+import { fixNamespaces } from './fixNamespaces.js'
+import { simplifyNode } from './simplifyNode.js'
 
 export function simplifyAndAddComment(
 	ctx: TransformContext,

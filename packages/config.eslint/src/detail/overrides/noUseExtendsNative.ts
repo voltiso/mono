@@ -27,5 +27,5 @@ export const noUseExtendNative = defineEslintFlatConfig(
 
 			//
 		},
-	} as const,
+	},
 )

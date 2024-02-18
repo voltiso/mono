@@ -30,5 +30,5 @@ export const switchCase = defineEslintFlatConfig(
 			'switch-case/newline-between-switch-case': 0, // crashes eslint!
 			'switch-case/no-case-curly': 1,
 		},
-	} as const,
+	},
 )

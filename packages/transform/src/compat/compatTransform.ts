@@ -17,7 +17,10 @@ import type { DeepPartial_ } from '~/_'
 import { _deepMerge2 } from '~/_'
 
 import type { CompatTransformOptions } from './_'
-import { defaultCompatTransformOptions, logCompatTransformNode } from './_'
+import {
+	defaultCompatTransformOptions,
+	logCompatTransformNode,
+} from './_/index.js'
 
 export interface CompatTransformContext extends TransformContext {
 	options: CompatTransformOptions
@@ -120,7 +123,7 @@ export function compatTransform(
 			const visitor: ts.Visitor = node => {
 				// console.log('visitor', ts.SyntaxKind[node.kind])
 
-				if(ts.isIdentifier(node) && node.text === '__dirname') {
+				if (ts.isIdentifier(node) && node.text === '__dirname') {
 					isDirnamePresent = true
 				}
 

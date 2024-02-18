@@ -33,5 +33,5 @@ export const testingLibrary = defineEslintFlatConfig(
 
 			// 'testing-library/consistent-data-testid': 'off',
 		},
-	} as const,
+	},
 )

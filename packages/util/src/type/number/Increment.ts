@@ -1,9 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import type { _ } from '~/object'
 
-import type { AlsoAccept } from '..'
+import type { AlsoAccept } from '../AlsoAccept'
 
 /* eslint-disable no-magic-numbers */
 
@@ -38,8 +41,8 @@ export type $Increment_<X> = X extends keyof _IncrementMap
 		_IncrementMap[X]
 	: number
 
-export type $Increment<X extends IncrementArgument | AlsoAccept<number>> =
+export type $Increment<X extends AlsoAccept<number> | IncrementArgument> =
 	$Increment_<X>
 
-export type Increment<X extends IncrementArgument | AlsoAccept<number>> =
+export type Increment<X extends AlsoAccept<number> | IncrementArgument> =
 	Increment_<X>

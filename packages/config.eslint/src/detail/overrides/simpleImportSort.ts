@@ -22,4 +22,4 @@ export const simpleImportSort = defineEslintFlatConfig({
 		'simple-import-sort/imports': 'warn',
 		'simple-import-sort/exports': 'warn',
 	},
-} as const)
+})

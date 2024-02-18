@@ -15,4 +15,4 @@ export const i18nText = defineEslintFlatConfig({
 	rules: {
 		'i18n-text/no-en': 0, //! this is good! override-enable in projects using i18n
 	},
-} as const)
+})

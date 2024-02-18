@@ -33,5 +33,5 @@ export const i18nextConfig = defineEslintFlatConfig(
 			// 	},
 			// ],
 		},
-	} as const,
+	},
 )

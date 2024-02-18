@@ -35,5 +35,5 @@ export const sonar = defineEslintFlatConfig(
 			'sonarjs/no-duplicate-string': 1,
 			'sonarjs/no-unused-collection': 1,
 		},
-	} as const,
+	},
 )

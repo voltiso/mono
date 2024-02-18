@@ -7,6 +7,7 @@ export function basename(
 	path: PathString<{ separator: '/' }>,
 ): PathSegmentString<{ separator: '/' }>
 
+// eslint-disable-next-line @typescript-eslint/unified-signatures
 export function basename(path: string): PathSegmentString<{ separator: '/' }>
 
 /**

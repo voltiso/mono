@@ -14,7 +14,7 @@ import {
 	hasNodeInlineComment,
 	logInlinedNode,
 	simplifyAndAddComment,
-} from './_'
+} from './_/index.js'
 
 export interface InlineTransformOptions {
 	onInlineError?: 'fail' | undefined

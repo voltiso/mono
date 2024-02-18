@@ -31,5 +31,5 @@ export const eslintComments = defineEslintFlatConfig(
 			'eslint-comments/no-use': 0,
 			'eslint-comments/no-unlimited-disable': 0, // handled by unicorn
 		},
-	} as const,
+	},
 )

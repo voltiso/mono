@@ -80,6 +80,7 @@ export const lintEslintWorkspace = turboAllPackages('lint:eslint', {
 export const lintWorkspace = [lintTscWorkspace, lintEslintWorkspace]
 
 export const depcheckWorkspace = turboAllPackages('depcheck')
+export const areTheTypesWrongWorkspace = turboAllPackages('areTheTypesWrong')
 
 export const testWorkspace = turboAllPackages('test')
 
@@ -96,6 +97,7 @@ export const checkWorkspace = [
 	// turboAllPackages('fix:prettier'),
 	buildWorkspace,
 	depcheckWorkspace,
+	areTheTypesWrongWorkspace,
 	testWorkspace,
 	lintWorkspace,
 ]
@@ -160,6 +162,8 @@ export const trace = ['reset', turbo('trace:run'), traceAnalyze]
 
 export const clean = 'rimraf node_modules dist'
 
+export const areTheTypesWrong = 'attw --pack'
+
 export const prepublishOnly = [
 	'prepareWorkspace',
 
@@ -174,6 +178,8 @@ export const prepublishOnly = [
 		'depcheck',
 		'compatDirs',
 	),
+
+	areTheTypesWrong,
 
 	turboDependents('test'),
 ]
@@ -190,7 +196,10 @@ export const prepublishOnlyFast = [
 		// 'lint:eslint',
 		'lint:tsc',
 		'depcheck',
+		'compatDirs', // ! added - should it be here?
 	),
+
+	areTheTypesWrong,
 
 	async () => {
 		try {

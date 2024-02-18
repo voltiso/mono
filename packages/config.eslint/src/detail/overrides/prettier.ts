@@ -5,7 +5,7 @@ import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 // import { codeFiles } from '~/_/files'
 
-export const prettierOverride = defineEslintFlatConfig({
+export const prettierConfig = defineEslintFlatConfig({
 	// files: ['*'],
 
 	/**
@@ -43,4 +43,4 @@ export const prettierOverride = defineEslintFlatConfig({
 		'array-bracket-newline': 0,
 		'semi-style': 0,
 	},
-} as const)
+})

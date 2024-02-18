@@ -1,8 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getAllRules } from '@voltiso/config.eslint.lib'
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 import jsdocPlugin from 'eslint-plugin-jsdoc'
 
 import { codeFiles, tsFiles } from '../files'
@@ -11,7 +10,7 @@ const allRules = getAllRules(jsdocPlugin as never, 'jsdoc', 'warn')
 delete allRules['jsdoc/text-escaping']
 delete allRules['jsdoc/match-name']
 
-export const jsdocConfig: Linter.FlatConfig[] = [
+export const jsdocConfig = defineEslintFlatConfig(
 	// jsdocPlugin.configs.recommended as never,
 	// ...eslintFlatConfigFromConfig(jsdocPlugin.configs.recommended as never, {
 	// 	jsdoc: jsdocPlugin,
@@ -127,4 +126,4 @@ export const jsdocConfig: Linter.FlatConfig[] = [
 			'jsdoc/require-returns-type': 'off',
 		},
 	},
-]
+)

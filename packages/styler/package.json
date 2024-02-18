@@ -51,6 +51,7 @@
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "v lintTsc",
     "fix": "v fix",

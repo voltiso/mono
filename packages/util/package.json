@@ -44,6 +44,7 @@
     "lint:tsc:tscOptions:snc:true": "tsc -b src/tsc-options/strictNullChecks/test-true",
     "lint:tsc:tscOptions:snc:false": "tsc -b src/tsc-options/strictNullChecks/test-false",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "fix": "v fix",
     "fix:prettier": "v fixPrettier",
     "fix:eslint": "v fixEslint",
@@ -64,6 +65,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.13.10",
     "@types/clone": "^2.1.4",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.ts": "workspace:^",

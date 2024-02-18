@@ -4,31 +4,47 @@
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
+  "type": "module",
   "sideEffects": false,
   "__________EXPORTS": "__________",
   "exports": {
     ".": {
-      "types": "./dist/cjs/index.d.ts",
+      "types": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.js"
+      },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./strip": {
-      "types": "./dist/cjs/strip/default.d.ts",
+      "types": {
+        "import": "./dist/esm/strip/default.js",
+        "require": "./dist/cjs/strip/default.js"
+      },
       "import": "./dist/esm/strip/default.js",
       "require": "./dist/cjs/strip/default.js"
     },
     "./inline": {
-      "types": "./dist/cjs/inline/default.d.ts",
+      "types": {
+        "import": "./dist/esm/inline/default.js",
+        "require": "./dist/cjs/inline/default.js"
+      },
       "import": "./dist/esm/inline/default.js",
       "require": "./dist/cjs/inline/default.js"
     },
     "./compat": {
-      "types": "./dist/cjs/compat/default.d.ts",
+      "types": {
+        "import": "./dist/esm/compat/default.js",
+        "require": "./dist/cjs/compat/default.js"
+      },
       "import": "./dist/esm/compat/default.js",
       "require": "./dist/cjs/compat/default.js"
     },
     "./call-info": {
-      "types": "./dist/cjs/call-info/default.d.ts",
+      "types": {
+        "import": "./dist/esm/call-info/default.js",
+        "require": "./dist/cjs/call-info/default.js"
+      },
       "import": "./dist/esm/call-info/default.js",
       "require": "./dist/cjs/call-info/default.js"
     }
@@ -64,6 +80,7 @@
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "v lintTsc",
     "fix": "v fix",
@@ -71,9 +88,10 @@
     "fix:eslint": "v fixEslint",
     "__________BUILD": "__________",
     "build": "v build",
-    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
     "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "build:esm": "run-s build:esm:clean build:esm:tsc",
     "build:esm:clean": "rimraf dist/esm",
     "build:esm:tsc": "tsc -b tsconfig.build.esm.json",

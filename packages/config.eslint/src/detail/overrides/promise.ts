@@ -25,5 +25,5 @@ export const promise = defineEslintFlatConfig(
 
 			'promise/no-native': 0,
 		},
-	} as const,
+	},
 )

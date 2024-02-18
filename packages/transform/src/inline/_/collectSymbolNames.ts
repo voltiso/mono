@@ -3,7 +3,7 @@
 
 import * as ts from 'typescript'
 
-import { getSymbolPath } from './getSymbolPath'
+import { getSymbolPath } from './getSymbolPath.js'
 import type { SymbolObject } from './SymbolObject'
 
 function isWithTypeParameters(node: ts.Node): node is ts.Node & {

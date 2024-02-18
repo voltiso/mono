@@ -191,4 +191,4 @@ export const unicorn = defineEslintFlatConfig({
 		'unicorn/text-encoding-identifier-case': 1,
 		'unicorn/throw-new-error': 1,
 	},
-} as const)
+})

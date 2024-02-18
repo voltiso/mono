@@ -3,9 +3,9 @@
 
 import {
 	defineEslintConfigOverrideRules,
+	defineEslintFlatConfig,
 	getAllRules,
 } from '@voltiso/config.eslint.lib'
-import type { Linter } from 'eslint'
 // @ts-expect-error no typings
 import importPlugin from 'eslint-plugin-import'
 
@@ -106,7 +106,7 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 
 // console.log('111', importPlugin.configs.recommended)
 
-export const importConfig: Linter.FlatConfig[] = [
+export const importConfig = defineEslintFlatConfig(
 	// ...eslintFlatConfigFromConfig(importPlugin.configs.recommended as never, {
 	// 	import: importPlugin,
 	// }),
@@ -180,4 +180,4 @@ export const importConfig: Linter.FlatConfig[] = [
 			...styleGuideRules,
 		},
 	},
-]
+)

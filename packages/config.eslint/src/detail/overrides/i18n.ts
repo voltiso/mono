@@ -1,11 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import i18nPlugin from 'eslint-plugin-i18n'
 
-export const i18nConfig: Linter.FlatConfig[] = [
+export const i18nConfig = defineEslintFlatConfig(
 	// ...eslintFlatConfigFromConfig(i18nPlugin.configs.recommended, {
 	// 	i18n: i18nPlugin,
 	// }),
@@ -18,7 +18,7 @@ export const i18nConfig: Linter.FlatConfig[] = [
 
 		rules: {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			...i18nPlugin.configs.recommended.rules as {},
+			...(i18nPlugin.configs.recommended.rules as {}),
 
 			'i18n/no-chinese-character': 1,
 			'i18n/no-greek-character': 1,
@@ -28,4 +28,4 @@ export const i18nConfig: Linter.FlatConfig[] = [
 			'i18n/no-thai-character': 1,
 		},
 	},
-]
+)

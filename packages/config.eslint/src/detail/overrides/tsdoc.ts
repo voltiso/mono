@@ -17,4 +17,4 @@ export const tsdoc = defineEslintFlatConfig({
 	rules: {
 		'tsdoc/syntax': 1,
 	},
-} as const)
+})

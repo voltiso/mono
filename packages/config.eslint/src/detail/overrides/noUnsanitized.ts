@@ -22,5 +22,5 @@ export const noUnsanitized = defineEslintFlatConfig(
 			'no-unsanitized/method': 'error',
 			'no-unsanitized/property': 'error',
 		},
-	} as const,
+	},
 )

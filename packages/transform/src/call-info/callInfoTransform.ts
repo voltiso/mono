@@ -12,7 +12,7 @@ import * as ts from 'typescript'
 import { getJsDocTagNames } from '~/_'
 
 import type { CallInfo } from './_'
-import { getAstPath, logCallInfoNode } from './_'
+import { getAstPath, logCallInfoNode } from './_/index.js'
 
 // export interface StripTransformOptions
 // 	extends Partial<{

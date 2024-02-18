@@ -31,5 +31,5 @@ export const jsx = defineEslintFlatConfig(
 			'jsx/mark-used-vars': 1,
 			'jsx/no-undef': 0, // does not work with boolean props
 		},
-	} as const,
+	},
 )

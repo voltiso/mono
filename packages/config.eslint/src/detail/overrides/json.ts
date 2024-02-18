@@ -1,8 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { getAllRules } from '@voltiso/config.eslint.lib'
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 import jsoncPlugin from 'eslint-plugin-jsonc'
 import jsoncEslintParser from 'jsonc-eslint-parser'
 
@@ -15,7 +14,7 @@ const allRules = getAllRules(jsoncPlugin as never, 'jsonc', 'warn')
 delete allRules['jsonc/sort-array-values']
 
 /** `json` with comments */
-export const jsoncConfig: Linter.FlatConfig[] = [
+export const jsoncConfig = defineEslintFlatConfig(
 	// ...eslintFlatConfigFromConfig(jsoncPlugin.configs.base as never, {
 	// 	jsonc: jsoncPlugin,
 	// }),
@@ -99,22 +98,20 @@ export const jsoncConfig: Linter.FlatConfig[] = [
 			// 'json-files/validate-schema': 'error',
 		},
 	},
-]
+)
 
 /** `json` without comments */
-export const jsonConfig: Linter.FlatConfig[] = [
-	{
-		files: [
-			'package.json',
-			'package.*.json',
-			'turbo.json',
-			'firebase.json',
-			'**/.changeset/config.json',
-		],
+export const jsonConfig = defineEslintFlatConfig({
+	files: [
+		'package.json',
+		'package.*.json',
+		'turbo.json',
+		'firebase.json',
+		'**/.changeset/config.json',
+	],
 
-		rules: {
-			'notice/notice': 0,
-			'jsonc/no-comments': 2,
-		},
+	rules: {
+		'notice/notice': 0,
+		'jsonc/no-comments': 2,
 	},
-]
+})

@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { EslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 import { anyOverride } from './detail/overrides/any.js'
 import { arrayFunc } from './detail/overrides/arrayFunc.js'
@@ -14,6 +15,7 @@ import { es } from './detail/overrides/es.js'
 import { eslintComments } from './detail/overrides/eslintComments.js'
 import { etcConfig } from './detail/overrides/etc.js'
 import { extOverride } from './detail/overrides/ext.js'
+import { fileExtensionInImportTsConfig } from './detail/overrides/fileExtensionInImportTs.js'
 import { formatJs } from './detail/overrides/formatJs.js'
 import { formatMessage } from './detail/overrides/formatMessage.js'
 import { githubOverride } from './detail/overrides/github.js'
@@ -39,7 +41,7 @@ import { noSecrets } from './detail/overrides/noSecrets.js'
 import { notice, noticeHash } from './detail/overrides/notice.js'
 import { noUnsanitized } from './detail/overrides/noUnsanitized.js'
 import { noUseExtendNative } from './detail/overrides/noUseExtendsNative.js'
-import { prettierOverride } from './detail/overrides/prettier.js'
+import { prettierConfig } from './detail/overrides/prettier.js'
 import { promise } from './detail/overrides/promise.js'
 import { putoutOverride } from './detail/overrides/putout.js'
 import { react } from './detail/overrides/react.js'
@@ -47,7 +49,7 @@ import { reactHooksConfig } from './detail/overrides/reactHooks.js'
 import { reactNative } from './detail/overrides/reactNative.js'
 import { reactNativeGlobals } from './detail/overrides/reactNativeGlobals.js'
 import { regexConfig } from './detail/overrides/regex.js'
-import { regexpOverride } from './detail/overrides/regexp.js'
+import { regexpConfig } from './detail/overrides/regexp.js'
 import { rxjsConfig } from './detail/overrides/rxjs.js'
 import { securityConfig } from './detail/overrides/security.js'
 import { simpleImportSort } from './detail/overrides/simpleImportSort.js'
@@ -55,9 +57,8 @@ import { sonar } from './detail/overrides/sonar.js'
 import { switchCase } from './detail/overrides/switchCase.js'
 import { testingLibrary } from './detail/overrides/testingLibrary.js'
 import { testOverride } from './detail/overrides/testOverride.js'
-import { toml } from './detail/overrides/toml.js'
 import { tsdoc } from './detail/overrides/tsdoc.js'
-import { turbo } from './detail/overrides/turbo.js'
+import { turboConfig } from './detail/overrides/turbo.js'
 import { typescriptSortKeys } from './detail/overrides/typescriptSortKeys.js'
 import { unicorn } from './detail/overrides/unicorn.js'
 import { unusedImports } from './detail/overrides/unusedImports.js'
@@ -65,9 +66,9 @@ import { voltisoOverride } from './detail/overrides/voltiso.js'
 import { yamlConfig } from './detail/overrides/yaml.js'
 
 // eslint-disable-next-line es-x/no-array-prototype-flat
-export const overrides: EslintFlatConfig[] = [
+export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	/** Null parser - parses anything */
-	anyOverride,
+	...anyOverride,
 
 	// fpOverride, // crap
 	// functional, // crap
@@ -82,74 +83,74 @@ export const overrides: EslintFlatConfig[] = [
 	// sortKeysFix,
 
 	// Configs / plugins
-	githubOverride,
-	react,
-	reactHooksConfig,
-	reactNative,
-	reactNativeGlobals,
+	...githubOverride,
+	...react,
+	...reactHooksConfig,
+	...reactNative,
+	...reactNativeGlobals,
 
 	// Plugins
-	arrayFunc,
-	etcConfig,
-	extOverride,
-	jsdocConfig,
-	putoutOverride,
-	notice, // has to be before `json`
-	noticeHash, // has to be after `notice`
-	nConfig,
-	destructuringConfig,
-	importConfig,
-	unicorn,
-	promise,
-	regexConfig,
-	regexpOverride,
-	rxjsConfig,
-	eslintComments,
-	nodeDependencies,
-	noUseExtendNative,
-	jsxAllyConfig,
-	sonar,
-	noConstructorBind,
-	noExplicitTypeExports,
-	noSecrets,
-	noUnsanitized,
-	securityConfig,
-	switchCase,
-	tsdoc,
-	typescriptSortKeys,
-	unusedImports,
-	cypress,
+	...arrayFunc,
+	...etcConfig,
+	...extOverride,
+	...jsdocConfig,
+	...putoutOverride,
+	...notice, // has to be before `json`
+	...noticeHash, // has to be after `notice`
+	...nConfig,
+	...fileExtensionInImportTsConfig,
+	...destructuringConfig,
+	...importConfig,
+	...unicorn,
+	...promise,
+	...regexConfig,
+	...regexpConfig,
+	...rxjsConfig,
+	...eslintComments,
+	...nodeDependencies,
+	...noUseExtendNative,
+	...jsxAllyConfig,
+	...sonar,
+	...noConstructorBind,
+	...noExplicitTypeExports,
+	...noSecrets,
+	...noUnsanitized,
+	...securityConfig,
+	...switchCase,
+	...tsdoc,
+	...typescriptSortKeys,
+	...unusedImports,
+	...cypress,
 	// html, // ! breaks everything - not sure why
-	testingLibrary,
-	next,
-	simpleImportSort,
+	...testingLibrary,
+	...next,
+	...simpleImportSort,
 	// storybook,
-	jsx,
-	editorconfig,
-	i18nConfig,
-	i18nextConfig,
-	formatMessage,
-	formatJs,
-	i18nText,
-	es,
+	...jsx,
+	...editorconfig,
+	...i18nConfig,
+	...i18nextConfig,
+	...formatMessage,
+	...formatJs,
+	...i18nText,
+	...es,
 
-	codeOverride,
-	chaiFriendly,
-	testOverride, // has to be after `fp`
-	noOnlyTests,
+	...codeOverride,
+	...chaiFriendly,
+	...testOverride, // has to be after `fp`
+	...noOnlyTests,
 
-	markdownConfig,
+	...markdownConfig,
 
-	jsoncConfig,
-	jsonConfig, // has to be after `jsonc`
-	toml,
-	yamlConfig,
+	...jsoncConfig,
+	...jsonConfig, // has to be after `jsonc`	toml,
+	...yamlConfig,
 
-	turbo,
+	...turboConfig,
 
-	prettierOverride,
+	...prettierConfig,
 
-	voltisoOverride,
+	...voltisoOverride,
 
 	// /** `js` (no `ts`) */
 	// {
@@ -232,5 +233,5 @@ export const overrides: EslintFlatConfig[] = [
 	},
 
 	...additionalMarkdownOverrides,
-].flat() as never
+).flat()
 // .slice(0,1345)

@@ -1,6 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './CallInfo'
-export * from './getAstPath'
-export * from './logCallInfoNode'
+export * from './CallInfo.js'
+export * from './getAstPath.js'
+export * from './logCallInfoNode.js'

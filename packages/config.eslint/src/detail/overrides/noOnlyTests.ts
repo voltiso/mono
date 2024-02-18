@@ -19,4 +19,4 @@ export const noOnlyTests = defineEslintFlatConfig({
 	settings: {
 		'no-only-tests/no-only-tests': 1,
 	},
-} as const)
+})

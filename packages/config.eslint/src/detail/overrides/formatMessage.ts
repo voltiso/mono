@@ -1,11 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Linter } from 'eslint'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import formatMessagePlugin from 'eslint-plugin-format-message'
 
-export const formatMessage: Linter.FlatConfig[] = [
+export const formatMessage = defineEslintFlatConfig(
 	// formatMessagePlugin.configs.recommended,
 	{
 		// files: ['*'],
@@ -36,4 +36,4 @@ export const formatMessage: Linter.FlatConfig[] = [
 			},
 		},
 	},
-]
+)

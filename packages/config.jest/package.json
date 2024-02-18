@@ -11,14 +11,6 @@
     ".": {
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    },
-    "./transform": {
-      "import": "./dist/esm/transform.js",
-      "require": "./dist/cjs/transform.js"
-    },
-    "./setup-after-env": {
-      "import": "./dist/esm/setup-after-env.js",
-      "require": "./dist/cjs/setup-after-env.js"
     }
   },
   "__________EXPORTS FALLBACK": "__________",
@@ -36,6 +28,7 @@
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "v lintTsc",
     "fix": "v fix",
@@ -61,6 +54,7 @@
     "flow-remove-types": "^2.225.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.13.10",
     "@voltiso/config.ts": "workspace:^"
   },
   "comment-esbuild": "0.18.x-to-0.19.7-not-transforming-decorators"

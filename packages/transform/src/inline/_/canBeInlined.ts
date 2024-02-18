@@ -6,11 +6,11 @@ import chalk from 'chalk'
 import * as ts from 'typescript'
 
 import type { InlineTransformContext } from '../inlineTransform'
-import { collectNodesOfKind } from './collectNodesOfKind'
-import { collectSymbolNames } from './collectSymbolNames'
-import { getFirstChildOrSelf } from './getFirstChildOrSelf'
-import { hasNodeOfType } from './hasNodeOfType'
-import { simplifyNode } from './simplifyNode'
+import { collectNodesOfKind } from './collectNodesOfKind.js'
+import { collectSymbolNames } from './collectSymbolNames.js'
+import { getFirstChildOrSelf } from './getFirstChildOrSelf.js'
+import { hasNodeOfType } from './hasNodeOfType.js'
+import { simplifyNode } from './simplifyNode.js'
 
 export function canBeInlined(
 	ctx: InlineTransformContext,

@@ -4,9 +4,9 @@
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
-import { logStrippedNode, moduleIcon } from './_'
-import { shouldStripModule } from './_/shouldStripModule'
-import { shouldStripSymbol } from './_/shouldStripSymbol'
+import { logStrippedNode, moduleIcon } from './_/index.js'
+import { shouldStripModule } from './_/shouldStripModule.js'
+import { shouldStripSymbol } from './_/shouldStripSymbol.js'
 
 export interface StripTransformOptions
 	extends Partial<{

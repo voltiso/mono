@@ -3,7 +3,8 @@
 
 import { $AssumeType } from '_'
 
-import type { _, NonStrictPartial } from '..'
+import type { _, NonStrictPartial } from '~/object'
+
 import { isWithCloneFunction } from './clone'
 
 function deepAssign(
@@ -14,6 +15,7 @@ function deepAssign(
 	const descriptors = Object.getOwnPropertyDescriptors(x)
 
 	for (const key of options?.omit ?? []) {
+		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 		delete descriptors[key as never]
 	}
 

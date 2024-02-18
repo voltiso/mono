@@ -1,9 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintFlatConfig,
-} from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import cypressPlugin from 'eslint-plugin-cypress'
 
@@ -30,7 +28,7 @@ export const cypress = defineEslintFlatConfig(
 
 		rules: {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			...cypressPlugin.configs.recommended.rules as {},
+			...(cypressPlugin.configs.recommended.rules as {}),
 
 			'cypress/no-assigning-return-values': 'error',
 			'cypress/no-unnecessary-waiting': 'error',
@@ -39,5 +37,5 @@ export const cypress = defineEslintFlatConfig(
 			'cypress/no-async-tests': 'error',
 			'cypress/no-pause': 'error',
 		},
-	} as const,
+	},
 )

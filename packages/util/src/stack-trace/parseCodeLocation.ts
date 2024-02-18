@@ -3,9 +3,14 @@
 
 import { $fastAssert } from '_'
 
+import type { PathSegmentString } from '~/object'
 import { basename } from '~/path'
 
 import type { CodeLocation } from './CodeLocation'
+
+/** @internal */
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type _hack_parseCodeLocation = PathSegmentString
 
 export function getShortStackTracePath(path: string) {
 	return (

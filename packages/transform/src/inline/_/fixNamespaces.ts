@@ -4,8 +4,8 @@
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
-import { buildNestedQualifiedName } from './buildNestedQualifiedName'
-import { getSymbolPath } from './getSymbolPath'
+import { buildNestedQualifiedName } from './buildNestedQualifiedName.js'
+import { getSymbolPath } from './getSymbolPath.js'
 import type { SymbolObject } from './SymbolObject'
 
 // function isSynthesizedTypeReferenceNode(

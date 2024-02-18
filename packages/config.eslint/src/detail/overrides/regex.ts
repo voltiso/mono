@@ -73,4 +73,4 @@ export const regexConfig = defineEslintFlatConfig({
 		// 	],
 		// ],
 	},
-} as const)
+})

@@ -12,6 +12,7 @@
     "test": "v testWorkspace",
     "lint": "v lintWorkspace",
     "depcheck": "v depcheckWorkspace",
+    "areTheTypesWrong": "v areTheTypesWrongWorkspace",
     "check": "v checkWorkspace",
     "__________PREPARE WORKSPACE": "__________",
     "prepare": "cross-env FORCE_COLOR=1 run-s prepare:ts-patch prepare:script prepare:run",
@@ -21,6 +22,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.13.10",
     "@changesets/cli": "^2.27.1",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.10.5",

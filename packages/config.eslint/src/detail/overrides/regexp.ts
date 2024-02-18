@@ -5,7 +5,7 @@ import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import regexpPlugin from 'eslint-plugin-regexp'
 
-export const regexpOverride = defineEslintFlatConfig(
+export const regexpConfig = defineEslintFlatConfig(
 	//  ...eslintFlatConfigFromConfig(regexpPlugin.configs.all, {regexp: regexpPlugin}),
 	{
 		// files: '*',
@@ -26,5 +26,5 @@ export const regexpOverride = defineEslintFlatConfig(
 			'regexp/require-unicode-sets-regexp': 0, // not yet, node@18.18.0 does not support `v` flag
 			'regexp/prefer-named-capture-group': 0, // hmmm, not sure, might be useful
 		},
-	} as const,
+	},
 )

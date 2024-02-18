@@ -1,10 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintConfigOverride } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 import formatJsPlugin from 'eslint-plugin-formatjs'
 
-export const formatJs = defineEslintConfigOverride({
+export const formatJs = defineEslintFlatConfig({
 	// files: '*',
 
 	// plugins: ['formatjs'],
@@ -28,4 +28,4 @@ export const formatJs = defineEslintConfigOverride({
 		'formatjs/no-id': 2,
 		'formatjs/no-complex-selectors': 2,
 	},
-} as const)
+})

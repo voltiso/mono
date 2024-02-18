@@ -22,6 +22,7 @@
     "lint:fast": "run-p lint:depcheck lint:prettier",
     "lint:slow": "run-p lint:tsc lint:eslint",
     "depcheck": "depcheck",
+    "areTheTypesWrong": "v areTheTypesWrong",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "v lintTsc",
     "fix": "v fix",

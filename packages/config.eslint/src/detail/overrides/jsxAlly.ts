@@ -23,5 +23,5 @@ export const jsxAllyConfig = defineEslintFlatConfig(
 
 			'jsx-a11y/no-autofocus': 0, // hmm
 		},
-	} as const,
+	},
 )

@@ -59,5 +59,5 @@ export const nodeDependencies = defineEslintFlatConfig(
 			...bestPractices,
 			...stylisticIssues,
 		},
-	} as const,
+	},
 )
