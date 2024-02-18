@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Bivariant, Bivariant_ } from '@voltiso/util'
@@ -35,12 +35,12 @@ export type GetSignatures<Hs extends HandlersTree> = GetSignatures_<Hs>
 export type GetSignatures_<Hs> = Hs extends Handler
 	? GetSignature<Hs>
 	: Hs extends (...args: any) => any
-	? Hs
-	: Hs extends object
-	? {
-			[k in keyof Hs]: GetSignatures_<Hs[k]>
-	  }
-	: Hs
+		? Hs
+		: Hs extends object
+			? {
+					[k in keyof Hs]: GetSignatures_<Hs[k]>
+				}
+			: Hs
 
 //
 
@@ -50,9 +50,9 @@ export type GetBivariantSignatures<Hs extends HandlersTree> =
 export type GetBivariantSignatures_<Hs> = Hs extends Handler
 	? GetBivariantSignature<Hs>
 	: Hs extends (...args: any) => any
-	? Hs
-	: Hs extends object
-	? {
-			[k in keyof Hs]: GetBivariantSignatures_<Hs[k]>
-	  }
-	: Hs
+		? Hs
+		: Hs extends object
+			? {
+					[k in keyof Hs]: GetBivariantSignatures_<Hs[k]>
+				}
+			: Hs

@@ -3,7 +3,6 @@
 
 import * as path from 'node:path'
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 import baseConfig from '@voltiso/eslint-config'
 // import baseConfigFast from '@voltiso/eslint-config-fast'
 
@@ -54,7 +53,7 @@ const dirname = path.dirname(new URL(import.meta.url).pathname)
 // console.log('dirname', __dirname)
 
 // eslint-disable-next-line import/no-default-export
-export default defineEslintFlatConfig(
+const config = [
 	...baseConfig,
 	// ...(isFastMode ? baseConfigFast : baseConfig),
 	{
@@ -76,4 +75,6 @@ export default defineEslintFlatConfig(
 			},
 		},
 	},
-)
+]
+
+export default config

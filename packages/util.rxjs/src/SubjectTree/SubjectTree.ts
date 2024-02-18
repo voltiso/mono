@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable etc/no-internal */
@@ -154,13 +154,14 @@ export type GetSubjectTree<O extends Partial<SubjectTreeTypeOptions>> =
 export type GetSubjectTree_<
 	O extends Partial<SubjectTreeTypeOptions>,
 	Options extends SubjectTreeTypeOptions, // computed
-> = IsCompatible<Options['Output'], Options['Input']> extends false
-	? CustomSubjectTree<O>
-	: Options['IsOptional'] extends false
-		? Options['IsAncestorOptional'] extends false
-			? RequiredSubjectTree<Options['Output']>
+> =
+	IsCompatible<Options['Output'], Options['Input']> extends false
+		? CustomSubjectTree<O>
+		: Options['IsOptional'] extends false
+			? Options['IsAncestorOptional'] extends false
+				? RequiredSubjectTree<Options['Output']>
+				: CustomSubjectTree<O>
 			: CustomSubjectTree<O>
-		: CustomSubjectTree<O>
 
 // Options['IsOptional'] extends true
 // 	? CustomSubjectTree<O>

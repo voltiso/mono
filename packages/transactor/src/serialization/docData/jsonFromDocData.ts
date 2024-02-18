@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isDocumentReference, isTimestamp } from '@voltiso/firestore-like'
@@ -17,14 +17,14 @@ export type JsonFromDocData<Data> = Data extends $$DocRef & {
 		? StrongDocRefJson
 		: WeakDocRefJson
 	: Data extends string
-	? string
-	: Data extends Date
-	? DateJson
-	: Data extends object
-	? {
-			[k in keyof Data]: JsonFromDocData<Data[k]>
-	  }
-	: Data
+		? string
+		: Data extends Date
+			? DateJson
+			: Data extends object
+				? {
+						[k in keyof Data]: JsonFromDocData<Data[k]>
+					}
+				: Data
 
 export function jsonFromDocData<Data>(data: Data): JsonFromDocData<Data> {
 	if (isDocRef(data)) return data.toJSON() as never

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -23,5 +23,5 @@ export interface WeakDocRef<R extends $$DocRelated = AnyDoc>
 export type WeakDocRef_<R> = R extends $$DocRelatedLike
 	? CustomDocRef<{
 			doc: GetDocRepresentative<R>
-	  }>
+		}>
 	: never

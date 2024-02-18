@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
@@ -23,6 +23,7 @@ function _helloOnce() {
 
 const rightArrow = '➡️ '
 
+// eslint-disable-next-line @typescript-eslint/max-params
 export function logCompatTransformNode(
 	ctx: CompatTransformContext,
 	node: ts.Node,

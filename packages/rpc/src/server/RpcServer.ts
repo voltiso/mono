@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SchemarError } from '@voltiso/schemar'
@@ -65,7 +65,7 @@ export class _RpcServer<
 			const args = this.options.serializer
 				? serializedArgs.map(serializedArg =>
 						this.options.serializer?.deserialize(serializedArg),
-				  )
+					)
 				: serializedArgs
 
 			const logName = `rpc.${path.join('.')}(${args

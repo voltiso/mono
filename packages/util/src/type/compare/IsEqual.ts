@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { OptionalFromUndefined, SmartFlatten } from '~/object'
@@ -16,11 +16,8 @@ export type IsCompatible<A, B, T = true, F = false> = [A, B] extends [B, A]
 	: F
 
 /** Is (very) strictly equal https://stackoverflow.com/a/52473108/3570903 */
-export type IsAlmostSame<A, B, T = true, F = false> = (<X>() => X extends B
-	? 1
-	: 0) extends <X>() => X extends A ? 1 : 0
-	? T
-	: F
+export type IsAlmostSame<A, B, T = true, F = false> =
+	(<X>() => X extends B ? 1 : 0) extends <X>() => X extends A ? 1 : 0 ? T : F
 
 export type IsIdenticalIfFunction<A, B> = [A] extends [
 	(this: infer ThisA, ...args: any) => any,

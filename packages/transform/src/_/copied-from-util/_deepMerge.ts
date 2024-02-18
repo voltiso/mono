@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // ! COPIED from `@voltiso/util` - to avoid cyclic package deps
@@ -19,7 +19,7 @@ export function _deepMerge2(
 		) {
 			// eslint-disable-next-line etc/no-internal
 			result[k] = _deepMerge2(result[k] as never, objectB[k] as never)
-		} else (result[k] as unknown) = objectB[k]
+		} else result[k] = objectB[k]
 	}
 
 	return result

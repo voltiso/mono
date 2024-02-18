@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _, NewableReturn_ } from '@voltiso/util'
@@ -38,9 +38,9 @@ export type GetTI<X extends $$DocTI | DocTag | { readonly [DTI]: $$DocTI }> =
 	X extends $$DocTI
 		? X
 		: X extends { readonly [DTI]: $$DocTI }
-		? X[DTI]
-		: X extends DocTag
-		? DocTypes[X] extends { readonly [DTI]: {} }
-			? DocTypes[X][DTI]
-			: never
-		: never
+			? X[DTI]
+			: X extends DocTag
+				? DocTypes[X] extends { readonly [DTI]: {} }
+					? DocTypes[X][DTI]
+					: never
+				: never

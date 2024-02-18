@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IndexedCssProps } from '~/_/CssProps'
@@ -9,6 +9,7 @@ import type { IStyledDataMod } from './IStyledData'
 export type GetModProps<
 	Mod extends IStyledDataMod<CustomCss>,
 	CustomCss extends object,
-> = Mod['cssProps'] extends IndexedCssProps<CustomCss>
-	? PropsFromCssProps<Mod['cssProps'], CustomCss>
-	: {}
+> =
+	Mod['cssProps'] extends IndexedCssProps<CustomCss>
+		? PropsFromCssProps<Mod['cssProps'], CustomCss>
+		: {}

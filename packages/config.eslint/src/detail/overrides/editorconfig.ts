@@ -20,6 +20,8 @@ export const editorconfig: Linter.FlatConfig[] = [
 		rules: {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			...editorConfigPlugin.configs.all.rules,
+
+			'editorconfig/indent': 0 // conflicts with prettier
 		},
 	},
 ]

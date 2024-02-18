@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Bivariant } from '@voltiso/util'
@@ -13,21 +13,21 @@ import type { MethodNoThis } from '~/Method'
 export type Promisify<F> = F extends (...args: any) => PromiseLike<unknown>
 	? Bivariant<F>
 	: F extends (...args: infer Args) => infer R
-	? Bivariant<(...args: Args) => PromiseLike<R>>
-	: never
+		? Bivariant<(...args: Args) => PromiseLike<R>>
+		: never
 
 /** @inline */
 export type GetMethodPromises<R extends $$DocRelatedLike> = R extends AnyDoc
 	? Record<string, MethodNoThis>
 	: // : GetMethodPromises.ByTI<GetDocTI<R>>
-	  GetMethodPromises.ByTI<InferTI<R>> // ! INFER slow
+		GetMethodPromises.ByTI<InferTI<R>> // ! INFER slow
 
 export namespace GetMethodPromises {
 	/** Simplest way */
 	export type ByMethods<methods> = methods extends any
 		? {
 				[k in keyof methods]: Promisify<OmitThisParameter<methods[k]>>
-		  }
+			}
 		: never
 
 	/** Almost as simple as {@link ByMethods} */

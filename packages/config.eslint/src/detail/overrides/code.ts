@@ -125,6 +125,8 @@ export const codeOverride: EslintFlatConfig[] = [
 				{
 					selector: 'typeLike',
 					format: ['PascalCase'],
+					leadingUnderscore: 'allow',
+					trailingUnderscore: 'allow',
 				},
 
 				{
@@ -133,8 +135,10 @@ export const codeOverride: EslintFlatConfig[] = [
 				},
 			],
 
-			'@typescript-eslint/explicit-module-boundary-types': 1,
-			'@typescript-eslint/explicit-function-return-type': 1,
+			'@typescript-eslint/init-declarations': 0, // require to init with undefined?
+			'@typescript-eslint/prefer-nullish-coalescing': 0,
+			'@typescript-eslint/explicit-module-boundary-types': 0,
+			'@typescript-eslint/explicit-function-return-type': 0,
 			'@typescript-eslint/max-params': 1,
 
 			'@typescript-eslint/strict-boolean-expressions': 0,
@@ -218,7 +222,10 @@ export const codeOverride: EslintFlatConfig[] = [
 			'no-shadow': 0, // we like to shadow
 			'no-ternary': 0, // ternary... hmm, ok.
 			'no-underscore-dangle': 0,
-			'no-use-before-define': 2,
+
+			'no-use-before-define': 0,
+			'@typescript-eslint/no-use-before-define': 0,
+
 			'no-void': ['error', { allowAsStatement: true }],
 			'prefer-arrow-callback': 1,
 			'no-confusing-arrow': 0, // not confusing at all
@@ -280,6 +287,8 @@ export const codeOverride: EslintFlatConfig[] = [
 			'no-useless-computed-key': 1,
 
 			'no-duplicate-imports': 0, // handled by `import/no-duplicates`
+
+			'no-undef': 0,
 
 			'consistent-return': 1,
 			// 'consistent-return': 0, // a bit pain to return `undefined` explicitly in branches?

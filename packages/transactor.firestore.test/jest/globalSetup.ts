@@ -1,4 +1,7 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-console */
@@ -9,7 +12,8 @@ import { getCwd } from './_/getCwd'
 import { getFirebaseJsonPath } from './_/getFirebaseJsonPath'
 import { writeFirebaseJson } from './_/writeFirebaseJson'
 
-export = async () => {
+// eslint-disable-next-line import/no-anonymous-default-export, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
+export default async () => {
 	// eslint-disable-next-line import/dynamic-import-chunkname
 	const getPortModule = await import('get-port')
 	const getPort = getPortModule.default

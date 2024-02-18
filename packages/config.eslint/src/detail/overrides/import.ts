@@ -62,7 +62,16 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/exports-last': 0,
 	'import/no-duplicates': 1, // simple-import-sort does not handle this
 	'import/no-namespace': 0,
-	'import/extensions': 0, // handled by eslint-plugin-n + PATCH
+
+	// 'import/extensions': 0, // handled by eslint-plugin-n + PATCH
+	'import/extensions': [
+		'error',
+		'always',
+		{
+			ts: 'never',
+			tsx: 'never',
+		},
+	],
 
 	'import/newline-after-import': 1,
 	'import/no-unassigned-import': 1,
@@ -122,8 +131,8 @@ export const importConfig: Linter.FlatConfig[] = [
 
 		settings: {
 			'import/parsers': {
-				espree: ['.js', '.cjs', '.mjs', '.jsx'],
-				// '@typescript-eslint/parser': codeFiles.map(s => s.slice(1)),
+				// espree: ['.js', '.cjs', '.mjs', '.jsx'],
+				'@typescript-eslint/parser': codeFiles.map(s => s.slice(1)),
 			},
 
 			'import/ignore': ['node_modules/react-native/index\\.js$'],

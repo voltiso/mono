@@ -1,0 +1,24 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	"extends": "@voltiso/config.ts/build/esm",
+
+	"compilerOptions": {
+		"outDir": "dist/esm",
+		"rootDir": "src",
+
+		// "declaration": false,
+		// "declarationMap": false,
+
+		"paths": {
+			// "~": ["./src"],
+			"~/*": ["./src/*"],
+			"@typescript-eslint/utils": [
+				"./node_modules/@typescript-eslint/utils/dist/index.d.ts"
+			]
+		}
+	},
+
+	"include": ["src"]
+}

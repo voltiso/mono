@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ApplyPatch, PatchFor } from '@voltiso/util'
@@ -6,10 +6,10 @@ import { isDeleteIt, isReplaceIt, patch } from '@voltiso/util'
 
 import { TransactorError } from '~/error'
 
-export function applyUpdates<X extends object | null | undefined, Updates extends PatchFor<X>>(
-	data: X,
-	updates: Updates,
-): ApplyPatch<X, Updates> | null {
+export function applyUpdates<
+	X extends object | null | undefined,
+	Updates extends PatchFor<X>,
+>(data: X, updates: Updates): ApplyPatch<X, Updates> | null {
 	// console.log('applyUpdates', { data, updates })
 
 	if (isDeleteIt(updates) || (isReplaceIt(updates) && !updates.__replaceIt))

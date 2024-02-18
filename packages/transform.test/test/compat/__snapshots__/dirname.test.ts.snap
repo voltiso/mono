@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compat dirname 1`] = `
+"const __dirname = new URL(".", import.meta.url).pathname.slice(0, -1);
+export const a = __dirname + '/test';
+//# sourceMappingURL=dirname.js.map"
+`;

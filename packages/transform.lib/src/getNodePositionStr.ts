@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as ts from 'typescript'
@@ -8,7 +8,7 @@ import { getGitRelativePath } from './git'
 export function getNodePositionStr(
 	node: ts.Node,
 	sourceFile?: ts.SourceFile | undefined,
-) {
+): string {
 	// eslint-disable-next-line no-param-reassign
 	node = ts.getOriginalNode(node)
 

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
@@ -124,7 +124,7 @@ export async function processTriggers(
 	// apply updates
 	const data = isDefined(params?.updates)
 		? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		  applyUpdates(cacheEntry.data, params?.updates as never)
+			applyUpdates(cacheEntry.data, params?.updates as never)
 		: cacheEntry.data
 
 	assert(!isReplaceIt(data))

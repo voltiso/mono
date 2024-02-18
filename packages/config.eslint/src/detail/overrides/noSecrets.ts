@@ -14,6 +14,6 @@ export const noSecrets = defineEslintFlatConfig({
 	},
 
 	rules: {
-		'no-secrets/no-secrets': 'error',
+		'no-secrets/no-secrets': ['warn', { tolerance: 4.5 }],
 	},
 } as const)

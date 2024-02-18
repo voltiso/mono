@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '_'
@@ -64,12 +64,8 @@ describe('OptionalArgument', () => {
 		$Assert.is<Func<Args, Result>, IFunc>()
 		$Assert.is<Func<Args, Result>, Func>()
 
-		type TestA<Args extends number[], Result extends string> = Func<
-			Args,
-			Result
-		> extends IFunc<Result>
-			? 1
-			: 0
+		type TestA<Args extends number[], Result extends string> =
+			Func<Args, Result> extends IFunc<Result> ? 1 : 0
 
 		type A = TestA<Args, Result>
 
@@ -78,12 +74,8 @@ describe('OptionalArgument', () => {
 
 		//
 
-		type TestB<Args extends number[], Result extends string> = Func<
-			Args,
-			Result
-		> extends Func_<Args, Result>
-			? 1
-			: 0
+		type TestB<Args extends number[], Result extends string> =
+			Func<Args, Result> extends Func_<Args, Result> ? 1 : 0
 
 		type B = TestB<Args, Result>
 		$Assert.is<B, 0 | 1>()

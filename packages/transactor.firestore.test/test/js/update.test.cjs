@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 'use strict'
@@ -39,9 +39,7 @@ describe('update', function () {
 			},
 		}
 
-		await expect(db('person', 'artur').data).resolves.toMatchObject(
-			expected,
-		)
+		await expect(db('person', 'artur').data).resolves.toMatchObject(expected)
 		await expect(db('person', 'artur').dataWithId()).resolves.toMatchObject({
 			...expected,
 			id,

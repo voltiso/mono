@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$DocTI, CustomDoc, DocTI } from '~/Doc'
@@ -7,12 +7,11 @@ import type { DocTypes } from '~/DocTypes-module-augmentation'
 type GDocByTag_<TI extends DocTI> = TI['tag'] extends 'untagged'
 	? never
 	: TI['tag'] extends keyof DocTypes
-	? DocTypes[TI['tag']]
-	: never
+		? DocTypes[TI['tag']]
+		: never
 
-export type GDocByTag<TI extends DocTI> = GDocByTag_<TI> extends never
-	? GO<TI>
-	: GDocByTag_<TI>
+export type GDocByTag<TI extends DocTI> =
+	GDocByTag_<TI> extends never ? GO<TI> : GDocByTag_<TI>
 
 // export type GDoc<TI extends IDocTI, Ctx extends ExecutionContext = 'outside'> = IDoc extends TI['doc']
 // 	? Doc<TI, Ctx>

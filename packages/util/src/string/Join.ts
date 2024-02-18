@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Override } from '~/type'
@@ -29,14 +29,12 @@ export type Join<
 	partialOptions extends Partial<JoinOptions> = {},
 > = Join_<T, partialOptions>
 
-export type Join_<
-	T,
-	partialOptions = {},
-> = partialOptions extends Partial<JoinOptions>
-	? T extends readonly Printable[]
-		? Join._Rec<T, Override<DefaultJoinOptions, partialOptions>>
-		: T
-	: never
+export type Join_<T, partialOptions = {}> =
+	partialOptions extends Partial<JoinOptions>
+		? T extends readonly Printable[]
+			? Join._Rec<T, Override<DefaultJoinOptions, partialOptions>>
+			: T
+		: never
 
 export namespace Join {
 	export type _Rec<Arr, options extends JoinOptions> = Arr extends readonly [

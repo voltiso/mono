@@ -7,6 +7,14 @@ import testingLibraryPlugin from 'eslint-plugin-testing-library'
 
 import { testFiles } from '~/detail/files'
 
+const allRules = getAllRules(
+	testingLibraryPlugin as never,
+	'testing-library',
+	'warn',
+)
+
+delete allRules['testing-library/consistent-data-testid']
+
 export const testingLibrary = defineEslintFlatConfig(
 	// ...eslintFlatConfigFromConfig(testingLibraryPlugin.configs.react, {
 	// 	'testing-library': testingLibraryPlugin,
@@ -21,9 +29,9 @@ export const testingLibrary = defineEslintFlatConfig(
 		// extends: ['plugin:testing-library/react'],
 
 		rules: {
-			...getAllRules(testingLibraryPlugin as never, 'testing-library', 'warn'),
+			...allRules,
 
-			//
+			// 'testing-library/consistent-data-testid': 'off',
 		},
 	} as const,
 )

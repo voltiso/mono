@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { BRAND, IsAny } from '@voltiso/util'
@@ -29,8 +29,7 @@ export interface DocBrand<tag extends DocTagLike | AnyDoc = AnyDoc>
 			: { [k in tag]: true }
 	> {}
 
-export type DocTagFromBrand<brand extends DocBrand> = IsAny<
-	brand[BRAND][TRANSACTOR]['doc']
-> extends true
-	? AnyDoc
-	: keyof brand[BRAND][TRANSACTOR]['doc'] & DocTag
+export type DocTagFromBrand<brand extends DocBrand> =
+	IsAny<brand[BRAND][TRANSACTOR]['doc']> extends true
+		? AnyDoc
+		: keyof brand[BRAND][TRANSACTOR]['doc'] & DocTag

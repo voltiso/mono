@@ -158,7 +158,14 @@ export const overrides: EslintFlatConfig[] = [
 
 	/** `ts` (no `js`) */
 	{
-		files: ['*.ts', '*.tsx', '*.cts', '*.ctsx', '*.mts', '*.mtsx'],
+		files: [
+			'**/*.ts',
+			'**/*.tsx',
+			'**/*.cts',
+			'**/*.ctsx',
+			'**/*.mts',
+			'**/*.mtsx',
+		],
 
 		rules: {
 			'jsdoc/require-param-type': 0,
@@ -174,11 +181,11 @@ export const overrides: EslintFlatConfig[] = [
 	// `cjs` (js/ts)
 	{
 		files: [
-			'*.cjs',
-			'*.cjsx',
-			'*.cts',
-			'*.ctsx',
-			'next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
+			'**/*.cjs',
+			'**/*.cjsx',
+			'**/*.cts',
+			'**/*.ctsx',
+			'**/next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
 		],
 
 		languageOptions: {
@@ -189,6 +196,7 @@ export const overrides: EslintFlatConfig[] = [
 
 		rules: {
 			'@typescript-eslint/no-var-requires': 0,
+			'@typescript-eslint/no-require-imports': 0,
 			'import/no-commonjs': 0,
 			'unicorn/prefer-module': 0,
 		},
@@ -197,9 +205,9 @@ export const overrides: EslintFlatConfig[] = [
 	// `cjs` (js-only)
 	{
 		files: [
-			'*.cjs',
-			'*.cjsx',
-			'next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
+			'**/*.cjs',
+			'**/*.cjsx',
+			'**/next.config.js', // has to be `.js` for `@next/bundle-analyzer` to work :(
 		],
 
 		rules: {
@@ -209,7 +217,14 @@ export const overrides: EslintFlatConfig[] = [
 
 	// `jsx`/`tsx`
 	{
-		files: ['*.tsx', '*.jsx', '*.mtsx', '*.ctsx', '*.mjsx', '*.cjsx'],
+		files: [
+			'**/*.tsx',
+			'**/*.jsx',
+			'**/*.mtsx',
+			'**/*.ctsx',
+			'**/*.mjsx',
+			'**/*.cjsx',
+		],
 
 		rules: {
 			'import/no-nodejs-modules': 1,

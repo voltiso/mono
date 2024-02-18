@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { BoundCallable, CALL } from '@voltiso/util'
@@ -17,9 +17,9 @@ import type { DbContext, DbParentContext } from './Context'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Db {
-	<Tokens extends readonly string[]>(...pathTokens: Tokens): DbPathFromString<
-		CanonicalPath<Tokens>
-	>
+	<Tokens extends readonly string[]>(
+		...pathTokens: Tokens
+	): DbPathFromString<CanonicalPath<Tokens>>
 
 	(docPath: DocPath): WeakDocRef<IndexedDoc>
 }

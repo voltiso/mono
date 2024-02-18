@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Brands, CustomBrand_, PropertyPath } from '@voltiso/util'
@@ -34,8 +34,8 @@ export interface TransactorBrand<
 		path extends keyof Brands[TRANSACTOR]
 			? [path]
 			: path extends PropertyPath.ForObject<Brands[TRANSACTOR]> | []
-			? path
-			: never,
+				? path
+				: never,
 		detail
 	> {}
 

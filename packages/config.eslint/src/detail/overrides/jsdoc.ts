@@ -32,6 +32,8 @@ export const jsdocConfig: Linter.FlatConfig[] = [
 		rules: {
 			...allRules,
 
+			'jsdoc/sort-tags': 0,
+
 			'jsdoc/text-escaping': 0,
 			'jsdoc/match-name': 0,
 

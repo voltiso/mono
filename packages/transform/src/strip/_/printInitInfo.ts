@@ -1,11 +1,11 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { StripTransformOptions } from '../stripTransform'
 
 export function printInitInfo(pluginOptions: StripTransformOptions) {
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
-	const isEnabled = !process.env['VOLTISO_STRIP_DISABLE']
+	const isEnabled = !process.env.VOLTISO_STRIP_DISABLE
 
 	if (isEnabled) {
 		if (pluginOptions.symbols?.length)

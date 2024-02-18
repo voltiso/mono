@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $AssumeType } from '@voltiso/util'
@@ -26,12 +26,12 @@ export interface ReactiveEffectOptions {
 	/**
 	 * `false` means run synchronously when Subject emits.
 	 *
-	 * `true` means use `requestAnimationFrame` to run the effect
-	 * asynchronously. This also means that the effect may not run on every
-	 * observable change, but rather group updates for better performance.
+	 * `true` means use `requestAnimationFrame` to run the effect asynchronously.
+	 * This also means that the effect may not run on every observable change, but
+	 * rather group updates for better performance.
 	 *
-	 * - (`setTimeout` is very slow, `requestAnimationFrame` is much better -
-	 *   tested in Firefox)
+	 * - (`setTimeout` is very slow, `requestAnimationFrame` is much better - tested
+	 *   in Firefox)
 	 *
 	 * @defaultValue `false` if `isImmediate`, `true` otherwise
 	 */

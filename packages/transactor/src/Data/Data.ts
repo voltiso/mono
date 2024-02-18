@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output, Output_ } from '@voltiso/schemar'
@@ -45,6 +45,6 @@ export type $WithId<
 							? Output<GetDocTI<R & $$DocRelatedLike>['id']>
 							: unknown)
 				} & Data
-		  >
+			>
 		: never
 	: never

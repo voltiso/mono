@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsAny } from '~/any'
@@ -10,23 +10,21 @@ import type { IncrementIt } from './incrementIt'
 import type { KeepIt } from './keepIt'
 import type { ReplaceIt } from './replaceIt'
 
-export type PatchFor<
-	X,
-	atomics = PatchFor.DefaultAtomics,
-> = IsAny<X> extends true
-	? any
-	: unknown extends X
-		? unknown // IsIdentical<X, object> extends true ? object :
-		: // IsIdentical<X, {}> extends true ? {} :
-			[X] extends [never]
-			? never
-			:
-					| X
-					| KeepIt
-					| ReplaceIt<X>
-					| PatchFor.Nested<X, atomics>
-					| (X extends number | bigint ? IncrementIt : never)
-					| (X extends readonly (infer E)[] ? ArraySetUpdateIt<E, E> : never)
+export type PatchFor<X, atomics = PatchFor.DefaultAtomics> =
+	IsAny<X> extends true
+		? any
+		: unknown extends X
+			? unknown // IsIdentical<X, object> extends true ? object :
+			: // IsIdentical<X, {}> extends true ? {} :
+				[X] extends [never]
+				? never
+				:
+						| X
+						| KeepIt
+						| ReplaceIt<X>
+						| PatchFor.Nested<X, atomics>
+						| (X extends number | bigint ? IncrementIt : never)
+						| (X extends readonly (infer E)[] ? ArraySetUpdateIt<E, E> : never)
 
 export namespace PatchFor {
 	export type Nested<X, atomics> = X extends atomics

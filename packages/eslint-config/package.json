@@ -123,7 +123,7 @@
     "eslint-plugin-yml": "^1.12.2",
     "espree": "^10.0.1",
     "jsonc-eslint-parser": "^2.4.0",
-    "putout": "^35.4.1",
+    "putout": "^35.4.2",
     "toml-eslint-parser": "^0.9.3",
     "yaml-eslint-parser": "^1.2.2"
   },

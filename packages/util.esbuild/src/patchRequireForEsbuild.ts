@@ -1,8 +1,8 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export function patchRequireForEsbuild() {
-	// eslint-disable-next-line n/global-require, unicorn/prefer-module
+	// eslint-disable-next-line n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention
 	const Module = require('node:module') as NodeRequire
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

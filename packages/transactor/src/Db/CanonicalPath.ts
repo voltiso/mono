@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Join } from '@voltiso/util'
@@ -9,12 +9,12 @@ import type { DocTag } from '~/DocTypes'
 type IsSingleUnknownPathToken<A, T = true, F = false> = A extends DocTag
 	? T
 	: string extends A
-	? T
-	: A extends DocIdString
-	? A extends object
 		? T
-		: F
-	: F
+		: A extends DocIdString
+			? A extends object
+				? T
+				: F
+			: F
 
 // declare module '@voltiso/util' {
 // 	interface Op<A = def> {
@@ -30,8 +30,8 @@ type CanonicalPathTokens_<
 > = tokens extends readonly []
 	? acc
 	: tokens extends [infer h, ...infer t]
-	? CanonicalPathTokens_<t, [...acc, IsSingleUnknownPathToken<h, '...', h>]>
-	: never
+		? CanonicalPathTokens_<t, [...acc, IsSingleUnknownPathToken<h, '...', h>]>
+		: never
 
 type CanonicalPathTokens<tokens> = CanonicalPathTokens_<tokens, []>
 

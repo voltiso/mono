@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 //! shared scripts - run using `v` binary from `@voltiso/script`
@@ -50,7 +50,7 @@ function turboAllPackages(
 	scriptName: string,
 	options?: { concurrency?: number },
 ) {
-	const turboOptions = {} as Record<string, string | number>
+	const turboOptions = {} as Record<string, number | string>
 
 	if (options?.concurrency !== undefined) {
 		turboOptions['concurrency'] = Math.round(options.concurrency)

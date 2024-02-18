@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -28,14 +28,14 @@ export type GetDocIdBrand<
 > = X extends NoArgument
 	? DocIdBrand
 	: X extends $$DocRelatedLike
-	? AnyDoc extends GetDocTag<X>
-		? DocIdBrand
-		: GetDocTag<X> extends never
-		? DocIdBrand
-		: GetDocTag<X> extends DocTag
-		? DocIdBrand<GetDocTag<X>>
+		? AnyDoc extends GetDocTag<X>
+			? DocIdBrand
+			: GetDocTag<X> extends never
+				? DocIdBrand
+				: GetDocTag<X> extends DocTag
+					? DocIdBrand<GetDocTag<X>>
+					: never
 		: never
-	: never
 
 export type IdString = string & IdBrand
 

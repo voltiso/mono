@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _, IsIdentical } from '@voltiso/util'
@@ -69,9 +69,10 @@ export declare namespace SchemarAnd {
 	//
 
 	export namespace Object {
-		export type Get<Output, Input> = IsIdentical<Output, Input> extends true
-			? Object$<Output>
-			: CustomObject$<{ Output: Output; Input: Input }>
+		export type Get<Output, Input> =
+			IsIdentical<Output, Input> extends true
+				? Object$<Output>
+				: CustomObject$<{ Output: Output; Input: Input }>
 	}
 
 	export type GetUnknown<A, B> = A extends {

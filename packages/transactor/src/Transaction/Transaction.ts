@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as Database from '@voltiso/firestore-like'
@@ -14,9 +14,9 @@ import type { TransactionConstructor } from './TransactionConstructor'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Transaction {
-	<Tokens extends readonly string[]>(...pathTokens: Tokens): DbPathFromString<
-		CanonicalPath<Tokens>
-	>
+	<Tokens extends readonly string[]>(
+		...pathTokens: Tokens
+	): DbPathFromString<CanonicalPath<Tokens>>
 }
 
 @staticImplements<TransactionConstructor<Transaction>>()

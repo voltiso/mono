@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
@@ -33,9 +33,9 @@ export interface CollectionRef<
 	(id: DocIdString<R>): WeakDocRef<GetDocRepresentative<R>>
 
 	/** Get Doc reference by Id */
-	<T extends DocIdString>(id: T): Throw<
-		'wrong Id type' & { docTag: DocTagFromBrand<T> }
-	>
+	<T extends DocIdString>(
+		id: T,
+	): Throw<'wrong Id type' & { docTag: DocTagFromBrand<T> }>
 
 	/** Get Doc reference by Id */
 	(id: string): WeakDocRef<GetDocRepresentative<R>>

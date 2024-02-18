@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_, Throw } from '@voltiso/util'
@@ -39,20 +39,18 @@ export type GetDuplicateProps<
 > = (keyof This[TI]['Props'] | keyof GetComponentProps_<$['Component']>) &
 	keyof $['Props']
 
-export type PatchImpl<
-	This extends StyledLike,
-	$ extends StyledTypeInfo,
-> = GetDuplicateCustomCss<This, $> extends never
-	? GetDuplicateProps<This, $> extends never
-		? ForcePatchImpl<This, $>
+export type PatchImpl<This extends StyledLike, $ extends StyledTypeInfo> =
+	GetDuplicateCustomCss<This, $> extends never
+		? GetDuplicateProps<This, $> extends never
+			? ForcePatchImpl<This, $>
+			: Throw<
+					'Props already exist' & { duplicateProps: GetDuplicateProps<This, $> }
+				>
 		: Throw<
-				'Props already exist' & { duplicateProps: GetDuplicateProps<This, $> }
+				'CustomCss already exists' & {
+					duplicateCustomCss: GetDuplicateCustomCss<This, $>
+				}
 			>
-	: Throw<
-			'CustomCss already exists' & {
-				duplicateCustomCss: GetDuplicateCustomCss<This, $>
-			}
-		>
 
 //
 

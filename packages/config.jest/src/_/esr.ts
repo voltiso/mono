@@ -1,23 +1,41 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable unicorn/prefer-module */
 
-import {
-	codeFilesExtensions,
-	defineJestConfig,
-	moduleNameMapper,
-} from '@voltiso/config.jest.lib'
+import { codeFilesExtensions, moduleNameMapper } from '@voltiso/config.jest.lib'
+
+import * as path from 'node:path'
 
 //
 
 const transform: Record<string, string> = {}
 
+// const dirname =
+// 	typeof import.meta !== 'undefined'
+// 		? path.dirname(new URL(import.meta.url).pathname)
+// 		: typeof __dirname !== 'undefined'
+// 			? __dirname
+// 			: ''
+
+// console.log('!!!', new URL('.', import.meta.url).pathname.slice(0, -1))
+// console.log('!!!', __dirname)
+
+// let dirname
+
+// try {
+// 	dirname = __dirname
+// }
+// catch {
+// 	dirname = new URL('.', import.meta.url).pathname.slice(0, -1)
+// }
+
+const dirname = __dirname // will be transpiled to `import.meta...` by `@voltiso/transform/compat
+
 for (const extension of codeFilesExtensions) {
-	transform[`\\.${extension}$`] =
-		// require.resolve('esbuild-jest')
-		require.resolve('../transform.js')
-	// './node_modules/@voltiso/config.jest/dist/cjs/transform.js'
+	transform[`\\.${extension}$`] = path.join(dirname, '..', 'transform.js')
+	// require.resolve('../transform.js')
+	// '@voltiso/config.jest/transform'
 }
 
 const librariesToTransform = [
@@ -28,32 +46,30 @@ const librariesToTransform = [
 	// '@voltiso/localstore'
 ]
 
-export const jestEsrConfig = defineJestConfig({
-	testMatch: [
-		'**/__tests__/**/*.?([cm])[jt]s?(x)',
-		'**/?(*.)+(spec|test).?([cm])[tj]s?(x)',
-	],
+export const testMatch = [
+	'**/__tests__/**/*.?([cm])[jt]s?(x)',
+	'**/?(*.)+(spec|test).?([cm])[tj]s?(x)',
+]
 
-	// testEnvironment: require.resolve('jest-environment-jsdom'), // 'jsdom',
-	testEnvironment: 'node',
+// testEnvironment: require.resolve('jest-environment-jsdom'), // 'jsdom',
+export const testEnvironment = 'node'
 
-	modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
+export const modulePathIgnorePatterns = ['dist/', '.tsc-out/', '.next/']
 
-	transformIgnorePatterns: [
-		`node_modules/\\.pnpm/(?!${librariesToTransform.join('|')}).*`,
-	],
+export const transformIgnorePatterns = [
+	`node_modules/\\.pnpm/(?!${librariesToTransform.join('|')}).*`,
+]
 
-	moduleNameMapper,
-	transform,
+export { transform, moduleNameMapper }
 
-	setupFilesAfterEnv: [
-		require.resolve('../setup-after-env.js'),
-		// require.resolve('react-native/jest/setup'), // replaces global `Promise` - not compatible with `AsyncLocalStorage`
-	],
+export const setupFilesAfterEnv = [
+	path.join(dirname, '..', 'setup-after-env.js'),
+	// require.resolve('../setup-after-env.js'),
+	// '@voltiso/config.jest/setup-after-env',
+]
 
-	/** For react-native */
-	haste: {
-		defaultPlatform: 'ios',
-		platforms: ['android', 'ios', 'native'],
-	},
-} as const)
+/** For react-native */
+export const haste = {
+	defaultPlatform: 'ios',
+	platforms: ['android', 'ios', 'native'],
+}

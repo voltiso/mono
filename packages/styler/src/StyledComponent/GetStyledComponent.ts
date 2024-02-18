@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_, Throw } from '@voltiso/util'
@@ -36,18 +36,16 @@ export type ThrowMissingRequiredInnerProps<P> = IsReactNative extends true
 
 //
 
-export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> = Exclude<
-	keyof $,
-	keyof StyledTypeInfo
-> extends never
-	? GetStyledComponentImpl<
-			$Override_<{ Component: IStylable; Props: {}; CustomCss: {} }, $>
-		>
-	: Throw<
-			'unknown type parameters' & {
-				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
-			}
-		>
+export type GetStyledComponent<$ extends Partial<StyledTypeInfo>> =
+	Exclude<keyof $, keyof StyledTypeInfo> extends never
+		? GetStyledComponentImpl<
+				$Override_<{ Component: IStylable; Props: {}; CustomCss: {} }, $>
+			>
+		: Throw<
+				'unknown type parameters' & {
+					Parameters: Exclude<keyof $, keyof StyledTypeInfo>
+				}
+			>
 
 /**
  * If user code does not include `DOM` lib, `HTMLElement` may be an empty
@@ -63,14 +61,12 @@ export type IsStylable_<C> = keyof InnerProps extends keyof $ComponentProps<C>
 	? true
 	: false
 
-export type $IsStylableForwardRef_<C> = C extends ForwardRefRenderFunction<
-	any,
-	infer P
->
-	? keyof InnerProps extends keyof P
-		? true
+export type $IsStylableForwardRef_<C> =
+	C extends ForwardRefRenderFunction<any, infer P>
+		? keyof InnerProps extends keyof P
+			? true
+			: false
 		: false
-	: false
 
 export type $IsStylableForwardRefAndCss_<C> =
 	C extends ForwardRefAndCssRenderFunction<any, any, infer P>
@@ -113,13 +109,14 @@ export type GetStyledComponentImpl<
 
 export type GetStyledHoc<
 	$ extends Partial<Pick<StyledTypeInfo, 'Props' | 'CustomCss'>>,
-> = Exclude<keyof $, keyof StyledTypeInfo> extends never
-	? GetStyledHocImpl<$Override_<{ Props: {}; CustomCss: {} }, $>>
-	: Throw<
-			'unknown type parameters' & {
-				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
-			}
-		>
+> =
+	Exclude<keyof $, keyof StyledTypeInfo> extends never
+		? GetStyledHocImpl<$Override_<{ Props: {}; CustomCss: {} }, $>>
+		: Throw<
+				'unknown type parameters' & {
+					Parameters: Exclude<keyof $, keyof StyledTypeInfo>
+				}
+			>
 
 export type GetStyledHocImpl<
 	$ extends Pick<StyledTypeInfo, 'Props' | 'CustomCss'>,
@@ -133,16 +130,16 @@ export type GetStyledHocImpl<
 
 //
 
-export type GetStyled<$ extends Partial<StyledTypeInfo>> = Exclude<
-	keyof $,
-	keyof StyledTypeInfo
-> extends never
-	? GetStyledImpl<$Override_<{ Component: null; Props: {}; CustomCss: {} }, $>>
-	: Throw<
-			'unknown type parameters' & {
-				Parameters: Exclude<keyof $, keyof StyledTypeInfo>
-			}
-		>
+export type GetStyled<$ extends Partial<StyledTypeInfo>> =
+	Exclude<keyof $, keyof StyledTypeInfo> extends never
+		? GetStyledImpl<
+				$Override_<{ Component: null; Props: {}; CustomCss: {} }, $>
+			>
+		: Throw<
+				'unknown type parameters' & {
+					Parameters: Exclude<keyof $, keyof StyledTypeInfo>
+				}
+			>
 
 export type GetStyledImpl<$ extends StyledTypeInfo> = $ extends {
 	Component: null

@@ -1,7 +1,7 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type CompatTransformOptions = {
+export interface CompatTransformOptions {
 	supported: {
 		/**
 		 * E.g. `1_000_000`

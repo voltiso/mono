@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // ! COPIED from `@voltiso/util` - to avoid cyclic package deps
@@ -12,4 +12,5 @@ export type DeepPartial_<T> = [
 	{
 		[k in keyof T]?: DeepPartial_<T[k]>
 	},
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 ][0]

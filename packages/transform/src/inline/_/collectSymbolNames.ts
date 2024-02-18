@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as ts from 'typescript'
@@ -6,9 +6,9 @@ import * as ts from 'typescript'
 import { getSymbolPath } from './getSymbolPath'
 import type { SymbolObject } from './SymbolObject'
 
-function isWithTypeParameters(node: ts.Node): node is {
+function isWithTypeParameters(node: ts.Node): node is ts.Node & {
 	typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>
-} & ts.Node {
+} {
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	return !!(node as any)?.typeParameters
 }

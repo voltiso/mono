@@ -1,11 +1,7 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	getNodePositionStr,
-	getNodeText,
-	stringFromSyntaxKind,
-} from '@voltiso/transform.lib'
+import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import * as ts from 'typescript'
 
@@ -83,7 +79,7 @@ export function canBeInlined(
 
 	if (hasSymbolsOutOfScope && options?.warn) {
 		const message = `\n[@voltiso/transform] unable to inline ${
-			getNodeText(ctx, node) || stringFromSyntaxKind(node.kind)
+			getNodeText(ctx, node) || ts.SyntaxKind[node.kind]
 		} - symbols out of scope: ${[...symbolsOutOfScope].join(
 			', ',
 		)} \n  @ ${getNodePositionStr(node)}`
@@ -107,7 +103,7 @@ export function canBeInlined(
 
 			if (options?.warn) {
 				const message = `\n[@voltiso/transform] unable to inline ${
-					getNodeText(ctx, node) || stringFromSyntaxKind(node.kind)
+					getNodeText(ctx, node) || ts.SyntaxKind[node.kind]
 				} - resulting node text would include absolute disk path import of '${
 					child.text
 				}' \n  @ ${getNodePositionStr(node)}`
@@ -128,7 +124,7 @@ export function canBeInlined(
 
 	if (options?.warn && containsTypeQueryNodes) {
 		const message = `\n[@voltiso/transform] unable to inline ${
-			getNodeText(ctx, node) || stringFromSyntaxKind(node.kind)
+			getNodeText(ctx, node) || ts.SyntaxKind[node.kind]
 		} - resulting node text would include type query node (typeof) \n  @ ${getNodePositionStr(
 			node,
 		)}`

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema$, SchemaOptions, Schemas } from '~'
@@ -6,12 +6,12 @@ import type { CustomSchema$, SchemaOptions, Schemas } from '~'
 //
 
 export type GetSchema$ByName<
-	schemaName,
+	SchemaName,
 	O extends Partial<SchemaOptions>,
-> = string extends schemaName
+> = string extends SchemaName
 	? CustomSchema$<O>
-	: [schemaName] extends [keyof Schemas<O>]
-		? schemaName extends keyof Schemas<O>
-			? Schemas<O>[schemaName]
+	: [SchemaName] extends [keyof Schemas<O>]
+		? SchemaName extends keyof Schemas<O>
+			? Schemas<O>[SchemaName]
 			: never
 		: never

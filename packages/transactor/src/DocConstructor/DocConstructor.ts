@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as s from '@voltiso/schemar'
@@ -52,7 +52,7 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 		? DocConstructor.WithOverrides<TI, DocConstructor.MapPartialOptions<TI, O>>
 		: Throw<
 				'unknown keys:' & { keys: Exclude<keyof O, keyof $$PartialDocOptions> }
-		  >
+			>
 
 	// /** ⚠️ If possible, use call signature instead */
 	// publicOnCreation<S extends Record<string, t.Schemable>>(
@@ -238,7 +238,7 @@ export namespace DocConstructor {
 						? s.SchemarAnd<
 								TI['publicOnCreation'],
 								InferSchema$<O['publicOnCreation']>
-						  >
+							>
 						: never
 
 					public: 'public' extends keyof O
@@ -254,17 +254,13 @@ export namespace DocConstructor {
 						: never
 				},
 				undefined
-		  >
+			>
 		: never
 
 	/**
 	 * Generally forward this task to `@voltiso/schemar`, but treat `{}` as object
 	 * schemas
 	 */
-	export type InferSchema$<S extends s.$$Schemable> = IsIdentical<
-		S,
-		{}
-	> extends true
-		? s.Object$<{}>
-		: s.ImplicitInferSchema$<S>
+	export type InferSchema$<S extends s.$$Schemable> =
+		IsIdentical<S, {}> extends true ? s.Object$<{}> : s.ImplicitInferSchema$<S>
 }

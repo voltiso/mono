@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-console */
@@ -50,7 +50,7 @@ function getLoaderFromFilename(filename: string): string {
 
 //
 
-export = {
+export default {
 	process(source: string, filename: string) {
 		// console.log({ source, filename })
 

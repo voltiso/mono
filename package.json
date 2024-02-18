@@ -32,7 +32,6 @@
     "@voltiso/config.prettier": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/eslint-config": "workspace:^",
-    "@voltiso/eslint-config-fast": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "cross-env": "^7.0.3",

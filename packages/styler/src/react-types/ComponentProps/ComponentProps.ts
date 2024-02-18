@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -15,15 +15,16 @@ export type JSXElementConstructorLike<P> =
 	| ((props: P) => ReactNodeLike) // ReactElementLike | null
 	| (new (props: P) => ComponentLike)
 
-export type $ComponentProps<T> = T extends JSXElementConstructorLike<infer P>
-	? P
-	: T extends ForwardRefRenderFunction<any, infer P>
+export type $ComponentProps<T> =
+	T extends JSXElementConstructorLike<infer P>
 		? P
-		: T extends ForwardRefAndCssRenderFunction<any, any, infer P>
+		: T extends ForwardRefRenderFunction<any, infer P>
 			? P
-			: T extends keyof JSX.IntrinsicElements
-				? JSX.IntrinsicElements[T]
-				: {}
+			: T extends ForwardRefAndCssRenderFunction<any, any, infer P>
+				? P
+				: T extends keyof JSX.IntrinsicElements
+					? JSX.IntrinsicElements[T]
+					: {}
 
 export type ComponentPropsWithRef_<T> = T extends new (
 	props: infer P,

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output } from '@voltiso/schemar'
@@ -98,8 +98,8 @@ export type Doc<TI extends $$DocTI | NoArgument = NoArgument> =
 	TI extends NoArgument
 		? IDoc
 		: TI extends $$DocTI
-		? CustomDoc<TI, 'outside'>
-		: never
+			? CustomDoc<TI, 'outside'>
+			: never
 
 export const Doc = CallableConstructor({
 	constructor: lazyConstructor(() => DocImpl as never),

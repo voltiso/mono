@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { TransformContext } from '@voltiso/transform.lib'
@@ -22,7 +22,7 @@ function _helloOnce() {
 export function logInlinedNode(
 	ctx: TransformContext,
 	node: ts.Node,
-	options: { type: 'expression' | 'alias' },
+	options: { type: 'alias' | 'expression' },
 ) {
 	// eslint-disable-next-line etc/no-internal
 	_helloOnce()

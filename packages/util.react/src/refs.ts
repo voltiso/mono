@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { MutableRefObject, RefCallback, RefObject } from 'react'
@@ -12,8 +12,8 @@ export type MutableRef<T> = MutableRefObject<T> | RefCallback<T> | null
 export type GetRefsTypeImpl<Refs, acc> = Refs extends []
 	? acc
 	: Refs extends [MutableRef<infer HType>, ...infer Tail]
-	? GetRefsTypeImpl<Tail, acc & HType>
-	: never
+		? GetRefsTypeImpl<Tail, acc & HType>
+		: never
 
 export type GetRefsType<Refs extends readonly unknown[]> = GetRefsTypeImpl<
 	[...Refs],
@@ -30,15 +30,15 @@ export function refs<T>(
 	...refs: readonly (MutableRef<T | null> | undefined)[]
 ): RefCallback<T>
 
-export function refs<Refs extends readonly (MutableRef<unknown | null> | undefined)[]>(
-	...refs: Refs
-): RefsResult<Refs>
+export function refs<
+	Refs extends readonly (MutableRef<unknown | null> | undefined)[],
+>(...refs: Refs): RefsResult<Refs>
 
 //
 
-export function refs<Refs extends readonly (MutableRef<unknown | null> | undefined)[]>(
-	...refs: Refs
-): RefsResult<Refs> {
+export function refs<
+	Refs extends readonly (MutableRef<unknown | null> | undefined)[],
+>(...refs: Refs): RefsResult<Refs> {
 	return (instance: GetRefsType<Refs>) => {
 		for (const ref of refs) {
 			if (typeof ref === 'function') ref(instance)

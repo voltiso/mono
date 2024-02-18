@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export type _ApplyUnknownPathTokens<
@@ -8,19 +8,19 @@ export type _ApplyUnknownPathTokens<
 > = Tokens extends readonly []
 	? `${Acc}${Path}`
 	: Tokens extends readonly [infer Token, ...infer TokensTail]
-	? Token extends string
-		? Path extends `{${string}}${infer PathTail}`
-			? _ApplyUnknownPathTokens<`${Acc}${Token}`, PathTail, TokensTail>
-			: Path extends `**${infer PathTail}`
-			? _ApplyUnknownPathTokens<`${Acc}${Token}`, PathTail, TokensTail>
-			: Path extends `*${infer PathTail}`
-			? _ApplyUnknownPathTokens<`${Acc}${Token}`, PathTail, TokensTail>
-			: Path extends `${infer Char}${infer PathTail}`
-			? _ApplyUnknownPathTokens<`${Acc}${Char}`, PathTail, Tokens>
-			: Acc
-		: // : `${Acc}${Path}`
-		  never
-	: never
+		? Token extends string
+			? Path extends `{${string}}${infer PathTail}`
+				? _ApplyUnknownPathTokens<`${Acc}${Token}`, PathTail, TokensTail>
+				: Path extends `**${infer PathTail}`
+					? _ApplyUnknownPathTokens<`${Acc}${Token}`, PathTail, TokensTail>
+					: Path extends `*${infer PathTail}`
+						? _ApplyUnknownPathTokens<`${Acc}${Token}`, PathTail, TokensTail>
+						: Path extends `${infer Char}${infer PathTail}`
+							? _ApplyUnknownPathTokens<`${Acc}${Char}`, PathTail, Tokens>
+							: Acc
+			: // : `${Acc}${Path}`
+				never
+		: never
 
 export type ApplyUnknownPathTokens<
 	Path extends string,

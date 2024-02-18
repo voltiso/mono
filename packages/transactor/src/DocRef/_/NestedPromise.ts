@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsAny } from '@voltiso/util'
@@ -14,7 +14,7 @@ export type NestedPromise<data, Exists> = PromiseLike<
 		? any
 		: {
 				[k in keyof data]: DocFieldPath<data[k]>
-		  })
+			})
 
 export function dataOrNestedPromise<data, Exists extends boolean>(
 	// eslint-disable-next-line etc/no-internal

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable tsdoc/syntax */
@@ -84,9 +84,9 @@ export const noUselessPathSegments = createRule<
 			// eslint-disable-next-line etc/no-deprecated
 			context.getPhysicalFilename
 				? // eslint-disable-next-line etc/no-deprecated
-				  context.getPhysicalFilename()
+					context.getPhysicalFilename()
 				: // eslint-disable-next-line etc/no-deprecated
-				  context.getFilename(),
+					context.getFilename(),
 		)
 		const options = context.options[0]
 

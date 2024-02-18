@@ -29,6 +29,7 @@
     "__________BUILD": "__________",
     "build": "v build",
     "build:cjs": "v buildCjs",
+    "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnly",
     "__________MISC": "__________",

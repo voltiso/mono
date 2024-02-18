@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { assertZod } from '~/assertZod'
@@ -33,30 +33,32 @@ export type _ConsumeTokens<
 > = Tokens extends readonly []
 	? UnknownTokens
 	: Tokens extends readonly [unknown, ...infer TokensTail]
-	? UnknownTokens extends readonly [unknown, ...infer UnknownTokensTail]
-		? _ConsumeTokens<UnknownTokensTail, TokensTail>
+		? UnknownTokens extends readonly [unknown, ...infer UnknownTokensTail]
+			? _ConsumeTokens<UnknownTokensTail, TokensTail>
+			: never
 		: never
-	: never
 
 export interface CollectionRefPattern<
 	Pattern extends string = string,
 	Doc extends $$DocRelated = AnyDoc,
 > {
 	// [CALL]
-	<Tokens extends string[]>(...tokens: Tokens): IsCompatible<
+	<Tokens extends string[]>(
+		...tokens: Tokens
+	): IsCompatible<
 		Length<Tokens>,
 		Length<GetUnknownPathTokens<Pattern>>
 	> extends true
 		? CollectionRef<GetDocRepresentative<Doc>>
 		: IsCompatible<
-				$Decrement<Length<Tokens>>,
-				Length<GetUnknownPathTokens<Pattern>>
-		  > extends true
-		? WeakDocRef<GetDocRepresentative<Doc>>
-		: CollectionRefPattern<
-				ApplyUnknownPathTokens<Pattern, Tokens>,
-				GetDocRepresentative<Doc>
-		  >
+					$Decrement<Length<Tokens>>,
+					Length<GetUnknownPathTokens<Pattern>>
+			  > extends true
+			? WeakDocRef<GetDocRepresentative<Doc>>
+			: CollectionRefPattern<
+					ApplyUnknownPathTokens<Pattern, Tokens>,
+					GetDocRepresentative<Doc>
+				>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging

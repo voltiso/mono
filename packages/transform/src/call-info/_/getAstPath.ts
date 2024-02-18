@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as ts from 'typescript'
@@ -19,9 +19,9 @@ export function getAstPath(node: ts.Node): string[] {
 	while (current) {
 		if (isWithName(current)) {
 			const name = current.name as
+				| ts.BindingName
 				| ts.Identifier
 				| ts.PropertyName
-				| ts.BindingName
 
 			path.push(name.getText())
 		}

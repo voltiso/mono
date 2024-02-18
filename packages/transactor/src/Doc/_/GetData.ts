@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Input_, Output_, SchemarAnd_ } from '@voltiso/schemar'
@@ -35,13 +35,13 @@ export type _$GetAggregateTarget<T> = T extends any
 		? {
 				// eslint-disable-next-line etc/no-internal
 				[k in keyof T]: _GetAggregateTargetEntry<T[k]>
-		  }
+			}
 		: HasIndexSignature<T> extends false
-		? {
-				// eslint-disable-next-line etc/no-internal
-				[k in keyof T]: _GetAggregateTargetEntry<T[k]> // ! Should be optional???
-		  }
-		: never
+			? {
+					// eslint-disable-next-line etc/no-internal
+					[k in keyof T]: _GetAggregateTargetEntry<T[k]> // ! Should be optional???
+				}
+			: never
 	: never
 
 /** @inline */
@@ -59,7 +59,7 @@ export namespace GetData {
 				>['Output'] &
 					// >
 					GetIntrinsicFields.ForDocTI<TI>
-		  >
+			>
 		: never
 
 	export type ForDoc<D extends $$Doc> = ForDocTI<GetDocTI.FromDoc<D>>
@@ -88,7 +88,7 @@ export namespace GetInputData {
 				TI['publicOnCreation']['Input'] &
 					TI['public']['Input'] &
 					TI['private']['Input']
-		  >
+			>
 		: never
 
 	export type ForDoc<D extends $$Doc> = [D] extends [{ [DTI]: $$DocTI }]
@@ -134,7 +134,7 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 					GetDocTI<R>['public']
 				>['Input'],
 				{ skip: Primitive | Callable | Newable | Date | $$DocRef }
-		  >
+			>
 
 // type A = _<GetPublicCreationInputData<'oops'>>
 
@@ -152,8 +152,8 @@ export type GetCreationDataByCtx<
 > = Ctx extends 'inside'
 	? GetInputData<R>
 	: Ctx extends 'outside'
-	? GetPublicCreationInputData<R>
-	: never
+		? GetPublicCreationInputData<R>
+		: never
 
 /** @inline */
 export type GetUpdateDataByCtx<
@@ -162,5 +162,5 @@ export type GetUpdateDataByCtx<
 > = Ctx extends 'inside'
 	? GetInputData<R>
 	: Ctx extends 'outside'
-	? GetPublicInputData<R>
-	: never
+		? GetPublicInputData<R>
+		: never

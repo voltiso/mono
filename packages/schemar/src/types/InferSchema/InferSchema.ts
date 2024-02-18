@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -94,33 +94,36 @@ export declare namespace ImplicitInferSchema$ {
 				: Step2<S>
 
 	/** Group literals */
-	export type Step2<S> = Extract<S, InferableLiteral> extends never
-		? Step3<S>
-		:
-				| Literal$<Extract<S, InferableLiteral>>
-				| Step3<Exclude<S, InferableLiteral>>
+	export type Step2<S> =
+		Extract<S, InferableLiteral> extends never
+			? Step3<S>
+			:
+					| Literal$<Extract<S, InferableLiteral>>
+					| Step3<Exclude<S, InferableLiteral>>
 
 	/** IObject super-type */
-	export type Step3<S> = InferableObject extends ExcludeEmptyBraces<S>
-		? IObject$ | Simple<Exclude<S, $$SchemableObject>>
-		: IObject$ extends ExcludeEmptyBraces<S>
+	export type Step3<S> =
+		InferableObject extends ExcludeEmptyBraces<S>
 			? IObject$ | Simple<Exclude<S, $$SchemableObject>>
-			: Simple<S>
+			: IObject$ extends ExcludeEmptyBraces<S>
+				? IObject$ | Simple<Exclude<S, $$SchemableObject>>
+				: Simple<S>
 
 	/** Other */
-	export type Simple<S> = IsCompatible<$$Schema, S> extends true
-		? Schema$
-		: S extends $$Schema
-			? S
-			: IsAlmostSame<S, {}> extends true
-				? NonNullish$
-				: S extends $$InferableObject
-					? GetImplicitObject$<S>
-					: S extends Newable
-						? Instance$<S>
-						: S extends $$InferableMutableTuple
-							? MutableTuple$<RelaxInferableTuple_<S>>
-							: S extends $$InferableReadonlyTuple
-								? ReadonlyTuple$<RelaxInferableTuple_<S>>
-								: never
+	export type Simple<S> =
+		IsCompatible<$$Schema, S> extends true
+			? Schema$
+			: S extends $$Schema
+				? S
+				: IsAlmostSame<S, {}> extends true
+					? NonNullish$
+					: S extends $$InferableObject
+						? GetImplicitObject$<S>
+						: S extends Newable
+							? Instance$<S>
+							: S extends $$InferableMutableTuple
+								? MutableTuple$<RelaxInferableTuple_<S>>
+								: S extends $$InferableReadonlyTuple
+									? ReadonlyTuple$<RelaxInferableTuple_<S>>
+									: never
 }

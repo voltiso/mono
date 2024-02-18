@@ -1,9 +1,14 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
-import { $fastAssert, lazyConstructor, OPTIONS, stringFrom } from '@voltiso/util'
+import {
+	$fastAssert,
+	lazyConstructor,
+	OPTIONS,
+	stringFrom,
+} from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'

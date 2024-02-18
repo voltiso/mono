@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { strict as assert } from 'node:assert'
@@ -7,7 +7,7 @@ import { dirname, resolve } from 'node:path'
 import { _getPackageForDir } from './getPackageForDir'
 
 /** @internal */
-export type _PackagePath = {
+export interface _PackagePath {
 	package: {
 		name: string
 		version?: string | undefined

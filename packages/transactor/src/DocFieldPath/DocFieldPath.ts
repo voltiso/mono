@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { _ } from '@voltiso/util'
@@ -19,7 +19,7 @@ export type DocFieldPath<data = unknown> = _<PromiseLike<data>> & // ! convert `
 				[k in keyof data]:
 					| DocFieldPath<data[k]>
 					| ('then' extends k ? PromiseLike<data>['then'] : never) // ! fix assignability for `D` with index signatures
-		  }
+			}
 		: unknown)
 
 $dev(() => {

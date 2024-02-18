@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -22,7 +22,7 @@ export type DocRef_<R> = R extends $$DocRelatedLike
 	? CustomDocRef<{
 			doc: R
 			isStrong: true
-	  }>
+		}>
 	: never
 
 // /** Strong document reference - with ref-counting ✅ */

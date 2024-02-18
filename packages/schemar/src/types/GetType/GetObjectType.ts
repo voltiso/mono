@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -95,23 +95,24 @@ export type GetObjectInput<Shape extends object> = Shape extends any
 export type GetObjectType<
 	Shape extends object,
 	PartialOptions extends Partial<GetTypeOptions> = {},
-> = HasIndexSignature<Shape> extends true
-	? {
-			[k in keyof Shape]: Type_<Shape[k], PartialOptions>
-		}
-	: HasIndexSignature<Shape> extends false
-		? GetObjectType._GetNoSignature<
-				{
-					[k in keyof Shape]: Type_<Shape[k], PartialOptions>
-				},
-				Shape,
-				{
-					// eslint-disable-next-line etc/no-internal
-					[k in keyof Shape]: _GetOptions<Shape[k]>
-				},
-				$Override_<DefaultGetTypeOptions, PartialOptions>
-			>
-		: never
+> =
+	HasIndexSignature<Shape> extends true
+		? {
+				[k in keyof Shape]: Type_<Shape[k], PartialOptions>
+			}
+		: HasIndexSignature<Shape> extends false
+			? GetObjectType._GetNoSignature<
+					{
+						[k in keyof Shape]: Type_<Shape[k], PartialOptions>
+					},
+					Shape,
+					{
+						// eslint-disable-next-line etc/no-internal
+						[k in keyof Shape]: _GetOptions<Shape[k]>
+					},
+					$Override_<DefaultGetTypeOptions, PartialOptions>
+				>
+			: never
 
 export type GetImplicitObjectType<
 	Shape extends object,

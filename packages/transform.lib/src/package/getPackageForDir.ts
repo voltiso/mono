@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { strict as assert } from 'node:assert'
@@ -6,13 +6,13 @@ import * as fs from 'node:fs'
 import { dirname, join } from 'node:path'
 
 /** @internal */
-export type _PackageJson = {
+export interface _PackageJson {
 	name: string
 	version: string
 }
 
 /** @internal */
-export type _GetPackageForDirResult = {
+export interface _GetPackageForDirResult {
 	// eslint-disable-next-line etc/no-internal
 	packageJson: _PackageJson
 	packageJsonPath: string
@@ -22,8 +22,8 @@ export type _GetPackageForDirResult = {
 const packageJsonsByDir = new Map<string, _GetPackageForDirResult>()
 
 /**
- * @throws When not found
  * @internal
+ * @throws When not found
  */
 export function _getPackageForDirUncached(
 	dir: string,

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { getNodePositionStr } from '@voltiso/transform.lib'
@@ -23,9 +23,9 @@ export function logStrippedNode(node: ts.Node) {
 	console.log(
 		moduleIcon,
 		'strip',
-		chalk.blue(`${node.getText()}`),
+		chalk.blue(node.getText()),
 		chalk.gray(`\n  @`),
-		chalk.green(`${getNodePositionStr(node)}`),
+		chalk.green(getNodePositionStr(node)),
 		'\n',
 	)
 }

@@ -1,9 +1,9 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as ts from 'typescript'
 
-export type CreateLiteralExpressionOptions = {
+export interface CreateLiteralExpressionOptions {
 	singleQuote: boolean
 	multiLine: boolean
 }

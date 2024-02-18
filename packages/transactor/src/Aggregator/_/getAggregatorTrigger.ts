@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
@@ -69,14 +69,14 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 			awaitedTargetHandlerResult === null
 				? [[targetHandlerResult as $$DocRef], [awaitedTargetHandlerResult]]
 				: Array.isArray(awaitedTargetHandlerResult)
-				? [
-						awaitedTargetHandlerResult,
-						await Promise.all(awaitedTargetHandlerResult),
-				  ]
-				: [
-						[targetHandlerResult as $$Doc | $$DocRef],
-						[awaitedTargetHandlerResult],
-				  ]
+					? [
+							awaitedTargetHandlerResult,
+							await Promise.all(awaitedTargetHandlerResult),
+						]
+					: [
+							[targetHandlerResult as $$Doc | $$DocRef],
+							[awaitedTargetHandlerResult],
+						]
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		__voltiso.aggregateSource[name] ||= {} //! !!

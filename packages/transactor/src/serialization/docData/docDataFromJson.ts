@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isPlainObject } from '@voltiso/util'
@@ -14,12 +14,12 @@ import { dateFromJson, isDateJson } from '../date'
 export type DocDataFromJson<J> = J extends StrongDocRefJson
 	? DocRef
 	: J extends WeakDocRefJson
-	? WeakDocRef
-	: J extends DateJson
-	? Date
-	: J extends object
-	? { [k in keyof J]: DocDataFromJson<J[k]> }
-	: J
+		? WeakDocRef
+		: J extends DateJson
+			? Date
+			: J extends object
+				? { [k in keyof J]: DocDataFromJson<J[k]> }
+				: J
 
 export function docDataFromJson<J>(
 	db: Transactor,

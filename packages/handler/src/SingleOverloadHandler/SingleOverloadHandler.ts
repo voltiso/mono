@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable n/no-sync */
@@ -72,19 +72,19 @@ export namespace SingleOverloadHandlerDetail {
 	] extends [NoThis]
 		? (
 				...args: Assume<readonly unknown[], s.Input<O['parameters']>>
-		  ) => O['IsAsync'] extends true
+			) => O['IsAsync'] extends true
 				? MaybePromise<s.Output<O['return']>>
 				: O['IsAsync'] extends false
-				? s.Output<O['return']>
-				: never
+					? s.Output<O['return']>
+					: never
 		: (
 				this: s.Input<O['this']>,
 				...args: Assume<readonly unknown[], s.Input<O['parameters']>>
-		  ) => O['IsAsync'] extends true
+			) => O['IsAsync'] extends true
 				? MaybePromise<s.Output<O['return']>>
 				: O['IsAsync'] extends false
-				? s.Output<O['return']>
-				: never
+					? s.Output<O['return']>
+					: never
 
 	//
 
@@ -92,15 +92,15 @@ export namespace SingleOverloadHandlerDetail {
 		[O['this']] extends [NoThis]
 			? (
 					...args: Assume<readonly unknown[], s.Output<O['parameters']>>
-			  ) => O['IsAsync'] extends true
+				) => O['IsAsync'] extends true
 					? MaybePromise<s.Input<O['return']>>
 					: O['IsAsync'] extends false
-					? s.Input<O['return']>
-					: never
+						? s.Input<O['return']>
+						: never
 			: (
 					this: s.Output<O['this']>,
 					...args: Assume<readonly unknown[], s.Output<O['parameters']>>
-			  ) => MaybePromise<s.Input<O['return']>>
+				) => MaybePromise<s.Input<O['return']>>
 
 	//
 

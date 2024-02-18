@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InferTI } from '~/CollectionRef'
@@ -16,12 +16,12 @@ import type { $$DocRelatedLike, WithDocTI } from './DocRelated'
 export type GetDocTI<X extends $$DocRelatedLike> = X extends $$Doc
 	? InferTI<X> // ! slow !
 	: X extends WithDocTI
-	? X[DTI]
-	: X extends DocTI
-	? X
-	: X extends DocTagLike | AnyDoc
-	? GetDocTI.FromTag<X>
-	: DocTI // fallback to supertype
+		? X[DTI]
+		: X extends DocTI
+			? X
+			: X extends DocTagLike | AnyDoc
+				? GetDocTI.FromTag<X>
+				: DocTI // fallback to supertype
 // : IndexedDocTI // fallback to indexed doc // ! too slow
 
 export namespace GetDocTI {
@@ -29,8 +29,8 @@ export namespace GetDocTI {
 	export type FromTag<tag extends DocTagLike | AnyDoc> = tag extends AnyDoc
 		? DocTI
 		: tag extends keyof DocTypes
-		? DocTypes[tag][DTI & keyof DocTypes[tag]]
-		: never
+			? DocTypes[tag][DTI & keyof DocTypes[tag]]
+			: never
 	// : DocTypes extends { [k in tag]: { [DTI]: infer R } }
 	// ? R
 	// ? Assume<DocTI, Get_<DocTypes[tag], DTI>> // ! problematic with recursive types

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -241,13 +241,14 @@ export declare namespace CustomObject {
 	}
 
 	export namespace GetDeepShape {
-		export type Rec<Output, Input> = IsCompatible<Output, Input> extends false
-			? CustomSchema<{ Output: Output; Input: Input }>
-			: Output extends InferableObject | InferableTuple
-				? {
-						[k in keyof Output]: Rec<Output[k], Output[k]>
-					}
-				: Schema<Output> | Inferable<Output>
+		export type Rec<Output, Input> =
+			IsCompatible<Output, Input> extends false
+				? CustomSchema<{ Output: Output; Input: Input }>
+				: Output extends InferableObject | InferableTuple
+					? {
+							[k in keyof Output]: Rec<Output[k], Output[k]>
+						}
+					: Schema<Output> | Inferable<Output>
 	}
 
 	// export type GetShape<This extends >

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IObject, SchemaLike } from '@voltiso/schemar'
@@ -168,7 +168,7 @@ export class DocConstructorImpl implements $$Doc {
 						? (s.and(
 								super._.publicOnCreation,
 								s.object(f.publicOnCreation as never),
-						  ) as never)
+							) as never)
 						: super._.publicOnCreation,
 
 					public: f.public

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Assume, IsUnion } from '@voltiso/util'
@@ -24,17 +24,14 @@ export namespace GetDocTag {
 	>
 
 	/** @internal */
-	export type _Finalize<tag> = IsUnion<tag> extends true
-		? AnyDoc
-		: [tag] extends [never]
-		? AnyDoc
-		: tag
+	export type _Finalize<tag> =
+		IsUnion<tag> extends true ? AnyDoc : [tag] extends [never] ? AnyDoc : tag
 
 	export type Simple<X extends $$DocRelatedLike> = X extends WithDocTI
 		? X[DTI]['tag']
 		: X extends $$DocTI & { tag: unknown }
-		? X['tag']
-		: X
+			? X['tag']
+			: X
 }
 
 export type GetDocRepresentative<X extends $$DocRelatedLike> =
@@ -43,7 +40,7 @@ export type GetDocRepresentative<X extends $$DocRelatedLike> =
 			? X
 			: X[DTI]['tag']
 		: X extends $$DocTI & { tag: unknown }
-		? AnyDoc extends X['tag']
-			? X
-			: X['tag']
-		: X
+			? AnyDoc extends X['tag']
+				? X
+				: X['tag']
+			: X

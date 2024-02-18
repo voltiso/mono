@@ -4,6 +4,7 @@
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
+  "type": "module",
   "sideEffects": false,
   "__________EXPORTS": "__________",
   "exports": {
@@ -51,7 +52,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.45",
+    "@types/react": "^18.2.56",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",

@@ -1,5 +1,7 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable no-nested-ternary */
 
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
@@ -14,7 +16,7 @@ import {
 	simplifyAndAddComment,
 } from './_'
 
-export type InlineTransformOptions = {
+export interface InlineTransformOptions {
 	onInlineError?: 'fail' | undefined
 }
 

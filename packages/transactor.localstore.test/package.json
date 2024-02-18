@@ -1,6 +1,9 @@
 {
   "name": "@voltiso/transactor.localstore.test",
   "private": true,
+  "__________": "__________",
+  "type": "module",
+  "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TEST": "__________",

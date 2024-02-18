@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Type_ } from '@voltiso/schemar'
@@ -21,7 +21,7 @@ export namespace GetVoltisoEntry {
 					// eslint-disable-next-line etc/no-internal
 					aggregateTarget: _$GetAggregateTarget<Type_<TI['aggregates']>>
 				}
-		  >
+			>
 		: never
 }
 

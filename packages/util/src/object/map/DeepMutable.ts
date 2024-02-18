@@ -1,4 +1,4 @@
-// ⠀ⓥ 2023     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -98,12 +98,10 @@ export type $$DeepMutableN<
 
 export namespace DeepMutableN {
 	/** @internal */
-	export type _ShouldSkip<T, skipOption> = IsCompatible<
-		skipOption,
-		NoArgument
-	> extends true
-		? false
-		: [T] extends [skipOption]
-			? true
-			: false
+	export type _ShouldSkip<T, skipOption> =
+		IsCompatible<skipOption, NoArgument> extends true
+			? false
+			: [T] extends [skipOption]
+				? true
+				: false
 }
