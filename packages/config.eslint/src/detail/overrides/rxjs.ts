@@ -5,7 +5,7 @@ import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import rxjs from 'eslint-plugin-rxjs'
 
-import { codeFilesNoMd } from '~/detail/files'
+import { codeFilesNoMd } from '~/detail/files.js'
 
 export const rxjsConfig = defineEslintFlatConfig({
 	...codeFilesNoMd,
@@ -15,6 +15,8 @@ export const rxjsConfig = defineEslintFlatConfig({
 
 	rules: {
 		...getAllRules(rxjs as never, 'rxjs', 'warn'),
+
+		'rxjs/macro': 0, // not yet available?
 
 		'rxjs/ban-observables': 1,
 		'rxjs/ban-operators': 1,

@@ -13,10 +13,10 @@ import * as path from 'node:path'
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
-import type { DeepPartial_ } from '~/_'
-import { _deepMerge2 } from '~/_'
+import type { DeepPartial_ } from '~/_/index.js'
+import { _deepMerge2 } from '~/_/index.js'
 
-import type { CompatTransformOptions } from './_'
+import type { CompatTransformOptions } from './_/index.js'
 import {
 	defaultCompatTransformOptions,
 	logCompatTransformNode,

@@ -1,12 +1,13 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable @typescript-eslint/no-extraneous-class */
+
 import type * as Database from '@voltiso/firestore-like'
 import { staticImplements } from '@voltiso/util'
 
 @staticImplements<Database.TypeofFieldValue>()
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore experimental decorators
 export class FieldValue implements Database.FieldValue {
 	static delete() {
 		return new DeleteIt()

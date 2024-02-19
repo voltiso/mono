@@ -3,11 +3,24 @@
 
 /* eslint-disable unicorn/prefer-module */
 
-import jestEsrConfig from '@voltiso/config.jest'
-import { defineJestConfig } from '@voltiso/config.jest.lib'
+// import jestEsrConfig from '@voltiso/config.jest'
+// import { defineJestConfig } from '@voltiso/config.jest.lib'
 
-export const jestNodeConfig = defineJestConfig({
-	...jestEsrConfig,
+// export const jestNodeConfig = defineJestConfig({
+// 	...jestEsrConfig,
 
-	testEnvironment: require.resolve('jest-environment-node'),
-})
+// 	testEnvironment: require.resolve('jest-environment-node'),
+// })
+
+export {
+	haste,
+	moduleNameMapper,
+	modulePathIgnorePatterns,
+	setupFilesAfterEnv,
+	// testEnvironment,
+	testMatch,
+	transform,
+	transformIgnorePatterns,
+} from '@voltiso/config.jest'
+
+export const testEnvironment = 'jest-environment-node'

@@ -1,18 +1,20 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
 import { $fastAssert, isDefined } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
-import type { DocumentReference } from './DocumentReference'
-import { DocumentSnapshot } from './DocumentSnapshot'
-import { CongestionError, LocalstoreError } from './Error'
-import type { Localstore } from './Localstore'
-import { Lock } from './Lock'
-import type { DocPath } from './Path'
-import { applyUpdatesInPlace } from './util/applyUpdates'
+import type { DocumentReference } from './DocumentReference.js'
+import { DocumentSnapshot } from './DocumentSnapshot.js'
+import { CongestionError, LocalstoreError } from './Error.js'
+import type { Localstore } from './Localstore.js'
+import { Lock } from './Lock.js'
+import type { DocPath } from './Path.js'
+import { applyUpdatesInPlace } from './util/applyUpdates.js'
 
 function fail(_store: Localstore) {
 	// console.log(
@@ -123,12 +125,14 @@ export class Transaction implements Database.Transaction {
 			if (lock.data === null) docRef._delete()
 			else if (lock.data) docRef._set(lock.data)
 
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete this._store._locks[path]
 		}
 	}
 
 	_cleanup() {
 		for (const [path, lock] of Object.entries(this._store._locks)) {
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			if (lock.transaction === this) delete this._store._locks[path]
 		}
 	}

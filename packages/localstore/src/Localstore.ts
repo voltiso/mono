@@ -1,15 +1,17 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import type * as Database from '@voltiso/firestore-like'
 import { at } from '@voltiso/util'
 import { BehaviorSubject } from 'rxjs'
 
-import { CollectionReference } from './CollectionReference'
-import { DocumentReference } from './DocumentReference'
-import type { Lock } from './Lock'
-import type { CollectionPath, DocPath } from './Path'
-import { Transaction } from './Transaction'
+import { CollectionReference } from './CollectionReference.js'
+import { DocumentReference } from './DocumentReference.js'
+import type { Lock } from './Lock.js'
+import type { CollectionPath, DocPath } from './Path.js'
+import { Transaction } from './Transaction.js'
 
 export class Doc {
 	// eslint-disable-next-line rxjs/no-exposed-subjects

@@ -26,9 +26,13 @@
     "fix": "v fix",
     "__________BUILD": "__________",
     "build": "v build",
-    "build:cjs": "run-s build:cjs:clean build:cjs:tsc",
+    "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
     "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
+    "build:esm": "run-s build:esm:clean build:esm:tsc",
+    "build:esm:clean": "rimraf dist/esm",
+    "build:esm:tsc": "tsc -b tsconfig.build.esm.json",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
@@ -37,7 +41,6 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^",
     "jest-environment-node": "^29.7.0"
   },
   "devDependencies": {

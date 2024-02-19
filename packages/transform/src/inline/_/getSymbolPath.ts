@@ -3,7 +3,7 @@
 
 import * as ts from 'typescript'
 
-import type { SymbolObject } from './SymbolObject'
+import type { SymbolObject } from './SymbolObject.js'
 
 export function getSymbolPath(symbol: SymbolObject | undefined): string[] {
 	if (!symbol) return []

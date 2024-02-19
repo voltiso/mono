@@ -18,3 +18,5 @@ traceDir/
 firebase-*.json
 
 output_path
+
+*.txt

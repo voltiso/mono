@@ -1,21 +1,23 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
 import { $fastAssert, isDefined } from '@voltiso/util'
 import { deepCloneData, newAutoId } from '@voltiso/util.firestore'
 import type { Observable } from 'rxjs'
 
-import type { CollectionReference } from './CollectionReference'
-import { DocumentSnapshot } from './DocumentSnapshot'
-import { LocalstoreError } from './Error'
-import type { Localstore } from './Localstore'
-import { Collection, Doc } from './Localstore'
-import type { DocPath } from './Path'
-import { getOrCreateDoc } from './util'
-import { applyUpdatesInPlace } from './util/applyUpdates'
-import { updateCollectionSubject } from './util/updateCollectionSubject'
+import type { CollectionReference } from './CollectionReference.js'
+import { DocumentSnapshot } from './DocumentSnapshot.js'
+import { LocalstoreError } from './Error.js'
+import type { Localstore } from './Localstore.js'
+import { Collection, Doc } from './Localstore.js'
+import type { DocPath } from './Path.js'
+import { applyUpdatesInPlace } from './util/applyUpdates.js'
+import { getOrCreateDoc } from './util/index.js'
+import { updateCollectionSubject } from './util/updateCollectionSubject.js'
 
 function failTransactionFor(store: Localstore, path: DocPath) {
 	const transaction = store._locks[path]?.transaction
@@ -57,7 +59,7 @@ export class DocumentReference implements Database.DocumentReference {
 	}
 
 	set(data: Database.DocumentData): MaybePromise<void> {
-		return this._set(deepCloneData(data))
+		this._set(deepCloneData(data))
 	}
 
 	_set(data: Database.DocumentData | null) {
@@ -72,13 +74,12 @@ export class DocumentReference implements Database.DocumentReference {
 	}
 
 	update(updates: Database.UpdateData): MaybePromise<void> {
-		return this._update(updates)
+		this._update(updates)
 	}
 
 	_update(updates: Database.UpdateData) {
 		const collections = this._store._collections
 		const collectionPath = this._collectionRef._path
-		const id = this.id
 
 		if (!collections[collectionPath])
 			throw new LocalstoreError(
@@ -88,7 +89,7 @@ export class DocumentReference implements Database.DocumentReference {
 		const collection = collections[collectionPath]
 		$fastAssert(collection)
 
-		const doc = collection._docs[id]
+		const doc = collection._docs[this.id]
 
 		if (!doc?.data$.value)
 			throw new LocalstoreError(

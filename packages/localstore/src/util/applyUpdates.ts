@@ -8,7 +8,7 @@ import type * as Database from '@voltiso/firestore-like'
 import { at } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
 
-import { ArrayRemove, ArrayUnion, DeleteIt, IncrementIt } from '~/FieldValue'
+import { ArrayRemove, ArrayUnion, DeleteIt, IncrementIt } from '~/FieldValue.js'
 
 export function applyUpdatesInPlace(
 	data: Database.DocumentData,
@@ -26,6 +26,7 @@ export function applyUpdatesInPlace(
 
 		const f = at(pathTokens, -1)
 
+		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 		if (v instanceof DeleteIt) delete o[f]
 		else if (v instanceof IncrementIt) {
 			o[f] ||= 0

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import type * as Database from '@voltiso/firestore-like'
 
 export class DocumentSnapshot implements Database.DocumentSnapshot {

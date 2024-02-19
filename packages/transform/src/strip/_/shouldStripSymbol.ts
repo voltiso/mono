@@ -5,7 +5,7 @@ import type * as ts from 'typescript'
 
 import { getJsDocTagNames } from '~/_'
 
-import type { StripTransformContext } from '../stripTransform'
+import type { StripTransformContext } from '../stripTransform.js'
 
 export function shouldStripSymbol(
 	ctx: StripTransformContext,

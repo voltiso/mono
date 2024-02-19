@@ -11,7 +11,7 @@ import {
 } from '@voltiso/config.eslint.lib'
 import globals from 'globals'
 
-import { codeFilesNoMd } from '../files'
+import { codeFilesNoMd } from '../files.js'
 
 const alreadyHandledByPrettier = defineEslintConfigOverrideRules({
 	'@typescript-eslint/comma-dangle': 0,
@@ -136,6 +136,7 @@ export const codeOverride = defineEslintFlatConfig({
 			},
 		],
 
+		'@typescript-eslint/member-ordering': 0,
 		'@typescript-eslint/init-declarations': 0, // require to init with undefined?
 		'@typescript-eslint/prefer-nullish-coalescing': 0,
 		'@typescript-eslint/explicit-module-boundary-types': 0,

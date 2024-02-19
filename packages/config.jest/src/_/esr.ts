@@ -3,9 +3,9 @@
 
 /* eslint-disable unicorn/prefer-module */
 
-import { codeFilesExtensions, moduleNameMapper } from '@voltiso/config.jest.lib'
-
 import * as path from 'node:path'
+
+import { codeFilesExtensions } from '@voltiso/config.jest.lib'
 
 //
 
@@ -60,7 +60,7 @@ export const transformIgnorePatterns = [
 	`node_modules/\\.pnpm/(?!${librariesToTransform.join('|')}).*`,
 ]
 
-export { transform, moduleNameMapper }
+export { transform }
 
 export const setupFilesAfterEnv = [
 	path.join(dirname, '..', 'setup-after-env.js'),
@@ -73,3 +73,5 @@ export const haste = {
 	defaultPlatform: 'ios',
 	platforms: ['android', 'ios', 'native'],
 }
+
+export { moduleNameMapper } from '@voltiso/config.jest.lib'

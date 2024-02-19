@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { StripTransformOptions } from '../stripTransform'
+import type { StripTransformOptions } from '../stripTransform.js'
 
 export function printInitInfo(pluginOptions: StripTransformOptions) {
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars

@@ -5,7 +5,7 @@ import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import * as ts from 'typescript'
 
-import type { InlineTransformContext } from '../inlineTransform'
+import type { InlineTransformContext } from '../inlineTransform.js'
 import { collectNodesOfKind } from './collectNodesOfKind.js'
 import { collectSymbolNames } from './collectSymbolNames.js'
 import { getFirstChildOrSelf } from './getFirstChildOrSelf.js'

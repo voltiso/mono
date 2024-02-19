@@ -309,9 +309,6 @@ importers:
       '@voltiso/config.jest':
         specifier: workspace:^
         version: link:../config.jest
-      '@voltiso/config.jest.lib':
-        specifier: workspace:^
-        version: link:../config.jest.lib
       jest-environment-node:
         specifier: ^29.7.0
         version: 29.7.0
@@ -328,9 +325,6 @@ importers:
       '@voltiso/config.jest':
         specifier: workspace:^
         version: link:../config.jest
-      '@voltiso/config.jest.lib':
-        specifier: workspace:^
-        version: link:../config.jest.lib
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0

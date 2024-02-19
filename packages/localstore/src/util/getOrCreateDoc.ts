@@ -1,11 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Localstore } from '~/Localstore'
-import { Doc } from '~/Localstore'
-import type { CollectionPath } from '~/Path'
+import type { Localstore } from '~/Localstore.js'
+import { Doc } from '~/Localstore.js'
+import type { CollectionPath } from '~/Path.js'
 
-import { getOrCreateCollection } from './getOrCreateCollection'
+import { getOrCreateCollection } from './getOrCreateCollection.js'
 
 export function getOrCreateDoc(
 	store: Localstore,

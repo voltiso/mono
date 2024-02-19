@@ -5,8 +5,8 @@ import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import type * as ts from 'typescript'
 
-import type { CompatTransformContext } from '../compatTransform'
-import type { CompatFeature } from './CompatTransformOptions'
+import type { CompatTransformContext } from '../compatTransform.js'
+import type { CompatFeature } from './CompatTransformOptions.js'
 
 const moduleIcon = '🧩'
 
