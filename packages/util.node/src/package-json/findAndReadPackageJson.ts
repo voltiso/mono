@@ -19,7 +19,7 @@ export function* findAndReadPackageJsonSyncer(
 	$fastAssert(packageJsonPath)
 
 	const packageJsonBuffer = (yield {
-		// eslint-disable-next-line security/detect-non-literal-fs-filename
+		// eslint-disable-next-line security/detect-non-literal-fs-filename, @typescript-eslint/promise-function-async
 		async: () => fs.readFile(packageJsonPath),
 		// eslint-disable-next-line security/detect-non-literal-fs-filename
 		sync: () => fsSync.readFileSync(packageJsonPath),
@@ -32,6 +32,7 @@ export function* findAndReadPackageJsonSyncer(
 
 //
 
+// eslint-disable-next-line @typescript-eslint/promise-function-async
 export function findAndReadPackageJson(
 	dir?: string | undefined,
 ): Promise<PackageJson> {

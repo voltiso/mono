@@ -7,6 +7,9 @@ import { runAsync, runSync } from '@voltiso/util'
 
 import { findAndReadPackageJsonSyncer } from './findAndReadPackageJson'
 
+// eslint-disable-next-line es-x/no-import-meta
+const __dirname = new URL('.', import.meta.url).pathname
+
 describe('findAndReadPackageJson', () => {
 	it('async', async () => {
 		expect.hasAssertions()

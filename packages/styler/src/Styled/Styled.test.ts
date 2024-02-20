@@ -1,6 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// const isCjs = typeof require === 'function'
+// console.log('isCjs', isCjs)
+
 import type { StaticError } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 

@@ -24,6 +24,7 @@ import { setupFilesAfterEnv as baseSetupFilesAfterEnv } from '@voltiso/config.je
 import resolve from 'resolve'
 
 export {
+	extensionsToTreatAsEsm,
 	haste,
 	moduleNameMapper,
 	modulePathIgnorePatterns,
@@ -31,6 +32,7 @@ export {
 	testMatch,
 	transform,
 	transformIgnorePatterns,
+	// setupFilesAfterEnv
 } from '@voltiso/config.jest'
 
 const dirname = __dirname // will be transpiled to `import.meta...` by `@voltiso/transform/compat

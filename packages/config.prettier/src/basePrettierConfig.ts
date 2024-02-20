@@ -1,9 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import fs from 'node:fs'
-import * as path from 'node:path'
+// import fs from 'node:fs'
+// import * as path from 'node:path'
 
+import packageJson from '../package.json'
 import { defineConfig } from './defineConfig'
 
 interface PackageJson {
@@ -14,11 +15,11 @@ interface PackageJson {
 // ...
 
 function getPackageJson(): PackageJson {
-	// eslint-disable-next-line unicorn/prefer-module
-	const dirname = __dirname
+	// // eslint-disable-next-line unicorn/prefer-module
+	// const dirname = __dirname
 
-	// eslint-disable-next-line n/no-sync
-	const packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', '..', 'package.json'))
+	// // eslint-disable-next-line n/no-sync
+	// const packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', '..', 'package.json'))
 
 	// try {
 	// 	// eslint-disable-next-line n/global-require, n/no-missing-require, unicorn/prefer-module, n/no-sync
@@ -29,7 +30,9 @@ function getPackageJson(): PackageJson {
 	// }
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return JSON.parse(packageJsonBuffer as never)
+	// return JSON.parse(packageJsonBuffer as never)
+
+	return packageJson
 }
 
 function getDependencies(): Record<string, string> {

@@ -30,7 +30,7 @@
     "__________DEV": "__________",
     "dev": "v dev",
     "__________TEST": "__________",
-    "test": "jest --silent",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",

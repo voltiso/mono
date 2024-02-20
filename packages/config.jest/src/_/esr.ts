@@ -82,4 +82,4 @@ const isCjs = typeof require === 'function'
 // console.log('config.jest', isCjs ? 'cjs' : 'esm')
 // console.log({dirname})
 
-export const extensionsToTreatAsEsm = isCjs ? [] : ['.ts']
+export const extensionsToTreatAsEsm = isCjs ? [] : ['.ts', '.tsx']

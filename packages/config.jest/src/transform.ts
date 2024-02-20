@@ -50,10 +50,10 @@ function getLoaderFromFilename(filename: string): string {
 
 //
 
-// // eslint-disable-next-line unicorn/prefer-module
-// const isCjs = typeof require === 'function'
+// eslint-disable-next-line unicorn/prefer-module
+const isCjs = typeof require === 'function'
 
-// console.log({isCjs})
+console.log('config.jest', {isCjs})
 
 export default {
 	process(source: string, filename: string) {
@@ -64,13 +64,15 @@ export default {
 		const isFlow = isFileFlow(filename)
 		const isJsx = isFileJsx(filename)
 
+		// if(isFlow) console.log('isFlow', filename)
+
 		if (isFlow) code = flowRemoveTypes(code).toString()
 
 		try {
 			const result = esbuild.transformSync(code, {
 				// target: 'node16',
 
-				// format: isCjs ? 'cjs' : 'esm',
+				format: isCjs ? 'cjs' : 'esm',
 
 				sourcemap: true,
 				sourcesContent: false,

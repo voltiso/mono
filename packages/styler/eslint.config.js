@@ -15,7 +15,7 @@ const config = [
 		// },
 		rules: {
 			// 'import/extensions': ['error', 'ignorePackages']
-			'file-extension-in-import-ts/file-extension-in-import-ts': 'error',
+			// 'file-extension-in-import-ts/file-extension-in-import-ts': 'error',
 			// '@voltiso/file-extension-in-import': ['error', 'always']
 
 			'node-dependencies/absolute-version': 'off',
