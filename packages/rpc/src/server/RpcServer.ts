@@ -1,6 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/prefer-function-type */
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import { SchemarError } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { $AssumeType, BoundCallable, CALL } from '@voltiso/util'
@@ -111,8 +115,8 @@ export class _RpcServer<
 
 				response.json({ result: serializedResult })
 			} catch (error) {
-				// eslint-disable-next-line no-console
-				console.error(logName, 'throws', error)
+				// // eslint-disable-next-line no-console
+				// console.error(logName, 'throws', error) // ! SHOULD BE LOGGED ?
 
 				if (this.options.serializer)
 					response

@@ -50,6 +50,11 @@ function getLoaderFromFilename(filename: string): string {
 
 //
 
+// // eslint-disable-next-line unicorn/prefer-module
+// const isCjs = typeof require === 'function'
+
+// console.log({isCjs})
+
 export default {
 	process(source: string, filename: string) {
 		// console.log({ source, filename })
@@ -65,7 +70,7 @@ export default {
 			const result = esbuild.transformSync(code, {
 				// target: 'node16',
 
-				format: 'cjs',
+				// format: isCjs ? 'cjs' : 'esm',
 
 				sourcemap: true,
 				sourcesContent: false,

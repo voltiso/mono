@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable unicorn/no-array-for-each */
 /* eslint-disable es-x/no-array-prototype-foreach */
 /* eslint-disable github/array-foreach */
@@ -119,40 +120,50 @@ export const fileExtensionInImport = {
 				// Ignore if the file extension could not be determined one.
 				return
 			}
-			// @ts-expect-error ...
-			const ext = mappingExtensions(resolvedExt || existingExts[0], extMapping)
-			// @ts-expect-error ...
-			const style = overrideStyle[ext] || defaultStyle
+			const extWithIndex = mappingExtensions(
+				resolvedExt || existingExts[0]!,
+				extMapping,
+			)
+
+			const extWithoutIndex = extWithIndex?.startsWith('/index')
+				? extWithIndex.slice('/index'.length)
+				: extWithIndex
+
+			// console.log({extWithoutIndex})
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			const style = overrideStyle[extWithoutIndex as never] || defaultStyle
 			// Verify.
-			if (style === 'always' && ext !== originalExt) {
+			if (style === 'always' && extWithoutIndex !== originalExt) {
 				context.report({
-					data: { ext },
+					data: { ext: extWithIndex },
 
 					fix(fixer) {
 						if (existingExts.length !== 1) {
 							return null
 						}
-						// @ts-expect-error ...
-						const index = node.range[1] - 1
+						const index = node.range![1] - 1
 
-						return fixer.insertTextBeforeRange([index, index], ext as never)
+						return fixer.insertTextBeforeRange(
+							[index, index],
+							extWithIndex as never,
+						)
 					},
 
 					messageId: 'requireExt',
 					node,
 				})
-			} else if (style === 'never' && ext === originalExt) {
+			} else if (style === 'never' && extWithIndex === originalExt) {
 				context.report({
-					data: { ext },
+					data: { ext: extWithIndex },
 
 					fix(fixer) {
 						if (existingExts.length !== 1) {
 							return null
 						}
-						const index = name.lastIndexOf(ext)
-						// @ts-expect-error ...
-						const start = node.range[0] + 1 + index
-						const end = start + ext.length
+						const index = name.lastIndexOf(extWithIndex)
+						const start = node.range![0] + 1 + index
+						const end = start + extWithIndex.length
 
 						return fixer.removeRange([start, end])
 					},

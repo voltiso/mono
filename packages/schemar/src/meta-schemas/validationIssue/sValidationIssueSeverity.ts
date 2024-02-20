@@ -4,6 +4,10 @@
 import { lazyObject } from '@voltiso/util'
 
 import { or } from '~/base-schemas/union/or'
+import type { Union$ } from '~/base-schemas/union/Union'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type __hack_sValidationIssueSeverity = Union$<[]>
 
 /**
  * If just a `'warning'`, schema validation is considered successful anyway

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
@@ -151,95 +152,97 @@ export function compatTransform(
 					node.parent &&
 					ts.isStringLiteral(node) &&
 					(ts.isImportDeclaration(node.parent) ||
-						ts.isExportDeclaration(node.parent))
+						ts.isExportDeclaration(node.parent) ||
+						ts.isLiteralTypeNode(node.parent))
 				) {
-					const isTypeOnly = ts.isImportDeclaration(node.parent)
-						? node.parent.importClause?.isTypeOnly
-						: node.parent.isTypeOnly
+					const isTypeOnly = ts.isLiteralTypeNode(node.parent)
+						? false
+						: ts.isImportDeclaration(node.parent)
+							? node.parent.importClause?.isTypeOnly
+							: node.parent.isTypeOnly
 
 					if (!isTypeOnly || options.afterDeclarationsHack) {
-						const { moduleSpecifier } = node.parent
+						// const { moduleSpecifier } = node.parent
 
-						if (moduleSpecifier) {
-							let moduleSpecifierStr = moduleSpecifier.getText(sourceFile)
+						const moduleSpecifier = node
 
-							const singleQuote = moduleSpecifierStr.startsWith("'")
+						// if (moduleSpecifier) {
+						let moduleSpecifierStr = moduleSpecifier.getText(sourceFile)
 
-							moduleSpecifierStr = moduleSpecifierStr.slice(1, -1)
+						const singleQuote = moduleSpecifierStr.startsWith("'")
 
-							// console.log({ moduleSpecifierStr })
+						moduleSpecifierStr = moduleSpecifierStr.slice(1, -1)
 
-							// ! HACK !
+						// console.log({ moduleSpecifierStr })
 
-							const paths = {
-								'~': 'src',
-								_: 'src/_',
-							}
+						// ! HACK !
 
-							for (const [key, value] of Object.entries(paths)) {
-								if (moduleSpecifierStr.startsWith(key)) {
-									const target = path.join(
-										program.getCurrentDirectory(),
-										value,
-										moduleSpecifierStr.slice(1),
-									)
+						const paths = {
+							'~': 'src',
+							_: 'src/_',
+						}
 
-									moduleSpecifierStr = path.relative(
-										path.dirname(sourceFile.fileName),
-										target,
-									)
-
-									// console.log({ moduleSpecifierStr })
-
-									if (
-										!moduleSpecifierStr.startsWith('./') &&
-										!moduleSpecifierStr.startsWith('../')
-									) {
-										moduleSpecifierStr = `./${moduleSpecifierStr}`
-									}
-								}
-							}
-
-							// console.log('?', { moduleSpecifierStr })
-
-							if (
-								(moduleSpecifierStr.startsWith('./') ||
-									moduleSpecifierStr.startsWith('../')) &&
-								!moduleSpecifierStr.endsWith('.js')
-							) {
-								// console.log({ moduleSpecifierStr })
-								// console.log('!!!', sourceFile.fileName)
-								const myPath = path.join(
-									path.dirname(sourceFile.fileName),
-									moduleSpecifierStr,
+						for (const [key, value] of Object.entries(paths)) {
+							if (moduleSpecifierStr.startsWith(key)) {
+								const target = path.join(
+									program.getCurrentDirectory(),
+									value,
+									moduleSpecifierStr.slice(1),
 								)
 
-								// console.log({ myPath })
+								moduleSpecifierStr = path.relative(
+									path.dirname(sourceFile.fileName),
+									target,
+								)
 
-								if (isDirectory(myPath)) {
-									if (!options.supported.importDirectory) {
-										const newNodeStr = `${moduleSpecifierStr}/index.js`
+								// console.log({ moduleSpecifierStr })
 
-										logCompatTransformNode(ctx, node, newNodeStr, {
-											feature: 'importDirectory',
-										})
+								if (
+									!moduleSpecifierStr.startsWith('./') &&
+									!moduleSpecifierStr.startsWith('../')
+								) {
+									moduleSpecifierStr = `./${moduleSpecifierStr}`
+								}
+							}
+						}
 
-										return ts.factory.createStringLiteral(
-											newNodeStr,
-											singleQuote,
-										)
-									}
-								} else if (!options.supported.importWithoutExtension) {
-									const newNodeStr = `${moduleSpecifierStr}.js`
+						// console.log('?', { moduleSpecifierStr })
+
+						if (
+							(moduleSpecifierStr.startsWith('./') ||
+								moduleSpecifierStr.startsWith('../')) &&
+							!moduleSpecifierStr.endsWith('.js')
+						) {
+							// console.log({ moduleSpecifierStr })
+							// console.log('!!!', sourceFile.fileName)
+							const myPath = path.join(
+								path.dirname(sourceFile.fileName),
+								moduleSpecifierStr,
+							)
+
+							// console.log({ myPath })
+
+							if (isDirectory(myPath)) {
+								if (!options.supported.importDirectory) {
+									const newNodeStr = `${moduleSpecifierStr}/index.js`
 
 									logCompatTransformNode(ctx, node, newNodeStr, {
-										feature: 'importWithoutExtension',
+										feature: 'importDirectory',
 									})
 
 									return ts.factory.createStringLiteral(newNodeStr, singleQuote)
 								}
+							} else if (!options.supported.importWithoutExtension) {
+								const newNodeStr = `${moduleSpecifierStr}.js`
+
+								logCompatTransformNode(ctx, node, newNodeStr, {
+									feature: 'importWithoutExtension',
+								})
+
+								return ts.factory.createStringLiteral(newNodeStr, singleQuote)
 							}
 						}
+						// }
 					}
 				}
 

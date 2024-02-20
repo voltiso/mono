@@ -25,3 +25,5 @@ export { type AAA }
 export { a as a3 } from '../compat/test'
 export { a as a2 } from '~/compat/test'
 export { abc } from '_'
+
+export type testA = typeof import('./numericSeparators')

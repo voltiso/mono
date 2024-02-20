@@ -3,8 +3,22 @@
 
 import { $fastAssert, lazyObject } from '@voltiso/util'
 
+import type {
+	Number$,
+	String$,
+	Union$,
+	Unknown$,
+	UnknownSymbol$,
+} from '~/base-schemas'
 import { number, or, string, symbol, unknown } from '~/base-schemas'
 import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+
+export type __hack_defaultRecordOptions =
+	| Union$<[]>
+	| String$
+	| Number$
+	| UnknownSymbol$
+	| Unknown$
 
 $fastAssert(defaultSchemaOptions)
 

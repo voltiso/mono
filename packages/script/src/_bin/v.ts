@@ -3,13 +3,16 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable max-depth */
+
 // eslint-disable-next-line n/shebang
 import { spawn } from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
-import { registerEsbuild } from '@voltiso/util.esbuild'
 import chalk from 'chalk'
+// import { registerEsbuild } from '@voltiso/util.esbuild'
+import { register as registerEsbuild } from 'esbuild-register/dist/node'
 
 // import type { EventListener } from 'node'
 import { isParallelScript, isRaceScript } from '../parallel'
@@ -17,6 +20,7 @@ import type { Script } from '../Script'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 registerEsbuild()
 
 const commands = {
@@ -43,19 +47,29 @@ function getScripts(): Record<string, string | string[]> {
 
 		while (currentCwd) {
 			const scriptsFilePath = path.join(currentCwd, 'scripts')
+			// console.log({scriptsFilePath})
 
-			try {
-				// eslint-disable-next-line import/no-dynamic-require, n/global-require, unicorn/prefer-module
-				const moreScripts = require(scriptsFilePath) as Record<string, string>
-				scripts = { ...moreScripts, ...scripts }
-			} catch (error) {
-				if (
-					(error as { code: string } | null)?.code !== 'MODULE_NOT_FOUND' ||
-					!(error as { message?: string } | null)?.message?.includes(
-						`Cannot find module '${scriptsFilePath}'`,
+			const suffixes = [
+				'',
+				// '.ts',
+			]
+
+			for (const suffix of suffixes) {
+				const requirePath = `${scriptsFilePath}${suffix}`
+
+				try {
+					// eslint-disable-next-line import/no-dynamic-require, n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports
+					const moreScripts = require(requirePath) as Record<string, string>
+					scripts = { ...moreScripts, ...scripts }
+				} catch (error) {
+					if (
+						(error as { code: string } | null)?.code !== 'MODULE_NOT_FOUND' ||
+						!(error as { message?: string } | null)?.message?.includes(
+							`Cannot find module '${requirePath}'`,
+						)
 					)
-				)
-					throw error
+						throw error
+				}
 			}
 
 			const nextCwd = path.dirname(currentCwd)
@@ -111,7 +125,7 @@ async function runScript(
 	args: string[],
 	{ signal }: { signal?: AbortSignal | undefined } = {},
 ) {
-	// eslint-disable-next-line require-atomic-updates, no-param-reassign
+	// eslint-disable-next-line require-atomic-updates, no-param-reassign, @typescript-eslint/no-floating-promises
 	script = await script
 
 	if (Array.isArray(script)) {
@@ -126,6 +140,7 @@ async function runScript(
 
 	if (isParallelScript(script)) {
 		// TODO: use child signal with a separate controller?
+		// eslint-disable-next-line @typescript-eslint/promise-function-async
 		const promises = script.parallel.map(s => runScript(s, args, { signal })) // ! pass args?
 
 		try {
@@ -153,6 +168,7 @@ async function runScript(
 
 	if (isRaceScript(script)) {
 		// TODO: use child signal with a separate controller?
+		// eslint-disable-next-line @typescript-eslint/promise-function-async
 		const promises = script.race.map(s => runScript(s, args, { signal })) // ! pass args?
 		try {
 			await Promise.race(promises)
@@ -267,6 +283,7 @@ async function main(): Promise<void> {
 	}
 
 	const controller = new AbortController()
+	// eslint-disable-next-line @typescript-eslint/prefer-destructuring
 	const signal = controller.signal
 
 	process.on('exit', () => {

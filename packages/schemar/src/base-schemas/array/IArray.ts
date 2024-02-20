@@ -3,9 +3,14 @@
 
 import type { OPTIONS } from '@voltiso/util'
 
-import type { $$Schema, Schema, SCHEMA_NAME, Schema$, SchemaLike } from '~'
-
-import type { ArrayOptions } from '.'
+import type {
+	$$Schema,
+	ArrayOptions,
+	Schema,
+	SCHEMA_NAME,
+	Schema$,
+	SchemaLike,
+} from '~'
 
 export interface $$Array extends $$Schema {
 	readonly [SCHEMA_NAME]: 'Array'

@@ -14,4 +14,14 @@ describe('compat', () => {
 
 		expect(file.toString()).toMatchSnapshot()
 	})
+
+	it('importExtensions - d.ts', async () => {
+		expect.hasAssertions()
+
+		const file = await fs.readFile(
+			path.join(__dirname, '../../dist/esm/compat/importExtensions.d.ts'),
+		)
+
+		expect(file.toString()).toMatchSnapshot()
+	})
 })

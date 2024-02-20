@@ -5,6 +5,14 @@ const zoneAwarePromiseKey = '__zone_symbol__uncaughtPromiseErrors'
 
 const messagePrefix = '[@voltiso/context] Non-Node environment:'
 
+function checkZonePresent() {
+	if (typeof Zone === 'undefined') {
+		// eslint-disable-next-line unicorn/prefer-type-error
+		throw new Error(`${messagePrefix} zone.js not imported`)
+	}
+
+}
+
 function checkPromiseConstructor() {
 	if (!(zoneAwarePromiseKey in Promise)) {
 		throw new Error(
@@ -31,6 +39,7 @@ function checkImplicitPromiseConstructorName() {
 //
 
 export function checkEnvUncached() {
+	checkZonePresent()
 	checkPromiseConstructor()
 	checkImplicitPromiseConstructorName()
 }

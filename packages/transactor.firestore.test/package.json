@@ -11,7 +11,6 @@
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
-    "areTheTypesWrong": "v areTheTypesWrong",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "v lintTsc",
     "fix": "eslint . --fix"
@@ -35,7 +34,7 @@
     "firebase-tools": "^13.0.2",
     "get-port": "^7.0.0",
     "jest": "^29.7.0",
-    "jest-dev-server": "^9.0.2",
+    "jest-dev-server": "^10.0.0",
     "random-seed": "^0.3.0",
     "zone.js": "^0.14.2"
   }

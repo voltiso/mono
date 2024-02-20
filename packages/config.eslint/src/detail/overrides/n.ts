@@ -55,7 +55,7 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 		'warn',
 		'always',
 		// eslint-disable-next-line @typescript-eslint/no-magic-numbers
-		Object.fromEntries(codeFiles.map(ext => [ext.slice(1), 'never'])),
+		Object.fromEntries(codeFiles.map(ext => [ext.slice(1 + 3), 'never'])),
 	],
 
 	// 'n/file-extension-in-import': [

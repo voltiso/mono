@@ -1,13 +1,25 @@
 {
   "name": "@voltiso/config.prettier",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "type": "module",
   "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
+  "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
@@ -16,7 +28,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TEST": "__________",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",
     "lint:fast": "run-p lint:depcheck lint:prettier",
@@ -29,6 +41,7 @@
     "__________BUILD": "__________",
     "build": "v build",
     "build:cjs": "v buildCjs",
+    "build:esm": "v buildEsm",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",

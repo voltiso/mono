@@ -9,16 +9,26 @@
   "__________EXPORTS": "__________",
   "exports": {
     ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./client": {
-      "types": "./dist/cjs/client/index.d.ts",
+      "types": {
+        "import": "./dist/esm/client/index.d.ts",
+        "require": "./dist/cjs/client/index.d.ts"
+      },
       "import": "./dist/esm/client/index.js",
       "require": "./dist/cjs/client/index.js"
     },
     "./server": {
-      "types": "./dist/cjs/server/index.d.ts",
+      "types": {
+        "import": "./dist/esm/server/index.d.ts",
+        "require": "./dist/cjs/server/index.d.ts"
+      },
       "import": "./dist/esm/server/index.js",
       "require": "./dist/cjs/server/index.js"
     }
@@ -99,7 +109,6 @@
     "@testing-library/react-native": "^12.4.2",
     "@types/hyphenate-style-name": "^1.0.2",
     "@types/react": "^18.2.56",
-    "@types/react-native": "^0.73.0",
     "@types/react-test-renderer": "^18.0.7",
     "@types/stylis": "^4.2.4",
     "@voltiso/config.eslint.lib": "workspace:^",
@@ -113,7 +122,7 @@
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "^0.73.4",
+    "react-native": "=0.72.7",
     "react-test-renderer": "^18.2.0",
     "typescript": "^5.3.3",
     "typescript-transform-paths": "^3.4.6"

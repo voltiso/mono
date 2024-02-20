@@ -90,7 +90,10 @@ export const testOverride = defineEslintFlatConfig(
 			'new-cap': 0,
 			'max-lines-per-function': 0,
 			'max-statements': 0,
+
 			'no-magic-numbers': 0,
+			'@typescript-eslint/no-magic-numbers': 0,
+
 			'@typescript-eslint/no-explicit-any': 0,
 			'etc/prefer-interface': 0,
 			'etc/no-misused-generics': 0,

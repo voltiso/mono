@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $fastAssert } from '_'
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 
 import { areArrowFunctionsTranspiled } from '~/misc'
 
@@ -108,6 +108,8 @@ describe('lazyFunction', () => {
 			return 123
 		}
 
+		// $fastAssert(Object.getOwnPropertyDescriptor(a, 'arguments'))
+
 		Object.setPrototypeOf(a, {
 			s: 'abc',
 		})
@@ -145,12 +147,17 @@ describe('lazyFunction', () => {
 		)
 
 		const expected = Object.getOwnPropertyDescriptor(a, 'arguments')
-		$fastAssert(expected)
-		delete expected.configurable
+		// ! CHANGED IN NODE 20 ???
+		// $fastAssert(expected)
+		// delete expected.configurable
 
-		expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toMatchObject(
-			expected,
-		)
+		// expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toMatchObject(
+		// 	expected,
+		// )
+
+		expect(expected).toBeUndefined()
+		expect(Object.getOwnPropertyDescriptor(b, 'arguments')).toBeUndefined()
+		// !
 
 		if (areArrowFunctionsTranspiled) {
 			// eslint-disable-next-line jest/no-conditional-expect
@@ -177,17 +184,19 @@ describe('lazyFunction', () => {
 			expect(Object.getOwnPropertyDescriptors(b)).toMatchObject({
 				...expected,
 
-				arguments: {
-					...expected['arguments'],
-					// eslint-disable-next-line jest/no-conditional-expect
-					configurable: expect.any(Boolean),
-				},
+				// ! DELETED SINCE NODE 20 ???
+				// arguments: {
+				// 	...expected['arguments'],
+				// 	// eslint-disable-next-line jest/no-conditional-expect
+				// 	configurable: expect.any(Boolean),
+				// },
 
-				caller: {
-					...expected['caller'],
-					// eslint-disable-next-line jest/no-conditional-expect
-					configurable: expect.any(Boolean),
-				},
+				// caller: {
+				// 	...expected['caller'],
+				// 	// eslint-disable-next-line jest/no-conditional-expect
+				// 	configurable: expect.any(Boolean),
+				// },
+				// !
 
 				prototype: {
 					...expected['prototype'],

@@ -7,14 +7,18 @@ import { forwardRef } from 'react'
 import type { IForwardRefRenderFunction } from '~/_/StyledData'
 import type { StyledData } from '~/_/StyledData/StyledData'
 import type { StylableLike } from '~/Stylable'
-import type { OuterProps } from '~/Stylable/OuterProps'
+import type { NativeOuterProps, OuterProps } from '~/Stylable/OuterProps'
 import { getElementName } from '~/Styled/_/getElementName'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
 import { defineFunctionComponent } from './defineFunctionComponent'
 import { render } from './render'
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type __hack_GetComponent = NativeOuterProps
+
 export function getComponent<
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	$ extends StyledTypeInfo & { Component: StylableLike },
 >(data: StyledData<$>) {
 	const elementName = getElementName(data.component)
@@ -38,6 +42,7 @@ export function getComponent<
 
 	renderFunction.displayName = renderFunctionName
 
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const StyledComponent = defineFunctionComponent(
 		forwardRefName,
 		forwardRef<unknown, $['Props'] & OuterProps>(renderFunction),

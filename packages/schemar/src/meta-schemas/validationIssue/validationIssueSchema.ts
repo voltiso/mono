@@ -7,6 +7,7 @@ import { array } from '~/base-schemas/array/Array'
 import { boolean } from '~/base-schemas/boolean/boolean'
 import { optional } from '~/base-schemas/misc'
 import { number } from '~/base-schemas/number/Number'
+import type { CustomObject$ } from '~/base-schemas/object/CustomObject'
 import { string } from '~/base-schemas/string/String'
 import { undefined as undefined_ } from '~/base-schemas/undefined/undefined'
 import { or } from '~/base-schemas/union/or'
@@ -17,6 +18,9 @@ import { infer } from '~/infer/infer'
 
 import { validationIssueSeverity } from './sValidationIssueSeverity'
 import type { ValidationIssue } from './ValidationIssue'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type __hack_validationIssueSchema = CustomObject$<{}>
 
 export const _validationIssue = lazyObject(() => {
 	const toStringParameter = infer({

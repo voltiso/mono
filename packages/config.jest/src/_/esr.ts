@@ -62,6 +62,8 @@ export const transformIgnorePatterns = [
 
 export { transform }
 
+// console.log('!!!', path.join(dirname, '..', 'setup-after-env.js'))
+
 export const setupFilesAfterEnv = [
 	path.join(dirname, '..', 'setup-after-env.js'),
 	// require.resolve('../setup-after-env.js'),
@@ -75,3 +77,9 @@ export const haste = {
 }
 
 export { moduleNameMapper } from '@voltiso/config.jest.lib'
+
+const isCjs = typeof require === 'function'
+// console.log('config.jest', isCjs ? 'cjs' : 'esm')
+// console.log({dirname})
+
+export const extensionsToTreatAsEsm = isCjs ? [] : ['.ts']

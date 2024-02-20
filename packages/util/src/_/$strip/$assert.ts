@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/method-signature-style */
+
 import { VoltisoUtilError } from '_/error'
 
 import { isDefined } from '~/nullish'
@@ -29,31 +31,31 @@ export interface $AssertFunction {
 	): asserts x is X extends object ? X : never
 }
 
-const _assert: $AssertFunction = (condition, message?) => {
+const _fastAssert: $AssertFunction = (condition, message?) => {
 	if (condition) return // good
 
 	const finalMessage = message
-		? `$assert(${stringFrom(condition)}, '${message}') failed`
-		: `$assert(${stringFrom(condition)}) failed`
+		? `$fastAssert(${stringFrom(condition)}, '${message}') failed`
+		: `$fastAssert(${stringFrom(condition)}) failed`
 
 	throw new VoltisoUtilError(finalMessage)
 }
 
-_assert.defined = (...args) => {
+_fastAssert.defined = (...args) => {
 	const [x, _message] = args
 	if (isDefined(x)) return // good
 
 	throw new VoltisoUtilError('Assertion failed', {
-		function: { name: '$assert.defined', arguments: args },
+		function: { name: '$fastAssert.defined', arguments: args },
 	})
 }
 
-_assert.object = (...args) => {
+_fastAssert.object = (...args) => {
 	const [x, _message] = args
 	if (typeof x === 'object' && x !== null) return // good
 
 	throw new VoltisoUtilError('Assertion failed', {
-		function: { name: '$assert.defined', arguments: args },
+		function: { name: '$fastAssert.defined', arguments: args },
 	})
 }
 
@@ -66,7 +68,7 @@ _assert.object = (...args) => {
  *
  * @strip Use `@voltiso/transform/strip` to strip from production code
  */
-export const $fastAssert: typeof _assert = _assert
+export const $fastAssert: typeof _fastAssert = _fastAssert
 
 /**
  * @deprecated Use `$fastAssert` instead

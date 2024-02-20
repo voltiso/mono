@@ -19,7 +19,7 @@ export default {
 	// projects: allPackages.map(p => `<rootDir>/packages/${p}`),
 
 	projects: [
-		'packages/*/jest.config.cjs',
+		'packages/*/jest.config.js',
 		//
 	],
 }

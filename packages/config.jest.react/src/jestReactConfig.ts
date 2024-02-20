@@ -21,6 +21,7 @@
 import * as path from 'node:path'
 
 import { setupFilesAfterEnv as baseSetupFilesAfterEnv } from '@voltiso/config.jest'
+import resolve from 'resolve'
 
 export {
 	haste,
@@ -32,12 +33,14 @@ export {
 	transformIgnorePatterns,
 } from '@voltiso/config.jest'
 
-export const testEnvironment = 'jest-environment-jsdom'
-
 const dirname = __dirname // will be transpiled to `import.meta...` by `@voltiso/transform/compat
+
+export const testEnvironment = resolve.sync('jest-environment-jsdom', {
+	basedir: dirname,
+})
 
 export const setupFilesAfterEnv = [
 	...baseSetupFilesAfterEnv,
 	path.join(dirname, 'react-setup-after-env.js'),
-	'react-native/jest/setup',
+	resolve.sync('react-native/jest/setup', { basedir: dirname }),
 ]

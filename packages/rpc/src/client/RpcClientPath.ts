@@ -1,6 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import type { MaybePromise, Mutable } from '@voltiso/util'
 import {
 	BoundCallable,
@@ -20,8 +23,9 @@ import type { RpcClient } from './RpcClient'
 function callLocal(
 	clientPath: RpcClientPath,
 	args: unknown[],
-): MaybePromise<unknown> | void {
+): MaybePromise<unknown> | undefined { // | void ???
 	const options = clientPath._client._options
+	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 	const localHandler = tryGet(
 		options.localHandlers,
 		clientPath._path as never,
@@ -41,6 +45,7 @@ function callLocal(
 
 async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 	// console.log('callRemote', clientPath, ...args)
+	// eslint-disable-next-line @typescript-eslint/prefer-destructuring
 	const serializer = clientPath._client.options.serializer
 
 	const serializedArgs = serializer
@@ -108,12 +113,12 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 			}
 		} catch {}
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.error(error)
+		// // eslint-disable-next-line no-console
+		// console.error(error) // ! SHOULD PRINT TO CONSOLE ?
 
 		const message =
 			error instanceof Error
-				? `${error.toString()}`
+				? error.toString()
 				: `Exotic error: ${stringFrom(error)}`
 
 		detail.push(message)

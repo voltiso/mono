@@ -4,9 +4,13 @@
 import { $fastAssert } from '@voltiso/util'
 
 import { defaultSchemaOptions } from '~/Schema/options/defaultSchemaOptions'
+import type { $$Schema } from '~/types/Schema/ISchema'
 
 import { unknown } from '../unknown/Unknown'
 import type { ArrayOptions } from './ArrayOptions'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type __hack_defaultArrayOptions = $$Schema
 
 $fastAssert(defaultSchemaOptions)
 

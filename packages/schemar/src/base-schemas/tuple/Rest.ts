@@ -1,12 +1,17 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/class-methods-use-this */
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import { BoundCallable, CALL } from '@voltiso/util'
 
 import type { $$Schemable } from '~'
 
-import type { Unknown } from '../unknown/Unknown'
+import type { Unknown, Unknown$ } from '../unknown/Unknown'
 import { unknown } from '../unknown/Unknown'
+
+export type __hack_Rest = Unknown$
 
 export interface UnknownRest extends Rest<Unknown> {
 	readonly element: Unknown
@@ -16,6 +21,7 @@ export interface UnknownRest extends Rest<Unknown> {
 export const IS_REST = Symbol('IS_REST')
 
 export interface Rest<S extends $$Schemable> {
+	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 

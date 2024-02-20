@@ -12,6 +12,7 @@ import { ZoneContext } from './zone/ZoneContext'
  * - Note: ⚠️ `undefined` is not a valid context value!
  */
 export interface Context<T> {
+	// eslint-disable-next-line @typescript-eslint/method-signature-style
 	run<Return>(value: T, run: () => Return): Return
 
 	get value(): T
@@ -20,6 +21,7 @@ export interface Context<T> {
 }
 
 export interface ContextConstructor {
+	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	new <T>(): Context<T>
 }
 

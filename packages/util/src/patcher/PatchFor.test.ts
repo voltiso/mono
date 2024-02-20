@@ -27,8 +27,6 @@ describe('PatchFor', () => {
 		$Assert<IsIdentical<B, any>>()
 	})
 
-	it.todo('object')
-
 	it('misc', () => {
 		type A = PatchFor<unknown>
 		$Assert<IsIdentical<A, unknown>>()

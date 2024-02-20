@@ -7,8 +7,7 @@
 // eslint-disable-next-line no-restricted-imports, @voltiso/file-extension-in-import
 import baseConfig from '../../eslint.config.js'
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default [
+const config = [
 	...baseConfig,
 	{
 		// env: {
@@ -16,15 +15,12 @@ export default [
 		// },
 		rules: {
 			// 'import/extensions': ['error', 'ignorePackages']
+			'file-extension-in-import-ts/file-extension-in-import-ts': 'error',
+			// '@voltiso/file-extension-in-import': ['error', 'always']
 
-			// TODO: make this work with `import type`
-			'file-extension-in-import-ts/file-extension-in-import-ts': [
-				'error',
-				'always',
-				{
-					extMapping: { '.ts': '.js' },
-				},
-			],
+			'node-dependencies/absolute-version': 'off',
 		},
 	},
 ]
+
+export default config

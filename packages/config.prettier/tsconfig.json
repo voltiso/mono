@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts",
+	"extends": "@voltiso/config.ts"
 
-	"compilerOptions": {
-		"module": "CommonJS",
-		"moduleResolution": "node"
-	}
+	// "compilerOptions": {
+	// 	"module": "CommonJS",
+	// 	"moduleResolution": "node"
+	// }
 }

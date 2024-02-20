@@ -3,9 +3,14 @@
 
 import { lazyObject } from '@voltiso/util'
 
+import type { Literal$ } from '~/core-schemas/index.js'
 import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
 
+import type { CustomUnknown$ } from './unknown/CustomUnknown'
 import { unknown } from './unknown/Unknown'
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export type __hack_baseSchemas_misc = CustomUnknown$<{}> | Literal$<0>
 
 export const optional = lazyObject(() => unknown.optional)
 export const readonly = lazyObject(() => unknown.readonly)

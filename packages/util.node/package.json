@@ -28,7 +28,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TEST": "__________",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",
     "lint:eslint": "v lintEslint",

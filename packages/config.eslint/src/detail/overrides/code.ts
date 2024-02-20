@@ -102,40 +102,43 @@ export const codeOverride = defineEslintFlatConfig({
 		...alreadyHandledByUnicorn,
 		...functionalRecommendedRules,
 
-		'@typescript-eslint/naming-convention': [
-			'warn',
-			{
-				selector: 'default',
-				format: ['camelCase'],
-				leadingUnderscore: 'allow',
-				trailingUnderscore: 'allow',
-			},
+		'@typescript-eslint/naming-convention': 0,
+		// '@typescript-eslint/naming-convention': [
+		// 	'warn',
+		// 	{
+		// 		selector: 'default',
+		// 		format: ['camelCase'],
+		// 		leadingUnderscore: 'allow',
+		// 		trailingUnderscore: 'allow',
+		// 	},
 
-			{
-				selector: 'import',
-				format: ['camelCase', 'PascalCase'],
-			},
+		// 	{
+		// 		selector: 'import',
+		// 		format: ['camelCase', 'PascalCase'],
+		// 	},
 
-			{
-				selector: 'variable',
-				format: ['camelCase', 'UPPER_CASE'],
-				leadingUnderscore: 'allow',
-				trailingUnderscore: 'allow',
-			},
+		// 	{
+		// 		selector: 'variable',
+		// 		format: ['camelCase', 'UPPER_CASE'],
+		// 		leadingUnderscore: 'allow',
+		// 		trailingUnderscore: 'allow',
+		// 	},
 
-			{
-				selector: 'typeLike',
-				format: ['PascalCase'],
-				leadingUnderscore: 'allow',
-				trailingUnderscore: 'allow',
-			},
+		// 	{
+		// 		selector: 'typeLike',
+		// 		format: ['PascalCase'],
+		// 		leadingUnderscore: 'allow',
+		// 		trailingUnderscore: 'allow',
+		// 	},
 
-			{
-				selector: 'objectLiteralProperty',
-				format: null,
-			},
-		],
+		// 	{
+		// 		selector: 'objectLiteralProperty',
+		// 		format: null,
+		// 	},
+		// ],
 
+		'@typescript-eslint/no-unnecessary-type-arguments': 0,
+		'@typescript-eslint/sort-type-constituents': 0,
 		'@typescript-eslint/member-ordering': 0,
 		'@typescript-eslint/init-declarations': 0, // require to init with undefined?
 		'@typescript-eslint/prefer-nullish-coalescing': 0,

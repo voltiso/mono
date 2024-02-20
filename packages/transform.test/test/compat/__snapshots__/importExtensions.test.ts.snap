@@ -1,5 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`compat importExtensions - d.ts 1`] = `
+"export * from './numericSeparators.js';
+export * as default from './numericSeparators.js';
+export * as x from './test/index.js';
+export type { A } from './test/index.js';
+import type { A as B } from './test/index.js';
+export type { B };
+export { a } from './test/index.js';
+import {} from './test/index.js';
+export {};
+export { a as a3 } from '../compat/test/index.js';
+export { a as a2 } from './test/index.js';
+export { abc } from '../_/index.js';
+export type testA = typeof import('./numericSeparators.js');
+//# sourceMappingURL=importExtensions.d.ts.map"
+`;
+
 exports[`compat importExtensions 1`] = `
 "// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀

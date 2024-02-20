@@ -1,12 +1,16 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
+// import { requireAsyncHooks } from './asyncHooks'
+import { AsyncLocalStorage } from 'node:async_hooks'
+
 import { fastAssert, isPromiseLike } from '@voltiso/util'
 
 import { NoContextError } from '~/NoContextError'
 
 import type { Context } from '../Context'
-import { requireAsyncHooks } from './asyncHooks'
 
 /**
  * `Context` implementation for NodeJS
@@ -15,7 +19,8 @@ import { requireAsyncHooks } from './asyncHooks'
  */
 // eslint-disable-next-line etc/underscore-internal
 export class NodeContext<T> implements Context<T> {
-	readonly _asyncLocalStorage = new (requireAsyncHooks().AsyncLocalStorage)<T>()
+	readonly _asyncLocalStorage = new AsyncLocalStorage<T>()
+	// readonly _asyncLocalStorage = new (requireAsyncHooks().AsyncLocalStorage)<T>()
 
 	run<Return>(value: T, run: () => Return): Return {
 		fastAssert(value !== undefined)

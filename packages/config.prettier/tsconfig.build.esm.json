@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
-	"extends": "@voltiso/config.ts/build/cjs",
+	"extends": "@voltiso/config.ts/build/esm",
 
 	"compilerOptions": {
-		"outDir": "dist/cjs",
+		"outDir": "dist/esm",
 		"rootDir": "src"
 	},
 

@@ -9,17 +9,26 @@
   "__________EXPORTS": "__________",
   "exports": {
     ".": {
-      "types": "./dist/cjs/index.d.ts",
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
     "./client": {
-      "types": "./dist/cjs/client/index.d.ts",
+      "types": {
+        "import": "./dist/esm/client/index.d.ts",
+        "require": "./dist/cjs/client/index.d.ts"
+      },
       "import": "./dist/esm/client/index.js",
       "require": "./dist/cjs/client/index.js"
     },
     "./server": {
-      "types": "./dist/cjs/server/index.d.ts",
+      "types": {
+        "import": "./dist/esm/server/index.d.ts",
+        "require": "./dist/cjs/server/index.d.ts"
+      },
       "import": "./dist/esm/server/index.js",
       "require": "./dist/cjs/server/index.js"
     }
