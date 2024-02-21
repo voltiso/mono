@@ -6,6 +6,7 @@
 import { areArrowFunctionsTranspiled } from '~/misc'
 
 import { lazyFunction } from './lazyFunction'
+// import { $fastAssert } from '_/$strip/$assert'
 
 describe('lazyFunction', () => {
 	it('arrow functions should not be transpiled', () => {
@@ -147,7 +148,7 @@ describe('lazyFunction', () => {
 		)
 
 		const expected = Object.getOwnPropertyDescriptor(a, 'arguments')
-		// ! CHANGED IN NODE 20 ???
+		// ! THIS DIFFERS IN CJS VS ESM
 		// $fastAssert(expected)
 		// delete expected.configurable
 
@@ -184,7 +185,7 @@ describe('lazyFunction', () => {
 			expect(Object.getOwnPropertyDescriptors(b)).toMatchObject({
 				...expected,
 
-				// ! DELETED SINCE NODE 20 ???
+				// ! THIS DIFFERS IN CJS VS ESM
 				// arguments: {
 				// 	...expected['arguments'],
 				// 	// eslint-disable-next-line jest/no-conditional-expect

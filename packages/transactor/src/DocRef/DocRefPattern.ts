@@ -121,7 +121,7 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line consistent-return
+			// eslint-disable-next-line consistent-return, @typescript-eslint/no-magic-numbers
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 

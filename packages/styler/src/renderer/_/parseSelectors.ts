@@ -19,6 +19,7 @@ export function parseSelectors(str: string): ParseSelectorResult {
 				.split(',')
 				.map(s => s.trim())
 				.map(s =>
+					// eslint-disable-next-line no-nested-ternary
 					s.includes('&')
 						? s
 						: s.startsWith(':') || s.startsWith('[')

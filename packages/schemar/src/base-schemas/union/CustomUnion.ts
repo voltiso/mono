@@ -7,7 +7,7 @@ import type { CustomSchema, CustomSchema$, SCHEMA_NAME } from '~'
 
 import type { UnionOptions } from './UnionOptions'
 
-export type $$Union = {
+export interface $$Union {
 	readonly [SCHEMA_NAME]: 'Union'
 }
 

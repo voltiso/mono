@@ -9,7 +9,7 @@ import type { Updates } from '~/updates'
 
 import type { WithTransaction } from './WithTransaction'
 
-export type CacheEntry = {
+export interface CacheEntry {
 	data?: IntrinsicFields | null | undefined // undefined -> unknown; null -> deleted
 	originalData?: IntrinsicFields | null | undefined
 	updates?: Updates

@@ -113,6 +113,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 				else return Reflect.get(this._rawProxy, p) as never
 			},
 
+			// eslint-disable-next-line @typescript-eslint/max-params
 			set: (target, p, value, receiver: unknown) => {
 				if (typeof p !== 'string' || p in target)
 					return Reflect.set(target, p, value, receiver)

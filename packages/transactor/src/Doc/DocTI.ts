@@ -12,9 +12,16 @@ export const DTI: DTI = Symbol('DTI') as never
 //
 
 // ! 'extends' clause of exported class 'AnotherTest' has or is using private name 'IS_DOC_TYPE_INFO'
-export const IS_DOC_TYPE_INFO = `FakeSymbol('IS_DOC_TYPE_INFO')`
-// export const IS_DOC_TYPE_INFO = Symbol('IS_DOC_TYPE_INFO')
-export type IS_DOC_TYPE_INFO = typeof IS_DOC_TYPE_INFO
+
+/** ! never used - type only */
+export type IS_DOC_TYPE_INFO = 'VoltisoTransactorSymbol(IS_DOC_TYPE_INFO)' // { readonly symbol: unique symbol }['symbol']
+
+
+/** ! never used - type only */
+export const IS_DOC_TYPE_INFO: IS_DOC_TYPE_INFO = Symbol('IS_DOC_TYPE_INFO') as never
+// export type IS_DOC_TYPE_INFO = typeof IS_DOC_TYPE_INFO
+
+
 
 export interface $$DocTI {
 	readonly [IS_DOC_TYPE_INFO]: true

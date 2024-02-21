@@ -2,12 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { equals } from '@voltiso/util'
-import {
-	callHookDestructors,
-	type Destructor,
-	useUpdate,
-} from '@voltiso/util.react'
-import { type DependencyList, useMemo } from 'react'
+import type { Destructor } from '@voltiso/util.react'
+import { callHookDestructors, useUpdate } from '@voltiso/util.react'
+import type { DependencyList } from 'react'
+import { useMemo } from 'react'
 
 import { useCustomReactiveEffect } from './useReactiveEffect'
 

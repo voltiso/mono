@@ -105,6 +105,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 	ProtoCallable({
 		prototype: {
 			schema(schema: $$Schemable, value: unknown, ...rest: any) {
+				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 				return new Assertor(`${name}.schema`, s.schema(schema), {
 					argumentsPrefix: [schema],
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument

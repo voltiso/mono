@@ -50,7 +50,7 @@ export interface Record$<
 
 //
 
-export type RecordConstructor = {
+export interface RecordConstructor {
 	new <
 		TKeySchema extends $$Schema & {
 			Output: keyof any

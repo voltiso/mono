@@ -21,6 +21,7 @@ export function fromDatabaseData(
 
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	nestedData: Database.DocumentDataNested,
 ): NestedDataNoArray
 

@@ -17,7 +17,7 @@ export class NumberImpl extends lazyConstructor(() => CustomNumberImpl)<{}> {
 		return BoundCallable(this) as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	[CALL]<L extends number>(...args: L[] | [Set<L>]): Literal<L> {
 		return literal<L>(...args)
 	}

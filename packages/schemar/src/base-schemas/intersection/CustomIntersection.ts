@@ -8,7 +8,7 @@ import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { IntersectionOptions } from './IntersectionOptions'
 
-export type $$Intersection = {
+export interface $$Intersection {
 	readonly [SCHEMA_NAME]: 'Intersection'
 }
 

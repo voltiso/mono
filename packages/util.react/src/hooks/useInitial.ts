@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable jsdoc/informative-docs */
+
 import { isCallable } from '@voltiso/util'
 import { useMemo } from 'react'
 
@@ -30,6 +32,7 @@ export function useInitial<X>(getInitialValue: () => X): X
  * @param initialValue - Initial value
  * @returns The initial value
  */
+// eslint-disable-next-line @typescript-eslint/unified-signatures
 export function useInitial<X>(initialValue: X): X
 
 /**
@@ -37,6 +40,7 @@ export function useInitial<X>(initialValue: X): X
  *
  * @returns The initial value
  */
+// eslint-disable-next-line @typescript-eslint/unified-signatures
 export function useInitial<X>(x: X | (() => X)): X
 
 //

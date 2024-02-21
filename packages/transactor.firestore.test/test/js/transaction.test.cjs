@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable no-implicit-globals */
+
 'use strict'
 
 const { firestore, srcFirestore } = require('./common/index.cjs')

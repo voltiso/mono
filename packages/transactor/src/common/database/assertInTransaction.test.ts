@@ -12,10 +12,10 @@ describe('assertInTransaction', () => {
 	it('works when not in transaction', () => {
 		const transactor = new Transactor()
 
-		expect(() => assertInTransaction({ transactor })).toThrow(
+		expect(() => {assertInTransaction({ transactor })}).toThrow(
 			'expected to be in transaction',
 		)
 
-		expect(() => assertNotInTransaction({ transactor })).not.toThrow()
+		expect(() => {assertNotInTransaction({ transactor })}).not.toThrow()
 	})
 })

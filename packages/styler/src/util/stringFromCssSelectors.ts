@@ -34,8 +34,10 @@ export function stringFromCss(css: Css): string {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 			.map(([k, v]) => [k.startsWith('-') ? k : hyphenateProperty(k), v])
 			.map(([k, v]) =>
+				// eslint-disable-next-line no-nested-ternary
 				typeof v === 'string'
 					? `${k}:${escapeValue(v)};`
+					// eslint-disable-next-line no-nested-ternary
 					: typeof v === 'object'
 						? `${k}{${stringFromCss(v)}}`
 						: isUnitlessProperty(k)

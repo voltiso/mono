@@ -5,4 +5,5 @@
 
 // export = jestReactConfig
 
-export * from './jestReactConfig'
+export { default } from './default'
+export { getJestReactConfig } from './getJestReactConfig'

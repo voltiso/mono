@@ -9,7 +9,7 @@ import { sAutoId, sRef } from '~/schemas'
 void sAutoId
 void sRef
 
-export type $$PartialDocOptions = {
+export interface $$PartialDocOptions {
 	// tag?: DocTag // ! temporarily disable to clean up lib API
 
 	/**

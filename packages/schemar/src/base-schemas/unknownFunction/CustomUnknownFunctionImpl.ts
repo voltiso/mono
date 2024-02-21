@@ -60,7 +60,7 @@ export class CustomUnknownFunctionImpl<
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'function'
 	}
@@ -85,6 +85,7 @@ export class CustomUnknownFunctionImpl<
 		return_: Return,
 	): CustomFunction<{ parameters: Parameters; return: Return }>
 
+	// eslint-disable-next-line jsdoc/informative-docs
 	/** Custom */
 	[CALL]<Options extends FunctionOptions>(
 		options: Partial<Options>,
@@ -92,7 +93,7 @@ export class CustomUnknownFunctionImpl<
 
 	//
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	[CALL](...args: unknown[]): never {
 		let options: Partial<FunctionOptions> = {}
 

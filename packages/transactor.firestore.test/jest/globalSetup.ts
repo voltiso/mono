@@ -1,9 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
 /* eslint-disable no-console */
 
 import * as jestDevServer from 'jest-dev-server'

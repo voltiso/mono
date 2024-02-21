@@ -17,6 +17,10 @@ const dateRegex = /\d{4}-[01]\d-[0-3]\d/u // 2022-10-04
 
 const sDate = s.string.regex(dateRegex)
 
+// console.log('????????????????????', {sDate})
+
+// console.log('?!?!?!?!?!', s.isSchema(sDate as never))
+
 function getLastSunday(day: string | Date): string {
 	const date = new Date(day)
 	date.setUTCDate(date.getUTCDate() - date.getUTCDay())
@@ -107,6 +111,9 @@ describe('aggregator', () => {
 
 		type A = WeekData['__voltiso']['aggregateTarget']['numWomenThisWeek']
 		$Assert($Is<undefined>().not.subtypeOf<A>())
+
+		// type WeekTI = Week[DTI]
+		// type AAA = Required<GetData<WeekTI>['__voltiso']['aggregateTarget']>
 
 		type B = Week['aggregates']['numWomenThisWeek']
 		$Assert<IsIdentical<B, { value: number; numSources: number }>>()

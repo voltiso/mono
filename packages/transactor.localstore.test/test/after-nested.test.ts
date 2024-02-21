@@ -7,7 +7,7 @@ import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
 import { deleteIt, incrementIt } from '@voltiso/util'
-import * as gen from 'random-seed'
+import gen from 'random-seed'
 
 import { createTransactor, database } from './common'
 
@@ -42,7 +42,7 @@ class Doctor extends Doc.with({
 
 		// // @ts-expect-error `c` is not optional
 		// ;() => this.update({ c: deleteIt })
-		;() => this.update({ opt: deleteIt })
+		;async () => this.update({ opt: deleteIt })
 	})
 
 	.afterUpdate('b', async function (p) {

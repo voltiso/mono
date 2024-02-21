@@ -49,7 +49,9 @@ const LazyRender: ForwardRefRenderFunction<
 	// console.log('height', height)
 
 	const handle = useInitial({
-		layoutFirstRender: () => setIsLoaded(true),
+		layoutFirstRender: () => {
+			setIsLoaded(true)
+		},
 	})
 
 	return (

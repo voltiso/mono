@@ -3,7 +3,7 @@
 
 import type { Brand, CustomBrand, Override } from '~/type'
 
-export type PathOptions = {
+export interface PathOptions {
 	/**
 	 * Path separator
 	 *

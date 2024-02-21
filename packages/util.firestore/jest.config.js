@@ -3,11 +3,10 @@
 
 // const isCjs = typeof require === 'function'
 // console.log('util.firestore/jest.config.js', isCjs ? 'cjs' : 'esm')
-
-//! extraneous require to avoid cyclic deps --- or not?
-import * as baseConfig from '@voltiso/config.jest'
+import baseConfig from '@voltiso/config.jest'
+import { defineJestConfig } from '@voltiso/config.jest.lib'
 
 //! need to create a new unique object!
-export default {
+export default defineJestConfig({
 	...baseConfig,
-}
+})

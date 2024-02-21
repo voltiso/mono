@@ -30,6 +30,7 @@ export type AggregatesView<T extends IntrinsicFields> = [
 			T['__voltiso']['aggregateTarget'][k]
 		>
 	},
+	// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 ][0]
 
 export function getAggregatesView<R extends $$DocRelatedLike>(

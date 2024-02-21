@@ -35,12 +35,12 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 {
 	readonly [SCHEMA_NAME] = 'UnknownRecord'
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getIndexSignatures() {
 		return [] as []
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getShape() {
 		return {}
 	}
@@ -53,7 +53,7 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 		return newThis
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	[CALL]<
 		TKeySchema extends $$Schema & {
 			Output: keyof any
@@ -66,7 +66,7 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 		return new RecordImpl(...(args as [any, any])) as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 		// if (isObject(other)) {

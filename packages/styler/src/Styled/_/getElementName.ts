@@ -3,7 +3,7 @@
 
 import type { StylableLike } from '~/Stylable/IStylable'
 
-type WithDisplayName = {
+interface WithDisplayName {
 	displayName: string
 }
 

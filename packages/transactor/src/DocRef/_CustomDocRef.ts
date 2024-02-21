@@ -112,7 +112,7 @@ export class _CustomDocRef<
 		return this[OPTIONS].isStrong
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get schema(): Schema<GetData<O['doc']>> | undefined {
 		throw new TransactorError('not implemented')
 	}

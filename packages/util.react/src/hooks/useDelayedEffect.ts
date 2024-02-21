@@ -10,7 +10,10 @@ export function useDelayedEffect(milliseconds: number, callback: () => void) {
 	const current = useCurrent({ callback })
 
 	useEffect(() => {
-		const timeout = setTimeout(() => current.callback(), milliseconds)
+		const timeout = setTimeout(() => {
+			current.callback()
+		}, milliseconds)
+
 		return () => {
 			clearTimeout(timeout)
 		}

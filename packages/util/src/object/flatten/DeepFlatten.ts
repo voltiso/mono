@@ -19,4 +19,5 @@ import type { IsOptional } from '../IsOptional'
 	? T
 	: T extends abstract new (...args: any) => any
 		? T
-		: [{ [k in keyof T]: DeepFlattenValue<T, k> }][0]
+		: // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+			[{ [k in keyof T]: DeepFlattenValue<T, k> }][0]

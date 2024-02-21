@@ -40,6 +40,7 @@ class Client extends Doc('clientAddXyz').with({
 	async _create(params: TriggerParams.AfterCreate<Client>) {
 		const client = await clients(params.id)
 		fastAssert(client)
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		client.data.friends = [clients('a'), clients('b').asStrongRef]
 	}
 }

@@ -20,6 +20,7 @@ class Class_ {
 	}
 
 	[CALL](s: string): string
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	[CALL](n: number): string
 
 	[CALL](arg: string | number) {
@@ -41,6 +42,7 @@ class Class_ {
 
 interface ClassConstructor<Derived extends Class_ = Class_> {
 	new (arg: string): Derived
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	new (arg: number): Derived
 }
 

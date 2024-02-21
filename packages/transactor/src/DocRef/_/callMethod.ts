@@ -18,12 +18,13 @@ import { dump } from '~/util'
 
 import { processTriggers } from './processTriggers'
 
-export type CallMethodOptions = {
+export interface CallMethodOptions {
 	name: string
 	// argSchema?: Schema<unknown>
 	localDoc?: IDocImpl
 }
 
+// eslint-disable-next-line @typescript-eslint/max-params
 export async function callMethod<
 	TI extends DocTI,
 	EC extends ExecutionContext,

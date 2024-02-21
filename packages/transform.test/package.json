@@ -12,7 +12,7 @@
     "test": "run-s test:build test:jest",
     "test:build": "run-s clean test:build:esm",
     "test:build:esm": "tsc -b tsconfig.build.esm.json",
-    "test:jest": "jest",
+    "test:jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
@@ -27,7 +27,9 @@
   "__________DEPS": "__________",
   "devDependencies": {
     "@voltiso/assertor": "workspace:^",
+    "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/schemar": "workspace:^",

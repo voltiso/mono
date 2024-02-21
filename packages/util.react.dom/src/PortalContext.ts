@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react'
 
-export type PortalContext = {
+export interface PortalContext {
 	// Element?: keyof JSX.IntrinsicElements
 	renderTarget?: HTMLElement | undefined
 

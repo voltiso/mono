@@ -135,6 +135,7 @@ describe('useStatePatcher', () => {
 
 		const C: FC = () => {
 			state = useStatePatcher({ a: true })
+			// eslint-disable-next-line jest/no-if
 			return <div data-testid='a'>{state.a ? 'T' : 'F'}</div>
 		}
 
@@ -158,6 +159,7 @@ describe('useStatePatcher', () => {
 
 		const C: FC = () => {
 			state = useStatePatcher({ a: true })
+			// eslint-disable-next-line jest/no-if
 			return <div data-testid='a'>{state.a ? 'T' : 'F'}</div>
 		}
 

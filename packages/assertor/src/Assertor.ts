@@ -62,6 +62,7 @@ export class _Assertor {
 		...rest: [string, CallInfo | undefined] | [CallInfo | undefined]
 	): any {
 		const [message, callInfo] =
+			// eslint-disable-next-line no-nested-ternary
 			rest.length >= 2
 				? rest
 				: typeof rest[0] === 'string'

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type DateJson = {
+export interface DateJson {
 	__date: string // iso
 }
 

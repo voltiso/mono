@@ -50,16 +50,19 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	declare readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
 
 	/** Type-only property (no value at runtime) */
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get Type(): this[OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get Output(): this[OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get Input(): this[OPTIONS]['Input'] {
 		return throwTypeOnlyFieldError()
 	}
@@ -145,6 +148,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return result as never
 	}
 
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	protected _getIssues(
 		_value: unknown,
 		_options?: Partial<ValidationOptions> | undefined,
@@ -152,6 +156,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return []
 	}
 
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	protected _fix(
 		x: unknown,
 		_options?: Partial<ValidationOptions> | undefined,
@@ -293,15 +298,18 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		return this[EXTENDS](otherType as never)
 	}
 
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	protected _toString(): string {
 		return 'unknown'
 	}
 
 	toString(): string {
 		const prefix =
+			// eslint-disable-next-line no-nested-ternary
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				: this.isReadonly
+				: // eslint-disable-next-line no-nested-ternary
+					this.isReadonly
 					? 'readonly:'
 					: this.isOptional
 						? '?'

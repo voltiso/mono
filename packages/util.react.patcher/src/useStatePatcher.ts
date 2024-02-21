@@ -143,11 +143,13 @@ class StatePatcher_<S extends StateObject> {
 	 * - (like React's .update() on class components)
 	 */
 	update(updateValue: PatchFor<S>): void {
+		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		return this.patch(updateValue, { depth: 1 })
 	}
 
 	/** Same as `.patch()` with `depth === 0` */
 	set(newValue: S): void {
+		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		return this.patch(newValue as never, { depth: 0 })
 	}
 
@@ -193,6 +195,7 @@ export function useStatePatcher<S extends StateObject>(
 
 	const handler: ProxyHandler<StatePatcher<S>> = useMemo(
 		() => ({
+			// eslint-disable-next-line @typescript-eslint/max-params
 			set(t, p, v, r) {
 				if (hasOwnProperty(t, p)) {
 					return Reflect.set(t, p, v, r)

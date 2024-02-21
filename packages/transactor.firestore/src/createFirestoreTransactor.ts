@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/unified-signatures */
+
 import type { TransactorOptions } from '@voltiso/transactor'
 import { Transactor } from '@voltiso/transactor'
 import type { Firestore } from 'firebase-admin/firestore'

@@ -46,8 +46,6 @@ describe('useForm', () => {
 		let form$: UseForm.Result<typeof sFormData> | undefined
 
 		const Component = () => {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
 			form$ = useForm({
 				schemable: sFormData,
 

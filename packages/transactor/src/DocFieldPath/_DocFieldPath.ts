@@ -34,7 +34,8 @@ function getCandidatePaths(segments: string[]): string[][] {
 	paths.push([
 		'__voltiso',
 		'aggregateTarget',
-		segments[0] as string,
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		segments[0]!,
 		'value',
 		...segments.slice(1),
 	])
@@ -44,6 +45,7 @@ function getCandidatePaths(segments: string[]): string[][] {
 
 /** @internal */
 // @staticImplements<DocFieldPathConstructor>()
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class _DocFieldPath {
 	constructor(ctx: DocFieldPath.Context, fields: string[]) {
 		// this._context = ctx

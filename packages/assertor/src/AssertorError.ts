@@ -108,7 +108,7 @@ export class AssertorError extends Error {
 			messageParts.push(chalk.blue(str))
 		} else {
 			const argumentsStr = args
-				.map(arg => `${chalk.red(stringFrom(arg))}`)
+				.map(arg => chalk.red(stringFrom(arg)))
 				.join(', ')
 
 			messageParts.push(`${name}(${argumentsStr})`)
@@ -159,9 +159,10 @@ export class AssertorError extends Error {
 		if (!haveLocation && this.stack) {
 			const parsedStack = parseStackTrace(this.stack)[0]
 			if (parsedStack) {
-				const locationStr = `${parsedStack.path as string}:${
-					parsedStack.line as number
-				}:${parsedStack.column as number}`
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				const locationStr = `${parsedStack.path!}:${
+					parsedStack.line
+				}:${parsedStack.column}`
 
 				this.message = `${this.message} ${chalk.gray('@')} ${chalk.gray(
 					locationStr,

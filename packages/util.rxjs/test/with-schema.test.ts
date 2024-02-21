@@ -38,7 +38,7 @@ describe('SubjectTree with schema', () => {
 
 		/** Simplified typings if `Input === Output` */
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new TS bug?
+		// @ts-expect-error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new TS bug?
 		$Assert<IsIdentical<typeof subject, SubjectTree<{ str: string }>>>()
 	})
 

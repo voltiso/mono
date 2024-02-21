@@ -1,19 +1,20 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/promise-function-async */
 /* eslint-disable jest/require-hook */
 
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc, Transactor } from '@voltiso/transactor'
 import { deleteIt, incrementIt } from '@voltiso/util'
-import { create } from 'random-seed'
+import randomSeed from 'random-seed'
 
 import { firestore, firestoreModule } from './common'
 
 const db = new Transactor(firestore, firestoreModule)
 
-const rand = create('voltiso')
+const rand = randomSeed.create('voltiso')
 let cutoff = 0.2
 
 class Doctor extends Doc.with({

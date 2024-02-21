@@ -61,6 +61,7 @@
   "devDependencies": {
     "@types/node": "^20.10.5",
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",

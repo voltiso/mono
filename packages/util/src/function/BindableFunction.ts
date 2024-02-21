@@ -4,6 +4,7 @@
 import { $expect, $fastAssert } from '_'
 
 import type { ArrayPrefix } from '~/array/ArrayPrefix'
+import type { Printable } from '~/string'
 import type { AlsoAccept } from '~/type'
 
 import type { NoThis } from './_symbols/noThis'
@@ -36,10 +37,10 @@ export class _BindableFunction<
 
 	toString(): string {
 		const thisStr =
-			this.boundThis === noThis ? 'noThis' : `${this.boundThis as string}`
+			this.boundThis === noThis ? 'noThis' : (this.boundThis as string)
 		const params: string[] = [
 			thisStr,
-			...this.boundArguments.map(arg => `${arg as string}`),
+			...this.boundArguments.map(arg => `${arg as Printable}`),
 		]
 
 		return `BindableFunction(${params.join(', ')})\n${this.function.toString()}`
@@ -66,6 +67,7 @@ export class _BindableFunction<
 				// eslint-disable-next-line unicorn/no-negated-condition
 				const finalThis = self.boundThis !== noThis ? self.boundThis : this
 				const finalArgs = [...self.boundArguments, ...args]
+				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 				return Reflect.apply(self.function, finalThis, finalArgs) as never
 			},
 		}[name]

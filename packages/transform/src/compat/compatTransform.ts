@@ -153,7 +153,8 @@ export function compatTransform(
 					ts.isStringLiteral(node) &&
 					(ts.isImportDeclaration(node.parent) ||
 						ts.isExportDeclaration(node.parent) ||
-						ts.isLiteralTypeNode(node.parent))
+						(ts.isLiteralTypeNode(node.parent) &&
+							ts.isImportTypeNode(node.parent.parent)))
 				) {
 					const isTypeOnly = ts.isLiteralTypeNode(node.parent)
 						? false

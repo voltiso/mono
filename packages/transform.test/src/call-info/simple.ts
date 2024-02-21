@@ -18,12 +18,10 @@ namespace A {
 	export namespace B {
 		export class C {
 			/** @callInfo */
-			// eslint-disable-next-line class-methods-use-this
 			willAppend<X>(_x: X, _info?: CallInfo) {
 				//
 			}
 
-			// eslint-disable-next-line class-methods-use-this
 			willNotAppend<X>(_x: X, _info?: CallInfo) {
 				//
 			}

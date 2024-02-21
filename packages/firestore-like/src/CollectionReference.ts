@@ -3,6 +3,6 @@
 
 import type { ServerDocumentReference } from './DocumentReference'
 
-export type CollectionReference = {
+export interface CollectionReference {
 	doc: (id?: string) => ServerDocumentReference
 }

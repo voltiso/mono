@@ -1,9 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type FieldValue = {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface FieldValue {}
 
-export type TypeofFieldValue = {
+export interface TypeofFieldValue {
 	delete: () => FieldValue
 	increment: (n: number) => FieldValue
 

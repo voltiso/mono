@@ -20,5 +20,6 @@
  * @returns Decorator
  */
 export function staticImplements<Constructor>() {
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	return <C extends Constructor>(_: C) => {}
 }

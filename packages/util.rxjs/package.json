@@ -19,7 +19,7 @@
     "__________DEV": "__________",
     "dev": "v dev",
     "__________TEST": "__________",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
@@ -52,6 +52,7 @@
   "devDependencies": {
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",

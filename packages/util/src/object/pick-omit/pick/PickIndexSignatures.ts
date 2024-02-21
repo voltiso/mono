@@ -1,7 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/** Pick index signatures */
 export type PickIndexSignatures<T> = {
 	[k in keyof T as string extends k
 		? k

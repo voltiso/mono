@@ -14,4 +14,5 @@ export type _ProtoCallable<Options extends ProtoCallableOptions> = [
 	Options['call'] &
 		Options['prototype'] &
 		Record<Exclude<keyof CallableFunction, keyof Options['prototype']>, never>,
+	// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 ][0]

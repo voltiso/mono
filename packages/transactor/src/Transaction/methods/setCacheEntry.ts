@@ -14,6 +14,7 @@ import type { WithTransactor } from '~/Transactor'
 import { initLastDataSeen } from '~/Trigger'
 import { guardedValidate_ } from '~/util'
 
+// eslint-disable-next-line @typescript-eslint/max-params
 export function setCacheEntry(
 	ctx: WithTransaction & WithDocRef & WithDb & WithTransactor,
 	entry: CacheEntry,

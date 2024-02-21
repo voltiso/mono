@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
 import { $AssumeType } from '@voltiso/util'
 import { useImmediateEffect } from '@voltiso/util.react'
 import { isObservableLike } from '@voltiso/util.rxjs'

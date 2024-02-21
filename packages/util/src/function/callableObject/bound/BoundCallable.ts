@@ -94,6 +94,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 
 		// eslint-disable-next-line unicorn/consistent-destructuring
 		for (const key of options?.omit ?? []) {
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete descriptors[key as never]
 		}
 

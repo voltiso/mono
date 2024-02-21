@@ -7,6 +7,7 @@ export function getObservableValue<T = unknown>(
 	observable$: IObservable,
 	fallback: T,
 ): T | undefined {
+	// eslint-disable-next-line no-nested-ternary
 	return 'maybeValue' in observable$
 		? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			((observable$ as any).maybeValue as T | undefined)

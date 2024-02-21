@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
 import type { Test } from './_/external-stuff'
 
 export type Flatten<T> = [{ [k in keyof T]: T[k] }][0]

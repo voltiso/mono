@@ -1,15 +1,18 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/max-params */
+
 import type * as Database from '@voltiso/firestore-like'
 import { isDatabase } from '@voltiso/firestore-like'
 import { isDeleteIt, isReplaceIt, stringFrom } from '@voltiso/util'
 
+import type { DocIdBrand } from '~/brand/Id'
 import type { $WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
 import type { AnyDoc } from '~/DocTypes'
 import { TransactorError } from '~/error'
-import type { IntrinsicFields } from '~/schemas'
+import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
 import type { Transactor, WithTransactor } from '~/Transactor'
 import type { Updates } from '~/updates/Updates'
@@ -20,6 +23,8 @@ import {
 	assertNotInTransaction,
 } from './assertInTransaction'
 import { toDatabaseSet, toDatabaseUpdate } from './toDatabase'
+
+export type __hack_databaseUpdate = DocIdBrand | VoltisoEntry
 
 type T = Database.Transaction | Database.Database
 

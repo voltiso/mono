@@ -8,7 +8,7 @@ import type { $$DocTI, DocTI, DTI } from '../Doc/DocTI'
 import type { $$Doc } from '../Doc/IDoc'
 import type { $$DocConstructor } from '../DocConstructor'
 
-export type WithDocTI = {
+export interface WithDocTI {
 	readonly [DTI]: DocTI
 }
 

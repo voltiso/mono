@@ -50,7 +50,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	}
 
 	get getShape(): any {
-		return this[v.OPTIONS]['shape']
+		return this[v.OPTIONS].shape
 	}
 
 	get getDeepShape(): any {
@@ -58,7 +58,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	}
 
 	get getIndexSignatures(): this[v.OPTIONS]['indexSignatures'] {
-		return this[v.OPTIONS]['indexSignatures'] as never
+		return this[v.OPTIONS].indexSignatures as never
 	}
 
 	get plain(): never {
@@ -339,6 +339,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 					if (result.value === undefined && isOptional) {
 						if (Object.prototype.hasOwnProperty.call(fixedObject, key)) {
+							// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 							delete fixedObject[key as never]
 							isChanged = true
 						}
@@ -378,6 +379,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 				if (fixedObject[originalXKey] !== xValue || originalXKey !== xKey) {
 					isChanged = true
 
+					// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 					if (xKey !== originalXKey) delete fixedObject[originalXKey]
 
 					if (xValue !== fixedObject[xKey]) fixedObject[xKey] = xValue as never

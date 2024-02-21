@@ -3,7 +3,7 @@
 
 // import { createServerContext } from 'react'
 
-export type RscStyle = {
+export interface RscStyle {
 	/** `id` */
 	k: string
 

@@ -61,7 +61,8 @@ export class Transactor extends Db {
 	get databaseModule(): DatabaseContext {
 		// $assert(this._databaseContext.database)
 		// $assert(this._databaseContext.module)
-		return this._databaseContext as DatabaseContext
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this._databaseContext!
 	}
 
 	//

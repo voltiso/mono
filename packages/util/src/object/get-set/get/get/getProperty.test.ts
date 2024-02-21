@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-meaningless-void-operator */
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 /* eslint-disable @typescript-eslint/prefer-readonly */
 
 import { $Assert } from '_'
@@ -28,12 +30,21 @@ describe('getProperty', () => {
 		expect(() => getProperty({ a: 1 }, '__proto__')).toThrow('pollution')
 
 		expect(() => getProperty({ a: 1 }, 'constructor')).toThrow('pollution')
+
+		expect(() => getProperty('test' as never, 'a')).toThrow('property not found')
 	})
 
 	it('works with optionals', () => {
 		expect.hasAssertions()
 
 		expect(getProperty({ a: 1 } as { a?: 1 }, 'a')).toBe(1)
+	})
+
+	it('works with non-objects', () => {
+		function a() {}
+		a.test = 123
+
+		expect(getProperty(a, 'test')).toBe(123)
 	})
 
 	it('works with private class fields', () => {

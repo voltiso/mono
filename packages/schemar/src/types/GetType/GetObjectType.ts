@@ -141,7 +141,7 @@ export declare namespace GetObjectType {
 		// eslint-disable-next-line etc/no-internal
 	> = _MaybeIntersectWithObject<
 		// eslint-disable-next-line etc/no-internal
-		GetObjectType._Finalize<
+		_Finalize<
 			{
 				[k in keyof T as false extends O[k]['isReadonly']
 					? // eslint-disable-next-line etc/no-internal
@@ -201,7 +201,7 @@ export declare namespace GetObjectType {
 		? _<
 				$OmitNever_<{
 					// eslint-disable-next-line etc/no-internal
-					[k in keyof T]: GetObjectType._ShouldForceOptional<
+					[k in keyof T]: _ShouldForceOptional<
 						T[k],
 						Get_<Shape, k>
 					> extends false
@@ -211,7 +211,7 @@ export declare namespace GetObjectType {
 					OmitByValue_<
 						{
 							// eslint-disable-next-line etc/no-internal
-							[k in keyof T]?: GetObjectType._ShouldForceOptional<
+							[k in keyof T]?: _ShouldForceOptional<
 								T[k],
 								Get_<Shape, k>
 							> extends true

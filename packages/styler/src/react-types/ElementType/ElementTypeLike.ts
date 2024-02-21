@@ -6,13 +6,13 @@ import type { ReactNode, ReactPortal } from 'react'
 
 import type { IntrinsicElementLike } from '~/Stylable'
 
-export type ReactElementLike<P = any> = {
+export interface ReactElementLike<P = any> {
 	type: any
 	props: P
 	key: any
 }
 
-export type FunctionComponentLike<P = any> = {
+export interface FunctionComponentLike<P = any> {
 	(props: any): ReactNodeLike<P> // ReactElementLike<P> | null
 }
 
@@ -30,12 +30,12 @@ export type ReactNodeLike<P = any> =
 
 $Assert.is<ReactNode, ReactNodeLike>()
 
-export type ComponentLike<P = any> = {
+export interface ComponentLike<P = any> {
 	render(): any
 	readonly props: Readonly<P>
 }
 
-export type ComponentClassLike<P = any> = {
+export interface ComponentClassLike<P = any> {
 	new (props: P, context?: any): ComponentLike<P>
 }
 

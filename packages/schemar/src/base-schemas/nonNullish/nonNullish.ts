@@ -89,12 +89,12 @@ export class CustomNonNullishImpl<
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return '{}'
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.')
 	}

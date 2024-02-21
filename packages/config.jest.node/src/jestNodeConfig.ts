@@ -12,15 +12,10 @@
 // 	testEnvironment: require.resolve('jest-environment-node'),
 // })
 
-export {
-	haste,
-	moduleNameMapper,
-	modulePathIgnorePatterns,
-	setupFilesAfterEnv,
-	// testEnvironment,
-	testMatch,
-	transform,
-	transformIgnorePatterns,
-} from '@voltiso/config.jest'
+import baseConfig from '@voltiso/config.jest'
+import type { Config } from 'jest'
 
-export const testEnvironment = 'jest-environment-node'
+export const jestNodeConfig = {
+	...baseConfig,
+	testEnvironment: 'jest-environment-node',
+} satisfies Config

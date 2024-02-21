@@ -2,8 +2,8 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
+  - _
   - '~'
-  - '_'
   - '@voltiso/config.ts'
   - '@voltiso/config.jest'
   - '@voltiso/config.tsdoc'

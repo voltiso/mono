@@ -162,7 +162,7 @@ export declare namespace CustomFunction {
 
 						parameters: Assume<
 							readonly unknown[],
-							$Input_<CustomFunction.FixParameters<This[OPTIONS]['parameters']>>
+							$Input_<FixParameters<This[OPTIONS]['parameters']>>
 						>
 
 						return: Input_<This[OPTIONS]['return']>
@@ -173,9 +173,7 @@ export declare namespace CustomFunction {
 
 						parameters: Assume<
 							readonly unknown[],
-							$Output_<
-								CustomFunction.FixParameters<This[OPTIONS]['parameters']>
-							>
+							$Output_<FixParameters<This[OPTIONS]['parameters']>>
 						> // $Output_<This[OPTIONS]['parameters']>
 
 						return: Output_<This[OPTIONS]['return']>
@@ -188,9 +186,7 @@ export declare namespace CustomFunction {
 
 						parameters: Assume<
 							readonly unknown[],
-							$Output_<
-								CustomFunction.FixParameters<This[OPTIONS]['parameters']>
-							>
+							$Output_<FixParameters<This[OPTIONS]['parameters']>>
 						> // $Output_<This[OPTIONS]['parameters']>
 
 						return: Input_<This[OPTIONS]['return']>
@@ -201,7 +197,7 @@ export declare namespace CustomFunction {
 
 						parameters: Assume<
 							readonly unknown[],
-							$Input_<CustomFunction.FixParameters<This[OPTIONS]['parameters']>>
+							$Input_<FixParameters<This[OPTIONS]['parameters']>>
 						> // $Output_<This[OPTIONS]['parameters']>
 
 						return: Output_<This[OPTIONS]['return']>

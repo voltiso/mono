@@ -137,6 +137,12 @@ export const codeOverride = defineEslintFlatConfig({
 		// 	},
 		// ],
 
+		'@typescript-eslint/prefer-destructuring': 0,
+		'@typescript-eslint/promise-function-async': 0, // does not work correctly if function returns either Promise or sync value
+		'@typescript-eslint/no-invalid-void-type': 0,
+		'@typescript-eslint/method-signature-style': 0, // not the same for TS - shorthand is e.g. used for bivariance hack
+		'@typescript-eslint/explicit-member-accessibility': 0,
+		'@typescript-eslint/consistent-indexed-object-style': 0, // no - we often prefer interfaces to types
 		'@typescript-eslint/no-unnecessary-type-arguments': 0,
 		'@typescript-eslint/sort-type-constituents': 0,
 		'@typescript-eslint/member-ordering': 0,
@@ -165,6 +171,12 @@ export const codeOverride = defineEslintFlatConfig({
 			{ allowSingleExtends: true },
 		],
 
+		'@typescript-eslint/prefer-function-type': 0, // sometimes we prefer interface to type
+
+		'no-empty-function': 0,
+		'@typescript-eslint/no-empty-function': 1,
+
+		// '@typescript-eslint/no-confusing-void-expression': 0,
 		'@typescript-eslint/padding-line-between-statements': 1,
 		'@typescript-eslint/no-unsafe-assignment': 1,
 		'@typescript-eslint/no-unsafe-member-access': 1,
@@ -235,7 +247,10 @@ export const codeOverride = defineEslintFlatConfig({
 		'prefer-arrow-callback': 1,
 		'no-confusing-arrow': 0, // not confusing at all
 		'generator-star-spacing': 0, // prettier
-		'class-methods-use-this': 1,
+
+		'class-methods-use-this': 0,
+		'@typescript-eslint/class-methods-use-this': 1,
+
 		'new-cap': 0,
 		'require-atomic-updates': 1,
 		'jsx-quotes': 0,

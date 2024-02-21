@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util": "workspace:^",

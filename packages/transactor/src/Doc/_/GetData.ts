@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
 import type { Input_, Output_, SchemarAnd_ } from '@voltiso/schemar'
 import type {
 	_,

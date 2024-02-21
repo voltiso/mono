@@ -40,6 +40,7 @@ const users = db.register(DbUser)
 describe('tds-user', () => {
 	it('works', async () => {
 		const user = await users('a')
+		// eslint-disable-next-line jest/no-if
 		if (user) {
 			await user.update({ isEditor: true }) // should type-check
 		}

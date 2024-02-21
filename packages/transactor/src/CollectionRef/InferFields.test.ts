@@ -38,6 +38,7 @@ class Doctor extends Doc.with({
 	}
 
 	@method
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	async good() {
 		// await doctors(this.id).update({ specialty: 'fireman' })
 		return true

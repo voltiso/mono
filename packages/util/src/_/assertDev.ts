@@ -19,8 +19,8 @@ export function _findFirstDollarEntry(
 export function assertDev(): void {
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	if (process.env['NODE_ENV'] !== 'test' && typeof expect === 'undefined') {
-		// eslint-disable-next-line unicorn/error-message
-		const stackStr = new Error().stack as string
+		// eslint-disable-next-line unicorn/error-message, @typescript-eslint/no-non-null-assertion
+		const stackStr = new Error().stack!
 		const stack = parseStackTrace(stackStr)
 
 		// eslint-disable-next-line etc/no-internal

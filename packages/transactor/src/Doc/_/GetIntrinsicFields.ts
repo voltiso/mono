@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
 import type { Type_ } from '@voltiso/schemar'
 import type { $Override_ } from '@voltiso/util'
 
@@ -27,12 +29,12 @@ export namespace GetVoltisoEntry {
 
 //
 
-export type GetIntrinsicFields<R extends $$DocRelatedLike> = {
+export interface GetIntrinsicFields<R extends $$DocRelatedLike> {
 	__voltiso: [GetVoltisoEntry<R>][0]
 }
 
 export namespace GetIntrinsicFields {
-	export type ForDocTI<TI extends $$DocTI> = {
+	export interface ForDocTI<TI extends $$DocTI> {
 		__voltiso: [GetVoltisoEntry.ForDocTI<TI>][0]
 	}
 }

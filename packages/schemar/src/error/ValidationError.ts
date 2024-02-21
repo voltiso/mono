@@ -13,7 +13,7 @@ export class ValidationError extends lazyConstructor(() => SchemarError) {
 	issues: ValidationIssue[]
 
 	constructor(issues: ValidationIssue[]) {
-		super(`${issues.map(issue => issue.toString()).join('\n')}`)
+		super(issues.map(issue => issue.toString()).join('\n'))
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		this.name = name

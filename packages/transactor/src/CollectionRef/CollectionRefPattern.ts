@@ -43,6 +43,7 @@ export interface CollectionRefPattern<
 	Doc extends $$DocRelated = AnyDoc,
 > {
 	// [CALL]
+	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	<Tokens extends string[]>(
 		...tokens: Tokens
 	): IsCompatible<

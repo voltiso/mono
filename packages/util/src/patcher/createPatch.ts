@@ -24,6 +24,7 @@ export function createPatch(oldObject: unknown, newObject: unknown): unknown {
 				)
 
 				if (patch[oldKey] === keepIt) {
+					// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 					delete patch[oldKey]
 				}
 			} else patch[oldKey] = deleteIt

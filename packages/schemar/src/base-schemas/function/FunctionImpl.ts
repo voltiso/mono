@@ -22,7 +22,7 @@ export class FunctionImpl<
 		return BoundCallable(this) as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	[CALL](...args: unknown[]): never {
 		return new CustomUnknownFunctionImpl(...(args as [any])) as never
 	}

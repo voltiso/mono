@@ -5,12 +5,12 @@ import type { BivariantCallable_ } from '@voltiso/util'
 
 import type { $$Schemable } from '~'
 
-export type CustomCheck<InputType = unknown> = {
+export interface CustomCheck<InputType = unknown> {
 	checkIfValid(x: unknown): boolean
 	expectedDescription?: string | BivariantCallable_<(x: InputType) => string>
 }
 
-export type CustomTransform = {
+export interface CustomTransform {
 	condition?: $$Schemable | undefined
 	transform(x: unknown): unknown
 }

@@ -44,7 +44,7 @@ describe('get', () => {
 		$Assert<IsIdentical<H, undefined>>()
 
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore bad path
+		// @ts-expect-error bad path
 		type I = TryGet<{ a: { b: { c: 0 } } }, ['a', 'a']>
 		$Assert<IsIdentical<I, undefined>>()
 	})

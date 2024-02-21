@@ -1,6 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable jsdoc/informative-docs */
+/* eslint-disable @typescript-eslint/unified-signatures */
+
 import type {
 	MapOrUndefined,
 	PickOptional,
@@ -284,7 +287,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	cssProps<PropNames extends (keyof C<$>)[]>(
 		...propNames: PropNames
-	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
 	// @ts-ignore TS2590: Expression produces a union type that is too complex to represent.
 	Patch<this, { Props: Pick<C<$>, PropNames[number]> }> {
 		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>

@@ -32,6 +32,7 @@ $dev(() => {
 //
 
 export interface DocFieldPathConstructor {
+	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	new <data>(ctx: DocFieldPath.Context, path: string[]): DocFieldPath<data>
 }
 

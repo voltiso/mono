@@ -3,7 +3,7 @@
 
 'use strict'
 
-import { incrementIt, omit } from '@voltiso/util'
+const { incrementIt, omit } = require('@voltiso/util')
 
 const { sVoltisoEntry } = require('@voltiso/transactor')
 const { firestore, srcFirestore } = require('./common/index.cjs')

@@ -1,11 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import destructuringPlugin from 'eslint-plugin-destructuring'
 
 import { codeFiles } from '../files'
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 export const destructuringConfig = defineEslintFlatConfig({
 	files: codeFiles,

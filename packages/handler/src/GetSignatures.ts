@@ -23,7 +23,7 @@ export type GetBivariantSignature_<H> = 'Signature' extends keyof H
 
 //
 
-export type NestedHandlers = {
+export interface NestedHandlers {
 	[k: string]: HandlersTree
 }
 export type HandlersTree = Handler | ((...args: any) => any) | NestedHandlers

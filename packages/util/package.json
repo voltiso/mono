@@ -67,6 +67,7 @@
   "devDependencies": {
     "@types/clone": "^2.1.4",
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/transform": "workspace:^",

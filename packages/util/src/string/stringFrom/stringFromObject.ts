@@ -37,7 +37,7 @@ export function stringFromObject_(
 
 	if (entries.length === 0) return name ? `${name} {}` : '{}'
 
-	let result = name ? `${name} ${baseObjStr}` : `${baseObjStr}`
+	let result = name ? `${name} ${baseObjStr}` : baseObjStr
 	let shortResult = name ? `${name} {...}` : '{...}'
 
 	for (const entry of entries) {

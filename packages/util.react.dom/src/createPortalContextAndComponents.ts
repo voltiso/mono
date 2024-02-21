@@ -8,7 +8,7 @@ import type { PortalContext } from './PortalContext'
 import type { PortalDestination } from './PortalDestination'
 import type { PortalSource } from './PortalSource'
 
-export type PortalContextAndComponents = {
+export interface PortalContextAndComponents {
 	context: PortalContext
 	Source: PortalSource
 	Destination: PortalDestination

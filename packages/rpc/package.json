@@ -96,6 +96,7 @@
     "@types/node": "^20.10.5",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/handler": "workspace:^",
     "@voltiso/schemar": "workspace:^",

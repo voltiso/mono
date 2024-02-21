@@ -99,7 +99,7 @@ export declare namespace SchemarAndN {
 		infer B,
 		...infer Rest,
 	]
-		? SchemarAndN.Impl<
+		? Impl<
 				[
 					SchemarAnd_<ImplicitInferSchema$_<A>, ImplicitInferSchema$_<B>>,
 					...Rest,

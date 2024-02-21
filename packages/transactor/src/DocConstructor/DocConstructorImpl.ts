@@ -1,14 +1,14 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import type { IObject, SchemaLike } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { CallableConstructor, staticImplements } from '@voltiso/util'
 
 import type { IAggregatorHandlers } from '~/Aggregator'
 import { aggregate } from '~/Aggregator'
-import type { $$Doc, DocBuilderPlugin } from '~/Doc'
-import { DocCall, DTI, IS_DOC } from '~/Doc'
 import type { GI } from '~/Doc/_/GDoc'
 import type { $$PartialDocOptions } from '~/Doc/_/NewFields'
 import {
@@ -19,7 +19,12 @@ import {
 	withAfterUpdate,
 	withBeforeCommit,
 } from '~/Doc/_/triggerCreators'
+import type { DocBuilderPlugin } from '~/Doc/DocBuilderPlugin/DocBuilderPlugin'
+import { DocCall } from '~/Doc/DocCall'
 import type { $$DocTI, DocTI } from '~/Doc/DocTI'
+import { DTI } from '~/Doc/DocTI'
+import type { $$Doc } from '~/Doc/IDoc'
+import { IS_DOC } from '~/Doc/IDoc'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'

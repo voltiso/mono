@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react'
 
-export type ScrollProps = {
+export interface ScrollProps {
 	as?: keyof JSX.IntrinsicElements | undefined
 	scrollTarget?: keyof JSX.IntrinsicElements | undefined
 

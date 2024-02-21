@@ -14,4 +14,5 @@ export interface StaticError {
  * type MyGeneric<T> = T extends string ? ... : Throw<"MyGeneric: T should be string" & {Got: T}>
  * ```
  */
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 export type Throw<message> = [StaticError & message][0]

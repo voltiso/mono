@@ -67,7 +67,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type GetSignature<O extends SingleOverloadHandlerDetail.Options> = [
+	export type GetSignature<O extends Options> = [
 		O['this'],
 	] extends [NoThis]
 		? (
@@ -88,7 +88,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type GetImplementation<O extends SingleOverloadHandlerDetail.Options> =
+	export type GetImplementation<O extends Options> =
 		[O['this']] extends [NoThis]
 			? (
 					...args: Assume<readonly unknown[], s.Output<O['parameters']>>

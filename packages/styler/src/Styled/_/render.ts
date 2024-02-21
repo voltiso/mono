@@ -38,6 +38,7 @@ import {
 
 /** @internal */
 function _getCssArray(css: Css | readonly Css[] | undefined): Css[] {
+	// eslint-disable-next-line no-nested-ternary
 	return Array.isArray(css) ? (css as Css[]) : css ? [css as Css] : []
 }
 
@@ -152,6 +153,7 @@ export function render<$ extends StyledTypeInfo>(
 		const node = stack[i]
 
 		if (isRemovePropsNode(node)) {
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			for (const prop of node.removeProps) delete p[prop as never]
 		} else if (isStyleNode(node)) {
 			styles.push(prepare(node.style, { theme, customCss: node.customCss }))
@@ -174,7 +176,7 @@ export function render<$ extends StyledTypeInfo>(
 		} else if (isWrapNode(node)) {
 			// overrideChildren = true
 
-			// eslint-disable-next-line no-loop-func
+			// eslint-disable-next-line no-loop-func, @typescript-eslint/no-loop-func
 			const children = node.wrap.map((element, index) => {
 				let props = {
 					key: index,

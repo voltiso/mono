@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /** @internal */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class _NewableBivarianceHack<Args extends readonly unknown[]> {
 	constructor(...args: Args) {
 		void args
@@ -9,6 +10,7 @@ class _NewableBivarianceHack<Args extends readonly unknown[]> {
 }
 
 /** @internal */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 abstract class _NewableAbstractBivarianceHack<Args extends readonly unknown[]> {
 	constructor(...args: Args) {
 		void args

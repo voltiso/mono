@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable jsdoc/informative-docs */
+
 import { assert } from '@voltiso/assertor'
 import { deepFrozen, isDefined, isDeleteIt, isReplaceIt } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
@@ -100,7 +102,7 @@ async function loop(ctx: DocRefContext.AlsoWithTransaction) {
 	}
 }
 
-type Params = {
+interface Params {
 	updates?: Updates
 }
 

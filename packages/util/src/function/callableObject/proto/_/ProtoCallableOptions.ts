@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type ProtoCallableOptions = {
+export interface ProtoCallableOptions {
 	/** Call implementation */
 	call(this: void, ...args: unknown[]): unknown
 

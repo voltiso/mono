@@ -5,12 +5,12 @@ import type { PathMatches } from '~/common'
 import type { Method } from '~/Method'
 import type { Trigger } from '~/Trigger'
 
-export type DocRefTriggerEntry<T = Trigger> = {
+export interface DocRefTriggerEntry<T = Trigger> {
 	trigger: T
 	pathMatches: PathMatches
 }
 
-export type DocRefMethodEntry = {
+export interface DocRefMethodEntry {
 	method: Method
 	name: string
 	pathMatches: PathMatches

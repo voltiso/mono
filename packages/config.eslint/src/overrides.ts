@@ -179,6 +179,15 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 		},
 	},
 
+	/** Js (ESM) */
+	{
+		files: ['**/*.js', '**/*.jsx', '**/*.mjs', '**/*.mjsx'],
+
+		rules: {
+			'@voltiso/file-extension-in-import': ['error', 'always'],
+		},
+	},
+
 	// `cjs` (js/ts)
 	{
 		files: [

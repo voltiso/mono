@@ -9,7 +9,9 @@ import type { PropertyPath } from './PropertyPath'
 
 //
 
-export type PropertyPathPartialOptions = { separator: '.' }
+export interface PropertyPathPartialOptions {
+	separator: '.'
+}
 
 export type PropertyPathOptions = Override<
 	PathOptions,

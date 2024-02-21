@@ -38,6 +38,7 @@ export interface CollectionRef<
 	): Throw<'wrong Id type' & { docTag: DocTagFromBrand<T> }>
 
 	/** Get Doc reference by Id */
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	(id: string): WeakDocRef<GetDocRepresentative<R>>
 }
 

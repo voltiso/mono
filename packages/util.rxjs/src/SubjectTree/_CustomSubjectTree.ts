@@ -138,7 +138,8 @@ export class _CustomSubjectTree<
 		if (!this._exists)
 			throw new Error('.value called on SubjectTree without value')
 
-		return this._value as TO['Output']
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this._value!
 	}
 
 	get maybeValue(): TO['Output'] | undefined {

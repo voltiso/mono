@@ -43,6 +43,7 @@ export function useObservables<Observables extends readonly unknown[]>(
 	const current = useCurrent({ values })
 
 	const results = observables$.map((x, index) =>
+		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		isObservableLike(x) ? getObservableValue(x, values[index]) : x,
 	) as GetObservedValues<Observables>
 

@@ -25,7 +25,7 @@ export function lazyFunction<T extends (...args: any) => any>(
 	}
 
 	// Has to be an arrow function, since it doesn't define prototype
-	// eslint-disable-next-line no-empty-function
+	// eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
 	const target = () => {}
 
 	function load() {

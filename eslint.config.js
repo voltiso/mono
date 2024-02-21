@@ -3,7 +3,7 @@
 
 import * as path from 'node:path'
 
-import {defineEslintFlatConfig} from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 import baseConfig from '@voltiso/eslint-config'
 // import baseConfigFast from '@voltiso/eslint-config-fast'
 

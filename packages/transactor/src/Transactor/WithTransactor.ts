@@ -3,4 +3,6 @@
 
 import type { Transactor } from './Transactor'
 
-export type WithTransactor = { transactor: Transactor }
+export interface WithTransactor {
+	transactor: Transactor
+}

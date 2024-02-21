@@ -19,7 +19,10 @@ function isEnoentError(error: unknown): error is EnoentError {
 
 function _access(filePath: string, mode: number): SyncerSwitch<void> {
 	return {
-		sync: () => fs.accessSync(filePath, mode),
+		sync: () => {
+			fs.accessSync(filePath, mode)
+		},
+
 		async: () => fs.promises.access(filePath, mode),
 	}
 }

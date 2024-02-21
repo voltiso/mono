@@ -65,7 +65,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 		const awaitedTargetHandlerResult = await targetHandlerResult
 
 		const [targets, awaitedTargets] =
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-nested-ternary
 			awaitedTargetHandlerResult === null
 				? [[targetHandlerResult as $$DocRef], [awaitedTargetHandlerResult]]
 				: Array.isArray(awaitedTargetHandlerResult)
@@ -158,6 +158,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 				)
 				targetInfo.numSources -= 1
 
+				// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 				delete sourceInfo[finalTargetPath]
 			}
 

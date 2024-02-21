@@ -55,6 +55,7 @@
   "devDependencies": {
     "@firebase/app-types": "^0.9.0",
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",

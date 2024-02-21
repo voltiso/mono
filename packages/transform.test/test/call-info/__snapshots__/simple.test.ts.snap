@@ -21,11 +21,9 @@ var A;
     (function (B) {
         class C {
             /** @callInfo */
-            // eslint-disable-next-line class-methods-use-this
             willAppend(_x, _info) {
                 //
             }
-            // eslint-disable-next-line class-methods-use-this
             willNotAppend(_x, _info) {
                 //
             }
@@ -50,8 +48,8 @@ var Test;
                 },
                 packagePath: 'src/call-info/simple.ts',
                 gitPath: 'packages/transform.test/src/call-info/simple.ts',
-                position: 699,
-                line: 36,
+                position: 591,
+                line: 34,
                 column: 26,
                 astPath: [
                     'Test',
@@ -75,8 +73,8 @@ var Test;
                 },
                 packagePath: 'src/call-info/simple.ts',
                 gitPath: 'packages/transform.test/src/call-info/simple.ts',
-                position: 762,
-                line: 38,
+                position: 654,
+                line: 36,
                 column: 32,
                 astPath: [
                     'Test',

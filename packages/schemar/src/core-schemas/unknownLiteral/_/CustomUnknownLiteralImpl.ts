@@ -38,7 +38,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'literal'
 	}
@@ -47,7 +47,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	[CALL]<L extends InferableLiteral>(literals: Set<L>): LiteralImpl<L>
 	[CALL]<L extends InferableLiteral>(...args: L[] | [Set<L>]): LiteralImpl<L>
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	[CALL]<L extends InferableLiteral>(...args: L[] | [Set<L>]): LiteralImpl<L> {
 		return new LiteralImpl(...args) as never
 	}

@@ -7,7 +7,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TEST": "__________",
-    "test": "jest --silent",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",

@@ -34,6 +34,7 @@ describe('clone', () => {
 	it('simple', () => {
 		expect.hasAssertions()
 		expect(clone(null)).toBeNull()
+		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		expect(clone(undefined)).toBeUndefined()
 		expect(clone(123)).toBe(123)
 		expect(clone('123')).toBe('123')

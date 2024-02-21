@@ -30,10 +30,10 @@ export declare namespace SchemarOr {
 	]
 		? A extends $$Literal
 			? B extends $$Literal
-				? SchemarOr.Literals<A, B>
+				? Literals<A, B>
 				: never
 			: never
-		: SchemarOr.Custom<A, B>
+		: Custom<A, B>
 
 	export type Custom<A extends $$Schema, B extends $$Schema> = A extends {
 		Output: unknown

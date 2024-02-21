@@ -23,6 +23,8 @@ export const ignores = [
 	'**/traceDir/',
 	'**/.turbo/',
 	'**/firebase-*.json',
+	'**/*.snap',
+	'**/*.ts_',
 	...gitIgnored,
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//

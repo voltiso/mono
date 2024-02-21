@@ -54,6 +54,7 @@ describe('raw-transaction', () => {
 		await db.runTransaction(async db => {
 			const adam = await db('userG/adam').set({ age: 123, x: 2 })
 			adam.data['age'] = 234
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			delete adam.data['x']
 
 			expect(adam.data['age']).toBe(234)
@@ -61,8 +62,8 @@ describe('raw-transaction', () => {
 		})
 		const adam = await db('userG/adam')
 
-		// @ts-ignore
-		expect(adam.age).toBe(234)
+		// @ts-expect-error
+		expect(adam!.age).toBe(234)
 
 		assert(adam)
 
@@ -74,15 +75,15 @@ describe('raw-transaction', () => {
 
 		await db.runTransaction(async () => {
 			const adam = await db('userG/adam').set({ address: { street: 'a' } })
-			// @ts-ignore
+			// @ts-expect-error
 			adam.address.street = 'b'
 
-			// @ts-ignore
+			// @ts-expect-error
 			expect(adam.address.street).toBe('b')
 		})
 		const adam = await db('userG/adam')
 
-		// @ts-ignore
+		// @ts-expect-error
 		expect(adam.address.street).toBe('b')
 	})
 
@@ -93,7 +94,7 @@ describe('raw-transaction', () => {
 			const adam = await db('userG/adam').set({
 				a: { b: { c: { d: { e: { f: { g: 1234 } } } } } },
 			})
-			// @ts-ignore
+			// @ts-expect-error
 			const c = await t('userG/adam').a.b.c
 
 			expect(c.d.e).toStrictEqual({ f: { g: 1234 } })
@@ -101,19 +102,19 @@ describe('raw-transaction', () => {
 			c.d = 99
 
 			expect(c.d).toBe(99)
-			// @ts-ignore
+			// @ts-expect-error
 			expect(adam.a.b.c.d).toBe(99)
-			// @ts-ignore
+			// @ts-expect-error
 			expect((await db('userG', 'adam').a).b.c).toStrictEqual({ d: 99 })
 		})
 		const adam = await db('userG/adam')
-		// @ts-ignore
+		// @ts-expect-error
 		const c = await db('userG/adam').a.b.c
 
 		expect(c.d).toBe(99)
-		// @ts-ignore
+		// @ts-expect-error
 		expect(adam.a.b.c.d).toBe(99)
-		// @ts-ignore
+		// @ts-expect-error
 		expect((await db('userG', 'adam').a).b.c).toStrictEqual({ d: 99 })
 	})
 

@@ -88,7 +88,7 @@ export class PolymorphicGeneric<O extends {}> {
 	readonly options: this[OPTIONS] & this[HIDDEN_OPTIONS]
 
 	/** Static */
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get defaultOptions(): this[DEFAULT_OPTIONS] &
 		Rebind<this, this[DEFAULT_OPTIONS]>[HIDDEN_OPTIONS] {
 		return {}

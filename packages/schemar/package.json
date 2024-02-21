@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/schemar",
-  "version": "23.0.3",
+  "version": "24.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/script": "workspace:^",

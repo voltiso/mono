@@ -9,6 +9,7 @@ import type { Transaction } from './Transaction'
 export interface TransactionConstructor<
 	Derived extends Transaction = Transaction,
 > {
+	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	new (
 		parentContext: ParentContext,
 		databaseTransaction: FirestoreLike.Transaction,

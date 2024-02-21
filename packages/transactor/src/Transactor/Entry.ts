@@ -6,24 +6,24 @@ import type { $$InferableObject, $$Object, SchemaLike } from '@voltiso/schemar'
 import type { GetPathMatches } from '~/common'
 import type { Method } from '~/Method'
 
-export type TransactorIdSchemaEntry = {
+export interface TransactorIdSchemaEntry {
 	getPathMatches: GetPathMatches
 	schema: SchemaLike<string>
 }
 
-export type TransactorSchemaEntry = {
+export interface TransactorSchemaEntry {
 	getPathMatches: GetPathMatches
 	schema: $$InferableObject | $$Object
 }
 
-export type TransactorMethodEntry = {
+export interface TransactorMethodEntry {
 	name: string
 	getPathMatches: GetPathMatches
 	method: Method
 	// argSchema?: Schema
 }
 
-export type TransactorTriggerEntry<T> = {
+export interface TransactorTriggerEntry<T> {
 	getPathMatches: GetPathMatches
 	trigger: T
 }

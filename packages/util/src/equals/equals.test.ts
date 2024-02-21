@@ -72,7 +72,7 @@ describe('equals', () => {
 			const a = new Set([1, 2, 3])
 			const b = new Set([3, 2, 1])
 
-			;(a as any)['bonus'] = 123
+			;(a as any).bonus = 123
 
 			expect(equals(a, b)).toBeFalsy()
 		})

@@ -10,7 +10,7 @@ export type CALL = typeof CALL
 
 //
 
-export type WithCALL<Call extends Callable = Callable> = {
+export interface WithCALL<Call extends Callable = Callable> {
 	readonly [CALL]: Call
 }
 

@@ -29,7 +29,7 @@ export class CustomAnyImpl<
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	readonly [SCHEMA_NAME] = 'Any' as const;
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override [EXTENDS](other: Schema): boolean {
 		if (isAnySchema(other) || isSchemaInferrer(other) || isUnknownSchema(other))
 			return true

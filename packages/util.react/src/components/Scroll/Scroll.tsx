@@ -22,7 +22,7 @@ import { isNavigationBackForward } from './isNavigationBackForward'
 import type { ScrollProps } from './ScrollProps'
 import { defaultScrollProps } from './ScrollProps'
 
-export type ScrollContextValue = {
+export interface ScrollContextValue {
 	onScrollRestore?: ((scrollTop: number) => void) | nullish
 }
 
@@ -152,11 +152,13 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	useEffect(() => {
 		if (typeof setSmoothAfterDelay !== 'number') return undefined
 
-		const timeout = setTimeout(
-			() => setScrollBehavior('smooth'),
-			setSmoothAfterDelay,
-		)
-		return () => clearTimeout(timeout)
+		const timeout = setTimeout(() => {
+			setScrollBehavior('smooth')
+		}, setSmoothAfterDelay)
+
+		return () => {
+			clearTimeout(timeout)
+		}
 	}, [setSmoothAfterDelay])
 
 	//

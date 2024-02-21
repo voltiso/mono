@@ -11,7 +11,9 @@ import { DataHook } from './DataHook'
 
 export interface DataHookConstructor {
 	new <D extends object>(p: { isLoading: boolean }): DataHook<D>
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	new <D extends object>(p: { data: D | null }): DataHook<D>
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	new <D extends object>(p: { error: Error }): DataHook<D>
 }
 

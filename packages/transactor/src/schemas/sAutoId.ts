@@ -5,7 +5,7 @@ import type { CustomString, CustomString$ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { ProtoCallable } from '@voltiso/util'
 
-import type { DocIdString } from '~/brand'
+import type { DocIdBrand, DocIdString } from '~/brand'
 import type { $$DocRelated } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
@@ -42,6 +42,8 @@ export interface UnknownAutoIdSchema$ extends AutoIdSchema$ {
 }
 
 //
+
+export type __hack_sAutoId = DocIdBrand
 
 /** 🧙‍♂️ Validate default auto-generated document ID */
 export const sAutoId: UnknownAutoIdSchema$ = ProtoCallable({

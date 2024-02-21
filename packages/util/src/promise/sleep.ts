@@ -23,7 +23,10 @@ export function sleep(
 	// eslint-disable-next-line promise/avoid-new
 	const result: Promise<void> & Partial<SleepController> = new Promise<void>(
 		(resolve, reject) => {
-			const handler = () => resolve()
+			const handler = () => {
+				resolve()
+			}
+
 			controller.timeout = setTimeout(handler, milliseconds)
 
 			controller.cancel = () => {

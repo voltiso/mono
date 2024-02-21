@@ -36,12 +36,12 @@ export class CustomUnknownObjectImpl<
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	readonly [SCHEMA_NAME] = 'UnknownObject' as const
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getIndexSignatures() {
 		return [] as []
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getShape() {
 		return {}
 	}

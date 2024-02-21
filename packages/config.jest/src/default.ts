@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-'use strict'
+import { getJestConfig } from './getJestConfig'
 
-module.exports = {
-	ignorePatterns: ['src/converted-esm'],
-}
+export default getJestConfig()

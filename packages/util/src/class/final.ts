@@ -68,5 +68,6 @@ export function $final<
 	},
 	keys: Keys,
 ): void {
+	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 	return final(thisArg, Base, keys)
 }

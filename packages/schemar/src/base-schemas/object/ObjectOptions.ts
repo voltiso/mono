@@ -3,7 +3,7 @@
 
 import type { $$Schemable, SchemaOptions } from '~'
 
-export type ObjectIndexSignatureEntry = {
+export interface ObjectIndexSignatureEntry {
 	keySchema: $$Schemable
 	valueSchema: $$Schemable
 }

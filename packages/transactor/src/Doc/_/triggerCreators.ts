@@ -41,6 +41,7 @@ function assertNotAfter(
 	fastAssert(!x.after)
 }
 
+// eslint-disable-next-line @typescript-eslint/max-params
 function logTrigger(
 	name: string,
 	when: 'before' | 'after' | 'on',

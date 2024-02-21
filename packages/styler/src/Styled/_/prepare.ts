@@ -10,11 +10,11 @@ import { $fastAssert, isPlainObject } from '@voltiso/util'
 import type { CssProp } from '~/_/CssProps'
 import { isThemePath } from '~/ThemePath'
 
-export type WithNested = { _: object }
+// export interface WithNested { _: object }
 
-export function isWithNested(x: unknown): x is WithNested {
-	return isPlainObject((x as WithNested | null)?._)
-}
+// export function isWithNested(x: unknown): x is WithNested {
+// 	return isPlainObject((x as WithNested | null)?._)
+// }
 
 function isWith0(x: unknown): x is { [0]: unknown } {
 	return (
@@ -86,7 +86,7 @@ export function prepare<X>(
 
 					cssValues = { ...cssValues }
 					$fastAssert(typeof cssValues === 'object')
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-dynamic-delete
 					delete (cssValues as any)[k]
 
 					const preparedCustomCss = prepare(cssValues, params)

@@ -91,8 +91,16 @@ export const testOverride = defineEslintFlatConfig(
 			'max-lines-per-function': 0,
 			'max-statements': 0,
 
+			'require-unicode-regexp': 0,
+
+			'@typescript-eslint/no-confusing-void-expression': 0,
+
 			'no-magic-numbers': 0,
+			'@typescript-eslint/class-methods-use-this': 0,
 			'@typescript-eslint/no-magic-numbers': 0,
+
+			'@typescript-eslint/no-extraneous-class': 0,
+			'@typescript-eslint/consistent-type-definitions': 0,
 
 			'@typescript-eslint/no-explicit-any': 0,
 			'etc/prefer-interface': 0,

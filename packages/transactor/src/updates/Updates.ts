@@ -10,6 +10,7 @@ export interface UpdatesRecord {
 	id?: never
 	[k: string]: NestedUpdates
 }
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface NestedUpdatesRecord {
 	[k: string]: NestedUpdates
 }

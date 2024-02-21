@@ -3,11 +3,11 @@
 
 import type { Override } from '~/type'
 
-export type SplitOptions = {
+export interface SplitOptions {
 	separator: string
 }
 
-export type DefaultSplitOptions = {
+export interface DefaultSplitOptions {
 	separator: ''
 }
 

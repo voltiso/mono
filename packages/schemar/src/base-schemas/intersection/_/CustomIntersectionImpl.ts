@@ -36,7 +36,7 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 		return this[OPTIONS].schemas as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.') // TODO
 	}

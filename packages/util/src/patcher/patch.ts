@@ -64,7 +64,7 @@ export type ApplyPatch<X, P extends ForcePatchFor<X>> = P extends DeleteIt
 
 //
 
-export type PatchOptions = {
+export interface PatchOptions {
 	/**
 	 * Recursion max depth
 	 *
@@ -153,7 +153,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 
 			if (isDeleteIt(value) || isDeleteItIfPresent(value)) {
 				if (haveOldValue) {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-dynamic-delete
 					delete res[key]
 					haveChange = true
 				}

@@ -1,13 +1,15 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 import { VoltisoUtilError } from '_/error/VoltisoUtilError'
 
 import { lazyConstructor } from '~/lazy/lazyConstructor'
 import type { Value } from '~/object'
 import type { TryGetPropertyImpl } from '~/object/get-set/get/get/tryGetProperty'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
-import { isObject } from '~/object/isObject'
+// import { isObject } from '~/object/isObject'
 import type { UnknownProperty } from '~/object/UnknownProperty'
 import { stringFrom } from '~/string'
 import type { AlsoAccept } from '~/type/AlsoAccept'
@@ -61,7 +63,7 @@ export type GetPropertyComplex<
  * const val = getProperty(obj, key)
  * ```
  *
- * @param object - An object
+ * @param object - An object to access
  * @param property - A property of the `object`
  * @returns `object[property]`
  * @throws
@@ -70,7 +72,9 @@ export function getProperty<
 	Obj extends object,
 	Property extends keyof Obj | UnknownProperty,
 >(object: Obj, property: Property): GetPropertyComplex<Obj, Property> {
-	if (!isObject(object)) throw new GetPropertyError(object, property)
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	if (object === null || object === undefined)
+		throw new GetPropertyError(object, property)
 
 	assertNotPolluting(property)
 
@@ -78,8 +82,8 @@ export function getProperty<
 
 	// ! it may be proxy object 🤔
 	if (
-		typeof result === 'undefined' &&
-		!((property as keyof any) in object) &&
+		result === undefined &&
+		// !((property as keyof any) in object) &&
 		!Object.prototype.hasOwnProperty.call(object, property)
 	)
 		throw new GetPropertyError(object, property)

@@ -11,6 +11,7 @@ import { CallableConstructor } from './CallableConstructor'
 
 class _Cls {
 	constructor(n: number)
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	constructor(s: string)
 
 	constructor(arg: string | number) {
@@ -27,8 +28,11 @@ class _Cls {
 	static readonly _staticData: (number | bigint | symbol)[] = []
 
 	static addStaticData(this: typeof _Cls, arg: number): Cls
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	static addStaticData(this: typeof _Cls, arg: bigint | symbol): Cls
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	static addStaticData(this: typeof _Cls, arg: symbol): Cls
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol): Cls
 
 	static addStaticData(this: typeof _Cls, arg: number | bigint | symbol): Cls {
@@ -48,6 +52,7 @@ class _Derived extends _Cls {
 }
 
 function call(s: symbol): typeof _Cls
+// eslint-disable-next-line @typescript-eslint/unified-signatures
 function call(b: bigint): typeof _Cls
 function call(b: string): string
 

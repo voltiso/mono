@@ -17,6 +17,7 @@ export type DeepMutable_<T> = {
 
 //
 
+// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 export type _<T> = [{ [k in keyof T]: T[k] }][0]
 
 export type Merge2_<A, B> = _<Omit<A, keyof B> & B>

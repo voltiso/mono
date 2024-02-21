@@ -20,7 +20,7 @@ import type { DOMAttributes } from 'react'
 import type { UseFormValidators } from './Validators'
 
 export namespace UseForm {
-	export type Options<S extends $$SchemableObject> = {
+	export interface Options<S extends $$SchemableObject> {
 		schemable: S
 
 		data$?: ISubjectTree | undefined
@@ -35,17 +35,17 @@ export namespace UseForm {
 		// onError?: (error: Error) => Promise<void> | void
 	}
 
-	export type InputState = {
+	export interface InputState {
 		path: (keyof any)[]
 		element: HTMLElement
 	}
 
-	export type MutableState<S extends $$SchemableObject> = {
-		inputs: UseForm.InputState[]
+	export interface MutableState<S extends $$SchemableObject> {
+		inputs: InputState[]
 
 		issuesByPath: Map<string, ValidationIssue[]>
 
-		result$: RequiredSubjectTree<UseForm.RawResult<S>>
+		result$: RequiredSubjectTree<RawResult<S>>
 	}
 
 	export type ResultFields<S extends $$Schemable> = S extends SchemableWithShape
@@ -68,7 +68,7 @@ export namespace UseForm {
 				issues: ValidationIssue[]
 			}
 
-	export type RawResult<S extends $$SchemableObject> = {
+	export interface RawResult<S extends $$SchemableObject> {
 		props: {
 			onSubmit: Exclude<DOMAttributes<HTMLFormElement>['onSubmit'], undefined>
 			ref: (instance: HTMLFormElement | null) => void

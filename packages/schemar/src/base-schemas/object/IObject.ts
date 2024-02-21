@@ -58,6 +58,7 @@ export interface IObject$ extends $$Object, Schema$ {
 
 	get plain(): $$Object
 
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	index(key: $$Schemable, value: $$Schemable): $$Object
 	index(value: $$Schemable): $$Object
 }

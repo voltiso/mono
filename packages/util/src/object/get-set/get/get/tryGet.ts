@@ -52,6 +52,7 @@ export function tryGet(
 
 export function tryGet(
 	o: undefined,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	path: readonly [] | ReadonlyPropertyPath,
 ): undefined
 
@@ -74,6 +75,7 @@ export function tryGet<
 	let r = o
 
 	for (const token of path) {
+		// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 		r = tryGetProperty(r, token as never) as never
 	}
 

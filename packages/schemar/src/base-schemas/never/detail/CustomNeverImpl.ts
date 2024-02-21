@@ -22,7 +22,7 @@ export class CustomNeverImpl<
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	readonly [SCHEMA_NAME] = 'Never' as const;
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: SchemaLike): boolean {
 		return true
 	}

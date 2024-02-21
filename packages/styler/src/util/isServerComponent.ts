@@ -8,5 +8,5 @@
  */
 import React from 'react'
 
-// eslint-disable-next-line import/no-named-as-default-member
+// eslint-disable-next-line import/no-named-as-default-member, @typescript-eslint/no-inferrable-types
 export const isServerComponent: boolean = !React.createContext

@@ -6,6 +6,9 @@ import type { JSONObject } from 'superjson/dist/types'
 
 import { blackbox } from './Blackbox'
 
+// const isCjs = typeof require === 'function'
+// console.log('Blackbox.test.ts', { isCjs })
+
 // eslint-disable-next-line jest/require-hook
 registerCustom<object, PropertyDescriptorMap & JSONObject>(
 	{

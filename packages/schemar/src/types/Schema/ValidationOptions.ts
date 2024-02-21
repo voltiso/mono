@@ -21,7 +21,7 @@ export interface ValidationOptions {
 }
 
 export declare namespace ValidationOptions {
-	export type Default = {
+	export interface Default {
 		onUnknownProperty: 'error'
 	}
 }

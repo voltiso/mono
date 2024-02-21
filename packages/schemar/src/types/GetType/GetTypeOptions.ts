@@ -6,7 +6,7 @@ export interface GetTypeOptions {
 	// isPlain: boolean
 }
 
-export type DefaultGetTypeOptions = {
+export interface DefaultGetTypeOptions {
 	kind: 'out'
 	// isPlain: false
 }

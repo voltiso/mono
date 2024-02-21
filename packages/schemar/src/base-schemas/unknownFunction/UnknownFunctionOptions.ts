@@ -7,6 +7,7 @@ import type { SchemaOptions } from '~'
 
 export type BivariantUnknownFunction = [
 	BivariantCallable<(...args: unknown[]) => unknown>,
+	// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 ][0]
 
 export interface UnknownFunctionOptions extends SchemaOptions {

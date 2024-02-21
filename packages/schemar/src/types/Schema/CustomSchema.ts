@@ -266,6 +266,7 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 			| this[OPTIONS]['Input']
 			| AlsoAccept<Readonly<this[OPTIONS]['Input']>>,
 	>(
+		// eslint-disable-next-line @typescript-eslint/unified-signatures
 		getValue: () => DefaultValue,
 	): CustomSchema.WithDefault<this, O, DefaultValue>
 
@@ -703,7 +704,7 @@ export declare namespace CustomSchema {
 		? OverrideSchema$<This, O, { Output: NewType }>
 		: Throw<
 				'WidenOutput: NewType is not supertype' &
-					CustomSchema.TypeCastErrorDetailOutput<This, NewType>
+					TypeCastErrorDetailOutput<This, NewType>
 			>
 
 	export type WithWidenInput<
@@ -714,7 +715,7 @@ export declare namespace CustomSchema {
 		? OverrideSchema$<This, O, { Input: NewType }>
 		: Throw<
 				'WidenInput: NewType is not supertype' &
-					CustomSchema.TypeCastErrorDetailInput<This, NewType>
+					TypeCastErrorDetailInput<This, NewType>
 			>
 
 	/** @inline */
@@ -749,27 +750,27 @@ export declare namespace CustomSchema {
 			>
 		: never
 
-	export type TypeCastErrorDetail<
+	export interface TypeCastErrorDetail<
 		This extends { Output: unknown; Input: unknown },
 		NewType,
-	> = {
+	> {
 		NewType: NewType
 		CurrentOutputType: This['Output']
 		CurrentInputType: This['Input']
 	}
 
-	export type TypeCastErrorDetailOutput<
+	export interface TypeCastErrorDetailOutput<
 		This extends { Output: unknown },
 		NewType,
-	> = {
+	> {
 		NewType: NewType
 		CurrentOutputType: This['Output']
 	}
 
-	export type TypeCastErrorDetailInput<
+	export interface TypeCastErrorDetailInput<
 		This extends { Input: unknown },
 		NewType,
-	> = {
+	> {
 		NewType: NewType
 		CurrentInputType: This['Input']
 	}

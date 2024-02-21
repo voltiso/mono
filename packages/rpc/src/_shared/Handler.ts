@@ -5,4 +5,6 @@ export type Handler = {
 	bivarianceHack(...args: unknown[]): unknown
 }['bivarianceHack']
 
-export type Handlers = { [k: string]: Handlers | Handler }
+export interface Handlers {
+	[k: string]: Handlers | Handler
+}

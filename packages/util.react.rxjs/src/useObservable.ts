@@ -23,6 +23,7 @@ export function useObservable<T>(
 ): T | undefined
 
 export function useObservable<T>(
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	observable$: (Observable<T> & { value?: T }) | T | undefined,
 ): T | undefined
 
@@ -40,7 +41,7 @@ export function useObservable<T>(
 	useImmediateEffect(() => {
 		if (!isObservableLike(observable$)) return undefined
 
-		// eslint-disable-next-line rxjs/no-ignored-error
+		// eslint-disable-next-line rxjs/no-ignored-error, @typescript-eslint/no-confusing-void-expression
 		const subscription = observable$.subscribe(value => setValue(value))
 
 		// // value might have changed in the meantime

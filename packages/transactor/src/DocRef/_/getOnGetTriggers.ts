@@ -3,7 +3,10 @@
 
 import { $AssumeType } from '@voltiso/util'
 
-import type { _CustomDocRef, $$DocRef } from '~/DocRef'
+import type { _CustomDocRef, $$DocRef, DocRefTriggerEntry } from '~/DocRef'
+import type { OnGetTrigger } from '~/Trigger/Trigger'
+
+export type __hack_getOnGetTriggers = DocRefTriggerEntry | OnGetTrigger
 
 export function getOnGetTriggers(docRef: $$DocRef) {
 	// eslint-disable-next-line etc/no-internal

@@ -6,8 +6,20 @@
   "__________": "__________",
   "type": "module",
   "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
+  "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
@@ -44,6 +56,7 @@
     "jest-environment-node": "^29.7.0"
   },
   "devDependencies": {
-    "@voltiso/config.ts": "workspace:^"
+    "@voltiso/config.ts": "workspace:^",
+    "jest": "^29.7.0"
   }
 }

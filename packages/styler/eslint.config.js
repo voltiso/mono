@@ -5,14 +5,18 @@
 // import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 // eslint-disable-next-line no-restricted-imports, @voltiso/file-extension-in-import
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+
+// eslint-disable-next-line no-restricted-imports
 import baseConfig from '../../eslint.config.js'
 
-const config = [
+export default defineEslintFlatConfig(
 	...baseConfig,
 	{
 		// env: {
 		// 	node: true
 		// },
+
 		rules: {
 			// 'import/extensions': ['error', 'ignorePackages']
 			// 'file-extension-in-import-ts/file-extension-in-import-ts': 'error',
@@ -21,6 +25,11 @@ const config = [
 			'node-dependencies/absolute-version': 'off',
 		},
 	},
-]
+	{
+		files: ['**/no-strictNullChecks/**/*'],
 
-export default config
+		rules: {
+			'@typescript-eslint/no-unnecessary-condition': 0, // requires `strictNullChecks`
+		},
+	},
+)

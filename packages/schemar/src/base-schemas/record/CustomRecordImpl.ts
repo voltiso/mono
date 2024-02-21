@@ -42,14 +42,14 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	}
 
 	get getKeySchema(): this[OPTIONS]['keySchema'] {
-		return this[OPTIONS]['keySchema'] as never
+		return this[OPTIONS].keySchema as never
 	}
 
 	get getValueSchema(): this[OPTIONS]['valueSchema'] {
-		return this[OPTIONS]['valueSchema'] as never
+		return this[OPTIONS].valueSchema as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getShape(): {} {
 		return {}
 	}
@@ -63,7 +63,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		]
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 	}

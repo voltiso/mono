@@ -56,7 +56,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return newThis
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	[CALL]<L extends string>(...args: readonly L[] | [Set<L>]): Literal<L> {
 		return literal(...(args as never[])) as never
 	}
@@ -130,7 +130,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this
+	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'string'
 	}

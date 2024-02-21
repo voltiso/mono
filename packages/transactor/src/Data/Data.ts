@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+
 import type { Output, Output_ } from '@voltiso/schemar'
 import type { _, $_, NoArgument } from '@voltiso/util'
 
@@ -12,7 +14,7 @@ import type { AnyDoc } from '~/DocTypes'
 export type LeafData = boolean | string | number | null | Date | $$DocRef
 
 // NestedData
-export type DataRecord = {
+export interface DataRecord {
 	[k: string]: NestedData
 }
 export const isNestedDataRecord = (x: NestedData): x is DataRecord =>

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable require-unicode-regexp */
 /* eslint-disable tsdoc/syntax */
 
 /**
@@ -81,7 +82,7 @@ export const noUselessPathSegments = createRule<
 
 	create(context) {
 		const currentDir = path.dirname(
-			// eslint-disable-next-line etc/no-deprecated
+			// eslint-disable-next-line etc/no-deprecated, @typescript-eslint/no-unnecessary-condition
 			context.getPhysicalFilename
 				? // eslint-disable-next-line etc/no-deprecated
 					context.getPhysicalFilename()
