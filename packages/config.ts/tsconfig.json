@@ -17,7 +17,7 @@
 		"/**/node_modules/**/*",
 		"/**/dist/**/*",
 		"/**/.turbo/**/*",
-		"/**/.tsc-lint/**/*",
+		"/**/.tsc-out/**/*",
 		"/**/.*/**/*" // Hidden dirs (works?)
 		//
 	],

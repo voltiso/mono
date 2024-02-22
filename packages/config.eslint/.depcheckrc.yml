@@ -5,4 +5,4 @@ ignores:
   - '~'
   - '@voltiso/config.ts'
   - '@voltiso/script'
-  - eslint-plugin-no-only-tests
+  - eslint-import-resolver-typescript

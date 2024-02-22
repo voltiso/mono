@@ -34,6 +34,13 @@ function isDirectory(path: string) {
 	return false
 }
 
+function isFile(path: string) {
+	try {
+		return fs.statSync(path).isFile()
+	} catch {}
+	return false
+}
+
 function createDirnameDeclaration() {
 	// eslint-disable-next-line @typescript-eslint/prefer-destructuring
 	const factory = ts.factory
@@ -211,8 +218,11 @@ export function compatTransform(
 
 						if (
 							(moduleSpecifierStr.startsWith('./') ||
-								moduleSpecifierStr.startsWith('../')) &&
-							!moduleSpecifierStr.endsWith('.js')
+								moduleSpecifierStr.startsWith('../')) 
+							// 	&&
+							// !moduleSpecifierStr.endsWith('.js') 
+							// &&
+							// !moduleSpecifierStr.endsWith('.json')
 						) {
 							// console.log({ moduleSpecifierStr })
 							// console.log('!!!', sourceFile.fileName)
@@ -233,14 +243,21 @@ export function compatTransform(
 
 									return ts.factory.createStringLiteral(newNodeStr, singleQuote)
 								}
-							} else if (!options.supported.importWithoutExtension) {
-								const newNodeStr = `${moduleSpecifierStr}.js`
+							} else if (!options.supported.importWithoutExtension && !isFile(myPath)) {
+								const mapExtensions = {ts: 'js', tsx: 'js', json: 'json'}
 
-								logCompatTransformNode(ctx, node, newNodeStr, {
-									feature: 'importWithoutExtension',
-								})
+								for(const [ext, targetExt] of Object.entries(mapExtensions)) {
+									const targetFile = `${myPath}.${ext}`
+									if(!isFile(targetFile)) continue
 
-								return ts.factory.createStringLiteral(newNodeStr, singleQuote)
+									const newNodeStr = `${moduleSpecifierStr}.${targetExt}`
+
+									logCompatTransformNode(ctx, node, newNodeStr, {
+										feature: 'importWithoutExtension',
+									})
+
+									return ts.factory.createStringLiteral(newNodeStr, singleQuote)
+								}
 							}
 						}
 						// }

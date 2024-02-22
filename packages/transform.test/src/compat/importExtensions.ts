@@ -27,3 +27,5 @@ export { a as a2 } from '~/compat/test'
 export { abc } from '_'
 
 export type testA = typeof import('./numericSeparators')
+
+export { default as jsonTest } from '../../package.json'

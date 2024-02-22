@@ -3,8 +3,8 @@
 
 import * as path from 'node:path'
 
+import baseConfig from '@voltiso/config.eslint'
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-import baseConfig from '@voltiso/eslint-config'
 // import baseConfigFast from '@voltiso/eslint-config-fast'
 
 const project = [
@@ -50,7 +50,7 @@ const project = [
 // })
 
 // eslint-disable-next-line es-x/no-import-meta
-const dirname = path.dirname(new URL(import.meta.url).pathname)
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 // console.log('dirname', __dirname)
 
 // eslint-disable-next-line import/no-default-export
@@ -63,7 +63,7 @@ export default defineEslintFlatConfig(
 		languageOptions: {
 			parserOptions: {
 				project,
-				tsconfigRootDir: dirname,
+				tsconfigRootDir: __dirname,
 			},
 		},
 
@@ -71,7 +71,7 @@ export default defineEslintFlatConfig(
 			'import/resolver': {
 				typescript: {
 					project,
-					tsconfigRootDir: dirname,
+					tsconfigRootDir: __dirname,
 				},
 			},
 		},

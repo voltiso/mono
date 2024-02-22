@@ -59,7 +59,6 @@ import { testingLibrary } from './detail/overrides/testingLibrary.js'
 import { testOverride } from './detail/overrides/testOverride.js'
 import { tsdoc } from './detail/overrides/tsdoc.js'
 import { turboConfig } from './detail/overrides/turbo.js'
-import { typescriptSortKeys } from './detail/overrides/typescriptSortKeys.js'
 import { unicorn } from './detail/overrides/unicorn.js'
 import { unusedImports } from './detail/overrides/unusedImports.js'
 import { voltisoOverride } from './detail/overrides/voltiso.js'
@@ -118,7 +117,7 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	...securityConfig,
 	...switchCase,
 	...tsdoc,
-	...typescriptSortKeys,
+	// ...typescriptSortKeys,
 	...unusedImports,
 	...cypress,
 	// html, // ! breaks everything - not sure why

@@ -35,6 +35,7 @@ export const es = defineEslintFlatConfig(...baseConfig, {
 	// extends: ['plugin:es/restrict-to-es2016'], // 4th oldest
 
 	rules: {
+		'es-x/no-import-meta': 0,
 		'es-x/no-array-prototype-find': 0,
 		'es-x/no-hashbang': 0,
 		'es-x/no-modules': 0,
