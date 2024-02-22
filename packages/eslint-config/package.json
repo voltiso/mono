@@ -57,8 +57,8 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@next/eslint-plugin-next": "^14.1.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "any-eslint-parser": "^1.0.1",
@@ -125,7 +125,7 @@
     "eslint-plugin-yml": "^1.12.2",
     "espree": "^10.0.1",
     "jsonc-eslint-parser": "^2.4.0",
-    "putout": "^35.4.2",
+    "putout": "^35.5.1",
     "toml-eslint-parser": "^0.9.3",
     "yaml-eslint-parser": "^1.2.2"
   },
@@ -139,6 +139,6 @@
     "@voltiso/transform": "workspace:^",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3",
-    "typescript-transform-paths": "^3.4.6"
+    "typescript-transform-paths": "^3.4.7"
   }
 }

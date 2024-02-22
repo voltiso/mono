@@ -47,7 +47,7 @@
     "@babel/preset-env": "^7.23.6",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",
-    "@types/react": "^18.2.56",
+    "@types/react": "^18.2.57",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",
@@ -57,6 +57,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.3.3",
-    "typescript-transform-paths": "^3.4.6"
+    "typescript-transform-paths": "^3.4.7"
   }
 }

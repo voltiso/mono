@@ -34,6 +34,6 @@
   "devDependencies": {
     "@voltiso/transform": "workspace:^",
     "typescript": "^5.3.3",
-    "typescript-transform-paths": "^3.4.6"
+    "typescript-transform-paths": "^3.4.7"
   }
 }

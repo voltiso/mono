@@ -1,10 +1,10 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable unicorn/no-array-for-each */
 /* eslint-disable es-x/no-array-prototype-foreach */
 /* eslint-disable github/array-foreach */
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable etc/no-deprecated */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -151,7 +151,7 @@ export const fileExtensionInImport = {
 					},
 
 					messageId: 'requireExt',
-					node,
+					node: node as never,
 				})
 			} else if (style === 'never' && extWithIndex === originalExt) {
 				context.report({
@@ -169,7 +169,7 @@ export const fileExtensionInImport = {
 					},
 
 					messageId: 'forbidExt',
-					node,
+					node: node as never,
 				})
 			}
 		}

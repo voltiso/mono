@@ -60,6 +60,6 @@
     "@voltiso/util": "workspace:^",
     "rxjs": "^7.8.1",
     "typescript": "^5.3.3",
-    "typescript-transform-paths": "^3.4.6"
+    "typescript-transform-paths": "^3.4.7"
   }
 }
