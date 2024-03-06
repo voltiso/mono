@@ -3,11 +3,11 @@
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-// eslint-disable-next-line no-restricted-imports
 import baseConfig from '../../eslint.config.js'
 
 export default defineEslintFlatConfig(...baseConfig, {
 	rules: {
+		'no-restricted-imports': 'off',
 		'@typescript-eslint/no-useless-empty-export': 'off',
 		'@typescript-eslint/class-methods-use-this': 'off',
 		'unicorn/prefer-module': 'off',

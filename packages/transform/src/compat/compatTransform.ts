@@ -217,10 +217,10 @@ export function compatTransform(
 						// console.log('?', { moduleSpecifierStr })
 
 						if (
-							(moduleSpecifierStr.startsWith('./') ||
-								moduleSpecifierStr.startsWith('../')) 
+							moduleSpecifierStr.startsWith('./') ||
+							moduleSpecifierStr.startsWith('../')
 							// 	&&
-							// !moduleSpecifierStr.endsWith('.js') 
+							// !moduleSpecifierStr.endsWith('.js')
 							// &&
 							// !moduleSpecifierStr.endsWith('.json')
 						) {
@@ -243,12 +243,15 @@ export function compatTransform(
 
 									return ts.factory.createStringLiteral(newNodeStr, singleQuote)
 								}
-							} else if (!options.supported.importWithoutExtension && !isFile(myPath)) {
-								const mapExtensions = {ts: 'js', tsx: 'js', json: 'json'}
+							} else if (
+								!options.supported.importWithoutExtension &&
+								!isFile(myPath)
+							) {
+								const mapExtensions = { ts: 'js', tsx: 'js', json: 'json' }
 
-								for(const [ext, targetExt] of Object.entries(mapExtensions)) {
+								for (const [ext, targetExt] of Object.entries(mapExtensions)) {
 									const targetFile = `${myPath}.${ext}`
-									if(!isFile(targetFile)) continue
+									if (!isFile(targetFile)) continue
 
 									const newNodeStr = `${moduleSpecifierStr}.${targetExt}`
 

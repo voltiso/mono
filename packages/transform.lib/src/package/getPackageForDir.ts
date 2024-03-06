@@ -22,8 +22,8 @@ export interface _GetPackageForDirResult {
 const packageJsonsByDir = new Map<string, _GetPackageForDirResult>()
 
 /**
- * @internal
  * @throws When not found
+ * @internal
  */
 export function _getPackageForDirUncached(
 	dir: string,

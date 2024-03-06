@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.ts",
-  "version": "4.0.0",
+  "version": "4.0.2",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -30,6 +30,14 @@
     "@voltiso/transform": "workspace:^",
     "typescript": ">= 4.8.4",
     "typescript-transform-paths": "^3.4.6"
+  },
+  "peerDependenciesMeta": {
+    "@voltiso/transform": {
+      "optional": true
+    },
+    "typescript-transform-paths": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@voltiso/transform": "workspace:^",

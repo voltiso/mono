@@ -18,8 +18,16 @@ function getPackageJson(): PackageJson {
 	// eslint-disable-next-line unicorn/prefer-module
 	const dirname = __dirname
 
-	// eslint-disable-next-line n/no-sync
-	const packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', '..', 'package.json'))
+	let packageJsonBuffer
+
+	try {
+		// eslint-disable-next-line n/no-sync, sonarjs/no-duplicate-string
+		packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', '..', 'package.json'))
+	} catch {
+		// for test env
+		// eslint-disable-next-line n/no-sync
+		packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', 'package.json'))
+	}
 
 	return JSON.parse(packageJsonBuffer as never) as never
 }
