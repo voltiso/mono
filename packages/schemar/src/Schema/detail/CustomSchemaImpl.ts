@@ -447,8 +447,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		}) as never
 	}
 
+	/**
+	 * Note: function default has to be wrapped in a function! I.e. if arg is a
+	 * function, it will be treated as a getter.
+	 */
 	default<D>(arg: D | (() => D)): never {
-		if (typeof arg === 'function' && this[SCHEMA_NAME] !== 'Function')
+		if (typeof arg === 'function')
 			return this._cloneWithOptions({
 				hasDefault: true as const,
 				getDefault: arg as never,

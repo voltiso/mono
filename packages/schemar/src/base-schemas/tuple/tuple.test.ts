@@ -215,7 +215,7 @@ describe('array', () => {
 		)
 
 		expect(() => s.tuple({ a: s.number.min(1) }).validate([{ a: 0 }])).toThrow(
-			'[0].a should at least 1',
+			'[0].a should be at least 1',
 		)
 	})
 

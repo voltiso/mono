@@ -59,7 +59,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 				issues.push(
 					new ValidationIssue({
 						name: this[OPTIONS].name,
-						expected: { description: 'integer' },
+						expected: { description: 'be integer' },
 						received: { value },
 					}),
 				)
@@ -70,7 +70,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 					new ValidationIssue({
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expected: { description: `at least ${this.getMin}` },
+						expected: { description: `be at least ${this.getMin}` },
 						received: { value },
 					}),
 				)
@@ -81,7 +81,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 					new ValidationIssue({
 						name: this[OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-						expected: { description: `at most ${this.getMax}` },
+						expected: { description: `be at most ${this.getMax}` },
 						received: { value },
 					}),
 				)
