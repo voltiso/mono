@@ -7,12 +7,12 @@ import {
 } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import jsxPlugin from 'eslint-plugin-jsx'
-// @ts-expect-error no typings
 import reactPlugin from 'eslint-plugin-react'
 
 export const jsx = defineEslintFlatConfig(
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-	...eslintFlatConfigFromConfig(reactPlugin.configs['jsx-runtime'], {
+	...eslintFlatConfigFromConfig(reactPlugin.configs['jsx-runtime'] as never, {
+		// `number` instead of `0 | 1 | 2`
 		react: reactPlugin,
 	}),
 	{

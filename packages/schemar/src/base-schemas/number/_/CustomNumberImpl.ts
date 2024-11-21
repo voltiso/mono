@@ -27,7 +27,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomNumber<O>
 {
-	readonly [SCHEMA_NAME] = 'Number' as const
+	override readonly [SCHEMA_NAME] = 'Number' as const
 
 	get isInteger(): this[OPTIONS]['isInteger'] {
 		return this[OPTIONS].isInteger as never

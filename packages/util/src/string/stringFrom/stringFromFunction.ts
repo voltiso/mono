@@ -11,6 +11,7 @@ import { defaultToStringOptions } from './StringFromOptions'
 /* eslint-disable @typescript-eslint/ban-types */
 
 export function stringFromFunction_(
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 	f: Function,
 	parameters: StringFromOptions,
 ) {
@@ -30,6 +31,7 @@ export function stringFromFunction_(
 }
 
 export function stringFromFunction(
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 	f: Function,
 	options?: Partial<StringFromOptions> | undefined,
 ): string {

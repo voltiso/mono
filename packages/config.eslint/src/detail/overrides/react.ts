@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
 import reactPlugin from 'eslint-plugin-react'
 
 import { codeFiles } from '~/detail/files'

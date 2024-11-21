@@ -35,7 +35,7 @@ import { _tupleExtends, _tupleExtendsArray } from './_'
 export class CustomTupleImpl<
 	O extends Partial<TupleOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	readonly [SCHEMA_NAME] = 'Tuple' as const;
+	override readonly [SCHEMA_NAME] = 'Tuple' as const;
 
 	declare readonly [BASE_OPTIONS]: TupleOptions;
 	declare readonly [DEFAULT_OPTIONS]: TupleOptions.Default

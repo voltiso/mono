@@ -32,6 +32,7 @@ export const jsdocConfig = defineEslintFlatConfig(
 			...allRules,
 
 			'jsdoc/sort-tags': 0,
+			'jsdoc/require-template': 0,
 
 			'jsdoc/text-escaping': 0,
 			'jsdoc/match-name': 0,
@@ -46,6 +47,7 @@ export const jsdocConfig = defineEslintFlatConfig(
 			'jsdoc/check-param-names': 1,
 			'jsdoc/check-property-names': 1,
 			'jsdoc/check-syntax': 1,
+			'jsdoc/convert-to-jsdoc-comments': 0,
 
 			'jsdoc/check-tag-names': [
 				'warn',

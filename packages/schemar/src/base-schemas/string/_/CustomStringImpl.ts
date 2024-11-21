@@ -31,7 +31,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomString<O>
 {
-	readonly [SCHEMA_NAME] = 'String' as const;
+	override readonly [SCHEMA_NAME] = 'String' as const;
 
 	declare readonly [BASE_OPTIONS]: StringOptions;
 	declare readonly [DEFAULT_OPTIONS]: StringOptions.Default

@@ -7,7 +7,7 @@ import type { WithSelfBoundCALL } from '~/function'
 import { CALL } from '~/function'
 
 /** @internal Use `BoundCallable` instead */
-// eslint-disable-next-line etc/underscore-internal, @typescript-eslint/ban-types
+// eslint-disable-next-line etc/underscore-internal, @typescript-eslint/ban-types, @typescript-eslint/no-unsafe-function-type
 export interface IBoundCallable extends Function {
 	clone(): unknown
 	[CALL]?(...args: unknown[]): unknown
@@ -23,7 +23,7 @@ export type _BoundCallable<
 	},
 > = Options['shape'] &
 	Options['call'] &
-	// eslint-disable-next-line @typescript-eslint/ban-types
+	// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unsafe-function-type
 	Function & {
 		// Record<Exclude<keyof CallableFunction, keyof Options['shape']>, never> & // ! need bind-call-apply for react-native
 		clone(): object // _BoundCallable<Options>

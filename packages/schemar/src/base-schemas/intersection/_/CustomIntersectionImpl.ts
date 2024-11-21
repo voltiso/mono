@@ -30,7 +30,7 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomIntersection<O>, IIntersection
 {
-	readonly [SCHEMA_NAME] = 'Intersection' as const
+	override readonly [SCHEMA_NAME] = 'Intersection' as const
 
 	get getSchemas(): this[OPTIONS]['schemas'] {
 		return this[OPTIONS].schemas as never

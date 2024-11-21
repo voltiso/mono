@@ -21,7 +21,7 @@ class User extends Doc.with({
 	async createUser(this: User | null, p: TriggerParams.OnGet<User>) {
 		if (p.doc) return
 
-		// eslint-disable-next-line consistent-return
+		// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
 		return {
 			displayName: 'default',
 		}

@@ -15,7 +15,12 @@ import type {
 } from 'react'
 import { forwardRef } from 'react'
 
-import type { ComponentPropsWithRef_, Css, GetNativeElement } from '~'
+import type {
+	ComponentPropsWithRef_,
+	Css,
+	GetNativeElement,
+	NativeElement,
+} from '~'
 import { style } from '~'
 
 import { renderApp } from './common'
@@ -80,7 +85,7 @@ describe('forwardRef', () => {
 		expect.hasAssertions()
 
 		const Component = style(
-			forwardRef((props, ref) => (
+			forwardRef<any>((props, ref) => (
 				<AnotherButton ref={ref} {...props} />
 			)) as ForwardRefExoticComponent<any>,
 		)
@@ -114,6 +119,7 @@ describe('forwardRef', () => {
 				borderRadius: 22,
 			})
 
+		// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 		const render: ForwardRefRenderFunction<HTMLAnchorElement, {}> = (
 			props,
 			ref,
@@ -145,7 +151,11 @@ describe('forwardRef', () => {
 
 		$Assert.is<typeof RenderButton, ForwardRefRenderFunction<any>>()
 
-		const Button = style.forwardRef(RenderButton)
+		$Assert.is<HTMLButtonElement, NativeElement>()
+
+		/** ! should infer without explicit 'button'? */
+		const Button = style.forwardRef<'button'>(RenderButton)
+
 		$Assert.is<
 			ComponentPropsWithRef<typeof Button>['ref'],
 			Ref<HTMLButtonElement> | undefined
@@ -155,6 +165,7 @@ describe('forwardRef', () => {
 
 		renderApp(
 			<Button
+				onClick={() => {}}
 				ref={inst => {
 					instance = inst
 				}}

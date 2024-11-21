@@ -98,7 +98,7 @@ export type $OverrideWithOptionals<
 
 //
 
-export function override<
+export function overrideStrict<
 	Base extends object,
 	Overrides extends {
 		readonly [k in keyof Base]?: Base[k] | AlsoAccept<unknown>
@@ -106,6 +106,12 @@ export function override<
 >(base: Base, overrides: Overrides): $OverrideWithOptionals<Base, Overrides> {
 	return { ...base, ...overrides } as never
 }
+
+/**
+ * @deprecated Use `overrideStrict` instead (or consider using
+ *   `overrideDefined`)
+ */
+export const override = overrideStrict
 
 //
 

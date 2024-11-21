@@ -63,7 +63,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomFunction<O>
 {
-	readonly [SCHEMA_NAME] = 'Function' as const
+	override readonly [SCHEMA_NAME] = 'Function' as const
 
 	get hasThis(): [this[OPTIONS]['this']] extends [NoThis] ? false : true {
 		return (this[OPTIONS].this !== noThis) as never

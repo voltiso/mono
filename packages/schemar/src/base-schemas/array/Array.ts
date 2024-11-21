@@ -16,7 +16,7 @@ import { ReadonlyArrayImpl } from './ReadonlyArrayImpl'
 
 interface MutableArray_<S extends $$Schemable>
 	extends CustomArray<{
-		// element: InferSchema$_<S>
+		/** Element: InferSchema$_<S> */
 		Output: Type_<S, { kind: 'out' }>[]
 		Input: Type_<S, { kind: 'in' }>[]
 	}> {}
@@ -25,7 +25,7 @@ export type { MutableArray_ as MutableArray }
 
 export interface MutableArray$<S extends $$Schemable>
 	extends CustomArray$<{
-		// element: InferSchema$_<S>
+		/** Element: InferSchema$_<S> */
 		Output: Type_<S, { kind: 'out' }>[]
 		Input: Type_<S, { kind: 'in' }>[]
 	}> {}
@@ -83,7 +83,9 @@ export interface UnknownMutableArray$
 		Output: unknown[]
 		Input: unknown[]
 	}> {
-	<S extends $$Schemable>(elementSchema: S): MutableArray$<RelaxSchema_<S>>
+	<S extends $$Schemable>(
+		elementSchema: S,
+	): MutableArray$<RelaxSchema_<S>>
 }
 
 export interface UnknownReadonlyArray$

@@ -26,7 +26,7 @@ export class CustomVoidImpl<O extends Partial<VoidOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements IVoid
 {
-	readonly [SCHEMA_NAME] = 'Void' as const;
+	override readonly [SCHEMA_NAME] = 'Void' as const;
 
 	override [EXTENDS](other: Schema): boolean {
 		if (isVoidSchema(other)) return true

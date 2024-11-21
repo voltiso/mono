@@ -39,12 +39,11 @@ type DeepMerge2_<A, B, BOptional extends boolean = false> = A extends object
 							? Value<B, k>
 							: never
 				} & {
-					[k in keyof A | keyof B as IsOptional<
-						A & B,
-						k,
-						never,
-						k
-					>]: k extends keyof A
+					[k in keyof A | keyof B as
+						| (k extends keyof A ? IsOptional<A, k, never, k> : never)
+						| (k extends keyof B
+								? IsOptional<B, k, never, k>
+								: never)]: k extends keyof A
 						? k extends keyof B
 							? DeepMerge2<
 									Value<A, k>,

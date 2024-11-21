@@ -4,6 +4,7 @@
 'use client'
 
 import type { nullish } from '@voltiso/util'
+import { overrideDefined } from '@voltiso/util'
 /* eslint-disable react/forbid-component-props */
 import type { ComponentProps, ForwardRefRenderFunction } from 'react'
 import {
@@ -44,7 +45,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		setSmoothAfterDelay,
 		style,
 		...otherProps
-	} = props
+	} = overrideDefined(defaultScrollProps, props)
 
 	const [scrollBehavior, setScrollBehavior] = useState<'smooth' | undefined>()
 
@@ -188,5 +189,3 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 ScrollRenderFunction.displayName = 'Scroll'
 
 export const Scroll = forwardRef(ScrollRenderFunction)
-
-Scroll.defaultProps = defaultScrollProps

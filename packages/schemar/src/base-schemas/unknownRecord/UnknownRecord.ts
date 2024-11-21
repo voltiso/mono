@@ -36,7 +36,7 @@ export interface UnknownRecord$ extends CustomUnknownRecord$<{}> {
 			},
 			GetFinalSchema<TKeySchema>
 		>,
-		GetFinalSchema<TValueSchema>
+		GetFinalSchema<TValueSchema> & $$Schemable
 	>
 
 	<TValueSchema extends $$Schemable>(

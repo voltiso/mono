@@ -6,7 +6,6 @@ import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 import jest from 'eslint-plugin-jest'
 // @ts-expect-error no typings
 import jestAsync from 'eslint-plugin-jest-async'
-// @ts-expect-error no typings
 import jestDom from 'eslint-plugin-jest-dom'
 // @ts-expect-error no typings
 import jestFormatting from 'eslint-plugin-jest-formatting'
@@ -98,6 +97,7 @@ export const testOverride = defineEslintFlatConfig(
 			'no-magic-numbers': 0,
 			'@typescript-eslint/class-methods-use-this': 0,
 			'@typescript-eslint/no-magic-numbers': 0,
+			'@typescript-eslint/no-unnecessary-type-parameters': 0,
 
 			'@typescript-eslint/no-extraneous-class': 0,
 			'@typescript-eslint/consistent-type-definitions': 0,

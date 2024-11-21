@@ -151,7 +151,9 @@ describe('$$_ (DistributedFlattenAnything)', () => {
 		type OO = $$_<{}>
 		$Assert<IsIdentical<OO, {}>>()
 
+		// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
 		type OOO = $$_<Object>
+		// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
 		$Assert<IsIdentical<OOO, Object>>()
 
 		type OOOO = $$_<Record<string, unknown>>

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable unicorn/no-array-for-each */
 /* eslint-disable es-x/no-array-prototype-foreach */
@@ -131,7 +132,6 @@ export const fileExtensionInImport = {
 
 			// console.log({extWithoutIndex})
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			const style = overrideStyle[extWithoutIndex as never] || defaultStyle
 			// Verify.
 			if (style === 'always' && extWithoutIndex !== originalExt) {

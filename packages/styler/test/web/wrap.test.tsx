@@ -75,12 +75,9 @@ describe('wrap', () => {
 				'span', // should not pass props
 			)
 			// wrap additional elements inside
-			.wrap(
-				MyFooter1, // should not pass props
-				props => (
-					<MyFooter footerColor={props.footerColor} data-testid='MyFooter2' />
-				),
-			)
+			.wrap(MyFooter1 /** Should not pass props */, props => (
+				<MyFooter footerColor={props.footerColor} data-testid='MyFooter2' />
+			))
 
 		renderApp(
 			<MyDiv

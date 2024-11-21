@@ -20,7 +20,7 @@ export class CustomUnknownImpl<O extends UnknownOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknown<O>
 {
-	readonly [SCHEMA_NAME] = 'Unknown' as const
+	override readonly [SCHEMA_NAME] = 'Unknown' as const
 
 	constructor(options: O) {
 		super(options)

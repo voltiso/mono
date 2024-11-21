@@ -26,7 +26,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomRecord<O>
 {
-	readonly [SCHEMA_NAME] = 'Record' as const
+	override readonly [SCHEMA_NAME] = 'Record' as const
 
 	readonly _object: CustomUnknownObjectImpl<any>
 

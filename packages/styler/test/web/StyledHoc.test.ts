@@ -101,6 +101,7 @@ describe('StyledHoc', () => {
 		;() => style(0 as unknown as StylableIntrinsic<TextProps>)
 
 		//
+
 		const a = () => style(0 as unknown as Stylable<TextProps>)
 		type A = ReturnType<typeof a>
 		$Assert.is<A, IStyledComponent>()

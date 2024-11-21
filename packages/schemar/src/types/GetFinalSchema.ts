@@ -13,7 +13,9 @@ import type {
 export type GetFinalSchema_<S> = S extends $$Schema & {
 	get Final(): infer F
 }
-	? F
+	? F extends $$Schema
+		? F
+		: never
 	: ImplicitInferSchema$_<S> extends { get Final(): infer F }
 		? F
 		: never
@@ -25,7 +27,9 @@ export type GetFinalSchema<S extends $$Schemable> = GetFinalSchema_<S>
 export type RelaxSchema_<S> = S extends $$Schema & {
 	get Final(): infer F
 }
-	? F
+	? F extends $$Schemable
+		? F
+		: never
 	: S extends $$InferableObject
 		? { [k in keyof S]: RelaxSchema_<S[k]> }
 		: S extends $$InferableTuple
@@ -33,6 +37,13 @@ export type RelaxSchema_<S> = S extends $$Schema & {
 			: S
 
 export type RelaxSchema<S extends $$Schemable> = RelaxSchema_<S>
+
+// type A = RelaxSchema<$$Schemable>
+
+// function ts<S extends $$Schemable>() {
+// 	type A = RelaxSchema_<S>
+// 	$Assert.is<A, $$Schemable>()
+// }
 
 //
 

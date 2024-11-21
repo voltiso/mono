@@ -32,7 +32,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnion<O>, IUnion
 {
-	readonly [SCHEMA_NAME] = 'Union' as const
+	override readonly [SCHEMA_NAME] = 'Union' as const
 
 	get getSchemas(): this[OPTIONS]['schemas'] {
 		return this[OPTIONS].schemas as never

@@ -38,7 +38,7 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements ISchemaInferrer
 {
-	readonly [SCHEMA_NAME] = 'SchemaInferrer' as const
+	override readonly [SCHEMA_NAME] = 'SchemaInferrer' as const
 
 	constructor(o: O) {
 		super(o)

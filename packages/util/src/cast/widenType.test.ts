@@ -11,7 +11,7 @@ describe('widenType', () => {
 	it('works #1', () => {
 		expect.assertions(0)
 
-		const s = 'asd' as const
+		const s = 'asd'
 		const r = widen(s).toType<'d'>()
 		$Assert<IsIdentical<typeof r, never>>()
 	})
@@ -19,7 +19,7 @@ describe('widenType', () => {
 	it('works #2', () => {
 		expect.assertions(0)
 
-		const s = 'asd' as const
+		const s = 'asd'
 		const r = widen(s).toType<number>()
 		$Assert<IsIdentical<typeof r, never>>()
 	})
@@ -27,7 +27,7 @@ describe('widenType', () => {
 	it('works #3', () => {
 		expect.assertions(0)
 
-		const s = 'asd' as const
+		const s = 'asd'
 		const r = widen(s).toType<string>()
 		$Assert<IsIdentical<typeof r, string>>()
 	})

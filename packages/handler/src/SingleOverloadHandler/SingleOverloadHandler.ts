@@ -50,7 +50,6 @@ export namespace SingleOverloadHandlerDetail {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			extends Handler.Options.Default,
 				Omit<Options, keyof Handler.Options.Default> {
-			//
 			IsAsync: true
 
 			this: NoThis
@@ -67,9 +66,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type GetSignature<O extends Options> = [
-		O['this'],
-	] extends [NoThis]
+	export type GetSignature<O extends Options> = [O['this']] extends [NoThis]
 		? (
 				...args: Assume<readonly unknown[], s.Input<O['parameters']>>
 			) => O['IsAsync'] extends true
@@ -88,19 +85,20 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type GetImplementation<O extends Options> =
-		[O['this']] extends [NoThis]
-			? (
-					...args: Assume<readonly unknown[], s.Output<O['parameters']>>
-				) => O['IsAsync'] extends true
-					? MaybePromise<s.Input<O['return']>>
-					: O['IsAsync'] extends false
-						? s.Input<O['return']>
-						: never
-			: (
-					this: s.Output<O['this']>,
-					...args: Assume<readonly unknown[], s.Output<O['parameters']>>
-				) => MaybePromise<s.Input<O['return']>>
+	export type GetImplementation<O extends Options> = [O['this']] extends [
+		NoThis,
+	]
+		? (
+				...args: Assume<readonly unknown[], s.Output<O['parameters']>>
+			) => O['IsAsync'] extends true
+				? MaybePromise<s.Input<O['return']>>
+				: O['IsAsync'] extends false
+					? s.Input<O['return']>
+					: never
+		: (
+				this: s.Output<O['this']>,
+				...args: Assume<readonly unknown[], s.Output<O['parameters']>>
+			) => MaybePromise<s.Input<O['return']>>
 
 	//
 
@@ -137,7 +135,10 @@ export namespace SingleOverloadHandlerDetail {
 	> = RebindAndUpdateSignature<
 		This,
 		{
-			parameters: [...This[OPTIONS]['parameters'], RelaxSchema_<Parameter>]
+			parameters: [
+				...This[OPTIONS]['parameters'],
+				RelaxSchema_<Parameter>,
+			]
 		}
 	>
 
@@ -208,11 +209,10 @@ declare module '@voltiso/util' {
 export class SingleOverloadHandlerImpl<
 	O extends Partial<SingleOverloadHandlerDetail.Options>,
 > extends HandlerImpl<O> {
-	//
-	declare readonly [GENERIC_ID]: typeof singleOverloadHandlerGenericId;
+	declare readonly [GENERIC_ID]: typeof singleOverloadHandlerGenericId
 
-	declare readonly [BASE_OPTIONS]: SingleOverloadHandlerDetail.Options;
-	declare readonly [DEFAULT_OPTIONS]: SingleOverloadHandlerDetail.Options.Default;
+	declare readonly [BASE_OPTIONS]: SingleOverloadHandlerDetail.Options
+	declare readonly [DEFAULT_OPTIONS]: SingleOverloadHandlerDetail.Options.Default
 
 	declare readonly [HIDDEN_OPTIONS]: SingleOverloadHandlerDetail.Options.Hidden<
 		this[OPTIONS]
@@ -247,7 +247,7 @@ export class SingleOverloadHandlerImpl<
 		) as unknown as s.Schema
 		const validParameters = parametersSchema.validate(args) as unknown[]
 
-		// eslint-disable-next-line @typescript-eslint/ban-types
+		// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unsafe-function-type
 		const result = (this.getImplementation as Function).call(
 			validThis as never,
 			...validParameters,

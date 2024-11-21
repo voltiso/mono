@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable tsdoc/syntax */
+
 import type {
 	$Override_,
 	Assume,
@@ -37,6 +39,7 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 	extends $$Function,
 		CustomSchema<O> {
 	//
+
 	readonly [SCHEMA_NAME]: 'Function'
 
 	readonly [BASE_OPTIONS]: FunctionOptions
@@ -79,7 +82,6 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 export interface CustomFunction$<O extends Partial<FunctionOptions>>
 	extends $$Function,
 		CustomSchema$<O> {
-	//
 	readonly [SCHEMA_NAME]: 'Function'
 
 	readonly [BASE_OPTIONS]: FunctionOptions
@@ -148,7 +150,7 @@ export declare namespace CustomFunction {
 
 	export type FixInferredType<This extends $$Schema, O> = This extends {
 		[OPTIONS]: {
-			// hasThis: unknown
+			/** HasThis: unknown */
 			this: unknown
 			parameters: unknown
 			return: unknown
@@ -171,10 +173,11 @@ export declare namespace CustomFunction {
 					Output: Callable_<{
 						this: Output_<This[OPTIONS]['this']>
 
+						/** $Output_<This[OPTIONS]['parameters']> */
 						parameters: Assume<
 							readonly unknown[],
 							$Output_<FixParameters<This[OPTIONS]['parameters']>>
-						> // $Output_<This[OPTIONS]['parameters']>
+						>
 
 						return: Output_<This[OPTIONS]['return']>
 					}>
@@ -184,10 +187,11 @@ export declare namespace CustomFunction {
 					Inner: Callable_<{
 						this: Output_<This[OPTIONS]['this']>
 
+						/** $Output_<This[OPTIONS]['parameters']> */
 						parameters: Assume<
 							readonly unknown[],
 							$Output_<FixParameters<This[OPTIONS]['parameters']>>
-						> // $Output_<This[OPTIONS]['parameters']>
+						>
 
 						return: Input_<This[OPTIONS]['return']>
 					}>
@@ -195,10 +199,11 @@ export declare namespace CustomFunction {
 					Outer: Callable_<{
 						this: Input_<This[OPTIONS]['this']>
 
+						/** $Output_<This[OPTIONS]['parameters']> */
 						parameters: Assume<
 							readonly unknown[],
 							$Input_<FixParameters<This[OPTIONS]['parameters']>>
-						> // $Output_<This[OPTIONS]['parameters']>
+						>
 
 						return: Output_<This[OPTIONS]['return']>
 					}>

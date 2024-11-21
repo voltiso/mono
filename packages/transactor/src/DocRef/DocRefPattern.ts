@@ -121,7 +121,7 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line consistent-return, @typescript-eslint/no-magic-numbers
+			// eslint-disable-next-line consistent-return, @typescript-eslint/no-magic-numbers, @typescript-eslint/consistent-return
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 
@@ -145,7 +145,7 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line consistent-return
+			// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 
@@ -171,7 +171,7 @@ export class DocRefPattern {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line consistent-return
+			// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
 			trigger(p) {
 				const { doc, before, after, ...rest } = p
 

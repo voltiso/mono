@@ -29,6 +29,12 @@
 	// "typeCoverage.strict": true,
 	// "typeCoverage.jsEnable": true,
 
+	"files.watcherExclude": {
+		"**/dist/**": true,
+		"**/.turbo/**": true,
+		"**/node_modules/**": true
+	},
+
 	"files.exclude": {
 		// "**/node_modules/": true,
 		// "**/dist/": true,
@@ -75,7 +81,7 @@
 	 */
 	"editor.linkedEditing": true,
 
-	"jest.enableCodeLens": false, // Fixes code lines jumps
+	// "jest.enableCodeLens": false, // Fixes code lines jumps
 
 	// "explorer.experimental.fileNesting.enabled": true,
 	// "explorer.experimental.fileNesting.expand": false,
@@ -273,6 +279,7 @@
 	"cSpell.words": [
 		"anymatch",
 		"appendor",
+		"arethetypeswrong",
 		"artur",
 		"atablash",
 		"attw",
@@ -373,6 +380,7 @@
 		"postcss",
 		"prebuild",
 		"predeploy",
+		"Pressable",
 		"prettierrc",
 		"readdirp",
 		"realpath",

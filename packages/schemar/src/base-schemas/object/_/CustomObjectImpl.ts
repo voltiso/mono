@@ -34,7 +34,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	extends v.lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomObject<O>
 {
-	readonly [SCHEMA_NAME] = 'Object' as const;
+	override readonly [SCHEMA_NAME] = 'Object' as const;
 
 	declare readonly [BASE_OPTIONS]: ObjectOptions;
 	declare readonly [DEFAULT_OPTIONS]: ObjectOptions.Default

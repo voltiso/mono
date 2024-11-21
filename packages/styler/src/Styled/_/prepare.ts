@@ -115,6 +115,7 @@ export function prepare<X>(
 			return x.replace(
 				/\$\{([^}]*)\}/gu,
 				// /\$__STYLER__\{([^}]*)\}/gu,
+
 				(_, match: string) =>
 					`${prepare(
 						readPath(params.theme, match.split('.') as never),

@@ -39,7 +39,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBigint<O>
 {
-	readonly [SCHEMA_NAME] = 'Bigint' as const
+	override readonly [SCHEMA_NAME] = 'Bigint' as const
 
 	get getMin(): this[OPTIONS]['min'] {
 		return this[OPTIONS].min as never

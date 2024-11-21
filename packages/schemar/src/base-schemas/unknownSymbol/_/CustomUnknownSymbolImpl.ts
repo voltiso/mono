@@ -27,7 +27,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownSymbol<O>
 {
-	readonly [SCHEMA_NAME] = 'UnknownSymbol' as const
+	override readonly [SCHEMA_NAME] = 'UnknownSymbol' as const
 
 	constructor(o: O) {
 		super(o)

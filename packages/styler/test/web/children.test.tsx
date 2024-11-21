@@ -23,6 +23,7 @@ describe('children', () => {
 	it('no implicit children for React.forwardRef', () => {
 		const Button = style('button')
 
+		// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 		const Inner = forwardRef<HTMLButtonElement, {}>((props, ref) => (
 			<Button ref={ref} {...props} />
 		))

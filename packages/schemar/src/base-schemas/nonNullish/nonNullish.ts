@@ -44,7 +44,6 @@ export const defaultNonNullishOptions: NonNullishOptions.Default =
 
 export interface CustomNonNullish<O extends Partial<NonNullishOptions>>
 	extends CustomSchema<O> {
-	//
 	readonly [SCHEMA_NAME]: 'NonNullish'
 
 	readonly [BASE_OPTIONS]: NonNullishOptions
@@ -53,7 +52,6 @@ export interface CustomNonNullish<O extends Partial<NonNullishOptions>>
 
 export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
 	extends CustomSchema$<O> {
-	//
 	readonly [SCHEMA_NAME]: 'NonNullish'
 
 	readonly [BASE_OPTIONS]: NonNullishOptions
@@ -67,10 +65,9 @@ export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
 export class CustomNonNullishImpl<
 	O extends Partial<NonNullishOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	//
-	readonly [SCHEMA_NAME] = 'NonNullish' as const;
+	override readonly [SCHEMA_NAME] = 'NonNullish' as const
 
-	declare readonly [BASE_OPTIONS]: NonNullishOptions;
+	declare readonly [BASE_OPTIONS]: NonNullishOptions
 	declare readonly [DEFAULT_OPTIONS]: NonNullishOptions.Default
 
 	override _getIssues(x: unknown): ValidationIssue[] {

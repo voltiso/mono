@@ -1,6 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable jsdoc/require-template */
+
 import type { $Override_, Throw } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 import type { NativeMethods } from 'react-native'
@@ -150,7 +153,11 @@ export type GetStyledImpl<$ extends StyledTypeInfo> = $ extends {
 		: never
 
 export type GetStyledImplN<
-	C extends StylableLike | NativeElement | null,
+	C extends
+		| StylableLike
+		| React.Component<any, any, any>
+		| NativeElement
+		| null,
 	P extends {},
 	CC extends {},
 > = GetStyledImpl<{ Component: C; Props: P; CustomCss: CC }>

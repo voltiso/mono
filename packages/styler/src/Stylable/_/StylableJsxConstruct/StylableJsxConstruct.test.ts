@@ -1,0 +1,27 @@
+// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import { $Assert } from '@voltiso/util'
+import type { View } from 'react-native'
+
+import type { StylableJsxConstruct } from './AutoStylableJsxConstruct'
+import type {
+	IStylableJsxConstruct,
+	StylableJsxConstructLike,
+} from './StylableJsxConstruct'
+
+describe('StylableJsxConstruct', () => {
+	it('type', () => {
+		expect.assertions(0)
+
+		$Assert.is<typeof View, StylableJsxConstructLike>()
+		$Assert.is<typeof View, StylableJsxConstruct>()
+		$Assert.is<typeof View, IStylableJsxConstruct>()
+
+		$Assert.is<typeof View, StylableJsxConstructLike>()
+		$Assert.is<typeof View, StylableJsxConstruct>()
+		$Assert.is<typeof View, IStylableJsxConstruct>()
+
+		// $Assert.is<NativeMethods, StylableLike>() // no!
+	})
+})

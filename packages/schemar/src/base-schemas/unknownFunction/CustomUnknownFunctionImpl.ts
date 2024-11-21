@@ -31,7 +31,7 @@ export class CustomUnknownFunctionImpl<
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownFunction<O>
 {
-	readonly [SCHEMA_NAME] = 'UnknownFunction' as const
+	override readonly [SCHEMA_NAME] = 'UnknownFunction' as const
 
 	constructor(o: O) {
 		super(o)

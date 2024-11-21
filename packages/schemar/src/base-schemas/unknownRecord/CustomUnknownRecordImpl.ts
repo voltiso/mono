@@ -33,7 +33,7 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownRecord<O>
 {
-	readonly [SCHEMA_NAME] = 'UnknownRecord'
+	override readonly [SCHEMA_NAME] = 'UnknownRecord'
 
 	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getIndexSignatures() {

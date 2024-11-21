@@ -1,12 +1,17 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
 import type {
 	ForwardRefRenderFunction,
 	PropsWithoutRef,
 	PropsWithRef,
 	RefAttributes,
 } from 'react'
+import type React from 'react'
+
+import type { NativeElement } from '~/StyledComponent'
 
 import type { ComponentLike, ReactNodeLike } from '../ElementType'
 import type { ForwardRefAndCssRenderFunction } from '../ForwardRefRenderFunction'
@@ -24,7 +29,9 @@ export type $ComponentProps<T> =
 				? P
 				: T extends keyof JSX.IntrinsicElements
 					? JSX.IntrinsicElements[T]
-					: {}
+					: T extends NativeElement
+						? React.RefAttributes<T>
+						: {}
 
 export type ComponentPropsWithRef_<T> = T extends new (
 	props: infer P,

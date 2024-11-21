@@ -7,10 +7,10 @@ export type Flatten<T> = [{ [k in keyof T]: T[k] }][0]
 
 /** @inline */ export type InlineFlatten<T> = [{ [k in keyof T]: T[k] }][0]
 
-const a = 0 as unknown as Test.A
+// const a = 0 as unknown as Test.A
 
 const obj = {
-	a: 0 as unknown as typeof a,
+	a: 0 as unknown as Test.A, // `typeof a` stopped working!
 	b: 0 as unknown as Test.B,
 }
 

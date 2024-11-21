@@ -33,7 +33,7 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomInstance<O>
 {
-	readonly [SCHEMA_NAME] = 'Instance' as const
+	override readonly [SCHEMA_NAME] = 'Instance' as const
 
 	// declare readonly [PARTIAL_OPTIONS]: O;
 

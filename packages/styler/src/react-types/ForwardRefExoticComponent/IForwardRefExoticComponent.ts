@@ -17,5 +17,6 @@ export interface INamedExoticComponent extends IExoticComponent {
 export interface IForwardRefExoticComponent<P extends Props = Props>
 	extends INamedExoticComponent {
 	defaultProps?: Partial<P> | undefined
+	// eslint-disable-next-line etc/no-deprecated
 	propTypes?: WeakValidationMap</* P*/ any> | undefined
 }

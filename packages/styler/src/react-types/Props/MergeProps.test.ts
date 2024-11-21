@@ -19,6 +19,7 @@ describe('MergeProps', () => {
 					// [k: string]: unknown
 					// [k: number]: never
 					// [k: symbol]: never
+
 					a: 1
 					b: 2
 				}

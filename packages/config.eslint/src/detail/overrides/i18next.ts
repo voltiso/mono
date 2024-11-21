@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
 import i18nextPlugin from 'eslint-plugin-i18next'
 
 export const i18nextConfig = defineEslintFlatConfig(
@@ -19,7 +18,7 @@ export const i18nextConfig = defineEslintFlatConfig(
 
 		rules: {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			...(i18nextPlugin.configs.recommended.rules as {}),
+			...(i18nextPlugin.configs['flat/recommended'].rules as {}),
 
 			'i18next/no-literal-string': 0,
 			// 'i18next/no-literal-string': 2,

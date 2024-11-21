@@ -139,7 +139,7 @@ export function compatTransform(
 				if (!options.supported.numericSeparators && ts.isNumericLiteral(node)) {
 					try {
 						const nodeText = node.getText(sourceFile)
-						if (nodeText && nodeText.includes('_')) {
+						if (nodeText?.includes('_')) {
 							const newNodeStr = nodeText.replace(/_/gu, '')
 
 							logCompatTransformNode(ctx, node, newNodeStr, {

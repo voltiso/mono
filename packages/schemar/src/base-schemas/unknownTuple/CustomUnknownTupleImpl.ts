@@ -34,7 +34,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownTuple<O>
 {
-	readonly [SCHEMA_NAME] = 'UnknownTuple' as const;
+	override readonly [SCHEMA_NAME] = 'UnknownTuple' as const;
 
 	declare readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default;
 	declare readonly [BASE_OPTIONS]: UnknownTupleOptions

@@ -34,7 +34,7 @@ export interface CustomUnknownObjectImpl<O> {
 export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	readonly [SCHEMA_NAME] = 'UnknownObject' as const
+	override readonly [SCHEMA_NAME] = 'UnknownObject' as const
 
 	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
 	get getIndexSignatures() {

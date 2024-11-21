@@ -30,8 +30,12 @@ export function canBeInlined(
 			.map(symbol => symbol.name),
 	)
 
+	// console.log('symbols in scope', typeSymbols)
+
 	const newNode = simplifyNode(ctx, node)
 	if (!newNode) return false
+
+	// console.log('simplified node', getNodeText(ctx, node), '=>', newNode)
 
 	if (hasNodeOfType(newNode, ts.SyntaxKind.MappedType)) {
 		// console.warn('not inlining mapped types')
@@ -134,6 +138,13 @@ export function canBeInlined(
 
 		if (ctx.options.onInlineError === 'fail') throw new Error(message)
 	}
+
+	// console.log({
+	// 	hasSymbolsOutOfScope,
+	// 	containsImportAbsolutePath,
+	// 	containsTypeQueryNodes,
+	// 	warn: options?.warn,
+	// })
 
 	const canBeInlined =
 		!hasSymbolsOutOfScope &&

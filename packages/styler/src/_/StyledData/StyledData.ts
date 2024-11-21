@@ -12,7 +12,8 @@ export interface StyledData<
 > {
 	component: $['Component']
 
-	stack: IStack // not Stack<P> - outer props `P` are not necessarily supertype
+	/** Not Stack<P> - outer props `P` are not necessarily supertype */
+	stack: IStack
 
 	defaults: Partial<$['Props']>
 	domDefaults: Partial<$['Props']>

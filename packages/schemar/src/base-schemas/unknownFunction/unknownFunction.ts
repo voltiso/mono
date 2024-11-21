@@ -33,7 +33,7 @@ export interface UnknownFunction$ extends CustomUnknownFunction$<{}> {
 	): CustomFunction.FixInferredType<
 		CustomFunction<{
 			parameters: RelaxSchema_<Parameters>
-			return: RelaxSchema_<Return>
+			return: RelaxSchema_<Return> & $$Schemable
 		}>,
 		{
 			parameters: RelaxSchema_<Parameters>
@@ -52,9 +52,9 @@ export interface UnknownFunction$ extends CustomUnknownFunction$<{}> {
 		returnSchema: Return,
 	): CustomFunction.FixInferredType<
 		CustomFunction<{
-			this: RelaxSchema_<This>
+			this: RelaxSchema_<This> & $$Schemable
 			parameters: RelaxSchema_<Parameters>
-			return: RelaxSchema_<Return>
+			return: RelaxSchema_<Return> & $$Schemable
 		}>,
 		{
 			this: RelaxSchema_<This>

@@ -33,7 +33,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomArray<O>
 {
-	readonly [SCHEMA_NAME] = 'Array' as const;
+	override readonly [SCHEMA_NAME] = 'Array' as const;
 
 	declare readonly [BASE_OPTIONS]: ArrayOptions;
 	declare readonly [DEFAULT_OPTIONS]: ArrayOptions.Default

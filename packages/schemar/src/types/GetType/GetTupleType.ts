@@ -41,9 +41,9 @@ export type TupleType_<
 		? readonly unknown[]
 		: unknown[]
 	: T extends unknown[]
-		? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: false }>
+		? _TupleTypeImpl<T, $Override_<PartialOptions, { readonlyTuple: false }>>
 		: T extends readonly unknown[]
-			? _TupleTypeImpl<T, PartialOptions & { readonlyTuple: true }>
+			? _TupleTypeImpl<T, $Override_<PartialOptions, { readonlyTuple: true }>>
 			: never
 
 export type $TupleType_<

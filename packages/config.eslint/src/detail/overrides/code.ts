@@ -151,6 +151,8 @@ export const codeOverride = defineEslintFlatConfig({
 		'@typescript-eslint/explicit-module-boundary-types': 0,
 		'@typescript-eslint/explicit-function-return-type': 0,
 		'@typescript-eslint/max-params': 1,
+		'@typescript-eslint/no-empty-object-type': 0,
+		'@typescript-eslint/no-unnecessary-type-parameters': 0,
 
 		'@typescript-eslint/strict-boolean-expressions': 0,
 

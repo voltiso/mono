@@ -38,7 +38,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBoolean<O>
 {
-	readonly [SCHEMA_NAME] = 'Boolean' as const
+	override readonly [SCHEMA_NAME] = 'Boolean' as const
 
 	constructor(o: O) {
 		super(o)

@@ -80,7 +80,6 @@ describe('defineProps', () => {
 		//
 		;() => style('button').defineProps<MyProps>({})
 
-		//
 		const a = () => style('button').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
 		$Assert.is<A, IStyledComponent>()
@@ -96,7 +95,6 @@ describe('defineProps', () => {
 		//
 		;() => style('div').defineProps<MyProps>({})
 
-		//
 		const a = () => style('div').defineProps<MyProps>()
 		type A = ReturnType<typeof a>
 		$Assert.is<A, IStyledComponent>()

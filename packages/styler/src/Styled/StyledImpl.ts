@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
 /* eslint-disable jsdoc/informative-docs */
 /* eslint-disable @typescript-eslint/unified-signatures */
 
@@ -12,15 +14,13 @@ import type {
 	UndefinedFromOptional,
 } from '@voltiso/util'
 import { tryAt } from '@voltiso/util'
-import type { ComponentType, ForwardedRef, ReactNode } from 'react'
+import type { ComponentType } from 'react'
 
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
 import type { IStyledDataMod, StyledData } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
 import type {
-	$ComponentProps,
-	FastMergeProps_,
 	ForwardRefAndCssRenderFunction,
 	ForwardRefRenderFunction,
 	Props,
@@ -47,7 +47,7 @@ import type { IStyled } from './IStyled'
 import { isStyled } from './IStyled'
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
-	declare readonly [$]: G<$>;
+	declare readonly [$]: G<$>
 	readonly [DATA]: StyledData<G<$>, C<$>>
 
 	get component(): G<$>['Component'] {
@@ -110,73 +110,62 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 
 	//
 
-	/** Forward ref and css */
-	forwardRef<T extends IntrinsicElement | ComponentType<any>>(
-		renderFunction: ForwardRefAndCssRenderFunction<
-			T,
-			C<$>,
-			Omit<$ComponentProps<T> & $['Props'], 'ref' | 'css'>
-		>,
-	): ForcePatch<this, { Component: T }>
-
-	/** Forward ref and css, add props P */
-	forwardRef<T extends IntrinsicElement | ComponentType<any>, P extends Props>(
-		renderFunction: ForwardRefAndCssRenderFunction<
-			T,
-			C<$>,
-			FastMergeProps_<$ComponentProps<T> & $['Props'], P>
-		>,
-	): ForcePatch<this, { Component: T; Props: P }>
-
 	/** Forward ref (but not css), add all props of T */
-	forwardRef<T extends IntrinsicElement | ComponentType<any>>(
-		renderFunction: ForwardRefRenderFunction<
-			T,
-			$ComponentProps<T> & $['Props']
-		>,
+	forwardRef<
+		T extends
+			| IntrinsicElement
+			| ComponentType<any>
+			| React.Component<any, any, any> // catches react-native native elements
+			| NativeElement, // e.g. HTMLButtonElement
+	>(
+		renderFunction: ForwardRefRenderFunction<T, $['Props']>,
 	): ForcePatch<this, { Component: T }>
 
 	/** Forward ref (but not css), add all props of T, add props P */
-	forwardRef<T extends IntrinsicElement | ComponentType<any>, P extends Props>(
+	forwardRef<
+		T extends
+			| IntrinsicElement
+			| ComponentType<any>
+			| React.Component<any, any, any>
+			| NativeElement,
+		P extends Props,
+	>(
 		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
 	): ForcePatch<this, { Component: T; Props: P }>
 
-	/** Forward ref (but not css) */
-	forwardRef<T extends NativeElement, P extends Props>(
-		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
-	): ForcePatch<
-		this,
-		{
-			Component: T
-			Props: P
-			// Props: FastMergeProps_<
-			// 	{
-			// 		ref?: ForwardedRef<T> | undefined
-			// 		children?: ReactNode | undefined
-			// 	},
-			// 	P
-			// >
-		}
-	>
-
 	/** Forward ref and css */
-	forwardRef<T extends NativeElement, P extends Props = {}>(
-		renderFunction: ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
-	): ForcePatch<
-		this,
-		{
-			Component: T
-			Props: FastMergeProps_<
-				{
-					ref?: ForwardedRef<T> | undefined
-					children?: ReactNode | undefined
-				},
-				P
-			>
-		}
-	>
+	forwardRef<
+		T extends
+			| IntrinsicElement
+			| ComponentType<any>
+			| React.Component<any, any, any>
+			| NativeElement,
+	>(
+		renderFunction: ForwardRefAndCssRenderFunction<T, C<$>, $['Props']>,
+	): ForcePatch<this, { Component: T }>
 
-	forwardRef<T extends NativeElement, P extends Props>(
+	/** Forward ref and css, add props P */
+	forwardRef<
+		T extends
+			| IntrinsicElement
+			| ComponentType<any>
+			| React.Component<any, any, any>
+			| NativeElement,
+		P extends Props,
+	>(
+		renderFunction: ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
+	): ForcePatch<this, { Component: T; Props: P }>
+
+	//
+
+	forwardRef<
+		T extends
+			| ComponentType<any>
+			| IntrinsicElement
+			| React.Component<any, any, any>
+			| NativeElement,
+		P extends Props,
+	>(
 		renderFunction:
 			| ForwardRefRenderFunction<T, P & $['Props']>
 			| ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
@@ -1002,7 +991,8 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		? ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 		: Throw<
 				'defineProps requires providing default values for optional props' & {
-					missingDefaults: keyof PickOptional<DefinedProps> & string // need to filter out `undefined` - TS bug??
+					/** Need to filter out `undefined` - TS bug?? */
+					missingDefaults: keyof PickOptional<DefinedProps> & string
 				}
 			>
 

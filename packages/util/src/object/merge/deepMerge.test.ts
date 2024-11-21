@@ -8,6 +8,24 @@ import type { IsIdentical } from '~/type'
 import type { DeepMerge, DeepMerge2 } from './deepMerge/deepMerge'
 import { deepMerge } from './deepMerge/deepMerge'
 
+// type A = { a: 1 }
+// type B = { a: 2 }
+
+// type IsOptional<
+// 	Obj,
+// 	K extends keyof Obj,
+// 	True = true,
+// 	False = false,
+// > = Obj extends { [k in K]-?: Obj[k] } ? False : True
+
+// type Test<A, B> = {
+// 	[k in keyof A | keyof B as
+// 		| (k extends keyof A ? IsOptional<A, k, never, k> : never)
+// 		| (k extends keyof B ? IsOptional<B, k, never, k> : never)]: 123
+// }
+
+// type X = Test<A, B>
+
 describe('deepMerge', () => {
 	it('deepMerge2', () => {
 		expect.assertions(0)
@@ -20,6 +38,9 @@ describe('deepMerge', () => {
 		$Assert<IsIdentical<DeepMerge2<{ a: 1 }, number>, number>>()
 		$Assert<IsIdentical<DeepMerge2<{ a: 1 }, { b: 2 }>, { a: 1; b: 2 }>>()
 		$Assert<IsIdentical<DeepMerge2<{ a: 1; b: 3 }, { b: 2 }>, { a: 1; b: 2 }>>()
+
+		type XX = DeepMerge2<{ a: 1 }, { a: 2 }>
+		$Assert<IsIdentical<XX, { a: 2 }>>()
 
 		type B = DeepMerge2<{ a: 1; b: 3 }, { b?: 2 }>
 		$Assert<IsIdentical<B, { a: 1; b: 2 | 3 }>>()

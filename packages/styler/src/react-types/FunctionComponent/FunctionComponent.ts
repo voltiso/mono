@@ -11,5 +11,6 @@ export interface FunctionComponent<P extends Props = {}> {
 	// propTypes?: WeakValidationMap<P> | undefined
 	// contextTypes?: ValidationMap<any> | undefined
 	// defaultProps?: Partial<P> | undefined
+
 	displayName?: string | undefined
 }

@@ -27,7 +27,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomLiteral<O>
 {
-	readonly [SCHEMA_NAME] = 'Literal' as const
+	override readonly [SCHEMA_NAME] = 'Literal' as const
 
 	get getValues(): Set<never> {
 		return this[OPTIONS].values as never

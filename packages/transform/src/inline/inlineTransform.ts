@@ -40,8 +40,10 @@ export function inlineTransform(
 				options: pluginOptions || {},
 			}
 
+			// console.log('FILE', sourceFile.fileName)
+
 			function visitor(originalNode: ts.Node): ts.Node {
-				// console.log('visit', getNodeText(originalNode))
+				// console.log('visit', getNodeText(ctx, originalNode))
 
 				let node = originalNode
 
@@ -56,6 +58,7 @@ export function inlineTransform(
 					ts.isIndexedAccessTypeNode(node) ||
 					ts.isTypeQueryNode(node)
 				) {
+					// console.log('--------- BRANCH B')
 					const symbolNode = ts.isTypeReferenceNode(node)
 						? node.typeName
 						: ts.isIndexedAccessTypeNode(node)
@@ -64,14 +67,22 @@ export function inlineTransform(
 								? node.exprName
 								: node
 
+					// console.log('symbolNode', symbolNode)
+
 					const symbol = typeChecker.getSymbolAtLocation(symbolNode)
+
+					// console.log('symbol', symbol)
 
 					if (symbol) {
 						// console.log('...\n\n')
 						const tags = getJsDocTagNames(ctx, symbol)
 						const hasInlineTag = tags.includes('inline')
 
+						// console.log('============ TAGS ==', tags)
+
 						// console.log('hasInlineTag?', symbol, hasInlineTag, '\n\n\n')
+
+						// console.log('canBeInlined?', canBeInlined(ctx, node))
 
 						if (hasInlineTag && canBeInlined(ctx, node)) {
 							logInlinedNode(ctx, originalNode, { type: 'alias' })

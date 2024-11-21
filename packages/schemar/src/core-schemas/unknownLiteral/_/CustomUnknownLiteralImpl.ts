@@ -25,7 +25,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownLiteral<O>
 {
-	readonly [SCHEMA_NAME] = 'UnknownLiteral' as const
+	override readonly [SCHEMA_NAME] = 'UnknownLiteral' as const
 
 	constructor(o: O) {
 		super(o)

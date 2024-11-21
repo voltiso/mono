@@ -11,9 +11,8 @@ describe('narrowType', () => {
 	it('works #1', () => {
 		expect.assertions(0)
 
-		const s = 'asd' as const
 		// @ts-expect-error should not work
-		narrow(s).toType<'d'>()
+		narrow('asd' as const).toType<'d'>()
 	})
 
 	it('works #2', () => {
