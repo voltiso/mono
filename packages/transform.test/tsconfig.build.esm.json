@@ -44,6 +44,7 @@
 				"transform": "@voltiso/transform/compat",
 				"afterDeclarationsHack": true,
 				"afterDeclarations": true
+				// "after": true
 			},
 
 			// Transform paths in output .js files

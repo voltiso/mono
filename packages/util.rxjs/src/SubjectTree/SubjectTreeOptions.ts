@@ -76,11 +76,8 @@ export interface _SubjectTreeChildOptions {
 }
 
 /** @internal */
-// eslint-disable-next-line etc/underscore-internal
 export function isSubjectTreeChildOptions(
 	x: unknown,
-	// eslint-disable-next-line etc/no-internal
 ): x is _SubjectTreeChildOptions {
-	// eslint-disable-next-line etc/no-internal
 	return Boolean((x as _SubjectTreeChildOptions | null)?.parent)
 }

@@ -19,9 +19,7 @@ import type { CssProperties } from './CssProperties'
  */
 export interface CssReactNative<CustomCss extends object>
 	extends CssOverridesReactNative<CustomCss>,
-		// eslint-disable-next-line etc/no-internal
 		_Css_WithExtensionReactNative<CustomCss>,
-		// eslint-disable-next-line etc/no-internal
 		_Css_OriginalReactNative<CustomCss> {}
 
 export interface CssPropertiesReactNative

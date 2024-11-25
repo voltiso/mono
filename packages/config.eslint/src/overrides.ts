@@ -17,15 +17,12 @@ import { etcConfig } from './detail/overrides/etc.js'
 import { extOverride } from './detail/overrides/ext.js'
 import { fileExtensionInImportTsConfig } from './detail/overrides/fileExtensionInImportTs.js'
 import { formatJs } from './detail/overrides/formatJs.js'
-import { formatMessage } from './detail/overrides/formatMessage.js'
-import { githubOverride } from './detail/overrides/github.js'
 import { i18nConfig } from './detail/overrides/i18n.js'
 import { i18nextConfig } from './detail/overrides/i18next.js'
 import { i18nText } from './detail/overrides/i18nText.js'
 import { importConfig } from './detail/overrides/import.js'
 import { jsdocConfig } from './detail/overrides/jsdoc.js'
 import { jsoncConfig, jsonConfig } from './detail/overrides/json.js'
-import { jsx } from './detail/overrides/jsx.js'
 import { jsxAllyConfig } from './detail/overrides/jsxAlly.js'
 import {
 	additionalMarkdownOverrides,
@@ -44,9 +41,8 @@ import { noUseExtendNative } from './detail/overrides/noUseExtendsNative.js'
 import { prettierConfig } from './detail/overrides/prettier.js'
 import { promise } from './detail/overrides/promise.js'
 import { putoutOverride } from './detail/overrides/putout.js'
-import { react } from './detail/overrides/react.js'
+import { reactConfig } from './detail/overrides/react.js'
 import { reactHooksConfig } from './detail/overrides/reactHooks.js'
-import { reactNative } from './detail/overrides/reactNative.js'
 import { reactNativeGlobals } from './detail/overrides/reactNativeGlobals.js'
 import { regexConfig } from './detail/overrides/regex.js'
 import { regexpConfig } from './detail/overrides/regexp.js'
@@ -82,10 +78,8 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	// sortKeysFix,
 
 	// Configs / plugins
-	...githubOverride,
-	...react,
+	...reactConfig,
 	...reactHooksConfig,
-	...reactNative,
 	...reactNativeGlobals,
 
 	// Plugins
@@ -125,11 +119,9 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	...next,
 	...simpleImportSort,
 	// storybook,
-	...jsx,
 	...editorconfig,
 	...i18nConfig,
 	...i18nextConfig,
-	...formatMessage,
 	...formatJs,
 	...i18nText,
 	...es,

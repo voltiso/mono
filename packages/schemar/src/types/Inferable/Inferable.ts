@@ -24,6 +24,7 @@ export type InferableLiteral =
 
 export type InferableMutableTuple = Schemable[]
 export type InferableReadonlyTuple = readonly Schemable[]
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type InferableTuple =
 	InferableReadonlyTuple /* | InferableMutableTuple */
 
@@ -82,6 +83,7 @@ export type $$InferableReadonlyTuple =
 
 //
 
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type $$InferableTuple =
 	// | $$InferableMutableTuple
 	$$InferableReadonlyTuple

@@ -13,7 +13,7 @@ import type { CustomNumber } from '../CustomNumber'
 import { isNumberSchema } from '../isNumber'
 import type { NumberOptions } from '../NumberOptions'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNumberImpl<O> {
 	readonly [BASE_OPTIONS]: NumberOptions
 	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
@@ -27,6 +27,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomNumber<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Number' as const
 
 	get isInteger(): this[OPTIONS]['isInteger'] {
@@ -99,7 +100,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'number'
 	}

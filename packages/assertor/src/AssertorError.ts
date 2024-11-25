@@ -58,6 +58,7 @@ function getTimeStr(date: Date) {
 //
 
 export class AssertorError extends Error {
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	constructor(options: AssertorErrorOptions) {
 		const {
 			name,

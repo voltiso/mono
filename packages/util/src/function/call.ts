@@ -20,6 +20,6 @@ export function call<ThisArg, Args extends unknown[], R>(
 	func: (this: ThisArg, ...args: Args) => R,
 	thisArg: ThisArg,
 	...args: Args
-) {
+): R {
 	return func.call(thisArg, ...args)
 }

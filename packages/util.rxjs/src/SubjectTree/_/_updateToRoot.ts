@@ -7,7 +7,7 @@ import * as s from '@voltiso/schemar'
 import type { _CustomSubjectTree } from '~'
 
 /** @internal */
-export function _updateToRoot(node: _CustomSubjectTree<any>) {
+export function _updateToRoot(node: _CustomSubjectTree<any>): void {
 	while (node._parent) {
 		// console.log('set exists', node._subject$.value)
 		node._exists = true

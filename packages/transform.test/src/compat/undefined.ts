@@ -5,14 +5,12 @@ const a = undefined
 
 const b = a
 
-export function shadowSameType() {
-	// eslint-disable-next-line no-shadow-restricted-names
+export function shadowSameType(): undefined {
 	const undefined = b
 	return undefined
 }
 
-export function shadowDifferentType() {
-	// eslint-disable-next-line no-shadow-restricted-names
+export function shadowDifferentType(): number {
 	const undefined = 123
 	return undefined
 }

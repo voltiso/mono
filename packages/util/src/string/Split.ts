@@ -14,7 +14,6 @@ export interface DefaultSplitOptions {
 export type Split<
 	str extends string,
 	partialOptions extends Partial<SplitOptions> = {},
-	// eslint-disable-next-line etc/no-internal
 > = Split._Rec<str, Override<DefaultSplitOptions, partialOptions>, readonly []>
 
 export namespace Split {
@@ -24,8 +23,7 @@ export namespace Split {
 		options extends SplitOptions,
 		accumulator extends readonly unknown[],
 	> = T extends `${infer A}${options['separator']}${infer B}`
-		? // eslint-disable-next-line etc/no-internal
-			_Rec<B, options, readonly [...accumulator, A]>
+		? _Rec<B, options, readonly [...accumulator, A]>
 		: T extends ''
 			? accumulator
 			: T extends `${infer S}`

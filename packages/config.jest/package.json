@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.jest",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -53,11 +53,11 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/jest-dom": "^6.6.3",
     "@voltiso/config.jest.lib": "workspace:^",
-    "esbuild": "=0.17.19",
-    "esbuild-register": "^3.5.0",
-    "flow-remove-types": "^2.225.0"
+    "esbuild": "^0.24.0",
+    "esbuild-register": "^3.6.0",
+    "flow-remove-types": "^2.254.1"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^"

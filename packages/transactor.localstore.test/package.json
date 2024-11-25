@@ -7,7 +7,7 @@
   "__________SCRIPTS": "__________",
   "scripts": {
     "__________TEST": "__________",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
@@ -19,6 +19,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/random-seed": "^0.3.5",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",

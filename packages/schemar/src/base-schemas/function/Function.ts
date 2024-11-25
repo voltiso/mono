@@ -17,6 +17,7 @@ import type {
 
 import { FunctionImpl } from './FunctionImpl'
 
+// eslint-disable-next-line sonarjs/no-built-in-override
 export type Function<F extends (...args: any) => any> = F extends (
 	this: infer This,
 	...rest: any[]
@@ -43,7 +44,6 @@ export type FunctionConstructor = new <
 >(
 	parametersSchema: Args,
 	returnSchema: R,
-	// eslint-disable-next-line @typescript-eslint/ban-types
 ) => Function<
 	Callable<{
 		parameters: Assume<readonly unknown[], $Type<Args>>
@@ -51,6 +51,7 @@ export type FunctionConstructor = new <
 	}>
 >
 
+// eslint-disable-next-line sonarjs/no-globals-shadowing, sonarjs/no-built-in-override
 export const Function = lazyConstructor(
 	() => FunctionImpl,
 ) as unknown as FunctionConstructor

@@ -1,11 +1,11 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './GetFinalSchema'
-export * from './GetSchemaByName'
-export * from './GetType'
-export * from './Inferable'
-export * from './InferSchema'
+export type * from './GetFinalSchema'
+export type * from './GetSchemaByName'
+export type * from './GetType'
+export type * from './Inferable'
+export type * from './InferSchema'
 export * from './Schema'
 export * from './Schemable'
-export * from './SchemarOp'
+export type * from './SchemarOp'

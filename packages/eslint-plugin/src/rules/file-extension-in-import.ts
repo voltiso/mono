@@ -5,17 +5,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable unicorn/no-array-for-each */
 /* eslint-disable es-x/no-array-prototype-foreach */
-/* eslint-disable github/array-foreach */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable etc/no-deprecated */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable n/no-sync */
 /* eslint-disable security/detect-non-literal-fs-filename */
-/* eslint-disable tsdoc/syntax */
 /* eslint-disable security/detect-unsafe-regex */
 
 import fs from 'node:fs'
-import path from 'node:path'
+import * as path from 'node:path'
 
 import type { RuleContext } from '@typescript-eslint/utils/dist/ts-eslint'
 import type { Node } from 'estree'
@@ -25,9 +22,11 @@ import type ImportTarget from '~/util.plugin-n/import-target'
 import mappingExtensions from '../util.plugin-n/mapping-extensions.js'
 import visitImport from '../util.plugin-n/visit-import.js'
 
+// eslint-disable-next-line sonarjs/regular-expr
 const packageNamePattern = /^(?:@[^/\\]+[/\\])?[^._~][^/\\]+$/u
 // const packageNamePattern = /^(?:@[^/\\]+[/\\])?[^/\\]+$/u
 const corePackageOverridePattern =
+	// eslint-disable-next-line sonarjs/regex-complexity
 	/^(?:assert|async_hooks|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|http2|https|inspector|module|net|os|path|perf_hooks|process|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|trace_events|tty|url|util|v8|vm|worker_threads|zlib)[/\\]$/u
 
 /**
@@ -48,10 +47,10 @@ function getExistingExtensions(filePath: string, extMappingList: string[]) {
 		// console.log({isDirectory})
 
 		if (isDirectory) {
-			// eslint-disable-next-line no-plusplus
 			for (let i = 0, l = extMappingList.length; i < l; i++) {
 				const ext = extMappingList[i]
 
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (fs.existsSync(path.join(filePath, `/index${ext}`))) {
 					return ['/index.js']
 				}
@@ -71,7 +70,9 @@ function getExistingExtensions(filePath: string, extMappingList: string[]) {
 }
 
 export const fileExtensionInImport = {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	create(context: RuleContext<string, unknown[]>) {
+		// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
 		if (context.getFilename().startsWith('<')) {
 			return {}
 		}
@@ -82,6 +83,7 @@ export const fileExtensionInImport = {
 			overrideStyle.extMapping || mappingExtensions.mappingDefault
 		const extMappingList = Object.keys(extMapping)
 
+		// eslint-disable-next-line sonarjs/cyclomatic-complexity
 		function verify({
 			filePath,
 			name,
@@ -113,7 +115,8 @@ export const fileExtensionInImport = {
 			// eslint-disable-next-line no-nested-ternary
 			const resolvedExt = isDirectory
 				? null
-				: fs.existsSync(filePath)
+				: // eslint-disable-next-line sonarjs/no-nested-conditional
+					fs.existsSync(filePath)
 					? path.extname(filePath)
 					: null
 			const existingExts = getExistingExtensions(filePath, extMappingList)
@@ -122,7 +125,7 @@ export const fileExtensionInImport = {
 				return
 			}
 			const extWithIndex = mappingExtensions(
-				resolvedExt || existingExts[0]!,
+				resolvedExt ?? existingExts[0]!,
 				extMapping,
 			)
 

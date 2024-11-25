@@ -3,6 +3,6 @@
 
 export * from './add'
 export * from './IsInteger'
-export * from './IsNegative'
+export type * from './IsNegative'
 export * from './isNumber'
-export * from './IsNumberLiteral'
+export type * from './IsNumberLiteral'

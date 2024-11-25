@@ -31,9 +31,10 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomString<O>
 {
-	override readonly [SCHEMA_NAME] = 'String' as const;
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	override readonly [SCHEMA_NAME] = 'String' as const
 
-	declare readonly [BASE_OPTIONS]: StringOptions;
+	declare readonly [BASE_OPTIONS]: StringOptions
 	declare readonly [DEFAULT_OPTIONS]: StringOptions.Default
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
@@ -56,7 +57,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return newThis
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends string>(...args: readonly L[] | [Set<L>]): Literal<L> {
 		return literal(...(args as never[])) as never
 	}
@@ -108,7 +109,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 
 							expected: {
 								description:
-									re.expectedDescription ||
+									re.expectedDescription ??
 									`pass RegExp(${re.regExp.toString()})`,
 							},
 
@@ -130,7 +131,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'string'
 	}

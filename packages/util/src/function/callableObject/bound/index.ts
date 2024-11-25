@@ -3,4 +3,4 @@
 
 export * from './_'
 export * from './BoundCallable'
-export * from './BoundCallableOptions'
+export type * from './BoundCallableOptions'

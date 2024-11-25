@@ -10,7 +10,7 @@ export function _validate(options: {
 	dependencies?: SubjectTreeOptions.Dependencies | undefined
 	schemable?: $$Schemable
 	value: unknown
-}) {
+}): unknown {
 	if (options.dependencies && options.schemable !== undefined) {
 		return options.dependencies
 			.inferSchema(options.schemable)

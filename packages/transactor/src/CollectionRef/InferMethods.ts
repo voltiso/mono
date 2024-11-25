@@ -10,5 +10,5 @@ export type InferMethods<Inst> = Inst extends unknown
 			) => Promise<unknown>
 				? k
 				: never]: Inst[k]
-	  }
+		}
 	: never

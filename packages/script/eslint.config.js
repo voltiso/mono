@@ -15,6 +15,8 @@ const config = [
 		// },
 		rules: {
 			'node-dependencies/absolute-version': 'off',
+			'n/hashbang': 'off',
+			'n/shebang': 'off',
 		},
 	},
 ]

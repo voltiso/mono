@@ -1,8 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './IObservable'
-export * from './IObserver'
+export type * from './IObservable'
+export type * from './IObserver'
 export * from './isObservableLike'
-export * from './ISubject'
+export type * from './ISubject'
 export * from './SubjectTree'

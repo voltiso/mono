@@ -3,8 +3,9 @@
 
 import { useMemo } from 'react'
 
+import type { PortalContextAndComponents } from './createPortalContextAndComponents'
 import { createPortalContextAndComponents } from './createPortalContextAndComponents'
 
-export function usePortal() {
+export function usePortal(): PortalContextAndComponents {
 	return useMemo(() => createPortalContextAndComponents(), [])
 }

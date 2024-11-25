@@ -19,7 +19,7 @@ import type { IntersectionOptions } from '../IntersectionOptions'
 $fastAssert(SCHEMA_NAME)
 $fastAssert(EXTENDS)
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomIntersectionImpl<O> {
 	readonly [BASE_OPTIONS]: IntersectionOptions
 	readonly [DEFAULT_OPTIONS]: IntersectionOptions.Default
@@ -30,13 +30,14 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomIntersection<O>, IIntersection
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Intersection' as const
 
 	get getSchemas(): this[OPTIONS]['schemas'] {
 		return this[OPTIONS].schemas as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.') // TODO
 	}

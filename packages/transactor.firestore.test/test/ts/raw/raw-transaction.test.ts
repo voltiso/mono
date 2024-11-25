@@ -3,6 +3,7 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
+import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
@@ -54,7 +55,7 @@ describe('raw-transaction', () => {
 		await db.runTransaction(async db => {
 			const adam = await db('userG/adam').set({ age: 123, x: 2 })
 			adam.data['age'] = 234
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+
 			delete adam.data['x']
 
 			expect(adam.data['age']).toBe(234)

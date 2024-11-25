@@ -1,6 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './Bivariant'
-export * from './BivariantCallable'
-export * from './BivariantNewable'
+export type * from './Bivariant'
+export type * from './BivariantCallable'
+export type * from './BivariantNewable'

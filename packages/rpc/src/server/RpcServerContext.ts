@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-
 import { Context } from '@voltiso/context'
 
 import type { RpcRequest } from './RpcRequest'
@@ -12,6 +10,7 @@ export class RpcServerContext<
 	TRequest extends RpcRequest = RpcRequest,
 	TResponse extends RpcResponse = RpcResponse,
 > {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	_context = new Context<{ request: TRequest; response: TResponse }>()
 
 	get request(): TRequest {

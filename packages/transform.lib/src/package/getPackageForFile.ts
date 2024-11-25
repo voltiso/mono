@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { strict as assert } from 'node:assert'
-import { dirname, resolve } from 'node:path'
+import * as path from 'node:path'
 
 import { _getPackageForDir } from './getPackageForDir.js'
 
@@ -16,15 +16,15 @@ export interface _PackagePath {
 }
 
 /** @internal */
-// eslint-disable-next-line etc/no-internal
+
 export function _getPackageForFile(file: string): _PackagePath {
 	// eslint-disable-next-line no-param-reassign
-	file = resolve(file)
+	file = path.resolve(file)
 
-	const dirPath = dirname(file)
-	// eslint-disable-next-line etc/no-internal
+	const dirPath = path.dirname(file)
+
 	const { packageJson, packageJsonPath } = _getPackageForDir(dirPath)
-	const packageJsonDirPath = dirname(packageJsonPath)
+	const packageJsonDirPath = path.dirname(packageJsonPath)
 
 	assert(file.startsWith(packageJsonDirPath))
 

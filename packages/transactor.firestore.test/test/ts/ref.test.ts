@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { DocIdString } from '@voltiso/transactor'
 import { Doc, sStrongRef, sWeakRef, Transactor } from '@voltiso/transactor'

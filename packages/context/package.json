@@ -50,7 +50,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^",
-    "uuid": "^9.0.1"
+    "uuid": "^11.0.3"
   },
   "peerDependencies": {
     "zone.js": "^0.12.0"
@@ -61,7 +61,8 @@
     }
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.7",
+    "@jest/globals": "^29.7.0",
+    "@types/uuid": "^10.0.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
@@ -69,9 +70,12 @@
     "@voltiso/transform": "workspace:^",
     "typescript": "^5.6.3",
     "typescript-transform-paths": "^3.5.2",
-    "zone.js": "^0.14.2"
+    "zone.js": "^0.15.0"
   },
   "__________MISC": "__________",
+  "engines": {
+    "node": ">=16.4.0"
+  },
   "browser": {
     "async_hooks": false
   }

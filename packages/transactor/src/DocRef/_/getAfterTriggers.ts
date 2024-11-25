@@ -26,7 +26,6 @@ function forEachStrongRef(o: any, f: (r: WeakDocRef) => void) {
 export function getAfterTriggers(
 	docRef: $$DocRef,
 ): DocRefTriggerEntry<AfterTrigger>[] {
-	// eslint-disable-next-line etc/no-internal
 	$AssumeType<_CustomDocRef>(docRef)
 	if (docRef._afterTriggers) return docRef._afterTriggers as never
 
@@ -76,7 +75,7 @@ export function getAfterTriggers(
 					const targetDoc = await targetDocRef
 
 					// ! TODO ! no-await-in-loop
-					// eslint-disable-next-line no-await-in-loop
+					// eslint-disable-next-line no-await-in-loop, sonarjs/variable-name
 					const __voltiso = await (async () => {
 						try {
 							return await targetDocRef.__voltiso // returns __voltiso from transaction cache if doc is already deleted

@@ -62,6 +62,7 @@ function isRecord(updates: Updates): updates is UpdatesRecord {
 	return updates.constructor === Object
 }
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 function check<T extends Updates>(
 	ctx: WithDocRef,
 	updates: T,
@@ -154,6 +155,7 @@ async function rawUpdate(
 	let data: object | null | undefined // undefined -> unknown; null -> deleted
 
 	const needTransaction = Boolean(
+		// eslint-disable-next-line sonarjs/expression-complexity
 		options.create ||
 			schema ||
 			afterTriggers.length > 0 ||
@@ -210,6 +212,7 @@ async function transactionUpdateImpl(
 	options: Partial<StripParams>,
 ): Promise<IndexedDoc | null | undefined>
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 async function transactionUpdateImpl(
 	ctx: CtxWithTransaction,
 	updates: Updates,
@@ -251,6 +254,7 @@ async function transactionUpdateImpl(
 	cacheEntry.write = true
 
 	const needReadWrite = Boolean(
+		// eslint-disable-next-line sonarjs/expression-complexity
 		options.create ||
 			beforeCommits.length > 0 ||
 			afterTriggers.length > 0 ||
@@ -329,7 +333,7 @@ function transactionUpdate(
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// eslint-disable-next-line promise/prefer-await-to-then
+			// eslint-disable-next-line promise/prefer-await-to-then, @typescript-eslint/use-unknown-in-catch-callback-variable
 			return promise.then(f as never, r)
 		},
 	}

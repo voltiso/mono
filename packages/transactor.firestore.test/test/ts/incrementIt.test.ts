@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { sVoltisoEntry, Transactor } from '@voltiso/transactor'
 import { incrementIt, omit } from '@voltiso/util'
 

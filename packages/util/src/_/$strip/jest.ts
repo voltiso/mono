@@ -1,25 +1,96 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/** @strip Use `@voltiso/transform/strip` to strip from production code */
-export const $expect: jest.Expect =
-	// eslint-disable-next-line unicorn/no-negated-condition
-	typeof expect !== 'undefined' ? expect : (undefined as never)
+import { VoltisoError } from '_/error/VoltisoError'
 
-/** @strip Use `@voltiso/transform/strip` to strip from production code */
-export const $describe: jest.Describe =
-	// eslint-disable-next-line unicorn/no-negated-condition
-	typeof describe !== 'undefined' ? describe : (undefined as never)
+import { lazyFunction } from '~/lazy/lazyFunction'
 
-/** @strip Use `@voltiso/transform/strip` to strip from production code */
-export const $it: jest.It =
-	// eslint-disable-next-line unicorn/no-negated-condition
-	typeof it !== 'undefined' ? it : (undefined as never)
+async function importJest() {
+	// eslint-disable-next-line turbo/no-undeclared-env-vars, n/no-process-env
+	if (process.env['NODE_ENV'] !== 'test') return null
+	// eslint-disable-next-line import/dynamic-import-chunkname
+	return import('@jest/globals')
+}
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+let jestModule: typeof import('@jest/globals') | null = null
+// eslint-disable-next-line sonarjs/no-redundant-type-constituents
+let jestError: unknown | null = null
+
+importJest()
+	// eslint-disable-next-line promise/always-return
+	.then(jest => {
+		jestModule = jest
+	})
+	// eslint-disable-next-line unicorn/prefer-top-level-await, promise/prefer-await-to-callbacks
+	.catch((error: unknown) => {
+		jestError = error
+	})
+
+// // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+// let jest: typeof import('@jest/globals') = null as never
+// // eslint-disable-next-line sonarjs/no-redundant-type-constituents
+// let jestError: unknown | null = null
+// try {
+// 	// eslint-disable-next-line es-x/no-top-level-await, import/dynamic-import-chunkname
+// 	jest = await import('@jest/globals')
+// } catch (error) {
+// 	jestError = error
+// }
+
+/**
+ * @internal This is not tested, just an idea
+ *
+ * @strip Use `@voltiso/transform/strip` to strip from production code
+ */
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+export const $expect: typeof import('@jest/globals').expect = lazyFunction(
+	() => {
+		// eslint-disable-next-line @typescript-eslint/only-throw-error, rxjs/throw-error
+		if (jestError) throw jestError
+		// eslint-disable-next-line sonarjs/no-duplicate-string
+		if (!jestModule) throw new VoltisoError('`@jest/globals` not loaded')
+		return jestModule.expect
+	},
+)
+
+/**
+ * @internal This is not tested, just an idea
+ *
+ * @strip Use `@voltiso/transform/strip` to strip from production code
+ */
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+export const $describe: typeof import('@jest/globals').describe = lazyFunction(
+	() => {
+		// eslint-disable-next-line @typescript-eslint/only-throw-error, rxjs/throw-error
+		if (jestError) throw jestError
+		if (!jestModule) throw new VoltisoError('`@jest/globals` not loaded')
+		return jestModule.describe
+	},
+)
+
+/**
+ * @internal This is not tested, just an idea
+ *
+ * @strip Use `@voltiso/transform/strip` to strip from production code
+ */
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+export const $it: typeof import('@jest/globals').it = lazyFunction(() => {
+	// eslint-disable-next-line @typescript-eslint/only-throw-error, rxjs/throw-error
+	if (jestError) throw jestError
+	if (!jestModule) throw new VoltisoError('`@jest/globals` not loaded')
+	return jestModule.it
+})
 
 /**
  * @deprecated Use `$it` instead
+ * @internal This is not tested, just an idea
  * @strip Use `@voltiso/transform/strip` to strip from production code
  */
-export const $test: jest.It =
-	// eslint-disable-next-line unicorn/no-negated-condition
-	typeof test !== 'undefined' ? test : (undefined as never)
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+export const $test: typeof import('@jest/globals').test = lazyFunction(() => {
+	// eslint-disable-next-line @typescript-eslint/only-throw-error, rxjs/throw-error
+	if (jestError) throw jestError
+	if (!jestModule) throw new VoltisoError('`@jest/globals` not loaded')
+	return jestModule.test
+})

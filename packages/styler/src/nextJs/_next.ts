@@ -9,7 +9,7 @@ const { useServerInsertedHTML } = (() => {
 		return require('next/navigation') as typeof import('next/navigation')
 	} catch {
 		return {
-			// eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
 			useServerInsertedHTML: () => {},
 		}
 	}

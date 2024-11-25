@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export function pathToString(path: (keyof any)[]) {
+export function pathToString(path: (keyof any)[]): string {
 	let r = ''
 
 	for (const t of path) {

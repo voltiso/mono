@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/cyclomatic-complexity */
+
 import { fastAssert, omitIfPresent } from '@voltiso/util'
 
 import type { EslintConfig } from './EslintConfig'
@@ -32,7 +34,7 @@ export function eslintFlatConfigFromConfig(
 		if (typeof flatConfig.parser === 'string') {
 			// flatConfig.languageOptions.parser = require(flatConfig.parser)
 			// console.log('!!!!!!!! find', flatConfig.parser, 'in', parsersMap)
-			// eslint-disable-next-line es-x/no-array-prototype-find
+
 			const key = Object.keys(parsersMap ?? {}).find(key =>
 				flatConfig.parser?.includes(key),
 			)
@@ -55,7 +57,7 @@ export function eslintFlatConfigFromConfig(
 
 	if (flatConfig.env) {
 		if (flatConfig.env.node) delete flatConfig.env.node
-		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+
 		if (flatConfig.env['es2024']) delete flatConfig.env['es2024']
 
 		if (Object.keys(flatConfig.env).length === 0) delete flatConfig.env
@@ -83,7 +85,6 @@ export function eslintFlatConfigFromConfig(
 		const prepend = []
 
 		for (const extend of flatConfig.extends) {
-			// eslint-disable-next-line es-x/no-array-prototype-find
 			const key = Object.keys(configsMap ?? {}).find(key =>
 				extend.includes(key),
 			)

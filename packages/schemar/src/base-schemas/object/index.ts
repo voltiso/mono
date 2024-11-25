@@ -2,10 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './CustomObject'
-export * from './DeepPartialShape'
+export type * from './CustomObject'
+export type * from './DeepPartialShape'
 export * from './defaultObjectOptions'
 export * from './IObject'
 export * from './Object'
-export * from './ObjectOptions'
-export * from './PartialShape'
+export type * from './ObjectOptions'
+export type * from './PartialShape'

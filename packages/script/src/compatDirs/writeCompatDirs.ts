@@ -11,7 +11,7 @@ import { VoltisoScriptError } from '~/VoltisoScriptError'
 
 import { getCompatDirNames } from './getCompatDirNames'
 
-export async function writeCompatDirs() {
+export async function writeCompatDirs(): Promise<void> {
 	const packageJson = await getPackageJsonCached(path.resolve())
 
 	const compatDirsNames = getCompatDirNames(packageJson)
@@ -51,7 +51,7 @@ export async function writeCompatDirs() {
 			// eslint-disable-next-line no-await-in-loop, security/detect-non-literal-fs-filename
 			await fs.writeFile(
 				path.join(name, 'package.json'),
-				`${JSON.stringify(data, null, '\t')}\n`,
+				`${JSON.stringify(data, null, 2)}\n`,
 				{ flag: 'w' },
 			)
 		} catch {}

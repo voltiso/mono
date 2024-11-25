@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-instance-fields */
 
 import type * as Database from '@voltiso/firestore-like'
 import type { MaybePromise } from '@voltiso/util'
@@ -29,11 +29,11 @@ export class DocumentReference implements Database.DocumentReference {
 	_collectionRef: CollectionReference
 	id: string // implements
 
-	get path() {
+	get path(): string {
 		return `${this._collectionRef._path}/${this.id}`
 	}
 
-	get _store() {
+	get _store(): Localstore {
 		return this._collectionRef._store
 	}
 
@@ -62,7 +62,7 @@ export class DocumentReference implements Database.DocumentReference {
 		this._set(deepCloneData(data))
 	}
 
-	_set(data: Database.DocumentData | null) {
+	_set(data: Database.DocumentData | null): void {
 		const doc = getOrCreateDoc(this._store, this._collectionRef._path, this.id)
 		doc.data$.next(data)
 
@@ -77,7 +77,7 @@ export class DocumentReference implements Database.DocumentReference {
 		this._update(updates)
 	}
 
-	_update(updates: Database.UpdateData) {
+	_update(updates: Database.UpdateData): void {
 		const collections = this._store._collections
 		const collectionPath = this._collectionRef._path
 

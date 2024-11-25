@@ -19,7 +19,6 @@ import { infer } from '~/infer/infer'
 import { validationIssueSeverity } from './sValidationIssueSeverity'
 import type { ValidationIssue } from './ValidationIssue'
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export type __hack_validationIssueSchema = CustomObject$<{}>
 
 export const _validationIssue = lazyObject(() => {

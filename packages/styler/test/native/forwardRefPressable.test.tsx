@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 import * as React from 'react'
@@ -28,7 +29,7 @@ const OtherRedButton = RedButton.css({
 const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 	.css(p => ({
 		height: p.big ? 100 : 50,
-		width: p.nativeID?.length || 0,
+		width: p.nativeID?.length ?? 0,
 	}))
 	.mapProps(({ big }) => {
 		$Assert<IsEqual<typeof big, boolean>>()
@@ -94,6 +95,7 @@ describe('forwardRefPressable', () => {
 		expect.assertions(0)
 
 		// @ts-expect-error no properties in common
+
 		const Component = style(React.forwardRef(() => null))
 		// Assert.is<typeof Component, `Error${string}`>()
 	})
@@ -259,7 +261,6 @@ describe('forwardRefPressable', () => {
 		// eslint-disable-next-line testing-library/prefer-screen-queries
 		const button = view.getByTestId('a')
 
-		// eslint-disable-next-line testing-library/no-node-access
 		expect(button.props.children[0]).toBe('myContent')
 
 		expect(button.props.style).toMatchObject({

@@ -1,13 +1,14 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/no-redundant-type-constituents */
+
 import type { ComponentPropsWithRef, ComponentType, LegacyRef } from 'react'
 import type React from 'react'
 
 import type { IntrinsicElement } from '~/Stylable'
 import type { NativeElement } from '~/StyledComponent'
 
-// eslint-disable-next-line jsdoc/require-template
 /** Get native element from intrinsic element or component */
 export type GetNativeElement<
 	T extends

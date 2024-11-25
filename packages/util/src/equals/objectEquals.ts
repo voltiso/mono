@@ -18,7 +18,7 @@ import { setEquals } from './setEquals'
  *
  * - ❌ Prototype-chain inherited properties
  */
-export function ownPropertiesEqual(a: object, b: object) {
+export function ownPropertiesEqual(a: object, b: object): boolean {
 	const aKeysArr = Reflect.ownKeys(a)
 	const bKeysArr = Reflect.ownKeys(b)
 
@@ -49,13 +49,13 @@ export function ownPropertiesEqual(a: object, b: object) {
  * - ❌ `symbol` keys
  * - ❌ Non-enumerable keys
  */
-export function forInEquals(a: object, b: object) {
+export function forInEquals(a: object, b: object): boolean {
 	const aKeysArr = []
 	const bKeysArr = []
 
-	// eslint-disable-next-line guard-for-in
+	// eslint-disable-next-line guard-for-in, sonarjs/for-in
 	for (const key in a) aKeysArr.push(key)
-	// eslint-disable-next-line guard-for-in
+	// eslint-disable-next-line guard-for-in, sonarjs/for-in
 	for (const key in b) bKeysArr.push(key)
 
 	const aKeys = new Set(aKeysArr)
@@ -80,7 +80,7 @@ export function forInEquals(a: object, b: object) {
  * - ❌ Prototype-chain inherited properties
  * - ❌ `symbol` keys
  */
-export function entriesEqual(a: object, b: object) {
+export function entriesEqual(a: object, b: object): boolean {
 	const aKeysArr = Object.keys(a)
 	const bKeysArr = Object.keys(b)
 

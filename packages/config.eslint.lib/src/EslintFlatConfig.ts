@@ -4,7 +4,7 @@
 import type { Linter } from 'eslint'
 import type { FlatESLintConfig as DcFlatESLintConfig } from 'eslint-define-config'
 
-export type EslintFlatConfig = Linter.FlatConfig & DcFlatESLintConfig
+export type EslintFlatConfig = Linter.Config & DcFlatESLintConfig
 
 // type A = Linter.FlatConfig['extends']
 // type B = DcFlatESLintConfig['extends']

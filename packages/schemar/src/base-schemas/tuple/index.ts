@@ -2,14 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './CustomTuple'
+export type * from './CustomTuple'
 export * from './CustomTupleImpl'
 export * from './defaultTupleOptions'
-export * from './GetArrayLength'
+export type * from './GetArrayLength'
 export * from './isTuple'
-export * from './ITuple'
+export type * from './ITuple'
 export * from './MutableTupleImpl'
 export * from './ReadonlyTupleImpl'
 export * from './Rest'
 export * from './Tuple'
-export * from './TupleOptions'
+export type * from './TupleOptions'

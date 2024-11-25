@@ -58,7 +58,6 @@ export type GetObjectOutput<Shape extends object> = Shape extends any
 					},
 					Shape,
 					{
-						// eslint-disable-next-line etc/no-internal
 						[k in keyof Shape]: _GetOptions<Shape[k]>
 					},
 					{ kind: 'out' }
@@ -79,7 +78,6 @@ export type GetObjectInput<Shape extends object> = Shape extends any
 					},
 					Shape,
 					{
-						// eslint-disable-next-line etc/no-internal
 						[k in keyof Shape]: _GetOptions<Shape[k]>
 					},
 					{ kind: 'in' }
@@ -107,7 +105,6 @@ export type GetObjectType<
 					},
 					Shape,
 					{
-						// eslint-disable-next-line etc/no-internal
 						[k in keyof Shape]: _GetOptions<Shape[k]>
 					},
 					$Override_<DefaultGetTypeOptions, PartialOptions>
@@ -138,19 +135,15 @@ export declare namespace GetObjectType {
 		Shape extends object,
 		O extends Record<keyof T, _GetObjectTypeRequiredOptions>,
 		Options extends GetTypeOptions,
-		// eslint-disable-next-line etc/no-internal
 	> = _MaybeIntersectWithObject<
-		// eslint-disable-next-line etc/no-internal
 		_Finalize<
 			{
 				[k in keyof T as false extends O[k]['isReadonly']
-					? // eslint-disable-next-line etc/no-internal
-						_IsOptional<O[k], Options, never, k>
+					? _IsOptional<O[k], Options, never, k>
 					: never]: T[k]
 			} & {
 				[k in keyof T as false extends O[k]['isReadonly'] ? k : never]?: T[k]
 			} & {
-				// eslint-disable-next-line etc/no-internal
 				readonly [k in keyof T as _IsOptional<O[k], Options> extends false
 					? k
 					: never]: T[k]
@@ -200,7 +193,6 @@ export declare namespace GetObjectType {
 	> = IO['kind'] extends 'in'
 		? _<
 				$OmitNever_<{
-					// eslint-disable-next-line etc/no-internal
 					[k in keyof T]: _ShouldForceOptional<
 						T[k],
 						Get_<Shape, k>
@@ -210,7 +202,6 @@ export declare namespace GetObjectType {
 				}> &
 					OmitByValue_<
 						{
-							// eslint-disable-next-line etc/no-internal
 							[k in keyof T]?: _ShouldForceOptional<
 								T[k],
 								Get_<Shape, k>

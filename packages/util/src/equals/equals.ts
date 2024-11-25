@@ -48,6 +48,7 @@ export function isWithEqualsFunction(x: unknown): x is WithEqualsFunction {
  * - ❌ Non-enumerable keys NOT included (as usually desired)
  * - ❌ Non-own (prototype-chain) keys NOT included
  */
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function equals<A, B extends Suggest<A>>(
 	a: A,
 	b: B,

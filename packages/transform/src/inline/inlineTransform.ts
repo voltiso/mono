@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/cyclomatic-complexity */
+/* eslint-disable sonarjs/no-nested-conditional */
 /* eslint-disable no-nested-ternary */
 
 import type { TransformContext } from '@voltiso/transform.lib'
@@ -31,7 +33,7 @@ export function inlineTransform(
 	const typeChecker = program.getTypeChecker()
 
 	return (transformationContext: ts.TransformationContext) =>
-		(sourceFile: ts.SourceFile) => {
+		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			const ctx: InlineTransformContext = {
 				transformationContext,
 				program,

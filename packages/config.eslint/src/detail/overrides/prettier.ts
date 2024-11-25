@@ -1,7 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import prettier from 'eslint-plugin-prettier'
 
 // import { codeFiles } from '~/_/files'
 
@@ -14,12 +15,14 @@ export const prettierConfig = defineEslintFlatConfig({
 	 */
 	// ignores: codeFiles,
 
-	// plugins: ['prettier'],
+	plugins: { prettier },
 
 	// extends: ['plugin:prettier/recommended'],
 
 	rules: {
+		...getAllRules(prettier as never, 'prettier', 'warn'),
 		// 'prettier/prettier': 1,
+
 		quotes: 0,
 		'no-tabs': 0,
 		'comma-dangle': 0,

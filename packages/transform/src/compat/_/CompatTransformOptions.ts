@@ -21,6 +21,9 @@ export interface CompatTransformOptions {
 		importWithoutExtension: boolean // transpile to import `.js` instead
 	}
 
+	/** Unfortunately, ts-patch does not forward this to us */
+	afterDeclarations?: boolean
+
 	/**
 	 * Hack: please supply `false` to fix import/export declarations in regular
 	 * non-declaration files, and `true` for declaration files.

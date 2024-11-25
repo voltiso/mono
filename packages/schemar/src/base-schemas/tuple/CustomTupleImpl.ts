@@ -35,9 +35,10 @@ import { _tupleExtends, _tupleExtendsArray } from './_'
 export class CustomTupleImpl<
 	O extends Partial<TupleOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	override readonly [SCHEMA_NAME] = 'Tuple' as const;
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	override readonly [SCHEMA_NAME] = 'Tuple' as const
 
-	declare readonly [BASE_OPTIONS]: TupleOptions;
+	declare readonly [BASE_OPTIONS]: TupleOptions
 	declare readonly [DEFAULT_OPTIONS]: TupleOptions.Default
 
 	get isReadonlyTuple(): any {
@@ -78,6 +79,7 @@ export class CustomTupleImpl<
 		return this._cloneWithOptions({ isReadonlyTuple: false }) as never
 	}
 
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override [EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTupleSchema(other) || isUnknownTupleSchema(other)) &&
@@ -89,10 +91,8 @@ export class CustomTupleImpl<
 		if (isArraySchema(other) && this.isReadonlyTuple && !other.isReadonlyArray)
 			return false
 
-		// eslint-disable-next-line etc/no-internal
 		if (isTupleSchema(other)) return _tupleExtends(this, other)
 		else if (isUnknownTupleSchema(other)) return true
-		// eslint-disable-next-line etc/no-internal
 		else if (isArraySchema(other)) return _tupleExtendsArray(this, other)
 		else return super[EXTENDS](other)
 	}
@@ -116,6 +116,7 @@ export class CustomTupleImpl<
 		return value
 	}
 
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override _getIssues(
 		value: unknown,
 		options?: Partial<ValidationOptions> | undefined,
@@ -170,6 +171,7 @@ export class CustomTupleImpl<
 				const r = schema(t).exec(value[idx], options)
 
 				if (!r.isValid) {
+					// eslint-disable-next-line sonarjs/nested-control-flow
 					for (const issue of r.issues) issue.path = [idx, ...issue.path]
 
 					issues = [...issues, ...r.issues]
@@ -182,6 +184,7 @@ export class CustomTupleImpl<
 				for (let idx = this.getShape.length; idx < value.length; ++idx) {
 					const r = restSchema.exec(value[idx], options)
 
+					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (!r.isValid) {
 						for (const issue of r.issues) issue.path = [idx, ...issue.path]
 

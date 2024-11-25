@@ -44,7 +44,6 @@ import { _CustomDocRef } from './_CustomDocRef'
 
 // eslint-disable-next-line import/export
 export const CustomDocRef = lazyConstructor(
-	// eslint-disable-next-line etc/no-internal
 	() => _CustomDocRef,
 ) as unknown as CustomDocRef.Constructor
 

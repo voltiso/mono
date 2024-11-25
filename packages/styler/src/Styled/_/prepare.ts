@@ -32,6 +32,7 @@ function readPath(obj: object | null, path: string[]): unknown {
 	return isWith0(result) ? result[0] : result
 }
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function prepare<X>(
 	x: X,
 	params: {
@@ -54,6 +55,7 @@ export function prepare<X>(
 
 		// let foundNested = false
 
+		// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 		for (const [k, v] of Object.entries(x)) {
 			/** Unsafe - do not do when preparing props */
 			if (!params.isPreparingProps && k === '_') {
@@ -78,10 +80,12 @@ export function prepare<X>(
 					k as keyof typeof params.customCss
 				] as CssProp<unknown, object>
 
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (typeof customCssEntry === 'function' || Boolean(v)) {
 					let cssValues =
 						typeof customCssEntry === 'function'
-							? (customCssEntry(v) as object)
+							? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+								(customCssEntry(v) as object)
 							: customCssEntry
 
 					cssValues = { ...cssValues }
@@ -113,6 +117,7 @@ export function prepare<X>(
 		else {
 			// replace all
 			return x.replace(
+				// eslint-disable-next-line sonarjs/regular-expr
 				/\$\{([^}]*)\}/gu,
 				// /\$__STYLER__\{([^}]*)\}/gu,
 

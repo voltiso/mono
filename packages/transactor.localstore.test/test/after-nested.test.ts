@@ -3,6 +3,7 @@
 
 /* eslint-disable jest/require-hook */
 
+import { describe, expect, it } from '@jest/globals'
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'

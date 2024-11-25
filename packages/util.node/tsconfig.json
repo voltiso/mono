@@ -5,6 +5,8 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
+		"exactOptionalPropertyTypes": true,
+
 		"paths": {
 			// "~": ["./src"],
 			"~/*": ["./src/*"]

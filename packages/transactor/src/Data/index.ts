@@ -4,7 +4,7 @@
 export * from './Data'
 export * from './isWithId'
 export * from './omitVoltisoEntry'
-export * from './TightenRefs'
+export type * from './TightenRefs'
 export * from './withId'
 export * from './withoutId'
 export * from './withVoltisoEntry'

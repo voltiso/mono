@@ -29,8 +29,7 @@ export function logCompatTransformNode(
 	node: ts.Node,
 	newNodeStr: string,
 	options: { feature: CompatFeature },
-) {
-	// eslint-disable-next-line etc/no-internal
+): void {
 	_helloOnce()
 
 	// eslint-disable-next-line no-console

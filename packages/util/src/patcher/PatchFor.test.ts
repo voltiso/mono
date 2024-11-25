@@ -1,9 +1,16 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ApplyPatch, DeleteIt, IsIdentical, KeepIt, ReplaceIt } from '..'
-import { $Assert, $Is } from '..'
+import { $Assert, $Is } from '_'
+import { describe, expect, it } from '@jest/globals'
+
+import type { IsIdentical } from '~/type'
+
+import type { DeleteIt } from './deleteIt'
+import type { KeepIt } from './keepIt'
+import type { ApplyPatch } from './patch'
 import type { $PatchFor, PatchFor } from './PatchFor'
+import type { ReplaceIt } from './replaceIt'
 
 describe('PatchFor', () => {
 	it('generic', <X>() => {

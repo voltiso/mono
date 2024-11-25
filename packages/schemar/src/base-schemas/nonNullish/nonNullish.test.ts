@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -23,7 +24,7 @@ describe('nonNullish', () => {
 
 		expect(s.nonNullish.toString()).toBe('{}')
 
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
 		expect(s.infer({}).toString()).toBe('{}')
 
 		$Assert<IsIdentical<typeof s.nonNullish, NonNullish$>>()

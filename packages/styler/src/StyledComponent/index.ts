@@ -1,8 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './CustomStyledComponent'
-export * from './GetStyledComponent'
-export * from './IStyledComponent'
-export * from './StyledComponent'
-export * from './StyledComponentWithProps'
+export type * from './CustomStyledComponent'
+export type * from './GetStyledComponent'
+export type * from './IStyledComponent'
+export type * from './StyledComponent'
+export type * from './StyledComponentWithProps'

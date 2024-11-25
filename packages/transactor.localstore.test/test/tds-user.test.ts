@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import { Doc, sAutoId } from '@voltiso/transactor'
 
@@ -40,7 +41,6 @@ const users = db.register(DbUser)
 describe('tds-user', () => {
 	it('works', async () => {
 		const user = await users('a')
-		// eslint-disable-next-line jest/no-if
 		if (user) {
 			await user.update({ isEditor: true }) // should type-check
 		}

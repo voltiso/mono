@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jsdoc/require-template */
-
 import type { NoArgument, OptionalArgument } from '@voltiso/util'
 
 import type { Props } from '~/react-types'

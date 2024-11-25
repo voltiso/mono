@@ -4,7 +4,7 @@
 import { useInitial } from './useInitial'
 import { useUpdate } from './useUpdate'
 
-export const useDelayed = (x: unknown, delay = 0) => {
+export function useDelayed(x: unknown, delay = 0): unknown {
 	const update = useUpdate()
 	const s = useInitial({ curr: x, next: x })
 

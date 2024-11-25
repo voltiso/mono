@@ -35,12 +35,10 @@ export type _GetAggregateTargetEntry<T> = [
 export type _$GetAggregateTarget<T> = T extends any
 	? HasIndexSignature<T> extends true
 		? {
-				// eslint-disable-next-line etc/no-internal
 				[k in keyof T]: _GetAggregateTargetEntry<T[k]>
 			}
 		: HasIndexSignature<T> extends false
 			? {
-					// eslint-disable-next-line etc/no-internal
 					[k in keyof T]: _GetAggregateTargetEntry<T[k]> // ! Should be optional???
 				}
 			: never
@@ -127,7 +125,6 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 	R extends AnyDoc
 		? { id?: string & DocIdBrand } & DataRecord
 		: DeepReadonlyN<
-				// eslint-disable-next-line no-magic-numbers
 				10,
 				{
 					readonly id?: DocIdString_<R> | undefined

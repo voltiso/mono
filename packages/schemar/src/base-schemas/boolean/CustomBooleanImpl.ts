@@ -27,7 +27,7 @@ import { _booleanCollectTrueFalse } from './_booleanCollectTrueFalse'
 $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBooleanImpl<O> {
 	readonly [BASE_OPTIONS]: BooleanOptions
 	readonly [DEFAULT_OPTIONS]: BooleanOptions.Default
@@ -38,6 +38,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBoolean<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Boolean' as const
 
 	constructor(o: O) {
@@ -50,7 +51,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 	[CALL]<L extends boolean>(literals: Set<L>): Literal<L>
 	[CALL]<L extends boolean>(...args: L[] | [Set<L>]): Literal<L>
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends boolean>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
 		return literal(literals) as never
@@ -60,7 +61,6 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		if (isBooleanSchema(other)) return true
 		else if (isUnknownLiteralSchema(other)) return true
 		else if (isLiteralSchema(other) || isUnionSchema(other)) {
-			// eslint-disable-next-line etc/no-internal
 			const { haveTrue, haveFalse } = _booleanCollectTrueFalse(other)
 			return haveTrue && haveFalse
 		} else return super[EXTENDS](other)
@@ -81,7 +81,7 @@ export class CustomBooleanImpl<O extends Partial<BooleanOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'boolean'
 	}

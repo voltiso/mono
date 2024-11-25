@@ -73,6 +73,7 @@ export const ImplicitSchemaInferrer$ = lazyConstructor(
 export const schema = lazyFunction(() => new ImplicitSchemaInferrer$())
 
 /** Non-generic version for faster type-check */
+// eslint-disable-next-line sonarjs/variable-name
 export const schema_ = lazyFunction(
 	() => new ImplicitSchemaInferrer$() as ImplicitSchemaInferrer$_,
 )

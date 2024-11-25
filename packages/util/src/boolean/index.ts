@@ -1,8 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './And'
-export * from './Not'
-export * from './Or'
-export * from './truthy-falsy'
-export * from './Xor'
+export type * from './And'
+export type * from './Not'
+export type * from './Or'
+export type * from './truthy-falsy'
+export type * from './Xor'

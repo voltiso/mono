@@ -31,7 +31,7 @@ import type { CustomFunction } from './CustomFunction'
 import type { FunctionOptions } from './FunctionOptions'
 import { isFunctionSchema } from './isFunction'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomFunctionImpl<O> {
 	readonly [BASE_OPTIONS]: FunctionOptions
 	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
@@ -63,6 +63,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomFunction<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Function' as const
 
 	get hasThis(): [this[OPTIONS]['this']] extends [NoThis] ? false : true {
@@ -90,7 +91,6 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 			this[OPTIONS].parameters as never,
 		) as unknown as IArray | ITuple
 
-		// eslint-disable-next-line etc/no-internal
 		let parametersUnionSchemas = _flattenUnion(parametersSchema).getSchemas
 
 		parametersUnionSchemas = parametersUnionSchemas.map(s => {

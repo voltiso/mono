@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept } from '@voltiso/util'
+import type * as React from 'react'
 
 import type { Css } from './Css'
 
@@ -14,7 +15,8 @@ export function defineCss<TCss extends Css>(
 //
 
 export type CssSelectors = Partial<
-	Record<keyof JSX.IntrinsicElements | AlsoAccept<string>, Css>
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
+	Record<keyof React.JSX.IntrinsicElements | AlsoAccept<string>, Css>
 >
 
 export function defineCssSelectors<T extends CssSelectors>(

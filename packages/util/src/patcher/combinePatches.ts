@@ -11,6 +11,7 @@ import { isKeepIt } from './keepIt'
 import { patch } from './patch'
 import type { PatchFor } from './PatchFor'
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
 	if (isDeleteIt(b)) return b
 

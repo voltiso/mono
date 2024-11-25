@@ -3,6 +3,8 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
+
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore

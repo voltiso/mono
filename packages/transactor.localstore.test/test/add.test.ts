@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { createTransactor } from './common'
+import { describe, expect, it } from '@jest/globals'
 import { createLocalstore } from '@voltiso/localstore'
 import * as s from '@voltiso/schemar'
 import type { DocIdString, TriggerParams } from '@voltiso/transactor'
@@ -40,7 +41,7 @@ class Client extends Doc('clientAddXyz').with({
 	async _create(params: TriggerParams.AfterCreate<Client>) {
 		const client = await clients(params.id)
 		fastAssert(client)
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+
 		client.data.friends = [clients('a'), clients('b').asStrongRef]
 	}
 }

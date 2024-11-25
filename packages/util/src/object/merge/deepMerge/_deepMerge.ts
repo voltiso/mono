@@ -5,7 +5,7 @@
 export function _deepMerge(
 	objectA: Record<string, object>,
 	objectB: Record<string, object>,
-) {
+): { [x: string]: object } {
 	const result = {
 		...objectA,
 	}
@@ -15,7 +15,6 @@ export function _deepMerge(
 			Object === result[k]?.constructor &&
 			Object === objectB[k]?.constructor
 		) {
-			// eslint-disable-next-line etc/no-internal
 			result[k] = _deepMerge(result[k] as never, objectB[k] as never)
 		} else (result[k] as unknown) = objectB[k]
 	}

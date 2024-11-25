@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import { $assert } from '@voltiso/assertor'
 import type { $$Schemable, Schemable } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
@@ -9,6 +11,7 @@ import {
 	assertNotPolluting,
 	defaultPatchOptions,
 	deleteIt,
+	// eslint-disable-next-line sonarjs/no-built-in-override
 	hasOwnProperty,
 	isPolluting,
 	patch,
@@ -34,10 +37,7 @@ import {
 export class _CustomSubjectTree<
 	TO extends SubjectTreeTypeOptions = SubjectTreeTypeOptions,
 > {
-	constructor(
-		options: // eslint-disable-next-line etc/no-internal
-		Partial<SubjectTreeOptions> | _SubjectTreeChildOptions,
-	) {
+	constructor(options: Partial<SubjectTreeOptions> | _SubjectTreeChildOptions) {
 		const proxyHandlers = {
 			get: (_target: object, key: keyof any, receiver: unknown) => {
 				if (key in this || isPolluting(key))
@@ -51,7 +51,6 @@ export class _CustomSubjectTree<
 			},
 		}
 
-		// eslint-disable-next-line etc/no-internal
 		if (isSubjectTreeChildOptions(options)) {
 			assertNotPolluting(options.key)
 			this._dependencies = options.parent._dependencies
@@ -101,7 +100,6 @@ export class _CustomSubjectTree<
 
 			this._schema = options.schema as never
 
-			// eslint-disable-next-line etc/no-internal
 			this._value = _validate({
 				dependencies: this._dependencies,
 				schemable: this._schema,
@@ -146,7 +144,7 @@ export class _CustomSubjectTree<
 		return this._value
 	}
 
-	get exists() {
+	get exists(): boolean {
 		return this._exists
 	}
 
@@ -228,7 +226,7 @@ export class _CustomSubjectTree<
 	patch(
 		patchValue: PatchFor<TO['Input']>,
 		options: PatchOptions = defaultPatchOptions,
-	) {
+	): void {
 		const newValue = patch(this._value, patchValue as never, options)
 		this.set(newValue)
 	}
@@ -236,7 +234,7 @@ export class _CustomSubjectTree<
 	patchUnchecked(
 		patchValue: PatchFor<TO['Output']>,
 		options: PatchOptions = defaultPatchOptions,
-	) {
+	): void {
 		const newValue = patch(this._value, patchValue as never, options)
 		this.setUnchecked(newValue)
 	}
@@ -251,7 +249,6 @@ export class _CustomSubjectTree<
 
 		// console.log('this._schema', this._schema)
 
-		// eslint-disable-next-line etc/no-internal
 		const validNewValue = _validate({
 			dependencies: this._dependencies,
 			schemable: this._schema,
@@ -266,10 +263,8 @@ export class _CustomSubjectTree<
 		// eslint-disable-next-line es-x/no-object-is
 		if (Object.is(newValue, this._value)) return // no change
 
-		// eslint-disable-next-line etc/no-internal
 		this._set(newValue, true)
 
-		// eslint-disable-next-line etc/no-internal
 		_updateToRoot(this)
 	}
 
@@ -283,7 +278,6 @@ export class _CustomSubjectTree<
 				[this._parentKey]: deleteIt,
 			} as never)
 		} else {
-			// eslint-disable-next-line etc/no-internal
 			this._set(undefined, false)
 		}
 	}
@@ -299,7 +293,6 @@ export class _CustomSubjectTree<
 			keyof typeof this._children,
 			_CustomSubjectTree,
 		][]) {
-			// eslint-disable-next-line etc/no-internal
 			child._set(
 				newValue?.[key] as never,
 				exists && Object.prototype.hasOwnProperty.call(newValue || {}, key),
@@ -310,11 +303,11 @@ export class _CustomSubjectTree<
 		this._subject$.next(this._value)
 	}
 
-	get asRequired() {
+	get asRequired(): this {
 		return this
 	}
 
-	get Final() {
+	get Final(): this {
 		return this
 	}
 }

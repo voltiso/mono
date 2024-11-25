@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './CssProp'
-export * from './CssProps'
-export * from './ICssProp'
-export * from './IndexedCssProps'
+export type * from './CssProp'
+export type * from './CssProps'
+export type * from './ICssProp'
+export type * from './IndexedCssProps'

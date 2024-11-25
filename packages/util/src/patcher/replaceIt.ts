@@ -25,6 +25,6 @@ export function replaceIt<X>(x: X): ReplaceIt<X> {
 	})
 }
 
-export function isReplaceIt(x: any): x is ReplaceIt {
+export function isReplaceIt(x: unknown): x is ReplaceIt {
 	return Object.prototype.hasOwnProperty.call(x || {}, '__replaceIt')
 }

@@ -21,6 +21,7 @@ export function parseStackTrace(stackStr: string): StackTraceEntry[] {
 		.split('\n')
 		.map(
 			line =>
+				// eslint-disable-next-line sonarjs/regular-expr
 				/at (?<functionName>(?:new )?[^ ]*) [^(]*\((?<location>[^)]*)\)/u.exec(
 					line,
 				)?.groups as

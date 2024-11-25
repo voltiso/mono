@@ -7,6 +7,7 @@ import type { Doc } from './Doc'
  * Empty interfaces (not yet augmented) causes inlining of `never` keyof in
  * `.d.ts`
  */
+// eslint-disable-next-line sonarjs/variable-name
 export const __never_keyof_bug_workaround = Symbol(
 	'__never_keyof_bug_workaround',
 )

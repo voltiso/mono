@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { DocIdString, DocRef } from '@voltiso/transactor'
@@ -85,6 +86,7 @@ describe('emu-ts', () => {
 			assert(b.data.friend)
 			$Assert<IsIdentical<typeof b.data.friend, DocRef<'doctorLorcan'>>>()
 
+			// eslint-disable-next-line sonarjs/no-invalid-await
 			const name = await b.data.friend.data.name
 
 			expect(name).toBe('a')

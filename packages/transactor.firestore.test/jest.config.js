@@ -4,7 +4,7 @@
 import baseConfig from '@voltiso/config.jest'
 import { defineJestConfig } from '@voltiso/config.jest.lib'
 // import { registerEsbuild } from '@voltiso/util.esbuild'
-import {register as registerEsbuild} from 'esbuild-register/dist/node'
+import { register as registerEsbuild } from 'esbuild-register/dist/node'
 
 // registerEsbuild({
 // 	target: `node${process.version.slice(1)}`,
@@ -12,7 +12,7 @@ import {register as registerEsbuild} from 'esbuild-register/dist/node'
 
 registerEsbuild()
 
-//! need to create a new unique object!
+// ! need to create a new unique object!
 export default defineJestConfig({
 	...baseConfig,
 
@@ -26,6 +26,6 @@ export default defineJestConfig({
 		'./jest/setupAfterEnv.ts',
 	],
 
-	forceExit: true, //! (have to, because jest-dev-server's `teardown` function causes always exit code 0 even on failed tests)
+	forceExit: true, // ! (have to, because jest-dev-server's `teardown` function causes always exit code 0 even on failed tests)
 	detectOpenHandles: true,
 })

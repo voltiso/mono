@@ -3,7 +3,7 @@
 
 export * from './final'
 export * from './isInstanceOf'
-export * from './OmitPrivate'
+export type * from './OmitPrivate'
 export * from './PolymorphicGeneric'
 export * from './protoLink'
 export * from './staticImplements'

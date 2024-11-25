@@ -3,6 +3,8 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
+import { describe, expect, it } from '@jest/globals'
+
 import { deepClone } from './deepClone'
 
 class MyCloneable {

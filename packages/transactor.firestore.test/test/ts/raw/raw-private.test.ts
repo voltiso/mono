@@ -3,6 +3,7 @@
 
 import 'zone.js'
 
+import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { Method } from '@voltiso/transactor'

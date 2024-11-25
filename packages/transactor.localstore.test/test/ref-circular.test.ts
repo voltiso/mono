@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import { Doc, sStrongRef, sVoltisoEntry } from '@voltiso/transactor'
@@ -52,10 +53,12 @@ describe('localstore', () => {
 
 			expect(f.data.name).toBe('a')
 
+			// eslint-disable-next-line sonarjs/no-invalid-await
 			const name = await b.data.friend.data.name
 
 			expect(name).toBe('a')
 
+			// eslint-disable-next-line sonarjs/no-invalid-await
 			const name2 = await b.data.friend.data.name
 
 			expect(name2).toBe('a')

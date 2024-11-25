@@ -3,7 +3,8 @@
 
 import { $fastAssert } from '@voltiso/util'
 
-export default function simple(x: number) {
+// eslint-disable-next-line import/no-default-export
+export default function simple(x: number): number {
 	// eslint-disable-next-line no-param-reassign
 	x -= 1
 

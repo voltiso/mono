@@ -6,6 +6,7 @@ import {
 	defaultPatchOptions,
 	forwardGetOwnPropertyDescriptor,
 	forwardOwnKeys,
+	// eslint-disable-next-line sonarjs/no-built-in-override
 	hasOwnProperty,
 	patch,
 	replaceIt,
@@ -13,6 +14,7 @@ import {
 import { useUpdate } from '@voltiso/util.react'
 import { useMemo } from 'react'
 
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 type State = unknown
 type StateObject = Record<string, State>
 
@@ -81,6 +83,7 @@ class StatePatcher_<S extends StateObject> {
 	 * Here we keep a reference to the update() hook, to force-update the React
 	 * component
 	 */
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	private readonly _forceUpdate: () => void
 
 	/**
@@ -88,6 +91,7 @@ class StatePatcher_<S extends StateObject> {
 	 *
 	 * - Lifetime: from update to update
 	 */
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	private _rawState: S
 
 	get raw() {

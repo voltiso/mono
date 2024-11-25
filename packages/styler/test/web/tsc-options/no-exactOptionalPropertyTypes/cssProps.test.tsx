@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical, Throw } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -10,6 +11,7 @@ describe('cssProps', () => {
 	it('works', () => {
 		expect.assertions(0)
 
+		// eslint-disable-next-line no-useless-assignment
 		const Button = style('button').cssProps('flex', 'backgroundColor')
 		;<Button /> // check if optional
 	})

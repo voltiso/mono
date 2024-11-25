@@ -21,7 +21,6 @@ import type { Config as JestConfig } from 'jest'
 // 	readonly [k in keyof T]: DeepReadonly_<T[k]>
 // }
 
-
 export type Constraint<Derived extends Parent, Parent> = Derived & {
 	[k in keyof Derived]: k extends keyof Parent ? Derived[k] : never
 }

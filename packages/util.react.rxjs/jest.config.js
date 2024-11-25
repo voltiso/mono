@@ -2,9 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineJestConfig } from '@voltiso/config.jest.lib'
-import baseJestConfig from '@voltiso/config.jest.react'
+import { getJestReactConfig } from '@voltiso/config.jest.react'
 
-//! need to create a new unique object!
+const baseJestConfig = getJestReactConfig({
+	format: 'cjs', // rxjs doesn't include `"type": "module"`
+})
+
+// ! need to create a new unique object!
 export default defineJestConfig({
 	...baseJestConfig,
 })

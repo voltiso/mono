@@ -3,5 +3,5 @@
 
 export * from './_'
 export * from './aggregate'
-export * from './Aggregator'
+export type * from './Aggregator'
 export * from './AggregatorPlugin'

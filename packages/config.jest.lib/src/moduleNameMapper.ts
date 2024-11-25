@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable github/unescaped-html-literal */
-
 import { codeFilesExtensions } from './codeFilesExtensions'
 
 const moduleNameMapper: Record<string, string> = {

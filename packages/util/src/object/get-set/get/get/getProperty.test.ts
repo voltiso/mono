@@ -2,10 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-meaningless-void-operator */
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+
 /* eslint-disable @typescript-eslint/prefer-readonly */
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 
@@ -31,7 +32,9 @@ describe('getProperty', () => {
 
 		expect(() => getProperty({ a: 1 }, 'constructor')).toThrow('pollution')
 
-		expect(() => getProperty('test' as never, 'a')).toThrow('property not found')
+		expect(() => getProperty('test' as never, 'a')).toThrow(
+			'property not found',
+		)
 	})
 
 	it('works with optionals', () => {

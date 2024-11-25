@@ -19,7 +19,7 @@ export function getNodePositionStr(
 
 	const gitPath = getGitRelativePath(sourceFile.fileName)
 
-	return `${gitPath || sourceFile.fileName}:${lineCol.line + 1}:${
+	return `${gitPath ?? sourceFile.fileName}:${lineCol.line + 1}:${
 		lineCol.character + 1
 	}`
 }

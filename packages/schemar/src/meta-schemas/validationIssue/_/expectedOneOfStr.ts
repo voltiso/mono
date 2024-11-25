@@ -3,7 +3,7 @@
 
 import { stringFrom } from '@voltiso/util'
 
-export function expectedOneOfStr(oneOf: unknown[]) {
+export function expectedOneOfStr(oneOf: unknown[]): string {
 	// const oneOfArray = Array.isArray(oneOf) ? oneOf : [...oneOf]
 
 	if (oneOf.length === 1) return stringFrom(oneOf[0])

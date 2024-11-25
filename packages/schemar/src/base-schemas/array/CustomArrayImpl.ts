@@ -33,9 +33,10 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomArray<O>
 {
-	override readonly [SCHEMA_NAME] = 'Array' as const;
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	override readonly [SCHEMA_NAME] = 'Array' as const
 
-	declare readonly [BASE_OPTIONS]: ArrayOptions;
+	declare readonly [BASE_OPTIONS]: ArrayOptions
 	declare readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
 
 	get getMinLength(): this[OPTIONS]['minLength'] {
@@ -74,6 +75,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		return this._cloneWithOptions({ isReadonlyArray: false }) as never
 	}
 
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	override [EXTENDS](other: Schema): boolean {
 		if (isArraySchema(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
@@ -96,6 +98,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				if (thisMaxLength < other.getLength) return false
 
 				for (const t of other.getShape) {
+					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (!(this.getElementSchema as unknown as Schema).extends(t))
 						return false
 				}
@@ -186,6 +189,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 				const c = (this.getElementSchema as unknown as Schema).exec(e, options)
 
 				if (!c.isValid) {
+					// eslint-disable-next-line sonarjs/nested-control-flow
 					for (const issue of c.issues) issue.path = [idx, ...issue.path]
 
 					issues = [...issues, ...c.issues]
@@ -206,7 +210,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 	override _toString(): string {
 		const elementTypeStr =
-			// eslint-disable-next-line @typescript-eslint/no-base-to-string
+			// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
 			(this.getElementSchema as unknown as Schema).toString()
 
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`

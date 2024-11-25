@@ -1,7 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/no-redundant-type-constituents */
+
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { OmitByValue } from '~'
 import type { IsIdentical } from '~/type'

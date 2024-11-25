@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable no-magic-numbers */
 
 /** @internal */
 export interface _LessEqual<True = true, False = false> {
@@ -166,11 +165,8 @@ export type LessEqual<
 	b extends number,
 	True = true,
 	False = false,
-	// eslint-disable-next-line etc/no-internal
 > = a extends keyof _LessEqual<True, False>
-	? // eslint-disable-next-line etc/no-internal
-		b extends keyof _LessEqual<True, False>[a]
-		? // eslint-disable-next-line etc/no-internal
-			_LessEqual<True, False>[a][b]
+	? b extends keyof _LessEqual<True, False>[a]
+		? _LessEqual<True, False>[a][b]
 		: number
 	: number

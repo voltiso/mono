@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 
@@ -41,6 +42,7 @@ describe('OptionalArgument', () => {
 		type I = IsProvided<null | NoArgument>
 		$Assert<IsIdentical<I, boolean>>()
 
+		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		type J = IsProvided<never | NoArgument>
 		$Assert<IsIdentical<J, false>>()
 

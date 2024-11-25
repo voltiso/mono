@@ -41,13 +41,14 @@ export const jsdocConfig = defineEslintFlatConfig(
 
 			'jsdoc/check-access': 1,
 			'jsdoc/check-alignment': 1,
-			'jsdoc/check-examples': 0, // TODO: Enable when it supports ESLint 8
+			'jsdoc/check-examples': 0, // handled by `examples/examples` processor
 			'jsdoc/check-indentation': 0, // does not work properly with wrapped lines
 			'jsdoc/check-line-alignment': 0, // conflicts with prettier
 			'jsdoc/check-param-names': 1,
 			'jsdoc/check-property-names': 1,
 			'jsdoc/check-syntax': 1,
 			'jsdoc/convert-to-jsdoc-comments': 0,
+			'jsdoc/lines-before-block': 0, // handled by `@stylistic/lines-around-comment`
 
 			'jsdoc/check-tag-names': [
 				'warn',

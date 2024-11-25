@@ -47,8 +47,7 @@ export type __hack_sAutoId = DocIdBrand
 
 /** 🧙‍♂️ Validate default auto-generated document ID */
 export const sAutoId: UnknownAutoIdSchema$ = ProtoCallable({
-	// eslint-disable-next-line etc/no-internal
 	prototype: _sAutoId,
-	// eslint-disable-next-line etc/no-internal
+
 	call: <D extends $$DocRelated>() => _sAutoId.Cast<DocIdString<D>>(),
 }) as never

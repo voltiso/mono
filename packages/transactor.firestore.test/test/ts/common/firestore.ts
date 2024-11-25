@@ -22,6 +22,6 @@ export const firestoreModule = {
 export function createFirestoreTransactor(
 	firestore: Firestore,
 	options?: Partial<TransactorOptions> | undefined,
-) {
+): Transactor {
 	return new Transactor(firestore, firestoreModule, options)
 }

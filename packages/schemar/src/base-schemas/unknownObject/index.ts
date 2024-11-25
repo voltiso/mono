@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './CustomUnknownObject'
+export type * from './CustomUnknownObject'
 export * from './defaultUnknownObjectOptions'
 export * from './IUnknownObject'
 export * from './UnknownObject'
-export * from './UnknownObjectOptions'
+export type * from './UnknownObjectOptions'

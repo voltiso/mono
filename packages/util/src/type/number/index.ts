@@ -1,6 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './Decrement'
-export * from './Increment'
-export * from './LessEqual'
+export type * from './Decrement'
+export type * from './Increment'
+export type * from './LessEqual'

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import { $expect, $fastAssert } from '_'
 
 import type { ArrayPrefix } from '~/array/ArrayPrefix'
@@ -57,7 +59,7 @@ export class _BindableFunction<
 		this.boundThis = boundThis
 		this.boundArguments = boundArguments
 
-		// eslint-disable-next-line consistent-this, unicorn/no-this-assignment, @typescript-eslint/no-this-alias
+		// eslint-disable-next-line consistent-this, unicorn/no-this-assignment, @typescript-eslint/no-this-alias, sonarjs/no-this-alias
 		const self = this
 
 		const name = this.name
@@ -108,22 +110,19 @@ export class _BindableFunction<
 	bind<
 		BindThis extends ThisParameterType<Func>,
 		BindArguments extends ArrayPrefix<Parameters<Func>>,
-	>(thisArg: BindThis, ...args: BindArguments) {
-		// eslint-disable-next-line etc/no-internal
+	>(thisArg: BindThis, ...args: BindArguments): unknown {
 		return new _BindableFunction(this.function, thisArg, ...args)
 	}
 
 	//
 
 	unbind(): UnboundFunction<Func> {
-		// eslint-disable-next-line etc/no-internal
 		return new _BindableFunction(this.function) as never
 	}
 
 	//
 
-	clone() {
-		// eslint-disable-next-line etc/no-internal
+	clone(): _BindableFunction<Func, BoundThis, [...BoundArguments]> {
 		const result = new _BindableFunction(
 			this.function,
 			this.boundThis,
@@ -137,14 +136,12 @@ export class _BindableFunction<
 }
 
 export const BindableFunction =
-	// eslint-disable-next-line etc/no-internal
 	_BindableFunction as unknown as BindableFunctionConstructor
 
 export type BindableFunction<
 	Func extends Callable,
 	BoundThis,
 	BoundArguments extends readonly unknown[],
-	// eslint-disable-next-line etc/no-internal
 > = _BindableFunction<Func, BoundThis, BoundArguments> &
 	BoundFunctionCall<Func, BoundThis, BoundArguments>
 
@@ -170,7 +167,6 @@ export interface BindableFunctionConstructor {
 	): BindableFunction<Func, BoundThis, BoundArguments>
 }
 
-// eslint-disable-next-line etc/no-internal
 Object.setPrototypeOf(_BindableFunction.prototype, Function.prototype) // inherit call, apply, ...
 
 //

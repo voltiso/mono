@@ -115,6 +115,7 @@ export type UnknownFunction$Constructor = new () => UnknownFunction$
 
 //
 
+// eslint-disable-next-line sonarjs/variable-name
 const function_: UnknownFunction$ = lazyFunction(() => new UnknownFunction$())
 
 export { function_ as function }

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-private-fields */
+/* eslint-disable es-x/no-class-instance-fields */
 /* eslint-disable @typescript-eslint/prefer-readonly */
 
 import { assert } from '@voltiso/assertor'
@@ -96,6 +98,7 @@ export type CollectionPatternString<S extends string = string> = S &
  */
 export function isPathString(str: unknown): str is DbPathString {
 	return (
+		// eslint-disable-next-line sonarjs/expression-complexity
 		typeof str === 'string' &&
 		str !== '' &&
 		!str.startsWith('/') &&
@@ -107,6 +110,7 @@ export function isPathString(str: unknown): str is DbPathString {
 
 export function isPatternString(str: unknown): str is DbPatternString {
 	return (
+		// eslint-disable-next-line sonarjs/expression-complexity
 		typeof str === 'string' &&
 		str !== '' &&
 		!str.startsWith('/') &&
@@ -179,11 +183,11 @@ export class Pattern<S extends string = string> {
 		Object.freeze(this)
 	}
 
-	toString() {
+	toString(): string {
 		return this.pattern
 	}
 
-	valueOf() {
+	valueOf(): DbPatternString<S> {
 		return this.pattern
 	}
 }
@@ -222,7 +226,7 @@ export class CustomDocPath<
 		assert(isDocPathString(str))
 	}
 
-	get id() {
+	get id(): PathSegmentString {
 		return at(this.segments, -1)
 	}
 }
@@ -299,7 +303,6 @@ export type _PathFromString<
 export type DbPathFromString<
 	P extends string,
 	Doc extends $$DocRelated = AnyDoc,
-	// eslint-disable-next-line etc/no-internal
 > = _PathFromString<
 	GetDocRef<{ doc: GetDocTag<Doc>; isStrong: false }>,
 	CollectionRef<Doc>,

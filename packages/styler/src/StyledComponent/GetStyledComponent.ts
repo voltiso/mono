@@ -1,9 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-/* eslint-disable jsdoc/require-template */
-
 import type { $Override_, Throw } from '@voltiso/util'
 import type { ForwardRefRenderFunction } from 'react'
 import type { NativeMethods } from 'react-native'
@@ -19,7 +16,7 @@ import type {
 	StyledHoc,
 	StyledHocWithProps,
 } from '~/StyledHoc'
-import type { StyledTypeInfo } from '~/StyledTypeInfo'
+import type { StyledSubject, StyledTypeInfo } from '~/StyledTypeInfo'
 import type { IsReactNative } from '~/util'
 
 import type { CustomStyledComponent } from './CustomStyledComponent'
@@ -27,7 +24,7 @@ import type { StyledComponent } from './StyledComponent'
 import type { StyledComponentWithProps } from './StyledComponentWithProps'
 
 export type GetStyledComponentNoCustomCss<
-	C extends StylableLike | NativeElement,
+	C extends StyledSubject,
 	P extends Props,
 > = keyof P extends never ? StyledComponent<C> : StyledComponentWithProps<C, P>
 
@@ -93,8 +90,8 @@ export type $IsStylableComponentOrForwardRefOrNativeElement_<X> =
 
 /** With Element already provided */
 export type GetStyledComponentImpl<
-	$ extends StyledTypeInfo & { Component: StylableLike | NativeElement },
-	Component extends StylableLike | NativeElement = $['Component'],
+	$ extends StyledTypeInfo & { Component: StyledSubject },
+	Component extends StyledSubject = $['Component'],
 > = Component extends any
 	? $IsStylableComponentOrForwardRefOrNativeElement_<Component> extends true
 		? keyof $['CustomCss'] extends never
@@ -153,11 +150,7 @@ export type GetStyledImpl<$ extends StyledTypeInfo> = $ extends {
 		: never
 
 export type GetStyledImplN<
-	C extends
-		| StylableLike
-		| React.Component<any, any, any>
-		| NativeElement
-		| null,
+	C extends StyledSubject | null,
 	P extends {},
 	CC extends {},
 > = GetStyledImpl<{ Component: C; Props: P; CustomCss: CC }>

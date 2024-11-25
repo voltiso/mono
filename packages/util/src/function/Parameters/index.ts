@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './CallableParameters'
-export * from './NewableParameters'
-export * from './Parameters'
-export * from './ThisParameter'
+export type * from './CallableParameters'
+export type * from './NewableParameters'
+export type * from './Parameters'
+export type * from './ThisParameter'

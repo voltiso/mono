@@ -16,7 +16,7 @@ import { isLiteralSchema } from '../isLiteral'
 import type { LiteralOptions } from '../LiteralOptions'
 import { literalValueExtends } from './literalValueExtends'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomLiteralImpl<O> {
 	readonly [BASE_OPTIONS]: LiteralOptions
 	readonly [DEFAULT_OPTIONS]: LiteralOptions.Default
@@ -27,6 +27,7 @@ export class CustomLiteralImpl<O extends Partial<LiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomLiteral<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Literal' as const
 
 	get getValues(): Set<never> {

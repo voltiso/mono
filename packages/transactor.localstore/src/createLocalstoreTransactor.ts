@@ -37,7 +37,7 @@ export function createLocalstoreTransactor(
 	options: Partial<TransactorOptions>,
 ): Transactor
 
-export function createLocalstoreTransactor(...args: Args) {
+export function createLocalstoreTransactor(...args: Args): Transactor {
 	if (isDatabase(args[0])) {
 		const [db, ...rest] = args
 		return new Transactor(db, firestoreModule, ...rest)

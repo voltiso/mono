@@ -1,12 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
 /* eslint-disable n/no-sync */
 /* eslint-disable jest/prefer-hooks-on-top */
 
 import type { Server } from 'node:http'
 
+import { afterAll, beforeAll, describe, expect, it } from '@jest/globals'
 import { checked } from '@voltiso/handler'
 import * as s from '@voltiso/schemar'
 import { $Assert } from '@voltiso/util'
@@ -22,7 +22,6 @@ import { RpcServer, RpcServerContext } from '~/server'
 const context = new RpcServerContext<Express.Request, Express.Response>()
 
 class MyError extends Error {
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	constructor(message: string) {
 		super(message)
 		this.name = 'MyError'
@@ -88,7 +87,7 @@ beforeAll(async () => {
 
 describe('client', () => {
 	it('type', () => {
-		// eslint-disable-next-line no-new
+		// eslint-disable-next-line no-new, sonarjs/constructor-for-side-effects
 		new RpcClient<typeof myServer.handlers>(`http://localhost:${port}/rpc`)
 
 		$Assert()

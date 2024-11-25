@@ -26,7 +26,6 @@ const project = [
 	'packages/util/src/tsc-options/*/test-false/tsconfig.json',
 ]
 
-// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 // const isFastMode = !process.env['FULL']
 // const isFastMode = false
 
@@ -49,11 +48,10 @@ const project = [
 // 	}
 // })
 
-// eslint-disable-next-line es-x/no-import-meta
+// eslint-disable-next-line sonarjs/variable-name
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 // console.log('dirname', __dirname)
 
-// eslint-disable-next-line import/no-default-export
 export default defineEslintFlatConfig(
 	...baseConfig,
 	// ...(isFastMode ? baseConfigFast : baseConfig),

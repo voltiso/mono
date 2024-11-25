@@ -27,6 +27,6 @@ export function incrementIt<Amount extends number | bigint>(
 	})
 }
 
-export function isIncrementIt(x: any): x is IncrementIt {
+export function isIncrementIt(x: unknown): x is IncrementIt {
 	return Object.prototype.hasOwnProperty.call(x || {}, '__incrementIt')
 }

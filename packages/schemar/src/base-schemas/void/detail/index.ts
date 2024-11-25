@@ -3,5 +3,5 @@
 
 export * from './CustomVoidImpl'
 export * from './isVoid'
-export * from './IVoid'
+export type * from './IVoid'
 export * from './VoidImpl'

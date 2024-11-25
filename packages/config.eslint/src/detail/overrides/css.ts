@@ -2,12 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Linter } from 'eslint'
-// @ts-expect-error no typings
 import cssPlugin from 'eslint-plugin-css'
 
 import { codeFiles } from '../files'
 
-export const cssOverride: Linter.FlatConfig[] = [
+export const cssOverride: Linter.Config[] = [
 	{
 		files: [...codeFiles, '**/*.css'],
 
@@ -21,7 +20,6 @@ export const cssOverride: Linter.FlatConfig[] = [
 		// ],
 
 		rules: {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			...(cssPlugin.configs.all.rules as {}),
 		},
 

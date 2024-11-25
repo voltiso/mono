@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable no-empty-function */
 
 import { assertDev } from '_'
 
@@ -95,9 +94,8 @@ const _AssertInterface = {
 	isSupertype<A, _B extends A>() {},
 }
 
-// eslint-disable-next-line etc/no-internal
 Object.setPrototypeOf(_Assert, _AssertInterface)
 
 /** @strip Use `@voltiso/transform/strip` to strip from production code */
-// eslint-disable-next-line etc/no-internal
+
 export const $Assert = _Assert as typeof _AssertInterface & typeof _Assert

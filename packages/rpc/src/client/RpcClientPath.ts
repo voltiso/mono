@@ -1,8 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+/* eslint-disable sonarjs/cyclomatic-complexity */
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 
 import type { MaybePromise, Mutable } from '@voltiso/util'
 import {
@@ -23,7 +24,8 @@ import type { RpcClient } from './RpcClient'
 function callLocal(
 	clientPath: RpcClientPath,
 	args: unknown[],
-): MaybePromise<unknown> | undefined { // | void ???
+): MaybePromise<unknown> | undefined {
+	// | void ???
 	const options = clientPath._client._options
 	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 	const localHandler = tryGet(
@@ -45,7 +47,6 @@ function callLocal(
 
 async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 	// console.log('callRemote', clientPath, ...args)
-	// eslint-disable-next-line @typescript-eslint/prefer-destructuring
 	const serializer = clientPath._client.options.serializer
 
 	const serializedArgs = serializer
@@ -84,7 +85,6 @@ async function callRemote(clientPath: RpcClientPath, args: unknown[]) {
 
 		detail.push(`HTTP ${response.status}`)
 
-		// eslint-disable-next-line no-magic-numbers
 		if (response.status === 200) {
 			// eslint-disable-next-line destructuring/no-rename
 			const { result: serializedResult } = (await response.json()) as {

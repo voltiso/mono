@@ -18,6 +18,7 @@ export type PropertyPathOptions = Override<
 	PropertyPathPartialOptions
 >
 
+// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type PropertyPathString<Obj extends unknown | NoArgument = NoArgument> =
 	[Obj] extends [NoArgument]
 		? PropertyPathString.Supertype
@@ -30,7 +31,6 @@ export namespace PropertyPathString {
 	export type Supertype = PathString<PropertyPathPartialOptions>
 
 	export type ForObject<obj> = string &
-		// eslint-disable-next-line etc/no-internal
 		_FilterOut<
 			Join<
 				Extract<PropertyPath.ForObject<obj>, readonly Printable[]>,

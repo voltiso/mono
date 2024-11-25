@@ -62,6 +62,7 @@
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
@@ -73,7 +74,7 @@
   },
   "__________MISC": "__________",
   "engines": {
-    "node": ">=12"
+    "node": ">=15.6.0"
   },
   "typeCoverage": {
     "is": 99.5

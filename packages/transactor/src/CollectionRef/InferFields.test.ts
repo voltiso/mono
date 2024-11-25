@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -38,7 +39,6 @@ class Doctor extends Doc.with({
 	}
 
 	@method
-	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	async good() {
 		// await doctors(this.id).update({ specialty: 'fireman' })
 		return true

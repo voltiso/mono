@@ -85,6 +85,7 @@ $Assert.is<typeof defaultPatchOptions, PatchOptions>()
 
 //
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 	x: X,
 	patchValue: PatchValue,
@@ -152,6 +153,7 @@ export function forcePatch<X, PatchValue extends ForcePatchFor<X>>(
 				throw new TypeError(`forcePatch: cannot delete non-existing key ${key}`)
 
 			if (isDeleteIt(value) || isDeleteItIfPresent(value)) {
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (haveOldValue) {
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-dynamic-delete
 					delete res[key]

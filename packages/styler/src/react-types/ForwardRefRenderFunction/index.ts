@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './ForwardRefAndCssRenderFunction'
-export * from './ForwardRefRenderFunction'
-export * from './GetIntrinsicElement'
-export * from './GetNativeElement'
+export type * from './ForwardRefAndCssRenderFunction'
+export type * from './ForwardRefRenderFunction'
+export type * from './GetIntrinsicElement'
+export type * from './GetNativeElement'

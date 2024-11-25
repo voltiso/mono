@@ -5,11 +5,11 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		"module": "commonjs",
-		"moduleResolution": "node",
+		// "module": "commonjs",
+		// "moduleResolution": "node",
 
-		"declaration": false,
-		"declarationMap": false,
+		// "declaration": false,
+		// "declarationMap": false,
 
 		"paths": {
 			// "~": ["./src"],

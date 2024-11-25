@@ -3,8 +3,8 @@
 
 export * from './any'
 export * from './AnyImpl'
-export * from './AnyOptions'
-export * from './CustomAny'
+export type * from './AnyOptions'
+export type * from './CustomAny'
 export * from './CustomAnyImpl'
 export * from './defaultAnyOptions'
 export * from './IAny'

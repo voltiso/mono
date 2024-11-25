@@ -3,6 +3,7 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
 /* eslint-disable jest/require-hook */
 const { firestore, srcFirestore } = require('./common/index.cjs')
 

@@ -6,6 +6,6 @@ import * as util from 'node:util'
 
 const execAsync = util.promisify(exec)
 
-export async function killJava() {
+export async function killJava(): Promise<void> {
 	await execAsync('pkill java')
 }

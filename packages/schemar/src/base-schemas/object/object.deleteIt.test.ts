@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
+
 import * as s from '~'
 
 describe('object', () => {
@@ -22,9 +24,8 @@ describe('object', () => {
 		it('map', () => {
 			const sMyString = s.string.optional.map('test', () => undefined)
 
-			// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 			expect(sMyString.validate('test')).toBeUndefined()
-			// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+
 			expect(sMyString.validate('x')).toBe('x')
 
 			const a = s.object({ a: sMyString })

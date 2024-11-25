@@ -3,6 +3,8 @@
 
 import { randomUUID } from 'node:crypto'
 
+import { describe, expect, it } from '@jest/globals'
+
 import * as s from '~'
 
 const sOrderProduct = s.schema({

@@ -38,6 +38,5 @@ export interface ComponentClassLike<P = any> {
 }
 
 export type ElementTypeLike =
-	| IntrinsicElementLike
-	| ComponentClassLike
-	| FunctionComponentLike
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
+	IntrinsicElementLike | ComponentClassLike | FunctionComponentLike

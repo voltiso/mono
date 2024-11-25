@@ -9,9 +9,11 @@ import type { PropertyPathPartialOptions } from './PropertyPathString'
 //
 
 export type ReadonlyPropertyPath<
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	Obj extends unknown | NoArgument = NoArgument,
 > = readonly [...PropertyPath<Obj>]
 
+// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type PropertyPath<Obj extends unknown | NoArgument = NoArgument> = [
 	Obj,
 ] extends [NoArgument]

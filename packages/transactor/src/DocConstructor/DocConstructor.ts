@@ -218,7 +218,6 @@ export namespace DocConstructor {
 
 	export type WithOverrides<Old extends DocTI, New extends Partial<DocTI>> = [
 		DocConstructor<Override<Old, New>>,
-		// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 	][0]
 
 	export type MapPartialOptions<

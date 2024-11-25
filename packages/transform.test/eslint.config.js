@@ -28,5 +28,13 @@ export default defineEslintFlatConfig(...baseConfig, {
 		'@typescript-eslint/consistent-type-imports': 'off',
 		'@typescript-eslint/consistent-type-definitions': 'off',
 		'@typescript-eslint/no-magic-numbers': 'off',
+		'sonarjs/void-use': 'off',
+		'@typescript-eslint/no-unsafe-return': 'off',
+		'@typescript-eslint/no-unsafe-call': 'off',
+		'sonarjs/no-undefined-assignment': 'off',
+		'no-shadow-restricted-names': 'off',
+		'sonarjs/no-globals-shadowing': 'off',
+		'sonarjs/variable-name': 'off',
+		'@typescript-eslint/no-empty-function': 'off',
 	},
 })

@@ -13,6 +13,8 @@ export const defaultBigintOptions = Object.freeze({
 	Output: 0 as unknown as bigint,
 	Input: 0 as unknown as bigint,
 
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	min: undefined,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	max: undefined,
 })

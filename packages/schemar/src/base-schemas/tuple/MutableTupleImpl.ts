@@ -13,7 +13,7 @@ export class MutableTupleImpl<T extends $$Schemable[]> extends lazyConstructor(
 	() => CustomTupleImpl,
 )<{}> {
 	constructor(...shapeWithRest: T) {
-		// eslint-disable-next-line es-x/no-array-string-prototype-at
+		// eslint-disable-next-line es-x/no-array-prototype-at
 		const lastElement = shapeWithRest.at(-1)
 
 		const hasRest = isRest(lastElement)

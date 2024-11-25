@@ -17,14 +17,14 @@ function beforeLog() {
 	initialLogDone = true
 }
 
-export function logStrippedNode(node: ts.Node) {
+export function logStrippedNode(node: ts.Node): void {
 	beforeLog()
 	// eslint-disable-next-line no-console
 	console.log(
 		moduleIcon,
 		'strip',
 		chalk.blue(node.getText()),
-		chalk.gray(`\n  @`),
+		chalk.gray('\n  @'),
 		chalk.green(getNodePositionStr(node)),
 		'\n',
 	)

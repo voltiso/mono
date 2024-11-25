@@ -2,13 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable @typescript-eslint/naming-convention */
 
 import type { _ } from '~/object'
 
 import type { AlsoAccept } from '../AlsoAccept'
-
-/* eslint-disable no-magic-numbers */
 
 /** @internal */
 export interface _DecrementMap {
@@ -26,12 +23,8 @@ export interface _DecrementMap {
 	11: 10
 }
 
-// eslint-disable-next-line etc/no-internal
 export type DecrementArgument = _<keyof _DecrementMap>
 
+// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type $Decrement<X extends AlsoAccept<number> | DecrementArgument> =
-	// eslint-disable-next-line etc/no-internal
-	X extends keyof _DecrementMap
-		? // eslint-disable-next-line etc/no-internal
-			_DecrementMap[X]
-		: number
+	X extends keyof _DecrementMap ? _DecrementMap[X] : number

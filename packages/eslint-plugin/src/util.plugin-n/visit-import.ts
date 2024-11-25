@@ -1,18 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable etc/no-deprecated */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable promise/prefer-await-to-callbacks */
 /* eslint-disable default-param-last */
 /* eslint-disable @typescript-eslint/default-param-last */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable import/extensions */
 /* eslint-disable tsdoc/syntax */
 
 import * as path from 'node:path'
@@ -37,12 +31,14 @@ import stripImportPathParams from './strip-import-path-params.js'
  * @param callback - The callback function to get result.
  * @returns A list of found target's information.
  */
+// eslint-disable-next-line import/no-default-export
 export default function visitImport(
 	context: Rule.RuleContext,
 	{ includeCore = false, optionIndex = 0 } = {},
-	callback: any,
+	callback: (targets: ImportTarget[]) => unknown,
 ): RuleListener {
-	const targets = [] as any
+	const targets: ImportTarget[] = []
+	// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
 	const basedir = path.dirname(path.resolve(context.getFilename()))
 	const paths = getResolvePaths(context as never, optionIndex)
 	const options = {
@@ -71,6 +67,7 @@ export default function visitImport(
 
 	return {
 		// @ts-expect-error ...
+		// eslint-disable-next-line sonarjs/cyclomatic-complexity
 		[[
 			'ExportAllDeclaration',
 			'ExportNamedDeclaration',
@@ -98,6 +95,7 @@ export default function visitImport(
 			const name = sourceNode && stripImportPathParams(sourceNode.value)
 			// Note: "999" arbitrary to check current/future Node.js version
 			if (
+				// eslint-disable-next-line sonarjs/expression-complexity
 				name &&
 				(context.options[1]?.includeTypeOnly ||
 					(node.importKind !== 'type' && node.exportKind !== 'type')) &&

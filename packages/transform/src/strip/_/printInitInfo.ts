@@ -3,9 +3,9 @@
 
 import type { StripTransformOptions } from '../stripTransform.js'
 
-export function printInitInfo(pluginOptions: StripTransformOptions) {
+export function printInitInfo(pluginOptions: StripTransformOptions): void {
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
-	const isEnabled = !process.env.VOLTISO_STRIP_DISABLE
+	const isEnabled = !process.env['VOLTISO_STRIP_DISABLE']
 
 	if (isEnabled) {
 		if (pluginOptions.symbols?.length)
@@ -24,7 +24,7 @@ export function printInitInfo(pluginOptions: StripTransformOptions) {
 				)}`,
 			)
 	} /* isEnabled === false */ else {
-		// eslint-disable-next-line no-lonely-if
+		// eslint-disable-next-line no-lonely-if, sonarjs/no-lonely-if
 		if (pluginOptions.symbols?.length)
 			// eslint-disable-next-line no-console
 			console.warn(

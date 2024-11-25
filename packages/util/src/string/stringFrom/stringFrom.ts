@@ -20,6 +20,7 @@ export function isWithToString(x: unknown): x is WithToString {
 	return typeof f === 'function' && f !== Object.prototype.toString
 }
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function stringFrom_(x: unknown, options: StringFromOptions): string {
 	for (const [idx, ancestor] of options.context.path.entries()) {
 		if (x === ancestor)
@@ -55,7 +56,7 @@ export function stringFrom_(x: unknown, options: StringFromOptions): string {
 export function stringFrom(
 	x: unknown,
 	options?: Partial<StringFromOptions> | undefined,
-) {
+): string {
 	const p = overrideDefined(defaultToStringOptions, options || {})
 	let r = stringFrom_(x, p)
 

@@ -2,4 +2,4 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './defaultVoidOptions'
-export * from './VoidOptions'
+export type * from './VoidOptions'

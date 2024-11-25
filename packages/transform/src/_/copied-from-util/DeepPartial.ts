@@ -12,5 +12,4 @@ export type DeepPartial_<T> = [
 	{
 		[k in keyof T]?: DeepPartial_<T[k]>
 	},
-	// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 ][0]

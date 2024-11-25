@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { FC, RefObject } from 'react'
 
 import { style } from '~'
@@ -15,10 +16,7 @@ describe('ref', () => {
 
 		const ref: RefObject<HTMLButtonElement> = { current: null }
 
-		const Component: FC = () => {
-			//
-			return <Button ref={ref} />
-		}
+		const Component: FC = () => <Button ref={ref} />
 
 		renderApp(<Component />)
 

@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './CustomIntersection'
+export type * from './CustomIntersection'
 export * from './defaultIntersectionOptions'
 export * from './IIntersection'
 export * from './Intersection'
-export * from './IntersectionOptions'
+export type * from './IntersectionOptions'

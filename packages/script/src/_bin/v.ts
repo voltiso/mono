@@ -3,9 +3,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/cyclomatic-complexity */
+/* eslint-disable sonarjs/nested-control-flow */
 /* eslint-disable max-depth */
 
-// eslint-disable-next-line n/shebang
 import { spawn } from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
@@ -20,7 +21,6 @@ import type { Script } from '../Script'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 registerEsbuild()
 
 const commands = {
@@ -29,6 +29,7 @@ const commands = {
 
 type CommandName = keyof typeof commands
 
+// eslint-disable-next-line sonarjs/variable-name
 function isCommandName(string_: unknown): string_ is CommandName {
 	if (typeof string_ !== 'string') return false
 
@@ -125,7 +126,7 @@ async function runScript(
 	args: string[],
 	{ signal }: { signal?: AbortSignal | undefined } = {},
 ) {
-	// eslint-disable-next-line require-atomic-updates, no-param-reassign, @typescript-eslint/no-floating-promises
+	// eslint-disable-next-line require-atomic-updates, no-param-reassign
 	script = await script
 
 	if (Array.isArray(script)) {
@@ -140,7 +141,6 @@ async function runScript(
 
 	if (isParallelScript(script)) {
 		// TODO: use child signal with a separate controller?
-		// eslint-disable-next-line @typescript-eslint/promise-function-async
 		const promises = script.parallel.map(s => runScript(s, args, { signal })) // ! pass args?
 
 		try {
@@ -168,7 +168,6 @@ async function runScript(
 
 	if (isRaceScript(script)) {
 		// TODO: use child signal with a separate controller?
-		// eslint-disable-next-line @typescript-eslint/promise-function-async
 		const promises = script.race.map(s => runScript(s, args, { signal })) // ! pass args?
 		try {
 			await Promise.race(promises)
@@ -196,7 +195,7 @@ async function runScript(
 	if (tokens[0] === 'v')
 		tokens = tokens.slice(1)
 
-		// eslint-disable-next-line no-param-reassign
+		// eslint-disable-next-line no-param-reassign, sonarjs/no-unenclosed-multiline-block
 	;[script, ...args] = tokens as [string, ...string[]]
 
 	// eslint-disable-next-line no-console
@@ -224,6 +223,7 @@ async function runScript(
 	// eslint-disable-next-line promise/avoid-new
 	const cpPromise = new Promise<void>((resolve, reject) => {
 		// console.log('spawn', script, ...args)
+		// eslint-disable-next-line sonarjs/os-command
 		const childProcess = spawn([script, ...args].join(' '), {
 			shell: true,
 			stdio: 'inherit',
@@ -259,6 +259,7 @@ async function runScript(
 }
 
 async function main(): Promise<void> {
+	// eslint-disable-next-line sonarjs/process-argv
 	const args = process.argv.slice(2)
 
 	const commandNames = Object.keys(commands) as CommandName[]
@@ -283,7 +284,6 @@ async function main(): Promise<void> {
 	}
 
 	const controller = new AbortController()
-	// eslint-disable-next-line @typescript-eslint/prefer-destructuring
 	const signal = controller.signal
 
 	process.on('exit', () => {

@@ -47,6 +47,7 @@ export function dataHook<D extends object>(input: {
 
 //
 
+// eslint-disable-next-line sonarjs/function-return-type
 export function dataHook<D extends object>(input: unknown): DataHook<D> {
 	return new DataHook(input as never)
 }

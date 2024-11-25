@@ -12,7 +12,6 @@ import { ZoneContext } from './zone/ZoneContext'
  * - Note: ⚠️ `undefined` is not a valid context value!
  */
 export interface Context<T> {
-	// eslint-disable-next-line @typescript-eslint/method-signature-style
 	run<Return>(value: T, run: () => Return): Return
 
 	get value(): T
@@ -21,14 +20,14 @@ export interface Context<T> {
 }
 
 export interface ContextConstructor {
-	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	new <T>(): Context<T>
 }
 
 //
 
 function log(...messages: unknown[]) {
-	if (typeof window !== 'undefined') return
+	// eslint-disable-next-line es-x/no-global-this
+	if (typeof globalThis !== 'undefined') return
 
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	const nodeEnv = process.env['NODE_ENV'] as
@@ -49,14 +48,14 @@ function getContextConstructor(): ContextConstructor {
 		log(
 			'[@voltiso/context] ✅ Using NodeContext (`AsyncLocalStorage`) - do not patch the global `Promise`',
 		)
-		// eslint-disable-next-line etc/no-internal
+
 		return NodeContext
 	}
 
 	log(
 		'[@voltiso/context] ⚠️ Using ZoneContext (`zone.js`) - make sure `zone.js` is imported after any other global `Promise` object manipulation, and transpile all code to not include `async`/`await` syntax (ES2016 or earlier)',
 	)
-	// eslint-disable-next-line etc/no-internal
+
 	return ZoneContext
 }
 

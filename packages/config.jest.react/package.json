@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.jest.react",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -15,6 +15,21 @@
       },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./jest-globals": {
+      "types": {
+        "import": "./dist/esm/jest-globals/index.d.ts",
+        "require": "./dist/cjs/jest-globals/index.d.ts"
+      },
+      "import": "./dist/esm/jest-globals/index.js",
+      "require": "./dist/cjs/jest-globals/index.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "jest-globals": [
+        "dist/cjs/jest-globals"
+      ]
     }
   },
   "__________EXPORTS FALLBACK": "__________",
@@ -23,7 +38,8 @@
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist"
+    "dist",
+    "jest-globals/"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
@@ -46,13 +62,14 @@
     "build:esm:clean": "rimraf dist/esm",
     "build:esm:tsc": "tsc -b tsconfig.build.esm.json",
     "__________PREPARE": "__________",
+    "compatDirs": "v compatDirs write",
     "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
     "clean": "v clean"
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/jest-dom": "^6.6.3",
     "@voltiso/config.jest": "workspace:^",
     "jest-environment-jsdom": "^29.7.0",
     "resolve": "^1.22.8"

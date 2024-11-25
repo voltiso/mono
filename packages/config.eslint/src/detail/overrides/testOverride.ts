@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
 import jest from 'eslint-plugin-jest'
 // @ts-expect-error no typings
 import jestAsync from 'eslint-plugin-jest-async'
@@ -67,7 +66,6 @@ export const testOverride = defineEslintFlatConfig(
 		// ],
 
 		plugins: {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			jest,
 			'jest-async': jestAsync as never,
 			'jest-dom': jestDom as never,
@@ -80,7 +78,26 @@ export const testOverride = defineEslintFlatConfig(
 			...getAllRules(jestFormatting as never, 'jest-formatting', 'warn'),
 			...getAllRules(jestAsync as never, 'jest-async', 'warn'),
 
+			'es-x/no-class-instance-fields': 0,
+			'es-x/no-class-private-fields': 0,
+			'es-x/no-class-static-fields': 0,
+
 			'jest-async/expect-return': 2,
+			'react/react-in-jsx-scope': 0,
+
+			'sonarjs/void-use': 0,
+			'sonarjs/no-undefined-assignment': 0,
+			'sonarjs/redundant-type-aliases': 0,
+			'sonarjs/public-static-readonly': 0,
+			'sonarjs/use-type-alias': 0,
+			'sonarjs/bool-param-default': 0,
+			'sonarjs/no-dead-store': 0,
+			'sonarjs/anchor-has-content': 0,
+			'sonarjs/no-built-in-override': 0,
+			'sonarjs/new-cap': 0,
+			'sonarjs/no-primitive-wrappers': 0,
+			'sonarjs/jsx-no-useless-fragment': 0,
+			'sonarjs/variable-name': 0,
 
 			'etc/no-deprecated': 0,
 			'security/detect-non-literal-fs-filename': 0,
@@ -134,7 +151,7 @@ export const testOverride = defineEslintFlatConfig(
 			'func-style': 0,
 			'promise/avoid-new': 0,
 			'no-promise-executor-return': 0,
-			'jest/max-expects': 0, //! TODO: enable?
+			'jest/max-expects': 0,
 			'no-await-in-loop': 0,
 			'sonarjs/no-duplicate-string': 0,
 			'unicorn/no-await-expression-member': 0,

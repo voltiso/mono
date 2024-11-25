@@ -4,16 +4,16 @@
 import * as s from '@voltiso/schemar'
 import { $Assert, $dev } from '@voltiso/util'
 
-import type { Aggregator } from '~/Aggregator'
+import type { Aggregator } from '~/Aggregator/Aggregator'
 import type { DocTI, IS_DOC_TYPE_INFO } from '~/Doc/DocTI'
 import { sAutoId } from '~/schemas/sAutoId'
-import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
+import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger/Trigger'
 
 export interface DocDerivedData extends DocTI {
 	id: DocTI['id']
 
 	aggregates: {}
-	methods: {}
+	readonly methods: {}
 
 	readonly afters: readonly AfterTrigger[]
 	readonly beforeCommits: readonly Trigger.BeforeCommit[]

@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable no-magic-numbers */
 
 /** @internal */
 export type _GetArrayLength<Arr extends readonly unknown[]> =
@@ -43,6 +42,5 @@ export type _GetArrayLength<Arr extends readonly unknown[]> =
 
 /** @internal */
 export type _GetArrayLength_<X> = X extends readonly unknown[]
-	? // eslint-disable-next-line etc/no-internal
-		_GetArrayLength<X>
+	? _GetArrayLength<X>
 	: never

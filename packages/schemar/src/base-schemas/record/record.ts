@@ -79,6 +79,7 @@ export interface RecordConstructor {
 
 //
 
+// eslint-disable-next-line sonarjs/variable-name
 const Record_ = lazyConstructor(
 	() => RecordImpl,
 ) as unknown as RecordConstructor

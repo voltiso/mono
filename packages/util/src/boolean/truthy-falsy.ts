@@ -3,7 +3,6 @@
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-// eslint-disable-next-line no-magic-numbers
 export type Falsy = null | undefined | 0 | 0n | false | void | ''
 
 // export type IsFalsy<A, T = true, F = false> = A extends Falsy

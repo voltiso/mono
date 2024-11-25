@@ -12,7 +12,7 @@ function isJSONable(x: unknown): x is JSONable {
 	return typeof (x as JSONable | null)?.toJSON === 'function'
 }
 
-export function dump(o: unknown) {
+export function dump(o: unknown): string {
 	// console.log('dump', o)
 	return yamlDump(o, {
 		skipInvalid: true,

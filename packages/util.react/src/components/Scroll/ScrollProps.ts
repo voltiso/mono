@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ReactNode } from 'react'
+import type { JSX, ReactNode } from 'react'
 
 export interface ScrollProps {
 	as?: keyof JSX.IntrinsicElements | undefined

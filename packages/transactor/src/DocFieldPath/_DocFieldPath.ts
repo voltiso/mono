@@ -51,6 +51,7 @@ export class _DocFieldPath {
 		// this._context = ctx
 		// this._fields = fields
 
+		// eslint-disable-next-line sonarjs/cyclomatic-complexity
 		const getPromise = async () => {
 			const ctxOverride = ctx.transactor._transactionContext.tryGetValue
 
@@ -133,7 +134,7 @@ export class _DocFieldPath {
 			)
 		}
 
-		// eslint-disable-next-line no-constructor-return
+		// eslint-disable-next-line no-constructor-return, sonarjs/no-async-constructor
 		return new Proxy(protoLink(lazyPromise(getPromise), this), {
 			get: (target, p) => {
 				if (typeof p === 'symbol' || p in target)

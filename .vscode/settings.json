@@ -179,7 +179,7 @@
 		"source.fixAll.eslint": "explicit"
 	},
 
-	"eslint.experimental.useFlatConfig": true,
+	"eslint.useFlatConfig": true,
 
 	"eslint.codeActionsOnSave.mode": "all", // slower
 	// "eslint.codeActionsOnSave.mode": "problems", // faster
@@ -373,6 +373,7 @@
 		"Parens",
 		"Paulo",
 		"picomatch",
+		"pjson",
 		"pkill",
 		"plusplus",
 		"pnpm",

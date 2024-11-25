@@ -19,7 +19,6 @@ export namespace GetDocTag {
 
 	export type FromDocRelated<X extends $$DocRelatedLike> = Assume<
 		DocTag | AnyDoc,
-		// eslint-disable-next-line etc/no-internal
 		_Finalize<Simple<X>>
 	>
 

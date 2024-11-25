@@ -3,6 +3,7 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
 const { incrementIt, omit } = require('@voltiso/util')
 
 const { sVoltisoEntry } = require('@voltiso/transactor')

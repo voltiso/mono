@@ -6,13 +6,9 @@ exports[`callInfo simple 1`] = `
 var MyNamespace;
 (function (MyNamespace) {
     /** @callInfo */
-    function willAppend(_str, _info) {
-        //
-    }
+    function willAppend(_str, _info) { }
     MyNamespace.willAppend = willAppend;
-    function willNotAppend(_str, _info) {
-        //
-    }
+    function willNotAppend(_str, _info) { }
     MyNamespace.willNotAppend = willNotAppend;
 })(MyNamespace || (MyNamespace = {}));
 var A;
@@ -21,12 +17,8 @@ var A;
     (function (B) {
         class C {
             /** @callInfo */
-            willAppend(_x, _info) {
-                //
-            }
-            willNotAppend(_x, _info) {
-                //
-            }
+            willAppend(_x, _info) { }
+            willNotAppend(_x, _info) { }
         }
         B.C = C;
     })(B = A.B || (A.B = {}));
@@ -48,9 +40,9 @@ var Test;
                 },
                 packagePath: 'src/call-info/simple.ts',
                 gitPath: 'packages/transform.test/src/call-info/simple.ts',
-                position: 591,
-                line: 34,
-                column: 26,
+                position: 583,
+                line: 24,
+                column: 32,
                 astPath: [
                     'Test',
                     'start'
@@ -73,8 +65,8 @@ var Test;
                 },
                 packagePath: 'src/call-info/simple.ts',
                 gitPath: 'packages/transform.test/src/call-info/simple.ts',
-                position: 654,
-                line: 36,
+                position: 646,
+                line: 26,
                 column: 32,
                 astPath: [
                     'Test',

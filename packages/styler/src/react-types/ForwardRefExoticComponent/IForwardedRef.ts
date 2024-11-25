@@ -8,6 +8,7 @@ export interface IMutableRefObject {
 }
 
 export type IForwardedRef =
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| BivariantCallable<(instance: unknown | null) => void>
 	| IMutableRefObject
 	| null

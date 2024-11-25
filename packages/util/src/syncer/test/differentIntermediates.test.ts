@@ -4,6 +4,7 @@
 /* eslint-disable n/no-sync */
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { SyncerFunction, SyncerPromise } from '~/syncer'
 import { runAsync, runSync } from '~/syncer'

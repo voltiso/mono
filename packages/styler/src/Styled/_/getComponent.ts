@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ForwardedRef } from 'react'
+import type React from 'react'
 import { forwardRef } from 'react'
 
 import type { IForwardRefRenderFunction } from '~/_/StyledData'
@@ -14,13 +15,17 @@ import type { StyledTypeInfo } from '~/StyledTypeInfo'
 import { defineFunctionComponent } from './defineFunctionComponent'
 import { render } from './render'
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export type __hack_GetComponent = NativeOuterProps
 
-export function getComponent<
-	// eslint-disable-next-line @typescript-eslint/naming-convention
+export type GetComponentResult<
 	$ extends StyledTypeInfo & { Component: StylableLike },
->(data: StyledData<$>) {
+> = React.ForwardRefExoticComponent<
+	React.PropsWithoutRef<$['Props'] & OuterProps> & React.RefAttributes<unknown>
+>
+
+export function getComponent<
+	$ extends StyledTypeInfo & { Component: StylableLike },
+>(data: StyledData<$>): GetComponentResult<$> {
 	const elementName = getElementName(data.component)
 	const renderFunctionName = `StyledComponent<${elementName}>`
 	const forwardRefName = `forwardRef(${renderFunctionName})`
@@ -42,7 +47,6 @@ export function getComponent<
 
 	renderFunction.displayName = renderFunctionName
 
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const StyledComponent = defineFunctionComponent(
 		forwardRefName,
 		forwardRef<unknown, $['Props'] & OuterProps>(renderFunction),

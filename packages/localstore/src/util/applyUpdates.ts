@@ -10,10 +10,11 @@ import { deepCloneData } from '@voltiso/util.firestore'
 
 import { ArrayRemove, ArrayUnion, DeleteIt, IncrementIt } from '~/FieldValue.js'
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function applyUpdatesInPlace(
 	data: Database.DocumentData,
 	updates: Database.UpdateData,
-) {
+): void {
 	for (const [path, v] of Object.entries(updates)) {
 		const pathTokens = path.split('.')
 		let o = data as any

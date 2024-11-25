@@ -43,7 +43,7 @@ export interface ReactiveMemoOptions {
 export function useReactiveMemo<T>(
 	factory: (addDestructor: (destructor: Destructor) => void) => T,
 	deps: DependencyList,
-) {
+): T {
 	return useCustomReactiveMemo({}, factory, deps)
 }
 
@@ -51,7 +51,7 @@ export function useReactiveMemo<T>(
 export function useEagerReactiveMemo<T>(
 	factory: (addDestructor: (destructor: Destructor) => void) => T,
 	deps: DependencyList,
-) {
+): T {
 	return useCustomReactiveMemo({ isLazy: false }, factory, deps)
 }
 

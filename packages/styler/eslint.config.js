@@ -4,7 +4,6 @@
 // ! cannot use defineEslintFlatConfig - would introduce circular dependency
 // import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-// eslint-disable-next-line no-restricted-imports, @voltiso/file-extension-in-import
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 // eslint-disable-next-line no-restricted-imports
@@ -26,10 +25,16 @@ export default defineEslintFlatConfig(
 		},
 	},
 	{
-		files: ['**/no-strictNullChecks/**/*'],
+		files: [
+			'**/no-strictNullChecks/**/*',
+			'**/no-exactOptionalPropertyTypes/**/*',
+		],
 
 		rules: {
 			'@typescript-eslint/no-unnecessary-condition': 0, // requires `strictNullChecks`
+			'sonarjs/prefer-nullish-coalescing': 0, // requires `strictNullChecks`
+			'sonarjs/no-redundant-optional': 0,
+			'jest/prefer-importing-jest-globals': 0, // `toHaveStyle` does not work with this
 		},
 	},
 )

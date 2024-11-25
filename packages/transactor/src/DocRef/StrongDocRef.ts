@@ -41,6 +41,5 @@ export namespace DocRef {
 //
 
 export function isStrongDocRef(x: unknown): x is DocRef {
-	// eslint-disable-next-line etc/no-internal
 	return typeof x === 'object' && (x as _CustomDocRef | null)?.isStrong === true
 }

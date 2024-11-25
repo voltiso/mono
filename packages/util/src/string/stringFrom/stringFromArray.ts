@@ -17,7 +17,10 @@ function append(str: string, x: string) {
 	return `${str.slice(0, -1)}, ${x}]`
 }
 
-export function stringFromArray_(array: unknown[], options: StringFromOptions) {
+export function stringFromArray_(
+	array: unknown[],
+	options: StringFromOptions,
+): string {
 	if (array.length === 0) return '[]'
 
 	let result = baseResult
@@ -51,7 +54,7 @@ export function stringFromArray_(array: unknown[], options: StringFromOptions) {
 export function stringFromArray(
 	array: unknown[],
 	options?: NonStrictPartial<StringFromOptions> | undefined,
-) {
+): string {
 	const finalOptions = overrideDefined(defaultToStringOptions, options || {})
 	return stringFromArray_(array, finalOptions as never)
 }

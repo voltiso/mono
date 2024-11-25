@@ -35,7 +35,7 @@
 		//  - Otherwise, pollution happens e.g. when moving files between packages in a monorepo
 		"outDir": "_outDir_PLEASE_OVERRIDE",
 
-		// TODO: we may want to remove declaration maps when publishing?
+		// ! we may want to remove declaration maps when publishing?
 		// Allows easy jump-to-source in this monorepo
 		"declarationMap": true,
 

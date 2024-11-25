@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type * as s from '@voltiso/schemar'
 import { isValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
@@ -41,7 +43,6 @@ export class _Assertor {
 						const childName = `${this._name}.${propertyName}`
 						const childSchema = this._schema[property as never]
 
-						// eslint-disable-next-line etc/no-internal
 						const child = new _Assertor(childName, childSchema)
 
 						this._cache.set(propertyName, child)
@@ -65,7 +66,8 @@ export class _Assertor {
 			// eslint-disable-next-line no-nested-ternary
 			rest.length >= 2
 				? rest
-				: typeof rest[0] === 'string'
+				: // eslint-disable-next-line sonarjs/no-nested-conditional
+					typeof rest[0] === 'string'
 					? [rest[0], undefined]
 					: [undefined, rest[0]]
 
@@ -115,8 +117,6 @@ export type Assertor<S extends s.$$Schema, Exclude = never> = {
 	//
 
 	// or<Other extends t.$$Schemable>(other: Other): Assertor<t.Union<[S, Other]>, Exclude>
-
-	// eslint-disable-next-line etc/no-internal
 } & _AssertorMapped<
 	Omit<
 		S,
@@ -129,7 +129,6 @@ export type Assertor<S extends s.$$Schema, Exclude = never> = {
 	Exclude
 >
 
-// eslint-disable-next-line etc/no-internal
 export const Assertor = _Assertor as unknown as AssertorConstructor
 
 export type AssertorConstructor = new <S extends s.Schema>(

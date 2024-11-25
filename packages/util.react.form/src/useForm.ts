@@ -134,6 +134,7 @@ function _initializeResult<S extends $$SchemableObject>(
 					}
 				}
 
+				// eslint-disable-next-line sonarjs/void-use
 				void options.onSubmit(data$.value)
 			},
 

@@ -68,6 +68,7 @@ export declare namespace SchemarAnd {
 
 	//
 
+	// eslint-disable-next-line sonarjs/no-built-in-override
 	export namespace Object {
 		export type Get<Output, Input> =
 			IsIdentical<Output, Input> extends true

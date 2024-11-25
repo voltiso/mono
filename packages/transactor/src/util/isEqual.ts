@@ -10,7 +10,6 @@ import { deepEqual } from 'fast-equals'
 import { _CustomDocRef } from '~/DocRef'
 
 function filter(x: any): unknown {
-	// eslint-disable-next-line etc/no-internal
 	if (x instanceof _CustomDocRef) return x.toJSON()
 	else if (x?.constructor === Object) {
 		const r = {} as any
@@ -23,6 +22,6 @@ function filter(x: any): unknown {
 	} else return x
 }
 
-export function isEqual(a: unknown, b: unknown) {
+export function isEqual(a: unknown, b: unknown): boolean {
 	return deepEqual(filter(a), filter(b))
 }

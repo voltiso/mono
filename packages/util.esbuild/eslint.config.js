@@ -13,7 +13,7 @@ const config = [
 
 		languageOptions: {
 			sourceType: 'module',
-		}
+		},
 	},
 ]
 

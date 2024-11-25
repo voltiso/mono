@@ -5,10 +5,10 @@ export function addDays(date: Date, numDays: number): Date {
 	return new Date(new Date(date).setUTCDate(date.getUTCDate() + numDays))
 }
 
-export function nextDay(date: Date) {
+export function nextDay(date: Date): Date {
 	return addDays(date, 1)
 }
 
-export function prevDay(date: Date) {
+export function prevDay(date: Date): Date {
 	return addDays(date, -1)
 }

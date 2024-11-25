@@ -3,8 +3,8 @@
 
 export * from './bigint'
 export * from './BigintImpl'
-export * from './BigintOptions'
-export * from './CustomBigint'
+export type * from './BigintOptions'
+export type * from './CustomBigint'
 export * from './CustomBigintImpl'
 export * from './defaultBigintOptions'
 export * from './IBigint'

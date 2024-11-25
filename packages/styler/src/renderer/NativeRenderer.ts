@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable class-methods-use-this */
-
 import { assignStyle } from 'css-in-js-utils'
 import type { StyleObject } from 'css-in-js-utils/es/cssifyObject'
 

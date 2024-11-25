@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import { VoltisoUtilError } from '_/error/VoltisoUtilError'
 
 import { lazyConstructor } from '~/lazy/lazyConstructor'

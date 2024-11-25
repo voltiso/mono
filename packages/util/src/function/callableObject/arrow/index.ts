@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './_'
+export type * from './_'
 export * from './ArrowCallable'
-export * from './ArrowCallableOptions'
+export type * from './ArrowCallableOptions'
 export * from './EmptyArrowCallable'

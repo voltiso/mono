@@ -14,6 +14,7 @@
 		"noEmit": true,
 
 		"strictNullChecks": true,
+		"exactOptionalPropertyTypes": true,
 
 		"paths": {
 			"~": ["./src"],

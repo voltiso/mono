@@ -1,10 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 /* eslint-disable @typescript-eslint/class-methods-use-this */
 
-// eslint-disable-next-line @voltiso/file-extension-in-import
 import { SCHEMA_NAME } from '_'
 import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
@@ -23,7 +21,6 @@ import type { $$Schemable } from '~/types/Schemable/Schemable'
 import type { ISchemaInferrer } from './ISchemaInferrer'
 import type { UnknownSchemaOptions } from './UnknownSchemaOptions'
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export type __CustomSchemaInferrerImpl = InferSchema$NoReadonlyTuple_<[]>
 
 $fastAssert(SCHEMA_NAME)
@@ -38,6 +35,7 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements ISchemaInferrer
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'SchemaInferrer' as const
 
 	constructor(o: O) {
@@ -46,8 +44,7 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 		return BoundCallable_(this) as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this
-	[CALL]<S extends $$Schemable>(schemable: S) {
+	[CALL]<S extends $$Schemable>(schemable: S): InferSchema$NoReadonlyTuple_<S> {
 		return infer(schemable)
 	}
 }

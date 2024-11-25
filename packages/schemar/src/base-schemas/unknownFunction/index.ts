@@ -1,10 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './CustomUnknownFunction'
+export type * from './CustomUnknownFunction'
 export * from './CustomUnknownFunctionImpl'
 export * from './defaultUnknownFunctionOptions'
 export * from './IUnknownFunction'
 export * from './unknownFunction'
 export * from './UnknownFunctionImpl'
-export * from './UnknownFunctionOptions'
+export type * from './UnknownFunctionOptions'

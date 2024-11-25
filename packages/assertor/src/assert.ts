@@ -48,10 +48,12 @@ export interface AssertFunction {
 	schema<S extends $$Schemable>(
 		schema: S,
 		value: Type<S> | AlsoAccept<unknown>,
+		// eslint-disable-next-line sonarjs/variable-name
 		__callInfo?: CallInfo | undefined,
 	): asserts value is Type<S>
 
 	/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
+	// eslint-disable-next-line sonarjs/variable-name
 	not(value: unknown, __callInfo?: CallInfo | undefined): asserts value is Falsy
 
 	//
@@ -83,6 +85,7 @@ export interface AssertFunction {
 
 	readonly array: Assertor<typeof s.array>
 
+	// eslint-disable-next-line sonarjs/no-built-in-override
 	instance<C extends Constructor>(constructor: C): Assertor<Instance<C>>
 }
 
@@ -211,6 +214,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 
 			//
 
+			// eslint-disable-next-line sonarjs/no-built-in-override
 			instance(constructor: Constructor) {
 				return new Assertor(
 					`${name}.instance`,
@@ -221,6 +225,7 @@ const _getAssert: (name: string) => AssertFunction = name =>
 			//
 
 			/** @callInfo 🖨️ Use `@voltiso/transform/call-info` to append call information as the last argument */
+			// eslint-disable-next-line sonarjs/variable-name
 			not(value: unknown, __callInfo?: CallInfo | undefined) {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				const assertor = _getAssertor(`${name}.not`, s.falsy) as any

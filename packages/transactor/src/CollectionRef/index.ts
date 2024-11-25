@@ -3,6 +3,6 @@
 
 export * from './CollectionRef'
 export * from './CollectionRefPattern'
-export * from './InferFields'
-export * from './InferMethods'
-export * from './InferTI'
+export type * from './InferFields'
+export type * from './InferMethods'
+export type * from './InferTI'

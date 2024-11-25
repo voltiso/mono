@@ -23,7 +23,7 @@ declare global {
 		readonly EXTENDS: EXTENDS
 	}
 
-	// eslint-disable-next-line vars-on-top, no-var
+	// eslint-disable-next-line vars-on-top, no-var, sonarjs/no-var
 	var voltisoSchemar: VoltisoSchemar
 }
 

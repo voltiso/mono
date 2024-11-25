@@ -1,5 +1,5 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './AutoStylableIntrinsic'
-export * from './StylableIntrinsic'
+export type * from './AutoStylableIntrinsic'
+export type * from './StylableIntrinsic'

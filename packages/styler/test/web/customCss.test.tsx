@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -128,6 +129,7 @@ describe('customCss', () => {
 	it('hoc', () => {
 		expect.hasAssertions()
 
+		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		function marginY(x: Property.Margin | number | boolean): Css {
 			if (typeof x === 'boolean' && !x) return {}
 			const margin = typeof x === 'boolean' ? 123 : x

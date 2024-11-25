@@ -1,10 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable jsdoc/require-returns-type */
-/* eslint-disable @typescript-eslint/prefer-optional-chain */
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-
 import type { Rule } from 'eslint'
 
 // eslint-disable-next-line tsdoc/syntax
@@ -21,8 +17,7 @@ const DEFAULT_VALUE = Object.freeze(['.js', '.json', '.node'])
 function get(
 	option?: { tryExtensions: string[] } | undefined,
 ): string[] | null {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (option && option.tryExtensions && Array.isArray(option.tryExtensions)) {
+	if (option?.tryExtensions && Array.isArray(option.tryExtensions)) {
 		return option.tryExtensions.map(String)
 	}
 
@@ -46,7 +41,7 @@ export function getTryExtensions(
 ): readonly string[] {
 	return (
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
-		get(context.options && context.options[optionIndex]) ||
+		get(context.options?.[optionIndex]) ||
 		get(
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
 			context.settings && (context.settings['n'] || context.settings['node']),

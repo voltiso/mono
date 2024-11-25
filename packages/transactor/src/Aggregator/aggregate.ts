@@ -28,7 +28,7 @@ export interface AggregateFunction {
 	}
 }
 
-export const aggregate: AggregateFunction = (_source?) => ({
+export const aggregate: AggregateFunction = _source => ({
 	into: (_target, aggregateName) => ({
 		with(handlers) {
 			return new AggregatePlugin(aggregateName, handlers as never) as never

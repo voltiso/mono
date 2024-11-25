@@ -6,7 +6,7 @@ import * as fs from 'node:fs/promises'
 export async function writeFirebaseJson(params: {
 	port: number
 	firebaseJsonPath: string
-}) {
+}): Promise<void> {
 	const firebaseJson = {
 		emulators: {
 			ui: {

@@ -83,9 +83,7 @@ export interface UnknownMutableArray$
 		Output: unknown[]
 		Input: unknown[]
 	}> {
-	<S extends $$Schemable>(
-		elementSchema: S,
-	): MutableArray$<RelaxSchema_<S>>
+	<S extends $$Schemable>(elementSchema: S): MutableArray$<RelaxSchema_<S>>
 }
 
 export interface UnknownReadonlyArray$

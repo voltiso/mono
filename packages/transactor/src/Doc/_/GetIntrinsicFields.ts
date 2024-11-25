@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
 import type { Type_ } from '@voltiso/schemar'
 import type { $Override_ } from '@voltiso/util'
 
@@ -20,7 +18,6 @@ export namespace GetVoltisoEntry {
 		? $Override_<
 				VoltisoEntry,
 				{
-					// eslint-disable-next-line etc/no-internal
 					aggregateTarget: _$GetAggregateTarget<Type_<TI['aggregates']>>
 				}
 			>

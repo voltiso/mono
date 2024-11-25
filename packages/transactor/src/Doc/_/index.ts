@@ -1,12 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './ExecutionContext'
-export * from './GDoc'
-export * from './GetAggregatePromises'
-export * from './GetData'
-export * from './GetDocFields'
-export * from './GetIntrinsicFields'
-export * from './GetMethodPromises'
-export * from './NewFields'
+export type * from './ExecutionContext'
+export type * from './GDoc'
+export type * from './GetAggregatePromises'
+export type * from './GetData'
+export type * from './GetDocFields'
+export type * from './GetIntrinsicFields'
+export type * from './GetMethodPromises'
+export type * from './NewFields'
 export * from './triggerCreators'

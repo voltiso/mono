@@ -1,8 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export function patchRequireForEsbuild() {
-	// eslint-disable-next-line n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention
+export function patchRequireForEsbuild(): void {
+	// eslint-disable-next-line n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports
 	const Module = require('node:module') as NodeRequire
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -22,6 +22,6 @@ export function patchRequireForEsbuild() {
 	}
 	Object.setPrototypeOf(newRequire, originalRequire)
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, sonarjs/class-prototype
 	Module.prototype.require = newRequire
 }

@@ -55,6 +55,7 @@ function getLoaderFromFilename(filename: string): string {
 
 // console.log('config.jest/transform', { isCjs })
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getJestTransform(options?: { format?: 'cjs' | 'esm' }) {
 	return {
 		process(source: string, filename: string) {

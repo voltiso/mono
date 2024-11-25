@@ -7,7 +7,6 @@ import {
 	getAllRules,
 } from '@voltiso/config.eslint.lib'
 import voltisoPlugin from '@voltiso/eslint-plugin'
-// @ts-expect-error no typings
 import nPlugin from 'eslint-plugin-n'
 
 import { codeFiles } from '~/detail/files'
@@ -16,7 +15,7 @@ const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/handle-callback-err': 1,
 	'n/no-callback-literal': 1,
 	'n/no-exports-assign': 1,
-	'n/no-extraneous-import': 1,
+	'n/no-extraneous-import': 0, // ! stopped working with TS path mappings? ("paths")
 	'n/no-extraneous-require': 1,
 	'n/no-missing-import': 0, // handled by `import/no-unresolved` instead (works better for `index.js` files)
 	'n/no-missing-require': 1,
@@ -31,7 +30,7 @@ const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	'n/no-unsupported-features': 0,
 
 	'n/no-unsupported-features/es-builtins': 1,
-	'n/no-unsupported-features/es-syntax': 0, //! disabled
+	'n/no-unsupported-features/es-syntax': 0, // ! disabled
 	'n/no-unsupported-features/node-builtins': 1,
 	'n/process-exit-as-throw': 1,
 	'n/shebang': 1,
@@ -54,7 +53,6 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'@voltiso/file-extension-in-import': [
 		'warn',
 		'always',
-		// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 		Object.fromEntries(codeFiles.map(ext => [ext.slice(1 + 3), 'never'])),
 	],
 

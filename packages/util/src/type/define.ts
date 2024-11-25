@@ -32,7 +32,6 @@ export interface DefineTypeOptions {
 }
 
 export interface DefaultDefineTypeOptions extends DefineTypeOptions {
-	// eslint-disable-next-line no-magic-numbers
 	MakeMutableDepth: 10
 	Skip: Primitive | Callable | Newable
 }

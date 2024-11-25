@@ -20,6 +20,7 @@ export class CustomUnknownImpl<O extends UnknownOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknown<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Unknown' as const
 
 	constructor(options: O) {

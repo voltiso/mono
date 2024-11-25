@@ -1,12 +1,17 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { createPatch, fastAssert } from '@voltiso/util'
+import { $AssumeType, createPatch, fastAssert } from '@voltiso/util'
 import chalk from 'chalk'
 
 import type { Doc } from '~/Doc'
 import type { DocDerivedData } from '~/DocConstructor'
-import type { AfterTriggerParams, Trigger, TriggerParams } from '~/Trigger'
+import type {
+	AfterTrigger,
+	AfterTriggerParams,
+	Trigger,
+	TriggerParams,
+} from '~/Trigger'
 import { dump } from '~/util'
 
 function assertBefore(
@@ -64,167 +69,224 @@ function logTrigger(
 
 //
 
+export function createAfterTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+	// f: TI extends any ? GI<TI> extends any ? AfterTrigger<GI<TI>> : never : never,
+): void {
+	$AssumeType<{ afters: AfterTrigger[] }>(mutableMetadata)
+
+	mutableMetadata.afters.push(function (
+		this: Doc | null,
+		params: AfterTriggerParams,
+	) {
+		logTrigger(name, 'after', 'ANY', params)
+		return Function.prototype.call.call(trigger, this, params) as never
+	})
+}
+
 export function withAfter<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 	// f: TI extends any ? GI<TI> extends any ? AfterTrigger<GI<TI>> : never : never,
 ): TI {
-	// $AssumeType<AfterTrigger<GI<TI>>>(trigger)
-	return {
-		..._,
-
-		afters: [
-			..._.afters,
-			function (this: Doc | null, params: AfterTriggerParams) {
-				logTrigger(name, 'after', 'ANY', params)
-				return Function.prototype.call.call(trigger, this, params) as never
-			},
-		],
-	}
+	const newData = { ...oldData, afters: [...oldData.afters] }
+	createAfterTrigger(newData, name, trigger)
+	return newData
 }
 
 //
 
+export function createAfterUpdateTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+): void {
+	$AssumeType<{ afters: AfterTrigger[] }>(mutableMetadata)
+
+	mutableMetadata.afters.push(function (
+		this: Doc | null,
+		params: AfterTriggerParams,
+	) {
+		if (params.before && this) {
+			logTrigger(name, 'after', 'UPDATE', params)
+			assertBefore(params)
+			assertAfter(params)
+			return Function.prototype.call.call(trigger, this, params) as never
+		} else return undefined
+	})
+}
+
 export function withAfterUpdate<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 ): TI {
-	// $AssumeType<AfterTrigger<GI<TI>, true, true>>(trigger)
-	return {
-		..._,
+	const newData = { ...oldData, afters: [...oldData.afters] }
+	createAfterUpdateTrigger(newData, name, trigger)
+	return newData
+}
 
-		afters: [
-			..._.afters,
-			function (this: Doc | null, params: AfterTriggerParams) {
-				if (params.before && this) {
-					logTrigger(name, 'after', 'UPDATE', params)
-					assertBefore(params)
-					assertAfter(params)
-					return Function.prototype.call.call(trigger, this, params) as never
-				} else return undefined
-			},
-		],
-	}
+//
+
+export function createAfterDeleteTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+): void {
+	$AssumeType<{ afters: AfterTrigger[] }>(mutableMetadata)
+
+	mutableMetadata.afters.push(function (
+		this: Doc | null,
+		params: AfterTriggerParams,
+	) {
+		// eslint-disable-next-line unicorn/no-negated-condition
+		if (!this) {
+			logTrigger(name, 'after', 'DELETE', params)
+			assertBefore(params)
+			assertNotAfter(params)
+			return Function.prototype.call.call(trigger, this, params) as never
+		} else return undefined
+	})
 }
 
 export function withAfterDelete<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 ): TI {
-	// $AssumeType<AfterTrigger<GI<TI>, true, false>>(trigger)
-	return {
-		..._,
+	const newData = { ...oldData, afters: [...oldData.afters] }
+	createAfterDeleteTrigger(newData, name, trigger)
+	return newData
+}
 
-		afters: [
-			..._.afters,
-			function (this: Doc | null, params: AfterTriggerParams) {
-				// eslint-disable-next-line unicorn/no-negated-condition
-				if (!this) {
-					logTrigger(name, 'after', 'DELETE', params)
-					assertBefore(params)
-					assertNotAfter(params)
-					return Function.prototype.call.call(trigger, this, params) as never
-				} else return undefined
-			},
-		],
-	}
+//
+
+export function createAfterCreateOrUpdateTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+): void {
+	$AssumeType<{ afters: AfterTrigger[] }>(mutableMetadata)
+
+	mutableMetadata.afters.push(function (
+		this: Doc | null,
+		params: AfterTriggerParams,
+	) {
+		if (this) {
+			logTrigger(name, 'after', 'CREATE or UPDATE', params)
+			assertAfter(params)
+			return Function.prototype.call.call(trigger, this, params) as never
+		} else return undefined
+	})
 }
 
 export function withAfterCreateOrUpdate<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 ): TI {
-	// $AssumeType<AfterTrigger<GI<TI>, boolean, true>>(trigger)
-	return {
-		..._,
+	const newData = { ...oldData, afters: [...oldData.afters] }
+	createAfterCreateOrUpdateTrigger(newData, name, trigger)
+	return newData
+}
 
-		afters: [
-			..._.afters,
-			function (this: Doc | null, params: AfterTriggerParams) {
-				if (this) {
-					logTrigger(name, 'after', 'CREATE or UPDATE', params)
-					assertAfter(params)
-					return Function.prototype.call.call(trigger, this, params) as never
-				} else return undefined
-			},
-		],
-	}
+//
+
+export function createAfterCreateTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+): void {
+	$AssumeType<{ afters: AfterTrigger[] }>(mutableMetadata)
+
+	mutableMetadata.afters.push(function (
+		this: Doc | null,
+		params: AfterTriggerParams,
+	) {
+		if (!params.before && params.after) {
+			logTrigger(name, 'after', 'CREATE', params)
+			fastAssert(this)
+			assertNotBefore(params)
+			assertAfter(params)
+			return Function.prototype.call.call(trigger, this, params) as never
+		} else return undefined
+	})
 }
 
 export function withAfterCreate<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 ): TI {
-	// $AssumeType<AfterTrigger<GI<TI>, false, true>>(trigger)
-	return {
-		..._,
+	const newData = { ...oldData, afters: [...oldData.afters] }
+	createAfterCreateTrigger(newData, name, trigger)
+	return newData
+}
 
-		afters: [
-			..._.afters,
-			function (this: Doc | null, params: AfterTriggerParams) {
-				if (!params.before && params.after) {
-					logTrigger(name, 'after', 'CREATE', params)
-					fastAssert(this)
-					assertNotBefore(params)
-					assertAfter(params)
-					return Function.prototype.call.call(trigger, this, params) as never
-				} else return undefined
-			},
-		],
-	}
+//
+
+export function createBeforeCommitTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+): void {
+	$AssumeType<{ beforeCommits: unknown[] }>(mutableMetadata)
+
+	mutableMetadata.beforeCommits.push(function (
+		this: Doc | null,
+		p: TriggerParams.BeforeCommit,
+	) {
+		const before = this?.dataWithId() || null
+		const after = this?.dataWithId() || null
+		logTrigger(name, 'before', 'COMMIT', {
+			...p,
+			before,
+			after,
+		})
+		return Function.prototype.call.call(trigger, this, p) as never
+	})
 }
 
 export function withBeforeCommit<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 ): TI {
-	// $AssumeType<Trigger.BeforeCommit<CustomDoc<TI, 'inside'>>>(trigger)
-	return {
-		..._,
+	const newData = { ...oldData, beforeCommits: [...oldData.beforeCommits] }
+	createBeforeCommitTrigger(newData, name, trigger)
+	return newData
+}
 
-		beforeCommits: [
-			..._.beforeCommits,
-			function (this: Doc | null, p: TriggerParams.BeforeCommit) {
-				const before = this?.dataWithId() || null
-				const after = this?.dataWithId() || null
-				logTrigger(name, 'before', 'COMMIT', {
-					...p,
-					before,
-					after,
-				})
-				return Function.prototype.call.call(trigger, this, p) as never
-			},
-		],
-	}
+//
+
+export function createOnGetTrigger<TI extends DocDerivedData>(
+	mutableMetadata: TI,
+	name: string,
+	trigger: Trigger,
+): void {
+	$AssumeType<{ onGets: unknown[] }>(mutableMetadata)
+
+	mutableMetadata.onGets.push(function (this: Doc | null, p: TriggerParams) {
+		const before = this?.dataWithId() || null
+		const after = this?.dataWithId() || null
+		logTrigger(name, 'on', 'GET', {
+			...p,
+			before,
+			after,
+		})
+		return Function.prototype.call.call(trigger, this, p) as never
+	})
 }
 
 export function withOnGet<TI extends DocDerivedData>(
-	_: TI,
+	oldData: TI,
 	name: string,
 	trigger: Trigger,
 ): TI {
-	// $AssumeType<Trigger.BeforeCommit<GI<TI>>>(trigger)
-	return {
-		..._,
-
-		onGets: [
-			..._.onGets,
-			function (this: Doc | null, p: TriggerParams) {
-				const before = this?.dataWithId() || null
-				const after = this?.dataWithId() || null
-				logTrigger(name, 'on', 'GET', {
-					...p,
-					before,
-					after,
-				})
-				return Function.prototype.call.call(trigger, this, p) as never
-			},
-		],
-	}
+	const newData = { ...oldData, onGets: [...oldData.onGets] }
+	createOnGetTrigger(newData, name, trigger)
+	return newData
 }

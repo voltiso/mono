@@ -23,7 +23,6 @@ export const eslintComments = defineEslintFlatConfig(
 		},
 
 		rules: {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			...getAllRules(eslintCommentsPlugin as never, 'eslint-comments', 'warn'),
 
 			'eslint-comments/require-description': 0,

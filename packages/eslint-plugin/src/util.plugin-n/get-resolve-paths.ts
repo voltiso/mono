@@ -34,7 +34,7 @@ function get(option: { resolvePaths?: unknown } | undefined) {
 function getResolvePaths(
 	context: RuleContext<string, unknown[]>,
 	optionIndex = 0,
-) {
+): string[] | readonly never[] {
 	return (
 		get(context.options?.[optionIndex] as never) ||
 		get(context.settings?.['node'] as never) ||
@@ -48,4 +48,5 @@ getResolvePaths.schema = {
 	uniqueItems: true,
 }
 
+// eslint-disable-next-line import/no-default-export
 export default getResolvePaths

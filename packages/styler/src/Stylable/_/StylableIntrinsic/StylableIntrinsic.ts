@@ -4,7 +4,7 @@
 import type { Props } from '~/react-types'
 import type { IsReactNative } from '~/util'
 
-//! slow - not needed with all JSX properties being optional
+// ! slow - not needed with all JSX properties being optional
 // type StylableIntrinsic<P extends Props> = IsReactNative extends false
 // 	? {
 // 			[k in keyof JSX.IntrinsicElements]: Required<
@@ -15,7 +15,7 @@ import type { IsReactNative } from '~/util'
 // 	  }[keyof JSX.IntrinsicElements]
 // 	: never
 
-//! still slow
+// ! still slow
 export type StylableIntrinsicElement_<P extends Props> = P extends any
 	? IsReactNative extends false
 		? Partial<P> extends P
@@ -30,7 +30,7 @@ export type StylableIntrinsicElement_<P extends Props> = P extends any
 		: never
 	: never
 
-//! faster
+// ! faster
 // type StylableIntrinsic<P extends Props> = P extends unknown
 // 	? IsReactNative extends false
 // 		? Partial<P> extends P
@@ -47,6 +47,7 @@ export type IntrinsicElement = IsReactNative extends false
 	? keyof JSX.IntrinsicElements
 	: never
 
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type IStylableIntrinsicElement = IntrinsicElement
 
 // export type IStylableIntrinsic = IsReactNative extends false

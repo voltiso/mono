@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 
@@ -23,6 +24,7 @@ class _Cls {
 	}
 
 	_val: string | number
+
 	_staticRef: (number | bigint | symbol)[]
 
 	static readonly _staticData: (number | bigint | symbol)[] = []
@@ -56,6 +58,7 @@ function call(s: symbol): typeof _Cls
 function call(b: bigint): typeof _Cls
 function call(b: string): string
 
+// eslint-disable-next-line sonarjs/function-return-type
 function call(
 	this: typeof _Cls,
 	arg: bigint | symbol | string,
@@ -84,6 +87,7 @@ describe('callableConstructor', () => {
 
 		expect(() => cls()).toThrow('not a function')
 
+		// eslint-disable-next-line sonarjs/inconsistent-function-call
 		const value = Cls('aaa')
 
 		expect(value).toBe('aaa')
@@ -93,6 +97,7 @@ describe('callableConstructor', () => {
 
 		const cls3 = new Cls3('3')
 
+		// eslint-disable-next-line sonarjs/inconsistent-function-call
 		const cls2 = new Cls2('2')
 
 		expect(cls2._val).toBe('2')

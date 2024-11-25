@@ -3,6 +3,7 @@
 
 .tsc-out/
 _outDir_PLEASE_OVERRIDE
+.VSCodeCounter/
 
 node_modules/
 

@@ -1,6 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './_'
+export type * from './_'
 export * from './defaultSchemaOptions'
-export * from './SchemaOptions'
+export type * from './SchemaOptions'

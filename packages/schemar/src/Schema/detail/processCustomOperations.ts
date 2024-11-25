@@ -40,6 +40,7 @@ export function _processCustomOperations(
 
 	let value = input.value
 
+	// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 	for (const operation of input.schema.getCustomOperations) {
 		if (operation.type === 'check') {
 			if (!operation.checkIfValid(value)) {
@@ -51,8 +52,8 @@ export function _processCustomOperations(
 							description:
 								typeof operation.expectedDescription === 'function'
 									? operation.expectedDescription(value as never)
-									: operation.expectedDescription ||
-										`pass custom check (${operation.checkIfValid.toString()})`,
+									: (operation.expectedDescription ??
+										`pass custom check (${operation.checkIfValid.toString()})`),
 						},
 
 						received: { value },
@@ -71,12 +72,12 @@ export function _processCustomOperations(
 				const result = schema(operation.condition).exec(nextValue, {
 					onUnknownProperty: 'ignore',
 				})
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (result.isValid) {
 					nextValue = result.value
 				} else continue // skip this operation
 			}
 
-			// eslint-disable-next-line etc/no-internal
 			value = _guardedTransform(operation, nextValue) // undefined to delete
 		} else throw new SchemarError('Internal: unknown custom operation type')
 	}
@@ -115,6 +116,6 @@ export function _process(input: ProcessInput): ProcessResult {
 	if (issues.length > 0) return { value: input.value, issues }
 
 	// custom operations are processed only until first issue
-	// eslint-disable-next-line etc/no-internal
+
 	return _processCustomOperations(input)
 }

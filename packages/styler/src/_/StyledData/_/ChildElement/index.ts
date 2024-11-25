@@ -1,5 +1,5 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './ChildElement'
-export * from './IChildElement'
+export type * from './ChildElement'
+export type * from './IChildElement'

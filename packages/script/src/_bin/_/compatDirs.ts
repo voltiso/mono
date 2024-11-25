@@ -30,6 +30,7 @@ type CommandName = keyof typeof subCommands
 
 const subCommandNames = Object.keys(subCommands) as CommandName[]
 
+// eslint-disable-next-line sonarjs/variable-name
 function isMyCommandName(string_: unknown): string_ is CommandName {
 	if (typeof string_ !== 'string') return false
 
@@ -42,7 +43,7 @@ export const compatDirs: Command = ({ commandArgs }) => {
 	if (rest.length > 0)
 		throw new VoltisoScriptError('compatDirs expects at most 1 argument')
 
-	const commandName = _commandName || 'get'
+	const commandName = _commandName ?? 'get'
 
 	if (!isMyCommandName(commandName)) {
 		const message = [

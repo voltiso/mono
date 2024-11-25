@@ -20,6 +20,7 @@ export function lazyPromise<T, ARGS extends unknown[]>(
 		then: (f, r) => {
 			if (!promise) promise = getPromise(...args)
 
+			// eslint-disable-next-line @typescript-eslint/use-unknown-in-catch-callback-variable
 			return promise.then(f, r)
 		},
 	}

@@ -14,7 +14,7 @@
  * @param x - Variable to narrow type of
  * @returns `{toType<T>()}`
  */
-export function narrow<X>(x: X) {
+export function narrow<X>(x: X): { toType<T extends X>(): T } {
 	return {
 		toType<T extends X>(): T {
 			return x as T

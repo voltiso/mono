@@ -4,18 +4,111 @@
 // ! Not extending `@voltiso/config.ts` to avoid cyclic deps
 
 {
-	"compilerOptions": {
-		"noEmit": true,
+	"$schema": "https://json.schemastore.org/tsconfig",
 
+	// "files": [],
+	"include": [
+		"/**/*",
+		"/**/.*"
+		// "/**/.*/**/*"
+		// "/**/.*/**/*.md"
+		//
+	],
+
+	"exclude": [
+		"/**/node_modules/**/*",
+		"/**/dist/**/*",
+		"/**/.turbo/**/*",
+		"/**/.tsc-out/**/*",
+		"/**/.*/**/*" // Hidden dirs (works?)
+		//
+	],
+
+	"compilerOptions": {
 		"target": "ESNext",
 		"moduleResolution": "node",
 
 		"esModuleInterop": true,
 		"strictNullChecks": true,
+		"exactOptionalPropertyTypes": true,
 
 		"paths": {
 			"~": ["./src"],
 			"~/*": ["./src/*"]
-		}
+		},
+
+		"noEmit": true,
+		"outDir": "_outDir_PLEASE_OVERRIDE",
+
+		// ! we may want to remove declaration maps when publishing?
+		// Allows easy jump-to-source in this monorepo
+		"declarationMap": true,
+
+		"declaration": true,
+
+		"sourceMap": true,
+
+		//
+
+		"lib": ["ESNext"], // allow everything, but `eslint-plugin-es-x` will complain
+		// "lib": ["ES2021", "ES2022.Error", "ES2022.Array"], // 2022-08-11 - no `Object.ownKeys` (ES2022) in Safari
+		// "lib": ["ESNext", "DOM", "DOM.Iterable"],
+		// "module": "CommonJS", // default - for jest config files, etc.
+		"module": "ESNext", // Unused - tsup?
+
+		//
+		// ____________________ Node 16 recommended ____________________
+		// https://github.com/tsconfig/bases/blob/main/bases/node16.json
+		// "lib": ["ES2021"],
+		// "module": "CommonJS",
+		// "target": "ES2021",
+
+		"strict": true,
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		// ____________________ Node 16 recommended ____________________
+		//
+
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+
+		"allowJs": true,
+		"checkJs": true,
+
+		"jsx": "react-jsx", // For ts-jest - also next.js does not transpile node_modules by default
+		// "jsx": "preserve", // for next.js - they implement their own transforms
+
+		"disableSizeLimit": true,
+
+		//
+		// ______________________ STRICT options _______________________
+		"alwaysStrict": true,
+		"strictBindCallApply": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"useUnknownInCatchVariables": true,
+		//
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"allowUnusedLabels": false, // Undefined = warning
+		"allowUnreachableCode": false, // Undefined = warning
+		//
+
+		// "importsNotUsedAsValues": "error", // deprecated in TS 5
+		"verbatimModuleSyntax": false, // ? good? // since TS 5 - not supported by ts-patch yet
+		// "ignoreDeprecations": "5.0", // since TS 5
+
+		"preserveValueImports": false
+		// ______________________ STRICT options _______________________
+		//
 	}
 }

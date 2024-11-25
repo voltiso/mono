@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { IsAny, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { ComponentProps } from 'react'
@@ -16,8 +17,8 @@ import type {
 	IStyledComponent,
 	OuterProps,
 	Props,
-	StylableLike,
 	StyledComponentLike,
+	StyledSubject,
 } from '~'
 
 describe('StyledComponent', () => {
@@ -36,8 +37,8 @@ describe('StyledComponent', () => {
 		$Assert.is<A, IStyledComponent>()
 		$Assert.is<A, IStyled>()
 
-		$Assert.is<A, StyledComponentLike<StylableLike, Props>>()
-		$Assert.is<A, StyledComponentLike<StylableLike, {}>>()
+		$Assert.is<A, StyledComponentLike<StyledSubject, Props>>()
+		$Assert.is<A, StyledComponentLike<StyledSubject, {}>>()
 	})
 
 	it('type - second argument', () => {
@@ -52,7 +53,7 @@ describe('StyledComponent', () => {
 
 		$Assert.is<
 			GetStyledComponent<{ Component: 'button'; Props: {} }>,
-			StyledComponentLike<StylableLike, {}>
+			StyledComponentLike<StyledSubject, {}>
 		>()
 
 		$Assert.is<
@@ -62,7 +63,7 @@ describe('StyledComponent', () => {
 
 		$Assert.is<
 			GetStyledComponent<{ Component: 'button'; Props: { abc: 1 } }>,
-			StyledComponentLike<StylableLike, { abc: 1 }>
+			StyledComponentLike<StyledSubject, { abc: 1 }>
 		>()
 	})
 
@@ -77,12 +78,12 @@ describe('StyledComponent', () => {
 		}
 
 		$Assert.is<
-			GetStyledComponent<{ Component: StylableLike; Props: RequiredProps }>,
+			GetStyledComponent<{ Component: StyledSubject; Props: RequiredProps }>,
 			IStyledComponent
 		>()
 
 		$Assert.is<
-			GetStyledComponent<{ Component: StylableLike; Props: RequiredProps }>,
+			GetStyledComponent<{ Component: StyledSubject; Props: RequiredProps }>,
 			IStyledComponent
 		>()
 

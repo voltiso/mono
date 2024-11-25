@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -37,7 +38,7 @@ describe('SubjectTree with schema', () => {
 		// $Assert<B>()
 
 		/** Simplified typings if `Input === Output` */
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
 		// @ts-expect-error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! new TS bug?
 		$Assert<IsIdentical<typeof subject, SubjectTree<{ str: string }>>>()
 	})

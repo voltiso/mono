@@ -3,6 +3,6 @@
 
 import { isDefined } from '../isDefined'
 
-export function definedOr(a: unknown, b: unknown) {
+export function definedOr(a: unknown, b: unknown): unknown {
 	return isDefined(a) ? a : b
 }

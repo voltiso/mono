@@ -37,10 +37,11 @@ export function stringFromCss(css: Css): string {
 				// eslint-disable-next-line no-nested-ternary
 				typeof v === 'string'
 					? `${k}:${escapeValue(v)};`
-					// eslint-disable-next-line no-nested-ternary
-					: typeof v === 'object'
+					: // eslint-disable-next-line no-nested-ternary, sonarjs/no-nested-conditional
+						typeof v === 'object'
 						? `${k}{${stringFromCss(v)}}`
-						: isUnitlessProperty(k)
+						: // eslint-disable-next-line sonarjs/no-nested-conditional
+							isUnitlessProperty(k)
 							? `${k}:${v};`
 							: `${k}:${v}px;`,
 			)
@@ -48,7 +49,7 @@ export function stringFromCss(css: Css): string {
 	)
 }
 
-export function stringFromCssSelectors(cssSelectors: CssSelectors) {
+export function stringFromCssSelectors(cssSelectors: CssSelectors): string {
 	return Object.entries(cssSelectors)
 		.map(([k, v]) => `${k}{${stringFromCss(v as never)}}`)
 		.join('')

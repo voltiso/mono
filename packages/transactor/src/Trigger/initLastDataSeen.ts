@@ -9,7 +9,10 @@ import type { CacheEntry } from '~/Transaction/Cache'
 
 import type { IntrinsicFields } from '..'
 
-export function initLastDataSeen(ctx: WithDocRef, cacheEntry: CacheEntry) {
+export function initLastDataSeen(
+	ctx: WithDocRef,
+	cacheEntry: CacheEntry,
+): void {
 	if (cacheEntry.lastDataSeenByAfters || cacheEntry.originalData === undefined)
 		return
 

@@ -1,6 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/cyclomatic-complexity */
+/* eslint-disable @typescript-eslint/no-deprecated */
+/* eslint-disable sonarjs/deprecation */
+/* eslint-disable sonarjs/nested-control-flow */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable tsdoc/syntax */
 
@@ -9,13 +13,23 @@
  * @author Thomas Grainger
  */
 
-import path from 'node:path'
+import * as path from 'node:path'
 
 import { getFileExtensions } from 'eslint-module-utils/ignore'
-import moduleVisitor from 'eslint-module-utils/moduleVisitor'
-import resolve from 'eslint-module-utils/resolve'
+import moduleVisitorModule from 'eslint-module-utils/moduleVisitor'
+import resolveModule from 'eslint-module-utils/resolve'
 
 import { createRule } from '~/util'
+
+const moduleVisitor =
+	// @ts-expect-error es interop
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	(moduleVisitorModule.default as typeof moduleVisitorModule) ??
+	moduleVisitorModule
+
+// @ts-expect-error es interop
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+const resolve = (resolveModule.default as typeof resolveModule) ?? resolveModule
 
 /**
  * Convert a potentially relative path from node utils into a true relative
@@ -58,6 +72,7 @@ export const noUselessPathSegments = createRule<
 
 		docs: {
 			description: 'removes useless path segments',
+			// @ts-expect-error legacy
 			recommended: 'recommended',
 		},
 
@@ -82,12 +97,10 @@ export const noUselessPathSegments = createRule<
 
 	create(context) {
 		const currentDir = path.dirname(
-			// eslint-disable-next-line etc/no-deprecated, @typescript-eslint/no-unnecessary-condition
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			context.getPhysicalFilename
-				? // eslint-disable-next-line etc/no-deprecated
-					context.getPhysicalFilename()
-				: // eslint-disable-next-line etc/no-deprecated
-					context.getFilename(),
+				? context.getPhysicalFilename()
+				: context.getFilename(),
 		)
 		const options = context.options[0]
 

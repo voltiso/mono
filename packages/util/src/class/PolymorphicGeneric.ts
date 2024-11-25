@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type { Generics } from '~/Generics-augmentation'
 import type { AlsoAccept, Override } from '~/type'
 
@@ -88,7 +90,7 @@ export class PolymorphicGeneric<O extends {}> {
 	readonly options: this[OPTIONS] & this[HIDDEN_OPTIONS]
 
 	/** Static */
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get defaultOptions(): this[DEFAULT_OPTIONS] &
 		Rebind<this, this[DEFAULT_OPTIONS]>[HIDDEN_OPTIONS] {
 		return {}

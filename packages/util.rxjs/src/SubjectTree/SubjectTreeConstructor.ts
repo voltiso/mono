@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type { $$Schemable, Input_, Output_, Schemable } from '@voltiso/schemar'
 import type {
 	DEFAULT_OPTIONS,
@@ -120,7 +122,17 @@ export class SubjectTreeConstructor<
 		}) as never
 	}
 
-	withSchema<S extends $$Schemable>(schema: S) {
+	withSchema<S extends $$Schemable>(
+		schema: S,
+	): // return type auto-inferred
+	SubjectTreeConstructor<{
+		[k in keyof (Required<SubjectTreeTypeOptionsFromOptions<{ schema: S }>> &
+			Omit<
+				TO,
+				keyof SubjectTreeTypeOptionsFromOptions<{ schema: S }>
+			>)]: (Required<SubjectTreeTypeOptionsFromOptions<{ schema: S }>> &
+			Omit<TO, keyof SubjectTreeTypeOptionsFromOptions<{ schema: S }>>)[k]
+	}> {
 		return this.with({ schema })
 	}
 }

@@ -1,4 +1,8 @@
-# `@voltiso/transform/inline`
+# `@voltiso/transform`
+
+A set of TS transformers to be applied using `ts-patch`.
+
+## `@voltiso/transform/inline`
 
 Type-alias-inlining using either:
 
@@ -16,7 +20,7 @@ Config:
 ⚠️ Currently only checks if type names are in scope - but does not check if the
 types are equal!
 
-# `@voltiso/transform/strip`
+## `@voltiso/transform/strip`
 
 Strip symbols such as asserts from production code.
 
@@ -25,3 +29,17 @@ Config:
 - `modules: string[]` - comment-out import declarations with given prefixes
 - `symbols: string[]` - comment-out instructions containing `tokens` (function
   calls, etc.)
+
+## `@voltiso/transform/compat`
+
+### Numeric separators
+
+Removes numeric separators from the compiled code.
+
+### Import extensions
+
+#### Pitfalls
+
+- Please use the `@typescript-eslint/explicit-module-boundary-types` rule.
+  Otherwise the transformer might fail for some fringe cases. This is not a big
+  issue, as exporting types explicitly might speed up type-checking anyway.

@@ -5,7 +5,6 @@ import type { CALL, WithCALL } from '~/function'
 import type { NoArgument } from '~/type'
 
 /** @internal Use `CallableWithCall` instead */
-// eslint-disable-next-line etc/underscore-internal
 export type IArrowCallableWithCALL = WithCALL & WithCALL[CALL]
 
 /** @internal Use `CallableWithCall` instead */
@@ -18,9 +17,7 @@ export type _ArrowCallableWithCALL<T extends WithCALL> = T &
 export type ArrowCallableWithCALL<
 	T extends WithCALL | NoArgument = NoArgument,
 > = T extends NoArgument
-	? // eslint-disable-next-line etc/no-internal
-		IArrowCallableWithCALL
+	? IArrowCallableWithCALL
 	: T extends WithCALL
-		? // eslint-disable-next-line etc/no-internal
-			_ArrowCallableWithCALL<T>
+		? _ArrowCallableWithCALL<T>
 		: never

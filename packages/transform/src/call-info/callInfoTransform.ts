@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/no-nested-functions */
+
 import type { TransformContext } from '@voltiso/transform.lib'
 import {
 	_getPackageForFile,
@@ -33,10 +35,10 @@ export function callInfoTransform(program: ts.Program, pluginOptions?: object) {
 	const typeChecker = program.getTypeChecker()
 
 	return (transformationContext: ts.TransformationContext) =>
-		(sourceFile: ts.SourceFile) => {
+		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			const ctx: TransformContext = {
 				program,
-				options: pluginOptions || {},
+				options: pluginOptions ?? {},
 				transformationContext,
 				sourceFile,
 				typeChecker,
@@ -76,7 +78,6 @@ export function callInfoTransform(program: ts.Program, pluginOptions?: object) {
 								node.typeArguments?.map(arg => arg.getText()) || [],
 
 							location: {
-								// eslint-disable-next-line etc/no-internal
 								..._getPackageForFile(filePath),
 
 								gitPath: getGitRelativePath(filePath),

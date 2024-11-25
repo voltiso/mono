@@ -14,6 +14,8 @@ export { a as a3 } from '../compat/test/index.js';
 export { a as a2 } from './test/index.js';
 export { abc } from '../_/index.js';
 export type testA = typeof import('./numericSeparators.js');
+export type testB = import('./test/index.js').A;
+export type testC = import('./test/index.js').A;
 export { default as jsonTest } from '../../package.json';
 //# sourceMappingURL=importExtensions.d.ts.map"
 `;

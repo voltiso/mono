@@ -20,7 +20,7 @@ export function collectSymbolNames(node: ts.Node): Set<string> {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
 		const symbol: SymbolObject = (node.typeName as any)?.symbol
 
-		result.add(getSymbolPath(symbol)[0] || node.typeName.text)
+		result.add(getSymbolPath(symbol)[0] ?? node.typeName.text)
 	}
 
 	const typeParameters = isWithTypeParameters(node)

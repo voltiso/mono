@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import { $assert } from '@voltiso/assertor'
 import { Context } from '@voltiso/context'
 import type * as FirestoreLike from '@voltiso/firestore-like'
@@ -111,6 +113,7 @@ export class Transactor extends Db {
 
 		$AssumeType<TransactorConstructorParametersNoUndefined, typeof args>(args)
 
+		// eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
 		switch (args.length) {
 			case 1:
 				;[partialOptions] = args
@@ -190,15 +193,15 @@ export class Transactor extends Db {
 		return runTransaction(this, body, ...args)
 	}
 
-	get requireSchemas() {
+	get requireSchemas(): boolean {
 		return this._options.requireSchemas
 	}
 
-	set requireSchemas(x) {
+	set requireSchemas(x: boolean) {
 		this._options.requireSchemas = x
 	}
 
-	get partial() {
+	get partial(): boolean {
 		return this._options.partial
 	}
 
@@ -206,7 +209,7 @@ export class Transactor extends Db {
 		this._options.partial = x
 	}
 
-	get readOnly() {
+	get readOnly(): boolean {
 		return this._options.readOnly
 	}
 
@@ -214,7 +217,7 @@ export class Transactor extends Db {
 		this._options.readOnly = value
 	}
 
-	get refCounters() {
+	get refCounters(): boolean {
 		return this._options.refCounters
 	}
 }

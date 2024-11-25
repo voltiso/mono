@@ -21,7 +21,7 @@ $fastAssert(OPTIONS)
 $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnionImpl<O> {
 	readonly [BASE_OPTIONS]: UnionOptions
 	readonly [DEFAULT_OPTIONS]: UnionOptions.Default
@@ -32,6 +32,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnion<O>, IUnion
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Union' as const
 
 	get getSchemas(): this[OPTIONS]['schemas'] {

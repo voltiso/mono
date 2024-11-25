@@ -20,6 +20,7 @@ export function recordCall<TValueSchema extends $$Schemable>(
 	valueSchema: TValueSchema,
 ): CustomUnknownObject.Index<UnknownObject, Schema<keyof any>, TValueSchema>
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function recordCall(...args: any): any {
 	return object.index(...(args as [any]))
 }

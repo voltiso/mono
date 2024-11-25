@@ -20,7 +20,7 @@ function _deepMerge(objectA: Rso, objectB: Rso) {
 	return result
 }
 
-export function deepMerge<Objs extends readonly object[]>(...objs: Objs) {
+export function deepMerge<Objs extends readonly object[]>(...objs: Objs): {} {
 	let r = {}
 
 	for (const object of objs) {

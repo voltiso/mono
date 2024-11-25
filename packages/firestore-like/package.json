@@ -54,13 +54,14 @@
   },
   "devDependencies": {
     "@firebase/app-types": "^0.9.0",
+    "@jest/globals": "^29.7.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "firebase": "^10.7.1",
-    "firebase-admin": "^12.0.0",
+    "firebase": "^11.0.2",
+    "firebase-admin": "^13.0.1",
     "typescript": "^5.6.3",
     "typescript-transform-paths": "^3.5.2"
   }

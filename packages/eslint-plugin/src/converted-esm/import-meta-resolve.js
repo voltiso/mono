@@ -290,6 +290,7 @@ function getMessage(key, args, self) {
 		)
 		return Reflect.apply(message, self, args)
 	}
+	/* cSpell:disable-next-line */
 	const expectedLength = (message.match(/%[dfijoOs]/g) || []).length
 	;(0, import_assert.default)(
 		expectedLength === args.length,
@@ -390,7 +391,7 @@ function emitLegacyIndexDeprecation(url, packageJsonUrl, base, main) {
 			)}, excluding the full filename and extension to the resolved file at "${path4.slice(
 				pkgPath.length,
 			)}", imported from ${basePath}.
- Automatic extension resolution of the "main" field isdeprecated for ES modules.`,
+ Automatic extension resolution of the "main" field is deprecated for ES modules.`,
 			'DeprecationWarning',
 			'DEP0151',
 		)

@@ -6,12 +6,10 @@ exports[`compat undefined 1`] = `
 const a = void 0;
 const b = a;
 export function shadowSameType() {
-    // eslint-disable-next-line no-shadow-restricted-names
     const undefined = b;
     return undefined;
 }
 export function shadowDifferentType() {
-    // eslint-disable-next-line no-shadow-restricted-names
     const undefined = 123;
     return undefined;
 }

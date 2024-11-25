@@ -22,7 +22,8 @@ export function parseSelectors(str: string): ParseSelectorResult {
 					// eslint-disable-next-line no-nested-ternary
 					s.includes('&')
 						? s
-						: s.startsWith(':') || s.startsWith('[')
+						: // eslint-disable-next-line sonarjs/no-nested-conditional
+							s.startsWith(':') || s.startsWith('[')
 							? `&${s}`
 							: `& ${s}`,
 				),

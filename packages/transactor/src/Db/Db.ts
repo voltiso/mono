@@ -5,12 +5,15 @@ import { BoundCallable, CALL } from '@voltiso/util'
 
 import { CollectionRef } from '~/CollectionRef/CollectionRef'
 import { CollectionRefPattern } from '~/CollectionRef/CollectionRefPattern'
-import type { IndexedDoc } from '~/Doc'
-import type { GetDocRef, WeakDocRef } from '~/DocRef'
-import { CustomDocRef, DocRefPattern } from '~/DocRef'
+import type { IndexedDoc } from '~/Doc/IndexedDoc'
+import { CustomDocRef } from '~/DocRef/CustomDocRef'
+import { DocRefPattern } from '~/DocRef/DocRefPattern'
+import type { GetDocRef } from '~/DocRef/GetDocRef'
+import type { WeakDocRef } from '~/DocRef/WeakDocRef'
 import type { AnyDoc } from '~/DocTypes'
-import type { DbPathFromString, DocPath } from '~/Path'
-import { concatPath, CustomDocPath } from '~/Path'
+import { concatPath } from '~/Path/concatPath'
+import type { DbPathFromString, DocPath } from '~/Path/Path'
+import { CustomDocPath } from '~/Path/Path'
 
 import type { CanonicalPath } from './CanonicalPath'
 import type { DbContext, DbParentContext } from './Context'
@@ -27,6 +30,7 @@ export interface Db {
 /** In transaction or not */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Db {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	protected _context: DbContext
 
 	constructor(parentContext: DbParentContext) {

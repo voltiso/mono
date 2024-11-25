@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { $assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 
@@ -77,7 +78,7 @@ describe('raw-transaction', function () {
 		await db.runTransaction(async db => {
 			const adam = await db('user/adam').set({ age: 123, x: 2, arr: [1, 2, 3] })
 			adam.data['age'] = 234
-			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+
 			delete adam.data['x']
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 			;(adam.data['arr'] as any).push(4)

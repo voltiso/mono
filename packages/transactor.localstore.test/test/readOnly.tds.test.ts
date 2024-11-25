@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import { Doc } from '@voltiso/transactor'
 
@@ -19,12 +20,13 @@ declare module '@voltiso/transactor' {
 }
 
 const dateIsoStringRegex =
+	// eslint-disable-next-line sonarjs/regular-expr
 	/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/u
 
 const sDateIsoString = s.string.regex(dateIsoStringRegex)
 
 const emailRegex =
-	// eslint-disable-next-line security/detect-unsafe-regex, no-control-regex, unicorn/escape-case, unicorn/no-hex-escape, regexp/no-super-linear-move, regexp/control-character-escape, regexp/sort-character-class-elements, regexp/no-control-character, regexp/no-dupe-characters-character-class, regexp/require-unicode-regexp, regexp/no-useless-non-capturing-group
+	// eslint-disable-next-line security/detect-unsafe-regex, no-control-regex, unicorn/escape-case, unicorn/no-hex-escape, regexp/no-super-linear-move, regexp/control-character-escape, regexp/sort-character-class-elements, regexp/no-control-character, regexp/no-dupe-characters-character-class, regexp/require-unicode-regexp, regexp/no-useless-non-capturing-group, sonarjs/regular-expr, sonarjs/slow-regex, sonarjs/regex-complexity, sonarjs/sonar-no-control-regex, sonarjs/duplicates-in-character-class
 	/(?:[a-z\d!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z\d!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z\d](?:[a-z\d-]*[a-z\d])?\.)+[a-z\d](?:[a-z\d-]*[a-z\d])?|\[(?:(?:(2(5[0-5]|[0-4]\d)|1\d{2}|[1-9]?\d))\.){3}(?:(2(5[0-5]|[0-4]\d)|1\d{2}|[1-9]?\d)|[a-z\d-]*[a-z\d]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
 const sEmail = s.string.regex(emailRegex)
@@ -49,12 +51,12 @@ class Meeting extends Doc('meetings').with({
 		endsAt: sDateIsoString,
 
 		attendeeId: sMyUserId,
-		attendeeDisplayName: s.string.optional, //!
+		attendeeDisplayName: s.string.optional, // !
 		attendeeEmail: sEmail.optional,
 
 		cancelledBy: s.string.optional,
 		language: sLanguage,
-		modifiedAt: sDateIsoString.optional, //!
+		modifiedAt: sDateIsoString.optional, // !
 		presenterEndsAt: sDateIsoString,
 		presenterId: sMyUserId,
 
@@ -67,13 +69,13 @@ class Meeting extends Doc('meetings').with({
 		surveyAnswer: s.object, // TODO
 		surveyAnswers: s.object.optional, // TODO
 
-		isCheckedIn: s.boolean.optional, //!
+		isCheckedIn: s.boolean.optional, // !
 
-		registeredAt: sDateIsoString.optional, //!
+		registeredAt: sDateIsoString.optional, // !
 
 		isDeleted: s.boolean,
 
-		version: s.number.optional, //!
+		version: s.number.optional, // !
 	},
 }) {}
 

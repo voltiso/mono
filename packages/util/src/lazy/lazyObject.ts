@@ -26,6 +26,7 @@ export function lazyObject<T extends object>(getValue: () => T): T {
 	function load() {
 		if (state.value === undefined) {
 			state.value = getValue()
+
 			$fastAssert(state.value !== undefined, 'lazyObject: got undefined')
 			// assign(obj, value)
 		}

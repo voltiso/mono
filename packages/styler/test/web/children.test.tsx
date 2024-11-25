@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { ComponentProps, ReactNode } from 'react'
@@ -23,7 +24,6 @@ describe('children', () => {
 	it('no implicit children for React.forwardRef', () => {
 		const Button = style('button')
 
-		// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 		const Inner = forwardRef<HTMLButtonElement, {}>((props, ref) => (
 			<Button ref={ref} {...props} />
 		))

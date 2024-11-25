@@ -51,6 +51,7 @@ const librariesToTransform = [
 // console.log('config.jest', isCjs ? 'cjs' : 'esm')
 // console.log({dirname})
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 	const transform: Record<string, string> = {}
 
@@ -84,6 +85,8 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 		],
 
 		transform,
+
+		injectGlobals: false, // import from `@jest/globals`
 
 		setupFilesAfterEnv: [
 			path.join(dirname, 'setup-after-env.js'),

@@ -38,6 +38,7 @@ export function infer(x: $$Schemable): $$Schema {
  *
  * - Especially in generic contexts
  */
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function infer_(x: $$Schemable): $$Schema {
 	if (isSchema(x)) {
 		return x as never

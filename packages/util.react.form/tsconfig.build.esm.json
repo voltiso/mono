@@ -10,8 +10,8 @@
 		"outDir": "dist/esm",
 		"rootDir": "src",
 
-		"declaration": false,
-		"declarationMap": false,
+		// "declaration": false,
+		// "declarationMap": false,
 
 		"paths": {
 			"~": ["./src"],

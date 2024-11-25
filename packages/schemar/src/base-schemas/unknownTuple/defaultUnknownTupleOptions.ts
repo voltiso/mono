@@ -12,7 +12,9 @@ export const defaultUnknownTupleOptions = Object.freeze({
 	Output: 0 as unknown as unknown[],
 	Input: 0 as unknown as unknown[],
 
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	minLength: undefined,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	maxLength: undefined,
 
 	isReadonlyTuple: false as const,

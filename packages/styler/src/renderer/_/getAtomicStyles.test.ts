@@ -1,9 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
+
 import { WebRenderer } from '../WebRenderer'
 import { getAtomicStyles } from './getAtomicStyles'
 
+// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
 describe('getAtomicStyles', () => {
 	it('simple', () => {
 		expect(

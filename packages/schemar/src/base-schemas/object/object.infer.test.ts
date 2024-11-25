@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -16,6 +17,6 @@ describe('infer object - readonly', () => {
 
 		type A = typeof mySchema.Output
 
-		$Assert<IsIdentical<A, { a: { b: readonly [{ readonly c: number }] } }>>() //! hmm
+		$Assert<IsIdentical<A, { a: { b: readonly [{ readonly c: number }] } }>>() // ! hmm
 	})
 })

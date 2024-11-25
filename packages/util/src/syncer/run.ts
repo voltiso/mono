@@ -35,6 +35,7 @@ export async function runAsync<Return, Intermediate>(
 			if (isIterable(generated)) {
 				next = await runAsync(generated)
 			} else if (isSyncerNested(generated)) {
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (generated.onAsyncStart) {
 					const promise = lazyPromise(() => runAsync(generated.syncerIterator))
 					await generated.onAsyncStart(promise)

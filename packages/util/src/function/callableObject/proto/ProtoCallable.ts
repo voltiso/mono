@@ -15,11 +15,9 @@ export type __unused_ProtoCallable = typeof clone
 export type ProtoCallable<
 	Options extends ProtoCallableOptions | NoArgument = NoArgument,
 > = Options extends NoArgument
-	? // eslint-disable-next-line etc/no-internal
-		IProtoCallable
+	? IProtoCallable
 	: Options extends ProtoCallableOptions
-		? // eslint-disable-next-line etc/no-internal
-			_ProtoCallable<Options>
+		? _ProtoCallable<Options>
 		: never
 
 //

@@ -65,7 +65,7 @@ export async function callMethod<
 			assert(ctxOverride)
 			const { transaction, db } = ctxOverride
 			cache = transaction._cache
-			// eslint-disable-next-line etc/no-internal
+
 			return (db.doc(path) as unknown as _CustomDocRef)._callMethod(
 				method as never,
 				args,

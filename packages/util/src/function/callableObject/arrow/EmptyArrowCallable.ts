@@ -35,8 +35,8 @@ export function EmptyArrowCallable<
 	const callableObject = func.bind(null as never)
 
 	// clean up own properties of the function object (name, length, caller, callee, arguments, prototype, ...)
-	//! * deleting symbols should generally not be needed... just for forward-compatibility, just in case
-	//! * NOTE: this silently fails under react-native, after Expo upgrade (new Hermes engine version?)
+	// ! * deleting symbols should generally not be needed... just for forward-compatibility, just in case
+	// ! * NOTE: this silently fails under react-native, after Expo upgrade (new Hermes engine version?)
 	tryDeleteAllProperties(callableObject)
 
 	$expect(Object.getOwnPropertyDescriptors(callableObject)).toStrictEqual({})

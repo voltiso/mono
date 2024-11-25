@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
 import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 
 export const unusedImports = defineEslintFlatConfig({

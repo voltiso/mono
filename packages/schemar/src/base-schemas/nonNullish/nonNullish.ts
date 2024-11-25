@@ -65,6 +65,7 @@ export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
 export class CustomNonNullishImpl<
 	O extends Partial<NonNullishOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'NonNullish' as const
 
 	declare readonly [BASE_OPTIONS]: NonNullishOptions
@@ -86,12 +87,12 @@ export class CustomNonNullishImpl<
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return '{}'
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.')
 	}

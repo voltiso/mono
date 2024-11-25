@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable no-magic-numbers */
 
 import type { Throw } from './_/error'
 import type { IsCompatible, NoArgument } from './type'

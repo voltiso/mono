@@ -12,7 +12,7 @@ export async function runMigration<D extends $$Doc>(
 	ctx: WithTransactor,
 	doc: D,
 	migration: Migration<D>,
-) {
+): Promise<void> {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!doc) return
 	$AssumeType<Doc>(doc)
@@ -33,7 +33,7 @@ export async function runMigrations<D extends $$Doc>(
 	ctx: WithTransactor,
 	doc: D,
 	migrations: Migration<D>[],
-) {
+): Promise<void> {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!doc) return
 

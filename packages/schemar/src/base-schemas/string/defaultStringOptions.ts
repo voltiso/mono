@@ -13,7 +13,9 @@ export const defaultStringOptions = Object.freeze({
 	Output: 0 as unknown as string,
 	Input: 0 as unknown as string,
 
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	minLength: undefined,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	maxLength: undefined,
 	regExps: [] as [],
 })

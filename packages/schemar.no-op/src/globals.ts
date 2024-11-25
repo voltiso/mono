@@ -14,9 +14,11 @@ export const readonlyTuple = _schema as typeof s.readonlyTuple
 export const array = _schema as typeof s.array
 export const readonlyArray = _schema as typeof s.readonlyArray
 
+// eslint-disable-next-line sonarjs/variable-name
 const function_ = _schema as typeof s.function
 export { function_ as function }
 
+// eslint-disable-next-line sonarjs/variable-name
 const void_ = _schema as typeof s.void
 export { void_ as void }
 
@@ -35,12 +37,14 @@ export const instance = _schema as typeof s.instance
 export const literal = _schema as typeof s.literal
 export const never = _schema as typeof s.never
 
+// eslint-disable-next-line sonarjs/variable-name
 const null_ = _schema as typeof s.null
 export { null_ as null }
 
 export const object = _schema as typeof s.object
 export const record = _schema as typeof s.record
 
+// eslint-disable-next-line sonarjs/variable-name
 const undefined_ = _schema as typeof s.undefined
 export { undefined_ as undefined }
 

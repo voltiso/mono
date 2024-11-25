@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type { NonStrictPartial } from '@voltiso/util'
 import { stringFrom } from '@voltiso/util'
 
@@ -18,7 +20,7 @@ export class ValidationIssueImpl implements ValidationIssue {
 	received?: SchemarReceived
 
 	constructor(p: ValidationIssueInput) {
-		this.severity = p.severity || 'error'
+		this.severity = p.severity ?? 'error'
 		this.path = p.path || []
 
 		if (p.name) this.name = p.name
@@ -27,6 +29,7 @@ export class ValidationIssueImpl implements ValidationIssue {
 		if (p.received) this.received = p.received
 	}
 
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	toString(
 		options?: { skipReceived?: boolean | undefined } | undefined,
 	): string {
@@ -56,7 +59,7 @@ export class ValidationIssueImpl implements ValidationIssue {
 			const have =
 				'value' in this.received && this.received.description
 					? `${this.received.description} (${stringFrom(this.received.value)})`
-					: this.received.description || stringFrom(this.received.value)
+					: (this.received.description ?? stringFrom(this.received.value))
 
 			const part = `(got ${have})`
 			r.push(part)

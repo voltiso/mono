@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
 import type { ForwardRefRenderFunction } from 'react'
 
 import type { Css } from '~/Css'
@@ -26,12 +24,14 @@ import type { InnerProps } from './InnerProps'
 export type StylableLike =
 	| StylableJsxCallLike
 	| StylableJsxConstructLike
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| IntrinsicElementLike
 
 /** Element types that can be styled using style(...) */
 export type IStylable =
 	| IStylableJsxCall
 	| IStylableJsxConstruct
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| IStylableIntrinsicElement
 
 //

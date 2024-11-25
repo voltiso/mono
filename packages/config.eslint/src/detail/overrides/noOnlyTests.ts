@@ -3,7 +3,6 @@
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
-// eslint-disable-next-line n/no-extraneous-import
 import noOnlyTestsPlugin from 'eslint-plugin-no-only-tests'
 
 import { testFiles } from '~/detail/files'

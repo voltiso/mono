@@ -19,5 +19,6 @@ export type _Css_WithExtensionReactNative<CustomCss extends object> = {
 export type _Css_OriginalReactNative<CustomCss extends object> = Omit<
 	CssPropertiesReactNative,
 	| keyof CssExtensionReactNative<CustomCss>
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| keyof CssOverridesReactNative<CustomCss>
 >

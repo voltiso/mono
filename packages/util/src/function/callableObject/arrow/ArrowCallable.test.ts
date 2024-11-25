@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { Callable, WithCALL } from '~/function'
 import type { NoArgument } from '~/type'
@@ -42,6 +43,7 @@ describe('ArrowCallable', () => {
 			shape: new Proxy(
 				{},
 				{
+					// eslint-disable-next-line sonarjs/function-return-type
 					get(_t, p) {
 						return p
 					},

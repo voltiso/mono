@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
 import type { $Override_, Throw } from '@voltiso/util'
 
 import type { STYLED_TYPE_INFO as TI } from '~/_/symbols'

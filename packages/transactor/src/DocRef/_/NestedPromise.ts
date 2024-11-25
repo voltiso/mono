@@ -17,10 +17,9 @@ export type NestedPromise<data, Exists> = PromiseLike<
 			})
 
 export function dataOrNestedPromise<data, Exists extends boolean>(
-	// eslint-disable-next-line etc/no-internal
 	docRef: _CustomDocRef,
 	getPromise: () => PromiseLike<data | (Exists extends false ? null : never)>,
-) {
+): NestedPromise<data, Exists> {
 	return new Proxy(lazyPromise(getPromise), {
 		get: (target, p) => {
 			if (typeof p === 'symbol' || p in target)

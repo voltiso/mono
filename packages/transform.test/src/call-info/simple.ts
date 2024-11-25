@@ -5,26 +5,16 @@ import type { CallInfo } from '@voltiso/transform'
 
 namespace MyNamespace {
 	/** @callInfo */
-	export function willAppend(_str: string, _info?: CallInfo) {
-		//
-	}
-
-	export function willNotAppend(_str: string, _info?: CallInfo) {
-		//
-	}
+	export function willAppend(_str: string, _info?: CallInfo): void {}
+	export function willNotAppend(_str: string, _info?: CallInfo): void {}
 }
 
 namespace A {
 	export namespace B {
 		export class C {
 			/** @callInfo */
-			willAppend<X>(_x: X, _info?: CallInfo) {
-				//
-			}
-
-			willNotAppend<X>(_x: X, _info?: CallInfo) {
-				//
-			}
+			willAppend<X>(_x: X, _info?: CallInfo): void {}
+			willNotAppend<X>(_x: X, _info?: CallInfo): void {}
 		}
 	}
 }
@@ -32,7 +22,7 @@ namespace A {
 const c = new A.B.C()
 
 namespace Test {
-	export function start() {
+	export function start(): void {
 		MyNamespace.willAppend('a')
 		MyNamespace.willNotAppend('a')
 

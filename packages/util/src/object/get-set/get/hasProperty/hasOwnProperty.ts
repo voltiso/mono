@@ -6,6 +6,7 @@ import { VoltisoUtilError } from '_/error/VoltisoUtilError'
 import { assertNotPolluting } from '~/object'
 import { stringFrom } from '~/string'
 
+// eslint-disable-next-line sonarjs/no-built-in-override
 export function hasOwnProperty<Obj extends object, Key extends keyof any>(
 	obj: Obj,
 	key: Key,

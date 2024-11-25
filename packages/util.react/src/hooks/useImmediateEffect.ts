@@ -12,7 +12,7 @@ import { useOnUnmount } from './useOnUnmount'
 export function useImmediateEffect(
 	effect: (info: { isFirstRender: boolean }) => void | Destructor,
 	deps?: DependencyList,
-) {
+): void {
 	const mutable = useInitial({
 		destructor: undefined as void | undefined | Destructor,
 		isFirstRender: true,
@@ -24,6 +24,7 @@ export function useImmediateEffect(
 		try {
 			mutable.destructor()
 		} finally {
+			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			mutable.destructor = undefined
 		}
 	}

@@ -3,4 +3,4 @@
 
 export * from './Brand'
 export * from './BrandedSymbol'
-export * from './BrandReference'
+export type * from './BrandReference'

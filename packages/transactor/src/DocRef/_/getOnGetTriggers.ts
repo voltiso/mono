@@ -8,8 +8,9 @@ import type { OnGetTrigger } from '~/Trigger/Trigger'
 
 export type __hack_getOnGetTriggers = DocRefTriggerEntry | OnGetTrigger
 
-export function getOnGetTriggers(docRef: $$DocRef) {
-	// eslint-disable-next-line etc/no-internal
+export function getOnGetTriggers(
+	docRef: $$DocRef,
+): DocRefTriggerEntry<OnGetTrigger>[] {
 	$AssumeType<_CustomDocRef>(docRef)
 	if (docRef._onGets) return docRef._onGets
 

@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
@@ -13,7 +14,7 @@ const db = createTransactor()
 const slug = s.string
 	.lengthRange(1, 255)
 	.regex(
-		// eslint-disable-next-line security/detect-unsafe-regex
+		// eslint-disable-next-line security/detect-unsafe-regex, sonarjs/regular-expr
 		/^[\da-z]+(-[\da-z]+)*$/u,
 		'Slug must be lowercase with single hyphen separators',
 	)

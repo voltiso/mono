@@ -2,21 +2,14 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable jsdoc/require-hyphen-before-param-description */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck ...
-
 /* eslint-disable jsdoc/informative-docs */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-extraneous-class */
+
 /* eslint-disable tsdoc/syntax */
 
-import path from 'node:path'
+import * as path from 'node:path'
 
+import { $fastAssert } from '@voltiso/util'
+import type { Node as ASTNode } from 'estree' // Add this line to import ASTNode type
 import resolve from 'resolve'
 
 /**
@@ -28,12 +21,18 @@ import resolve from 'resolve'
  *   `options.basedir`.
  * @returns The resolved path.
  */
-function getFilePath(isModule, id, options) {
+function getFilePath(
+	isModule: boolean,
+	id: string,
+	options: resolve.SyncOpts | undefined,
+) {
 	// console.log('getFilePath', isModule, id, options)
+	$fastAssert(options)
+	$fastAssert(options.basedir)
 
 	if (id.startsWith('~')) {
 		const idx = options.basedir.indexOf('/src')
-		if(idx !== -1) {
+		if (idx !== -1) {
 			const packageDir = `${options.basedir.slice(0, idx)}/src`
 			const relativePath = path.relative(options.basedir, packageDir)
 			// eslint-disable-next-line no-param-reassign
@@ -67,9 +66,9 @@ function getFilePath(isModule, id, options) {
  * @param nameOrPath - A path to get.
  * @returns The module name of the path.
  */
-function getModuleName(nameOrPath) {
+function getModuleName(nameOrPath: string) {
 	let end = nameOrPath.indexOf('/')
-	if (end !== -1 && nameOrPath[0] === '@') {
+	if (end !== -1 && nameOrPath.startsWith('@')) {
 		end = nameOrPath.indexOf('/', 1 + end)
 	}
 
@@ -77,7 +76,17 @@ function getModuleName(nameOrPath) {
 }
 
 /** Information of an import target. */
+// eslint-disable-next-line import/no-default-export
 export default class ImportTarget {
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	node: ASTNode
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	name: string
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	filePath: string | null
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	moduleName: string | null
+
 	/**
 	 * Initialize this instance.
 	 *
@@ -85,7 +94,11 @@ export default class ImportTarget {
 	 * @param name - The name of an import target.
 	 * @param options - The options of `node-resolve` module.
 	 */
-	constructor(node, name, options) {
+	constructor(
+		node: ASTNode,
+		name: string,
+		options: { basedir: string; paths: string[] | readonly never[] },
+	) {
 		const isModule = !/^(?:[./\\_~]|\w+:)/u.test(name) // ! added `_~` to treat imports beginning with these as local
 		// const isModule = !/^(?:[./\\]|\w+:)/u.test(name)
 

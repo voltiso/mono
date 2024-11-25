@@ -25,6 +25,7 @@ export function fromDatabaseData(
 	nestedData: Database.DocumentDataNested,
 ): NestedDataNoArray
 
+// eslint-disable-next-line sonarjs/function-return-type, sonarjs/cyclomatic-complexity
 export function fromDatabaseData(
 	ctx: DocRefContext.Base,
 	nestedData: Database.DocumentDataNested,

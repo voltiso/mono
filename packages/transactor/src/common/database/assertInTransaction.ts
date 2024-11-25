@@ -8,8 +8,9 @@ import type { WithTransactor } from '~/Transactor/WithTransactor'
 
 //
 
-export function assertInTransaction(ctx: WithTransactor) {
+export function assertInTransaction(ctx: WithTransactor): void {
 	try {
+		// eslint-disable-next-line sonarjs/void-use
 		void ctx.transactor._transactionContext.value
 	} catch (error) {
 		const outerError = new TransactorError(
@@ -27,8 +28,9 @@ export function assertInTransaction(ctx: WithTransactor) {
 
 //
 
-export function assertNotInTransaction(ctx: WithTransactor) {
+export function assertNotInTransaction(ctx: WithTransactor): void {
 	try {
+		// eslint-disable-next-line sonarjs/void-use
 		void ctx.transactor._transactionContext.value
 	} catch (error) {
 		if (error instanceof NoContextError) return

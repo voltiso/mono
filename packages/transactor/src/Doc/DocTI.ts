@@ -16,12 +16,11 @@ export const DTI: DTI = Symbol('DTI') as never
 /** ! never used - type only */
 export type IS_DOC_TYPE_INFO = 'VoltisoTransactorSymbol(IS_DOC_TYPE_INFO)' // { readonly symbol: unique symbol }['symbol']
 
-
 /** ! never used - type only */
-export const IS_DOC_TYPE_INFO: IS_DOC_TYPE_INFO = Symbol('IS_DOC_TYPE_INFO') as never
+export const IS_DOC_TYPE_INFO: IS_DOC_TYPE_INFO = Symbol(
+	'IS_DOC_TYPE_INFO',
+) as never
 // export type IS_DOC_TYPE_INFO = typeof IS_DOC_TYPE_INFO
-
-
 
 export interface $$DocTI {
 	readonly [IS_DOC_TYPE_INFO]: true
@@ -35,6 +34,7 @@ export type DocTISchema = s.$$Object & { Output: {}; Input: {} } // not `object`
  * - Every Doc Type Info (`DocTI`) is assignable to it
  */
 export interface DocTI extends $$DocTI {
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	tag: DocTag | any // | AnyDoc
 
 	id: s.$$String & {

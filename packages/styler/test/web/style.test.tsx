@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -24,7 +25,7 @@ const OtherRedButton = RedButton.css({
 const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 	.css(p => ({
 		height: p.big ? 100 : 50,
-		width: p.name?.length || 0,
+		width: p.name?.length ?? 0,
 	}))
 	.mapProps(({ big }) => {
 		$Assert<IsEqual<typeof big, boolean>>()
@@ -54,6 +55,7 @@ const OnClickMapped = AnotherButton.mapProp(
 )
 ;<OnClickMapped big />
 
+// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
 describe('style', () => {
 	it('simple', () => {
 		expect.hasAssertions()

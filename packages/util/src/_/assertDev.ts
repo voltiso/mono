@@ -17,25 +17,24 @@ export function _findFirstDollarEntry(
 }
 
 export function assertDev(): void {
-	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
-	if (process.env['NODE_ENV'] !== 'test' && typeof expect === 'undefined') {
-		// eslint-disable-next-line unicorn/error-message, @typescript-eslint/no-non-null-assertion
-		const stackStr = new Error().stack!
-		const stack = parseStackTrace(stackStr)
+	// eslint-disable-next-line turbo/no-undeclared-env-vars, n/no-process-env
+	if (process.env['NODE_ENV'] !== 'production') return
 
-		// eslint-disable-next-line etc/no-internal
-		const entry = _findFirstDollarEntry(stack)
+	// eslint-disable-next-line unicorn/error-message, @typescript-eslint/no-non-null-assertion
+	const stackStr = new Error().stack!
+	const stack = parseStackTrace(stackStr)
 
-		const functionInfo = entry
-			? { name: entry.functionName }
-			: { name: 'assertDev', arguments: [] as string[] }
+	const entry = _findFirstDollarEntry(stack)
 
-		const message = entry
-			? `assertDev() failed - function ${entry.functionName} not pruned in production code - check '@voltiso/transform/strip' configuration`
-			: 'Assertion failed - not in DEV mode - no `jest` environment present'
+	const functionInfo = entry
+		? { name: entry.functionName }
+		: { name: 'assertDev', arguments: [] as string[] }
 
-		throw new VoltisoUtilError(message, {
-			function: functionInfo,
-		})
-	}
+	const message = entry
+		? `assertDev() failed - function ${entry.functionName} not pruned in production code - check '@voltiso/transform/strip' configuration`
+		: 'Assertion failed - not in DEV mode - no `jest` environment present'
+
+	throw new VoltisoUtilError(message, {
+		function: functionInfo,
+	})
 }

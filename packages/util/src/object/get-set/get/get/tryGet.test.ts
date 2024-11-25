@@ -2,6 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 
@@ -43,7 +44,6 @@ describe('get', () => {
 		type H = TryGet<{}, ['a', 'b', 'c']>
 		$Assert<IsIdentical<H, undefined>>()
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-expect-error bad path
 		type I = TryGet<{ a: { b: { c: 0 } } }, ['a', 'a']>
 		$Assert<IsIdentical<I, undefined>>()

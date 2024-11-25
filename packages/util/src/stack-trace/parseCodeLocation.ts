@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/regular-expr */
+
 import { $fastAssert } from '_'
 
 import type { PathSegmentString } from '~/object'
@@ -9,20 +11,28 @@ import { basename } from '~/path'
 import type { CodeLocation } from './CodeLocation'
 
 /** @internal */
-// eslint-disable-next-line @typescript-eslint/naming-convention
+
 export type _hack_parseCodeLocation = PathSegmentString
 
-export function getShortStackTracePath(path: string) {
+export function getShortStackTracePath(path: string): string {
 	return (
-		/^.*node_modules\/(?<shortPath>.*)$/u.exec(path)?.groups?.['shortPath'] ||
+		/^.*node_modules\/(?<shortPath>.*)$/u.exec(path)?.groups?.['shortPath'] ??
 		/^.*\/(?<shortPath>[^/]*\/(?:dist|src)\/.*)$/u.exec(path)?.groups?.[
 			'shortPath'
-		] ||
+		] ??
 		path
 	)
 }
 
-export function decomposeStackTracePath(path: string) {
+export interface DecomposeStackTracePathResult {
+	path: string
+	shortPath: string
+	fileName: PathSegmentString<{ separator: '/' }>
+}
+
+export function decomposeStackTracePath(
+	path: string,
+): DecomposeStackTracePathResult {
 	return {
 		path,
 		shortPath: getShortStackTracePath(path),
@@ -66,7 +76,7 @@ export function tryParseCodeLocation(
 	locationStr: string,
 ): CodeLocation | undefined {
 	return (
-		tryParseCodeLocationWithLineAndColumn(locationStr) ||
-		tryParseCodeLocationWithLine(locationStr) || { path: locationStr }
+		tryParseCodeLocationWithLineAndColumn(locationStr) ??
+		tryParseCodeLocationWithLine(locationStr) ?? { path: locationStr }
 	)
 }

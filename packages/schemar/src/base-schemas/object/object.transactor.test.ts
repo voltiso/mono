@@ -3,6 +3,7 @@
 
 /* eslint-disable jest/no-export */
 
+import { describe, expect, it } from '@jest/globals'
 import { equals } from '@voltiso/util'
 
 import type { Input_, Output_ } from '~'

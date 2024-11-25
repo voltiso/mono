@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 // import { assertZod } from '~/assertZod'
 import type { InferableObject } from '@voltiso/schemar'
 import type { $Decrement, IsCompatible, Length } from '@voltiso/util'
@@ -43,7 +45,7 @@ export interface CollectionRefPattern<
 	Doc extends $$DocRelated = AnyDoc,
 > {
 	// [CALL]
-	// eslint-disable-next-line @typescript-eslint/prefer-function-type
+
 	<Tokens extends string[]>(
 		...tokens: Tokens
 	): IsCompatible<
@@ -104,7 +106,7 @@ export class CollectionRefPattern<
 		return this
 	}
 
-	publicOnCreation(schema: InferableObject) {
+	publicOnCreation(schema: InferableObject): void {
 		// assertZod()
 		this.context.transactor._allPublicOnCreationSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern),
@@ -112,7 +114,7 @@ export class CollectionRefPattern<
 		})
 	}
 
-	public(schema: InferableObject) {
+	public(schema: InferableObject): void {
 		// assertZod()
 		this.context.transactor._allPublicSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern),
@@ -120,7 +122,7 @@ export class CollectionRefPattern<
 		})
 	}
 
-	private(schema: InferableObject) {
+	private(schema: InferableObject): void {
 		// assertZod()
 		this.context.transactor._allPrivateSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern),
@@ -128,21 +130,21 @@ export class CollectionRefPattern<
 		})
 	}
 
-	trigger(trigger: AfterTrigger) {
+	trigger(trigger: AfterTrigger): void {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern),
 			trigger,
 		})
 	}
 
-	beforeCommit(trigger: Trigger.BeforeCommit) {
+	beforeCommit(trigger: Trigger.BeforeCommit): void {
 		this.context.transactor._allBeforeCommits.push({
 			getPathMatches: getGetPathMatches(this.pattern),
 			trigger,
 		})
 	}
 
-	method(name: string, method: Method) {
+	method(name: string, method: Method): void {
 		// , argSchemaObject?: object
 		const methodEntry: TransactorMethodEntry = {
 			getPathMatches: getGetPathMatches(this.pattern),

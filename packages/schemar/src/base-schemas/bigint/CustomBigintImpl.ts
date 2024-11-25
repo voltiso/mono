@@ -21,7 +21,7 @@ import type { BigintOptions } from './BigintOptions'
 import type { CustomBigint } from './CustomBigint'
 import { isBigintSchema } from './IBigint'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBigintImpl<O> {
 	readonly [BASE_OPTIONS]: BigintOptions
 	readonly [DEFAULT_OPTIONS]: BigintOptions.Default
@@ -39,6 +39,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBigint<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Bigint' as const
 
 	get getMin(): this[OPTIONS]['min'] {
@@ -59,7 +60,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	[CALL]<L extends bigint>(literals: Set<L>): Literal<L>
 	[CALL]<L extends bigint>(...args: L[] | [Set<L>]): Literal<L>
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends bigint>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
 		return literal<L>(literals as never) as never
@@ -114,7 +115,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'bigint'
 	}

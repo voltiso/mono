@@ -1,8 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-static-fields */
 
+import { $assert } from '@voltiso/assertor'
 import type { IObject, SchemaLike } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import { CallableConstructor, staticImplements } from '@voltiso/util'
@@ -32,6 +33,7 @@ import type { AfterTrigger, Trigger } from '~/Trigger/Trigger'
 
 import type { DocDerivedData } from './_/DocDerivedData'
 import { defaultDocDerivedData } from './_/DocDerivedData'
+import { _inferMetadata } from './_/inferMetadata'
 import type { $$DocConstructor } from './IDocConstructor'
 import { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
@@ -62,16 +64,22 @@ import { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 // 	return b.and(a as InferableObjectLike) as never
 // }
 
+$assert(defaultDocDerivedData)
+// console.log('test', defaultDocDerivedData)
+
 @staticImplements<$$DocConstructor>()
 export class DocConstructorImpl implements $$Doc {
-	declare static [DTI]: DocTI
+	declare static readonly [DTI]: DocTI
 
-	static readonly [IS_DOC_CONSTRUCTOR] = true as const;
+	static readonly [IS_DOC_CONSTRUCTOR] = true as const
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly [IS_DOC] = true as const
 
+	// eslint-disable-next-line sonarjs/public-static-readonly
 	static _: DocDerivedData = defaultDocDerivedData
 
 	static tag<Tag extends DocTag | AnyDoc>(tag: Tag): any {
+		_inferMetadata(this)
 		return CallableConstructor({
 			constructor: class extends this {
 				static override readonly _: DocDerivedData = { ...super._, tag }
@@ -141,15 +149,17 @@ export class DocConstructorImpl implements $$Doc {
 	// 	})
 	// }
 
-	static withPlugin(plugin: DocBuilderPlugin<any>) {
+	static withPlugin(plugin: DocBuilderPlugin<any>): $$DocConstructor {
+		_inferMetadata(this)
 		return plugin.run(this as never)
 	}
 
 	static aggregateInto(
-		_target: any,
+		_target: unknown,
 		aggregateName: string,
 		handlers: IAggregatorHandlers,
-	) {
+	): $$DocConstructor {
+		_inferMetadata(this)
 		// console.log({ aggregateName, handlers })
 		return aggregate(0 as never)
 			.into(0 as never, aggregateName as never)
@@ -160,6 +170,7 @@ export class DocConstructorImpl implements $$Doc {
 	//
 
 	static with<F extends $$PartialDocOptions>(f: F): any {
+		_inferMetadata(this)
 		return CallableConstructor({
 			constructor: class extends this {
 				static override readonly _ = {
@@ -227,11 +238,11 @@ export class DocConstructorImpl implements $$Doc {
 		) as never
 	}
 
-	static get schemaWithId() {
+	static get schemaWithId(): never {
 		return s.and({ id: this.idSchema }, this.schema) as never
 	}
 
-	static get aggregateSchemables() {
+	static get aggregateSchemables(): never {
 		// console.log('this', this)
 		// console.log('this._', this._)
 		return this._.aggregates as never
@@ -243,6 +254,7 @@ export class DocConstructorImpl implements $$Doc {
 	static after<TI extends DocDerivedData & $$DocTI>(
 		...args: [AfterTrigger<GI<TI>>] | [string, AfterTrigger<GI<TI>>]
 	): any {
+		_inferMetadata(this)
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 
@@ -267,6 +279,7 @@ export class DocConstructorImpl implements $$Doc {
 			| [AfterTrigger<GI<TI>, true, true>]
 			| [string, AfterTrigger<GI<TI>, true, true>]
 	): any {
+		_inferMetadata(this)
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 		return CallableConstructor({
@@ -290,6 +303,7 @@ export class DocConstructorImpl implements $$Doc {
 			| [AfterTrigger<GI<TI>, boolean, true>]
 			| [string, AfterTrigger<GI<TI>, boolean, true>]
 	): any {
+		_inferMetadata(this)
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 		return CallableConstructor({
@@ -313,6 +327,7 @@ export class DocConstructorImpl implements $$Doc {
 			| [AfterTrigger<GI<TI>, false, true>]
 			| [string, AfterTrigger<GI<TI>, false, true>]
 	): any {
+		_inferMetadata(this)
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 		return CallableConstructor({
@@ -336,6 +351,7 @@ export class DocConstructorImpl implements $$Doc {
 			| [AfterTrigger<GI<TI>, true, false>]
 			| [string, AfterTrigger<GI<TI>, true, false>]
 	): any {
+		_inferMetadata(this)
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 		return CallableConstructor({
@@ -359,6 +375,7 @@ export class DocConstructorImpl implements $$Doc {
 			| [Trigger.BeforeCommit<GI<TI>>]
 			| [string, Trigger.BeforeCommit<GI<TI>>]
 	): any {
+		_inferMetadata(this)
 		const f = args.length === 2 ? args[1] : args[0]
 		const name = args.length === 2 ? args[0] : ''
 		return CallableConstructor({
@@ -375,6 +392,7 @@ export class DocConstructorImpl implements $$Doc {
 	}
 
 	static method<N extends string, M extends Method>(name: N, m: M): any {
+		_inferMetadata(this)
 		return CallableConstructor({
 			constructor: class extends this {
 				static override readonly _: DocDerivedData = {

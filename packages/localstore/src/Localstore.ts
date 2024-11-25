@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-instance-fields */
 
 import type * as Database from '@voltiso/firestore-like'
 import { at } from '@voltiso/util'
@@ -63,6 +63,6 @@ export class Localstore implements Database.Database {
 	}
 }
 
-export function createLocalstore() {
+export function createLocalstore(): Localstore {
 	return new Localstore()
 }

@@ -3,4 +3,6 @@
 
 import type { Db } from './Db'
 
-export interface WithDb { db: Db }
+export interface WithDb {
+	db: Db
+}

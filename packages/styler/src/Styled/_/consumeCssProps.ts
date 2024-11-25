@@ -13,7 +13,7 @@ export function consumeCssProps<CustomCss extends object>(params: {
 	styles: Css[]
 	theme: object | null
 	customCss: object | undefined
-}) {
+}): void {
 	// console.log('consumeCssProps', params.customCss)
 	for (const [prop, value] of Object.entries(params.props)) {
 		// assertNotPolluting(prop)
@@ -23,6 +23,7 @@ export function consumeCssProps<CustomCss extends object>(params: {
 
 		for (const entry of [...list].reverse()) {
 			if (typeof entry === 'function') {
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (entry.length > 0 || Boolean(value))
 					params.styles.push(
 						prepare(entry(value as never), {

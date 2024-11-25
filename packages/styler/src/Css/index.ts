@@ -1,10 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './Css'
+export type * from './Css'
 export * from './defineCss'
-export * from './Keyframes'
-export * from './MergeCss'
-export * from './react-native'
-export * from './RelaxedCss'
-export * from './web'
+export type * from './Keyframes'
+export type * from './MergeCss'
+export type * from './react-native'
+export type * from './RelaxedCss'
+export type * from './web'

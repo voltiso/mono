@@ -14,6 +14,8 @@ export const defaultNumberOptions = Object.freeze({
 	Input: 0 as unknown as number,
 
 	isInteger: false as const,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	min: undefined,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	max: undefined,
 })

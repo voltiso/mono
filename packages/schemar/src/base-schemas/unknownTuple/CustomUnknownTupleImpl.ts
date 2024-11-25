@@ -34,9 +34,10 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownTuple<O>
 {
-	override readonly [SCHEMA_NAME] = 'UnknownTuple' as const;
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	override readonly [SCHEMA_NAME] = 'UnknownTuple' as const
 
-	declare readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default;
+	declare readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default
 	declare readonly [BASE_OPTIONS]: UnknownTupleOptions
 
 	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple'] {
@@ -66,7 +67,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		: O['isReadonlyTuple'] extends false
 			? MutableTuple<T>
 			: never {
-		// eslint-disable-next-line es-x/no-array-string-prototype-at
+		// eslint-disable-next-line es-x/no-array-prototype-at
 		const lastElement = shapeWithRest.at(-1)
 
 		const shape = isRest(lastElement)
@@ -115,7 +116,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return ' [...]'
 	}

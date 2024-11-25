@@ -35,7 +35,7 @@ const nodeDependenciesConfigRecommended =
 	nodeDependenciesPlugin.configs.recommended
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 for (const override of nodeDependenciesConfigRecommended.overrides) {
-	// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 	if (override.parser.includes('jsonc-eslint-parser')) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		override.parser = jsoncEslintParser

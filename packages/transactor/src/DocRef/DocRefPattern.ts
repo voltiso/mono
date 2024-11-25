@@ -24,7 +24,9 @@ import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
 type Context = WithTransactor
 
 export class DocRefPattern {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	context: Context
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	pattern: DocPattern
 
 	constructor(context: Context, ...args: string[]) {
@@ -64,7 +66,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	id(schema: SchemaLike<string>) {
+	id(schema: SchemaLike<string>): this {
 		this.context.transactor._allIdSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
@@ -72,7 +74,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	publicOnCreation(schema: $$SchemableObject) {
+	publicOnCreation(schema: $$SchemableObject): this {
 		this.context.transactor._allPublicOnCreationSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
@@ -80,7 +82,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	public(schema: $$SchemableObject) {
+	public(schema: $$SchemableObject): this {
 		this.context.transactor._allPublicSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
@@ -88,7 +90,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	private(schema: $$SchemableObject) {
+	private(schema: $$SchemableObject): this {
 		// assertZod()
 		this.context.transactor._allPrivateSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
@@ -97,7 +99,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	aggregates(schema: InferableObject) {
+	aggregates(schema: InferableObject): this {
 		this.context.transactor._allAggregateSchemas.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			schema,
@@ -107,7 +109,7 @@ export class DocRefPattern {
 
 	//
 
-	after<D extends $$Doc = IndexedDoc>(trigger: AfterTrigger<D>) {
+	after<D extends $$Doc = IndexedDoc>(trigger: AfterTrigger<D>): this {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			trigger: trigger as any,
@@ -117,11 +119,11 @@ export class DocRefPattern {
 
 	afterCreateOrUpdate<D extends $$Doc = IndexedDoc>(
 		trigger: AfterTrigger<D, boolean, true>,
-	) {
+	): this {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
-			// eslint-disable-next-line consistent-return, @typescript-eslint/no-magic-numbers, @typescript-eslint/consistent-return
+			// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
 			trigger(p: Parameters<AfterTrigger>[0]) {
 				const { doc, after, ...rest } = p
 
@@ -141,7 +143,7 @@ export class DocRefPattern {
 
 	afterCreate<D extends $$Doc = IndexedDoc>(
 		trigger: AfterTrigger<D, false, true>,
-	) {
+	): this {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
@@ -167,7 +169,7 @@ export class DocRefPattern {
 
 	afterDelete<D extends $$Doc = IndexedDoc>(
 		trigger: AfterTrigger<D, true, false>,
-	) {
+	): void {
 		this.context.transactor._allAfterTriggers.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 
@@ -191,7 +193,9 @@ export class DocRefPattern {
 		})
 	}
 
-	beforeCommit<D extends $$Doc = IndexedDoc>(trigger: Trigger.BeforeCommit<D>) {
+	beforeCommit<D extends $$Doc = IndexedDoc>(
+		trigger: Trigger.BeforeCommit<D>,
+	): this {
 		this.context.transactor._allBeforeCommits.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			trigger,
@@ -199,7 +203,7 @@ export class DocRefPattern {
 		return this
 	}
 
-	onGet<D extends $$Doc = IndexedDoc>(trigger: OnGetTrigger<D>) {
+	onGet<D extends $$Doc = IndexedDoc>(trigger: OnGetTrigger<D>): void {
 		this.context.transactor._allOnGets.push({
 			getPathMatches: getGetPathMatches(this.pattern.toString()),
 			trigger: trigger as any,
@@ -210,7 +214,7 @@ export class DocRefPattern {
 		D extends $$Doc = IndexedDoc,
 		ARGS extends unknown[] = unknown[],
 		R = unknown,
-	>(name: string, method: Method<D, ARGS, R>) {
+	>(name: string, method: Method<D, ARGS, R>): this {
 		// , argSchema?: SchemaObject
 		const methodEntry: TransactorMethodEntry = {
 			getPathMatches: getGetPathMatches(this.pattern.toString()),

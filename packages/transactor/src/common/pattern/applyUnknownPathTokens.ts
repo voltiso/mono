@@ -36,6 +36,7 @@ export function applyUnknownPathTokens<
 	let currentPath = path as string
 
 	for (const token of tokens) {
+		// eslint-disable-next-line sonarjs/regular-expr
 		currentPath = currentPath.replace(/\{([^{}]*)\}|\*{1,2}/u, token)
 	}
 

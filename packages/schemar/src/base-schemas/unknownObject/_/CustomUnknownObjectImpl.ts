@@ -22,7 +22,7 @@ import {
 import { CustomObjectImpl, defaultObjectOptions } from '~/base-schemas/object'
 import { ValidationIssue } from '~/meta-schemas'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownObjectImpl<O> {
 	readonly [SCHEMA_NAME]: 'UnknownObject'
 
@@ -34,15 +34,16 @@ export interface CustomUnknownObjectImpl<O> {
 export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'UnknownObject' as const
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
-	get getIndexSignatures() {
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
+	get getIndexSignatures(): [] {
 		return [] as []
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
-	get getShape() {
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
+	get getShape(): {} {
 		return {}
 	}
 
@@ -54,7 +55,8 @@ export class CustomUnknownObjectImpl<
 		}) as never
 	}
 
-	index(...args: any) {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	index(...args: any): never {
 		const r = new CustomObjectImpl({
 			...defaultObjectOptions,
 			...this[OPTIONS],

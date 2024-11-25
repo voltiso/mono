@@ -32,13 +32,11 @@ $dev(() => {
 //
 
 export interface DocFieldPathConstructor {
-	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	new <data>(ctx: DocFieldPath.Context, path: string[]): DocFieldPath<data>
 }
 
 // eslint-disable-next-line import/export
 export const DocFieldPath = lazyConstructor(
-	// eslint-disable-next-line etc/no-internal
 	() => _DocFieldPath,
 ) as unknown as DocFieldPathConstructor
 

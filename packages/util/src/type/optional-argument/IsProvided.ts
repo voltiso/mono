@@ -5,10 +5,11 @@ import type { IsAny } from '~/any'
 
 import type { NoArgument } from './OptionalArgument'
 
-export type IsProvided<X, True = true, False = false> = IsAny<X> extends true
-	? True
-	: [X] extends [never]
+export type IsProvided<X, True = true, False = false> =
+	IsAny<X> extends true
 		? True
-		: X extends NoArgument
-			? False
-			: True
+		: [X] extends [never]
+			? True
+			: X extends NoArgument
+				? False
+				: True

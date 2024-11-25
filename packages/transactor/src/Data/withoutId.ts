@@ -16,6 +16,7 @@ export function withoutId<D extends object | null>(
 	expectedId: DocIdString,
 ): D extends null ? null : Omit<D, 'id'>
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function withoutId(
 	data: { id?: string } | null,
 	expectedId: DocIdString,

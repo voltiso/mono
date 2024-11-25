@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type * as t from '@voltiso/schemar'
 import {
 	deepFrozen,
@@ -135,7 +137,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	_raw!: IntrinsicFields
 	_rawProxy!: IntrinsicFields
 
-	_setRaw(raw: IntrinsicFields) {
+	_setRaw(raw: IntrinsicFields): void {
 		this._raw = raw
 		this._rawProxy = this._context.transaction ? raw : deepFrozen(raw)
 		// immutabilize(
@@ -144,7 +146,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		//   )
 	}
 
-	get id() {
+	get id(): never {
 		return this._context.docRef.id as never
 	}
 
@@ -182,7 +184,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return (await this._context.docRef.update(updates as never)) as never
 	}
 
-	async delete() {
+	async delete(): Promise<never> {
 		return (await this._context.docRef.delete()) as never
 	}
 
@@ -194,7 +196,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 		return this.ref.schemaWithId as never
 	}
 
-	get aggregateSchemas() {
+	get aggregateSchemas(): {} {
 		return this.ref.aggregateSchemas
 	}
 }

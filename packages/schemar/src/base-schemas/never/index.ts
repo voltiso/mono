@@ -1,10 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './CustomNever'
+export type * from './CustomNever'
 export * from './defaultNeverOptions'
 export * from './detail'
-export * from './INever'
+export type * from './INever'
 export * from './isNever'
 export * from './Never'
-export * from './NeverOptions'
+export type * from './NeverOptions'

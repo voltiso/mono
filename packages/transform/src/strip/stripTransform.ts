@@ -1,6 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/cyclomatic-complexity */
+/* eslint-disable sonarjs/expression-complexity */
+/* eslint-disable sonarjs/no-nested-functions */
+
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
@@ -22,21 +26,21 @@ export interface StripTransformContext extends TransformContext {
 export function areAllStripAnnotated(
 	ctx: StripTransformContext,
 	node: ts.ImportClause,
-) {
+): boolean {
 	// console.log('areAllSymbolsStripAnnotated', node.getText(ctx.sourceFile))
 	if (node.namedBindings && ts.isNamespaceImport(node.namedBindings))
 		return false
 
-	const childNodes = [
+	const childNodes: (ts.Identifier | undefined)[] = [
 		node.name,
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-		...(node.namedBindings?.elements || []).map(node => node.name),
+		...(node.namedBindings?.elements ?? []).map(
+			(node: { name: ts.Identifier }) => node.name,
+		),
 	]
 
 	// eslint-disable-next-line es-x/no-array-prototype-every
 	const result = childNodes.every(childNode => {
 		if (!childNode) return true
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		const symbol = ctx.typeChecker.getSymbolAtLocation(childNode)
 		// console.log('arr symbol', !!symbol)
 		return symbol && shouldStripSymbol(ctx, symbol)
@@ -56,11 +60,11 @@ export function stripTransform(
 	const typeChecker = program.getTypeChecker()
 
 	return (transformationContext: ts.TransformationContext) =>
-		(sourceFile: ts.SourceFile) => {
+		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			// console.log('compile', sourceFile.fileName)
 
 			// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
-			const isEnabled = !process.env.VOLTISO_STRIP_DISABLE
+			const isEnabled = !process.env['VOLTISO_STRIP_DISABLE']
 
 			const ctx: StripTransformContext = {
 				program,
@@ -135,6 +139,7 @@ export function stripTransform(
 							.map(node => node.name.getText())
 							.includes(ctx.shouldStripBecauseOfSymbol.name)
 					) {
+						// eslint-disable-next-line sonarjs/no-undefined-assignment
 						ctx.shouldStripBecauseOfSymbol = undefined
 					}
 

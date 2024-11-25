@@ -18,7 +18,7 @@ import type { CustomUnknownFunction } from './CustomUnknownFunction'
 import { isUnknownFunctionSchema } from './IUnknownFunction'
 import type { UnknownFunctionOptions } from './UnknownFunctionOptions'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownFunctionImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownFunctionOptions
 	readonly [DEFAULT_OPTIONS]: UnknownFunctionOptions.Default
@@ -31,6 +31,7 @@ export class CustomUnknownFunctionImpl<
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownFunction<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'UnknownFunction' as const
 
 	constructor(o: O) {
@@ -60,7 +61,7 @@ export class CustomUnknownFunctionImpl<
 		return issues
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'function'
 	}
@@ -71,6 +72,7 @@ export class CustomUnknownFunctionImpl<
 		Return extends $$Schemable,
 	>(
 		parameters: Parameters,
+		// eslint-disable-next-line sonarjs/variable-name
 		return_: Return,
 	): CustomFunction<{ parameters: Parameters; return: Return }>
 
@@ -82,6 +84,7 @@ export class CustomUnknownFunctionImpl<
 	>(
 		thisArg: This,
 		parameters: Parameters,
+		// eslint-disable-next-line sonarjs/variable-name
 		return_: Return,
 	): CustomFunction<{ parameters: Parameters; return: Return }>
 
@@ -93,7 +96,7 @@ export class CustomUnknownFunctionImpl<
 
 	//
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL](...args: unknown[]): never {
 		let options: Partial<FunctionOptions> = {}
 

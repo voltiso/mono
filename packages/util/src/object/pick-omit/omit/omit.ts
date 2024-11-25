@@ -3,6 +3,7 @@
 
 import { VoltisoUtilError } from '_/error/VoltisoUtilError'
 
+// eslint-disable-next-line sonarjs/no-built-in-override
 import { hasOwnProperty } from '~/object'
 import { stringFrom } from '~/string'
 

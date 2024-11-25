@@ -19,7 +19,7 @@ export function simple() {
             },
             packagePath: 'src/simple.ts',
             gitPath: 'packages/assertor.test/src/simple.ts',
-            position: 180,
+            position: 186,
             line: 6,
             column: 26,
             astPath: [

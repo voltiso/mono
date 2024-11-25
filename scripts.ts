@@ -1,13 +1,13 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-//! shared scripts - run using `v` binary from `@voltiso/script`
+// ! shared scripts - run using `v` binary from `@voltiso/script`
 
 /* eslint-disable sonarjs/no-duplicate-string */
 
 import * as fs from 'node:fs'
 import * as fsPromises from 'node:fs/promises'
-import * as os from 'node:os'
+// import * as os from 'node:os'
 import * as path from 'node:path'
 
 const packageJson = JSON.parse(
@@ -31,20 +31,20 @@ const finalEnvStr = `cross-env ${envStr}`
 
 function turbo(...scriptNames: string[]) {
 	return `${finalEnvStr} pnpm -w exec turbo run --filter=${
-		packageJson.name || '//'
+		packageJson.name ?? '//'
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
 function turboDependents(...scriptNames: string[]) {
 	return `${finalEnvStr} pnpm -w exec turbo run --filter=...^${
-		packageJson.name || '//'
+		packageJson.name ?? '//'
 	} ${scriptNames.join(' ')} --output-logs=new-only`
 }
 
 //
 
-const numCpuThreads = os.cpus().length
-void numCpuThreads // unused
+// const numCpuThreads = os.cpus().length
+// void numCpuThreads // unused
 
 function turboAllPackages(
 	scriptName: string,
@@ -63,8 +63,8 @@ function turboAllPackages(
 	return `${finalEnvStr} pnpm -w exec turbo run ${turboOptionsStr} ${scriptName} --output-logs=new-only`
 }
 
-//!
-//! Workspace-level
+// !
+// ! Workspace-level
 
 export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=new-only`
 
@@ -102,8 +102,8 @@ export const checkWorkspace = [
 	lintWorkspace,
 ]
 
-//!
-//! Per-package
+// !
+// ! Per-package
 
 export const devCjs =
 	'cross-env VOLTISO_STRIP_DISABLE=1 tsc -p tsconfig.build.cjs.json --watch --noUnusedLocals false --noUnusedParameters false'
@@ -210,9 +210,9 @@ export const prepublishOnlyFast = [
 			// return `echo no ${packageJson.name}.test package`
 		}
 
-		// eslint-disable-next-line consistent-return
+		// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
 		return `pnpm -w exec turbo run --filter=${
-			packageJson.name || '//'
+			packageJson.name ?? '//'
 		}.test test --output-logs=new-only`
 	},
 ]

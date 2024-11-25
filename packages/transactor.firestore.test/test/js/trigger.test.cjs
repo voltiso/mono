@@ -3,6 +3,7 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -10,7 +11,7 @@ const { createFirestoreTransactor } = srcFirestore
 const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 
 if (
-	// eslint-disable-next-line no-useless-call
+	// eslint-disable-next-line no-useless-call, sonarjs/no-useless-call
 	function () {
 		// @ts-expect-error ...
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -27,6 +28,7 @@ db('frog/{user}')
 		if (!this) return
 
 		// @ts-expect-error ...
+		// eslint-disable-next-line sonarjs/values-not-convertible-to-numbers
 		if ((this.data['age'] || 0) < 18) throw new Error('frog too young')
 	})
 

@@ -1,7 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { Component } from 'react'
 
 import type { ComponentLike, Props } from '~/react-types'

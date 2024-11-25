@@ -9,4 +9,5 @@
 
 // export * from './basePrettierConfig'
 
+// eslint-disable-next-line import/no-default-export
 export { basePrettierConfig as default } from './basePrettierConfig'

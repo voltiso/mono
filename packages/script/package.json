@@ -11,6 +11,17 @@
     "voltiso-script": "dist/cjs/_bin/v.js",
     "v": "dist/cjs/_bin/v.js"
   },
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
@@ -48,11 +59,11 @@
   "dependencies": {
     "@voltiso/util.node": "workspace:^",
     "chalk": "^4.1.2",
-    "esbuild": "=0.17.19",
+    "esbuild": "^0.24.0",
     "esbuild-register": "^3.5.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
+    "@types/node": "^22.9.1",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util.package-json": "workspace:^",
@@ -61,6 +72,6 @@
   },
   "__________MISC": "__________",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=15.4.0"
   }
 }

@@ -23,6 +23,7 @@ export function createPatch(oldObject: unknown, newObject: unknown): unknown {
 					newObject[oldKey as keyof typeof newObject],
 				)
 
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (patch[oldKey] === keepIt) {
 					// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 					delete patch[oldKey]

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
+
 import { WebRenderer } from './WebRenderer'
 
 describe('WebRenderer', () => {
@@ -68,6 +70,7 @@ describe('WebRenderer', () => {
 					},
 				},
 			} as never),
+
 			/* cspell:disable-next-line */
 		).toBe(`meviQw`)
 		// ).toBe(`_0`)
@@ -122,6 +125,7 @@ describe('WebRenderer', () => {
 					backdropFilter: 'blur(10px)',
 				},
 			}),
+
 			/* cspell:disable-next-line */
 		).toBe(`IDEKYw`)
 
@@ -155,6 +159,7 @@ describe('WebRenderer', () => {
 					},
 				},
 			} as never),
+
 			/* cspell:disable-next-line */
 		).toBe(`Anwm4w`)
 		// ).toBe(`_0`)

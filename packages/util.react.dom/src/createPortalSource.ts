@@ -14,7 +14,7 @@ export function createPortalSource(ctx: PortalContext): PortalSource {
 		const update = useUpdate()
 
 		if (typeof window !== 'undefined')
-			// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+			// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
 			useLayoutEffect(update, [])
 
 		// if (!ctx.Element) {
@@ -32,7 +32,6 @@ export function createPortalSource(ctx: PortalContext): PortalSource {
 		} else {
 			// console.log('Source: portal children', props)
 
-			// eslint-disable-next-line etc/no-internal
 			if (!ctx.renderTarget) ctx.renderTarget = _createElement('div')
 
 			if (ctx.renderTarget) {

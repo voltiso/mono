@@ -1,9 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/prefer-function-type */
+/* eslint-disable es-x/no-class-instance-fields */
+/* eslint-disable sonarjs/cyclomatic-complexity */
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 
 import { SchemarError } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
@@ -31,11 +31,11 @@ export class _RpcServer<
 > {
 	readonly options: RpcServerOptions<THandlers, TRequest, TResponse>
 
-	get context() {
+	get context(): RpcServerContext<TRequest, TResponse> {
 		return this.options.context
 	}
 
-	get handlers() {
+	get handlers(): typeof this.options.handlers {
 		return this.options.handlers
 	}
 
@@ -120,14 +120,11 @@ export class _RpcServer<
 
 				if (this.options.serializer)
 					response
-						// eslint-disable-next-line no-magic-numbers
 						.status(400)
 						.json({ error: this.options.serializer.serialize(error) })
 				else if (error instanceof SchemarError) {
-					// eslint-disable-next-line no-magic-numbers
 					response.status(400).json({ error })
 				} else if (error instanceof Error) {
-					// eslint-disable-next-line no-magic-numbers
 					response.status(400).json({ error: error.toString() })
 					// response.status(400).json({
 					// 	error: omitUndefinedAndNull({
@@ -138,7 +135,6 @@ export class _RpcServer<
 					// 		// stack: error.stack,
 					// 	}),
 					// })
-					// eslint-disable-next-line no-magic-numbers
 				} else response.status(500).end()
 			}
 		})
@@ -151,12 +147,9 @@ export type RpcServer<
 	THandlers extends Handlers = {},
 	TRequest extends RpcRequest = RpcRequest,
 	TResponse extends RpcResponse = RpcResponse,
-	// eslint-disable-next-line etc/no-internal
 > = _RpcServer<THandlers, TRequest, TResponse> &
-	// eslint-disable-next-line etc/no-internal
 	_RpcServer<THandlers, TRequest, TResponse>[CALL]
 
-// eslint-disable-next-line etc/no-internal
 export const RpcServer = _RpcServer as unknown as RpcServerConstructor
 
 export interface RpcServerConstructor {

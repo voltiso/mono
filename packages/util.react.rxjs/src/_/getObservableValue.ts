@@ -1,6 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable sonarjs/no-nested-conditional */
+
 import type { IObservable } from '@voltiso/util.rxjs'
 
 export function getObservableValue<T = unknown>(
@@ -9,10 +12,8 @@ export function getObservableValue<T = unknown>(
 ): T | undefined {
 	// eslint-disable-next-line no-nested-ternary
 	return 'maybeValue' in observable$
-		? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			((observable$ as any).maybeValue as T | undefined)
+		? ((observable$ as any).maybeValue as T | undefined)
 		: 'value' in observable$
-			? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				((observable$ as any).value as T)
+			? ((observable$ as any).value as T)
 			: fallback
 }

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-instance-fields */
 
 import type * as Database from '@voltiso/firestore-like'
 import { staticImplements } from '@voltiso/util'
@@ -13,11 +13,11 @@ export class Timestamp implements Database.Timestamp {
 		this._date = date
 	}
 
-	toDate() {
+	toDate(): Date {
 		return this._date
 	}
 
-	static fromDate(date: Date) {
+	static fromDate(date: Date): Timestamp {
 		return new Timestamp(date)
 	}
 }

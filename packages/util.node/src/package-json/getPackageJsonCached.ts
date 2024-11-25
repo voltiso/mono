@@ -54,10 +54,10 @@ export function* getPackageJsonCachedSyncer(
 
 //
 
-export function getPackageJsonCached(dir: string) {
+export function getPackageJsonCached(dir: string): Promise<PackageJson> {
 	return runAsync(getPackageJsonCachedSyncer(dir))
 }
 
-export function getPackageJsonCachedSync(dir: string) {
+export function getPackageJsonCachedSync(dir: string): PackageJson {
 	return runSync(getPackageJsonCachedSyncer(dir))
 }

@@ -6,6 +6,7 @@ import { BrandedSymbol } from '@voltiso/util'
 
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
+// eslint-disable-next-line sonarjs/redundant-type-aliases
 export type DocTagLike = string // | typeof __never_keyof_bug_workaround // | AnyDoc
 
 export type DocTag = keyof DocTypes // Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc

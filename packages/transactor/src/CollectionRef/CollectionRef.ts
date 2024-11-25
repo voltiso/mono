@@ -11,6 +11,7 @@ import type { WithDb } from '~/Db'
 import type { $$Doc, GetPublicCreationInputData } from '~/Doc'
 import type { ExecutionContext } from '~/Doc/_/ExecutionContext'
 import type { $$DocConstructor } from '~/DocConstructor'
+import { _inferMetadata } from '~/DocConstructor/_/inferMetadata'
 import type { WeakDocRef } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
 import type {
@@ -49,8 +50,10 @@ export class CollectionRef<
 	_Ctx extends ExecutionContext = 'outside',
 > {
 	// [DTI]: TI
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	private readonly _context: Context
 
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	private readonly _path: CollectionPath
 	get path(): CollectionPath {
 		return this._path
@@ -101,6 +104,7 @@ export class CollectionRef<
 			? GetDocRepresentative<NewableReturn_<Cls>>
 			: never
 	> {
+		_inferMetadata(cls)
 		const { db } = this._context
 		const docPattern = db.docPattern(this._path, '*')
 

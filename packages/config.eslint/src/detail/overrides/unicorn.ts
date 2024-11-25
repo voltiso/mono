@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
 import unicornPlugin from 'eslint-plugin-unicorn'
 
 import { codeFiles } from '../files'
@@ -34,6 +33,7 @@ export const unicorn = defineEslintFlatConfig({
 		'unicorn/escape-case': 1,
 		'unicorn/expiring-todo-comments': 1,
 		'unicorn/explicit-length-check': 1,
+		'unicorn/prefer-global-this': 0, // has auto-fix, dangerous: `typeof window !== 'undefined'`
 
 		// 'unicorn/filename-case': [
 		// 	1,
@@ -42,7 +42,18 @@ export const unicorn = defineEslintFlatConfig({
 
 		'unicorn/filename-case': 0, // does not allow `someName_.ts`
 
-		'unicorn/import-style': 1,
+		'unicorn/import-style': [
+			'warn',
+			{
+				styles: {
+					path: { namespace: true, default: false },
+					'node:path': { namespace: true, default: false },
+					util: { namespace: true, default: false },
+					'node:util': { namespace: true, default: false },
+				},
+			},
+		],
+
 		// 'unicorn/import-style': ['warn', { styles: { chalk: { default: false } } }],
 		'unicorn/new-for-builtins': 1,
 		'unicorn/no-abusive-eslint-disable': 1,

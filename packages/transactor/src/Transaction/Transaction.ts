@@ -1,12 +1,14 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type * as Database from '@voltiso/firestore-like'
 import { lazyConstructor, omit, staticImplements } from '@voltiso/util'
 
 import type { CanonicalPath } from '~/Db/CanonicalPath'
 import { Db } from '~/Db/Db'
-import type { DbPathFromString, DocPath } from '~/Path'
+import type { DbPathFromString, DocPath } from '~/Path/Path'
 
 import type { Cache } from './Cache'
 import type { ParentContext, TransactionContext } from './Context'

@@ -4,7 +4,6 @@
 import type { ProtoCallableOptions } from './ProtoCallableOptions'
 
 /** @internal Use `ProtoCallable` instead */
-// eslint-disable-next-line etc/underscore-internal
 export type IProtoCallable = ProtoCallableOptions['call'] &
 	ProtoCallableOptions['prototype'] &
 	Record<keyof CallableFunction, unknown>
@@ -14,5 +13,4 @@ export type _ProtoCallable<Options extends ProtoCallableOptions> = [
 	Options['call'] &
 		Options['prototype'] &
 		Record<Exclude<keyof CallableFunction, keyof Options['prototype']>, never>,
-	// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 ][0]

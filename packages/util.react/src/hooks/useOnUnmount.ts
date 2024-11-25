@@ -1,13 +1,13 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type React from 'react'
+import type { DependencyList } from 'react'
 import { useEffect } from 'react'
 
-export const useOnUnmount = (
+export function useOnUnmount(
 	handleUnmount: () => void,
-	deps?: React.DependencyList,
-) => {
+	deps?: DependencyList,
+): void {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => handleUnmount, deps || [])
 }

@@ -12,7 +12,6 @@ import type { Trigger } from '~/Trigger'
 export function getBeforeCommits(
 	docRef: $$DocRef,
 ): DocRefTriggerEntry<Trigger.BeforeCommit>[] {
-	// eslint-disable-next-line etc/no-internal
 	$AssumeType<_CustomDocRef>(docRef)
 
 	if (docRef._beforeCommits) return docRef._beforeCommits
@@ -52,6 +51,7 @@ export function getBeforeCommits(
 						__voltiso.aggregateTarget,
 					)) {
 						assert(targetInfo)
+						// eslint-disable-next-line sonarjs/nested-control-flow
 						if (targetInfo.numSources !== 0)
 							throw new TransactorError(
 								`cannot delete ${path.toString()}: it's an active aggregation target (${

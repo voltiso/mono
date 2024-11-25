@@ -24,6 +24,7 @@ export type _Css_WithExtensionWeb<CustomCss extends object> = {
 /** @internal */
 export type _Css_OriginalWeb<CustomCss extends object> = Omit<
 	CssPropertiesAndPseudosWeb<CustomCss>,
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	keyof CssExtensionWeb<CustomCss> | keyof CssOverridesWeb<CustomCss>
 >
 

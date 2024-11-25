@@ -9,8 +9,8 @@ import { getCwd } from './_/getCwd'
 import { getFirebaseJsonPath } from './_/getFirebaseJsonPath'
 import { writeFirebaseJson } from './_/writeFirebaseJson'
 
-// eslint-disable-next-line import/no-anonymous-default-export, @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/explicit-function-return-type
-export default async () => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+async function globalSetup() {
 	// eslint-disable-next-line import/dynamic-import-chunkname
 	const getPortModule = await import('get-port')
 	const getPort = getPortModule.default
@@ -41,3 +41,6 @@ export default async () => {
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	process.env['PORT'] = `${port}`
 }
+
+// eslint-disable-next-line import/no-default-export
+export default globalSetup

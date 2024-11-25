@@ -25,6 +25,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 	handlers,
 	autoCreateTarget,
 }) =>
+	// eslint-disable-next-line sonarjs/cyclomatic-complexity
 	async function ({
 		transactor,
 		__voltiso,
@@ -68,7 +69,8 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-nested-ternary
 			awaitedTargetHandlerResult === null
 				? [[targetHandlerResult as $$DocRef], [awaitedTargetHandlerResult]]
-				: Array.isArray(awaitedTargetHandlerResult)
+				: // eslint-disable-next-line sonarjs/no-nested-conditional
+					Array.isArray(awaitedTargetHandlerResult)
 					? [
 							awaitedTargetHandlerResult,
 							await Promise.all(awaitedTargetHandlerResult),
@@ -79,7 +81,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 						]
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		__voltiso.aggregateSource[name] ||= {} //! !!
+		__voltiso.aggregateSource[name] ||= {} // ! !!
 
 		const sourceInfo = __voltiso.aggregateSource[name]
 
@@ -95,6 +97,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 				const handlerReturnedRef = isDocRef(target)
 
 				if (handlerReturnedRef && autoCreateTarget) {
+					// eslint-disable-next-line sonarjs/nested-control-flow
 					try {
 						// eslint-disable-next-line no-await-in-loop
 						finalTarget = await target.set()
@@ -113,6 +116,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 					}
 				} else {
 					let additionalInfo = ''
+					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (!autoCreateTarget)
 						additionalInfo = ' - hint: you can use `autoCreateTarget: true`'
 
@@ -137,7 +141,8 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 					{ transactor },
 
 					finalTarget.aggregateSchemas[name],
-					// eslint-disable-next-line etc/no-deprecated
+
+					// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
 					handlers.initialValue,
 				),
 

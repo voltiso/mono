@@ -10,6 +10,7 @@ import { SchemarError } from './SchemarError'
 const name = 'ValidationError'
 
 export class ValidationError extends lazyConstructor(() => SchemarError) {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	issues: ValidationIssue[]
 
 	constructor(issues: ValidationIssue[]) {

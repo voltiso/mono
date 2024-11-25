@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -246,7 +247,7 @@ describe('array', () => {
 	it('toString', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
 		expect(s.array.getElementSchema.toString()).toBe('unknown')
 
 		expect(s.array.toString()).toBe('unknown[]')

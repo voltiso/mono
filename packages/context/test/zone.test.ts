@@ -6,6 +6,7 @@
 
 import 'zone.js'
 
+import { describe, expect, it } from '@jest/globals'
 import { sleep } from '@voltiso/util'
 
 import { NoContextError } from '~/NoContextError'
@@ -15,7 +16,6 @@ const mySleep = () => sleep(100)
 
 describe('node', () => {
 	it('simple sync', async () => {
-		// eslint-disable-next-line etc/no-internal
 		const context = new ZoneContext<number>()
 
 		expect(() => context.value).toThrow(NoContextError)
@@ -27,7 +27,6 @@ describe('node', () => {
 	})
 
 	it('simple async', async () => {
-		// eslint-disable-next-line etc/no-internal
 		const context = new ZoneContext<number>()
 
 		expect(() => context.value).toThrow(NoContextError)
@@ -39,7 +38,6 @@ describe('node', () => {
 	})
 
 	it('nested sync', async () => {
-		// eslint-disable-next-line etc/no-internal
 		const context = new ZoneContext<number>()
 
 		expect(() => context.value).toThrow(NoContextError)
@@ -58,7 +56,6 @@ describe('node', () => {
 	})
 
 	it('nested async', async () => {
-		// eslint-disable-next-line etc/no-internal
 		const context = new ZoneContext<number>()
 
 		expect(() => context.value).toThrow(NoContextError)
@@ -78,7 +75,6 @@ describe('node', () => {
 
 	/** Fails when global `Promise` not patched correctly */
 	it('parallel', async () => {
-		// eslint-disable-next-line etc/no-internal
 		const context = new ZoneContext<number>()
 
 		const promise = mySleep()

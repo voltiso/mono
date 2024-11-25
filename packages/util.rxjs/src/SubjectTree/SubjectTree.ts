@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable etc/no-internal */
-
 import type { IsCompatible, IsOptional, Override, Value } from '@voltiso/util'
 import { $Assert, $dev, lazyConstructor } from '@voltiso/util'
 import type { Subject } from 'rxjs'

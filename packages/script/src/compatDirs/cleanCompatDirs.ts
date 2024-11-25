@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as fs from 'node:fs/promises'
-import path from 'node:path'
+import * as path from 'node:path'
 
 import { getPackageJsonCached } from '@voltiso/util.node'
 
@@ -12,7 +12,7 @@ import { getCompatDirNames } from './getCompatDirNames'
 
 const dryRun = false // TODO: expose option
 
-export async function cleanCompatDirs() {
+export async function cleanCompatDirs(): Promise<void> {
 	const packageJson = await getPackageJsonCached(path.resolve())
 	const compatDirNames = getCompatDirNames(packageJson)
 

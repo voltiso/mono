@@ -10,7 +10,7 @@ import { RendererContext } from '~/client'
 
 let renderer: NativeRenderer | undefined
 
-export function getRenderer() {
+export function getRenderer(): NativeRenderer {
 	if (!renderer) {
 		// renderer = createRenderer({
 		// 	plugins: [typescript(), ...webPreset],

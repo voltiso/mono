@@ -4,7 +4,6 @@
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import anyParser from 'any-eslint-parser'
-import type { Linter } from 'eslint'
 
 export const anyOverride = defineEslintFlatConfig({
 	// files: ['*'],
@@ -12,7 +11,7 @@ export const anyOverride = defineEslintFlatConfig({
 	// parser: 'any-eslint-parser',
 
 	languageOptions: {
-		parser: anyParser as Linter.ParserModule,
+		parser: anyParser as never,
 	},
 
 	// rules: {

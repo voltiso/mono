@@ -45,6 +45,7 @@ export interface CloneOptions {
  * - ⚠️ Uses `WeakMap`
  * - ⛔ Throws if getters or setters are encountered
  */
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function deepClone<T>(
 	value: T,
 	inputOptions?: NonStrictPartial<CloneOptions> | undefined,

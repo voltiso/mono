@@ -3,12 +3,12 @@
 
 import { assert } from '@voltiso/assertor'
 
-export function simple() {
+export function simple(): void {
 	const value = 0 as number
 	assert(value === 1)
 }
 
-export function propertyAccess() {
+export function propertyAccess(): void {
 	const myValue = undefined as number | undefined
 	assert.defined(myValue)
 }

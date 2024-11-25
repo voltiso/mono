@@ -21,12 +21,17 @@ function getPackageJson(): PackageJson {
 	let packageJsonBuffer
 
 	try {
-		// eslint-disable-next-line n/no-sync, sonarjs/no-duplicate-string
-		packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', '..', 'package.json'))
+		// eslint-disable-next-line n/no-sync
+		packageJsonBuffer = fs.readFileSync(
+			// eslint-disable-next-line sonarjs/no-duplicate-string
+			path.join(dirname, '..', '..', 'package.json'),
+		)
 	} catch {
 		// for test env
 		// eslint-disable-next-line n/no-sync
-		packageJsonBuffer = fs.readFileSync(path.join(dirname, '..', 'package.json'))
+		packageJsonBuffer = fs.readFileSync(
+			path.join(dirname, '..', 'package.json'),
+		)
 	}
 
 	return JSON.parse(packageJsonBuffer as never) as never

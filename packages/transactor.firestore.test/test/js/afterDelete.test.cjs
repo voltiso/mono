@@ -3,6 +3,7 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
@@ -13,7 +14,6 @@ const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 let numCalls = 0
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// eslint-disable-next-line jest/require-hook, @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
 // @ts-ignore
 // eslint-disable-next-line jest/require-hook
 db('account/*').afterDelete(function ({ before }) {

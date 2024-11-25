@@ -3,6 +3,7 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
 const { incrementIt } = require('@voltiso/util')
 
 const { firestore, srcFirestore } = require('./common/index.cjs')
@@ -15,6 +16,7 @@ const db = createFirestoreTransactor(firestore, { requireSchemas: false })
 db('userA/{user}/project/*').after(
 	async ({ db, before, after, pathParams }) => {
 		// @ts-expect-error ...
+		// eslint-disable-next-line sonarjs/non-number-in-arithmetic-expression
 		const dNumProjects = Boolean(after) - Boolean(before)
 
 		if (dNumProjects) {

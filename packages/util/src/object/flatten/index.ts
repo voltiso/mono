@@ -1,8 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './DeepFlatten'
-export * from './DistributedFlatten'
-export * from './DistributedFlattenAnything'
-export * from './Flatten'
-export * from './SmartFlatten'
+export type * from './DeepFlatten'
+export type * from './DistributedFlatten'
+export type * from './DistributedFlattenAnything'
+export type * from './Flatten'
+export type * from './SmartFlatten'

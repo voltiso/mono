@@ -90,6 +90,7 @@ async function directDocPathGet<D extends $$Doc>(
 	else return null
 }
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 async function transactionDocPathGetImpl<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
@@ -153,6 +154,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 
 				entry.value = guardedValidate_(ctx, schema, entry.value) as never
 
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (entry.value === undefined) delete entry.value
 
 				// console.log('SET INITIAL AGGREGATE', name, entry)
@@ -310,7 +312,7 @@ export function transactionDocPathGet<D extends $$Doc>(
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// eslint-disable-next-line promise/prefer-await-to-then
+			// eslint-disable-next-line promise/prefer-await-to-then, @typescript-eslint/use-unknown-in-catch-callback-variable
 			return promise.then(f as never, r)
 		},
 	}

@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/prefer-readonly */
 
 import { $Assert, $Is } from '_'
+import { describe, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 

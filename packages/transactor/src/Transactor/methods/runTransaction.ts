@@ -37,6 +37,7 @@ function getCacheSnapshot(cache: Cache) {
 	const r = {} as Record<string, Partial<CacheEntry>>
 
 	for (const [k, v] of cache.entries()) {
+		// eslint-disable-next-line sonarjs/no-nested-assignment
 		const entry = (r[k] = {}) as Partial<CacheEntry>
 
 		if ('data' in v) entry.data = deepCloneData(v.data)
@@ -78,6 +79,7 @@ export async function runTransaction<R>(
 
 		return transactor._transactionContext.run(
 			transactionContextOverride,
+			// eslint-disable-next-line sonarjs/cyclomatic-complexity
 			async () => {
 				const cache = transaction._cache
 
@@ -90,6 +92,7 @@ export async function runTransaction<R>(
 					// console.log('snap', cacheSnapshot)
 
 					// loop final after and beforeCommit triggers while there are changes in cache
+					// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 					for (;;) {
 						// detect local changes and set write=true
 						for (const [_path, cacheEntry] of cache.entries()) {
@@ -101,6 +104,7 @@ export async function runTransaction<R>(
 							// 	)
 							// }
 
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							if (
 								!cacheEntry.write &&
 								(!isEqual(cacheEntry.data, cacheEntry.originalData) ||
@@ -124,6 +128,7 @@ export async function runTransaction<R>(
 
 						// process triggers (again)
 						for (const [path, cacheEntry] of cache.entries()) {
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							if (!cacheEntry.write) continue
 
 							// console.log('should write!')
@@ -133,6 +138,7 @@ export async function runTransaction<R>(
 							const ctx = { ...transaction._context, docRef }
 
 							// process normal triggers - they may not have been called if updates were made in-place, not via `update` method
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							if (isDefined(cacheEntry.data)) {
 								// eslint-disable-next-line no-await-in-loop
 								await processTriggers(ctx as never)
@@ -145,6 +151,7 @@ export async function runTransaction<R>(
 						if (!isEqual(nextCacheSnapshot, cacheSnapshot)) {
 							cacheSnapshot = nextCacheSnapshot
 
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							if (transactor._options.log) {
 								// eslint-disable-next-line no-console
 								console.log(
@@ -164,10 +171,10 @@ export async function runTransaction<R>(
 
 						// process before-commits
 						for (const [path, cacheEntry] of cache.entries()) {
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							if (!cacheEntry.write) continue
 
 							// console.log('should write!')
-							// eslint-disable-next-line etc/no-internal
 							const docRef = new _CustomDocRef(transaction._context, path, {
 								isStrong: true,
 							})
@@ -176,6 +183,7 @@ export async function runTransaction<R>(
 
 							const beforeCommits = getBeforeCommits(docRef)
 
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							for (const { trigger, pathMatches } of beforeCommits) {
 								let triggerResult: Awaited<ReturnType<typeof trigger>>
 								// eslint-disable-next-line no-await-in-loop
@@ -228,6 +236,7 @@ export async function runTransaction<R>(
 						if (!isEqual(finalCacheSnapshot, cacheSnapshot)) {
 							cacheSnapshot = finalCacheSnapshot
 
+							// eslint-disable-next-line sonarjs/nested-control-flow
 							if (transactor._options.log) {
 								// eslint-disable-next-line no-console
 								console.log(

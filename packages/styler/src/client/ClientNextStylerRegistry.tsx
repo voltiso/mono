@@ -4,6 +4,7 @@
 'use client'
 
 import type React from 'react'
+import type { JSX } from 'react'
 import { useState } from 'react'
 
 import { useServerInsertedHTML } from '~/nextJs/_next'
@@ -13,7 +14,7 @@ import { RendererContext } from './context'
 
 export const ClientNextStylerRegistry = (props: {
 	readonly children: React.ReactNode
-}) => {
+}): JSX.Element => {
 	// eslint-disable-next-line react/hook-use-state
 	const [renderer] = useState(() => new WebRenderer())
 

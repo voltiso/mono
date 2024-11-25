@@ -10,7 +10,7 @@ import type { SchemaLike } from '~/types/Schema/ISchema'
 
 import type { NeverOptions } from '../NeverOptions'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNeverImpl<O> {
 	readonly [DEFAULT_OPTIONS]: NeverOptions.Default
 	readonly [BASE_OPTIONS]: NeverOptions
@@ -20,9 +20,10 @@ export interface CustomNeverImpl<O> {
 export class CustomNeverImpl<
 	O extends Partial<NeverOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Never' as const;
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: SchemaLike): boolean {
 		return true
 	}

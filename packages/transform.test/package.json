@@ -26,6 +26,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/config.jest": "workspace:^",

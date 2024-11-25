@@ -23,7 +23,7 @@ export function defineEslintConfig<
 
 export function defineEslintConfig<
 	Configs extends (EslintConfig | AlsoAccept<PlainObject>)[],
->(...configs: Configs) {
+>(...configs: Configs): Record<string, unknown> {
 	return deepMerge(...configs) as never
 }
 

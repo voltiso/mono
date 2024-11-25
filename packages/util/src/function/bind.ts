@@ -18,6 +18,6 @@
 export function bind<ThisArg, Args extends unknown[], R>(
 	func: (this: ThisArg, ...args: Args) => R,
 	thisArg: ThisParameterType<(this: ThisArg, ...args: Args) => R>,
-) {
+): OmitThisParameter<(this: ThisArg, ...args: Args) => R> {
 	return func.bind(thisArg)
 }

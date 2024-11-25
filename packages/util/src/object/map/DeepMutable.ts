@@ -44,8 +44,7 @@ export type DeepMutableN<
 	? T
 	: $Decrement<TLength> extends DecrementArgument
 		? T extends object
-			? // eslint-disable-next-line etc/no-internal
-				DeepMutableN._ShouldSkip<T, Options['skip']> extends true
+			? DeepMutableN._ShouldSkip<T, Options['skip']> extends true
 				? T
 				: {
 						-readonly [k in keyof T]: DeepMutableN<
@@ -83,8 +82,7 @@ export type $$DeepMutableN<
 	? T
 	: $Decrement<TLength> extends DecrementArgument
 		? T extends object
-			? // eslint-disable-next-line etc/no-internal
-				DeepMutableN._ShouldSkip<T, Options['skip']> extends true
+			? DeepMutableN._ShouldSkip<T, Options['skip']> extends true
 				? T
 				: {
 						-readonly [k in keyof T]: $$DeepMutableN<

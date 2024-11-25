@@ -34,6 +34,7 @@ export function useObservables<Observables extends readonly unknown[]>(
 
 //
 
+// eslint-disable-next-line sonarjs/function-return-type
 export function useObservables<Observables extends readonly unknown[]>(
 	...observables$: Observables
 ): GetObservedValues<Observables> | StaticError {

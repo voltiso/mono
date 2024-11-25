@@ -1,17 +1,16 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-import reactPlugin from 'eslint-plugin-react'
+import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import react from 'eslint-plugin-react'
 
 import { codeFiles } from '~/detail/files'
 
-export const react = defineEslintFlatConfig({
+export const reactConfig = defineEslintFlatConfig({
 	files: codeFiles,
 
-	// plugins: ['react'],
 	plugins: {
-		react: reactPlugin as never,
+		react: react as never,
 	},
 
 	settings: {
@@ -21,6 +20,8 @@ export const react = defineEslintFlatConfig({
 	},
 
 	rules: {
+		...getAllRules(react, 'react', 'warn'),
+
 		'react/boolean-prop-naming': 1,
 		'react/button-has-type': 1,
 		'react/default-props-match-prop-types': 1,
@@ -100,6 +101,7 @@ export const react = defineEslintFlatConfig({
 
 		'react/jsx-props-no-spreading': 0, // spreading is useful
 
+		'react/jsx-sort-default-props': 0, // renamed
 		'react/sort-default-props': 1,
 
 		'react/jsx-sort-props': 0,
@@ -150,7 +152,7 @@ export const react = defineEslintFlatConfig({
 
 		'react/prop-types': 0, // not using prop-types
 
-		'react/react-in-jsx-scope': 1,
+		'react/react-in-jsx-scope': 0, // not required since React 17
 
 		'react/require-default-props': 0, // not using prop-types
 

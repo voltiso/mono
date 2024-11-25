@@ -2,11 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './capitalize'
-export * from './Includes'
+export type * from './Includes'
 export * from './isString'
-export * from './IsStringLiteral'
+export type * from './IsStringLiteral'
 export * from './Join'
 export * from './pad'
-export * from './Printable'
-export * from './Split'
+export type * from './Printable'
+export type * from './Split'
 export * from './stringFrom'

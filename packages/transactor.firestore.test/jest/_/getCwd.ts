@@ -3,7 +3,7 @@
 
 import * as path from 'node:path'
 
-export function getCwd() {
+export function getCwd(): string {
 	// eslint-disable-next-line unicorn/prefer-module
 	return path.resolve(__dirname, '..', '..', 'emulator')
 }

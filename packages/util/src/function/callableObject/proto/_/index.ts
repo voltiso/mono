@@ -1,5 +1,5 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './ProtoCallableOptions'
-export * from './ProtoCallableType'
+export type * from './ProtoCallableOptions'
+export type * from './ProtoCallableType'

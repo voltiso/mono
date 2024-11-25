@@ -10,28 +10,26 @@ export type _GetUnknownPathTokens<
 > = string extends P
 	? string[]
 	: P extends `{${infer Token}}${infer Tail}`
-		? // eslint-disable-next-line etc/no-internal
-			_GetUnknownPathTokens<Tail, [...Acc, Token]>
+		? _GetUnknownPathTokens<Tail, [...Acc, Token]>
 		: P extends `*${infer Tail}`
 			? Tail extends `*${infer Tail2}`
-				? // eslint-disable-next-line etc/no-internal
-					_GetUnknownPathTokens<Tail2, [...Acc, '**']>
-				: // eslint-disable-next-line etc/no-internal
-					_GetUnknownPathTokens<Tail, [...Acc, '*']>
+				? _GetUnknownPathTokens<Tail2, [...Acc, '**']>
+				: _GetUnknownPathTokens<Tail, [...Acc, '*']>
 			: P extends `${string}${infer Tail}`
-				? // eslint-disable-next-line etc/no-internal
-					_GetUnknownPathTokens<Tail, Acc>
+				? _GetUnknownPathTokens<Tail, Acc>
 				: Acc
 
-export type GetUnknownPathTokens<P extends string> =
-	// eslint-disable-next-line etc/no-internal
-	_GetUnknownPathTokens<P, []>
+export type GetUnknownPathTokens<P extends string> = _GetUnknownPathTokens<
+	P,
+	[]
+>
 
 export function getUnknownPathTokens<P extends string>(
 	pattern: P,
 ): GetUnknownPathTokens<P> {
+	// eslint-disable-next-line sonarjs/regular-expr
 	return [...pattern.matchAll(/\{([^{}]*)\}|\*{1,2}/gu)].map(r => {
-		const res = r[1] || r[0]
+		const res = r[1] ?? r[0]
 		fastAssert(res)
 		return res
 	}) as never

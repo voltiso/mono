@@ -22,7 +22,7 @@ import type { SymbolObject } from './SymbolObject'
 // }
 
 /** Transform `A` into `Namespace.Nested.A` */
-export function fixNamespaces(ctx: TransformContext, node: ts.Node) {
+export function fixNamespaces(ctx: TransformContext, node: ts.Node): ts.Node {
 	function visitor(node: ts.Node): ts.Node {
 		// console.log(
 		// 	'visit',

@@ -23,8 +23,7 @@ export function logInlinedNode(
 	ctx: TransformContext,
 	node: ts.Node,
 	options: { type: 'alias' | 'expression' },
-) {
-	// eslint-disable-next-line etc/no-internal
+): void {
 	_helloOnce()
 
 	// eslint-disable-next-line no-console

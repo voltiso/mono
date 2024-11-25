@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable sonarjs/no-redundant-type-constituents */
 
 import type { BivariantCallable } from '@voltiso/util'
 import type * as React from 'react'

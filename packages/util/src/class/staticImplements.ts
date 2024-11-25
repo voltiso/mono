@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-empty-function */
-
 /**
  * Decorator for classes to type-check static fields
  *
@@ -19,7 +17,9 @@
  *
  * @returns Decorator
  */
-export function staticImplements<Constructor>() {
+export function staticImplements<Constructor>(): <C extends Constructor>(
+	_: C,
+) => void {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	return <C extends Constructor>(_: C) => {}
 }

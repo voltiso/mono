@@ -4,11 +4,10 @@
 import type { $Override_ } from '@voltiso/util'
 
 import type { STYLED_TYPE_INFO as $ } from '~/_/symbols'
-import type { StylableLike } from '~/Stylable'
-import type { StyledTypeInfo } from '~/StyledTypeInfo'
+import type { StyledSubject, StyledTypeInfo } from '~/StyledTypeInfo'
 
 export type StyledLike<$ extends Partial<StyledTypeInfo> = {}> = StyledLikeImpl<
-	$Override_<{ Component: StylableLike | null; Props: {}; CustomCss: {} }, $>
+	$Override_<{ Component: StyledSubject | null; Props: {}; CustomCss: {} }, $>
 >
 
 export interface StyledLikeImpl<$ extends StyledTypeInfo> {

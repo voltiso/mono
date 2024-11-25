@@ -6,6 +6,17 @@
   "__________": "__________",
   "type": "module",
   "sideEffects": false,
+  "__________EXPORTS": "__________",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/esm/index.d.ts",
+        "require": "./dist/cjs/index.d.ts"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "__________EXPORTS FALLBACK": "__________",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
@@ -50,6 +61,7 @@
     }
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",

@@ -1,12 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable import/no-named-as-default-member */
-
 import { $fastAssert, getKeys, tryAt } from '@voltiso/util'
 import type { ForwardedRef } from 'react'
 // ! has to be default-imported - otherwise Next.js will complain
-import React from 'react'
+import * as React from 'react'
 
 import type { IForwardRefRenderFunction, StyledData } from '~/_/StyledData'
 import { useRenderer, useTheme } from '~/client'
@@ -38,7 +36,7 @@ import {
 
 /** @internal */
 function _getCssArray(css: Css | readonly Css[] | undefined): Css[] {
-	// eslint-disable-next-line no-nested-ternary
+	// eslint-disable-next-line no-nested-ternary, sonarjs/no-nested-conditional
 	return Array.isArray(css) ? (css as Css[]) : css ? [css as Css] : []
 }
 
@@ -77,19 +75,20 @@ function _getFinalNativeProps(css: Css, props: NativeInnerProps) {
 	return { ...props, style }
 }
 
+// eslint-disable-next-line sonarjs/function-return-type, sonarjs/cyclomatic-complexity
 export function render<$ extends StyledTypeInfo>(
 	props: $['Props'] & OuterProps,
 	ref: ForwardedRef<unknown>,
 	data: StyledData<$>,
-) {
+): React.ReactNode {
 	const renderer: WebRenderer | NativeRenderer | null = isServerComponent
 		? rscRenderer
-		: // eslint-disable-next-line react-hooks/rules-of-hooks
+		: // eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
 			useRenderer()
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (React.useInsertionEffect && isWebRenderer(renderer)) {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
 		React.useInsertionEffect(() => {
 			const style = renderer.flushStyle()
 			if (!style) return
@@ -102,7 +101,7 @@ export function render<$ extends StyledTypeInfo>(
 		})
 	}
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
 	const theme = isServerComponent ? {} : useTheme()
 
 	const { css, ...otherProps } = props
@@ -124,7 +123,6 @@ export function render<$ extends StyledTypeInfo>(
 	// 	p[k] = prepare(p[k], { theme, isPreparingProps: true }) as never
 	// }
 
-	// eslint-disable-next-line etc/no-internal
 	const cssArray = [..._getCssArray(css)].reverse()
 
 	const styles: Css[] = []
@@ -158,7 +156,6 @@ export function render<$ extends StyledTypeInfo>(
 		} else if (isStyleNode(node)) {
 			styles.push(prepare(node.style, { theme, customCss: node.customCss }))
 		} else if (isGetStyleNode(node)) {
-			// eslint-disable-next-line etc/no-internal
 			const props = _prepareProps(
 				{ ...data.defaults, ...p },
 				{ theme, customCss: node.customCss },
@@ -176,7 +173,7 @@ export function render<$ extends StyledTypeInfo>(
 		} else if (isWrapNode(node)) {
 			// overrideChildren = true
 
-			// eslint-disable-next-line no-loop-func, @typescript-eslint/no-loop-func
+			// eslint-disable-next-line @typescript-eslint/no-loop-func
 			const children = node.wrap.map((element, index) => {
 				let props = {
 					key: index,
@@ -198,7 +195,6 @@ export function render<$ extends StyledTypeInfo>(
 			// 	? [...children, ...newChildElements]
 			// 	: [...newChildElements, ...children]
 		} else if (isMapPropsNode(node)) {
-			// eslint-disable-next-line etc/no-internal
 			const inputProps = _prepareProps(
 				{ ...data.defaults, ...p },
 				{ theme, customCss: node.customCss },
@@ -232,15 +228,13 @@ export function render<$ extends StyledTypeInfo>(
 	}
 
 	const renderedProps = isWebRenderer(renderer)
-		? // eslint-disable-next-line etc/no-internal
-			_getFinalWebProps(
-				(renderer as unknown as WebRenderer | null)?.classNameFor(...styles) ||
+		? _getFinalWebProps(
+				(renderer as unknown as WebRenderer | null)?.classNameFor(...styles) ??
 					'',
 				p,
 			)
-		: // eslint-disable-next-line etc/no-internal
-			_getFinalNativeProps(
-				(renderer as unknown as NativeRenderer | null)?.styleFor(...styles) ||
+		: _getFinalNativeProps(
+				(renderer as unknown as NativeRenderer | null)?.styleFor(...styles) ??
 					{},
 				p,
 			)

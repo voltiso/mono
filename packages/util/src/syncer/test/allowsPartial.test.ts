@@ -3,6 +3,8 @@
 
 /* eslint-disable n/no-sync */
 
+import { describe, expect, it } from '@jest/globals'
+
 import type { SyncerPromise } from '~/syncer'
 import { runAsync, runSync } from '~/syncer'
 
@@ -11,7 +13,7 @@ function* partialFunc(): SyncerPromise<number, number | undefined> {
 		async: () => 11,
 	}
 
-	return 100 + (x || 0)
+	return 100 + (x ?? 0)
 }
 
 describe('allowsPartial', () => {

@@ -22,7 +22,7 @@ import type { InstanceOptions } from './InstanceOptions'
 $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomInstanceImpl<O> {
 	readonly [BASE_OPTIONS]: InstanceOptions
 	readonly [DEFAULT_OPTIONS]: InstanceOptions.Default
@@ -33,6 +33,7 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomInstance<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Instance' as const
 
 	// declare readonly [PARTIAL_OPTIONS]: O;
@@ -61,8 +62,7 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 
 		if (!(x instanceof this.getConstructor)) {
 			const received = `${
-				// eslint-disable-next-line etc/no-internal
-				_getInstanceConstructorName(x) || '[unknown-constructor]'
+				_getInstanceConstructorName(x) ?? '[unknown-constructor]'
 			}(${stringFrom(x)})`
 
 			issues.push(

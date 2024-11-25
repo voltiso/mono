@@ -1,10 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import '@alex_neo/jest-expect-message'
-// import 'jest-expect-message'
-import '@testing-library/jest-dom'
-
+import { describe, expect, it } from '@jest/globals'
 import { act, render, screen } from '@testing-library/react'
 import { BoundCallable, CALL } from '@voltiso/util'
 import type { FC } from 'react'
@@ -51,6 +48,7 @@ describe('useStatePatcher', () => {
 		expect(prevState.a).toBe('bb') // no stale values
 
 		// #3 no re-render (same value)
+		// eslint-disable-next-line no-useless-assignment
 		prevState = state
 		let prevRaw = state.raw
 		// eslint-disable-next-line testing-library/render-result-naming-convention
@@ -65,6 +63,7 @@ describe('useStatePatcher', () => {
 		//
 
 		// #3-b no re-render (same value)
+		// eslint-disable-next-line no-useless-assignment
 		prevState = state
 		prevRaw = state.raw
 		prevRenderId = renderId
@@ -135,7 +134,6 @@ describe('useStatePatcher', () => {
 
 		const C: FC = () => {
 			state = useStatePatcher({ a: true })
-			// eslint-disable-next-line jest/no-if
 			return <div data-testid='a'>{state.a ? 'T' : 'F'}</div>
 		}
 
@@ -159,13 +157,12 @@ describe('useStatePatcher', () => {
 
 		const C: FC = () => {
 			state = useStatePatcher({ a: true })
-			// eslint-disable-next-line jest/no-if
-			return <div data-testid='a'>{state.a ? 'T' : 'F'}</div>
+			return <div data-testid='aa'>{state.a ? 'T' : 'F'}</div>
 		}
 
 		render(<C />)
 
-		const c = screen.getByTestId('a')
+		const c = screen.getByTestId('aa')
 
 		expect(c).toHaveTextContent('T')
 

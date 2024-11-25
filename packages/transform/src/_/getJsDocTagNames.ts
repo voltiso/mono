@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/nested-control-flow */
+
 import type { TransformContext } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
@@ -15,7 +17,8 @@ function poorMansGetJsDocTags(node: ts.Node) {
 	for (const commentRange of commentRanges || []) {
 		const comment = source.slice(commentRange.pos, commentRange.end)
 
-		const moreTags = [...comment.matchAll(/@(\S+)/gu)].map(match => match[1])
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const moreTags = [...comment.matchAll(/@(\S+)/gu)].map(match => match[1]!)
 		// console.log('xxxxxxxxx', comment, tags)
 		tags.push(...moreTags)
 	}

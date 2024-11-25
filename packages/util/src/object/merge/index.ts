@@ -3,8 +3,8 @@
 
 export * from './assign'
 export * from './deepMerge'
-export * from './DeepReplace'
-export * from './Merge'
-export * from './MergeN'
-export * from './Suggest'
-export * from './SuggestObjectNullish'
+export type * from './DeepReplace'
+export type * from './Merge'
+export type * from './MergeN'
+export type * from './Suggest'
+export type * from './SuggestObjectNullish'

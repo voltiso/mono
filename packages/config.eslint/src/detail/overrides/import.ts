@@ -21,7 +21,7 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'@voltiso/no-useless-path-segments': ['warn', { noUselessIndex: true }],
 	// 'import/no-useless-path-segments': ['warn', { noUselessIndex: true }],
 
-	'import/default': 1, //! TS does the same?
+	'import/default': 1, // ! TS does the same?
 	'import/no-restricted-paths': 1,
 	'import/no-absolute-path': 1,
 	'import/no-dynamic-require': 1,
@@ -29,9 +29,9 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 
 	'import/named': 0, // buggy when using import from '~' (tsconfig -> paths)?
 	'import/namespace': 0, // buggy when using custom "paths" in `tsconfig.json`
-	'import/no-internal-modules': 0, //! hmm... configure and enable?
+	'import/no-internal-modules': 0, // ! hmm... configure and enable?
 	'import/no-webpack-loader-syntax': 0,
-	'import/no-cycle': 0, //! hmm... might be useful !
+	'import/no-cycle': 0, // ! hmm... might be useful !
 
 	'import/no-relative-parent-imports': 0, // use 'no-restricted-imports' instead
 })
@@ -39,7 +39,7 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 const helpfulWarningsRules = defineEslintConfigOverrideRules({
 	'import/export': 1,
 	'import/no-named-as-default': 1, // TS does not do this
-	'import/no-named-as-default-member': 1, //! TS does the same?
+	'import/no-named-as-default-member': 1, // ! TS does the same?
 	'import/no-deprecated': 1, // TS does not do this
 	'import/no-mutable-exports': 1,
 	'import/no-unused-modules': 1, // TS does not do this
@@ -97,7 +97,7 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	// 	},
 	// ],
 
-	'import/order': 0, //! hmm... using simple-import-fix - but wondering if this would work better?
+	'import/order': 0, // ! hmm... using simple-import-fix - but wondering if this would work better?
 	'import/prefer-default-export': 0, // named exports are better!
 	'import/max-dependencies': 0,
 	'import/no-named-export': 0, // meh
@@ -135,9 +135,9 @@ export const importConfig = defineEslintFlatConfig(
 				'@typescript-eslint/parser': codeFiles.map(s => s.slice(1)),
 			},
 
+			// eslint-disable-next-line unicorn/prefer-string-raw
 			'import/ignore': ['node_modules/react-native/index\\.js$'],
 
-			// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 			'import/extensions': codeFiles.map(s => s.slice(1)),
 
 			'import/resolver': {
@@ -178,6 +178,13 @@ export const importConfig = defineEslintFlatConfig(
 			...helpfulWarningsRules,
 			...moduleSystemsRules,
 			...styleGuideRules,
+		},
+	},
+	{
+		files: ['**/eslint.config.js', '**/jest.config.js'],
+
+		rules: {
+			'import/no-default-export': 0,
 		},
 	},
 )

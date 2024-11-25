@@ -132,7 +132,6 @@ export function deepMerge<Objs extends readonly object[]>(
 	let r = {}
 
 	for (const object of objs) {
-		// eslint-disable-next-line etc/no-internal
 		r = _deepMerge(r, object as Record<string, object>)
 	}
 

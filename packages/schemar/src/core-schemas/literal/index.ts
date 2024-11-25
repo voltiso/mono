@@ -2,9 +2,9 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
-export * from './CustomLiteral'
+export type * from './CustomLiteral'
 export * from './defaultLiteralOptions'
-export * from './ILiteral'
+export type * from './ILiteral'
 export * from './isLiteral'
 export * from './Literal'
-export * from './LiteralOptions'
+export type * from './LiteralOptions'

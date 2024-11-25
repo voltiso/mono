@@ -22,15 +22,17 @@ function append(str: string, x: string): string {
 	return `${str.slice(0, -2)}, ${x} }`
 }
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function stringFromObject_(
 	obj: Record<keyof any, unknown>,
 	options: StringFromOptions,
-) {
+): string {
 	let name: string | undefined =
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		obj.constructor?.name ||
 		(Object.getPrototypeOf(obj) === null ? '[null-proto]' : '[unknown-proto]')
 
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	if (name === 'Object') name = undefined
 
 	const entries = getEntries(obj, options)
@@ -72,7 +74,7 @@ export function stringFromObject_(
 export function stringFromObject(
 	object: Record<keyof any, unknown>,
 	options?: Partial<StringFromOptions> | undefined,
-) {
+): string {
 	const finalOptions = overrideDefined(defaultToStringOptions, options)
 	return stringFromObject_(object, finalOptions)
 }

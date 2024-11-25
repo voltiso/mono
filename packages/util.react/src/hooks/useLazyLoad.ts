@@ -9,7 +9,15 @@ import { useInView } from 'react-intersection-observer'
 
 import { useCurrent } from './useCurrent'
 
-export function useLazyLoad(options?: IntersectionOptions | undefined) {
+export interface UseLazyLoadResult {
+	ref: <Element>(instance: Element | null) => void
+	show: boolean
+	element: unknown
+}
+
+export function useLazyLoad(
+	options?: IntersectionOptions | undefined,
+): UseLazyLoadResult {
 	const { ref, inView } = useInView({
 		triggerOnce: true,
 		threshold: 0.000_1,
@@ -17,6 +25,7 @@ export function useLazyLoad(options?: IntersectionOptions | undefined) {
 	})
 
 	// const [element, setElement] = useState<HTMLElement>()
+	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	const current = useCurrent<{ element: unknown | null }>({ element: null })
 
 	const myRef = useMemo(

@@ -1,8 +1,11 @@
-/* eslint-disable no-nested-ternary */
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable no-bitwise */
+/* eslint-disable sonarjs/no-nested-conditional */
+/* eslint-disable sonarjs/nested-control-flow */
+/* eslint-disable sonarjs/cyclomatic-complexity */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable sonarjs/expression-complexity */
 /* eslint-disable max-depth */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable n/no-sync */
@@ -42,7 +45,6 @@ function isFile(path: string) {
 }
 
 function createDirnameDeclaration() {
-	// eslint-disable-next-line @typescript-eslint/prefer-destructuring
 	const factory = ts.factory
 
 	return factory.createVariableStatement(
@@ -92,7 +94,7 @@ function createDirnameDeclaration() {
 
 export function compatTransform(
 	program: ts.Program,
-	partialOptions?: DeepPartial_<CompatTransformOptions> | undefined,
+	partialOptions?: DeepPartial_<CompatTransformOptions>,
 ) {
 	const moduleOption = program.getCompilerOptions().module
 	const isImportMetaAvailable =
@@ -101,20 +103,19 @@ export function compatTransform(
 		moduleOption !== ts.ModuleKind.AMD &&
 		moduleOption !== ts.ModuleKind.UMD
 
-	// eslint-disable-next-line etc/no-internal
 	const options: CompatTransformOptions = _deepMerge2(
 		defaultCompatTransformOptions as never,
 		partialOptions || {},
 	) as never
 
 	if (options.afterDeclarationsHack === undefined) {
-		throw new Error('Please supply `stripTypeOnly` option')
+		throw new Error('Please supply `afterDeclarationsHack` option')
 	}
 
 	const typeChecker = program.getTypeChecker()
 
 	return (transformationContext: ts.TransformationContext) =>
-		(sourceFile: ts.SourceFile) => {
+		(sourceFile: ts.SourceFile): ts.SourceFile => {
 			// console.log('compatTransform', sourceFile.fileName)
 
 			const ctx: CompatTransformContext = {
@@ -128,6 +129,7 @@ export function compatTransform(
 			let isDirnameDeclarationCreated = false
 			let isDirnamePresent = false
 
+			// eslint-disable-next-line sonarjs/function-return-type
 			const visitor: ts.Visitor = node => {
 				// console.log('visitor', ts.SyntaxKind[node.kind])
 
@@ -152,6 +154,8 @@ export function compatTransform(
 					} catch {}
 				}
 
+				// console.log(options.afterDeclarationsHack, 'process', getNodeText(ctx, node))
+
 				/** Import folders or files without extension */
 				if (
 					(!options.supported.importDirectory ||
@@ -163,6 +167,8 @@ export function compatTransform(
 						(ts.isLiteralTypeNode(node.parent) &&
 							ts.isImportTypeNode(node.parent.parent)))
 				) {
+					// console.log('yes')
+
 					const isTypeOnly = ts.isLiteralTypeNode(node.parent)
 						? false
 						: ts.isImportDeclaration(node.parent)
@@ -177,7 +183,7 @@ export function compatTransform(
 						// if (moduleSpecifier) {
 						let moduleSpecifierStr = moduleSpecifier.getText(sourceFile)
 
-						const singleQuote = moduleSpecifierStr.startsWith("'")
+						const singleQuote = moduleSpecifierStr.startsWith(`'`)
 
 						moduleSpecifierStr = moduleSpecifierStr.slice(1, -1)
 
@@ -254,6 +260,8 @@ export function compatTransform(
 									if (!isFile(targetFile)) continue
 
 									const newNodeStr = `${moduleSpecifierStr}.${targetExt}`
+
+									// console.log('hack', options.afterDeclarationsHack)
 
 									logCompatTransformNode(ctx, node, newNodeStr, {
 										feature: 'importWithoutExtension',

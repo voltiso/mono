@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type { Keyframes } from '~/Css/Keyframes'
 
 import type { Css } from '../Css'
@@ -19,7 +21,7 @@ export class WebRenderer {
 	_styleToFlush = ''
 	numFlushes = 0
 
-	classNameFor(...stylerStyles: Css[]) {
+	classNameFor(...stylerStyles: Css[]): string {
 		const atomicStyles = groupAtomicStyles(
 			getAtomicStyles(this, ...stylerStyles),
 		)
@@ -58,7 +60,7 @@ export class WebRenderer {
 		return classNames.join(' ')
 	}
 
-	animationNameFor(keyframes: Keyframes) {
+	animationNameFor(keyframes: Keyframes): string {
 		const keyframesStr = stringFromKeyframes(keyframes)
 		// console.log({ keyframes, keyframesStr })
 
@@ -82,7 +84,7 @@ export class WebRenderer {
 		return animationName
 	}
 
-	flushStyle() {
+	flushStyle(): string {
 		if (!this._styleToFlush) return ''
 		const style = this._styleToFlush
 		this._styleToFlush = ''
@@ -91,7 +93,7 @@ export class WebRenderer {
 		return style
 	}
 
-	unflushStyle() {
+	unflushStyle(): void {
 		this._styleToFlush = [...this._classNames.entries()]
 			.map(([k, v]) => k.replace(/&/gu, `.${v}`))
 			.join('')
@@ -103,7 +105,7 @@ export class WebRenderer {
 		this.numFlushes = 0
 	}
 
-	isFlushed() {
+	isFlushed(): boolean {
 		return !this._styleToFlush
 	}
 }

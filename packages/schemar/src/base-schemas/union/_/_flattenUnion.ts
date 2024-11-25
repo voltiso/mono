@@ -14,7 +14,6 @@ export function _flattenUnion(s: $$Schemable): IUnion {
 	let schemas = [] as $$Schemable[]
 
 	for (const child of s.getSchemas) {
-		// eslint-disable-next-line etc/no-internal
 		const flattenedChild = _flattenUnion(child)
 		if (isUnionSchema(flattenedChild))
 			schemas = [...schemas, ...flattenedChild.getSchemas]

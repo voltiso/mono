@@ -4,7 +4,8 @@
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
-// eslint-disable-next-line es-x/no-import-meta
+import { describe, expect, it } from '@jest/globals'
+
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
 describe('typeof (not supported yet)', () => {

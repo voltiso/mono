@@ -39,6 +39,7 @@ export function combineNestedSelectors(
 
 //
 
+// eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function getAtomicStyles(
 	renderer: WebRenderer,
 	...stylerStyles: RelaxedCss[]
@@ -66,6 +67,7 @@ export function getAtomicStyles(
 			const inners = getAtomicStyles(renderer, v as never)
 
 			if (outer.mediaQueries.length > 0) {
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				for (const inner of inners) {
 					for (const override of inner.overrides) {
 						override.mediaQueries = [
@@ -77,6 +79,7 @@ export function getAtomicStyles(
 			}
 
 			if (outer.selectors.length > 1 || outer.selectors[0] !== '&') {
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				for (const inner of inners) {
 					inner.selectors = combineNestedSelectors(
 						outer.selectors,

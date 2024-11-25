@@ -14,7 +14,9 @@ export const staticContext: FirestoreLikeModule = {
 	// Timestamp,
 }
 
-export function createTransactor(opts?: Partial<TransactorOptions>) {
+export function createTransactor(
+	opts?: Partial<TransactorOptions>,
+): Transactor {
 	if (opts) return new Transactor(database, staticContext, opts)
 	else return new Transactor(database, staticContext)
 }

@@ -13,7 +13,6 @@ import type { GetDocTI } from '~/DocRelated'
 export function getAggregateSchemas<Ref extends $$DocRef>(
 	ref: Ref,
 ): GetDocTI<Ref>['aggregates'] {
-	// eslint-disable-next-line etc/no-internal
 	$AssumeType<_CustomDocRef>(ref)
 	if (ref._aggregateSchemas !== undefined) return ref._aggregateSchemas as never
 

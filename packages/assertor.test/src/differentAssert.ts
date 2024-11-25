@@ -3,6 +3,6 @@
 
 import assert from 'node:assert'
 
-export function differentAssert() {
+export function differentAssert(): void {
 	assert(1)
 }

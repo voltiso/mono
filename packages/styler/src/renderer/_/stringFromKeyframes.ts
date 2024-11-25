@@ -5,7 +5,7 @@ import type { Keyframes } from '~/Css'
 
 import { stringFromDeclaration } from './stringFromDeclaration'
 
-export function stringFromKeyframes(keyframes: Keyframes) {
+export function stringFromKeyframes(keyframes: Keyframes): string {
 	return Object.entries(keyframes)
 		.map(
 			([k, v]) =>

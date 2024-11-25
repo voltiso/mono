@@ -26,6 +26,7 @@ export function CallableConstructor<O extends CallableConstructorOptions>(
 
 	const name = `CallableConstructor(${options.constructor.name})`
 
+	// eslint-disable-next-line sonarjs/function-return-type
 	function CallableConstructor(
 		...args: ConstructorParameters<O['constructor']> | Parameters<O['call']>
 	): ReturnType<O['call']> | InstanceType<O['constructor']> {

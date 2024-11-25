@@ -34,7 +34,9 @@ export type String$Constructor = new () => String$
 
 export const string: String$ = lazyFunction(() => new String$())
 
-export const regex = (
+export function regex(
 	regExp: RegExp,
 	expectedDescription?: string | undefined,
-) => string.regex(regExp, expectedDescription)
+): String$ {
+	return string.regex(regExp, expectedDescription)
+}

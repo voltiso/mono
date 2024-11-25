@@ -74,7 +74,9 @@ export function reduceExtends<
 	}) as never
 }
 
-export function isEslintConfigOverrideEmpty(config: EslintConfigOverride): boolean {
+export function isEslintConfigOverrideEmpty(
+	config: EslintConfigOverride,
+): boolean {
 	if (config.plugins && config.plugins.length > 0) return false
 
 	if (config.extends && config.extends.length > 0) return false
@@ -92,7 +94,8 @@ export function reduceEslintConfigOverride<
 ): Partial<Override> | null {
 	const result = { ...configOverride }
 
-	if (result.plugins) result.plugins = reducePlugins(result.plugins, options)
+	if (result.plugins)
+		result.plugins = reducePlugins(result.plugins as never, options)
 
 	if (result.extends) {
 		result.extends = reduceExtends(result.extends as never, options)

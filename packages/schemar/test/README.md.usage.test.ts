@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 
@@ -12,6 +13,7 @@ describe('README.md - usage', () => {
 
 		const myShape = {
 			name: s.string,
+			// eslint-disable-next-line sonarjs/regular-expr
 			version: s.string.regex(/^\d+\.\d+\.\d+$/u), // simplified
 			license: s.string.regex(/^[A-Z]\d$/u).optional,
 

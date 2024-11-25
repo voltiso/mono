@@ -165,7 +165,10 @@ export namespace VoltisoEntry {
 	}
 }
 
-export function getDefaultVoltisoEntry(context: WithTransactor, date: Date) {
+export function getDefaultVoltisoEntry(
+	context: WithTransactor,
+	date: Date,
+): VoltisoEntry {
 	return guardedValidate(context, sVoltisoEntry, {
 		createdAt: date,
 		updatedAt: date,

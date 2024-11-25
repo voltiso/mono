@@ -7,3 +7,8 @@ export const rules = {
 	'file-extension-in-import': fileExtensionInImport,
 	'no-useless-path-segments': noUselessPathSegments,
 }
+
+// eslint-disable-next-line import/no-default-export
+export default {
+	rules,
+}

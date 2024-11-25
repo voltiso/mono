@@ -2,11 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $Assert } from '_'
+import { describe, expect, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 
 import type { Override } from './Override'
-import { override, overrideDefined } from './Override'
+import { overrideDefined, overrideStrict } from './Override'
 
 describe('override', () => {
 	it('type', () => {
@@ -18,13 +19,13 @@ describe('override', () => {
 	})
 
 	it('optionals', () => {
-		const a = override({ a: 1 as const }, { a: 2 as const })
+		const a = overrideStrict({ a: 1 as const }, { a: 2 as const })
 
 		expect(a).toStrictEqual({ a: 2 })
 
 		$Assert<IsIdentical<typeof a, { a: 2 }>>()
 
-		const b = override({ a: 1 }, { a: undefined })
+		const b = overrideStrict({ a: 1 }, { a: undefined })
 
 		expect(b).toStrictEqual({ a: undefined })
 

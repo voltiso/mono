@@ -1,5 +1,5 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './IForwardedRef'
-export * from './IForwardRefExoticComponent'
+export type * from './IForwardedRef'
+export type * from './IForwardRefExoticComponent'

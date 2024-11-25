@@ -15,7 +15,7 @@ import { object } from '../unknownObject'
 import type { CustomRecord } from './CustomRecord'
 import type { RecordOptions } from './RecordOptions'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {
 	readonly [BASE_OPTIONS]: RecordOptions
 	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
@@ -26,8 +26,10 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomRecord<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'Record' as const
 
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly _object: CustomUnknownObjectImpl<any>
 
 	constructor(options: O) {
@@ -49,7 +51,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		return this[OPTIONS].valueSchema as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getShape(): {} {
 		return {}
 	}
@@ -63,7 +65,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		]
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override [EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 	}

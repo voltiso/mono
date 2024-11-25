@@ -3,5 +3,5 @@
 
 export * from './compatDirs'
 export * from './parallel'
-export * from './Script'
+export type * from './Script'
 export * from './VoltisoScriptError'

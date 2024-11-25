@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-instance-fields */
 
 // import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
@@ -114,7 +114,7 @@ export class Transaction implements Database.Transaction {
 		lock.data = null
 	}
 
-	_commit() {
+	_commit(): void {
 		checkIfFailed(this)
 
 		for (const [path, lock] of Object.entries(this._store._locks)) {
@@ -130,7 +130,7 @@ export class Transaction implements Database.Transaction {
 		}
 	}
 
-	_cleanup() {
+	_cleanup(): void {
 		for (const [path, lock] of Object.entries(this._store._locks)) {
 			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 			if (lock.transaction === this) delete this._store._locks[path]

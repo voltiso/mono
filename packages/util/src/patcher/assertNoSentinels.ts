@@ -5,7 +5,7 @@ import { assertNotPolluting, isPlainObject } from '~/object'
 
 import { isPatchSentinel, stringFromPatchSentinel } from './Sentinel'
 
-export function assertNoSentinels(value: unknown) {
+export function assertNoSentinels(value: unknown): void {
 	if (isPatchSentinel(value)) {
 		throw new TypeError(
 			`patch: found unexpected sentinel ${stringFromPatchSentinel(value)}`,

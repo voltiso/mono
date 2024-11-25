@@ -3,6 +3,8 @@
 
 import 'zone.js'
 
+import { describe, expect, it } from '@jest/globals'
+
 // import 'zone.js/fesm2015/zone-testing-node-bundle'
 import { protoLink } from '~/class/protoLink'
 import { sleep } from '~/promise/sleep'
@@ -15,6 +17,7 @@ class DocumentReference {
 	}
 
 	constructor() {
+		// eslint-disable-next-line sonarjs/no-async-constructor
 		return new Proxy(
 			protoLink(
 				lazyPromise(() => this.get()),
@@ -37,6 +40,7 @@ describe('lazyPromise', () => {
 	it('zone.js imported correctly', () => {
 		expect.hasAssertions()
 
+		// eslint-disable-next-line promise/spec-only
 		expect(Promise.name).toBe('ZoneAwarePromise')
 
 		const promise = (async () => {})()
@@ -88,6 +92,7 @@ describe('lazyPromise', () => {
 
 						expect(Zone.current.name).toBe(String(index))
 
+						// eslint-disable-next-line sonarjs/no-nested-functions
 						await lazyPromise(() => func(index))
 						await sleep(100)
 

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './ast'
-export * from './eval'
-export * from './Operation'
-export * from './tokenize'
+export type * from './ast'
+export type * from './eval'
+export type * from './Operation'
+export type * from './tokenize'

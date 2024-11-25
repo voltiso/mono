@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-instance-fields */
 /* eslint-disable @typescript-eslint/no-extraneous-class */
 
 import type * as Database from '@voltiso/firestore-like'
@@ -9,19 +9,19 @@ import { staticImplements } from '@voltiso/util'
 
 @staticImplements<Database.TypeofFieldValue>()
 export class FieldValue implements Database.FieldValue {
-	static delete() {
+	static delete(): DeleteIt {
 		return new DeleteIt()
 	}
 
-	static increment(n: number) {
+	static increment(n: number): IncrementIt {
 		return new IncrementIt(n)
 	}
 
-	static arrayUnion(...items: unknown[]) {
+	static arrayUnion(...items: unknown[]): ArrayUnion {
 		return new ArrayUnion(...items)
 	}
 
-	static arrayRemove(...items: unknown[]) {
+	static arrayRemove(...items: unknown[]): ArrayRemove {
 		return new ArrayRemove(...items)
 	}
 }

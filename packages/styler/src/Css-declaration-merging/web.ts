@@ -20,9 +20,7 @@ import type { CssProperties } from './CssProperties'
  */
 export interface CssWeb<CustomCss extends object>
 	extends CssOverridesWeb<CustomCss>,
-		// eslint-disable-next-line etc/no-internal
 		_Css_WithExtensionWeb<CustomCss>,
-		// eslint-disable-next-line etc/no-internal
 		_Css_OriginalWeb<CustomCss> {}
 
 export interface CssPropertiesWeb

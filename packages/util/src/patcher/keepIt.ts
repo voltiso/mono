@@ -23,7 +23,7 @@ export const keepIt: KeepIt = blackbox({
 	__keepIt: true as const,
 })
 
-export function isKeepIt(x: any): x is KeepIt {
+export function isKeepIt(x: unknown): x is KeepIt {
 	return Object.prototype.hasOwnProperty.call(x || {}, '__keepIt')
 }
 
@@ -49,6 +49,6 @@ export const keepItIfPresent: KeepItIfPresent = blackbox({
 	__keepItIfPresent: true as const,
 })
 
-export function isKeepItIfPresent(x: any): x is KeepItIfPresent {
+export function isKeepItIfPresent(x: unknown): x is KeepItIfPresent {
 	return Object.prototype.hasOwnProperty.call(x || {}, '__keepItIfPresent')
 }

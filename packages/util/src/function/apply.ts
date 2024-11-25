@@ -20,6 +20,6 @@ export function apply<ThisArg, Args extends unknown[], R>(
 	func: (this: ThisArg, ...args: Args) => R,
 	thisArg: ThisArg,
 	args: Args,
-) {
+): R {
 	return func.apply(thisArg, args)
 }

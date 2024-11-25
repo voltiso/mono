@@ -9,6 +9,7 @@
 
 import 'zone.js'
 
+import { describe, expect, it } from '@jest/globals'
 import { lazyPromise } from '@voltiso/util'
 
 function sleep(ms: number) {
@@ -25,6 +26,7 @@ function sleep(ms: number) {
 describe('zone', () => {
 	it('patches Promise', () => {
 		expect.hasAssertions()
+		// eslint-disable-next-line promise/spec-only
 		expect(Promise.name).toBe('ZoneAwarePromise')
 	})
 

@@ -5,14 +5,23 @@
 
 import { useContext } from 'react'
 
-import type { NativeRenderer } from '~/renderer/index.js'
+import type { NativeRenderer, WebRenderer } from '~/renderer/index.js'
+import type { IsReactNative } from '~/util'
 
 import { RendererContext, ThemeContext } from './context'
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export type __hack_useContext = NativeRenderer
 
-export const useRenderer = () => useContext(RendererContext)
+export type UseRendererResult = IsReactNative extends true
+	? NativeRenderer | null
+	: IsReactNative extends false
+		? WebRenderer | null
+		: never
 
-export const useTheme = <Theme extends object>() =>
-	useContext<Theme | null>(ThemeContext as never)
+export function useRenderer(): UseRendererResult {
+	return useContext(RendererContext)
+}
+
+export function useTheme<Theme extends object>(): Theme | null {
+	return useContext<Theme | null>(ThemeContext as never)
+}

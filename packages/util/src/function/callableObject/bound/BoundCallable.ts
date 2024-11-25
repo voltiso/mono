@@ -23,14 +23,12 @@ import type { BoundCallableOptions } from './BoundCallableOptions'
 export type BoundCallable<
 	This extends WithSelfBoundCALL | NoArgument = NoArgument,
 > = This extends NoArgument
-	? // eslint-disable-next-line etc/no-internal
-		IBoundCallable
+	? IBoundCallable
 	: This extends WithSelfBoundCALL
 		? _BoundCallableWithCALL<This>
 		: never
 
 export type CustomBoundCallable<Options extends BoundCallableOptions> =
-	// eslint-disable-next-line etc/no-internal
 	_BoundCallable<Options>
 
 /**
@@ -43,7 +41,6 @@ export type CustomBoundCallable<Options extends BoundCallableOptions> =
 export function CustomBoundCallable<Options extends BoundCallableOptions>(
 	options: Options,
 ): CustomBoundCallable<Options> {
-	// eslint-disable-next-line etc/no-internal
 	const callable = _CustomBoundCallableNoClone(options)
 
 	// eslint-disable-next-line @typescript-eslint/unbound-method

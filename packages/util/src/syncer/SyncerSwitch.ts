@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-
 import type { UndefinedFromOptional } from '~/object'
 
 export interface SyncerSwitchAsync<T = unknown> {

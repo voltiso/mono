@@ -19,8 +19,7 @@ function _helloOnce() {
 	helloPrinted = true
 }
 
-export function logCallInfoNode(ctx: TransformContext, node: ts.Node) {
-	// eslint-disable-next-line etc/no-internal
+export function logCallInfoNode(ctx: TransformContext, node: ts.Node): void {
 	_helloOnce()
 
 	// eslint-disable-next-line no-console

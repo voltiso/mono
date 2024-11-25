@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type { Handlers, PromisifyHandlers } from '~/_shared'
 
 import type { RpcClientOptions } from './RpcClientOptions'
@@ -13,15 +15,15 @@ export class _RpcClient<THandlers extends Handlers> {
 	_token = ''
 	_options: RpcClientOptions<THandlers>
 
-	get url() {
+	get url(): string {
 		return this._url
 	}
 
-	get token() {
+	get token(): string {
 		return this._token
 	}
 
-	get options() {
+	get options(): RpcClientOptions<THandlers> {
 		return this._options
 	}
 
@@ -44,21 +46,21 @@ export class _RpcClient<THandlers extends Handlers> {
 		})
 	}
 
-	setToken(token: string) {
+	setToken(token: string): void {
 		this._token = token
 	}
 }
 
 export type RpcClient<THandlers extends Handlers = Handlers> =
-	// eslint-disable-next-line etc/no-internal
 	_RpcClient<THandlers> & PromisifyHandlers<THandlers>
 
-// eslint-disable-next-line etc/no-internal
 export const RpcClient = _RpcClient as RpcClientConstructor
 
 //
 
-export type RpcClientConstructor = new <THandlers extends Handlers>(
-	url: string,
-	options?: Partial<RpcClientOptions<THandlers>> | undefined,
-) => RpcClient<THandlers>
+export interface RpcClientConstructor {
+	new <THandlers extends Handlers>(
+		url: string,
+		options?: Partial<RpcClientOptions<THandlers>> | undefined,
+	): RpcClient<THandlers>
+}

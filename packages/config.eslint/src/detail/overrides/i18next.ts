@@ -17,7 +17,6 @@ export const i18nextConfig = defineEslintFlatConfig(
 		// extends: ['plugin:i18next/recommended'],
 
 		rules: {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			...(i18nextPlugin.configs['flat/recommended'].rules as {}),
 
 			'i18next/no-literal-string': 0,

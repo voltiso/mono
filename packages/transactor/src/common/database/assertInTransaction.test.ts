@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
+
 import { Transactor } from '~/Transactor/Transactor'
 
 import {
@@ -12,10 +14,12 @@ describe('assertInTransaction', () => {
 	it('works when not in transaction', () => {
 		const transactor = new Transactor()
 
-		expect(() => {assertInTransaction({ transactor })}).toThrow(
-			'expected to be in transaction',
-		)
+		expect(() => {
+			assertInTransaction({ transactor })
+		}).toThrow('expected to be in transaction')
 
-		expect(() => {assertNotInTransaction({ transactor })}).not.toThrow()
+		expect(() => {
+			assertNotInTransaction({ transactor })
+		}).not.toThrow()
 	})
 })

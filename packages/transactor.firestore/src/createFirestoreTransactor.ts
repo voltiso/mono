@@ -41,7 +41,7 @@ export function createFirestoreTransactor(
 
 //
 
-export function createFirestoreTransactor(...args: Args) {
+export function createFirestoreTransactor(...args: Args): Transactor {
 	if (isFirestore(args[0])) {
 		const [db, ...rest] = args
 		return new Transactor(db, firestoreModule, ...rest)

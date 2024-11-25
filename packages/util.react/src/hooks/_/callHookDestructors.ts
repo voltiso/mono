@@ -17,7 +17,7 @@ import type { Destructor } from './Destructor'
 export function callHookDestructors(
 	destructors: Destructor[],
 	hookName: string,
-) {
+): void {
 	let firstError: unknown
 	let haveError = false
 
@@ -30,6 +30,7 @@ export function callHookDestructors(
 			if (haveError) {
 				let message = 'Multiple errors in destructors. Next error ignored:'
 
+				// eslint-disable-next-line sonarjs/nested-control-flow
 				if (hookName) {
 					message = `${hookName}(): ${message}`
 				}

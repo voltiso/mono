@@ -32,7 +32,6 @@ export function _booleanCollectTrueFalse(schemable: $$Schemable): {
 		let haveFalse = false
 
 		for (const t of o.getSchemas) {
-			// eslint-disable-next-line etc/no-internal
 			const r = _booleanCollectTrueFalse(t)
 
 			if (r.haveTrue) haveTrue = true

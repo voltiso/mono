@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import * as uuid from 'uuid'
 
 import { NoContextError } from '~/NoContextError'
@@ -13,7 +15,6 @@ import { checkEnv } from './checkEnv'
  *
  * @internal use `Context` instead
  */
-// eslint-disable-next-line etc/underscore-internal
 export class ZoneContext<T> implements Context<T> {
 	_id = uuid.v4()
 

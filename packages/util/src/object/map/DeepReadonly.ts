@@ -43,8 +43,7 @@ export type DeepReadonlyN<
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
-		? // eslint-disable-next-line etc/no-internal
-			DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
+		? DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
 			? T
 			: T extends object
 				? {
@@ -82,8 +81,7 @@ export type $$DeepReadonlyN<
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
-		? // eslint-disable-next-line etc/no-internal
-			DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
+		? DeepReadonlyN._ShouldSkip<T, Options['skip']> extends true
 			? T
 			: {
 					readonly [k in keyof T]: $$DeepReadonlyN<

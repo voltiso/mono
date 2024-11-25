@@ -6,7 +6,6 @@ import type { ArrowCallableOptions } from '../ArrowCallableOptions'
 //
 
 /** @internal Use `ArrowCallable` instead */
-// eslint-disable-next-line etc/underscore-internal
 export type IArrowCallable = ArrowCallableOptions['shape'] &
 	ArrowCallableOptions['call'] &
 	Record<keyof CallableFunction, never>

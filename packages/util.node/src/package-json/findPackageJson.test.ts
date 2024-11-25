@@ -3,6 +3,8 @@
 
 /* eslint-disable n/no-sync */
 
+import { describe, expect, it } from '@jest/globals'
+
 import { findPackageJsonSync } from './findPackageJson'
 
 describe('findPackageJson', () => {

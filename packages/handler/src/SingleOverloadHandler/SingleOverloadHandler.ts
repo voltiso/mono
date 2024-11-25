@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable n/no-sync */
-
 import type { RelaxSchema_ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type {
@@ -47,7 +45,6 @@ export namespace SingleOverloadHandlerDetail {
 
 	export namespace Options {
 		export interface Default
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			extends Handler.Options.Default,
 				Omit<Options, keyof Handler.Options.Default> {
 			IsAsync: true
@@ -58,7 +55,6 @@ export namespace SingleOverloadHandlerDetail {
 		}
 
 		export interface Hidden<O extends Options>
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 			extends Handler.Options.Hidden<O> {
 			// implementation?: GetImplementation<O> | undefined
 		}
@@ -135,10 +131,7 @@ export namespace SingleOverloadHandlerDetail {
 	> = RebindAndUpdateSignature<
 		This,
 		{
-			parameters: [
-				...This[OPTIONS]['parameters'],
-				RelaxSchema_<Parameter>,
-			]
+			parameters: [...This[OPTIONS]['parameters'], RelaxSchema_<Parameter>]
 		}
 	>
 
@@ -247,7 +240,7 @@ export class SingleOverloadHandlerImpl<
 		) as unknown as s.Schema
 		const validParameters = parametersSchema.validate(args) as unknown[]
 
-		// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-unsafe-function-type
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 		const result = (this.getImplementation as Function).call(
 			validThis as never,
 			...validParameters,

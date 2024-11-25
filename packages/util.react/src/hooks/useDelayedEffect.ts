@@ -5,8 +5,11 @@ import { useEffect } from 'react'
 
 import { useCurrent } from '~/hooks'
 
-// eslint-disable-next-line promise/prefer-await-to-callbacks
-export function useDelayedEffect(milliseconds: number, callback: () => void) {
+export function useDelayedEffect(
+	milliseconds: number,
+	// eslint-disable-next-line promise/prefer-await-to-callbacks
+	callback: () => void,
+): void {
 	const current = useCurrent({ callback })
 
 	useEffect(() => {

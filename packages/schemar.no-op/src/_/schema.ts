@@ -1,19 +1,17 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable etc/no-internal */
-
 /** @internal */
 export const _schemaBase = {
-	validate(x: unknown) {
+	validate(x: unknown): unknown {
 		return x
 	},
 
-	isValid() {
+	isValid(): boolean {
 		return true
 	},
 
-	exec(value: unknown) {
+	exec(value: unknown): { isValid: boolean; issues: never[]; value: unknown } {
 		return {
 			isValid: true,
 			issues: [],
@@ -23,7 +21,7 @@ export const _schemaBase = {
 }
 
 /** @internal */
-export function _schemaCall() {
+export function _schemaCall(): unknown {
 	return _schema
 }
 

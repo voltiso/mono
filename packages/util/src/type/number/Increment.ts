@@ -2,13 +2,10 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-/* eslint-disable @typescript-eslint/naming-convention */
 
 import type { _ } from '~/object'
 
 import type { AlsoAccept } from '../AlsoAccept'
-
-/* eslint-disable no-magic-numbers */
 
 /** @internal */
 export interface _IncrementMap {
@@ -26,23 +23,20 @@ export interface _IncrementMap {
 	11: 12
 }
 
-// eslint-disable-next-line etc/no-internal
 export type IncrementArgument = _<keyof _IncrementMap>
 
-// eslint-disable-next-line etc/no-internal
 export type Increment_<X> = [X] extends [keyof _IncrementMap]
-	? // eslint-disable-next-line etc/no-internal
-		_IncrementMap[X]
+	? _IncrementMap[X]
 	: number
 
-// eslint-disable-next-line etc/no-internal
 export type $Increment_<X> = X extends keyof _IncrementMap
-	? // eslint-disable-next-line etc/no-internal
-		_IncrementMap[X]
+	? _IncrementMap[X]
 	: number
 
+// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type $Increment<X extends AlsoAccept<number> | IncrementArgument> =
 	$Increment_<X>
 
+// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type Increment<X extends AlsoAccept<number> | IncrementArgument> =
 	Increment_<X>

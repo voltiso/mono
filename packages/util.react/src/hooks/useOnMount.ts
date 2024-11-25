@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react'
 
-export const useOnMount = (handleMount: () => void) => {
+export function useOnMount(handleMount: () => void): void {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(handleMount, [])
 }

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
+
 import { ProtoCallable } from './ProtoCallable'
 
 describe('callable', () => {
@@ -25,6 +27,7 @@ describe('callable', () => {
 			prototype: new Proxy(
 				{},
 				{
+					// eslint-disable-next-line sonarjs/function-return-type
 					get(_t, p) {
 						return p
 					},

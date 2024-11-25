@@ -1,5 +1,5 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './SchemarAnd'
-export * from './SchemarOr'
+export type * from './SchemarAnd'
+export type * from './SchemarOr'

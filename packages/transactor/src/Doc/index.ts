@@ -3,9 +3,9 @@
 
 export * from './_'
 export * from './Doc'
-export * from './DocBuilderPlugin'
+export type * from './DocBuilderPlugin'
 export * from './DocCall'
-export * from './DocContext'
+export type * from './DocContext'
 export * from './DocImpl'
 export * from './DocTI'
 export * from './IDoc'

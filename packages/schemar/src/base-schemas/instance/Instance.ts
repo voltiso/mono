@@ -27,10 +27,12 @@ export const Instance$ = lazyConstructor(
 //
 
 export type UnknownInstance = <TInstance extends object>(
+	// eslint-disable-next-line sonarjs/no-built-in-override
 	constructor: abstract new (...args: any) => TInstance,
 ) => Instance<TInstance>
 
 export type UnknownInstance$ = <TInstance extends object>(
+	// eslint-disable-next-line sonarjs/no-built-in-override
 	constructor: abstract new (...args: any) => TInstance,
 ) => Instance$<TInstance>
 

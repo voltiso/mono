@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-class-instance-fields */
+
 import type * as FirestoreLike from '@voltiso/firestore-like'
 import type { IObject$, Output_, Schema, SchemaLike } from '@voltiso/schemar'
 import type { _, If, Override } from '@voltiso/util'
@@ -112,7 +114,7 @@ export class _CustomDocRef<
 		return this[OPTIONS].isStrong
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get schema(): Schema<GetData<O['doc']>> | undefined {
 		throw new TransactorError('not implemented')
 	}
@@ -126,7 +128,6 @@ export class _CustomDocRef<
 	}
 
 	get asStrongRef(): GetDocRef<Override<O, { isStrong: true }>> {
-		// eslint-disable-next-line etc/no-internal
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
 			this._path.toString(),
@@ -136,7 +137,6 @@ export class _CustomDocRef<
 	}
 
 	get asWeakRef(): GetDocRef<Override<O, { isStrong: false }>> {
-		// eslint-disable-next-line etc/no-internal
 		return new _CustomDocRef(
 			omit(this._context, 'docRef'),
 			this._path.toString(),
@@ -161,6 +161,7 @@ export class _CustomDocRef<
 		const methods = this._getMethods()
 
 		for (const { name, method, pathMatches } of methods) {
+			// eslint-disable-next-line sonarjs/arrow-function-convention
 			const f = (...args: unknown[]) => {
 				return this._callMethod(method as never, args, { name, ...pathMatches })
 			}
@@ -170,10 +171,11 @@ export class _CustomDocRef<
 			this.methods[name as never] = f as never
 		}
 
+		// eslint-disable-next-line sonarjs/no-async-constructor
 		void Object.seal(this)
 		// void Object.freeze(this)
 
-		// eslint-disable-next-line no-constructor-return
+		// eslint-disable-next-line no-constructor-return, sonarjs/no-async-constructor
 		return new Proxy(
 			protoLink(
 				lazyPromise(() => this.get()),
@@ -216,11 +218,12 @@ export class _CustomDocRef<
 	set(
 		data?: GetPublicCreationInputData<O['doc']>,
 	): PromiseLike<GetDoc<O['doc']>> {
-		const dataWithoutId = withoutId(data || null, this.id as never) || {}
+		const dataWithoutId = withoutId(data ?? null, this.id as never) ?? {}
 
 		const idSchemas = getIdSchemas(this)
 
 		for (const idSchema of idSchemas) {
+			// eslint-disable-next-line sonarjs/void-use
 			void guardedValidate(this._context, idSchema, this.id) // ! TODO: not read-only?
 		}
 
@@ -239,11 +242,12 @@ export class _CustomDocRef<
 	create(
 		data?: _<GetPublicCreationInputData<O['doc']>>,
 	): PromiseLike<GetDoc<O['doc']>> {
-		const dataWithoutId = withoutId(data || null, this.id as never) || {}
+		const dataWithoutId = withoutId(data || null, this.id as never) ?? {}
 
 		const idSchemas = getIdSchemas(this)
 
 		for (const idSchema of idSchemas) {
+			// eslint-disable-next-line sonarjs/void-use
 			void guardedValidate(this._context, idSchema, this.id) // ! TODO: not read-only?
 		}
 
@@ -259,6 +263,7 @@ export class _CustomDocRef<
 	//
 
 	/** @returns `PromiseLike`! (`then`-only) */
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	update(updates: any): any {
 		// PromiseLike<GetDoc<O['doc']> | null | undefined>
 		/**
@@ -330,7 +335,7 @@ export class _CustomDocRef<
 		return getMethods(this)
 	}
 
-	get Final() {
+	get Final(): this {
 		return this
 	}
 }

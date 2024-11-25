@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-
 import { $AssumeType } from '@voltiso/util'
 import { useImmediateEffect } from '@voltiso/util.react'
 import { isObservableLike } from '@voltiso/util.rxjs'
@@ -118,6 +116,7 @@ export function useCustomReactiveEffect(
 			try {
 				mutable.destructor()
 			} finally {
+				// eslint-disable-next-line sonarjs/no-undefined-assignment
 				mutable.destructor = undefined
 			}
 		}
@@ -182,7 +181,7 @@ export function useCustomReactiveEffect(
 	 * because we don't want to miss updates between now and first effect phase
 	 */
 	if (options.isImmediate || options.isReactiveOnly) {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
 		useImmediateEffect(() => {
 			subscribe()
 
@@ -196,7 +195,7 @@ export function useCustomReactiveEffect(
 			}
 		}, deps)
 	} else {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
 		useEffect(() => {
 			subscribe()
 

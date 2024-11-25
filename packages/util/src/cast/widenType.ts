@@ -14,7 +14,7 @@
  * @param x - Variable to widen type of
  * @returns `{toType<T>()}`
  */
-export function widen<X>(x: X) {
+export function widen<X>(x: X): { toType<T>(): X extends T ? T : never } {
 	return {
 		toType<T>(): X extends T ? T : never {
 			return x as unknown as X extends T ? T : never

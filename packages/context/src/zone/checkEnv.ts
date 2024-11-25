@@ -10,19 +10,19 @@ function checkZonePresent() {
 		// eslint-disable-next-line unicorn/prefer-type-error
 		throw new Error(`${messagePrefix} zone.js not imported`)
 	}
-
 }
 
 function checkPromiseConstructor() {
 	if (!(zoneAwarePromiseKey in Promise)) {
 		throw new Error(
+			// eslint-disable-next-line promise/spec-only
 			`${messagePrefix} zone.js won't work: Promise does not seem to be ZoneAwarePromise (constructor name ${Promise.name})`,
 		)
 	}
 }
 
 function getImplicitPromiseConstructor() {
-	// eslint-disable-next-line no-empty-function, @typescript-eslint/no-empty-function
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	return (async () => {})().constructor
 }
 
@@ -38,7 +38,7 @@ function checkImplicitPromiseConstructorName() {
 
 //
 
-export function checkEnvUncached() {
+export function checkEnvUncached(): void {
 	checkZonePresent()
 	checkPromiseConstructor()
 	checkImplicitPromiseConstructorName()
@@ -46,7 +46,7 @@ export function checkEnvUncached() {
 
 let isEnvChecked = false
 
-export function checkEnv() {
+export function checkEnv(): void {
 	if (isEnvChecked) return
 	isEnvChecked = true
 	checkEnvUncached()

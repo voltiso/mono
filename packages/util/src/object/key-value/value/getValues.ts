@@ -88,6 +88,6 @@ export function getValues<
 	obj: Obj,
 	options?: O | undefined,
 ): GetValues<Obj, Override<DefaultIterationOptions, O>> {
-	const myOptions = overrideDefined(defaultIterationOptions, options || {})
+	const myOptions = overrideDefined(defaultIterationOptions, options ?? {})
 	return getValues_(obj, myOptions as never) as never
 }

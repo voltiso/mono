@@ -84,6 +84,7 @@ async function loop(ctx: DocRefContext.AlsoWithTransaction) {
 
 	// console.log('processTriggers loop', afterTriggers.length, ctx.docRef.path.toString())
 
+	// eslint-disable-next-line sonarjs/too-many-break-or-continue-in-loop
 	for (let iter = 0; ; ++iter) {
 		if (iter >= MAX_ITERS) throw new TransactorError('Trigger loop')
 

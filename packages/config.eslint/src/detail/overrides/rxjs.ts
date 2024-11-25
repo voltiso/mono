@@ -2,15 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
-import rxjs from 'eslint-plugin-rxjs'
+import rxjs from 'eslint-plugin-rxjs-updated'
 
 import { codeFilesNoMd } from '~/detail/files.js'
 
 export const rxjsConfig = defineEslintFlatConfig({
 	...codeFilesNoMd,
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	plugins: { rxjs },
 
 	rules: {

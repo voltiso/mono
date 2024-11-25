@@ -3,4 +3,4 @@
 
 export * from './defined-logical'
 export * from './isDefined'
-export * from './Nullish'
+export type * from './Nullish'

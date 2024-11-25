@@ -57,7 +57,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "package-json": "^9.0.0"
+    "package-json": "^10.0.1"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^",

@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable es-x/no-class-instance-fields */
 
 import type * as Database from '@voltiso/firestore-like'
 import type { Observable } from 'rxjs'
@@ -24,7 +24,7 @@ export class CollectionReference implements Database.CollectionReference {
 		return collection._docs$
 	}
 
-	doc(id?: string) {
+	doc(id?: string): DocumentReference {
 		return new DocumentReference(this, id)
 	}
 }

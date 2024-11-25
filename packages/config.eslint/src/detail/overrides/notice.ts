@@ -7,11 +7,11 @@ import noticePlugin from 'eslint-plugin-notice'
 
 import { codeFiles, filesInsideMd } from '~/detail/files'
 
-const year = 2_024
+const year = new Date().getUTCFullYear()
 
 const lines = [
 	`⠀ⓥ ${year}     🌩    🌩     ⠀   ⠀`,
-	`⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀`,
+	'⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀',
 ]
 
 const commentLines = lines.map(line => `// ${line}`)

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-/* eslint-disable @typescript-eslint/no-unnecessary-type-parameters */
 /* eslint-disable jsdoc/informative-docs */
 /* eslint-disable @typescript-eslint/unified-signatures */
 
@@ -14,7 +12,6 @@ import type {
 	UndefinedFromOptional,
 } from '@voltiso/util'
 import { tryAt } from '@voltiso/util'
-import type { ComponentType } from 'react'
 
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
 import type { IStyledDataMod, StyledData } from '~/_/StyledData'
@@ -25,9 +22,8 @@ import type {
 	ForwardRefRenderFunction,
 	Props,
 } from '~/react-types'
-import type { IntrinsicElement, Stylable } from '~/Stylable'
-import type { NativeElement } from '~/StyledComponent'
-import type { StyledTypeInfo } from '~/StyledTypeInfo'
+import type { Stylable } from '~/Stylable'
+import type { StyledSubject, StyledTypeInfo } from '~/StyledTypeInfo'
 
 import type { $GetStyledLikeProps as P } from './_'
 import { getComponent } from './_/getComponent'
@@ -48,6 +44,7 @@ import { isStyled } from './IStyled'
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
 	declare readonly [$]: G<$>
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly [DATA]: StyledData<G<$>, C<$>>
 
 	get component(): G<$>['Component'] {
@@ -61,7 +58,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 			const alreadyHaveCustomCss = tryAt(this[DATA].stack, -1)?.customCss
 			const incomingCustomCss = newData.customCss
 
-			if (alreadyHaveCustomCss || incomingCustomCss) {
+			if (alreadyHaveCustomCss ?? incomingCustomCss) {
 				const customCss = { ...alreadyHaveCustomCss, ...incomingCustomCss }
 				// eslint-disable-next-line no-param-reassign
 				newData = {
@@ -112,60 +109,29 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 
 	/** Forward ref (but not css), add all props of T */
 	forwardRef<
-		T extends
-			| IntrinsicElement
-			| ComponentType<any>
-			| React.Component<any, any, any> // catches react-native native elements
-			| NativeElement, // e.g. HTMLButtonElement
+		T extends StyledSubject, // e.g. HTMLButtonElement
 	>(
 		renderFunction: ForwardRefRenderFunction<T, $['Props']>,
 	): ForcePatch<this, { Component: T }>
 
 	/** Forward ref (but not css), add all props of T, add props P */
-	forwardRef<
-		T extends
-			| IntrinsicElement
-			| ComponentType<any>
-			| React.Component<any, any, any>
-			| NativeElement,
-		P extends Props,
-	>(
+	forwardRef<T extends StyledSubject, P extends Props>(
 		renderFunction: ForwardRefRenderFunction<T, P & $['Props']>,
 	): ForcePatch<this, { Component: T; Props: P }>
 
 	/** Forward ref and css */
-	forwardRef<
-		T extends
-			| IntrinsicElement
-			| ComponentType<any>
-			| React.Component<any, any, any>
-			| NativeElement,
-	>(
+	forwardRef<T extends StyledSubject>(
 		renderFunction: ForwardRefAndCssRenderFunction<T, C<$>, $['Props']>,
 	): ForcePatch<this, { Component: T }>
 
 	/** Forward ref and css, add props P */
-	forwardRef<
-		T extends
-			| IntrinsicElement
-			| ComponentType<any>
-			| React.Component<any, any, any>
-			| NativeElement,
-		P extends Props,
-	>(
+	forwardRef<T extends StyledSubject, P extends Props>(
 		renderFunction: ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
 	): ForcePatch<this, { Component: T; Props: P }>
 
 	//
 
-	forwardRef<
-		T extends
-			| ComponentType<any>
-			| IntrinsicElement
-			| React.Component<any, any, any>
-			| NativeElement,
-		P extends Props,
-	>(
+	forwardRef<T extends StyledSubject, P extends Props>(
 		renderFunction:
 			| ForwardRefRenderFunction<T, P & $['Props']>
 			| ForwardRefAndCssRenderFunction<T, C<$>, P & $['Props']>,
@@ -276,7 +242,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	 */
 	cssProps<PropNames extends (keyof C<$>)[]>(
 		...propNames: PropNames
-	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
+	): // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore TS2590: Expression produces a union type that is too complex to represent.
 	Patch<this, { Props: Pick<C<$>, PropNames[number]> }> {
 		// Patch<this, { [k in PropNames[number]]?: CssObject[k] | undefined }>
@@ -1024,6 +990,7 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 			>,
 	): ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 
+	// eslint-disable-next-line sonarjs/function-return-type
 	defineProps<DefinedProps extends Props>(
 		defaultValues?: Partial<UndefinedFromOptional<DefinedProps>> &
 			MapOrUndefined<
@@ -1035,8 +1002,8 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 		| ForcePatch<this, { Props: UndefinedFromOptional<DefinedProps> }>
 		| StaticError {
 		return this._clone({
-			stack: [{ removeProps: Object.keys(defaultValues || {}) }],
-			defaults: defaultValues || {},
+			stack: [{ removeProps: Object.keys(defaultValues ?? {}) }],
+			defaults: defaultValues ?? {},
 		})
 	}
 

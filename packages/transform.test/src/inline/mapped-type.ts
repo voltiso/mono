@@ -15,5 +15,5 @@ export type _ObjectLike = {
 export type _GetDeepPartial_<This> = This extends _ObjectLike
 	? {
 			Output: DeepPartial_<This['OPTIONS']['Output']>
-	  }
+		}
 	: never

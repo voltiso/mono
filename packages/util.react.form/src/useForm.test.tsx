@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { act, render } from '@testing-library/react'
 import { ValidationIssue } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
@@ -56,6 +57,7 @@ describe('useForm', () => {
 						// eslint-disable-next-line rxjs/no-ignored-replay-buffer
 						const subject = new ReplaySubject<ValidationIssue>()
 
+						// eslint-disable-next-line sonarjs/no-nested-functions
 						async function run() {
 							// no sleep - push issue synchronously before subject is listened on
 							if (value.toLowerCase() !== value)

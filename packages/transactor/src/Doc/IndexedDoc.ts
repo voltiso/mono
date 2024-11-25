@@ -55,6 +55,7 @@ export interface IndexedDoc<C extends ExecutionContext = ExecutionContext>
 export const IndexedDoc = lazyConstructor(
 	() =>
 		class extends Doc {
+			// eslint-disable-next-line es-x/no-class-static-fields
 			static override readonly _: DocDerivedData = {
 				...Doc._,
 

@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable class-methods-use-this */
-
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { $Merge, $Override_ } from '@voltiso/util'
 import {
@@ -42,11 +40,12 @@ import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>
 {
-	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>;
+	// eslint-disable-next-line es-x/no-class-instance-fields
+	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
-	declare readonly [SCHEMA_NAME]: string; // SchemaName
+	declare readonly [SCHEMA_NAME]: string // SchemaName
 
-	declare readonly [BASE_OPTIONS]: SchemaOptions;
+	declare readonly [BASE_OPTIONS]: SchemaOptions
 	declare readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
 
 	/** Type-only property (no value at runtime) */
@@ -176,7 +175,6 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		value: unknown,
 		options?: Partial<ValidationOptions> | undefined,
 	): ValidationIssue[] {
-		// eslint-disable-next-line etc/no-internal
 		return _process({ schema: this, value, options }).issues
 	}
 
@@ -207,7 +205,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		value = this._fix(value, options) as never
 
 		/** Also calls customOperations */
-		// eslint-disable-next-line etc/no-internal
+
 		const result = _process({ schema: this, value, options })
 
 		// eslint-disable-next-line es-x/no-array-prototype-every
@@ -305,13 +303,14 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 	toString(): string {
 		const prefix =
-			// eslint-disable-next-line no-nested-ternary
+			// eslint-disable-next-line no-nested-ternary, sonarjs/expression-complexity
 			this.isReadonly && this.isOptional
 				? 'readonly?:'
-				: // eslint-disable-next-line no-nested-ternary
+				: // eslint-disable-next-line no-nested-ternary, sonarjs/no-nested-conditional
 					this.isReadonly
 					? 'readonly:'
-					: this.isOptional
+					: // eslint-disable-next-line sonarjs/no-nested-conditional
+						this.isOptional
 						? '?'
 						: ''
 
@@ -354,7 +353,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	mapIf(
 		condition: (value: this[OPTIONS]['Output']) => boolean,
 		transform: (value: this[OPTIONS]['Output']) => this[OPTIONS]['Output'],
-	) {
+	): never {
 		return this._cloneWithOptions({
 			customOperations: [
 				...this.getCustomOperations,
@@ -370,11 +369,12 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		}) as never
 	}
 
-	narrowIf(...args: any): any {
+	narrowIf(...args: unknown[]): unknown {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		return (this.mapIf as any)(...args)
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	narrow(...args: any): any {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		return this.map(...args)
@@ -392,7 +392,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	/** Same as `.fix` - different typings */
-	implicitFix(...args: any): any {
+	implicitFix(...args: any[]): any {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		return (this.fix as any)(...args)
 	}
@@ -424,8 +424,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			isOptional: true as const,
 			isStrictOptional: false as const,
 
+			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			default: undefined,
 			hasDefault: false,
+			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			getDefault: undefined,
 		}) as never
 	}
@@ -435,8 +437,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 			isOptional: true as const,
 			isStrictOptional: true as const,
 
+			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			default: undefined,
 			hasDefault: false,
+			// eslint-disable-next-line sonarjs/no-undefined-assignment
 			getDefault: undefined,
 		}) as never
 	}

@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/class-methods-use-this */
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 
 import { BoundCallable, CALL } from '@voltiso/util'
 
@@ -21,14 +20,15 @@ export interface UnknownRest extends Rest<Unknown> {
 export const IS_REST = Symbol('IS_REST')
 
 export interface Rest<S extends $$Schemable> {
-	// eslint-disable-next-line @typescript-eslint/prefer-function-type
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Rest<S extends $$Schemable = $$Schemable> {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly [IS_REST] = true
 
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly element: S
 
 	constructor(element: S) {
@@ -37,12 +37,11 @@ export class Rest<S extends $$Schemable = $$Schemable> {
 		return BoundCallable(this)
 	}
 
-	// eslint-disable-next-line class-methods-use-this
-	[CALL]<S extends $$Schemable>(element: S) {
+	[CALL]<S extends $$Schemable>(element: S): Rest<S> {
 		return new Rest(element)
 	}
 
-	[Symbol.iterator]() {
+	[Symbol.iterator](): ArrayIterator<this> {
 		return [this][Symbol.iterator]()
 	}
 }

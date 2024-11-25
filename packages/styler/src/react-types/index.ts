@@ -1,9 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export * from './ComponentProps'
-export * from './ElementType'
-export * from './ForwardRefExoticComponent'
-export * from './ForwardRefRenderFunction'
-export * from './FunctionComponent'
-export * from './Props'
+export type * from './ComponentProps'
+export type * from './ElementType'
+export type * from './ForwardRefExoticComponent'
+export type * from './ForwardRefRenderFunction'
+export type * from './FunctionComponent'
+export type * from './Props'

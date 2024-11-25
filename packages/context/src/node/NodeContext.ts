@@ -1,9 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
+/* eslint-disable sonarjs/arrow-function-convention */
+/* eslint-disable es-x/no-class-instance-fields */
 
-// import { requireAsyncHooks } from './asyncHooks'
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 import { fastAssert, isPromiseLike } from '@voltiso/util'
@@ -17,7 +17,7 @@ import type { Context } from '../Context'
  *
  * @internal use `Context` instead
  */
-// eslint-disable-next-line etc/underscore-internal
+
 export class NodeContext<T> implements Context<T> {
 	readonly _asyncLocalStorage = new AsyncLocalStorage<T>()
 	// readonly _asyncLocalStorage = new (requireAsyncHooks().AsyncLocalStorage)<T>()

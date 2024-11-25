@@ -5,11 +5,13 @@
 
 'use strict'
 
+const { describe, expect, it } = require('@jest/globals')
 const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
 
 function promiseConstructorName() {
+	// eslint-disable-next-line promise/spec-only
 	return Promise.name
 }
 

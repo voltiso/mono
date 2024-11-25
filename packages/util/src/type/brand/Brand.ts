@@ -41,7 +41,6 @@ export interface CustomBrand<
 
 export interface CustomBrand_<B, detail> {
 	/** 🌿 Type-only (no value at runtime) */
-	// eslint-disable-next-line etc/no-internal
 	readonly [BRAND]: _CustomBrandEntry<B, detail>
 }
 

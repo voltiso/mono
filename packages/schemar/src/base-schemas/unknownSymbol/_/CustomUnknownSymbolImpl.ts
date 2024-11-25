@@ -16,7 +16,7 @@ import type { CustomUnknownSymbol } from '../CustomUnknownSymbol'
 import { isUnknownSymbolSchema } from '../IUnknownSymbol'
 import type { UnknownSymbolOptions } from '../UnknownSymbolOptions'
 
-//! esbuild bug: Cannot `declare` inside class - using interface merging instead
+// ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownSymbolImpl<O> {
 	readonly [BASE_OPTIONS]: UnknownSymbolOptions
 	readonly [DEFAULT_OPTIONS]: UnknownSymbolOptions.Default
@@ -27,6 +27,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownSymbol<O>
 {
+	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [SCHEMA_NAME] = 'UnknownSymbol' as const
 
 	constructor(o: O) {
@@ -35,7 +36,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		return BoundCallable(this) as never
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	[CALL]<L extends symbol>(...args: L[] | [Set<L>]): Literal<L> {
 		const literals = args[0] instanceof Set ? args[0] : new Set(args as L[])
 		return literal(literals) as never
@@ -46,7 +47,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		else return super[EXTENDS](other)
 	}
 
-	// eslint-disable-next-line class-methods-use-this, @typescript-eslint/class-methods-use-this
+	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	override _toString(): string {
 		return 'symbol'
 	}

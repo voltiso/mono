@@ -38,6 +38,7 @@ try {
 
 //
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getJestReactConfig(options?: { format?: 'cjs' | 'esm' }) {
 	const baseConfig = getJestConfig(options)
 
@@ -52,6 +53,12 @@ export function getJestReactConfig(options?: { format?: 'cjs' | 'esm' }) {
 
 	return {
 		...baseConfig,
+
+		...(reactNativeSetup
+			? {
+					injectGlobals: true, // react-native assumes globalThis.jest is available
+				}
+			: {}),
 
 		testEnvironment: resolve.sync('jest-environment-jsdom', {
 			basedir: dirname,

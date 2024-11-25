@@ -27,7 +27,6 @@ export function _CustomBoundCallableNoClone<
 export function _BoundCallableNoClone<This extends WithSelfBoundCALL>(
 	self: This,
 ): BoundCallable<This> {
-	// eslint-disable-next-line etc/no-internal
 	return _CustomBoundCallableNoClone<any>({
 		call: self[CALL],
 		shape: self,

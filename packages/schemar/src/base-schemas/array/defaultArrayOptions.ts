@@ -9,7 +9,6 @@ import type { $$Schema } from '~/types/Schema/ISchema'
 import { unknown } from '../unknown/Unknown'
 import type { ArrayOptions } from './ArrayOptions'
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export type __hack_defaultArrayOptions = $$Schema
 
 $fastAssert(defaultSchemaOptions)
@@ -22,7 +21,9 @@ export const defaultArrayOptions: ArrayOptions.Default = Object.freeze({
 	isReadonlyArray: false as const,
 
 	element: unknown,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	minLength: undefined,
+	// eslint-disable-next-line sonarjs/no-undefined-assignment
 	maxLength: undefined,
 })
 

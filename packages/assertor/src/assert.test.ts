@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { Falsy, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -12,11 +13,12 @@ describe('assert', () => {
 		expect.hasAssertions()
 
 		expect(() => assert(1)).not.toThrow()
-		// eslint-disable-next-line regexp/no-super-linear-backtracking
+		// eslint-disable-next-line regexp/no-super-linear-backtracking, sonarjs/regular-expr, sonarjs/slow-regex
 		expect(() => assert(0)).toThrow(/assert.*\(.*0.*\)/u)
 
 		expect(() => assert(undefined)).toThrow(/assert.*undefined/u)
 
+		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		const str = 'test' as string | Falsy
 		assert(str)
 		$Assert<IsIdentical<typeof str, string>>()
@@ -29,21 +31,26 @@ describe('assert', () => {
 			/assert\.defined.*undefined/u,
 		)
 
+		// eslint-disable-next-line sonarjs/regular-expr
 		expect(() => assert(s.string, 123)).toThrow(/assert.*string.*123/u)
 		expect(() => assert(s.string, '123')).not.toThrow()
 
+		// eslint-disable-next-line sonarjs/regular-expr
 		expect(() => assert(s.undefined, null)).toThrow(/assert.*undefined.*null/u)
 		expect(() => assert(s.undefined, undefined)).not.toThrow()
 
+		// eslint-disable-next-line sonarjs/regular-expr
 		expect(() => assert(s.null, undefined)).toThrow(/assert.*null.*undefined/u)
 		expect(() => assert(s.null, null)).not.toThrow()
 
 		expect(() => assert(s.nullish, 123)).toThrow(
+			// eslint-disable-next-line sonarjs/regular-expr
 			/assert.*null | undefined.*123/u,
 		)
 		expect(() => assert(s.nullish, null)).not.toThrow()
 
 		expect(() => assert.schema(s.string, 123)).toThrow(
+			// eslint-disable-next-line sonarjs/regular-expr
 			/assert.schema.*string.*123/u,
 		)
 		expect(() => assert.schema(s.string, '123')).not.toThrow()

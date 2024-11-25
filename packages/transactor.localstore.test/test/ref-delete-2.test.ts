@@ -1,6 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { describe, expect, it } from '@jest/globals'
 import { $assert } from '@voltiso/assertor'
 import * as s from '@voltiso/schemar'
 import type { TriggerParams } from '@voltiso/transactor'
@@ -25,7 +26,7 @@ class Man extends Doc('man').with({
 }) {
 	@afterCreate
 	async createWoman(this: Man, params: TriggerParams.AfterCreate<Man>) {
-		//! TODO it should work with polymorphic `this`
+		// ! TODO it should work with polymorphic `this`
 		const woman = await women.add({
 			id: params.id as never,
 			man: this.ref,

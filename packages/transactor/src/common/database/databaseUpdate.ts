@@ -92,7 +92,11 @@ export async function databaseUpdate(
 	t: T,
 	ref: Database.ServerDocumentReference,
 	updates: Updates,
-) {
+): Promise<
+	| { readonly id: string & DocIdBrand<AnyDoc>; __voltiso: VoltisoEntry }
+	| null
+	| undefined
+> {
 	if (transactor.readOnly)
 		throw new TransactorError(
 			`cannot write to readOnly db - databaseUpdate(updates=${stringFrom(

@@ -55,6 +55,7 @@
     "@voltiso/schemar": "workspace:^"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
