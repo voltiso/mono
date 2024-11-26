@@ -7,6 +7,5 @@ export * from './getJestConfig'
 export * from './getJestTransform'
 
 // export * as default from './_/esr'
-
 // export default jestEsrConfig
 // export = jestEsrConfig

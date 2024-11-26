@@ -16,8 +16,7 @@
 	"compilerOptions": {
 		"rootDir": "src",
 
-		// "composite": true,
-		"composite": false,
+		"composite": false, // when doing clean builds each time, `composite` should be `false`
 
 		"noEmit": false,
 

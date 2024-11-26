@@ -8,6 +8,8 @@
 		"outDir": "dist/cjs",
 		"rootDir": "src",
 
+		// "composite": false,
+
 		"paths": {
 			"_": ["./src/_"],
 			"_/*": ["./src/_/*"],

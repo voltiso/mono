@@ -59,7 +59,7 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/transactor": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript": "^5.6.3",
+    "typescript": "~5.6.3",
     "typescript-transform-paths": "^3.5.2"
   }
 }

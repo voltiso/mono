@@ -8,3 +8,4 @@
 // eslint-disable-next-line import/no-default-export
 export { default } from './default'
 export { getJestReactConfig } from './getJestReactConfig'
+//

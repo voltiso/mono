@@ -14,8 +14,7 @@
 	"compilerOptions": {
 		"target": "ES2019", // cypress won't work with 2020
 
-		// "composite": true,
-		"composite": false,
+		"composite": false, // when doing clean builds each time, `composite` should be `false`
 
 		"noEmit": false,
 

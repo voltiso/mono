@@ -42,7 +42,7 @@
 		"declaration": true,
 		// "emitDeclarationOnly": true,
 
-		// "composite": true, // possibly need to overwrite for TSUP builds!
+		"composite": false, // when doing clean builds each time, `composite` should be `false`
 		"noEmit": true,
 		"sourceMap": true,
 

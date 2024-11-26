@@ -24,6 +24,7 @@ export const promise = defineEslintFlatConfig(
 			...getAllRules(promisePlugin as never, 'promise', 'warn'),
 
 			'promise/no-native': 0,
+			'promise/prefer-catch': 0, // dangerous: auto-fix provided breaks PromiseLike objects
 		},
 	},
 )
