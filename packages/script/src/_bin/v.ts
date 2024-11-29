@@ -121,13 +121,19 @@ const icon = '🐚'
 
 // const cpPromises = [] as Promise<void>[]
 
-async function runScript(
+/** @internal */
+export async function runScript(
 	script: Script | Promise<Script>,
 	args: string[],
-	{ signal }: { signal?: AbortSignal | undefined } = {},
+	{ signal }: { signal: AbortSignal },
 ) {
+	if (!signal)
+		throw new Error('`runScript`: Internal error: `signal` is required')
+
 	// eslint-disable-next-line require-atomic-updates, no-param-reassign
 	script = await script
+
+	if (!script) return
 
 	if (Array.isArray(script)) {
 		const subScripts = await Promise.all(script)
@@ -198,6 +204,8 @@ async function runScript(
 		// eslint-disable-next-line no-param-reassign, sonarjs/no-unenclosed-multiline-block
 	;[script, ...args] = tokens as [string, ...string[]]
 
+	// console.log('script', script, script.length)
+
 	// eslint-disable-next-line no-console
 	console.log(icon, chalk.blueBright(script), chalk.gray(args.join(' ')))
 
@@ -258,6 +266,13 @@ async function runScript(
 	// console.log('exec done')
 }
 
+type Context = {
+	signal?: AbortSignal | undefined
+}
+
+/** @internal */
+export const context: Context = {}
+
 async function main(): Promise<void> {
 	// eslint-disable-next-line sonarjs/process-argv
 	const args = process.argv.slice(2)
@@ -285,6 +300,8 @@ async function main(): Promise<void> {
 
 	const controller = new AbortController()
 	const signal = controller.signal
+
+	context.signal = signal
 
 	process.on('exit', () => {
 		controller.abort()

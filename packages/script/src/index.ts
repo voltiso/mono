@@ -3,6 +3,7 @@
 
 export * from './compatDirs'
 export * from './parallel'
+export * from './run'
 export type * from './Script'
 export * from './VoltisoScriptError'
 //

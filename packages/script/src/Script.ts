@@ -4,8 +4,13 @@
 export type MaybePromise<T> = T | Promise<T>
 
 export type Script = MaybePromise<
+	| Script.Literal
+	| Script.Sequence
+	| Script.WithParameters
 	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
-	Script.Literal | Script.Sequence | Script.WithParameters | Script.Nullish
+	| Script.Nullish
+	| Script.Parallel
+	| Script.Race
 >
 
 //
