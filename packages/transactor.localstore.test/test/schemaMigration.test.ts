@@ -7,7 +7,7 @@ import { Doc, sDeleteIt, sRef } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor({ onUnknownField: 'error' })
+const db = createTransactor({ onUnknownField: 'error', checkDecorators: false })
 
 class Dog extends Doc.with({
 	id: s.string,

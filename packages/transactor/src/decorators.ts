@@ -8,6 +8,7 @@ import * as h from './Doc/_/triggerCreators'
 import type { DocDerivedData } from './DocConstructor'
 import { TransactorError } from './error'
 import type { Method } from './Method'
+import type { WithTransactor } from './Transactor'
 import type {
 	AfterTrigger,
 	OnGetTrigger,
@@ -29,6 +30,47 @@ interface MethodDecorator<
 	(cls: Cls, methodName: string): void
 }
 
+let _didAnyDecoratorFire = false
+
+// export function _didAnyDecoratorFire(): boolean {
+// 	return _didAnyDecoratorFireFlag
+// }
+
+/**
+ * @throws Error {@link TransactorError} If no decorators fired, and
+ *   `checkDecorators` is enabled
+ * @internal
+ */
+export function _checkDecorators(ctx: WithTransactor): void {
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	if (ctx.transactor._options.checkDecorators === undefined) {
+		throw new TransactorError(
+			'Unable to read Transactor options (`checkDecorators`)',
+		)
+	}
+
+	// console.log('!!!!!!!!!!!!!!!!', { _didAnyDecoratorFire })
+
+	if (!_didAnyDecoratorFire) {
+		const error = new TransactorError(
+			'No decorators fired - see `checkDecorators` option',
+		)
+
+		if (ctx.transactor._options.checkDecorators === true) {
+			throw error
+		} else if (ctx.transactor._options.checkDecorators === 'warn') {
+			ctx.transactor._options.onWarning(error)
+		}
+	}
+}
+
+let _decoratorDetection = true
+
+/** @internal For testing purposes, do NOT use. Please use `checkDecorators` option instead!!! */
+export function _setDecoratorDetection(x: boolean): void {
+	_decoratorDetection = x
+}
+
 function createMethodDecorator<
 	Doc extends $$Doc,
 	Method extends (...args: any) => unknown,
@@ -44,6 +86,8 @@ function createMethodDecorator<
 			| [(...args: unknown[]) => unknown, ClassMethodDecoratorContext]
 			| [parent: { constructor: { _: DocDerivedData } }, methodName: string]
 	) {
+		// console.log('DECORATOR', args)
+		if (_decoratorDetection) _didAnyDecoratorFire = true
 		if (typeof args[1] === 'string') {
 			// assume [class, methodName]
 			// eslint-disable-next-line sonarjs/destructuring-assignment-syntax

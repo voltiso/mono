@@ -7,7 +7,11 @@ import { Doc } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor({ readOnly: true, requireSchemas: false })
+const db = createTransactor({
+	readOnly: true,
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 class RandomSuper extends Doc.with({
 	public: {

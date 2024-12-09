@@ -8,7 +8,9 @@ import { Doc, Transactor } from '@voltiso/transactor'
 
 import { database, staticContext } from './common'
 
-const db = new Transactor()
+const db = new Transactor({
+	checkDecorators: false,
+})
 
 // eslint-disable-next-line jest/require-hook
 db.init(database, staticContext)

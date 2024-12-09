@@ -6,7 +6,7 @@
 import { $assert } from '@voltiso/assertor'
 import { Context } from '@voltiso/context'
 import type * as FirestoreLike from '@voltiso/firestore-like'
-import type { IsUnion, Tail, Throw } from '@voltiso/util'
+import type { IsUnion, MaybePromise, Tail, Throw } from '@voltiso/util'
 import { $AssumeType, staticImplements, tryAt } from '@voltiso/util'
 
 import { checkEnv } from '~/checkEnv'
@@ -99,7 +99,49 @@ export class Transactor extends Db {
 	_allBeforeCommits: TransactorTriggerEntry<Trigger.BeforeCommit>[] = []
 	_allOnGets: TransactorTriggerEntry<OnGetTrigger>[] = []
 
+	/** @internal Uses Async Context (`AsyncLocalStorage`) */
 	_transactionContext: Context<ContextOverride> = new Context<ContextOverride>()
+
+	/** @internal In case Async Context doesn't work and we're fine not allowing concurrent transactions */
+	_transactionContextGlobal: ContextOverride | null = null
+
+	_getTransactionContext(): ContextOverride | null {
+		if (this._options.allowConcurrentTransactions) {
+			return this._transactionContext.value
+		} else {
+			if (
+				this._transactionContextGlobal?.transaction !==
+				this._transactionContext.tryGetValue?.transaction
+			) {
+				const warning = new TransactorError(
+					'Async Context broken - fortunately we have `allowConcurrentTransactions === false`',
+				)
+				this._options.onWarning(warning)
+			}
+			return this._transactionContextGlobal
+		}
+	}
+
+	_runWithContext<Return>(
+		context: ContextOverride,
+		body: () => MaybePromise<Return>,
+	): Promise<Return> {
+		if (
+			!this._options.allowConcurrentTransactions &&
+			this._transactionContextGlobal
+		) {
+			throw new TransactorError('internal: already have transaction context')
+		}
+		return this._transactionContext.run(context, async () => {
+			try {
+				this._transactionContextGlobal = context
+				const result = await body()
+				return result
+			} finally {
+				this._transactionContextGlobal = null
+			}
+		})
+	}
 
 	constructor(...args: TransactorConstructorParameters) {
 		super({ transactor: undefined as unknown as Transactor }) // hack
@@ -219,5 +261,23 @@ export class Transactor extends Db {
 
 	get refCounters(): boolean {
 		return this._options.refCounters
+	}
+
+	// eslint-disable-next-line sonarjs/function-return-type
+	get allowConcurrentTransactions(): boolean | 'warn' {
+		return this._options.allowConcurrentTransactions
+	}
+
+	set allowConcurrentTransactions(value: boolean | 'warn') {
+		this._options.allowConcurrentTransactions = value
+	}
+
+	// eslint-disable-next-line sonarjs/function-return-type
+	get checkDecorators(): boolean | 'warn' {
+		return this._options.checkDecorators
+	}
+
+	set checkDecorators(value: boolean | 'warn') {
+		this._options.checkDecorators = value
 	}
 }

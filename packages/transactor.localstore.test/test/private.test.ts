@@ -8,7 +8,7 @@ import { Doc, IndexedDoc } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor({ onUnknownField: 'error' })
+const db = createTransactor({ onUnknownField: 'error', checkDecorators: false })
 
 class Doctor extends Doc.with({
 	id: s.string,

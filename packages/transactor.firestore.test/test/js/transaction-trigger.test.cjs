@@ -10,7 +10,10 @@ const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
 
-const db = createFirestoreTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 // eslint-disable-next-line jest/require-hook
 db('userA/{user}/project/*').after(

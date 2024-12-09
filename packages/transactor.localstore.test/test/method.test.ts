@@ -7,7 +7,7 @@ import { Doc } from '@voltiso/transactor'
 
 import { createTransactor } from './common'
 
-const db = createTransactor({ requireSchemas: false })
+const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
 class Counter extends Doc.with({
 	id: s.string,

@@ -10,7 +10,9 @@ import { $Assert } from '@voltiso/util'
 
 import { firestore, firestoreModule } from './common/firestore'
 
-const db = new Transactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule, {
+	checkDecorators: false,
+})
 
 class Doctor extends Doc('doctorW').with({
 	id: s.string,

@@ -53,7 +53,7 @@ export class _DocFieldPath {
 
 		// eslint-disable-next-line sonarjs/cyclomatic-complexity
 		const getPromise = async () => {
-			const ctxOverride = ctx.transactor._transactionContext.tryGetValue
+			const ctxOverride = ctx.transactor._getTransactionContext()
 
 			// eslint-disable-next-line no-param-reassign
 			if (ctxOverride) ctx = { ...ctx, ...ctxOverride }

@@ -7,7 +7,11 @@ import { omit } from '@voltiso/util'
 
 import { createTransactor } from '../common'
 
-const db = createTransactor({ requireSchemas: false, refCounters: false })
+const db = createTransactor({
+	requireSchemas: false,
+	refCounters: false,
+	checkDecorators: false,
+})
 
 describe('raw-update', function () {
 	it('updates without returning data when no triggers or schemas', async function () {

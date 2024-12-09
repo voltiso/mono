@@ -10,6 +10,7 @@ import { firestore, firestoreModule } from './common/firestore'
 const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
 	refCounters: false,
+	checkDecorators: false,
 })
 
 const doctors = db('doctor')

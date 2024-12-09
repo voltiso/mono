@@ -8,7 +8,10 @@ const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
 
-const db = createFirestoreTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 if (
 	// eslint-disable-next-line no-useless-call, sonarjs/no-useless-call

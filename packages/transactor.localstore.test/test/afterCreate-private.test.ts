@@ -8,7 +8,7 @@ import { Doc } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor()
+const db = createTransactor({ checkDecorators: false })
 
 // type A = _<DocIdBrand<typeof AnyDoc>>
 

@@ -10,7 +10,9 @@ import { $Assert, omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor()
+const db = createTransactor({
+	checkDecorators: false,
+})
 
 class MyDoctor extends Doc('MyDoctor').with({
 	public: {

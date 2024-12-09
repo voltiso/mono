@@ -8,7 +8,7 @@ import { sleep } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor()
+const db = createTransactor({ checkDecorators: false })
 
 declare module '@voltiso/transactor' {
 	interface DocTypes {

@@ -9,7 +9,10 @@ describe('partial', () => {
 	it('throws on refCounting error if not partial', async () => {
 		expect.hasAssertions()
 
-		const db = createTransactor({ requireSchemas: false })
+		const db = createTransactor({
+			requireSchemas: false,
+			checkDecorators: false,
+		})
 
 		const otherItem = db('wallNoWall', 'cell2')
 

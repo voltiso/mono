@@ -37,7 +37,7 @@ export async function callMethod<
 	args: ARGS,
 	options: CallMethodOptions,
 ): Promise<R> {
-	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
+	const ctxOverride = ctx.transactor._getTransactionContext()
 
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }
@@ -60,7 +60,7 @@ export async function callMethod<
 
 		const result = await transactor.runTransaction(() => {
 			// eslint-disable-next-line unicorn/consistent-destructuring
-			const ctxOverride = ctx.transactor._transactionContext.tryGetValue
+			const ctxOverride = ctx.transactor._getTransactionContext()
 
 			assert(ctxOverride)
 			const { transaction, db } = ctxOverride

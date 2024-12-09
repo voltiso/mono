@@ -7,7 +7,11 @@ import { arraySetAddToIt, omit } from '@voltiso/util'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor({ requireSchemas: false, refCounters: false })
+const db = createTransactor({
+	requireSchemas: false,
+	refCounters: false,
+	checkDecorators: false,
+})
 
 const doctors = db('doctor')
 

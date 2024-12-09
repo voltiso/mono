@@ -8,7 +8,10 @@ import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
 import { firestore } from '../common/firestore'
 
-const db = createFirestoreTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 const promises: PromiseLike<unknown>[] = []
 

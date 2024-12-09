@@ -12,6 +12,7 @@ import { firestore, firestoreModule } from '../common/firestore'
 
 const db = new Transactor(firestore, firestoreModule, {
 	onUnknownField: 'error',
+	checkDecorators: false,
 })
 
 // eslint-disable-next-line jest/require-hook

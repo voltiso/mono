@@ -11,6 +11,7 @@ const db = createTransactor({
 	readOnly: true,
 	requireSchemas: false,
 	allowValidIdField: true,
+	checkDecorators: false,
 })
 
 declare module '@voltiso/transactor' {

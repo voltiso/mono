@@ -7,7 +7,7 @@ import type { Transaction } from '@voltiso/transactor'
 
 import { createTransactor } from '../common'
 
-const db = createTransactor({ requireSchemas: false })
+const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
 describe('raw-transaction', function () {
 	it('should use async storage (get)', async function () {

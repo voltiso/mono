@@ -7,7 +7,9 @@ import { Doc, sAutoId } from '@voltiso/transactor'
 
 import { createTransactor } from './common'
 
-const db = createTransactor()
+const db = createTransactor({
+	checkDecorators: false,
+})
 
 const sOldProfileKey = s.string.regex(/^oldProfile_\d+$/u)
 

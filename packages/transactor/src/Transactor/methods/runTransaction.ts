@@ -50,7 +50,7 @@ export async function runTransaction<R>(
 	transactor: Transactor,
 	body: (t: Transaction) => Promise<R>,
 ): Promise<R> {
-	const ctxOverride = transactor._transactionContext.tryGetValue
+	const ctxOverride = transactor._getTransactionContext()
 
 	if (ctxOverride) {
 		// already in transaction
@@ -77,7 +77,7 @@ export async function runTransaction<R>(
 
 		$assert.not(ctxOverride)
 
-		return transactor._transactionContext.run(
+		return transactor._runWithContext(
 			transactionContextOverride,
 			// eslint-disable-next-line sonarjs/cyclomatic-complexity
 			async () => {

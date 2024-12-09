@@ -7,7 +7,10 @@ import { Doc } from '@voltiso/transactor'
 import { createLocalstoreTransactor } from '@voltiso/transactor.localstore'
 
 const database = createLocalstore()
-const db = createLocalstoreTransactor(database, { requireSchemas: false })
+const db = createLocalstoreTransactor(database, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 const myCollection = db('firstTimeWithSchema').register(Doc)
 

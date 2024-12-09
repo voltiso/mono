@@ -48,7 +48,10 @@ checkPromiseConstructorName()
 // eslint-disable-next-line jest/require-hook
 checkImplicitPromiseConstructorName()
 
-const db = createFirestoreTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 describe('transaction', function () {
 	it('should use async storage (get)', async () => {

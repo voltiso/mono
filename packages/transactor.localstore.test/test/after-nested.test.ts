@@ -12,7 +12,9 @@ import gen from 'random-seed'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor()
+const db = createTransactor({
+	checkDecorators: false,
+})
 
 const rand = gen.create('voltiso')
 let cutoff = 0.2

@@ -31,7 +31,7 @@ describe('unknown-fields', () => {
 			.doc('usersUnknownFields/a')
 			.set({ known: 'test', unknown: 'test2' })
 
-		const db = createTransactor()
+		const db = createTransactor({ checkDecorators: false })
 		db.register(User)
 
 		const user = await db('usersUnknownFields/a')
@@ -43,7 +43,10 @@ describe('unknown-fields', () => {
 			.doc('usersUnknownFields/a')
 			.set({ known: 'test', unknown: 'test2' })
 
-		const db = createTransactor({ onUnknownField: 'error' })
+		const db = createTransactor({
+			checkDecorators: false,
+			onUnknownField: 'error',
+		})
 		db.register(User)
 
 		await expect(db('usersUnknownFields/a')).rejects.toThrow('.unknown')
@@ -59,6 +62,7 @@ describe('unknown-fields', () => {
 			.set({ known: 'test', unknown: 'test2' })
 
 		const db = createTransactor({
+			checkDecorators: false,
 			onUnknownField: issue => void issues.push(issue),
 		})
 		db.register(User)

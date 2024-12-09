@@ -56,7 +56,7 @@ async function databaseSet(
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,
 		)
 
-	const ctxOverride = transactor._transactionContext.tryGetValue
+	const ctxOverride = transactor._getTransactionContext()
 
 	const now = ctxOverride?.transaction
 		? ctxOverride.transaction._date
@@ -112,7 +112,7 @@ export async function databaseUpdate(
 
 	if (isDeleteIt(updates)) return databaseDelete({ transactor }, t, ref)
 
-	const ctxOverride = transactor._transactionContext.tryGetValue
+	const ctxOverride = transactor._getTransactionContext()
 
 	const now = ctxOverride?.transaction
 		? ctxOverride.transaction._date

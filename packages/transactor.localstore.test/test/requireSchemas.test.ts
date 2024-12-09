@@ -5,8 +5,12 @@ import { describe, expect, it } from '@jest/globals'
 
 import { createTransactor } from './common'
 
-const db = createTransactor({ requireSchemas: false })
-const dbWithSchema = createTransactor({ requireSchemas: true })
+const db = createTransactor({ requireSchemas: false, checkDecorators: false })
+
+const dbWithSchema = createTransactor({
+	requireSchemas: true,
+	checkDecorators: false,
+})
 
 const items = db('foo')
 const itemsWithSchema = dbWithSchema('foo')

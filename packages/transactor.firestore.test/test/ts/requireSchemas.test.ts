@@ -8,9 +8,11 @@ import { firestore, firestoreModule } from './common/firestore'
 
 const db = new Transactor(firestore, firestoreModule, {
 	requireSchemas: false,
+	checkDecorators: false,
 })
 const dbWithSchema = new Transactor(firestore, firestoreModule, {
 	requireSchemas: true,
+	checkDecorators: false,
 })
 
 const tigers = db('foo')

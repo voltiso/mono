@@ -14,6 +14,7 @@ const { createFirestoreTransactor } = srcFirestore
 const db = createFirestoreTransactor(firestore, {
 	requireSchemas: false,
 	refCounters: false,
+	checkDecorators: false,
 })
 
 describe('incrementIt', function () {

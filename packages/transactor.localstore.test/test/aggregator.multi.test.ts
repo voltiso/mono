@@ -16,7 +16,7 @@ import { $Assert, nextDay } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
-const db = createTransactor()
+const db = createTransactor({ checkDecorators: false })
 
 //
 

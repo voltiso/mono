@@ -6,7 +6,7 @@ import { sVoltisoEntry } from '@voltiso/transactor'
 
 import { createTransactor, database } from './common'
 
-const db = createTransactor({ requireSchemas: false })
+const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
 describe('data', () => {
 	it('docRef.data returns no id', async () => {

@@ -95,6 +95,22 @@ export interface TransactorOptions {
 	 * @defaultValue `console.warn`
 	 */
 	onWarning: (warning: Error) => void
+
+	/**
+	 * Check if you have at least one decorator (useful to verify if decorators
+	 * are transpiled properly)
+	 *
+	 * @defaultValue `true`
+	 */
+	checkDecorators: boolean | 'warn'
+
+	/**
+	 * This is dangerous, because it requires Async Context and some libraries,
+	 * like Firestore queries, can break it!
+	 *
+	 * @defaultValue `false`
+	 */
+	allowConcurrentTransactions: boolean | 'warn'
 }
 
 export const defaultTransactorOptions = define<TransactorOptions>().value({
@@ -112,4 +128,7 @@ export const defaultTransactorOptions = define<TransactorOptions>().value({
 
 	// eslint-disable-next-line no-console
 	onWarning: console.warn,
+
+	checkDecorators: true,
+	allowConcurrentTransactions: false,
 })

@@ -67,6 +67,11 @@
       }
     },
     "packageExtensions": {
+      "firebase-tools": {
+        "peerDependencies": {
+          "js-yaml": "*"
+        }
+      },
       "@testing-library/jest-dom": {
         "peerDependencies": {
           "@jest/globals": "*",

@@ -10,7 +10,7 @@ import { $Assert, $Is, fastAssert } from '@voltiso/util'
 
 import { createTransactor } from './common'
 
-const db = createTransactor()
+const db = createTransactor({ checkDecorators: false })
 
 //
 

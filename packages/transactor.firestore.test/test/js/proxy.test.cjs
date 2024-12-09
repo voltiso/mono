@@ -8,7 +8,10 @@ const { firestore, srcFirestore } = require('./common/index.cjs')
 
 const { createFirestoreTransactor } = srcFirestore
 
-const db = createFirestoreTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 describe('proxy', function () {
 	it('should throw on immutable result change', async function () {

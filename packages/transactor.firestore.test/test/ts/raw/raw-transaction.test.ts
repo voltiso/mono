@@ -7,10 +7,14 @@ import { describe, expect, it } from '@jest/globals'
 import { assert } from '@voltiso/assertor'
 import type { Transaction } from '@voltiso/transactor'
 import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
+import { sleep } from '@voltiso/util'
 
 import { firestore } from '../common/firestore'
 
-const db = createFirestoreTransactor(firestore, { requireSchemas: false })
+const db = createFirestoreTransactor(firestore, {
+	requireSchemas: false,
+	checkDecorators: false,
+})
 
 describe('raw-transaction', () => {
 	it('should use async storage (get)', async function () {
@@ -149,5 +153,59 @@ describe('raw-transaction', () => {
 		).rejects.toThrow('test')
 
 		await expect(db('col', id)).resolves.toBeNull()
+	})
+
+	it('should not allow concurrent transactions', async () => {
+		expect.hasAssertions()
+
+		const test = async () => {
+			const a = db.runTransaction(async () => {
+				await sleep(100)
+			})
+
+			const b = db.runTransaction(async () => {
+				await sleep(100)
+			})
+
+			return Promise.all([a, b])
+		}
+
+		await expect(test()).rejects.toThrow('already have transaction context')
+	})
+
+	it('should warn if async context is broken', async () => {
+		expect.hasAssertions()
+
+		// db.allowConcurrentTransactions = false
+
+		let _error
+
+		db._options.onWarning = error => {
+			_error = error
+			// eslint-disable-next-line no-console
+			console.warn(error)
+		}
+
+		const test = () =>
+			db.runTransaction(async () => {
+				await sleep(100)
+				await db._runWithContext(
+					{ transaction: {} as never, db: {} as never },
+					// eslint-disable-next-line sonarjs/no-nested-functions
+					async () => {
+						await sleep(100)
+						await db.runTransaction(async () => {
+							await sleep(100)
+						})
+					},
+				)
+				await sleep(100)
+			})
+
+		await expect(test()).resolves.toBeUndefined()
+
+		expect(_error).toMatchInlineSnapshot(
+			'[TransactorError: Async Context broken - fortunately we have `allowConcurrentTransactions === false`]',
+		)
 	})
 })

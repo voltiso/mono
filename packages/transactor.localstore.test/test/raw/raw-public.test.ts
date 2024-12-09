@@ -6,7 +6,7 @@ import * as s from '@voltiso/schemar'
 
 import { createTransactor, database } from '../common'
 
-const db = createTransactor({ onUnknownField: 'error' })
+const db = createTransactor({ onUnknownField: 'error', checkDecorators: false })
 
 // eslint-disable-next-line jest/require-hook
 db('doctor/*').public({

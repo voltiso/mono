@@ -12,7 +12,9 @@ import randomSeed from 'random-seed'
 
 import { firestore, firestoreModule } from './common'
 
-const db = new Transactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule, {
+	checkDecorators: false,
+})
 
 const rand = randomSeed.create('voltiso')
 let cutoff = 0.2

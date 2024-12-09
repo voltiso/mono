@@ -4,7 +4,7 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
-packageExtensionsChecksum: bd3d9ea2d57642bb0ea33f43340ac536
+packageExtensionsChecksum: eac8653b53c37847856ebbbdbd7e5754
 
 importers:
 
@@ -1218,7 +1218,7 @@ importers:
         version: 13.0.1(encoding@0.1.13)
       firebase-tools:
         specifier: ^13.27.0
-        version: 13.27.0(encoding@0.1.13)
+        version: 13.27.0(encoding@0.1.13)(js-yaml@4.1.0)
       get-port:
         specifier: ^7.0.0
         version: 7.1.0
@@ -7470,6 +7470,8 @@ packages:
     resolution: {integrity: sha512-/G6Ga+vEByYV2NnEBwfg2jvh7IgQiwy00fxxkZzXRvMAsx/2CpxoDByYVXsA/Q95k3VuUwi02nrm8qEgJaJrMA==}
     engines: {node: '>=18.0.0 || >=20.0.0'}
     hasBin: true
+    peerDependencies:
+      js-yaml: '*'
 
   firebase@11.0.2:
     resolution: {integrity: sha512-w4T8BSJpzdZA25QRch5ahLsgB6uRvg1LEic4BaC5rTD1YygroI1AXp+W+rbMnr8d8EjfAv6t4k8doULIjc1P8Q==}
@@ -19333,7 +19335,7 @@ snapshots:
       - encoding
       - supports-color
 
-  firebase-tools@13.27.0(encoding@0.1.13):
+  firebase-tools@13.27.0(encoding@0.1.13)(js-yaml@4.1.0):
     dependencies:
       '@electric-sql/pglite': 0.2.13
       '@google-cloud/cloud-sql-connector': 1.4.0(encoding@0.1.13)
@@ -19366,6 +19368,7 @@ snapshots:
       google-auth-library: 9.15.0(encoding@0.1.13)
       inquirer: 8.2.6
       inquirer-autocomplete-prompt: 2.0.1(inquirer@8.2.6)
+      js-yaml: 4.1.0
       jsonwebtoken: 9.0.2
       leven: 3.1.0
       libsodium-wrappers: 0.7.15

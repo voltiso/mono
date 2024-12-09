@@ -16,6 +16,7 @@ import {
 import { databaseUpdate } from '~/common'
 import { withoutId, withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
+import { _checkDecorators } from '~/decorators'
 import type { $$Doc, Doc } from '~/Doc'
 import { IndexedDoc } from '~/Doc'
 import type { WithDocRef } from '~/DocRef'
@@ -142,6 +143,7 @@ async function rawUpdate(
 	updates: Updates,
 	options: Partial<UpdateOptions>,
 ): Promise<IndexedDoc | null | undefined> {
+	_checkDecorators(ctx)
 	fastAssert(updates)
 	// eslint-disable-next-line no-param-reassign
 	updates = check(ctx, updates)
@@ -218,6 +220,7 @@ async function transactionUpdateImpl(
 	updates: Updates,
 	partialOptions: Partial<UpdateOptions>,
 ): Promise<$$Doc | null | undefined> {
+	_checkDecorators(ctx)
 	const defaultOptions = {
 		onConstField: 'error' as const,
 		onPrivateField: 'error' as const,
@@ -370,7 +373,7 @@ export function update(
 ): PromiseLike<$$Doc | null | undefined> {
 	fastAssert(updates)
 
-	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
+	const ctxOverride = ctx.transactor._getTransactionContext()
 
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }

@@ -7,7 +7,7 @@ import type { Doc } from '@voltiso/transactor'
 
 import { createTransactor } from '../common'
 
-const db = createTransactor({ requireSchemas: false })
+const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
 // eslint-disable-next-line jest/require-hook
 db('counter/*')

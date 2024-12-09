@@ -8,7 +8,9 @@ import { Transactor } from '@voltiso/transactor'
 
 import { firestore, firestoreModule } from '../common/firestore'
 
-const db = new Transactor(firestore, firestoreModule)
+const db = new Transactor(firestore, firestoreModule, {
+	checkDecorators: false,
+})
 interface Transfer extends Doc {
 	amount: number
 	triggerCondition: boolean
@@ -30,6 +32,21 @@ db('transferB/*')
 	})
 
 describe('raw-const', function () {
+	it('should throw if no decorators (checkDecorators === true)', async () => {
+		expect.hasAssertions()
+
+		const oldOption = db.checkDecorators
+		db.checkDecorators = true
+		try {
+			expect(db._options.checkDecorators).toBe(true)
+			await expect(db('transferB/a').set({})).rejects.toThrow(
+				'No decorators fired - see `checkDecorators` option',
+			)
+		} finally {
+			db.checkDecorators = oldOption
+		}
+	})
+
 	it('should not allow creating without required const schema fields', async function () {
 		expect.hasAssertions()
 		await expect(db('transferB/a').set({})).rejects.toThrow('amount')

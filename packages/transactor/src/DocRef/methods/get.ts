@@ -14,6 +14,7 @@ import { deepCloneData } from '@voltiso/util.firestore'
 import { fromDatabase } from '~/common'
 import { withVoltisoEntry } from '~/Data'
 import type { WithDb } from '~/Db'
+import { _checkDecorators } from '~/decorators'
 import type { $$Doc, DocTI } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
@@ -66,6 +67,7 @@ function getIsTransactionNeededForRead(
 async function directDocPathGet<D extends $$Doc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): Promise<D | null> {
+	_checkDecorators(ctx)
 	const needTransaction = getIsTransactionNeededForRead(ctx)
 
 	let data: object | null
@@ -94,6 +96,7 @@ async function directDocPathGet<D extends $$Doc>(
 async function transactionDocPathGetImpl<D extends $$Doc>(
 	ctx: WithTransactor & WithDocRef & WithTransaction & WithDb,
 ): Promise<D | null> {
+	_checkDecorators(ctx)
 	const { _ref, id } = ctx.docRef
 	const { _cache, _databaseTransaction, _date } = ctx.transaction
 
@@ -321,7 +324,7 @@ export function transactionDocPathGet<D extends $$Doc>(
 export function get<TI extends DocTI>(
 	ctx: Partial<WithTransaction> & WithTransactor & WithDocRef & WithDb,
 ): PromiseLike<Doc<TI> | null> {
-	const ctxOverride = ctx.transactor._transactionContext.tryGetValue
+	const ctxOverride = ctx.transactor._getTransactionContext()
 
 	// eslint-disable-next-line no-param-reassign
 	if (ctxOverride) ctx = { ...ctx, ...ctxOverride }

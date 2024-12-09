@@ -8,7 +8,7 @@ import { aggregate, Doc, sRef } from '@voltiso/transactor'
 
 import { createTransactor } from './common'
 
-const db = createTransactor()
+const db = createTransactor({ checkDecorators: false })
 
 //
 

@@ -5,7 +5,7 @@ import { describe, expect, it } from '@jest/globals'
 
 import { createTransactor } from './common'
 
-const db = createTransactor({ requireSchemas: false })
+const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
 describe('intrinsic fields', () => {
 	it('returns default __voltiso for non-existing documents (inside transaction)', async () => {

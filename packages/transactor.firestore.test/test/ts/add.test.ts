@@ -8,7 +8,9 @@ import { createFirestoreTransactor } from '@voltiso/transactor.firestore'
 
 import { firestore } from './common'
 
-const db = createFirestoreTransactor(firestore)
+const db = createFirestoreTransactor(firestore, {
+	checkDecorators: false,
+})
 
 class Client extends Doc.with({
 	id: s.string,

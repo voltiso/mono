@@ -7,7 +7,7 @@ import type { Doc } from '@voltiso/transactor'
 
 import { createTransactor, database } from '../common'
 
-const db = createTransactor()
+const db = createTransactor({ checkDecorators: false })
 interface Transfer extends Doc {
 	amount: number
 	triggerCondition: boolean

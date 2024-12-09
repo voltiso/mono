@@ -10,6 +10,7 @@ import { firestore, firestoreModule } from './common/firestore'
 
 const db = new Transactor(firestore, firestoreModule, {
 	onUnknownField: 'error',
+	checkDecorators: false,
 })
 
 class Doctor extends Doc.with({

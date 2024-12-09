@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { method } from './decorators'
+import { _setDecoratorDetection, method } from './decorators'
 import { Doc } from './Doc/Doc'
 import { _inferMetadata } from './DocConstructor/_/inferMetadata'
 import { TransactorError } from './error'
@@ -27,11 +27,15 @@ function checkDecorators() {
 		Symbol.metadata ??= Symbol('Symbol.metadata')
 	}
 
+	_setDecoratorDetection(false)
+
 	class C extends Doc {
 		@method
 		// eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/class-methods-use-this
 		fun() {}
 	}
+
+	_setDecoratorDetection(true)
 
 	_inferMetadata(C)
 
