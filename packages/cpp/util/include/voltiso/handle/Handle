@@ -1,0 +1,8 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/handle/Custom>
+
+namespace VOLTISO_NAMESPACE {
+template <class Brand> using Handle = handle::Custom<Brand, std::size_t>;
+} // namespace VOLTISO_NAMESPACE

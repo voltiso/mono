@@ -1,0 +1,100 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/handle/Custom>
+#include <voltiso/singleton>
+#include <voltiso/throwError>
+
+#include <cstddef>
+#include <cstdlib>
+#include <new>
+
+namespace VOLTISO_NAMESPACE::allocator::malloc {
+template <class _Brand> struct BUILD {
+private:
+  using Self = BUILD;
+
+private:
+  friend singleton::perThread;
+  BUILD() = default;
+
+public:
+  static constexpr auto &get() { return singleton::perThread::get<Self>(); }
+
+public:
+  using Brand = _Brand;
+
+  template <class Item> using HandleForItem = handle::Custom<Self, Item *>;
+  using Handle = HandleForItem<void>;
+
+  static Handle allocateBytes(size_t numBytes,
+                              size_t alignment = alignof(std::max_align_t)) {
+    if (!numBytes) [[unlikely]]
+      return nullptr;
+    if (alignment == alignof(std::max_align_t)) [[likely]] {
+      auto pointer = ::malloc(numBytes);
+      if (!pointer) [[unlikely]]
+        throwError(std::bad_alloc());
+      return pointer;
+    } else [[unlikely]] {
+      auto pointer = ::aligned_alloc(alignment, numBytes);
+      if (!pointer) [[unlikely]]
+        throwError(std::bad_alloc());
+      return pointer;
+    }
+  }
+
+  static void freeBytes(Handle handle) { ::free((void *)handle.value); }
+
+  template <class Item, class... Args>
+  static HandleForItem<Item> construct(Args &&...args) {
+    auto handle = allocateBytes(sizeof(Item), alignof(Item));
+    new (handle) Item(std::forward<Args>(args)...);
+    return handle;
+  }
+
+  template <class Item> static void destroy(const HandleForItem<Item> &item) {
+    item->~Item();
+    freeBytes(item);
+  }
+
+  static Handle setNumBytes(const Handle &handle, size_t newNumBytes) {
+    if (!newNumBytes) [[unlikely]]
+      return nullptr;
+    auto newPointer = ::realloc((void *)handle.value, newNumBytes);
+    if (!newPointer) [[unlikely]]
+      throwError(std::bad_alloc());
+    return newPointer;
+  }
+
+  //
+
+  template <class Item> auto &operator[](const HandleForItem<Item> &handle) {
+    return *(Item *)handle.value;
+  }
+
+  template <class Item>
+  const auto &operator[](const HandleForItem<Item> &handle) const {
+    return *handle.value;
+  }
+
+  template <class Item, class = std::enable_if_t<!std::is_same_v<Item, void>>>
+  auto &operator()(const HandleForItem<Item> &handle, std::ptrdiff_t index) {
+    return ((Item *)handle.value)[index];
+  }
+
+  template <class Item, class = std::enable_if_t<!std::is_same_v<Item, void>>>
+  const auto &operator()(const HandleForItem<Item> &handle,
+                         std::ptrdiff_t index) const {
+    return ((Item *)handle.value)[index];
+  }
+
+  //
+
+  template <class NewBrand> using WithBrand = BUILD<NewBrand>;
+};
+} // namespace VOLTISO_NAMESPACE::allocator::malloc
+
+namespace VOLTISO_NAMESPACE::allocator {
+using Malloc = malloc::BUILD<void>;
+} // namespace VOLTISO_NAMESPACE::allocator

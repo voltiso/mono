@@ -1,0 +1,16 @@
+#pragma once
+#include <voltiso/_>
+
+#include <memory>
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+
+template <class T>
+static constexpr auto is_trivially_relocatable =
+    std::is_trivially_copyable_v<T>;
+
+template <class T>
+static constexpr auto is_trivially_relocatable<std::unique_ptr<T>> = true;
+
+} // namespace VOLTISO_NAMESPACE

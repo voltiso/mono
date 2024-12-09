@@ -1,0 +1,297 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/DynamicArray>
+#include <voltiso/Entry>
+#include <voltiso/allocator/Malloc>
+#include <voltiso/handle/Custom>
+#include <voltiso/is_trivially_relocatable>
+#include <voltiso/override>
+
+#include <bit>
+#include <type_traits>
+
+//
+
+namespace VOLTISO_NAMESPACE::hashTable::_ {
+
+template <class Options> struct Bucket {
+  using Entries = DynamicArray<typename Options::Entry>::
+      template WithInPlace<Options::BUCKET_IN_PLACE>::template WithAllocator<
+          typename Options::Allocator>;
+  Entries entries;
+};
+} // namespace VOLTISO_NAMESPACE::hashTable::_
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <class Options>
+static constexpr auto is_trivially_relocatable<hashTable::_::Bucket<Options>> =
+    true;
+} // namespace VOLTISO_NAMESPACE
+
+//
+
+namespace VOLTISO_NAMESPACE::hashTable {
+struct DefaultOptions {
+  using Entry = int; // need to override
+  static constexpr size_t IN_PLACE = 0;
+  static constexpr size_t BUCKET_IN_PLACE = 1;
+  using Allocator = allocator::Malloc;
+};
+
+template <class _Options> class BUILD {
+  using Self = BUILD;
+
+public:
+  using Options = _Options;
+  using Entry = Options::Entry;
+  using Key = GetKey<Entry>;
+  using Value = GetValue<Entry>;
+
+private:
+  using Bucket = _::Bucket<Options>;
+  using Buckets = DynamicArray<Bucket>::template WithInPlace<
+      Options::IN_PLACE>::template WithAllocator<typename Options::Allocator>;
+
+public:
+  Buckets const buckets = {};
+  size_t const numItems = 0;
+
+private:
+  struct TemporaryHandle {
+    Buckets::Handle bucket;
+    Bucket::Entries::Handle entry;
+  };
+
+public:
+  BUILD() = default;
+  BUILD(std::initializer_list<Entry> entries) {
+    for (auto &entry : entries) {
+      if constexpr (std::is_same_v<Value, Entry> ||
+                    std::is_same_v<Value, void>) {
+        (*this)[entry].insert();
+      } else {
+        (*this)[getKey(entry)] = getValue(entry);
+      }
+    }
+  }
+
+public:
+  // using Handle = handle::Custom<Self, HandleValue>;
+
+  struct ConstSetAccessor {
+    const TemporaryHandle handle;
+    const Key key;
+    const bool exists;
+
+  private:
+    const Self &_hashTable;
+
+  public:
+    ConstSetAccessor(const TemporaryHandle &handle, const Key &key, bool exists,
+                     const Self &hashTable)
+        : handle(handle), key(key), exists(exists), _hashTable(hashTable) {}
+    const auto &hashTable() const { return _hashTable; }
+
+    const Value &get() const {
+      auto &bucket = this->hashTable().buckets[this->handle.bucket];
+      return getValue(bucket.entries[this->handle.entry]);
+    }
+
+    // explicit operator bool() const { return exists; }
+
+    operator const Value &() const { return get(); }
+    const Value &operator*() const { return get(); }
+    const Value *operator->() const { return &get(); }
+    const Value *operator&() const { return &get(); }
+  };
+
+  struct ConstValueAccessor : ConstSetAccessor {
+    using ConstSetAccessor::ConstSetAccessor;
+  };
+
+  using ConstAccessor =
+      std::conditional_t<std::is_same_v<Value, Entry> ||
+                             std::is_same_v<Value, void>,
+                         ConstSetAccessor, ConstValueAccessor>;
+
+  struct SetAccessor : ConstAccessor {
+    using ConstAccessor::ConstAccessor;
+
+    BUILD &hashTable() {
+      return const_cast<BUILD &>(ConstAccessor::hashTable());
+    }
+
+    void erase() {
+      auto &bucket = this->hashTable.buckets[this->handle.bucket];
+      DCHECK_LT(this->handle.item, bucket.numItems);
+      bucket.items[this->handle.item] = std::move(bucket.items.last());
+      bucket.pop();
+      --this->hashTable.numItems;
+    }
+
+    void maybeErase() {
+      if (this->exists) {
+        erase();
+      }
+    }
+
+    void insert() {
+      DCHECK(!this->exists);
+      auto &bucket =
+          const_cast<Bucket &>(this->hashTable().buckets[this->handle.bucket]);
+      bucket.entries.push(this->key);
+      ++const_cast<size_t &>(this->hashTable().numItems);
+    }
+
+    void set() {
+      if (!this->exists) {
+        insert();
+      }
+    }
+
+    // explicit operator bool() const { return this->exists; }
+
+    Value &get() { return const_cast<Value &>(ConstAccessor::get()); }
+    operator Value &() { return get(); }
+    Value &operator*() { return get(); }
+    Value *operator->() { return &get(); }
+    Value *operator&() { return &get(); }
+  };
+
+  struct ValueAccessor : SetAccessor {
+    using SetAccessor::SetAccessor;
+
+    template <class... Args> void insert(Args &&...args) {
+      DCHECK(!this->exists);
+      auto &bucket =
+          const_cast<Buckets &>(this->hashTable().buckets)[this->handle.bucket];
+      DCHECK_EQ(this->handle.entry, bucket.entries.numItems);
+
+      auto newHandle =
+          bucket.entries.push({this->key, Value(std::forward<Args>(args)...)});
+      DCHECK_EQ(newHandle, this->handle.entry);
+      ++const_cast<size_t &>(this->hashTable().numItems);
+    }
+
+    template <class... Args> ValueAccessor &maybeInsert(Args &&...args) {
+      if (!this->exists) {
+        insert(std::forward<Args>(args)...);
+      }
+      return *this;
+    }
+
+    template <class... Args> void update(Args &&...args) {
+      DCHECK(this->exists);
+      auto &bucket =
+          const_cast<Buckets &>(this->hashTable().buckets)[this->handle.bucket];
+      auto &value = getValue(bucket.entries[this->handle.entry]);
+      value = Value(std::forward<Args>(args)...);
+      // value.~Value();
+      // new (&value) Value(std::forward<Args>(args)...);
+    }
+
+    template <class... Args> void set(Args &&...args) {
+      if (this->exists) {
+        update(std::forward<Args>(args)...);
+      } else {
+        insert(std::forward<Args>(args)...);
+      }
+    }
+
+    template <class Other> auto &operator=(Other &&other) {
+      set(std::forward<Other>(other));
+      return *this;
+    }
+  };
+
+  using Accessor = std::conditional_t<std::is_same_v<Value, Entry> ||
+                                          std::is_same_v<Value, void>,
+                                      SetAccessor, ValueAccessor>;
+
+private:
+  auto _bucketIndex(const Key &key) const {
+    auto hash = std::hash<Key>{}(key);
+    DCHECK(std::has_single_bit(buckets.numItems));
+    // auto index = hash % buckets.numItems;
+    auto index = hash & (buckets.numItems - 1);
+    return index;
+  }
+
+  auto _find(const Key &key) const {
+    DCHECK_GT(buckets.numItems, 0);
+    auto index = _bucketIndex(key);
+    auto &bucket = buckets[index];
+    for (size_t i = 0; i < bucket.entries.numItems; ++i) {
+      if (getKey(bucket.entries[i]) == key) {
+        return TemporaryHandle{index, i};
+      }
+    }
+    return TemporaryHandle{index, bucket.entries.numItems};
+  }
+
+private:
+  void grow() {
+    auto &buckets = const_cast<Buckets &>(this->buckets);
+    auto oldNumBuckets = buckets.numItems;
+    auto newNumBuckets = oldNumBuckets << 1;
+    if (!newNumBuckets) [[unlikely]]
+      newNumBuckets = 1;
+    buckets.setNumItems(newNumBuckets);
+    for (size_t i = 0; i < oldNumBuckets; ++i) {
+      auto &oldBucket = buckets[i];
+      for (size_t j = 0; j < oldBucket.entries.numItems; ++j) {
+        auto &entry = oldBucket.entries[j];
+        auto newIndex = _bucketIndex(getKey(entry));
+        if (newIndex != i) {
+          DCHECK_GE(newIndex, oldNumBuckets);
+          auto &newBucket = buckets[newIndex];
+          newBucket.entries.push(std::move(entry));
+          oldBucket.entries[j] = std::move(oldBucket.entries.last());
+          oldBucket.entries.pop();
+          --j;
+        }
+      }
+    }
+  }
+
+  void maybeGrow() {
+    if (numItems >= buckets.numItems) [[unlikely]]
+      grow();
+  }
+
+public:
+  Accessor operator[](const Key &key) {
+    maybeGrow();
+    auto handle = _find(key);
+    auto exists = handle.entry.value != buckets[handle.bucket].entries.numItems;
+    return {handle, key, exists, *this};
+  }
+  ConstAccessor operator[](const Key &key) const {
+    maybeGrow();
+    auto handle = _find(key);
+    auto exists = handle.entry.value != buckets[handle.bucket].entries.numItems;
+    return {handle, key, exists, *this};
+  }
+
+public:
+  template <class NewAllocator>
+  using WithAllocator = BUILD<override::Allocator_<NewAllocator, Options>>;
+};
+} // namespace VOLTISO_NAMESPACE::hashTable
+
+namespace VOLTISO_NAMESPACE {
+template <class Options>
+static constexpr auto is_trivially_relocatable<hashTable::BUILD<Options>> =
+    true;
+} // namespace VOLTISO_NAMESPACE
+
+namespace VOLTISO_NAMESPACE {
+
+template <class Entry>
+using HashTable =
+    hashTable::BUILD<override::Entry_<Entry, hashTable::DefaultOptions>>;
+
+} // namespace VOLTISO_NAMESPACE

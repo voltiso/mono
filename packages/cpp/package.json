@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "@voltiso/cpp",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voltiso/mono.git",
+  "__________": "__________",
+  "type": "module",
+  "sideEffects": false,
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "prepare": "v prepare",
+    "clean": "v clean",
+    "test": "v test",
+    "bench": "v bench"
+  },
+  "__________DEPS": "__________",
+  "devDependencies": {
+    "@voltiso/script": "workspace:^",
+    "@voltiso/script.cmake": "workspace:^"
+  },
+  "__________MISC": "__________",
+  "packageManager": "pnpm@9.14.2",
+  "engines": {
+    "node": ">=16"
+  }
+}

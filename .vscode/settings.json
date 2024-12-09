@@ -9,6 +9,16 @@
 	//  - But - there are project-specific settings here too - see "files.exclude" for "util"
 	//
 
+	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
+
+	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/build",
+
+	"clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
+
+	"[cpp]": {
+		"editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+	},
+
 	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
 	// "javascript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
 	// "typescript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm
@@ -291,18 +301,24 @@
 		"bivariant",
 		"blackbox",
 		"browserslistrc",
+		"buildsystems",
+		"callgrind",
 		"camelcase",
 		"cand",
 		"chokidar",
 		"chunkname",
 		"cjsx",
 		"clier",
+		"clzll",
 		"Coderho",
 		"compat",
 		"concat",
+		"cpptrace",
 		"cssify",
 		"csstype",
+		"ctest",
 		"ctsx",
+		"DCMAKE",
 		"defineproperties",
 		"depcheck",
 		"depcheckrc",
@@ -328,9 +344,13 @@
 		"getownpropertydescriptors",
 		"getownpropertynames",
 		"getownpropertysymbols",
+		"gflags",
 		"gitignores",
+		"GLIBCXX",
 		"globby",
+		"glog",
 		"glsl",
+		"GTEST",
 		"hashbang",
 		"iife",
 		"immutabilize",
@@ -349,6 +369,7 @@
 		"loglevel",
 		"lookaround",
 		"Lorcan",
+		"malloc",
 		"matchall",
 		"Methodish",
 		"microtask",
@@ -367,11 +388,14 @@
 		"nonblock",
 		"npmjs",
 		"npmrc",
+		"nsys",
+		"nullptr",
 		"oltiso",
 		"Orta",
 		"outfile",
 		"Parens",
 		"Paulo",
+		"pbds",
 		"picomatch",
 		"pjson",
 		"pkill",
@@ -383,8 +407,10 @@
 		"predeploy",
 		"Pressable",
 		"prettierrc",
+		"RAII",
 		"readdirp",
 		"realpath",
+		"RELWITHDEBINFO",
 		"reusify",
 		"rimraf",
 		"riscv",
@@ -401,6 +427,7 @@
 		"Simplifiable",
 		"sonarjs",
 		"startswith",
+		"stdc",
 		"stester",
 		"stylis",
 		"subclassing",
@@ -432,10 +459,20 @@
 		"unflush",
 		"unist",
 		"Unitless",
+		"vcpkg",
 		"V͛o͛",
 		"voltiso",
+		"Werror",
+		"Wextra",
+		"Wfatal",
 		"whitespaces",
+		"Winvalid",
 		"wrappy",
+		"Wshadow",
 		"Zonejs"
-	]
+	],
+	"[cmake]": {
+		"editor.defaultFormatter": "josetr.cmake-language-support-vscode"
+	},
+	"cmake.sourceDirectory": "/home/atablash/mono/packages/cpp"
 }

@@ -1,0 +1,17 @@
+#pragma once
+#include <voltiso/_>
+
+#include <glog/logging.h>
+
+namespace VOLTISO_NAMESPACE {
+
+template <class T> [[noreturn]] void throwError(T &&error) {
+#ifdef __cpp_exceptions
+  throw error;
+#else
+  LOG(FATAL) << error.what();
+  std::abort();
+#endif
+}
+
+} // namespace VOLTISO_NAMESPACE

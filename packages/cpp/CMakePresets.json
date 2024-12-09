@@ -1,0 +1,76 @@
+{
+	"version": 8,
+	"configurePresets": [
+		{
+			"name": "clang-18_Debug",
+			"displayName": "clang-18_Debug",
+			"binaryDir": "${sourceDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "/usr/bin/clang-18",
+				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": true
+			}
+		},
+		{
+			"name": "clang-18_RelWithDebInfo",
+			"displayName": "clang-18_RelWithDebInfo",
+			"binaryDir": "${sourceDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "/usr/bin/clang-18",
+				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": true
+			}
+		},
+		{
+			"name": "clang-18_Release",
+			"displayName": "clang-18_Release",
+			"binaryDir": "${sourceDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "/usr/bin/clang-18",
+				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": true
+			}
+		},
+		{
+			"name": "gcc-14_Release",
+			"displayName": "gcc-14_Release",
+			"binaryDir": "${sourceDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "/usr/bin/gcc-14",
+				"CMAKE_CXX_COMPILER": "/usr/bin/g++-14",
+				"CMAKE_BUILD_TYPE": "Release",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": true
+			}
+		}
+	],
+
+	"buildPresets": [
+		{
+			"name": "clang-18_Debug",
+			"displayName": "clang-18_Debug",
+			"configurePreset": "clang-18_Debug",
+			"jobs": 8
+		},
+		{
+			"name": "clang-18_RelWithDebInfo",
+			"displayName": "clang-18_RelWithDebInfo",
+			"configurePreset": "clang-18_RelWithDebInfo",
+			"jobs": 8
+		},
+		{
+			"name": "clang-18_Release",
+			"displayName": "clang-18_Release",
+			"configurePreset": "clang-18_Release",
+			"jobs": 8
+		},
+		{
+			"name": "gcc-14_Release",
+			"displayName": "gcc-14_Release",
+			"configurePreset": "gcc-14_Release",
+			"jobs": 8
+		}
+	]
+}

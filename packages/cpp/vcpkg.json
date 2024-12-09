@@ -1,0 +1,9 @@
+{
+	"dependencies": [
+		{ "name": "gflags" },
+		{ "name": "glog" },
+		{ "name": "gtest" },
+		{ "name": "benchmark" },
+		{ "name": "cpptrace" }
+	]
+}

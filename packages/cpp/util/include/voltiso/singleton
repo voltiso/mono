@@ -1,0 +1,18 @@
+#pragma once
+#include <voltiso/_>
+
+// namespace VOLTISO_NAMESPACE::singleton {
+// template <class T> auto &get() {
+//   static T instance;
+//   return instance;
+// }
+// } // namespace VOLTISO_NAMESPACE::singleton
+
+namespace VOLTISO_NAMESPACE::singleton {
+struct perThread {
+  template <class T> static auto &get() {
+    static thread_local T instance;
+    return instance;
+  }
+}; // struct perThread
+} // namespace VOLTISO_NAMESPACE::singleton

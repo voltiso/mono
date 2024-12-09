@@ -1,0 +1,46 @@
+#pragma once
+#include <initializer_list>
+#include <voltiso/_>
+
+#include <voltiso/Array>
+#include <voltiso/storage/Custom>
+
+namespace VOLTISO_NAMESPACE {
+
+// To replace `std::aligned_storage`
+// https://stackoverflow.com/a/71828512/1123898
+// ⚠️ Remember to call `.destroy()` if you constructed something
+template <class _Item> struct Storage {
+  using Item = _Item;
+  // union {
+  alignas(Item) Array<std::byte, sizeof(Item)> bytes;
+  // Item item;
+  // };
+
+  auto &item() { return *reinterpret_cast<Item *>(&bytes[0]); }
+  auto &item() const { return *reinterpret_cast<const Item *>(&bytes[0]); }
+
+  Storage() = default;
+
+  Storage(std::initializer_list<std::byte> init) : bytes(init) {
+    LOG(INFO) << "Storage(std::initializer_list<std::byte>)";
+  }
+
+  // template <class... Args>
+  // constexpr Storage(Args &&...args) noexcept
+  //     : bytes(std::forward<Args>(args)...) {}
+
+  // ⚠️ Remember to call `.destroy()` if you constructed
+  // something
+  template <class... Args> void construct(Args &&...args) {
+    new (&item()) Item(std::forward<Args>(args)...);
+  }
+
+  // ⚠️ Remember to call `.destroy()` if you constructed something
+  void destroy() { item().~Item(); }
+};
+
+static_assert(sizeof(Storage<int>) == sizeof(int));
+// static_assert(sizeof(Storage<void>) == 111);
+
+} // namespace VOLTISO_NAMESPACE

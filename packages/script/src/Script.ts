@@ -18,17 +18,17 @@ export type Script = MaybePromise<
 export namespace Script {
 	export type Nullish = null | undefined | '' | void
 
-	export type WithParameters = (...args: string[]) => Script
+	export type WithParameters = (...args: string[]) => MaybePromise<Script>
 
 	export interface Parallel {
-		parallel: Script[]
+		parallel: MaybePromise<Script>[]
 	}
 
 	export interface Race {
-		race: Script[]
+		race: MaybePromise<Script>[]
 	}
 
-	export type Sequence = Script[]
+	export type Sequence = MaybePromise<Script>[]
 
 	// eslint-disable-next-line sonarjs/redundant-type-aliases
 	export type Literal = string

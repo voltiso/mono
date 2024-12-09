@@ -1,0 +1,11 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/storage/Custom>
+
+#include <cstddef>
+
+namespace VOLTISO_NAMESPACE::storage {
+template <size_t SIZE>
+using Universal = Custom<SIZE, alignof(std::max_align_t)>;
+}; // namespace VOLTISO_NAMESPACE::storage

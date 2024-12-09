@@ -21,3 +21,4 @@ firebase-*.json
 output_path
 
 *.txt
+!CMakeLists.txt

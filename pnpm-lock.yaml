@@ -630,6 +630,17 @@ importers:
         specifier: ^0.15.0
         version: 0.15.0
 
+  packages/cpp:
+    devDependencies:
+      '@voltiso/script':
+        specifier: workspace:^
+        version: link:../script
+      '@voltiso/script.cmake':
+        specifier: workspace:^
+        version: link:../script.cmake
+
+  packages/cpp/util: {}
+
   packages/eslint-plugin:
     dependencies:
       '@typescript-eslint/utils':
@@ -945,6 +956,24 @@ importers:
       '@voltiso/util.package-json':
         specifier: workspace:^
         version: link:../util.package-json
+      typescript:
+        specifier: ~5.6.3
+        version: 5.6.3
+      typescript-transform-paths:
+        specifier: ^3.5.2
+        version: 3.5.2(typescript@5.6.3)
+
+  packages/script.cmake:
+    devDependencies:
+      '@voltiso/config.ts':
+        specifier: workspace:^
+        version: link:../config.ts
+      '@voltiso/script':
+        specifier: workspace:^
+        version: link:../script
+      '@voltiso/transform':
+        specifier: workspace:^
+        version: link:../transform
       typescript:
         specifier: ~5.6.3
         version: 5.6.3

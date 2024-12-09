@@ -1,0 +1,152 @@
+#pragma once
+#include "voltiso/override"
+#include <voltiso/_>
+
+#include <voltiso/Allocation>
+#include <voltiso/Array>
+#include <voltiso/HashMap>
+#include <voltiso/Pool>
+#include <voltiso/bst>
+#include <voltiso/divCeil>
+#include <voltiso/handle/Custom>
+#include <voltiso/max>
+#include <voltiso/memory/PAGE_SIZE>
+#include <voltiso/singleton>
+#include <voltiso/splay>
+
+#include <cstddef>
+
+namespace VOLTISO_NAMESPACE::allocator::splay {
+struct DefaultOptions {
+  using ParentAllocator = Malloc;
+  static constexpr auto PAGE_SIZE = memory::PAGE_SIZE;
+  using Brand = void;
+};
+
+//
+
+template <class _Options> class BUILD {
+  using Self = BUILD;
+
+public:
+  using Options = _Options;
+  using ParentAllocator = Options::ParentAllocator;
+  static constexpr auto PAGE_SIZE = Options::PAGE_SIZE;
+
+  template <class Item>
+  using HandleForItem = typename ParentAllocator::template HandleForItem<
+      Item>::template WithBrand<Self>;
+  using Handle = HandleForItem<void>;
+
+private:
+  friend singleton::perThread;
+  BUILD() = default;
+
+public:
+  static constexpr auto &get() { return singleton::perThread::get<Self>(); }
+
+private:
+  struct Node;
+  using Pool = Pool<int>::template WithAllocator<Self>;
+  using Nodes = Pool ::template WithItem<Node>;
+  Nodes nodes;
+  using bst = bst<Nodes>;
+  using splay = ::VOLTISO_NAMESPACE::splay<Nodes>;
+
+  Nodes::Handle root = Nodes::Handle::null;
+
+  struct Node {
+    size_t numBytes;
+    ParentAllocator::Handle memory;
+    Array<typename Pool::Handle, 2> children = {Nodes::Handle::null,
+                                                Nodes::Handle::null};
+
+    auto &key() const { return numBytes; }
+    auto &value() const { return memory; }
+  };
+
+  using Edges = HashMap<std::uintptr_t,
+                        typename Nodes::Handle>::template WithAllocator<Self>;
+  Edges begins, ends;
+
+public:
+  // auto &operator[](const Handle &handle) const {
+  //   return ParentAllocator::get()[(typename
+  //   ParentAllocator::Handle)handle.value];
+  // }
+
+  Handle allocateBytes(const size_t numBytes) {
+    DCHECK_EQ(numBytes % alignof(std::max_align_t), 0);
+    // numBytes = divCeil(numBytes, alignof(std::max_align_t)) *
+    //            alignof(std::max_align_t);
+    auto hNode = splay::find(root, numBytes);
+    if (hNode) {
+      auto node = _erase(hNode);
+      DCHECK_GE(node->numBytes, numBytes);
+      if (node.numBytes > numBytes) [[likely]] {
+        // Split the node
+        auto newNumBytes = node.numBytes - numBytes;
+        auto newMemory = node.memory + numBytes;
+        auto hNewNode = splay::insert(root, Node{newNumBytes, newMemory});
+        begins[(std::uintptr_t)newMemory.value].insert(hNewNode);
+        ends[(std::uintptr_t)newMemory.value + newNumBytes].insert(hNewNode);
+      }
+      return node->memory;
+    } else {
+      auto newNumBytes = divCeil(numBytes, PAGE_SIZE) * PAGE_SIZE;
+      auto memory = ParentAllocator::allocateBytes(newNumBytes);
+      _add(memory, newNumBytes);
+      return allocateBytes(numBytes);
+    }
+  }
+
+  Handle setNumBytes(Handle handle, size_t numBytes, size_t newNumBytes) {
+    auto oldEnd = (std::uintptr_t)handle.value + numBytes;
+    auto accessor = begins[oldEnd];
+    if (newNumBytes <= numBytes) [[unlikely]] {
+      _add(handle.value + newNumBytes, numBytes - newNumBytes);
+      return handle;
+    }
+
+    auto numAdditionalBytes = newNumBytes - numBytes;
+
+    if (accessor.exists && nodes[accessor].numBytes >= numAdditionalBytes)
+        [[unlikely]] {
+      auto node = _erase(accessor);
+      _add(oldEnd + numAdditionalBytes, node.numBytes - numAdditionalBytes);
+      return handle;
+    }
+
+    auto newHandle = allocateBytes(newNumBytes);
+    std::memcpy(newHandle.value, handle.value, numBytes);
+    free(handle, numBytes);
+    return newHandle;
+  }
+
+  void freeBytes(Handle handle, size_t numBytes) { _add(handle, numBytes); }
+
+private:
+  auto _erase(typename Nodes::Handle hNode) {
+    auto node = splay::erase(root, hNode);
+    begins.erase((std::uintptr_t)node.memory.value);
+    ends.erase((std::uintptr_t)node.memory.value + node.numBytes);
+    return node;
+  }
+
+  void _add(ParentAllocator::Handle memory, size_t numBytes) {
+    if (numBytes == 0) [[unlikely]]
+      return;
+    auto node = splay::insert(root, Node{numBytes, memory});
+    begins[(std::uintptr_t)memory.value].insert(node);
+    ends[(std::uintptr_t)memory.value + numBytes].insert(node);
+  }
+
+public:
+  template <class NewBrand>
+  using WithBrand = BUILD<override::Brand_<NewBrand, Options>>;
+}; // BUILD
+} // namespace VOLTISO_NAMESPACE::allocator::splay
+
+namespace VOLTISO_NAMESPACE::allocator {
+using Splay = splay::BUILD<splay::DefaultOptions>;
+} // namespace VOLTISO_NAMESPACE::allocator

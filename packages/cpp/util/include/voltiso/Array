@@ -1,0 +1,97 @@
+#pragma once
+#include <voltiso/_>
+
+#include <type_traits>
+#include <voltiso/handle/Handle>
+#include <voltiso/memory/Iterator>
+
+#include <cstddef>
+
+namespace VOLTISO_NAMESPACE {
+// similar to `std::array`
+template <class _Item, size_t COUNT,
+          std::make_signed_t<size_t> STARTING_INDEX = 0>
+class Array {
+public:
+  using Self = Array;
+  using Item = _Item;
+  static constexpr auto numItems = COUNT;
+
+  template <class Index> using CustomHandle = handle::Custom<Self, Index>;
+  using Handle =
+      CustomHandle<std::conditional_t<(STARTING_INDEX < 0),
+                                      std::make_signed<size_t>, size_t>>;
+
+  Item items[COUNT];
+
+  Array() = default;
+
+  Array(std::initializer_list<Item> list) {
+    size_t i = 0;
+    for (auto &item : list) {
+      items[i++] = item;
+    }
+    for (; i < COUNT; i++) {
+      items[i] = Item{};
+    }
+  }
+
+  template <class Index>
+  const Item &operator[](const CustomHandle<Index> &handle) const {
+    DCHECK_LE(0, handle.value);
+    DCHECK_LT(handle.value - STARTING_INDEX, numItems);
+    return items[handle.value - STARTING_INDEX];
+  }
+
+  template <class Index> Item &operator[](const CustomHandle<Index> &handle) {
+    return const_cast<Item &>(const_cast<const Self &>(*this)[handle]);
+  }
+
+  // Automatic deduction does not work when assigning raw value, since the above
+  // methods are templated, and creating handle from a raw value is ambiguous
+  // (we can create a larger handle from a smaller value), se below we
+  // explicitly define `operator[]` for raw values
+
+  template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
+  const Item &operator[](const Index &index) const {
+    return (*this)[CustomHandle<Index>(index)];
+  }
+
+  template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
+  Item &operator[](const Index &index) {
+    return (*this)[CustomHandle<Index>(index)];
+  }
+
+  /**
+   *  - Invalidates on relocation
+   */
+  class Iterator final : public memory::IteratorCrtp<Item, Iterator> {
+  public:
+    using Self = Iterator;
+    using Base = memory::IteratorCrtp<Item, Iterator>;
+    using Item = Item;
+    using Base::Base;
+  };
+
+  /**
+   *  - Invalidates on relocation
+   */
+  class ConstIterator final
+      : public memory::ConstIteratorCrtp<Item, ConstIterator> {
+  public:
+    using Self = ConstIterator;
+    using Base = memory::ConstIteratorCrtp<Item, ConstIterator>;
+    using Item = Item;
+    using Base::Base;
+  };
+
+  Iterator begin() { return Iterator{items}; }
+  Iterator end() { return Iterator{items + numItems}; }
+
+  ConstIterator begin() const { return ConstIterator{items}; }
+  ConstIterator end() const { return ConstIterator{items + numItems}; }
+
+  template <std::make_signed_t<std::size_t> NEW_STARTING_INDEX>
+  using WithStartingIndex = Array<Item, COUNT, NEW_STARTING_INDEX>;
+};
+} // namespace VOLTISO_NAMESPACE

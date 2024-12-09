@@ -1,0 +1,32 @@
+#pragma once
+#include <voltiso/_>
+
+#include <cstddef>
+
+namespace VOLTISO_NAMESPACE::override {
+
+template <class NewItem, class Base> struct Item_ : Base {
+  using Item = NewItem;
+};
+
+template <class NewBrand, class Base> struct Brand_ : Base {
+  using Brand = NewBrand;
+};
+
+template <class NewEntry, class Base> struct Entry_ : Base {
+  using Entry = NewEntry;
+};
+
+template <class NewAllocator, class Base> struct Allocator_ : Base {
+  using Allocator = NewAllocator;
+};
+
+template <bool NEW_IS_WITH_SIZE, class Base> struct IS_WITH_SIZE_ : Base {
+  static constexpr bool IS_WITH_SIZE = NEW_IS_WITH_SIZE;
+};
+
+template <size_t NEW_IN_PLACE, class Base> struct IN_PLACE_ : Base {
+  static constexpr size_t IN_PLACE = NEW_IN_PLACE;
+};
+
+} // namespace VOLTISO_NAMESPACE::override

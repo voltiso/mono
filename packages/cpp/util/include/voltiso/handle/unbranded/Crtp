@@ -1,0 +1,107 @@
+#pragma once
+#include <cstddef>
+#include <cstdint>
+#include <voltiso/_>
+
+#include <voltiso/is_instantiated_from>
+
+#include <glog/logging.h>
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE::handle::unbranded::_ {
+template <class ValueOrPointer> constexpr auto getNullValue() noexcept {
+  if constexpr (std::is_pointer_v<ValueOrPointer>) {
+    return nullptr;
+  } else {
+    return std::numeric_limits<ValueOrPointer>::max();
+  }
+}
+} // namespace VOLTISO_NAMESPACE::handle::unbranded::_
+
+namespace VOLTISO_NAMESPACE::handle::unbranded {
+template <class Derived, class _IntOrPointer, class _Brand> struct Crtp {
+  using Self = Crtp;
+
+  using Brand = _Brand;
+
+  using Value = std::conditional_t<std::is_pointer_v<_IntOrPointer>,
+                                   std::uintptr_t, _IntOrPointer>;
+
+  using Pointer =
+      std::conditional_t<std::is_pointer_v<_IntOrPointer>, _IntOrPointer, void>;
+
+  // allow signed?
+  static_assert(std::is_integral_v<_IntOrPointer> ||
+                std::is_pointer_v<_IntOrPointer>);
+
+  // allow signed?
+  static_assert(std::is_integral_v<Value>);
+
+  // uninitialized
+  Value value;
+
+  Crtp() = default;
+  // Crtp(const Self &other) noexcept = default;
+
+  // auto &operator=(const Self &other) noexcept {
+  //   (Value &)value = other.value;
+  //   return *this;
+  // }
+
+  // allow `smallInt -> handle<bigInt>`
+  // (including signed and unsigned conversion of the same size - good?)
+  template <class OtherValue,
+            std::enable_if_t<std::is_integral_v<OtherValue> &&
+                             sizeof(Value) >= sizeof(OtherValue)> * = nullptr>
+  constexpr Crtp(const OtherValue &value) noexcept : value(value) {}
+
+  template <class P = Pointer,
+            std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
+  constexpr Crtp(const P &value) noexcept : value((Value)value) {}
+
+  template <class Other,
+            std::enable_if_t<(std::is_same_v<Brand, void> ||
+                              std::is_same_v<typename Other::Brand, void> ||
+                              std::is_same_v<typename Other::Brand, Brand>) &&
+                             sizeof(Value) >= sizeof(typename Other::Value)> * =
+                nullptr>
+  constexpr Crtp(const Other &other) : value(other.value) {}
+
+  constexpr Crtp(const std::nullptr_t &) noexcept
+      : value((Value)_::getNullValue<_IntOrPointer>()) {}
+
+  explicit constexpr operator Value() const noexcept { return value; }
+
+  bool operator==(const Self &other) const noexcept {
+    static_assert(std::is_final_v<Derived>);
+    return value == other.value;
+  }
+
+  bool operator!=(const Self &other) const noexcept {
+    static_assert(std::is_final_v<Derived>);
+    return value != other.value;
+  }
+
+  //
+
+  static const Derived null; // = Self(Value(-1));
+  explicit operator bool() const noexcept {
+    static_assert(std::is_final_v<Derived>);
+    return *this != Derived::null;
+  }
+};
+
+template <class Derived, class ValueOrPointer, class Brand>
+constexpr Derived Crtp<Derived, ValueOrPointer, Brand>::null =
+    _::getNullValue<ValueOrPointer>();
+
+//
+
+template <class Derived, class Value, class Brand>
+std::ostream &operator<<(std::ostream &os,
+                         const Crtp<Derived, Value, Brand> &handle) {
+  return os << "Handle(" << handle.value << ")";
+}
+
+} // namespace VOLTISO_NAMESPACE::handle::unbranded

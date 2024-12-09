@@ -1,0 +1,34 @@
+#pragma once
+#include <voltiso/_>
+
+#include <experimental/type_traits>
+#include <type_traits>
+#include <utility>
+
+namespace VOLTISO_NAMESPACE {
+
+/**
+ * It's not required to derive from this interface. You may prefer to define
+ * `move()` yourself in your own interface in order to avoid multiple
+ * inheritance.
+ */
+struct WithMove {
+  virtual void move(void *destination) = 0;
+};
+
+/**
+ * It's not required to derive from this interface. You may prefer to define
+ * `move()` yourself in your own interface in order to avoid multiple
+ * inheritance.
+ */
+template <class Derived> struct WithMoveCrtp : WithMove {
+  static_assert(std::is_class_v<Derived>);
+  static_assert(std::is_final_v<Derived>);
+  static_assert(std::is_base_of_v<WithMoveCrtp, Derived>);
+
+  void move(void *destination) override {
+    new (destination) Derived(std::move((Derived &)*this));
+  }
+};
+
+} // namespace VOLTISO_NAMESPACE

@@ -1,0 +1,8 @@
+#pragma once
+#include <voltiso/_>
+
+#ifndef VOLTISO_NAMESPACE
+#pragma message(                                                               \
+    "VOLTISO_NAMESPACE is not defined! Check your CMake configuration.")
+// #define VOLTISO_NAMESPACE v
+#endif

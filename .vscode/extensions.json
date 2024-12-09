@@ -82,6 +82,9 @@
 		"jsayol.firebase-explorer", // Explore Firestore, etc.
 
 		/** Security rules syntax highlighting */
-		"toba.vsfire"
+		"toba.vsfire",
+
+		/** C++ */
+		"llvm-vs-code-extensions.vscode-clangd"
 	]
 }

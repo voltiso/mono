@@ -1,0 +1,19 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/handle/unbranded/Crtp>
+
+namespace VOLTISO_NAMESPACE::handle {
+template <class Brand, class Value>
+struct Custom final : unbranded::Crtp<Custom<Brand, Value>, Value, Brand> {
+  using Base = unbranded::Crtp<Custom<Brand, Value>, Value, Brand>;
+
+  // static_assert(std::is_class_v<Brand>);
+  using Base::Base;
+	
+	template<class NewBrand>
+	using WithBrand = Custom<NewBrand, Value>;
+
+	using WithoutBrand = Custom<void, Value>;
+};
+} // namespace VOLTISO_NAMESPACE::handle

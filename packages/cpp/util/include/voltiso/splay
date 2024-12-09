@@ -1,0 +1,208 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/bst>
+#include <voltiso/singleton>
+
+namespace VOLTISO_NAMESPACE {
+template <class _Pool> struct splay {
+private:
+  splay() = delete;
+
+  using Pool = _Pool;
+  using Handle = typename Pool::Handle;
+  using Allocator = typename Pool::Allocator;
+  static thread_local constexpr auto &v = singleton::perThread::get<Pool>();
+
+  using Item = typename Pool::Item;
+  using Value = GetValue<Item>;
+
+private:
+  using DynamicArray = DynamicArray<int>::template WithAllocator<Allocator>;
+
+  struct AccessPathNode {
+    Handle node;
+    uint8_t childIndex;
+  };
+  using AccessPath = DynamicArray::template WithItem<AccessPathNode>;
+  static thread_local AccessPath accessPath;
+
+public:
+  static Handle merge(Handle a, Handle b) {
+    b = min(b);
+    DCHECK(!v[b]->children[0]);
+    v[b]->children[0] = a;
+    return b;
+  }
+
+  static Value erase(Handle &hRoot, const Handle &hNode) {
+    find(hRoot, hNode);
+    DCHECK_EQ(hRoot, hNode);
+    auto &node = v[hNode];
+    auto value = getValue(node);
+    if (!node->children[0]) [[unlikely]] {
+      hRoot = node->children[1];
+    } else if (!node->children[1]) [[unlikely]] {
+      hRoot = node->children[0];
+    } else {
+      hRoot = merge(node->children[0], node->children[1]);
+    }
+    v.erase(hNode);
+    return value;
+  }
+
+  static Handle find(Handle &root, const Handle &x) {
+    auto node = root;
+    auto &value = getValue(v[x]);
+    accessPath.clear();
+    while (node) {
+      if (node == x) [[unlikely]]
+        break;
+
+      if (value < getValue(v[node])) {
+        accessPath.push({node, 0});
+        node = v[node]->children[0];
+      } else {
+        accessPath.push({node, 1});
+        node = v[node]->children[1];
+      }
+    }
+    root = _splay();
+    DCHECK_EQ(node, root);
+    return node;
+  }
+
+  static Handle find(Handle &root, const Value &value) {
+    auto node = root;
+    auto cand = node;
+    accessPath.clear();
+    while (node) {
+      if (value < getValue(v[node])) {
+        accessPath.push({node, 0});
+        node = v[node]->children[0];
+      } else {
+        accessPath.push({node, 1});
+        cand = node;
+        node = v[node]->children[1];
+      }
+    }
+    root = _splay();
+    return cand;
+  }
+
+  static Handle min(Handle &root) {
+    auto node = root;
+    using Stack = DynamicArray::template WithItem<Handle>;
+    static thread_local Stack stack;
+    stack.clear();
+    stack.push(node);
+    while (v[node]->children[0]) {
+      node = v[node]->children[0];
+      stack.push(node);
+    }
+
+    // _splayRight(stack);
+    auto iNode = stack.numItems - 1;
+    while (iNode >= 3) {
+      auto &node1 = stack[iNode - 1];
+      auto &node2 = stack[iNode - 2];
+      auto &node3 = stack[iNode - 3];
+      rotateRight(node2);
+      rotateRight(node1);
+      v[node3]->children[0] = node;
+      iNode -= 2;
+    }
+
+    if (iNode == 2) {
+      auto &node1 = stack[iNode - 1];
+      auto &node2 = stack[iNode - 2];
+      rotateRight(node2);
+      rotateRight(node1);
+      iNode -= 2;
+    }
+
+    if (iNode == 1) {
+      auto &node1 = stack[iNode - 1];
+      rotateRight(node1);
+    }
+
+    DCHECK_EQ(node, root);
+    return node;
+  }
+
+private:
+  // splay last accessPath
+  static Handle _splay() {
+    auto iNode = accessPath.numItems - 1;
+    auto node = accessPath[iNode].node;
+    while (iNode >= 3) {
+      auto &node1 = accessPath[iNode - 1];
+      auto &node2 = accessPath[iNode - 2];
+      auto &node3 = accessPath[iNode - 3];
+
+      if (node2.childIndex) {
+        if (node1.childIndex) {
+          // zig-zig
+          rotateLeft(node2.node);
+          rotateLeft(node1.node);
+        } else {
+          // zig-zag
+          rotateRight(node1.node);
+          rotateLeft(node2.node);
+        }
+      } else {
+        if (node1.childIndex) {
+          // zag-zig
+          rotateLeft(node1.node);
+          rotateRight(node2.node);
+        } else {
+          // zag-zag
+          rotateRight(node2.node);
+          rotateRight(node1.node);
+        }
+      }
+      v[node3.node]->children[node3.childIndex] = node;
+      iNode -= 2;
+    }
+
+    if (iNode == 2) {
+      auto &node1 = accessPath[iNode - 1];
+      auto &node2 = accessPath[iNode - 2];
+
+      if (node2.childIndex) {
+        if (node1.childIndex) {
+          // zig-zig
+          rotateLeft(node2.node);
+          rotateLeft(node1.node);
+        } else {
+          // zig-zag
+          rotateRight(node1.node);
+          rotateLeft(node2.node);
+        }
+      } else {
+        if (node1.childIndex) {
+          // zag-zig
+          rotateLeft(node1.node);
+          rotateRight(node2.node);
+        } else {
+          // zag-zag
+          rotateRight(node2.node);
+          rotateRight(node1.node);
+        }
+      }
+      iNode -= 2;
+    }
+
+    if (iNode == 1) {
+      auto &node1 = accessPath[iNode - 1];
+      if (node1.childIndex) {
+        rotateLeft(node1.node);
+      } else {
+        rotateRight(node1.node);
+      }
+    }
+
+    return node;
+  }
+}; // struct splay
+} // namespace VOLTISO_NAMESPACE

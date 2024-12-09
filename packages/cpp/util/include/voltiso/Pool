@@ -1,0 +1,111 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/DynamicArray>
+#include <voltiso/handle/Handle>
+#include <voltiso/override>
+#include <voltiso/singleton>
+#include <voltiso/storage/Storage>
+
+#include <glog/logging.h>
+
+#include <bit>
+#include <cstdlib>
+
+namespace VOLTISO_NAMESPACE::pool {
+struct DefaultOptions {
+  using Item = int; // must override
+  using Allocator = allocator::Malloc;
+  using Brand = void;
+};
+
+//
+
+template <class _Options> class BUILD {
+  using Self = BUILD;
+
+public:
+  using Options = _Options;
+  using Item = Options::Item;
+  using Allocator = Options::Allocator;
+
+private:
+  struct Slot {
+    union {
+      Storage<Item> storage;
+      VOLTISO_NAMESPACE::DynamicArray<int>::template WithAllocator<
+          Allocator>::Handle next;
+    };
+
+    template <class... Args> Slot(Args &&...args) {
+      storage.construct(std::forward<Args>(args)...);
+    }
+  };
+
+  using Slots =
+      VOLTISO_NAMESPACE::DynamicArray<Slot>::template WithAllocator<Allocator>;
+  Slots slots;
+  Slots::Handle anyFree = Slots::Handle::null;
+
+public:
+  template <class Value>
+  using CustomHandle =
+      Slots::template CustomHandle<Value>::template WithBrand<Self>;
+  using Handle = Slots::Handle::template WithBrand<Self>;
+
+  static_assert(std::has_single_bit(sizeof(Item)));
+  ~BUILD() { DCHECK(slots.numItems == 0 || anyFree != Slots::Handle::null); }
+
+// private:
+//   friend singleton::perThread;
+//   constexpr BUILD() noexcept = default;
+
+// public:
+//   static constexpr auto &get() { return singleton::perThread::get<Self>(); }
+
+public:
+  template <class... Args> Handle construct(Args &&...args) {
+    if (anyFree == Slots::Handle::null) [[unlikely]] {
+      auto newItem = slots.push(std::forward<Args>(args)...);
+      slots[newItem].storage.construct();
+      return newItem.value;
+    } else [[likely]] {
+      auto handle = anyFree;
+      anyFree = slots[anyFree].next.value;
+      slots[handle].storage.construct(std::forward<Args>(args)...);
+      return handle.value;
+    }
+  }
+
+  void destroy(const Handle &handle) {
+    DCHECK_NE(handle, Handle::null);
+    slots[handle.value].storage.destroy();
+    slots[handle.value].next = anyFree.value;
+    anyFree = handle.value;
+  }
+
+  Item &operator[](const Handle &handle) {
+    DCHECK_NE(handle, Handle::null);
+    return (Item &)slots[handle.value];
+  }
+
+  const Item &operator[](const Handle &handle) const {
+    return static_cast<Self &>(*this)[handle];
+  }
+
+public:
+  template <class NewAllocator>
+  using WithAllocator = BUILD<override::Allocator_<NewAllocator, Options>>;
+
+  template <class NewBrand>
+  using WithBrand = BUILD<override::Brand_<NewBrand, Options>>;
+
+  template <class NewItem>
+  using WithItem = BUILD<override::Item_<NewItem, Options>>;
+};
+} // namespace VOLTISO_NAMESPACE::pool
+
+namespace VOLTISO_NAMESPACE {
+template <class Item>
+using Pool = pool::BUILD<override::Item_<Item, pool::DefaultOptions>>;
+} // namespace VOLTISO_NAMESPACE

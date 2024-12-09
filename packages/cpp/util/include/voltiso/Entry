@@ -1,0 +1,103 @@
+#pragma once
+#include <voltiso/_>
+
+#include <voltiso/has>
+#include <voltiso/is_trivially_relocatable>
+
+#include <experimental/type_traits>
+#include <functional>
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+template <class _Key, class _Value> struct Entry {
+  using Key = _Key;
+  using Value = _Value;
+  Key key;
+  Value value;
+};
+
+template <class Key, class Value>
+static constexpr auto is_trivially_relocatable<Entry<Key, Value>> =
+    is_trivially_relocatable<Key> && is_trivially_relocatable<Value>;
+
+// template <class _Key, class _Value> KeyValue(_Key, _Value)->KeyValue<_Key,
+// _Value>;
+
+// implement using template specialization
+// template <class Item> struct GetKey {};
+
+// implement using template specialization
+// template <class Item> struct GetValue {};
+
+// template <class Key, class Value> struct GetKey<Entry<Key, Value>> {
+//   auto &operator()(const Entry<Key, Value> &keyValue) {
+//     return keyValue.key;
+//   }
+// };
+
+template <class Item, class = std::enable_if_t<has::key<Item>>>
+auto &getKey(Item &item) {
+  return item.key;
+}
+
+template <class Item, class = std::enable_if_t<has::key<Item>>>
+const auto &getKey(const Item &item) {
+  return item.key;
+}
+
+template <class Item, std::enable_if_t<has::value<Item>> * = nullptr>
+auto &getValue(Item &item) {
+  return item.value;
+}
+
+template <class Item, class = std::enable_if_t<has::value<Item>>>
+const auto &getValue(const Item &item) {
+  return item.value;
+}
+
+template <class Item, class = decltype(std::declval<std::hash<Item>>()(
+                          std::declval<Item>()))>
+auto getKey(const Item &item) {
+  return std::hash<Item>{}(item);
+}
+
+// disable this?
+template <class Item, class = decltype(std::declval<std::hash<Item>>()(
+                          std::declval<Item>()))>
+auto &getValue(Item &item) {
+  return item;
+}
+
+// disable this?
+template <class Item, decltype(std::declval<std::hash<Item>>()(
+                          std::declval<Item>())) * = nullptr>
+const auto &getValue(const Item &item) {
+  return item;
+}
+
+template <class = void> void getValue(...) {
+  static_assert(false, "entry type does not have a value (key-only entry or "
+                       "`getValue` is not defined for your custom type)");
+}
+
+template <class Item>
+using GetKey = std::decay_t<decltype(getKey(std::declval<Item>()))>;
+
+template <class Item> using test = decltype(getValue(std::declval<Item>()));
+
+template <class Item>
+using GetValue = std::decay_t<decltype(getValue(std::declval<Item>()))>;
+
+// struct A {};
+// using AA = GetValue<AA>;
+
+// static_assert(!std::experimental::is_detected_v<test, A>);
+
+// using AA = GetValue<int>;
+
+// auto y = getKey(123);
+// auto x = getKey(A{});
+
+// auto &getKey(const int &item) { return item; }
+
+} // namespace VOLTISO_NAMESPACE

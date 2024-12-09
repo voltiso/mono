@@ -1,6 +1,14 @@
 # ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-packages:
-  - packages/*
-  - packages/cpp/*
+.cache/
+build/
+vcpkg/
+vcpkg.tar.gz
+callgrind.out.*
+*.callgrind
+*.nsys-rep
+*.sqlite
+data/
+compile_commands.json
+out/
