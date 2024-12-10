@@ -106,19 +106,23 @@ export class Transactor extends Db {
 	_transactionContextGlobal: ContextOverride | null = null
 
 	_getTransactionContext(): ContextOverride | null {
-		if (this._options.allowConcurrentTransactions) {
-			return this._transactionContext.value
-		} else {
-			if (
-				this._transactionContextGlobal?.transaction !==
-				this._transactionContext.tryGetValue?.transaction
-			) {
-				const warning = new TransactorError(
-					'Async Context broken - fortunately we have `allowConcurrentTransactions === false`',
-				)
-				this._options.onWarning(warning)
-			}
+		if (this._options.allowConcurrentTransactions === true) {
+			return this._transactionContext.tryGetValue ?? null
+		} else if (
+			this._transactionContextGlobal?.transaction ===
+			this._transactionContext.tryGetValue?.transaction
+		) {
 			return this._transactionContextGlobal
+		} else {
+			const error = new TransactorError(
+				'Concurrent transactions detected. Set `allowConcurrentTransactions: true` to allow this',
+			)
+			if (this._options.allowConcurrentTransactions === 'warn') {
+				this._options.onWarning(error)
+				return this._transactionContext.tryGetValue ?? null
+			} else {
+				throw error
+			}
 		}
 	}
 
@@ -126,13 +130,16 @@ export class Transactor extends Db {
 		context: ContextOverride,
 		body: () => MaybePromise<Return>,
 	): Promise<Return> {
-		if (
-			!this._options.allowConcurrentTransactions &&
-			this._transactionContextGlobal
-		) {
-			throw new TransactorError('internal: already have transaction context')
-		}
 		return this._transactionContext.run(context, async () => {
+			if (
+				!this._options.allowConcurrentTransactions &&
+				this._transactionContextGlobal
+			) {
+				throw new TransactorError(
+					'Concurrent transactions detected - it is not allowed unless you set `allowConcurrentTransactions: true`',
+				)
+			}
+
 			try {
 				this._transactionContextGlobal = context
 				const result = await body()
@@ -227,6 +234,9 @@ export class Transactor extends Db {
 	//
 
 	//
+
+	/** @internal */
+	_isInsideOnGetNoTransaction = new Context<boolean>()
 
 	runTransaction<R>(
 		body: TransactionBody<R>,

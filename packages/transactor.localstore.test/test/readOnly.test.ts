@@ -57,7 +57,8 @@ describe('readOnly', () => {
 			field: 123,
 		})
 
-		await expect(randomSupers('a')).rejects.toThrow('readOnly')
+		// this does not throw since currently this does not write to the database (schema is applied on-the-fly on `get`)
+		// await expect(randomSupers('a')).rejects.toThrow('readOnly')
 
 		await database.doc(path).set({ field: 123, defaulted: 33 })
 

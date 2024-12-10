@@ -8,8 +8,10 @@ import { lazyFunction } from '~/lazy/lazyFunction'
 async function importJest() {
 	// eslint-disable-next-line turbo/no-undeclared-env-vars, n/no-process-env
 	if (process.env['NODE_ENV'] !== 'test') return null
-	// eslint-disable-next-line import/dynamic-import-chunkname
-	return import('@jest/globals')
+	// eslint-disable-next-line import/dynamic-import-chunkname, promise/prefer-await-to-then, promise/prefer-await-to-callbacks
+	return import('@jest/globals').catch((error: unknown) => {
+		throw error // explicit `.catch` allows esbuild to properly transpile it to fail at runtime only
+	})
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports

@@ -23,42 +23,47 @@ public:
 
 public:
   using Brand = _Brand;
+  using Handle = handle::Custom<Self, void *>;
 
-  template <class Item> using HandleForItem = handle::Custom<Self, Item *>;
-  using Handle = HandleForItem<void>;
-
-  static Handle allocateBytes(size_t numBytes,
-                              size_t alignment = alignof(std::max_align_t)) {
-    if (!numBytes) [[unlikely]]
-      return nullptr;
-    if (alignment == alignof(std::max_align_t)) [[likely]] {
-      auto pointer = ::malloc(numBytes);
-      if (!pointer) [[unlikely]]
-        throwError(std::bad_alloc());
-      return pointer;
-    } else [[unlikely]] {
-      auto pointer = ::aligned_alloc(alignment, numBytes);
-      if (!pointer) [[unlikely]]
-        throwError(std::bad_alloc());
-      return pointer;
-    }
+  // `numBytes` must be greater than zero
+  static Handle allocateBytes(size_t numBytes) {
+    DCHECK_GT(numBytes, 0);
+    auto pointer = ::malloc(numBytes);
+    if (!pointer) [[unlikely]]
+      throwError(std::bad_alloc());
+    return pointer;
   }
 
-  static void freeBytes(Handle handle) { ::free((void *)handle.value); }
-
-  template <class Item, class... Args>
-  static HandleForItem<Item> construct(Args &&...args) {
-    auto handle = allocateBytes(sizeof(Item), alignof(Item));
-    new (handle) Item(std::forward<Args>(args)...);
-    return handle;
+  // `numBytes` must be greater than zero
+  // `alignment` must be greater than zero
+  static Handle allocateBytesAligned(size_t numBytes, size_t alignment) {
+    DCHECK_GT(numBytes, 0);
+    DCHECK_GT(alignment, 0);
+    auto pointer = ::aligned_alloc(alignment, numBytes);
+    if (!pointer) [[unlikely]]
+      throwError(std::bad_alloc());
+    return pointer;
   }
 
-  template <class Item> static void destroy(const HandleForItem<Item> &item) {
-    item->~Item();
-    freeBytes(item);
+  static void freeBytes(Handle handle, size_t /* oldNumBytes */) {
+    ::free(reinterpret_cast<void *>(handle.value));
   }
 
-  static Handle setNumBytes(const Handle &handle, size_t newNumBytes) {
+  // template <class Item, class... Args>
+  // static HandleForItem<Item> construct(Args &&...args) {
+  //   auto handle = allocateBytes(sizeof(Item), alignof(Item));
+  //   new (handle) Item(std::forward<Args>(args)...);
+  //   return handle;
+  // }
+
+  // template <class Item> static void destroy(const HandleForItem<Item> &item)
+  // {
+  //   item->~Item();
+  //   freeBytes(item);
+  // }
+
+  static Handle setNumBytes(const Handle &handle, size_t /* oldNumBytes */,
+                            size_t newNumBytes) {
     if (!newNumBytes) [[unlikely]]
       return nullptr;
     auto newPointer = ::realloc((void *)handle.value, newNumBytes);
@@ -67,27 +72,36 @@ public:
     return newPointer;
   }
 
+  void *operator()(const Handle &handle) {
+    return reinterpret_cast<void *>(handle.value);
+  }
+  const void *operator()(const Handle &handle) const {
+    return const_cast<Self &>(*this)(handle);
+  }
+
   //
 
-  template <class Item> auto &operator[](const HandleForItem<Item> &handle) {
-    return *(Item *)handle.value;
-  }
+  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
+  // void>>> Item &operator()(const HandleForItem<Item> &handle) {
+  //   return *(Item *)handle.value;
+  // }
 
-  template <class Item>
-  const auto &operator[](const HandleForItem<Item> &handle) const {
-    return *handle.value;
-  }
+  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
+  // void>>> const Item &operator()(const HandleForItem<Item> &handle) const {
+  //   return *handle.value;
+  // }
 
-  template <class Item, class = std::enable_if_t<!std::is_same_v<Item, void>>>
-  auto &operator()(const HandleForItem<Item> &handle, std::ptrdiff_t index) {
-    return ((Item *)handle.value)[index];
-  }
+  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
+  // void>>> Item &operator()(const HandleForItem<Item> &handle, std::ptrdiff_t
+  // index) {
+  //   return ((Item *)handle.value)[index];
+  // }
 
-  template <class Item, class = std::enable_if_t<!std::is_same_v<Item, void>>>
-  const auto &operator()(const HandleForItem<Item> &handle,
-                         std::ptrdiff_t index) const {
-    return ((Item *)handle.value)[index];
-  }
+  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
+  // void>>> const Item &operator()(const HandleForItem<Item> &handle,
+  //                        std::ptrdiff_t index) const {
+  //   return ((Item *)handle.value)[index];
+  // }
 
   //
 

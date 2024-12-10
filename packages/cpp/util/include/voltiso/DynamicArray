@@ -1,8 +1,6 @@
 #pragma once
-#include "voltiso/singleton"
 #include <voltiso/_>
 
-#include <voltiso/Allocation>
 #include <voltiso/Array>
 #include <voltiso/allocator/Malloc>
 #include <voltiso/handle/Custom>
@@ -10,6 +8,8 @@
 #include <voltiso/is_derived_from_template>
 #include <voltiso/is_trivially_relocatable>
 #include <voltiso/memory/Iterator>
+#include <voltiso/override>
+#include <voltiso/singleton>
 #include <voltiso/storage/Storage>
 
 #include <glog/logging.h>
@@ -17,30 +17,33 @@
 #include <cstddef>
 
 namespace VOLTISO_NAMESPACE::dynamicArray::_ {
-// rounds up to power-of-2
-template <class Item>
-static constexpr size_t getNumBytesForNumItems(size_t numItems) noexcept {
-  auto numBytes = sizeof(Item) * numItems;
-  // numBytes = std::bit_ceil(numBytes);
-  return numBytes;
-}
+// // rounds up to power-of-2
+// template <class Item>
+// static constexpr size_t getNumBytesForNumItems(size_t numItems) noexcept {
+//   auto numBytes = sizeof(Item) * numItems;
+//   // numBytes = std::bit_ceil(numBytes);
+//   return numBytes;
+// }
 
 template <class Options> struct Base {
-  using Allocation =
-      Allocation::WithAllocator<typename Options::Allocator>::template WithItem<
-          Storage<typename Options::Item>>;
-  static_assert(!std::is_same_v<typename Allocation::Item, void>);
+  // using Allocation =
+  //     Allocation::WithAllocator<typename Options::Allocator>::template
+  //     WithItem<
+  //         Storage<typename Options::Item>>;
+  // static_assert(!std::is_same_v<typename Allocation::Item, void>);
 };
 
 template <class Options> struct DataMembersNoInPlace : Base<Options> {
 protected:
-  Base<Options>::Allocation allocation;
+  // Base<Options>::Allocation allocation;
+  Options::Allocator::Handle allocation;
 };
 
 template <class Options> struct DataMembersInPlace : Base<Options> {
 protected:
   union {
-    Storage<typename Base<Options>::Allocation> allocation;
+    // Storage<typename Base<Options>::Allocation> allocation;
+    Storage<typename Options::Allocator::Handle> allocation;
     Array<Storage<typename Options::Item>, Options::IN_PLACE> inPlaceItems;
   };
   // DataMembersInPlace() = default;
@@ -88,11 +91,21 @@ public:
     for (size_t i = 0; i < numItems; ++i) {
       (*this)[i].~Item();
     }
+    if constexpr (Options::IN_PLACE == 0) {
+      Self::Allocator::get().freeBytes(this->allocation);
+    } else {
+      if (numSlots > Options::IN_PLACE) [[unlikely]] {
+        Self::Allocator::get().freeBytes(this->allocation.item());
+      }
+    }
   }
 
   void _assumeRelocated() {
-    if (numItems > Options::IN_PLACE) [[unlikely]] {
-      this->allocation._assumeRelocated();
+    if constexpr (Options::IN_PLACE == 0) {
+    } else {
+      if (numSlots > Options::IN_PLACE) [[unlikely]] {
+        this->allocation = nullptr;
+      }
     }
     (size_t &)this->numItems = 0;
   }
@@ -166,17 +179,17 @@ public:
     return self;
   }
 
-  // will be rounded up to power-of-2
+  // `newNumSlots` must be at least `numItems`
   auto setNumSlots(size_t newNumSlots) {
     static_assert(!std::is_same_v<Item, void>);
-    static_assert(!std::is_same_v<typename Self::Allocation::Item, void>);
     static_assert(is_trivially_relocatable<Item>);
     // newNumSlots = std::bit_ceil(newNumSlots);
+    DCHECK_GE(newNumSlots, numItems);
     if constexpr (Options::IN_PLACE == 0) {
-      for (size_t i = newNumSlots; i < numSlots; ++i) {
-        this->allocation[i].item().~Item();
-      }
-      this->allocation.setNumSlots(newNumSlots);
+      // this->allocation.setNumSlots(newNumSlots);
+      this->allocation = Allocator::get().reallocate(
+          this->allocation, sizeof(Item) * numSlots,
+          sizeof(Item) * newNumSlots);
     } else {
       if (newNumSlots <= Options::IN_PLACE) [[likely]] {
         if (numSlots <= Options::IN_PLACE) [[likely]] {
@@ -249,7 +262,7 @@ public:
         return this->allocation.item()[index].item();
       }
     } else {
-      return this->allocation[index].item();
+      return static_cast<Item *>(Allocator::get()(this->allocation))[index];
     }
   }
 

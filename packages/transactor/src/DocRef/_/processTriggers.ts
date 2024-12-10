@@ -70,6 +70,7 @@ async function processAfterTrigger(
 			possiblyExists: cacheEntry.possiblyExists,
 		})
 		const data = collectTriggerResult(ctx, r as never)
+		assert.defined(data)
 		validateAndSetCacheEntry(ctx, { data, schema, bestEffort: true })
 	})
 

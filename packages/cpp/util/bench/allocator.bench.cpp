@@ -130,6 +130,7 @@ static void BM_allocator_simple_new(benchmark::State &state) {
 }
 
 BENCHMARK(BM_allocator_trivial_Pool);
+BENCHMARK(BM_allocator_trivial_Splay);
 BENCHMARK(BM_allocator_trivial_malloc);
 BENCHMARK(BM_allocator_trivial_alignedAlloc);
 BENCHMARK(BM_allocator_trivial_new);

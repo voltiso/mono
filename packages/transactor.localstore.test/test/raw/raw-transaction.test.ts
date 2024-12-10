@@ -10,8 +10,35 @@ import { createTransactor } from '../common'
 const db = createTransactor({ requireSchemas: false, checkDecorators: false })
 
 describe('raw-transaction', function () {
+	it('should detect concurrent transactions', async () => {
+		expect.hasAssertions()
+
+		const oldOption = db.allowConcurrentTransactions
+		db.allowConcurrentTransactions = false
+
+		const run = async () => {
+			const p1 = db.runTransaction(async t => {
+				await t('user/artur').set({ age: 1 })
+				await t('user/artur').set({ age: 2 })
+			})
+
+			const p2 = db.runTransaction(async t => {
+				await t('user/artur').set({ age: 3 })
+				await t('user/artur').set({ age: 4 })
+			})
+			await Promise.all([p1, p2])
+		}
+
+		await expect(run()).rejects.toThrow('Concurrent transactions detected')
+
+		db.allowConcurrentTransactions = oldOption
+	})
+
 	it('should use async storage (get)', async function () {
 		expect.hasAssertions()
+
+		const oldOptions = db.allowConcurrentTransactions
+		db.allowConcurrentTransactions = true // random check, unrelated to the rest of this test
 
 		await db.runTransaction(async t => {
 			await t('user/artur').set({ age: 934 })
@@ -20,6 +47,8 @@ describe('raw-transaction', function () {
 
 			await expect(ref.data['age']).resolves.toBe(934)
 		})
+
+		db.allowConcurrentTransactions = oldOptions
 	})
 
 	it('should use async storage (update)', async function () {

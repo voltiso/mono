@@ -56,6 +56,9 @@ async function databaseSet(
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,
 		)
 
+	if (transactor._isInsideOnGetNoTransaction.tryGetValue)
+		throw new TransactorError('@onGet trigger cannot write to db')
+
 	const ctxOverride = transactor._getTransactionContext()
 
 	const now = ctxOverride?.transaction
@@ -103,6 +106,9 @@ export async function databaseUpdate(
 				updates,
 			)})`,
 		)
+
+	if (transactor._isInsideOnGetNoTransaction.tryGetValue)
+		throw new TransactorError('@onGet trigger cannot write to db')
 
 	// console.log('firestoreUpdate', ref.path, updates)
 

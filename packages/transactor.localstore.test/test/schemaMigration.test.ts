@@ -66,7 +66,15 @@ describe('schemaMigration', function () {
 		})
 
 		await expect(dogs('otherDog').__voltiso).resolves.toMatchObject({
-			numRefs: 1,
+			numRefs: 0, // did not update (no transaction)
+		})
+
+		await db.runTransaction(async () => {
+			await dogs('nala')
+		})
+
+		await expect(dogs('otherDog').__voltiso).resolves.toMatchObject({
+			numRefs: 1, // now all good
 		})
 	})
 })

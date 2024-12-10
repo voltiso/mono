@@ -58,6 +58,12 @@ export async function runTransaction<R>(
 		return body(ctxOverride.transaction)
 	}
 
+	if (transactor._isInsideOnGetNoTransaction.tryGetValue) {
+		throw new TransactorError(
+			'@onGet trigger cannot run transactions - it must work with direct database reads too',
+		)
+	}
+
 	// const zoneCurrent = Zone.current // ! firestore library code destroys current zone! (?!)
 
 	const options: Database.TransactionOptions = {

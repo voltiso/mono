@@ -139,7 +139,13 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 
 	_setRaw(raw: IntrinsicFields): void {
 		this._raw = raw
-		this._rawProxy = this._context.transaction ? raw : deepFrozen(raw)
+
+		// freeze if outside transaction, but don't freeze if inside @onGet trigger
+		const shouldFreeze =
+			!this._context.transaction &&
+			!this._context.transactor._isInsideOnGetNoTransaction.tryGetValue
+
+		this._rawProxy = shouldFreeze ? deepFrozen(raw) : raw
 		// immutabilize(
 		// 		raw,
 		// 		'non-transaction document object is immutable (would not commit changes - possible bug)',
@@ -165,7 +171,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 	}
 
 	get data(): GetData<TI> {
-		return this._raw as never
+		return this._rawProxy as never
 	}
 
 	dataWithoutId(): GetData<TI> {

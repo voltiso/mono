@@ -1,8 +1,12 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable sonarjs/nested-control-flow */
+
 import { assert } from '@voltiso/assertor'
+import type { DocumentSnapshot } from '@voltiso/firestore-like'
 import type { Schema } from '@voltiso/schemar'
+import type { nullish } from '@voltiso/util'
 import {
 	$AssumeType,
 	assertNotPolluting,
@@ -18,7 +22,7 @@ import { _checkDecorators } from '~/decorators'
 import type { $$Doc, DocTI } from '~/Doc'
 import { Doc, DocImpl } from '~/Doc'
 import { TransactorError } from '~/error'
-import type { VoltisoEntry } from '~/schemas'
+import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 import {
 	getDefaultVoltisoEntry,
 	sVoltisoEntry,
@@ -46,23 +50,74 @@ import {
 import type { WithDocRef } from '../WithDocRef'
 
 function getIsTransactionNeededForRead(
-	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
+	_ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
 ): boolean {
-	const onGetTriggers = getOnGetTriggers(ctx.docRef)
-	if (onGetTriggers.length > 0) return true
+	// ! currently since version 21 we don't start transactions automatically
 
-	// ! not needed - after triggers only react to changes - initiated by updates or schema transforms (fixes)
+	// const onGetTriggers = getOnGetTriggers(ctx.docRef)
+	// if (onGetTriggers.length > 0) return true
+
+	// ! not needed - after triggers only react to changes - initiated by updates or schema transforms (fixes) - this was disabled way before version 21
 	// const afterTriggers = getAfterTriggers(ctx.docRef)
 	// if(afterTriggers.length > 0) return true
 
-	const schema = getSchema(ctx.docRef)
-	if (schema) return true
+	// const schema = getSchema(ctx.docRef)
+	// if (schema) return true
 
-	const aggregateSchemas = getAggregateSchemas(ctx.docRef)
-	if (Object.keys(aggregateSchemas).length > 0) return true
+	// const aggregateSchemas = getAggregateSchemas(ctx.docRef)
+	// if (Object.keys(aggregateSchemas).length > 0) return true
 
 	return false
 }
+
+function transformDataPreGroundTruth(
+	ctx: WithDocRef & WithTransactor & WithDb,
+	rawData: DocumentSnapshot,
+): IntrinsicFields | null {
+	let data = fromDatabase(ctx, rawData)
+	if (data) data = withVoltisoEntry(ctx, data)
+	return data
+}
+
+function applyAggregateSchemaDefaults(
+	ctx: WithDocRef & WithTransactor,
+	voltisoEntry: VoltisoEntry | nullish,
+) {
+	if (!voltisoEntry) return
+
+	const aggregateSchemas = getAggregateSchemas(ctx.docRef)
+	const haveAggregateSchemas = Object.keys(aggregateSchemas).length > 0
+
+	// init aggregate defaults
+	if (haveAggregateSchemas) {
+		// read from `.__voltiso` - data may be `null`
+		for (const [name, schema] of Object.entries(aggregateSchemas)) {
+			assertNotPolluting(name)
+
+			let entry: VoltisoEntry.AggregateTarget.Entry | undefined =
+				voltisoEntry.aggregateTarget[name]
+
+			entry = guardedValidate_(
+				ctx,
+				sVoltisoEntryAggregateTargetEntry.default({}),
+				entry,
+			) as typeof entry
+
+			assert(entry)
+
+			$AssumeType<Schema>(schema)
+
+			entry.value = guardedValidate_(ctx, schema, entry.value) as never
+
+			if (entry.value === undefined) delete entry.value
+
+			// console.log('SET INITIAL AGGREGATE', name, entry)
+			voltisoEntry.aggregateTarget[name] = entry
+		}
+	}
+}
+
+// todo: there's some duplicated logic in directDocPathGet and transactionDocPathGetImpl
 
 async function directDocPathGet<D extends $$Doc>(
 	ctx: WithDocRef & WithTransactor & WithDb & Forbidden<WithTransaction>,
@@ -70,26 +125,120 @@ async function directDocPathGet<D extends $$Doc>(
 	_checkDecorators(ctx)
 	const needTransaction = getIsTransactionNeededForRead(ctx)
 
-	let data: object | null
-
 	if (needTransaction) {
+		// ! never
 		assert.not(ctx.transaction)
-		data = await ctx.transactor.runTransaction(async () => {
+		const data = await ctx.transactor.runTransaction(async () => {
 			const doc = await ctx.db.doc(ctx.docRef.path.toString())
 
 			if (doc) return doc.data
 			else return null
 		})
+
+		if (data) return new Doc(ctx, data as never) as unknown as D
+		else return null
 	} else {
-		const { _ref } = ctx.docRef
-		data = fromDatabase(ctx, await _ref.get())
-		if (data) data = withVoltisoEntry(ctx, data)
+		const { _ref, id, path } = ctx.docRef
+		const rawData = await _ref.get()
+
+		let data = transformDataPreGroundTruth(ctx, rawData)
+		applyAggregateSchemaDefaults(ctx, data?.__voltiso)
+
+		const schema = getSchema(ctx.docRef)
+		if (schema && data) {
+			try {
+				const validatedData = applySchema(ctx, {
+					schema,
+					data,
+					bestEffort: true,
+				})
+				assert.defined(validatedData) // ?
+				data = validatedData
+
+				assert(data?.__voltiso)
+				data.__voltiso = sVoltisoEntry.validate(data.__voltiso)
+				assert(data.__voltiso)
+			} catch (error) {
+				const pathString = path.toString()
+				const outerError = new TransactorError(
+					`database corrupt: ${pathString} (${(error as Error).message})`,
+				)
+				outerError.cause = error
+				throw outerError
+			}
+		}
+
+		const onGetTriggers = getOnGetTriggers(ctx.docRef)
+
+		if (onGetTriggers.length > 0) {
+			await ctx.transactor._isInsideOnGetNoTransaction.run(true, async () => {
+				for (const { trigger, pathMatches } of onGetTriggers) {
+					const doc = data ? new Doc(ctx, data as never) : null
+					// assert(cacheEntry.__voltiso)
+
+					// eslint-disable-next-line no-await-in-loop
+					const r = await trigger.call(doc, {
+						doc,
+
+						__voltiso:
+							data?.__voltiso || getDefaultVoltisoEntry(ctx, new Date()),
+
+						...pathMatches,
+						path,
+						id,
+						...ctx,
+						possiblyExists: ctx.transactor._options.partial,
+					})
+
+					{
+						const newData = collectTriggerResult(ctx, r)
+						// eslint-disable-next-line require-atomic-updates, unicorn/no-negated-condition
+						if (newData !== undefined) data = newData as never
+						// eslint-disable-next-line require-atomic-updates
+						else data = doc?.data ?? null
+					}
+
+					if (data && schema) {
+						data = applySchema(ctx, {
+							data,
+							schema,
+							bestEffort: true,
+						}) as never
+					}
+
+					if (data) data = withVoltisoEntry(ctx, data)
+				}
+			})
+		}
+
+		// console.log('FINAL SCHEMA CHECK', data)
+
+		// final schema check
+		if (schema && data) {
+			try {
+				const validatedData = applySchema(ctx, {
+					schema,
+					data,
+					bestEffort: false,
+				})
+				assert.defined(validatedData) // ?
+				data = validatedData
+
+				assert(data?.__voltiso)
+				data.__voltiso = sVoltisoEntry.validate(data.__voltiso)
+				assert(data.__voltiso)
+			} catch (error) {
+				const pathString = path.toString()
+				const outerError = new TransactorError(
+					`database corrupt: ${pathString} (${(error as Error).message})`,
+				)
+				outerError.cause = error
+				throw outerError
+			}
+		}
+
+		return data ? (new Doc(ctx, data as never) as unknown as D) : null
 	}
-
-	assert(!ctx.transaction)
-
-	if (data) return new Doc(ctx, data as never) as unknown as D
-	else return null
 }
 
 // eslint-disable-next-line sonarjs/cyclomatic-complexity
@@ -111,17 +260,13 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 	assert(cacheEntry)
 
 	const schema = getSchema(ctx.docRef)
-	const aggregateSchemas = getAggregateSchemas(ctx.docRef)
-	const haveAggregateSchemas = Object.keys(aggregateSchemas).length > 0
 
 	const prevData = cacheEntry.data
 
 	if (cacheEntry.data === undefined) {
 		const snapshot = await _databaseTransaction.get(_ref)
 
-		cacheEntry.data = fromDatabase(ctx, snapshot)
-		if (cacheEntry.data)
-			cacheEntry.data = withVoltisoEntry(ctx, cacheEntry.data)
+		cacheEntry.data = transformDataPreGroundTruth(ctx, snapshot)
 
 		if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
@@ -136,50 +281,17 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		// console.log({ aggregateSchemas, __voltiso: cacheEntry.__voltiso })
 
 		assert(cacheEntry.__voltiso)
-		// init aggregate defaults
-		if (haveAggregateSchemas) {
-			// read from `.__voltiso` - data may be `null`
-			for (const [name, schema] of Object.entries(aggregateSchemas)) {
-				assertNotPolluting(name)
 
-				let entry: VoltisoEntry.AggregateTarget.Entry | undefined =
-					cacheEntry.__voltiso.aggregateTarget[name]
-
-				entry = guardedValidate_(
-					ctx,
-					sVoltisoEntryAggregateTargetEntry.default({}),
-					entry,
-				) as typeof entry
-
-				assert(entry)
-
-				$AssumeType<Schema>(schema)
-
-				entry.value = guardedValidate_(ctx, schema, entry.value) as never
-
-				// eslint-disable-next-line sonarjs/nested-control-flow
-				if (entry.value === undefined) delete entry.value
-
-				// console.log('SET INITIAL AGGREGATE', name, entry)
-
-				cacheEntry.__voltiso.aggregateTarget[name] = entry
-			}
-		}
-
-		// console.log('AND...', { __voltiso: cacheEntry.__voltiso })
+		applyAggregateSchemaDefaults(ctx, cacheEntry.__voltiso) // updates both cacheEntry.__voltiso and cacheEntry.data.__voltiso
 
 		// schema migration
 		if (schema && cacheEntry.data) {
-			// console.log('schema val', cacheEntry.data)
-
 			const validatedData = applySchema(ctx, {
 				schema,
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
-
 			cacheEntry.data = validatedData
-			// cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 		}
 	}
 
@@ -212,9 +324,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 				data: cacheEntry.data,
 				bestEffort: true,
 			})
-
 			cacheEntry.data = validatedData
-			// cacheEntry.data = validatedData ? withoutId(validatedData, id) : null
 
 			if (cacheEntry.data)
 				cacheEntry.data.__voltiso = sVoltisoEntry.validate(
@@ -223,14 +333,15 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 
 			assert(cacheEntry.data?.__voltiso)
 
-			// if (cacheEntry.data?.__voltiso)
 			cacheEntry.__voltiso = cacheEntry.data.__voltiso
 
 			// console.log('applySchema partial after', cacheEntry.data)
 		} catch (error) {
-			throw new TransactorError(
+			const outerError = new TransactorError(
 				`database corrupt: ${path} (${(error as Error).message})`,
 			)
+			outerError.cause = error
+			throw outerError
 		}
 	}
 
@@ -274,6 +385,7 @@ async function transactionDocPathGetImpl<D extends $$Doc>(
 		})
 
 		const data = collectTriggerResult(ctx, r)
+		assert.defined(data)
 		validateAndSetCacheEntry(ctx, {
 			data,
 			schema,

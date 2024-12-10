@@ -158,6 +158,8 @@ describe('raw-transaction', () => {
 	it('should not allow concurrent transactions', async () => {
 		expect.hasAssertions()
 
+		db.allowConcurrentTransactions = false
+
 		const test = async () => {
 			const a = db.runTransaction(async () => {
 				await sleep(100)
@@ -170,13 +172,13 @@ describe('raw-transaction', () => {
 			return Promise.all([a, b])
 		}
 
-		await expect(test()).rejects.toThrow('already have transaction context')
+		await expect(test()).rejects.toThrow('Concurrent transactions detected')
 	})
 
-	it('should warn if async context is broken', async () => {
+	it('should warn if concurrent transactions are detected', async () => {
 		expect.hasAssertions()
 
-		// db.allowConcurrentTransactions = false
+		db.allowConcurrentTransactions = 'warn'
 
 		let _error
 
@@ -205,7 +207,7 @@ describe('raw-transaction', () => {
 		await expect(test()).resolves.toBeUndefined()
 
 		expect(_error).toMatchInlineSnapshot(
-			'[TransactorError: Async Context broken - fortunately we have `allowConcurrentTransactions === false`]',
+			'[TransactorError: Concurrent transactions detected. Set `allowConcurrentTransactions: true` to allow this]',
 		)
 	})
 })

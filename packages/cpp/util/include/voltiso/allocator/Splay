@@ -2,7 +2,6 @@
 #include "voltiso/override"
 #include <voltiso/_>
 
-#include <voltiso/Allocation>
 #include <voltiso/Array>
 #include <voltiso/HashMap>
 #include <voltiso/Pool>
@@ -33,10 +32,12 @@ public:
   using ParentAllocator = Options::ParentAllocator;
   static constexpr auto PAGE_SIZE = Options::PAGE_SIZE;
 
-  template <class Item>
-  using HandleForItem = typename ParentAllocator::template HandleForItem<
-      Item>::template WithBrand<Self>;
-  using Handle = HandleForItem<void>;
+  // template <class Item>
+  // using HandleForItem = typename ParentAllocator::template HandleForItem<
+  //     Item>::template WithBrand<Self>;
+  // using Handle = HandleForItem<void>;
+
+  using Handle = ParentAllocator::Handle ::template WithBrand<Self>;
 
 private:
   friend singleton::perThread;

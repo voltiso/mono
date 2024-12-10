@@ -39,31 +39,39 @@ describe('migration onGet', function () {
 		expect.hasAssertions()
 
 		await database.doc('userMigration/a').set({ date: '2022-11-25' })
-		const user = await users('a')
 
-		assert(user)
+		await expect(users('a')).rejects.toThrow(
+			'@onGet trigger cannot run transactions',
+		)
 
-		expect(user.data).toMatchObject({
-			date: expect.any(Date),
+		await db.runTransaction(async () => {
+			const user = await users('a')
+			assert(user)
 
-			__voltiso: {
-				migrations: {
-					myMigration: {
-						migratedAt: expect.any(Date),
+			expect(user.data.date).toBeInstanceOf(Date)
+
+			expect(user.data).toMatchObject({
+				date: expect.any(Date),
+
+				__voltiso: {
+					migrations: {
+						myMigration: {
+							migratedAt: expect.any(Date),
+						},
 					},
+
+					numMigrations: 1,
+					migratedAt: expect.any(Date),
 				},
+			})
 
-				numMigrations: 1,
-				migratedAt: expect.any(Date),
-			},
+			expect(user.data.__voltiso.migratedAt).toStrictEqual(
+				user.data.__voltiso.migrations['myMigration']?.migratedAt,
+			)
+
+			expect(+user.data.__voltiso.migratedAt).toBeGreaterThan(
+				+new Date('2022-11-26'),
+			)
 		})
-
-		expect(user.data.__voltiso.migratedAt).toStrictEqual(
-			user.data.__voltiso.migrations['myMigration']?.migratedAt,
-		)
-
-		expect(+user.data.__voltiso.migratedAt).toBeGreaterThan(
-			+new Date('2022-11-26'),
-		)
 	})
 })

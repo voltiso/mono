@@ -105,10 +105,10 @@ export interface TransactorOptions {
 	checkDecorators: boolean | 'warn'
 
 	/**
-	 * This is dangerous, because it requires Async Context and some libraries,
-	 * like Firestore queries, can break it!
+	 * This is dangerous, because it requires Async Context and some libraries
+	 * might potentially break it?
 	 *
-	 * @defaultValue `false`
+	 * @defaultValue `'warn'`
 	 */
 	allowConcurrentTransactions: boolean | 'warn'
 }
@@ -130,5 +130,5 @@ export const defaultTransactorOptions = define<TransactorOptions>().value({
 	onWarning: console.warn,
 
 	checkDecorators: true,
-	allowConcurrentTransactions: false,
+	allowConcurrentTransactions: 'warn',
 })
