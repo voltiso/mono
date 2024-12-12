@@ -12,8 +12,6 @@ static_assert(sizeof(T) == SIZE);
 
 static void BM_allocator_trivial_Pool(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
-  // struct Brand {};
-  // auto &pool = Pool<T>::WithBrand<Brand>::get();
   Pool<T> pool;
   for (auto _ : state) {
     auto handle = pool.construct();
@@ -24,9 +22,9 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
 
 static void BM_allocator_trivial_Splay(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
-  struct Brand {};
-  auto &splay = allocator::Splay::WithBrand<Brand>::get();
+  auto &splay = allocator::Splay::get();
   for (auto _ : state) {
+		LOG(INFO) << "iter";
     auto handle = splay.allocateBytes(sizeof(T));
     benchmark::DoNotOptimize(handle);
     splay.freeBytes(handle, sizeof(T));
@@ -70,8 +68,6 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
   }
 
   using namespace VOLTISO_NAMESPACE;
-  struct Brand {};
-  // auto &pool = Pool<T>::WithBrand<Brand>::get();
   Pool<T> pool;
   for (int i = 0; i < num; i++) {
     auto handle = pool.construct();

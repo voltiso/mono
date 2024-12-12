@@ -5,7 +5,6 @@
 #include <voltiso/Bit>
 #include <voltiso/divCeil>
 
-#include <bitset>
 #include <cstddef>
 #include <cstdint>
 
@@ -124,7 +123,7 @@ public:
         words[iWord] = 0;
       }
     }
-    while (iWord < words.numItems - 1) {
+    while (iWord < words.NUM_ITEMS - 1) {
       ++iWord;
       words[iWord] = 0;
     }
@@ -138,7 +137,7 @@ public:
     auto toBit = toIndex % (sizeof(Word) * 8);
     if (fromWord == toWord) {
       Word mask = ((Word(1) << (toBit - fromBit)) - 1) << fromBit;
-      LOG(INFO) << "mask: " << std::bitset<64>(mask);
+      // LOG(INFO) << "mask: " << std::bitset<64>(mask);
       if (bit.value) {
         words[fromWord] |= mask;
       } else {
@@ -165,8 +164,9 @@ public:
     }
   }
 
-  template <class Index> using CustomHandle = handle::Custom<Self, Index>;
-  using Handle = Handle<Self>;
+  template <class Index>
+  using CustomHandle = Handle::Brand_<Self>::template Type_<Index>;
+  using Handle = CustomHandle<std::size_t>;
 
   // template <class Index>
   // using CustomHandle = bitArray::_::CustomHandle<Self, Index>;

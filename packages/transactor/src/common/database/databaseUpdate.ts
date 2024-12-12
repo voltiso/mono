@@ -57,7 +57,9 @@ async function databaseSet(
 		)
 
 	if (transactor._isInsideOnGetNoTransaction.tryGetValue)
-		throw new TransactorError('@onGet trigger cannot write to db')
+		throw new TransactorError(
+			'@onGet trigger cannot write to db if not inside transaction',
+		)
 
 	const ctxOverride = transactor._getTransactionContext()
 
@@ -108,7 +110,9 @@ export async function databaseUpdate(
 		)
 
 	if (transactor._isInsideOnGetNoTransaction.tryGetValue)
-		throw new TransactorError('@onGet trigger cannot write to db')
+		throw new TransactorError(
+			'@onGet trigger cannot write to db if not inside transaction',
+		)
 
 	// console.log('firestoreUpdate', ref.path, updates)
 

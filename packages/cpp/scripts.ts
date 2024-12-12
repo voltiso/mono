@@ -68,8 +68,8 @@ const benchOptions: Options = {
 	compiler: 'clang-18',
 	// compiler: 'gcc-14',
 
-	// buildType: 'Debug',
-	buildType: 'Release',
+	buildType: 'Debug',
+	// buildType: 'Release',
 	// buildType: 'RelWithDebInfo',
 }
 

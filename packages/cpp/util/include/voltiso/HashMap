@@ -1,8 +1,8 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/Entry>
-#include <voltiso/HashTable>
+#include "voltiso/Entry"
+#include "voltiso/HashTable"
 
 namespace VOLTISO_NAMESPACE {
 template <class Key, class Value> using HashMap = HashTable<Entry<Key, Value>>;

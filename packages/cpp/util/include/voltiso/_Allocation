@@ -196,7 +196,7 @@ public:
     (ParentHandle &)this->data =
         (ParentHandle)Options::Allocator::allocateBytes(other.numBytes);
     if constexpr (std::is_same_v<Item, void>) {
-      std::memcpy(this->data, other.data, other.numBytes);
+      ::memcpy(this->data, other.data, other.numBytes);
       if constexpr (Options::IS_WITH_SIZE) {
         (size_t &)this->numBytes = other.numBytes;
       }
@@ -220,7 +220,7 @@ public:
     Options::Allocator::freeBytes(this->data);
     (ParentHandle &)this->data =
         Options::Allocator::allocateBytes(other.numBytes);
-    std::memcpy(this->data, other.data, other.numBytes);
+    ::memcpy(this->data, other.data, other.numBytes);
     (size_t &)this->numBytes = other.numBytes;
     return *this;
   }

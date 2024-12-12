@@ -1,24 +1,20 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/DynamicArray>
-#include <voltiso/Entry>
-#include <voltiso/allocator/Malloc>
-#include <voltiso/handle/Custom>
-#include <voltiso/is_trivially_relocatable>
-#include <voltiso/override>
-
-#include <bit>
-#include <type_traits>
-
-//
+#include "voltiso/DynamicArray.hpp"
+#include "voltiso/Entry"
+#include "voltiso/Object"
+#include "voltiso/Options"
+#include "voltiso/allocator/Malloc"
+#include "voltiso/is_trivially_relocatable"
 
 namespace VOLTISO_NAMESPACE::hashTable::_ {
-
 template <class Options> struct Bucket {
-  using Entries = DynamicArray<typename Options::Entry>::
-      template WithInPlace<Options::BUCKET_IN_PLACE>::template WithAllocator<
-          typename Options::Allocator>;
+  using DynamicArray = VOLTISO_NAMESPACE::DynamicArray<int>::Allocator_<
+      typename Options::Allocator>;
+
+  using Entries = DynamicArray ::template Item_<
+      typename Options::Entry>::template IN_PLACE_<Options::BUCKET_IN_PLACE>;
   Entries entries;
 };
 } // namespace VOLTISO_NAMESPACE::hashTable::_
@@ -34,15 +30,17 @@ static constexpr auto is_trivially_relocatable<hashTable::_::Bucket<Options>> =
 //
 
 namespace VOLTISO_NAMESPACE::hashTable {
-struct DefaultOptions {
-  using Entry = int; // need to override
+struct Defaults {
+  using Entry = void; // need to override
   static constexpr size_t IN_PLACE = 0;
   static constexpr size_t BUCKET_IN_PLACE = 1;
   using Allocator = allocator::Malloc;
 };
 
-template <class _Options> class BUILD {
-  using Self = BUILD;
+using DefaultOptions = Options<Defaults>;
+
+template <class _Options> class Build : public Object<_Options> {
+  using Self = Build;
 
 public:
   using Options = _Options;
@@ -50,14 +48,23 @@ public:
   using Key = GetKey<Entry>;
   using Value = GetValue<Entry>;
 
+  static_assert(!std::is_same_v<Key, void>);
+  static_assert(!std::is_same_v<Value, void>);
+
 private:
   using Bucket = _::Bucket<Options>;
-  using Buckets = DynamicArray<Bucket>::template WithInPlace<
-      Options::IN_PLACE>::template WithAllocator<typename Options::Allocator>;
+  using Buckets = DynamicArray<Bucket>::template IN_PLACE_<
+      Options::IN_PLACE>::template Allocator_<typename Options::Allocator>;
+
+  using BucketHandle = Buckets::Handle;
 
 public:
   Buckets const buckets = {};
   size_t const numItems = 0;
+
+private:
+  Buckets &_buckets() { return const_cast<Buckets &>(this->buckets); }
+  size_t &_numItems() { return const_cast<size_t &>(this->numItems); }
 
 private:
   struct TemporaryHandle {
@@ -66,8 +73,8 @@ private:
   };
 
 public:
-  BUILD() = default;
-  BUILD(std::initializer_list<Entry> entries) {
+  Build() = default;
+  Build(std::initializer_list<Entry> entries) {
     for (auto &entry : entries) {
       if constexpr (std::is_same_v<Value, Entry> ||
                     std::is_same_v<Value, void>) {
@@ -79,8 +86,6 @@ public:
   }
 
 public:
-  // using Handle = handle::Custom<Self, HandleValue>;
-
   struct ConstSetAccessor {
     const TemporaryHandle handle;
     const Key key;
@@ -120,16 +125,16 @@ public:
   struct SetAccessor : ConstAccessor {
     using ConstAccessor::ConstAccessor;
 
-    BUILD &hashTable() {
-      return const_cast<BUILD &>(ConstAccessor::hashTable());
+    Build &hashTable() {
+      return const_cast<Build &>(ConstAccessor::hashTable());
     }
 
     void erase() {
-      auto &bucket = this->hashTable.buckets[this->handle.bucket];
-      DCHECK_LT(this->handle.item, bucket.numItems);
-      bucket.items[this->handle.item] = std::move(bucket.items.last());
-      bucket.pop();
-      --this->hashTable.numItems;
+      Bucket &bucket = this->hashTable()._buckets()[this->handle.bucket];
+      DCHECK_LT(this->handle.bucket.value, bucket.entries.numItems);
+      bucket.entries[this->handle.entry] = std::move(bucket.entries.last());
+      bucket.entries.pop();
+      --this->hashTable()._numItems();
     }
 
     void maybeErase() {
@@ -168,7 +173,7 @@ public:
       DCHECK(!this->exists);
       auto &bucket =
           const_cast<Buckets &>(this->hashTable().buckets)[this->handle.bucket];
-      DCHECK_EQ(this->handle.entry, bucket.entries.numItems);
+      DCHECK_EQ(this->handle.entry.value, bucket.entries.numItems);
 
       auto newHandle =
           bucket.entries.push({this->key, Value(std::forward<Args>(args)...)});
@@ -212,12 +217,12 @@ public:
                                       SetAccessor, ValueAccessor>;
 
 private:
-  auto _bucketIndex(const Key &key) const {
+  Buckets::Handle _bucketIndex(const Key &key) const {
     auto hash = std::hash<Key>{}(key);
     DCHECK(std::has_single_bit(buckets.numItems));
     // auto index = hash % buckets.numItems;
     auto index = hash & (buckets.numItems - 1);
-    return index;
+    return BucketHandle(index);
   }
 
   auto _find(const Key &key) const {
@@ -226,10 +231,11 @@ private:
     auto &bucket = buckets[index];
     for (size_t i = 0; i < bucket.entries.numItems; ++i) {
       if (getKey(bucket.entries[i]) == key) {
-        return TemporaryHandle{index, i};
+        return TemporaryHandle{index, typename Bucket::Entries::Handle(i)};
       }
     }
-    return TemporaryHandle{index, bucket.entries.numItems};
+    return TemporaryHandle{
+        index, typename Bucket::Entries::Handle(bucket.entries.numItems)};
   }
 
 private:
@@ -244,10 +250,10 @@ private:
       auto &oldBucket = buckets[i];
       for (size_t j = 0; j < oldBucket.entries.numItems; ++j) {
         auto &entry = oldBucket.entries[j];
-        auto newIndex = _bucketIndex(getKey(entry));
-        if (newIndex != i) {
-          DCHECK_GE(newIndex, oldNumBuckets);
-          auto &newBucket = buckets[newIndex];
+        auto hNewBucket = _bucketIndex(getKey(entry));
+        if (hNewBucket.value != i) {
+          DCHECK_GE(hNewBucket.value, oldNumBuckets);
+          auto &newBucket = buckets[hNewBucket];
           newBucket.entries.push(std::move(entry));
           oldBucket.entries[j] = std::move(oldBucket.entries.last());
           oldBucket.entries.pop();
@@ -257,8 +263,10 @@ private:
     }
   }
 
+  static constexpr size_t MAX_LOAD_FACTOR_INV = 2; // 0.5 load factor
+
   void maybeGrow() {
-    if (numItems >= buckets.numItems) [[unlikely]]
+    if (MAX_LOAD_FACTOR_INV * numItems >= buckets.numItems) [[unlikely]]
       grow();
   }
 
@@ -277,21 +285,57 @@ public:
   }
 
 public:
-  template <class NewAllocator>
-  using WithAllocator = BUILD<override::Allocator_<NewAllocator, Options>>;
+  class ConstIterator {
+  private:
+    TemporaryHandle handle;
+    Self &hashTable;
+
+  private:
+    friend Self;
+    ConstIterator(const TemporaryHandle &handle, Self &hashTable)
+        : handle(handle), hashTable(hashTable) {}
+
+  public:
+    /** @internal - works only for comparisons with .end() */
+    bool operator==(const ConstIterator &other) const {
+      DCHECK_EQ(&hashTable, &other.hashTable);
+      return handle.bucket == other.handle.bucket; // !
+    }
+
+    auto &operator++() {
+      ++handle.entry.value;
+      if (handle.entry.value ==
+          hashTable.buckets[handle.bucket].entries.numItems) [[likely]] {
+        ++handle.bucket.value;
+        handle.entry.value = 0;
+      }
+      return *this;
+    }
+
+    const Entry &operator*() const {
+      return hashTable.buckets[handle.bucket].entries[handle.entry];
+    }
+  };
+
+  class Iterator : public ConstIterator {
+    using ConstIterator::ConstIterator;
+  };
+
+public:
+  Iterator begin() { return Iterator{TemporaryHandle{0, 0}, *this}; }
+  Iterator end() { return Iterator{{buckets.numItems, 0}, *this}; }
+
+  ConstIterator begin() const { return ConstIterator{{0, 0}, *this}; }
+  ConstIterator end() const {
+    return ConstIterator{{buckets.numItems, 0}, *this};
+  }
 };
 } // namespace VOLTISO_NAMESPACE::hashTable
+VOLTISO_OBJECT_FINAL(hashTable)
+VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(hashTable)
 
 namespace VOLTISO_NAMESPACE {
-template <class Options>
-static constexpr auto is_trivially_relocatable<hashTable::BUILD<Options>> =
-    true;
-} // namespace VOLTISO_NAMESPACE
-
-namespace VOLTISO_NAMESPACE {
-
 template <class Entry>
 using HashTable =
-    hashTable::BUILD<override::Entry_<Entry, hashTable::DefaultOptions>>;
-
+    hashTable::Final<typename hashTable::DefaultOptions::Entry_<Entry>>;
 } // namespace VOLTISO_NAMESPACE

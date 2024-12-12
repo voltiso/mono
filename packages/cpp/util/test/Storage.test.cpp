@@ -1,6 +1,8 @@
-#include <gtest/gtest.h>
+#include "voltiso/Storage"
 
-#include <voltiso/storage/Storage>
+#include "gtest/gtest.h"
+
+#include <type_traits>
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -12,9 +14,12 @@ TEST(Storage, doesNotInitialize) {
   new (&memory) Storage<S>;
   auto &storage = *reinterpret_cast<Storage<S> *>(&memory);
   EXPECT_EQ(storage.item().value, 333);
-  EXPECT_EQ(storage.bytes.numItems, sizeof(S));
+  EXPECT_EQ(storage.bytes.NUM_ITEMS, sizeof(S));
 
   //
+
+  static_assert(std::is_trivially_constructible_v<Storage<S>>);
+  static_assert(std::is_trivially_default_constructible_v<Storage<S>>);
 
   static_assert(sizeof(Storage<int>) == sizeof(int));
   struct Test {

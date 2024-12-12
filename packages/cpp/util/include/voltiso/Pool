@@ -1,28 +1,35 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/DynamicArray>
-#include <voltiso/handle/Handle>
-#include <voltiso/override>
-#include <voltiso/singleton>
-#include <voltiso/storage/Storage>
-
-#include <glog/logging.h>
+#include "voltiso/DynamicArray"
+#include "voltiso/Object"
+#include "voltiso/Storage"
 
 #include <bit>
 #include <cstdlib>
 
+#ifndef VOLTISO_DEBUG_POOL
+#define VOLTISO_DEBUG_POOL VOLTISO_DEBUG
+#endif
+
+#if VOLTISO_DEBUG_POOL
+#include "glog/logging.h"
+#endif
+
 namespace VOLTISO_NAMESPACE::pool {
-struct DefaultOptions {
-  using Item = int; // must override
+struct Defaults {
+  using Item = void; // must override
   using Allocator = allocator::Malloc;
   using Brand = void;
 };
 
+using DefaultOptions = Options<Defaults>;
+
 //
 
-template <class _Options> class BUILD {
-  using Self = BUILD;
+template <class _Options> class Build : public Object<_Options> {
+  using Self = Build;
+  using Base = Object<_Options>;
 
 public:
   using Options = _Options;
@@ -30,11 +37,14 @@ public:
   using Allocator = Options::Allocator;
 
 private:
+  using DynamicArray = DynamicArray<int>::template Allocator_<Allocator>;
+
+private:
   struct Slot {
     union {
       Storage<Item> storage;
-      VOLTISO_NAMESPACE::DynamicArray<int>::template WithAllocator<
-          Allocator>::Handle next;
+      DynamicArray::Handle
+          next; // recursive definition; wrong Item type; need to cast
     };
 
     template <class... Args> Slot(Args &&...args) {
@@ -42,46 +52,55 @@ private:
     }
   };
 
-  using Slots =
-      VOLTISO_NAMESPACE::DynamicArray<Slot>::template WithAllocator<Allocator>;
+  using Slots = DynamicArray::template Item_<Slot>;
   Slots slots;
   Slots::Handle anyFree = Slots::Handle::null;
+  using SlotHandle = Slots::Handle;
 
 public:
-  template <class Value>
-  using CustomHandle =
-      Slots::template CustomHandle<Value>::template WithBrand<Self>;
-  using Handle = Slots::Handle::template WithBrand<Self>;
+  template <class Type>
+  using CustomHandle = Handle ::Type_<Type>::template Brand_<Self>;
+  using Handle = CustomHandle<typename Slots::Handle::Type>;
 
   static_assert(std::has_single_bit(sizeof(Item)));
-  ~BUILD() { DCHECK(slots.numItems == 0 || anyFree != Slots::Handle::null); }
 
-// private:
-//   friend singleton::perThread;
-//   constexpr BUILD() noexcept = default;
+#if VOLTISO_DEBUG_POOL
+  ~Build() { CHECK(slots.numItems == 0 || anyFree != Slots::Handle::null); }
+#endif
 
-// public:
-//   static constexpr auto &get() { return singleton::perThread::get<Self>(); }
+public:
+  Build() = default;
+  Build(Self &&) = default;
+
+  // private:
+  //   friend singleton::perThread;
+  //   constexpr BUILD() noexcept = default;
+
+  // public:
+  //   static constexpr auto &get() { return singleton::perThread::get<Self>();
+  //   }
 
 public:
   template <class... Args> Handle construct(Args &&...args) {
     if (anyFree == Slots::Handle::null) [[unlikely]] {
       auto newItem = slots.push(std::forward<Args>(args)...);
       slots[newItem].storage.construct();
-      return newItem.value;
+      return Handle(newItem.value);
     } else [[likely]] {
       auto handle = anyFree;
-      anyFree = slots[anyFree].next.value;
+      anyFree =
+          SlotHandle(slots[anyFree].next.value); // wrong Handle type; need cast
       slots[handle].storage.construct(std::forward<Args>(args)...);
-      return handle.value;
+      return Handle(handle.value);
     }
   }
 
   void destroy(const Handle &handle) {
     DCHECK_NE(handle, Handle::null);
     slots[handle.value].storage.destroy();
-    slots[handle.value].next = anyFree.value;
-    anyFree = handle.value;
+    // wrong Handle type; need cast
+    slots[handle.value].next = typename DynamicArray::Handle(anyFree.value);
+    anyFree = SlotHandle(handle.value);
   }
 
   Item &operator[](const Handle &handle) {
@@ -90,22 +109,14 @@ public:
   }
 
   const Item &operator[](const Handle &handle) const {
-    return static_cast<Self &>(*this)[handle];
+    return const_cast<Self &>(*this)[handle];
   }
-
-public:
-  template <class NewAllocator>
-  using WithAllocator = BUILD<override::Allocator_<NewAllocator, Options>>;
-
-  template <class NewBrand>
-  using WithBrand = BUILD<override::Brand_<NewBrand, Options>>;
-
-  template <class NewItem>
-  using WithItem = BUILD<override::Item_<NewItem, Options>>;
 };
 } // namespace VOLTISO_NAMESPACE::pool
+VOLTISO_OBJECT_FINAL(pool)
+VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(pool)
 
 namespace VOLTISO_NAMESPACE {
 template <class Item>
-using Pool = pool::BUILD<override::Item_<Item, pool::DefaultOptions>>;
+using Pool = pool::Final<pool::DefaultOptions::Item_<Item>>;
 } // namespace VOLTISO_NAMESPACE

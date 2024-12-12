@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Array>
-#include <voltiso/storage/Storage>
+#include "voltiso/Array"
+#include "voltiso/Storage"
 
 using namespace VOLTISO_NAMESPACE;
 

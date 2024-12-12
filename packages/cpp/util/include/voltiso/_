@@ -6,3 +6,11 @@
     "VOLTISO_NAMESPACE is not defined! Check your CMake configuration.")
 // #define VOLTISO_NAMESPACE v
 #endif
+
+#ifndef VOLTISO_DEBUG
+#ifdef NDEBUG
+#define VOLTISO_DEBUG false
+#else
+#define VOLTISO_DEBUG true
+#endif
+#endif

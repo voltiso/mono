@@ -1,10 +1,9 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/has>
-#include <voltiso/is_trivially_relocatable>
+#include "voltiso/has"
+#include "voltiso/is_trivially_relocatable"
 
-#include <experimental/type_traits>
 #include <functional>
 #include <type_traits>
 
@@ -20,62 +19,101 @@ template <class Key, class Value>
 static constexpr auto is_trivially_relocatable<Entry<Key, Value>> =
     is_trivially_relocatable<Key> && is_trivially_relocatable<Value>;
 
-// template <class _Key, class _Value> KeyValue(_Key, _Value)->KeyValue<_Key,
-// _Value>;
+//
 
-// implement using template specialization
-// template <class Item> struct GetKey {};
-
-// implement using template specialization
-// template <class Item> struct GetValue {};
-
-// template <class Key, class Value> struct GetKey<Entry<Key, Value>> {
-//   auto &operator()(const Entry<Key, Value> &keyValue) {
-//     return keyValue.key;
-//   }
-// };
-
-template <class Item, class = std::enable_if_t<has::key<Item>>>
-auto &getKey(Item &item) {
-  return item.key;
+template <class Item, class = std::enable_if_t<has::entry<Item>>>
+constexpr auto &getEntry(Item &item) {
+  if constexpr (has::function::entry<Item>) {
+    return item.entry();
+  } else {
+    return item.entry;
+  }
 }
 
-template <class Item, class = std::enable_if_t<has::key<Item>>>
-const auto &getKey(const Item &item) {
-  return item.key;
+template <class Item, class = std::enable_if_t<has::entry<Item>>>
+constexpr const auto &getEntry(const Item &item) {
+  return getEntry(const_cast<Item &>(item));
 }
 
-template <class Item, std::enable_if_t<has::value<Item>> * = nullptr>
-auto &getValue(Item &item) {
-  return item.value;
+//
+
+template <class Item, std::enable_if_t<has::key<Item>> * = nullptr>
+constexpr auto &getKey(Item &item) {
+  if constexpr (has::function::key<Item>) {
+    return item.key();
+  } else {
+    return item.key;
+  }
+}
+
+template <class Item, std::enable_if_t<has::key<Item>> * = nullptr>
+constexpr const auto &getKey(const Item &item) {
+  return getKey(const_cast<Item &>(item));
+}
+
+//
+
+template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+constexpr auto &getKey(Item &item) {
+  return getKey(getEntry(item));
+}
+
+template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+constexpr const auto &getKey(const Item &item) {
+  return getKey(const_cast<Item &>(item));
+}
+
+//
+
+template <class Item, class = std::enable_if_t<has::value<Item>>>
+constexpr auto &getValue(Item &item) {
+  if constexpr (has::function::value<Item>) {
+    return item.value();
+  } else {
+    return item.value;
+  }
 }
 
 template <class Item, class = std::enable_if_t<has::value<Item>>>
-const auto &getValue(const Item &item) {
-  return item.value;
+constexpr const auto &getValue(const Item &item) {
+  return getValue(const_cast<Item &>(item));
 }
 
-template <class Item, class = decltype(std::declval<std::hash<Item>>()(
-                          std::declval<Item>()))>
-auto getKey(const Item &item) {
-  return std::hash<Item>{}(item);
+//
+
+template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+constexpr auto &getValue(Item &item) {
+  return getValue(getEntry(item));
+}
+
+template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+constexpr const auto &getValue(const Item &item) {
+  return getValue(const_cast<Item &>(item));
 }
 
 // disable this?
 template <class Item, class = decltype(std::declval<std::hash<Item>>()(
                           std::declval<Item>()))>
-auto &getValue(Item &item) {
-  return item;
+constexpr auto getKey(const Item &item) {
+  return std::hash<Item>{}(item);
 }
 
 // disable this?
 template <class Item, decltype(std::declval<std::hash<Item>>()(
                           std::declval<Item>())) * = nullptr>
-const auto &getValue(const Item &item) {
+constexpr auto &getValue(Item &item) {
   return item;
 }
 
-template <class = void> void getValue(...) {
+template <class Item, decltype(std::declval<std::hash<Item>>()(
+                          std::declval<Item>())) * = nullptr>
+constexpr const auto &getValue(const Item &item) {
+  return getValue(const_cast<Item &>(item));
+}
+
+//
+
+template <class = void> constexpr void getValue(...) {
   static_assert(false, "entry type does not have a value (key-only entry or "
                        "`getValue` is not defined for your custom type)");
 }
@@ -83,21 +121,10 @@ template <class = void> void getValue(...) {
 template <class Item>
 using GetKey = std::decay_t<decltype(getKey(std::declval<Item>()))>;
 
-template <class Item> using test = decltype(getValue(std::declval<Item>()));
-
 template <class Item>
 using GetValue = std::decay_t<decltype(getValue(std::declval<Item>()))>;
 
-// struct A {};
-// using AA = GetValue<AA>;
-
-// static_assert(!std::experimental::is_detected_v<test, A>);
-
-// using AA = GetValue<int>;
-
-// auto y = getKey(123);
-// auto x = getKey(A{});
-
-// auto &getKey(const int &item) { return item; }
+template <class Item>
+using GetEntry = std::decay_t<decltype(getEntry(std::declval<Item>()))>;
 
 } // namespace VOLTISO_NAMESPACE

@@ -1,0 +1,172 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/Object"
+#include "voltiso/Options"
+
+#include <cstdint>
+#include <limits>
+#include <ostream>
+#include <type_traits>
+
+//
+
+namespace VOLTISO_NAMESPACE::handle::_ {
+template <class ValueOrPointer> constexpr auto getNullValue() noexcept {
+  if constexpr (std::is_pointer_v<ValueOrPointer>) {
+    return uintptr_t(0);
+    // return (uintptr_t) nullptr; // not constexpr
+  } else {
+    return std::numeric_limits<ValueOrPointer>::max();
+  }
+}
+} // namespace VOLTISO_NAMESPACE::handle::_
+
+//
+
+namespace VOLTISO_NAMESPACE::handle {
+struct Defaults {
+  using Brand = void;
+  using Type = void *;
+};
+
+using DefaultOptions = Options<Defaults>;
+
+template <class _Options> class Build : public Object<_Options> {
+private:
+  using Self = Build;
+  // using Base = Object<_Options>;
+  using Final = _Options::Final;
+
+public:
+  using Options = _Options;
+  using Brand = Options::Brand;
+  using Type = Options::Type;
+  using Value =
+      std::conditional_t<std::is_pointer_v<Type>, std::uintptr_t, Type>;
+
+  using Pointer = std::conditional_t<std::is_pointer_v<Type>, Type, void>;
+
+  // allow signed?
+  static_assert(std::is_integral_v<Type> || std::is_pointer_v<Type>);
+
+  // allow signed?
+  static_assert(std::is_integral_v<Value>);
+
+public:
+  // uninitialized
+  Value value;
+
+  // using Base::Base;
+  // using Base::operator=;
+
+  Build() noexcept = default;
+  // Build(const Self &) noexcept = default;
+
+  // auto &operator=(const Self &other) noexcept {
+  //   (Value &)value = other.value;
+  //   return *this;
+  // }
+
+  // allow `smallInt -> handle<bigInt>`
+  // (including signed and unsigned conversion of the same size - good?)
+  // this should be explicit to avoid converting random int variables to our
+  // handles
+  template <class OtherValue,
+            std::enable_if_t<std::is_integral_v<OtherValue> &&
+                             sizeof(Value) >= sizeof(OtherValue)> * = nullptr>
+  explicit constexpr Build(const OtherValue &value) noexcept : value(value) {}
+
+  template <class Other,
+            std::enable_if_t<(std::is_same_v<Brand, void> ||
+                              std::is_same_v<typename Other::Brand, void> ||
+                              std::is_same_v<typename Other::Brand, Brand>) &&
+                             sizeof(Value) >= sizeof(typename Other::Value)> * =
+                nullptr>
+  constexpr Build(const Other &other) : value(other.value) {}
+
+  // this can be implicit, contrary to random pointers
+  constexpr Build(const std::nullptr_t &) noexcept
+      : value(_::getNullValue<Type>()) {}
+
+  // this could be implicit possibly
+  explicit constexpr operator Value() const noexcept { return value; }
+
+  bool operator==(const Self &other) const noexcept {
+    return value == other.value;
+  }
+
+  bool operator!=(const Self &other) const noexcept {
+    return value != other.value;
+  }
+
+  static const Final null;
+
+  explicit operator bool() const noexcept { return *this != Self::null; }
+
+  // ! one of the 2 below needs to be explicit to forbid arbitrary conversions
+  // ! between pointer Handle types
+
+  // explicit - make sure the pointer is really our handle, not something else
+  template <class P = Pointer,
+            std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
+  explicit constexpr Build(const P &value) noexcept
+      : value(reinterpret_cast<Value>(value)) {}
+
+  // note: non-const pointer (if needed, implement ConstHandle)
+  // implicit conversion to pointer for e.g. calls to ::malloc
+  template <class Pointer_ = Pointer,
+            class = std::enable_if_t<std::is_same_v<Pointer_, Pointer> &&
+                                     !std::is_same_v<Pointer_, void>>>
+  operator Pointer_() const noexcept {
+    return reinterpret_cast<Pointer>(value);
+  }
+
+  // note: non-const pointer (if needed, implement ConstHandle)
+  // implicit conversion to void* for e.g. calls to ::malloc
+  template <class Pointer_ = Pointer,
+            class = std::enable_if_t<std::is_same_v<Pointer_, Pointer> &&
+                                     !std::is_same_v<Pointer_, void>>>
+  operator void *() const noexcept {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+    return reinterpret_cast<void *>(value);
+#pragma GCC diagnostic pop
+  }
+}; // class Build
+
+template <class Options>
+constexpr Options::Final Build<Options>::null = static_cast<Options::Final>(
+    _::getNullValue<typename Options::Type>()); // explicit constructor
+
+template <class Options>
+std::ostream &operator<<(std::ostream &os, const Build<Options> &handle) {
+  return os << "Handle(" << handle.value << ")";
+}
+} // namespace VOLTISO_NAMESPACE::handle
+
+VOLTISO_OBJECT_FINAL(handle)
+VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(handle)
+
+namespace std {
+template <class Options>
+struct hash<::VOLTISO_NAMESPACE::handle::Build<Options>> {
+  using Handle = ::VOLTISO_NAMESPACE::handle::Build<Options>;
+  auto operator()(const Handle &handle) const {
+    return std::hash<typename Handle::Value>{}(handle.value);
+  }
+};
+template <class Options>
+struct hash<::VOLTISO_NAMESPACE::handle::Final<Options>> {
+  using Handle = ::VOLTISO_NAMESPACE::handle::Final<Options>;
+  auto operator()(const Handle &handle) const {
+    return std::hash<typename Handle::Value>{}(handle.value);
+  }
+};
+} // namespace std
+
+//
+
+namespace VOLTISO_NAMESPACE {
+using Handle = handle::Final<handle::DefaultOptions>;
+} // namespace VOLTISO_NAMESPACE

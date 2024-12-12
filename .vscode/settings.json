@@ -314,6 +314,7 @@
 		"compat",
 		"concat",
 		"cpptrace",
+		"crttp",
 		"cssify",
 		"csstype",
 		"ctest",
@@ -410,6 +411,7 @@
 		"RAII",
 		"readdirp",
 		"realpath",
+		"Relocator",
 		"RELWITHDEBINFO",
 		"reusify",
 		"rimraf",
@@ -467,6 +469,7 @@
 		"Wfatal",
 		"whitespaces",
 		"Winvalid",
+		"Wmaybe",
 		"wrappy",
 		"Wshadow",
 		"Zonejs"

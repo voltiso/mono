@@ -1,8 +1,9 @@
-#include <gtest/gtest.h>
+#include "voltiso/BitArray"
+#include "voltiso/Storage"
+
+#include "gtest/gtest.h"
 
 #include <limits>
-#include <voltiso/BitArray>
-#include <voltiso/storage/Storage>
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -112,7 +113,6 @@ TEST(BitArray, fill_wide) {
     EXPECT_EQ(array[i], 1);
   }
   for (std::size_t i = 20; i < 64 * 3 - 20; ++i) {
-    LOG(INFO) << i;
     EXPECT_EQ(array[i], 0);
   }
   for (std::size_t i = 64 * 3 - 20; i < 64 * 3 - 10; ++i) {

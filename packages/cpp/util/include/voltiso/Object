@@ -1,0 +1,164 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/has"
+#include "voltiso/is_derived_from"
+#include "voltiso/is_trivially_relocatable"
+
+#include "glog/logging.h"
+
+#include <cstring>
+#include <type_traits>
+
+//
+
+#define OPTION_TYPE(Name)                                                      \
+  namespace VOLTISO_NAMESPACE {                                                \
+  template <class Options, bool> struct _with_##Name {                         \
+    template <class Name>                                                      \
+    using Name##_ = Options::template FinalTemplate<                           \
+        typename Options::template Name##_<Name>>;                             \
+  };                                                                           \
+  template <class Options> struct _with_##Name<Options, false> {};             \
+  }
+
+#define OPTION_VALUE(NAME, type)                                               \
+  namespace VOLTISO_NAMESPACE {                                                \
+  template <class Options, bool> struct _with_##NAME {                         \
+    template <type NAME, class O = Options,                                    \
+              class = std::enable_if_t<has::NAME<O>>>                          \
+    using NAME##_ = Options::template FinalTemplate<                           \
+        typename Options::template NAME##_<NAME>>;                             \
+  };                                                                           \
+  template <class Options> struct _with_##NAME<Options, false> {};             \
+  }
+
+// #define DERIVE_TYPE(name) with_##name<true>
+#define DERIVE_TYPE(name) _with_##name<_Options, has::type::name<_Options>>
+
+// #define DERIVE_VALUE(name) with_##name<true>
+#define DERIVE_VALUE(name) _with_##name<_Options, has::name<_Options>>
+
+OPTION_TYPE(Allocator)
+OPTION_TYPE(Item)
+OPTION_TYPE(Brand)
+OPTION_TYPE(Type)
+OPTION_VALUE(IN_PLACE, std::size_t)
+OPTION_VALUE(BUCKET_IN_PLACE, std::size_t)
+OPTION_VALUE(NUM_ITEMS, std::size_t)
+OPTION_VALUE(STARTING_INDEX, std::make_signed_t<std::size_t>)
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <class _Options>
+struct Object : DERIVE_TYPE(Allocator),
+                DERIVE_TYPE(Item),
+                DERIVE_TYPE(Brand),
+                DERIVE_TYPE(Type),
+                DERIVE_VALUE(IN_PLACE),
+                DERIVE_VALUE(BUCKET_IN_PLACE),
+                DERIVE_VALUE(NUM_ITEMS),
+                DERIVE_VALUE(STARTING_INDEX) {
+#undef OPTION_TYPE
+#undef OPTION_VALUE
+#undef DERIVE_TYPE
+#undef DERIVE_VALUE
+private:
+  using Self = Object;
+
+public:
+  using Options = _Options;
+  template <class O> using FinalTemplate = Options::template FinalTemplate<O>;
+  using Final = Options::Final;
+
+private:
+  static void _test() noexcept {
+    static_assert(std::is_final_v<Final>);
+    static_assert(is_derived_from<Final, Self>);
+
+    static_assert(!std::is_polymorphic_v<Final>);
+    static_assert(!std::is_polymorphic_v<Self>);
+  }
+
+private:
+  // - move-only (enable_if)
+  // - cannot enable_if `is_trivially_relocatable` here - Final may be
+  //   incomplete yet
+  template <class Other,
+            std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
+  void _relocate(Other &&other) noexcept {
+    _test();
+    static_assert(is_trivially_relocatable<Final>);
+    static_assert(is_trivially_relocatable<Other>);
+    static_assert(is_trivially_relocatable<Self>);
+
+    static_assert(!std::is_polymorphic_v<Other>);
+    static_assert(is_derived_from<Final, Other>);
+    static_assert(sizeof(Final) == sizeof(Other));
+
+    static_assert(!has::_assumeRelocated<Final>,
+                  "_assumeRelocated() should be private");
+
+    ::memcpy(this, &other, sizeof(Final));
+    other._assumeRelocated();
+  }
+
+  auto &_finalSelf() noexcept {
+    _test();
+    return reinterpret_cast<Final &>(*this);
+  }
+
+public:
+  Object() = default; // must be trivially default constructible
+                      // Object() { _test(); }
+
+  // - move-only (enable_if)
+  // - cannot enable_if `is_trivially_relocatable` here - Final may be
+  //   incomplete yet
+  template <class Other,
+            std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
+  Object(Other &&other) noexcept {
+    // DLOG(INFO) << "Object(Other &&other) noexcept";
+    _relocate(std::forward<Other>(other));
+  }
+
+  // - move-only (enable_if)
+  // - cannot enable_if `is_trivially_relocatable` here - Final may be
+  //   incomplete yet
+  template <class Other,
+            std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
+  Final &operator=(Other &&other) noexcept {
+    // DLOG(INFO) << "Final &operator=(Other &&other) noexcept";
+    auto &final = _finalSelf();
+    final.~Final();
+    _relocate(std::move(other));
+    return final;
+  }
+};
+} // namespace VOLTISO_NAMESPACE
+
+//
+
+#define VOLTISO_OBJECT_FINAL(namespaceName)                                    \
+  namespace VOLTISO_NAMESPACE::namespaceName {                                 \
+  namespace _ {                                                                \
+  template <template <class> class Final, class Options>                       \
+  using GetBase = Build<typename Options::template FinalTemplate_<             \
+      Final>::template Final_<Final<Options>>>;                                \
+  }                                                                            \
+  template <class Options> struct Final final : _::GetBase<Final, Options> {   \
+    using Base = _::GetBase<Final, Options>;                                   \
+    using Base::Base;                                                          \
+  };                                                                           \
+  } // namespace VOLTISO_NAMESPACE::namespaceName
+
+#define VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(namespaceName)                    \
+  namespace VOLTISO_NAMESPACE {                                                \
+  template <class Options>                                                     \
+  static constexpr auto                                                        \
+      is_trivially_relocatable<namespaceName::Build<Options>> = true;          \
+  template <class Options>                                                     \
+  static constexpr auto                                                        \
+      is_trivially_relocatable<namespaceName::Final<Options>> = true;          \
+  } // namespace VOLTISO_NAMESPACE::namespaceName

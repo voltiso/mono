@@ -1,114 +1,134 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/handle/Custom>
-#include <voltiso/singleton>
-#include <voltiso/throwError>
+#include "Malloc.hpp" // IWYU pragma: export
 
-#include <cstddef>
-#include <cstdlib>
-#include <new>
+#include "voltiso/throwError"
+
+#if VOLTISO_DEBUG_MALLOC
+#include "glog/logging.h"
+
+#include <unordered_map>
+
+namespace VOLTISO_NAMESPACE::allocator::malloc::_ {
+struct Debug {
+  // ::VOLTISO_NAMESPACE::HashMap<Handle, size_t> allocations;
+  std::unordered_map<Handle, size_t> allocations;
+};
+} // namespace VOLTISO_NAMESPACE::allocator::malloc::_
+
+//
 
 namespace VOLTISO_NAMESPACE::allocator::malloc {
-template <class _Brand> struct BUILD {
-private:
-  using Self = BUILD;
-
-private:
-  friend singleton::perThread;
-  BUILD() = default;
-
-public:
-  static constexpr auto &get() { return singleton::perThread::get<Self>(); }
-
-public:
-  using Brand = _Brand;
-  using Handle = handle::Custom<Self, void *>;
-
-  // `numBytes` must be greater than zero
-  static Handle allocateBytes(size_t numBytes) {
-    DCHECK_GT(numBytes, 0);
-    auto pointer = ::malloc(numBytes);
-    if (!pointer) [[unlikely]]
-      throwError(std::bad_alloc());
-    return pointer;
-  }
-
-  // `numBytes` must be greater than zero
-  // `alignment` must be greater than zero
-  static Handle allocateBytesAligned(size_t numBytes, size_t alignment) {
-    DCHECK_GT(numBytes, 0);
-    DCHECK_GT(alignment, 0);
-    auto pointer = ::aligned_alloc(alignment, numBytes);
-    if (!pointer) [[unlikely]]
-      throwError(std::bad_alloc());
-    return pointer;
-  }
-
-  static void freeBytes(Handle handle, size_t /* oldNumBytes */) {
-    ::free(reinterpret_cast<void *>(handle.value));
-  }
-
-  // template <class Item, class... Args>
-  // static HandleForItem<Item> construct(Args &&...args) {
-  //   auto handle = allocateBytes(sizeof(Item), alignof(Item));
-  //   new (handle) Item(std::forward<Args>(args)...);
-  //   return handle;
-  // }
-
-  // template <class Item> static void destroy(const HandleForItem<Item> &item)
-  // {
-  //   item->~Item();
-  //   freeBytes(item);
-  // }
-
-  static Handle setNumBytes(const Handle &handle, size_t /* oldNumBytes */,
-                            size_t newNumBytes) {
-    if (!newNumBytes) [[unlikely]]
-      return nullptr;
-    auto newPointer = ::realloc((void *)handle.value, newNumBytes);
-    if (!newPointer) [[unlikely]]
-      throwError(std::bad_alloc());
-    return newPointer;
-  }
-
-  void *operator()(const Handle &handle) {
-    return reinterpret_cast<void *>(handle.value);
-  }
-  const void *operator()(const Handle &handle) const {
-    return const_cast<Self &>(*this)(handle);
-  }
-
-  //
-
-  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
-  // void>>> Item &operator()(const HandleForItem<Item> &handle) {
-  //   return *(Item *)handle.value;
-  // }
-
-  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
-  // void>>> const Item &operator()(const HandleForItem<Item> &handle) const {
-  //   return *handle.value;
-  // }
-
-  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
-  // void>>> Item &operator()(const HandleForItem<Item> &handle, std::ptrdiff_t
-  // index) {
-  //   return ((Item *)handle.value)[index];
-  // }
-
-  // template <class Item, class = std::enable_if_t<!std::is_same_v<Item,
-  // void>>> const Item &operator()(const HandleForItem<Item> &handle,
-  //                        std::ptrdiff_t index) const {
-  //   return ((Item *)handle.value)[index];
-  // }
-
-  //
-
-  template <class NewBrand> using WithBrand = BUILD<NewBrand>;
-};
+template <class Options>
+inline Build<Options>::Build() : _debug(new _::Debug()) {}
 } // namespace VOLTISO_NAMESPACE::allocator::malloc
 
-namespace VOLTISO_NAMESPACE::allocator {
-using Malloc = malloc::BUILD<void>;
-} // namespace VOLTISO_NAMESPACE::allocator
+//
+
+namespace VOLTISO_NAMESPACE::allocator::malloc {
+template <class Options> inline Build<Options>::~Build() {
+  auto &debug = *this->_debug;
+  for (auto [handle, numBytes] : debug.allocations) {
+    throwError(std::runtime_error("Memory leak"));
+    // ::free(handle.value);
+  }
+  delete this->_debug;
+}
+} // namespace VOLTISO_NAMESPACE::allocator::malloc
+#endif
+
+//
+
+namespace VOLTISO_NAMESPACE::allocator::malloc {
+template <class Options>
+inline Build<Options>::Handle Build<Options>::allocateBytes(size_t numBytes) {
+  LOG(INFO) << "Allocate " << numBytes << " bytes";
+#if VOLTISO_DEBUG_MALLOC
+  CHECK_GT(numBytes, 0);
+#endif
+  auto handle = static_cast<Handle>(::malloc(numBytes));
+  if (!handle) [[unlikely]]
+    throwError(std::bad_alloc());
+#if VOLTISO_DEBUG_MALLOC
+  auto &debug = *this->_debug;
+  // debug.allocations[handle].insert(numBytes);
+  CHECK(debug.allocations.find(handle) == debug.allocations.end());
+  debug.allocations[handle] = numBytes;
+#endif
+  return handle;
+}
+
+// `numBytes` must be greater than zero
+// `alignment` must be greater than zero
+template <class Options>
+inline Build<Options>::Handle
+Build<Options>::allocateBytesAligned(size_t numBytes, size_t alignment) {
+#if VOLTISO_DEBUG_MALLOC
+  CHECK_GT(numBytes, 0);
+  CHECK_GT(alignment, 0);
+#endif
+  Handle handle = ::aligned_alloc(alignment, numBytes);
+  if (!handle) [[unlikely]]
+    throwError(std::bad_alloc());
+#if VOLTISO_DEBUG_MALLOC
+  auto &debug = *this->_debug;
+  // debug.allocations[handle].insert(numBytes);
+  CHECK(debug.allocations.find(handle) == debug.allocations.end());
+  debug.allocations[handle] = numBytes;
+#endif
+  return handle;
+}
+
+template <class Options>
+inline void Build<Options>::freeBytes(const Build<Options>::Handle &handle,
+                                      size_t oldNumBytes) {
+#if VOLTISO_DEBUG_MALLOC
+  CHECK_GT(oldNumBytes, 0);
+  auto &debug = *this->_debug;
+  CHECK(debug.allocations.find(handle) != debug.allocations.end());
+  if (debug.allocations[handle] != oldNumBytes)
+    throwError(
+        std::runtime_error("Malloc::freeBytes(): invalid `oldNumBytes`"));
+  // debug.allocations[handle].erase();
+  debug.allocations.erase(handle);
+#endif
+  ::free(handle);
+}
+
+template <class Options>
+inline Build<Options>::Handle
+Build<Options>::reallocateBytes(const Build<Options>::Handle &oldHandle,
+                                std::size_t oldNumBytes,
+                                std::size_t newNumBytes) {
+  if (!newNumBytes) [[unlikely]]
+    return nullptr;
+  auto newHandle = static_cast<Handle>(::realloc(oldHandle, newNumBytes));
+  if (!newHandle) [[unlikely]]
+    throwError(std::bad_alloc());
+#if VOLTISO_DEBUG_MALLOC
+  auto &debug = *this->_debug;
+  CHECK(debug.allocations.find(oldHandle) != debug.allocations.end());
+  if (debug.allocations[oldHandle] != oldNumBytes)
+    throwError(
+        std::runtime_error("Malloc::reallocateBytes(): invalid `oldNumBytes`"));
+  // debug.allocations[oldHandle].erase();
+  // debug.allocations[newHandle].insert(newNumBytes);
+  debug.allocations.erase(oldHandle);
+  debug.allocations[newHandle] = newNumBytes;
+#endif
+  return newHandle;
+}
+
+template <class Options>
+inline void *Build<Options>::operator()(const Build<Options>::Handle &handle) {
+#if VOLTISO_DEBUG_MALLOC
+  CHECK_NE(handle, Handle::null);
+  auto &debug = *this->_debug;
+  // if (!debug.allocations[handle].exists)
+  if (debug.allocations.find(handle) == debug.allocations.end())
+    throwError(std::runtime_error("Malloc::operator(): invalid handle"));
+#endif
+  return handle;
+}
+} // namespace VOLTISO_NAMESPACE::allocator::malloc

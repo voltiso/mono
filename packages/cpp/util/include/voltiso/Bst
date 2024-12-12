@@ -1,25 +1,29 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/DynamicArray>
-#include <voltiso/Entry>
-#include <voltiso/singleton>
+#include "voltiso/Entry"
 
 namespace VOLTISO_NAMESPACE {
-template <class _Pool> struct bst {
+template <class _Pool> class Bst {
 private:
-  bst() = delete;
+  using Self = Bst;
 
+public:
   using Pool = _Pool;
   using Handle = typename Pool::Handle;
-  static thread_local constexpr auto &v = singleton::perThread::get<Pool>();
-
   using Item = typename Pool::Item;
   using Value = GetValue<Item>;
 
+private:
+  Pool &v;
+
+public:
+  Bst(Pool &pool) : v(pool) {}
+  // Bst(Self &&) = default;
+
 public:
   // find first node that is `>= value`
-  static Handle _find(const Handle &root, const Value &value) {
+  Handle _find(const Handle &root, const Value &value) {
     auto node = root;
     auto cand = node;
     while (node) {
@@ -39,10 +43,10 @@ public:
   //          a   y      ->	      x   c                          |
   //             / \             / \                             |
   //            b   c           a   b                            |
-  static Handle rotateLeft(const Handle &x) {
-    auto y = v[x]->children[1];
-    v[x]->children[1] = v[y]->children[0];
-    v[y]->children[0] = x;
+  Handle rotateLeft(const Handle &x) {
+    auto y = v[x].children[1];
+    v[x].children[1] = v[y].children[0];
+    v[y].children[0] = x;
     return y;
   }
 
@@ -51,12 +55,12 @@ public:
   //          y   c      ->	      a   x                          |
   //         / \                     / \                         |
   // 	      a   b                   b   c                        |
-  static Handle rotateRight(const Handle &x) {
-    auto y = v[x]->children[0];
-    v[x]->children[0] = v[y]->children[1];
-    v[y]->children[1] = x;
+  Handle rotateRight(const Handle &x) {
+    auto y = v[x].children[0];
+    v[x].children[0] = v[y].children[1];
+    v[y].children[1] = x;
     return y;
   }
-
 }; // struct bst
+
 } // namespace VOLTISO_NAMESPACE

@@ -1,9 +1,9 @@
 #include <benchmark/benchmark.h>
 
 #include <voltiso/Array>
+#include <voltiso/Storage>
 #include <voltiso/is_trivially_relocatable>
 #include <voltiso/min>
-#include <voltiso/storage/Storage>
 
 #include <iostream>
 
@@ -30,7 +30,8 @@ static void BM_Array(benchmark::State &state) {
                              (size_t)std::numeric_limits<Count>::max() - 3);
   while (state.KeepRunningBatch(COUNT)) {
     // LOG(INFO) << "COUNT: " << COUNT;
-    Array<Count, COUNT, STARTING_INDEX> vec = {};
+    using Vec = Array<Count, COUNT>::template STARTING_INDEX_<STARTING_INDEX>;
+    Vec vec = {};
     CHECK_EQ(vec[STARTING_INDEX], 0);
     for (Count i = STARTING_INDEX; i < (Count)(STARTING_INDEX + COUNT); ++i) {
       vec[i] = i;

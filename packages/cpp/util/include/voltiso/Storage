@@ -1,12 +1,23 @@
 #pragma once
-#include <initializer_list>
 #include <voltiso/_>
 
-#include <voltiso/Array>
-#include <voltiso/storage/Custom>
+#include "voltiso/Array"
+
+#include "glog/logging.h"
+
+#include <cstddef>
+#include <initializer_list>
+
+namespace VOLTISO_NAMESPACE::storage {
+// To replace `std::aligned_storage`
+// https://stackoverflow.com/a/71828512/1123898
+template <size_t _SIZE, size_t ALIGN> struct Custom {
+  static constexpr size_t SIZE = _SIZE;
+  alignas(ALIGN) std::array<std::byte, SIZE> data;
+};
+} // namespace VOLTISO_NAMESPACE::storage
 
 namespace VOLTISO_NAMESPACE {
-
 // To replace `std::aligned_storage`
 // https://stackoverflow.com/a/71828512/1123898
 // ⚠️ Remember to call `.destroy()` if you constructed something
@@ -23,7 +34,7 @@ template <class _Item> struct Storage {
   Storage() = default;
 
   Storage(std::initializer_list<std::byte> init) : bytes(init) {
-    LOG(INFO) << "Storage(std::initializer_list<std::byte>)";
+    // LOG(INFO) << "Storage(std::initializer_list<std::byte>)";
   }
 
   // template <class... Args>
@@ -39,8 +50,4 @@ template <class _Item> struct Storage {
   // ⚠️ Remember to call `.destroy()` if you constructed something
   void destroy() { item().~Item(); }
 };
-
-static_assert(sizeof(Storage<int>) == sizeof(int));
-// static_assert(sizeof(Storage<void>) == 111);
-
 } // namespace VOLTISO_NAMESPACE

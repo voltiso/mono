@@ -5,5 +5,5 @@
 
 namespace VOLTISO_NAMESPACE {
 template <class Derived, class Base>
-using is_derived_from = std::is_base_of<Base, Derived>;
+static constexpr auto is_derived_from = std::is_base_of_v<Base, Derived>;
 } // namespace VOLTISO_NAMESPACE

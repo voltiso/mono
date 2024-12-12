@@ -1,8 +1,8 @@
 #include <benchmark/benchmark.h>
 
 #include <voltiso/DynamicArray>
+#include <voltiso/Storage>
 #include <voltiso/is_trivially_relocatable>
-#include <voltiso/storage/Storage>
 
 #include <iostream>
 
@@ -26,6 +26,7 @@ template <int SIZE> struct Trivial {
 static_assert(sizeof(Trivial<123>) == 123);
 
 static_assert(std::is_trivially_copyable_v<Trivial<123>>);
+static_assert(is_trivially_relocatable<Trivial<123>>);
 
 static constexpr auto MEMORY = 4 * 1024 * 1024;
 
@@ -125,8 +126,8 @@ template <int SIZE> struct TriviallyRelocatable {
 
   TriviallyRelocatable(TriviallyRelocatable &&other) {
     ++numConstructorCalls;
-    // std::memcpy(data, other.data, Size);
-    // std::memset(other.data, 0, Size);
+    // ::memcpy(data, other.data, Size);
+    // ::memset(other.data, 0, Size);
   }
 
   TriviallyRelocatable &operator=(const TriviallyRelocatable &other) = delete;

@@ -31,10 +31,11 @@ find_package(gflags REQUIRED)
 find_package(glog REQUIRED)
 find_package(cpptrace REQUIRED)
 
-# torch
+# set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# find_package(Torch REQUIRED) set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}
-# ${TORCH_CXX_FLAGS}")
+# set(CMAKE_BUILD_PARALLEL_LEVEL 1)
+
+# add_link_options("-fuse-ld=gold") # default crashes? OOM?
 
 # cpptrace find_package(cpptrace REQUIRED)
 add_subdirectory(util)
@@ -50,12 +51,15 @@ include(GoogleTest)
 add_executable(
 	voltiso-util-test
 	test.cpp
+
+	util/test/Entry.test.cpp
 	util/test/Context.test.cpp
 	util/test/Handle.test.cpp
 	util/test/InPlace.test.cpp
 	util/test/Owned.test.cpp
 	util/test/Storage.test.cpp
 	util/test/BitArray.test.cpp
+	util/test/Object.test.cpp
 	util/test/Array.test.cpp
 	util/test/DynamicArray.test.cpp
 	util/test/HashTable.test.cpp

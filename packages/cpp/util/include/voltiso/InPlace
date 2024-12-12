@@ -1,11 +1,11 @@
 #pragma once
 #include <voltiso/_>
 
+#include <voltiso/Storage>
 #include <voltiso/WithCopy>
 #include <voltiso/WithMove>
 #include <voltiso/WithSize>
 #include <voltiso/has>
-#include <voltiso/storage/Universal>
 
 #include <glog/logging.h>
 

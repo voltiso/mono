@@ -1,37 +1,61 @@
 #pragma once
 #include <voltiso/_>
 
-#include <type_traits>
-#include <voltiso/handle/Handle>
-#include <voltiso/memory/Iterator>
+#include "voltiso/Handle"
+#include "voltiso/Object"
+#include "voltiso/Options"
+#include "voltiso/memory/Iterator"
+
+#include "glog/logging.h"
 
 #include <cstddef>
+#include <type_traits>
 
-namespace VOLTISO_NAMESPACE {
+namespace VOLTISO_NAMESPACE::array {
+
+struct Defaults {
+  using Item = void;                          // need to override
+  static constexpr std::size_t NUM_ITEMS = 0; // need to override
+  static constexpr std::make_signed_t<size_t> STARTING_INDEX = 0;
+};
+
+using DefaultOptions = Options<Defaults>;
+
+//
+
 // similar to `std::array`
-template <class _Item, size_t COUNT,
-          std::make_signed_t<size_t> STARTING_INDEX = 0>
-class Array {
-public:
-  using Self = Array;
-  using Item = _Item;
-  static constexpr auto numItems = COUNT;
+template <class _Options> class Build : public Object<_Options> {
+  using Self = Build;
+  using Base = Object<_Options>;
 
-  template <class Index> using CustomHandle = handle::Custom<Self, Index>;
+public:
+  using Options = _Options;
+  using Item = Options::Item;
+  static constexpr auto NUM_ITEMS = Options::NUM_ITEMS;
+  static constexpr auto STARTING_INDEX = Options::STARTING_INDEX;
+  // static constexpr auto numItems = NUM_ITEMS;
+
+  template <class Type>
+  using CustomHandle = Handle::Brand_<Self>::template Type_<Type>;
+
   using Handle =
       CustomHandle<std::conditional_t<(STARTING_INDEX < 0),
                                       std::make_signed<size_t>, size_t>>;
 
-  Item items[COUNT];
+  Item items[NUM_ITEMS];
 
-  Array() = default;
+public:
+  using Base::Base;
+  using Base::operator=;
 
-  Array(std::initializer_list<Item> list) {
+  Build() = default;
+
+  Build(std::initializer_list<Item> list) {
     size_t i = 0;
     for (auto &item : list) {
       items[i++] = item;
     }
-    for (; i < COUNT; i++) {
+    for (; i < NUM_ITEMS; i++) {
       items[i] = Item{};
     }
   }
@@ -39,7 +63,7 @@ public:
   template <class Index>
   const Item &operator[](const CustomHandle<Index> &handle) const {
     DCHECK_LE(0, handle.value);
-    DCHECK_LT(handle.value - STARTING_INDEX, numItems);
+    DCHECK_LT(handle.value - STARTING_INDEX, NUM_ITEMS);
     return items[handle.value - STARTING_INDEX];
   }
 
@@ -86,12 +110,22 @@ public:
   };
 
   Iterator begin() { return Iterator{items}; }
-  Iterator end() { return Iterator{items + numItems}; }
+  Iterator end() { return Iterator{items + NUM_ITEMS}; }
 
   ConstIterator begin() const { return ConstIterator{items}; }
-  ConstIterator end() const { return ConstIterator{items + numItems}; }
-
-  template <std::make_signed_t<std::size_t> NEW_STARTING_INDEX>
-  using WithStartingIndex = Array<Item, COUNT, NEW_STARTING_INDEX>;
+  ConstIterator end() const { return ConstIterator{items + NUM_ITEMS}; }
 };
+} // namespace VOLTISO_NAMESPACE::array
+VOLTISO_OBJECT_FINAL(array)
+
+namespace VOLTISO_NAMESPACE {
+template <class Options>
+static constexpr auto is_trivially_relocatable<array::Build<Options>> = true;
+
+template <class Options>
+static constexpr auto is_trivially_relocatable<array::Final<Options>> = true;
+
+template <class Item, size_t NUM_ITEMS>
+using Array = array::Final<typename array::DefaultOptions::Item_<
+    Item>::template NUM_ITEMS_<NUM_ITEMS>>;
 } // namespace VOLTISO_NAMESPACE
