@@ -15,6 +15,11 @@ export const sonar = defineEslintFlatConfig({
 	rules: {
 		...getAllRules(sonarjs, 'sonarjs', 'warn'),
 
+		'sonarjs/deprecation': 0, // ! slow + already handled by faster `import/no-deprecated`
+		'sonarjs/aws-restricted-ip-admin-access': 0, // ! slow + we don't use AWS
+
+		'sonarjs/no-unused-vars': 0, // typescript does this already; also, ts allows names starting with `_...`
+
 		'sonarjs/no-empty-function': 0, // does not work with eslint 9
 		'sonarjs/no-unused-expressions': 0, // does not work with eslint 9
 		'sonarjs/no-inconsistent-returns': 0, // does not work with eslint 9

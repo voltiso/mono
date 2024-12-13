@@ -109,6 +109,8 @@ export const nConfig = defineEslintFlatConfig(
 			...getAllRules(voltisoPlugin, '@voltiso', 'warn'),
 
 			...nRules,
+
+			'n/no-hide-core-modules': 0, // ! deprecated; wrong assumption; incorrect rule
 		},
 	},
 )

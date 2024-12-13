@@ -14,7 +14,6 @@ export interface ISubjectTreeBase {
 
 	get exists(): boolean
 	get value(): unknown
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	get maybeValue(): unknown | undefined
 
 	// get Final$(): ISubjectTreeBase

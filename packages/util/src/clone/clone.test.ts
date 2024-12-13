@@ -25,7 +25,7 @@ class MyCloneable {
 	}
 }
 
-// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
+// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('clone', () => {
 	// eslint-disable-next-line jest/no-commented-out-tests
 	// it('strict mode', () => {

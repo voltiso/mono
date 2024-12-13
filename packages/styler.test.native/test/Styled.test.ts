@@ -34,7 +34,6 @@ describe('Styled (react-native)', () => {
 		const BadComponent = (_props: { a?: 1 }) => null
 
 		// @ts-expect-error no properties in common
-		// eslint-disable-next-line sonarjs/no-unused-vars
 		const _c = style(BadComponent)
 
 		//

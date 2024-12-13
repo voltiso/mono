@@ -4,12 +4,21 @@
 import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical, Value } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
+import type { SubscriptionLike } from 'rxjs'
 
 import type { CustomSubjectTree, RequiredSubjectTree } from '~'
 import { SubjectTree } from '~'
 
 describe('SubjectTree', () => {
 	it('type', () => {
+		$Assert.is<SubjectTree<{}>, SubscriptionLike>
+		// $Assert.is<SubjectTree<{}>, Subject<{}>>
+		// $Assert.is<SubjectTree<{}>, RequiredSubjectTree<{}>>()
+		$Assert.is<RequiredSubjectTree<{}>, SubjectTree<{}>>()
+		$Assert.is<RequiredSubjectTree<{}>, SubjectTree<unknown>>()
+
+		// type AA = RequiredSubjectTree<{}>['observers']
+
 		type A = RequiredSubjectTree<{
 			a0: number
 			a1?: number

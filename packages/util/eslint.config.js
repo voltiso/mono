@@ -1,12 +1,13 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+// ! circular dependency
+// import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
 // eslint-disable-next-line no-restricted-imports
 import baseConfig from '../../eslint.config.js'
 
-export default defineEslintFlatConfig(
+export default [
 	...baseConfig,
 	{
 		files: ['**/strictNullChecks/test-false/**/*'],
@@ -23,4 +24,4 @@ export default defineEslintFlatConfig(
 			'sonarjs/no-redundant-optional': 0, // requires `strictNullChecks`
 		},
 	},
-)
+]

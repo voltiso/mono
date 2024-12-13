@@ -10,7 +10,6 @@ import { chaiFriendly } from './detail/overrides/chaiFriendly.js'
 import { codeOverride } from './detail/overrides/code.js'
 import { cypress } from './detail/overrides/cypress.js'
 import { destructuringConfig } from './detail/overrides/destructuring.js'
-import { editorconfig } from './detail/overrides/editorconfig.js'
 import { es } from './detail/overrides/es.js'
 import { eslintComments } from './detail/overrides/eslintComments.js'
 import { etcConfig } from './detail/overrides/etc.js'
@@ -119,7 +118,7 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	...next,
 	...simpleImportSort,
 	// storybook,
-	...editorconfig,
+	// ...editorconfig,
 	...i18nConfig,
 	...i18nextConfig,
 	...formatJs,

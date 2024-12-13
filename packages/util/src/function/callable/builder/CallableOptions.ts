@@ -10,7 +10,6 @@ export interface CallableNoThisOptions {
 }
 
 export interface CallableOptions extends CallableNoThisOptions {
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	this: unknown | NoThis
 }
 

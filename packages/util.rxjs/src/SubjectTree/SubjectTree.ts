@@ -3,17 +3,16 @@
 
 import type { IsCompatible, IsOptional, Override, Value } from '@voltiso/util'
 import { $Assert, $dev, lazyConstructor } from '@voltiso/util'
-import type { Subject } from 'rxjs'
 
 import type {
 	CustomSubjectTreeBase,
 	ISubjectTreeBase,
+	SubjectNoDeprecated,
 	SubjectTreeOptions,
 	SubjectTreeTypeOptions,
 	SubjectTreeTypeOptionsFromOptions,
 } from '~'
 import { _CustomSubjectTree, SubjectTreeConstructor } from '~'
-import type { ISubject } from '~/ISubject'
 
 //
 
@@ -32,7 +31,7 @@ export type CustomSubjectTree<TO extends Partial<SubjectTreeTypeOptions>> =
 
 export type CustomSubjectTree_<TO extends SubjectTreeTypeOptions> =
 	CustomSubjectTreeBase<TO> &
-		Subject<
+		SubjectNoDeprecated<
 			| TO['Output']
 			| (true extends TO['IsAncestorOptional']
 					? undefined
@@ -42,22 +41,9 @@ export type CustomSubjectTree_<TO extends SubjectTreeTypeOptions> =
 		> &
 		_SubjectTreeRec<TO>
 
-// export type CustomSubjectTree$<TO extends Partial<SubjectTreeTypeOptions>> =
-// 	CustomSubjectTree$_<Override<SubjectTreeTypeOptions.Default, TO>>
-
-// export type CustomSubjectTree$_<TO extends SubjectTreeTypeOptions> =
-// 	CustomSubjectTreeBase$<TO> &
-// 		Subject<
-// 			| TO['Output']
-// 			| (true extends TO['IsAncestorOptional']
-// 					? undefined
-// 					: true extends TO['IsOptional']
-// 						? undefined
-// 						: never)
-// 		> &
-// 		_SubjectTreeRec<TO>
-
-export interface ISubjectTree extends ISubjectTreeBase, ISubject {}
+export interface ISubjectTree
+	extends ISubjectTreeBase,
+		SubjectNoDeprecated<unknown> {}
 
 $dev(<TO extends Partial<SubjectTreeTypeOptions>>() => {
 	$Assert.is<CustomSubjectTree<TO>, ISubjectTree>()

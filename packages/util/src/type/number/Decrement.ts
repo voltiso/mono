@@ -25,6 +25,5 @@ export interface _DecrementMap {
 
 export type DecrementArgument = _<keyof _DecrementMap>
 
-// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type $Decrement<X extends AlsoAccept<number> | DecrementArgument> =
 	X extends keyof _DecrementMap ? _DecrementMap[X] : number

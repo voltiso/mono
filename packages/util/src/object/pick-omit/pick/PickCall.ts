@@ -43,6 +43,7 @@ type _PickCall3<T> = T extends (a: infer A, b: infer B, c: infer C) => infer R
 		: (...args: [A, B]) => R
 	: never
 
+// eslint-disable-next-line @typescript-eslint/max-params
 type _PickCall4<T> = T extends (
 	a: infer A,
 	b: infer B,

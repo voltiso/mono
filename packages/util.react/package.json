@@ -53,8 +53,8 @@
     "react-intersection-observer": "^9.5.3"
   },
   "peerDependencies": {
-    "@types/react": "18 || 17",
-    "react": "18 || 17"
+    "@types/react": "19 || 18 || 17",
+    "react": "19 || 18 || 17"
   },
   "devDependencies": {
     "@babel/core": "^7.23.6",

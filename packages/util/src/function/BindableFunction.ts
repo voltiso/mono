@@ -59,7 +59,7 @@ export class _BindableFunction<
 		this.boundThis = boundThis
 		this.boundArguments = boundArguments
 
-		// eslint-disable-next-line consistent-this, unicorn/no-this-assignment, @typescript-eslint/no-this-alias, sonarjs/no-this-alias
+		// eslint-disable-next-line unicorn/no-this-assignment, consistent-this, @typescript-eslint/no-this-alias
 		const self = this
 
 		const name = this.name

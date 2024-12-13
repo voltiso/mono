@@ -138,6 +138,8 @@ export const codeOverride = defineEslintFlatConfig(
 			// '@stylistic/quotes': ['warn', 'single', { avoidEscape: true }], // ! avoidEscape does not actually work
 			'@stylistic/quotes': 0,
 
+			'@stylistic/jsx-newline': 0,
+
 			'@stylistic/quote-props': [
 				'warn',
 				'as-needed',

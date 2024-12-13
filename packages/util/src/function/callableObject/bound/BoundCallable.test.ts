@@ -56,7 +56,7 @@ describe('BoundCallable', () => {
 
 		expect(callable('hello')).toBe(15)
 
-		// eslint-disable-next-line no-useless-call, sonarjs/no-useless-call
+		// eslint-disable-next-line no-useless-call
 		expect(callable.call(null, 'hello')).toBe(15) // bound anyway
 	})
 })

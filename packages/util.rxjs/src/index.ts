@@ -4,6 +4,5 @@
 export type * from './IObservable'
 export type * from './IObserver'
 export * from './isObservableLike'
-export type * from './ISubject'
+export type * from './SubjectNoDeprecated'
 export * from './SubjectTree'
-//

@@ -1,26 +1,17 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
-import prettier from 'eslint-plugin-prettier'
+// ! eslint-plugin-prettier is slow!
+// ! use scripting that does direct `prettier` linting instead (possibly with auto `--fix`)
 
-// import { codeFiles } from '~/_/files'
+import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+// import prettier from 'eslint-plugin-prettier'
 
 export const prettierConfig = defineEslintFlatConfig({
-	// files: ['*'],
-
-	/**
-	 * Do not use prettier for JS/TS, because it does not allow for
-	 * `putout/align-spaces`
-	 */
-	// ignores: codeFiles,
-
-	plugins: { prettier },
-
-	// extends: ['plugin:prettier/recommended'],
+	// plugins: { prettier }, // ! slow!
 
 	rules: {
-		...getAllRules(prettier as never, 'prettier', 'warn'),
+		// ...getAllRules(prettier as never, 'prettier', 'warn'),
 		// 'prettier/prettier': 1,
 
 		quotes: 0,

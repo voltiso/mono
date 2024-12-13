@@ -42,7 +42,6 @@ describe('OptionalArgument', () => {
 		type I = IsProvided<null | NoArgument>
 		$Assert<IsIdentical<I, boolean>>()
 
-		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		type J = IsProvided<never | NoArgument>
 		$Assert<IsIdentical<J, false>>()
 

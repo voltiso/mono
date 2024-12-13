@@ -3,6 +3,9 @@
 
 'use client'
 
-export * from './ClientFlushRscStyle'
-export * from './ClientNextStylerRegistry'
-export * from './context'
+// nextjs: Error: It's currently unsupported to use "export *" in a client boundary. Please use named exports instead.
+
+export { ClientFlushRscStyle } from './ClientFlushRscStyle'
+export { ClientNextStylerRegistry } from './ClientNextStylerRegistry'
+export { RendererContext, ThemeContext, useRenderer, useTheme } from './context'
+export type { UseRendererResult } from './context'

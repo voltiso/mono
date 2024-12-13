@@ -131,18 +131,20 @@ export const buildCjs = [
 	`echo '{"type":"commonjs"}' > dist/cjs/package.json`,
 ]
 
-export const lint = [installWorkspace, turbo('lint:tsc', 'lint:eslint')]
+//
 
-export const lintEslint =
-	'cross-env FULL=1 NODE_OPTIONS=--max_old_space_size=24000 eslint --max-warnings=0 .'
+export const lint = [
+	installWorkspace,
+	turbo('fix:prettier', 'depcheck', 'lint:tsc', 'lint:eslint'),
+]
 
-export const lintTsc = 'tsc -b'
-
-export const fix = [installWorkspace, turbo('fix:eslint', 'fix:prettier')]
 export const fixPrettier = 'prettier --write --loglevel error .'
-export const fixEslint = 'eslint --fix --max-warnings=0 .'
-
 export const depcheck = 'depcheck'
+export const lintTsc = 'tsc -b'
+export const lintEslint =
+	'cross-env TIMING=1 NODE_OPTIONS=--max_old_space_size=24000 FORCE_COLOR=1 eslint --max-warnings=0 .'
+
+//
 
 export const typecov = [
 	'type-coverage --project tsconfig.build.cjs --update || true',
@@ -173,11 +175,13 @@ export const prepublishOnly = [
 		'build:esm',
 		'build:cjs',
 		'test',
-		'typecov',
+		//
 		'fix:prettier',
-		'lint:eslint',
-		'lint:tsc',
 		'depcheck',
+		'lint:tsc',
+		'lint:eslint',
+		//
+		'typecov',
 		'compatDirs',
 	),
 

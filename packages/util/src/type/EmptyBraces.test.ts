@@ -12,7 +12,6 @@ describe('EmptyBraces', () => {
 		expect.assertions(0)
 
 		type A = ExtractEmptyBraces<
-			// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 			{} | 1 | null | 'a' | { a: 1 } | void | never | object
 		>
 
@@ -21,7 +20,6 @@ describe('EmptyBraces', () => {
 		//
 
 		type B = ExcludeEmptyBraces<
-			// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 			{} | 1 | null | 'a' | { a: 1 } | void | never | object
 		>
 

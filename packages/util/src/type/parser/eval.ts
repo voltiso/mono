@@ -78,7 +78,6 @@ export type EvalAst<ast = never, args extends unknown[] = []> = ast extends [
 // eslint-disable-next-line sonarjs/redundant-type-aliases
 type ExprString = string
 
-// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type Expr = Ast | keyof Operation | ExprString
 
 export type PreprocessExpr<E extends Expr> = E extends keyof Operation

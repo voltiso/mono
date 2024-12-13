@@ -1,6 +1,10 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// ! this is slow
+// ! better use scripting that does direct lint:prettier step with --fix
+// ! also, we fine-tune all eslint options manually anyway
+
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import editorConfigPlugin from 'eslint-plugin-editorconfig'

@@ -33,10 +33,8 @@ export type $Increment_<X> = X extends keyof _IncrementMap
 	? _IncrementMap[X]
 	: number
 
-// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type $Increment<X extends AlsoAccept<number> | IncrementArgument> =
 	$Increment_<X>
 
-// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 export type Increment<X extends AlsoAccept<number> | IncrementArgument> =
 	Increment_<X>

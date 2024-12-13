@@ -23,7 +23,6 @@ describe('cssProps', () => {
 		$Assert.is<IsReactNative, true>()
 
 		// @ts-expect-error react-native
-		// eslint-disable-next-line sonarjs/no-unused-vars
 		const _a = style('button')
 		// $Assert.is<typeof a, StaticError>()
 

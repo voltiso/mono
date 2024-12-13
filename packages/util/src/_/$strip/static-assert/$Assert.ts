@@ -88,10 +88,10 @@ const _AssertInterface = {
 	 * Assert.is<123, number>()
 	 * ```
 	 */
-	is<_A extends B, B>() {},
+	is: <_A extends B, B>() => {},
 
-	isSubtype<_A extends B, B>() {},
-	isSupertype<A, _B extends A>() {},
+	isSubtype: <_A extends B, B>() => {},
+	isSupertype: <A, _B extends A>() => {},
 }
 
 Object.setPrototypeOf(_Assert, _AssertInterface)
