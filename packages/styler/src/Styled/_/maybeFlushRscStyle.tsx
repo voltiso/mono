@@ -27,6 +27,7 @@ export function maybeFlushRscStyle(
 
 	if (!isServerComponent) return reactNode
 
-	// eslint-disable-next-line react/jsx-key, sonarjs/jsx-key
+	// ! key??? TODO
+	// eslint-disable-next-line react/jsx-key
 	return [reactNode, <FlushRscStyle />]
 }

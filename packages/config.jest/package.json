@@ -57,7 +57,7 @@
     "@voltiso/config.jest.lib": "workspace:^",
     "esbuild": "^0.24.0",
     "esbuild-register": "^3.6.0",
-    "flow-remove-types": "^2.254.2"
+    "flow-remove-types": "^2.256.0"
   },
   "devDependencies": {
     "@voltiso/config.ts": "workspace:^"

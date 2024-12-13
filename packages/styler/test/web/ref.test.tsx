@@ -14,7 +14,7 @@ describe('ref', () => {
 
 		const Button = style('button')
 
-		const ref: RefObject<HTMLButtonElement> = { current: null }
+		const ref: RefObject<HTMLButtonElement> = { current: null as never }
 
 		const Component: FC = () => <Button ref={ref} />
 

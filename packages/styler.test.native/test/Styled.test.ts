@@ -2,10 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
-import type { IsIdentical, StaticError } from '@voltiso/util'
-import { $Assert } from '@voltiso/util'
-import type { StyleProp } from 'react-native'
-
 import type {
 	GetStyledComponent,
 	IStyled,
@@ -13,8 +9,11 @@ import type {
 	Stylable,
 	StyledComponent,
 	StyledComponentWithProps,
-} from '~'
-import { style } from '~'
+} from '@voltiso/styler'
+import { style } from '@voltiso/styler'
+import type { IsIdentical, StaticError } from '@voltiso/util'
+import { $Assert } from '@voltiso/util'
+import type { StyleProp } from 'react-native'
 
 describe('Styled (react-native)', () => {
 	it('generic', <P extends {}, C extends Stylable>() => {
@@ -35,6 +34,7 @@ describe('Styled (react-native)', () => {
 		const BadComponent = (_props: { a?: 1 }) => null
 
 		// @ts-expect-error no properties in common
+		// eslint-disable-next-line sonarjs/no-unused-vars
 		const _c = style(BadComponent)
 
 		//

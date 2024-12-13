@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { ReactNode } from 'react'
+import type React from 'react'
 
 import type { Props, ReactNodeLike } from '~/react-types'
 import type { InnerProps } from '~/Stylable/InnerProps'
@@ -11,7 +11,7 @@ import type { InnerProps } from '~/Stylable/InnerProps'
  * assignable to `P`
  */
 export type StylableJsxCall_<P extends Props> = {
-	bivarianceHack(props: P & InnerProps): ReactNode // ReactElement | null
+	bivarianceHack(props: P & InnerProps): React.ReactNode // | React.ReactElement | null
 }['bivarianceHack']
 
 //
@@ -20,5 +20,5 @@ export type StylableJsxCallLike = (props: any) => ReactNodeLike // ReactElementL
 
 /** FC-like types that can be styled using style(...) */
 export type IStylableJsxCall = {
-	bivarianceHack(props: InnerProps): ReactNode // ReactElement | null
+	bivarianceHack(props: InnerProps): React.ReactNode // | React.ReactElement | null
 }['bivarianceHack']

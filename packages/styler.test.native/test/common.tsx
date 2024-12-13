@@ -3,10 +3,9 @@
 
 import type { RenderAPI } from '@testing-library/react-native'
 import { render } from '@testing-library/react-native'
-import type { ReactNode } from 'react'
-
-import { NativeRenderer } from '~'
-import { RendererContext } from '~/client'
+import { NativeRenderer } from '@voltiso/styler'
+import { RendererContext } from '@voltiso/styler/client'
+import type React from 'react'
 
 let renderer: NativeRenderer | undefined
 
@@ -29,7 +28,7 @@ export function getRenderer(): NativeRenderer {
 	return renderer
 }
 
-export function renderApp(children: ReactNode): RenderAPI {
+export function renderApp(children: React.ReactNode): RenderAPI {
 	return render(
 		<RendererContext.Provider value={getRenderer()}>
 			{children}

@@ -24,14 +24,12 @@ import type { InnerProps } from './InnerProps'
 export type StylableLike =
 	| StylableJsxCallLike
 	| StylableJsxConstructLike
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| IntrinsicElementLike
 
 /** Element types that can be styled using style(...) */
 export type IStylable =
 	| IStylableJsxCall
 	| IStylableJsxConstruct
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| IStylableIntrinsicElement
 
 //

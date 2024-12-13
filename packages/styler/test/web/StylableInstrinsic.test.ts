@@ -24,7 +24,6 @@ describe('StylableIntrinsic', () => {
 		expect.assertions(0)
 		// allows simplifying typings
 
-		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		type All = _<keyof JSX.IntrinsicElements & string>
 		type WithClassName = StylableIntrinsic<{}>
 

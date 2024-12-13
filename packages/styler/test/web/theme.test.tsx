@@ -1,7 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// import { describe, expect, it } from '@jest/globals'
 import { describe, expect, it } from '@jest/globals'
 import { render, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
@@ -91,7 +90,7 @@ describe('theme', () => {
 		expect.hasAssertions()
 
 		const Button = style('button').css({
-			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
+			// eslint-disable-next-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
 			boxShadow: `${t.a.b.c}px solid red`,
 		})
 		renderApp(<Button />)

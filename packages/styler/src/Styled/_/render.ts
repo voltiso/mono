@@ -83,12 +83,12 @@ export function render<$ extends StyledTypeInfo>(
 ): React.ReactNode {
 	const renderer: WebRenderer | NativeRenderer | null = isServerComponent
 		? rscRenderer
-		: // eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		: // eslint-disable-next-line react-hooks/rules-of-hooks
 			useRenderer()
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (React.useInsertionEffect && isWebRenderer(renderer)) {
-		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		React.useInsertionEffect(() => {
 			const style = renderer.flushStyle()
 			if (!style) return
@@ -101,7 +101,7 @@ export function render<$ extends StyledTypeInfo>(
 		})
 	}
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const theme = isServerComponent ? {} : useTheme()
 
 	const { css, ...otherProps } = props

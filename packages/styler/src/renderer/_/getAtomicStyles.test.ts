@@ -6,7 +6,7 @@ import { describe, expect, it } from '@jest/globals'
 import { WebRenderer } from '../WebRenderer'
 import { getAtomicStyles } from './getAtomicStyles'
 
-// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
+// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('getAtomicStyles', () => {
 	it('simple', () => {
 		expect(

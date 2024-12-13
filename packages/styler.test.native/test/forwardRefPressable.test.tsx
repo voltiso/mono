@@ -2,13 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
+import type { ComponentPropsWithRef_, GetNativeElement } from '@voltiso/styler'
+import { style } from '@voltiso/styler'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 import * as React from 'react'
 import { Pressable, View } from 'react-native'
-
-import type { ComponentPropsWithRef_, GetNativeElement } from '~'
-import { style } from '~'
 
 import { renderApp } from './common'
 

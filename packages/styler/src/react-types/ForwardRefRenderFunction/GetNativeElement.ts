@@ -1,8 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/no-redundant-type-constituents */
-
+// eslint-disable-next-line sonarjs/deprecation
 import type { ComponentPropsWithRef, ComponentType, LegacyRef } from 'react'
 import type React from 'react'
 
@@ -20,7 +19,8 @@ export type GetNativeElement<
 	? T
 	: T extends IntrinsicElement | ComponentType<any>
 		? 'ref' extends keyof ComponentPropsWithRef<T>
-			? ComponentPropsWithRef<T>['ref'] extends LegacyRef<infer R> | undefined
+			? // eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
+				ComponentPropsWithRef<T>['ref'] extends LegacyRef<infer R> | undefined
 				? R
 				: never
 			: never

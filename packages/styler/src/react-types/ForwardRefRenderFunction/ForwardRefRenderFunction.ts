@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/no-redundant-type-constituents */
-
 import type * as React from 'react'
 
 import type { IntrinsicElement } from '~/Stylable'

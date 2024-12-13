@@ -4,9 +4,8 @@
 /* eslint-disable testing-library/prefer-screen-queries */
 
 import { describe, expect, it } from '@jest/globals'
+import { style } from '@voltiso/styler'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
-
-import { style } from '~'
 
 import { renderApp } from './common'
 

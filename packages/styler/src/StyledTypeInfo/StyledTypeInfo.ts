@@ -7,7 +7,6 @@ import type { IntrinsicElement } from '~/Stylable'
 import type { NativeElement } from '~/StyledComponent'
 
 export type StyledSubject =
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| IntrinsicElement
 	| React.ComponentType<any>
 	| React.Component<any, any, any> // catches react-native native elements

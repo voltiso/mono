@@ -22,6 +22,8 @@ export const sonar = defineEslintFlatConfig({
 
 		'sonarjs/different-types-comparison': 0, // not always works correctly
 		'sonarjs/no-useless-intersection': 0, // not always useless
+
+		'sonarjs/no-empty-test-file': 0, // detects other files as test files in styler.test.native/
 		'sonarjs/max-union-size': 0,
 		'sonarjs/no-empty-interface': 0, // ! dangerous, changes empty interfaces to types, results in different editor tooltips
 		'sonarjs/semi': 0,

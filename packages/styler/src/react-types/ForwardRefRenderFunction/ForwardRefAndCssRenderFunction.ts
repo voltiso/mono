@@ -1,8 +1,6 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/no-redundant-type-constituents */
-
 import type { BivariantCallable } from '@voltiso/util'
 import type * as React from 'react'
 
@@ -18,7 +16,7 @@ export type IForwardRefAndCssRenderFunction = BivariantCallable<
 		props: {},
 		ref: IForwardedRef | undefined,
 		css: readonly Css[],
-	) => React.ReactElement | null
+	) => React.ReactElement // | null
 > & { displayName?: string | undefined }
 
 export type ForwardRefAndCssRenderFunction<
@@ -48,4 +46,4 @@ export type ForwardRefAndCssRenderFunction<
 	>,
 	ref: React.ForwardedRef<GetNativeElement<T>>,
 	css: readonly TCss[],
-) => React.ReactElement | null
+) => React.ReactElement // | null

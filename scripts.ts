@@ -6,9 +6,11 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 
 import * as fs from 'node:fs'
-import * as fsPromises from 'node:fs/promises'
-// import * as os from 'node:os'
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
+import { glob } from 'node:fs/promises'
 import * as path from 'node:path'
+
+import { run } from '@voltiso/script'
 
 const packageJson = JSON.parse(
 	// eslint-disable-next-line n/no-sync
@@ -66,7 +68,7 @@ function turboAllPackages(
 // !
 // ! Workspace-level
 
-export const prepareWorkspace = `pnpm -w exec turbo run build:cjs --filter=//^... --output-logs=new-only`
+export const prepareWorkspace = `pnpm -w exec turbo run build:esm --filter=//^... --output-logs=new-only`
 
 export const devWorkspace = turboAllPackages('dev', { concurrency: 1_000 })
 
@@ -184,6 +186,17 @@ export const prepublishOnly = [
 	turboDependents('test'),
 ]
 
+export async function runTestPackages(): Promise<void> {
+	const name = packageJson.name?.split('/')[1]
+
+	// eslint-disable-next-line es-x/no-async-iteration
+	for await (const pkg of glob(`../${name}.*test*`)) {
+		await run(
+			`pnpm -w exec turbo run --filter=./packages/${pkg.slice(3)} test lint:tsc lint:eslint --output-logs=new-only`,
+		)
+	}
+}
+
 export const prepublishOnlyFast = [
 	'prepareWorkspace',
 
@@ -201,18 +214,5 @@ export const prepublishOnlyFast = [
 
 	areTheTypesWrong,
 
-	async () => {
-		try {
-			// eslint-disable-next-line security/detect-non-literal-fs-filename
-			await fsPromises.stat(`../${packageJson.name}.test`)
-		} catch {
-			return
-			// return `echo no ${packageJson.name}.test package`
-		}
-
-		// eslint-disable-next-line consistent-return, @typescript-eslint/consistent-return
-		return `pnpm -w exec turbo run --filter=${
-			packageJson.name ?? '//'
-		}.test test --output-logs=new-only`
-	},
+	runTestPackages,
 ]

@@ -1,6 +1,8 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type React from 'react'
+
 import type { Props } from '~/react-types'
 import type { IsReactNative } from '~/util'
 
@@ -20,12 +22,12 @@ export type StylableIntrinsicElement_<P extends Props> = P extends any
 	? IsReactNative extends false
 		? Partial<P> extends P
 			? {
-					[k in keyof JSX.IntrinsicElements]: keyof P extends keyof JSX.IntrinsicElements[k]
-						? P extends JSX.IntrinsicElements[k]
+					[k in keyof React.JSX.IntrinsicElements]: keyof P extends keyof React.JSX.IntrinsicElements[k]
+						? P extends React.JSX.IntrinsicElements[k]
 							? k
 							: never
 						: never
-				}[keyof JSX.IntrinsicElements]
+				}[keyof React.JSX.IntrinsicElements]
 			: never
 		: never
 	: never
@@ -44,7 +46,7 @@ export type StylableIntrinsicElement_<P extends Props> = P extends any
 export type IntrinsicElementLike = IsReactNative extends false ? string : never
 
 export type IntrinsicElement = IsReactNative extends false
-	? keyof JSX.IntrinsicElements
+	? keyof React.JSX.IntrinsicElements
 	: never
 
 // eslint-disable-next-line sonarjs/redundant-type-aliases

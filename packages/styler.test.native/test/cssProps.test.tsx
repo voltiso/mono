@@ -4,11 +4,15 @@
 /* eslint-disable testing-library/prefer-screen-queries */
 
 import { describe, expect, it } from '@jest/globals'
+import type {
+	IsReactNative,
+	IStylable,
+	IStylableJsxCall,
+} from '@voltiso/styler'
+import { style } from '@voltiso/styler'
 import { $Assert } from '@voltiso/util'
+import type { ForwardRefExoticComponent } from 'react'
 import { View } from 'react-native'
-
-import type { IsReactNative, IStylable, IStylableJsxCall } from '~'
-import { style } from '~'
 
 import { renderApp } from './common'
 
@@ -19,11 +23,14 @@ describe('cssProps', () => {
 		$Assert.is<IsReactNative, true>()
 
 		// @ts-expect-error react-native
-		const a = style('button')
-		// Assert.is<typeof a, StaticError>()
+		// eslint-disable-next-line sonarjs/no-unused-vars
+		const _a = style('button')
+		// $Assert.is<typeof a, StaticError>()
 
 		const StyledView = style(View)
 		;() => <StyledView /> // check if optional
+
+		$Assert.is<ForwardRefExoticComponent<{}>, IStylable>()
 
 		$Assert.is<typeof StyledView, IStylable>()
 		// Assert.is<typeof StyledView, IStylableJsxConstruct>()

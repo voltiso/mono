@@ -15,7 +15,6 @@ export function defineCss<TCss extends Css>(
 //
 
 export type CssSelectors = Partial<
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	Record<keyof React.JSX.IntrinsicElements | AlsoAccept<string>, Css>
 >
 

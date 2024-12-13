@@ -55,7 +55,7 @@ const OnClickMapped = AnotherButton.mapProp(
 )
 ;<OnClickMapped big />
 
-// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
+// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('style', () => {
 	it('simple', () => {
 		expect.hasAssertions()
@@ -428,7 +428,8 @@ describe('style', () => {
 
 		const C: FC = () => null
 		// @ts-expect-error no className prop
-		const CC = style(C)
+		// eslint-disable-next-line sonarjs/no-unused-vars
+		const _CC = style(C)
 	})
 
 	it('merges nested', () => {

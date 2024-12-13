@@ -7,4 +7,4 @@ import type { ElementType, ReactElement } from 'react'
 export type IChildElement =
 	| OmitCall_<ElementType<{}>>
 	// | ((props: any) => ElementType<{}>)
-	| ((props: any) => ReactElement | null)
+	| ((props: any) => ReactElement) // | null

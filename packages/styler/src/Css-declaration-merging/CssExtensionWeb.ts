@@ -24,7 +24,6 @@ export interface CssExtensionWeb<CustomCss extends object>
 	/** Embed `font-face` */
 	fontFace?:
 		| {
-				// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 				fontFamily?: 'Arial' | AlsoAccept<string> | undefined
 				fontWeight?: number | undefined
 				src?: (string | undefined)[] | undefined

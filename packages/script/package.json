@@ -63,7 +63,7 @@
     "esbuild-register": "^3.5.0"
   },
   "devDependencies": {
-    "@types/node": "^22.9.3",
+    "@types/node": "^22.10.2",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util.package-json": "workspace:^",

@@ -31,7 +31,7 @@
     "__________DEV": "__________",
     "dev": "v dev",
     "__________TEST": "__________",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
+    "test": "echo \"no tests yet!\"",
     "__________LINT": "__________",
     "lint": "v lint",
     "lint:eslint": "v lintEslint",

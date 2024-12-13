@@ -4,7 +4,7 @@
 import { defineJestConfig } from '@voltiso/config.jest.lib'
 import { getJestReactConfig } from '@voltiso/config.jest.react'
 
-const baseConfig = getJestReactConfig({ format: 'esm' })
+const baseConfig = getJestReactConfig({ format: 'cjs' })
 
 // ! need to create a new unique object!
 export default defineJestConfig({

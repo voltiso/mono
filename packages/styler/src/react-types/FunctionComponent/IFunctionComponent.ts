@@ -4,6 +4,6 @@
 import type { ReactElement } from 'react'
 
 export interface IFunctionComponent {
-	(props: any): ReactElement | null
+	(props: any): ReactElement // | null
 	displayName?: string | undefined
 }

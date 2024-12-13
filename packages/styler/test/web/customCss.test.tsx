@@ -129,7 +129,6 @@ describe('customCss', () => {
 	it('hoc', () => {
 		expect.hasAssertions()
 
-		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		function marginY(x: Property.Margin | number | boolean): Css {
 			if (typeof x === 'boolean' && !x) return {}
 			const margin = typeof x === 'boolean' ? 123 : x

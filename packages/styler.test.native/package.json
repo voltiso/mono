@@ -1,0 +1,40 @@
+{
+  "name": "@voltiso/styler.test.native",
+  "private": true,
+  "__________": "__________",
+  "type": "module",
+  "sideEffects": false,
+  "__________SCRIPTS": "__________",
+  "scripts": {
+    "__________TEST": "__________",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "__________LINT": "__________",
+    "lint": "v lint",
+    "depcheck": "depcheck",
+    "lint:eslint": "v lintEslint",
+    "lint:tsc": "v lintTsc",
+    "fix": "eslint . --fix"
+  },
+  "__________DEPS": "__________",
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@testing-library/react-native": "^12.9.0",
+    "@types/react": "^18.3.0",
+    "@voltiso/config.eslint.lib": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
+    "@voltiso/config.jest.react": "workspace:^",
+    "@voltiso/styler": "workspace:^",
+    "@voltiso/util": "workspace:^",
+    "react": "^18.3.0",
+    "react-native": "~0.72.17",
+    "react-test-renderer": "^18.3.0"
+  },
+  "dependenciesMeta": {
+    "@voltiso/config.jest.react": {
+      "injected": true
+    },
+    "@voltiso/styler": {
+      "injected": true
+    }
+  }
+}
