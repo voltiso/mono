@@ -2,7 +2,7 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 .tsc-out/
-_outDir_PLEASE_OVERRIDE
+*_PLEASE_OVERRIDE
 .VSCodeCounter/
 
 node_modules/

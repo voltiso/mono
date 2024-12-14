@@ -11,6 +11,10 @@
 		// "moduleResolution": "NodeNext"
 		"moduleResolution": "Node" // does not require file extensions
 
+		// ! nope - we can use `composite` too, BUT it's all problematic with tsc not cleaning deleted files from the output directory
+		// "incremental": true,
+		// "tsBuildInfoFile": ".esm.tsbuildinfo_PLEASE_OVERRIDE"
+
 		// "declaration": false, // by default, we output types for CJS only
 		// "declarationMap": false // by default, we output types for CJS only
 

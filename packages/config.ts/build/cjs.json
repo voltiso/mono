@@ -11,6 +11,10 @@
 		"moduleResolution": "Node"
 		// "declaration": false,
 
+		// ! nope - we can use `composite` too, BUT it's all problematic with tsc not cleaning deleted files from the output directory
+		// "incremental": true,
+		// "tsBuildInfoFile": ".cjs.tsbuildinfo_PLEASE_OVERRIDE"
+
 		// !
 		// ! OVERWRITE WHEN EXTENDING !
 		// !

@@ -43,6 +43,8 @@
 		// "emitDeclarationOnly": true,
 
 		"composite": false, // when doing clean builds each time, `composite` should be `false`
+		"incremental": false,
+
 		"noEmit": true,
 		"sourceMap": true,
 
