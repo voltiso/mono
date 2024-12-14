@@ -191,8 +191,8 @@
 
 	"eslint.useFlatConfig": true,
 
-	"eslint.codeActionsOnSave.mode": "all", // slower
-	// "eslint.codeActionsOnSave.mode": "problems", // faster
+	// "eslint.codeActionsOnSave.mode": "all", // slower
+	"eslint.codeActionsOnSave.mode": "problems", // faster
 
 	"eslint.workingDirectories": [{ "pattern": "./packages/*/" }, "."],
 

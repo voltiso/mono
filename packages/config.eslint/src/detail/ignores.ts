@@ -25,6 +25,7 @@ export const ignores = [
 	'**/firebase-*.json',
 	'**/*.snap',
 	'**/*.ts_',
+	'**/next-env.d.ts',
 	...gitIgnored,
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//

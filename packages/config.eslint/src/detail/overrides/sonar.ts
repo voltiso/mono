@@ -18,6 +18,12 @@ export const sonar = defineEslintFlatConfig({
 		'sonarjs/deprecation': 0, // ! slow + already handled by faster `import/no-deprecated`
 		'sonarjs/aws-restricted-ip-admin-access': 0, // ! slow + we don't use AWS
 
+		// even if we use `exactOptionalPropertyTypes === false`, no reason not to write portable code
+		'sonarjs/no-redundant-optional': 0,
+
+		// not perfect - sometimes it's nice to have a single return statement - then we're able to add stuff fast, e.g. `console.log`
+		'sonarjs/arrow-function-convention': 0,
+
 		'sonarjs/no-unused-vars': 0, // typescript does this already; also, ts allows names starting with `_...`
 
 		'sonarjs/no-empty-function': 0, // does not work with eslint 9

@@ -18,6 +18,5 @@ export interface IForwardRefExoticComponent<P extends Props = Props>
 	extends INamedExoticComponent {
 	defaultProps?: Partial<P> | undefined
 
-	// // eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
 	// propTypes?: WeakValidationMap</* P*/ any> | undefined
 }

@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.react.patcher",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -51,7 +51,7 @@
     "@voltiso/util.react": "workspace:^"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^17.0.0"
+    "react": "19 || 18 || 17"
   },
   "devDependencies": {
     "@babel/core": "^7.23.6",

@@ -46,7 +46,7 @@ export const reactConfig = defineEslintFlatConfig({
 		'react/hook-use-state': 1,
 		'react/iframe-missing-sandbox': 1,
 		'react/jsx-boolean-value': 1,
-		'react/jsx-child-element-spacing': 1,
+		'react/jsx-child-element-spacing': 0, // conflicts with prettier
 		'react/jsx-closing-bracket-location': 1,
 		'react/jsx-closing-tag-location': 1,
 		'react/jsx-curly-spacing': 1,

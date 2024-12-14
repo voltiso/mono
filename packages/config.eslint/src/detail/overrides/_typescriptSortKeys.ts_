@@ -3,7 +3,6 @@
 
 import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
-// eslint-disable-next-line import/no-deprecated, import/default, import/no-named-as-default, import/no-named-as-default-member
 import typescriptSortKeysPlugin from 'eslint-plugin-typescript-sort-keys'
 
 import { codeFiles } from '../files'

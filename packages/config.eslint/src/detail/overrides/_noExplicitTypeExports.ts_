@@ -1,6 +1,9 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+// ! this is slow + likely not needed, because we force export type to always be explicit
+// ! possibly this could be useful for export stars maybe in very rare cases?
+
 import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import noExplicitTypeExportsPlugin from 'eslint-plugin-no-explicit-type-exports'

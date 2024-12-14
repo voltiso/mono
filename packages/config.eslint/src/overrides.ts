@@ -31,7 +31,7 @@ import { nConfig } from './detail/overrides/n.js'
 import { next } from './detail/overrides/next.js'
 import { noConstructorBind } from './detail/overrides/noConstructorBind.js'
 import { nodeDependencies } from './detail/overrides/nodeDependencies.js'
-import { noExplicitTypeExports } from './detail/overrides/noExplicitTypeExports.js'
+// import { noExplicitTypeExports } from './detail/overrides/_noExplicitTypeExports.ts_'
 import { noOnlyTests } from './detail/overrides/noOnlyTests.js'
 import { noSecrets } from './detail/overrides/noSecrets.js'
 import { notice, noticeHash } from './detail/overrides/notice.js'
@@ -104,7 +104,7 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	...jsxAllyConfig,
 	...sonar,
 	...noConstructorBind,
-	...noExplicitTypeExports,
+	// ...noExplicitTypeExports,
 	...noSecrets,
 	...noUnsanitized,
 	...securityConfig,

@@ -160,7 +160,11 @@ export const codeOverride = defineEslintFlatConfig(
 			'@stylistic/semi': 0, // does not always work with JSX
 			// '@stylistic/semi': ['warn', 'never'],
 
-			'@stylistic/comma-dangle': ['warn', 'always-multiline'],
+			'@stylistic/comma-dangle': 0, // conflicts with prettier (rarely, but still)
+			// '@stylistic/comma-dangle': ['warn', 'always-multiline'],
+
+			'@stylistic/jsx-child-element-spacing': 0, // conflicts with prettier
+
 			// '@stylistic/max-len': ['warn', { code: 80, comments: 120 }],
 			'@stylistic/max-len': 0,
 			'@stylistic/function-call-argument-newline': ['warn', 'consistent'],
@@ -500,8 +504,6 @@ export const codeOverride = defineEslintFlatConfig(
 
 			'no-undef': 0,
 
-			'consistent-return': 1,
-			// 'consistent-return': 0, // a bit pain to return `undefined` explicitly in branches?
 			'no-undefined': 0,
 
 			// 'func-names': [
@@ -527,6 +529,8 @@ export const codeOverride = defineEslintFlatConfig(
 			'no-useless-rename': 1,
 			'prefer-object-has-own': 0, // not available in Safari
 			'no-return-await': 1,
+
+			'consistent-return': 0, // @typescript-eslint/consistent-return
 
 			'no-restricted-imports': [
 				'warn',

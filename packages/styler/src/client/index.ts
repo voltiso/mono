@@ -7,5 +7,5 @@
 
 export { ClientFlushRscStyle } from './ClientFlushRscStyle'
 export { ClientNextStylerRegistry } from './ClientNextStylerRegistry'
-export { RendererContext, ThemeContext, useRenderer, useTheme } from './context'
 export type { UseRendererResult } from './context'
+export { RendererContext, ThemeContext, useRenderer, useTheme } from './context'

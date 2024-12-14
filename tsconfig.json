@@ -4,10 +4,6 @@
 {
 	"extends": "@voltiso/config.ts",
 
-	// "compilerOptions": {
-	// 	"baseUrl": "."
-	// },
-
 	"exclude": [
 		"/**/node_modules/",
 		"/**/dist/",

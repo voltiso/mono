@@ -40,7 +40,7 @@ const helpfulWarningsRules = defineEslintConfigOverrideRules({
 	'import/export': 1,
 	'import/no-named-as-default': 1, // TS does not do this
 	'import/no-named-as-default-member': 1, // ! TS does the same?
-	'import/no-deprecated': 1, // TS does not do this
+	'import/no-deprecated': 0, // ! this is slow + we don't have a single deprecated import in `@voltiso/mono`
 	'import/no-mutable-exports': 1,
 	'import/no-unused-modules': 1, // TS does not do this
 
@@ -185,6 +185,14 @@ export const importConfig = defineEslintFlatConfig(
 
 		rules: {
 			'import/no-default-export': 0,
+		},
+	},
+	{
+		// nextjs pages
+		files: ['**/page.ts', '**/page.tsx', '**/layout.ts', '**/layout.tsx'],
+
+		rules: {
+			'import/no-default-export': 'off',
 		},
 	},
 )

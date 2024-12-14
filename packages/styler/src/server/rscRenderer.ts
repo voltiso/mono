@@ -3,6 +3,6 @@
 
 import { WebRenderer } from '../renderer/WebRenderer'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-multi-assign, @typescript-eslint/no-unsafe-member-access
-export const rscRenderer: WebRenderer = ((global as any)._voltisoRscRenderer ||=
-	new WebRenderer())
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+export const rscRenderer: WebRenderer = // eslint-disable-next-line es-x/no-global-this, no-multi-assign, @typescript-eslint/no-unsafe-member-access
+	((globalThis as any)._voltisoRscRenderer ||= new WebRenderer())

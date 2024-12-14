@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.eslint",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
   "type": "module",
@@ -92,7 +92,6 @@
     "eslint-plugin-markdown": "^5.1.0",
     "eslint-plugin-n": "^17.15.0",
     "eslint-plugin-no-constructor-bind": "^2.0.4",
-    "eslint-plugin-no-explicit-type-exports": "^0.12.1",
     "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-no-secrets": "^2.1.1",
     "eslint-plugin-no-unsanitized": "^4.0.2",

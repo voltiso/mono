@@ -5,7 +5,6 @@ import * as path from 'node:path'
 
 import baseConfig from '@voltiso/config.eslint'
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
-// import baseConfigFast from '@voltiso/eslint-config-fast'
 
 const project = [
 	'tsconfig.json',
@@ -24,28 +23,6 @@ const project = [
 	'packages/util/src/tsc-options/*/test-true/tsconfig.json',
 	'packages/util/src/tsc-options/*/test-false/tsconfig.json',
 ]
-
-// const isFastMode = !process.env['FULL']
-// const isFastMode = false
-
-// // eslint-disable-next-line no-console
-// console.log(
-// 	new Date().toISOString(),
-// 	'eslint config:',
-// 	isFastMode ? 'FAST' : 'FULL',
-// )
-
-// import config from '@voltiso/config.eslint'
-
-// console.log('process.cwd', process.cwd())
-// console.log('import.meta.url', import.meta.url)
-// console.log('__dirname', __dirname)
-
-// export default defineEslintFlatConfig({
-// 	rules: {
-// 		'no-console': 1
-// 	}
-// })
 
 // eslint-disable-next-line sonarjs/variable-name
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
