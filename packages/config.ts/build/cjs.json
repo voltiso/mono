@@ -8,7 +8,8 @@
 
 	"compilerOptions": {
 		"module": "CommonJS",
-		"moduleResolution": "Node"
+		"moduleResolution": "node10"
+
 		// "declaration": false,
 
 		// ! nope - we can use `composite` too, BUT it's all problematic with tsc not cleaning deleted files from the output directory

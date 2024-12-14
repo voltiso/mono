@@ -73,7 +73,6 @@ describe('theme', () => {
 			// '$__STYLER__{a.b.c.11}px solid red',
 		)
 
-		// eslint-disable-next-line no-useless-assignment
 		const Button = style('button').css({
 			boxShadow: `${t.a.b.c[11]}px solid red`,
 		})

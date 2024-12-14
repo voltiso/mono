@@ -66,6 +66,7 @@
     }
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@testing-library/react": "^16.1.0",
     "@types/react": "^19.0.1",

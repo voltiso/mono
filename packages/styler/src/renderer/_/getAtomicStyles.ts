@@ -3,6 +3,7 @@
 
 /* eslint-disable max-depth */
 
+import type { Unit } from '~/_/StyledData/IStyledData'
 import type { RelaxedCss } from '~/Css'
 
 import type { WebRenderer } from '../WebRenderer'
@@ -41,6 +42,7 @@ export function combineNestedSelectors(
 
 // eslint-disable-next-line sonarjs/cyclomatic-complexity
 export function getAtomicStyles(
+	options: { unit: Unit },
 	renderer: WebRenderer,
 	...stylerStyles: RelaxedCss[]
 ): AtomicStyle[] {
@@ -50,7 +52,7 @@ export function getAtomicStyles(
 
 	for (const [k, v] of Object.entries(stylerStyle) as [string, unknown][]) {
 		if (k === 'animationName' && typeof v === 'object') {
-			const animationName = renderer.animationNameFor(v as never)
+			const animationName = renderer.animationNameFor(options, v as never)
 			result.push({
 				property: k,
 				selectors: ['&'],
@@ -64,7 +66,7 @@ export function getAtomicStyles(
 			})
 		} else if (typeof v === 'object' && !Array.isArray(v)) {
 			const outer = parseSelectors(k)
-			const inners = getAtomicStyles(renderer, v as never)
+			const inners = getAtomicStyles(options, renderer, v as never)
 
 			if (outer.mediaQueries.length > 0) {
 				// eslint-disable-next-line sonarjs/nested-control-flow

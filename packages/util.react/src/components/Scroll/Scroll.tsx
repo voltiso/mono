@@ -68,13 +68,13 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	const scrollContextValue = useMemo<ScrollContextValue>(() => ({}), [])
 
 	if (typeof window !== 'undefined') {
-		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const scrollTargetElement = useMemo(
 			() => (scrollTarget ? document.querySelector(scrollTarget) : null),
 			[scrollTarget],
 		)
 
-		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useLayoutEffect(() => {
 			if (!isNavigationBackForward({ pathname })) return undefined
 			if (!current.scrollRestoration) return undefined
@@ -112,7 +112,7 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 		//
 
 		/** Save scroll position periodically */
-		// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useEffect(() => {
 			if (scrollRestorationKey === undefined) return undefined
 

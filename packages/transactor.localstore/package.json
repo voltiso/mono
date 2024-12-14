@@ -53,6 +53,7 @@
     "@voltiso/transactor": ">= 8.0.0"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/firestore-like": "workspace:^",
     "@voltiso/localstore": "workspace:^",

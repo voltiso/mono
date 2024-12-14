@@ -54,6 +54,7 @@
     "react": "19 || 18 || 17"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@jest/globals": "^29.7.0",

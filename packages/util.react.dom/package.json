@@ -52,6 +52,7 @@
     "react-dom": "^18.0.0 || ^17.0.0"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@voltiso/assertor": "workspace:^",

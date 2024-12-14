@@ -57,6 +57,7 @@
     "react": "19 || 18 || 17"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@babel/core": "^7.23.6",
     "@babel/plugin-proposal-decorators": "^7.23.6",
     "@babel/plugin-transform-react-jsx": "^7.23.4",

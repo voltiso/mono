@@ -6,6 +6,8 @@ import type { Css } from '~/Css'
 import type { IStack } from '~/Styled/_/Stack'
 import type { StyledTypeInfo } from '~/StyledTypeInfo'
 
+import type { Unit } from './IStyledData'
+
 export interface StyledData<
 	$ extends StyledTypeInfo = StyledTypeInfo,
 	CustomCss extends object = Css,
@@ -19,6 +21,8 @@ export interface StyledData<
 	domDefaults: Partial<$['Props']>
 
 	cssProps: CssProps<$['Props'], CustomCss>
+
+	unit: Unit
 
 	_currentCss?: object
 }

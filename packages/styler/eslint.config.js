@@ -6,8 +6,7 @@
 
 import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-// eslint-disable-next-line no-restricted-imports
-import baseConfig from '../../eslint.config.js'
+import baseConfig from '@~/workspace/eslint.config.js'
 
 export default defineEslintFlatConfig(
 	...baseConfig,

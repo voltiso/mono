@@ -1,7 +1,6 @@
 {
   "private": true,
-  "name": "@voltiso/cpp",
-  "version": "1.0.0",
+  "name": "@~/cpp",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -16,6 +15,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/script.cmake": "workspace:^"
   },

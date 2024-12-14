@@ -103,10 +103,10 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/transform.lib": "workspace:^",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.1"
   },
   "peerDependencies": {
-    "typescript": ">= 4.8.4"
+    "typescript": "~5.6.3"
   },
   "devDependencies": {
     "@voltiso/config.tsdoc": "workspace:^",

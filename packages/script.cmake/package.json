@@ -56,6 +56,7 @@
     "@voltiso/script": "workspace:^"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",

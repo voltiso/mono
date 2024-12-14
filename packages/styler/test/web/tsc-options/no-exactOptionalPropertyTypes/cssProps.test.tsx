@@ -11,7 +11,6 @@ describe('cssProps', () => {
 	it('works', () => {
 		expect.assertions(0)
 
-		// eslint-disable-next-line no-useless-assignment
 		const Button = style('button').cssProps('flex', 'backgroundColor')
 		;<Button /> // check if optional
 	})

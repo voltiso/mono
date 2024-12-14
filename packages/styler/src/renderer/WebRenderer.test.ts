@@ -3,13 +3,17 @@
 
 import { describe, expect, it } from '@jest/globals'
 
+import type { Unit } from '~/_'
+
 import { WebRenderer } from './WebRenderer'
+
+const options = { unit: 'px' as Unit }
 
 describe('WebRenderer', () => {
 	it('simple', () => {
 		const renderer = new WebRenderer()
 
-		const className = renderer.classNameFor({
+		const className = renderer.classNameFor(options, {
 			_: {
 				color: 'red',
 			},
@@ -30,7 +34,7 @@ describe('WebRenderer', () => {
 		const renderer = new WebRenderer()
 
 		expect(
-			renderer.classNameFor({
+			renderer.classNameFor(options, {
 				_: {
 					color: 'red',
 
@@ -59,7 +63,7 @@ describe('WebRenderer', () => {
 		const renderer = new WebRenderer()
 
 		expect(
-			renderer.classNameFor({
+			renderer.classNameFor(options, {
 				animationName: {
 					'0%': {
 						backgroundColor: 'red',
@@ -94,7 +98,7 @@ describe('WebRenderer', () => {
 		const renderer = new WebRenderer()
 
 		expect(
-			renderer.classNameFor({
+			renderer.classNameFor(options, {
 				color: 'red',
 
 				_: {
@@ -120,7 +124,7 @@ describe('WebRenderer', () => {
 		const renderer = new WebRenderer()
 
 		expect(
-			renderer.classNameFor({
+			renderer.classNameFor(options, {
 				_: {
 					backdropFilter: 'blur(10px)',
 				},
@@ -146,7 +150,7 @@ describe('WebRenderer', () => {
 		const renderer = new WebRenderer()
 
 		expect(
-			renderer.classNameFor({
+			renderer.classNameFor(options, {
 				animationName: {
 					'0%': {
 						/* cspell:disable-next-line */

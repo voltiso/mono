@@ -55,7 +55,7 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@eslint/js": "^9.16.0",
+    "@eslint/js": "^9.17.0",
     "@next/eslint-plugin-next": "^15.1.0",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
@@ -63,7 +63,7 @@
     "@voltiso/config.eslint.lib": "workspace:^",
     "@voltiso/eslint-plugin": "workspace:^",
     "any-eslint-parser": "^1.0.1",
-    "chalk": "^4.1.2",
+    "chalk": "^4.1.1",
     "eslint-gitignore": "^0.1.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-array-func": "^5.0.1",
@@ -120,7 +120,7 @@
     "eslint-plugin-yml": "^1.16.0",
     "globals": "^15.13.0",
     "jsonc-eslint-parser": "^2.4.0",
-    "putout": "^36.17.0",
+    "putout": "^37.1.0",
     "toml-eslint-parser": "^0.10.0",
     "yaml-eslint-parser": "^1.2.2"
   },
@@ -130,13 +130,13 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "typescript": "~5.6.3",
     "typescript-transform-paths": "^3.5.2"
   },
   "peerDependencies": {
     "eslint": ">= 8.18.0",
-    "typescript": ">= 4.8.4"
+    "typescript": "~5.6.3"
   },
   "__________MISC": "__________",
   "engines": {

@@ -6,11 +6,13 @@ import { describe, expect, it } from '@jest/globals'
 import { WebRenderer } from '../WebRenderer'
 import { getAtomicStyles } from './getAtomicStyles'
 
+const options = { unit: 'px' } as const
+
 // eslint-disable-next-line sonarjs/max-lines-per-function
 describe('getAtomicStyles', () => {
 	it('simple', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				_: {
 					color: 'red',
 				},
@@ -45,7 +47,7 @@ describe('getAtomicStyles', () => {
 
 	it('array value', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				backgroundColor: ['blue', 'red'] as never,
 			}),
 		).toStrictEqual([
@@ -65,7 +67,7 @@ describe('getAtomicStyles', () => {
 
 	it('selector', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				'&:hover': {
 					backgroundColor: 'blue',
 				},
@@ -87,7 +89,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested selector', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				'div > &:hover': {
 					'&:active > span': {
 						color: 'green',
@@ -127,7 +129,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested media queries', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				'@media (min-width: 100px)': {
 					'@media (min-width: 200px)': {
 						backgroundColor: 'blue',
@@ -155,7 +157,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested media queries with selectors', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				'@media (min-width: 100px)': {
 					'@media (min-width: 200px)': {
 						'&:hover': {
@@ -185,7 +187,7 @@ describe('getAtomicStyles', () => {
 
 	it('nested media queries with selectors and nested selectors', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				'@media (min-width: 100px)': {
 					'@media (min-width: 200px)': {
 						'&:hover': {
@@ -217,7 +219,7 @@ describe('getAtomicStyles', () => {
 
 	it('flatten media query - preserves order', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				display: 'flex',
 
 				flexDirection: 'column',
@@ -250,7 +252,7 @@ describe('getAtomicStyles', () => {
 		])
 
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				display: 'flex',
 
 				flexDirection: 'column',
@@ -285,7 +287,7 @@ describe('getAtomicStyles', () => {
 
 	it('animationName', () => {
 		expect(
-			getAtomicStyles(new WebRenderer(), {
+			getAtomicStyles(options, new WebRenderer(), {
 				animationName: 'fade-in' as never,
 			}),
 		).toStrictEqual([

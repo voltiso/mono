@@ -92,6 +92,7 @@
     }
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",

@@ -5,10 +5,12 @@ import { describe, expect, it } from '@jest/globals'
 
 import { stringFromAtomicStyle } from './stringFromAtomicStyle'
 
+const options = { unit: 'px' } as const
+
 describe('stringFromAtomicStyle', () => {
 	it('suffix and selectors', () => {
 		expect(
-			stringFromAtomicStyle({
+			stringFromAtomicStyle(options, {
 				property: 'color',
 				selectors: ['& button', 'div &'],
 
@@ -24,7 +26,7 @@ describe('stringFromAtomicStyle', () => {
 
 	it('media query', () => {
 		expect(
-			stringFromAtomicStyle({
+			stringFromAtomicStyle(options, {
 				property: 'color',
 				selectors: ['& button', 'div &'],
 
@@ -46,7 +48,7 @@ describe('stringFromAtomicStyle', () => {
 
 	it('auto unit', () => {
 		expect(
-			stringFromAtomicStyle({
+			stringFromAtomicStyle(options, {
 				property: 'width',
 				selectors: ['&'],
 
@@ -62,7 +64,7 @@ describe('stringFromAtomicStyle', () => {
 
 	it('camel case', () => {
 		expect(
-			stringFromAtomicStyle({
+			stringFromAtomicStyle(options, {
 				property: 'flexDirection',
 				selectors: ['&'],
 

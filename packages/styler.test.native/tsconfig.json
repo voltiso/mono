@@ -7,8 +7,6 @@
 	"compilerOptions": {
 		"lib": ["DOM"],
 
-		// "types": ["react/canary"],
-
 		"paths": {
 			"~": ["../../src"],
 			"~/*": ["../../src/*"]

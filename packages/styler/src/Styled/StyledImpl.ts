@@ -14,7 +14,7 @@ import type {
 import { tryAt } from '@voltiso/util'
 
 import type { IndexedCssPropsSingle } from '~/_/CssProps'
-import type { IStyledDataMod, StyledData } from '~/_/StyledData'
+import type { IStyledDataMod, StyledData, Unit } from '~/_/StyledData'
 import type { ChildElement } from '~/_/StyledData/_/ChildElement'
 import { STYLED_DATA as DATA, STYLED_TYPE_INFO as $ } from '~/_/symbols'
 import type {
@@ -84,6 +84,8 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 			domDefaults: mergeDefaults(this[DATA].domDefaults, newData.domDefaults),
 
 			cssProps: mergeCssProps(this[DATA].cssProps, newData.cssProps) as never,
+
+			unit: newData.unit ?? this[DATA].unit,
 		}) as never
 	}
 
@@ -142,6 +144,28 @@ export class Styled<$ extends Partial<StyledTypeInfo>> {
 	}
 
 	//
+
+	/**
+	 * Change default unit for unit-less CSS values
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const myStyle = style.unit('em')
+	 * const Button = myStyle('button')
+	 * <Button />
+	 * ```
+	 *
+	 * @example
+	 *
+	 * ```ts
+	 * const Button = style('button').unit('px')
+	 * <Button />
+	 * ```
+	 */
+	unit(unit: Unit): this {
+		return this._clone({ unit })
+	}
 
 	/**
 	 * Override CSS style

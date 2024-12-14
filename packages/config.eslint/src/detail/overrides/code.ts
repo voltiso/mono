@@ -4,7 +4,8 @@
 import js from '@eslint/js'
 import stylistic from '@stylistic/eslint-plugin'
 import typescriptPlugin from '@typescript-eslint/eslint-plugin'
-// @ts-expect-error no typings
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore no types
 import typescriptParser from '@typescript-eslint/parser'
 import {
 	defineEslintConfigOverrideRules,
@@ -60,8 +61,8 @@ export const codeOverride = defineEslintFlatConfig(
 		...codeFilesNoMd,
 
 		plugins: {
-			'@typescript-eslint': typescriptPlugin,
-			'@stylistic': stylistic,
+			'@typescript-eslint': typescriptPlugin as never,
+			'@stylistic': stylistic as never,
 
 			// ! does not work with typescript for MD files - tsconfig.json cannot include things inside *.md
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -125,8 +126,8 @@ export const codeOverride = defineEslintFlatConfig(
 		rules: {
 			...js.configs.all.rules,
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-			...typescriptPlugin.configs['all'].rules,
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-non-null-assertion
+			...typescriptPlugin.configs['all']!.rules,
 
 			...alreadyHandledByPrettier,
 			...alreadyHandledByTsc,

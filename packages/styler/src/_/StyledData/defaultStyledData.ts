@@ -14,6 +14,8 @@ export const defaultStyledData = {
 	domDefaults: {},
 
 	cssProps: {},
+
+	unit: 'px' as const,
 }
 
 export type DefaultStyledData = typeof defaultStyledData

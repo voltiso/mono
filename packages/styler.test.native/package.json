@@ -17,6 +17,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@testing-library/react-native": "^12.9.0",
     "@types/react": "^18.3.0",

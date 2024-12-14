@@ -2,6 +2,7 @@
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
+  - '@~/workspace'
   - 'prettier-plugin-*'
   - '*/prettier-plugin-*'
   - '@prettier/plugin-*'

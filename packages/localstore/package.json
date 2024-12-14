@@ -59,6 +59,7 @@
     "rxjs": "^7.5.6"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",

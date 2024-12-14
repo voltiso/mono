@@ -61,10 +61,13 @@
 		 * Hard to choose:
 		 *
 		 * - `Node16` or `NodeNext` required for `exports` field in `package.json`
-		 * - `Node` required for dynamic imports without extensions
+		 * - `Node`/`Node10` required for dynamic imports without extensions
+		 * - since we now have ESM-default repo, we should probably not use `Node`/`Node10`, because it picks CJS types (the CJS may not have been built yet)
+		 * - `bundler` is a new option, supports exports field, does not require extensions
 		 */
-		"moduleResolution": "Node", // default - for commonjs by default
+		// "moduleResolution": "Node",
 		// "moduleResolution": "NodeNext",
+		"moduleResolution": "bundler",
 
 		//
 		// ____________________ Node 16 recommended ____________________

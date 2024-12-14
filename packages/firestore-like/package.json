@@ -53,6 +53,7 @@
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@firebase/app-types": "^0.9.0",
     "@jest/globals": "^29.7.0",
     "@voltiso/config.jest": "workspace:^",

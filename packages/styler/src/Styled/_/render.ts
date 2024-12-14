@@ -229,8 +229,10 @@ export function render<$ extends StyledTypeInfo>(
 
 	const renderedProps = isWebRenderer(renderer)
 		? _getFinalWebProps(
-				(renderer as unknown as WebRenderer | null)?.classNameFor(...styles) ??
-					'',
+				(renderer as unknown as WebRenderer | null)?.classNameFor(
+					{ unit: data.unit },
+					...styles,
+				) ?? '',
 				p,
 			)
 		: _getFinalNativeProps(

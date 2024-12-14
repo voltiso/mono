@@ -7,7 +7,7 @@
 		},
 
 		"build:esm": {
-			"dependsOn": ["^build:esm", "^build:cjs"],
+			"dependsOn": ["^build:esm"],
 			"outputs": ["dist/esm/**"]
 		},
 
@@ -21,19 +21,19 @@
 		},
 
 		"test": {
-			"dependsOn": ["^build:cjs"],
+			"dependsOn": ["^build:esm"],
 			"inputs": ["**", "!dist/**"],
 			"outputs": []
 		},
 
 		"lint:eslint": {
-			"dependsOn": ["^build:cjs", "build:cjs"],
+			"dependsOn": ["^build:esm"],
 			"inputs": ["**", "!dist/**"],
 			"outputs": []
 		},
 
 		"lint:tsc": {
-			"dependsOn": ["^build:cjs"],
+			"dependsOn": ["^build:esm"],
 			"inputs": ["**", "!dist/**"],
 			"outputs": []
 		},
@@ -48,7 +48,7 @@
 		},
 
 		"typecov": {
-			"dependsOn": ["^build:cjs"],
+			"dependsOn": ["^build:esm"],
 			"inputs": ["src/**", "package.json"],
 			"outputs": ["package.json"]
 		},
@@ -58,7 +58,7 @@
 		"fix:eslint": {},
 
 		"trace:run": {
-			"dependsOn": ["^build:cjs"],
+			"dependsOn": ["^build:esm"],
 			"outputs": ["traceDir/**"]
 		},
 

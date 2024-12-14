@@ -28,7 +28,7 @@
   "__________DEPS": "__________",
   "peerDependencies": {
     "@voltiso/transform": "workspace:^",
-    "typescript": ">= 4.8.4",
+    "typescript": "~5.6.3",
     "typescript-transform-paths": "^3.4.6"
   },
   "peerDependenciesMeta": {

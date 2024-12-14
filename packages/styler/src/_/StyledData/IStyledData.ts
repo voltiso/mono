@@ -10,6 +10,23 @@ import type { Stylable, StylableLike, StylableRenderFunction } from '~/Stylable'
 import type { IStack } from '~/Styled/_/Stack'
 import type { NativeElement } from '~/StyledComponent'
 
+export type Unit =
+	| 'px'
+	| 'rem'
+	| 'em'
+	| 'cm'
+	| 'mm'
+	| 'pc'
+	| 'pt'
+	| 'in'
+	| '%'
+	| 'vw'
+	| 'vh'
+	| 'vmin'
+	| 'vmax'
+	| 'ch'
+	| 'ex'
+
 export interface IStyledData<CustomCss extends object> {
 	component: StylableLike | null
 
@@ -20,6 +37,9 @@ export interface IStyledData<CustomCss extends object> {
 
 	cssProps: IndexedCssProps<CustomCss>
 	// customCss: IndexedCssProps
+
+	/** @defaultValue 'px' */
+	unit: Unit
 }
 
 export type IStyledDataMod<CustomCss extends object> = Partial<{
@@ -32,4 +52,6 @@ export type IStyledDataMod<CustomCss extends object> = Partial<{
 
 	cssProps: IndexedCssProps<CustomCss> | IndexedCssPropsSingle<CustomCss>
 	customCss: IndexedCssProps<CustomCss> | IndexedCssPropsSingle<CustomCss>
+
+	unit: Unit
 }>

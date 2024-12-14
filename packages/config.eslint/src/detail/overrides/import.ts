@@ -107,24 +107,7 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 // console.log('111', importPlugin.configs.recommended)
 
 export const importConfig = defineEslintFlatConfig(
-	// ...eslintFlatConfigFromConfig(importPlugin.configs.recommended as never, {
-	// 	import: importPlugin,
-	// }),
-	// ...eslintFlatConfigFromConfig(importPlugin.configs.warnings as never, {
-	// 	import: importPlugin,
-	// }),
-	// ...eslintFlatConfigFromConfig(importPlugin.configs.errors as never, {
-	// 	import: importPlugin,
-	// }),
-	// ...eslintFlatConfigFromConfig(importPlugin.configs.typescript as never),
 	{
-		// extends: [
-		// 	'plugin:import/recommended',
-		// 	'plugin:import/warnings',
-		// 	'plugin:import/errors',
-		// 	'plugin:import/typescript',
-		// ],
-
 		files: codeFiles,
 
 		plugins: { import: importPlugin as never },

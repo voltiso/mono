@@ -11,7 +11,7 @@
 
 import * as path from 'node:path'
 
-import type { RuleListener } from '@typescript-eslint/utils/dist/ts-eslint'
+import type { RuleListener } from '@typescript-eslint/utils/ts-eslint'
 import type { Rule } from 'eslint'
 import isCoreModule from 'is-core-module'
 

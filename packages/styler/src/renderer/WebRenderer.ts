@@ -3,6 +3,7 @@
 
 /* eslint-disable es-x/no-class-instance-fields */
 
+import type { Unit } from '~/_/StyledData/IStyledData'
 import type { Keyframes } from '~/Css/Keyframes'
 
 import type { Css } from '../Css'
@@ -21,35 +22,27 @@ export class WebRenderer {
 	_styleToFlush = ''
 	numFlushes = 0
 
-	classNameFor(...stylerStyles: Css[]): string {
+	// _options: { unit: Unit }
+
+	// constructor(options: { unit: Unit }) {
+	// 	this._options = options
+	// }
+
+	classNameFor(options: { unit: Unit }, ...stylerStyles: Css[]): string {
 		const atomicStyles = groupAtomicStyles(
-			getAtomicStyles(this, ...stylerStyles),
+			getAtomicStyles(options, this, ...stylerStyles),
 		)
 
 		// ! .map with side effects
 		const classNames = atomicStyles.map(atomicStyle => {
-			const atomicStyleStr = stringFromAtomicStyle(atomicStyle)
+			const atomicStyleStr = stringFromAtomicStyle(options, atomicStyle)
 			let className = this._classNames.get(atomicStyleStr)
-
-			// console.log({ atomicStyleStr })
 
 			if (!className) {
 				className = getHash(atomicStyleStr)
-				// className = isServerComponent
-				// 	? // isServerComponent || process.env['NODE_ENV'] === 'development'
-				// 	  getHash(atomicStyleStr)
-				// 	: // eslint-disable-next-line no-magic-numbers
-				// 	  this._classNames.size.toString(36)
 
 				if (!Number.isNaN(Number(className[0]))) className = `_${className}`
 				this._classNames.set(atomicStyleStr, className)
-
-				// if (typeof document !== 'undefined') {
-				// 	const headStyleElement = getHeadStyleElement()
-				// 	const cssText = `.${className}{${content}}`
-				// 	// console.log({ cssText })
-				// 	headStyleElement.append(cssText)
-				// }
 
 				this._styleToFlush += atomicStyleStr.replace(/&/gu, `.${className}`)
 			}
@@ -60,19 +53,14 @@ export class WebRenderer {
 		return classNames.join(' ')
 	}
 
-	animationNameFor(keyframes: Keyframes): string {
-		const keyframesStr = stringFromKeyframes(keyframes)
+	animationNameFor(options: { unit: Unit }, keyframes: Keyframes): string {
+		const keyframesStr = stringFromKeyframes(options, keyframes)
 		// console.log({ keyframes, keyframesStr })
 
 		let animationName = this._keyframes.get(keyframesStr)
 
 		if (!animationName) {
 			animationName = getHash(keyframesStr)
-			// animationName = isServerComponent
-			// 	? // isServerComponent || process.env['NODE_ENV'] === 'development'
-			// 	  getHash(keyframesStr)
-			// 	: // eslint-disable-next-line no-magic-numbers
-			// 	  this._keyframes.size.toString(36)
 
 			if (!Number.isNaN(Number(animationName[0])))
 				animationName = `_${animationName}`
@@ -113,17 +101,3 @@ export class WebRenderer {
 export function isWebRenderer(x: unknown): x is WebRenderer {
 	return !!(x as WebRenderer | null)?.classNameFor
 }
-
-// export function getStyle(renderer: WebRenderer) {
-// 	return [...renderer._cache.entries()].map(([k, v]) => `.${v}{${k}}`).join('')
-// }
-
-// export function getNodeList(renderer: WebRenderer) {
-// 	return React.createElement(
-// 		'style',
-// 		{
-// 			'data-voltiso': '',
-// 		},
-// 		getStyle(renderer),
-// 	)
-// }

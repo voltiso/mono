@@ -109,6 +109,56 @@ describe('style', () => {
 		})
 	})
 
+	it('unit', () => {
+		expect.hasAssertions()
+
+		const ButtonWithUnit = RedButton.unit('em')
+
+		renderApp(<ButtonWithUnit css={{ margin: 8 }} />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			margin: '8em',
+		})
+	})
+
+	it('unit HOC', () => {
+		expect.hasAssertions()
+
+		const myStyle = style.unit('em')
+
+		const MyButton = myStyle('button').css({ margin: 4 })
+
+		renderApp(<MyButton />)
+
+		const button = screen.getByRole('button')
+
+		expect(button).toHaveStyle({
+			margin: '4em',
+		})
+	})
+
+	// TODO: resolve `unit` by pushing node to the stack, instead of global override
+	// eslint-disable-next-line jest/no-commented-out-tests
+	// it('unit HOC already styled', () => {
+	// 	expect.hasAssertions()
+
+	// 	const myStyle = style.unit('em')
+
+	// 	const ButtonWithUnit = myStyle(RedButton)
+
+	// 	renderApp(<ButtonWithUnit css={{ margin: 8 }} />)
+
+	// 	const button = screen.getByRole('button')
+
+	// 	expect(button).toHaveStyle({
+	// 		margin: '4em',
+	// 		color: 'red',
+	// 		borderWidth: '8em',
+	// 	})
+	// })
+
 	it('overwrite css => css #2', () => {
 		expect.hasAssertions()
 
@@ -428,7 +478,6 @@ describe('style', () => {
 
 		const C: FC = () => null
 		// @ts-expect-error no className prop
-		// eslint-disable-next-line sonarjs/no-unused-vars
 		const _CC = style(C)
 	})
 

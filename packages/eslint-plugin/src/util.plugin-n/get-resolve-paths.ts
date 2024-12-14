@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
-import type { RuleContext } from '@typescript-eslint/utils/dist/ts-eslint'
+import type { RuleContext } from '@typescript-eslint/utils/ts-eslint'
 
 const DEFAULT_VALUE = Object.freeze([])
 

@@ -61,6 +61,7 @@
     }
   },
   "devDependencies": {
+    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
