@@ -145,7 +145,7 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 	}
 
 	bind(thisArg: unknown, ...args: unknown[]): unknown {
-		// eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias, unicorn/no-this-assignment, sonarjs/no-this-alias
+		// eslint-disable-next-line unicorn/no-this-assignment, consistent-this, @typescript-eslint/no-this-alias
 		const self = this
 		return Function.prototype.bind.call(
 			function (this: unknown, ...moreArgs: unknown[]) {

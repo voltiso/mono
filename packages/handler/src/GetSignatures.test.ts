@@ -1,7 +1,7 @@
 // ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, it } from '@jest/globals'
+import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
 import type { IsIdentical, MaybePromise } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -54,5 +54,13 @@ describe('GetSignatures', () => {
 				}
 			>
 		>()
+	})
+
+	it('return schema schemable', () => {
+		const fun = checked
+			.return({ a: s.number })
+			.implement(() => ({ a: 'test' as never }))
+
+		expect(() => fun()).toThrow('should be number')
 	})
 })

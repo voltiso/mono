@@ -36,7 +36,7 @@ describe('object', () => {
 
 			//
 
-			const explicit = s.infer({
+			const explicit = s.object({
 				x: {
 					y: {
 						z: s.number.default(123),
@@ -44,7 +44,7 @@ describe('object', () => {
 				},
 			})
 
-			expect(explicit.hasDefault).toBeTruthy()
+			expect(explicit.hasDefault).toBeFalsy()
 		})
 	})
 })

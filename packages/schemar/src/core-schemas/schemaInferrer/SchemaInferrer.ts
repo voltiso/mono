@@ -14,8 +14,9 @@ import { SchemaInferrerImpl } from './SchemaInferrerImpl'
  * All library functions will behave same way with inferables and schemas
  * implicitly inferred from these inferables
  *
- * On the other hand, the explicit `s.infer` function will never auto-default
- * objects - it will behave as `s.object` if object inferable is provided
+ * THIS IS NO LONGER THE CASE: On the other hand, the explicit `s.infer`
+ * function will never auto-default objects - it will behave as `s.object` if
+ * object inferable is provided
  */
 export interface ImplicitInferSchema$Function {
 	<S extends $$Schemable>(schemable: S): ImplicitInferSchema$_<S>

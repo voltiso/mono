@@ -1,6 +1,8 @@
+# `@voltiso/schemar`
+
 Schema validation.
 
-# Usage
+## Usage
 
 ```ts
 import * as s from '@voltiso/schemar'
@@ -16,27 +18,27 @@ const myShape = {
 
 const value = s.schema(myShape).validate({ name: 'a', version: '1.0.0' })
 // --> {
-//  	name: 'a',
-//  	version: '1.0.0',
-//  	dependencies: {
-//      '@voltiso/schemar': '9.0.0',
-// 	 },
+//   name: 'a',
+//   version: '1.0.0',
+//   dependencies: {
+//     '@voltiso/schemar': '9.0.0',
+//   },
 // }
 ```
 
-## Infer TS Types
+### Infer TS Types
 
 ```ts
 const mySchema = s.schema(myShape)
 
 type MySchema = typeof mySchema.Output
 // --> {
-// 	 name: string
-// 	 version: string
-// 	 license?: string
-// 	 dependencies: {
-// 	 	 '@voltiso/schemar': string
-// 	 }
+//   name: string
+//   version: string
+//   license?: string
+//   dependencies: {
+//     '@voltiso/schemar': string
+//   }
 // }
 
 type MySchemaInput = typeof mySchema.Input
@@ -50,7 +52,7 @@ type MySchemaInput = typeof mySchema.Input
 // }
 ```
 
-## `exec` - get full validation information and issues list
+### `exec` - get full validation information and issues list
 
 ```ts
 import * as s from '@voltiso/schemar'
@@ -61,8 +63,12 @@ const myShape = {
 
 const result = s.schema(myShape).exec({ field: 123 })
 // --> {
-// 	 isValid: true,
-// 	 issues: [],
-// 	 value: { field: 123 },
+//   isValid: true,
+//   issues: [],
+//   value: { field: 123 },
 // }
 ```
+
+### Explicit `infer` function
+
+Seems currently it works similarly to `schema` function. Use `schema` instead?

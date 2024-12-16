@@ -230,12 +230,15 @@ export class SingleOverloadHandlerImpl<
 			throw new Error('Checked: no implementation provided')
 		}
 
-		const thisSchema =
-			this.options.this === noThis ? s.void : (this.options.this as s.Schema)
+		const thisSchema: s.Schema =
+			this.options.this === noThis
+				? (s.void as never)
+				: (s.schema(this.options.this) as never)
 
 		const validThis = thisSchema.validate(thisArg)
 
-		const parametersSchema = s.infer(
+		// ! s.infer ???
+		const parametersSchema = s.schema(
 			this.options.parameters,
 		) as unknown as s.Schema
 		const validParameters = parametersSchema.validate(args) as unknown[]
@@ -246,7 +249,7 @@ export class SingleOverloadHandlerImpl<
 			...validParameters,
 		) as unknown
 
-		const returnSchema = this.options.return as s.Schema
+		const returnSchema: s.Schema = s.schema(this.options.return)
 
 		function finalize(result: unknown) {
 			const validResult = returnSchema.validate(result)

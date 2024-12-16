@@ -16,7 +16,7 @@ import type {
 } from '~'
 import * as s from '~'
 
-// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
+// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('object', () => {
 	it('generic', <O extends Partial<ObjectOptions>>() => {
 		$Assert.is<CustomObject<O>, Schema>()
@@ -411,7 +411,6 @@ describe('object', () => {
 		expect(s.schema({ a: s.number }).hasDefault).toBe(false)
 
 		expect(s.schema({}).hasDefault).toBe(false) // NonNullish schema
-
 		expect(s.infer({}).hasDefault).toBe(false) // NonNullish schema
 
 		expect(s.infer({ a: s.number.optional }).hasDefault).toBe(true)

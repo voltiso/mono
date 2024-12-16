@@ -24,8 +24,11 @@ describe('nonNullish', () => {
 
 		expect(s.nonNullish.toString()).toBe('{}')
 
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
+		// ! what was the difference between `infer` and `schema`??
+
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.infer({}).toString()).toBe('{}')
+		expect(s.schema({}).toString()).toBe('{}')
 
 		$Assert<IsIdentical<typeof s.nonNullish, NonNullish$>>()
 
