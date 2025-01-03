@@ -1,0 +1,10 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/Entry"
+#include "voltiso/SplayTable"
+
+namespace VOLTISO_NAMESPACE {
+template <class Key, class Value>
+using SplayMap = SplayTable<Entry<Key, Value>>;
+} // namespace VOLTISO_NAMESPACE

@@ -10,7 +10,7 @@
 
 namespace VOLTISO_NAMESPACE::singleton {
 struct perThread {
-  template <class T> static auto &get() {
+  template <class T> static auto &instance() {
     static thread_local T instance;
     return instance;
   }

@@ -85,7 +85,7 @@ void BM_DynamicArray_resize(benchmark::State &state) {
   while (state.KeepRunningBatch(count)) {
     auto array = DynamicArray<T>();
     array.setNumItems(count, 123);
-    auto data = &array[0];
+    auto data = &array[0].item();
     benchmark::DoNotOptimize(data);
     benchmark::ClobberMemory();
   }
@@ -165,7 +165,7 @@ void BM_DynamicArray_resize_nonTrivial(benchmark::State &state) {
   while (state.KeepRunningBatch(1)) {
     auto array = DynamicArray<T>();
     array.setNumItems(count);
-    auto data = &array[0];
+    auto data = &array[0].item();
     benchmark::DoNotOptimize(data);
     benchmark::ClobberMemory();
   }

@@ -62,7 +62,7 @@ public:
 
   template <class Index>
   const Item &operator[](const CustomHandle<Index> &handle) const {
-    DCHECK_LE(0, handle.value);
+    DCHECK_GE(handle.value, STARTING_INDEX);
     DCHECK_LT(handle.value - STARTING_INDEX, NUM_ITEMS);
     return items[handle.value - STARTING_INDEX];
   }
@@ -117,6 +117,25 @@ public:
 };
 } // namespace VOLTISO_NAMESPACE::array
 VOLTISO_OBJECT_FINAL(array)
+
+//
+
+namespace std {
+template <class Options>
+ostream &operator<<(ostream &os,
+                    const VOLTISO_NAMESPACE::array::Build<Options> &array) {
+  os << "[";
+  for (size_t i = 0; i < Options::NUM_ITEMS; i++) {
+    if (i > 0) {
+      os << ", ";
+    }
+    os << array[i];
+  }
+  return os << "]";
+}
+} // namespace std
+
+//
 
 namespace VOLTISO_NAMESPACE {
 template <class Options>

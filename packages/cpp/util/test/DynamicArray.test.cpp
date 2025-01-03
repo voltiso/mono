@@ -94,16 +94,16 @@ TEST(DynamicArray, inPlace) {
   a.push(1);
   EXPECT_EQ(a.numItems, 1);
   EXPECT_EQ(a.numSlots, 5);
-  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[0].item(), 1);
   EXPECT_EQ(numConstructors, 1);
   a.setNumSlots(6);
   EXPECT_EQ(a.numItems, 1);
   EXPECT_EQ(a.numSlots, 6);
-  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[0].item(), 1);
   EXPECT_EQ(numConstructors, 1);
   a.setNumSlots(2);
   EXPECT_EQ(a.numItems, 1);
   EXPECT_EQ(a.numSlots, 2);
-  EXPECT_EQ(a[0], 1);
+  EXPECT_EQ(a[0].item(), 1);
   EXPECT_EQ(numConstructors, 1);
 }

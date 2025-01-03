@@ -44,7 +44,9 @@ protected:
 #endif
 
 public:
-  static constexpr auto &get() { return singleton::perThread::get<Self>(); }
+  static constexpr auto &instance() {
+    return singleton::perThread::instance<Self>();
+  }
 
 public:
   using Options = _Options;

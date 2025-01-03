@@ -1,0 +1,277 @@
+#pragma once
+
+#include "voltiso/Entry"
+#include "voltiso/Pool"
+#include "voltiso/Splay"
+#include "voltiso/allocator/Malloc"
+
+namespace VOLTISO_NAMESPACE::splayTable::_ {
+template <class Options> struct Node {
+private:
+  using Entry = Options::Entry;
+  using Allocator = Options::Allocator;
+  using Pool = Pool<int>::template Allocator_<Allocator>; // need to cast
+  using Handle = Pool::Handle::template Brand_<void>;
+
+public:
+  Entry entry;
+  Array<Handle, 2> children = {Handle::null, Handle::null};
+};
+} // namespace VOLTISO_NAMESPACE::splayTable::_
+
+//
+
+namespace VOLTISO_NAMESPACE::splayTable {
+template <class Options> class Build;
+} // namespace VOLTISO_NAMESPACE::splayTable
+
+//
+
+namespace VOLTISO_NAMESPACE::splayTable::_ {
+template <class Options> class ConstAccessor {
+protected:
+  using Build = Build<Options>;
+  using Handle = Build::Pool::Handle;
+  using Key = Build::Key;
+  using Value = Build::Value;
+
+public:
+  // const Handle handle;
+  const Key key;
+  const Build &splayTable;
+  const bool exists;
+
+private:
+  friend Build;
+  ConstAccessor(const Key &key, const Build &splayTable, bool exists)
+      : key(key), splayTable(splayTable), exists(exists) {}
+
+public:
+  const Value &get() const {
+    DCHECK(this->exists);
+    return getValue(this->splayTable.pool[this->splayTable.root]->entry);
+  }
+
+public:
+  operator const Value &() const { return this->get(); }
+  const Value &operator*() const { return this->get(); }
+  const Value *operator->() const { return &this->get(); }
+  const Value *operator&() const { return &this->get(); }
+};
+
+//
+
+template <class Options> class SetAccessor : public ConstAccessor<Options> {
+private:
+  using Base = ConstAccessor<Options>;
+  using Base::Base;
+  using Build = Build<Options>;
+
+protected:
+  using Value = Base::Value;
+
+public:
+  void insert() {
+    DCHECK(!this->exists);
+    auto &root = const_cast<Build::Pool::Handle &>(this->splayTable.root);
+    this->splayTable._splay()(root).insert(this->key);
+  }
+
+public:
+  Value &get() { return const_cast<Value &>(Base::get()); }
+
+public:
+  operator Value &() { return get(); }
+  Value &operator*() { return get(); }
+  Value *operator->() { return &get(); }
+  Value *operator&() { return &get(); }
+};
+
+//
+
+template <class Options> class MapAccessor : public SetAccessor<Options> {
+private:
+  using Base = SetAccessor<Options>;
+  using Base::Base;
+  using Build = Build<Options>;
+  using Value = Build::Value;
+
+public:
+  template <class... Args> auto &insert(Args &&...args) {
+    DCHECK(!this->exists);
+    auto &root = const_cast<Build::Pool::Handle &>(this->splayTable.root);
+    this->splayTable._splay()(root).insert(
+        Entry{this->key, Value(std::forward<Args>(args)...)});
+    const_cast<bool &>(this->exists) = true;
+    return *this;
+  }
+
+  template <class... Args> auto &maybeInsert(Args &&...args) {
+    if (!this->exists) {
+      insert(std::forward<Args>(args)...);
+    }
+    return *this;
+  }
+
+  void erase() {
+    DCHECK(this->exists);
+    auto &root = const_cast<Build::Pool::Handle &>(this->splayTable.root);
+    this->splayTable._splay()(root).erase(this->key);
+  }
+
+  void maybeErase() {
+    if (this->exists) {
+      erase();
+    }
+  }
+}; // class MapAccessor
+
+template <class Options> class Iterator {
+private:
+  using Build = Build<Options>;
+  using Pool = Build::Pool;
+
+private:
+  using Stack =
+      DynamicArray<typename Pool::Handle>::template IN_PLACE_ONLY_<32>;
+  Stack stack;
+
+private:
+  Build &splayTable;
+
+private:
+  friend Build;
+  Iterator(bool end, Build &splayTable) : splayTable(splayTable) {
+    if (!end) {
+      auto current = splayTable.root;
+      while (current) {
+        stack.push(current);
+        current = splayTable.pool[current]->children[0];
+      }
+    }
+  }
+
+public:
+  void operator++() {
+    DCHECK_GT(stack.numItems, 0);
+    auto &pool = splayTable.pool;
+    auto current = stack.last();
+    if (pool[current]->children[1]) {
+      current = pool[current]->children[1];
+      stack.push(current);
+      while (pool[current]->children[0]) {
+        current = pool[current]->children[0];
+        stack.push(current);
+      }
+    } else {
+      do {
+        current = stack.pop();
+      } while (stack.numItems && pool[stack.last()]->children[1] == current);
+    }
+  }
+
+  // ! only for `for auto`
+  bool operator==(const Iterator &other) const {
+    return stack.numItems == other.stack.numItems;
+  }
+
+  auto &operator*() const { return splayTable.pool[stack.last()]->entry; }
+}; // class Iterator
+
+} // namespace VOLTISO_NAMESPACE::splayTable::_
+
+//
+
+namespace VOLTISO_NAMESPACE::splayTable {
+struct Defaults {
+  using Entry = void; // need to override
+  using Allocator = allocator::Malloc;
+};
+using DefaultOptions = Options<Defaults>;
+
+//
+
+template <class _Options> class Build : public Object<_Options> {
+  using Self = Build;
+  // using Base = Object<_Options>;
+  //
+public:
+  using Options = _Options;
+
+public:
+  using Entry = Options::Entry;
+  using Key = GetKey<Entry>;
+  using Value = GetValue<Entry>;
+  using Allocator = Options::Allocator;
+
+  using ConstAccessor = _::ConstAccessor<Options>;
+  using Accessor =
+      std::conditional_t<std::is_same_v<Value, Entry> ||
+                             std::is_same_v<Value, void>,
+                         _::SetAccessor<Options>, _::MapAccessor<Options>>;
+  friend ConstAccessor;
+  friend _::SetAccessor<Options>;
+  friend _::MapAccessor<Options>;
+
+  // using ConstIterator = ConstIterator<Options>;
+  using Iterator = _::Iterator<Options>;
+  friend Iterator;
+
+private:
+  using Node = _::Node<Options>;
+  using Pool = Pool<Node>::template Allocator_<Allocator>;
+
+private:
+  Pool pool;
+  Pool::Handle root = Pool::Handle::null;
+
+public:
+  Build() = default;
+  Build(std::initializer_list<Entry> entries) {
+    for (auto &entry : entries) {
+      if constexpr (std::is_same_v<Value, Entry> ||
+                    std::is_same_v<Value, void>) {
+        (*this)[entry].insert();
+      } else {
+        (*this)[getKey(entry)].insert(getValue(entry));
+      }
+    }
+  }
+
+private:
+  auto _splay() const {
+    auto &pool = const_cast<Pool &>(this->pool);
+    // auto &root = const_cast<Pool::Handle &>(this->root);
+    return Splay<Pool>(pool);
+    // return Splay<Pool>(pool)(root);
+  }
+
+public:
+  Accessor operator[](const Key &key) {
+    auto splay = this->_splay();
+    auto handle = splay(this->root).find(key);
+    return Accessor{key, *this, handle != decltype(handle)::null};
+  }
+  ConstAccessor operator[](const Key &key) const {
+    auto splay = this->_splay();
+    auto handle = splay(this->root).find(key);
+    return ConstAccessor{key, *this, handle != decltype(handle)::null};
+  }
+
+public:
+  Iterator begin() { return Iterator(false, *this); }
+  // ConstIterator begin() const { return {}; }
+
+  Iterator end() { return Iterator(true, *this); }
+  // ConstIterator end() const { return {}; }
+}; // class Build
+} // namespace VOLTISO_NAMESPACE::splayTable
+
+VOLTISO_OBJECT_FINAL(splayTable)
+// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(splayTable)
+
+namespace VOLTISO_NAMESPACE {
+template <class Entry>
+using SplayTable =
+    splayTable::Final<typename splayTable::DefaultOptions::Entry_<Entry>>;
+} // namespace VOLTISO_NAMESPACE

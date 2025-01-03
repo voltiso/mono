@@ -15,10 +15,10 @@ public:
   using Value = GetValue<Item>;
 
 private:
-  Pool &v;
+  Pool &pool;
 
 public:
-  Bst(Pool &pool) : v(pool) {}
+  Bst(Pool &pool) : pool(pool) {}
   // Bst(Self &&) = default;
 
 public:
@@ -27,11 +27,11 @@ public:
     auto node = root;
     auto cand = node;
     while (node) {
-      if (value < getValue(v[node])) {
-        node = v[node]->children[0];
+      if (value < getValue(pool[node])) {
+        node = pool[node]->children[0];
       } else {
         cand = node;
-        node = v[node]->children[1];
+        node = pool[node]->children[1];
       }
     }
     return cand;
@@ -44,9 +44,9 @@ public:
   //             / \             / \                             |
   //            b   c           a   b                            |
   Handle rotateLeft(const Handle &x) {
-    auto y = v[x].children[1];
-    v[x].children[1] = v[y].children[0];
-    v[y].children[0] = x;
+    auto y = pool[x]->children[1];
+    pool[x]->children[1] = pool[y]->children[0];
+    pool[y]->children[0] = x;
     return y;
   }
 
@@ -56,9 +56,9 @@ public:
   //         / \                     / \                         |
   // 	      a   b                   b   c                        |
   Handle rotateRight(const Handle &x) {
-    auto y = v[x].children[0];
-    v[x].children[0] = v[y].children[1];
-    v[y].children[1] = x;
+    auto y = pool[x]->children[0];
+    pool[x]->children[0] = pool[y]->children[1];
+    pool[y]->children[1] = x;
     return y;
   }
 }; // struct bst

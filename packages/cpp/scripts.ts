@@ -1,4 +1,4 @@
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -68,8 +68,8 @@ const benchOptions: Options = {
 	compiler: 'clang-18',
 	// compiler: 'gcc-14',
 
-	buildType: 'Debug',
-	// buildType: 'Release',
+	// buildType: 'Debug',
+	buildType: 'Release',
 	// buildType: 'RelWithDebInfo',
 }
 

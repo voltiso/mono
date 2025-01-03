@@ -14,19 +14,18 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
   Pool<T> pool;
   for (auto _ : state) {
-    auto handle = pool.construct();
+    auto handle = pool.insert();
     benchmark::DoNotOptimize(pool[handle]);
-    pool.destroy(handle);
+    pool[handle].erase();
   }
 }
 
 static void BM_allocator_trivial_Splay(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
-  auto &splay = allocator::Splay::get();
+  auto &splay = allocator::Splay::instance();
   for (auto _ : state) {
-		LOG(INFO) << "iter";
     auto handle = splay.allocateBytes(sizeof(T));
-    benchmark::DoNotOptimize(handle);
+    benchmark::DoNotOptimize(splay(handle));
     splay.freeBytes(handle, sizeof(T));
   }
 }
@@ -70,14 +69,30 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
   Pool<T> pool;
   for (int i = 0; i < num; i++) {
-    auto handle = pool.construct();
+    auto handle = pool.insert();
     benchmark::DoNotOptimize(pool[handle]);
   }
-  auto prev = pool.construct();
+  auto prev = pool.insert().handle;
   for (auto _ : state) {
-    auto handle = pool.construct();
+    auto handle = pool.insert();
     benchmark::DoNotOptimize(pool[handle]);
-    pool.destroy(prev);
+    pool[prev].erase();
+    prev = handle;
+  }
+}
+
+static void BM_allocator_simple_Splay(benchmark::State &state) {
+  using namespace VOLTISO_NAMESPACE;
+  auto &splay = allocator::Splay::instance();
+  for (int i = 0; i < num; i++) {
+    auto handle = splay.allocateBytes(sizeof(T));
+    benchmark::DoNotOptimize(splay(handle));
+  }
+  auto prev = splay.allocateBytes(sizeof(T));
+  for (auto _ : state) {
+    auto handle = splay.allocateBytes(sizeof(T));
+    benchmark::DoNotOptimize(splay(handle));
+    splay.freeBytes(prev, sizeof(T));
     prev = handle;
   }
 }
@@ -132,6 +147,7 @@ BENCHMARK(BM_allocator_trivial_alignedAlloc);
 BENCHMARK(BM_allocator_trivial_new);
 
 BENCHMARK(BM_allocator_simple_Pool);
+BENCHMARK(BM_allocator_simple_Splay);
 BENCHMARK(BM_allocator_simple_malloc);
 BENCHMARK(BM_allocator_simple_alignedAlloc);
 BENCHMARK(BM_allocator_simple_new);

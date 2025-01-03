@@ -13,9 +13,9 @@ TEST(Handle, doesNotInitialize) {
   struct S {};
   using Handle = Handle::Brand_<S>;
   Storage<Handle> storage;
-  storage.item() = 123;
+  storage.item() = Handle(123);
   new (&storage) Handle;
-  EXPECT_EQ(storage.item(), 123);
+  EXPECT_EQ(storage.item().value, 123);
 }
 
 TEST(Handle, operatorBool) {
@@ -23,8 +23,18 @@ TEST(Handle, operatorBool) {
   using Handle = Handle ::Brand_<S>;
   Handle handle = Handle::null;
   EXPECT_FALSE(handle);
-  handle = 123;
+  handle = Handle(123);
   EXPECT_TRUE(handle);
+}
+
+TEST(Handle, zeroInitialize) {
+  auto handle = Handle(0);
+  EXPECT_EQ(handle.value, 0);
+
+  struct S {};
+  using Handle2 = Handle ::Brand_<S>::template Type_<std::size_t>;
+  auto handle2 = Handle2(0);
+  EXPECT_EQ(handle2.value, 0);
 }
 
 // TEST(Handle, valueInitialize) {
@@ -45,36 +55,30 @@ static_assert(std::is_trivially_default_constructible_v<Handle>);
 static_assert(std::is_trivially_destructible_v<Handle>);
 static_assert(std::is_trivially_copyable_v<Handle>);
 
-static_assert(std::is_trivially_copyable_v<
-              Handle ::Brand_<S>::Type_<void *>>);
+static_assert(std::is_trivially_copyable_v<Handle ::Brand_<S>::Type_<void *>>);
 
-static_assert(std::is_trivially_copyable_v<
-              Handle::Brand_<S>::Type_<uint32_t>>);
+static_assert(std::is_trivially_copyable_v<Handle::Brand_<S>::Type_<uint32_t>>);
 
 // CustomUnbranded<uint32_t> a = 123;
 
-// allow `int -> handle`
-static_assert(
-    std::is_nothrow_assignable_v<
-        Handle::Brand_<S>::Type_<std::uint32_t>, std::uint32_t>);
+// do not allow `int -> handle`
+static_assert(!std::is_nothrow_assignable_v<
+              Handle::Brand_<S>::Type_<std::uint32_t>, std::uint32_t>);
 
 // disallow `handle -> int` (user should use `handle.value`)
-static_assert(!std::is_assignable_v<
-              uint32_t, Handle::Brand_<S>::Type_<uint32_t>>);
+static_assert(
+    !std::is_assignable_v<uint32_t, Handle::Brand_<S>::Type_<uint32_t>>);
 
 // allow `handle<smallInt> -> handle<bigInt>`
-static_assert(
-    std::is_assignable_v<Handle::Brand_<S>::Type_<uint64_t>,
-                         Handle::Brand_<S>::Type_<uint32_t>>);
+static_assert(std::is_assignable_v<Handle::Brand_<S>::Type_<uint64_t>,
+                                   Handle::Brand_<S>::Type_<uint32_t>>);
 
 // most importantly: disallow `handle<bigInt> -> handle<smallInt>`
-static_assert(
-    !std::is_assignable_v<Handle::Brand_<S>::Type_<uint32_t>,
-                          Handle::Brand_<S>::Type_<uint64_t>>);
+static_assert(!std::is_assignable_v<Handle::Brand_<S>::Type_<uint32_t>,
+                                    Handle::Brand_<S>::Type_<uint64_t>>);
 
-static_assert(
-    !std::is_assignable_v<Handle::Brand_<S>::Type_<uint32_t>,
-                          Handle::Brand_<S>::Type_<uint64_t>>);
+static_assert(!std::is_assignable_v<Handle::Brand_<S>::Type_<uint32_t>,
+                                    Handle::Brand_<S>::Type_<uint64_t>>);
 
 //
 
@@ -87,39 +91,32 @@ static_assert(std::is_trivially_constructible_v<Handle::Brand_<S>>);
 struct A {};
 struct B {};
 static_assert(sizeof(Handle::Brand_<A>) == sizeof(std::size_t));
-static_assert(
-    !std::is_assignable_v<Handle::Brand_<A>, Handle::Brand_<B>>);
-
-static_assert(std::is_assignable_v<Handle::Brand_<A>::Type_<size_t>,
-                                   Handle::Brand_<A>>);
+static_assert(!std::is_assignable_v<Handle::Brand_<A>, Handle::Brand_<B>>);
 
 static_assert(
-    std::is_assignable_v<Handle::Brand_<A>,
-                         Handle::Brand_<A>::Type_<size_t>>);
+    std::is_assignable_v<Handle::Brand_<A>::Type_<size_t>, Handle::Brand_<A>>);
 
 static_assert(
-    std::is_constructible_v<Handle::Brand_<A>,
-                            Handle::Brand_<A>::Type_<size_t>>);
+    std::is_assignable_v<Handle::Brand_<A>, Handle::Brand_<A>::Type_<size_t>>);
+
+static_assert(std::is_constructible_v<Handle::Brand_<A>,
+                                      Handle::Brand_<A>::Type_<size_t>>);
 
 //
-static_assert(
-    std::is_constructible_v<Handle::Brand_<A>::Type_<uint64_t>,
-                            Handle::Brand_<A>::Type_<uint32_t>>);
+static_assert(std::is_constructible_v<Handle::Brand_<A>::Type_<uint64_t>,
+                                      Handle::Brand_<A>::Type_<uint32_t>>);
+
+static_assert(std::is_constructible_v<Handle::Brand_<A>,
+                                      Handle::Brand_<A>::Type_<uint32_t>>);
 
 static_assert(
-    std::is_constructible_v<Handle::Brand_<A>,
-                            Handle::Brand_<A>::Type_<uint32_t>>);
-
-static_assert(
-    std::is_constructible_v<Handle::Brand_<A>,
-                            Handle::Brand_<A>::Type_<int>>);
-
-static_assert(
-    std::is_assignable_v<Handle::Brand_<A>,
-                         Handle::Brand_<A>::Type_<uint32_t>>);
+    std::is_constructible_v<Handle::Brand_<A>, Handle::Brand_<A>::Type_<int>>);
 
 static_assert(std::is_assignable_v<Handle::Brand_<A>,
-                                   Handle::Brand_<A>::Type_<int>>);
+                                   Handle::Brand_<A>::Type_<uint32_t>>);
+
+static_assert(
+    std::is_assignable_v<Handle::Brand_<A>, Handle::Brand_<A>::Type_<int>>);
 
 // void *a = handle::Custom<A, A *>();
 // A *b = handle::Custom<A, A *>();
@@ -128,11 +125,9 @@ static_assert(std::is_assignable_v<Handle::Brand_<A>,
 //   b = handle::Custom<A, A *>();
 // }
 
-static_assert(
-    std::is_constructible_v<A *, Handle::Brand_<A>::Type_<A *>>);
+static_assert(std::is_constructible_v<A *, Handle::Brand_<A>::Type_<A *>>);
 
-static_assert(
-    std::is_constructible_v<void *, Handle::Brand_<A>::Type_<A *>>);
+static_assert(std::is_constructible_v<void *, Handle::Brand_<A>::Type_<A *>>);
 
 // static_assert(std::is_assignable_v<A *, handle::Custom<A, A *>>);
 // static_assert(std::is_assignable_v<void *, handle::Custom<A, A *>>);

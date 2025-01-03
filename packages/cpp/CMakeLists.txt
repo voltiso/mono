@@ -63,6 +63,7 @@ add_executable(
 	util/test/Array.test.cpp
 	util/test/DynamicArray.test.cpp
 	util/test/HashTable.test.cpp
+	util/test/SplayTable.test.cpp
 )
 
 # google benchmark

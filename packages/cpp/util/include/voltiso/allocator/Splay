@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 #include <voltiso/_>
 
 #include "voltiso/Array"
@@ -6,7 +7,6 @@
 #include "voltiso/Object"
 #include "voltiso/Pool"
 #include "voltiso/Splay"
-#include "voltiso/divCeil"
 #include "voltiso/memory/PAGE_SIZE"
 #include "voltiso/singleton"
 
@@ -19,12 +19,242 @@ struct Defaults {
   static constexpr auto PAGE_SIZE = memory::PAGE_SIZE;
   using Brand = void;
 };
-
 using DefaultOptions = Options<Defaults>;
+
+template <class Options> class Build;
+} // namespace VOLTISO_NAMESPACE::allocator::splay
 
 //
 
+namespace VOLTISO_NAMESPACE::allocator::splay::_ {
+template <size_t PAGE_SIZE> auto roundUpToFullPages(size_t numBytes) {
+  return (numBytes + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
+  //
+}
+/** @internal used to self-allocate memory for our internal structures, in order
+ * to avoid dependency on self */
+template <class Options> class SelfAllocator : public Object<Options> {
+public:
+  using Handle = void *;
+
+public:
+  void *allocateBytes(size_t numBytes) {
+    // LOG(INFO) << "SelfAllocator::allocateBytes(" << numBytes << ")";
+    DCHECK_EQ(numBytes % alignof(std::max_align_t), 0);
+
+    if (this->spareBlocks.numItems &&
+        this->spareBlocks.first().numBytes >= numBytes) { // ! likely? unlikely?
+      // LOG(INFO) << "USE SPARE BLOCK DIRECTLY";
+      if (this->spareBlocks.first().numBytes != numBytes) [[likely]] {
+        auto ptr = this->spareBlocks.first().ptr;
+        reinterpret_cast<std::uintptr_t &>(this->spareBlocks.first().ptr) +=
+            numBytes;
+        this->spareBlocks.first().numBytes -= numBytes;
+        return ptr;
+      } else [[unlikely]] {
+        auto ptr = this->spareBlocks.first().ptr;
+        this->spareBlocks.pop();
+        return ptr;
+      }
+    }
+
+    auto hNode = _alloc()
+                     .splay(_alloc().root)
+                     .lowerBound(numBytes << (sizeof(std::size_t) * 8 / 2));
+
+    if (hNode) [[likely]] {
+      auto entry = _alloc().splay(_alloc().root).erase(hNode);
+      DCHECK_GE(entry.numBytes, numBytes);
+      // LOG(INFO) << "begins[" << entry.memory.value << "].erase()";
+      _alloc().begins[entry.memory.value].erase();
+      _alloc().ends[entry.memory.value + entry.numBytes].erase();
+      this->_add(entry.memory.value + numBytes, entry.numBytes - numBytes);
+      return entry.memory;
+    } else [[unlikely]] {
+      // LOG(INFO) << "SelfAllocator: allocate full page";
+      auto newNumBytes = roundUpToFullPages<Options::PAGE_SIZE>(numBytes);
+      auto memory = Options::Allocator::instance().allocateBytes(newNumBytes);
+      this->_add(memory.value + numBytes, newNumBytes - numBytes);
+      return memory;
+    }
+  }
+
+public:
+  void *reallocateBytes(void *handle, size_t numBytes, size_t newNumBytes) {
+    // LOG(INFO) << "SelfAllocator::reallocateBytes(" << handle << ", " << numBytes
+    //           << ", " << newNumBytes << ")";
+
+    // don't optimize for this branch; shrinking allocations is not done when
+    // time is critical
+    if (newNumBytes <= numBytes) [[unlikely]] {
+      auto pLeftover = (std::uintptr_t)handle + newNumBytes;
+      if (newNumBytes != numBytes) [[likely]] {
+        auto leftoverSize = numBytes - newNumBytes;
+        _add(pLeftover, leftoverSize);
+      }
+      return handle;
+    }
+
+    // auto pAdditional = (std::uintptr_t)handle + numBytes;
+    // auto aAdditionalBegin = _alloc().begins[pAdditional];
+
+    // // optimize for fast in-place realloc
+    // if (aAdditionalBegin.exists) [[likely]] {
+    //   auto aNode = _alloc().nodes[aAdditionalBegin];
+    //   auto numAdditionalBytes = newNumBytes - numBytes;
+    //   if (aNode->entry.numBytes >= numAdditionalBytes) [[likely]] {
+    //     // realloc in place possible
+    //     auto entry = _alloc().splay(_alloc().root).erase(aNode);
+
+    //     // remove from begins and ends
+    //     aAdditionalBegin.erase();
+    //     _alloc().ends[entry.memory.value + entry.numBytes].erase();
+
+    //     // shrink left numAdditionalBytes
+    //     if (aNode->entry.numBytes != numAdditionalBytes) [[likely]] {
+    //       DCHECK_GT(aNode->entry.numBytes, numAdditionalBytes);
+    //       auto pLeftover = (std::uintptr_t)handle + newNumBytes;
+    //       auto leftoverSize = aNode->entry.numBytes - numAdditionalBytes;
+    //       _add(pLeftover, leftoverSize);
+    //     } else [[unlikely]] {
+    //       // whole block consumed
+    //     }
+    //     return handle;
+    //   }
+    // }
+
+    auto newHandle = allocateBytes(newNumBytes);
+    ::memcpy(newHandle, handle, numBytes);
+    this->freeBytes(handle, numBytes);
+    return newHandle;
+  }
+
+public:
+  void freeBytes(void *ptr, size_t numBytes) {
+    // LOG(INFO) << "SelfAllocator::freeBytes(" << ptr << ", " << numBytes << ")";
+    this->_add(ptr, numBytes);
+  }
+
+public:
+  void *operator()(void *ptr) { return ptr; }
+
+private:
+  friend singleton::perThread;
+  SelfAllocator() = default;
+
+private:
+  friend Build<Options>;
+  static constexpr auto &instance() {
+    return singleton::perThread::instance<SelfAllocator>();
+  }
+
+private:
+  auto &_alloc() { return Build<Options>::instance(); }
+
+private:
+  struct SpareBlock {
+    void *ptr;
+    size_t numBytes;
+  };
+  using SpareBlocks = DynamicArray<SpareBlock>::template IN_PLACE_ONLY_<100>;
+  SpareBlocks spareBlocks;
+
+  void _add(std::uintptr_t memory, size_t numBytes) {
+    _add(reinterpret_cast<void *>(memory), numBytes);
+  }
+
+  void _add(void *memory, size_t numBytes) {
+    // LOG(INFO) << "Adding spare block " << numBytes << " bytes at " << memory;
+    DCHECK_LT(spareBlocks.numItems, spareBlocks.NUM_SLOTS);
+    spareBlocks.push({memory, numBytes});
+  }
+
+  void _cleanup() {
+    // if (spareBlocks.numItems) {
+    //   LOG(INFO) << "Cleaning up " << spareBlocks.numItems << " spare blocks";
+    // }
+    while (spareBlocks.numItems) [[unlikely]] {
+      auto block = spareBlocks.pop();
+      // LOG(INFO) << "Registering " << block.numBytes << " spare bytes at "
+      //           << block.ptr;
+      _alloc().freeBytes(typename Build<Options>::Handle(block.ptr),
+                         block.numBytes);
+    }
+  }
+}; // class SelfAllocator
+
+template <class Options> struct SplayEntry {
+  const std::size_t key;
+  const std::size_t numBytes;
+  const Options::Allocator::Handle memory;
+
+  SplayEntry(std::size_t numBytes, Options::Allocator::Handle memory)
+      : key(_key(numBytes, memory)), numBytes(numBytes), memory(memory) {}
+
+  SplayEntry(const SplayEntry &) = default;
+
+  SplayEntry &operator=(const SplayEntry &other) {
+    static_assert(std::is_trivially_destructible_v<SplayEntry>);
+    new (this) SplayEntry(other);
+    return *this;
+  }
+
+  auto &value() const { return memory; }
+
+private:
+  static constexpr auto _key(std::size_t numBytes,
+                             Options::Allocator::Handle memory) {
+    constexpr auto BITS = sizeof(std::size_t) * 8 / 2;
+    constexpr auto MASK = (std::size_t(1) << BITS) - 1;
+    DCHECK_EQ(numBytes % alignof(std::max_align_t), 0);
+    DCHECK_EQ(memory.value % alignof(std::max_align_t), 0);
+    auto key = numBytes / alignof(std::max_align_t);
+    DCHECK_LE(key, MASK);
+    auto memoryHash = (memory.value & MASK) / alignof(std::max_align_t);
+    auto hash = key ^ memoryHash;
+    auto result = (key << BITS) | hash;
+    return result;
+  }
+};
+
+template <class Options>
+using Pool = Pool<int>::template Allocator_<SelfAllocator<Options>>;
+
+template <class Options> struct SplayNode {
+  SplayEntry<Options> entry;
+  using Handle = typename Pool<Options>::Handle::template Brand_<void>;
+  Array<Handle, 2> children = {Handle::null, Handle::null};
+
+  // SplayNode &operator=(const SplayNode &other) {
+  //   memcpy(this, &other, sizeof(SplayNode));
+  //   return *this;
+  // }
+};
+} // namespace VOLTISO_NAMESPACE::allocator::splay::_
+
+namespace std {
+template <class Options>
+ostream &operator<<(
+    ostream &os,
+    const VOLTISO_NAMESPACE::allocator::splay::_::SplayEntry<Options> &entry) {
+  return os << "{numBytes: " << entry.numBytes << ", memory: " << entry.memory
+            << "}";
+}
+
+template <class Options>
+ostream &operator<<(
+    ostream &os,
+    const VOLTISO_NAMESPACE::allocator::splay::_::SplayNode<Options> &node) {
+  return os << "{entry: " << node.entry << ", children: " << node.children
+            << "}";
+}
+} // namespace std
+
+//
+
+namespace VOLTISO_NAMESPACE::allocator::splay {
 template <class _Options> class Build : public Object<_Options> {
+private:
   using Self = Build;
 
 public:
@@ -35,24 +265,13 @@ public:
   using Handle = Allocator::Handle ::template Brand_<Self>;
 
 private:
+  friend _::SelfAllocator<Options>;
   using AllocatorHandle = Allocator::Handle;
 
 private:
-  using Pool = Pool<int>::template Allocator_<Self>;
-
-  struct SplayEntry {
-    size_t numBytes;
-    Allocator::Handle memory;
-    auto &key() const { return numBytes; }
-    auto &value() const { return memory; }
-  };
-
-  struct SplayNode {
-    SplayEntry entry;
-    using Handle = typename Pool::Handle::template Brand_<void>;
-    Array<Handle, 2> children = {Handle::null, Handle::null};
-  };
-
+  using Pool = _::Pool<Options>;
+  using SplayEntry = _::SplayEntry<Options>;
+  using SplayNode = _::SplayNode<Options>;
   using Nodes = Pool ::template Item_<SplayNode>;
   Nodes nodes;
   Nodes::Handle root = Nodes::Handle::null;
@@ -63,7 +282,9 @@ private:
   static constexpr size_t BUCKET_IN_PLACE = 1;
   using Edges =
       HashMap<std::uintptr_t, typename Nodes::Handle>::template Allocator_<
-          Self>::template BUCKET_IN_PLACE_<BUCKET_IN_PLACE>;
+          _::SelfAllocator<Options>>;
+  // ::template BUCKET_IN_PLACE_<
+  //     BUCKET_IN_PLACE>;
   Edges begins, ends;
 
 private:
@@ -71,46 +292,54 @@ private:
   Build() = default;
 
 public:
-  static constexpr auto &get() { return singleton::perThread::get<Self>(); }
+  static constexpr auto &instance() {
+    return singleton::perThread::instance<Self>();
+  }
 
 public:
   Handle allocateBytes(const size_t numBytes) {
+    // LOG(INFO) << "Build::allocateBytes(" << numBytes << ")";
     DCHECK_EQ(numBytes % alignof(std::max_align_t), 0);
     // numBytes = divCeil(numBytes, alignof(std::max_align_t)) *
     //            alignof(std::max_align_t);
-    auto hNode = splay[root].lowerBound(numBytes);
+    auto hNode = splay(root).lowerBound(numBytes);
 
     if (!hNode) [[unlikely]] {
-      auto newNumBytes = divCeil(numBytes, PAGE_SIZE) * PAGE_SIZE;
-      auto memory = Allocator::get().allocateBytes(newNumBytes);
+      auto newNumBytes = _::roundUpToFullPages<Options::PAGE_SIZE>(numBytes);
+      auto memory = Allocator::instance().allocateBytes(newNumBytes);
       _add(memory, newNumBytes);
-      hNode = splay[root].lowerBound(numBytes);
+      hNode = splay(root).lowerBound(numBytes);
     }
 
-    auto &node = nodes[hNode];
-    auto result = node.memory;
-    DCHECK_GE(node.numBytes, numBytes);
-    if (node.numBytes > numBytes) [[likely]] {
+    auto aNode = nodes[hNode];
+    auto result = aNode->entry.memory;
+    DCHECK_GE(aNode->entry.numBytes, numBytes);
+    if (aNode->entry.numBytes > numBytes) [[likely]] {
       // Split the node
-      begins[node.memory.value].erase();
+      begins[aNode->entry.memory.value].erase();
 
-      splay[root].unlink(node);
-      node.numBytes -= numBytes;
-      node.memory.value += numBytes;
-      splay[root].link(hNode);
+      splay(root).unlink(hNode);
+      aNode->entry = {aNode->entry.numBytes - numBytes,
+                      AllocatorHandle(aNode->entry.memory.value + numBytes)};
+      splay(root).link(hNode);
 
-      begins[node.memory.value].insert(hNode);
+      begins[aNode->entry.memory.value].insert(hNode);
     } else [[unlikely]] {
-      DCHECK_EQ(node.numBytes, numBytes);
-      begins[node.memory.value].erase();
-      ends[node.memory.value + node.numBytes].erase();
-      splay[root].erase(hNode);
+      DCHECK_EQ(aNode->entry.numBytes, numBytes);
+      begins[aNode->entry.memory.value].erase();
+      ends[aNode->entry.memory.value + aNode->entry.numBytes].erase();
+      splay(root).erase(hNode);
     }
-    return result;
+
+    DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
+
+    return Handle(result.value);
   }
 
   Handle reallocateBytes(const Handle &handle, size_t numBytes,
                          size_t newNumBytes) {
+    // LOG(INFO) << "Build::reallocateBytes(" << handle << ", " << numBytes << ", "
+    //           << newNumBytes << ")";
     // don't optimize for this branch; shrinking allocations is not done when
     // time is critical
     if (newNumBytes <= numBytes) [[unlikely]] {
@@ -119,6 +348,7 @@ public:
         auto leftoverSize = numBytes - newNumBytes;
         _add(AllocatorHandle(pLeftover), leftoverSize);
       }
+      DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
       return handle;
     }
 
@@ -143,6 +373,8 @@ public:
           // whole block consumed
           splay[root].erase(aNode);
         }
+        DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems,
+                  0);
         return handle;
       }
     }
@@ -150,12 +382,15 @@ public:
     auto newHandle = allocateBytes(newNumBytes);
     ::memcpy(newHandle, handle, numBytes);
     this->freeBytes(handle, numBytes);
+    DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
     return newHandle;
   }
 
   void freeBytes(const Handle &handle, size_t numBytes) {
+    // LOG(INFO) << "Build::freeBytes(" << handle << ", " << numBytes << ")";
     DCHECK_GT(numBytes, 0);
     _add(AllocatorHandle(handle.value), numBytes);
+    DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
   }
 
   void *operator()(const Handle &handle) { return handle; }
@@ -165,32 +400,6 @@ public:
   }
 
 private:
-  void _selfGrow() {
-    size_t bytesNeeded = 0;
-
-    auto nodesGrow = nodes.numItems == nodes.numSlots;
-    if (nodesGrow) [[unlikely]] {
-      bytesNeeded += sizeof(SplayNode) * nodes.numSlots;
-    }
-
-    auto beginsGrow = begins.buckets.numItems * BUCKET_IN_PLACE <=
-                      (begins.numItems + 1) * begins.MAX_LOAD_FACTOR_INV;
-    if (beginsGrow) [[unlikely]] {
-      bytesNeeded += begins.buckets.numItems * sizeof(typename Edges::Bucket);
-    }
-
-    auto endsGrow = ends.buckets.numItems * BUCKET_IN_PLACE <=
-                    (ends.numItems + 1) * ends.MAX_LOAD_FACTOR_INV;
-    if (endsGrow) [[unlikely]] {
-      bytesNeeded += ends.buckets.numItems * sizeof(typename Edges::Bucket);
-    }
-
-    if (bytesNeeded == 0) [[likely]]
-      return;
-
-		// todo
-  }
-
   // add new block of memory, merging with adjacent blocks if possible
   // adds at most 1 entry to `begins`
   // adds at most 1 entry to `ends`
@@ -200,7 +409,7 @@ private:
     DCHECK_GT(numBytes, 0);
     DCHECK_EQ(numBytes % alignof(std::max_align_t), 0);
 
-    _selfGrow();
+    // _selfGrow();
 
     auto pNewBlock = (std::uintptr_t)memory.value;
     auto aPrevEnd = ends[pNewBlock];
@@ -208,20 +417,23 @@ private:
       // have previous block
       auto aPrevNode = nodes[aPrevEnd];
       aPrevEnd.erase();
+      // LOG(INFO) << splay(root);
       splay(root).unlink(aPrevNode);
-      aPrevNode->entry.numBytes += numBytes;
+      auto prevNodeNumBytes = aPrevNode->entry.numBytes;
+      prevNodeNumBytes += numBytes;
       auto pNewBlockEnd = (std::uintptr_t)memory.value + numBytes;
       auto aNextBegin = begins[pNewBlockEnd];
       if (aNextBegin.exists) [[unlikely]] {
         // also have next block
         auto aNextNode = nodes[aNextBegin];
-        aPrevNode->entry.numBytes += aNextNode->entry.numBytes;
+        prevNodeNumBytes += aNextNode->entry.numBytes;
         splay(root).erase(aNextNode);
         aNextBegin.erase();
       } else [[likely]] {
         // have previous, but no next block
         ends[pNewBlockEnd].insert(aPrevNode);
       }
+      aPrevNode->entry = {prevNodeNumBytes, aPrevNode->entry.memory};
       splay(root).link(aPrevNode);
     } else [[likely]] {
       // no previous block
@@ -232,18 +444,22 @@ private:
         auto aNextNode = nodes[aNextBegin];
         begins[aNextNode->entry.memory.value].erase();
         splay(root).unlink(aNextNode);
-        aNextNode->entry.numBytes += numBytes;
-        aNextNode->entry.memory.value = memory.value;
+        aNextNode->entry = {aNextNode->entry.numBytes + numBytes, memory};
         splay(root).link(aNextNode);
         begins[pNewBlock].insert(aNextNode);
       } else [[likely]] {
         // no previous, no next block
-        auto newNode = splay(root).insert(numBytes, memory);
-        begins[pNewBlock].insert(newNode);
-        ends[pNewBlockEnd].insert(newNode);
+        auto aNode =
+            this->nodes.insert(SplayNode{SplayEntry{numBytes, memory}});
+        // auto newNode = splay(root).insert(SplayEntry{numBytes, memory});
+        // LOG(INFO) << "begins[" << pNewBlock << "].insert(" << aNode << ")";
+        ends[pNewBlockEnd].insert(aNode); // has to be first
+        begins[pNewBlock].insert(aNode);
+        splay(root).link(aNode);
       }
     }
-  }
+    _::SelfAllocator<Options>::instance()._cleanup();
+  } // _add
 }; // class Build
 } // namespace VOLTISO_NAMESPACE::allocator::splay
 VOLTISO_OBJECT_FINAL(allocator::splay)

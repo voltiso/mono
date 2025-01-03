@@ -12,12 +12,12 @@
 //
 
 namespace VOLTISO_NAMESPACE::handle::_ {
-template <class ValueOrPointer> constexpr auto getNullValue() noexcept {
-  if constexpr (std::is_pointer_v<ValueOrPointer>) {
+template <class Type> constexpr auto getNullValue() noexcept {
+  if constexpr (std::is_pointer_v<Type>) {
     return uintptr_t(0);
     // return (uintptr_t) nullptr; // not constexpr
   } else {
-    return std::numeric_limits<ValueOrPointer>::max();
+    return std::numeric_limits<Type>::max();
   }
 }
 } // namespace VOLTISO_NAMESPACE::handle::_
@@ -86,6 +86,7 @@ public:
   constexpr Build(const Other &other) : value(other.value) {}
 
   // this can be implicit, contrary to random pointers
+  template <class P = Pointer, class = std::enable_if_t<std::is_pointer_v<P>>>
   constexpr Build(const std::nullptr_t &) noexcept
       : value(_::getNullValue<Type>()) {}
 
@@ -141,6 +142,9 @@ constexpr Options::Final Build<Options>::null = static_cast<Options::Final>(
 
 template <class Options>
 std::ostream &operator<<(std::ostream &os, const Build<Options> &handle) {
+  if (handle == Build<Options>::null) [[unlikely]] {
+    return os << "Handle::null";
+  }
   return os << "Handle(" << handle.value << ")";
 }
 } // namespace VOLTISO_NAMESPACE::handle

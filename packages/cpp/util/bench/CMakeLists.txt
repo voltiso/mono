@@ -9,7 +9,7 @@ add_executable(
 	Array.bench.cpp
 	DynamicArray.bench.cpp
 	HashSet.bench.cpp
-	HashMap.bench.cpp
+	map.bench.cpp
 
 	# Tree.bench.cpp
 	# BitTree.bench.cpp

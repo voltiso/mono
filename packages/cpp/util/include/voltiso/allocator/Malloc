@@ -43,7 +43,7 @@ template <class Options> inline Build<Options>::~Build() {
 namespace VOLTISO_NAMESPACE::allocator::malloc {
 template <class Options>
 inline Build<Options>::Handle Build<Options>::allocateBytes(size_t numBytes) {
-  LOG(INFO) << "Allocate " << numBytes << " bytes";
+  // LOG(INFO) << "Allocate " << numBytes << " bytes";
 #if VOLTISO_DEBUG_MALLOC
   CHECK_GT(numBytes, 0);
 #endif
