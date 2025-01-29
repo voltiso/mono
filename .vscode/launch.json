@@ -15,19 +15,19 @@
 			"name": "cpp.util/test_clang-18_Debug",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/packages/cpp/build/clang-18_Debug/voltiso-util-test"
+			"program": "${workspaceFolder}/packages/cpp/out/clang-18_Debug/voltiso-util-test"
 		},
 		{
 			"name": "cpp.util/bench_clang-18_Debug",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/packages/cpp/build/clang-18_Debug/util/bench/voltiso-util-bench"
+			"program": "${workspaceFolder}/packages/cpp/out/clang-18_Debug/util/bench/voltiso-util-bench"
 		},
 		{
 			"name": "cpp.util/bench_clang-18_RelWithDebInfo",
 			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/packages/cpp/build/clang-18_RelWithDebInfo/util/bench/voltiso-util-bench"
+			"program": "${workspaceFolder}/packages/cpp/out/clang-18_RelWithDebInfo/util/bench/voltiso-util-bench"
 		}
 	]
 }

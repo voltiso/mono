@@ -2,9 +2,23 @@
 
 #include <voltiso/Pool>
 #include <voltiso/allocator/Splay>
+#include <voltiso/singleton>
 
 #include <cstddef>
 #include <iostream>
+
+//
+
+// order may be important
+auto g_malloc = v::allocator::Malloc();
+// auto g_malloc = v::singleton::instance<v::allocator::Malloc>();
+auto g_mallocGuard = v::context::Guard(g_malloc);
+
+// auto g_splay = v::allocator::Splay();
+// auto g_splayGuard = v::context::Guard(g_splay);
+// auto g_splayGuard = v::context::Guard(v::allocator::Splay::instance());
+
+//
 
 static constexpr auto SIZE = 32;
 using T = std::array<std::byte, SIZE>;
@@ -22,6 +36,7 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
 
 static void BM_allocator_trivial_Splay(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
+  // auto &splay = g_splay;
   auto &splay = allocator::Splay::instance();
   for (auto _ : state) {
     auto handle = splay.allocateBytes(sizeof(T));
@@ -84,6 +99,7 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
 static void BM_allocator_simple_Splay(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
   auto &splay = allocator::Splay::instance();
+  // auto &splay = g_splay;
   for (int i = 0; i < num; i++) {
     auto handle = splay.allocateBytes(sizeof(T));
     benchmark::DoNotOptimize(splay(handle));

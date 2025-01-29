@@ -1,133 +1,81 @@
 #pragma once
-#include <voltiso/_>
 
-#include <voltiso/WithCopy>
-#include <voltiso/WithMove>
-#include <voltiso/WithSize>
-#include <voltiso/has>
+#include "voltiso/Pool"
 
-#include <glog/logging.h>
-
-#include <experimental/type_traits>
-#include <memory>
+#include <iostream>
 #include <type_traits>
+#include <utility>
 
 namespace VOLTISO_NAMESPACE {
+template <class Item> class Owned {
+  static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
+  using Pool = Pool<Item>;
 
-template <class T> class Owned : public std::unique_ptr<T> {
 public:
-  // explicit constructor (memory allocation)
-  template <class _Derived,
-            class = std::enable_if_t< // !isInPlace &&
-                !std::is_class_v<std::decay_t<_Derived>> ||
-                (std::is_final_v<std::decay_t<_Derived>> ||
-                 (std::is_polymorphic_v<std::decay_t<_Derived>> &&
-                  (has::move<std::decay_t<_Derived>> ||
-                   has::copy<std::decay_t<_Derived>>)))>>
-  explicit Owned(_Derived &&value)
-      : std::unique_ptr<T>([&value]() {
-          using Derived = std::decay_t<_Derived>;
-
-          if constexpr (!std::is_class_v<Derived> || std::is_final_v<Derived>)
-            return std::make_unique<Derived>(std::forward<_Derived>(value));
-          else if constexpr (!std::is_lvalue_reference_v<_Derived> &&
-                             has::move<Derived>) {
-            // move
-            auto data = malloc(sizeof(Derived));
-            value.move(data);
-            return (Derived *)data;
-          } else if constexpr (has::copy<Derived>) {
-            auto data = malloc(sizeof(Derived));
-            value.copy(data);
-            return (Derived *)data;
-          } else {
-            DCHECK(false) << "Not implemented";
-            // static_assert(false, "Not implemented");
-            return nullptr;
-          }
-        }()) {}
-
-  // template <class TT = T,
-  //           std::enable_if_t<!(!std::is_class_v<TT> ||
-  //                              (has_size<TT> && has_copy<TT>))> * = nullptr>
-  // Owned(const Owned<T> &other) = delete;
-
-  // template <class TT = T,
-  //           std::enable_if_t<!std::is_class_v<TT> ||
-  //                            (has_size<TT> && has_copy<TT>)> * = nullptr>
-  explicit Owned(const Owned<T> &other)
-      : std::unique_ptr<T>([&]() {
-          auto data = malloc(other->size());
-          other->copy(data);
-          return (T *)data;
-        }()) {
-    static_assert(!std::is_class_v<T> || (has::size<T> && has::copy<T>));
+  template <class... Args> static Owned create(Args &&...args) {
+    Owned self;
+    self.item = pool().insert(std::forward<Args>(args)...);
+    return self;
   }
 
-  //
+  static Owned create(const Item &item) {
+    Owned self;
+    self.item = pool().insert(item);
+    return self;
+  }
 
-  // template <class TT = T,
-  //           std::enable_if_t<!(!std::is_class_v<TT> ||
-  //                              (has_size<TT> && has_copy<TT>))> * = nullptr>
-  // Owned<T> &operator=(const Owned<T> &other) = delete;
+  static Owned create(Item &&item) {
+    Owned self;
+    self.item = pool().insert(std::move(item));
+    return self;
+  }
 
-  // template <class TT = T,
-  //           std::enable_if_t<!std::is_class_v<TT> ||
-  //                            (has_size<TT> && has_copy<TT>)> * = nullptr>
-  auto &operator=(const Owned &other) {
-    static_assert(!std::is_class_v<T> || (has::size<T> && has::copy<T>));
+  ~Owned() {
+    if (this->item) [[likely]] {
+      std::cout << "erase" << std::endl;
+      pool()[this->item].erase();
+    }
+  }
 
-    auto data = malloc(other->size());
-    other->copy(data);
-    std::unique_ptr<T>::reset((T *)data);
+  Owned() = default;
+
+  Owned(const Owned &) = delete;
+  Owned &operator=(const Owned &) = delete;
+
+  Owned(Owned &&other) noexcept : item(other.item) {
+    other.item = Pool::Handle::null;
+  }
+
+  Owned &operator=(Owned &&other) noexcept {
+    if (this->item) // ? [[likely]]
+      pool()[this->item].erase();
+    this->item = other.item;
+    other.item = Pool::Handle::null;
     return *this;
-  };
+  }
 
-  Owned(Owned<T> &&) = default;               // simply move the `unique_ptr`
-  Owned<T> &operator=(Owned<T> &&) = default; // simply move the `unique_ptr`
+  Item &operator*() { return pool()[item].item(); }
+  const Item &operator*() const { return pool()[item].item(); }
 
-  // ~Owned() {
-  //   if constexpr (isInPlace)
-  //     get()->~T();
-  //   else
-  //   ((std::unique_ptr<T> *)_data)->~unique_ptr();
-  // }
+  Item *operator->() { return &**this; }
+  const Item *operator->() const { return &**this; }
 
-  // using std::unique_ptr<T>::get;
-  // using std::unique_ptr<T>::operator->;
-  // using std::unique_ptr<T>::operator*;
+  operator Item &() { return **this; }
+  operator const Item &() const { return **this; }
 
-  // T *get() {
-  //   if constexpr (isInPlace)
-  //     return (T *)_data;
-  //   else
-  //   return ((std::unique_ptr<T> *)_data)->get();
-  // }
+  operator Item &&() { return (Item &&)**this; }
+  operator const Item &&() const { return (Item &&)**this; }
 
-  // const T *get() const {
-  //   if constexpr (isInPlace)
-  //     return (T *)_data;
-  //   else
-  //   return ((std::unique_ptr<T> *)_data)->get();
-  // }
+private:
+  Pool::Handle item = Pool::Handle::null;
 
-  // auto operator->() { return get(); }
-  // auto operator->() const { return get(); }
-
-  // auto &operator*() { return *get(); }
-  // auto &operator*() const { return *get(); }
-
-  operator T &() { return *std::unique_ptr<T>::get(); }
-  operator const T &() const { return *std::unique_ptr<T>::get(); }
-
-  operator T &&() { return (T &&)*std::unique_ptr<T>::get(); }
-  operator const T &&() const { return (T &&)*std::unique_ptr<T>::get(); }
-};
-
-// deduction guide
-template <class T> Owned(T &&) -> Owned<std::decay_t<T>>;
-
-// operators
+  static auto &pool() {
+    // return *(context::tryGet<Pool>() || &singleton::instance<Pool>());
+    // return context::getOrSingleton<Pool>();
+    return context::get<Pool>();
+    // return singleton::instance<Pool>();
+  }
+}; // class Owned
 
 #define DEFINE_OPERATOR(op)                                                    \
   template <class T, class Other>                                              \
@@ -185,26 +133,5 @@ DEFINE_OPERATOR(&&)
 DEFINE_OPERATOR(||)
 
 #undef DEFINE_OPERATOR
-
-// template <class Base, int ReserveSize = sizeof(Base)> struct MaybeInPlace {
-//   template <class Derived>
-//   MaybeInPlace(Derived &&value)
-//       : _value([&value]() {
-//           if constexpr (sizeof(Derived) <= sizeof(InPlace<Base>))
-//             return InPlace<Base, ReserveSize>(std::forward<Derived>(value));
-//           else
-//             return std::make_unique<Derived>(std::forward<Derived>(value));
-//         }()) {}
-
-//   auto operator->() { if }
-//   auto operator->() const { return (const Base *)_value.data(); }
-
-// private:
-//   // union {
-//   //   InPlace<Base, ReserveSize> inPlace;
-//   //   std::unique_ptr<Base> pointer;
-//   // } _value;
-//   std::variant<InPlace<Base, ReserveSize>, std::unique_ptr<Base>> _value;
-// };
 
 } // namespace VOLTISO_NAMESPACE

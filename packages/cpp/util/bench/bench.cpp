@@ -1,3 +1,5 @@
+#include "common.hpp"
+
 #include <gflags/gflags.h>
 #include <benchmark/benchmark.h>
 

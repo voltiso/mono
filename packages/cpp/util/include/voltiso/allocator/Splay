@@ -8,9 +8,11 @@
 #include "voltiso/Pool"
 #include "voltiso/Splay"
 #include "voltiso/memory/PAGE_SIZE"
-#include "voltiso/singleton"
 
 #include <cstddef>
+
+// ! experimental - unused, 6x slower than malloc, does not ever return memory
+// ! to the system
 
 namespace VOLTISO_NAMESPACE::allocator::splay {
 struct Defaults {
@@ -81,7 +83,8 @@ public:
 
 public:
   void *reallocateBytes(void *handle, size_t numBytes, size_t newNumBytes) {
-    // LOG(INFO) << "SelfAllocator::reallocateBytes(" << handle << ", " << numBytes
+    // LOG(INFO) << "SelfAllocator::reallocateBytes(" << handle << ", " <<
+    // numBytes
     //           << ", " << newNumBytes << ")";
 
     // don't optimize for this branch; shrinking allocations is not done when
@@ -131,25 +134,32 @@ public:
 
 public:
   void freeBytes(void *ptr, size_t numBytes) {
-    // LOG(INFO) << "SelfAllocator::freeBytes(" << ptr << ", " << numBytes << ")";
+    // LOG(INFO) << "SelfAllocator::freeBytes(" << ptr << ", " << numBytes <<
+    // ")";
     this->_add(ptr, numBytes);
   }
 
 public:
   void *operator()(void *ptr) { return ptr; }
 
-private:
-  friend singleton::perThread;
+public:
+  // friend singleton;
+  // friend singleton::perThread;
   SelfAllocator() = default;
 
 private:
   friend Build<Options>;
   static constexpr auto &instance() {
-    return singleton::perThread::instance<SelfAllocator>();
+    // todo: store in SplayAllocator
+    return singleton::instance<SelfAllocator>();
+    // return singleton::perThread::instance<SelfAllocator>();
   }
 
 private:
-  auto &_alloc() { return Build<Options>::instance(); }
+  auto &_alloc() {
+    // return context::get<SelfAllocator>();
+    return Build<Options>::instance();
+  }
 
 private:
   struct SpareBlock {
@@ -268,6 +278,9 @@ private:
   friend _::SelfAllocator<Options>;
   using AllocatorHandle = Allocator::Handle;
 
+  context::Guard<_::SelfAllocator<Options>> splaySelfGuard =
+      context::Guard(_::SelfAllocator<Options>::instance());
+
 private:
   using Pool = _::Pool<Options>;
   using SplayEntry = _::SplayEntry<Options>;
@@ -288,12 +301,15 @@ private:
   Edges begins, ends;
 
 private:
-  friend singleton::perThread;
+  friend singleton;
+  // friend singleton::perThread;
   Build() = default;
 
 public:
   static constexpr auto &instance() {
-    return singleton::perThread::instance<Self>();
+    // return context::get<typename Options::Final>();
+    return singleton::instance<Self>();
+    // return singleton::perThread::instance<Self>();
   }
 
 public:
@@ -338,7 +354,8 @@ public:
 
   Handle reallocateBytes(const Handle &handle, size_t numBytes,
                          size_t newNumBytes) {
-    // LOG(INFO) << "Build::reallocateBytes(" << handle << ", " << numBytes << ", "
+    // LOG(INFO) << "Build::reallocateBytes(" << handle << ", " << numBytes <<
+    // ", "
     //           << newNumBytes << ")";
     // don't optimize for this branch; shrinking allocations is not done when
     // time is critical
@@ -466,4 +483,7 @@ VOLTISO_OBJECT_FINAL(allocator::splay)
 
 namespace VOLTISO_NAMESPACE::allocator {
 using Splay = splay::Final<splay::DefaultOptions>;
+
+inline auto g_splayGuard = v::context::Guard(v::allocator::Splay::instance());
+
 } // namespace VOLTISO_NAMESPACE::allocator

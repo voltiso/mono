@@ -31,7 +31,8 @@ private:
   using Base = Object<_Options>;
 
 protected:
-  friend singleton::perThread;
+  friend singleton;
+  // friend singleton::perThread;
 
 #if VOLTISO_DEBUG_MALLOC
 protected:
@@ -45,7 +46,8 @@ protected:
 
 public:
   static constexpr auto &instance() {
-    return singleton::perThread::instance<Self>();
+    return singleton::instance<Self>();
+    // return singleton::perThread::instance<Self>();
   }
 
 public:

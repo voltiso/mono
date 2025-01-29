@@ -1,5 +1,4 @@
 #pragma once
-#include <type_traits>
 #include <voltiso/_>
 
 #include "voltiso/DynamicArray"
@@ -7,6 +6,7 @@
 #include "voltiso/Storage"
 
 #include <cstdlib>
+#include <type_traits>
 
 #ifndef VOLTISO_DEBUG_POOL
 #define VOLTISO_DEBUG_POOL VOLTISO_DEBUG
@@ -113,6 +113,8 @@ using DefaultOptions = Options<Defaults>;
 
 //
 
+// class Base {};
+
 template <class _Options> class Build : public Object<_Options> {
   using Self = Build;
   using Base = Object<_Options>;
@@ -151,12 +153,13 @@ public:
   // static_assert(std::has_single_bit(sizeof(Item)));
 
   ~Build() {
+		// std::cout << "Pool::~Build()" << std::endl;
     if constexpr (std::is_trivially_destructible_v<Item>) {
       // noop
     } else {
       if (anyFree == Slots::Handle::null) [[unlikely]] {
-        for (size_t i = 0; i < slots.numItems; i++) {
-          slots[i].storage.destroy();
+        for (size_t i = 0; i < slots.numItems; ++i) {
+          slots[i]->storage.destroy();
         }
       } else [[likely]] {
         // ! slow
@@ -165,11 +168,11 @@ public:
         auto anyFree = this->anyFree;
         while (anyFree != Slots::Handle::null) {
           free[anyFree.value] = true;
-          anyFree = SlotHandle(slots[anyFree].next.value);
+          anyFree = SlotHandle(slots[anyFree]->next.value);
         }
         for (size_t i = 0; i < slots.numItems; i++) {
           if (!free[i]) {
-            slots[i].storage.destroy();
+            slots[i]->storage.destroy();
           }
         }
       }
@@ -212,8 +215,8 @@ public:
       return Accessor(static_cast<Handle>(newItem.value), *this);
     } else [[likely]] {
       auto handle = anyFree;
-      anyFree =
-          SlotHandle(slots[anyFree]->next.value); // wrong Handle type; need cast
+      anyFree = SlotHandle(
+          slots[anyFree]->next.value); // wrong Handle type; need cast
       slots[handle]->storage.construct(std::forward<Args>(args)...);
       return Accessor(static_cast<Handle>(handle.value), *this);
     }
@@ -235,4 +238,8 @@ VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(pool)
 namespace VOLTISO_NAMESPACE {
 template <class Item>
 using Pool = pool::Final<pool::DefaultOptions::Item_<Item>>;
+
+// template <class Item = Any>
+// using Pool = std::conditional_t<std::is_same_v<Item, Any>, pool::Base,
+//                                 pool::Final<pool::DefaultOptions::Item_<Item>>>;
 } // namespace VOLTISO_NAMESPACE

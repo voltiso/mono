@@ -9,7 +9,8 @@
 #include "voltiso/allocator/Malloc"
 #include "voltiso/is_trivially_relocatable"
 
-//
+// ! todo: can be made faster by using a single growable allocation for both
+// pool and buckets
 
 namespace VOLTISO_NAMESPACE::hashTable {
 template <class Options> class Build;
@@ -139,9 +140,14 @@ public:
 protected:
   void _maybeGrow() {
     if (this->_hashTable().shouldGrow()) [[unlikely]] {
+      // auto prevNumBuckets = this->_hashTable().buckets.numItems;
       this->_hashTable().grow();
       const_cast<Buckets::Handle &>(this->bucket) =
           this->_hashTable()._bucketIndex(this->key);
+      // if (prevNumBuckets == 0) [[unlikely]] {
+      // const_cast<GenericPoolHandle *&>(this->pHandle) =
+      //     &this->_buckets()[this->bucket].item().firstNode;
+      // }
     }
   }
 
@@ -155,6 +161,7 @@ public:
     auto &bucket = buckets[this->bucket].item();
     pool[node]->nextNode = bucket.firstNode;
     bucket.firstNode = node;
+    const_cast<GenericPoolHandle *&>(this->pHandle) = &bucket.firstNode;
     ++this->_hashTable()._numItems();
   }
 
@@ -194,6 +201,7 @@ public:
     auto &bucket = buckets[this->bucket].item();
     node->nextNode = bucket.firstNode;
     bucket.firstNode = node.handle;
+    const_cast<GenericPoolHandle *&>(this->pHandle) = &bucket.firstNode;
     ++this->_hashTable()._numItems();
     const_cast<bool &>(this->exists) = true;
     // const_cast<GenericPoolHandle &>(this->handle) = node.handle;
@@ -201,6 +209,20 @@ public:
 
   template <class... Args> MapAccessor &maybeInsert(Args &&...args) {
     if (!this->exists) {
+      insert(std::forward<Args>(args)...);
+    }
+    return *this;
+  }
+
+  template <class... Args> MapAccessor &maybeInsertLikely(Args &&...args) {
+    if (!this->exists) [[likely]] {
+      insert(std::forward<Args>(args)...);
+    }
+    return *this;
+  }
+
+  template <class... Args> MapAccessor &maybeInsertUnlikely(Args &&...args) {
+    if (!this->exists) [[unlikely]] {
       insert(std::forward<Args>(args)...);
     }
     return *this;

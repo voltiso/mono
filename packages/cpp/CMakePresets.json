@@ -4,7 +4,7 @@
 		{
 			"name": "clang-18_Debug",
 			"displayName": "clang-18_Debug",
-			"binaryDir": "${sourceDir}/build/${presetName}",
+			"binaryDir": "${sourceDir}/out/${presetName}",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "/usr/bin/clang-18",
 				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
@@ -15,7 +15,7 @@
 		{
 			"name": "clang-18_RelWithDebInfo",
 			"displayName": "clang-18_RelWithDebInfo",
-			"binaryDir": "${sourceDir}/build/${presetName}",
+			"binaryDir": "${sourceDir}/out/${presetName}",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "/usr/bin/clang-18",
 				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
@@ -26,7 +26,7 @@
 		{
 			"name": "clang-18_Release",
 			"displayName": "clang-18_Release",
-			"binaryDir": "${sourceDir}/build/${presetName}",
+			"binaryDir": "${sourceDir}/out/${presetName}",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "/usr/bin/clang-18",
 				"CMAKE_CXX_COMPILER": "/usr/bin/clang++-18",
@@ -37,7 +37,7 @@
 		{
 			"name": "gcc-14_Release",
 			"displayName": "gcc-14_Release",
-			"binaryDir": "${sourceDir}/build/${presetName}",
+			"binaryDir": "${sourceDir}/out/${presetName}",
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "/usr/bin/gcc-14",
 				"CMAKE_CXX_COMPILER": "/usr/bin/g++-14",

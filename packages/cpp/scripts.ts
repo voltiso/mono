@@ -25,7 +25,7 @@ function preset(options: Options) {
 }
 
 function dir(options: Options) {
-	return `build/${preset(options)}`
+	return `out/${preset(options)}`
 }
 
 export async function exists(fileName: string): Promise<boolean> {

@@ -1,14 +1,29 @@
 #include <gtest/gtest.h>
 
 #include <voltiso/Owned>
+#include <voltiso/context>
 
 #include <memory>
 
 using namespace VOLTISO_NAMESPACE;
 
+struct Global {
+  // order is important
+  allocator::Malloc malloc;
+  context::Guard<allocator::Malloc> mallocGuard =
+      context::Guard<allocator::Malloc>(malloc);
+
+  Pool<int> poolInt;
+  context::Guard<Pool<int>> poolIntGuard = context::Guard<Pool<int>>(poolInt);
+};
+Global global;
+
 TEST(Owned, trivial) {
-  Owned<int> owned =
-      Owned(123); // explicit! (memory allocation), uses deduction guide
+  auto owned = Owned<int>::create(123);
+
+  // Owned<int> owned =
+  //     Owned(123); // explicit! (memory allocation), uses deduction guide
+
   EXPECT_EQ(sizeof(owned),
             sizeof(std::unique_ptr<int>)); // Owned is now always a ptr
 
@@ -47,8 +62,15 @@ TEST(Owned, big) {
   };
   EXPECT_GT(sizeof(A), sizeof(std::unique_ptr<A>));
 
-  Owned<A> owned =
-      Owned(A{1, 2, 3}); // explicit! (memory allocation), uses deduction guide
+  Pool<A> poolA;
+  context::Guard<Pool<A>> poolAGuard = context::Guard<Pool<A>>(poolA);
+
+  // Owned<A> owned =
+  //     Owned(A{1, 2, 3}); // explicit! (memory allocation), uses deduction
+  //     guide
+
+  Owned<A> owned = Owned<A>::create({1, 2, 3});
+
   EXPECT_EQ(sizeof(owned), sizeof(std::unique_ptr<A>));
 
   // operator ==
@@ -95,9 +117,14 @@ struct BigDestructible final {
 
 int BigDestructible::numDestructorCalls = 0;
 
+Pool<BigDestructible> poolBigDestructible;
+context::Guard<Pool<BigDestructible>> poolBigDestructibleGuard =
+    context::Guard<Pool<BigDestructible>>(poolBigDestructible);
+
 TEST(Owned, destructor_big) {
   {
-    Owned<BigDestructible> owned = Owned(BigDestructible{});
+    Owned<BigDestructible> owned = Owned<BigDestructible>::create();
+    // Owned<BigDestructible> owned = Owned(BigDestructible{});
     BigDestructible::numDestructorCalls = 0;
   }
 

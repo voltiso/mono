@@ -10,9 +10,6 @@ add_executable(
 	DynamicArray.bench.cpp
 	HashSet.bench.cpp
 	map.bench.cpp
-
-	# Tree.bench.cpp
-	# BitTree.bench.cpp
 )
 
 target_link_libraries(voltiso-util-bench benchmark::benchmark gflags::gflags glog::glog

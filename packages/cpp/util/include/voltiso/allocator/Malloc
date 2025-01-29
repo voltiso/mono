@@ -28,9 +28,11 @@ inline Build<Options>::Build() : _debug(new _::Debug()) {}
 
 namespace VOLTISO_NAMESPACE::allocator::malloc {
 template <class Options> inline Build<Options>::~Build() {
+	// std::cout << "allocator::malloc::Build::~Build()" << std::endl;
   auto &debug = *this->_debug;
   for (auto [handle, numBytes] : debug.allocations) {
-    throwError(std::runtime_error("Memory leak"));
+    throwError(std::runtime_error("Memory leak " + std::to_string(numBytes) +
+                                  " bytes"));
     // ::free(handle.value);
   }
   delete this->_debug;

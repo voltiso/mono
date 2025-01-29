@@ -1,0 +1,58 @@
+#pragma once
+#include <voltiso/_>
+
+// #include "voltiso/singleton"
+
+#if VOLTISO_DEBUG
+#include "voltiso/demangle"
+#endif
+
+namespace VOLTISO_NAMESPACE::context::_ {
+template <class T> inline T *&getPointer() {
+  static T *value = nullptr;
+  return value;
+}
+}; // namespace VOLTISO_NAMESPACE::context::_
+
+namespace VOLTISO_NAMESPACE::context {
+template <class T> inline T &get() {
+  auto pointer = _::getPointer<T>();
+#if VOLTISO_DEBUG
+  if (!pointer)
+    throw std::runtime_error("v::context::get<" + demangle(typeid(T).name()) +
+                             ">() called without current context");
+#endif
+  return *pointer;
+}
+
+template <class T> inline T *tryGet() { return _::getPointer<T>(); }
+
+// template <class T> inline T &getOrSingleton() {
+//   return _::getPointer<T>() || singleton::instance<T>();
+// }
+
+template <class T> struct Guard {
+  Guard(T &value) : _previous(_::getPointer<T>()) {
+    _::getPointer<T>() = &value;
+  }
+
+  ~Guard() { _::getPointer<T>() = _previous; }
+
+private:
+  T *_previous;
+};
+
+/** Using `context::Guard` will usually be easier */
+template <class T, class Function>
+inline void runWith(T &value, const Function &function) {
+  auto guard = Guard<T>(value);
+  function();
+}
+
+template <class T, class Function>
+inline void runWith(T &&value, const Function &function) {
+  auto guard = Guard<T>(value);
+  function();
+}
+
+} // namespace VOLTISO_NAMESPACE::context

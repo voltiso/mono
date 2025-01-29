@@ -1,0 +1,31 @@
+#pragma once
+
+#include <utility>
+
+namespace VOLTISO_NAMESPACE {
+template <class Item = void> class OwnedDynamic {
+  using Deleter = void (*)();
+
+private:
+  Item *item;
+  Deleter deleter;
+
+public:
+  template <class RealItem = Item, class... Args>
+  static OwnedDynamic create(Args &&...args) {
+    OwnedDynamic self;
+    self.item = new RealItem(std::forward<Args>(args)...);
+    self.deleter = [item = self.item]() {
+      delete static_cast<RealItem *>(item);
+    };
+		return self;
+  }
+
+	~OwnedDynamic() {
+		this->deleter();
+	}
+
+private:
+  OwnedDynamic() = default;
+};
+} // namespace VOLTISO_NAMESPACE

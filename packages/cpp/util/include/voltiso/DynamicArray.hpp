@@ -4,6 +4,7 @@
 #include <voltiso/_>
 
 #include "voltiso/allocator/Malloc.hpp"
+#include "voltiso/context"
 
 #include "voltiso/Array"
 #include "voltiso/Handle"
@@ -134,6 +135,10 @@ public:
   Item *operator->() { return &item(); }
   Item *operator&() { return &item(); }
   operator Item &() { return item(); }
+  auto &operator=(const Item &other) {
+    item() = other;
+    return *this;
+  }
 };
 
 } // namespace VOLTISO_NAMESPACE::dynamicArray::_
@@ -338,7 +343,11 @@ public:
 
 private:
   static auto &_allocator() {
-    return singleton::perThread::instance<Self::Allocator>();
+    // return context::tryGet<Self::Allocator>() ||
+    //        singleton::instance<Self::Allocator>();
+    return context::get<Self::Allocator>();
+    // return singleton::instance<Self::Allocator>();
+    // return singleton::perThread::instance<Self::Allocator>();
   }
 
 public:

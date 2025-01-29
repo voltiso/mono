@@ -53,7 +53,7 @@ add_executable(
 	test.cpp
 
 	util/test/Entry.test.cpp
-	util/test/Context.test.cpp
+	util/test/context.test.cpp
 	util/test/Handle.test.cpp
 	util/test/InPlace.test.cpp
 	util/test/Owned.test.cpp

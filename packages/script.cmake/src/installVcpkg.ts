@@ -1,4 +1,4 @@
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Script } from '@voltiso/script'
@@ -26,5 +26,5 @@ export async function installVcpkg(version = '2024.11.16'): Promise<void> {
 	if (!(await exists('vcpkg')))
 		await run(downloadVcpkg(version), bootstrapVcpkg)
 
-	// await run('ln -sf build/Debug/compile_commands.json')
+	// await run('ln -sf out/Debug/compile_commands.json')
 }
