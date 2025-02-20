@@ -37,6 +37,11 @@ template <class _Item> struct Storage {
     // LOG(INFO) << "Storage(std::initializer_list<std::byte>)";
   }
 
+  Storage(const Storage &other) =
+      delete; // we do not know if object is constructed
+  Storage &operator=(const Storage &other) =
+      delete; // we do not know if object is constructed
+
   // template <class... Args>
   // constexpr Storage(Args &&...args) noexcept
   //     : bytes(std::forward<Args>(args)...) {}

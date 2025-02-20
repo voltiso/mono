@@ -1,0 +1,13 @@
+#pragma once
+
+// namespace VOLTISO_NAMESPACE {
+// 	// tag-only type
+// 	class Unknown {
+// 		Unknown() = delete;
+// 		Unknown(const Unknown &) = delete;
+// 		Unknown(Unknown &&) = delete;
+// 		Unknown &operator=(const Unknown &) = delete;
+// 		Unknown &operator=(Unknown &&) = delete;
+// 		~Unknown() = delete;
+// 	};
+// } // namespace VOLTISO_NAMESPACE

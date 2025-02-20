@@ -2,7 +2,9 @@
 #include <voltiso/_>
 
 #include "voltiso/Handle"
-#include "voltiso/singleton"
+#include "voltiso/Singleton"
+
+#include <iostream>
 
 #ifndef VOLTISO_DEBUG_MALLOC
 #define VOLTISO_DEBUG_MALLOC VOLTISO_DEBUG
@@ -31,7 +33,7 @@ private:
   using Base = Object<_Options>;
 
 protected:
-  friend singleton;
+  // friend singleton;
   // friend singleton::perThread;
 
 #if VOLTISO_DEBUG_MALLOC
@@ -46,7 +48,8 @@ protected:
 
 public:
   static constexpr auto &instance() {
-    return singleton::instance<Self>();
+		std::cout << "Malloc::instance()" << std::endl;
+    return Singleton<Self>::instance();
     // return singleton::perThread::instance<Self>();
   }
 

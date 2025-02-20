@@ -34,6 +34,16 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
   }
 }
 
+// static void BM_allocator_trivial_Pool_dynamic(benchmark::State &state) {
+//   using namespace VOLTISO_NAMESPACE;
+//   pool::Virtual pool;
+//   for (auto _ : state) {
+//     auto handle = pool.insert();
+//     benchmark::DoNotOptimize(pool[handle]);
+//     pool[handle].erase();
+//   }
+// }
+
 static void BM_allocator_trivial_Splay(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
   // auto &splay = g_splay;

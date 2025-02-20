@@ -1,0 +1,96 @@
+#pragma once
+
+#include "voltiso/Owned"
+#include "voltiso/Shared"
+
+#include <type_traits>
+#include <utility>
+
+namespace VOLTISO_NAMESPACE::pointer {
+class Virtual {
+public:
+  virtual ~Virtual() = default;
+  virtual void *target() = 0;
+}; // class Virtual
+} // namespace VOLTISO_NAMESPACE::pointer
+
+//
+
+namespace VOLTISO_NAMESPACE::pointer {
+template <class Implementation>
+class Dynamic : public Virtual, public Implementation {
+  static_assert(!std::is_polymorphic_v<Implementation>);
+
+public:
+  template <class... Args>
+  Dynamic(Args &&...args) : Implementation(std::forward<Args>(args)...) {
+    // std::cout << "Dynamic constructor" << std::endl;
+  }
+  // Dynamic(Owned &&other) : Owned(std::move(other)) {}
+
+  void *target() override { return &this->item(); }
+}; // class Dynamic
+} // namespace VOLTISO_NAMESPACE::pointer
+
+//
+
+namespace VOLTISO_NAMESPACE {
+// type-erasure for `Owned` and `Shared`
+// virtual function calls
+template <class T = void> class Pointer {
+  // class OwnedUnknown {
+  using Self = Pointer;
+
+private:
+  Storage<pointer::Dynamic<Owned<int>>> storage;
+
+public:
+  Pointer(const Self &) = delete;
+  Pointer(Self &&other) {
+    memcpy(this, &other, sizeof(*this));
+    auto &otherDynamic =
+        reinterpret_cast<pointer::Dynamic<Owned<int>> &>(other);
+    auto &otherInt = static_cast<Owned<int> &>(otherDynamic);
+    auto &handle = reinterpret_cast<Pool<int>::Handle &>(otherInt);
+    handle = Pool<int>::Handle::null;
+    // std::cout << "OwnedUnknown(OwnedUnknown &&other) " << &otherDynamic << "
+    // "
+    //           << &otherInt << " " << &handle << std::endl;
+    // auto &otherVirtual = static_cast<owned::_::Virtual &>(otherDynamic);
+    // std::cout << "otherVirtual " << &otherVirtual << std::endl;
+  }
+
+  template <class Other,
+            class = std::enable_if_t<std::is_assignable_v<Other *&, Other *>>>
+  Pointer(Owned<Other> &&other) {
+    // forbid multiple inheritance for performance
+    DCHECK_EQ((T *)&other.item(), &other.item());
+    static_assert(sizeof(*this) == sizeof(pointer::Dynamic<Owned<Other>>));
+    // so that move constructor can set handle to null:
+    static_assert(Pool<Other>::Handle::null.value ==
+                  Pool<int>::Handle::null.value);
+    new (this) pointer::Dynamic<Owned<Other>>(std::move(other));
+  }
+
+  template <class Other,
+            class = std::enable_if_t<std::is_assignable_v<Other *&, Other *>>>
+  Pointer(Shared<Other> &&other) {
+    // forbid multiple inheritance for performance
+    DCHECK_EQ((T *)&other.item(), &other.item());
+    static_assert(sizeof(*this) == sizeof(pointer::Dynamic<Shared<Other>>));
+    // so that move constructor can set handle to null:
+    static_assert(Pool<Other>::Handle::null.value ==
+                  Pool<int>::Handle::null.value);
+    new (this) pointer::Dynamic<Shared<Other>>(std::move(other));
+  }
+
+  ~Pointer() {
+    static_assert(sizeof(*this) == sizeof(pointer::Dynamic<Owned<int>>));
+    static_assert(sizeof(*this) == sizeof(pointer::Dynamic<Shared<int>>));
+    (void)storage;
+    auto &selfDynamic = reinterpret_cast<pointer::Dynamic<Owned<int>> &>(*this);
+    auto &selfVirtual = static_cast<pointer::Virtual &>(selfDynamic);
+    selfVirtual.~Virtual();
+  }
+};
+} // namespace VOLTISO_NAMESPACE

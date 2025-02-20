@@ -1,9 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Owned>
-// #include <voltiso/context>
-
-#include <memory>
+#include <voltiso/Shared>
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -19,42 +16,42 @@ using namespace VOLTISO_NAMESPACE;
 // };
 // Global global;
 
-TEST(Owned, trivial) {
-  auto owned = Owned<int>::create(123);
+TEST(Shared, trivial) {
+  auto shared = Shared<int>::create(123);
 
   // Owned<int> owned =
   //     Owned(123); // explicit! (memory allocation), uses deduction guide
 
-  EXPECT_EQ(sizeof(owned),
+  EXPECT_EQ(sizeof(shared),
             sizeof(std::unique_ptr<int>)); // Owned is now always a ptr
 
   // operator ==
-  EXPECT_EQ(owned, 123);
-  EXPECT_EQ(123, owned);
+  EXPECT_EQ(shared, 123);
+  EXPECT_EQ(123, shared);
 
   // operator !=
-  EXPECT_NE(owned, 124);
-  EXPECT_NE(124, owned);
+  EXPECT_NE(shared, 124);
+  EXPECT_NE(124, shared);
 
   // operator *
-  EXPECT_EQ(*owned, 123);
+  EXPECT_EQ(*shared, 123);
 
   // operator -
-  EXPECT_EQ(owned - 1, 122);
-  EXPECT_EQ(1 - owned, -122);
+  EXPECT_EQ(shared - 1, 122);
+  EXPECT_EQ(1 - shared, -122);
 
-  EXPECT_EQ((owned += 1) += 1, 125);
-  EXPECT_EQ(owned, 125);
+  EXPECT_EQ((shared += 1) += 1, 125);
+  EXPECT_EQ(shared, 125);
 
-  EXPECT_EQ((int &)owned, 125);
-  EXPECT_EQ((const int &)owned, 125);
-  EXPECT_EQ((int &&)owned, 125);
-  EXPECT_EQ((const int &&)owned, 125);
+  EXPECT_EQ((int &)shared, 125);
+  EXPECT_EQ((const int &)shared, 125);
+  EXPECT_EQ((int &&)shared, 125);
+  EXPECT_EQ((const int &&)shared, 125);
   // EXPECT_EQ((int)owned, 123);
   // EXPECT_EQ((const int)owned, 123);
 }
 
-TEST(Owned, big) {
+TEST(Shared, big) {
   struct A final {
     int a, b, c;
     bool operator==(const A &other) const {
@@ -70,16 +67,16 @@ TEST(Owned, big) {
   //     Owned(A{1, 2, 3}); // explicit! (memory allocation), uses deduction
   //     guide
 
-  Owned<A> owned = Owned<A>::create({1, 2, 3});
+  Shared<A> shared = Shared<A>::create({1, 2, 3});
 
-  EXPECT_EQ(sizeof(owned), sizeof(std::unique_ptr<A>));
+  EXPECT_EQ(sizeof(shared), sizeof(std::unique_ptr<A>));
 
   // operator ==
-  EXPECT_EQ(*owned, (A{1, 2, 3}));
-  EXPECT_EQ(owned, (A{1, 2, 3}));
-  EXPECT_EQ((A &)owned, (A{1, 2, 3}));
-  EXPECT_EQ((const A &)owned, (A{1, 2, 3}));
-  EXPECT_EQ((A &&)owned, (A{1, 2, 3}));
+  EXPECT_EQ(*shared, (A{1, 2, 3}));
+  EXPECT_EQ(shared, (A{1, 2, 3}));
+  EXPECT_EQ((A &)shared, (A{1, 2, 3}));
+  EXPECT_EQ((const A &)shared, (A{1, 2, 3}));
+  EXPECT_EQ((A &&)shared, (A{1, 2, 3}));
 
   struct AA {
     A a;
@@ -110,24 +107,24 @@ TEST(Owned, big) {
 //   EXPECT_EQ(SmallDestructible::numDestructorCalls, 1);
 // }
 
-struct BigDestructible final {
+struct BigDestructibleA final {
   static int numDestructorCalls;
-  ~BigDestructible() { numDestructorCalls += 1; }
+  ~BigDestructibleA() { numDestructorCalls += 1; }
   char data[1024];
 };
 
-int BigDestructible::numDestructorCalls = 0;
+int BigDestructibleA::numDestructorCalls = 0;
 
 // Pool<BigDestructible> poolBigDestructible;
 // context::Guard<Pool<BigDestructible>> poolBigDestructibleGuard =
 //     context::Guard<Pool<BigDestructible>>(poolBigDestructible);
 
-TEST(Owned, destructor_big) {
+TEST(Shared, destructor_big) {
   {
-    Owned<BigDestructible> owned = Owned<BigDestructible>::create();
+    Shared<BigDestructibleA> shared = Shared<BigDestructibleA>::create();
     // Owned<BigDestructible> owned = Owned(BigDestructible{});
-    BigDestructible::numDestructorCalls = 0;
+    BigDestructibleA::numDestructorCalls = 0;
   }
 
-  EXPECT_EQ(BigDestructible::numDestructorCalls, 1);
+  EXPECT_EQ(BigDestructibleA::numDestructorCalls, 1);
 }

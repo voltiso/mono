@@ -115,7 +115,9 @@ using DefaultOptions = Options<Defaults>;
 
 // class Base {};
 
-template <class _Options> class Build : public Object<_Options> {
+template <class _Options>
+class Build : public Object<_Options>,
+              public Singleton<typename _Options::Allocator>::Guard {
   using Self = Build;
   using Base = Object<_Options>;
 
@@ -153,7 +155,7 @@ public:
   // static_assert(std::has_single_bit(sizeof(Item)));
 
   ~Build() {
-		// std::cout << "Pool::~Build()" << std::endl;
+    // std::cout << "Pool::~Build()" << std::endl;
     if constexpr (std::is_trivially_destructible_v<Item>) {
       // noop
     } else {
@@ -242,4 +244,11 @@ using Pool = pool::Final<pool::DefaultOptions::Item_<Item>>;
 // template <class Item = Any>
 // using Pool = std::conditional_t<std::is_same_v<Item, Any>, pool::Base,
 //                                 pool::Final<pool::DefaultOptions::Item_<Item>>>;
+
+// namespace pool {
+// class Virtual {
+//   //
+// };
+// } // namespace pool
+
 } // namespace VOLTISO_NAMESPACE

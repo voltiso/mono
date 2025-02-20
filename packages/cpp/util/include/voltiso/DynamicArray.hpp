@@ -4,7 +4,6 @@
 #include <voltiso/_>
 
 #include "voltiso/allocator/Malloc.hpp"
-#include "voltiso/context"
 
 #include "voltiso/Array"
 #include "voltiso/Handle"
@@ -343,11 +342,11 @@ public:
 
 private:
   static auto &_allocator() {
+    // return context::get<Self::Allocator>();
+    return Singleton<Self::Allocator>::instance();
+    // return singleton::perThread::instance<Self::Allocator>();
     // return context::tryGet<Self::Allocator>() ||
     //        singleton::instance<Self::Allocator>();
-    return context::get<Self::Allocator>();
-    // return singleton::instance<Self::Allocator>();
-    // return singleton::perThread::instance<Self::Allocator>();
   }
 
 public:

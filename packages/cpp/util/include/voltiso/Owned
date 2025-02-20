@@ -2,60 +2,65 @@
 
 #include "voltiso/Pool"
 
-#include <iostream>
-#include <type_traits>
-#include <utility>
+// #include <iostream>
+// #include <type_traits>
+// #include <utility>
 
 namespace VOLTISO_NAMESPACE {
+
 template <class Item> class Owned {
   static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
+  using Self = Owned;
   using Pool = Pool<Item>;
 
 public:
-  template <class... Args> static Owned create(Args &&...args) {
-    Owned self;
-    self.item = pool().insert(std::forward<Args>(args)...);
+  template <class... Args> static Self create(Args &&...args) {
+    Self self;
+    self._item = pool().insert(std::forward<Args>(args)...);
     return self;
   }
 
-  static Owned create(const Item &item) {
-    Owned self;
-    self.item = pool().insert(item);
+  static Self create(const Item &item) {
+    Self self;
+    self._item = pool().insert(item);
     return self;
   }
 
-  static Owned create(Item &&item) {
-    Owned self;
-    self.item = pool().insert(std::move(item));
+  static Self create(Item &&item) {
+    Self self;
+    self._item = pool().insert(std::move(item));
     return self;
   }
 
   ~Owned() {
-    if (this->item) [[likely]] {
-      std::cout << "erase" << std::endl;
-      pool()[this->item].erase();
+    if (this->_item) [[likely]] {
+      // std::cout << "erase" << std::endl;
+      pool()[this->_item].erase();
     }
   }
 
   Owned() = default;
 
-  Owned(const Owned &) = delete;
-  Owned &operator=(const Owned &) = delete;
+  Owned(const Self &) = delete;
+  Self &operator=(const Self &) = delete;
 
-  Owned(Owned &&other) noexcept : item(other.item) {
-    other.item = Pool::Handle::null;
+  Owned(Self &&other) noexcept : _item(other._item) {
+    other._item = Pool::Handle::null;
   }
 
-  Owned &operator=(Owned &&other) noexcept {
-    if (this->item) // ? [[likely]]
-      pool()[this->item].erase();
-    this->item = other.item;
-    other.item = Pool::Handle::null;
+  Self &operator=(Self &&other) noexcept {
+    if (this->_item) [[likely]]
+      pool()[this->_item].erase();
+    this->_item = other._item;
+    other._item = Pool::Handle::null;
     return *this;
   }
 
-  Item &operator*() { return pool()[item].item(); }
-  const Item &operator*() const { return pool()[item].item(); }
+  Item &item() { return pool()[_item].item(); }
+  const Item &item() const { return pool()[_item].item(); }
+
+  Item &operator*() { return item(); }
+  const Item &operator*() const { return item(); }
 
   Item *operator->() { return &**this; }
   const Item *operator->() const { return &**this; }
@@ -66,16 +71,65 @@ public:
   operator Item &&() { return (Item &&)**this; }
   operator const Item &&() const { return (Item &&)**this; }
 
+  // operator owned::Dynamic () && { return *this; }
+
 private:
-  Pool::Handle item = Pool::Handle::null;
+  Pool::Handle _item = Pool::Handle::null;
 
   static auto &pool() {
+    // return context::get<Pool>();
+    return Singleton<Pool>::instance();
     // return *(context::tryGet<Pool>() || &singleton::instance<Pool>());
-    // return context::getOrSingleton<Pool>();
-    return context::get<Pool>();
-    // return singleton::instance<Pool>();
   }
 }; // class Owned
+
+//
+
+// // virtual function calls
+// template <> class Owned<Unknown> {
+//   // class OwnedUnknown {
+//   using Self = Owned;
+
+// private:
+//   Storage<Dynamic<Owned<int>>> storage;
+
+// public:
+//   Owned(const Self &) = delete;
+//   Owned(Self &&other) {
+//     memcpy(this, &other, sizeof(*this));
+//     auto &otherDynamic =
+//         reinterpret_cast<Dynamic<Owned<int>> &>(other);
+//     auto &otherInt = static_cast<Owned<int> &>(otherDynamic);
+//     auto &handle = reinterpret_cast<Pool<int>::Handle &>(otherInt);
+//     handle = Pool<int>::Handle::null;
+//     // std::cout << "OwnedUnknown(OwnedUnknown &&other) " << &otherDynamic <<
+//     "
+//     // "
+//     //           << &otherInt << " " << &handle << std::endl;
+//     // auto &otherVirtual = static_cast<owned::_::Virtual &>(otherDynamic);
+//     // std::cout << "otherVirtual " << &otherVirtual << std::endl;
+//   }
+
+//   template <class T> Owned(Owned<T> &&other) {
+//     static_assert(!std::is_same_v<T, Unknown>);
+//     static_assert(sizeof(*this) == sizeof(Dynamic<Owned<T>>));
+//     // so that move constructor can set handle to null:
+//     static_assert(Pool<T>::Handle::null.value ==
+//     Pool<int>::Handle::null.value); new (this)
+//     Dynamic<Owned<T>>(std::move(other));
+//   }
+
+//   ~Owned() {
+//     static_assert(sizeof(*this) == sizeof(Dynamic<Owned<int>>));
+//     (void)storage;
+//     auto &selfDynamic =
+//         reinterpret_cast<Dynamic<Owned<int>> &>(*this);
+//     auto &selfVirtual = static_cast<Virtual &>(selfDynamic);
+//     selfVirtual.~Virtual();
+//   }
+// };
+
+//
 
 #define DEFINE_OPERATOR(op)                                                    \
   template <class T, class Other>                                              \

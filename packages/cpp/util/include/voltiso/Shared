@@ -1,0 +1,168 @@
+#pragma once
+
+#include "voltiso/Pool"
+
+namespace VOLTISO_NAMESPACE::shared::_ {
+template <class Item> struct ControlBlock {
+  Item item;
+  std::size_t numReferences = 1;
+  // std::atomic<int> refCount = 1;
+
+  template <class... Args>
+  ControlBlock(Args &&...args) : item(std::forward<Args>(args)...) {}
+};
+} // namespace VOLTISO_NAMESPACE::shared::_
+
+namespace VOLTISO_NAMESPACE {
+template <class Item> class Shared {
+  using Self = Shared;
+  static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
+  using Pool = Pool<shared::_::ControlBlock<Item>>;
+
+public:
+  template <class... Args> static Self create(Args &&...args) {
+    Self self;
+    self._controlBlock = pool().insert(std::forward<Args>(args)...);
+    return self;
+  }
+
+  static Self create(const Item &item) {
+    Self self;
+    self._controlBlock = pool().insert(item);
+    return self;
+  }
+
+  static Self create(Item &&item) {
+    Self self;
+    self._controlBlock = pool().insert(std::move(item));
+    return self;
+  }
+
+  ~Shared() {
+    if (this->_controlBlock) [[likely]] {
+      // std::cout << "erase" << std::endl;
+      auto controlBlock = pool()[this->_controlBlock];
+      if (--controlBlock->numReferences == 0) [[unlikely]]
+        controlBlock.erase();
+    }
+  }
+
+  Shared() = default;
+
+  Shared(const Self &other) : _controlBlock(other._controlBlock) {
+    if (other._controlBlock) [[likely]]
+      ++pool()[other._controlBlock].numReferences;
+  }
+
+  Shared &operator=(const Self &other) {
+    if (this->_controlBlock) [[likely]] {
+      if (--pool()[this->_controlBlock].numReferences == 0) [[unlikely]]
+        pool()[this->_controlBlock].erase();
+    }
+    this->_controlBlock = other._controlBlock;
+    if (other._controlBlock) [[likely]]
+      ++pool()[other._controlBlock].numReferences;
+    return *this;
+  }
+
+  Shared(Self &&other) noexcept : _controlBlock(other._controlBlock) {
+    other._controlBlock = Pool::Handle::null;
+  }
+
+  Shared &operator=(Self &&other) noexcept {
+    if (this->_controlBlock) [[likely]]
+      pool()[this->_controlBlock].erase();
+    this->_controlBlock = other._controlBlock;
+    other._controlBlock = Pool::Handle::null;
+    return *this;
+  }
+
+  Item &item() { return pool()[_controlBlock].item().item; }
+  const Item &item() const { return pool()[_controlBlock].item().item; }
+
+  Item &operator*() { return item(); }
+  const Item &operator*() const { return item(); }
+
+  Item *operator->() { return &**this; }
+  const Item *operator->() const { return &**this; }
+
+  operator Item &() { return **this; }
+  operator const Item &() const { return **this; }
+
+  operator Item &&() { return (Item &&)**this; }
+  operator const Item &&() const { return (Item &&)**this; }
+
+  // operator owned::Dynamic () && { return *this; }
+
+private:
+  Pool::Handle _controlBlock = Pool::Handle::null;
+
+  static auto &pool() {
+    // return context::get<Pool>();
+    return Singleton<Pool>::instance();
+    // return *(context::tryGet<Pool>() || &singleton::instance<Pool>());
+  }
+}; // class Owned
+
+//
+
+//
+
+#define DEFINE_OPERATOR(op)                                                    \
+  template <class T, class Other>                                              \
+  auto operator op(const Shared<T> &lhs, Other &&rhs)                          \
+      ->decltype(*lhs op std::forward<Other>(rhs)) {                           \
+    return *lhs op std::forward<Other>(rhs);                                   \
+  }                                                                            \
+                                                                               \
+  template <class T, class Other>                                              \
+  auto operator op(Other &&lhs, const Shared<T> &rhs)                          \
+      ->decltype(std::forward<Other>(lhs) op * rhs) {                          \
+    return std::forward<Other>(lhs) op * rhs;                                  \
+  }
+
+DEFINE_OPERATOR(==)
+DEFINE_OPERATOR(!=)
+
+DEFINE_OPERATOR(<)
+DEFINE_OPERATOR(<=)
+
+DEFINE_OPERATOR(>)
+DEFINE_OPERATOR(>=)
+
+DEFINE_OPERATOR(+)
+DEFINE_OPERATOR(+=)
+
+DEFINE_OPERATOR(-)
+DEFINE_OPERATOR(-=)
+
+DEFINE_OPERATOR(*)
+DEFINE_OPERATOR(*=)
+
+DEFINE_OPERATOR(/)
+DEFINE_OPERATOR(/=)
+
+DEFINE_OPERATOR(%)
+DEFINE_OPERATOR(%=)
+
+DEFINE_OPERATOR(<<)
+DEFINE_OPERATOR(<<=)
+
+DEFINE_OPERATOR(>>)
+DEFINE_OPERATOR(>>=)
+
+DEFINE_OPERATOR(&)
+DEFINE_OPERATOR(&=)
+
+DEFINE_OPERATOR(|)
+DEFINE_OPERATOR(|=)
+
+DEFINE_OPERATOR(^)
+DEFINE_OPERATOR(^=)
+
+DEFINE_OPERATOR(&&)
+DEFINE_OPERATOR(||)
+
+#undef DEFINE_OPERATOR
+
+} // namespace VOLTISO_NAMESPACE

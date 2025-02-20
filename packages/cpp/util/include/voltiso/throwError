@@ -1,7 +1,9 @@
 #pragma once
 #include <voltiso/_>
 
+#ifndef __cpp_exceptions
 #include <glog/logging.h>
+#endif
 
 namespace VOLTISO_NAMESPACE {
 
