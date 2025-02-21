@@ -39,8 +39,11 @@ public:
     }
   }
 
+  // public: Owned() = default; // convenient, but runtime-bug-prone
+private:
   Owned() = default;
 
+public:
   Owned(const Self &) = delete;
   Self &operator=(const Self &) = delete;
 

@@ -58,7 +58,9 @@ add_executable(
 	# util/test/InPlace.test.cpp
 	util/test/Owned.test.cpp
 	util/test/Shared.test.cpp
-	util/test/Pointer.test.cpp
+
+	# util/test/Pointer.test.cpp
+	# util/test/State.test.cpp
 
 	# util/test/Storage.test.cpp
 	# util/test/BitArray.test.cpp

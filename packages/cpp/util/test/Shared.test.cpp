@@ -128,3 +128,20 @@ TEST(Shared, destructor_big) {
 
   EXPECT_EQ(BigDestructibleA::numDestructorCalls, 1);
 }
+
+TEST(Shared, clone_freeze) {
+  {
+    auto testState = Shared<const BigDestructibleA>::create();
+    // Shared<const BigDestructibleA> testState;
+    auto s = testState.clone();
+    static_assert(std::is_same_v<decltype(s), Shared<BigDestructibleA>>);
+    s->data[0] = 123;
+    auto newState = std::move(s).freeze();
+    static_assert(
+        std::is_same_v<decltype(newState), Shared<const BigDestructibleA>>);
+
+    EXPECT_EQ(BigDestructibleA::numDestructorCalls, 0);
+  }
+
+  EXPECT_EQ(BigDestructibleA::numDestructorCalls, 2);
+}

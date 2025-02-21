@@ -147,4 +147,9 @@ static constexpr auto is_trivially_relocatable<array::Final<Options>> = true;
 template <class Item, size_t NUM_ITEMS>
 using Array = array::Final<typename array::DefaultOptions::Item_<
     Item>::template NUM_ITEMS_<NUM_ITEMS>>;
+
+// using A = typename array::DefaultOptions::Item_<int>::template NUM_ITEMS_<5>;
+// using B = typename array::DefaultOptions::template NUM_ITEMS_<5>::Item_<int>;
+// static_assert(std::is_same_v<A,B>);
+
 } // namespace VOLTISO_NAMESPACE
