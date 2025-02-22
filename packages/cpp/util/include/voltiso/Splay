@@ -7,14 +7,12 @@
 #include "voltiso/Object"
 
 namespace VOLTISO_NAMESPACE::splay::_ {
-template <class Options> struct AccessPathNode {
+struct AccessPathNode {
   Handle node;
   uint8_t childIndex;
 };
 
-template <class Options>
-::std::ostream &operator<<(::std::ostream &os,
-                           const AccessPathNode<Options> &node) {
+::std::ostream &operator<<(::std::ostream &os, const AccessPathNode &node) {
   return os << "{node: " << node.node
             << ", childIndex: " << (int)node.childIndex << "}";
 }; // struct _
@@ -24,36 +22,36 @@ template <class Options>
 //
 
 namespace VOLTISO_NAMESPACE::splay {
-struct Defaults {
-  using Pool = void; // need to override
-};
-using DefaultOptions = Options<Defaults>;
+// struct Defaults {
+//   using Pool = void; // need to override
+// };
+// using DefaultOptions = Options<Defaults>;
 
 //
 
-template <class Options> class Build;
+template <class Final, class Parameters> class Custom;
 
-template <class Options> class ConstAccessor {
+template <class Final, class Parameters> class ConstAccessor {
 protected:
-  using Build = Build<Options>;
-  using Entry = Build::Entry;
-  using Key = Build::Key;
-  using Handle = Build::Handle;
-  using Pool = Build::Pool;
+  using Custom = Custom<Final, Parameters>;
+  using Entry = Custom::Entry;
+  using Key = Custom::Key;
+  using Handle = Custom::Handle;
+  using Pool = Custom::Pool;
 
 public:
   const Handle &root;
-  const Build &splay;
+  const Custom &splay;
 
 protected:
-  friend Build;
-  ConstAccessor(const Handle &root, const Build &splay)
+  friend Custom;
+  ConstAccessor(const Handle &root, const Custom &splay)
       : root(root), splay(splay) {}
 
 protected:
   auto &_root() { return const_cast<Handle &>(root); }
-  auto &_accessPath() const { return const_cast<Build &>(splay).accessPath; }
-  auto &_bst() const { return const_cast<Build &>(splay).bst; }
+  auto &_accessPath() const { return const_cast<Custom &>(splay).accessPath; }
+  auto &_bst() const { return const_cast<Custom &>(splay).bst; }
   auto &_pool() const { return const_cast<Pool &>(splay.pool); }
 
 public:
@@ -262,16 +260,18 @@ protected:
   }
 };
 
-template <class Options> class Accessor : public ConstAccessor<Options> {
-  using Base = ConstAccessor<Options>;
-  using Build = Base::Build;
+template <class Final, class Parameters>
+class Accessor : public ConstAccessor<Final, Parameters> {
+  using Base = ConstAccessor<Final, Parameters>;
+  using Custom = Base::Custom;
   using Entry = Base::Entry;
   using Handle = Base::Handle;
   using Pool = Base::Pool;
 
 private:
-  friend Build;
-  Accessor(Handle &root, Build &splay) : ConstAccessor<Options>(root, splay) {}
+  friend Custom;
+  Accessor(Handle &root, Custom &splay)
+      : ConstAccessor<Final, Parameters>(root, splay) {}
 
 public:
   Handle insert(const Entry &entry) { return insert<>(entry); }
@@ -295,7 +295,7 @@ public:
     this->find(getKey(pool[nodeToUnlink].item()));
     // LOG(INFO) << "AFTER FIND\n" << *this;
     auto &root = this->_root();
-    auto &splay = const_cast<Build &>(this->splay);
+    auto &splay = const_cast<Custom &>(this->splay);
     DCHECK_EQ(root, nodeToUnlink);
     if (!pool[nodeToUnlink]->children[0]) [[unlikely]] {
       root = pool[nodeToUnlink]->children[1];
@@ -353,7 +353,7 @@ public:
     this->find(getKey(pool[nodeToErase].item()));
     const auto &n = nodeToErase;
     auto &root = this->_root();
-    auto &splay = const_cast<Build &>(this->splay);
+    auto &splay = const_cast<Custom &>(this->splay);
     DCHECK_EQ(root, n);
     if (!pool[n]->children[0]) [[unlikely]] {
       root = pool[n]->children[1];
@@ -373,11 +373,13 @@ public:
 //
 
 namespace std {
-template <class Options>
+template <class Final, class Parameters>
 ostream &
 operator<<(ostream &os,
-           const VOLTISO_NAMESPACE::splay::ConstAccessor<Options> &accessor) {
-  using Handle = typename VOLTISO_NAMESPACE::splay::Build<Options>::Handle;
+           const VOLTISO_NAMESPACE::splay::ConstAccessor<Final, Parameters>
+               &accessor) {
+  using Handle =
+      typename VOLTISO_NAMESPACE::splay::Custom<Final, Parameters>::Handle;
   static thread_local int indent = 0;
   auto key =
       VOLTISO_NAMESPACE::getKey(accessor.splay.pool[accessor.root].item());
@@ -408,21 +410,20 @@ operator<<(ostream &os,
 //
 
 namespace VOLTISO_NAMESPACE::splay {
-template <class _Options> class Build : public Object<_Options> {
+template <class Final, class Parameters> class Custom : public Object<Final> {
 private:
-  using Self = Build;
+  using Self = Custom;
 
 public:
-  using Options = _Options;
-  using Pool = Options::Pool;
+  using Pool = getParameter::Type<parameter::Pool, Parameters>;
   using Handle = typename Pool::Handle;
   // using Allocator = typename Pool::Allocator;
   using Node = typename Pool::Item;
   using Entry = GetEntry<Node>;
   using Key = GetKey<Entry>; // may be implicit
 
-  using ConstAccessor = ConstAccessor<Options>;
-  using Accessor = Accessor<Options>;
+  using ConstAccessor = ConstAccessor<Final, Parameters>;
+  using Accessor = Accessor<Final, Parameters>;
   friend ConstAccessor;
   friend Accessor;
 
@@ -430,11 +431,13 @@ public:
 
 private:
   // using DynamicArray = DynamicArray<int>::Allocator_<Allocator>;
-  using AccessPathNode = _::template AccessPathNode<Options>;
+
+  using AccessPathNode = _::AccessPathNode;
+  // using AccessPathNode = _::template AccessPathNode<Final, Parameters>;
 
   // ! we use in-place array in order to be able to use this class in
   // allocators
-  using AccessPath = DynamicArray<AccessPathNode>::template IN_PLACE_ONLY_<32>;
+  using AccessPath = DynamicArray<AccessPathNode>::template WithInPlaceOnly<32>;
   // using AccessPath = DynamicArray::template Item_<AccessPathNode>;
   AccessPath accessPath;
 
@@ -448,7 +451,7 @@ private:
   auto &_pool() { return const_cast<Pool &>(pool); }
 
 public:
-  Build(Pool &pool) : pool(pool), bst(pool) {}
+  Custom(Pool &pool) : pool(pool), bst(pool) {}
   // Splay(Self&&) = default;
 
 public:
@@ -466,14 +469,15 @@ public:
     return ConstAccessor(root, *this);
   }
   Accessor operator()(Handle &root) { return Accessor(root, *this); }
-}; // class Build
+}; // class Custom
 } // namespace VOLTISO_NAMESPACE::splay
 
-VOLTISO_OBJECT_FINAL(splay)
+// VOLTISO_OBJECT_FINAL(splay)
 
 //
 
 namespace VOLTISO_NAMESPACE {
 template <class Pool>
-using Splay = splay::Final<splay::DefaultOptions::Pool_<Pool>>;
+class Splay
+    : public splay::Custom<Splay<Pool>, std::tuple<parameter::Pool<Pool>>> {};
 } // namespace VOLTISO_NAMESPACE

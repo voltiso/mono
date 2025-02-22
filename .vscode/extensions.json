@@ -28,8 +28,8 @@
 		/** Jest testing pane (left-side of VSCode window) */
 		"Orta.vscode-jest",
 
-		/** Displays vulnerability pop-overs in `package.json` */
-		"redhat.fabric8-analytics",
+		// /** Displays vulnerability pop-overs in `package.json` */
+		// "redhat.fabric8-analytics",
 
 		/** Test Regex quickly (manually) */
 		"chrmarti.regex",
@@ -85,6 +85,7 @@
 		"toba.vsfire",
 
 		/** C++ */
-		"llvm-vs-code-extensions.vscode-clangd"
+		"llvm-vs-code-extensions.vscode-clangd",
+		"ms-vscode.cmake-tools"
 	]
 }

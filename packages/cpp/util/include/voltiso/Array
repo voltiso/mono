@@ -3,40 +3,52 @@
 
 #include "voltiso/Handle"
 #include "voltiso/Object"
-#include "voltiso/Options"
+#include "voltiso/ValueParameter"
+#include "voltiso/getParameter/VALUE"
+#include "voltiso/is_trivially_relocatable"
 #include "voltiso/memory/Iterator"
-
-#include "glog/logging.h"
 
 #include <cstddef>
 #include <type_traits>
 
-namespace VOLTISO_NAMESPACE::array {
+namespace VOLTISO_NAMESPACE {
 
-struct Defaults {
-  using Item = void;                          // need to override
-  static constexpr std::size_t NUM_ITEMS = 0; // need to override
-  static constexpr std::make_signed_t<size_t> STARTING_INDEX = 0;
-};
+namespace array {
 
-using DefaultOptions = Options<Defaults>;
+// Parameter types
+namespace parameter {
+template <std::make_signed_t<std::size_t> N>
+struct StartingIndex : ValueParameter<N, 0> {};
+} // namespace parameter
 
-//
-
-// similar to `std::array`
-template <class _Options> class Build : public Object<_Options> {
-  using Self = Build;
-  using Base = Object<_Options>;
+// Main Array class
+template <class Final, class Parameters> class Custom : public Object<Final> {
+  using Base = Object<Final>;
+  using Self = Custom;
 
 public:
-  using Options = _Options;
-  using Item = Options::Item;
-  static constexpr auto NUM_ITEMS = Options::NUM_ITEMS;
-  static constexpr auto STARTING_INDEX = Options::STARTING_INDEX;
-  // static constexpr auto numItems = NUM_ITEMS;
+  using Item =
+      getParameter::Type<VOLTISO_NAMESPACE::parameter::Item, Parameters>;
+
+  static constexpr auto NUM_ITEMS =
+      getParameter::VALUE<VOLTISO_NAMESPACE::parameter::NumItems, Parameters>;
+
+  static constexpr auto STARTING_INDEX =
+      getParameter::VALUE<parameter::StartingIndex, Parameters>;
+
+  // Make sure required parameters are set
+  static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
+  static_assert(NUM_ITEMS > 0, "Array size must be greater than 0");
 
   template <class Type>
-  using CustomHandle = Handle::Brand_<Self>::template Type_<Type>;
+  using CustomHandle = Handle::WithBrand<Final>::template WithType<Type>;
+
+  // template <class Type>
+  // struct CustomHandle : Handle::WithBrand<Final>::template WithType<Type> {
+  //   using Base = Handle::WithBrand<Final>::template WithType<Type>;
+  //   using Base::Base;
+  //   using Base::operator=;
+  // };
 
   using Handle =
       CustomHandle<std::conditional_t<(STARTING_INDEX < 0),
@@ -48,9 +60,9 @@ public:
   using Base::Base;
   using Base::operator=;
 
-  Build() = default;
+  Custom() = default;
 
-  Build(std::initializer_list<Item> list) {
+  Custom(std::initializer_list<Item> list) {
     size_t i = 0;
     for (auto &item : list) {
       items[i++] = item;
@@ -60,15 +72,20 @@ public:
     }
   }
 
-  template <class Index>
-  const Item &operator[](const CustomHandle<Index> &handle) const {
+  template <class InferredHandle,
+            std::enable_if_t<std::is_same_v<typename InferredHandle::Brand,
+                                            Final>> * = nullptr>
+  const Item &operator[](const InferredHandle &handle) const {
     DCHECK_GE(handle.value, STARTING_INDEX);
     DCHECK_LT(handle.value - STARTING_INDEX, NUM_ITEMS);
     return items[handle.value - STARTING_INDEX];
   }
 
-  template <class Index> Item &operator[](const CustomHandle<Index> &handle) {
-    return const_cast<Item &>(const_cast<const Self &>(*this)[handle]);
+  template <class InferredHandle,
+            std::enable_if_t<std::is_same_v<typename InferredHandle::Brand,
+                                            Final>> * = nullptr>
+  Item &operator[](const InferredHandle &handle) {
+    return const_cast<Item &>(const_cast<const Custom &>(*this)[handle]);
   }
 
   // Automatic deduction does not work when assigning raw value, since the above
@@ -114,18 +131,36 @@ public:
 
   ConstIterator begin() const { return ConstIterator{items}; }
   ConstIterator end() const { return ConstIterator{items + NUM_ITEMS}; }
-};
-} // namespace VOLTISO_NAMESPACE::array
-VOLTISO_OBJECT_FINAL(array)
 
-//
+public:
+  template <class Parameter>
+  using With =
+      Custom<Final,
+             decltype(std::tuple_cat(std::declval<std::tuple<Parameter>>(),
+                                     std::declval<Parameters>()))>;
+
+  template <class T>
+  using WithItem = With<VOLTISO_NAMESPACE::parameter::Item<T>>;
+
+  template <std::size_t N>
+  using WithSize = With<VOLTISO_NAMESPACE::parameter::NumItems<N>>;
+
+  template <std::size_t N>
+  using WithStartingIndex = With<parameter::StartingIndex<N>>;
+};
+
+} // namespace array
+
+} // namespace VOLTISO_NAMESPACE
 
 namespace std {
-template <class Options>
-ostream &operator<<(ostream &os,
-                    const VOLTISO_NAMESPACE::array::Build<Options> &array) {
+template <class Final, class... Parameters>
+ostream &operator<<(
+    ostream &os,
+    const VOLTISO_NAMESPACE::array::Custom<Final, Parameters...> &array) {
+  using Array = VOLTISO_NAMESPACE::array::Custom<Final, Parameters...>;
   os << "[";
-  for (size_t i = 0; i < Options::NUM_ITEMS; i++) {
+  for (size_t i = 0; i < Array::NUM_ITEMS; i++) {
     if (i > 0) {
       os << ", ";
     }
@@ -135,24 +170,22 @@ ostream &operator<<(ostream &os,
 }
 } // namespace std
 
-//
-
 namespace VOLTISO_NAMESPACE {
-template <class Options>
-static constexpr auto is_trivially_relocatable<array::Build<Options>> = true;
-
-template <class Options>
-static constexpr auto is_trivially_relocatable<array::Final<Options>> = true;
+template <class Final, class... Parameters>
+static constexpr auto
+    is_trivially_relocatable<array::Custom<Final, Parameters...>> = true;
 
 template <class Item, size_t NUM_ITEMS>
-using Array = array::Final<typename array::DefaultOptions::Item_<
-    Item>::template NUM_ITEMS_<NUM_ITEMS>>;
+class Array final
+    : public array::Custom<
+          Array<Item, NUM_ITEMS>,
+          std::tuple<parameter::Item<Item>, parameter::NumItems<NUM_ITEMS>>> {
+  using Base = array::Custom<
+      Array<Item, NUM_ITEMS>,
+      std::tuple<parameter::Item<Item>, parameter::NumItems<NUM_ITEMS>>>;
 
-// using X = typename array::DefaultOptions::Item_<int>::template NUM_ITEMS_<
-//     5>::template BUCKET_IN_PLACE_<4>; // ! should not compile
-
-// using A = typename array::DefaultOptions::Item_<int>::template NUM_ITEMS_<5>;
-// using B = typename array::DefaultOptions::template NUM_ITEMS_<5>::Item_<int>;
-// static_assert(std::is_same_v<A,B>);
+public:
+  using Base::Base; // Inherit constructors
+};
 
 } // namespace VOLTISO_NAMESPACE

@@ -3,15 +3,14 @@
 #include "voltiso/Entry"
 #include "voltiso/Pool"
 #include "voltiso/Splay"
-#include "voltiso/allocator/Malloc"
 
 namespace VOLTISO_NAMESPACE::splayTable::_ {
-template <class Options> struct Node {
+template <class Final, class Parameters> struct Node {
 private:
-  using Entry = Options::Entry;
-  using Allocator = Options::Allocator;
-  using Pool = Pool<int>::template Allocator_<Allocator>; // need to cast
-  using Handle = Pool::Handle::template Brand_<void>;
+  using Entry = getParameter::Type<parameter::Entry, Parameters>;
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+  using Pool = Pool<int>::template WithAllocator<Allocator>; // need to cast
+  using Handle = Pool::Handle::template WithBrand<void>;
 
 public:
   Entry entry;
@@ -22,28 +21,28 @@ public:
 //
 
 namespace VOLTISO_NAMESPACE::splayTable {
-template <class Options> class Build;
+template <class Final, class Parameters> class Custom;
 } // namespace VOLTISO_NAMESPACE::splayTable
 
 //
 
 namespace VOLTISO_NAMESPACE::splayTable::_ {
-template <class Options> class ConstAccessor {
+template <class Final, class Parameters> class ConstAccessor {
 protected:
-  using Build = Build<Options>;
-  using Handle = Build::Pool::Handle;
-  using Key = Build::Key;
-  using Value = Build::Value;
+  using Custom = Custom<Final, Parameters>;
+  using Handle = Custom::Pool::Handle;
+  using Key = Custom::Key;
+  using Value = Custom::Value;
 
 public:
   // const Handle handle;
   const Key key;
-  const Build &splayTable;
+  const Custom &splayTable;
   const bool exists;
 
 private:
-  friend Build;
-  ConstAccessor(const Key &key, const Build &splayTable, bool exists)
+  friend Custom;
+  ConstAccessor(const Key &key, const Custom &splayTable, bool exists)
       : key(key), splayTable(splayTable), exists(exists) {}
 
 public:
@@ -61,11 +60,12 @@ public:
 
 //
 
-template <class Options> class SetAccessor : public ConstAccessor<Options> {
+template <class Final, class Parameters>
+class SetAccessor : public ConstAccessor<Final, Parameters> {
 private:
-  using Base = ConstAccessor<Options>;
+  using Base = ConstAccessor<Final, Parameters>;
   using Base::Base;
-  using Build = Build<Options>;
+  using Custom = Custom<Final, Parameters>;
 
 protected:
   using Value = Base::Value;
@@ -73,7 +73,7 @@ protected:
 public:
   void insert() {
     DCHECK(!this->exists);
-    auto &root = const_cast<Build::Pool::Handle &>(this->splayTable.root);
+    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
     this->splayTable._splay()(root).insert(this->key);
   }
 
@@ -89,17 +89,18 @@ public:
 
 //
 
-template <class Options> class MapAccessor : public SetAccessor<Options> {
+template <class Final, class Parameters>
+class MapAccessor : public SetAccessor<Final, Parameters> {
 private:
-  using Base = SetAccessor<Options>;
+  using Base = SetAccessor<Final, Parameters>;
   using Base::Base;
-  using Build = Build<Options>;
-  using Value = Build::Value;
+  using Custom = Custom<Final, Parameters>;
+  using Value = Custom::Value;
 
 public:
   template <class... Args> auto &insert(Args &&...args) {
     DCHECK(!this->exists);
-    auto &root = const_cast<Build::Pool::Handle &>(this->splayTable.root);
+    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
     this->splayTable._splay()(root).insert(
         Entry{this->key, Value(std::forward<Args>(args)...)});
     const_cast<bool &>(this->exists) = true;
@@ -115,7 +116,7 @@ public:
 
   void erase() {
     DCHECK(this->exists);
-    auto &root = const_cast<Build::Pool::Handle &>(this->splayTable.root);
+    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
     this->splayTable._splay()(root).erase(this->key);
   }
 
@@ -126,22 +127,22 @@ public:
   }
 }; // class MapAccessor
 
-template <class Options> class Iterator {
+template <class Final, class Parameters> class Iterator {
 private:
-  using Build = Build<Options>;
-  using Pool = Build::Pool;
+  using Custom = Custom<Final, Parameters>;
+  using Pool = Custom::Pool;
 
 private:
   using Stack =
-      DynamicArray<typename Pool::Handle>::template IN_PLACE_ONLY_<32>;
+      DynamicArray<typename Pool::Handle>::template WithInPlaceOnly<32>;
   Stack stack;
 
 private:
-  Build &splayTable;
+  Custom &splayTable;
 
 private:
-  friend Build;
-  Iterator(bool end, Build &splayTable) : splayTable(splayTable) {
+  friend Custom;
+  Iterator(bool end, Custom &splayTable) : splayTable(splayTable) {
     if (!end) {
       auto current = splayTable.root;
       while (current) {
@@ -183,51 +184,46 @@ public:
 //
 
 namespace VOLTISO_NAMESPACE::splayTable {
-struct Defaults {
-  using Entry = void; // need to override
-  using Allocator = allocator::Malloc;
-};
-using DefaultOptions = Options<Defaults>;
+// struct Defaults {
+//   using Entry = void; // need to override
+//   using Allocator = allocator::Malloc;
+// };
+// using DefaultOptions = Options<Defaults>;
 
 //
 
-template <class _Options> class Build : public Object<_Options> {
-  using Self = Build;
-  // using Base = Object<_Options>;
-  //
-public:
-  using Options = _Options;
+template <class Final, class Parameters> class Custom : public Object<Final> {
+  using Self = Custom;
 
 public:
-  using Entry = Options::Entry;
+  using Entry = getParameter::Type<parameter::Entry, Parameters>;
   using Key = GetKey<Entry>;
   using Value = GetValue<Entry>;
-  using Allocator = Options::Allocator;
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
 
-  using ConstAccessor = _::ConstAccessor<Options>;
-  using Accessor =
-      std::conditional_t<std::is_same_v<Value, Entry> ||
-                             std::is_same_v<Value, void>,
-                         _::SetAccessor<Options>, _::MapAccessor<Options>>;
+  using ConstAccessor = _::ConstAccessor<Final, Parameters>;
+  using Accessor = std::conditional_t<
+      std::is_same_v<Value, Entry> || std::is_same_v<Value, void>,
+      _::SetAccessor<Final, Parameters>, _::MapAccessor<Final, Parameters>>;
   friend ConstAccessor;
-  friend _::SetAccessor<Options>;
-  friend _::MapAccessor<Options>;
+  friend _::SetAccessor<Final, Parameters>;
+  friend _::MapAccessor<Final, Parameters>;
 
   // using ConstIterator = ConstIterator<Options>;
-  using Iterator = _::Iterator<Options>;
+  using Iterator = _::Iterator<Final, Parameters>;
   friend Iterator;
 
 private:
-  using Node = _::Node<Options>;
-  using Pool = Pool<Node>::template Allocator_<Allocator>;
+  using Node = _::Node<Final, Parameters>;
+  using Pool = Pool<Node>::template WithAllocator<Allocator>;
 
 private:
   Pool pool;
   Pool::Handle root = Pool::Handle::null;
 
 public:
-  Build() = default;
-  Build(std::initializer_list<Entry> entries) {
+  Custom() = default;
+  Custom(std::initializer_list<Entry> entries) {
     for (auto &entry : entries) {
       if constexpr (std::is_same_v<Value, Entry> ||
                     std::is_same_v<Value, void>) {
@@ -267,11 +263,16 @@ public:
 }; // class Build
 } // namespace VOLTISO_NAMESPACE::splayTable
 
-VOLTISO_OBJECT_FINAL(splayTable)
+// VOLTISO_OBJECT_FINAL(splayTable)
 // VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(splayTable)
 
 namespace VOLTISO_NAMESPACE {
 template <class Entry>
-using SplayTable =
-    splayTable::Final<typename splayTable::DefaultOptions::Entry_<Entry>>;
+class SplayTable
+    : public splayTable::Custom<SplayTable<Entry>,
+                                std::tuple<parameter::Entry<Entry>>> {
+  using Base = splayTable::Custom<SplayTable<Entry>,
+                                  std::tuple<parameter::Entry<Entry>>>;
+  using Base::Base;
+};
 } // namespace VOLTISO_NAMESPACE

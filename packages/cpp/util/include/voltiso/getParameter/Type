@@ -1,0 +1,39 @@
+#pragma once
+
+#include <tuple>
+
+namespace VOLTISO_NAMESPACE::getParameter {
+
+namespace _ {
+
+// Get type from parameter if it matches, or fallback type if not
+template <template <class> class Parameter, class T, class Fallback>
+struct get_param_type {
+  using type = Fallback;
+};
+
+template <template <class> class Parameter, class T, class Fallback>
+struct get_param_type<Parameter, Parameter<T>, Fallback> {
+  using type = typename Parameter<T>::StoredType;
+};
+
+// Implementation helper
+template <template <class> class Parameter, class Tuple> struct TypeImpl {
+  using Type = typename Parameter<void>::StoredDefaultType;
+};
+
+// Specialization for non-empty tuples
+template <template <class> class Parameter, class Head, class... Tail>
+struct TypeImpl<Parameter, std::tuple<Head, Tail...>> {
+  using Type = typename get_param_type<
+      Parameter, Head,
+      typename TypeImpl<Parameter, std::tuple<Tail...>>::Type>::type;
+};
+
+} // namespace _
+
+// Helper alias template
+template <template <class> class Parameter, class Tuple>
+using Type = typename _::TypeImpl<Parameter, Tuple>::Type;
+
+} // namespace VOLTISO_NAMESPACE::getParameter

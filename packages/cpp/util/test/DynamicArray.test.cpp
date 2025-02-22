@@ -79,13 +79,13 @@ struct S {
 };
 
 template <>
-static constexpr auto VOLTISO_NAMESPACE::is_trivially_relocatable<S> = true;
+constexpr auto VOLTISO_NAMESPACE::is_trivially_relocatable<S> = true;
 
 TEST(DynamicArray, inPlace) {
   numConstructors = 0;
   numDestructors = 0;
-  using MyArray = DynamicArray<S>::IN_PLACE_<5>;
-  static_assert(MyArray::Options::IN_PLACE == 5);
+  using MyArray = DynamicArray<S>::WithInPlace<5>;
+  static_assert(MyArray::IN_PLACE == 5);
   MyArray a;
   EXPECT_EQ(numConstructors, 0);
   EXPECT_EQ(numDestructors, 0);

@@ -29,8 +29,10 @@ private:
   using Handle = Self::Handle;
   using Word = Self::Word;
 
-  template <class Index>
-  Accessor(const CustomHandle<Index> &handle, Self &bitArray)
+  template <class InferredHandle,
+            std::enable_if_t<std::is_same_v<typename InferredHandle::Brand,
+                                            Self>> * = nullptr>
+  Accessor(const InferredHandle &handle, Self &bitArray)
       : handle(handle), bitArray(bitArray) {}
 
 public:
@@ -165,7 +167,7 @@ public:
   }
 
   template <class Index>
-  using CustomHandle = Handle::Brand_<Self>::template Type_<Index>;
+  using CustomHandle = Handle::WithBrand<Self>::template WithType<Index>;
   using Handle = CustomHandle<std::size_t>;
 
   // template <class Index>
@@ -175,17 +177,23 @@ public:
   using Accessor = bitArray::_::Accessor<Self>;
   using ConstAccessor = bitArray::_::ConstAccessor<Self>;
 
-  template <class Index>
-  Accessor operator[](const CustomHandle<Index> &handle) {
+  template <class InferredHandle,
+            std::enable_if_t<std::is_same_v<typename InferredHandle::Brand,
+                                            Self>> * = nullptr>
+  Accessor operator[](const InferredHandle &handle) {
     return Accessor{handle, *this};
   }
 
-  template <class Index>
-  ConstAccessor operator[](const CustomHandle<Index> &handle) const {
+  template <class InferredHandle,
+            std::enable_if_t<std::is_same_v<typename InferredHandle::Brand,
+                                            Self>> * = nullptr>
+  ConstAccessor operator[](const InferredHandle &handle) const {
     return ConstAccessor{handle, *this};
   }
 
   // Automatic deduction does not work when assigning raw value, since the above
+  // methods are templated, and creating handle from a raw value is ambiguous
+  // (we can create a larger handle from a smaller value), se below
   // methods are templated, and creating handle from a raw value is ambiguous
   // (we can create a larger handle from a smaller value), se below we
   // explicitly define `operator[]` for raw values

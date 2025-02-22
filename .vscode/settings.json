@@ -1,5 +1,5 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+// ⠀         🌩 V͛o͛͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
 	/** --------------------------------------------------------- */
@@ -11,12 +11,18 @@
 
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
 
-	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/build",
+	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/out",
+	"cmake.sourceDirectory": "${workspaceFolder}/packages/cpp",
 
 	"clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
 
 	"[cpp]": {
 		"editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+	},
+
+	"files.associations": {
+		"**/include/voltiso/**/*": "cpp",
+		"*.json": "jsonc"
 	},
 
 	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
@@ -75,9 +81,6 @@
 	"exportall.config.semis": false,
 
 	/** Allow JSON comments by default */
-	"files.associations": {
-		"*.json": "jsonc"
-	},
 
 	"editor.hover.delay": 200, // Let's be fast
 
@@ -153,7 +156,7 @@
 		}
 	],
 
-	// "tag": "⎠ √☁ √ 🗲⎠  𝓥☁ 🗲 √ᘇ𝓦 🗲 ☁ 🌩️ 🗲🌩 ⛈ 🗲  ䷲ ⚡☁ ⓥ V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛ 🗲 𝙑☁ 𝙫☁ 🗲 🗲☁🗲 www asfdsf 🗲🌩Ѵ 🗲 𝙑 ☁ 𝙫  ѵѴ🗲 ",
+	// "tag": "⎠ √☁ √ 🗲⎠  𝓥☁ 🗲 √ᘇ𝓦 🗲 ☁ 🌩️ 🗲🌩 ⛈ 🗲  ䷲ ⚡☁ ⓥ V͛o͛͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛ 🗲 𝙑☁ 𝙫☁ 🗲 🗲☁🗲 www asfdsf 🗲🌩Ѵ 🗲 𝙑 ☁ 𝙫  ѵѴ🗲 ",
 
 	//                        🌩
 	//                      🌩    🌩
@@ -310,7 +313,7 @@
 		"cjsx",
 		"clier",
 		"clzll",
-		"Coderho",
+		"Codero",
 		"compat",
 		"concat",
 		"cpptrace",
@@ -470,14 +473,10 @@
 		"Wextra",
 		"Wfatal",
 		"whitespaces",
-		"Winvalid",
+		"isvalid",
 		"Wmaybe",
 		"wrappy",
 		"Wshadow",
 		"Zonejs"
-	],
-	"[cmake]": {
-		"editor.defaultFormatter": "josetr.cmake-language-support-vscode"
-	},
-	"cmake.sourceDirectory": "/home/atablash/mono/packages/cpp"
+	]
 }

@@ -1,0 +1,42 @@
+#pragma once
+#include <voltiso/_>
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+
+template <class T, class Default> struct TypeParameter {
+  // we need prefix with `Stored` in order to be able to define parameters
+  // with the same name
+  using StoredType = T;
+  using StoredDefaultType = Default;
+};
+
+namespace _ {
+template <class T, class = void>
+struct test_is_type_argument : std::false_type {};
+
+template <class T>
+struct test_is_type_argument<
+    T, std::void_t<typename T::StoredType, typename T::StoredDefaultType>>
+    : std::true_type {};
+} // namespace _
+
+template <class T>
+constexpr auto is_type_argument = _::test_is_type_argument<T>::value;
+
+template <template <class> class Parameter>
+constexpr auto is_type_parameter = is_type_argument<Parameter<void>>;
+
+//
+
+// template <class T> struct MyParam : TypeParameter<T, void> {};
+
+// static_assert(is_type_argument<MyParam<int>>);
+// static_assert(!is_type_argument<int>);
+
+// static_assert(is_type_parameter<MyParam>);
+// template<class T> struct S {};
+// static_assert(!is_type_parameter<S>);
+
+} // namespace VOLTISO_NAMESPACE

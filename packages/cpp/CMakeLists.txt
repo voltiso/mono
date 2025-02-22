@@ -52,23 +52,25 @@ add_executable(
 	voltiso-util-test
 	test.cpp
 
-	# util/test/Entry.test.cpp
-	# util/test/context.test.cpp
-	# util/test/Handle.test.cpp
-	# util/test/InPlace.test.cpp
+	util/test/Entry.test.cpp
+	util/test/context.test.cpp
+	util/test/Handle.test.cpp
+	util/test/InPlace.test.cpp
 	util/test/Owned.test.cpp
 	util/test/Shared.test.cpp
-
-	# util/test/Pointer.test.cpp
+	util/test/Pointer.test.cpp
 	# util/test/State.test.cpp
 
-	# util/test/Storage.test.cpp
-	# util/test/BitArray.test.cpp
-	# util/test/Object.test.cpp
-	# util/test/Array.test.cpp
-	# util/test/DynamicArray.test.cpp
-	# util/test/HashTable.test.cpp
-	# util/test/SplayTable.test.cpp
+	util/test/Storage.test.cpp
+	util/test/BitArray.test.cpp
+	util/test/Array.test.cpp
+
+	util/test/DynamicArray.test.cpp
+	util/test/HashTable.test.cpp
+	util/test/SplayTable.test.cpp
+	util/test/Pool.test.cpp
+	util/test/getParameter.test.cpp
+	util/test/is_derived_from_template.test.cpp
 )
 
 # google benchmark

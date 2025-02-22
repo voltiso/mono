@@ -4,70 +4,70 @@
 #include "voltiso/DynamicArray.hpp"
 #include "voltiso/Entry"
 #include "voltiso/Object"
-#include "voltiso/Options"
 #include "voltiso/Pool"
-#include "voltiso/allocator/Malloc"
 #include "voltiso/is_trivially_relocatable"
 
 // ! todo: can be made faster by using a single growable allocation for both
 // pool and buckets
 
 namespace VOLTISO_NAMESPACE::hashTable {
-template <class Options> class Build;
+template <class Final, class Parameters> class Custom;
 } // namespace VOLTISO_NAMESPACE::hashTable
 
 //
 
 namespace VOLTISO_NAMESPACE::hashTable::_ {
 
-template <class Options>
-using GenericPool = Pool<int>::template Allocator_<typename Options::Allocator>;
+template <class Final, class Parameters>
+using GenericPool = Pool<int>::template WithAllocator<
+    getParameter::Type<parameter::Allocator, Parameters>>;
 
-template <class Options>
-using GenericPoolHandle = GenericPool<Options>::Handle::template Brand_<void>;
+template <class Final, class Parameters>
+using GenericPoolHandle =
+    typename GenericPool<Final, Parameters>::Handle::template WithBrand<void>;
 
-template <class Options> struct Node {
-  using GenericPoolHandle = GenericPoolHandle<Options>;
-  using Build = Build<Options>;
-  using Entry = Build::Entry;
+template <class Final, class Parameters> struct Node {
+  using GenericPoolHandle = GenericPoolHandle<Final, Parameters>;
+  using Custom = Custom<Final, Parameters>;
+  using Entry = Custom::Entry;
   Entry entry;
   GenericPoolHandle nextNode = GenericPoolHandle::null;
 }; // struct Node
 
-template <class Options>
-using Pool =
-    Pool<Node<Options>>::template Allocator_<typename Options::Allocator>;
+template <class Final, class Parameters>
+using Pool = Pool<Node<Final, Parameters>>::template WithAllocator<
+    getParameter::Type<parameter::Allocator, Parameters>>;
 
-template <class Options> struct Bucket {
-  using Node = Node<Options>;
-  using GenericPoolHandle = GenericPoolHandle<Options>;
+template <class Final, class Parameters> struct Bucket {
+  using Node = Node<Final, Parameters>;
+  using GenericPoolHandle = GenericPoolHandle<Final, Parameters>;
   GenericPoolHandle firstNode = GenericPoolHandle::null;
 }; // struct Bucket
 
-template <class Options>
-using Buckets = DynamicArray<Bucket<Options>>::template Allocator_<
-    typename Options::Allocator>;
+template <class Final, class Parameters>
+using Buckets = DynamicArray<Bucket<Final, Parameters>>::template WithAllocator<
+    getParameter::Type<parameter::Allocator, Parameters>>;
 
 } // namespace VOLTISO_NAMESPACE::hashTable::_
 
 //
 
 namespace VOLTISO_NAMESPACE {
-template <class Options>
-static constexpr auto is_trivially_relocatable<hashTable::_::Bucket<Options>> =
-    true;
+template <class Final, class Parameters>
+static constexpr auto
+    is_trivially_relocatable<hashTable::_::Bucket<Final, Parameters>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 //
 
 namespace VOLTISO_NAMESPACE::hashTable::_ {
-template <class Options> class ConstAccessor {
+template <class Final, class Parameters> class ConstAccessor {
 private:
-  using GenericPoolHandle = GenericPoolHandle<Options>;
-  using Build = Build<Options>;
-  using Key = typename Build::Key;
-  using Value = typename Build::Value;
-  using Buckets = typename Build::Buckets;
+  using GenericPoolHandle = GenericPoolHandle<Final, Parameters>;
+  using Custom = Custom<Final, Parameters>;
+  using Key = typename Custom::Key;
+  using Value = typename Custom::Value;
+  using Buckets = typename Custom::Buckets;
 
 protected:
   GenericPoolHandle const *const pHandle;
@@ -77,12 +77,12 @@ protected:
 public:
   const Key key;
   const bool exists;
-  const Build &hashTable;
+  const Custom &hashTable;
 
 protected:
-  friend Build;
+  friend Custom;
   ConstAccessor(const GenericPoolHandle *pHandle, const Buckets::Handle &bucket,
-                const Key &key, bool exists, const Build &hashTable)
+                const Key &key, bool exists, const Custom &hashTable)
       : pHandle(pHandle), bucket(bucket), key(key), exists(exists),
         hashTable(hashTable) {}
   // const auto &hashTable() const { return _hashTable; }
@@ -101,21 +101,22 @@ public:
   const Value *operator&() const { return &item(); }
 }; // class ConstAccessor
 
-template <class Options> class SetAccessor : public ConstAccessor<Options> {
+template <class Final, class Parameters>
+class SetAccessor : public ConstAccessor<Final, Parameters> {
 private:
-  using Base = ConstAccessor<Options>;
+  using Base = ConstAccessor<Final, Parameters>;
   using Base::Base;
 
 private:
-  using GenericPoolHandle = GenericPoolHandle<Options>;
-  using Build = Build<Options>;
-  using Value = typename Build::Value;
-  using Bucket = Bucket<Options>;
-  using Buckets = Buckets<Options>;
-  using Entry = typename Build::Entry;
+  using GenericPoolHandle = GenericPoolHandle<Final, Parameters>;
+  using Custom = Custom<Final, Parameters>;
+  using Value = typename Custom::Value;
+  using Bucket = Bucket<Final, Parameters>;
+  using Buckets = Buckets<Final, Parameters>;
+  using Entry = typename Custom::Entry;
 
 protected:
-  auto &_hashTable() { return const_cast<Build &>(this->hashTable); }
+  auto &_hashTable() { return const_cast<Custom &>(this->hashTable); }
   auto &_handle() { return const_cast<GenericPoolHandle &>(*this->pHandle); }
   auto &_pool() { return this->_hashTable()._pool(); }
   auto &_buckets() { return this->_hashTable()._buckets(); }
@@ -181,14 +182,15 @@ public:
   Value *operator&() { return &item(); }
 }; // class SetAccessor
 
-template <class Options> class MapAccessor : public SetAccessor<Options> {
+template <class Final, class Parameters>
+class MapAccessor : public SetAccessor<Final, Parameters> {
 private:
-  using Base = SetAccessor<Options>;
+  using Base = SetAccessor<Final, Parameters>;
   using Base::Base;
-  using Build = Build<Options>;
-  using Buckets = typename Build::Buckets;
-  using Value = typename Build::Value;
-  using GenericPoolHandle = GenericPoolHandle<Options>;
+  using Custom = Custom<Final, Parameters>;
+  using Buckets = typename Custom::Buckets;
+  using Value = typename Custom::Value;
+  using GenericPoolHandle = GenericPoolHandle<Final, Parameters>;
 
 public:
   template <class... Args> void insert(Args &&...args) {
@@ -252,22 +254,22 @@ public:
   }
 }; // class MapAccessor
 
-template <class Options> class ConstIterator {
+template <class Final, class Parameters> class ConstIterator {
 private:
-  using Build = Build<Options>;
-  using Buckets = typename Build::Buckets;
-  using Pool = Pool<Options>;
-  using Entry = typename Build::Entry;
+  using Custom = Custom<Final, Parameters>;
+  using Buckets = typename Custom::Buckets;
+  using Pool = Pool<Final, Parameters>;
+  using Entry = typename Custom::Entry;
 
 private:
   Buckets::Handle bucket;
   Pool::Handle node;
-  const Build &hashTable;
+  const Custom &hashTable;
 
 private:
-  friend Build;
+  friend Custom;
   ConstIterator(const Buckets::Handle &bucket, const Pool::Handle &node,
-                const Build &hashTable)
+                const Custom &hashTable)
       : bucket(bucket), node(node), hashTable(hashTable) {}
 
 public:
@@ -295,17 +297,18 @@ public:
   }
 }; // class ConstIterator
 
-template <class Options> class Iterator : public ConstIterator<Options> {
+template <class Final, class Parameters>
+class Iterator : public ConstIterator<Final, Parameters> {
 private:
-  using Base = ConstIterator<Options>;
-  using Build = Build<Options>;
-  using Buckets = Buckets<Options>;
-  using Pool = Pool<Options>;
+  using Base = ConstIterator<Final, Parameters>;
+  using Custom = Custom<Final, Parameters>;
+  using Buckets = Buckets<Final, Parameters>;
+  using Pool = Pool<Final, Parameters>;
 
 private:
-  friend Build;
+  friend Custom;
   Iterator(const Buckets::Handle &bucket, const Pool::Handle &node,
-           Build &hashTable)
+           Custom &hashTable)
       : Base(bucket, node, hashTable) {}
 }; // class Iterator
 } // namespace VOLTISO_NAMESPACE::hashTable::_
@@ -313,21 +316,19 @@ private:
 //
 
 namespace VOLTISO_NAMESPACE::hashTable {
-struct Defaults {
-  using Entry = void; // need to override
-  using Allocator = allocator::Malloc;
-};
-using DefaultOptions = Options<Defaults>;
+// struct Defaults {
+//   using Entry = void; // need to override
+//   using Allocator = allocator::Malloc;
+// };
 
 //
 
-template <class _Options> class Build : public Object<_Options> {
+template <class Final, class Parameters> class Custom : public Object<Final> {
 private:
-  using Self = Build;
+  using Self = Custom;
 
 public:
-  using Options = _Options;
-  using Entry = Options::Entry;
+  using Entry = getParameter::Type<parameter::Entry, Parameters>;
   using Key = GetKey<Entry>;
   using Value = GetValue<Entry>;
 
@@ -335,12 +336,12 @@ public:
   static_assert(!std::is_same_v<Value, void>);
 
 private:
-  using Allocator = Options::Allocator;
-  using Bucket = _::Bucket<Options>;
-  using Buckets = _::Buckets<Options>;
-  using Node = _::Node<Options>;
-  using Pool = _::Pool<Options>;
-  using GenericPoolHandle = _::GenericPoolHandle<Options>;
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+  using Bucket = _::Bucket<Final, Parameters>;
+  using Buckets = _::Buckets<Final, Parameters>;
+  using Node = _::Node<Final, Parameters>;
+  using Pool = _::Pool<Final, Parameters>;
+  using GenericPoolHandle = _::GenericPoolHandle<Final, Parameters>;
 
 public:
   Buckets const buckets = {};
@@ -353,8 +354,8 @@ private:
   size_t &_numItems() { return const_cast<size_t &>(this->numItems); }
 
 public:
-  Build() = default;
-  Build(std::initializer_list<Entry> entries) {
+  Custom() = default;
+  Custom(std::initializer_list<Entry> entries) {
     auto numBuckets = std::bit_ceil(entries.size()) * MAX_LOAD_FACTOR_INV;
     auto &buckets = this->_buckets();
     buckets.setNumItems(numBuckets);
@@ -368,18 +369,18 @@ public:
     }
   }
 
-  using ConstAccessor = _::ConstAccessor<Options>;
+  using ConstAccessor = _::ConstAccessor<Final, Parameters>;
   friend ConstAccessor;
-  using Accessor =
-      std::conditional_t<std::is_same_v<Value, Entry> ||
-                             std::is_same_v<Value, void>,
-                         _::SetAccessor<Options>, _::MapAccessor<Options>>;
-  friend _::SetAccessor<Options>;
-  friend _::MapAccessor<Options>;
+  using Accessor = std::conditional_t<
+      std::is_same_v<Value, Entry> || std::is_same_v<Value, void>,
+      _::SetAccessor<Final, Parameters>, _::MapAccessor<Final, Parameters>>;
+  friend Accessor;
+  friend _::SetAccessor<Final, Parameters>;
+  friend _::MapAccessor<Final, Parameters>;
 
-  using Iterator = _::Iterator<Options>;
+  using Iterator = _::Iterator<Final, Parameters>;
   friend Iterator;
-  using ConstIterator = _::ConstIterator<Options>;
+  using ConstIterator = _::ConstIterator<Final, Parameters>;
   friend ConstIterator;
 
 private:
@@ -482,11 +483,16 @@ public:
   }
 };
 } // namespace VOLTISO_NAMESPACE::hashTable
-VOLTISO_OBJECT_FINAL(hashTable)
-VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(hashTable)
+// VOLTISO_OBJECT_FINAL(hashTable)
+// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(hashTable)
 
 namespace VOLTISO_NAMESPACE {
 template <class Entry>
-using HashTable =
-    hashTable::Final<typename hashTable::DefaultOptions::Entry_<Entry>>;
+class HashTable final
+    : public hashTable::Custom<HashTable<Entry>,
+                               std::tuple<parameter::Entry<Entry>>> {
+  using Base =
+      hashTable::Custom<HashTable<Entry>, std::tuple<parameter::Entry<Entry>>>;
+  using Base::Base;
+};
 } // namespace VOLTISO_NAMESPACE

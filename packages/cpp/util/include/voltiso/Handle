@@ -2,7 +2,9 @@
 #include <voltiso/_>
 
 #include "voltiso/Object"
-#include "voltiso/Options"
+#include "voltiso/TypeParameter"
+#include "voltiso/getParameter/Type"
+#include "voltiso/parameter"
 
 #include <cstdint>
 #include <limits>
@@ -11,71 +13,51 @@
 
 //
 
-namespace VOLTISO_NAMESPACE::handle::_ {
+namespace VOLTISO_NAMESPACE {
+
+namespace handle::parameter {
+template <class T> struct Type : TypeParameter<T, void *> {};
+} // namespace handle::parameter
+
+namespace handle::_ {
 template <class Type> constexpr auto getNullValue() noexcept {
   if constexpr (std::is_pointer_v<Type>) {
     return uintptr_t(0);
-    // return (uintptr_t) nullptr; // not constexpr
   } else {
     return std::numeric_limits<Type>::max();
   }
 }
-} // namespace VOLTISO_NAMESPACE::handle::_
+} // namespace handle::_
 
-//
-
-namespace VOLTISO_NAMESPACE::handle {
-struct Defaults {
-  using Brand = void;
-  using Type = void *;
-};
-
-using DefaultOptions = Options<Defaults>;
-
-template <class _Options> class Build : public Object<_Options> {
+namespace handle {
+template <class Final, class Parameters = std::tuple<>>
+class Custom : public Object<Final> {
 private:
-  using Self = Build;
-  // using Base = Object<_Options>;
-  using Final = _Options::Final;
+  using Self = Custom;
 
 public:
-  using Options = _Options;
-  using Brand = Options::Brand;
-  using Type = Options::Type;
+  using Brand =
+      getParameter::Type<VOLTISO_NAMESPACE::parameter::Brand, Parameters>;
+
+  using Type = getParameter::Type<parameter::Type, Parameters>;
+
   using Value =
       std::conditional_t<std::is_pointer_v<Type>, std::uintptr_t, Type>;
 
   using Pointer = std::conditional_t<std::is_pointer_v<Type>, Type, void>;
 
-  // allow signed?
   static_assert(std::is_integral_v<Type> || std::is_pointer_v<Type>);
-
-  // allow signed?
   static_assert(std::is_integral_v<Value>);
 
 public:
-  // uninitialized
   Value value;
 
-  // using Base::Base;
-  // using Base::operator=;
+  Custom() noexcept = default;
 
-  Build() noexcept = default;
-  // Build(const Self &) noexcept = default;
-
-  // auto &operator=(const Self &other) noexcept {
-  //   (Value &)value = other.value;
-  //   return *this;
-  // }
-
-  // allow `smallInt -> handle<bigInt>`
-  // (including signed and unsigned conversion of the same size - good?)
-  // this should be explicit to avoid converting random int variables to our
-  // handles
   template <class OtherValue,
             std::enable_if_t<std::is_integral_v<OtherValue> &&
                              sizeof(Value) >= sizeof(OtherValue)> * = nullptr>
-  explicit constexpr Build(const OtherValue &value) noexcept : value(value) {}
+  explicit constexpr Custom(const OtherValue &value) noexcept : value(value) {}
 
   template <class Other,
             std::enable_if_t<(std::is_same_v<Brand, void> ||
@@ -83,14 +65,12 @@ public:
                               std::is_same_v<typename Other::Brand, Brand>) &&
                              sizeof(Value) >= sizeof(typename Other::Value)> * =
                 nullptr>
-  constexpr Build(const Other &other) : value(other.value) {}
+  constexpr Custom(const Other &other) : value(other.value) {}
 
-  // this can be implicit, contrary to random pointers
   template <class P = Pointer, class = std::enable_if_t<std::is_pointer_v<P>>>
-  constexpr Build(const std::nullptr_t &) noexcept
+  constexpr Custom(const std::nullptr_t &) noexcept
       : value(_::getNullValue<Type>()) {}
 
-  // this could be implicit possibly
   explicit constexpr operator Value() const noexcept { return value; }
 
   bool operator==(const Self &other) const noexcept {
@@ -105,17 +85,11 @@ public:
 
   explicit operator bool() const noexcept { return *this != Self::null; }
 
-  // ! one of the 2 below needs to be explicit to forbid arbitrary conversions
-  // ! between pointer Handle types
-
-  // explicit - make sure the pointer is really our handle, not something else
   template <class P = Pointer,
             std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
-  explicit constexpr Build(const P &value) noexcept
+  explicit constexpr Custom(const P &value) noexcept
       : value(reinterpret_cast<Value>(value)) {}
 
-  // note: non-const pointer (if needed, implement ConstHandle)
-  // implicit conversion to pointer for e.g. calls to ::malloc
   template <class Pointer_ = Pointer,
             class = std::enable_if_t<std::is_same_v<Pointer_, Pointer> &&
                                      !std::is_same_v<Pointer_, void>>>
@@ -123,8 +97,6 @@ public:
     return reinterpret_cast<Pointer>(value);
   }
 
-  // note: non-const pointer (if needed, implement ConstHandle)
-  // implicit conversion to void* for e.g. calls to ::malloc
   template <class Pointer_ = Pointer,
             class = std::enable_if_t<std::is_same_v<Pointer_, Pointer> &&
                                      !std::is_same_v<Pointer_, void>>>
@@ -133,44 +105,60 @@ public:
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
     return reinterpret_cast<void *>(value);
 #pragma GCC diagnostic pop
-  }
-}; // class Build
+  } // operator void *()
 
-template <class Options>
-constexpr Options::Final Build<Options>::null = static_cast<Options::Final>(
-    _::getNullValue<typename Options::Type>()); // explicit constructor
+public:
+  template <class Argument>
+  using With = handle::Custom<Final, decltype(std::tuple_cat(
+                                         std::declval<std::tuple<Argument>>(),
+                                         std::declval<Parameters>()))>;
 
-template <class Options>
-std::ostream &operator<<(std::ostream &os, const Build<Options> &handle) {
-  if (handle == Build<Options>::null) [[unlikely]] {
+  template <class NewBrand>
+  using WithBrand = With<VOLTISO_NAMESPACE::parameter::Brand<NewBrand>>;
+
+  template <class NewType>
+  using WithType = With<handle::parameter::Type<NewType>>;
+
+}; // class Custom
+
+template <class Final, class Parameters>
+constexpr Final Custom<Final, Parameters>::null = static_cast<Final>(
+    _::getNullValue<typename Custom<Final, Parameters>::Type>());
+
+template <class Final, class... Parameters>
+std::ostream &operator<<(std::ostream &os,
+                         const Custom<Final, Parameters...> &handle) {
+  if (handle == Custom<Final, Parameters...>::null) [[unlikely]] {
     return os << "Handle::null";
   }
   return os << "Handle(" << handle.value << ")";
 }
-} // namespace VOLTISO_NAMESPACE::handle
 
-VOLTISO_OBJECT_FINAL(handle)
-VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(handle)
+} // namespace handle
 
-namespace std {
-template <class Options>
-struct hash<::VOLTISO_NAMESPACE::handle::Build<Options>> {
-  using Handle = ::VOLTISO_NAMESPACE::handle::Build<Options>;
-  auto operator()(const Handle &handle) const {
-    return std::hash<typename Handle::Value>{}(handle.value);
-  }
+// Define Handle after Custom is complete
+class Handle : public handle::Custom<Handle> {
+  using Base = handle::Custom<Handle>;
+  using Base::Base;
 };
-template <class Options>
-struct hash<::VOLTISO_NAMESPACE::handle::Final<Options>> {
-  using Handle = ::VOLTISO_NAMESPACE::handle::Final<Options>;
-  auto operator()(const Handle &handle) const {
-    return std::hash<typename Handle::Value>{}(handle.value);
-  }
-};
-} // namespace std
+
+} // namespace VOLTISO_NAMESPACE
 
 //
 
-namespace VOLTISO_NAMESPACE {
-using Handle = handle::Final<handle::DefaultOptions>;
-} // namespace VOLTISO_NAMESPACE
+namespace std {
+template <class Final, class Parameters>
+struct hash<VOLTISO_NAMESPACE::handle::Custom<Final, Parameters>> {
+  using HandleType = VOLTISO_NAMESPACE::handle::Custom<Final, Parameters>;
+  auto operator()(const HandleType &handle) const {
+    return ::std::hash<typename HandleType::Value>{}(handle.value);
+  }
+};
+
+template <> struct hash<VOLTISO_NAMESPACE::Handle> {
+  using HandleType = VOLTISO_NAMESPACE::Handle;
+  auto operator()(const HandleType &handle) const {
+    return ::std::hash<typename HandleType::Value>{}(handle.value);
+  }
+};
+} // namespace std

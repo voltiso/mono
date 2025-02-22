@@ -19,25 +19,25 @@
 //
 
 namespace VOLTISO_NAMESPACE::pool {
-template <class Options> class Build;
+template <class Final, class Parameters> class Custom;
 } // namespace VOLTISO_NAMESPACE::pool
 
 //
 
 namespace VOLTISO_NAMESPACE::pool::_ {
-template <class Options> class ConstAccessor {
+template <class Final, class Parameters> class ConstAccessor {
 private:
-  using Build = Build<Options>;
-  using Handle = typename Build::Handle;
-  using SlotHandle = typename Build::SlotHandle;
+  using Custom = Custom<Final, Parameters>;
+  using Handle = typename Custom::Handle;
+  using SlotHandle = typename Custom::SlotHandle;
 
 private:
-  friend Build;
-  ConstAccessor(const Handle &handle, const Build &self)
+  friend Custom;
+  ConstAccessor(const Handle &handle, const Custom &self)
       : handle(handle), self(self) {}
 
 private:
-  using Item = typename Options::Item;
+  using Item = typename Custom::Item;
 
 public:
   const Item &item() const { return self.slots[handle.value]->storage.item(); }
@@ -51,19 +51,20 @@ public:
   const Handle handle;
 
 protected:
-  const Build &self;
+  const Custom &self;
 };
 
-template <class Options> class Accessor : public ConstAccessor<Options> {
+template <class Final, class Parameters>
+class Accessor : public ConstAccessor<Final, Parameters> {
 private:
-  using Base = ConstAccessor<Options>;
+  using Base = ConstAccessor<Final, Parameters>;
   using Base::Base;
-  using Build = Build<Options>;
-  using Item = typename Options::Item;
-  using DynamicArray = typename Build::DynamicArray;
-  using Handle = typename Build::Handle;
-  using SlotHandle = typename Build::SlotHandle;
-  Build &self() { return const_cast<Build &>(Base::self); }
+  using Custom = Custom<Final, Parameters>;
+  using Item = Custom::Item;
+  using DynamicArray = typename Custom::DynamicArray;
+  using Handle = typename Custom::Handle;
+  using SlotHandle = typename Custom::SlotHandle;
+  Custom &self() { return const_cast<Custom &>(Base::self); }
 
 public:
   Item &item() { return self().slots[this->handle.value]->storage.item(); }
@@ -85,17 +86,18 @@ public:
 //
 
 namespace std {
-template <class Options>
+template <class Final, class Parameters>
 ostream &
 operator<<(ostream &os,
-           const VOLTISO_NAMESPACE::pool::_::ConstAccessor<Options> &accessor) {
+           const VOLTISO_NAMESPACE::pool::_::ConstAccessor<Final, Parameters>
+               &accessor) {
   return os << "Pool::ConstAccessor(" << accessor.handle.value << ")";
 }
 
-template <class Options>
-ostream &
-operator<<(ostream &os,
-           const VOLTISO_NAMESPACE::pool::_::Accessor<Options> &accessor) {
+template <class Final, class Parameters>
+ostream &operator<<(
+    ostream &os,
+    const VOLTISO_NAMESPACE::pool::_::Accessor<Final, Parameters> &accessor) {
   return os << "Pool::Accessor(" << accessor.handle.value << ")";
 }
 } // namespace std
@@ -103,31 +105,32 @@ operator<<(ostream &os,
 //
 
 namespace VOLTISO_NAMESPACE::pool {
-struct Defaults {
-  using Item = void; // must override
-  using Allocator = allocator::Malloc;
-  using Brand = void;
-};
+// struct Defaults {
+//   using Item = void; // must override
+//   using Allocator = allocator::Malloc;
+//   using Brand = void;
+// };
 
-using DefaultOptions = Options<Defaults>;
+// using DefaultOptions = Options<Defaults>;
 
 //
 
 // class Base {};
 
-template <class _Options>
-class Build : public Object<_Options>,
-              public Singleton<typename _Options::Allocator>::Guard {
-  using Self = Build;
-  using Base = Object<_Options>;
+template <class Final, class Parameters>
+class Custom
+    : public Object<Final>,
+      public Singleton<
+          getParameter::Type<parameter::Allocator, Parameters>>::Guard {
+  using Self = Custom;
+  using Base = Object<Final>;
 
 public:
-  using Options = _Options;
-  using Item = Options::Item;
-  using Allocator = Options::Allocator;
+  using Item = getParameter::Type<parameter::Item, Parameters>;
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
 
 private:
-  using DynamicArray = DynamicArray<int>::template Allocator_<Allocator>;
+  using DynamicArray = DynamicArray<int>::template WithAllocator<Allocator>;
 
 private:
   struct Slot {
@@ -142,19 +145,19 @@ private:
     }
   };
 
-  using Slots = DynamicArray::template Item_<Slot>;
+  using Slots = DynamicArray::template WithItem<Slot>;
   Slots slots;
   Slots::Handle anyFree = Slots::Handle::null;
   using SlotHandle = Slots::Handle;
 
 public:
   template <class Type>
-  using CustomHandle = Handle ::Type_<Type>::template Brand_<Self>;
+  using CustomHandle = Handle ::WithType<Type>::template WithBrand<Self>;
   using Handle = CustomHandle<typename Slots::Handle::Type>;
 
   // static_assert(std::has_single_bit(sizeof(Item)));
 
-  ~Build() {
+  ~Custom() {
     // std::cout << "Pool::~Build()" << std::endl;
     if constexpr (std::is_trivially_destructible_v<Item>) {
       // noop
@@ -165,7 +168,7 @@ public:
         }
       } else [[likely]] {
         // ! slow
-        using Free = DynamicArray::template Item_<bool>;
+        using Free = DynamicArray::template WithItem<bool>;
         auto free = Free::createWithNumItems(slots.numItems, 0);
         auto anyFree = this->anyFree;
         while (anyFree != Slots::Handle::null) {
@@ -187,8 +190,8 @@ public:
   // #endif
 
 public:
-  Build() = default;
-  Build(Self &&) = default;
+  Custom() = default;
+  Custom(Self &&) = default;
 
   // private:
   //   friend singleton::perThread;
@@ -199,8 +202,8 @@ public:
   //   }
 
 private:
-  using Accessor = _::Accessor<Options>;
-  using ConstAccessor = _::ConstAccessor<Options>;
+  using Accessor = _::Accessor<Final, Parameters>;
+  using ConstAccessor = _::ConstAccessor<Final, Parameters>;
   friend Accessor;
   friend ConstAccessor;
 
@@ -232,14 +235,30 @@ public:
   // const Item &operator[](const Handle &handle) const {
   //   return const_cast<Self &>(*this)[handle];
   // }
-};
+
+public:
+  template <class Parameter>
+  using With =
+      Custom<Final,
+             decltype(std::tuple_cat(std::declval<std::tuple<Parameter>>(),
+                                     std::declval<Parameters>()))>;
+
+  template <class T> using WithItem = With<parameter::Item<T>>;
+  template <class T> using WithAllocator = With<parameter::Allocator<T>>;
+  template <class T> using WithBrand = With<parameter::Brand<T>>;
+
+}; // class Custom
 } // namespace VOLTISO_NAMESPACE::pool
-VOLTISO_OBJECT_FINAL(pool)
-VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(pool)
+// VOLTISO_OBJECT_FINAL(pool)
+// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(pool)
 
 namespace VOLTISO_NAMESPACE {
+// template <class Item>
+// using Pool = pool::Final<pool::DefaultOptions::Item_<Item>>;
+
 template <class Item>
-using Pool = pool::Final<pool::DefaultOptions::Item_<Item>>;
+class Pool
+    : public pool::Custom<Pool<Item>, std::tuple<parameter::Item<Item>>> {};
 
 // template <class Item = Any>
 // using Pool = std::conditional_t<std::is_same_v<Item, Any>, pool::Base,
