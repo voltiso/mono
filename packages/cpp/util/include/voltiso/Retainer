@@ -1,0 +1,18 @@
+#pragma once
+
+#include "voltiso/DynamicArray"
+#include "voltiso/Ref"
+
+namespace VOLTISO_NAMESPACE {
+
+class Retainer {
+private:
+  DynamicArray<Ref<>> pointers;
+
+public:
+  template <class T> void retain(Ref<T> &&pointer) {
+    pointers.push(std::move(pointer));
+  }
+};
+
+} // namespace VOLTISO_NAMESPACE

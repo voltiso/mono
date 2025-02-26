@@ -1,6 +1,8 @@
 #pragma once
 
 #include "voltiso/Pool"
+#include "voltiso/Singleton"
+#include "voltiso/has"
 
 namespace VOLTISO_NAMESPACE::shared::_ {
 template <class Item> struct ControlBlock {
@@ -10,6 +12,13 @@ template <class Item> struct ControlBlock {
 
   template <class... Args>
   ControlBlock(Args &&...args) : item(std::forward<Args>(args)...) {}
+  void dereference() {
+    if (--numReferences == 0) [[unlikely]] {
+      using Pool = Pool<ControlBlock>;
+      using Handle = Pool::Handle;
+      Singleton<Pool>::instance().erase(Handle(this));
+    }
+  }
 };
 } // namespace VOLTISO_NAMESPACE::shared::_
 
@@ -41,9 +50,7 @@ public:
   ~Shared() {
     if (this->_controlBlock) [[likely]] {
       // std::cout << "erase" << std::endl;
-      auto controlBlock = pool()[this->_controlBlock];
-      if (--controlBlock->numReferences == 0) [[unlikely]]
-        controlBlock.erase();
+      this->_controlBlock->dereference();
     }
   }
 
@@ -54,17 +61,21 @@ private:
 public:
   Shared(const Self &other) : _controlBlock(other._controlBlock) {
     if (other._controlBlock) [[likely]]
-      ++pool()[other._controlBlock]->numReferences;
+      ++other._controlBlock->numReferences;
   }
 
   Shared &operator=(const Self &other) {
+    DCHECK_NE(this->_controlBlock,
+              other._controlBlock); // self-assignment forbidden
+    // if (this->_controlBlock == other._controlBlock) [[unlikely]]
+    //   return *this;
+
     if (this->_controlBlock) [[likely]] {
-      if (--pool()[this->_controlBlock].numReferences == 0) [[unlikely]]
-        pool()[this->_controlBlock].erase();
+      this->_controlBlock->dereference();
     }
     this->_controlBlock = other._controlBlock;
     if (other._controlBlock) [[likely]]
-      ++pool()[other._controlBlock].numReferences;
+      ++other._controlBlock->numReferences;
     return *this;
   }
 
@@ -73,27 +84,17 @@ public:
   }
 
   Shared &operator=(Self &&other) noexcept {
-    if (this->_controlBlock) [[likely]]
-      pool()[this->_controlBlock].erase();
+    this->_controlBlock->dereference();
     this->_controlBlock = other._controlBlock;
     other._controlBlock = Pool::Handle::null;
     return *this;
   }
 
-  Item &item() { return pool()[_controlBlock].item().item; }
-  const Item &item() const { return pool()[_controlBlock].item().item; }
-
-  Item &operator*() { return item(); }
-  const Item &operator*() const { return item(); }
-
-  Item *operator->() { return &**this; }
-  const Item *operator->() const { return &**this; }
-
-  operator Item &() { return **this; }
-  operator const Item &() const { return **this; }
-
-  operator Item &&() { return (Item &&)**this; }
-  operator const Item &&() const { return (Item &&)**this; }
+  Item &item() const { return _controlBlock->item; }
+  Item &operator*() const { return item(); }
+  Item *operator->() const { return &**this; }
+  operator Item &() const { return **this; }
+  operator Item &&() const { return (Item &&)**this; }
 
   //
 

@@ -69,6 +69,14 @@ static_assert(!std::is_nothrow_assignable_v<
 static_assert(
     !std::is_assignable_v<uint32_t, Handle::WithBrand<S>::WithType<uint32_t>>);
 
+// void test() {
+//   Handle::WithBrand<S>::WithType<uint32_t> a(123);
+//   Handle::WithBrand<S>::WithType<uint64_t> b = a;
+//   b = a;
+//   //   return 53;
+// }
+// // static_assert(test() == 53);
+
 // allow `handle<smallInt> -> handle<bigInt>`
 static_assert(std::is_assignable_v<Handle::WithBrand<S>::WithType<uint64_t>,
                                    Handle::WithBrand<S>::WithType<uint32_t>>);

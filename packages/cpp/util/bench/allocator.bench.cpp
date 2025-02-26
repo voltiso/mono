@@ -1,8 +1,8 @@
 #include <benchmark/benchmark.h>
 
 #include <voltiso/Pool>
+#include <voltiso/Singleton>
 #include <voltiso/allocator/Splay>
-#include <voltiso/singleton>
 
 #include <cstddef>
 #include <iostream>
@@ -28,8 +28,8 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
   Pool<T> pool;
   for (auto _ : state) {
-    auto handle = pool.insert();
-    benchmark::DoNotOptimize(pool[handle]);
+    auto handle = pool.insert().handle;
+    benchmark::DoNotOptimize(handle);
     pool[handle].erase();
   }
 }
@@ -94,13 +94,13 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
   Pool<T> pool;
   for (int i = 0; i < num; i++) {
-    auto handle = pool.insert();
-    benchmark::DoNotOptimize(pool[handle]);
+    auto handle = pool.insert().handle;
+    benchmark::DoNotOptimize(handle);
   }
   auto prev = pool.insert().handle;
   for (auto _ : state) {
-    auto handle = pool.insert();
-    benchmark::DoNotOptimize(pool[handle]);
+    auto handle = pool.insert().handle;
+    benchmark::DoNotOptimize(handle);
     pool[prev].erase();
     prev = handle;
   }

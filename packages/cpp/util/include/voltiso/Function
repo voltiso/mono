@@ -1,0 +1,108 @@
+#pragma once
+
+#include "voltiso/Pool"
+#include "voltiso/Storage"
+#include "voltiso/is_trivially_relocatable"
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+
+template <class R, class... Args> class Function;
+
+template <class R, class... Args> class Function<R(Args...)> {
+private:
+  using Storage = Storage<std::byte[sizeof(void *)]>;
+  using Deleter = void (*)(Storage &);
+  using Invoker = R (*)(Storage &, Args...);
+
+  //   using RawFunction = R (&)(Args...);
+  using RawPointer = R (*)(Args...);
+
+  Storage storage;
+  Deleter deleter = nullptr;
+  Invoker invoker = nullptr;
+
+public:
+  Function() = delete;
+  Function(const Function &) = delete;
+  Function &operator=(const Function &) = delete;
+
+  Function(Function &&other) noexcept {
+    memcpy(this, &other, sizeof(Function));
+    other.deleter = nullptr;
+  }
+
+  // bind function pointer or stateless lambda
+  template <class TCallable,
+            std::enable_if_t<std::is_convertible_v<std::decay_t<TCallable>,
+                                                   RawPointer>> * = nullptr>
+  Function(TCallable &&f) {
+    new (&storage) RawPointer(std::forward<TCallable>(f));
+    invoker = [](Storage &storage, Args... args) -> R {
+      return (*std::bit_cast<RawPointer>(storage))(std::forward<Args>(args)...);
+    };
+    static_assert(std::is_trivially_destructible_v<RawPointer>);
+  }
+
+  // bind small anything
+  template <class TCallable,
+            std::enable_if_t<
+                !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
+                is_trivially_relocatable<std::decay_t<TCallable>> &&
+                sizeof(std::decay_t<TCallable>) <= sizeof(storage)> * = nullptr>
+  Function(TCallable &&f) {
+    using Callable = std::decay_t<TCallable>;
+    new (&storage) Callable(std::forward<TCallable>(f));
+    invoker = [](Storage &storage, Args... args) -> R {
+      return (*reinterpret_cast<Callable *>(&storage))(
+          std::forward<Args>(args)...);
+    };
+    if constexpr (!std::is_trivially_destructible_v<Callable>) {
+      deleter = [](Storage &storage) {
+        std::bit_cast<Callable>(storage).~Callable();
+      };
+    }
+  }
+
+  // bind big anything
+  template <
+      class TCallable,
+      std::enable_if_t<
+          !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
+          (!is_trivially_relocatable<std::decay_t<TCallable>> ||
+           sizeof(std::decay_t<TCallable>) > sizeof(storage))> * = nullptr>
+  Function(TCallable &&f) {
+    // callable(owned::create(std::forward<F>(f)))
+    using Callable = std::decay_t<TCallable>;
+    using Pool = Pool<Callable>;
+    using Handle = typename Pool::Handle;
+    auto &pool = Singleton<Pool>::instance();
+    auto handle = pool.insert(std::forward<TCallable>(f)).handle;
+    new (&storage) Handle(handle);
+    deleter = [](Storage &storage) {
+      auto &pool = Singleton<Pool>::instance();
+      pool.erase(std::bit_cast<Handle>(storage));
+    };
+    invoker = [](Storage &storage, Args... args) -> R {
+      return (*std::bit_cast<Handle>(storage))(std::forward<Args>(args)...);
+    };
+  }
+
+  R operator()(Args... args) {
+    return invoker(storage, std::forward<Args>(args)...);
+  }
+
+  ~Function() {
+    // speed-up raw pointer path
+    if (deleter) [[unlikely]] {
+      deleter(storage);
+    }
+  }
+
+}; // class Function
+
+template <class R, class... Args>
+static constexpr auto is_trivially_relocatable<Function<R(Args...)>> = true;
+
+} // namespace VOLTISO_NAMESPACE

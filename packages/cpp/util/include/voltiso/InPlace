@@ -2,15 +2,11 @@
 #include <voltiso/_>
 
 #include <voltiso/Storage>
-#include <voltiso/WithCopy>
-#include <voltiso/WithMove>
-#include <voltiso/WithSize>
 #include <voltiso/has>
 
 #include <glog/logging.h>
 
 #include <cstddef>
-#include <experimental/type_traits>
 #include <type_traits>
 
 namespace VOLTISO_NAMESPACE::inPlace {

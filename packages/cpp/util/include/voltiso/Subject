@@ -1,0 +1,104 @@
+#pragma once
+
+#include "voltiso/HashSet"
+#include "voltiso/Owned"
+#include "voltiso/Retainer"
+#include "voltiso/context"
+
+#include <utility>
+
+namespace VOLTISO_NAMESPACE {
+
+// Forward declaration
+template <class T> class Subject;
+
+namespace subject::_ {
+template <class T> using Callback = void (*)(const T &);
+template <class T> struct Implementation final {
+  T value;
+  HashSet<Callback<T>> listeners;
+  ~Implementation() { DCHECK_EQ(listeners.numItems, 0); }
+};
+} // namespace subject::_
+
+namespace subject {
+template <class T> class Subscription {
+private:
+  Owned<subject::_::Implementation<T>> implementation;
+  subject::_::Callback<T> callback;
+
+public:
+  Subscription(Subject<T> &subject, subject::_::Callback<T> &&callback)
+      : implementation(subject.implementation), callback(std::move(callback)) {
+    implementation->listeners[callback].insert();
+  }
+
+  ~Subscription() {
+    if (implementation) [[likely]]
+      implementation->listeners.erase(callback);
+  }
+
+  // Non-copyable
+  Subscription(const Subscription &) = delete;
+  Subscription &operator=(const Subscription &) = delete;
+
+  // Movable
+  Subscription(Subscription &&other) noexcept
+      : implementation(other.implementation), callback(other.callback) {
+    other.implementation = nullptr;
+  }
+
+  Subscription &operator=(Subscription &&other) noexcept {
+    DCHECK_NE(this, &other);
+    if (implementation) [[likely]] {
+      implementation->listeners.erase(callback);
+    }
+    callback = other.callback;
+    implementation = other.implementation;
+    other.implementation = nullptr;
+    return *this;
+  }
+}; // class Subscription
+} // namespace subject
+
+template <class T> class Subject final {
+private:
+  Owned<subject::_::Implementation<T>> implementation;
+
+public:
+  template <class U>
+  Subject(U &&value)
+      : implementation(Owned<subject::_::Implementation<T>>::create(
+            std::forward<U>(value))) {}
+
+  operator const T &() const {
+    DCHECK(implementation);
+    return implementation->value;
+  }
+  //   operator T &() { return value; } // ! illegal
+
+  template <class U> Subject &operator=(U &&value) {
+    if (this->implementation->value == value)
+      return *this;
+    this->implementation->value = std::forward<U>(value);
+    for (auto &listener : this->implementation->listeners) {
+      listener(value);
+    }
+    return *this;
+  }
+
+private:
+  template <class Callback>
+  subject::Subscription<T> createSubscription(Callback &&callback) {
+    return subject::Subscription<T>(*this, std::forward<Callback>(callback));
+  }
+
+public:
+  void subscribe(subject::_::Callback<T> &&callback) {
+    auto subscription =
+        createSubscription(std::forward<subject::_::Callback<T>>(callback));
+    context::get<Retainer>().retain(subscription);
+  }
+};
+
+} // namespace VOLTISO_NAMESPACE

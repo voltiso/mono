@@ -1,0 +1,72 @@
+#pragma once
+
+#include "voltiso/Handle"
+#include "voltiso/Owned"
+#include "voltiso/Ref"
+
+#include <utility>
+
+namespace VOLTISO_NAMESPACE {
+
+namespace function {
+
+template <class R, class... Args> class Virtual {
+public:
+  virtual ~Virtual() = default;
+  virtual R operator()(Args...) = 0;
+}; // class Virtual
+
+template <class Implementation, class R, class... Args>
+class Dynamic final : public Virtual<R, Args...>, public Implementation {
+public:
+  template <class... Ts>
+  Dynamic(Ts &&...args) : Implementation(std::forward<Ts>(args)...) {}
+
+  R operator()(Args... args) override {
+    return Implementation::operator()(std::forward<Args>(args)...);
+  }
+}; // class Dynamic
+
+template <class F, class R, class... Args> class Implementation {
+private:
+  F f;
+
+public:
+  template <class... Ts>
+  Implementation(Ts &&...args) : f(std::forward<Ts>(args)...) {}
+
+  R operator()(Args... args) { return f(std::forward<Args>(args)...); }
+}; // class Implementation
+
+} // namespace function
+
+//
+
+// namespace VOLTISO_NAMESPACE
+
+template <class> class Function;
+
+template <class R, class... Args> class Function<R(Args...)> {
+private:
+  Ref<function::Virtual<R, Args...>> impl;
+
+public:
+  Function() = delete;
+  Function(const Function &) = delete;
+  Function &operator=(const Function &) = delete;
+
+  Function(Function &&other) = default;
+  Function &operator=(Function &&) = default;
+
+  template <class F>
+  Function(F &&f)
+      : impl(Owned<function::Dynamic<function::Implementation<F, R, Args...>, R,
+                                     Args...>>::create(std::forward<F>(f))) {}
+
+  R operator()(Args... args) {
+    DCHECK(impl.target());
+    return (*impl)(std::forward<Args>(args)...);
+  }
+};
+
+} // namespace VOLTISO_NAMESPACE

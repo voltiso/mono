@@ -131,3 +131,12 @@ TEST(Owned, destructor_big) {
 
   EXPECT_EQ(BigDestructible::numDestructorCalls, 1);
 }
+
+TEST(Owned, weak) {
+  Owned<int> owned = Owned<int>::create(123);
+  auto weak = owned.weak();
+  static_assert(std::is_same_v<decltype(weak), Owned<int>::Weak>);
+  EXPECT_EQ(*weak, 123);
+  weak = owned.weak();
+  EXPECT_EQ(*weak, 123);
+}

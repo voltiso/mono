@@ -1,14 +1,14 @@
 #pragma once
 #include <voltiso/_>
 
-#include "voltiso/has"
-#include "voltiso/is_derived_from"
-#include "voltiso/is_trivially_relocatable"
+// #include "voltiso/has"
+// #include "voltiso/is_derived_from"
+// #include "voltiso/is_trivially_relocatable"
 
 #include "glog/logging.h"
 
 #include <cstring>
-#include <type_traits>
+// #include <type_traits>
 
 //
 
@@ -18,94 +18,69 @@ template <class Final> class Object {
 private:
   using Self = Object;
 
-private:
-  static void _test() noexcept {
-    static_assert(std::is_final_v<Final>);
-    static_assert(is_derived_from<Final, Self>);
+  // private:
+  //   static void _test() noexcept {
+  //     static_assert(std::is_final_v<Final>);
+  //     static_assert(is_derived_from<Final, Self>);
 
-    static_assert(!std::is_polymorphic_v<Final>);
-    static_assert(!std::is_polymorphic_v<Self>);
-  }
+  //     static_assert(!std::is_polymorphic_v<Final>);
+  //     static_assert(!std::is_polymorphic_v<Self>);
+  //   }
 
-private:
-  // - move-only (enable_if)
-  // - cannot enable_if `is_trivially_relocatable` here - Final may be
-  //   incomplete yet
-  template <class Other,
-            std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
-  void _relocate(Other &&other) noexcept {
-    _test();
-    static_assert(is_trivially_relocatable<Final>);
-    static_assert(is_trivially_relocatable<Other>);
-    static_assert(is_trivially_relocatable<Self>);
+  // private:
+  //   // - move-only (enable_if)
+  //   // - cannot enable_if `is_trivially_relocatable` here - Final may be
+  //   //   incomplete yet
+  //   template <class Other,
+  //             std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
+  //   void _relocate(Other &&other) noexcept {
+  //     _test();
+  //     static_assert(is_trivially_relocatable<Final>);
+  //     static_assert(is_trivially_relocatable<Other>);
+  //     static_assert(is_trivially_relocatable<Self>);
 
-    static_assert(!std::is_polymorphic_v<Other>);
-    static_assert(is_derived_from<Final, Other>);
-    static_assert(sizeof(Final) == sizeof(Other));
+  //     static_assert(!std::is_polymorphic_v<Other>);
+  //     static_assert(is_derived_from<Final, Other>);
+  //     static_assert(sizeof(Final) == sizeof(Other));
 
-    static_assert(!has::_assumeRelocated<Final>,
-                  "_assumeRelocated() should be private");
+  //     static_assert(!has::_assumeRelocated<Final>,
+  //                   "_assumeRelocated() should be private");
 
-    ::memcpy(this, &other, sizeof(Final));
-    other._assumeRelocated();
-  }
+  //     ::memcpy(this, &other, sizeof(Final));
+  //     other._assumeRelocated();
+  //   }
 
-  auto &_finalSelf() noexcept {
-    _test();
-    return reinterpret_cast<Final &>(*this);
-  }
+  //   auto &_finalSelf() noexcept {
+  //     _test();
+  //     return reinterpret_cast<Final &>(*this);
+  //   }
 
 public:
   Object() = default; // must be trivially default constructible
                       // Object() { _test(); }
 
-  // - move-only (enable_if)
-  // - cannot enable_if `is_trivially_relocatable` here - Final may be
-  //   incomplete yet
-  template <class Other,
-            std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
-  Object(Other &&other) noexcept {
-    // DLOG(INFO) << "Object(Other &&other) noexcept";
-    _relocate(std::forward<Other>(other));
-  }
+  // // - move-only (enable_if)
+  // // - cannot enable_if `is_trivially_relocatable` here - Final may be
+  // //   incomplete yet
+  // template <class Other,
+  //           std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
+  // Object(Other &&other) noexcept {
+  //   // DLOG(INFO) << "Object(Other &&other) noexcept";
+  //   _relocate(std::forward<Other>(other));
+  // }
 
-  // - move-only (enable_if)
-  // - cannot enable_if `is_trivially_relocatable` here - Final may be
-  //   incomplete yet
-  template <class Other,
-            std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
-  Final &operator=(Other &&other) noexcept {
-    // DLOG(INFO) << "Final &operator=(Other &&other) noexcept";
-    auto &final = _finalSelf();
-    final.~Final();
-    _relocate(std::move(other));
-    return final;
-  }
+  // // - move-only (enable_if)
+  // // - cannot enable_if `is_trivially_relocatable` here - Final may be
+  // //   incomplete yet
+  // template <class Other,
+  //           std::enable_if_t<!std::is_reference_v<Other>> * = nullptr>
+  // Final &operator=(Other &&other) noexcept {
+  //   // DLOG(INFO) << "Final &operator=(Other &&other) noexcept";
+  //   auto &final = _finalSelf();
+  //   final.~Final();
+  //   _relocate(std::move(other));
+  //   return final;
+  // }
 };
 
 } // namespace VOLTISO_NAMESPACE
-
-//
-
-// #define VOLTISO_OBJECT_FINAL(namespaceName)                                    \
-//   namespace VOLTISO_NAMESPACE::namespaceName {                                 \
-//   namespace _ {                                                                \
-//   template <template <class> class Final, class Options>                       \
-//   using GetBase = Build<typename Options::template FinalTemplate_<             \
-//       Final>::template Final_<Final<Options>>>;                                \
-//   }                                                                            \
-//   template <class Options> struct Final final : _::GetBase<Final, Options> {   \
-//     using Base = _::GetBase<Final, Options>;                                   \
-//     using Base::Base;                                                          \
-//   };                                                                           \
-//   } // namespace VOLTISO_NAMESPACE::namespaceName
-
-// #define VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(namespaceName)                    \
-//   namespace VOLTISO_NAMESPACE {                                                \
-//   template <class Options>                                                     \
-//   static constexpr auto                                                        \
-//       is_trivially_relocatable<namespaceName::Build<Options>> = true;          \
-//   template <class Options>                                                     \
-//   static constexpr auto                                                        \
-//       is_trivially_relocatable<namespaceName::Final<Options>> = true;          \
-//   } // namespace VOLTISO_NAMESPACE::namespaceName

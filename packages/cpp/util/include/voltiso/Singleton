@@ -33,7 +33,12 @@ private:
   struct Data {
     Storage<T> storage;
     std::size_t numReferences = 1;
-    Data() { storage.construct(); }
+    Data() {
+      // storage.construct();
+
+      // can't use storage.construct(), because Storage is not a friend
+      new (&storage.item()) T();
+    }
     void decrement() {
       --numReferences;
       if (numReferences == 0) [[unlikely]] {

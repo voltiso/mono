@@ -8,15 +8,13 @@
 #include "voltiso/getParameter/Type"
 #include "voltiso/parameter"
 
-#include <iostream>
-
 #include "glog/logging.h"
 
 #include <cstddef>
 #include <cstdlib>
 
 #ifndef VOLTISO_DEBUG_MALLOC
-#define VOLTISO_DEBUG_MALLOC 1
+#define VOLTISO_DEBUG_MALLOC VOLTISO_DEBUG
 #endif
 
 #if VOLTISO_DEBUG_MALLOC
@@ -34,8 +32,8 @@ private:
   using Self = Custom;
 
 protected:
-  // friend singleton;
-  // friend singleton::perThread;
+  // friend Singleton<Self>;
+  friend Singleton<Final>;
 
 #if VOLTISO_DEBUG_MALLOC
 protected:
@@ -49,8 +47,8 @@ protected:
 
 public:
   static constexpr auto &instance() {
-    std::cout << "Malloc::instance()" << std::endl;
-    return Singleton<Self>::instance();
+    // std::cout << "Malloc::instance()" << std::endl;
+    return Singleton<Final>::instance();
     // return singleton::perThread::instance<Self>();
   }
 

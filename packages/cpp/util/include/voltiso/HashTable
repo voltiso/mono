@@ -481,6 +481,16 @@ public:
     return ConstIterator{Buckets::Handle(buckets.numItems), Pool::Handle::null,
                          *this};
   }
+
+public:
+  template <class... NewParameters>
+  using With =
+      Custom<Final, decltype(std::tuple_cat(
+                        std::declval<Parameters>(),
+                        std::declval<std::tuple<NewParameters...>>()))>;
+
+  template <class NewAllocator>
+  using WithAllocator = With<parameter::Allocator<NewAllocator>>;
 };
 } // namespace VOLTISO_NAMESPACE::hashTable
 // VOLTISO_OBJECT_FINAL(hashTable)

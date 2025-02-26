@@ -1,148 +1,157 @@
 #pragma once
 
+#include "voltiso/Object"
 #include "voltiso/Pool"
-
-// #include <iostream>
-// #include <type_traits>
-// #include <utility>
+#include "voltiso/getParameter/Type"
+#include "voltiso/getParameter/VALUE"
+#include "voltiso/parameter"
 
 namespace VOLTISO_NAMESPACE {
 
-template <class Item> class Owned {
-  static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
-  using Self = Owned;
+template <class Item> class Owned;
+
+namespace owned {
+
+template <class Item> auto create(const Item &item) {
+  return Owned<Item>::create(item);
+}
+
+template <class Item> auto create(Item &&item) {
+  return Owned<std::decay_t<Item>>::create(std::move(item));
+}
+
+template <class Final, class Parameters> class Custom : public Object<Final> {
+  using Item = getParameter::Type<parameter::Item, Parameters>;
+  // static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
   using Pool = Pool<Item>;
+  static constexpr bool WEAK = getParameter::VALUE<parameter::WEAK, Parameters>;
 
 public:
-  template <class... Args> static Self create(Args &&...args) {
-    Self self;
+  template <class... Args> static Final create(Args &&...args) {
+    Final self;
     self._item = pool().insert(std::forward<Args>(args)...);
     return self;
   }
 
-  static Self create(const Item &item) {
-    Self self;
+  static Final create(const Item &item) {
+    Final self;
     self._item = pool().insert(item);
     return self;
   }
 
-  static Self create(Item &&item) {
-    Self self;
-    self._item = pool().insert(std::move(item));
-    return self;
-  }
+  // static Final create(Item &&item) {
+  //   Final self;
+  //   self._item = pool().insert(std::move(item));
+  //   return self;
+  // }
 
-  ~Owned() {
-    if (this->_item) [[likely]] {
-      // std::cout << "erase" << std::endl;
-      pool()[this->_item].erase();
-    }
+  ~Custom() {
+    if constexpr (!WEAK)
+      if (this->_item) [[likely]] {
+        // std::cout << "erase" << std::endl;
+        pool().erase(this->_item);
+        // pool()[this->_item].erase();
+      }
   }
 
   // public: Owned() = default; // convenient, but runtime-bug-prone
-private:
-  Owned() = default;
+
+protected:
+  Custom() = default;
 
 public:
-  Owned(const Self &) = delete;
-  Self &operator=(const Self &) = delete;
+  Custom(const Custom &) = delete;
 
-  Owned(Self &&other) noexcept : _item(other._item) {
-    other._item = Pool::Handle::null;
+  // copy constructor (for weak)
+  template <class OtherFinal, class OtherParameters, bool W = WEAK,
+            std::enable_if_t<
+                W && std::is_assignable_v<
+                         Item *&, typename getParameter::Type<
+                                      parameter::Item, OtherParameters> *>> * =
+                nullptr>
+  Custom(const Custom<OtherFinal, OtherParameters> &other)
+      : _item(other._item) {}
+
+  // copy assignment (for weak)
+  template <class OtherFinal, class OtherParameters, bool W = WEAK,
+            std::enable_if_t<
+                W && std::is_assignable_v<
+                         Item *&, typename getParameter::Type<
+                                      parameter::Item, OtherParameters> *>> * =
+                nullptr>
+  Custom &operator=(const Custom<OtherFinal, OtherParameters> &other) {
+    this->_item = other._item;
+    return *this;
   }
 
-  Self &operator=(Self &&other) noexcept {
+  template <class OtherFinal, class OtherParameters> friend class Custom;
+
+  // move constructor (not for weak)
+  template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
+  Custom(Custom &&other) noexcept : _item(other._item) {
+    other._item = Pool::Handle::null;
+    // std::cout << other._item.value << std::endl;
+  }
+
+  // move assignment (not for weak)
+  template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
+  Custom &operator=(Custom &&other) noexcept {
     if (this->_item) [[likely]]
-      pool()[this->_item].erase();
+      pool().erase(this->_item);
+    // pool()[this->_item].erase();
     this->_item = other._item;
     other._item = Pool::Handle::null;
     return *this;
   }
 
-  Item &item() { return pool()[_item].item(); }
-  const Item &item() const { return pool()[_item].item(); }
+  // Item &item() { return pool()[_item].item(); }
+  // const Item &item() const { return pool()[_item].item(); }
 
-  Item &operator*() { return item(); }
-  const Item &operator*() const { return item(); }
+  Item &item() const {
+    return *_item;
 
-  Item *operator->() { return &**this; }
-  const Item *operator->() const { return &**this; }
+    // ! slower - why is this not optimized away?
+    // return pool()[_item].item();
+  }
 
-  operator Item &() { return **this; }
-  operator const Item &() const { return **this; }
-
-  operator Item &&() { return (Item &&)**this; }
-  operator const Item &&() const { return (Item &&)**this; }
-
-  // operator owned::Dynamic () && { return *this; }
+  Item &operator*() const { return item(); }
+  Item *operator->() const { return &**this; }
+  operator Item &() const { return **this; }
+  operator Item &&() const { return (Item &&)**this; }
 
 private:
   Pool::Handle _item = Pool::Handle::null;
 
-  static auto &pool() {
-    // return context::get<Pool>();
-    return Singleton<Pool>::instance();
-    // return *(context::tryGet<Pool>() || &singleton::instance<Pool>());
-  }
+  static constexpr auto &pool() { return Singleton<Pool>::instance(); }
+
+public:
+  template <class Parameter>
+  using With =
+      Custom<Final,
+             decltype(std::tuple_cat(std::declval<std::tuple<Parameter>>(),
+                                     std::declval<Parameters>()))>;
+  template <class NewItem> using WithItem = With<parameter::Item<NewItem>>;
+  using Weak = With<parameter::WEAK<true>>;
+
+public:
+  Weak weak() const { return *this; }
 }; // class Owned
 
 //
 
-// // virtual function calls
-// template <> class Owned<Unknown> {
-//   // class OwnedUnknown {
-//   using Self = Owned;
-
-// private:
-//   Storage<Dynamic<Owned<int>>> storage;
-
-// public:
-//   Owned(const Self &) = delete;
-//   Owned(Self &&other) {
-//     memcpy(this, &other, sizeof(*this));
-//     auto &otherDynamic =
-//         reinterpret_cast<Dynamic<Owned<int>> &>(other);
-//     auto &otherInt = static_cast<Owned<int> &>(otherDynamic);
-//     auto &handle = reinterpret_cast<Pool<int>::Handle &>(otherInt);
-//     handle = Pool<int>::Handle::null;
-//     // std::cout << "OwnedUnknown(OwnedUnknown &&other) " << &otherDynamic <<
-//     "
-//     // "
-//     //           << &otherInt << " " << &handle << std::endl;
-//     // auto &otherVirtual = static_cast<owned::_::Virtual &>(otherDynamic);
-//     // std::cout << "otherVirtual " << &otherVirtual << std::endl;
-//   }
-
-//   template <class T> Owned(Owned<T> &&other) {
-//     static_assert(!std::is_same_v<T, Unknown>);
-//     static_assert(sizeof(*this) == sizeof(Dynamic<Owned<T>>));
-//     // so that move constructor can set handle to null:
-//     static_assert(Pool<T>::Handle::null.value ==
-//     Pool<int>::Handle::null.value); new (this)
-//     Dynamic<Owned<T>>(std::move(other));
-//   }
-
-//   ~Owned() {
-//     static_assert(sizeof(*this) == sizeof(Dynamic<Owned<int>>));
-//     (void)storage;
-//     auto &selfDynamic =
-//         reinterpret_cast<Dynamic<Owned<int>> &>(*this);
-//     auto &selfVirtual = static_cast<Virtual &>(selfDynamic);
-//     selfVirtual.~Virtual();
-//   }
-// };
+// static_assert(sizeof(Owned<int>) == sizeof(int *));
 
 //
 
 #define DEFINE_OPERATOR(op)                                                    \
-  template <class T, class Other>                                              \
-  auto operator op(const Owned<T> &lhs, Other &&rhs)                           \
+  template <class Final, class Parameters, class Other>                        \
+  auto operator op(const Custom<Final, Parameters> &lhs, Other &&rhs)          \
       ->decltype(*lhs op std::forward<Other>(rhs)) {                           \
     return *lhs op std::forward<Other>(rhs);                                   \
   }                                                                            \
                                                                                \
-  template <class T, class Other>                                              \
-  auto operator op(Other &&lhs, const Owned<T> &rhs)                           \
+  template <class Final, class Parameters, class Other>                        \
+  auto operator op(Other &&lhs, const Custom<Final, Parameters> &rhs)          \
       ->decltype(std::forward<Other>(lhs) op * rhs) {                          \
     return std::forward<Other>(lhs) op * rhs;                                  \
   }
@@ -190,5 +199,16 @@ DEFINE_OPERATOR(&&)
 DEFINE_OPERATOR(||)
 
 #undef DEFINE_OPERATOR
+
+} // namespace owned
+
+//
+
+template <class Item>
+class Owned
+    : public owned::Custom<Owned<Item>, std::tuple<parameter::Item<Item>>> {
+  using Base = owned::Custom<Owned<Item>, std::tuple<parameter::Item<Item>>>;
+  using Base::Base;
+};
 
 } // namespace VOLTISO_NAMESPACE

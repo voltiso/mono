@@ -4,12 +4,11 @@
 #include "voltiso/Entry"
 
 namespace VOLTISO_NAMESPACE {
-template <class _Pool> class Bst {
+template <class Pool> class Bst {
 private:
   using Self = Bst;
 
 public:
-  using Pool = _Pool;
   using Handle = typename Pool::Handle;
   using Item = typename Pool::Item;
   using Value = GetValue<Item>;

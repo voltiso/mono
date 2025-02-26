@@ -6,24 +6,27 @@
 #include "voltiso/HashMap"
 #include "voltiso/Object"
 #include "voltiso/Pool"
+#include "voltiso/Singleton"
 #include "voltiso/Splay"
+#include "voltiso/context"
+#include "voltiso/getParameter/VALUE"
 #include "voltiso/memory/PAGE_SIZE"
-
+#include "voltiso/parameter"
 #include <cstddef>
 
 // ! experimental - unused, 6x slower than malloc, does not ever return memory
 // ! to the system
 
 namespace VOLTISO_NAMESPACE::allocator::splay {
-struct Defaults {
-  // parent allocator
-  using Allocator = Malloc;
-  static constexpr auto PAGE_SIZE = memory::PAGE_SIZE;
-  using Brand = void;
-};
-using DefaultOptions = Options<Defaults>;
+// struct Defaults {
+//   // parent allocator
+//   using Allocator = Malloc;
+//   static constexpr auto PAGE_SIZE = memory::PAGE_SIZE;
+//   using Brand = void;
+// };
+// using DefaultOptions = Options<Defaults>;
 
-template <class Options> class Build;
+template <class Final, class Parameters> class Custom;
 } // namespace VOLTISO_NAMESPACE::allocator::splay
 
 //
@@ -35,9 +38,14 @@ template <size_t PAGE_SIZE> auto roundUpToFullPages(size_t numBytes) {
 }
 /** @internal used to self-allocate memory for our internal structures, in order
  * to avoid dependency on self */
-template <class Options> class SelfAllocator : public Object<Options> {
+template <class Final, class Parameters> class SelfAllocator {
 public:
   using Handle = void *;
+
+  static constexpr auto PAGE_SIZE =
+      getParameter::VALUE<parameter::PAGE_SIZE, Parameters>;
+
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
 
 public:
   void *allocateBytes(size_t numBytes) {
@@ -74,8 +82,8 @@ public:
       return entry.memory;
     } else [[unlikely]] {
       // LOG(INFO) << "SelfAllocator: allocate full page";
-      auto newNumBytes = roundUpToFullPages<Options::PAGE_SIZE>(numBytes);
-      auto memory = Options::Allocator::instance().allocateBytes(newNumBytes);
+      auto newNumBytes = roundUpToFullPages<PAGE_SIZE>(numBytes);
+      auto memory = Allocator::instance().allocateBytes(newNumBytes);
       this->_add(memory.value + numBytes, newNumBytes - numBytes);
       return memory;
     }
@@ -148,17 +156,17 @@ public:
   SelfAllocator() = default;
 
 private:
-  friend Build<Options>;
+  friend Custom<Final, Parameters>;
   static constexpr auto &instance() {
     // todo: store in SplayAllocator
-    return singleton::instance<SelfAllocator>();
+    return Singleton<SelfAllocator>::instance();
     // return singleton::perThread::instance<SelfAllocator>();
   }
 
 private:
   auto &_alloc() {
     // return context::get<SelfAllocator>();
-    return Build<Options>::instance();
+    return Custom<Final, Parameters>::instance();
   }
 
 private:
@@ -166,7 +174,7 @@ private:
     void *ptr;
     size_t numBytes;
   };
-  using SpareBlocks = DynamicArray<SpareBlock>::template IN_PLACE_ONLY_<100>;
+  using SpareBlocks = DynamicArray<SpareBlock>::template WithInPlaceOnly<100>;
   SpareBlocks spareBlocks;
 
   void _add(std::uintptr_t memory, size_t numBytes) {
@@ -187,18 +195,20 @@ private:
       auto block = spareBlocks.pop();
       // LOG(INFO) << "Registering " << block.numBytes << " spare bytes at "
       //           << block.ptr;
-      _alloc().freeBytes(typename Build<Options>::Handle(block.ptr),
+      _alloc().freeBytes(typename Custom<Final, Parameters>::Handle(block.ptr),
                          block.numBytes);
     }
   }
 }; // class SelfAllocator
 
-template <class Options> struct SplayEntry {
+template <class Final, class Parameters> struct SplayEntry {
   const std::size_t key;
   const std::size_t numBytes;
-  const Options::Allocator::Handle memory;
 
-  SplayEntry(std::size_t numBytes, Options::Allocator::Handle memory)
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+  const Allocator::Handle memory;
+
+  SplayEntry(std::size_t numBytes, Allocator::Handle memory)
       : key(_key(numBytes, memory)), numBytes(numBytes), memory(memory) {}
 
   SplayEntry(const SplayEntry &) = default;
@@ -212,8 +222,7 @@ template <class Options> struct SplayEntry {
   auto &value() const { return memory; }
 
 private:
-  static constexpr auto _key(std::size_t numBytes,
-                             Options::Allocator::Handle memory) {
+  static constexpr auto _key(std::size_t numBytes, Allocator::Handle memory) {
     constexpr auto BITS = sizeof(std::size_t) * 8 / 2;
     constexpr auto MASK = (std::size_t(1) << BITS) - 1;
     DCHECK_EQ(numBytes % alignof(std::max_align_t), 0);
@@ -227,12 +236,14 @@ private:
   }
 };
 
-template <class Options>
-using Pool = Pool<int>::template Allocator_<SelfAllocator<Options>>;
+template <class Final, class Parameters>
+using Pool =
+    Pool<int>::template WithAllocator<SelfAllocator<Final, Parameters>>;
 
-template <class Options> struct SplayNode {
-  SplayEntry<Options> entry;
-  using Handle = typename Pool<Options>::Handle::template Brand_<void>;
+template <class Final, class Parameters> struct SplayNode {
+  SplayEntry<Final, Parameters> entry;
+  using Handle =
+      typename Pool<Final, Parameters>::Handle::template WithBrand<void>;
   Array<Handle, 2> children = {Handle::null, Handle::null};
 
   // SplayNode &operator=(const SplayNode &other) {
@@ -240,21 +251,29 @@ template <class Options> struct SplayNode {
   //   return *this;
   // }
 };
+
+// using A = GetValue<SplayNode<int, std::tuple<>>>;
+// using A = GetValue<SplayEntry<int, std::tuple<>>>;
+
+// static_assert(std::is_same_v<A, void>);
+
 } // namespace VOLTISO_NAMESPACE::allocator::splay::_
 
 namespace std {
-template <class Options>
+template <class Final, class Parameters>
 ostream &operator<<(
     ostream &os,
-    const VOLTISO_NAMESPACE::allocator::splay::_::SplayEntry<Options> &entry) {
+    const VOLTISO_NAMESPACE::allocator::splay::_::SplayEntry<Final, Parameters>
+        &entry) {
   return os << "{numBytes: " << entry.numBytes << ", memory: " << entry.memory
             << "}";
 }
 
-template <class Options>
+template <class Final, class Parameters>
 ostream &operator<<(
     ostream &os,
-    const VOLTISO_NAMESPACE::allocator::splay::_::SplayNode<Options> &node) {
+    const VOLTISO_NAMESPACE::allocator::splay::_::SplayNode<Final, Parameters>
+        &node) {
   return os << "{entry: " << node.entry << ", children: " << node.children
             << "}";
 }
@@ -263,52 +282,56 @@ ostream &operator<<(
 //
 
 namespace VOLTISO_NAMESPACE::allocator::splay {
-template <class _Options> class Build : public Object<_Options> {
+template <class Final, class Parameters> class Custom : public Object<Final> {
 private:
-  using Self = Build;
+  using Self = Custom;
 
 public:
-  using Options = _Options;
   // parent allocator
-  using Allocator = Options::Allocator;
-  static constexpr auto PAGE_SIZE = Options::PAGE_SIZE;
-  using Handle = Allocator::Handle ::template Brand_<Self>;
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+
+  static constexpr auto PAGE_SIZE =
+      getParameter::VALUE<parameter::PAGE_SIZE, Parameters>;
+
+  using Handle = Allocator::Handle ::template WithBrand<Self>;
 
 private:
-  friend _::SelfAllocator<Options>;
+  friend _::SelfAllocator<Final, Parameters>;
   using AllocatorHandle = Allocator::Handle;
 
-  context::Guard<_::SelfAllocator<Options>> splaySelfGuard =
-      context::Guard(_::SelfAllocator<Options>::instance());
+  context::Guard<_::SelfAllocator<Final, Parameters>> splaySelfGuard =
+      context::Guard(_::SelfAllocator<Final, Parameters>::instance());
 
 private:
-  using Pool = _::Pool<Options>;
-  using SplayEntry = _::SplayEntry<Options>;
-  using SplayNode = _::SplayNode<Options>;
-  using Nodes = Pool ::template Item_<SplayNode>;
+  using Pool = _::Pool<Final, Parameters>;
+  using SplayEntry = _::SplayEntry<Final, Parameters>;
+  using SplayNode = _::SplayNode<Final, Parameters>;
+  using Nodes = Pool ::template WithItem<SplayNode>;
   Nodes nodes;
   Nodes::Handle root = Nodes::Handle::null;
 
 private:
+  // static_assert(std::is_same_v<typename Nodes::Item, int>);
   Splay<Nodes> splay = Splay<Nodes>(this->nodes);
 
   static constexpr size_t BUCKET_IN_PLACE = 1;
   using Edges =
-      HashMap<std::uintptr_t, typename Nodes::Handle>::template Allocator_<
-          _::SelfAllocator<Options>>;
+      HashMap<std::uintptr_t, typename Nodes::Handle>::template WithAllocator<
+          _::SelfAllocator<Final, Parameters>>;
   // ::template BUCKET_IN_PLACE_<
   //     BUCKET_IN_PLACE>;
   Edges begins, ends;
 
 private:
-  friend singleton;
+  friend Singleton<Self>;
+  friend Singleton<Final>;
   // friend singleton::perThread;
-  Build() = default;
+  Custom() = default;
 
 public:
   static constexpr auto &instance() {
     // return context::get<typename Options::Final>();
-    return singleton::instance<Self>();
+    return Singleton<Self>::instance();
     // return singleton::perThread::instance<Self>();
   }
 
@@ -321,7 +344,7 @@ public:
     auto hNode = splay(root).lowerBound(numBytes);
 
     if (!hNode) [[unlikely]] {
-      auto newNumBytes = _::roundUpToFullPages<Options::PAGE_SIZE>(numBytes);
+      auto newNumBytes = _::roundUpToFullPages<PAGE_SIZE>(numBytes);
       auto memory = Allocator::instance().allocateBytes(newNumBytes);
       _add(memory, newNumBytes);
       hNode = splay(root).lowerBound(numBytes);
@@ -347,7 +370,9 @@ public:
       splay(root).erase(hNode);
     }
 
-    DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
+    DCHECK_EQ(
+        (_::SelfAllocator<Final, Parameters>::instance().spareBlocks.numItems),
+        0);
 
     return Handle(result.value);
   }
@@ -365,7 +390,9 @@ public:
         auto leftoverSize = numBytes - newNumBytes;
         _add(AllocatorHandle(pLeftover), leftoverSize);
       }
-      DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
+      DCHECK_EQ((_::SelfAllocator<Final, Parameters>::instance()
+                     .spareBlocks.numItems),
+                0);
       return handle;
     }
 
@@ -390,7 +417,8 @@ public:
           // whole block consumed
           splay[root].erase(aNode);
         }
-        DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems,
+        DCHECK_EQ((_::SelfAllocator<Final, Parameters>::instance()
+                       .spareBlocks.numItems),
                   0);
         return handle;
       }
@@ -399,7 +427,9 @@ public:
     auto newHandle = allocateBytes(newNumBytes);
     ::memcpy(newHandle, handle, numBytes);
     this->freeBytes(handle, numBytes);
-    DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
+    DCHECK_EQ(
+        (_::SelfAllocator<Final, Parameters>::instance().spareBlocks.numItems),
+        0);
     return newHandle;
   }
 
@@ -407,7 +437,9 @@ public:
     // LOG(INFO) << "Build::freeBytes(" << handle << ", " << numBytes << ")";
     DCHECK_GT(numBytes, 0);
     _add(AllocatorHandle(handle.value), numBytes);
-    DCHECK_EQ(_::SelfAllocator<Options>::instance().spareBlocks.numItems, 0);
+    DCHECK_EQ(
+        (_::SelfAllocator<Final, Parameters>::instance().spareBlocks.numItems),
+        0);
   }
 
   void *operator()(const Handle &handle) { return handle; }
@@ -475,15 +507,24 @@ private:
         splay(root).link(aNode);
       }
     }
-    _::SelfAllocator<Options>::instance()._cleanup();
+    _::SelfAllocator<Final, Parameters>::instance()._cleanup();
   } // _add
-}; // class Build
+}; // class Custom
 } // namespace VOLTISO_NAMESPACE::allocator::splay
-VOLTISO_OBJECT_FINAL(allocator::splay)
+
+// VOLTISO_OBJECT_FINAL(allocator::splay)
 
 namespace VOLTISO_NAMESPACE::allocator {
-using Splay = splay::Final<splay::DefaultOptions>;
+// using Splay = splay::Final<splay::DefaultOptions>;
 
-inline auto g_splayGuard = v::context::Guard(v::allocator::Splay::instance());
+class Splay : public splay::Custom<Splay, std::tuple<>> {
+  using Base = splay::Custom<Splay, std::tuple<>>;
+
+public:
+  using Base::Base;
+};
+
+// inline auto g_splayGuard =
+// v::context::Guard(v::allocator::Splay::instance());
 
 } // namespace VOLTISO_NAMESPACE::allocator

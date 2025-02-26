@@ -4,15 +4,20 @@
 #include "voltiso/throwError"
 
 #include <cstdlib>
-#include <map>
 #include <stdexcept>
 #include <string>
 
 #ifndef VOLTISO_DEBUG_MALLOC
-#define VOLTISO_DEBUG_MALLOC 1
+#define VOLTISO_DEBUG_MALLOC VOLTISO_DEBUG
+#endif
+
+#if VOLTISO_DEBUG_MALLOC
+#include <map>
 #endif
 
 namespace VOLTISO_NAMESPACE::allocator::malloc {
+
+#if VOLTISO_DEBUG_MALLOC
 
 namespace _ {
 struct Debug {
@@ -33,6 +38,7 @@ inline Custom<Final, Parameters>::~Custom() {
   }
   delete this->_debug;
 }
+#endif
 
 template <class Final, class Parameters>
 inline typename Custom<Final, Parameters>::Handle

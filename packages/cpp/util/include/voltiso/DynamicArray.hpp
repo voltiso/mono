@@ -1,4 +1,5 @@
 #pragma once
+#include <voltiso/_>
 
 #include "voltiso/Array"
 #include "voltiso/Handle"
@@ -12,12 +13,10 @@
 #include "voltiso/is_trivially_relocatable"
 #include "voltiso/parameter"
 
-#include <bit>
-#include <cstddef>
-#include <voltiso/_>
-
 #include "glog/logging.h"
 
+#include <bit>
+#include <cstddef>
 #include <iostream>
 #include <type_traits>
 

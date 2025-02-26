@@ -3,6 +3,7 @@
 #include "voltiso/TypeParameter"
 #include "voltiso/ValueParameter"
 #include "voltiso/allocator/Malloc.forward.hpp"
+#include "voltiso/memory/PAGE_SIZE"
 
 #include <cstddef>
 
@@ -28,7 +29,12 @@ template <class T> struct Entry : TypeParameter<T, void> {};
 template <std::size_t N> struct NumItems : ValueParameter<N, 0> {};
 template <std::make_signed_t<std::size_t> N>
 struct StartingIndex : ValueParameter<N, 0> {};
+
+template <std::size_t N>
+struct PAGE_SIZE : ValueParameter<N, memory::PAGE_SIZE> {};
+
 template <std::size_t N> struct IN_PLACE : ValueParameter<N, 0> {};
 template <std::size_t N> struct IN_PLACE_ONLY : ValueParameter<N, 0> {};
+template <bool B> struct WEAK : ValueParameter<B, false> {}; // for pointers
 
 } // namespace VOLTISO_NAMESPACE::parameter

@@ -30,7 +30,7 @@ static void BM_Array(benchmark::State &state) {
                              (size_t)std::numeric_limits<Count>::max() - 3);
   while (state.KeepRunningBatch(COUNT)) {
     // LOG(INFO) << "COUNT: " << COUNT;
-    using Vec = Array<Count, COUNT>::template STARTING_INDEX_<STARTING_INDEX>;
+    using Vec = Array<Count, COUNT>::template WithStartingIndex<STARTING_INDEX>;
     Vec vec = {};
     CHECK_EQ(vec[STARTING_INDEX], 0);
     for (Count i = STARTING_INDEX; i < (Count)(STARTING_INDEX + COUNT); ++i) {

@@ -69,14 +69,7 @@ constexpr auto &getValue(Item &item) {
   }
 }
 
-template <class Item, class = std::enable_if_t<has::value<Item>>>
-constexpr const auto &getValue(const Item &item) {
-  return getValue(const_cast<Item &>(item));
-}
-
-//
-
-template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+template <class Item, std::enable_if_t<has::value<Item>> * = nullptr>
 constexpr const auto &getValue(const Item &item) {
   return getValue(const_cast<Item &>(item));
 }
@@ -117,6 +110,11 @@ constexpr auto getKey(Item &item) {
 template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
 constexpr auto &getValue(Item &item) {
   return getValue(getEntry(item));
+}
+
+template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+constexpr const auto &getValue(const Item &item) {
+  return getValue(const_cast<Item &>(item));
 }
 
 //

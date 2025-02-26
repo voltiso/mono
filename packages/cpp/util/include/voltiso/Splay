@@ -135,13 +135,11 @@ public:
     auto &pool = this->_pool();
     auto &bst = this->_bst();
 
-    // LOG(INFO) << "!!!!!" << *this;
-
     auto x = root;
 
     // ! we use in-place array in order to be able to use this class in
     // allocators
-    using Stack = DynamicArray<Handle>::template IN_PLACE_ONLY_<32>;
+    using Stack = DynamicArray<Handle>::template WithInPlaceOnly<32>;
     // using Stack = DynamicArray::template Item_<Handle>;
 
     Stack stack;

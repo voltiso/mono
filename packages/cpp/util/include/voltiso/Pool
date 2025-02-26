@@ -2,272 +2,252 @@
 #include <voltiso/_>
 
 #include "voltiso/DynamicArray"
-#include "voltiso/Object"
-#include "voltiso/Storage"
+#include "voltiso/Handle"
+#include "voltiso/getParameter/Type"
+#include "voltiso/parameter"
 
-#include <cstdlib>
-#include <type_traits>
+#include <tuple>
 
 #ifndef VOLTISO_DEBUG_POOL
 #define VOLTISO_DEBUG_POOL VOLTISO_DEBUG
 #endif
 
-#if VOLTISO_DEBUG_POOL
-#include "glog/logging.h"
-#endif
+namespace VOLTISO_NAMESPACE {
 
-//
-
-namespace VOLTISO_NAMESPACE::pool {
+namespace pool {
 template <class Final, class Parameters> class Custom;
-} // namespace VOLTISO_NAMESPACE::pool
+} // namespace pool
+
+namespace pool::_ {
+template <class Item> struct Slot {
+  union {
+    Storage<Item> storage;
+    Slot *next; // must be zero-filled manually
+  };
+
+  //   template <class... Args> Slot(Args &&...args) {
+  //     storage.construct(std::forward<Args>(args)...);
+  //   }
+};
+
+template <class Parameters> struct Block {
+  using Item = getParameter::Type<parameter::Item, Parameters>;
+  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+
+  Slot<Item> *allocationStart;
+  Slot<Item> *allocationEnd;
+
+  //   static_assert(is_trivially_relocatable<decltype(numBytes)>);
+  //   static_assert(is_trivially_relocatable<decltype(allocation)>);
+
+  Block(size_t numItems) {
+    auto handle =
+        Singleton<Allocator>::instance().allocateBytes(numItems * sizeof(Item));
+    static_assert(sizeof(Slot<Item> *) == sizeof(handle));
+    this->allocationStart = std::bit_cast<Slot<Item> *>(handle);
+    this->allocationEnd = this->allocationStart + numItems;
+    std::memset(this->allocationStart, 0,
+                (this->allocationEnd - this->allocationStart) *
+                    sizeof(Slot<Item>));
+  }
+
+  Block(const Block &) = delete;
+  Block &operator=(const Block &) = delete;
+
+  ~Block() {
+    Singleton<Allocator>::instance().freeBytes(
+        typename Allocator::Handle(allocationStart),
+        (allocationEnd - allocationStart) * sizeof(Item));
+  }
+};
+} // namespace pool::_
+
+template <class Parameters>
+static constexpr auto is_trivially_relocatable<pool::_::Block<Parameters>> =
+    true;
 
 //
 
-namespace VOLTISO_NAMESPACE::pool::_ {
-template <class Final, class Parameters> class ConstAccessor {
-private:
-  using Custom = Custom<Final, Parameters>;
-  using Handle = typename Custom::Handle;
-  using SlotHandle = typename Custom::SlotHandle;
+namespace pool {
+template <class Final, class Parameters, bool IS_CONST> class Accessor {
+  using Pool = Custom<Final, Parameters>;
+  using MaybeConstPool = std::conditional_t<IS_CONST, const Pool, Pool>;
 
-private:
-  friend Custom;
-  ConstAccessor(const Handle &handle, const Custom &self)
-      : handle(handle), self(self) {}
+  using Item = typename Pool::Item;
+  using MaybeConstItem = std::conditional_t<IS_CONST, const Item, Item>;
 
-private:
-  using Item = typename Custom::Item;
+  using Handle = typename Pool::Handle;
 
-public:
-  const Item &item() const { return self.slots[handle.value]->storage.item(); }
-  const Item &operator*() const { return item(); }
-  const Item *operator->() const { return &item(); }
-
-  // auto handle() const {return handle; }
-  operator Handle() const { return handle; }
+  static_assert(std::is_same_v<typename Handle::Type, Item *>);
 
 public:
   const Handle handle;
+  //   _::Slot<MaybeConstItem> *slot;
 
-protected:
-  const Custom &self;
-};
-
-template <class Final, class Parameters>
-class Accessor : public ConstAccessor<Final, Parameters> {
 private:
-  using Base = ConstAccessor<Final, Parameters>;
-  using Base::Base;
-  using Custom = Custom<Final, Parameters>;
-  using Item = Custom::Item;
-  using DynamicArray = typename Custom::DynamicArray;
-  using Handle = typename Custom::Handle;
-  using SlotHandle = typename Custom::SlotHandle;
-  Custom &self() { return const_cast<Custom &>(Base::self); }
+  MaybeConstPool &pool;
+
+private:
+  friend Pool;
+  Accessor(MaybeConstPool &pool, const Handle &handle) noexcept
+      : handle(handle), pool(pool) {}
+
+  Accessor(MaybeConstPool &pool, _::Slot<MaybeConstItem> *slot) noexcept
+      : handle(slot), pool(pool) {}
+
+  Accessor(const Accessor &) = delete;
+  Accessor &operator=(const Accessor &) = delete;
 
 public:
-  Item &item() { return self().slots[this->handle.value]->storage.item(); }
-  Item &operator*() { return item(); }
-  Item *operator->() { return &item(); }
+  MaybeConstItem &item() noexcept {
+    return *std::bit_cast<MaybeConstItem *>(handle);
+  }
+  const Item &item() const noexcept {
+    return *std::bit_cast<const Item *>(handle);
+  }
 
-public:
-  void erase() {
-    DCHECK_NE(this->handle, Handle::null);
-    self().slots[this->handle.value]->storage.destroy();
-    // wrong Handle type; need cast
-    self().slots[this->handle.value]->next =
-        typename DynamicArray::Handle(self().anyFree.value);
-    self().anyFree = SlotHandle(this->handle.value);
+  MaybeConstItem &operator*() noexcept { return item(); }
+  const Item &operator*() const noexcept { return item(); }
+
+  MaybeConstItem *operator->() noexcept { return &item(); }
+  const Item *operator->() const noexcept { return &item(); }
+
+  template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+  operator Item &() noexcept {
+    return item();
+  }
+
+  operator const Item &() const noexcept { return item(); }
+
+  operator Handle() const noexcept { return handle; }
+  operator bool() const noexcept { return handle; }
+
+  template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+  void erase() const {
+    pool.erase(handle);
   }
 };
-} // namespace VOLTISO_NAMESPACE::pool::_
+} // namespace pool
 
 //
 
-namespace std {
-template <class Final, class Parameters>
-ostream &
-operator<<(ostream &os,
-           const VOLTISO_NAMESPACE::pool::_::ConstAccessor<Final, Parameters>
-               &accessor) {
-  return os << "Pool::ConstAccessor(" << accessor.handle.value << ")";
-}
+namespace pool {
 
-template <class Final, class Parameters>
-ostream &operator<<(
-    ostream &os,
-    const VOLTISO_NAMESPACE::pool::_::Accessor<Final, Parameters> &accessor) {
-  return os << "Pool::Accessor(" << accessor.handle.value << ")";
-}
-} // namespace std
-
-//
-
-namespace VOLTISO_NAMESPACE::pool {
-// struct Defaults {
-//   using Item = void; // must override
-//   using Allocator = allocator::Malloc;
-//   using Brand = void;
-// };
-
-// using DefaultOptions = Options<Defaults>;
-
-//
-
-// class Base {};
-
+// Current implementation does not ever release memory to the system.
+// In the future, it's possible to keep free-lists per block, but additional
+// indirection would make things a little bit slower.
 template <class Final, class Parameters>
 class Custom
-    : public Object<Final>,
-      public Singleton<
+    : public Singleton<
           getParameter::Type<parameter::Allocator, Parameters>>::Guard {
-  using Self = Custom;
-  using Base = Object<Final>;
+  //   static_assert(std::is_base_of_v<Custom, Final>);
 
 public:
   using Item = getParameter::Type<parameter::Item, Parameters>;
   using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
 
-private:
-  using DynamicArray = DynamicArray<int>::template WithAllocator<Allocator>;
+  using Handle = Handle ::WithType<Item *>::template WithBrand<Final>;
+
+  using Accessor = pool::Accessor<Final, Parameters, false>;
+  using ConstAccessor = pool::Accessor<Final, Parameters, true>;
+
+  static_assert(std::is_same_v<typename Handle::Type, Item *>);
 
 private:
-  struct Slot {
-    union {
-      Storage<Item> storage;
-      DynamicArray::Handle
-          next; // recursive definition; wrong Item type; need to cast
-    };
-
-    template <class... Args> Slot(Args &&...args) {
-      storage.construct(std::forward<Args>(args)...);
-    }
-  };
-
-  using Slots = DynamicArray::template WithItem<Slot>;
-  Slots slots;
-  Slots::Handle anyFree = Slots::Handle::null;
-  using SlotHandle = Slots::Handle;
-
-public:
-  template <class Type>
-  using CustomHandle = Handle ::WithType<Type>::template WithBrand<Self>;
-  using Handle = CustomHandle<typename Slots::Handle::Type>;
-
-  // static_assert(std::has_single_bit(sizeof(Item)));
-
-  ~Custom() {
-    // std::cout << "Pool::~Build()" << std::endl;
-    if constexpr (std::is_trivially_destructible_v<Item>) {
-      // noop
-    } else {
-      if (anyFree == Slots::Handle::null) [[unlikely]] {
-        for (size_t i = 0; i < slots.numItems; ++i) {
-          slots[i]->storage.destroy();
-        }
-      } else [[likely]] {
-        // ! slow
-        using Free = DynamicArray::template WithItem<bool>;
-        auto free = Free::createWithNumItems(slots.numItems, 0);
-        auto anyFree = this->anyFree;
-        while (anyFree != Slots::Handle::null) {
-          free[anyFree.value] = true;
-          anyFree = SlotHandle(slots[anyFree]->next.value);
-        }
-        for (size_t i = 0; i < slots.numItems; i++) {
-          if (!free[i]) {
-            slots[i]->storage.destroy();
-          }
-        }
-      }
-    }
-  }
-
-  // #if VOLTISO_DEBUG_POOL
-  //   ~Build() { CHECK(slots.numItems == 0 || anyFree != Slots::Handle::null);
-  //   }
-  // #endif
-
-public:
-  Custom() = default;
-  Custom(Self &&) = default;
-
-  // private:
-  //   friend singleton::perThread;
-  //   constexpr BUILD() noexcept = default;
-
-  // public:
-  //   static constexpr auto &get() { return singleton::perThread::get<Self>();
-  //   }
+  using Slot = _::Slot<Item>;
 
 private:
-  using Accessor = _::Accessor<Final, Parameters>;
-  using ConstAccessor = _::ConstAccessor<Final, Parameters>;
+  DynamicArray<_::Block<Parameters>> blocks;
+  Slot *anyFreeSlot = nullptr;
+
+  // below values could be read from last block instead
+  Slot *remainingStart = nullptr;
+  Slot *remainingEnd = nullptr;
+
+  size_t numSlots = 0;
+
   friend Accessor;
   friend ConstAccessor;
 
+#if VOLTISO_DEBUG_POOL
 public:
-  Accessor operator[](const Handle &handle) { return Accessor(handle, *this); }
-  ConstAccessor operator[](const Handle &handle) const {
-    return ConstAccessor(handle, *this);
+  ~Custom() {
+    size_t numSlotsInChain = 0;
+    auto nextSlot = anyFreeSlot;
+    while (nextSlot) {
+      ++numSlotsInChain;
+      nextSlot = nextSlot->next;
+    }
+    auto numSlotsInLastBlock = remainingEnd - remainingStart;
+    DCHECK_EQ(numSlotsInChain + numSlotsInLastBlock, numSlots);
   }
+#endif
 
 public:
+  ConstAccessor operator[](Handle handle) const noexcept {
+    return ConstAccessor(*this, handle);
+  }
+
+  Accessor operator[](Handle handle) noexcept {
+    return Accessor(*this, handle);
+  }
+
   template <class... Args> Accessor insert(Args &&...args) {
-    if (anyFree == Slots::Handle::null) [[unlikely]] {
-      auto newItem = slots.push(std::forward<Args>(args)...);
-      return Accessor(static_cast<Handle>(newItem.value), *this);
-    } else [[likely]] {
-      auto handle = anyFree;
-      anyFree = SlotHandle(
-          slots[anyFree]->next.value); // wrong Handle type; need cast
-      slots[handle]->storage.construct(std::forward<Args>(args)...);
-      return Accessor(static_cast<Handle>(handle.value), *this);
+    if (anyFreeSlot) [[likely]] {
+      auto slot = anyFreeSlot;
+      anyFreeSlot = anyFreeSlot->next;
+      new (&slot->storage) Item(std::forward<Args>(args)...);
+      return Accessor(*this, slot);
+    } else if (remainingStart != remainingEnd) [[likely]] {
+      auto slot = remainingStart;
+      ++remainingStart;
+      new (&slot->storage) Item(std::forward<Args>(args)...);
+      return Accessor(*this, slot);
+    } else [[unlikely]] {
+      auto numNewSlots = numSlots + 1;
+      DCHECK_GE(numNewSlots, 1);
+      blocks.push(numNewSlots);
+      numSlots += numNewSlots;
+      remainingStart = blocks.last().allocationStart;
+      remainingEnd = blocks.last().allocationEnd;
+      auto slot = remainingStart;
+      ++remainingStart;
+      new (&slot->storage) Item(std::forward<Args>(args)...);
+      return Accessor(*this, slot);
     }
   }
 
-  // Item &operator[](const Handle &handle) {
-  //   DCHECK_NE(handle, Handle::null);
-  //   return (Item &)slots[handle.value];
-  // }
+  void erase(const Handle &handle) noexcept {
+    DCHECK(handle);
+    auto slot = std::bit_cast<_::Slot<Item> *>(handle);
+    static_assert(sizeof(slot) == sizeof(Handle));
+    slot->storage.destroy();
+    slot->next = this->anyFreeSlot;
+    this->anyFreeSlot = slot;
+  }
 
-  // const Item &operator[](const Handle &handle) const {
-  //   return const_cast<Self &>(*this)[handle];
-  // }
+private:
+  auto &allocator() const { return Allocator::instance(); }
 
 public:
   template <class Parameter>
-  using With =
-      Custom<Final,
-             decltype(std::tuple_cat(std::declval<std::tuple<Parameter>>(),
-                                     std::declval<Parameters>()))>;
+  class With : public Custom<With<Parameter>,
+                             decltype(std::tuple_cat(
+                                 std::declval<std::tuple<Parameter>>(),
+                                 std::declval<Parameters>()))> {};
 
-  template <class T> using WithItem = With<parameter::Item<T>>;
-  template <class T> using WithAllocator = With<parameter::Allocator<T>>;
-  template <class T> using WithBrand = With<parameter::Brand<T>>;
+  template <class NewItem> using WithItem = With<parameter::Item<NewItem>>;
 
+  template <class NewAllocator>
+  using WithAllocator = With<parameter::Allocator<NewAllocator>>;
 }; // class Custom
-} // namespace VOLTISO_NAMESPACE::pool
-// VOLTISO_OBJECT_FINAL(pool)
-// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(pool)
-
-namespace VOLTISO_NAMESPACE {
-// template <class Item>
-// using Pool = pool::Final<pool::DefaultOptions::Item_<Item>>;
+} // namespace pool
 
 template <class Item>
-class Pool
-    : public pool::Custom<Pool<Item>, std::tuple<parameter::Item<Item>>> {};
-
-// template <class Item = Any>
-// using Pool = std::conditional_t<std::is_same_v<Item, Any>, pool::Base,
-//                                 pool::Final<pool::DefaultOptions::Item_<Item>>>;
-
-// namespace pool {
-// class Virtual {
-//   //
-// };
-// } // namespace pool
+class Pool final
+    : public pool::Custom<Pool<Item>, std::tuple<parameter::Item<Item>>> {
+  using Base = pool::Custom<Pool<Item>, std::tuple<parameter::Item<Item>>>;
+  using Base::Base;
+};
 
 } // namespace VOLTISO_NAMESPACE

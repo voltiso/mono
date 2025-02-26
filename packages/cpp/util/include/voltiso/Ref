@@ -1,0 +1,182 @@
+#pragma once
+
+#include "voltiso/Owned"
+#include "voltiso/Shared"
+
+#include <type_traits>
+#include <utility>
+
+// namespace VOLTISO_NAMESPACE::ref {
+// class Virtual {
+// public:
+//   virtual ~Virtual() = default;
+
+//   // since the new Pools no longer have indirection, we don't need this
+//   // virtual void *target() const = 0;
+// }; // class Virtual
+// } // namespace VOLTISO_NAMESPACE::ref
+
+// //
+
+// namespace VOLTISO_NAMESPACE::ref {
+// template <class Implementation>
+// class Dynamic : public ref::Virtual, public Implementation {
+//   static_assert(!std::is_polymorphic_v<Implementation>);
+
+// public:
+//   template <class... Args>
+//   Dynamic(Args &&...args) : Implementation(std::forward<Args>(args)...) {
+//     // std::cout << "Dynamic constructor" << std::endl;
+//   }
+//   // Dynamic(Owned &&other) : Owned(std::move(other)) {}
+
+//   // void *target() const override { return &this->item(); }
+// }; // class Dynamic
+// } // namespace VOLTISO_NAMESPACE::ref
+
+//
+
+namespace VOLTISO_NAMESPACE {
+// type-erasure for `Owned` and `Shared`
+// virtual function calls
+template <class T = void> class Ref {
+  // class OwnedUnknown {
+  using Self = Ref;
+
+public:
+  T *const target = nullptr; // const because public
+
+private:
+  using Deleter = void (*)(void *);
+  Deleter deleter;
+
+  // Storage<ref::Dynamic<Owned<int>>> storage;
+
+public:
+  Ref() = delete; // empty Ref is forbidden
+
+  Ref(const Self &) = delete;
+
+  Ref(Self &&other) {
+    DCHECK_NE(this, &other);
+    const_cast<T *&>(target) = other.target;
+    deleter = other.deleter;
+    // other.pointer = nullptr;
+    other.deleter = nullptr;
+
+    // memcpy(this, &other, sizeof(*this));
+    // auto &otherDynamic = reinterpret_cast<ref::Dynamic<Owned<int>> &>(other);
+    // auto &otherInt = static_cast<Owned<int> &>(otherDynamic);
+    // auto &handle = reinterpret_cast<Pool<int>::Handle &>(otherInt);
+    // handle = Pool<int>::Handle::null;
+  }
+
+  template <class Other,
+            class = std::enable_if_t<std::is_assignable_v<T *&, Other *>>>
+  Ref(Owned<Other> &&other) {
+    static_assert(sizeof(Owned<Other>) == sizeof(void *));
+    new (const_cast<T **>(&this->target)) Owned<Other>(std::move(other));
+    this->deleter = [](void *p) {
+      using Pool = Pool<Other>;
+      using Handle = typename Pool::Handle;
+      auto &pool = Singleton<Pool>::instance();
+      pool.erase(Handle(p));
+      // reinterpret_cast<Owned<Other> *>(&p)->~Owned<Other>();
+    };
+    // // forbid multiple inheritance for performance
+    // DCHECK_EQ((T *)&other.item(), &other.item());
+    // static_assert(sizeof(*this) == sizeof(ref::Dynamic<Owned<Other>>));
+    // // so that move constructor can set handle to null:
+    // static_assert(
+    //     handle::_::getNullValue<typename Pool<Other>::Handle::Type>() ==
+    //     handle::_::getNullValue<typename Pool<int>::Handle::Type>());
+    // new (this) ref::Dynamic<Owned<Other>>(std::move(other));
+    // // std::cout << other._item.value << std::endl;
+  }
+
+  template <class Other,
+            class = std::enable_if_t<std::is_assignable_v<T *&, Other *>>>
+  Ref(Shared<Other> &&other) {
+    const_cast<void *&>(target) = &other.item();
+
+    auto *controlBlock =
+        reinterpret_cast<shared::_::ControlBlock<Other> *>(this->target);
+    static_assert(offsetof(shared::_::ControlBlock<Other>, item) == 0,
+                  "item must be the first member of ControlBlock");
+    ++controlBlock->numReferences;
+
+    this->deleter = [](void *p) {
+      auto *controlBlock =
+          reinterpret_cast<shared::_::ControlBlock<Other> *>(p);
+      controlBlock->dereference();
+    };
+    // // forbid multiple inheritance for performance
+    // DCHECK_EQ((T *)&other.item(), &other.item());
+    // static_assert(sizeof(*this) == sizeof(ref::Dynamic<Shared<Other>>));
+    // // so that move constructor can set handle to null:
+    // static_assert(Pool<Other>::Handle::null.value ==
+    //               Pool<int>::Handle::null.value);
+    // new (this) ref::Dynamic<Shared<Other>>(std::move(other));
+  }
+
+  // private:
+  //   const ref::Virtual &selfVirtual() const {
+  //     static_assert(sizeof(*this) == sizeof(ref::Dynamic<Owned<int>>));
+  //     static_assert(sizeof(*this) == sizeof(ref::Dynamic<Shared<int>>));
+  //     auto &selfDynamic =
+  //         reinterpret_cast<const ref::Dynamic<Owned<int>> &>(*this);
+  //     auto &selfVirtual = static_cast<const ref::Virtual &>(selfDynamic);
+  //     return selfVirtual;
+  //   }
+
+public:
+  ~Ref() {
+    // deleter is nullptr if object is moved-from
+    if (deleter) [[likely]] {
+      deleter(target);
+    }
+    // selfVirtual().~Virtual();
+  }
+
+  // T *target() const {
+  //   // since the new Pools no longer have indirection, we don't need this
+  //   // return selfVirtual().target();
+
+  //   // vtable pointer + pointer to the object
+  //   static_assert(sizeof(*this) == 2 * sizeof(void *));
+  //   return (T *)(void *)&this->storage.item().item();
+  // }
+
+  template <class TT = T,
+            std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+  TT &item() const {
+    // auto target = this->target();
+    DCHECK(target);
+    return *static_cast<T *>(target);
+  }
+
+  T *operator->() const { return target; }
+
+  template <class TT = T,
+            std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+  TT &operator*() const {
+    return item();
+  }
+
+  operator bool() const { return target; }
+
+  template <class TT = T,
+            std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+  operator TT &() const {
+    return item();
+  }
+
+  template <class TT = T,
+            std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+  operator const TT &() const {
+    return item();
+  }
+};
+
+template <class T> constexpr bool is_trivially_relocatable<Ref<T>> = true;
+} // namespace VOLTISO_NAMESPACE

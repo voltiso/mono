@@ -90,28 +90,49 @@ public:
   explicit constexpr Custom(const P &value) noexcept
       : value(reinterpret_cast<Value>(value)) {}
 
-  template <class Pointer_ = Pointer,
-            class = std::enable_if_t<std::is_same_v<Pointer_, Pointer> &&
-                                     !std::is_same_v<Pointer_, void>>>
-  operator Pointer_() const noexcept {
+  template <class P = Pointer,
+            class = std::enable_if_t<std::is_same_v<P, Pointer> &&
+                                     !std::is_same_v<P, void>>>
+  operator P() const noexcept {
     return reinterpret_cast<Pointer>(value);
   }
 
-  template <class Pointer_ = Pointer,
-            class = std::enable_if_t<std::is_same_v<Pointer_, Pointer> &&
-                                     !std::is_same_v<Pointer_, void>>>
+  template <class P = Pointer,
+            class = std::enable_if_t<std::is_same_v<P, Pointer> &&
+                                     !std::is_same_v<P, void>>>
   operator void *() const noexcept {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-    return reinterpret_cast<void *>(value);
+    return std::bit_cast<void *>(value);
 #pragma GCC diagnostic pop
   } // operator void *()
 
+  // for pointer-handles
+  template <class P = Pointer,
+            class = std::enable_if_t<!std::is_same_v<P, void>>>
+  auto operator*() const noexcept -> std::remove_pointer_t<P> & {
+    return *std::bit_cast<P>(this->value);
+  }
+
+  template <class P = Pointer,
+            class = std::enable_if_t<!std::is_same_v<P, void>>>
+  auto operator->() const noexcept -> P {
+    return std::bit_cast<P>(this->value);
+  }
+
 public:
   template <class Argument>
-  using With = handle::Custom<Final, decltype(std::tuple_cat(
+  class With : public handle::Custom<With<Argument>,
+                                     decltype(std::tuple_cat(
                                          std::declval<std::tuple<Argument>>(),
-                                         std::declval<Parameters>()))>;
+                                         std::declval<Parameters>()))> {
+    using Base =
+        handle::Custom<With<Argument>, decltype(std::tuple_cat(
+                                           std::declval<std::tuple<Argument>>(),
+                                           std::declval<Parameters>()))>;
+    using Base::Base;
+    // using Base::operator=;
+  };
 
   template <class NewBrand>
   using WithBrand = With<VOLTISO_NAMESPACE::parameter::Brand<NewBrand>>;
