@@ -22,7 +22,7 @@ export function downloadVcpkg(version: string): Script {
 
 export const bootstrapVcpkg = './vcpkg/bootstrap-vcpkg.sh'
 
-export async function installVcpkg(version = '2024.11.16'): Promise<void> {
+export async function installVcpkg(version: string): Promise<void> {
 	if (!(await exists('vcpkg')))
 		await run(downloadVcpkg(version), bootstrapVcpkg)
 

@@ -136,16 +136,16 @@ public:
     Options::Allocator::get().freeBytes(_::getData(*this));
   }
 
-  void _assumeRelocated() {
-    _::getData(*this) = nullptr;
-    if constexpr (IS_WITH_SIZE) {
-      if constexpr (has::numBytes<Self>) {
-        (size_t &)this->numBytes = 0;
-      } else {
-        _::getNumItems(*this) = 0;
-      }
-    }
-  }
+  // void _assumeRelocated() {
+  //   _::getData(*this) = nullptr;
+  //   if constexpr (IS_WITH_SIZE) {
+  //     if constexpr (has::numBytes<Self>) {
+  //       (size_t &)this->numBytes = 0;
+  //     } else {
+  //       _::getNumItems(*this) = 0;
+  //     }
+  //   }
+  // }
 
   BUILD() noexcept = default;
 

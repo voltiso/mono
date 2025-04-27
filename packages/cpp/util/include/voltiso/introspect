@@ -1,0 +1,10 @@
+#pragma once
+
+namespace VOLTISO_NAMESPACE::introspect {
+void name(const char *name) {
+  //
+}
+void field(const char *name, auto &value) {
+  //
+}
+} // namespace VOLTISO_NAMESPACE::introspect

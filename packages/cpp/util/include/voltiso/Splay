@@ -12,7 +12,8 @@ struct AccessPathNode {
   uint8_t childIndex;
 };
 
-::std::ostream &operator<<(::std::ostream &os, const AccessPathNode &node) {
+inline ::std::ostream &operator<<(::std::ostream &os,
+                                  const AccessPathNode &node) {
   return os << "{node: " << node.node
             << ", childIndex: " << (int)node.childIndex << "}";
 }; // struct _
@@ -137,10 +138,12 @@ public:
 
     auto x = root;
 
-    // ! we use in-place array in order to be able to use this class in
-    // allocators
-    using Stack = DynamicArray<Handle>::template WithInPlaceOnly<32>;
-    // using Stack = DynamicArray::template Item_<Handle>;
+    // ! this was not correct - splay trees can have unbounded heights
+    // // ! we use in-place array in order to be able to use this class in
+    // // allocators
+    // using Stack = DynamicArray<Handle>::template WithInPlaceOnly<32>;
+
+    using Stack = DynamicArray<Handle>;
 
     Stack stack;
     stack.push(x);

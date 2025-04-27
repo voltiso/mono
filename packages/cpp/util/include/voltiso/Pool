@@ -41,23 +41,21 @@ template <class Parameters> struct Block {
   //   static_assert(is_trivially_relocatable<decltype(allocation)>);
 
   Block(size_t numItems) {
-    auto handle =
-        Singleton<Allocator>::instance().allocateBytes(numItems * sizeof(Item));
+    auto numBytes = numItems * sizeof(Slot<Item>);
+    auto handle = Singleton<Allocator>::instance().allocateBytes(numBytes);
     static_assert(sizeof(Slot<Item> *) == sizeof(handle));
     this->allocationStart = std::bit_cast<Slot<Item> *>(handle);
     this->allocationEnd = this->allocationStart + numItems;
-    std::memset(this->allocationStart, 0,
-                (this->allocationEnd - this->allocationStart) *
-                    sizeof(Slot<Item>));
+    std::memset(this->allocationStart, 0, numBytes);
   }
 
   Block(const Block &) = delete;
   Block &operator=(const Block &) = delete;
 
   ~Block() {
+    auto numBytes = (std::byte *)allocationEnd - (std::byte *)allocationStart;
     Singleton<Allocator>::instance().freeBytes(
-        typename Allocator::Handle(allocationStart),
-        (allocationEnd - allocationStart) * sizeof(Item));
+        typename Allocator::Handle(allocationStart), numBytes);
   }
 };
 } // namespace pool::_

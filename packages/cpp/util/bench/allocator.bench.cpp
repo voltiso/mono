@@ -2,7 +2,7 @@
 
 #include <voltiso/Pool>
 #include <voltiso/Singleton>
-#include <voltiso/allocator/Splay>
+// #include <voltiso/allocator/Splay>
 
 #include <cstddef>
 #include <iostream>
@@ -10,13 +10,8 @@
 //
 
 // order may be important
-auto g_malloc = v::allocator::Malloc();
-// auto g_malloc = v::singleton::instance<v::allocator::Malloc>();
-auto g_mallocGuard = v::context::Guard(g_malloc);
-
-// auto g_splay = v::allocator::Splay();
-// auto g_splayGuard = v::context::Guard(g_splay);
-// auto g_splayGuard = v::context::Guard(v::allocator::Splay::instance());
+// auto g_malloc = v::allocator::Malloc();
+// auto g_mallocGuard = v::context::Guard(g_malloc);
 
 //
 
@@ -33,6 +28,7 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
     pool[handle].erase();
   }
 }
+BENCHMARK(BM_allocator_trivial_Pool);
 
 // static void BM_allocator_trivial_Pool_dynamic(benchmark::State &state) {
 //   using namespace VOLTISO_NAMESPACE;
@@ -44,16 +40,17 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
 //   }
 // }
 
-static void BM_allocator_trivial_Splay(benchmark::State &state) {
-  using namespace VOLTISO_NAMESPACE;
-  // auto &splay = g_splay;
-  auto &splay = allocator::Splay::instance();
-  for (auto _ : state) {
-    auto handle = splay.allocateBytes(sizeof(T));
-    benchmark::DoNotOptimize(splay(handle));
-    splay.freeBytes(handle, sizeof(T));
-  }
-}
+// static void BM_allocator_trivial_Splay(benchmark::State &state) {
+//   using namespace VOLTISO_NAMESPACE;
+//   // auto &splay = g_splay;
+//   auto &splay = allocator::Splay::instance();
+//   for (auto _ : state) {
+//     auto handle = splay.allocateBytes(sizeof(T));
+//     benchmark::DoNotOptimize(splay(handle));
+//     splay.freeBytes(handle, sizeof(T));
+//   }
+// }
+// BENCHMARK(BM_allocator_trivial_Splay);
 
 static void BM_allocator_trivial_malloc(benchmark::State &state) {
   for (auto _ : state) {
@@ -62,6 +59,7 @@ static void BM_allocator_trivial_malloc(benchmark::State &state) {
     std::free(ptr);
   }
 }
+BENCHMARK(BM_allocator_trivial_malloc);
 
 static void BM_allocator_trivial_alignedAlloc(benchmark::State &state) {
   for (auto _ : state) {
@@ -70,6 +68,7 @@ static void BM_allocator_trivial_alignedAlloc(benchmark::State &state) {
     std::free(ptr);
   }
 }
+BENCHMARK(BM_allocator_trivial_alignedAlloc);
 
 static void BM_allocator_trivial_new(benchmark::State &state) {
   for (auto _ : state) {
@@ -78,6 +77,7 @@ static void BM_allocator_trivial_new(benchmark::State &state) {
     delete ptr;
   }
 }
+BENCHMARK(BM_allocator_trivial_new);
 
 //
 
@@ -105,23 +105,25 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
     prev = handle;
   }
 }
+BENCHMARK(BM_allocator_simple_Pool);
 
-static void BM_allocator_simple_Splay(benchmark::State &state) {
-  using namespace VOLTISO_NAMESPACE;
-  auto &splay = allocator::Splay::instance();
-  // auto &splay = g_splay;
-  for (int i = 0; i < num; i++) {
-    auto handle = splay.allocateBytes(sizeof(T));
-    benchmark::DoNotOptimize(splay(handle));
-  }
-  auto prev = splay.allocateBytes(sizeof(T));
-  for (auto _ : state) {
-    auto handle = splay.allocateBytes(sizeof(T));
-    benchmark::DoNotOptimize(splay(handle));
-    splay.freeBytes(prev, sizeof(T));
-    prev = handle;
-  }
-}
+// static void BM_allocator_simple_Splay(benchmark::State &state) {
+//   using namespace VOLTISO_NAMESPACE;
+//   auto &splay = allocator::Splay::instance();
+//   // auto &splay = g_splay;
+//   for (int i = 0; i < num; i++) {
+//     auto handle = splay.allocateBytes(sizeof(T));
+//     benchmark::DoNotOptimize(splay(handle));
+//   }
+//   auto prev = splay.allocateBytes(sizeof(T));
+//   for (auto _ : state) {
+//     auto handle = splay.allocateBytes(sizeof(T));
+//     benchmark::DoNotOptimize(splay(handle));
+//     splay.freeBytes(prev, sizeof(T));
+//     prev = handle;
+//   }
+// }
+// BENCHMARK(BM_allocator_simple_Splay);
 
 static void BM_allocator_simple_malloc(benchmark::State &state) {
   for (int i = 0; i < num; i++) {
@@ -136,6 +138,7 @@ static void BM_allocator_simple_malloc(benchmark::State &state) {
     prev = ptr;
   }
 }
+BENCHMARK(BM_allocator_simple_malloc);
 
 static void BM_allocator_simple_alignedAlloc(benchmark::State &state) {
   for (int i = 0; i < num; i++) {
@@ -151,6 +154,7 @@ static void BM_allocator_simple_alignedAlloc(benchmark::State &state) {
     prev = ptr;
   }
 }
+BENCHMARK(BM_allocator_simple_alignedAlloc);
 
 static void BM_allocator_simple_new(benchmark::State &state) {
   for (int i = 0; i < num; i++) {
@@ -165,15 +169,4 @@ static void BM_allocator_simple_new(benchmark::State &state) {
     prev = ptr;
   }
 }
-
-BENCHMARK(BM_allocator_trivial_Pool);
-BENCHMARK(BM_allocator_trivial_Splay);
-BENCHMARK(BM_allocator_trivial_malloc);
-BENCHMARK(BM_allocator_trivial_alignedAlloc);
-BENCHMARK(BM_allocator_trivial_new);
-
-BENCHMARK(BM_allocator_simple_Pool);
-BENCHMARK(BM_allocator_simple_Splay);
-BENCHMARK(BM_allocator_simple_malloc);
-BENCHMARK(BM_allocator_simple_alignedAlloc);
 BENCHMARK(BM_allocator_simple_new);

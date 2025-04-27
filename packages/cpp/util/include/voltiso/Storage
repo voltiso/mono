@@ -2,8 +2,9 @@
 #include <voltiso/_>
 
 #include "voltiso/Array"
+#include "voltiso/is_trivially_relocatable"
 
-#include "glog/logging.h"
+// #include "glog/logging.h"
 
 #include <cstddef>
 #include <initializer_list>
@@ -41,6 +42,21 @@ template <class _Item> struct Storage {
       delete; // we do not know if object is constructed
   Storage &operator=(const Storage &other) =
       delete; // we do not know if object is constructed
+
+  // bitwise move for trivially relocatable underlying type
+  template <class TItem = Item,
+            std::enable_if_t<is_trivially_relocatable<TItem>> * = nullptr>
+  Storage(Storage &&other) {
+    memcpy(&this->bytes, &other.bytes, sizeof(Item));
+  }
+
+  // bitwise move for trivially relocatable underlying type
+  template <class TItem = Item,
+            std::enable_if_t<is_trivially_relocatable<TItem>> * = nullptr>
+  Storage &operator=(Storage &&other) {
+    memcpy(&this->bytes, &other.bytes, sizeof(Item));
+    return *this;
+  }
 
   // template <class... Args>
   // constexpr Storage(Args &&...args) noexcept

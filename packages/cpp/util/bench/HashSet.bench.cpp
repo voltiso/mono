@@ -1,6 +1,7 @@
 #include <benchmark/benchmark.h>
 
 #include <voltiso/HashSet>
+#include <voltiso/Owned>
 
 #include <iostream>
 #include <unordered_set>
@@ -25,6 +26,7 @@ static void BM_HashSet(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_HashSet);
 
 static void BM_HashSet_set(benchmark::State &state) {
   using namespace VOLTISO_NAMESPACE;
@@ -37,6 +39,7 @@ static void BM_HashSet_set(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_HashSet_set);
 
 static void BM_HashSet_stdUnorderedSet(benchmark::State &state) {
   std::unordered_set<int> a;
@@ -49,7 +52,32 @@ static void BM_HashSet_stdUnorderedSet(benchmark::State &state) {
     ++value;
   }
 }
-
-BENCHMARK(BM_HashSet);
-BENCHMARK(BM_HashSet_set);
 BENCHMARK(BM_HashSet_stdUnorderedSet);
+
+static void BM_HashSet_Owned(benchmark::State &state) {
+  using namespace VOLTISO_NAMESPACE;
+  const int numElements = 1000;
+  DynamicArray<Owned<int>> array;
+  for (int i = 0; i < numElements; ++i) {
+    array.push(Owned<int>::create(i));
+  }
+  HashSet<Owned<int>::Weak> set;
+  // const int numOperations = 1000000;
+  // while (state.KeepRunningBatch(numOperations)) {
+  for (auto _ : state) {
+    auto idx = rand() % array.numItems;
+    if (rand() % 2 == 0) {
+      // Add
+      set[*array[idx]].maybeInsert();
+    } else {
+      // Remove
+      set[*array[idx]].maybeErase();
+    }
+  }
+  auto sum = 0;
+  for (auto &item : set) {
+    sum += item;
+  }
+  benchmark::DoNotOptimize(sum);
+}
+BENCHMARK(BM_HashSet_Owned);

@@ -1,17 +1,33 @@
 #pragma once
+#include <voltiso/_>
 
 #include "voltiso/Object"
 #include "voltiso/Pool"
+#include "voltiso/getHash"
 #include "voltiso/getParameter/Type"
 #include "voltiso/getParameter/VALUE"
+#include "voltiso/is_trivially_relocatable"
 #include "voltiso/parameter"
 
+namespace VOLTISO_NAMESPACE::owned {
+template <class Final, class Parameters> class Custom;
+template <class Parameters> class Final;
+} // namespace VOLTISO_NAMESPACE::owned
+
 namespace VOLTISO_NAMESPACE {
+template <class Parameters>
+static constexpr auto is_trivially_relocatable<owned::Final<Parameters>> = true;
 
-template <class Item> class Owned;
+template <class Item>
+using Owned = owned::Final<std::tuple<parameter::Item<Item>>>;
 
-namespace owned {
+template <class Parameters>
+std::size_t getHash(const VOLTISO_NAMESPACE::owned::Final<Parameters> &owned) {
+  return getHash(&owned.item());
+}
+} // namespace VOLTISO_NAMESPACE
 
+namespace VOLTISO_NAMESPACE::owned {
 template <class Item> auto create(const Item &item) {
   return Owned<Item>::create(item);
 }
@@ -46,6 +62,7 @@ public:
   // }
 
   ~Custom() {
+    static_assert(std::is_final_v<Final>); // need to test somewhere
     if constexpr (!WEAK)
       if (this->_item) [[likely]] {
         // std::cout << "erase" << std::endl;
@@ -60,7 +77,11 @@ protected:
   Custom() = default;
 
 public:
+  template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
   Custom(const Custom &) = delete;
+
+  // template <bool W = WEAK, std::enable_if_t<W> * = nullptr>
+  // Custom(const Custom &) = default;
 
   // copy constructor (for weak)
   template <class OtherFinal, class OtherParameters, bool W = WEAK,
@@ -80,6 +101,19 @@ public:
                                       parameter::Item, OtherParameters> *>> * =
                 nullptr>
   Custom &operator=(const Custom<OtherFinal, OtherParameters> &other) {
+    this->_item = other._item;
+    return *this;
+  }
+
+  // move assignment (weak -> weak)
+  template <class OtherFinal, class OtherParameters,
+            std::enable_if_t<
+                WEAK && getParameter::VALUE<parameter::WEAK, OtherParameters> &&
+                std::is_assignable_v<
+                    Item *&, typename getParameter::Type<parameter::Item,
+                                                         OtherParameters> *>>
+                * = nullptr>
+  Custom &operator=(Custom<OtherFinal, OtherParameters> &&other) {
     this->_item = other._item;
     return *this;
   }
@@ -104,6 +138,8 @@ public:
     return *this;
   }
 
+  Custom &operator=(const Custom &) = delete;
+
   // Item &item() { return pool()[_item].item(); }
   // const Item &item() const { return pool()[_item].item(); }
 
@@ -116,26 +152,43 @@ public:
 
   Item &operator*() const { return item(); }
   Item *operator->() const { return &**this; }
+
   operator Item &() const { return **this; }
-  operator Item &&() const { return (Item &&)**this; }
+
+  template <class _Unused = void> operator Item &&() const {
+    return (Item &&)(**this);
+  }
 
 private:
   Pool::Handle _item = Pool::Handle::null;
-
   static constexpr auto &pool() { return Singleton<Pool>::instance(); }
 
 public:
   template <class Parameter>
-  using With =
-      Custom<Final,
-             decltype(std::tuple_cat(std::declval<std::tuple<Parameter>>(),
-                                     std::declval<Parameters>()))>;
+  using With = owned::Final<decltype(std::tuple_cat(
+      std::declval<std::tuple<Parameter>>(), std::declval<Parameters>()))>;
+
   template <class NewItem> using WithItem = With<parameter::Item<NewItem>>;
   using Weak = With<parameter::WEAK<true>>;
 
 public:
   Weak weak() const { return *this; }
-}; // class Owned
+
+public:
+  template <class OtherFinal, class OtherParameters,
+            std::enable_if_t<std::is_same_v<Item, typename OtherFinal::Item>>
+                * = nullptr>
+  bool operator==(const Custom<OtherFinal, OtherParameters> &other) const {
+    return this->_item == other._item;
+  }
+
+}; // class Custom
+
+template <class Parameters>
+class Final final : public Custom<Final<Parameters>, Parameters> {
+  using Base = Custom<Final<Parameters>, Parameters>;
+  using Base::Base;
+};
 
 //
 
@@ -156,8 +209,9 @@ public:
     return std::forward<Other>(lhs) op * rhs;                                  \
   }
 
-DEFINE_OPERATOR(==)
-DEFINE_OPERATOR(!=)
+// ! not sure
+// DEFINE_OPERATOR(==)
+// DEFINE_OPERATOR(!=)
 
 DEFINE_OPERATOR(<)
 DEFINE_OPERATOR(<=)
@@ -200,15 +254,4 @@ DEFINE_OPERATOR(||)
 
 #undef DEFINE_OPERATOR
 
-} // namespace owned
-
-//
-
-template <class Item>
-class Owned
-    : public owned::Custom<Owned<Item>, std::tuple<parameter::Item<Item>>> {
-  using Base = owned::Custom<Owned<Item>, std::tuple<parameter::Item<Item>>>;
-  using Base::Base;
-};
-
-} // namespace VOLTISO_NAMESPACE
+} // namespace VOLTISO_NAMESPACE::owned

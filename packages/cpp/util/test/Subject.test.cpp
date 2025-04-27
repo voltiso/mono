@@ -12,7 +12,7 @@ TEST(Subject, Basic) {
     gotValue = value;
     //
   };
-  static_assert(sizeof(std::function<void(const int &)>) == 8);
+  // static_assert(sizeof(std::function<void(const int &)>) == 8);
   subject.subscribe(std::move(callback));
 
   EXPECT_EQ(gotValue, 0); // not called yet

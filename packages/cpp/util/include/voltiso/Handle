@@ -13,13 +13,36 @@
 
 //
 
-namespace VOLTISO_NAMESPACE {
-
-namespace handle::parameter {
+namespace VOLTISO_NAMESPACE::handle::parameter {
 template <class T> struct Type : TypeParameter<T, void *> {};
-} // namespace handle::parameter
+} // namespace VOLTISO_NAMESPACE::handle::parameter
 
-namespace handle::_ {
+namespace VOLTISO_NAMESPACE::handle {
+template <class Final, class Parameters> class Custom;
+template <class Parameters = std::tuple<>>
+class Final : public Custom<Final<Parameters>, Parameters> {
+  using Base = Custom<Final, Parameters>;
+  using Base::Base;
+};
+} // namespace VOLTISO_NAMESPACE::handle
+
+namespace VOLTISO_NAMESPACE {
+using Handle = handle::Final<>;
+} // namespace VOLTISO_NAMESPACE
+
+namespace std {
+template <class Parameters>
+struct hash<VOLTISO_NAMESPACE::handle::Final<Parameters>> {
+  using Handle = VOLTISO_NAMESPACE::handle::Final<Parameters>;
+  auto operator()(const Handle &handle) const {
+    return ::std::hash<typename Handle::Value>{}(handle.value);
+  }
+};
+} // namespace std
+
+//
+
+namespace VOLTISO_NAMESPACE::handle::_ {
 template <class Type> constexpr auto getNullValue() noexcept {
   if constexpr (std::is_pointer_v<Type>) {
     return uintptr_t(0);
@@ -27,9 +50,9 @@ template <class Type> constexpr auto getNullValue() noexcept {
     return std::numeric_limits<Type>::max();
   }
 }
-} // namespace handle::_
+} // namespace VOLTISO_NAMESPACE::handle::_
 
-namespace handle {
+namespace VOLTISO_NAMESPACE::handle {
 template <class Final, class Parameters = std::tuple<>>
 class Custom : public Object<Final> {
 private:
@@ -122,24 +145,14 @@ public:
 
 public:
   template <class Argument>
-  class With : public handle::Custom<With<Argument>,
-                                     decltype(std::tuple_cat(
-                                         std::declval<std::tuple<Argument>>(),
-                                         std::declval<Parameters>()))> {
-    using Base =
-        handle::Custom<With<Argument>, decltype(std::tuple_cat(
-                                           std::declval<std::tuple<Argument>>(),
-                                           std::declval<Parameters>()))>;
-    using Base::Base;
-    // using Base::operator=;
-  };
+  using With = handle::Final<decltype(std::tuple_cat(
+      std::declval<std::tuple<Argument>>(), std::declval<Parameters>()))>;
 
   template <class NewBrand>
   using WithBrand = With<VOLTISO_NAMESPACE::parameter::Brand<NewBrand>>;
 
   template <class NewType>
   using WithType = With<handle::parameter::Type<NewType>>;
-
 }; // class Custom
 
 template <class Final, class Parameters>
@@ -154,32 +167,4 @@ std::ostream &operator<<(std::ostream &os,
   }
   return os << "Handle(" << handle.value << ")";
 }
-
-} // namespace handle
-
-// Define Handle after Custom is complete
-class Handle : public handle::Custom<Handle> {
-  using Base = handle::Custom<Handle>;
-  using Base::Base;
-};
-
-} // namespace VOLTISO_NAMESPACE
-
-//
-
-namespace std {
-template <class Final, class Parameters>
-struct hash<VOLTISO_NAMESPACE::handle::Custom<Final, Parameters>> {
-  using HandleType = VOLTISO_NAMESPACE::handle::Custom<Final, Parameters>;
-  auto operator()(const HandleType &handle) const {
-    return ::std::hash<typename HandleType::Value>{}(handle.value);
-  }
-};
-
-template <> struct hash<VOLTISO_NAMESPACE::Handle> {
-  using HandleType = VOLTISO_NAMESPACE::Handle;
-  auto operator()(const HandleType &handle) const {
-    return ::std::hash<typename HandleType::Value>{}(handle.value);
-  }
-};
-} // namespace std
+} // namespace VOLTISO_NAMESPACE::handle

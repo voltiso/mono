@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <voltiso/Subject>
+#include <voltiso/introspect>
 #include <voltiso/throwError>
-
 using namespace VOLTISO_NAMESPACE;
 
 struct TickEvent {};
@@ -30,6 +31,7 @@ struct Ball {
 
   // used to serialize and deserialize the state
   void introspect() {
+    using namespace introspect;
     name("Ball");
     field("position", position);
     field("velocity", velocity);
@@ -42,7 +44,7 @@ struct Ball {
   Owned<Retainer> retainer = Owned<Retainer>::create();
 
   void instantiate() {
-    context::Guard<Retainer>(retainer);
+    auto guard = context::Guard<Retainer>(retainer);
 
     auto &input = context::get<Input>();
     auto &ticker = context::get<Ticker>();
@@ -68,14 +70,14 @@ struct Ball {
       y += vy;
     };
 
-    onChange(isFrozen, [] {
+    subscribe(isFrozen, [] {
       if (isFrozen)
         return;
       // register our callback to be called on every tick
       ticker.on<TickEvent>(tick);
     });
 
-    onChange({props.isVisible, props.size}, [] {
+    subscribe({props.isVisible, props.size}, [] {
       if (!props.isVisible)
         return;
       renderer.on<DrawEvent>([&](DrawEvent &event) {
@@ -83,7 +85,7 @@ struct Ball {
       });
     });
 
-    onChange({props.isControlled}, [] {
+    subscribe({props.isControlled}, [] {
       if (!props.isControlled)
         return;
       input.on<KeyEvent>([&](KeyEvent &event) {

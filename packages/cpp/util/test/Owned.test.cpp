@@ -29,12 +29,12 @@ TEST(Owned, trivial) {
             sizeof(std::unique_ptr<int>)); // Owned is now always a ptr
 
   // operator ==
-  EXPECT_EQ(owned, 123);
-  EXPECT_EQ(123, owned);
+  EXPECT_EQ(owned, 123); // todo: this was working before?
+  EXPECT_EQ(123, owned); // todo: this was working before?
 
   // operator !=
-  EXPECT_NE(owned, 124);
-  EXPECT_NE(124, owned);
+  EXPECT_NE(owned, 124); // todo: this was working before?
+  EXPECT_NE(124, owned); // todo: this was working before?
 
   // operator *
   EXPECT_EQ(*owned, 123);
@@ -53,6 +53,22 @@ TEST(Owned, trivial) {
   // EXPECT_EQ((int)owned, 123);
   // EXPECT_EQ((const int)owned, 123);
 }
+
+//
+
+TEST(Owned, compare) {
+  // // should be ambiguous
+  // EXPECT_NE(Owned<int>::create(123), Owned<int>::create(123));
+
+  struct A final {
+    int value;
+  };
+  auto owned1 = Owned<A>::create({123});
+  auto owned2 = Owned<A>::create({123});
+  EXPECT_NE(owned1, owned2);
+}
+
+//
 
 TEST(Owned, big) {
   struct A final {
@@ -80,6 +96,7 @@ TEST(Owned, big) {
   EXPECT_EQ((A &)owned, (A{1, 2, 3}));
   EXPECT_EQ((const A &)owned, (A{1, 2, 3}));
   EXPECT_EQ((A &&)owned, (A{1, 2, 3}));
+  EXPECT_EQ((const A &&)owned, (A{1, 2, 3}));
 
   struct AA {
     A a;
@@ -139,4 +156,13 @@ TEST(Owned, weak) {
   EXPECT_EQ(*weak, 123);
   weak = owned.weak();
   EXPECT_EQ(*weak, 123);
+}
+
+TEST(Owned, weak_compare) {
+  struct A final {};
+  Owned<A> owned = Owned<A>::create();
+  auto weak = owned.weak();
+  EXPECT_EQ(weak, owned.weak());
+  EXPECT_EQ(owned, weak);
+  EXPECT_EQ(weak, owned);
 }

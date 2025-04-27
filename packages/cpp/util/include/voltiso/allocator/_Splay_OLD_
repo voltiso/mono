@@ -17,6 +17,9 @@
 // ! experimental - unused, 6x slower than malloc, does not ever return memory
 // ! to the system
 
+// ! currently not even correct - incorrectly assumed splay trees can never have
+// ! large heights, and the Splay class buffer can be InPlaceOnly
+
 namespace VOLTISO_NAMESPACE::allocator::splay {
 // struct Defaults {
 //   // parent allocator

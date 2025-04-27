@@ -3,10 +3,15 @@
 
 #include <voltiso/throwError>
 
-#include <glog/logging.h>
+// #include <glog/logging.h>
 
-#include <cstdlib>
+#include <stdexcept>
+
+#ifdef WIN32
+#include <sysinfoapi.h>
+#else
 #include <unistd.h>
+#endif
 
 namespace VOLTISO_NAMESPACE::memory {
 
@@ -15,7 +20,13 @@ static constexpr size_t PAGE_SIZE = 4096; // 4096 ?
 /** @internal */
 struct _Check {
   _Check() {
+#ifdef WIN32
+    SYSTEM_INFO si;
+    GetSystemInfo(&si);
+    auto realPageSize = si.dwPageSize;
+#else
     auto realPageSize = sysconf(_SC_PAGESIZE);
+#endif
     if (PAGE_SIZE != realPageSize) {
       throwError(std::runtime_error("realPageSize != 4096"));
     }

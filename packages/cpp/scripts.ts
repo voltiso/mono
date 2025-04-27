@@ -9,6 +9,8 @@ import { run } from '@voltiso/script'
 import type { BuildType } from '@voltiso/script.cmake'
 import { installVcpkg } from '@voltiso/script.cmake'
 
+const vcpkgVersion = '2025.04.09'
+
 // export const prepare: Promise<Script> = configure({ type: 'Debug' })
 
 export const clean = 'rimraf build'
@@ -40,7 +42,7 @@ export async function exists(fileName: string): Promise<boolean> {
 //
 
 export const prepare = [
-	installVcpkg,
+	() => installVcpkg(vcpkgVersion),
 	`ln -sf ${dir({ compiler: 'clang-18', buildType: 'Release' })}/compile_commands.json`,
 ]
 

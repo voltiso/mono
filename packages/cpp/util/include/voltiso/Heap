@@ -1,0 +1,134 @@
+#pragma once
+
+#include "voltiso/DynamicArray"
+#include "voltiso/is_trivially_relocatable"
+
+namespace VOLTISO_NAMESPACE::heap {
+template <class Final, class Parameters>
+class Custom
+    : private dynamicArray::Custom<
+          Final, std::tuple<parameter::Item<Storage<
+                     getParameter::Type<parameter::Item, Parameters>>>>> {
+  //   using Self = Custom;
+  using Base = dynamicArray::Custom<
+      Final, std::tuple<parameter::Item<
+                 Storage<getParameter::Type<parameter::Item, Parameters>>>>>;
+
+public:
+  using Item = getParameter::Type<parameter::Item, Parameters>;
+  static_assert(is_trivially_relocatable<Item>);
+
+  using Base::numItems;
+
+public:
+  Custom() = default;
+
+  Custom(std::initializer_list<Item> items) {
+    for (auto &item : items) {
+      push(std::move(item));
+    }
+  }
+
+  template <class TItem,
+            std::enable_if_t<std::is_convertible_v<TItem &&, Item>> * = nullptr>
+  void push(TItem &&item) {
+    Base::push();
+    auto index = Base::numItems;
+    Storage<Item> *array = &Base::first() - 1;
+    while (index != 1 && array[index >> 1].item() < item) [[likely]] {
+      auto nextIndex = index >> 1;
+      static_assert(is_trivially_relocatable<Item>);
+      // memcpy(array + index, array + nextIndex, sizeof(Item));
+      array[index] = std::move(array[nextIndex]);
+      // std::swap(array[index], array[nextIndex]);
+      index = nextIndex;
+    }
+    array[index].construct(std::forward<TItem>(item));
+  }
+
+  const Item &peek() const {
+    DCHECK_NE(Base::numItems, 0);
+    return Base::first().item();
+  }
+
+  Item pop() {
+    DCHECK_NE(Base::numItems, 0);
+    Item item = std::move(Base::first().item());
+    auto lastItem = std::move(Base::last());
+    Base::pop();
+    size_t index = 1;
+    // decltype(Base::numItems) index = 1;
+    Storage<Item> *array = &Base::slots()->item() - 1;
+    while ((index << 1) <= Base::numItems) [[likely]] {
+      auto indexLeft = (index << 1);
+      auto indexRight = indexLeft + 1;
+      if (indexRight <= Base::numItems &&
+          array[indexLeft].item() < array[indexRight].item()) [[unlikely]] {
+        if (array[index].item() < array[indexRight].item()) [[likely]] {
+          array[index] = std::move(array[indexRight]);
+          // std::swap(array[index], array[indexRight]);
+          index = indexRight;
+        } else
+          break;
+      } else [[likely]] {
+        if (array[index].item() < array[indexLeft].item()) [[likely]] {
+          array[index] = std::move(array[indexLeft]);
+          // std::swap(array[index], array[indexLeft]);
+          index = indexLeft;
+        } else
+          break;
+      }
+    }
+    array[index] = std::move(lastItem);
+    return item;
+  }
+
+public:
+  /**
+   *  - Invalidates on resize
+   *  - Invalidates on relocation
+   */
+  class ConstIterator final
+      : public memory::ConstIteratorCrtp<Item, ConstIterator> {
+  public:
+    // using Self = ConstIterator;
+    using Base = memory::ConstIteratorCrtp<Item, ConstIterator>;
+
+    // using Item = Item;
+
+    using Base::Base;
+  };
+
+public:
+  // instead of `using Base::begin`, make iterators always const
+  // auto begin() const {}
+  // auto end() const { return Base::end(); }
+
+  ConstIterator begin() const {
+    DCHECK_GT(numItems, 0);
+    return &Base::slots()->item().item();
+  }
+  ConstIterator end() const {
+    DCHECK_GT(numItems, 0);
+    return &Base::slots()->item().item() + this->numItems;
+  }
+};
+} // namespace VOLTISO_NAMESPACE::heap
+
+namespace VOLTISO_NAMESPACE {
+template <class Item>
+class Heap final
+    : public heap::Custom<Heap<Item>, std::tuple<parameter::Item<Item>>> {
+  using Base = heap::Custom<Heap<Item>, std::tuple<parameter::Item<Item>>>;
+
+public:
+  using Base::Base;
+  using Base::operator=;
+};
+
+template <class Final, class Parameters>
+constexpr auto is_trivially_relocatable<heap::Custom<Final, Parameters>> = true;
+
+template <class Item>
+constexpr auto is_trivially_relocatable<Heap<Item>> = true;
+} // namespace VOLTISO_NAMESPACE

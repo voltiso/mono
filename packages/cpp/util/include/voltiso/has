@@ -28,7 +28,7 @@ VOLTISO_HAS_DEFINE(slots)
 VOLTISO_HAS_DEFINE(key)
 VOLTISO_HAS_DEFINE(value)
 VOLTISO_HAS_DEFINE(entry)
-VOLTISO_HAS_DEFINE(_assumeRelocated)
+// VOLTISO_HAS_DEFINE(_assumeRelocated)
 
 #define VOLTISO_HAS_FUNCTION_DEFINE(member)                                    \
   namespace VOLTISO_NAMESPACE::has::function::_ {                              \

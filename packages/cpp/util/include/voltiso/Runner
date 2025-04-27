@@ -1,0 +1,55 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/Function"
+
+#include <chrono>
+
+namespace VOLTISO_NAMESPACE {
+class Task {};
+
+class Runner {
+private:
+  bool keepRunning = true;
+
+public:
+  using Clock = std::chrono::high_resolution_clock;
+  using Duration = Clock::duration;
+
+  void loop() {
+    keepRunning = true;
+    while (keepRunning) {
+      //
+    }
+  }
+
+  // finish current tasks, break out of `loop()`
+  void stop() { keepRunning = false; }
+
+  //   // break out of `loop()`, do not finish current tasks
+  //   void terminate() {}
+
+  Task post(Function<void()> &&run) {
+    Task task;
+    return task;
+  }
+
+  Task postDelayed(Duration delay, Function<void()> &&run) {
+    Task task;
+    return task;
+  }
+
+  // period is start->start
+  Task postScheduled(Duration period, Function<void()> &&run) {
+    Task task;
+    return task;
+  }
+
+  // period is start->start
+  // catch-up to maintain constant average rate
+  Task postFixedRate(Duration period, Function<void()> &&run) {
+    Task task;
+    return task;
+  }
+};
+} // namespace VOLTISO_NAMESPACE

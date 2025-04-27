@@ -1,0 +1,12 @@
+#pragma once
+
+#include <cstddef>
+#include <functional>
+
+namespace VOLTISO_NAMESPACE {
+
+template <class T> std::size_t getHash(const T &value) {
+  return std::hash<T>{}(value);
+}
+
+} // namespace VOLTISO_NAMESPACE

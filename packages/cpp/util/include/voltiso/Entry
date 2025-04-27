@@ -4,7 +4,6 @@
 #include "voltiso/has"
 #include "voltiso/is_trivially_relocatable"
 
-#include <functional>
 #include <type_traits>
 
 namespace VOLTISO_NAMESPACE {
@@ -35,7 +34,7 @@ constexpr const auto &getEntry(const Item &item) {
   return getEntry(const_cast<Item &>(item));
 }
 
-//
+// getKey
 
 template <class Item, std::enable_if_t<has::key<Item>> * = nullptr>
 constexpr auto &getKey(Item &item) {
@@ -46,19 +45,25 @@ constexpr auto &getKey(Item &item) {
   }
 }
 
-template <class Item, std::enable_if_t<has::key<Item>> * = nullptr>
-constexpr const auto &getKey(const Item &item) {
-  return getKey(const_cast<Item &>(item));
+template <class Item,
+          std::enable_if_t<!has::key<Item> && !has::entry<Item>> * = nullptr>
+constexpr auto &getKey(Item &item) {
+  return item; // identity function by default
 }
-
-//
 
 template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
-constexpr auto getKey(const Item &item) {
+constexpr auto &getKey(Item &item) {
+  return getKey(getEntry(item));
+}
+
+template <class Item> constexpr const auto &getKey(const Item &item) {
   return getKey(const_cast<Item &>(item));
 }
 
-//
+template <class Item>
+using GetKey = std::decay_t<decltype(getKey(std::declval<Item>()))>;
+
+// getValue
 
 template <class Item, class = std::enable_if_t<has::value<Item>>>
 constexpr auto &getValue(Item &item) {
@@ -69,42 +74,10 @@ constexpr auto &getValue(Item &item) {
   }
 }
 
-template <class Item, std::enable_if_t<has::value<Item>> * = nullptr>
-constexpr const auto &getValue(const Item &item) {
-  return getValue(const_cast<Item &>(item));
-}
-
-// disable this?
-template <
-    class Item, std::enable_if_t<!std::is_integral_v<Item>> * = nullptr,
-    class = decltype(std::declval<std::hash<Item>>()(std::declval<Item>()))>
-constexpr auto getKey(const Item &item) {
-  return std::hash<Item>{}(item);
-}
-
-template <class Item, std::enable_if_t<std::is_integral_v<Item>> * = nullptr>
-constexpr auto getKey(const Item &item) {
-  return item;
-}
-
-// disable this?
-template <class Item, decltype(std::declval<std::hash<Item>>()(
-                          std::declval<Item>())) * = nullptr>
+template <class Item,
+          std::enable_if_t<!has::value<Item> && !has::entry<Item>> * = nullptr>
 constexpr auto &getValue(Item &item) {
-  return item;
-}
-
-template <class Item, decltype(std::declval<std::hash<Item>>()(
-                          std::declval<Item>())) * = nullptr>
-constexpr const auto &getValue(const Item &item) {
-  return getValue(const_cast<Item &>(item));
-}
-
-//
-
-template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
-constexpr auto getKey(Item &item) {
-  return getKey(getEntry(item));
+  return item; // identity function by default
 }
 
 template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
@@ -112,20 +85,44 @@ constexpr auto &getValue(Item &item) {
   return getValue(getEntry(item));
 }
 
-template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
-constexpr const auto &getValue(const Item &item) {
+template <class Item> constexpr const auto &getValue(const Item &item) {
   return getValue(const_cast<Item &>(item));
 }
 
+// // disable this?
+// template <
+//     class Item, std::enable_if_t<!std::is_integral_v<Item>> * = nullptr,
+//     class = decltype(std::declval<std::hash<Item>>()(std::declval<Item>()))>
+// constexpr auto getKey(const Item &item) {
+//   return std::hash<Item>{}(item);
+// }
+
+// template <class Item, std::enable_if_t<std::is_integral_v<Item>> * = nullptr>
+// constexpr auto getKey(const Item &item) {
+//   return item;
+// }
+
+// // disable this?
+// template <class Item, decltype(std::declval<std::hash<Item>>()(
+//                           std::declval<Item>())) * = nullptr>
+// constexpr auto &getValue(Item &item) {
+//   return item;
+// }
+
+// template <class Item, decltype(std::declval<std::hash<Item>>()(
+//                           std::declval<Item>())) * = nullptr>
+// constexpr const auto &getValue(const Item &item) {
+//   return getValue(const_cast<Item &>(item));
+// }
+
 //
 
-template <class = void> constexpr void getValue(...) {
-  static_assert(false, "entry type does not have a value (key-only entry or "
-                       "`getValue` is not defined for your custom type)");
-}
+//
 
-template <class Item>
-using GetKey = std::decay_t<decltype(getKey(std::declval<Item>()))>;
+// template <class = void> constexpr void getValue(...) {
+//   static_assert(false, "entry type does not have a value (key-only entry or "
+//                        "`getValue` is not defined for your custom type)");
+// }
 
 template <class Item>
 using GetValue = std::decay_t<decltype(getValue(std::declval<Item>()))>;

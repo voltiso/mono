@@ -9,11 +9,9 @@
 #include "voltiso/getParameter/Type"
 #include "voltiso/getParameter/VALUE"
 #include "voltiso/has"
-#include "voltiso/is_derived_from_template"
+// #include "voltiso/is_derived_from_template"
 #include "voltiso/is_trivially_relocatable"
 #include "voltiso/parameter"
-
-#include "glog/logging.h"
 
 #include <bit>
 #include <cstddef>
@@ -275,13 +273,13 @@ public:
     }
   }
 
-private:
-  friend Object<Final>;
-  // make sure the destructor will be no-op
-  void _assumeRelocated() {
-    const_cast<size_t &>(this->numItems) = 0;
-    const_cast<size_t &>(this->numSlots) = 0;
-  }
+  // private:
+  //   friend Object<Final>;
+  //   // make sure the destructor will be no-op
+  //   void _assumeRelocated() {
+  //     const_cast<size_t &>(this->numItems) = 0;
+  //     const_cast<size_t &>(this->numSlots) = 0;
+  //   }
 
 public:
   Custom() = default;
@@ -301,9 +299,8 @@ public:
   // explicit Build(const Self &other) = default;
   // Build(Self &&other) noexcept = default;
 
-  template <class Other, class = std::enable_if_t<
-                             is_derived_from_template<Other, SelfTemplate>>>
-  explicit Custom(const Other &other) {
+  template <class OtherFinal, class OtherParameters>
+  explicit Custom(const Custom<OtherFinal, OtherParameters> &other) {
     setNumSlots(other.numItems);
     auto memory = slots();
     auto otherMemory = other.slots();
@@ -536,6 +533,7 @@ public:
   Handle push(const Item &item) { return push<>(item); }
 
   template <class... Args> Handle push(Args &&...args) {
+    // std::cout << "push" << std::endl;
     if constexpr (has::numSlots<Self>) {
       DCHECK_LE(numItems, this->numSlots);
     }
@@ -581,12 +579,12 @@ public:
   void grow() {
     static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
                   0);
-    // LOG(INFO) << "grow";
     auto newNumSlots = this->numSlots << 1;
     if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> == 0) {
       if (!newNumSlots) [[unlikely]]
         newNumSlots = 1;
     }
+    // LOG(INFO) << "grow " << this->numSlots << " " << newNumSlots;
     DCHECK_GT(newNumSlots, this->numSlots);
     this->setNumSlots(newNumSlots);
   }
@@ -679,6 +677,15 @@ public:
     return &slots()->item();
   }
   Iterator end() {
+    DCHECK_GT(numItems, 0);
+    return &slots()->item() + this->numItems;
+  }
+
+  ConstIterator begin() const {
+    DCHECK_GT(numItems, 0);
+    return &slots()->item();
+  }
+  ConstIterator end() const {
     DCHECK_GT(numItems, 0);
     return &slots()->item() + this->numItems;
   }

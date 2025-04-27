@@ -28,6 +28,7 @@ static void BM_map_hash(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_map_hash);
 
 // static void BM_map_hash_inPlace(benchmark::State &state) {
 //   using namespace VOLTISO_NAMESPACE;
@@ -40,6 +41,7 @@ static void BM_map_hash(benchmark::State &state) {
 //     ++value;
 //   }
 // }
+// BENCHMARK(BM_map_hash_inPlace);
 
 static void BM_map_hash_cc(benchmark::State &state) {
   cc_hash_table<int, int> a;
@@ -51,6 +53,7 @@ static void BM_map_hash_cc(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_map_hash_cc);
 
 static void BM_map_hash_gp(benchmark::State &state) {
   gp_hash_table<int, int> a;
@@ -62,6 +65,7 @@ static void BM_map_hash_gp(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_map_hash_gp);
 
 static void BM_map_hash_stdUnorderedMap(benchmark::State &state) {
   std::unordered_map<int, int> a;
@@ -73,11 +77,6 @@ static void BM_map_hash_stdUnorderedMap(benchmark::State &state) {
     ++value;
   }
 }
-
-BENCHMARK(BM_map_hash);
-// BENCHMARK(BM_map_hash_inPlace);
-BENCHMARK(BM_map_hash_cc);
-BENCHMARK(BM_map_hash_gp);
 BENCHMARK(BM_map_hash_stdUnorderedMap);
 
 //
@@ -100,6 +99,7 @@ static void BM_map_tree(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_map_tree);
 
 static void BM_map_tree_pbdsRb(benchmark::State &state) {
   using MyTree = tree<int, int, std::less<int>, rb_tree_tag, null_node_update>;
@@ -112,6 +112,7 @@ static void BM_map_tree_pbdsRb(benchmark::State &state) {
     ++value;
   }
 }
+BENCHMARK(BM_map_tree_pbdsRb);
 
 // ! segfault
 // static void BM_SplayMap_pbdsSplay(benchmark::State &state) {
@@ -128,6 +129,7 @@ static void BM_map_tree_pbdsRb(benchmark::State &state) {
 //     ++value;
 //   }
 // }
+// BENCHMARK(BM_SplayMap_pbdsSplay);
 
 static void BM_map_tree_stdMap(benchmark::State &state) {
   std::map<int, int> a;
@@ -139,8 +141,4 @@ static void BM_map_tree_stdMap(benchmark::State &state) {
     ++value;
   }
 }
-
-BENCHMARK(BM_map_tree);
-BENCHMARK(BM_map_tree_pbdsRb);
-// BENCHMARK(BM_SplayMap_pbdsSplay);
 BENCHMARK(BM_map_tree_stdMap);

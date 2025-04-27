@@ -2,9 +2,8 @@
 #include <voltiso/_>
 
 #ifndef VOLTISO_NAMESPACE
-#pragma message(                                                               \
-    "VOLTISO_NAMESPACE is not defined! Check your CMake configuration.")
-// #define VOLTISO_NAMESPACE v
+#pragma message("VOLTISO_NAMESPACE not defined - defaulting to `v`.")
+#define VOLTISO_NAMESPACE v
 #endif
 
 #ifndef VOLTISO_DEBUG
@@ -13,4 +12,15 @@
 #else
 #define VOLTISO_DEBUG true
 #endif
+#endif
+
+#if __has_include(<glog/logging.h>)
+#include <glog/logging.h>
+#else
+#define DCHECK(a) ((void)0)
+#define DCHECK_EQ(a, b) ((void)0)
+#define DCHECK_GT(a, b) ((void)0)
+#define DCHECK_GE(a, b) ((void)0)
+#define DCHECK_LT(a, b) ((void)0)
+#define DCHECK_LE(a, b) ((void)0)
 #endif

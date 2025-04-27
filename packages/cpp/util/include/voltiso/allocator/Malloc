@@ -18,7 +18,6 @@
 namespace VOLTISO_NAMESPACE::allocator::malloc {
 
 #if VOLTISO_DEBUG_MALLOC
-
 namespace _ {
 struct Debug {
   std::map<void *, size_t> allocations;
@@ -67,11 +66,17 @@ Custom<Final, Parameters>::allocateBytesAligned(size_t numBytes,
   CHECK_GT(alignment, 0);
 #endif
   void *handle;
+
+#ifdef WIN32
+  handle = _aligned_malloc(alignment, numBytes);
+#else
   auto err = ::posix_memalign(&handle, alignment, numBytes);
   if (err) [[unlikely]] {
     throwError(std::runtime_error("Failed to allocate " +
                                   std::to_string(numBytes) + " bytes"));
   }
+#endif
+
 #if VOLTISO_DEBUG_MALLOC
   auto &debug = *this->_debug;
   debug.allocations[handle] = numBytes;

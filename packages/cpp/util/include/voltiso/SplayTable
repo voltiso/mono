@@ -4,6 +4,16 @@
 #include "voltiso/Pool"
 #include "voltiso/Splay"
 
+namespace VOLTISO_NAMESPACE::splayTable {
+template <class Final, class Parameters> class Custom;
+template <class Parameters> class Final;
+} // namespace VOLTISO_NAMESPACE::splayTable
+
+namespace VOLTISO_NAMESPACE {
+template <class Entry>
+using SplayTable = splayTable::Final<std::tuple<parameter::Entry<Entry>>>;
+} // namespace VOLTISO_NAMESPACE
+
 namespace VOLTISO_NAMESPACE::splayTable::_ {
 template <class Final, class Parameters> struct Node {
 private:
@@ -17,12 +27,6 @@ public:
   Array<Handle, 2> children = {Handle::null, Handle::null};
 };
 } // namespace VOLTISO_NAMESPACE::splayTable::_
-
-//
-
-namespace VOLTISO_NAMESPACE::splayTable {
-template <class Final, class Parameters> class Custom;
-} // namespace VOLTISO_NAMESPACE::splayTable
 
 //
 
@@ -184,14 +188,6 @@ public:
 //
 
 namespace VOLTISO_NAMESPACE::splayTable {
-// struct Defaults {
-//   using Entry = void; // need to override
-//   using Allocator = allocator::Malloc;
-// };
-// using DefaultOptions = Options<Defaults>;
-
-//
-
 template <class Final, class Parameters> class Custom : public Object<Final> {
   using Self = Custom;
 
@@ -222,6 +218,37 @@ private:
   Pool::Handle root = Pool::Handle::null;
 
 public:
+  ~Custom() { _destroy(root); }
+
+private:
+  void _destroy(Pool::Handle node) {
+    if (!node) [[likely]] // optimize empty splay path (fast)
+      return;
+
+    DynamicArray<typename Pool::Handle> stack = {node};
+    while (stack.numItems) {
+      auto node = stack.pop();
+
+      if (node->children[0]) [[likely]]
+        stack.push(node->children[0]);
+
+      if (node->children[1]) [[likely]]
+        stack.push(node->children[1]);
+
+      pool.erase(node);
+    }
+  }
+  // // non-stack-overflow friendly
+  // void _destroy(Pool::Handle node) {
+  //   if (!node)
+  //     return;
+
+  //   _destroy(node->children[0]);
+  //   _destroy(node->children[1]);
+  //   pool.erase(node);
+  // }
+
+public:
   Custom() = default;
   Custom(std::initializer_list<Entry> entries) {
     for (auto &entry : entries) {
@@ -237,9 +264,7 @@ public:
 private:
   auto _splay() const {
     auto &pool = const_cast<Pool &>(this->pool);
-    // auto &root = const_cast<Pool::Handle &>(this->root);
     return Splay<Pool>(pool);
-    // return Splay<Pool>(pool)(root);
   }
 
 public:
@@ -256,23 +281,13 @@ public:
 
 public:
   Iterator begin() { return Iterator(false, *this); }
-  // ConstIterator begin() const { return {}; }
-
   Iterator end() { return Iterator(true, *this); }
-  // ConstIterator end() const { return {}; }
-}; // class Build
-} // namespace VOLTISO_NAMESPACE::splayTable
+}; // class Custom
 
-// VOLTISO_OBJECT_FINAL(splayTable)
-// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(splayTable)
-
-namespace VOLTISO_NAMESPACE {
-template <class Entry>
-class SplayTable
-    : public splayTable::Custom<SplayTable<Entry>,
-                                std::tuple<parameter::Entry<Entry>>> {
-  using Base = splayTable::Custom<SplayTable<Entry>,
-                                  std::tuple<parameter::Entry<Entry>>>;
+template <class Parameters>
+class Final final : public Custom<Final<Parameters>, Parameters> {
+  using Base = Custom<Final<Parameters>, Parameters>;
   using Base::Base;
-};
-} // namespace VOLTISO_NAMESPACE
+}; // class Final
+
+} // namespace VOLTISO_NAMESPACE::splayTable

@@ -5,23 +5,26 @@
 // #include "voltiso/is_derived_from"
 // #include "voltiso/is_trivially_relocatable"
 
-#include "glog/logging.h"
+// #include "glog/logging.h"
 
 #include <cstring>
-// #include <type_traits>
 
 //
 
 namespace VOLTISO_NAMESPACE {
 
+// Here we could test if Final is actually final, but it's impossible, because:
+//  - We want `Object` default-constructible (can't test in
+//  constructor/destructor)
+//  - Can't test in `Object` body, because `Final` may be incomplete
 template <class Final> class Object {
-private:
-  using Self = Object;
+  // private:
+  //   using Self = Object;
 
   // private:
   //   static void _test() noexcept {
   //     static_assert(std::is_final_v<Final>);
-  //     static_assert(is_derived_from<Final, Self>);
+  //     // static_assert(is_derived_from<Final, Self>);
 
   //     static_assert(!std::is_polymorphic_v<Final>);
   //     static_assert(!std::is_polymorphic_v<Self>);
@@ -57,7 +60,9 @@ private:
 
 public:
   Object() = default; // must be trivially default constructible
-                      // Object() { _test(); }
+  // Object() { _test(); }
+
+  ~Object() = default; // must be trivially destructible
 
   // // - move-only (enable_if)
   // // - cannot enable_if `is_trivially_relocatable` here - Final may be
@@ -82,5 +87,9 @@ public:
   //   return final;
   // }
 };
+
+// struct MyTest : Object<MyTest> {};
+// static_assert(std::is_trivially_destructible_v<MyTest>);
+// static_assert(std::is_trivially_default_constructible_v<MyTest>);
 
 } // namespace VOLTISO_NAMESPACE

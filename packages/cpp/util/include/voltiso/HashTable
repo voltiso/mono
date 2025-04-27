@@ -5,14 +5,29 @@
 #include "voltiso/Entry"
 #include "voltiso/Object"
 #include "voltiso/Pool"
+#include "voltiso/getHash"
 #include "voltiso/is_trivially_relocatable"
 
 // ! todo: can be made faster by using a single growable allocation for both
-// pool and buckets
+// ! pool and buckets
 
-namespace VOLTISO_NAMESPACE::hashTable {
+namespace VOLTISO_NAMESPACE {
+namespace hashTable {
 template <class Final, class Parameters> class Custom;
-} // namespace VOLTISO_NAMESPACE::hashTable
+template <class Parameters> class Final;
+} // namespace hashTable
+
+namespace hashTable::_ {
+template <class Final, class Parameters> class Iterator;
+} // namespace hashTable::_
+
+template <class Entry>
+using HashTable = hashTable::Final<std::tuple<parameter::Entry<Entry>>>;
+
+template <class Parameters>
+static constexpr auto is_trivially_relocatable<hashTable::Final<Parameters>> =
+    true;
+} // namespace VOLTISO_NAMESPACE
 
 //
 
@@ -166,6 +181,12 @@ public:
     ++this->_hashTable()._numItems();
   }
 
+  void maybeInsert() {
+    if (!this->exists) {
+      insert();
+    }
+  }
+
   void set() {
     if (!this->exists) {
       insert();
@@ -268,6 +289,7 @@ private:
 
 private:
   friend Custom;
+  friend Iterator<Final, Parameters>;
   ConstIterator(const Buckets::Handle &bucket, const Pool::Handle &node,
                 const Custom &hashTable)
       : bucket(bucket), node(node), hashTable(hashTable) {}
@@ -276,7 +298,7 @@ public:
   /** @internal - works only for comparisons with .end() */
   bool operator!=(const ConstIterator &other) const {
     DCHECK_EQ(&hashTable, &other.hashTable);
-    return this->node; // !
+    return !!this->node; // !
   }
 
   auto &operator++() {
@@ -284,7 +306,7 @@ public:
       auto &pool = this->hashTable.pool;
       this->node = pool[this->node]->nextNode;
     } else {
-      ++bucket;
+      ++this->bucket.value;
       auto &buckets = this->hashTable.buckets;
       this->node = buckets[bucket]->firstNode;
     }
@@ -345,13 +367,25 @@ private:
 
 public:
   Buckets const buckets = {};
-  Pool const pool = {};
+  Pool const pool = {}; // for better data locality, we keep internal pool
   size_t const numItems = 0;
 
 private:
   Buckets &_buckets() { return const_cast<Buckets &>(this->buckets); }
   Pool &_pool() { return const_cast<Pool &>(this->pool); }
   size_t &_numItems() { return const_cast<size_t &>(this->numItems); }
+
+public:
+  ~Custom() {
+    for (size_t i = 0; i < buckets.numItems; ++i) {
+      auto node = std::bit_cast<typename Pool::Handle>(buckets[i]->firstNode);
+      while (node) {
+        auto nextNode = node->nextNode;
+        _pool().erase(node);
+        node = nextNode;
+      }
+    }
+  }
 
 public:
   Custom() = default;
@@ -385,7 +419,7 @@ public:
 
 private:
   Buckets::Handle _bucketIndex(const Key &key) const {
-    auto hash = std::hash<Key>{}(key);
+    auto hash = getHash(key);
     DCHECK(std::has_single_bit(buckets.numItems));
     // auto index = hash % buckets.numItems;
     auto index = hash & (buckets.numItems - 1);
@@ -443,7 +477,6 @@ public:
     auto bucket = _bucketIndex(key);
     auto pHandle = &buckets[bucket]->firstNode;
     while (*pHandle && getKey(pool[*pHandle]->entry) != key) {
-      // auto &poolNode = pool[*pHandle].item();
       pHandle = &pool[*pHandle]->nextNode;
     }
     bool exists = (bool)(*pHandle);
@@ -463,12 +496,13 @@ public:
 
 public:
   Iterator begin() {
-    auto node = buckets.numItems ? buckets[0]->firstNode : Pool::Handle::null;
-    return Iterator{Buckets::Handle(0), node, *this};
+    auto node =
+        buckets.numItems ? buckets[0]->firstNode : GenericPoolHandle::null;
+    return Iterator{typename Buckets::Handle(0), node, *this};
   }
   Iterator end() {
-    return Iterator{Buckets::Handle(buckets.numItems), Pool::Handle::null,
-                    *this};
+    return Iterator{typename Buckets::Handle(buckets.numItems),
+                    Pool::Handle::null, *this};
   }
 
   ConstIterator begin() const {
@@ -483,26 +517,17 @@ public:
   }
 
 public:
-  template <class... NewParameters>
-  using With =
-      Custom<Final, decltype(std::tuple_cat(
-                        std::declval<Parameters>(),
-                        std::declval<std::tuple<NewParameters...>>()))>;
+  template <class NewParameter>
+  using With = hashTable::Final<decltype(std::tuple_cat(
+      std::declval<Parameters>(), std::declval<std::tuple<NewParameter>>()))>;
 
   template <class NewAllocator>
   using WithAllocator = With<parameter::Allocator<NewAllocator>>;
 };
-} // namespace VOLTISO_NAMESPACE::hashTable
-// VOLTISO_OBJECT_FINAL(hashTable)
-// VOLTISO_OBJECT_TRIVIALLY_RELOCATABLE(hashTable)
 
-namespace VOLTISO_NAMESPACE {
-template <class Entry>
-class HashTable final
-    : public hashTable::Custom<HashTable<Entry>,
-                               std::tuple<parameter::Entry<Entry>>> {
-  using Base =
-      hashTable::Custom<HashTable<Entry>, std::tuple<parameter::Entry<Entry>>>;
+template <class Parameters>
+class Final final : public Custom<Final<Parameters>, Parameters> {
+  using Base = Custom<Final<Parameters>, Parameters>;
   using Base::Base;
 };
-} // namespace VOLTISO_NAMESPACE
+} // namespace VOLTISO_NAMESPACE::hashTable
