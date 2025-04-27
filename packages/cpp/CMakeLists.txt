@@ -73,6 +73,7 @@ add_executable(
 	util/test/Heap.test.cpp
 	util/test/Pool.test.cpp
 	util/test/getParameter.test.cpp
+	util/test/Runner.test.cpp
 	
 	# util/test/Subject.test.cpp
 	# util/test/State.test.cpp

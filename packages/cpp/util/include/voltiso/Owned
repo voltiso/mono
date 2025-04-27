@@ -182,6 +182,9 @@ public:
     return this->_item == other._item;
   }
 
+public:
+  auto &key() const { return this->_item.value; } // ! remove `.value`
+
 }; // class Custom
 
 template <class Parameters>

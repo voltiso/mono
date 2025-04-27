@@ -19,6 +19,7 @@
 #else
 #define DCHECK(a) ((void)0)
 #define DCHECK_EQ(a, b) ((void)0)
+#define DCHECK_NE(a, b) ((void)0)
 #define DCHECK_GT(a, b) ((void)0)
 #define DCHECK_GE(a, b) ((void)0)
 #define DCHECK_LT(a, b) ((void)0)

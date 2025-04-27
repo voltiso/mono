@@ -18,6 +18,7 @@ public:
   using Item = getParameter::Type<parameter::Item, Parameters>;
   static_assert(is_trivially_relocatable<Item>);
 
+  using Base::hasItems;
   using Base::numItems;
 
 public:
@@ -29,9 +30,11 @@ public:
     }
   }
 
-  template <class TItem,
-            std::enable_if_t<std::is_convertible_v<TItem &&, Item>> * = nullptr>
-  void push(TItem &&item) {
+  void push(const Item &item) { push<>(item); }
+  void push(Item &&item) { push<>(std::move(item)); }
+
+  template <class... Args> void push(Args &&...args) {
+    auto item = Item(std::forward<Args...>(args...));
     Base::push();
     auto index = Base::numItems;
     Storage<Item> *array = &Base::first() - 1;
@@ -43,7 +46,7 @@ public:
       // std::swap(array[index], array[nextIndex]);
       index = nextIndex;
     }
-    array[index].construct(std::forward<TItem>(item));
+    array[index].construct(std::move(item));
   }
 
   const Item &peek() const {

@@ -46,7 +46,7 @@ template <class Parameters> struct Block {
     static_assert(sizeof(Slot<Item> *) == sizeof(handle));
     this->allocationStart = std::bit_cast<Slot<Item> *>(handle);
     this->allocationEnd = this->allocationStart + numItems;
-    std::memset(this->allocationStart, 0, numBytes);
+    std::memset((void *)this->allocationStart, 0, numBytes);
   }
 
   Block(const Block &) = delete;
@@ -118,7 +118,7 @@ public:
   operator const Item &() const noexcept { return item(); }
 
   operator Handle() const noexcept { return handle; }
-  operator bool() const noexcept { return handle; }
+  operator bool() const noexcept { return (bool)handle; }
 
   template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
   void erase() const {

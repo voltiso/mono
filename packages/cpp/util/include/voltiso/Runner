@@ -2,24 +2,184 @@
 #include <voltiso/_>
 
 #include "voltiso/Function"
+// #include "voltiso/HashSet"
+#include "voltiso/HashSet"
+#include "voltiso/Heap"
+#include "voltiso/Owned"
+// #include "voltiso/SplayMap"
+// #include "voltiso/SplaySet"
+#include "voltiso/is_trivially_relocatable"
 
 #include <chrono>
+#include <thread>
+
+namespace VOLTISO_NAMESPACE::runner::_ {
+using Clock = std::chrono::high_resolution_clock;
+using TimePoint = Clock::time_point;
+using Delay = Clock::duration;
+using Priority = int;
+
+enum class Schedule { Once = 0, Repeating, FixedRate };
+} // namespace VOLTISO_NAMESPACE::runner::_
 
 namespace VOLTISO_NAMESPACE {
-class Task {};
+class Runner;
 
-class Runner {
-private:
-  bool keepRunning = true;
+struct Task {
+public:
+  using Clock = runner::_::Clock;
+  using TimePoint = runner::_::TimePoint;
+  using Delay = Clock::duration;
+  using Priority = runner::_::Priority;
+  using Schedule = runner::_::Schedule;
+
+  struct Options {
+    Priority priority = 0;
+    Delay delay = std::chrono::nanoseconds(0);
+    Schedule schedule = Schedule::Once;
+  };
+
+  // Main constructor taking explicit Options
+  Task(Function<void()> &&run, const Options &options)
+      : run(std::move(run)), delay(options.delay),
+        targetExecutionTime(Clock::now() + options.delay),
+        priority(options.priority), schedule(options.schedule) {}
+
+  // Delegating constructor for default Options
+  Task(Function<void()> &&run) : Task(std::move(run), Options{}) {}
 
 public:
-  using Clock = std::chrono::high_resolution_clock;
-  using Duration = Clock::duration;
+  Function<void()> run;
+  Delay delay = std::chrono::nanoseconds(0);
+  TimePoint targetExecutionTime = TimePoint::min();
+  Priority priority = 0;
+  Schedule schedule = Schedule::Once;
 
+public:
+  Task(const Task &) = delete;
+  Task &operator=(const Task &) = delete;
+
+  static_assert(is_trivially_relocatable<Function<void()>>);
+};
+
+template <> constexpr auto is_trivially_relocatable<Task> = true;
+} // namespace VOLTISO_NAMESPACE
+
+namespace VOLTISO_NAMESPACE::runner::_ {
+struct ImmediateTaskRef {
+  Owned<Task>::Weak task;
+  const Priority priority; // have to copy - task may be deleted already
+
+  ImmediateTaskRef(const Owned<Task>::Weak &task)
+      : task(task.weak()), priority(task->priority) {}
+
+  bool operator<(const ImmediateTaskRef &other) const {
+    return priority < other.priority;
+    // return task->priority < other.task->priority;
+  }
+};
+
+struct ScheduledTaskRef {
+  Owned<Task>::Weak task;
+  const TimePoint targetExecutionTime;
+
+  ScheduledTaskRef(const Owned<Task>::Weak &task)
+      : task(task.weak()), targetExecutionTime(task->targetExecutionTime) {}
+
+  // smaller time -> greater order (priority)
+  bool operator<(const ScheduledTaskRef &other) const {
+    return targetExecutionTime > other.targetExecutionTime;
+    // return task->targetExecutionTime > other.task->targetExecutionTime;
+  }
+}; // struct ScheduledTaskRef
+} // namespace VOLTISO_NAMESPACE::runner::_
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <>
+constexpr auto is_trivially_relocatable<runner::_::ImmediateTaskRef> = true;
+
+template <>
+constexpr auto is_trivially_relocatable<runner::_::ScheduledTaskRef> = true;
+} // namespace VOLTISO_NAMESPACE
+
+//
+
+namespace VOLTISO_NAMESPACE {
+class Runner {
+public:
+  using Clock = runner::_::Clock;
+  using Duration = Clock::duration;
+  using TimePoint = runner::_::TimePoint;
+
+private:
+  bool keepRunning = true;
+  // Heap<Owned<Task>> immediateTasks;
+  // HashSet<Owned<Task>::Weak> canceledTasks;
+  HashSet<Owned<Task>> tasks;
+
+  Heap<runner::_::ImmediateTaskRef> immediateTasks;
+  Heap<runner::_::ScheduledTaskRef> scheduledTasks;
+
+private:
+  void updateImmediateTasks() {
+    auto now = Clock::now();
+    while (scheduledTasks.hasItems() &&
+           scheduledTasks.peek().targetExecutionTime <= now) [[unlikely]] {
+      auto taskRef = scheduledTasks.pop();
+      auto realTask = tasks[taskRef.task];
+      if (realTask.exists) [[likely]] {
+        immediateTasks.push(realTask.item());
+      }
+    }
+
+    // ignore already canceled tasks
+    while (scheduledTasks.hasItems() &&
+           !tasks[scheduledTasks.peek().task].exists) {
+      scheduledTasks.pop();
+    }
+  }
+
+public:
   void loop() {
     keepRunning = true;
     while (keepRunning) {
-      //
+      if (updateImmediateTasks(), immediateTasks.hasItems()) [[likely]] {
+        auto weakTask = immediateTasks.pop().task;
+
+        auto t0 = Clock::now();
+
+        weakTask->run();
+
+        switch (weakTask->schedule) {
+        case Task::Schedule::Once:
+          tasks[weakTask].erase(); // !
+          break;
+
+        case Task::Schedule::Repeating:
+          weakTask->targetExecutionTime = t0 + weakTask->delay;
+          scheduledTasks.push(weakTask);
+          break;
+
+        case Task::Schedule::FixedRate:
+          weakTask->targetExecutionTime += weakTask->delay;
+          scheduledTasks.push(weakTask);
+          break;
+        }
+
+        continue;
+      }
+
+      // sleep
+      if (scheduledTasks.hasItems()) [[likely]] {
+        // LOG(INFO) << "SLEEP";
+        std::this_thread::sleep_until(
+            scheduledTasks.peek().targetExecutionTime);
+      } else [[unlikely]] {
+        // LOG(INFO) << "No more tasks! Shutting down v::Runner.";
+        keepRunning = false; // !
+      }
     }
   }
 
@@ -29,27 +189,23 @@ public:
   //   // break out of `loop()`, do not finish current tasks
   //   void terminate() {}
 
-  Task post(Function<void()> &&run) {
-    Task task;
-    return task;
+  Owned<Task>::Weak post(const Task::Options &options, Function<void()> &&run) {
+    auto task = Owned<Task>::create(std::move(run), options);
+    if (options.delay > std::chrono::nanoseconds(0))
+      this->scheduledTasks.push(task);
+    else
+      this->immediateTasks.push(task);
+    auto weakTask = task.weak();
+    tasks.insert(std::move(task));
+    return weakTask;
   }
 
-  Task postDelayed(Duration delay, Function<void()> &&run) {
-    Task task;
-    return task;
-  }
-
-  // period is start->start
-  Task postScheduled(Duration period, Function<void()> &&run) {
-    Task task;
-    return task;
-  }
-
-  // period is start->start
-  // catch-up to maintain constant average rate
-  Task postFixedRate(Duration period, Function<void()> &&run) {
-    Task task;
-    return task;
+  Owned<Task>::Weak post(Function<void()> &&run) {
+    auto task = Owned<Task>::create(std::move(run));
+    this->immediateTasks.push(task);
+    auto weakTask = task.weak();
+    tasks.insert(std::move(task));
+    return weakTask;
   }
 };
 } // namespace VOLTISO_NAMESPACE

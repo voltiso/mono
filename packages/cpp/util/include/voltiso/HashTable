@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 #include <voltiso/_>
 
 #include "voltiso/DynamicArray.hpp"
@@ -112,8 +113,8 @@ protected:
 public:
   operator const Value &() const { return item(); }
   const Value &operator*() const { return item(); }
-  const Value *operator->() const { return &item(); }
-  const Value *operator&() const { return &item(); }
+  const std::remove_reference_t<Value> *operator->() const { return &item(); }
+  const std::remove_reference_t<Value> *operator&() const { return &item(); }
 }; // class ConstAccessor
 
 template <class Final, class Parameters>
@@ -199,8 +200,8 @@ public:
   Value &item() { return const_cast<Value &>(Base::item()); }
   operator Value &() { return item(); }
   Value &operator*() { return item(); }
-  Value *operator->() { return &item(); }
-  Value *operator&() { return &item(); }
+  std::remove_reference_t<Value> *operator->() { return &item(); }
+  std::remove_reference_t<Value> *operator&() { return &item(); }
 }; // class SetAccessor
 
 template <class Final, class Parameters>
@@ -227,7 +228,6 @@ public:
     const_cast<GenericPoolHandle *&>(this->pHandle) = &bucket.firstNode;
     ++this->_hashTable()._numItems();
     const_cast<bool &>(this->exists) = true;
-    // const_cast<GenericPoolHandle &>(this->handle) = node.handle;
   }
 
   template <class... Args> MapAccessor &maybeInsert(Args &&...args) {
@@ -370,6 +370,8 @@ public:
   Pool const pool = {}; // for better data locality, we keep internal pool
   size_t const numItems = 0;
 
+  bool hasItems() const { return numItems; }
+
 private:
   Buckets &_buckets() { return const_cast<Buckets &>(this->buckets); }
   Pool &_pool() { return const_cast<Pool &>(this->pool); }
@@ -466,14 +468,31 @@ private:
   }
 
   void maybeGrow() {
-    if (shouldGrow()) [[unlikely]]
-      grow();
+    if (this->shouldGrow()) [[unlikely]]
+      this->grow();
   }
 
 public:
-  Accessor operator[](const Key &key) {
+  template <class... Args> Accessor insert(Args &&...args) {
+    this->maybeGrow();
+    auto node = this->_pool().insert(std::forward<Args>(args)...);
+    // auto &buckets = this->_buckets();
+    auto bucketIndex = this->_bucketIndex(node);
+    auto &bucket = buckets[bucketIndex].item();
+    node->nextNode = bucket.firstNode;
+    const_cast<GenericPoolHandle &>(bucket.firstNode) = node.handle;
+    ++this->_numItems();
+    return {&bucket.firstNode, bucketIndex, getKey(node->entry), true, *this};
+  }
+
+public:
+  template <class ConvertibleToKey,
+            std::enable_if_t<std::is_convertible_v<GetKey<ConvertibleToKey>,
+                                                   Key>> * = nullptr>
+  Accessor operator[](const ConvertibleToKey &convertibleToKey) {
+    auto &key = getKey(convertibleToKey);
     if (buckets.numItems == 0) [[unlikely]]
-      return {nullptr, typename Buckets::Handle(0), key, false, *this};
+      return {nullptr, typename Buckets::Handle(0), getKey(key), false, *this};
     auto bucket = _bucketIndex(key);
     auto pHandle = &buckets[bucket]->firstNode;
     while (*pHandle && getKey(pool[*pHandle]->entry) != key) {
@@ -482,7 +501,12 @@ public:
     bool exists = (bool)(*pHandle);
     return {pHandle, bucket, key, exists, *this};
   }
-  ConstAccessor operator[](const Key &key) const {
+
+  template <class ConvertibleToKey,
+            std::enable_if_t<std::is_convertible_v<GetKey<ConvertibleToKey>,
+                                                   Key>> * = nullptr>
+  ConstAccessor operator[](const ConvertibleToKey &convertibleToKey) const {
+    auto &key = getKey(convertibleToKey);
     if (buckets.numItems == 0) [[unlikely]]
       return {nullptr, typename Buckets::Handle(0), key, false, *this};
     auto bucket = _bucketIndex(key);

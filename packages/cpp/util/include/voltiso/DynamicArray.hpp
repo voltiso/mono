@@ -631,6 +631,8 @@ public:
     }
   }
 
+  bool hasItems() const { return numItems; }
+
   Item pop() {
     DCHECK_GT(numItems, 0);
     auto lastIndex = numItems - 1;

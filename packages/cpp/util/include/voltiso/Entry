@@ -60,8 +60,16 @@ template <class Item> constexpr const auto &getKey(const Item &item) {
   return getKey(const_cast<Item &>(item));
 }
 
-template <class Item>
-using GetKey = std::decay_t<decltype(getKey(std::declval<Item>()))>;
+namespace _ {
+template <class Item> struct GetKeyImpl {
+  using Type = std::decay_t<decltype(getKey(std::declval<Item>()))>;
+};
+template <class Key, class Value> struct GetKeyImpl<Entry<Key, Value>> {
+  using Type = Key;
+};
+} // namespace _
+
+template <class Item> using GetKey = _::GetKeyImpl<Item>::Type;
 
 // getValue
 
@@ -124,8 +132,23 @@ template <class Item> constexpr const auto &getValue(const Item &item) {
 //                        "`getValue` is not defined for your custom type)");
 // }
 
-template <class Item>
-using GetValue = std::decay_t<decltype(getValue(std::declval<Item>()))>;
+// template <class Item> using GetValue =
+// decltype(getValue(std::declval<Item>()));
+
+//
+
+namespace _ {
+template <class Item> struct GetValueImpl {
+  using Type = std::decay_t<decltype(getValue(std::declval<Item>()))>;
+};
+template <class Key, class Value> struct GetValueImpl<Entry<Key, Value>> {
+  using Type = Value;
+};
+} // namespace _
+
+template <class Item> using GetValue = _::GetValueImpl<Item>::Type;
+
+//
 
 template <class Item>
 using GetEntry = std::decay_t<decltype(getEntry(std::declval<Item>()))>;

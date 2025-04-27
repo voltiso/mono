@@ -3,6 +3,7 @@
 
 #include <experimental/type_traits>
 
+// todo: does not work with reference members
 #define VOLTISO_HAS_DEFINE(member)                                             \
   namespace VOLTISO_NAMESPACE::has::_ {                                        \
   template <class TT> using has_##member##_check = decltype(&TT::member);      \

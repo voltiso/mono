@@ -1,4 +1,5 @@
 #pragma once
+#include <voltiso/_>
 
 #include "Malloc.forward.hpp"
 
@@ -8,7 +9,7 @@
 #include "voltiso/getParameter/Type"
 #include "voltiso/parameter"
 
-#include "glog/logging.h"
+// #include "glog/logging.h"
 
 #include <cstddef>
 #include <cstdlib>

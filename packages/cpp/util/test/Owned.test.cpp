@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <voltiso/Entry>
 #include <voltiso/Owned>
 // #include <voltiso/context>
 
@@ -18,6 +19,10 @@ using namespace VOLTISO_NAMESPACE;
 //   context::Guard<Pool<int>>(poolInt);
 // };
 // Global global;
+
+// using A = GetKey<Owned<int>>;
+
+// static_assert(std::is_same_v<GetKey<Owned<int>>, int *>);
 
 TEST(Owned, trivial) {
   auto owned = Owned<int>::create(123);
