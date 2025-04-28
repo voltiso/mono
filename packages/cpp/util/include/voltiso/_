@@ -25,3 +25,7 @@
 #define DCHECK_LT(a, b) ((void)0)
 #define DCHECK_LE(a, b) ((void)0)
 #endif
+
+#if VOLTISO_DEBUG
+#include "voltiso/demangle"
+#endif

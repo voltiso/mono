@@ -118,7 +118,7 @@ public:
   operator const Item &() const noexcept { return item(); }
 
   operator Handle() const noexcept { return handle; }
-  operator bool() const noexcept { return (bool)handle; }
+  explicit operator bool() const noexcept { return (bool)handle; }
 
   template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
   void erase() const {

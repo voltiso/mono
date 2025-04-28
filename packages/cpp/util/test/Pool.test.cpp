@@ -20,6 +20,8 @@ protected:
   Pool<TestItem> pool;
 };
 
+static_assert(!std::is_convertible_v<Pool<TestItem>::Accessor, int>);
+
 TEST_F(PoolTest, ConstructionAndDestruction) {
   Pool<TestItem> testPool;
   // in debug mode, Pool destructor checks if all items are deallocated
