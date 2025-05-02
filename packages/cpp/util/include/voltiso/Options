@@ -73,6 +73,6 @@ template <class... As> struct Options {
 
   // todo: we could remove duplicates, and maybe sort
   // push a new argument
-  template <class Option> using With = Options<As..., Option>;
+	template <class Option> using With = Options<Option, As...>;
 }; // struct Options
 } // namespace VOLTISO_NAMESPACE

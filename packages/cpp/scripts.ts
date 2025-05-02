@@ -27,7 +27,7 @@ function preset(options: Options) {
 }
 
 function dir(options: Options) {
-	return `out/${preset(options)}`
+	return `build/${preset(options)}`
 }
 
 export async function exists(fileName: string): Promise<boolean> {
@@ -43,7 +43,7 @@ export async function exists(fileName: string): Promise<boolean> {
 
 export const prepare = [
 	() => installVcpkg(vcpkgVersion),
-	`ln -sf ${dir({ compiler: 'clang-18', buildType: 'Release' })}/compile_commands.json`,
+	`ln -sf ${dir({ compiler: 'clang-20', buildType: 'Release' })}/compile_commands.json`,
 ]
 
 async function configure(options: Options) {
@@ -54,7 +54,7 @@ async function configure(options: Options) {
 //
 
 const testOptions: Options = {
-	compiler: 'clang-18',
+	compiler: 'clang-20',
 	buildType: 'Debug',
 }
 
@@ -67,8 +67,8 @@ export const test = [
 //
 
 const benchOptions: Options = {
-	compiler: 'clang-18',
-	// compiler: 'gcc-14',
+	compiler: 'clang-20',
+	// compiler: 'gcc-15',
 
 	// buildType: 'Debug',
 	buildType: 'Release',

@@ -3,7 +3,6 @@
 
 #include "voltiso/Object"
 #include "voltiso/Options"
-#include "voltiso/TypeOption"
 #include "voltiso/concepts/Options"
 #include "voltiso/option"
 
@@ -37,12 +36,6 @@ using Handle = handle::Final<Options<>>;
 
 //
 
-namespace VOLTISO_NAMESPACE::handle::option {
-template <class T> struct Type : TypeOption<T, void *> {};
-} // namespace VOLTISO_NAMESPACE::handle::option
-
-//
-
 namespace VOLTISO_NAMESPACE::handle::_ {
 template <class Type> constexpr auto getNullValue() noexcept {
   if constexpr (std::is_pointer_v<Type>) {
@@ -62,15 +55,15 @@ private:
 
 public:
   using Brand = Options::template Get<::VOLTISO_NAMESPACE::option::Brand>;
-  using Type = Options::template Get<option::Type>;
+	using Type = Options::template Get<option::HandleType>;
 
-  using Value =
-      std::conditional_t<std::is_pointer_v<Type>, std::uintptr_t, Type>;
+	using Value =
+	  std::conditional_t<std::is_pointer_v<Type>, std::uintptr_t, Type>;
 
-  using Pointer = std::conditional_t<std::is_pointer_v<Type>, Type, void>;
+	using Pointer = std::conditional_t<std::is_pointer_v<Type>, Type, void>;
 
-  static_assert(std::is_integral_v<Type> || std::is_pointer_v<Type>);
-  static_assert(std::is_integral_v<Value>);
+	static_assert(std::is_integral_v<Type> || std::is_pointer_v<Type>);
+	static_assert(std::is_integral_v<Value>);
 
 public:
   Value value;
@@ -154,7 +147,7 @@ public:
   template <class NewBrand>
   using WithBrand = With<VOLTISO_NAMESPACE::option::Brand<NewBrand>>;
 
-  template <class NewType> using WithType = With<handle::option::Type<NewType>>;
+	template <class NewType> using WithType = With<option::HandleType<NewType>>;
 }; // class Custom
 
 template <class Final, class Options>
@@ -181,7 +174,7 @@ class Final final : public Custom<Final<Options>, Options> {
 
 public:
   using Base::Base;
-  using Base::operator=;
+	// using Base::operator=;
 }; // class Final
 
 } // namespace VOLTISO_NAMESPACE::handle

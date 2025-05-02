@@ -8,12 +8,12 @@ using namespace VOLTISO_NAMESPACE;
 static_assert(std::is_trivially_copyable_v<Handle>);
 
 TEST(Handle, doesNotInitialize) {
-  struct S {};
-  using Handle = Handle::WithBrand<S>;
-  Storage<Handle> storage;
-  storage.item() = Handle(123);
-  new (&storage) Handle;
-  EXPECT_EQ(storage.item().value, 123);
+	struct S {};
+	using Handle = Handle::WithBrand<S>;
+	Storage<Handle> storage;
+	storage.item() = Handle(123);
+	new (&storage) Handle;
+	EXPECT_EQ(storage.item().value, 123);
 }
 
 TEST(Handle, operatorBool) {
@@ -34,16 +34,6 @@ TEST(Handle, zeroInitialize) {
   auto handle2 = Handle2(0);
   EXPECT_EQ(handle2.value, 0);
 }
-
-// TEST(Handle, valueInitialize) {
-//   struct S {};
-//   // using Handle = Handle<S>;
-//   using Handle = handle::CustomUnbranded<size_t>;
-//   Storage<Handle> storage;
-//   storage.item() = 123;
-//   new (&storage) Handle{};
-//   EXPECT_EQ(storage.item(), Handle::INVALID);
-// }
 
 //
 
@@ -67,15 +57,14 @@ static_assert(!std::is_nothrow_assignable_v<
 
 // disallow `handle -> int` (user should use `handle.value`)
 static_assert(
-    !std::is_assignable_v<uint32_t, Handle::WithBrand<S>::WithType<uint32_t>>);
+  !std::is_assignable_v<uint32_t, Handle::WithBrand<S>::WithType<uint32_t>>);
 
 // void test() {
-//   Handle::WithBrand<S>::WithType<uint32_t> a(123);
-//   Handle::WithBrand<S>::WithType<uint64_t> b = a;
-//   b = a;
-//   //   return 53;
+// 	Handle::WithBrand<S>::WithType<uint64_t> test =
+// 	  Handle::WithBrand<S>::WithType<uint32_t>();
+
+// 	test = Handle::WithBrand<S>::WithType<uint32_t>();
 // }
-// // static_assert(test() == 53);
 
 // allow `handle<smallInt> -> handle<bigInt>`
 static_assert(std::is_assignable_v<Handle::WithBrand<S>::WithType<uint64_t>,
@@ -128,21 +117,11 @@ static_assert(std::is_assignable_v<Handle::WithBrand<A>,
 static_assert(std::is_assignable_v<Handle::WithBrand<A>,
                                    Handle::WithBrand<A>::WithType<int>>);
 
-// void *a = handle::Custom<A, A *>();
-// A *b = handle::Custom<A, A *>();
-// void test() {
-//   a = handle::Custom<A, A *>();
-//   b = handle::Custom<A, A *>();
-// }
-
 static_assert(
     std::is_constructible_v<A *, Handle::WithBrand<A>::WithType<A *>>);
 
 static_assert(
     std::is_constructible_v<void *, Handle::WithBrand<A>::WithType<A *>>);
-
-// static_assert(std::is_assignable_v<A *, handle::Custom<A, A *>>);
-// static_assert(std::is_assignable_v<void *, handle::Custom<A, A *>>);
 
 static_assert(std::is_same_v<decltype(std::declval<std::hash<Handle>>()(
                                  std::declval<Handle>())),

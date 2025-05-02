@@ -36,8 +36,8 @@ public:
   AnyFunction &operator=(const AnyFunction &) = delete;
 
   AnyFunction(AnyFunction &&other) noexcept {
-    memcpy(this, &other, sizeof(AnyFunction));
-    other.deleter = nullptr;
+		memcpy((void *)this, &other, sizeof(AnyFunction));
+		other.deleter = nullptr;
   }
 
   ~AnyFunction() {

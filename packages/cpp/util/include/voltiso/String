@@ -2,19 +2,20 @@
 #include <voltiso/_>
 
 #include "voltiso/Array"
+#include "voltiso/Options"
 #include "voltiso/assert"
 
 namespace VOLTISO_NAMESPACE {
 // null-terminated string
 template <size_t _NUM_CHARS>
 class String
-    : public array::Custom<String<_NUM_CHARS>,
-                           std::tuple<parameter::Item<char>,
-                                      parameter::NumItems<_NUM_CHARS + 1>>> {
+    : public array::Custom<
+        String<_NUM_CHARS>,
+        Options<option::Item<char>, option::NUM_ITEMS<_NUM_CHARS + 1>>> {
 private:
-  using Base = array::Custom<
-      String<_NUM_CHARS>,
-      std::tuple<parameter::Item<char>, parameter::NumItems<_NUM_CHARS + 1>>>;
+	using Base = array::Custom<
+	  String<_NUM_CHARS>,
+	  Options<option::Item<char>, option::NUM_ITEMS<_NUM_CHARS + 1>>>;
 
 public:
   static constexpr size_t NUM_CHARS = _NUM_CHARS;

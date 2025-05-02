@@ -26,7 +26,7 @@ template <class T> struct Entry : TypeOption<T, void> {};
 // Value parameters
 //
 
-template <std::size_t N> struct NumItems : ValueOption<N, 0> {};
+template <std::size_t N> struct NUM_ITEMS : ValueOption<N, 0> {};
 template <std::make_signed_t<std::size_t> N>
 struct StartingIndex : ValueOption<N, 0> {};
 
@@ -36,5 +36,8 @@ struct PAGE_SIZE : ValueOption<N, memory::PAGE_SIZE> {};
 template <std::size_t N> struct IN_PLACE : ValueOption<N, 0> {};
 template <std::size_t N> struct IN_PLACE_ONLY : ValueOption<N, 0> {};
 template <bool B> struct WEAK : ValueOption<B, false> {};
+
+// Handle-specific
+template <class T> struct HandleType : TypeOption<T, void *> {};
 
 } // namespace VOLTISO_NAMESPACE::option

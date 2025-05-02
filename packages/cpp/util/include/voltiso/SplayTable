@@ -3,26 +3,34 @@
 #include "voltiso/Entry"
 #include "voltiso/Pool"
 #include "voltiso/Splay"
+#include "voltiso/concepts/Options"
 
 #include <voltiso/ON>
 
 namespace VOLTISO_NAMESPACE::splayTable {
-template <class Final, class Parameters> class Custom;
-template <class Parameters> class Final;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+class Final;
 } // namespace VOLTISO_NAMESPACE::splayTable
 
 namespace VOLTISO_NAMESPACE {
 template <class Entry>
-using SplayTable = splayTable::Final<std::tuple<parameter::Entry<Entry>>>;
+using SplayTable = splayTable::Final<Options<option::Entry<Entry>>>;
 } // namespace VOLTISO_NAMESPACE
 
 namespace VOLTISO_NAMESPACE::splayTable::_ {
-template <class Final, class Parameters> struct Node {
+template <class Final, class Options>
+  requires concepts::Options<Options>
+struct Node {
 private:
-  using Entry = getParameter::Type<parameter::Entry, Parameters>;
-  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
-  using Pool = Pool<int>::template WithAllocator<Allocator>; // need to cast
-  using Handle = Pool::Handle::template WithBrand<void>;
+	using Entry = Options::template Get<option::Entry>;
+	using Allocator = Options::template Get<option::Allocator>;
+	using Pool = Pool<int>::template WithAllocator<Allocator>; // need to cast
+	using Handle = Pool::Handle::template WithBrand<void>;
 
 public:
   Entry entry;
@@ -289,36 +297,38 @@ public:
 //
 
 namespace VOLTISO_NAMESPACE::splayTable {
-template <class Final, class Parameters> class Custom : public Object<Final> {
-  using Self = Custom;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom : public Object<Final> {
+	using Self = Custom;
 
 public:
-  using Entry = getParameter::Type<parameter::Entry, Parameters>;
-  using Key = GetKey<Entry>;
-  using Value = GetValue<Entry>;
-  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+	using Entry = Options::template Get<option::Entry>;
+	using Key = GetKey<Entry>;
+	using Value = GetValue<Entry>;
+	using Allocator = Options::template Get<option::Allocator>;
 
-  // using ConstAccessor = _::ConstAccessor<Final, Parameters>;
-  using SetAccessor = _::SetAccessor<Final, Parameters, false>;
-  using ConstSetAccessor = _::SetAccessor<Final, Parameters, true>;
+	// using ConstAccessor = _::ConstAccessor<Final, Parameters>;
+	using SetAccessor = _::SetAccessor<Final, Options, false>;
+	using ConstSetAccessor = _::SetAccessor<Final, Options, true>;
 
-  using MapAccessor = _::MapAccessor<Final, Parameters, false>;
-  using ConstMapAccessor = _::MapAccessor<Final, Parameters, true>;
+	using MapAccessor = _::MapAccessor<Final, Options, false>;
+	using ConstMapAccessor = _::MapAccessor<Final, Options, true>;
 
-  friend SetAccessor;
-  friend MapAccessor;
+	friend SetAccessor;
+	friend MapAccessor;
   friend ConstSetAccessor;
   friend ConstMapAccessor;
-  friend _::Accessor<Final, Parameters, false>;
-  friend _::Accessor<Final, Parameters, true>;
+	friend _::Accessor<Final, Options, false>;
+	friend _::Accessor<Final, Options, true>;
 
-  // using ConstIterator = ConstIterator<Options>;
-  using Iterator = _::Iterator<Final, Parameters>;
-  friend Iterator;
+	// using ConstIterator = ConstIterator<Options>;
+	using Iterator = _::Iterator<Final, Options>;
+	friend Iterator;
 
 private:
-  using Node = _::Node<Final, Parameters>;
-  using Pool = Pool<Node>::template WithAllocator<Allocator>;
+	using Node = _::Node<Final, Options>;
+	using Pool = Pool<Node>::template WithAllocator<Allocator>;
 
 private:
   Pool pool;
@@ -453,10 +463,11 @@ public:
   Iterator end() { return Iterator(true, *this); }
 }; // class Custom
 
-template <class Parameters>
-class Final final : public Custom<Final<Parameters>, Parameters> {
-  using Base = Custom<Final<Parameters>, Parameters>;
-  using Base::Base;
+template <class Options>
+  requires concepts::Options<Options>
+class Final final : public Custom<Final<Options>, Options> {
+	using Base = Custom<Final<Options>, Options>;
+	using Base::Base;
 }; // class Final
 
 } // namespace VOLTISO_NAMESPACE::splayTable

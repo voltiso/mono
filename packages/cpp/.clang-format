@@ -1,0 +1,10 @@
+UseTab: ForIndentation #Always
+IndentWidth: 2
+ContinuationIndentWidth: 2
+TabWidth: 2
+LineEnding: LF
+ColumnLimit: 80
+
+InsertBraces: true # Insert braces for all control statements
+IndentPPDirectives: BeforeHash # Preprocessor directive indentation
+AlignAfterOpenBracket: AlwaysBreak

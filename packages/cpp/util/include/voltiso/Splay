@@ -1,18 +1,19 @@
 #pragma once
 #include <voltiso/_>
 
-#ifndef VOLTISO_DEBUG_SPLAY
-#define VOLTISO_DEBUG_SPLAY VOLTISO_DEBUG
-#endif
-
 #include "voltiso/Bst"
 #include "voltiso/DynamicArray"
 #include "voltiso/Entry"
 #include "voltiso/Object"
+#include "voltiso/concepts/Options"
 
 #include <concepts>
 
 #include <voltiso/ON>
+
+#ifndef VOLTISO_DEBUG_SPLAY
+	#define VOLTISO_DEBUG_SPLAY VOLTISO_DEBUG
+#endif
 
 namespace VOLTISO_NAMESPACE::splay::_ {
 struct AccessPathNode {
@@ -38,7 +39,9 @@ namespace VOLTISO_NAMESPACE::splay {
 
 //
 
-template <class Final, class Parameters> class Custom;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom;
 
 template <class Final, class Parameters> class ConstAccessor {
 protected:
@@ -421,26 +424,28 @@ operator<<(ostream &os,
 //
 
 namespace VOLTISO_NAMESPACE::splay {
-template <class Final, class Parameters> class Custom : public Object<Final> {
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom : public Object<Final> {
 private:
   using Self = Custom;
 
 public:
-  using Pool = getParameter::Type<parameter::Pool, Parameters>;
-  using Handle = typename Pool::Handle;
-  // using Allocator = typename Pool::Allocator;
-  using Node = typename Pool::Item;
+	using Pool = Options::template Get<option::Pool>;
+	using Handle = typename Pool::Handle;
+	// using Allocator = typename Pool::Allocator;
+	using Node = typename Pool::Item;
   using Entry = GetEntry<Node>;
   using Key = GetKey<Entry>; // may be implicit
 
   static_assert(std::equality_comparable<Key>);
 
-  using ConstAccessor = ConstAccessor<Final, Parameters>;
-  using Accessor = Accessor<Final, Parameters>;
-  friend ConstAccessor;
-  friend Accessor;
+	using ConstAccessor = ConstAccessor<Final, Options>;
+	using Accessor = Accessor<Final, Options>;
+	friend ConstAccessor;
+	friend Accessor;
 
-  static_assert(!std::is_same_v<Entry, void>);
+	static_assert(!std::is_same_v<Entry, void>);
 
 private:
   // using DynamicArray = DynamicArray<int>::Allocator_<Allocator>;
@@ -491,8 +496,7 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Pool>
-class Splay
-    : public splay::Custom<Splay<Pool>, std::tuple<parameter::Pool<Pool>>> {};
+class Splay : public splay::Custom<Splay<Pool>, Options<option::Pool<Pool>>> {};
 } // namespace VOLTISO_NAMESPACE
 
 #include <voltiso/OFF>

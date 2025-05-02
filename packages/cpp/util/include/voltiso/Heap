@@ -1,27 +1,31 @@
 #pragma once
 
 #include "voltiso/DynamicArray"
+#include "voltiso/Options"
+#include "voltiso/Storage"
 #include "voltiso/is_trivially_relocatable"
+#include "voltiso/option"
 
 #include <voltiso/ON>
 
 namespace VOLTISO_NAMESPACE::heap {
-template <class Final, class Parameters>
+template <class Final, class Options>
+  requires concepts::Options<Options>
 class Custom
     : private dynamicArray::Custom<
-          Final, std::tuple<parameter::Item<Storage<
-                     getParameter::Type<parameter::Item, Parameters>>>>> {
-  //   using Self = Custom;
-  using Base = dynamicArray::Custom<
-      Final, std::tuple<parameter::Item<
-                 Storage<getParameter::Type<parameter::Item, Parameters>>>>>;
+        Final, VOLTISO_NAMESPACE::Options<option::Item<
+                 Storage<typename Options::template Get<option::Item>>>>> {
+	//   using Self = Custom;
+	using Base = dynamicArray::Custom<
+	  Final, VOLTISO_NAMESPACE::Options<option::Item<
+	           Storage<typename Options::template Get<option::Item>>>>>;
 
 public:
-  using Item = getParameter::Type<parameter::Item, Parameters>;
-  static_assert(is_trivially_relocatable<Item>);
+	using Item = Options::template Get<option::Item>;
+	static_assert(is_trivially_relocatable<Item>);
 
-  using Base::hasItems;
-  using Base::numItems;
+	using Base::hasItems;
+	using Base::numItems;
 
 public:
   Custom() = default;
@@ -123,8 +127,8 @@ public:
 namespace VOLTISO_NAMESPACE {
 template <class Item>
 class Heap final
-    : public heap::Custom<Heap<Item>, std::tuple<parameter::Item<Item>>> {
-  using Base = heap::Custom<Heap<Item>, std::tuple<parameter::Item<Item>>>;
+    : public heap::Custom<Heap<Item>, Options<option::Item<Item>>> {
+	using Base = heap::Custom<Heap<Item>, Options<option::Item<Item>>>;
 
 public:
   using Base::Base;

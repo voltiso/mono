@@ -27,8 +27,8 @@ namespace VOLTISO_NAMESPACE::array {
 template <class Final, class Options>
   requires concepts::Options<Options>
 class Custom : public Object<Final> {
-  using Base = Object<Final>;
-  using Self = Custom;
+	using Base = Object<Final>;
+	using Self = Custom;
 
 public:
   using Item = Options::template Get<VOLTISO_NAMESPACE::option::Item>;
@@ -36,27 +36,20 @@ public:
   static_assert(!std::is_const_v<Item>,
                 "const Item does not make sense, just use `const Array<Item>`");
 
-  static constexpr auto NUM_ITEMS =
-      Options::template GET<VOLTISO_NAMESPACE::option::NumItems>;
+	static constexpr auto NUM_ITEMS =
+	  Options::template GET<VOLTISO_NAMESPACE::option::NUM_ITEMS>;
 
-  static constexpr auto STARTING_INDEX =
-      Options::template GET<option::StartingIndex>;
+	static constexpr auto STARTING_INDEX =
+	  Options::template GET<option::StartingIndex>;
 
-  // Make sure required parameters are set
-  static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
-  static_assert(NUM_ITEMS > 0, "Array size must be greater than 0");
+	// Make sure required parameters are set
+	static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
+	static_assert(NUM_ITEMS > 0, "Array size must be greater than 0");
 
-  template <class Type>
+	template <class Type>
   using CustomHandle = Handle::WithBrand<Final>::template WithType<Type>;
 
-  // template <class Type>
-  // struct CustomHandle : Handle::WithBrand<Final>::template WithType<Type> {
-  //   using Base = Handle::WithBrand<Final>::template WithType<Type>;
-  //   using Base::Base;
-  //   using Base::operator=;
-  // };
-
-  using Handle =
+	using Handle =
       CustomHandle<std::conditional_t<(STARTING_INDEX < 0),
                                       std::make_signed<size_t>, size_t>>;
 
@@ -210,10 +203,10 @@ public:
 
   template <class T> using WithItem = With<VOLTISO_NAMESPACE::option::Item<T>>;
 
-  template <size_t N>
-  using WithSize = With<VOLTISO_NAMESPACE::option::NumItems<N>>;
+	template <size_t N>
+	using WithSize = With<VOLTISO_NAMESPACE::option::NUM_ITEMS<N>>;
 
-  template <size_t N> using WithStartingIndex = With<option::StartingIndex<N>>;
+	template <size_t N> using WithStartingIndex = With<option::StartingIndex<N>>;
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::array
 
@@ -242,19 +235,20 @@ static constexpr auto
 template <class Item, size_t NUM_ITEMS>
 class Array final
     : public array::Custom<
-          Array<Item, NUM_ITEMS>,
-          Options<option::Item<Item>, option::NumItems<NUM_ITEMS>>> {
-  using Base =
-      array::Custom<Array<Item, NUM_ITEMS>,
-                    Options<option::Item<Item>, option::NumItems<NUM_ITEMS>>>;
+        Array<Item, NUM_ITEMS>,
+        Options<option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>>> {
+	using Base = array::Custom<
+	  Array<Item, NUM_ITEMS>,
+	  Options<option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>>>;
 
 public:
-  using Base::Base; // Inherit constructors
+	using Base::Base; // Inherit constructors
 };
 
 // Deduction guide (similar to std::array)
-template <class T, class... U,
-          std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
+template <
+  class T, class... U,
+  std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
 Array(T, U...) -> Array<std::type_identity_t<T>, 1 + sizeof...(U)>;
 
 // ! implicit linear-time copy

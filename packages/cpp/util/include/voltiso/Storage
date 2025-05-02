@@ -14,7 +14,7 @@ namespace VOLTISO_NAMESPACE::storage {
 // https://stackoverflow.com/a/71828512/1123898
 template <size_t _SIZE, size_t ALIGN> struct Custom {
   static constexpr size_t SIZE = _SIZE;
-  alignas(ALIGN) std::array<std::byte, SIZE> data;
+	alignas(ALIGN) Array<std::byte, SIZE> data;
 };
 } // namespace VOLTISO_NAMESPACE::storage
 
@@ -24,21 +24,19 @@ namespace VOLTISO_NAMESPACE {
 // ⚠️ Remember to call `.destroy()` if you constructed something
 template <class _Item> struct Storage {
   using Item = _Item;
-  // union {
-  alignas(Item) Array<std::byte, sizeof(Item)> bytes;
-  // Item item;
-  // };
 
-  auto &item() { return *reinterpret_cast<Item *>(&bytes[0]); }
-  auto &item() const { return *reinterpret_cast<const Item *>(&bytes[0]); }
+	alignas(Item) Array<std::byte, sizeof(Item)> bytes; // !!!!!!
 
-  Storage() = default;
+	auto &item() { return *reinterpret_cast<Item *>(&bytes[0]); }
+	auto &item() const { return *reinterpret_cast<const Item *>(&bytes[0]); }
 
-  Storage(std::initializer_list<std::byte> init) : bytes(init) {
-    // LOG(INFO) << "Storage(std::initializer_list<std::byte>)";
-  }
+	Storage() = default;
 
-  Storage(const Storage &other) =
+	Storage(std::initializer_list<std::byte> init) : bytes(init) {
+		// LOG(INFO) << "Storage(std::initializer_list<std::byte>)";
+	}
+
+	Storage(const Storage &other) =
       delete; // we do not know if object is constructed
   Storage &operator=(const Storage &other) =
       delete; // we do not know if object is constructed

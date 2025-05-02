@@ -20,9 +20,11 @@ namespace VOLTISO_NAMESPACE::concepts {
 template <class A>
 concept Options = requires {
   typename A::template Get<_::ExampleTypeOption>;
-  A::template GET<_::ExampleValueOption>;
 
-  typename A::template With<_::ExampleTypeOption<int>>;
+	// ! this causes compiler to crash (clang-20)
+	// A::template GET<_::ExampleValueOption>; // !!!!!
+
+	typename A::template With<_::ExampleTypeOption<int>>;
   typename A::template With<_::ExampleValueOption<42>>;
 };
 } // namespace VOLTISO_NAMESPACE::concepts
