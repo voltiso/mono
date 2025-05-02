@@ -2,6 +2,7 @@
 #include <voltiso/_>
 
 #include "voltiso/console"
+#include "voltiso/throwStaticError" // IWYU pragma: export
 
 #include <iostream>
 #include <source_location>
@@ -71,13 +72,15 @@ template <class T> inline constexpr std::string stdStringFrom(const T &value) {
   }
   return "";
 } // stdStringFrom
+
 } // namespace VOLTISO_NAMESPACE::_
 
 #define VOLTISO_CMP(_a, _op, _b)                                               \
   if constexpr (std::is_constant_evaluated() || IS_DEBUG_BUILD)                \
     if (!((_a)_op(_b))) [[unlikely]] {                                         \
       if constexpr (std::is_constant_evaluated())                              \
-        throw std::logic_error("assertion failed: " #_a " " #_op " " #_b);     \
+        throwStaticError(                                                      \
+            std::logic_error("assertion failed: " #_a " " #_op " " #_b));      \
       else                                                                     \
         VOLTISO_NAMESPACE::_::assertFail({                                     \
             .condition = ((_a)_op(_b)),                                        \
@@ -96,3 +99,6 @@ template <class T> inline constexpr std::string stdStringFrom(const T &value) {
 #define VOLTISO_LE(a, b) VOLTISO_CMP(a, <=, b)
 #define VOLTISO_GT(a, b) VOLTISO_CMP(a, >, b)
 #define VOLTISO_GE(a, b) VOLTISO_CMP(a, >=, b)
+
+#define VOLTISO_CHECK(a) VOLTISO_CMP(!!(a), ==, true)
+#define VOLTISO_NOT(a) VOLTISO_CMP(!(a), ==, false)

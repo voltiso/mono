@@ -3,6 +3,11 @@
 
 #include "voltiso/DynamicArray"
 
-namespace VOLTISO_NAMESPACE {
-using DynamicString = DynamicArray<char>;
-} // namespace VOLTISO_NAMESPACE
+namespace VOLTISO_NAMESPACE::dynamicString {
+// null-terminated string
+template <class Final, class... Parameters>
+class CustomDynamicString
+    : public dynamicArray::Custom<Final, parameter::Item<char>, Parameters...> {
+  //
+}; // class CustomDynamicString
+} // namespace VOLTISO_NAMESPACE::dynamicString

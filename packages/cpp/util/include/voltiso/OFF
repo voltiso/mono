@@ -12,4 +12,7 @@
 #undef GT
 #undef GE
 
+#undef CHECK
+#undef NOT
+
 #undef FORCE_INLINE

@@ -4,7 +4,7 @@
 #include "voltiso/DynamicString"
 
 namespace VOLTISO_NAMESPACE {
-class DynamicPath : public DynamicString {
+class DynamicPath : public dynamicString::Custom<> {
   //
 };
 } // namespace VOLTISO_NAMESPACE

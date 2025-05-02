@@ -6,6 +6,8 @@
 #include <type_traits>
 #include <utility>
 
+#include <voltiso/ON>
+
 // namespace VOLTISO_NAMESPACE::ref {
 // class Virtual {
 // public:
@@ -70,7 +72,7 @@ public:
   Any(const Self &) = delete;
 
   Any(Self &&other) {
-    DCHECK_NE(this, &other);
+    NE(this, &other);
     const_cast<Item *&>(target) = other.target;
     deleter = other.deleter;
     // other.pointer = nullptr;
@@ -169,7 +171,7 @@ public:
             std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
   TT &item() const {
     // auto target = this->target();
-    DCHECK(target);
+    CHECK(target);
     return *static_cast<Item *>(target);
   }
 
@@ -231,3 +233,5 @@ public:
 
 template <class T> constexpr bool is_trivially_relocatable<Any<T>> = true;
 } // namespace VOLTISO_NAMESPACE
+
+#include <voltiso/OFF>

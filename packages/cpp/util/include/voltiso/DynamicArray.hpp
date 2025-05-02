@@ -129,8 +129,8 @@ protected:
 
 public:
   const Item &item() const {
-    DCHECK_GE(this->handle.value, 0);
-    DCHECK_LT(this->handle.value, this->dynamicArray.numItems);
+    GE(this->handle.value, 0);
+    LT(this->handle.value, this->dynamicArray.numItems);
     return dynamicArray.slots()[this->handle.value].item();
   }
   const Item &operator*() const { return item(); }
@@ -315,7 +315,7 @@ public:
   using Base::operator=;
 
   Self &operator=(const Self &other) {
-    DCHECK_NE(this, &other); // forbid
+    NE(this, &other); // forbid
     auto memory = slots();
     for (size_t i = 0; i < numItems; ++i) {
       memory[i].item().~Item();
@@ -450,7 +450,7 @@ public:
         if (newNumSlots <= getParameter::VALUE<parameter::IN_PLACE, Parameters>)
             [[likely]] {
           auto oldData = this->allocation.item();
-          DCHECK_LT(newNumSlots, this->numSlots);
+          LT(newNumSlots, this->numSlots);
           ::memcpy(&this->inPlaceItems[0], oldData, sizeof(Item) * numItems);
           _allocator().freeBytes(oldData, this->numSlots * sizeof(Item));
         } else [[unlikely]] {
@@ -461,8 +461,8 @@ public:
       }
     } else {
       static_assert(IN_PLACE_ONLY > 0);
-      DCHECK_LE(this->numSlots, IN_PLACE_ONLY);
-      DCHECK_LE(newNumSlots, IN_PLACE_ONLY);
+      LE(this->numSlots, IN_PLACE_ONLY);
+      LE(newNumSlots, IN_PLACE_ONLY);
       static_assert(false); // `setNumSlots` disabled in this case
     }
     (size_t &)this->numSlots = newNumSlots;
@@ -506,13 +506,13 @@ public:
   }
 
   Accessor operator[](const Handle &handle) {
-    DCHECK_LT(handle.value, numItems);
+    LT(handle.value, numItems);
     return {handle, *this};
     // return *(Item *)&(*this)[handle.value];
   }
 
   ConstAccessor operator[](const Handle &handle) const {
-    DCHECK_LT(handle.value, numItems);
+    LT(handle.value, numItems);
     return {handle, *this};
     // return *(const Item *)&(*this)[handle.value];
   }
@@ -540,11 +540,11 @@ public:
   template <class... Args> Handle push(Args &&...args) {
     // std::cout << "push" << std::endl;
     if constexpr (has::numSlots<Self>) {
-      DCHECK_LE(numItems, this->numSlots);
+      LE(numItems, this->numSlots);
     }
 
     if constexpr (has::NUM_SLOTS<Self>) {
-      DCHECK_LE(numItems, this->NUM_SLOTS);
+      LE(numItems, this->NUM_SLOTS);
     }
 
     if constexpr (has::numSlots<Self>) {
@@ -554,11 +554,11 @@ public:
     }
 
     if constexpr (has::numSlots<Self>) {
-      DCHECK_LT(numItems, this->numSlots);
+      LT(numItems, this->numSlots);
     }
 
     if constexpr (has::NUM_SLOTS<Self>) {
-      DCHECK_LT(numItems, this->NUM_SLOTS);
+      LT(numItems, this->NUM_SLOTS);
     }
 
     // LOG(INFO) << "push " << numItems;
@@ -567,12 +567,12 @@ public:
     ++(size_t &)numItems;
 
     if constexpr (has::NUM_SLOTS<Self>)
-      DCHECK_LE(numItems, this->NUM_SLOTS);
+      LE(numItems, this->NUM_SLOTS);
 
     slots()[index].construct(std::forward<Args>(args)...);
 
     if constexpr (has::NUM_SLOTS<Self>)
-      DCHECK_LE(numItems, this->NUM_SLOTS);
+      LE(numItems, this->NUM_SLOTS);
 
     auto handle = Handle(index);
     return handle;
@@ -590,7 +590,7 @@ public:
         newNumSlots = 1;
     }
     // LOG(INFO) << "grow " << this->numSlots << " " << newNumSlots;
-    DCHECK_GT(newNumSlots, this->numSlots);
+    GT(newNumSlots, this->numSlots);
     this->setNumSlots(newNumSlots);
   }
 
@@ -618,8 +618,8 @@ public:
           setNumSlots(newNumItems);
         }
       } else {
-        DCHECK_EQ(this->numSlots, IN_PLACE_ONLY);
-        DCHECK_LE(newNumItems, this->numSlots);
+        EQ(this->numSlots, IN_PLACE_ONLY);
+        LE(newNumItems, this->numSlots);
       }
       auto memory = slots();
       if constexpr (std::is_copy_constructible_v<Item>) {

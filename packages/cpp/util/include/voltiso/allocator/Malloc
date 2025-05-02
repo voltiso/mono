@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <voltiso/ON>
+
 #ifndef VOLTISO_DEBUG_MALLOC
 #define VOLTISO_DEBUG_MALLOC VOLTISO_DEBUG
 #endif
@@ -43,7 +45,7 @@ template <class Final, class Parameters>
 inline typename Custom<Final, Parameters>::Handle
 Custom<Final, Parameters>::allocateBytes(size_t numBytes) {
 #if VOLTISO_DEBUG_MALLOC
-  CHECK_GT(numBytes, 0);
+  GT(numBytes, 0);
 #endif
   auto handle = static_cast<Handle>(::malloc(numBytes));
   if (!handle) [[unlikely]] {
@@ -62,8 +64,8 @@ inline typename Custom<Final, Parameters>::Handle
 Custom<Final, Parameters>::allocateBytesAligned(size_t numBytes,
                                                 size_t alignment) {
 #if VOLTISO_DEBUG_MALLOC
-  CHECK_GT(numBytes, 0);
-  CHECK_GT(alignment, 0);
+  GT(numBytes, 0);
+  GT(alignment, 0);
 #endif
   void *handle;
 
@@ -88,11 +90,11 @@ template <class Final, class Parameters>
 inline void Custom<Final, Parameters>::freeBytes(const Handle &handle,
                                                  size_t oldNumBytes) {
 #if VOLTISO_DEBUG_MALLOC
-  CHECK_GT(oldNumBytes, 0);
+  GT(oldNumBytes, 0);
   auto &debug = *this->_debug;
   auto it = debug.allocations.find(handle);
   CHECK(it != debug.allocations.end());
-  CHECK_EQ(it->second, oldNumBytes);
+  EQ(it->second, oldNumBytes);
   debug.allocations.erase(it);
 #endif
   ::free(handle);
@@ -114,7 +116,7 @@ Custom<Final, Parameters>::reallocateBytes(const Handle &oldHandle,
   auto &debug = *this->_debug;
   auto it = debug.allocations.find(oldHandle);
   CHECK(it != debug.allocations.end());
-  CHECK_EQ(it->second, oldNumBytes);
+  EQ(it->second, oldNumBytes);
   debug.allocations.erase(it);
   debug.allocations[newHandle] = newNumBytes;
 #endif
@@ -124,7 +126,7 @@ Custom<Final, Parameters>::reallocateBytes(const Handle &oldHandle,
 template <class Final, class Parameters>
 inline void *Custom<Final, Parameters>::operator()(const Handle &handle) {
 #if VOLTISO_DEBUG_MALLOC
-  CHECK_NE(handle, Handle::INVALID);
+  NE(handle, Handle::INVALID);
   // if (handle != Handle::INVALID) {
   auto &debug = *this->_debug;
   CHECK(debug.allocations.find(handle) != debug.allocations.end());
@@ -134,3 +136,5 @@ inline void *Custom<Final, Parameters>::operator()(const Handle &handle) {
 }
 
 } // namespace VOLTISO_NAMESPACE::allocator::malloc
+
+#include <voltiso/OFF>

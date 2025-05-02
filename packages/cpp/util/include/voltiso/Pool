@@ -8,6 +8,8 @@
 
 #include <tuple>
 
+#include <voltiso/ON>
+
 #ifndef VOLTISO_DEBUG_POOL
 #define VOLTISO_DEBUG_POOL VOLTISO_DEBUG
 #endif
@@ -183,7 +185,7 @@ public:
       nextSlot = nextSlot->next;
     }
     auto numSlotsInLastBlock = remainingEnd - remainingStart;
-    DCHECK_EQ(numSlotsInChain + numSlotsInLastBlock, numSlots);
+    EQ(numSlotsInChain + numSlotsInLastBlock, numSlots);
   }
 #endif
 
@@ -209,7 +211,7 @@ public:
       return Accessor(*this, slot);
     } else [[unlikely]] {
       auto numNewSlots = numSlots + 1;
-      DCHECK_GE(numNewSlots, 1);
+      GE(numNewSlots, 1);
       blocks.push(numNewSlots);
       numSlots += numNewSlots;
       remainingStart = blocks.last().allocationStart;
@@ -225,7 +227,7 @@ public:
   auto insert(Item &&item) { return insert<>(std::move(item)); }
 
   void erase(const Handle &handle) noexcept {
-    DCHECK(handle);
+    CHECK(handle);
     auto slot = std::bit_cast<_::Slot<Item> *>(handle);
     static_assert(sizeof(slot) == sizeof(Handle));
     slot->storage.destroy();
@@ -258,3 +260,5 @@ class Pool final
 };
 
 } // namespace VOLTISO_NAMESPACE
+
+#include <voltiso/OFF>

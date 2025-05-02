@@ -7,7 +7,7 @@
 
 namespace VOLTISO_NAMESPACE {
 
-template <class T> [[noreturn]] void throwError(T &&error) {
+template <class T> [[noreturn]] void throwError(const T &error) {
 #ifdef __cpp_exceptions
   throw error;
 #else

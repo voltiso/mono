@@ -1,12 +1,14 @@
 #pragma once
 #include <voltiso/_>
 
-#include <voltiso/Array>
-#include <voltiso/Bit>
-#include <voltiso/divCeil>
+#include "voltiso/Array"
+#include "voltiso/Bit"
+#include "voltiso/divCeil"
 
 #include <cstddef>
 #include <cstdint>
+
+#include <voltiso/ON>
 
 namespace VOLTISO_NAMESPACE::bitArray::_ {
 template <class Derived> struct AccessorCrtp {
@@ -117,7 +119,7 @@ public:
     size_t iBit = 0;
     words[0] = 0;
     for (auto bit : list) {
-      DCHECK(bit == 0 || bit == 1);
+      CHECK(bit == 0 || bit == 1);
       words[iWord] |= (bit << iBit);
       if (++iBit == sizeof(Word) * 8) [[unlikely]] {
         iBit = 0;
@@ -212,3 +214,5 @@ public:
 static_assert(sizeof(BitArray<64>) == 8);
 static_assert(sizeof(BitArray<1>) == 8);
 } // namespace VOLTISO_NAMESPACE
+
+#include <voltiso/OFF>

@@ -4,6 +4,8 @@
 #include "voltiso/Pool"
 #include "voltiso/Splay"
 
+#include <voltiso/ON>
+
 namespace VOLTISO_NAMESPACE::splayTable {
 template <class Final, class Parameters> class Custom;
 template <class Parameters> class Final;
@@ -69,12 +71,12 @@ protected:
 
 public:
   const Value &value() const {
-    DCHECK(this->exists);
+    CHECK(this->exists);
     return getValue(this->_pool()[this->splayTable.root]->entry);
   }
 
   Value &value() {
-    DCHECK(this->exists);
+    CHECK(this->exists);
     return getValue(this->_pool()[this->splayTable.root]->entry);
   }
 
@@ -111,7 +113,7 @@ public:
   void erase()
     requires(!IS_CONST)
   {
-    DCHECK(this->exists);
+    CHECK(this->exists);
     auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
     this->splayTable._splay()(root).erase(this->handle);
   }
@@ -202,7 +204,7 @@ private:
 
 public:
   template <class... Args> auto &insert(Args &&...args) {
-    DCHECK(!this->exists);
+    CHECK(!this->exists);
     auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
     this->splayTable._splay()(root).insert(
         Entry{this->key, Value(std::forward<Args>(args)...)});
@@ -257,7 +259,7 @@ private:
 
 public:
   void operator++() {
-    DCHECK_GT(stack.numItems, 0);
+    GT(stack.numItems, 0);
     auto &pool = splayTable.pool;
     auto current = stack.last();
     if (pool[current]->children[1]) {
@@ -376,11 +378,11 @@ public:
     auto &key = getKey(entry);
     auto handle = _splay()(root).find(key);
     bool exists = handle != Pool::Handle::INVALID;
-    DCHECK(!exists);
+    CHECK(!exists);
 #endif
     // auto &root = const_cast<Pool::Handle &>(this->root);
     auto newHandle = _splay()(root).insert(std::forward<TEntry>(entry));
-    DCHECK_EQ(newHandle, root);
+    EQ(newHandle, root);
   }
 
   template <class TEntry>
@@ -458,3 +460,5 @@ class Final final : public Custom<Final<Parameters>, Parameters> {
 }; // class Final
 
 } // namespace VOLTISO_NAMESPACE::splayTable
+
+#include <voltiso/OFF>

@@ -13,6 +13,8 @@
 #include <chrono>
 #include <thread>
 
+#include <voltiso/ON>
+
 // forward
 namespace VOLTISO_NAMESPACE {
 class Runner;
@@ -303,7 +305,7 @@ inline Task::~Task() {
 }
 
 inline void Task::cancel() {
-  DCHECK(runner);
+  CHECK(runner);
   runner->allTasks.maybeErase(this); // might be paused
   runner = nullptr;
 }
@@ -316,21 +318,21 @@ inline void Task::maybeCancel() {
 }
 
 inline void Task::pause() {
-  DCHECK(options.isRepeating);
-  DCHECK(runner);
+  CHECK(options.isRepeating);
+  CHECK(runner);
   runner->allTasks.erase(this);
 }
 
 inline void Task::maybePause() {
-  DCHECK(options.isRepeating);
+  CHECK(options.isRepeating);
   if (runner) [[likely]] {
     runner->allTasks.maybeErase(this);
   }
 }
 
 inline void Task::resume() {
-  DCHECK(options.isRepeating);
-  DCHECK(runner);
+  CHECK(options.isRepeating);
+  CHECK(runner);
   runner->allTasks.insert(this);
   this->targetExecutionTime = Clock::now();
   this->scheduleId += 1;
@@ -338,7 +340,7 @@ inline void Task::resume() {
 }
 
 inline void Task::maybeResume() {
-  DCHECK(options.isRepeating);
+  CHECK(options.isRepeating);
   if (runner) [[likely]] {
     auto taskRef = runner->allTasks[this];
     if (!taskRef.exists) [[likely]] {
@@ -350,3 +352,5 @@ inline void Task::maybeResume() {
   }
 }
 } // namespace VOLTISO_NAMESPACE::runner::_
+
+#include <voltiso/OFF>

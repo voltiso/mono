@@ -12,6 +12,8 @@
 
 #include <concepts>
 
+#include <voltiso/ON>
+
 namespace VOLTISO_NAMESPACE::splay::_ {
 struct AccessPathNode {
   Handle node;
@@ -123,9 +125,9 @@ public:
         accessPath.push({current, 0});
         current = splay.pool[current]->children[0];
       } else {
-        DCHECK(currentKey <
-               keyToFind); // TODO: make it DCHECK_LT, change logging library so
-                           // that it does not require operator<<
+        CHECK(currentKey <
+              keyToFind); // TODO: make it DCHECK_LT, change logging library so
+                          // that it does not require operator<<
         accessPath.push({current, 1});
         current = splay.pool[current]->children[1];
       }
@@ -133,7 +135,7 @@ public:
     // DCHECK(current) << "key not found " << keyToFind;
     this->_splayLastAccessPath();
     if (current)
-      DCHECK_EQ(current, root);
+      EQ(current, root);
     return current;
   }
 
@@ -190,7 +192,7 @@ protected:
   void _splayLastAccessPath() {
     // LOG(INFO) << "accessPath " << splay.accessPath;
     // LOG(INFO) << "BEFORE SPLAY" << "\n" << *this;
-    DCHECK_GT(splay.accessPath.numItems, 0);
+    GT(splay.accessPath.numItems, 0);
     auto iNode = splay.accessPath.numItems - 1;
     auto node = splay.accessPath[iNode]->node;
     auto &bst = _bst();
@@ -341,7 +343,8 @@ public:
         }
         current = pool[current]->children[0];
       } else {
-        DCHECK(currentKey < key) << "cannot insert duplicate key "; // << key;
+        CHECK(currentKey <
+              key); // << "cannot insert duplicate key "; // << key;
         accessPath.push({current, 1});
         if (!pool[current]->children[1]) [[unlikely]] {
           pool[current]->children[1] = nodeToLink;
@@ -352,7 +355,7 @@ public:
     }
     accessPath.push({nodeToLink, 0});
     this->_splayLastAccessPath();
-    DCHECK_EQ(root, nodeToLink);
+    EQ(root, nodeToLink);
   }
 
   Entry erase(const Handle &nodeToErase) {
@@ -362,7 +365,7 @@ public:
     const auto &n = nodeToErase;
     auto &root = this->_root();
     auto &splay = const_cast<Custom &>(this->splay);
-    DCHECK_EQ(root, n);
+    EQ(root, n);
     if (!pool[n]->children[0]) [[unlikely]] {
       root = pool[n]->children[1];
     } else if (!pool[n]->children[1]) [[unlikely]] {
@@ -491,3 +494,5 @@ template <class Pool>
 class Splay
     : public splay::Custom<Splay<Pool>, std::tuple<parameter::Pool<Pool>>> {};
 } // namespace VOLTISO_NAMESPACE
+
+#include <voltiso/OFF>

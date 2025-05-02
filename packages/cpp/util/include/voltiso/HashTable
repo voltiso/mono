@@ -10,6 +10,8 @@
 
 #include <type_traits>
 
+#include <voltiso/ON>
+
 // ! todo: can be made faster by using a single growable allocation for both
 // ! pool and buckets
 
@@ -105,20 +107,20 @@ protected:
 
 public:
   const Value &value() const {
-    DCHECK(this->exists);
+    CHECK(this->exists);
     return getValue(this->hashTable.pool[*this->pHandle]->entry);
   }
 
   template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
   Value &value() {
-    DCHECK(this->exists);
+    CHECK(this->exists);
     return getValue(this->_pool()[*this->pHandle]->entry);
   }
 
 public:
   template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
   void erase() {
-    DCHECK(this->exists);
+    CHECK(this->exists);
     auto &pool = this->_pool();
     auto node = pool[*this->pHandle];
     this->_handle() = node->nextNode;
@@ -226,7 +228,7 @@ protected:
 public:
   template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
   Self &insert() {
-    DCHECK(!this->exists);
+    CHECK(!this->exists);
     this->_maybeGrow();
     auto &pool = this->_pool();
     auto node = pool.insert(this->entry).handle;
@@ -459,7 +461,7 @@ private:
 public:
   /** @internal - works only for comparisons with .end() */
   bool operator!=(const ConstIterator &other) const {
-    DCHECK_EQ(&hashTable, &other.hashTable);
+    EQ(&hashTable, &other.hashTable);
     return !!this->node; // !
   }
 
@@ -612,7 +614,7 @@ private:
     // LOG(INFO) << "get bucket index for key " << key;
     auto hash = getHash<Key>(key);
     // LOG(INFO) << "hash is " << hash;
-    DCHECK(std::has_single_bit(buckets.numItems));
+    CHECK(std::has_single_bit(buckets.numItems));
     // auto index = hash % buckets.numItems;
     auto index = hash & (buckets.numItems - 1);
     return typename Buckets::Handle(index);
@@ -631,7 +633,7 @@ private:
   }
 
   void setNumBuckets(std::size_t newNumBuckets) {
-    DCHECK(std::has_single_bit(newNumBuckets));
+    CHECK(std::has_single_bit(newNumBuckets));
     auto &buckets = this->_buckets();
     auto &pool = this->_pool();
     auto oldNumBuckets = buckets.numItems;
@@ -860,3 +862,5 @@ class Final final : public Custom<Final<Parameters>, Parameters> {
   using Base::Base;
 };
 } // namespace VOLTISO_NAMESPACE::hashTable
+
+#include <voltiso/OFF>

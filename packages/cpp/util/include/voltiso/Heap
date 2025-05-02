@@ -3,6 +3,8 @@
 #include "voltiso/DynamicArray"
 #include "voltiso/is_trivially_relocatable"
 
+#include <voltiso/ON>
+
 namespace VOLTISO_NAMESPACE::heap {
 template <class Final, class Parameters>
 class Custom
@@ -50,12 +52,12 @@ public:
   }
 
   const Item &peek() const {
-    DCHECK_NE(Base::numItems, 0);
+    NE(Base::numItems, 0);
     return Base::first().item();
   }
 
   Item pop() {
-    DCHECK_NE(Base::numItems, 0);
+    NE(Base::numItems, 0);
     Item item = std::move(Base::first().item());
     auto lastItem = std::move(Base::last());
     Base::pop();
@@ -108,11 +110,11 @@ public:
   // auto end() const { return Base::end(); }
 
   ConstIterator begin() const {
-    DCHECK_GT(numItems, 0);
+    GT(numItems, 0);
     return &Base::slots()->item().item();
   }
   ConstIterator end() const {
-    DCHECK_GT(numItems, 0);
+    GT(numItems, 0);
     return &Base::slots()->item().item() + this->numItems;
   }
 };
@@ -135,3 +137,5 @@ constexpr auto is_trivially_relocatable<heap::Custom<Final, Parameters>> = true;
 template <class Item>
 constexpr auto is_trivially_relocatable<Heap<Item>> = true;
 } // namespace VOLTISO_NAMESPACE
+
+#include <voltiso/OFF>
