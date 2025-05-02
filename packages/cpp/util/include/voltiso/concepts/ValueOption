@@ -1,0 +1,10 @@
+#pragma once
+#include <voltiso/_>
+
+namespace VOLTISO_NAMESPACE::concepts {
+template <class T>
+concept ValueOption = requires {
+  T::VALUE;
+  T::DEFAULT;
+};
+} // namespace VOLTISO_NAMESPACE::concepts

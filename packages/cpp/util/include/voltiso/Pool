@@ -3,10 +3,8 @@
 
 #include "voltiso/DynamicArray"
 #include "voltiso/Handle"
-#include "voltiso/getParameter/Type"
-#include "voltiso/parameter"
-
-#include <tuple>
+#include "voltiso/concepts/Options"
+#include "voltiso/option"
 
 #include <voltiso/ON>
 
@@ -16,9 +14,21 @@
 
 namespace VOLTISO_NAMESPACE {
 
+// forward declarations
 namespace pool {
-template <class Final, class Parameters> class Custom;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+class Final final : public Custom<Final<Options>, Options> {
+  using Base = Custom<Final<Options>, Options>;
+  using Base::Base;
+};
 } // namespace pool
+
+//
 
 namespace pool::_ {
 template <class Item> struct Slot {
@@ -32,9 +42,9 @@ template <class Item> struct Slot {
   //   }
 };
 
-template <class Parameters> struct Block {
-  using Item = getParameter::Type<parameter::Item, Parameters>;
-  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+template <class Options> struct Block {
+  using Item = Options::template Get<option::Item>;
+  using Allocator = Options::template Get<option::Allocator>;
 
   Slot<Item> *allocationStart;
   Slot<Item> *allocationEnd;
@@ -62,15 +72,14 @@ template <class Parameters> struct Block {
 };
 } // namespace pool::_
 
-template <class Parameters>
-static constexpr auto is_trivially_relocatable<pool::_::Block<Parameters>> =
-    true;
+template <class Options>
+static constexpr auto is_trivially_relocatable<pool::_::Block<Options>> = true;
 
 //
 
 namespace pool {
-template <class Final, class Parameters, bool IS_CONST> class Accessor {
-  using Pool = Custom<Final, Parameters>;
+template <class Final, class Options, bool IS_CONST> class Accessor {
+  using Pool = Custom<Final, Options>;
   using MaybeConstPool = std::conditional_t<IS_CONST, const Pool, Pool>;
 
   using Item = typename Pool::Item;
@@ -136,24 +145,24 @@ namespace pool {
 // Current implementation does not ever release memory to the system.
 // In the future, it's possible to keep free-lists per block, but additional
 // indirection would make things a little bit slower.
-template <class Final, class Parameters>
-class Custom
-    : public Singleton<
-          getParameter::Type<parameter::Allocator, Parameters>>::Guard {
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom : public Singleton<
+                   typename Options::template Get<option::Allocator>>::Guard {
   //   static_assert(std::is_base_of_v<Custom, Final>);
 
 public:
-  using Item = getParameter::Type<parameter::Item, Parameters>;
+  using Item = Options::template Get<option::Item>;
   static_assert(!std::is_reference_v<Item>);
   static_assert(!std::is_const_v<Item>);
   static_assert(!std::is_volatile_v<Item>);
 
-  using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
+  using Allocator = Options::template Get<option::Allocator>;
 
   using Handle = Handle ::WithType<Item *>::template WithBrand<Final>;
 
-  using Accessor = pool::Accessor<Final, Parameters, false>;
-  using ConstAccessor = pool::Accessor<Final, Parameters, true>;
+  using Accessor = pool::Accessor<Final, Options, false>;
+  using ConstAccessor = pool::Accessor<Final, Options, true>;
 
   static_assert(std::is_same_v<typename Handle::Type, Item *>);
 
@@ -161,7 +170,7 @@ private:
   using Slot = _::Slot<Item>;
 
 private:
-  DynamicArray<_::Block<Parameters>> blocks;
+  DynamicArray<_::Block<Options>> blocks;
   Slot *anyFreeSlot = nullptr;
 
   // below values could be read from last block instead
@@ -239,23 +248,20 @@ private:
   auto &allocator() const { return Allocator::instance(); }
 
 public:
-  template <class Parameter>
-  class With : public Custom<With<Parameter>,
-                             decltype(std::tuple_cat(
-                                 std::declval<std::tuple<Parameter>>(),
-                                 std::declval<Parameters>()))> {};
+  template <class Option>
+  using With = pool::Final<typename Options::template With<Option>>;
 
-  template <class NewItem> using WithItem = With<parameter::Item<NewItem>>;
+  template <class Item> using WithItem = With<option::Item<Item>>;
 
-  template <class NewAllocator>
-  using WithAllocator = With<parameter::Allocator<NewAllocator>>;
+  template <class Allocator>
+  using WithAllocator = With<option::Allocator<Allocator>>;
 }; // class Custom
 } // namespace pool
 
 template <class Item>
 class Pool final
-    : public pool::Custom<Pool<Item>, std::tuple<parameter::Item<Item>>> {
-  using Base = pool::Custom<Pool<Item>, std::tuple<parameter::Item<Item>>>;
+    : public pool::Custom<Pool<Item>, Options<option::Item<Item>>> {
+  using Base = pool::Custom<Pool<Item>, Options<option::Item<Item>>>;
   using Base::Base;
 };
 

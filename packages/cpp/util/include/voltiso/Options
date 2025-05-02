@@ -1,0 +1,78 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/concepts/TypeOption"
+
+namespace VOLTISO_NAMESPACE::_::getTypeOption {
+// Get type from parameter if it matches, or fallback type if not
+template <template <class> class Option, class T, class Fallback>
+struct get_param_type {
+  using Result = Fallback;
+};
+
+template <template <class> class Option, class T, class Fallback>
+struct get_param_type<Option, Option<T>, Fallback> {
+  using Result = typename Option<T>::StoredType;
+};
+
+// Implementation helper
+template <template <class> class TypeOption, class... Pack>
+  requires concepts::TypeOption<TypeOption<void>>
+struct TypeImpl {
+  using Result = typename TypeOption<void>::StoredDefault;
+};
+
+// Specialization for non-empty tuples
+template <template <class> class Option, class PackHead, class... PackTail>
+struct TypeImpl<Option, PackHead, PackTail...> {
+  using Result = typename get_param_type<
+      Option, PackHead, typename TypeImpl<Option, PackTail...>::Result>::Result;
+};
+
+} // namespace VOLTISO_NAMESPACE::_::getTypeOption
+
+namespace VOLTISO_NAMESPACE::_::getValueOption {
+
+// Get value from parameter if it matches, or fallback value if not
+template <template <auto> class Option, class T, auto Fallback>
+struct get_param_value {
+  static constexpr auto RESULT = Fallback;
+};
+
+template <template <auto> class Option, auto V, auto Fallback>
+struct get_param_value<Option, Option<V>, Fallback> {
+  static constexpr auto RESULT = Option<V>::VALUE;
+};
+
+// Implementation helper
+template <template <auto> class Option, class... Tuple> struct ValueImpl {
+  static constexpr auto RESULT = Option<0>::DEFAULT;
+};
+
+// Specialization for non-empty tuples
+template <template <auto> class Option, class Head, class... Tail>
+struct ValueImpl<Option, Head, Tail...> {
+  static constexpr auto RESULT =
+      get_param_value<Option, Head, ValueImpl<Option, Tail...>::RESULT>::RESULT;
+};
+
+} // namespace VOLTISO_NAMESPACE::_::getValueOption
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <class... As> struct Options {
+  // get a Type argument
+  template <template <class> class TypeOption>
+  using Get = _::getTypeOption::TypeImpl<TypeOption, As...>::Result;
+
+  // Get a VALUE argument
+  template <template <auto> class ValueOption>
+  static constexpr auto GET =
+      _::getValueOption::ValueImpl<ValueOption, As...>::RESULT;
+
+  // todo: we could remove duplicates, and maybe sort
+  // push a new argument
+  template <class Option> using With = Options<As..., Option>;
+}; // struct Options
+} // namespace VOLTISO_NAMESPACE

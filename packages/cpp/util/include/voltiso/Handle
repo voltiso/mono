@@ -2,9 +2,10 @@
 #include <voltiso/_>
 
 #include "voltiso/Object"
-#include "voltiso/TypeParameter"
-#include "voltiso/getParameter/Type"
-#include "voltiso/parameter"
+#include "voltiso/Options"
+#include "voltiso/TypeOption"
+#include "voltiso/concepts/Options"
+#include "voltiso/option"
 
 #include <cstdint>
 #include <limits>
@@ -13,32 +14,32 @@
 
 //
 
-namespace VOLTISO_NAMESPACE::handle::parameter {
-template <class T> struct Type : TypeParameter<T, void *> {};
-} // namespace VOLTISO_NAMESPACE::handle::parameter
-
+// forward declarations
 namespace VOLTISO_NAMESPACE::handle {
-template <class Final, class Parameters> class Custom;
-template <class Parameters = std::tuple<>>
-class Final : public Custom<Final<Parameters>, Parameters> {
-  using Base = Custom<Final, Parameters>;
-  using Base::Base;
-};
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+class Final;
 } // namespace VOLTISO_NAMESPACE::handle
 
+//
+
 namespace VOLTISO_NAMESPACE {
-using Handle = handle::Final<>;
+using Handle = handle::Final<Options<>>;
+// class Handle final : public handle::Custom<Handle, Parameters<>> {
+//   using Base = handle::Custom<Handle, Parameters<>>;
+//   using Base::Base;
+// };
 } // namespace VOLTISO_NAMESPACE
 
-namespace std {
-template <class Parameters>
-struct hash<VOLTISO_NAMESPACE::handle::Final<Parameters>> {
-  using Handle = VOLTISO_NAMESPACE::handle::Final<Parameters>;
-  auto operator()(const Handle &handle) const {
-    return ::std::hash<typename Handle::Value>{}(handle.value);
-  }
-};
-} // namespace std
+//
+
+namespace VOLTISO_NAMESPACE::handle::option {
+template <class T> struct Type : TypeOption<T, void *> {};
+} // namespace VOLTISO_NAMESPACE::handle::option
 
 //
 
@@ -53,16 +54,15 @@ template <class Type> constexpr auto getNullValue() noexcept {
 } // namespace VOLTISO_NAMESPACE::handle::_
 
 namespace VOLTISO_NAMESPACE::handle {
-template <class Final, class Parameters = std::tuple<>>
+template <class Final, class Options>
+  requires concepts::Options<Options>
 class Custom : public Object<Final> {
 private:
   using Self = Custom;
 
 public:
-  using Brand =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Brand, Parameters>;
-
-  using Type = getParameter::Type<parameter::Type, Parameters>;
+  using Brand = Options::template Get<::VOLTISO_NAMESPACE::option::Brand>;
+  using Type = Options::template Get<option::Type>;
 
   using Value =
       std::conditional_t<std::is_pointer_v<Type>, std::uintptr_t, Type>;
@@ -148,27 +148,52 @@ public:
   }
 
 public:
-  template <class Argument>
-  using With = handle::Final<decltype(std::tuple_cat(
-      std::declval<std::tuple<Argument>>(), std::declval<Parameters>()))>;
+  template <class Option>
+  using With = handle::Final<typename Options::template With<Option>>;
 
   template <class NewBrand>
-  using WithBrand = With<VOLTISO_NAMESPACE::parameter::Brand<NewBrand>>;
+  using WithBrand = With<VOLTISO_NAMESPACE::option::Brand<NewBrand>>;
 
-  template <class NewType>
-  using WithType = With<handle::parameter::Type<NewType>>;
+  template <class NewType> using WithType = With<handle::option::Type<NewType>>;
 }; // class Custom
 
-template <class Final, class Parameters>
-constexpr Final Custom<Final, Parameters>::INVALID = static_cast<Final>(
-    _::getNullValue<typename Custom<Final, Parameters>::Type>());
+template <class Final, class Options>
+  requires concepts::Options<Options>
+constexpr Final Custom<Final, Options>::INVALID = static_cast<Final>(
+    _::getNullValue<typename Custom<Final, Options>::Type>());
 
-template <class Final, class... Parameters>
+template <class Final, class Options>
+  requires concepts::Options<Options>
 std::ostream &operator<<(std::ostream &os,
-                         const Custom<Final, Parameters...> &handle) {
-  if (handle == Custom<Final, Parameters...>::INVALID) [[unlikely]] {
+                         const Custom<Final, Options> &handle) {
+  if (handle == Custom<Final, Options>::INVALID) [[unlikely]] {
     return os << "Handle::INVALID";
   }
   return os << "Handle(" << handle.value << ")";
-}
+} // operator<<
+
+//
+
+template <class Options>
+  requires concepts::Options<Options>
+class Final final : public Custom<Final<Options>, Options> {
+  using Base = Custom<Final<Options>, Options>;
+
+public:
+  using Base::Base;
+  using Base::operator=;
+}; // class Final
+
 } // namespace VOLTISO_NAMESPACE::handle
+
+//
+
+namespace std {
+template <class Options>
+struct hash<VOLTISO_NAMESPACE::handle::Final<Options>> {
+  using Handle = VOLTISO_NAMESPACE::handle::Final<Options>;
+  auto operator()(const Handle &handle) const {
+    return ::std::hash<typename Handle::Value>{}(handle.value);
+  }
+};
+} // namespace std

@@ -6,11 +6,10 @@
 #include "voltiso/Object"
 #include "voltiso/Singleton"
 #include "voltiso/Storage"
-#include "voltiso/getParameter/Type"
-#include "voltiso/getParameter/VALUE"
-#include "voltiso/has"
+#include "voltiso/concepts/Option"
+#include "voltiso/concepts/Options"
 #include "voltiso/is_trivially_relocatable"
-#include "voltiso/parameter"
+#include "voltiso/option"
 
 #include <bit>
 #include <cstddef>
@@ -19,8 +18,21 @@
 
 #include <voltiso/ON>
 
+// forward declarations
 namespace VOLTISO_NAMESPACE::dynamicArray {
-template <class Final, class Parameters> class Custom;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+class Final final : public Custom<Final<Options>, Options> {
+  using Base = Custom<Final<Options>, Options>;
+
+public:
+  using Base::Base;
+  using Base::operator=;
+};
 } // namespace VOLTISO_NAMESPACE::dynamicArray
 
 namespace VOLTISO_NAMESPACE::dynamicArray::_ {
@@ -31,30 +43,32 @@ template <class Final, class Parameters> struct Base_ : Object<Final> {
   using Base::operator=;
 };
 
-template <class Final, class Parameters>
-struct DataMembersNoInPlace : Base_<Final, Parameters> {
-  using Base = Base_<Final, Parameters>;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+struct DataMembersNoInPlace : Base_<Final, Options> {
+  using Base = Base_<Final, Options>;
   using Base::Base;
   using Base::operator=;
 
-  using Allocator =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Allocator, Parameters>;
+  using Allocator = Options::template Get<option::Allocator>;
 
 protected:
   typename Allocator::Handle allocation;
 
 public:
-  size_t const numSlots = getParameter::VALUE<parameter::IN_PLACE, Parameters>;
+  size_t const numSlots = Options::template GET<option::IN_PLACE>;
 };
 
-template <class Final, class Parameters>
-struct DataMembersInPlaceBase : Base_<Final, Parameters> {
-  using Base = Base_<Final, Parameters>;
+//
+
+template <class Final, class Options>
+  requires concepts::Options<Options>
+struct DataMembersInPlaceBase : Base_<Final, Options> {
+  using Base = Base_<Final, Options>;
   using Base::Base;
   using Base::operator=;
 
-  using Allocator =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Allocator, Parameters>;
+  using Allocator = Options::template Get<option::Allocator>;
 
   static_assert(
       std::is_trivially_constructible_v<Storage<typename Allocator::Handle>>);
@@ -62,56 +76,56 @@ struct DataMembersInPlaceBase : Base_<Final, Parameters> {
                 Storage<typename Allocator::Handle>>);
 };
 
-template <class Final, class Parameters>
-struct DataMembersInPlaceOnly : DataMembersInPlaceBase<Final, Parameters> {
-  using Base = DataMembersInPlaceBase<Final, Parameters>;
+//
+
+template <class Final, class Options>
+  requires concepts::Options<Options>
+struct DataMembersInPlaceOnly : DataMembersInPlaceBase<Final, Options> {
+  using Base = DataMembersInPlaceBase<Final, Options>;
   using Base::Base;
   using Base::operator=;
 
-  using Item =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Item, Parameters>;
+  using Item = Options::template Get<option::Item>;
 
 protected:
-  Array<Storage<Item>,
-        getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>>
+  Array<Storage<Item>, Options::template GET<option::IN_PLACE_ONLY>>
       inPlaceItems;
 
 public:
   static constexpr size_t NUM_SLOTS =
-      getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>;
+      Options::template GET<option::IN_PLACE_ONLY>;
 };
 
-template <class Final, class Parameters>
-struct DataMembersInPlace : DataMembersInPlaceBase<Final, Parameters> {
-  using Base = DataMembersInPlaceBase<Final, Parameters>;
+//
+
+template <class Final, class Options>
+  requires concepts::Options<Options>
+struct DataMembersInPlace : DataMembersInPlaceBase<Final, Options> {
+  using Base = DataMembersInPlaceBase<Final, Options>;
   using Base::Base;
   using Base::operator=;
 
-  using Allocator =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Allocator, Parameters>;
-
-  using Item =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Item, Parameters>;
+  using Allocator = Options::template Get<option::Allocator>;
+  using Item = Options::template Get<option::Item>;
 
 protected:
   union {
     Storage<typename Allocator::Handle> allocation;
-    Array<Storage<Item>, getParameter::VALUE<parameter::IN_PLACE, Parameters>>
-        inPlaceItems;
+    Array<Storage<Item>, Options::template GET<option::IN_PLACE>> inPlaceItems;
   };
 
 public:
-  size_t const numSlots = getParameter::VALUE<parameter::IN_PLACE, Parameters>;
+  size_t const numSlots = Options::template GET<option::IN_PLACE>;
 };
 
-template <class Final, class Parameters>
+template <class Final, class Options>
+  requires concepts::Options<Options>
 using DataMembers = std::conditional_t<
-    (getParameter::VALUE<parameter::IN_PLACE, Parameters> > 0),
-    DataMembersInPlace<Final, Parameters>,
-    std::conditional_t<
-        (getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> > 0),
-        DataMembersInPlaceOnly<Final, Parameters>,
-        DataMembersNoInPlace<Final, Parameters>>>;
+    (Options::template GET<option::IN_PLACE> > 0),
+    DataMembersInPlace<Final, Options>,
+    std::conditional_t<(Options::template GET<option::IN_PLACE_ONLY> > 0),
+                       DataMembersInPlaceOnly<Final, Options>,
+                       DataMembersNoInPlace<Final, Options>>>;
 
 template <class Final, class Parameters> class ConstAccessor {
 private:
@@ -178,28 +192,26 @@ namespace VOLTISO_NAMESPACE::dynamicArray {
 
 //
 
-template <class Final, class Parameters>
-class Custom : public _::DataMembers<Final, Parameters> {
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom : public _::DataMembers<Final, Options> {
 private:
-  using Base = _::DataMembers<Final, Parameters>;
+  using Base = _::DataMembers<Final, Options>;
   using Self = Custom;
   template <class F, class P> using SelfTemplate = Custom<F, P>;
 
 public:
-  using Item =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Item, Parameters>;
+  using Item = Options::template Get<VOLTISO_NAMESPACE::option::Item>;
 
-  using Allocator =
-      getParameter::Type<VOLTISO_NAMESPACE::parameter::Allocator, Parameters>;
+  using Allocator = Options::template Get<VOLTISO_NAMESPACE::option::Allocator>;
 
-  static constexpr auto IN_PLACE =
-      getParameter::VALUE<parameter::IN_PLACE, Parameters>;
+  static constexpr auto IN_PLACE = Options::template GET<option::IN_PLACE>;
 
   static constexpr auto IN_PLACE_ONLY =
-      getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>;
+      Options::template GET<option::IN_PLACE_ONLY>;
 
-  using Accessor = _::Accessor<Final, Parameters>;
-  using ConstAccessor = _::ConstAccessor<Final, Parameters>;
+  using Accessor = _::Accessor<Final, Options>;
+  using ConstAccessor = _::ConstAccessor<Final, Options>;
   friend Accessor;
   friend ConstAccessor;
 
@@ -211,14 +223,13 @@ private:
                 "`Item` must be marked as trivially relocatable using "
                 "`is_trivially_relocatable<Item> = true`");
 
-  static_assert(getParameter::VALUE<parameter::IN_PLACE, Parameters> == 0 ||
-                    getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
-                        0,
+  static_assert(Options::template GET<option::IN_PLACE> == 0 ||
+                    Options::template GET<option::IN_PLACE_ONLY> == 0,
                 "Use either `IN_PLACE` or `IN_PLACE_ONLY`, not both");
 
   static constexpr size_t NUM_IN_PLACE_SLOTS =
-      getParameter::VALUE<parameter::IN_PLACE, Parameters> ||
-      getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>;
+      Options::template GET<option::IN_PLACE> ||
+      Options::template GET<option::IN_PLACE_ONLY>;
 
 public:
   // template <class Type>
@@ -242,10 +253,9 @@ public:
         }
         _allocator().freeBytes(this->allocation, _numBytes(this->numSlots));
       }
-    } else if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> >
-                         0) {
+    } else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
       // speed-up 'in-place' path (e.g. for `HashTable`)
-      if (this->numSlots > getParameter::VALUE<parameter::IN_PLACE, Parameters>)
+      if (this->numSlots > Options::template GET<option::IN_PLACE>)
           [[unlikely]] {
         auto memory =
             static_cast<Storage<Item> *>(_allocator()(this->allocation.item()));
@@ -263,9 +273,8 @@ public:
         }
       }
     } else {
-      static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> >
-                    0);
-      // DCHECK_LE(this->numSlots, getParameter::VALUE<parameter::IN_PLACE_ONLY,
+      static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
+      // DCHECK_LE(this->numSlots, Options::template GET<option::IN_PLACE_ONLY,
       // Parameters>);
       auto memory = static_cast<Storage<Item> *>(this->inPlaceItems.items);
       for (size_t i = 0; i < numItems; ++i) {
@@ -357,16 +366,13 @@ public:
 
     if constexpr (NUM_IN_PLACE_SLOTS == 0) {
       self.allocation = _allocator().allocateBytes(_numBytes(numItems));
-    } else if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> >
-                         0) {
-      if (numItems > getParameter::VALUE<parameter::IN_PLACE, Parameters>)
-          [[unlikely]] {
+    } else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
+      if (numItems > Options::template GET<option::IN_PLACE>) [[unlikely]] {
         self.allocation.item() =
             _allocator().allocateBytes(_numBytes(numItems));
       }
     } else {
-      static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> >
-                    0);
+      static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
       DCHECK_LE(numItems, IN_PLACE_ONLY);
     }
 
@@ -408,12 +414,10 @@ private:
 
 public:
   // `newNumSlots` must be at least `numItems`
-  template <auto IN_PLACE_ONLY =
-                getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>,
+  template <auto IN_PLACE_ONLY = Options::template GET<option::IN_PLACE_ONLY>,
             class = std::enable_if_t<IN_PLACE_ONLY == 0>>
   auto setNumSlots(size_t newNumSlots) {
-    static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
-                  0);
+    static_assert(Options::template GET<option::IN_PLACE_ONLY> == 0);
     // LOG(INFO) << "setNumSlots " << newNumSlots;
     VOLTISO_GE(newNumSlots, numItems);
     if constexpr (NUM_IN_PLACE_SLOTS == 0) {
@@ -432,12 +436,10 @@ public:
           // noop
         }
       }
-    } else if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> >
-                         0) {
-      if (this->numSlots <=
-          getParameter::VALUE<parameter::IN_PLACE, Parameters>) [[likely]] {
-        if (newNumSlots <= getParameter::VALUE<parameter::IN_PLACE, Parameters>)
-            [[likely]] {
+    } else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
+      if (this->numSlots <= Options::template GET<option::IN_PLACE>)
+          [[likely]] {
+        if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
           // noop - stay in place
         } else [[unlikely]] {
           auto allocation =
@@ -447,8 +449,7 @@ public:
           this->allocation.item() = allocation;
         }
       } else [[unlikely]] {
-        if (newNumSlots <= getParameter::VALUE<parameter::IN_PLACE, Parameters>)
-            [[likely]] {
+        if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
           auto oldData = this->allocation.item();
           LT(newNumSlots, this->numSlots);
           ::memcpy(&this->inPlaceItems[0], oldData, sizeof(Item) * numItems);
@@ -482,10 +483,9 @@ public:
       return std::bit_cast<Storage<Item> *>(this->allocation);
       // return static_cast<Storage<Item> *>(
       //     _allocator()(this->allocation.item()));
-    } else if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> >
-                         0) {
-      if (this->numSlots <=
-          getParameter::VALUE<parameter::IN_PLACE, Parameters>) [[likely]] {
+    } else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
+      if (this->numSlots <= Options::template GET<option::IN_PLACE>)
+          [[likely]] {
         return this->inPlaceItems.items;
       } else [[unlikely]] {
         return std::bit_cast<Storage<Item> *>(this->allocation);
@@ -493,9 +493,8 @@ public:
         //     _allocator()(this->allocation));
       }
     } else {
-      static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> >
-                    0);
-      // DCHECK_LE(this->numSlots, getParameter::VALUE<parameter::IN_PLACE_ONLY,
+      static_assert(Options::template GET<option::IN_PLACE_ONLY> > 0);
+      // LE(this->numSlots, getParameter::VALUE<option::IN_PLACE_ONLY,
       // Parameters>);
       return this->inPlaceItems.items;
     }
@@ -539,25 +538,25 @@ public:
 
   template <class... Args> Handle push(Args &&...args) {
     // std::cout << "push" << std::endl;
-    if constexpr (has::numSlots<Self>) {
+    if constexpr (requires { Self::numSlots; }) {
       LE(numItems, this->numSlots);
     }
 
-    if constexpr (has::NUM_SLOTS<Self>) {
+    if constexpr (requires { Self::NUM_SLOTS; }) {
       LE(numItems, this->NUM_SLOTS);
     }
 
-    if constexpr (has::numSlots<Self>) {
+    if constexpr (requires { Self::numSlots; }) {
       if (numItems == this->numSlots) [[unlikely]] {
         this->grow();
       }
     }
 
-    if constexpr (has::numSlots<Self>) {
+    if constexpr (requires { Self::numSlots; }) {
       LT(numItems, this->numSlots);
     }
 
-    if constexpr (has::NUM_SLOTS<Self>) {
+    if constexpr (requires { Self::NUM_SLOTS; }) {
       LT(numItems, this->NUM_SLOTS);
     }
 
@@ -566,26 +565,24 @@ public:
     auto index = numItems;
     ++(size_t &)numItems;
 
-    if constexpr (has::NUM_SLOTS<Self>)
+    if constexpr (requires { Self::NUM_SLOTS; })
       LE(numItems, this->NUM_SLOTS);
 
     slots()[index].construct(std::forward<Args>(args)...);
 
-    if constexpr (has::NUM_SLOTS<Self>)
+    if constexpr (requires { Self::NUM_SLOTS; })
       LE(numItems, this->NUM_SLOTS);
 
     auto handle = Handle(index);
     return handle;
   }
 
-  template <auto IN_PLACE_ONLY =
-                getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>,
+  template <auto IN_PLACE_ONLY = Options::template GET<option::IN_PLACE_ONLY>,
             class = std::enable_if_t<IN_PLACE_ONLY == 0>>
   void grow() {
-    static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
-                  0);
+    static_assert(Options::template GET<option::IN_PLACE_ONLY> == 0);
     auto newNumSlots = this->numSlots << 1;
-    if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> == 0) {
+    if constexpr (Options::template GET<option::IN_PLACE> == 0) {
       if (!newNumSlots) [[unlikely]]
         newNumSlots = 1;
     }
@@ -594,12 +591,10 @@ public:
     this->setNumSlots(newNumSlots);
   }
 
-  template <auto IN_PLACE_ONLY =
-                getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>,
+  template <auto IN_PLACE_ONLY = Options::template GET<option::IN_PLACE_ONLY>,
             class = std::enable_if_t<IN_PLACE_ONLY == 0>>
   void growToAtLeast(size_t minNumSlots) {
-    static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
-                  0);
+    static_assert(Options::template GET<option::IN_PLACE_ONLY> == 0);
     while (this->numSlots < minNumSlots)
       grow(); // ! SLOW
   }
@@ -708,18 +703,16 @@ public:
   }
 
 public:
-  template <class Parameter>
-  using With =
-      Custom<Final,
-             decltype(std::tuple_cat(std::declval<std::tuple<Parameter>>(),
-                                     std::declval<Parameters>()))>;
+  template <class Option>
+    requires concepts::Option<Option>
+  using With = dynamicArray::Final<typename Options::template With<Option>>;
 
-  template <class T> using WithItem = With<parameter::Item<T>>;
-  template <class T> using WithAllocator = With<parameter::Allocator<T>>;
-  template <std::size_t N> using WithInPlace = With<parameter::IN_PLACE<N>>;
+  template <class T> using WithItem = With<option::Item<T>>;
+  template <class T> using WithAllocator = With<option::Allocator<T>>;
+  template <std::size_t N> using WithInPlace = With<option::IN_PLACE<N>>;
 
   template <std::size_t N>
-  using WithInPlaceOnly = With<parameter::IN_PLACE_ONLY<N>>;
+  using WithInPlaceOnly = With<option::IN_PLACE_ONLY<N>>;
 
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::dynamicArray
@@ -742,21 +735,25 @@ operator<<(::std::ostream &os,
 } // namespace VOLTISO_NAMESPACE
 
 namespace VOLTISO_NAMESPACE {
+
 template <class Item>
 class DynamicArray final
     : public dynamicArray::Custom<DynamicArray<Item>,
-                                  std::tuple<parameter::Item<Item>>> {
-  using Base = dynamicArray::Custom<DynamicArray<Item>,
-                                    std::tuple<parameter::Item<Item>>>;
+                                  Options<option::Item<Item>>> {
+  using Base =
+      dynamicArray::Custom<DynamicArray<Item>, Options<option::Item<Item>>>;
 
 public:
   using Base::Base;
   using Base::operator=;
 };
 
-template <class Final, class Parameters>
-constexpr auto
-    is_trivially_relocatable<dynamicArray::Custom<Final, Parameters>> = true;
+template <class Final, class Options>
+constexpr auto is_trivially_relocatable<dynamicArray::Custom<Final, Options>> =
+    true;
+
+template <class Options>
+constexpr auto is_trivially_relocatable<dynamicArray::Final<Options>> = true;
 
 template <class Item>
 constexpr auto is_trivially_relocatable<DynamicArray<Item>> = true;

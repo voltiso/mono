@@ -6,8 +6,6 @@
 #include "voltiso/Handle"
 #include "voltiso/Object"
 #include "voltiso/Singleton"
-#include "voltiso/getParameter/Type"
-#include "voltiso/parameter"
 
 // #include "glog/logging.h"
 
@@ -26,8 +24,7 @@ struct Debug;
 
 namespace VOLTISO_NAMESPACE::allocator::malloc {
 
-template <class Final, class Parameters = std::tuple<>>
-struct Custom : public Object<Final> {
+template <class Final, class Options> struct Custom : public Object<Final> {
 private:
   using Base = Object<Final>;
   using Self = Custom;
@@ -54,7 +51,7 @@ public:
   }
 
 public:
-  using Brand = getParameter::Type<parameter::Brand, Parameters>;
+  using Brand = Options::template Get<option::Brand>;
   using Handle = Handle::WithBrand<Self>::template WithType<void *>;
 
   // `numBytes` must be greater than zero
@@ -78,5 +75,5 @@ public:
 // VOLTISO_OBJECT_FINAL(allocator::malloc)
 
 namespace VOLTISO_NAMESPACE::allocator {
-struct Malloc : malloc::Custom<Malloc> {};
+struct Malloc final : malloc::Custom<Malloc, Options<>> {};
 } // namespace VOLTISO_NAMESPACE::allocator

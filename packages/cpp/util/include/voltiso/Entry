@@ -1,7 +1,6 @@
 #pragma once
 #include <voltiso/_>
 
-#include "voltiso/has"
 #include "voltiso/is_trivially_relocatable"
 
 #include <type_traits>
@@ -20,38 +19,42 @@ static constexpr auto is_trivially_relocatable<Entry<Key, Value>> =
 
 //
 
-template <class Item, class = std::enable_if_t<has::entry<Item>>>
+template <class Item>
+  requires requires { Item::entry; }
 constexpr auto &getEntry(Item &item) {
-  if constexpr (has::function::entry<Item>) {
+  if constexpr (requires { item.entry(); }) {
     return item.entry();
   } else {
     return item.entry;
   }
 }
 
-template <class Item, class = std::enable_if_t<has::entry<Item>>>
+template <class Item>
+  requires requires { Item::entry; }
 constexpr const auto &getEntry(const Item &item) {
   return getEntry(const_cast<Item &>(item));
 }
 
 // getKey
 
-template <class Item, std::enable_if_t<has::key<Item>> * = nullptr>
+template <class Item>
+  requires requires { Item::key; }
 constexpr auto &getKey(Item &item) {
-  if constexpr (has::function::key<Item>) {
+  if constexpr (requires { item.key(); }) {
     return item.key();
   } else {
     return item.key;
   }
 }
 
-template <class Item,
-          std::enable_if_t<!has::key<Item> && !has::entry<Item>> * = nullptr>
+template <class Item>
+  requires(!requires { Item::key; }) && (!requires { Item::entry; })
 constexpr auto &getKey(Item &item) {
   return item; // identity function by default
 }
 
-template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+template <class Item>
+  requires requires { Item::entry; }
 constexpr auto &getKey(Item &item) {
   return getKey(getEntry(item));
 }
@@ -77,22 +80,24 @@ using GetKey =
 
 // getValue
 
-template <class Item, class = std::enable_if_t<has::value<Item>>>
+template <class Item>
+  requires requires { Item::value; }
 constexpr auto &getValue(Item &item) {
-  if constexpr (has::function::value<Item>) {
+  if constexpr (requires { item.value(); }) {
     return item.value();
   } else {
     return item.value;
   }
 }
 
-template <class Item,
-          std::enable_if_t<!has::value<Item> && !has::entry<Item>> * = nullptr>
+template <class Item>
+  requires(!requires { Item::value; }) && (!requires { Item::entry; })
 constexpr auto &getValue(Item &item) {
   return item; // identity function by default
 }
 
-template <class Item, std::enable_if_t<has::entry<Item>> * = nullptr>
+template <class Item>
+  requires requires { Item::entry; }
 constexpr auto &getValue(Item &item) {
   return getValue(getEntry(item));
 }

@@ -18,12 +18,12 @@ TEST(Owned, trivial) {
             sizeof(std::unique_ptr<int>)); // Owned is now always a ptr
 
   // operator ==
-  EXPECT_EQ(owned, 123); // todo: this was working before?
-  EXPECT_EQ(123, owned); // todo: this was working before?
+  EXPECT_EQ(owned, 123);
+  EXPECT_EQ(123, owned);
 
   // operator !=
-  EXPECT_NE(owned, 124); // todo: this was working before?
-  EXPECT_NE(124, owned); // todo: this was working before?
+  EXPECT_NE(owned, 124);
+  EXPECT_NE(124, owned);
 
   // operator *
   EXPECT_EQ(*owned, 123);

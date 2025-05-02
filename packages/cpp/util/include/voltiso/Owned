@@ -3,34 +3,39 @@
 
 #include "voltiso/Object"
 #include "voltiso/Pool"
+#include "voltiso/concepts/Options"
 #include "voltiso/getHash"
-#include "voltiso/getParameter/Type"
-#include "voltiso/getParameter/VALUE"
 #include "voltiso/is_trivially_relocatable"
-#include "voltiso/parameter"
+#include "voltiso/option"
 
 namespace VOLTISO_NAMESPACE::owned {
-template <class Final, class Parameters> class Custom;
-template <class Parameters> class Final;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+class Final;
 } // namespace VOLTISO_NAMESPACE::owned
 
 namespace VOLTISO_NAMESPACE {
-template <class Parameters>
-static constexpr auto is_trivially_relocatable<owned::Final<Parameters>> = true;
+template <class Options>
+static constexpr auto is_trivially_relocatable<owned::Final<Options>> = true;
 
-template <class Item>
-using Owned = owned::Final<std::tuple<parameter::Item<Item>>>;
+template <class Item> using Owned = owned::Final<Options<option::Item<Item>>>;
 
-template <class Parameters>
-std::size_t getHash(const VOLTISO_NAMESPACE::owned::Final<Parameters> &owned) {
+template <class Options>
+std::size_t getHash(const VOLTISO_NAMESPACE::owned::Final<Options> &owned) {
   return getHash(&owned.item());
 }
 } // namespace VOLTISO_NAMESPACE
 
 namespace VOLTISO_NAMESPACE::owned {
 
-template <class Final, class Parameters> class Custom : public Object<Final> {
-  using Item = getParameter::Type<parameter::Item, Parameters>;
+template <class Final, class Options>
+  requires concepts::Options<Options>
+class Custom : public Object<Final> {
+  using Item = Options::template Get<option::Item>;
   static_assert(!std::is_reference_v<Item>,
                 "you probably don't want Owned<Item&>");
 
@@ -38,7 +43,7 @@ template <class Final, class Parameters> class Custom : public Object<Final> {
 
   using CanonicalItem = std::remove_cv_t<Item>;
   using Pool = Pool<CanonicalItem>;
-  static constexpr bool WEAK = getParameter::VALUE<parameter::WEAK, Parameters>;
+  static constexpr bool WEAK = Options::template GET<option::WEAK>;
 
 public:
   template <class... Args> static Final create(Args &&...args) {
@@ -88,26 +93,24 @@ public:
   // Custom(const Custom &) = default;
 
   // copy constructor (for weak)
-  template <class OtherFinal, class OtherParameters, bool W = WEAK,
-            std::enable_if_t<
-                W && std::is_assignable_v<
-                         Item *&, typename getParameter::Type<
-                                      parameter::Item, OtherParameters> *>> * =
-                nullptr>
-  Custom(const Custom<OtherFinal, OtherParameters> &other)
-      : _item(other._item) {}
+  template <
+      class OtherFinal, class OtherOptions, bool W = WEAK,
+      std::enable_if_t<W && std::is_assignable_v<
+                                Item *&, typename OtherOptions::template Get<
+                                             option::Item> *>> * = nullptr>
+  Custom(const Custom<OtherFinal, OtherOptions> &other) : _item(other._item) {}
 
   // ! disable assignments - this should work like a reference, not a
   // ! pointer
   // // copy assignment (for weak)
-  // template <class OtherFinal, class OtherParameters, bool W = WEAK,
+  // template <class OtherFinal, class OtherOptions, bool W = WEAK,
   //           std::enable_if_t<
   //               W && std::is_assignable_v<
   //                        Item *&, typename getParameter::Type<
-  //                                     parameter::Item, OtherParameters> *>> *
+  //                                     option::Item, OtherOptions> *>> *
   //                                     =
   //               nullptr>
-  // Custom &operator=(const Custom<OtherFinal, OtherParameters> &other) {
+  // Custom &operator=(const Custom<OtherFinal, OtherOptions> &other) {
   //   this->_item = other._item;
   //   return *this;
   // }
@@ -115,19 +118,21 @@ public:
   // ! disable assignments - this should work like a reference, not a
   // ! pointer
   // // move assignment (weak -> weak)
-  // template <class OtherFinal, class OtherParameters,
+  // template <class OtherFinal, class OtherOptions,
   //           std::enable_if_t<
-  //               WEAK && getParameter::VALUE<parameter::WEAK, OtherParameters>
+  //               WEAK && getParameter::VALUE<option::WEAK, OtherOptions>
   //               && std::is_assignable_v<
-  //                   Item *&, typename getParameter::Type<parameter::Item,
-  //                                                        OtherParameters> *>>
+  //                   Item *&, typename getParameter::Type<option::Item,
+  //                                                        OtherOptions> *>>
   //               * = nullptr>
-  // Custom &operator=(Custom<OtherFinal, OtherParameters> &&other) {
+  // Custom &operator=(Custom<OtherFinal, OtherOptions> &&other) {
   //   this->_item = other._item;
   //   return *this;
   // }
 
-  template <class OtherFinal, class OtherParameters> friend class Custom;
+  template <class OtherFinal, class OtherOptions>
+    requires concepts::Options<OtherOptions>
+  friend class Custom;
 
   // move constructor (not for weak)
   template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
@@ -192,21 +197,22 @@ private:
   static constexpr auto &pool() { return Singleton<Pool>::instance(); }
 
 public:
-  template <class Parameter>
-  using With = owned::Final<decltype(std::tuple_cat(
-      std::declval<std::tuple<Parameter>>(), std::declval<Parameters>()))>;
+  template <class Option>
+    requires concepts::Option<Option>
+  using With = owned::Final<typename Options::template With<Option>>;
 
-  template <class NewItem> using WithItem = With<parameter::Item<NewItem>>;
-  using Weak = With<parameter::WEAK<true>>;
+  template <class Item> using WithItem = With<option::Item<Item>>;
+
+  using Weak = With<option::WEAK<true>>;
 
 public:
   Weak weak() const { return *this; }
 
 public:
-  template <class OtherFinal, class OtherParameters,
+  template <class OtherFinal, class OtherOptions,
             std::enable_if_t<std::is_same_v<Item, typename OtherFinal::Item>>
                 * = nullptr>
-  bool operator==(const Custom<OtherFinal, OtherParameters> &other) const {
+  bool operator==(const Custom<OtherFinal, OtherOptions> &other) const {
     return this->_item == other._item;
   }
 
@@ -245,9 +251,10 @@ public:
   //   }
 }; // class Custom
 
-template <class Parameters>
-class Final final : public Custom<Final<Parameters>, Parameters> {
-  using Base = Custom<Final<Parameters>, Parameters>;
+template <class Options>
+  requires concepts::Options<Options>
+class Final final : public Custom<Final<Options>, Options> {
+  using Base = Custom<Final<Options>, Options>;
   using Base::Base;
 
 public:
@@ -262,14 +269,14 @@ public:
 //
 
 #define DEFINE_OPERATOR(op)                                                    \
-  template <class Final, class Parameters, class Other>                        \
-  auto operator op(const Custom<Final, Parameters> &lhs, Other &&rhs)          \
+  template <class Final, class Options, class Other>                           \
+  auto operator op(const Custom<Final, Options> &lhs, Other &&rhs)             \
       ->decltype(*lhs op std::forward<Other>(rhs)) {                           \
     return *lhs op std::forward<Other>(rhs);                                   \
   }                                                                            \
                                                                                \
-  template <class Final, class Parameters, class Other>                        \
-  auto operator op(Other &&lhs, const Custom<Final, Parameters> &rhs)          \
+  template <class Final, class Options, class Other>                           \
+  auto operator op(Other &&lhs, const Custom<Final, Options> &rhs)             \
       ->decltype(std::forward<Other>(lhs) op * rhs) {                          \
     return std::forward<Other>(lhs) op * rhs;                                  \
   }

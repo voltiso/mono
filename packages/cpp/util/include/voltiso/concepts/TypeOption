@@ -1,0 +1,10 @@
+#pragma once
+#include <voltiso/_>
+
+namespace VOLTISO_NAMESPACE::concepts {
+template <class T>
+concept TypeOption = requires {
+  typename T::StoredType;
+  typename T::StoredDefault;
+};
+} // namespace VOLTISO_NAMESPACE::concepts

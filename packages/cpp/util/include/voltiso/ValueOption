@@ -1,0 +1,9 @@
+#pragma once
+#include <voltiso/_>
+
+namespace VOLTISO_NAMESPACE {
+template <auto _VALUE, auto _DEFAULT = _VALUE> struct ValueOption {
+  static constexpr auto VALUE = _VALUE;
+  static constexpr auto DEFAULT = _DEFAULT;
+};
+} // namespace VOLTISO_NAMESPACE
