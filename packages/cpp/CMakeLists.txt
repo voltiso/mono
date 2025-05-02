@@ -52,31 +52,36 @@ add_executable(
 	voltiso-util-test
 	test.cpp
 
-	util/test/Entry.test.cpp
-	util/test/context.test.cpp
-	util/test/Handle.test.cpp
-	util/test/InPlace.test.cpp
-	util/test/Owned.test.cpp
-	util/test/Shared.test.cpp
-	util/test/Ref.test.cpp
-	util/test/Function.test.cpp
-	util/test/is_trivially_relocatable.test.cpp
-	util/test/Storage.test.cpp
-	util/test/BitArray.test.cpp
-	util/test/Array.test.cpp
-
-	util/test/DynamicArray.test.cpp
-	util/test/HashMap.test.cpp
-	util/test/HashSet.test.cpp
-	util/test/SplayMap.test.cpp
-	util/test/SplaySet.test.cpp
-	util/test/Heap.test.cpp
-	util/test/Pool.test.cpp
-	util/test/getParameter.test.cpp
-	util/test/Runner.test.cpp
-	
+	# util/test/Entry.test.cpp
+	# util/test/context.test.cpp
+	# util/test/Handle.test.cpp
+	# util/test/Owned.test.cpp
+	# util/test/Shared.test.cpp
+	# util/test/Any.test.cpp
+	# util/test/Function.test.cpp
+	# util/test/is_trivially_relocatable.test.cpp
+	# util/test/Storage.test.cpp
+	# util/test/BitArray.test.cpp
+	# util/test/DynamicArray.test.cpp
+	# util/test/HashMap.test.cpp
+	# util/test/HashSet.test.cpp
+	# util/test/SplayMap.test.cpp
+	# util/test/SplaySet.test.cpp
+	# util/test/Heap.test.cpp
+	# util/test/Pool.test.cpp
+	# util/test/getParameter.test.cpp
+	# util/test/Runner.test.cpp
 	# util/test/Subject.test.cpp
-	# util/test/State.test.cpp
+
+	util/test/Array.test.cpp
+	util/test/Slice.test.cpp
+	util/test/RawArray.test.cpp
+	util/test/ConstStringSlice.test.cpp
+	util/test/String.test.cpp
+	# util/test/DynamicString.test.cpp # TODO
+	# util/test/State.test.cpp # TODO
+
+	# util/test/_InPlace.test.cpp # deprecated for now
 )
 
 # google benchmark

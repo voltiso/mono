@@ -58,6 +58,15 @@ template <class _Item> struct Storage {
     return *this;
   }
 
+  // bitwise compare
+  bool operator==(const Storage &other) const {
+    return memcmp(this, &other, sizeof(Storage)) == 0;
+  }
+
+  bool operator<(const Storage &other) const {
+    return memcmp(this, &other, sizeof(Storage)) < 0;
+  }
+
   // template <class... Args>
   // constexpr Storage(Args &&...args) noexcept
   //     : bytes(std::forward<Args>(args)...) {}

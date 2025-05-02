@@ -96,11 +96,10 @@ static void BM_Shared_copy(benchmark::State &state) {
     sources.push_back(Shared<SmallObject>::create(42));
     sources.push_back(Shared<SmallObject>::create(24));
 
-    Shared<SmallObject> dst = sources[0];
-
     for (int i = 0; i < 1000; ++i) {
-      dst = sources[i % 2]; // Alternate between two different sources
-      benchmark::DoNotOptimize(dst);
+      Shared<SmallObject> dst =
+          sources[i % 2]; // Alternate between two different sources
+      benchmark::DoNotOptimize(dst->value);
     }
   }
 }
@@ -114,11 +113,10 @@ static void BM_Shared_copy_sharedPtr(benchmark::State &state) {
     sources.push_back(std::make_shared<SmallObject>(42));
     sources.push_back(std::make_shared<SmallObject>(24));
 
-    std::shared_ptr<SmallObject> dst = sources[0];
-
     for (int i = 0; i < 1000; ++i) {
-      dst = sources[i % 2]; // Alternate between two different sources
-      benchmark::DoNotOptimize(dst);
+      std::shared_ptr<SmallObject> dst =
+          sources[i % 2]; // Alternate between two different sources
+      benchmark::DoNotOptimize(dst->value);
     }
   }
 }

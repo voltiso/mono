@@ -5,15 +5,13 @@
 using namespace VOLTISO_NAMESPACE;
 
 TEST(Subject, Basic) {
+  Retainer retainer;
+  auto retainerGuard = context::Guard(retainer);
+
   Subject<int> subject(42);
   int gotValue = 0;
 
-  auto callback = [&](const int &value) {
-    gotValue = value;
-    //
-  };
-  // static_assert(sizeof(std::function<void(const int &)>) == 8);
-  subject.subscribe(std::move(callback));
+  subject.subscribe([&](auto &value) { gotValue = value; });
 
   EXPECT_EQ(gotValue, 0); // not called yet
   subject = 1;

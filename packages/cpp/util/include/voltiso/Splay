@@ -1,10 +1,16 @@
 #pragma once
 #include <voltiso/_>
 
+#ifndef VOLTISO_DEBUG_SPLAY
+#define VOLTISO_DEBUG_SPLAY VOLTISO_DEBUG
+#endif
+
 #include "voltiso/Bst"
 #include "voltiso/DynamicArray"
 #include "voltiso/Entry"
 #include "voltiso/Object"
+
+#include <concepts>
 
 namespace VOLTISO_NAMESPACE::splay::_ {
 struct AccessPathNode {
@@ -58,12 +64,12 @@ protected:
 public:
   Handle lowerBound(const Key &searchAtLeast) {
     if (!root) [[unlikely]]
-      return Handle::null;
+      return Handle::INVALID;
     // LOG(INFO) << "lb start";
-    // LOG(INFO) << "null is " << Handle::null;
+    // LOG(INFO) << "null is " << Handle::INVALID;
     DCHECK(root);
     auto node = root;
-    auto cand = Handle::null;
+    auto cand = Handle::INVALID;
     auto &accessPath = _accessPath();
     accessPath.clear();
     // LOG(INFO) << "lb: search " << searchAtLeast;
@@ -94,11 +100,10 @@ public:
     // DCHECK(root);
 
     if (!root) [[unlikely]]
-      return Handle::null;
+      return Handle::INVALID;
 
     // ! todo: likely? unlikely?
     if (keyToFind == getKey(splay.pool[root].item()))
-      // if (nodeToFind == root)
       return root;
 
     auto current = root;
@@ -106,7 +111,7 @@ public:
     // auto &key = getKey(splay.pool[nodeToFind].item());
     accessPath.clear();
     while (current) {
-      auto currentKey = getKey(splay.pool[current].item());
+      auto &currentKey = getKey(splay.pool[current].item());
 
       if (currentKey == keyToFind) [[unlikely]] {
         // if (current == nodeToFind) [[unlikely]] {
@@ -118,7 +123,9 @@ public:
         accessPath.push({current, 0});
         current = splay.pool[current]->children[0];
       } else {
-        DCHECK_LT(currentKey, keyToFind);
+        DCHECK(currentKey <
+               keyToFind); // TODO: make it DCHECK_LT, change logging library so
+                           // that it does not require operator<<
         accessPath.push({current, 1});
         current = splay.pool[current]->children[1];
       }
@@ -306,8 +313,8 @@ public:
       root = splay.merge(splay.pool[nodeToUnlink]->children[0],
                          splay.pool[nodeToUnlink]->children[1]);
     }
-    pool[nodeToUnlink]->children[0] = Handle::null;
-    pool[nodeToUnlink]->children[1] = Handle::null;
+    pool[nodeToUnlink]->children[0] = Handle::INVALID;
+    pool[nodeToUnlink]->children[1] = Handle::INVALID;
   }
 
   void link(const Handle &nodeToLink) {
@@ -320,12 +327,12 @@ public:
       return;
     }
 
-    auto key = getKey(pool[nodeToLink].item());
+    auto &key = getKey(pool[nodeToLink].item());
 
     auto current = root;
     accessPath.clear();
     while (current) {
-      auto currentKey = getKey(pool[current].item());
+      auto &currentKey = getKey(pool[current].item());
       if (key < currentKey) {
         accessPath.push({current, 0});
         if (!pool[current]->children[0]) [[unlikely]] {
@@ -334,7 +341,7 @@ public:
         }
         current = pool[current]->children[0];
       } else {
-        DCHECK_LT(currentKey, key) << "cannot insert duplicate key " << key;
+        DCHECK(currentKey < key) << "cannot insert duplicate key "; // << key;
         accessPath.push({current, 1});
         if (!pool[current]->children[1]) [[unlikely]] {
           pool[current]->children[1] = nodeToLink;
@@ -422,6 +429,8 @@ public:
   using Node = typename Pool::Item;
   using Entry = GetEntry<Node>;
   using Key = GetKey<Entry>; // may be implicit
+
+  static_assert(std::equality_comparable<Key>);
 
   using ConstAccessor = ConstAccessor<Final, Parameters>;
   using Accessor = Accessor<Final, Parameters>;

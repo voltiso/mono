@@ -69,7 +69,11 @@ template <class Key, class Value> struct GetKeyImpl<Entry<Key, Value>> {
 };
 } // namespace _
 
-template <class Item> using GetKey = _::GetKeyImpl<Item>::Type;
+template <class Item>
+using GetKey =
+    std::conditional_t<std::is_same_v<typename _::GetKeyImpl<Item>::Type,
+                                      std::remove_cvref_t<Item>>,
+                       Item, typename _::GetKeyImpl<Item>::Type>;
 
 // getValue
 
@@ -146,7 +150,11 @@ template <class Key, class Value> struct GetValueImpl<Entry<Key, Value>> {
 };
 } // namespace _
 
-template <class Item> using GetValue = _::GetValueImpl<Item>::Type;
+template <class Item>
+using GetValue =
+    std::conditional_t<std::is_same_v<std::remove_cvref_t<Item>,
+                                      typename _::GetValueImpl<Item>::Type>,
+                       Item, typename _::GetValueImpl<Item>::Type>;
 
 //
 

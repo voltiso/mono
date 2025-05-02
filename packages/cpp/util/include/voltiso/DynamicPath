@@ -1,0 +1,10 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/DynamicString"
+
+namespace VOLTISO_NAMESPACE {
+class DynamicPath : public DynamicString {
+  //
+};
+} // namespace VOLTISO_NAMESPACE

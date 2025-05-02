@@ -1,4 +1,4 @@
-#include "voltiso/Function"
+#include "voltiso/AnyFunction"
 
 #include <gtest/gtest.h>
 
@@ -7,19 +7,23 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-static_assert(sizeof(Function<int(int)>) == sizeof(void *) * 3);
-static_assert(is_trivially_relocatable<Function<int(int)>>);
+static_assert(sizeof(AnyFunction<int(int)>) == sizeof(void *) * 3);
+static_assert(is_trivially_relocatable<AnyFunction<int(int)>>);
+
+TEST(Function, moveSemantics) {
+  v::AnyFunction<void()> test = [] {};
+}
 
 TEST(Function, Basic) {
-  Function<int(int)> f = [](int x) { return x * 2; };
+  AnyFunction<int(int)> f = [](int x) { return x * 2; };
   EXPECT_EQ(f(5), 10);
 
-  Function<int(int, int)> add = [](int a, int b) { return a + b; };
+  AnyFunction<int(int, int)> add = [](int a, int b) { return a + b; };
   EXPECT_EQ(add(3, 4), 7);
 }
 
 TEST(Function, MoveOnly) {
-  Function<std::string(std::string)> concat = [](std::string s) {
+  AnyFunction<std::string(std::string)> concat = [](std::string s) {
     return s + " world";
   };
 
@@ -41,6 +45,8 @@ TEST(Function, ComplexTypes) {
     int count = 0;
     int operator()() { return ++count; }
 
+    int data[123];
+
     Counter() { numConstructorCalls += 1; }
     Counter(const Counter &) { numConstructorCalls += 1; }
     Counter &operator=(const Counter &) = delete;
@@ -48,7 +54,7 @@ TEST(Function, ComplexTypes) {
   };
 
   {
-    Function<int()> counter = Counter{};
+    AnyFunction<int()> counter = Counter{};
     EXPECT_EQ(counter(), 1);
     EXPECT_EQ(counter(), 2);
   }
@@ -59,11 +65,13 @@ TEST(Function, ComplexTypes) {
 
 TEST(Function, Capture) {
   int multiplier = 3;
-  Function<int(int)> multiply = [multiplier](int x) { return x * multiplier; };
+  AnyFunction<int(int)> multiply = [multiplier](int x) {
+    return x * multiplier;
+  };
   EXPECT_EQ(multiply(4), 12);
 
   std::string prefix = "test_";
-  Function<std::string(std::string)> prefixer = [prefix](std::string s) {
+  AnyFunction<std::string(std::string)> prefixer = [prefix](std::string s) {
     return prefix + s;
   };
   EXPECT_EQ(prefixer("value"), "test_value");
@@ -71,6 +79,6 @@ TEST(Function, Capture) {
 
 TEST(Function, CaptureBig) {
   std::vector<int> data = {1, 2, 3, 4, 5};
-  Function<int(int)> sum = [data](int index) { return data[index]; };
+  AnyFunction<int(int)> sum = [data](int index) { return data[index]; };
   EXPECT_EQ(sum(2), 3);
 }

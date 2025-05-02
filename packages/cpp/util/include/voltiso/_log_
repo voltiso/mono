@@ -1,0 +1,22 @@
+#pragma once
+#include <voltiso/_>
+
+namespace VOLTISO_NAMESPACE::_ {
+struct LogArg {};
+} // namespace VOLTISO_NAMESPACE::_
+
+std::ostringstream oss;
+// format time
+auto now = std::chrono::system_clock::now();
+auto time = std::chrono::system_clock::to_time_t(now);
+auto localTime = std::localtime(&time);
+oss << std::put_time(localTime, "%Y-%m-%d %H:%M:%S") << " ";
+// format location
+oss << arg.location.file_name() << ":" << arg.location.line() << " ";
+// format message
+oss << "Assertion failed";
+
+std::cerr << oss.str() << std::endl;
+
+throw std::runtime_error(oss.str());
+std::abort();

@@ -28,31 +28,25 @@ std::size_t getHash(const VOLTISO_NAMESPACE::owned::Final<Parameters> &owned) {
 } // namespace VOLTISO_NAMESPACE
 
 namespace VOLTISO_NAMESPACE::owned {
-template <class Item> auto create(const Item &item) {
-  return Owned<Item>::create(item);
-}
-
-template <class Item> auto create(Item &&item) {
-  return Owned<std::decay_t<Item>>::create(std::move(item));
-}
 
 template <class Final, class Parameters> class Custom : public Object<Final> {
   using Item = getParameter::Type<parameter::Item, Parameters>;
+  static_assert(!std::is_reference_v<Item>,
+                "you probably don't want Owned<Item&>");
+
   // static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
-  using Pool = Pool<Item>;
+
+  using CanonicalItem = std::remove_cv_t<Item>;
+  using Pool = Pool<CanonicalItem>;
   static constexpr bool WEAK = getParameter::VALUE<parameter::WEAK, Parameters>;
 
 public:
   template <class... Args> static Final create(Args &&...args) {
-    Final self;
-    self._item = pool().insert(std::forward<Args>(args)...);
-    return self;
+    return Final(pool().insert(std::forward<Args>(args)...), nullptr);
   }
 
   static Final create(const Item &item) {
-    Final self;
-    self._item = pool().insert(item);
-    return self;
+    return Final(pool().insert(item), nullptr);
   }
 
   // static Final create(Item &&item) {
@@ -64,19 +58,29 @@ public:
   ~Custom() {
     static_assert(std::is_final_v<Final>); // need to test somewhere
     if constexpr (!WEAK)
-      if (this->_item) [[likely]] {
-        // std::cout << "erase" << std::endl;
+      // TODO: likely/unlikely?
+      // [[unlikely]] speeds-up move-out path
+      // Moving-out should be the only case when this is triggered,
+      //   because Owned is reference-style.
+      if (this->_item) [[unlikely]] {
+        // std::cout << "erase " << this->_item << std::endl;
         pool().erase(this->_item);
         // pool()[this->_item].erase();
       }
   }
 
-  // public: Owned() = default; // convenient, but runtime-bug-prone
+  // public: Custom() = default; // convenient, but runtime-bug-prone
 
-protected:
-  Custom() = default;
+private:
+  // @internal
+  template <class Item>
+  Custom(Item &&item, void *_unusedTag) : _item(std::forward<Item>(item)) {
+    // std::cout << "create " << _item << std::endl;
+  }
 
 public:
+  Custom() = delete;
+
   template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
   Custom(const Custom &) = delete;
 
@@ -93,56 +97,79 @@ public:
   Custom(const Custom<OtherFinal, OtherParameters> &other)
       : _item(other._item) {}
 
-  // copy assignment (for weak)
-  template <class OtherFinal, class OtherParameters, bool W = WEAK,
-            std::enable_if_t<
-                W && std::is_assignable_v<
-                         Item *&, typename getParameter::Type<
-                                      parameter::Item, OtherParameters> *>> * =
-                nullptr>
-  Custom &operator=(const Custom<OtherFinal, OtherParameters> &other) {
-    this->_item = other._item;
-    return *this;
-  }
+  // ! disable assignments - this should work like a reference, not a
+  // ! pointer
+  // // copy assignment (for weak)
+  // template <class OtherFinal, class OtherParameters, bool W = WEAK,
+  //           std::enable_if_t<
+  //               W && std::is_assignable_v<
+  //                        Item *&, typename getParameter::Type<
+  //                                     parameter::Item, OtherParameters> *>> *
+  //                                     =
+  //               nullptr>
+  // Custom &operator=(const Custom<OtherFinal, OtherParameters> &other) {
+  //   this->_item = other._item;
+  //   return *this;
+  // }
 
-  // move assignment (weak -> weak)
-  template <class OtherFinal, class OtherParameters,
-            std::enable_if_t<
-                WEAK && getParameter::VALUE<parameter::WEAK, OtherParameters> &&
-                std::is_assignable_v<
-                    Item *&, typename getParameter::Type<parameter::Item,
-                                                         OtherParameters> *>>
-                * = nullptr>
-  Custom &operator=(Custom<OtherFinal, OtherParameters> &&other) {
-    this->_item = other._item;
-    return *this;
-  }
+  // ! disable assignments - this should work like a reference, not a
+  // ! pointer
+  // // move assignment (weak -> weak)
+  // template <class OtherFinal, class OtherParameters,
+  //           std::enable_if_t<
+  //               WEAK && getParameter::VALUE<parameter::WEAK, OtherParameters>
+  //               && std::is_assignable_v<
+  //                   Item *&, typename getParameter::Type<parameter::Item,
+  //                                                        OtherParameters> *>>
+  //               * = nullptr>
+  // Custom &operator=(Custom<OtherFinal, OtherParameters> &&other) {
+  //   this->_item = other._item;
+  //   return *this;
+  // }
 
   template <class OtherFinal, class OtherParameters> friend class Custom;
 
   // move constructor (not for weak)
   template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
   Custom(Custom &&other) noexcept : _item(other._item) {
-    other._item = Pool::Handle::null;
+    other._item = Pool::Handle::INVALID;
     // std::cout << other._item.value << std::endl;
   }
 
-  // move assignment (not for weak)
-  template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
-  Custom &operator=(Custom &&other) noexcept {
-    if (this->_item) [[likely]]
-      pool().erase(this->_item);
-    // pool()[this->_item].erase();
-    this->_item = other._item;
-    other._item = Pool::Handle::null;
-    return *this;
-  }
+  // ! disable move-assignments - this should work like a reference, not a
+  // pointer
+  // // move assignment (not for weak)
+  // template <bool W = WEAK, std::enable_if_t<!W> * = nullptr>
+  // Custom &operator=(Custom &&other) noexcept {
+  //   if (this->_item) [[likely]]
+  //     pool().erase(this->_item);
+  //   // pool()[this->_item].erase();
+  //   this->_item = other._item;
+  //   other._item = Pool::Handle::INVALID;
+  //   return *this;
+  // }
 
   Custom &operator=(const Custom &) = delete;
+
+public:
+  // assign to underlying value
+  template <class OtherItem>
+    requires(
+        std::is_assignable_v<Item &, OtherItem> &&
+        // Only check the second condition if OtherItem actually has operator*
+        (!(requires(OtherItem t) {
+          { *t };
+        }) ||
+         !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
+  Custom &operator=(OtherItem &&other) {
+    pool()[this->_item].item() = std::forward<OtherItem>(other);
+    return *this;
+  }
 
   // Item &item() { return pool()[_item].item(); }
   // const Item &item() const { return pool()[_item].item(); }
 
+public:
   Item &item() const {
     return *_item;
 
@@ -154,13 +181,14 @@ public:
   Item *operator->() const { return &**this; }
 
   operator Item &() const { return **this; }
+  operator Item *() const { return &**this; }
 
   template <class _Unused = void> operator Item &&() const {
     return (Item &&)(**this);
   }
 
 private:
-  Pool::Handle _item = Pool::Handle::null;
+  Pool::Handle _item = Pool::Handle::INVALID;
   static constexpr auto &pool() { return Singleton<Pool>::instance(); }
 
 public:
@@ -185,12 +213,46 @@ public:
 public:
   auto &key() const { return this->_item.value; } // ! remove `.value`
 
+public:
+  [[nodiscard]] Owned<const Item> &&freeze() && {
+    return reinterpret_cast<Owned<const Item> &&>(*this);
+  }
+
+  [[nodiscard]] const Owned<const Item> &&freeze() const && {
+    return reinterpret_cast<const Owned<const Item> &&>(*this);
+  }
+
+  const Owned<const Item> &frozen() const && {
+    static_assert(false, "Owned::frozen() works only for lvalue references");
+  }
+
+  [[nodiscard]] Owned<const Item> &frozen() & {
+    return reinterpret_cast<Owned<const Item> &>(*this);
+  }
+
+  [[nodiscard]] const Owned<const Item> &frozen() const & {
+    return reinterpret_cast<const Owned<const Item> &>(*this);
+  }
+
+  // public:
+  //   auto clone() const {
+  //     DCHECK(_item);
+  //     using NewSelf = Owned<std::remove_cv_t<Item>>;
+  //     if constexpr (has::clone<Item>)
+  //       return NewSelf::create(item().clone());
+  //     else
+  //       return NewSelf::create(item());
+  //   }
 }; // class Custom
 
 template <class Parameters>
 class Final final : public Custom<Final<Parameters>, Parameters> {
   using Base = Custom<Final<Parameters>, Parameters>;
   using Base::Base;
+
+public:
+  using Base::operator=;
+  Final() = delete;
 };
 
 //

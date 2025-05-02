@@ -142,6 +142,10 @@ class Custom
 
 public:
   using Item = getParameter::Type<parameter::Item, Parameters>;
+  static_assert(!std::is_reference_v<Item>);
+  static_assert(!std::is_const_v<Item>);
+  static_assert(!std::is_volatile_v<Item>);
+
   using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
 
   using Handle = Handle ::WithType<Item *>::template WithBrand<Final>;
@@ -170,6 +174,8 @@ private:
 #if VOLTISO_DEBUG_POOL
 public:
   ~Custom() {
+    std::cout << "DESTROYING POOL " << demangle(typeid(decltype(*this)))
+              << std::endl;
     size_t numSlotsInChain = 0;
     auto nextSlot = anyFreeSlot;
     while (nextSlot) {
@@ -214,6 +220,9 @@ public:
       return Accessor(*this, slot);
     }
   }
+
+  auto insert(const Item &item) { return insert<>(item); }
+  auto insert(Item &&item) { return insert<>(std::move(item)); }
 
   void erase(const Handle &handle) noexcept {
     DCHECK(handle);

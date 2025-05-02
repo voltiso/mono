@@ -1,17 +1,17 @@
 #pragma once
+#include <type_traits>
 #include <voltiso/_>
 
 #include "voltiso/Storage"
 
-// #include <iostream>
+#ifndef VOLTISO_DEBUG_SINGLETON
+#define VOLTISO_DEBUG_SINGLETON VOLTISO_DEBUG
+#endif
 
-// #ifndef VOLTISO_DEBUG_SINGLETON
-// #define VOLTISO_DEBUG_SINGLETON VOLTISO_DEBUG
-// #endif
-
-// #if VOLTISO_DEBUG_SINGLETON
-// #include "voltiso/throwError"
-// #endif
+#if VOLTISO_DEBUG_SINGLETON
+#include "voltiso/demangle"
+#include <iostream>
+#endif
 
 // namespace VOLTISO_NAMESPACE::singleton {
 // template <class T> auto &get() {
@@ -29,21 +29,30 @@ namespace VOLTISO_NAMESPACE {
 // }; // struct perThread
 
 template <class T> class Singleton {
+  static_assert(!std::is_reference_v<T>);
+  static_assert(!std::is_const_v<T>);
+  static_assert(!std::is_volatile_v<T>);
+
 private:
   struct Data {
     Storage<T> storage;
     std::size_t numReferences = 1;
     Data() {
+#if VOLTISO_DEBUG_SINGLETON
+      std::cout << "Singleton<" << demangle(typeid(T)) << "> CREATE"
+                << std::endl;
+#endif
       // storage.construct();
-
       // can't use storage.construct(), because Storage is not a friend
       new (&storage.item()) T();
     }
     void decrement() {
       --numReferences;
       if (numReferences == 0) [[unlikely]] {
-        // std::cout << "singleton::Data destroy " << typeid(T).name()
-        //           << std::endl;
+#if VOLTISO_DEBUG_SINGLETON
+        std::cout << "Singleton<" << demangle(typeid(T)) << "> DESTROY"
+                  << std::endl;
+#endif
         storage.destroy();
       }
     }

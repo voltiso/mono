@@ -1,17 +1,55 @@
 #pragma once
 
 #include "voltiso/DynamicArray"
-#include "voltiso/Ref"
+// #include "voltiso/Ref"
+// #include "voltiso/Storage"
+#include "voltiso/divCeil"
+#include "voltiso/is_trivially_relocatable"
 
 namespace VOLTISO_NAMESPACE {
 
 class Retainer {
 private:
-  DynamicArray<Ref<>> pointers;
+  struct alignas(std::max_align_t) TStorage {};
+  static_assert(sizeof(TStorage) == alignof(std::max_align_t));
+
+  using Data = DynamicArray<TStorage>;
+  Data data;
+
+  using Deleter = void (*)(void *);
+
+  struct Item {
+    Data::Handle offset;
+    Deleter deleter;
+  };
+  DynamicArray<Item> items;
 
 public:
-  template <class T> void retain(Ref<T> &&pointer) {
-    pointers.push(std::move(pointer));
+  Retainer() = default;
+
+  Retainer(const Retainer &) = delete;
+  Retainer &operator=(const Retainer &) = delete;
+
+public:
+  // accept only r-value references
+  template <class T, std::enable_if_t<!std::is_reference_v<T>> * = nullptr>
+  void retain(T &&t) {
+    static_assert(is_trivially_relocatable<T>);
+    auto numNewStorageItems = divCeil(sizeof(T), sizeof(TStorage));
+    data.growToAtLeast(data.numItems + numNewStorageItems);
+    auto memory = &*data.end();
+    auto prevNumStorageItems = data.numItems;
+    data.setNumItems(data.numItems + numNewStorageItems);
+    new (memory) T(std::move(t));
+    items.push(
+        Item{.offset = Data::Handle(prevNumStorageItems),
+             .deleter = [](void *memory) { static_cast<T *>(memory)->~T(); }});
+  }
+
+  ~Retainer() {
+    for (auto &item : items) {
+      item.deleter(&data[item.offset].item());
+    }
   }
 };
 

@@ -3,6 +3,9 @@
 
 {
 	"recommendations": [
+		/** support `.editorconfig` file */
+		"EditorConfig.EditorConfig",
+
 		/** Recommended user setting: `editor.formatOnSave` */
 		"esbenp.prettier-vscode",
 

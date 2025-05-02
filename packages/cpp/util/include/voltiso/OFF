@@ -1,0 +1,15 @@
+#ifndef VOLTISO_ON
+#error "Short macros not ON"
+#endif
+
+#undef VOLTISO_ON
+
+#undef CMP
+#undef EQ
+#undef NE
+#undef LT
+#undef LE
+#undef GT
+#undef GE
+
+#undef FORCE_INLINE

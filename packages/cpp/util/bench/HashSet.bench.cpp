@@ -2,6 +2,7 @@
 
 #include <voltiso/HashSet>
 #include <voltiso/Owned>
+#include <voltiso/SplaySet>
 
 #include <iostream>
 #include <unordered_set>
@@ -81,3 +82,31 @@ static void BM_HashSet_Owned(benchmark::State &state) {
   benchmark::DoNotOptimize(sum);
 }
 BENCHMARK(BM_HashSet_Owned);
+
+static void BM_SplaySet_Owned(benchmark::State &state) {
+  using namespace VOLTISO_NAMESPACE;
+  const int numElements = 1000;
+  DynamicArray<Owned<int>> array;
+  for (int i = 0; i < numElements; ++i) {
+    array.push(Owned<int>::create(i));
+  }
+  SplaySet<Owned<int>::Weak> set;
+  // const int numOperations = 1000000;
+  // while (state.KeepRunningBatch(numOperations)) {
+  for (auto _ : state) {
+    auto idx = rand() % array.numItems;
+    if (rand() % 2 == 0) {
+      // Add
+      set[*array[idx]].maybeInsert();
+    } else {
+      // Remove
+      set[*array[idx]].maybeErase();
+    }
+  }
+  auto sum = 0;
+  for (auto &item : set) {
+    sum += item;
+  }
+  benchmark::DoNotOptimize(sum);
+}
+BENCHMARK(BM_SplaySet_Owned);

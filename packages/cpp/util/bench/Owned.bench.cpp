@@ -95,15 +95,13 @@ static void BM_Owned_move(benchmark::State &state) {
 
   while (state.KeepRunningBatch(1000)) {
     Owned<SmallObject> src = Owned<SmallObject>::create(42);
-    Owned<SmallObject> dst;
 
     for (int i = 0; i < 1000; ++i) {
-      dst = std::move(src);
-      src = std::move(dst);
+      Owned<SmallObject> dst = std::move(src);
+      benchmark::DoNotOptimize(dst->value);
     }
 
     benchmark::DoNotOptimize(src);
-    benchmark::DoNotOptimize(dst);
   }
 }
 BENCHMARK(BM_Owned_move);
@@ -112,15 +110,13 @@ BENCHMARK(BM_Owned_move);
 static void BM_Owned_move_uniquePtr(benchmark::State &state) {
   while (state.KeepRunningBatch(1000)) {
     std::unique_ptr<SmallObject> src = std::make_unique<SmallObject>(42);
-    std::unique_ptr<SmallObject> dst;
 
     for (int i = 0; i < 1000; ++i) {
-      dst = std::move(src);
-      src = std::move(dst);
+      std::unique_ptr<SmallObject> dst = std::move(src);
+      benchmark::DoNotOptimize(dst->value);
     }
 
     benchmark::DoNotOptimize(src);
-    benchmark::DoNotOptimize(dst);
   }
 }
 BENCHMARK(BM_Owned_move_uniquePtr);

@@ -1,0 +1,9 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/ArrayView"
+
+namespace VOLTISO_NAMESPACE {
+template <size_t NUM_CHARS>
+using ConstStringView = ArrayView<const char, NUM_CHARS>;
+} // namespace VOLTISO_NAMESPACE

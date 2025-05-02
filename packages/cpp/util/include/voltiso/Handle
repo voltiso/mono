@@ -104,9 +104,13 @@ public:
     return value != other.value;
   }
 
-  static const Final null;
+  // can't be defined as constexpr, because can't be defined here inline
+  // ...because of CRTP type `Final`
+  // static constexpr Final INVALID = static_cast<Final>(
+  //     _::getNullValue<typename Custom<Final, Parameters>::Type>());
+  static const Final INVALID;
 
-  explicit operator bool() const noexcept { return *this != Self::null; }
+  explicit operator bool() const noexcept { return *this != Self::INVALID; }
 
   template <class P = Pointer,
             std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
@@ -156,14 +160,14 @@ public:
 }; // class Custom
 
 template <class Final, class Parameters>
-constexpr Final Custom<Final, Parameters>::null = static_cast<Final>(
+constexpr Final Custom<Final, Parameters>::INVALID = static_cast<Final>(
     _::getNullValue<typename Custom<Final, Parameters>::Type>());
 
 template <class Final, class... Parameters>
 std::ostream &operator<<(std::ostream &os,
                          const Custom<Final, Parameters...> &handle) {
-  if (handle == Custom<Final, Parameters...>::null) [[unlikely]] {
-    return os << "Handle::null";
+  if (handle == Custom<Final, Parameters...>::INVALID) [[unlikely]] {
+    return os << "Handle::INVALID";
   }
   return os << "Handle(" << handle.value << ")";
 }

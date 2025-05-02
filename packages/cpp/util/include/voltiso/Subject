@@ -1,45 +1,48 @@
 #pragma once
 
-#include "voltiso/Function"
+#include "voltiso/AnyFunction"
 #include "voltiso/HashSet"
 #include "voltiso/Owned"
 #include "voltiso/Retainer"
 #include "voltiso/context"
+#include "voltiso/is_trivially_relocatable"
 
 #include <utility>
 
 namespace VOLTISO_NAMESPACE {
 
 // Forward declaration
-template <class T> class Subject;
+template <class Value> class Subject;
 
 namespace subject::_ {
-template <class T> using Callback = Function<void(const T &)>;
-template <class T> struct Implementation final {
-  T value;
-  HashSet<Callback<T>> listeners;
-  ~Implementation() { DCHECK_EQ(listeners.numItems, 0); }
-};
+template <class Value> using Callback = AnyFunction<void(const Value &)>;
 } // namespace subject::_
 
 namespace subject {
-template <class T> class Subscription {
+template <class Value> class Subscription {
 public:
-  using Callback = subject::_::Callback<T>;
+  using Callback = subject::_::Callback<Value>;
+  using Subject = Subject<Value>;
 
 private:
-  Owned<subject::_::Implementation<T>> implementation;
+  friend Subject;
+  Subject *subject = nullptr;
   Callback callback;
 
+  static_assert(is_trivially_relocatable<Subject *>);
+  static_assert(is_trivially_relocatable<Callback>);
+
 public:
-  Subscription(Subject<T> &subject, Callback &&callback)
-      : implementation(subject.implementation), callback(std::move(callback)) {
-    implementation->listeners[callback].insert();
+  Subscription(Subject &subject, Callback &&callback)
+      : callback(std::move(callback)) {
+    this->subject = &subject;
+    this->subject->subscriptions.insert(*this);
   }
 
   ~Subscription() {
-    if (implementation) [[likely]]
-      implementation->listeners.erase(callback);
+    // speed-up fast-path (e.g. move construction)
+    if (subject) [[unlikely]]
+      subject->subscriptions.erase(*this);
   }
 
   // Non-copyable
@@ -48,59 +51,99 @@ public:
 
   // Movable
   Subscription(Subscription &&other) noexcept
-      : implementation(other.implementation), callback(other.callback) {
-    other.implementation = nullptr;
+      : subject(other.subject), callback(std::move(other.callback)) {
+    other.subject = nullptr;
   }
 
-  Subscription &operator=(Subscription &&other) noexcept {
-    DCHECK_NE(this, &other);
-    if (implementation) [[likely]] {
-      implementation->listeners.erase(callback);
-    }
-    callback = other.callback;
-    implementation = other.implementation;
-    other.implementation = nullptr;
-    return *this;
-  }
+private:
+  friend Subject;
+  void update(const Value &value) { callback(value); }
+
+  // Subscription &operator=(Subscription &&other) noexcept {
+  //   DCHECK_NE(this, &other);
+  //   if (implementation) [[likely]] {
+  //     implementation->listeners.erase(callback);
+  //   }
+  //   callback = other.callback;
+  //   implementation = other.implementation;
+  //   other.implementation = nullptr;
+  //   return *this;
+  // }
 }; // class Subscription
 } // namespace subject
 
-template <class T> class Subject final {
-private:
-  Owned<subject::_::Implementation<T>> implementation;
+template <class Value>
+constexpr auto is_trivially_relocatable<subject::Subscription<Value>> = true;
+
+template <class Value> class Subject {
+public:
+  using Callback = subject::_::Callback<Value>;
+  using Subscription = subject::Subscription<Value>;
 
 public:
-  template <class U>
-  Subject(U &&value)
-      : implementation(Owned<subject::_::Implementation<T>>::create(
-            std::forward<U>(value))) {}
+  // Owned<subject::_::Implementation<T>> implementation;
+  const Value value; // = T{};
 
-  operator const T &() const {
-    DCHECK(implementation);
-    return implementation->value;
+private:
+  auto &_value() { return const_cast<Value &>(this->value); }
+
+private:
+  using SubscriptionRef = Owned<subject::Subscription<Value>>;
+  using SubscriptionRefWeak = typename SubscriptionRef::Weak;
+
+  friend Subscription;
+  HashSet<Subscription &> subscriptions;
+
+public:
+  ~Subject() {
+    for (auto &subscription : subscriptions) {
+      // subscription.unsubscribe();
+      subscription.subject = nullptr;
+    }
   }
-  //   operator T &() { return value; } // ! illegal
+
+  // Subject() = default;
+  template <class V,
+            std::enable_if_t<std::is_convertible_v<V &&, Value>> * = nullptr>
+  Subject(V &&value) : value(std::forward<V>(value)) {}
+  Subject(const Value &value) : value(value) {}
+  Subject(Value &&value) : value(std::move(value)) {}
 
   template <class U> Subject &operator=(U &&value) {
-    if (this->implementation->value == value)
-      return *this;
-    this->implementation->value = std::forward<U>(value);
-    for (auto &listener : this->implementation->listeners) {
-      listener(value);
+    if constexpr (requires(const Value &lhs, U &&rhs) { lhs == rhs; })
+      if (this->value == value) [[unlikely]]
+        return *this;
+    this->_value() = std::forward<U>(value);
+    for (auto &subscription : this->subscriptions) {
+      subscription.update(this->value);
     }
     return *this;
   }
 
+  Subject &operator=(const Value &value) { return this->operator= <>(value); }
+  Subject &operator=(Value &&value) {
+    return this->operator= <>(std::move(value));
+  }
+
 private:
-  template <class Callback>
-  subject::Subscription<T> createSubscription(Callback &&callback) {
-    return subject::Subscription<T>(*this, std::forward<Callback>(callback));
+  template <class Listener>
+  SubscriptionRef createSubscription(Listener &&listener) {
+    return SubscriptionRef::create(*this, std::forward<Listener>(listener));
   }
 
 public:
-  void subscribe(subject::_::Callback<T> &&callback) {
+  // subscribe to future updates (does not call the callback with current value
+  // until it changes)
+  template <class Callback> void subscribe(Callback &&callback) {
     context::get<Retainer>().retain(
-        createSubscription(std::forward<subject::_::Callback<T>>(callback)));
+        createSubscription(std::forward<Callback>(callback)));
+  }
+
+  // immediately call the callback, and subscribe to future updates
+  template <class Callback> void getAndSubscribe(Callback &&callback) {
+    auto subscription = createSubscription(std::forward<Callback>(callback));
+    subscription->update(this->value);
+    context::get<Retainer>().retain(std::move(subscription));
   }
 };
 

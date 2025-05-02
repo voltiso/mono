@@ -1,0 +1,106 @@
+#pragma once
+#include <voltiso/_>
+
+#include "voltiso/Array"
+#include "voltiso/assert"
+
+namespace VOLTISO_NAMESPACE {
+// null-terminated string
+template <size_t _NUM_CHARS>
+class String
+    : public array::Custom<String<_NUM_CHARS>,
+                           std::tuple<parameter::Item<char>,
+                                      parameter::NumItems<_NUM_CHARS + 1>>> {
+private:
+  using Base = array::Custom<
+      String<_NUM_CHARS>,
+      std::tuple<parameter::Item<char>, parameter::NumItems<_NUM_CHARS + 1>>>;
+
+public:
+  static constexpr size_t NUM_CHARS = _NUM_CHARS;
+
+public:
+  using Base::Base;
+  // ! items must be null-terminated
+  // this constructor is for the `operator""s`
+  // `explicit` causes `operator""s` to not work
+  consteval String(const char (&items)[NUM_CHARS + 1]) : Base(items) {
+    // static_assert(items[NUM_CHARS] == '\0', "String must be
+    // null-terminated");
+    VOLTISO_EQ(items[NUM_CHARS], '\0');
+  }
+
+  // template <class TEST> consteval String(TEST &&test) : Base(test) {
+  //   static_assert(test[NUM_CHARS] == '\0', "String must be null-terminated");
+  //   //
+  // }
+
+  // for std
+  constexpr size_t size() const noexcept { return NUM_CHARS - 1; }
+
+  using Base::operator==;
+}; // class String
+
+// deduction guide
+template <size_t N> String(const char (&)[N]) -> String<N - 1>;
+
+} // namespace VOLTISO_NAMESPACE
+
+namespace std {
+template <size_t N>
+ostream &operator<<(ostream &os, const ::VOLTISO_NAMESPACE::String<N> &str) {
+  if constexpr (N > 0) {
+    os << std::string_view(str.items, N - 1);
+  }
+  return os;
+}
+} // namespace std
+
+//
+
+// ! ConstString does not make any sense - just use `const String`
+
+//
+
+namespace VOLTISO_NAMESPACE::string {
+template <size_t NUM_CHARS_WITH_NULL>
+inline constexpr auto from(const char (&rawString)[NUM_CHARS_WITH_NULL]) {
+  constexpr auto NUM_CHARS = NUM_CHARS_WITH_NULL - 1;
+  // DCHECK_EQ(rawString[NUM_CHARS], '\0');
+  // can't call constructor - it's for consteval only?
+  return String<NUM_CHARS>::from(rawString);
+}
+
+// template <class Item, std::size_t N> struct FixedArray {
+//   // Item items[N];
+//   v::RawArray<Item, N> items;
+
+// public:
+//   // note: `v::RawArray<const char, N> &str` argument does not work, the type
+//   // alias is not fully unwind?
+//   consteval FixedArray(const Item (&items)[N])
+//       : FixedArray(items, std::make_index_sequence<N>{}) {}
+
+// private:
+//   template <size_t... INDICES>
+//   consteval FixedArray(const Item (&items)[N],
+//   std::index_sequence<INDICES...>)
+//       : items{items[INDICES]...} {}
+// };
+
+// ! wrong
+// template <std::size_t N> using FixedString = FixedArray<const char, N>;
+
+// ! good
+// template <size_t N> struct FixedString : FixedArray<const char, N> {
+//   using Base = FixedArray<const char, N>;
+//   // using Base::Base;
+
+//   constexpr FixedString(const char (&items)[N]) : Base(items) {}
+// };
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wuser-defined-literals"
+template <String STRING> consteval auto &operator""s() { return STRING; }
+#pragma GCC diagnostic pop
+} // namespace VOLTISO_NAMESPACE::string

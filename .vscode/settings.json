@@ -10,6 +10,7 @@
 	//
 
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
+	"clangd.enableCodeCompletion": false, // conflicts with copilot
 
 	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/out",
 	"cmake.sourceDirectory": "${workspaceFolder}/packages/cpp",
@@ -478,6 +479,7 @@
 		"Wmaybe",
 		"wrappy",
 		"Wshadow",
+		"Wuser",
 		"Zonejs"
 	]
 }

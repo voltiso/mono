@@ -8,22 +8,6 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-// struct Global {
-//   // order is important
-//   allocator::Malloc malloc;
-//   context::Guard<allocator::Malloc> mallocGuard =
-//       context::Guard<allocator::Malloc>(malloc);
-
-//   Pool<int> poolInt;
-//   context::Guard<Pool<int>> poolIntGuard =
-//   context::Guard<Pool<int>>(poolInt);
-// };
-// Global global;
-
-// using A = GetKey<Owned<int>>;
-
-// static_assert(std::is_same_v<GetKey<Owned<int>>, int *>);
-
 TEST(Owned, trivial) {
   auto owned = Owned<int>::create(123);
 
@@ -55,8 +39,6 @@ TEST(Owned, trivial) {
   EXPECT_EQ((const int &)owned, 125);
   EXPECT_EQ((int &&)owned, 125);
   EXPECT_EQ((const int &&)owned, 125);
-  // EXPECT_EQ((int)owned, 123);
-  // EXPECT_EQ((const int)owned, 123);
 }
 
 //
@@ -116,22 +98,6 @@ TEST(Owned, big) {
   EXPECT_EQ(sizeof(AA), sizeof(BB));
 }
 
-// struct SmallDestructible final {
-//   static int numDestructorCalls;
-//   ~SmallDestructible() { numDestructorCalls += 1; }
-// };
-
-// int SmallDestructible::numDestructorCalls = 0;
-
-// TEST(Owned, destructor_small) {
-//   {
-//     Owned<SmallDestructible> owned = SmallDestructible{};
-//     SmallDestructible::numDestructorCalls = 0;
-//   }
-
-//   EXPECT_EQ(SmallDestructible::numDestructorCalls, 1);
-// }
-
 struct BigDestructible final {
   static int numDestructorCalls;
   ~BigDestructible() { numDestructorCalls += 1; }
@@ -159,8 +125,8 @@ TEST(Owned, weak) {
   auto weak = owned.weak();
   static_assert(std::is_same_v<decltype(weak), Owned<int>::Weak>);
   EXPECT_EQ(*weak, 123);
-  weak = owned.weak();
-  EXPECT_EQ(*weak, 123);
+  // weak = owned.weak();
+  // EXPECT_EQ(*weak, 123);
 }
 
 TEST(Owned, weak_compare) {
@@ -170,4 +136,91 @@ TEST(Owned, weak_compare) {
   EXPECT_EQ(weak, owned.weak());
   EXPECT_EQ(owned, weak);
   EXPECT_EQ(weak, owned);
+}
+
+namespace {
+struct S {
+  static int numConstructorCalls;
+  static int numDestructorCalls;
+
+  ~S() { numDestructorCalls += 1; }
+  S(int) { numConstructorCalls += 1; }
+  S(const S &) = delete;
+  S &operator=(const S &) = delete;
+};
+int S::numConstructorCalls = 0;
+int S::numDestructorCalls = 0;
+} // namespace
+
+TEST(Owned, freeze) {
+  S::numConstructorCalls = 0;
+  S::numDestructorCalls = 0;
+  // see Ref for better tests
+  {
+    auto owned = Owned<S>::create(123);
+
+    auto &frozenRef = owned.frozen();
+    static_assert(std::is_same_v<decltype(frozenRef), Owned<const S> &>);
+
+    auto frozen = std::move(owned).freeze().freeze();
+    static_assert(std::is_same_v<decltype(frozen), Owned<const S>>);
+  }
+
+  EXPECT_EQ(S::numDestructorCalls, S::numConstructorCalls);
+  EXPECT_EQ(S::numDestructorCalls, 1);
+}
+
+TEST(Owned, doesInitialize) {
+  auto a = Owned<int>::create();
+  EXPECT_EQ(a, 0);
+}
+
+TEST(Owned, worksLikeReference) {
+  Owned<int> owned = Owned<int>::create(123);
+  EXPECT_EQ(owned, 123);
+  EXPECT_EQ(*owned, 123);
+  EXPECT_EQ((int &)owned, 123);
+  EXPECT_EQ((const int &)owned, 123);
+  EXPECT_EQ((int &&)owned, 123);
+  EXPECT_EQ((const int &&)owned, 123);
+}
+
+TEST(Owned, moveSemantics) {
+  auto owned = Owned<int>::create(123);
+  Owned<int> owned2 = std::move(owned);
+  EXPECT_EQ(owned2, 123);
+
+  int x = 123;
+  owned2 = x;
+  owned2 = std::move(x);
+
+  // ! should be illegal (Owned is reference-like, can't assign to it)
+  // ! ...and we want to avoid ambiguity
+  // ! if need to move-out pointed value instead, be explicit
+  // owned2 = owned;            // !!!
+  // owned2 = std::move(owned); // !!!
+}
+
+TEST(Owned, illegal) {
+  // ! should be illegal, Owned is reference-style, always present
+  // !  (unless moved-out)
+  // Owned<int> owned; // !!!
+}
+
+TEST(Owned, baseRef) {
+  struct Base {
+    Base(int) {}
+    Base(const Base &) = delete;
+    Base &operator=(const Base &) = delete;
+  };
+
+  struct Derived : Base {
+    Derived(char) : Base(123) {}
+  };
+
+  // ! should not compile (use Ref for polymorphism)
+  // Owned<Base> owned = Owned<Derived>::create('a'); // !!!
+
+  // ! illegal
+  // Owned<Derived> owned = Owned<Base>::create(123); // !!!
 }

@@ -1,8 +1,12 @@
 #pragma once
 #include <voltiso/_>
 
+#include "voltiso/Array.forward.hpp"
+
 #include "voltiso/Handle"
 #include "voltiso/Object"
+#include "voltiso/RawArray"
+#include "voltiso/Slice"
 #include "voltiso/ValueParameter"
 #include "voltiso/getParameter/VALUE"
 #include "voltiso/is_trivially_relocatable"
@@ -10,6 +14,8 @@
 
 #include <cstddef>
 #include <type_traits>
+
+#include <voltiso/ON>
 
 namespace VOLTISO_NAMESPACE {
 
@@ -29,6 +35,9 @@ template <class Final, class Parameters> class Custom : public Object<Final> {
 public:
   using Item =
       getParameter::Type<VOLTISO_NAMESPACE::parameter::Item, Parameters>;
+
+  static_assert(!std::is_const_v<Item>,
+                "const Item does not make sense, just use `const Array<Item>`");
 
   static constexpr auto NUM_ITEMS =
       getParameter::VALUE<VOLTISO_NAMESPACE::parameter::NumItems, Parameters>;
@@ -54,14 +63,24 @@ public:
       CustomHandle<std::conditional_t<(STARTING_INDEX < 0),
                                       std::make_signed<size_t>, size_t>>;
 
-  Item items[NUM_ITEMS];
+  // Item items[NUM_ITEMS];
+  RawArray<Item, NUM_ITEMS> items;
 
 public:
-  using Base::Base;
-  using Base::operator=;
+  // using Base::Base;
+  // using Base::operator=;
 
+public:
   Custom() = default;
 
+  // ! linear-time copy (should be explicit?)
+  Custom(const Custom &) = default;
+  Custom &operator=(const Custom &) = default;
+
+  // ! allow implicit move (but not copy?)
+  Custom(Custom &&) = default;
+
+  // ! implicit linear-time - force consteval?
   Custom(std::initializer_list<Item> list) {
     size_t i = 0;
     for (auto &item : list) {
@@ -72,12 +91,34 @@ public:
     }
   }
 
+  static constexpr auto from(const Item (&items)[NUM_ITEMS]) {
+    Final result;
+    for (size_t i = 0; i < NUM_ITEMS; i++) {
+      result.items[i] = items[i];
+    }
+    return result;
+  }
+
+public:
+  // ! implicit copy - so force consteval (or use `from` method)
+  // for `operator""s`?
+  explicit constexpr Custom(const Item (&items)[NUM_ITEMS])
+      : Custom(items, std::make_index_sequence<NUM_ITEMS>{}) {}
+
+private:
+  template <size_t... INDICES>
+  explicit constexpr Custom(const Item (&items)[NUM_ITEMS],
+                            std::index_sequence<INDICES...>)
+      : items{items[INDICES]...} {}
+
+public:
   template <class InferredHandle,
             std::enable_if_t<std::is_same_v<typename InferredHandle::Brand,
                                             Final>> * = nullptr>
   const Item &operator[](const InferredHandle &handle) const {
-    DCHECK_GE(handle.value, STARTING_INDEX);
-    DCHECK_LT(handle.value - STARTING_INDEX, NUM_ITEMS);
+    GE(handle.value, STARTING_INDEX);
+    LT(handle.value - STARTING_INDEX,
+       (std::make_signed_t<decltype(NUM_ITEMS)>)NUM_ITEMS);
     return items[handle.value - STARTING_INDEX];
   }
 
@@ -101,6 +142,34 @@ public:
   template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
   Item &operator[](const Index &index) {
     return (*this)[CustomHandle<Index>(index)];
+  }
+
+  // comparisons
+  constexpr bool operator==(const Custom &other) const {
+    return NUM_ITEMS == other.NUM_ITEMS &&
+           std::equal(items, items + NUM_ITEMS, other.items);
+  }
+
+  // raw array conversion should be explicit (can loose size information)
+  explicit operator RawArray<Item, NUM_ITEMS> &() { return items; }
+
+  // raw array conversion should be explicit (can loose size information)
+  explicit operator const RawArray<Item, NUM_ITEMS> &() const { return items; }
+
+  // string_view is constant-time, so can be implicit
+  constexpr operator ::std::string_view() const
+    requires std::is_same_v<Item, char>
+  {
+    // omit null terminator
+    return ::std::string_view(items, NUM_ITEMS - 1);
+  }
+
+  // constant-time - can be implicit
+  constexpr operator Slice<Item[NUM_ITEMS]>() {
+    return Slice<Item[NUM_ITEMS]>(items);
+  }
+  constexpr operator Slice<const Item[NUM_ITEMS]>() const {
+    return Slice<const Item[NUM_ITEMS]>(items);
   }
 
   /**
@@ -132,6 +201,9 @@ public:
   ConstIterator begin() const { return ConstIterator{items}; }
   ConstIterator end() const { return ConstIterator{items + NUM_ITEMS}; }
 
+  // for std
+  constexpr size_t size() const noexcept { return NUM_ITEMS; }
+
 public:
   template <class Parameter>
   using With =
@@ -142,15 +214,13 @@ public:
   template <class T>
   using WithItem = With<VOLTISO_NAMESPACE::parameter::Item<T>>;
 
-  template <std::size_t N>
+  template <size_t N>
   using WithSize = With<VOLTISO_NAMESPACE::parameter::NumItems<N>>;
 
-  template <std::size_t N>
+  template <size_t N>
   using WithStartingIndex = With<parameter::StartingIndex<N>>;
-};
-
+}; // class Custom
 } // namespace array
-
 } // namespace VOLTISO_NAMESPACE
 
 namespace std {
@@ -188,4 +258,32 @@ public:
   using Base::Base; // Inherit constructors
 };
 
+// Deduction guide (similar to std::array)
+template <class T, class... U,
+          std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
+Array(T, U...) -> Array<std::type_identity_t<T>, 1 + sizeof...(U)>;
+
+// ! implicit linear-time copy
+// Deduction guide for constructing from a raw array
+template <class Item, size_t NUM_ITEMS>
+Array(const Item (&)[NUM_ITEMS]) -> Array<Item, NUM_ITEMS>;
+
+namespace array {
+template <class Item, size_t NUM_ITEMS>
+inline constexpr auto from(const Item (&rawArray)[NUM_ITEMS]) {
+  return Array<Item, NUM_ITEMS>::from(rawArray);
+}
+} // namespace array
+
 } // namespace VOLTISO_NAMESPACE
+
+namespace std {
+template <class T>
+  requires requires(T t) { T::NUM_ITEMS; }
+struct tuple_size<T> : std::integral_constant<std::size_t, T::NUM_ITEMS> {};
+template <class T>
+  requires requires(T t) { T::EXTENT; }
+struct tuple_size<T> : std::integral_constant<std::size_t, T::EXTENT> {};
+} // namespace std
+
+#include <voltiso/OFF>

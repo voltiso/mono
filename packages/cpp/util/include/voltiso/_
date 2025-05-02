@@ -14,18 +14,41 @@
 #endif
 #endif
 
-#if __has_include(<glog/logging.h>)
-#include <glog/logging.h>
-#else
-#define DCHECK(a) ((void)0)
-#define DCHECK_EQ(a, b) ((void)0)
-#define DCHECK_NE(a, b) ((void)0)
-#define DCHECK_GT(a, b) ((void)0)
-#define DCHECK_GE(a, b) ((void)0)
-#define DCHECK_LT(a, b) ((void)0)
-#define DCHECK_LE(a, b) ((void)0)
-#endif
+// #if __has_include(<glog/logging.h>)
+// #include <glog/logging.h>
+// #else
+// #define DCHECK(a) ((void)0)
+// #define DCHECK_EQ(a, b) ((void)0)
+// #define DCHECK_NE(a, b) ((void)0)
+// #define DCHECK_GT(a, b) ((void)0)
+// #define DCHECK_GE(a, b) ((void)0)
+// #define DCHECK_LT(a, b) ((void)0)
+// #define DCHECK_LE(a, b) ((void)0)
+// #endif
 
 #if VOLTISO_DEBUG
 #include "voltiso/demangle"
 #endif
+
+// Define FORCE_INLINE macro based on compiler
+#if defined(_MSC_VER) // Microsoft Visual C++
+#define VOLTISO_FORCE_INLINE __forceinline inline
+#elif defined(__GNUC__) || defined(__clang__) // GCC or Clang
+#define VOLTISO_FORCE_INLINE __attribute__((always_inline)) inline
+// Note: Adding 'inline' keyword as well is good practice with the attribute
+#else                               // Other compilers
+#define VOLTISO_FORCE_INLINE inline // Fallback to standard inline hint
+#endif
+
+// v::check::lt(a, 10) << "a must be less than 10, got {} instead" << a;
+
+// auto rawMessage = "a must be less than 10" r;
+// auto message = "a must be less than 10, got % instead" f % a;
+
+namespace VOLTISO_NAMESPACE {
+#ifdef NDEBUG
+inline constexpr bool IS_DEBUG_BUILD = false;
+#else
+inline constexpr bool IS_DEBUG_BUILD = true;
+#endif
+} // namespace VOLTISO_NAMESPACE

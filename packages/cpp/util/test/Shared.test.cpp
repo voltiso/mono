@@ -129,19 +129,65 @@ TEST(Shared, destructor_big) {
   EXPECT_EQ(BigDestructibleA::numDestructorCalls, 1);
 }
 
-TEST(Shared, clone_freeze) {
-  {
-    auto testState = Shared<const BigDestructibleA>::create();
-    // Shared<const BigDestructibleA> testState;
-    auto s = testState.clone();
-    static_assert(std::is_same_v<decltype(s), Shared<BigDestructibleA>>);
-    s->data[0] = 123;
-    auto newState = std::move(s).freeze();
-    static_assert(
-        std::is_same_v<decltype(newState), Shared<const BigDestructibleA>>);
+namespace {
+struct S {
+  static int numConstructorCalls;
+  static int numDestructorCalls;
+  ~S() { numDestructorCalls += 1; }
+  S(int) { numConstructorCalls += 1; }
+  S(const S &) = delete;
+  S &operator=(const S &) = delete;
+};
+int S::numConstructorCalls = 0;
+int S::numDestructorCalls = 0;
+} // namespace
 
-    EXPECT_EQ(BigDestructibleA::numDestructorCalls, 0);
+TEST(Shared, freeze) {
+  // see Ref for better tests
+  S::numConstructorCalls = 0;
+  S::numDestructorCalls = 0;
+  {
+    auto shared = Shared<const S>::create(123);
+
+    auto &frozenRef = shared.frozen();
+    static_assert(std::is_same_v<decltype(frozenRef), Shared<const S> &>);
+
+    auto frozen = std::move(shared).freeze().freeze();
+    static_assert(std::is_same_v<decltype(frozen), Shared<const S>>);
   }
 
-  EXPECT_EQ(BigDestructibleA::numDestructorCalls, 2);
+  EXPECT_EQ(S::numDestructorCalls, S::numConstructorCalls);
+  EXPECT_EQ(S::numDestructorCalls, 1);
+}
+
+TEST(Shared, worksLikeReference) {
+  Shared<int> shared = Shared<int>::create(123);
+  EXPECT_EQ(shared, 123);
+  EXPECT_EQ(*shared, 123);
+  EXPECT_EQ((int &)shared, 123);
+  EXPECT_EQ((const int &)shared, 123);
+  EXPECT_EQ((int &&)shared, 123);
+  EXPECT_EQ((const int &&)shared, 123);
+}
+
+TEST(Shared, moveSemantics) {
+  auto shared = Shared<int>::create(123);
+  Shared<int> shared2 = std::move(shared);
+  EXPECT_EQ(shared2, 123);
+
+  int x = 123;
+  shared2 = x;
+  shared2 = std::move(x);
+
+  // ! should be illegal (Shared is reference-like, can't assign to it)
+  // ! ...and we want to avoid ambiguity
+  // ! if user wants to move-out pointed value instead, it should be explicit
+  // shared2 = shared;            // !!!
+  // shared2 = std::move(shared); // !!!
+}
+
+TEST(Shared, illegal) {
+  // ! should be illegal, Shared is reference-style, always present
+  // !  (unless moved-out)
+  // Shared<int> shared; // !!!
 }

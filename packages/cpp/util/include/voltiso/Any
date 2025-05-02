@@ -38,28 +38,40 @@
 
 namespace VOLTISO_NAMESPACE {
 // type-erasure for `Owned` and `Shared`
+// reference-semantics like Owned and Shared
+//  - if we ever implement value semantics, it'll be names explicitly, e.g.
+//  OwnedValue, SharedValue, AnyValue.
 // virtual function calls
-template <class T = void> class Ref {
-  // class OwnedUnknown {
-  using Self = Ref;
+template <class Item = void> class Any {
+private:
+  using Self = Any;
+  using Deleter = void (*)(void *);
 
 public:
-  T *const target = nullptr; // const because public
+  Item *const target = nullptr; // const because public
 
 private:
-  using Deleter = void (*)(void *);
   Deleter deleter;
 
   // Storage<ref::Dynamic<Owned<int>>> storage;
 
 public:
-  Ref() = delete; // empty Ref is forbidden
+  ~Any() {
+    // deleter is nullptr if object is moved-from
+    if (deleter) [[likely]] {
+      deleter(const_cast<std::remove_const_t<Item> *>(target));
+    }
+    // selfVirtual().~Virtual();
+  }
 
-  Ref(const Self &) = delete;
+public:
+  Any() = delete; // empty Ref is forbidden
 
-  Ref(Self &&other) {
+  Any(const Self &) = delete;
+
+  Any(Self &&other) {
     DCHECK_NE(this, &other);
-    const_cast<T *&>(target) = other.target;
+    const_cast<Item *&>(target) = other.target;
     deleter = other.deleter;
     // other.pointer = nullptr;
     other.deleter = nullptr;
@@ -68,14 +80,14 @@ public:
     // auto &otherDynamic = reinterpret_cast<ref::Dynamic<Owned<int>> &>(other);
     // auto &otherInt = static_cast<Owned<int> &>(otherDynamic);
     // auto &handle = reinterpret_cast<Pool<int>::Handle &>(otherInt);
-    // handle = Pool<int>::Handle::null;
+    // handle = Pool<int>::Handle::INVALID;
   }
 
   template <class Other,
-            class = std::enable_if_t<std::is_assignable_v<T *&, Other *>>>
-  Ref(Owned<Other> &&other) {
+            class = std::enable_if_t<std::is_assignable_v<Item *&, Other *>>>
+  Any(Owned<Other> &&other) {
     static_assert(sizeof(Owned<Other>) == sizeof(void *));
-    new (const_cast<T **>(&this->target)) Owned<Other>(std::move(other));
+    new (const_cast<Item **>(&this->target)) Owned<Other>(std::move(other));
     this->deleter = [](void *p) {
       using Pool = Pool<Other>;
       using Handle = typename Pool::Handle;
@@ -95,8 +107,8 @@ public:
   }
 
   template <class Other,
-            class = std::enable_if_t<std::is_assignable_v<T *&, Other *>>>
-  Ref(Shared<Other> &&other) {
+            class = std::enable_if_t<std::is_assignable_v<Item *&, Other *>>>
+  Any(Shared<Other> &&other) {
     const_cast<void *&>(target) = &other.item();
 
     auto *controlBlock =
@@ -114,8 +126,8 @@ public:
     // DCHECK_EQ((T *)&other.item(), &other.item());
     // static_assert(sizeof(*this) == sizeof(ref::Dynamic<Shared<Other>>));
     // // so that move constructor can set handle to null:
-    // static_assert(Pool<Other>::Handle::null.value ==
-    //               Pool<int>::Handle::null.value);
+    // static_assert(Pool<Other>::Handle::INVALID.value ==
+    //               Pool<int>::Handle::INVALID.value);
     // new (this) ref::Dynamic<Shared<Other>>(std::move(other));
   }
 
@@ -130,12 +142,18 @@ public:
   //   }
 
 public:
-  ~Ref() {
-    // deleter is nullptr if object is moved-from
-    if (deleter) [[likely]] {
-      deleter(target);
-    }
-    // selfVirtual().~Virtual();
+  // assign to underlying value
+  template <class OtherItem>
+    requires(
+        std::is_assignable_v<Item &, OtherItem> &&
+        // Only check the second condition if OtherItem actually has operator*
+        (!(requires(OtherItem t) {
+          { *t };
+        }) ||
+         !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
+  Self &operator=(OtherItem &&other) {
+    item() = std::forward<OtherItem>(other);
+    return *this;
   }
 
   // T *target() const {
@@ -147,36 +165,69 @@ public:
   //   return (T *)(void *)&this->storage.item().item();
   // }
 
-  template <class TT = T,
+  template <class TT = Item,
             std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
   TT &item() const {
     // auto target = this->target();
     DCHECK(target);
-    return *static_cast<T *>(target);
+    return *static_cast<Item *>(target);
   }
 
-  T *operator->() const { return target; }
+  Item *operator->() const { return target; }
 
-  template <class TT = T,
+  template <class TT = Item,
             std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
   TT &operator*() const {
     return item();
   }
 
-  operator bool() const { return target; }
+  explicit operator bool() const { return target; }
 
-  template <class TT = T,
-            std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+  template <class TT = Item>
+    requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
   operator TT &() const {
     return item();
   }
 
-  template <class TT = T,
-            std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+  template <class TT = Item>
+    requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
   operator const TT &() const {
     return item();
   }
+
+  template <class TT = Item>
+    requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
+  operator TT &&() const {
+    return (Item &&)(**this);
+  }
+
+  template <class TT = Item>
+    requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
+  operator const TT &&() const {
+    return (Item &&)(**this);
+  }
+
+public:
+  [[nodiscard]] Any<const Item> &&freeze() && {
+    return reinterpret_cast<Any<const Item> &&>(*this);
+  }
+
+  [[nodiscard]] const Any<const Item> &&freeze() const && {
+    return reinterpret_cast<const Any<const Item> &&>(*this);
+  }
+
+  const Any<const Item> &frozen() const && {
+    static_assert(false, "Ref::frozen() works only for lvalue references");
+  }
+
+  [[nodiscard]] Any<const Item> &frozen() & {
+    return reinterpret_cast<Any<const Item> &>(*this);
+  }
+
+  [[nodiscard]] const Any<const Item> &frozen() const & {
+    return reinterpret_cast<const Any<const Item> &>(*this);
+  }
 };
 
-template <class T> constexpr bool is_trivially_relocatable<Ref<T>> = true;
+template <class T> constexpr bool is_trivially_relocatable<Any<T>> = true;
 } // namespace VOLTISO_NAMESPACE

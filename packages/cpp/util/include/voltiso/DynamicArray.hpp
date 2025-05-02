@@ -9,7 +9,6 @@
 #include "voltiso/getParameter/Type"
 #include "voltiso/getParameter/VALUE"
 #include "voltiso/has"
-// #include "voltiso/is_derived_from_template"
 #include "voltiso/is_trivially_relocatable"
 #include "voltiso/parameter"
 
@@ -17,6 +16,8 @@
 #include <cstddef>
 #include <iostream>
 #include <type_traits>
+
+#include <voltiso/ON>
 
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Final, class Parameters> class Custom;
@@ -414,7 +415,7 @@ public:
     static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
                   0);
     // LOG(INFO) << "setNumSlots " << newNumSlots;
-    DCHECK_GE(newNumSlots, numItems);
+    VOLTISO_GE(newNumSlots, numItems);
     if constexpr (NUM_IN_PLACE_SLOTS == 0) {
       if (this->numSlots > 0) [[likely]] {
         if (newNumSlots > 0) [[likely]] {
@@ -469,23 +470,27 @@ public:
 
   // `numSlots` must be greater than zero
   Storage<Item> *slots() {
-    if constexpr (has::numSlots<Self>) {
-      DCHECK_GT(this->numSlots, 0);
-    }
-    if constexpr (has::NUM_SLOTS<Self>) {
-      DCHECK_GT(this->NUM_SLOTS, 0);
-    }
+    // if constexpr (has::numSlots<Self>) {
+    //   DCHECK_GT(this->numSlots, 0);
+    // }
+
+    // if constexpr (has::NUM_SLOTS<Self>) {
+    //   DCHECK_GT(this->NUM_SLOTS, 0);
+    // }
 
     if constexpr (NUM_IN_PLACE_SLOTS == 0) {
-      return static_cast<Storage<Item> *>(_allocator()(this->allocation));
+      return std::bit_cast<Storage<Item> *>(this->allocation);
+      // return static_cast<Storage<Item> *>(
+      //     _allocator()(this->allocation.item()));
     } else if constexpr (getParameter::VALUE<parameter::IN_PLACE, Parameters> >
                          0) {
       if (this->numSlots <=
           getParameter::VALUE<parameter::IN_PLACE, Parameters>) [[likely]] {
         return this->inPlaceItems.items;
       } else [[unlikely]] {
-        return static_cast<Storage<Item> *>(
-            _allocator()(this->allocation.item()));
+        return std::bit_cast<Storage<Item> *>(this->allocation);
+        // return static_cast<Storage<Item> *>(
+        //     _allocator()(this->allocation));
       }
     } else {
       static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> >
@@ -513,8 +518,8 @@ public:
   }
 
   Accessor operator[](const size_t &index) {
-    DCHECK_GE(index, 0);
-    DCHECK_LT(index, numItems);
+    GE(index, 0);
+    LT(index, numItems);
     return {Handle(index), *this};
     // return slots()[index].item();
   }
@@ -589,6 +594,16 @@ public:
     this->setNumSlots(newNumSlots);
   }
 
+  template <auto IN_PLACE_ONLY =
+                getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters>,
+            class = std::enable_if_t<IN_PLACE_ONLY == 0>>
+  void growToAtLeast(size_t minNumSlots) {
+    static_assert(getParameter::VALUE<parameter::IN_PLACE_ONLY, Parameters> ==
+                  0);
+    while (this->numSlots < minNumSlots)
+      grow(); // ! SLOW
+  }
+
   // cannot perfect-forward
   template <class... Args>
   void setNumItems(size_t newNumItems, Args &&...args) {
@@ -634,7 +649,7 @@ public:
   bool hasItems() const { return numItems; }
 
   Item pop() {
-    DCHECK_GT(numItems, 0);
+    GT(numItems, 0);
     auto lastIndex = numItems - 1;
     Item item = std::move((*this)[lastIndex].item());
     (*this)[lastIndex]->~Item();
@@ -675,20 +690,20 @@ public:
   // Iterator _end; // cannot store pointer to self (we're relocatable)
 
   Iterator begin() {
-    DCHECK_GT(numItems, 0);
+    // DCHECK_GT(numItems, 0);
     return &slots()->item();
   }
   Iterator end() {
-    DCHECK_GT(numItems, 0);
+    // DCHECK_GT(numItems, 0);
     return &slots()->item() + this->numItems;
   }
 
   ConstIterator begin() const {
-    DCHECK_GT(numItems, 0);
+    // DCHECK_GT(numItems, 0);
     return &slots()->item();
   }
   ConstIterator end() const {
-    DCHECK_GT(numItems, 0);
+    // DCHECK_GT(numItems, 0);
     return &slots()->item() + this->numItems;
   }
 
@@ -747,3 +762,5 @@ template <class Item>
 constexpr auto is_trivially_relocatable<DynamicArray<Item>> = true;
 
 } // namespace VOLTISO_NAMESPACE
+
+#include <voltiso/OFF>

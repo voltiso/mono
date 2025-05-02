@@ -1,0 +1,6 @@
+#pragma once
+#include <voltiso/_>
+
+namespace VOLTISO_NAMESPACE {
+template <class Item> using Pointer = Item *;
+} // namespace VOLTISO_NAMESPACE

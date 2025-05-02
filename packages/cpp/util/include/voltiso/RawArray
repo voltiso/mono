@@ -1,0 +1,68 @@
+#pragma once
+#include <voltiso/_>
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+
+namespace _::rawArray {
+
+// using Dim = size_t;
+using Dim = std::make_signed_t<size_t>;
+constexpr auto UNKNOWN_DIM = static_cast<Dim>(-1);
+
+template <typename T, Dim... dims> struct Rec; // Forward declaration
+
+template <typename T, Dim dim, Dim... rest>
+  requires(dim >= 0)
+struct Rec<T, dim, rest...> {
+  using ElementType = typename Rec<T, rest...>::Result;
+  using Result = ElementType[dim];
+};
+
+template <class T, Dim... rest> struct Rec<T, UNKNOWN_DIM, rest...> {
+  using ElementType = typename Rec<T, rest...>::Result;
+  using Result = ElementType[];
+};
+
+template <class T> struct Rec<T> {
+  using Result = T;
+};
+
+//
+
+template <class T, Dim... dims> struct Get {
+  using Result = typename Rec<T, dims...>::Result;
+};
+
+template <class T> struct Get<T> {
+  using Result = T[];
+};
+
+} // namespace _::rawArray
+
+/**
+ * `RawArray<int>` -> `int[]`
+ * `RawArray<int, 3>` -> `int[3]`
+ * `RawArray<int, 2, 3>` -> `int[2][3]`
+ * `RawArray<int, -1, 2, 3>` -> `int[][2][3]`
+ * `RawArray<int, -1>` -> `int[]`
+ */
+template <class Item, _::rawArray::Dim... dims>
+using RawArray = typename _::rawArray::Get<Item, dims...>::Result;
+
+// RawArray<int, 5> a;
+// template <class T> using Arr = T;
+// Arr<int[][2][3]> b;
+
+static_assert(std::is_same_v<RawArray<int>, int[]>);
+
+static_assert(std::is_same_v<RawArray<int, -1>, int[]>);
+static_assert(std::is_same_v<RawArray<int, 3>, int[3]>);
+static_assert(std::is_same_v<RawArray<int, 2, 3>, int[2][3]>);
+static_assert(std::is_same_v<RawArray<int, -1, 2, 3>, int[][2][3]>);
+
+// static_assert(
+//     std::is_same_v<v::RawArray<const char, 123> &, const char (&)[123]>);
+
+} // namespace VOLTISO_NAMESPACE

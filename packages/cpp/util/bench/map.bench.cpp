@@ -91,12 +91,12 @@ static void BM_map_tree(benchmark::State &state) {
 
   using namespace VOLTISO_NAMESPACE;
   SplayMap<int, int> a;
-  int value = 0;
+  int key = 0;
   for (auto _ : state) {
-    a[value].maybeInsert() += 1;
-    int x = a[value];
+    a[key].maybeInsert() += 1;
+    int x = a[key];
     benchmark::DoNotOptimize(x);
-    ++value;
+    ++key;
   }
 }
 BENCHMARK(BM_map_tree);

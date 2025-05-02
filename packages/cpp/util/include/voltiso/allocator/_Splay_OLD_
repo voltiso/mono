@@ -247,7 +247,7 @@ template <class Final, class Parameters> struct SplayNode {
   SplayEntry<Final, Parameters> entry;
   using Handle =
       typename Pool<Final, Parameters>::Handle::template WithBrand<void>;
-  Array<Handle, 2> children = {Handle::null, Handle::null};
+  Array<Handle, 2> children = {Handle::INVALID, Handle::INVALID};
 
   // SplayNode &operator=(const SplayNode &other) {
   //   memcpy(this, &other, sizeof(SplayNode));
@@ -311,7 +311,7 @@ private:
   using SplayNode = _::SplayNode<Final, Parameters>;
   using Nodes = Pool ::template WithItem<SplayNode>;
   Nodes nodes;
-  Nodes::Handle root = Nodes::Handle::null;
+  Nodes::Handle root = Nodes::Handle::INVALID;
 
 private:
   // static_assert(std::is_same_v<typename Nodes::Item, int>);

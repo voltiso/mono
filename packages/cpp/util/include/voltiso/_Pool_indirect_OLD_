@@ -73,7 +73,7 @@ public:
 
 public:
   void erase() {
-    DCHECK_NE(this->handle, Handle::null);
+    DCHECK_NE(this->handle, Handle::INVALID);
     self().slots[this->handle.value]->storage.destroy();
     // wrong Handle type; need cast
     self().slots[this->handle.value]->next =
@@ -147,7 +147,7 @@ private:
 
   using Slots = DynamicArray::template WithItem<Slot>;
   Slots slots;
-  Slots::Handle anyFree = Slots::Handle::null;
+  Slots::Handle anyFree = Slots::Handle::INVALID;
   using SlotHandle = Slots::Handle;
 
 public:
@@ -162,7 +162,7 @@ public:
     if constexpr (std::is_trivially_destructible_v<Item>) {
       // noop
     } else {
-      if (anyFree == Slots::Handle::null) [[unlikely]] {
+      if (anyFree == Slots::Handle::INVALID) [[unlikely]] {
         for (size_t i = 0; i < slots.numItems; ++i) {
           slots[i]->storage.destroy();
         }
@@ -171,7 +171,7 @@ public:
         using Free = DynamicArray::template WithItem<bool>;
         auto free = Free::createWithNumItems(slots.numItems, 0);
         auto anyFree = this->anyFree;
-        while (anyFree != Slots::Handle::null) {
+        while (anyFree != Slots::Handle::INVALID) {
           free[anyFree.value] = true;
           anyFree = SlotHandle(slots[anyFree]->next.value);
         }
@@ -185,7 +185,8 @@ public:
   }
 
   // #if VOLTISO_DEBUG_POOL
-  //   ~Build() { CHECK(slots.numItems == 0 || anyFree != Slots::Handle::null);
+  //   ~Build() { CHECK(slots.numItems == 0 || anyFree !=
+  //   Slots::Handle::INVALID);
   //   }
   // #endif
 
@@ -215,7 +216,7 @@ public:
 
 public:
   template <class... Args> Accessor insert(Args &&...args) {
-    if (anyFree == Slots::Handle::null) [[unlikely]] {
+    if (anyFree == Slots::Handle::INVALID) [[unlikely]] {
       auto newItem = slots.push(std::forward<Args>(args)...);
       return Accessor(static_cast<Handle>(newItem.value), *this);
     } else [[likely]] {
@@ -228,7 +229,7 @@ public:
   }
 
   // Item &operator[](const Handle &handle) {
-  //   DCHECK_NE(handle, Handle::null);
+  //   DCHECK_NE(handle, Handle::INVALID);
   //   return (Item &)slots[handle.value];
   // }
 

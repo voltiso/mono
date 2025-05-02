@@ -2,7 +2,6 @@
 
 #include "voltiso/Pool"
 #include "voltiso/Singleton"
-#include "voltiso/has"
 
 namespace VOLTISO_NAMESPACE::shared::_ {
 template <class Item> struct ControlBlock {
@@ -25,26 +24,25 @@ template <class Item> struct ControlBlock {
 namespace VOLTISO_NAMESPACE {
 template <class Item> class Shared {
   using Self = Shared;
-  static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
-  using Pool = Pool<shared::_::ControlBlock<Item>>;
+  // static_assert(!std::is_class_v<Item> || std::is_final_v<Item>);
+
+  static_assert(!std::is_reference_v<Item>,
+                "you probably don't want Shared<Item&>");
+
+  using CanonicalItem = std::remove_cv_t<Item>;
+  using Pool = Pool<shared::_::ControlBlock<CanonicalItem>>;
 
 public:
   template <class... Args> static Self create(Args &&...args) {
-    Self self;
-    self._controlBlock = pool().insert(std::forward<Args>(args)...);
-    return self;
+    return Self(pool().insert(std::forward<Args>(args)...), nullptr);
   }
 
   static Self create(const Item &item) {
-    Self self;
-    self._controlBlock = pool().insert(item);
-    return self;
+    return Self(pool().insert(item), nullptr);
   }
 
   static Self create(Item &&item) {
-    Self self;
-    self._controlBlock = pool().insert(std::move(item));
-    return self;
+    return Self(pool().insert(std::move(item)), nullptr);
   }
 
   ~Shared() {
@@ -54,9 +52,12 @@ public:
     }
   }
 
-  // public: Shared() = default; // convenient, but runtime-bug-prone
 private:
-  Shared() = default;
+  template <class Arg>
+  Shared(Arg &&arg, void *_unusedTag) : _controlBlock(std::forward<Arg>(arg)) {}
+
+public:
+  Shared() = delete;
 
 public:
   Shared(const Self &other) : _controlBlock(other._controlBlock) {
@@ -64,32 +65,50 @@ public:
       ++other._controlBlock->numReferences;
   }
 
-  Shared &operator=(const Self &other) {
-    DCHECK_NE(this->_controlBlock,
-              other._controlBlock); // self-assignment forbidden
-    // if (this->_controlBlock == other._controlBlock) [[unlikely]]
-    //   return *this;
+  // ! no assignment - Shared is reference-like
+  // Shared &operator=(const Self &other) {
+  //   DCHECK_NE(this->_controlBlock,
+  //             other._controlBlock); // self-assignment forbidden
+  //   // if (this->_controlBlock == other._controlBlock) [[unlikely]]
+  //   //   return *this;
 
-    if (this->_controlBlock) [[likely]] {
-      this->_controlBlock->dereference();
-    }
-    this->_controlBlock = other._controlBlock;
-    if (other._controlBlock) [[likely]]
-      ++other._controlBlock->numReferences;
-    return *this;
-  }
+  //   if (this->_controlBlock) [[likely]] {
+  //     this->_controlBlock->dereference();
+  //   }
+  //   this->_controlBlock = other._controlBlock;
+  //   if (other._controlBlock) [[likely]]
+  //     ++other._controlBlock->numReferences;
+  //   return *this;
+  // }
 
   Shared(Self &&other) noexcept : _controlBlock(other._controlBlock) {
-    other._controlBlock = Pool::Handle::null;
+    other._controlBlock = Pool::Handle::INVALID;
   }
 
-  Shared &operator=(Self &&other) noexcept {
-    this->_controlBlock->dereference();
-    this->_controlBlock = other._controlBlock;
-    other._controlBlock = Pool::Handle::null;
+  // ! no assignment - Shared is reference-like
+  // Shared &operator=(Self &&other) noexcept {
+  //   this->_controlBlock->dereference();
+  //   this->_controlBlock = other._controlBlock;
+  //   other._controlBlock = Pool::Handle::INVALID;
+  //   return *this;
+  // }
+
+public:
+  // assign to underlying value
+  template <class OtherItem>
+    requires(
+        std::is_assignable_v<Item &, OtherItem> &&
+        // Only check the second condition if OtherItem actually has operator*
+        (!(requires(OtherItem t) {
+          { *t };
+        }) ||
+         !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
+  Shared &operator=(OtherItem &&other) {
+    item() = std::forward<OtherItem>(other);
     return *this;
   }
 
+public:
   Item &item() const { return _controlBlock->item; }
   Item &operator*() const { return item(); }
   Item *operator->() const { return &**this; }
@@ -102,22 +121,37 @@ public:
     return reinterpret_cast<Shared<const Item> &>(*this);
   }
 
-  auto clone() const {
-    DCHECK(_controlBlock);
-    using NewSelf = Shared<std::remove_cv_t<Item>>;
-    if constexpr (has::clone<Item>)
-      return NewSelf::create(item().clone());
-    else
-      return NewSelf::create(item());
+  // auto clone() const {
+  //   DCHECK(_controlBlock);
+  //   using NewSelf = Shared<std::remove_cv_t<Item>>;
+  //   if constexpr (has::clone<Item>)
+  //     return NewSelf::create(item().clone());
+  //   else
+  //     return NewSelf::create(item());
+  // }
+
+  [[nodiscard]] Shared<const Item> &&freeze() && {
+    return reinterpret_cast<Shared<const Item> &&>(*this);
   }
 
-  auto &&freeze() && {
-    using NewSelf = Shared<const Item>;
-    return static_cast<NewSelf &>(*this);
+  [[nodiscard]] const Shared<const Item> &&freeze() const && {
+    return reinterpret_cast<const Shared<const Item> &&>(*this);
+  }
+
+  const Shared<const Item> &frozen() const && {
+    static_assert(false, "Shared::frozen() works only for lvalue references");
+  }
+
+  [[nodiscard]] Shared<const Item> &frozen() & {
+    return reinterpret_cast<Shared<const Item> &>(*this);
+  }
+
+  [[nodiscard]] const Shared<const Item> &frozen() const & {
+    return reinterpret_cast<const Shared<const Item> &>(*this);
   }
 
 private:
-  Pool::Handle _controlBlock = Pool::Handle::null;
+  Pool::Handle _controlBlock = Pool::Handle::INVALID;
 
   static auto &pool() {
     // return context::get<Pool>();

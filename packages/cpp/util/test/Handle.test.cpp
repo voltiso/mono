@@ -19,7 +19,7 @@ TEST(Handle, doesNotInitialize) {
 TEST(Handle, operatorBool) {
   struct S {};
   using Handle = Handle ::WithBrand<S>;
-  Handle handle = Handle::null;
+  Handle handle = Handle::INVALID;
   EXPECT_FALSE(handle);
   handle = Handle(123);
   EXPECT_TRUE(handle);
@@ -42,7 +42,7 @@ TEST(Handle, zeroInitialize) {
 //   Storage<Handle> storage;
 //   storage.item() = 123;
 //   new (&storage) Handle{};
-//   EXPECT_EQ(storage.item(), Handle::null);
+//   EXPECT_EQ(storage.item(), Handle::INVALID);
 // }
 
 //

@@ -24,82 +24,181 @@ private:
 
 public:
   Entry entry;
-  Array<Handle, 2> children = {Handle::null, Handle::null};
+  Array<Handle, 2> children = {Handle::INVALID, Handle::INVALID};
 };
 } // namespace VOLTISO_NAMESPACE::splayTable::_
 
 //
 
 namespace VOLTISO_NAMESPACE::splayTable::_ {
-template <class Final, class Parameters> class ConstAccessor {
+template <class Final, class Parameters, bool IS_CONST> class Accessor {
 protected:
   using Custom = Custom<Final, Parameters>;
   using Handle = Custom::Pool::Handle;
   using Key = Custom::Key;
   using Value = Custom::Value;
 
-public:
-  // const Handle handle;
-  const Key key;
+protected: // public ??
+  // const Key &key;
   const Custom &splayTable;
+  const Handle &handle;
+
+public:
   const bool exists;
 
 private:
-  friend Custom;
-  ConstAccessor(const Key &key, const Custom &splayTable, bool exists)
-      : key(key), splayTable(splayTable), exists(exists) {}
-
-public:
-  const Value &get() const {
-    DCHECK(this->exists);
-    return getValue(this->splayTable.pool[this->splayTable.root]->entry);
+  const Custom &_splayTable() const { return splayTable; }
+  Custom &_splayTable()
+    requires(!IS_CONST)
+  {
+    return const_cast<Custom &>(splayTable);
   }
 
-public:
-  operator const Value &() const { return this->get(); }
-  const Value &operator*() const { return this->get(); }
-  const Value *operator->() const { return &this->get(); }
-  const Value *operator&() const { return &this->get(); }
-};
-
-//
-
-template <class Final, class Parameters>
-class SetAccessor : public ConstAccessor<Final, Parameters> {
-private:
-  using Base = ConstAccessor<Final, Parameters>;
-  using Base::Base;
-  using Custom = Custom<Final, Parameters>;
+  auto &_pool() const { return splayTable.pool; }
+  auto &_pool()
+    requires(!IS_CONST)
+  {
+    return _splayTable().pool;
+  }
 
 protected:
-  using Value = Base::Value;
+  friend Custom;
+  Accessor(const Custom &splayTable, const auto &handle)
+      : splayTable(splayTable), handle(handle),
+        exists(handle != Handle::INVALID) {}
 
 public:
-  void insert() {
-    DCHECK(!this->exists);
-    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
-    this->splayTable._splay()(root).insert(this->key);
+  const Value &value() const {
+    DCHECK(this->exists);
+    return getValue(this->_pool()[this->splayTable.root]->entry);
+  }
+
+  Value &value() {
+    DCHECK(this->exists);
+    return getValue(this->_pool()[this->splayTable.root]->entry);
   }
 
 public:
-  Value &get() { return const_cast<Value &>(Base::get()); }
+  operator const Value &() const { return this->value(); }
+  operator Value &()
+    requires(!IS_CONST)
+  {
+    return this->value();
+  }
+
+  const Value &operator*() const { return this->value(); }
+  Value &operator*()
+    requires(!IS_CONST)
+  {
+    return this->value();
+  }
+
+  const Value *operator->() const { return &this->value(); }
+  Value *operator->()
+    requires(!IS_CONST)
+  {
+    return &this->value();
+  }
+
+  const Value *operator&() const { return &this->value(); }
+  Value *operator&()
+    requires(!IS_CONST)
+  {
+    return &this->value();
+  }
 
 public:
-  operator Value &() { return get(); }
-  Value &operator*() { return get(); }
-  Value *operator->() { return &get(); }
-  Value *operator&() { return &get(); }
+  void erase()
+    requires(!IS_CONST)
+  {
+    DCHECK(this->exists);
+    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
+    this->splayTable._splay()(root).erase(this->handle);
+  }
+
+  void maybeErase()
+    requires(!IS_CONST)
+  {
+    maybeEraseLikely();
+  }
+
+  void maybeEraseLikely()
+    requires(!IS_CONST)
+  {
+    if (this->exists) [[likely]] {
+      erase();
+    }
+  }
+
+  void maybeEraseUnlikely()
+    requires(!IS_CONST)
+  {
+    if (this->exists) [[unlikely]] {
+      erase();
+    }
+  }
 };
 
 //
 
-template <class Final, class Parameters>
-class MapAccessor : public SetAccessor<Final, Parameters> {
+template <class Final, class Parameters, bool IS_CONST>
+class SetAccessor : public Accessor<Final, Parameters, IS_CONST> {
 private:
-  using Base = SetAccessor<Final, Parameters>;
+  using Base = Accessor<Final, Parameters, IS_CONST>;
+  using Custom = Custom<Final, Parameters>;
+  using Entry = Custom::Entry;
+
+private:
+  const Entry &entry; // can be move-only
+
+private:
+  friend Custom;
+  SetAccessor(const Entry &entry, const Custom &splayTable, const auto &handle)
+      : Base(splayTable, handle), entry(entry) {}
+
+public:
+  auto &insert() {
+    DCHECK(!this->exists);
+    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
+    this->splayTable._splay()(root).insert(this->entry);
+    return *this;
+  }
+
+  auto &maybeInsert() { return maybeInsertLikely(); }
+
+  auto &maybeInsertLikely() {
+    if (!this->exists) [[likely]] {
+      insert();
+    }
+    return *this;
+  }
+
+  auto &maybeInsertUnlikely() {
+    if (!this->exists) [[unlikely]] {
+      insert();
+    }
+    return *this;
+  }
+};
+
+//
+
+template <class Final, class Parameters, bool IS_CONST>
+class MapAccessor : public Accessor<Final, Parameters, IS_CONST> {
+private:
+  using Base = Accessor<Final, Parameters, IS_CONST>;
   using Base::Base;
   using Custom = Custom<Final, Parameters>;
   using Value = Custom::Value;
+  using Key = Custom::Key;
+
+private:
+  const Key &key; // can be move-only
+
+private:
+  friend Custom;
+  MapAccessor(const Key &key, const Custom &splayTable, const auto &handle)
+      : Base(splayTable, handle), key(key) {}
 
 public:
   template <class... Args> auto &insert(Args &&...args) {
@@ -112,23 +211,23 @@ public:
   }
 
   template <class... Args> auto &maybeInsert(Args &&...args) {
-    if (!this->exists) {
+    return maybeInsertLikely(std::forward<Args>(args)...);
+  }
+
+  template <class... Args> auto &maybeInsertLikely(Args &&...args) {
+    if (!this->exists) [[likely]] {
       insert(std::forward<Args>(args)...);
     }
     return *this;
   }
 
-  void erase() {
-    DCHECK(this->exists);
-    auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
-    this->splayTable._splay()(root).erase(this->key);
+  template <class... Args> auto &maybeInsertUnlikely(Args &&...args) {
+    if (!this->exists) [[unlikely]] {
+      insert(std::forward<Args>(args)...);
+    }
+    return *this;
   }
 
-  void maybeErase() {
-    if (this->exists) {
-      erase();
-    }
-  }
 }; // class MapAccessor
 
 template <class Final, class Parameters> class Iterator {
@@ -197,13 +296,19 @@ public:
   using Value = GetValue<Entry>;
   using Allocator = getParameter::Type<parameter::Allocator, Parameters>;
 
-  using ConstAccessor = _::ConstAccessor<Final, Parameters>;
-  using Accessor = std::conditional_t<
-      std::is_same_v<Value, Entry> || std::is_same_v<Value, void>,
-      _::SetAccessor<Final, Parameters>, _::MapAccessor<Final, Parameters>>;
-  friend ConstAccessor;
-  friend _::SetAccessor<Final, Parameters>;
-  friend _::MapAccessor<Final, Parameters>;
+  // using ConstAccessor = _::ConstAccessor<Final, Parameters>;
+  using SetAccessor = _::SetAccessor<Final, Parameters, false>;
+  using ConstSetAccessor = _::SetAccessor<Final, Parameters, true>;
+
+  using MapAccessor = _::MapAccessor<Final, Parameters, false>;
+  using ConstMapAccessor = _::MapAccessor<Final, Parameters, true>;
+
+  friend SetAccessor;
+  friend MapAccessor;
+  friend ConstSetAccessor;
+  friend ConstMapAccessor;
+  friend _::Accessor<Final, Parameters, false>;
+  friend _::Accessor<Final, Parameters, true>;
 
   // using ConstIterator = ConstIterator<Options>;
   using Iterator = _::Iterator<Final, Parameters>;
@@ -215,7 +320,7 @@ private:
 
 private:
   Pool pool;
-  Pool::Handle root = Pool::Handle::null;
+  Pool::Handle root = Pool::Handle::INVALID;
 
 public:
   ~Custom() { _destroy(root); }
@@ -252,12 +357,57 @@ public:
   Custom() = default;
   Custom(std::initializer_list<Entry> entries) {
     for (auto &entry : entries) {
-      if constexpr (std::is_same_v<Value, Entry> ||
-                    std::is_same_v<Value, void>) {
-        (*this)[entry].insert();
-      } else {
-        (*this)[getKey(entry)].insert(getValue(entry));
-      }
+      insert(entry);
+    }
+  }
+
+  template <class... Args>
+    requires std::is_constructible_v<Entry, Args...>
+  void insert(Args &&...args) {
+    // construct only once, so that we can get key
+    auto entry = Entry(std::forward<Args>(args)...);
+    insert(std::move(entry));
+  }
+
+  template <class TEntry>
+    requires std::is_same_v<Entry, std::decay_t<TEntry>>
+  void insert(TEntry &&entry) {
+#if VOLTISO_DEBUG_SPLAY
+    auto &key = getKey(entry);
+    auto handle = _splay()(root).find(key);
+    bool exists = handle != Pool::Handle::INVALID;
+    DCHECK(!exists);
+#endif
+    // auto &root = const_cast<Pool::Handle &>(this->root);
+    auto newHandle = _splay()(root).insert(std::forward<TEntry>(entry));
+    DCHECK_EQ(newHandle, root);
+  }
+
+  template <class TEntry>
+    requires std::is_constructible_v<Entry, TEntry>
+  void maybeInsert(TEntry &&entry) {
+    maybeInsertLikely(std::forward<TEntry>(entry));
+  }
+
+  template <class TEntry>
+    requires std::is_constructible_v<Entry, TEntry>
+  void maybeInsertLikely(TEntry &&entry) {
+    auto &key = getKey(entry);
+    auto handle = _splay()(root).find(key);
+    bool exists = handle != Pool::Handle::INVALID;
+    if (!exists) [[likely]] {
+      insert(std::forward<TEntry>(entry));
+    }
+  }
+
+  template <class TEntry>
+    requires std::is_constructible_v<Entry, TEntry>
+  void maybeInsertUnlikely(TEntry &&entry) {
+    auto &key = getKey(entry);
+    auto handle = _splay()(root).find(key);
+    bool exists = handle != Pool::Handle::INVALID;
+    if (!exists) [[unlikely]] {
+      insert(std::forward<TEntry>(entry));
     }
   }
 
@@ -268,15 +418,32 @@ private:
   }
 
 public:
-  Accessor operator[](const Key &key) {
+  SetAccessor operator[](const Entry &entry) {
     auto splay = this->_splay();
-    auto handle = splay(this->root).find(key);
-    return Accessor{key, *this, handle != decltype(handle)::null};
+    auto handle = splay(this->root).find(getKey(entry));
+    return SetAccessor{entry, *this, handle};
   }
-  ConstAccessor operator[](const Key &key) const {
+
+  ConstSetAccessor operator[](const Entry &entry) const {
+    auto splay = this->_splay();
+    auto handle = splay(this->root).find(getKey(entry));
+    return ConstSetAccessor{entry, *this, handle};
+  }
+
+  template <class K = Key,
+            std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+  MapAccessor operator[](const Key &key) {
     auto splay = this->_splay();
     auto handle = splay(this->root).find(key);
-    return ConstAccessor{key, *this, handle != decltype(handle)::null};
+    return MapAccessor{key, *this, handle};
+  }
+
+  template <class K = Key,
+            std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+  ConstMapAccessor operator[](const Key &key) const {
+    auto splay = this->_splay();
+    auto handle = splay(this->root).find(key);
+    return ConstMapAccessor{key, *this, handle};
   }
 
 public:
