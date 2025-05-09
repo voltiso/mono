@@ -11,5 +11,6 @@ callgrind.out.*
 *.sqlite
 data/
 compile_commands.json
-out/
-build/
+
+out/ # legacy
+build/ # current - usual for c++ project, for AI

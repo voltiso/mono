@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/RawArray>
+#include <v/RawArray>
 
 using namespace VOLTISO_NAMESPACE;
 

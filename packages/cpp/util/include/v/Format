@@ -1,0 +1,28 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/Array>
+#include <v/String>
+#include <v/StringView>
+
+namespace VOLTISO_NAMESPACE {
+template <int NUM_PLACEHOLDERS, StringView FORMAT> class StringTemplate {
+private:
+	using Self = StringTemplate;
+
+	String result;
+
+	struct Part {
+		String str;
+	};
+
+	Array<Part> parts;
+};
+} // namespace VOLTISO_NAMESPACE
+
+void testFormat() {
+	using namespace v::literal::string;
+	auto str = "You have % friends" f % 10;
+	static_assert(std::is_same_v<decltype(str), v::String>);
+	std::cout << str << std::endl;
+}

@@ -1,0 +1,870 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/Entry"
+#include "v/Object"
+#include "v/Options"
+#include "v/Pool"
+#include "v/_/DynamicArray.hpp"
+#include "v/concepts/Options"
+#include "v/get/hash"
+#include "v/is_trivially_relocatable"
+#include "v/option/CustomTemplate"
+#include "v/option/Entry"
+
+#include <type_traits>
+
+#include <v/ON>
+
+// ! todo: can be made faster by using a single growable allocation for both
+// ! pool and buckets
+
+// forward declarations
+namespace VOLTISO_NAMESPACE::hashTable {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom;
+} // namespace VOLTISO_NAMESPACE::hashTable
+
+namespace VOLTISO_NAMESPACE::hashTable::_ {
+template <class Options> class Iterator;
+} // namespace VOLTISO_NAMESPACE::hashTable::_
+
+//
+
+namespace VOLTISO_NAMESPACE::hashTable::_ {
+template <class Options>
+  requires concepts::Options<Options>
+using GenericPool = Pool<int>::template WithAllocator<
+  typename Options::template Get<option::Allocator>>;
+
+template <class Options>
+  requires concepts::Options<Options>
+using GenericPoolHandle =
+  typename GenericPool<Options>::Handle::template WithBrand<void>;
+
+template <class Options>
+  requires concepts::Options<Options>
+struct Node {
+	using GenericPoolHandle = GenericPoolHandle<Options>;
+	using Custom = Custom<Options>;
+	using Entry = Custom::Entry;
+	Entry entry;
+	GenericPoolHandle nextNode = handle::INVALID;
+}; // struct Node
+
+template <class Options>
+  requires concepts::Options<Options>
+using Pool = Pool<Node<Options>>::template WithAllocator<
+  typename Options::template Get<option::Allocator>>;
+
+template <class Options> struct Bucket {
+	using Node = Node<Options>;
+	using GenericPoolHandle = GenericPoolHandle<Options>;
+	GenericPoolHandle firstNode = handle::INVALID;
+}; // struct Bucket
+
+template <class Options>
+using Buckets = DynamicArray<Bucket<Options>>::template WithAllocator<
+  typename Options::template Get<option::Allocator>>;
+
+} // namespace VOLTISO_NAMESPACE::hashTable::_
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <class Options>
+  requires concepts::Options<Options>
+static constexpr auto is_trivially_relocatable<hashTable::_::Bucket<Options>> =
+  true;
+} // namespace VOLTISO_NAMESPACE
+
+//
+
+namespace VOLTISO_NAMESPACE::hashTable::_ {
+template <class Options, bool IS_CONST> class Accessor {
+private:
+	using GenericPoolHandle = GenericPoolHandle<Options>;
+	using Custom = Custom<Options>;
+	using Value = typename Custom::Value;
+	using Buckets = typename Custom::Buckets;
+
+protected:
+	Custom &_hashTable;
+	GenericPoolHandle *_pHandle;
+	Buckets::Handle _bucket;
+	bool _exists;
+
+public:
+	const Custom &hashTable() const { return _hashTable; }
+	bool exists() const { return _exists; }
+
+protected:
+	friend Custom;
+	Accessor(
+	  Custom &hashTable, GenericPoolHandle *pHandle, Buckets::Handle bucket,
+	  bool exists)
+	    : _hashTable(hashTable), _pHandle(pHandle), _bucket(bucket),
+	      _exists(exists) {}
+	// const auto &hashTable() const { return _hashTable; }
+
+public:
+	const Value &value() const {
+		CHECK(this->_exists);
+		return getValue(this->_hashTable._pool[*this->_pHandle].entry);
+	}
+
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+	Value &value() {
+		CHECK(this->_exists);
+		return getValue(this->_hashTable._pool[*this->_pHandle].entry);
+	}
+
+public:
+	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
+	void erase() {
+		CHECK(this->_exists);
+		auto &pool = this->_hashTable._pool;
+		auto node = pool(*this->_pHandle);
+		*this->_pHandle = node->nextNode;
+		node.erase();
+		this->_exists = false;
+		--this->_hashTable._numItems;
+	}
+
+public:
+	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
+	void maybeErase() {
+		if (this->_exists) {
+			erase();
+		}
+	}
+
+public:
+	explicit operator bool() const { return _exists; }
+
+	operator const Value &() const { return value(); }
+
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+	operator Value &() {
+		return value();
+	}
+
+	const Value &operator*() const { return value(); }
+
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+	Value &operator*() {
+		return value();
+	}
+
+	const std::remove_reference_t<Value> *operator->() const { return &value(); }
+
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+	std::remove_reference_t<Value> *operator->() {
+		return &value();
+	}
+
+	const std::remove_reference_t<Value> *operator&() const { return &value(); }
+
+	template <bool C = IS_CONST, std::enable_if_t<!C> * = nullptr>
+	std::remove_reference_t<Value> *operator&() {
+		return &value();
+	}
+}; // class ConstAccessor
+
+template <class Options, bool IS_CONST>
+class SetAccessor : public Accessor<Options, IS_CONST> {
+private:
+	using Base = Accessor<Options, IS_CONST>;
+	using Base::Base;
+	using Self = SetAccessor;
+
+private:
+	using GenericPoolHandle = GenericPoolHandle<Options>;
+	using Custom = Custom<Options>;
+	using Value = typename Custom::Value;
+	using Bucket = Bucket<Options>;
+	using Buckets = Buckets<Options>;
+	using Entry = typename Custom::Entry;
+	using Key = typename Custom::Key;
+
+public:
+	const Entry &entry; // can be move-only
+
+protected:
+	friend Custom;
+	SetAccessor(
+	  Custom &hashTable, GenericPoolHandle *pHandle, Buckets::Handle bucket,
+	  bool exists, const Entry &entry)
+	    : Base(hashTable, pHandle, bucket, exists), entry(entry) {}
+
+protected:
+	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
+	void _maybeGrow() {
+		if (this->_hashTable.shouldGrow()) [[unlikely]] {
+			this->_hashTable.grow();
+			this->_bucket = this->_hashTable._bucketIndex(getKey(this->entry));
+		}
+	}
+
+public:
+	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
+	Self &insert() {
+		CHECK(!this->_exists);
+		this->_maybeGrow();
+		auto &pool = this->_hashTable._pool;
+		auto node = pool.insert(this->entry).handle;
+		auto &buckets = this->_hashTable._buckets;
+		auto &bucket = buckets[this->_bucket];
+		pool[node].nextNode = bucket.firstNode;
+		bucket.firstNode = node;
+		this->_pHandle = &bucket.firstNode;
+		++this->_hashTable._numItems;
+		return *this;
+	}
+
+	Self &maybeInsert() {
+		if (!this->_exists) {
+			insert();
+		}
+		return *this;
+	}
+
+	Self &maybeInsertLikely() {
+		if (!this->_exists) [[likely]] {
+			insert();
+		}
+		return *this;
+	}
+
+	Self &maybeInsertUnlikely() {
+		if (!this->_exists) [[unlikely]] {
+			insert();
+		}
+		return *this;
+	}
+
+	void set() {
+		if (!this->_exists) {
+			insert();
+		}
+	}
+
+	// explicit operator bool() const { return this->exists; }
+
+public:
+	operator Value &() { return this->value(); }
+	Value &operator*() { return this->value(); }
+	std::remove_reference_t<Value> *operator->() { return &this->value(); }
+	std::remove_reference_t<Value> *operator&() { return &this->value(); }
+}; // class SetAccessor
+
+template <class Options, bool IS_CONST>
+class MapAccessor : public Accessor<Options, IS_CONST> {
+private:
+	using Self = MapAccessor;
+	using Base = Accessor<Options, IS_CONST>;
+	using Base::Base;
+	using Custom = Custom<Options>;
+	using Buckets = typename Custom::Buckets;
+	using Value = typename Custom::Value;
+	using GenericPoolHandle = GenericPoolHandle<Options>;
+	using Entry = typename Custom::Entry;
+	using Key = typename Custom::Key;
+
+public:
+	const Key &key;
+
+protected:
+	friend Custom;
+
+	MapAccessor(
+	  Custom &hashTable, GenericPoolHandle *pHandle, Buckets::Handle bucket,
+	  bool exists, const Key &key)
+	    : Base(hashTable, pHandle, bucket, exists), key(key) {}
+
+	template <class K>
+	MapAccessor(
+	  Custom &hashTable, GenericPoolHandle *pHandle, Buckets::Handle bucket,
+	  bool exists, const K &key)
+	    : Base(hashTable, pHandle, bucket, exists), key(getKey(key)) {}
+
+protected:
+	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
+	void _maybeGrow() {
+		if (this->_hashTable.shouldGrow()) [[unlikely]] {
+			this->_hashTable.grow();
+			this->_bucket = this->_hashTable._bucketIndex(this->key);
+		}
+	}
+
+public:
+	template <
+	  class... Args, bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
+	void insert(Args &&...args) {
+		CHECK(!this->_exists);
+		this->_maybeGrow();
+		auto &pool = this->_hashTable.pool;
+		auto node =
+		  pool.insert(Entry{this->key, Value{std::forward<Args>(args)...}});
+		auto &buckets = this->_buckets();
+		auto &bucket = buckets[this->_bucket].item();
+		node->nextNode = bucket.firstNode;
+		bucket.firstNode = node.handle;
+		this->_pHandle = &bucket.firstNode;
+		++this->_hashTable._numItems;
+		this->_exists = true;
+	}
+
+	template <
+	  class V = Value, std::enable_if_t<std::is_reference_v<V>> * = nullptr>
+	void insert(Value value) {
+		CHECK(!this->_exists);
+		this->_maybeGrow();
+		auto &pool = this->_hashTable.pool;
+		auto node = pool.insert(Entry{this->key, value});
+		auto &buckets = this->_hashTable.buckets;
+		auto &bucket = buckets[this->_bucket].item();
+		node->nextNode = bucket.firstNode;
+		bucket.firstNode = node.handle;
+		this->_pHandle = &bucket.firstNode;
+		++this->_hashTable._numItems;
+		this->_exists = true;
+	}
+
+	//
+
+	template <class... Args> Self &maybeInsert(Args &&...args) {
+		if (!this->_exists) {
+			insert(std::forward<Args>(args)...);
+		}
+		return *this;
+	}
+
+	auto &maybeInsert(const Value &value) { return this->maybeInsert<>(value); }
+
+	template <
+	  class V = Value, std::enable_if_t<!std::is_reference_v<V>> * = nullptr>
+	auto &maybeInsert(Value &&value) {
+		return this->maybeInsert<>(std::move(value));
+	}
+
+	template <class... Args> Self &maybeInsertLikely(Args &&...args) {
+		if (!this->_exists) [[likely]] {
+			insert(std::forward<Args>(args)...);
+		}
+		return *this;
+	}
+
+	auto &maybeInsertLikely(const Value &value) {
+		return this->maybeInsertLikely<>(value);
+	}
+
+	template <
+	  class V = Value, std::enable_if_t<!std::is_reference_v<V>> * = nullptr>
+	auto &maybeInsertLikely(Value &&value) {
+		return this->maybeInsertLikely<>(std::move(value));
+	}
+
+	template <class... Args> Self &maybeInsertUnlikely(Args &&...args) {
+		if (!this->_exists) [[unlikely]] {
+			insert(std::forward<Args>(args)...);
+		}
+		return *this;
+	}
+
+	auto &maybeInsertUnlikely(const Value &value) {
+		return this->maybeInsertUnlikely<>(value);
+	}
+
+	template <
+	  class V = Value, std::enable_if_t<!std::is_reference_v<V>> * = nullptr>
+	auto &maybeInsertUnlikely(Value &&value) {
+		return this->maybeInsertUnlikely<>(std::move(value));
+	}
+
+	//
+
+	template <class... Args> void update(Args &&...args) {
+		DCHECK(this->_exists);
+		auto &bucket = this->_hashTable.buckets[this->handle.bucket];
+		auto &value = getValue(bucket.entries[this->handle.entry]);
+		value = Value{std::forward<Args>(args)...};
+	}
+
+	template <class... Args> void set(Args &&...args) {
+		if (this->_exists) {
+			update(std::forward<Args>(args)...);
+		} else {
+			insert(std::forward<Args>(args)...);
+		}
+	}
+
+	template <class Value> auto &operator=(Value &&value) {
+		set(std::forward<Value>(value));
+		return *this;
+	}
+
+	auto &operator=(const Value &value) {
+		set(value);
+		return *this;
+	}
+
+	template <
+	  class V = Value, std::enable_if_t<!std::is_reference_v<V>> * = nullptr>
+	auto &operator=(Value &&value) {
+		set(std::move(value));
+		return *this;
+	}
+}; // class MapAccessor
+
+template <class Options> class ConstIterator {
+private:
+	using Custom = Custom<Options>;
+	using Buckets = typename Custom::Buckets;
+	using Pool = Pool<Options>;
+	using Entry = typename Custom::Entry;
+
+private:
+	Buckets::Handle bucket;
+	Pool::Handle node;
+	const Custom &hashTable;
+
+private:
+	friend Custom;
+	friend Iterator<Options>;
+	ConstIterator(
+	  const Buckets::Handle &bucket, const Pool::Handle &node,
+	  const Custom &hashTable)
+	    : bucket(bucket), node(node), hashTable(hashTable) {}
+
+public:
+	/** @internal - works only for comparisons with .end() */
+	bool operator!=(const ConstIterator &other) const {
+		EQ(&hashTable, &other.hashTable);
+		return !!this->node; // !
+	}
+
+	auto &operator++() {
+		if (this->node) {
+			auto &pool = this->hashTable._pool;
+			this->node = pool[this->node].nextNode;
+		} else {
+			++this->bucket.value;
+			auto &buckets = this->hashTable._buckets;
+			this->node = buckets[bucket].firstNode;
+		}
+		return *this;
+	}
+
+	const Entry &operator*() const {
+		auto &pool = this->hashTable._pool;
+		return pool[node].entry;
+	}
+}; // class ConstIterator
+
+template <class Options> class Iterator : public ConstIterator<Options> {
+private:
+	using Base = ConstIterator<Options>;
+	using Custom = Custom<Options>;
+	using Buckets = Buckets<Options>;
+	using Pool = Pool<Options>;
+	using Entry = typename Custom::Entry;
+
+private:
+	friend Custom;
+	Iterator(
+	  const Buckets::Handle &bucket, const Pool::Handle &node, Custom &hashTable)
+	    : Base(bucket, node, hashTable) {}
+
+public:
+	const Entry &operator*() { return this->hashTable._pool[this->node].entry; }
+}; // class Iterator
+} // namespace VOLTISO_NAMESPACE::hashTable::_
+
+//
+
+namespace VOLTISO_NAMESPACE::hashTable {
+// struct Defaults {
+//   using Entry = void; // need to override
+//   using Allocator = allocator::Malloc;
+// };
+
+//
+
+template <class Options>
+  requires concepts::Options<Options>
+class Custom
+    : public Object<
+        typename Options::template With<option::CustomTemplate<Custom>>> {
+private:
+	using Base =
+	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+	using Self = Base::Self;
+
+public:
+	using Entry = Options::template Get<option::Entry>;
+	static_assert(!std::is_same_v<Entry, void>);
+	using Key = GetKey<Entry>;
+	using Value = GetValue<Entry>;
+
+	// static_assert(std::is_trivially_copyable_v<Key>);
+
+	static_assert(!std::is_same_v<Key, void>);
+	static_assert(!std::is_same_v<Value, void>);
+
+private:
+	using Allocator = Options::template Get<option::Allocator>;
+	using Bucket = _::Bucket<Options>;
+	using Buckets = _::Buckets<Options>;
+	using Node = _::Node<Options>;
+	using Pool = _::Pool<Options>;
+	using GenericPoolHandle = _::GenericPoolHandle<Options>;
+
+protected:
+	Buckets _buckets = {};
+	Pool _pool = {}; // for better data locality, we keep internal pool
+	std::size_t _numItems = 0;
+
+public:
+	const Buckets &buckets() const { return _buckets; }
+
+	auto numItems() const { return this->_numItems; }
+	bool hasItems() const { return this->_numItems != 0; }
+
+public:
+	~Custom() {
+		for (std::size_t i = 0; i < _buckets.numItems(); ++i) {
+			auto node = std::bit_cast<typename Pool::Handle>(_buckets[i].firstNode);
+			while (node) {
+				auto nextNode = node->nextNode;
+				_pool.erase(node);
+				node = nextNode;
+			}
+		}
+	}
+
+	// private:
+	//   void _debug_print() {
+	//     LOG(INFO) << "HashTable";
+	//     LOG(INFO) << "numBuckets " << this->buckets.numItems;
+	//     for (auto &bucket : this->buckets) {
+	//       LOG(INFO) << "bucket has items " << !!bucket.firstNode;
+	//     }
+	//   }
+
+public:
+	Custom() = default;
+	Custom(std::initializer_list<Entry> entries) {
+		auto numBuckets = std::bit_ceil(entries.size()) * MAX_LOAD_FACTOR_INV;
+		this->_buckets.setNumItems(numBuckets);
+		for (auto &entry : entries) {
+			// LOG(INFO) << "insert " << entry;
+			this->insert(entry);
+			// _debug_print();
+		}
+	}
+
+	//
+
+	friend _::Accessor<Options, true>;
+	friend _::Accessor<Options, false>;
+
+	using SetAccessor = _::SetAccessor<Options, false>;
+	friend SetAccessor;
+
+	using ConstSetAccessor = _::SetAccessor<Options, true>;
+	friend ConstSetAccessor;
+
+	using MapAccessor = _::MapAccessor<Options, false>;
+	friend MapAccessor;
+
+	using ConstMapAccessor = _::MapAccessor<Options, true>;
+	friend ConstMapAccessor;
+
+	//
+
+	using Iterator = _::Iterator<Options>;
+	friend Iterator;
+
+	using ConstIterator = _::ConstIterator<Options>;
+	friend ConstIterator;
+
+private:
+	Buckets::Handle _bucketIndex(const Key &key) const {
+		// LOG(INFO) << "get bucket index for key " << key;
+		auto hash = get::hash<Key>(key);
+		// LOG(INFO) << "hash is " << hash;
+		CHECK(std::has_single_bit(_buckets.numItems()));
+		// auto index = hash % buckets.numItems;
+		auto index = hash & (_buckets.numItems() - 1);
+		return typename Buckets::Handle(index);
+	}
+
+	template <class K> auto _bucketIndex(const K &key) const {
+		return this->_bucketIndex(getKey(key));
+	}
+
+private:
+	void grow() {
+		auto newNumBuckets = _buckets.numItems() << 1;
+		if (!newNumBuckets) [[unlikely]] {
+			newNumBuckets = 1;
+		}
+		setNumBuckets(newNumBuckets);
+	}
+
+	void setNumBuckets(std::size_t newNumBuckets) {
+		CHECK(std::has_single_bit(newNumBuckets));
+		auto &buckets = this->_buckets;
+		auto &pool = this->_pool;
+		auto oldNumBuckets = buckets.numItems();
+		buckets.setNumItems(newNumBuckets);
+		for (size_t i = 0; i < oldNumBuckets; ++i) {
+			auto &oldBucket = buckets[i];
+			auto pNode = &oldBucket.firstNode;
+			while (*pNode) {
+				auto newIndex = _bucketIndex(getKey(pool[*pNode].entry));
+				if (newIndex.value == i) {
+					pNode = &pool[*pNode].nextNode;
+				} else if (newIndex.value != i) {
+					auto oldBucketRest = pool[*pNode].nextNode;
+					auto &newBucket = buckets[newIndex];
+					auto newBucketRest = newBucket.firstNode;
+					newBucket.firstNode = *pNode;
+					pool[*pNode].nextNode = newBucketRest;
+					*pNode = oldBucketRest;
+				}
+			}
+		}
+	}
+
+	static constexpr size_t MAX_LOAD_FACTOR_INV = 2; // 0.5 load factor
+
+	bool shouldGrow() const {
+		return MAX_LOAD_FACTOR_INV * _numItems >= _buckets.numItems();
+	}
+
+	void maybeGrow() {
+		if (this->shouldGrow()) [[unlikely]] {
+			this->grow();
+		}
+	}
+
+public:
+	bool has(const Key &key) const { return this->operator()(key).exists(); }
+
+	template <
+	  class K,
+	  std::enable_if_t<std::is_convertible_v<GetKey<K>, Key>> * = nullptr>
+	bool has(const K &key) const {
+		return has(getKey(key));
+	}
+
+public:
+	template <class... Args> Handle insert(Args &&...args) {
+		this->maybeGrow();
+		auto node = this->_pool.insert(std::forward<Args>(args)...);
+		// auto &buckets = this->_buckets();
+		// LOG(INFO) << "Key = " << demangle(typeid(Key));
+		// LOG(INFO) << "Argument = " << demangle(typeid(node));
+		auto bucketIndex = this->_bucketIndex(getKey(node->entry));
+		// LOG(INFO) << "insert at bucket index " << bucketIndex;
+		auto &bucket = _buckets[bucketIndex];
+		node->nextNode = bucket.firstNode;
+		bucket.firstNode = node.handle;
+		++this->_numItems;
+		return node.handle;
+		// return {&bucket.firstNode, bucketIndex, getKey(node->entry), true,
+		// *this};
+	}
+
+public:
+	template <class TEntry>
+	  requires std::is_same_v<Entry, std::decay_t<TEntry>>
+	auto maybeInsert(TEntry &&entry) {
+		// todo: should be other way around I guess?
+		return this->operator()(std::forward<TEntry>(entry)).maybeInsert();
+	}
+
+public:
+	void erase(const Entry &entry) { this->operator()(entry).erase(); }
+
+	template <
+	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	void erase(const Key &key) {
+		this->operator()(key).erase();
+	}
+
+	void maybeErase(const Entry &entry) { this->operator()(entry).maybeErase(); }
+
+	// template <class E,
+	//           std::enable_if_t<std::is_convertible_v<E, Entry>> * = nullptr>
+	// void maybeErase(const E &entry) {
+	//   this->operator()(entry).erase();
+	// }
+
+	template <
+	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	void maybeErase(const Key &key) {
+		this->operator()(key).maybeErase();
+	}
+
+	template <
+	  class K, std::enable_if_t<std::is_convertible_v<K, Key>> * = nullptr>
+	void maybeErase(const K &key) {
+		return this->operator()(key).maybeErase();
+	}
+
+	template <
+	  class K,
+	  std::enable_if_t<std::is_convertible_v<GetKey<K>, Key>> * = nullptr>
+	void maybeErase(const K &key) {
+		return this->operator()(getKey(key)).maybeErase();
+	}
+
+public:
+	template <class... Args>
+	VOLTISO_FORCE_INLINE Value &operator[](Args &&...args) {
+		return this->operator()(std::forward<Args>(args)...).value();
+	}
+
+	template <class... Args>
+	VOLTISO_FORCE_INLINE const Value &operator[](Args &&...args) const {
+		return this->operator()(std::forward<Args>(args)...).value();
+	}
+
+public:
+	SetAccessor operator()(const Entry &entry) {
+		auto &key = getKey(entry);
+		if (_buckets.numItems() == 0) [[unlikely]] {
+			return {*this, nullptr, typename Buckets::Handle(0), false, entry};
+		}
+		auto bucket = _bucketIndex(key);
+		auto pHandle = &_buckets[bucket].firstNode;
+		if constexpr (std::is_reference_v<Key>) {
+			while (*pHandle && (&getKey(_pool[*pHandle].entry) != &key)) {
+				pHandle = &_pool[*pHandle].nextNode;
+			}
+		} else {
+			while (*pHandle && getKey(_pool[*pHandle].entry) != key) {
+				pHandle = &_pool[*pHandle].nextNode;
+			}
+		}
+		bool exists = (bool)(*pHandle);
+		return {*this, pHandle, bucket, exists, entry};
+	}
+
+	template <class E>
+	  requires std::is_convertible_v<E, Entry>
+	auto operator()(const E &entry) {
+		return this->operator()(static_cast<Entry>(entry));
+	}
+
+	// const -> non-const
+	ConstSetAccessor operator()(const Entry &entry) const {
+		static_assert(
+		  std::is_const_v<std::remove_reference_t<decltype(this->self())>>);
+		auto accessor = const_cast<Custom *>(this)->operator()(entry);
+		return std::bit_cast<ConstSetAccessor>(accessor); // rvo works?
+	}
+
+	template <
+	  class E, std::enable_if_t<std::is_convertible_v<E, Entry>> * = nullptr>
+	auto operator()(const E &entry) const {
+		return this->operator()(static_cast<Entry>(entry));
+	}
+
+	template <
+	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	MapAccessor operator()(const Key &key) {
+		if (_buckets.numItems() == 0) [[unlikely]] {
+			return {*this, nullptr, typename Buckets::Handle(0), false, key};
+		}
+		auto bucket = _bucketIndex(key);
+		auto pHandle = &_buckets[bucket].firstNode;
+		while (*pHandle && getKey(_pool[*pHandle].entry) != key) {
+			pHandle = &_pool[*pHandle].nextNode;
+		}
+		bool exists = (bool)(*pHandle);
+		return {*this, pHandle, bucket, exists, key};
+	}
+
+	template <
+	  class K = Key, std::enable_if_t<
+	                   !std::is_convertible_v<K, Entry> &&
+	                   !std::is_same_v<K, Entry>> * = nullptr>
+	auto operator()(const K &key) {
+		return this->operator()(getKey(key));
+	}
+
+	// template <class K,
+	//           std::enable_if_t<std::is_same_v<
+	//               std::remove_cv_t<std::remove_reference_t<K>>, Key>> * =
+	//               nullptr>
+	template <
+	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	ConstMapAccessor operator()(const Key &key) const {
+		auto accessor = this->self()[key];
+		return std::bit_cast<ConstMapAccessor>(accessor); // rvo works?
+	}
+
+	template <
+	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
+	auto operator()(const K &key) const {
+		return this->operator()(getKey(key));
+	}
+
+public:
+	Iterator begin() {
+		auto node = _buckets.numItems() ? _buckets[0].firstNode : handle::INVALID;
+		return Iterator{typename Buckets::Handle(0), node, *this};
+	}
+	Iterator end() {
+		return Iterator{
+		  typename Buckets::Handle(_buckets.numItems()), handle::INVALID, *this};
+	}
+
+	ConstIterator begin() const {
+		auto node = _buckets.numItems() ? _buckets[0].firstNode : handle::INVALID;
+		return ConstIterator{Buckets::Handle(0), node, *this};
+	}
+
+	ConstIterator end() const {
+		return ConstIterator{
+		  Buckets::Handle(_buckets.numItems()), handle::INVALID, *this};
+	}
+
+public:
+	template <class Option> using With = Base::template With<Option>;
+	template <class Allocator>
+	using WithAllocator = With<option::Allocator<Allocator>>;
+}; // class Custom
+} // namespace VOLTISO_NAMESPACE::hashTable
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+template <class Options>
+  requires concepts::Options<Options>
+static constexpr auto is_trivially_relocatable<hashTable::Custom<Options>> =
+  true;
+} // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+template <class Entry>
+class HashTable
+    : public hashTable::Custom<
+        Options<option::Entry<Entry>, option::Self<HashTable<Entry>>>> {
+	using Base = hashTable::Custom<
+	  Options<option::Entry<Entry>, option::Self<HashTable<Entry>>>>;
+	using Base::Base;
+}; // class HashTable
+
+template <class Entry>
+static constexpr auto is_trivially_relocatable<HashTable<Entry>> = true;
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

@@ -1,12 +1,18 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Entry>
-#include <voltiso/Owned>
-// #include <voltiso/context>
+#include <v/Entry>
+#include <v/Owned>
+// #include <v/context>
 
 #include <memory>
 
 using namespace VOLTISO_NAMESPACE;
+
+//
+
+static_assert(sizeof(Owned<int>) == sizeof(void *));
+
+//
 
 TEST(Owned, trivial) {
   auto owned = Owned<int>::create(123);
@@ -14,10 +20,7 @@ TEST(Owned, trivial) {
   // Owned<int> owned =
   //     Owned(123); // explicit! (memory allocation), uses deduction guide
 
-  EXPECT_EQ(sizeof(owned),
-            sizeof(std::unique_ptr<int>)); // Owned is now always a ptr
-
-  // operator ==
+	// operator ==
   EXPECT_EQ(owned, 123);
   EXPECT_EQ(123, owned);
 
@@ -121,10 +124,11 @@ TEST(Owned, destructor_big) {
 }
 
 TEST(Owned, weak) {
-  Owned<int> owned = Owned<int>::create(123);
-  auto weak = owned.weak();
-  static_assert(std::is_same_v<decltype(weak), Owned<int>::Weak>);
-  EXPECT_EQ(*weak, 123);
+	// using W = Owned<int>::With<option::WEAK<true>>;
+	Owned<int> owned = Owned<int>::create(123);
+	auto weak = owned.weak();
+	static_assert(std::is_same_v<decltype(weak), Owned<int>::Weak>);
+	EXPECT_EQ(*weak, 123);
   // weak = owned.weak();
   // EXPECT_EQ(*weak, 123);
 }

@@ -1,7 +1,7 @@
 #include <benchmark/benchmark.h>
 
-#include <voltiso/HashMap>
-#include <voltiso/SplayMap>
+#include <v/HashMap>
+#include <v/SplayMap>
 
 #include <ext/pb_ds/assoc_container.hpp>
 

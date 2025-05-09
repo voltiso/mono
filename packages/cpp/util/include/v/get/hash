@@ -1,0 +1,40 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/has"
+
+#include <functional>
+
+namespace VOLTISO_NAMESPACE::get {
+template <hasFunction::hash T>
+constexpr auto hash(const T &t) noexcept
+// ! simply force noexcept - bad design to have throwing hash function
+// noexcept(noexcept(t.hash()))
+{
+	static_assert(noexcept(t.hash()));
+	return t.hash();
+}
+
+template <hasValue::hash T> constexpr auto hash(const T &t) noexcept {
+	return t.hash;
+}
+
+// ! if std::hash is able to hash this, use its implementation
+template <class T>
+  requires requires(T t) {
+	  std::hash<T>{}(t);
+	  // { std::hash<T>{}(t) } -> std::convertible_to<std::size_t>;
+  }
+constexpr auto hash(const T &t) noexcept(noexcept(std::hash<T>{}(t))) {
+	return std::hash<T>{}(t);
+}
+
+// ! hash references as pointers
+// note: this requires explicit `hash<T&>(...)` call
+template <class T>
+  requires(std::is_reference_v<T>)
+constexpr auto hash(const T &t) noexcept {
+	static_assert(noexcept(hash(&t)));
+	return hash(&t);
+}
+} // namespace VOLTISO_NAMESPACE::get

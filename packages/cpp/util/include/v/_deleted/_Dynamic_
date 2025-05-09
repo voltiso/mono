@@ -1,0 +1,20 @@
+#pragma once
+
+#include "v/Virtual"
+
+#include <type_traits>
+#include <utility>
+
+namespace VOLTISO_NAMESPACE {
+template <class Implementation, class TVirtual = Virtual>
+class Dynamic : public TVirtual, public Implementation {
+	static_assert(!std::is_polymorphic_v<Implementation>);
+
+public:
+	template <class... Args>
+	Dynamic(Args &&...args) : Implementation{std::forward<Args>(args)...} {
+		// std::cout << "Dynamic constructor" << std::endl;
+	}
+	// Dynamic(Owned &&other) : Owned(std::move(other)) {}
+}; // class Dynamic
+} // namespace VOLTISO_NAMESPACE

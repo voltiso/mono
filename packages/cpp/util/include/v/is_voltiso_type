@@ -1,0 +1,14 @@
+#pragma once
+
+#include "v/concepts/Object"
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+
+// Check if it's our type.
+// Purpose: e.g. define global operators that do not conflict with other
+// libraries.
+template <class T>
+static constexpr bool is_voltiso_type = concepts::Object<std::decay_t<T>>;
+} // namespace VOLTISO_NAMESPACE

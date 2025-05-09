@@ -1,5 +1,5 @@
-#include "voltiso/BitArray"
-#include "voltiso/Storage"
+#include "v/BitArray"
+#include "v/Storage"
 
 #include "gtest/gtest.h"
 

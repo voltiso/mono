@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-#include "voltiso/Function"
+#include "v/AnyFunction"
 
 #include <functional>
 #include <string>
@@ -45,13 +45,13 @@ static void BM_Function(benchmark::State &state) {
     std::cout << std::endl;
   }
 
-  std::vector<Function<int(int, int)>> fns;
-  fns.reserve(1000);
-  for (int i = 0; i < 1000; i++) {
-    fns.emplace_back(&add);
-  }
+	std::vector<AnyFunction<int(int, int)>> fns;
+	fns.reserve(1000);
+	for (int i = 0; i < 1000; i++) {
+		fns.emplace_back(&add);
+	}
 
-  unsigned int result = 0;
+	unsigned int result = 0;
   while (state.KeepRunningBatch(1000)) {
     for (int i = 0; i < 1000; ++i) {
       result += fns[i](i, i + 1);
@@ -63,9 +63,9 @@ BENCHMARK(BM_Function);
 
 // Benchmark for simple function calls
 static void BM_Function_raw(benchmark::State &state) {
-  std::vector<Function<int(int, int)>> fns;
-  fns.reserve(1000);
-  for (int i = 0; i < 1000; i++) {
+	std::vector<AnyFunction<int(int, int)>> fns;
+	fns.reserve(1000);
+	for (int i = 0; i < 1000; i++) {
     fns.emplace_back(&add);
   }
 
@@ -107,9 +107,9 @@ static void BM_Function_lambdaCapture(benchmark::State &state) {
   }
 
   auto lambda = makeCaptureLambda(42);
-  std::vector<Function<int(int)>> fns;
-  fns.reserve(1000);
-  for (int i = 0; i < 1000; i++) {
+	std::vector<AnyFunction<int(int)>> fns;
+	fns.reserve(1000);
+	for (int i = 0; i < 1000; i++) {
     fns.emplace_back(lambda);
   }
 
@@ -172,9 +172,9 @@ static void BM_Function_lambdaCaptureLarge(benchmark::State &state) {
 
   std::vector<int> data(100, 1); // Vector with 100 elements
   auto lambda = makeLargeCaptureLambda(data);
-  std::vector<Function<int(int)>> fns;
-  fns.reserve(1000);
-  for (int i = 0; i < 1000; i++) {
+	std::vector<AnyFunction<int(int)>> fns;
+	fns.reserve(1000);
+	for (int i = 0; i < 1000; i++) {
     fns.emplace_back(lambda);
   }
 
@@ -240,9 +240,9 @@ static void BM_Function_creationDestruction(benchmark::State &state) {
 
   while (state.KeepRunningBatch(1000)) {
     for (int i = 0; i < 1000; ++i) {
-      Function<int(int, int)> fn = &add;
-      benchmark::DoNotOptimize(&fn);
-    }
+			AnyFunction<int(int, int)> fn = &add;
+			benchmark::DoNotOptimize(&fn);
+		}
   }
 }
 BENCHMARK(BM_Function_creationDestruction);
@@ -282,9 +282,9 @@ static void BM_Function_complexObjectMethod(benchmark::State &state) {
   }
 
   ComplexObject obj(50);
-  Function<int(int)> fn = [&obj](int x) { return obj.compute(x); };
-  int result = 0;
-  while (state.KeepRunningBatch(1000)) {
+	AnyFunction<int(int)> fn = [&obj](int x) { return obj.compute(x); };
+	int result = 0;
+	while (state.KeepRunningBatch(1000)) {
     for (int i = 0; i < 1000; ++i) {
       result += fn(i);
     }

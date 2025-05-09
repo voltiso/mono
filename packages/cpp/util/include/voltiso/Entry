@@ -1,9 +1,14 @@
 #pragma once
-#include <voltiso/_>
+#include <voltiso/_/_>
 
+#include "voltiso/has/entry"
+#include "voltiso/has/value"
+#include "voltiso/hasFunction/entry"
+#include "voltiso/hasFunction/key"
+#include "voltiso/hasFunction/value"
+#include "voltiso/hasValue/key"
+#include "voltiso/hasValue/value"
 #include "voltiso/is_trivially_relocatable"
-
-#include <type_traits>
 
 namespace VOLTISO_NAMESPACE {
 template <class _Key, class _Value> struct Entry {
@@ -11,6 +16,11 @@ template <class _Key, class _Value> struct Entry {
   using Value = _Value;
   Key key;
   Value value;
+
+	[[nodiscard]] auto hash() const noexcept {
+		static_assert(noexcept(getHash(key)));
+		return getHash(key);
+	}
 };
 
 template <class Key, class Value>
@@ -19,48 +29,54 @@ static constexpr auto is_trivially_relocatable<Entry<Key, Value>> =
 
 //
 
-template <class Item>
-  requires requires { Item::entry; }
-constexpr auto &getEntry(Item &item) {
-  if constexpr (requires { item.entry(); }) {
-    return item.entry();
-  } else {
-    return item.entry;
-  }
+template <hasFunction::entry Item>
+constexpr auto &getEntry(Item &item) noexcept {
+	static_assert(noexcept(item.entry()));
+	return item.entry();
 }
 
-template <class Item>
-  requires requires { Item::entry; }
-constexpr const auto &getEntry(const Item &item) {
-  return getEntry(const_cast<Item &>(item));
+template <hasValue::entry Item> constexpr auto &getEntry(Item &item) noexcept {
+	return item.entry;
 }
 
-// getKey
-
+// const version (delegates to non-const)
 template <class Item>
-  requires requires { Item::key; }
-constexpr auto &getKey(Item &item) {
-  if constexpr (requires { item.key(); }) {
-    return item.key();
-  } else {
-    return item.key;
-  }
+constexpr const auto &getEntry(const Item &item) noexcept {
+	static_assert(noexcept(getEntry(const_cast<Item &>(item))));
+	return getEntry(const_cast<Item &>(item));
 }
 
+//
+
+// ! getKey
+
+// fallback - identity by default
 template <class Item>
-  requires(!requires { Item::key; }) && (!requires { Item::entry; })
-constexpr auto &getKey(Item &item) {
-  return item; // identity function by default
+// requires(!requires { Item::key; }) && (!requires { Item::entry; })
+constexpr auto &getKey(Item &item) noexcept {
+	return item; // identity function by default
 }
 
-template <class Item>
-  requires requires { Item::entry; }
-constexpr auto &getKey(Item &item) {
-  return getKey(getEntry(item));
+template <hasFunction::key Item> constexpr auto &getKey(Item &item) noexcept {
+	static_assert(noexcept(item.key()));
+	return item.key();
 }
 
-template <class Item> constexpr const auto &getKey(const Item &item) {
-  return getKey(const_cast<Item &>(item));
+template <hasValue::key Item> constexpr auto &getKey(Item &item) noexcept {
+	return item.key;
+}
+
+template <has::entry Item> constexpr auto &getKey(Item &item) noexcept {
+	static_assert(noexcept(getKey(getEntry(item))));
+	return getKey(getEntry(item));
+}
+
+// const version (delegates to non-const)
+template <class Item>
+  requires(!std::is_const_v<Item>)
+constexpr const auto &getKey(const Item &item) noexcept {
+	static_assert(noexcept(getKey(const_cast<Item &>(item))));
+	return getKey(const_cast<Item &>(item));
 }
 
 namespace _ {
@@ -78,83 +94,50 @@ using GetKey =
                                       std::remove_cvref_t<Item>>,
                        Item, typename _::GetKeyImpl<Item>::Type>;
 
-// getValue
+//
 
+// ! getValue
+
+// fallback - identity by default
 template <class Item>
-  requires requires { Item::value; }
-constexpr auto &getValue(Item &item) {
-  if constexpr (requires { item.value(); }) {
-    return item.value();
-  } else {
-    return item.value;
-  }
+  requires(!has::value<Item> && !has::entry<Item>)
+constexpr auto &getValue(Item &item) noexcept {
+	return item; // identity function by default
 }
 
+template <hasFunction::value Item>
+constexpr auto &getValue(Item &item) noexcept {
+	static_assert(noexcept(item.value()));
+	return item.value();
+}
+
+template <hasValue::value Item> constexpr auto &getValue(Item &item) noexcept {
+	return item.value;
+}
+
+template <has::entry Item> constexpr auto &getValue(Item &item) noexcept {
+	return getValue(getEntry(item));
+}
+
+// const version (delegates to non-const version)
 template <class Item>
-  requires(!requires { Item::value; }) && (!requires { Item::entry; })
-constexpr auto &getValue(Item &item) {
-  return item; // identity function by default
+constexpr const auto &getValue(const Item &constItem) noexcept {
+	return getValue(const_cast<Item &>(constItem));
 }
-
-template <class Item>
-  requires requires { Item::entry; }
-constexpr auto &getValue(Item &item) {
-  return getValue(getEntry(item));
-}
-
-template <class Item> constexpr const auto &getValue(const Item &item) {
-  return getValue(const_cast<Item &>(item));
-}
-
-// // disable this?
-// template <
-//     class Item, std::enable_if_t<!std::is_integral_v<Item>> * = nullptr,
-//     class = decltype(std::declval<std::hash<Item>>()(std::declval<Item>()))>
-// constexpr auto getKey(const Item &item) {
-//   return std::hash<Item>{}(item);
-// }
-
-// template <class Item, std::enable_if_t<std::is_integral_v<Item>> * = nullptr>
-// constexpr auto getKey(const Item &item) {
-//   return item;
-// }
-
-// // disable this?
-// template <class Item, decltype(std::declval<std::hash<Item>>()(
-//                           std::declval<Item>())) * = nullptr>
-// constexpr auto &getValue(Item &item) {
-//   return item;
-// }
-
-// template <class Item, decltype(std::declval<std::hash<Item>>()(
-//                           std::declval<Item>())) * = nullptr>
-// constexpr const auto &getValue(const Item &item) {
-//   return getValue(const_cast<Item &>(item));
-// }
+} // namespace VOLTISO_NAMESPACE
 
 //
 
-//
-
-// template <class = void> constexpr void getValue(...) {
-//   static_assert(false, "entry type does not have a value (key-only entry or "
-//                        "`getValue` is not defined for your custom type)");
-// }
-
-// template <class Item> using GetValue =
-// decltype(getValue(std::declval<Item>()));
-
-//
-
-namespace _ {
+namespace VOLTISO_NAMESPACE::_ {
 template <class Item> struct GetValueImpl {
-  using Type = std::decay_t<decltype(getValue(std::declval<Item>()))>;
+	using Type = std::decay_t<decltype(getValue(std::declval<Item>()))>;
 };
 template <class Key, class Value> struct GetValueImpl<Entry<Key, Value>> {
-  using Type = Value;
+	using Type = Value;
 };
-} // namespace _
+} // namespace VOLTISO_NAMESPACE::_
 
+namespace VOLTISO_NAMESPACE {
 template <class Item>
 using GetValue =
     std::conditional_t<std::is_same_v<std::remove_cvref_t<Item>,
@@ -165,5 +148,4 @@ using GetValue =
 
 template <class Item>
 using GetEntry = std::decay_t<decltype(getEntry(std::declval<Item>()))>;
-
 } // namespace VOLTISO_NAMESPACE

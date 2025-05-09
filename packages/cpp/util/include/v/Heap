@@ -1,0 +1,178 @@
+#pragma once
+
+#include "v/DynamicArray"
+#include "v/Likelihood"
+#include "v/Options"
+#include "v/Storage"
+#include "v/is_trivially_relocatable"
+#include "v/option/Item"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::heap {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom
+    : protected dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
+        option::Item<Storage<typename Options::template Get<option::Item>>>>> {
+	//   using Self = Custom;
+	using Base = dynamicArray::Custom<VOLTISO_NAMESPACE::Options<
+	  option::Item<Storage<typename Options::template Get<option::Item>>>>>;
+	using Self = Base::Self;
+
+public:
+	using Item = Options::template Get<option::Item>;
+	static_assert(is_trivially_relocatable<Item>);
+
+	using Base::hasItems;
+	using Base::numItems;
+
+public:
+	Custom() = default;
+
+	Custom(std::initializer_list<Item> items) {
+		Base::setNumSlotsAtLeast(items.size());
+		for (auto &item : items) {
+			push(std::move(item));
+		}
+	}
+
+	template <class... Args>
+	  requires(std::is_constructible_v<Item, Args...>)
+	VOLTISO_FORCE_INLINE void push(Args &&...args) noexcept {
+		push(Item{std::forward<Args>(args)...});
+	}
+
+	template <class TItem>
+	  requires(std::is_same_v<Item, std::decay_t<TItem>>)
+	VOLTISO_FORCE_INLINE void push(TItem &&item) noexcept {
+		Base::push(); // do not emplace item yet!
+		auto index = Base::_numItems;
+		Storage<Item> *array = &Base::first() - 1;
+		while (index != 1 && array[index >> 1].item() < item) [[likely]] {
+			auto nextIndex = index >> 1;
+			static_assert(is_trivially_relocatable<Item>);
+			// memcpy(array + index, array + nextIndex, sizeof(Item));
+			array[index] = std::move(array[nextIndex]);
+			// std::swap(array[index], array[nextIndex]);
+			index = nextIndex;
+		}
+		array[index].construct(std::move(item));
+	}
+
+	template <Likelihood LIKELIHOOD = Likelihood::UNLIKELY, class... Args>
+	  requires(std::is_constructible_v<Item, Args...>)
+	VOLTISO_FORCE_INLINE void maybeGrowAndPush(Args &&...args) noexcept {
+		maybeGrowAndPush(Item{std::forward<Args>(args)...});
+	}
+
+	template <Likelihood LIKELIHOOD = Likelihood::UNLIKELY, class TItem>
+	  requires(std::is_same_v<Item, std::decay_t<TItem>>)
+	VOLTISO_FORCE_INLINE void maybeGrowAndPush(TItem &&item) noexcept {
+		if constexpr (LIKELIHOOD == Likelihood::UNKNOWN) {
+			if (Base::_numItems == Base::_numSlots) {
+				Base::grow();
+			}
+		} else if constexpr (LIKELIHOOD == Likelihood::LIKELY) {
+			if (Base::_numItems == Base::_numSlots) [[likely]] {
+				Base::grow();
+			}
+		} else if constexpr (LIKELIHOOD == Likelihood::UNLIKELY) {
+			if (Base::_numItems == Base::_numSlots) [[unlikely]] {
+				Base::grow();
+			}
+		} else {
+			static_assert(false);
+		}
+		push(std::forward<TItem>(item));
+	}
+
+	const Item &peek() const {
+		NE(Base::_numItems, 0);
+		return Base::first().item();
+	}
+
+	Item pop() {
+		NE(Base::_numItems, 0);
+		Item item = std::move(Base::first().item());
+		auto lastItem = std::move(Base::last());
+		Base::pop();
+		size_t index = 1;
+		// decltype(Base::_numItems) index = 1;
+		Storage<Item> *array = &Base::slots()->item() - 1;
+		while ((index << 1) <= Base::_numItems) [[likely]] {
+			auto indexLeft = (index << 1);
+			auto indexRight = indexLeft + 1;
+			if (
+			  indexRight <= Base::_numItems &&
+			  array[indexLeft].item() < array[indexRight].item()) [[unlikely]] {
+				if (array[index].item() < array[indexRight].item()) [[likely]] {
+					array[index] = std::move(array[indexRight]);
+					// std::swap(array[index], array[indexRight]);
+					index = indexRight;
+				} else {
+					break;
+				}
+			} else [[likely]] {
+				if (array[index].item() < array[indexLeft].item()) [[likely]] {
+					array[index] = std::move(array[indexLeft]);
+					// std::swap(array[index], array[indexLeft]);
+					index = indexLeft;
+				} else {
+					break;
+				}
+			}
+		}
+		array[index] = std::move(lastItem);
+		return item;
+	}
+
+public:
+	/**
+	 *  - Invalidates on resize
+	 *  - Invalidates on relocation
+	 */
+	class ConstIterator final
+	    : public memory::ConstIteratorCrtp<Item, ConstIterator> {
+	public:
+		// using Self = ConstIterator;
+		using Base = memory::ConstIteratorCrtp<Item, ConstIterator>;
+
+		// using Item = Item;
+
+		using Base::Base;
+	};
+
+public:
+	// instead of `using Base::begin`, make iterators always const
+	// auto begin() const {}
+	// auto end() const { return Base::end(); }
+
+	ConstIterator begin() const {
+		GT(this->_numItems, 0);
+		return &Base::slots()->item().item();
+	}
+	ConstIterator end() const {
+		GT(this->_numItems, 0);
+		return &Base::slots()->item().item() + this->_numItems;
+	}
+};
+} // namespace VOLTISO_NAMESPACE::heap
+
+namespace VOLTISO_NAMESPACE {
+template <class Item>
+class Heap : public heap::Custom<
+               Options<option::Item<Item>, option::Self<Heap<Item>>>> {
+	using Base =
+	  heap::Custom<Options<option::Item<Item>, option::Self<Heap<Item>>>>;
+	using Base::Base;
+};
+
+template <class Options>
+constexpr auto is_trivially_relocatable<heap::Custom<Options>> = true;
+
+template <class Item>
+constexpr auto is_trivially_relocatable<Heap<Item>> = true;
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

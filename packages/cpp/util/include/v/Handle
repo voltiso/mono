@@ -1,0 +1,201 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/Object"
+#include "v/Options"
+#include "v/brand/Custom"
+#include "v/concepts/Options"
+#include "v/get/hash"
+#include "v/option/HandleKind"
+
+#include <cstdint>
+#include <limits>
+#include <ostream>
+#include <type_traits>
+
+//
+
+// forward declarations
+namespace VOLTISO_NAMESPACE::handle {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom;
+} // namespace VOLTISO_NAMESPACE::handle
+
+//
+
+namespace VOLTISO_NAMESPACE::handle::_ {
+// @internal Use `handle::INVALID` instead.
+struct Invalid {
+	consteval Invalid() noexcept = default;
+};
+inline std::ostream &operator<<(std::ostream &os, const Invalid &) {
+	return os << "handle::INVALID";
+} // operator<<
+} // namespace VOLTISO_NAMESPACE::handle::_
+
+namespace VOLTISO_NAMESPACE::handle {
+constexpr inline auto INVALID = _::Invalid{};
+} // namespace VOLTISO_NAMESPACE::handle
+
+namespace VOLTISO_NAMESPACE::handle::_ {
+template <class Type> consteval auto getNullValue() noexcept {
+	if constexpr (std::is_pointer_v<Type>) {
+		return uintptr_t(0);
+	} else {
+		return std::numeric_limits<Type>::max();
+	}
+}
+} // namespace VOLTISO_NAMESPACE::handle::_
+
+namespace VOLTISO_NAMESPACE::handle {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom
+    : public Object<
+        typename Options::template With<option::CustomTemplate<Custom>>> {
+private:
+	using Base =
+	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+
+public:
+	using Brand = Options::template Get<brand::Custom>;
+	using Kind = Options::template Get<option::HandleKind>;
+
+	using Value =
+	  std::conditional_t<std::is_pointer_v<Kind>, std::uintptr_t, Kind>;
+
+	using Pointer = std::conditional_t<std::is_pointer_v<Kind>, Kind, void>;
+
+	static_assert(std::is_integral_v<Kind> || std::is_pointer_v<Kind>);
+	static_assert(std::is_integral_v<Value>);
+
+public:
+	Value value;
+
+	Custom() noexcept = default;
+
+	template <
+	  class OtherValue, std::enable_if_t<
+	                      std::is_integral_v<OtherValue> &&
+	                      sizeof(Value) >= sizeof(OtherValue)> * = nullptr>
+	explicit constexpr Custom(const OtherValue &value) noexcept : value(value) {}
+
+	template <
+	  class Other, std::enable_if_t<
+	                 (std::is_same_v<Brand, void> ||
+	                  std::is_same_v<typename Other::Brand, void> ||
+	                  std::is_same_v<typename Other::Brand, Brand>) &&
+	                 sizeof(Value) >= sizeof(typename Other::Value)> * = nullptr>
+	constexpr Custom(const Other &other) : value(other.value) {}
+
+	template <class P = Pointer, class = std::enable_if_t<std::is_pointer_v<P>>>
+	constexpr Custom(const std::nullptr_t &) noexcept
+	    : value(_::getNullValue<Kind>()) {}
+
+	explicit constexpr operator Value() const noexcept { return value; }
+
+	bool operator==(const Custom &other) const noexcept {
+		return value == other.value;
+	}
+
+	bool operator!=(const Custom &other) const noexcept {
+		return value != other.value;
+	}
+
+	constexpr auto hash() const noexcept(noexcept(get::hash(value))) {
+		return get::hash(value);
+	}
+
+	//  - Can't use `constexpr` static here inside the class - it's incomplete
+	//  until
+	// `}`.
+	//  - We really want this either constexpr, or not available at all.
+	//  - So the declaration is commented out. Please use `handle::INVALID`
+	//  instead.
+	// static constexpr Custom INVALID =
+	//   static_cast<Custom>(_::getNullValue<Custom::HandleKind>());
+
+	// construction from `handle::INVALID` - consteval (mitigates the problem in
+	// the comment above)
+	consteval Custom(_::Invalid) noexcept : value(_::getNullValue<Kind>()) {}
+
+	explicit constexpr operator bool() const noexcept {
+		return *this != handle::INVALID;
+	}
+
+	template <
+	  class P = Pointer, std::enable_if_t<std::is_pointer_v<P>> * = nullptr>
+	explicit constexpr Custom(const P &value) noexcept
+	    : value(reinterpret_cast<Value>(value)) {}
+
+	template <
+	  class P = Pointer,
+	  class =
+	    std::enable_if_t<std::is_same_v<P, Pointer> && !std::is_same_v<P, void>>>
+	operator P() const noexcept {
+		return reinterpret_cast<Pointer>(value);
+	}
+
+	template <
+	  class P = Pointer,
+	  class =
+	    std::enable_if_t<std::is_same_v<P, Pointer> && !std::is_same_v<P, void>>>
+	operator void *() const noexcept {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+		return std::bit_cast<void *>(value);
+#pragma GCC diagnostic pop
+	} // operator void *()
+
+	// for pointer-handles
+	template <
+	  class P = Pointer, class = std::enable_if_t<!std::is_same_v<P, void>>>
+	auto operator*() const noexcept -> std::remove_pointer_t<P> & {
+		return *std::bit_cast<P>(this->value);
+	}
+
+	template <
+	  class P = Pointer, class = std::enable_if_t<!std::is_same_v<P, void>>>
+	auto operator->() const noexcept -> P {
+		return std::bit_cast<P>(this->value);
+	}
+
+public:
+	// ⚠️ override the single `brand::Custom`
+	template <class NewBrand>
+	using WithBrand = Base::template With<brand::Custom<NewBrand>>;
+
+	// Mostly maps 1:1 to the handle Value, but stores pointers as uintptr_t
+	template <class NewType>
+	using WithKind = Base::template With<option::HandleKind<NewType>>;
+}; // class Custom
+
+// template <class Final, class Options>
+// // requires concepts::Options<Options>
+// constexpr Final Custom<Final, Options>::INVALID =
+//   static_cast<Final>(_::getNullValue<typename Custom<Final,
+//   Options>::Type>());
+
+template <class Options>
+  requires concepts::Options<Options>
+inline std::ostream &
+operator<<(std::ostream &os, const Custom<Options> &handle) {
+	if (handle == handle::INVALID) [[unlikely]] {
+		return os << "Handle::INVALID";
+	}
+	return os << "Handle(" << handle.value << ")";
+} // operator<<
+
+} // namespace VOLTISO_NAMESPACE::handle
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+class Handle : public handle::Custom<Options<>> {
+	using Base = handle::Custom<VOLTISO_NAMESPACE::Options<>>;
+
+public:
+	using Base::Base;
+}; // class Handle
+} // namespace VOLTISO_NAMESPACE

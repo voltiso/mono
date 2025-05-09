@@ -1,0 +1,13 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/TemplateOption"
+#include "v/_/Object.forward.hpp"
+
+namespace VOLTISO_NAMESPACE::option {
+template <template <class...> class TCustomTemplate>
+struct CustomTemplate : TemplateOption<TCustomTemplate, Object> {
+	// this should be at the end for cleaner compilation errors
+	static constexpr auto ORDER = 2000;
+};
+} // namespace VOLTISO_NAMESPACE::option

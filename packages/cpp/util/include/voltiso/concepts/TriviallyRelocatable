@@ -1,9 +1,0 @@
-#pragma once
-#include <voltiso/_>
-
-#include "voltiso/is_trivially_relocatable"
-
-namespace VOLTISO_NAMESPACE::concepts {
-template <class T>
-concept TriviallyRelocatable = is_trivially_relocatable<T>;
-} // namespace VOLTISO_NAMESPACE::concepts

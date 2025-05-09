@@ -1,0 +1,143 @@
+#pragma once
+#include <v/_/_>
+
+#include "./_/Malloc.hpp" // IWYU pragma: export
+
+#include "v/throwError"
+
+#include <cstdlib>
+#include <stdexcept>
+#include <string>
+
+#include <v/ON>
+
+#ifndef VOLTISO_DEBUG_MALLOC
+	#define VOLTISO_DEBUG_MALLOC VOLTISO_DEBUG
+#endif
+
+#if VOLTISO_DEBUG_MALLOC
+	#include <map>
+#endif
+
+namespace VOLTISO_NAMESPACE::allocator::malloc {
+
+#if VOLTISO_DEBUG_MALLOC
+namespace _ {
+struct Debug {
+	std::map<void *, size_t> allocations;
+};
+} // namespace _
+
+template <class Options>
+inline Custom<Options>::Custom() : _debug(new _::Debug()) {}
+
+template <class Options> inline Custom<Options>::~Custom() {
+	auto &debug = *this->_debug;
+	for (auto [handle, numBytes] : debug.allocations) {
+		throwError(
+		  std::runtime_error(
+		    "Memory leak " + std::to_string(numBytes) + " bytes at " +
+		    std::to_string((size_t)handle)));
+	}
+	delete this->_debug;
+}
+#endif
+
+template <class Options>
+inline typename Custom<Options>::Handle
+Custom<Options>::allocateBytes(size_t numBytes) {
+#if VOLTISO_DEBUG_MALLOC
+	GT(numBytes, 0);
+#endif
+	auto handle = static_cast<Handle>(::malloc(numBytes));
+	if (!handle) [[unlikely]] {
+		throwError(
+		  std::runtime_error(
+		    "Failed to allocate " + std::to_string(numBytes) + " bytes"));
+	}
+#if VOLTISO_DEBUG_MALLOC
+	auto &debug = *this->_debug;
+	debug.allocations[handle] = numBytes;
+#endif
+	return handle;
+}
+
+template <class Options>
+inline typename Custom<Options>::Handle
+Custom<Options>::allocateBytesAligned(size_t numBytes, size_t alignment) {
+#if VOLTISO_DEBUG_MALLOC
+	GT(numBytes, 0);
+	GT(alignment, 0);
+#endif
+	void *handle;
+
+#ifdef WIN32
+	handle = _aligned_malloc(alignment, numBytes);
+#else
+	auto err = ::posix_memalign(&handle, alignment, numBytes);
+	if (err) [[unlikely]] {
+		throwError(
+		  std::runtime_error(
+		    "Failed to allocate " + std::to_string(numBytes) + " bytes"));
+	}
+#endif
+
+#if VOLTISO_DEBUG_MALLOC
+	auto &debug = *this->_debug;
+	debug.allocations[handle] = numBytes;
+#endif
+	return handle;
+}
+
+template <class Options>
+inline void
+Custom<Options>::freeBytes(const Handle &handle, size_t oldNumBytes) {
+#if VOLTISO_DEBUG_MALLOC
+	GT(oldNumBytes, 0);
+	auto &debug = *this->_debug;
+	auto it = debug.allocations.find(handle);
+	CHECK(it != debug.allocations.end());
+	EQ(it->second, oldNumBytes);
+	debug.allocations.erase(it);
+#endif
+	::free(handle);
+}
+
+template <class Options>
+inline typename Custom<Options>::Handle Custom<Options>::reallocateBytes(
+  const Handle &oldHandle, std::size_t oldNumBytes, std::size_t newNumBytes) {
+	if (!newNumBytes) [[unlikely]] {
+		return nullptr;
+	}
+	auto newHandle = static_cast<Handle>(::realloc(oldHandle, newNumBytes));
+	if (!newHandle) [[unlikely]] {
+		throwError(
+		  std::runtime_error(
+		    "Failed to reallocate " + std::to_string(newNumBytes) + " bytes"));
+	}
+#if VOLTISO_DEBUG_MALLOC
+	auto &debug = *this->_debug;
+	auto it = debug.allocations.find(oldHandle);
+	CHECK(it != debug.allocations.end());
+	EQ(it->second, oldNumBytes);
+	debug.allocations.erase(it);
+	debug.allocations[newHandle] = newNumBytes;
+#endif
+	return newHandle;
+}
+
+template <class Options>
+inline void *Custom<Options>::operator()(const Handle &handle) {
+#if VOLTISO_DEBUG_MALLOC
+	NE(handle, handle::INVALID);
+	// if (handle != Handle::INVALID) {
+	auto &debug = *this->_debug;
+	CHECK(debug.allocations.find(handle) != debug.allocations.end());
+	// }
+#endif
+	return handle;
+}
+
+} // namespace VOLTISO_NAMESPACE::allocator::malloc
+
+#include <v/OFF>

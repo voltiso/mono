@@ -1,0 +1,67 @@
+#pragma once
+#include <v/_/_>
+
+// #include "v/Object"
+
+// #include <type_traits>
+
+namespace VOLTISO_NAMESPACE::concepts::_ {
+// Example parameter for testing
+template <class T> struct ExampleTypeOption {
+	static constexpr auto ORDER = 0;
+	using StoredType = T;
+	using StoredDefault = int;
+	static constexpr auto VALUE = 42;
+	static constexpr auto DEFAULT = 0;
+};
+
+template <auto V> struct ExampleValueOption {
+	static constexpr auto ORDER = 0;
+	static constexpr auto VALUE = V;
+	static constexpr auto DEFAULT = 0;
+};
+
+template <template <class...> class _Template> struct ExampleTemplateOption {
+	static constexpr auto ORDER = 0;
+	template <class... As> using Template = _Template<As...>;
+	template <class... As> using Default = _Template<As...>;
+};
+
+} // namespace VOLTISO_NAMESPACE::concepts::_
+
+//
+
+namespace VOLTISO_NAMESPACE::concepts {
+// ! more comprehensive checks
+// template <class A>
+// concept Options = requires {
+// 	typename A::template Get<_::ExampleTypeOption>;
+
+// 	// ! this causes compiler to crash (clang-20)
+// 	// A::template GET<_::ExampleValueOption>; // !!!!!
+
+// 	typename A::template GetTemplate<_::ExampleTemplateOption, int>;
+
+// 	// `class...` version
+// 	typename A::template GetTemplate<
+// 	  _::ExampleTemplateOption, int, char, long long>;
+
+// 	typename A::template GetTemplate<_::ExampleTemplateOption, int>;
+
+// 	// `class...` version
+// 	typename A::template GetTemplate<
+// 	  _::ExampleTemplateOption, int, char, long long>;
+
+// 	//
+
+// 	typename A::template With<_::ExampleTypeOption<int>>;
+// 	typename A::template With<_::ExampleValueOption<42>>;
+// };
+
+// a minimal concept for fast compilation
+template <class A>
+concept Options = requires {
+	typename A::template Get<_::ExampleTypeOption>;
+	//
+};
+} // namespace VOLTISO_NAMESPACE::concepts

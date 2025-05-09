@@ -1,0 +1,13 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/ValueOption"
+
+#include <cstddef>
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE::option {
+// array-specific
+template <std::make_signed_t<std::size_t> N>
+struct STARTING_INDEX : ValueOption<N, 0> {};
+} // namespace VOLTISO_NAMESPACE::option

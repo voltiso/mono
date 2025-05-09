@@ -1,0 +1,20 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/Extent"
+#include "v/get/EXTENT"
+
+namespace VOLTISO_NAMESPACE::get {
+
+template <class T> [[nodiscard]] constexpr Extent extent(const T &t) noexcept {
+	if constexpr (requires { t.extent(); }) {
+		return t.extent();
+	} else if constexpr (requires { get::EXTENT<T>; }) {
+		static_assert(get::EXTENT<T> != Extent::DYNAMIC);
+		return get::EXTENT<T>;
+	} else {
+		static_assert(false, "Extent not known");
+	}
+}
+
+} // namespace VOLTISO_NAMESPACE::get

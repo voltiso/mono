@@ -1,8 +1,0 @@
-#pragma once
-#include <voltiso/_>
-
-#include <voltiso/SplayTable>
-
-namespace VOLTISO_NAMESPACE {
-template <class Item> using SplaySet = SplayTable<Item>;
-} // namespace VOLTISO_NAMESPACE

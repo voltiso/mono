@@ -1,0 +1,58 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/has"
+
+namespace VOLTISO_NAMESPACE::get {
+
+template <class T>
+  requires hasValue::NUM_CHARS<T>
+[[nodiscard]] constexpr decltype(auto) numChars(const T &t) noexcept {
+	return t.NUM_CHARS;
+}
+
+template <class T>
+  requires hasFunction::NUM_CHARS<T>
+[[nodiscard]] constexpr decltype(auto) numChars(const T &t) noexcept {
+	return t.NUM_CHARS(); // quite exotic
+}
+
+// !
+
+template <class T>
+  requires(!has::NUM_CHARS<T> && hasValue::numChars<T>)
+[[nodiscard]] constexpr decltype(auto) numChars(const T &t) noexcept {
+	return t.numChars;
+}
+
+template <class T>
+  requires(!has::NUM_CHARS<T> && hasFunction::numChars<T>)
+[[nodiscard]] constexpr decltype(auto) numChars(const T &t) noexcept {
+	return t.numChars();
+}
+
+// !
+
+// // for raw arrays
+// template <class T, std::size_t N>
+// [[nodiscard]] consteval std::size_t numItems(const T (&)[N]) noexcept {
+// 	return N;
+// }
+
+// !
+
+// // std compatibility
+// template <class T>
+//   requires(!has::NUM_ITEMS<T> && !has::numItems<T> && hasValue::size<T>)
+// [[nodiscard]] constexpr decltype(auto) numItems(const T &t) noexcept {
+// 	return t.size;
+// }
+
+// // std compatibility
+// template <class T>
+//   requires(!has::NUM_ITEMS<T> && !has::numItems<T> && hasFunction::size<T>)
+// [[nodiscard]] constexpr decltype(auto) numItems(const T &t) noexcept {
+// 	return t.size();
+// }
+
+} // namespace VOLTISO_NAMESPACE::get

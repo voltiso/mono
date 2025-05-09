@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Any>
-#include <voltiso/Owned>
-#include <voltiso/Shared>
+#include <v/Any>
+#include <v/Owned>
+#include <v/Shared>
 
 using namespace VOLTISO_NAMESPACE;
 

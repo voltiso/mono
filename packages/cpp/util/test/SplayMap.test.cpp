@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/SplayMap>
+#include <v/SplayMap>
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -12,8 +12,8 @@ TEST(SplayMap, initializerList) {
   EXPECT_EQ(a[1], 10);
   EXPECT_EQ(a[2], 20);
   EXPECT_EQ(a[3], 30);
-  EXPECT_TRUE(a[3].exists);
-  EXPECT_FALSE(a[4].exists);
+	EXPECT_TRUE(a(3).exists);
+	EXPECT_FALSE(a(4).exists);
 }
 
 TEST(SplayMap, iterate) {
@@ -32,15 +32,15 @@ TEST(SplayMap, iterate) {
 TEST(SplayMap, maybeInsert) {
   SplayMap<int, int> a;
 
-  a[1].maybeInsert() += 10;
-  a[2].maybeInsert() += 20;
-  a[3].maybeInsert() += 30;
+	a(1).maybeInsert() += 10;
+	a(2).maybeInsert() += 20;
+	a.maybeInsert(3) += 30;
 
-  a[1].maybeInsert() += 100;
-  a[2].maybeInsert() += 200;
-  a[3].maybeInsert() += 300;
+	a(1).maybeInsert() += 100;
+	a.maybeInsert(2) += 200;
+	a.maybeInsert(3, 0) += 300;
 
-  EXPECT_EQ(a[1], 110);
-  EXPECT_EQ(a[2], 220);
-  EXPECT_EQ(a[3], 330);
+	EXPECT_EQ(a[1], 110);
+	EXPECT_EQ(a(2), 220);
+	EXPECT_EQ(a[3], 330);
 }

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Shared>
+#include <v/Shared>
 
 using namespace VOLTISO_NAMESPACE;
 

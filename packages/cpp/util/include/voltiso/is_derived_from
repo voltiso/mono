@@ -1,9 +1,0 @@
-#pragma once
-#include <voltiso/_>
-
-#include <type_traits>
-
-namespace VOLTISO_NAMESPACE {
-template <class Derived, class Base>
-static constexpr auto is_derived_from = std::is_base_of_v<Base, Derived>;
-} // namespace VOLTISO_NAMESPACE

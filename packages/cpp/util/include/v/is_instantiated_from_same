@@ -1,0 +1,43 @@
+#pragma once
+
+// Primary template (fallback case)
+template <typename, typename>
+inline constexpr bool is_instantiated_from_same = false;
+
+// Specialization 1: Matching templates with ONLY type parameters
+template <template <typename...> class T, typename... Args1, typename... Args2>
+inline constexpr bool is_instantiated_from_same<T<Args1...>, T<Args2...>> =
+  true;
+
+// Specialization 2: Matching templates with ONLY non-type parameters (C++17)
+// Requires template<auto...> T syntax for the template template parameter.
+#if __cplusplus >= 201703L // Check for C++17 support
+template <template <auto...> class T, auto... Args1, auto... Args2>
+inline constexpr bool is_instantiated_from_same<T<Args1...>, T<Args2...>> =
+  true;
+#endif
+
+// Specialization 3: Matching templates that take template template parameters
+// This is a conceptual sketch. The exact syntax for matching T can be tricky.
+// It needs to match a class template 'T' that itself is templated on one or
+// more template template parameters.
+template <
+  template <template <class...> class...> class T, // T is the outer template,
+                                                   // e.g.,
+                                                   // option::CustomTemplate
+                                                   // which takes template
+                                                   // template parameters.
+  template <class...> class... Args1, // The template template args for the
+                                      // first instance (e.g., ImplAlpha)
+  template <class...> class... Args2  // The template template args for the
+                                      // second instance (e.g., ImplBeta)
+  >
+inline constexpr bool is_instantiated_from_same<T<Args1...>, T<Args2...>> =
+  true;
+
+// --- What this DOES NOT cover ---
+// - Templates with a mix of type and non-type parameters:
+//   template<typename T, int Size> struct Mixed;
+//   is_instantiated_from_same<Mixed<int, 5>, Mixed<double, 10>> -> false (falls
+//   back)
+//

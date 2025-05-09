@@ -1,0 +1,44 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/Slice"
+#include "v/assert"
+
+namespace VOLTISO_NAMESPACE {
+template <size_t NUM_CHARS> class StringSlice : public Slice<char[NUM_CHARS]> {
+
+public:
+	constexpr StringSlice(char (&chars)[NUM_CHARS + 1])
+	    : Slice<char[NUM_CHARS]>(reinterpret_cast<char (&)[NUM_CHARS]>(chars)) {
+		// static_assert(chars[NUM_CHARS] == '\0',
+		//               "StringSlice must be null-terminated");
+
+		VOLTISO_EQ(chars[NUM_CHARS], '\0');
+	}
+
+	constexpr bool operator==(const StringSlice &other) const {
+		// todo: we could have traits `is_trivially_equal_comparable` and
+		// `is_trivially_less_comparable` - and use memcmp
+		// (or `binary` instead of `trivially`)
+		// return items == other.items ||
+		//        memcmp(items, other.items, sizeof(RawArray)) == 0;
+		if (&this->items == &other.items) [[unlikely]] {
+			return true; // assume a==a
+		}
+
+		for (size_t i = 0; i < NUM_CHARS; i++) {
+			if (this->items[i] != other.items[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// for std?
+	constexpr size_t size() const noexcept { return NUM_CHARS; }
+}; // class StringSlice
+
+// deduction guide
+template <size_t N> StringSlice(char (&)[N]) -> StringSlice<N - 1>;
+
+} // namespace VOLTISO_NAMESPACE

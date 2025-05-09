@@ -1,6 +1,0 @@
-#pragma once
-#include <voltiso/_>
-
-#include "voltiso/DynamicArray.hpp" // IWYU pragma: export
-
-#include "voltiso/allocator/Malloc" // IWYU pragma: export

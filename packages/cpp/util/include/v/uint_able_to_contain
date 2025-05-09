@@ -1,0 +1,21 @@
+#pragma once
+#include <v/_/_>
+
+#include <cstdint>
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE {
+
+template <uint64_t N>
+using uint_able_to_contain = std::conditional_t<
+    (N <= (1 << 8)), uint8_t,
+    std::conditional_t<
+        (N <= (1 << 16)), uint16_t,
+        std::conditional_t<(N <= (1LLU << 32)), uint32_t, uint64_t>>>;
+
+static_assert(std::is_same_v<uint_able_to_contain<234>, uint8_t>);
+static_assert(std::is_same_v<uint_able_to_contain<65000>, uint16_t>);
+static_assert(std::is_same_v<uint_able_to_contain<4'000'000'000>, uint32_t>);
+static_assert(std::is_same_v<uint_able_to_contain<40'000'000'000>, uint64_t>);
+
+} // namespace VOLTISO_NAMESPACE

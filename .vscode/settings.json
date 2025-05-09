@@ -4,18 +4,35 @@
 {
 	/** --------------------------------------------------------- */
 	//
-	// Suggested USER settings
-	//  - Maybe these shouldn't be here, but in User Settings!
-	//  - But - there are project-specific settings here too - see "files.exclude" for "util"
+	// These are king-of-user/kind-of-project settings
 	//
+	"editor.tabSize": 2,
+
+	"files.autoSave": "onFocusChange",
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
+
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true, // Already handled by eslint
 
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
-	"clangd.enableCodeCompletion": false, // conflicts with copilot
 
-	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/out",
-	"cmake.sourceDirectory": "${workspaceFolder}/packages/cpp",
+	// "clangd.enableCodeCompletion": false, // conflicts with copilot
+	"editor.quickSuggestions": {
+		"other": false, // conflicts with copilot
+		"comments": false, // conflicts with copilot
+		"strings": false // conflicts with copilot
+	},
 
 	"clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
+	/** --------------------------------------------------------- */
+
+	// Project-specific settings
+	//
+	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/build",
+	"cmake.sourceDirectory": "${workspaceFolder}/packages/cpp",
+	"cmake.configureOnOpen": false,
+	"cmake.configureOnEdit": false,
 
 	"[cpp]": {
 		"editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
@@ -84,10 +101,6 @@
 	/** Allow JSON comments by default */
 
 	"editor.hover.delay": 200, // Let's be fast
-
-	"editor.formatOnSave": true,
-	"files.insertFinalNewline": true,
-	"files.trimFinalNewlines": true, // Already handled by eslint
 
 	/**
 	 * Does NOT work for JSX currently
@@ -323,6 +336,7 @@
 		"csstype",
 		"ctest",
 		"ctsx",
+		"CVREF",
 		"DCMAKE",
 		"defineproperties",
 		"depcheck",
@@ -465,6 +479,7 @@
 		"typecov",
 		"typeof",
 		"unflush",
+		"uninstantiated",
 		"unist",
 		"Unitless",
 		"vcpkg",
@@ -477,10 +492,12 @@
 		"Wextra",
 		"Wfatal",
 		"whitespaces",
+		"Winvalid",
 		"Wmaybe",
 		"wrappy",
 		"Wshadow",
 		"Wuser",
 		"Zonejs"
-	]
+	],
+	"CodeGPT.apiKey": "CodeGPT Plus Beta"
 }

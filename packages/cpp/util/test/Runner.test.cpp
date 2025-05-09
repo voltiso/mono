@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Retainer>
-#include <voltiso/Runner>
-#include <voltiso/context>
+#include <v/Retainer>
+#include <v/Runner>
+#include <v/context>
 
 using namespace VOLTISO_NAMESPACE;
 

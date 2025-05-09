@@ -1,0 +1,17 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/allocator/Paged>
+
+namespace VOLTISO_NAMESPACE::persistent {
+
+template <class T> class BinaryTree {
+public:
+  using Handle = typename allocator::Paged<BinaryTree<T>>::Handle;
+
+private:
+  uint8_t _value[sizeof(T)];
+  std::array<Handle, 2> _parts = {Handle::INVALID, Handle::INVALID};
+};
+
+} // namespace VOLTISO_NAMESPACE::persistent

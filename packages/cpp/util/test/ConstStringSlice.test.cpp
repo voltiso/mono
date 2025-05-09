@@ -1,9 +1,17 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/ConstStringSlice>
-#include <voltiso/String>
+#include <v/ConstStringSlice>
+#include <v/String>
 
 using namespace VOLTISO_NAMESPACE;
+
+static_assert(std::is_constructible_v<ConstStringSlice<3>, const char[4]>);
+static_assert(!std::is_constructible_v<ConstStringSlice<3>, const char[5]>);
+static_assert(!std::is_constructible_v<ConstStringSlice<3>, const char[3]>);
+
+static_assert(std::is_constructible_v<ConstStringSlice<3>, char[4]>);
+static_assert(!std::is_constructible_v<ConstStringSlice<3>, char[5]>);
+static_assert(!std::is_constructible_v<ConstStringSlice<3>, char[3]>);
 
 TEST(ConstStringSlice, fromChars) {
   auto str = ConstStringSlice("abc");
@@ -28,13 +36,5 @@ TEST(ConstStringSlice, fromChars) {
 
   EXPECT_EQ(str, "abc");
   EXPECT_EQ(std::string(str), "abc");
-  EXPECT_EQ(std::string_view(str), "abc");
-
-  static_assert(std::is_constructible_v<ConstStringSlice<3>, const char[4]>);
-  static_assert(!std::is_constructible_v<ConstStringSlice<3>, const char[5]>);
-  static_assert(!std::is_constructible_v<ConstStringSlice<3>, const char[3]>);
-
-  static_assert(std::is_constructible_v<ConstStringSlice<3>, char[4]>);
-  static_assert(!std::is_constructible_v<ConstStringSlice<3>, char[5]>);
-  static_assert(!std::is_constructible_v<ConstStringSlice<3>, char[3]>);
+	EXPECT_EQ(std::string_view(str), "abc");
 }

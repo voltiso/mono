@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "voltiso/Entry"
+#include "v/Entry"
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -23,6 +23,10 @@ static_assert(std::is_same_v<std::remove_cvref_t<decltype(getValue(
                                  std::declval<Entry<char, int>>()))>,
                              int>);
 
+static_assert(
+  std::is_same_v<
+    decltype(getValue(std::declval<Entry<char, int>>())), const int &>);
+
 TEST(Entry, braceInitialization) {
   Entry<int, Entry<int, int>> entry = {1, {2, 3}};
   EXPECT_EQ(entry.key, 1);
@@ -39,4 +43,10 @@ TEST(Entry, braceInitializationRef) {
   EXPECT_EQ(entry.key, 1);
   EXPECT_EQ(entry.value.key, 2);
   EXPECT_EQ(entry.value.value, 3);
+}
+
+TEST(Entry, valueIsDefaulted) {
+	Entry<int, int> entry = {1};
+	EXPECT_EQ(entry.key, 1);
+	EXPECT_EQ(entry.value, 0);
 }

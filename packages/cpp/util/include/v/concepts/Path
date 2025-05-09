@@ -1,0 +1,12 @@
+#pragma once
+#include <v/_/_>
+
+#include <concepts>
+
+namespace VOLTISO_NAMESPACE::concepts {
+template <class T>
+concept Path = requires(T t) {
+	{ t == t } -> std::same_as<bool>;
+	{ t / t } -> std::same_as<T>;
+};
+} // namespace VOLTISO_NAMESPACE::concepts

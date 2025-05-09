@@ -1,0 +1,96 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/Storage>
+#include <v/has>
+
+#include <glog/logging.h>
+
+#include <cstddef>
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE::inPlace {
+template <class Item, std::size_t SIZE, std::size_t ALIGN> struct Custom {
+public:
+	using Self = Custom;
+
+	template <
+	  class DerivedOrRef, class Derived = std::decay_t<DerivedOrRef>,
+	  class = std::enable_if_t<
+	    !std::is_class_v<Derived> || std::is_final_v<Derived> ||
+	    (std::is_polymorphic_v<Derived> &&
+	     (has::move<Derived> || has::copy<Derived>))>>
+	Custom(DerivedOrRef &&value) {
+		static_assert(
+		  (!std::is_class_v<Item> && !std::is_class_v<Derived>) ||
+		    std::is_base_of_v<Item, Derived>,
+		  "`InPlace<T>` requires value derived from `T`");
+
+		static_assert(
+		  sizeof(Derived) <= sizeof(*this),
+		  "Value to be held inside InPlace too large");
+
+		if constexpr (!std::is_class_v<Derived> || std::is_final_v<Derived>) {
+			new (&data) Derived(std::forward<DerivedOrRef>(value));
+		} else if constexpr (
+		  !std::is_lvalue_reference_v<DerivedOrRef> && has::move<Derived>) {
+			if constexpr (has::size<typeof value>) {
+				DCHECK_LE(value.size(), sizeof(data));
+			}
+
+			value.move(data);
+		} else if constexpr (has::copy<Derived>) {
+			DCHECK_LE(value.size(), sizeof(data));
+			value.copy(data);
+		} else {
+			static_assert(false, "Not implemented");
+			DCHECK(false) << "Not implemented";
+			std::unreachable();
+		}
+	};
+
+	~Custom() { ((Item *)&data)->~Item(); }
+
+	Custom(const Self &other) {
+		static_assert(has::copy<Item>);
+		other->copy(&data);
+	}
+
+	auto &operator=(const Self &other) {
+		static_assert(has::copy<Item>);
+		((Item *)&data)->~Base();
+		other->copy(&data);
+		return *this;
+	}
+
+	Custom(Self &&other) {
+		static_assert(has::move<Item>);
+		other->move(&data);
+	}
+
+	auto &operator=(Self &&other) {
+		static_assert(has::move<Item>);
+		((Item *)&data)->~Base();
+		other->move(data);
+		return *this;
+	}
+
+	auto get() { return (Item *)&data; }
+	auto get() const { return (const Item *)&data; }
+
+	auto operator->() { return get(); }
+	auto operator->() const { return get(); }
+
+	auto operator*() { return *get(); }
+	auto operator*() const { return *get(); }
+
+	storage::Custom<SIZE, ALIGN> data;
+};
+} // namespace VOLTISO_NAMESPACE::inPlace
+
+namespace VOLTISO_NAMESPACE {
+template <
+  class Item,
+  class = std::enable_if_t<!std::is_class_v<Item> || std::is_final_v<Item>>>
+using InPlace = inPlace::Custom<Item, sizeof(Item), alignof(Item)>;
+} // namespace VOLTISO_NAMESPACE

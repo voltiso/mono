@@ -1,0 +1,107 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/_/FilterOut.hpp"
+#include "v/_/GetTemplateOption.hpp"
+#include "v/_/GetTypeOption.hpp"
+#include "v/_/GetValueOption.hpp"
+#include "v/_/Options.hpp"
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <class... As> struct Options {
+	// get a Type option
+	template <template <class> class TypeOption>
+	using Get = _::getTypeOption::TypeImpl<TypeOption, As...>::Result;
+
+	// Get a VALUE option
+	template <template <auto> class ValueOption>
+	static constexpr auto GET =
+	  _::getValueOption::ValueImpl<ValueOption, As...>::RESULT;
+
+	// Get Template<> option
+	template <
+	  template <template <class...> class> class TemplateOption, class... Args>
+	using GetTemplate =
+	  _::TemplateImplHelper<TemplateOption, std::tuple<Args...>, As...>::Result;
+
+	/**
+	 * @brief Creates a new Options type by adding/replacing options.
+	 *
+	 * Accepts either a parameter pack of options (e.g., With<Opt1, Opt2>)
+	 * or a single Options type (e.g., With<Options<Opt1, Opt2>>).
+	 *
+	 * Processes added options one by one:
+	 * 1. Removes any existing option of the same kind (using
+	 * is_instantiated_from_same).
+	 * 2. Appends the new option.
+	 * 3. Re-sorts the list based on ::ORDER and a tie-breaker.
+	 * 4. Strips options that are equal to their default value.
+	 *
+	 * @tparam Args Either a pack of option types (MoreOptions...) or a single
+	 * Options<OtherAs...> type.
+	 * @return The resulting canonical Options type.
+	 */
+	template <typename... Args> // Accepts pack or single Options<>
+  using With = typename _::OptionsFromTypeList< // Wrap final list in Options<>
+    typename _::WithHelper< // Delegate to the internal helper
+        _::TypeList<As...>, // Current options as a TypeList
+        Args...             // Pass the arguments (pack or single Options<>)
+    >::ResultList
+  >::Type;
+
+	/**
+	 * @brief Creates a new Options type by adding default options if their kind
+	 * is missing.
+	 *
+	 * Accepts either a parameter pack of default options (e.g., WithDefault<Opt1,
+	 * Opt2>) or a single Options type containing defaults (e.g.,
+	 * WithDefault<Options<Opt1, Opt2>>).
+	 *
+	 * For each option in the provided defaults:
+	 * 1. Checks if an option of the same kind (using is_instantiated_from_same)
+	 * is already present in the current options.
+	 * 2. If the kind is NOT present, checks if the default option itself is
+	 * equal to its own inherent default value (using
+	 * _::IsOptionEqualToItsDefault_v).
+	 * 3. If the kind is NOT present AND the default option is NOT redundant,
+	 * it's added to the list.
+	 * 4. The list is re-sorted after each potential addition.
+	 * 5. Finally, any options in the resulting list that are equal to their
+	 * default value are stripped.
+	 *
+	 * @tparam Args Either a pack of default option types (DefaultOptions...) or a
+	 * single Options<OtherDefaultOptions...> type.
+	 * @return The resulting canonical Options type.
+	 */
+	template <typename... Args> // Accepts pack or single Options<>
+  using WithDefault = typename _::OptionsFromTypeList< // Wrap final list in Options<>
+    typename _::WithDefaultHelper< // Delegate to the internal helper
+        _::TypeList<As...>,        // Current options as a TypeList
+        Args...                    // Pass the arguments (pack or single Options<>)
+    >::ResultList
+  >::Type;
+
+	/**
+	 * @brief Creates a new Options type by removing all options of a specific
+	 * kind.
+	 *
+	 * @tparam OptionKind The template defining the kind of option to remove
+	 * (e.g., option::Item). Currently supports TypeOption kinds
+	 * (template<class>).
+	 * @return A new Options type with the specified kind removed.
+	 */
+	template <
+	  template <class> class OptionKind> // Takes the TypeOption kind template
+	using Without = typename _::OptionsFromTypeList<
+	  // Use FilterOut with the IsOptionKindPredicate adapter
+	  _::FilterOut_t<
+	    _::IsOptionKindPredicate<OptionKind>::template Apply, // Pass the
+	                                                          // predicate adapter
+	    _::TypeList<As...> // Filter the current options list
+	    >>::Type;
+	// TODO: Add overloads or specializations for ValueOption and TemplateOption
+	// kinds if needed.
+}; // struct Options
+} // namespace VOLTISO_NAMESPACE

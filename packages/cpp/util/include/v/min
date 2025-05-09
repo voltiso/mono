@@ -1,0 +1,14 @@
+#pragma once
+#include <v/_/_>
+
+namespace VOLTISO_NAMESPACE {
+template <class T, class... Ts>
+constexpr auto min(const T &t, const Ts &...ts) noexcept {
+  if constexpr (sizeof...(Ts) == 0) {
+    return t;
+  } else {
+    auto m = min(ts...);
+    return t < m ? t : m;
+  }
+}
+} // namespace VOLTISO_NAMESPACE

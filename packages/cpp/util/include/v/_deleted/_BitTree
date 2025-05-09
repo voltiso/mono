@@ -1,0 +1,102 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/BitArray>
+#include <v/Tree>
+#include <v/handle/Custom>
+
+#include <bit>
+#include <cstddef>
+#include <cstdint>
+
+// todo: untested
+
+namespace VOLTISO_NAMESPACE::bitTree {
+template <class Word> struct And {
+	Bit neutral = 1;
+	Bit operator()(const Word &a) const {
+		return (a + 1) == 0;
+		// return ((a + 1) << (sizeof(Word) * 8 - numBits)) == 0;
+	}
+};
+template <class Word> struct Or {
+	Bit neutral = 0;
+	Bit operator()(const Word &a) const {
+		return a;
+		// return a << (sizeof(Word) * 8 - numBits);
+	}
+};
+template <class Word> struct Xor {
+	Bit neutral = 0;
+	Bit operator()(const Word &a) const {
+		return std::popcount(a) & 1;
+		// return std::popcount(a << (sizeof(Word) * 8 - numBits)) & 1;
+	}
+};
+} // namespace VOLTISO_NAMESPACE::bitTree
+
+namespace VOLTISO_NAMESPACE {
+// in-place
+template <
+  template <class> class _BitOperation, size_t _NUM_LEAFS,
+  class _Word = std::uintmax_t>
+class BitTree {
+	using Self = BitTree;
+
+public:
+	template <class Word> using BitOperation = _BitOperation<Word>;
+	static constexpr auto NUM_LEAFS = _NUM_LEAFS;
+	using Word = _Word;
+
+	struct Node {
+		struct Aggregate {
+			BitArray<sizeof(Word) * 8, Word> bitArray = {};
+			Aggregate(size_t numChildren) {
+				auto bitOperation = singleton::perThread::get<BitOperation>();
+				bitArray.fill(bitOperation.neutral, numChildren);
+			}
+			void compoundAssign(const Aggregate &other, size_t iChild) {
+				auto bitOperation = singleton::perThread::get<BitOperation>();
+				bitArray[iChild] = bitOperation(other.bitArray);
+			}
+		};
+		Aggregate aggregate;
+		Node(size_t iNode) : aggregate() {}
+	};
+
+	Tree<Node, divCeil(NUM_LEAFS, sizeof(Word) * 8), sizeof(Word) * 8>
+	  bitArrayTree;
+
+	template <class Index> using CustomHandle = handle::Custom<Self, Index>;
+	using Handle = Handle<Self>;
+
+	struct Accessor {
+		Handle handle;
+		Self &tree;
+	};
+
+	struct ConstAccessor {
+		Handle handle;
+		const Self &tree;
+	};
+
+	template <class Index>
+	Accessor &operator[](const CustomHandle<Index> &handle) {
+		return Accessor{handle, *this};
+	}
+
+	template <class Index>
+	ConstAccessor operator[](const CustomHandle<Index> &handle) const {
+		return ConstAccessor{handle, *this};
+	}
+
+	template <class Index>
+	void aggregateAncestors(const CustomHandle<Index> &handle) {
+		auto iNode = handle.value / (sizeof(Word) * 8);
+		bitArrayTree.aggregateAncestors(iNode);
+	}
+};
+
+// static_assert(sizeof(BitTree<int, 128>) == 255 * sizeof(int));
+
+} // namespace VOLTISO_NAMESPACE

@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/Subject>
-#include <voltiso/introspect>
-#include <voltiso/throwError>
+#include <v/Subject>
+#include <v/introspect>
+#include <v/throwError>
 using namespace VOLTISO_NAMESPACE;
 
 struct TickEvent {};

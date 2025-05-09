@@ -1,0 +1,18 @@
+#pragma once
+#include <v/_/_>
+
+#include <concepts>
+
+namespace VOLTISO_NAMESPACE {
+// small helper for e.g. Splay to use `operator<` if `operator==` is not
+// available
+// ! better force user to define `operator==` where needed (might be more
+// ! performant), rather than silently using multiple comparisons
+template <class A, class B> inline bool isEqual(const A &a, const B &b) {
+	if constexpr (std::equality_comparable_with<A, B>) {
+		return a == b;
+	} else {
+		return !((a < b) || (b < a));
+	}
+}
+} // namespace VOLTISO_NAMESPACE

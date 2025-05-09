@@ -1,0 +1,23 @@
+#include <gtest/gtest.h>
+
+#include <v/DynamicString>
+#include <v/brand/Path>
+
+using namespace VOLTISO_NAMESPACE;
+
+TEST(DynamicString, specializations) {
+	using X =
+	  DynamicString::Options::GetTemplate<option::CustomTemplate, Options<>>;
+
+	static_assert(std::is_same_v<X, dynamicString::Custom<Options<>>>);
+
+	using A = DynamicString ::With<brand::Path<>>;
+	static_assert(
+	  std::is_same_v<
+	    A, v::dynamicString::Custom<v::Options<
+	         v::option::Item<char>, v::brand::Path<>,
+	         v::option::CustomTemplate<v::dynamicString::_::GetCustom>>>>);
+
+	using B = A ::With<brand::Path<false>>;
+	static_assert(std::is_same_v<B, DynamicString>); // TODO
+}

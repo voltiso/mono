@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <voltiso/SplaySet>
+#include <v/SplaySet>
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -12,8 +12,8 @@ TEST(SplaySet, initializerList) {
   EXPECT_EQ(a[1], 1);
   EXPECT_EQ(a[2], 2);
   EXPECT_EQ(a[3], 3);
-  EXPECT_TRUE(a[3].exists);
-  EXPECT_FALSE(a[4].exists);
+	EXPECT_TRUE(a(3).exists);
+	EXPECT_FALSE(a(4).exists);
 }
 
 TEST(SplaySet, iterate) {
@@ -62,5 +62,5 @@ TEST(SplaySet, nonMovable) {
     }
   }
   EXPECT_EQ(S::numDestructorCalls, S::numConstructorCalls);
-  EXPECT_EQ(S::numDestructorCalls, 20);
+	EXPECT_EQ(S::numDestructorCalls, 10);
 }

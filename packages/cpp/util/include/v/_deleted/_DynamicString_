@@ -1,0 +1,89 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/DynamicArray"
+#include "v/Options"
+#include "v/concepts/Options"
+// #include "v/get/numChars"
+#include "v/option/Item"
+
+// forward declarations
+namespace VOLTISO_NAMESPACE {
+class DynamicString;
+} // namespace VOLTISO_NAMESPACE
+
+namespace VOLTISO_NAMESPACE::dynamicString {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom;
+
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations;
+} // namespace VOLTISO_NAMESPACE::dynamicString
+
+// !
+
+namespace VOLTISO_NAMESPACE::dynamicString::_ {
+template <class... Args> using GetCustom = Specializations<Args...>::Result;
+} // namespace VOLTISO_NAMESPACE::dynamicString::_
+
+namespace VOLTISO_NAMESPACE::dynamicString {
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations {
+	using Result = Custom<Options>;
+};
+template <>
+struct Specializations<
+  Options<option::Item<char>, option::CustomTemplate<_::GetCustom>>> {
+	using Result = DynamicString;
+};
+} // namespace VOLTISO_NAMESPACE::dynamicString
+
+namespace VOLTISO_NAMESPACE::dynamicString {
+// null-terminated string
+// use protected inheritance to avoid confusion of numChars with numItems
+// (one is +1 for null-termination)
+template <class Options>
+  requires concepts::Options<Options>
+class Custom
+    : public dynamicArray::Custom<typename Options::template WithDefault<
+        option::Item<char>, option::CustomTemplate<_::GetCustom>>> {
+	using Base = dynamicArray::Custom<typename Options::template WithDefault<
+	  option::Item<char>, option::CustomTemplate<_::GetCustom>>>;
+
+	using Base::Base;
+
+	// ! old implementation - with null-termination
+	// public:
+	// 	template <class Other>
+	// 	decltype(auto) operator+=(this auto &&self, const Other &other) {
+	// 		EQ(((const char *)self)[get::numChars(self)], '\0');
+	// 		EQ(((const char *)other)[get::numChars(other)], '\0');
+
+	// 		auto minSlots =
+	// 		  get::numChars(self) + get::numChars(other) + 1; // +1 for
+	// null-termination
+
+	// 		self.setNumSlotsAtLeast(minSlots);
+	// 		for (auto &item : other) {
+	// 			NE(item, '\0');
+	// 			self.push(item);
+	// 		}
+	// 		return std::forward<decltype(self)>(self);
+	// 	}
+}; // class Custom
+} // namespace VOLTISO_NAMESPACE::dynamicString
+
+//
+
+namespace VOLTISO_NAMESPACE {
+class DynamicString
+    : public dynamicString::Custom<
+        VOLTISO_NAMESPACE::Options<option::Self<DynamicString>>> {
+	using Base = dynamicString::Custom<
+	  VOLTISO_NAMESPACE::Options<option::Self<DynamicString>>>;
+	using Base::Base;
+}; // class DynamicString
+} // namespace VOLTISO_NAMESPACE

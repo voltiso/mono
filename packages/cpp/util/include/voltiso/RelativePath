@@ -1,8 +1,0 @@
-#pragma once
-#include <voltiso/_>
-
-#include "voltiso/Path"
-
-namespace VOLTISO_NAMESPACE {
-using RelativePath = Path;
-} // namespace VOLTISO_NAMESPACE

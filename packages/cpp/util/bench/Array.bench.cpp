@@ -1,11 +1,13 @@
 #include <benchmark/benchmark.h>
 
-#include <voltiso/Array>
-#include <voltiso/Storage>
-#include <voltiso/is_trivially_relocatable>
-#include <voltiso/min>
+#include <v/Array>
+#include <v/Storage>
+#include <v/is_trivially_relocatable>
+#include <v/min>
 
 #include <iostream>
+
+#include <v/ON>
 
 namespace std {
 ostream &operator<<(ostream &os, __int128_t x) {
@@ -32,16 +34,16 @@ static void BM_Array(benchmark::State &state) {
     // LOG(INFO) << "COUNT: " << COUNT;
     using Vec = Array<Count, COUNT>::template WithStartingIndex<STARTING_INDEX>;
     Vec vec = {};
-    CHECK_EQ(vec[STARTING_INDEX], 0);
-    for (Count i = STARTING_INDEX; i < (Count)(STARTING_INDEX + COUNT); ++i) {
-      vec[i] = i;
-      auto data = vec.items;
+		EQ(vec[STARTING_INDEX], 0);
+		for (Count i = STARTING_INDEX; i < (Count)(STARTING_INDEX + COUNT); ++i) {
+			vec[i] = i;
+			auto data = vec.items;
       static_assert(std::is_same_v<decltype(data), Count *>);
       benchmark::DoNotOptimize(data);
       benchmark::ClobberMemory();
-    }
-    Count sum = 0;
-    for (auto &item : vec) {
+		}
+		Count sum = 0;
+		for (auto &item : vec) {
       sum += item;
     }
     benchmark::DoNotOptimize(sum);
@@ -55,15 +57,15 @@ static void BM_Array_stdArray(benchmark::State &state) {
                              (size_t)std::numeric_limits<Count>::max() - 3);
   while (state.KeepRunningBatch(COUNT)) {
     std::array<Count, COUNT> vec = {};
-    CHECK_EQ(vec[0], 0);
-    for (Count i = 0; i < (Count)COUNT; ++i) {
-      vec[i] = i;
+		EQ(vec[0], 0);
+		for (Count i = 0; i < (Count)COUNT; ++i) {
+			vec[i] = i;
       auto data = vec.data();
       static_assert(std::is_same_v<decltype(data), Count *>);
       benchmark::DoNotOptimize(data);
       benchmark::ClobberMemory();
-    }
-    Count sum = 0;
+		}
+		Count sum = 0;
     for (auto &item : vec) {
       sum += item;
     }
@@ -87,3 +89,5 @@ BENCHMARK(BM_Array_stdArray<1, MEMORY, int8_t>);
 
 BENCHMARK(BM_Array<1, MEMORY, __int128_t>);
 BENCHMARK(BM_Array_stdArray<1, MEMORY, __int128_t>);
+
+#include <v/OFF>

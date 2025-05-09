@@ -1,0 +1,31 @@
+#pragma once
+#include <v/_/_>
+
+#ifndef __cpp_exceptions
+	#include <glog/logging.h>
+#endif
+
+namespace VOLTISO_NAMESPACE {
+// see `voltiso/assert` for usage
+// it's a workaround for consteval contexts:
+// fatal error: '~Custom' has a non-throwing exception specification but can
+// still throw [-Wexceptions]
+template <class T>
+[[noreturn]] consteval void throwStaticError(const T &error) {
+	static_assert(false, "");
+	// ! this assert does not make sense
+	// static_assert(
+	//     std::is_constant_evaluated(),
+	//     "throwStaticError() should only be used in constant expressions");
+
+#ifdef __cpp_exceptions
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wexceptions"
+	throw error;
+	#pragma GCC diagnostic pop
+#else
+	LOG(FATAL) << error.what();
+	std::abort();
+#endif
+} // throwStaticError
+} // namespace VOLTISO_NAMESPACE

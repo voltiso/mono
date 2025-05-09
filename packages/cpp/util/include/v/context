@@ -1,0 +1,88 @@
+#pragma once
+#include <type_traits>
+#include <v/_/_>
+
+// #include "v/singleton"
+
+#if VOLTISO_DEBUG
+	#include "v/demangle"
+#endif
+
+namespace VOLTISO_NAMESPACE::context::_ {
+template <class T> inline T *&getPointer() {
+	static T *value = nullptr;
+	return value;
+}
+template <class T> using Unwrap = std::remove_cv_t<T>;
+}; // namespace VOLTISO_NAMESPACE::context::_
+
+namespace VOLTISO_NAMESPACE::context {
+template <class T> inline auto &get() {
+	auto pointer = _::getPointer<T>();
+	// T *pointer = _::getPointer<_::Unwrap<T>>();
+#if VOLTISO_DEBUG
+	if (!pointer) {
+		throw std::runtime_error(
+		  "v::context::get<" + demangle(typeid(T).name()) +
+		  ">() called without current context");
+	}
+#endif
+	return *pointer;
+}
+
+template <class T> inline T *maybeGet() { return _::getPointer<T>(); }
+
+// template <class T> inline T &getOrSingleton() {
+//   return _::getPointer<T>() || singleton::instance<T>();
+// }
+
+template <class T> struct Guard {
+	static_assert(!std::is_reference_v<T>, "not supported");
+	// static_assert(!std::is_const_v<T>, "not supported");
+	static_assert(!std::is_volatile_v<T>, "not supported");
+
+	using Mutable = _::Unwrap<T>;
+	using Const = const Mutable;
+
+	template <class Input>
+	  requires std::is_lvalue_reference_v<Input &&> &&
+	           std::is_convertible_v<std::remove_reference_t<Input> *, T *>
+	Guard(Input &&value) {
+		_previousConst = _::getPointer<Const>();
+		_previousMutable = _::getPointer<Mutable>();
+		if constexpr (std::is_const_v<T>) {
+			_::getPointer<Const>() = &value;
+			_::getPointer<Mutable>() = (Mutable *)(-1); // encode const-violation
+		} else {
+			_::getPointer<Const>() = &value;
+			_::getPointer<Mutable>() = &value;
+		}
+	}
+
+	~Guard() {
+		_::getPointer<Const>() = _previousConst;
+		_::getPointer<Mutable>() = _previousMutable;
+	}
+
+private:
+	Const *_previousConst;
+	Mutable *_previousMutable;
+};
+
+// deduction guide
+template <class Input> Guard(Input &&) -> Guard<std::remove_reference_t<Input>>;
+
+// /** Using `context::Guard` will usually be easier */
+// template <class T, class Function>
+// inline void runWith(T &value, const Function &function) {
+//   auto guard = Guard<T>(value);
+//   function();
+// }
+
+// template <class T, class Function>
+// inline void runWith(T &&value, const Function &function) {
+//   auto guard = Guard<T>(value);
+//   function();
+// }
+
+} // namespace VOLTISO_NAMESPACE::context

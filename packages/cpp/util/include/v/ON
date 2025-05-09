@@ -1,0 +1,20 @@
+#ifdef VOLTISO_ON
+#error "Short macros already ON"
+#endif
+
+#include <v/assert>
+
+#define VOLTISO_ON
+
+#define CMP VOLTISO_CMP
+#define EQ VOLTISO_EQ
+#define NE VOLTISO_NE
+#define LT VOLTISO_LT
+#define LE VOLTISO_LE
+#define GT VOLTISO_GT
+#define GE VOLTISO_GE
+
+#define CHECK VOLTISO_CHECK
+#define NOT VOLTISO_NOT
+
+#define FORCE_INLINE VOLTISO_FORCE_INLINE

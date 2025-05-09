@@ -1,7 +1,7 @@
 // ! this is not flexible enough, can't template for both type and value
 // parameters
 
-#include "voltiso/is_derived_from_template"
+#include "v/is_derived_from_template"
 
 namespace VOLTISO_NAMESPACE {
 

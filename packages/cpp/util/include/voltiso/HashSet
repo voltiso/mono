@@ -1,8 +1,0 @@
-#pragma once
-#include <voltiso/_>
-
-#include <voltiso/HashTable>
-
-namespace VOLTISO_NAMESPACE {
-template <class Item> using HashSet = HashTable<Item>;
-} // namespace VOLTISO_NAMESPACE

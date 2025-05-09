@@ -1,10 +1,12 @@
 #include <benchmark/benchmark.h>
 
-#include <voltiso/DynamicArray>
-#include <voltiso/Storage>
-#include <voltiso/is_trivially_relocatable>
+#include <v/DynamicArray>
+#include <v/Storage>
+#include <v/is_trivially_relocatable>
 
 #include <iostream>
+
+#include <v/ON>
 
 using namespace VOLTISO_NAMESPACE;
 
@@ -217,7 +219,7 @@ static void BM_DynamicArray_nonTrivial(benchmark::State &state) {
     benchmark::DoNotOptimize(sum);
   }
 
-  CHECK_EQ(numConstructorCalls, numDestructorCalls);
+	EQ(numConstructorCalls, numDestructorCalls);
 }
 
 //
@@ -247,7 +249,7 @@ void BM_DynamicArray_nonTrivial_stdVector(benchmark::State &state) {
     benchmark::DoNotOptimize(sum);
   }
 
-  CHECK_EQ(numConstructorCalls, numDestructorCalls);
+	EQ(numConstructorCalls, numDestructorCalls);
 }
 
 //
@@ -279,3 +281,5 @@ BENCHMARK(BM_DynamicArray_nonTrivial_stdVector<16>);
 
 BENCHMARK(BM_DynamicArray_nonTrivial<1024>);
 BENCHMARK(BM_DynamicArray_nonTrivial_stdVector<1024>);
+
+#include <v/OFF>
