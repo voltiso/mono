@@ -61,7 +61,6 @@ add_executable(
 	util/test/Options.test.cpp
 	util/test/Handle.test.cpp
 	util/test/Pool.test.cpp
-	util/test/Storage.test.cpp
 	util/test/Owned.test.cpp
 	util/test/Shared.test.cpp
 	util/test/Any.test.cpp
@@ -81,6 +80,7 @@ add_executable(
 	util/test/Slice.test.cpp
 	util/test/Array.test.cpp
 	util/test/String.test.cpp
+	util/test/Storage.test.cpp
 
 	# util/test/State.test.cpp # TODO
 

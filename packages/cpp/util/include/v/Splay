@@ -44,28 +44,28 @@ template <class Options>
   requires concepts::Options<Options>
 class Custom;
 
-template <class Options> class ConstAccessor {
+template <class Options, bool IS_CONST> class Accessor {
+private:
+	template <class T>
+	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+
 protected:
 	using Custom = Custom<Options>;
+	using AccessPath = Custom::AccessPath;
 	using Entry = Custom::Entry;
 	using Key = Custom::Key;
 	using Handle = Custom::Handle;
 	using Pool = Custom::Pool;
+	using Bst = Custom::Bst;
 
-public:
-	const Handle &root;
-	const Custom &splay;
+protected:
+	MaybeConst<Handle> &root;
+	MaybeConst<Custom> &splay;
 
 protected:
 	friend Custom;
-	ConstAccessor(const Handle &root, const Custom &splay)
+	Accessor(MaybeConst<Handle> &root, MaybeConst<Custom> &splay)
 	    : root(root), splay(splay) {}
-
-protected:
-	auto &_root() { return const_cast<Handle &>(root); }
-	auto &_accessPath() const { return const_cast<Custom &>(splay).accessPath; }
-	auto &_bst() const { return const_cast<Custom &>(splay).bst; }
-	auto &_pool() const { return const_cast<Pool &>(splay.pool); }
 
 public:
 	Handle lowerBound(const Key &searchAtLeast) {
@@ -77,50 +77,52 @@ public:
 		DCHECK(root);
 		auto node = root;
 		auto cand = Handle::INVALID;
-		auto &accessPath = _accessPath();
-		accessPath.clear();
+
+		auto &accessPath = splay._accessPath();
+		EQ(accessPath.numItems(), 0);
+		// accessPath.clear();
+
 		// LOG(INFO) << "lb: search " << searchAtLeast;
 		while (node) {
 			// LOG(INFO) << "lb: node " << node << " key "
 			//           << getKey(splay.pool[node].item());
 
 			if (getKey(splay.pool[node].item()) < searchAtLeast) {
-				accessPath.push({node, 0});
+				accessPath.maybeGrowAndPush({node, 0});
 				node = splay.pool[node]->children[0];
 			} else {
-				accessPath.push({node, 1});
+				accessPath.maybeGrowAndPush({node, 1});
 				cand = node;
 				node = splay.pool[node]->children[1];
 			}
 		}
-		_splayLastAccessPath();
+		_splayAccessPath(accessPath);
+		accessPath.clear();
 		return cand;
 	}
 
 public:
 	Handle find(const Key &keyToFind) {
-		// void find(const Handle &nodeToFind) {
-		// LOG(INFO) << "find " << nodeToFind;
-		// LOG(INFO) << *this;
-
-		auto &root = this->_root();
-		// DCHECK(root);
+		auto &root = this->root;
 
 		if (!root) [[unlikely]] {
 			return handle::INVALID;
 		}
 
 		// ! todo: likely? unlikely?
-		if (keyToFind == getKey(splay.pool[root])) {
+		if (keyToFind == getKey(splay._pool[root])) {
 			return root;
 		}
 
 		auto current = root;
-		auto &accessPath = _accessPath();
-		// auto &key = getKey(splay.pool[nodeToFind].item());
-		accessPath.clear();
+
+		auto &accessPath = splay._accessPath();
+		EQ(accessPath.numItems(), 0);
+		// accessPath.clear();
+
+		// std::cout << accessPath.numSlots() << " slots" << std::endl;
 		while (current) {
-			auto &currentKey = getKey(splay.pool[current]);
+			auto &currentKey = getKey(splay._pool[current]);
 
 			if (currentKey == keyToFind) [[unlikely]] {
 				accessPath.maybeGrowAndPush({current, 0});
@@ -129,29 +131,31 @@ public:
 
 			if (keyToFind < currentKey) {
 				accessPath.maybeGrowAndPush({current, 0});
-				current = splay.pool[current].children[0];
+				current = splay._pool[current].children[0];
 			} else {
-				CHECK(
-				  currentKey <
-				  keyToFind); // TODO: make it DCHECK_LT, change logging library so
-				              // that it does not require operator<<
+				CHECK(currentKey < keyToFind);
 				accessPath.maybeGrowAndPush({current, 1});
-				current = splay.pool[current].children[1];
+				current = splay._pool[current].children[1];
 			}
 		}
 		// DCHECK(current) << "key not found " << keyToFind;
-		this->_splayLastAccessPath();
+
+		// std::cout << "accessPath: " << accessPath.numItems() << std::endl;
+
+		this->_splayAccessPath(accessPath);
+		accessPath.clear();
+
 		if (current) {
 			EQ(current, root);
+			EQ(getKey(this->splay._pool[this->root]), keyToFind);
 		}
 		return current;
 	}
 
 public:
 	Handle min() {
-		auto &root = this->_root();
-		auto &pool = this->_pool();
-		auto &bst = this->_bst();
+		auto &root = this->root;
+		auto &pool = this->splay._pool;
 
 		auto x = root;
 
@@ -161,74 +165,76 @@ public:
 		// using Stack = DynamicArray<Handle>::template WithInPlaceOnly<32>;
 
 		using Stack = DynamicArray<Handle>;
+		static Stack stack{};
+		EQ(stack.numItems(), 0);
 
-		Stack stack;
-		stack.push(x);
-		while (pool[x]->children[0]) {
-			x = pool[x]->children[0];
-			stack.push(x);
+		stack.maybeGrowAndPush(x);
+		while (pool[x].children[0]) {
+			x = pool[x].children[0];
+			stack.maybeGrowAndPush(x);
 		}
 
 		// _splayRight(stack);
-		auto iNode = stack._numItems - 1;
+		auto iNode = stack.numItems() - 1;
 		while (iNode >= 3) {
-			auto &x1 = stack[iNode - 1].item();
-			auto &x2 = stack[iNode - 2].item();
-			auto &x3 = stack[iNode - 3].item();
-			bst.rotateRight(x2);
-			bst.rotateRight(x1);
-			pool[x3]->children[0] = x;
+			auto &x1 = stack[iNode - 1];
+			auto &x2 = stack[iNode - 2];
+			auto &x3 = stack[iNode - 3];
+			Bst{pool}.rotateRight(x2);
+			Bst{pool}.rotateRight(x1);
+			pool[x3].children[0] = x;
 			iNode -= 2;
 		}
 
 		if (iNode == 2) {
-			auto &x1 = stack[iNode - 1].item();
-			auto &x2 = stack[iNode - 2].item();
-			bst.rotateRight(x2);
-			bst.rotateRight(x1);
+			auto &x1 = stack[iNode - 1];
+			auto &x2 = stack[iNode - 2];
+			Bst{pool}.rotateRight(x2);
+			Bst{pool}.rotateRight(x1);
 			// iNode -= 2;
 		} else if (iNode == 1) {
-			auto &x1 = stack[iNode - 1].item();
-			bst.rotateRight(x1);
+			auto &x1 = stack[iNode - 1];
+			Bst{pool}.rotateRight(x1);
 		}
+
+		stack.clear();
 
 		root = x;
 		return x;
 	}
 
 protected:
-	void _splayLastAccessPath() {
+	void _splayAccessPath(const AccessPath &accessPath) {
 		// LOG(INFO) << "accessPath " << splay.accessPath;
 		// LOG(INFO) << "BEFORE SPLAY" << "\n" << *this;
-		GT(splay.accessPath.numItems(), 0);
-		auto iNode = splay.accessPath.numItems() - 1;
-		auto node = splay.accessPath[iNode].node;
-		auto &bst = _bst();
-		auto &pool = const_cast<Pool &>(splay.pool);
+		GT(accessPath.numItems(), 0);
+		auto iNode = accessPath.numItems() - 1;
+		auto node = accessPath[iNode].node;
+		auto &pool = splay._pool;
 		while (iNode >= 3) {
-			auto &node1 = splay.accessPath[iNode - 1];
-			auto &node2 = splay.accessPath[iNode - 2];
-			auto &node3 = splay.accessPath[iNode - 3];
+			auto &node1 = accessPath[iNode - 1];
+			auto &node2 = accessPath[iNode - 2];
+			auto &node3 = accessPath[iNode - 3];
 
 			if (node2.childIndex) {
 				if (node1.childIndex) {
 					// zig-zig
-					bst.rotateLeft(node2.node);
-					bst.rotateLeft(node1.node);
+					Bst{pool}.rotateLeft(node2.node);
+					Bst{pool}.rotateLeft(node1.node);
 				} else {
 					// zig-zag
-					pool[node2.node].children[1] = bst.rotateRight(node1.node);
-					bst.rotateLeft(node2.node);
+					pool[node2.node].children[1] = Bst{pool}.rotateRight(node1.node);
+					Bst{pool}.rotateLeft(node2.node);
 				}
 			} else {
 				if (node1.childIndex) {
 					// zag-zig
-					pool[node2.node].children[0] = bst.rotateLeft(node1.node);
-					bst.rotateRight(node2.node);
+					pool[node2.node].children[0] = Bst{pool}.rotateLeft(node1.node);
+					Bst{pool}.rotateRight(node2.node);
 				} else {
 					// zag-zag
-					bst.rotateRight(node2.node);
-					bst.rotateRight(node1.node);
+					Bst{pool}.rotateRight(node2.node);
+					Bst{pool}.rotateRight(node1.node);
 				}
 			}
 			pool[node3.node].children[node3.childIndex] = node;
@@ -236,82 +242,75 @@ protected:
 		}
 
 		if (iNode == 2) {
-			auto &node1 = splay.accessPath[iNode - 1];
-			auto &node2 = splay.accessPath[iNode - 2];
+			auto &node1 = accessPath[iNode - 1];
+			auto &node2 = accessPath[iNode - 2];
 
 			if (node2.childIndex) {
 				if (node1.childIndex) {
 					// zig-zig
-					bst.rotateLeft(node2.node);
-					bst.rotateLeft(node1.node);
+					Bst{pool}.rotateLeft(node2.node);
+					Bst{pool}.rotateLeft(node1.node);
 				} else {
 					// zig-zag
-					pool[node2.node].children[1] = bst.rotateRight(node1.node);
-					bst.rotateLeft(node2.node);
+					pool[node2.node].children[1] = Bst{pool}.rotateRight(node1.node);
+					Bst{pool}.rotateLeft(node2.node);
 				}
 			} else {
 				if (node1.childIndex) {
 					// zag-zig
-					pool[node2.node].children[0] = bst.rotateLeft(node1.node);
-					bst.rotateRight(node2.node);
+					pool[node2.node].children[0] = Bst{pool}.rotateLeft(node1.node);
+					Bst{pool}.rotateRight(node2.node);
 				} else {
 					// zag-zag
-					bst.rotateRight(node2.node);
-					bst.rotateRight(node1.node);
+					Bst{pool}.rotateRight(node2.node);
+					Bst{pool}.rotateRight(node1.node);
 				}
 			}
 			// iNode -= 2;
 		} else if (iNode == 1) {
-			auto &node1 = splay.accessPath[iNode - 1];
+			auto &node1 = accessPath[iNode - 1];
 			if (node1.childIndex) {
-				bst.rotateLeft(node1.node);
+				Bst{pool}.rotateLeft(node1.node);
 			} else {
-				bst.rotateRight(node1.node);
+				Bst{pool}.rotateRight(node1.node);
 			}
 		}
-
-		this->_root() = node;
-
-		// LOG(INFO) << "AFTER SPLAY" << "\n" << *this;
-
-		// return node;
+		this->root = node;
 	}
-};
-
-template <class Options> class Accessor : public ConstAccessor<Options> {
-	using Base = ConstAccessor<Options>;
-	using Custom = Base::Custom;
-	using Entry = Base::Entry;
-	using Handle = Base::Handle;
-	using Pool = Base::Pool;
-
-private:
-	friend Custom;
-	Accessor(Handle &root, Custom &splay) : ConstAccessor<Options>(root, splay) {}
 
 public:
-	Handle insert(const Entry &entry) { return insert<>(entry); }
-	Handle insert(Entry &&entry) { return insert<>(std::move(entry)); }
+	Handle insert(const Entry &entry)
+	  requires(!IS_CONST)
+	{
+		return insert<>(entry);
+	}
 
-	// template <class E,
-	//           class = std::enable_if_t<std::is_same_v<Entry,
-	//           std::decay_t<E>>>>
-	template <class... Args> Handle insert(Args &&...args) {
-		auto &pool = this->_pool();
+	Handle insert(Entry &&entry)
+	  requires(!IS_CONST)
+	{
+		return insert<>(std::move(entry));
+	}
+
+	template <class... Args>
+	Handle insert(Args &&...args)
+	  requires(!IS_CONST)
+	{
+		auto &pool = this->splay._pool;
 		auto node = pool.insert(std::forward<Args>(args)...);
 		link(node);
 		// LOG(INFO) << "Splay::insert " << pool[node].item();
 		return node;
 	}
 
-public:
-	void unlink(const Handle &nodeToUnlink) {
-		auto &pool = this->_pool();
+	void unlink(const Handle &nodeToUnlink)
+	  requires(!IS_CONST)
+	{
+		auto &pool = this->splay._pool;
 		// LOG(INFO) << "BEFORE FIND\n" << *this;
 		this->find(getKey(pool[nodeToUnlink].item()));
 		// LOG(INFO) << "AFTER FIND\n" << *this;
-		auto &root = this->_root();
-		auto &splay = const_cast<Custom &>(this->splay);
+		auto &root = this->root;
+		auto &splay = this->splay;
 		DCHECK_EQ(root, nodeToUnlink);
 		if (!pool[nodeToUnlink]->children[0]) [[unlikely]] {
 			root = pool[nodeToUnlink]->children[1];
@@ -326,10 +325,11 @@ public:
 		pool[nodeToUnlink]->children[1] = Handle::INVALID;
 	}
 
-	void link(const Handle &nodeToLink) {
-		auto &root = this->_root();
-		auto &pool = this->_pool();
-		auto &accessPath = this->_accessPath();
+	void link(const Handle &nodeToLink)
+	  requires(!IS_CONST)
+	{
+		auto &root = this->root;
+		auto &pool = this->splay._pool;
 
 		if (!root) [[unlikely]] {
 			root = nodeToLink;
@@ -339,7 +339,11 @@ public:
 		auto &key = getKey(pool[nodeToLink]);
 
 		auto current = root;
-		accessPath.clear();
+
+		auto &accessPath = this->splay._accessPath();
+		EQ(accessPath.numItems(), 0);
+		// accessPath.clear();
+
 		while (current) {
 			auto &currentKey = getKey(pool[current]);
 			if (key < currentKey) {
@@ -361,28 +365,46 @@ public:
 			}
 		}
 		accessPath.maybeGrowAndPush({nodeToLink, 0});
-		this->_splayLastAccessPath();
+
+		this->_splayAccessPath(accessPath);
+		accessPath.clear();
+
 		EQ(root, nodeToLink);
 	}
 
-	Entry erase(const Handle &nodeToErase) {
+	Entry erase(const Handle &nodeToErase)
+	  requires(!IS_CONST)
+	{
 		// LOG(INFO) << "Splay::erase " << nodeToErase;
-		auto &pool = this->_pool();
-		this->find(getKey(pool[nodeToErase].item()));
+		auto &pool = this->splay._pool;
+
+		// std::cout << "erase " << nodeToErase << std::endl;
+		// std::cout << "key " << getKey(pool[nodeToErase]) << std::endl;
+		// std::cout << "key " << getKey(pool[nodeToErase].entry) << std::endl;
+		// std::cout << "address " << (std::uintptr_t)&pool[nodeToErase] <<
+		// std::endl; std::cout << "value inside " << pool[nodeToErase].entry <<
+		// std::endl; std::cout << "value inside addr " << &pool[nodeToErase].entry
+		// << std::endl;
+
+		// EQ(
+		//   getKey(pool[nodeToErase]),
+		//   (std::uintptr_t)&pool[nodeToErase].entry.target()); // !
+
+		this->find(getKey(pool[nodeToErase]));
 		const auto &n = nodeToErase;
-		auto &root = this->_root();
-		auto &splay = const_cast<Custom &>(this->splay);
+		auto &root = this->root;
+		auto &splay = this->splay;
 		EQ(root, n);
-		if (!pool[n]->children[0]) [[unlikely]] {
-			root = pool[n]->children[1];
-		} else if (!pool[n]->children[1]) [[unlikely]] {
-			root = pool[n]->children[0];
+		if (!pool[n].children[0]) [[unlikely]] {
+			root = pool[n].children[1];
+		} else if (!pool[n].children[1]) [[unlikely]] {
+			root = pool[n].children[0];
 		} else [[likely]] {
 			root =
-			  splay.merge(splay.pool[n]->children[0], splay.pool[n]->children[1]);
+			  splay.merge(splay._pool[n].children[0], splay._pool[n].children[1]);
 		}
-		auto entry = getEntry(splay.pool[n].item());
-		pool[n].erase();
+		auto entry = getEntry(splay._pool[n]);
+		pool(n).erase();
 		return entry;
 	}
 }; // class Accessor
@@ -394,7 +416,7 @@ namespace std {
 template <class Options>
 ostream &operator<<(
   ostream &os,
-  const VOLTISO_NAMESPACE::splay::ConstAccessor<Options> &accessor) {
+  const VOLTISO_NAMESPACE::splay::Accessor<Options, true> &accessor) {
 	using Handle = typename VOLTISO_NAMESPACE::splay::Custom<Options>::Handle;
 	static thread_local int indent = 0;
 	auto key =
@@ -445,45 +467,54 @@ public:
 
 	static_assert(std::equality_comparable<Key>);
 
-	using ConstAccessor = ConstAccessor<Options>;
-	using Accessor = Accessor<Options>;
+	using ConstAccessor = Accessor<Options, true>;
+	using Accessor = Accessor<Options, false>;
 	friend ConstAccessor;
 	friend Accessor;
 
 	static_assert(!std::is_same_v<Entry, void>);
 
 private:
+	using Bst = Bst<Pool>;
 	// using DynamicArray = DynamicArray<int>::Allocator_<Allocator>;
 
 	using AccessPathNode = _::AccessPathNode;
 	// using AccessPathNode = _::template AccessPathNode<Final, Parameters>;
 
-	// ! we use in-place array in order to be able to use this class in
+	// !!! this was wrong - apparently access path can be linear length
+	// we use in-place array in order to be able to use this class in
 	// allocators
-	using AccessPath = DynamicArray<AccessPathNode>::template WithInPlaceOnly<32>;
-	// using AccessPath = DynamicArray::template Item_<AccessPathNode>;
-	AccessPath accessPath;
+	// using AccessPath = DynamicArray<AccessPathNode>::template
+	// WithInPlaceOnly<32>;
+	using AccessPath = DynamicArray<AccessPathNode>;
+	// AccessPath _accessPath;
+
+protected:
+	auto &_accessPath() {
+		// cache static for performance
+		static auto accessPath = AccessPath{};
+		return accessPath;
+	}
+
+protected:
+	static_assert(!std::is_const_v<Pool>);
+	Pool &_pool;
+
+	// private:
+	// 	Bst<Pool> _bst;
 
 public:
-	const Pool &pool; // const-cast when needed
-
-private:
-	Bst<Pool> bst;
-
-private:
-	auto &_pool() { return const_cast<Pool &>(pool); }
-
-public:
-	Custom(Pool &pool) : pool(pool), bst(pool) {}
+	Custom(Pool &pool) : _pool(pool) {}
+	// Custom(Pool &pool) : _pool(pool), _bst(pool) {}
 	// Splay(Self&&) = default;
 
 public:
 	// assumes rootA < rootB
 	Handle merge(Handle rootA, Handle rootB) {
-		auto &pool = _pool();
+		auto &pool = this->_pool;
 		rootB = (*this)(rootB).min();
-		CHECK(!pool[rootB]->children[0]);
-		pool[rootB]->children[0] = rootA;
+		CHECK(!pool[rootB].children[0]);
+		pool[rootB].children[0] = rootA;
 		return rootB;
 	}
 

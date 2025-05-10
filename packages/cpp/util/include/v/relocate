@@ -1,0 +1,23 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/is_trivially_relocatable"
+
+namespace VOLTISO_NAMESPACE {
+template <class T>
+  requires(
+    is_trivially_relocatable<std::remove_cvref_t<T>> &&
+    // source's destructor will be called
+    std::is_trivially_destructible_v<std::remove_cvref_t<T>> &&
+    // for now, force source to be mutable
+    !std::is_const_v<std::remove_reference_t<T>>)
+[[nodiscard]] constexpr auto relocate(T &&obj) noexcept {
+	using To = std::remove_cvref_t<T>;
+	// #if VOLTISO_HAS_BUILTIN_BIT_CAST
+	// 	return __builtin_bit_cast(To, obj);
+	// #else
+	// std::bit_cast requires TObject to be trivially copyable
+	return std::bit_cast<To>(obj);
+	// #endif
+}
+} // namespace VOLTISO_NAMESPACE

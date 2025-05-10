@@ -1,5 +1,8 @@
 #include <benchmark/benchmark.h>
 
+// ! we're not properly freeing memory
+#define VOLTISO_DEBUG_POOL false
+
 #include <v/Pool>
 #include <v/Singleton>
 // #include <v/allocator/Splay>
@@ -25,8 +28,8 @@ static void BM_allocator_trivial_Pool(benchmark::State &state) {
   for (auto _ : state) {
     auto handle = pool.insert().handle;
     benchmark::DoNotOptimize(handle);
-    pool[handle].erase();
-  }
+		pool(handle).erase();
+	}
 }
 BENCHMARK(BM_allocator_trivial_Pool);
 
@@ -101,9 +104,9 @@ static void BM_allocator_simple_Pool(benchmark::State &state) {
   for (auto _ : state) {
     auto handle = pool.insert().handle;
     benchmark::DoNotOptimize(handle);
-    pool[prev].erase();
-    prev = handle;
-  }
+		pool(prev).erase();
+		prev = handle;
+	}
 }
 BENCHMARK(BM_allocator_simple_Pool);
 

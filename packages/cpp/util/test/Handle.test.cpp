@@ -12,9 +12,9 @@ TEST(Handle, doesNotInitialize) {
 	struct S {};
 	using Handle = Handle::WithBrand<S>;
 	Storage<Handle> storage;
-	storage.item() = Handle(123);
+	storage.object() = Handle(123);
 	new (&storage) Handle;
-	EXPECT_EQ(storage.item().value, 123);
+	EXPECT_EQ(storage.object().value, 123);
 }
 
 TEST(Handle, operatorBool) {

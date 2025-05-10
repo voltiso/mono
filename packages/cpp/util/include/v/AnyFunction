@@ -16,15 +16,15 @@ template <class R, class... Args> class AnyFunction;
  * type-erasure for callables
  * One-pointer storage is in-place (if trivially relocatable)
  */
-template <class R, class... Args> class AnyFunction<R(Args...)> {
-private:
+template <class Return, class... Args> class AnyFunction<Return(Args...)> {
 	using Self = AnyFunction;
-	using Storage = Storage<std::byte[sizeof(void *)]>;
-	using Deleter = void (*)(Storage &);
-	using Invoker = R (*)(Storage &, Args...);
 
-	//   using RawFunction = R (&)(Args...);
-	using RawPointer = R (*)(Args...);
+private:
+	using RawPointer = Return (*)(Args...);
+	using Storage = Storage<RawPointer>; // ...or not raw pointer
+
+	using Deleter = void (*)(Storage &);
+	using Invoker = Return (*)(Storage &, Args...);
 
 	Storage storage;
 	Deleter deleter = nullptr;
@@ -50,14 +50,8 @@ public:
 	// for HashTable
 	bool operator==(const AnyFunction &other) const {
 		static_assert(sizeof(storage) == sizeof(std::uintptr_t));
-		// ! in some peculiar cases this could not be enough
-		return std::bit_cast<std::uintptr_t>(storage) ==
-		       std::bit_cast<std::uintptr_t>(other.storage);
-		// return std::bit_cast<std::uintptr_t>(storage) ==
-		//            std::bit_cast<std::uintptr_t>(other.storage) &&
-		//        invoker == other.invoker && deleter == other.deleter;
-		// return storage == other.storage && invoker == other.invoker &&
-		//        deleter == other.deleter;
+		// ! in some peculiar cases this could not be enough?
+		return storage.bytes == other.storage.bytes;
 	}
 
 	// for HashTable
@@ -66,32 +60,28 @@ public:
 	}
 
 	__attribute__((always_inline)) // can't hurt?
-  R operator()(Args... args) {
+	Return
+	operator()(Args... args) {
 		return invoker(storage, std::forward<Args>(args)...); // always this path
 	}
 
 	// bind function pointer or stateless lambda
-	template <
-	  class TCallable,
-	  std::enable_if_t<
-	    // !is_instantiated_from<std::decay_t<TCallable>, Function> &&
-	    std::is_convertible_v<std::decay_t<TCallable>, RawPointer>> * = nullptr>
+	template <class TCallable>
+	  requires(std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
 	AnyFunction(TCallable &&f) {
 		static_assert(!is_instantiated_from<std::decay_t<TCallable>, AnyFunction>);
 		new (&storage) RawPointer{std::forward<TCallable>(f)};
-		invoker = [](Storage &storage, Args... args) -> R {
-			return std::bit_cast<RawPointer>(storage)(std::forward<Args>(args)...);
+		invoker = [](Storage &storage, Args... args) -> Return {
+			return storage.object()(std::forward<Args>(args)...);
 		};
 		static_assert(std::is_trivially_destructible_v<RawPointer>);
 	}
 
 	// bind small anything
-	template <
-	  class TCallable,
-	  std::enable_if_t<
-	    // !is_instantiated_from<std::decay_t<TCallable>, Function> &&
+	template <class TCallable>
+	  requires(
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
-	    (sizeof(std::decay_t<TCallable>) <= sizeof(storage))> * = nullptr>
+	    (sizeof(std::decay_t<TCallable>) <= sizeof(storage)))
 	AnyFunction(TCallable &&f) {
 		static_assert(!is_instantiated_from<std::decay_t<TCallable>, AnyFunction>);
 		static_assert(
@@ -99,7 +89,7 @@ public:
 		  "mark your type as trivially relocatable, or use createIndirect");
 		using Callable = std::decay_t<TCallable>;
 		new (&storage) Callable{std::forward<TCallable>(f)};
-		invoker = [](Storage &storage, Args... args) -> R {
+		invoker = [](Storage &storage, Args... args) -> Return {
 			return (*reinterpret_cast<Callable *>(&storage))(
 			  std::forward<Args>(args)...);
 		};
@@ -110,29 +100,26 @@ public:
 		}
 	}
 
-	// static_assert(!is_instantiated_from<std::decay_t<decltype([] {})>,
-	// Function>);
-
 	// bind big anything
-	template <
-	  class TCallable,
-	  std::enable_if_t<
-	    // !is_instantiated_from<std::decay_t<TCallable>, Function> &&
+	template <class TCallable>
+	  requires(
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
-	    (sizeof(std::decay_t<TCallable>) > sizeof(storage))> * = nullptr>
-	AnyFunction(TCallable &&f) : AnyFunction{std::forward<TCallable>(f), 0} {
+	    (sizeof(std::decay_t<TCallable>) > sizeof(storage)))
+	AnyFunction(TCallable &&f)
+	    : AnyFunction{CreateIndirectTag{}, std::forward<TCallable>(f)} {
 		static_assert(!is_instantiated_from<std::decay_t<TCallable>, AnyFunction>);
 	}
 
 	// explicit "big anything"
 	template <class TCallable> static Self createIndirect(TCallable &&f) {
 		static_assert(!is_instantiated_from<std::decay_t<TCallable>, AnyFunction>);
-		return Self{std::forward<TCallable>(f), 0};
+		return Self{CreateIndirectTag{}, std::forward<TCallable>(f)};
 	}
 
 private:
+	struct CreateIndirectTag {};
 	// "big anything" implementation
-	template <class TCallable> AnyFunction(TCallable &&f, int) {
+	template <class TCallable> AnyFunction(CreateIndirectTag, TCallable &&f) {
 		using Callable = std::decay_t<TCallable>;
 		using Pool = Pool<Callable>;
 		using Handle = typename Pool::Handle;
@@ -141,10 +128,10 @@ private:
 		new (&storage) Handle(handle);
 		deleter = [](Storage &storage) {
 			auto &pool = Singleton<Pool>::instance();
-			pool.erase(std::bit_cast<Handle>(storage));
+			pool.erase(storage.template as<Handle>());
 		};
-		invoker = [](Storage &storage, Args... args) -> R {
-			return (*std::bit_cast<Handle>(storage))(std::forward<Args>(args)...);
+		invoker = [](Storage &storage, Args... args) -> Return {
+			return (*storage.template as<Handle>())(std::forward<Args>(args)...);
 		};
 	}
 

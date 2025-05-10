@@ -12,8 +12,8 @@ TEST(SplayMap, initializerList) {
   EXPECT_EQ(a[1], 10);
   EXPECT_EQ(a[2], 20);
   EXPECT_EQ(a[3], 30);
-	EXPECT_TRUE(a(3).exists);
-	EXPECT_FALSE(a(4).exists);
+	EXPECT_TRUE(a(3).exists());
+	EXPECT_FALSE(a(4).exists());
 }
 
 TEST(SplayMap, iterate) {

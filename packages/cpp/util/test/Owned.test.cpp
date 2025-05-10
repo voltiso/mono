@@ -228,3 +228,18 @@ TEST(Owned, baseRef) {
   // ! illegal
   // Owned<Derived> owned = Owned<Base>::create(123); // !!!
 }
+
+TEST(Owned, countCtor) {
+	S::numConstructorCalls = 0;
+	S::numDestructorCalls = 0;
+
+	{
+		auto owned = Owned<S>::create(123);
+		auto weak = owned.weak();
+
+		Owned<S>::Weak otherWeak = owned;
+	}
+
+	EXPECT_EQ(S::numConstructorCalls, 1);
+	EXPECT_EQ(S::numDestructorCalls, 1);
+}

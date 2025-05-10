@@ -148,7 +148,7 @@ public:
 		// Assuming `self.template cast<Base>()` correctly returns Base&, const
 		// Base&, Base&&, or const Base&&, matching the cv-ref qualifiers of `self`.
 		// This calls Base::operator<< on the correctly casted `self`.
-		return self.template cast<Base>().operator<<(ConstStringSlice(
+		return self.template as<Base>().operator<<(ConstStringSlice(
 		  std::forward<Other>(other)) // Forward 'other' to ConstStringSlice
 		);
 	}

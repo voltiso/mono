@@ -5,6 +5,7 @@
 
 #include "v/Array"
 #include "v/Handle"
+#include "v/Likelihood"
 #include "v/Object"
 #include "v/Singleton"
 #include "v/Storage"
@@ -128,7 +129,7 @@ using DataMembers = std::conditional_t<
     (Options::template GET<option::IN_PLACE_ONLY> > 0),
     DataMembersInPlaceOnly<Options>, DataMembersNoInPlace<Options>>>;
 
-template <class Options> class ConstAccessor {
+template <class Options, bool IS_CONST> class Accessor {
 private:
 	using Custom = Custom<Options>;
 	using Item = typename Custom::Item;
@@ -139,43 +140,27 @@ private:
 
 protected:
 	friend Custom;
-	ConstAccessor(const Handle &handle, const Custom &dynamicArray)
+	Accessor(const Handle &handle, const Custom &dynamicArray)
 	    : handle(handle), dynamicArray(dynamicArray) {}
 
 public:
 	const Item &item() const {
 		GE(this->handle.value, 0);
 		LT(this->handle.value, this->dynamicArray._numItems);
-		return dynamicArray.slots()[this->handle.value].item();
+		return dynamicArray.slots()[this->handle.value].object();
 	}
 	const Item &operator*() const { return item(); }
 	const Item *operator->() const { return &item(); }
 	const Item *operator&() const { return &item(); }
 	operator const Item &() const { return item(); }
-};
 
-template <class Options> class Accessor : public ConstAccessor<Options> {
-private:
-	using Base = ConstAccessor<Options>;
-	using Custom = Custom<Options>;
-	using Item = typename Custom::Item;
-
-private:
-	friend Custom;
-	Accessor(const Handle &handle, Custom &dynamicArray)
-	    : ConstAccessor<Options>(handle, dynamicArray) {}
-
-public:
-	Item &item() { return const_cast<Item &>(Base::item()); }
-	Item &operator*() { return item(); }
-	Item *operator->() { return &item(); }
-	Item *operator&() { return &item(); }
-	operator Item &() { return item(); }
-	auto &operator=(const Item &other) {
+	auto &operator=(const Item &other)
+	  requires(!IS_CONST)
+	{
 		item() = other;
 		return *this;
 	}
-}; // class Accessor
+};
 } // namespace VOLTISO_NAMESPACE::dynamicArray::_
 
 // !
@@ -228,8 +213,8 @@ public:
 	static constexpr auto IN_PLACE_ONLY =
 	  Options::template GET<option::IN_PLACE_ONLY>;
 
-	using Accessor = _::Accessor<Options>;
-	using ConstAccessor = _::ConstAccessor<Options>;
+	using Accessor = _::Accessor<Options, false>;
+	using ConstAccessor = _::Accessor<Options, true>;
 	friend Accessor;
 	friend ConstAccessor;
 
@@ -273,7 +258,7 @@ public:
 				auto memory =
 				  static_cast<Storage<Item> *>(_allocator()(this->allocation));
 				for (size_t i = 0; i < _numItems; ++i) [[likely]] {
-					memory[i].item().~Item();
+					memory[i].object().~Item();
 				}
 				_allocator().freeBytes(this->allocation, _numBytes(this->_numSlots));
 			}
@@ -282,18 +267,18 @@ public:
 			if (this->_numSlots > Options::template GET<option::IN_PLACE>)
 			  [[unlikely]] {
 				auto memory =
-				  static_cast<Storage<Item> *>(_allocator()(this->allocation.item()));
+				  static_cast<Storage<Item> *>(_allocator()(this->allocation.object()));
 				// speed-up empty path
 				for (size_t i = 0; i < _numItems; ++i) [[unlikely]] {
-					memory[i].item().~Item();
+					memory[i].object().~Item();
 				}
 				_allocator().freeBytes(
-				  this->allocation.item(), _numBytes(this->_numSlots));
+				  this->allocation.object(), _numBytes(this->_numSlots));
 			} else [[likely]] {
 				// speed-up inplace path
 				// speed-up empty path
 				for (size_t i = 0; i < _numItems; ++i) [[unlikely]] {
-					this->inPlaceItems[i].item().~Item();
+					this->inPlaceItems[i].object().~Item();
 				}
 			}
 		} else {
@@ -302,7 +287,7 @@ public:
 			// Parameters>);
 			auto memory = static_cast<Storage<Item> *>(this->inPlaceItems.items);
 			for (size_t i = 0; i < _numItems; ++i) {
-				memory[i].item().~Item();
+				memory[i].object().~Item();
 			}
 		}
 	}
@@ -351,7 +336,7 @@ public:
 	Custom(std::initializer_list<Item> items) {
 		setNumSlotsAtLeast(items.size());
 		for (auto &item : items) {
-			push(item);
+			pushUnchecked(item);
 		}
 	}
 
@@ -384,7 +369,7 @@ public:
 		setNumSlotsAtLeast(get::numItems(items));
 		// }
 		for (const auto &item : items) {
-			push(item);
+			pushUnchecked(item);
 		}
 	}
 
@@ -399,7 +384,7 @@ public:
 		NE(&self, &other); // forbid (for performance)
 		auto memory = self.slots();
 		for (size_t i = 0; i < self._numItems; ++i) {
-			memory[i].item().~Item();
+			memory[i].object().~Item();
 		}
 		if (self._numSlots < other._numItems) [[unlikely]] {
 			self.setNumSlotsAtLeast(other._numItems);
@@ -559,17 +544,19 @@ public:
 					  _allocator().allocateBytes(newNumSlots * sizeof(Item));
 					auto memory = _allocator()(allocation);
 					::memcpy(memory, &this->inPlaceItems[0], sizeof(Item) * _numItems);
-					this->allocation.item() = allocation;
+					this->allocation.object() = allocation;
 				}
 			} else [[unlikely]] {
 				if (newNumSlots <= Options::template GET<option::IN_PLACE>) [[likely]] {
-					auto oldData = this->allocation.item();
+					auto oldData = this->allocation.object();
 					LT(newNumSlots, this->_numSlots);
-					::memcpy(&this->inPlaceItems[0], oldData, sizeof(Item) * _numItems);
+					::memcpy(
+					  static_cast<void *>(&this->inPlaceItems), oldData,
+					  sizeof(Item) * _numItems);
 					_allocator().freeBytes(oldData, this->_numSlots * sizeof(Item));
 				} else [[unlikely]] {
-					this->allocation.item() = _allocator().reallocateBytes(
-					  this->allocation.item(), this->_numSlots * sizeof(Item),
+					this->allocation.object() = _allocator().reallocateBytes(
+					  this->allocation.object(), this->_numSlots * sizeof(Item),
 					  newNumSlots * sizeof(Item));
 				}
 			}
@@ -596,7 +583,7 @@ public:
 			  [[likely]] {
 				return this->inPlaceItems.items;
 			} else [[unlikely]] {
-				return std::bit_cast<Storage<Item> *>(this->allocation.item());
+				return std::bit_cast<Storage<Item> *>(this->allocation.object());
 				// return static_cast<Storage<Item> *>(
 				//     _allocator()(this->allocation));
 			}
@@ -608,6 +595,7 @@ public:
 		}
 	}
 
+	// const -> non-const
 	const Storage<Item> *slots() const {
 		return const_cast<Custom *>(this)->slots();
 	}
@@ -617,13 +605,13 @@ public:
 	VOLTISO_FORCE_INLINE Item &operator[](const Index &i) {
 		GE(i, 0);
 		LT(i, _numItems);
-		return slots()[i].item();
+		return slots()[i].object();
 	}
 
 	VOLTISO_FORCE_INLINE const Item &operator[](const Index &i) const {
 		GE(i, 0);
 		LT(i, _numItems);
-		return slots()[i].item();
+		return slots()[i].object();
 	}
 
 	//
@@ -631,13 +619,13 @@ public:
 	VOLTISO_FORCE_INLINE Item &operator[](const Handle &handle) {
 		GE(handle.value, 0);
 		LT(handle.value, _numItems);
-		return slots()[handle.value].item();
+		return slots()[handle.value].object();
 	}
 
 	VOLTISO_FORCE_INLINE const Item &operator[](const Handle &handle) const {
 		GE(handle.value, 0);
 		LT(handle.value, _numItems);
-		return slots()[handle.value].item();
+		return slots()[handle.value].object();
 	}
 
 	//
@@ -668,11 +656,11 @@ public:
 	Item &last() { return (*this)[_numItems - 1]; }
 	const Item &last() const { return (*this)[_numItems - 1]; }
 
-	Handle push(Item &&item) { return push<>(std::move(item)); }
-	Handle push(const Item &item) { return push<>(item); }
+	Handle push(Item &&item) { return pushUnchecked<>(std::move(item)); }
+	Handle push(const Item &item) { return pushUnchecked<>(item); }
 
 	// ! does not grow
-	template <class... Args> Handle push(Args &&...args) {
+	template <class... Args> Handle pushUnchecked(Args &&...args) {
 		LE(get::numItems(*this), get::numSlots(*this));
 
 		LT(_numItems, get::numSlots(*this));
@@ -694,18 +682,27 @@ public:
 		return handle;
 	}
 
-	Handle maybeGrowAndPush(Item &&item) {
+	Handle maybeGrowAndPush(Item &&item)
+	  requires(IN_PLACE_ONLY == 0)
+	{
 		return maybeGrowAndPush<>(std::move(item));
 	}
-	Handle maybeGrowAndPush(const Item &item) { return maybeGrowAndPush<>(item); }
+	Handle maybeGrowAndPush(const Item &item)
+	  requires(IN_PLACE_ONLY == 0)
+	{
+		return maybeGrowAndPush<>(item);
+	}
 
-	template <class... Args> Handle maybeGrowAndPush(Args &&...args) {
+	template <class... Args>
+	VOLTISO_FORCE_INLINE Handle maybeGrowAndPush(Args &&...args)
+	  requires(IN_PLACE_ONLY == 0)
+	{
 		if constexpr (requires { this->_numSlots; }) {
-			if (_numItems == this->_numSlots) [[unlikely]] {
+			if (this->_numItems == this->_numSlots) [[unlikely]] {
 				this->grow();
 			}
 		}
-		return push<>(std::forward<Args>(args)...);
+		return pushUnchecked<>(std::forward<Args>(args)...);
 	}
 
 	//
@@ -740,7 +737,7 @@ public:
 		if (newNumItems < _numItems) {
 			auto memory = slots();
 			for (std::size_t i = _numItems; i < newNumItems; ++i) {
-				memory[i].item().~Item();
+				memory[i].object().~Item();
 			}
 		} else if (newNumItems > _numItems) [[likely]] {
 			if constexpr (IN_PLACE_ONLY == 0) {
@@ -766,25 +763,45 @@ public:
 		this->_numItems = newNumItems;
 	}
 
-	void clear() {
-		if (_numItems != 0) [[likely]] {
-			auto memory = slots();
-			for (std::size_t i = 0; i < _numItems; ++i) {
-				memory[i].item().~Item();
+	template <Likelihood LIKELIHOOD = Likelihood::UNKNOWN> void clear() {
+		if constexpr (!std::is_trivially_destructible_v<Item>) {
+			if constexpr (LIKELIHOOD == Likelihood::UNKNOWN) {
+				if (_numItems != 0) {
+					auto memory = slots();
+					for (std::size_t i = 0; i < _numItems; ++i) {
+						memory[i].object().~Item();
+					}
+				}
+			} else if constexpr (LIKELIHOOD == Likelihood::LIKELY) {
+				if (_numItems != 0) {
+					auto memory = slots();
+					for (std::size_t i = 0; i < _numItems; ++i) [[likely]] {
+						memory[i].object().~Item();
+					}
+				}
+			} else if constexpr (LIKELIHOOD == Likelihood::UNLIKELY) {
+				if (_numItems != 0) [[unlikely]] {
+					auto memory = slots();
+					for (std::size_t i = 0; i < _numItems; ++i) [[unlikely]] {
+						memory[i].object().~Item();
+					}
+				}
+			} else {
+				static_assert(false);
 			}
-			this->_numItems = 0;
 		}
+		this->_numItems = 0;
 	}
 
 	bool hasItems() const { return this->_numItems != 0; }
 
-	Item pop() {
+	VOLTISO_FORCE_INLINE constexpr auto pop() noexcept {
+		static_assert(is_trivially_relocatable<Item>);
 		GT(this->_numItems, 0);
 		auto lastIndex = this->_numItems - 1;
-		Item item = std::move((*this)[lastIndex]);
-		(*this)[lastIndex].~Item();
 		this->_numItems = lastIndex;
-		return item;
+		return slots()[lastIndex].relocate(); // hoping for RVO
+		// (*this)[lastIndex].~Item(); // ! do not call after relocate
 	}
 
 	/**
@@ -821,20 +838,20 @@ public:
 
 	Iterator begin() {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->item();
+		return &slots()->object();
 	}
 	Iterator end() {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->item() + this->_numItems;
+		return &slots()->object() + this->_numItems;
 	}
 
 	ConstIterator begin() const {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->item();
+		return &slots()->object();
 	}
 	ConstIterator end() const {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->item() + this->_numItems;
+		return &slots()->object() + this->_numItems;
 	}
 
 public:

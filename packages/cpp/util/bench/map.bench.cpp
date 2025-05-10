@@ -22,9 +22,9 @@ static void BM_map_hash(benchmark::State &state) {
   HashMap<int, int> a;
   int value = 0;
   for (auto _ : state) {
-    a[value].maybeInsert() += 1;
-    int x = a[value];
-    benchmark::DoNotOptimize(x);
+		a(value).maybeInsert() += 1;
+		int x = a[value];
+		benchmark::DoNotOptimize(x);
     ++value;
   }
 }
@@ -93,8 +93,8 @@ static void BM_map_tree(benchmark::State &state) {
   SplayMap<int, int> a;
   int key = 0;
   for (auto _ : state) {
-    a[key].maybeInsert() += 1;
-    int x = a[key];
+		a(key).maybeInsert() += 1;
+		int x = a[key];
     benchmark::DoNotOptimize(x);
     ++key;
   }

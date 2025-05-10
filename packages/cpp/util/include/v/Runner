@@ -180,6 +180,8 @@ private:
 		while (scheduledTasks.hasItems() &&
 		       scheduledTasks.peek().targetExecutionTime <= now) [[unlikely]] {
 			auto taskRef = scheduledTasks.pop();
+			// auto taskRef = scheduledTasks.peek();
+			// scheduledTasks.pop();
 			if (
 			  allTasks.has(taskRef.task) &&
 			  taskRef.task->scheduleId == taskRef.scheduleId) [[likely]] {

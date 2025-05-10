@@ -172,6 +172,7 @@ public:
 		return items[handle.value - STARTING_INDEX];
 	}
 
+	// non-const -> const
 	template <
 	  class InferredHandle,
 	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =

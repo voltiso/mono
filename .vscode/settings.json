@@ -4,6 +4,29 @@
 {
 	/** --------------------------------------------------------- */
 	//
+	// These are strictly User settings. They probably should be commented out here
+	// They're here just for reference. You might want to copy them to your user settings.
+	//
+
+	// 1. Disable automatic IntelliSense pop-ups
+	// "editor.quickSuggestions": {
+	// 	"other": "off", // conflicts with copilot
+	// 	"comments": "off", // conflicts with copilot
+	// 	"strings": "off" // conflicts with copilot
+	// },
+	// "editor.suggestOnTriggerCharacters": false,
+
+	// 2. Ensure inline suggestions (used by Copilot) are enabled
+	// "editor.inlineSuggest.enabled": true,
+
+	// 3. (Optional but recommended) Control how suggestions are accepted
+	// "editor.acceptSuggestionOnEnter": "smart", // "on", "off", "smart"
+
+	// 4. (Optional) If you want to see Copilot suggestions even when the IntelliSense widget is visible
+	// "editor.suggest.preview": true, // This shows a preview of the selected IntelliSense item, Copilot might show alongside
+
+	/** --------------------------------------------------------- */
+	//
 	// These are king-of-user/kind-of-project settings
 	//
 	"editor.tabSize": 2,
@@ -16,13 +39,6 @@
 	"files.trimFinalNewlines": true, // Already handled by eslint
 
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
-
-	// "clangd.enableCodeCompletion": false, // conflicts with copilot
-	"editor.quickSuggestions": {
-		"other": false, // conflicts with copilot
-		"comments": false, // conflicts with copilot
-		"strings": false // conflicts with copilot
-	},
 
 	"clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
 	/** --------------------------------------------------------- */
@@ -498,6 +514,5 @@
 		"Wshadow",
 		"Wuser",
 		"Zonejs"
-	],
-	"CodeGPT.apiKey": "CodeGPT Plus Beta"
+	]
 }

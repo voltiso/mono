@@ -43,7 +43,7 @@ public:
 public:
 	template <class Other>
 	decltype(auto) operator<<=(this auto &&self, const Other &other) {
-		self.template cast<Base>().operator<<=(ConstStringSlice(other));
+		self.template as<Base>().operator<<=(ConstStringSlice(other));
 		return std::forward<decltype(self)>(self);
 	}
 };

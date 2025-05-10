@@ -220,6 +220,7 @@ public:
 		bucket.firstNode = node;
 		this->_pHandle = &bucket.firstNode;
 		++this->_hashTable._numItems;
+		this->_exists = true;
 		return *this;
 	}
 
@@ -304,11 +305,11 @@ public:
 	void insert(Args &&...args) {
 		CHECK(!this->_exists);
 		this->_maybeGrow();
-		auto &pool = this->_hashTable.pool;
+		auto &pool = this->_hashTable._pool;
 		auto node =
 		  pool.insert(Entry{this->key, Value{std::forward<Args>(args)...}});
-		auto &buckets = this->_buckets();
-		auto &bucket = buckets[this->_bucket].item();
+		auto &buckets = this->_hashTable._buckets;
+		auto &bucket = buckets[this->_bucket];
 		node->nextNode = bucket.firstNode;
 		bucket.firstNode = node.handle;
 		this->_pHandle = &bucket.firstNode;
@@ -324,7 +325,7 @@ public:
 		auto &pool = this->_hashTable.pool;
 		auto node = pool.insert(Entry{this->key, value});
 		auto &buckets = this->_hashTable.buckets;
-		auto &bucket = buckets[this->_bucket].item();
+		auto &bucket = buckets[this->_bucket];
 		node->nextNode = bucket.firstNode;
 		bucket.firstNode = node.handle;
 		this->_pHandle = &bucket.firstNode;
@@ -775,9 +776,9 @@ public:
 		return this->operator()(static_cast<Entry>(entry));
 	}
 
-	template <
-	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
-	MapAccessor operator()(const Key &key) {
+	MapAccessor operator()(const Key &key)
+	  requires(!std::is_same_v<Key, Entry>)
+	{
 		if (_buckets.numItems() == 0) [[unlikely]] {
 			return {*this, nullptr, typename Buckets::Handle(0), false, key};
 		}
@@ -790,30 +791,24 @@ public:
 		return {*this, pHandle, bucket, exists, key};
 	}
 
-	template <
-	  class K = Key, std::enable_if_t<
-	                   !std::is_convertible_v<K, Entry> &&
-	                   !std::is_same_v<K, Entry>> * = nullptr>
+	template <class K>
+	  requires(!std::is_convertible_v<K, Entry> && !std::is_same_v<K, Entry>)
 	auto operator()(const K &key) {
 		return this->operator()(getKey(key));
 	}
 
-	// template <class K,
-	//           std::enable_if_t<std::is_same_v<
-	//               std::remove_cv_t<std::remove_reference_t<K>>, Key>> * =
-	//               nullptr>
-	template <
-	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
-	ConstMapAccessor operator()(const Key &key) const {
+	ConstMapAccessor operator()(const Key &key) const
+	  requires(!std::is_same_v<Key, Entry>)
+	{
 		auto accessor = this->self()[key];
 		return std::bit_cast<ConstMapAccessor>(accessor); // rvo works?
 	}
 
-	template <
-	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
-	auto operator()(const K &key) const {
-		return this->operator()(getKey(key));
-	}
+	// template <class K>
+	//   requires(!std::is_same_v<K, Entry>)
+	// auto operator()(const K &key) const {
+	// 	return this->operator()(getKey(key));
+	// }
 
 public:
 	Iterator begin() {

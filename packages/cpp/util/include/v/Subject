@@ -80,12 +80,11 @@ public:
   using Callback = subject::_::Callback<Value>;
   using Subscription = subject::Subscription<Value>;
 
-public:
-  // Owned<subject::_::Implementation<T>> implementation;
-  const Value value; // = T{};
+protected:
+	Value _value; // = T{};
 
-private:
-  auto &_value() { return const_cast<Value &>(this->value); }
+public:
+	const Value &value() const { return this->_value; }
 
 private:
   using SubscriptionRef = Owned<subject::Subscription<Value>>;
@@ -103,20 +102,21 @@ public:
   }
 
   // Subject() = default;
-  template <class V,
-            std::enable_if_t<std::is_convertible_v<V &&, Value>> * = nullptr>
-  Subject(V &&value) : value{std::forward<V>(value)} {}
-  Subject(const Value &value) : value{value} {}
-  Subject(Value &&value) : value{std::move(value)} {}
+	template <
+	  class V, std::enable_if_t<std::is_convertible_v<V &&, Value>> * = nullptr>
+	Subject(V &&value) : _value{std::forward<V>(value)} {}
+	Subject(const Value &value) : _value{value} {}
+	Subject(Value &&value) : _value{std::move(value)} {}
 
-  template <class U> Subject &operator=(U &&value) {
+	template <class U> Subject &operator=(U &&value) {
     if constexpr (requires(const Value &lhs, U &&rhs) { lhs == rhs; })
-      if (this->value == value) [[unlikely]]
-        return *this;
-    this->_value() = std::forward<U>(value);
-    for (auto &subscription : this->subscriptions) {
-      subscription.update(this->value);
-    }
+			if (this->_value == value) [[unlikely]] {
+				return *this;
+			}
+		this->_value = std::forward<U>(value);
+		for (auto &subscription : this->subscriptions) {
+			subscription.update(this->_value);
+		}
     return *this;
   }
 
@@ -142,8 +142,8 @@ public:
   // immediately call the callback, and subscribe to future updates
   template <class Callback> void getAndSubscribe(Callback &&callback) {
     auto subscription = createSubscription(std::forward<Callback>(callback));
-    subscription->update(this->value);
-    context::get<Retainer>().retain(std::move(subscription));
+		subscription->update(this->_value);
+		context::get<Retainer>().retain(std::move(subscription));
   }
 };
 

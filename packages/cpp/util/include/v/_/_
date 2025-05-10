@@ -55,4 +55,14 @@ inline constexpr bool IS_DEBUG_BUILD = true;
 
 // !
 
+// #ifndef VOLTISO_HAS_BUILTIN_BIT_CAST
+// 	#if (defined(__GNUC__) || defined(__clang__)) && !defined(__ICC)
+// 		#define VOLTISO_HAS_BUILTIN_BIT_CAST true
+// 	#else
+// 		#define VOLTISO_HAS_BUILTIN_BIT_CAST false
+// 	#endif
+// #endif
+
+// !
+
 #include "v/_/operators.hpp" // IWYU pragma: keep

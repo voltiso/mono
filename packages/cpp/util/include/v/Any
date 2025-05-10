@@ -26,26 +26,16 @@ private:
 	using Deleter = void (*)(Item *&);
 
 public:
-	Item *const target = nullptr; // const because public
-
-private:
-	VOLTISO_FORCE_INLINE constexpr auto &_target() & noexcept {
-		return const_cast<Item *&>(target);
-	}
-	VOLTISO_FORCE_INLINE constexpr const auto &_target() const & noexcept {
-		return target;
-	}
+	Item *const target = nullptr;
 
 private:
 	Deleter deleter;
-
-	// Storage<ref::Dynamic<Owned<int>>> storage;
 
 public:
 	~Any() {
 		// deleter is nullptr if object is moved-from
 		if (deleter) [[likely]] {
-			deleter(this->_target());
+			deleter(const_cast<Item *&>(this->target));
 		}
 	}
 
@@ -56,11 +46,8 @@ public:
 	// won't work with unique pointers (`Owned`)
 	Any(const Any &) = delete;
 
-	Any(Any &&other) {
+	Any(Any &&other) : target(other.target), deleter(other.deleter) {
 		NE(this, &other);
-		const_cast<Item *&>(target) = other.target;
-		deleter = other.deleter;
-		// other.pointer = nullptr;
 		other.deleter = nullptr;
 	}
 
@@ -74,40 +61,6 @@ public:
 			reinterpret_cast<Other &>(storage).~Other();
 		};
 	}
-
-	// template <
-	//   class Other,
-	//   class = std::enable_if_t<std::is_assignable_v<Item *&, Other *>>>
-	// Any(Owned<Other> &&other) {
-	// 	static_assert(sizeof(Owned<Other>) == sizeof(void *));
-	// 	new (const_cast<Item **>(&this->target)) Owned<Other>(std::move(other));
-	// 	this->deleter = [](void *p) {
-	// 		using Pool = Pool<Other>;
-	// 		using Handle = typename Pool::Handle;
-	// 		auto &pool = Singleton<Pool>::instance();
-	// 		pool.erase(Handle(p));
-	// 	};
-	// }
-
-	// template <
-	//   class Other,
-	//   class = std::enable_if_t<std::is_assignable_v<Item *&, Other *>>>
-	// Any(Shared<Other> &&other) {
-	// 	const_cast<void *&>(target) = &other.item();
-
-	// 	auto *controlBlock =
-	// 	  reinterpret_cast<shared::_::ControlBlock<Other> *>(this->target);
-	// 	static_assert(
-	// 	  offsetof(shared::_::ControlBlock<Other>, item) == 0,
-	// 	  "item must be the first member of ControlBlock");
-	// 	++controlBlock->numReferences;
-
-	// 	this->deleter = [](void *p) {
-	// 		auto *controlBlock =
-	// 		  reinterpret_cast<shared::_::ControlBlock<Other> *>(p);
-	// 		controlBlock->dereference();
-	// 	};
-	// }
 
 public:
 	// assign to underlying value (reference semantics)
@@ -127,7 +80,6 @@ public:
 	template <
 	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
 	TT &item() const {
-		// auto target = this->target();
 		CHECK(target);
 		return *static_cast<Item *>(target);
 	}

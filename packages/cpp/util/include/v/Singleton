@@ -26,19 +26,18 @@ private:
 		std::size_t numReferences = 1;
 		Data() {
 #if VOLTISO_DEBUG_SINGLETON
-			std::cout << "Singleton<" << demangle(typeid(T)) << "> CREATE"
-			          << std::endl;
+			// std::cout << "Singleton<" << demangle(typeid(T)) << "> CREATE"
+			//           << std::endl;
 #endif
-			// storage.construct();
-			// can't use storage.construct(), because Storage is not a friend
-			new (&storage.item()) T();
+			new (&storage.object()) T();
+			// storage.construct(); // not possible, T constructor may be private
 		}
 		void decrement() {
 			--numReferences;
 			if (numReferences == 0) [[unlikely]] {
 #if VOLTISO_DEBUG_SINGLETON
-				std::cout << "Singleton<" << demangle(typeid(T)) << "> DESTROY"
-				          << std::endl;
+				// std::cout << "Singleton<" << demangle(typeid(T)) << "> DESTROY"
+				//           << std::endl;
 #endif
 				storage.destroy();
 			}
@@ -60,7 +59,7 @@ public:
 		//           0"));
 		//     }
 		// #endif
-		return data().storage.item();
+		return data().storage.object();
 	}
 
 	// ! if your singletons depend on each other, derive the user-singleton class

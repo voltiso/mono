@@ -39,50 +39,41 @@ public:
 
 namespace VOLTISO_NAMESPACE::splayTable::_ {
 template <class Options, bool IS_CONST> class Accessor {
-protected:
-	using Custom = Custom<Options>;
+private:
+	template <class T>
+	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+
+private:
+	using Custom = MaybeConst<Custom<Options>>;
 	using Handle = Custom::Pool::Handle;
 	using Key = Custom::Key;
 	using Value = Custom::Value;
 
-protected: // public ??
-	// const Key &key;
-	const Custom &splayTable;
-	const Handle &handle;
+protected:
+	MaybeConst<Custom> &_splayTable;
+	const Handle handle;
+	bool _exists;
 
 public:
-	const bool exists;
-
-private:
-	const Custom &_splayTable() const { return splayTable; }
-	Custom &_splayTable()
-	  requires(!IS_CONST)
-	{
-		return const_cast<Custom &>(splayTable);
-	}
-
-	auto &_pool() const { return splayTable.pool; }
-	auto &_pool()
-	  requires(!IS_CONST)
-	{
-		return _splayTable().pool;
+	[[nodiscard]] VOLTISO_FORCE_INLINE bool exists() const {
+		return this->_exists;
 	}
 
 protected:
 	friend Custom;
-	Accessor(const Custom &splayTable, const auto &handle)
-	    : splayTable(splayTable), handle(handle),
-	      exists(handle != handle::INVALID) {}
+	Accessor(MaybeConst<Custom> &splayTable, const Handle handle)
+	    : _splayTable(splayTable), handle(handle),
+	      _exists(handle != handle::INVALID) {}
 
 public:
 	const Value &value() const {
-		CHECK(this->exists);
-		return getValue(this->_pool()[this->splayTable.root].entry);
+		CHECK(this->_exists);
+		return getValue(this->_splayTable.pool[this->_splayTable.root].entry);
 	}
 
 	Value &value() {
-		CHECK(this->exists);
-		return getValue(this->_pool()[this->splayTable.root].entry);
+		CHECK(this->_exists);
+		return getValue(this->_splayTable.pool[this->_splayTable.root].entry);
 	}
 
 public:
@@ -118,30 +109,29 @@ public:
 	void erase()
 	  requires(!IS_CONST)
 	{
-		CHECK(this->exists);
-		auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
-		this->splayTable._splay()(root).erase(this->handle);
+		CHECK(this->_exists);
+		auto &root = this->_splayTable.root;
+		this->_splayTable._splay()(root).erase(this->handle);
 	}
 
+	template <Likelihood LIKELIHOOD = Likelihood::LIKELY>
 	void maybeErase()
 	  requires(!IS_CONST)
 	{
-		maybeEraseLikely();
-	}
-
-	void maybeEraseLikely()
-	  requires(!IS_CONST)
-	{
-		if (this->exists) [[likely]] {
-			erase();
-		}
-	}
-
-	void maybeEraseUnlikely()
-	  requires(!IS_CONST)
-	{
-		if (this->exists) [[unlikely]] {
-			erase();
+		if constexpr (LIKELIHOOD == Likelihood::UNKNOWN) {
+			if (this->_exists) {
+				erase();
+			}
+		} else if constexpr (LIKELIHOOD == Likelihood::LIKELY) {
+			if (this->_exists) [[likely]] {
+				erase();
+			}
+		} else if constexpr (LIKELIHOOD == Likelihood::UNLIKELY) {
+			if (this->_exists) [[unlikely]] {
+				erase();
+			}
+		} else {
+			static_assert(false);
 		}
 	}
 };
@@ -150,38 +140,44 @@ public:
 
 template <class Options, bool IS_CONST>
 class SetAccessor : public Accessor<Options, IS_CONST> {
-private:
 	using Base = Accessor<Options, IS_CONST>;
+
+private:
+	template <class T>
+	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+
+private:
 	using Custom = Custom<Options>;
 	using Entry = Custom::Entry;
 
 private:
-	const Entry &entry; // can be move-only
+	const Entry &entry;
 
 private:
 	friend Custom;
-	SetAccessor(const Entry &entry, const Custom &splayTable, const auto &handle)
+	SetAccessor(
+	  const Entry &entry, MaybeConst<Custom> &splayTable, const auto &handle)
 	    : Base(splayTable, handle), entry(entry) {}
 
 public:
 	auto &insert() {
-		CHECK(!this->exists);
-		auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
-		this->splayTable._splay()(root).insert(this->entry);
+		CHECK(!this->_exists);
+		auto &root = this->_splayTable.root;
+		this->_splayTable._splay()(root).insert(this->entry);
 		return *this;
 	}
 
 	auto &maybeInsert() { return maybeInsertLikely(); }
 
 	auto &maybeInsertLikely() {
-		if (!this->exists) [[likely]] {
+		if (!this->_exists) [[likely]] {
 			insert();
 		}
 		return *this;
 	}
 
 	auto &maybeInsertUnlikely() {
-		if (!this->exists) [[unlikely]] {
+		if (!this->_exists) [[unlikely]] {
 			insert();
 		}
 		return *this;
@@ -192,9 +188,14 @@ public:
 
 template <class Options, bool IS_CONST>
 class MapAccessor : public Accessor<Options, IS_CONST> {
-private:
 	using Base = Accessor<Options, IS_CONST>;
 	using Base::Base;
+
+private:
+	template <class T>
+	using MaybeConst = std::conditional_t<IS_CONST, const T, T>;
+
+private:
 	using Custom = Custom<Options>;
 	using Value = Custom::Value;
 	using Key = Custom::Key;
@@ -204,16 +205,17 @@ private:
 
 private:
 	friend Custom;
-	MapAccessor(const Key &key, const Custom &splayTable, const auto &handle)
+	MapAccessor(
+	  const Key &key, MaybeConst<Custom> &splayTable, const auto &handle)
 	    : Base(splayTable, handle), key(key) {}
 
 public:
 	template <class... Args> auto &insert(Args &&...args) {
-		CHECK(!this->exists);
-		auto &root = const_cast<Custom::Pool::Handle &>(this->splayTable.root);
-		this->splayTable._splay()(root).insert(
+		CHECK(!this->_exists);
+		auto &root = this->_splayTable.root;
+		this->_splayTable._splay()(root).insert(
 		  Entry{this->key, Value{std::forward<Args>(args)...}});
-		const_cast<bool &>(this->exists) = true;
+		this->_exists = true;
 		return *this;
 	}
 
@@ -222,14 +224,14 @@ public:
 	}
 
 	template <class... Args> auto &maybeInsertLikely(Args &&...args) {
-		if (!this->exists) [[likely]] {
+		if (!this->_exists) [[likely]] {
 			insert(std::forward<Args>(args)...);
 		}
 		return *this;
 	}
 
 	template <class... Args> auto &maybeInsertUnlikely(Args &&...args) {
-		if (!this->exists) [[unlikely]] {
+		if (!this->_exists) [[unlikely]] {
 			insert(std::forward<Args>(args)...);
 		}
 		return *this;
@@ -243,8 +245,10 @@ private:
 	using Pool = Custom::Pool;
 
 private:
-	using Stack =
-	  DynamicArray<typename Pool::Handle>::template WithInPlaceOnly<32>;
+	// !!! this was wrong - splay can have linear height
+	// using Stack =
+	//   DynamicArray<typename Pool::Handle>::template WithInPlaceOnly<32>;
+	using Stack = DynamicArray<typename Pool::Handle>;
 	Stack stack;
 
 private:
@@ -329,6 +333,7 @@ private:
 	using Pool = Pool<Node>::template WithAllocator<Allocator>;
 
 private:
+	static_assert(!std::is_const_v<Pool>);
 	Pool pool;
 	Pool::Handle root = handle::INVALID;
 
@@ -416,10 +421,7 @@ public:
 	}
 
 private:
-	auto _splay() const {
-		auto &pool = const_cast<Pool &>(this->pool);
-		return Splay<Pool>(pool);
-	}
+	VOLTISO_FORCE_INLINE auto _splay() { return Splay<Pool>(this->pool); }
 
 public:
 	template <class... Args> Value &operator[](Args &&...args) {

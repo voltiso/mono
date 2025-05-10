@@ -25,10 +25,10 @@ struct LargeObject final {
   std::vector<int> data;
   std::string name;
 
-  explicit LargeObject(size_t size = 100, const std::string &n = "test")
-      : data(size, 1), name(n) {}
+	explicit LargeObject(int size = 100, const std::string &n = "test")
+	    : data(size, 1), name(n) {}
 
-  int sum() const {
+	int sum() const {
     int result = 0;
     for (auto val : data)
       result += val;

@@ -45,9 +45,9 @@ template <int SIZE> void BM_DynamicArray(benchmark::State &state) {
   while (state.KeepRunningBatch(count)) {
     auto array = DynamicArray<T>();
     for (int i = 0; i < count; ++i) {
-      array.push(i);
-      auto data = array.slots();
-      benchmark::DoNotOptimize(data);
+			array.maybeGrowAndPush(i);
+			auto data = array.slots();
+			benchmark::DoNotOptimize(data);
       benchmark::ClobberMemory();
     }
   }
@@ -87,10 +87,10 @@ void BM_DynamicArray_resize(benchmark::State &state) {
   while (state.KeepRunningBatch(count)) {
     auto array = DynamicArray<T>();
     array.setNumItems(count, 123);
-    auto data = &array[0].item();
-    benchmark::DoNotOptimize(data);
-    benchmark::ClobberMemory();
-  }
+		auto data = &array[0];
+		benchmark::DoNotOptimize(data);
+		benchmark::ClobberMemory();
+	}
 }
 
 void BM_DynamicArray_resize_stdVector(benchmark::State &state) {
@@ -167,10 +167,10 @@ void BM_DynamicArray_resize_nonTrivial(benchmark::State &state) {
   while (state.KeepRunningBatch(1)) {
     auto array = DynamicArray<T>();
     array.setNumItems(count);
-    auto data = &array[0].item();
-    benchmark::DoNotOptimize(data);
-    benchmark::ClobberMemory();
-  }
+		auto data = &array[0];
+		benchmark::DoNotOptimize(data);
+		benchmark::ClobberMemory();
+	}
 }
 
 void BM_DynamicArray_resize_nonTrivial_stdVector(benchmark::State &state) {
@@ -207,8 +207,8 @@ static void BM_DynamicArray_nonTrivial(benchmark::State &state) {
     int x = 1;
     for (int i = 0; i < count; ++i) {
       x = (x * x * 7 + x * 3 + 13) % 71;
-      array.push(x);
-      auto data = array.slots();
+			array.maybeGrowAndPush(x);
+			auto data = array.slots();
       benchmark::DoNotOptimize(data);
       benchmark::ClobberMemory();
     }

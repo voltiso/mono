@@ -43,7 +43,7 @@ protected:
 	// get Self from CRTP, and apply correct cvref-qualifiers
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
 	self(this auto &&self) noexcept {
-		return std::forward<decltype(self)>(self).template cast<Self>();
+		return std::forward<decltype(self)>(self).template as<Self>();
 	}
 
 public:
@@ -56,9 +56,11 @@ public:
 	  MoreOptions...>::template Without<option::Self>>;
 
 public:
+	/// cast to another class, preserving cvref-qualifiers
 	template <class NewSelfClass>
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	cast(this auto &&self) noexcept {
+	as(this auto &&self) noexcept {
+		static_assert(sizeof(NewSelfClass) == sizeof(self));
 		static_assert(!std::is_reference_v<NewSelfClass>);
 		static_assert(!std::is_const_v<NewSelfClass>);
 		static_assert(!std::is_volatile_v<NewSelfClass>);

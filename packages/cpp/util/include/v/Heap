@@ -6,6 +6,7 @@
 #include "v/Storage"
 #include "v/is_trivially_relocatable"
 #include "v/option/Item"
+#include "v/relocate"
 
 #include <v/ON>
 
@@ -33,27 +34,27 @@ public:
 	Custom(std::initializer_list<Item> items) {
 		Base::setNumSlotsAtLeast(items.size());
 		for (auto &item : items) {
-			push(std::move(item));
+			pushUnchecked(std::move(item));
 		}
 	}
 
 	template <class... Args>
 	  requires(std::is_constructible_v<Item, Args...>)
 	VOLTISO_FORCE_INLINE void push(Args &&...args) noexcept {
-		push(Item{std::forward<Args>(args)...});
+		pushUnchecked(Item{std::forward<Args>(args)...});
 	}
 
 	template <class TItem>
 	  requires(std::is_same_v<Item, std::decay_t<TItem>>)
-	VOLTISO_FORCE_INLINE void push(TItem &&item) noexcept {
-		Base::push(); // do not emplace item yet!
+	VOLTISO_FORCE_INLINE void pushUnchecked(TItem &&item) noexcept {
+		Base::pushUnchecked(); // do not emplace item yet!
 		auto index = Base::_numItems;
 		Storage<Item> *array = &Base::first() - 1;
-		while (index != 1 && array[index >> 1].item() < item) [[likely]] {
+		while (index != 1 && array[index >> 1].object() < item) [[likely]] {
 			auto nextIndex = index >> 1;
 			static_assert(is_trivially_relocatable<Item>);
 			// memcpy(array + index, array + nextIndex, sizeof(Item));
-			array[index] = std::move(array[nextIndex]);
+			array[index].relocateFrom(array[nextIndex]);
 			// std::swap(array[index], array[nextIndex]);
 			index = nextIndex;
 		}
@@ -84,47 +85,88 @@ public:
 		} else {
 			static_assert(false);
 		}
-		push(std::forward<TItem>(item));
+		pushUnchecked(std::forward<TItem>(item));
 	}
 
 	const Item &peek() const {
 		NE(Base::_numItems, 0);
-		return Base::first().item();
+		return Base::first().object();
 	}
 
-	Item pop() {
+public:
+	// relocate item from the heap
+	VOLTISO_FORCE_INLINE Item pop() noexcept
+	  requires(requires { Base::first().relocate(); })
+	{
 		NE(Base::_numItems, 0);
-		Item item = std::move(Base::first().item());
-		auto lastItem = std::move(Base::last());
+		auto item = Base::first().relocate();
+		static_assert(std::is_same_v<decltype(item), Item>);
+		_pop();
+		return item; // hoping for RVO
+	}
+
+	// if can't relocate, use move constructor
+	VOLTISO_FORCE_INLINE Item pop() noexcept
+	  requires(!requires {
+		  Base::first().relocate();
+	  } && std::is_move_constructible_v<Item>)
+	{
+		NE(Base::_numItems, 0);
+		auto item = std::move(Base::first().object());
+		_pop();
+		return item; // hoping for RVO
+	}
+
+	// (don't try copying implicitly)
+
+	// if everything fails, return `void`
+	VOLTISO_FORCE_INLINE void pop() noexcept
+	  requires(!requires {
+		  Base::first().relocate();
+	  } && !std::is_move_constructible_v<Item>)
+	{
+		NE(Base::_numItems, 0);
+		_pop();
+	}
+
+private:
+	void _pop() {
+		NE(Base::_numItems, 0);
+
+		// here we relocate the whole Storage<Item> object,
+		// because later we want to relocate it again
+		auto lastItem = relocate(Base::last());
+		static_assert(std::is_same_v<decltype(lastItem), Storage<Item>>);
+
 		Base::pop();
 		size_t index = 1;
 		// decltype(Base::_numItems) index = 1;
-		Storage<Item> *array = &Base::slots()->item() - 1;
+		Storage<Item> *array = &Base::slots()->object() - 1;
 		while ((index << 1) <= Base::_numItems) [[likely]] {
 			auto indexLeft = (index << 1);
 			auto indexRight = indexLeft + 1;
 			if (
 			  indexRight <= Base::_numItems &&
-			  array[indexLeft].item() < array[indexRight].item()) [[unlikely]] {
-				if (array[index].item() < array[indexRight].item()) [[likely]] {
-					array[index] = std::move(array[indexRight]);
-					// std::swap(array[index], array[indexRight]);
+			  array[indexLeft].object() < array[indexRight].object()) [[unlikely]] {
+				if (array[index].object() < array[indexRight].object()) [[likely]] {
+					static_assert(is_trivially_relocatable<Item>);
+					array[index].relocateFrom(array[indexRight]);
 					index = indexRight;
 				} else {
 					break;
 				}
 			} else [[likely]] {
-				if (array[index].item() < array[indexLeft].item()) [[likely]] {
-					array[index] = std::move(array[indexLeft]);
-					// std::swap(array[index], array[indexLeft]);
+				if (array[index].object() < array[indexLeft].object()) [[likely]] {
+					static_assert(is_trivially_relocatable<Item>);
+					array[index].relocateFrom(array[indexLeft]);
 					index = indexLeft;
 				} else {
 					break;
 				}
 			}
 		}
-		array[index] = std::move(lastItem);
-		return item;
+		static_assert(is_trivially_relocatable<Item>);
+		array[index].relocateFrom(lastItem);
 	}
 
 public:
@@ -150,11 +192,11 @@ public:
 
 	ConstIterator begin() const {
 		GT(this->_numItems, 0);
-		return &Base::slots()->item().item();
+		return &Base::slots()->object().object();
 	}
 	ConstIterator end() const {
 		GT(this->_numItems, 0);
-		return &Base::slots()->item().item() + this->_numItems;
+		return &Base::slots()->object().object() + this->_numItems;
 	}
 };
 } // namespace VOLTISO_NAMESPACE::heap

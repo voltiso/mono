@@ -179,8 +179,8 @@ private:
 #if VOLTISO_DEBUG_POOL
 public:
 	~Custom() {
-		std::cout << "DESTROYING POOL " << demangle(typeid(decltype(*this)))
-		          << std::endl;
+		// std::cout << "DESTROYING POOL " << demangle(typeid(decltype(*this)))
+		//           << std::endl;
 		size_t numSlotsInChain = 0;
 		auto nextSlot = anyFreeSlot;
 		while (nextSlot) {
@@ -220,12 +220,12 @@ public:
 		if (anyFreeSlot) [[likely]] {
 			auto slot = anyFreeSlot;
 			anyFreeSlot = anyFreeSlot->next;
-			new (&slot->storage) Item{std::forward<Args>(args)...};
+			slot->storage.construct(std::forward<Args>(args)...);
 			return Accessor(*this, slot);
 		} else if (remainingStart != remainingEnd) [[likely]] {
 			auto slot = remainingStart;
 			++remainingStart;
-			new (&slot->storage) Item{std::forward<Args>(args)...};
+			slot->storage.construct(std::forward<Args>(args)...);
 			return Accessor(*this, slot);
 		} else [[unlikely]] {
 			auto numNewSlots = numSlots + 1;
