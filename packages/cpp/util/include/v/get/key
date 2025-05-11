@@ -1,0 +1,66 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/entry"
+#include "v/get/entry"
+#include "v/get/stable"
+
+#include <v/ON>
+
+namespace V::_ {
+template <class T>
+[[nodiscard]] INLINE constexpr decltype(auto) optional_key(T &&t) noexcept {
+	if constexpr (requires { t.key(); }) {
+		static_assert(noexcept(t.key()));
+		return std::forward<T>(t).key();
+	} else if constexpr (requires { t.key; }) {
+		return (std::forward<T>(t).key);
+	} else if constexpr (has::entry<T>) {
+		static_assert(noexcept(optional_key(get::entry(t))));
+		return optional_key(get::entry(t));
+	} else {
+		return std::forward<T>(t);
+	}
+}
+} // namespace V::_
+
+namespace VOLTISO_NAMESPACE::has {
+template <class T>
+constexpr bool key =
+  !is::StaticError<decltype(V::_::optional_key(std::declval<T>()))>;
+} // namespace VOLTISO_NAMESPACE::has
+
+namespace V::get {
+[[nodiscard]] INLINE constexpr decltype(auto) key(auto &&item) noexcept
+  requires has::key<decltype(item)>
+{
+	return get::stable(
+	  catchStaticError(V::_::optional_key(std::forward<decltype(item)>(item))));
+}
+} // namespace V::get
+
+// !
+
+namespace V::get {
+template <class T> struct KeySpecializations {
+	using Result =
+	  std::remove_cvref_t<decltype(V::_::optional_key(std::declval<T>()))>;
+};
+
+template <class Key, class Value>
+struct KeySpecializations<V::Entry<Key, Value>> {
+	using Result = Key;
+};
+
+template <class T>
+  requires(std::is_same_v<decltype(V::_::optional_key(std::declval<T>())), T>)
+struct KeySpecializations<T> {
+	using Result = T; // preserve ref-ness
+};
+
+template <class T>
+  requires has::key<T>
+using Key = typename KeySpecializations<T>::Result;
+} // namespace V::get
+
+#include <v/OFF>

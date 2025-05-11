@@ -1,8 +1,0 @@
-#pragma once
-#include <v/_/_>
-
-#include "v/ValueOption"
-
-namespace VOLTISO_NAMESPACE::option {
-template <bool B> struct WEAK : ValueOption<B, false> {};
-} // namespace VOLTISO_NAMESPACE::option

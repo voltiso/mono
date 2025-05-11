@@ -8,7 +8,7 @@
 #include "voltiso/hasFunction/value"
 #include "voltiso/hasValue/key"
 #include "voltiso/hasValue/value"
-#include "voltiso/is_trivially_relocatable"
+#include "voltiso/is::TriviallyRelocatable"
 
 namespace VOLTISO_NAMESPACE {
 template <class _Key, class _Value> struct Entry {
@@ -24,8 +24,8 @@ template <class _Key, class _Value> struct Entry {
 };
 
 template <class Key, class Value>
-static constexpr auto is_trivially_relocatable<Entry<Key, Value>> =
-    is_trivially_relocatable<Key> && is_trivially_relocatable<Value>;
+static constexpr auto is::TriviallyRelocatable<Entry<Key, Value>> =
+    is::TriviallyRelocatable<Key> && is::TriviallyRelocatable<Value>;
 
 //
 

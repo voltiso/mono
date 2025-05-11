@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
 # Setup vcpkg script with CMake (note: should be placed before project() call)
 set(CMAKE_TOOLCHAIN_FILE
-	${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
-	CACHE STRING "Vcpkg toolchain file")
+  ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
+  CACHE STRING "Vcpkg toolchain file")
 
 project(voltiso)
 
@@ -49,48 +49,49 @@ include(GoogleTest)
 
 # add_subdirectory(util)
 add_executable(
-	voltiso-util-test
-	test.cpp
+  voltiso-util-test
+  test.cpp
 
-	util/test/Singleton.test.cpp
-	util/test/Options.test.cpp
-	util/test/Object.test.cpp
-	util/test/Entry.test.cpp
-	util/test/context.test.cpp
-	util/test/is_trivially_relocatable.test.cpp
-	util/test/Options.test.cpp
-	util/test/Handle.test.cpp
-	util/test/Pool.test.cpp
-	util/test/Owned.test.cpp
-	util/test/Shared.test.cpp
-	util/test/Any.test.cpp
-	util/test/Function.test.cpp
-	util/test/BitArray.test.cpp
-	util/test/HashMap.test.cpp
-	util/test/HashSet.test.cpp
-	util/test/SplayMap.test.cpp
-	util/test/SplaySet.test.cpp
-	util/test/Heap.test.cpp
-	util/test/Runner.test.cpp
-	util/test/Subject.test.cpp
-	util/test/DynamicArray.test.cpp
-	util/test/RawArray.test.cpp
-	util/test/ConstStringSlice.test.cpp
-	util/test/Path.test.cpp
-	util/test/Slice.test.cpp
-	util/test/Array.test.cpp
-	util/test/String.test.cpp
-	util/test/Storage.test.cpp
+  util/test/hash.test.cpp
+  util/test/entry.test.cpp
+  util/test/singleton.test.cpp
+  util/test/options.test.cpp
+  util/test/object.test.cpp
+  util/test/context.test.cpp
+  util/test/is-trivially-relocatable.test.cpp
+  util/test/options.test.cpp
+  util/test/handle.test.cpp
+  util/test/owned.test.cpp
+  util/test/shared.test.cpp
+  util/test/any.test.cpp
+  util/test/function.test.cpp
+  util/test/bit-array.test.cpp
+  util/test/hash-map.test.cpp
+  util/test/hash-set.test.cpp
+  util/test/splay-map.test.cpp
+  util/test/splay-set.test.cpp
+  util/test/heap.test.cpp
+  util/test/subject.test.cpp
+  util/test/dynamic-array.test.cpp
+  util/test/raw-array.test.cpp
+  util/test/const-string-slice.test.cpp
+  util/test/path.test.cpp
+  util/test/slice.test.cpp
+  util/test/string.test.cpp
+  util/test/storage.test.cpp
+  util/test/array.test.cpp
+  util/test/runner.test.cpp
+  util/test/pool.test.cpp
 
-	# util/test/State.test.cpp # TODO
+  # util/test/state.test.cpp # TODO
 
-	# util/test/_InPlace.test.cpp # deprecated for now
+  # util/test/_in-place.test.cpp # deprecated for now
 )
 
 # google benchmark
 find_package(benchmark REQUIRED)
 target_link_libraries(voltiso-util-test benchmark::benchmark glog::glog
-	GTest::gtest cpptrace::cpptrace)
+  GTest::gtest cpptrace::cpptrace)
 target_link_libraries(voltiso-util-test debug stdc++exp)
 
 # GTest::gtest_main benchmark::benchmark_main

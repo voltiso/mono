@@ -1,7 +1,6 @@
-#include "common.hpp"
+#include <benchmark/benchmark.h>
 
 #include <gflags/gflags.h>
-#include <benchmark/benchmark.h>
 
 #include <cpptrace/cpptrace.hpp>
 #include <cpptrace/utils.hpp>

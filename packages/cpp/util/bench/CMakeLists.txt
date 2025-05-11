@@ -6,14 +6,14 @@ add_executable(
 	bench.cpp
 
 	allocator.bench.cpp
-	Array.bench.cpp
-	DynamicArray.bench.cpp
-	Owned.bench.cpp
-	Shared.bench.cpp
-	HashSet.bench.cpp
+	array.bench.cpp
+	dynamic-array.bench.cpp
+	owned.bench.cpp
+	shared.bench.cpp
 	map.bench.cpp
-	Function.bench.cpp
-	Heap.bench.cpp
+	function.bench.cpp
+	heap.bench.cpp
+	hash-set.bench.cpp
 )
 
 target_link_libraries(voltiso-util-bench benchmark::benchmark gflags::gflags glog::glog

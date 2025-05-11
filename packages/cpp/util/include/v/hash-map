@@ -1,0 +1,9 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/entry"
+#include "v/hash-table"
+
+namespace VOLTISO_NAMESPACE {
+template <class Key, class Value> using HashMap = HashTable<Entry<Key, Value>>;
+} // namespace VOLTISO_NAMESPACE

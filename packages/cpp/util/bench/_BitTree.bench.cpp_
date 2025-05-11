@@ -1,7 +1,7 @@
 #include <benchmark/benchmark.h>
 
 #include <v/BitTree>
-#include <v/is_trivially_relocatable>
+#include <v/is::TriviallyRelocatable>
 #include <v/min>
 #include <v/storage/Storage>
 

@@ -1,0 +1,36 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::_ {
+template <class T>
+[[nodiscard]] constexpr std::optional<std::size_t>
+optional_numSlots(const T &t) noexcept {
+	if constexpr (requires { t.numSlots(); }) {
+		return t.numSlots();
+	} else if constexpr (requires { t.numSlots; }) {
+		return t.numSlots;
+	} else if constexpr (requires { t.NUM_SLOTS; }) {
+		return t.NUM_SLOTS;
+	} else if constexpr (requires { t.capacity(); }) {
+		return t.capacity();
+	} else {
+		return std::nullopt;
+	}
+}
+} // namespace VOLTISO_NAMESPACE::_
+
+namespace VOLTISO_NAMESPACE::get {
+[[nodiscard]] constexpr std::size_t numSlots(const auto &t) noexcept {
+	return VOLTISO_NAMESPACE::_::optional_numSlots(t).value();
+}
+} // namespace VOLTISO_NAMESPACE::get
+
+namespace VOLTISO_NAMESPACE::has {
+constexpr auto numSlots(const auto &t) noexcept {
+	return VOLTISO_NAMESPACE::_::optional_numSlots(t).hasValue();
+}
+} // namespace VOLTISO_NAMESPACE::has
+
+#include <v/OFF>

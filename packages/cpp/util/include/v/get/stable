@@ -1,0 +1,41 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace V::get {
+
+/**
+ * @brief Ensures a “stable” value or reference from an input expression.
+ *
+ * If the argument is an lvalue reference, it is perfectly forwarded.
+ * Otherwise, the argument is cast (and thus moved) into a prvalue of
+ * its decayed type, avoiding dangling references.
+ *
+ * @tparam Input type deduced for the input expression result.
+ * @param input The value or reference to stabilize.
+ * @return Either a forwarded lvalue reference or a prvalue of the
+ *         moved-out input.
+ */
+template <typename Input>
+[[nodiscard]] constexpr decltype(auto) stable(Input &&input) noexcept {
+	if constexpr (std::is_lvalue_reference_v<Input>) {
+		return std::forward<Input>(input);
+	} else {
+		// strip rvalue reference
+		// (also strip const, volatile)
+		using TargetType = std::remove_cvref_t<Input>;
+		return static_cast<TargetType>(std::forward<Input>(input));
+	}
+}
+} // namespace V::get
+
+// !
+
+namespace V::get {
+template <class T>
+using Stable = std::conditional_t<
+  std::is_lvalue_reference_v<T>, T, std::remove_reference_t<T>>;
+} // namespace V::get
+
+#include <v/OFF>

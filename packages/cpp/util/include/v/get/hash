@@ -1,40 +1,61 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/has"
+// #include "v/demangle"
+#include "v/get/stable"
+#include "v/static-error"
 
 #include <functional>
 
-namespace VOLTISO_NAMESPACE::get {
-template <hasFunction::hash T>
-constexpr auto hash(const T &t) noexcept
-// ! simply force noexcept - bad design to have throwing hash function
-// noexcept(noexcept(t.hash()))
+#include <v/ON>
+
+namespace V::_ {
+template <class T> constexpr auto optional_hash(T &&t) noexcept {
+	if constexpr (std::is_pointer_v<std::remove_reference_t<T>>) {
+		// ! hash raw pointers
+		using Target = std::remove_pointer_t<std::remove_reference_t<T>>;
+		// std::cout << "target is " << demangle(typeid(Target)) << std::endl;
+		// std::cout << "DIVISION by " << sizeof(Target) << std::endl;
+		return std::bit_cast<std::uintptr_t>(t) / sizeof(Target); // ! divide here !
+		// ! node: this division causes 2.80ns -> 1.74ns speedup
+	} else if constexpr (std::is_integral_v<std::remove_reference_t<T>>) {
+		return std::forward<T>(t);
+	} else if constexpr (requires { t.hash(); }) {
+		static_assert(noexcept(t.hash()));
+		return std::forward<T>(t).hash();
+	} else if constexpr (requires { t.hash; }) {
+		return (std::forward<T>(t).hash);
+	} else if constexpr (requires { std::hash<T>{}(t); }) {
+		static_assert(noexcept(std::hash<T>{}(t)));
+		return std::hash<T>{}(std::forward<T>(t));
+		// } else if constexpr (std::is_reference_v<T>) {
+		// 	// fringe case when people want to hash references
+		// 	// i.e. `get::hash<T&>(...)` - has to be explicit
+		// 	static_assert(noexcept(optional_hash(&t)));
+		// 	return optional_hash(&t);
+	} else {
+		return STATIC_ERROR;
+		// static_assert(false, "get::hash(t) - unable to figure out how to get
+		// hash");
+	}
+}
+} // namespace V::_
+
+namespace V::has {
+template <class T>
+constexpr bool hash =
+  !is::StaticError<decltype(V::_::optional_hash(std::declval<T>()))>;
+} // namespace V::has
+
+// !
+
+namespace V::get {
+template <class T>
+[[nodiscard]] INLINE constexpr decltype(auto) hash(T &&item) noexcept
+  requires(has::hash<decltype(item)>)
 {
-	static_assert(noexcept(t.hash()));
-	return t.hash();
+	return get::stable(catchStaticError(V::_::optional_hash(item)));
 }
+} // namespace V::get
 
-template <hasValue::hash T> constexpr auto hash(const T &t) noexcept {
-	return t.hash;
-}
-
-// ! if std::hash is able to hash this, use its implementation
-template <class T>
-  requires requires(T t) {
-	  std::hash<T>{}(t);
-	  // { std::hash<T>{}(t) } -> std::convertible_to<std::size_t>;
-  }
-constexpr auto hash(const T &t) noexcept(noexcept(std::hash<T>{}(t))) {
-	return std::hash<T>{}(t);
-}
-
-// ! hash references as pointers
-// note: this requires explicit `hash<T&>(...)` call
-template <class T>
-  requires(std::is_reference_v<T>)
-constexpr auto hash(const T &t) noexcept {
-	static_assert(noexcept(hash(&t)));
-	return hash(&t);
-}
-} // namespace VOLTISO_NAMESPACE::get
+#include <v/OFF>

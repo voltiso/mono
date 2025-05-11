@@ -1,0 +1,9 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/is/trivially-relocatable"
+
+namespace VOLTISO_NAMESPACE::concepts {
+template <class T>
+concept TriviallyRelocatable = is::TriviallyRelocatable<T>;
+} // namespace VOLTISO_NAMESPACE::concepts

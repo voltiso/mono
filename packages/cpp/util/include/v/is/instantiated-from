@@ -1,0 +1,14 @@
+#pragma once
+#include "v/_/0-namespace.hpp" // IWYU pragma: keep
+
+namespace VOLTISO_NAMESPACE::is {
+
+template <class T, template <class...> class U>
+inline constexpr bool InstantiatedFrom = false;
+
+template <template <class...> class U, class... Vs>
+inline constexpr bool InstantiatedFrom<U<Vs...>, U> = true;
+
+// static_assert(is::InstantiatedFrom<std::vector<int>, std::vector>);
+
+} // namespace VOLTISO_NAMESPACE::is

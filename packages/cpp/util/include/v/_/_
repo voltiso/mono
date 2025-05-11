@@ -1,10 +1,4 @@
 #pragma once
-#include <v/_/_> // self
-
-#ifndef VOLTISO_NAMESPACE
-	#pragma message("VOLTISO_NAMESPACE not defined - defaulting to `v`.")
-	#define VOLTISO_NAMESPACE v
-#endif
 
 #ifndef VOLTISO_DEBUG
 	#ifdef NDEBUG
@@ -30,20 +24,14 @@
 	#include "v/demangle"
 #endif
 
-// Define FORCE_INLINE macro based on compiler
-#if defined(_MSC_VER) // Microsoft Visual C++
-	#define VOLTISO_FORCE_INLINE __forceinline inline
-#elif defined(__GNUC__) || defined(__clang__) // GCC or Clang
-	#define VOLTISO_FORCE_INLINE __attribute__((always_inline)) inline
-// Note: Adding 'inline' keyword as well is good practice with the attribute
-#else                                 // Other compilers
-	#define VOLTISO_FORCE_INLINE inline // Fallback to standard inline hint
-#endif
+#include "v/_/0-force-inline.hpp" // IWYU pragma: export
 
 // v::check::lt(a, 10) << "a must be less than 10, got {} instead" << a;
 
 // auto rawMessage = "a must be less than 10" r;
 // auto message = "a must be less than 10, got % instead" f % a;
+
+#include "v/_/0-namespace.hpp" // IWYU pragma: export
 
 namespace VOLTISO_NAMESPACE {
 #ifdef NDEBUG
@@ -63,6 +51,4 @@ inline constexpr bool IS_DEBUG_BUILD = true;
 // 	#endif
 // #endif
 
-// !
-
-#include "v/_/operators.hpp" // IWYU pragma: keep
+#include "v/_/0-operators.hpp" // IWYU pragma: export

@@ -1,9 +1,0 @@
-#pragma once
-#include <v/_/_>
-
-#include "v/concepts/Path"
-
-namespace VOLTISO_NAMESPACE::concepts {
-template <class T>
-concept RelativePath = Path<T> && !T::IS_ABSOLUTE;
-} // namespace VOLTISO_NAMESPACE::concepts

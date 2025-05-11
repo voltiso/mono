@@ -2,7 +2,7 @@
 #include <type_traits>
 #include <v/_/_>
 
-#include "v/Array"
+#include "v/array"
 #include "v/HashMap"
 #include "v/Object"
 #include "v/Pool"

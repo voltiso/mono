@@ -1,0 +1,145 @@
+#pragma once
+
+#include "v/is/instantiated-from"
+#include "v/is/trivially-relocatable"
+#include "v/relocate"
+#include "v/storage"
+
+#include <type_traits>
+#include <utility>
+
+#include <v/ON>
+
+//
+
+namespace VOLTISO_NAMESPACE {
+/**
+ * @brief Provides type-erasure for `Owned` and `Shared` smart pointers.
+ *
+ * Works with any magic pointer type that:
+ *  - has `sizeof(void *)` size
+ *  - can be safely bit_cast to `T*` (i.e. shared pointer must have T as first
+ * in its control block)
+ */
+template <class Item = void> class Any {
+private:
+	using Storage = Storage<Item *>;
+	using Deleter = void (*)(Storage &);
+
+private:
+	Storage _storage = {};
+	Deleter _deleter = {};
+
+public:
+	~Any() {
+		// deleter is nullptr if object is moved-from
+		if (_deleter) [[likely]] {
+			_deleter(this->_storage);
+		}
+	}
+
+public:
+	// reference-semantics (empty Ref is forbidden)
+	Any() = delete;
+
+	// won't work with unique pointers (`Owned`)
+	Any(const Any &) = delete;
+
+	Any(Any &&other)
+	    : _storage(relocate(other._storage)), _deleter(other._deleter) {
+		NE(this, &other);
+		other._deleter = nullptr;
+	}
+
+	template <class Other>
+	  requires(!is::InstantiatedFrom<Other, Any>)
+	Any(Other &&other) {
+		static_assert(sizeof(Other) == sizeof(this->_storage));
+		new (&this->_storage) Other(std::move(other));
+		_deleter = [](auto &storage) {
+			reinterpret_cast<Other &>(storage).~Other();
+		};
+	}
+
+public:
+	// assign to underlying value (reference semantics)
+	template <class OtherItem>
+	  requires(
+	    std::is_assignable_v<Item &, OtherItem> &&
+	    // Only check the second condition if OtherItem actually has operator*
+	    (!(requires(OtherItem t) {
+		    { *t };
+	    }) ||
+	     !std::is_assignable_v<Item &, decltype(*std::declval<OtherItem>())>))
+	Any &operator=(OtherItem &&other) {
+		target() = std::forward<OtherItem>(other);
+		return *this;
+	}
+
+	template <
+	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+	TT &target() const {
+		CHECK(_storage.object());
+		return *_storage.object();
+	}
+
+	Item *operator->() const { return _storage.object(); }
+
+	template <
+	  class TT = Item, std::enable_if_t<!std::is_same_v<TT, void>> * = nullptr>
+	TT &operator*() const {
+		return target();
+	}
+
+	explicit operator bool() const { return _storage.object(); }
+
+	template <class TT = Item>
+	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
+	operator TT &() const {
+		return target();
+	}
+
+	template <class TT = Item>
+	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
+	operator const TT &() const {
+		return target();
+	}
+
+	template <class TT = Item>
+	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
+	operator TT &&() const {
+		return (Item &&)(**this);
+	}
+
+	template <class TT = Item>
+	  requires(std::is_same_v<TT, Item> && !std::is_same_v<Item, void>)
+	operator const TT &&() const {
+		return (Item &&)(**this);
+	}
+
+public:
+	[[nodiscard]] Any<const Item> &&freeze() && {
+		return reinterpret_cast<Any<const Item> &&>(*this);
+	}
+
+	[[nodiscard]] const Any<const Item> &&freeze() const && {
+		return reinterpret_cast<const Any<const Item> &&>(*this);
+	}
+
+	const Any<const Item> &frozen() const && {
+		static_assert(false, "Ref::frozen() works only for lvalue references");
+	}
+
+	[[nodiscard]] Any<const Item> &frozen() & {
+		return reinterpret_cast<Any<const Item> &>(*this);
+	}
+
+	[[nodiscard]] const Any<const Item> &frozen() const & {
+		return reinterpret_cast<const Any<const Item> &>(*this);
+	}
+};
+
+template <class T> constexpr bool is::TriviallyRelocatable<Any<T>> = true;
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

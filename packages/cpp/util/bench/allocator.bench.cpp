@@ -3,9 +3,8 @@
 // ! we're not properly freeing memory
 #define VOLTISO_DEBUG_POOL false
 
-#include <v/Pool>
-#include <v/Singleton>
-// #include <v/allocator/Splay>
+#include <v/pool>
+#include <v/singleton>
 
 #include <cstddef>
 #include <iostream>

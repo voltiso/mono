@@ -3,8 +3,8 @@
 
 #include <v/allocator/Malloc>
 #include <v/has>
-#include <v/is_instantiated_from>
-#include <v/is_trivially_relocatable>
+#include <v/is::InstantiatedFrom>
+#include <v/is::TriviallyRelocatable>
 #include <v/override>
 #include <v/singleton>
 #include <v/storage/Storage>
@@ -49,7 +49,7 @@ template <class Options>
 using BaseWithBytesOrItems = std::conditional_t<
   std::is_same_v<typename Options::Item, void>, BaseWithBytes<Options>,
   std::conditional_t<
-    is_instantiated_from<typename Options::Item, Storage>,
+    is::InstantiatedFrom<typename Options::Item, Storage>,
     BaseWithSlots<Options>, BaseWithItems<Options>>>;
 template <class Options>
 struct DataMembersWithoutSize : BaseWithBytesOrItems<Options> {};
@@ -72,7 +72,7 @@ using DataMembers = std::conditional_t<
     std::is_same_v<typename Options::Item, void>,
     DataMembersWithNumBytes<Options>,
     std::conditional_t<
-      is_instantiated_from<typename Options::Item, Storage>,
+      is::InstantiatedFrom<typename Options::Item, Storage>,
       DataMembersWithNumSlots<Options>, DataMembersWithNumItems<Options>>>,
   DataMembersWithoutSize<Options>>;
 
@@ -261,10 +261,10 @@ public:
 	void setNumBytes(size_t newNumBytes) {
 		// simply don't allow to avoid accidental slow copying
 		static_assert(
-		  is_trivially_relocatable<Item>,
+		  is::TriviallyRelocatable<Item>,
 		  "Allocation::setNumBytes(): Item must be marked as trivially "
 		  "relocatable using "
-		  "`is_trivially_relocatable<Item> = true`");
+		  "`is::TriviallyRelocatable<Item> = true`");
 		_::getData(*this) =
 		  Options::Allocator::setNumBytes(_::getData(*this), newNumBytes);
 		if constexpr (IS_WITH_SIZE) {

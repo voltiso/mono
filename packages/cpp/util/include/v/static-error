@@ -1,0 +1,79 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+
+// unique type signaling substitution failure, or other static error
+struct StaticError {
+	consteval bool operator==(const StaticError &) const { return true; }
+
+	// private:
+	consteval StaticError() = default;
+	// static consteval StaticError instance() {
+	// 	static StaticError instance;
+	// 	return instance;
+	// }
+};
+
+// unique type signaling substitution failure, or other static error
+constexpr StaticError STATIC_ERROR;
+
+// !
+
+template <class T>
+  requires(!std::is_same_v<T, StaticError>)
+consteval bool operator==(const T &, StaticError) {
+	return false;
+}
+
+template <class T>
+  requires(!std::is_same_v<T, StaticError>)
+consteval bool operator==(StaticError, const T &) {
+	return false;
+}
+
+// !
+
+namespace is {
+template <class T>
+  requires(std::is_same_v<std::remove_cvref_t<T>, StaticError>)
+consteval bool staticError(T) {
+	return true;
+}
+consteval bool staticError(...) { return false; }
+} // namespace is
+
+// !
+
+namespace is {
+template <class T>
+constexpr bool StaticError =
+  std::is_same_v<std::remove_cvref_t<T>, V::StaticError>;
+} // namespace is
+// !
+
+template <auto VALUE>
+  requires(!std::is_same_v<std::remove_cvref_t<decltype(VALUE)>, StaticError>)
+constexpr auto CATCH_STATIC_ERROR = VALUE;
+
+template <class Type>
+constexpr decltype(auto) catchStaticError(Type &&value)
+  requires(!std::is_same_v<std::remove_cvref_t<Type>, StaticError>)
+{
+	return std::forward<Type>(value);
+}
+
+template <class Type>
+  requires(!std::is_same_v<std::remove_cvref_t<Type>, StaticError>)
+using catch_static_error = Type;
+
+} // namespace VOLTISO_NAMESPACE
+
+// namespace VOLTISO_NAMESPACE {
+// consteval bool isStaticError(StaticError) { return true; }
+// consteval bool isStaticError(...) { return false; }
+// } // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

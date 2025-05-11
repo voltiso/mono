@@ -1,0 +1,45 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/get/stable"
+#include "v/static-error"
+
+#include <v/ON>
+
+namespace V::_ {
+template <class T>
+[[nodiscard]] INLINE constexpr decltype(auto) optional_entry(T &&t) noexcept {
+	if constexpr (requires { t.entry(); }) {
+		static_assert(noexcept(t.entry()));
+		return std::forward<T>(t).entry();
+	} else if constexpr (requires { t.entry; }) {
+		return (std::forward<T>(t).entry);
+	} else {
+		return STATIC_ERROR;
+	}
+}
+} // namespace V::_
+
+namespace V::has {
+template <class T>
+constexpr bool entry =
+  !is::StaticError<decltype(V::_::optional_entry(std::declval<T>()))>;
+} // namespace V::has
+
+// !
+
+namespace V::get {
+[[nodiscard]] INLINE constexpr decltype(auto) entry(auto &&item) noexcept
+  requires has::entry<decltype(item)>
+{
+	return get::stable(catchStaticError(V::_::optional_entry(item)));
+}
+} // namespace V::get
+
+namespace V::get {
+template <class T>
+using Entry =
+  std::remove_cvref_t<decltype(V::_::optional_entry(std::declval<T>()))>;
+} // namespace V::get
+
+#include <v/OFF>

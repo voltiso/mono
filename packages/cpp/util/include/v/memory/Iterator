@@ -2,128 +2,56 @@
 #include <v/_/_>
 
 #include <cstddef>
-#include <type_traits>
+
+#include <v/ON>
 
 namespace VOLTISO_NAMESPACE::memory {
+template <class TItem> class Iterator {
+	using Self = Iterator;
 
-template <class _Item, class Derived> class IteratorCrtp {
 public:
-  using Self = IteratorCrtp;
-  using Item = _Item;
-  // using Item = Derived::Item;
+	using Item = TItem;
 
-  Item *item; // uninitialized
+	Item *target; // uninitialized
 
-  IteratorCrtp() { static_assert(std::is_final_v<Derived>); }
+	INLINE Iterator(Item *target) noexcept : target(target) {}
 
-  IteratorCrtp(Item *item) : item(item) {
-    static_assert(std::is_final_v<Derived>);
-  }
+	VOLTISO_FORCE_INLINE auto operator<=>(const Self &other) const = default;
 
-  bool operator==(const Self &other) const = default;
-  bool operator!=(const Self &other) const = default;
+	VOLTISO_FORCE_INLINE auto &operator++() noexcept {
+		++target;
+		return *this;
+	}
 
-  auto &operator++() {
-    ++item;
-    return *this;
-  }
+	VOLTISO_FORCE_INLINE auto &operator--() noexcept {
+		--target;
+		return *this;
+	}
 
-  auto &operator--() {
-    --item;
-    return *this;
-  }
+	VOLTISO_FORCE_INLINE auto &operator+=(std::ptrdiff_t difference) noexcept {
+		target += difference;
+		return *this;
+	}
 
-  auto &operator+=(std::ptrdiff_t difference) {
-    item += difference;
-    return *this;
-  }
+	VOLTISO_FORCE_INLINE auto
+	operator+(std::ptrdiff_t difference) const noexcept {
+		return Self{target + difference};
+	}
 
-  auto operator+(std::ptrdiff_t difference) const {
-    return Derived(item + difference);
-  }
+	VOLTISO_FORCE_INLINE auto &operator-=(std::ptrdiff_t difference) noexcept {
+		target -= difference;
+		return *this;
+	}
 
-  auto &operator-=(std::ptrdiff_t difference) {
-    item -= difference;
-    return *this;
-  }
+	VOLTISO_FORCE_INLINE auto
+	operator-(std::ptrdiff_t difference) const noexcept {
+		return Self{target - difference};
+	}
 
-  auto operator-(std::ptrdiff_t difference) const {
-    return Derived(item - difference);
-  }
-
-  Item &operator*() const { return *item; }
-  Item *operator->() const { return item; }
-};
-
-//
-
-template <class _Item>
-class Iterator final : public IteratorCrtp<_Item, Iterator<_Item>> {
-public:
-  using Self = Iterator;
-  using Base = IteratorCrtp<_Item, Iterator<_Item>>;
-
-  using Item = _Item;
-
-  using Base::Base;
-};
-
-//
-
-//
-
-//
-
-template <class _Item, class Derived> class ConstIteratorCrtp {
-public:
-  using Item = _Item;
-
-  using Self = ConstIteratorCrtp;
-
-  const Item *item;
-
-  ConstIteratorCrtp(const Item *item) : item(item) {}
-
-  bool operator==(const Self &other) const = default;
-  bool operator!=(const Self &other) const = default;
-
-  auto &operator++() {
-    ++item;
-    return *this;
-  }
-
-  auto &operator+=(std::ptrdiff_t difference) {
-    item += difference;
-    return *this;
-  }
-
-  auto operator+(std::ptrdiff_t difference) const {
-    return Derived(item + difference);
-  }
-
-  auto &operator-=(std::ptrdiff_t difference) {
-    item -= difference;
-    return *this;
-  }
-
-  auto operator-(std::ptrdiff_t difference) const {
-    return Derived(item - difference);
-  }
-
-  const Item &operator*() const { return *item; }
-  const Item *operator->() const { return item; }
-};
-
-template <class _Item>
-class ConstIterator final
-    : public ConstIteratorCrtp<_Item, ConstIterator<_Item>> {
-public:
-  using Self = ConstIterator;
-  using Base = ConstIteratorCrtp<_Item, ConstIterator<_Item>>;
-
-  using Item = _Item;
-
-  using Base::Base;
+	VOLTISO_FORCE_INLINE Item &operator*() noexcept { return *target; }
+	VOLTISO_FORCE_INLINE Item *operator->() noexcept { return target; }
 };
 
 } // namespace VOLTISO_NAMESPACE::memory
+
+#include <v/OFF>

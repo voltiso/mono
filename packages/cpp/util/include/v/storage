@@ -1,0 +1,163 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/_/storage.forward.hpp"
+
+#include "v/_/array.hpp"
+#include "v/_/object.forward.hpp"
+#include "v/is/trivially-relocatable"
+#include "v/object"
+#include "v/options"
+
+// #include "glog/logging.h"
+
+#include <cstddef>
+#include <cstring>
+#include <initializer_list>
+
+// namespace VOLTISO_NAMESPACE::storage {
+// // To replace `std::aligned_storage`
+// // https://stackoverflow.com/a/71828512/1123898
+// template <size_t _SIZE, size_t ALIGN> struct Custom {
+// 	static constexpr size_t SIZE = _SIZE;
+// 	alignas(ALIGN) Array<std::byte, SIZE> data;
+// };
+// } // namespace VOLTISO_NAMESPACE::storage
+
+namespace VOLTISO_NAMESPACE {
+// To replace `std::aligned_storage`
+// https://stackoverflow.com/a/71828512/1123898
+// ⚠️ Remember to call `.destroy()` if you constructed something
+template <class TObject> class Storage : public Object<Options<>> {
+public:
+	alignas(TObject) Array<std::byte, sizeof(TObject)> bytes;
+
+	// union {
+	// 	Array<std::byte, sizeof(TObject)> bytes;
+	// 	TObject object;
+	// };
+
+	[[nodiscard]] constexpr auto &object() noexcept {
+		return reinterpret_cast<TObject &>(bytes);
+	}
+
+	[[nodiscard]] constexpr const auto &object() const noexcept {
+		return reinterpret_cast<const TObject &>(bytes);
+	}
+
+	Storage() = default;
+
+	constexpr Storage(std::initializer_list<std::byte> bytes) noexcept
+	    : bytes(bytes) {}
+
+	Storage(const Storage &) = delete;
+
+	// // we do not know if object is constructed
+	// consteval Storage(const Storage &other) { // = delete;
+	// 	// ! Note: we can't just `delete`, because then compiler may use memcpy.
+	// 	// `std::is_trivially_copyable` can be true with deleted copy constructors
+	// 	// static_assert(false, "Cannot implicitly copy Storage<T>");
+	// 	throw "Cannot implicitly copy Storage<T>";
+	// }
+	Storage &operator=(const Storage &other) = delete;
+
+	// ! (1) if there is TObject::relocateFrom(Storage) - use it
+	// pre-condition: this object constructed
+	// post-condition: this object NOT constructed
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr TObject
+	relocate() noexcept(noexcept(TObject::relocateFrom(*this)))
+	  requires requires { TObject::relocateFrom(*this); }
+	{
+		return TObject::relocateFrom(*this);
+	}
+
+	// ! (2) if std::bit_cast would work, use it
+	// pre-condition: this object constructed
+	// post-condition: this object NOT constructed
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr TObject relocate() noexcept
+	  requires(
+	    !requires { TObject::relocateFrom(*this); } &&
+	    is::TriviallyRelocatable<TObject> &&
+	    // ! unfortunately, even the `__builtin_bit_cast` forces this:
+	    std::is_trivially_copyable_v<TObject>)
+	{
+		// simply bit-copy this
+		// #if VOLTISO_HAS_BUILTIN_BIT_CAST
+		// 		return __builtin_bit_cast(TObject, bytes);
+		// #else
+		// std::bit_cast requires TObject to be trivially copyable
+		return std::bit_cast<TObject>(bytes);
+		// #endif
+	}
+
+	// ! (3) if `std::bit_cast` would NOT work, try `memcpy`
+	// (this other approach unfortunately requires
+	// `std::is_trivially_default_constructible`)
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr TObject relocate() noexcept
+	  requires(
+	    !requires { TObject::relocateFrom(*this); } &&
+	    is::TriviallyRelocatable<TObject> &&
+	    !std::is_trivially_copyable_v<TObject> &&
+	    std::is_trivially_default_constructible_v<TObject>)
+	{
+		TObject result; // we want trivial default constructor here
+		std::memcpy((void *)&result, &bytes, sizeof(TObject));
+		return result; // ! hoping for RVO
+	}
+
+	// pre-condition: other object constructed
+	// post-condition: other object NOT constructed
+	VOLTISO_FORCE_INLINE constexpr auto &relocateFrom(Storage &other) noexcept
+	  requires(is::TriviallyRelocatable<TObject>)
+	{
+		std::memcpy(this, &other, sizeof(Storage));
+		return *this;
+	}
+
+	// TODO: we can add specialization for TObject::relocate() if provided
+
+	// // ...but enable back for trivially relocatable items
+	// constexpr Storage(Storage &&other) noexcept
+	//   requires(is::TriviallyRelocatable<TObject>)
+	// {
+	// 	static_assert(sizeof(Storage) == sizeof(TObject));
+	// 	std::memcpy(this, &other, sizeof(Storage));
+	// }
+	// Storage &operator=(Storage &&other) noexcept
+	//   requires(is::TriviallyRelocatable<TObject>)
+	// {
+	// 	static_assert(sizeof(Storage) == sizeof(TObject));
+	// 	std::memcpy(this, &other, sizeof(Storage));
+	// 	return *this;
+	// }
+
+	// // bitwise compare
+	// constexpr bool operator==(const Storage &other) const noexcept {
+	// 	return std::memcmp(this, &other, sizeof(Storage)) == 0;
+	// }
+
+	// constexpr bool operator<(const Storage &other) const noexcept {
+	// 	return std::memcmp(this, &other, sizeof(Storage)) < 0;
+	// }
+
+	// ⚠️ Remember to call `.destroy()` if you constructed
+	// something
+	template <class... Args>
+	void construct(Args &&...args) noexcept(
+	  std::is_nothrow_constructible_v<TObject, Args...>) {
+		new (&bytes) TObject{std::forward<Args>(args)...};
+	}
+
+	// ⚠️ Remember to call `.destroy()` if you constructed something
+	void destroy() noexcept(std::is_nothrow_destructible_v<TObject>) {
+		object().~TObject();
+	}
+}; // class Storage
+} // namespace VOLTISO_NAMESPACE
+
+//
+namespace VOLTISO_NAMESPACE {
+template <class T>
+constexpr bool is::TriviallyRelocatable<Storage<T>> =
+  is::TriviallyRelocatable<T>;
+} // namespace VOLTISO_NAMESPACE

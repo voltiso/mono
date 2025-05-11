@@ -41,8 +41,9 @@
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
 
 	"clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
-	/** --------------------------------------------------------- */
 
+	/** --------------------------------------------------------- */
+	//
 	// Project-specific settings
 	//
 	"cmake.buildDirectory": "${workspaceFolder}/packages/cpp/build",
@@ -53,11 +54,16 @@
 	"[cpp]": {
 		"editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
 	},
+	"[cmake]": {
+		"editor.defaultFormatter": "KylinIdeTeam.cmake-intellisence"
+	},
 
 	"files.associations": {
 		"**/include/voltiso/**/*": "cpp",
 		"*.json": "jsonc"
 	},
+
+	// !
 
 	/** https://2ality.com/2021/06/typescript-esm-nodejs.html */
 	// "javascript.preferences.importModuleSpecifierEnding": "js", // Needed for proper esm

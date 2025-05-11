@@ -1,20 +1,78 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/Extent"
-#include "v/get/EXTENT"
+#include "v/extent"
+#include "v/static-error"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::_ {
+// ! static EXTENT
+// can be any `Extent` value
+template <class TT>
+constexpr auto optional_EXTENT = [] {
+	using T = std::remove_cvref_t<TT>;
+	if constexpr (requires { T::EXTENT; }) {
+		return T::EXTENT;
+	} else if constexpr (std::is_array_v<T>) {
+		return std::extent_v<T>;
+	} else if constexpr (requires { std::tuple_size<T>::value; }) {
+		return std::tuple_size_v<T>;
+	} else if constexpr (
+	  requires(T t) { t.extent(); } || requires(T t) { t.extent; }) {
+		return Extent::DYNAMIC;
+	} else {
+		// static_assert(false);
+		// static_assert(DEPENDENT_FALSE<T>);
+		return STATIC_ERROR;
+	}
+}();
+} // namespace VOLTISO_NAMESPACE::_
+
+namespace V::has {
+template <class T>
+constexpr bool EXTENT = !is::staticError(_::optional_EXTENT<T>);
+} // namespace V::has
+
+// auto xx = v::has::EXTENT<int>;
 
 namespace VOLTISO_NAMESPACE::get {
+template <class T>
+  requires has::EXTENT<T>
+constexpr auto EXTENT = Extent{V::_::optional_EXTENT<T>};
+} // namespace VOLTISO_NAMESPACE::get
 
-template <class T> [[nodiscard]] constexpr Extent extent(const T &t) noexcept {
+//----------------------------------------------------------------------------//
+
+namespace VOLTISO_NAMESPACE::_ {
+// ! dynamic extent
+// can never be `Extent::DYNAMIC` - always a concrete value
+template <class T>
+[[nodiscard]] constexpr decltype(auto) optional_extent(T &&t) noexcept {
 	if constexpr (requires { t.extent(); }) {
-		return t.extent();
-	} else if constexpr (requires { get::EXTENT<T>; }) {
+		return std::forward<T>(t).extent();
+	} else if constexpr (has::EXTENT<T>) {
 		static_assert(get::EXTENT<T> != Extent::DYNAMIC);
 		return get::EXTENT<T>;
 	} else {
-		static_assert(false, "Extent not known");
+		return STATIC_ERROR;
 	}
 }
+} // namespace VOLTISO_NAMESPACE::_
 
+namespace V::has {
+template <class T>
+constexpr bool extent =
+  !is::StaticError<decltype(_::optional_extent(std::declval<T>()))>;
+} // namespace V::has
+
+namespace VOLTISO_NAMESPACE::get {
+template <class T>
+constexpr Extent extent(const T &t) noexcept
+  requires has::extent<T>
+{
+	return V::_::optional_extent(t);
+}
 } // namespace VOLTISO_NAMESPACE::get
+
+#include <v/OFF>

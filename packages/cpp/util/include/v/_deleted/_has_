@@ -1,94 +1,42 @@
 #pragma once
-#include <v/_/_>
 
-#include <experimental/type_traits>
+// note: currently these are helpers for `get::`
 
-// todo: does not work with reference members
-#define VOLTISO_HAS_DEFINE(member)                                             \
-	namespace VOLTISO_NAMESPACE::has::_ {                                        \
-	template <class TT> using has_##member##_check1 = decltype(&TT::member);     \
-	template <class TT> using has_##member##_check2 = decltype(TT::member);      \
-	}                                                                            \
-	namespace VOLTISO_NAMESPACE::has {                                           \
-	template <class TT>                                                          \
-	static constexpr auto member =                                               \
-	  std::experimental::is_detected_v<_::has_##member##_check1, TT> ||          \
-	  std::experimental::is_detected_v<_::has_##member##_check2, TT>;            \
-	}
 
-VOLTISO_HAS_DEFINE(size)
-VOLTISO_HAS_DEFINE(bytes)
-// VOLTISO_HAS_DEFINE(clone)
-// VOLTISO_HAS_DEFINE(copy)
-// VOLTISO_HAS_DEFINE(move)
-VOLTISO_HAS_DEFINE(item)
-VOLTISO_HAS_DEFINE(items)
-VOLTISO_HAS_DEFINE(numBytes)
-VOLTISO_HAS_DEFINE(numItems)
-VOLTISO_HAS_DEFINE(numSlots)
-VOLTISO_HAS_DEFINE(NUM_SLOTS)
-VOLTISO_HAS_DEFINE(slots)
-VOLTISO_HAS_DEFINE(key)
-VOLTISO_HAS_DEFINE(value)
-VOLTISO_HAS_DEFINE(entry)
-// VOLTISO_HAS_DEFINE(_assumeRelocated)
 
-#define VOLTISO_HAS_FUNCTION_DEFINE(member)                                    \
-	namespace VOLTISO_NAMESPACE::has::function::_ {                              \
-	template <class TT>                                                          \
-	using has_##member##_check = decltype(std::declval<TT>().member());          \
-	}                                                                            \
-	namespace VOLTISO_NAMESPACE::has::function {                                 \
-	template <class TT>                                                          \
-	static constexpr auto member =                                               \
-	  std::experimental::is_detected_v<_::has_##member##_check, TT>;             \
-	}
 
-VOLTISO_HAS_FUNCTION_DEFINE(key)
-VOLTISO_HAS_FUNCTION_DEFINE(value)
-VOLTISO_HAS_FUNCTION_DEFINE(entry)
+// ! OLD CODE:
 
-//
+// #define VOLTISO_HAS_DEFINE(NAME)                                               \
+// 	namespace VOLTISO_NAMESPACE::hasValue {                                      \
+// 	template <class T>                                                           \
+// 	concept NAME = requires(T t) { t.NAME; };                                    \
+// 	}                                                                            \
+// 	namespace VOLTISO_NAMESPACE::hasFunction {                                   \
+// 	template <class T>                                                           \
+// 	concept NAME = requires(T t) { t.NAME(); };                                  \
+// 	}                                                                            \
+// 	namespace VOLTISO_NAMESPACE::has {                                           \
+// 	template <class T>                                                           \
+// 	concept NAME = hasValue::NAME<T> || hasFunction::NAME<T>;                    \
+// 	}
 
-#define VOLTISO_HAS_TYPE_DEFINE(member)                                        \
-	namespace VOLTISO_NAMESPACE::has::type::_ {                                  \
-	template <class TT> using has_##member##_check = TT::member;                 \
-	}                                                                            \
-	namespace VOLTISO_NAMESPACE::has::type {                                     \
-	template <class TT>                                                          \
-	static constexpr auto member =                                               \
-	  std::experimental::is_detected_v<_::has_##member##_check, TT>;             \
-	}
+// VOLTISO_HAS_DEFINE(NUM_ITEMS)
+// VOLTISO_HAS_DEFINE(numItems)
+// VOLTISO_HAS_DEFINE(size)
 
-#define VOLTISO_HAS_TEMPLATE_DEFINE(member)                                    \
-	namespace VOLTISO_NAMESPACE::has::type::_ {                                  \
-	template <class TT, class X = void>                                          \
-	using has_##member##_check = TT::template member<X>;                         \
-	}                                                                            \
-	namespace VOLTISO_NAMESPACE::has::type {                                     \
-	template <class TT>                                                          \
-	static constexpr auto member =                                               \
-	  std::experimental::is_detected_v<_::has_##member##_check, TT>;             \
-	}
+// // VOLTISO_HAS_DEFINE(NUM_CHARS)
+// // VOLTISO_HAS_DEFINE(numChars)
 
-//
+// VOLTISO_HAS_DEFINE(NUM_SLOTS)
+// VOLTISO_HAS_DEFINE(numSlots)
+// VOLTISO_HAS_DEFINE(capacity)
 
-VOLTISO_HAS_DEFINE(IN_PLACE)
-VOLTISO_HAS_DEFINE(IN_PLACE_ONLY)
-VOLTISO_HAS_DEFINE(NUM_ITEMS)
-VOLTISO_HAS_DEFINE(STARTING_INDEX)
-VOLTISO_HAS_DEFINE(BUCKET_IN_PLACE)
+// VOLTISO_HAS_DEFINE(key)
+// VOLTISO_HAS_DEFINE(value)
+// VOLTISO_HAS_DEFINE(entry)
 
-VOLTISO_HAS_TYPE_DEFINE(Item)
-VOLTISO_HAS_TYPE_DEFINE(Entry)
-VOLTISO_HAS_TYPE_DEFINE(Allocator)
-VOLTISO_HAS_TYPE_DEFINE(Brand)
-VOLTISO_HAS_TYPE_DEFINE(Type)
-VOLTISO_HAS_TYPE_DEFINE(Final)
-VOLTISO_HAS_TEMPLATE_DEFINE(FinalTemplate)
+// VOLTISO_HAS_DEFINE(hash)
 
-// struct S{
-// 	// using Item = int;
-// };
-
-// static_assert(!v::has::type::Item<S>);
+// VOLTISO_HAS_DEFINE(EXTENT)
+// VOLTISO_HAS_DEFINE(extent)

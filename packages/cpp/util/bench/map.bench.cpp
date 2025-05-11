@@ -1,7 +1,7 @@
 #include <benchmark/benchmark.h>
 
-#include <v/HashMap>
-#include <v/SplayMap>
+#include <v/hash-map>
+#include <v/splay-map>
 
 #include <ext/pb_ds/assoc_container.hpp>
 

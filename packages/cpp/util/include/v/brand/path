@@ -1,0 +1,39 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/brand-option"
+
+#include <utility>
+
+namespace VOLTISO_NAMESPACE::brand {
+template <bool B = true> struct Path : BrandOption<B> {};
+} // namespace VOLTISO_NAMESPACE::brand
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+template <class T> constexpr auto is_path = false;
+
+template <class T>
+  requires(T::Options::template GET<brand::Path>)
+constexpr auto is_path<T> = true;
+} // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace VOLTISO_NAMESPACE::concepts {
+template <class T>
+concept Path = is_path<T>;
+} // namespace VOLTISO_NAMESPACE::concepts
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+template <class TPath, class TArg>
+  requires(is_path<TPath> && !std::is_const_v<TPath>)
+TPath &operator/=(TPath &a, TArg &&b) {
+	a <<= "/";
+	return a <<= std::forward<TArg>(b);
+	// return a <<= '/' <<= std::forward<TArg>(b);
+}
+} // namespace VOLTISO_NAMESPACE

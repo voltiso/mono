@@ -1,0 +1,203 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/array"
+#include "v/bit"
+#include "v/div-ceil"
+
+#include <cstddef>
+#include <cstdint>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::bitArray::_ {
+template <class Derived> struct AccessorCrtp {
+	AccessorCrtp() {
+		static_assert(std::is_base_of_v<AccessorCrtp, Derived>);
+		static_assert(std::is_final_v<Derived>);
+	}
+};
+
+// template <class Derived>
+// bool operator==(const AccessorCrtp<Derived> &lhs, const Bit &rhs) {
+//   return (Bit)lhs == rhs;
+// }
+
+template <class Self> struct Accessor final : AccessorCrtp<Accessor<Self>> {
+private:
+	friend Self;
+	template <class Index>
+	using CustomHandle = Self::template CustomHandle<Index>;
+	using Handle = Self::Handle;
+	using Word = Self::Word;
+
+	Accessor(const Handle &handle, Self &bitArray)
+	    : handle(handle), bitArray(bitArray) {}
+
+public:
+	Handle handle;
+	Self &bitArray;
+
+	operator Bit() const {
+		auto iWord = handle.value / (sizeof(Word) * 8);
+		auto iBit = handle.value % (sizeof(Word) * 8);
+		return Bit{bitArray.words[iWord] & (Word(1) << iBit)};
+	}
+
+	Accessor &operator=(const Bit &bit) {
+		auto iWord = handle.value / (sizeof(Word) * 8);
+		auto iBit = handle.value % (sizeof(Word) * 8);
+		if (bit.value) {
+			bitArray.words[iWord] |= (Word(1) << iBit);
+		} else {
+			bitArray.words[iWord] &= ~(Word(1) << iBit);
+		}
+		return *this;
+	}
+
+	Accessor &operator|=(const Bit &bit) {
+		auto iWord = handle.value / (sizeof(Word) * 8);
+		auto iBit = handle.value % (sizeof(Word) * 8);
+		bitArray.words[iWord] |= (Word(bit.value) << iBit);
+		return *this;
+	}
+
+	Accessor &operator&=(const Bit &bit) {
+		auto iWord = handle.value / (sizeof(Word) * 8);
+		auto iBit = handle.value % (sizeof(Word) * 8);
+		bitArray.words[iWord] &= (Word(bit.value) << iBit);
+		return *this;
+	}
+
+	Accessor &operator^=(const Bit &bit) {
+		auto iWord = handle.value / (sizeof(Word) * 8);
+		auto iBit = handle.value % (sizeof(Word) * 8);
+		bitArray.words[iWord] ^= (Word(bit.value) << iBit);
+		return *this;
+	}
+};
+
+template <class Self>
+struct ConstAccessor final : AccessorCrtp<ConstAccessor<Self>> {
+private:
+	friend Self;
+	using Handle = Self::Handle;
+	using Word = Self::Word;
+	ConstAccessor(Handle handle, Self &bitArray)
+	    : handle(handle), bitArray(bitArray) {}
+
+public:
+	Handle handle;
+	const Self &bitArray;
+
+	operator Bit() const {
+		auto iWord = handle.value / (sizeof(Self::Word) * 8);
+		auto iBit = handle.value % (sizeof(Self::Word) * 8);
+		return Bit{bitArray.words[iWord] & (Word(1) << iBit)};
+	}
+};
+} // namespace VOLTISO_NAMESPACE::bitArray::_
+
+namespace VOLTISO_NAMESPACE {
+template <size_t _NUM_BITS, class _Word = std::uintmax_t> class BitArray {
+public:
+	using Self = BitArray;
+	static constexpr auto NUM_BITS = _NUM_BITS;
+	using Word = _Word;
+
+	static_assert(NUM_BITS > 0);
+
+	Array<Word, divCeil(NUM_BITS, (sizeof(Word) * 8))> words;
+
+	BitArray() = default;
+
+	BitArray(std::initializer_list<int> list) {
+		size_t iWord = 0;
+		size_t iBit = 0;
+		words[0] = 0;
+		for (auto bit : list) {
+			CHECK(bit == 0 || bit == 1);
+			words[iWord] |= (bit << iBit);
+			if (++iBit == sizeof(Word) * 8) [[unlikely]] {
+				iBit = 0;
+				++iWord;
+				words[iWord] = 0;
+			}
+		}
+		while (iWord < words.NUM_ITEMS - 1) {
+			++iWord;
+			words[iWord] = 0;
+		}
+	}
+
+	// [fromIndex,toIndex)
+	void fill(const Bit &bit, size_t fromIndex = 0, size_t toIndex = NUM_BITS) {
+		auto fromWord = fromIndex / (sizeof(Word) * 8);
+		auto fromBit = fromIndex % (sizeof(Word) * 8);
+		auto toWord = toIndex / (sizeof(Word) * 8);
+		auto toBit = toIndex % (sizeof(Word) * 8);
+		if (fromWord == toWord) {
+			Word mask = ((Word(1) << (toBit - fromBit)) - 1) << fromBit;
+			// LOG(INFO) << "mask: " << std::bitset<64>(mask);
+			if (bit.value) {
+				words[fromWord] |= mask;
+			} else {
+				words[fromWord] &= ~mask;
+			}
+		} else {
+			Word mask = ~((Word(1) << fromBit) - 1);
+			if (bit.value) {
+				words[fromWord] |= mask;
+			} else {
+				words[fromWord] &= ~mask;
+			}
+			for (++fromWord; fromWord < toWord; ++fromWord) {
+				words[fromWord] = bit.value ? ~Word(0) : 0;
+			}
+			if (toBit) {
+				mask = (Word(1) << toBit) - 1;
+				if (bit.value) {
+					words[toWord] |= mask;
+				} else {
+					words[toWord] &= ~mask;
+				}
+			}
+		}
+	}
+
+	template <class Index>
+	using CustomHandle = Handle::WithBrand<Self>::template WithKind<Index>;
+	using Handle = CustomHandle<std::size_t>;
+
+	// template <class Index>
+	// using CustomHandle = bitArray::_::CustomHandle<Self, Index>;
+	// using Handle = bitArray::_::Handle<Self>;
+
+	using Accessor = bitArray::_::Accessor<Self>;
+	using ConstAccessor = bitArray::_::ConstAccessor<Self>;
+
+	Accessor operator[](const Handle &handle) { return Accessor{handle, *this}; }
+
+	ConstAccessor operator[](const Handle &handle) const {
+		return ConstAccessor{handle, *this};
+	}
+
+	// Automatic deduction does not work when assigning raw value, since the above
+	// methods are templated, and creating handle from a raw value is ambiguous
+	// (we can create a larger handle from a smaller value), se below
+	// methods are templated, and creating handle from a raw value is ambiguous
+	// (we can create a larger handle from a smaller value), se below we
+	// explicitly define `operator[]` for raw values
+
+	Accessor operator[](std::size_t index) { return (*this)[Handle(index)]; }
+
+	ConstAccessor operator[](std::size_t index) const {
+		return (*this)[Handle(index)];
+	}
+};
+
+static_assert(sizeof(BitArray<64>) == 8);
+static_assert(sizeof(BitArray<1>) == 8);
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

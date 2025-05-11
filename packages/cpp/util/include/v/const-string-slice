@@ -1,0 +1,121 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/_/const-string-slice.forward.hpp"
+
+#include "v/_/array-concat-traits.hpp"
+#include "v/_/dynamic-string.forward.hpp"
+#include "v/_/string.forward.hpp"
+#include "v/extent"
+#include "v/get/extent"
+#include "v/slice"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+template <Extent T_EXTENT>
+class ConstStringSlice : public Slice<const char, T_EXTENT> {
+	using Base = Slice<const char, T_EXTENT>;
+	// using Base::Base;
+
+protected:
+	using Self = Base::Self;
+
+public:
+	template <class Other>
+	  requires(!std::is_array_v<std::remove_reference_t<Other>>)
+	constexpr ConstStringSlice(Other &&other)
+	    : Base{std::forward<Other>(other)} {}
+
+public:
+	// create from raw array - static extent
+	template <std::size_t N>
+	  requires(
+	    T_EXTENT != Extent::DYNAMIC && T_EXTENT != Extent::UNBOUND &&
+	    N == T_EXTENT.value + 1)
+	constexpr ConstStringSlice(const char (&chars)[N])
+	    : Base{reinterpret_cast<const char (&)[T_EXTENT.value]>(chars)} {
+		EQ(chars[T_EXTENT.value], '\0');
+	}
+
+	constexpr bool operator==(const ConstStringSlice &other) const {
+		// todo: we could have traits `is_trivially_equal_comparable` and
+		// `is_trivially_less_comparable` - and use memcmp
+		// (or `binary` instead of `trivially`)
+		// return items == other.items ||
+		//        memcmp(items, other.items, sizeof(RawArray)) == 0;
+		if (&this->items == &other.items) [[unlikely]] {
+			return true; // assume a==a
+		}
+
+		for (size_t i = 0; i < T_EXTENT.value; ++i) {
+			if (this->items[i] != other.items[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+public:
+	// concat known size
+	template <class Other>
+	auto operator<<(this auto &&self, Other &&other)
+	  requires(
+	    // for now, accept only `self.copy()`
+	    // !std::is_reference_v<decltype(self)> && std::is_const_v<decltype(self)>
+	    // &&
+	    //
+	    get::EXTENT<decltype(self)> != Extent::DYNAMIC &&
+	    get::EXTENT<decltype(self)> != Extent::UNBOUND &&
+	    get::EXTENT<Other> != Extent::DYNAMIC &&
+	    get::EXTENT<Other> != Extent::UNBOUND)
+	{ // Allow rvalue this
+		// Use get::EXTENT<Other> to ensure we get extent of e.g. const char (&)[N]
+		// not const char* if the latter would have an UNBOUND extent.
+		// ! NOTE: Base::Self is not correct - we have no CustomSlice class for now
+		constexpr auto NEW_NUM_ITEMS =
+		  get::EXTENT<decltype(self)>.value + get::EXTENT<Other>.value;
+		// using Result = Self::template With<option::NUM_ITEMS<NEW_NUM_ITEMS>>;
+		using Result = String<NEW_NUM_ITEMS>;
+		// using Result = String<NEW_NUM_ITEMS> ::WithDefault<GetBrands<>>;
+		static_assert(_::array::sumExtents(self, other) == NEW_NUM_ITEMS);
+		return Result::concat(
+		  std::forward<decltype(self)>(self),
+		  std::forward<Other>(other)); // rvo guaranteed
+	}
+
+	// concat unknown size
+	template <class Other>
+	VOLTISO_FORCE_INLINE auto operator<<(const Other &other) const
+	  requires(
+	    get::EXTENT<ConstStringSlice> == Extent::DYNAMIC ||
+	    get::EXTENT<Other> == Extent::DYNAMIC)
+	{
+		// using Result = DynamicString;
+		return dynamicString::concat(*this, other);
+	}
+
+public:
+	// for std?
+	constexpr std::size_t size() const noexcept {
+		NE(this->extent(), Extent::DYNAMIC);
+		NE(this->extent(), Extent::UNBOUND);
+		return this->extent().value;
+	}
+}; // class StringSlice
+
+// deduction guide for raw arrays
+template <size_t N>
+ConstStringSlice(const char (&)[N]) -> ConstStringSlice<N - 1>;
+
+// deduction guide for custom tuples
+template <class TArray>
+  requires(
+    !std::is_array_v<TArray> &&
+    std::is_same_v<
+      std::remove_cvref_t<decltype(std::declval<TArray>()[0])>, char>)
+ConstStringSlice(TArray &array) -> ConstStringSlice<get::EXTENT<TArray>>;
+
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>
