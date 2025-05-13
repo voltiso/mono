@@ -1,4 +1,4 @@
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DeepReadonly } from '@voltiso/util'
@@ -19,7 +19,10 @@ export function defineEslintConfig<
 >(configA: A, configB: B): _FromUtil.DeepMutable_<_FromUtil.Merge2_<A, B>>
 
 export function defineEslintConfig<
-	Configs extends (EslintConfig | _FromUtil.AlsoAccept<_FromUtil.PlainObject>)[],
+	Configs extends (
+		| EslintConfig
+		| _FromUtil.AlsoAccept<_FromUtil.PlainObject>
+	)[],
 >(...configs: Configs): Record<string, unknown> {
 	return deepMerge(...configs) as never
 }

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // // eslint-disable-next-line @typescript-eslint/consistent-type-imports

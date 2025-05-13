@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { registerEsbuild } from '@voltiso/util.esbuild'

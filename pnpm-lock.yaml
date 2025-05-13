@@ -8,7 +8,7 @@ overrides:
   chalk: ^4.1.1
   typescript: ~5.6.3
 
-packageExtensionsChecksum: 395b61079594340b5a104219b81a1dd7
+packageExtensionsChecksum: sha256-rl0N4e1ski5IT9nX+emoRZpYRH+c2/GYfWueqmnkgF4=
 
 importers:
 
@@ -1086,6 +1086,11 @@ importers:
         version: 3.5.2(typescript@5.6.3)
 
   packages/styler.test.native:
+    dependenciesMeta:
+      '@voltiso/config.jest.react':
+        injected: true
+      '@voltiso/styler':
+        injected: true
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -1123,11 +1128,6 @@ importers:
       react-test-renderer:
         specifier: ^18.3.0
         version: 18.3.1(react@18.3.1)
-    dependenciesMeta:
-      '@voltiso/config.jest.react':
-        injected: true
-      '@voltiso/styler':
-        injected: true
 
   packages/transactor:
     dependencies:

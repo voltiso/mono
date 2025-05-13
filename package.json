@@ -56,10 +56,10 @@
   },
   "typescript-COMMENT": "5.7.2 not working with ts-patch 3.2.1",
   "__________MISC": "__________",
-  "packageManager": "pnpm@9.14.1",
+  "packageManager": "pnpm@10.10.0",
   "engines": {
-    "node": ">= 20",
-    "pnpm": ">= 8.7.6"
+    "node": ">= 22",
+    "pnpm": ">= 10"
   },
   "pnpm": {
     "overrides": {
