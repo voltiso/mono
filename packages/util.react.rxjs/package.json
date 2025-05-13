@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@types/react": "^19.0.1",
+    "@types/react": "^19.1.4",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
@@ -66,8 +66,8 @@
     "@voltiso/util.react": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",
     "@~/workspace": "workspace:^",
-    "react": "^19.0.0",
-    "rxjs": "^7.8.1",
+    "react": "^19.1.0",
+    "rxjs": "^7.8.2",
     "typescript": "~5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }

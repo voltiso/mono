@@ -19,16 +19,14 @@
     "__________WORKSPACE ONLY": "__________",
     "lint:eslint": "cross-env FULL=1 NODE_OPTIONS=--max_old_space_size=24000 eslint --max-warnings=0 \"*\"",
     "__________PREPARE WORKSPACE": "__________",
-    "prepare": "cross-env FORCE_COLOR=1 run-s prepare:ts-patch prepare:script prepare:run",
-    "prepare:ts-patch": "cross-env FORCE_COLOR=1 ts-patch install",
+    "prepare": "cross-env FORCE_COLOR=1 run-s prepare:script prepare:run",
     "prepare:script": "cross-env FORCE_COLOR=1 turbo run build:cjs --filter=@voltiso/script",
     "prepare:run": "v prepareWorkspace"
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.17.1",
-    "@changesets/cli": "^2.27.10",
-    "@types/node": "^22.10.2",
+    "@arethetypeswrong/cli": "^0.18.1",
+    "@types/node": "^22.15.17",
     "@typescript/analyze-trace": "^0.10.1",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.eslint.lib": "workspace:^",
@@ -41,11 +39,11 @@
     "@voltiso/transform": "workspace:^",
     "cross-env": "^7.0.3",
     "depcheck": "^1.4.7",
-    "eslint": "^9.17.0",
+    "eslint": "^9.26.0",
     "gnomon": "^1.5.0",
     "jest": "^29.7.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "ts-patch": "^3.3.0",
@@ -54,7 +52,6 @@
     "typescript": "~5.8.3",
     "typescript-transform-paths": "^3.5.5"
   },
-  "typescript-COMMENT": "5.7.2 not working with ts-patch 3.2.1",
   "__________MISC": "__________",
   "packageManager": "pnpm@10.10.0",
   "engines": {
@@ -63,8 +60,7 @@
   },
   "pnpm": {
     "overrides": {
-      "chalk": "^4.1.1",
-      "typescript": "~5.6.3"
+      "chalk": "^4.1.2"
     },
     "peerDependencyRules": {
       "allowedVersions": {

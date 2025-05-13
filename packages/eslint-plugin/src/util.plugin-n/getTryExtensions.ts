@@ -43,8 +43,9 @@ export function getTryExtensions(
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
 		get(context.options?.[optionIndex]) ||
 		get(
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
-			context.settings && (context.settings['n'] || context.settings['node']),
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			context.settings &&
+				((context.settings['n'] || context.settings['node']) as never),
 		) ||
 		DEFAULT_VALUE
 	)

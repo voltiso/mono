@@ -10,7 +10,7 @@ export const sonar = defineEslintFlatConfig({
 	files: codeFiles,
 
 	// extends: ['plugin:sonarjs/recommended'],
-	plugins: { sonarjs },
+	plugins: { sonarjs: sonarjs as never }, // !
 
 	rules: {
 		...getAllRules(sonarjs, 'sonarjs', 'warn'),

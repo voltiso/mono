@@ -6,7 +6,6 @@ import {
 	defineEslintFlatConfig,
 	eslintFlatConfigFromConfig,
 } from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
 import nodeDependenciesPlugin from 'eslint-plugin-node-dependencies'
 import jsoncEslintParser from 'jsonc-eslint-parser'
 
@@ -29,22 +28,17 @@ const stylisticIssues = defineEslintConfigOverrideRules({
 
 // console.log('???', nodeDependenciesPlugin.configs.recommended)
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const nodeDependenciesConfigRecommended =
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	nodeDependenciesPlugin.configs.recommended
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 for (const override of nodeDependenciesConfigRecommended.overrides) {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 	if (override.parser.includes('jsonc-eslint-parser')) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		// @ts-expect-error well
 		override.parser = jsoncEslintParser
 	}
 }
 
 export const nodeDependencies = defineEslintFlatConfig(
 	...eslintFlatConfigFromConfig(nodeDependenciesConfigRecommended as never, {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		'node-dependencies': nodeDependenciesPlugin,
 	}),
 	{

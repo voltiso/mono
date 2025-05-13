@@ -50,24 +50,24 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@prettier/plugin-xml": "^3.3.1",
-    "prettier-plugin-glsl": "^0.2.0",
-    "prettier-plugin-jsdoc": "^1.3.0",
-    "prettier-plugin-sh": "^0.14.0",
-    "prettier-plugin-toml": "^2.0.1"
+    "prettier-plugin-glsl": "^0.2.1",
+    "prettier-plugin-jsdoc": "^1.3.2",
+    "prettier-plugin-sh": "^0.17.4",
+    "prettier-plugin-toml": "^2.0.5"
   },
   "peerDependencies": {
     "prettier": "*"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.15.17",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "jest": "^29.7.0",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "typescript": "~5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }

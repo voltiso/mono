@@ -54,12 +54,12 @@
     "react": "19 || 18 || 17"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.6",
-    "@babel/preset-env": "^7.23.6",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
     "@jest/globals": "^29.7.0",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/react": "^16.1.0",
-    "@types/react": "^19.0.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.1.4",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",
@@ -67,8 +67,8 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@~/workspace": "workspace:^",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "typescript": "~5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }

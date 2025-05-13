@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/context",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -50,7 +50,7 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util": "workspace:^",
-    "uuid": "^11.0.3"
+    "uuid": "^11.1.0"
   },
   "peerDependencies": {
     "zone.js": "^0.12.0"

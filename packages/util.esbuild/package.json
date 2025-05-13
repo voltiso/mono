@@ -56,11 +56,11 @@
     "esbuild": ">= 0.14.49"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.15.17",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@~/workspace": "workspace:^",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.4",
     "rimraf": "^6.0.1",
     "typescript": "~5.8.3",
     "typescript-transform-paths": "^3.5.5"

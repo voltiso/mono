@@ -45,9 +45,9 @@ function log(...messages: unknown[]) {
 
 function getContextConstructor(): ContextConstructor {
 	if (haveAsyncHooks()) {
-		log(
-			'[@voltiso/context] ✅ Using NodeContext (`AsyncLocalStorage`) - do not patch the global `Promise`',
-		)
+		// log(
+		// 	'[@voltiso/context] ✅ Using NodeContext (`AsyncLocalStorage`) - do not patch the global `Promise`',
+		// )
 
 		return NodeContext
 	}

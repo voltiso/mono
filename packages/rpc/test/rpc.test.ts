@@ -11,7 +11,6 @@ import { checked } from '@voltiso/handler'
 import * as s from '@voltiso/schemar'
 import { $Assert } from '@voltiso/util'
 import type * as Express from 'express'
-// import express = require('express')
 import express from 'express'
 
 import { RpcClient } from '~/client'

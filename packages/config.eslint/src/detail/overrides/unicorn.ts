@@ -14,7 +14,7 @@ export const unicorn = defineEslintFlatConfig({
 	rules: {
 		...getAllRules(unicornPlugin as never, 'unicorn', 'warn'),
 
-		'unicorn/import-index': 1, // deprecated but cool
+		// 'unicorn/import-index': 1, // deprecated but cool
 
 		'unicorn/switch-case-braces': 0,
 		//
@@ -86,7 +86,7 @@ export const unicorn = defineEslintFlatConfig({
 		'unicorn/no-this-assignment': 1,
 		'unicorn/no-unreadable-array-destructuring': 1,
 		'unicorn/no-unreadable-iife': 1,
-		'unicorn/no-unsafe-regex': 1,
+		// 'unicorn/no-unsafe-regex': 1, // deprecated
 		'unicorn/no-unused-properties': 1,
 		'unicorn/no-useless-fallback-in-spread': 1,
 		'unicorn/no-useless-length-check': 1,

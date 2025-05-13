@@ -59,11 +59,11 @@
   "dependencies": {
     "@voltiso/util.node": "workspace:^",
     "chalk": "^4.1.1",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.4",
     "esbuild-register": "^3.5.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.15.17",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util.package-json": "workspace:^",
