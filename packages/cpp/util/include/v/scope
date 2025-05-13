@@ -1,0 +1,133 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/context"
+#include "v/is/trivially-relocatable"
+#include "v/retainer"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::scope {
+class Guard : public context::Guard<Retainer> {
+	using Base = context::Guard<Retainer>;
+	using Base::Base;
+};
+} // namespace VOLTISO_NAMESPACE::scope
+
+namespace VOLTISO_NAMESPACE {
+// Glues v::Context and v::Retainer together.
+//  - Provides `Retainer` context via `.use()`.
+class Scope {
+	Retainer _retainer;
+
+public:
+	[[nodiscard]] INLINE scope::Guard use() noexcept {
+		return scope::Guard{_retainer};
+	}
+
+	// retain value, but don't provide it via `v::context`
+	// (i.e. push private)
+	//  - Note that for parent scopes, this is the only possibility.
+	//  - `scope::get` and `scope::push` are not available for parent scopes.
+	template <class... Args> INLINE auto &retain(Args &&...args) {
+		return _retainer.retain(std::forward<Args>(args)...);
+	}
+
+	// NOTE: there is no member `.get()`, we don't support getting stuff from
+	// parent scope
+
+	// NOTE2: same for `.push<T>()` - it auto-creates context::Guard<T> and
+	// retains it
+
+	// `v::context` only works in current scope, because the whole scope/context
+	// guards sequence remembers previous values (pointers) inside them.
+
+	// I.e. we can only work with current scope, unless we implement slow
+	// structures that would allow otherwise.
+};
+} // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace VOLTISO_NAMESPACE::scope::_ {
+template <class Interface, class Actual>
+  requires(std::is_convertible_v<Actual *, Interface *>)
+struct ValueWithGuard {
+	Actual value;
+	context::Guard<Interface> guard;
+
+	template <class... Args>
+	ValueWithGuard(Args &&...args)
+	    : value(std::forward<Args>(args)...), guard(this->value) {}
+
+	ValueWithGuard(const ValueWithGuard &) = delete;
+	ValueWithGuard &operator=(const ValueWithGuard &) = delete;
+};
+} // namespace VOLTISO_NAMESPACE::scope::_
+
+//
+
+template <class Interface, class Actual>
+constexpr auto
+  V::is::TriviallyRelocatable<V::scope::_::ValueWithGuard<Interface, Actual>> =
+    true;
+
+// !
+
+namespace VOLTISO_NAMESPACE::scope {
+template <class T> INLINE auto &get() { return context::get<T>(); }
+} // namespace VOLTISO_NAMESPACE::scope
+
+// !
+
+namespace VOLTISO_NAMESPACE::scope {
+template <class Interface, class Actual = Interface, class... Args>
+  requires(
+    std::is_convertible_v<Actual *, Interface *> &&
+    std::is_constructible_v<Actual, Args...> &&
+    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> &&
+    !std::is_same_v<Interface, Retainer>)
+INLINE auto &push(Args &&...args) {
+	return context::get<Retainer>()
+	  .retain<_::ValueWithGuard<Interface, Actual>>(std::forward<Args>(args)...)
+	  .value;
+}
+
+template <class Interface, class Actual = Interface>
+  requires(
+    !std::is_reference_v<Actual> && // move-only
+    std::is_convertible_v<Actual *, Interface *> &&
+    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> &&
+    !std::is_same_v<Interface, Retainer>)
+INLINE auto &push(Actual &&actual) {
+	return context::get<Retainer>()
+	  .retain<_::ValueWithGuard<Interface, Actual>>(std::forward<Actual>(actual))
+	  .value;
+}
+
+// special overload for types constructible from `T::Options`
+template <class Interface, class Actual = Interface>
+  requires(
+    std::is_convertible_v<Actual *, Interface *> &&
+    std::is_constructible_v<Actual, typename Actual::Options> &&
+    !std::is_same_v<std::remove_cvref_t<Actual>, Retainer> &&
+    !std::is_same_v<Interface, Retainer>)
+INLINE auto &push(const typename Actual::Options &options) {
+	return context::get<Retainer>()
+	  .retain<_::ValueWithGuard<Interface, Actual>>(options)
+	  .value;
+}
+
+template <class InterfaceAndActual>
+  requires(
+    !std::is_reference_v<InterfaceAndActual> && // move-only
+    !std::is_same_v<std::remove_cvref_t<InterfaceAndActual>, Retainer>)
+INLINE auto &push(InterfaceAndActual &&actual) {
+	return context::get<Retainer>()
+	  .retain<_::ValueWithGuard<InterfaceAndActual, InterfaceAndActual>>(
+	    std::forward<InterfaceAndActual>(actual))
+	  .value;
+}
+} // namespace VOLTISO_NAMESPACE::scope
+
+#include <v/OFF>

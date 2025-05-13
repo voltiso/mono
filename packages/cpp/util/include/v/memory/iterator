@@ -1,0 +1,103 @@
+#pragma once
+#include <v/_/_>
+
+#include <cstddef>
+#include <iterator>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::memory {
+template <class TItem> class Iterator {
+	using Self = Iterator;
+
+public:
+	using Item = TItem;
+
+	Item *target; // uninitialized
+
+	// Constructors
+	INLINE Iterator() noexcept = default;
+	explicit INLINE Iterator(Item *target) noexcept : target(target) {}
+
+	// Dereference
+	INLINE Item &operator*() const noexcept { return *target; }
+	INLINE Item *operator->() const noexcept { return target; }
+
+	// Comparison
+	INLINE auto operator<=>(const Self &other) const noexcept = default;
+	INLINE bool operator==(const Self &other) const noexcept = default;
+
+	// Increment
+	INLINE Self &operator++() noexcept {
+		++target;
+		return *this;
+	}
+	INLINE Self operator++(int) noexcept { // Post-increment
+		Self temp = *this;
+		++(*this);
+		return temp;
+	}
+
+	// Decrement
+	INLINE Self &operator--() noexcept {
+		--target;
+		return *this;
+	}
+	INLINE Self operator--(int) noexcept { // Post-decrement
+		Self temp = *this;
+		--(*this);
+		return temp;
+	}
+
+	// Arithmetic +
+	INLINE Self &operator+=(std::ptrdiff_t difference) noexcept {
+		target += difference;
+		return *this;
+	}
+	INLINE Self operator+(std::ptrdiff_t difference) const noexcept {
+		return Self{target + difference};
+	}
+
+	// Arithmetic -
+	INLINE Self &operator-=(std::ptrdiff_t difference) noexcept {
+		target -= difference;
+		return *this;
+	}
+	INLINE Self operator-(std::ptrdiff_t difference) const noexcept {
+		return Self{target - difference};
+	}
+
+	// Difference between iterators
+	VOLTISO_FORCE_INLINE std::ptrdiff_t
+	operator-(const Self &other) const noexcept {
+		return target - other.target;
+	}
+
+	// Subscript operator
+	VOLTISO_FORCE_INLINE Item &operator[](std::ptrdiff_t n) const noexcept {
+		return target[n];
+	}
+
+	// std interop
+public:
+	using iterator_concept = std::random_access_iterator_tag; // C++20
+	using iterator_category =
+	  std::random_access_iterator_tag; // pre-C++20 fallback
+	using value_type = std::remove_cv_t<Item>;
+	using difference_type = std::ptrdiff_t;
+	using pointer = Item *;
+	using reference = Item &;
+};
+
+// Non-member operator+ for symmetry (difference + iterator)
+template <class TItem>
+INLINE Iterator<TItem>
+operator+(std::ptrdiff_t difference, const Iterator<TItem> &it) noexcept {
+	return it + difference;
+}
+
+// static_assert(std::iterator_traits<Iterator<int>>);
+
+} // namespace VOLTISO_NAMESPACE::memory
+
+#include <v/OFF>

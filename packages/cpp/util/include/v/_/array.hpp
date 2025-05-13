@@ -9,7 +9,7 @@
 #include "v/concepts/options"
 #include "v/handle"
 #include "v/is/trivially-relocatable"
-#include "v/memory/Iterator"
+#include "v/memory/iterator"
 #include "v/object"
 #include "v/option/item"
 #include "v/option/num-items"
@@ -209,21 +209,23 @@ public:
 	}
 
 	// raw array conversion should be explicit (can loose size information)
-	explicit operator RawArray<Item, NUM_ITEMS> &() { return items; }
+	explicit operator RawArray<Item, NUM_ITEMS> &() noexcept { return items; }
 
 	// raw array conversion should be explicit (can loose size information)
-	explicit operator const RawArray<Item, NUM_ITEMS> &() const { return items; }
+	explicit operator const RawArray<Item, NUM_ITEMS> &() const noexcept {
+		return items;
+	}
 
 	// string_view is constant-time, so can be implicit
 	constexpr operator ::std::string_view() const
-	  requires std::is_same_v<Item, char>
+	  requires std::is_same_v<std::remove_const_t<Item>, char>
 	{
 		return ::std::string_view(items, NUM_ITEMS);
 	}
 
 	explicit constexpr operator ::std::string() noexcept(
 	  noexcept(std::string(items, items + NUM_ITEMS)))
-	  requires(std::is_same_v<std::decay_t<Item>, char>)
+	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
 	{
 		return std::string(items, items + NUM_ITEMS);
 	}
@@ -336,19 +338,6 @@ private:
 		}
 	}
 }; // class Custom
-
-template <class Options>
-std::ostream &operator<<(std::ostream &os, const Custom<Options> &array) {
-	using Array = Custom<Options>;
-	os << "[";
-	for (size_t i = 0; i < Array::NUM_ITEMS; i++) {
-		if (i > 0) {
-			os << ", ";
-		}
-		os << array[i];
-	}
-	return os << "]";
-}
 } // namespace VOLTISO_NAMESPACE::array
 
 // !

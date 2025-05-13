@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 
 #include <v/brand/path>
-#include <v/dynamic-string>
 #include <v/path>
 #include <v/slice>
 

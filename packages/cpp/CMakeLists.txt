@@ -52,6 +52,7 @@ add_executable(
   voltiso-util-test
   test.cpp
 
+	util/test/retainer.test.cpp
   util/test/hash.test.cpp
   util/test/entry.test.cpp
   util/test/singleton.test.cpp

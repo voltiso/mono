@@ -175,7 +175,6 @@ public:
 	VOLTISO_FORCE_INLINE constexpr operator Item &() const noexcept {
 		return *_target;
 	}
-	// operator Item *() const { return &**this; }
 
 	// ! is this even legal?
 	VOLTISO_FORCE_INLINE explicit constexpr operator Item &&() const noexcept {

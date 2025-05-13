@@ -1,0 +1,81 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/get/extent"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::get {
+template <class T>
+[[nodiscard]] constexpr decltype(auto) rawArray(T &&t) noexcept {
+	// using Source = std::remove_reference_t<T>;
+	if constexpr (requires { t.rawArray(); }) {
+		static_assert(noexcept(std::forward<T>(t).rawArray()));
+		return std::forward<T>(t).rawArray();
+	} else if constexpr (requires { t.rawArray; }) {
+		return (std::forward<T>(t).rawArray);
+	} else if constexpr (std::is_array_v<std::remove_reference_t<T>>) {
+		return std::forward<T>(t);
+
+		// 1. static extent
+	} else if constexpr (has::EXTENT<T> && get::EXTENT<T> != Extent::DYNAMIC) {
+		// (a) type provides conversion operator
+		if constexpr (std::is_constructible_v<
+		                std::remove_reference_t<decltype(t[0])>(
+		                    &)[get::EXTENT<T>.value],
+		                T>) {
+			static_assert(
+			  noexcept(static_cast<std::remove_reference_t<decltype(t[0])>(
+			               &)[get::EXTENT<T>.value]>(std::forward<T>(t))));
+			return static_cast<
+			  std::remove_reference_t<decltype(t[0])>(&)[get::EXTENT<T>.value]>(
+			  std::forward<T>(t));
+
+			// (b) type provides `.data()` method (std interop)
+		} else if constexpr (requires { t.data(); }) {
+			static_assert(noexcept(std::forward<T>(t).data()));
+			using Item = std::remove_reference_t<decltype(t[0])>;
+			using RawArrayPtr = std::conditional_t<
+			  get::EXTENT<T> == Extent::UNBOUND, //
+			  Item(*)[],                         //
+			  Item(*)[get::EXTENT<T>.value]>;
+			return *reinterpret_cast<RawArrayPtr>(std::forward<T>(t).data());
+		} else {
+			// todo: we could also try to use t[0] (which can be undefined behavior)
+			static_assert(
+			  false, "rawArray: unable to figure out how to get the raw array "
+			         "(static extent known)");
+		}
+
+		// 2. dynamic extent
+	} else if constexpr (has::extent<T>) {
+
+		// (a) type provides conversion operator
+		if constexpr (std::is_constructible_v<
+		                std::remove_reference_t<decltype(t[0])>(&)[], T>) {
+			static_assert(
+			  noexcept(static_cast<std::remove_reference_t<decltype(t[0])>(&)[]>(
+			    std::forward<T>(t))));
+			return static_cast<std::remove_reference_t<decltype(t[0])>(&)[]>(
+			  std::forward<T>(t));
+
+			// (b) type provides `.data()` method (std interop)
+		} else if constexpr (requires { t.data(); }) {
+			static_assert(noexcept(std::forward<T>(t).data()));
+			using Item = std::remove_reference_t<decltype(t[0])>;
+			using RawArrayPtr = Item(*)[];
+			return *reinterpret_cast<RawArrayPtr>(std::forward<T>(t).data());
+		} else {
+			// todo: we could also try to use t[0] (which can be undefined behavior)
+			static_assert(
+			  false, "rawArray: unable to figure out how to get the raw array "
+			         "(dynamic extent known)");
+		}
+	} else {
+		static_assert(
+		  false, "rawArray: unable to figure out how to get the raw array");
+	}
+}
+} // namespace VOLTISO_NAMESPACE::get
+
+#include <v/OFF>

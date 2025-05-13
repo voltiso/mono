@@ -1,25 +1,23 @@
 #pragma once
-#include <type_traits>
 #include <v/_/_>
-
-// #include "v/singleton"
 
 #if VOLTISO_DEBUG
 	#include "v/demangle"
 #endif
 
+#include <v/ON>
+
 namespace VOLTISO_NAMESPACE::context::_ {
 template <class T> inline T *&getPointer() {
+	static_assert(std::is_same_v<T, std::remove_cvref_t<T>>, "not supported");
 	static T *value = nullptr;
 	return value;
 }
-template <class T> using Unwrap = std::remove_cv_t<T>;
 }; // namespace VOLTISO_NAMESPACE::context::_
 
 namespace VOLTISO_NAMESPACE::context {
-template <class T> inline auto &get() {
+template <class T> [[nodiscard]] INLINE auto &get() {
 	auto pointer = _::getPointer<T>();
-	// T *pointer = _::getPointer<_::Unwrap<T>>();
 #if VOLTISO_DEBUG
 	if (!pointer) {
 		throw std::runtime_error(
@@ -30,59 +28,45 @@ template <class T> inline auto &get() {
 	return *pointer;
 }
 
-template <class T> inline T *maybeGet() { return _::getPointer<T>(); }
+template <class T> INLINE T *maybeGet() { return _::getPointer<T>(); }
 
-// template <class T> inline T &getOrSingleton() {
-//   return _::getPointer<T>() || singleton::instance<T>();
-// }
-
-template <class T> struct Guard {
+template <class T> class Guard {
 	static_assert(!std::is_reference_v<T>, "not supported");
-	// static_assert(!std::is_const_v<T>, "not supported");
 	static_assert(!std::is_volatile_v<T>, "not supported");
 
-	using Mutable = _::Unwrap<T>;
-	using Const = const Mutable;
+	// Note: there is const-aware implementation in `_deleted` files.
+	// However, for performance, we do not support it anymore.
+	// Similarly, we don't support polymorphic types.
+	static_assert(!std::is_const_v<T>, "not supported");
 
+public:
+	Guard(const Guard &) = delete;
+	Guard &operator=(const Guard &) = delete;
+
+	INLINE ~Guard() {
+		// std::cout << "Guard<" << demangle(typeid(T).name()) << ">::~Guard()"
+		//           << std::endl;
+		_::getPointer<T>() = _previous;
+	}
+
+public:
 	template <class Input>
 	  requires std::is_lvalue_reference_v<Input &&> &&
 	           std::is_convertible_v<std::remove_reference_t<Input> *, T *>
-	Guard(Input &&value) {
-		_previousConst = _::getPointer<Const>();
-		_previousMutable = _::getPointer<Mutable>();
-		if constexpr (std::is_const_v<T>) {
-			_::getPointer<Const>() = &value;
-			_::getPointer<Mutable>() = (Mutable *)(-1); // encode const-violation
-		} else {
-			_::getPointer<Const>() = &value;
-			_::getPointer<Mutable>() = &value;
-		}
-	}
-
-	~Guard() {
-		_::getPointer<Const>() = _previousConst;
-		_::getPointer<Mutable>() = _previousMutable;
+	INLINE Guard(Input &&value) {
+		// std::cout << "Guard<" << demangle(typeid(T).name()) << ">::Guard()"
+		//           << std::endl;
+		_previous = _::getPointer<T>();
+		_::getPointer<T>() = &value;
 	}
 
 private:
-	Const *_previousConst;
-	Mutable *_previousMutable;
+	T *_previous;
 };
 
-// deduction guide
+// ! deduction guide is dangerous !
+// We do not support polymorphic context for performance.
 template <class Input> Guard(Input &&) -> Guard<std::remove_reference_t<Input>>;
-
-// /** Using `context::Guard` will usually be easier */
-// template <class T, class Function>
-// inline void runWith(T &value, const Function &function) {
-//   auto guard = Guard<T>(value);
-//   function();
-// }
-
-// template <class T, class Function>
-// inline void runWith(T &&value, const Function &function) {
-//   auto guard = Guard<T>(value);
-//   function();
-// }
-
 } // namespace VOLTISO_NAMESPACE::context
+
+#include <v/OFF>

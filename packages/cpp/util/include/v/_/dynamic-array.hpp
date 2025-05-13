@@ -25,7 +25,6 @@
 #include <cstddef>
 #include <cstring>
 #include <initializer_list>
-#include <iostream>
 #include <type_traits>
 
 #include <v/ON>
@@ -347,9 +346,9 @@ public:
 public:
 	// accept rvalue reference only if it's const (marked for copy)
 	template <class Items>
-	  requires(
-	    std::is_reference_v<Items> ||
-	    std::is_const_v<std::remove_reference_t<Items>>)
+	// requires(
+	//   std::is_reference_v<Items> ||
+	//   std::is_const_v<std::remove_reference_t<Items>>)
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto from(Items &&items) {
 		static_assert(std::is_base_of_v<Custom<Options>, Self>);
 		return Self{tag::EXPLICIT_COPY, std::forward<Items>(items)};
@@ -521,11 +520,7 @@ private:
 
 private:
 	static auto &_allocator() {
-		// return context::get<Self::Allocator>();
 		return Singleton<typename Self::Allocator>::instance();
-		// return singleton::perThread::instance<Self::Allocator>();
-		// return context::tryGet<Self::Allocator>() ||
-		//        singleton::instance<Self::Allocator>();
 	}
 
 public:
@@ -861,23 +856,56 @@ public:
 	// private:
 	// Iterator _end; // cannot store pointer to self (we're relocatable)
 
-	Iterator begin() {
+	constexpr Iterator begin() noexcept {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->object();
+		return Iterator{std::addressof(slots()->object())};
 	}
-	Iterator end() {
+	constexpr Iterator end() noexcept {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->object() + this->_numItems;
+		return Iterator{std::addressof(slots()->object()) + this->_numItems};
 	}
 
-	ConstIterator begin() const {
+	constexpr ConstIterator begin() const noexcept {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->object();
+		return ConstIterator{std::addressof(slots()->object())};
 	}
-	ConstIterator end() const {
+	constexpr ConstIterator end() const noexcept {
 		// DCHECK_GT(numItems, 0);
-		return &slots()->object() + this->_numItems;
+		return ConstIterator{std::addressof(slots()->object()) + this->_numItems};
 	}
+
+public:
+	// string_view is constant-time, so can be implicit
+	constexpr operator ::std::string_view() const noexcept(
+	  noexcept(::std::string_view(std::addressof(slots()->object()), _numItems)))
+	  requires std::is_same_v<std::remove_const_t<Item>, char>
+	{
+		return ::std::string_view(std::addressof(slots()->object()), _numItems);
+	}
+
+	explicit constexpr operator ::std::string() const noexcept(
+	  noexcept(::std::string(std::addressof(slots()->object()), _numItems)))
+	  requires(std::is_same_v<std::remove_const_t<Item>, char>)
+	{
+		return std::string(std::addressof(slots()->object()), _numItems);
+	}
+
+	// ! note: these are bug-prone when used with strings - we may have no
+	// ! null-terminator
+	// public:
+	// 	explicit operator Item *() noexcept {
+	// 		return std::addressof(this->self().slots()->object());
+	// 	}
+
+	// 	explicit operator const Item *() const noexcept {
+	// 		return std::addressof(this->self().slots()->object());
+	// 	}
+
+	// raw array conversion should be explicit (can loose size information)
+	explicit operator RawArray<Item> &() noexcept { return slots(); }
+
+	// raw array conversion should be explicit (can loose size information)
+	explicit operator const RawArray<Item> &() const noexcept { return slots(); }
 
 public:
 	template <class Option> using With = Base::template With<Option>;
@@ -887,25 +915,8 @@ public:
 
 	template <std::size_t N>
 	using WithInPlaceOnly = With<option::IN_PLACE_ONLY<N>>;
-
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::dynamicArray
-
-namespace VOLTISO_NAMESPACE {
-template <class Options>
-::std::ostream &
-operator<<(::std::ostream &os, const dynamicArray::Custom<Options> &array) {
-	os << "[";
-	for (std::size_t i = 0; i < array.numItems(); ++i) {
-		if (i > 0) {
-			os << ", ";
-		}
-		os << array[i];
-	}
-	os << "]";
-	return os;
-}
-} // namespace VOLTISO_NAMESPACE
 
 // !
 
@@ -938,9 +949,9 @@ namespace VOLTISO_NAMESPACE::dynamicArray {
 // explicit copy
 // if OtherItems is rvalue, it must be const (marked for copy)
 template <class OtherItems>
-  requires(
-    std::is_reference_v<OtherItems> ||
-    std::is_const_v<std::remove_reference_t<OtherItems>>)
+// requires(
+//   std::is_reference_v<OtherItems> ||
+//   std::is_const_v<std::remove_reference_t<OtherItems>>)
 [[nodiscard]] VOLTISO_FORCE_INLINE /*constexpr*/ auto
 from(OtherItems &&otherItems) {
 	using Item = std::remove_reference_t<decltype(*std::begin(otherItems))>;

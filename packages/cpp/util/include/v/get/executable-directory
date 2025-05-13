@@ -1,0 +1,38 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/get/executable-path"
+#include "v/path"
+
+#include <filesystem>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::_::get {
+inline path::Dynamic executableDirectoryUncached() {
+	auto &exe_full_path_str = V::get::executablePath(); // This can throw
+
+	// std::filesystem::path will handle empty strings or invalid paths gracefully
+	// by typically returning an empty path from parent_path() or itself.
+	std::filesystem::path exe_fs_path((std::string)exe_full_path_str);
+
+	// parent_path() returns the directory containing the file.
+	// If exe_fs_path is a directory itself (e.g., "/"), parent_path() returns it.
+	// If exe_fs_path has no parent (e.g., "filename.exe" without a path),
+	// parent_path() is empty. Since get_executable_path() aims to return a full
+	// path, this should generally work as expected.
+	return dynamicString::from(exe_fs_path.parent_path().string())
+	  .brand<brand::Path<>>();
+}
+} // namespace VOLTISO_NAMESPACE::_::get
+
+// !
+
+namespace VOLTISO_NAMESPACE::get {
+inline const path::Dynamic &executableDirectory() {
+	static const auto cached = V::_::get::executableDirectoryUncached();
+	return cached;
+} // executableDirectory
+} // namespace VOLTISO_NAMESPACE::get
+
+#include <v/OFF>

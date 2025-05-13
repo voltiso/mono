@@ -68,6 +68,7 @@ protected:
 
 	template <class Arg>
 	VOLTISO_FORCE_INLINE Custom(tag::ExplicitCopy, const Arg &arg)
+	    // requires requires { ConstStringSlice(arg); }
 	    : Base(tag::ExplicitCopy{}, ConstStringSlice(arg)) {}
 
 public:
@@ -123,3 +124,7 @@ template <class... Args>
 	return DynamicString::concat(std::forward<Args>(args)...);
 } // from
 } // namespace VOLTISO_NAMESPACE::dynamicString
+
+namespace VOLTISO_NAMESPACE::string {
+using Dynamic = DynamicString;
+};

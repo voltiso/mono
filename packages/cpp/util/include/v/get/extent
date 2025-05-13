@@ -21,6 +21,9 @@ constexpr auto optional_EXTENT = [] {
 	} else if constexpr (
 	  requires(T t) { t.extent(); } || requires(T t) { t.extent; }) {
 		return Extent::DYNAMIC;
+	} else if constexpr (requires(T t) { t.size(); }) {
+		// std interop
+		return Extent::DYNAMIC;
 	} else {
 		// static_assert(false);
 		// static_assert(DEPENDENT_FALSE<T>);
@@ -51,6 +54,9 @@ template <class T>
 [[nodiscard]] constexpr decltype(auto) optional_extent(T &&t) noexcept {
 	if constexpr (requires { t.extent(); }) {
 		return std::forward<T>(t).extent();
+	} else if constexpr (requires { t.size(); }) {
+		// std interop
+		return std::forward<T>(t).size();
 	} else if constexpr (has::EXTENT<T>) {
 		static_assert(get::EXTENT<T> != Extent::DYNAMIC);
 		return get::EXTENT<T>;

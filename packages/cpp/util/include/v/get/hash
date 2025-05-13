@@ -16,7 +16,14 @@ template <class T> constexpr auto optional_hash(T &&t) noexcept {
 		using Target = std::remove_pointer_t<std::remove_reference_t<T>>;
 		// std::cout << "target is " << demangle(typeid(Target)) << std::endl;
 		// std::cout << "DIVISION by " << sizeof(Target) << std::endl;
-		return std::bit_cast<std::uintptr_t>(t) / sizeof(Target); // ! divide here !
+		// ! we want to divide by `sizeof(Target)`, but it's not always possible
+		// ! Target may be incomplete type from some API like `GLFWwindow*`
+		if constexpr (requires { sizeof(Target); }) {
+			// ! divide here !
+			return std::bit_cast<std::uintptr_t>(t) / sizeof(Target);
+		} else {
+			return std::bit_cast<std::uintptr_t>(t);
+		}
 		// ! node: this division causes 2.80ns -> 1.74ns speedup
 	} else if constexpr (std::is_integral_v<std::remove_reference_t<T>>) {
 		return std::forward<T>(t);

@@ -106,12 +106,14 @@ public:
 		// use `With` from the derived class (`Object::With` may be overridden)
 		using NewSelfClass = typename SelfClass::template With<Brand>;
 
-		return std::forward<decltype(self)>(self).template cast<NewSelfClass>();
+		return std::forward<decltype(self)>(self).template as<NewSelfClass>();
 	}
 
 public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr decltype(auto)
-	move(this auto &&self) noexcept {
+	move(this auto &&self) noexcept
+	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
+	{
 		using NewSelf = std::remove_reference_t<decltype(self)> &&;
 		return static_cast<NewSelf>(self);
 	}

@@ -5,6 +5,8 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+namespace {
+
 TEST(HashSet, empty) {
 	HashSet<int> a;
 	static_assert(has::hash<int>);
@@ -49,9 +51,7 @@ struct S {
 	S() { ++numConstructed; }
 	~S() { ++numDestructed; }
 	S(const S &) = delete;
-	S(S &&) = delete;
 	S &operator=(const S &) = delete;
-
 	float data[16];
 };
 
@@ -79,3 +79,5 @@ TEST(HashSet, owned) {
 	EXPECT_EQ(S::numConstructed, 100);
 	EXPECT_EQ(S::numDestructed, 100);
 }
+
+} // namespace

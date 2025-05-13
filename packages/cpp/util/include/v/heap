@@ -174,21 +174,19 @@ public:
 	 *  - Invalidates on resize
 	 *  - Invalidates on relocation
 	 */
-	using Iterator = memory::Iterator<Item>;
+	// using Iterator = memory::Iterator<Item>;
 	using ConstIterator = memory::Iterator<const Item>;
 
 public:
-	// instead of `using Base::begin`, make iterators always const
-	// auto begin() const {}
-	// auto end() const { return Base::end(); }
-
+	// ! make iterators always const
 	ConstIterator begin() const {
 		GT(this->_numItems, 0);
-		return &Base::slots()->object().object();
+		return ConstIterator{std::addressof(Base::slots()->object().object())};
 	}
 	ConstIterator end() const {
 		GT(this->_numItems, 0);
-		return &Base::slots()->object().object() + this->_numItems;
+		return ConstIterator{
+		  std::addressof(Base::slots()->object().object()) + this->_numItems};
 	}
 };
 } // namespace VOLTISO_NAMESPACE::heap

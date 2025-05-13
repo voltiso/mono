@@ -40,3 +40,15 @@ TEST(ConstStringSlice, fromChars) {
 	EXPECT_EQ(std::string(str), "abc");
 	EXPECT_EQ(std::string_view(str), "abc");
 }
+
+TEST(ConstStringSlice, stdInterop) {
+	std::string str = "abc";
+	auto slice = ConstStringSlice(str);
+	EXPECT_EQ(slice, "abc");
+	EXPECT_EQ(slice, "abc"_s);
+}
+
+TEST(ConstStringSlice, fromDynamicString) {
+	auto str = dynamicString::from("abc");
+	auto slice = ConstStringSlice(str);
+}

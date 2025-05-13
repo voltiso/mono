@@ -4,7 +4,7 @@
 #include "v/_/const-string-slice.forward.hpp"
 #include "v/extent"
 #include "v/get/extent"
-#include "v/memory/Iterator"
+#include "v/memory/iterator"
 #include "v/object"
 #include "v/options"
 #include "v/raw-array"
@@ -70,6 +70,11 @@ public:
 	Item *const items;
 
 public:
+	// create from single item (static extent)
+	constexpr Slice(Item &item) noexcept
+	  requires(T_EXTENT.value == 1)
+	    : items(&item) {}
+
 	// create from raw array - static extent
 	constexpr Slice(Items &items) noexcept
 	  requires(T_EXTENT != Extent::DYNAMIC)
@@ -311,10 +316,11 @@ template <class A, class B>
 
 // !
 
-template <class RawArray>
-std::ostream &operator<<(std::ostream &os, const Slice<RawArray> &slice) {
+template <class TItem, Extent T_EXTENT>
+std::ostream &
+operator<<(std::ostream &os, const Slice<TItem, T_EXTENT> &slice) {
 	os << '[';
-	for (size_t i = 0; i < slice.extent().value; i++) {
+	for (std::size_t i = 0; i < slice.extent().value; i++) {
 		if (i > 0) {
 			os << ", ";
 		}

@@ -22,6 +22,7 @@ protected:
 	using Self = Base::Self;
 
 public:
+	// create from anything - forward to Base
 	template <class Other>
 	  requires(!std::is_array_v<std::remove_reference_t<Other>>)
 	constexpr ConstStringSlice(Other &&other)
@@ -104,11 +105,16 @@ public:
 	}
 }; // class StringSlice
 
+// ! deduction guide for single element (dangerous??)
+template <class Item>
+  requires(std::is_same_v<std::remove_const_t<Item>, char>)
+ConstStringSlice(Item &item) -> ConstStringSlice<1>;
+
 // deduction guide for raw arrays
 template <size_t N>
 ConstStringSlice(const char (&)[N]) -> ConstStringSlice<N - 1>;
 
-// deduction guide for custom tuples
+// deduction guide for custom tuples - static extent
 template <class TArray>
   requires(
     !std::is_array_v<TArray> &&
@@ -116,6 +122,43 @@ template <class TArray>
       std::remove_cvref_t<decltype(std::declval<TArray>()[0])>, char>)
 ConstStringSlice(TArray &array) -> ConstStringSlice<get::EXTENT<TArray>>;
 
+// deduction guide for custom arrays - dynamic extent
+template <class TArray>
+  requires(
+    !std::is_array_v<TArray> &&
+    std::is_same_v<
+      std::remove_cvref_t<decltype(std::declval<TArray>()[0])>, char> &&
+    !has::EXTENT<TArray>)
+ConstStringSlice(TArray &array) -> ConstStringSlice<Extent::DYNAMIC>;
 } // namespace VOLTISO_NAMESPACE
+
+// !
+
+template <V::Extent T_EXTENT>
+std::ostream &
+operator<<(std::ostream &os, const V::ConstStringSlice<T_EXTENT> &slice) {
+	return os << std::string_view(slice.items, slice.extent().value);
+} // operator<<
+
+// !
+
+// ! operator<< for std::ostream for arrays and strings
+
+template <class T>
+  requires(VOLTISO_NAMESPACE::is::VoltisoType<T>)
+std::ostream &operator<<(std::ostream &os, const T &t)
+  requires requires { V::ConstStringSlice(t); }
+{
+	return os << V::ConstStringSlice(t);
+}
+
+template <class T>
+  requires(VOLTISO_NAMESPACE::is::VoltisoType<T>)
+std::ostream &operator<<(std::ostream &os, T &&t)
+  requires(
+    !requires { V::ConstStringSlice(t); } && requires { V::Slice(t); })
+{
+	return os << V::Slice(t);
+}
 
 #include <v/OFF>

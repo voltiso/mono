@@ -101,3 +101,23 @@ TEST(String, concatRhsDynamic) {
 	EXPECT_EQ(a, "Hello world"_s);
 	EXPECT_EQ(a.numItems(), 11);
 }
+
+TEST(String, stdInterop) {
+	auto &a = "Hello world"_s;
+	EXPECT_EQ(std::string_view(a), "Hello world");
+	EXPECT_EQ(std::string(a), "Hello world");
+	EXPECT_EQ(std::string_view(a).size(), 11);
+	EXPECT_EQ(std::string(a).size(), 11);
+	EXPECT_EQ(a.size(), 11);
+	EXPECT_EQ(a.NUM_ITEMS, 11);
+}
+
+TEST(DynamicString, stdInterop) {
+	auto a = dynamicString::from("Hello world");
+	EXPECT_EQ(std::string_view(a), "Hello world");
+	EXPECT_EQ(std::string(a), "Hello world");
+	EXPECT_EQ(std::string_view(a).size(), 11);
+	EXPECT_EQ(std::string(a).size(), 11);
+	EXPECT_EQ(a.size(), 11);
+	EXPECT_EQ(a.numItems(), 11);
+}

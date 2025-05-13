@@ -32,7 +32,7 @@ namespace VOLTISO_NAMESPACE {
 template <class TPath, class TArg>
   requires(is_path<TPath> && !std::is_const_v<TPath>)
 TPath &operator/=(TPath &a, TArg &&b) {
-	a <<= "/";
+	a <<= '/';
 	return a <<= std::forward<TArg>(b);
 	// return a <<= '/' <<= std::forward<TArg>(b);
 }

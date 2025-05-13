@@ -6,37 +6,6 @@
 
 using namespace VOLTISO_NAMESPACE;
 
-// TEST(context, runWith) {
-//   EXPECT_THROW(context::get<int>(), std::runtime_error);
-
-//   // EXPECT_EXIT(
-//   //     {
-//   //       auto value = context::get<int>();
-//   //       benchmark::DoNotOptimize(value);
-//   //     },
-//   //     testing::KilledBySignal(SIGSEGV), ".*");
-
-//   // EXPECT_EXIT(context::get<int>(), ::testing::KilledBySignal(SIGSEGV),
-//   ".*");
-
-//   auto numInvocations = 0;
-//   context::runWith<int>(123, [&]() {
-//     EXPECT_EQ(context::get<int>(), 123);
-//     numInvocations += 1;
-//   });
-
-//   EXPECT_EQ(numInvocations, 1);
-
-//   // EXPECT_THROW(context::get<int>(), std::runtime_error);
-
-//   // EXPECT_EXIT(
-//   //     {
-//   //       auto value = context::get<int>();
-//   //       benchmark::DoNotOptimize(value);
-//   //     },
-//   //     testing::KilledBySignal(SIGSEGV), ".*");
-// }
-
 struct S {
   S() = default;
   S(const S &) = delete;
@@ -45,85 +14,44 @@ struct S {
 
 TEST(context, forbidRvalueReference) {
   int i = 123;
-  auto guard1 = context::Guard<int>(i);
-  static_assert(std::is_same_v<decltype(guard1), context::Guard<int>>);
+	auto guard1 = context::Guard(i);
+	static_assert(std::is_same_v<decltype(guard1), context::Guard<int>>);
 
-  auto guard2 = context::Guard(i);
-  static_assert(std::is_same_v<decltype(guard2), context::Guard<int>>);
+	auto guard2 = context::Guard(i);
+	static_assert(std::is_same_v<decltype(guard2), context::Guard<int>>);
 
-  // ! should not compile (rvalue reference)
-  // auto guard3 = context::Guard(int()); // !!!
+	// ! should not compile (rvalue reference)
+	// auto guard3 = context::Guard(int()); // !!!
 
-  // ! should not compile (rvalue reference)
-  // auto guard4 = context::Guard<const int>(int()); // !!!
+	// ! should not compile (rvalue reference)
+	// auto guard4 = context::Guard<const int>(int()); // !!!
 }
 
 TEST(context, forbidRvalueReferenceCustomType) {
   S s;
   // auto guard = context::Guard(123); // should not compile
   // auto guard = context::Guard<const int>(123); // should not compile
-  auto guard1 = context::Guard<S>(s);
-  static_assert(std::is_same_v<decltype(guard1), context::Guard<S>>);
+	auto guard1 = context::Guard(s);
+	static_assert(std::is_same_v<decltype(guard1), context::Guard<S>>);
 
-  auto guard2 = context::Guard(s);
-  static_assert(std::is_same_v<decltype(guard2), context::Guard<S>>);
+	auto guard2 = context::Guard(s);
+	static_assert(std::is_same_v<decltype(guard2), context::Guard<S>>);
 
-  // ! should not compile (rvalue reference)
-  // auto guard3 = context::Guard(S()); // !!!
+	// ! should not compile (rvalue reference)
+	// auto guard3 = context::Guard(S()); // !!!
 
-  // ! should not compile (rvalue reference)
-  // auto guard4 = context::Guard<const S>(S()); // !!!
+	// ! should not compile (rvalue reference)
+	// auto guard4 = context::Guard<const S>(S()); // !!!
 }
 
-TEST(context, handleConst) {
-  // ! should not compile (const violation)
-  // const int ci = 234; // !!!
-  // auto g = context::Guard<int>(ci); // !!!
-
-  int i = 123;
-  auto guard = context::Guard(i);
-  static_assert(std::is_same_v<decltype(guard), context::Guard<int>>);
-  {
-    i = 1;
-    auto &value = context::get<int>();
-    static_assert(std::is_same_v<decltype(value), int &>);
-    EXPECT_EQ(value, 1);
-  }
-  {
-    i = 2;
-    auto &value = context::get<const int>();
-    static_assert(std::is_same_v<decltype(value), const int &>);
-    EXPECT_EQ(value, 2);
-  }
-
-  int j = 234;
-  {
-    auto constGuard = context::Guard<const int>(j);
-    static_assert(
-        std::is_same_v<decltype(constGuard), context::Guard<const int>>);
-    {
-      j = 11;
-      auto &value = context::get<const int>();
-      static_assert(std::is_same_v<decltype(value), const int &>);
-      EXPECT_EQ(value, 11);
-    }
-    {
-      j = 12;
-      auto value = context::maybeGet<int>();
-      static_assert(std::is_same_v<decltype(value), int *>);
-      EXPECT_EQ(value, (int *)(-1));
-    }
-  }
-  auto &a = context::get<int>();
-  static_assert(std::is_same_v<decltype(a), int &>);
-  EXPECT_EQ(a, 2); // i
-
-  auto &b = context::get<const int>();
-  static_assert(std::is_same_v<decltype(b), const int &>);
-  EXPECT_EQ(b, 2); // i
+TEST(context, constForbidden) {
+	int i = 123;
+	(void)i;
+	// auto guard = context::Guard<const int>(i); // ! should not compile
 }
 
 TEST(context, volatileForbidden) {
-  // int i = 123;
-  // auto guard = context::Guard<volatile int>(i); // ! should not compile
+	int i = 123;
+	(void)i;
+	// auto guard = context::Guard<volatile int>(i); // ! should not compile
 }

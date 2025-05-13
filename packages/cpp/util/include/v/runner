@@ -85,7 +85,7 @@ public:
 	Options options;
 	TimePoint targetExecutionTime = TimePoint::min();
 
-	// increated on re-schedule (in order to ignore old heap entries)
+	// increated on re-schedule (in order to ignore old `Heap` entries)
 	uint64_t scheduleId = 0;
 }; // class Task
 } // namespace VOLTISO_NAMESPACE::runner::_
@@ -102,7 +102,6 @@ struct ImmediateTaskRef {
 
 	bool operator<(const ImmediateTaskRef &other) const {
 		return priority < other.priority;
-		// return task->priority < other.task->priority;
 	}
 };
 
@@ -136,6 +135,7 @@ constexpr auto is::TriviallyRelocatable<runner::_::ScheduledTaskRef> = true;
 //
 
 namespace VOLTISO_NAMESPACE {
+// uses `v::context::get<Retainer>()` to retain tasks
 class Runner {
 public:
 	using Task = runner::_::Task;

@@ -1,0 +1,113 @@
+// gemini 2.5 pro
+#pragma once
+
+#include "v/path"
+
+#include <stdexcept> // For std::runtime_error
+#include <string>    // IWYU pragma: keep
+#include <vector>    // IWYU pragma: keep
+
+#if defined(_WIN32) || defined(_WIN64)
+	#include <windows.h> // For GetModuleFileNameW
+#elif defined(__linux__)
+	#include <limits.h> // For PATH_MAX
+	#include <unistd.h> // For readlink
+#elif defined(__APPLE__)
+	#include <limits.h> // For PATH_MAX (though _NSGetExecutablePath handles buffer size)
+	#include <mach-o/dyld.h> // For _NSGetExecutablePath
+#else
+// Fallback for other platforms or if you want to disable platform-specific code
+#endif
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::_::get {
+inline path::Dynamic executablePathUncached() {
+#if defined(_WIN32) || defined(_WIN64)
+	std::vector<wchar_t> path_buf;
+	DWORD copied = 0;
+	do {
+		path_buf.resize(path_buf.size() + MAX_PATH);
+		copied = GetModuleFileNameW(
+		  NULL, path_buf.data(), static_cast<DWORD>(path_buf.size()));
+	} while (copied >= path_buf.size());
+
+	if (copied == 0) {
+		throw std::runtime_error(
+		  "Failed to get executable path (Windows). Error code: " +
+		  std::to_string(GetLastError()));
+	}
+
+	path_buf.resize(copied);
+
+	// Convert wchar_t to char (UTF-8)
+	int size_needed = WideCharToMultiByte(
+	  CP_UTF8, 0, path_buf.data(), (int)path_buf.size(), NULL, 0, NULL, NULL);
+	if (size_needed == 0) {
+		throw std::runtime_error(
+		  "Failed to convert executable path to UTF-8 (Windows). Error code: " +
+		  std::to_string(GetLastError()));
+	}
+	path::Dynamic path_str;
+	path_str.setNumSlots(size_needed);
+	path_str.setNumItems(size_needed);
+	WideCharToMultiByte(
+	  CP_UTF8, 0, path_buf.data(), (int)path_buf.size(), &path_str[0],
+	  size_needed, NULL, NULL);
+	return path_str;
+
+#elif defined(__linux__)
+	// char result[PATH_MAX];
+	path::Dynamic result;
+	result.setNumSlots(PATH_MAX);
+	auto count = readlink("/proc/self/exe", &result[0], result.numSlots());
+	if (count == -1) {
+		throw std::runtime_error("Failed to get executable path (Linux).");
+	}
+	result.setNumItems(count);
+	return result;
+	// return std::string(result, count);
+
+#elif defined(__APPLE__)
+	char path_buf[PATH_MAX];
+	uint32_t size = sizeof(path_buf);
+	if (_NSGetExecutablePath(path_buf, &size) == 0) {
+		// Path successfully retrieved
+		// If the buffer was too small, `size` would be updated with the required
+		// size. We could reallocate and try again if needed, but PATH_MAX is
+		// usually sufficient.
+		return std::string(path_buf);
+	} else {
+		// Buffer was too small, try again with the new size
+		std::vector<char> path_vec(size);
+		if (_NSGetExecutablePath(path_vec.data(), &size) == 0) {
+			return std::string(path_vec.data());
+		} else {
+			throw std::runtime_error(
+			  "Failed to get executable path (macOS), even after resizing buffer.");
+		}
+	}
+#else
+	// Fallback or error for unsupported platforms
+	// You might return an empty string, throw an exception,
+	// or try a less reliable method like using argv[0] (which is not guaranteed
+	// to be the full path). For now, let's throw.
+	throw std::runtime_error(
+	  "Executable path retrieval not supported on this platform.");
+	// As a very basic fallback, you *could* try argv[0] from main,
+	// but it's not reliable and might be relative or just the executable name.
+	// return ""; // Or handle argv[0] if passed to this function
+#endif
+}
+} // namespace VOLTISO_NAMESPACE::_::get
+
+// !
+
+namespace VOLTISO_NAMESPACE::get {
+inline const path::Dynamic &executablePath() {
+	static const auto cached = V::_::get::executablePathUncached();
+	return cached;
+} // executablePath
+} // namespace VOLTISO_NAMESPACE::get
+
+#include <v/OFF>

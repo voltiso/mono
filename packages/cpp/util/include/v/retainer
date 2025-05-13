@@ -1,26 +1,37 @@
 #pragma once
 
-#include "v/div-ceil"
 #include "v/dynamic-array"
-#include "v/is/trivially-relocatable"
+#include "v/handle"
+#include "v/pool"
+
+#include <ranges>
+
+#include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
 
 class Retainer {
 private:
-	struct alignas(std::max_align_t) TStorage {};
-	static_assert(sizeof(TStorage) == alignof(std::max_align_t));
+	// struct alignas(std::max_align_t) TStorage {};
+	// static_assert(sizeof(TStorage) == alignof(std::max_align_t));
 
-	using Data = DynamicArray<TStorage>;
-	Data data;
+	// using Data = DynamicArray<TStorage>;
+	// Data data;
 
-	using Deleter = void (*)(void *);
+	using Deleter = void (*)(Handle);
 
 	struct Item {
-		Data::Handle offset;
+		Handle handle;
 		Deleter deleter;
 	};
 	DynamicArray<Item> items;
+
+public:
+	~Retainer() {
+		for (auto &item : items | std::views::reverse) {
+			item.deleter(item.handle);
+		}
+	}
 
 public:
 	Retainer() = default;
@@ -28,28 +39,42 @@ public:
 	Retainer(const Retainer &) = delete;
 	Retainer &operator=(const Retainer &) = delete;
 
-public:
-	// accept only r-value references
-	template <class T, std::enable_if_t<!std::is_reference_v<T>> * = nullptr>
-	void retain(T &&t) {
-		static_assert(is::TriviallyRelocatable<T>);
-		auto numNewStorageItems = divCeil(sizeof(T), sizeof(TStorage));
-		data.setNumSlotsAtLeast(data.numItems() + numNewStorageItems);
-		auto memory = &*data.end();
-		auto prevNumStorageItems = data.numItems();
-		data.setNumItems(data.numItems() + numNewStorageItems);
-		new (memory) T(std::move(t));
-		items.maybeGrowAndPush(
-		  Item{
-		    .offset = Data::Handle(prevNumStorageItems),
-		    .deleter = [](void *memory) { static_cast<T *>(memory)->~T(); }});
+	// Retainer(Retainer &&) = default;
+
+private:
+	template <class T, class... Args>
+	  requires std::is_constructible_v<T, Args...>
+	INLINE auto &_retain(Args &&...args) {
+		// static_assert(is::TriviallyRelocatable<T>);
+		// auto numNewStorageItems = divCeil(sizeof(T), sizeof(TStorage));
+		// data.setNumSlotsAtLeast(data.numItems() + numNewStorageItems);
+		// auto memory = &data.slots()->object() + data.numItems();
+		// auto prevNumStorageItems = data.numItems();
+		// data.setNumItems(data.numItems() + numNewStorageItems);
+		// new (memory) T(std::forward<Args>(args)...);
+		auto handle =
+		  Singleton<Pool<T>>::instance().insert(std::forward<Args>(args)...).handle;
+
+		items.maybeGrowAndPush(Item{.handle = handle, .deleter = [](Handle handle) {
+			                            Singleton<Pool<T>>::instance().erase(handle);
+		                            }});
+		return *handle.value;
 	}
 
-	~Retainer() {
-		for (auto &item : items) {
-			item.deleter(&data[item.offset]);
-		}
+public:
+	template <class T, class... Args>
+	  requires std::is_constructible_v<T, Args...>
+	INLINE auto &retain(Args &&...args) {
+		return _retain<T>(std::forward<Args>(args)...);
+	}
+
+	template <class T>
+	  requires(!std::is_reference_v<T>)
+	INLINE auto &retain(T &&value) {
+		return _retain<std::remove_reference_t<T>>(std::forward<T>(value));
 	}
 };
 
 } // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>
