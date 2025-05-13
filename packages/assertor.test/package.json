@@ -19,7 +19,7 @@
     "__________TEST": "__________",
     "test": "run-s test:build test:jest",
     "test:build": "run-s clean test:build:esm",
-    "test:build:esm": "tsc -b tsconfig.build.esm.json",
+    "test:build:esm": "tspc -b tsconfig.build.esm.json",
     "test:jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
     "__________LINT": "__________",
     "lint": "v lint",

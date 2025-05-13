@@ -3,9 +3,9 @@
 exports[`import works 1`] = `
 "// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-/*import * as path from 'node:path'*/
+/*import * as path from 'node:path'*/ 
 // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`basename\`
-/*export const test = path.basename('a/b/c')*/
+/*export const test = path.basename('a/b/c')*/ 
 export {};
 //# sourceMappingURL=import.js.map"
 `;

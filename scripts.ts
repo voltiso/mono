@@ -121,13 +121,13 @@ export const build = [installWorkspace, turbo('build:esm', 'build:cjs')]
 
 export const buildEsm = [
 	'rimraf dist/esm',
-	'tsc -b tsconfig.build.esm.json',
+	'tspc -b tsconfig.build.esm.json',
 	`echo '{"type":"module"}' > dist/esm/package.json`,
 ]
 
 export const buildCjs = [
 	'rimraf dist/cjs',
-	'tsc -b tsconfig.build.cjs.json',
+	'tspc -b tsconfig.build.cjs.json',
 	`echo '{"type":"commonjs"}' > dist/cjs/package.json`,
 ]
 
@@ -220,3 +220,15 @@ export const prepublishOnlyFast = [
 
 	runTestPackages,
 ]
+
+// must not include `"` (or escape them)
+const testNodeOptions = [
+	`--experimental-vm-modules`, // no longer required?
+	// '--import esbuild-node-loader', // ! doesn't work
+	// '--import tsx', // ok
+]
+
+const testNodeOptionsStr = testNodeOptions.join(' ')
+
+// default per-package test command
+export const test = `cross-env NODE_OPTIONS="${testNodeOptionsStr}" jest --silent`

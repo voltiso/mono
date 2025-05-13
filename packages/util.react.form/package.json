@@ -66,7 +66,6 @@
     }
   },
   "devDependencies": {
-    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@testing-library/react": "^16.1.0",
     "@types/react": "^19.0.1",
@@ -79,11 +78,12 @@
     "@voltiso/util": "workspace:^",
     "@voltiso/util.react.rxjs": "workspace:^",
     "@voltiso/util.rxjs": "workspace:^",
+    "@~/workspace": "workspace:^",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "rxjs": "^7.8.1",
-    "typescript": "~5.6.3",
-    "typescript-transform-paths": "^3.5.2"
+    "typescript": "~5.8.3",
+    "typescript-transform-paths": "^3.5.5"
   },
   "__________MISC": "__________",
   "typeCoverage": {

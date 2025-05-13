@@ -1,7 +1,8 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable unicorn/prefer-module */
+// // eslint-disable-next-line import/no-unassigned-import, sonarjs/no-implicit-dependencies
+// import 'tsx'
 
 import * as path from 'node:path'
 
@@ -10,13 +11,13 @@ import {
 	defineJestConfig,
 	moduleNameMapper,
 } from '@voltiso/config.jest.lib'
-import { register as registerEsbuild } from 'esbuild-register/dist/node'
+// import { register as registerEsbuild } from 'esbuild-register/dist/node'
 
-let registerEsbuildOnce = () => {
-	registerEsbuild()
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	registerEsbuildOnce = () => {}
-}
+// let registerEsbuildOnce = () => {
+// 	registerEsbuild()
+// 	// eslint-disable-next-line @typescript-eslint/no-empty-function
+// 	registerEsbuildOnce = () => {}
+// }
 
 // const dirname =
 // 	typeof import.meta !== 'undefined'
@@ -37,6 +38,7 @@ let registerEsbuildOnce = () => {
 // 	dirname = new URL('.', import.meta.url).pathname.slice(0, -1)
 // }
 
+// eslint-disable-next-line unicorn/prefer-module
 const dirname = __dirname // will be transpiled to `import.meta...` by `@voltiso/transform/compat
 
 const librariesToTransform = [
@@ -59,6 +61,8 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 
 	const transformValue = path.join(
 		dirname,
+		// '..',
+		// 'cjs', // !
 		'transform',
 		`${transformFileName}.js`,
 	)
@@ -89,7 +93,16 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 		injectGlobals: false, // import from `@jest/globals`
 
 		setupFilesAfterEnv: [
-			path.join(dirname, 'setup-after-env.js'),
+			path.join(
+				dirname,
+
+				// ! Jest in ESM mode by default wants this in CJS format?!
+				// ! probably not needed if user has `--experimental-vm-modules` flag
+				// '..',
+				// 'cjs',
+
+				'setup-after-env.js',
+			),
 			// require.resolve('../setup-after-env.js'),
 			// '@voltiso/config.jest/setup-after-env',
 		],
@@ -108,7 +121,7 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 
 	return new Proxy(config, {
 		get(target, prop, receiver) {
-			registerEsbuildOnce()
+			// registerEsbuildOnce()
 			return Reflect.get(target, prop, receiver) as never
 		},
 	})

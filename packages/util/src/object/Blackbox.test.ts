@@ -2,16 +2,19 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
+// import type { SuperJSON } from 'superjson'
 import { deserialize, registerCustom, serialize } from 'superjson'
-import type { JSONObject } from 'superjson/dist/types'
 
 import { blackbox } from './Blackbox'
+
+// type JSONValue = Parameters<typeof SuperJSON.serialize>[0] // ! broken
+type JSONValue = never
 
 // const isCjs = typeof require === 'function'
 // console.log('Blackbox.test.ts', { isCjs })
 
 // eslint-disable-next-line jest/require-hook
-registerCustom<object, PropertyDescriptorMap & JSONObject>(
+registerCustom<object, PropertyDescriptorMap & JSONValue>(
 	{
 		isApplicable(v): v is object {
 			return Object.getPrototypeOf(v) === null

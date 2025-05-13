@@ -11,7 +11,7 @@
 
 import * as path from 'node:path'
 
-import type { RuleListener } from '@typescript-eslint/utils/ts-eslint'
+import type { TSESLint } from '@typescript-eslint/utils'
 import type { Rule } from 'eslint'
 import isCoreModule from 'is-core-module'
 
@@ -36,9 +36,10 @@ export default function visitImport(
 	context: Rule.RuleContext,
 	{ includeCore = false, optionIndex = 0 } = {},
 	callback: (targets: ImportTarget[]) => unknown,
-): RuleListener {
+): TSESLint.RuleListener {
 	const targets: ImportTarget[] = []
-	// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
+
+	// eslint-disable-next-line @typescript-eslint/no-deprecated
 	const basedir = path.dirname(path.resolve(context.getFilename()))
 	const paths = getResolvePaths(context as never, optionIndex)
 	const options = {

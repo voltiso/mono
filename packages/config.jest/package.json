@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.jest",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -40,11 +40,11 @@
     "build": "v build",
     "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
-    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs:tsc": "tspc -b tsconfig.build.cjs.json",
     "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "build:esm": "run-s build:esm:clean build:esm:tsc build:esm:type",
     "build:esm:clean": "rimraf dist/esm",
-    "build:esm:tsc": "tsc -b tsconfig.build.esm.json",
+    "build:esm:tsc": "tspc -b tsconfig.build.esm.json",
     "build:esm:type": "echo '{\"type\":\"module\"}' > dist/esm/package.json",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast",
@@ -55,8 +55,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@voltiso/config.jest.lib": "workspace:^",
-    "esbuild": "^0.24.0",
-    "esbuild-register": "^3.6.0",
+    "esbuild": "=0.24.0",
     "flow-remove-types": "^2.256.0"
   },
   "devDependencies": {

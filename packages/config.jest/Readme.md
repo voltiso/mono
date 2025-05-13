@@ -1,3 +1,18 @@
+#
+
+To use with ESM, run `jest` e.g. like this:
+
+`NODE_OPTIONS=--experimental-vm-modules jest`
+
+Or, additionally using `tsx` to handle TypeScript setup files (like
+`setup-after-env`), and using per-project `jest` installation, plus `--silent`
+flag:
+
+`NODE_OPTIONS="--experimental-vm-modules --import tsx" pnpm jest --silent`
+
+Note: if you only have TypeScript in the actual test/source files, this is
+handled by `transformer` option instead.
+
 # Example custom configuration
 
 `jest.config.cjs`:

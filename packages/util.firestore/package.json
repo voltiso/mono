@@ -53,7 +53,6 @@
     "randombytes": "^2.1.0"
   },
   "devDependencies": {
-    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@types/randombytes": "^2.0.3",
     "@voltiso/config.jest": "workspace:^",
@@ -61,7 +60,8 @@
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript": "~5.6.3",
-    "typescript-transform-paths": "^3.5.2"
+    "@~/workspace": "workspace:^",
+    "typescript": "~5.8.3",
+    "typescript-transform-paths": "^3.5.5"
   }
 }

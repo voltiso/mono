@@ -14,7 +14,7 @@
 import fs from 'node:fs'
 import * as path from 'node:path'
 
-import type { RuleContext } from '@typescript-eslint/utils/ts-eslint'
+import type { TSESLint } from '@typescript-eslint/utils'
 import type { Node } from 'estree'
 
 import type ImportTarget from '~/util.plugin-n/import-target'
@@ -71,7 +71,8 @@ function getExistingExtensions(filePath: string, extMappingList: string[]) {
 
 export const fileExtensionInImport = {
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-	create(context: RuleContext<string, unknown[]>) {
+	create(context: TSESLint.RuleContext<string, unknown[]>) {
+		// eslint-disable-next-line @typescript-eslint/no-deprecated
 		if (context.getFilename().startsWith('<')) {
 			return {}
 		}

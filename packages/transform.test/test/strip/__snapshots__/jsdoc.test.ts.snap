@@ -18,9 +18,9 @@ const normalFunctionArrow = () => {
     //
 };
 // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`willBeStripped\`
-/*willBeStripped()*/
+/*willBeStripped()*/ 
 // 👗 [@voltiso/transform/strip] Commented-out because of symbol \`willBeStrippedArrow\`
-/*willBeStrippedArrow()*/
+/*willBeStrippedArrow()*/ 
 normalFunction();
 normalFunctionArrow();
 export {};

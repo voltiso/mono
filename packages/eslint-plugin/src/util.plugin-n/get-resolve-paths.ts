@@ -3,7 +3,7 @@
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
-import type { RuleContext } from '@typescript-eslint/utils/ts-eslint'
+import type { TSESLint } from '@typescript-eslint/utils'
 
 const DEFAULT_VALUE = Object.freeze([])
 
@@ -32,7 +32,7 @@ function get(option: { resolvePaths?: unknown } | undefined) {
  * @returns A list of extensions.
  */
 function getResolvePaths(
-	context: RuleContext<string, unknown[]>,
+	context: TSESLint.RuleContext<string, unknown[]>,
 	optionIndex = 0,
 ): string[] | readonly never[] {
 	return (

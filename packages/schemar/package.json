@@ -62,7 +62,6 @@
     "@voltiso/util": "workspace:^"
   },
   "devDependencies": {
-    "@~/workspace": "workspace:^",
     "@jest/globals": "^29.7.0",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
@@ -70,8 +69,9 @@
     "@voltiso/config.tsdoc": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "typescript": "~5.6.3",
-    "typescript-transform-paths": "^3.5.2"
+    "@~/workspace": "workspace:^",
+    "typescript": "~5.8.3",
+    "typescript-transform-paths": "^3.5.5"
   },
   "__________MISC": "__________",
   "engines": {

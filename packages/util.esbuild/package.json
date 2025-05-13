@@ -40,11 +40,11 @@
     "build": "v build",
     "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
-    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs:tsc": "tspc -b tsconfig.build.cjs.json",
     "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "build:esm": "run-s build:esm:clean build:esm:tsc",
     "build:esm:clean": "rimraf dist/esm",
-    "build:esm:tsc": "tsc -b tsconfig.build.esm.json",
+    "build:esm:tsc": "tspc -b tsconfig.build.esm.json",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast"
   },
@@ -56,14 +56,14 @@
     "esbuild": ">= 0.14.49"
   },
   "devDependencies": {
-    "@~/workspace": "workspace:^",
     "@types/node": "^22.10.2",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
+    "@~/workspace": "workspace:^",
     "esbuild": "^0.24.0",
     "rimraf": "^6.0.1",
-    "typescript": "~5.6.3",
-    "typescript-transform-paths": "^3.5.2"
+    "typescript": "~5.8.3",
+    "typescript-transform-paths": "^3.5.5"
   },
   "comment-esbuild": "0.18.x-to-0.19.7-not-transforming-decorators---0.24.0-transforms-decorators-proposal-stage-3"
 }

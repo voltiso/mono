@@ -1,4 +1,4 @@
-# ⠀ⓥ 2024     🌩    🌩     ⠀   ⠀
+# ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 root = true
@@ -18,3 +18,7 @@ indent_style = space
 
 [{package.json,package.*.json}]
 indent_style = space
+
+[*.snap]
+insert_final_newline = false
+trim_trailing_whitespace = false

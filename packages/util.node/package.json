@@ -42,11 +42,11 @@
     "build": "v build",
     "build:cjs": "run-s build:cjs:clean build:cjs:tsc build:cjs:type",
     "build:cjs:clean": "rimraf dist/cjs",
-    "build:cjs:tsc": "tsc -b tsconfig.build.cjs.json",
+    "build:cjs:tsc": "tspc -b tsconfig.build.cjs.json",
     "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "build:esm": "run-s build:esm:clean build:esm:tsc",
     "build:esm:clean": "rimraf dist/esm",
-    "build:esm:tsc": "tsc -b tsconfig.build.esm.json",
+    "build:esm:tsc": "tspc -b tsconfig.build.esm.json",
     "__________PREPARE": "__________",
     "prepublishOnly": "v prepublishOnlyFast"
   },
