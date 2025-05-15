@@ -4,8 +4,9 @@
 import * as s from '@voltiso/schemar'
 import { lazyFunction, lazyObject, OPTIONS, ProtoCallable } from '@voltiso/util'
 
-import type { $$DocRelated, WeakDocRef } from '~'
-import { _CustomDocRef } from '~'
+import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
+import type { WeakDocRef } from '~/DocRef/WeakDocRef'
+import type { $$DocRelated } from '~/DocRelated/DocRelated'
 import type { AnyDoc, DocTag } from '~/DocTypes'
 
 /**

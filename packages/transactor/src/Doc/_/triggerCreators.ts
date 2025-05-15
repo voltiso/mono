@@ -142,7 +142,6 @@ export function createAfterDeleteTrigger<TI extends DocDerivedData>(
 		this: Doc | null,
 		params: AfterTriggerParams,
 	) {
-		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!this) {
 			logTrigger(name, 'after', 'DELETE', params)
 			assertBefore(params)

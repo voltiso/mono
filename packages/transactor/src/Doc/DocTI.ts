@@ -34,7 +34,6 @@ export type DocTISchema = s.$$Object & { Output: {}; Input: {} } // not `object`
  * - Every Doc Type Info (`DocTI`) is assignable to it
  */
 export interface DocTI extends $$DocTI {
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	tag: DocTag | any // | AnyDoc
 
 	id: s.$$String & {

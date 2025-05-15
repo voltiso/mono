@@ -192,7 +192,7 @@ async function directDocPathGet<D extends $$Doc>(
 
 					{
 						const newData = collectTriggerResult(ctx, r)
-						// eslint-disable-next-line require-atomic-updates, unicorn/no-negated-condition
+						// eslint-disable-next-line require-atomic-updates
 						if (newData !== undefined) data = newData as never
 						// eslint-disable-next-line require-atomic-updates
 						else data = doc?.data ?? null
@@ -427,7 +427,7 @@ export function transactionDocPathGet<D extends $$Doc>(
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// eslint-disable-next-line promise/prefer-await-to-then, @typescript-eslint/use-unknown-in-catch-callback-variable
+			// eslint-disable-next-line promise/prefer-await-to-then
 			return promise.then(f as never, r)
 		},
 	}

@@ -46,6 +46,5 @@ export type DocIdString<X extends $$DocRelated | NoArgument = NoArgument> = [
 	: string & IntersectionFromUnion<GetDocIdBrand<X>>
 
 export type DocIdString_<
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	X extends DocTag | AlsoAccept<$$DocRelatedLike> | NoArgument = NoArgument,
 > = [string & GetDocIdBrand<X>][0]

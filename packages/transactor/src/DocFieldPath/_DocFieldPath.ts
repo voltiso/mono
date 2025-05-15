@@ -31,6 +31,7 @@ function getCandidatePaths(segments: string[]): string[][] {
 
 	paths.push(segments)
 
+	// eslint-disable-next-line unicorn/prefer-single-call
 	paths.push([
 		'__voltiso',
 		'aggregateTarget',

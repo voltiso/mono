@@ -161,7 +161,6 @@ export class _CustomDocRef<
 		const methods = this._getMethods()
 
 		for (const { name, method, pathMatches } of methods) {
-			// eslint-disable-next-line sonarjs/arrow-function-convention
 			const f = (...args: unknown[]) => {
 				return this._callMethod(method as never, args, { name, ...pathMatches })
 			}

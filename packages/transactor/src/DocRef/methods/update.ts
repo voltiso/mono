@@ -336,7 +336,7 @@ function transactionUpdate(
 		then(f, r) {
 			transaction._numFloatingPromises -= 1
 
-			// eslint-disable-next-line promise/prefer-await-to-then, @typescript-eslint/use-unknown-in-catch-callback-variable
+			// eslint-disable-next-line promise/prefer-await-to-then
 			return promise.then(f as never, r)
 		},
 	}

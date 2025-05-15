@@ -12,7 +12,6 @@ import type { $$DocRelated, GetDocTI } from '~/DocRelated'
 import type { IAggregatorHandlers } from './_/AggregatorHandlers'
 import { getAggregatorTrigger } from './_/getAggregatorTrigger'
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 export const aggregatePluginName = 'aggregate' as const
 
 export class AggregatePlugin<R extends $$DocRelated>

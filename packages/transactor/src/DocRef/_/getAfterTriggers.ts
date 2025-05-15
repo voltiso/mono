@@ -101,6 +101,7 @@ export function getAfterTriggers(
 
 					if (shouldCheck && __voltiso.numRefs < ba.after) {
 						throw new TransactorError(
+							// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
 							`ref trigger for ${path.toString()}: ${targetPath.toString()}.__voltiso.numRefs === ${
 								__voltiso.numRefs
 							} too small - database corrupt`,

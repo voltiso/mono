@@ -35,7 +35,7 @@ export const getGetPathMatches = (pattern: string): GetPathMatches => {
 	const regex = new RegExp(`^${currentPattern}$`)
 
 	return (path: string): PathMatches | null => {
-		// eslint-disable-next-line regexp/prefer-regexp-exec, sonarjs/sonar-prefer-regexp-exec
+		// eslint-disable-next-line regexp/prefer-regexp-exec, sonarjs/prefer-regexp-exec
 		const matches = path.match(regex)
 
 		if (matches)

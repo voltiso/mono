@@ -142,7 +142,7 @@ export const getAggregatorTrigger: GetTriggerFunction = ({
 
 					finalTarget.aggregateSchemas[name],
 
-					// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
+					// eslint-disable-next-line @typescript-eslint/no-deprecated
 					handlers.initialValue,
 				),
 
