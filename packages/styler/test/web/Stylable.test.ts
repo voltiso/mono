@@ -3,10 +3,12 @@
 
 import { describe, expect, it } from '@jest/globals'
 import { $Assert, $Is } from '@voltiso/util'
-import type { ChangeEvent, FC, RefObject } from 'react'
+import type { ChangeEvent, RefObject } from 'react'
 
 import type { IStylable, Stylable } from '~'
 import type { Props } from '~/react-types'
+
+import type { FC } from './common'
 
 describe('Stylable', () => {
 	it('generic', <P extends Props>() => {

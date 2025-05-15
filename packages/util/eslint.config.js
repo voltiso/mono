@@ -4,7 +4,7 @@
 // ! circular dependency
 // import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
 
-// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports, import/no-relative-packages
 import baseConfig from '../../eslint.config.js'
 
 export default [

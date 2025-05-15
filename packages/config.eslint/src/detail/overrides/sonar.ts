@@ -15,6 +15,8 @@ export const sonar = defineEslintFlatConfig({
 	rules: {
 		...getAllRules(sonarjs, 'sonarjs', 'warn'),
 
+		'sonarjs/no-commented-code': 0, // god, why
+
 		'sonarjs/deprecation': 0, // ! slow + already handled by faster `import/no-deprecated`
 		'sonarjs/aws-restricted-ip-admin-access': 0, // ! slow + we don't use AWS
 

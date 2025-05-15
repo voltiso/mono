@@ -8,7 +8,7 @@ import { deserialize, registerCustom, serialize } from 'superjson'
 import { blackbox } from './Blackbox'
 
 // type JSONValue = Parameters<typeof SuperJSON.serialize>[0] // ! broken
-type JSONValue = never
+type JSONValue = never // well... `superjson` in its super-ness does not export this type for us
 
 // const isCjs = typeof require === 'function'
 // console.log('Blackbox.test.ts', { isCjs })

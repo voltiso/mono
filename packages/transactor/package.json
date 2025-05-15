@@ -61,7 +61,7 @@
     "js-yaml": "^4.1.0"
   },
   "peerDependencies": {
-    "@voltiso/firestore-like": "workspace:^ || ^1",
+    "@voltiso/firestore-like": "workspace:^ || ^1.3.3",
     "@voltiso/schemar": "workspace:^ || ^24 || ^23 || ^22 || ^21"
   },
   "devDependencies": {

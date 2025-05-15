@@ -28,26 +28,20 @@ const project = [
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 // console.log('dirname', __dirname)
 
-export default defineEslintFlatConfig(
-	...baseConfig,
-	// ...(isFastMode ? baseConfigFast : baseConfig),
-	{
-		// files: ['*.ts', '*.tsx'],
+export default defineEslintFlatConfig(...baseConfig, {
+	languageOptions: {
+		parserOptions: {
+			project,
+			tsconfigRootDir: __dirname,
+		},
+	},
 
-		languageOptions: {
-			parserOptions: {
+	settings: {
+		'import/resolver': {
+			typescript: {
 				project,
 				tsconfigRootDir: __dirname,
 			},
 		},
-
-		settings: {
-			'import/resolver': {
-				typescript: {
-					project,
-					tsconfigRootDir: __dirname,
-				},
-			},
-		},
 	},
-)
+})

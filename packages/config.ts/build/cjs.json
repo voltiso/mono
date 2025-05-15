@@ -9,6 +9,7 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"moduleResolution": "node10"
+		// "moduleResolution": "bundler" // can only be used when `module` is `preserve` or es2015+
 
 		// "declaration": false,
 

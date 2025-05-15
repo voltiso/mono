@@ -30,3 +30,14 @@ import { NextStylerRegistry } from '~'
 export function renderApp(children: ReactNode): RenderResult {
 	return render(<NextStylerRegistry>{children}</NextStylerRegistry>)
 }
+
+// ! React now allows returning Promise<ReactNode>.
+// Since we don't support this yet, here's the old type for testing, that does not allow this.
+export interface FC<P = {}> {
+	(props: P): ReactNode // | Promise<ReactNode>
+
+	// // @deprecated
+	// propTypes?: any;
+
+	displayName?: string | undefined
+}

@@ -8,7 +8,7 @@ import { TransactorError } from './error'
 
 function checkStrictMode() {
 	if (
-		// eslint-disable-next-line no-useless-call, sonarjs/no-useless-call
+		// eslint-disable-next-line no-useless-call
 		function (this: unknown) {
 			return this
 		}.call(null) !== null
@@ -22,7 +22,7 @@ function checkDecorators() {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!Symbol.metadata) {
 		// eslint-disable-next-line no-console
-		console.warn('`Symbol(Symbol.metadata)` not defined, adding a polyfill')
+		console.warn('⚠️ @voltiso/transactor: checkDecorators: `Symbol(Symbol.metadata)` not defined, adding a polyfill')
 		// @ts-expect-error hack
 		Symbol.metadata ??= Symbol('Symbol.metadata')
 	}

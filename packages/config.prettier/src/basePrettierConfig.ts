@@ -46,10 +46,26 @@ const pluginNames = Object.keys(getDependencies()).filter(
 	dep => dep.startsWith('@prettier/plugin') || dep.includes('prettier-plugin'),
 )
 
-// // eslint-disable-next-line import/no-dynamic-require, n/global-require, @typescript-eslint/no-unsafe-return, unicorn/prefer-module
-// const plugins = pluginNames.map(name => require(name))
-const plugins = pluginNames
+// const plugins = pluginNames
 
+const resolve =
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore `import.meta.url`
+	// eslint-disable-next-line unicorn/no-negated-condition, unicorn/prefer-module, @typescript-eslint/unbound-method, n/no-unsupported-features/node-builtins
+	typeof require !== 'undefined' ? require.resolve : import.meta.resolve // createRequire(import.meta.url)
+
+// this is required, because prettier plugins installed here locally
+
+function resolveWithoutFileProtocol(name: string): string {
+	const resolved = resolve(name)
+	const prefix = 'file://'
+	if (resolved.startsWith(prefix)) {
+		return resolved.slice(prefix.length)
+	}
+	return resolved
+}
+
+const plugins = pluginNames.map(name => resolveWithoutFileProtocol(name))
 // console.log('prettier plugins', plugins)
 
 /** ! Code must be CLEAN for readability and DX 👌 */

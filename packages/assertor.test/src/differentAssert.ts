@@ -4,5 +4,6 @@
 import assert from 'node:assert'
 
 export function differentAssert(): void {
+	// eslint-disable-next-line unicorn/consistent-assert
 	assert(1)
 }

@@ -3,9 +3,11 @@
 
 import { describe, expect, it } from '@jest/globals'
 import { $Assert, $Is } from '@voltiso/util'
-import type { FC } from 'react'
 
 import type { IStylableJsxCall, Props, StylableJsxCall } from '~'
+
+import type { FC } from './common'
+
 
 describe('StylableJsxCall', () => {
 	it('generic', <P extends Props>() => {

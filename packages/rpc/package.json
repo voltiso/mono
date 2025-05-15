@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/rpc",
-  "version": "5.1.9",
+  "version": "5.1.11",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -79,9 +79,9 @@
     "cross-fetch": "^4.1.0"
   },
   "peerDependencies": {
-    "@types/express": "^4.17.13",
+    "@types/express": "^5 || ^4",
     "@voltiso/schemar": "workspace:^",
-    "express": "^4.18.1"
+    "express": "^5 || ^4"
   },
   "peerDependenciesMeta": {
     "express": {

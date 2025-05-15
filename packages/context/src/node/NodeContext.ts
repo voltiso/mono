@@ -1,7 +1,6 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable sonarjs/arrow-function-convention */
 /* eslint-disable es-x/no-class-instance-fields */
 
 import { AsyncLocalStorage } from 'node:async_hooks'
