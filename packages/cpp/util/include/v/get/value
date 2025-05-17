@@ -10,6 +10,9 @@
 namespace V::_ {
 template <class T>
 [[nodiscard]] INLINE constexpr decltype(auto) optional_value(T &&t) noexcept {
+	// if constexpr (std::is_reference_v<T>) {
+	// 	return std::forward<T>(t); // do not try to follow references
+	// } else
 	if constexpr (requires { t.value(); }) {
 		static_assert(noexcept(t.value()));
 		return std::forward<T>(t).value();
@@ -59,6 +62,13 @@ template <class T>
 struct ValueSpecializations<T> {
 	using Result = T; // preserve ref-ness
 };
+
+// ! short-circuit references to avoid incomplete type errors
+// template <class T>
+//   requires(std::is_reference_v<T>)
+// struct ValueSpecializations<T> {
+// 	using Result = T;
+// };
 
 template <class T>
   requires has::value<T>

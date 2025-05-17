@@ -11,19 +11,19 @@ static_assert(sizeof(AnyFunction<int(int)>) == sizeof(void *) * 3);
 static_assert(is::TriviallyRelocatable<AnyFunction<int(int)>>);
 
 TEST(Function, moveSemantics) {
-	v::AnyFunction<void()> test = [] {};
+	v::AnyFunction<void()> test = [] noexcept {};
 }
 
 TEST(Function, Basic) {
-	AnyFunction<int(int)> f = [](int x) { return x * 2; };
+	AnyFunction<int(int)> f = [](int x) noexcept { return x * 2; };
 	EXPECT_EQ(f(5), 10);
 
-	AnyFunction<int(int, int)> add = [](int a, int b) { return a + b; };
+	AnyFunction<int(int, int)> add = [](int a, int b) noexcept { return a + b; };
 	EXPECT_EQ(add(3, 4), 7);
 }
 
 TEST(Function, MoveOnly) {
-	AnyFunction<std::string(std::string)> concat = [](std::string s) {
+	AnyFunction<std::string(std::string)> concat = [](std::string s) noexcept {
 		return s + " world";
 	};
 
@@ -34,6 +34,7 @@ TEST(Function, MoveOnly) {
 	EXPECT_EQ(concat2("hello"), "hello world");
 }
 
+int count = 0;
 TEST(Function, ComplexTypes) {
 	static int numConstructorCalls;
 	static int numDestructorCalls;
@@ -41,9 +42,10 @@ TEST(Function, ComplexTypes) {
 	numConstructorCalls = 0;
 	numDestructorCalls = 0;
 
+	count = 0;
+
 	struct Counter {
-		int count = 0;
-		int operator()() { return ++count; }
+		int operator()() const noexcept { return ++count; }
 
 		int data[123];
 
@@ -65,20 +67,21 @@ TEST(Function, ComplexTypes) {
 
 TEST(Function, Capture) {
 	int multiplier = 3;
-	AnyFunction<int(int)> multiply = [multiplier](int x) {
+	AnyFunction<int(int)> multiply = [multiplier](int x) noexcept {
 		return x * multiplier;
 	};
 	EXPECT_EQ(multiply(4), 12);
 
 	std::string prefix = "test_";
-	AnyFunction<std::string(std::string)> prefixer = [prefix](std::string s) {
-		return prefix + s;
-	};
+	AnyFunction<std::string(std::string)> prefixer =
+	  [prefix](std::string s) noexcept { return prefix + s; };
 	EXPECT_EQ(prefixer("value"), "test_value");
 }
 
 TEST(Function, CaptureBig) {
 	std::vector<int> data = {1, 2, 3, 4, 5};
-	AnyFunction<int(int)> sum = [data](int index) { return data[index]; };
+	AnyFunction<int(int)> sum = [data](int index) noexcept {
+		return data[index];
+	};
 	EXPECT_EQ(sum(2), 3);
 }

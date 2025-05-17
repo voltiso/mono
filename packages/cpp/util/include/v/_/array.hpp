@@ -53,8 +53,21 @@ struct Specializations<Options<
   option::CustomTemplate<GetCustom>>> {
 	using Result = Array<Item, NUM_ITEMS>;
 };
-
 } // namespace VOLTISO_NAMESPACE::array
+
+// !
+
+// namespace VOLTISO_NAMESPACE::array::_ {
+// template <class Item, std::size_t NUM_ITEMS> struct GetItems {
+// 	using Result = RawArray<Item, NUM_ITEMS>;
+// };
+
+// template <class Item, std::size_t NUM_ITEMS>
+//   requires(std::is_reference_v<Item>)
+// struct GetItems<Item, NUM_ITEMS> {
+// 	using Result = ...;
+// };
+// } // namespace VOLTISO_NAMESPACE::array::_
 
 // !
 
@@ -98,6 +111,9 @@ public:
 	// Item items[NUM_ITEMS];
 	RawArray<Item, NUM_ITEMS> items; // = {};
 
+	// using Items = GetItems<Item, NUM_ITEMS>;
+	// Items items; // = {};
+
 public:
 	Custom() = default;
 
@@ -119,8 +135,9 @@ public:
 		std::copy(other.items, other.items + Other::NUM_ITEMS, items);
 	}
 
-	VOLTISO_FORCE_INLINE constexpr Custom(
-	  std::initializer_list<Item> list) noexcept {
+	INLINE constexpr Custom(std::initializer_list<Item> list) noexcept
+	// : items{{list}}
+	{
 		EQ(list.size(), NUM_ITEMS);
 		std::copy(list.begin(), list.end(), items);
 	}
@@ -132,13 +149,11 @@ public:
 	// 	return Self{tag::EXPLICIT_COPY, items};
 	// }
 
-	template <class Arg>
-	static VOLTISO_FORCE_INLINE constexpr auto from(Arg &&arg) {
+	template <class Arg> static INLINE constexpr auto from(Arg &&arg) {
 		return Self{tag::EXPLICIT_COPY, std::forward<Arg>(arg)};
 	}
 
-	template <class... Args>
-	static VOLTISO_FORCE_INLINE constexpr auto concat(Args &&...args) {
+	template <class... Args> static INLINE constexpr auto concat(Args &&...args) {
 		return Self{tag::CONCAT, std::forward<Args>(args)...};
 	}
 

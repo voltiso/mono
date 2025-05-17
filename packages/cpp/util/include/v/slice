@@ -7,7 +7,6 @@
 #include "v/memory/iterator"
 #include "v/object"
 #include "v/options"
-#include "v/raw-array"
 
 #include <cstddef>
 #include <ostream>
@@ -39,6 +38,27 @@ public:
 
 // !
 
+namespace VOLTISO_NAMESPACE::slice::_ {
+template <class TItem, Extent T_EXTENT> struct GetItems {
+	using Result = TItem[T_EXTENT.value];
+};
+
+// template <class TItem, Extent T_EXTENT>
+//   requires(std::is_reference_v<TItem>)
+// struct GetItems<TItem, T_EXTENT> {
+// 	using Result = void;
+// };
+
+template <class TItem, Extent T_EXTENT>
+  requires(T_EXTENT == Extent::UNBOUND || T_EXTENT == Extent::DYNAMIC)
+struct GetItems<TItem, T_EXTENT> {
+	using Result = TItem[];
+};
+
+} // namespace VOLTISO_NAMESPACE::slice::_
+
+// !
+
 namespace VOLTISO_NAMESPACE {
 // TExtent = -1 means dynamic extent
 // TExtent = 0 means unknown extent
@@ -60,10 +80,7 @@ public:
 	}
 
 public:
-	using Items = RawArray<
-	  Item, ((T_EXTENT == Extent::DYNAMIC || T_EXTENT == Extent::UNBOUND)
-	           ? -1
-	           : T_EXTENT.signedValue())>;
+	using Items = typename slice::_::GetItems<Item, T_EXTENT>::Result;
 
 	// Items &items;
 	// Items *const items; // ! super-bug-prone

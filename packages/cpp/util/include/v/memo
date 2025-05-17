@@ -1,0 +1,115 @@
+#pragma once
+
+#include "v/_/memo.forward.hpp"
+
+#include "v/any-function"
+#include "v/array"
+#include "v/dynamic-array"
+#include "v/late-init"
+#include "v/ref"
+#include "v/sink"
+#include "v/subject"
+
+#include <cstddef>
+#include <limits>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+template <class Value, memo::NumDeps NUM_DEPS>
+class Memo : private Subject<Value> {
+	using Base = Subject<Value>;
+
+	using UpdateCallback = AnyFunction<Value()>;
+	UpdateCallback _updateCallback;
+
+	using Deps = std::conditional_t<
+	  NUM_DEPS == std::numeric_limits<memo::NumDeps>::max(),
+	  DynamicArray<LateInit<Owned<subscription::Base>>>,
+	  Array<LateInit<Owned<subscription::Base>>, NUM_DEPS>>;
+
+	Deps _deps;
+	bool _isDirty = true;
+
+public:
+	INLINE constexpr bool isDirty() const noexcept { return _isDirty; }
+
+public:
+	[[nodiscard]] INLINE constexpr Memo(
+	  const std::array<Ref<sink::Base>, NUM_DEPS> &deps,
+	  UpdateCallback &&updateCallback) noexcept
+	  requires(NUM_DEPS != std::numeric_limits<memo::NumDeps>::max())
+	    : _updateCallback(std::move(updateCallback)) {
+		static_assert(get::EXTENT<decltype(deps)> == NUM_DEPS);
+		for (std::size_t i = 0; i < NUM_DEPS; ++i) {
+			_deps[i].construct(
+			  deps[i].target.createLazySubscription([this]() noexcept {
+				  // std::cout << "--------- memo lazy callback" << std::endl;
+				  // // ! assuming normal Memo use is not to subscribe to it??
+				  // [[unlikely]] if (this->_subscriptions.numItems()) [[unlikely]] {
+				  //   this->_update();
+				  // } else {
+				  this->_maybeMakeDirty();
+				  // }
+			  }));
+		}
+	}
+
+	// public:
+	// 	template <class... Args>
+	// 	[[nodiscard]] constexpr auto createSubscription(Args &&...args) noexcept(
+	// 	  noexcept(Base::createSubscription(std::forward<Args>(args)...))) {
+	// 		return Base::createSubscription(std::forward<Args>(args)...);
+	// 	}
+
+private:
+	INLINE void _maybeMakeDirty() noexcept {
+		if (_isDirty) [[likely]] {
+			return;
+		}
+		_isDirty = true;
+		Base::_notify();
+	}
+
+private:
+	INLINE constexpr void _maybeUpdate() noexcept {
+		if (_isDirty) [[unlikely]] {
+			_update();
+		}
+	}
+
+	INLINE constexpr void _update() noexcept {
+		// pull up-to-date values from dependencies?
+		// std::cout << "memo: call update callback" << std::endl;
+		Base::_value = this->_updateCallback();
+		_isDirty = false;
+		Base::_notify();
+	}
+
+public:
+	[[nodiscard]] INLINE constexpr auto &value() noexcept {
+		_maybeUpdate();
+		return Base::value();
+	}
+
+public:
+	template <class Listener>
+	[[nodiscard]] INLINE auto createSubscription(Listener &&listener) {
+		// std::cout << "--------- memo createSubscription" << std::endl;
+		// chain may be cold, need to pull first values to deps
+		// (don't have to update self yet)
+		// ...but actually we don't know the deps derived memo types,
+		// so we are forced to call our update function
+		// That's the cost of avoiding polymorphism.
+		_maybeUpdate(); // 🤷‍♂️
+		return Base::createSubscription(std::forward<Listener>(listener));
+	}
+
+public:
+	using Base::map;
+	using Base::sink;      // cast to Sink base-base should be safe?
+	using Base::subscribe; // make sure it captures `this self&`
+};
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

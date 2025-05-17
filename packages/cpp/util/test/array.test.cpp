@@ -1,10 +1,18 @@
 #include <gtest/gtest.h>
+#include <type_traits>
 
 #include "v/array"
 #include "v/slice"
 #include "v/storage"
 
 using namespace VOLTISO_NAMESPACE;
+
+// ! note: our Array is not an aggregate type !
+// there's too many cool stuff in it
+// we don't want implicit linear-time copies, etc.
+// - If you need an aggregate type, just use `std::array`
+static_assert(std::is_aggregate_v<std::array<int, 3>>);
+static_assert(!std::is_aggregate_v<Array<int, 3>>);
 
 TEST(Array, uninitialized) {
 	Storage<Array<int, 10>> array;
@@ -130,3 +138,13 @@ TEST(Array, concat) {
 	EXPECT_EQ(c[5], 6);
 	EXPECT_EQ(c, (Array<int, 6>{1, 2, 3, 4, 5, 6}));
 }
+
+// TEST(Array, arrayOfReferences) {
+// 	int a = 1;
+// 	int b = 2;
+// 	int c = 3;
+// 	Array<int &, 3> array = {a, b, c};
+// 	EXPECT_EQ(array[0], 1);
+// 	EXPECT_EQ(array[1], 2);
+// 	EXPECT_EQ(array[2], 3);
+// }

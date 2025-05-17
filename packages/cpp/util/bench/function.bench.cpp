@@ -9,7 +9,7 @@
 using namespace VOLTISO_NAMESPACE;
 
 // Simple function to test function call overhead
-int add(int a, int b) { return a + b; }
+int add(int a, int b) noexcept { return a + b; }
 
 // Function with more complex return type
 std::string concat(const std::string &a, const std::string &b) { return a + b; }
@@ -21,12 +21,12 @@ using ConcatFunctionPtr =
 
 // Small lambda with capture
 auto makeCaptureLambda(int capture_value) {
-	return [capture_value](int x) { return x + capture_value; };
+	return [capture_value](int x) noexcept { return x + capture_value; };
 }
 
 // Large capture lambda to test memory overhead
 auto makeLargeCaptureLambda(const std::vector<int> &data) {
-	return [data](int x) {
+	return [data](int x) noexcept {
 		int sum = 0;
 		for (const auto &val : data) {
 			sum += val * x;
@@ -282,7 +282,7 @@ static void BM_Function_complexObjectMethod(benchmark::State &state) {
 	}
 
 	ComplexObject obj(50);
-	AnyFunction<int(int)> fn = [&obj](int x) { return obj.compute(x); };
+	AnyFunction<int(int)> fn = [&obj](int x) noexcept { return obj.compute(x); };
 	int result = 0;
 	while (state.KeepRunningBatch(1000)) {
 		for (int i = 0; i < 1000; ++i) {
@@ -296,7 +296,9 @@ BENCHMARK(BM_Function_complexObjectMethod);
 static void
 BM_Function_complexObjectMethod_stdFunction(benchmark::State &state) {
 	ComplexObject obj(50);
-	std::function<int(int)> fn = [&obj](int x) { return obj.compute(x); };
+	std::function<int(int)> fn = [&obj](int x) noexcept {
+		return obj.compute(x);
+	};
 	int result = 0;
 	while (state.KeepRunningBatch(1000)) {
 		for (int i = 0; i < 1000; ++i) {

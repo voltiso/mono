@@ -1,0 +1,36 @@
+#pragma once
+
+#include "v/_/subscription.hpp" // IWYU pragma: export
+
+#include "v/_/sink.hpp" // IWYU pragma: keep
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE::subscription {
+INLINE Base::~Base() noexcept {
+	static_assert(noexcept(_pSink->_subscriptions.erase(*this)));
+	// hopefully no branch on inlined move construction anyway
+	if (_pSink) [[likely]] {
+		_pSink->_subscriptions.erase(*this);
+	}
+}
+} // namespace VOLTISO_NAMESPACE::subscription
+
+namespace VOLTISO_NAMESPACE::subscription {
+INLINE Base::Base(sink::Base &sink, Callback &&callback) /** throws OOM */
+    : _callback(std::move(callback)) {
+	this->_pSink = &sink;
+	// chain may be cold, need to pull value?
+	// _pull();
+	this->_pSink->_subscriptions.insert(*this);
+}
+} // namespace VOLTISO_NAMESPACE::subscription
+
+// namespace VOLTISO_NAMESPACE {
+// template <class Value>
+// INLINE Subscription<Value>::Subscription(
+//   Sink &sink, Callback &&callback) /** throws OOM */
+//     : Base(sink, std::move(callback)) {}
+// } // namespace VOLTISO_NAMESPACE
+
+#include <v/ON>

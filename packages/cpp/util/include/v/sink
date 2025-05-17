@@ -1,0 +1,36 @@
+#pragma once
+
+#include "v/_/sink.hpp" // IWYU pragma: export
+
+// these may be required for instantiations
+#include "v/memo" // IWYU pragma: keep
+
+//
+
+#include "v/owned"
+#include "v/subscription"
+
+#include <v/ON>
+
+//
+
+namespace VOLTISO_NAMESPACE {
+template <class Listener>
+[[nodiscard]] INLINE Owned<subscription::Base>
+sink::Base::createLazySubscription(Listener &&listener) {
+	// ! note: this will not be called on cold sink before first value is pulled
+	return Owned<subscription::Base>::create(
+	  *this, std::forward<Listener>(listener));
+}
+} // namespace VOLTISO_NAMESPACE
+
+namespace VOLTISO_NAMESPACE {
+template <class Value>
+template <class Listener>
+[[nodiscard]] INLINE Owned<Subscription<Value>>
+Sink<Value>::createSubscription(Listener &&listener) {
+	return Owned<Subscription>::create(*this, std::forward<Listener>(listener));
+}
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

@@ -1,0 +1,63 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/storage"
+
+#include <v/ON>
+
+#ifndef VOLTISO_DEBUG_LATE_INIT
+	#define VOLTISO_DEBUG_LATE_INIT VOLTISO_DEBUG
+#endif
+
+namespace VOLTISO_NAMESPACE {
+template <class T> class LateInit {
+private:
+	Storage<T> _storage;
+
+#if VOLTISO_DEBUG_LATE_INIT
+	bool _isConstructed = false;
+#endif
+
+public:
+	INLINE auto &object() noexcept { return _storage.object(); }
+	INLINE const auto &object() const noexcept { return _storage.object(); }
+
+public:
+	INLINE constexpr ~LateInit() noexcept(
+	  !VOLTISO_DEBUG_LATE_INIT && noexcept(std::declval<T>().~T())) {
+#if VOLTISO_DEBUG_LATE_INIT
+		if (!_isConstructed) [[unlikely]] {
+			throw std::runtime_error(
+			  "LateInit<T> not initialized before destruction");
+		}
+#endif
+		_storage.destroy();
+	}
+
+	INLINE constexpr LateInit() = default;
+
+	template <class... Args>
+	INLINE constexpr LateInit(Args &&...args) noexcept(
+	  noexcept(T(std::forward<Args>(args)...)))
+	    : _storage{std::forward<Args>(args)...} {}
+
+	template <class... Args>
+	INLINE void construct(Args &&...args) noexcept(
+	  noexcept(_storage.construct(std::forward<Args>(args)...))) {
+		_storage.construct(std::forward<Args>(args)...);
+#if VOLTISO_DEBUG_LATE_INIT
+		_isConstructed = true;
+#endif
+	}
+};
+} // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+template <class T>
+static constexpr bool is::TriviallyRelocatable<LateInit<T>> =
+  is::TriviallyRelocatable<T>;
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

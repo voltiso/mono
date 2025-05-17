@@ -136,7 +136,7 @@ public:
 
 public:
 	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
-	void erase() {
+	void erase() noexcept {
 		CHECK(this->_exists);
 		auto &pool = this->_hashTable._pool;
 		auto node = pool(*this->_pHandle);
@@ -148,7 +148,7 @@ public:
 
 public:
 	template <bool C = IS_CONST, std::enable_if_t<C == false> * = nullptr>
-	void maybeErase() {
+	INLINE void maybeErase() noexcept {
 		if (this->_exists) {
 			erase();
 		}
@@ -707,15 +707,17 @@ public:
 	}
 
 public:
-	void erase(const Entry &entry) { this->operator()(entry).erase(); }
+	void erase(const Entry &entry) noexcept { this->operator()(entry).erase(); }
 
 	template <
 	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
-	void erase(const Key &key) {
+	void erase(const Key &key) noexcept {
 		this->operator()(key).erase();
 	}
 
-	void maybeErase(const Entry &entry) { this->operator()(entry).maybeErase(); }
+	void maybeErase(const Entry &entry) noexcept {
+		this->operator()(entry).maybeErase();
+	}
 
 	// template <class E,
 	//           std::enable_if_t<std::is_convertible_v<E, Entry>> * = nullptr>
@@ -725,20 +727,20 @@ public:
 
 	template <
 	  class K = Key, std::enable_if_t<!std::is_same_v<K, Entry>> * = nullptr>
-	void maybeErase(const Key &key) {
+	void maybeErase(const Key &key) noexcept {
 		this->operator()(key).maybeErase();
 	}
 
 	template <
 	  class K, std::enable_if_t<std::is_convertible_v<K, Key>> * = nullptr>
-	void maybeErase(const K &key) {
+	void maybeErase(const K &key) noexcept {
 		return this->operator()(key).maybeErase();
 	}
 
 	template <
 	  class K,
 	  std::enable_if_t<std::is_convertible_v<get::Key<K>, Key>> * = nullptr>
-	void maybeErase(const K &key) {
+	void maybeErase(const K &key) noexcept {
 		return this->operator()(get::key(key)).maybeErase();
 	}
 

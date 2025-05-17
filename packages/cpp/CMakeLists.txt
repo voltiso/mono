@@ -72,7 +72,6 @@ add_executable(
   util/test/splay-map.test.cpp
   util/test/splay-set.test.cpp
   util/test/heap.test.cpp
-  util/test/subject.test.cpp
   util/test/dynamic-array.test.cpp
   util/test/raw-array.test.cpp
   util/test/const-string-slice.test.cpp
@@ -80,9 +79,10 @@ add_executable(
   util/test/slice.test.cpp
   util/test/string.test.cpp
   util/test/storage.test.cpp
-  util/test/array.test.cpp
   util/test/runner.test.cpp
   util/test/pool.test.cpp
+  util/test/array.test.cpp
+  util/test/subject.test.cpp
 
   # util/test/state.test.cpp # TODO
 
