@@ -15,7 +15,27 @@ import type {
 import type { DocRefContext } from '~/DocRef'
 import type { CustomDocPath } from '~/Path'
 
-export declare const TRIGGER_PARAMS_TYPE_INFO: unique symbol
+declare global {
+	namespace Voltiso {
+		namespace Transactor {
+			const TRIGGER_PARAMS_TYPE_INFO: unique symbol
+			type TRIGGER_PARAMS_TYPE_INFO = typeof TRIGGER_PARAMS_TYPE_INFO
+		}
+	}
+}
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
+;(globalThis as any).Voltiso.Transactor.TRIGGER_PARAMS_TYPE_INFO ??=
+	/* @__PURE__ */ Symbol.for('@voltiso/transactor/TRIGGER_PARAMS_TYPE_INFO')
+export type TRIGGER_PARAMS_TYPE_INFO =
+	Voltiso.Transactor.TRIGGER_PARAMS_TYPE_INFO
+export const TRIGGER_PARAMS_TYPE_INFO: TRIGGER_PARAMS_TYPE_INFO =
+	/* @__PURE__ */ Voltiso.Transactor.TRIGGER_PARAMS_TYPE_INFO
 
 // type AA = GetDocTag<Doc>
 // type A = CustomDocPath<AA>

@@ -5,7 +5,7 @@
 
 import { BoundCallable, CALL } from '@voltiso/util'
 
-import type { $$Schemable } from '~'
+import type { $$Schemable } from '~/types/Schemable/Schemable'
 
 import type { Unknown, Unknown$ } from '../unknown/Unknown'
 import { unknown } from '../unknown/Unknown'
@@ -17,8 +17,32 @@ export interface UnknownRest extends Rest<Unknown> {
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 
-export const IS_REST = Symbol('IS_REST')
+// !
 
+declare global {
+	namespace Voltiso {
+		namespace Schemar {
+			const IS_REST: unique symbol
+			type IS_REST = typeof IS_REST
+		}
+	}
+}
+
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+
+;(globalThis as any).Voltiso.Schemar ??= {}
+;(globalThis as any).Voltiso.Schemar.IS_REST ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/schemar/IS_REST',
+)
+export type IS_REST = Voltiso.Schemar.IS_REST
+export const IS_REST: IS_REST = /* @__PURE__ */ Voltiso.Schemar.IS_REST
+
+// !
 export interface Rest<S extends $$Schemable> {
 	<S extends $$Schemable>(element: S): Rest<S>
 }

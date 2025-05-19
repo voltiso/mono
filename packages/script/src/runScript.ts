@@ -7,9 +7,9 @@ import * as path from 'node:path'
 
 import chalk from 'chalk'
 
-import { context } from './_bin/v'
 import { isParallelScript, isRaceScript } from './parallel'
 import type { Script } from './Script'
+import { context } from './_/context'
 
 let gScripts: Record<string, string | string[]> | undefined
 

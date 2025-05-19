@@ -180,12 +180,30 @@ export const defaultSingleOverloadHandlerOptions: SingleOverloadHandlerDetail.Op
 
 //
 
-export type SingleOverloadHandlerGenericId = {
-	readonly symbol: unique symbol
-}['symbol']
+declare global {
+	namespace Voltiso {
+		namespace Handler {
+			const singleOverloadHandlerGenericId: unique symbol
+			type singleOverloadHandlerGenericId =
+				typeof singleOverloadHandlerGenericId
+		}
+	}
+}
+
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+;(globalThis as any).Voltiso.Handler ??= {}
+;(globalThis as any).Voltiso.Handler.singleOverloadHandlerGenericId ??=
+	/* @__PURE__ */ Symbol.for('@voltiso/handler/SingleOverloadHandler')
+export type SingleOverloadHandlerGenericId =
+	Voltiso.Handler.singleOverloadHandlerGenericId
 
 export const singleOverloadHandlerGenericId: SingleOverloadHandlerGenericId =
-	Symbol('SingleOverloadHandler') as never
+	/* @__PURE__ */ Voltiso.Handler.singleOverloadHandlerGenericId
 
 //
 

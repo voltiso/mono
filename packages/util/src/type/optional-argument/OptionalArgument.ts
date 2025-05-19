@@ -1,19 +1,26 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// declare const _Provided: unique symbol
-// export type WithProvided<B extends boolean> = { [_Provided]?: B }
+declare global {
+	namespace Voltiso {
+		const NoArgument: unique symbol
+		type NoArgument = typeof NoArgument
+	}
+}
 
-// type MakeProvided<X> = X & WithProvided<true>
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
 
-// export type Provided<X> = X extends null | undefined ? X : MakeProvided<X>
+;(globalThis as any).Voltiso.NoArgument ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/NoArgument',
+)
+export type NoArgument = Voltiso.NoArgument
+export const NoArgument: NoArgument = /* @__PURE__ */ Voltiso.NoArgument
 
-// export type NoArgument = WithProvided<false>
-
-// export type OptionalArgument<X> = Provided<X> | NoArgument
-
-// declare const NoArgument: unique symbol
-export const NoArgument = Symbol('NoArgument')
-export type NoArgument = typeof NoArgument
+//
 
 export type OptionalArgument<X> = X | NoArgument

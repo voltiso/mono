@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/handler",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -40,6 +40,9 @@
     "prepublishOnly": "v prepublishOnly"
   },
   "__________DEPS": "__________",
+  "dependencies": {
+    "@voltiso/util": "workspace:^"
+  },
   "peerDependencies": {
     "@voltiso/schemar": "workspace:^"
   },
@@ -51,7 +54,6 @@
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
-    "@voltiso/util": "workspace:^",
     "@~/workspace": "workspace:^",
     "typescript": "~5.8.3",
     "typescript-transform-paths": "^3.5.5"

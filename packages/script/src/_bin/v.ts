@@ -11,6 +11,7 @@ import { runScript } from '~/runScript'
 // import type { EventListener } from 'node'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
+import { context } from '~/_/context'
 
 registerEsbuild()
 
@@ -31,13 +32,6 @@ function isCommandName(string_: unknown): string_ is CommandName {
 // console.log(icon, chalk.gray('@voltiso/script'))
 
 // const cpPromises = [] as Promise<void>[]
-
-interface Context {
-	signal?: AbortSignal | undefined
-}
-
-/** @internal */
-export const context: Context = {}
 
 async function main(): Promise<void> {
 	// eslint-disable-next-line sonarjs/process-argv

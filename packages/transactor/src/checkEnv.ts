@@ -26,7 +26,7 @@ function checkDecorators() {
 			'⚠️ @voltiso/transactor: checkDecorators: `Symbol(Symbol.metadata)` not defined, adding a polyfill',
 		)
 		// @ts-expect-error hack
-		Symbol.metadata ??= Symbol('Symbol.metadata')
+		Symbol.metadata ??= Symbol.for('Symbol.metadata') // consistent with other polyfills
 	}
 
 	_setDecoratorDetection(false)

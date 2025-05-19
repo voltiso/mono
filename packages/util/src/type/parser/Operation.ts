@@ -6,8 +6,26 @@ import type { IsNumber, IsSuperNumber } from '~/number'
 
 import type { IsSubtype, IsSupertype } from '../compare'
 
-declare const _unset: unique symbol
-export type Unset = typeof _unset
+declare global {
+	namespace Voltiso {
+		const Unset: unique symbol
+		type Unset = typeof Unset
+	}
+}
+
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+
+;(globalThis as any).Voltiso.Unset ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/Unset',
+)
+
+export type Unset = typeof Voltiso.Unset
+export const Unset: Unset = /* @__PURE__ */ Voltiso.Unset
 
 export type Default<X, DefaultType> = X extends Unset ? DefaultType : X
 

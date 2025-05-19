@@ -6,11 +6,26 @@ import type { Brands, CustomBrand_, PropertyPath } from '@voltiso/util'
 import type { DocTag } from '~/DocTypes'
 import type { TransactorConfig } from '~/TransactorConfig-augmentation'
 
-export const TRANSACTOR = Symbol('TRANSACTOR')
-export type TRANSACTOR = typeof TRANSACTOR
-
-// export type TRANSACTOR = { readonly symbol: unique symbol }['symbol']
-// export const TRANSACTOR: TRANSACTOR = Symbol('TRANSACTOR') as never
+declare global {
+	namespace Voltiso {
+		namespace Transactor {
+			const TRANSACTOR: unique symbol
+			type TRANSACTOR = typeof TRANSACTOR
+		}
+	}
+}
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
+;(globalThis as any).Voltiso.Transactor.TRANSACTOR ??=
+	/* @__PURE__ */ Symbol.for('@voltiso/transactor/TRANSACTOR')
+export type TRANSACTOR = Voltiso.Transactor.TRANSACTOR
+export const TRANSACTOR: TRANSACTOR =
+	/* @__PURE__ */ Voltiso.Transactor.TRANSACTOR
 
 declare module '@voltiso/util' {
 	interface Brands {

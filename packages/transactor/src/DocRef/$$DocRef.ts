@@ -5,8 +5,26 @@ import type { DocBrand } from '~/brand'
 import type { $$DocRelated, GetDocTag } from '~/DocRelated'
 import type { AnyDoc } from '~/DocTypes'
 
-export type IS_DOC_REF = { readonly symbol: unique symbol }['symbol']
-export const IS_DOC_REF: IS_DOC_REF = Symbol('IS_DOC_REF') as never
+declare global {
+	namespace Voltiso {
+		namespace Transactor {
+			const IS_DOC_REF: unique symbol
+			type IS_DOC_REF = typeof IS_DOC_REF
+		}
+	}
+}
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
+;(globalThis as any).Voltiso.Transactor.IS_DOC_REF ??=
+	/* @__PURE__ */ Symbol.for('@voltiso/transactor/IS_DOC_REF')
+export type IS_DOC_REF = Voltiso.Transactor.IS_DOC_REF
+export const IS_DOC_REF: IS_DOC_REF =
+	/* @__PURE__ */ Voltiso.Transactor.IS_DOC_REF
 
 export interface $$DocRef {
 	readonly [IS_DOC_REF]: true

@@ -5,9 +5,11 @@
 	"extends": "@voltiso/config.ts",
 
 	"compilerOptions": {
-		// "lib": ["DOM"],
-
 		"paths": {
+			// Redirect self-imports of this package to its 'src' directory (prevents parsing `dist`)
+			"@voltiso/util": ["./src/index.ts"],
+			"@voltiso/util/*": ["./src/*"],
+
 			"_": ["./src/_"],
 			"_/*": ["./src/_/*"],
 			"~": ["./src"],
@@ -16,6 +18,7 @@
 	},
 
 	"exclude": [
+		".turbo/",
 		"dist/",
 		"node_modules/",
 		".tsc-out/",

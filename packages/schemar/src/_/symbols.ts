@@ -1,37 +1,37 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-global-this */
+declare global {
+	namespace Voltiso {
+		namespace Schemar {
+			const SCHEMA_NAME: unique symbol
+			type SCHEMA_NAME = typeof SCHEMA_NAME
 
-// ! real symbols are troublesome - they break the lib if it's loaded in multiple copies
+			const EXTENDS: unique symbol
+			type EXTENDS = typeof EXTENDS
+		}
+	}
+}
 
-export type SCHEMA_NAME = { readonly symbol: unique symbol }['symbol']
-// export const SCHEMA_NAME: SCHEMA_NAME = `SchemarSymbol(SCHEMA_NAME)` as never // Symbol('SCHEMA_NAME') as never
-// export const SCHEMA_NAME: SCHEMA_NAME = Symbol('SCHEMA_NAME') as never
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
 
-// globalThis.voltisoSchemar ??= {}
+;(globalThis as any).Voltiso.Schemar ??= /* @__PURE__ */ {}
 
 //
-
-export type EXTENDS = { readonly symbol: unique symbol }['symbol']
-// export const EXTENDS: EXTENDS = `SchemarSymbol(EXTENDS)` as never // Symbol('EXTENDS') as never
-// export const EXTENDS: EXTENDS = Symbol('EXTENDS') as never
-
-declare global {
-	interface VoltisoSchemar {
-		readonly SCHEMA_NAME: SCHEMA_NAME
-		readonly EXTENDS: EXTENDS
-	}
-
-	// eslint-disable-next-line vars-on-top, no-var, sonarjs/no-var
-	var voltisoSchemar: VoltisoSchemar
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-globalThis.voltisoSchemar ??= {
-	SCHEMA_NAME: Symbol('SCHEMA_NAME') as never,
-	EXTENDS: Symbol('EXTENDS') as never,
-}
-
-export const SCHEMA_NAME: SCHEMA_NAME = globalThis.voltisoSchemar.SCHEMA_NAME
-export const EXTENDS: EXTENDS = globalThis.voltisoSchemar.EXTENDS
+;(globalThis as any).Voltiso.Schemar.SCHEMA_NAME ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/schemar/SCHEMA_NAME',
+)
+export type SCHEMA_NAME = Voltiso.Schemar.SCHEMA_NAME
+export const SCHEMA_NAME: SCHEMA_NAME = /* @__PURE__ */ (globalThis as any)
+	.Voltiso.Schemar.SCHEMA_NAME
+;(globalThis as any).Voltiso.Schemar.EXTENDS ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/schemar/EXTENDS',
+)
+export type EXTENDS = Voltiso.Schemar.EXTENDS
+export const EXTENDS: EXTENDS = /* @__PURE__ */ (globalThis as any).Voltiso
+	.Schemar.EXTENDS

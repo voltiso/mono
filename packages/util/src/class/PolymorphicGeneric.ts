@@ -4,25 +4,66 @@
 /* eslint-disable es-x/no-class-instance-fields */
 
 import type { Generics } from '~/Generics-augmentation'
-import type { AlsoAccept, Override } from '~/type'
+import type { Get_ } from '~/object/get-set/get/get/Get'
+import type { AlsoAccept, Override, Override_ } from '~/type'
 
-export const OPTIONS = /* @__PURE__ */ Symbol('OPTIONS')
-export type OPTIONS = typeof OPTIONS
+declare global {
+	namespace Voltiso {
+		const OPTIONS: unique symbol
+		type OPTIONS = typeof OPTIONS
+		const PARTIAL_OPTIONS: unique symbol
+		type PARTIAL_OPTIONS = typeof PARTIAL_OPTIONS
+		const DEFAULT_OPTIONS: unique symbol
+		type DEFAULT_OPTIONS = typeof DEFAULT_OPTIONS
+		const BASE_OPTIONS: unique symbol
+		type BASE_OPTIONS = typeof BASE_OPTIONS
+		const HIDDEN_OPTIONS: unique symbol
+		type HIDDEN_OPTIONS = typeof HIDDEN_OPTIONS
+		const GENERIC_ID: unique symbol
+		type GENERIC_ID = typeof GENERIC_ID
+	}
+}
 
-export const PARTIAL_OPTIONS = /* @__PURE__ */ Symbol('PARTIAL_OPTIONS')
-export type PARTIAL_OPTIONS = typeof PARTIAL_OPTIONS
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
 
-export const DEFAULT_OPTIONS = /* @__PURE__ */ Symbol('DEFAULT_OPTIONS')
-export type DEFAULT_OPTIONS = typeof DEFAULT_OPTIONS
-
-export const BASE_OPTIONS = /* @__PURE__ */ Symbol('BASE_OPTIONS')
-export type BASE_OPTIONS = typeof BASE_OPTIONS
-
-export const HIDDEN_OPTIONS = /* @__PURE__ */ Symbol('HIDDEN_OPTIONS')
-export type HIDDEN_OPTIONS = typeof HIDDEN_OPTIONS
-
-export const GENERIC_ID = /* @__PURE__ */ Symbol('GENERIC_ID')
-export type GENERIC_ID = typeof GENERIC_ID
+;(globalThis as any).Voltiso.OPTIONS ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/OPTIONS',
+)
+export type OPTIONS = typeof Voltiso.OPTIONS
+export const OPTIONS: OPTIONS = /* @__PURE__ */ Voltiso.OPTIONS
+;(globalThis as any).Voltiso.PARTIAL_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/PARTIAL_OPTIONS',
+)
+export type PARTIAL_OPTIONS = Voltiso.PARTIAL_OPTIONS
+export const PARTIAL_OPTIONS: PARTIAL_OPTIONS =
+	/* @__PURE__ */ Voltiso.PARTIAL_OPTIONS
+;(globalThis as any).Voltiso.DEFAULT_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/DEFAULT_OPTIONS',
+)
+export type DEFAULT_OPTIONS = Voltiso.DEFAULT_OPTIONS
+export const DEFAULT_OPTIONS: DEFAULT_OPTIONS =
+	/* @__PURE__ */ Voltiso.DEFAULT_OPTIONS
+;(globalThis as any).Voltiso.BASE_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/BASE_OPTIONS',
+)
+export type BASE_OPTIONS = Voltiso.BASE_OPTIONS
+export const BASE_OPTIONS: BASE_OPTIONS = /* @__PURE__ */ Voltiso.BASE_OPTIONS
+;(globalThis as any).Voltiso.HIDDEN_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/HIDDEN_OPTIONS',
+)
+export type HIDDEN_OPTIONS = Voltiso.HIDDEN_OPTIONS
+export const HIDDEN_OPTIONS: HIDDEN_OPTIONS =
+	/* @__PURE__ */ Voltiso.HIDDEN_OPTIONS
+;(globalThis as any).Voltiso.GENERIC_ID ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/GENERIC_ID',
+)
+export type GENERIC_ID = Voltiso.GENERIC_ID
+export const GENERIC_ID: GENERIC_ID = /* @__PURE__ */ Voltiso.GENERIC_ID
 
 //
 
@@ -61,8 +102,6 @@ export interface PolymorphicGeneric<O extends {}> {
 	 */
 	readonly [HIDDEN_OPTIONS]: {}
 
-	//
-
 	/**
 	 * For accessing the generic type parameter
 	 *
@@ -93,7 +132,7 @@ export class PolymorphicGeneric<O extends {}> {
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get defaultOptions(): this[DEFAULT_OPTIONS] &
 		Rebind<this, this[DEFAULT_OPTIONS]>[HIDDEN_OPTIONS] {
-		return {}
+		return {} as never
 	}
 
 	//
@@ -155,9 +194,9 @@ export namespace PolymorphicGeneric {
 	//   >
 
 	export type GetOptions<
-		This extends PolymorphicGeneric<any>,
-		O extends Partial<This[BASE_OPTIONS]>,
-	> = Override<This[DEFAULT_OPTIONS], O>
+		This extends PolymorphicGeneric<{}>,
+		O extends Partial<Get_<This, BASE_OPTIONS>>,
+	> = Override_<Get_<This, DEFAULT_OPTIONS>, O>
 }
 
 //

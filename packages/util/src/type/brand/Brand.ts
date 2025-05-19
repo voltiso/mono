@@ -7,11 +7,27 @@ import type { GetNested_, Nest_ } from '~/object'
 import type { NoArgument } from '../optional-argument'
 import type { BrandReference } from './BrandReference'
 
-/** 🌿 Type-only (no value at runtime) */
-export declare const BRAND: unique symbol
+declare global {
+	namespace Voltiso {
+		const BRAND: unique symbol
+		type BRAND = typeof BRAND
+	}
+}
 
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+
+;(globalThis as any).Voltiso.BRAND ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/util/BRAND',
+)
 /** 🌿 Type-only (no value at runtime) */
-export type BRAND = typeof BRAND
+export type BRAND = Voltiso.BRAND
+/** 🌿 Type-only (no value at runtime) */
+export const BRAND: BRAND = /* @__PURE__ */ Voltiso.BRAND
 
 /**
  * Helper for implementing **nominal type hierarchies**.

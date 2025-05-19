@@ -1,9 +1,6 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $ } from '@voltiso/util'
-import { BrandedSymbol } from '@voltiso/util'
-
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 // eslint-disable-next-line sonarjs/redundant-type-aliases
@@ -11,16 +8,25 @@ export type DocTagLike = string // | typeof __never_keyof_bug_workaround // | An
 
 export type DocTag = keyof DocTypes // Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc
 
-/**
- * Real unique symbols conflicted with `@voltiso/transform/inline` - resulted in
- * hard-to-handle type queries (`typeof`)
- */
-export const AnyDoc = BrandedSymbol('AnyDoc') // Symbol('AnyDoc')
-export type AnyDoc = $<'AnyDoc'>
+declare global {
+	namespace Voltiso {
+		namespace Transactor {
+			const AnyDoc: unique symbol
+			type AnyDoc = typeof AnyDoc
+		}
+	}
+}
 
-/**
- * This does not work correctly with exports - private names are not exported
- * (`.symbol` field)
- */
-// export type AnyDoc = { readonly symbol: unique symbol }['symbol']
-// export const AnyDoc: AnyDoc = Symbol('AnyDoc') as never
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+
+;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
+;(globalThis as any).Voltiso.Transactor.AnyDoc ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/transactor/AnyDoc',
+)
+export type AnyDoc = Voltiso.Transactor.AnyDoc
+export const AnyDoc: AnyDoc = /* @__PURE__ */ Voltiso.Transactor.AnyDoc

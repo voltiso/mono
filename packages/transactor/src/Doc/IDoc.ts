@@ -13,8 +13,26 @@ import type { IntrinsicFields } from '~/schemas'
 import type { DocContext } from './DocContext'
 import type { DocTI, DTI } from './DocTI'
 
-export type IS_DOC = { readonly symbol: unique symbol }['symbol']
-export const IS_DOC: IS_DOC = Symbol('IS_DOC') as never
+declare global {
+	namespace Voltiso {
+		namespace Transactor {
+			const IS_DOC: unique symbol
+			type IS_DOC = typeof IS_DOC
+		}
+	}
+}
+if (
+	typeof (globalThis as any).Voltiso !== 'object' ||
+	(globalThis as any).Voltiso === null
+) {
+	;(globalThis as any).Voltiso = {}
+}
+;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
+;(globalThis as any).Voltiso.Transactor.IS_DOC ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/transactor/IS_DOC',
+)
+export type IS_DOC = Voltiso.Transactor.IS_DOC
+export const IS_DOC: IS_DOC = /* @__PURE__ */ Voltiso.Transactor.IS_DOC
 
 export interface $$Doc {
 	readonly [IS_DOC]: true

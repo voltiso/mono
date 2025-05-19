@@ -55,7 +55,8 @@ export function combinePatches<X>(a: PatchFor<X>, b: PatchFor<X>): PatchFor<X> {
 		const result = { ...a }
 
 		for (const [key, value] of Object.entries(b)) {
-			result[key as never] = combinePatches(
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			;(result as any)[key] = combinePatches(
 				result[key as never],
 				value,
 			) as never
