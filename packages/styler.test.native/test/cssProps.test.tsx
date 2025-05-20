@@ -41,6 +41,7 @@ describe('cssProps', () => {
 			<MyView testID='a' flex={1} backgroundColor='red' />,
 		)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -56,6 +57,7 @@ describe('cssProps', () => {
 		;<Button /> // check if optional
 		const { getByTestId } = renderApp(<Button red testID='a' />)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const button = getByTestId('a')
 
 		expect(button.props.style).toMatchObject({

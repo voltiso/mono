@@ -51,7 +51,7 @@ describe('forwardRefPressable', () => {
 		)
 
 		const view = renderApp(<Component testID='a' big={false} />)
-		// eslint-disable-next-line testing-library/prefer-screen-queries
+		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -81,7 +81,7 @@ describe('forwardRefPressable', () => {
 		)
 
 		const view = renderApp(<Component testID='a' big={false} />)
-		// eslint-disable-next-line testing-library/prefer-screen-queries
+		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('a')
 
 		expect(button.props.style).toMatchObject({
@@ -119,7 +119,7 @@ describe('forwardRefPressable', () => {
 		const StyledButton = myStyle(Button)
 
 		const view = renderApp(<StyledButton small testID='test' />)
-		// eslint-disable-next-line testing-library/prefer-screen-queries
+		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('test')
 
 		expect(button.props.style).toMatchObject({
@@ -149,6 +149,7 @@ describe('forwardRefPressable', () => {
 		$Assert.is<typeof Button, (...args: any) => any>()
 
 		type B = React.ComponentPropsWithRef<typeof View>['ref']
+		// eslint-disable-next-line @typescript-eslint/no-deprecated
 		$Assert.is<B, React.LegacyRef<View> | undefined>()
 
 		// type C = typeof Button extends (arg: infer R) => any ? R : never
@@ -257,7 +258,7 @@ describe('forwardRefPressable', () => {
 
 		expect(instance).toBeInstanceOf(View)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries
+		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('a')
 
 		expect(button.props.children[0]).toBe('myContent')
@@ -275,7 +276,7 @@ describe('forwardRefPressable', () => {
 			<AnotherButton testID='button' content='test' css={{ margin: 4242 }} />,
 		)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries
+		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const anotherButton = view2.getByTestId('button')
 
 		expect(anotherButton.props.style).toMatchObject({
@@ -300,7 +301,7 @@ describe('forwardRefPressable', () => {
 
 		const view = renderApp(<Another testID='a' magic />)
 
-		// eslint-disable-next-line testing-library/prefer-screen-queries
+		// eslint-disable-next-line testing-library/prefer-screen-queries, testing-library/no-test-id-queries
 		const button = view.getByTestId('a')
 
 		expect(button.props.style).toMatchObject({ margin: 123 })
