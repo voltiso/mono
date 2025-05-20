@@ -8,7 +8,6 @@ import type { IStylableJsxCall, Props, StylableJsxCall } from '~'
 
 import type { FC } from './common'
 
-
 describe('StylableJsxCall', () => {
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)

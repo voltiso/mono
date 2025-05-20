@@ -1,8 +1,6 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $expect } from '_'
-
 import type { CloneOptions, WithCloneFunction } from '~/clone'
 import type {
 	_BoundCallable,
@@ -78,8 +76,7 @@ export function CustomBoundCallable<Options extends BoundCallableOptions>(
 
 		// no inner `.clone()` - have to clone manually
 
-		// eslint-disable-next-line @typescript-eslint/unbound-method
-		$expect(this.clone).toBe(clone) // `clone` overridden in the meantime - not supported
+		// $expect(this.clone).toBe(clone) // `clone` overridden in the meantime - not supported
 
 		// build descriptors for an object passed as an argument to `BoundCallable`
 		// (restore original inner `clone`)

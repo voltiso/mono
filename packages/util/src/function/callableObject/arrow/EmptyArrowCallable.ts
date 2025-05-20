@@ -1,7 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $expect, $fastAssert } from '_'
+import { $fastAssert } from '_'
 
 import type { clone } from '~/clone'
 import type { ArrowCallable, Callable } from '~/function'
@@ -39,7 +39,7 @@ export function EmptyArrowCallable<
 	// ! * NOTE: this silently fails under react-native, after Expo upgrade (new Hermes engine version?)
 	tryDeleteAllProperties(callableObject)
 
-	$expect(Object.getOwnPropertyDescriptors(callableObject)).toStrictEqual({})
+	// $expect(Object.getOwnPropertyDescriptors(callableObject)).toStrictEqual({})
 
 	$fastAssert(
 		Object.getOwnPropertyDescriptor(callableObject, 'prototype')

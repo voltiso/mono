@@ -1,8 +1,15 @@
 #pragma once
 #include <v/_/_>
 
+#include "v/concepts/options"
 #include "v/is/instantiated-from"
+#include "v/is/member-function-const"
 #include "v/is/trivially-relocatable"
+#include "v/option/mutable"
+#include "v/option/optional"
+#include "v/option/parameters"
+#include "v/option/return"
+#include "v/option/throwing"
 #include "v/pool"
 #include "v/storage"
 
@@ -10,39 +17,104 @@
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE {
+namespace VOLTISO_NAMESPACE::anyFunction {
+template <class Options>
+  requires concepts::Options<Options> // && std::is_final_v<Final>
+class Custom;
 
-template <class R, class... Args> class AnyFunction;
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations;
+
+template <class... Args> using GetCustom = Specializations<Args...>::Result;
+} // namespace VOLTISO_NAMESPACE::anyFunction
+
+namespace VOLTISO_NAMESPACE {
+template <class Signature> class AnyFunction;
+} // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace VOLTISO_NAMESPACE::anyFunction {
+template <class Options>
+  requires concepts::Options<Options>
+struct Specializations {
+	using Result = Custom<Options>;
+};
+
+template <class Return, class... ParametersList>
+struct Specializations<Options<
+  option::Return<Return>, option::Parameters<Pack<ParametersList...>>,
+  option::CustomTemplate<GetCustom>>> {
+	using Result = AnyFunction<Return(ParametersList...)>;
+};
+} // namespace VOLTISO_NAMESPACE::anyFunction
+
+// !
 
 /**
- * type-erasure for callables
- * One-pointer storage is in-place (if trivially relocatable)
+ * Type-erasure for functions and other invocable things.
+ * One-pointer storage is in-place (if trivially relocatable).
+ * Type-safe mutable operator() flag, noexcept flag, optional flag.
+ * For in-place storage, trivial relocatability is forced (no type param for
+ * this).
  */
-template <class Return, class... Args> class AnyFunction<Return(Args...)> {
-	using Self = AnyFunction;
+
+namespace VOLTISO_NAMESPACE::anyFunction {
+template <class Options, class Parameters>
+  requires concepts::Options<Options>
+class CustomBase;
+
+template <class Options, class... ParametersList>
+  requires concepts::Options<Options>
+class CustomBase<Options, Pack<ParametersList...>>
+    : public Object<
+        typename Options::template With<option::CustomTemplate<GetCustom>>> {
+	using Base =
+	  Object<typename Options::template With<option::CustomTemplate<GetCustom>>>;
 
 private:
-	using RawPointer = Return (*)(Args...);
+	using This = CustomBase;
+
+protected:
+	using Self = Base::Self;
+
+public:
+	using Return = Options::template Get<option::Return>;
+	using Parameters = Options::template Get<option::Parameters>;
+	static constexpr auto THROWING = Options::template GET<option::THROWING>;
+	static constexpr auto MUTABLE = Options::template GET<option::MUTABLE>;
+	static constexpr auto OPTIONAL = Options::template GET<option::OPTIONAL>;
+
+private:
+	using RawPointer = Return (*)(ParametersList...);
 	using Storage = Storage<RawPointer>; // ...or not raw pointer
 
 	using Deleter = void (*)(Storage &);
-	using Invoker = Return (*)(const Storage &, Args...);
+	using Invoker = Return (*)(const Storage &, ParametersList...);
 
 	Storage storage;
 	Deleter deleter = nullptr;
 	Invoker invoker = nullptr;
 
 public:
-	AnyFunction() = delete;
-	AnyFunction(const AnyFunction &) = delete;
-	AnyFunction &operator=(const AnyFunction &) = delete;
+	CustomBase()
+	  requires(!OPTIONAL)
+	= delete;
 
-	AnyFunction(AnyFunction &&other) noexcept {
-		memcpy((void *)this, &other, sizeof(AnyFunction));
+	INLINE CustomBase()
+	  requires(OPTIONAL)
+	= default;
+
+	CustomBase(const CustomBase &) = delete;
+	CustomBase &operator=(const CustomBase &) = delete;
+
+	INLINE CustomBase(CustomBase &&other) noexcept {
+		memcpy((void *)this, &other, sizeof(CustomBase));
 		other.deleter = nullptr;
 	}
 
-	~AnyFunction() {
+	INLINE ~CustomBase() noexcept {
 		// speed-up raw pointer path
 		if (deleter) [[unlikely]] {
 			deleter(storage);
@@ -50,7 +122,7 @@ public:
 	}
 
 	// for HashTable
-	bool operator==(const AnyFunction &other) const {
+	bool operator==(const CustomBase &other) const {
 		static_assert(sizeof(storage) == sizeof(std::uintptr_t));
 		// ! in some peculiar cases this could not be enough?
 		return storage.bytes == other.storage.bytes;
@@ -61,19 +133,35 @@ public:
 		return *reinterpret_cast<const std::uintptr_t *>(&this->storage);
 	}
 
-	INLINE constexpr Return operator()(Args... args) const noexcept {
-		return invoker(storage, std::forward<Args>(args)...); // always this path
+	INLINE constexpr Return operator()(ParametersList... args) const
+	  // if optional, can still throw
+	  noexcept(!THROWING && !OPTIONAL)
+	  requires(!MUTABLE)
+	{
+		return invoker(
+		  storage, std::forward<ParametersList>(args)...); // always this path
+	}
+
+	INLINE constexpr Return operator()(ParametersList... args)
+	  // if optional, can still throw
+	  noexcept(!THROWING && !OPTIONAL)
+	// requires(MUTABLE)
+	{
+		return invoker(
+		  storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
 	// bind function pointer or stateless lambda
 	template <class TCallable>
-	  requires(std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
-	AnyFunction(TCallable &&f) {
-		_checkCallable<TCallable>();
-		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, AnyFunction>);
+	  requires(
+	    This::template _isCallableOk<TCallable>() &&
+	    std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
+	CustomBase(TCallable &&f) {
+		static_assert(is::TriviallyRelocatable<std::decay_t<TCallable>>);
+		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		new (&storage) RawPointer{std::forward<TCallable>(f)};
-		invoker = [](const Storage &storage, Args... args) -> Return {
-			return storage.object()(std::forward<Args>(args)...);
+		invoker = [](const Storage &storage, ParametersList... args) -> Return {
+			return storage.object()(std::forward<ParametersList>(args)...);
 		};
 		static_assert(std::is_trivially_destructible_v<RawPointer>);
 	}
@@ -81,19 +169,19 @@ public:
 	// bind small anything
 	template <class TCallable>
 	  requires(
+	    This::template _isCallableOk<TCallable>() &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
 	    (sizeof(std::decay_t<TCallable>) <= sizeof(storage)))
-	AnyFunction(TCallable &&f) {
-		_checkCallable<TCallable>();
-		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, AnyFunction>);
+	CustomBase(TCallable &&f) {
+		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		static_assert(
 		  is::TriviallyRelocatable<std::decay_t<TCallable>>,
 		  "mark your type as trivially relocatable, or use createIndirect");
 		using Callable = std::decay_t<TCallable>;
 		new (&storage) Callable{std::forward<TCallable>(f)};
-		invoker = [](const Storage &storage, Args... args) -> Return {
+		invoker = [](const Storage &storage, ParametersList... args) -> Return {
 			return (*reinterpret_cast<const Callable *>(&storage))(
-			  std::forward<Args>(args)...);
+			  std::forward<ParametersList>(args)...);
 		};
 		if constexpr (!std::is_trivially_destructible_v<Callable>) {
 			deleter = [](Storage &storage) {
@@ -106,24 +194,25 @@ public:
 	template <class TCallable>
 	  requires(
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
-	    (sizeof(std::decay_t<TCallable>) > sizeof(storage)))
-	AnyFunction(TCallable &&f)
-	    : AnyFunction{CreateIndirectTag{}, std::forward<TCallable>(f)} {
-		_checkCallable<TCallable>();
-		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, AnyFunction>);
+	    (sizeof(std::decay_t<TCallable>) > sizeof(storage)) &&
+	    This::template _isCallableOk<TCallable>())
+	CustomBase(TCallable &&f)
+	    : CustomBase{CreateIndirectTag{}, std::forward<TCallable>(f)} {
+		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 	}
 
 	// explicit "big anything"
-	template <class TCallable> static Self createIndirect(TCallable &&f) {
-		_checkCallable<TCallable>();
-		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, AnyFunction>);
+	template <class TCallable>
+	  requires(This::template _isCallableOk<TCallable>())
+	static Self createIndirect(TCallable &&f) {
+		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		return Self{CreateIndirectTag{}, std::forward<TCallable>(f)};
 	}
 
 private:
 	struct CreateIndirectTag {};
 	// "big anything" implementation
-	template <class TCallable> AnyFunction(CreateIndirectTag, TCallable &&f) {
+	template <class TCallable> CustomBase(CreateIndirectTag, TCallable &&f) {
 		using Callable = std::decay_t<TCallable>;
 		using Pool = Pool<Callable>;
 		using Handle = typename Pool::Handle;
@@ -134,44 +223,79 @@ private:
 			auto &pool = Singleton<Pool>::instance();
 			pool.erase(storage.template as<Handle>());
 		};
-		invoker = [](const Storage &storage, Args... args) -> Return {
-			return (*storage.template as<Handle>())(std::forward<Args>(args)...);
+		invoker = [](const Storage &storage, ParametersList... args) -> Return {
+			return (*storage.template as<Handle>())(
+			  std::forward<ParametersList>(args)...);
 		};
 	}
 
 private:
 	template <class TCallable>
-	static INLINE consteval void _checkCallable() noexcept {
+	static INLINE consteval bool _isCallableOk() noexcept {
 		using Callable = std::decay_t<TCallable>;
-		static_assert(
-		  requires(Callable f) { f(std::declval<Args>()...); },
-		  "Callable must be invocable with Args");
-
-		using ConstCallable = const Callable;
-
-		// since for now we only support const operator(), check if input type
-		// provides const-qualified operator()
-		static_assert(
-		  requires(ConstCallable f) { f(std::declval<Args>()...); },
-		  "Callable must provide const-qualified operator()");
-
-		// same goes for noexcept-ness
-		// our resulting function is marked noexcept
-		static_assert(
-		  noexcept(std::declval<ConstCallable>()(std::declval<Args>()...)),
-		  "mark your operator() as noexcept");
+		if constexpr (!(requires(Callable f) {
+			              f(std::declval<ParametersList>()...);
+		              })) {
+			return false;
+		}
+		if constexpr (!MUTABLE) {
+			if constexpr (!is::MemberFunctionConst<decltype(&Callable::operator())>) {
+				// if constexpr (!std::is_invocable_v<const Callable,
+				// ParametersList...>) { // ! `std::is_invocable_v` broken
+				return false;
+			}
+		}
+		if constexpr (!THROWING) {
+			if constexpr (!(noexcept(std::declval<Callable>()(
+			                std::declval<ParametersList>()...)))) {
+				return false;
+			}
+		}
+		// static_assert(
+		//   is::TriviallyRelocatable<Callable>,
+		//   "Mark your type as trivially relocatable");
+		// if constexpr (!is::TriviallyRelocatable<TCallable>) {
+		// 	return false;
+		// }
+		return true;
 	}
 
-}; // class Function
+public:
+	template <class... OptionsList>
+	using With = Base::template With<OptionsList...>;
 
-template <class R, class... Args>
-static constexpr auto is::TriviallyRelocatable<AnyFunction<R(Args...)>> = true;
+	template <class Return> using WithReturn = With<option::Return<Return>>;
 
+	template <class... TParametersList>
+	using WithParameters = With<option::Parameters<Pack<TParametersList...>>>;
+
+	using Throwing = With<option::THROWING<true>>;
+	using Mutable = With<option::MUTABLE<true>>;
+	using Optional = With<option::OPTIONAL<true>>;
+}; // class CustomBase
+
+template <class Options>
+  requires concepts::Options<Options>
+class Custom : public CustomBase<
+                 Options, typename Options::template Get<option::Parameters>> {
+	using Base =
+	  CustomBase<Options, typename Options::template Get<option::Parameters>>;
+	using Base::Base;
+};
+} // namespace VOLTISO_NAMESPACE::anyFunction
+
+// !
+
+namespace VOLTISO_NAMESPACE {
+template <class Signature> class AnyFunction;
+template <class Return, class... ParametersList>
+class AnyFunction<Return(ParametersList...)>
+    : public anyFunction::Custom<Options<
+        option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
+	using Base = anyFunction::Custom<Options<
+	  option::Return<Return>, option::Parameters<Pack<ParametersList...>>>>;
+	using Base::Base;
+}; // class AnyFunction
 } // namespace VOLTISO_NAMESPACE
-
-// static_assert(!v::is::InstantiatedFrom<std::decay_t<decltype([]{})>,
-// v::Function>);
-
-// static v::Function<void()> test = [] {};
 
 #include <v/OFF>

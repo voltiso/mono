@@ -3,7 +3,7 @@
 
 /* eslint-disable es-x/no-class-instance-fields */
 
-import { $expect, $fastAssert } from '_'
+import { $fastAssert } from '_'
 
 import type { ArrayPrefix } from '~/array/ArrayPrefix'
 import type { Printable } from '~/string'
@@ -53,8 +53,6 @@ export class _BindableFunction<
 		boundThis: BoundThis = noThis as never,
 		...boundArguments: BoundArguments
 	) {
-		$expect(func).toBeDefined()
-
 		this.function = func
 		this.boundThis = boundThis
 		this.boundArguments = boundArguments
@@ -66,7 +64,6 @@ export class _BindableFunction<
 
 		const bindableFunctionCall = {
 			[name](this: BoundThis, ...args: BoundArguments) {
-				// eslint-disable-next-line unicorn/no-negated-condition
 				const finalThis = self.boundThis !== noThis ? self.boundThis : this
 				const finalArgs = [...self.boundArguments, ...args]
 				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression

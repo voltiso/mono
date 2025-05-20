@@ -464,6 +464,7 @@
 		"RAII",
 		"readdirp",
 		"realpath",
+		"relocatability",
 		"Relocator",
 		"RELWITHDEBINFO",
 		"reusify",

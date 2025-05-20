@@ -1,0 +1,63 @@
+#pragma once
+#include "v/_/0-namespace.hpp" // IWYU pragma: keep
+
+#include <type_traits>
+
+namespace VOLTISO_NAMESPACE::_ {
+template <typename> struct is_const_member_function_impl : std::false_type {};
+
+// Specializations for const-qualified member functions
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const> : std::true_type {
+};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const &>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const &&>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const noexcept>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const & noexcept>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const && noexcept>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const volatile>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const volatile &>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const volatile &&>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<R (C::*)(Args...) const volatile noexcept>
+    : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<
+  R (C::*)(Args...) const volatile & noexcept> : std::true_type {};
+template <typename R, typename C, typename... Args>
+struct is_const_member_function_impl<
+  R (C::*)(Args...) const volatile && noexcept> : std::true_type {};
+
+template <typename MemberFnPtr>
+static constexpr auto is_const_member_function_v =
+  _::is_const_member_function_impl<std::decay_t<MemberFnPtr>>::value;
+} // namespace VOLTISO_NAMESPACE::_
+
+namespace VOLTISO_NAMESPACE::is {
+template <class Member>
+static constexpr auto MemberFunctionConst =
+  _::is_const_member_function_v<Member>;
+} // namespace VOLTISO_NAMESPACE::is
+
+// auto a = [] {};
+// auto b = [] mutable {};
+// using A = decltype(a);
+// using B = decltype(b);
+// static_assert(v::is::MemberFunctionConst<decltype(&A::operator())>);
+// static_assert(!v::is::MemberFunctionConst<decltype(&B::operator())>);

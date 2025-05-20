@@ -35,14 +35,14 @@
     "lint": "v lint",
     "lint:eslint": "v lintEslint",
     "lint:tsc": "run-p lint:tsc:root lint:tsc:tscOptions",
-    "lint:tsc:root": "tspc -b",
+    "lint:tsc:root": "tsc -b",
     "lint:tsc:tscOptions": "run-p lint:tsc:tscOptions:eopt lint:tsc:tscOptions:snc",
     "lint:tsc:tscOptions:eopt": "run-p lint:tsc:tscOptions:eopt:true lint:tsc:tscOptions:eopt:false",
-    "lint:tsc:tscOptions:eopt:true": "tspc -b src/tsc-options/exactOptionalPropertyTypes/test-true",
-    "lint:tsc:tscOptions:eopt:false": "tspc -b src/tsc-options/exactOptionalPropertyTypes/test-false",
+    "lint:tsc:tscOptions:eopt:true": "tsc -b src/tsc-options/exactOptionalPropertyTypes/test-true",
+    "lint:tsc:tscOptions:eopt:false": "tsc -b src/tsc-options/exactOptionalPropertyTypes/test-false",
     "lint:tsc:tscOptions:snc": "run-p lint:tsc:tscOptions:snc:true lint:tsc:tscOptions:snc:false",
-    "lint:tsc:tscOptions:snc:true": "tspc -b src/tsc-options/strictNullChecks/test-true",
-    "lint:tsc:tscOptions:snc:false": "tspc -b src/tsc-options/strictNullChecks/test-false",
+    "lint:tsc:tscOptions:snc:true": "tsc -b src/tsc-options/strictNullChecks/test-true",
+    "lint:tsc:tscOptions:snc:false": "tsc -b src/tsc-options/strictNullChecks/test-false",
     "depcheck": "depcheck",
     "areTheTypesWrong": "v areTheTypesWrong",
     "fix": "v fix",
@@ -79,19 +79,11 @@
     "typescript-transform-paths": "^3.5.5",
     "zone.js": "^0.15.0"
   },
-  "peerDependencies": {
-    "@jest/globals": "*"
-  },
-  "peerDependenciesMeta": {
-    "@jest/globals": {
-      "optional": true
-    }
-  },
   "__________MISC": "__________",
   "engines": {
     "node": ">=15.0.0"
   },
   "typeCoverage": {
-    "is": 98.99
+    "is": 98.83
   }
 }

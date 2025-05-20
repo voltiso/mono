@@ -5,11 +5,7 @@ import { describe, expect, it } from '@jest/globals'
 import { $Assert } from '@voltiso/util'
 import type { ComponentClass } from 'react'
 
-import type {
-	IStylableJsxConstruct,
-	Props,
-	StylableJsxConstruct,
-} from '~'
+import type { IStylableJsxConstruct, Props, StylableJsxConstruct } from '~'
 
 describe('StylableJsx', () => {
 	it('generic', <P extends Props>() => {

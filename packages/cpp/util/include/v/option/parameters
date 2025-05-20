@@ -1,0 +1,13 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/pack"
+#include "v/type-option"
+
+namespace VOLTISO_NAMESPACE::option {
+template <class ParametersPack>
+struct Parameters : TypeOption<ParametersPack, Pack<>> {
+	// this should near the beginning of the list for cleaner compilation errors
+	static constexpr auto ORDER = -1000;
+};
+} // namespace VOLTISO_NAMESPACE::option

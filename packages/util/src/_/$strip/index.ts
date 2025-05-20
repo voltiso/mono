@@ -3,5 +3,4 @@
 
 export * from './$assert'
 export * from './$AssumeType'
-export * from './jest'
 export * from './static-assert'

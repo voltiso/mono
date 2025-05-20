@@ -65,7 +65,7 @@ add_executable(
   util/test/owned.test.cpp
   util/test/shared.test.cpp
   util/test/any.test.cpp
-  util/test/function.test.cpp
+  util/test/any-function.test.cpp
   util/test/bit-array.test.cpp
   util/test/hash-map.test.cpp
   util/test/hash-set.test.cpp

@@ -138,7 +138,7 @@ export const lint = [
 	turbo('fix:prettier', 'depcheck', 'lint:tsc', 'lint:eslint'),
 ]
 
-export const fixPrettier = 'prettier --write --loglevel error .'
+export const fixPrettier = 'prettier --write --log-level error .'
 export const depcheck = 'depcheck'
 export const lintTsc = 'tsc -b'
 export const lintEslint =

@@ -382,7 +382,7 @@ importers:
         specifier: ^9.26.0
         version: 9.26.0
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -737,6 +737,10 @@ importers:
         version: 3.5.5(typescript@5.8.3)
 
   packages/handler:
+    dependencies:
+      '@voltiso/util':
+        specifier: workspace:^
+        version: link:../util
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -759,9 +763,6 @@ importers:
       '@voltiso/transform':
         specifier: workspace:^
         version: link:../transform
-      '@voltiso/util':
-        specifier: workspace:^
-        version: link:../util
       '@~/workspace':
         specifier: workspace:^
         version: link:../..
@@ -10936,11 +10937,6 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  typescript@5.6.3:
-    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
   typescript@5.8.3:
     resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
@@ -17225,7 +17221,7 @@ snapshots:
       minimatch: 9.0.5
       scslre: 0.3.0
       semver: 7.7.1
-      typescript: 5.6.3
+      typescript: 5.8.3
 
   eslint-plugin-storybook@0.12.0(eslint@9.26.0)(typescript@5.8.3):
     dependencies:
@@ -22697,8 +22693,6 @@ snapshots:
       typescript: 5.8.3
 
   typescript@5.6.1-rc: {}
-
-  typescript@5.6.3: {}
 
   typescript@5.8.3: {}
 
