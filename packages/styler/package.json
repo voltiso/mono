@@ -121,11 +121,11 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "^0.79.2",
-    "typescript": "~5.8.3",
+    "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   },
   "__________MISC": "__________",
   "typeCoverage": {
-    "is": 98.93
+    "is": 99.19
   }
 }

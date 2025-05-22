@@ -25,7 +25,7 @@ describe('WeakDocRef', () => {
 		// $Assert.is<
 		// 	DocRef<'zebra'>,
 		// 	CustomDocRef<{
-		// 		doc: AnyDoc
+		// 		doc: ANY_DOC
 		// 	}>
 		// >()
 
@@ -42,7 +42,7 @@ describe('WeakDocRef', () => {
 
 		// $Assert.is<DocRef<'zebra'>, _CustomDocRef<Opts>>()
 
-		// $Assert.is<DocRef<'zebra'>, CustomDocRef.Base<{ doc: AnyDoc }>>()
+		// $Assert.is<DocRef<'zebra'>, CustomDocRef.Base<{ doc: ANY_DOC }>>()
 		// $Assert.is<DocRef<'zebra'>, CustomDocRef.Get<{ doc: 'zebra' }>>()
 		// $Assert.is<DocRef<'zebra'>, CustomDocRef<{ doc: 'zebra' }>>()
 
@@ -86,7 +86,7 @@ describe('WeakDocRef', () => {
 
 // type A = DocRef['data']
 
-// type B = GetData<AnyDoc>
+// type B = GetData<ANY_DOC>
 
 // type A = {
 // 	a: 1

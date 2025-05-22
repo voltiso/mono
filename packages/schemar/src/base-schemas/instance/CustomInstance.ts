@@ -1,37 +1,30 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
-
-import type {
-	CustomSchema,
-	CustomSchema$,
-	InstanceOptions,
-	SCHEMA_NAME,
-} from '~'
+import type { CustomSchema, CustomSchema$, InstanceOptions } from '~'
 
 export interface CustomInstance<O extends Partial<InstanceOptions>>
 	extends CustomSchema<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Instance'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Instance'
 
-	readonly [BASE_OPTIONS]: InstanceOptions
-	readonly [DEFAULT_OPTIONS]: InstanceOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: InstanceOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: InstanceOptions.Default
 
 	//
 
-	get getConstructor(): this[OPTIONS]['Constructor']
+	get getConstructor(): this[Voltiso.OPTIONS]['Constructor']
 }
 
 export interface CustomInstance$<O extends Partial<InstanceOptions>>
 	extends CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Instance'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Instance'
 
-	readonly [BASE_OPTIONS]: InstanceOptions
-	readonly [DEFAULT_OPTIONS]: InstanceOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: InstanceOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: InstanceOptions.Default
 
 	//
 
-	get getConstructor(): this[OPTIONS]['Constructor']
+	get getConstructor(): this[Voltiso.OPTIONS]['Constructor']
 }

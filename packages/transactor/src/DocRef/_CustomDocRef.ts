@@ -47,7 +47,6 @@ import { getIdSchemas, getSchema } from './_/getSchema'
 import type { NestedPromise } from './_/NestedPromise'
 import { dataOrNestedPromise } from './_/NestedPromise'
 import type { $$DocRef } from './$$DocRef'
-import { IS_DOC_REF } from './$$DocRef'
 import type { CustomDocRef } from './CustomDocRef'
 import { defaultDocRefOptions } from './CustomDocRef'
 import type { GetDocRef } from './GetDocRef'
@@ -70,7 +69,7 @@ export class _CustomDocRef<
 {
 	// declare readonly [DTI]: GetDocTI.ByTag<O['doc']>;
 
-	readonly [IS_DOC_REF] = true as const
+	readonly [Voltiso.Transactor.IS_DOC_REF] = true as const
 
 	_context: DocRefContext
 	_ref: FirestoreLike.ServerDocumentReference
@@ -111,7 +110,7 @@ export class _CustomDocRef<
 	[OPTIONS]: CustomDocRef.Options
 
 	get isStrong(): O['isStrong'] {
-		return this[OPTIONS].isStrong
+		return this[Voltiso.OPTIONS].isStrong
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
@@ -132,7 +131,7 @@ export class _CustomDocRef<
 			omit(this._context, 'docRef'),
 			this._path.toString(),
 
-			{ ...this[OPTIONS], isStrong: true },
+			{ ...this[Voltiso.OPTIONS], isStrong: true },
 		) as never
 	}
 
@@ -141,7 +140,7 @@ export class _CustomDocRef<
 			omit(this._context, 'docRef'),
 			this._path.toString(),
 
-			{ ...this[OPTIONS], isStrong: false },
+			{ ...this[Voltiso.OPTIONS], isStrong: false },
 		) as never
 	}
 
@@ -156,7 +155,7 @@ export class _CustomDocRef<
 
 		const options = { ...defaultDocRefOptions, ...partialOptions }
 
-		this[OPTIONS] = options as never // assume the generic type argument is correct
+		this[Voltiso.OPTIONS] = options as never // assume the generic type argument is correct
 
 		const methods = this._getMethods()
 
@@ -195,7 +194,7 @@ export class _CustomDocRef<
 			__voltiso: { type: 'Ref' },
 			path: this._ref.path,
 
-			isStrong: this[OPTIONS].isStrong,
+			isStrong: this[Voltiso.OPTIONS].isStrong,
 		}
 	}
 
@@ -204,7 +203,7 @@ export class _CustomDocRef<
 			__voltiso: { type: 'Ref' },
 			ref: this._ref,
 
-			isStrong: this[OPTIONS].isStrong,
+			isStrong: this[Voltiso.OPTIONS].isStrong,
 		}
 	}
 

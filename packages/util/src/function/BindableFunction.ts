@@ -3,14 +3,12 @@
 
 /* eslint-disable es-x/no-class-instance-fields */
 
-import { $fastAssert } from '_'
+import { $fastAssert, UNSET } from '_'
 
 import type { ArrayPrefix } from '~/array/ArrayPrefix'
 import type { Printable } from '~/string'
 import type { AlsoAccept } from '~/type'
 
-import type { NoThis } from './_symbols/noThis'
-import { noThis } from './_symbols/noThis'
 import type { Callable } from './callable'
 import type { CallableParameters_ } from './Parameters'
 import type { CallableReturn_ } from './Return'
@@ -18,7 +16,7 @@ import type { CallableReturn_ } from './Return'
 /** @internal */
 export class _BindableFunction<
 	Func extends Callable,
-	BoundThis extends NoThis | AlsoAccept<unknown>,
+	BoundThis extends UNSET | AlsoAccept<unknown>,
 	BoundArguments extends readonly unknown[],
 > {
 	readonly function: Func
@@ -39,7 +37,7 @@ export class _BindableFunction<
 
 	toString(): string {
 		const thisStr =
-			this.boundThis === noThis ? 'noThis' : (this.boundThis as string)
+			this.boundThis === UNSET ? 'UNSET' : (this.boundThis as string)
 		const params: string[] = [
 			thisStr,
 			...this.boundArguments.map(arg => `${arg as Printable}`),
@@ -50,7 +48,7 @@ export class _BindableFunction<
 
 	constructor(
 		func: Func,
-		boundThis: BoundThis = noThis as never,
+		boundThis: BoundThis = UNSET as never,
 		...boundArguments: BoundArguments
 	) {
 		this.function = func
@@ -64,7 +62,7 @@ export class _BindableFunction<
 
 		const bindableFunctionCall = {
 			[name](this: BoundThis, ...args: BoundArguments) {
-				const finalThis = self.boundThis !== noThis ? self.boundThis : this
+				const finalThis = self.boundThis !== UNSET ? self.boundThis : this
 				const finalArgs = [...self.boundArguments, ...args]
 				// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 				return Reflect.apply(self.function, finalThis, finalArgs) as never
@@ -144,7 +142,7 @@ export type BindableFunction<
 
 export interface BindableFunctionConstructor {
 	/** Unbound */
-	new <Func extends Callable>(func: Func): BindableFunction<Func, NoThis, []>
+	new <Func extends Callable>(func: Func): BindableFunction<Func, UNSET, []>
 
 	/** Bound `this` */
 	new <Func extends Callable, BoundThis>(
@@ -198,7 +196,7 @@ export type BoundFunctionParameters<
 
 export type UnboundFunction<Func extends Callable> = BindableFunction<
 	Func,
-	NoThis,
+	UNSET,
 	[]
 >
 

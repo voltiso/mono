@@ -5,10 +5,8 @@ import type {
 	_,
 	$Override_,
 	AlsoAccept,
-	BASE_OPTIONS,
 	DeepNonStrictPartial_,
 	DeepPartial_,
-	DEFAULT_OPTIONS,
 	IsCompatible,
 	NonStrictPartial_,
 	OPTIONS,
@@ -23,7 +21,6 @@ import type {
 	InferableObject,
 	InferableTuple,
 	Schema,
-	SCHEMA_NAME,
 	Type,
 } from '~'
 
@@ -34,17 +31,17 @@ import type { ObjectIndexSignatureEntry, ObjectOptions } from './ObjectOptions'
 export interface CustomObject<O extends Partial<ObjectOptions>>
 	extends $$Object,
 		CustomSchema<O> {
-	readonly [SCHEMA_NAME]: 'Object'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 
-	readonly [BASE_OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: ObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	//
 
-	get isPlain(): this[OPTIONS]['isPlain']
+	get isPlain(): this[Voltiso.OPTIONS]['isPlain']
 
 	/** Currently not type-exposed */
-	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[OPTIONS]['indexSignatures']
+	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[Voltiso.OPTIONS]['indexSignatures']
 
 	//
 
@@ -61,17 +58,17 @@ export interface CustomObject$<O extends Partial<ObjectOptions>>
 	extends $$Object,
 		CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Object'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 
-	readonly [BASE_OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: ObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	//
 
-	get isPlain(): this[OPTIONS]['isPlain']
+	get isPlain(): this[Voltiso.OPTIONS]['isPlain']
 
 	/** Currently not type-exposed */
-	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[OPTIONS]['indexSignatures']
+	get getIndexSignatures(): ObjectIndexSignatureEntry[] // this[Voltiso.OPTIONS]['indexSignatures']
 
 	//
 

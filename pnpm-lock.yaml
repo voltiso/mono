@@ -86,7 +86,7 @@ importers:
         specifier: ^2.29.7
         version: 2.29.7(typescript@5.8.3)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -129,7 +129,7 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -410,7 +410,7 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -447,7 +447,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.17)(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -509,7 +509,7 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -518,7 +518,7 @@ importers:
   packages/config.prettier:
     dependencies:
       '@prettier/plugin-xml':
-        specifier: ^3.3.1
+        specifier: ^3.4.1
         version: 3.4.1(prettier@3.5.3)
       prettier-plugin-glsl:
         specifier: ^0.2.1
@@ -561,7 +561,7 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -615,7 +615,7 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -687,7 +687,7 @@ importers:
         specifier: ^4.0.0
         version: 4.1.0
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -730,17 +730,13 @@ importers:
         specifier: ^13.4.0
         version: 13.4.0(encoding@0.1.13)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
         version: 3.5.5(typescript@5.8.3)
 
   packages/handler:
-    dependencies:
-      '@voltiso/util':
-        specifier: workspace:^
-        version: link:../util
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -763,11 +759,14 @@ importers:
       '@voltiso/transform':
         specifier: workspace:^
         version: link:../transform
+      '@voltiso/util':
+        specifier: workspace:^
+        version: link:../util
       '@~/workspace':
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -801,7 +800,7 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -868,17 +867,13 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.15.17)(ts-node@10.9.2(@types/node@22.15.17)(typescript@5.8.3))
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
         version: 3.5.5(typescript@5.8.3)
 
   packages/schemar:
-    dependencies:
-      '@voltiso/util':
-        specifier: workspace:^
-        version: link:../util
     devDependencies:
       '@jest/globals':
         specifier: ^29.7.0
@@ -901,11 +896,14 @@ importers:
       '@voltiso/transform':
         specifier: workspace:^
         version: link:../transform
+      '@voltiso/util':
+        specifier: workspace:^
+        version: link:../util
       '@~/workspace':
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -939,7 +937,7 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -973,7 +971,7 @@ importers:
         specifier: workspace:^
         version: link:../util.package-json
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -994,7 +992,7 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1070,7 +1068,7 @@ importers:
         specifier: ^0.79.2
         version: 0.79.2(@babel/core@8.0.0-alpha.17)(@types/react@19.1.4)(react@19.1.0)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1178,7 +1176,7 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1211,7 +1209,7 @@ importers:
         specifier: ^13.4.0
         version: 13.4.0(encoding@0.1.13)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1316,7 +1314,7 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1383,20 +1381,13 @@ importers:
         specifier: workspace:^
         version: link:../config.tsdoc
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
         version: 3.5.5(typescript@5.8.3)
 
-  packages/transform.lib:
-    devDependencies:
-      typescript:
-        specifier: ~5.8.3
-        version: 5.8.3
-      typescript-transform-paths:
-        specifier: ^3.5.5
-        version: 3.5.5(typescript@5.8.3)
+  packages/transform.lib: {}
 
   packages/transform.test:
     devDependencies:
@@ -1433,11 +1424,14 @@ importers:
       '@voltiso/util':
         specifier: workspace:^
         version: link:../util
+      '@voltiso/util.jest':
+        specifier: workspace:^
+        version: link:../util.jest
       '@~/workspace':
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1476,7 +1470,7 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1510,7 +1504,7 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1550,11 +1544,20 @@ importers:
         specifier: workspace:^
         version: link:../..
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
         version: 3.5.5(typescript@5.8.3)
+
+  packages/util.jest:
+    devDependencies:
+      '@jest/globals':
+        specifier: ^29.7.0
+        version: 29.7.0
+      '@voltiso/util':
+        specifier: workspace:^
+        version: link:../util
 
   packages/util.node:
     dependencies:
@@ -1594,7 +1597,7 @@ importers:
         specifier: workspace:^
         version: link:../transform
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1655,7 +1658,7 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1694,7 +1697,7 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1755,7 +1758,7 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1816,7 +1819,7 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1861,7 +1864,7 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5
@@ -1903,7 +1906,7 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
       typescript:
-        specifier: ~5.8.3
+        specifier: ^5.8.3
         version: 5.8.3
       typescript-transform-paths:
         specifier: ^3.5.5

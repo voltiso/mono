@@ -1,44 +1,28 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable es-x/no-global-this */
+
 import type { And, Not, Or, Xor } from '~/boolean'
 import type { IsNumber, IsSuperNumber } from '~/number'
 
 import type { IsSubtype, IsSupertype } from '../compare'
+import { UNSET } from '_/symbols/unset'
 
-declare global {
-	namespace Voltiso {
-		const Unset: unique symbol
-		type Unset = typeof Unset
-	}
-}
-
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-
-;(globalThis as any).Voltiso.Unset ??= /* @__PURE__ */ Symbol.for(
-	'@voltiso/util/Unset',
-)
-
-export type Unset = typeof Voltiso.Unset
-export const Unset: Unset = /* @__PURE__ */ Voltiso.Unset
-
-export type Default<X, DefaultType> = X extends Unset ? DefaultType : X
+export type Default<X, DefaultType> = X extends UNSET ? DefaultType : X
 
 export interface Operation<
-	A = Unset,
-	B = Unset,
-	C = Unset,
-	D = Unset,
-	_E = Unset,
-	_F = Unset,
-	_G = Unset,
-	_H = Unset,
-	_I = Unset,
+	A = UNSET,
+	B = UNSET,
+	C = UNSET,
+	D = UNSET,
+	_E = UNSET,
+	_F = UNSET,
+	_G = UNSET,
+	_H = UNSET,
+	_I = UNSET,
 > {
 	'!': Not<A>
 
@@ -65,16 +49,16 @@ export type IsSuperString<A, T = true, F = false> = string extends A ? T : F
 
 export type OperationPacked<args extends unknown[]> = [
 	...args,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
-	Unset,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
+	UNSET,
 ] extends [
 	infer A,
 	infer B,

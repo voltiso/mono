@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.rxjs",
-  "version": "7.0.7",
+  "version": "8.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -72,7 +72,7 @@
     "@voltiso/util": "workspace:^",
     "@~/workspace": "workspace:^",
     "rxjs": "^7.8.2",
-    "typescript": "~5.8.3",
+    "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }
 }

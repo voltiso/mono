@@ -4,3 +4,13 @@
 packages:
   - packages/*
   - packages/cpp/*
+
+nodeLinker: isolated
+autoInstallPeers: false
+hoist: false
+
+# dedupePeerDependents: true # default
+resolvePeersFromWorkspaceRoot: false # ! make true?
+
+strictPeerDependencies: false
+ignoreWorkspaceRootCheck: true

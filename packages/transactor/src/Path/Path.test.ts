@@ -8,7 +8,7 @@ import type { DocBrand } from '~/brand'
 import type { $$Doc, IndexedDoc } from '~/Doc'
 import type { WeakDocRef } from '~/DocRef'
 import type { GetDocTag } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 
 import type { CustomDocPath, DbPathFromString } from './Path'
 import { CollectionPath } from './Path'
@@ -18,8 +18,8 @@ describe('path', function () {
 		type A = GetDocTag<D>
 		type B = GetDocTag<IndexedDoc>
 
-		$Assert.is<B, AnyDoc>()
-		$Assert.is<AnyDoc, B>()
+		$Assert.is<B, ANY_DOC>()
+		$Assert.is<ANY_DOC, B>()
 
 		$Assert.is<DocBrand<A>, DocBrand<B>>()
 

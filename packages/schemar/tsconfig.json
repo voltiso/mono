@@ -7,6 +7,7 @@
 	"compilerOptions": {
 		"paths": {
 			"_": ["./src/_"], // priority
+			"_/*": ["./src/_/*"], // priority
 
 			"~": ["./src"],
 			"~/*": ["./src/*"]

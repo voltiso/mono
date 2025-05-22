@@ -1,7 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoArgument, OptionalArgument } from '@voltiso/util'
+import type { UNSET, OptionalArgument } from '@voltiso/util'
 
 import type { Props } from '~/react-types'
 
@@ -11,8 +11,8 @@ import type {
 } from './StylableIntrinsic'
 
 export type StylableIntrinsic<
-	P extends OptionalArgument<Props> | NoArgument = NoArgument,
-> = P extends NoArgument
+	P extends OptionalArgument<Props> | UNSET = UNSET,
+> = P extends UNSET
 	? IStylableIntrinsicElement
 	: P extends Props
 		? StylableIntrinsicElement_<P>

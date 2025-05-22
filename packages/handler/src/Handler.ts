@@ -3,21 +3,20 @@
 
 import type {
 	AlsoAccept,
+	BASE_OPTIONS,
 	GENERIC_ID,
+	HIDDEN_OPTIONS,
 	MaybePromise,
 	OPTIONS,
 	Override,
 	PARTIAL_OPTIONS,
 } from '@voltiso/util'
 import {
-	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
-	DEFAULT_OPTIONS,
 	define,
-	HIDDEN_OPTIONS,
-	noThis,
 	PolymorphicGeneric,
+	UNSET,
 } from '@voltiso/util'
 
 import type { HandlerDerived } from './HandlerDerived-augmentation'
@@ -80,17 +79,19 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 	extends PolymorphicGeneric<O>
 	implements Omit<IHandler, 'bind' | 'call' | 'apply'>
 {
-	declare readonly [BASE_OPTIONS]: Handler.Options
-	declare readonly [DEFAULT_OPTIONS]: Handler.Options.Default
-	declare readonly [HIDDEN_OPTIONS]: Handler.Options.Hidden<this[OPTIONS]>
+	declare readonly [Voltiso.BASE_OPTIONS]: Handler.Options
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: Handler.Options.Default
+	declare readonly [Voltiso.HIDDEN_OPTIONS]: Handler.Options.Hidden<
+		this[Voltiso.OPTIONS]
+	>
 
 	//
 
 	/** 🌿 Type-only! (no value at runtime) */
-	declare readonly Signature: this[OPTIONS]['Signature']
+	declare readonly Signature: this[Voltiso.OPTIONS]['Signature']
 
 	/** 🌿 Type-only! (no value at runtime) */
-	declare readonly Implementation: this[OPTIONS]['Implementation']
+	declare readonly Implementation: this[Voltiso.OPTIONS]['Implementation']
 
 	//
 
@@ -98,7 +99,7 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 		return this.options.name ?? 'unknown'
 	}
 
-	get getImplementation(): this[OPTIONS]['Implementation'] | undefined {
+	get getImplementation(): this[Voltiso.OPTIONS]['Implementation'] | undefined {
 		return this.options.implementation as never
 	}
 
@@ -114,7 +115,7 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 		return this.rebind({ name }) as never
 	}
 
-	implement(implementation: this[OPTIONS]['Implementation']): this {
+	implement(implementation: this[Voltiso.OPTIONS]['Implementation']): this {
 		return this.rebind({ implementation }) as never
 	}
 
@@ -122,7 +123,7 @@ export class HandlerImpl<O extends Partial<Handler.Options>>
 
 	[CALL](...args: unknown[]): never {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-		return this._call(noThis as never, ...(args as any)) as never
+		return this._call(UNSET as never, ...(args as any)) as never
 	}
 
 	protected _call(thisArg: unknown, ...args: unknown[]): unknown {

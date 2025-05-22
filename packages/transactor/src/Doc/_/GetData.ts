@@ -18,7 +18,7 @@ import type { $WithId, DataRecord, WithId } from '~/Data'
 import type { $$Doc, $$DocTI, DocTI, DTI, ExecutionContext } from '~/Doc'
 import type { $$DocRef } from '~/DocRef'
 import type { $$DocRelatedLike, GetDocTI } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 import type { VoltisoEntry } from '~/schemas'
 
 import type { GetIntrinsicFields } from './GetIntrinsicFields'
@@ -45,7 +45,7 @@ export type _$GetAggregateTarget<T> = T extends any
 	: never
 
 /** @inline */
-export type GetData<R extends $$DocRelatedLike> = R extends AnyDoc
+export type GetData<R extends $$DocRelatedLike> = R extends ANY_DOC
 	? { readonly id?: never; __voltiso: VoltisoEntry; [k: string]: unknown }
 	: GetData.ForDocTI<GetDocTI<R>>
 
@@ -66,7 +66,7 @@ export namespace GetData {
 }
 
 /** @inline */
-export type GetDataWithId<R extends $$DocRelatedLike> = R extends AnyDoc
+export type GetDataWithId<R extends $$DocRelatedLike> = R extends ANY_DOC
 	? { readonly id: DocIdString<R>; [k: string]: unknown }
 	: WithId<GetData<R>, R>
 
@@ -78,7 +78,7 @@ export namespace GetDataWithId {
 //
 
 /** @inline */
-export type GetInputData<R extends $$DocRelatedLike> = R extends AnyDoc
+export type GetInputData<R extends $$DocRelatedLike> = R extends ANY_DOC
 	? { readonly id?: never; [k: string]: unknown }
 	: GetInputData.ForDocTI<GetDocTI<R>>
 
@@ -101,7 +101,7 @@ export namespace GetInputData {
 /** @inline */
 export type GetInputDataWithId<
 	TI extends $$DocRelatedLike,
-	Doc extends $$DocRelatedLike = AnyDoc,
+	Doc extends $$DocRelatedLike = ANY_DOC,
 > = $WithId<GetInputData<TI>, Doc>
 
 //
@@ -122,7 +122,7 @@ export type GetPublicData<R extends $$DocRelatedLike> = Output_<
 
 /** @inline */
 export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
-	R extends AnyDoc
+	R extends ANY_DOC
 		? { id?: string & DocIdBrand } & DataRecord
 		: DeepReadonlyN<
 				10,
@@ -138,7 +138,7 @@ export type GetPublicCreationInputData<R extends $$DocRelatedLike> =
 // type A = _<GetPublicCreationInputData<'oops'>>
 
 /** @inline */
-export type GetPublicInputData<R extends $$DocRelatedLike> = R extends AnyDoc
+export type GetPublicInputData<R extends $$DocRelatedLike> = R extends ANY_DOC
 	? { readonly id?: never; [k: string]: unknown }
 	: Input_<GetDocTI<R>['public']>
 

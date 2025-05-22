@@ -1,6 +1,9 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable es-x/no-global-this */
+
 import type { Brands, CustomBrand_, PropertyPath } from '@voltiso/util'
 
 import type { DocTag } from '~/DocTypes'
@@ -11,18 +14,16 @@ declare global {
 		namespace Transactor {
 			const TRANSACTOR: unique symbol
 			type TRANSACTOR = typeof TRANSACTOR
+			// type TRANSACTOR = { readonly _: unique symbol }['_']
+			// const TRANSACTOR: TRANSACTOR
 		}
 	}
 }
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
-;(globalThis as any).Voltiso.Transactor.TRANSACTOR ??=
-	/* @__PURE__ */ Symbol.for('@voltiso/transactor/TRANSACTOR')
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+Voltiso.Transactor ??= /* @__PURE__ */ {} as never
+;(Voltiso.Transactor.TRANSACTOR as any) ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/transactor/TRANSACTOR',
+)
 export type TRANSACTOR = Voltiso.Transactor.TRANSACTOR
 export const TRANSACTOR: TRANSACTOR =
 	/* @__PURE__ */ Voltiso.Transactor.TRANSACTOR

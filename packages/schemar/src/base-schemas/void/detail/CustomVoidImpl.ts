@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $fastAssert, lazyConstructor } from '@voltiso/util'
 
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -17,8 +16,8 @@ $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomVoidImpl<O> {
-	readonly [BASE_OPTIONS]: VoidOptions
-	readonly [DEFAULT_OPTIONS]: VoidOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: VoidOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: VoidOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -27,10 +26,10 @@ export class CustomVoidImpl<O extends Partial<VoidOptions>>
 	implements IVoid
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Void' as const;
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Void' as const;
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isVoidSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 }

@@ -1,6 +1,9 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
+/* eslint-disable es-x/no-global-this */
 /* eslint-disable es-x/no-class-instance-fields */
 
 import type { Generics } from '~/Generics-augmentation'
@@ -11,55 +14,71 @@ declare global {
 	namespace Voltiso {
 		const OPTIONS: unique symbol
 		type OPTIONS = typeof OPTIONS
+
 		const PARTIAL_OPTIONS: unique symbol
 		type PARTIAL_OPTIONS = typeof PARTIAL_OPTIONS
+
 		const DEFAULT_OPTIONS: unique symbol
 		type DEFAULT_OPTIONS = typeof DEFAULT_OPTIONS
+
 		const BASE_OPTIONS: unique symbol
 		type BASE_OPTIONS = typeof BASE_OPTIONS
+
 		const HIDDEN_OPTIONS: unique symbol
 		type HIDDEN_OPTIONS = typeof HIDDEN_OPTIONS
+
 		const GENERIC_ID: unique symbol
 		type GENERIC_ID = typeof GENERIC_ID
+
+		// type OPTIONS = { readonly _: unique symbol }['_']
+		// const OPTIONS: OPTIONS
+
+		// type PARTIAL_OPTIONS = { readonly _: unique symbol }['_']
+		// const PARTIAL_OPTIONS: PARTIAL_OPTIONS
+
+		// type DEFAULT_OPTIONS = { readonly _: unique symbol }['_']
+		// const DEFAULT_OPTIONS: DEFAULT_OPTIONS
+
+		// type BASE_OPTIONS = { readonly _: unique symbol }['_']
+		// const BASE_OPTIONS: BASE_OPTIONS
+
+		// type HIDDEN_OPTIONS = { readonly _: unique symbol }['_']
+		// const HIDDEN_OPTIONS: HIDDEN_OPTIONS
+
+		// type GENERIC_ID = { readonly _: unique symbol }['_']
+		// const GENERIC_ID: GENERIC_ID
 	}
 }
-
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-
-;(globalThis as any).Voltiso.OPTIONS ??= /* @__PURE__ */ Symbol.for(
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+;(Voltiso.OPTIONS as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/util/OPTIONS',
 )
 export type OPTIONS = typeof Voltiso.OPTIONS
 export const OPTIONS: OPTIONS = /* @__PURE__ */ Voltiso.OPTIONS
-;(globalThis as any).Voltiso.PARTIAL_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+;(Voltiso.PARTIAL_OPTIONS as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/util/PARTIAL_OPTIONS',
 )
 export type PARTIAL_OPTIONS = Voltiso.PARTIAL_OPTIONS
 export const PARTIAL_OPTIONS: PARTIAL_OPTIONS =
 	/* @__PURE__ */ Voltiso.PARTIAL_OPTIONS
-;(globalThis as any).Voltiso.DEFAULT_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+;(Voltiso.DEFAULT_OPTIONS as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/util/DEFAULT_OPTIONS',
 )
 export type DEFAULT_OPTIONS = Voltiso.DEFAULT_OPTIONS
 export const DEFAULT_OPTIONS: DEFAULT_OPTIONS =
 	/* @__PURE__ */ Voltiso.DEFAULT_OPTIONS
-;(globalThis as any).Voltiso.BASE_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+;(Voltiso.BASE_OPTIONS as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/util/BASE_OPTIONS',
 )
 export type BASE_OPTIONS = Voltiso.BASE_OPTIONS
 export const BASE_OPTIONS: BASE_OPTIONS = /* @__PURE__ */ Voltiso.BASE_OPTIONS
-;(globalThis as any).Voltiso.HIDDEN_OPTIONS ??= /* @__PURE__ */ Symbol.for(
+;(Voltiso.HIDDEN_OPTIONS as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/util/HIDDEN_OPTIONS',
 )
 export type HIDDEN_OPTIONS = Voltiso.HIDDEN_OPTIONS
 export const HIDDEN_OPTIONS: HIDDEN_OPTIONS =
 	/* @__PURE__ */ Voltiso.HIDDEN_OPTIONS
-;(globalThis as any).Voltiso.GENERIC_ID ??= /* @__PURE__ */ Symbol.for(
+;(Voltiso.GENERIC_ID as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/util/GENERIC_ID',
 )
 export type GENERIC_ID = Voltiso.GENERIC_ID
@@ -83,14 +102,14 @@ export interface PolymorphicGeneric<O extends {}> {
 	 *
 	 * 🌿 Type-only (no value at runtime)
 	 */
-	readonly [BASE_OPTIONS]: {}
+	readonly [Voltiso.BASE_OPTIONS]: {}
 
 	/**
 	 * Please override!
 	 *
 	 * 🌿 Type-only (no value at runtime)
 	 */
-	readonly [DEFAULT_OPTIONS]: {}
+	readonly [Voltiso.DEFAULT_OPTIONS]: {}
 
 	/**
 	 * Instance options that are not part of the generic type parameter (but can
@@ -100,7 +119,7 @@ export interface PolymorphicGeneric<O extends {}> {
 	 *
 	 * 🌿 Type-only (no value at runtime)
 	 */
-	readonly [HIDDEN_OPTIONS]: {}
+	readonly [Voltiso.HIDDEN_OPTIONS]: {}
 
 	/**
 	 * For accessing the generic type parameter
@@ -118,7 +137,7 @@ export interface PolymorphicGeneric<O extends {}> {
 	 *
 	 * 🌿 Type-only (no value at runtime)
 	 */
-	readonly [OPTIONS]: PolymorphicGeneric.GetOptions<this, O>
+	readonly [Voltiso.OPTIONS]: PolymorphicGeneric.GetOptions<this, O>
 }
 
 //
@@ -126,7 +145,7 @@ export interface PolymorphicGeneric<O extends {}> {
 /** Utility for building polymorphic builder-like interfaces */
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class PolymorphicGeneric<O extends {}> {
-	readonly options: this[OPTIONS] & this[HIDDEN_OPTIONS]
+	readonly options: this[Voltiso.OPTIONS] & this[HIDDEN_OPTIONS]
 
 	/** Static */
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this

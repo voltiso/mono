@@ -24,6 +24,8 @@ export function logInlinedNode(
 	node: ts.Node,
 	options: { type: 'alias' | 'expression' },
 ): void {
+	if (ctx.options.silent) return
+
 	_helloOnce()
 
 	// eslint-disable-next-line no-console

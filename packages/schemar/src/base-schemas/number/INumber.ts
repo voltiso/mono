@@ -1,25 +1,23 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-
-import type { $$Schema, Schema, SCHEMA_NAME, Schema$, SchemaLike } from '~'
+import type { $$Schema, Schema, Schema$, SchemaLike } from '~'
 
 import type { NumberOptions } from './NumberOptions'
 
 export interface $$Number extends $$Schema {
-	readonly [SCHEMA_NAME]: 'Number'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 }
 
 export interface NumberLike<T extends number> extends $$Number, SchemaLike<T> {
-	readonly [SCHEMA_NAME]: 'Number'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 }
 
 export interface INumber extends Schema {
-	readonly [SCHEMA_NAME]: 'Number'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 
-	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: NumberOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: NumberOptions.Default
 
 	get isInteger(): boolean
 	get getMin(): number | undefined
@@ -29,10 +27,10 @@ export interface INumber extends Schema {
 //
 
 export interface INumber$ extends Schema$ {
-	readonly [SCHEMA_NAME]: 'Number'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 
-	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: NumberOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: NumberOptions.Default
 
 	get isInteger(): boolean
 	get getMin(): number | undefined

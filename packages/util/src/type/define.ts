@@ -10,7 +10,7 @@ import type { Primitive } from '~/primitive'
 import type { Override } from '../object/Override'
 import type { AlsoAccept } from './AlsoAccept'
 import type { DecrementArgument } from './number'
-import type { NoArgument } from './optional-argument'
+import { UNSET } from '_/symbols/unset'
 
 export interface DefineTypeOptions {
 	/**
@@ -28,7 +28,7 @@ export interface DefineTypeOptions {
 	 * - Passed to `DeepMutableN`
 	 * - Type-only
 	 */
-	Skip: NoArgument | AlsoAccept<unknown>
+	Skip: UNSET | AlsoAccept<unknown>
 }
 
 export interface DefaultDefineTypeOptions extends DefineTypeOptions {

@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $$DocRef } from '~/DocRef'
-import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
+import type { ANY_DOC, DocTag, DocTagLike } from '~/DocTypes'
 
 import type { $$DocTI, DocTI, DTI } from '../Doc/DocTI'
 import type { $$Doc } from '../Doc/IDoc'
@@ -20,7 +20,7 @@ export type $$DocRelatedLike =
 	| $$DocTI
 	| WithDocTI
 	| DocTagLike // string
-	| AnyDoc
+	| ANY_DOC
 
 /** Strict DocTags */
-export type $$DocRelated = Exclude<$$DocRelatedLike, string> | AnyDoc | DocTag
+export type $$DocRelated = Exclude<$$DocRelatedLike, string> | ANY_DOC | DocTag

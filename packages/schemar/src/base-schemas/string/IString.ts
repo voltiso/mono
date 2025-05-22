@@ -2,22 +2,24 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import { $fastAssert } from '@voltiso/util'
 
 import type { $$Schema, Schema, Schema$ } from '~'
 
 import type { StringOptions } from './StringOptions'
 
+$fastAssert(SCHEMA_NAME)
+
 export interface $$String extends $$Schema {
-	readonly [SCHEMA_NAME]: 'String'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 }
 
 /** Every String<O> is assignable to IString */
 export interface IString extends Schema<string> {
-	readonly [SCHEMA_NAME]: 'String'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 
-	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: StringOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: StringOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: StringOptions.Default
 
 	get getMinLength(): number | undefined
 	get getMaxLength(): number | undefined
@@ -25,10 +27,10 @@ export interface IString extends Schema<string> {
 
 /** Every String$<O> is assignable to IString$ */
 export interface IString$ extends Schema$<string> {
-	readonly [SCHEMA_NAME]: 'String'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 
-	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: StringOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: StringOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: StringOptions.Default
 
 	get getMinLength(): number | undefined
 	get getMaxLength(): number | undefined
@@ -44,5 +46,5 @@ export interface IString$ extends Schema$<string> {
 }
 
 export function isStringSchema(x: unknown): x is IString$ {
-	return (x as IString | null)?.[SCHEMA_NAME] === 'String'
+	return (x as IString | null)?.[Voltiso.Schemar.SCHEMA_NAME] === 'String'
 }

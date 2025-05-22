@@ -11,6 +11,7 @@ import * as ts from 'typescript'
 import type { InlineTransformContext } from '../inlineTransform.js'
 import { collectNodesOfKind } from './collectNodesOfKind.js'
 import { collectSymbolNames } from './collectSymbolNames.js'
+import { collectValueSymbolNames } from './collectValueSymbolNames.js'
 import { getFirstChildOrSelf } from './getFirstChildOrSelf.js'
 import { hasNodeOfType } from './hasNodeOfType.js'
 import { simplifyNode } from './simplifyNode.js'
@@ -31,6 +32,26 @@ export function canBeInlined(
 					ts.SymbolFlags.ModuleMember,
 			)
 			.map(symbol => symbol.name),
+	)
+
+	const valueSymbols = new Set(
+		ctx.typeChecker
+			.getSymbolsInScope(
+				ctx.sourceFile,
+				// eslint-disable-next-line no-bitwise
+				ts.SymbolFlags.Variable |
+					ts.SymbolFlags.Function |
+					ts.SymbolFlags.Method |
+					ts.SymbolFlags.Class |
+					ts.SymbolFlags.Value,
+			)
+			.map(symbol => symbol.name),
+	)
+
+	const aliasSymbols = new Map<string, ts.Symbol>(
+		ctx.typeChecker
+			.getSymbolsInScope(ctx.sourceFile, ts.SymbolFlags.Alias)
+			.map(symbol => [symbol.name, symbol]),
 	)
 
 	// console.log('symbols in scope', typeSymbols)
@@ -67,34 +88,78 @@ export function canBeInlined(
 		}
 	}
 
-	const symbolsOutOfScope = collectSymbolNames(newNode)
+	let hasTypeSymbolsOutOfScope: boolean
+	{
+		const symbolsOutOfScope = collectSymbolNames(newNode)
+		// console.log('collected symbol names', symbolsOutOfScope)
 
-	// console.log('collected symbol names', symbolsOutOfScope)
+		// console.log(newSymbolNames)
 
-	// console.log(newSymbolNames)
+		const symbolNames = collectSymbolNames(node)
+		for (const symbolName of symbolNames) symbolsOutOfScope.delete(symbolName)
 
-	const symbolNames = collectSymbolNames(node)
-	for (const symbolName of symbolNames) symbolsOutOfScope.delete(symbolName)
+		// console.log('remaining symbols', newSymbolNames)
 
-	// console.log('remaining symbols', newSymbolNames)
+		for (const symbol of symbolsOutOfScope) {
+			if (typeSymbols.has(symbol)) symbolsOutOfScope.delete(symbol)
+		}
 
-	for (const symbol of symbolsOutOfScope) {
-		if (typeSymbols.has(symbol)) symbolsOutOfScope.delete(symbol)
+		hasTypeSymbolsOutOfScope = symbolsOutOfScope.size > 0
+
+		if (hasTypeSymbolsOutOfScope && options?.warn) {
+			const message = `\n[@voltiso/transform] unable to inline ${
+				getNodeText(ctx, node) ?? ts.SyntaxKind[node.kind]
+			} - type symbols out of scope: ${[...symbolsOutOfScope].join(
+				', ',
+			)} \n  @ ${getNodePositionStr(node)}`
+
+			// eslint-disable-next-line no-console
+			console.warn(chalk.bgRed(message))
+
+			if (ctx.options.onInlineError === 'fail') throw new Error(message)
+		}
 	}
 
-	const hasSymbolsOutOfScope = symbolsOutOfScope.size > 0
+	//
 
-	if (hasSymbolsOutOfScope && options?.warn) {
-		const message = `\n[@voltiso/transform] unable to inline ${
-			getNodeText(ctx, node) ?? ts.SyntaxKind[node.kind]
-		} - symbols out of scope: ${[...symbolsOutOfScope].join(
-			', ',
-		)} \n  @ ${getNodePositionStr(node)}`
+	let hasValueSymbolsOutOfScope: boolean
+	{
+		const symbolsOutOfScope = collectValueSymbolNames(newNode)
+		// console.log('collected value symbol names', symbolsOutOfScope)
 
-		// eslint-disable-next-line no-console
-		console.warn(chalk.bgRed(message))
+		const symbolNames = collectValueSymbolNames(node)
+		for (const symbolName of symbolNames) symbolsOutOfScope.delete(symbolName)
 
-		if (ctx.options.onInlineError === 'fail') throw new Error(message)
+		for (const symbol of symbolsOutOfScope) {
+			if (valueSymbols.has(symbol)) symbolsOutOfScope.delete(symbol)
+		}
+
+		for (const symbol of symbolsOutOfScope) {
+			if (aliasSymbols.has(symbol)) {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				const aliasSymbol = aliasSymbols.get(symbol)!
+				const aliasedSymbol = ctx.typeChecker.getAliasedSymbol(aliasSymbol)
+				// eslint-disable-next-line no-bitwise
+				if (aliasedSymbol.flags & ts.SymbolFlags.Value) {
+					symbolsOutOfScope.delete(symbol)
+				}
+			}
+		}
+
+		hasValueSymbolsOutOfScope = symbolsOutOfScope.size > 0
+
+		if (hasValueSymbolsOutOfScope && options?.warn) {
+			const message = `\n[@voltiso/transform] unable to inline ${
+				getNodeText(ctx, node) ?? ts.SyntaxKind[node.kind]
+			} - value symbols out of scope: ${[...symbolsOutOfScope].join(
+				', ',
+			)} \n  @ ${getNodePositionStr(node)}`
+
+			// eslint-disable-next-line no-console
+			console.warn(chalk.bgRed(message))
+
+			if (ctx.options.onInlineError === 'fail') throw new Error(message)
+		}
 	}
 
 	//
@@ -125,22 +190,24 @@ export function canBeInlined(
 
 	//
 
-	const typeQueryNodes = collectNodesOfKind(newNode, ts.SyntaxKind.TypeQuery)
+	// const typeQueryNodes = collectNodesOfKind(newNode, ts.SyntaxKind.TypeQuery)
 
-	const containsTypeQueryNodes = typeQueryNodes.length > 0
+	// const containsTypeQueryNodes = typeQueryNodes.length > 0
 
-	if (options?.warn && containsTypeQueryNodes) {
-		const message = `\n[@voltiso/transform] unable to inline ${
-			getNodeText(ctx, node) ?? ts.SyntaxKind[node.kind]
-		} - resulting node text would include type query node (typeof) \n  @ ${getNodePositionStr(
-			node,
-		)}`
+	// if (options?.warn && containsTypeQueryNodes) {
+	// 	const message = `\n[@voltiso/transform] unable to inline ${
+	// 		getNodeText(ctx, node) ?? ts.SyntaxKind[node.kind]
+	// 	} - resulting node text would include type query node (typeof) \n  @ ${getNodePositionStr(
+	// 		node,
+	// 	)}`
 
-		// eslint-disable-next-line no-console
-		console.warn(chalk.bgRed(message))
+	// 	// eslint-disable-next-line no-console
+	// 	console.warn(chalk.bgRed(message))
 
-		if (ctx.options.onInlineError === 'fail') throw new Error(message)
-	}
+	// 	// !!! do not fail on type query nodes - ok?
+	// 	// if (ctx.options.onInlineError === 'fail') throw new Error(message)
+	// 	// !!!
+	// }
 
 	// console.log({
 	// 	hasSymbolsOutOfScope,
@@ -150,9 +217,10 @@ export function canBeInlined(
 	// })
 
 	const canBeInlined =
-		!hasSymbolsOutOfScope &&
-		!containsImportAbsolutePath &&
-		!containsTypeQueryNodes
+		!hasTypeSymbolsOutOfScope &&
+		!hasValueSymbolsOutOfScope &&
+		!containsImportAbsolutePath // &&
+	// !containsTypeQueryNodes
 
 	return canBeInlined
 }

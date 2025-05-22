@@ -26,31 +26,36 @@
 
 		"plugins": [
 			{
-				"transform": "@voltiso/transform/strip"
+				"transform": "@voltiso/transform/strip",
 				// "tokens": ["$assert", "$Assert", "$Is", "$AssumeType"]
 				// "modules": []
+				"silent": true
 			},
 
 			{
 				"transform": "@voltiso/transform/inline",
 				"afterDeclarations": true,
-				"onInlineError": "fail"
+				"onInlineError": "fail",
+				"silent": true
 			},
 
 			{
-				"transform": "@voltiso/transform/call-info"
+				"transform": "@voltiso/transform/call-info",
+				"silent": true
 			},
 
 			{
 				"transform": "@voltiso/transform/compat",
 				"afterDeclarationsHack": false,
-				"afterDeclarations": false
+				"afterDeclarations": false,
+				"silent": true
 			},
 
 			{
 				"transform": "@voltiso/transform/compat",
 				"afterDeclarationsHack": true,
-				"afterDeclarations": true
+				"afterDeclarations": true,
+				"silent": true
 			},
 
 			// Transform paths in output .js files
@@ -68,7 +73,7 @@
 		]
 
 		// !
-		// ! OVERWRITE WHEN EXTENDING !
+		// ! OVERRIDE WHEN EXTENDING !
 		// !
 		// "rootDir": "src",
 		// "baseUrl": ".",
@@ -78,7 +83,7 @@
 	}
 
 	// !
-	// ! OVERWRITE WHEN EXTENDING !
+	// ! OVERRIDE WHEN EXTENDING !
 	// !
 	// "include": ["src"],
 	// "exclude": [

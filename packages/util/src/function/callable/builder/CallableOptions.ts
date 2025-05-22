@@ -1,7 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoThis } from '~/function'
+import { UNSET } from '_/symbols/unset'
 import type { Override } from '~/type'
 
 export interface CallableNoThisOptions {
@@ -10,11 +10,11 @@ export interface CallableNoThisOptions {
 }
 
 export interface CallableOptions extends CallableNoThisOptions {
-	this: unknown | NoThis
+	this: unknown | UNSET
 }
 
 export interface DefaultCallableOptions extends CallableOptions {
-	this: NoThis
+	this: UNSET
 	parameters: any // ! good enough without bivariance hack
 	return: void
 }

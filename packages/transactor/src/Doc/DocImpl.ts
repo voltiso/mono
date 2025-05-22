@@ -19,7 +19,7 @@ import { withId } from '~/Data'
 import type { Db } from '~/Db'
 import type { DocRefContext, WeakDocRef } from '~/DocRef'
 import { CustomDocRef, isStrongDocRef } from '~/DocRef'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 import { TransactorError } from '~/error/TransactorError'
 import type { Method } from '~/Method'
 import type { CustomDocPath } from '~/Path'
@@ -210,7 +210,7 @@ export class DocImpl<TI extends DocTI = DocTI> extends lazyConstructor(
 //
 
 export interface DefaultDocTI extends DocTI {
-	tag: AnyDoc
+	tag: ANY_DOC
 
 	// publicOnCreation: t.Object<{
 	// 	[DOC_SHAPE_NON_EMPTY_HACK]?: never

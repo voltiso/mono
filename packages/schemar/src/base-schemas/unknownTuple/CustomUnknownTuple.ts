@@ -1,42 +1,34 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SCHEMA_NAME } from '_'
-import type {
-	$Override_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-} from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
 import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { UnknownTupleOptions } from './UnknownTupleOptions'
 
-//
-
 export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	extends CustomSchema<O> {
-	readonly [SCHEMA_NAME]: 'UnknownTuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
-	readonly [BASE_OPTIONS]: UnknownTupleOptions
-	readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownTupleOptions.Default
 
-	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
-	get getMinLength(): this[OPTIONS]['minLength']
-	get getMaxLength(): this[OPTIONS]['maxLength']
+	get isReadonlyTuple(): this[Voltiso.OPTIONS]['isReadonlyTuple']
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength']
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 }
 
 export interface CustomUnknownTuple$<O extends Partial<UnknownTupleOptions>>
 	extends CustomSchema$<O> {
-	readonly [SCHEMA_NAME]: 'UnknownTuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
-	readonly [BASE_OPTIONS]: UnknownTupleOptions
-	readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownTupleOptions.Default
 
-	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple']
-	get getMinLength(): number // this[OPTIONS]['minLength']
-	get getMaxLength(): number // this[OPTIONS]['maxLength']
+	get isReadonlyTuple(): this[Voltiso.OPTIONS]['isReadonlyTuple']
+	get getMinLength(): number // this[Voltiso.OPTIONS]['minLength']
+	get getMaxLength(): number // this[Voltiso.OPTIONS]['maxLength']
 
 	//
 

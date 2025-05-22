@@ -2,8 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor } from '@voltiso/util'
+import {
+	$fastAssert,
+	BoundCallable,
+	CALL,
+	lazyConstructor,
+} from '@voltiso/util'
 
 import { LiteralImpl } from '~/core-schemas/literal/_/LiteralImpl'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -14,10 +18,13 @@ import type { CustomUnknownLiteral } from '../CustomUnknownLiteral'
 import { isUnknownLiteralSchema } from '../isUnknownLiteral'
 import type { UnknownLiteralOptions } from '../UnknownLiteralOptions'
 
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownLiteralImpl<O> {
-	readonly [BASE_OPTIONS]: UnknownLiteralOptions
-	readonly [DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownLiteralOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownLiteralOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -26,7 +33,7 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	implements CustomUnknownLiteral<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'UnknownLiteral' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownLiteral' as const
 
 	constructor(o: O) {
 		super(o)
@@ -34,9 +41,9 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 		return BoundCallable(this) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isUnknownLiteralSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this

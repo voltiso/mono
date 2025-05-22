@@ -19,7 +19,7 @@ import type { $$DocConstructor } from '~/DocConstructor'
 import type { WeakDocRef } from '~/DocRef'
 import { CustomDocRef } from '~/DocRef'
 import type { $$DocRelated, GetDocRepresentative } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { WithTransactor } from '~/Transactor'
 import type { TransactorMethodEntry } from '~/Transactor/Entry'
@@ -42,7 +42,7 @@ export type _ConsumeTokens<
 
 export interface CollectionRefPattern<
 	Pattern extends string = string,
-	Doc extends $$DocRelated = AnyDoc,
+	Doc extends $$DocRelated = ANY_DOC,
 > {
 	// [CALL]
 
@@ -67,7 +67,7 @@ export interface CollectionRefPattern<
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CollectionRefPattern<
 	Pattern extends string = string,
-	Doc extends $$DocRelated = AnyDoc,
+	Doc extends $$DocRelated = ANY_DOC,
 > {
 	// /** Type-only */
 	// declare Doc: GetDocRepresentative<Doc>

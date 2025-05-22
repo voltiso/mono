@@ -3,18 +3,18 @@
 
 import type { clone } from '~/clone'
 import { deleteAllProperties } from '~/object'
-import type { NoArgument } from '~/type'
 
 import type { _ProtoCallable, IProtoCallable } from './_'
 import type { ProtoCallableOptions } from './_/ProtoCallableOptions'
+import { UNSET } from '_/symbols/unset'
 
 export type __unused_ProtoCallable = typeof clone
 
 //
 
 export type ProtoCallable<
-	Options extends ProtoCallableOptions | NoArgument = NoArgument,
-> = Options extends NoArgument
+	Options extends ProtoCallableOptions | UNSET = UNSET,
+> = Options extends UNSET
 	? IProtoCallable
 	: Options extends ProtoCallableOptions
 		? _ProtoCallable<Options>

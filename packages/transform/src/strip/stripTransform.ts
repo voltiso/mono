@@ -5,18 +5,20 @@
 /* eslint-disable sonarjs/expression-complexity */
 /* eslint-disable sonarjs/no-nested-functions */
 
-import type { TransformContext } from '@voltiso/transform.lib'
+import type { TransformContext, TransformOptions } from '@voltiso/transform.lib'
+import { defaultTransformOptions } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
+
+import { _deepMerge2 } from '~/_/copied-from-util/_deepMerge'
 
 import { logStrippedNode, moduleIcon } from './_/index.js'
 import { shouldStripModule } from './_/shouldStripModule.js'
 import { shouldStripSymbol } from './_/shouldStripSymbol.js'
 
-export interface StripTransformOptions
-	extends Partial<{
-		modules: string[]
-		symbols: string[]
-	}> {}
+export interface StripTransformOptions extends TransformOptions {
+	modules?: string[]
+	symbols?: string[]
+}
 
 export interface StripTransformContext extends TransformContext {
 	options: StripTransformOptions
@@ -66,9 +68,15 @@ export function stripTransform(
 			// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 			const isEnabled = !process.env['VOLTISO_STRIP_DISABLE']
 
+			const options: StripTransformOptions = _deepMerge2(
+				defaultTransformOptions as never,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				(pluginOptions as never) ?? {},
+			) as never
+
 			const ctx: StripTransformContext = {
 				program,
-				options: pluginOptions || {},
+				options,
 				transformationContext,
 				sourceFile,
 				typeChecker,
@@ -101,7 +109,7 @@ export function stripTransform(
 						shouldStripModule(ctx, node.moduleSpecifier.text)) ||
 						(node.importClause && areAllStripAnnotated(ctx, node.importClause)))
 				) {
-					logStrippedNode(node)
+					logStrippedNode(ctx, node)
 
 					const notEmittedNode = ts.factory.createNotEmittedStatement(node)
 
@@ -144,7 +152,7 @@ export function stripTransform(
 					}
 
 					if (ctx.shouldStripBecauseOfSymbol) {
-						logStrippedNode(node)
+						logStrippedNode(ctx, node)
 
 						let result = ts.factory.createNotEmittedStatement(node)
 

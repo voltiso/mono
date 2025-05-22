@@ -29,16 +29,17 @@ import { partialShape, strictPartialShape } from './partialShape'
 v.$fastAssert(EXTENDS)
 v.$fastAssert(SCHEMA_NAME)
 v.$fastAssert(BASE_OPTIONS)
+v.$fastAssert(DEFAULT_OPTIONS)
 
 export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	extends v.lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomObject<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Object' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Object' as const
 
-	declare readonly [BASE_OPTIONS]: ObjectOptions
-	declare readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: ObjectOptions
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	constructor(partialOptions: O) {
 		// super(partialOptions.shape ? {...partialOptions, shape: updateShapeNames() } : partialOptions)
@@ -63,7 +64,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	}
 
 	get plain(): never {
-		// console.log('CustomObjectImpl_.plain', this[OPTIONS])
+		// console.log('CustomObjectImpl_.plain', this[Voltiso.OPTIONS])
 		return this._cloneWithOptions({
 			isPlain: true,
 		}) as never
@@ -105,7 +106,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 		}) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isObjectSchema(other)) {
 			for (const [key, value] of v.getEntries(other.getShape, {
 				includeSymbols: true,
@@ -129,7 +130,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 			return true
 		} else if (isUnknownObjectSchema(other)) {
 			return true
-		} else return super[EXTENDS](other)
+		} else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	// eslint-disable-next-line sonarjs/cyclomatic-complexity
@@ -139,10 +140,9 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	): ValidationIssue[] {
 		const options = { ...defaultValidationOptions, ...partialOptions }
 
-		// console.log('CustomObjectImpl._getIssuesImpl', this[OPTIONS])
+		// console.log('CustomObjectImpl._getIssuesImpl', this[Voltiso.OPTIONS])
 		let issues: ValidationIssue[] = []
 
-		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!v.isObject(x)) {
 			issues.push(
 				new ValidationIssue({
@@ -251,7 +251,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key],
 
 									expected: {
-										// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
+										// eslint-disable-next-line @typescript-eslint/no-base-to-string
 										description: `match index signature key: ${sKeySchema.toString()}`,
 									},
 
@@ -276,7 +276,7 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 									path: [key],
 
 									expected: {
-										// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
+										// eslint-disable-next-line @typescript-eslint/no-base-to-string
 										description: `match index signature value: ${sValueSchema.toString()}`,
 									},
 

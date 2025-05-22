@@ -1,8 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
+import type { OPTIONS } from '@voltiso/util'
 
 import type { CustomSchema, CustomSchema$ } from '~'
 
@@ -10,15 +9,15 @@ import type { RecordOptions } from './RecordOptions'
 
 export interface CustomRecord<O extends Partial<RecordOptions>>
 	extends CustomSchema<O> {
-	readonly [SCHEMA_NAME]: 'Record'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 
-	readonly [BASE_OPTIONS]: RecordOptions
-	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: RecordOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: RecordOptions.Default
 
 	//
 
-	get getKeySchema(): this[OPTIONS]['keySchema']
-	get getValueSchema(): this[OPTIONS]['valueSchema']
+	get getKeySchema(): this[Voltiso.OPTIONS]['keySchema']
+	get getValueSchema(): this[Voltiso.OPTIONS]['valueSchema']
 
 	//
 
@@ -30,15 +29,15 @@ export interface CustomRecord<O extends Partial<RecordOptions>>
 
 export interface CustomRecord$<O extends Partial<RecordOptions>>
 	extends CustomSchema$<O> {
-	readonly [SCHEMA_NAME]: 'Record'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 
-	readonly [BASE_OPTIONS]: RecordOptions
-	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: RecordOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: RecordOptions.Default
 
 	//
 
-	get getKeySchema(): this[OPTIONS]['keySchema']
-	get getValueSchema(): this[OPTIONS]['valueSchema']
+	get getKeySchema(): this[Voltiso.OPTIONS]['keySchema']
+	get getValueSchema(): this[Voltiso.OPTIONS]['valueSchema']
 
 	//
 

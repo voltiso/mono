@@ -41,30 +41,30 @@ export interface SubjectTreeConstructor<
 	TO extends Partial<SubjectTreeTypeOptions>,
 > {
 	readonly [PARTIAL_OPTIONS]: TO
-	readonly [OPTIONS]: Override<this[DEFAULT_OPTIONS], TO>
+	readonly [Voltiso.OPTIONS]: Override<this[DEFAULT_OPTIONS], TO>
 
-	readonly [DEFAULT_OPTIONS]: SubjectTreeTypeOptions.Default
+	readonly [Voltiso.DEFAULT_OPTIONS]: SubjectTreeTypeOptions.Default
 
 	// ! disable no-argument constructor?
 	// new <
-	// 	Type extends this[OPTIONS]['Output'] | NoArgument = NoArgument,
-	// >(): undefined extends this[OPTIONS]['Input']
+	// 	Type extends this[Voltiso.OPTIONS]['Output'] | UNSET = UNSET,
+	// >(): undefined extends this[Voltiso.OPTIONS]['Input']
 	// 	? GetSubjectTree<
-	// 			[Type] extends [NoArgument]
-	// 				? this[OPTIONS]
-	// 				: Override<this[OPTIONS], { Output: Type; Input: Type }>
+	// 			[Type] extends [UNSET]
+	// 				? this[Voltiso.OPTIONS]
+	// 				: Override<this[Voltiso.OPTIONS], { Output: Type; Input: Type }>
 	// 	  >
 	// 	: Throw<'Need to provide initialValue argument'>
 
-	new <InitialValue extends this[OPTIONS]['Input']>(
+	new <InitialValue extends this[Voltiso.OPTIONS]['Input']>(
 		initialValue: InitialValue,
-	): unknown extends this[OPTIONS]['Input'] // TODO: hacky...
+	): unknown extends this[Voltiso.OPTIONS]['Input'] // TODO: hacky...
 		? RequiredSubjectTree<InitialValue>
 		: GetSubjectTree<
-				IsCompatible<InitialValue, this[OPTIONS]['Input']> extends true // ! ?
-					? this[OPTIONS]
+				IsCompatible<InitialValue, this[Voltiso.OPTIONS]['Input']> extends true // ! ?
+					? this[Voltiso.OPTIONS]
 					: Override<
-							this[OPTIONS],
+							this[Voltiso.OPTIONS],
 							{ Output: InitialValue; Input: InitialValue }
 						>
 			>
@@ -72,7 +72,7 @@ export interface SubjectTreeConstructor<
 	// RequiredSubjectTree<InitialValue>
 
 	// GetSubjectTree<
-	// 	Override<this[OPTIONS], { Output: InitialValue; Input: InitialValue }>
+	// 	Override<this[Voltiso.OPTIONS], { Output: InitialValue; Input: InitialValue }>
 	// >
 }
 

@@ -28,3 +28,8 @@ export declare namespace Test {
 
 const AnyDoc = Symbol('AnyDoc')
 export type AnyDoc = typeof AnyDoc
+
+export const importedValue = Symbol('importedValue')
+
+export const BothTypeAndValue = Symbol('BothTypeAndValue')
+export type BothTypeAndValue = typeof BothTypeAndValue

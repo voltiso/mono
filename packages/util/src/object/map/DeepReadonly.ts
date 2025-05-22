@@ -1,12 +1,8 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$Decrement,
-	DecrementArgument,
-	IsCompatible,
-	NoArgument,
-} from '~/type'
+import { UNSET } from '_/symbols/unset'
+import type { $Decrement, DecrementArgument, IsCompatible } from '~/type'
 
 /** @inline */
 export type DeepReadonly_<T> = T extends object
@@ -39,7 +35,7 @@ export type $DeepReadonly<T extends object> = $DeepReadonly_<T>
 export type DeepReadonlyN<
 	TLength extends DecrementArgument,
 	T,
-	Options extends { skip: unknown } = { skip: NoArgument },
+	Options extends { skip: unknown } = { skip: UNSET },
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
@@ -65,7 +61,7 @@ export type DeepReadonlyN<
 export type $DeepReadonlyN<
 	TLength extends DecrementArgument,
 	T,
-	Options extends { skip: unknown } = { skip: NoArgument },
+	Options extends { skip: unknown } = { skip: UNSET },
 > = T extends any ? DeepReadonlyN<TLength, T, Options> : never
 
 /**
@@ -77,7 +73,7 @@ export type $DeepReadonlyN<
 export type $$DeepReadonlyN<
 	TLength extends DecrementArgument,
 	T,
-	Options extends { skip: unknown } = { skip: NoArgument },
+	Options extends { skip: unknown } = { skip: UNSET },
 > = TLength extends 0
 	? T
 	: $Decrement<TLength> extends DecrementArgument
@@ -97,7 +93,7 @@ export type $$DeepReadonlyN<
 export namespace DeepReadonlyN {
 	/** @internal */
 	export type _ShouldSkip<T, skipOption> =
-		IsCompatible<skipOption, NoArgument> extends true
+		IsCompatible<skipOption, UNSET> extends true
 			? false
 			: [T] extends [skipOption]
 				? true

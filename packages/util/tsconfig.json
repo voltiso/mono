@@ -6,14 +6,14 @@
 
 	"compilerOptions": {
 		"paths": {
-			// Redirect self-imports of this package to its 'src' directory (prevents parsing `dist`)
-			"@voltiso/util": ["./src/index.ts"],
-			"@voltiso/util/*": ["./src/*"],
-
 			"_": ["./src/_"],
 			"_/*": ["./src/_/*"],
 			"~": ["./src"],
-			"~/*": ["./src/*"]
+			"~/*": ["./src/*"],
+
+			// Redirect self-imports of this package to its 'src' directory (prevents parsing `dist`)
+			"@voltiso/util": ["./src/index.ts"],
+			"@voltiso/util/*": ["./src/*"]
 		}
 	},
 

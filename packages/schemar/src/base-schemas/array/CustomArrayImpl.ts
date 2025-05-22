@@ -1,8 +1,11 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-type-conversion */
+
 import { EXTENDS, SCHEMA_NAME } from '_'
 import {
+	$fastAssert,
 	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
@@ -29,30 +32,36 @@ import {
 import { schema } from '~/core-schemas'
 import { ValidationIssue } from '~/meta-schemas'
 
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+$fastAssert(OPTIONS)
+$fastAssert(BASE_OPTIONS)
+$fastAssert(DEFAULT_OPTIONS)
+
 export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomArray<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Array' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Array' as const
 
-	declare readonly [BASE_OPTIONS]: ArrayOptions
-	declare readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: ArrayOptions
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: ArrayOptions.Default
 
-	get getMinLength(): this[OPTIONS]['minLength'] {
-		return this[OPTIONS].minLength as never
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength'] {
+		return this[Voltiso.OPTIONS].minLength as never
 	}
 
-	get getMaxLength(): this[OPTIONS]['maxLength'] {
-		return this[OPTIONS].maxLength as never
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength'] {
+		return this[Voltiso.OPTIONS].maxLength as never
 	}
 
-	get isReadonlyArray(): this[OPTIONS]['isReadonlyArray'] {
-		return this[OPTIONS].isReadonlyArray as never
+	get isReadonlyArray(): this[Voltiso.OPTIONS]['isReadonlyArray'] {
+		return this[Voltiso.OPTIONS].isReadonlyArray as never
 	}
 
 	get getElementSchema(): CustomArray.GetElementSchema<this> {
-		return this[OPTIONS].element as never
+		return this[Voltiso.OPTIONS].element as never
 	}
 
 	constructor(o: O) {
@@ -76,7 +85,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	}
 
 	// eslint-disable-next-line sonarjs/cyclomatic-complexity
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isArraySchema(other) && this.isReadonlyArray && !other.isReadonlyArray)
 			return false
 
@@ -121,7 +130,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			return (this.getElementSchema as unknown as Schema).extends(
 				other.getElementSchema,
 			)
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	protected override _fix(
@@ -156,7 +165,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 
 						expected: {
 							description: `be of length at least ${
@@ -172,7 +181,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 			if (isDefined(this.getMaxLength) && x.length > this.getMaxLength) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 
 						expected: {
 							description: `be of length at most ${
@@ -198,7 +207,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be array' },
 					received: { value: x },
 				}),
@@ -210,7 +219,7 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 
 	override _toString(): string {
 		const elementTypeStr =
-			// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
+			// eslint-disable-next-line @typescript-eslint/no-base-to-string
 			(this.getElementSchema as unknown as Schema).toString()
 
 		if (this.isReadonlyArray) return `readonly ${elementTypeStr}[]`

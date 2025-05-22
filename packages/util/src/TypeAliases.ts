@@ -1,10 +1,13 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-global-this */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
 import type { Throw } from './_/error'
-import type { IsCompatible, NoArgument } from './type'
+import { UNSET } from '_/symbols/unset'
+import type { IsCompatible } from './type'
 import type {
 	TypeAliases0,
 	TypeAliases1,
@@ -65,24 +68,18 @@ export type TypeAlias =
 	| TypeAlias7
 	| TypeAlias8
 	| TypeAlias9
-
-//
-
-export const NoParameter = Symbol('NoParameter')
-export type NoParameter = typeof NoParameter
-
 //
 
 export type TypeAliases<
-	_1 = NoParameter,
-	_2 = NoParameter,
-	_3 = NoParameter,
-	_4 = NoParameter,
-	_5 = NoParameter,
-	_6 = NoParameter,
-	_7 = NoParameter,
-	_8 = NoParameter,
-	_9 = NoParameter,
+	_1 = UNSET,
+	_2 = UNSET,
+	_3 = UNSET,
+	_4 = UNSET,
+	_5 = UNSET,
+	_6 = UNSET,
+	_7 = UNSET,
+	_8 = UNSET,
+	_9 = UNSET,
 > = TypeAliases0 &
 	TypeAliases1<_1> &
 	TypeAliases2<_1, _2> &
@@ -234,49 +231,49 @@ export type Call9<
 
 export type Call<
 	name extends TypeAlias,
-	_1 = NoArgument,
-	_2 = NoArgument,
-	_3 = NoArgument,
-	_4 = NoArgument,
-	_5 = NoArgument,
-	_6 = NoArgument,
-	_7 = NoArgument,
-	_8 = NoArgument,
-	_9 = NoArgument,
+	_1 = UNSET,
+	_2 = UNSET,
+	_3 = UNSET,
+	_4 = UNSET,
+	_5 = UNSET,
+	_6 = UNSET,
+	_7 = UNSET,
+	_8 = UNSET,
+	_9 = UNSET,
 > =
-	IsCompatible<_9, NoArgument> extends false
+	IsCompatible<_9, UNSET> extends false
 		? name extends TypeAlias9
 			? Call9<name, _1, _2, _3, _4, _5, _6, _7, _8, _9>
 			: Throw<'TypeAlias not found' & { name: name; numArgs: 9 }>
-		: IsCompatible<_8, NoArgument> extends false
+		: IsCompatible<_8, UNSET> extends false
 			? name extends TypeAlias8
 				? Call8<name, _1, _2, _3, _4, _5, _6, _7, _8>
 				: Throw<'TypeAlias not found' & { name: name; numArgs: 8 }>
-			: IsCompatible<_7, NoArgument> extends false
+			: IsCompatible<_7, UNSET> extends false
 				? name extends TypeAlias7
 					? Call7<name, _1, _2, _3, _4, _5, _6, _7>
 					: Throw<'TypeAlias not found' & { name: name; numArgs: 7 }>
-				: IsCompatible<_6, NoArgument> extends false
+				: IsCompatible<_6, UNSET> extends false
 					? name extends TypeAlias6
 						? Call6<name, _1, _2, _3, _4, _5, _6>
 						: Throw<'TypeAlias not found' & { name: name; numArgs: 6 }>
-					: IsCompatible<_5, NoArgument> extends false
+					: IsCompatible<_5, UNSET> extends false
 						? name extends TypeAlias5
 							? Call5<name, _1, _2, _3, _4, _5>
 							: Throw<'TypeAlias not found' & { name: name; numArgs: 5 }>
-						: IsCompatible<_4, NoArgument> extends false
+						: IsCompatible<_4, UNSET> extends false
 							? name extends TypeAlias4
 								? Call4<name, _1, _2, _3, _4>
 								: Throw<'TypeAlias not found' & { name: name; numArgs: 4 }>
-							: IsCompatible<_3, NoArgument> extends false
+							: IsCompatible<_3, UNSET> extends false
 								? name extends TypeAlias3
 									? Call3<name, _1, _2, _3>
 									: Throw<'TypeAlias not found' & { name: name; numArgs: 3 }>
-								: IsCompatible<_2, NoArgument> extends false
+								: IsCompatible<_2, UNSET> extends false
 									? name extends TypeAlias2
 										? Call2<name, _1, _2>
 										: Throw<'TypeAlias not found' & { name: name; numArgs: 2 }>
-									: IsCompatible<_1, NoArgument> extends false
+									: IsCompatible<_1, UNSET> extends false
 										? name extends TypeAlias1
 											? Call1<name, _1>
 											: Throw<

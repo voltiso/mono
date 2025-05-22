@@ -25,8 +25,7 @@ import { DocCall } from '~/Doc/DocCall'
 import type { $$DocTI, DocTI } from '~/Doc/DocTI'
 import { DTI } from '~/Doc/DocTI'
 import type { $$Doc } from '~/Doc/IDoc'
-import { IS_DOC } from '~/Doc/IDoc'
-import type { AnyDoc, DocTag } from '~/DocTypes'
+import type { ANY_DOC, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import { sIntrinsicFields } from '~/schemas'
 import type { AfterTrigger, Trigger } from '~/Trigger/Trigger'
@@ -35,7 +34,6 @@ import type { DocDerivedData } from './_/DocDerivedData'
 import { defaultDocDerivedData } from './_/DocDerivedData'
 import { _inferMetadata } from './_/inferMetadata'
 import type { $$DocConstructor } from './IDocConstructor'
-import { IS_DOC_CONSTRUCTOR } from './IDocConstructor'
 
 // function mergeSchemas(
 // 	a: Record<string, Schemable> | ObjectLike,
@@ -71,14 +69,14 @@ $assert(defaultDocDerivedData)
 export class DocConstructorImpl implements $$Doc {
 	declare static readonly [DTI]: DocTI
 
-	static readonly [IS_DOC_CONSTRUCTOR] = true as const
+	static readonly [Voltiso.Transactor.IS_DOC_CONSTRUCTOR] = true as const
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	readonly [IS_DOC] = true as const
+	readonly [Voltiso.Transactor.IS_DOC] = true as const
 
 	// eslint-disable-next-line sonarjs/public-static-readonly
 	static _: DocDerivedData = defaultDocDerivedData
 
-	static tag<Tag extends DocTag | AnyDoc>(tag: Tag): any {
+	static tag<Tag extends DocTag | ANY_DOC>(tag: Tag): any {
 		_inferMetadata(this)
 		return CallableConstructor({
 			constructor: class extends this {

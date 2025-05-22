@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output } from '@voltiso/schemar'
-import type { $_, DeleteIt, NoArgument, PatchFor } from '@voltiso/util'
+import type { $_, DeleteIt, PatchFor, UNSET } from '@voltiso/util'
 import { CallableConstructor, lazyConstructor } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
@@ -94,12 +94,11 @@ export namespace DocBase {
 	}>
 }
 
-export type Doc<TI extends $$DocTI | NoArgument = NoArgument> =
-	TI extends NoArgument
-		? IDoc
-		: TI extends $$DocTI
-			? CustomDoc<TI, 'outside'>
-			: never
+export type Doc<TI extends $$DocTI | UNSET = UNSET> = TI extends UNSET
+	? IDoc
+	: TI extends $$DocTI
+		? CustomDoc<TI, 'outside'>
+		: never
 
 export const Doc = CallableConstructor({
 	constructor: lazyConstructor(() => DocImpl as never),

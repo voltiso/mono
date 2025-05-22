@@ -6,7 +6,7 @@ import * as s from '@voltiso/schemar'
 import type { Bivariant } from '@voltiso/util'
 import { lazyConstructor } from '@voltiso/util'
 
-import { AnyDoc } from '~/DocTypes'
+import { ANY_DOC } from '~/DocTypes'
 import type { Method } from '~/Method'
 
 import type { DocConstructor, DocDerivedData } from '../DocConstructor'
@@ -35,7 +35,7 @@ export type IndexedDocTISchema = s.$$Object & {
 
 /** Doc Type Info with index signatures for fields and methods */
 export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
-	tag: any // AnyDoc
+	tag: any // ANY_DOC
 
 	publicOnCreation: IndexedDocTISchema
 	public: IndexedDocTISchema
@@ -59,7 +59,7 @@ export const IndexedDoc = lazyConstructor(
 			static override readonly _: DocDerivedData = {
 				...Doc._,
 
-				tag: AnyDoc,
+				tag: ANY_DOC,
 
 				id: s.string,
 

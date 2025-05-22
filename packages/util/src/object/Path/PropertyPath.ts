@@ -1,20 +1,18 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoArgument } from '~/type'
-
+import { UNSET } from '_/symbols/unset'
 import type { PathSegmentString } from './PathBrand'
 import type { PropertyPathPartialOptions } from './PropertyPathString'
 
 //
 
-export type ReadonlyPropertyPath<
-	Obj extends unknown | NoArgument = NoArgument,
-> = readonly [...PropertyPath<Obj>]
+export type ReadonlyPropertyPath<Obj extends unknown | UNSET = UNSET> =
+	readonly [...PropertyPath<Obj>]
 
-export type PropertyPath<Obj extends unknown | NoArgument = NoArgument> = [
-	Obj,
-] extends [NoArgument]
+export type PropertyPath<Obj extends unknown | UNSET = UNSET> = [Obj] extends [
+	UNSET,
+]
 	? PropertyPath.Supertype
 	: PropertyPath.ForObject<Obj>
 

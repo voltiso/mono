@@ -3,7 +3,7 @@
 
 import type { NewableReturn_ } from '@voltiso/util'
 
-import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
+import type { ANY_DOC, DocTag, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { Doc } from '../Doc/Doc'
@@ -13,7 +13,7 @@ import type { IndexedDoc, IndexedDocTI } from '../Doc/IndexedDoc'
 import type { $$DocConstructor } from '../DocConstructor'
 import type { $$DocRelatedLike, WithDocTI } from './DocRelated'
 
-export type GetDoc<X extends $$DocRelatedLike> = X extends AnyDoc
+export type GetDoc<X extends $$DocRelatedLike> = X extends ANY_DOC
 	? IndexedDoc
 	: X extends $$DocConstructor
 		? NewableReturn_<X> extends never
@@ -22,7 +22,7 @@ export type GetDoc<X extends $$DocRelatedLike> = X extends AnyDoc
 		: X extends $$Doc
 			? X
 			: X extends WithDocTI
-				? X[DTI]['tag'] extends AnyDoc
+				? X[DTI]['tag'] extends ANY_DOC
 					? Doc
 					: X[DTI]['tag'] extends DocTag
 						? DocTypes[X[DTI]['tag']]
@@ -30,12 +30,12 @@ export type GetDoc<X extends $$DocRelatedLike> = X extends AnyDoc
 				: X extends DocTI
 					? IndexedDocTI extends X
 						? IndexedDoc
-						: X['tag'] extends AnyDoc
+						: X['tag'] extends ANY_DOC
 							? Doc
 							: X['tag'] extends DocTag
 								? DocTypes[X['tag']]
 								: never
-					: X extends DocTagLike | AnyDoc
+					: X extends DocTagLike | ANY_DOC
 						? GetDoc$.ByTag<X>
 						: never
 
@@ -43,9 +43,9 @@ export type GetDoc<X extends $$DocRelatedLike> = X extends AnyDoc
 // 	'Final' extends keyof GetDoc$<X> ? GetDoc$<X>['Final'] : never
 
 export namespace GetDoc$ {
-	export type ByTag<tag extends DocTagLike | AnyDoc> = tag extends DocTag
+	export type ByTag<tag extends DocTagLike | ANY_DOC> = tag extends DocTag
 		? DocTypes[tag]
-		: tag extends AnyDoc
+		: tag extends ANY_DOC
 			? Doc
 			: never
 }

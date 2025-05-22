@@ -2,10 +2,11 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Join, Printable } from '~/string'
-import type { NoArgument, Override } from '~/type'
+import type { Override } from '~/type'
 
 import type { PathOptions, PathString } from './PathBrand'
 import type { PropertyPath } from './PropertyPath'
+import { UNSET } from '_/symbols/unset'
 
 //
 
@@ -18,10 +19,11 @@ export type PropertyPathOptions = Override<
 	PropertyPathPartialOptions
 >
 
-export type PropertyPathString<Obj extends unknown | NoArgument = NoArgument> =
-	[Obj] extends [NoArgument]
-		? PropertyPathString.Supertype
-		: PropertyPathString.ForObject<Obj>
+export type PropertyPathString<Obj extends unknown | UNSET = UNSET> = [
+	Obj,
+] extends [UNSET]
+	? PropertyPathString.Supertype
+	: PropertyPathString.ForObject<Obj>
 
 //
 

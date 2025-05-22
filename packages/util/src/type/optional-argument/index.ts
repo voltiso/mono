@@ -1,7 +1,6 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export type * from './AreNotProvided'
-export type * from './AreProvided'
-export type * from './IsProvided'
+export type * from './are-all-unset'
+export type * from './is-set'
 export * from './OptionalArgument'

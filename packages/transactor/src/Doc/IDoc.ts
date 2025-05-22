@@ -1,6 +1,9 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable es-x/no-global-this */
+
 import type { SchemaLike } from '@voltiso/schemar'
 import type { _ } from '@voltiso/util'
 
@@ -18,24 +21,21 @@ declare global {
 		namespace Transactor {
 			const IS_DOC: unique symbol
 			type IS_DOC = typeof IS_DOC
+			// type IS_DOC = { readonly _: unique symbol }['_']
+			// const IS_DOC: IS_DOC
 		}
 	}
 }
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
-;(globalThis as any).Voltiso.Transactor.IS_DOC ??= /* @__PURE__ */ Symbol.for(
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+Voltiso.Transactor ??= /* @__PURE__ */ {} as never
+;(Voltiso.Transactor.IS_DOC as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/transactor/IS_DOC',
 )
 export type IS_DOC = Voltiso.Transactor.IS_DOC
 export const IS_DOC: IS_DOC = /* @__PURE__ */ Voltiso.Transactor.IS_DOC
 
 export interface $$Doc {
-	readonly [IS_DOC]: true
+	readonly [Voltiso.Transactor.IS_DOC]: true
 }
 
 /**

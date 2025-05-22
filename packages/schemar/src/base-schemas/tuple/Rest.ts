@@ -1,6 +1,9 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
+/* eslint-disable es-x/no-global-this */
 /* eslint-disable @typescript-eslint/class-methods-use-this */
 
 import { BoundCallable, CALL } from '@voltiso/util'
@@ -24,19 +27,14 @@ declare global {
 		namespace Schemar {
 			const IS_REST: unique symbol
 			type IS_REST = typeof IS_REST
+			// type IS_REST = { readonly _: unique symbol }['_']
+			// const IS_REST: IS_REST
 		}
 	}
 }
-
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-
-;(globalThis as any).Voltiso.Schemar ??= {}
-;(globalThis as any).Voltiso.Schemar.IS_REST ??= /* @__PURE__ */ Symbol.for(
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+Voltiso.Schemar ??= /* @__PURE__ */ {} as never
+;(Voltiso.Schemar.IS_REST as any) ??= /* @__PURE__ */ Symbol.for(
 	'@voltiso/schemar/IS_REST',
 )
 export type IS_REST = Voltiso.Schemar.IS_REST
@@ -50,7 +48,7 @@ export interface Rest<S extends $$Schemable> {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Rest<S extends $$Schemable = $$Schemable> {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	readonly [IS_REST] = true
+	readonly [Voltiso.Schemar.IS_REST] = true
 
 	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly element: S

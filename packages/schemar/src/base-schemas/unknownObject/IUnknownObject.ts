@@ -6,15 +6,15 @@ import { SCHEMA_NAME } from '_'
 import type { $$Schema, Schema, Schema$ } from '~'
 
 export interface $$UnknownObject extends $$Schema {
-	readonly [SCHEMA_NAME]: 'UnknownObject'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 }
 
 export interface IUnknownObject extends $$UnknownObject, Schema {
-	readonly [SCHEMA_NAME]: 'UnknownObject'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 }
 
 export interface IUnknownObject$ extends $$UnknownObject, Schema$ {
-	readonly [SCHEMA_NAME]: 'UnknownObject'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 }
 
 export function isUnknownObjectSchema(x: unknown): x is IUnknownObject$ {

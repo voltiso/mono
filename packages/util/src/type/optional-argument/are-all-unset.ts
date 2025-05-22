@@ -1,17 +1,17 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { IsProvided } from './IsProvided'
+import type { IsSet } from './is-set'
 
 type Rec<Ts, True, False> = Ts extends []
 	? True
 	: Ts extends [infer Head, ...infer Tail]
-		? IsProvided<Head> extends false
+		? IsSet<Head> extends false
 			? Rec<Tail, True, False>
 			: False
 		: never
 
-export type AreNoArgument_<
+export type AreAllUnset_<
 	Ts,
 	True = true,
 	False = false,
@@ -23,8 +23,8 @@ export type AreNoArgument_<
 		>
 	: never
 
-export type AreNoArgument<
+export type AreAllUnset<
 	Ts extends readonly unknown[],
 	True = true,
 	False = false,
-> = AreNoArgument_<Ts, True, False>
+> = AreAllUnset_<Ts, True, False>

@@ -1,28 +1,23 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$Override_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-} from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
-import type { CustomSchema, CustomSchema$, NumberOptions, SCHEMA_NAME } from '~'
+import type { CustomSchema, CustomSchema$, NumberOptions } from '~'
 
 export interface CustomNumber<O extends Partial<NumberOptions>>
 	extends CustomSchema<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Number'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 
-	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: NumberOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: NumberOptions.Default
 
 	//
 
-	get isInteger(): this[OPTIONS]['isInteger']
-	get getMin(): this[OPTIONS]['min']
-	get getMax(): this[OPTIONS]['max']
+	get isInteger(): this[Voltiso.OPTIONS]['isInteger']
+	get getMin(): this[Voltiso.OPTIONS]['min']
+	get getMax(): this[Voltiso.OPTIONS]['max']
 }
 
 //
@@ -30,14 +25,14 @@ export interface CustomNumber<O extends Partial<NumberOptions>>
 export interface CustomNumber$<O extends Partial<NumberOptions>>
 	extends CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Number'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 
-	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: NumberOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: NumberOptions.Default
 
-	get isInteger(): this[OPTIONS]['isInteger']
-	get getMin(): this[OPTIONS]['min']
-	get getMax(): this[OPTIONS]['max']
+	get isInteger(): this[Voltiso.OPTIONS]['isInteger']
+	get getMin(): this[Voltiso.OPTIONS]['min']
+	get getMax(): this[Voltiso.OPTIONS]['max']
 
 	//
 

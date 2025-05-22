@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SCHEMA_NAME } from '_'
-import type { DEFAULT_OPTIONS, OPTIONS } from '@voltiso/util'
 
 import type {
 	$$Schema,
@@ -14,15 +13,15 @@ import type {
 } from '~'
 
 export interface $$Object extends $$Schema {
-	readonly [SCHEMA_NAME]: 'Object'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 }
 
 export interface IObject extends $$Object, Schema {
 	//
-	readonly [SCHEMA_NAME]: 'Object'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 
-	readonly [OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+	readonly [Voltiso.OPTIONS]: ObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	get isPlain(): boolean
 
@@ -34,10 +33,10 @@ export interface IObject extends $$Object, Schema {
 
 export interface IObject$ extends $$Object, Schema$ {
 	//
-	readonly [SCHEMA_NAME]: 'Object'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 
-	readonly [OPTIONS]: ObjectOptions
-	readonly [DEFAULT_OPTIONS]: ObjectOptions.Default
+	readonly [Voltiso.OPTIONS]: ObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: ObjectOptions.Default
 
 	get isPlain(): boolean
 

@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
+	$fastAssert,
 	BoundCallable,
 	CALL,
 	getKeys,
@@ -22,12 +22,16 @@ import {
 import { CustomObjectImpl, defaultObjectOptions } from '~/base-schemas/object'
 import { ValidationIssue } from '~/meta-schemas'
 
+$fastAssert(OPTIONS)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownObjectImpl<O> {
-	readonly [SCHEMA_NAME]: 'UnknownObject'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 
-	readonly [BASE_OPTIONS]: UnknownObjectOptions
-	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -35,7 +39,7 @@ export class CustomUnknownObjectImpl<
 	O extends Partial<UnknownObjectOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'UnknownObject' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownObject' as const
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getIndexSignatures(): [] {
@@ -59,7 +63,7 @@ export class CustomUnknownObjectImpl<
 	index(...args: any): never {
 		const r = new CustomObjectImpl({
 			...defaultObjectOptions,
-			...this[OPTIONS],
+			...this[Voltiso.OPTIONS],
 		})
 
 		return r.index(...(args as never))
@@ -79,17 +83,17 @@ export class CustomUnknownObjectImpl<
 		// console.log('CustomUnknownObjectImpl[CALL]', this)
 		return new CustomObjectImpl({
 			...defaultObjectOptions,
-			...this[OPTIONS],
+			...this[Voltiso.OPTIONS],
 			shape,
 			indexSignatures: [],
 		}) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isObjectSchema(other)) {
 			return getKeys(other.getShape).length === 0
 		} else if (isUnknownObjectSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	protected override _getIssues(value: unknown): ValidationIssue[] {
@@ -98,15 +102,15 @@ export class CustomUnknownObjectImpl<
 		if (typeof value !== 'object' || value === null) {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be object' },
 					received: { value },
 				}),
 			)
-		} else if (this[OPTIONS].isPlain && !isPlainObject(value)) {
+		} else if (this[Voltiso.OPTIONS].isPlain && !isPlainObject(value)) {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be plain object' },
 					received: { value },
 				}),

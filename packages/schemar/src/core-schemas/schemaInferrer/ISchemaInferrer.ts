@@ -6,12 +6,12 @@ import { SCHEMA_NAME } from '_'
 import type { Schema, Schema$ } from '~'
 
 export interface ISchemaInferrer extends Schema {
-	readonly [SCHEMA_NAME]: 'SchemaInferrer'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'SchemaInferrer'
 }
 
 /** Typeof s.schema */
 export interface ISchemaInferrer$ extends Schema$ {
-	readonly [SCHEMA_NAME]: 'SchemaInferrer'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'SchemaInferrer'
 }
 
 export function isSchemaInferrer(x: unknown): x is ISchemaInferrer$ {

@@ -1,7 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`typeof (not supported yet) works 1`] = `
+exports[`typeof works 1`] = `
 "import type { AnyDoc } from './_/external-stuff.js';
+import { BothTypeAndValue, importedValue } from './_/external-stuff.js';
 export type A = AnyDoc;
+declare const IN_SCOPE: unique symbol;
+type InScopeProxy = typeof IN_SCOPE;
+export type InScope = /* InScopeProxy */ typeof IN_SCOPE;
+export type InScope2 = /* typeof importedValue */ typeof importedValue;
+export type InScope3 = /* typeof BothTypeAndValue */ typeof BothTypeAndValue;
+export {};
 //# sourceMappingURL=typeof.d.ts.map"
 `;

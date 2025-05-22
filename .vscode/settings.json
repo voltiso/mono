@@ -31,9 +31,16 @@
 	//
 	"editor.tabSize": 2,
 
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit",
+		"source.fixAll.eslint": "explicit"
+	},
+
 	"files.autoSave": "onFocusChange",
 	"editor.formatOnSave": true,
-	"editor.formatOnSaveMode": "modificationsIfAvailable",
+	"editor.formatOnSaveMode": "file",
+	// "editor.formatOnSaveMode": "modificationsIfAvailable", // ! breaks formatting
 
 	// "files.trimTrailingWhitespace": false,
 	"files.insertFinalNewline": true,
@@ -228,17 +235,6 @@
 	"files.encoding": "utf8",
 	"files.eol": "\n",
 
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	// "prettier.configPath": "./config/dist/cjs/prettier.js",
-	// "prettier.enable": true,
-	// "prettier.withNodeModules": true,
-	// "prettier.enableDebugLogs": true,
-
-	"editor.codeActionsOnSave": {
-		"source.fixAll": "explicit",
-		"source.fixAll.eslint": "explicit"
-	},
-
 	"eslint.useFlatConfig": true,
 
 	// "eslint.codeActionsOnSave.mode": "all", // slower
@@ -371,6 +367,7 @@
 		"ctsx",
 		"CVREF",
 		"DCMAKE",
+		"dedupe",
 		"defineproperties",
 		"depcheck",
 		"depcheckrc",

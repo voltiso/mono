@@ -3,15 +3,17 @@
 
 /* eslint-disable sonarjs/no-nested-functions */
 
-import type { TransformContext } from '@voltiso/transform.lib'
+import type { TransformContext, TransformOptions } from '@voltiso/transform.lib'
 import {
 	_getPackageForFile,
 	createLiteralExpression,
+	defaultTransformOptions,
 	getGitRelativePath,
 } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
-import { getJsDocTagNames } from '~/_'
+import { _deepMerge2 } from '~/_/copied-from-util/_deepMerge'
+import { getJsDocTagNames } from '~/_/getJsDocTagNames'
 
 import type { CallInfo } from './_'
 import { getAstPath, logCallInfoNode } from './_/index.js'
@@ -36,9 +38,14 @@ export function callInfoTransform(program: ts.Program, pluginOptions?: object) {
 
 	return (transformationContext: ts.TransformationContext) =>
 		(sourceFile: ts.SourceFile): ts.SourceFile => {
+			const options: TransformOptions = _deepMerge2(
+				defaultTransformOptions as never,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				(pluginOptions as never) ?? {},
+			) as never
 			const ctx: TransformContext = {
 				program,
-				options: pluginOptions ?? {},
+				options,
 				transformationContext,
 				sourceFile,
 				typeChecker,

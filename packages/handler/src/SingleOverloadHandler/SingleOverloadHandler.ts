@@ -1,28 +1,35 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable es-x/no-global-this */
+
 import type { RelaxSchema_ } from '@voltiso/schemar'
 import * as s from '@voltiso/schemar'
 import type {
 	$Override_,
 	Assume,
 	MaybePromise,
-	NoThis,
 	OPTIONS,
 	Override,
 	Rebind,
 } from '@voltiso/util'
 import {
+	$fastAssert,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	GENERIC_ID,
 	HIDDEN_OPTIONS,
 	isPromiseLike,
-	noThis,
+	UNSET,
 } from '@voltiso/util'
 
 import type { Handler } from '../Handler'
 import { defaultHandlerOptions, HandlerImpl } from '../Handler'
+
+$fastAssert(BASE_OPTIONS)
+$fastAssert(DEFAULT_OPTIONS)
+$fastAssert(HIDDEN_OPTIONS)
 
 export namespace SingleOverloadHandlerDetail {
 	export interface Options extends Handler.Options {
@@ -34,7 +41,7 @@ export namespace SingleOverloadHandlerDetail {
 		IsAsync: boolean
 
 		/** Currently not type-exposed */
-		this: s.$$Schemable | NoThis
+		this: s.$$Schemable | UNSET
 
 		/** Currently not type-exposed */
 		parameters: s.$$Schemable[]
@@ -49,7 +56,7 @@ export namespace SingleOverloadHandlerDetail {
 				Omit<Options, keyof Handler.Options.Default> {
 			IsAsync: true
 
-			this: NoThis
+			this: UNSET
 			parameters: []
 			return: s.Void
 		}
@@ -62,7 +69,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type GetSignature<O extends Options> = [O['this']] extends [NoThis]
+	export type GetSignature<O extends Options> = [O['this']] extends [UNSET]
 		? (
 				...args: Assume<readonly unknown[], s.Input<O['parameters']>>
 			) => O['IsAsync'] extends true
@@ -81,9 +88,7 @@ export namespace SingleOverloadHandlerDetail {
 
 	//
 
-	export type GetImplementation<O extends Options> = [O['this']] extends [
-		NoThis,
-	]
+	export type GetImplementation<O extends Options> = [O['this']] extends [UNSET]
 		? (
 				...args: Assume<readonly unknown[], s.Output<O['parameters']>>
 			) => O['IsAsync'] extends true
@@ -173,7 +178,7 @@ export const defaultSingleOverloadHandlerOptions: SingleOverloadHandlerDetail.Op
 	Object.freeze({
 		...defaultHandlerOptions,
 
-		this: noThis,
+		this: UNSET,
 		parameters: [],
 		return: s.void,
 	}) as never
@@ -183,33 +188,31 @@ export const defaultSingleOverloadHandlerOptions: SingleOverloadHandlerDetail.Op
 declare global {
 	namespace Voltiso {
 		namespace Handler {
-			const singleOverloadHandlerGenericId: unique symbol
-			type singleOverloadHandlerGenericId =
-				typeof singleOverloadHandlerGenericId
+			const SINGLE_OVERLOAD_HANDLER_GENERIC_ID: unique symbol
+			type SINGLE_OVERLOAD_HANDLER_GENERIC_ID = typeof SINGLE_OVERLOAD_HANDLER_GENERIC_ID
+			// type SINGLE_OVERLOAD_HANDLER_GENERIC_ID = {
+			// 	readonly _: unique symbol
+			// }['_']
+			// const SINGLE_OVERLOAD_HANDLER_GENERIC_ID: SINGLE_OVERLOAD_HANDLER_GENERIC_ID
 		}
 	}
 }
-
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-;(globalThis as any).Voltiso.Handler ??= {}
-;(globalThis as any).Voltiso.Handler.singleOverloadHandlerGenericId ??=
-	/* @__PURE__ */ Symbol.for('@voltiso/handler/SingleOverloadHandler')
-export type SingleOverloadHandlerGenericId =
-	Voltiso.Handler.singleOverloadHandlerGenericId
-
-export const singleOverloadHandlerGenericId: SingleOverloadHandlerGenericId =
-	/* @__PURE__ */ Voltiso.Handler.singleOverloadHandlerGenericId
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+Voltiso.Handler ??= /* @__PURE__ */ {} as never
+;(Voltiso.Handler.SINGLE_OVERLOAD_HANDLER_GENERIC_ID as any) ??=
+	/* @__PURE__ */ Symbol.for(
+		'@voltiso/handler/SINGLE_OVERLOAD_HANDLER_GENERIC_ID',
+	)
+export type SINGLE_OVERLOAD_HANDLER_GENERIC_ID =
+	Voltiso.Handler.SINGLE_OVERLOAD_HANDLER_GENERIC_ID
+export const SINGLE_OVERLOAD_HANDLER_GENERIC_ID: SINGLE_OVERLOAD_HANDLER_GENERIC_ID =
+	/* @__PURE__ */ Voltiso.Handler.SINGLE_OVERLOAD_HANDLER_GENERIC_ID
 
 //
 
 declare module '@voltiso/util' {
 	interface Generics<PartialOptions extends {}> {
-		[singleOverloadHandlerGenericId]: SingleOverloadHandler<PartialOptions>
+		[SINGLE_OVERLOAD_HANDLER_GENERIC_ID]: SingleOverloadHandler<PartialOptions>
 	}
 }
 
@@ -220,13 +223,13 @@ declare module '@voltiso/util' {
 export class SingleOverloadHandlerImpl<
 	O extends Partial<SingleOverloadHandlerDetail.Options>,
 > extends HandlerImpl<O> {
-	declare readonly [GENERIC_ID]: typeof singleOverloadHandlerGenericId
+	declare readonly [GENERIC_ID]: typeof SINGLE_OVERLOAD_HANDLER_GENERIC_ID
 
-	declare readonly [BASE_OPTIONS]: SingleOverloadHandlerDetail.Options
-	declare readonly [DEFAULT_OPTIONS]: SingleOverloadHandlerDetail.Options.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: SingleOverloadHandlerDetail.Options
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: SingleOverloadHandlerDetail.Options.Default
 
-	declare readonly [HIDDEN_OPTIONS]: SingleOverloadHandlerDetail.Options.Hidden<
-		this[OPTIONS]
+	declare readonly [Voltiso.HIDDEN_OPTIONS]: SingleOverloadHandlerDetail.Options.Hidden<
+		this[Voltiso.OPTIONS]
 	>
 
 	constructor(
@@ -249,7 +252,7 @@ export class SingleOverloadHandlerImpl<
 		}
 
 		const thisSchema: s.Schema =
-			this.options.this === noThis
+			this.options.this === UNSET
 				? (s.void as never)
 				: (s.schema(this.options.this) as never)
 
@@ -281,15 +284,15 @@ export class SingleOverloadHandlerImpl<
 
 	//
 
-	get getThis(): this[OPTIONS]['this'] {
+	get getThis(): this[Voltiso.OPTIONS]['this'] {
 		return this.options.this as never
 	}
 
-	get getParameters(): this[OPTIONS]['parameters'] {
+	get getParameters(): this[Voltiso.OPTIONS]['parameters'] {
 		return this.options.parameters as never
 	}
 
-	get getReturn(): this[OPTIONS]['return'] {
+	get getReturn(): this[Voltiso.OPTIONS]['return'] {
 		return this.options.return as never
 	}
 

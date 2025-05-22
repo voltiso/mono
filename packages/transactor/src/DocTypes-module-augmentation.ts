@@ -44,7 +44,6 @@ import type { Doc } from './Doc'
 // 	Voltiso.Transactor.__never_keyof_bug_workaround
 
 /** Map from `DocTag` string to a Doc type */
-
 export interface DocTypes {
 	__never_keyof_bug_workaround: Doc
 	// [__never_keyof_bug_workaround]: Doc

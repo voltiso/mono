@@ -7,16 +7,16 @@ import type { OPTIONS } from '@voltiso/util'
 import type { RecordOptions, Schema, Schema$ } from '~'
 
 export interface $$Record {
-	readonly [SCHEMA_NAME]: 'Record'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 }
 
 export interface IRecord extends Schema {
-	readonly [SCHEMA_NAME]: 'Record'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 	[OPTIONS]: RecordOptions
 }
 
 export interface IRecord$ extends Schema$ {
-	readonly [SCHEMA_NAME]: 'Record'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Record'
 	[OPTIONS]: RecordOptions
 }
 

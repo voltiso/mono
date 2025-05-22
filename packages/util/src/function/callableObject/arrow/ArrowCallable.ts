@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ArrowCallableWithCALL, Callable, ProtoCallable } from '~/function'
-import type { NoArgument } from '~/type'
 
 import type { WithCALL } from '../CALL'
 import { CALL } from '../CALL'
 import type { _ArrowCallable, IArrowCallable } from './_/ArrowCallableType'
 import type { ArrowCallableOptions } from './ArrowCallableOptions'
 import { EmptyArrowCallable } from './EmptyArrowCallable'
+import { UNSET } from '_/symbols/unset'
 
 //
 
@@ -17,8 +17,8 @@ export type ArrowCallable<
 		| ArrowCallableOptions
 		| WithCALL
 		| Callable<{ this: void }>
-		| NoArgument = NoArgument,
-> = Options extends NoArgument
+		| UNSET = UNSET,
+> = Options extends UNSET
 	? IArrowCallable
 	: Options extends ArrowCallableOptions
 		? _ArrowCallable<Options>

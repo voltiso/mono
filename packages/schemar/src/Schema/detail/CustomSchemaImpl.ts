@@ -2,13 +2,16 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { $Merge, $Override_ } from '@voltiso/util'
+import type {
+	$Merge,
+	$Override_,
+	BASE_OPTIONS,
+	DEFAULT_OPTIONS,
+} from '@voltiso/util'
 import {
 	$fastAssert,
 	$final,
-	BASE_OPTIONS,
 	clone,
-	DEFAULT_OPTIONS,
 	frozen,
 	omitUndefined,
 	OPTIONS,
@@ -37,74 +40,77 @@ import { defaultSchemaOptions } from '../options'
 import { _process } from './processCustomOperations'
 import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 
+$fastAssert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+
 export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	implements CustomSchema<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
+	readonly [Voltiso.OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
-	declare readonly [SCHEMA_NAME]: string // SchemaName
+	declare readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
 
-	declare readonly [BASE_OPTIONS]: SchemaOptions
-	declare readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: SchemaOptions
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: SchemaOptions.Default
 
 	/** Type-only property (no value at runtime) */
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
-	get Type(): this[OPTIONS]['Output'] {
+	get Type(): this[Voltiso.OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
-	get Output(): this[OPTIONS]['Output'] {
+	get Output(): this[Voltiso.OPTIONS]['Output'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	/** Type-only property (no value at runtime) */
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
-	get Input(): this[OPTIONS]['Input'] {
+	get Input(): this[Voltiso.OPTIONS]['Input'] {
 		return throwTypeOnlyFieldError()
 	}
 
 	// GET
 
 	get getName(): string | undefined {
-		return this[OPTIONS].name
+		return this[Voltiso.OPTIONS].name
 	}
 
-	get isOptional(): this[OPTIONS]['isOptional'] {
-		return this[OPTIONS].isOptional as never
+	get isOptional(): this[Voltiso.OPTIONS]['isOptional'] {
+		return this[Voltiso.OPTIONS].isOptional as never
 	}
 
-	get isStrictOptional(): this[OPTIONS]['isStrictOptional'] {
-		return this[OPTIONS].isStrictOptional as never
+	get isStrictOptional(): this[Voltiso.OPTIONS]['isStrictOptional'] {
+		return this[Voltiso.OPTIONS].isStrictOptional as never
 	}
 
-	get isReadonly(): this[OPTIONS]['isReadonly'] {
-		return this[OPTIONS].isReadonly as never
+	get isReadonly(): this[Voltiso.OPTIONS]['isReadonly'] {
+		return this[Voltiso.OPTIONS].isReadonly as never
 	}
 
-	get hasDefault(): this[OPTIONS]['hasDefault'] {
-		return this[OPTIONS].hasDefault as never
+	get hasDefault(): this[Voltiso.OPTIONS]['hasDefault'] {
+		return this[Voltiso.OPTIONS].hasDefault as never
 	}
 
-	get getDefault(): this[OPTIONS]['hasDefault'] extends false
+	get getDefault(): this[Voltiso.OPTIONS]['hasDefault'] extends false
 		? never
-		: this[OPTIONS]['Output'] {
-		if (!this[OPTIONS].hasDefault)
+		: this[Voltiso.OPTIONS]['Output'] {
+		if (!this[Voltiso.OPTIONS].hasDefault)
 			throw new SchemarError(`getDefault() no default value specified`)
 
-		const getDefault = (this[OPTIONS] as SchemaOptions).getDefault
+		const getDefault = (this[Voltiso.OPTIONS] as SchemaOptions).getDefault
 		if (getDefault) return getDefault() as never
-		else return this[OPTIONS].default as never
+		else return this[Voltiso.OPTIONS].default as never
 	}
 
 	get getCustomOperations(): readonly CustomOperation[] {
-		return this[OPTIONS].customOperations
+		return this[Voltiso.OPTIONS].customOperations
 	}
 
 	get getCustomFixes(): readonly CustomFix[] {
-		return this[OPTIONS].customFixes
+		return this[Voltiso.OPTIONS].customFixes
 	}
 
 	constructor(partialOptions: O, opts?: { freeze?: boolean }) {
@@ -112,7 +118,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 		if (opts?.freeze ?? true) Object.freeze(options)
 
-		this[OPTIONS] = options as never
+		this[Voltiso.OPTIONS] = options as never
 
 		$final(this, CustomSchemaImpl, [
 			'extends',
@@ -132,7 +138,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 		const result = clone(this, { omit: [OPTIONS] }) as this
 
-		const newOptions = frozen({ ...this[OPTIONS], ...o })
+		const newOptions = frozen({ ...this[Voltiso.OPTIONS], ...o })
 
 		Object.defineProperty(result, OPTIONS, {
 			value: newOptions,
@@ -166,7 +172,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	tryValidate<X>(
 		x: X,
 		options?: Partial<ValidationOptions> | undefined,
-	): X | this[OPTIONS]['Output'] {
+	): X | this[Voltiso.OPTIONS]['Output'] {
 		const result = this.exec(x, options)
 		return result.value as never
 	}
@@ -181,7 +187,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	exec(
 		inputValue: unknown,
 		options?: Partial<ValidationOptions> | undefined,
-	): ValidationResult<this[OPTIONS]['Output']> {
+	): ValidationResult<this[Voltiso.OPTIONS]['Output']> {
 		let value = inputValue
 
 		/** Apply custom fixes */
@@ -230,14 +236,14 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	isFixable(
 		x: unknown,
 		options?: Partial<ValidationOptions> | undefined,
-	): x is this[OPTIONS]['Input'] {
+	): x is this[Voltiso.OPTIONS]['Input'] {
 		return this.exec(x, options).isValid
 	}
 
 	assertFixable(
 		x: unknown,
 		options?: Partial<ValidationOptions> | undefined,
-	): asserts x is this[OPTIONS]['Input'] {
+	): asserts x is this[Voltiso.OPTIONS]['Input'] {
 		const result = this.exec(x, options)
 		if (!result.isValid) throw new ValidationError(result.issues)
 	}
@@ -246,7 +252,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	isValid(
 		value: unknown,
 		options?: Partial<ValidationOptions> | undefined,
-	): value is this[OPTIONS]['Output'] {
+	): value is this[Voltiso.OPTIONS]['Output'] {
 		const result = this.exec(value, options)
 		// eslint-disable-next-line es-x/no-object-is
 		return result.isValid && Object.is(result.value, value)
@@ -260,7 +266,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	assertValid(
 		value: unknown,
 		options?: Partial<ValidationOptions> | undefined,
-	): asserts value is this[OPTIONS]['Output'] {
+	): asserts value is this[Voltiso.OPTIONS]['Output'] {
 		const result = this.exec(value, options)
 		// eslint-disable-next-line es-x/no-object-is
 		const wasAlreadyValid = result.isValid && Object.is(result.value, value)
@@ -322,8 +328,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	// BUILDER
 
 	check(
-		checkIfValid: (x: this[OPTIONS]['Input']) => boolean,
-		expectedDescription?: string | ((x: this[OPTIONS]['Input']) => string),
+		checkIfValid: (x: this[Voltiso.OPTIONS]['Input']) => boolean,
+		expectedDescription?:
+			| string
+			| ((x: this[Voltiso.OPTIONS]['Input']) => string),
 	): never {
 		const entry = omitUndefined({
 			type: 'check',
@@ -351,8 +359,10 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 	}
 
 	mapIf(
-		condition: (value: this[OPTIONS]['Output']) => boolean,
-		transform: (value: this[OPTIONS]['Output']) => this[OPTIONS]['Output'],
+		condition: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
+		transform: (
+			value: this[Voltiso.OPTIONS]['Output'],
+		) => this[Voltiso.OPTIONS]['Output'],
 	): never {
 		return this._cloneWithOptions({
 			customOperations: [
@@ -360,7 +370,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 				{
 					type: 'transform',
 
-					transform: (value: this[OPTIONS]['Output']) => {
+					transform: (value: this[Voltiso.OPTIONS]['Output']) => {
 						if (condition(value)) return transform(value)
 						else return value // or undefined?
 					},

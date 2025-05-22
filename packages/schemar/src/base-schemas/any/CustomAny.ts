@@ -1,19 +1,17 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-
-import type { AnyOptions, CustomSchema, CustomSchema$, SCHEMA_NAME } from '~'
+import type { AnyOptions, CustomSchema, CustomSchema$ } from '~'
 
 //
 
 export interface CustomAny<O extends Partial<AnyOptions>>
 	extends CustomSchema<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Any'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Any'
 
-	readonly [BASE_OPTIONS]: AnyOptions
-	readonly [DEFAULT_OPTIONS]: AnyOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: AnyOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: AnyOptions.Default
 }
 
 //
@@ -21,10 +19,10 @@ export interface CustomAny<O extends Partial<AnyOptions>>
 export interface CustomAny$<O extends Partial<AnyOptions>>
 	extends CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Any'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Any'
 
-	readonly [BASE_OPTIONS]: AnyOptions
-	readonly [DEFAULT_OPTIONS]: AnyOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: AnyOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: AnyOptions.Default
 
 	//
 

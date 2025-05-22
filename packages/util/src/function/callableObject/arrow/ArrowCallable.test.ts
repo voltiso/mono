@@ -1,11 +1,10 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
+import { $Assert, UNSET } from '_'
 import { describe, expect, it } from '@jest/globals'
 
 import type { Callable, WithCALL } from '~/function'
-import type { NoArgument } from '~/type'
 
 import type { ArrowCallable } from './ArrowCallable'
 import { CustomArrowCallable } from './ArrowCallable'
@@ -16,7 +15,7 @@ describe('ArrowCallable', () => {
 		| ArrowCallableOptions
 		| WithCALL
 		| Callable<{ this: void }>
-		| NoArgument>() => {
+		| UNSET>() => {
 		expect.assertions(0)
 
 		$Assert.is<ArrowCallable<O>, ArrowCallable>()

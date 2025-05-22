@@ -10,7 +10,7 @@ import { isDeleteIt, isReplaceIt, stringFrom } from '@voltiso/util'
 import type { DocIdBrand } from '~/brand/Id'
 import type { $WithId } from '~/Data'
 import type { DatabaseContext } from '~/DatabaseContext'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 import { TransactorError } from '~/error'
 import type { IntrinsicFields, VoltisoEntry } from '~/schemas'
 import { sVoltisoEntry } from '~/schemas'
@@ -50,7 +50,7 @@ async function databaseSet(
 	t: T,
 	ref: Database.ServerDocumentReference,
 	data: IntrinsicFields,
-): Promise<$WithId<IntrinsicFields, AnyDoc>> {
+): Promise<$WithId<IntrinsicFields, ANY_DOC>> {
 	if (transactor.readOnly)
 		throw new TransactorError(
 			`cannot write to readOnly db - databaseSet(data=${stringFrom(data)})`,
@@ -98,7 +98,7 @@ export async function databaseUpdate(
 	ref: Database.ServerDocumentReference,
 	updates: Updates,
 ): Promise<
-	| { readonly id: string & DocIdBrand<AnyDoc>; __voltiso: VoltisoEntry }
+	| { readonly id: string & DocIdBrand<ANY_DOC>; __voltiso: VoltisoEntry }
 	| null
 	| undefined
 > {

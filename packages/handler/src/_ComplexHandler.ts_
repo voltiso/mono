@@ -233,7 +233,7 @@ export interface HandlerConstructor {
 export interface CustomComplexHandler<
 	Options extends ComplexHandlerDetail.InputOptions,
 > {
-	readonly [OPTIONS]: Options
+	readonly [Voltiso.OPTIONS]: Options
 	readonly IsAsync: Options['IsAsync'] extends boolean
 		? Options['IsAsync']
 		: false

@@ -6,7 +6,7 @@ import type {
 	$$DocRelatedLike,
 	GetDocRepresentative,
 } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 
 import type { CustomDocRef } from './CustomDocRef'
 
@@ -15,7 +15,7 @@ import type { CustomDocRef } from './CustomDocRef'
  *
  * - 😱 no ref-counting❗
  */
-export interface WeakDocRef<R extends $$DocRelated = AnyDoc>
+export interface WeakDocRef<R extends $$DocRelated = ANY_DOC>
 	extends CustomDocRef<{
 		doc: GetDocRepresentative<R>
 	}> {}

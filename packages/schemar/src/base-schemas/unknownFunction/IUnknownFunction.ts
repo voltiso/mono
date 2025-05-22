@@ -10,13 +10,13 @@ import type { BivariantUnknownFunction } from './UnknownFunctionOptions'
 export interface IUnknownFunction<
 	T extends BivariantUnknownFunction = BivariantUnknownFunction,
 > extends Schema<T> {
-	readonly [SCHEMA_NAME]: 'UnknownFunction'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownFunction'
 }
 
 export interface IUnknownFunction$<
 	T extends BivariantUnknownFunction = BivariantUnknownFunction,
 > extends Schema$<T> {
-	readonly [SCHEMA_NAME]: 'UnknownFunction'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownFunction'
 }
 
 export function isUnknownFunctionSchema(x: unknown): x is IUnknownFunction$ {

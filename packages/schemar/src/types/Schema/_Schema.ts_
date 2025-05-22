@@ -8,19 +8,19 @@ import type { ISchema, ISchema$ } from '~'
 export interface Schema<T = unknown> extends ISchema<T> {}
 export interface Schema$<T = unknown> extends ISchema$<T> {}
 
-// export type Schema<T extends unknown | NoArgument = NoArgument> = [T] extends [
+// export type Schema<T extends unknown | UNSET = UNSET> = [T] extends [
 // 	never,
 // ]
 // 	? SimpleSchema<never>
-// 	: [T] extends [NoArgument]
+// 	: [T] extends [UNSET]
 // 	  ? ISchema
 // 	  : SimpleSchema<T>
 
-// export type Schema$<T extends unknown | NoArgument = NoArgument> = [T] extends [
+// export type Schema$<T extends unknown | UNSET = UNSET> = [T] extends [
 // 	never,
 // ]
 // 	? SimpleSchema$<never>
-// 	: [T] extends [NoArgument]
+// 	: [T] extends [UNSET]
 // 	  ? ISchema
 // 	  : SimpleSchema$<T>
 

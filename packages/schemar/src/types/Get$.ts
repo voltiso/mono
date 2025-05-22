@@ -12,7 +12,7 @@ export type Get$<
 	S extends $$Schema,
 	O extends Partial<SchemaOptions> = {},
 > = S extends {
-	readonly [SCHEMA_NAME]: keyof Schemas
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: keyof Schemas
 }
 	? Schemas<O>[S[SCHEMA_NAME]]
 	: never

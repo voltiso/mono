@@ -1,9 +1,8 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { lazyConstructor, OPTIONS } from '@voltiso/util'
+import { SCHEMA_NAME } from '_'
+import { $fastAssert, lazyConstructor } from '@voltiso/util'
 
 import type { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -15,10 +14,12 @@ import { object } from '../unknownObject'
 import type { CustomRecord } from './CustomRecord'
 import type { RecordOptions } from './RecordOptions'
 
+$fastAssert(SCHEMA_NAME)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomRecordImpl<O> {
-	readonly [BASE_OPTIONS]: RecordOptions
-	readonly [DEFAULT_OPTIONS]: RecordOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: RecordOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: RecordOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -27,7 +28,7 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	implements CustomRecord<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Record' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Record' as const
 
 	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly _object: CustomUnknownObjectImpl<any>
@@ -36,19 +37,19 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 		super(options)
 
 		this._object = object.index(
-			this[OPTIONS].keySchema,
-			this[OPTIONS].valueSchema,
+			this[Voltiso.OPTIONS].keySchema,
+			this[Voltiso.OPTIONS].valueSchema,
 		) as never
 
 		Object.freeze(this)
 	}
 
-	get getKeySchema(): this[OPTIONS]['keySchema'] {
-		return this[OPTIONS].keySchema as never
+	get getKeySchema(): this[Voltiso.OPTIONS]['keySchema'] {
+		return this[Voltiso.OPTIONS].keySchema as never
 	}
 
-	get getValueSchema(): this[OPTIONS]['valueSchema'] {
-		return this[OPTIONS].valueSchema as never
+	get getValueSchema(): this[Voltiso.OPTIONS]['valueSchema'] {
+		return this[Voltiso.OPTIONS].valueSchema as never
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
@@ -59,14 +60,14 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	get getIndexSignatures(): any {
 		return [
 			{
-				keySchema: this[OPTIONS].keySchema,
-				valueSchema: this[OPTIONS].valueSchema,
+				keySchema: this[Voltiso.OPTIONS].keySchema,
+				valueSchema: this[Voltiso.OPTIONS].valueSchema,
 			},
 		]
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
-	override [EXTENDS](_other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 	}
 

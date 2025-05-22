@@ -1,7 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { equals } from '@voltiso/util'
+import { equals, UNSET } from '@voltiso/util'
 import { useMemo } from 'react'
 
 import { callHookDestructors } from './_'
@@ -42,7 +42,7 @@ export function useMemoCleanup<T>(
 		callHookDestructors(destructors, 'useMemoCleanup')
 	}
 
-	const mutable = useInitial(() => ({ value: Symbol('unset') as T }))
+	const mutable = useInitial(() => ({ value: UNSET as T }))
 
 	useImmediateEffect(() => {
 		cleanup()

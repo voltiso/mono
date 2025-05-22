@@ -5,12 +5,12 @@ import type {
 	_CustomDocRef,
 	$$DocRelated,
 	$$DocRelatedLike,
-	AnyDoc,
+	ANY_DOC,
 	CustomDocRef,
 } from '~'
 
 /** Strong document reference - with ref-counting ✅ */
-export interface DocRef<doc extends $$DocRelated = AnyDoc>
+export interface DocRef<doc extends $$DocRelated = ANY_DOC>
 	extends CustomDocRef<{
 		doc: doc
 		isStrong: true
@@ -26,7 +26,7 @@ export type DocRef_<R> = R extends $$DocRelatedLike
 	: never
 
 // /** Strong document reference - with ref-counting ✅ */
-// export interface DocRef$<doc extends $$DocRelatedLike = AnyDoc>
+// export interface DocRef$<doc extends $$DocRelatedLike = ANY_DOC>
 // 	extends CustomDocRef$<{
 // 		doc: doc
 // 		isStrong: true

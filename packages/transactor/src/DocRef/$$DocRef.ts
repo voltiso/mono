@@ -1,15 +1,20 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable es-x/no-global-this */
+
 import type { DocBrand } from '~/brand'
 import type { $$DocRelated, GetDocTag } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 
 declare global {
 	namespace Voltiso {
 		namespace Transactor {
 			const IS_DOC_REF: unique symbol
 			type IS_DOC_REF = typeof IS_DOC_REF
+			// type IS_DOC_REF = { readonly _: unique symbol }['_']
+			// const IS_DOC_REF: IS_DOC_REF
 		}
 	}
 }
@@ -35,7 +40,7 @@ export interface $$DocRef {
  *
  * This actually is "either weak or strong" (weak is supertype)
  */
-export interface WeakDocRefLike<R extends $$DocRelated | AnyDoc = AnyDoc>
+export interface WeakDocRefLike<R extends $$DocRelated | ANY_DOC = ANY_DOC>
 	extends $$DocRef,
 		DocBrand<GetDocTag<R>> {
 	//
@@ -47,7 +52,7 @@ export interface WeakDocRefLike<R extends $$DocRelated | AnyDoc = AnyDoc>
  *
  * ⚠️ {@link WeakDocRefLike} is supertype
  */
-export interface DocRefLike<tag extends $$DocRelated = AnyDoc>
+export interface DocRefLike<tag extends $$DocRelated = ANY_DOC>
 	extends WeakDocRefLike<tag> {
 	isStrong: true
 }

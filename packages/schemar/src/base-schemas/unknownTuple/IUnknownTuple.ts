@@ -6,7 +6,7 @@ import { SCHEMA_NAME } from '_'
 import type { Schema, Schema$ } from '~'
 
 export interface IUnknownTuple extends Schema {
-	readonly [SCHEMA_NAME]: 'UnknownTuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
 	get isReadonlyTuple(): boolean
 	get getMinLength(): number | undefined
@@ -14,7 +14,7 @@ export interface IUnknownTuple extends Schema {
 }
 
 export interface IUnknownTuple$ extends Schema$ {
-	readonly [SCHEMA_NAME]: 'UnknownTuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
 	get isReadonlyTuple(): boolean
 	get getMinLength(): number | undefined

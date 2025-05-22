@@ -3,7 +3,7 @@
 
 import { equals } from '@voltiso/util'
 import type { Destructor } from '@voltiso/util.react'
-import { callHookDestructors, useUpdate } from '@voltiso/util.react'
+import { callHookDestructors, UNSET, useUpdate } from '@voltiso/util.react'
 import type { DependencyList } from 'react'
 import { useMemo } from 'react'
 
@@ -71,7 +71,7 @@ export function useCustomReactiveMemo<T>(
 
 	const mutable = useMemo(
 		() => ({
-			value: Symbol('unset') as T,
+			value: UNSET as T,
 			isInHookBody: true,
 		}),
 		[],

@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/class-methods-use-this */
 
 import { SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	$fastAssert,
 	BoundCallable_,
@@ -26,8 +25,8 @@ export type __CustomSchemaInferrerImpl = InferSchema$NoReadonlyTuple_<[]>
 $fastAssert(SCHEMA_NAME)
 
 export interface CustomSchemaInferrerImpl<O> {
-	readonly [BASE_OPTIONS]: UnknownSchemaOptions
-	readonly [DEFAULT_OPTIONS]: UnknownSchemaOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownSchemaOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownSchemaOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -36,7 +35,7 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	implements ISchemaInferrer
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'SchemaInferrer' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'SchemaInferrer' as const
 
 	constructor(o: O) {
 		super(o)

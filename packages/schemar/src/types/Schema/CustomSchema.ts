@@ -4,12 +4,10 @@
 import type {
 	$Override_,
 	AlsoAccept,
-	BASE_OPTIONS,
 	DeepPartial_,
 	DEFAULT_OPTIONS,
-	NoArgument,
+	UNSET,
 	NonStrictPartial,
-	OPTIONS,
 	Throw,
 } from '@voltiso/util'
 
@@ -22,7 +20,6 @@ import type {
 	OverrideSchema$,
 	OverrideSchema$WithOmit,
 	Schema,
-	SCHEMA_NAME,
 	SchemaOptions,
 	SchemarAnd,
 	SchemarOr,
@@ -36,12 +33,12 @@ import type {
 export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	extends Schema {
 	//
-	readonly [SCHEMA_NAME]: string // SchemaName
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
 
-	readonly [BASE_OPTIONS]: SchemaOptions
-	readonly [DEFAULT_OPTIONS]: SchemaOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: SchemaOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: SchemaOptions.Default
 
-	readonly [OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
+	readonly [Voltiso.OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
 	/**
 	 * Type-only (no value at runtime)
@@ -57,8 +54,8 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * - Get the type using `typeof xxx.OutputType`
 	 * - Type-only (no value at runtime)
 	 */
-	get Output(): this[OPTIONS]['Output']
-	// | (this[OPTIONS]['isOptional'] extends true ? undefined : never)
+	get Output(): this[Voltiso.OPTIONS]['Output']
+	// | (this[Voltiso.OPTIONS]['isOptional'] extends true ? undefined : never)
 
 	/**
 	 * Inferred Input Type (the schema is able to convert these into Output Type)
@@ -67,24 +64,24 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * - Type-only (no value at runtime)
 	 */
 	get Input():
-		| this[OPTIONS]['Input']
-		| (this[OPTIONS]['isOptional'] extends true
+		| this[Voltiso.OPTIONS]['Input']
+		| (this[Voltiso.OPTIONS]['isOptional'] extends true
 				? undefined
-				: this[OPTIONS]['hasDefault'] extends true
+				: this[Voltiso.OPTIONS]['hasDefault'] extends true
 					? undefined
 					: never)
 
 	//
 
-	get isOptional(): this[OPTIONS]['isOptional']
-	get isStrictOptional(): this[OPTIONS]['isStrictOptional']
+	get isOptional(): this[Voltiso.OPTIONS]['isOptional']
+	get isStrictOptional(): this[Voltiso.OPTIONS]['isStrictOptional']
 
-	get isReadonly(): this[OPTIONS]['isReadonly']
+	get isReadonly(): this[Voltiso.OPTIONS]['isReadonly']
 
-	get hasDefault(): this[OPTIONS]['hasDefault']
-	get getDefault(): this[OPTIONS]['hasDefault'] extends false
+	get hasDefault(): this[Voltiso.OPTIONS]['hasDefault']
+	get getDefault(): this[Voltiso.OPTIONS]['hasDefault'] extends false
 		? never
-		: this[OPTIONS]['Output']
+		: this[Voltiso.OPTIONS]['Output']
 
 	//
 
@@ -99,9 +96,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 */
 
 	validate(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
-	): this[OPTIONS]['Output']
+	): this[Voltiso.OPTIONS]['Output']
 
 	/**
 	 * Best-effort fix - same as `exec(x).value`, but does not generate issues
@@ -115,7 +112,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	tryValidate<X>(
 		x: X,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
-	): X | this[OPTIONS]['Output']
+	): X | this[Voltiso.OPTIONS]['Output']
 
 	/**
 	 * Validate `this` schema, do not throw on failure
@@ -124,7 +121,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @returns `ValidationResult` - either success or error with issue list
 	 */
 	exec(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): ValidationResult
 
@@ -134,7 +131,7 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @param x - Value to validate against `this` schema, without applying fixes
 	 */
 	getIssues(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
 	): ValidationIssue[]
 
@@ -145,9 +142,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @param x - Value to validate against `this` schema
 	 */
 	isFixable(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
-	): x is this[OPTIONS]['Input']
+	): x is this[Voltiso.OPTIONS]['Input']
 
 	/**
 	 * Do not return transformed value - just check if the value is valid
@@ -156,9 +153,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @param x - Value to validate against `this` schema
 	 */
 	assertFixable(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
-	): asserts x is this[OPTIONS]['Input']
+	): asserts x is this[Voltiso.OPTIONS]['Input']
 
 	/**
 	 * Check if `x` is already valid (without applying fixes)
@@ -166,9 +163,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @param x - Value to validate against `this` schema, without applying fixes
 	 */
 	isValid(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
-	): x is this[OPTIONS]['Output']
+	): x is this[Voltiso.OPTIONS]['Output']
 
 	/**
 	 * Check if `x` is already valid (without applying fixes)
@@ -177,9 +174,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 	 * @throws ValidationError
 	 */
 	assertValid(
-		x: this[OPTIONS]['Input'] | AlsoAccept<unknown>,
+		x: this[Voltiso.OPTIONS]['Input'] | AlsoAccept<unknown>,
 		options?: NonStrictPartial<ValidationOptions> | undefined,
-	): asserts x is this[OPTIONS]['Output']
+	): asserts x is this[Voltiso.OPTIONS]['Output']
 }
 
 //
@@ -250,8 +247,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 */
 	default<
 		DefaultValue extends
-			| this[OPTIONS]['Input']
-			| AlsoAccept<Readonly<this[OPTIONS]['Input']>>,
+			| this[Voltiso.OPTIONS]['Input']
+			| AlsoAccept<Readonly<this[Voltiso.OPTIONS]['Input']>>,
 	>(
 		value: DefaultValue,
 	): CustomSchema.WithDefault<this, O, DefaultValue>
@@ -263,8 +260,8 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 */
 	default<
 		DefaultValue extends
-			| this[OPTIONS]['Input']
-			| AlsoAccept<Readonly<this[OPTIONS]['Input']>>,
+			| this[Voltiso.OPTIONS]['Input']
+			| AlsoAccept<Readonly<this[Voltiso.OPTIONS]['Input']>>,
 	>(
 		// eslint-disable-next-line @typescript-eslint/unified-signatures
 		getValue: () => DefaultValue,
@@ -283,8 +280,10 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 * @inline
 	 */
 	check(
-		checkIfValid: (value: this[OPTIONS]['Output']) => boolean,
-		expectedDescription?: string | ((value: this[OPTIONS]['Output']) => string),
+		checkIfValid: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
+		expectedDescription?:
+			| string
+			| ((value: this[Voltiso.OPTIONS]['Output']) => string),
 	): this
 
 	/**
@@ -301,13 +300,15 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 *
 	 * @inline
 	 */
-	narrow<NarrowOutput extends this[OPTIONS]['Output']>(
-		map: (value: this[OPTIONS]['Output']) => NarrowOutput, // | void,
+	narrow<NarrowOutput extends this[Voltiso.OPTIONS]['Output']>(
+		map: (value: this[Voltiso.OPTIONS]['Output']) => NarrowOutput, // | void,
 	): OverrideSchema$<this, O, { Output: NarrowOutput }>
 
 	narrowIf(
-		condition: (value: this[OPTIONS]['Output']) => boolean,
-		map: (value: this[OPTIONS]['Output']) => this[OPTIONS]['Output'], // | void | undefined,
+		condition: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
+		map: (
+			value: this[Voltiso.OPTIONS]['Output'],
+		) => this[Voltiso.OPTIONS]['Output'], // | void | undefined,
 	): this
 
 	/**
@@ -326,22 +327,22 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 * @inline
 	 */
 	map<NewOutput>(
-		map: (value: this[OPTIONS]['Output']) =>
+		map: (value: this[Voltiso.OPTIONS]['Output']) =>
 			| NewOutput
-			| (this[OPTIONS]['isOptional'] extends true
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): OverrideSchema$<this, O, { Output: NewOutput }>
 
 	map<ConditionSchema extends $$Schemable, NewOutput>(
 		conditionSchema: ConditionSchema,
-		map: (value: Output_<ConditionSchema> & this[OPTIONS]['Output']) =>
+		map: (value: Output_<ConditionSchema> & this[Voltiso.OPTIONS]['Output']) =>
 			| NewOutput
-			| (this[OPTIONS]['isOptional'] extends true
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): OverrideSchema$<this, O, { Output: NewOutput }>
@@ -352,23 +353,23 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 * Prefer {@link narrowIf} directly for type-check performance
 	 */
 	mapIf(
-		condition: (value: this[OPTIONS]['Output']) => boolean,
-		map: (value: this[OPTIONS]['Output']) =>
-			| this[OPTIONS]['Output']
-			| (this[OPTIONS]['isOptional'] extends true
+		condition: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
+		map: (value: this[Voltiso.OPTIONS]['Output']) =>
+			| this[Voltiso.OPTIONS]['Output']
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): this
 
 	mapIf<NewOutput>(
-		condition: (value: this[OPTIONS]['Output']) => boolean,
-		map: (value: this[OPTIONS]['Output']) =>
+		condition: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
+		map: (value: this[Voltiso.OPTIONS]['Output']) =>
 			| NewOutput
-			| (this[OPTIONS]['isOptional'] extends true
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): CustomSchema.WithMapIf<this, O, NewOutput>
@@ -386,26 +387,26 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 			value: AdditionalInput | AlsoAccept<unknown>,
 		) => value is AdditionalInput,
 		fix: (value: AdditionalInput) =>
-			| this[OPTIONS]['Input']
-			| (this[OPTIONS]['isOptional'] extends true
+			| this[Voltiso.OPTIONS]['Input']
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): CustomSchema.WithFix<this, O, AdditionalInput>
 
-	fixIf<AdditionalInput = NoArgument>(
+	fixIf<AdditionalInput = UNSET>(
 		conditionPredicate: (
 			value: unknown, // AdditionalInput | AlsoAccept<unknown>,
 		) => boolean,
 		fix: (value: AdditionalInput) =>
-			| this[OPTIONS]['Input']
-			| (this[OPTIONS]['isOptional'] extends true
+			| this[Voltiso.OPTIONS]['Input']
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
-	): [AdditionalInput] extends [NoArgument]
+	): [AdditionalInput] extends [UNSET]
 		? Throw<'Missing explicit AdditionalInput type argument'>
 		: CustomSchema.WithFix<this, O, AdditionalInput>
 
@@ -439,26 +440,26 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 			Input: AdditionalInput
 		},
 		fix: (value: AdditionalInput) =>
-			| DeepPartial_<this[OPTIONS]['Input']>
-			| (this[OPTIONS]['isOptional'] extends true
+			| DeepPartial_<this[Voltiso.OPTIONS]['Input']>
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
-	): AdditionalInput extends Partial<this[OPTIONS]['Input']>
+	): AdditionalInput extends Partial<this[Voltiso.OPTIONS]['Input']>
 		? this
 		: CustomSchema.WithFix<this, O, AdditionalInput>
 
 	fix<S extends $$Schemable>(
 		conditionSchema: S,
 		fix: (value: Output_<S>) =>
-			| DeepPartial_<this[OPTIONS]['Input']>
-			| (this[OPTIONS]['isOptional'] extends true
+			| DeepPartial_<this[Voltiso.OPTIONS]['Input']>
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
-	): Input_<S> extends Partial<this[OPTIONS]['Input']>
+	): Input_<S> extends Partial<this[Voltiso.OPTIONS]['Input']>
 		? this
 		: CustomSchema.WithFix<this, O, Input_<S>>
 
@@ -467,10 +468,10 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	fix<ConditionSchema extends $$Schemable>(
 		conditionSchema: ConditionSchema,
 		fix: (value: Output_<ConditionSchema>) =>
-			| this[OPTIONS]['Input']
-			| (this[OPTIONS]['isOptional'] extends true
+			| this[Voltiso.OPTIONS]['Input']
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): CustomSchema.WithFix<this, O, Input_<ConditionSchema>>
@@ -480,17 +481,17 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	 *
 	 * ⚠️ Please provide `AdditionalInput` type argument
 	 */
-	fix<AdditionalInput = NoArgument>(
+	fix<AdditionalInput = UNSET>(
 		fix: <Value extends AdditionalInput | AlsoAccept<unknown>>(
 			value: Value,
 		) =>
-			| this[OPTIONS]['Input'] // | void | undefined
-			| (this[OPTIONS]['isOptional'] extends true
+			| this[Voltiso.OPTIONS]['Input'] // | void | undefined
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
-						: never), // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
-	): [AdditionalInput] extends [NoArgument]
+						: never), // Value extends AdditionalInput ? this[Voltiso.OPTIONS]['Input'] : void,
+	): [AdditionalInput] extends [UNSET]
 		? Throw<'Missing explicit AdditionalInput type argument'>
 		: CustomSchema.WithFix<this, O, AdditionalInput>
 
@@ -501,10 +502,10 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 			Input: AdditionalInput
 		},
 		fix: (value: AdditionalInput) =>
-			| DeepPartial_<this[OPTIONS]['Input']>
-			| (this[OPTIONS]['isOptional'] extends true
+			| DeepPartial_<this[Voltiso.OPTIONS]['Input']>
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): this
@@ -513,10 +514,10 @@ export interface CustomSchema$<O extends Partial<SchemaOptions>>
 	implicitFix<S extends $$Schemable>(
 		conditionSchema: S,
 		fix: (value: Output_<S>) =>
-			| DeepPartial_<this[OPTIONS]['Input']>
-			| (this[OPTIONS]['isOptional'] extends true
+			| DeepPartial_<this[Voltiso.OPTIONS]['Input']>
+			| (this[Voltiso.OPTIONS]['isOptional'] extends true
 					? undefined // typeof deleteIt
-					: this[OPTIONS]['isStrictOptional'] extends true
+					: this[Voltiso.OPTIONS]['isStrictOptional'] extends true
 						? undefined // typeof deleteIt
 						: never),
 	): this

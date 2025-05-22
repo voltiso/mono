@@ -1,8 +1,6 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoThis } from '@voltiso/util'
-
 import type {
 	$$Array,
 	$$Schemable,
@@ -20,7 +18,7 @@ export interface FunctionOptions extends SchemaOptions {
 	Inner: (...args: any) => any
 
 	// hasThis: boolean
-	this: $$Schemable | NoThis
+	this: $$Schemable | Voltiso.UNSET
 
 	parameters: $$SchemableTuple | $$Array
 	return: $$Schemable
@@ -35,7 +33,7 @@ export declare namespace FunctionOptions {
 		Inner: BivariantUnknownFunction
 
 		// hasThis: false
-		this: NoThis
+		this: Voltiso.UNSET
 
 		parameters: []
 		return: Void

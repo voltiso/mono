@@ -1,11 +1,11 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
+import { $Assert, UNSET } from '_'
 import { describe, expect, it } from '@jest/globals'
 
-import type { AreNoArgument } from './AreNotProvided'
-import type { NoArgument, OptionalArgument } from './OptionalArgument'
+import type { OptionalArgument } from './OptionalArgument'
+import { AreAllUnset } from './are-all-unset'
 
 type IFunc_<Result> = (...args: never[]) => Result
 type IFunc<Result extends string = string> = IFunc_<Result>
@@ -49,9 +49,9 @@ type Func_<Args, Result> = Args extends readonly unknown[]
 // 	: never
 
 type Func<
-	Args extends OptionalArgument<number[]> = NoArgument,
-	Result extends OptionalArgument<string> = NoArgument,
-> = AreNoArgument<[Args, Result], IFunc, Func_<Args, Result>>
+	Args extends OptionalArgument<number[]> = UNSET,
+	Result extends OptionalArgument<string> = UNSET,
+> = AreAllUnset<[Args, Result], IFunc, Func_<Args, Result>>
 
 describe('OptionalArgument', () => {
 	it('works', <Args extends number[], Result extends string>() => {

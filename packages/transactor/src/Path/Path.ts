@@ -22,7 +22,7 @@ import type { DocBrand } from '~/brand'
 import type { CollectionRef, CollectionRefPattern } from '~/CollectionRef'
 import type { DocRefPattern, GetDocRef } from '~/DocRef'
 import type { $$DocRelated, $$DocRelatedLike, GetDocTag } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 import { TransactorError } from '~/error'
 
 /**
@@ -203,7 +203,7 @@ export interface DocPathOptions {
 
 export interface DefaultDocPathOptions extends DocPathOptions {
 	path: string
-	doc: AnyDoc
+	doc: ANY_DOC
 }
 
 export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
@@ -213,7 +213,7 @@ export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
 	//
 }
 
-export interface DocPath<TDoc extends $$DocRelatedLike = AnyDoc>
+export interface DocPath<TDoc extends $$DocRelatedLike = ANY_DOC>
 	extends CustomDocPath<{ doc: TDoc }> {}
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -302,7 +302,7 @@ export type _PathFromString<
 
 export type DbPathFromString<
 	P extends string,
-	Doc extends $$DocRelated = AnyDoc,
+	Doc extends $$DocRelated = ANY_DOC,
 > = _PathFromString<
 	GetDocRef<{ doc: GetDocTag<Doc>; isStrong: false }>,
 	CollectionRef<Doc>,

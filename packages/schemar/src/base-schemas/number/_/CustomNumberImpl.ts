@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $fastAssert, isDefined, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
@@ -15,12 +14,13 @@ import type { NumberOptions } from '../NumberOptions'
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomNumberImpl<O> {
-	readonly [BASE_OPTIONS]: NumberOptions
-	readonly [DEFAULT_OPTIONS]: NumberOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: NumberOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: NumberOptions.Default
 }
 
 $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
+$fastAssert(OPTIONS)
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomNumberImpl<O extends Partial<NumberOptions>>
@@ -28,23 +28,23 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	implements CustomNumber<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Number' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Number' as const
 
-	get isInteger(): this[OPTIONS]['isInteger'] {
-		return this[OPTIONS].isInteger as never
+	get isInteger(): this[Voltiso.OPTIONS]['isInteger'] {
+		return this[Voltiso.OPTIONS].isInteger as never
 	}
 
-	get getMin(): this[OPTIONS]['min'] {
-		return this[OPTIONS].min as never
+	get getMin(): this[Voltiso.OPTIONS]['min'] {
+		return this[Voltiso.OPTIONS].min as never
 	}
 
-	get getMax(): this[OPTIONS]['max'] {
-		return this[OPTIONS].max as never
+	get getMax(): this[Voltiso.OPTIONS]['max'] {
+		return this[Voltiso.OPTIONS].max as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isNumberSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	constructor(options: O) {
@@ -59,7 +59,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (this.isInteger && !Number.isInteger(value)) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 						expected: { description: 'be integer' },
 						received: { value },
 					}),
@@ -69,7 +69,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (isDefined(this.getMin) && value < this.getMin) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `be at least ${this.getMin}` },
 						received: { value },
@@ -80,7 +80,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 			if (isDefined(this.getMax) && value > this.getMax) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `be at most ${this.getMax}` },
 						received: { value },
@@ -90,7 +90,7 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be number' },
 					received: { value },
 				}),

@@ -10,7 +10,7 @@ import { CustomDocRef } from '~/DocRef/CustomDocRef'
 import { DocRefPattern } from '~/DocRef/DocRefPattern'
 import type { GetDocRef } from '~/DocRef/GetDocRef'
 import type { WeakDocRef } from '~/DocRef/WeakDocRef'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 import { concatPath } from '~/Path/concatPath'
 import type { DbPathFromString, DocPath } from '~/Path/Path'
 import { CustomDocPath } from '~/Path/Path'
@@ -66,7 +66,7 @@ export class Db {
 
 	doc(
 		...pathTokens: readonly string[]
-	): GetDocRef<{ docTag: AnyDoc; isStrong: false }> {
+	): GetDocRef<{ docTag: ANY_DOC; isStrong: false }> {
 		// $assert(this.context)
 		return new CustomDocRef(this._context, concatPath(pathTokens), {
 			isStrong: false,

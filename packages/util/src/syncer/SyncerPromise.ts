@@ -1,10 +1,11 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { NoArgument, OptionalArgument } from '~/type/optional-argument'
+import type { OptionalArgument } from '~/type/optional-argument'
 
 import type { ISyncerNested, SyncerNested } from './SyncerNested'
 import type { PartialSyncerSwitch, SyncerSwitch } from './SyncerSwitch'
+import { UNSET } from '_/symbols/unset'
 
 export type ISyncerPromise<Return = unknown> = Generator<
 	PartialSyncerSwitch | ISyncerPromise | ISyncerNested,
@@ -24,7 +25,7 @@ type SyncerPromise_<Return, Intermediate> = Generator<
 
 export type SyncerPromise<
 	Return = unknown,
-	Intermediate extends OptionalArgument<unknown> = NoArgument,
-> = [Intermediate] extends [NoArgument]
+	Intermediate extends OptionalArgument<unknown> = UNSET,
+> = [Intermediate] extends [UNSET]
 	? ISyncerPromise<Return>
 	: SyncerPromise_<Return, Intermediate>

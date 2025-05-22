@@ -30,6 +30,8 @@ export function logCompatTransformNode(
 	newNodeStr: string,
 	options: { feature: CompatFeature },
 ): void {
+	if (ctx.options.silent) return
+
 	_helloOnce()
 
 	// eslint-disable-next-line no-console

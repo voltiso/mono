@@ -3,12 +3,12 @@
 
 import type { DocFieldPath } from '~/DocFieldPath'
 import type { $$DocRelatedLike } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 
 import type { GetData } from './GetData'
 
 /** @inline */
-export type GetDocFields<R extends $$DocRelatedLike> = R extends AnyDoc
+export type GetDocFields<R extends $$DocRelatedLike> = R extends ANY_DOC
 	? GetDocFields.ForData<{ [k: string]: unknown }>
 	: GetDocFields.ForData<GetData<R>>
 

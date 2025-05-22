@@ -1,17 +1,14 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { EXTENDS, SCHEMA_NAME } from '_'
 import {
 	$fastAssert,
-	BASE_OPTIONS,
 	BoundCallable,
 	CALL,
-	DEFAULT_OPTIONS,
 	lazyConstructor,
-	OPTIONS,
 } from '@voltiso/util'
 
+import { EXTENDS, SCHEMA_NAME } from '~/_/symbols'
 import { SchemarError } from '~/error/SchemarError'
 import { ValidationIssue } from '~/meta-schemas/validationIssue/ValidationIssue'
 import { CustomSchemaImpl } from '~/Schema/detail/CustomSchemaImpl'
@@ -35,21 +32,21 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	implements CustomUnknownTuple<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'UnknownTuple' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownTuple' as const
 
-	declare readonly [DEFAULT_OPTIONS]: UnknownTupleOptions.Default
-	declare readonly [BASE_OPTIONS]: UnknownTupleOptions
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: UnknownTupleOptions.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions
 
-	get isReadonlyTuple(): this[OPTIONS]['isReadonlyTuple'] {
-		return this[OPTIONS].isReadonlyTuple as never
+	get isReadonlyTuple(): this[Voltiso.OPTIONS]['isReadonlyTuple'] {
+		return this[Voltiso.OPTIONS].isReadonlyTuple as never
 	}
 
-	get getMinLength(): this[OPTIONS]['minLength'] {
-		return this[OPTIONS].minLength as never
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength'] {
+		return this[Voltiso.OPTIONS].minLength as never
 	}
 
-	get getMaxLength(): this[OPTIONS]['maxLength'] {
-		return this[OPTIONS].maxLength as never
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength'] {
+		return this[Voltiso.OPTIONS].maxLength as never
 	}
 
 	constructor(o: O) {
@@ -84,7 +81,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		else return new MutableTuple$(...shapeWithRest) as never
 	}
 
-	override [EXTENDS](other: SchemaLike): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: SchemaLike): boolean {
 		if (
 			isUnknownTupleSchema(other) &&
 			this.isReadonlyTuple &&
@@ -98,7 +95,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		if (isUnknownTupleSchema(other)) return true
 		else if (isArraySchema(other))
 			return unknown.extends(other.getElementSchema)
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	override _getIssues(x: unknown): ValidationIssue[] {
@@ -107,7 +104,7 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		if (!Array.isArray(x))
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be array' },
 					received: { value: x },
 				}),

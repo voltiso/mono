@@ -1,10 +1,10 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { TypeTag } from '~/type'
+import { TYPE } from '_/symbols/type'
 
 export interface StaticError {
-	[TypeTag]: 'StaticError'
+	[TYPE]: 'StaticError'
 }
 
 /**

@@ -2,8 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
+import {
+	$fastAssert,
+	BoundCallable,
+	CALL,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type { CustomFunction, FunctionOptions } from '~/base-schemas/function'
 import { FunctionImpl } from '~/base-schemas/function'
@@ -18,10 +23,14 @@ import type { CustomUnknownFunction } from './CustomUnknownFunction'
 import { isUnknownFunctionSchema } from './IUnknownFunction'
 import type { UnknownFunctionOptions } from './UnknownFunctionOptions'
 
+$fastAssert(OPTIONS)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownFunctionImpl<O> {
-	readonly [BASE_OPTIONS]: UnknownFunctionOptions
-	readonly [DEFAULT_OPTIONS]: UnknownFunctionOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownFunctionOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownFunctionOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -32,7 +41,7 @@ export class CustomUnknownFunctionImpl<
 	implements CustomUnknownFunction<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'UnknownFunction' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownFunction' as const
 
 	constructor(o: O) {
 		super(o)
@@ -40,9 +49,9 @@ export class CustomUnknownFunctionImpl<
 		return BoundCallable(this) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isUnknownFunctionSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	override _getIssues(value: unknown): ValidationIssue[] {
@@ -51,7 +60,7 @@ export class CustomUnknownFunctionImpl<
 		if (typeof value !== 'function') {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be function' },
 					received: { value },
 				}),

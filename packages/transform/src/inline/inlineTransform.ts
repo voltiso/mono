@@ -5,10 +5,12 @@
 /* eslint-disable sonarjs/no-nested-conditional */
 /* eslint-disable no-nested-ternary */
 
-import type { TransformContext } from '@voltiso/transform.lib'
+import type { TransformContext, TransformOptions } from '@voltiso/transform.lib'
+import { defaultTransformOptions } from '@voltiso/transform.lib'
 import * as ts from 'typescript'
 
-import { getJsDocTagNames } from '~/_'
+import { _deepMerge2 } from '~/_/copied-from-util/_deepMerge'
+import { getJsDocTagNames } from '~/_/getJsDocTagNames'
 
 import {
 	canBeInlined,
@@ -18,7 +20,7 @@ import {
 	simplifyAndAddComment,
 } from './_/index.js'
 
-export interface InlineTransformOptions {
+export interface InlineTransformOptions extends TransformOptions {
 	onInlineError?: 'fail' | undefined
 }
 
@@ -34,12 +36,18 @@ export function inlineTransform(
 
 	return (transformationContext: ts.TransformationContext) =>
 		(sourceFile: ts.SourceFile): ts.SourceFile => {
+			const options: InlineTransformOptions = _deepMerge2(
+				defaultTransformOptions as never,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				(pluginOptions as never) ?? {},
+			) as never
+
 			const ctx: InlineTransformContext = {
 				transformationContext,
 				program,
 				sourceFile,
 				typeChecker,
-				options: pluginOptions || {},
+				options,
 			}
 
 			// console.log('FILE', sourceFile.fileName)

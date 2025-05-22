@@ -7,12 +7,12 @@ import { $fastAssert } from '@voltiso/util'
 import type { Schema, Schema$ } from '~'
 
 export interface IUnknown extends Schema {
-	readonly [SCHEMA_NAME]: 'Unknown'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Unknown'
 }
 
 /** Typeof s.unknown */
 export interface IUnknown$ extends Schema$ {
-	readonly [SCHEMA_NAME]: 'Unknown'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Unknown'
 }
 
 export function isUnknownSchema(x: unknown): x is IUnknown {

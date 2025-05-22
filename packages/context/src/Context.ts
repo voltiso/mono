@@ -25,29 +25,31 @@ export interface ContextConstructor {
 
 //
 
-function log(...messages: unknown[]) {
-	// eslint-disable-next-line es-x/no-global-this
-	if (typeof globalThis !== 'undefined') return
+function log(..._messages: unknown[]) {
+	return // ! logging disabled
 
-	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
-	const nodeEnv = process.env['NODE_ENV'] as
-		| 'production'
-		| 'development'
-		| 'test'
+	// // eslint-disable-next-line es-x/no-global-this
+	// if (typeof globalThis !== 'undefined') return
 
-	if (nodeEnv === 'test') return
+	// // eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
+	// const nodeEnv = process.env['NODE_ENV'] as
+	// 	| 'production'
+	// 	| 'development'
+	// 	| 'test'
 
-	// eslint-disable-next-line no-console
-	console.warn(...messages)
+	// if (nodeEnv == 'test') return
+
+	// // eslint-disable-next-line no-console
+	// console.warn(...messages)
 }
 
 //
 
 function getContextConstructor(): ContextConstructor {
 	if (haveAsyncHooks()) {
-		// log(
-		// 	'[@voltiso/context] ✅ Using NodeContext (`AsyncLocalStorage`) - do not patch the global `Promise`',
-		// )
+		log(
+			'[@voltiso/context] ✅ Using NodeContext (`AsyncLocalStorage`) - do not patch the global `Promise`',
+		)
 
 		return NodeContext
 	}

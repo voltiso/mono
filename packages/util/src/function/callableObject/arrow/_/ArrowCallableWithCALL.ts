@@ -1,8 +1,8 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import { UNSET } from '_/symbols/unset'
 import type { CALL, WithCALL } from '~/function'
-import type { NoArgument } from '~/type'
 
 /** @internal Use `CallableWithCall` instead */
 export type IArrowCallableWithCALL = WithCALL & WithCALL[CALL]
@@ -14,10 +14,9 @@ export type _ArrowCallableWithCALL<T extends WithCALL> = T &
 
 //
 
-export type ArrowCallableWithCALL<
-	T extends WithCALL | NoArgument = NoArgument,
-> = T extends NoArgument
-	? IArrowCallableWithCALL
-	: T extends WithCALL
-		? _ArrowCallableWithCALL<T>
-		: never
+export type ArrowCallableWithCALL<T extends WithCALL | UNSET = UNSET> =
+	T extends UNSET
+		? IArrowCallableWithCALL
+		: T extends WithCALL
+			? _ArrowCallableWithCALL<T>
+			: never

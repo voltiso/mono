@@ -2,13 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DocTag } from '~/DocTypes'
-import { AnyDoc } from '~/DocTypes'
+import { ANY_DOC } from '~/DocTypes'
 
 import type { DocConstructorImpl } from '../DocConstructor'
 import type { $$PartialDocOptions } from './_/NewFields'
 import type { DocTI } from './DocTI'
 
-export function DocCall<TI extends DocTI, Tag extends DocTag | AnyDoc>(
+export function DocCall<TI extends DocTI, Tag extends DocTag | ANY_DOC>(
 	tag: Tag,
 ): never
 
@@ -18,9 +18,9 @@ export function DocCall<TI extends DocTI, F extends $$PartialDocOptions>(
 
 export function DocCall(
 	this: typeof DocConstructorImpl,
-	arg: DocTag | AnyDoc | $$PartialDocOptions,
+	arg: DocTag | ANY_DOC | $$PartialDocOptions,
 ): never {
-	if (typeof arg === 'string' || arg === AnyDoc)
+	if (typeof arg === 'string' || arg === ANY_DOC)
 		// eslint-disable-next-line no-useless-call
 		return this.tag.call(this, arg as never) as never
 	else {

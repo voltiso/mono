@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/util.firestore",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -61,7 +61,7 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@~/workspace": "workspace:^",
-    "typescript": "~5.8.3",
+    "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }
 }

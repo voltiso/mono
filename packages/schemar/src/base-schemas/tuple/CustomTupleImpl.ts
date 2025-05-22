@@ -7,6 +7,7 @@
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import {
+	$fastAssert,
 	BASE_OPTIONS,
 	DEFAULT_OPTIONS,
 	lazyConstructor,
@@ -32,17 +33,23 @@ import { ValidationIssue } from '~/meta-schemas'
 
 import { _tupleExtends, _tupleExtendsArray } from './_'
 
+$fastAssert(BASE_OPTIONS)
+$fastAssert(DEFAULT_OPTIONS)
+$fastAssert(OPTIONS)
+$fastAssert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+
 export class CustomTupleImpl<
 	O extends Partial<TupleOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Tuple' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Tuple' as const
 
-	declare readonly [BASE_OPTIONS]: TupleOptions
-	declare readonly [DEFAULT_OPTIONS]: TupleOptions.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: TupleOptions
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: TupleOptions.Default
 
 	get isReadonlyTuple(): any {
-		return this[OPTIONS].isReadonlyTuple as never
+		return this[Voltiso.OPTIONS].isReadonlyTuple as never
 	}
 
 	get getLength(): any {
@@ -51,15 +58,15 @@ export class CustomTupleImpl<
 	}
 
 	get getShape(): any {
-		return this[OPTIONS].shape
+		return this[Voltiso.OPTIONS].shape
 	}
 
 	get hasRest(): any {
-		return this[OPTIONS].hasRest
+		return this[Voltiso.OPTIONS].hasRest
 	}
 
 	get restSchema(): any {
-		return this[OPTIONS].rest
+		return this[Voltiso.OPTIONS].rest
 	}
 
 	get getDeepShape(): GetDeepShape_<this> {
@@ -80,7 +87,7 @@ export class CustomTupleImpl<
 	}
 
 	// eslint-disable-next-line sonarjs/cyclomatic-complexity
-	override [EXTENDS](other: SchemaLike): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: SchemaLike): boolean {
 		if (
 			(isTupleSchema(other) || isUnknownTupleSchema(other)) &&
 			this.isReadonlyTuple &&
@@ -94,7 +101,7 @@ export class CustomTupleImpl<
 		if (isTupleSchema(other)) return _tupleExtends(this, other)
 		else if (isUnknownTupleSchema(other)) return true
 		else if (isArraySchema(other)) return _tupleExtendsArray(this, other)
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	protected override _fix(
@@ -123,12 +130,11 @@ export class CustomTupleImpl<
 	): ValidationIssue[] {
 		let issues = []
 
-		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!Array.isArray(value)) {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name
-						? `Array.isArray(${this[OPTIONS].name})`
+					name: this[Voltiso.OPTIONS].name
+						? `Array.isArray(${this[Voltiso.OPTIONS].name})`
 						: 'Array.isArray',
 
 					expected: { oneOfValues: [true] },
@@ -140,8 +146,8 @@ export class CustomTupleImpl<
 				if (value.length < this.getShape.length) {
 					issues.push(
 						new ValidationIssue({
-							name: this[OPTIONS].name
-								? `${this[OPTIONS].name} tuple size`
+							name: this[Voltiso.OPTIONS].name
+								? `${this[Voltiso.OPTIONS].name} tuple size`
 								: 'tuple size',
 
 							expected: { description: `at least ${this.getShape.length}` },
@@ -152,8 +158,8 @@ export class CustomTupleImpl<
 			} else if (this.getShape.length !== value.length)
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name
-							? `${this[OPTIONS].name} tuple size`
+						name: this[Voltiso.OPTIONS].name
+							? `${this[Voltiso.OPTIONS].name} tuple size`
 							: 'tuple size',
 
 						expected: { oneOfValues: [this.getShape.length] },

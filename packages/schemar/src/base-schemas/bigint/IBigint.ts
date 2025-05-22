@@ -6,7 +6,7 @@ import { SCHEMA_NAME } from '_'
 import type { Schema } from '~'
 
 export interface IBigint extends Schema {
-	readonly [SCHEMA_NAME]: 'Bigint'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Bigint'
 
 	get getMin(): bigint | undefined
 	get getMax(): bigint | undefined

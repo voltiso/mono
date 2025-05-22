@@ -1,16 +1,21 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable es-x/no-global-this */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import type { Brands } from '~/Brands-augmentation'
 import type { GetNested_, Nest_ } from '~/object'
 
-import type { NoArgument } from '../optional-argument'
 import type { BrandReference } from './BrandReference'
+import { UNSET } from '_/symbols/unset'
 
 declare global {
 	namespace Voltiso {
 		const BRAND: unique symbol
 		type BRAND = typeof BRAND
+		// type BRAND = { readonly _: unique symbol }['_']
+		// const BRAND: BRAND
 	}
 }
 
@@ -21,9 +26,7 @@ if (
 	;(globalThis as any).Voltiso = {}
 }
 
-;(globalThis as any).Voltiso.BRAND ??= /* @__PURE__ */ Symbol.for(
-	'@voltiso/util/BRAND',
-)
+;(Voltiso.BRAND as any) ??= /* @__PURE__ */ Symbol.for('@voltiso/util/BRAND')
 /** 🌿 Type-only (no value at runtime) */
 export type BRAND = Voltiso.BRAND
 /** 🌿 Type-only (no value at runtime) */
@@ -86,11 +89,11 @@ export interface Brand<B extends BrandReference>
 
 export type GetBrand<
 	B extends BrandReference,
-	detail extends Brand.GetConstraint<B> | NoArgument = NoArgument,
+	detail extends Brand.GetConstraint<B> | UNSET = UNSET,
 > = GetBrand_<B, detail>
 
-export type GetBrand_<B, detail = NoArgument> = B extends BrandReference
-	? detail extends NoArgument
+export type GetBrand_<B, detail = UNSET> = B extends BrandReference
+	? detail extends UNSET
 		? Brand<B>
 		: detail extends Brand.GetConstraint<B>
 			? CustomBrand<B, detail>

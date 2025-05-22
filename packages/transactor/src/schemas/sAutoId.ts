@@ -7,16 +7,16 @@ import { ProtoCallable } from '@voltiso/util'
 
 import type { DocIdBrand, DocIdString } from '~/brand'
 import type { $$DocRelated } from '~/DocRelated'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 
-export interface AutoIdSchema<D extends $$DocRelated = AnyDoc>
+export interface AutoIdSchema<D extends $$DocRelated = ANY_DOC>
 	extends CustomString<{
 		Input: DocIdString<D>
 		Output: DocIdString<D>
 		// regExps: AtLeast1<RegExpEntry>
 	}> {}
 
-export interface AutoIdSchema$<D extends $$DocRelated = AnyDoc>
+export interface AutoIdSchema$<D extends $$DocRelated = ANY_DOC>
 	extends CustomString$<{
 		Input: DocIdString<D>
 		Output: DocIdString<D>
@@ -26,7 +26,10 @@ export interface AutoIdSchema$<D extends $$DocRelated = AnyDoc>
 }
 
 /** @internal */
-export const _sAutoId = s.string
+export const _sAutoId: CustomString$<{
+	Output: string & DocIdBrand<ANY_DOC>
+	Input: string & DocIdBrand<ANY_DOC>
+}> = s.string
 	.name('autoId')
 	.regex(/^[\dA-Za-z]{20}$/u, 'be 20 alphanumeric characters')
 	.Cast<DocIdString>()
@@ -36,7 +39,7 @@ export const _sAutoId = s.string
 export interface UnknownAutoIdSchema extends AutoIdSchema {}
 
 export interface UnknownAutoIdSchema$ extends AutoIdSchema$ {
-	<D extends $$DocRelated = AnyDoc>(): AutoIdSchema$<D>
+	<D extends $$DocRelated = ANY_DOC>(): AutoIdSchema$<D>
 
 	get Final(): UnknownAutoIdSchema
 }

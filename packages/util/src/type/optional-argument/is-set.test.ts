@@ -1,68 +1,67 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert } from '_'
+import { $Assert, UNSET } from '_'
 import { describe, expect, it } from '@jest/globals'
 
 import type { IsIdentical } from '~/type'
 
-import type { IsProvided } from './IsProvided'
-import type { NoArgument } from './OptionalArgument'
+import type { IsSet } from './is-set'
 
 describe('OptionalArgument', () => {
 	it('type', () => {
 		expect.assertions(0)
 
-		type A = IsProvided<never>
+		type A = IsSet<never>
 		$Assert<IsIdentical<A, true>>()
 
-		type B = IsProvided<null>
+		type B = IsSet<null>
 		$Assert<IsIdentical<B, true>>()
 
-		type C = IsProvided<unknown>
+		type C = IsSet<unknown>
 		$Assert<IsIdentical<C, true>>()
 
-		type D = IsProvided<any>
+		type D = IsSet<any>
 		$Assert<IsIdentical<D, true>>()
 
-		type E = IsProvided<void>
+		type E = IsSet<void>
 		$Assert<IsIdentical<E, true>>()
 
-		type F = IsProvided<symbol>
+		type F = IsSet<symbol>
 		$Assert<IsIdentical<F, true>>()
 
 		const sym = Symbol('sym')
 
-		type G = IsProvided<typeof sym>
+		type G = IsSet<typeof sym>
 		$Assert<IsIdentical<G, true>>()
 
-		type H = IsProvided<NoArgument>
+		type H = IsSet<UNSET>
 		$Assert<IsIdentical<H, false>>()
 
-		type I = IsProvided<null | NoArgument>
+		type I = IsSet<null | UNSET>
 		$Assert<IsIdentical<I, boolean>>()
 
-		type J = IsProvided<never | NoArgument>
+		type J = IsSet<never | UNSET>
 		$Assert<IsIdentical<J, false>>()
 
-		type K = IsProvided<void | NoArgument>
+		type K = IsSet<void | UNSET>
 		$Assert<IsIdentical<K, boolean>>()
 	})
 
 	it('generic - true', <X extends null>() => {
 		expect.assertions(0)
 
-		type A = IsProvided<X>
+		type A = IsSet<X>
 		$Assert<A, true>()
 		// Assert.is<true, A>()
 		// Assert.is<A, false>()
 		// Assert<IsIdentical<A, true>>()
 	})
 
-	it('generic - not provided (or never)', <X extends NoArgument>() => {
+	it('generic - not provided (or never)', <X extends UNSET>() => {
 		expect.assertions(0)
 
-		type A = IsProvided<X>
+		type A = IsSet<X>
 		$Assert.is<A, boolean>()
 		// Assert.is<A, false>() // IsProvided<never> === true
 
@@ -71,10 +70,10 @@ describe('OptionalArgument', () => {
 		// Assert<IsIdentical<A, boolean>>()
 	})
 
-	it('generic - provided or not (null)', <X extends null | NoArgument>() => {
+	it('generic - provided or not (null)', <X extends null | UNSET>() => {
 		expect.assertions(0)
 
-		type A = IsProvided<X>
+		type A = IsSet<X>
 		$Assert.is<A, boolean>()
 		// Assert.is<A, true>()
 		// Assert.is<A, false>()

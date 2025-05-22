@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
 	$fastAssert,
 	BoundCallable,
@@ -19,13 +18,13 @@ import { RecordImpl } from '../record/RecordImpl'
 import type { CustomUnknownRecord } from './CustomUnknownRecord'
 import type { UnknownRecordOptions } from './UnknownRecordOptions'
 
-$fastAssert(SCHEMA_NAME)
 $fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownRecordImpl<O> {
-	readonly [BASE_OPTIONS]: UnknownRecordOptions
-	readonly [DEFAULT_OPTIONS]: UnknownRecordOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownRecordOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownRecordOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -34,7 +33,7 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	implements CustomUnknownRecord<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'UnknownRecord'
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownRecord'
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
 	get getIndexSignatures(): [] {
@@ -68,12 +67,12 @@ export class CustomUnknownRecordImpl<O extends Partial<UnknownRecordOptions>>
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
-	override [EXTENDS](_other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](_other: Schema): boolean {
 		throw new Error('not implemented')
 		// if (isObject(other)) {
 		// 	return getKeys(other.getShape).length === 0
 		// } else if (isUnknownObject(other)) return true
 		// // eslint-disable-next-line security/detect-object-injection
-		// else return super[EXTENDS](other)
+		// else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 }

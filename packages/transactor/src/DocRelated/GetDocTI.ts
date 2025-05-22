@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { InferTI } from '~/CollectionRef'
-import type { AnyDoc, DocTagLike } from '~/DocTypes'
+import type { ANY_DOC, DocTagLike } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { DocTI, DTI } from '../Doc/DocTI'
@@ -19,14 +19,14 @@ export type GetDocTI<X extends $$DocRelatedLike> = X extends $$Doc
 		? X[DTI]
 		: X extends DocTI
 			? X
-			: X extends DocTagLike | AnyDoc
+			: X extends DocTagLike | ANY_DOC
 				? GetDocTI.FromTag<X>
 				: DocTI // fallback to supertype
 // : IndexedDocTI // fallback to indexed doc // ! too slow
 
 export namespace GetDocTI {
 	/** ⚠️ Problematic with recursive types */
-	export type FromTag<tag extends DocTagLike | AnyDoc> = tag extends AnyDoc
+	export type FromTag<tag extends DocTagLike | ANY_DOC> = tag extends ANY_DOC
 		? DocTI
 		: tag extends keyof DocTypes
 			? DocTypes[tag][DTI & keyof DocTypes[tag]]

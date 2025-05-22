@@ -6,7 +6,7 @@ import { SCHEMA_NAME } from '_'
 import type { Schema } from '~'
 
 export interface IInstance extends Schema {
-	readonly [SCHEMA_NAME]: 'Instance'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Instance'
 
 	readonly getConstructor: abstract new (...args: any) => object
 }

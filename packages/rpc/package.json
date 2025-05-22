@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/rpc",
-  "version": "5.1.11",
+  "version": "6.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -80,7 +80,7 @@
   },
   "peerDependencies": {
     "@types/express": "^5 || ^4",
-    "@voltiso/schemar": "workspace:^",
+    "@voltiso/schemar": "workspace:^ || ^25 || ^24",
     "express": "^5 || ^4"
   },
   "peerDependenciesMeta": {
@@ -108,7 +108,7 @@
     "express": "^5.1.0",
     "get-port": "^7.0.0",
     "jest": "^29.7.0",
-    "typescript": "~5.8.3",
+    "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }
 }

@@ -1,6 +1,10 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
+/* eslint-disable es-x/no-global-this */
+
 import type { If } from '@voltiso/util'
 
 import type { DocIdString } from '~/brand'
@@ -20,17 +24,14 @@ declare global {
 		namespace Transactor {
 			const TRIGGER_PARAMS_TYPE_INFO: unique symbol
 			type TRIGGER_PARAMS_TYPE_INFO = typeof TRIGGER_PARAMS_TYPE_INFO
+			// type TRIGGER_PARAMS_TYPE_INFO = { readonly _: unique symbol }['_']
+			// const TRIGGER_PARAMS_TYPE_INFO: TRIGGER_PARAMS_TYPE_INFO
 		}
 	}
 }
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
-;(globalThis as any).Voltiso.Transactor.TRIGGER_PARAMS_TYPE_INFO ??=
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+Voltiso.Transactor ??= /* @__PURE__ */ {} as never
+;(Voltiso.Transactor.TRIGGER_PARAMS_TYPE_INFO as any) ??=
 	/* @__PURE__ */ Symbol.for('@voltiso/transactor/TRIGGER_PARAMS_TYPE_INFO')
 export type TRIGGER_PARAMS_TYPE_INFO =
 	Voltiso.Transactor.TRIGGER_PARAMS_TYPE_INFO

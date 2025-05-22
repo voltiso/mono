@@ -8,7 +8,7 @@ import { describe, expect, it } from '@jest/globals'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
-describe('typeof (not supported yet)', () => {
+describe('typeof', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 

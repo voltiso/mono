@@ -1,7 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { $Override_, BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
 import type {
 	$$InferableObject,
@@ -12,7 +12,6 @@ import type {
 	CustomSchema$,
 	GetObject$,
 	Schema,
-	SCHEMA_NAME,
 	Type,
 } from '~'
 
@@ -22,10 +21,10 @@ import type { UnknownObjectOptions } from './UnknownObjectOptions'
 
 export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 	extends CustomSchema<O> {
-	readonly [SCHEMA_NAME]: 'UnknownObject'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 
-	readonly [BASE_OPTIONS]: UnknownObjectOptions
-	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 
 	get getIndexSignatures(): []
 	get getShape(): {}
@@ -36,10 +35,10 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
 	extends CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'UnknownObject'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 
-	readonly [BASE_OPTIONS]: UnknownObjectOptions
-	readonly [DEFAULT_OPTIONS]: UnknownObjectOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownObjectOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownObjectOptions.Default
 
 	get getIndexSignatures(): []
 	get getShape(): {}
@@ -63,7 +62,7 @@ export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
 			? GetObject$<X>
 			: never
 
-	// this[OPTIONS]['isPlain'] extends true
+	// this[Voltiso.OPTIONS]['isPlain'] extends true
 	// 	? CustomObject<{
 	// 			shape: Shape
 	// 			deepShape: GetDeepShape_<Shape>

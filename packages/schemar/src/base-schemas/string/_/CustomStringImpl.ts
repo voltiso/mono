@@ -26,27 +26,30 @@ import type { StringOptions } from '../StringOptions'
 
 $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
+$fastAssert(OPTIONS)
+$fastAssert(BASE_OPTIONS)
+$fastAssert(DEFAULT_OPTIONS)
 
 export class CustomStringImpl<O extends Partial<StringOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomString<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'String' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'String' as const
 
-	declare readonly [BASE_OPTIONS]: StringOptions
-	declare readonly [DEFAULT_OPTIONS]: StringOptions.Default
+	declare readonly [Voltiso.BASE_OPTIONS]: StringOptions
+	declare readonly [Voltiso.DEFAULT_OPTIONS]: StringOptions.Default
 
-	get getMinLength(): this[OPTIONS]['minLength'] {
-		return this[OPTIONS].minLength as never
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength'] {
+		return this[Voltiso.OPTIONS].minLength as never
 	}
 
-	get getMaxLength(): this[OPTIONS]['maxLength'] {
-		return this[OPTIONS].maxLength as never
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength'] {
+		return this[Voltiso.OPTIONS].maxLength as never
 	}
 
-	get getRegExps(): this[OPTIONS]['regExps'] {
-		return this[OPTIONS].regExps as never
+	get getRegExps(): this[Voltiso.OPTIONS]['regExps'] {
+		return this[Voltiso.OPTIONS].regExps as never
 	}
 
 	constructor(o: O) {
@@ -62,9 +65,9 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		return literal(...(args as never[])) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isStringSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	override _getIssues(x: unknown): ValidationIssue[] {
@@ -74,7 +77,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			if (isDefined(this.getMinLength) && x.length < this.getMinLength) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 
 						expected: {
 							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -89,7 +92,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 			if (isDefined(this.getMaxLength) && x.length > this.getMaxLength) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 
 						expected: {
 							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -105,7 +108,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 				if (!re.regExp.test(x)) {
 					issues.push(
 						new ValidationIssue({
-							name: this[OPTIONS].name,
+							name: this[Voltiso.OPTIONS].name,
 
 							expected: {
 								description:
@@ -121,7 +124,7 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be string' },
 					received: { value: x },
 				}),

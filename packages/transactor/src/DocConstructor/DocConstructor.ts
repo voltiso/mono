@@ -28,7 +28,7 @@ import type {
 } from '~/Doc'
 import type { DocBuilderPluginResult } from '~/DocBuilderPluginResult-module-augmentation'
 import type { GetDocTag } from '~/DocRelated/GetDocTag'
-import type { AnyDoc, DocTag } from '~/DocTypes'
+import type { ANY_DOC, DocTag } from '~/DocTypes'
 import type { Method } from '~/Method'
 import type { AutoIdSchema } from '~/schemas'
 import type { Trigger } from '~/Trigger'
@@ -43,7 +43,7 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 
 	new (context: DocContext, data: GetInputData<TI>): Doc<TI>
 
-	<Tag extends DocTag | AnyDoc>(tag: Tag): DocConstructor.WithTag<TI, Tag>
+	<Tag extends DocTag | ANY_DOC>(tag: Tag): DocConstructor.WithTag<TI, Tag>
 	// tag<Tag extends DocTag>(tag: Tag): DocConstructor.WithTag<TI, Tag>
 
 	with<O extends $$PartialDocOptions>(
@@ -213,7 +213,7 @@ export interface DocConstructor<TI extends DocTI = DocTI>
 export namespace DocConstructor {
 	export type WithTag<
 		TI extends DocTI,
-		tag extends DocTag | AnyDoc,
+		tag extends DocTag | ANY_DOC,
 	> = WithOverrides<TI, { tag: tag }>
 
 	export type WithOverrides<Old extends DocTI, New extends Partial<DocTI>> = [

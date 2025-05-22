@@ -1,6 +1,7 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+import type { TransformContext } from '@voltiso/transform.lib'
 import { getNodePositionStr } from '@voltiso/transform.lib'
 import chalk from 'chalk'
 import type * as ts from 'typescript'
@@ -17,7 +18,9 @@ function beforeLog() {
 	initialLogDone = true
 }
 
-export function logStrippedNode(node: ts.Node): void {
+export function logStrippedNode(ctx: TransformContext, node: ts.Node): void {
+	if (ctx.options.silent) return
+
 	beforeLog()
 	// eslint-disable-next-line no-console
 	console.log(

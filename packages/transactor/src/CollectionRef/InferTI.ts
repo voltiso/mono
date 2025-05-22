@@ -6,7 +6,7 @@ import type { _, NewableReturn_ } from '@voltiso/util'
 import type { $$Doc, $$DocTI, DocTI, DTI } from '~/Doc'
 import type { $$DocConstructor } from '~/DocConstructor'
 import type { $$DocRelatedLike, GetDoc } from '~/DocRelated'
-import type { AnyDoc, DocTag } from '~/DocTypes'
+import type { ANY_DOC, DocTag } from '~/DocTypes'
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 import type { InferMethods } from './InferMethods'
@@ -25,7 +25,7 @@ export namespace InferTI {
 				_<
 					D[DTI] & {
 						methods: InferMethods<D>
-					} & (AnyDoc extends D[DTI]['tag'] ? { tag: AnyDoc } : unknown)
+					} & (ANY_DOC extends D[DTI]['tag'] ? { tag: ANY_DOC } : unknown)
 				>
 		: DocTI
 

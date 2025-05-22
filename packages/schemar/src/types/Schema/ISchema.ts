@@ -2,14 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS } from '_'
-import type {
-	AlsoAccept,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	NoArgument,
-	OPTIONS,
-	StaticError,
-} from '@voltiso/util'
+import type { AlsoAccept, UNSET, StaticError } from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -17,7 +10,6 @@ import type {
 	CustomOperation,
 	CustomSchema$,
 	Output_,
-	SCHEMA_NAME,
 	SchemaOptions,
 	ValidationIssue,
 	ValidationOptions,
@@ -25,7 +17,7 @@ import type {
 } from '~'
 
 export interface $$Schema {
-	readonly [SCHEMA_NAME]: unknown
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: unknown
 }
 
 export interface SchemaLike<T = unknown> extends $$Schema {
@@ -39,12 +31,12 @@ export interface SchemaLike<T = unknown> extends $$Schema {
  * - Also @see {@link Schema$ } for a version with builder interface
  */
 export interface Schema<T = unknown> extends $$Schema, SchemaLike<T> {
-	readonly [SCHEMA_NAME]: string // SchemaName
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
 
-	readonly [BASE_OPTIONS]: SchemaOptions
-	readonly [DEFAULT_OPTIONS]: SchemaOptions // not necessarily the global defaults
+	readonly [Voltiso.BASE_OPTIONS]: SchemaOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: SchemaOptions // not necessarily the global defaults
 
-	readonly [OPTIONS]: SchemaOptions & {
+	readonly [Voltiso.OPTIONS]: SchemaOptions & {
 		Output: T
 		Input: T | undefined
 	}
@@ -196,8 +188,10 @@ export interface Schema$<T = unknown> extends Schema<T> {
 	 * @inline
 	 */
 	check(
-		checkIfValid: (value: this[OPTIONS]['Output']) => boolean,
-		expectedDescription?: string | ((value: this[OPTIONS]['Output']) => string),
+		checkIfValid: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
+		expectedDescription?:
+			| string
+			| ((value: this[Voltiso.OPTIONS]['Output']) => string),
 	): this
 
 	/**
@@ -235,13 +229,15 @@ export interface Schema$<T = unknown> extends Schema<T> {
 	 * @inline
 	 */
 	map<NewOutput>(
-		map: (value: this[OPTIONS]['Output']) => NewOutput | void | undefined,
+		map: (
+			value: this[Voltiso.OPTIONS]['Output'],
+		) => NewOutput | void | undefined,
 	): $$Schema
 
 	mapIf<AdditionalOutput>(
-		condition: (value: this[OPTIONS]['Output']) => boolean,
+		condition: (value: this[Voltiso.OPTIONS]['Output']) => boolean,
 		map: (
-			value: this[OPTIONS]['Output'],
+			value: this[Voltiso.OPTIONS]['Output'],
 		) => AdditionalOutput | void | undefined,
 	): $$Schema
 
@@ -253,14 +249,14 @@ export interface Schema$<T = unknown> extends Schema<T> {
 		conditionTypeGuard: (
 			value: AdditionalInput | AlsoAccept<unknown>,
 		) => value is AdditionalInput,
-		fix: (value: AdditionalInput) => this[OPTIONS]['Input'],
+		fix: (value: AdditionalInput) => this[Voltiso.OPTIONS]['Input'],
 	): $$Schema
 
-	fixIf<AdditionalInput = NoArgument>(
+	fixIf<AdditionalInput = UNSET>(
 		conditionPredicate: (
 			value: AdditionalInput | AlsoAccept<unknown>,
 		) => boolean,
-		fix: (value: AdditionalInput) => unknown, // this[OPTIONS]['Input'],
+		fix: (value: AdditionalInput) => unknown, // this[Voltiso.OPTIONS]['Input'],
 	): $$Schema | StaticError
 
 	/**
@@ -287,19 +283,19 @@ export interface Schema$<T = unknown> extends Schema<T> {
 			Output: AdditionalInput
 			Input: AdditionalInput
 		},
-		fix: (value: AdditionalInput) => this[OPTIONS]['Input'],
+		fix: (value: AdditionalInput) => this[Voltiso.OPTIONS]['Input'],
 	): $$Schema
 
 	fix<ConditionSchema extends $$Schemable>(
 		conditionSchema: ConditionSchema,
-		fix: (value: Output_<ConditionSchema>) => this[OPTIONS]['Input'],
+		fix: (value: Output_<ConditionSchema>) => this[Voltiso.OPTIONS]['Input'],
 	): $$Schema
 
 	/** ⚠️ Please provide `AdditionalInput` type argument */
-	fix<AdditionalInput = NoArgument>(
+	fix<AdditionalInput = UNSET>(
 		fix: <Value extends AdditionalInput | AlsoAccept<unknown>>(
 			value: Value,
-		) => this[OPTIONS]['Input'] | void | undefined, // Value extends AdditionalInput ? this[OPTIONS]['Input'] : void,
+		) => this[Voltiso.OPTIONS]['Input'] | void | undefined, // Value extends AdditionalInput ? this[Voltiso.OPTIONS]['Input'] : void,
 	): $$Schema | StaticError
 
 	//

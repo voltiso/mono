@@ -3,7 +3,7 @@
 
 import type { BRAND, IsAny } from '@voltiso/util'
 
-import type { AnyDoc, DocTag, DocTagLike } from '~/DocTypes'
+import type { ANY_DOC, DocTag, DocTagLike } from '~/DocTypes'
 
 import type { TRANSACTOR, TransactorBrand } from './Transactor'
 
@@ -21,15 +21,15 @@ import type { TRANSACTOR, TransactorBrand } from './Transactor'
  * type UserId = string & DocBrand<'users'> & DocBrand<'usersData'>
  * ```
  */
-export interface DocBrand<tag extends DocTagLike | AnyDoc = AnyDoc>
+export interface DocBrand<tag extends DocTagLike | ANY_DOC = ANY_DOC>
 	extends TransactorBrand<
 		'doc',
-		AnyDoc extends tag
+		ANY_DOC extends tag
 			? any // {[k in DocTag]: true}
 			: { [k in tag]: true }
 	> {}
 
 export type DocTagFromBrand<brand extends DocBrand> =
 	IsAny<brand[BRAND][TRANSACTOR]['doc']> extends true
-		? AnyDoc
+		? ANY_DOC
 		: keyof brand[BRAND][TRANSACTOR]['doc'] & DocTag

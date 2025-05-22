@@ -1,14 +1,9 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$Override_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-} from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
-import type { CustomSchema, CustomSchema$, SCHEMA_NAME } from '~'
+import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { StringOptions } from './StringOptions'
 
@@ -17,15 +12,15 @@ import type { StringOptions } from './StringOptions'
 export interface CustomString<O extends Partial<StringOptions>>
 	extends CustomSchema<O> {
 	//
-	readonly [SCHEMA_NAME]: 'String'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 
-	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: StringOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: StringOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: StringOptions.Default
 
 	//
 
-	get getMinLength(): this[OPTIONS]['minLength']
-	get getMaxLength(): this[OPTIONS]['maxLength']
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength']
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 }
 
 //
@@ -33,15 +28,15 @@ export interface CustomString<O extends Partial<StringOptions>>
 export interface CustomString$<O extends Partial<StringOptions>>
 	extends CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'String'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 
-	readonly [BASE_OPTIONS]: StringOptions
-	readonly [DEFAULT_OPTIONS]: StringOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: StringOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: StringOptions.Default
 
 	//
 
-	get getMinLength(): this[OPTIONS]['minLength']
-	get getMaxLength(): this[OPTIONS]['maxLength']
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength']
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 
 	//
 

@@ -14,10 +14,10 @@ import type { GetDocRef } from '~/DocRef/GetDocRef'
 import type { DocRef } from '~/DocRef/StrongDocRef'
 import type { $$DocRelated, $$DocRelatedLike } from '~/DocRelated/DocRelated'
 import type { GetDocRepresentative, GetDocTag } from '~/DocRelated/GetDocTag'
-import type { AnyDoc } from '~/DocTypes'
+import type { ANY_DOC } from '~/DocTypes'
 
 /** @internal */
-export const _strongRefSchema = lazyObject(() => {
+export const _strongRefSchema: s.Schema<DocRef<ANY_DOC>> = lazyObject(() => {
 	$fastAssert(_CustomDocRef)
 
 	return s
@@ -36,10 +36,10 @@ export const _strongRefCall = <X extends $$DocRelatedLike>(): s.Schema<
 
 //
 
-export interface StrongDocRefSchema<X extends $$DocRelated = AnyDoc>
+export interface StrongDocRefSchema<X extends $$DocRelated = ANY_DOC>
 	extends s.Schema<DocRef<X>> {}
 
-export interface StrongDocRefSchema$<X extends $$DocRelated = AnyDoc>
+export interface StrongDocRefSchema$<X extends $$DocRelated = ANY_DOC>
 	extends s.Schema$<DocRef<X>> {
 	//
 	get Final(): StrongDocRefSchema<X>

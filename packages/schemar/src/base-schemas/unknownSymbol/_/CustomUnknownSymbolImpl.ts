@@ -2,8 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
-import { BoundCallable, CALL, lazyConstructor, OPTIONS } from '@voltiso/util'
+import {
+	$fastAssert,
+	BoundCallable,
+	CALL,
+	lazyConstructor,
+	OPTIONS,
+} from '@voltiso/util'
 
 import type { Literal } from '~/core-schemas/literal/Literal'
 import { literal } from '~/core-schemas/unknownLiteral/UnknownLiteral'
@@ -16,10 +21,14 @@ import type { CustomUnknownSymbol } from '../CustomUnknownSymbol'
 import { isUnknownSymbolSchema } from '../IUnknownSymbol'
 import type { UnknownSymbolOptions } from '../UnknownSymbolOptions'
 
+$fastAssert(OPTIONS)
+$fastAssert(EXTENDS)
+$fastAssert(SCHEMA_NAME)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnknownSymbolImpl<O> {
-	readonly [BASE_OPTIONS]: UnknownSymbolOptions
-	readonly [DEFAULT_OPTIONS]: UnknownSymbolOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnknownSymbolOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnknownSymbolOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -28,7 +37,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 	implements CustomUnknownSymbol<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'UnknownSymbol' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownSymbol' as const
 
 	constructor(o: O) {
 		super(o)
@@ -42,9 +51,9 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		return literal(literals) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isUnknownSymbolSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
@@ -63,7 +72,7 @@ export class CustomUnknownSymbolImpl<O extends Partial<UnknownSymbolOptions>>
 		if (typeof x !== 'symbol') {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be symbol' },
 					received: { value: x },
 				}),

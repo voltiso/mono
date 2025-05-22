@@ -2,13 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type {
-	Assume,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	NoThis,
-} from '@voltiso/util'
-import { lazyConstructor, noThis, OPTIONS } from '@voltiso/util'
+import type { Assume } from '@voltiso/util'
+import { $fastAssert, lazyConstructor, UNSET, OPTIONS } from '@voltiso/util'
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { SchemarError } from '~/error'
@@ -31,30 +26,35 @@ import type { CustomFunction } from './CustomFunction'
 import type { FunctionOptions } from './FunctionOptions'
 import { isFunctionSchema } from './isFunction'
 
+$fastAssert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(UNSET)
+$fastAssert(OPTIONS)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomFunctionImpl<O> {
-	readonly [BASE_OPTIONS]: FunctionOptions
-	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: FunctionOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: FunctionOptions.Default
 
-	readonly Outer: this[OPTIONS]['Outer']
-	readonly Inner: this[OPTIONS]['Inner']
+	readonly Outer: this[Voltiso.OPTIONS]['Outer']
+	readonly Inner: this[Voltiso.OPTIONS]['Inner']
 
-	readonly OutputThis: Output_<this[OPTIONS]['this']>
-	readonly InputThis: Input_<this[OPTIONS]['this']>
+	readonly OutputThis: Output_<this[Voltiso.OPTIONS]['this']>
+	readonly InputThis: Input_<this[Voltiso.OPTIONS]['this']>
 	readonly This: this['OutputThis']
 
 	readonly OutputParameters: Assume<
 		unknown[],
-		Output_<this[OPTIONS]['parameters']>
+		Output_<this[Voltiso.OPTIONS]['parameters']>
 	>
 	readonly InputParameters: Assume<
 		unknown[],
-		Input_<this[OPTIONS]['parameters']>
+		Input_<this[Voltiso.OPTIONS]['parameters']>
 	>
 	readonly Parameters: this['OutputParameters']
 
-	readonly OutputReturn: Output_<this[OPTIONS]['return']>
-	readonly InputReturn: Input_<this[OPTIONS]['return']>
+	readonly OutputReturn: Output_<this[Voltiso.OPTIONS]['return']>
+	readonly InputReturn: Input_<this[Voltiso.OPTIONS]['return']>
 	readonly Return: this['OutputReturn']
 }
 
@@ -64,31 +64,33 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	implements CustomFunction<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Function' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Function' as const
 
-	get hasThis(): [this[OPTIONS]['this']] extends [NoThis] ? false : true {
-		return (this[OPTIONS].this !== noThis) as never
+	get hasThis(): [this[Voltiso.OPTIONS]['this']] extends [UNSET]
+		? false
+		: true {
+		return (this[Voltiso.OPTIONS].this !== UNSET) as never
 	}
 
 	get getThisSchema(): never {
-		if (this[OPTIONS].this === noThis) throw new Error('no this schema')
+		if (this[Voltiso.OPTIONS].this === UNSET) throw new Error('no this schema')
 
-		return infer_(this[OPTIONS].this) as never // ! infer in constructor instead?
+		return infer_(this[Voltiso.OPTIONS].this) as never // ! infer in constructor instead?
 	}
 
 	get getParametersSchema(): never {
-		return infer_(this[OPTIONS].parameters) as never // ! infer in constructor instead?
+		return infer_(this[Voltiso.OPTIONS].parameters) as never // ! infer in constructor instead?
 	}
 
 	get getReturnSchema(): never {
-		return infer_(this[OPTIONS].return) as never // ! infer in constructor instead?
+		return infer_(this[Voltiso.OPTIONS].return) as never // ! infer in constructor instead?
 	}
 
 	constructor(o: FunctionOptions & O) {
 		super(o, { freeze: false })
 
 		const parametersSchema = schema(
-			this[OPTIONS].parameters as never,
+			this[Voltiso.OPTIONS].parameters as never,
 		) as unknown as IArray | ITuple
 
 		let parametersUnionSchemas = _flattenUnion(parametersSchema).getSchemas
@@ -110,32 +112,38 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 				? parametersUnionSchemas[0]
 				: or(...parametersUnionSchemas)
 
-		this[OPTIONS].parameters = finalArgumentsSchema as never
+		this[Voltiso.OPTIONS].parameters = finalArgumentsSchema as never
 		// ! TODO - typings for parameters are incorrect
 
-		Object.freeze(this[OPTIONS])
+		Object.freeze(this[Voltiso.OPTIONS])
 
 		Object.freeze(this)
 	}
 
 	this<NewThis extends $$Schemable>(newThis: NewThis): any {
-		return new CustomFunctionImpl({ ...this[OPTIONS], this: newThis }) as never
+		return new CustomFunctionImpl({
+			...this[Voltiso.OPTIONS],
+			this: newThis,
+		}) as never
 	}
 
 	parameters<NewParameters extends $$SchemableTuple>(
 		parameters: NewParameters,
 	): any {
-		return new CustomFunctionImpl({ ...this[OPTIONS], parameters }) as never
+		return new CustomFunctionImpl({
+			...this[Voltiso.OPTIONS],
+			parameters,
+		}) as never
 	}
 
 	return<NewReturn extends SchemaLike>(newReturn: NewReturn): any {
 		return new CustomFunctionImpl({
-			...this[OPTIONS],
+			...this[Voltiso.OPTIONS],
 			return: newReturn,
 		}) as never
 	}
 
-	override [EXTENDS](other: SchemaLike): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: SchemaLike): boolean {
 		if (isUnknownFunctionSchema(other)) return true
 		else if (isFunctionSchema(other)) {
 			const argsOk: boolean = _functionArgumentsExtends(
@@ -148,7 +156,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 			)
 
 			return argsOk && rOk
-		} else return super[EXTENDS](other)
+		} else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	override _getIssues(value: unknown): ValidationIssue[] {
@@ -157,7 +165,7 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 		if (typeof value !== 'function') {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'be function' },
 					received: { value },
 				}),

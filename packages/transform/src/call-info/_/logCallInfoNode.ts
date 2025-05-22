@@ -20,6 +20,8 @@ function _helloOnce() {
 }
 
 export function logCallInfoNode(ctx: TransformContext, node: ts.Node): void {
+	if (ctx.options.silent) return
+
 	_helloOnce()
 
 	// eslint-disable-next-line no-console

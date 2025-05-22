@@ -35,7 +35,7 @@ describe('StrongDocRef', () => {
 		$Assert<IsIdentical<X, any>>()
 	})
 
-	it('assignable to DocRef<AnyDocTI>', () => {
+	it('assignable to DocRef<ANY_DOCTI>', () => {
 		expect.assertions(0)
 
 		class MyDoc extends Doc.with({ public: { a: s.number } }) {}

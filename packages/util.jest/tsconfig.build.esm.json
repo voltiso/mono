@@ -1,0 +1,13 @@
+// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+{
+	"extends": ["./tsconfig.json", "@voltiso/config.ts/build/esm"],
+
+	"compilerOptions": {
+		"outDir": "dist/esm",
+		"rootDir": "src"
+	},
+
+	"include": ["src"]
+}

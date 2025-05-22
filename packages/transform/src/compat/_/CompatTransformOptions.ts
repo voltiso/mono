@@ -1,7 +1,12 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-export interface CompatTransformOptions {
+import type { TransformOptions } from '@voltiso/transform.lib'
+import { defaultTransformOptions } from '@voltiso/transform.lib'
+
+import { _deepMerge2 } from '~/_/copied-from-util'
+
+export interface CompatTransformOptions extends TransformOptions {
 	supported: {
 		/**
 		 * E.g. `1_000_000`
@@ -33,11 +38,12 @@ export interface CompatTransformOptions {
 
 export type CompatFeature = keyof CompatTransformOptions['supported']
 
-export const defaultCompatTransformOptions: CompatTransformOptions = {
-	supported: {
-		numericSeparators: false, // useless in transpiled code
-		undefined: false, // transpile to `void 0` by default
-		importDirectory: false, // transpile to import `/index.js` instead
-		importWithoutExtension: false, // transpile to import `.js` instead
-	},
-}
+export const defaultCompatTransformOptions: CompatTransformOptions =
+	_deepMerge2(defaultTransformOptions as never, {
+		supported: {
+			numericSeparators: false, // useless in transpiled code
+			undefined: false, // transpile to `void 0` by default
+			importDirectory: false, // transpile to import `/index.js` instead
+			importWithoutExtension: false, // transpile to import `.js` instead
+		},
+	}) as never

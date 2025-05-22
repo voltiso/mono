@@ -1,16 +1,16 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { AlsoAccept, BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { AlsoAccept } from '@voltiso/util'
 
-import type { $$Schema, FunctionOptions, Schema, SCHEMA_NAME, Schema$ } from '~'
+import type { $$Schema, FunctionOptions, Schema, Schema$ } from '~'
 
 export interface IFunction extends Schema {
 	//
-	readonly [SCHEMA_NAME]: 'Function'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Function'
 
-	readonly [BASE_OPTIONS]: FunctionOptions
-	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: FunctionOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: FunctionOptions.Default
 
 	//
 
@@ -40,10 +40,10 @@ export interface IFunction extends Schema {
 
 export interface IFunction$ extends Schema$ {
 	//
-	readonly [SCHEMA_NAME]: 'Function'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Function'
 
-	readonly [BASE_OPTIONS]: FunctionOptions
-	readonly [DEFAULT_OPTIONS]: FunctionOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: FunctionOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: FunctionOptions.Default
 
 	//
 

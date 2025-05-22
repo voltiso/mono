@@ -2,8 +2,8 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import {
+	$fastAssert,
 	BoundCallable,
 	CALL,
 	isDefined,
@@ -21,14 +21,18 @@ import type { BigintOptions } from './BigintOptions'
 import type { CustomBigint } from './CustomBigint'
 import { isBigintSchema } from './IBigint'
 
+$fastAssert(SCHEMA_NAME)
+$fastAssert(EXTENDS)
+$fastAssert(OPTIONS)
+
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomBigintImpl<O> {
-	readonly [BASE_OPTIONS]: BigintOptions
-	readonly [DEFAULT_OPTIONS]: BigintOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: BigintOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: BigintOptions.Default
 
 	// readonly [PARTIAL_OPTIONS]: O
 
-	// readonly [OPTIONS]: Assume<
+	// readonly [Voltiso.OPTIONS]: Assume<
 	// 	BigintOptions,
 	// 	MergeSchemaOptions<DefaultBigintOptions, O>
 	// >
@@ -40,14 +44,14 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	implements CustomBigint<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Bigint' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Bigint' as const
 
-	get getMin(): this[OPTIONS]['min'] {
-		return this[OPTIONS].min as never
+	get getMin(): this[Voltiso.OPTIONS]['min'] {
+		return this[Voltiso.OPTIONS].min as never
 	}
 
-	get getMax(): this[OPTIONS]['max'] {
-		return this[OPTIONS].max as never
+	get getMax(): this[Voltiso.OPTIONS]['max'] {
+		return this[Voltiso.OPTIONS].max as never
 	}
 
 	constructor(o: O) {
@@ -66,9 +70,9 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		return literal<L>(literals as never) as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isBigintSchema(other)) return true
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	override _getIssues(value: unknown): ValidationIssue[] {
@@ -81,7 +85,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 			) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `at least ${this.getMin}` },
 						received: { value },
@@ -95,7 +99,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 			) {
 				issues.push(
 					new ValidationIssue({
-						name: this[OPTIONS].name,
+						name: this[Voltiso.OPTIONS].name,
 						// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 						expected: { description: `at most ${this.getMax}` },
 						received: { value },
@@ -105,7 +109,7 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 		} else {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 					expected: { description: 'bigint' },
 					received: { value },
 				}),

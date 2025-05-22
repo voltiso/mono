@@ -1,32 +1,31 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
+/* eslint-disable es-x/no-global-this */
+
 import type { DocTypes } from '~/DocTypes-module-augmentation'
 
 // eslint-disable-next-line sonarjs/redundant-type-aliases
-export type DocTagLike = string // | typeof __never_keyof_bug_workaround // | AnyDoc
+export type DocTagLike = string // | typeof __never_keyof_bug_workaround // | ANY_DOC
 
-export type DocTag = keyof DocTypes // Exclude<keyof OmitSignatures<DocTypes>, symbol> // | AnyDoc
+export type DocTag = keyof DocTypes // Exclude<keyof OmitSignatures<DocTypes>, symbol> // | ANY_DOC
 
 declare global {
 	namespace Voltiso {
 		namespace Transactor {
-			const AnyDoc: unique symbol
-			type AnyDoc = typeof AnyDoc
+			const ANY_DOC: unique symbol
+			type ANY_DOC = typeof ANY_DOC
+			// type ANY_DOC = { readonly _: unique symbol }['_']
+			// const ANY_DOC: ANY_DOC
 		}
 	}
 }
-
-if (
-	typeof (globalThis as any).Voltiso !== 'object' ||
-	(globalThis as any).Voltiso === null
-) {
-	;(globalThis as any).Voltiso = {}
-}
-
-;(globalThis as any).Voltiso.Transactor ??= /* @__PURE__ */ {}
-;(globalThis as any).Voltiso.Transactor.AnyDoc ??= /* @__PURE__ */ Symbol.for(
-	'@voltiso/transactor/AnyDoc',
+globalThis.Voltiso ??= /* @__PURE__ */ {} as never
+Voltiso.Transactor ??= /* @__PURE__ */ {} as never
+;(Voltiso.Transactor.ANY_DOC as any) ??= /* @__PURE__ */ Symbol.for(
+	'@voltiso/transactor/ANY_DOC',
 )
-export type AnyDoc = Voltiso.Transactor.AnyDoc
-export const AnyDoc: AnyDoc = /* @__PURE__ */ Voltiso.Transactor.AnyDoc
+export type ANY_DOC = Voltiso.Transactor.ANY_DOC
+export const ANY_DOC: ANY_DOC = /* @__PURE__ */ Voltiso.Transactor.ANY_DOC

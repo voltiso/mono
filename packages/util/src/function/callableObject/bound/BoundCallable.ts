@@ -10,21 +10,20 @@ import type {
 } from '~/function'
 import { _CustomBoundCallableNoClone } from '~/function'
 import type { NonStrictPartial } from '~/object'
-import type { NoArgument } from '~/type/optional-argument/OptionalArgument'
 
 import type { WithSelfBoundCALL } from '../CALL'
 import { CALL } from '../CALL'
 import type { BoundCallableOptions } from './BoundCallableOptions'
+import { UNSET } from '_/symbols/unset'
 
 //
 
-export type BoundCallable<
-	This extends WithSelfBoundCALL | NoArgument = NoArgument,
-> = This extends NoArgument
-	? IBoundCallable
-	: This extends WithSelfBoundCALL
-		? _BoundCallableWithCALL<This>
-		: never
+export type BoundCallable<This extends WithSelfBoundCALL | UNSET = UNSET> =
+	This extends UNSET
+		? IBoundCallable
+		: This extends WithSelfBoundCALL
+			? _BoundCallableWithCALL<This>
+			: never
 
 export type CustomBoundCallable<Options extends BoundCallableOptions> =
 	_BoundCallable<Options>

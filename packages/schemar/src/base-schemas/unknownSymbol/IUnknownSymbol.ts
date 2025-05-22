@@ -6,11 +6,11 @@ import { SCHEMA_NAME } from '_'
 import type { Schema, Schema$ } from '~'
 
 export interface IUnknownSymbol extends Schema {
-	readonly [SCHEMA_NAME]: 'UnknownSymbol'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownSymbol'
 }
 
 export interface IUnknownSymbol$ extends Schema$ {
-	readonly [SCHEMA_NAME]: 'UnknownSymbol'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownSymbol'
 }
 
 //

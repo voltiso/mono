@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $fastAssert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { schema } from '~/core-schemas'
@@ -23,8 +22,8 @@ $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomUnionImpl<O> {
-	readonly [BASE_OPTIONS]: UnionOptions
-	readonly [DEFAULT_OPTIONS]: UnionOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: UnionOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: UnionOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -33,13 +32,13 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 	implements CustomUnion<O>, IUnion
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Union' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Union' as const
 
-	get getSchemas(): this[OPTIONS]['schemas'] {
-		return this[OPTIONS].schemas as never
+	get getSchemas(): this[Voltiso.OPTIONS]['schemas'] {
+		return this[Voltiso.OPTIONS].schemas as never
 	}
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		const otherTypes: $$Schemable[] = isUnionSchema(other)
 			? other.getSchemas
 			: [other]
@@ -79,7 +78,7 @@ export class CustomUnionImpl<O extends Partial<UnionOptions>>
 		if (!valid) {
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name,
+					name: this[Voltiso.OPTIONS].name,
 
 					expected: {
 						oneOfValues: (this.getSchemas as unknown as Schemable[]).map(t =>

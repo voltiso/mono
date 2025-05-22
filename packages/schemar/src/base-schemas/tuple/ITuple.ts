@@ -1,33 +1,21 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$Override_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	OPTIONS,
-} from '@voltiso/util'
+import type { $Override_ } from '@voltiso/util'
 
-import type {
-	$$Schema,
-	$$Schemable,
-	Schema,
-	SCHEMA_NAME,
-	Schema$,
-	SchemaLike,
-} from '~'
+import type { $$Schema, $$Schemable, Schema, Schema$, SchemaLike } from '~'
 
 import type { TupleOptions } from './TupleOptions'
 
 export interface $$Tuple extends $$Schema {
-	readonly [SCHEMA_NAME]: 'Tuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 }
 
 export interface TupleLike<T extends readonly unknown[] = readonly unknown[]>
 	extends $$Tuple,
 		SchemaLike<T> {
 	//
-	readonly [SCHEMA_NAME]: 'Tuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 }
 
 //
@@ -37,12 +25,12 @@ export interface ITuple<T extends readonly unknown[] = readonly unknown[]>
 		TupleLike<T>,
 		Schema<T> {
 	//
-	readonly [SCHEMA_NAME]: 'Tuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 
-	readonly [BASE_OPTIONS]: TupleOptions
-	readonly [DEFAULT_OPTIONS]: TupleOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: TupleOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: TupleOptions.Default
 
-	readonly [OPTIONS]: TupleOptions<T>
+	readonly [Voltiso.OPTIONS]: TupleOptions<T>
 
 	get isReadonlyTuple(): boolean
 	get getShape(): $$Schemable[]
@@ -54,12 +42,12 @@ export interface ITuple$<T extends readonly unknown[] = readonly unknown[]>
 		TupleLike<T>,
 		Schema$<T> {
 	//
-	readonly [SCHEMA_NAME]: 'Tuple'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 
-	readonly [BASE_OPTIONS]: TupleOptions
-	readonly [DEFAULT_OPTIONS]: TupleOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: TupleOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: TupleOptions.Default
 
-	readonly [OPTIONS]: TupleOptions<T>
+	readonly [Voltiso.OPTIONS]: TupleOptions<T>
 
 	get isReadonlyTuple(): boolean
 	get getShape(): $$Schemable[]
@@ -78,17 +66,23 @@ export interface ITuple$<T extends readonly unknown[] = readonly unknown[]>
 //
 
 export interface IReadonlyTuple extends ITuple {
-	readonly [OPTIONS]: $Override_<TupleOptions, { isMutableTuple: false }>
+	readonly [Voltiso.OPTIONS]: $Override_<
+		TupleOptions,
+		{ isMutableTuple: false }
+	>
 }
 
 export interface IReadonlyTuple$ extends ITuple$ {
-	readonly [OPTIONS]: $Override_<TupleOptions, { isMutableTuple: false }>
+	readonly [Voltiso.OPTIONS]: $Override_<
+		TupleOptions,
+		{ isMutableTuple: false }
+	>
 }
 
 //
 
 export interface IMutableTuple extends ITuple {
-	readonly [OPTIONS]: $Override_<TupleOptions, { isMutableTuple: true }>
+	readonly [Voltiso.OPTIONS]: $Override_<TupleOptions, { isMutableTuple: true }>
 
 	get Type(): unknown[]
 	get Output(): unknown[]
@@ -96,7 +90,7 @@ export interface IMutableTuple extends ITuple {
 }
 
 export interface IMutableTuple$ extends ITuple$ {
-	readonly [OPTIONS]: $Override_<TupleOptions, { isMutableTuple: true }>
+	readonly [Voltiso.OPTIONS]: $Override_<TupleOptions, { isMutableTuple: true }>
 
 	get Type(): unknown[]
 	get Output(): unknown[]

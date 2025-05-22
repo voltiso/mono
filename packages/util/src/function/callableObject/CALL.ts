@@ -1,12 +1,26 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable es-x/no-global-this */
+
 import type { Callable } from '../callable'
 
 //
 
-export const CALL = Symbol('CALL')
-export type CALL = typeof CALL
+declare global {
+	namespace Voltiso {
+		const CALL: unique symbol
+		type CALL = typeof CALL
+		// type CALL = { readonly _: unique symbol }['_']
+		// const CALL: CALL
+	}
+}
+globalThis.Voltiso ??= {} as never
+;(Voltiso.CALL as any) ??= Symbol.for('@voltiso/util/CALL')
+export type CALL = Voltiso.CALL
+export const CALL: CALL = Voltiso.CALL
+//
 
 //
 

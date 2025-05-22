@@ -6,18 +6,18 @@ import type { $Override_ } from '@voltiso/util'
 import type { GetSchema$ByName, SCHEMA_NAME, SchemaOptions } from '~'
 
 export type DefineSchema$<
-	This extends { readonly [SCHEMA_NAME]: unknown },
+	This extends { readonly [Voltiso.Schemar.SCHEMA_NAME]: unknown },
 	NewPartialOptions extends Partial<SchemaOptions>,
 > = GetSchema$ByName<This[SCHEMA_NAME], NewPartialOptions>
 
 export type OverrideSchema$<
-	This extends { readonly [SCHEMA_NAME]: unknown },
+	This extends { readonly [Voltiso.Schemar.SCHEMA_NAME]: unknown },
 	PartialOptions,
 	NewPartialOptions,
 > = DefineSchema$<This, $Override_<PartialOptions, NewPartialOptions>>
 
 export type OverrideSchema$WithOmit<
-	This extends { readonly [SCHEMA_NAME]: unknown },
+	This extends { readonly [Voltiso.Schemar.SCHEMA_NAME]: unknown },
 	PartialOptions extends object,
 	NewPartialOptions,
 	FieldsToOmit extends string,

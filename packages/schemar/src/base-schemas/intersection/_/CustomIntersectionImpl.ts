@@ -2,7 +2,6 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, DEFAULT_OPTIONS } from '@voltiso/util'
 import { $fastAssert, lazyConstructor, OPTIONS } from '@voltiso/util'
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
@@ -18,11 +17,12 @@ import type { IntersectionOptions } from '../IntersectionOptions'
 
 $fastAssert(SCHEMA_NAME)
 $fastAssert(EXTENDS)
+$fastAssert(OPTIONS)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomIntersectionImpl<O> {
-	readonly [BASE_OPTIONS]: IntersectionOptions
-	readonly [DEFAULT_OPTIONS]: IntersectionOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: IntersectionOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: IntersectionOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -31,14 +31,14 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	implements CustomIntersection<O>, IIntersection
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Intersection' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Intersection' as const
 
-	get getSchemas(): this[OPTIONS]['schemas'] {
-		return this[OPTIONS].schemas as never
+	get getSchemas(): this[Voltiso.OPTIONS]['schemas'] {
+		return this[Voltiso.OPTIONS].schemas as never
 	}
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this
-	override [EXTENDS](_other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](_other: Schema): boolean {
 		throw new Error('Method not implemented.') // TODO
 	}
 

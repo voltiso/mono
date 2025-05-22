@@ -2,7 +2,7 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
-import type { BASE_OPTIONS, Constructor, DEFAULT_OPTIONS } from '@voltiso/util'
+import type { Constructor } from '@voltiso/util'
 import {
 	$fastAssert,
 	lazyConstructor,
@@ -19,13 +19,14 @@ import type { CustomInstance } from './CustomInstance'
 import { isInstanceSchema } from './IInstance'
 import type { InstanceOptions } from './InstanceOptions'
 
+$fastAssert(OPTIONS)
 $fastAssert(EXTENDS)
 $fastAssert(SCHEMA_NAME)
 
 // ! esbuild bug: Cannot `declare` inside class - using interface merging instead
 export interface CustomInstanceImpl<O> {
-	readonly [BASE_OPTIONS]: InstanceOptions
-	readonly [DEFAULT_OPTIONS]: InstanceOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: InstanceOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: InstanceOptions.Default
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -34,7 +35,7 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	implements CustomInstance<O>
 {
 	// eslint-disable-next-line es-x/no-class-instance-fields
-	override readonly [SCHEMA_NAME] = 'Instance' as const
+	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Instance' as const
 
 	// declare readonly [PARTIAL_OPTIONS]: O;
 
@@ -43,18 +44,18 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	// 	MergeSchemaOptions<DefaultInstanceOptions, O>
 	// >
 
-	get getConstructor(): this[OPTIONS]['Constructor'] {
-		return this[OPTIONS].Constructor as never
+	get getConstructor(): this[Voltiso.OPTIONS]['Constructor'] {
+		return this[Voltiso.OPTIONS].Constructor as never
 	}
 
 	// constructor(o: O) {
 	// 	super(o)
 	// }
 
-	override [EXTENDS](other: Schema): boolean {
+	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {
 		if (isInstanceSchema(other))
 			return this.getConstructor === other.getConstructor
-		else return super[EXTENDS](other)
+		else return super[Voltiso.Schemar.EXTENDS](other)
 	}
 
 	override _getIssues(x: unknown): ValidationIssue[] {
@@ -67,8 +68,8 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 
 			issues.push(
 				new ValidationIssue({
-					name: this[OPTIONS].name
-						? `instanceof ${this[OPTIONS].name}`
+					name: this[Voltiso.OPTIONS].name
+						? `instanceof ${this[Voltiso.OPTIONS].name}`
 						: 'instanceof',
 
 					expected: {
@@ -84,6 +85,6 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	}
 
 	override _toString(): string {
-		return `instanceof ${this[OPTIONS].Constructor.name}`
+		return `instanceof ${this[Voltiso.OPTIONS].Constructor.name}`
 	}
 }

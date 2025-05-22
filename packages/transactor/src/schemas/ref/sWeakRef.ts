@@ -7,7 +7,7 @@ import { lazyFunction, lazyObject, OPTIONS, ProtoCallable } from '@voltiso/util'
 import { _CustomDocRef } from '~/DocRef/_CustomDocRef'
 import type { WeakDocRef } from '~/DocRef/WeakDocRef'
 import type { $$DocRelated } from '~/DocRelated/DocRelated'
-import type { AnyDoc, DocTag } from '~/DocTypes'
+import type { ANY_DOC, DocTag } from '~/DocTypes'
 
 /**
  * Match any ref, make it weakRef
@@ -28,11 +28,11 @@ const _fixableWeakRefSchema = lazyObject(() =>
 //
 
 /** 🫠 Accept any, output weak - but currently weak is just supertype */
-export interface FixableWeakDocRefSchema<X extends $$DocRelated = AnyDoc>
+export interface FixableWeakDocRefSchema<X extends $$DocRelated = ANY_DOC>
 	extends s.Schema<WeakDocRef<X>> {}
 
 /** 🫠 Accept any, output weak - but currently weak is just supertype */
-export interface FixableWeakDocRefSchema$<X extends $$DocRelated = AnyDoc>
+export interface FixableWeakDocRefSchema$<X extends $$DocRelated = ANY_DOC>
 	extends s.Schema$<WeakDocRef<X>> {
 	//
 	get Final(): FixableWeakDocRefSchema<X>

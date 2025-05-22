@@ -1,21 +1,9 @@
 // ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type {
-	$Override_,
-	BASE_OPTIONS,
-	DEFAULT_OPTIONS,
-	IsCompatible,
-	OPTIONS,
-} from '@voltiso/util'
+import type { $Override_, IsCompatible, OPTIONS } from '@voltiso/util'
 
-import type {
-	$$Array,
-	CustomSchema,
-	CustomSchema$,
-	Schema,
-	SCHEMA_NAME,
-} from '~'
+import type { $$Array, CustomSchema, CustomSchema$, Schema } from '~'
 
 import type { ArrayOptions } from './ArrayOptions'
 
@@ -25,18 +13,18 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 	extends $$Array,
 		CustomSchema<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Array'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 
-	readonly [BASE_OPTIONS]: ArrayOptions
-	readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: ArrayOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: ArrayOptions.Default
 
 	//
 
 	get getElementSchema(): CustomArray.GetElementSchema<this>
 
-	get isReadonlyArray(): this[OPTIONS]['isReadonlyArray']
-	get getMinLength(): this[OPTIONS]['minLength']
-	get getMaxLength(): this[OPTIONS]['maxLength']
+	get isReadonlyArray(): this[Voltiso.OPTIONS]['isReadonlyArray']
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength']
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 }
 
 //
@@ -45,18 +33,18 @@ export interface CustomArray$<O extends Partial<ArrayOptions>>
 	extends $$Array,
 		CustomSchema$<O> {
 	//
-	readonly [SCHEMA_NAME]: 'Array'
+	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 
-	readonly [BASE_OPTIONS]: ArrayOptions
-	readonly [DEFAULT_OPTIONS]: ArrayOptions.Default
+	readonly [Voltiso.BASE_OPTIONS]: ArrayOptions
+	readonly [Voltiso.DEFAULT_OPTIONS]: ArrayOptions.Default
 
 	//
 
 	get getElementSchema(): CustomArray.GetElementSchema<this>
 
-	get isReadonlyArray(): this[OPTIONS]['isReadonlyArray']
-	get getMinLength(): this[OPTIONS]['minLength']
-	get getMaxLength(): this[OPTIONS]['maxLength']
+	get isReadonlyArray(): this[Voltiso.OPTIONS]['isReadonlyArray']
+	get getMinLength(): this[Voltiso.OPTIONS]['minLength']
+	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 
 	//
 

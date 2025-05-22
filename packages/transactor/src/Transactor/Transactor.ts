@@ -17,7 +17,7 @@ import type { DTI, IndexedDoc } from '~/Doc'
 import type { $$DocConstructor, DocConstructor } from '~/DocConstructor'
 import type { GetDoc, GetDocTI } from '~/DocRelated'
 import type { DocTag } from '~/DocTypes'
-import { AnyDoc } from '~/DocTypes'
+import { ANY_DOC } from '~/DocTypes'
 import { TransactorError } from '~/error'
 import type { DbPathFromString } from '~/Path'
 import type { AfterTrigger, OnGetTrigger, Trigger } from '~/Trigger'
@@ -203,7 +203,7 @@ export class Transactor extends Db {
 
 	//
 
-	register<Cls extends { [DTI]: { tag: AnyDoc } }>(
+	register<Cls extends { [DTI]: { tag: ANY_DOC } }>(
 		cls: Cls,
 	): Throw<'db.register requires Doc tag'>
 
@@ -218,7 +218,7 @@ export class Transactor extends Db {
 	register<Cls extends $$DocConstructor>(cls: Cls): any {
 		$AssumeType<DocConstructor>(cls)
 
-		if (cls._.tag === AnyDoc)
+		if (cls._.tag === ANY_DOC)
 			throw new TransactorError(
 				'db.register(Cls) requires `Cls` to include DocTag',
 			)

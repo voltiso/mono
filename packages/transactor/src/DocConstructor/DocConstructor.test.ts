@@ -9,7 +9,7 @@ import { $Assert, $Is } from '@voltiso/util'
 import type { DocIdBrand } from '~/brand'
 import type { DocTI, DTI } from '~/Doc'
 import { Doc } from '~/Doc'
-import { AnyDoc } from '~/DocTypes'
+import { ANY_DOC } from '~/DocTypes'
 
 import type { DocConstructor } from './DocConstructor'
 import type { $$DocConstructor } from './IDocConstructor'
@@ -44,12 +44,12 @@ describe('DocConstructor', () => {
 	it('Id', () => {
 		expect.assertions(0)
 
-		const MyDocConstructor = Doc(AnyDoc).with({ public: { num: s.number } })
+		const MyDocConstructor = Doc(ANY_DOC).with({ public: { num: s.number } })
 
-		$Assert.is<(typeof MyDocConstructor)[DTI]['tag'], AnyDoc>()
+		$Assert.is<(typeof MyDocConstructor)[DTI]['tag'], ANY_DOC>()
 
 		type MyDoc = InstanceType<typeof MyDocConstructor>
-		$Assert<IsIdentical<MyDoc[DTI]['tag'], AnyDoc>>()
+		$Assert<IsIdentical<MyDoc[DTI]['tag'], ANY_DOC>>()
 
 		type MyId = MyDoc['id']
 		$Assert<IsIdentical<MyId, string & DocIdBrand>>()

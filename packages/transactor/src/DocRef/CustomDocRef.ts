@@ -2,20 +2,13 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output_, Schema } from '@voltiso/schemar'
-import type {
-	_,
-	$Override_,
-	DeleteIt,
-	If,
-	OPTIONS,
-	PatchFor,
-} from '@voltiso/util'
+import type { _, $Override_, DeleteIt, If, PatchFor } from '@voltiso/util'
 import { $Assert, lazyConstructor } from '@voltiso/util'
 
 import type {
 	$$DocRef,
 	$WithId,
-	AnyDoc,
+	ANY_DOC,
 	DocBrand,
 	DocIdString,
 	DocPath,
@@ -51,16 +44,16 @@ export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
 	extends $$DocRef,
 		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
 		CustomDocRef.IntrinsicFields<O> {
-	readonly [OPTIONS]: CustomDocRef.Options.Get<O>
+	readonly [Voltiso.OPTIONS]: CustomDocRef.Options.Get<O>
 
 	//
 
 	get isStrong(): O['isStrong']
 
-	get id(): DocIdString<GetDocTI<this[OPTIONS]['doc']>> &
-		Output_<GetDocTI<this[OPTIONS]['doc']>['id']>
+	get id(): DocIdString<GetDocTI<this[Voltiso.OPTIONS]['doc']>> &
+		Output_<GetDocTI<this[Voltiso.OPTIONS]['doc']>['id']>
 
-	get path(): DocPath<this[OPTIONS]['doc']>
+	get path(): DocPath<this[Voltiso.OPTIONS]['doc']>
 
 	//
 
@@ -72,24 +65,26 @@ export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
 	//
 
 	get data(): NestedPromise<
-		GetData<this[OPTIONS]['doc']>,
+		GetData<this[Voltiso.OPTIONS]['doc']>,
 		O['isStrong'] extends true ? true : boolean
 	>
 
 	dataWithId(): NestedPromise<
-		GetDataWithId<this[OPTIONS]['doc']>,
+		GetDataWithId<this[Voltiso.OPTIONS]['doc']>,
 		O['isStrong'] extends true ? true : boolean
 	>
 
-	readonly aggregates: GetAggregatePromises<this[OPTIONS]['doc']>
+	readonly aggregates: GetAggregatePromises<this[Voltiso.OPTIONS]['doc']>
 
-	readonly methods: GetMethodPromises<this[OPTIONS]['doc']>
+	readonly methods: GetMethodPromises<this[Voltiso.OPTIONS]['doc']>
 
 	//
 
-	get schema(): Schema<GetData<this[OPTIONS]['doc']>> | undefined
-	get schemaWithId(): Schema<$WithId<GetData<this[OPTIONS]['doc']>>> | undefined
-	get aggregateSchemas(): GetDocTI<this[OPTIONS]['doc']>['aggregates']
+	get schema(): Schema<GetData<this[Voltiso.OPTIONS]['doc']>> | undefined
+	get schemaWithId():
+		| Schema<$WithId<GetData<this[Voltiso.OPTIONS]['doc']>>>
+		| undefined
+	get aggregateSchemas(): GetDocTI<this[Voltiso.OPTIONS]['doc']>['aggregates']
 
 	//
 
@@ -109,15 +104,17 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 		> {
 	/** @returns `PromiseLike`! (`then`-only) */
 	get(): PromiseLike<
-		GetDoc<this[OPTIONS]['doc']> | If<O['isStrong'], never, null>
+		GetDoc<this[Voltiso.OPTIONS]['doc']> | If<O['isStrong'], never, null>
 	>
 
 	//
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(
-		updates: PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>,
-	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+		updates: PatchFor<
+			GetUpdateDataByCtx<this[Voltiso.OPTIONS]['doc'], 'outside'>
+		>,
+	): PromiseLike<GetDoc<this[Voltiso.OPTIONS]['doc']>>
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(updates: DeleteIt): PromiseLike<null>
@@ -125,20 +122,20 @@ export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
 	/** @returns `PromiseLike`! (`then`-only) */
 	update(
 		updates:
-			| PatchFor<GetUpdateDataByCtx<this[OPTIONS]['doc'], 'outside'>>
+			| PatchFor<GetUpdateDataByCtx<this[Voltiso.OPTIONS]['doc'], 'outside'>>
 			| DeleteIt,
-	): PromiseLike<GetDoc<this[OPTIONS]['doc']> | null>
+	): PromiseLike<GetDoc<this[Voltiso.OPTIONS]['doc']> | null>
 
 	//
 
 	/** @returns `PromiseLike`! (`then`-only) */
 	set(
-		data?: GetPublicCreationInputData<this[OPTIONS]['doc']>,
-	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+		data?: GetPublicCreationInputData<this[Voltiso.OPTIONS]['doc']>,
+	): PromiseLike<GetDoc<this[Voltiso.OPTIONS]['doc']>>
 
 	create(
-		data?: _<GetPublicCreationInputData<this[OPTIONS]['doc']>>,
-	): PromiseLike<GetDoc<this[OPTIONS]['doc']>>
+		data?: _<GetPublicCreationInputData<this[Voltiso.OPTIONS]['doc']>>,
+	): PromiseLike<GetDoc<this[Voltiso.OPTIONS]['doc']>>
 
 	//
 
@@ -210,7 +207,7 @@ export namespace CustomDocRef {
 		 * (Didn't work with full $$DocRelated - recursive types)
 		 */
 		doc: $$DocRelatedLike
-		// doc: DocTagLike | AnyDoc
+		// doc: DocTagLike | ANY_DOC
 
 		// /**
 		//  * Useful to make recursive types possible
@@ -241,7 +238,7 @@ export const defaultDocRefOptions = {
 	isStrong: false as boolean, // must be supertype
 
 	/** 🌿 Type-only (no value at runtime) */
-	doc: undefined as unknown as AnyDoc,
+	doc: undefined as unknown as ANY_DOC,
 }
 
 //

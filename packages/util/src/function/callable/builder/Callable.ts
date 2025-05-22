@@ -2,12 +2,12 @@
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsAny } from '~/any'
-import type { NoThis } from '~/function'
 
 import type { CallableOptions, GetCallableOptions } from './CallableOptions'
+import { UNSET } from '_/symbols/unset'
 
 export type Callable<O extends Partial<CallableOptions> = {}> =
-	GetCallableOptions<O>['this'] extends NoThis
+	GetCallableOptions<O>['this'] extends UNSET
 		? (
 				...args: Callable.FixParameters<GetCallableOptions<O>['parameters']>
 			) => GetCallableOptions<O>['return']
