@@ -126,6 +126,10 @@ export class Transactor extends Db {
 		}
 	}
 
+	isInsideTransaction(): boolean {
+		return !!this._getTransactionContext()
+	}
+
 	_runWithContext<Return>(
 		context: ContextOverride,
 		body: () => MaybePromise<Return>,

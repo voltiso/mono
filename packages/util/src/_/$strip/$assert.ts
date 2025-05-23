@@ -68,8 +68,8 @@ _fastAssert.object = (...args) => {
  */
 export const $fastAssert: typeof _fastAssert = _fastAssert
 
-/**
- * @deprecated Use `$fastAssert` instead
- * @strip Use `@voltiso/transform/strip` to strip from production code
- */
-export const $assert = $fastAssert
+// /**
+//  * @deprecated Use `$fastAssert` instead
+//  * @strip Use `@voltiso/transform/strip` to strip from production code
+//  */
+// export const $assert = $fastAssert

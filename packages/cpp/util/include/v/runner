@@ -2,10 +2,17 @@
 #include <v/_/_>
 
 #include "v/any-function"
+#include "v/concepts/options"
 #include "v/context"
 #include "v/hash-set"
 #include "v/heap"
-#include "v/is/trivially-relocatable"
+#include "v/object"
+#include "v/option/custom-template"
+#include "v/option/input-options"
+#include "v/option/mutable"
+#include "v/option/noexcept"
+#include "v/option/self"
+#include "v/options"
 #include "v/owned"
 #include "v/retainer"
 
@@ -15,7 +22,13 @@
 
 #include <v/ON>
 
-// forward
+// forward declarations
+namespace VOLTISO_NAMESPACE::runner {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom;
+} // namespace VOLTISO_NAMESPACE::runner
+
 namespace VOLTISO_NAMESPACE {
 class Runner;
 } // namespace VOLTISO_NAMESPACE
@@ -26,13 +39,13 @@ using TimePoint = Clock::time_point;
 using Delay = Clock::duration;
 using Priority = int;
 
-class Task {
+template <class TRunner> class Task {
 public:
 	using Clock = runner::_::Clock;
 	using TimePoint = runner::_::TimePoint;
 	using Duration = Clock::duration;
 	using Priority = runner::_::Priority;
-	// using Schedule = runner::_::Schedule;
+	using AnyCallback = TRunner::AnyCallback;
 
 	struct Options {
 		Priority priority = 0;
@@ -72,16 +85,16 @@ public:
 	template <
 	  class TFunction, class TOptions,
 	  std::enable_if_t<
-	    std::is_convertible_v<TFunction, AnyFunction<void()>> &&
+	    std::is_convertible_v<TFunction, AnyCallback> &&
 	    std::is_convertible_v<TOptions, Options>> * = nullptr>
-	Task(Runner *runner, TFunction &&run, TOptions &&options)
+	Task(TRunner *runner, TFunction &&run, TOptions &&options)
 	    : run{std::forward<TFunction>(run)}, runner{runner},
 	      options{std::forward<TOptions>(options)},
 	      targetExecutionTime{Clock::now() + options.delay} {}
 
 public:
-	AnyFunction<void()> run;
-	Runner *runner = nullptr;
+	AnyCallback run;
+	TRunner *runner = nullptr;
 	Options options;
 	TimePoint targetExecutionTime = TimePoint::min();
 
@@ -91,7 +104,10 @@ public:
 } // namespace VOLTISO_NAMESPACE::runner::_
 
 namespace VOLTISO_NAMESPACE::runner::_ {
-struct ImmediateTaskRef {
+template <class TRunner> struct ImmediateTaskRef {
+	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
+	using Task = TRunner::Task;
+
 	Task &task;
 	const uint64_t scheduleId = 0;
 	const Priority priority; // have to copy - task may be deleted already
@@ -105,7 +121,10 @@ struct ImmediateTaskRef {
 	}
 };
 
-struct ScheduledTaskRef {
+template <class TRunner> struct ScheduledTaskRef {
+	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
+	using Task = TRunner::Task;
+
 	Task &task;
 	const uint64_t scheduleId = 0;
 	const TimePoint targetExecutionTime;
@@ -124,29 +143,31 @@ struct ScheduledTaskRef {
 
 //
 
-namespace VOLTISO_NAMESPACE {
-template <>
-constexpr auto is::TriviallyRelocatable<runner::_::ImmediateTaskRef> = true;
+namespace VOLTISO_NAMESPACE::runner {
+template <class Options>
+  requires concepts::Options<Options>
+class Custom
+    : public Object<typename Options::template WithDefault<
+        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
+private:
+	using Base = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
+	using Self = Base::Self;
 
-template <>
-constexpr auto is::TriviallyRelocatable<runner::_::ScheduledTaskRef> = true;
-} // namespace VOLTISO_NAMESPACE
-
-//
-
-namespace VOLTISO_NAMESPACE {
-// uses `v::context::get<Retainer>()` to retain tasks
-class Runner {
 public:
-	using Task = runner::_::Task;
+	using Task = runner::_::Task<Custom>;
 	using Clock = runner::_::Clock;
 	using Duration = Clock::duration;
 	using TimePoint = runner::_::TimePoint;
 	using Delay = runner::_::Delay;
+	static constexpr bool IS_NOEXCEPT = Options::template GET<option::NOEXCEPT>;
+	static constexpr bool IS_MUTABLE = Options::template GET<option::MUTABLE>;
+	using AnyCallback = AnyFunction<void()>::With<
+	  option::NOEXCEPT<IS_NOEXCEPT>, option::MUTABLE<IS_MUTABLE>>;
 
 private:
-	using ImmediateTaskRef = runner::_::ImmediateTaskRef;
-	using ScheduledTaskRef = runner::_::ScheduledTaskRef;
+	using ImmediateTaskRef = runner::_::ImmediateTaskRef<Custom>;
+	using ScheduledTaskRef = runner::_::ScheduledTaskRef<Custom>;
 
 private:
 	bool keepRunning = true;
@@ -158,14 +179,14 @@ private:
 	Heap<ScheduledTaskRef> scheduledTasks;
 
 public:
-	Runner() = default;
+	Custom() = default;
 
 	// not relocatable - tasks reference it
-	Runner(const Runner &) = delete;
-	Runner &operator=(const Runner &) = delete;
+	Custom(const Custom &) = delete;
+	Custom &operator=(const Custom &) = delete;
 
 public:
-	~Runner() {
+	~Custom() {
 		for (auto &task : allTasks) {
 			task.runner = nullptr;
 		}
@@ -258,7 +279,7 @@ public:
 	//   void terminate() {}
 
 	v::Owned<Task>::Weak
-	post(const Task::Options &options, AnyFunction<void()> &&run) {
+	post(const Task::Options &options, AnyCallback &&run) {
 		auto task = Owned<Task>::create(this, std::move(run), options);
 		this->allTasks.insert(task);
 		if (options.isRepeating) [[unlikely]] {
@@ -272,8 +293,9 @@ public:
 		return weakTask;
 	}
 
-	v::Owned<Task>::Weak post(AnyFunction<void()> &&run) {
-		auto task = Owned<Task>::create(this, std::move(run), Task::Options{});
+	v::Owned<Task>::Weak post(AnyCallback &&run) {
+		auto task =
+		  Owned<Task>::create(this, std::move(run), typename Task::Options{});
 		this->allTasks.insert(task);
 		this->immediateTasks.maybeGrowAndPush(task);
 		auto &retainer = context::get<Retainer>();
@@ -282,7 +304,7 @@ public:
 		return weakTask;
 	}
 
-	v::Owned<Task>::Weak postRepeating(Delay period, AnyFunction<void()> &&run) {
+	v::Owned<Task>::Weak postRepeating(Delay period, AnyCallback &&run) {
 		return post(
 		  {
 		    // .delay = delayAndPeriod, // 0
@@ -291,45 +313,52 @@ public:
 		  },
 		  std::move(run));
 	}
+}; // class Custom
+} // namespace VOLTISO_NAMESPACE::runner
+
+namespace VOLTISO_NAMESPACE {
+class Runner : public runner::Custom<Options<option::Self<Runner>>> {
+	using Base = runner::Custom<VOLTISO_NAMESPACE::Options<option::Self<Runner>>>;
+	using Base::Base;
 };
 } // namespace VOLTISO_NAMESPACE
 
 //
 
 namespace VOLTISO_NAMESPACE::runner::_ {
-inline Task::~Task() {
+template <class TRunner> inline Task<TRunner>::~Task() {
 	if (runner) [[likely]] {
 		runner->allTasks.maybeErase(*this);
 	}
 }
 
-inline void Task::cancel() {
+template <class TRunner> inline void Task<TRunner>::cancel() {
 	CHECK(runner);
 	runner->allTasks.maybeErase(*this); // might be paused
 	runner = nullptr;
 }
 
-inline void Task::maybeCancel() {
+template <class TRunner> inline void Task<TRunner>::maybeCancel() {
 	if (runner) [[likely]] {
 		runner->allTasks.maybeErase(*this);
 		runner = nullptr;
 	}
 }
 
-inline void Task::pause() {
+template <class TRunner> inline void Task<TRunner>::pause() {
 	CHECK(options.isRepeating);
 	CHECK(runner);
 	runner->allTasks.erase(*this);
 }
 
-inline void Task::maybePause() {
+template <class TRunner> inline void Task<TRunner>::maybePause() {
 	CHECK(options.isRepeating);
 	if (runner) [[likely]] {
 		runner->allTasks.maybeErase(*this);
 	}
 }
 
-inline void Task::resume() {
+template <class TRunner> inline void Task<TRunner>::resume() {
 	CHECK(options.isRepeating);
 	CHECK(runner);
 	runner->allTasks.insert(*this);
@@ -338,7 +367,7 @@ inline void Task::resume() {
 	runner->immediateTasks.maybeGrowAndPush(*this);
 }
 
-inline void Task::maybeResume() {
+template <class TRunner> inline void Task<TRunner>::maybeResume() {
 	CHECK(options.isRepeating);
 	if (runner) [[likely]] {
 		auto taskRef = runner->allTasks(*this);

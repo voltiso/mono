@@ -20,16 +20,17 @@ export function checkHeapSize(): void {
 
 	const totalMemoryGb = os.totalmem() / 1_024 / 1_024 / 1_024
 
-	const minHeapSizeGb = Math.max(7, totalMemoryGb / 2)
+	const minHeapSizeGb = Math.min(Math.max(7, totalMemoryGb / 2), 20) // require between 7 and 20 GB
+	const haveHeapSizeGb = stats.heap_size_limit / 1_024 / 1_024 / 1_024
 
-	if (stats.heap_size_limit < minHeapSizeGb * 1_024 * 1_024 * 1_024) {
-		const message = `heap_size_limit is less than ${minHeapSizeGb}GB! eslint may crash! Use --max-old-space-size=${
-			minHeapSizeGb * 1_024 * 1_024 * 1_024
+	if (haveHeapSizeGb < minHeapSizeGb) {
+		const message = `heap size (${haveHeapSizeGb} GB) is less than ${minHeapSizeGb} GB! eslint may crash! Use NODE_OPTIONS=--max-old-space-size=${
+			minHeapSizeGb * 1_024 * 1.1
 		} to increase the heap size limit`
 
 		// eslint-disable-next-line no-console
 		console.error(chalk.bgRed(message))
 
-		throw new Error(message)
+		// throw new Error(message) // ! don't want to auto-crash though
 	}
 }
