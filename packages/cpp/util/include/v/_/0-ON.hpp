@@ -36,3 +36,9 @@
 
 #pragma push_macro("V")
 #define V VOLTISO_NAMESPACE
+
+// Windows headers define OPTIONAL as empty macro, conflicts with voltiso naming
+#pragma push_macro("OPTIONAL")
+#ifdef OPTIONAL
+	#undef OPTIONAL
+#endif

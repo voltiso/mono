@@ -12,3 +12,5 @@
 #pragma pop_macro("INLINE")
 
 #pragma pop_macro("V")
+
+#pragma pop_macro("OPTIONAL")
