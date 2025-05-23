@@ -9,12 +9,16 @@ namespace VOLTISO_NAMESPACE::is {
 // ! std::remove_all_extents not working ?????????
 
 template <class T>
-static constexpr auto TriviallyRelocatable =
-  // !std::is_class_v<T> && !std::is_union_v<T>;
-  // !std::is_class_v<std::remove_all_extents<T>> &&
-  // !std::is_union_v<std::remove_all_extents<T>>;
-  std::is_reference_v<T> ||
-  std::is_trivially_copyable_v<T>; // may be incomplete yet
+static constexpr auto TriviallyRelocatable = []() constexpr {
+	// Check if type provides IS_TRIVIALLY_RELOCATABLE marker
+	if constexpr (requires { T::IS_TRIVIALLY_RELOCATABLE; }) {
+		return T::IS_TRIVIALLY_RELOCATABLE;
+	} else {
+		// Fall back to default inference
+		return std::is_reference_v<T> ||
+		       std::is_trivially_copyable_v<T>; // may be incomplete yet
+	}
+}();
 
 template <class T>
 static constexpr auto TriviallyRelocatable<std::unique_ptr<T>> = true;

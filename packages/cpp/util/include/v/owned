@@ -6,6 +6,8 @@
 #include "v/is/trivially-relocatable"
 #include "v/object"
 #include "v/option/custom-template"
+#include "v/option/input-options"
+#include "v/option/trivially-relocatable"
 #include "v/option/weak"
 #include "v/options"
 #include "v/pool"
@@ -48,15 +50,11 @@ template <class Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
-template <class Item, template <class...> class CustomTemplate>
-struct Specializations<
-  Options<option::Item<Item>, option::CustomTemplate<CustomTemplate>>> {
+template <class Item> struct Specializations<Options<option::Item<Item>>> {
 	using Result = Owned<Item>;
 };
-template <class Item, template <class...> class CustomTemplate>
-struct Specializations<Options<
-  option::Item<Item>, option::WEAK<true>,
-  option::CustomTemplate<CustomTemplate>>> {
+template <class Item>
+struct Specializations<Options<option::Item<Item>, option::WEAK<true>>> {
 	using Result = owned::Weak<Item>;
 };
 } // namespace VOLTISO_NAMESPACE::owned
@@ -66,11 +64,14 @@ struct Specializations<Options<
 namespace VOLTISO_NAMESPACE::owned {
 template <class Options>
   requires concepts::Options<Options>
-class Custom : public Object<typename Options ::template With<
-                 option::CustomTemplate<_::GetCustom>>> {
+class Custom
+    : public Object<typename Options ::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<true>,
+        option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
 private:
-	using Base = Object<
-	  typename Options ::template With<option::CustomTemplate<_::GetCustom>>>;
+	using Base = Object<typename Options ::template WithDefault<
+	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<_::GetCustom>,
+	  option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
 	using Item = Options::template Get<option::Item>;
@@ -333,14 +334,6 @@ DEFINE_OPERATOR(||)
 } // namespace VOLTISO_NAMESPACE::owned
 
 // !
-
-namespace VOLTISO_NAMESPACE {
-template <class Options>
-static constexpr auto is::TriviallyRelocatable<owned::Custom<Options>> = true;
-
-template <class Item>
-static constexpr auto is::TriviallyRelocatable<owned::Weak<Item>> = true;
-} // namespace VOLTISO_NAMESPACE
 
 // !
 

@@ -15,7 +15,9 @@
 #include "v/option/allocator"
 #include "v/option/in-place"
 #include "v/option/in-place-only"
+#include "v/option/input-options"
 #include "v/option/item"
+#include "v/option/trivially-relocatable"
 #include "v/singleton"
 #include "v/storage"
 #include "v/tag/concat"
@@ -183,9 +185,7 @@ struct Specializations {
 	using Result = Custom<Options>;
 };
 
-template <class Item>
-struct Specializations<
-  Options<option::Item<Item>, option::CustomTemplate<_::GetCustom>>> {
+template <class Item> struct Specializations<Options<option::Item<Item>>> {
 	using Result = DynamicArray<Item>;
 };
 } // namespace VOLTISO_NAMESPACE::dynamicArray
@@ -195,11 +195,14 @@ struct Specializations<
 namespace VOLTISO_NAMESPACE::dynamicArray {
 template <class Options>
   requires concepts::Options<Options>
-class Custom : public _::DataMembers<typename Options::template WithDefault<
-                 option::CustomTemplate<_::GetCustom>>> {
+class Custom
+    : public _::DataMembers<typename Options::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<true>,
+        option::CustomTemplate<_::GetCustom>, option::InputOptions<Options>>> {
 private:
 	using Base = _::DataMembers<typename Options::template WithDefault<
-	  option::CustomTemplate<_::GetCustom>>>;
+	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<_::GetCustom>,
+	  option::InputOptions<Options>>>;
 
 protected:
 	using Self = Base::Self;
@@ -936,11 +939,6 @@ public:
 	DynamicArray(Args &&...args) : Base(std::forward<Args>(args)...) {}
 };
 
-template <class Options>
-constexpr auto is::TriviallyRelocatable<dynamicArray::Custom<Options>> = true;
-
-template <class Item>
-constexpr auto is::TriviallyRelocatable<DynamicArray<Item>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 // !

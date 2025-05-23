@@ -8,6 +8,8 @@
 #include "v/object"
 #include "v/option/custom-template"
 #include "v/option/entry"
+#include "v/option/input-options"
+#include "v/option/trivially-relocatable"
 #include "v/options"
 #include "v/pool"
 #include <v/get/key>
@@ -500,11 +502,13 @@ namespace VOLTISO_NAMESPACE::hashTable {
 template <class Options>
   requires concepts::Options<Options>
 class Custom
-    : public Object<
-        typename Options::template With<option::CustomTemplate<Custom>>> {
+    : public Object<typename Options::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
+        option::InputOptions<Options>>> {
 private:
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+	using Base = Object<typename Options::template WithDefault<
+	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
+	  option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
 public:
@@ -874,15 +878,6 @@ public:
 	using WithAllocator = With<option::Allocator<Allocator>>;
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::hashTable
-
-// !
-
-namespace VOLTISO_NAMESPACE {
-template <class Options>
-  requires concepts::Options<Options>
-static constexpr auto is::TriviallyRelocatable<hashTable::Custom<Options>> =
-  true;
-} // namespace VOLTISO_NAMESPACE
 
 // !
 

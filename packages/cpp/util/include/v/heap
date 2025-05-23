@@ -200,11 +200,6 @@ class Heap : public heap::Custom<
 	using Base::Base;
 };
 
-template <class Options>
-constexpr auto is::TriviallyRelocatable<heap::Custom<Options>> = true;
-
-template <class Item>
-constexpr auto is::TriviallyRelocatable<Heap<Item>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

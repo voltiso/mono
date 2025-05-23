@@ -3,6 +3,10 @@
 
 #include "v/value-option"
 
+#include <v/ON>
+
 namespace VOLTISO_NAMESPACE::option {
-template <bool B> struct THROWING : ValueOption<B, false> {};
+template <bool B> struct NOEXCEPT : ValueOption<B, false> {};
 } // namespace VOLTISO_NAMESPACE::option
+
+#include <v/OFF>

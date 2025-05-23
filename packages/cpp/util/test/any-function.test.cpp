@@ -12,19 +12,19 @@ static_assert(sizeof(AnyFunction<int(int)>) == sizeof(void *) * 3);
 static_assert(is::TriviallyRelocatable<AnyFunction<int(int)>>);
 
 TEST(AnyFunction, moveSemantics) {
-	v::AnyFunction<void()> test = [] noexcept {};
+	v::AnyFunction<void()> test = [] {};
 }
 
 TEST(AnyFunction, Basic) {
-	AnyFunction<int(int)> f = [](int x) noexcept { return x * 2; };
+	AnyFunction<int(int)> f = [](int x) { return x * 2; };
 	EXPECT_EQ(f(5), 10);
 
-	AnyFunction<int(int, int)> add = [](int a, int b) noexcept { return a + b; };
+	AnyFunction<int(int, int)> add = [](int a, int b) { return a + b; };
 	EXPECT_EQ(add(3, 4), 7);
 }
 
 TEST(AnyFunction, MoveOnly) {
-	AnyFunction<std::string(std::string)> concat = [](std::string s) noexcept {
+	AnyFunction<std::string(std::string)> concat = [](std::string s) {
 		return s + " world";
 	};
 
@@ -46,7 +46,7 @@ TEST(AnyFunction, ComplexTypes) {
 	count = 0;
 
 	struct Counter {
-		int operator()() const noexcept { return ++count; }
+		int operator()() const { return ++count; }
 
 		int data[123];
 
@@ -68,50 +68,49 @@ TEST(AnyFunction, ComplexTypes) {
 
 TEST(AnyFunction, Capture) {
 	int multiplier = 3;
-	AnyFunction<int(int)> multiply = [multiplier](int x) noexcept {
+	AnyFunction<int(int)> multiply = [multiplier](int x) {
 		return x * multiplier;
 	};
 	EXPECT_EQ(multiply(4), 12);
 
 	std::string prefix = "test_";
-	AnyFunction<std::string(std::string)> prefixer =
-	  [prefix](std::string s) noexcept { return prefix + s; };
+	AnyFunction<std::string(std::string)> prefixer = [prefix](std::string s) {
+		return prefix + s;
+	};
 	EXPECT_EQ(prefixer("value"), "test_value");
 }
 
 TEST(AnyFunction, CaptureBig) {
 	std::vector<int> data = {1, 2, 3, 4, 5};
-	AnyFunction<int(int)> sum = [data](int index) noexcept {
-		return data[index];
-	};
+	AnyFunction<int(int)> sum = [data](int index) { return data[index]; };
 	EXPECT_EQ(sum(2), 3);
 }
 
 TEST(AnyFunction, GetCustom) {
-	using A = AnyFunction<int(int)>::With<option::THROWING<false>>;
+	using A = AnyFunction<int(int)>::With<option::NOEXCEPT<false>>;
 	static_assert(std::is_same_v<A, AnyFunction<int(int)>>);
 }
 
-TEST(AnyFunction, Throwing) {
-	static_assert(std::is_constructible_v<
-	              AnyFunction<void(int)>, decltype([](int x) noexcept {})>);
+TEST(AnyFunction, Noexcept) {
+	// test constructor - all 4 noexcept combinations
+	static_assert(!std::is_constructible_v<
+	              AnyFunction<void(int)>::Noexcept, decltype([](int x) {})>);
 
-	static_assert(
-	  !std::is_constructible_v<AnyFunction<void(int)>, decltype([](int x) {})>);
+	AnyFunction<void(int)> f1 = [](int x) {}; // ok
+	static_assert(!noexcept(f1(1)));
 
 	AnyFunction<void(int)> f2 = [](int x) noexcept {}; // ok
-	static_assert(noexcept(f2(1)));
-	AnyFunction<void(int)>::Throwing f3 = [](int x) {}; // ok
-	static_assert(!noexcept(f3(1)));
+	static_assert(!noexcept(f2(1)));
+
+	AnyFunction<void(int)>::Noexcept f3 = [](int x) noexcept {}; // ok
+	static_assert(noexcept(f3(1)));
 }
 
 TEST(AnyFunction, Mutable) {
 	static_assert(!std::is_constructible_v<
 	              AnyFunction<void()>, decltype([]() mutable noexcept {})>);
 	// AnyFunction<void()> f1 = []() mutable noexcept {}; // ! should not compile
-	const AnyFunction<void()> f2 = []() noexcept {}; // ok
-	static_assert(requires { f2(); });
-	const AnyFunction<void()>::Mutable f3 = []() mutable noexcept {}; // ok
+	const AnyFunction<void()>::Mutable f3 = []() mutable {}; // ok
 	static_assert(!std::is_invocable_v<decltype(f3)>);
 }
 

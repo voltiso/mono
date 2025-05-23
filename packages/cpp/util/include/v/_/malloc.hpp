@@ -7,6 +7,7 @@
 #include "v/handle"
 #include "v/object"
 #include "v/option/custom-template"
+#include "v/option/input-options"
 #include "v/singleton"
 
 // #include "glog/logging.h"
@@ -28,11 +29,11 @@ namespace VOLTISO_NAMESPACE::allocator::malloc {
 
 template <class Options>
 struct Custom
-    : public Object<
-        typename Options::template With<option::CustomTemplate<Custom>>> {
+    : public Object<typename Options::template WithDefault<
+        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
 private:
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+	using Base = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 
 	using Self = Base::Self;
 

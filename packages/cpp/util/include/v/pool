@@ -4,7 +4,7 @@
 #include "v/concepts/options"
 #include "v/dynamic-array"
 #include "v/handle"
-// #include "v/option"
+#include "v/option/input-options"
 
 #include <v/ON>
 
@@ -137,12 +137,12 @@ namespace VOLTISO_NAMESPACE::pool {
 template <class Options>
   requires concepts::Options<Options>
 class Custom
-    : public Object<
-        typename Options ::template With<option::CustomTemplate<Custom>>>,
+    : public Object<typename Options::template WithDefault<
+        option::CustomTemplate<Custom>, option::InputOptions<Options>>>,
       public Singleton<
         typename Options::template Get<option::Allocator>>::Guard {
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+	using Base = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
 public:

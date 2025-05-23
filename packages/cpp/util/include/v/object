@@ -4,7 +4,9 @@
 #include "v/_/object.forward.hpp" // IWYU pragma: keep
 
 #include "v/option/custom-template"
+#include "v/option/input-options"
 #include "v/option/self"
+#include "v/option/trivially-relocatable"
 
 #include <memory>
 #include <type_traits>
@@ -19,15 +21,21 @@ template <class TOptions>
 // requires concepts::Options<Options> && std::is_final_v<Final>
 class Object {
 public:
-	static constexpr bool IS_VOLTISO_OBJECT = true;
-
-public:
 	using Options = TOptions;
+
+	static constexpr bool IS_VOLTISO_OBJECT = true;
+	static constexpr bool IS_TRIVIALLY_RELOCATABLE =
+	  Options::template GET<option::TRIVIALLY_RELOCATABLE>;
 
 protected:
 	template <class OptionsArg>
 	using CustomTemplate =
 	  Options::template GetTemplate<option::CustomTemplate, OptionsArg>;
+
+	// Use InputOptions if provided, otherwise fall back to Options
+	using InputOptions = std::conditional_t<
+	  !std::is_same_v<typename Options::template Get<option::InputOptions>, void>,
+	  typename Options::template Get<option::InputOptions>, Options>;
 
 protected:
 	// CRTP
@@ -35,9 +43,9 @@ protected:
 	  !std::is_same_v<typename Options::template Get<option::Self>, void>,
 	  typename Options::template Get<option::Self>,
 	  // if option::Self was not provided for true CRTP,
-	  // try using provided `CustomTemplate<Options>` instead
+	  // try using provided `CustomTemplate<InputOptions>` instead
 	  // (which might not yield the final class in chain)
-	  CustomTemplate<Options>>;
+	  CustomTemplate<InputOptions>>;
 
 protected:
 	// get Self from CRTP, and apply correct cvref-qualifiers
@@ -48,12 +56,13 @@ protected:
 
 public:
 	template <class... MoreOptions>
-	using With = CustomTemplate<typename Options ::template With<
+	using With = CustomTemplate<typename InputOptions ::template With<
 	  MoreOptions...>::template Without<option::Self>>;
 
 	template <class... MoreOptions>
-	using WithDefault = CustomTemplate<typename Options ::template WithDefault<
-	  MoreOptions...>::template Without<option::Self>>;
+	using WithDefault =
+	  CustomTemplate<typename InputOptions ::template WithDefault<
+	    MoreOptions...>::template Without<option::Self>>;
 
 public:
 	/// cast to another class, preserving cvref-qualifiers

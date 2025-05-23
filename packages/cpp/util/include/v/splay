@@ -6,6 +6,7 @@
 #include "v/dynamic-array"
 #include "v/get/key"
 #include "v/object"
+#include "v/option/input-options"
 #include "v/option/pool"
 
 #include <v/ON>
@@ -450,10 +451,10 @@ namespace VOLTISO_NAMESPACE::splay {
 template <class Options>
   requires concepts::Options<Options>
 class Custom
-    : public Object<
-        typename Options::template With<option::CustomTemplate<Custom>>> {
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+    : public Object<typename Options::template WithDefault<
+        option::CustomTemplate<Custom>, option::InputOptions<Options>>> {
+	using Base = Object<typename Options::template WithDefault<
+	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 	using Self = Base::Self;
 
 public:

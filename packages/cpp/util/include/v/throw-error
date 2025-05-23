@@ -2,18 +2,20 @@
 #include <v/_/_>
 
 #ifndef __cpp_exceptions
-#include <glog/logging.h>
+	#include <glog/logging.h>
 #endif
+
+#include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
-
-template <class T> [[noreturn]] void throwError(const T &error) {
+template <class T> [[noreturn]] INLINE void throwError(const T &error) {
 #ifdef __cpp_exceptions
-  throw error;
+	throw error;
 #else
-  LOG(FATAL) << error.what();
-  std::abort();
+	LOG(FATAL) << error.what();
+	std::abort();
 #endif
 }
-
 } // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

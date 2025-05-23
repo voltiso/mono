@@ -6,6 +6,8 @@
 #include "v/get/hash"
 #include "v/object"
 #include "v/option/handle-kind"
+#include "v/option/input-options"
+#include "v/option/trivially-relocatable"
 #include "v/options"
 
 // #include <cstdint>
@@ -53,11 +55,13 @@ namespace VOLTISO_NAMESPACE::handle {
 template <class Options>
   requires concepts::Options<Options>
 class Custom
-    : public Object<
-        typename Options::template With<option::CustomTemplate<Custom>>> {
+    : public Object<typename Options::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
+        option::InputOptions<Options>>> {
 private:
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<Custom>>>;
+	using Base = Object<typename Options::template WithDefault<
+	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<Custom>,
+	  option::InputOptions<Options>>>;
 
 public:
 	using Brand = Options::template Get<brand::Custom>;

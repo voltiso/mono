@@ -5,14 +5,18 @@
 #include "v/is/instantiated-from"
 #include "v/is/member-function-const"
 #include "v/is/trivially-relocatable"
+#include "v/option/input-options"
 #include "v/option/mutable"
+#include "v/option/noexcept"
 #include "v/option/optional"
 #include "v/option/parameters"
 #include "v/option/return"
-#include "v/option/throwing"
+#include "v/option/trivially-relocatable"
 #include "v/pool"
 #include "v/storage"
+#include "v/throw-error"
 
+#include <functional>
 #include <type_traits>
 
 #include <v/ON>
@@ -44,8 +48,7 @@ struct Specializations {
 
 template <class Return, class... ParametersList>
 struct Specializations<Options<
-  option::Return<Return>, option::Parameters<Pack<ParametersList...>>,
-  option::CustomTemplate<GetCustom>>> {
+  option::Return<Return>, option::Parameters<Pack<ParametersList...>>>> {
 	using Result = AnyFunction<Return(ParametersList...)>;
 };
 } // namespace VOLTISO_NAMESPACE::anyFunction
@@ -68,10 +71,12 @@ class CustomBase;
 template <class Options, class... ParametersList>
   requires concepts::Options<Options>
 class CustomBase<Options, Pack<ParametersList...>>
-    : public Object<
-        typename Options::template With<option::CustomTemplate<GetCustom>>> {
-	using Base =
-	  Object<typename Options::template With<option::CustomTemplate<GetCustom>>>;
+    : public Object<typename Options::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+        option::InputOptions<Options>>> {
+	using Base = Object<typename Options::template WithDefault<
+	  option::TRIVIALLY_RELOCATABLE<true>, option::CustomTemplate<GetCustom>,
+	  option::InputOptions<Options>>>;
 
 private:
 	using This = CustomBase;
@@ -82,7 +87,7 @@ protected:
 public:
 	using Return = Options::template Get<option::Return>;
 	using Parameters = Options::template Get<option::Parameters>;
-	static constexpr auto THROWING = Options::template GET<option::THROWING>;
+	static constexpr auto NOEXCEPT = Options::template GET<option::NOEXCEPT>;
 	static constexpr auto MUTABLE = Options::template GET<option::MUTABLE>;
 	static constexpr auto OPTIONAL = Options::template GET<option::OPTIONAL>;
 
@@ -134,19 +139,26 @@ public:
 	}
 
 	INLINE constexpr Return operator()(ParametersList... args) const
-	  // if optional, can still throw
-	  noexcept(!THROWING && !OPTIONAL)
+	  noexcept(NOEXCEPT)
 	  requires(!MUTABLE)
 	{
+		if constexpr (!NOEXCEPT && OPTIONAL) {
+			if (!invoker) {
+				throwError(std::bad_function_call{});
+			}
+		}
 		return invoker(
 		  storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
-	INLINE constexpr Return operator()(ParametersList... args)
-	  // if optional, can still throw
-	  noexcept(!THROWING && !OPTIONAL)
+	INLINE constexpr Return operator()(ParametersList... args) noexcept(NOEXCEPT)
 	// requires(MUTABLE)
 	{
+		if constexpr (!NOEXCEPT && OPTIONAL) {
+			if (!invoker) {
+				throwError(std::bad_function_call{});
+			}
+		}
 		return invoker(
 		  storage, std::forward<ParametersList>(args)...); // always this path
 	}
@@ -239,13 +251,16 @@ private:
 			return false;
 		}
 		if constexpr (!MUTABLE) {
-			if constexpr (!is::MemberFunctionConst<decltype(&Callable::operator())>) {
-				// if constexpr (!std::is_invocable_v<const Callable,
-				// ParametersList...>) { // ! `std::is_invocable_v` broken
-				return false;
+			if constexpr (requires { &Callable::operator(); }) {
+				if constexpr (!is::MemberFunctionConst<
+				                decltype(&Callable::operator())>) {
+					// if constexpr (!std::is_invocable_v<const Callable,
+					// ParametersList...>) { // ! `std::is_invocable_v` broken
+					return false;
+				}
 			}
 		}
-		if constexpr (!THROWING) {
+		if constexpr (NOEXCEPT) {
 			if constexpr (!(noexcept(std::declval<Callable>()(
 			                std::declval<ParametersList>()...)))) {
 				return false;
@@ -269,7 +284,7 @@ public:
 	template <class... TParametersList>
 	using WithParameters = With<option::Parameters<Pack<TParametersList...>>>;
 
-	using Throwing = With<option::THROWING<true>>;
+	using Noexcept = With<option::NOEXCEPT<true>>;
 	using Mutable = With<option::MUTABLE<true>>;
 	using Optional = With<option::OPTIONAL<true>>;
 }; // class CustomBase

@@ -11,9 +11,11 @@
 #include "v/is/trivially-relocatable"
 #include "v/memory/iterator"
 #include "v/object"
+#include "v/option/input-options"
 #include "v/option/item"
 #include "v/option/num-items"
 #include "v/option/starting-index"
+#include "v/option/trivially-relocatable"
 #include "v/raw-array"
 #include "v/slice"
 #include "v/tag/concat"
@@ -48,9 +50,8 @@ template <class Item, size_t NUM_ITEMS> class Array;
 
 namespace VOLTISO_NAMESPACE::array {
 template <class Item, std::size_t NUM_ITEMS>
-struct Specializations<Options<
-  option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>,
-  option::CustomTemplate<GetCustom>>> {
+struct Specializations<
+  Options<option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>>> {
 	using Result = Array<Item, NUM_ITEMS>;
 };
 } // namespace VOLTISO_NAMESPACE::array
@@ -74,10 +75,15 @@ struct Specializations<Options<
 namespace VOLTISO_NAMESPACE::array {
 template <class Options>
   requires concepts::Options<Options> // && std::is_final_v<Final>
-class Custom : public Object<typename Options ::template WithDefault<
-                 option::CustomTemplate<GetCustom>>> {
-	using Base = Object<
-	  typename Options ::template WithDefault<option::CustomTemplate<GetCustom>>>;
+class Custom
+    : public Object<typename Options ::template WithDefault<
+        option::TRIVIALLY_RELOCATABLE<is::TriviallyRelocatable<
+          typename Options::template Get<option::Item>>>,
+        option::CustomTemplate<GetCustom>, option::InputOptions<Options>>> {
+	using Base = Object<typename Options ::template WithDefault<
+	  option::TRIVIALLY_RELOCATABLE<
+	    is::TriviallyRelocatable<typename Options::template Get<option::Item>>>,
+	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>;
 	using Base::Base;
 
 protected:
@@ -415,15 +421,5 @@ struct tuple_size<T> : std::integral_constant<std::size_t, T::EXTENT.value> {};
 } // namespace std
 
 // !
-
-namespace VOLTISO_NAMESPACE {
-template <class Options>
-static constexpr auto is::TriviallyRelocatable<array::Custom<Options>> =
-  is::TriviallyRelocatable<typename Options::template Get<option::Item>>;
-
-template <class Item, std::size_t NUM_ITEMS>
-static constexpr auto is::TriviallyRelocatable<Array<Item, NUM_ITEMS>> =
-  is::TriviallyRelocatable<Item>;
-} // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>
