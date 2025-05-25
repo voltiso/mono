@@ -1,7 +1,7 @@
 // ! this is not flexible enough, can't template for both type and value
 // parameters
 
-#include "v/is_derived_from_template"
+#include "v/is/derived-from-template"
 
 namespace VOLTISO_NAMESPACE {
 
@@ -10,9 +10,9 @@ struct TestDerived : TestBase<int> {};
 struct TestUnrelated {};
 struct TestDerivedPrivate : private TestBase<int> {};
 
-static_assert(is_derived_from_template<TestDerived, TestBase>);
-static_assert(!is_derived_from_template<TestUnrelated, TestBase>);
-static_assert(is_derived_from_template<TestDerivedPrivate, TestBase>);
+static_assert(is::DerivedFromTemplate<TestDerived, TestBase>);
+static_assert(!is::DerivedFromTemplate<TestUnrelated, TestBase>);
+static_assert(is::DerivedFromTemplate<TestDerivedPrivate, TestBase>);
 
 //
 

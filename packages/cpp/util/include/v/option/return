@@ -2,9 +2,10 @@
 #include <v/_/_>
 
 #include "v/type-option"
+#include "v/unset"
 
 namespace VOLTISO_NAMESPACE::option {
-template <class T> struct Return : TypeOption<T, void> {
+template <class T> struct Return : TypeOption<T, Unset> {
 	// this should near the beginning of the list for cleaner compilation errors
 	static constexpr auto ORDER = -1001;
 };

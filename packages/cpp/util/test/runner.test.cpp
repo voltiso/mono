@@ -16,7 +16,7 @@ TEST(Runner, immediate) {
 	auto retainerGuard = context::Guard(retainer);
 	Runner runner;
 	int x = 0;
-	runner.post([&] noexcept { x = 123; });
+	runner.post([&] { x = 123; });
 	EXPECT_EQ(x, 0);
 	runner.loop();
 	EXPECT_EQ(x, 123);
@@ -27,7 +27,7 @@ TEST(Runner, immediate_cancel) {
 	auto retainerGuard = context::Guard(retainer);
 	Runner runner;
 	int x = 0;
-	auto task = runner.post([&] noexcept { x = 123; });
+	auto task = runner.post([&] { x = 123; });
 	EXPECT_EQ(x, 0);
 	task->cancel();
 	runner.loop();
@@ -41,8 +41,7 @@ TEST(Runner, scheduled) {
 	auto retainerGuard = context::Guard(retainer);
 	Runner runner;
 	int x = 0;
-	runner.post(
-	  {.delay = std::chrono::milliseconds(10)}, [&] noexcept { x = 123; });
+	runner.post({.delay = std::chrono::milliseconds(10)}, [&] { x = 123; });
 	EXPECT_EQ(x, 0);
 	runner.loop();
 	EXPECT_EQ(x, 123);
@@ -53,8 +52,8 @@ TEST(Runner, scheduled_cancel) {
 	auto retainerGuard = context::Guard(retainer);
 	Runner runner;
 	int x = 0;
-	auto task = runner.post(
-	  {.delay = std::chrono::milliseconds(10)}, [&] noexcept { x = 123; });
+	auto task =
+	  runner.post({.delay = std::chrono::milliseconds(10)}, [&] { x = 123; });
 	EXPECT_EQ(x, 0);
 	task->cancel();
 	runner.loop();

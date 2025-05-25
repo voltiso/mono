@@ -10,5 +10,6 @@ namespace VOLTISO_NAMESPACE::is {
 // Purpose: e.g. define global operators that do not conflict with other
 // libraries.
 template <class T>
-static constexpr bool VoltisoType = concepts::Object<std::decay_t<T>>;
+static constexpr bool VoltisoType =
+  VOLTISO_NAMESPACE::concepts::Object<std::decay_t<T>>;
 } // namespace VOLTISO_NAMESPACE::is

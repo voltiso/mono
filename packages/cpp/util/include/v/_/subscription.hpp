@@ -1,50 +1,75 @@
 #pragma once
+#include <v/_/_>
 
 #include "v/_/subscription.forward.hpp"
 
+#include "v/_/memo.forward.hpp"
 #include "v/_/sink.forward.hpp"
+
+#include <type_traits>
 
 #include <v/ON>
 
 // ! SubscriptionBase
 
-namespace VOLTISO_NAMESPACE::subscription {
-class Base {
+namespace VOLTISO_NAMESPACE {
+class Subscription {
+public:
+	using Callback = subscription::Callback;
+
 protected:
-	friend class sink::Base;
+	friend class V::sink::Base;
 	sink::Base *_pSink = nullptr;
 	Callback _callback;
+
+public:
 	static_assert(is::TriviallyRelocatable<decltype(_pSink)>);
 	static_assert(is::TriviallyRelocatable<decltype(_callback)>);
+	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
 
 public:
-	INLINE ~Base() noexcept; // circular dep
+	INLINE ~Subscription() noexcept; // circular dep
 
 public:
-	INLINE
-	Base(sink::Base &sink, Callback &&callback) /** throws OOM */; // circular dep
+	template <class TSink>
+	  requires(std::is_base_of_v<sink::Base, TSink>)
+	INLINE Subscription(
+	  TSink &sink, Callback &&callback) /* throws OOM */; // circular dep
 
 	// Non-copyable
-	Base(const Base &) = delete;
-	Base &operator=(const Base &) = delete;
+	Subscription(const Subscription &) = delete;
+	Subscription &operator=(const Subscription &) = delete;
 
 	// Movable
-	constexpr INLINE Base(Base &&other) noexcept
+	constexpr INLINE Subscription(Subscription &&other) noexcept
 	    : _pSink(other._pSink), _callback(std::move(other._callback)) {
 		other._pSink = nullptr;
 	}
 
 protected:
-	INLINE void _notify() noexcept { _callback(); }
+	template <class Value> friend class Sink;
+	template <class Value, memo::NumDeps> friend class Memo;
+	INLINE void _notify() noexcept(noexcept(_callback())) { _callback(); }
 }; // class Base
-} // namespace VOLTISO_NAMESPACE::subscription
+} // namespace VOLTISO_NAMESPACE
 
 // ! Subscription implementation
 
 namespace VOLTISO_NAMESPACE {
-template <class Value> class Subscription : public subscription::Base {
-	using Base = subscription::Base;
-	using Callback = subscription::Callback;
+template <class Value> class EagerSubscription : public Subscription {
+	using Base = Subscription;
+	using AnyCallback = subscription::AnyCallback;
+	using EagerCallback = subscription::EagerCallback<Value>;
+	// using Callback = subscription::Callback;
+
+	// store locally (alternatively, we could store in AnyFunction's
+	// closure, which would cause AnyFunction not to be in-place)
+	AnyCallback _anyCallback;
+
+public:
+	static_assert(is::TriviallyRelocatable<decltype(_anyCallback)>);
+	static constexpr bool IS_TRIVIALLY_RELOCATABLE =
+	  Base::IS_TRIVIALLY_RELOCATABLE;
 
 public:
 	using Sink = Sink<Value>;
@@ -62,29 +87,66 @@ public:
 	}
 
 public:
-	INLINE Subscription(Sink &sink, Callback &&callback) /** throws OOM */
-	    : Base(sink, std::move(callback)) {
-		// std::cout << "create typed subscription" << std::endl;
+	template <class TSink>
+	  requires(std::is_base_of_v<Sink, TSink>)
+	INLINE
+	EagerSubscription(TSink &sink, EagerCallback &&eagerCallback) /* throws OOM */
+	    : Base(
+	        sink,
+	        // ! better store callback locally
+	        [this] {
+		        auto &value = static_cast<TSink *>(_pSink)->value();
+		        std::cout << "CALL EAGER CALLBACK " << value << std::endl;
+		        this->_anyCallback.as<EagerCallback>()(value);
+	        }
+	        // ! otherwise AnyFunction would not be in-place
+	        // [this, callback = std::move(callback)] {
+	        //   callback(this->value());
+	        // }
+	        ),
+	      _anyCallback(std::move(eagerCallback)) {
+		// static_assert(
+		//   std::is_pointer_interconvertible_base_of_v<sink::Base, TSink>);
+		// ! should we auto-call callback instantly?
+		// _notify(); // no - notify does not know the sink derived type (if it's
+		// memo, it needs to update first)
+
+		sink._onNewEagerSubscription(*this);
+
+		// std::cout << "PULL" << std::endl;
+		// auto &value = sink.value();
+		// std::cout << "CALL IMMEDIATELY" << std::endl;
+		// _anyCallback.as<EagerCallback>()(value); // call immediately
+		// std::cout << "CALLED IMMEDIATELY" << std::endl;
 	}
 
-	// ~Subscription() noexcept {
-	// 	std::cout << "destroy typed subscription -------------------" <<
-	// std::endl;
-	// }
+	template <class TSink>
+	  requires(std::is_base_of_v<Sink, TSink>)
+	INLINE EagerSubscription(TSink &sink, Callback &&callback) /* throws OOM*/
+	    : Base(
+	        sink,
+	        [this] {
+		        // ! we have to call .value() to make it eager
+		        (void)static_cast<TSink *>(_pSink)->value();
+		        this->_anyCallback.as<Callback>()();
+	        }),
+	      _anyCallback(std::move(callback)) {
+		// static_assert(
+		//   std::is_pointer_interconvertible_base_of_v<sink::Base, TSink>);
+		// ! should we auto-call callback instantly?
+		// _notify(); // no - notify does not know the sink derived type (if it's
+		// memo, it needs to update first)
+
+		sink._onNewEagerSubscription(*this);
+
+		// std::cout << "PULL" << std::endl;
+		// (void)sink.value(); // pull first value (force evaluation)
+
+		// std::cout << "CALL IMMEDIATELY" << std::endl;
+		// _anyCallback.as<Callback>()(); // call immediately
+		// std::cout << "CALLED IMMEDIATELY" << std::endl;
+	}
 }; // class Subscription
-} // namespace VOLTISO_NAMESPACE
-
-//
-
-namespace VOLTISO_NAMESPACE {
-template <> constexpr auto is::TriviallyRelocatable<subscription::Base> = true;
-} // namespace VOLTISO_NAMESPACE
-
-//
-
-namespace VOLTISO_NAMESPACE {
-template <class Value>
-constexpr auto is::TriviallyRelocatable<Subscription<Value>> = true;
 } // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

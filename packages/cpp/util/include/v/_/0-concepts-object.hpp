@@ -1,4 +1,5 @@
 #pragma once
+#include <v/_/0-namespace.hpp>
 
 namespace VOLTISO_NAMESPACE::concepts {
 template <class T>

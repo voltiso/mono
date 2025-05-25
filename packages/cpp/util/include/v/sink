@@ -16,20 +16,20 @@
 
 namespace VOLTISO_NAMESPACE {
 template <class Listener>
-[[nodiscard]] INLINE Owned<subscription::Base>
-sink::Base::createLazySubscription(Listener &&listener) {
-	// ! note: this will not be called on cold sink before first value is pulled
-	return Owned<subscription::Base>::create(
-	  *this, std::forward<Listener>(listener));
+[[nodiscard]] INLINE Owned<Subscription> sink::Base::createLazySubscription(
+  this auto &self, Listener &&listener) noexcept(false) {
+	return Owned<Subscription>::create(self, std::forward<Listener>(listener));
 }
 } // namespace VOLTISO_NAMESPACE
 
 namespace VOLTISO_NAMESPACE {
 template <class Value>
-template <class Listener>
-[[nodiscard]] INLINE Owned<Subscription<Value>>
-Sink<Value>::createSubscription(Listener &&listener) {
-	return Owned<Subscription>::create(*this, std::forward<Listener>(listener));
+template <class EagerCallback>
+[[nodiscard]] INLINE Owned<EagerSubscription<Value>>
+Sink<Value>::createSubscription(
+  this auto &self, EagerCallback &&callback) noexcept(false) {
+	return Owned<EagerSubscription>::create(
+	  self, std::forward<EagerCallback>(callback));
 }
 } // namespace VOLTISO_NAMESPACE
 

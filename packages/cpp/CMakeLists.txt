@@ -52,7 +52,7 @@ add_executable(
   voltiso-util-test
   test.cpp
 
-	util/test/retainer.test.cpp
+  util/test/retainer.test.cpp
   util/test/hash.test.cpp
   util/test/entry.test.cpp
   util/test/singleton.test.cpp
@@ -60,6 +60,8 @@ add_executable(
   util/test/object.test.cpp
   util/test/context.test.cpp
   util/test/is-trivially-relocatable.test.cpp
+  util/test/is-instantiated-from-same.test.cpp
+  util/test/is-derived-from-template.test.cpp
   util/test/options.test.cpp
   util/test/handle.test.cpp
   util/test/owned.test.cpp

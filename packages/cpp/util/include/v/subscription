@@ -6,25 +6,35 @@
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::subscription {
-INLINE Base::~Base() noexcept {
+namespace VOLTISO_NAMESPACE {
+INLINE Subscription::~Subscription() noexcept {
 	static_assert(noexcept(_pSink->_subscriptions.erase(*this)));
 	// hopefully no branch on inlined move construction anyway
 	if (_pSink) [[likely]] {
 		_pSink->_subscriptions.erase(*this);
 	}
 }
-} // namespace VOLTISO_NAMESPACE::subscription
+} // namespace VOLTISO_NAMESPACE
 
-namespace VOLTISO_NAMESPACE::subscription {
-INLINE Base::Base(sink::Base &sink, Callback &&callback) /** throws OOM */
+namespace VOLTISO_NAMESPACE {
+template <class TSink>
+  requires(std::is_base_of_v<sink::Base, TSink>)
+INLINE
+Subscription::Subscription(TSink &sink, Callback &&callback) /** throws OOM */
     : _callback(std::move(callback)) {
-	this->_pSink = &sink;
-	// chain may be cold, need to pull value?
-	// _pull();
-	this->_pSink->_subscriptions.insert(*this);
+	if constexpr (requires { sink.sink(); }) {
+		// hack to hast to `sink::Base` if derived class private-inherits it, and
+		// provides member `.sink()`
+		_pSink = &sink.sink();
+	} else {
+		_pSink = &sink;
+	}
+	_pSink->_subscriptions.insert(*this);
+
+	// ! should we auto-call callback instantly?
+	// _callback(); // ! segfault - derived class may need to init first
 }
-} // namespace VOLTISO_NAMESPACE::subscription
+} // namespace VOLTISO_NAMESPACE
 
 // namespace VOLTISO_NAMESPACE {
 // template <class Value>

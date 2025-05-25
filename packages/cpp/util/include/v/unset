@@ -1,0 +1,19 @@
+#pragma once
+#include <v/_/_>
+
+#include <v/ON>
+
+namespace V {
+/**
+ *🌿 Type-only
+ *
+ * (different from `optional::None`, which is for runtime `Optional` system)
+ */
+struct Unset {
+	Unset() = delete;
+	Unset(const Unset &) = delete;
+	Unset &operator=(const Unset &) = delete;
+};
+} // namespace V
+
+#include <v/OFF>

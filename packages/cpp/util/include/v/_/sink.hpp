@@ -1,4 +1,5 @@
 #pragma once
+#include <v/_/_>
 
 #include "v/_/sink.forward.hpp" // self
 
@@ -18,9 +19,9 @@
 namespace VOLTISO_NAMESPACE::sink {
 class Base {
 protected:
-	friend class subscription::Base;
-	HashSet<subscription::Base &> _subscriptions;
-	std::size_t _numEagerSubscriptions = 0;
+	friend Subscription;
+	HashSet<Subscription &> _subscriptions;
+	// std::size_t _numEagerSubscriptions = 0;
 
 public:
 	~Base() {
@@ -31,7 +32,8 @@ public:
 
 protected:
 	// notify all subscriptions (note: the value may not be computed yet)
-	INLINE constexpr void _notify() noexcept {
+	INLINE constexpr void
+	_notify() noexcept(noexcept(std::declval<Subscription>()._notify())) {
 		for (auto &subscription : _subscriptions) {
 			subscription._notify();
 		}
@@ -42,9 +44,9 @@ public:
 	// ! Have to be careful with casting here - Pool<SubscriptionBase> will be a
 	// different pool
 	// ! note: this will not be called on cold sink before first value is pulled
-	template <class Listener>
-	[[nodiscard]] INLINE Owned<subscription::Base>
-	createLazySubscription(Listener &&listener);
+	template <class LazyCallback>
+	[[nodiscard]] INLINE Owned<Subscription>
+	createLazySubscription(this auto &self, LazyCallback &&listener);
 }; // class Base
 } // namespace VOLTISO_NAMESPACE::sink
 
@@ -54,7 +56,8 @@ public:
 
 namespace VOLTISO_NAMESPACE {
 template <class Value> class Sink : public sink::Base {
-	using Subscription = Subscription<Value>;
+	// using Subscription =
+	using EagerSubscription = EagerSubscription<Value>;
 
 protected:
 	Value _value; // = T{};
@@ -72,28 +75,35 @@ public:
 public:
 	// note: you can use `subscribe` instead, to automatically push subscription
 	// to `v::Scope`
-	template <class Listener>
-	[[nodiscard]] INLINE Owned<Subscription>
-	createSubscription(Listener &&listener);
+	template <class EagerCallback>
+	[[nodiscard]] INLINE Owned<EagerSubscription>
+	createSubscription(this auto &self, EagerCallback &&eagerCallback);
 
 public:
 	// subscribe to future updates (does not call the callback with current
 	// value until it changes)
-	template <class Callback>
-	void subscribe(this auto &self, Callback &&callback) {
+	template <class EagerCallback>
+	void subscribe(this auto &self, EagerCallback &&eagerCallback) {
 		// std::cout << "sink: will retain subscription" << std::endl;
 		context::get<Retainer>().retain(
-		  self.createSubscription(std::forward<Callback>(callback)));
+		  self.createSubscription(std::forward<EagerCallback>(eagerCallback)));
 	}
 
-	// public:
-	// 	// immediately call the callback, and subscribe to future updates
-	// 	template <class Callback> void getAndSubscribe(Callback &&callback) {
-	// 		auto subscription =
-	// createSubscription(std::forward<Callback>(callback));
-	// 		subscription->update(this->value());
-	// 		context::get<Retainer>().retain(std::move(subscription));
-	// 	}
+	template <class LazyCallback>
+	void lazySubscribe(this auto &self, LazyCallback &&lazyCallback) {
+		// std::cout << "sink: will retain subscription" << std::endl;
+		context::get<Retainer>().retain(
+		  self.createLazySubscription(std::forward<LazyCallback>(lazyCallback)));
+	}
+
+protected:
+	friend EagerSubscription;
+	INLINE void
+	_onNewEagerSubscription(EagerSubscription &eagerSubscription) noexcept(
+	  noexcept(eagerSubscription._notify())) {
+		// call the new subscription immediately with current value
+		eagerSubscription._notify();
+	}
 
 public:
 	// note: if you reference other sinks, the new memo will not be notified
@@ -101,9 +111,9 @@ public:
 	[[nodiscard]] INLINE Memo<R, 1>
 	map(this auto &self, AnyFunction<R(const Value &)> &&callback) {
 		return Memo<R, 1>{
-		  {self.sink()}, [&self, callback = std::move(callback)]() noexcept {
-			  return callback(self.value());
-		  }};
+		  {self.sink()},
+		  [&self, callback = std::move(callback)]() noexcept(
+		    noexcept(callback(self.value()))) { return callback(self.value()); }};
 	}
 }; // class Sink
 } // namespace VOLTISO_NAMESPACE

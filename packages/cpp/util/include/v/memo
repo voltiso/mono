@@ -1,4 +1,5 @@
 #pragma once
+#include <v/_/_>
 
 #include "v/_/memo.forward.hpp"
 
@@ -16,17 +17,18 @@
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
-template <class Value, memo::NumDeps NUM_DEPS>
+template <class Value, V::memo::NumDeps NUM_DEPS>
 class Memo : private Subject<Value> {
+	friend class EagerSubscription<Value>;
 	using Base = Subject<Value>;
 
-	using UpdateCallback = AnyFunction<Value()>;
+	using UpdateCallback = AnyFunction<Value()>; // todo: support `noexcept`
 	UpdateCallback _updateCallback;
 
 	using Deps = std::conditional_t<
 	  NUM_DEPS == std::numeric_limits<memo::NumDeps>::max(),
-	  DynamicArray<LateInit<Owned<subscription::Base>>>,
-	  Array<LateInit<Owned<subscription::Base>>, NUM_DEPS>>;
+	  DynamicArray<LateInit<Owned<Subscription>>>,
+	  Array<LateInit<Owned<Subscription>>, NUM_DEPS>>;
 
 	Deps _deps;
 	bool _isDirty = true;
@@ -37,21 +39,16 @@ public:
 public:
 	[[nodiscard]] INLINE constexpr Memo(
 	  const std::array<Ref<sink::Base>, NUM_DEPS> &deps,
-	  UpdateCallback &&updateCallback) noexcept
+	  UpdateCallback &&updateCallback) noexcept(false) // throws OOM
 	  requires(NUM_DEPS != std::numeric_limits<memo::NumDeps>::max())
 	    : _updateCallback(std::move(updateCallback)) {
 		static_assert(get::EXTENT<decltype(deps)> == NUM_DEPS);
 		for (std::size_t i = 0; i < NUM_DEPS; ++i) {
 			_deps[i].construct(
-			  deps[i].target.createLazySubscription([this]() noexcept {
-				  // std::cout << "--------- memo lazy callback" << std::endl;
-				  // // ! assuming normal Memo use is not to subscribe to it??
-				  // [[unlikely]] if (this->_subscriptions.numItems()) [[unlikely]] {
-				  //   this->_update();
-				  // } else {
-				  this->_maybeMakeDirty();
-				  // }
-			  }));
+			  deps[i].target.createLazySubscription(
+			    [this]() noexcept(noexcept(this->_maybeMakeDirty())) {
+				    this->_maybeMakeDirty();
+			    }));
 		}
 	}
 
@@ -63,7 +60,7 @@ public:
 	// 	}
 
 private:
-	INLINE void _maybeMakeDirty() noexcept {
+	INLINE void _maybeMakeDirty() noexcept(noexcept(Base::_notify())) {
 		if (_isDirty) [[likely]] {
 			return;
 		}
@@ -72,40 +69,47 @@ private:
 	}
 
 private:
-	INLINE constexpr void _maybeUpdate() noexcept {
+	INLINE constexpr void _maybeUpdate() noexcept(noexcept(_update())) {
 		if (_isDirty) [[unlikely]] {
 			_update();
 		}
 	}
 
-	INLINE constexpr void _update() noexcept {
+	INLINE constexpr void _update() noexcept(
+	  noexcept(_updateCallback()) &&
+	  std::is_nothrow_move_constructible_v<Value>) {
 		// pull up-to-date values from dependencies?
 		// std::cout << "memo: call update callback" << std::endl;
-		Base::_value = this->_updateCallback();
+		CHECK(_isDirty);
+		auto newValue = _updateCallback();
 		_isDirty = false;
-		Base::_notify();
+		// if new value is the same as old, don't update
+		// if constexpr (requires { newValue == Base::_value; }) {
+		if (newValue == Base::_value) [[unlikely]] {
+			return;
+		}
+		// }
+		Base::_value = std::move(newValue);
 	}
 
 public:
-	[[nodiscard]] INLINE constexpr auto &value() noexcept {
+	[[nodiscard]] INLINE constexpr auto &
+	value() noexcept(noexcept(_maybeUpdate()) && noexcept(Base::value())) {
 		_maybeUpdate();
 		return Base::value();
 	}
 
-public:
-	template <class Listener>
-	[[nodiscard]] INLINE auto createSubscription(Listener &&listener) {
-		// std::cout << "--------- memo createSubscription" << std::endl;
-		// chain may be cold, need to pull first values to deps
-		// (don't have to update self yet)
-		// ...but actually we don't know the deps derived memo types,
-		// so we are forced to call our update function
-		// That's the cost of avoiding polymorphism.
-		_maybeUpdate(); // 🤷‍♂️
-		return Base::createSubscription(std::forward<Listener>(listener));
+private:
+	INLINE void
+	_onNewEagerSubscription(EagerSubscription<Value> &eagerSubscription) noexcept(
+	  noexcept(
+	    noexcept(_maybeUpdate()) && noexcept(eagerSubscription._notify()))) {
+		_maybeUpdate();
+		eagerSubscription._notify(); // call the new subscription immediately
 	}
 
 public:
+	using Base::createSubscription;
 	using Base::map;
 	using Base::sink;      // cast to Sink base-base should be safe?
 	using Base::subscribe; // make sure it captures `this self&`

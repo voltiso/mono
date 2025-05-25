@@ -2,6 +2,7 @@
 #include <v/_/_>
 
 #include "v/concepts/options"
+#include "v/is/derived-from-template"
 #include "v/is/instantiated-from"
 #include "v/is/member-function-const"
 #include "v/is/trivially-relocatable"
@@ -12,6 +13,7 @@
 #include "v/option/parameters"
 #include "v/option/return"
 #include "v/option/trivially-relocatable"
+#include "v/pack"
 #include "v/pool"
 #include "v/storage"
 #include "v/throw-error"
@@ -87,20 +89,25 @@ protected:
 public:
 	using Return = Options::template Get<option::Return>;
 	using Parameters = Options::template Get<option::Parameters>;
+
+	using Signature = std::conditional_t<
+	  std::is_same_v<Return, Unset> || std::is_same_v<Parameters, Unset>, Unset,
+	  Return(ParametersList...)>;
+
 	static constexpr auto NOEXCEPT = Options::template GET<option::NOEXCEPT>;
 	static constexpr auto MUTABLE = Options::template GET<option::MUTABLE>;
 	static constexpr auto OPTIONAL = Options::template GET<option::OPTIONAL>;
 
-private:
+protected:
 	using RawPointer = Return (*)(ParametersList...);
 	using Storage = Storage<RawPointer>; // ...or not raw pointer
 
 	using Deleter = void (*)(Storage &);
 	using Invoker = Return (*)(const Storage &, ParametersList...);
 
-	Storage storage;
-	Deleter deleter = nullptr;
-	Invoker invoker = nullptr;
+	Storage _storage;
+	Deleter _deleter = nullptr;
+	Invoker _invoker = nullptr;
 
 public:
 	CustomBase()
@@ -114,65 +121,79 @@ public:
 	CustomBase(const CustomBase &) = delete;
 	CustomBase &operator=(const CustomBase &) = delete;
 
+	template <class OtherOptions, class Parameters>
+	  requires concepts::Options<OtherOptions>
+	friend class CustomBase;
+
 	INLINE CustomBase(CustomBase &&other) noexcept {
 		memcpy((void *)this, &other, sizeof(CustomBase));
-		other.deleter = nullptr;
+		other._deleter = nullptr;
+	}
+
+	// if signature is unknown (not callable), we can create AnyFunction from any
+	// other AnyFunction (typed or not)
+	template <class OtherOptions>
+	  requires(std::is_same_v<Signature, Unset>)
+	INLINE CustomBase(Custom<OtherOptions> &&other) noexcept {
+		memcpy((void *)this, &other, sizeof(CustomBase));
+		other._deleter = nullptr;
 	}
 
 	INLINE ~CustomBase() noexcept {
 		// speed-up raw pointer path
-		if (deleter) [[unlikely]] {
-			deleter(storage);
+		if (_deleter) [[unlikely]] {
+			_deleter(_storage);
 		}
 	}
 
 	// for HashTable
-	bool operator==(const CustomBase &other) const {
-		static_assert(sizeof(storage) == sizeof(std::uintptr_t));
+	INLINE constexpr bool operator==(const CustomBase &other) const noexcept {
+		static_assert(sizeof(_storage) == sizeof(std::uintptr_t));
 		// ! in some peculiar cases this could not be enough?
-		return storage.bytes == other.storage.bytes;
+		return _storage.bytes == other._storage.bytes;
 	}
 
 	// for HashTable
-	INLINE auto &key() const {
-		return *reinterpret_cast<const std::uintptr_t *>(&this->storage);
+	INLINE constexpr auto &key() const noexcept {
+		return *reinterpret_cast<const std::uintptr_t *>(&this->_storage);
 	}
 
 	INLINE constexpr Return operator()(ParametersList... args) const
 	  noexcept(NOEXCEPT)
-	  requires(!MUTABLE)
+	  requires(!MUTABLE && !std::is_same_v<Signature, Unset>)
 	{
 		if constexpr (!NOEXCEPT && OPTIONAL) {
-			if (!invoker) {
+			if (!_invoker) {
 				throwError(std::bad_function_call{});
 			}
 		}
-		return invoker(
-		  storage, std::forward<ParametersList>(args)...); // always this path
+		return _invoker(
+		  _storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
 	INLINE constexpr Return operator()(ParametersList... args) noexcept(NOEXCEPT)
-	// requires(MUTABLE)
+	  requires(!std::is_same_v<Signature, Unset>)
 	{
 		if constexpr (!NOEXCEPT && OPTIONAL) {
-			if (!invoker) {
+			if (!_invoker) {
 				throwError(std::bad_function_call{});
 			}
 		}
-		return invoker(
-		  storage, std::forward<ParametersList>(args)...); // always this path
+		return _invoker(
+		  _storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
 	// bind function pointer or stateless lambda
 	template <class TCallable>
 	  requires(
+	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>() &&
 	    std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
 	CustomBase(TCallable &&f) {
 		static_assert(is::TriviallyRelocatable<std::decay_t<TCallable>>);
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
-		new (&storage) RawPointer{std::forward<TCallable>(f)};
-		invoker = [](const Storage &storage, ParametersList... args) -> Return {
+		new (&_storage) RawPointer{std::forward<TCallable>(f)};
+		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
 			return storage.object()(std::forward<ParametersList>(args)...);
 		};
 		static_assert(std::is_trivially_destructible_v<RawPointer>);
@@ -181,22 +202,23 @@ public:
 	// bind small anything
 	template <class TCallable>
 	  requires(
+	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>() &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
-	    (sizeof(std::decay_t<TCallable>) <= sizeof(storage)))
+	    (sizeof(std::decay_t<TCallable>) <= sizeof(_storage)))
 	CustomBase(TCallable &&f) {
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		static_assert(
 		  is::TriviallyRelocatable<std::decay_t<TCallable>>,
 		  "mark your type as trivially relocatable, or use createIndirect");
 		using Callable = std::decay_t<TCallable>;
-		new (&storage) Callable{std::forward<TCallable>(f)};
-		invoker = [](const Storage &storage, ParametersList... args) -> Return {
+		new (&_storage) Callable{std::forward<TCallable>(f)};
+		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
 			return (*reinterpret_cast<const Callable *>(&storage))(
 			  std::forward<ParametersList>(args)...);
 		};
 		if constexpr (!std::is_trivially_destructible_v<Callable>) {
-			deleter = [](Storage &storage) {
+			_deleter = [](Storage &storage) {
 				std::bit_cast<Callable>(storage).~Callable();
 			};
 		}
@@ -205,8 +227,9 @@ public:
 	// bind big anything
 	template <class TCallable>
 	  requires(
+	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
-	    (sizeof(std::decay_t<TCallable>) > sizeof(storage)) &&
+	    (sizeof(std::decay_t<TCallable>) > sizeof(_storage)) &&
 	    This::template _isCallableOk<TCallable>())
 	CustomBase(TCallable &&f)
 	    : CustomBase{CreateIndirectTag{}, std::forward<TCallable>(f)} {
@@ -215,7 +238,9 @@ public:
 
 	// explicit "big anything"
 	template <class TCallable>
-	  requires(This::template _isCallableOk<TCallable>())
+	  requires(
+	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    This::template _isCallableOk<TCallable>())
 	static Self createIndirect(TCallable &&f) {
 		static_assert(!is::InstantiatedFrom<std::decay_t<TCallable>, CustomBase>);
 		return Self{CreateIndirectTag{}, std::forward<TCallable>(f)};
@@ -230,12 +255,12 @@ private:
 		using Handle = typename Pool::Handle;
 		auto &pool = Singleton<Pool>::instance();
 		auto handle = pool.insert(std::forward<TCallable>(f)).handle;
-		new (&storage) Handle(handle);
-		deleter = [](Storage &storage) {
+		new (&_storage) Handle(handle);
+		_deleter = [](Storage &storage) {
 			auto &pool = Singleton<Pool>::instance();
 			pool.erase(storage.template as<Handle>());
 		};
-		invoker = [](const Storage &storage, ParametersList... args) -> Return {
+		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
 			return (*storage.template as<Handle>())(
 			  std::forward<ParametersList>(args)...);
 		};
@@ -289,12 +314,32 @@ public:
 	using Optional = With<option::OPTIONAL<true>>;
 }; // class CustomBase
 
+// !
+
+namespace _ {
 template <class Options>
   requires concepts::Options<Options>
-class Custom : public CustomBase<
-                 Options, typename Options::template Get<option::Parameters>> {
-	using Base =
+struct GetCustomBase {
+	using Result =
 	  CustomBase<Options, typename Options::template Get<option::Parameters>>;
+}; // struct GetCustomBase
+
+template <class Options>
+  requires(
+    concepts::Options<Options> &&
+    std::is_same_v<typename Options::template Get<option::Parameters>, Unset>)
+struct GetCustomBase<Options> {
+	// CustomBase requires a true list, so give it an empty one
+	using Result = CustomBase<Options, Pack<>>;
+}; // struct GetCustomBase
+} // namespace _
+
+// !
+
+template <class Options = V::Options<>>
+  requires concepts::Options<Options>
+class Custom : public _::GetCustomBase<Options>::Result {
+	using Base = _::GetCustomBase<Options>::Result;
 	using Base::Base;
 };
 } // namespace VOLTISO_NAMESPACE::anyFunction
