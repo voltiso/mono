@@ -46,7 +46,8 @@ namespace VOLTISO_NAMESPACE::is {
 /** ⚠️ This only works for type-templates */
 template <class Derived, template <class...> class BaseTemplate>
 inline constexpr bool DerivedFromTemplate =
-  decltype(_::test_is_derived_from_template<Derived, BaseTemplate>(0))::value;
+  decltype(_::test_is_derived_from_template<
+           std::decay_t<Derived>, BaseTemplate>(0))::value;
 } // namespace VOLTISO_NAMESPACE::is
 
 //

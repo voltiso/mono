@@ -44,7 +44,7 @@ public:
 private:
 	template <class T, class... Args>
 	  requires std::is_constructible_v<T, Args...>
-	INLINE auto &_retain(Args &&...args) {
+	INLINE auto &_retain(Args &&...args) noexcept(false) {
 		// static_assert(is::TriviallyRelocatable<T>);
 		// auto numNewStorageItems = divCeil(sizeof(T), sizeof(TStorage));
 		// data.setNumSlotsAtLeast(data.numItems() + numNewStorageItems);

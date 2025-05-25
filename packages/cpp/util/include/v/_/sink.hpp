@@ -60,17 +60,27 @@ template <class Value> class Sink : public sink::Base {
 	using EagerSubscription = EagerSubscription<Value>;
 
 protected:
-	Value _value; // = T{};
+	Value _value = Value{}; // ! initialized?
 
 	// ! note - we may have to store _value as Storage<Value>
 	// ! to comply with strict aliasing
 
 public:
-	INLINE constexpr const Value &value() const noexcept { return this->_value; }
+	[[nodiscard]] INLINE constexpr const Value &value() const noexcept {
+		return this->_value;
+	}
+
+	// also expose `.operator()` mapping to `.value()`
+	[[nodiscard]] INLINE constexpr const auto &operator()() const noexcept {
+		return this->value();
+	}
 
 public:
+	// /** Allow uninitialized `value`? */
+	// Sink() = default;
+
 	template <class... Args>
-	Sink(Args &&...args) : _value(std::forward<Args>(args)...) {}
+	Sink(Args &&...args) : _value{std::forward<Args>(args)...} {}
 
 public:
 	// note: you can use `subscribe` instead, to automatically push subscription
@@ -83,14 +93,16 @@ public:
 	// subscribe to future updates (does not call the callback with current
 	// value until it changes)
 	template <class EagerCallback>
-	void subscribe(this auto &self, EagerCallback &&eagerCallback) {
+	void
+	subscribe(this auto &self, EagerCallback &&eagerCallback) noexcept(false) {
 		// std::cout << "sink: will retain subscription" << std::endl;
 		context::get<Retainer>().retain(
 		  self.createSubscription(std::forward<EagerCallback>(eagerCallback)));
 	}
 
 	template <class LazyCallback>
-	void lazySubscribe(this auto &self, LazyCallback &&lazyCallback) {
+	void
+	lazySubscribe(this auto &self, LazyCallback &&lazyCallback) noexcept(false) {
 		// std::cout << "sink: will retain subscription" << std::endl;
 		context::get<Retainer>().retain(
 		  self.createLazySubscription(std::forward<LazyCallback>(lazyCallback)));

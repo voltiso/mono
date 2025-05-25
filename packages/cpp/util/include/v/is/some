@@ -1,0 +1,27 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/optional"
+
+#include <v/ON>
+
+namespace V::is {
+INLINE constexpr bool some(const auto &value) noexcept {
+	// Check if the value is an Optional and has a value
+	if constexpr (requires { value.isSome(); }) {
+		return value.isSome();
+	} else if constexpr (requires { value.has_value(); }) {
+		return value.has_value();
+	} else if constexpr (requires { value.hasValue(); }) {
+		return value.hasValue();
+	} else if constexpr (requires { value != decltype(value)::NONE; }) {
+		return value != decltype(value)::NONE;
+	} else if constexpr (requires { value != optional::NONE; }) {
+		return value != optional::NONE;
+	} else if constexpr (requires { value != std::nullopt; }) {
+		return value != std::nullopt;
+	} else {
+		return true; // Assume non-Optional values are "some"
+	}
+}
+} // namespace V::is

@@ -125,3 +125,37 @@ TEST(AnyFunction, Optional) {
 
 	static_assert(std::is_move_constructible_v<F>);
 }
+
+//
+
+TEST(AnyFunction, Proxy) {
+	struct S {
+		S() = default;
+		S(const S &) = delete;
+		S &operator=(const S &) = delete;
+
+		int numCalls = 0;
+		void operator()() { numCalls += 1; }
+	};
+	S s;
+
+	s();
+	EXPECT_EQ(s.numCalls, 1);
+
+	static_assert(std::is_constructible_v<AnyFunction<void()>, S *>);
+	static_assert(!std::is_constructible_v<AnyFunction<void()>, const S *>);
+
+	// note: AnyFunction is not mutable, S is mutable `operator()`
+	//  - it is ok - proxy mode
+	AnyFunction<void()> f = &s;
+	f();
+	EXPECT_EQ(s.numCalls, 2);
+
+	f = &s;
+	f();
+	EXPECT_EQ(s.numCalls, 3);
+
+	// also `operator=`
+	static_assert(std::is_assignable_v<AnyFunction<void()>, S *>);
+	static_assert(!std::is_assignable_v<AnyFunction<void()>, const S *>);
+}

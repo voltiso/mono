@@ -96,7 +96,7 @@ public:
 	        // ! better store callback locally
 	        [this] {
 		        auto &value = static_cast<TSink *>(_pSink)->value();
-		        std::cout << "CALL EAGER CALLBACK " << value << std::endl;
+		        // std::cout << "CALL EAGER CALLBACK " << value << std::endl;
 		        this->_anyCallback.as<EagerCallback>()(value);
 	        }
 	        // ! otherwise AnyFunction would not be in-place
@@ -105,19 +105,7 @@ public:
 	        // }
 	        ),
 	      _anyCallback(std::move(eagerCallback)) {
-		// static_assert(
-		//   std::is_pointer_interconvertible_base_of_v<sink::Base, TSink>);
-		// ! should we auto-call callback instantly?
-		// _notify(); // no - notify does not know the sink derived type (if it's
-		// memo, it needs to update first)
-
 		sink._onNewEagerSubscription(*this);
-
-		// std::cout << "PULL" << std::endl;
-		// auto &value = sink.value();
-		// std::cout << "CALL IMMEDIATELY" << std::endl;
-		// _anyCallback.as<EagerCallback>()(value); // call immediately
-		// std::cout << "CALLED IMMEDIATELY" << std::endl;
 	}
 
 	template <class TSink>
@@ -131,20 +119,7 @@ public:
 		        this->_anyCallback.as<Callback>()();
 	        }),
 	      _anyCallback(std::move(callback)) {
-		// static_assert(
-		//   std::is_pointer_interconvertible_base_of_v<sink::Base, TSink>);
-		// ! should we auto-call callback instantly?
-		// _notify(); // no - notify does not know the sink derived type (if it's
-		// memo, it needs to update first)
-
 		sink._onNewEagerSubscription(*this);
-
-		// std::cout << "PULL" << std::endl;
-		// (void)sink.value(); // pull first value (force evaluation)
-
-		// std::cout << "CALL IMMEDIATELY" << std::endl;
-		// _anyCallback.as<Callback>()(); // call immediately
-		// std::cout << "CALLED IMMEDIATELY" << std::endl;
 	}
 }; // class Subscription
 } // namespace VOLTISO_NAMESPACE

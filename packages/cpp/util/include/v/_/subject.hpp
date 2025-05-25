@@ -17,7 +17,7 @@ template <class Value> class Subject : public Sink<Value> {
 
 public:
 	template <class... Args>
-	Subject(Args &&...args) : Base(std::forward<Args>(args)...) {}
+	Subject(Args &&...args) : Base{std::forward<Args>(args)...} {}
 
 	Sink &sink() { return *this; }
 	const Sink &sink() const { return *this; }

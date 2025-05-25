@@ -121,6 +121,13 @@ public:
 	CustomBase(const CustomBase &) = delete;
 	CustomBase &operator=(const CustomBase &) = delete;
 
+	INLINE ~CustomBase() noexcept {
+		// speed-up raw pointer path
+		if (_deleter) [[unlikely]] {
+			_deleter(_storage);
+		}
+	}
+
 	template <class OtherOptions, class Parameters>
 	  requires concepts::Options<OtherOptions>
 	friend class CustomBase;
@@ -139,11 +146,19 @@ public:
 		other._deleter = nullptr;
 	}
 
-	INLINE ~CustomBase() noexcept {
-		// speed-up raw pointer path
-		if (_deleter) [[unlikely]] {
-			_deleter(_storage);
-		}
+	// reuse move-constructor
+	INLINE CustomBase &operator=(CustomBase &&other) noexcept {
+		this->~CustomBase();
+		new (this) CustomBase(std::move(other));
+		return *this;
+	}
+
+	// reuse move-constructor
+	template <class OtherOptions>
+	INLINE CustomBase &operator=(Custom<OtherOptions> &&other) noexcept {
+		this->~CustomBase();
+		new (this) CustomBase(std::move(other));
+		return *this;
 	}
 
 	// for HashTable
@@ -183,9 +198,22 @@ public:
 		  _storage, std::forward<ParametersList>(args)...); // always this path
 	}
 
+	// proxy mode (non-owning)
+	template <class TCallable>
+	CustomBase(TCallable *f)
+	  requires requires { (*f)(std::declval<ParametersList>()...); }
+	{
+		new (&_storage) TCallable *(f);
+		_invoker = [](const Storage &storage, ParametersList... args) -> Return {
+			auto &target = *std::bit_cast<TCallable *>(storage);
+			return target(std::forward<ParametersList>(args)...);
+		};
+	}
+
 	// bind function pointer or stateless lambda
 	template <class TCallable>
 	  requires(
+	    !std::is_reference_v<TCallable> &&
 	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>() &&
 	    std::is_convertible_v<std::decay_t<TCallable>, RawPointer>)
@@ -202,6 +230,7 @@ public:
 	// bind small anything
 	template <class TCallable>
 	  requires(
+	    !std::is_reference_v<TCallable> &&
 	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>() &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
@@ -227,6 +256,7 @@ public:
 	// bind big anything
 	template <class TCallable>
 	  requires(
+	    !std::is_reference_v<TCallable> &&
 	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    !std::is_convertible_v<std::decay_t<TCallable>, RawPointer> &&
 	    (sizeof(std::decay_t<TCallable>) > sizeof(_storage)) &&
@@ -239,6 +269,7 @@ public:
 	// explicit "big anything"
 	template <class TCallable>
 	  requires(
+	    !std::is_reference_v<TCallable> &&
 	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
 	    This::template _isCallableOk<TCallable>())
 	static Self createIndirect(TCallable &&f) {
@@ -249,7 +280,12 @@ public:
 private:
 	struct CreateIndirectTag {};
 	// "big anything" implementation
-	template <class TCallable> CustomBase(CreateIndirectTag, TCallable &&f) {
+	template <class TCallable>
+	  requires(
+	    !std::is_reference_v<TCallable> &&
+	    !is::DerivedFromTemplate<TCallable, CustomBase> &&
+	    This::template _isCallableOk<TCallable>())
+	CustomBase(CreateIndirectTag, TCallable &&f) {
 		using Callable = std::decay_t<TCallable>;
 		using Pool = Pool<Callable>;
 		using Handle = typename Pool::Handle;
@@ -298,6 +334,11 @@ private:
 		// 	return false;
 		// }
 		return true;
+	}
+
+public:
+	INLINE constexpr operator bool() const noexcept {
+		return _invoker != nullptr;
 	}
 
 public:

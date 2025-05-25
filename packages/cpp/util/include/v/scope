@@ -81,6 +81,10 @@ template <class T> INLINE auto &get() { return context::get<T>(); }
 // !
 
 namespace VOLTISO_NAMESPACE::scope {
+template <class Interface> INLINE void borrow(Interface &value) noexcept {
+	context::get<Retainer>().retain<context::Guard<Interface>>(value);
+}
+
 template <class Interface, class Actual = Interface, class... Args>
   requires(
     std::is_convertible_v<Actual *, Interface *> &&

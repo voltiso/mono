@@ -93,10 +93,15 @@ private:
 	}
 
 public:
-	[[nodiscard]] INLINE constexpr auto &
+	[[nodiscard]] INLINE constexpr const auto &
 	value() noexcept(noexcept(_maybeUpdate()) && noexcept(Base::value())) {
 		_maybeUpdate();
 		return Base::value();
+	}
+
+	// also expose `.operator()` mapping to `.value()`
+	[[nodiscard]] INLINE constexpr const auto &operator()() noexcept {
+		return this->value();
 	}
 
 private:

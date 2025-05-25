@@ -1,0 +1,76 @@
+#pragma once
+#include <v/_/_>
+
+// #include "v/_/poll.forward.hpp"
+
+#include "v/any-function"
+#include "v/get/some"
+#include "v/is/some"
+#include "v/optional"
+#include "v/subject"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+template <class Value> class Poll : private Subject<Value> {
+	friend class EagerSubscription<Value>;
+	using Base = Subject<Value>;
+
+	using UpdateCallback =
+	  AnyFunction<Optional<Value>(const Value &old)>; // todo: support `noexcept`
+	UpdateCallback _updateCallback;
+
+public:
+	[[nodiscard]] INLINE constexpr Poll(UpdateCallback &&updateCallback) noexcept(
+	  false) // throws OOM
+	    : _updateCallback(std::move(updateCallback)) {}
+
+private:
+	INLINE constexpr void _update() noexcept(
+	  noexcept(_updateCallback(Base::_value)) &&
+	  std::is_nothrow_move_constructible_v<Value>) {
+		auto newValue = _updateCallback(Base::_value);
+		if (is::some(newValue)) {
+			auto &newValueSome = get::some(newValue);
+			if (newValueSome == Base::_value) [[unlikely]] {
+				return;
+			}
+			Base::_value = std::move(newValueSome);
+		}
+	}
+
+public:
+	[[nodiscard]] INLINE constexpr const auto &
+	value() noexcept(noexcept(_update()) && noexcept(Base::value())) {
+		_update();
+		return Base::value();
+	}
+
+	// also expose `.operator()` mapping to `.value()`
+	[[nodiscard]] INLINE constexpr const auto &operator()() noexcept {
+		return this->value();
+	}
+
+	[[nodiscard]] INLINE constexpr const auto &cachedValue() const
+	  noexcept(noexcept(Base::value())) {
+		return Base::value();
+	}
+
+private:
+	INLINE void
+	_onNewEagerSubscription(EagerSubscription<Value> &eagerSubscription) noexcept(
+	  noexcept(noexcept(_update()) && noexcept(eagerSubscription._notify()))) {
+		_update();
+		eagerSubscription._notify(); // call the new subscription immediately
+	}
+
+public:
+	using Base::operator=;
+	using Base::createSubscription;
+	using Base::map;
+	using Base::sink;      // cast to Sink base-base should be safe?
+	using Base::subscribe; // make sure it captures `this self&`
+};
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

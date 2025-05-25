@@ -504,7 +504,7 @@ private:
 			this->allocation = _allocator().allocateBytes(_numBytes(numItems));
 		} else if constexpr (Options::template GET<option::IN_PLACE> > 0) {
 			if (numItems > Options::template GET<option::IN_PLACE>) [[unlikely]] {
-				this->allocation.item() =
+				this->allocation.object() =
 				  _allocator().allocateBytes(_numBytes(numItems));
 			}
 		} else {
