@@ -46,7 +46,7 @@ private:
 	}; // struct Data
 
 	static Data &data() {
-		static thread_local Data data;
+		static VOLTISO_THREAD_LOCAL Data data;
 		return data;
 	}
 

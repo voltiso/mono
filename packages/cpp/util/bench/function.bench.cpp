@@ -106,11 +106,10 @@ static void BM_Function_lambdaCapture(benchmark::State &state) {
 		std::cout << std::endl;
 	}
 
-	auto lambda = makeCaptureLambda(42);
 	std::vector<AnyFunction<int(int)>> fns;
 	fns.reserve(1000);
 	for (int i = 0; i < 1000; i++) {
-		fns.emplace_back(lambda);
+		fns.emplace_back(makeCaptureLambda(42));
 	}
 
 	unsigned int result = 0;
@@ -125,11 +124,10 @@ BENCHMARK(BM_Function_lambdaCapture);
 
 // Benchmark for lambda with small captures
 static void BM_Function_lambdaCapture_raw(benchmark::State &state) {
-	auto lambda = makeCaptureLambda(42);
-	std::vector<decltype(lambda)> fns;
+	std::vector<decltype(makeCaptureLambda(42))> fns;
 	fns.reserve(1000);
 	for (int i = 0; i < 1000; i++) {
-		fns.emplace_back(lambda);
+		fns.emplace_back(makeCaptureLambda(42));
 	}
 
 	unsigned int result = 0;
@@ -143,11 +141,10 @@ static void BM_Function_lambdaCapture_raw(benchmark::State &state) {
 BENCHMARK(BM_Function_lambdaCapture_raw);
 
 static void BM_Function_lambdaCapture_stdFunction(benchmark::State &state) {
-	auto lambda = makeCaptureLambda(42);
 	std::vector<std::function<int(int)>> fns;
 	fns.reserve(1000);
 	for (int i = 0; i < 1000; i++) {
-		fns.emplace_back(lambda);
+		fns.emplace_back(makeCaptureLambda(42));
 	}
 
 	unsigned int result = 0;
@@ -171,11 +168,10 @@ static void BM_Function_lambdaCaptureLarge(benchmark::State &state) {
 	}
 
 	std::vector<int> data(100, 1); // Vector with 100 elements
-	auto lambda = makeLargeCaptureLambda(data);
 	std::vector<AnyFunction<int(int)>> fns;
 	fns.reserve(1000);
 	for (int i = 0; i < 1000; i++) {
-		fns.emplace_back(lambda);
+		fns.emplace_back(makeLargeCaptureLambda(data));
 	}
 
 	int result = 0;
@@ -190,11 +186,10 @@ BENCHMARK(BM_Function_lambdaCaptureLarge);
 
 static void BM_Function_lambdaCaptureLarge_raw(benchmark::State &state) {
 	std::vector<int> data(100, 1); // Vector with 100 elements
-	auto lambda = makeLargeCaptureLambda(data);
-	std::vector<decltype(lambda)> fns;
+	std::vector<decltype(makeLargeCaptureLambda(data))> fns;
 	fns.reserve(1000);
 	for (int i = 0; i < 1000; i++) {
-		fns.emplace_back(lambda);
+		fns.emplace_back(makeLargeCaptureLambda(data));
 	}
 
 	int result = 0;
@@ -211,11 +206,10 @@ BENCHMARK(BM_Function_lambdaCaptureLarge_raw);
 static void
 BM_Function_lambdaLargeCapture_stdFunction(benchmark::State &state) {
 	std::vector<int> data(100, 1); // Vector with 100 elements
-	auto lambda = makeLargeCaptureLambda(data);
 	std::vector<std::function<int(int)>> fns;
 	fns.reserve(1000);
 	for (int i = 0; i < 1000; i++) {
-		fns.emplace_back(lambda);
+		fns.emplace_back(makeLargeCaptureLambda(data));
 	}
 
 	int result = 0;

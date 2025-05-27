@@ -5,12 +5,16 @@
 	#include "v/demangle"
 #endif
 
+#ifndef VOLTISO_CONTEXT_THREAD_LOCAL
+	#define VOLTISO_CONTEXT_THREAD_LOCAL VOLTISO_THREAD_LOCAL
+#endif
+
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE::context::_ {
 template <class T> inline T *&getPointer() {
 	static_assert(std::is_same_v<T, std::remove_cvref_t<T>>, "not supported");
-	static thread_local T *value = nullptr; // ! `thread_local` fast?
+	static VOLTISO_CONTEXT_THREAD_LOCAL T *value = nullptr;
 	return value;
 }
 }; // namespace VOLTISO_NAMESPACE::context::_

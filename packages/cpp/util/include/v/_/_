@@ -1,5 +1,10 @@
 #pragma once
 
+// #define VOLTISO_DEBUG false // !!!
+// #define VOLTISO_ENABLE_THREAD_LOCAL false // !!!
+
+// !
+
 #ifndef VOLTISO_DEBUG
 	#ifdef NDEBUG
 		#define VOLTISO_DEBUG false
@@ -7,6 +12,22 @@
 		#define VOLTISO_DEBUG true
 	#endif
 #endif
+
+// !
+
+#ifndef VOLTISO_ENABLE_THREAD_LOCAL
+	#define VOLTISO_ENABLE_THREAD_LOCAL true
+#endif
+
+#ifndef VOLTISO_THREAD_LOCAL
+	#if VOLTISO_ENABLE_THREAD_LOCAL
+		#define VOLTISO_THREAD_LOCAL thread_local
+	#else
+		#define VOLTISO_THREAD_LOCAL
+	#endif
+#endif
+
+// !
 
 // #if __has_include(<glog/logging.h>)
 // #include <glog/logging.h>

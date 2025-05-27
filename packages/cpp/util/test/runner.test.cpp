@@ -8,7 +8,7 @@ using namespace VOLTISO_NAMESPACE;
 
 TEST(Runner, empty) {
 	Runner runner;
-	runner.loop();
+	runner.processAllTasksSync();
 }
 
 TEST(Runner, immediate) {
@@ -18,7 +18,7 @@ TEST(Runner, immediate) {
 	int x = 0;
 	runner.post([&] { x = 123; });
 	EXPECT_EQ(x, 0);
-	runner.loop();
+	runner.processAllTasksSync();
 	EXPECT_EQ(x, 123);
 }
 
@@ -30,7 +30,7 @@ TEST(Runner, immediate_cancel) {
 	auto task = runner.post([&] { x = 123; });
 	EXPECT_EQ(x, 0);
 	task->cancel();
-	runner.loop();
+	runner.processAllTasksSync();
 	EXPECT_EQ(x, 0);
 }
 
@@ -43,7 +43,7 @@ TEST(Runner, scheduled) {
 	int x = 0;
 	runner.post({.delay = std::chrono::milliseconds(10)}, [&] { x = 123; });
 	EXPECT_EQ(x, 0);
-	runner.loop();
+	runner.processAllTasksSync();
 	EXPECT_EQ(x, 123);
 }
 
@@ -56,6 +56,6 @@ TEST(Runner, scheduled_cancel) {
 	  runner.post({.delay = std::chrono::milliseconds(10)}, [&] { x = 123; });
 	EXPECT_EQ(x, 0);
 	task->cancel();
-	runner.loop();
+	runner.processAllTasksSync();
 	EXPECT_EQ(x, 0);
 }
