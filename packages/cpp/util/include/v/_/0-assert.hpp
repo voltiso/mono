@@ -51,7 +51,8 @@ struct AssertOpArg {
 	// std::unreachable();
 }
 
-template <class T> inline constexpr std::string stdStringFrom(const T &value) {
+template <class T>
+inline /* constexpr */ std::string stdStringFrom(const T &value) {
 	if constexpr (std::is_same_v<T, std::string>) {
 		return value;
 		// } else if constexpr (std::is_constant_evaluated()) {

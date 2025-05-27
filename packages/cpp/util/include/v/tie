@@ -1,0 +1,25 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/memo"
+#include "v/scope"
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+// requires `v::scope`
+template <class... Sinks> [[nodiscard]] INLINE auto &tie(Sinks &...sinks) {
+	using R = std::tuple<typename Ref<const typename Sinks::Value>::Optional...>;
+	static constexpr auto NUM_DEPS = sizeof...(Sinks);
+	using Memo = V::Memo<R, NUM_DEPS>;
+
+	using Arg0 = const std::array<Ref<sink::Base>, NUM_DEPS>;
+
+	return v::scope::retain<Memo, Arg0>(
+	  {Ref<sink::Base>{sinks}...}, [&]() noexcept {
+		  return std::tuple<Ref<const typename Sinks::Value>...>{sinks.value()...};
+	  });
+}
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

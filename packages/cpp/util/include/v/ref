@@ -1,23 +1,111 @@
 #pragma once
 #include <v/_/_>
 
+#include <v/_/ref.forward.hpp>
+
+#include "v/concepts/options"
+#include "v/object"
+#include "v/option/custom-template"
+#include "v/option/input-options"
+#include "v/option/optional"
+#include "v/option/self"
+#include "v/option/target"
+#include "v/options"
+
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE {
-template <class T>
-  requires(!std::is_const_v<T>)
-class Ref {
-public:
-	T &target;
+// !
 
-	INLINE constexpr Ref(T &target) noexcept : target(target) {}
-
-	Ref(const Ref &) = delete;
-	Ref &operator=(const Ref &) = delete;
-
-	INLINE constexpr operator T &() noexcept { return target; }
-	INLINE constexpr operator const T &() const noexcept { return target; }
+namespace VOLTISO_NAMESPACE::ref {
+template <class Target>
+struct Specializations<Options<option::Target<Target>>> {
+	using Result = Ref<Target>;
 };
+} // namespace VOLTISO_NAMESPACE::ref
+
+// !
+
+namespace VOLTISO_NAMESPACE::ref {
+template <class InputOptions>
+  requires concepts::Options<InputOptions>
+// requires(!std::is_const_v<T>) // ! allow `Ref<const T>`
+class Custom : public Object<typename InputOptions::template WithDefault<
+                 option::CustomTemplate<GetCustom>,
+                 option::InputOptions<InputOptions>>> {
+	using Base = Object<typename InputOptions::template WithDefault<
+	  option::CustomTemplate<GetCustom>, option::InputOptions<InputOptions>>>;
+
+public:
+	static constexpr bool IS_TRIVIALLY_RELOCATABLE = true;
+	using Target = InputOptions::template Get<option::Target>;
+	static constexpr bool IS_OPTIONAL =
+	  InputOptions::template GET<option::OPTIONAL>;
+
+protected:
+	template <class OtherOptions>
+	  requires concepts::Options<OtherOptions>
+	friend class Custom;
+	Target *_pTarget = nullptr;
+
+public:
+	INLINE constexpr auto &target() const noexcept {
+		CHECK(_pTarget);
+		return *_pTarget;
+	}
+
+	INLINE constexpr bool isSome() const noexcept
+	  requires(IS_OPTIONAL)
+	{
+		return _pTarget != nullptr;
+	}
+
+	INLINE constexpr Custom() noexcept
+	  requires(IS_OPTIONAL)
+	    : _pTarget{nullptr} {}
+
+	INLINE constexpr Custom(Target &target) noexcept : _pTarget(&target) {
+		if constexpr (!IS_OPTIONAL) {
+			CHECK(_pTarget);
+		}
+	}
+
+	Custom(const Custom &) = delete;            // ! dangerous
+	Custom &operator=(const Custom &) = delete; // ! dangerous
+
+	// Also kind of dangerous (disregards our ref-semantics),
+	// but minimum convenience:
+	Custom(Custom &&other) noexcept : _pTarget(other._pTarget) {
+		if constexpr (!IS_OPTIONAL) {
+			CHECK(_pTarget);
+		}
+	}
+
+	template <class OtherOptions>
+	  requires(
+	    (!(!IS_OPTIONAL && Custom<OtherOptions>::IS_OPTIONAL)) &&
+	    std::is_convertible_v<typename Custom<OtherOptions>::Target &, Target &>)
+	Custom(Custom<OtherOptions> &&other) noexcept : _pTarget(other._pTarget) {
+		if constexpr (!IS_OPTIONAL) {
+			CHECK(_pTarget);
+		}
+	}
+
+	INLINE constexpr operator Target &() const noexcept { return this->target(); }
+
+public:
+	using Optional = Base::template With<option::OPTIONAL<true>>;
+};
+} // namespace VOLTISO_NAMESPACE::ref
+
+namespace VOLTISO_NAMESPACE {
+template <class Target>
+class Ref final
+    : public ref::Custom<
+        V::Options<option::Target<Target>, option::Self<Ref<Target>>>> {
+	using Base =
+	  ref::Custom<V::Options<option::Target<Target>, option::Self<Ref<Target>>>>;
+	using Base::Base;
+}; // class Ref
 } // namespace VOLTISO_NAMESPACE
 
 #include <v/OFF>

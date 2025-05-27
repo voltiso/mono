@@ -28,7 +28,7 @@ template <class T> [[nodiscard]] INLINE auto &get() {
 	return *pointer;
 }
 
-template <class T> INLINE T *maybeGet() { return _::getPointer<T>(); }
+template <class T> INLINE T *maybeGet() noexcept { return _::getPointer<T>(); }
 
 template <class T> class Guard {
 	static_assert(!std::is_reference_v<T>, "not supported");

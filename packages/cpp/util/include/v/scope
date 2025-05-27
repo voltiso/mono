@@ -7,12 +7,12 @@
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::scope {
-class Guard : public context::Guard<Retainer> {
-	using Base = context::Guard<Retainer>;
-	using Base::Base;
-};
-} // namespace VOLTISO_NAMESPACE::scope
+// namespace VOLTISO_NAMESPACE::scope {
+// class Guard : public context::Guard<Retainer> {
+// 	using Base = context::Guard<Retainer>;
+// 	using Base::Base;
+// };
+// } // namespace VOLTISO_NAMESPACE::scope
 
 namespace VOLTISO_NAMESPACE {
 // Glues v::Context and v::Retainer together.
@@ -21,9 +21,15 @@ class Scope {
 	Retainer _retainer;
 
 public:
-	[[nodiscard]] INLINE scope::Guard use() noexcept {
-		return scope::Guard{_retainer};
+	[[nodiscard]] INLINE context::Guard<Retainer> use() noexcept {
+		return context::Guard<Retainer>{_retainer};
 	}
+
+	// TODO:
+	// ⚠️ TODO: implement .use() that uses not only retainer, but also all context
+	// [[nodiscard]] INLINE context::Guard<Retainer> use() noexcept {
+	// 	return context::Guard<Retainer>{_retainer};
+	// }
 
 	// retain value, but don't provide it via `v::context`
 	// (i.e. push private)
@@ -81,8 +87,31 @@ template <class T> INLINE auto &get() { return context::get<T>(); }
 // !
 
 namespace VOLTISO_NAMESPACE::scope {
+template <class T> INLINE T *maybeGet() noexcept {
+	return context::maybeGet<T>();
+}
+} // namespace VOLTISO_NAMESPACE::scope
+
+// !
+
+namespace VOLTISO_NAMESPACE::scope {
+// TODO: this should push to scope, not just retainer?
 template <class Interface> INLINE void borrow(Interface &value) noexcept {
 	context::get<Retainer>().retain<context::Guard<Interface>>(value);
+}
+
+template <class T, class... Args>
+  requires(std::is_constructible_v<T, Args...>)
+INLINE auto &retain(Args &&...args) {
+	return context::get<Retainer>().retain<T, Args...>(
+	  std::forward<Args>(args)...);
+}
+
+template <class T>
+INLINE auto &retain(T &&value)
+  requires(!std::is_reference_v<T>)
+{
+	return context::get<Retainer>().retain<T>(std::forward<T>(value));
 }
 
 template <class Interface, class Actual = Interface, class... Args>

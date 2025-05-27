@@ -55,8 +55,11 @@ public:
 // ! Sink implementation
 
 namespace VOLTISO_NAMESPACE {
-template <class Value> class Sink : public sink::Base {
-	// using Subscription =
+template <class TValue> class Sink : public sink::Base {
+public:
+	using Value = TValue;
+
+private:
 	using EagerSubscription = EagerSubscription<Value>;
 
 protected:
@@ -72,6 +75,11 @@ public:
 
 	// also expose `.operator()` mapping to `.value()`
 	[[nodiscard]] INLINE constexpr const auto &operator()() const noexcept {
+		return this->value();
+	}
+
+	// also allow implicit conversion to `Value`
+	[[nodiscard]] INLINE constexpr operator const Value &() const noexcept {
 		return this->value();
 	}
 

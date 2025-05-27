@@ -12,6 +12,7 @@
 #include "v/option/mutable"
 #include "v/option/noexcept"
 #include "v/option/self"
+#include "v/option/thread-safe"
 #include "v/options"
 #include "v/owned"
 #include "v/retainer"
@@ -143,6 +144,16 @@ template <class TRunner> struct ScheduledTaskRef {
 
 //
 
+namespace VOLTISO_NAMESPACE::runner::_ {
+template <bool IS_THREAD_SAFE> struct ThreadSafeData {};
+template <> struct ThreadSafeData<true> {
+	std::mutex queuesMutex;
+	std::condition_variable wakeUp;
+};
+} // namespace VOLTISO_NAMESPACE::runner::_
+
+//
+
 namespace VOLTISO_NAMESPACE::runner {
 template <class Options>
   requires concepts::Options<Options>
@@ -162,6 +173,8 @@ public:
 	using Delay = runner::_::Delay;
 	static constexpr bool IS_NOEXCEPT = Options::template GET<option::NOEXCEPT>;
 	static constexpr bool IS_MUTABLE = Options::template GET<option::MUTABLE>;
+	static constexpr bool IS_THREAD_SAFE =
+	  Options::template GET<option::THREAD_SAFE>;
 	using AnyCallback = AnyFunction<void()>::With<
 	  option::NOEXCEPT<IS_NOEXCEPT>, option::MUTABLE<IS_MUTABLE>>;
 
@@ -170,13 +183,18 @@ private:
 	using ScheduledTaskRef = runner::_::ScheduledTaskRef<Custom>;
 
 private:
-	bool keepRunning = true;
+	bool _keepRunning = true;
 
 	friend Task;
-	HashSet<Task &> allTasks;
+	HashSet<Task &> _allTasks;
 
-	Heap<ImmediateTaskRef> immediateTasks;
-	Heap<ScheduledTaskRef> scheduledTasks;
+	Heap<ImmediateTaskRef> _immediateTasks;
+	Heap<ScheduledTaskRef> _scheduledTasks;
+
+	[[no_unique_address]] _::ThreadSafeData<IS_THREAD_SAFE> _threadSafeData;
+
+public:
+	const std::thread::id threadId = std::this_thread::get_id();
 
 public:
 	Custom() = default;
@@ -187,117 +205,233 @@ public:
 
 public:
 	~Custom() {
-		for (auto &task : allTasks) {
+		for (auto &task : _allTasks) {
 			task.runner = nullptr;
 		}
 	}
 
 private:
-	void updateImmediateTasks() {
+	INLINE auto _lockQueues() noexcept(noexcept(std::unique_lock{
+	  this->_threadSafeData.queuesMutex}))
+	  requires(IS_THREAD_SAFE)
+	{
+		return std::unique_lock{this->_threadSafeData.queuesMutex};
+	}
+
+	INLINE auto _lockQueues() noexcept
+	  requires(!IS_THREAD_SAFE)
+	{
+		return 0;
+	}
+
+	INLINE void _wakeUp() noexcept
+	  requires(IS_THREAD_SAFE)
+	{
+		_threadSafeData.wakeUp.notify_one();
+	}
+
+	INLINE void _wakeUp() noexcept
+	  requires(!IS_THREAD_SAFE)
+	{}
+
+private:
+	// ⚠️ not thread-safe
+	void _updateImmediateTasks() {
 		auto now = Clock::now();
 
 		// move all tasks that are ready to run to immediateTasks
 		// (and remove old scheduleIds before re-scheduling)
-		while (scheduledTasks.hasItems() &&
-		       scheduledTasks.peek().targetExecutionTime <= now) [[unlikely]] {
-			auto taskRef = scheduledTasks.pop();
+		while (_scheduledTasks.hasItems() &&
+		       _scheduledTasks.peek().targetExecutionTime <= now) [[unlikely]] {
+			auto taskRef = _scheduledTasks.pop();
 			// auto taskRef = scheduledTasks.peek();
 			// scheduledTasks.pop();
 			if (
-			  allTasks.has(taskRef.task) &&
+			  _allTasks.has(taskRef.task) &&
 			  taskRef.task.scheduleId == taskRef.scheduleId) [[likely]] {
-				immediateTasks.maybeGrowAndPush(taskRef.task);
+				_immediateTasks.maybeGrowAndPush(taskRef.task);
 			}
 		}
 
 		// ignore already canceled scheduledTasks (and old scheduleIds before
 		// re-scheduling)
-		while (scheduledTasks.hasItems() &&
-		       (!allTasks.has(scheduledTasks.peek().task) ||
-		        scheduledTasks.peek().task.scheduleId !=
-		          scheduledTasks.peek().scheduleId)) [[unlikely]] {
-			scheduledTasks.pop();
+		while (_scheduledTasks.hasItems() &&
+		       (!_allTasks.has(_scheduledTasks.peek().task) ||
+		        _scheduledTasks.peek().task.scheduleId !=
+		          _scheduledTasks.peek().scheduleId)) [[unlikely]] {
+			_scheduledTasks.pop();
 		}
 
 		// ignore already canceled immediateTasks
-		while (immediateTasks.hasItems() &&
-		       (!allTasks.has(immediateTasks.peek().task) ||
-		        immediateTasks.peek().task.scheduleId !=
-		          immediateTasks.peek().scheduleId)) [[unlikely]] {
-			immediateTasks.pop();
+		while (_immediateTasks.hasItems() &&
+		       (!_allTasks.has(_immediateTasks.peek().task) ||
+		        _immediateTasks.peek().task.scheduleId !=
+		          _immediateTasks.peek().scheduleId)) [[unlikely]] {
+			_immediateTasks.pop();
 		}
 	}
 
 public:
-	void loop() {
-		keepRunning = true;
-		while (keepRunning) {
-			if (updateImmediateTasks(), immediateTasks.hasItems()) [[likely]] {
-				auto &task = immediateTasks.pop().task;
+	// process one task if available (only if not stopped)
+	bool processOneImmediateTask() {
+		auto lock = _lockQueues();
 
-				task.run();
+		_updateImmediateTasks();
+		if (!_immediateTasks.hasItems()) [[unlikely]] {
+			return false; // no tasks to process
+		}
 
-				if (task.options.isRepeating) [[likely]] {
-					// speed up high-performance repeating tasks
-					task.targetExecutionTime += task.options.period;
-					if (
-					  task.targetExecutionTime <
-					  Clock::now() - task.options.maxLagCompensationDuration)
-					  [[unlikely]] {
-						task.targetExecutionTime =
-						  Clock::now() - task.options.maxLagCompensationDuration;
-					}
-					task.scheduleId += 1;
-					scheduledTasks.maybeGrowAndPush(task);
-				} else [[unlikely]] {
-					// the task is no longer registered with Runner
-					task.runner = nullptr;
-					allTasks(task).erase(); // !
-				}
+		if (!_keepRunning) [[unlikely]] {
+			return false; // stop processing
+		}
+		auto &task = _immediateTasks.pop().task;
+		if constexpr (IS_THREAD_SAFE) {
+			lock.unlock(); // unlock before running the task
+		}
+		// std::cout << "run task..." << std::endl;
+		try {
+			task.run();
+		} catch (const std::exception &e) {
+			std::cerr << "Exception in task: " << e.what() << std::endl;
+			throw;
+		} catch (...) {
+			std::cerr << "Unknown exception in task" << std::endl;
+			throw;
+		}
+		// std::cout << "run task DONE." << std::endl;
 
-				continue;
+		if (task.options.isRepeating) [[likely]] {
+			// speed up high-performance repeating tasks
+			task.targetExecutionTime += task.options.period;
+			if (
+			  task.targetExecutionTime <
+			  Clock::now() - task.options.maxLagCompensationDuration) [[unlikely]] {
+				task.targetExecutionTime =
+				  Clock::now() - task.options.maxLagCompensationDuration;
+			}
+			task.scheduleId += 1;
+			_scheduledTasks.maybeGrowAndPush(task);
+		} else [[unlikely]] {
+			// the task is no longer registered with Runner
+			task.runner = nullptr;
+			_allTasks(task).erase(); // !
+		}
+		return true;
+	}
+
+	// process all immediate tasks (only if not stopped)
+	void processAllImmediateTasks() {
+		while (processOneImmediateTask()) {
+			// continue
+		}
+	}
+
+	// Blocks (sleep)
+	// ⚠️ Adding new task will not wake up the thread
+	// (meant for single-threaded apps)
+	void processAllTasksSync()
+	  requires(!IS_THREAD_SAFE)
+	{
+		for (;;) {
+			processAllImmediateTasks();
+
+			if (!_keepRunning) [[unlikely]] {
+				break;
 			}
 
 			// sleep
-			if (scheduledTasks.hasItems()) [[likely]] {
-				// std::cout << "SLEEP "
-				//           << scheduledTasks.peek().targetExecutionTime - Clock::now()
-				//           << std::endl;
-				std::this_thread::sleep_until(
-				  scheduledTasks.peek().targetExecutionTime);
-			} else [[unlikely]] {
-				// LOG(INFO) << "No more tasks! Shutting down v::Runner.";
-				keepRunning = false; // !
+			if (_scheduledTasks.hasItems()) [[likely]] {
+				auto sleepUntil = _scheduledTasks.peek().targetExecutionTime;
+				std::this_thread::sleep_until(sleepUntil);
+				continue;
+			}
+
+			break;
+		}
+	}
+
+	void loop()
+	  requires(IS_THREAD_SAFE)
+	{
+		for (;;) {
+			processAllImmediateTasks();
+
+			// wakeable sleep
+			std::unique_lock<std::mutex> lock = _lockQueues();
+			if (!_keepRunning) [[unlikely]] {
+				break;
+			}
+			_updateImmediateTasks();
+			if (_immediateTasks.hasItems()) [[likely]] {
+				continue;
+			}
+			if (_scheduledTasks.hasItems()) [[likely]] {
+				auto waitUntil = _scheduledTasks.peek().targetExecutionTime;
+				_threadSafeData.wakeUp.wait_until(lock, waitUntil);
+			} else {
+				// no tasks to process
+				_threadSafeData.wakeUp.wait(lock);
 			}
 		}
 	}
 
-	// finish current tasks, break out of `loop()`
-	void stop() { keepRunning = false; }
-
-	//   // break out of `loop()`, do not finish current tasks
-	//   void terminate() {}
-
-	v::Owned<Task>::Weak
-	post(const Task::Options &options, AnyCallback &&run) {
-		auto task = Owned<Task>::create(this, std::move(run), options);
-		this->allTasks.insert(task);
-		if (options.isRepeating) [[unlikely]] {
-			this->scheduledTasks.maybeGrowAndPush(task);
-		} else [[likely]] {
-			this->immediateTasks.maybeGrowAndPush(task);
+	// finish current tasks, break out of processing loops
+	INLINE void stop() {
+		{
+			auto lock = _lockQueues();
+			_keepRunning = false;
 		}
+		_wakeUp();
+	}
+
+	// post, or run sync if on the same thread
+	template <class TCallback>
+	void postOrRunSync(TCallback &&callback)
+	  requires(IS_THREAD_SAFE && requires { callback(); })
+	{
+		if (this->threadId == std::this_thread::get_id()) [[likely]] {
+			callback();
+		} else [[unlikely]] {
+			post(std::forward<TCallback>(callback));
+		}
+	}
+
+	v::Owned<Task>::Weak post(const Task::Options &options, AnyCallback &&run)
+	// requires(!IS_THREAD_SAFE)
+	{
+		auto task = Owned<Task>::create(this, std::move(run), options);
+
+		auto lock = _lockQueues();
+		_allTasks.insert(task);
+		if (options.isRepeating) [[unlikely]] {
+			_scheduledTasks.maybeGrowAndPush(task);
+		} else [[likely]] {
+			_immediateTasks.maybeGrowAndPush(task);
+		}
+		if constexpr (IS_THREAD_SAFE) {
+			lock.unlock();
+			_wakeUp();
+		}
+
 		auto &retainer = context::get<Retainer>();
 		auto weakTask = task.weak();
 		retainer.retain(std::move(task));
 		return weakTask;
 	}
 
-	v::Owned<Task>::Weak post(AnyCallback &&run) {
+	v::Owned<Task>::Weak post(AnyCallback &&run)
+	// requires(!IS_THREAD_SAFE)
+	{
 		auto task =
 		  Owned<Task>::create(this, std::move(run), typename Task::Options{});
-		this->allTasks.insert(task);
-		this->immediateTasks.maybeGrowAndPush(task);
+
+		auto lock = _lockQueues();
+		_allTasks.insert(task);
+		_immediateTasks.maybeGrowAndPush(task);
+		if constexpr (IS_THREAD_SAFE) {
+			lock.unlock();
+			_wakeUp();
+		}
 		auto &retainer = context::get<Retainer>();
 		auto weakTask = task.weak();
 		retainer.retain(std::move(task));
@@ -313,6 +447,10 @@ public:
 		  },
 		  std::move(run));
 	}
+
+public:
+	using ThreadSafe = Base::template With<option::THREAD_SAFE<true>>;
+
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::runner
 
@@ -328,19 +466,31 @@ class Runner : public runner::Custom<Options<option::Self<Runner>>> {
 namespace VOLTISO_NAMESPACE::runner::_ {
 template <class TRunner> inline Task<TRunner>::~Task() {
 	if (runner) [[likely]] {
-		runner->allTasks.maybeErase(*this);
+		{
+			auto lock = runner->_lockQueues();
+			runner->_allTasks.maybeErase(*this);
+		}
+		runner->_wakeUp(); // probably not needed
 	}
 }
 
 template <class TRunner> inline void Task<TRunner>::cancel() {
 	CHECK(runner);
-	runner->allTasks.maybeErase(*this); // might be paused
+	{
+		auto lock = runner->_lockQueues();
+		runner->_allTasks.maybeErase(*this); // might be paused
+	}
+	runner->_wakeUp(); // probably not needed
 	runner = nullptr;
 }
 
 template <class TRunner> inline void Task<TRunner>::maybeCancel() {
 	if (runner) [[likely]] {
-		runner->allTasks.maybeErase(*this);
+		{
+			auto lock = runner->_lockQueues();
+			runner->_allTasks.maybeErase(*this);
+		}
+		runner->_wakeUp(); // probably not needed
 		runner = nullptr;
 	}
 }
@@ -348,35 +498,51 @@ template <class TRunner> inline void Task<TRunner>::maybeCancel() {
 template <class TRunner> inline void Task<TRunner>::pause() {
 	CHECK(options.isRepeating);
 	CHECK(runner);
-	runner->allTasks.erase(*this);
+	{
+		auto lock = runner->_lockQueues();
+		runner->_allTasks.erase(*this);
+	}
+	runner->_wakeUp(); // probably not needed
 }
 
 template <class TRunner> inline void Task<TRunner>::maybePause() {
 	CHECK(options.isRepeating);
 	if (runner) [[likely]] {
-		runner->allTasks.maybeErase(*this);
+		{
+			auto lock = runner->_lockQueues();
+			runner->_allTasks.maybeErase(*this);
+		}
+		runner->_wakeUp(); // probably not needed
 	}
 }
 
 template <class TRunner> inline void Task<TRunner>::resume() {
 	CHECK(options.isRepeating);
 	CHECK(runner);
-	runner->allTasks.insert(*this);
-	this->targetExecutionTime = Clock::now();
-	this->scheduleId += 1;
-	runner->immediateTasks.maybeGrowAndPush(*this);
+	{
+		auto lock = runner->_lockQueues();
+		runner->_allTasks.insert(*this);
+		this->targetExecutionTime = Clock::now();
+		this->scheduleId += 1;
+		runner->_immediateTasks.maybeGrowAndPush(*this);
+	}
+	runner->_wakeUp(); // probably not needed
 }
 
 template <class TRunner> inline void Task<TRunner>::maybeResume() {
 	CHECK(options.isRepeating);
 	if (runner) [[likely]] {
-		auto taskRef = runner->allTasks(*this);
-		if (!taskRef.exists()) [[likely]] {
-			taskRef.insert();
-			this->targetExecutionTime = Clock::now();
-			this->scheduleId += 1;
-			runner->immediateTasks.maybeGrowAndPush(*this);
+		{
+			auto lock = runner->_lockQueues();
+			auto taskRef = runner->_allTasks(*this);
+			if (!taskRef.exists()) [[likely]] {
+				taskRef.insert();
+				this->targetExecutionTime = Clock::now();
+				this->scheduleId += 1;
+				runner->_immediateTasks.maybeGrowAndPush(*this);
+			}
 		}
+		runner->_wakeUp(); // probably not needed
 	}
 }
 } // namespace VOLTISO_NAMESPACE::runner::_

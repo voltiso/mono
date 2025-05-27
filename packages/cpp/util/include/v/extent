@@ -25,7 +25,8 @@ public:
 	}
 
 	inline constexpr Base(Value value) noexcept : value{value} {
-		if !consteval {
+		// if !consteval {
+		if (!std::is_constant_evaluated()) {
 			NE(value, DYNAMIC); // DYNAMIC only valid as template argument
 		}
 	}

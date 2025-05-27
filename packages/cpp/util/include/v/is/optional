@@ -1,0 +1,31 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/is/instantiated-from"
+#include "v/optional"
+
+#include <v/ON>
+
+namespace V::is {
+template <class T>
+constexpr bool OPTIONAL = [] {
+	// Check if the value is an Optional and has a value
+	if constexpr (is::InstantiatedFrom<T, Optional>) {
+		return true;
+	} else if constexpr (requires { T::NONE; }) {
+		return true;
+	} else if constexpr (requires { T(optional::NONE); }) {
+		return true;
+	} else if constexpr (requires { T(std::nullopt); }) {
+		return true;
+	} else if constexpr (is::InstantiatedFrom<T, std::optional>) {
+		// std interop
+		return true;
+	} else {
+		return false;
+	}
+}();
+
+} // namespace V::is
+
+#include <v/OFF>

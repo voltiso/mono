@@ -1,0 +1,44 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/runner"
+#include "v/scope"
+
+#include <thread>
+
+#include <v/ON>
+
+namespace VOLTISO_NAMESPACE {
+class Thread : private std::thread, private v::Runner::ThreadSafe {
+	using Base = std::thread;
+	using BaseRunner = v::Runner::ThreadSafe;
+
+public:
+	INLINE void
+	join() noexcept(noexcept(BaseRunner::stop()) && noexcept(Base::join())) {
+		BaseRunner::stop();
+		Base::join();
+	}
+
+public:
+	INLINE ~Thread() noexcept(noexcept(this->join())) {
+		BaseRunner::stop();
+		this->join();
+	}
+
+public:
+	Thread()
+	    : std::thread([this] {
+		      Scope scope{};
+		      auto guard = scope.use();
+		      v::scope::borrow<v::Runner::ThreadSafe>(*this);
+		      BaseRunner::loop();
+	      }) {}
+
+public:
+	using BaseRunner::post;
+	using BaseRunner::postRepeating;
+};
+} // namespace VOLTISO_NAMESPACE
+
+#include <v/OFF>

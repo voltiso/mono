@@ -17,6 +17,7 @@
 
 #if VOLTISO_DEBUG_MALLOC
 	#include <map>
+	#include <mutex>
 #endif
 
 namespace VOLTISO_NAMESPACE::allocator::malloc {
@@ -24,6 +25,7 @@ namespace VOLTISO_NAMESPACE::allocator::malloc {
 #if VOLTISO_DEBUG_MALLOC
 namespace _ {
 struct Debug {
+	std::mutex mutex;
 	std::map<void *, size_t> allocations;
 };
 } // namespace _
@@ -57,7 +59,10 @@ Custom<Options>::allocateBytes(size_t numBytes) {
 	}
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;
-	debug.allocations[handle] = numBytes;
+	{
+		auto lock = std::unique_lock{debug.mutex};
+		debug.allocations[handle] = numBytes;
+	}
 #endif
 	return handle;
 }
@@ -84,7 +89,10 @@ Custom<Options>::allocateBytesAligned(size_t numBytes, size_t alignment) {
 
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;
-	debug.allocations[handle] = numBytes;
+	{
+		auto lock = std::unique_lock{debug.mutex};
+		debug.allocations[handle] = numBytes;
+	}
 #endif
 	return handle;
 }
@@ -95,10 +103,13 @@ Custom<Options>::freeBytes(const Handle &handle, size_t oldNumBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(oldNumBytes, 0);
 	auto &debug = *this->_debug;
-	auto it = debug.allocations.find(handle);
-	CHECK(it != debug.allocations.end());
-	EQ(it->second, oldNumBytes);
-	debug.allocations.erase(it);
+	{
+		auto lock = std::unique_lock{debug.mutex};
+		auto it = debug.allocations.find(handle);
+		CHECK(it != debug.allocations.end());
+		EQ(it->second, oldNumBytes);
+		debug.allocations.erase(it);
+	}
 #endif
 	::free(handle);
 }
@@ -117,11 +128,14 @@ inline typename Custom<Options>::Handle Custom<Options>::reallocateBytes(
 	}
 #if VOLTISO_DEBUG_MALLOC
 	auto &debug = *this->_debug;
-	auto it = debug.allocations.find(oldHandle);
-	CHECK(it != debug.allocations.end());
-	EQ(it->second, oldNumBytes);
-	debug.allocations.erase(it);
-	debug.allocations[newHandle] = newNumBytes;
+	{
+		auto lock = std::unique_lock{debug.mutex};
+		auto it = debug.allocations.find(oldHandle);
+		CHECK(it != debug.allocations.end());
+		EQ(it->second, oldNumBytes);
+		debug.allocations.erase(it);
+		debug.allocations[newHandle] = newNumBytes;
+	}
 #endif
 	return newHandle;
 }
@@ -132,7 +146,10 @@ inline void *Custom<Options>::operator()(const Handle &handle) {
 	NE(handle, handle::INVALID);
 	// if (handle != Handle::INVALID) {
 	auto &debug = *this->_debug;
-	CHECK(debug.allocations.find(handle) != debug.allocations.end());
+	{
+		auto lock = std::unique_lock{debug.mutex};
+		CHECK(debug.allocations.find(handle) != debug.allocations.end());
+	}
 	// }
 #endif
 	return handle;

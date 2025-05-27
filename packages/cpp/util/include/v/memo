@@ -16,11 +16,24 @@
 
 #include <v/ON>
 
+// namespace VOLTISO_NAMESPACE::_::memo {
+// template <class Value>
+// using MaybeValue = std::conditional_t<
+//   std::is_constructible_v<Value>, Value, V::get::Optional<Value>>;
+// } // namespace VOLTISO_NAMESPACE::_::memo
+
+//
+
 namespace VOLTISO_NAMESPACE {
 template <class Value, V::memo::NumDeps NUM_DEPS>
 class Memo : private Subject<Value> {
-	friend class EagerSubscription<Value>;
 	using Base = Subject<Value>;
+	// using Base = Subject<_::memo::MaybeValue<Value>>;
+	// using BaseValue = typename Base::Value;
+	using BaseValue = Value;
+	static_assert(std::is_constructible_v<BaseValue>);
+
+	friend class EagerSubscription<BaseValue>;
 
 	using UpdateCallback = AnyFunction<Value()>; // todo: support `noexcept`
 	UpdateCallback _updateCallback;
@@ -37,15 +50,22 @@ public:
 	INLINE constexpr bool isDirty() const noexcept { return _isDirty; }
 
 public:
+	~Memo() = default;
+
+	Memo(const Memo &) = delete;
+	Memo &operator=(const Memo &) = delete;
+
+public:
 	[[nodiscard]] INLINE constexpr Memo(
 	  const std::array<Ref<sink::Base>, NUM_DEPS> &deps,
 	  UpdateCallback &&updateCallback) noexcept(false) // throws OOM
 	  requires(NUM_DEPS != std::numeric_limits<memo::NumDeps>::max())
-	    : _updateCallback(std::move(updateCallback)) {
+	    : Base{}, // ! `Value` must be constructible with no arguments (?)
+	      _updateCallback(std::move(updateCallback)) {
 		static_assert(get::EXTENT<decltype(deps)> == NUM_DEPS);
 		for (std::size_t i = 0; i < NUM_DEPS; ++i) {
 			_deps[i].construct(
-			  deps[i].target.createLazySubscription(
+			  deps[i].target().createLazySubscription(
 			    [this]() noexcept(noexcept(this->_maybeMakeDirty())) {
 				    this->_maybeMakeDirty();
 			    }));
@@ -81,15 +101,24 @@ private:
 		// pull up-to-date values from dependencies?
 		// std::cout << "memo: call update callback" << std::endl;
 		CHECK(_isDirty);
-		auto newValue = _updateCallback();
-		_isDirty = false;
+		// auto newValue = _updateCallback();
 		// if new value is the same as old, don't update
 		// if constexpr (requires { newValue == Base::_value; }) {
-		if (newValue == Base::_value) [[unlikely]] {
-			return;
-		}
+		// ! DISABLE checks - updateFunction should return `optional::NONE` if no
+		// ! changes are made
+		// if (is::some(Base::_value) && newValue ==
+		// get::some(Base::_value))
+		//   [[unlikely]] {
+		// 	return;
 		// }
-		Base::_value = std::move(newValue);
+		// }
+		if constexpr (requires { Base::_value = _updateCallback(); }) {
+			Base::_value = _updateCallback();
+		} else {
+			Base::_value.~BaseValue();
+			new (std::addressof(Base::_value)) BaseValue{_updateCallback()};
+		}
+		_isDirty = false;
 	}
 
 public:
@@ -104,11 +133,15 @@ public:
 		return this->value();
 	}
 
+	// also allow implicit conversion to `Value`
+	[[nodiscard]] INLINE constexpr operator const Value &() const noexcept {
+		return this->value();
+	}
+
 private:
 	INLINE void
 	_onNewEagerSubscription(EagerSubscription<Value> &eagerSubscription) noexcept(
-	  noexcept(
-	    noexcept(_maybeUpdate()) && noexcept(eagerSubscription._notify()))) {
+	  noexcept(_maybeUpdate()) && noexcept(eagerSubscription._notify())) {
 		_maybeUpdate();
 		eagerSubscription._notify(); // call the new subscription immediately
 	}

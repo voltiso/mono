@@ -15,6 +15,8 @@
 #include <cstddef>
 #include <cstdlib>
 
+#include <v/ON>
+
 #ifndef VOLTISO_DEBUG_MALLOC
 	#define VOLTISO_DEBUG_MALLOC VOLTISO_DEBUG
 #endif
@@ -35,11 +37,13 @@ private:
 	using Base = Object<typename Options::template WithDefault<
 	  option::CustomTemplate<Custom>, option::InputOptions<Options>>>;
 
+protected:
 	using Self = Base::Self;
+	using Singleton = V::Singleton<Self>;
 
 protected:
-	// friend Singleton<Self>;
-	// friend Singleton<Final>;
+	// friend ThreadSingleton<Self>;
+	// friend ThreadSingleton<Final>;
 
 #if VOLTISO_DEBUG_MALLOC
 protected:
@@ -53,8 +57,8 @@ protected:
 
 public:
 	static constexpr auto &instance() {
-		// std::cout << "Malloc::instance()" << std::endl;
-		return Singleton<Self>::instance();
+		// Note: not `ThreadSingleton`. We just delegate to global malloc/free.
+		return Singleton::instance();
 	}
 
 public:
@@ -82,5 +86,13 @@ public:
 // VOLTISO_OBJECT_FINAL(allocator::malloc)
 
 namespace VOLTISO_NAMESPACE::allocator {
-struct Malloc final : malloc::Custom<Options<>> {};
+struct Malloc final : malloc::Custom<Options<option::Self<Malloc>>> {
+	using Base = malloc::Custom<V::Options<option::Self<Malloc>>>;
+
+protected:
+	friend Singleton;
+	Malloc() = default;
+};
 } // namespace VOLTISO_NAMESPACE::allocator
+
+#include <v/OFF>

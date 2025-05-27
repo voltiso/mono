@@ -51,6 +51,11 @@ public:
 		return this->value();
 	}
 
+	// also allow implicit conversion to `Value`
+	[[nodiscard]] INLINE constexpr operator const Value &() const noexcept {
+		return this->value();
+	}
+
 	[[nodiscard]] INLINE constexpr const auto &cachedValue() const
 	  noexcept(noexcept(Base::value())) {
 		return Base::value();

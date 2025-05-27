@@ -18,7 +18,6 @@
 #include "v/option/input-options"
 #include "v/option/item"
 #include "v/option/trivially-relocatable"
-#include "v/singleton"
 #include "v/storage"
 #include "v/tag/concat"
 #include "v/tag/explicit-copy"
@@ -522,9 +521,7 @@ private:
 	//
 
 private:
-	static auto &_allocator() {
-		return Singleton<typename Self::Allocator>::instance();
-	}
+	static auto &_allocator() { return Self::Allocator::instance(); }
 
 public:
 	static const auto &allocator() { return _allocator(); }
