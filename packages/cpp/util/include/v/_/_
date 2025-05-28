@@ -29,6 +29,19 @@
 
 // !
 
+#ifdef __has_feature
+	#if __has_feature(address_sanitizer)
+		#include <sanitizer/lsan_interface.h>
+		#define VOLTISO_HAS_LSAN true
+	#endif
+#endif
+
+#ifndef VOLTISO_HAS_LSAN
+	#define VOLTISO_HAS_LSAN false
+#endif
+
+// !
+
 // #if __has_include(<glog/logging.h>)
 // #include <glog/logging.h>
 // #else

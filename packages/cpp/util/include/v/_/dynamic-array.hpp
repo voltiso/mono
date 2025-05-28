@@ -465,7 +465,7 @@ public:
 		NE(otherExtent, Extent::UNBOUND);
 		self.setNumSlotsAtLeast(self._numItems + otherExtent.value);
 		for (std::size_t i = 0; i < otherExtent.value; ++i) {
-			self.push(other[i]);
+			self.pushUnchecked(other[i]);
 		}
 		return std::forward<decltype(self)>(self);
 	}

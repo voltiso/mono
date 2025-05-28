@@ -530,6 +530,7 @@
 		"wrappy",
 		"Wshadow",
 		"Wuser",
-		"Zonejs"
+		"Zonejs",
+		"LSAN"
 	]
 }
