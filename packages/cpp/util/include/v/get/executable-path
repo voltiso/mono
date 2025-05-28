@@ -60,9 +60,13 @@ inline path::Dynamic executablePathUncached() {
 	// char result[PATH_MAX];
 	path::Dynamic result;
 	result.setNumSlots(PATH_MAX);
-	auto count = readlink("/proc/self/exe", &result[0], result.numSlots());
+	auto count =
+	  readlink("/proc/self/exe", (char *)result.slots(), result.numSlots());
 	if (count == -1) {
 		throw std::runtime_error("Failed to get executable path (Linux).");
+	}
+	if (count == 0) {
+		throw std::runtime_error("Executable path is empty (Linux).");
 	}
 	result.setNumItems(count);
 	return result;

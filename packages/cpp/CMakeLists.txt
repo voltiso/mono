@@ -85,6 +85,7 @@ add_executable(
   util/test/pool.test.cpp
   util/test/array.test.cpp
   util/test/subject.test.cpp
+  util/test/executable-path.test.cpp
 
   # util/test/state.test.cpp # TODO
 

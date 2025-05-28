@@ -13,6 +13,8 @@
 
 #include <utility>
 
+#include <v/ON>
+
 namespace VOLTISO_NAMESPACE::dynamicString {
 template <class Options>
   requires concepts::Options<Options>
@@ -41,7 +43,11 @@ protected:
 
 public:
 	template <class... Args>
-	Custom(Args &&...args) : Base(std::forward<Args>(args)...) {}
+	INLINE Custom(Args &&...args) : Base(std::forward<Args>(args)...) {}
+
+	template <std::size_t N>
+	explicit INLINE Custom(const char (&rawString)[N])
+	    : Base(tag::EXPLICIT_COPY, ConstStringSlice{rawString}) {}
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
@@ -125,6 +131,18 @@ template <class... Args>
 } // from
 } // namespace VOLTISO_NAMESPACE::dynamicString
 
+// !
+
+namespace VOLTISO_NAMESPACE::dynamicString {
+template <class Options>
+::std::ostream &operator<<(::std::ostream &os, const Custom<Options> &custom) {
+	return os << ConstStringSlice{custom};
+}
+} // namespace VOLTISO_NAMESPACE::dynamicString
+
+// !
 namespace VOLTISO_NAMESPACE::string {
 using Dynamic = DynamicString;
 };
+
+#include <v/OFF>

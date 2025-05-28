@@ -3,21 +3,29 @@
 
 #include "v/runner"
 #include "v/scope"
+#include "v/string"
 
 #include <thread>
 
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
-class Thread : private std::thread, private v::Runner::ThreadSafe {
+class Thread : private v::Runner::ThreadSafe {
 	using Base = std::thread;
 	using BaseRunner = v::Runner::ThreadSafe;
 
+protected:
+	const string::Dynamic _name;
+	std::thread _thread;
+
+public:
+	const auto &name() const noexcept { return _name; }
+
 public:
 	INLINE void
-	join() noexcept(noexcept(BaseRunner::stop()) && noexcept(Base::join())) {
+	join() noexcept(noexcept(BaseRunner::stop()) && noexcept(_thread.join())) {
 		BaseRunner::stop();
-		Base::join();
+		_thread.join();
 	}
 
 public:
@@ -27,12 +35,21 @@ public:
 	}
 
 public:
-	Thread()
-	    : std::thread([this] {
-		      Scope scope{};
-		      auto guard = scope.use();
-		      v::scope::borrow<v::Runner::ThreadSafe>(*this);
-		      BaseRunner::loop();
+	template <class TString>
+	Thread(TString &&name)
+	    : _name(std::forward<TString>(name)), _thread([this] {
+		      try {
+			      Scope scope{};
+			      auto guard = scope.use();
+			      v::scope::borrow<v::Runner::ThreadSafe>(*this);
+			      BaseRunner::loop();
+		      } catch (const std::exception &e) {
+			      std::cerr << "Thread '" << _name << "' exception: " << e.what()
+			                << std::endl;
+		      } catch (...) {
+			      std::cerr << "Thread '" << _name << "' unknown exception."
+			                << std::endl;
+		      }
 	      }) {}
 
 public:

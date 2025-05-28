@@ -698,8 +698,8 @@ public:
 	Item &last() { return (*this)[_numItems - 1]; }
 	const Item &last() const { return (*this)[_numItems - 1]; }
 
-	Handle push(Item &&item) { return pushUnchecked<>(std::move(item)); }
-	Handle push(const Item &item) { return pushUnchecked<>(item); }
+	Handle pushUnchecked(Item &&item) { return pushUnchecked<>(std::move(item)); }
+	Handle pushUnchecked(const Item &item) { return pushUnchecked<>(item); }
 
 	// ! does not grow
 	template <class... Args> Handle pushUnchecked(Args &&...args) {
@@ -708,13 +708,18 @@ public:
 		LT(_numItems, get::numSlots(*this));
 
 		auto index = _numItems;
-		++(size_t &)_numItems;
+		++_numItems;
 
 		if constexpr (requires { this->NUM_SLOTS; }) {
 			LE(_numItems, this->NUM_SLOTS);
 		}
 
-		slots()[index].construct(std::forward<Args>(args)...);
+		if constexpr (
+		  std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
+			// noop - memory not zeroed!
+		} else {
+			slots()[index].construct(std::forward<Args>(args)...);
+		}
 
 		if constexpr (requires { this->NUM_SLOTS; }) {
 			LE(_numItems, this->NUM_SLOTS);
@@ -791,7 +796,10 @@ public:
 				LE(newNumItems, this->_numSlots);
 			}
 			auto memory = slots();
-			if constexpr (std::is_copy_constructible_v<Item>) {
+			if constexpr (
+			  std::is_trivially_constructible_v<Item> && sizeof...(Args) == 0) {
+				// noop ! memory not zeroed!
+			} else if constexpr (std::is_copy_constructible_v<Item>) {
 				auto item = Item{std::forward<Args>(args)...};
 				for (std::size_t i = _numItems; i < newNumItems; ++i) {
 					new (memory + i) Item(item);
