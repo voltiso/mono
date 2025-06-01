@@ -67,14 +67,6 @@
 
 #include "v/_/0-namespace.hpp" // IWYU pragma: export
 
-namespace VOLTISO_NAMESPACE {
-#ifdef NDEBUG
-inline constexpr bool IS_DEBUG_BUILD = false;
-#else
-inline constexpr bool IS_DEBUG_BUILD = true;
-#endif
-} // namespace VOLTISO_NAMESPACE
-
 // !
 
 // #ifndef VOLTISO_HAS_BUILTIN_BIT_CAST

@@ -1,6 +1,7 @@
 #pragma once
-#include "v/_/0-console.hpp"
-#include <v/_/0-namespace.hpp> // IWYU pragma: keep
+#include <v/_/0-console.hpp>
+#include <v/_/0-debug-build.hpp>
+#include <v/_/0-namespace.hpp>
 
 #include <iostream>
 #include <source_location>
