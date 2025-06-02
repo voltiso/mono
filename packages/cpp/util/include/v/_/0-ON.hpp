@@ -1,4 +1,5 @@
 #include <v/_/0-assert.hpp>
+#include <v/_/0-force-inline.hpp>
 
 #pragma push_macro("CMP")
 #define CMP VOLTISO_CMP

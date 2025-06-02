@@ -264,7 +264,8 @@ public:
 	// ! should we delegate to Slice::operator<< ?
 	// concat known size
 	template <class Other>
-	  requires( // Check extent of Other directly, not its decayed type if decay loses extent info
+	  requires( // Check extent of Other directly, not its decayed type if decay
+	            // loses extent info
 	    get::EXTENT<Other> != Extent::DYNAMIC &&
 	    get::EXTENT<Other> != Extent::UNBOUND)
 	auto operator<<(this auto &&self, Other &&other) { // Allow rvalue this
