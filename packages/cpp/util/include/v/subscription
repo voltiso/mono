@@ -36,11 +36,4 @@ Subscription::Subscription(TSink &sink, Callback &&callback) /** throws OOM */
 }
 } // namespace VOLTISO_NAMESPACE
 
-// namespace VOLTISO_NAMESPACE {
-// template <class Value>
-// INLINE Subscription<Value>::Subscription(
-//   Sink &sink, Callback &&callback) /** throws OOM */
-//     : Base(sink, std::move(callback)) {}
-// } // namespace VOLTISO_NAMESPACE
-
-#include <v/ON>
+#include <v/OFF>

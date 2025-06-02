@@ -30,8 +30,11 @@ public:
 
 public:
 	INLINE ~Thread() noexcept(noexcept(this->join())) {
+		// std::cout << "Thread '" << _name << "' stopping..." << std::endl;
 		BaseRunner::stop();
+		// std::cout << "Thread '" << _name << "' joining..." << std::endl;
 		this->join();
+		// std::cout << "Thread '" << _name << "' joined." << std::endl;
 	}
 
 public:
