@@ -1,38 +1,35 @@
 #pragma once
 #include <v/_/_>
 
+#include "v/extent"
+#include "v/value-pack"
+
 #include <type_traits>
+
+#include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
 
 namespace _::rawArray {
 
-// using Dim = size_t;
-using Dim = std::make_signed_t<std::size_t>;
-constexpr auto UNKNOWN_DIM = static_cast<Dim>(-1);
-
-template <typename T, Dim... dims> struct Rec; // Forward declaration
-
-template <typename T, Dim dim, Dim... rest>
-  requires(dim >= 0)
-struct Rec<T, dim, rest...> {
-	using ElementType = typename Rec<T, rest...>::Result;
-	using Result = ElementType[dim];
-};
-
-template <class T, Dim... rest> struct Rec<T, UNKNOWN_DIM, rest...> {
-	using ElementType = typename Rec<T, rest...>::Result;
-	using Result = ElementType[];
-};
-
+template <class T, auto... ES> struct Rec;
 template <class T> struct Rec<T> {
 	using Result = T;
+};
+template <class T, auto E, auto... ES> struct Rec<T, E, ES...> {
+	using Result = Rec<T, ES...>::Result[E];
+};
+template <class T, auto... ES> struct Rec<T, (Size)V::extent::DYNAMIC, ES...> {
+	using Result = Rec<T, ES...>::Result[];
+};
+template <class T, auto... ES> struct Rec<T, V::extent::DYNAMIC, ES...> {
+	using Result = Rec<T, ES...>::Result[];
 };
 
 //
 
-template <class T, Dim... dims> struct Get {
-	using Result = typename Rec<T, dims...>::Result;
+template <class T, auto... ES> struct Get {
+	using Result = typename Rec<T, ES...>::Result;
 };
 
 template <class T> struct Get<T> {
@@ -45,11 +42,11 @@ template <class T> struct Get<T> {
  * `RawArray<int>` -> `int[]`
  * `RawArray<int, 3>` -> `int[3]`
  * `RawArray<int, 2, 3>` -> `int[2][3]`
- * `RawArray<int, -1, 2, 3>` -> `int[][2][3]`
- * `RawArray<int, -1>` -> `int[]`
+ * `RawArray<int, V::extent::DYNAMIC, 2, 3>` -> `int[][2][3]`
+ * `RawArray<int, V::extent::DYNAMIC>` -> `int[]`
  */
-template <class Item, _::rawArray::Dim... dims>
-using RawArray = typename _::rawArray::Get<Item, dims...>::Result;
+template <class Item, auto... ES>
+using RawArray = typename _::rawArray::Get<Item, ES...>::Result;
 
 // RawArray<int, 5> a;
 // template <class T> using Arr = T;
@@ -57,12 +54,29 @@ using RawArray = typename _::rawArray::Get<Item, dims...>::Result;
 
 static_assert(std::is_same_v<RawArray<int>, int[]>);
 
-static_assert(std::is_same_v<RawArray<int, -1>, int[]>);
+static_assert(std::is_same_v<RawArray<int, V::extent::DYNAMIC>, int[]>);
 static_assert(std::is_same_v<RawArray<int, 3>, int[3]>);
 static_assert(std::is_same_v<RawArray<int, 2, 3>, int[2][3]>);
-static_assert(std::is_same_v<RawArray<int, -1, 2, 3>, int[][2][3]>);
+static_assert(
+  std::is_same_v<RawArray<int, V::extent::DYNAMIC, 2, 3>, int[][2][3]>);
 
 // static_assert(
 //     std::is_same_v<v::RawArray<const char, 123> &, const char (&)[123]>);
 
 } // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace V::_::rawArray {
+template <class Item, class Extents> struct GetRawArray;
+template <class Item, auto... ES> struct GetRawArray<Item, ValuePack<ES...>> {
+	using Result = RawArray<Item, ES...>;
+};
+} // namespace V::_::rawArray
+
+namespace V {
+template <class Item, class Extents>
+using GetRawArray = typename _::rawArray::GetRawArray<Item, Extents>::Result;
+}
+
+#include <v/OFF>

@@ -55,15 +55,15 @@ template <class Options>
 struct DataMembersWithoutSize : BaseWithBytesOrItems<Options> {};
 template <class Options>
 struct DataMembersWithNumBytes : BaseWithBytesOrItems<Options> {
-	size_t const numBytes = 0;
+	Size const numBytes = 0;
 };
 template <class Options>
 struct DataMembersWithNumItems : BaseWithBytesOrItems<Options> {
-	size_t const numItems = 0;
+	Size const numItems = 0;
 };
 template <class Options>
 struct DataMembersWithNumSlots : BaseWithBytesOrItems<Options> {
-	size_t const numSlots = 0;
+	Size const numSlots = 0;
 };
 template <class Options>
 using DataMembers = std::conditional_t<
@@ -89,9 +89,9 @@ template <class Allocation> auto &getData(Allocation &allocation) {
 template <class Allocation> auto &getNumItems(Allocation &allocation) {
 	static_assert(!std::is_same_v<void, typename Allocation::Options::Item>);
 	if constexpr (has::numItems<Allocation>) {
-		return const_cast<size_t &>(allocation.numItems);
+		return const_cast<Size &>(allocation.numItems);
 	} else {
-		return const_cast<size_t &>(allocation.numSlots);
+		return const_cast<Size &>(allocation.numSlots);
 	}
 }
 } // namespace VOLTISO_NAMESPACE::allocation::_
@@ -117,7 +117,7 @@ public:
 	static constexpr bool IS_WITH_SIZE = Options::IS_WITH_SIZE;
 
 	template <class Index> using CustomHandle = handle::Custom<Self, Index>;
-	using Handle = CustomHandle<size_t>;
+	using Handle = CustomHandle<Size>;
 
 	const auto &allocator() const { return _::allocator(*this); }
 
@@ -130,7 +130,7 @@ public:
 		  "must be true");
 
 		if constexpr (!std::is_same_v<Item, void> && Options::IS_WITH_SIZE) {
-			for (size_t i = 0; i < _::getNumItems(*this); ++i) {
+			for (Size i = 0; i < _::getNumItems(*this); ++i) {
 				_::allocator (*this)(_::getData(*this), i).~Item();
 			}
 		}
@@ -141,7 +141,7 @@ public:
 	//   _::getData(*this) = nullptr;
 	//   if constexpr (IS_WITH_SIZE) {
 	//     if constexpr (has::numBytes<Self>) {
-	//       (size_t &)this->numBytes = 0;
+	//       (Size &)this->numBytes = 0;
 	//     } else {
 	//       _::getNumItems(*this) = 0;
 	//     }
@@ -150,7 +150,7 @@ public:
 
 	BUILD() noexcept = default;
 
-	static Self allocateBytes(size_t numBytes, size_t alignment = alignof(Item)) {
+	static Self allocateBytes(Size numBytes, Size alignment = alignof(Item)) {
 		Self allocation;
 
 		_::getData(allocation) =
@@ -158,7 +158,7 @@ public:
 
 		if constexpr (Options::IS_WITH_SIZE) {
 			if constexpr (std::is_same_v<typename Options::Item, void>) {
-				(size_t &)allocation.numBytes = numBytes;
+				(Size &)allocation.numBytes = numBytes;
 			} else {
 				_::getNumItems(allocation) = numBytes / sizeof(Item);
 			}
@@ -169,7 +169,7 @@ public:
 	template <
 	  class O = Options,
 	  class = std::enable_if_t<!std::is_same_v<typename O::Item, void>>>
-	static Self allocateItems(size_t numItems) {
+	static Self allocateItems(Size numItems) {
 		static_assert(
 		  std::is_trivially_destructible_v<typename Options::Item> ||
 		    Options::IS_WITH_SIZE,
@@ -181,11 +181,11 @@ public:
 		  Options::Allocator::allocateBytes(numItems * sizeof(Item));
 		auto memory = &allocation[0];
 		static_assert(std::is_same_v<decltype(memory), Item *>);
-		for (size_t i = 0; i < numItems; ++i) {
+		for (Size i = 0; i < numItems; ++i) {
 			new (&memory[i]) Item();
 		}
 		if constexpr (Options::IS_WITH_SIZE) {
-			(size_t &)allocation.numItems = numItems;
+			(Size &)allocation.numItems = numItems;
 		}
 		return allocation;
 	}
@@ -200,14 +200,14 @@ public:
 		if constexpr (std::is_same_v<Item, void>) {
 			::memcpy(this->data, other.data, other.numBytes);
 			if constexpr (Options::IS_WITH_SIZE) {
-				(size_t &)this->numBytes = other.numBytes;
+				(Size &)this->numBytes = other.numBytes;
 			}
 		} else {
-			for (size_t i = 0; i < other.numItems; ++i) {
+			for (Size i = 0; i < other.numItems; ++i) {
 				new (&this->data[i]) Item(other.data[i]);
 			}
 			if constexpr (Options::IS_WITH_SIZE) {
-				(size_t &)this->numItems = other.numItems;
+				(Size &)this->numItems = other.numItems;
 			}
 		}
 	}
@@ -224,7 +224,7 @@ public:
 		(ParentHandle &)this->data =
 		  Options::Allocator::allocateBytes(other.numBytes);
 		::memcpy(this->data, other.data, other.numBytes);
-		(size_t &)this->numBytes = other.numBytes;
+		(Size &)this->numBytes = other.numBytes;
 		return *this;
 	}
 
@@ -233,8 +233,8 @@ public:
 		_::getData(other) = nullptr;
 		if constexpr (IS_WITH_SIZE) {
 			if constexpr (has::numBytes<Self>) {
-				(size_t &)this->numBytes = other.numBytes;
-				(size_t &)other.numBytes = 0;
+				(Size &)this->numBytes = other.numBytes;
+				(Size &)other.numBytes = 0;
 			} else {
 				_::getNumItems(*this) = _::getNumItems(other);
 				_::getNumItems(other) = 0;
@@ -248,8 +248,8 @@ public:
 		_::getData(other) = nullptr;
 		if constexpr (IS_WITH_SIZE) {
 			if constexpr (has::numBytes<Self>) {
-				(size_t &)this->numBytes = other.numBytes;
-				(size_t &)other.numBytes = 0;
+				(Size &)this->numBytes = other.numBytes;
+				(Size &)other.numBytes = 0;
 			} else {
 				_::getNumItems(*this) = _::getNumItems(other);
 				_::getNumItems(other) = 0;
@@ -258,7 +258,7 @@ public:
 		return *this;
 	}
 
-	void setNumBytes(size_t newNumBytes) {
+	void setNumBytes(Size newNumBytes) {
 		// simply don't allow to avoid accidental slow copying
 		static_assert(
 		  is::TriviallyRelocatable<Item>,
@@ -269,7 +269,7 @@ public:
 		  Options::Allocator::setNumBytes(_::getData(*this), newNumBytes);
 		if constexpr (IS_WITH_SIZE) {
 			if constexpr (has::numBytes<Self>) {
-				(size_t &)this->numBytes = newNumBytes;
+				(Size &)this->numBytes = newNumBytes;
 			} else {
 				_::getNumItems(*this) = newNumBytes / sizeof(Item);
 			}
@@ -277,12 +277,12 @@ public:
 	}
 
 	// template <class S = Self, class = std::enable_if_t<has_numSlots<S>>>
-	void setNumSlots(size_t newNumSlots) {
+	void setNumSlots(Size newNumSlots) {
 		setNumBytes(newNumSlots * sizeof(Item));
 	}
 
 	template <class S = Self, class = std::enable_if_t<has::numItems<S>>>
-	void setNumItems(size_t newNumItems) {
+	void setNumItems(Size newNumItems) {
 		setNumBytes(newNumItems * sizeof(Item));
 	}
 

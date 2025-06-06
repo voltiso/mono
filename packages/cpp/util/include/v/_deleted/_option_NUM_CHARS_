@@ -7,6 +7,6 @@
 
 namespace VOLTISO_NAMESPACE::option {
 // string-specific
-template <std::size_t N>
+template <Size N>
 struct NUM_CHARS : ValueOption<N, -1> {}; // NUM_ITEMS-1 for null-terminated
 } // namespace VOLTISO_NAMESPACE::option

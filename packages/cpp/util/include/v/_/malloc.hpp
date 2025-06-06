@@ -66,17 +66,17 @@ public:
 	using Handle = Handle::WithBrand<Self>::template WithKind<void *>;
 
 	// `numBytes` must be greater than zero
-	Handle allocateBytes(size_t numBytes);
+	Handle allocateBytes(Size numBytes);
 
 public:
 	// `numBytes` must be greater than zero
 	// `alignment` must be greater than zero
-	Handle allocateBytesAligned(size_t numBytes, size_t alignment);
+	Handle allocateBytesAligned(Size numBytes, Size alignment);
 
-	void freeBytes(const Handle &handle, size_t oldNumBytes);
+	void freeBytes(const Handle &handle, Size oldNumBytes);
 
-	Handle reallocateBytes(
-	  const Handle &oldHandle, size_t oldNumBytes, size_t newNumBytes);
+	Handle
+	reallocateBytes(const Handle &oldHandle, Size oldNumBytes, Size newNumBytes);
 
 	void *operator()(const Handle &handle);
 };

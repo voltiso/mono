@@ -4,12 +4,12 @@
 #include "v/_/memo.forward.hpp"
 
 #include "v/any-function"
-#include "v/array"
 #include "v/dynamic-array"
 #include "v/late-init"
 #include "v/ref"
 #include "v/sink"
 #include "v/subject"
+#include "v/tensor"
 
 #include <cstddef>
 #include <limits>
@@ -41,7 +41,7 @@ class Memo : private Subject<Value> {
 	using Deps = std::conditional_t<
 	  NUM_DEPS == std::numeric_limits<memo::NumDeps>::max(),
 	  DynamicArray<LateInit<Owned<Subscription>>>,
-	  Array<LateInit<Owned<Subscription>>, NUM_DEPS>>;
+	  Tensor<LateInit<Owned<Subscription>>, NUM_DEPS>>;
 
 	Deps _deps;
 	bool _isDirty = true;
@@ -63,7 +63,7 @@ public:
 	    : Base{}, // ! `Value` must be constructible with no arguments (?)
 	      _updateCallback(std::move(updateCallback)) {
 		static_assert(get::EXTENT<decltype(deps)> == NUM_DEPS);
-		for (std::size_t i = 0; i < NUM_DEPS; ++i) {
+		for (Size i = 0; i < NUM_DEPS; ++i) {
 			_deps[i].construct(
 			  deps[i].target().createLazySubscription(
 			    [this]() noexcept(noexcept(this->_maybeMakeDirty())) {

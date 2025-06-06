@@ -10,7 +10,7 @@
 #include <type_traits>
 
 namespace VOLTISO_NAMESPACE::inPlace {
-template <class Item, std::size_t SIZE, std::size_t ALIGN> struct Custom {
+template <class Item, Size SIZE, Size ALIGN> struct Custom {
 public:
 	using Self = Custom;
 

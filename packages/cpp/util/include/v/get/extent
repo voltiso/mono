@@ -8,22 +8,21 @@
 
 namespace VOLTISO_NAMESPACE::_ {
 // ! static EXTENT
-// can be any `Extent` value
 template <class TT>
 constexpr auto optional_EXTENT = [] {
 	using T = std::remove_cvref_t<TT>;
 	if constexpr (requires { T::EXTENT; }) {
 		return T::EXTENT;
 	} else if constexpr (std::is_array_v<T>) {
-		return std::extent_v<T>;
+		return (int)std::extent_v<T>;
 	} else if constexpr (requires { std::tuple_size<T>::value; }) {
-		return std::tuple_size_v<T>;
+		return (int)std::tuple_size_v<T>;
 	} else if constexpr (
 	  requires(T t) { t.extent(); } || requires(T t) { t.extent; }) {
-		return Extent::DYNAMIC;
+		return V::extent::DYNAMIC;
 	} else if constexpr (requires(T t) { t.size(); }) {
 		// std interop
-		return Extent::DYNAMIC;
+		return V::extent::DYNAMIC;
 	} else {
 		// static_assert(false);
 		// static_assert(DEPENDENT_FALSE<T>);
@@ -42,7 +41,7 @@ constexpr bool EXTENT = !is::staticError(_::optional_EXTENT<T>);
 namespace VOLTISO_NAMESPACE::get {
 template <class T>
   requires has::EXTENT<T>
-constexpr auto EXTENT = Extent{V::_::optional_EXTENT<T>};
+constexpr auto EXTENT = V::_::optional_EXTENT<T>;
 } // namespace VOLTISO_NAMESPACE::get
 
 //----------------------------------------------------------------------------//
@@ -58,7 +57,7 @@ template <class T>
 		// std interop
 		return std::forward<T>(t).size();
 	} else if constexpr (has::EXTENT<T>) {
-		static_assert(get::EXTENT<T> != Extent::DYNAMIC);
+		static_assert(get::EXTENT<T> != V::extent::DYNAMIC);
 		return get::EXTENT<T>;
 	} else {
 		return STATIC_ERROR;
@@ -74,7 +73,7 @@ constexpr bool extent =
 
 namespace VOLTISO_NAMESPACE::get {
 template <class T>
-constexpr Extent extent(const T &t) noexcept
+constexpr auto extent(const T &t) noexcept
   requires has::extent<T>
 {
 	return V::_::optional_extent(t);

@@ -34,8 +34,8 @@ template <class T>
 // !
 
 // // for raw arrays
-// template <class T, std::size_t N>
-// [[nodiscard]] consteval std::size_t numItems(const T (&)[N]) noexcept {
+// template <class T, Size N>
+// [[nodiscard]] consteval Size numItems(const T (&)[N]) noexcept {
 // 	return N;
 // }
 

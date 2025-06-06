@@ -31,7 +31,7 @@ private:
 
 public:
 	Entry entry;
-	Array<Handle, 2> children = {handle::INVALID, handle::INVALID};
+	Tensor<Handle, 2> children = {handle::INVALID, handle::INVALID};
 };
 } // namespace VOLTISO_NAMESPACE::splayTable::_
 

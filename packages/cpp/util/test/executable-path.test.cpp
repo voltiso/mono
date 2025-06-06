@@ -25,7 +25,7 @@ TEST(ExecutablePath, basic) {
 #endif
 
 	// Should not contain null characters in the middle
-	for (size_t i = 0; i < execPath.numItems(); ++i) {
+	for (Size i = 0; i < execPath.numItems(); ++i) {
 		EXPECT_NE(execPath[i], '\0');
 	}
 }

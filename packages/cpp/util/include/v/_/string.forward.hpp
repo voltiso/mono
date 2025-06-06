@@ -2,8 +2,7 @@
 #include <v/_/_>
 
 #include "v/concepts/options"
-
-#include <cstddef>
+#include "v/size"
 
 namespace VOLTISO_NAMESPACE::string {
 template <class Options>
@@ -14,5 +13,5 @@ class Custom;
 //
 
 namespace VOLTISO_NAMESPACE {
-template <std::size_t NUM_CHARS> class String;
+template <Size NUM_CHARS> class String;
 } // namespace VOLTISO_NAMESPACE

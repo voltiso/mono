@@ -3,7 +3,7 @@
 
 #include <v/brand/path>
 #include <v/path>
-#include <v/slice>
+#include <v/view>
 
 using namespace v;
 

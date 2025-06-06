@@ -23,7 +23,7 @@ template <class T> class ThreadSingleton {
 private:
 	struct Data {
 		Storage<T> storage;
-		std::size_t numReferences = 1;
+		Size numReferences = 1;
 		Data() {
 #if VOLTISO_DEBUG_SINGLETON
 			// std::cout << "ThreadSingleton<" << demangle(typeid(T)) << "> CREATE"

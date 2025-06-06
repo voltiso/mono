@@ -1,14 +1,19 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/array.forward.hpp"
 #include "v/_/dynamic-string.forward.hpp"
 #include "v/_/string.forward.hpp"
+#include "v/_/tensor.forward.hpp"
+#include "v/const-string-view"
 #include "v/option/custom-template"
+#include "v/option/extents"
 #include "v/option/item"
+#include "v/tensor"
+
+#include <v/ON>
 
 // --- primary template for mapping Options -> string::Custom
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 template <class Options>
   requires concepts::Options<Options>
 struct Specializations;
@@ -16,11 +21,11 @@ struct Specializations;
 // helper alias for option::CustomTemplate
 template <class... Args>
 using GetCustom = typename Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::string
+} // namespace V::string
 
 // --- get custom-type logic: dispatch Options+CustomTemplate -> actual Custom
 // or String
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 // alias for CustomTemplate
 template <class... Args>
 using GetCustom = typename Specializations<Args...>::Result;
@@ -31,35 +36,33 @@ template <class Options>
 struct Specializations {
 	using Result = Custom<Options>;
 };
-} // namespace VOLTISO_NAMESPACE::string
+} // namespace V::string
 
 // --- string::GetCustom for wiring CustomTemplate -> types
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 template <class... Args>
 using GetCustom = typename Specializations<Args...>::Result;
 }
 // --- string::GetCustom alias and Specializations primary template
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 template <class... Args>
 using GetCustom = typename Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::string
+} // namespace V::string
 
 // --- primary dispatch: map Options -> string::Custom, and helper alias
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 template <class... Args>
 using GetCustom = typename Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::string
+} // namespace V::string
 // --- enable `.dynamic()` on fixed-size strings via string::Custom<Options>
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 template <class Options>
   requires concepts::Options<Options>
 class Custom
-    : public VOLTISO_NAMESPACE::array::Custom<
-        typename Options ::template WithDefault<
-          option::Item<char>, option::CustomTemplate<string::GetCustom>>> {
-	using Base =
-	  VOLTISO_NAMESPACE::array::Custom<typename Options ::template WithDefault<
-	    option::Item<char>, option::CustomTemplate<string::GetCustom>>>;
+    : public V::tensor::Custom<typename Options ::template WithDefault<
+        option::Item<char>, option::CustomTemplate<string::GetCustom>>> {
+	using Base = V::tensor::Custom<typename Options ::template WithDefault<
+	  option::Item<char>, option::CustomTemplate<string::GetCustom>>>;
 	using Base::Base;
 
 public:
@@ -67,26 +70,18 @@ public:
 		return dynamicString::from(this->self());
 	}
 };
-} // namespace VOLTISO_NAMESPACE::string
-
-#include "v/_/dynamic-string.forward.hpp"
-#include "v/array"
-#include "v/const-string-slice"
-
-#include <cstddef>
-
-#include <v/ON>
+} // namespace V::string
 
 // !
 
-namespace VOLTISO_NAMESPACE::string {
-template <std::size_t NUM_ITEMS>
+namespace V::string {
+template <Size NUM_ITEMS>
 struct Specializations<Options<
-  option::Item<char>, option::NUM_ITEMS<NUM_ITEMS>,
+  option::Item<char>, option::Extents<ValuePack<NUM_ITEMS>>,
   option::CustomTemplate<string::GetCustom>>> {
 	using Result = String<NUM_ITEMS>;
 };
-} // namespace VOLTISO_NAMESPACE::string
+} // namespace V::string
 
 // !
 
@@ -95,18 +90,18 @@ struct Specializations<Options<
 // so that it generalizes null-termination (add option::NULL_TERMINATED)
 // ! The only reason this class is here, deriving from flat Array,
 // is that we want to use it with `operator""_s`
-namespace VOLTISO_NAMESPACE {
-template <size_t NUM_ITEMS>
-class String
-    : public string::Custom<Options<
-        option::NUM_ITEMS<NUM_ITEMS>, option::Self<String<NUM_ITEMS>>>> {
-	using Base = string::Custom<
-	  Options<option::NUM_ITEMS<NUM_ITEMS>, option::Self<String<NUM_ITEMS>>>>;
+namespace V {
+template <Size NUM_ITEMS>
+class String : public string::Custom<Options<
+                 option::Extents<ValuePack<NUM_ITEMS>>,
+                 option::Self<String<NUM_ITEMS>>>> {
+	using Base = string::Custom<Options<
+	  option::Extents<ValuePack<NUM_ITEMS>>, option::Self<String<NUM_ITEMS>>>>;
 	using Base::Base;
 
 public:
 	// `consteval`-only constructor for `operator""_s`
-	template <std::size_t NUM_ITEMS_WITH_NULL>
+	template <Size NUM_ITEMS_WITH_NULL>
 	  requires(NUM_ITEMS_WITH_NULL == NUM_ITEMS + 1)
 	consteval String(const char (&items)[NUM_ITEMS_WITH_NULL])
 	    : Base(tag::EXPLICIT_COPY_CONSTEVAL, items) {
@@ -116,7 +111,7 @@ public:
 public:
 	// interpret raw string as c-string - check for null-terminator, but discard
 	// it
-	template <std::size_t NUM_ITEMS_WITH_NULL>
+	template <Size NUM_ITEMS_WITH_NULL>
 	  requires(NUM_ITEMS == NUM_ITEMS_WITH_NULL - 1)
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 	from(const char (&rawString)[NUM_ITEMS_WITH_NULL]) noexcept {
@@ -137,7 +132,7 @@ public:
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 	concat(Args &&...args) {
 		// return Base::concat(std::forward<Args>(args)...);
-		return Base::concat(ConstStringSlice{std::forward<Args>(args)}...);
+		return Base::concat(ConstStringView{std::forward<Args>(args)}...);
 	}
 
 public:
@@ -149,58 +144,59 @@ public:
 	// concat known size
 	template <class Other>
 	  requires(
-	    get::EXTENT<Other> != Extent::DYNAMIC &&
-	    get::EXTENT<Other> != Extent::UNBOUND)
+	    get::EXTENT<Other> != extent::DYNAMIC &&
+	    get::EXTENT<Other> != extent::UNBOUND)
 	constexpr auto operator<<(
 	  this auto &&self, Other &&other) { // `other` is the RHS of String << Other
 		// Assuming `self.template cast<Base>()` correctly returns Base&, const
 		// Base&, Base&&, or const Base&&, matching the cv-ref qualifiers of `self`.
 		// This calls Base::operator<< on the correctly casted `self`.
-		return self.template as<Base>().operator<<(ConstStringSlice(
-		  std::forward<Other>(other)) // Forward 'other' to ConstStringSlice
+		return self.template as<Base>().operator<<(ConstStringView(
+		  std::forward<Other>(other)) // Forward 'other' to ConstStringView
 		);
 	}
 };
 // deduction guide
-template <std::size_t N> String(const char (&)[N]) -> String<N - 1>;
+template <Size N> String(const char (&)[N]) -> String<N - 1>;
 
 // // rhs concat known size
-// template <class Lhs, std::size_t SelfN>
+// template <class Lhs, Size SelfN>
 //   requires(
-//     get::EXTENT<Lhs> != Extent::DYNAMIC && get::EXTENT<Lhs> !=
-//     Extent::UNBOUND)
+//     get::EXTENT<Lhs> != extent::DYNAMIC && get::EXTENT<Lhs> !=
+//     extent::UNBOUND)
 // constexpr auto operator<<(const Lhs &lhs, const String<SelfN> &rhs) {
 // 	return lhs.template as<array::Custom<Options<option::Item<char>>>>()
 // 	  .operator<<(rhs.self());
 // }
 
-} // namespace VOLTISO_NAMESPACE
+} // namespace V
 
 // !
 
-namespace VOLTISO_NAMESPACE::string {
+namespace V::string {
 // interpret raw string as c-string - check for null-terminator, but discard it
-template <std::size_t NUM_ITEMS_WITH_NULL>
+template <Size NUM_ITEMS_WITH_NULL>
 [[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 from(const char (&rawString)[NUM_ITEMS_WITH_NULL]) noexcept {
 	constexpr auto NUM_ITEMS = NUM_ITEMS_WITH_NULL - 1;
 	return String<NUM_ITEMS>{rawString};
 }
-// forward everything else to `array::from`
+// forward everything else to `tensor::from`
 template <class... Args>
-[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto from(
-  Args &&...args) noexcept(noexcept(array::from(std::forward<Args>(args)...))) {
-	return array::from(std::forward<Args>(args)...);
+[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
+from(Args &&...args) noexcept(
+  noexcept(tensor::from(std::forward<Args>(args)...))) {
+	return tensor::from(std::forward<Args>(args)...);
 }
-} // namespace VOLTISO_NAMESPACE::string
+} // namespace V::string
 
 // !
 
-namespace VOLTISO_NAMESPACE {
+namespace V {
 // #pragma GCC diagnostic push
 // #pragma GCC diagnostic ignored "-Wuser-defined-literals"
 template <String STRING> consteval auto &operator""_s() { return STRING; }
 // #pragma GCC diagnostic pop
-} // namespace VOLTISO_NAMESPACE
+} // namespace V
 
 #include <v/OFF>

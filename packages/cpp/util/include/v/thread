@@ -47,7 +47,7 @@ public:
 			      v::scope::borrow<v::Runner::ThreadSafe>(*this);
 			      BaseRunner::loop();
 		      } catch (const std::exception &e) {
-			      std::cerr << "Thread '" << _name << "' exception: " << e.what()
+			      std::cerr << "Thread '" << _name << "' std::exception: " << e.what()
 			                << std::endl;
 		      } catch (...) {
 			      std::cerr << "Thread '" << _name << "' unknown exception."

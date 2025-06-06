@@ -162,7 +162,7 @@ public:
 			// noop
 		} else {
 			if (anyFree == Slots::Handle::INVALID) [[unlikely]] {
-				for (size_t i = 0; i < slots.numItems; ++i) {
+				for (Size i = 0; i < slots.numItems; ++i) {
 					slots[i]->storage.destroy();
 				}
 			} else [[likely]] {
@@ -174,7 +174,7 @@ public:
 					free[anyFree.value] = true;
 					anyFree = SlotHandle(slots[anyFree]->next.value);
 				}
-				for (size_t i = 0; i < slots.numItems; i++) {
+				for (Size i = 0; i < slots.numItems; i++) {
 					if (!free[i]) {
 						slots[i]->storage.destroy();
 					}

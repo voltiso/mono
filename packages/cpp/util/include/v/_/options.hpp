@@ -3,8 +3,8 @@
 #pragma once
 
 #include "v/is/instantiated-from-same" // For kind checking in FilterOutKind
+#include "v/size"
 
-#include <cstddef>     // For size_t
 #include <string_view> // For constexpr string comparison tie-breaker
 #include <type_traits> // For std::conditional_t, std::is_same_v, std::enable_if_t
 
@@ -99,9 +99,9 @@ public:
 };
 
 // --- Split Implementation ---
-template <size_t N, typename List, typename Acc = TypeList<>, typename = void>
+template <Size N, typename List, typename Acc = TypeList<>, typename = void>
 struct SplitN;
-template <size_t N, typename H, typename... T, typename... Acc>
+template <Size N, typename H, typename... T, typename... Acc>
 struct SplitN<N, TypeList<H, T...>, TypeList<Acc...>, std::enable_if_t<(N > 0)>>
     : SplitN<N - 1, TypeList<T...>, TypeList<Acc..., H>> {};
 template <typename... T, typename... Acc>
@@ -112,7 +112,7 @@ struct SplitN<0, TypeList<T...>, TypeList<Acc...>, void> {
 template <typename List> struct Split;
 template <typename... Ts> struct Split<TypeList<Ts...>> {
 private:
-	static constexpr size_t N = sizeof...(Ts) / 2;
+	static constexpr Size N = sizeof...(Ts) / 2;
 	using SplitResult = SplitN<N, TypeList<Ts...>>;
 
 public:
@@ -398,3 +398,10 @@ struct WithDefaultHelper<
 };
 
 } // namespace VOLTISO_NAMESPACE::_
+
+// #include "v/option/extents"
+
+// static constexpr auto x =
+//   v::_::IsOptionEqualToItsDefault_v<v::option::EXTENTS<v::Extent{3}>>;
+
+// static_assert(!x);

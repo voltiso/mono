@@ -5,7 +5,7 @@
 #include "v/assert"
 
 namespace VOLTISO_NAMESPACE {
-template <size_t NUM_CHARS> class StringSlice : public Slice<char[NUM_CHARS]> {
+template <Size NUM_CHARS> class StringSlice : public Slice<char[NUM_CHARS]> {
 
 public:
 	constexpr StringSlice(char (&chars)[NUM_CHARS + 1])
@@ -26,7 +26,7 @@ public:
 			return true; // assume a==a
 		}
 
-		for (size_t i = 0; i < NUM_CHARS; i++) {
+		for (Size i = 0; i < NUM_CHARS; i++) {
 			if (this->items[i] != other.items[i]) {
 				return false;
 			}
@@ -35,10 +35,10 @@ public:
 	}
 
 	// for std?
-	constexpr size_t size() const noexcept { return NUM_CHARS; }
+	constexpr Size size() const noexcept { return NUM_CHARS; }
 }; // class StringSlice
 
 // deduction guide
-template <size_t N> StringSlice(char (&)[N]) -> StringSlice<N - 1>;
+template <Size N> StringSlice(char (&)[N]) -> StringSlice<N - 1>;
 
 } // namespace VOLTISO_NAMESPACE

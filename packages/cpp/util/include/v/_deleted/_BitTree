@@ -38,7 +38,7 @@ template <class Word> struct Xor {
 namespace VOLTISO_NAMESPACE {
 // in-place
 template <
-  template <class> class _BitOperation, size_t _NUM_LEAFS,
+  template <class> class _BitOperation, Size _NUM_LEAFS,
   class _Word = std::uintmax_t>
 class BitTree {
 	using Self = BitTree;
@@ -51,17 +51,17 @@ public:
 	struct Node {
 		struct Aggregate {
 			BitArray<sizeof(Word) * 8, Word> bitArray = {};
-			Aggregate(size_t numChildren) {
+			Aggregate(Size numChildren) {
 				auto bitOperation = singleton::perThread::get<BitOperation>();
 				bitArray.fill(bitOperation.neutral, numChildren);
 			}
-			void compoundAssign(const Aggregate &other, size_t iChild) {
+			void compoundAssign(const Aggregate &other, Size iChild) {
 				auto bitOperation = singleton::perThread::get<BitOperation>();
 				bitArray[iChild] = bitOperation(other.bitArray);
 			}
 		};
 		Aggregate aggregate;
-		Node(size_t iNode) : aggregate() {}
+		Node(Size iNode) : aggregate() {}
 	};
 
 	Tree<Node, divCeil(NUM_LEAFS, sizeof(Word) * 8), sizeof(Word) * 8>

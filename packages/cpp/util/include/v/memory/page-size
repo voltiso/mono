@@ -15,7 +15,7 @@
 
 namespace VOLTISO_NAMESPACE::memory {
 
-static constexpr size_t PAGE_SIZE = 4096; // 4096 ?
+static constexpr Size PAGE_SIZE = 4096; // 4096 ?
 
 /** @internal */
 struct _Check {

@@ -5,4 +5,4 @@
 #include "v/_/string.hpp"         // IWYU pragma: export
 
 // possibly required by String
-#include "v/const-string-slice" // IWYU pragma: keep
+#include "v/const-string-view" // IWYU pragma: keep

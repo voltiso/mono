@@ -57,45 +57,45 @@ TEST(BitArray, assignBit) {
 TEST(BitArray, fill) {
 	BitArray<128> array = {};
 
-	for (std::size_t i = 0; i < 128; ++i) {
+	for (Size i = 0; i < 128; ++i) {
 		EXPECT_EQ(array[i], 0);
 	}
 
 	array.fill(1);
 
-	for (std::size_t i = 0; i < 128; ++i) {
+	for (Size i = 0; i < 128; ++i) {
 		EXPECT_EQ(array[i], 1);
 	}
 
 	array.fill(0);
 
-	for (std::size_t i = 0; i < 128; ++i) {
+	for (Size i = 0; i < 128; ++i) {
 		EXPECT_EQ(array[i], 0);
 	}
 }
 
 TEST(BitArray, fill_narrow) {
 	BitArray<64 * 3> array = {};
-	for (std::size_t i = 0; i < 64 * 3; ++i) {
+	for (Size i = 0; i < 64 * 3; ++i) {
 		EXPECT_EQ(array[i], 0);
 	}
 
 	array.fill(1, 64 + 10, 64 * 2 - 10);
 	array.fill(0, 64 + 20, 64 * 2 - 20);
 
-	for (std::size_t i = 0; i < 64 + 10; ++i) {
+	for (Size i = 0; i < 64 + 10; ++i) {
 		EXPECT_EQ(array[i], 0) << i;
 	}
-	for (std::size_t i = 64 + 10; i < 64 + 20; ++i) {
+	for (Size i = 64 + 10; i < 64 + 20; ++i) {
 		EXPECT_EQ(array[i], 1) << i;
 	}
-	for (std::size_t i = 64 + 20; i < 64 * 2 - 20; ++i) {
+	for (Size i = 64 + 20; i < 64 * 2 - 20; ++i) {
 		EXPECT_EQ(array[i], 0) << i;
 	}
-	for (std::size_t i = 64 * 2 - 20; i < 64 * 2 - 10; ++i) {
+	for (Size i = 64 * 2 - 20; i < 64 * 2 - 10; ++i) {
 		EXPECT_EQ(array[i], 1) << i;
 	}
-	for (std::size_t i = 64 * 2 - 10; i < 64 * 3; ++i) {
+	for (Size i = 64 * 2 - 10; i < 64 * 3; ++i) {
 		EXPECT_EQ(array[i], 0) << i;
 	}
 }
@@ -106,19 +106,19 @@ TEST(BitArray, fill_wide) {
 	array.fill(1, 10, 64 * 3 - 10);
 	array.fill(0, 20, 64 * 3 - 20);
 
-	for (std::size_t i = 0; i < 10; ++i) {
+	for (Size i = 0; i < 10; ++i) {
 		EXPECT_EQ(array[i], 0);
 	}
-	for (std::size_t i = 10; i < 20; ++i) {
+	for (Size i = 10; i < 20; ++i) {
 		EXPECT_EQ(array[i], 1);
 	}
-	for (std::size_t i = 20; i < 64 * 3 - 20; ++i) {
+	for (Size i = 20; i < 64 * 3 - 20; ++i) {
 		EXPECT_EQ(array[i], 0);
 	}
-	for (std::size_t i = 64 * 3 - 20; i < 64 * 3 - 10; ++i) {
+	for (Size i = 64 * 3 - 20; i < 64 * 3 - 10; ++i) {
 		EXPECT_EQ(array[i], 1);
 	}
-	for (std::size_t i = 64 * 3 - 10; i < 64 * 3; ++i) {
+	for (Size i = 64 * 3 - 10; i < 64 * 3; ++i) {
 		EXPECT_EQ(array[i], 0);
 	}
 }

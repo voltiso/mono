@@ -539,7 +539,7 @@ public:
 protected:
 	Buckets _buckets = {};
 	Pool _pool = {}; // for better data locality, we keep internal pool
-	std::size_t _numItems = 0;
+	Size _numItems = 0;
 
 public:
 	const Buckets &buckets() const { return _buckets; }
@@ -549,7 +549,7 @@ public:
 
 public:
 	~Custom() {
-		for (std::size_t i = 0; i < _buckets.numItems(); ++i) {
+		for (Size i = 0; i < _buckets.numItems(); ++i) {
 			auto node = std::bit_cast<typename Pool::Handle>(_buckets[i].firstNode);
 			while (node) {
 				auto nextNode = node->nextNode;
@@ -607,7 +607,7 @@ public:
 
 private:
 	Buckets::Handle _bucketIndex(const Key &key) const {
-		std::size_t hash;
+		Size hash;
 		if constexpr (std::is_reference_v<Key>) {
 			// static_assert(false, "not implemented");
 			hash = get::hash(&key); // ! hash references as pointers
@@ -617,7 +617,7 @@ private:
 		// std::cout << "get bucket index for key " << (std::uintptr_t)key.value
 		//           << std::endl;
 		// std::cout << "hash is " << hash << std::endl;
-		CHECK(std::has_single_bit(_buckets.numItems()));
+		CHECK(std::has_single_bit((std::size_t)_buckets.numItems()));
 		// auto index = hash % buckets.numItems;
 		auto index = hash & (_buckets.numItems() - 1);
 		// std::cout << "index is " << index << std::endl;
@@ -637,13 +637,14 @@ private:
 		setNumBuckets(newNumBuckets);
 	}
 
-	void setNumBuckets(std::size_t newNumBuckets) {
-		CHECK(std::has_single_bit(newNumBuckets));
+	void setNumBuckets(Size newNumBuckets) {
+		GT(newNumBuckets, 0);
+		CHECK(std::has_single_bit((std::size_t)newNumBuckets));
 		auto &buckets = this->_buckets;
 		auto &pool = this->_pool;
 		auto oldNumBuckets = buckets.numItems();
 		buckets.setNumItems(newNumBuckets);
-		for (size_t i = 0; i < oldNumBuckets; ++i) {
+		for (Size i = 0; i < oldNumBuckets; ++i) {
 			auto &oldBucket = buckets[i];
 			auto pNode = &oldBucket.firstNode;
 			while (*pNode) {
@@ -662,7 +663,7 @@ private:
 		}
 	}
 
-	static constexpr size_t MAX_LOAD_FACTOR_INV = 2; // 0.5 load factor
+	static constexpr Size MAX_LOAD_FACTOR_INV = 2; // 0.5 load factor
 
 	bool shouldGrow() const {
 		return MAX_LOAD_FACTOR_INV * _numItems >= _buckets.numItems();
@@ -858,7 +859,7 @@ public:
 public:
 	auto debugGetMaxBucketSize() const {
 		auto maxSize = 0;
-		for (std::size_t i = 0; i < _buckets.numItems(); ++i) {
+		for (Size i = 0; i < _buckets.numItems(); ++i) {
 			auto &bucket = _buckets[i];
 			auto size = 0;
 			auto node = bucket.firstNode;

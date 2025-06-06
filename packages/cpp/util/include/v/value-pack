@@ -1,0 +1,45 @@
+#pragma once
+
+#include "v/size"
+
+#include <tuple>
+
+#include <v/ON>
+
+namespace V {
+template <auto... VALUES> struct ValuePack;
+} // namespace V
+
+// !
+
+namespace V::_ {
+template <auto... T_VALUES> struct ValuePackBase {};
+
+template <auto T_HEAD, auto... T_VALUES>
+struct ValuePackBase<T_HEAD, T_VALUES...> {
+	static constexpr auto HEAD = T_HEAD;
+	using Tail = ValuePack<T_VALUES...>;
+};
+} // namespace V::_
+
+namespace V {
+/**
+ * @brief A template for packing heterogeneous values for use as a
+ * Non-Type Template Parameter (NTTP).
+ * * @tparam Values A parameter pack of values (e.g., 42, 'a', true).
+ * The types are deduced automatically.
+ */
+template <auto... VALUES> struct ValuePack : _::ValuePackBase<VALUES...> {
+	static constexpr Size NUM_ITEMS = sizeof...(VALUES);
+
+	ValuePack() = delete;
+
+	consteval static auto tuple() { return std::tuple{VALUES...}; }
+
+	template <class Item> consteval static auto array() {
+		return std::array<Item, NUM_ITEMS>{VALUES...};
+	}
+}; // struct ValuePack
+} // namespace V
+
+#include <v/OFF>

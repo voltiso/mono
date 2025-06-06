@@ -48,7 +48,8 @@
 
 	"C_Cpp.intelliSenseEngine": "disabled", // clangd for editor, ms extension for debugging and disassembly
 
-	"clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
+	// "clangd.arguments": ["-log=verbose", "-pretty", "--background-index"],
+	"clangd.path": "clangd",
 
 	/** --------------------------------------------------------- */
 	//
@@ -77,7 +78,7 @@
 	},
 
 	"files.associations": {
-		"**/include/voltiso/**/*": "cpp",
+		"**/include/v/**/*": "cpp",
 		"*.json": "jsonc"
 	},
 

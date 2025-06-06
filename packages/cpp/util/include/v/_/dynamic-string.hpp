@@ -2,7 +2,7 @@
 #include <v/_/_>
 
 #include "v/_/dynamic-string.forward.hpp"
-#include "v/const-string-slice"
+#include "v/const-string-view"
 #include "v/dynamic-array"
 #include "v/get/brands"
 #include "v/option/custom-template"
@@ -45,9 +45,9 @@ public:
 	template <class... Args>
 	INLINE Custom(Args &&...args) : Base(std::forward<Args>(args)...) {}
 
-	template <std::size_t N>
+	template <Size N>
 	explicit INLINE Custom(const char (&rawString)[N])
-	    : Base(tag::EXPLICIT_COPY, ConstStringSlice{rawString}) {}
+	    : Base(tag::EXPLICIT_COPY, ConstStringView{rawString}) {}
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
@@ -63,26 +63,26 @@ public:
 
 	template <class Arg> VOLTISO_FORCE_INLINE static auto from(const Arg &arg) {
 		static_assert(std::is_base_of_v<Custom, Self>);
-		// return Self(ConstStringSlice{arg}.copy());
+		// return Self(ConstStringView{arg}.copy());
 		return Self(tag::EXPLICIT_COPY, arg);
 	}
 
 protected:
 	template <class... Args>
 	VOLTISO_FORCE_INLINE Custom(tag::Concat, const Args &...args)
-	    : Base(tag::Concat{}, ConstStringSlice(args)...) {}
+	    : Base(tag::Concat{}, ConstStringView(args)...) {}
 
 	template <class Arg>
 	VOLTISO_FORCE_INLINE Custom(tag::ExplicitCopy, const Arg &arg)
-	    // requires requires { ConstStringSlice(arg); }
-	    : Base(tag::ExplicitCopy{}, ConstStringSlice(arg)) {}
+	    // requires requires { ConstStringView(arg); }
+	    : Base(tag::ExplicitCopy{}, ConstStringView(arg)) {}
 
 public:
 	template <class Other>
 	decltype(auto) operator<<=(this auto &&self, const Other &other)
 	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
 	{
-		self.template as<Base>().operator<<=(ConstStringSlice(other));
+		self.template as<Base>().operator<<=(ConstStringView(other));
 		return std::forward<decltype(self)>(self);
 	}
 };
@@ -104,7 +104,7 @@ class DynamicString : public dynamicString::Custom<VOLTISO_NAMESPACE::Options<
 namespace VOLTISO_NAMESPACE::dynamicString {
 // // Overload for C-style string literals
 // // Creates a DynamicString from a raw string, excluding the null terminator.
-// template <std::size_t NUM_ITEMS_WITH_NULL>
+// template <Size NUM_ITEMS_WITH_NULL>
 // [[nodiscard]] VOLTISO_FORCE_INLINE auto
 // from(const char (&rawString)[NUM_ITEMS_WITH_NULL]) {
 // 	constexpr auto SLICE_SIZE =
@@ -136,7 +136,7 @@ template <class... Args>
 namespace VOLTISO_NAMESPACE::dynamicString {
 template <class Options>
 ::std::ostream &operator<<(::std::ostream &os, const Custom<Options> &custom) {
-	return os << ConstStringSlice{custom};
+	return os << ConstStringView{custom};
 }
 } // namespace VOLTISO_NAMESPACE::dynamicString
 

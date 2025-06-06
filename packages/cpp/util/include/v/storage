@@ -3,8 +3,8 @@
 
 #include "v/_/storage.forward.hpp"
 
-#include "v/_/array.hpp"
 #include "v/_/object.forward.hpp"
+#include "v/_/tensor.hpp"
 #include "v/is/trivially-relocatable"
 #include "v/object"
 #include "v/options"
@@ -18,8 +18,8 @@
 // namespace VOLTISO_NAMESPACE::storage {
 // // To replace `std::aligned_storage`
 // // https://stackoverflow.com/a/71828512/1123898
-// template <size_t _SIZE, size_t ALIGN> struct Custom {
-// 	static constexpr size_t SIZE = _SIZE;
+// template <Size _SIZE, Size ALIGN> struct Custom {
+// 	static constexpr Size SIZE = _SIZE;
 // 	alignas(ALIGN) Array<std::byte, SIZE> data;
 // };
 // } // namespace VOLTISO_NAMESPACE::storage
@@ -30,7 +30,7 @@ namespace VOLTISO_NAMESPACE {
 // ⚠️ Remember to call `.destroy()` if you constructed something
 template <class TObject> class Storage : public Object<Options<>> {
 public:
-	alignas(TObject) Array<std::byte, sizeof(TObject)> bytes;
+	alignas(TObject) Tensor<std::byte, sizeof(TObject)> bytes;
 
 	// union {
 	// 	Array<std::byte, sizeof(TObject)> bytes;

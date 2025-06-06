@@ -4,7 +4,7 @@
 #include <limits>
 
 namespace VOLTISO_NAMESPACE::memo {
-using NumDeps = std::size_t;
+using NumDeps = Size;
 class MemoBase;
 } // namespace VOLTISO_NAMESPACE::memo
 

@@ -139,7 +139,7 @@ private:
 		static_assert(std::is_same_v<decltype(lastItem), Storage<Item>>);
 
 		Base::pop();
-		size_t index = 1;
+		Size index = 1;
 		// decltype(Base::_numItems) index = 1;
 		Storage<Item> *array = &Base::slots()->object() - 1;
 		while ((index << 1) <= Base::_numItems) [[likely]] {

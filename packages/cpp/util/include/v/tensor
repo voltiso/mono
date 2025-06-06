@@ -1,7 +1,7 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/array.hpp" // IWYU pragma: export
+#include "v/_/tensor.hpp" // IWYU pragma: export
 
-// possibly required by Array
+// possibly required by Tensor
 #include "v/dynamic-array" // IWYU pragma: keep

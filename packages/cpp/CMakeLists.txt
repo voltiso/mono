@@ -76,16 +76,16 @@ add_executable(
   util/test/heap.test.cpp
   util/test/dynamic-array.test.cpp
   util/test/raw-array.test.cpp
-  util/test/const-string-slice.test.cpp
   util/test/path.test.cpp
-  util/test/slice.test.cpp
+  util/test/view.test.cpp
   util/test/string.test.cpp
   util/test/storage.test.cpp
   util/test/runner.test.cpp
   util/test/pool.test.cpp
-  util/test/array.test.cpp
   util/test/subject.test.cpp
   util/test/executable-path.test.cpp
+  util/test/tensor.test.cpp
+  util/test/const-string-view.test.cpp
 
   # util/test/state.test.cpp # TODO
 

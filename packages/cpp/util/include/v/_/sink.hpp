@@ -21,7 +21,7 @@ class Base {
 protected:
 	friend Subscription;
 	HashSet<Subscription &> _subscriptions;
-	// std::size_t _numEagerSubscriptions = 0;
+	// Size _numEagerSubscriptions = 0;
 
 public:
 	~Base() {

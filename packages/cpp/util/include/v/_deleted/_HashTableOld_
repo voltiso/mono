@@ -180,7 +180,7 @@ public:
 		auto newHandle =
 		  bucket.entries.push({this->key, Value(std::forward<Args>(args)...)});
 		DCHECK_EQ(newHandle, this->handle.entry);
-		++const_cast<size_t &>(this->hashTable().numItems);
+		++const_cast<Size &>(this->hashTable().numItems);
 		// if (!wasEmpty) [[likely]]
 		//   this->hashTable().maybeGrow();
 	}
@@ -222,8 +222,8 @@ public:
 namespace VOLTISO_NAMESPACE::hashTable {
 struct Defaults {
 	using Entry = void; // need to override
-	static constexpr size_t IN_PLACE = 0;
-	static constexpr size_t BUCKET_IN_PLACE = 1;
+	static constexpr Size IN_PLACE = 0;
+	static constexpr Size BUCKET_IN_PLACE = 1;
 	using Allocator = allocator::Malloc;
 };
 using DefaultOptions = Options<Defaults>;
@@ -254,11 +254,11 @@ private:
 
 public:
 	Buckets const buckets = {};
-	size_t const numItems = 0;
+	Size const numItems = 0;
 
 private:
 	Buckets &_buckets() { return const_cast<Buckets &>(this->buckets); }
-	size_t &_numItems() { return const_cast<size_t &>(this->numItems); }
+	Size &_numItems() { return const_cast<Size &>(this->numItems); }
 
 public:
 	Build() = default;
@@ -299,7 +299,7 @@ private:
 
 		auto index = _bucketIndex(key);
 		auto &bucket = buckets[index].item();
-		for (size_t i = 0; i < bucket.entries.numItems; ++i) {
+		for (Size i = 0; i < bucket.entries.numItems; ++i) {
 			if (getKey(bucket.entries[i].item()) == key) {
 				return TemporaryHandle{index, typename Bucket::Entries::Handle(i)};
 			}
@@ -317,9 +317,9 @@ private:
 			newNumBuckets = 1;
 		}
 		buckets.setNumItems(newNumBuckets);
-		for (size_t i = 0; i < oldNumBuckets; ++i) {
+		for (Size i = 0; i < oldNumBuckets; ++i) {
 			auto &oldBucket = buckets[i].item();
-			for (size_t j = 0; j < oldBucket.entries.numItems; ++j) {
+			for (Size j = 0; j < oldBucket.entries.numItems; ++j) {
 				auto &entry = oldBucket.entries[j].item();
 				auto hNewBucket = _bucketIndex(getKey(entry));
 				if (hNewBucket.value != i) {
@@ -334,7 +334,7 @@ private:
 		}
 	}
 
-	static constexpr size_t MAX_LOAD_FACTOR_INV = 2; // 0.5 load factor
+	static constexpr Size MAX_LOAD_FACTOR_INV = 2; // 0.5 load factor
 
 	bool shouldGrow() const {
 		return MAX_LOAD_FACTOR_INV * numItems >= buckets.numItems;

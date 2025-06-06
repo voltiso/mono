@@ -256,7 +256,7 @@ BENCHMARK(BM_Function_creationDestruction_stdFunction);
 struct ComplexObject {
 	std::vector<int> data;
 
-	ComplexObject(size_t size) : data(size, 1) {}
+	ComplexObject(Size size) : data(size, 1) {}
 
 	int compute(int x) const {
 		int sum = 0;

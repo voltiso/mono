@@ -1,59 +1,47 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/array.forward.hpp"
+#include "v/_/tensor.forward.hpp"
 
-#include "v/_/array-concat-traits.hpp"
+#include "v/_/tensor-concat-traits.hpp"
 
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/concepts/options"
+#include "v/get/num-items"
 #include "v/handle"
 #include "v/is/trivially-relocatable"
 #include "v/memory/iterator"
 #include "v/object"
+#include "v/option/extents"
 #include "v/option/input-options"
 #include "v/option/item"
-#include "v/option/num-items"
 #include "v/option/starting-index"
 #include "v/option/trivially-relocatable"
 #include "v/raw-array"
-#include "v/slice"
+#include "v/size"
 #include "v/tag/concat"
 #include "v/tag/explicit-copy"
 #include "v/tag/explicit-copy-consteval"
+#include "v/value-pack"
+#include "v/view"
 
-#include <cstddef>
 #include <type_traits>
 
 #include <v/ON>
 
 // !
 
-namespace VOLTISO_NAMESPACE::array {
-template <class Item, std::size_t NUM_ITEMS>
+namespace VOLTISO_NAMESPACE::tensor {
+template <class Item, auto... ES>
 struct Specializations<
-  Options<option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>>> {
-	using Result = Array<Item, NUM_ITEMS>;
+  Options<option::Item<Item>, option::Extents<ValuePack<ES...>>>> {
+	using Result = Tensor<Item, ES...>;
 };
-} // namespace VOLTISO_NAMESPACE::array
+} // namespace VOLTISO_NAMESPACE::tensor
 
 // !
 
-// namespace VOLTISO_NAMESPACE::array::_ {
-// template <class Item, std::size_t NUM_ITEMS> struct GetItems {
-// 	using Result = RawArray<Item, NUM_ITEMS>;
-// };
-
-// template <class Item, std::size_t NUM_ITEMS>
-//   requires(std::is_reference_v<Item>)
-// struct GetItems<Item, NUM_ITEMS> {
-// 	using Result = ...;
-// };
-// } // namespace VOLTISO_NAMESPACE::array::_
-
-// !
-
-namespace VOLTISO_NAMESPACE::array {
+namespace VOLTISO_NAMESPACE::tensor {
 template <class Options>
   requires concepts::Options<Options> // && std::is_final_v<Final>
 class Custom
@@ -77,29 +65,55 @@ public:
 	  !std::is_const_v<Item>,
 	  "const Item does not make sense, just use `const Array<Item>`");
 
-	static constexpr auto NUM_ITEMS =
-	  Options::template GET<VOLTISO_NAMESPACE::option::NUM_ITEMS>;
+	using Extents = Options::template Get<option::Extents>;
+	static constexpr auto EXTENTS = Extents::template array<Size>();
+	static constexpr auto EXTENT = std::get<0>(Extents::tuple());
+	static constexpr auto NUM_ITEMS = []() {
+		// std::apply unpacks the tuple elements into the lambda's arguments.
+		return std::apply(
+		  [](auto... elements) {
+			  return (static_cast<V::Size>(1) * ... * static_cast<V::Size>(elements));
+		  },
+		  EXTENTS);
+	}();
+	static constexpr auto STRIDES = []() {
+		constexpr auto N = EXTENTS.size();
 
-	static constexpr auto EXTENT = NUM_ITEMS;
+		std::array<V::Size, N> strides{};
+
+		if constexpr (N > 0) {
+			strides[N - 1] = 1;
+			for (Size i = N - 1; i > 0; --i) {
+				strides[i - 1] = strides[i] * EXTENTS[i];
+			}
+		}
+
+		return strides;
+	}();
 
 	static constexpr auto STARTING_INDEX =
 	  Options::template GET<option::STARTING_INDEX>;
 
 	// Make sure required parameters are set
 	static_assert(!std::is_same_v<Item, void>, "Item type must be specified");
-	// static_assert(NUM_ITEMS > 0, "Array size must be greater than 0");
+	// static_assert(EXTENT > 0, "Array size must be greater than 0");
 
 	template <class Kind>
 	using CustomHandle = Handle::WithBrand<Self>::template WithKind<Kind>;
 
 	using Handle = CustomHandle<
-	  std::conditional_t<(STARTING_INDEX < 0), std::make_signed<size_t>, size_t>>;
+	  std::conditional_t<(STARTING_INDEX < 0), std::make_signed<Size>, Size>>;
 
-	// Item items[NUM_ITEMS];
+	// Item items[EXTENT];
 	RawArray<Item, NUM_ITEMS> items; // = {};
 
-	// using Items = GetItems<Item, NUM_ITEMS>;
+	// using Items = GetItems<Item, EXTENT>;
 	// Items items; // = {};
+
+public:
+	constexpr auto extent() const { return EXTENT; }
+	constexpr auto numItems() const { return NUM_ITEMS; }
+	constexpr auto strides() const { return STRIDES; }
 
 public:
 	Custom() = default;
@@ -112,12 +126,12 @@ public:
 
 	// // `other` is the result of `.copy()` - user wants linear-time copy
 	// Custom(const Custom &&other) {
-	// 	std::copy(other.items, other.items + NUM_ITEMS, items);
+	// 	std::copy(other.items, other.items + EXTENT, items);
 	// }
 
 	// `other` is the result of `.copy()` - user wants linear-time copy
 	template <class Other>
-	  requires(!std::is_reference_v<Other> && Other::NUM_ITEMS == NUM_ITEMS)
+	  requires(!std::is_reference_v<Other> && Other::EXTENTS == EXTENTS)
 	Custom(const Other &&other) {
 		std::copy(other.items, other.items + Other::NUM_ITEMS, items);
 	}
@@ -129,10 +143,25 @@ public:
 		std::copy(list.begin(), list.end(), items);
 	}
 
+	INLINE constexpr Custom(
+	  std::initializer_list<std::initializer_list<Item>> list) noexcept {
+		// Assert the number of rows
+		EQ(list.size(), EXTENT);
+
+		Size i = 0;
+		for (const auto &row : list) {
+			// Assert the number of columns for each row
+			EQ(row.size(), EXTENT);
+			for (const auto &val : row) {
+				items[i++] = val;
+			}
+		}
+	}
+
 	// explicit linear time copy
 	// must not use consteval version
 	// [[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
-	// from(const Item (&items)[NUM_ITEMS]) {
+	// from(const Item (&items)[EXTENT]) {
 	// 	return Self{tag::EXPLICIT_COPY, items};
 	// }
 
@@ -156,7 +185,7 @@ protected:
 	// `consteval` for `operator""_s`
 	// we accept any N>NUM_ITEMS, and copy the first NUM_ITEMS
 	// usually N will be NUM_ITEMS+1 for null-terminated strings
-	template <std::size_t N>
+	template <Size N>
 	  requires(N >= NUM_ITEMS)
 	consteval Custom(tag::ExplicitCopyConsteval, const Item (&items)[N]) {
 		std::copy(items, items + NUM_ITEMS, this->items);
@@ -172,6 +201,7 @@ public:
 	  class InferredHandle,
 	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
 	    nullptr>
+	  requires(EXTENT == NUM_ITEMS)
 	const Item &operator[](const InferredHandle &handle) const {
 		GE(handle.value, STARTING_INDEX);
 		LT(
@@ -185,6 +215,7 @@ public:
 	  class InferredHandle,
 	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
 	    nullptr>
+	  requires(EXTENT == NUM_ITEMS)
 	Item &operator[](const InferredHandle &handle) {
 		return const_cast<Item &>(const_cast<const Custom &>(*this)[handle]);
 	}
@@ -195,13 +226,31 @@ public:
 	// explicitly define `operator[]` for raw values
 
 	template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
+	  requires(EXTENT == NUM_ITEMS)
 	const Item &operator[](const Index &index) const {
 		return (*this)[CustomHandle<Index>(index)];
 	}
 
 	template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
+	  requires(EXTENT == NUM_ITEMS)
 	Item &operator[](const Index &index) {
 		return (*this)[CustomHandle<Index>(index)];
+	}
+
+	// md
+	auto operator[](Size index)
+	  requires(EXTENTS.size() > 1)
+	{
+		using SubView = View<Item>::template WithExtents<typename Extents::Tail>;
+		return SubView{items + index * extent() - STARTING_INDEX};
+	}
+
+	auto operator[](Size index) const
+	  requires(EXTENTS.size() > 1)
+	{
+		using SubView =
+		  const View<const Item>::template WithExtents<typename Extents::Tail>;
+		return SubView{items + index * extent() - STARTING_INDEX};
 	}
 
 	// comparisons
@@ -233,16 +282,12 @@ public:
 	}
 
 	// constant-time - can be implicit
-	constexpr operator Slice<Item, NUM_ITEMS>()
-	// requires(NUM_ITEMS > 0)
-	{
-		return Slice<Item, NUM_ITEMS>(items);
+	constexpr operator View<Item, NUM_ITEMS>() {
+		return View<Item, NUM_ITEMS>{items};
 	}
 
-	constexpr operator Slice<const Item, NUM_ITEMS>() const
-	// requires(NUM_ITEMS > 0)
-	{
-		return Slice<const Item, NUM_ITEMS>(items);
+	constexpr operator View<const Item, NUM_ITEMS>() const {
+		return View<const Item, NUM_ITEMS>{items};
 	}
 
 	/**
@@ -258,7 +303,7 @@ public:
 	ConstIterator end() const { return ConstIterator{items + NUM_ITEMS}; }
 
 	// for std
-	constexpr std::size_t size() const noexcept { return NUM_ITEMS; }
+	constexpr Size size() const noexcept { return NUM_ITEMS; }
 
 public:
 	// ! should we delegate to Slice::operator<< ?
@@ -266,14 +311,15 @@ public:
 	template <class Other>
 	  requires( // Check extent of Other directly, not its decayed type if decay
 	            // loses extent info
-	    get::EXTENT<Other> != Extent::DYNAMIC &&
-	    get::EXTENT<Other> != Extent::UNBOUND)
+	    get::EXTENT<Other> != extent::DYNAMIC &&
+	    get::EXTENT<Other> != extent::UNBOUND)
 	auto operator<<(this auto &&self, Other &&other) { // Allow rvalue this
 		// Use get::EXTENT<Other> to ensure we get extent of e.g. const char (&)[N]
 		// not const char* if the latter would have an UNBOUND extent.
-		constexpr auto NEW_NUM_ITEMS = NUM_ITEMS + get::EXTENT<Other>.value;
-		using Result = Self::template With<option::NUM_ITEMS<NEW_NUM_ITEMS>>;
-		static_assert(_::array::sumExtents(self, other) == NEW_NUM_ITEMS);
+		constexpr Size NEW_NUM_ITEMS = NUM_ITEMS + get::NUM_ITEMS<Other>;
+		using Result =
+		  Self::template With<option::Extents<ValuePack<NEW_NUM_ITEMS>>>;
+		EQ(_::tensor::sumNumItems(self, other), NEW_NUM_ITEMS);
 		return Result::concat(
 		  std::forward<decltype(self)>(self), std::forward<Other>(other));
 	}
@@ -282,14 +328,14 @@ private:
 	// The implemented constexpr constructor for concatenation
 	template <class... Slices>
 	constexpr Custom(tag::Concat, Slices &&...slices)
-	// requires(NUM_ITEMS == _::array::sumExtents(slices...))
+	// requires(EXTENT == _::array::sumExtents(slices...))
 	// : items{}
 	{
-		constexpr auto sumResult = _::array::sumExtents(slices...);
+		constexpr auto sumResult = _::tensor::sumNumItems(slices...);
 		if constexpr (!is::staticError(sumResult)) {
 			static_assert(NUM_ITEMS == sumResult);
 		}
-		std::size_t current_offset = 0;
+		Size current_offset = 0;
 
 		// Process each source array (skip the tag)
 		(void)std::initializer_list<int>{
@@ -299,13 +345,13 @@ private:
 private:
 	// Helper function to process a single slice
 	template <class SliceT>
-	constexpr void processSlice(std::size_t &current_offset, SliceT &&slice) {
+	constexpr void processSlice(Size &current_offset, SliceT &&slice) {
 		// Skip processing if this is a tag
 		if constexpr (std::is_same_v<std::decay_t<SliceT>, tag::ExplicitCopy>) {
 			return;
 		} else {
 			// Create a Slice from the source
-			auto slice_instance = Slice(slice);
+			auto slice_instance = View(slice);
 
 			using SliceInstanceType = decltype(slice_instance);
 
@@ -325,34 +371,34 @@ private:
 			// matches the one obtained via get::EXTENT for the source type.
 			// This ensures consistency.
 			static_assert(
-			  slice_instance.extent().value == get::EXTENT<SliceT>.value,
+			  slice_instance.extent() == get::EXTENT<SliceT>,
 			  "Slice extent mismatch: slice_instance.extent() vs get::EXTENT for "
 			  "source type.");
 
 			// Perform the copy in a constexpr-friendly way
-			for (std::size_t i = 0; i < slice_instance.extent().value; ++i) {
-				// Bounds check (current_offset + i < NUM_ITEMS) is implicitly
-				// guaranteed by the requires clause (NUM_ITEMS == total_extent) and
+			for (Size i = 0; i < slice_instance.extent(); ++i) {
+				// Bounds check (current_offset + i < EXTENT) is implicitly
+				// guaranteed by the requires clause (EXTENT == total_extent) and
 				// correct iteration.
 				items[current_offset + i] =
 				  slice_instance.items[i]; // Implicit conversion if types differ
 			}
-			current_offset += slice_instance.extent().value;
+			current_offset += slice_instance.extent();
 		}
 	}
 }; // class Custom
-} // namespace VOLTISO_NAMESPACE::array
+} // namespace VOLTISO_NAMESPACE::tensor
 
 // !
 
 namespace VOLTISO_NAMESPACE {
-template <class Item, size_t NUM_ITEMS>
-class Array : public array::Custom<Options<
-                option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>,
-                option::Self<Array<Item, NUM_ITEMS>>>> {
-	using Base = array::Custom<Options<
-	  option::Item<Item>, option::NUM_ITEMS<NUM_ITEMS>,
-	  option::Self<Array<Item, NUM_ITEMS>>>>;
+template <class Item, auto E, auto... ES>
+class Tensor : public tensor::Custom<Options<
+                 option::Item<Item>, option::Extents<ValuePack<E, ES...>>,
+                 option::Self<Tensor<Item, E, ES...>>>> {
+	using Base = tensor::Custom<Options<
+	  option::Item<Item>, option::Extents<ValuePack<E, ES...>>,
+	  option::Self<Tensor<Item, E, ES...>>>>;
 	using Base::Base;
 };
 
@@ -360,46 +406,55 @@ class Array : public array::Custom<Options<
 template <
   class T, class... U,
   std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
-Array(T, U...) -> Array<std::type_identity_t<T>, 1 + sizeof...(U)>;
+Tensor(T, U...) -> Tensor<std::type_identity_t<T>, 1 + (Size)sizeof...(U)>;
 
 template <class T>
-Array(std::initializer_list<T> list) -> Array<T, list.size()>;
+Tensor(std::initializer_list<T> list) -> Tensor<T, list.size()>;
+
+// 2D Deduction Guide
+template <class T>
+Tensor(std::initializer_list<std::initializer_list<T>> list)
+  -> Tensor<T, list.size(), list.begin()->size()>;
+
+// 3D Deduction Guide
+template <class T>
+Tensor(
+  std::initializer_list<std::initializer_list<std::initializer_list<T>>> list)
+  -> Tensor<
+    T, list.size(), list.begin()->size(), list.begin()->begin()->size()>;
 
 // ! linear-time copy (make explicit?)
 // Deduction guide for constructing from a raw array
-// template <class Item, size_t NUM_ITEMS>
-// explicit Array(const Item (&)[NUM_ITEMS]) -> Array<Item, NUM_ITEMS>;
+// template <class Item, Size EXTENT>
+// explicit Array(const Item (&)[EXTENT]) -> Array<Item, EXTENT>;
 
 // ! hmm does not work - pointer decay?
-// template <class Item, size_t NUM_ITEMS>
-// explicit Array(std::initializer_list<Item[NUM_ITEMS]> list)
-//   -> Array<Item, NUM_ITEMS>;
+// template <class Item, Size EXTENT>
+// explicit Array(std::initializer_list<Item[EXTENT]> list)
+//   -> Array<Item, EXTENT>;
 
-namespace array {
+namespace tensor {
 // ! linear-time copy
-template <class Item, size_t NUM_ITEMS>
+template <class Item, int EXTENT>
 [[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
-from(const Item (&rawArray)[NUM_ITEMS]) {
-	return Array<Item, NUM_ITEMS>::from(rawArray);
+from(const Item (&rawArray)[EXTENT]) {
+	return Tensor<Item, EXTENT>::from(rawArray);
 }
 
-template <class Item, size_t NUM_ITEMS>
+template <class Item, int EXTENT>
 [[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 from(const std::initializer_list<Item> &list) {
-	static_assert(list.size() == NUM_ITEMS, "wrong constructor selected");
-	return Array<Item, NUM_ITEMS>::from(list);
+	static_assert(list.size() == EXTENT, "wrong constructor selected");
+	return Tensor<Item, EXTENT>::from(list);
 }
-} // namespace array
+} // namespace tensor
 
 } // namespace VOLTISO_NAMESPACE
 
 namespace std {
 template <class T>
-  requires requires(T t) { T::NUM_ITEMS; }
-struct tuple_size<T> : std::integral_constant<std::size_t, T::NUM_ITEMS> {};
-template <class T>
   requires requires(T t) { T::EXTENT; }
-struct tuple_size<T> : std::integral_constant<std::size_t, T::EXTENT.value> {};
+struct tuple_size<T> : std::integral_constant<V::Size, T::EXTENT> {};
 } // namespace std
 
 // !

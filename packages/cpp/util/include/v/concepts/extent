@@ -1,0 +1,10 @@
+#pragma once
+#include <v/_/_>
+
+#include "v/extent"
+
+namespace VOLTISO_NAMESPACE::concepts {
+template <class T>
+concept Extent = std::is_integral_v<T> || std::is_same_v<T, extent::Dynamic> ||
+                 std::is_same_v<T, extent::Unbound>;
+} // namespace VOLTISO_NAMESPACE::concepts

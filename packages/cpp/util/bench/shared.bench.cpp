@@ -25,7 +25,7 @@ struct LargeObject final {
 	std::vector<int> data;
 	std::string name;
 
-	explicit LargeObject(size_t size = 100, const std::string &n = "test")
+	explicit LargeObject(Size size = 100, const std::string &n = "test")
 	    : data(size, 1), name(n) {}
 
 	int sum() const {

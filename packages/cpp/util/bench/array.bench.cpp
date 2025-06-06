@@ -1,9 +1,9 @@
 #include <benchmark/benchmark.h>
 
-#include <v/array>
 #include <v/is/trivially-relocatable>
 #include <v/min>
 #include <v/storage>
+#include <v/tensor>
 
 #include <iostream>
 
@@ -29,10 +29,10 @@ static void BM_Array(benchmark::State &state) {
 
 	using namespace VOLTISO_NAMESPACE;
 	constexpr auto COUNT =
-	  min(MEMORY / sizeof(Count), (size_t)std::numeric_limits<Count>::max() - 3);
+	  min(MEMORY / (Size)sizeof(Count), std::numeric_limits<Count>::max() - 3);
 	while (state.KeepRunningBatch(COUNT)) {
 		// LOG(INFO) << "COUNT: " << COUNT;
-		using Vec = Array<Count, COUNT>::template With<
+		using Vec = Tensor<Count, COUNT>::template With<
 		  option::STARTING_INDEX<STARTING_INDEX>>;
 		Vec vec = {};
 		EQ(vec[STARTING_INDEX], 0);
@@ -51,11 +51,11 @@ static void BM_Array(benchmark::State &state) {
 	}
 }
 
-template <int SIZE, int MEMORY, class Count>
+template <v::Size SIZE, v::Size MEMORY, class Count>
 static void BM_Array_stdArray(benchmark::State &state) {
 	using namespace VOLTISO_NAMESPACE;
 	constexpr auto COUNT =
-	  min(MEMORY / sizeof(Count), (size_t)std::numeric_limits<Count>::max() - 3);
+	  min(MEMORY / (Size)sizeof(Count), std::numeric_limits<Count>::max() - 3);
 	while (state.KeepRunningBatch(COUNT)) {
 		std::array<Count, COUNT> vec = {};
 		EQ(vec[0], 0);
@@ -74,10 +74,10 @@ static void BM_Array_stdArray(benchmark::State &state) {
 	}
 }
 
-BENCHMARK(BM_Array<1, MEMORY, size_t, 1>);
+BENCHMARK(BM_Array<1, MEMORY, v::Size, 1>);
 
-BENCHMARK(BM_Array<1, MEMORY, size_t>);
-BENCHMARK(BM_Array_stdArray<1, MEMORY, size_t>);
+BENCHMARK(BM_Array<1, MEMORY, v::Size>);
+BENCHMARK(BM_Array_stdArray<1, MEMORY, v::Size>);
 
 BENCHMARK(BM_Array<1, MEMORY, int32_t>);
 BENCHMARK(BM_Array_stdArray<1, MEMORY, int32_t>);

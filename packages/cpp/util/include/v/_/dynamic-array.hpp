@@ -3,7 +3,7 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 
-#include "v/_/array.forward.hpp"
+#include "v/_/tensor.forward.hpp"
 #include "v/concepts/options"
 #include "v/get/brands"
 #include "v/get/num-items"
@@ -50,7 +50,7 @@ protected:
 	typename Allocator::Handle allocation;
 
 protected:
-	std::size_t _numSlots = Options::template GET<option::IN_PLACE>;
+	Size _numSlots = Options::template GET<option::IN_PLACE>;
 
 public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const {
@@ -87,11 +87,11 @@ struct DataMembersInPlaceOnly : DataMembersInPlaceBase<Options> {
 	using Item = Options::template Get<option::Item>;
 
 protected:
-	Array<Storage<Item>, Options::template GET<option::IN_PLACE_ONLY>>
+	Tensor<Storage<Item>, Options::template GET<option::IN_PLACE_ONLY>>
 	  inPlaceItems;
 
 public:
-	static constexpr size_t NUM_SLOTS =
+	static constexpr Size NUM_SLOTS =
 	  Options::template GET<option::IN_PLACE_ONLY>;
 };
 
@@ -110,11 +110,11 @@ struct DataMembersInPlace : DataMembersInPlaceBase<Options> {
 protected:
 	union {
 		Storage<typename Allocator::Handle> allocation;
-		Array<Storage<Item>, Options::template GET<option::IN_PLACE>> inPlaceItems;
+		Tensor<Storage<Item>, Options::template GET<option::IN_PLACE>> inPlaceItems;
 	};
 
 protected:
-	std::size_t _numSlots = Options::template GET<option::IN_PLACE>;
+	Size _numSlots = Options::template GET<option::IN_PLACE>;
 
 public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numSlots() const {
@@ -235,20 +235,20 @@ private:
 	    Options::template GET<option::IN_PLACE_ONLY> == 0,
 	  "Use either `IN_PLACE` or `IN_PLACE_ONLY`, not both");
 
-	static constexpr size_t NUM_IN_PLACE_SLOTS =
+	static constexpr Size NUM_IN_PLACE_SLOTS =
 	  Options::template GET<option::IN_PLACE> ||
 	  Options::template GET<option::IN_PLACE_ONLY>;
 
 public:
 	// template <class Type>
 	// using CustomHandle = Handle ::Brand_<Self>::template Type_<Type>;
-	// using Handle = CustomHandle<std::size_t>;
-	using Handle = Handle::WithBrand<Self>::template WithKind<std::size_t>;
+	// using Handle = CustomHandle<Size>;
+	using Handle = Handle::WithBrand<Self>::template WithKind<Size>;
 
-	static_assert(std::is_same_v<typename Handle::Value, std::size_t>);
+	static_assert(std::is_same_v<typename Handle::Value, Size>);
 
 protected:
-	std::size_t _numItems = 0;
+	Size _numItems = 0;
 
 public:
 	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto numItems() const noexcept {
@@ -262,7 +262,7 @@ public:
 			if (this->_numSlots > 0) [[likely]] {
 				auto memory =
 				  static_cast<Storage<Item> *>(_allocator()(this->allocation));
-				for (size_t i = 0; i < _numItems; ++i) [[likely]] {
+				for (Size i = 0; i < _numItems; ++i) [[likely]] {
 					memory[i].object().~Item();
 				}
 				_allocator().freeBytes(this->allocation, _numBytes(this->_numSlots));
@@ -274,7 +274,7 @@ public:
 				auto memory =
 				  static_cast<Storage<Item> *>(_allocator()(this->allocation.object()));
 				// speed-up empty path
-				for (size_t i = 0; i < _numItems; ++i) [[unlikely]] {
+				for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
 					memory[i].object().~Item();
 				}
 				_allocator().freeBytes(
@@ -282,7 +282,7 @@ public:
 			} else [[likely]] {
 				// speed-up inplace path
 				// speed-up empty path
-				for (size_t i = 0; i < _numItems; ++i) [[unlikely]] {
+				for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
 					this->inPlaceItems[i].object().~Item();
 				}
 			}
@@ -291,7 +291,7 @@ public:
 			// DCHECK_LE(this->_numSlots, Options::template GET<option::IN_PLACE_ONLY,
 			// Parameters>);
 			auto memory = static_cast<Storage<Item> *>(this->inPlaceItems.items);
-			for (size_t i = 0; i < _numItems; ++i) {
+			for (Size i = 0; i < _numItems; ++i) {
 				memory[i].object().~Item();
 			}
 		}
@@ -372,14 +372,14 @@ public:
 
 protected:
 	template <class... Args> Custom(tag::Concat, Args &&...args) {
-		std::size_t totalItems = 0;
+		Size totalItems = 0;
 
 		// 1) Sum up extents of each arg
 		(void)std::initializer_list<int>{(
 		  [&] {
-			  auto extent = get::extent(Slice{args});
-			  NE(extent, Extent::UNBOUND);
-			  totalItems += extent.value;
+			  auto extent = get::extent(View{args});
+			  NE(extent, extent::UNBOUND);
+			  totalItems += extent;
 		  }(),
 		  0)...};
 
@@ -392,10 +392,10 @@ protected:
 		// 2) Push all items from each arg
 		(void)std::initializer_list<int>{(
 		  [&] {
-			  auto slice = Slice{args};
+			  auto slice = View{args};
 			  auto extent = get::extent(slice);
-			  NE(extent, Extent::UNBOUND);
-			  for (std::size_t i = 0; i < extent.value; ++i) {
+			  NE(extent, extent::UNBOUND);
+			  for (Size i = 0; i < extent; ++i) {
 				  pushUnchecked(slice[i]);
 			  }
 		  }(),
@@ -426,7 +426,7 @@ public:
 	decltype(auto) operator=(this auto &&self, const Other &&other) {
 		NE(&self, &other); // forbid (for performance)
 		auto memory = self.slots();
-		for (size_t i = 0; i < self._numItems; ++i) {
+		for (Size i = 0; i < self._numItems; ++i) {
 			memory[i].object().~Item();
 		}
 		if (self._numSlots < other._numItems) [[unlikely]] {
@@ -434,18 +434,18 @@ public:
 			memory = self.slots();
 		}
 		self._numItems = other._numItems;
-		for (size_t i = 0; i < other._numItems; ++i) {
+		for (Size i = 0; i < other._numItems; ++i) {
 			new (memory + i) Item(other[i]);
 		}
 		return std::forward<decltype(self)>(self);
 	}
 
-	// prefer converting to `Slice` if possible
-	template <class OtherItem, Extent EXTENT>
-	decltype(auto) operator<<=(this auto &&self, Slice<OtherItem, EXTENT> other)
+	// prefer converting to `View` if possible
+	template <class OtherItem, auto EXTENT>
+	decltype(auto) operator<<=(this auto &&self, View<OtherItem, EXTENT> other)
 	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
 	{
-		auto numNewItems = get::extent(other).value;
+		auto numNewItems = get::extent(other);
 		self.setNumSlotsAtLeast(self._numItems + numNewItems);
 		for (auto &item : other) {
 			self.push(item);
@@ -462,9 +462,9 @@ public:
 	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
 	{
 		auto otherExtent = get::extent(other);
-		NE(otherExtent, Extent::UNBOUND);
-		self.setNumSlotsAtLeast(self._numItems + otherExtent.value);
-		for (std::size_t i = 0; i < otherExtent.value; ++i) {
+		NE(otherExtent, extent::UNBOUND);
+		self.setNumSlotsAtLeast(self._numItems + otherExtent);
+		for (Size i = 0; i < otherExtent; ++i) {
 			self.pushUnchecked(other[i]);
 		}
 		return std::forward<decltype(self)>(self);
@@ -483,14 +483,14 @@ public:
 public:
 	// `numItems` must be at least 1
 	template <class... Args>
-	static Self createWithNumItems(size_t numItems, Args &&...args) {
+	static Self createWithNumItems(Size numItems, Args &&...args) {
 		return Self{CreateWithNumItemsTag{}, numItems, std::forward<Args>(args)...};
 	}
 
 private:
 	struct CreateWithNumItemsTag {};
 	template <class... Args>
-	Custom(CreateWithNumItemsTag, std::size_t numItems, Args &&...args) {
+	Custom(CreateWithNumItemsTag, Size numItems, Args &&...args) {
 		static_assert(!std::is_polymorphic_v<Self>);
 		// auto &self = reinterpret_cast<Self &>(_self);
 
@@ -513,7 +513,7 @@ private:
 
 		auto memory = this->slots();
 
-		for (size_t i = 0; i < numItems; ++i) {
+		for (Size i = 0; i < numItems; ++i) {
 			new (memory + i) Item(item);
 		}
 	}
@@ -529,7 +529,7 @@ public:
 	//
 
 private:
-	static constexpr auto _numBytes(size_t numSlots) {
+	static constexpr auto _numBytes(Size numSlots) {
 		constexpr auto roundUp = alignof(std::max_align_t);
 		static_assert(std::has_single_bit(roundUp));
 		constexpr auto MASK = roundUp - 1;
@@ -540,21 +540,20 @@ private:
 
 public:
 	// std compatibility
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr std::size_t
-	size() const noexcept {
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr Size size() const noexcept {
 		return _numItems;
 	}
 
 	// contiguous memory
-	[[nodiscard]] VOLTISO_FORCE_INLINE Extent extent() const noexcept {
-		return Extent(_numItems);
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto extent() const noexcept {
+		return _numItems;
 	}
 
 	//
 
 public:
 	// `newNumSlots` must be at least `numItems`
-	auto setNumSlots(std::size_t newNumSlots)
+	auto setNumSlots(Size newNumSlots)
 	  requires(IN_PLACE_ONLY == 0)
 	{
 		// LOG(INFO) << "setNumSlots " << newNumSlots;
@@ -607,7 +606,7 @@ public:
 			LE(newNumSlots, IN_PLACE_ONLY);
 			static_assert(false); // `setNumSlots` disabled in this case
 		}
-		(size_t &)this->_numSlots = newNumSlots;
+		(Size &)this->_numSlots = newNumSlots;
 	}
 
 	// `numSlots` must be greater than zero
@@ -641,7 +640,7 @@ public:
 		return const_cast<Custom *>(this)->slots();
 	}
 
-	using Index = std::size_t;
+	using Index = Size;
 
 	VOLTISO_FORCE_INLINE Item &operator[](const Index &i) {
 		GE(i, 0);
@@ -684,7 +683,7 @@ public:
 	Accessor operator()(const Index &index) {
 		GE(index, 0);
 		LT(index, _numItems);
-		static_assert(std::is_same_v<typename Handle::Value, std::size_t>);
+		static_assert(std::is_same_v<typename Handle::Value, Size>);
 		return {Handle{index}, *this};
 	}
 
@@ -767,7 +766,7 @@ public:
 		this->setNumSlots(newNumSlots);
 	}
 
-	void setNumSlotsAtLeast(size_t minNumSlots)
+	void setNumSlotsAtLeast(Size minNumSlots)
 	  requires(IN_PLACE_ONLY == 0)
 	{
 		static_assert(IN_PLACE_ONLY == 0);
@@ -779,11 +778,10 @@ public:
 	}
 
 	// cannot perfect-forward
-	template <class... Args>
-	void setNumItems(std::size_t newNumItems, Args &&...args) {
+	template <class... Args> void setNumItems(Size newNumItems, Args &&...args) {
 		if (newNumItems < _numItems) {
 			auto memory = slots();
-			for (std::size_t i = _numItems; i < newNumItems; ++i) {
+			for (Size i = _numItems; i < newNumItems; ++i) {
 				memory[i].object().~Item();
 			}
 		} else if (newNumItems > _numItems) [[likely]] {
@@ -801,11 +799,11 @@ public:
 				// noop ! memory not zeroed!
 			} else if constexpr (std::is_copy_constructible_v<Item>) {
 				auto item = Item{std::forward<Args>(args)...};
-				for (std::size_t i = _numItems; i < newNumItems; ++i) {
+				for (Size i = _numItems; i < newNumItems; ++i) {
 					new (memory + i) Item(item);
 				}
 			} else {
-				for (std::size_t i = _numItems; i < newNumItems; ++i) {
+				for (Size i = _numItems; i < newNumItems; ++i) {
 					new (memory + i) Item(args...); // no std::forward (values reused)
 				}
 			}
@@ -818,21 +816,21 @@ public:
 			if constexpr (LIKELIHOOD == Likelihood::UNKNOWN) {
 				if (_numItems != 0) {
 					auto memory = slots();
-					for (std::size_t i = 0; i < _numItems; ++i) {
+					for (Size i = 0; i < _numItems; ++i) {
 						memory[i].object().~Item();
 					}
 				}
 			} else if constexpr (LIKELIHOOD == Likelihood::LIKELY) {
 				if (_numItems != 0) {
 					auto memory = slots();
-					for (std::size_t i = 0; i < _numItems; ++i) [[likely]] {
+					for (Size i = 0; i < _numItems; ++i) [[likely]] {
 						memory[i].object().~Item();
 					}
 				}
 			} else if constexpr (LIKELIHOOD == Likelihood::UNLIKELY) {
 				if (_numItems != 0) [[unlikely]] {
 					auto memory = slots();
-					for (std::size_t i = 0; i < _numItems; ++i) [[unlikely]] {
+					for (Size i = 0; i < _numItems; ++i) [[unlikely]] {
 						memory[i].object().~Item();
 					}
 				}
@@ -919,10 +917,9 @@ public:
 	template <class Option> using With = Base::template With<Option>;
 	template <class T> using WithItem = With<option::Item<T>>;
 	template <class T> using WithAllocator = With<option::Allocator<T>>;
-	template <std::size_t N> using WithInPlace = With<option::IN_PLACE<N>>;
+	template <Size N> using WithInPlace = With<option::IN_PLACE<N>>;
 
-	template <std::size_t N>
-	using WithInPlaceOnly = With<option::IN_PLACE_ONLY<N>>;
+	template <Size N> using WithInPlaceOnly = With<option::IN_PLACE_ONLY<N>>;
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::dynamicArray
 

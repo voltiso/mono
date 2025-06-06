@@ -11,9 +11,9 @@
 // tree with fringe indexing... (must benchmark against regular 2i,2i+1)
 
 namespace VOLTISO_NAMESPACE::tree::_ {
-static constexpr size_t getNumNodes(size_t numLeafs, size_t arity) {
-	size_t row = numLeafs;
-	size_t numNodes = 0;
+static constexpr Size getNumNodes(Size numLeafs, Size arity) {
+	Size row = numLeafs;
+	Size numNodes = 0;
 	while (row > 1) {
 		numNodes += row;
 		row = (row + arity - 1) / arity;
@@ -27,7 +27,7 @@ static_assert(getNumNodes(8, 3) == 12);
 namespace VOLTISO_NAMESPACE {
 // in-place
 // Aggregate must be an associative operation
-template <class _Node, size_t _NUM_LEAFS, size_t Arity = 2> class Tree {
+template <class _Node, Size _NUM_LEAFS, Size Arity = 2> class Tree {
 	using Self = Tree;
 
 public:
@@ -40,21 +40,21 @@ public:
 	Tree() {
 		// use constructor taking `numChildren`, if provided
 		if constexpr (std::is_same_v<decltype(nodes[0].construct(0), 0), int>) {
-			for (size_t iLeafNode = 0; iLeafNode < NUM_LEAFS; ++iLeafNode) {
+			for (Size iLeafNode = 0; iLeafNode < NUM_LEAFS; ++iLeafNode) {
 				auto numChildren = 0;
 				nodes[iLeafNode].construct(numChildren);
 			}
 
-			size_t rowSize = NUM_LEAFS;
-			size_t prevRowRemainder = 0;
-			size_t rowFirstNodeIndex = 0;
+			Size rowSize = NUM_LEAFS;
+			Size prevRowRemainder = 0;
+			Size rowFirstNodeIndex = 0;
 
 			while (rowSize > 1) [[likely]] {
 				rowFirstNodeIndex += rowSize;
 				rowSize = divCeil(rowSize, Arity);
 				prevRowRemainder = rowSize % Arity;
 
-				for (size_t iNode = rowFirstNodeIndex;
+				for (Size iNode = rowFirstNodeIndex;
 				     iNode < rowFirstNodeIndex + rowSize - 1; ++iNode) {
 					auto numChildren = Arity;
 					nodes[iNode].construct(numChildren);
@@ -64,7 +64,7 @@ public:
 				  prevRowRemainder ? prevRowRemainder : Arity);
 			}
 		} else {
-			for (size_t iNode = 0; iNode < NUM_NODES; ++iNode) {
+			for (Size iNode = 0; iNode < NUM_NODES; ++iNode) {
 				nodes[iNode].construct();
 			}
 		}
@@ -96,8 +96,8 @@ public:
 	void aggregateAncestors(const CustomHandle<Index> &leafHandle) {
 		auto iRowNode = leafHandle.value;
 		DCHECK_LT(iRowNode, NUM_LEAFS);
-		size_t rowSize = NUM_LEAFS;
-		size_t rowFirstNodeIndex = 0;
+		Size rowSize = NUM_LEAFS;
+		Size rowFirstNodeIndex = 0;
 		for (;;) {
 			auto iNode = rowFirstNodeIndex + iRowNode;
 

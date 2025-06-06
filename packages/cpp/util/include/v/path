@@ -2,29 +2,28 @@
 #include <v/_/_>
 
 #include "v/brand/path"
-#include "v/option/num-items"
+#include "v/option/extents"
 #include "v/option/self"
 #include "v/options"
+#include "v/size"
 #include "v/string"
 #include "v/tag/explicit-copy-consteval"
-
-#include <cstddef>
 
 // ! the only reason PathString is a separate class is that we can't specify
 // deduction guide for alias template, which we need for `operator""_p`
 namespace VOLTISO_NAMESPACE {
-template <std::size_t NUM_ITEMS>
+template <Size NUM_ITEMS>
 class Path : public string::Custom<Options<
-               option::NUM_ITEMS<NUM_ITEMS>, brand::Path<>,
+               option::Extents<ValuePack<NUM_ITEMS>>, brand::Path<>,
                option::Self<Path<NUM_ITEMS>>>> {
 	using Base = string::Custom<Options<
-	  option::NUM_ITEMS<NUM_ITEMS>, brand::Path<>,
+	  option::Extents<ValuePack<NUM_ITEMS>>, brand::Path<>,
 	  option::Self<Path<NUM_ITEMS>>>>;
 	using Base::Base;
 
 public:
 	// `consteval`-only constructor for `operator""_p`
-	template <std::size_t NUM_ITEMS_WITH_NULL>
+	template <Size NUM_ITEMS_WITH_NULL>
 	  requires(NUM_ITEMS_WITH_NULL == NUM_ITEMS + 1)
 	consteval Path(const char (&items)[NUM_ITEMS_WITH_NULL])
 	    : Base(tag::EXPLICIT_COPY_CONSTEVAL, items) {
@@ -33,7 +32,7 @@ public:
 };
 
 // deduction guide
-template <std::size_t NUM_CHARS>
+template <Size NUM_CHARS>
 Path(const char (&)[NUM_CHARS])
   -> Path<NUM_CHARS - 1>; // -1 for null terminator
 } // namespace VOLTISO_NAMESPACE
@@ -43,18 +42,6 @@ Path(const char (&)[NUM_CHARS])
 namespace VOLTISO_NAMESPACE::path {
 using Dynamic = dynamicString::Custom<Options<brand::Path<>>>;
 } // namespace VOLTISO_NAMESPACE::path
-
-// !
-
-// namespace VOLTISO_NAMESPACE {
-// template <std::size_t NUM_CHARS>
-// using PathString =
-//   string::Custom<Options<option::NUM_CHARS<NUM_CHARS>, brand::Path>>;
-
-// // deduction guide
-// template <size_t N> PathString(const char (&)[N]) -> PathString<N - 1>;
-
-// } // namespace VOLTISO_NAMESPACE
 
 // !
 

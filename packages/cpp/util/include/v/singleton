@@ -23,7 +23,7 @@ template <class T> class Singleton {
 private:
 	struct Data {
 		Storage<T> storage;
-		std::size_t numReferences = 1;
+		Size numReferences = 1;
 		Data() {
 #if VOLTISO_DEBUG_SINGLETON
 			// std::cout << "Singleton<" << demangle(typeid(T)) << "> CREATE"

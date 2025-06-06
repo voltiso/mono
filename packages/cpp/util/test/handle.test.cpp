@@ -31,7 +31,7 @@ TEST(Handle, zeroInitialize) {
 	EXPECT_EQ(handle.value, nullptr);
 
 	struct S {};
-	using Handle2 = Handle ::WithBrand<S>::template WithKind<std::size_t>;
+	using Handle2 = Handle ::WithBrand<S>::template WithKind<Size>;
 	auto handle2 = Handle2(0);
 	EXPECT_EQ(handle2.value, 0);
 }
@@ -91,18 +91,18 @@ static_assert(std::is_trivially_constructible_v<Handle::WithBrand<S>>);
 
 struct A {};
 struct B {};
-static_assert(sizeof(Handle::WithBrand<A>) == sizeof(std::size_t));
+static_assert(sizeof(Handle::WithBrand<A>) == sizeof(Size));
 static_assert(
   !std::is_assignable_v<Handle::WithBrand<A>, Handle::WithBrand<B>>);
 
 static_assert(std::is_assignable_v<
-              Handle::WithBrand<A>::WithKind<size_t>, Handle::WithBrand<A>>);
+              Handle::WithBrand<A>::WithKind<Size>, Handle::WithBrand<A>>);
 
 static_assert(std::is_assignable_v<
-              Handle::WithBrand<A>, Handle::WithBrand<A>::WithKind<size_t>>);
+              Handle::WithBrand<A>, Handle::WithBrand<A>::WithKind<Size>>);
 
 static_assert(std::is_constructible_v<
-              Handle::WithBrand<A>, Handle::WithBrand<A>::WithKind<size_t>>);
+              Handle::WithBrand<A>, Handle::WithBrand<A>::WithKind<Size>>);
 
 //
 static_assert(std::is_constructible_v<

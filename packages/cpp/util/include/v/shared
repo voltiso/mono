@@ -6,7 +6,7 @@
 namespace VOLTISO_NAMESPACE::shared::_ {
 template <class Item> struct ControlBlock {
 	Item item;
-	std::size_t numReferences = 1;
+	Size numReferences = 1;
 	// std::atomic<int> refCount = 1;
 
 	template <class... Args>

@@ -3,11 +3,9 @@
 
 #include "v/concepts/options"
 
-#include <cstddef>
-
-namespace VOLTISO_NAMESPACE::array {
+namespace VOLTISO_NAMESPACE::view {
 template <class Options>
-  requires concepts::Options<Options> // && std::is_final_v<Final>
+  requires concepts::Options<Options>
 class Custom;
 
 template <class Options>
@@ -17,8 +15,10 @@ struct Specializations {
 };
 
 template <class... Args> using GetCustom = Specializations<Args...>::Result;
-} // namespace VOLTISO_NAMESPACE::array
+} // namespace VOLTISO_NAMESPACE::view
+
+// !
 
 namespace VOLTISO_NAMESPACE {
-template <class Item, size_t NUM_ITEMS> class Array;
+template <class Item, auto... EXTENTS> class View;
 } // namespace VOLTISO_NAMESPACE

@@ -6,5 +6,5 @@
 #include <cstddef>
 
 namespace VOLTISO_NAMESPACE::option {
-template <std::size_t N> struct IN_PLACE_ONLY : ValueOption<N, 0> {};
+template <Size N> struct IN_PLACE_ONLY : ValueOption<N, 0> {};
 } // namespace VOLTISO_NAMESPACE::option

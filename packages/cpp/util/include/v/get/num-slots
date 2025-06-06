@@ -5,7 +5,7 @@
 
 namespace VOLTISO_NAMESPACE::_ {
 template <class T>
-[[nodiscard]] constexpr std::optional<std::size_t>
+[[nodiscard]] constexpr std::optional<Size>
 optional_numSlots(const T &t) noexcept {
 	if constexpr (requires { t.numSlots(); }) {
 		return t.numSlots();
@@ -22,7 +22,7 @@ optional_numSlots(const T &t) noexcept {
 } // namespace VOLTISO_NAMESPACE::_
 
 namespace VOLTISO_NAMESPACE::get {
-[[nodiscard]] constexpr std::size_t numSlots(const auto &t) noexcept {
+[[nodiscard]] constexpr Size numSlots(const auto &t) noexcept {
 	return VOLTISO_NAMESPACE::_::optional_numSlots(t).value();
 }
 } // namespace VOLTISO_NAMESPACE::get

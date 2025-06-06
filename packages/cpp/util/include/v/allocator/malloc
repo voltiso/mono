@@ -26,7 +26,7 @@ namespace VOLTISO_NAMESPACE::allocator::malloc {
 namespace _ {
 struct Debug {
 	std::mutex mutex;
-	std::map<void *, size_t> allocations;
+	std::map<void *, Size> allocations;
 };
 } // namespace _
 
@@ -39,7 +39,7 @@ template <class Options> inline Custom<Options>::~Custom() {
 		throwError(
 		  std::runtime_error(
 		    "Memory leak " + std::to_string(numBytes) + " bytes at " +
-		    std::to_string((size_t)handle)));
+		    std::to_string((Size)handle)));
 	}
 	delete this->_debug;
 }
@@ -47,7 +47,7 @@ template <class Options> inline Custom<Options>::~Custom() {
 
 template <class Options>
 inline typename Custom<Options>::Handle
-Custom<Options>::allocateBytes(size_t numBytes) {
+Custom<Options>::allocateBytes(Size numBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(numBytes, 0);
 #endif
@@ -69,7 +69,7 @@ Custom<Options>::allocateBytes(size_t numBytes) {
 
 template <class Options>
 inline typename Custom<Options>::Handle
-Custom<Options>::allocateBytesAligned(size_t numBytes, size_t alignment) {
+Custom<Options>::allocateBytesAligned(Size numBytes, Size alignment) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(numBytes, 0);
 	GT(alignment, 0);
@@ -98,8 +98,7 @@ Custom<Options>::allocateBytesAligned(size_t numBytes, size_t alignment) {
 }
 
 template <class Options>
-inline void
-Custom<Options>::freeBytes(const Handle &handle, size_t oldNumBytes) {
+inline void Custom<Options>::freeBytes(const Handle &handle, Size oldNumBytes) {
 #if VOLTISO_DEBUG_MALLOC
 	GT(oldNumBytes, 0);
 	auto &debug = *this->_debug;
@@ -116,7 +115,7 @@ Custom<Options>::freeBytes(const Handle &handle, size_t oldNumBytes) {
 
 template <class Options>
 inline typename Custom<Options>::Handle Custom<Options>::reallocateBytes(
-  const Handle &oldHandle, std::size_t oldNumBytes, std::size_t newNumBytes) {
+  const Handle &oldHandle, Size oldNumBytes, Size newNumBytes) {
 	if (!newNumBytes) [[unlikely]] {
 		return nullptr;
 	}

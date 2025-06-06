@@ -39,7 +39,7 @@ template <class Options> struct Block {
 	//   static_assert(is::TriviallyRelocatable<decltype(numBytes)>);
 	//   static_assert(is::TriviallyRelocatable<decltype(allocation)>);
 
-	Block(size_t numItems) {
+	Block(Size numItems) {
 		auto numBytes = numItems * sizeof(Slot<Item>);
 		auto handle = Allocator::instance().allocateBytes(numBytes);
 		static_assert(sizeof(Slot<Item> *) == sizeof(handle));
@@ -171,7 +171,7 @@ private:
 	Slot *remainingStart = nullptr;
 	Slot *remainingEnd = nullptr;
 
-	size_t numSlots = 0;
+	Size numSlots = 0;
 
 	friend Accessor;
 	friend ConstAccessor;
@@ -181,7 +181,7 @@ public:
 	~Custom() {
 		// std::cout << "DESTROYING POOL " << demangle(typeid(decltype(*this)))
 		//           << std::endl;
-		size_t numSlotsInChain = 0;
+		Size numSlotsInChain = 0;
 		auto nextSlot = anyFreeSlot;
 		while (nextSlot) {
 			++numSlotsInChain;

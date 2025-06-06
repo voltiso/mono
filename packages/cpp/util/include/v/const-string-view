@@ -1,21 +1,21 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/_/const-string-slice.forward.hpp"
+#include "v/_/const-string-view.forward.hpp"
 
-#include "v/_/array-concat-traits.hpp"
 #include "v/_/dynamic-string.forward.hpp"
 #include "v/_/string.forward.hpp"
+#include "v/_/tensor-concat-traits.hpp"
 #include "v/extent"
 #include "v/get/extent"
-#include "v/slice"
+#include "v/view"
 
 #include <v/ON>
 
 namespace VOLTISO_NAMESPACE {
-template <Extent T_EXTENT>
-class ConstStringSlice : public Slice<const char, T_EXTENT> {
-	using Base = Slice<const char, T_EXTENT>;
+template <auto T_EXTENT>
+class ConstStringView : public View<const char, T_EXTENT> {
+	using Base = View<const char, T_EXTENT>;
 	// using Base::Base;
 
 protected:
@@ -25,21 +25,20 @@ public:
 	// create from anything - forward to Base
 	template <class Other>
 	  requires(!std::is_array_v<std::remove_reference_t<Other>>)
-	constexpr ConstStringSlice(Other &&other)
-	    : Base{std::forward<Other>(other)} {}
+	constexpr ConstStringView(Other &&other) : Base{std::forward<Other>(other)} {}
 
 public:
 	// create from raw array - static extent
-	template <std::size_t N>
+	template <Size N>
 	  requires(
-	    T_EXTENT != Extent::DYNAMIC && T_EXTENT != Extent::UNBOUND &&
-	    N == T_EXTENT.value + 1)
-	constexpr ConstStringSlice(const char (&chars)[N])
-	    : Base{reinterpret_cast<const char (&)[T_EXTENT.value]>(chars)} {
-		EQ(chars[T_EXTENT.value], '\0');
+	    T_EXTENT != extent::DYNAMIC && T_EXTENT != extent::UNBOUND &&
+	    N == T_EXTENT + 1)
+	constexpr ConstStringView(const char (&chars)[N])
+	    : Base{reinterpret_cast<const char (&)[T_EXTENT]>(chars)} {
+		EQ(chars[T_EXTENT], '\0');
 	}
 
-	constexpr bool operator==(const ConstStringSlice &other) const {
+	constexpr bool operator==(const ConstStringView &other) const {
 		// todo: we could have traits `is_trivially_equal_comparable` and
 		// `is_trivially_less_comparable` - and use memcmp
 		// (or `binary` instead of `trivially`)
@@ -49,7 +48,7 @@ public:
 			return true; // assume a==a
 		}
 
-		for (size_t i = 0; i < T_EXTENT.value; ++i) {
+		for (Size i = 0; i < T_EXTENT; ++i) {
 			if (this->items[i] != other.items[i]) {
 				return false;
 			}
@@ -66,20 +65,20 @@ public:
 	    // !std::is_reference_v<decltype(self)> && std::is_const_v<decltype(self)>
 	    // &&
 	    //
-	    get::EXTENT<decltype(self)> != Extent::DYNAMIC &&
-	    get::EXTENT<decltype(self)> != Extent::UNBOUND &&
-	    get::EXTENT<Other> != Extent::DYNAMIC &&
-	    get::EXTENT<Other> != Extent::UNBOUND)
+	    get::EXTENT<decltype(self)> != extent::DYNAMIC &&
+	    get::EXTENT<decltype(self)> != extent::UNBOUND &&
+	    get::EXTENT<Other> != extent::DYNAMIC &&
+	    get::EXTENT<Other> != extent::UNBOUND)
 	{ // Allow rvalue this
 		// Use get::EXTENT<Other> to ensure we get extent of e.g. const char (&)[N]
 		// not const char* if the latter would have an UNBOUND extent.
 		// ! NOTE: Base::Self is not correct - we have no CustomSlice class for now
 		constexpr auto NEW_NUM_ITEMS =
-		  get::EXTENT<decltype(self)>.value + get::EXTENT<Other>.value;
+		  get::EXTENT<decltype(self)> + get::EXTENT<Other>;
 		// using Result = Self::template With<option::NUM_ITEMS<NEW_NUM_ITEMS>>;
 		using Result = String<NEW_NUM_ITEMS>;
 		// using Result = String<NEW_NUM_ITEMS> ::WithDefault<GetBrands<>>;
-		static_assert(_::array::sumExtents(self, other) == NEW_NUM_ITEMS);
+		static_assert(_::tensor::sumNumItems(self, other) == NEW_NUM_ITEMS);
 		return Result::concat(
 		  std::forward<decltype(self)>(self),
 		  std::forward<Other>(other)); // rvo guaranteed
@@ -89,8 +88,8 @@ public:
 	template <class Other>
 	VOLTISO_FORCE_INLINE auto operator<<(const Other &other) const
 	  requires(
-	    get::EXTENT<ConstStringSlice> == Extent::DYNAMIC ||
-	    get::EXTENT<Other> == Extent::DYNAMIC)
+	    get::EXTENT<ConstStringView> == extent::DYNAMIC ||
+	    get::EXTENT<Other> == extent::DYNAMIC)
 	{
 		// using Result = DynamicString;
 		return dynamicString::concat(*this, other);
@@ -98,9 +97,9 @@ public:
 
 public:
 	// for std?
-	constexpr std::size_t size() const noexcept {
-		NE(this->extent(), Extent::DYNAMIC);
-		NE(this->extent(), Extent::UNBOUND);
+	constexpr Size size() const noexcept {
+		NE(this->extent(), extent::DYNAMIC);
+		NE(this->extent(), extent::UNBOUND);
 		return this->extent().value;
 	}
 }; // class StringSlice
@@ -108,11 +107,10 @@ public:
 // ! deduction guide for single element (dangerous??)
 template <class Item>
   requires(std::is_same_v<std::remove_const_t<Item>, char>)
-ConstStringSlice(Item &item) -> ConstStringSlice<1>;
+ConstStringView(Item &item) -> ConstStringView<1>;
 
 // deduction guide for raw arrays
-template <size_t N>
-ConstStringSlice(const char (&)[N]) -> ConstStringSlice<N - 1>;
+template <Size N> ConstStringView(const char (&)[N]) -> ConstStringView<N - 1>;
 
 // deduction guide for custom tuples - static extent
 template <class TArray>
@@ -120,7 +118,7 @@ template <class TArray>
     !std::is_array_v<TArray> &&
     std::is_same_v<
       std::remove_cvref_t<decltype(std::declval<TArray>()[0])>, char>)
-ConstStringSlice(TArray &array) -> ConstStringSlice<get::EXTENT<TArray>>;
+ConstStringView(TArray &array) -> ConstStringView<get::EXTENT<TArray>>;
 
 // deduction guide for custom arrays - dynamic extent
 template <class TArray>
@@ -129,14 +127,14 @@ template <class TArray>
     std::is_same_v<
       std::remove_cvref_t<decltype(std::declval<TArray>()[0])>, char> &&
     !has::EXTENT<TArray>)
-ConstStringSlice(TArray &array) -> ConstStringSlice<Extent::DYNAMIC>;
+ConstStringView(TArray &array) -> ConstStringView<extent::DYNAMIC>;
 } // namespace VOLTISO_NAMESPACE
 
 // !
 
-template <V::Extent T_EXTENT>
+template <auto T_EXTENT>
 std::ostream &
-operator<<(std::ostream &os, const V::ConstStringSlice<T_EXTENT> &slice) {
+operator<<(std::ostream &os, const V::ConstStringView<T_EXTENT> &slice) {
 	return os << std::string_view(slice.items, slice.extent().value);
 } // operator<<
 
@@ -145,20 +143,20 @@ operator<<(std::ostream &os, const V::ConstStringSlice<T_EXTENT> &slice) {
 // ! operator<< for std::ostream for arrays and strings
 
 template <class T>
-  requires(VOLTISO_NAMESPACE::is::VoltisoType<T>)
+  requires(V::is::VoltisoType<T>)
 std::ostream &operator<<(std::ostream &os, const T &t)
-  requires requires { V::ConstStringSlice(t); }
+  requires requires { V::ConstStringView(t); }
 {
-	return os << V::ConstStringSlice(t);
+	return os << V::ConstStringView(t);
 }
 
 template <class T>
-  requires(VOLTISO_NAMESPACE::is::VoltisoType<T>)
+  requires(V::is::VoltisoType<T>)
 std::ostream &operator<<(std::ostream &os, T &&t)
   requires(
-    !requires { V::ConstStringSlice(t); } && requires { V::Slice(t); })
+    !requires { V::ConstStringView(t); } && requires { V::View(t); })
 {
-	return os << V::Slice(t);
+	return os << V::View(t);
 }
 
 #include <v/OFF>

@@ -56,11 +56,11 @@ template <class Defaults> struct Options : Defaults {
 	OPTION_TYPE(Brand)
 	OPTION_TYPE(Type)
 	OPTION_TYPE(Pool)
-	OPTION_VALUE(IN_PLACE, std::size_t)
-	OPTION_VALUE(IN_PLACE_ONLY, std::size_t)
-	OPTION_VALUE(NUM_ITEMS, std::size_t)
-	OPTION_VALUE(BUCKET_IN_PLACE, std::size_t)
-	OPTION_VALUE(STARTING_INDEX, std::make_signed_t<std::size_t>);
+	OPTION_VALUE(IN_PLACE, Size)
+	OPTION_VALUE(IN_PLACE_ONLY, Size)
+	OPTION_VALUE(NUM_ITEMS, Size)
+	OPTION_VALUE(BUCKET_IN_PLACE, Size)
+	OPTION_VALUE(STARTING_INDEX, std::make_signed_t<Size>);
 };
 } // namespace VOLTISO_NAMESPACE
 

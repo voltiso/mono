@@ -8,8 +8,8 @@
 using namespace VOLTISO_NAMESPACE;
 
 TEST(String, fromCharsAsArray) {
-	auto arr = array::from("abc");
-	static_assert(std::is_same_v<decltype(arr), v::Array<char, 4>>);
+	auto arr = tensor::from("abc");
+	static_assert(std::is_same_v<decltype(arr), v::Tensor<char, 4>>);
 }
 
 TEST(String, fromChars) {
@@ -19,10 +19,10 @@ TEST(String, fromChars) {
 	EXPECT_EQ(std::string_view(str), "abc");
 	EXPECT_EQ(std::string(str), "abc");
 
-	// auto a = ConstStringSlice<3>(str);
+	// auto a = ConstStringView<3>(str);
 	// (void)a;
 
-	// auto b = ConstStringSlice("abc");
+	// auto b = ConstStringView("abc");
 	// (void)b;
 
 	EXPECT_EQ(str, "abc");
@@ -79,7 +79,7 @@ TEST(String, literal) {
 
 TEST(String, concat) {
 	auto a = "Hello"_s << " " << "world";
-	static_assert(std::is_same_v<decltype(a), String<11>>);
+	static_assert(std::is_same_v<decltype(a), String<11L>>);
 	EXPECT_EQ(a, "Hello world"_s);
 
 	// a = (a << "!").copy(); // ! illegal for now

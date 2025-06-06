@@ -215,7 +215,7 @@ public:
 	// 	VOLTISO_FORCE_INLINE auto hash() const noexcept {
 	// 		static_assert(noexcept(getHash(this->_target)));
 	// 		// static_assert(
-	// 		//   std::is_same_v<decltype(getHash(this->_target)), std::size_t>);
+	// 		//   std::is_same_v<decltype(getHash(this->_target)), Size>);
 	// 		// return getHash(this->_target);
 
 	// 		return 1;

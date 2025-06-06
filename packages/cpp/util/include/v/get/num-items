@@ -1,15 +1,14 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/get/extent"
+#include "v/size"
 
-#include <cstddef>
+#include <type_traits>
 
 #include <v/ON>
 
-namespace VOLTISO_NAMESPACE::get {
-template <class T>
-[[nodiscard]] constexpr std::size_t numItems(const T &t) noexcept {
+namespace V::get {
+template <class T> [[nodiscard]] constexpr Size numItems(const T &t) noexcept {
 	if constexpr (requires { t.numItems(); }) {
 		static_assert(noexcept(t.numItems()));
 		return t.numItems();
@@ -19,19 +18,31 @@ template <class T>
 		return t.NUM_ITEMS;
 	} else if constexpr (std::is_array_v<T>) {
 		return std::extent_v<T>;
-	} else if constexpr (requires { get::extent(t).value; }) {
-		static_assert(noexcept(get::extent(t)));
-		NE(get::extent(t), Extent::UNBOUND);
-		return get::extent(t).value;
 	} else if constexpr (requires { t.size(); }) {
+		// std interop
 		static_assert(noexcept(t.size()));
 		return t.size();
-	} else if constexpr (requires { t.size; }) {
-		return t.size;
 	} else {
 		static_assert(false, "numItems: no known member or trait for this type");
 	}
 }
-} // namespace VOLTISO_NAMESPACE::get
+} // namespace V::get
+
+// !
+
+namespace V::get {
+template <class T>
+static constexpr auto NUM_ITEMS = []() {
+	using Value = std::remove_reference_t<T>;
+	if constexpr (requires { Value::NUM_ITEMS; }) {
+		return Value::NUM_ITEMS;
+	} else if constexpr (std::is_array_v<Value>) {
+		return static_cast<v::Size>(std::extent_v<Value>);
+	} else {
+		static_assert(
+		  false, "get::NUM_ITEMS: no known member or trait for this type");
+	}
+}();
+} // namespace V::get
 
 #include <v/OFF>

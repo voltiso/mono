@@ -1,11 +1,10 @@
 #pragma once
 #include <v/_/_>
 
-#include "v/array"
 #include "v/bit"
 #include "v/div-ceil"
+#include "v/tensor"
 
-#include <cstddef>
 #include <cstdint>
 
 #include <v/ON>
@@ -99,7 +98,7 @@ public:
 } // namespace VOLTISO_NAMESPACE::bitArray::_
 
 namespace VOLTISO_NAMESPACE {
-template <size_t _NUM_BITS, class _Word = std::uintmax_t> class BitArray {
+template <Size _NUM_BITS, class _Word = std::uintmax_t> class BitArray {
 public:
 	using Self = BitArray;
 	static constexpr auto NUM_BITS = _NUM_BITS;
@@ -107,13 +106,13 @@ public:
 
 	static_assert(NUM_BITS > 0);
 
-	Array<Word, divCeil(NUM_BITS, (sizeof(Word) * 8))> words;
+	Tensor<Word, divCeil(NUM_BITS, (sizeof(Word) * 8))> words;
 
 	BitArray() = default;
 
 	BitArray(std::initializer_list<int> list) {
-		size_t iWord = 0;
-		size_t iBit = 0;
+		Size iWord = 0;
+		Size iBit = 0;
 		words[0] = 0;
 		for (auto bit : list) {
 			CHECK(bit == 0 || bit == 1);
@@ -131,7 +130,7 @@ public:
 	}
 
 	// [fromIndex,toIndex)
-	void fill(const Bit &bit, size_t fromIndex = 0, size_t toIndex = NUM_BITS) {
+	void fill(const Bit &bit, Size fromIndex = 0, Size toIndex = NUM_BITS) {
 		auto fromWord = fromIndex / (sizeof(Word) * 8);
 		auto fromBit = fromIndex % (sizeof(Word) * 8);
 		auto toWord = toIndex / (sizeof(Word) * 8);
@@ -167,7 +166,7 @@ public:
 
 	template <class Index>
 	using CustomHandle = Handle::WithBrand<Self>::template WithKind<Index>;
-	using Handle = CustomHandle<std::size_t>;
+	using Handle = CustomHandle<Size>;
 
 	// template <class Index>
 	// using CustomHandle = bitArray::_::CustomHandle<Self, Index>;
@@ -189,11 +188,9 @@ public:
 	// (we can create a larger handle from a smaller value), se below we
 	// explicitly define `operator[]` for raw values
 
-	Accessor operator[](std::size_t index) { return (*this)[Handle(index)]; }
+	Accessor operator[](Size index) { return (*this)[Handle(index)]; }
 
-	ConstAccessor operator[](std::size_t index) const {
-		return (*this)[Handle(index)];
-	}
+	ConstAccessor operator[](Size index) const { return (*this)[Handle(index)]; }
 };
 
 static_assert(sizeof(BitArray<64>) == 8);

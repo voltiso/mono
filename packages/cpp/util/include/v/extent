@@ -1,83 +1,26 @@
 #pragma once
 #include <v/_/_>
 
-#include <ostream>
+#include "v/size"
 
 #include <v/ON>
 
 //
 
 namespace VOLTISO_NAMESPACE::_::extent {
-using Value = std::size_t;
-static constexpr Value UNBOUND = std::numeric_limits<Value>::max();
-static constexpr Value DYNAMIC = -2u;
-static_assert(UNBOUND != DYNAMIC);
-
-class Base {
-public:
-	using Value = extent::Value;
-
-public:
-	const Value value = 0;
-
-	[[nodiscard]] constexpr auto signedValue() const noexcept {
-		return static_cast<std::make_signed_t<Value>>(value);
-	}
-
-	inline constexpr Base(Value value) noexcept : value{value} {
-		// if !consteval {
-		if (!std::is_constant_evaluated()) {
-			NE(value, DYNAMIC); // DYNAMIC only valid as template argument
-		}
-	}
-};
-
-#define VOLTISO_OPERATOR_PROXY(Class, _OP_, SUFFIX)                            \
-	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr bool operator _OP_(             \
-	  const Class &lhs, const Class &rhs) noexcept {                             \
-		return lhs SUFFIX _OP_ rhs SUFFIX;                                         \
-	}
-
-VOLTISO_OPERATOR_PROXY(Base, ==, .value)
-VOLTISO_OPERATOR_PROXY(Base, <, .value)
-VOLTISO_OPERATOR_PROXY(Base, >, .value)
-VOLTISO_OPERATOR_PROXY(Base, <=, .value)
-VOLTISO_OPERATOR_PROXY(Base, >=, .value)
-
-#undef VOLTISO_OPERATOR_PROXY
-
-inline auto &operator<<(std::ostream &os, const Base &extent) {
-	if (extent.value == extent::DYNAMIC) {
-		return os << "Extent::DYNAMIC";
-	} else if (extent.value == extent::UNBOUND) {
-		return os << "Extent::UNBOUND";
-	} else {
-		return os << "Extent{" << extent.value << "}";
-	}
-}
+using Value = Size;
 }; // namespace VOLTISO_NAMESPACE::_::extent
 
-// !
-
-namespace VOLTISO_NAMESPACE {
-class Extent : public _::extent::Base {
-	using Base = _::extent::Base;
-
-public:
-	constexpr Extent(const Base &other) noexcept : Base(other) {}
-
-	// using Base::Base;
-	constexpr Extent(Value value) noexcept : Base(value) {
-		NE(value, DYNAMIC); // use Extent::DYNAMIC instead
-		NE(value, UNBOUND); // use Extent::UNBOUND instead
-	}
-
-public:
-	static constexpr Base DYNAMIC = _::extent::DYNAMIC;
-	static constexpr Base UNBOUND = _::extent::UNBOUND;
-
-	explicit constexpr operator Value() const noexcept { return value; }
+namespace V::extent {
+struct Dynamic {
+	INLINE constexpr operator _::extent::Value() const noexcept { return -1; }
 };
-} // namespace VOLTISO_NAMESPACE
+static constexpr auto DYNAMIC = Dynamic{};
+
+struct Unbound {
+	INLINE constexpr operator _::extent::Value() const noexcept { return -2; }
+};
+static constexpr auto UNBOUND = Unbound{};
+} // namespace V::extent
 
 #include <v/OFF>

@@ -7,6 +7,5 @@
 #include <cstddef>
 
 namespace VOLTISO_NAMESPACE::option {
-template <std::size_t N>
-struct PAGE_SIZE : ValueOption<N, memory::PAGE_SIZE> {};
+template <Size N> struct PAGE_SIZE : ValueOption<N, memory::PAGE_SIZE> {};
 } // namespace VOLTISO_NAMESPACE::option
