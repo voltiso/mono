@@ -18,7 +18,7 @@ template <class T>
 		return std::forward<T>(t);
 
 		// 1. static extent
-	} else if constexpr (has::EXTENT<T> && get::EXTENT<T> != Extent::DYNAMIC) {
+	} else if constexpr (has::EXTENT<T> && get::EXTENT<T> != extent::DYNAMIC) {
 		// (a) type provides conversion operator
 		if constexpr (std::is_constructible_v<
 		                std::remove_reference_t<decltype(t[0])>(
@@ -36,7 +36,7 @@ template <class T>
 			static_assert(noexcept(std::forward<T>(t).data()));
 			using Item = std::remove_reference_t<decltype(t[0])>;
 			using RawArrayPtr = std::conditional_t<
-			  get::EXTENT<T> == Extent::UNBOUND, //
+			  get::EXTENT<T> == extent::UNBOUND, //
 			  Item(*)[],                         //
 			  Item(*)[get::EXTENT<T>.value]>;
 			return *reinterpret_cast<RawArrayPtr>(std::forward<T>(t).data());

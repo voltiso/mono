@@ -47,7 +47,7 @@ public:
 
 	template <Size N>
 	explicit INLINE Custom(const char (&rawString)[N])
-	    : Base(tag::EXPLICIT_COPY, ConstStringView{rawString}) {}
+	    : Base(tag::COPY, ConstStringView{rawString}) {}
 
 public:
 	VOLTISO_FORCE_INLINE auto dynamic() const && -> auto {
@@ -64,7 +64,7 @@ public:
 	template <class Arg> VOLTISO_FORCE_INLINE static auto from(const Arg &arg) {
 		static_assert(std::is_base_of_v<Custom, Self>);
 		// return Self(ConstStringView{arg}.copy());
-		return Self(tag::EXPLICIT_COPY, arg);
+		return Self(tag::COPY, arg);
 	}
 
 protected:
@@ -73,9 +73,9 @@ protected:
 	    : Base(tag::Concat{}, ConstStringView(args)...) {}
 
 	template <class Arg>
-	VOLTISO_FORCE_INLINE Custom(tag::ExplicitCopy, const Arg &arg)
+	VOLTISO_FORCE_INLINE Custom(tag::Copy, const Arg &arg)
 	    // requires requires { ConstStringView(arg); }
-	    : Base(tag::ExplicitCopy{}, ConstStringView(arg)) {}
+	    : Base(tag::COPY, ConstStringView(arg)) {}
 
 public:
 	template <class Other>

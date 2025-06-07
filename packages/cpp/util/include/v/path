@@ -7,7 +7,7 @@
 #include "v/options"
 #include "v/size"
 #include "v/string"
-#include "v/tag/explicit-copy-consteval"
+#include "v/tag/copy-consteval"
 
 // ! the only reason PathString is a separate class is that we can't specify
 // deduction guide for alias template, which we need for `operator""_p`
@@ -19,14 +19,24 @@ class Path : public string::Custom<Options<
 	using Base = string::Custom<Options<
 	  option::Extents<ValuePack<NUM_ITEMS>>, brand::Path<>,
 	  option::Self<Path<NUM_ITEMS>>>>;
+
+public:
 	using Base::Base;
+	template <class... Args>
+	Path(Args &&...args) : Base(std::forward<Args>(args)...) {}
+
+	// public:
+	// 	using Base::operator=;
+	// 	template <class... Args> decltype(auto) operator=(Args &&...args) {
+	// 		return Base::operator=(std::forward<Args>(args)...);
+	// 	}
 
 public:
 	// `consteval`-only constructor for `operator""_p`
 	template <Size NUM_ITEMS_WITH_NULL>
 	  requires(NUM_ITEMS_WITH_NULL == NUM_ITEMS + 1)
 	consteval Path(const char (&items)[NUM_ITEMS_WITH_NULL])
-	    : Base(tag::EXPLICIT_COPY_CONSTEVAL, items) {
+	    : Base(tag::COPY_CONSTEVAL, items) {
 		VOLTISO_EQ(items[NUM_ITEMS], '\0');
 	}
 };

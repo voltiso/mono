@@ -7,6 +7,7 @@
 
 #include "v/_/dynamic-array.forward.hpp"
 #include "v/concepts/options"
+#include "v/extent"
 #include "v/get/num-items"
 #include "v/handle"
 #include "v/is/trivially-relocatable"
@@ -20,8 +21,8 @@
 #include "v/raw-array"
 #include "v/size"
 #include "v/tag/concat"
-#include "v/tag/explicit-copy"
-#include "v/tag/explicit-copy-consteval"
+#include "v/tag/copy"
+#include "v/tag/copy-consteval"
 #include "v/value-pack"
 #include "v/view"
 
@@ -41,6 +42,43 @@ struct Specializations<
 
 // !
 
+namespace V::_::tensor {
+template <class Options>
+static constexpr auto extentKind = [] {
+	using Extents = Options::template Get<option::Extents>;
+	constexpr auto EXTENTS = Extents::tuple();
+	if constexpr (std::tuple_size_v<decltype(EXTENTS)> == 0) {
+		return 2;
+	} else {
+		return std::get<0>(EXTENTS) == V::extent::DYNAMIC;
+	}
+}();
+template <class Options, int KIND> class ExtentData;
+
+// single element - no extent
+template <class Options> class ExtentData<Options, 2> {};
+
+// dynamic extent
+template <class Options> class ExtentData<Options, 1> {
+public:
+	static constexpr auto EXTENT = V::extent::DYNAMIC;
+};
+
+// static extent
+template <class Options> class ExtentData<Options, 0> {
+public:
+	static constexpr auto EXTENT = [] {
+		using Extents = Options::template Get<option::Extents>;
+		return std::get<0>(Extents::tuple());
+	}();
+};
+
+template <class Options>
+class Data : public ExtentData<Options, extentKind<Options>> {};
+} // namespace V::_::tensor
+
+// !
+
 namespace VOLTISO_NAMESPACE::tensor {
 template <class Options>
   requires concepts::Options<Options> // && std::is_final_v<Final>
@@ -48,11 +86,15 @@ class Custom
     : public Object<typename Options ::template WithDefault<
         option::TRIVIALLY_RELOCATABLE<is::TriviallyRelocatable<
           typename Options::template Get<option::Item>>>,
-        option::CustomTemplate<GetCustom>, option::InputOptions<Options>>> {
+        option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>,
+      public _::tensor::Data<Options> {
 	using Base = Object<typename Options ::template WithDefault<
 	  option::TRIVIALLY_RELOCATABLE<
 	    is::TriviallyRelocatable<typename Options::template Get<option::Item>>>,
 	  option::CustomTemplate<GetCustom>, option::InputOptions<Options>>>;
+
+	using DataBase = _::tensor::Data<Options>;
+
 	using Base::Base;
 
 protected:
@@ -67,7 +109,6 @@ public:
 
 	using Extents = Options::template Get<option::Extents>;
 	static constexpr auto EXTENTS = Extents::template array<Size>();
-	static constexpr auto EXTENT = std::get<0>(Extents::tuple());
 	static constexpr auto NUM_ITEMS = []() {
 		// std::apply unpacks the tuple elements into the lambda's arguments.
 		return std::apply(
@@ -111,7 +152,7 @@ public:
 	// Items items; // = {};
 
 public:
-	constexpr auto extent() const { return EXTENT; }
+	constexpr auto extent() const { return DataBase::EXTENT; }
 	constexpr auto numItems() const { return NUM_ITEMS; }
 	constexpr auto strides() const { return STRIDES; }
 
@@ -123,22 +164,16 @@ public:
 	Custom(const Custom &) = delete;
 	Custom(Custom &&) = delete;
 	Custom &operator=(const Custom &) = delete;
-
-	// // `other` is the result of `.copy()` - user wants linear-time copy
-	// Custom(const Custom &&other) {
-	// 	std::copy(other.items, other.items + EXTENT, items);
-	// }
+	Custom &operator=(Custom &&) = delete;
 
 	// `other` is the result of `.copy()` - user wants linear-time copy
 	template <class Other>
-	  requires(!std::is_reference_v<Other> && Other::EXTENTS == EXTENTS)
-	Custom(const Other &&other) {
-		std::copy(other.items, other.items + Other::NUM_ITEMS, items);
+	  requires(Other::EXTENTS == EXTENTS)
+	constexpr Custom(const Copy<Other> &other) {
+		std::copy(other->items, other->items + Other::NUM_ITEMS, items);
 	}
 
-	INLINE constexpr Custom(std::initializer_list<Item> list) noexcept
-	// : items{{list}}
-	{
+	INLINE constexpr Custom(std::initializer_list<Item> list) noexcept {
 		EQ(list.size(), NUM_ITEMS);
 		std::copy(list.begin(), list.end(), items);
 	}
@@ -146,48 +181,44 @@ public:
 	INLINE constexpr Custom(
 	  std::initializer_list<std::initializer_list<Item>> list) noexcept {
 		// Assert the number of rows
-		EQ(list.size(), EXTENT);
+		EQ(list.size(), DataBase::EXTENT);
 
 		Size i = 0;
 		for (const auto &row : list) {
 			// Assert the number of columns for each row
-			EQ(row.size(), EXTENT);
+			EQ(row.size(), DataBase::EXTENT);
 			for (const auto &val : row) {
 				items[i++] = val;
 			}
 		}
 	}
 
-	// explicit linear time copy
-	// must not use consteval version
-	// [[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
-	// from(const Item (&items)[EXTENT]) {
-	// 	return Self{tag::EXPLICIT_COPY, items};
-	// }
-
 	template <class Arg> static INLINE constexpr auto from(Arg &&arg) {
-		return Self{tag::EXPLICIT_COPY, std::forward<Arg>(arg)};
+		return Self{tag::COPY, std::forward<Arg>(arg)};
 	}
 
 	template <class... Args> static INLINE constexpr auto concat(Args &&...args) {
 		return Self{tag::CONCAT, std::forward<Args>(args)...};
 	}
 
-protected:
-	// friend from;
-	// `consteval` for `operator""_s`
-	constexpr Custom(tag::ExplicitCopy, const Item (&items)[NUM_ITEMS]) {
+public:
+	template <class TSource> constexpr Custom(tag::Copy, const TSource &source) {
+		static_assert(TSource::NUM_ITEMS == NUM_ITEMS);
+		std::copy(source.items, source.items + NUM_ITEMS, this->items);
+	}
+
+public:
+	constexpr Custom(tag::Copy, const Item (&items)[NUM_ITEMS]) {
 		std::copy(items, items + NUM_ITEMS, this->items);
 	}
 
-protected:
-	// friend from;
+public:
 	// `consteval` for `operator""_s`
-	// we accept any N>NUM_ITEMS, and copy the first NUM_ITEMS
+	// we accept any N > NUM_ITEMS, and copy the first NUM_ITEMS
 	// usually N will be NUM_ITEMS+1 for null-terminated strings
 	template <Size N>
 	  requires(N >= NUM_ITEMS)
-	consteval Custom(tag::ExplicitCopyConsteval, const Item (&items)[N]) {
+	consteval Custom(tag::CopyConsteval, const Item (&items)[N]) {
 		std::copy(items, items + NUM_ITEMS, this->items);
 	}
 
@@ -201,7 +232,7 @@ public:
 	  class InferredHandle,
 	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
 	    nullptr>
-	  requires(EXTENT == NUM_ITEMS)
+	  requires(DataBase::EXTENT == NUM_ITEMS)
 	const Item &operator[](const InferredHandle &handle) const {
 		GE(handle.value, STARTING_INDEX);
 		LT(
@@ -215,7 +246,7 @@ public:
 	  class InferredHandle,
 	  std::enable_if_t<std::is_same_v<typename InferredHandle::Brand, Self>> * =
 	    nullptr>
-	  requires(EXTENT == NUM_ITEMS)
+	  requires(DataBase::EXTENT == NUM_ITEMS)
 	Item &operator[](const InferredHandle &handle) {
 		return const_cast<Item &>(const_cast<const Custom &>(*this)[handle]);
 	}
@@ -226,13 +257,13 @@ public:
 	// explicitly define `operator[]` for raw values
 
 	template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
-	  requires(EXTENT == NUM_ITEMS)
+	  requires(DataBase::EXTENT == NUM_ITEMS)
 	const Item &operator[](const Index &index) const {
 		return (*this)[CustomHandle<Index>(index)];
 	}
 
 	template <class Index, class = std::enable_if_t<std::is_integral_v<Index>>>
-	  requires(EXTENT == NUM_ITEMS)
+	  requires(DataBase::EXTENT == NUM_ITEMS)
 	Item &operator[](const Index &index) {
 		return (*this)[CustomHandle<Index>(index)];
 	}
@@ -288,6 +319,16 @@ public:
 
 	constexpr operator View<const Item, NUM_ITEMS>() const {
 		return View<const Item, NUM_ITEMS>{items};
+	}
+
+	[[nodiscard]] constexpr auto view() noexcept {
+		using Result = View<Item>::template WithExtents<Extents>;
+		return Result{*this};
+	}
+
+	[[nodiscard]] constexpr auto view() const noexcept {
+		using Result = const View<const Item>::template WithExtents<Extents>;
+		return Result{*this};
 	}
 
 	/**
@@ -347,7 +388,7 @@ private:
 	template <class SliceT>
 	constexpr void processSlice(Size &current_offset, SliceT &&slice) {
 		// Skip processing if this is a tag
-		if constexpr (std::is_same_v<std::decay_t<SliceT>, tag::ExplicitCopy>) {
+		if constexpr (std::is_same_v<std::decay_t<SliceT>, tag::Copy>) {
 			return;
 		} else {
 			// Create a Slice from the source
@@ -386,19 +427,23 @@ private:
 			current_offset += slice_instance.extent();
 		}
 	}
+
+public:
+	template <class Extents>
+	using WithExtents = Base::template With<option::Extents<Extents>>;
 }; // class Custom
 } // namespace VOLTISO_NAMESPACE::tensor
 
 // !
 
 namespace VOLTISO_NAMESPACE {
-template <class Item, auto E, auto... ES>
+template <class Item, auto... ES>
 class Tensor : public tensor::Custom<Options<
-                 option::Item<Item>, option::Extents<ValuePack<E, ES...>>,
-                 option::Self<Tensor<Item, E, ES...>>>> {
+                 option::Item<Item>, option::Extents<ValuePack<ES...>>,
+                 option::Self<Tensor<Item, ES...>>>> {
 	using Base = tensor::Custom<Options<
-	  option::Item<Item>, option::Extents<ValuePack<E, ES...>>,
-	  option::Self<Tensor<Item, E, ES...>>>>;
+	  option::Item<Item>, option::Extents<ValuePack<ES...>>,
+	  option::Self<Tensor<Item, ES...>>>>;
 	using Base::Base;
 };
 

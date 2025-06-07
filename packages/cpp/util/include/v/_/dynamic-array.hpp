@@ -20,7 +20,7 @@
 #include "v/option/trivially-relocatable"
 #include "v/storage"
 #include "v/tag/concat"
-#include "v/tag/explicit-copy"
+#include "v/tag/copy"
 
 #include <bit>
 #include <cstddef>
@@ -305,7 +305,7 @@ public:
 	Custom(const Custom &) = delete;
 
 	// uber-explicit copy constructor (our invention)
-	Custom(const Custom &&other) : Custom(tag::EXPLICIT_COPY, other) {}
+	Custom(const Custom &&otherCopy) : Custom(tag::COPY, otherCopy) {}
 
 	// Standard move constructor
 	Custom(Custom &&other) noexcept
@@ -353,7 +353,7 @@ public:
 	//   std::is_const_v<std::remove_reference_t<Items>>)
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto from(Items &&items) {
 		static_assert(std::is_base_of_v<Custom<Options>, Self>);
-		return Self{tag::EXPLICIT_COPY, std::forward<Items>(items)};
+		return Self{tag::COPY, std::forward<Items>(items)};
 	}
 
 	template <class SourceItem>
@@ -405,8 +405,7 @@ protected:
 	}
 
 public:
-	template <class Items>
-	constexpr Custom(tag::ExplicitCopy, const Items &items) {
+	template <class Items> constexpr Custom(tag::Copy, const Items &items) {
 		// ! better force container to provide numItems
 		// if constexpr (requires { get::numItems(items); }) {
 		setNumSlotsAtLeast(get::numItems(items));
@@ -417,13 +416,25 @@ public:
 	}
 
 public:
-	// assignment operator - linear-time, so we make it explicit this way:
-	// `arr = otherArr.copy()`
-	// `.copy()` casts to `const Other&&`
-	// the `operator=` here accepts `const Other&&`
-	template <class Other>
-	  requires(!std::is_reference_v<Other>)
-	decltype(auto) operator=(this auto &&self, const Other &&other) {
+	// // implicit move
+	// template <class OtherOptions>
+	// Custom &operator=(Custom<OtherOptions> &&other) {
+	// 	this->~Custom();
+	// 	new (this) Custom(std::move(other));
+	// 	return *this;
+	// }
+
+	// // super-explicit copy
+	// decltype(auto) operator=(const Custom &&other) {
+	// 	return this->operator= <>(other);
+	// }
+
+	// super-explicit copy
+	template <class Self, class OtherOptions>
+	decltype(auto) operator=(this Self &self, const Custom<OtherOptions> &&other)
+	  requires(!std::is_const_v<Self>)
+	{
+		// const Other &other = otherCopy;
 		NE(&self, &other); // forbid (for performance)
 		auto memory = self.slots();
 		for (Size i = 0; i < self._numItems; ++i) {
@@ -441,9 +452,9 @@ public:
 	}
 
 	// prefer converting to `View` if possible
-	template <class OtherItem, auto EXTENT>
-	decltype(auto) operator<<=(this auto &&self, View<OtherItem, EXTENT> other)
-	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
+	template <class Self, class OtherItem, auto EXTENT>
+	decltype(auto) operator<<=(this Self &self, View<OtherItem, EXTENT> other)
+	  requires(!std::is_const_v<Self>)
 	{
 		auto numNewItems = get::extent(other);
 		self.setNumSlotsAtLeast(self._numItems + numNewItems);
@@ -454,12 +465,12 @@ public:
 	}
 
 	// if not, use regular collection interface
-	template <class OtherItems>
+	template <class Self, class OtherItems>
 	  requires requires(OtherItems items) {
 		  { &items[0] } -> std::convertible_to<const Item *>;
 	  }
-	decltype(auto) operator<<=(this auto &&self, const OtherItems &other)
-	  requires(!std::is_const_v<std::remove_reference_t<decltype(self)>>)
+	decltype(auto) operator<<=(this Self &self, const OtherItems &other)
+	  requires(!std::is_const_v<Self>)
 	{
 		auto otherExtent = get::extent(other);
 		NE(otherExtent, extent::UNBOUND);
@@ -470,11 +481,11 @@ public:
 		return std::forward<decltype(self)>(self);
 	}
 
-	template <class OtherItem>
+	template <class Self, class OtherItem>
 	  requires requires(OtherItem item) {
 		  { &item } -> std::convertible_to<const Item *>;
 	  }
-	decltype(auto) operator<<=(this auto &&self, OtherItem &&other) {
+	decltype(auto) operator<<=(this Self &self, OtherItem &&other) {
 		// self.setNumSlotsAtLeast(self._numItems + 1);
 		self.maybeGrowAndPush(std::forward<OtherItem>(other));
 		return std::forward<decltype(self)>(self);
@@ -936,6 +947,17 @@ class DynamicArray
 public:
 	using Base::Base;
 	using Base::operator=;
+
+	// DynamicArray(const DynamicArray &other) = delete;
+	// DynamicArray(DynamicArray &&other) = default;
+
+	// DynamicArray &operator=(const DynamicArray &other) = delete;
+	// DynamicArray &operator=(DynamicArray &&other) = delete;
+	// DynamicArray &operator=(const DynamicArray &&other) {}
+
+	template <class... Args> decltype(auto) operator=(Args &&...args) {
+		return this->Base::operator=(std::forward<Args>(args)...);
+	}
 
 	template <class... Args>
 	DynamicArray(Args &&...args) : Base(std::forward<Args>(args)...) {}

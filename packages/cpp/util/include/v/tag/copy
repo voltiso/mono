@@ -2,6 +2,6 @@
 #include <v/_/_>
 
 namespace VOLTISO_NAMESPACE::tag {
-struct ExplicitCopyConsteval {};
-constexpr auto EXPLICIT_COPY_CONSTEVAL = ExplicitCopyConsteval{};
+struct Copy {};
+constexpr auto COPY = Copy{};
 } // namespace VOLTISO_NAMESPACE::tag

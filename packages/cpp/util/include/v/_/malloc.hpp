@@ -10,11 +10,6 @@
 #include "v/option/input-options"
 #include "v/singleton"
 
-// #include "glog/logging.h"
-
-#include <cstddef>
-#include <cstdlib>
-
 #include <v/ON>
 
 #ifndef VOLTISO_DEBUG_MALLOC

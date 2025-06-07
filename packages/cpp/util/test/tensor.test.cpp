@@ -9,6 +9,21 @@
 
 using namespace VOLTISO_NAMESPACE;
 
+// template <class Int = int>
+// struct S {
+// 	Int a;
+// 	S() = delete;
+// 	S(const S &) = delete;
+
+// 	S(S &&) = delete;
+// 	// S(const S &&) = default;
+
+// 	S &operator=(const S &) = delete;
+// };
+// static_assert(std::is_trivially_copyable_v<S<>>);
+
+static_assert(std::is_trivially_copyable_v<Tensor<int, 1>>);
+
 // ! note: our Tensor is not an aggregate type !
 // there's too many cool stuff in it
 // we don't want implicit linear-time copies, etc.
@@ -142,6 +157,20 @@ TEST(Tensor, concat) {
 	EXPECT_EQ(c[4], 5);
 	EXPECT_EQ(c[5], 6);
 	EXPECT_EQ(c, (Tensor<int, 6>{1, 2, 3, 4, 5, 6}));
+}
+
+TEST(Tensor, noImplicitCopy) {
+	static_assert(!std::is_constructible_v<Tensor<int, 3>, Tensor<int, 3> &>);
+	static_assert(!std::is_constructible_v<Tensor<int, 3>, Tensor<int, 3>>);
+	Tensor<int, 3> tensor = {1, 2, 3};
+	// Tensor<int, 3> copy = tensor; // wrong (linear time)
+	// Tensor<int, 3> copy = std::move(tensor);  // wrong (linear time)
+	// Tensor<int, 3> newTensor = tensor.move(); // wrong (linear time)
+	Tensor<int, 3> newTensor = tensor.copy(); // ok (linear time)
+	EXPECT_EQ(newTensor, tensor);
+	EXPECT_EQ(newTensor[0], tensor[0]);
+	EXPECT_EQ(newTensor[1], tensor[1]);
+	EXPECT_EQ(newTensor[2], tensor[2]);
 }
 
 TEST(Tensor, md) {

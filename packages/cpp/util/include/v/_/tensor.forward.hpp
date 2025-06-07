@@ -18,5 +18,5 @@ template <class... Args> using GetCustom = Specializations<Args...>::Result;
 } // namespace VOLTISO_NAMESPACE::tensor
 
 namespace VOLTISO_NAMESPACE {
-template <class Item, auto E, auto... Es> class Tensor;
+template <class Item, auto... ES> class Tensor;
 } // namespace VOLTISO_NAMESPACE

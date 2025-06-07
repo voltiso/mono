@@ -64,3 +64,15 @@ TEST(View, dynamic) {
 	EXPECT_EQ(dynamicStr, "b");
 	EXPECT_NE(dynamicStr, "!");
 }
+
+TEST(View, copy) {
+	auto tensor = Tensor{1, 2, 3};
+	auto view = tensor.view();
+	static_assert(std::is_same_v<decltype(view), View<int, 3L>>);
+	auto newTensor = view.copy();
+	static_assert(std::is_same_v<decltype(newTensor), Tensor<int, 3L>>);
+	EXPECT_EQ(newTensor, tensor);
+	EXPECT_EQ(newTensor[0], (int)tensor[0]);
+	EXPECT_EQ(newTensor[1], (int)tensor[1]);
+	EXPECT_EQ(newTensor[2], (int)tensor[2]);
+}

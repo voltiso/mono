@@ -8,6 +8,11 @@ using namespace VOLTISO_NAMESPACE;
 static_assert(
   std::is_same_v<DynamicArray<int>::WithItem<double>, DynamicArray<double>>);
 
+static_assert(
+  std::is_constructible_v<DynamicArray<int>, const DynamicArray<int> &&>);
+static_assert(
+  std::is_assignable_v<DynamicArray<int> &, const DynamicArray<int> &&>);
+
 TEST(DynamicArray, defaultInitialized) {
 	auto array = DynamicArray<int>::createWithNumItems(1);
 	EXPECT_EQ(array[0], 0);
@@ -24,6 +29,14 @@ TEST(DynamicArray, initializerList) {
 	EXPECT_EQ(array.numItems(), 2);
 	EXPECT_EQ(array[0], 1);
 	EXPECT_EQ(array[1], 2);
+}
+
+TEST(DynamicArray, copy_construct) {
+	auto array = DynamicArray<int>::createWithNumItems(3);
+	auto array2 = array.copy();
+
+	EXPECT_EQ(array.numItems(), 3);
+	EXPECT_EQ(array2.numItems(), 3);
 }
 
 TEST(DynamicArray, copy) {

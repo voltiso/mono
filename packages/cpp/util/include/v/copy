@@ -1,0 +1,56 @@
+#pragma once
+#include <v/_/_>
+
+// #include "v/option/target"
+// #include "v/options"
+// #include "v/ref"
+
+#include <v/ON>
+
+// namespace V {
+// template <class Target>
+//   requires(!std::is_reference_v<Target>)
+// class Copy : public ref::Custom<Options<option::Target<const Target>>> {
+// 	using Base = ref::Custom<Options<option::Target<const Target>>>;
+// 	using Base::Base;
+
+// public:
+// 	// using Base::operator const Target &;
+// };
+// } // namespace V
+
+namespace V {
+template <class TTarget>
+  requires(!std::is_reference_v<TTarget>)
+class Copy { // : public ref::Custom<Options<option::Target<const Target>>> {
+	           // using Base = ref::Custom<Options<option::Target<const
+	           // Target >>> ;
+	           // using Base::Base;
+public:
+	using Target = TTarget;
+	const Target &target;
+
+	constexpr Copy(const Target &target) : target(target) {}
+
+	Copy(const Copy &) = delete;
+	Copy(Copy &&) = delete;
+	Copy &operator=(const Copy &) = delete;
+	Copy &operator=(Copy &&) = delete;
+
+	// operator->
+	Target *operator->() { return &target; }
+	const Target *operator->() const { return &target; }
+
+	// operator*
+	Target &operator*() { return target; }
+	const Target &operator*() const { return target; }
+
+	// ! contrary to `Ref`, we can't have implicit conversion
+	// ! (messes overload resolution for our explicit copy semantics)
+	explicit operator Target &() { return target; }
+	explicit operator const Target &() const { return target; }
+};
+template <class Target> Copy(const Target &) -> Copy<Target>;
+} // namespace V
+
+#include <v/OFF>

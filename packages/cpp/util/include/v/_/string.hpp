@@ -104,7 +104,7 @@ public:
 	template <Size NUM_ITEMS_WITH_NULL>
 	  requires(NUM_ITEMS_WITH_NULL == NUM_ITEMS + 1)
 	consteval String(const char (&items)[NUM_ITEMS_WITH_NULL])
-	    : Base(tag::EXPLICIT_COPY_CONSTEVAL, items) {
+	    : Base(tag::COPY_CONSTEVAL, items) {
 		VOLTISO_EQ(items[NUM_ITEMS], '\0');
 	}
 
@@ -116,7 +116,7 @@ public:
 	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto
 	from(const char (&rawString)[NUM_ITEMS_WITH_NULL]) noexcept {
 		EQ(rawString[NUM_ITEMS], '\0');
-		return String<NUM_ITEMS>(rawString, String<NUM_ITEMS>::EXPLICIT_COPY);
+		return String<NUM_ITEMS>(rawString, String<NUM_ITEMS>::COPY);
 	}
 
 	// forward everything else to `Array<>::from`

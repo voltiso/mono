@@ -1,6 +1,4 @@
 #pragma once
-
-#include "v/_/0-force-inline.hpp"
 #include "v/_/0-is-voltiso-type.hpp"
 
 #include <type_traits>
@@ -15,7 +13,7 @@ namespace VOLTISO_NAMESPACE {
 // `operator<<`
 template <class A, class B>
   requires(is::VoltisoType<A> && !std::is_reference_v<A> && !std::is_const_v<A>)
-VOLTISO_FORCE_INLINE decltype(auto) operator<<(A &&a, B &&b)
+INLINE decltype(auto) operator<<(A &&a, B &&b)
   requires(
     requires { a <<= std::forward<B>(b); } &&
     !requires { a << std::forward<B>(b); })
@@ -28,7 +26,7 @@ VOLTISO_FORCE_INLINE decltype(auto) operator<<(A &&a, B &&b)
 // Only if there's no `A::operator<<`
 template <class A, class B>
   requires(is::VoltisoType<A> && !std::is_reference_v<A> && std::is_const_v<A>)
-VOLTISO_FORCE_INLINE A operator<<(A &&a, B &&b)
+INLINE A operator<<(A &&a, B &&b)
   requires(
     requires(std::remove_const_t<A> a) { a <<= std::forward<B>(b); } &&
     !requires(A a) { a.operator<<(std::forward<B>(b)); })
@@ -48,7 +46,7 @@ VOLTISO_FORCE_INLINE A operator<<(A &&a, B &&b)
 // `operator/`
 template <class A, class B>
   requires(is::VoltisoType<A> && !std::is_reference_v<A> && !std::is_const_v<A>)
-VOLTISO_FORCE_INLINE decltype(auto) operator/(A &&a, B &&b)
+INLINE decltype(auto) operator/(A &&a, B &&b)
   requires(
     requires { a /= std::forward<B>(b); } &&
     !requires { a / std::forward<B>(b); })
@@ -65,7 +63,7 @@ VOLTISO_FORCE_INLINE decltype(auto) operator/(A &&a, B &&b)
 // only if A is const rvalue reference (result of `.copy()`)
 template <class A, class B>
   requires(is::VoltisoType<A> && !std::is_reference_v<A> && std::is_const_v<A>)
-VOLTISO_FORCE_INLINE A operator/(A &&a, B &&b)
+INLINE A operator/(A &&a, B &&b)
   requires(
     requires(std::remove_const_t<A> a_) { a_ /= std::forward<B>(b); } &&
     // !requires(A a_) { a_ / std::forward<B>(b); })
