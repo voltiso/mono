@@ -18,6 +18,7 @@
 #include "v/option/input-options"
 #include "v/option/item"
 #include "v/option/trivially-relocatable"
+#include "v/options"
 #include "v/storage"
 #include "v/tag/concat"
 #include "v/tag/copy"
@@ -300,6 +301,10 @@ public:
 public:
 	Custom() noexcept = default;
 
+	template <class TItems>
+	explicit Custom(TItems &&items)
+	    : Custom(tag::COPY, std::forward<TItems>(items)) {}
+
 	// Explicitly delete copy constructor to prevent shallow copies.
 	// Use .copy() for deep copies.
 	Custom(const Custom &) = delete;
@@ -429,7 +434,14 @@ public:
 	// 	return this->operator= <>(other);
 	// }
 
+	auto &operator=(Custom &&other) {
+		this->~Custom();
+		new (this) Custom(std::move(other));
+		return *this;
+	}
+
 	// super-explicit copy
+	auto &operator=(const Custom &) = delete;
 	template <class Self, class OtherOptions>
 	decltype(auto) operator=(this Self &self, const Custom<OtherOptions> &&other)
 	  requires(!std::is_const_v<Self>)
@@ -621,7 +633,7 @@ public:
 	}
 
 	// `numSlots` must be greater than zero
-	Storage<Item> *slots() {
+	INLINE Storage<Item> *slots() {
 		if constexpr (NUM_IN_PLACE_SLOTS == 0) {
 			// static_assert(std::is_base_of_v<
 			//               Custom<Options>,
@@ -647,8 +659,13 @@ public:
 	}
 
 	// const -> non-const
-	const Storage<Item> *slots() const {
+	INLINE const Storage<Item> *slots() const {
 		return const_cast<Custom *>(this)->slots();
+	}
+
+	INLINE Item *items() { return std::bit_cast<Item *>(slots()); }
+	INLINE const Item *items() const {
+		return std::bit_cast<const Item *>(slots());
 	}
 
 	using Index = Size;
@@ -656,13 +673,13 @@ public:
 	VOLTISO_FORCE_INLINE Item &operator[](const Index &i) {
 		GE(i, 0);
 		LT(i, _numItems);
-		return slots()[i].object();
+		return items()[i];
 	}
 
 	VOLTISO_FORCE_INLINE const Item &operator[](const Index &i) const {
 		GE(i, 0);
 		LT(i, _numItems);
-		return slots()[i].object();
+		return items()[i];
 	}
 
 	//
@@ -863,6 +880,27 @@ public:
 		// (*this)[lastIndex].~Item(); // ! do not call after relocate
 	}
 
+	// !
+
+	[[nodiscard]] INLINE auto map(auto &&func) const {
+		using Result = Base::template With<
+		  option::Item<std::remove_cvref_t<decltype(func(items()[0]))>>>;
+		auto result = Result{};
+		result.setNumSlotsAtLeast(this->_numItems);
+		for (Size i = 0; i < this->_numItems; ++i) {
+			result.pushUnchecked(func(this->items()[i]));
+		}
+		return result;
+	}
+
+	// !
+
+	[[nodiscard]] INLINE explicit operator std::vector<Item>() const {
+		return std::vector<Item>(this->items(), this->items() + this->_numItems);
+	}
+
+	// !
+
 	/**
 	 *  - Invalidates on resize
 	 *  - Invalidates on relocation
@@ -946,7 +984,14 @@ class DynamicArray
 
 public:
 	using Base::Base;
-	using Base::operator=;
+	// template <class... Args>
+	//   requires(std::is_constructible_v<Base, Args...>)
+	// explicit DynamicArray(Args &&...args) : Base(std::forward<Args>(args)...)
+	// {}
+
+	// uber-explicit copy
+	template <class Other>
+	DynamicArray(const Other &&other) : Base(std::forward<const Other>(other)) {}
 
 	// DynamicArray(const DynamicArray &other) = delete;
 	// DynamicArray(DynamicArray &&other) = default;
@@ -955,13 +1000,23 @@ public:
 	// DynamicArray &operator=(DynamicArray &&other) = delete;
 	// DynamicArray &operator=(const DynamicArray &&other) {}
 
-	template <class... Args> decltype(auto) operator=(Args &&...args) {
-		return this->Base::operator=(std::forward<Args>(args)...);
+	// using Base::operator=;
+	template <class... Args>
+	  requires(std::is_assignable_v<Base &, Args...>)
+	decltype(auto) operator=(Args &&...args) {
+		return Base::operator=(std::forward<Args>(args)...);
 	}
 
-	template <class... Args>
-	DynamicArray(Args &&...args) : Base(std::forward<Args>(args)...) {}
-};
+}; // class DynamicArray
+
+// Deduction for general lists like {1, 2, 3}
+template <
+  class T, class... U,
+  std::enable_if_t<std::conjunction_v<std::is_same<T, U>...>, int> = 0>
+DynamicArray(T, U...) -> DynamicArray<std::type_identity_t<T>>;
+
+template <class T>
+DynamicArray(std::initializer_list<T> list) -> DynamicArray<T>;
 
 } // namespace VOLTISO_NAMESPACE
 

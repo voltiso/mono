@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <type_traits>
 #include <v/dynamic-array>
 
 using namespace VOLTISO_NAMESPACE;
@@ -161,4 +162,52 @@ TEST(DynamicArray, concatMagic) {
 	EXPECT_EQ(c[5], 6);
 	EXPECT_EQ(a.numItems(), 3);
 	EXPECT_EQ(b.numItems(), 3);
+}
+
+TEST(DynamicArray, deductionGuide) {
+	auto a = DynamicArray{1, 2, 3};
+	static_assert(std::is_same_v<decltype(a), DynamicArray<int>>);
+}
+
+TEST(DynamicArray, explicitCopy) {
+	auto a = DynamicArray{1, 2, 3};
+
+	// auto b = a; // wrong
+	static_assert(!std::is_copy_constructible_v<DynamicArray<int>>);
+
+	auto b = a.copy(); // ok
+	static_assert(std::is_same_v<decltype(b), DynamicArray<int>>);
+
+	EXPECT_EQ(a.numItems(), 3);
+	EXPECT_EQ(b.numItems(), 3);
+	EXPECT_EQ(a[0], b[0]);
+	EXPECT_EQ(a[1], b[1]);
+	EXPECT_EQ(a[2], b[2]);
+}
+
+TEST(DynamicArray, operatorStdVector) {
+	auto a = DynamicArray{1, 2, 3};
+
+	// std::vector<int> vec = a; // wrong (must be explicit)
+	static_assert(!std::is_convertible_v<DynamicArray<int>, std::vector<int>>);
+
+	std::vector<int> vec = (std::vector<int>)a; // ok
+	EXPECT_EQ(vec.size(), 3);
+	EXPECT_EQ(vec[0], 1);
+	EXPECT_EQ(vec[1], 2);
+	EXPECT_EQ(vec[2], 3);
+}
+
+TEST(DynamicArray, fromStdVector) {
+	auto vec = std::vector<int>{1, 2, 3};
+
+	// DynamicArray<int> b = vec; // wrong (need explicit copy)
+	static_assert(!std::is_convertible_v<std::vector<int> &, DynamicArray<int>>);
+
+	auto a = DynamicArray<int>{vec}; // ok
+	static_assert(std::is_same_v<decltype(a), DynamicArray<int>>);
+	EXPECT_EQ(a.numItems(), 3);
+	EXPECT_EQ(a[0], 1);
+	EXPECT_EQ(a[1], 2);
+	EXPECT_EQ(a[2], 3);
 }

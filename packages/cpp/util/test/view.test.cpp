@@ -55,14 +55,24 @@ TEST(View, chars) {
 }
 
 TEST(View, dynamic) {
-	auto str = View("abc");
-	auto dynamicStr = str.view(1, 2);
+	auto v = View("abc");
+	auto dv = v.view(1, 2);
 	static_assert(
-	  std::is_same_v<decltype(dynamicStr), View<const char, extent::DYNAMIC>>);
+	  std::is_same_v<decltype(dv), View<const char, extent::DYNAMIC>>);
 
-	EXPECT_EQ(dynamicStr.extent(), 1);
-	EXPECT_EQ(dynamicStr, "b");
-	EXPECT_NE(dynamicStr, "!");
+	EXPECT_EQ(dv.extent(), 1);
+	EXPECT_EQ(dv, "b");
+	EXPECT_NE(dv, "!");
+}
+
+TEST(View, dynamic_copy) {
+	auto v = View("abc");
+	auto dv = v.view(1, 2);
+	auto v2 = dv.copy();
+	static_assert(std::is_same_v<decltype(v2), DynamicArray<char>>);
+	EXPECT_EQ(v2.extent(), 1);
+	EXPECT_EQ(v2, "b");
+	EXPECT_NE(v2, "!");
 }
 
 TEST(View, copy) {
@@ -75,4 +85,36 @@ TEST(View, copy) {
 	EXPECT_EQ(newTensor[0], (int)tensor[0]);
 	EXPECT_EQ(newTensor[1], (int)tensor[1]);
 	EXPECT_EQ(newTensor[2], (int)tensor[2]);
+}
+
+TEST(View, empty) {
+	View<int, 0> v = {};
+	EXPECT_EQ(v.extent(), 0);
+}
+
+TEST(View, empty_dynamic) {
+	View<int, extent::DYNAMIC> v = {};
+	EXPECT_EQ(v.extent(), 0);
+}
+
+TEST(View, initializerList) {
+	// ⚠️ This is actually incorrect, we're binding temporaries
+	View<const int, extent::DYNAMIC> v = {1, 2, 3};
+	EXPECT_EQ(v.extent(), 3);
+	EXPECT_EQ(v[0], 1);
+	EXPECT_EQ(v[1], 2);
+	EXPECT_EQ(v[2], 3);
+}
+
+TEST(View, initializerList_struct) {
+	struct S {
+		int value;
+	};
+
+	// ⚠️ This is actually incorrect, we're binding temporaries
+	View<const S, extent::DYNAMIC> v = {{1}, {2}, {3}};
+	EXPECT_EQ(v.extent(), 3);
+	EXPECT_EQ(v[0].value, 1);
+	EXPECT_EQ(v[1].value, 2);
+	EXPECT_EQ(v[2].value, 3);
 }

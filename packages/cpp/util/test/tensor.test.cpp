@@ -57,6 +57,14 @@ TEST(Tensor, initializerList) {
 	EXPECT_EQ(array[2], 0);
 }
 
+// TEST(Tensor, initializerList_dynamic) {
+// 	Tensor<int, extent::DYNAMIC> array = {1, 2, 3};
+// 	EXPECT_EQ(array.extent(), 3);
+// 	EXPECT_EQ(array[0], 1);
+// 	EXPECT_EQ(array[1], 2);
+// 	EXPECT_EQ(array[2], 3);
+// }
+
 TEST(Tensor, deductionGuide) {
 	auto array = Tensor{1, 2, 3};
 	static_assert(std::is_same_v<decltype(array), Tensor<int, 3L>>);

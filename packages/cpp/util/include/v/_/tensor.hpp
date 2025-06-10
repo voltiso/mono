@@ -110,12 +110,14 @@ public:
 	using Extents = Options::template Get<option::Extents>;
 	static constexpr auto EXTENTS = Extents::template array<Size>();
 	static constexpr auto NUM_ITEMS = []() {
-		// std::apply unpacks the tuple elements into the lambda's arguments.
-		return std::apply(
-		  [](auto... elements) {
-			  return (static_cast<V::Size>(1) * ... * static_cast<V::Size>(elements));
-		  },
-		  EXTENTS);
+		V::Size result = 1;
+		for (const auto &extent : EXTENTS) {
+			if (extent < 0) {
+				return extent;
+			}
+			result *= extent;
+		}
+		return result;
 	}();
 	static constexpr auto STRIDES = []() {
 		constexpr auto N = EXTENTS.size();
@@ -152,9 +154,9 @@ public:
 	// Items items; // = {};
 
 public:
-	constexpr auto extent() const { return DataBase::EXTENT; }
-	constexpr auto numItems() const { return NUM_ITEMS; }
-	constexpr auto strides() const { return STRIDES; }
+	constexpr auto extent() const noexcept { return DataBase::EXTENT; }
+	constexpr auto numItems() const noexcept { return NUM_ITEMS; }
+	constexpr auto strides() const noexcept { return STRIDES; }
 
 public:
 	Custom() = default;
@@ -208,7 +210,7 @@ public:
 	}
 
 public:
-	constexpr Custom(tag::Copy, const Item (&items)[NUM_ITEMS]) {
+	constexpr Custom(tag::Copy, RawArray<const Item, NUM_ITEMS> &items) {
 		std::copy(items, items + NUM_ITEMS, this->items);
 	}
 

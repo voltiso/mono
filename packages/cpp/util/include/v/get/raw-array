@@ -21,14 +21,13 @@ template <class T>
 	} else if constexpr (has::EXTENT<T> && get::EXTENT<T> != extent::DYNAMIC) {
 		// (a) type provides conversion operator
 		if constexpr (std::is_constructible_v<
-		                std::remove_reference_t<decltype(t[0])>(
-		                    &)[get::EXTENT<T>.value],
+		                std::remove_reference_t<decltype(t[0])>(&)[get::EXTENT<T>],
 		                T>) {
-			static_assert(
-			  noexcept(static_cast<std::remove_reference_t<decltype(t[0])>(
-			               &)[get::EXTENT<T>.value]>(std::forward<T>(t))));
+			static_assert(noexcept(
+			  static_cast<std::remove_reference_t<decltype(t[0])>(&)[get::EXTENT<T>]>(
+			    std::forward<T>(t))));
 			return static_cast<
-			  std::remove_reference_t<decltype(t[0])>(&)[get::EXTENT<T>.value]>(
+			  std::remove_reference_t<decltype(t[0])>(&)[get::EXTENT<T>]>(
 			  std::forward<T>(t));
 
 			// (b) type provides `.data()` method (std interop)
@@ -38,7 +37,7 @@ template <class T>
 			using RawArrayPtr = std::conditional_t<
 			  get::EXTENT<T> == extent::UNBOUND, //
 			  Item(*)[],                         //
-			  Item(*)[get::EXTENT<T>.value]>;
+			  Item(*)[get::EXTENT<T>]>;
 			return *reinterpret_cast<RawArrayPtr>(std::forward<T>(t).data());
 		} else {
 			// todo: we could also try to use t[0] (which can be undefined behavior)

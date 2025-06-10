@@ -10,3 +10,15 @@ TEST(hash, plainTypes) {
 	static_assert(get::hash(0) == 0);
 	//
 }
+
+TEST(hash, enumClass) {
+	enum class E {
+		A,
+		B,
+		C,
+	};
+	static_assert(has::hash<E>);
+	static_assert(get::hash(E::A) == 0);
+	static_assert(get::hash(E::B) == 1);
+	static_assert(get::hash(E::C) == 2);
+}

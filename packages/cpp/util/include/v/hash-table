@@ -318,7 +318,7 @@ protected:
 public:
 	template <class... Args>
 	void insert(Args &&...args)
-	  requires(!IS_CONST)
+	  requires(!IS_CONST && std::is_constructible_v<Value, Args...>)
 	{
 		CHECK(!this->_exists);
 		this->_maybeGrow();
@@ -447,19 +447,21 @@ private:
 
 public:
 	/** @internal - works only for comparisons with .end() */
-	bool operator!=(const ConstIterator &other) const {
+	INLINE bool operator!=(const ConstIterator &other) const {
 		EQ(&hashTable, &other.hashTable);
+		CHECK(!other.node);  // other must be `.end()`
 		return !!this->node; // !
 	}
 
 	auto &operator++() {
-		if (this->node) {
-			auto &pool = this->hashTable._pool;
-			this->node = pool[this->node].nextNode;
-		} else {
+		CHECK(this->node);
+		auto &pool = this->hashTable._pool;
+		this->node = pool[this->node].nextNode;
+		while (!this->node &&
+		       this->bucket.value + 1 < this->hashTable._buckets.numItems()) {
 			++this->bucket.value;
 			auto &buckets = this->hashTable._buckets;
-			this->node = buckets[bucket].firstNode;
+			this->node = buckets[this->bucket].firstNode;
 		}
 		return *this;
 	}
@@ -604,6 +606,8 @@ public:
 
 	using ConstIterator = _::ConstIterator<Options>;
 	friend ConstIterator;
+
+	static_assert(std::is_reference_v<Key> || has::hash<Key>);
 
 private:
 	Buckets::Handle _bucketIndex(const Key &key) const {
@@ -822,10 +826,10 @@ public:
 		return this->operator()(get::key(key));
 	}
 
-	ConstMapAccessor operator()(const Key &key) const
+	INLINE ConstMapAccessor operator()(const Key &key) const
 	  requires(!std::is_same_v<Key, Entry>)
 	{
-		auto accessor = this->self()[key];
+		MapAccessor accessor = const_cast<Custom *>(this)->operator()(key);
 		return std::bit_cast<ConstMapAccessor>(accessor); // rvo works?
 	}
 
@@ -836,21 +840,31 @@ public:
 	// }
 
 public:
-	Iterator begin() {
-		auto node = _buckets.numItems() ? _buckets[0].firstNode : handle::INVALID;
-		return Iterator{typename Buckets::Handle(0), node, *this};
+	INLINE Iterator begin() {
+		for (Size i = 0; i < _buckets.numItems(); ++i) {
+			if (_buckets[i].firstNode) {
+				return Iterator{
+				  typename Buckets::Handle(i), _buckets[i].firstNode, *this};
+			}
+		}
+		return end();
 	}
-	Iterator end() {
+	INLINE Iterator end() {
 		return Iterator{
 		  typename Buckets::Handle(_buckets.numItems()), handle::INVALID, *this};
 	}
 
-	ConstIterator begin() const {
-		auto node = _buckets.numItems() ? _buckets[0].firstNode : handle::INVALID;
-		return ConstIterator{Buckets::Handle(0), node, *this};
+	INLINE ConstIterator begin() const {
+		for (Size i = 0; i < _buckets.numItems(); ++i) {
+			if (_buckets[i].firstNode) {
+				return ConstIterator{
+				  typename Buckets::Handle(i), _buckets[i].firstNode, *this};
+			}
+		}
+		return end();
 	}
 
-	ConstIterator end() const {
+	INLINE ConstIterator end() const {
 		return ConstIterator{
 		  Buckets::Handle(_buckets.numItems()), handle::INVALID, *this};
 	}

@@ -15,3 +15,12 @@ TEST(HashMap, initializerList) {
 	EXPECT_TRUE(a(3).exists());
 	EXPECT_FALSE(a(4).exists());
 }
+
+TEST(HashMap, iterate) {
+	HashMap<int, int> a = {{1, 10}, {2, 20}, {3, 30}};
+	int sum = 0;
+	for (auto [key, value] : a) {
+		sum += key + value;
+	}
+	EXPECT_EQ(sum, 1 + 10 + 2 + 20 + 3 + 30);
+}

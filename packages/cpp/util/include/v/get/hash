@@ -11,7 +11,9 @@
 
 namespace V::_ {
 template <class T> constexpr auto optional_hash(T &&t) noexcept {
-	if constexpr (std::is_pointer_v<std::remove_reference_t<T>>) {
+	if constexpr (std::is_enum_v<std::remove_reference_t<T>>) {
+		return static_cast<std::underlying_type_t<std::remove_reference_t<T>>>(t);
+	} else if constexpr (std::is_pointer_v<std::remove_reference_t<T>>) {
 		// ! hash raw pointers
 		using Target = std::remove_pointer_t<std::remove_reference_t<T>>;
 		// std::cout << "target is " << demangle(typeid(Target)) << std::endl;

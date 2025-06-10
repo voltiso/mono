@@ -1,5 +1,6 @@
 #pragma once
 
+#include "v/context"
 #include "v/dynamic-array"
 #include "v/handle"
 #include "v/pool"
@@ -76,8 +77,20 @@ public:
 	INLINE auto &retain(T &&value) {
 		return _retain<std::remove_reference_t<T>>(std::forward<T>(value));
 	}
-};
 
+	[[nodiscard]] INLINE context::Guard<Retainer> use() noexcept {
+		return context::Guard<Retainer>{*this};
+	}
+};
 } // namespace VOLTISO_NAMESPACE
+
+// !
+
+namespace V::retainer {
+INLINE auto &push(auto &&value) {
+	return V::context::get<Retainer>().retain(
+	  std::forward<decltype(value)>(value));
+}
+} // namespace V::retainer
 
 #include <v/OFF>

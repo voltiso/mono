@@ -5,6 +5,7 @@
 
 #include "v/_/0-is-voltiso-type.hpp"
 #include "v/_/const-string-view.forward.hpp"
+#include "v/_/dynamic-array.forward.hpp"
 #include "v/_/tensor.forward.hpp"
 #include "v/extent"
 #include "v/get/extent"
@@ -92,7 +93,16 @@ public:
 };
 template <class Options> class NumItemsData<Options, true> {
 public:
-	const Size numItems;
+	static constexpr auto NUM_ITEMS = V::extent::DYNAMIC;
+
+private:
+	const Size _numItems;
+
+public:
+	constexpr auto numItems() const noexcept { return _numItems; }
+
+public:
+	constexpr NumItemsData(Size numItems) : _numItems(numItems) {}
 };
 
 //
@@ -104,8 +114,8 @@ class Data : public ExtentData<Options, extentKind<Options>>,
 	using NumItemsBase = NumItemsData<Options, isDynamicNumItems<Options>>;
 
 public:
-	Data() = default;
-	Data(Size extent, Size numItems)
+	constexpr Data() = default;
+	constexpr Data(Size extent, Size numItems)
 	    : ExtentBase{extent}, NumItemsBase{numItems} {}
 };
 } // namespace V::_::view
@@ -144,9 +154,19 @@ public:
 
 	// Items &items;
 	// Items *const items; // ! super-bug-prone
-	Item *const items;
+	Item *const items = nullptr;
 
 public:
+	// default construct empty view - only if numItems == 0
+	constexpr Custom() noexcept
+	  requires(DataBase::NUM_ITEMS == 0)
+	    : items(nullptr) {}
+
+	// default construct empty view - if first extent is dynamic (make it 0)
+	constexpr Custom() noexcept
+	  requires(DataBase::EXTENT == extent::DYNAMIC)
+	    : DataBase(0, 0), items(nullptr) {}
+
 	// create from single item (static extent)
 	constexpr Custom(Item &item) noexcept
 	  requires(DataBase::EXTENT == 1)
@@ -186,7 +206,7 @@ public:
 		static_assert(!requires { this->extent; }); // no need to set?
 	}
 
-	// create from anything - dynamic extent
+	// create from anything indexable - dynamic extent
 	template <class TSource>
 	  requires(DataBase::EXTENT == extent::DYNAMIC)
 	constexpr Custom(TSource &&source) noexcept
@@ -194,6 +214,21 @@ public:
 		          { &source[0] } -> std::convertible_to<Item *>;
 	          })
 	    : DataBase(get::extent(source), get::extent(source)), items(&source[0]) {}
+
+	// create from anything iterable - dynamic extent
+	template <class TSource>
+	  requires(DataBase::EXTENT == extent::DYNAMIC)
+	constexpr Custom(TSource &&source) noexcept
+	  requires(requires {
+		          { source.begin() } -> std::convertible_to<Item *>;
+	          })
+	    : DataBase(get::extent(source), get::extent(source)),
+	      items(&*source.begin()) {}
+
+	// create from initializer_list - dynamic extent
+	constexpr Custom(const std::initializer_list<Item> &source) noexcept
+	  requires(DataBase::EXTENT == extent::DYNAMIC)
+	    : DataBase(source.size(), source.size()), items(&*source.begin()) {}
 
 	// create from pointer - static extent
 	template <class ItemsPointer>
@@ -251,9 +286,34 @@ public:
 	// !
 
 	[[nodiscard]] constexpr auto copy() const noexcept {
-		using Result =
-		  V::Tensor<std::remove_const_t<Item>>::template WithExtents<Extents>;
-		return Result{tag::COPY, *this};
+		if constexpr (DataBase::NUM_ITEMS < 0) {
+			using Result = v::DynamicArray<std::remove_const_t<Item>>;
+			return Result{tag::COPY, *this};
+		} else {
+			using Result =
+			  V::Tensor<std::remove_const_t<Item>>::template WithExtents<Extents>;
+			return Result{tag::COPY, *this};
+		}
+	}
+
+	[[nodiscard]] constexpr auto map(auto &&func) const noexcept {
+		using NewItem = std::remove_cvref_t<decltype(func(items[0]))>;
+		if constexpr (DataBase::NUM_ITEMS < 0) {
+			using Result = v::DynamicArray<NewItem>;
+			Result result;
+			result.setNumSlotsAtLeast(extent());
+			for (Size i = 0; i < extent(); ++i) {
+				result.pushUnchecked(func(items[i]));
+			}
+			return result;
+		} else {
+			using Result = V::Tensor<NewItem>::template WithExtents<Extents>;
+			Result result;
+			for (Size i = 0; i < extent(); ++i) {
+				result[i] = func(items[i]);
+			}
+			return result;
+		}
 	}
 
 	// !
@@ -272,6 +332,11 @@ public:
 	template <class Extents>
 	using WithExtents = Base::template With<option::Extents<Extents>>;
 }; // class Custom
+
+// static_assert(
+//   std::is_trivially_copyable_v<Custom<Options<
+//     option::Item<const int>, option::Extents<ValuePack<extent::DYNAMIC>>>>>);
+
 } // namespace VOLTISO_NAMESPACE::view
 
 // !
@@ -285,7 +350,14 @@ class View : public view::Custom<Options<
 	  option::Item<Item>, option::Extents<ValuePack<ES...>>,
 	  option::Self<View<Item, ES...>>>>;
 	using Base::Base;
+
+public:
+	constexpr View() noexcept = default;
+	constexpr View(const View &) noexcept = default;
 };
+
+// static_assert(std::is_trivially_copyable_v<View<const int,
+// extent::DYNAMIC>>);
 
 // deduction guide for raw arrays
 template <class Item, Size NUM_ITEMS>
