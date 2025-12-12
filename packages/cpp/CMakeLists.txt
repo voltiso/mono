@@ -85,6 +85,7 @@ add_executable(
   util/test/subject.test.cpp
   util/test/executable-path.test.cpp
   util/test/tensor.test.cpp
+  util/test/quaternion.test.cpp
   util/test/ref.test.cpp
   util/test/const-string-view.test.cpp
 
