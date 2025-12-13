@@ -30,6 +30,46 @@ public:
 	constexpr auto x() -> Item & { return (*this)[1]; }
 	constexpr auto y() -> Item & { return (*this)[2]; }
 	constexpr auto z() -> Item & { return (*this)[3]; }
+
+	[[nodiscard]] static VOLTISO_FORCE_INLINE constexpr auto identity()
+	  requires(std::is_constructible_v<Item, int>)
+	{
+		return Quaternion{Item(1), Item(0), Item(0), Item(0)};
+	}
+
+	template <class OtherItem>
+	[[nodiscard]] VOLTISO_FORCE_INLINE constexpr auto
+	operator*(const Quaternion<OtherItem> &other) const {
+		using ResultItem = std::common_type_t<Item, OtherItem>;
+		const ResultItem aw = this->w();
+		const ResultItem ax = this->x();
+		const ResultItem ay = this->y();
+		const ResultItem az = this->z();
+
+		const ResultItem bw = other.w();
+		const ResultItem bx = other.x();
+		const ResultItem by = other.y();
+		const ResultItem bz = other.z();
+
+		return Quaternion<ResultItem>{
+		  aw * bw - ax * bx - ay * by - az * bz,
+		  aw * bx + ax * bw + ay * bz - az * by,
+		  aw * by - ax * bz + ay * bw + az * bx,
+		  aw * bz + ax * by - ay * bx + az * bw};
+	}
+
+	template <class OtherItem>
+	VOLTISO_FORCE_INLINE constexpr auto
+	operator*=(const Quaternion<OtherItem> &other) -> Quaternion & {
+		using ResultItem = std::common_type_t<Item, OtherItem>;
+		static_assert(std::is_convertible_v<ResultItem, Item>);
+		const auto r = (*this) * other;
+		this->w() = static_cast<Item>(r.w());
+		this->x() = static_cast<Item>(r.x());
+		this->y() = static_cast<Item>(r.y());
+		this->z() = static_cast<Item>(r.z());
+		return *this;
+	}
 };
 
 template <
