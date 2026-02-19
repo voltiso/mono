@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-console */
@@ -26,12 +26,24 @@ async function globalSetup() {
 
 	const cwd = getCwd()
 
-	await jestDevServer.setup({
-		command: `cd ${cwd} && ../node_modules/.bin/firebase emulators:start --only firestore --config firebase-${port}.json`,
-		port,
-		usedPortAction: 'error',
-		launchTimeout: 40_000, // needs more time if ran via `turbo` (for some reason?)
-	})
+	try {
+		const command = `cd ${cwd} && ../node_modules/.bin/firebase emulators:start --only firestore --config firebase-${port}.json`
+
+		console.log(
+			'starting firebase emulator (make sure Java is installed - `apt install default-jre`)...',
+		)
+		console.log('🐚', command)
+
+		await jestDevServer.setup({
+			command,
+			port,
+			usedPortAction: 'error',
+			launchTimeout: 40_000, // needs more time if ran via `turbo` (for some reason?)
+		})
+	} catch (error) {
+		console.error('jest/globalSetup.ts error while starting emulator:', error)
+		throw error
+	}
 
 	console.log('firebase emulator started!')
 
@@ -40,6 +52,7 @@ async function globalSetup() {
 
 	// eslint-disable-next-line n/no-process-env, turbo/no-undeclared-env-vars
 	process.env['PORT'] = `${port}`
+	console.log('jest/globalSetup.ts complete!')
 }
 
 // eslint-disable-next-line import/no-default-export

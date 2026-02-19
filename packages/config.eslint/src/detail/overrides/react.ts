@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import react from 'eslint-plugin-react'
 
 import { codeFiles } from '~/detail/files'
 
-export const reactConfig = defineEslintFlatConfig({
+export const reactConfig = defineConfig({
 	files: codeFiles,
 
 	plugins: {

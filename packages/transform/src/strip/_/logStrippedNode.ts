@@ -1,9 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { TransformContext } from '@voltiso/transform.lib'
 import { getNodePositionStr } from '@voltiso/transform.lib'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 import type * as ts from 'typescript'
 
 export const moduleIcon = '👗'
@@ -14,7 +14,7 @@ function beforeLog() {
 	if (initialLogDone) return
 
 	// eslint-disable-next-line no-console
-	console.log(moduleIcon, chalk.gray('[@voltiso/transform/strip]'))
+	console.log(moduleIcon, pc.gray('[@voltiso/transform/strip]'))
 	initialLogDone = true
 }
 
@@ -26,9 +26,9 @@ export function logStrippedNode(ctx: TransformContext, node: ts.Node): void {
 	console.log(
 		moduleIcon,
 		'strip',
-		chalk.blue(node.getText()),
-		chalk.gray('\n  @'),
-		chalk.green(getNodePositionStr(node)),
+		pc.blue(node.getText()),
+		pc.gray('\n  @'),
+		pc.green(getNodePositionStr(node)),
 		'\n',
 	)
 }

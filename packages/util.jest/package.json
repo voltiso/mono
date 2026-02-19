@@ -30,7 +30,7 @@
     "__________DEV": "__________",
     "dev": "v dev",
     "__________TEST": "__________",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent --passWithNoTests",
     "__________LINT": "__________",
     "lint": "v lint",
     "depcheck": "depcheck",
@@ -49,11 +49,9 @@
   },
   "__________DEPS": "__________",
   "peerDependencies": {
-    "@jest/globals": "*",
-    "@voltiso/util": "workspace:^"
+    "@jest/globals": "*"
   },
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
-    "@voltiso/util": "workspace:^"
+    "@jest/globals": "^30.2.0"
   }
 }

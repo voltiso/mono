@@ -1,7 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import jsdocPlugin from 'eslint-plugin-jsdoc'
 
 import { codeFiles, tsFiles } from '../files'
@@ -10,7 +11,7 @@ const allRules = getAllRules(jsdocPlugin as never, 'jsdoc', 'warn')
 delete allRules['jsdoc/text-escaping']
 delete allRules['jsdoc/match-name']
 
-export const jsdocConfig = defineEslintFlatConfig(
+export const jsdocConfig = defineConfig(
 	// jsdocPlugin.configs.recommended as never,
 	// ...eslintFlatConfigFromConfig(jsdocPlugin.configs.recommended as never, {
 	// 	jsdoc: jsdocPlugin,
@@ -30,6 +31,10 @@ export const jsdocConfig = defineEslintFlatConfig(
 
 		rules: {
 			...allRules,
+
+			'jsdoc/require-throws-type': 0,
+
+			'jsdoc/require-tags': 0,
 
 			'jsdoc/sort-tags': 0,
 			'jsdoc/require-template': 0,

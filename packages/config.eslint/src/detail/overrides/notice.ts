@@ -1,7 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import noticePlugin from 'eslint-plugin-notice'
 
@@ -17,7 +17,7 @@ const lines = [
 const commentLines = lines.map(line => `// ${line}`)
 const hashCommentLines = lines.map(line => `# ${line}`)
 
-export const notice = defineEslintFlatConfig({
+export const notice = defineConfig({
 	files: codeFiles,
 	ignores: filesInsideMd,
 
@@ -34,7 +34,7 @@ export const notice = defineEslintFlatConfig({
 	},
 })
 
-export const noticeHash = defineEslintFlatConfig({
+export const noticeHash = defineConfig({
 	files: [
 		'**/*.yml',
 		'**/*.yaml',

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IndexedCssProps } from '~/_/CssProps'
@@ -21,6 +21,7 @@ export function consumeCssProps<CustomCss extends object>(params: {
 
 		// const value = prepare(rawValue, params.theme, params.customCss)
 
+		// eslint-disable-next-line unicorn/no-array-reverse
 		for (const entry of [...list].reverse()) {
 			if (typeof entry === 'function') {
 				// eslint-disable-next-line sonarjs/nested-control-flow

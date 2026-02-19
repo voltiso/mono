@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -41,6 +41,7 @@ describe('clone', () => {
 		expect(clone(undefined)).toBeUndefined()
 		expect(clone(123)).toBe(123)
 		expect(clone('123')).toBe('123')
+		// eslint-disable-next-line unicorn/prefer-bigint-literals
 		expect(clone(BigInt(123))).toBe(BigInt(123))
 
 		const sym = Symbol('sym')

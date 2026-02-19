@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomString, CustomString$ } from '@voltiso/schemar'
@@ -9,19 +9,21 @@ import type { DocIdBrand, DocIdString } from '~/brand'
 import type { $$DocRelated } from '~/DocRelated'
 import type { ANY_DOC } from '~/DocTypes'
 
-export interface AutoIdSchema<D extends $$DocRelated = ANY_DOC>
-	extends CustomString<{
-		Input: DocIdString<D>
-		Output: DocIdString<D>
-		// regExps: AtLeast1<RegExpEntry>
-	}> {}
+export interface AutoIdSchema<
+	D extends $$DocRelated = ANY_DOC,
+> extends CustomString<{
+	Input: DocIdString<D>
+	Output: DocIdString<D>
+	// regExps: AtLeast1<RegExpEntry>
+}> {}
 
-export interface AutoIdSchema$<D extends $$DocRelated = ANY_DOC>
-	extends CustomString$<{
-		Input: DocIdString<D>
-		Output: DocIdString<D>
-		// regExps: AtLeast1<RegExpEntry>
-	}> {
+export interface AutoIdSchema$<
+	D extends $$DocRelated = ANY_DOC,
+> extends CustomString$<{
+	Input: DocIdString<D>
+	Output: DocIdString<D>
+	// regExps: AtLeast1<RegExpEntry>
+}> {
 	get Final(): AutoIdSchema<D>
 }
 

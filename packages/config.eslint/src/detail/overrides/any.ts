@@ -1,11 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import anyParser from 'any-eslint-parser'
 
-export const anyOverride = defineEslintFlatConfig({
+export const anyOverride = defineConfig({
 	// files: ['*'],
 
 	// parser: 'any-eslint-parser',
@@ -23,6 +23,6 @@ export const anyOverride = defineEslintFlatConfig({
 	// },
 })
 
-// const a = defineEslintFlatConfig({
+// const a = defineConfig({
 
 // })

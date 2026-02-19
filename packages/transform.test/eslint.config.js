@@ -1,12 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 
 // eslint-disable-next-line import/no-relative-packages
 import baseConfig from '../../eslint.config.js'
 
-export default defineEslintFlatConfig(...baseConfig, {
+export default defineConfig(...baseConfig, {
 	rules: {
 		'no-restricted-imports': 'off',
 		'@typescript-eslint/no-useless-empty-export': 'off',

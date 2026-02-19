@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable n/no-sync */
@@ -24,7 +24,7 @@ class MyError extends Error {
 	constructor(message: string) {
 		super(message)
 		this.name = 'MyError'
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
 		if (Error.captureStackTrace) Error.captureStackTrace(this, MyError)
 	}
 }
@@ -85,6 +85,7 @@ beforeAll(async () => {
 // CLIENT
 
 describe('client', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		// eslint-disable-next-line no-new, sonarjs/constructor-for-side-effects
 		new RpcClient<typeof myServer.handlers>(`http://localhost:${port}/rpc`)
@@ -146,7 +147,7 @@ describe('client', () => {
 	it('network error', async () => {
 		expect.hasAssertions()
 
-		const invalidPort = 7444
+		const invalidPort = 31851
 		const myClient = new RpcClient<typeof myServer.handlers>(
 			`http://localhost:${invalidPort}/rpc`,
 		)
@@ -154,7 +155,9 @@ describe('client', () => {
 		myClient.setToken('test')
 
 		await expect(myClient.auth.echoToken()).rejects.toThrow(
-			'rpc.auth.echoToken(): FetchError: request to http://localhost:7444/rpc failed, reason: connect ECONNREFUSED 127.0.0.1:7444',
+			`rpc.auth.echoToken(): FetchError: request to http://localhost:${
+				invalidPort
+			}/rpc failed, reason: connect ECONNREFUSED 127.0.0.1:${invalidPort}`,
 		)
 	})
 

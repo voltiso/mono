@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable promise/always-return */
@@ -74,6 +74,7 @@ describe('node', () => {
 	})
 
 	/** Fails when global `Promise` not patched correctly */
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('parallel', async () => {
 		const context = new ZoneContext<number>()
 

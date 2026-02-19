@@ -1,24 +1,16 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ! cannot use defineEslintFlatConfig - would introduce circular dependency
-// import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 
-// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports, import/no-relative-packages
 import baseConfig from '../../eslint.config.js'
 
-const config = [
-	...baseConfig,
-	{
-		// env: {
-		// 	node: true
-		// },
-		rules: {
-			'node-dependencies/absolute-version': 'off',
-			'n/hashbang': 'off',
-			'n/shebang': 'off',
-		},
+const config = defineConfig(...baseConfig, {
+	rules: {
+		'n/hashbang': 0,
+		'n/shebang': 0,
 	},
-]
+})
 
 export default config

@@ -1,8 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 import type * as ts from 'typescript'
 
 import type { CompatTransformContext } from '../compatTransform.js'
@@ -17,7 +17,7 @@ function _helloOnce() {
 	if (helloPrinted) return
 
 	// eslint-disable-next-line no-console
-	console.log(moduleIcon, chalk.gray('@voltiso/transform/compat'))
+	console.log(moduleIcon, pc.gray('@voltiso/transform/compat'))
 	helloPrinted = true
 }
 
@@ -38,11 +38,11 @@ export function logCompatTransformNode(
 	console.log(
 		moduleIcon,
 		options.feature,
-		chalk.blue(getNodeText(ctx, node)),
+		pc.blue(getNodeText(ctx, node)),
 		rightArrow,
-		chalk.blue(newNodeStr),
-		chalk.gray('\n  @'),
-		chalk.green(getNodePositionStr(node, ctx.sourceFile)),
+		pc.blue(newNodeStr),
+		pc.gray('\n  @'),
+		pc.green(getNodePositionStr(node, ctx.sourceFile)),
 		'\n',
 	)
 }

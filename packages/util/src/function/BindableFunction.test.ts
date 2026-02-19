@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -18,6 +18,7 @@ describe('BindableFunction', () => {
 			return thisVal + a + b * 2
 		}
 
+		// eslint-disable-next-line @typescript-eslint/strict-void-return
 		let bindableFunc = new BindableFunction(func)
 
 		expect(bindableFunc(1, 2)).toBe(5)

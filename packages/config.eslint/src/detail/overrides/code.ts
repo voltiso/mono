@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import js from '@eslint/js'
@@ -7,37 +7,34 @@ import typescriptPlugin from '@typescript-eslint/eslint-plugin'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore no types
 import typescriptParser from '@typescript-eslint/parser'
-import {
-	defineEslintConfigOverrideRules,
-	defineEslintFlatConfig,
-	getAllRules,
-} from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
+// @ts-ignore CJS build fails
 import { getJsdocProcessorPlugin } from 'eslint-plugin-jsdoc/getJsdocProcessorPlugin.js'
 import globals from 'globals'
 
 import { codeFilesNoMd } from '../files.js'
 
-const alreadyHandledByPrettier = defineEslintConfigOverrideRules({
+const alreadyHandledByPrettier = {
 	'@typescript-eslint/comma-dangle': 0,
 	'@typescript-eslint/object-curly-spacing': 0,
 	'@typescript-eslint/semi': 0,
 	'quote-props': 0,
 	'object-curly-spacing': 0,
 	semi: 0,
-} as const)
+} as const
 
-const alreadyHandledByTsc = defineEslintConfigOverrideRules({
+const alreadyHandledByTsc = {
 	/** Already checked by TSC, can ignore with `_name` underscored variable name */
 	'@typescript-eslint/no-unused-vars': 0,
-} as const)
+} as const
 
-const alreadyHandledByUnicorn = defineEslintConfigOverrideRules({
+const alreadyHandledByUnicorn = {
 	/** Handled by `unicorn/prefer-module` */
 	'@typescript-eslint/no-var-requires': 0,
-} as const)
+} as const
 
-const functionalRecommendedRules = defineEslintConfigOverrideRules({
+const functionalRecommendedRules = {
 	'@typescript-eslint/prefer-readonly': 1,
 
 	// '@typescript-eslint/prefer-readonly-parameter-types': [
@@ -50,12 +47,12 @@ const functionalRecommendedRules = defineEslintConfigOverrideRules({
 	'@typescript-eslint/switch-exhaustiveness-check': 1,
 	'no-var': 2,
 	'prefer-const': 1,
-} as const)
+} as const
 
 // console.log('??', typescriptPlugin.configs['recommended'])
 
 /** All TS/JS files */
-export const codeOverride = defineEslintFlatConfig(
+export const codeOverride = defineConfig(
 	{
 		// files: codeFiles,
 		...codeFilesNoMd,
@@ -65,7 +62,7 @@ export const codeOverride = defineEslintFlatConfig(
 			'@stylistic': stylistic as never,
 
 			// ! does not work with typescript for MD files - tsconfig.json cannot include things inside *.md
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
 			examples: getJsdocProcessorPlugin({
 				// Enable these options if you want the `someDefault` inside of the
 				//   following to be checked in addition to `@example`:
@@ -122,11 +119,10 @@ export const codeOverride = defineEslintFlatConfig(
 		// 	},
 		// },
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		rules: {
 			...js.configs.all.rules,
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-non-null-assertion
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			...typescriptPlugin.configs['all']!.rules,
 
 			...alreadyHandledByPrettier,
@@ -138,6 +134,8 @@ export const codeOverride = defineEslintFlatConfig(
 
 			// '@stylistic/quotes': ['warn', 'single', { avoidEscape: true }], // ! avoidEscape does not actually work
 			'@stylistic/quotes': 0,
+
+			'@stylistic/exp-list-style': 0, // conflicts with prettier
 
 			'@stylistic/jsx-newline': 0,
 

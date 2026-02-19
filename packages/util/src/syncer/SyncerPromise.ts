@@ -1,11 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { OptionalArgument } from '~/type/optional-argument'
 
 import type { ISyncerNested, SyncerNested } from './SyncerNested'
 import type { PartialSyncerSwitch, SyncerSwitch } from './SyncerSwitch'
-import { UNSET } from '_/symbols/unset'
 
 export type ISyncerPromise<Return = unknown> = Generator<
 	PartialSyncerSwitch | ISyncerPromise | ISyncerNested,

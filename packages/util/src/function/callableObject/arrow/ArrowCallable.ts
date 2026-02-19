@@ -1,5 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { ArrowCallableWithCALL, Callable, ProtoCallable } from '~/function'
 
@@ -8,7 +10,6 @@ import { CALL } from '../CALL'
 import type { _ArrowCallable, IArrowCallable } from './_/ArrowCallableType'
 import type { ArrowCallableOptions } from './ArrowCallableOptions'
 import { EmptyArrowCallable } from './EmptyArrowCallable'
-import { UNSET } from '_/symbols/unset'
 
 //
 
@@ -37,7 +38,7 @@ export type __unused_ArrowCallable = ProtoCallable
  *
  * - ✅ Works with `clone`
  * - ❌ Does not allow `this` (hence "ArrowCallable")
- * - ❌ Does not work with `Proxy` (if needed, @see {@link ProtoCallable})
+ * - ❌ Does not work with `Proxy` (if needed, see {@link ProtoCallable})
  *
  * @example
  *
@@ -48,11 +49,12 @@ export type __unused_ArrowCallable = ProtoCallable
  * expect(a(2)).toBe(4)
  * ```
  *
- * @param options - @see `ArrowCallableOptions`
+ * @param options - See {@link ArrowCallableOptions}
  */
 export function CustomArrowCallable<Options extends ArrowCallableOptions>(
 	options: Options,
 ): ArrowCallable<Options> {
+	// eslint-disable-next-line @typescript-eslint/strict-void-return
 	const callableObject = EmptyArrowCallable(options.call)
 
 	if (options.shape) {
@@ -75,7 +77,7 @@ export function CustomArrowCallable<Options extends ArrowCallableOptions>(
  *
  * - ✅ Works with `clone`
  * - ❌ Does not allow `this` (hence "ArrowCallable")
- * - ❌ Does not work with `Proxy` (if needed, @see {@link ProtoCallable})
+ * - ❌ Does not work with `Proxy` (if needed, see {@link ProtoCallable})
  *
  * @example
  *

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -27,9 +27,9 @@ export interface StyledComponentWithProps<
 	C extends StyledSubject,
 	P extends Props,
 > extends CustomStyledComponent<
-		C,
-		{
-			Props: P
-			CustomCss: {}
-		}
-	> {}
+	C,
+	{
+		Props: P
+		CustomCss: {}
+	}
+> {}

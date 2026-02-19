@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -48,16 +48,18 @@ export const defaultNonNullishOptions: NonNullishOptions.Default =
 
 //
 
-export interface CustomNonNullish<O extends Partial<NonNullishOptions>>
-	extends CustomSchema<O> {
+export interface CustomNonNullish<
+	O extends Partial<NonNullishOptions>,
+> extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'NonNullish'
 
 	readonly [Voltiso.BASE_OPTIONS]: NonNullishOptions
 	readonly [Voltiso.DEFAULT_OPTIONS]: NonNullishOptions.Default
 }
 
-export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
-	extends CustomSchema$<O> {
+export interface CustomNonNullish$<
+	O extends Partial<NonNullishOptions>,
+> extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'NonNullish'
 
 	readonly [Voltiso.BASE_OPTIONS]: NonNullishOptions
@@ -71,7 +73,6 @@ export interface CustomNonNullish$<O extends Partial<NonNullishOptions>>
 export class CustomNonNullishImpl<
 	O extends Partial<NonNullishOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'NonNullish' as const
 
 	declare readonly [Voltiso.BASE_OPTIONS]: NonNullishOptions
@@ -112,11 +113,9 @@ export class NonNullishImpl extends lazyConstructor(
 	}
 }
 
-export interface NonNullish
-	extends CustomNonNullish<NonNullishOptions.Default> {}
+export interface NonNullish extends CustomNonNullish<NonNullishOptions.Default> {}
 
-export interface NonNullish$
-	extends CustomNonNullish$<NonNullishOptions.Default> {}
+export interface NonNullish$ extends CustomNonNullish$<NonNullishOptions.Default> {}
 
 //
 

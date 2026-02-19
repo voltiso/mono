@@ -1,16 +1,16 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// @ts-expect-error no typings
 import nextPlugin from '@next/eslint-plugin-next'
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
+import { getAllRules } from '@voltiso/config.eslint.lib'
 
 // console.log('!!!', nextPlugin.configs['core-web-vitals'])
 
 // const coreWebVitalsConfig = { ...nextPlugin.configs['core-web-vitals'] }
 // delete coreWebVitalsConfig.extends
 
-export const next = defineEslintFlatConfig(
+export const next = defineConfig(
 	// ...eslintFlatConfigFromConfig(nextPlugin.configs.recommended, {
 	// 	'@next/next': nextPlugin,
 	// }),

@@ -1,7 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { UNSET } from '_/symbols/unset'
+import type { UNSET } from '_/symbols/unset'
+
 import type { $Decrement, DecrementArgument, IsCompatible } from '~/type'
 
 /** @inline */

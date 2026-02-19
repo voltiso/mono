@@ -1,13 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import arrayFuncPlugin from 'eslint-plugin-array-func'
 
 import { codeFiles } from '../files'
 
-export const arrayFunc = defineEslintFlatConfig({
+export const arrayFunc = defineConfig({
 	// extends: ['plugin:array-func/all'],
 
 	files: codeFiles,

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable sonarjs/no-nested-conditional */
@@ -172,7 +172,8 @@ export function compatTransform(
 					const isTypeOnly = ts.isLiteralTypeNode(node.parent)
 						? false
 						: ts.isImportDeclaration(node.parent)
-							? node.parent.importClause?.isTypeOnly
+							? // eslint-disable-next-line @typescript-eslint/no-deprecated
+								node.parent.importClause?.isTypeOnly
 							: node.parent.isTypeOnly
 
 					if (!isTypeOnly || options.afterDeclarationsHack) {

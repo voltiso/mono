@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -29,7 +29,9 @@ describe('clone', () => {
 			c: new Date(),
 		}
 
+		// eslint-disable-next-line @typescript-eslint/strict-void-return
 		const myTime = bench(() => deepClone(o))
+		// eslint-disable-next-line @typescript-eslint/strict-void-return
 		const otherTime = bench(() => cloneLib(o))
 
 		const q = myTime / otherTime

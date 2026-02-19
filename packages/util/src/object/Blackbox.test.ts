@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -56,6 +56,7 @@ describe('Blackbox', () => {
 			},
 
 			meta: {
+				v: 1, // this is new (suprejson update?)
 				values: [['custom', 'null-proto']],
 			},
 		})

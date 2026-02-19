@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -9,6 +9,7 @@ class Base {
 	a: number
 
 	constructor() {
+		// eslint-disable-next-line unicorn/prefer-class-fields
 		this.a = 123
 		freeze(this, ['a'])
 	}

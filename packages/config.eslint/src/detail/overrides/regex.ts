@@ -1,7 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import regex from 'eslint-plugin-regex'
 
@@ -9,7 +10,7 @@ import regex from 'eslint-plugin-regex'
  * `eslint-plugin-regex` - custom eslint rules - can use instead of
  * notice/notice, etc.
  */
-export const regexConfig = defineEslintFlatConfig({
+export const regexConfig = defineConfig({
 	// files: '*',
 
 	plugins: {

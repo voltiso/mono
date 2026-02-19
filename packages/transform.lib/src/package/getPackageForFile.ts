@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { strict as assert } from 'node:assert'
@@ -26,6 +26,7 @@ export function _getPackageForFile(file: string): _PackagePath {
 	const { packageJson, packageJsonPath } = _getPackageForDir(dirPath)
 	const packageJsonDirPath = path.dirname(packageJsonPath)
 
+	// eslint-disable-next-line unicorn/consistent-assert
 	assert(file.startsWith(packageJsonDirPath))
 
 	return {

@@ -1,15 +1,15 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // ! this is slow
 // ! better use scripting that does direct lint:prettier step with --fix
 // ! also, we fine-tune all eslint options manually anyway
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import editorConfigPlugin from 'eslint-plugin-editorconfig'
 
-export const editorconfig = defineEslintFlatConfig({
+export const editorconfig = defineConfig({
 	// files: ['*'],
 
 	// extends: ['plugin:editorconfig/all'],

@@ -1,13 +1,14 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import etc from 'eslint-plugin-etc'
+import { defineConfig } from 'eslint/config'
 
 import { codeFilesNoMd } from '../files'
 
-export const etcConfig = defineEslintFlatConfig({
+export const etcConfig = defineConfig({
 	// extends: ['plugin:etc/recommended'],
 
 	// files: codeFiles,

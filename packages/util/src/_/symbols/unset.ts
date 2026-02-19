@@ -1,3 +1,6 @@
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
 declare global {
 	namespace Voltiso {
 		/**
@@ -17,6 +20,7 @@ declare global {
 		type UNSET = typeof UNSET
 	}
 }
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 globalThis.Voltiso ??= /* @__PURE__ */ {} as never
 ;(Voltiso.UNSET as any) ??= /* @__PURE__ */ Symbol.for('@voltiso/util/UNSET')
 /**

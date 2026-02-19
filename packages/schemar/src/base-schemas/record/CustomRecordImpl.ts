@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SCHEMA_NAME } from '_'
@@ -27,10 +27,8 @@ export class CustomRecordImpl<O extends Partial<RecordOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomRecord<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Record' as const
 
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly _object: CustomUnknownObjectImpl<any>
 
 	constructor(options: O) {

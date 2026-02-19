@@ -1,10 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { IsAny } from '~/any'
 
 import type { CallableOptions, GetCallableOptions } from './CallableOptions'
-import { UNSET } from '_/symbols/unset'
 
 export type Callable<O extends Partial<CallableOptions> = {}> =
 	GetCallableOptions<O>['this'] extends UNSET

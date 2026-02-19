@@ -1,7 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import jest from 'eslint-plugin-jest'
 // @ts-expect-error no typings
 import jestAsync from 'eslint-plugin-jest-async'
@@ -41,7 +42,7 @@ import { testFiles } from '~/detail/files'
 // 	...common,
 // }))
 
-export const testOverride = defineEslintFlatConfig(
+export const testOverride = defineConfig(
 	// ...baseConfigs,
 	{
 		files: testFiles,

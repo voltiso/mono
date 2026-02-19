@@ -1,19 +1,20 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import sonarjs from 'eslint-plugin-sonarjs'
 
 import { codeFiles } from '../files'
 
-export const sonar = defineEslintFlatConfig({
+export const sonar = defineConfig({
 	files: codeFiles,
 
 	// extends: ['plugin:sonarjs/recommended'],
 	plugins: { sonarjs: sonarjs as never }, // !
 
 	rules: {
-		...getAllRules(sonarjs, 'sonarjs', 'warn'),
+		...getAllRules(sonarjs as never, 'sonarjs', 'warn'),
 
 		'sonarjs/no-commented-code': 0, // god, why
 

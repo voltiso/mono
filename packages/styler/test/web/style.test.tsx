@@ -1,8 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { FC } from 'react'
@@ -10,6 +11,11 @@ import type { FC } from 'react'
 import { style } from '~'
 
 import { renderApp } from './common'
+
+// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
+afterEach(() => {
+	cleanup() // required after upgrading testing library
+})
 
 const Button = style('button')
 const RedButton = Button.css({
@@ -65,7 +71,7 @@ describe('style', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -84,7 +90,7 @@ describe('style', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'green',
+			color: 'rgb(0, 128, 0)',
 		})
 	})
 
@@ -105,7 +111,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			margin: '4px',
-			color: 'green',
+			color: 'rgb(0, 128, 0)',
 		})
 	})
 
@@ -178,7 +184,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			margin: '88px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 			borderWidth: 16,
 		})
 	})
@@ -192,7 +198,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			margin: '4px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 			borderWidth: 16,
 		})
 	})
@@ -206,7 +212,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			height: '100px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -219,7 +225,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			height: '50px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -232,7 +238,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			height: '100px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -245,7 +251,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			height: '100px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -258,7 +264,7 @@ describe('style', () => {
 
 		expect(button).toHaveStyle({
 			height: '100px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -473,6 +479,7 @@ describe('style', () => {
 		expect(outerCalls).toBe(1)
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('requires className prop (type-only assert)', () => {
 		expect.assertions(0)
 
@@ -494,11 +501,12 @@ describe('style', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'green',
-			backgroundColor: 'purple',
+			color: 'rgb(0, 128, 0)',
+			backgroundColor: 'rgb(128, 0, 128)',
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('relaxedCss typing', () => {
 		;() =>
 			// @ts-expect-error `colorA`

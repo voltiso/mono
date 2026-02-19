@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
@@ -52,7 +52,8 @@ export namespace SingleOverloadHandlerDetail {
 
 	export namespace Options {
 		export interface Default
-			extends Handler.Options.Default,
+			extends
+				Handler.Options.Default,
 				Omit<Options, keyof Handler.Options.Default> {
 			IsAsync: true
 
@@ -61,8 +62,8 @@ export namespace SingleOverloadHandlerDetail {
 			return: s.Void
 		}
 
-		export interface Hidden<O extends Options>
-			extends Handler.Options.Hidden<O> {
+		export interface Hidden<O extends Options> extends Handler.Options
+			.Hidden<O> {
 			// implementation?: GetImplementation<O> | undefined
 		}
 	}
@@ -189,7 +190,8 @@ declare global {
 	namespace Voltiso {
 		namespace Handler {
 			const SINGLE_OVERLOAD_HANDLER_GENERIC_ID: unique symbol
-			type SINGLE_OVERLOAD_HANDLER_GENERIC_ID = typeof SINGLE_OVERLOAD_HANDLER_GENERIC_ID
+			type SINGLE_OVERLOAD_HANDLER_GENERIC_ID =
+				typeof SINGLE_OVERLOAD_HANDLER_GENERIC_ID
 			// type SINGLE_OVERLOAD_HANDLER_GENERIC_ID = {
 			// 	readonly _: unique symbol
 			// }['_']

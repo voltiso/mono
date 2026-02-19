@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable es-x/no-class-instance-fields */
@@ -56,7 +56,9 @@ import { get, update } from './methods'
 
 export interface _CustomDocRef<
 	O extends CustomDocRef.Options = CustomDocRef.Options.Default,
-> extends $$DocRef,
+>
+	extends
+		$$DocRef,
 		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
 		CustomDocRef.IntrinsicFields<O>,
 		PromiseLike<GetDoc<O['doc']> | CustomDocRef.MaybeNull<O>> {}
@@ -65,8 +67,7 @@ export interface _CustomDocRef<
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class _CustomDocRef<
 	O extends CustomDocRef.Options = CustomDocRef.Options.Default,
-> implements $$DocRef
-{
+> implements $$DocRef {
 	// declare readonly [DTI]: GetDocTI.ByTag<O['doc']>;
 
 	readonly [Voltiso.Transactor.IS_DOC_REF] = true as const

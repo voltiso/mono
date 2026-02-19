@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -9,6 +9,7 @@ import { $Assert } from '@voltiso/util'
 import { $assert, $Assume, assert } from './assert'
 
 describe('assert', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		expect.hasAssertions()
 
@@ -18,7 +19,6 @@ describe('assert', () => {
 
 		expect(() => assert(undefined)).toThrow(/assert.*undefined/u)
 
-		// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 		const str = 'test' as string | Falsy
 		assert(str)
 		$Assert<IsIdentical<typeof str, string>>()

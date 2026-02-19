@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -6,6 +6,7 @@ import { describe, expect, it } from '@jest/globals'
 import { style } from '~'
 
 describe('curried', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('simple', () => {
 		expect.assertions(0)
 
@@ -13,6 +14,7 @@ describe('curried', () => {
 		;() => style.css({ color: 'red' })('button')
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('new props (mandatory)', () => {
 		expect.assertions(0)
 
@@ -25,6 +27,7 @@ describe('curried', () => {
 		;() => <Button />
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('new props (optional & present)', () => {
 		expect.assertions(0)
 
@@ -35,6 +38,7 @@ describe('curried', () => {
 			}))('button')
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('new props (optional & not present)', () => {
 		expect.assertions(0)
 

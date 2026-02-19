@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-conversion */
@@ -42,7 +42,6 @@ export class CustomArrayImpl<O extends Partial<ArrayOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomArray<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Array' as const
 
 	declare readonly [Voltiso.BASE_OPTIONS]: ArrayOptions

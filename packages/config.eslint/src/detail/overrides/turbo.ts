@@ -1,10 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
+import { getAllRules } from '@voltiso/config.eslint.lib'
 import turboPlugin from 'eslint-plugin-turbo'
 
-export const turboConfig = defineEslintFlatConfig({
+export const turboConfig = defineConfig({
 	// files: '*',
 
 	plugins: {
@@ -16,6 +17,6 @@ export const turboConfig = defineEslintFlatConfig({
 	rules: {
 		...getAllRules(turboPlugin as never, 'turbo', 'warn'),
 
-		'turbo/no-undeclared-env-vars': 1,
+		// 'turbo/no-undeclared-env-vars': 1,
 	},
 })

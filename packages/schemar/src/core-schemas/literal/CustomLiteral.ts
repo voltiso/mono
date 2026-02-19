@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$ } from '~'
@@ -7,8 +7,9 @@ import type { LiteralOptions } from './LiteralOptions'
 
 //
 
-export interface CustomLiteral<O extends Partial<LiteralOptions>>
-	extends CustomSchema<O> {
+export interface CustomLiteral<
+	O extends Partial<LiteralOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Literal'
 
@@ -20,8 +21,9 @@ export interface CustomLiteral<O extends Partial<LiteralOptions>>
 
 //
 
-export interface CustomLiteral$<O extends Partial<LiteralOptions>>
-	extends CustomSchema$<O> {
+export interface CustomLiteral$<
+	O extends Partial<LiteralOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Literal'
 

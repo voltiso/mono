@@ -1,9 +1,5 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
-// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable es-x/no-class-instance-fields */
-
-import * as uuid from 'uuid'
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
+// ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀'uuid'
 
 import { NoContextError } from '~/NoContextError'
 
@@ -16,7 +12,7 @@ import { checkEnv } from './checkEnv'
  * @internal use `Context` instead
  */
 export class ZoneContext<T> implements Context<T> {
-	_id = uuid.v4()
+	_id = globalThis.crypto.randomUUID()
 
 	constructor() {
 		checkEnv()

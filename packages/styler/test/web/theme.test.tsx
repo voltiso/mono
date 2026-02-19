@@ -1,12 +1,15 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, render, screen } from '@testing-library/react'
 import type { Property } from 'csstype'
 import type { ReactNode } from 'react'
 
-import { createTheme, NextStylerRegistry, style, ThemeContext } from '~'
+import { createTheme, style } from '~'
+import { ThemeContext } from '~/client'
+import { NextStylerRegistry } from '~/server'
 
 type Theme = {
 	primaryColor: Property.Color
@@ -50,6 +53,11 @@ const renderApp = (children: ReactNode) =>
 	)
 
 describe('theme', () => {
+	// eslint-disable-next-line jest/no-hooks
+	afterEach(() => {
+		cleanup() // required after upgrading testing library
+	})
+
 	it('simple', () => {
 		expect.hasAssertions()
 
@@ -65,6 +73,7 @@ describe('theme', () => {
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('string literal', () => {
 		expect.hasAssertions()
 		expect(`${t.a.b.c[11]}px solid red`).toBe(
@@ -148,7 +157,7 @@ describe('theme', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			backgroundColor: 'purple',
+			backgroundColor: 'rgb(128, 0, 128)',
 		})
 	})
 })

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$ } from '~'
@@ -6,8 +6,9 @@ import type { VoidOptions } from '~/base-schemas/void/options/VoidOptions'
 
 //
 
-export interface CustomVoid<O extends Partial<VoidOptions>>
-	extends CustomSchema<O> {
+export interface CustomVoid<
+	O extends Partial<VoidOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Void'
 
@@ -17,8 +18,9 @@ export interface CustomVoid<O extends Partial<VoidOptions>>
 
 //
 
-export interface CustomVoid$<O extends Partial<VoidOptions>>
-	extends CustomSchema$<O> {
+export interface CustomVoid$<
+	O extends Partial<VoidOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Void'
 

@@ -1,15 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable es-x/no-global-this */
+import type { UNSET } from '_/symbols/unset'
 
 import type { And, Not, Or, Xor } from '~/boolean'
 import type { IsNumber, IsSuperNumber } from '~/number'
 
 import type { IsSubtype, IsSupertype } from '../compare'
-import { UNSET } from '_/symbols/unset'
 
 export type Default<X, DefaultType> = X extends UNSET ? DefaultType : X
 

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -22,7 +22,7 @@ describe('cssProps', () => {
 
 		expect(button).toHaveStyle({
 			flex: 1,
-			backgroundColor: 'red',
+			backgroundColor: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -68,6 +68,7 @@ describe('cssProps', () => {
 		const GoodSvg = StrippedSvg.cssProps('margin')
 
 		renderApp(<GoodSvg data-testid='a' margin={8} />)
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const svg = screen.getByTestId('a')
 
 		expect(svg).toHaveStyle({

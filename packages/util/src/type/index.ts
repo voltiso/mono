@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from '../object/Override'
@@ -12,7 +12,7 @@ export type * from './If'
 export type * from './IntersectionFromUnion'
 export type * from './IsUnion'
 export type * from './number'
-export * from './optional-argument'
+export type * from './optional-argument'
 export type * from './parser'
 export type * from './Record'
 export type * from './Typeof'

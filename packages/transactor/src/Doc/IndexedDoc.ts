@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Schema } from '@voltiso/schemar'
@@ -49,8 +49,9 @@ export interface IndexedDocTI extends /* $$IndexedDocTI, */ DocTI {
 //
 
 /** Does not validate doc schema, or `id` schema. */
-export interface IndexedDoc<C extends ExecutionContext = ExecutionContext>
-	extends CustomDoc<IndexedDocTI, C> {}
+export interface IndexedDoc<
+	C extends ExecutionContext = ExecutionContext,
+> extends CustomDoc<IndexedDocTI, C> {}
 
 export const IndexedDoc = lazyConstructor(
 	() =>

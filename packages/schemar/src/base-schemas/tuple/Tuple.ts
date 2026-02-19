@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor } from '@voltiso/util'
@@ -10,37 +10,33 @@ import { ReadonlyTupleImpl } from './ReadonlyTupleImpl'
 
 //
 
-export interface MutableTuple<T extends $$Schemable[]>
-	extends CustomTuple<{
-		// shape: T
-		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
-		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }> // allow readonly input
-	}> {}
+export interface MutableTuple<T extends $$Schemable[]> extends CustomTuple<{
+	// shape: T
+	Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
+	Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }> // allow readonly input
+}> {}
 
-export interface MutableTuple$<T extends $$Schemable[]>
-	extends CustomTuple$<{
-		// shape: T
-		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
-		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }> // allow readonly input
-	}> {}
+export interface MutableTuple$<T extends $$Schemable[]> extends CustomTuple$<{
+	// shape: T
+	Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: false }>
+	Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }> // allow readonly input
+}> {}
 
 //
 
-export interface ReadonlyTuple<T extends $$Schemable[]>
-	extends CustomTuple<{
-		// shape: T
-		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
-		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
-		isReadonlyTuple: true
-	}> {}
+export interface ReadonlyTuple<T extends $$Schemable[]> extends CustomTuple<{
+	// shape: T
+	Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
+	Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
+	isReadonlyTuple: true
+}> {}
 
-export interface ReadonlyTuple$<T extends $$Schemable[]>
-	extends CustomTuple$<{
-		// shape: T
-		Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
-		Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
-		isReadonlyTuple: true
-	}> {}
+export interface ReadonlyTuple$<T extends $$Schemable[]> extends CustomTuple$<{
+	// shape: T
+	Output: _TupleTypeImpl<T, { kind: 'out'; readonlyTuple: true }>
+	Input: _TupleTypeImpl<T, { kind: 'in'; readonlyTuple: true }>
+	isReadonlyTuple: true
+}> {}
 
 //
 

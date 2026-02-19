@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import {
@@ -31,7 +31,6 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownTuple<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownTuple' as const
 
 	declare readonly [Voltiso.DEFAULT_OPTIONS]: UnknownTupleOptions.Default
@@ -64,7 +63,6 @@ export class CustomUnknownTupleImpl<O extends Partial<UnknownTupleOptions>>
 		: O['isReadonlyTuple'] extends false
 			? MutableTuple<T>
 			: never {
-		// eslint-disable-next-line es-x/no-array-prototype-at
 		const lastElement = shapeWithRest.at(-1)
 
 		const shape = isRest(lastElement)

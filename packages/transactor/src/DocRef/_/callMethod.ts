@@ -1,8 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { assert } from '@voltiso/assertor'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 
 import type { WithDb } from '~/Db'
 import type { CustomDoc, DocImpl, DocTI, IDocImpl } from '~/Doc'
@@ -101,12 +101,12 @@ export async function callMethod<
 		// eslint-disable-next-line no-console
 		console.log(
 			'\n',
-			chalk.inverse('CALL method'),
-			chalk.blueBright(name),
+			pc.inverse('CALL method'),
+			pc.blueBright(name),
 			'\n',
 			path,
 			'\n',
-			chalk.green(dump(doc.dataWithoutId())),
+			pc.green(dump(doc.dataWithoutId())),
 		)
 	}
 

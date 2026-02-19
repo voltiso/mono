@@ -1,9 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
-/* eslint-disable es-x/no-global-this */
 /* eslint-disable @typescript-eslint/class-methods-use-this */
 
 import { BoundCallable, CALL } from '@voltiso/util'
@@ -16,7 +14,8 @@ import { unknown } from '../unknown/Unknown'
 export type __hack_Rest = Unknown$
 
 export interface UnknownRest extends Rest<Unknown> {
-	readonly element: Unknown
+	// eslint-disable-next-line @stylistic/member-delimiter-style
+	readonly element: Unknown;
 	<S extends $$Schemable>(element: S): Rest<S>
 }
 
@@ -47,10 +46,8 @@ export interface Rest<S extends $$Schemable> {
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Rest<S extends $$Schemable = $$Schemable> {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly [Voltiso.Schemar.IS_REST] = true
 
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly element: S
 
 	constructor(element: S) {

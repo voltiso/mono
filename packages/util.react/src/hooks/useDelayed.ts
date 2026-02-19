@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { useInitial } from './useInitial'
@@ -9,8 +9,10 @@ export function useDelayed(x: unknown, delay = 0): unknown {
 	const s = useInitial({ curr: x, next: x })
 
 	if (x !== s.next) {
+		// eslint-disable-next-line react-hooks/immutability
 		s.next = x
 		setTimeout(() => {
+			// eslint-disable-next-line react-hooks/immutability
 			s.curr = x
 			update()
 		}, delay)

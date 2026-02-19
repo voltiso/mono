@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_ } from '@voltiso/util'
@@ -19,8 +19,9 @@ import type { UnknownObjectOptions } from './UnknownObjectOptions'
 
 //
 
-export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
-	extends CustomSchema<O> {
+export interface CustomUnknownObject<
+	O extends Partial<UnknownObjectOptions>,
+> extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownObjectOptions
@@ -32,8 +33,9 @@ export interface CustomUnknownObject<O extends Partial<UnknownObjectOptions>>
 
 //
 
-export interface CustomUnknownObject$<O extends Partial<UnknownObjectOptions>>
-	extends CustomSchema$<O> {
+export interface CustomUnknownObject$<
+	O extends Partial<UnknownObjectOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownObject'
 

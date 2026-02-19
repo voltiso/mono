@@ -1,10 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import unusedImportsPlugin from 'eslint-plugin-unused-imports'
 
-export const unusedImports = defineEslintFlatConfig({
+export const unusedImports = defineConfig({
 	// files: ['*'],
 
 	// plugins: ['unused-imports'],

@@ -1,25 +1,24 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import ymlPlugin from 'eslint-plugin-yml'
-import yamlEslintParser from 'yaml-eslint-parser'
+import * as yamlEslintParser from 'yaml-eslint-parser'
 
 const allRules = getAllRules(ymlPlugin as never, 'yml', 'warn')
-delete allRules['yml/sort-sequence-values']
 
-export const yamlConfig = defineEslintFlatConfig(
+// console.log({ allRules })
+
+export const yamlConfig = defineConfig(
 	//  ...eslintFlatConfigFromConfig(	ymlPlugin.configs.standard as never, {yml: ymlPlugin}, {'yaml-eslint-parser': yamlEslintParser}, ymlPlugin.configs),
 	{
 		files: ['*.yaml', '*.yml'],
 
-		// parser: 'yaml-eslint-parser',
-
 		languageOptions: {
-			parser: yamlEslintParser as never,
+			parser: yamlEslintParser,
 		},
 
-		// plugins: ['yml'],
 		plugins: {
 			yml: ymlPlugin as never,
 		},
@@ -29,7 +28,9 @@ export const yamlConfig = defineEslintFlatConfig(
 		rules: {
 			...allRules,
 
-			// 'yml/sort-sequence-values': 0,
+			'yml/sort-keys': 0, // sort logically instead
+
+			'yml/sort-sequence-values': 0,
 
 			'yml/file-extension': 0,
 

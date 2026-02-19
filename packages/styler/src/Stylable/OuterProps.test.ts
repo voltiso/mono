@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -13,6 +13,7 @@ import type {
 } from './OuterProps'
 
 describe('OuterProps', <CustomCss extends object>() => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

@@ -1,7 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 
 import { codeFiles } from '~/detail/files'
@@ -23,7 +24,7 @@ const additional2ArgumentHooksWithDeps = [
 // 	},
 // }
 
-export const reactHooksConfig = defineEslintFlatConfig({
+export const reactHooksConfig = defineConfig({
 	files: codeFiles,
 
 	plugins: {

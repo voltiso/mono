@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/class-methods-use-this */
@@ -34,7 +34,6 @@ export class CustomSchemaInferrerImpl<O extends SchemaOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements ISchemaInferrer
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'SchemaInferrer' as const
 
 	constructor(o: O) {

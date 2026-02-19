@@ -1,10 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
+export * from './client' // ! do not export client globally? - nextjs specific?
 export * from './Css'
+export * from './server' // ! do not export server globally? - nextjs specific?
 // ! need to explicitly export interfaces that are supposed to work with declaration merging
-export * from './client' // ! can't export client? - Next.js doesn't like it
 export type {
 	CssExtension,
 	CssExtensionReactNative,
@@ -22,7 +23,6 @@ export type {
 export * from './nextJs'
 export type * from './react-types'
 export * from './renderer'
-export * from './server'
 export type * from './Stylable'
 export * from './style'
 export * from './Styled'

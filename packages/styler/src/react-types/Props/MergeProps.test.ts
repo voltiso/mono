@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -9,6 +9,7 @@ import type { MergeProps_ } from './MergeProps'
 import type { Props } from './Props'
 
 describe('MergeProps', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('simple', () => {
 		expect.assertions(0)
 
@@ -28,6 +29,7 @@ describe('MergeProps', () => {
 		>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P0 extends Props, P1 extends Props>() => {
 		expect.assertions(0)
 
@@ -51,6 +53,7 @@ describe('MergeProps', () => {
 	// 	>()
 	// })
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('vscode jump to definition (manual test...)', () => {
 		expect.assertions(0)
 

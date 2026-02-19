@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -22,6 +22,7 @@ describe('object', () => {
 				 * Should never be called with `undefined`, because `undefined` does not
 				 * extend the Output type
 				 */
+				// eslint-disable-next-line jest/no-unnecessary-assertion
 				expect(value).toBeDefined()
 
 				if (value.field === 'oops') return 123 as never // crash

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -56,7 +56,7 @@ describe('hoc', () => {
 		const after = screen.getByRole('button')
 
 		expect(after).toHaveStyle({
-			color: 'purple',
+			color: 'rgb(128,0,128)', // 'purple',
 			borderRadius: '4px',
 		})
 	})

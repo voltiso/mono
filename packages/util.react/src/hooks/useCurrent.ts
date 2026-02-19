@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { useRef } from 'react'
@@ -20,5 +20,6 @@ import { useRef } from 'react'
 export function useCurrent<Current extends object>(
 	currentValues: Current,
 ): Current {
+	// eslint-disable-next-line react-hooks/refs
 	return Object.setPrototypeOf(useRef({}).current, currentValues) as Current
 }

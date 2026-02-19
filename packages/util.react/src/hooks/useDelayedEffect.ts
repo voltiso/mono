@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { useEffect } from 'react'
@@ -20,6 +20,7 @@ export function useDelayedEffect(
 		return () => {
 			clearTimeout(timeout)
 		}
+		// eslint-disable-next-line react-hooks/rule-suppression
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 }

@@ -1,15 +1,16 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { spawn } from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 
-import chalk from 'chalk'
+import pc from 'picocolors'
+import treeKill from 'tree-kill'
 
+import { context } from './_/context'
 import { isParallelScript, isRaceScript } from './parallel'
 import type { Script } from './Script'
-import { context } from './_/context'
 
 let gScripts: Record<string, string | string[]> | undefined
 
@@ -112,6 +113,7 @@ export async function runScript(
 	if (!script) return
 
 	if (Array.isArray(script)) {
+		// eslint-disable-next-line @typescript-eslint/await-thenable
 		const subScripts = await Promise.all(script)
 
 		for (const s of subScripts) {
@@ -139,7 +141,6 @@ export async function runScript(
 			// process.exit(1)
 			// process.kill(process.pid, 'SIGTERM')
 
-			// eslint-disable-next-line es-x/no-promise-all-settled
 			await Promise.allSettled(promises)
 
 			throw error
@@ -149,19 +150,29 @@ export async function runScript(
 	}
 
 	if (isRaceScript(script)) {
-		// TODO: use child signal with a separate controller?
-		const promises = script.race.map(s => runScript(s, args, { signal })) // ! pass args?
+		// need new AbortController to kill only this subtree of `race`
+		const raceController = new AbortController()
+		const listener = () => {
+			raceController.abort()
+		}
+		signal?.addEventListener('abort', listener)
+
+		const promises = script.race.map(s =>
+			runScript(s, args, { signal: raceController.signal }),
+		) // ! pass args?
+
 		try {
 			await Promise.race(promises)
 		} finally {
-			// eslint-disable-next-line no-console
-			console.log(icon, 'race(...) script finished - aborting other scripts...')
+			// // eslint-disable-next-line no-console
+			// console.log(icon, 'race(...) script finished - aborting other scripts...')
 
-			signal?.dispatchEvent(new Event('abort'))
+			raceController.abort()
 
 			// process.kill(process.pid, 'SIGTERM')
-			// eslint-disable-next-line es-x/no-promise-all-settled
 			await Promise.allSettled(promises)
+
+			signal?.removeEventListener('abort', listener)
 		}
 
 		return
@@ -183,7 +194,7 @@ export async function runScript(
 	// console.log('script', script, script.length)
 
 	// eslint-disable-next-line no-console
-	console.log(icon, chalk.blueBright(script), chalk.gray(args.join(' ')))
+	console.log(icon, pc.blueBright(script), pc.gray(args.join(' ')))
 
 	const packageScripts = await getPackageScripts()
 	const scripts = getScripts()
@@ -202,36 +213,45 @@ export async function runScript(
 		return
 	}
 
-	const stringScript = script
-
 	// eslint-disable-next-line promise/avoid-new
 	const cpPromise = new Promise<void>((resolve, reject) => {
-		// console.log('spawn', script, ...args)
+		const command = [script, ...args].join(' ')
+
 		// eslint-disable-next-line sonarjs/os-command
-		const childProcess = spawn([script, ...args].join(' '), {
+		const childProcess = spawn(command, {
 			shell: true,
 			stdio: 'inherit',
+			detached: true, // 1. Create a new process group (easier to kill them all?)
+			// signal, // node does not kill correctly - test fails
 		})
 
-		const listener = (_event: Event) => {
-			childProcess.kill('SIGTERM')
+		// 3. Fallback: If Node's internal signal handling isn't enough for the shell
+		const killHandler = () => {
+			// console.log('!!!!!!!!!! TREE KILLING', childProcess.pid)
+			if (childProcess.pid) {
+				// Use tree-kill to wipe out the shell AND the emulator AND the java children
+				treeKill(childProcess.pid, 'SIGKILL')
+			}
 		}
 
-		signal?.addEventListener('abort', listener, { once: true })
+		signal?.addEventListener('abort', killHandler, { once: true })
 
-		childProcess.on('error', reject)
+		childProcess.on('error', err => {
+			// console.log('onError', command)
+			signal?.removeEventListener('abort', killHandler)
+			reject(err)
+			// killHandler()
+		})
 
 		childProcess.on('close', code => {
-			signal?.removeEventListener('abort', listener)
-			if (code)
-				reject(
-					new Error(
-						`${icon} ${stringScript} ${args.join(
-							' ',
-						)} Non-zero exit code: ${code}`,
-					),
-				)
-			else resolve()
+			// console.log('onClose', command)
+			signal?.removeEventListener('abort', killHandler)
+			if (code && !signal?.aborted) {
+				reject(new Error(`${icon} ${command} Non-zero exit code: ${code}`))
+			} else {
+				resolve()
+			}
+			// killHandler()
 		})
 	})
 

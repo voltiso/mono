@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -10,6 +10,7 @@ import type { ChildElement } from './ChildElement'
 import type { IChildElement } from './IChildElement'
 
 describe('ChildElement', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props>() => {
 		expect.assertions(0)
 

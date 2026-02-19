@@ -1,9 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
-import type { AnyDoc, DocRef, WeakDocRef } from '@voltiso/transactor'
+import type { ANY_DOC, DocRef, WeakDocRef } from '@voltiso/transactor'
 import { Doc, method, sStrongRef, Transactor } from '@voltiso/transactor'
 import { $Assert } from '@voltiso/util'
 
@@ -122,8 +122,9 @@ declare module '@voltiso/transactor' {
 }
 
 describe('lotsOfTags', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		const r = db('a', 'b', 'c', 'd')
-		$Assert.is<typeof r, WeakDocRef<typeof AnyDoc>>()
+		$Assert.is<typeof r, WeakDocRef<typeof ANY_DOC>>()
 	})
 })

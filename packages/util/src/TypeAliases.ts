@@ -1,12 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-/* eslint-disable es-x/no-global-this */
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
+import type { UNSET } from '_/symbols/unset'
+
 import type { Throw } from './_/error'
-import { UNSET } from '_/symbols/unset'
 import type { IsCompatible } from './type'
 import type {
 	TypeAliases0,

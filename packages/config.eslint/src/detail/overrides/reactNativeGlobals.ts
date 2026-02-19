@@ -1,13 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import reactNativeGlobalsPlugin from 'eslint-plugin-react-native-globals'
 
 import { codeFiles } from '~/detail/files'
 
-export const reactNativeGlobals = defineEslintFlatConfig({
+export const reactNativeGlobals = defineConfig({
 	files: codeFiles,
 
 	// plugins: ['react-native-globals'],

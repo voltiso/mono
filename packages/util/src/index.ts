@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export * from './_'
@@ -35,7 +35,7 @@ export * from './string'
 export * from './syncer'
 export type * from './tsc-options'
 export * from './type'
-export * from './TypeAliases'
+export type * from './TypeAliases'
 export type {
 	TypeAliases0,
 	TypeAliases1,

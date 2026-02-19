@@ -1,8 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
-import type { AnyDoc, DocRef } from '@voltiso/transactor'
+import type { ANY_DOC, DocRef } from '@voltiso/transactor'
 import { Doc, sRef } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -22,13 +22,15 @@ declare module '@voltiso/transactor' {
 }
 
 describe('ref schema', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		const a = sRef
 
 		type A = typeof a.Output
-		$Assert<IsIdentical<A, DocRef<AnyDoc>>>()
+		$Assert<IsIdentical<A, DocRef<ANY_DOC>>>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type 2', () => {
 		expect.assertions(0)
 
@@ -39,9 +41,9 @@ describe('ref schema', () => {
 			IsIdentical<
 				Omit<A, '__voltiso'>,
 				{
-					myIndexedStrongRef: DocRef<AnyDoc>
+					myIndexedStrongRef: DocRef<ANY_DOC>
 					myCustomStrongRef: DocRef<'refTestDoc'>
-					myOptionalIndexedStrongRef?: DocRef<AnyDoc>
+					myOptionalIndexedStrongRef?: DocRef<ANY_DOC>
 				}
 			>
 		>()

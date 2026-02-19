@@ -1,8 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
@@ -11,6 +12,11 @@ import type { ComponentProps } from 'react'
 import { style } from '~'
 
 import { renderApp } from './common'
+
+// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
+afterEach(() => {
+	cleanup() // required after upgrading testing library
+})
 
 describe('newCssProps', () => {
 	it('single boolean prop', () => {
@@ -23,7 +29,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -37,7 +43,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -54,7 +60,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -89,7 +95,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'green',
+			color: 'rgb(0, 128, 0)',
 		})
 	})
 
@@ -104,7 +110,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'green',
+			color: 'rgb(0, 128, 0)',
 		})
 	})
 
@@ -135,7 +141,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 			marginLeft: '123px',
 			marginRight: '123px',
 			display: 'flex',
@@ -186,7 +192,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -203,7 +209,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'blue',
+			color: 'rgb(0, 0, 255)',
 		})
 	})
 
@@ -223,7 +229,7 @@ describe('newCssProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'blue',
+			color: 'rgb(0, 0, 255)',
 		})
 	})
 

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable sonarjs/cyclomatic-complexity */
@@ -40,7 +40,6 @@ export function areAllStripAnnotated(
 		),
 	]
 
-	// eslint-disable-next-line es-x/no-array-prototype-every
 	const result = childNodes.every(childNode => {
 		if (!childNode) return true
 		const symbol = ctx.typeChecker.getSymbolAtLocation(childNode)

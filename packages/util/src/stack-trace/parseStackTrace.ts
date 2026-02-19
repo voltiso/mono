@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { UndefinedFromOptional } from '~/object'
@@ -6,15 +6,14 @@ import { define } from '~/type'
 
 import { tryParseCodeLocation } from './parseCodeLocation'
 
-export interface StackTraceEntry
-	extends UndefinedFromOptional<{
-		functionName: string
+export interface StackTraceEntry extends UndefinedFromOptional<{
+	functionName: string
 
-		path?: string
-		fileName?: string
-		line?: number
-		column?: number
-	}> {}
+	path?: string
+	fileName?: string
+	line?: number
+	column?: number
+}> {}
 
 export function parseStackTrace(stackStr: string): StackTraceEntry[] {
 	const entries = stackStr

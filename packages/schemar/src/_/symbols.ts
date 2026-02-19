@@ -1,10 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as v from '@voltiso/util'
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-/* eslint-disable es-x/no-global-this */
 
 declare global {
 	namespace Voltiso {

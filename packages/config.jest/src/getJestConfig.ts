@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // // eslint-disable-next-line import/no-unassigned-import, sonarjs/no-implicit-dependencies
@@ -54,7 +54,9 @@ const librariesToTransform = [
 // console.log({dirname})
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
+export function getJestConfig(options?: {
+	format?: 'cjs' | 'esm' | undefined
+}) {
 	const transform: Record<string, string> = {}
 
 	const transformFileName = options?.format ?? 'default'
@@ -68,6 +70,7 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 	)
 
 	for (const extension of codeFilesExtensions) {
+		// eslint-disable-next-line unicorn/prefer-string-raw
 		transform[`\\.${extension}$`] = transformValue
 		// require.resolve('../transform.js')
 		// '@voltiso/config.jest/transform'
@@ -85,6 +88,7 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 		modulePathIgnorePatterns: ['dist/', '.tsc-out/', '.next/'],
 
 		transformIgnorePatterns: [
+			// eslint-disable-next-line unicorn/prefer-string-raw
 			`node_modules/\\.pnpm/(?!${librariesToTransform.join('|')}).*`,
 		],
 
@@ -93,16 +97,14 @@ export function getJestConfig(options?: { format?: 'cjs' | 'esm' }) {
 		injectGlobals: false, // import from `@jest/globals`
 
 		setupFilesAfterEnv: [
-			path.join(
-				dirname,
-
-				// ! Jest in ESM mode by default wants this in CJS format?!
-				// ! probably not needed if user has `--experimental-vm-modules` flag
-				// '..',
-				// 'cjs',
-
-				'setup-after-env.js',
-			),
+			// path.join(
+			// 	dirname,
+			// 	// ! Jest in ESM mode by default wants this in CJS format?!
+			// 	// ! probably not needed if user has `--experimental-vm-modules` flag
+			// 	// '..',
+			// 	// 'cjs',
+			// 	'setup-after-env.js',
+			// ),
 			// require.resolve('../setup-after-env.js'),
 			// '@voltiso/config.jest/setup-after-env',
 		],

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { AlsoAccept } from '@voltiso/util'
@@ -13,8 +13,9 @@ import type { CssWeb } from './web'
  *
  * - Use TS declaration merging
  */
-export interface CssExtensionWeb<CustomCss extends object>
-	extends CssExtension<CustomCss> {
+export interface CssExtensionWeb<
+	CustomCss extends object,
+> extends CssExtension<CustomCss> {
 	':nth-child(odd)'?: CssWeb<CustomCss> | undefined
 	':nth-child(even)'?: CssWeb<CustomCss> | undefined
 

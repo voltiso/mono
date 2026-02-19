@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Merge } from '@voltiso/util'
@@ -45,8 +45,9 @@ export function getAggregatesView<R extends $$DocRelatedLike>(
 
 //
 
-export interface AggregatorHandlerThis<R extends $$DocRelatedLike>
-	extends PathMatches {
+export interface AggregatorHandlerThis<
+	R extends $$DocRelatedLike,
+> extends PathMatches {
 	id: GetId<R>
 	path: string
 	data: GetData<R>

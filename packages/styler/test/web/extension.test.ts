@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -13,6 +13,7 @@ declare module '~' {
 }
 
 describe('extension', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works', () => {
 		expect.assertions(0)
 

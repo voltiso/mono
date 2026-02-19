@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_, OPTIONS } from '@voltiso/util'
@@ -8,8 +8,7 @@ import type { $$Tuple, CustomSchema, CustomSchema$, TupleOptions } from '~'
 //
 
 export interface CustomTuple<O extends Partial<TupleOptions>>
-	extends $$Tuple,
-		CustomSchema<O> {
+	extends $$Tuple, CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 
@@ -30,8 +29,7 @@ export interface CustomTuple<O extends Partial<TupleOptions>>
 //
 
 export interface CustomTuple$<O extends Partial<TupleOptions>>
-	extends $$Tuple,
-		CustomSchema$<O> {
+	extends $$Tuple, CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Tuple'
 

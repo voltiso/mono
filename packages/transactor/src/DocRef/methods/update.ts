@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { DeleteIt } from '@voltiso/util'
@@ -159,10 +159,10 @@ async function rawUpdate(
 	const needTransaction = Boolean(
 		// eslint-disable-next-line sonarjs/expression-complexity
 		options.create ||
-			schema ||
-			afterTriggers.length > 0 ||
-			beforeCommits.length > 0 ||
-			ctx.transactor.refCounters,
+		schema ||
+		afterTriggers.length > 0 ||
+		beforeCommits.length > 0 ||
+		ctx.transactor.refCounters,
 	)
 
 	if (needTransaction) {
@@ -259,10 +259,10 @@ async function transactionUpdateImpl(
 	const needReadWrite = Boolean(
 		// eslint-disable-next-line sonarjs/expression-complexity
 		options.create ||
-			beforeCommits.length > 0 ||
-			afterTriggers.length > 0 ||
-			schema ||
-			ctx.transactor.refCounters,
+		beforeCommits.length > 0 ||
+		afterTriggers.length > 0 ||
+		schema ||
+		ctx.transactor.refCounters,
 	)
 
 	if (needReadWrite) {

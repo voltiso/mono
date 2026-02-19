@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -9,6 +9,7 @@ import { DataHook } from './DataHook'
 import { dataHook } from './DataHookConstructor'
 
 describe('DataHook', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works - data', () => {
 		expect.hasAssertions()
 

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$ } from '~'
@@ -7,8 +7,9 @@ import type { NeverOptions } from './NeverOptions'
 
 //
 
-export interface CustomNever<O extends Partial<NeverOptions>>
-	extends CustomSchema<O> {
+export interface CustomNever<
+	O extends Partial<NeverOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Never'
 
@@ -18,8 +19,9 @@ export interface CustomNever<O extends Partial<NeverOptions>>
 
 //
 
-export interface CustomNever$<O extends Partial<NeverOptions>>
-	extends CustomSchema$<O> {
+export interface CustomNever$<
+	O extends Partial<NeverOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Never'
 

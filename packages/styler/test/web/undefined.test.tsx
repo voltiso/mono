@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -6,6 +6,7 @@ import { describe, expect, it } from '@jest/globals'
 import { style } from '~'
 
 describe('undefined', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works (static)', () => {
 		expect.assertions(0)
 

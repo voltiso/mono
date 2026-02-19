@@ -1,7 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import testingLibraryPlugin from 'eslint-plugin-testing-library'
 
 import { testFiles } from '~/detail/files'
@@ -14,7 +15,7 @@ const allRules = getAllRules(
 
 delete allRules['testing-library/consistent-data-testid']
 
-export const testingLibrary = defineEslintFlatConfig(
+export const testingLibrary = defineConfig(
 	// ...eslintFlatConfigFromConfig(testingLibraryPlugin.configs.react, {
 	// 	'testing-library': testingLibraryPlugin,
 	// }),

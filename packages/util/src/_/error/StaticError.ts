@@ -1,7 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { TYPE } from '_/symbols/type'
+import type { TYPE } from '_/symbols/type'
 
 export interface StaticError {
 	[TYPE]: 'StaticError'

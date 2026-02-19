@@ -1,9 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { equals } from '@voltiso/util'
+import { equals, UNSET } from '@voltiso/util'
 import type { Destructor } from '@voltiso/util.react'
-import { callHookDestructors, UNSET, useUpdate } from '@voltiso/util.react'
+import { callHookDestructors, useUpdate } from '@voltiso/util.react'
 import type { DependencyList } from 'react'
 import { useMemo } from 'react'
 

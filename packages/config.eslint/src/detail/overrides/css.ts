@@ -1,36 +1,34 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { Linter } from 'eslint'
 import cssPlugin from 'eslint-plugin-css'
 
 import { codeFiles } from '../files'
+import { defineConfig } from 'eslint/config'
 
-export const cssOverride: Linter.Config[] = [
-	{
-		files: [...codeFiles, '**/*.css'],
+export const cssOverride = defineConfig({
+	files: [...codeFiles, '**/*.css'],
 
-		plugins: {
-			css: cssPlugin as never,
-		},
+	plugins: {
+		css: cssPlugin as never,
+	},
 
-		// extends: [
-		// 	// 'plugin:css/recommended',
-		// 	'plugin:css/all',
-		// ],
+	// extends: [
+	// 	// 'plugin:css/recommended',
+	// 	'plugin:css/all',
+	// ],
 
-		rules: {
-			...(cssPlugin.configs.all.rules as {}),
-		},
+	rules: {
+		...(cssPlugin.configs.all.rules as {}),
+	},
 
-		settings: {
-			css: {
-				target: {
-					attributes: [
-						'css', // The plugin will also parse `css` attribute.
-					],
-				},
+	settings: {
+		css: {
+			target: {
+				attributes: [
+					'css', // The plugin will also parse `css` attribute.
+				],
 			},
 		},
 	},
-]
+})

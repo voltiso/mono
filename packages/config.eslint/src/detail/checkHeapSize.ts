@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
@@ -6,7 +6,7 @@
 import os from 'node:os'
 import v8 from 'node:v8'
 
-import chalk from 'chalk'
+import pc from 'picocolors'
 
 export function checkHeapSize(): void {
 	const stats = v8.getHeapStatistics()
@@ -29,7 +29,7 @@ export function checkHeapSize(): void {
 		} to increase the heap size limit`
 
 		// eslint-disable-next-line no-console
-		console.error(chalk.bgRed(message))
+		console.error(pc.bgRed(message))
 
 		// throw new Error(message) // ! don't want to auto-crash though
 	}

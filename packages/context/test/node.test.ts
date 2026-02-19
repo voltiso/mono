@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable promise/prefer-await-to-then */
@@ -92,6 +92,7 @@ describe('node', () => {
 	 * Fails when using non-standard global `Promise` mock - e.g. `react-native`
 	 * jest config
 	 */
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('parallel', async () => {
 		const context = new NodeContext<number>()
 

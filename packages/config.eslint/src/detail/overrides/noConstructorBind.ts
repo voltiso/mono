@@ -1,11 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import noConstructorBindPlugin from 'eslint-plugin-no-constructor-bind'
 
-export const noConstructorBind = defineEslintFlatConfig({
+export const noConstructorBind = defineConfig({
 	// files: ['*'],
 
 	// plugins: ['no-constructor-bind'],

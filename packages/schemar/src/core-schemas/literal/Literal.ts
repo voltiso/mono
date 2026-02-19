@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor } from '@voltiso/util'
@@ -8,17 +8,15 @@ import type { InferableLiteral } from '~/types/Inferable/Inferable'
 import { LiteralImpl } from './_/LiteralImpl'
 import type { CustomLiteral, CustomLiteral$ } from './CustomLiteral'
 
-export interface Literal<T extends InferableLiteral>
-	extends CustomLiteral<{
-		Output: T
-		Input: T
-	}> {}
+export interface Literal<T extends InferableLiteral> extends CustomLiteral<{
+	Output: T
+	Input: T
+}> {}
 
-export interface Literal$<T extends InferableLiteral>
-	extends CustomLiteral$<{
-		Output: T
-		Input: T
-	}> {}
+export interface Literal$<T extends InferableLiteral> extends CustomLiteral$<{
+	Output: T
+	Input: T
+}> {}
 
 //
 

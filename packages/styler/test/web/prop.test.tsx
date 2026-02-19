@@ -1,8 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 import { $Assert } from '@voltiso/util'
 import type { ChangeEventHandler } from 'react'
 
@@ -12,6 +13,12 @@ import { style } from '~'
 import { renderApp } from './common'
 
 describe('prop', () => {
+	// eslint-disable-next-line jest/no-hooks
+	afterEach(() => {
+		cleanup() // required after upgrading testing library
+	})
+
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 
@@ -48,13 +55,13 @@ describe('prop', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 
 		// override red color
 		renderApp(<Button2 p='blue'>a</Button2>)
 
-		expect(screen.getByText('a')).toHaveStyle({ color: 'blue' })
+		expect(screen.getByText('a')).toHaveStyle({ color: 'rgb(0, 0, 255)' })
 	})
 
 	it('boolean prop', () => {

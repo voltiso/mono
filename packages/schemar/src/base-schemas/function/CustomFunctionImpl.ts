@@ -1,9 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
 import type { Assume } from '@voltiso/util'
-import { $fastAssert, lazyConstructor, UNSET, OPTIONS } from '@voltiso/util'
+import { $fastAssert, lazyConstructor, OPTIONS, UNSET } from '@voltiso/util'
 
 import { schema } from '~/core-schemas/schemaInferrer/SchemaInferrer'
 import { SchemarError } from '~/error'
@@ -63,7 +63,6 @@ export class CustomFunctionImpl<O extends Partial<FunctionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomFunction<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Function' as const
 
 	get hasThis(): [this[Voltiso.OPTIONS]['this']] extends [UNSET]

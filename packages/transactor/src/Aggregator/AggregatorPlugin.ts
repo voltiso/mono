@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable es-x/no-class-instance-fields */
@@ -14,9 +14,9 @@ import { getAggregatorTrigger } from './_/getAggregatorTrigger'
 
 export const aggregatePluginName = 'aggregate' as const
 
-export class AggregatePlugin<R extends $$DocRelated>
-	implements DocBuilderPlugin<R>
-{
+export class AggregatePlugin<
+	R extends $$DocRelated,
+> implements DocBuilderPlugin<R> {
 	declare readonly DocTag: DocBuilderPlugin<R>['DocTag']
 
 	readonly name = aggregatePluginName

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { IsCompatible, IsOptional, Override, Value } from '@voltiso/util'
@@ -42,8 +42,7 @@ export type CustomSubjectTree_<TO extends SubjectTreeTypeOptions> =
 		_SubjectTreeRec<TO>
 
 export interface ISubjectTree
-	extends ISubjectTreeBase,
-		SubjectNoDeprecated<unknown> {}
+	extends ISubjectTreeBase, SubjectNoDeprecated<unknown> {}
 
 $dev(<TO extends Partial<SubjectTreeTypeOptions>>() => {
 	$Assert.is<CustomSubjectTree<TO>, ISubjectTree>()

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -32,6 +32,7 @@ import type {
 } from '~'
 
 describe('StyledHoc', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props, CP extends Props>() => {
 		expect.assertions(0)
 
@@ -42,6 +43,7 @@ describe('StyledHoc', () => {
 		// Assert.is<Styled<P>, Styled<Props>>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 
@@ -64,6 +66,7 @@ describe('StyledHoc', () => {
 		$Assert.is<StyledBadProps, IStyledHoc>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('style the stylable', () => {
 		expect.assertions(0)
 
@@ -108,6 +111,7 @@ describe('StyledHoc', () => {
 		$Assert.is<A, IStyledComponent>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('style the stylable - generic', <S extends Stylable<{
 		a?: number
 		b?: string
@@ -142,6 +146,7 @@ describe('StyledHoc', () => {
 		$Assert.is<'b', keyof F>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('style the stylable - `size` prop', <S extends Stylable<{
 		size?: number
 		b?: string
@@ -165,6 +170,7 @@ describe('StyledHoc', () => {
 		$Assert.is<'b', keyof D>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('call signature', () => {
 		expect.assertions(0)
 

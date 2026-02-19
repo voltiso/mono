@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -35,7 +35,6 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 	extends v.lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomObject<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Object' as const
 
 	declare readonly [Voltiso.BASE_OPTIONS]: ObjectOptions
@@ -381,9 +380,8 @@ export class CustomObjectImpl<O extends Partial<ObjectOptions>>
 
 					// eslint-disable-next-line sonarjs/nested-control-flow
 					if (keyValidationResult.isValid && valueValidationResult.isValid) {
-						// eslint-disable-next-line sonarjs/updated-loop-counter
 						xKey = keyValidationResult.value as never
-						// eslint-disable-next-line sonarjs/updated-loop-counter
+
 						xValue = valueValidationResult.value
 					}
 				}

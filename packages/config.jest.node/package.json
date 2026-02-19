@@ -53,11 +53,11 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/config.jest": "workspace:^",
-    "jest-environment-node": "^29.7.0"
+    "jest-environment-node": "^30.2.0"
   },
   "devDependencies": {
-    "@~/workspace": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
-    "jest": "^29.7.0"
+    "@~/workspace": "workspace:^",
+    "jest": "^30.2.0"
   }
 }

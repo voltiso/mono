@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -30,7 +30,6 @@ export class CustomIntersectionImpl<O extends Partial<IntersectionOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomIntersection<O>, IIntersection
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Intersection' as const
 
 	get getSchemas(): this[Voltiso.OPTIONS]['schemas'] {

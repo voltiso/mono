@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override } from '@voltiso/util'
@@ -9,8 +9,9 @@ import type { BigintOptions } from './BigintOptions'
 
 //
 
-export interface CustomBigint<O extends Partial<BigintOptions>>
-	extends CustomSchema<O> {
+export interface CustomBigint<
+	O extends Partial<BigintOptions>,
+> extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Bigint'
 
 	readonly [Voltiso.BASE_OPTIONS]: BigintOptions
@@ -19,8 +20,9 @@ export interface CustomBigint<O extends Partial<BigintOptions>>
 
 //
 
-export interface CustomBigint$<O extends Partial<BigintOptions>>
-	extends CustomSchema$<O> {
+export interface CustomBigint$<
+	O extends Partial<BigintOptions>,
+> extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Bigint'
 
 	readonly [Voltiso.BASE_OPTIONS]: BigintOptions

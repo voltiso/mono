@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { strict as assert } from 'node:assert'
@@ -13,6 +13,7 @@ export function getGitRelativePath(file: string): string | undefined {
 	const gitPath = getGitForDir(path.dirname(file))
 	if (!gitPath) return undefined
 
+	// eslint-disable-next-line unicorn/consistent-assert
 	assert(file.startsWith(gitPath))
 	return file.slice(gitPath.length + 1)
 }

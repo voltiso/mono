@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // ! shared scripts - run using `v` binary from `@voltiso/script`
@@ -6,7 +6,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 
 import * as fs from 'node:fs'
-// eslint-disable-next-line n/no-unsupported-features/node-builtins
 import { glob } from 'node:fs/promises'
 import * as path from 'node:path'
 
@@ -193,7 +192,6 @@ export const prepublishOnly = [
 export async function runTestPackages(): Promise<void> {
 	const name = packageJson.name?.split('/')[1]
 
-	// eslint-disable-next-line es-x/no-async-iteration
 	for await (const pkg of glob(`../${name}.*test*`)) {
 		await run(
 			`pnpm -w exec turbo run --filter=./packages/${pkg.slice(3)} test lint:tsc lint:eslint --output-logs=new-only`,

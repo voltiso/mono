@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -34,7 +34,6 @@ export class CustomStringImpl<O extends Partial<StringOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomString<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'String' as const
 
 	declare readonly [Voltiso.BASE_OPTIONS]: StringOptions

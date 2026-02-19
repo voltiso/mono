@@ -1,9 +1,14 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
 import * as s from '@voltiso/schemar'
-import type { AnyDoc, DocIdString, IDoc, WeakDocRef } from '@voltiso/transactor'
+import type {
+	ANY_DOC,
+	DocIdString,
+	IDoc,
+	WeakDocRef,
+} from '@voltiso/transactor'
 import { Transactor } from '@voltiso/transactor'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
@@ -21,6 +26,7 @@ db('fairyAhj/*').public({
 })
 
 describe('raw-public', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('should validate schema', async () => {
 		expect.hasAssertions()
 
@@ -28,8 +34,10 @@ describe('raw-public', () => {
 
 		await expect(
 			db('fairyAhj', 'anthony').set({ favoriteOrganMarket: 'WHM' }),
+			// eslint-disable-next-line jest/valid-expect-with-promise
 		).rejects.toThrow('favoriteOrganMarket')
 
+		// eslint-disable-next-line jest/valid-expect-with-promise
 		await expect(db('fairyAhj/anthony')).resolves.toBeNull()
 
 		const x = db(
@@ -50,6 +58,6 @@ describe('raw-public', () => {
 			'o' as const,
 			'p',
 		)
-		$Assert<IsIdentical<typeof x, WeakDocRef<AnyDoc>>>()
+		$Assert<IsIdentical<typeof x, WeakDocRef<typeof ANY_DOC>>>()
 	})
 })

@@ -1,10 +1,10 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { ValidationError } from '@voltiso/schemar'
 import type { CallInfo } from '@voltiso/transform'
 import { padStart, parseStackTrace, stringFrom, zip } from '@voltiso/util'
-import chalk from 'chalk'
+import pc from 'picocolors'
 
 export function stringFromPackage(packageJson: {
 	name: string
@@ -73,8 +73,9 @@ export class AssertorError extends Error {
 		let messageParts = []
 
 		const dateStr = getTimeStr(new Date())
-		messageParts.push(chalk.gray(`[${dateStr}]`))
+		messageParts.push(pc.gray(`[${dateStr}]`))
 
+		// eslint-disable-next-line unicorn/prefer-single-call
 		messageParts.push('⛔')
 
 		if (callInfo?.expression && callInfo.expression !== name)
@@ -93,24 +94,21 @@ export class AssertorError extends Error {
 
 			const argumentsStr = [...zip(callInfo.arguments, args)]
 				.map(
-					([str, value]) =>
-						`${chalk.green(str)} 🟰  ${chalk.red(stringFrom(value))}`,
+					([str, value]) => `${pc.green(str)} 🟰  ${pc.red(stringFrom(value))}`,
 				)
 				.join(', ')
 
 			if (callInfo.typeArguments.length > 0) {
-				str = `${chalk.yellow(
+				str = `${pc.yellow(
 					callInfo.expression,
 				)}<${callInfo.typeArguments.join(', ')}>(${argumentsStr})`
 			} else {
-				str = `${chalk.yellow(callInfo.expression)}(${argumentsStr})`
+				str = `${pc.yellow(callInfo.expression)}(${argumentsStr})`
 			}
 
-			messageParts.push(chalk.blue(str))
+			messageParts.push(pc.blue(str))
 		} else {
-			const argumentsStr = args
-				.map(arg => chalk.red(stringFrom(arg)))
-				.join(', ')
+			const argumentsStr = args.map(arg => pc.red(stringFrom(arg))).join(', ')
 
 			messageParts.push(`${name}(${argumentsStr})`)
 
@@ -123,8 +121,8 @@ export class AssertorError extends Error {
 
 		if (callInfo?.location.package && callInfo.location.packagePath) {
 			locationParts.push(
-				chalk.gray(stringFromPackage(callInfo.location.package)),
-				chalk.gray(
+				pc.gray(stringFromPackage(callInfo.location.package)),
+				pc.gray(
 					`${callInfo.location.packagePath}:${callInfo.location.line}:${callInfo.location.column}`,
 				),
 			)
@@ -132,7 +130,7 @@ export class AssertorError extends Error {
 
 		if (callInfo?.location.gitPath) {
 			locationParts.push(
-				chalk.gray(
+				pc.gray(
 					`${callInfo.location.gitPath}:${callInfo.location.line}:${callInfo.location.column}`,
 				),
 			)
@@ -142,7 +140,7 @@ export class AssertorError extends Error {
 
 		if (locationParts.length > 0) {
 			haveLocation = true
-			messageParts = [...messageParts, chalk.gray('@'), ...locationParts]
+			messageParts = [...messageParts, pc.gray('@'), ...locationParts]
 		}
 
 		// FINALIZE
@@ -151,7 +149,7 @@ export class AssertorError extends Error {
 		super(message, otherOptions)
 
 		this.name = 'AssertorError'
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		if (this.stack) this.stack = hackStack(this.stack)
 
@@ -165,9 +163,7 @@ export class AssertorError extends Error {
 					parsedStack.line
 				}:${parsedStack.column}`
 
-				this.message = `${this.message} ${chalk.gray('@')} ${chalk.gray(
-					locationStr,
-				)}`
+				this.message = `${this.message} ${pc.gray('@')} ${pc.gray(locationStr)}`
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -33,10 +33,11 @@ describe('defineProps', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'purple',
+			color: 'rgb(128, 0, 128)',
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('requires providing defaults for optional props', () => {
 		expect.assertions(0)
 
@@ -60,6 +61,7 @@ describe('defineProps', () => {
 		>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('allows undefined default', () => {
 		expect.assertions(0)
 
@@ -71,6 +73,7 @@ describe('defineProps', () => {
 		;() => style('button').defineProps<MyProps>({ magic: undefined })
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not require defaults for mandatory props', () => {
 		expect.assertions(0)
 
@@ -86,6 +89,7 @@ describe('defineProps', () => {
 		$Assert.is<A, IStyledComponent>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not require default for children', () => {
 		expect.assertions(0)
 
@@ -101,6 +105,7 @@ describe('defineProps', () => {
 		$Assert.is<A, IStyledComponent>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not require defaults for already present props', () => {
 		expect.assertions(0)
 

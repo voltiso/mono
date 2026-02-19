@@ -1,8 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS } from '_'
-import type { AlsoAccept, UNSET, StaticError } from '@voltiso/util'
+import type { AlsoAccept, StaticError, UNSET } from '@voltiso/util'
 
 import type {
 	$$Schemable,
@@ -28,7 +28,7 @@ export interface SchemaLike<T = unknown> extends $$Schema {
 /**
  * Every schema is assignable to {@link Schema}
  *
- * - Also @see {@link Schema$ } for a version with builder interface
+ * - Also see {@link Schema$ } for a version with builder interface
  */
 export interface Schema<T = unknown> extends $$Schema, SchemaLike<T> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName

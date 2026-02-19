@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -8,6 +8,7 @@ import type { ReactNode } from 'react'
 import type { ReactNodeLike } from './ElementTypeLike'
 
 describe('ElementTypeLike', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 

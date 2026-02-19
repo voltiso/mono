@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -6,9 +6,9 @@ import type {
 	AlsoAccept,
 	DeepPartial_,
 	DEFAULT_OPTIONS,
-	UNSET,
 	NonStrictPartial,
 	Throw,
+	UNSET,
 } from '@voltiso/util'
 
 import type {
@@ -30,8 +30,9 @@ import type {
 
 //
 
-export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
-	extends Schema {
+export interface CustomSchema<
+	O extends Partial<SchemaOptions> = {},
+> extends Schema {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
 
@@ -183,8 +184,9 @@ export interface CustomSchema<O extends Partial<SchemaOptions> = {}>
 
 //
 
-export interface CustomSchema$<O extends Partial<SchemaOptions>>
-	extends CustomSchema<O> /* , Schema$ */ {
+export interface CustomSchema$<
+	O extends Partial<SchemaOptions>,
+> extends CustomSchema<O> /* , Schema$ */ {
 	//
 
 	/**

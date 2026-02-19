@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isObject } from '~/object/isObject'
@@ -39,6 +39,7 @@ export function stringFrom_(x: unknown, options: StringFromOptions): string {
 
 	if (isWithToString(x)) return x.toString()
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 	if (isObject(x)) return stringFromObject_(x as never, options)
 
 	if (x === null) return 'null'

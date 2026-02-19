@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -42,7 +42,6 @@ $fastAssert(EXTENDS)
 export class CustomTupleImpl<
 	O extends Partial<TupleOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Tuple' as const
 
 	declare readonly [Voltiso.BASE_OPTIONS]: TupleOptions
@@ -115,7 +114,6 @@ export class CustomTupleImpl<
 				schema(this.getShape[idx]).tryValidate(element, options),
 			)
 
-			// eslint-disable-next-line es-x/no-object-is
 			if ([...zip(value, fixedArray)].some(([a, b]) => !Object.is(a, b)))
 				value = fixedArray
 		}

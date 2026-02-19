@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -18,6 +18,7 @@ describe('useStatePatcher', () => {
 		let renderId = 0
 
 		const C: FC = () => {
+			// eslint-disable-next-line react-hooks/todo
 			++renderId
 			prevState = state
 			state = useStatePatcher({ a: 'aa' })
@@ -99,6 +100,7 @@ describe('useStatePatcher', () => {
 
 		const c = new C()
 
+		// eslint-disable-next-line @typescript-eslint/no-misused-spread
 		expect({ ...c }).toStrictEqual({})
 
 		/**
@@ -114,7 +116,9 @@ describe('useStatePatcher', () => {
 		let state = undefined as unknown as StatePatcher<{ a: string }>
 
 		const C: FC = () => {
+			// eslint-disable-next-line react-hooks/globals
 			state = useStatePatcher({ a: 'aa' })
+			// eslint-disable-next-line @typescript-eslint/no-misused-spread
 			return <>{`Num keys: ${Object.keys({ ...state }).length.toString()}`}</>
 		}
 
@@ -133,12 +137,14 @@ describe('useStatePatcher', () => {
 		let state: any
 
 		const C: FC = () => {
+			// eslint-disable-next-line react-hooks/globals
 			state = useStatePatcher({ a: true })
 			return <div data-testid='a'>{state.a ? 'T' : 'F'}</div>
 		}
 
 		render(<C />)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const c = screen.getByTestId('a')
 
 		expect(c).toHaveTextContent('T')
@@ -156,12 +162,14 @@ describe('useStatePatcher', () => {
 		let state: StatePatcher<{ a: boolean }>
 
 		const C: FC = () => {
+			// eslint-disable-next-line react-hooks/globals
 			state = useStatePatcher({ a: true })
 			return <div data-testid='aa'>{state.a ? 'T' : 'F'}</div>
 		}
 
 		render(<C />)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const c = screen.getByTestId('aa')
 
 		expect(c).toHaveTextContent('T')

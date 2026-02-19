@@ -1,10 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$, InstanceOptions } from '~'
 
-export interface CustomInstance<O extends Partial<InstanceOptions>>
-	extends CustomSchema<O> {
+export interface CustomInstance<
+	O extends Partial<InstanceOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Instance'
 
@@ -16,8 +17,9 @@ export interface CustomInstance<O extends Partial<InstanceOptions>>
 	get getConstructor(): this[Voltiso.OPTIONS]['Constructor']
 }
 
-export interface CustomInstance$<O extends Partial<InstanceOptions>>
-	extends CustomSchema$<O> {
+export interface CustomInstance$<
+	O extends Partial<InstanceOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Instance'
 

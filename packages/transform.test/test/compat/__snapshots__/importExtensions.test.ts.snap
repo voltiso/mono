@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`compat importExtensions - d.ts 1`] = `
 "export * from './numericSeparators.js';
@@ -21,7 +21,7 @@ export { default as jsonTest } from '../../package.json';
 `;
 
 exports[`compat importExtensions 1`] = `
-"// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+"// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 import * as test from './numericSeparators.js';
 void test;

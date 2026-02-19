@@ -1,7 +1,6 @@
 /* eslint-disable unicorn/no-abusive-eslint-disable */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 /* eslint-disable */
+// @ts-nocheck
 var __create = Object.create
 var __defProp = Object.defineProperty
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor

@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_ } from '@voltiso/util'
 
 import type { $$Schemable, SchemaOptions } from '~'
 
-export interface TupleOptions<T extends readonly unknown[] = readonly unknown[]>
-	extends SchemaOptions {
+export interface TupleOptions<
+	T extends readonly unknown[] = readonly unknown[],
+> extends SchemaOptions {
 	//
 	Output: T
 	Input: T

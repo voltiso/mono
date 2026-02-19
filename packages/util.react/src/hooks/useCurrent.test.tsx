@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -14,6 +14,7 @@ describe('useCurrent', () => {
 		let lastVal
 
 		const C: FC = () => {
+			// eslint-disable-next-line react-hooks/globals
 			lastVal = useCurrent({ a: 1 })
 			return null
 		}

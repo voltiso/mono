@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable tsdoc/syntax */
@@ -27,8 +27,7 @@ export interface $$Function extends $$Schema {
 }
 
 export interface CustomFunction<O extends Partial<FunctionOptions>>
-	extends $$Function,
-		CustomSchema<O> {
+	extends $$Function, CustomSchema<O> {
 	//
 
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Function'
@@ -79,8 +78,7 @@ export interface CustomFunction<O extends Partial<FunctionOptions>>
 //
 
 export interface CustomFunction$<O extends Partial<FunctionOptions>>
-	extends $$Function,
-		CustomSchema$<O> {
+	extends $$Function, CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Function'
 
 	readonly [Voltiso.BASE_OPTIONS]: FunctionOptions

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$ } from '~'
@@ -10,8 +10,7 @@ export interface $$Intersection {
 }
 
 export interface CustomIntersection<O extends Partial<IntersectionOptions>>
-	extends $$Intersection,
-		CustomSchema<O> {
+	extends $$Intersection, CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Intersection'
 
 	readonly [Voltiso.BASE_OPTIONS]: IntersectionOptions
@@ -23,8 +22,7 @@ export interface CustomIntersection<O extends Partial<IntersectionOptions>>
 }
 
 export interface CustomIntersection$<O extends Partial<IntersectionOptions>>
-	extends $$Intersection,
-		CustomSchema$<O> {
+	extends $$Intersection, CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Intersection'
 
 	readonly [Voltiso.BASE_OPTIONS]: IntersectionOptions

@@ -1,9 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { TransformContext } from '@voltiso/transform.lib'
 import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 import type * as ts from 'typescript'
 
 const moduleIcon = '👁️ '
@@ -15,7 +15,7 @@ function _helloOnce() {
 	if (helloPrinted) return
 
 	// eslint-disable-next-line no-console
-	console.log(moduleIcon, chalk.gray('@voltiso/transform/inline'))
+	console.log(moduleIcon, pc.gray('@voltiso/transform/inline'))
 	helloPrinted = true
 }
 
@@ -33,9 +33,9 @@ export function logInlinedNode(
 		moduleIcon,
 		'inline type',
 		options.type,
-		chalk.blue(getNodeText(ctx, node)),
-		chalk.gray('\n  @'),
-		chalk.green(getNodePositionStr(node)),
+		pc.blue(getNodeText(ctx, node)),
+		pc.gray('\n  @'),
+		pc.green(getNodePositionStr(node)),
 		'\n',
 	)
 }

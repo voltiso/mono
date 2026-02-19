@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`compat dirname 1`] = `
 "const __dirname = new URL(".", import.meta.url).pathname.slice(0, -1);

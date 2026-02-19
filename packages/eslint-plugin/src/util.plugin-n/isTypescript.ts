@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as path from 'node:path'
@@ -13,7 +13,6 @@ const typescriptExtensions = new Set(['.ts', '.cts', '.mts'])
  * @param context - A context
  */
 export function isTypescript(context: Rule.RuleContext): boolean {
-	// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
-	const sourceFileExt = path.extname(context.getPhysicalFilename())
+	const sourceFileExt = path.extname(context.physicalFilename)
 	return typescriptExtensions.has(sourceFileExt)
 }

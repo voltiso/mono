@@ -1,12 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import tsdocPlugin from 'eslint-plugin-tsdoc'
 
 import { tsFiles } from '~/detail/files'
 
-export const tsdoc = defineEslintFlatConfig({
+export const tsdoc = defineConfig({
 	files: tsFiles,
 
 	// plugins: ['tsdoc'],

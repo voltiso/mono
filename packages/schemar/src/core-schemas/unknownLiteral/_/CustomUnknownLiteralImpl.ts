@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -32,7 +32,6 @@ export class CustomUnknownLiteralImpl<O extends Partial<UnknownLiteralOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownLiteral<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownLiteral' as const
 
 	constructor(o: O) {

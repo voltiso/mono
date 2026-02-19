@@ -1,13 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // ! eslint-plugin-prettier is slow!
 // ! use scripting that does direct `prettier` linting instead (possibly with auto `--fix`)
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // import prettier from 'eslint-plugin-prettier'
 
-export const prettierConfig = defineEslintFlatConfig({
+export const prettierConfig = defineConfig({
 	// plugins: { prettier }, // ! slow!
 
 	rules: {

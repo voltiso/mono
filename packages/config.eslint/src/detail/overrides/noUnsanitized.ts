@@ -1,11 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import noUnsanitizedPlugin from 'eslint-plugin-no-unsanitized'
 
-export const noUnsanitized = defineEslintFlatConfig(
+export const noUnsanitized = defineConfig(
 	// ...eslintFlatConfigFromConfig(noUnsanitizedPlugin.configs.DOM, {
 	// 	'no-unsanitized': noUnsanitizedPlugin,
 	// }),

@@ -8,7 +8,7 @@
   "sideEffects": false,
   "__________SCRIPTS": "__________",
   "scripts": {
-    "prepare": "v prepare",
+    "prepublishOnly": "v prepare",
     "clean": "v clean",
     "test": "v test",
     "bench": "v bench"
@@ -21,6 +21,6 @@
   },
   "__________MISC": "__________",
   "engines": {
-    "node": ">= 16"
+    "node": ">= 24"
   }
 }

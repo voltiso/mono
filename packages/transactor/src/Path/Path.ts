@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable es-x/no-class-private-fields */
@@ -206,15 +206,17 @@ export interface DefaultDocPathOptions extends DocPathOptions {
 	doc: ANY_DOC
 }
 
-export interface CustomDocPath<PartialOptions extends Partial<DocPathOptions>>
-	extends DocBrand<
-		GetDocTag<Override<DefaultDocPathOptions, PartialOptions>['doc']>
-	> {
+export interface CustomDocPath<
+	PartialOptions extends Partial<DocPathOptions>,
+> extends DocBrand<
+	GetDocTag<Override<DefaultDocPathOptions, PartialOptions>['doc']>
+> {
 	//
 }
 
-export interface DocPath<TDoc extends $$DocRelatedLike = ANY_DOC>
-	extends CustomDocPath<{ doc: TDoc }> {}
+export interface DocPath<
+	TDoc extends $$DocRelatedLike = ANY_DOC,
+> extends CustomDocPath<{ doc: TDoc }> {}
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomDocPath<

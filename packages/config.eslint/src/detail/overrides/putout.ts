@@ -1,13 +1,14 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import putout from 'eslint-plugin-putout'
 
 import { codeFiles } from '~/detail/files'
 
-export const putoutOverride = defineEslintFlatConfig({
+export const putoutOverride = defineConfig({
 	files: codeFiles,
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -30,6 +31,7 @@ export const putoutOverride = defineEslintFlatConfig({
 		'putout/function-declaration-paren-newline': 0,
 		'putout/keyword-spacing': 0, // conflicts with prettier
 		'putout/newline-function-call-arguments': 0,
+		'putout/newlinene-function-call-arguments': 0,
 		'putout/object-property-newline': 0, // not sure about this one - prettier accepts both
 		'putout/objects-braces-inside-array': 0,
 

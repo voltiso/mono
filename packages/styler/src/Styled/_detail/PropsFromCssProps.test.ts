@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -10,6 +10,7 @@ import type { Props } from '~/react-types'
 import type { PropsFromCssProps } from './PropsFromCssProps'
 
 describe('PropsFromCssProps', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <CP extends IndexedCssPropsSingle<CssProps>, CssProps extends
 		object>() => {
 		expect.assertions(0)
@@ -17,6 +18,7 @@ describe('PropsFromCssProps', () => {
 		$Assert.is<PropsFromCssProps<CP, CssProps>, Props>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', <CssProps extends object>() => {
 		expect.assertions(0)
 

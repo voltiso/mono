@@ -56,10 +56,11 @@
   "devDependencies": {
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
-    "@jest/globals": "^29.7.0",
+    "@jest/globals": "^30.2.0",
     "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.2.14",
     "@voltiso/config.eslint": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.jest.react": "workspace:^",

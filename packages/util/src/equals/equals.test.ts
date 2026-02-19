@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -10,6 +10,7 @@ describe('equals', () => {
 		expect(equals(Number.NaN, Number.NaN)).toBeTruthy()
 		expect(equals(0, Number.NaN)).toBeFalsy()
 
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-conversion
 		expect(equals(+0, -0)).toBeTruthy()
 		expect(equals(1, 2)).toBeFalsy()
 	})

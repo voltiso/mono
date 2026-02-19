@@ -50,7 +50,9 @@
     "build:esm": "run-s build:esm:clean build:esm:tsc",
     "build:esm:clean": "rimraf dist/esm",
     "build:esm:tsc": "tspc -b tsconfig.build.esm.json",
-    "__________PREPARE": "__________",
+    "__________TEST": "__________",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --silent",
+    "__________HOOKS": "__________",
     "prepublishOnly": "v prepublishOnlyFast",
     "__________MISC": "__________",
     "clean": "rimraf dist"
@@ -58,20 +60,25 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/util.node": "workspace:^",
-    "chalk": "^4.1.1",
-    "esbuild": "^0.25.4",
-    "esbuild-register": "^3.5.0"
+    "esbuild": "^0.27.3",
+    "esbuild-register": "^3.5.0",
+    "picocolors": "^1.1.1",
+    "tree-kill": "^1.2.2"
   },
   "devDependencies": {
-    "@types/node": "^22.15.17",
+    "@jest/globals": "^30.2.0",
+    "@types/node": "^25.2.3",
+    "@voltiso/config.jest": "workspace:^",
+    "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@voltiso/util.package-json": "workspace:^",
+    "eslint": "^9.39.2",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   },
   "__________MISC": "__________",
   "engines": {
-    "node": ">=15.4.0"
+    "node": ">= 18"
   }
 }

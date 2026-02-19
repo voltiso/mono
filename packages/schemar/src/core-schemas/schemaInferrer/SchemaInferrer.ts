@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
@@ -56,13 +56,11 @@ export type ImplicitSchema$InferrerConstructor =
 	new () => ImplicitSchemaInferrer$
 
 export interface ImplicitSchemaInferrer$
-	extends CustomSchemaInferrer$<{}>,
-		ImplicitInferSchema$Function {}
+	extends CustomSchemaInferrer$<{}>, ImplicitInferSchema$Function {}
 
 /** Non-generic version for faster type-check */
 export interface ImplicitSchemaInferrer$_
-	extends CustomSchemaInferrer$<{}>,
-		ImplicitInferSchema$Function_ {}
+	extends CustomSchemaInferrer$<{}>, ImplicitInferSchema$Function_ {}
 
 //
 

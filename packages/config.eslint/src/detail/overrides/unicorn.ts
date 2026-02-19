@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import unicornPlugin from 'eslint-plugin-unicorn'
 
 import { codeFiles } from '../files'
 
-export const unicorn = defineEslintFlatConfig({
+export const unicorn = defineConfig({
 	files: codeFiles,
 
 	plugins: { unicorn: unicornPlugin as never },

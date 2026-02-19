@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -43,10 +43,9 @@ import { throwTypeOnlyFieldError } from './throwTypeOnlyFieldError'
 $fastAssert(SCHEMA_NAME)
 $fastAssert(EXTENDS)
 
-export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
-	implements CustomSchema<O>
-{
-	// eslint-disable-next-line es-x/no-class-instance-fields
+export abstract class CustomSchemaImpl<
+	O extends Partial<SchemaOptions>,
+> implements CustomSchema<O> {
 	readonly [Voltiso.OPTIONS]: $Override_<this[DEFAULT_OPTIONS], O>
 
 	declare readonly [Voltiso.Schemar.SCHEMA_NAME]: string // SchemaName
@@ -214,7 +213,6 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 
 		const result = _process({ schema: this, value, options })
 
-		// eslint-disable-next-line es-x/no-array-prototype-every
 		const isValid = result.issues.every(issue => issue.severity !== 'error')
 
 		return {
@@ -254,7 +252,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		options?: Partial<ValidationOptions> | undefined,
 	): value is this[Voltiso.OPTIONS]['Output'] {
 		const result = this.exec(value, options)
-		// eslint-disable-next-line es-x/no-object-is
+
 		return result.isValid && Object.is(result.value, value)
 	}
 
@@ -268,7 +266,7 @@ export abstract class CustomSchemaImpl<O extends Partial<SchemaOptions>>
 		options?: Partial<ValidationOptions> | undefined,
 	): asserts value is this[Voltiso.OPTIONS]['Output'] {
 		const result = this.exec(value, options)
-		// eslint-disable-next-line es-x/no-object-is
+
 		const wasAlreadyValid = result.isValid && Object.is(result.value, value)
 
 		if (!wasAlreadyValid) {

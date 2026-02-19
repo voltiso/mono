@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { AbortError } from '_/error'
@@ -47,6 +47,5 @@ export function sleep(
 		},
 	)
 
-	// eslint-disable-next-line es-x/no-object-assign
 	return Object.assign(result, controller as SleepController)
 }

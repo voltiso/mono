@@ -1,5 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+/* eslint-disable jsdoc/escape-inline-tags */
 
 import type { Value } from '../key-value'
 import type { Pick_ } from '../pick-omit'

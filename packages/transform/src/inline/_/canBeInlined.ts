@@ -1,11 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable sonarjs/nested-control-flow */
 /* eslint-disable sonarjs/cyclomatic-complexity */
 
 import { getNodePositionStr, getNodeText } from '@voltiso/transform.lib'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 import * as ts from 'typescript'
 
 import type { InlineTransformContext } from '../inlineTransform.js'
@@ -114,7 +114,7 @@ export function canBeInlined(
 			)} \n  @ ${getNodePositionStr(node)}`
 
 			// eslint-disable-next-line no-console
-			console.warn(chalk.bgRed(message))
+			console.warn(pc.bgRed(message))
 
 			if (ctx.options.onInlineError === 'fail') throw new Error(message)
 		}
@@ -156,7 +156,7 @@ export function canBeInlined(
 			)} \n  @ ${getNodePositionStr(node)}`
 
 			// eslint-disable-next-line no-console
-			console.warn(chalk.bgRed(message))
+			console.warn(pc.bgRed(message))
 
 			if (ctx.options.onInlineError === 'fail') throw new Error(message)
 		}
@@ -181,7 +181,7 @@ export function canBeInlined(
 				}' \n  @ ${getNodePositionStr(node)}`
 
 				// eslint-disable-next-line no-console
-				console.warn(chalk.bgRed(message))
+				console.warn(pc.bgRed(message))
 
 				if (ctx.options.onInlineError === 'fail') throw new Error(message)
 			}
@@ -202,7 +202,7 @@ export function canBeInlined(
 	// 	)}`
 
 	// 	// eslint-disable-next-line no-console
-	// 	console.warn(chalk.bgRed(message))
+	// 	console.warn(pc.bgRed(message))
 
 	// 	// !!! do not fail on type query nodes - ok?
 	// 	// if (ctx.options.onInlineError === 'fail') throw new Error(message)

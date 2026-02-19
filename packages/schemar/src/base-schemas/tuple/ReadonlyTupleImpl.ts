@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor } from '@voltiso/util'
@@ -13,7 +13,6 @@ export class ReadonlyTupleImpl<T extends $$Schemable[]> extends lazyConstructor(
 	() => CustomTupleImpl,
 )<never> {
 	constructor(...shapeWithRest: T) {
-		// eslint-disable-next-line es-x/no-array-prototype-at
 		const lastElement = shapeWithRest.at(-1)
 
 		const hasRest = isRest(lastElement)

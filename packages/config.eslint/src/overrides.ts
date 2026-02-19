@@ -1,8 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { EslintFlatConfig } from '@voltiso/config.eslint.lib'
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 
 import { anyOverride } from './detail/overrides/any.js'
 import { arrayFunc } from './detail/overrides/arrayFunc.js'
@@ -52,6 +51,7 @@ import { sonar } from './detail/overrides/sonar.js'
 import { switchCase } from './detail/overrides/switchCase.js'
 import { testingLibrary } from './detail/overrides/testingLibrary.js'
 import { testOverride } from './detail/overrides/testOverride.js'
+import { toml } from './detail/overrides/toml'
 import { tsdoc } from './detail/overrides/tsdoc.js'
 import { turboConfig } from './detail/overrides/turbo.js'
 import { unicorn } from './detail/overrides/unicorn.js'
@@ -59,8 +59,7 @@ import { unusedImports } from './detail/overrides/unusedImports.js'
 import { voltisoOverride } from './detail/overrides/voltiso.js'
 import { yamlConfig } from './detail/overrides/yaml.js'
 
-// eslint-disable-next-line es-x/no-array-prototype-flat
-export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
+export const overrides = defineConfig(
 	/** Null parser - parses anything */
 	...anyOverride,
 
@@ -124,6 +123,7 @@ export const overrides: EslintFlatConfig[] = defineEslintFlatConfig(
 	...formatJs,
 	...i18nText,
 	...es,
+	...toml,
 
 	...codeOverride,
 	...chaiFriendly,

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -10,11 +10,12 @@ import type {
 } from '~'
 
 /** Strong document reference - with ref-counting ✅ */
-export interface DocRef<doc extends $$DocRelated = ANY_DOC>
-	extends CustomDocRef<{
-		doc: doc
-		isStrong: true
-	}> {
+export interface DocRef<
+	doc extends $$DocRelated = ANY_DOC,
+> extends CustomDocRef<{
+	doc: doc
+	isStrong: true
+}> {
 	// get Final(): this
 }
 

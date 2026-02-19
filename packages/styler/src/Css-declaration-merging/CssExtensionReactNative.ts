@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CssExtension } from './CssExtension'
@@ -8,7 +8,8 @@ import type { CssExtension } from './CssExtension'
  *
  * - Use TS declaration merging
  */
-export interface CssExtensionReactNative<CustomCss extends object>
-	extends CssExtension<CustomCss> {
+export interface CssExtensionReactNative<
+	CustomCss extends object,
+> extends CssExtension<CustomCss> {
 	//
 }

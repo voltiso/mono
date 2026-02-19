@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable jsdoc/require-hyphen-before-param-description */
@@ -78,13 +78,9 @@ function getModuleName(nameOrPath: string) {
 /** Information of an import target. */
 // eslint-disable-next-line import/no-default-export
 export default class ImportTarget {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	node: ASTNode
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	name: string
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	filePath: string | null
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	moduleName: string | null
 
 	/**

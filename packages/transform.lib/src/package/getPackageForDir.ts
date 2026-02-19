@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { strict as assert } from 'node:assert'
@@ -51,6 +51,7 @@ export function _getPackageForDir(dir: string): _GetPackageForDirResult {
 	}
 
 	const result = packageJsonsByDir.get(dir)
+	// eslint-disable-next-line unicorn/consistent-assert
 	assert(result)
 	return result
 }

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_ } from '@voltiso/util'
@@ -9,8 +9,9 @@ import type { StringOptions } from './StringOptions'
 
 //
 
-export interface CustomString<O extends Partial<StringOptions>>
-	extends CustomSchema<O> {
+export interface CustomString<
+	O extends Partial<StringOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 
@@ -25,8 +26,9 @@ export interface CustomString<O extends Partial<StringOptions>>
 
 //
 
-export interface CustomString$<O extends Partial<StringOptions>>
-	extends CustomSchema$<O> {
+export interface CustomString$<
+	O extends Partial<StringOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'String'
 

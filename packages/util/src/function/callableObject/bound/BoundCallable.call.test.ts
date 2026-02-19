@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -68,6 +68,7 @@ describe('BoundCallable', () => {
 		c.opt = 444
 
 		expect(c.opt).toBe(444)
+		// eslint-disable-next-line @typescript-eslint/no-misused-spread
 		expect({ ...c }).toStrictEqual({ [sym]: 99, _data: 'test?', opt: 444 })
 
 		expect(c.constructor).toBe(Class)
@@ -124,6 +125,7 @@ describe('BoundCallable', () => {
 
 		const c = new C()
 
+		// eslint-disable-next-line @typescript-eslint/no-misused-spread
 		expect({ ...c }).toStrictEqual({})
 		// expect(Reflect.ownKeys(c)).toStrictEqual(['clone']) // can't make it work - need own bind/call/apply for react-native
 		expect(Reflect.ownKeys(c)).toStrictEqual(['clone', 'bind', 'call', 'apply'])

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_ } from '@voltiso/util'
@@ -7,8 +7,9 @@ import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { UnknownTupleOptions } from './UnknownTupleOptions'
 
-export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
-	extends CustomSchema<O> {
+export interface CustomUnknownTuple<
+	O extends Partial<UnknownTupleOptions>,
+> extends CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions
@@ -19,8 +20,9 @@ export interface CustomUnknownTuple<O extends Partial<UnknownTupleOptions>>
 	get getMaxLength(): this[Voltiso.OPTIONS]['maxLength']
 }
 
-export interface CustomUnknownTuple$<O extends Partial<UnknownTupleOptions>>
-	extends CustomSchema$<O> {
+export interface CustomUnknownTuple$<
+	O extends Partial<UnknownTupleOptions>,
+> extends CustomSchema$<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownTuple'
 
 	readonly [Voltiso.BASE_OPTIONS]: UnknownTupleOptions

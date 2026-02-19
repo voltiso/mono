@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SCHEMA_NAME } from '_'
@@ -19,7 +19,6 @@ export class CustomUnknownImpl<O extends UnknownOptions>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknown<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Unknown' as const
 
 	constructor(options: O) {

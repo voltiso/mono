@@ -1,11 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import i18nPlugin from 'eslint-plugin-i18n'
 
-export const i18nConfig = defineEslintFlatConfig(
+export const i18nConfig = defineConfig(
 	// ...eslintFlatConfigFromConfig(i18nPlugin.configs.recommended, {
 	// 	i18n: i18nPlugin,
 	// }),

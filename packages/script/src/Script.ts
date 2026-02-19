@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export type MaybePromise<T> = T | Promise<T>
@@ -7,7 +7,6 @@ export type Script = MaybePromise<
 	| Script.Literal
 	| Script.Sequence
 	| Script.WithParameters
-	// eslint-disable-next-line sonarjs/no-redundant-type-constituents
 	| Script.Nullish
 	| Script.Parallel
 	| Script.Race

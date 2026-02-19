@@ -1,10 +1,11 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { OptionalArgument } from '~/type/optional-argument'
 
 import type { ISyncerPromise } from './SyncerPromise'
-import { UNSET } from '_/symbols/unset'
 
 export interface ISyncerNested {
 	onAsyncStart?:

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Mutable } from '@voltiso/util'
@@ -17,11 +17,13 @@ import { ReadonlyUnknownTupleImpl } from './ReadonlyUnknownTupleImpl'
 
 //
 
-export interface MutableUnknownTuple
-	extends CustomUnknownTuple<{ isReadonlyTuple: false }> {}
+export interface MutableUnknownTuple extends CustomUnknownTuple<{
+	isReadonlyTuple: false
+}> {}
 
-export interface MutableUnknownTuple$
-	extends CustomUnknownTuple$<{ isReadonlyTuple: false }> {
+export interface MutableUnknownTuple$ extends CustomUnknownTuple$<{
+	isReadonlyTuple: false
+}> {
 	<T extends readonly $$Schemable[]>(
 		...elementTypes: T
 	): GetTuple$_<this, $Mutable<T>>
@@ -42,19 +44,17 @@ export interface MutableUnknownTuple$
 
 //
 
-export interface ReadonlyUnknownTuple
-	extends CustomUnknownTuple<{
-		isReadonlyTuple: true
-		Output: readonly unknown[]
-		Input: readonly unknown[]
-	}> {}
+export interface ReadonlyUnknownTuple extends CustomUnknownTuple<{
+	isReadonlyTuple: true
+	Output: readonly unknown[]
+	Input: readonly unknown[]
+}> {}
 
-export interface ReadonlyUnknownTuple$
-	extends CustomUnknownTuple$<{
-		isReadonlyTuple: true
-		Output: readonly unknown[]
-		Input: readonly unknown[]
-	}> {
+export interface ReadonlyUnknownTuple$ extends CustomUnknownTuple$<{
+	isReadonlyTuple: true
+	Output: readonly unknown[]
+	Input: readonly unknown[]
+}> {
 	<T extends readonly $$Schemable[]>(
 		...elementTypes: T
 	): GetTuple$_<this, [...T]>

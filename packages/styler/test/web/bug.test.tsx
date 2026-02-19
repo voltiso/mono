@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -30,6 +30,6 @@ describe('bug', () => {
 
 		const button = screen.getByRole('button')
 
-		expect(button).toHaveStyle({ backgroundColor: 'green' })
+		expect(button).toHaveStyle({ backgroundColor: 'rgb(0, 128, 0)' })
 	})
 })

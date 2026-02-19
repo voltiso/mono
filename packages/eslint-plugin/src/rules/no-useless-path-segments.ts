@@ -1,9 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable sonarjs/cyclomatic-complexity */
 /* eslint-disable @typescript-eslint/no-deprecated */
-/* eslint-disable sonarjs/deprecation */
 /* eslint-disable sonarjs/nested-control-flow */
 /* eslint-disable require-unicode-regexp */
 /* eslint-disable tsdoc/syntax */

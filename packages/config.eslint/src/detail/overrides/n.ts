@@ -1,17 +1,15 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintConfigOverrideRules,
-	defineEslintFlatConfig,
-	getAllRules,
-} from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
 import voltisoPlugin from '@voltiso/eslint-plugin'
+import { Linter } from 'eslint'
 import nPlugin from 'eslint-plugin-n'
+import { defineConfig } from 'eslint/config'
 
 import { codeFiles } from '~/detail/files'
 
-const nRulesPossibleErrors = defineEslintConfigOverrideRules({
+const nRulesPossibleErrors: Linter.RulesRecord = {
 	'n/handle-callback-err': 1,
 	'n/no-callback-literal': 1,
 	'n/no-exports-assign': 1,
@@ -37,13 +35,13 @@ const nRulesPossibleErrors = defineEslintConfigOverrideRules({
 	//
 
 	// 'n/no-unpublished-require': 1, //! DISABLE?
-} as const)
+}
 
-const nRulesBestPractices = defineEslintConfigOverrideRules({
+const nRulesBestPractices: Linter.RulesRecord = {
 	'n/no-deprecated-api': 1,
-} as const)
+}
 
-const nRulesStylisticIssues = defineEslintConfigOverrideRules({
+const nRulesStylisticIssues: Linter.RulesRecord = {
 	'n/callback-return': 1,
 	'n/exports-style': 1,
 
@@ -81,17 +79,17 @@ const nRulesStylisticIssues = defineEslintConfigOverrideRules({
 	'n/prefer-global/url-search-params': 1,
 	'n/prefer-promises/dns': 1,
 	'n/prefer-promises/fs': 1,
-} as const)
+}
 
-const nRules = defineEslintConfigOverrideRules({
+const nRules: Linter.RulesRecord = {
 	...nRulesPossibleErrors,
 	...nRulesBestPractices,
 	...nRulesStylisticIssues,
-} as const)
+}
 
 // console.log(nPlugin.configs.recommended.env)
 
-export const nConfig = defineEslintFlatConfig(
+export const nConfig = defineConfig(
 	// ...eslintFlatConfigFromConfig(nPlugin.configs.recommended, {n: nPlugin}),
 	{
 		// extends: ['plugin:n/recommended'],

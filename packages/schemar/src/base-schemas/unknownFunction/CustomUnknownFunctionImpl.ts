@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -35,12 +35,11 @@ export interface CustomUnknownFunctionImpl<O> {
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class CustomUnknownFunctionImpl<
-		O extends Partial<UnknownFunctionOptions>,
-	>
+	O extends Partial<UnknownFunctionOptions>,
+>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomUnknownFunction<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'UnknownFunction' as const
 
 	constructor(o: O) {

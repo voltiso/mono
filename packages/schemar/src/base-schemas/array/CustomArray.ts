@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_, IsCompatible, OPTIONS } from '@voltiso/util'
@@ -10,8 +10,7 @@ import type { ArrayOptions } from './ArrayOptions'
 //
 
 export interface CustomArray<O extends Partial<ArrayOptions>>
-	extends $$Array,
-		CustomSchema<O> {
+	extends $$Array, CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 
@@ -30,8 +29,7 @@ export interface CustomArray<O extends Partial<ArrayOptions>>
 //
 
 export interface CustomArray$<O extends Partial<ArrayOptions>>
-	extends $$Array,
-		CustomSchema$<O> {
+	extends $$Array, CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Array'
 

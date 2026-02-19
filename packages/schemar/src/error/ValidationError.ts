@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor } from '@voltiso/util'
@@ -10,7 +10,6 @@ import { SchemarError } from './SchemarError'
 const name = 'ValidationError'
 
 export class ValidationError extends lazyConstructor(() => SchemarError) {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	issues: ValidationIssue[]
 
 	constructor(issues: ValidationIssue[]) {

@@ -63,6 +63,7 @@
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@~/workspace": "workspace:^",
+    "eslint": "^9.39.2",
     "rxjs": "^7.8.2",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { StyleProp } from 'react-native'
@@ -14,14 +14,16 @@ export interface OuterPropsBase<AdditionalCss extends object> extends Props {
 		| undefined
 }
 
-export interface WebOuterProps<AdditionalCss extends object = {}>
-	extends OuterPropsBase<AdditionalCss> {
+export interface WebOuterProps<
+	AdditionalCss extends object = {},
+> extends OuterPropsBase<AdditionalCss> {
 	className?: string | undefined
 	style?: Css | undefined
 }
 
-export interface NativeOuterProps<AdditionalCss extends object = {}>
-	extends OuterPropsBase<AdditionalCss> {
+export interface NativeOuterProps<
+	AdditionalCss extends object = {},
+> extends OuterPropsBase<AdditionalCss> {
 	className?: never
 	style?: StyleProp<unknown> | undefined
 }

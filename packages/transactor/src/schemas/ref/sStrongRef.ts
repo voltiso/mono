@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as s from '@voltiso/schemar'
@@ -36,11 +36,13 @@ export const _strongRefCall = <X extends $$DocRelatedLike>(): s.Schema<
 
 //
 
-export interface StrongDocRefSchema<X extends $$DocRelated = ANY_DOC>
-	extends s.Schema<DocRef<X>> {}
+export interface StrongDocRefSchema<
+	X extends $$DocRelated = ANY_DOC,
+> extends s.Schema<DocRef<X>> {}
 
-export interface StrongDocRefSchema$<X extends $$DocRelated = ANY_DOC>
-	extends s.Schema$<DocRef<X>> {
+export interface StrongDocRefSchema$<
+	X extends $$DocRelated = ANY_DOC,
+> extends s.Schema$<DocRef<X>> {
 	//
 	get Final(): StrongDocRefSchema<X>
 }

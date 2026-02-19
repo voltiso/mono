@@ -1,17 +1,14 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintConfigOverrideRules,
-	defineEslintFlatConfig,
-	getAllRules,
-} from '@voltiso/config.eslint.lib'
-// @ts-expect-error no typings
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import type { Linter } from 'eslint'
+import { defineConfig } from 'eslint/config'
 import importPlugin from 'eslint-plugin-import'
 
 import { codeFiles } from '~/detail/files'
 
-const staticAnalysisRules = defineEslintConfigOverrideRules({
+const staticAnalysisRules: Linter.RulesRecord = {
 	'import/no-unresolved': 0, // handled by TS
 	// 'import/no-unresolved': ['error', { caseSensitiveStrict: true }],
 
@@ -34,9 +31,9 @@ const staticAnalysisRules = defineEslintConfigOverrideRules({
 	'import/no-cycle': 0, // ! hmm... might be useful !
 
 	'import/no-relative-parent-imports': 0, // use 'no-restricted-imports' instead
-})
+}
 
-const helpfulWarningsRules = defineEslintConfigOverrideRules({
+const helpfulWarningsRules: Linter.RulesRecord = {
 	'import/export': 1,
 	'import/no-named-as-default': 1, // TS does not do this
 	'import/no-named-as-default-member': 1, // ! TS does the same?
@@ -45,18 +42,18 @@ const helpfulWarningsRules = defineEslintConfigOverrideRules({
 	'import/no-unused-modules': 1, // TS does not do this
 
 	'import/no-extraneous-dependencies': 0, // buggy with non-relative paths duplicate across projects in monorepo
-})
+} as const
 
-const moduleSystemsRules = defineEslintConfigOverrideRules({
+const moduleSystemsRules: Linter.RulesRecord = {
 	'import/unambiguous': 1,
 	'import/no-commonjs': 1,
 	'import/no-amd': 1,
 	'import/no-import-module-exports': 1,
 
 	'import/no-nodejs-modules': 0,
-})
+} as const
 
-const styleGuideRules = defineEslintConfigOverrideRules({
+const styleGuideRules: Linter.RulesRecord = {
 	'import/first': 1,
 
 	'import/exports-last': 0,
@@ -102,11 +99,11 @@ const styleGuideRules = defineEslintConfigOverrideRules({
 	'import/max-dependencies': 0,
 	'import/no-named-export': 0, // meh
 	'import/group-exports': 0,
-})
+} as const
 
 // console.log('111', importPlugin.configs.recommended)
 
-export const importConfig = defineEslintFlatConfig(
+export const importConfig = defineConfig(
 	{
 		files: codeFiles,
 
@@ -161,6 +158,8 @@ export const importConfig = defineEslintFlatConfig(
 			...helpfulWarningsRules,
 			...moduleSystemsRules,
 			...styleGuideRules,
+
+			'import/enforce-node-protocol-usage': ['warn', 'always'],
 		},
 	},
 	{

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -25,7 +25,6 @@ export class CustomVoidImpl<O extends Partial<VoidOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements IVoid
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Void' as const;
 
 	override [Voltiso.Schemar.EXTENDS](other: Schema): boolean {

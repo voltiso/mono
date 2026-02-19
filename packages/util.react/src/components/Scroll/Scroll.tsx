@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 'use client'
@@ -68,12 +68,14 @@ const ScrollRenderFunction: ForwardRefRenderFunction<
 	const scrollContextValue = useMemo<ScrollContextValue>(() => ({}), [])
 
 	if (typeof window !== 'undefined') {
+		// eslint-disable-next-line react-hooks/rule-suppression
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const scrollTargetElement = useMemo(
 			() => (scrollTarget ? document.querySelector(scrollTarget) : null),
 			[scrollTarget],
 		)
 
+		// eslint-disable-next-line react-hooks/rule-suppression
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		useLayoutEffect(() => {
 			if (!isNavigationBackForward({ pathname })) return undefined

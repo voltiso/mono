@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { useEffect, useState } from 'react'
@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react'
 export function useIsPageLoaded(): boolean {
 	if (typeof document === 'undefined') return false // ssr
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+	// eslint-disable-next-line react-hooks/hooks, react-hooks/rules-of-hooks
 	const [isPageLoaded, setIsPageLoaded] = useState(
 		false, // consistent with server
 		// () => document.readyState === 'complete',
 	)
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks, sonarjs/rules-of-hooks
+	// eslint-disable-next-line react-hooks/hooks, react-hooks/rules-of-hooks
 	useEffect(() => {
 		if (isPageLoaded) return undefined
 

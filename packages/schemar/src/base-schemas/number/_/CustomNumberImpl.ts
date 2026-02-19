@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -27,7 +27,6 @@ export class CustomNumberImpl<O extends Partial<NumberOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomNumber<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Number' as const
 
 	get isInteger(): this[Voltiso.OPTIONS]['isInteger'] {

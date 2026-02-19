@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output_, Schema } from '@voltiso/schemar'
@@ -41,7 +41,8 @@ export const CustomDocRef = lazyConstructor(
 ) as unknown as CustomDocRef.Constructor
 
 export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
-	extends $$DocRef,
+	extends
+		$$DocRef,
 		DocBrand<GetDocTag<CustomDocRef.Options.Get<O>['doc']>>,
 		CustomDocRef.IntrinsicFields<O> {
 	readonly [Voltiso.OPTIONS]: CustomDocRef.Options.Get<O>
@@ -97,7 +98,8 @@ export interface CustomDocRefBase<O extends Partial<CustomDocRef.Options>>
 // 	: never
 
 export interface CustomDocRef<O extends Partial<CustomDocRef.Options> = {}>
-	extends CustomDocRefBase<O>,
+	extends
+		CustomDocRefBase<O>,
 		PromiseLike<
 			| GetDoc<CustomDocRef.Options.Get<O>['doc']>
 			| CustomDocRef.MaybeNull<CustomDocRef.Options.Get<O>>

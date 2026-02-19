@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import path from 'node:path'
@@ -29,4 +29,4 @@ export const ignores = [
 	...gitIgnored,
 	// ...readGitignoreFiles({ cwd: __dirname }),
 	//
-] as const
+]

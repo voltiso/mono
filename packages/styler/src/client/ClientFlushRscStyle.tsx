@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 'use client'
@@ -28,7 +28,6 @@ export const ClientFlushRscStyle: FC<{ readonly rscStyle: RscStyle }> = ({
 	// 	return () => {
 	// 		observer.disconnect()
 	// 	}
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	// }, [])
 
 	// if (process.env['NODE_ENV'] === 'development') {

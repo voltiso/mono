@@ -1,10 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { isObject, isPlainObject } from '@voltiso/util'
 
 export class ThemePath {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	path: string[]
 
 	constructor(path: string[] = []) {

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 {
@@ -13,7 +13,7 @@
 		"dbaeumer.vscode-eslint",
 
 		/** Stylelint (CSS) errors underlined in VSCode editor */
-		"stylelint.vscode-stylelint",
+		// "stylelint.vscode-stylelint", ⚠️
 
 		/**
 		 * Rename matching JSX tag
@@ -65,7 +65,7 @@
 		"mikestead.dotenv",
 
 		/** Newest TS version in VSCode - but please still use per-project TS installation */
-		"ms-vscode.vscode-typescript-next",
+		// "ms-vscode.vscode-typescript-next", // ⚠️
 
 		// /** ? Screen-sharing VSCode?? */
 		// "ms-vsliveshare.vsliveshare-pack",
@@ -73,7 +73,7 @@
 		//
 
 		// `react-native` - Expo - app.json validation, code completion
-		"expo.vscode-expo-tools",
+		// "expo.vscode-expo-tools", ⚠️
 
 		//
 
@@ -81,11 +81,11 @@
 		// FIREBASE-specifig extensions below
 		//
 
-		/** Firebase - explore FireStore from VSCode! */
-		"jsayol.firebase-explorer", // Explore Firestore, etc.
+		// /** Firebase - explore FireStore from VSCode! */
+		// "jsayol.firebase-explorer", // Explore Firestore, etc. ⚠️
 
 		/** Security rules syntax highlighting */
-		"toba.vsfire",
+		// "toba.vsfire", ⚠️
 
 		/** C++ */
 		"llvm-vs-code-extensions.vscode-clangd",

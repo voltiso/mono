@@ -1,37 +1,32 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-// ! cannot use defineEslintFlatConfig - would introduce circular dependency
-// import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 
-// eslint-disable-next-line no-restricted-imports
-import baseConfig from '../../eslint.config.js'
+import baseConfig from '@~/workspace/eslint.config.js'
 
-export default [
-	...baseConfig,
-	{
-		// env: {
-		// 	node: true
-		// },
-		rules: {
-			// 'import/extensions': ['error', 'ignorePackages']
+export default defineConfig(...baseConfig, {
+	// env: {
+	// 	node: true
+	// },
+	rules: {
+		// 'import/extensions': ['error', 'ignorePackages']
 
-			// does not work with `import type`
-			// 'file-extension-in-import-ts/file-extension-in-import-ts': [
-			// 	'error',
-			// 	'always',
-			// 	{
-			// 		extMapping: { '.ts': '.js' },
-			// 	},
-			// ],
+		// does not work with `import type`
+		// 'file-extension-in-import-ts/file-extension-in-import-ts': [
+		// 	'error',
+		// 	'always',
+		// 	{
+		// 		extMapping: { '.ts': '.js' },
+		// 	},
+		// ],
 
-			'import/extensions': 'off',
+		'import/extensions': 'off',
 
-			'@voltiso/file-extension-in-import': [
-				'error',
-				'always',
-				{ includeTypeOnly: true },
-			],
-		},
+		'@voltiso/file-extension-in-import': [
+			'error',
+			'always',
+			{ includeTypeOnly: true },
+		],
 	},
-]
+})

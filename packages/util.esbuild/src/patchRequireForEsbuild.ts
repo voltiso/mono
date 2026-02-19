@@ -1,12 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 export function patchRequireForEsbuild(): void {
 	// eslint-disable-next-line n/global-require, unicorn/prefer-module, @typescript-eslint/no-require-imports
-	const Module = require('node:module') as NodeRequire
+	const Module = require('node:module') as NodeJS.Require
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-	const originalRequire = Module.prototype.require as NodeRequire
+	const originalRequire = Module.prototype.require as NodeJS.Require
 
 	function newRequire(this: unknown, id: string): never {
 		try {

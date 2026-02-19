@@ -1,11 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
 // @ts-expect-error no typings
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments'
+import { defineConfig } from 'eslint/config'
 
-export const eslintComments = defineEslintFlatConfig(
+export const eslintComments = defineConfig(
 	// ...eslintFlatConfigFromConfig(
 	// 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	// 	eslintCommentsPlugin.configs.recommended as never,

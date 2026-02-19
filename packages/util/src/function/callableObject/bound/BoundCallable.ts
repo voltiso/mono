@@ -1,5 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { CloneOptions, WithCloneFunction } from '~/clone'
 import type {
@@ -14,7 +16,6 @@ import type { NonStrictPartial } from '~/object'
 import type { WithSelfBoundCALL } from '../CALL'
 import { CALL } from '../CALL'
 import type { BoundCallableOptions } from './BoundCallableOptions'
-import { UNSET } from '_/symbols/unset'
 
 //
 
@@ -33,7 +34,7 @@ export type CustomBoundCallable<Options extends BoundCallableOptions> =
  *
  * - ✅ Works with `clone`
  * - ✅ Binds `this` to self
- * - ❌ Does not work with `Proxy` (if needed, @see `Callable`)
+ * - ❌ Does not work with `Proxy` (if needed, see {@link Callable})
  */
 export function CustomBoundCallable<Options extends BoundCallableOptions>(
 	options: Options,

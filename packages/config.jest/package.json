@@ -53,12 +53,14 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.27.1",
     "@voltiso/config.jest.lib": "workspace:^",
-    "esbuild": "^0.25.4",
-    "flow-remove-types": "^2.270.0"
+    "babel-plugin-syntax-hermes-parser": "^0.33.3",
+    "esbuild": "^0.27.3"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.5",
     "@voltiso/config.ts": "workspace:^"
   },
   "comment-esbuild": "0.18.x-to-0.19.7-not-transforming-decorators"

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -43,7 +43,6 @@ export class CustomBigintImpl<O extends Partial<BigintOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomBigint<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Bigint' as const
 
 	get getMin(): this[Voltiso.OPTIONS]['min'] {

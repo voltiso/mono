@@ -1,4 +1,4 @@
-# ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+# ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 # ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 ignores:
@@ -8,3 +8,4 @@ ignores:
   - '@voltiso/config.jest'
   - '@voltiso/config.eslint.lib'
   - '@voltiso/script'
+  - cross-env

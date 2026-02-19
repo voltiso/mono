@@ -1,8 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $AssumeType, createPatch, fastAssert } from '@voltiso/util'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 
 import type { Doc } from '~/Doc'
 import type { DocDerivedData } from '~/DocConstructor'
@@ -58,11 +58,11 @@ function logTrigger(
 
 	// eslint-disable-next-line no-console
 	console.log(
-		chalk.gray(params.path.toString()),
-		chalk.inverse(when, event),
-		chalk.blueBright(name),
+		pc.gray(params.path.toString()),
+		pc.inverse(`${when} ${event}`),
+		pc.blueBright(name),
 		'\n',
-		chalk.green(dump(createPatch(params.before, params.after))),
+		pc.green(dump(createPatch(params.before, params.after))),
 		'\n',
 	)
 }

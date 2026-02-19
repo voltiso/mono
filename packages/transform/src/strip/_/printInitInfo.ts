@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { StripTransformOptions } from '../stripTransform.js'
@@ -24,7 +24,7 @@ export function printInitInfo(pluginOptions: StripTransformOptions): void {
 				)}`,
 			)
 	} /* isEnabled === false */ else {
-		// eslint-disable-next-line no-lonely-if, sonarjs/no-lonely-if
+		// eslint-disable-next-line no-lonely-if
 		if (pluginOptions.symbols?.length)
 			// eslint-disable-next-line no-console
 			console.warn(

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable jsdoc/informative-docs */
@@ -44,7 +44,6 @@ import { isStyled } from './IStyled'
 
 export class Styled<$ extends Partial<StyledTypeInfo>> {
 	declare readonly [$]: G<$>
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	readonly [DATA]: StyledData<G<$>, C<$>>
 
 	get component(): G<$>['Component'] {

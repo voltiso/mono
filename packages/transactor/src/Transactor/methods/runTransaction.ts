@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $assert } from '@voltiso/assertor'
@@ -11,7 +11,7 @@ import {
 	replaceIt,
 } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
-import chalk from 'chalk'
+import * as pc from 'picocolors'
 
 import { databaseUpdate } from '~/common/database/databaseUpdate'
 import { withoutId } from '~/Data'
@@ -162,7 +162,7 @@ export async function runTransaction<R>(
 								// eslint-disable-next-line no-console
 								console.log(
 									'\n',
-									chalk.inverse(
+									pc.inverse(
 										'REPEAT TRIGGERS - CACHE CHANGED after regular triggers',
 									),
 									'\n',
@@ -247,7 +247,7 @@ export async function runTransaction<R>(
 								// eslint-disable-next-line no-console
 								console.log(
 									'\n',
-									chalk.inverse(
+									pc.inverse(
 										'REPEAT TRIGGERS - CACHE CHANGED after before-commits',
 									),
 									'\n',
@@ -269,7 +269,7 @@ export async function runTransaction<R>(
 						// eslint-disable-next-line no-console
 						console.log(
 							'\n',
-							chalk.inverse('TRANSACTION CACHE AFTER ERROR'),
+							pc.inverse('TRANSACTION CACHE AFTER ERROR'),
 							'\n',
 
 							dump(cache),

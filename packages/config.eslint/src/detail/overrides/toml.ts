@@ -1,28 +1,22 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import {
-	defineEslintFlatConfig,
-	eslintFlatConfigFromConfig,
-} from '@voltiso/config.eslint.lib'
-// import tomlParser from 'toml-eslint-parser'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore CJS build fails
 import tomlPlugin from 'eslint-plugin-toml'
-import tomlEslintParser from 'toml-eslint-parser'
 
-export const toml = defineEslintFlatConfig(
-	...eslintFlatConfigFromConfig(
-		tomlPlugin.configs.standard as never,
-		{ toml: tomlPlugin },
-		{ 'toml-eslint-parser': tomlEslintParser },
-		tomlPlugin.configs,
-	),
-	// 	{
-	// 	files: ['*.toml'],
+export const toml = defineConfig({
+	files: ['*.toml', '**/*.toml'],
 
-	// 	// parser: 'toml-eslint-parser',
+	plugins: {
+		toml: tomlPlugin as never,
+	},
 
-	// 	// plugins: ['toml'],
+	language: 'toml/toml',
 
-	// 	// extends: ['plugin:toml/standard'],
-	// } as const
-)
+	rules: {
+		...getAllRules(tomlPlugin, 'toml', 'warn'),
+	},
+})

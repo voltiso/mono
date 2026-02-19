@@ -1,11 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import chaiFriendlyPlugin from 'eslint-plugin-chai-friendly'
 
-export const chaiFriendly = defineEslintFlatConfig(
+export const chaiFriendly = defineConfig(
 	// ...eslintFlatConfigFromConfig(chaiFriendlyPlugin.configs.recommended, {
 	// 	'chai-friendly': chaiFriendlyPlugin,
 	// }),

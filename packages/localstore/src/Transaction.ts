@@ -1,9 +1,8 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable es-x/no-class-instance-fields */
 
-// import chalk from 'chalk'
 import * as Database from '@voltiso/firestore-like'
 import { $fastAssert, isDefined } from '@voltiso/util'
 import { deepCloneData } from '@voltiso/util.firestore'
@@ -19,16 +18,16 @@ import { applyUpdatesInPlace } from './util/applyUpdates.js'
 function fail(_store: Localstore) {
 	// console.log(
 	// 	'\n',
-	// 	chalk.bold.bgRed.inverse('  LOCALSTORE   '),
+	// 	pc.bold.bgRed.inverse('  LOCALSTORE   '),
 	// 	'\n',
-	// 	chalk.bold.bgRed.inverse(' checkIfFailed '),
+	// 	pc.bold.bgRed.inverse(' checkIfFailed '),
 	// 	'\n',
-	// 	chalk.blue(
+	// 	pc.blue(
 	// 		dump({
 	// 			collections: store._collections,
 	// 		}),
 	// 	),
-	// 	chalk.magenta(
+	// 	pc.magenta(
 	// 		dump({
 	// 			locks: store._locks,
 	// 		}),

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { codeFilesExtensions } from './codeFilesExtensions'
@@ -9,12 +9,11 @@ const moduleNameMapper: Record<string, string> = {
 	'^~/(.*)': '<rootDir>/src/$1',
 	'^_$': '<rootDir>/src/_',
 	'^_/(.*)': '<rootDir>/src/_/$1',
-	// '#ansi-styles': './node_modules/chalk/source/vendor/ansi-styles/index.js', // for chalk
-	// '#supports-color': './node_modules/chalk/source/vendor/supports-color/index.js', // for chalk
 }
 
 // remove extensions
 for (const extension of codeFilesExtensions) {
+	// eslint-disable-next-line unicorn/prefer-string-raw
 	moduleNameMapper[`^(\\..+)\\.${extension}$`] = '$1'
 }
 

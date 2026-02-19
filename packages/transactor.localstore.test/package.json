@@ -19,8 +19,7 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@~/workspace": "workspace:^",
-    "@jest/globals": "^29.7.0",
+    "@jest/globals": "^30.2.0",
     "@types/random-seed": "^0.3.5",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
@@ -32,7 +31,8 @@
     "@voltiso/transactor": "workspace:^",
     "@voltiso/transactor.localstore": "workspace:^",
     "@voltiso/util": "workspace:^",
-    "jest": "^29.7.0",
+    "@~/workspace": "workspace:^",
+    "jest": "^30.2.0",
     "random-seed": "^0.3.0"
   }
 }

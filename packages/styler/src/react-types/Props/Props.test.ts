@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -7,6 +7,7 @@ import { $Assert } from '@voltiso/util'
 import type { IndexedProps, Props } from './Props'
 
 describe('Props', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type', () => {
 		expect.assertions(0)
 
@@ -41,6 +42,7 @@ describe('Props', () => {
 		$Assert.is<SomeProps2, Props>()
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('interface', () => {
 		expect.assertions(0)
 
@@ -51,6 +53,7 @@ describe('Props', () => {
 		$Assert.is<MyProps, Props>() // so we can't even have `[x: string]` signature...
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <PropName extends string>() => {
 		expect.assertions(0)
 

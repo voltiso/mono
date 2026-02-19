@@ -1,7 +1,5 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable es-x/no-class-instance-fields */
 
 import { VoltisoUtilError } from '_/error/VoltisoUtilError'
 
@@ -66,7 +64,7 @@ export type GetPropertyComplex<
  * @param object - An object to access
  * @param property - A property of the `object`
  * @returns `object[property]`
- * @throws
+ * @throws Todo
  */
 export function getProperty<
 	Obj extends object,

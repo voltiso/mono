@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$ } from '~'
 
 import type { BooleanOptions } from './BooleanOptions'
 
-export interface CustomBoolean<O extends Partial<BooleanOptions>>
-	extends CustomSchema<O> {
+export interface CustomBoolean<
+	O extends Partial<BooleanOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Boolean'
 
@@ -16,8 +17,9 @@ export interface CustomBoolean<O extends Partial<BooleanOptions>>
 
 //
 
-export interface CustomBoolean$<O extends Partial<BooleanOptions>>
-	extends CustomSchema$<O> {
+export interface CustomBoolean$<
+	O extends Partial<BooleanOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Boolean'
 

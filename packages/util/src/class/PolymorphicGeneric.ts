@@ -1,10 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-
-/* eslint-disable es-x/no-global-this */
-/* eslint-disable es-x/no-class-instance-fields */
 
 import type { Generics } from '~/Generics-augmentation'
 import type { Get_ } from '~/object/get-set/get/get/Get'

@@ -34,12 +34,12 @@
   },
   "__________DEPS": "__________",
   "devDependencies": {
-    "@~/workspace": "workspace:^",
-    "@jest/globals": "^29.7.0",
+    "@jest/globals": "^30.2.0",
     "@voltiso/assertor": "workspace:^",
     "@voltiso/config.jest": "workspace:^",
     "@voltiso/config.jest.lib": "workspace:^",
     "@voltiso/config.ts": "workspace:^",
-    "cross-env": "^7.0.3"
+    "@~/workspace": "workspace:^",
+    "cross-env": "^10.1.0"
   }
 }

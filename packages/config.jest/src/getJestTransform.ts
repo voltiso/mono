@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable no-console */
@@ -8,8 +8,12 @@
 
 import * as path from 'node:path'
 
+import { transformSync } from '@babel/core'
+// @ts-expect-error types not installed
+import babelPluginTransformFlowStripTypes from '@babel/plugin-transform-flow-strip-types'
+// @ts-expect-error types not installed
+import babelPluginSyntaxHermesParser from 'babel-plugin-syntax-hermes-parser'
 import * as esbuild from 'esbuild'
-import flowRemoveTypes from 'flow-remove-types'
 
 //
 
@@ -68,7 +72,23 @@ export function getJestTransform(options?: { format?: 'cjs' | 'esm' }) {
 
 			// if(isFlow) console.log('isFlow', filename)
 
-			if (isReactNative) code = flowRemoveTypes(code).toString()
+			if (isReactNative) {
+				// console.log('input code', code)
+				// code = flowRemoveTypes(code).toString()
+				let babelResult
+				try {
+					babelResult = transformSync(code, {
+						plugins: [
+							babelPluginSyntaxHermesParser,
+							babelPluginTransformFlowStripTypes,
+						],
+					})
+					code = babelResult?.code ?? code
+				} catch (error) {
+					console.error(error)
+				}
+				// console.log('output code', code)
+			}
 
 			const isTs = filename.endsWith('.ts') || filename.endsWith('.tsx')
 

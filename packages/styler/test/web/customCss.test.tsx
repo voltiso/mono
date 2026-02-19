@@ -1,8 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 import type { IsIdentical } from '@voltiso/util'
 import { $Assert } from '@voltiso/util'
 import type { Property } from 'csstype'
@@ -13,6 +14,11 @@ import { style } from '~'
 import { renderApp } from './common'
 
 describe('customCss', () => {
+	// eslint-disable-next-line jest/no-hooks
+	afterEach(() => {
+		cleanup() // required after upgrading testing library
+	})
+
 	it('works', () => {
 		expect.hasAssertions()
 
@@ -36,8 +42,8 @@ describe('customCss', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
-			backgroundColor: 'black',
+			color: 'rgb(255, 0, 0)',
+			backgroundColor: 'rgb(0, 0, 0)',
 		})
 	})
 
@@ -89,6 +95,7 @@ describe('customCss', () => {
 		expect(button).toHaveStyle({ height: '666px' })
 
 		renderApp(<Button data-testid='test-2' css={{ big: true }} />)
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		button = screen.getByTestId('test-2')
 
 		expect(button).toHaveStyle({ height: '666px' })
@@ -122,7 +129,7 @@ describe('customCss', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 

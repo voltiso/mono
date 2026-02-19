@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import 'zone.js'
@@ -92,7 +92,6 @@ describe('lazyPromise', () => {
 
 						expect(Zone.current.name).toBe(String(index))
 
-						// eslint-disable-next-line sonarjs/no-nested-functions
 						await lazyPromise(() => func(index))
 						await sleep(100)
 

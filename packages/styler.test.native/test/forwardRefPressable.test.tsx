@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -60,6 +60,7 @@ describe('forwardRefPressable', () => {
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('forwardRef - complex', () => {
 		expect.assertions(0)
 
@@ -90,6 +91,7 @@ describe('forwardRefPressable', () => {
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works with forwardRef #2 - but requires className (static assert)', () => {
 		expect.assertions(0)
 

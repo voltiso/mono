@@ -1,8 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
 import jsoncPlugin from 'eslint-plugin-jsonc'
+import { defineConfig } from 'eslint/config'
 import jsoncEslintParser from 'jsonc-eslint-parser'
 
 import { filesInsideMd, jsonFiles } from '~/detail/files'
@@ -12,7 +13,7 @@ const allRules = getAllRules(jsoncPlugin as never, 'jsonc', 'warn')
 // delete allRules['jsonc/sort-array-values']
 
 /** `json` with comments */
-export const jsoncConfig = defineEslintFlatConfig({
+export const jsoncConfig = defineConfig({
 	files: jsonFiles,
 	ignores: filesInsideMd,
 
@@ -48,7 +49,7 @@ export const jsoncConfig = defineEslintFlatConfig({
 })
 
 /** `json` without comments */
-export const jsonConfig = defineEslintFlatConfig({
+export const jsonConfig = defineConfig({
 	files: [
 		'package.json',
 		'package.*.json',

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $fastAssert } from '@voltiso/util'
@@ -54,8 +54,9 @@ export interface IUnknownRecord$ extends Schema$ {
 
 //
 
-export interface CustomUnknownRecord<O extends Partial<UnknownRecordOptions>>
-	extends CustomSchema<O> {
+export interface CustomUnknownRecord<
+	O extends Partial<UnknownRecordOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownRecord'
 
@@ -68,8 +69,9 @@ export interface CustomUnknownRecord<O extends Partial<UnknownRecordOptions>>
 
 //
 
-export interface CustomUnknownRecord$<O extends Partial<UnknownRecordOptions>>
-	extends CustomSchema$<O> {
+export interface CustomUnknownRecord$<
+	O extends Partial<UnknownRecordOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'UnknownRecord'
 

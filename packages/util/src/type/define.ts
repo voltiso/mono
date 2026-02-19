@@ -1,7 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-magic-numbers */
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { Callable, Newable } from '~/function'
 import type { DeepMutableN } from '~/object'
@@ -10,7 +12,6 @@ import type { Primitive } from '~/primitive'
 import type { Override } from '../object/Override'
 import type { AlsoAccept } from './AlsoAccept'
 import type { DecrementArgument } from './number'
-import { UNSET } from '_/symbols/unset'
 
 export interface DefineTypeOptions {
 	/**

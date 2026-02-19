@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { lazyConstructor, lazyFunction } from '@voltiso/util'
@@ -14,15 +14,13 @@ export interface UnknownObject$ extends CustomUnknownObject$<{}> {}
 
 //
 
-export interface UnknownPlainObject
-	extends CustomUnknownObject<{
-		isPlain: true
-	}> {}
+export interface UnknownPlainObject extends CustomUnknownObject<{
+	isPlain: true
+}> {}
 
-export interface UnknownPlainObject$
-	extends CustomUnknownObject$<{
-		isPlain: true
-	}> {}
+export interface UnknownPlainObject$ extends CustomUnknownObject$<{
+	isPlain: true
+}> {}
 
 //
 

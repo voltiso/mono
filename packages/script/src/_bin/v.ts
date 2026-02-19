@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // import { registerEsbuild } from '@voltiso/util.esbuild'
 import { register as registerEsbuild } from 'esbuild-register/dist/node'
 
+import { context } from '~/_/context'
 import { runScript } from '~/runScript'
 
 // import type { EventListener } from 'node'
 import { VoltisoScriptError } from '../VoltisoScriptError'
 import { compatDirs } from './_/compatDirs'
-import { context } from '~/_/context'
 
 registerEsbuild()
 
@@ -29,7 +29,7 @@ function isCommandName(string_: unknown): string_ is CommandName {
 }
 
 // // eslint-disable-next-line no-console
-// console.log(icon, chalk.gray('@voltiso/script'))
+// console.log(icon, pc.gray('@voltiso/script'))
 
 // const cpPromises = [] as Promise<void>[]
 

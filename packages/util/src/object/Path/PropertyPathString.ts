@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { Join, Printable } from '~/string'
 import type { Override } from '~/type'
 
 import type { PathOptions, PathString } from './PathBrand'
 import type { PropertyPath } from './PropertyPath'
-import { UNSET } from '_/symbols/unset'
 
 //
 

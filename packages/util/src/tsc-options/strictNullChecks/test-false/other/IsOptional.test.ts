@@ -1,7 +1,5 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable sonarjs/no-redundant-optional */
 
 import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'

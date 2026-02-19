@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import rxjs from 'eslint-plugin-rxjs-updated'
 
 import { codeFilesNoMd } from '~/detail/files.js'
 
-export const rxjsConfig = defineEslintFlatConfig({
+export const rxjsConfig = defineConfig({
 	...codeFilesNoMd,
 
 	plugins: { rxjs },

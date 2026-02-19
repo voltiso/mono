@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -39,8 +39,7 @@ export default function visitImport(
 ): TSESLint.RuleListener {
 	const targets: ImportTarget[] = []
 
-	// eslint-disable-next-line @typescript-eslint/no-deprecated
-	const basedir = path.dirname(path.resolve(context.getFilename()))
+	const basedir = path.dirname(path.resolve(context.filename))
 	const paths = getResolvePaths(context as never, optionIndex)
 	const options = {
 		basedir,

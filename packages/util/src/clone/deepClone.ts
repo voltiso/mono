@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $AssumeType } from '_'
@@ -33,7 +33,6 @@ function deepAssign(
 export interface CloneOptions {
 	omit: readonly (keyof any)[]
 
-	// eslint-disable-next-line es-x/no-weak-map
 	cache: WeakMap<object, object>
 }
 
@@ -51,13 +50,10 @@ export function deepClone<T>(
 	inputOptions?: NonStrictPartial<CloneOptions> | undefined,
 ): T {
 	const options: _<
-		// eslint-disable-next-line es-x/no-weak-map
 		NonStrictPartial<CloneOptions> & { cache: WeakMap<object, object> }
 	> = inputOptions?.cache
-		? // eslint-disable-next-line es-x/no-weak-map
-			(inputOptions as typeof inputOptions & { cache: WeakMap<object, object> })
-		: // eslint-disable-next-line es-x/no-weak-map
-			{ ...inputOptions, cache: new WeakMap() }
+		? (inputOptions as typeof inputOptions & { cache: WeakMap<object, object> })
+		: { ...inputOptions, cache: new WeakMap() }
 
 	if (typeof value === 'object' && value !== null && options.cache.has(value))
 		return options.cache.get(value) as never

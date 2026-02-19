@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { CustomSchema, CustomSchema$ } from '~'
@@ -7,8 +7,9 @@ import type { UnknownOptions } from './UnknownOptions'
 
 //
 
-export interface CustomUnknown<O extends Partial<UnknownOptions>>
-	extends CustomSchema<O> {
+export interface CustomUnknown<
+	O extends Partial<UnknownOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Unknown'
 
@@ -18,8 +19,9 @@ export interface CustomUnknown<O extends Partial<UnknownOptions>>
 
 //
 
-export interface CustomUnknown$<O extends Partial<UnknownOptions>>
-	extends CustomSchema$<O> {
+export interface CustomUnknown$<
+	O extends Partial<UnknownOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Unknown'
 

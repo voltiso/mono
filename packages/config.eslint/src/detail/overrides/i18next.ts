@@ -1,10 +1,10 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 import i18nextPlugin from 'eslint-plugin-i18next'
 
-export const i18nextConfig = defineEslintFlatConfig(
+export const i18nextConfig = defineConfig(
 	// ...eslintFlatConfigFromConfig(i18nextPlugin.configs.recommended, {
 	// 	i18next: i18nextPlugin,
 	// }),

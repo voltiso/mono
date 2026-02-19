@@ -1,13 +1,14 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import promisePlugin from 'eslint-plugin-promise'
 
 import { codeFiles } from '../files'
 
-export const promise = defineEslintFlatConfig(
+export const promise = defineConfig(
 	// ...eslintFlatConfigFromConfig(promisePlugin.configs.recommended as never, {
 	// 	promise: promisePlugin,
 	// }),

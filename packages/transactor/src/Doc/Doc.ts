@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { Output } from '@voltiso/schemar'
@@ -28,8 +28,10 @@ import type { $$DocTI, DTI } from './DocTI'
 import type { $$Doc, IDoc } from './IDoc'
 
 /** Everything except custom stuff at the root level: fields, methods, aggregates */
-export interface _DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
-	extends $$Doc {
+export interface _DocBase<
+	TI extends $$DocTI,
+	Ctx extends ExecutionContext,
+> extends $$Doc {
 	//
 
 	readonly [DTI]: TI
@@ -74,8 +76,10 @@ export interface _DocBase<TI extends $$DocTI, Ctx extends ExecutionContext>
 //
 
 /** Everything except custom stuff at the root level: fields, methods, aggregates */
-export interface CustomDoc<TI extends $$DocTI, Ctx extends ExecutionContext>
-	extends _DocBase<TI, Ctx> {
+export interface CustomDoc<
+	TI extends $$DocTI,
+	Ctx extends ExecutionContext,
+> extends _DocBase<TI, Ctx> {
 	//
 	readonly ref: DocBase.Ref<GetDocRepresentative<TI>>
 }

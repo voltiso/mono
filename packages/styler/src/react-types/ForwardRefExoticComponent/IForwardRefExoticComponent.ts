@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type React from 'react'
@@ -14,8 +14,9 @@ export interface INamedExoticComponent extends IExoticComponent {
 	displayName?: string | undefined
 }
 
-export interface IForwardRefExoticComponent<P extends Props = Props>
-	extends INamedExoticComponent {
+export interface IForwardRefExoticComponent<
+	P extends Props = Props,
+> extends INamedExoticComponent {
 	defaultProps?: Partial<P> | undefined
 
 	// propTypes?: WeakValidationMap</* P*/ any> | undefined

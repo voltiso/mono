@@ -1,7 +1,5 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable sonarjs/no-redundant-optional */
 
 import { describe, expect, it } from '@jest/globals'
 import type { IsIdentical } from '@voltiso/util'
@@ -17,7 +15,7 @@ import type {
 } from '~'
 import * as s from '~'
 
-// eslint-disable-next-line sonarjs/sonar-max-lines-per-function
+// eslint-disable-next-line sonarjs/max-lines-per-function
 describe('object', () => {
 	it('generic', <O extends Partial<ObjectOptions>>() => {
 		$Assert.is<CustomObject<O>, Schema>()

@@ -15,21 +15,6 @@
       },
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    },
-    "./jest-globals": {
-      "types": {
-        "import": "./dist/esm/jest-globals/index.d.ts",
-        "require": "./dist/cjs/jest-globals/index.d.ts"
-      },
-      "import": "./dist/esm/jest-globals/index.js",
-      "require": "./dist/cjs/jest-globals/index.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "jest-globals": [
-        "dist/cjs/jest-globals"
-      ]
     }
   },
   "__________EXPORTS FALLBACK": "__________",
@@ -38,8 +23,7 @@
   "main": "dist/cjs/index.js",
   "__________PUBLISH WHITELIST": "__________",
   "files": [
-    "dist",
-    "jest-globals/"
+    "dist"
   ],
   "__________SCRIPTS": "__________",
   "scripts": {
@@ -71,7 +55,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@voltiso/config.jest": "workspace:^",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0",
     "resolve": "^1.22.10"
   },
   "peerDependencies": {
@@ -84,12 +68,12 @@
     }
   },
   "devDependencies": {
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.2.14",
     "@types/resolve": "^1.20.6",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "@~/workspace": "workspace:^",
-    "jest": "^29.7.0",
+    "jest": "^30.2.0",
     "react": "^19.1.0",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"

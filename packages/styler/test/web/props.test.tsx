@@ -1,12 +1,18 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 
 import { style } from '~'
 
 import { renderApp } from './common'
+
+// eslint-disable-next-line jest/no-hooks, jest/require-top-level-describe
+afterEach(() => {
+	cleanup() // required after upgrading testing library
+})
 
 describe('props', () => {
 	it('makes mandatory props optional', () => {
@@ -27,13 +33,13 @@ describe('props', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 
 		// override red color
 		renderApp(<Button2 p='blue'>a</Button2>)
 
-		expect(screen.getByText('a')).toHaveStyle({ color: 'blue' })
+		expect(screen.getByText('a')).toHaveStyle({ color: 'rgb(0, 0, 255)' })
 	})
 
 	it('chains', () => {
@@ -45,6 +51,7 @@ describe('props', () => {
 
 		renderApp(<Button data-testid='a' />)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		expect(screen.getByTestId('a')).toHaveAttribute('type', 'button')
 	})
 
@@ -57,9 +64,11 @@ describe('props', () => {
 
 		renderApp(<Button data-testid='a' type='radio' />)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		expect(screen.getByTestId('a')).toHaveAttribute('type', 'radio')
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('does not allow unknown props', () => {
 		expect.assertions(0)
 

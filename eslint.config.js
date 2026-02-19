@@ -1,10 +1,10 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import * as path from 'node:path'
 
 import baseConfig from '@voltiso/config.eslint'
-import { defineEslintFlatConfig } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 
 const project = [
 	'tsconfig.json',
@@ -28,7 +28,7 @@ const project = [
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 // console.log('dirname', __dirname)
 
-export default defineEslintFlatConfig(...baseConfig, {
+export default defineConfig(...baseConfig, {
 	languageOptions: {
 		parserOptions: {
 			project,

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 function getLocationHref() {
@@ -16,15 +16,14 @@ export function isNavigationBackForward(params?: {
 
 	const locationHref = params?.pathname ?? getLocationHref()
 
-	// eslint-disable-next-line unicorn/no-negated-condition
 	if (locationHref !== initialLocationHref) {
 		historyChanged = true
 		return true
 	} else
 		return (
-			// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
+			// eslint-disable-next-line @typescript-eslint/no-deprecated
 			window.performance.navigation.type ===
-			// eslint-disable-next-line sonarjs/deprecation, @typescript-eslint/no-deprecated
+			// eslint-disable-next-line @typescript-eslint/no-deprecated
 			window.performance.navigation.TYPE_BACK_FORWARD
 		)
 }

@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
+
+import type { UNSET } from '_/symbols/unset'
 
 import type { clone } from '~/clone'
 import { deleteAllProperties } from '~/object'
 
 import type { _ProtoCallable, IProtoCallable } from './_'
 import type { ProtoCallableOptions } from './_/ProtoCallableOptions'
-import { UNSET } from '_/symbols/unset'
 
 export type __unused_ProtoCallable = typeof clone
 

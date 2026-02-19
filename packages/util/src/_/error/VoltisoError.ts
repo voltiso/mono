@@ -1,7 +1,5 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-/* eslint-disable es-x/no-class-instance-fields */
 
 import type { UndefinedFromOptional } from '~/object'
 
@@ -112,7 +110,7 @@ export class VoltisoError extends Error {
 		// const prefixedMessage = `${prefix}${message || ''}`
 
 		super(message, options)
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-useless-error-capture-stack-trace
 		if (Error.captureStackTrace) Error.captureStackTrace(this, this.constructor)
 		this.name = 'VoltisoError'
 

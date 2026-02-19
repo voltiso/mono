@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -82,7 +82,7 @@ describe('bigint', () => {
 		expect.hasAssertions()
 
 		expect(s.bigint.toString()).toBe('bigint')
-		// eslint-disable-next-line @typescript-eslint/no-base-to-string, sonarjs/no-base-to-string
+		// eslint-disable-next-line @typescript-eslint/no-base-to-string
 		expect(s.bigint(1n, 2n, 3n).toString()).toBe('1n | 2n | 3n')
 	})
 })

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { SCHEMA_NAME } from '_'
@@ -13,8 +13,7 @@ $fastAssert(SCHEMA_NAME)
 //
 
 export interface CustomUnknownLiteral<O extends Partial<UnknownLiteralOptions>>
-	extends $$UnknownLiteral,
-		CustomSchema<O> {
+	extends $$UnknownLiteral, CustomSchema<O> {
 	//
 	[SCHEMA_NAME]: 'UnknownLiteral'
 
@@ -25,8 +24,7 @@ export interface CustomUnknownLiteral<O extends Partial<UnknownLiteralOptions>>
 //
 
 export interface CustomUnknownLiteral$<O extends Partial<UnknownLiteralOptions>>
-	extends $$UnknownLiteral,
-		CustomSchema$<O> {
+	extends $$UnknownLiteral, CustomSchema$<O> {
 	//
 	[SCHEMA_NAME]: 'UnknownLiteral'
 

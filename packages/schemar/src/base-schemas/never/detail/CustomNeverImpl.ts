@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -22,7 +22,6 @@ export interface CustomNeverImpl<O> {
 export class CustomNeverImpl<
 	O extends Partial<NeverOptions>,
 > extends lazyConstructor(() => CustomSchemaImpl)<O> {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Never' as const;
 
 	// eslint-disable-next-line @typescript-eslint/class-methods-use-this

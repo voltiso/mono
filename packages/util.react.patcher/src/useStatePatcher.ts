@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { PatchFor, PatchOptions } from '@voltiso/util'
@@ -83,7 +83,6 @@ class StatePatcher_<S extends StateObject> {
 	 * Here we keep a reference to the update() hook, to force-update the React
 	 * component
 	 */
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	private readonly _forceUpdate: () => void
 
 	/**
@@ -91,7 +90,6 @@ class StatePatcher_<S extends StateObject> {
 	 *
 	 * - Lifetime: from update to update
 	 */
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	private _rawState: S
 
 	get raw() {
@@ -193,6 +191,7 @@ export function useStatePatcher<S extends StateObject>(
 
 			return new StatePatcher(state, forceUpdate)
 		},
+		// eslint-disable-next-line react-hooks/rule-suppression
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	)
@@ -223,6 +222,7 @@ export function useStatePatcher<S extends StateObject>(
 				// return Reflect.getOwnPropertyDescriptor(statePatcher.raw, p)
 			},
 		}),
+		// eslint-disable-next-line react-hooks/rule-suppression
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	)
@@ -230,6 +230,7 @@ export function useStatePatcher<S extends StateObject>(
 	// let's pretend we're immutable
 	return useMemo(
 		() => new Proxy(statePatcher, handler),
+		// eslint-disable-next-line react-hooks/rule-suppression
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[statePatcher.raw],
 	)

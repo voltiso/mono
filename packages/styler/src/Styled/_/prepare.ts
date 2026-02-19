@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -111,7 +111,6 @@ export function prepare<X>(
 	}
 
 	if (typeof x === 'string') {
-		// eslint-disable-next-line unicorn/no-negated-condition
 		if (!x.includes('${')) return x
 		// if (!x.includes('$__STYLER__{')) return x
 		else {

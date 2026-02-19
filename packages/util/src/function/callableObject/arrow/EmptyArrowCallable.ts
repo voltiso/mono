@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $fastAssert } from '_'
@@ -17,7 +17,7 @@ export type __unused_EmptyArrowCallable = ProtoCallable | typeof clone
  * - ✅ Works with {@link clone}()
  * - ✅ Cleans-up all own properties
  * - ❌ Does not allow `this`
- * - ❌ Does not work with `Proxy` (if needed, @see {@link ProtoCallable})
+ * - ❌ Does not work with `Proxy` (if needed, see {@link ProtoCallable})
  *
  * @example
  *

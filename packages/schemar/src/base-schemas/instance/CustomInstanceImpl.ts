@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { EXTENDS, SCHEMA_NAME } from '_'
@@ -34,7 +34,6 @@ export class CustomInstanceImpl<O extends Partial<InstanceOptions>>
 	extends lazyConstructor(() => CustomSchemaImpl)<O>
 	implements CustomInstance<O>
 {
-	// eslint-disable-next-line es-x/no-class-instance-fields
 	override readonly [Voltiso.Schemar.SCHEMA_NAME] = 'Instance' as const
 
 	// declare readonly [PARTIAL_OPTIONS]: O;

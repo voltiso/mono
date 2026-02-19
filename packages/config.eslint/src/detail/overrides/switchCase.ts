@@ -1,13 +1,14 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { defineEslintFlatConfig, getAllRules } from '@voltiso/config.eslint.lib'
+import { getAllRules } from '@voltiso/config.eslint.lib'
+import { defineConfig } from 'eslint/config'
 // @ts-expect-error no typings
 import switchCasePlugin from 'eslint-plugin-switch-case'
 
 // console.log('!!!', switchCasePlugin.configs.recommended)
 
-export const switchCase = defineEslintFlatConfig(
+export const switchCase = defineConfig(
 	// {
 	// 	...switchCasePlugin.configs.recommended,
 

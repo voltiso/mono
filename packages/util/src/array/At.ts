@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { VoltisoUtilError } from '_/error'
@@ -6,6 +6,10 @@ import { VoltisoUtilError } from '_/error'
 import { mod } from '~/math'
 import { assertNotPolluting } from '~/object/get-set/isPolluting'
 import { stringFrom } from '~/string'
+
+export interface RelativeIndexable<T> {
+	at(index: number): T | undefined
+}
 
 type _At<Arr> = Arr extends (infer T)[]
 	? T | undefined

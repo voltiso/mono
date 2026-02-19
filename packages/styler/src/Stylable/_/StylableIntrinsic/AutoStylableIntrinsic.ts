@@ -1,7 +1,7 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import type { UNSET, OptionalArgument } from '@voltiso/util'
+import type { OptionalArgument, UNSET } from '@voltiso/util'
 
 import type { Props } from '~/react-types'
 

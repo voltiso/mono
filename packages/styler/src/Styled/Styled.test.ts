@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 // const isCjs = typeof require === 'function'
@@ -15,6 +15,7 @@ import type { IStyled } from './IStyled'
 import type { Styled } from './StyledImpl'
 
 describe('Styled', () => {
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('generic', <P extends Props, C extends IStylable | null>() => {
 		expect.assertions(0)
 

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type * as s from '@voltiso/schemar'
@@ -36,8 +36,9 @@ import type { Trigger } from '~/Trigger'
 import type { DocDerivedData } from './_/DocDerivedData'
 import type { $$DocConstructor } from './IDocConstructor'
 
-export interface DocConstructor<TI extends DocTI = DocTI>
-	extends $$DocConstructor {
+export interface DocConstructor<
+	TI extends DocTI = DocTI,
+> extends $$DocConstructor {
 	readonly [DTI]: TI
 	readonly _: DocDerivedData
 

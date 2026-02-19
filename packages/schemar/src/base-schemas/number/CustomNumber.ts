@@ -1,12 +1,13 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type { $Override_ } from '@voltiso/util'
 
 import type { CustomSchema, CustomSchema$, NumberOptions } from '~'
 
-export interface CustomNumber<O extends Partial<NumberOptions>>
-	extends CustomSchema<O> {
+export interface CustomNumber<
+	O extends Partial<NumberOptions>,
+> extends CustomSchema<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 
@@ -22,8 +23,9 @@ export interface CustomNumber<O extends Partial<NumberOptions>>
 
 //
 
-export interface CustomNumber$<O extends Partial<NumberOptions>>
-	extends CustomSchema$<O> {
+export interface CustomNumber$<
+	O extends Partial<NumberOptions>,
+> extends CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Number'
 

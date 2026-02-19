@@ -1,8 +1,9 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 import type { IsEqual, IsIdentical } from '@voltiso/util'
 import { $Assert, $Is } from '@voltiso/util'
 import type {
@@ -53,6 +54,11 @@ const OtherRedButton2 = OtherRedButton.newRequiredProps({ big: false })
 const AnotherButton = OtherRedButton2.mapProp('big', (x?: boolean) => !x)
 
 describe('forwardRef', () => {
+	// eslint-disable-next-line jest/no-hooks
+	afterEach(() => {
+		cleanup() // required after upgrading testing library
+	})
+
 	it('works with forwardRef', () => {
 		expect.hasAssertions()
 
@@ -67,10 +73,11 @@ describe('forwardRef', () => {
 
 		expect(button).toHaveStyle({
 			height: '100px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('forwardRef - complex', () => {
 		expect.assertions(0)
 
@@ -96,10 +103,11 @@ describe('forwardRef', () => {
 
 		expect(button).toHaveStyle({
 			height: '100px',
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('works with forwardRef #2 - but requires className (static assert)', () => {
 		expect.assertions(0)
 
@@ -132,10 +140,11 @@ describe('forwardRef', () => {
 		const StyledButton = myStyle(Button)
 
 		renderApp(<StyledButton small data-testid='test' />)
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const button = screen.getByTestId('test')
 
 		expect(button).toHaveStyle({
-			color: 'blue',
+			color: 'rgb(0, 0, 255)',
 			height: '33px',
 			borderRadius: '22px',
 		})
@@ -241,6 +250,7 @@ describe('forwardRef', () => {
 			/>,
 		)
 
+		// eslint-disable-next-line testing-library/no-test-id-queries
 		const anotherButton = screen.getByTestId('button')
 
 		expect(anotherButton).toHaveStyle({
@@ -270,6 +280,7 @@ describe('forwardRef', () => {
 		expect(button).toHaveStyle({ margin: '123px' })
 	})
 
+	// eslint-disable-next-line jest/prefer-ending-with-an-expect
 	it('type-test from api-shop', () => {
 		expect.assertions(0)
 

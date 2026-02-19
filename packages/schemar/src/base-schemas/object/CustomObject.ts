@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import type {
@@ -29,8 +29,7 @@ import type { ObjectIndexSignatureEntry, ObjectOptions } from './ObjectOptions'
 //
 
 export interface CustomObject<O extends Partial<ObjectOptions>>
-	extends $$Object,
-		CustomSchema<O> {
+	extends $$Object, CustomSchema<O> {
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 
 	readonly [Voltiso.BASE_OPTIONS]: ObjectOptions
@@ -55,8 +54,7 @@ export interface CustomObject<O extends Partial<ObjectOptions>>
 //
 
 export interface CustomObject$<O extends Partial<ObjectOptions>>
-	extends $$Object,
-		CustomSchema$<O> {
+	extends $$Object, CustomSchema$<O> {
 	//
 	readonly [Voltiso.Schemar.SCHEMA_NAME]: 'Object'
 

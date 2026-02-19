@@ -103,13 +103,14 @@
   "__________DEPS": "__________",
   "dependencies": {
     "@voltiso/transform.lib": "workspace:^",
-    "chalk": "^4.1.1"
+    "picocolors": "^1.1.1"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "devDependencies": {
     "@voltiso/config.tsdoc": "workspace:^",
+    "eslint": "^9.39.2",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }

@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { $fastAssert, getKeys, tryAt } from '@voltiso/util'
@@ -123,6 +123,7 @@ export function render<$ extends StyledTypeInfo>(
 	// 	p[k] = prepare(p[k], { theme, isPreparingProps: true }) as never
 	// }
 
+	// eslint-disable-next-line unicorn/no-array-reverse
 	const cssArray = [..._getCssArray(css)].reverse()
 
 	const styles: Css[] = []

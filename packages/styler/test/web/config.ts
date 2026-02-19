@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 declare module '~' {
@@ -7,4 +7,5 @@ declare module '~' {
 	}
 }
 
+// eslint-disable-next-line unicorn/require-module-specifiers
 export {}

@@ -1,11 +1,12 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { $Assert, UNSET } from '_'
+import type { UNSET } from '_'
+import { $Assert } from '_'
 import { describe, expect, it } from '@jest/globals'
 
+import type { AreAllUnset } from './are-all-unset'
 import type { OptionalArgument } from './OptionalArgument'
-import { AreAllUnset } from './are-all-unset'
 
 type IFunc_<Result> = (...args: never[]) => Result
 type IFunc<Result extends string = string> = IFunc_<Result>

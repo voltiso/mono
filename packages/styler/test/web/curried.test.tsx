@@ -1,14 +1,20 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
-import { describe, expect, it } from '@jest/globals'
-import { screen } from '@testing-library/react'
+import { afterEach, describe, expect, it } from '@jest/globals'
+// eslint-disable-next-line testing-library/no-manual-cleanup
+import { cleanup, screen } from '@testing-library/react'
 
 import { style } from '~'
 
 import { renderApp } from './common'
 
 describe('curried', () => {
+	// eslint-disable-next-line jest/no-hooks
+	afterEach(() => {
+		cleanup() // required after upgrading testing library
+	})
+
 	it('simple', () => {
 		expect.hasAssertions()
 
@@ -18,7 +24,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -36,7 +42,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -54,7 +60,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -72,7 +78,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'purple',
+			color: 'rgb(128, 0, 128)',
 		})
 	})
 
@@ -85,7 +91,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'blue',
+			color: 'rgb(0, 0, 255)',
 		})
 	})
 
@@ -98,7 +104,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'green',
+			color: 'rgb(0, 128, 0)',
 		})
 	})
 
@@ -111,7 +117,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'green',
+			color: 'rgb(0, 128, 0)',
 		})
 	})
 
@@ -128,7 +134,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -145,7 +151,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 
@@ -162,7 +168,7 @@ describe('curried', () => {
 		const button = screen.getByRole('button')
 
 		expect(button).toHaveStyle({
-			color: 'red',
+			color: 'rgb(255, 0, 0)',
 		})
 	})
 })

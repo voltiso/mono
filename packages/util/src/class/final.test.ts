@@ -1,4 +1,4 @@
-// ⠀ⓥ 2025     🌩    🌩     ⠀   ⠀
+// ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
 // ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
 
 import { describe, expect, it } from '@jest/globals'
@@ -19,6 +19,7 @@ class Base {
 	}
 
 	// @ts-expect-error unused
+	// eslint-disable-next-line @typescript-eslint/no-unused-private-class-members
 	private g() {
 		return 'g'
 	}
