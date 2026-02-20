@@ -10,7 +10,6 @@
 // mockConsole()
 // require('zone.js')
 
-const src = require('@voltiso/transactor')
 const srcFirestore = require('@voltiso/transactor.firestore')
 
 // Error.stackTraceLimit = 20
@@ -22,11 +21,7 @@ initializeApp({ projectId: 'firestore-transactor' })
 
 const firestore = getFirestore()
 
-const assert = require('node:assert').strict
-
 module.exports = {
 	firestore,
-	src,
 	srcFirestore,
-	assert,
 }

@@ -12,6 +12,9 @@ describe('compat', () => {
 	it('undefined', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/compat/undefined')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/compat/undefined.js'),
 		)

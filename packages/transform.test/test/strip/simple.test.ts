@@ -13,6 +13,9 @@ describe('simple', () => {
 	})
 
 	it('dist', async () => {
+		// ignores knip unused file warning
+		;() => import('~/strip/simple')
+
 		// biome-ignore lint/suspicious/noTsIgnore: sometimes triggers
 		// @ts-ignore might not be compiled yet
 		const distHello = (await import('../../dist/esm/strip/simple')).default

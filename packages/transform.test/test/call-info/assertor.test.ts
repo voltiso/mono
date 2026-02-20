@@ -12,6 +12,9 @@ describe('callInfo', () => {
 	it('assertor', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/call-info/assertor')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/call-info/assertor.js'),
 		)

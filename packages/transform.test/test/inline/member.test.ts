@@ -12,6 +12,9 @@ describe('member', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/member')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/member.d.ts'),
 		)

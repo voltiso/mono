@@ -12,6 +12,9 @@ describe('nested', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/strip/nested')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/strip/nested.js'),
 		)

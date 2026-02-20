@@ -1,6 +1,6 @@
 {
   "name": "@voltiso/config.jest.node",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "repository": "git://github.com/voltiso/mono.git",
   "__________": "__________",
@@ -35,12 +35,13 @@
   },
   "__________DEPS": "__________",
   "dependencies": {
-    "@voltiso/config.jest": "workspace:^",
-    "jest-environment-node": "^30.2.0"
+    "@voltiso/config.jest": "workspace:^"
+  },
+  "peerDependencies": {
+    "jest-environment-node": "*"
   },
   "devDependencies": {
     "@voltiso/script": "workspace:^",
-    "@voltiso/config.ts": "workspace:^",
-    "jest": "^30.2.0"
+    "@voltiso/config.ts": "workspace:^"
   }
 }

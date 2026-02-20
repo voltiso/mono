@@ -10,6 +10,7 @@ import type { IsReactNative } from '~/util'
 
 import { RendererContext, ThemeContext } from './context'
 
+/** @public @internal HACK: don't remember why */
 export type __hack_useContext = NativeRenderer
 
 export type UseRendererResult = IsReactNative extends true

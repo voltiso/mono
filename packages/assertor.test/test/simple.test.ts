@@ -12,6 +12,9 @@ describe('simple', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/simple')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../dist/esm/simple.js'),
 		)

@@ -12,6 +12,9 @@ describe('mapped-type', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/mapped-type')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/mapped-type.d.ts'),
 		)

@@ -12,6 +12,9 @@ describe('differentAssert', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/differentAssert')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../dist/esm/differentAssert.js'),
 		)

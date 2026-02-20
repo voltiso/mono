@@ -12,6 +12,9 @@ describe('typeof', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/typeof')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/typeof.d.ts'),
 		)

@@ -12,6 +12,9 @@ describe('jsdoc', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/strip/jsdoc')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/strip/jsdoc.js'),
 		)

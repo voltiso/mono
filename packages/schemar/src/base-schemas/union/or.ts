@@ -25,4 +25,5 @@ export const or = lazyFunction(
 		},
 )
 
+/** @alias {@link or} */
 export const union = or

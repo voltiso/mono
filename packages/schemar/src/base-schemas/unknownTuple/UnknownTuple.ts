@@ -89,4 +89,5 @@ export const mutableTuple: MutableUnknownTuple$ = lazyFunction(
 	() => new MutableUnknownTuple$(),
 )
 
+/** @alias {@link mutableTuple} */
 export const tuple: MutableUnknownTuple$ = mutableTuple

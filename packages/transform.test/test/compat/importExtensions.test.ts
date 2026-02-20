@@ -12,6 +12,9 @@ describe('compat', () => {
 	it('importExtensions', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/compat/importExtensions')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/compat/importExtensions.js'),
 		)

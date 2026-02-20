@@ -1,8 +1,0 @@
-# ⠀ⓥ 2026     🌩    🌩     ⠀   ⠀
-# ⠀         🌩 V͛o͛͛͛lt͛͛͛i͛͛͛͛so͛͛͛.com⠀  ⠀⠀⠀
-
-ignores:
-  - '~'
-  - '@voltiso/config.ts'
-  - '@voltiso/config.jest'
-  - '@voltiso/script'

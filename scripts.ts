@@ -102,14 +102,14 @@ export const typecov = [
 //
 
 export const check = parallel(
-	'checkDepcheck',
+	'checkKnip',
 	'checkAttw',
 	'checkBiome',
 	'checkTsc',
 	'test',
 )
 
-export const checkDepcheck = 'depcheck'
+export const checkKnip = `pnpm -w exec knip --workspace ${packageJson.name}`
 export const checkAttw = () => {
 	if (!packageJson.private) return 'attw --pack'
 	return null

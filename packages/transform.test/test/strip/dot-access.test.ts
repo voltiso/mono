@@ -12,6 +12,9 @@ describe('dot-access', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/strip/dot-access')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/strip/dot-access.js'),
 		)

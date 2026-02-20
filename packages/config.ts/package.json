@@ -34,10 +34,5 @@
     "typescript-transform-paths": {
       "optional": true
     }
-  },
-  "devDependencies": {
-    "@voltiso/transform": "workspace:^",
-    "typescript": "^5.8.3",
-    "typescript-transform-paths": "^3.5.5"
   }
 }

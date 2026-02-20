@@ -18,35 +18,35 @@
     },
     "./strip": {
       "types": {
-        "import": "./dist/esm/strip/default.js",
-        "require": "./dist/cjs/strip/default.js"
+        "import": "./dist/esm/strip/index.js",
+        "require": "./dist/cjs/strip/index.js"
       },
-      "import": "./dist/esm/strip/default.js",
-      "require": "./dist/cjs/strip/default.js"
+      "import": "./dist/esm/strip/index.js",
+      "require": "./dist/cjs/strip/index.js"
     },
     "./inline": {
       "types": {
-        "import": "./dist/esm/inline/default.js",
-        "require": "./dist/cjs/inline/default.js"
+        "import": "./dist/esm/inline/index.js",
+        "require": "./dist/cjs/inline/index.js"
       },
-      "import": "./dist/esm/inline/default.js",
-      "require": "./dist/cjs/inline/default.js"
+      "import": "./dist/esm/inline/index.js",
+      "require": "./dist/cjs/inline/index.js"
     },
     "./compat": {
       "types": {
-        "import": "./dist/esm/compat/default.js",
-        "require": "./dist/cjs/compat/default.js"
+        "import": "./dist/esm/compat/index.js",
+        "require": "./dist/cjs/compat/index.js"
       },
-      "import": "./dist/esm/compat/default.js",
-      "require": "./dist/cjs/compat/default.js"
+      "import": "./dist/esm/compat/index.js",
+      "require": "./dist/cjs/compat/index.js"
     },
     "./call-info": {
       "types": {
-        "import": "./dist/esm/call-info/default.js",
-        "require": "./dist/cjs/call-info/default.js"
+        "import": "./dist/esm/call-info/index.js",
+        "require": "./dist/cjs/call-info/index.js"
       },
-      "import": "./dist/esm/call-info/default.js",
-      "require": "./dist/cjs/call-info/default.js"
+      "import": "./dist/esm/call-info/index.js",
+      "require": "./dist/cjs/call-info/index.js"
     }
   },
   "typesVersions": {
@@ -99,7 +99,6 @@
     "typescript": "^5"
   },
   "devDependencies": {
-    "@voltiso/config.tsdoc": "workspace:^",
     "typescript": "^5.8.3",
     "typescript-transform-paths": "^3.5.5"
   }

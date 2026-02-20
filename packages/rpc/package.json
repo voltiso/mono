@@ -83,18 +83,13 @@
   "devDependencies": {
     "@jest/globals": "^30.2.0",
     "@types/express": "^5.0.1",
-    "@types/node": "^25.2.3",
-    "@voltiso/config.jest": "workspace:^",
-    "@voltiso/config.jest.lib": "workspace:^",
-    "@voltiso/config.ts": "workspace:^",
+    "@types/node": "^25.3.0",
     "@voltiso/handler": "workspace:^",
     "@voltiso/schemar": "workspace:^",
     "@voltiso/script": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "cross-env": "^10.1.0",
     "express": "^5.1.0",
-    "get-port": "^7.0.0",
-    "typescript": "^5.8.3",
-    "typescript-transform-paths": "^3.5.5"
+    "get-port": "^7.0.0"
   }
 }

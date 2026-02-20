@@ -41,7 +41,7 @@
     "esbuild": ">= 0.14.49"
   },
   "devDependencies": {
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.3.0",
     "@voltiso/config.ts": "workspace:^",
     "@voltiso/transform": "workspace:^",
     "esbuild": "^0.27.3",

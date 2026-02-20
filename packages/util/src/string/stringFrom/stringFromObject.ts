@@ -21,6 +21,7 @@ function append(str: string, x: string): string {
 	return `${str.slice(0, -2)}, ${x} }`
 }
 
+/** @public Needs full options (see {@link stringFromObject} for auto-defaulting) */
 export function stringFromObject_(
 	obj: Record<keyof any, unknown>,
 	options: StringFromOptions,
@@ -67,6 +68,7 @@ export function stringFromObject_(
 	return result
 }
 
+/** @public */
 export function stringFromObject(
 	object: Record<keyof any, unknown>,
 	options?: Partial<StringFromOptions> | undefined,

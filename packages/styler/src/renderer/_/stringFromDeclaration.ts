@@ -7,6 +7,7 @@ import { prefix } from 'stylis'
 
 import type { Unit } from '~/_/StyledData/IStyledData'
 
+/** @public */
 export function stringFromPropertyValue(
 	name: string,
 	value: string | number,
@@ -20,6 +21,7 @@ export function stringFromPropertyValue(
 	return result
 }
 
+/** @public */
 export function stringFromDeclaration(
 	camelCaseName: string,
 	value: string | number,

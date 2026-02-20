@@ -12,6 +12,9 @@ describe('import', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/import')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/import.d.ts'),
 		)

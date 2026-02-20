@@ -9,7 +9,7 @@ import type React from 'react'
 
 let renderer: NativeRenderer | undefined
 
-export function getRenderer(): NativeRenderer {
+function getRenderer(): NativeRenderer {
 	if (!renderer) {
 		// renderer = createRenderer({
 		// 	plugins: [typescript(), ...webPreset],

@@ -29,5 +29,8 @@ export function fastAssert(
 	throw error
 }
 
-/** @deprecated Use `fastAssert` instead */
+/**
+ * @deprecated Use {@link fastAssert} instead
+ * @alias {@link fastAssert}
+ */
 export const assert = fastAssert

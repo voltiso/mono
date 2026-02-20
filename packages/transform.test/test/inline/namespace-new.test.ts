@@ -12,6 +12,9 @@ describe('namespace-new', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/namespace-new')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/namespace-new.d.ts'),
 		)

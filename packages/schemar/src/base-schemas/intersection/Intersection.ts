@@ -189,4 +189,5 @@ export function andObjects<
 	return new CustomObjectImpl(o) as never
 }
 
+/** @alias {@link and} */
 export const intersection = and

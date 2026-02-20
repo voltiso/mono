@@ -12,6 +12,9 @@ describe('expression', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/expression')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/expression.d.ts'),
 		)

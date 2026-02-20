@@ -39,11 +39,7 @@
     "@voltiso/script": "workspace:^"
   },
   "devDependencies": {
-    "@voltiso/config.ts": "workspace:^",
-    "@voltiso/script": "workspace:^",
-    "@voltiso/transform": "workspace:^",
-    "typescript": "^5.8.3",
-    "typescript-transform-paths": "^3.5.5"
+    "@voltiso/script": "workspace:^"
   },
   "__________MISC": "__________",
   "engines": {

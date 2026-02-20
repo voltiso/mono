@@ -16,6 +16,7 @@ function append(str: string, x: string) {
 	return `${str.slice(0, -1)}, ${x}]`
 }
 
+/** @public Needs full options (see {@link stringFromArray} for auto-defaulting) */
 export function stringFromArray_(
 	array: unknown[],
 	options: StringFromOptions,
@@ -50,6 +51,7 @@ export function stringFromArray_(
 	return result
 }
 
+/** @public */
 export function stringFromArray(
 	array: unknown[],
 	options?: NonStrictPartial<StringFromOptions> | undefined,

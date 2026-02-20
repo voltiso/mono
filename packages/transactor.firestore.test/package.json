@@ -27,10 +27,10 @@
     "@voltiso/transactor.firestore": "workspace:^",
     "@voltiso/util": "workspace:^",
     "firebase-admin": "^13.4.0",
-    "firebase-tools": "^15.6.0",
+    "firebase-tools": "^15.7.0",
     "get-port": "^7.0.0",
     "jest-dev-server": "^11.0.0",
     "random-seed": "^0.3.0",
-    "zone.js": "^0.16.0"
+    "zone.js": "^0.16.1"
   }
 }

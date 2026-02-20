@@ -108,8 +108,9 @@ export function overrideStrict<
 }
 
 /**
- * @deprecated Use `overrideStrict` instead (or consider using
- *   `overrideDefined`)
+ * @deprecated Use {@link overrideStrict} instead
+ *   (or consider using {@link overrideDefined})
+ * @alias {@link overrideStrict}
  */
 export const override = overrideStrict
 

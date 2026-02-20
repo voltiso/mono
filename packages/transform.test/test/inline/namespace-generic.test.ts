@@ -12,6 +12,9 @@ describe('namespace-generic', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/namespace-generic')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/namespace-generic.d.ts'),
 		)

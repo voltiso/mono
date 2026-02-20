@@ -12,6 +12,9 @@ describe('omit-precise', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/inline/omit-precise')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/inline/omit-precise.d.ts'),
 		)

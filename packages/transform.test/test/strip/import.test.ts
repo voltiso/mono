@@ -12,6 +12,9 @@ describe('import', () => {
 	it('works', async () => {
 		expect.hasAssertions()
 
+		// ignores knip unused file warning
+		;() => import('~/strip/import')
+
 		const file = await fs.readFile(
 			path.join(__dirname, '../../dist/esm/strip/import.js'),
 		)

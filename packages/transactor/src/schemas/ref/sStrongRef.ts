@@ -67,5 +67,9 @@ export const sStrongRef: UnknownStrongDocRefSchema$ = lazyFunction(
 		}) as never,
 )
 
-/** Strong document reference schema (same as {@link sStrongRef}) */
+/**
+ * Strong document reference schema
+ *
+ * @alias {@link sStrongRef}
+ */
 export const sRef = sStrongRef

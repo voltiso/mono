@@ -35,6 +35,7 @@ function checkImplicitPromiseConstructorName() {
 
 //
 
+/** @public */
 export function checkEnvUncached(): void {
 	checkZonePresent()
 	checkPromiseConstructor()
@@ -43,6 +44,7 @@ export function checkEnvUncached(): void {
 
 let isEnvChecked = false
 
+/** @public */
 export function checkEnv(): void {
 	if (isEnvChecked) return
 	isEnvChecked = true
